@@ -4,110 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E50D5C44501
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 18:56:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED7A3C44507
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 18:57:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7C3AF10E14E;
-	Wed, 15 Jul 2026 18:56:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A2A1610E14E;
+	Wed, 15 Jul 2026 18:57:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="Qxs+T8Am";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="iN1bZHX9";
 	dkim-atps=neutral
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com
- [209.85.214.172])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 01C0A10E14E
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 18:55:57 +0000 (UTC)
-Received: by mail-pl1-f172.google.com with SMTP id
- d9443c01a7336-2ceae1ed204so31584375ad.0
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 11:55:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1784141757; cv=none;
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com
+ [209.85.216.49])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2323510E14E
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 18:57:27 +0000 (UTC)
+Received: by mail-pj1-f49.google.com with SMTP id
+ 98e67ed59e1d1-38dfe7eb825so2405074a91.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 11:57:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1784141846; cv=none;
  d=google.com; s=arc-20260327;
- b=ZkfQXdo6fC5d6hnTHzdLLe1CiBHmvoGiMQS8APwH9P4xeJG/V8FVUqXcRCITc1idtA
- dr6+ERSOmsJo62GxcnL4aLOaKDPcohUR82OoOmMDgU3JZZVHoS9KE1mJCWRPJz6Q29OW
- DB2mOAuhD/PEy1JLIltQF2+VM5kp2/datpIT2dmxstCpYhOpfROCI4IiyURAODMfg25U
- gFwMtDbWxobkvt/zt98uVIYi2jglpsq7nqreIYo28JSwuPZbYhNdEOJjU5m3WvW0XFae
- NLHiFoZ9nTzUANI+rLdCkT5/FOKglhwxq3b0nXiyZjP4DKZbVA0qmsAD4Z7sqDTHVwfb
- kp9A==
+ b=H0J0cr3wQY50Ixwuo9YDgeyy9QAQ6xQLAh2e9eBhzIZ+PM+xrgbUrAAjg6KluFQFPl
+ noeRAtsElzhUV8fFooSW8VjByZIgaiCFMISrQWzlklYp0CuAyTddHGoKJi6n7hnRKWJ5
+ IuN+2DKm5arD2N4L5NOOnxmVBgo+2o9XQdyx0qGErJWvULOMGdal+Ac6vPm9Kvcjag81
+ 6JAmHiVqG3Tf1XeT5RvK0elWGwzH9VJIEolEiKw/KMzPO98Q03OOCDDeUGo5quTC1ag1
+ UX5ly4Ng2+za1xBE32iQjf5XbY/OuJ2zPcO8WxRxRnZIP3SKCHgGoLNUo6hc5FhU4JtR
+ rGXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
  s=arc-20260327; 
  h=cc:to:subject:message-id:date:from:in-reply-to:references
  :mime-version:dkim-signature;
- bh=vjAm8sTGE03Lurcdh5znuxhwIi7S8FPFVDnOP8krqpQ=;
- fh=tMRKBOoL4bJei+G6MEwhzpmpOh6Qa56X1hWPLmDQyUM=;
- b=WWCzXn2xYzS+Kc2C/SYHDNNaNQCF/aObOh5gPzU2ON8xI6WxWLQHFec2+4rrukwd+O
- aX0hIMfkhNhhP0twlifW3akV/B7EBnZCo/TwYS2NdBWDYjkRkyLAIb7j0Tnrzgo1fUdM
- RUBO+17EJXQXcZaPMAIKuNmxnSYndJmuE2o4DhvVuiAQDHUDtq1TS8oWOo1chBSE73Zs
- jLdkshj6rmlY4/a3HLl9xc2kOVLC/SHu5KarCyHHx6uH8y4THAA6toztixJBxfqm7jsF
- l/QNrQRXviFYpU1b0j7fbKe31FDEeKTqgNZ8sHmrIWoCDLVW4wD3zCMDEmiBzDDmV+kc
- JRpg==; darn=lists.freedesktop.org
+ bh=dI9zYs4XPx7tcsdyMJqF/E8TIqk90uM2dl5yRHd2BJU=;
+ fh=jpHQ/pUyhHEYYhjtjVmKZsWvxwn5RoWyDL8TXETZyyk=;
+ b=J/QVmxUwhhY2b7g/ZvhRbxUzMG4/CY148Ho9jrNcxHB2aBAzDoTjtBkdtr+zA6eGmN
+ DFFsoCl/ghjgV7iC7SQnp8hTASUtJjsqjPmuJeGmdVzp9/eizAqKvDXzi7WNzlpQfj1p
+ W3oHZtLqv17ljdFf23qMDJTADlvqAxQzUXgjeOI5fwFz95zkgH/iBxrv2hHVym7UhXd4
+ IiZ4mOwlG/cmgAoOaAYhhVo3vH0c7VKK4KeHpY5bvtxt7rNyQrJTWvECAkhDFGmuxef7
+ KUgITEXixtxCOnjekFat1G9i7ng1Rpa7yjVaYzebmw+wa9jJ9SJ1yS113+DdGlsYdnMe
+ T04g==; darn=lists.freedesktop.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20251104; t=1784141757; x=1784746557;
+ d=google.com; s=20251104; t=1784141846; x=1784746646;
  darn=lists.freedesktop.org; 
  h=content-type:cc:to:subject:message-id:date:from:in-reply-to
  :references:mime-version:from:to:cc:subject:date:message-id:reply-to
- :content-type; bh=vjAm8sTGE03Lurcdh5znuxhwIi7S8FPFVDnOP8krqpQ=;
- b=Qxs+T8AmMt8XojIgRKzAkPEWbBkoHZJeHXvLf1GMySXUQWRz3wg5EkXA+YwV1bKa1j
- DqjOmJHNdyXDvlswHtigbZQ5PZD7ohBQNDE/RtUwqijmep/lnH3w6j2q/5Db8rtNsx1b
- IWZJkdKFyGLKNFJ7W50WOwrOwODvHGMe0AlqDcrPStPlUZEAGF52Uc8T1zer2cuZqlq+
- ANWMArTXzC3RTD7YVnPwhIIxrnM5bEjXQ+r7TAwu2cpaU0aFf4YQuYjiJq8N7jiIuASG
- jJn23/Sy2dRNUtr+iS5pSMUxkdxXRMwRrJPOAYdOrdTdOcXb9ATb95M7K8zOOcyq1sTI
- AEaw==
+ :content-type; bh=dI9zYs4XPx7tcsdyMJqF/E8TIqk90uM2dl5yRHd2BJU=;
+ b=iN1bZHX91oZAezcI/SkRfrYQuBkLJ/LGomCOE4EwN+stToBeNNmX6/Yea67Z+mdFcs
+ AQ1lTI/xFzNI1SXkhertmQnqtyRnhwvIcdTdPGOelutxqpzEtSOMEY+2aMBQ1KdQ7+wi
+ FQd9FdlVNr+r3TyDjJmIfdUstXcZKNJ3puaRXcirP1QBEv3axg0vpqI8Pf6H6x+/qcii
+ yF6zvn6uHr5eqRkzfzjC+BTdIkQb4MXLWRTbX5LsAzxghfldDs6AvJCx7nFOnpMbgII4
+ Blzwx0vSXyus3xEgRlSM1y7Ewe27maaQbgPyNrZb6eg2fyMzEGQyuj4e9VRkEnbvsuY7
+ w9Xg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1784141757; x=1784746557;
+ d=1e100.net; s=20251104; t=1784141846; x=1784746646;
  h=content-type:cc:to:subject:message-id:date:from:in-reply-to
  :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
  :subject:date:message-id:reply-to:content-type;
- bh=vjAm8sTGE03Lurcdh5znuxhwIi7S8FPFVDnOP8krqpQ=;
- b=Dp+abmI5MBtdfMkzTHr9apAaol1XVntkjzdATdk1EZwibL2Gn7kfx8AdDfVe6UfIjw
- pgVplPC/I6S7NfNpo8ISyLJTqGpDTLflAZEpMA6ahH8HUdWOtVXed/Pr8HbLPgrChM6F
- 0gxryNsw6/Oe7r0tkRYpI7Ib0fSfzHfJ8K3mXnUiInBhHA6M67WRev5Tgb2slFUjai43
- TsZ0j6B+npiArYIBTTW4U+w3+wwwaddpFzVfeiLzodWrk0TCrjYZqLfH4QNOruxUQqqM
- 0EBqQUulHkmfWUKxSjKjK5NhG53Ft0JLUiCsQ/veqMXn2Vz5y1wwDhar6BcU+Dmod4OG
- R3Kg==
+ bh=dI9zYs4XPx7tcsdyMJqF/E8TIqk90uM2dl5yRHd2BJU=;
+ b=SUJZ9U02d3hQ+KT5+khsFEWVrVtRMPlTifIhtCxeHH7vTxv2DQ9zRFCQc0AjL6RZi7
+ GuZC0cI+tlibzmxvGkw5cO5lug8q8m7OU6zHLQOJOcN3mskPCbA/NpTVdaRr25Ez5ujV
+ uUwkacDgw5u+wCUcY2twC7pLr4rfthqq5DtD+jGrmQmPe4farqpKMvoKmccKCuhP9uzW
+ HPpyt1dkwVV7nvOErWTjzkp3RYWE+vsDgyQdoqVBHoBFeMfFe6xu4dAtTQvoiqtsab88
+ 46URvzQxVl+4al61lJh4x+pLn7g8t2zAc5+spFmx6Wu5f+Vhp6CoXvQVnmWvN/L9/VeT
+ rumQ==
 X-Forwarded-Encrypted: i=1;
- AHgh+RpwGgAG6e3RN5SegsGHIIEORflB2L+VV0AELqjUVluT/ig4XqQErt5MCX0MpdP/fp2pj4rM14X6@lists.freedesktop.org
-X-Gm-Message-State: AOJu0Yyf9a8fJAQnBi+SK5Y4VLiB2xhJA4kgzGnmtEiHeo3WsJMjO4dA
- VtMLkxgfL/d+GnOJpUCbm7p3xVQ5HDgWzBwK62ZwIxf68AFwAQXOFRA78r7f7TdhFFwZCxP5yoO
- H46U9fs4+z7jo50WqPQBdfRJo2FN+KJ5BsaYWqSle
-X-Gm-Gg: AfdE7ck6qkCGDZHu92rgihPezlmc/0T3InYUWyxKjc8g3rl2kXr0Yn2BhzwiUjt7ZJJ
- /Raj+Mtih6DukKJPLje2x50lHOOswYhv7yguE13t/hMyagdo0Hj3xDBQDR6RYk3T4ZaWa8O6NQk
- J0YwMzRacOSF+Sm8GtYJhS5OUu5Od78nnnzQu8B+NA3pRc+Cl8hfY5ayyZBI6DYGDQRw50TfUbf
- WNBCYeeDxBvpDa4IDpveLlZ/IAzqQCRUkJoXk1f0L/F89Mrk1dNQUjPd0XpAyaaSia2t1/310+k
- PIBlOOVXYc5y6YWMhymRgPWjEdUkSRgoKbRrhulb8wCpivKR9D4LZy0snTgUh/Hk+J5IjBw=
-X-Received: by 2002:a05:6a20:a11c:b0:3bf:a698:ce4d with SMTP id
- adf61e73a8af0-3c110b6e09bmr20970279637.54.1784141756895; Wed, 15 Jul 2026
- 11:55:56 -0700 (PDT)
+ AHgh+RpjhI5aWBR8S+jZpqzPYwa3IWZcfkJgrCg9vgC3AYVOo9lKylfyg1/Kwc165j8QWWrHuhhhSiK+@lists.freedesktop.org
+X-Gm-Message-State: AOJu0YwMx3ylNXQAHPJPfXtcUJSFGytjDvkU2/FoG5TLP8Vyjr7ID1O2
+ hb9e1pr1zTKD2z+z5HZQ33G2/d7Gi7ozZh+7jjUJcOFcsqWq21LJiyYikj6mAWVDU8mjPPFzCgY
+ ce/hjeipJCAVnm8HT0Nfk2Fi9YQxB0lmV9uUVjAZyTYTBUZs7zWm6g1QfYqA=
+X-Gm-Gg: AfdE7cngDk8IoBkp86An/w6tKdWakVc1Tcbx5LK+77OASWIA/lYsKpyK/2uGSXiCYVR
+ odKHWHf15qo61oC/7xUFjxDZLAB2wOZ4EnRYJppAWIEBthowezBK2Fc5io/CbSwA/NfauStpSQg
+ h9IsNWbtNjficWexhnc8atHlPD9tB9pnft+lPQnAIZ1BE7wQ/JVWcD/hj+Qy/gQykw6zahN2k+4
+ jiKAm3V84SEkvaEmKc2TgTOszvs6y7GI/tFhxzSYU6DJDqqml2CnRkd+v9JLP8AULYlvRGhVJTU
+ n/JSGJDdJ20bExKCynSP6XXW4FA9XqpGcSEEJ9lYatlVEISiQ3Dxmi37iEwVAf8iNozjNeU=
+X-Received: by 2002:a05:6a21:398e:b0:39f:59c8:f302 with SMTP id
+ adf61e73a8af0-3c110b15bd6mr18794151637.37.1784141845991; Wed, 15 Jul 2026
+ 11:57:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260621081043.598388-1-jason-jh.lin@mediatek.com>
- <520d7fe2b1ef01d81cbb9cba7ca79e5cbd15922c.camel@mediatek.com>
- <CAMNLLoTHYoE3AiFeTaCj14ktcvuMjR0LoewUnmR+AXpoEoxpZw@mail.gmail.com>
- <bd0165e7-d245-4780-ae78-691589bc808a@intel.com>
- <e6b4e5b8b39eae29a2749d15e1d13a34b7d24b04.camel@mediatek.com>
- <667d2cc5-a7ab-4c2c-9218-e50e01001b9c@intel.com>
- <dd0fa20c95b8e0b66eb5a4f0cdde4fa44516e5d6.camel@mediatek.com>
-In-Reply-To: <dd0fa20c95b8e0b66eb5a4f0cdde4fa44516e5d6.camel@mediatek.com>
+References: <20260410100806.62906-1-jason-jh.lin@mediatek.com>
+ <adjQJE8Ok5K_sNuc@intel.com>
+ <7c20c056822e3bb860f48c23f3830a8ae93a67ef.camel@mediatek.com>
+ <ad5De-s-yxyyTt7s@intel.com>
+ <73567dcf64c48d1e02206839ce589809b1366d58.camel@mediatek.com>
+ <CAMNLLoSF9xLz=2pUwcTULURdxZDn+NR1+Y-oGHBaOsre3Uz-cw@mail.gmail.com>
+ <CAMNLLoSDZ5mGALP=vwuL245R+yZWf+adpCD3cFyeqv9k1bKzAw@mail.gmail.com>
+ <CAMNLLoSNXHyLS7gftj4ofMFknnhP-tdKoYjG32W3j3kb4DZO2A@mail.gmail.com>
+ <61f912e0d6a934afac8e2e978dae27314d27a23a@intel.com>
+ <986ffe07650b69ac71c36b10bb6d5e18aa82106f.camel@mediatek.com>
+ <ahc3rjW0MFg3LBAB@intel.com>
+ <f9fac697509e8c4c543e393152fd5c9809f0932e.camel@mediatek.com>
+ <4f0376dce37c5a5c8c6e849aacd6de30e7bc3eab.camel@mediatek.com>
+ <CAMNLLoS5KdeXN-DAMnCJ2E2PSe=W+6Oh+UPT04oVzL+=BqN-XQ@mail.gmail.com>
+In-Reply-To: <CAMNLLoS5KdeXN-DAMnCJ2E2PSe=W+6Oh+UPT04oVzL+=BqN-XQ@mail.gmail.com>
 From: Manasi Navare <navaremanasi@google.com>
-Date: Wed, 15 Jul 2026 11:55:45 -0700
-X-Gm-Features: AUfX_mzFIvj-U2vUj8v7Odosj3xXqbKCI3L98u2QVvEbft8Mpc8A_ibJVLAH-lA
-Message-ID: <CAMNLLoTOnZdL78BcJ15tqP+MaN6WU=-=jSHx0+E81tJGdNPuhQ@mail.gmail.com>
-Subject: Re: [PATCH i-g-t v2] tests/kms_hdr: Skip unsupported formats in
- bpc-switch test
+Date: Wed, 15 Jul 2026 11:57:14 -0700
+X-Gm-Features: AUfX_mxeJ2hh6TQfNUA0gwT40M9Y5h0mbYYm0mnzOYCJ78aRc9mZwgXS59_aDeM
+Message-ID: <CAMNLLoRPiHqdvxtkX8YR=G-Dt1W2i8Ks89amcx1qDccPSjrNOw@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] tests/kms_rotation_crc: Add MTK device support
 To: =?UTF-8?B?SmFzb24tSkggTGluICjmnpfnnb/npaUp?= <Jason-JH.Lin@mediatek.com>
-Cc: "suresh.kumar.kurmi@intel.com" <suresh.kumar.kurmi@intel.com>, 
- "swati2.sharma@intel.com" <swati2.sharma@intel.com>,
- "karthik.b.s@intel.com" <karthik.b.s@intel.com>, 
+Cc: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, 
+ "swati2.sharma@intel.com" <swati2.sharma@intel.com>, 
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
+ "karthik.b.s@intel.com" <karthik.b.s@intel.com>,
  "jani.nikula@intel.com" <jani.nikula@intel.com>, 
- "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>, 
+ =?UTF-8?B?TmFuY3kgTGluICjmnpfmrKPonqIp?= <Nancy.Lin@mediatek.com>, 
  Project_Global_Chrome_Upstream_Group
  <Project_Global_Chrome_Upstream_Group@mediatek.com>, 
- "gildekel@google.com" <gildekel@google.com>, 
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
+ "suresh.kumar.kurmi@intel.com" <suresh.kumar.kurmi@intel.com>, 
  =?UTF-8?B?UGF1bC1wbCBDaGVuICjpmbPmn4/pnJYp?= <Paul-pl.Chen@mediatek.com>, 
- "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>, 
- =?UTF-8?B?TGFuY2Vsb3QgV3UgKOWQs+eRi+aZnyk=?= <Lancelot.Wu@mediatek.com>, 
- "markyacoub@chromium.org" <markyacoub@chromium.org>,
- "fshao@chromium.org" <fshao@chromium.org>
-Content-Type: multipart/alternative; boundary="000000000000a762dc0656aadf4b"
+ "gildekel@google.com" <gildekel@google.com>, 
+ "bhanuprakash.modem@gmail.com" <bhanuprakash.modem@gmail.com>,
+ "fshao@chromium.org" <fshao@chromium.org>, 
+ "juhapekka.heikkila@gmail.com" <juhapekka.heikkila@gmail.com>, 
+ =?UTF-8?B?U2luZ28gQ2hhbmcgKOW8teiIiOWciyk=?= <Singo.Chang@mediatek.com>, 
+ "markyacoub@chromium.org" <markyacoub@chromium.org>, 
+ "kamil.konieczny@linux.intel.com" <kamil.konieczny@linux.intel.com>
+Content-Type: multipart/alternative; boundary="000000000000f6da8c0656aae492"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -123,158 +132,346 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---000000000000a762dc0656aadf4b
+--000000000000f6da8c0656aae492
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Great, thanks a lot Swati for reviews.
-Could we get this landed if CI results look good?
+Hi @Swati Sharma <swati2.sharma@intel.com>  @Karthik B S
+<karthik.b.s@intel.com> @Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel=
+.com> @Jani
+Nikula <jani.nikula@intel.com> :
+
+Could we get some response here from Intel to move this forward?
 
 Regards
 Manasi
 
-On Fri, Jul 10, 2026 at 12:21=E2=80=AFAM Jason-JH Lin (=E6=9E=97=E7=9D=BF=
+On Wed, Jul 8, 2026 at 3:31=E2=80=AFPM Manasi Navare <navaremanasi@google.c=
+om>
+wrote:
+
+> @Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com> @Kurmi, Suresh K=
+umar
+> <suresh.kumar.kurmi@intel.com> ;
+>
+> Gentle Ping here to provide feedback on these IGT changes that would help
+> us unblock our testing with MTK platforms.
+>
+> Regards
+> Manasi
+>
+> On Sun, Jun 7, 2026 at 8:07=E2=80=AFPM Jason-JH Lin (=E6=9E=97=E7=9D=BF=
 =E7=A5=A5) <
-Jason-JH.Lin@mediatek.com> wrote:
+> Jason-JH.Lin@mediatek.com> wrote:
+>
+>> [snip]
+>>
+>> > >
+>> > > AFAICS the test either does a blocking commit or explicitly waits
+>> > > for the page flip event before calling igt_pipe_crc_get_current().
+>> > > If the CRC returned by that doesn't match the commit then the CRCs
+>> > > clearly have bogus frame numbers.
+>> > >
+>> > > I guess if you can't fix the CRC frame numbers to be accurate then
+>> > > maybe just stop telling drm_crtc_add_crc_entry() that you even have
+>> > > any frame numbers. That should make igt_pipe_crc_get_current()
+>> > > throw
+>> > > out all captured CRCs and wait for the next one to come in. Perhaps
+>> > > that is enough to get you through this.
+>> > >
+>> > >
+>> >
+>> > Regarding the frame number, I confirmed that our downstream driver
+>> > currently always calls drm_crtc_add_crc_entry() with has_frame=3Dtrue,
+>> > passing the vblank counter as the frame number. However, since the
+>> > CRC content is inherently offset from the vblank it is reported on
+>> > due to the HW pipeline latency, the frame number we are passing is
+>> > effectively inaccurate.
+>> >
+>> > Based on your suggestion of setting has_frame=3Dfalse, I understand
+>> > that igt_pipe_crc_get_current() would then:
+>> >
+>> > 1. Drain all previously captured CRCs in the buffer
+>> > 2. Wait for the next incoming CRC
+>> > 3. Return it directly without frame number comparison
+>> >
+>> > This would naturally ensure the most recent CRC is returned,
+>> > reflecting the new HW configuration after atomic_commit().
+>> > I will try this approach in our downstream driver and verify if it
+>> > resolves the issue without requiring any IGT changes.
+>> >
+>>
+>> Hi Ville,
+>>
+>> I have implemented the CRC commit queue mechanism in the downstream
+>> kernel driver combined with the has_frame flag as you suggested.
+>> Here is a summary of the implementation:
+>> Commit Flow:
+>>   mtk_crtc_update_config()
+>>     =E2=94=94=E2=94=80=E2=94=80 Enqueue {vblank, has_frame=3Dfalse}
+>>     =E2=94=94=E2=94=80=E2=94=80 Send CMDQ command
+>>
+>>   CRC Work Flow (every vblank):
+>>     mtk_crtc_crc_work()
+>>       =E2=94=9C=E2=94=80=E2=94=80 If queue empty -> report current CRC w=
+ith has_frame=3Dfalse
+>>       =E2=94=94=E2=94=80=E2=94=80 If queue not empty:
+>>           =E2=94=9C=E2=94=80=E2=94=80 Set has_frame=3Dflase (when plane =
+FB is set to NULL)
+>>           =E2=94=9C=E2=94=80=E2=94=80 Wait for diff >=3D 3 (CRC valid) s=
+et has_fame=3Dtrue
+>>           =E2=94=94=E2=94=80=E2=94=80 Report CRC and dequeue
+>>
+>> With this change, the rotation CRC test now passes.
+>> So we can drop this patch for kms_rotainon_crc test now.
+>>
+>> SubTests/PixelFormatModifier
+>>
+>> However, we found that kms_plane tests fail at PixelFormatModifier
+>> due to an inconsistency in IGT's capture_crc() function.
+>> The issue is that capture_crc() uses a strict equality check on the
+>> frame number, while igt_pipe_crc_get_for_frame() internally uses a
+>> >=3D comparison.
+>> Due to the queue processing delay in MTK's driver, the reported
+>> frame number may be slightly ahead of the expected flip latch frame,
+>> causing the strict !=3D check to fail for the last frame even though
+>> the CRC itself is correct.
+>>
+>> I have proposed a IGT patch to align capture_crc() with the library's
+>> existing >=3D behavior, please refer to the patch here:
+>> https://patchwork.freedesktop.org/patch/731122/
+>>
+>> Test results summary:
+>> - Without kernel CRC queue, without IGT patch -> PASS
+>> - With kernel CRC queue, without IGT patch -> FAIL (last frame)
+>> - With kernel CRC queue, with IGT patch -> PASS
+>>
+>> ---
+>>
+>> Example Timeline in KmsPlaneTests#RunSubTests/PixelFormatModifier:
+>>   Flip 0 latches at frame 100
+>>   Flip 1 latches at frame 101
+>>   Flip 2 latches at frame 102
+>>   Flip 3 latches at frame 103
+>>
+>>
+>> Driver behavior without Internal Queue (Continuous CRC Reporting):
+>> - CRC work runs continuously every frame
+>> - Generates CRC entries with sequential frame numbers: 100, 101, 102,
+>>   103, 104...
+>> - Buffer contains entries for many consecutive frames
+>> Driver behavior with Internal Queue (Per-Commit CRC Reporting):
+>> - CRC is queued and processed with delay
+>> - Reports CRC with current frame sequence (when CRC is read)
+>> - Due to queue processing delay, reported frame > flip latch frame
+>> - Example: reports frames 102, 103, 104, 106 for flips 0-3
+>>
+>>
+>> Test behavior:
+>> - Expected frames(Continuous CRC Reporting):
+>>   100, 101, 102, 104 (last =3D 103 + 1)
+>> - Driver reports(Per-Commit CRC Reporting):
+>>   102, 103, 104, 106
+>> For earlier frames (0, 1, 2):
+>>   - Library's >=3D comparison finds valid CRC
+>>   - Example: expected=3D100, got=3D102, library accepts (102 >=3D 100)
+>>   - capture_crc's !=3D check: 102 !=3D 100... but test passes?
+>> For last frame (3):
+>>   - Expected =3D 103 + 1 =3D 104
+>>   - Driver reports =3D 106
+>>   - Library's >=3D comparison: 106 >=3D 104 =E2=9C=93 (returns CRC)
+>>   - capture_crc's !=3D check: 106 !=3D 104 =E2=86=92 FAIL
+>>
+>> ---
+>>
+>> Could you please let us know if this approach is acceptable, or if
+>> you have any concerns with relaxing the equality check in
+>> capture_crc()?
+>>
+>> Thanks again for your guidance.
+>>
+>> Best regards,
+>> Jason-JH Lin
+>>
+>>
 
-> On Fri, 2026-07-10 at 02:07 +0530, Sharma, Swati2 wrote:
-> >
-> > On 09-07-2026 01:12 pm, Jason-JH Lin (=E6=9E=97=E7=9D=BF=E7=A5=A5) wrot=
-e:
-> > > On Thu, 2026-07-09 at 12:00 +0530, Sharma, Swati2 wrote:
-> > > >
-> > > > Hi Jason,
-> > > >
-> > > > Rev2
-> > > >
-> https://urldefense.com/v3/__https://patchwork.freedesktop.org/series/1669=
-23/*rev2__;Iw!!CTRNKA9wMg0ARbw!jJDLK7pG0ZuxmGD136DdZjWzRPf1LZUuc6ZYogtPdi8l=
-ydj57e7rG3K-B5-1SJam7TDwVn6K7BDFbovc478SXl_HZk1P$
-> > > >   i see IGT
-> > > > build failure,
-> > > >
-> > > > can you please check?
-> > > >
-> > > Hi Swati,
-> > >
-> > > Because the series
-> > >
-> https://urldefense.com/v3/__https://patchwork.freedesktop.org/series/1687=
-59__;!!CTRNKA9wMg0ARbw!jJDLK7pG0ZuxmGD136DdZjWzRPf1LZUuc6ZYogtPdi8lydj57e7r=
-G3K-B5-1SJam7TDwVn6K7BDFbovc478SXux1w-1m$
-> > >
-> > > haven't landed at that time.
-> > > I have confirmed this patch has no conflicts in the latest
-> > > codebase.
-> > >
-> > > I resend it again, but it seems [i-g-t v2 RESEND] will not trigger
-> > > a
-> > > new build. So I sent a [i-g-t v3], please help check it.
-> > >
-> https://urldefense.com/v3/__https://patchwork.freedesktop.org/series/1669=
-23/*rev3__;Iw!!CTRNKA9wMg0ARbw!jJDLK7pG0ZuxmGD136DdZjWzRPf1LZUuc6ZYogtPdi8l=
-ydj57e7rG3K-B5-1SJam7TDwVn6K7BDFbovc478SXlqtxaxb$
-> > >
-> > >
-> > > Thanks!
-> > >
-> > > Regards,
-> > > Jasdon-JH Lin
-> >
-> > Hi Jason,
-> >
-> > Patch LGTM
-> >
-> > Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-> >
-> > Please wait for CI results before merge.
->
-> That's great, thank you for your review!
->
->
-> Regards,
-> Jason-JH Lin
->
-
---000000000000a762dc0656aadf4b
+--000000000000f6da8c0656aae492
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr">Great, thanks a lot Swati for reviews.<div>Could we get th=
-is landed if CI results look good?</div><div><br></div><div>Regards</div><d=
-iv>Manasi</div></div><br><div class=3D"gmail_quote gmail_quote_container"><=
-div dir=3D"ltr" class=3D"gmail_attr">On Fri, Jul 10, 2026 at 12:21=E2=80=AF=
-AM Jason-JH Lin (=E6=9E=97=E7=9D=BF=E7=A5=A5) &lt;<a href=3D"mailto:Jason-J=
-H.Lin@mediatek.com">Jason-JH.Lin@mediatek.com</a>&gt; wrote:<br></div><bloc=
-kquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:=
-1px solid rgb(204,204,204);padding-left:1ex">On Fri, 2026-07-10 at 02:07 +0=
-530, Sharma, Swati2 wrote:<br>
-&gt; <br>
-&gt; On 09-07-2026 01:12 pm, Jason-JH Lin (=E6=9E=97=E7=9D=BF=E7=A5=A5) wro=
-te:<br>
-&gt; &gt; On Thu, 2026-07-09 at 12:00 +0530, Sharma, Swati2 wrote:<br>
-&gt; &gt; &gt; =C2=A0 <br>
-&gt; &gt; &gt; Hi Jason,<br>
-&gt; &gt; &gt; =C2=A0 <br>
-&gt; &gt; &gt; Rev2<br>
-&gt; &gt; &gt; <a href=3D"https://urldefense.com/v3/__https://patchwork.fre=
-edesktop.org/series/166923/*rev2__;Iw!!CTRNKA9wMg0ARbw!jJDLK7pG0ZuxmGD136Dd=
-ZjWzRPf1LZUuc6ZYogtPdi8lydj57e7rG3K-B5-1SJam7TDwVn6K7BDFbovc478SXl_HZk1P$" =
-rel=3D"noreferrer" target=3D"_blank">https://urldefense.com/v3/__https://pa=
-tchwork.freedesktop.org/series/166923/*rev2__;Iw!!CTRNKA9wMg0ARbw!jJDLK7pG0=
-ZuxmGD136DdZjWzRPf1LZUuc6ZYogtPdi8lydj57e7rG3K-B5-1SJam7TDwVn6K7BDFbovc478S=
-Xl_HZk1P$</a><br>
-&gt; &gt; &gt; =C2=A0 i see IGT<br>
-&gt; &gt; &gt; build failure,<br>
-&gt; &gt; &gt; =C2=A0 <br>
-&gt; &gt; &gt; can you please check?<br>
-&gt; &gt; &gt; =C2=A0 <br>
-&gt; &gt; Hi Swati,<br>
-&gt; &gt; <br>
-&gt; &gt; Because the series<br>
-&gt; &gt; <a href=3D"https://urldefense.com/v3/__https://patchwork.freedesk=
-top.org/series/168759__;!!CTRNKA9wMg0ARbw!jJDLK7pG0ZuxmGD136DdZjWzRPf1LZUuc=
-6ZYogtPdi8lydj57e7rG3K-B5-1SJam7TDwVn6K7BDFbovc478SXux1w-1m$" rel=3D"norefe=
-rrer" target=3D"_blank">https://urldefense.com/v3/__https://patchwork.freed=
-esktop.org/series/168759__;!!CTRNKA9wMg0ARbw!jJDLK7pG0ZuxmGD136DdZjWzRPf1LZ=
-Uuc6ZYogtPdi8lydj57e7rG3K-B5-1SJam7TDwVn6K7BDFbovc478SXux1w-1m$</a><br>
-&gt; &gt; =C2=A0<br>
-&gt; &gt; haven&#39;t landed at that time.<br>
-&gt; &gt; I have confirmed this patch has no conflicts in the latest<br>
-&gt; &gt; codebase.<br>
-&gt; &gt; <br>
-&gt; &gt; I resend it again, but it seems [i-g-t v2 RESEND] will not trigge=
-r<br>
-&gt; &gt; a<br>
-&gt; &gt; new build. So I sent a [i-g-t v3], please help check it.<br>
-&gt; &gt; <a href=3D"https://urldefense.com/v3/__https://patchwork.freedesk=
-top.org/series/166923/*rev3__;Iw!!CTRNKA9wMg0ARbw!jJDLK7pG0ZuxmGD136DdZjWzR=
-Pf1LZUuc6ZYogtPdi8lydj57e7rG3K-B5-1SJam7TDwVn6K7BDFbovc478SXlqtxaxb$" rel=
-=3D"noreferrer" target=3D"_blank">https://urldefense.com/v3/__https://patch=
-work.freedesktop.org/series/166923/*rev3__;Iw!!CTRNKA9wMg0ARbw!jJDLK7pG0Zux=
-mGD136DdZjWzRPf1LZUuc6ZYogtPdi8lydj57e7rG3K-B5-1SJam7TDwVn6K7BDFbovc478SXlq=
-txaxb$</a><br>
-&gt; &gt; =C2=A0<br>
-&gt; &gt; <br>
-&gt; &gt; Thanks!<br>
-&gt; &gt; <br>
-&gt; &gt; Regards,<br>
-&gt; &gt; Jasdon-JH Lin<br>
-&gt; <br>
-&gt; Hi Jason,<br>
-&gt; <br>
-&gt; Patch LGTM<br>
-&gt; <br>
-&gt; Reviewed-by: Swati Sharma &lt;<a href=3D"mailto:swati2.sharma@intel.co=
-m" target=3D"_blank">swati2.sharma@intel.com</a>&gt;<br>
-&gt; <br>
-&gt; Please wait for CI results before merge.<br>
+<div dir=3D"ltr">Hi=C2=A0<a class=3D"gmail_plusreply" id=3D"plusReplyChip-0=
+" href=3D"mailto:swati2.sharma@intel.com" tabindex=3D"-1">@Swati Sharma</a>=
+=C2=A0=C2=A0<a class=3D"gmail_plusreply" id=3D"plusReplyChip-1" href=3D"mai=
+lto:karthik.b.s@intel.com" tabindex=3D"-1">@Karthik B S</a>=C2=A0<a class=
+=3D"gmail_plusreply" id=3D"plusReplyChip-2" href=3D"mailto:ville.syrjala@li=
+nux.intel.com" tabindex=3D"-1">@Ville Syrj=C3=A4l=C3=A4</a>=C2=A0<a class=
+=3D"gmail_plusreply" id=3D"plusReplyChip-3" href=3D"mailto:jani.nikula@inte=
+l.com" tabindex=3D"-1">@Jani Nikula</a>=C2=A0:<div><br></div><div>Could we =
+get some response here from Intel to move this forward?</div><div><br></div=
+><div>Regards</div><div>Manasi</div></div><br><div class=3D"gmail_quote gma=
+il_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jul 8, 20=
+26 at 3:31=E2=80=AFPM Manasi Navare &lt;<a href=3D"mailto:navaremanasi@goog=
+le.com">navaremanasi@google.com</a>&gt; wrote:<br></div><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex"><div dir=3D"ltr"><a class=3D"gmail_plusrep=
+ly" id=3D"m_6532357796384112429plusReplyChip-5" href=3D"mailto:ville.syrjal=
+a@linux.intel.com" target=3D"_blank">@Ville Syrj=C3=A4l=C3=A4</a>=C2=A0<a c=
+lass=3D"gmail_plusreply" id=3D"m_6532357796384112429plusReplyChip-6" href=
+=3D"mailto:suresh.kumar.kurmi@intel.com" target=3D"_blank">@Kurmi, Suresh K=
+umar</a>=C2=A0;<br><div><br></div><div>Gentle Ping here to provide feedback=
+ on these IGT changes that would help us unblock our testing with MTK platf=
+orms.</div><div><br></div><div>Regards</div><div>Manasi</div></div><br><div=
+ class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Sun, Jun 7,=
+ 2026 at 8:07=E2=80=AFPM Jason-JH Lin (=E6=9E=97=E7=9D=BF=E7=A5=A5) &lt;<a =
+href=3D"mailto:Jason-JH.Lin@mediatek.com" target=3D"_blank">Jason-JH.Lin@me=
+diatek.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">[snip]<br>
 <br>
-That&#39;s great, thank you for your review!<br>
+&gt; &gt; <br>
+&gt; &gt; AFAICS the test either does a blocking commit or explicitly waits=
+<br>
+&gt; &gt; for the page flip event before calling igt_pipe_crc_get_current()=
+.<br>
+&gt; &gt; If the CRC returned by that doesn&#39;t match the commit then the=
+ CRCs<br>
+&gt; &gt; clearly have bogus frame numbers.<br>
+&gt; &gt; <br>
+&gt; &gt; I guess if you can&#39;t fix the CRC frame numbers to be accurate=
+ then<br>
+&gt; &gt; maybe just stop telling drm_crtc_add_crc_entry() that you even ha=
+ve<br>
+&gt; &gt; any frame numbers. That should make igt_pipe_crc_get_current()<br=
+>
+&gt; &gt; throw<br>
+&gt; &gt; out all captured CRCs and wait for the next one to come in. Perha=
+ps<br>
+&gt; &gt; that is enough to get you through this.<br>
+&gt; &gt; <br>
+&gt; &gt; <br>
+&gt; <br>
+&gt; Regarding the frame number, I confirmed that our downstream driver<br>
+&gt; currently always calls drm_crtc_add_crc_entry() with has_frame=3Dtrue,=
+<br>
+&gt; passing the vblank counter as the frame number. However, since the<br>
+&gt; CRC content is inherently offset from the vblank it is reported on<br>
+&gt; due to the HW pipeline latency, the frame number we are passing is<br>
+&gt; effectively inaccurate.<br>
+&gt; <br>
+&gt; Based on your suggestion of setting has_frame=3Dfalse, I understand<br=
+>
+&gt; that igt_pipe_crc_get_current() would then:<br>
+&gt; <br>
+&gt; 1. Drain all previously captured CRCs in the buffer<br>
+&gt; 2. Wait for the next incoming CRC<br>
+&gt; 3. Return it directly without frame number comparison<br>
+&gt; <br>
+&gt; This would naturally ensure the most recent CRC is returned,<br>
+&gt; reflecting the new HW configuration after atomic_commit().<br>
+&gt; I will try this approach in our downstream driver and verify if it<br>
+&gt; resolves the issue without requiring any IGT changes.<br>
+&gt; <br>
+<br>
+Hi Ville,<br>
+<br>
+I have implemented the CRC commit queue mechanism in the downstream<br>
+kernel driver combined with the has_frame flag as you suggested.<br>
+Here is a summary of the implementation:<br>
+Commit Flow:<br>
+=C2=A0 mtk_crtc_update_config()<br>
+=C2=A0 =C2=A0 =E2=94=94=E2=94=80=E2=94=80 Enqueue {vblank, has_frame=3Dfals=
+e}<br>
+=C2=A0 =C2=A0 =E2=94=94=E2=94=80=E2=94=80 Send CMDQ command<br>
+<br>
+=C2=A0 CRC Work Flow (every vblank):<br>
+=C2=A0 =C2=A0 mtk_crtc_crc_work()<br>
+=C2=A0 =C2=A0 =C2=A0 =E2=94=9C=E2=94=80=E2=94=80 If queue empty -&gt; repor=
+t current CRC with has_frame=3Dfalse<br>
+=C2=A0 =C2=A0 =C2=A0 =E2=94=94=E2=94=80=E2=94=80 If queue not empty:<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =E2=94=9C=E2=94=80=E2=94=80 Set has_fram=
+e=3Dflase (when plane FB is set to NULL)<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =E2=94=9C=E2=94=80=E2=94=80 Wait for dif=
+f &gt;=3D 3 (CRC valid) set has_fame=3Dtrue<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =E2=94=94=E2=94=80=E2=94=80 Report CRC a=
+nd dequeue<br>
+<br>
+With this change, the rotation CRC test now passes.<br>
+So we can drop this patch for kms_rotainon_crc test now.<br>
+<br>
+SubTests/PixelFormatModifier<br>
+<br>
+However, we found that kms_plane tests fail at PixelFormatModifier<br>
+due to an inconsistency in IGT&#39;s capture_crc() function.<br>
+The issue is that capture_crc() uses a strict equality check on the<br>
+frame number, while igt_pipe_crc_get_for_frame() internally uses a<br>
+&gt;=3D comparison.<br>
+Due to the queue processing delay in MTK&#39;s driver, the reported<br>
+frame number may be slightly ahead of the expected flip latch frame,<br>
+causing the strict !=3D check to fail for the last frame even though<br>
+the CRC itself is correct.<br>
+<br>
+I have proposed a IGT patch to align capture_crc() with the library&#39;s<b=
+r>
+existing &gt;=3D behavior, please refer to the patch here:<br>
+<a href=3D"https://patchwork.freedesktop.org/patch/731122/" rel=3D"noreferr=
+er" target=3D"_blank">https://patchwork.freedesktop.org/patch/731122/</a><b=
+r>
+<br>
+Test results summary:<br>
+- Without kernel CRC queue, without IGT patch -&gt; PASS<br>
+- With kernel CRC queue, without IGT patch -&gt; FAIL (last frame)<br>
+- With kernel CRC queue, with IGT patch -&gt; PASS<br>
+<br>
+---<br>
+<br>
+Example Timeline in KmsPlaneTests#RunSubTests/PixelFormatModifier:<br>
+=C2=A0 Flip 0 latches at frame 100<br>
+=C2=A0 Flip 1 latches at frame 101<br>
+=C2=A0 Flip 2 latches at frame 102<br>
+=C2=A0 Flip 3 latches at frame 103<br>
 <br>
 <br>
-Regards,<br>
+Driver behavior without Internal Queue (Continuous CRC Reporting):<br>
+- CRC work runs continuously every frame<br>
+- Generates CRC entries with sequential frame numbers: 100, 101, 102,<br>
+=C2=A0 103, 104...<br>
+- Buffer contains entries for many consecutive frames<br>
+Driver behavior with Internal Queue (Per-Commit CRC Reporting):<br>
+- CRC is queued and processed with delay<br>
+- Reports CRC with current frame sequence (when CRC is read)<br>
+- Due to queue processing delay, reported frame &gt; flip latch frame<br>
+- Example: reports frames 102, 103, 104, 106 for flips 0-3<br>
+<br>
+<br>
+Test behavior:<br>
+- Expected frames(Continuous CRC Reporting):<br>
+=C2=A0 100, 101, 102, 104 (last =3D 103 + 1)<br>
+- Driver reports(Per-Commit CRC Reporting):<br>
+=C2=A0 102, 103, 104, 106<br>
+For earlier frames (0, 1, 2):<br>
+=C2=A0 - Library&#39;s &gt;=3D comparison finds valid CRC<br>
+=C2=A0 - Example: expected=3D100, got=3D102, library accepts (102 &gt;=3D 1=
+00)<br>
+=C2=A0 - capture_crc&#39;s !=3D check: 102 !=3D 100... but test passes?<br>
+For last frame (3):<br>
+=C2=A0 - Expected =3D 103 + 1 =3D 104<br>
+=C2=A0 - Driver reports =3D 106<br>
+=C2=A0 - Library&#39;s &gt;=3D comparison: 106 &gt;=3D 104 =E2=9C=93 (retur=
+ns CRC)<br>
+=C2=A0 - capture_crc&#39;s !=3D check: 106 !=3D 104 =E2=86=92 FAIL<br>
+<br>
+---<br>
+<br>
+Could you please let us know if this approach is acceptable, or if<br>
+you have any concerns with relaxing the equality check in<br>
+capture_crc()?<br>
+<br>
+Thanks again for your guidance.<br>
+<br>
+Best regards,<br>
 Jason-JH Lin<br>
+<br>
+</blockquote></div>
 </blockquote></div>
 
---000000000000a762dc0656aadf4b--
+--000000000000f6da8c0656aae492--
