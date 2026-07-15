@@ -4,54 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B508C4450A
-	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 04:20:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25D89C44508
+	for <igt-dev@archiver.kernel.org>; Wed, 15 Jul 2026 04:21:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C1D710E125;
-	Wed, 15 Jul 2026 04:20:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D04CA10EE9F;
+	Wed, 15 Jul 2026 04:21:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EE2pmc7O";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ocy/bop1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4817D10E125
- for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 04:19:26 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AC3B910EE9F
+ for <igt-dev@lists.freedesktop.org>; Wed, 15 Jul 2026 04:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784089166; x=1815625166;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=GliQXuFq709M/hAOdB/TDQCCaGzCSlmpLFx0Vh+18t4=;
- b=EE2pmc7OI0XXe+nnf3BSYRfhtnssmF27zh8lZE5qxiPgEDVGrpMREHNc
- XzDByr8ZOXUjgb8fe+9oy+VEym1HqeH4UqNFEBao3OM8JlDhgDz0xyzPN
- VKJBV+UUepMRVZnDMz7cw6bcWsfNSxwJsY5bCM9BnYOiHI4k4qObNzDRV
- 364hKp049b9MTIgGANeMcaMVeBbxMPmXEp/PcXnjPzyQhmYliSDkoE5p4
- RUk+fYCAh1LZ7ac2p/pWh459VTxaCmsBCc4LrxXS3mGqKuqIrVejq38Gr
- 7VerVT6d5yN30u9GLKuzslXL+jPFYsU/vpfDZsUv2r1mPQRxRw3yWH738 w==;
-X-CSE-ConnectionGUID: F/I3q3HZRrmuEDh4eXZpsg==
-X-CSE-MsgGUID: gBNxK5M+SV+/Irp1XHamQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84807140"
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; d="scan'208";a="84807140"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Jul 2026 21:19:26 -0700
-X-CSE-ConnectionGUID: Azpw8mMJRgeQoxJ2Uxsn+Q==
-X-CSE-MsgGUID: 6CBLZjwlSq2PAgWGttyCJg==
+ t=1784089281; x=1815625281;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=70lM8SonYb3p0EyJv/XAw+rmT2kpt6lCrg7r6qaj2Kw=;
+ b=Ocy/bop1SHFEoC0tE+qfCVB7KtVB1m9PV4SALhdaJitBEZZjhXryeT0c
+ gSkPY08VIqkJUtEBwZaGqhsxRy0zUbwG5Y0hrLznca1JlsJ/D9lOuwVqI
+ xYNDLDn2uVEn82ssDMqdRtHzWenjvdXi0Z7xtZ2JKEsRK/ZwcgPZWwFz/
+ wkqMqSJVeXodz9tPvYZBnzQ32s/n6YvME9tCmu5LHvTpUEq9VtqVv7HJe
+ K/H83WdcCmVsM7uzbwtnk31X1xwPOw/+RR8VzN1mnloQEct3zd4piN/WI
+ R9QVJliGRfwJxJOsfLNYhIZsOnDL0lQYDOjwOa8T0RUOXraAzMzDKd+Gt g==;
+X-CSE-ConnectionGUID: M9TUJMZgRqmsarfi5bNQfw==
+X-CSE-MsgGUID: QehgvXoOSxepgUH8Krfv/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="88617827"
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; d="scan'208";a="88617827"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2026 21:21:21 -0700
+X-CSE-ConnectionGUID: Fogppz5pR4CQGHFk/tS9bQ==
+X-CSE-MsgGUID: 8ZtRWT2YR0OO+DVdhZIpoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; d="scan'208";a="256692256"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jul 2026 21:19:25 -0700
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
- sameer.lattannavar@intel.com, pranay.samala@intel.com
-Subject: [PATCH i-g-t v2 2/2] tests/chamelium/kms_chamelium_color: Add
- multi-format coverage for pipe color tests
-Date: Wed, 15 Jul 2026 10:02:26 +0530
-Message-ID: <20260715043226.169521-3-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260715043226.169521-1-pranay.samala@intel.com>
-References: <20260715043226.169521-1-pranay.samala@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,164,1779174000"; d="scan'208";a="260951464"
+Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Jul 2026 21:21:21 -0700
+From: Sobin Thomas <sobin.thomas@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	daniele.ceraolospurio@intel.com
+Cc: Sobin Thomas <sobin.thomas@intel.com>
+Subject: [PATCH i-g-t v2] tests/xe_debugfs: add GT debugfs validation and GSC
+ info read tests
+Date: Wed, 15 Jul 2026 04:21:13 +0000
+Message-ID: <20260715042113.1932212-1-sobin.thomas@intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,167 +67,169 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend chamelium color tests to run across multiple pixel formats
-at dynamic subtest level instead of being limited to single format
-for gamma/degamma and CTM tests.
+Add coverage for GT-specific debugfs entries by introducing a new
+gt-dir subtest that validates the presence of required files in the
+GT debugfs hierarchy. The test currently verifies the existence of
+the following debugfs nodes:
 
-This improves coverage for format-dependent pipe color pipeline
-behavior.
+  - uc/gsc_info
+  - uc/huc_info
+  - uc/guc_info
+  - uc/guc_pc
 
-v2:
-- Add formats (P010, RGB10bit, FP16)
-- Rebase and split the patches
+These additions improve validation of Xe GT debugfs interfaces and
+provide basic functional coverage for the GSC information debugfs node.
 
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+v2: Add support for guc and huc info (Daniele)
+
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
 ---
- tests/chamelium/kms_chamelium_color.c | 102 +++++++++++++++++---------
- 1 file changed, 67 insertions(+), 35 deletions(-)
+ tests/intel/xe_debugfs.c | 103 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 102 insertions(+), 1 deletion(-)
 
-diff --git a/tests/chamelium/kms_chamelium_color.c b/tests/chamelium/kms_chamelium_color.c
-index 72d7716bc..77970fa7e 100644
---- a/tests/chamelium/kms_chamelium_color.c
-+++ b/tests/chamelium/kms_chamelium_color.c
-@@ -58,6 +58,19 @@
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+index da482157e..bc9a9c27f 100644
+--- a/tests/intel/xe_debugfs.c
++++ b/tests/intel/xe_debugfs.c
+@@ -451,6 +451,32 @@ skip:
+ 	igt_skip("Failed to open debugfs directory\n");
+ }
  
- IGT_TEST_DESCRIPTION("Test Color Features at Pipe level using Chamelium to verify instead of CRC");
- 
-+static const struct {
-+	const char *name;
-+	uint32_t format;
-+	int bpc;
-+} formats[] = {
-+	{ "XRGB8888", DRM_FORMAT_XRGB8888, 8 },
-+	{ "YUYV", DRM_FORMAT_YUYV, 8 },
-+	{ "NV12", DRM_FORMAT_NV12, 8 },
-+	{ "XRGB2101010", DRM_FORMAT_XRGB2101010, 10 },
-+	{ "P010", DRM_FORMAT_P010, 10 },
-+	{ "FP16", DRM_FORMAT_XRGB16161616F, 16 },
-+};
++/**
++ * SUBTEST: gt-dir
++ * Description: Check required debugfs devnodes exist in the GT debugfs directory
++ */
++static void test_gt_dir(struct xe_device *xe_dev, unsigned int gt)
++{
++	const struct check_entry expected_files[] = {
++		{ "uc/gsc_info", O_RDONLY },
++		{ "uc/huc_info", O_RDONLY },
++		{ "uc/guc_info", O_RDONLY },
++		{ "uc/guc_pc", O_RDONLY },
++	};
++	int debugfs_fd = igt_debugfs_gt_dir(xe_dev->fd, gt);
++	int missing_count;
 +
- static unsigned int create_test_fb(data_t *data, int w, int h,
- 				   uint32_t format,
- 				   enum igt_color_encoding encoding,
-@@ -504,15 +517,24 @@ run_gamma_degamma_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 
- 	igt_require(port_idx >= 0);
- 
--	data->color_depth = 8;
--	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
- 
- 	if (!crtc_output_combo_valid(data, crtc))
- 		return;
--
--	igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc), data->output->name)
--		igt_assert(test_t(data, data->primary, data->ports[port_idx]));
-+	for (int i = 0; i < ARRAY_SIZE(formats); i++) {
-+		if (!igt_plane_has_format_mod(data->primary, formats[i].format,
-+					      DRM_FORMAT_MOD_LINEAR))
-+			continue;
++	igt_skip_on_f(debugfs_fd < 0, "Failed to open debugfs directory\n");
 +
-+		igt_dynamic_f("pipe-%s-%s-%s", igt_crtc_name(crtc),
-+			      data->output->name, formats[i].name) {
-+			igt_info("Running on " IGT_FORMAT_FMT " format\n",
-+				 IGT_FORMAT_ARGS(formats[i].format));
-+			data->color_depth = formats[i].bpc;
-+			data->drm_format = formats[i].format;
-+			igt_assert(test_t(data, data->primary, data->ports[port_idx]));
-+		}
++	missing_count = debugfs_validate_entries(xe_dev, debugfs_fd, expected_files,
++						 ARRAY_SIZE(expected_files));
++
++	close(debugfs_fd);
++
++	igt_fail_on_f(missing_count > 0, "Found %d missing debugfs files (see warnings above)\n",
++		      missing_count);
++}
++
+ /**
+  * SUBTEST: tile-dir
+  * Description: Check required debugfs devnodes exist in the tile debugfs directory
+@@ -595,6 +621,61 @@ static void check_gt_reg_sr(int fd, int gt)
+ 	igt_assert_eq(problems, 0);
+ }
+ 
++static void test_uc_info_read(struct xe_device *xe_dev, unsigned int gt, const char *node)
++{
++	int debugfs_fd = igt_debugfs_gt_dir(xe_dev->fd, gt);
++	char *buf;
++
++	igt_skip_on_f(debugfs_fd < 0, "Failed to open debugfs directory\n");
++
++	if (faccessat(debugfs_fd, node, F_OK, 0) < 0) {
++		close(debugfs_fd);
++		igt_skip("%s debugfs node not present on gt-%u\n", node, gt);
 +	}
- }
++	buf = igt_sysfs_get(debugfs_fd, node);
++	close(debugfs_fd);
++	igt_assert_f(buf, "Failed to read %s debugfs file\n", node);
++	igt_assert_f(buf[0] != '\0', "%s debugfs file is empty\n", node);
++	free(buf);
++}
++
++/**
++ * SUBTEST: gsc-info-read
++ * Description: Check GSC info debugfs devnode contents
++ */
++static void test_gsc_info_read(struct xe_device *xe_dev, unsigned int gt)
++{
++	test_uc_info_read(xe_dev, gt, "uc/gsc_info");
++}
++
++/**
++ * SUBTEST: huc-info-read
++ * Description: Check HUC info debugfs devnode contents
++ */
++static void test_huc_info_read(struct xe_device *xe_dev, unsigned int gt)
++{
++	test_uc_info_read(xe_dev, gt, "uc/huc_info");
++}
++
++/**
++ * SUBTEST: guc_pc read
++ * Description: Read the guc pc info from the debugfs node contents
++ */
++
++static void test_guc_pc_info(struct xe_device *xe_dev, unsigned int gt)
++{
++	test_uc_info_read(xe_dev, gt, "uc/guc_pc");
++}
++
++/**
++ * SUBTEST: guc-info-read
++ * Description: Check GUC info debugfs devnode contents
++ */
++static void test_guc_info_read(struct xe_device *xe_dev, unsigned int gt)
++{
++	test_uc_info_read(xe_dev, gt, "uc/guc_info");
++}
++
+ const char *help_str =
+ 	"  --warn-not-hit|--w\tWarn about devfs nodes that have no tests";
  
- static void
-@@ -522,6 +544,7 @@ run_ctm_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 		       int iter)
+@@ -619,8 +700,9 @@ static int opt_handler(int option, int option_index, void *input)
+ int igt_main_args("", long_options, help_str, opt_handler, NULL)
  {
- 	double delta;
-+	bool success;
- 	color_t red_green_blue[] = {
- 		{ 1.0, 0.0, 0.0 },
- 		{ 0.0, 1.0, 0.0 },
-@@ -542,43 +565,52 @@ run_ctm_tests_for_crtc(data_t *data, igt_crtc_t *crtc,
- 	 * We assume an 8bits depth per color for degamma/gamma LUTs
- 	 * for CRC checks with framebuffer references.
- 	 */
--	data->color_depth = 8;
--	delta = 1.0 / (1 << data->color_depth);
--	data->drm_format = DRM_FORMAT_XRGB8888;
- 	data->mode = igt_output_get_mode(data->output);
+ 	struct xe_device *xe_dev;
++	unsigned int gt;
+ 	unsigned int t;
+-	int fd = -1, gt;
++	int fd = -1;
  
- 	if (!crtc_output_combo_valid(data, crtc))
- 		return;
+ 	igt_fixture() {
+ 		fd = drm_open_driver_master(DRIVER_XE);
+@@ -633,6 +715,12 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 	igt_subtest("root-dir")
+ 		test_root_dir(xe_dev);
  
--	igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc), data->output->name) {
--		bool success = false;
--		int i;
--
--		if (!iter)
--			success = test_pipe_ctm(data, data->primary,
--						red_green_blue,
--						expected_colors, ctm,
--						data->ports[port_idx]);
--
--		/*
--		 * We tests a few values around the expected result because
--		 * it depends on the hardware we're dealing with, we can either
--		 * get clamped or rounded values and we also need to account
--		 * for odd number of items in the LUTs.
--		 */
--		for (i = 0; i < iter; i++) {
--			expected_colors[0].r =
--				expected_colors[1].g =
--				expected_colors[2].b =
--				ctm[0] + delta * (i - (iter / 2));
--			if (test_pipe_ctm(data, data->primary,
--					  red_green_blue, expected_colors,
--					  ctm, data->ports[port_idx])) {
--				success = true;
--				break;
-+	for (int fi = 0; fi < ARRAY_SIZE(formats); fi++) {
-+		if (!igt_plane_has_format_mod(data->primary, formats[fi].format,
-+					      DRM_FORMAT_MOD_LINEAR))
-+			continue;
++	igt_describe("Check required debugfs devnodes exist in the GT debugfs directory.");
++	igt_subtest_with_dynamic("gt-dir")
++		xe_for_each_gt(fd, gt)
++			igt_dynamic_f("gt-%u", gt)
++				test_gt_dir(xe_dev, gt);
 +
-+		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc), data->output->name) {
-+			data->color_depth = formats[fi].bpc;
-+			delta = 1.0 / (1 << data->color_depth);
-+			data->drm_format = formats[fi].format;
-+			success = false;
-+			int i;
+ 	igt_describe("Check required debugfs devnodes exist in the tile debugfs directory.");
+ 	igt_subtest_with_dynamic("tile-dir")
+ 			xe_for_each_tile(fd, t)
+@@ -648,6 +736,19 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			igt_dynamic_f("gt%d", gt)
+ 				check_gt_reg_sr(fd, gt);
+ 
++	igt_describe("Check GSC info debugfs devnode contents.");
++	igt_subtest_with_dynamic("gsc-info-read")
++		xe_for_each_gt(fd, gt)
++			igt_dynamic_f("gt-%u", gt)
++				test_gsc_info_read(xe_dev, gt);
++	igt_describe("Read GuC information from debugfs.");
++	igt_subtest("guc-info-read")
++		test_guc_info_read(xe_dev, gt);
 +
-+			igt_info("Running on " IGT_FORMAT_FMT " format\n",
-+				 IGT_FORMAT_ARGS(formats[fi].format));
++	igt_describe("Read HuC information from debugfs.");
++	igt_subtest("huc-info-read")
++		test_huc_info_read(xe_dev, gt);
 +
-+			if (!iter)
-+				success = test_pipe_ctm(data, data->primary,
-+							red_green_blue,
-+							expected_colors, ctm,
-+							data->ports[port_idx]);
-+
-+			/*
-+			 * We tests a few values around the expected result because
-+			 * it depends on the hardware we're dealing with, we can either
-+			 * get clamped or rounded values and we also need to account
-+			 * for odd number of items in the LUTs.
-+			 */
-+			for (i = 0; i < iter; i++) {
-+				expected_colors[0].r =
-+					expected_colors[1].g =
-+					expected_colors[2].b =
-+					ctm[0] + delta * (i - (iter / 2));
-+				if (test_pipe_ctm(data, data->primary,
-+						  red_green_blue, expected_colors,
-+						  ctm, data->ports[port_idx])) {
-+					success = true;
-+					break;
-+				}
- 			}
-+			igt_assert(success);
- 		}
--		igt_assert(success);
+ 	igt_fixture() {
+ 		drm_close_driver(fd);
  	}
- }
- 
 -- 
-2.53.0
+2.52.0
 
