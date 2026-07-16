@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C01EC44514
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 20:17:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D2EDC44512
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 20:41:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 33A9410E136;
-	Thu, 16 Jul 2026 20:17:48 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C590810E136;
- Thu, 16 Jul 2026 20:17:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1314454097778947795=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id DE44D10F3D2;
+	Thu, 16 Jul 2026 20:41:45 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VP/+iT2o";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF90A10F3D2
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 20:41:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1784234475; x=1815770475;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=G0j88asP7NDOxdBKXlcg9ORygCaXe9OWSXvFRgX3dxA=;
+ b=VP/+iT2oLYFpo5qaCBlXXtP4WeP6/5RdpRND3tLSrwjGS/aeDLgwzK3P
+ 3Qe0TptkttP/tRCGsPWs/aa75OtfK/EdhoqslX8lfoPWckmVjKHOCRUhQ
+ /MOqubKbPOHT9ltqUFQ1UmGbBrzKfAh+JAkf/UFt6GAe3OI1GAloScu2M
+ dSbRLHlvSGWxOzHEKeLVAoHraUDRcqB2AJhJXXEEFAVizvkaWJvnX/FE6
+ b8tJwsMjgzIbPJOF62ZpAxPe6koTsTp4Gx7PmK/5+mZPwvC8sV0tNjhju
+ VKeQk5DrSwn5UR3aqLx9ItfGyD4Gw1WY9VNWb42J5Yy2VAxADMSmKimWl g==;
+X-CSE-ConnectionGUID: Byejh0v7SWC22m+dUo0vjg==
+X-CSE-MsgGUID: LtGJRbGdRJOYc4sIcJKNOw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="88810283"
+X-IronPort-AV: E=Sophos;i="6.25,168,1779174000"; d="scan'208";a="88810283"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2026 13:41:14 -0700
+X-CSE-ConnectionGUID: 7mkp8EKQQQmDFp4py/fFyA==
+X-CSE-MsgGUID: VFgIW5ZQTw6K48qCbFDe1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,168,1779174000"; d="scan'208";a="253202105"
+Received: from osgc-sh-dragon.sh.intel.com ([10.239.81.44])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2026 13:41:12 -0700
+From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, niranjana.vishwanathapura@intel.com,
+ Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Subject: [i-g-t, v3] tests/intel/xe_exec_multi_queue: Check PXP is rejected on
+ multi-queue
+Date: Fri, 17 Jul 2026 04:41:03 +0800
+Message-ID: <82d8609cce6a2e22be972e9e917011b90c5e6f43.1784234143.git.jagmeet.randhawa@intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_intel-ci=3A_remove_dc3co-?=
- =?utf-8?q?vpb-simulation_from_NVL_blocklist?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 16 Jul 2026 20:17:15 -0000
-Message-ID: <178423303580.199043.4016624656046126980@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260716184422.3255515-1-swati2.sharma@intel.com>
-In-Reply-To: <20260716184422.3255515-1-swati2.sharma@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,149 +64,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1314454097778947795==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+HWDRM is the only supported PXP type and is display related, so it
+cannot be combined with a multi-queue exec queue group. Extend the
+sanity subtest to create a multi-queue exec queue with the PXP HWDRM
+property chained and verify the kernel rejects the combination.
 
-== Series Details ==
+The multi-queue property is chained before the PXP property, so the
+kernel rejects the combination with -EINVAL while processing the PXP
+extension, regardless of whether PXP is supported on the platform.
 
-Series: intel-ci: remove dc3co-vpb-simulation from NVL blocklist
-URL   : https://patchwork.freedesktop.org/series/170594/
-State : success
+v3:
+ - Assert -EINVAL unconditionally instead of branching on
+   xe_wait_for_pxp_init(); this ordering always returns -EINVAL
+   with the KMD check in exec_queue_user_ext_check() (Niranjana).
+v2:
+ - Drop igt_debug() calls; use direct igt_assert_eq().
+ - Remove redundant multi_queue.value set and next_extension reset
+   (Niranjana).
 
-== Summary ==
+Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+---
+ tests/intel/xe_exec_multi_queue.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-CI Bug Log - changes from IGT_9010 -> IGTPW_15544
-====================================================
+diff --git a/tests/intel/xe_exec_multi_queue.c b/tests/intel/xe_exec_multi_queue.c
+index 9b41f87c7..b9f72968b 100644
+--- a/tests/intel/xe_exec_multi_queue.c
++++ b/tests/intel/xe_exec_multi_queue.c
+@@ -65,6 +65,11 @@ __test_sanity(int fd, int gt, int class, bool preempt_mode)
+ 		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PRIORITY,
+ 		.value = XE_EXEC_QUEUE_PRIORITY_NORMAL,
+ 	};
++	struct drm_xe_ext_set_property pxp_hwdrm = {
++		.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++		.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_PXP_TYPE,
++		.value = DRM_XE_PXP_TYPE_HWDRM,
++	};
+ 	struct drm_xe_engine_class_instance vm_bind_eci = {
+ 		.engine_class = DRM_XE_ENGINE_CLASS_VM_BIND,
+ 	};
+@@ -119,6 +124,17 @@ __test_sanity(int fd, int gt, int class, bool preempt_mode)
+ 	multi_queue.base.next_extension = to_user_pointer(&multi_queue);
+ 	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
+ 
++	/*
++	 * HWDRM is the only supported PXP type and is display related, so it
++	 * cannot be combined with a multi-queue exec queue group. The
++	 * multi-queue property is chained before the PXP property here, so the
++	 * kernel rejects the combination with -EINVAL while processing the PXP
++	 * extension, before the PXP type is evaluated. The rejection therefore
++	 * happens regardless of whether PXP is supported on the platform.
++	 */
++	multi_queue.base.next_extension = to_user_pointer(&pxp_hwdrm);
++	igt_assert_eq(__xe_exec_queue_create(fd, vm, 1, 1, eci, ext, &val), -EINVAL);
++
+ 	/* Setting other queue properties are valid for Q0 */
+ 	multi_queue.base.next_extension = to_user_pointer(&priority);
+ 	exec_queues[0] = xe_exec_queue_create(fd, vm, eci, ext);
+-- 
+2.53.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/index.html
-
-Participating hosts (42 -> 40)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15544 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_debugfs@read-all-entries:
-    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#15673])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9010/bat-adlp-6/igt@core_debugfs@read-all-entries.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/bat-adlp-6/igt@core_debugfs@read-all-entries.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_auth@basic-auth:
-    - bat-adlp-6:         [DMESG-WARN][3] ([i915#15673]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9010/bat-adlp-6/igt@core_auth@basic-auth.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/bat-adlp-6/igt@core_auth@basic-auth.html
-
-  
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9010 -> IGTPW_15544
-  * Linux: CI_DRM_18836 -> CI_DRM_18837
-
-  CI-20190529: 20190529
-  CI_DRM_18836: 7fb776db50ccd72e7625c246c42157fa35274a24 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18837: 0fcee361fa4cf13207af78b95e71bbbaeb046319 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15544: 15544
-  IGT_9010: 17413fe8bc1c3c9418d3d2359fc16531927ab42e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/index.html
-
---===============1314454097778947795==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel-ci: remove dc3co-vpb-simulation from NVL blocklist</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170594/">https://patchwork.freedesktop.org/series/170594/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9010 -&gt; IGTPW_15544</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/index.html</p>
-<h2>Participating hosts (42 -&gt; 40)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15544 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@core_debugfs@read-all-entries:<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9010/bat-adlp-6/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/bat-adlp-6/igt@core_debugfs@read-all-entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@core_auth@basic-auth:<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9010/bat-adlp-6/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15544/bat-adlp-6/igt@core_auth@basic-auth.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9010 -&gt; IGTPW_15544</li>
-<li>Linux: CI_DRM_18836 -&gt; CI_DRM_18837</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18836: 7fb776db50ccd72e7625c246c42157fa35274a24 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18837: 0fcee361fa4cf13207af78b95e71bbbaeb046319 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15544: 15544<br />
-  IGT_9010: 17413fe8bc1c3c9418d3d2359fc16531927ab42e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1314454097778947795==--
