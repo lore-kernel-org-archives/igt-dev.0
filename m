@@ -4,55 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869EDC44501
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 09:57:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5237FC4450A
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 10:14:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3290A10E335;
-	Thu, 16 Jul 2026 09:57:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 05E1F10F25C;
+	Thu, 16 Jul 2026 10:14:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YO3Y9AEQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bA54465d";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 13FE910E335
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 09:57:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9AE910E777
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 10:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784195840; x=1815731840;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nv6br8Hisj7yLjUsLvlv2XeijfwGvss1KAKOIkS6EJQ=;
- b=YO3Y9AEQNrEJqPdlGbS9xk/hAqmGtxTkMSHEGsqRt1LgoXcOjtjHCEau
- 4mst5MMCk1QaNEu4IqoZcfODXQKR63ypTroK5rOILoh4xuMXuoDlv7NfT
- P+QZYlW5M9X7BwVygvWVg4R2GIHw7l05twahZDk0DUg8O7C0vhCVNO8vU
- t3d5jgpwefkH3t01n4dAn+TqM2K3D5dS8oZDL/RpJBopbvhsZMIOqf+3Y
- gO4OsZfBa+j7HKQPZyy84a7j24JfmxzUlpfTgwjQX4fEqD10KpWNS9vSo
- r6xY9ITXjs4CFS3STIo97yYcTVLm6+zcy3rdRNfcXGPpULh0eCEiMY3v7 g==;
-X-CSE-ConnectionGUID: vkjELEgMRkKpd0H1HlED7A==
-X-CSE-MsgGUID: ti6DjgYzTaSDqp9jnF4jkg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="87394743"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="87394743"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2026 02:57:20 -0700
-X-CSE-ConnectionGUID: 3t/eLAoCT0i+Pg62zv6Gqg==
-X-CSE-MsgGUID: oZWeZokVSdS0NTRaoxwYWQ==
+ t=1784196817; x=1815732817;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=+Y6qjWKKJPF6qFYqasSiePtc0WtgxDutFPOZz5y3NQw=;
+ b=bA54465dBHbKPUhlJT243FiCLW3UnnAgCgA4TUzNQTgcyVNnh5cdPb5B
+ WUgqPGoisN/78yxw1aaABARW8/BH5x5/C9kLgPaU7TPDQl2UvuqWUY85D
+ Z7TgP3Jq/PD6kFDjdD5KRemq9o6RIFUGteKsPzNrEbRBDgE0nuAWf/v44
+ Vt/uR7zVjktFkJeb+4O76wHBlfSi8blG08lS57s9X6FDr9VbfEPfAaIQX
+ XAWp6GTbxcrjLf4zjxxgI+gnWkVyb1lgeOeohW08TdL7ANOW37eV1hhf0
+ Yewv3X2QVzVefbbvfdM0yztQFBML2lQEwwyK6np02z4Kzk1zywUqNbhnz w==;
+X-CSE-ConnectionGUID: vbM131UqQ0CbmN7gbP4WFg==
+X-CSE-MsgGUID: L+MO+naQRYexOhCLPxqM3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="95204432"
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="95204432"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2026 03:13:33 -0700
+X-CSE-ConnectionGUID: Ykx4c0IrQmWubT+7dcLyTg==
+X-CSE-MsgGUID: /eqPEVxsT9KpdY5OjAFo+g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="261382612"
-Received: from tejasupa-desk.iind.intel.com (HELO tejasupa-desk)
- ([10.190.239.37])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2026 02:57:18 -0700
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Subject: [i-g-t] tests/intel/xe_mempage_offline: Add fault-inject based page
- offline tests
-Date: Thu, 16 Jul 2026 15:27:04 +0530
-Message-ID: <20260716095703.1543088-2-tejas.upadhyay@intel.com>
-X-Mailer: git-send-email 2.52.0
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="250097713"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 03:13:32 -0700
+Date: Thu, 16 Jul 2026 12:13:12 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ igt-dev@lists.freedesktop.org, krzysztof.niemiec@intel.com,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+Subject: Re: [PATCH i-g-t v3 05/31] lib/igt_tools_stub: add stubs needed by
+ tools
+Message-ID: <20260716101312.75mjhktkn4fmcxno@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ igt-dev@lists.freedesktop.org, krzysztof.niemiec@intel.com,
+ Pawel Sikora <pawel.sikora@intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>
+References: <cover.1784117512.git.sebastian.brzezinka@intel.com>
+ <7f05cdb527300126c8cd32363f5cb961846bcb42.1784117512.git.sebastian.brzezinka@intel.com>
+ <puhkn5xjeoh2ds6f64tfihuenvcze5jvkz2dq6kabsrlqp2ize@uvws2lsm55uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <puhkn5xjeoh2ds6f64tfihuenvcze5jvkz2dq6kabsrlqp2ize@uvws2lsm55uk>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,244 +79,154 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add IGT tests for VRAM page offlining using the kernel's fault-inject
-infrastructure (inject_mempage_offline). Tests exercise:
+Hi all,
+On 2026-07-16 at 06:09:42 +0000, Krzysztof Karas wrote:
+> Hi Sebastian,
+> 
+> On 2026-07-15 at 14:15:15 +0200, Sebastian Brzezinka wrote:
+> > Add stubs for functions used by tools when linking without the
+> > full libigt.so: __igt_skip_check, igt_exit, igt_debugfs_open and
+> > igt_open_forcewake_handle_for_pcidev.
+> This patch does more than that: it unifies the comment style in
+> the file. This is a nit though, so consider it only if you would
+> prepare another version.
+> 
+> > 
+> > Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> > Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> > ---
+> >  lib/igt_tools_stub.c | 83 ++++++++++++++++++++++++++++++++++++++++----
+> >  1 file changed, 76 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/lib/igt_tools_stub.c b/lib/igt_tools_stub.c
+> > index 9a0ec6217..21dc53f3f 100644
+> > --- a/lib/igt_tools_stub.c
+> > +++ b/lib/igt_tools_stub.c
+> > @@ -21,12 +21,27 @@
+> >   * IN THE SOFTWARE.
+> >   *
+> >   */
+> > +#include <fcntl.h>
+> > +#include <limits.h>
+> > +#include <stdarg.h>
+> > +#include <stdio.h>
+> > +#include <stdlib.h>
+> > +#include <sys/stat.h>
+> > +#include <sys/sysmacros.h>
+> > +#include <unistd.h>
+> > +
+> >  #include "igt_core.h"
+> > +#include "igt_debugfs.h"
+> >  
+> > -/* Stub for igt_log, this stub will simply print the msg on stderr device.
+> > - * Domain and log level are ignored.
+> > +/*
+> > + * Forward declaration only - avoids pulling in the heavy igt_gt.h header.
+> > + * The type is used as an opaque pointer; this stub always returns -1.
+> >   */
+> This is a nit, so consider it only if you would prepare another
+> version of this series:
+> The comment should be moved right before the function declaration.
+> > +struct pci_device;
+> >  
+> > +int igt_open_forcewake_handle_for_pcidev(const struct pci_device *pci_dev);
+> > +
+> > +/* Stub for igt_log: print message to stderr; domain and log level are ignored. */
+> >  void igt_log(const char *domain, enum igt_log_level level, const char *format, ...)
 
-- inject-single-page: Inject one fault via auto-pick ("0"), verify
-  page appears in vram_bad_pages sysfs with 'R' (reserved) flag
-- inject-duplicate-page: Re-inject the same PFN, verify soft→hard
-  promotion returns -EEXIST and page count stays unchanged
+This will be a second documentation for a function.
+Question for Pawel: could it be a problem for our documentation generation?
+Do we need an exclusion for stub functions?
 
-The trigger file (inject_mempage_offline_trigger) accepts:
-- "0"      : auto-pick last unallocated VRAM page
-- "0xPFN"  : inject fault at a specific PFN address
++cc Pawel Sikora <pawel.sikora@intel.com>
 
-If CONFIG_FAULT_INJECTION_DEBUG_FS is enabled, the fault-inject
-probability/times knobs are configured first. If unavailable
-(only CONFIG_FAULT_INJECTION), the trigger injects directly.
+Regards,
+Kamil
 
-Requires CRI platform with CONFIG_FAULT_INJECTION enabled.
-
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
----
- tests/intel/xe_mempage_offline.c | 195 +++++++++++++++++++++++++++++++
- tests/meson.build                |   1 +
- 2 files changed, 196 insertions(+)
- create mode 100644 tests/intel/xe_mempage_offline.c
-
-diff --git a/tests/intel/xe_mempage_offline.c b/tests/intel/xe_mempage_offline.c
-new file mode 100644
-index 000000000..ae9ce981d
---- /dev/null
-+++ b/tests/intel/xe_mempage_offline.c
-@@ -0,0 +1,195 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: VRAM page offline injection and verification
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: RAS
-+ * Functionality: memory page offline
-+ * Test category: functionality test
-+ */
-+
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include "igt.h"
-+#include "igt_debugfs.h"
-+#include "igt_device.h"
-+#include "igt_sysfs.h"
-+
-+#include "xe/xe_query.h"
-+
-+#define FAULT_INJECT_DIR	"inject_mempage_offline"
-+#define TRIGGER_FILE		"inject_mempage_offline_trigger"
-+#define VRAM_BAD_PAGES		"device/vram_bad_pages"
-+
-+static int count_bad_pages(int sysfs_fd)
-+{
-+	char buf[4096];
-+	int len, count = 0;
-+	char *line;
-+
-+	len = igt_sysfs_read(sysfs_fd, VRAM_BAD_PAGES, buf, sizeof(buf) - 1);
-+	if (len <= 0)
-+		return 0;
-+
-+	buf[len] = '\0';
-+
-+	/* Each entry line has format: "0x%08x : 0x%08x : %c\n" */
-+	line = buf;
-+	while ((line = strchr(line, '\n')) != NULL) {
-+		count++;
-+		line++;
-+	}
-+
-+	/* Subtract the header line (max_pages : XXXX) */
-+	if (count > 0)
-+		count--;
-+
-+	return count;
-+}
-+
-+static bool bad_page_has_flag(int sysfs_fd, char flag)
-+{
-+	char buf[4096];
-+	int len;
-+	char *p;
-+
-+	len = igt_sysfs_read(sysfs_fd, VRAM_BAD_PAGES, buf, sizeof(buf) - 1);
-+	if (len <= 0)
-+		return false;
-+
-+	buf[len] = '\0';
-+
-+	/* Look for the flag character after last ':' on entry lines */
-+	p = buf;
-+	while ((p = strstr(p, " : ")) != NULL) {
-+		p += 3;
-+		if (*p == flag)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+static uint64_t get_last_bad_page_pfn(int sysfs_fd)
-+{
-+	char buf[4096];
-+	int len;
-+	char *line, *last_entry = NULL;
-+	uint64_t pfn = 0;
-+
-+	len = igt_sysfs_read(sysfs_fd, VRAM_BAD_PAGES, buf, sizeof(buf) - 1);
-+	if (len <= 0)
-+		return 0;
-+
-+	buf[len] = '\0';
-+
-+	/* Find last entry line (format: "0x%08llx : 0x%08llx : %c\n") */
-+	line = buf;
-+	while (*line) {
-+		if (line[0] == '0' && line[1] == 'x')
-+			last_entry = line;
-+		line = strchr(line, '\n');
-+		if (!line)
-+			break;
-+		line++;
-+	}
-+
-+	if (last_entry)
-+		sscanf(last_entry, "0x%lx", &pfn);
-+
-+	return pfn;
-+}
-+
-+static void inject_fault(int fd)
-+{
-+	/* Use fault-inject knobs if available, otherwise trigger directly */
-+	if (igt_debugfs_exists(fd, FAULT_INJECT_DIR "/probability", O_WRONLY)) {
-+		igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "100");
-+		igt_debugfs_write(fd, FAULT_INJECT_DIR "/times", "1");
-+		igt_debugfs_write(fd, FAULT_INJECT_DIR "/verbose", "1");
-+	}
-+	__igt_debugfs_write(fd, TRIGGER_FILE, "0", 1);
-+}
-+
-+/**
-+ * SUBTEST: inject-single-page
-+ * Description: Inject a single VRAM page fault and verify it appears in vram_bad_pages
-+ */
-+
-+/**
-+ * SUBTEST: inject-duplicate-page
-+ * Description: Inject two pages and verify both appear in vram_bad_pages
-+ */
-+
-+int igt_main()
-+{
-+	int fd;
-+	int sysfs_fd;
-+	uint16_t devid;
-+
-+	igt_fixture() {
-+		fd = drm_open_driver(DRIVER_XE);
-+		devid = intel_get_drm_devid(fd);
-+		igt_require(intel_get_device_info(devid)->is_crescentisland);
-+		igt_require(igt_debugfs_exists(fd, TRIGGER_FILE, O_WRONLY));
-+		sysfs_fd = igt_sysfs_open(fd);
-+		igt_assert(sysfs_fd >= 0);
-+	}
-+
-+	igt_subtest("inject-single-page") {
-+		int initial_count, after_count;
-+
-+		initial_count = count_bad_pages(sysfs_fd);
-+		inject_fault(fd);
-+		after_count = count_bad_pages(sysfs_fd);
-+		igt_assert_eq(after_count, initial_count + 1);
-+		igt_assert(bad_page_has_flag(sysfs_fd, 'R'));
-+	}
-+
-+	igt_subtest("inject-duplicate-page") {
-+		int initial_count, after_count;
-+		uint64_t pfn;
-+		char pfn_str[32];
-+		int debugfs_fd, ret;
-+
-+		initial_count = count_bad_pages(sysfs_fd);
-+
-+		/* First injection — auto-pick unallocated page */
-+		inject_fault(fd);
-+		after_count = count_bad_pages(sysfs_fd);
-+		igt_assert_eq(after_count, initial_count + 1);
-+
-+		/* Get PFN of the page just injected */
-+		pfn = get_last_bad_page_pfn(sysfs_fd);
-+		igt_assert(pfn != 0);
-+
-+		/*
-+		 * Re-inject same PFN — should return -EEXIST (soft→hard
-+		 * promotion). Write to trigger with the PFN value.
-+		 */
-+		snprintf(pfn_str, sizeof(pfn_str), "0x%lx", pfn);
-+		debugfs_fd = igt_debugfs_open(fd, TRIGGER_FILE, O_WRONLY);
-+		igt_assert(debugfs_fd >= 0);
-+		ret = write(debugfs_fd, pfn_str, strlen(pfn_str));
-+		igt_assert(ret < 0 && errno == EEXIST);
-+		close(debugfs_fd);
-+
-+		/* Count should not change — same page, not a new one */
-+		after_count = count_bad_pages(sysfs_fd);
-+		igt_assert_eq(after_count, initial_count + 1);
-+	}
-+
-+	igt_fixture() {
-+		igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "0");
-+		close(sysfs_fd);
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index d73aaecd9..c75633684 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -318,6 +318,7 @@ intel_xe_progs = [
- 	'xe_live_ktest',
- 	'xe_madvise',
- 	'xe_media_fill',
-+        'xe_mempage_offline',
- 	'xe_mmap',
-         'xe_module_load',
-         'xe_multigpu_svm',
--- 
-2.52.0
-
+> >  {
+> >  	va_list args;
+> > @@ -36,11 +51,7 @@ void igt_log(const char *domain, enum igt_log_level level, const char *format, .
+> >  	va_end(args);
+> >  }
+> >  
+> > -
+> > -/* Stub for __igt_fail_assert, this stub will simply print the msg on stderr device and
+> > - * exit the application, domain and log level are ignored.
+> > - */
+> > -
+> > +/* Stub for __igt_fail_assert: print failed assertion to stderr and exit. */
+> >  void __igt_fail_assert(const char *domain, const char *file,
+> >  		       const int line, const char *func, const char *assertion,
+> >  		       const char *format, ...)
+> > @@ -49,3 +60,61 @@ void __igt_fail_assert(const char *domain, const char *file,
+> >  		func, assertion);
+> >  	exit(1);
+> >  }
+> > +
+> > +/* Stub for __igt_skip_check: print skip reason to stderr and exit with skip code. */
+> > +void __igt_skip_check(const char *file, const int line,
+> > +		      const char *func, const char *check, const char *format, ...)
+> > +{
+> > +	fprintf(stderr, "%s: %d %s Skipped: %s", file, line, func, check);
+> > +	if (format) {
+> > +		va_list args;
+> > +
+> > +		fprintf(stderr, ": ");
+> > +		va_start(args, format);
+> > +		vfprintf(stderr, format, args);
+> > +		va_end(args);
+> > +	}
+> > +
+> > +	fprintf(stderr, "\n");
+> > +	/* IGT_EXIT_SKIP (77) is the exit code igt_core.c uses for skipped tests. */
+> > +	exit(IGT_EXIT_SKIP);
+> > +}
+> > +
+> > +/* Stub for igt_exit: tools use exit(0) rather than the full igt teardown sequence. */
+> > +__noreturn void igt_exit(void)
+> > +{
+> > +	exit(0);
+> > +}
+> > +
+> > +/*
+> > + * Stub for igt_debugfs_open: open a debugfs entry for a DRM device directly
+> > + * by path. device == -1 follows the igt_debugfs_path() convention of
+> > + * defaulting to the first DRM device (dri/0). When a valid fd is given, the
+> > + * DRM minor is resolved via fstat() so the correct dri/<minor> directory is
+> > + * used.
+> > + */
+> > +int igt_debugfs_open(int device, const char *filename, int mode)
+> > +{
+> > +	char path[PATH_MAX];
+> > +	int drm_minor = 0;
+> > +
+> > +	if (device >= 0) {
+> > +		struct stat st;
+> > +
+> > +		if (fstat(device, &st) == 0 && S_ISCHR(st.st_mode))
+> > +			drm_minor = minor(st.st_rdev);
+> > +	}
+> > +
+> > +	snprintf(path, sizeof(path),
+> > +		 "/sys/kernel/debug/dri/%d/%s", drm_minor, filename);
+> > +	return open(path, mode);
+> > +}
+> > +
+> > +/*
+> > + * Stub for igt_open_forcewake_handle_for_pcidev: in tool context the driver
+> > + * keeps the GPU awake; no forcewake handle needed.
+> > + */
+> > +int igt_open_forcewake_handle_for_pcidev(const struct pci_device *pci_dev)
+> > +{
+> > +	return -1;
+> > +}
+> > -- 
+> > 2.53.0
+> > 
+> 
+> The code looks good to me:
+> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+> 
+> -- 
+> Best Regards,
+> Krzysztof
