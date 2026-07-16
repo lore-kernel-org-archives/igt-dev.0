@@ -4,63 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BAE7C4450A
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 14:19:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B3F0C4450A
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 14:28:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A2BCB10E327;
-	Thu, 16 Jul 2026 14:19:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2A85E10E373;
+	Thu, 16 Jul 2026 14:28:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BJaa674W";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PwupXaRp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E797210E327
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 14:19:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECA8E10E373
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 14:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784211562; x=1815747562;
+ t=1784212099; x=1815748099;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=FSBdbKBl9VNE5mOwc3qp4Ex4LyzReX8jdOq9kvhzx3s=;
- b=BJaa674W87cc9PLeRutcmB4/YnnjZa0m6gH3vFrIaVH3+FmPN8AmmFPE
- GS+9FZjepOj9tT1TPmhEbitkkKYVMaVnjxUvm+Qz0jYJBYrEcHXBQiYa1
- KWimx4nEdC9bAhj7EO1QBfxkO5rPIRFWB+8JZLC1vF3QjYClpH7QI7u3i
- F4yeh2QIEJSeCoSY4inXsjkcm6nPLVwPl8zFTZ4hV1KlFVxzPuGvaRikS
- vjYwRGovES2oY+ZELKqVyUBvJVEQ+4KOB32QPpjbG3nEgx9VMfVqY5Vv0
- gnBKTT0uMyoqE+lUyycMfdWp6T34lR5Kbl6pmQ3dOWT+XhpDF24IeZM8X w==;
-X-CSE-ConnectionGUID: NLJizoIaRKe745GIlQajyg==
-X-CSE-MsgGUID: 71QCKFPfSyidxwt6luFJow==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84649676"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="84649676"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2026 07:19:21 -0700
-X-CSE-ConnectionGUID: l5Mq9UJVRqaANcA0QHdiwA==
-X-CSE-MsgGUID: 3oZGpg/wSyi1m40Io+47WQ==
+ bh=dGwJf4vlvAOJElkkjqeAdaeTo3qd4hSlXbeFy4aky3Q=;
+ b=PwupXaRpVgXw//OVgbgXPIobJ7P9cdVgIDY0XYXMzWBeI7Dy/AEotrvQ
+ 0O88bqbkaj+QZJln6T9JYgSHNEH7nwZgnr0IToUGUTZZYM4Lhqy0ZdgWH
+ qJ5CFJteYvyIXWkoDSNLkIcg33nfMbefJU8UkzzCCS2E/KZGTR6Go1sP3
+ Pj46gWlOdsfrGdwkTwU+M/loXRgoFID2CXhUTHgWudDDpM6pW29jYeDOl
+ N4BSjAwveR/1urQGkmLpi7h4y9McEWPcAXRB53PcUxupFV1nK/M9v3755
+ /xFIhF662WHaJgytlETMfe+z1q5nlTzDxpTpuxcxBZOf5XQLnMCkxr99C w==;
+X-CSE-ConnectionGUID: HSTXsMLdTXm2mjstcySYIQ==
+X-CSE-MsgGUID: WI85T4C8R12UO1MPXMmX3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84988065"
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="84988065"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2026 07:28:18 -0700
+X-CSE-ConnectionGUID: uQalV/FjSpmNZIPytPdQNw==
+X-CSE-MsgGUID: rvfL5KFXT+eSAesuXpGqGg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="260327629"
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="252088643"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 07:10:16 -0700
-Date: Thu, 16 Jul 2026 16:08:53 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 07:28:17 -0700
+Date: Thu, 16 Jul 2026 16:27:59 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-Cc: igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- krzysztof.niemiec@intel.com, Mark Yacoub <markyacoub@google.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t v3 30/31] lib/igt_core: move igt_load_igtrc to
- igt_device_scan
-Message-ID: <20260716140853.66ulgagvtzvp5mkh@kamilkon-DESK.igk.intel.com>
+To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, adam.miszczak@linux.intel.com,
+ lukasz.laguna@intel.com, tvrtko.ursulin@igalia.com
+Subject: Re: [PATCH i-g-t 1/2] benchmarks/gem_wsim: add explicit VM
+ create/assign steps
+Message-ID: <20260716142759.qlhj36tqcncpnnth@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org, krzysztof.karas@intel.com,
- krzysztof.niemiec@intel.com, Mark Yacoub <markyacoub@google.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>
-References: <cover.1784117512.git.sebastian.brzezinka@intel.com>
- <db4400f05ba72613df363cc62496319a5c0fed9b.1784117512.git.sebastian.brzezinka@intel.com>
+ Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, adam.miszczak@linux.intel.com,
+ lukasz.laguna@intel.com, tvrtko.ursulin@igalia.com
+References: <20260714151235.1246608-1-marcin.bernatowicz@linux.intel.com>
+ <20260714151235.1246608-2-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <db4400f05ba72613df363cc62496319a5c0fed9b.1784117512.git.sebastian.brzezinka@intel.com>
+In-Reply-To: <20260714151235.1246608-2-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,196 +74,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sebastian,
-On 2026-07-15 at 14:15:40 +0200, Sebastian Brzezinka wrote:
-> igt_load_igtrc() is used exclusively by igt_device_scan internals to read
-> per-device configuration from the igtrc file.  Moving it from igt_core.c
-> to igt_device_scan.c co-locates the function with its primary user and
-> makes it possible for lsgpu to link against lib_igt_device_scan without
-> needing the rest of libigt.
+Hi Marcin,
+On 2026-07-14 at 17:12:34 +0200, Marcin Bernatowicz wrote:
+> Add explicit VM management to workload descriptors so Xe runs can model
+
+Please write explicitly what VM means, my guess: Virtual Memory
+
+> VM topology directly.
 > 
-> Update the declaration accordingly: remove from igt_core.h and add to
-> igt_device_scan.h where the implementation now lives.
+> Introduce two new descriptor steps:
+> - V.N     create VM id N (1-based)
+> - v.N.M   assign VM N to context M
 > 
-> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-> Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-> ---
->  lib/igt_core.c        | 47 ------------------------------------------
->  lib/igt_core.h        |  2 --
->  lib/igt_device_scan.c | 48 +++++++++++++++++++++++++++++++++++++++++++
->  lib/igt_device_scan.h |  2 ++
->  runner/executor.c     |  1 +
+> Implementation details:
+> - Add VM_CREATE and CTX_VM step types and vm_id storage in w_step.
+> - Parse V/v syntax with validation and clear error messages.
+> - Add allocate_vms() pre-scan to size and allocate vm_list from V steps.
+> - Update xe_prepare_contexts() to support explicit VM mode:
+>   - create all explicit VMs
+>   - default contexts to VM 0
+>   - apply per-context VM assignments from v steps
+>   - retain implicit single-VM fallback when no V steps are present
+> - Make get_vm() use per-context VM linkage.
+> 
+> Documentation:
+> - Add VM management step documentation into benchmarks/wsim/README.
 
-If this is used by igt_runner, maybe more proper solution
-would be to move it to separate lib/igt_igtrc.[c|h]?
-
-Look also into https://patchwork.freedesktop.org/series/170509/
-with reimplementation of reading INI files
-
-+cc Mark Yacoub <markyacoub@google.com>
+Same in documentation, add there at least once a full name for VM.
 
 Regards,
 Kamil
 
->  5 files changed, 51 insertions(+), 49 deletions(-)
 > 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index a7c097d9e..2f737b01a 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -972,53 +972,6 @@ static void oom_adjust_for_doom(void)
->  
->  }
->  
-> -/**
-> - * load_igtrc:
-> - *
-> - * Load .igtrc from the path pointed to by #IGT_CONFIG_PATH or from
-> - * home directory if that is not set. The returned keyfile needs to be
-> - * deallocated using g_key_file_free().
-> - *
-> - * Returns: Pointer to the keyfile, NULL on error.
-> - */
-> -GKeyFile *igt_load_igtrc(void)
-> -{
-> -	char *key_file_env = NULL;
-> -	char *key_file_loc = NULL;
-> -	GError *error = NULL;
-> -	GKeyFile *file;
-> -	int ret;
-> -
-> -	/* Determine igt config path */
-> -	key_file_env = getenv("IGT_CONFIG_PATH");
-> -	if (key_file_env) {
-> -		key_file_loc = key_file_env;
-> -	} else {
-> -		key_file_loc = malloc(100);
-> -		snprintf(key_file_loc, 100, "%s/.igtrc", g_get_home_dir());
-> -	}
-> -
-> -	/* Load igt config file */
-> -	file = g_key_file_new();
-> -	ret = g_key_file_load_from_file(file, key_file_loc,
-> -					G_KEY_FILE_NONE, &error);
-> -	if (!ret) {
-> -		g_error_free(error);
-> -		g_key_file_free(file);
-> -		file = NULL;
-> -
-> -		goto out;
-> -	}
-> -
-> -	g_clear_error(&error);
-> -
-> - out:
-> -	if (!key_file_env && key_file_loc)
-> -		free(key_file_loc);
-> -
-> -	return file;
-> -}
-> -
->  static void common_init_config(void)
->  {
->  	GError *error = NULL;
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index 3337293bc..afaf35aa8 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -95,8 +95,6 @@ extern const char* __igt_test_description __attribute__((weak));
->  extern bool __igt_plain_output;
->  extern char *igt_frame_dump_path;
->  
-> -struct _GKeyFile *igt_load_igtrc(void);
-> -
->  /**
->   * IGT_TEST_DESCRIPTION:
->   * @str: description string
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 7c7995224..a15a4624e 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -33,6 +33,7 @@
->  #include <ctype.h>
->  #include <dirent.h>
->  #include <fcntl.h>
-> +#include <glib.h>
->  #include <libudev.h>
->  #ifdef __linux__
->  #include <linux/limits.h>
-> @@ -2477,3 +2478,50 @@ int igt_device_prepare_filtered_view(const char *vendor)
->  
->  	return gpu_count;
->  }
-> +
-> +/**
-> + * igt_load_igtrc:
-> + *
-> + * Load .igtrc from the path pointed to by #IGT_CONFIG_PATH or from
-> + * home directory if that is not set. The returned keyfile needs to be
-> + * deallocated using g_key_file_free().
-> + *
-> + * Returns: Pointer to the keyfile, NULL on error.
-> + */
-> +GKeyFile *igt_load_igtrc(void)
-> +{
-> +	char *key_file_env = NULL;
-> +	char *key_file_loc = NULL;
-> +	GError *error = NULL;
-> +	GKeyFile *file;
-> +	int ret;
-> +
-> +	/* Determine igt config path */
-> +	key_file_env = getenv("IGT_CONFIG_PATH");
-> +	if (key_file_env) {
-> +		key_file_loc = key_file_env;
-> +	} else {
-> +		key_file_loc = malloc(100);
-> +		snprintf(key_file_loc, 100, "%s/.igtrc", g_get_home_dir());
-> +	}
-> +
-> +	/* Load igt config file */
-> +	file = g_key_file_new();
-> +	ret = g_key_file_load_from_file(file, key_file_loc,
-> +					G_KEY_FILE_NONE, &error);
-> +	if (!ret) {
-> +		g_error_free(error);
-> +		g_key_file_free(file);
-> +		file = NULL;
-> +
-> +		goto out;
-> +	}
-> +
-> +	g_clear_error(&error);
-> +
-> + out:
-> +	if (!key_file_env && key_file_loc)
-> +		free(key_file_loc);
-> +
-> +	return file;
-> +}
-> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-> index f24a193cd..5b04033e3 100644
-> --- a/lib/igt_device_scan.h
-> +++ b/lib/igt_device_scan.h
-> @@ -103,4 +103,6 @@ int igt_open_render(struct igt_device_card *card);
->  /* Add or use filters to match multiGPU devices */
->  int igt_device_prepare_filtered_view(const char *vendor);
->  
-> +struct _GKeyFile *igt_load_igtrc(void);
-> +
->  #endif /* __IGT_DEVICE_SCAN_H__ */
-> diff --git a/runner/executor.c b/runner/executor.c
-> index a8907c575..a2cf517df 100644
-> --- a/runner/executor.c
-> +++ b/runner/executor.c
-> @@ -35,6 +35,7 @@
->  
->  #include "igt_aux.h"
->  #include "igt_core.h"
-> +#include "igt_device_scan.h"
->  #include "igt_facts.h"
->  #include "igt_taints.h"
->  #include "igt_vec.h"
-> -- 
-> 2.53.0
+> This keeps i915 behavior unchanged while enabling explicit VM topology
+> control for Xe workloads.
 > 
+> Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> ---
+>  benchmarks/gem_wsim.c  | 143 +++++++++++++++++++++++++++++++++++++----
+>  benchmarks/wsim/README |  19 ++++++
+>  2 files changed, 150 insertions(+), 12 deletions(-)
+> 
+[cut]
