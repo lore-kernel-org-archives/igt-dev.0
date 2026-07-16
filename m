@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98D11C44501
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 09:51:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 869EDC44501
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 09:57:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2431210E335;
-	Thu, 16 Jul 2026 09:51:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3290A10E335;
+	Thu, 16 Jul 2026 09:57:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RugpS1gU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YO3Y9AEQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8985A10E335
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 09:50:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13FE910E335
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 09:57:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784195456; x=1815731456;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=7B0m9s2Y6Fi+FhOXFRqwJdTLE0B2/zsEs16tIRTGm2E=;
- b=RugpS1gUMDYs5nV24blKS+PaAuQMDabGPHrlJElryCA84ME2PGP8SVb+
- dpanxpNUljC/PdyaOImTWX2GaCZd+3TNvY+wf5Fo1i1RpgZnMwFtWBexw
- QnIdmRA/4u4b/ruOOo0yfMTpU63tcZcx7CVSrFv7Tjz5Fo89oUMFRxhhK
- K2Hq7QS9EmBRXePFjBtLjAD0D4rWJHy3iZzXw5MBkt1qZWUA9h3pjX8Tj
- IrDihyLERGoXt8fDCr/RgKvV4Cl2GXp7kdKK2nud6392suVS6MA9fdRyV
- XIT4cQKZmV4tlAhYNRWzhlsJKCYmInSOR8llrdK0NTVXAhZoztmtmnWQm A==;
-X-CSE-ConnectionGUID: N8eNVdkNR8qXSvZ6b+3TIA==
-X-CSE-MsgGUID: nNj3SmxpS82vUr/PawXq3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="83970687"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="83970687"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2026 02:50:39 -0700
-X-CSE-ConnectionGUID: vxwy4u/1SPmP0P6r0JiI2Q==
-X-CSE-MsgGUID: Uasiy1QtQ9O/G5uhZKSOSw==
+ t=1784195840; x=1815731840;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=nv6br8Hisj7yLjUsLvlv2XeijfwGvss1KAKOIkS6EJQ=;
+ b=YO3Y9AEQNrEJqPdlGbS9xk/hAqmGtxTkMSHEGsqRt1LgoXcOjtjHCEau
+ 4mst5MMCk1QaNEu4IqoZcfODXQKR63ypTroK5rOILoh4xuMXuoDlv7NfT
+ P+QZYlW5M9X7BwVygvWVg4R2GIHw7l05twahZDk0DUg8O7C0vhCVNO8vU
+ t3d5jgpwefkH3t01n4dAn+TqM2K3D5dS8oZDL/RpJBopbvhsZMIOqf+3Y
+ gO4OsZfBa+j7HKQPZyy84a7j24JfmxzUlpfTgwjQX4fEqD10KpWNS9vSo
+ r6xY9ITXjs4CFS3STIo97yYcTVLm6+zcy3rdRNfcXGPpULh0eCEiMY3v7 g==;
+X-CSE-ConnectionGUID: vkjELEgMRkKpd0H1HlED7A==
+X-CSE-MsgGUID: ti6DjgYzTaSDqp9jnF4jkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="87394743"
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="87394743"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2026 02:57:20 -0700
+X-CSE-ConnectionGUID: 3t/eLAoCT0i+Pg62zv6Gqg==
+X-CSE-MsgGUID: oZWeZokVSdS0NTRaoxwYWQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="260756401"
-Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.244.235])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2026 02:50:38 -0700
-Date: Thu, 16 Jul 2026 11:50:35 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Jan Maslak <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH v6 09/11] lib/rendercopy: Convert pipeline emit commands
- to genxml
-Message-ID: <bmqkymsr46f7f2fkr4b5qyl3ucv5jstu4ejun6npajru777c44@cru2eiwaejmr>
-References: <20260713133746.453051-1-jan.maslak@intel.com>
- <20260713133746.453051-10-jan.maslak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="261382612"
+Received: from tejasupa-desk.iind.intel.com (HELO tejasupa-desk)
+ ([10.190.239.37])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2026 02:57:18 -0700
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+Subject: [i-g-t] tests/intel/xe_mempage_offline: Add fault-inject based page
+ offline tests
+Date: Thu, 16 Jul 2026 15:27:04 +0530
+Message-ID: <20260716095703.1543088-2-tejas.upadhyay@intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260713133746.453051-10-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,711 +68,244 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Jul 13, 2026 at 03:37:44PM +0200, Jan Maslak wrote:
-> Replace intel_bb_out() calls in state-base-address, URB, shader stage,
-> and draw-state emit functions with igt_genxml_emit macros backed by the
-> genxml pack headers.
+Add IGT tests for VRAM page offlining using the kernel's fault-inject
+infrastructure (inject_mempage_offline). Tests exercise:
 
-LGTM:
+- inject-single-page: Inject one fault via auto-pick ("0"), verify
+  page appears in vram_bad_pages sysfs with 'R' (reserved) flag
+- inject-duplicate-page: Re-inject the same PFN, verify soft→hard
+  promotion returns -EEXIST and page count stays unchanged
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+The trigger file (inject_mempage_offline_trigger) accepts:
+- "0"      : auto-pick last unallocated VRAM page
+- "0xPFN"  : inject fault at a specific PFN address
 
---
-Zbigniew
+If CONFIG_FAULT_INJECTION_DEBUG_FS is enabled, the fault-inject
+probability/times knobs are configured first. If unavailable
+(only CONFIG_FAULT_INJECTION), the trigger injects directly.
 
-> 
-> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
-> ---
->  lib/rendercopy_gen9.c | 542 +++++++++++++++++-------------------------
->  1 file changed, 223 insertions(+), 319 deletions(-)
-> 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index 881ab73b55..b20b128c48 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -22,7 +22,6 @@
->  #include "intel_mocs.h"
->  #include "rendercopy.h"
->  #include "surfaceformat.h"
-> -#include "xe2_render.h"
->  #include "intel_reg.h"
->  #include "igt_aux.h"
->  #include "intel_chipset.h"
-> @@ -755,81 +754,80 @@ gen6_create_scissor_rect(struct intel_bb *ibb)
->  
->  static void
->  gen8_emit_sip(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN4_STATE_SIP | (3 - 2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_STATE_SIP, sip) {
-> +		/* SystemInstructionPointer left as zero */
-> +	}
->  }
->  
->  static void
->  gen7_emit_push_constants(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN7_3DSTATE_PUSH_CONSTANT_ALLOC_VS);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, GEN8_3DSTATE_PUSH_CONSTANT_ALLOC_HS);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, GEN8_3DSTATE_PUSH_CONSTANT_ALLOC_DS);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, GEN8_3DSTATE_PUSH_CONSTANT_ALLOC_GS);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, GEN7_3DSTATE_PUSH_CONSTANT_ALLOC_PS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_VS, vs) { }
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_HS, hs) { }
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_DS, ds) { }
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_GS, gs) { }
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_PUSH_CONSTANT_ALLOC_PS, ps) { }
->  }
->  
-> +/*
-> + * IGT_SBA_COMMON - shared STATE_BASE_ADDRESS fields across gen9/gen11/gen125.
-> + * All three variants have identical field names for the fields we set.
-> + */
-> +#define IGT_SBA_COMMON(sba, mocs_val, surf, dyn, inst)                     \
-> +	do {                                                               \
-> +		sba.GeneralStateBaseAddressModifyEnable = true;            \
-> +		sba.GeneralStateMOCS = (mocs_val);                         \
-> +		sba.StatelessDataPortAccessMOCS = (mocs_val);              \
-> +		sba.SurfaceStateBaseAddressModifyEnable = true;            \
-> +		sba.SurfaceStateMOCS = (mocs_val);                         \
-> +		sba.SurfaceStateBaseAddress = (surf);                      \
-> +		sba.DynamicStateBaseAddressModifyEnable = true;            \
-> +		sba.DynamicStateMOCS = (mocs_val);                         \
-> +		sba.DynamicStateBaseAddress = (dyn);                       \
-> +		sba.IndirectObjectMOCS = (mocs_val);                       \
-> +		sba.InstructionBaseAddressModifyEnable = true;             \
-> +		sba.InstructionMOCS = (mocs_val);                          \
-> +		sba.InstructionBaseAddress = (inst);                       \
-> +		sba.GeneralStateBufferSizeModifyEnable = true;             \
-> +		sba.GeneralStateBufferSize = 0xfffff;                      \
-> +		sba.DynamicStateBufferSizeModifyEnable = true;             \
-> +		sba.DynamicStateBufferSize = 1;                            \
-> +		sba.IndirectObjectBufferSizeModifyEnable = true;           \
-> +		sba.IndirectObjectBufferSize = 0xfffff;                    \
-> +		sba.InstructionBuffersizeModifyEnable = true;              \
-> +		sba.InstructionBufferSize = 1;                             \
-> +		sba.BindlessSurfaceStateMOCS = (mocs_val);                 \
-> +	} while (0)
-> +
->  static void
->  gen9_emit_state_base_address(struct intel_bb *ibb) {
-> +	uint8_t mocs = intel_get_wb_mocs(ibb->fd);
->  
-> -	/* WaBindlessSurfaceStateModifyEnable:skl,bxt */
-> -	/* The length has to be one less if we dont modify
-> -	   bindless state */
-> -	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
-> -		intel_bb_out(ibb, GEN4_STATE_BASE_ADDRESS | 20);
-> -	else
-> -		intel_bb_out(ibb, GEN4_STATE_BASE_ADDRESS | (19 - 1 - 2));
-> -
-> -	/* general */
-> -	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);
-> -	intel_bb_out(ibb, 0);
-> -
-> -	/* stateless data port */
-> -	intel_bb_out(ibb, 0 | BASE_ADDRESS_MODIFY);
-> -
-> -	/* surface */
-> -	intel_bb_emit_reloc(ibb, ibb->handle,
-> -			    I915_GEM_DOMAIN_SAMPLER, 0,
-> -			    BASE_ADDRESS_MODIFY, ibb->batch_offset);
-> -
-> -	/* dynamic */
-> -	intel_bb_emit_reloc(ibb, ibb->handle,
-> -			    I915_GEM_DOMAIN_RENDER | I915_GEM_DOMAIN_INSTRUCTION, 0,
-> -			    BASE_ADDRESS_MODIFY, ibb->batch_offset);
-> -
-> -	/* indirect */
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	struct igt_address surf_base =
-> +		igt_address_of_batch(ibb, I915_GEM_DOMAIN_SAMPLER, 0);
-> +	struct igt_address dyn_base =
-> +		igt_address_of_batch(ibb,
-> +				     I915_GEM_DOMAIN_RENDER | I915_GEM_DOMAIN_INSTRUCTION, 0);
-> +	struct igt_address inst_base =
-> +		igt_address_of_batch(ibb, I915_GEM_DOMAIN_INSTRUCTION, 0);
->  
-> -	/* instruction */
-> -	intel_bb_emit_reloc(ibb, ibb->handle,
-> -			    I915_GEM_DOMAIN_INSTRUCTION, 0,
-> -			    BASE_ADDRESS_MODIFY, ibb->batch_offset);
-> -
-> -	/* general state buffer size */
-> -	intel_bb_out(ibb, 0xfffff000 | 1);
-> -	/* dynamic state buffer size */
-> -	intel_bb_out(ibb, 1 << 12 | 1);
-> -	/* indirect object buffer size */
-> -	intel_bb_out(ibb, 0xfffff000 | 1);
-> -	/* intruction buffer size */
-> -	intel_bb_out(ibb, 1 << 12 | 1);
-> -
-> -	/* Bindless surface state base address */
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -
-> -	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
-> -		/* Bindless sampler */
-> -		intel_bb_out(ibb, 0);
-> -		intel_bb_out(ibb, 0);
-> -		intel_bb_out(ibb, 0);
-> +	if (HAS_4TILE(ibb->devid) || intel_gen(ibb->devid) > 12) {
-> +		igt_genxml_emit(ibb, GFX125_STATE_BASE_ADDRESS, sba) {
-> +			IGT_SBA_COMMON(sba, mocs, surf_base, dyn_base, inst_base);
-> +			/* WBP (0) and UC (1) are marked dont_use in the XML for this field. */
-> +			sba.L1CacheControl = GFX125_L1CC_WB;
-> +			sba.BindlessSamplerStateBaseAddressModifyEnable = true;
-> +			sba.BindlessSamplerStateMOCS = mocs;
-> +		}
-> +	} else if (intel_gen(ibb->devid) >= 11) {
-> +		igt_genxml_emit(ibb, GFX11_STATE_BASE_ADDRESS, sba) {
-> +			IGT_SBA_COMMON(sba, mocs, surf_base, dyn_base, inst_base);
-> +			sba.BindlessSamplerStateBaseAddressModifyEnable = true;
-> +			sba.BindlessSamplerStateMOCS = mocs;
-> +		}
-> +	} else {
-> +		igt_genxml_emit(ibb, GFX9_STATE_BASE_ADDRESS, sba) {
-> +			IGT_SBA_COMMON(sba, mocs, surf_base, dyn_base, inst_base);
-> +		}
->  	}
->  }
->  
-> @@ -840,184 +838,119 @@ gen7_emit_urb(struct intel_bb *ibb) {
->  	const int vs_size = 2;
->  	const int vs_start = 4;
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_URB_VS);
-> -	intel_bb_out(ibb, vs_entries | ((vs_size - 1) << 16) | (vs_start << 25));
-> -	intel_bb_out(ibb, GEN7_3DSTATE_URB_GS);
-> -	intel_bb_out(ibb, vs_start << 25);
-> -	intel_bb_out(ibb, GEN7_3DSTATE_URB_HS);
-> -	intel_bb_out(ibb, vs_start << 25);
-> -	intel_bb_out(ibb, GEN7_3DSTATE_URB_DS);
-> -	intel_bb_out(ibb, vs_start << 25);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_URB_VS, urb) {
-> +		urb.VSNumberofURBEntries = vs_entries;
-> +		urb.VSURBEntryAllocationSize = vs_size - 1;
-> +		urb.VSURBStartingAddress = vs_start;
-> +	}
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_URB_GS, urb) {
-> +		urb.GSURBStartingAddress = vs_start;
-> +	}
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_URB_HS, urb) {
-> +		urb.HSURBStartingAddress = vs_start;
-> +	}
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_URB_DS, urb) {
-> +		urb.DSURBStartingAddress = vs_start;
-> +	}
->  }
->  
->  static void
->  gen8_emit_cc(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN7_3DSTATE_BLEND_STATE_POINTERS);
-> -	intel_bb_out(ibb, cc.blend_state | 1);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_BLEND_STATE_POINTERS, bsp) {
-> +		bsp.BlendStatePointer = cc.blend_state;
-> +		bsp.BlendStatePointerValid = true;
-> +	}
->  
-> -	intel_bb_out(ibb, GEN6_3DSTATE_CC_STATE_POINTERS);
-> -	intel_bb_out(ibb, cc.cc_state | 1);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_CC_STATE_POINTERS, ccp) {
-> +		ccp.ColorCalcStatePointer = cc.cc_state;
-> +		ccp.ColorCalcStatePointerValid = true;
-> +	}
->  }
->  
->  static void
->  gen8_emit_multisample(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN8_3DSTATE_MULTISAMPLE | 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_MULTISAMPLE, ms) { }
->  
-> -	intel_bb_out(ibb, GEN6_3DSTATE_SAMPLE_MASK);
-> -	intel_bb_out(ibb, 1);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLE_MASK, sm) {
-> +		sm.SampleMask = 1;
-> +	}
->  }
->  
->  static void
->  gen8_emit_vs(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN6_3DSTATE_CONSTANT_VS | (11-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_VS, cvs) {
-> +		cvs.MOCS = intel_get_wb_mocs(ibb->fd);
-> +	}
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_BINDING_TABLE_POINTERS_VS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_BINDING_TABLE_POINTERS_VS, bt) { }
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_SAMPLER_STATE_POINTERS_VS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLER_STATE_POINTERS_VS, sp) { }
->  
-> -	intel_bb_out(ibb, GEN6_3DSTATE_VS | (9-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_VS, vs) { }
->  }
->  
->  static void
->  gen8_emit_hs(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN7_3DSTATE_CONSTANT_HS | (11-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_HS, chs) {
-> +		chs.MOCS = intel_get_wb_mocs(ibb->fd);
-> +	}
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_HS | (9-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	if (intel_gen(ibb->devid) >= 20)
-> +		igt_genxml_emit(ibb, GFX20_3DSTATE_HS, hs) { }
-> +	else
-> +		igt_genxml_emit(ibb, GFX9_3DSTATE_HS, hs) { }
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_BINDING_TABLE_POINTERS_HS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_BINDING_TABLE_POINTERS_HS, bt) { }
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_SAMPLER_STATE_POINTERS_HS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLER_STATE_POINTERS_HS, sp) { }
->  }
->  
->  static void
->  gen8_emit_gs(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN6_3DSTATE_CONSTANT_GS | (11-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_GS, cgs) {
-> +		cgs.MOCS = intel_get_wb_mocs(ibb->fd);
-> +	}
->  
-> -	intel_bb_out(ibb, GEN6_3DSTATE_GS | (10-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_GS, gs) { }
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_BINDING_TABLE_POINTERS_GS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_BINDING_TABLE_POINTERS_GS, bt) { }
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_SAMPLER_STATE_POINTERS_GS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLER_STATE_POINTERS_GS, sp) { }
->  }
->  
->  static void
->  gen9_emit_ds(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN7_3DSTATE_CONSTANT_DS | (11-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_DS, cds) {
-> +		cds.MOCS = intel_get_wb_mocs(ibb->fd);
-> +	}
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_DS | (11-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_DS, ds) { }
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_BINDING_TABLE_POINTERS_DS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_BINDING_TABLE_POINTERS_DS, bt) { }
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_SAMPLER_STATE_POINTERS_DS);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_SAMPLER_STATE_POINTERS_DS, sp) { }
->  }
->  
->  
->  static void
->  gen8_emit_wm_hz_op(struct intel_bb *ibb) {
->  	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
-> -		intel_bb_out(ibb, GEN8_3DSTATE_WM_HZ_OP | (6-2));
-> -		intel_bb_out(ibb, 0);
-> +		igt_genxml_emit(ibb, GFX20_3DSTATE_WM_HZ_OP, hz) { }
->  	} else {
-> -		intel_bb_out(ibb, GEN8_3DSTATE_WM_HZ_OP | (5-2));
-> +		igt_genxml_emit(ibb, GFX9_3DSTATE_WM_HZ_OP, hz) { }
->  	}
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
->  }
->  
->  static void
->  gen8_emit_null_state(struct intel_bb *ibb) {
->  	gen8_emit_wm_hz_op(ibb);
->  	gen8_emit_hs(ibb);
-> -	intel_bb_out(ibb, GEN7_3DSTATE_TE | (4-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +
-> +	if (intel_gen(ibb->devid) >= 12)
-> +		igt_genxml_emit(ibb, GFX12_3DSTATE_TE, te) { }
-> +	else
-> +		igt_genxml_emit(ibb, GFX9_3DSTATE_TE, te) { }
-> +
->  	gen8_emit_gs(ibb);
->  	gen9_emit_ds(ibb);
->  	gen8_emit_vs(ibb);
-> @@ -1025,137 +958,109 @@ gen8_emit_null_state(struct intel_bb *ibb) {
->  
->  static void
->  gen7_emit_clip(struct intel_bb *ibb) {
-> -	intel_bb_out(ibb, GEN6_3DSTATE_CLIP | (4 - 2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0); /*  pass-through */
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_CLIP, clip) {
-> +		/* All fields zero = pass-through */
-> +	}
->  }
->  
->  static void
->  gen8_emit_sf(struct intel_bb *ibb)
->  {
-> -	int i;
-> -
-> -	intel_bb_out(ibb, GEN7_3DSTATE_SBE | (6 - 2));
-> -	intel_bb_out(ibb, 1 << GEN7_SBE_NUM_OUTPUTS_SHIFT |
-> -		     GEN8_SBE_FORCE_URB_ENTRY_READ_LENGTH |
-> -		     GEN8_SBE_FORCE_URB_ENTRY_READ_OFFSET |
-> -		     1 << GEN7_SBE_URB_ENTRY_READ_LENGTH_SHIFT |
-> -		     1 << GEN8_SBE_URB_ENTRY_READ_OFFSET_SHIFT);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, GEN9_SBE_ACTIVE_COMPONENT_XYZW << 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_SBE, sbe) {
-> +		sbe.NumberofSFOutputAttributes = 1;
-> +		sbe.ForceVertexURBEntryReadLength = true;
-> +		sbe.ForceVertexURBEntryReadOffset = true;
-> +		sbe.VertexURBEntryReadLength = 1;
-> +		sbe.VertexURBEntryReadOffset = 1;
-> +		sbe.AttributeActiveComponentFormat[0] = GFX9_ACTIVE_COMPONENT_XYZW;
-> +	}
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_SBE_SWIZ | (11 - 2));
-> -	for (i = 0; i < 8; i++)
-> -		intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_SBE_SWIZ, swiz) { }
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_RASTER | (5 - 2));
-> -	intel_bb_out(ibb, GEN8_RASTER_FRONT_WINDING_CCW | GEN8_RASTER_CULL_NONE);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_RASTER, raster) {
-> +		raster.FrontWinding = 1; /* CCW */
-> +		raster.CullMode = GFX9_CULLMODE_NONE;
-> +	}
->  
-> -	intel_bb_out(ibb, GEN6_3DSTATE_SF | (4 - 2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_SF, sf) { }
->  }
->  
->  static void
->  gen8_emit_ps(struct intel_bb *ibb, uint32_t kernel, bool fast_clear) {
->  	const int max_threads = 63;
->  
-> -	intel_bb_out(ibb, GEN6_3DSTATE_WM | (2 - 2));
-> -	intel_bb_out(ibb, /* XXX: I don't understand the BARYCENTRIC stuff, but it
-> -		   * appears we need it to put our setup data in the place we
-> -		   * expect (g6, see below) */
-> -		     GEN8_3DSTATE_PS_PERSPECTIVE_PIXEL_BARYCENTRIC);
-> -
-> -	intel_bb_out(ibb, GEN6_3DSTATE_CONSTANT_PS | (11-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_WM, wm) {
-> +		wm.BarycentricInterpolationMode = GFX9_BIM_PERSPECTIVE_PIXEL;
-> +	}
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_PS | (12-2));
-> -	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
-> -		intel_bb_out(ibb, kernel | 1);
-> -	else
-> -		intel_bb_out(ibb, kernel);
-> -	intel_bb_out(ibb, 0); /* kernel hi */
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_CONSTANT_PS, cps) {
-> +		cps.MOCS = intel_get_wb_mocs(ibb->fd);
-> +	}
->  
-> -	if (fast_clear)
-> -		intel_bb_out(ibb, 1 <<  GEN6_3DSTATE_WM_BINDING_TABLE_ENTRY_COUNT_SHIFT);
-> -	else
-> -		intel_bb_out(ibb, 1 << GEN6_3DSTATE_WM_SAMPLER_COUNT_SHIFT |
-> -		             2 << GEN6_3DSTATE_WM_BINDING_TABLE_ENTRY_COUNT_SHIFT);
-> -
-> -	intel_bb_out(ibb, 0); /* scratch space stuff */
-> -	intel_bb_out(ibb, 0); /* scratch hi */
-> -	intel_bb_out(ibb, (max_threads - 1) << GEN8_3DSTATE_PS_MAX_THREADS_SHIFT |
-> -	             GEN6_3DSTATE_WM_16_DISPATCH_ENABLE |
-> -	             (fast_clear ? GEN8_3DSTATE_FAST_CLEAR_ENABLE : 0));
-> -	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
-> -		intel_bb_out(ibb, 6 << GEN6_3DSTATE_WM_DISPATCH_START_GRF_0_SHIFT |
-> -			     GENXE_KERNEL0_POLY_PACK16_FIXED << GENXE_KERNEL0_PACKING_POLICY);
-> -	else
-> -		intel_bb_out(ibb, 6 << GEN6_3DSTATE_WM_DISPATCH_START_GRF_0_SHIFT);
-> -	intel_bb_out(ibb, 0); // kernel 1
-> -	intel_bb_out(ibb, 0); /* kernel 1 hi */
-> -	intel_bb_out(ibb, 0); // kernel 2
-> -	intel_bb_out(ibb, 0); /* kernel 2 hi */
-> +	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
-> +		igt_genxml_emit(ibb, GFX20_3DSTATE_PS, ps) {
-> +			ps.KernelStartPointer0 = kernel;
-> +			ps.Kernel0Enable = true;
-> +			ps.BindingTableEntryCount = fast_clear ? 1 : 2;
-> +			ps.SamplerCount = fast_clear ? 0 : 1;
-> +			ps.Kernel0SIMDWidth = GFX20_PS_SIMD16;
-> +			ps.RenderTargetFastClearEnable = fast_clear;
-> +			ps.MaximumNumberofThreadsPerPSD = max_threads - 1;
-> +			ps.DispatchGRFStartRegisterForConstantSetupData0 = 6;
-> +			ps.Kernel0PolyPackingPolicy = GFX20_POLY_PACK16_FIXED;
-> +		}
-> +	} else {
-> +		igt_genxml_emit(ibb, GFX9_3DSTATE_PS, ps) {
-> +			ps.KernelStartPointer0 = kernel;
-> +			ps.BindingTableEntryCount = fast_clear ? 1 : 2;
-> +			ps.SamplerCount = fast_clear ? 0 : 1;
-> +			ps._16PixelDispatchEnable = true;
-> +			ps.RenderTargetFastClearEnable = fast_clear;
-> +			ps.MaximumNumberofThreadsPerPSD = max_threads - 1;
-> +			ps.DispatchGRFStartRegisterForConstantSetupData0 = 6;
-> +		}
-> +	}
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_PS_BLEND | (2 - 2));
-> -	intel_bb_out(ibb, GEN8_PS_BLEND_HAS_WRITEABLE_RT);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_PS_BLEND, blend) {
-> +		blend.HasWriteableRT = true;
-> +	}
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_PS_EXTRA | (2 - 2));
-> -	intel_bb_out(ibb, GEN8_PSX_PIXEL_SHADER_VALID | GEN8_PSX_ATTRIBUTE_ENABLE);
-> +	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
-> +		igt_genxml_emit(ibb, GFX20_3DSTATE_PS_EXTRA, extra) {
-> +			extra.PixelShaderValid = true;
-> +		}
-> +	} else {
-> +		igt_genxml_emit(ibb, GFX9_3DSTATE_PS_EXTRA, extra) {
-> +			extra.PixelShaderValid = true;
-> +			extra.AttributeEnable = true;
-> +		}
-> +	}
->  }
->  
->  static void
->  gen9_emit_depth(struct intel_bb *ibb)
->  {
-> -	bool need_10dw = HAS_4TILE(ibb->devid);
-> +	uint8_t mocs = intel_get_wb_mocs(ibb->fd);
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_WM_DEPTH_STENCIL | (4 - 2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_WM_DEPTH_STENCIL, wds) { }
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_DEPTH_BUFFER | (need_10dw ? (10-2) : (8-2)));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	if (need_10dw) {
-> -		intel_bb_out(ibb, 0);
-> -		intel_bb_out(ibb, 0);
-> +	if (HAS_4TILE(ibb->devid)) {
-> +		igt_genxml_emit(ibb, GFX125_3DSTATE_DEPTH_BUFFER, db) {
-> +			db.MOCS = mocs;
-> +		}
-> +	} else {
-> +		igt_genxml_emit(ibb, GFX9_3DSTATE_DEPTH_BUFFER, db) {
-> +			db.MOCS = mocs;
-> +		}
->  	}
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_HIER_DEPTH_BUFFER | (5-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_HIER_DEPTH_BUFFER, hdb) {
-> +		hdb.MOCS = mocs;
-> +	}
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_STENCIL_BUFFER | (5-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_STENCIL_BUFFER, sb) {
-> +		sb.MOCS = mocs;
-> +	}
->  }
->  
->  static void
-> @@ -1163,46 +1068,45 @@ gen7_emit_clear(struct intel_bb *ibb) {
->  	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
->  		return;
->  
-> -	intel_bb_out(ibb, GEN7_3DSTATE_CLEAR_PARAMS | (3-2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 1); // clear valid
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_CLEAR_PARAMS, cp) {
-> +		cp.DepthClearValueValid = true;
-> +	}
->  }
->  
->  static void
->  gen6_emit_drawing_rectangle(struct intel_bb *ibb, const struct intel_buf *dst)
->  {
-> -	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20)
-> -		intel_bb_out(ibb, GENXE2_3DSTATE_DRAWING_RECTANGLE_FAST | (4 - 2));
-> -	else
-> -		intel_bb_out(ibb, GEN4_3DSTATE_DRAWING_RECTANGLE | (4 - 2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, (intel_buf_height(dst) - 1) << 16 | (intel_buf_width(dst) - 1));
-> -	intel_bb_out(ibb, 0);
-> +	if (intel_gen(intel_get_drm_devid(ibb->fd)) >= 20) {
-> +		igt_genxml_emit(ibb, GFX20_3DSTATE_DRAWING_RECTANGLE_FAST, dr) {
-> +			dr.ClippedDrawingRectangleXMax = intel_buf_width(dst) - 1;
-> +			dr.ClippedDrawingRectangleYMax = intel_buf_height(dst) - 1;
-> +		}
-> +	} else {
-> +		igt_genxml_emit(ibb, GFX9_3DSTATE_DRAWING_RECTANGLE, dr) {
-> +			dr.ClippedDrawingRectangleXMax = intel_buf_width(dst) - 1;
-> +			dr.ClippedDrawingRectangleYMax = intel_buf_height(dst) - 1;
-> +		}
-> +	}
->  }
->  
->  static void gen8_emit_vf_topology(struct intel_bb *ibb)
->  {
-> -	intel_bb_out(ibb, GEN8_3DSTATE_VF_TOPOLOGY);
-> -	intel_bb_out(ibb, _3DPRIM_RECTLIST);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_VF_TOPOLOGY, vft) {
-> +		vft.PrimitiveTopologyType = GFX9_3DPRIM_RECTLIST;
-> +	}
->  }
->  
->  /* Vertex elements MUST be defined before this according to spec */
->  static void gen8_emit_primitive(struct intel_bb *ibb, uint32_t offset)
->  {
-> -	intel_bb_out(ibb, GEN8_3DSTATE_VF | (2 - 2));
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_VF, vf) { }
->  
-> -	intel_bb_out(ibb, GEN8_3DSTATE_VF_INSTANCING | (3 - 2));
-> -	intel_bb_out(ibb, 0);
-> -	intel_bb_out(ibb, 0);
-> +	igt_genxml_emit(ibb, GFX9_3DSTATE_VF_INSTANCING, vfi) { }
->  
-> -	intel_bb_out(ibb, GEN4_3DPRIMITIVE | (7-2));
-> -	intel_bb_out(ibb, 0);	/* gen8+ ignore the topology type field */
-> -	intel_bb_out(ibb, 3);	/* vertex count */
-> -	intel_bb_out(ibb, 0);	/*  We're specifying this instead with offset in GEN6_3DSTATE_VERTEX_BUFFERS */
-> -	intel_bb_out(ibb, 1);	/* single instance */
-> -	intel_bb_out(ibb, 0);	/* start instance location */
-> -	intel_bb_out(ibb, 0);	/* index buffer offset, ignored */
-> +	igt_genxml_emit(ibb, GFX9_3DPRIMITIVE, prim) {
-> +		prim.VertexCountPerInstance = 3;
-> +		prim.InstanceCount = 1;
-> +	}
->  }
->  
->  #define PIPE_CONTROL_RENDER_TARGET_FLUSH    (1 << 12)
-> -- 
-> 2.43.0
-> 
+Requires CRI platform with CONFIG_FAULT_INJECTION enabled.
+
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+---
+ tests/intel/xe_mempage_offline.c | 195 +++++++++++++++++++++++++++++++
+ tests/meson.build                |   1 +
+ 2 files changed, 196 insertions(+)
+ create mode 100644 tests/intel/xe_mempage_offline.c
+
+diff --git a/tests/intel/xe_mempage_offline.c b/tests/intel/xe_mempage_offline.c
+new file mode 100644
+index 000000000..ae9ce981d
+--- /dev/null
++++ b/tests/intel/xe_mempage_offline.c
+@@ -0,0 +1,195 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++/**
++ * TEST: VRAM page offline injection and verification
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: RAS
++ * Functionality: memory page offline
++ * Test category: functionality test
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <limits.h>
++#include <string.h>
++#include <unistd.h>
++
++#include "igt.h"
++#include "igt_debugfs.h"
++#include "igt_device.h"
++#include "igt_sysfs.h"
++
++#include "xe/xe_query.h"
++
++#define FAULT_INJECT_DIR	"inject_mempage_offline"
++#define TRIGGER_FILE		"inject_mempage_offline_trigger"
++#define VRAM_BAD_PAGES		"device/vram_bad_pages"
++
++static int count_bad_pages(int sysfs_fd)
++{
++	char buf[4096];
++	int len, count = 0;
++	char *line;
++
++	len = igt_sysfs_read(sysfs_fd, VRAM_BAD_PAGES, buf, sizeof(buf) - 1);
++	if (len <= 0)
++		return 0;
++
++	buf[len] = '\0';
++
++	/* Each entry line has format: "0x%08x : 0x%08x : %c\n" */
++	line = buf;
++	while ((line = strchr(line, '\n')) != NULL) {
++		count++;
++		line++;
++	}
++
++	/* Subtract the header line (max_pages : XXXX) */
++	if (count > 0)
++		count--;
++
++	return count;
++}
++
++static bool bad_page_has_flag(int sysfs_fd, char flag)
++{
++	char buf[4096];
++	int len;
++	char *p;
++
++	len = igt_sysfs_read(sysfs_fd, VRAM_BAD_PAGES, buf, sizeof(buf) - 1);
++	if (len <= 0)
++		return false;
++
++	buf[len] = '\0';
++
++	/* Look for the flag character after last ':' on entry lines */
++	p = buf;
++	while ((p = strstr(p, " : ")) != NULL) {
++		p += 3;
++		if (*p == flag)
++			return true;
++	}
++
++	return false;
++}
++
++static uint64_t get_last_bad_page_pfn(int sysfs_fd)
++{
++	char buf[4096];
++	int len;
++	char *line, *last_entry = NULL;
++	uint64_t pfn = 0;
++
++	len = igt_sysfs_read(sysfs_fd, VRAM_BAD_PAGES, buf, sizeof(buf) - 1);
++	if (len <= 0)
++		return 0;
++
++	buf[len] = '\0';
++
++	/* Find last entry line (format: "0x%08llx : 0x%08llx : %c\n") */
++	line = buf;
++	while (*line) {
++		if (line[0] == '0' && line[1] == 'x')
++			last_entry = line;
++		line = strchr(line, '\n');
++		if (!line)
++			break;
++		line++;
++	}
++
++	if (last_entry)
++		sscanf(last_entry, "0x%lx", &pfn);
++
++	return pfn;
++}
++
++static void inject_fault(int fd)
++{
++	/* Use fault-inject knobs if available, otherwise trigger directly */
++	if (igt_debugfs_exists(fd, FAULT_INJECT_DIR "/probability", O_WRONLY)) {
++		igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "100");
++		igt_debugfs_write(fd, FAULT_INJECT_DIR "/times", "1");
++		igt_debugfs_write(fd, FAULT_INJECT_DIR "/verbose", "1");
++	}
++	__igt_debugfs_write(fd, TRIGGER_FILE, "0", 1);
++}
++
++/**
++ * SUBTEST: inject-single-page
++ * Description: Inject a single VRAM page fault and verify it appears in vram_bad_pages
++ */
++
++/**
++ * SUBTEST: inject-duplicate-page
++ * Description: Inject two pages and verify both appear in vram_bad_pages
++ */
++
++int igt_main()
++{
++	int fd;
++	int sysfs_fd;
++	uint16_t devid;
++
++	igt_fixture() {
++		fd = drm_open_driver(DRIVER_XE);
++		devid = intel_get_drm_devid(fd);
++		igt_require(intel_get_device_info(devid)->is_crescentisland);
++		igt_require(igt_debugfs_exists(fd, TRIGGER_FILE, O_WRONLY));
++		sysfs_fd = igt_sysfs_open(fd);
++		igt_assert(sysfs_fd >= 0);
++	}
++
++	igt_subtest("inject-single-page") {
++		int initial_count, after_count;
++
++		initial_count = count_bad_pages(sysfs_fd);
++		inject_fault(fd);
++		after_count = count_bad_pages(sysfs_fd);
++		igt_assert_eq(after_count, initial_count + 1);
++		igt_assert(bad_page_has_flag(sysfs_fd, 'R'));
++	}
++
++	igt_subtest("inject-duplicate-page") {
++		int initial_count, after_count;
++		uint64_t pfn;
++		char pfn_str[32];
++		int debugfs_fd, ret;
++
++		initial_count = count_bad_pages(sysfs_fd);
++
++		/* First injection — auto-pick unallocated page */
++		inject_fault(fd);
++		after_count = count_bad_pages(sysfs_fd);
++		igt_assert_eq(after_count, initial_count + 1);
++
++		/* Get PFN of the page just injected */
++		pfn = get_last_bad_page_pfn(sysfs_fd);
++		igt_assert(pfn != 0);
++
++		/*
++		 * Re-inject same PFN — should return -EEXIST (soft→hard
++		 * promotion). Write to trigger with the PFN value.
++		 */
++		snprintf(pfn_str, sizeof(pfn_str), "0x%lx", pfn);
++		debugfs_fd = igt_debugfs_open(fd, TRIGGER_FILE, O_WRONLY);
++		igt_assert(debugfs_fd >= 0);
++		ret = write(debugfs_fd, pfn_str, strlen(pfn_str));
++		igt_assert(ret < 0 && errno == EEXIST);
++		close(debugfs_fd);
++
++		/* Count should not change — same page, not a new one */
++		after_count = count_bad_pages(sysfs_fd);
++		igt_assert_eq(after_count, initial_count + 1);
++	}
++
++	igt_fixture() {
++		igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "0");
++		close(sysfs_fd);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index d73aaecd9..c75633684 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -318,6 +318,7 @@ intel_xe_progs = [
+ 	'xe_live_ktest',
+ 	'xe_madvise',
+ 	'xe_media_fill',
++        'xe_mempage_offline',
+ 	'xe_mmap',
+         'xe_module_load',
+         'xe_multigpu_svm',
+-- 
+2.52.0
+
