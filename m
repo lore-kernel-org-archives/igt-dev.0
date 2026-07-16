@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E8A7C4450A
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 08:42:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C4BEC4450A
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 09:50:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE69710F227;
-	Thu, 16 Jul 2026 08:42:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B18E110E335;
+	Thu, 16 Jul 2026 09:50:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Olg+JcRo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZdlJuwNZ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5682010F227
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 08:41:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 58C7D10E75C
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 09:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784191302; x=1815727302;
- h=date:from:to:cc:subject:in-reply-to:message-id:
- references:mime-version;
- bh=L5Pd5W66pSnAGHaVexMorIknLxmp28ajJdHuvAvLGhc=;
- b=Olg+JcRoeYe2zIBZeUWg59uOJ+81Lg/5ncAIitFqUGdRKIrDOayJti6A
- N0jDQk2OJegqvNNvbWtYx3ePbFQMk9t7OZHXfxqEuO581ACDozlfICq0E
- 8/eEffybadn7oR5T939ONHSHOBex+BHJjFaGQJKFNt9CIi2dvFu+rqudV
- tRZ09PGnue7MtNWCzfoSMYA8b990PhOSEbltbdnox0R56DhYGFVVMO6i7
- 5zinXpJQUtGNthjmoj5qbA2yjCkW1jc/8yaqUuctvEuudePPrh2njHHol
- oJh8wjSHW+dNFbvF9wjTR2rwNyFy0QOZt2KDc3440BCAJyBVl2r9hXMGP A==;
-X-CSE-ConnectionGUID: UCmmjh4XQiCk/VJKgzNpKQ==
-X-CSE-MsgGUID: E2MTQ4N6TLyF1j7rTK2wMg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="88746961"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="88746961"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2026 01:41:42 -0700
-X-CSE-ConnectionGUID: qquPNTwRTPiNw8HL6gq0sg==
-X-CSE-MsgGUID: U5YAf/CnQl2pFBIwTLb75g==
+ t=1784195414; x=1815731414;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=/akj0DoCcVFiNke1w1Delte+CaNypLLx5YlkDS03qdI=;
+ b=ZdlJuwNZBfp+sc9GIIYqanfxI9OIg0oWGSluneMMEbT7CLS41bkxzOeN
+ lLFWde8QxzCwFz5enom68OI9NwsZRkKnlUPZvoVihMye0B3x4tSQnlVwF
+ bNFkXKR7xOYyZ/hsvePNvv7mb1V5Ik6i42lkHnZ9gdzpPxdRsp2dr6POQ
+ vVK4Pug5YID6gdCba7eczBzie37e+WAhgfeEOzPuJHBxxUZcLSyG/GCL0
+ S/mWfiFCWJJiOvZDH9HvABmVc280Ams8O9X+H5zGcLeV880I6NzDLJ/1o
+ 1FWmbFhG17EI3pUhUXsxGQZ9feGb1F7drtb4jqvUkmeziyqebIUIm2u/P g==;
+X-CSE-ConnectionGUID: gbcEy+ejSJqAYOBD5Q7qhQ==
+X-CSE-MsgGUID: 8nHhd8BAS/u0fCkROdz7oQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="102277155"
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="102277155"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2026 02:50:13 -0700
+X-CSE-ConnectionGUID: oEM5hGoLRoyPVrJEeEFMxA==
+X-CSE-MsgGUID: smoara/RSYSxhCgj7ZPR+A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="256481884"
-Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2026 01:41:41 -0700
-Date: Thu, 16 Jul 2026 10:41:38 +0200 (CEST)
-From: =?ISO-8859-2?Q?Micha=B3_Grzelak?= <michal.grzelak@intel.com>
-To: "Garg, Nemesa" <nemesa.garg@intel.com>
-cc: "Grzelak, Michal" <michal.grzelak@intel.com>, 
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, 
- "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-Subject: RE: [PATCH i-g-t v1 12/16] tests/kms_sharpness_filter: limit #outputs
- tested during suspend
-In-Reply-To: <IA1PR11MB6467A9718AEB60E607D3A09CE3F92@IA1PR11MB6467.namprd11.prod.outlook.com>
-Message-ID: <964bf595-6ab1-23aa-5df4-404d491d6943@intel.com>
-References: <20260713085515.463575-1-michal.grzelak@intel.com>
- <20260713085515.463575-13-michal.grzelak@intel.com>
- <IA1PR11MB6467A9718AEB60E607D3A09CE3F92@IA1PR11MB6467.namprd11.prod.outlook.com>
+X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="260029690"
+Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.235])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Jul 2026 02:50:13 -0700
+Date: Thu, 16 Jul 2026 11:50:09 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Jan Maslak <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH 09/11] lib/rendercopy: Convert pipeline emit commands to
+ genxml
+Message-ID: <dut76zkjhvvcozjd4we3lijfeyx7onuxbzegmvdxcgju7pykhe@gldlmdnobvdz>
+References: <20260622035106.3023047-1-jan.maslak@intel.com>
+ <20260622035106.3023047-10-jan.maslak@intel.com>
+ <jqde5hdoyqor6snkirq3xgs3itsrceiqumjprsvgf4qre5k4fu@dr6gzlzobn3k>
+ <alSvWQGtgJAYsEfS@ART-DEV-395>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1914454364-1784191301=:605841"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alSvWQGtgJAYsEfS@ART-DEV-395>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,122 +72,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Jul 13, 2026 at 11:26:49AM +0200, Jan Maslak wrote:
+> > There's only one nit I got for this patch. Why HAS_4TILE() is necessary
+> > and > 12 is not enough? Have CI complained without this before?
+> 
+> Both plain Gen12 LP (TGL/ADL/DG1) and Gen12.5 (DG2/ATS-M/MTL) return intel_gen() == 12.
+> Gen12 LP wants GFX11 STATE_BASE_ADDRESS, while Gen12.5 platforms want GFX125.
+> We need to differentiate between the two, and HAS_4TILE() is a way to do that.
 
---8323329-1914454364-1784191301=:605841
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8BIT
+Ok, you're right. Looks we could also use:
 
-On Tue, 14 Jul 2026, Garg, Nemesa wrote:
->
->
->> -----Original Message-----
->> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Michał
->> Grzelak
->> Sent: Monday, July 13, 2026 2:25 PM
->> To: igt-dev@lists.freedesktop.org
->> Cc: Thasleem, Mohammed <mohammed.thasleem@intel.com>; Grzelak,
->> Michal <michal.grzelak@intel.com>
->> Subject: [PATCH i-g-t v1 12/16] tests/kms_sharpness_filter: limit #outputs
->> tested during suspend
->>
->> We are iterating through each output while testing suspend. This results in
->> extended execution time. In turn this leads to hitting CI enforced timeout.
->>
->> By default limit number of tested outputs to 3. Test each connected output
->> when passing command-line parameter.
->>
-> What is the rationale behind number 3.
+if (intel_graphics_ver(devid) >= IP_VER(12, 50))
+    ...
 
-Followed [1]. For kms_flip running 2 pipes and max 3 outputs fit into
-the CI's timeout, and 4 didn't. Also needed any number to set the limit.
+but both would work. So keep as it is.
 
-[1] https://lore.kernel.org/igt-dev/20260330075508.1003899-5-michal.grzelak@intel.com/
+--
+Zbigniew
 
-BR,
-Michał
-
->
-> Regards,
-> Nemesa
->
->> v1->v2
->> - remove abbreviations (Jani)
->>
->> Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
->> ---
->>  tests/intel/kms_sharpness_filter.c | 18 ++++++++++++++++--
->>  1 file changed, 16 insertions(+), 2 deletions(-)
->>
->> diff --git a/tests/intel/kms_sharpness_filter.c
->> b/tests/intel/kms_sharpness_filter.c
->> index f2e3fc9494..adec4a60c5 100644
->> --- a/tests/intel/kms_sharpness_filter.c
->> +++ b/tests/intel/kms_sharpness_filter.c
->> @@ -74,6 +74,8 @@ IGT_TEST_DESCRIPTION("Test to validate content
->> adaptive sharpness filter");
->>   * is seen without corruption for each subtest.
->>   */
->>
->> +#define OUTPUT_LIMIT 			3
->> +
->>  #define TAP_3				3
->>  #define TAP_5				5
->>  #define TAP_7				7
->> @@ -231,6 +233,7 @@ static const struct subtest_entry {  typedef struct {
->>  	int drm_fd;
->>  	bool limited;
->> +	bool all_outputs;
->>  	struct igt_fb fb[4];
->>  	igt_crtc_t *crtc;
->>  	igt_display_t display;
->> @@ -614,9 +617,16 @@ run_sharpness_filter_test(data_t *data, enum
->> test_type type)
->>  	igt_display_t *display = &data->display;
->>  	igt_output_t *output;
->>  	igt_crtc_t *crtc;
->> +	int output_counter = 0;
->>  	char name[40];
->>
->>  	for_each_connected_output(display, output) {
->> +		if (type == TEST_FILTER_SUSPEND && !data->all_outputs &&
->> +		    output_counter > OUTPUT_LIMIT)
->> +			continue;
->> +
->> +		output_counter++;
->> +
->>  		for_each_crtc(display, crtc) {
->>  			igt_display_reset(display);
->>
->> @@ -766,6 +776,9 @@ static int opt_handler(int opt, int opt_index, void
->> *_data)
->>  	case 'l':
->>  		data->limited = true;
->>  		break;
->> +	case 'o':
->> +		data->all_outputs = true;
->> +		break;
->>  	default:
->>  		return IGT_OPT_HANDLER_ERROR;
->>  	}
->> @@ -774,11 +787,12 @@ static int opt_handler(int opt, int opt_index, void
->> *_data)  }
->>
->>  static const char help_str[] =
->> -	"  --limited|-l\t\tLimit execution to 1 valid pipe-output combo\n";
->> +	"  --limited|-l\t\tLimit execution to 1 valid pipe-output combo\n"
->> +	"  --all-outputs|-o\t\tExtend suspend tests for all outputs\n";
->>
->>  data_t data = {};
->>
->> -int igt_main_args("l", NULL, help_str, opt_handler, &data)
->> +int igt_main_args("lo", NULL, help_str, opt_handler, &data)
->>  {
->>  	igt_fixture() {
->>  		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
->> --
->> 2.45.2
->
->
---8323329-1914454364-1784191301=:605841--
+> 
+> Pre-genxml code also used this logic for differentiation so I kept it for consistency.
+> No CI failures were tied to it either way.
+> 
+> --
+> Jan
