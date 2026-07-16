@@ -4,61 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B3F0C4450A
-	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 14:28:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8CA4C44512
+	for <igt-dev@archiver.kernel.org>; Thu, 16 Jul 2026 14:55:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A85E10E373;
-	Thu, 16 Jul 2026 14:28:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6927E10E351;
+	Thu, 16 Jul 2026 14:55:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PwupXaRp";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="sNXc76Az";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECA8E10E373
- for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 14:28:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784212099; x=1815748099;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=dGwJf4vlvAOJElkkjqeAdaeTo3qd4hSlXbeFy4aky3Q=;
- b=PwupXaRpVgXw//OVgbgXPIobJ7P9cdVgIDY0XYXMzWBeI7Dy/AEotrvQ
- 0O88bqbkaj+QZJln6T9JYgSHNEH7nwZgnr0IToUGUTZZYM4Lhqy0ZdgWH
- qJ5CFJteYvyIXWkoDSNLkIcg33nfMbefJU8UkzzCCS2E/KZGTR6Go1sP3
- Pj46gWlOdsfrGdwkTwU+M/loXRgoFID2CXhUTHgWudDDpM6pW29jYeDOl
- N4BSjAwveR/1urQGkmLpi7h4y9McEWPcAXRB53PcUxupFV1nK/M9v3755
- /xFIhF662WHaJgytlETMfe+z1q5nlTzDxpTpuxcxBZOf5XQLnMCkxr99C w==;
-X-CSE-ConnectionGUID: HSTXsMLdTXm2mjstcySYIQ==
-X-CSE-MsgGUID: WI85T4C8R12UO1MPXMmX3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11847"; a="84988065"
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="84988065"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Jul 2026 07:28:18 -0700
-X-CSE-ConnectionGUID: uQalV/FjSpmNZIPytPdQNw==
-X-CSE-MsgGUID: rvfL5KFXT+eSAesuXpGqGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,167,1779174000"; d="scan'208";a="252088643"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jul 2026 07:28:17 -0700
-Date: Thu, 16 Jul 2026 16:27:59 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, adam.miszczak@linux.intel.com,
- lukasz.laguna@intel.com, tvrtko.ursulin@igalia.com
-Subject: Re: [PATCH i-g-t 1/2] benchmarks/gem_wsim: add explicit VM
- create/assign steps
-Message-ID: <20260716142759.qlhj36tqcncpnnth@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- igt-dev@lists.freedesktop.org, adam.miszczak@linux.intel.com,
- lukasz.laguna@intel.com, tvrtko.ursulin@igalia.com
-References: <20260714151235.1246608-1-marcin.bernatowicz@linux.intel.com>
- <20260714151235.1246608-2-marcin.bernatowicz@linux.intel.com>
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BD9CC10E351
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 14:54:54 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 1CD424E40DFD
+ for <igt-dev@lists.freedesktop.org>; Thu, 16 Jul 2026 14:54:53 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id DD6CE602B8;
+ Thu, 16 Jul 2026 14:54:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id AFCDC11BD1C16; 
+ Thu, 16 Jul 2026 16:54:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1784213692; h=from:subject:date:message-id:to:mime-version:content-type:
+ content-transfer-encoding:content-language:in-reply-to:references;
+ bh=fzAMfTAWN4f9xA4qrEcsZCj77ZLXVvl8fnq/3FYj83k=;
+ b=sNXc76Azh68qzpq1JwYtl4jCseyl19RqH+Px3h8/33HfazOyC/cEUHVNrfgPJf7h0l9Dwm
+ 0NrFAI8enbOj0b7PRuubJVrbVDmyGrZ1cfwIxoHSqmxvygaXvZadald20qz/qu2qzeLYs5
+ cgncdq7RMy8x09JeV7j1LzQEZlrGzeOtGuaWEGQ9MnKrBVIiJ99rI76tUSl8R0j1mUWSyw
+ kbldxizLlbPqMtElWKgtHy8hijFXyBZyoM7a0BN6pajN0iTsxWhudMhaAAaSA/YBuAVKg+
+ IP9KGNLMFt0LouVeKMBMPNbdVrqGViXm5AK4XoUzKI2fznlyUEOKfz+D5mQKww==
+Message-ID: <883be072-85f1-4a07-9932-ca135c98e603@bootlin.com>
+Date: Thu, 16 Jul 2026 16:54:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260714151235.1246608-2-marcin.bernatowicz@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/3] tests/unigraf: Fix DRM master and heap memory leaks
+ in tests
+To: Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org
+References: <20260715192949.1984280-1-markyacoub@google.com>
+ <20260715192949.1984280-2-markyacoub@google.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260715192949.1984280-2-markyacoub@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,49 +63,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Marcin,
-On 2026-07-14 at 17:12:34 +0200, Marcin Bernatowicz wrote:
-> Add explicit VM management to workload descriptors so Xe runs can model
 
-Please write explicitly what VM means, my guess: Virtual Memory
 
-> VM topology directly.
+On 7/15/26 21:29, Mark Yacoub wrote:
+> [Why]
+> The unigraf_connectivity test allocates connector array buffers dynamically via
+> kms_wait_for_new_connectors and get_array_diff without freeing them before test
+> exit, leading to severe heap leaks when executed iteratively. Furthermore, neither
+> unigraf_connectivity nor unigraf_lt closed drm_fd upon completion, holding the
+> DRM Master lock open indefinitely. On platforms with a running display compositor
+> (such as Android's SurfaceFlinger), this leaves the DRM device locked and causes
+> subsequent graphics tests to fail with resource busy errors.
 > 
-> Introduce two new descriptor steps:
-> - V.N     create VM id N (1-based)
-> - v.N.M   assign VM N to context M
+> [How]
+> Explicitly call free() on already_connected, newly_connected, and diff buffers
+> at the end of unigraf_connectivity. Add an igt_fixture cleanup block to call
+> close(drm_fd) when tearing down both unigraf_connectivity and unigraf_lt.
 > 
-> Implementation details:
-> - Add VM_CREATE and CTX_VM step types and vm_id storage in w_step.
-> - Parse V/v syntax with validation and clear error messages.
-> - Add allocate_vms() pre-scan to size and allocate vm_list from V steps.
-> - Update xe_prepare_contexts() to support explicit VM mode:
->   - create all explicit VMs
->   - default contexts to VM 0
->   - apply per-context VM assignments from v steps
->   - retain implicit single-VM fallback when no V steps are present
-> - Make get_vm() use per-context VM linkage.
-> 
-> Documentation:
-> - Add VM management step documentation into benchmarks/wsim/README.
+> Fixes: c66d08db9177 ("tests/unigraf: Add basic unigraf tests")
+> Signed-off-by: Mark Yacoub <markyacoub@google.com>
 
-Same in documentation, add there at least once a full name for VM.
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
-Regards,
-Kamil
-
-> 
-> This keeps i915 behavior unchanged while enabling explicit VM topology
-> control for Xe workloads.
-> 
-> Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 > ---
->  benchmarks/gem_wsim.c  | 143 +++++++++++++++++++++++++++++++++++++----
->  benchmarks/wsim/README |  19 ++++++
->  2 files changed, 150 insertions(+), 12 deletions(-)
+>   tests/unigraf/unigraf_connectivity.c | 8 ++++++++
+>   1 file changed, 8 insertions(+)
 > 
-[cut]
+> diff --git a/tests/unigraf/unigraf_connectivity.c b/tests/unigraf/unigraf_connectivity.c
+> index 927ef2d6f..8ae9a2593 100644
+> --- a/tests/unigraf/unigraf_connectivity.c
+> +++ b/tests/unigraf/unigraf_connectivity.c
+> @@ -134,5 +134,13 @@ int igt_main()
+>   				     "Invalid connected connector count, expected %d found %d\n",
+>   				     max(i, 1), diff_len);
+>   		}
+> +
+> +		free(already_connected);
+> +		free(newly_connected);
+> +		free(diff);
+> +	}
+> +
+> +	igt_fixture() {
+> +		close(drm_fd);
+>   	}
+>   }
+
