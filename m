@@ -4,53 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEF1EC4451C
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:07:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8406BC4451C
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:07:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D37110E43D;
-	Fri, 17 Jul 2026 12:07:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 30CC910E43D;
+	Fri, 17 Jul 2026 12:07:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="q7amZoey";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m5mhjahS";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5606010EAB0;
- Fri, 17 Jul 2026 12:05:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Date:Subject:Cc:To:From:From:Reply-To;
- bh=ANM+eSpahzqvwTWIXh7CuP5Wcj+NwCM3k9v5P8p6HW0=; b=q7amZoeyCxXhGpVOm1qliBNxCH
- zdBs/I6Tyv86HAtwUP1EOkCNEd5Uz29JDMBLsUypAKAjTE7V40O8g4O8ODYXFeNHLYp1Jttxge72x
- ya+0ve6eJB0k8gt/6h0xyLxsfVnlPi4Lk4BMeM2lWAUYMKNROJH3M495T3jGGzmrkEZYc9Rhjm8DE
- dzgmLUnX88pckXjgw0t76g8KdEY3RXlcQLY1BUJ9WMFzcKCZ0rIMvs0GaXafs44LfoCxDtTuHeuej
- CNMFClwUH4rLChTy6oazjp0o/Ayw40KpUg1zYGtEfYk689oYKSK0sqEI5fryqzZVr2doT3zXcTVXr
- J1kcu3YA==;
-Received: from 179-125-86-98-dinamico.pombonet.net.br ([179.125.86.98]
- helo=quatroqueijos.lan) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wkhJj-00GPAm-T9; Fri, 17 Jul 2026 14:05:24 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: igt-dev@lists.freedesktop.org
-Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Christian Koenig <christian.koenig@amd.com>,
- maarten.lankhorst@linux.intel.com,
- =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Natalie Vock <natalie.vock@gmx.de>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v4 3/7] lib/xe: add xe_cgroup_region_name() helper
-Date: Fri, 17 Jul 2026 09:04:43 -0300
-Message-ID: <20260717120447.1837818-4-cascardo@igalia.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260717120447.1837818-1-cascardo@igalia.com>
-References: <20260717120447.1837818-1-cascardo@igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F6F610EAB0
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 12:05:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1784289954; x=1815825954;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=0ysmm0TzWulre1aynh+3JbnbuxcWoNq8PZW6eMJQvlo=;
+ b=m5mhjahSYEUipV99mVPn8JqY8A9RTWrDVb7deV/w0tptSZFbVPE6Qsav
+ UESsRFCNixSuW9EyLIqQaD+uCm+RoHvI55rJudkI6mQznleYsRDGjthbi
+ eZO/KIu9li13vYuVWM0SU0T8dz0IEbRUJ/imEPeaZnKoJ7QGTsZlZ2VNc
+ 3o253OMQKRSAcaIvtxeSAFHZN7VtRtqcmbgL8+dZ6497PrYphljAYCQ8F
+ oWa8zoASxuQV+ZYKQu57g7K5/ppwGl7apf2mwQduPZpqWhsqGbVuRw216
+ RB9xi64ZyoUTZtkv44nEPg2soN0CKtRDpU1C9Pv54UPjx6iWDnhQjH2q2 w==;
+X-CSE-ConnectionGUID: A5Nt/JCITP+UHrAf381uRQ==
+X-CSE-MsgGUID: gJHDtscLRpug/3TKnhH/AQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="96324245"
+X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="96324245"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2026 05:05:51 -0700
+X-CSE-ConnectionGUID: 8XmVVfWiQiCWhaYN51j7pg==
+X-CSE-MsgGUID: ZIVvnfqEQUWYv9JuMKlolw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="250419103"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 05:05:50 -0700
+Date: Fri, 17 Jul 2026 14:05:48 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "B, Jeevan" <jeevan.b@intel.com>
+Cc: "Sharma, Swati2" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t] intel-ci: remove dc3co-vpb-simulation from NVL
+ blocklist
+Message-ID: <20260717120548.flfbxvygmsnslbff@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ "B, Jeevan" <jeevan.b@intel.com>,
+ "Sharma, Swati2" <swati2.sharma@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20260716184422.3255515-1-swati2.sharma@intel.com>
+ <DM4PR11MB63127885A672C8E14ED6B5C290C62@DM4PR11MB6312.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DM4PR11MB63127885A672C8E14ED6B5C290C62@DM4PR11MB6312.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,91 +74,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Hi Jeevan,
+On 2026-07-17 at 03:28:47 +0000, B, Jeevan wrote:
+> > -----Original Message-----
+> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
+> > Sharma
+> > Sent: Friday, July 17, 2026 12:14 AM
+> > To: igt-dev@lists.freedesktop.org
+> > Cc: Sharma, Swati2 <swati2.sharma@intel.com>
+> > Subject: [PATCH i-g-t] intel-ci: remove dc3co-vpb-simulation from NVL blocklist
+> Update intel-ci to tests/intel-ci: 
+> 
+> With this PLTM. 
+> 
+>  Reviewed-by: Jeevan B <jeevan.b@intel.com>
 
-Add xe_cgroup_region_name(fd, region) which constructs the dmem cgroup
-region path for a given xe memory region.  The returned string has the
-form "drm/<pci-slot>/<region>" (e.g. "drm/0000:03:00.0/vram0"),
-matching the name registered by the kernel via drmm_cgroup_register_region().
+Can you start line with your r-b without a space?
+Our patchwork software cannot cope with it and
+do not mark a patch with r-b.
 
-Only VRAM regions are tracked by the dmem controller; system and stolen
-memory regions return NULL.
+Regards,
+Kamil
 
-Assisted-by: GitHub Copilot:claude-sonnet-4.6
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
----
- lib/xe/xe_query.c | 32 ++++++++++++++++++++++++++++++++
- lib/xe/xe_query.h |  2 ++
- 2 files changed, 34 insertions(+)
-
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 68e60ddc75a2..e2b25be21140 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <fcntl.h>
-+#include <limits.h>
- #include <stdlib.h>
- #include <pthread.h>
- 
-@@ -21,6 +22,7 @@
- 
- #include "drmtest.h"
- #include "igt_debugfs.h"
-+#include "igt_device.h"
- #include "ioctl_wrappers.h"
- #include "igt_map.h"
- #include "intel_common.h"
-@@ -1304,6 +1306,36 @@ int xe_query_eu_thread_count(int fd, int gt)
- 		xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU);
- }
- 
-+/**
-+ * xe_cgroup_region_name() - Build the dmem cgroup region name for an xe memory region.
-+ * @fd: xe device fd.
-+ * @region: Region mask (as used by xe_mem_region(), xe_region_name(), etc.).
-+ *
-+ * Constructs the full dmem cgroup region path for @region on the device
-+ * identified by @fd.  The returned string has the form
-+ * ``drm/<pci-slot>/<region>`` (e.g. ``drm/0000:03:00.0/vram0``), matching
-+ * the name registered by the kernel driver via drmm_cgroup_register_region().
-+ *
-+ * Only VRAM regions are registered with the dmem controller; passing a
-+ * system-memory region returns %NULL.
-+ *
-+ * Return: A newly allocated string that the caller must free(), or %NULL if
-+ * @region is not tracked by the dmem cgroup controller.
-+ */
-+char *xe_cgroup_region_name(int fd, uint64_t region)
-+{
-+	char pci_slot[NAME_MAX];
-+	char *name;
-+
-+	if (xe_region_class(fd, region) != DRM_XE_MEM_REGION_CLASS_VRAM)
-+		return NULL;
-+
-+	igt_device_get_pci_slot_name(fd, pci_slot);
-+
-+	igt_assert(asprintf(&name, "drm/%s/%s", pci_slot, xe_region_name(region)) > 0);
-+	return name;
-+}
-+
- igt_constructor
- {
- 	xe_device_cache_init();
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 59330d80fd1b..a6ef9cab9aa1 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -206,4 +206,6 @@ void xe_device_put(int fd);
- int xe_query_eu_count(int fd, int gt);
- int xe_query_eu_thread_count(int fd, int gt);
- 
-+char *xe_cgroup_region_name(int fd, uint64_t region);
-+
- #endif	/* XE_QUERY_H */
--- 
-2.47.3
-
+> > 
+> > Remove simulation-only kms_pm_dc subtest from the NVL display blocklist.
+> > 
+> > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> > ---
+> >  tests/intel-ci/xe.nvl.display.blocklist.txt | 1 -
+> >  1 file changed, 1 deletion(-)
+> > 
+> > diff --git a/tests/intel-ci/xe.nvl.display.blocklist.txt b/tests/intel-
+> > ci/xe.nvl.display.blocklist.txt
+> > index e6390d16b..d44c4030f 100644
+> > --- a/tests/intel-ci/xe.nvl.display.blocklist.txt
+> > +++ b/tests/intel-ci/xe.nvl.display.blocklist.txt
+> > @@ -81,7 +81,6 @@ igt@kms_plane_scaling@planes-.*upscale-.*downscale.*
+> > 
+> > #################################################################
+> > #############
+> >  # Valid skip: Simulation specific
+> > 
+> > #################################################################
+> > #############
+> > -igt@kms_pm_dc@dc3co-vpb-simulation
+> >  igt@kms_simulation_hpd@sim-hpd
+> > 
+> > #################################################################
+> > #############
+> >  # Valid skip: Mei interface not supported MTL+
+> > --
+> > 2.25.1
+> 
