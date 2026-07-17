@@ -4,81 +4,82 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58695C44507
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 07:51:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F1E8C44507
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 07:51:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0363F10F489;
-	Fri, 17 Jul 2026 07:51:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0DA5A10F488;
+	Fri, 17 Jul 2026 07:51:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="y7bVfSKo";
+	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="FSDrtiyW";
 	dkim-atps=neutral
 Received: from mx08-00376f01.pphosted.com (mx08-00376f01.pphosted.com
  [91.207.212.86])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E71610F485
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 07:49:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C201F10F485
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 07:49:14 +0000 (UTC)
 Received: from pps.filterd (m0168888.ppops.net [127.0.0.1])
  by mx08-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 66H7A2d52952494
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:09 +0100
+ 66H7A2d62952494
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=dk201812; bh=x
- fX1b7XFlX9ivlao4k61NGZD4Cpfl0tT4OiAdSTZMWo=; b=y7bVfSKo9HKhLFo5h
- Shi9pjhfBDb6fZqS2BJibU7Gwmrn1XKoaHSsWhQP+eYQYVv0XumnEhmD2JdcHIAN
- hfnxXsqELf36KgYOXBVPG25YHCuhrHyBD8lLpz5lr6xkGjUWavzsmbh9UibpBJv3
- BA6YRr2jYW5f/Cu8dYeG0326U3djuab0IHKgizKKmIBLEMj7fqqbdrNZmQDREHOG
- L96bu5wogLpHV+ZT9X1ojOb1UCri42hE5jGHHsn7bJFJf78S6l1QN5+I0khJmV8F
- ts5aQqNwqzXeoa+kSUKXHEgHyf71v9gn3adN6uJ3GM1/86etlpxRKM/d/54BQEW7
- 3aZyw==
+ :message-id:mime-version:references:subject:to; s=dk201812; bh=v
+ q0xtROCN6qiPD6Pq5S+pCmP8Nj3WQUcjU3PGtR2kZI=; b=FSDrtiyW6iQGoROld
+ Eu+LJdzzvKaI6qw6xkt6kI+Hpx05+aV7rrspOvjpX8dgjLcja+vP2x2IrTBcnSiQ
+ W6+o1MqFK000rBEYalK1HRycaBmDHrym0F7yEMyqY8w6iSbUsx7KkDAEf/QLjC/b
+ h+y4bF7mJLZwqKzaUV0+vUrcg0hdqPGNCKyJGHWL1S0JO1ck6rktPdGbYr59XVOo
+ CBJ7UUuBH+aCYXoiwqDO+OrLYeiH+w0hLuhICU5npqBV2Kx+qKxpfuUz1BAypAsY
+ VlY887c0tCd1EH3YvjUY3pgPCwt/nz9F9AtIZy3P0SpHJHa7V7chVgPueEXnAxJ6
+ EW5TA==
 Received: from hhmail01.hh.imgtec.org
  (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
- by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4fbcp7cwrh-3
+ by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4fbcp7cwrk-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:09 +0100 (BST)
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:13 +0100 (BST)
 Received: from [127.0.1.1] (172.25.9.35) by HHMAIL01.hh.imgtec.org
  (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 17 Jul
- 2026 08:49:08 +0100
+ 2026 08:49:12 +0100
 From: Robert Mazur <robert.mazur@imgtec.com>
-Date: Fri, 17 Jul 2026 09:48:09 +0200
-Subject: [PATCH i-g-t 02/10] tests/imagination: Add GEM mmap tests
+Date: Fri, 17 Jul 2026 09:48:15 +0200
+Subject: [PATCH i-g-t 08/10] tests/imagination: Add tests for free list and
+ hwrt creation ioctls
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260717-test-imagination-add-support-v1-2-2f02f9cc3b53@imgtec.com>
+Message-ID: <20260717-test-imagination-add-support-v1-8-2f02f9cc3b53@imgtec.com>
 References: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
 In-Reply-To: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Robert Mazur <robert.mazur@imgtec.com>, Matt Coster
- <matt.coster@imgtec.com>
+CC: Robert Mazur <robert.mazur@imgtec.com>, Sarah Walker
+ <sarah.walker@imgtec.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784274547; l=1832;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784274547; l=18984;
  i=robert.mazur@imgtec.com; s=20260324; h=from:subject:message-id;
- bh=Xe/Hh6ZCWAOcaQaupRy7GfHMUqrVptFz2/Xqdg0erAA=;
- b=BWg/uvOcfof7Nlh36SJGGwNwvh4JJgTn2ZsX4lNePRvAHhHZykO08Xvtd/NKrIUaDd5gAFnBa
- I8A/buqdDbsB5c9FNHuZWvnd1m0gP78f8vDjqJ28AbPy3+hw/zkNze7
+ bh=dVHof2eRms2fp5zJBv983ZqtXfaOb2+jJxRf3OiM3oE=;
+ b=3NWcEhMFgOk/1+ShZoKjkcUBRa+pb0XKPDIr9AKi5N0hZQpxnkdZXCHQ6PTPR+uGGvPo7W4uQ
+ xTujCUkSwtmA73rspiAMmX4pKhrvJg+adJ/OVtv1f+wYYVkSMQPmv7h
 X-Developer-Key: i=robert.mazur@imgtec.com; a=ed25519;
  pk=X5uhazsNnVDpw/srawR3m7WOmgzFZXdecapAeML2ZgM=
 X-Originating-IP: [172.25.9.35]
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfXw/xws17tGweF
- D/fqLeAASsK6rXW49lTdjZJ/LGGLoAXivmWD0tetoXJjiRq1x01oRdihZ2J4w9khjkYg3562jdt
- vZ0CntVKGsHNRmmYPLWFu8qSkBEY+4o=
-X-Proofpoint-GUID: zMlPx8KEiJEIj0DOzSIW94vgKNJYiBuv
-X-Proofpoint-ORIG-GUID: zMlPx8KEiJEIj0DOzSIW94vgKNJYiBuv
-X-Authority-Analysis: v=2.4 cv=AYOB2XXG c=1 sm=1 tr=0 ts=6a59de75 cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfX06WbhsjDK2up
+ TUz0NkSgwVDvyU3wmPagg5t1MXnHzaXtViOqgcO0hfZKmAZah3UxCgdyFrvIP8fOfKLLx4/WNKo
+ H9Kj1jOBTzevs1dl8ZI5CnFmh9cAoug=
+X-Proofpoint-GUID: Yp_WDvAtpe-QTwvcxKD0wsa4Cr0UMqN0
+X-Proofpoint-ORIG-GUID: Yp_WDvAtpe-QTwvcxKD0wsa4Cr0UMqN0
+X-Authority-Analysis: v=2.4 cv=AYOB2XXG c=1 sm=1 tr=0 ts=6a59de79 cx=c_pps
  a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
  a=CNmLAE0vrksA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=qZQ2PDNLMSdLoqI-hfl9:22
- a=r_1tXGB3AAAA:8 a=L8LdILqEO6YnCbYE5soA:9 a=QEXdDO2ut3YA:10
+ a=r_1tXGB3AAAA:8 a=FZU5aUeBoxhVD_5TVTsA:9 a=QEXdDO2ut3YA:10
  a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfX8LC/EzB71dSu
- 0ok+DKXzsLY7sRf7SPnA7xrcrOQjr8VtDedvQ09EH5Izr1FNsaDRoj+hgpieoK+Gr2glwQXAd9c
- gImyiiBB2N5tsaA9YOwGqyVUiPZmUs+VI4jB5cBXhspG5/NmATFDvvU9jXdQbwDiD++0q58Xf/X
- XlXUj752+t9OMSyF/XbGTuQyA18MypFi5p7T5031kPzWI7/cwEiNfgV1mBMYc9dJK64St242tnY
- dFiuAWiRaU0rJmzQsjwduJ+fCeAMecEtbrlVJQLwtVWPN3jeyy4SLvTedZcV442shBKVJRoicQz
- WXgHAcnH21K+TrdZkyUbqK1UVqgAIpLDz+8FZCaI3HDn5rwGGGgGYvrIixlDsmhqGZXrhsS53EF
- eR81BJDjNraHBVAnts1FxODMM2tghSeI0HP6lk/8jK9rpWL6Qv9W6maf//LVRi4CF74DbWqQ5Cw
- 9Vut3t91lJTZKlL/7dw==
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfX5KiUw83j6uC1
+ OrF/UWMJ01IJhDQ4VSYUGyiViHy07rWH/TOHBCdRurguBbfEwVALP/ylAmHzDkctM/PkkHzLlu5
+ +TGHd8CkurGSSYO5wLyb67+DfrE/+5ZuqM9CB9uia93pCq1Jpm7TZ/t3Mnj7sO7LIaPdf2fQYr7
+ UXtEM5IPGZuiD/F+G09p8e9YCIDgqfWS67jUw7u3RQmX7jS9y664UH3kOFPJE5QWYuXSxXZRQFd
+ +ltV5mDiGcfOKGNYm36hXT60D7b+ONTx8undUaYs3wxn8J4lplrEFaoFo1DZ2t67K0B+4QSfg23
+ m8gzVH0LquQj/hGta1E6MoQyCigtHBsJ+MWjtD9x7/PaMEUeZp4jneMYV8RGOli4PHRFZtAiZpS
+ dVuto0r2qZkX3BJLJsPj0KAguMM4fnDSDF5eTTzjYM7XxH/hAP3AnFk2PR0psc5MQHWeZ4AP+0Z
+ PBS5NkWlEU7BasUJrMA==
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -94,71 +95,575 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Matt Coster <matt.coster@imgtec.com>
+From: Sarah Walker <sarah.walker@imgtec.com>
 
-Add subtests for mmap operations on GEM buffer objects.
+Add subtests for free list and HWRT creation/destruction ioctls,
+covering valid usage and error paths for invalid parameters.
 
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Signed-off-by: Sarah Walker <sarah.walker@imgtec.com>
 Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
 ---
- tests/imagination/pvr_gem.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+ lib/igt_pvr.c                     |  75 ++++++++++++-
+ lib/igt_pvr.h                     |  13 +++
+ tests/imagination/meson.build     |   2 +
+ tests/imagination/pvr_free_list.c | 218 ++++++++++++++++++++++++++++++++++++++
+ tests/imagination/pvr_hwrt.c      | 168 +++++++++++++++++++++++++++++
+ 5 files changed, 475 insertions(+), 1 deletion(-)
 
-diff --git a/tests/imagination/pvr_gem.c b/tests/imagination/pvr_gem.c
-index b80d202a2..fec98a1f2 100644
---- a/tests/imagination/pvr_gem.c
-+++ b/tests/imagination/pvr_gem.c
-@@ -60,6 +60,50 @@ int igt_main()
- 		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_BO, &arg, EINVAL);
- 	}
+diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
+index a631c4ff2..704a5e2df 100644
+--- a/lib/igt_pvr.c
++++ b/lib/igt_pvr.c
+@@ -24,10 +24,11 @@
+  * tests.
+  */
  
-+	igt_describe("Test valid buffer object mapping");
-+	igt_subtest("mmap-bo-4096")
+-uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size)
++uint32_t igt_pvr_ioctl_create_bo_ex(int fd, size_t *size, uint64_t flags)
+ {
+ 	struct drm_pvr_ioctl_create_bo_args arg = {
+ 		.size = *size,
++		.flags = flags,
+ 	};
+ 
+ 	do_ioctl(fd, DRM_IOCTL_PVR_CREATE_BO, &arg);
+@@ -38,6 +39,12 @@ uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size)
+ 	return arg.handle;
+ }
+ 
++uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size)
++{
++	return igt_pvr_ioctl_create_bo_ex(fd, size,
++					  DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS);
++}
++
+ off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle)
+ {
+ 	struct drm_pvr_ioctl_get_bo_mmap_offset_args arg = {
+@@ -94,6 +101,19 @@ igt_pvr_get_heap_info(int fd, uint32_t *array_len_out)
+ 	return heaps;
+ }
+ 
++struct drm_pvr_heap igt_pvr_find_general_heap(int fd)
++{
++	struct drm_pvr_heap *heaps = igt_pvr_get_heap_info(fd, NULL);
++	struct drm_pvr_heap general_heap;
++
++	igt_assert(heaps);
++
++	general_heap = heaps[DRM_PVR_HEAP_GENERAL];
++	free(heaps);
++
++	return general_heap;
++}
++
+ struct drm_pvr_static_data_area *
+ igt_pvr_get_static_data_areas(int fd, uint32_t *array_len_out)
+ {
+@@ -139,3 +159,56 @@ void igt_pvr_ioctl_destroy_vm_context(int fd, uint32_t handle, int expect_err)
+ 	else
+ 		do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_VM_CONTEXT, &args);
+ }
++
++void igt_pvr_ioctl_vm_map(int fd, uint32_t vm_ctx_handle, uint32_t handle,
++			  uint64_t device_addr, uint64_t offset, uint64_t size)
++{
++	struct drm_pvr_ioctl_vm_map_args arg = {
++		.vm_context_handle = vm_ctx_handle,
++		.flags = 0,
++		.device_addr = device_addr,
++		.handle = handle,
++		.offset = offset,
++		.size = size,
++	};
++
++	do_ioctl(fd, DRM_IOCTL_PVR_VM_MAP, &arg);
++}
++
++void igt_pvr_ioctl_vm_unmap(int fd, uint32_t vm_ctx_handle,
++			    uint64_t device_addr, uint64_t size)
++{
++	struct drm_pvr_ioctl_vm_unmap_args arg = {
++		.vm_context_handle = vm_ctx_handle,
++		.device_addr = device_addr,
++		.size = size,
++	};
++
++	do_ioctl(fd, DRM_IOCTL_PVR_VM_UNMAP, &arg);
++}
++
++uint32_t igt_pvr_ioctl_create_free_list(int fd, uint32_t vm_ctx_handle,
++					uint64_t gpu_addr)
++{
++	struct drm_pvr_ioctl_create_free_list_args create_free_list_args = {
++		.free_list_gpu_addr = gpu_addr,
++		.initial_num_pages = 64,
++		.max_num_pages = 256,
++		.grow_num_pages = 16,
++		.grow_threshold = 50,
++		.vm_context_handle = vm_ctx_handle,
++	};
++
++	do_ioctl(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST, &create_free_list_args);
++
++	return create_free_list_args.handle;
++}
++
++void igt_pvr_ioctl_destroy_free_list(int fd, uint32_t free_list_handle)
++{
++	struct drm_pvr_ioctl_destroy_free_list_args destroy_free_list_args = {
++		.handle = free_list_handle,
++	};
++
++	do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST, &destroy_free_list_args);
++}
+diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
+index 3486a52d4..8d706c376 100644
+--- a/lib/igt_pvr.h
++++ b/lib/igt_pvr.h
+@@ -12,17 +12,30 @@
+ #include <sys/types.h>
+ 
+ uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size);
++uint32_t igt_pvr_ioctl_create_bo_ex(int fd, size_t *size, uint64_t flags);
+ off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle);
+ 
+ struct drm_pvr_ioctl_dev_query_args
+ igt_pvr_ioctl_dev_query(int fd, enum drm_pvr_dev_query type, uint64_t size,
+ 			void *pointer, int expect_err);
++
+ struct drm_pvr_heap *
+ igt_pvr_get_heap_info(int fd, uint32_t *array_len_out);
++struct drm_pvr_heap igt_pvr_find_general_heap(int fd);
++
+ struct drm_pvr_static_data_area *
+ igt_pvr_get_static_data_areas(int fd, uint32_t *array_len_out);
+ 
+ uint32_t igt_pvr_ioctl_create_vm_context(int fd, int expect_err);
+ void igt_pvr_ioctl_destroy_vm_context(int fd, uint32_t handle, int expect_err);
+ 
++void igt_pvr_ioctl_vm_map(int fd, uint32_t vm_ctx_handle, uint32_t handle,
++			  uint64_t device_addr, uint64_t offset, uint64_t size);
++void igt_pvr_ioctl_vm_unmap(int fd, uint32_t vm_ctx_handle,
++			    uint64_t device_addr, uint64_t size);
++
++uint32_t igt_pvr_ioctl_create_free_list(int fd, uint32_t vm_ctx_handle,
++					uint64_t gpu_addr);
++void igt_pvr_ioctl_destroy_free_list(int fd, uint32_t free_list_handle);
++
+ #endif /* IGT_PVR_H */
+diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
+index ffacce1fb..69ef0a8c6 100644
+--- a/tests/imagination/meson.build
++++ b/tests/imagination/meson.build
+@@ -1,7 +1,9 @@
+ pvr_progs = [ 'pvr_dev_query',
++	      'pvr_free_list',
+ 	      'pvr_gem',
+ 	      'pvr_gpu_info',
+ 	      'pvr_heap_info',
++	      'pvr_hwrt',
+ 	      'pvr_vm_context',
+ 	    ]
+ 
+diff --git a/tests/imagination/pvr_free_list.c b/tests/imagination/pvr_free_list.c
+new file mode 100644
+index 000000000..eabf8d6a2
+--- /dev/null
++++ b/tests/imagination/pvr_free_list.c
+@@ -0,0 +1,218 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
++
++#include "igt.h"
++#include "igt_pvr.h"
++
++#include "pvr_drm.h"
++
++#include <errno.h>
++#include <stdbool.h>
++#include <stdint.h>
++
++#define INVALID_ADDRESS 0xdeadbee0
++#define INVALID_HANDLE 0
++
++static void build_create_free_list_args(
++	struct drm_pvr_ioctl_create_free_list_args *create_free_list_args,
++	uint32_t vm_ctx_handle,
++	uint64_t gpu_addr)
++{
++	memset(create_free_list_args, 0, sizeof(*create_free_list_args));
++	create_free_list_args->free_list_gpu_addr = gpu_addr;
++	create_free_list_args->initial_num_pages = 32;
++	create_free_list_args->max_num_pages = 256;
++	create_free_list_args->grow_num_pages = 16;
++	create_free_list_args->grow_threshold = 50;
++	create_free_list_args->vm_context_handle = vm_ctx_handle;
++}
++
++static void build_destroy_free_list_args(
++	struct drm_pvr_ioctl_destroy_free_list_args *destroy_free_list_args,
++	uint32_t handle)
++{
++	memset(destroy_free_list_args, 0, sizeof(*destroy_free_list_args));
++	destroy_free_list_args->handle = handle;
++}
++
++int igt_main()
++{
++	struct drm_pvr_ioctl_create_free_list_args create_free_list_args;
++	struct drm_pvr_ioctl_destroy_free_list_args destroy_free_list_args;
++	uint64_t gem_obj_gpu_addr;
++	uint32_t gem_obj_handle;
++	uint32_t vm_ctx_handle;
++	size_t size = 4096;
++	int fd;
++
++	igt_fixture()
 +	{
-+		size_t size = 4096;
-+		uint32_t handle = igt_pvr_ioctl_create_bo(fd, &size);
++		struct drm_pvr_heap general_heap_info;
 +
-+		off_t offset = igt_pvr_ioctl_get_bo_mmap_offset(fd, handle);
++		fd = drm_open_driver(DRIVER_POWERVR);
++		vm_ctx_handle = igt_pvr_ioctl_create_vm_context(fd, 0);
++		gem_obj_handle =
++			igt_pvr_ioctl_create_bo_ex(fd, &size,
++						   DRM_PVR_BO_PM_FW_PROTECT);
++		general_heap_info = igt_pvr_find_general_heap(fd);
++		gem_obj_gpu_addr = general_heap_info.base;
 +
-+		char *mapped = mmap(NULL, size, PROT_WRITE, MAP_SHARED,
-+				    fd, offset);
-+		igt_assert(mapped != MAP_FAILED);
-+
-+		/* Test writing to beginning and end of mapped range. */
-+		mapped[0] = 0xff;
-+		mapped[size - 1] = 0xff;
-+
-+		munmap(mapped, size);
-+		gem_close(fd, handle);
++		igt_pvr_ioctl_vm_map(fd, vm_ctx_handle, gem_obj_handle,
++				     gem_obj_gpu_addr, 0, size);
 +	}
 +
-+	igt_describe("Test buffer object mapping with bad handle");
-+	igt_subtest("mmap-bo-bad-handle")
++	igt_describe("Test valid free list creation and destruction");
++	igt_subtest("create-free-list")
 +	{
-+		struct drm_pvr_ioctl_get_bo_mmap_offset_args arg = {
-+			.handle = 0xbad6bad6,
-+		};
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++		do_ioctl(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			 &create_free_list_args);
 +
-+		do_ioctl_err(fd, DRM_IOCTL_PVR_GET_BO_MMAP_OFFSET, &arg, ENOENT);
++		igt_assert_neq(create_free_list_args.handle, 0);
++
++		build_destroy_free_list_args(&destroy_free_list_args,
++					     create_free_list_args.handle);
++		do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST,
++			 &destroy_free_list_args);
 +	}
 +
-+	igt_describe("Test buffer object mapping with bad padding");
-+	igt_subtest("mmap-bo-bad-padding")
++	igt_describe("Test free list destruction with bad padding");
++	igt_subtest("destroy-free-list-bad-padding")
 +	{
-+		size_t size = 4096;
-+		uint32_t handle = igt_pvr_ioctl_create_bo(fd, &size);
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++		do_ioctl(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			 &create_free_list_args);
 +
-+		struct drm_pvr_ioctl_get_bo_mmap_offset_args arg = {
-+			.handle = handle,
-+			._padding_4 = 0xbad6bad6,
-+		};
++		igt_assert_neq(create_free_list_args.handle, 0);
 +
-+		do_ioctl_err(fd, DRM_IOCTL_PVR_GET_BO_MMAP_OFFSET, &arg, EINVAL);
++		build_destroy_free_list_args(&destroy_free_list_args,
++					     create_free_list_args.handle);
++		destroy_free_list_args._padding_4 = 1;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST,
++			     &destroy_free_list_args, EINVAL);
++
++		destroy_free_list_args._padding_4 = 0;
++		do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST,
++			 &destroy_free_list_args);
 +	}
 +
- 	igt_fixture()
- 	{
- 		close(fd);
++	igt_describe("Test creation and destruction of multiple free lists");
++	igt_subtest("create-multiple-free-lists")
++	{
++		uint32_t free_list_handles[2];
++
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++
++		do_ioctl(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			 &create_free_list_args);
++		free_list_handles[0] = create_free_list_args.handle;
++		do_ioctl(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			 &create_free_list_args);
++		free_list_handles[1] = create_free_list_args.handle;
++
++		igt_assert_neq(free_list_handles[0], 0);
++		igt_assert_neq(free_list_handles[1], 0);
++		igt_assert_neq(free_list_handles[0], free_list_handles[1]);
++
++		build_destroy_free_list_args(&destroy_free_list_args,
++					     free_list_handles[1]);
++		do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST,
++			 &destroy_free_list_args);
++		build_destroy_free_list_args(&destroy_free_list_args,
++					     free_list_handles[0]);
++		do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST,
++			 &destroy_free_list_args);
++	}
++
++	igt_describe("Test free list creation with invalid object address");
++	igt_subtest("invalid-free-list-object-addr")
++	{
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, 0);
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			     &create_free_list_args, EINVAL);
++	}
++
++	igt_describe("Test free list creation with initial pages greater than max pages");
++	igt_subtest("initial-pages-greater-than-max")
++	{
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++		create_free_list_args.initial_num_pages =
++			create_free_list_args.max_num_pages + 1;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			     &create_free_list_args, EINVAL);
++	}
++
++	igt_describe("Test free list creation with grow pages greater than max pages");
++	igt_subtest("grow-pages-greater-than-max")
++	{
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++		create_free_list_args.grow_num_pages =
++			create_free_list_args.max_num_pages + 1;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			     &create_free_list_args, EINVAL);
++	}
++
++	igt_describe("Test free list creation with invalid grow threshold");
++	igt_subtest("invalid-grow-threshold")
++	{
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++		create_free_list_args.grow_threshold = 101;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			     &create_free_list_args, EINVAL);
++	}
++
++	igt_describe("Test free list creation with zero max pages");
++	igt_subtest("zero-max-pages")
++	{
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++		create_free_list_args.initial_num_pages = 0;
++		create_free_list_args.max_num_pages = 0;
++		create_free_list_args.grow_num_pages = 0;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			     &create_free_list_args, EINVAL);
++	}
++
++	igt_describe("Test free list creation with zero grow pages and initial pages less than max pages");
++	igt_subtest("zero-grow-pages-initial-less-than-max")
++	{
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++		create_free_list_args.grow_num_pages = 0;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			     &create_free_list_args, EINVAL);
++	}
++
++	igt_describe("Test free list creation with zero grow pages and initial pages equal to max pages");
++	igt_subtest("zero-grow-pages-initial-equals-max")
++	{
++		build_create_free_list_args(&create_free_list_args,
++					    vm_ctx_handle, gem_obj_gpu_addr);
++		create_free_list_args.initial_num_pages =
++			create_free_list_args.max_num_pages;
++		create_free_list_args.grow_num_pages = 0;
++		do_ioctl(fd, DRM_IOCTL_PVR_CREATE_FREE_LIST,
++			 &create_free_list_args);
++
++		igt_assert_neq(create_free_list_args.handle, 0);
++
++		destroy_free_list_args.handle = create_free_list_args.handle;
++		do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST,
++			 &destroy_free_list_args);
++	}
++
++	igt_fixture()
++	{
++		igt_pvr_ioctl_vm_unmap(fd, vm_ctx_handle, gem_obj_gpu_addr, size);
++		gem_close(fd, gem_obj_handle);
++		igt_pvr_ioctl_destroy_vm_context(fd, vm_ctx_handle, 0);
++		close(fd);
++	}
++}
+diff --git a/tests/imagination/pvr_hwrt.c b/tests/imagination/pvr_hwrt.c
+new file mode 100644
+index 000000000..1b68df3e9
+--- /dev/null
++++ b/tests/imagination/pvr_hwrt.c
+@@ -0,0 +1,168 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
++
++#include "igt.h"
++#include "igt_pvr.h"
++
++#include "pvr_drm.h"
++
++#include <errno.h>
++#include <stdbool.h>
++#include <stdint.h>
++
++#define INVALID_ADDRESS 0xdeadbee0
++
++static void build_create_hwrt_args(
++	struct drm_pvr_ioctl_create_hwrt_dataset_args *create_hwrt_args,
++	const struct drm_pvr_create_hwrt_geom_data_args *geom_data_args,
++	const struct drm_pvr_create_hwrt_rt_data_args *rt_data_args,
++	uint32_t *free_list_handles,
++	uint32_t num_rt_data,
++	uint32_t num_free_lists)
++{
++	memset(create_hwrt_args, 0, sizeof(*create_hwrt_args));
++	memcpy(&create_hwrt_args->geom_data_args, geom_data_args,
++	       sizeof(*geom_data_args));
++
++	for (uint32_t i = 0; i < num_rt_data; i++) {
++		memcpy(&create_hwrt_args->rt_data_args[i], rt_data_args,
++		       sizeof(*rt_data_args) * num_rt_data);
++	}
++
++	for (uint32_t i = 0; i < num_free_lists; i++)
++		create_hwrt_args->free_list_handles[i] = free_list_handles[i];
++
++	create_hwrt_args->width = 256;
++	create_hwrt_args->height = 256;
++	create_hwrt_args->samples = 1;
++	create_hwrt_args->layers = 1;
++	create_hwrt_args->region_header_size = 64;
++}
++
++static void build_destroy_hwrt_args(
++	struct drm_pvr_ioctl_destroy_hwrt_dataset_args *destroy_hwrt_args,
++	uint32_t handle)
++{
++	memset(destroy_hwrt_args, 0, sizeof(*destroy_hwrt_args));
++	destroy_hwrt_args->handle = handle;
++}
++
++int igt_main()
++{
++	struct drm_pvr_ioctl_create_hwrt_dataset_args create_hwrt_args;
++	struct drm_pvr_create_hwrt_geom_data_args geom_data_args = {0};
++	struct drm_pvr_create_hwrt_rt_data_args rt_data_args[2] = {0};
++	struct drm_pvr_ioctl_destroy_hwrt_dataset_args destroy_hwrt_args;
++
++	const uint32_t num_free_lists =
++		ARRAY_SIZE(create_hwrt_args.free_list_handles);
++	uint32_t free_list_handles[num_free_lists];
++	uint32_t gem_obj_handle;
++	uint32_t gem_obj_handle_ml;
++	uint32_t vm_ctx_handle;
++	const uint32_t num_rt_data = ARRAY_SIZE(create_hwrt_args.rt_data_args);
++	uint64_t gem_obj_gpu_addr;
++	uint64_t gem_obj_gpu_addr_ml;
++	size_t size = 2 << 20;
++	int fd;
++
++	igt_fixture()
++	{
++		struct drm_pvr_heap general_heap_info;
++
++		fd = drm_open_driver(DRIVER_POWERVR);
++		general_heap_info = igt_pvr_find_general_heap(fd);
++		vm_ctx_handle = igt_pvr_ioctl_create_vm_context(fd, 0);
++
++		gem_obj_gpu_addr = general_heap_info.base;
++		gem_obj_handle =
++			igt_pvr_ioctl_create_bo_ex(fd, &size,
++						   DRM_PVR_BO_PM_FW_PROTECT);
++		igt_pvr_ioctl_vm_map(fd, vm_ctx_handle, gem_obj_handle,
++				     gem_obj_gpu_addr, 0, size);
++
++		for (int i = 0; i < num_free_lists; i++)
++			free_list_handles[i] =
++				igt_pvr_ioctl_create_free_list(fd,
++							       vm_ctx_handle,
++							       gem_obj_gpu_addr);
++
++		gem_obj_gpu_addr_ml = general_heap_info.base + size;
++		gem_obj_handle_ml =
++			igt_pvr_ioctl_create_bo_ex(fd, &size,
++						   DRM_PVR_BO_PM_FW_PROTECT);
++		igt_pvr_ioctl_vm_map(fd, vm_ctx_handle, gem_obj_handle_ml,
++				     gem_obj_gpu_addr_ml, 0, size);
++
++		for (int i = 0; i < num_rt_data; i++)
++			rt_data_args[i].pm_mlist_dev_addr = gem_obj_gpu_addr_ml;
++	}
++
++	igt_describe("Test valid HWRT creation and destruction");
++	igt_subtest("create-hwrt")
++	{
++		build_create_hwrt_args(&create_hwrt_args, &geom_data_args,
++				       rt_data_args, free_list_handles,
++				       num_rt_data, num_free_lists);
++		do_ioctl(fd, DRM_IOCTL_PVR_CREATE_HWRT_DATASET, &create_hwrt_args);
++
++		igt_assert_neq(create_hwrt_args.handle, 0);
++
++		build_destroy_hwrt_args(&destroy_hwrt_args, create_hwrt_args.handle);
++		do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_HWRT_DATASET, &destroy_hwrt_args);
++	}
++
++	igt_describe("Test HWRT creation with bad padding");
++	igt_subtest("destroy-hwrt-bad-padding")
++	{
++		build_create_hwrt_args(&create_hwrt_args, &geom_data_args,
++				       rt_data_args, free_list_handles,
++				       num_rt_data, num_free_lists);
++		do_ioctl(fd, DRM_IOCTL_PVR_CREATE_HWRT_DATASET, &create_hwrt_args);
++
++		igt_assert_neq(create_hwrt_args.handle, 0);
++
++		build_destroy_hwrt_args(&destroy_hwrt_args, create_hwrt_args.handle);
++		destroy_hwrt_args._padding_4 = 1;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_DESTROY_HWRT_DATASET, &destroy_hwrt_args,
++			     EINVAL);
++
++		destroy_hwrt_args._padding_4 = 0;
++		do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_HWRT_DATASET, &destroy_hwrt_args);
++	}
++
++	igt_describe("Test HWRT creation with invalid free list handle");
++	igt_subtest("invalid-free-list-handle")
++	{
++		build_create_hwrt_args(&create_hwrt_args, &geom_data_args,
++				       rt_data_args, free_list_handles,
++				       num_rt_data, num_free_lists);
++		create_hwrt_args.free_list_handles[0] = INVALID_ADDRESS;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_HWRT_DATASET,
++			     &create_hwrt_args, EINVAL);
++	}
++
++	igt_describe("Test HWRT creation with missing free list");
++	igt_subtest("missing-free-list")
++	{
++		build_create_hwrt_args(&create_hwrt_args, &geom_data_args,
++				       rt_data_args, free_list_handles,
++				       num_rt_data, num_free_lists);
++		create_hwrt_args.free_list_handles[0] = 0;
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_HWRT_DATASET,
++			     &create_hwrt_args, EINVAL);
++	}
++
++	igt_fixture()
++	{
++		for (int i = 0; i < num_free_lists; i++)
++			igt_pvr_ioctl_destroy_free_list(fd, free_list_handles[i]);
++
++		igt_pvr_ioctl_vm_unmap(fd, vm_ctx_handle, gem_obj_gpu_addr,
++				       size);
++		gem_close(fd, gem_obj_handle);
++		igt_pvr_ioctl_destroy_vm_context(fd, vm_ctx_handle, 0);
++
++		close(fd);
++	}
++}
 
 -- 
 2.43.0
