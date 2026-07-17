@@ -4,51 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC9E1C4451C
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:09:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7BE9C4451C
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:10:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4DA9310E43D;
-	Fri, 17 Jul 2026 12:09:38 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="dG7wpNWE";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4518110E446;
- Fri, 17 Jul 2026 12:05:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=EL2t/09vcN9V6Rkygrdza4kyop6teAGJd5C5hkrlR48=; b=
- dG7wpNWEvxsRsmJnvd3EoaEOntXgsV6TItZk0htBc1xluRkGOpUdcreq4JkzwZJobMYt1aT297fcV
- jIvBsLPMapw16LuEDCZGxGwpz2DYCwYnk7iV1a9v3JrEi6LyL8N+1Uq1uLEElzj6vS5rcfhWqrsMv
- +4Jv1AC+WpsdA+eD6DGpPEF2W4qid/gCOuQ3hmi1fwgO0ltukv25aF8itjyMa+pFC56lxJAVpHnk+
- QcJPDO2mLpU54Rpuj+Yd5vII/SyBIkqdehLDkYMEnzdhuB9jSOrV8r2nSRB8xzl2Vi3M/vkC7F81y
- 0A61CPpwmlf8gMmcX/GDzzu3r+nu4Uuewg==;
-Received: from 179-125-86-98-dinamico.pombonet.net.br ([179.125.86.98]
- helo=quatroqueijos.lan) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wkhJz-00GPAm-Vp; Fri, 17 Jul 2026 14:05:40 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: igt-dev@lists.freedesktop.org
-Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Christian Koenig <christian.koenig@amd.com>,
- maarten.lankhorst@linux.intel.com,
- =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Natalie Vock <natalie.vock@gmx.de>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v4 6/7] lib/amdgpu: add amdgpu support to igt_dmem_driver
-Date: Fri, 17 Jul 2026 09:04:46 -0300
-Message-ID: <20260717120447.1837818-7-cascardo@igalia.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260717120447.1837818-1-cascardo@igalia.com>
-References: <20260717120447.1837818-1-cascardo@igalia.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 50D2B10E45B;
+	Fri, 17 Jul 2026 12:10:08 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1EE0610F526;
+ Fri, 17 Jul 2026 12:06:48 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5758183981647888134=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/imagination=3A_Add_?=
+ =?utf-8?q?initial_test_coverage_for_Imagination_DRM_driver_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Robert Mazur" <robert.mazur@imgtec.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 17 Jul 2026 12:06:48 -0000
+Message-ID: <178429000811.200513.13315870152068297573@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260717-test-imagination-add-support-v2-0-e1bf415adcee@imgtec.com>
+In-Reply-To: <20260717-test-imagination-add-support-v2-0-e1bf415adcee@imgtec.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,151 +37,145 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This allows dmem cgroups tests to run on top of amdgpu driver, adding
-support to allocate and release VRAM memory.
+--===============5758183981647888134==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This does this by allocating a BO from VRAM domain, which will try to
-place BOs on VRAM, but may fallback to GTT.
+== Series Details ==
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- lib/amdgpu/amd_dmem.c | 99 +++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dmem_driver.h |  1 +
- lib/meson.build       |  1 +
- 3 files changed, 101 insertions(+)
- create mode 100644 lib/amdgpu/amd_dmem.c
+Series: tests/imagination: Add initial test coverage for Imagination DRM driver (rev2)
+URL   : https://patchwork.freedesktop.org/series/170620/
+State : success
 
-diff --git a/lib/amdgpu/amd_dmem.c b/lib/amdgpu/amd_dmem.c
-new file mode 100644
-index 000000000000..5ff6437dc78a
---- /dev/null
-+++ b/lib/amdgpu/amd_dmem.c
-@@ -0,0 +1,99 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2026 Valve Corporation
-+ * Authors:
-+ *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-+ */
-+
-+#include <errno.h>
-+
-+#include "igt.h"
-+#include "igt_cgroup.h"
-+#include "igt_dmem_driver.h"
-+#include "lib/amdgpu/amd_memory.h"
-+
-+struct amdgpu_dmem_ctx {
-+	int fd;
-+	amdgpu_device_handle device;
-+	amdgpu_bo_handle *handles;
-+	int max_bo;
-+};
-+
-+static int amdgpu_dmem_init(void **ctx, int fd, int max_bo)
-+{
-+	struct amdgpu_dmem_ctx *actx;
-+	uint32_t major, minor;
-+	int err = -ENOMEM;
-+
-+	actx = malloc(sizeof(*actx));
-+	if (!actx)
-+		return -ENOMEM;
-+
-+	actx->handles = calloc(max_bo, sizeof(actx->handles[0]));
-+	if (!actx->handles)
-+		goto out;
-+
-+	actx->max_bo = max_bo;
-+
-+	err = amdgpu_device_initialize(fd, &major, &minor, &actx->device);
-+	if (err)
-+		goto out;
-+
-+	*ctx = actx;
-+
-+	return 0;
-+
-+out:
-+	if (actx->handles)
-+		free(actx->handles);
-+	free(actx);
-+
-+	return err;
-+}
-+
-+static void amdgpu_dmem_deinit(void *ctx)
-+{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+
-+	amdgpu_device_deinitialize(actx->device);
-+	free(actx->handles);
-+	free(actx);
-+}
-+
-+static int amdgpu_dmem_allocate_vram(void *ctx, int n_bo, size_t len)
-+{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+	amdgpu_bo_handle handle;
-+	int err;
-+
-+	if (n_bo >= actx->max_bo)
-+		return -ENOMEM;
-+
-+	err = amdgpu_bo_alloc_wrap(actx->device, len, 4096,
-+				   AMDGPU_GEM_DOMAIN_VRAM, 0, &handle);
-+	if (err)
-+		return err;
-+
-+	actx->handles[n_bo] = handle;
-+
-+	return 0;
-+}
-+
-+static void amdgpu_dmem_free_vram(void *ctx, int n_bo)
-+{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+	if (n_bo >= actx->max_bo)
-+		return;
-+	if (actx->handles[n_bo])
-+		amdgpu_bo_free(actx->handles[n_bo]);
-+	actx->handles[n_bo] = 0;
-+}
-+
-+const struct igt_dmem_driver amdgpu_dmem_driver = {
-+	.name = "amdgpu",
-+	.get_region_name = amdgpu_cgroup_region_name,
-+	.init = amdgpu_dmem_init,
-+	.deinit = amdgpu_dmem_deinit,
-+	.allocate_vram = amdgpu_dmem_allocate_vram,
-+	.free_vram = amdgpu_dmem_free_vram,
-+};
-diff --git a/lib/igt_dmem_driver.h b/lib/igt_dmem_driver.h
-index 2f4a4673ab16..d34c839740a5 100644
---- a/lib/igt_dmem_driver.h
-+++ b/lib/igt_dmem_driver.h
-@@ -20,5 +20,6 @@ struct igt_dmem_driver {
- };
- 
- extern const struct igt_dmem_driver xe_dmem_driver;
-+extern const struct igt_dmem_driver amdgpu_dmem_driver;
- 
- #endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 012802475de0..27177f385ae6 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -199,6 +199,7 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_mmd_shared.c',
- 		'amdgpu/amd_jpeg_shared.c',
- 		'amdgpu/amd_utils.c',
-+		'amdgpu/amd_dmem.c',
- 		'amdgpu/amd_vcn_shared.c'
- 	]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
--- 
-2.47.3
+== Summary ==
 
+CI Bug Log - changes from IGT_9012 -> IGTPW_15552
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/index.html
+
+Participating hosts (41 -> 39)
+------------------------------
+
+  Missing    (2): bat-dg2-13 bat-arls-5 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15552 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_auth@basic-auth:
+    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#15673])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9012/bat-adlp-6/igt@core_auth@basic-auth.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/bat-adlp-6/igt@core_auth@basic-auth.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_debugfs@read-all-entries:
+    - bat-adlp-6:         [DMESG-WARN][3] ([i915#15673]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9012/bat-adlp-6/igt@core_debugfs@read-all-entries.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/bat-adlp-6/igt@core_debugfs@read-all-entries.html
+
+  
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9012 -> IGTPW_15552
+
+  CI-20190529: 20190529
+  CI_DRM_18842: 22852552aa1b7198931842ddf824af4dd09e2814 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15552: 15552
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/index.html
+
+--===============5758183981647888134==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/imagination: Add initial test coverage for Imagination DRM driver (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170620/">https://patchwork.freedesktop.org/series/170620/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9012 -&gt; IGTPW_15552</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/index.html</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Missing    (2): bat-dg2-13 bat-arls-5 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15552 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@core_auth@basic-auth:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9012/bat-adlp-6/igt@core_auth@basic-auth.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/bat-adlp-6/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_debugfs@read-all-entries:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9012/bat-adlp-6/igt@core_debugfs@read-all-entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15552/bat-adlp-6/igt@core_debugfs@read-all-entries.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9012 -&gt; IGTPW_15552</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18842: 22852552aa1b7198931842ddf824af4dd09e2814 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15552: 15552<br />
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============5758183981647888134==--
