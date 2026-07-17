@@ -4,49 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A567FC44507
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 08:21:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D399C44507
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 08:23:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5537110E423;
-	Fri, 17 Jul 2026 08:21:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D2FBC10E428;
+	Fri, 17 Jul 2026 08:23:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="IQcE1Mgz";
+	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="wfWSHD3J";
 	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 780A110E423
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:20:34 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id C103C1A1044;
- Fri, 17 Jul 2026 08:20:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 95A2660361;
- Fri, 17 Jul 2026 08:20:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id A85CC11BD013E; 
- Fri, 17 Jul 2026 10:20:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1784276432; h=from:subject:date:message-id:to:mime-version:content-type:
- content-transfer-encoding:content-language:in-reply-to:references;
- bh=zt58HaRJYnEn42Up6iekxeMkGosL+l08bDNKc90Hhnc=;
- b=IQcE1Mgzc6aZA104yWyr+/cB3rLzAzW8UVgJVu90pn2HP26UYtwOv9r+liydTphIQU2D2X
- Babthzlejj56HuOGpOrxU2EqcKRfp6EDdV2ItEZcO0AQ6gPyYOmmjzcRgLfnzcSyYA84la
- 5kxm4zIN4Fhc8wcYovlZpxKhTrLEv7yXME0MGGFJYEGlC3gPcOvY22E71RTva+R4MsmYhA
- 2CkSuEOTh0AZxEt4ZwzahoqtmwUKRmR1J+5Xv22db4WaH+c7w7E3Be8QR+Pcwv4jTZojoE
- Bre5isR/F+euONj0coxUcdYJ1V9p3k0fg8UvAgEJ4d7dMbqPwSCDixfGSgb6/Q==
-Message-ID: <11a2d7a3-bee7-4533-a29f-d9a7f9b9e154@bootlin.com>
-Date: Fri, 17 Jul 2026 10:20:30 +0200
+Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
+ [185.132.180.163])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB43410E46F
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:23:08 +0000 (UTC)
+Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
+ by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 66H7CaJ42902527
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:10 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=dk201812; bh=E
+ OopdK8/CYjOeAEiLPUzcTvPAGKPheItb+4GvknxomY=; b=wfWSHD3JFUiMFPaRW
+ xBIV+sL47o3cjlKDzqXN9YgkB9+aAGmIp/Cfm5H3adKgdSYxERB7pOdxI9cqLs6L
+ 3QmfYboWuKpwXzxm6kXht5qfh1ccfy1EIA4VXjOJ/UbAkbqmIHeaSX6gFMNKyaGQ
+ SXG4zJnRkcNbKVaVKqEET2pSoaXydwwmjmc+AIgo22meNZ2r2SztM4sCxHGyNTYi
+ qgmvfFdoH9wSb5cGSiWj2LR9safpFKa9cj0M8EVVRCH6BPfwvceWQFfBOj9lqkQh
+ UY3cQkrsmTfl3zun0wk96ZZGZ2lzTS1OwujElaq2+zrz+3vDGkU3X/0F3cBvDnb0
+ YaUdg==
+Received: from hhmail01.hh.imgtec.org
+ (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+ by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4fbdwsnh02-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:10 +0100 (BST)
+Received: from [127.0.1.1] (172.25.9.35) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 17 Jul
+ 2026 08:49:09 +0100
+From: Robert Mazur <robert.mazur@imgtec.com>
+Date: Fri, 17 Jul 2026 09:48:10 +0200
+Subject: [PATCH i-g-t 03/10] tests/imagination: Add DEV_QUERY tests
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] android: Implement lightweight GKeyFile INI string
- parser in glib shim
-To: Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org
-References: <20260715192949.1984280-1-markyacoub@google.com>
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260715192949.1984280-1-markyacoub@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260717-test-imagination-add-support-v1-3-2f02f9cc3b53@imgtec.com>
+References: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
+In-Reply-To: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Robert Mazur <robert.mazur@imgtec.com>, Donald Robson
+ <donald.robson@imgtec.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784274547; l=5322;
+ i=robert.mazur@imgtec.com; s=20260324; h=from:subject:message-id;
+ bh=l70ebfhevRBNgSEE4YNUowmsSzKDSyG+L9ThOb8t+UE=;
+ b=DAHnyLxboc7RD8ElJFgTX8p+51VBblWayBHEDMuOHQkfHi5xs46ggOSRSA/z7SB7DTCneuXjn
+ qalx8ki+0XTDVH4QvGeckLaqfZAaEupl3fo0GUjYf7iLy/2KKiEzu1r
+X-Developer-Key: i=robert.mazur@imgtec.com; a=ed25519;
+ pk=X5uhazsNnVDpw/srawR3m7WOmgzFZXdecapAeML2ZgM=
+X-Originating-IP: [172.25.9.35]
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfX3ysl7de6G6bm
+ E1fA/poqjltAOUiKZB/KKbz0IobIJ1TRTjKW13mpuldbz/Mla2U6lCOuJokJe9OH6tl2WXA+sHy
+ e4frWvqqSptqiZ6KwnovYMkecJdwLJa837ULHdGtkB0Y20+OA/2l6m9fMF+FFLApEbzTgug/foG
+ pnNpnHOaF97zU7iezI3J8TDgWSz5dm2fY2M48fl1KHWoFbFrWdIinDD/knpyr43JEb58VoDdgUv
+ /3JyN5LFM1InoDDZYNh4/XQfH3jz2ikPzB7Uua27wCWOe1vLOHeMRgoQ1GJSYNpb0mwyUvD6s3y
+ WgF9D6cHVk8LndC4cJxndc8f0A8pcDzZUY4cL+wM41QRPao2pUxmc91HUboA3smj1JsG9t9ZMhD
+ 29SIKY4MjEwoDyHjfVFCvaTnh4vLrN2tySqQcrwXibsX66kmC9gHfE7DWlkPqqyRL8pgwWkF13T
+ NKSr+vobCVEkHmyd8NA==
+X-Proofpoint-ORIG-GUID: 4LFcHqVaPeXZNOaBmR3k_YMWrMyzHfWS
+X-Proofpoint-GUID: 4LFcHqVaPeXZNOaBmR3k_YMWrMyzHfWS
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfX7UNhgUyEqejI
+ aFRxW6R6tb5GmLopI+cbESzcGo/Y0yUKVWjMCPwRtXrax84kt4Hc1XrJvZt2SLUcFSnM+1Lxkmq
+ u0ZrVlG+fwAWx/mSSBl8BIBad3Ytfz4=
+X-Authority-Analysis: v=2.4 cv=QbVWeMbv c=1 sm=1 tr=0 ts=6a59de76 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=CNmLAE0vrksA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
+ a=r_1tXGB3AAAA:8 a=5dTYAPD5xSfmRx3JF_cA:9 a=QEXdDO2ut3YA:10
+ a=t8nPyN_e6usw4ciXM-Pk:22
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,221 +94,177 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+From: Donald Robson <donald.robson@imgtec.com>
 
+Add subtests exercising DRM_IOCTL_PVR_DEV_QUERY: invalid type,
+successful query of all types, and undersized buffer error paths.
 
-On 7/15/26 21:29, Mark Yacoub wrote:
-> [Why]
-> Android's Bionic C library lacks libglib2, requiring IGT to build against
-> an Android-specific mock header (include/android/glib.h). The existing mock
-> implementation of GKeyFile and g_key_file_load_from_file is a hardcoded
-> no-op returning NULL, which prevents tests relying on configuration files
-> (such as .igtrc) from dynamically retrieving values on Android.
+Signed-off-by: Donald Robson <donald.robson@imgtec.com>
+Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
+---
+ lib/igt_pvr.c                     | 19 ++++++++
+ lib/igt_pvr.h                     |  4 ++
+ tests/imagination/meson.build     |  3 +-
+ tests/imagination/pvr_dev_query.c | 99 +++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 124 insertions(+), 1 deletion(-)
 
-Hello Mark,
+diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
+index 957d459b1..a729618d0 100644
+--- a/lib/igt_pvr.c
++++ b/lib/igt_pvr.c
+@@ -54,3 +54,22 @@ off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle)
+ 
+ 	return (off_t)arg.offset;
+ }
++
++struct drm_pvr_ioctl_dev_query_args
++igt_pvr_ioctl_dev_query(int fd, enum drm_pvr_dev_query type, uint64_t size,
++			void *pointer, int expect_err)
++{
++	struct drm_pvr_ioctl_dev_query_args args = {
++		.type = type,
++		.size = size,
++		.pointer = (uint64_t)pointer,
++	};
++
++	if (expect_err)
++		do_ioctl_err(fd, DRM_IOCTL_PVR_DEV_QUERY, &args, expect_err);
++	else
++		do_ioctl(fd, DRM_IOCTL_PVR_DEV_QUERY, &args);
++
++	return args;
++}
++
+diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
+index 33d826077..e949772e4 100644
+--- a/lib/igt_pvr.h
++++ b/lib/igt_pvr.h
+@@ -14,4 +14,8 @@
+ uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size);
+ off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle);
+ 
++struct drm_pvr_ioctl_dev_query_args
++igt_pvr_ioctl_dev_query(int fd, enum drm_pvr_dev_query type, uint64_t size,
++			void *pointer, int expect_err);
++
+ #endif /* IGT_PVR_H */
+diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
+index 65b90c39f..62930da2b 100644
+--- a/tests/imagination/meson.build
++++ b/tests/imagination/meson.build
+@@ -1,4 +1,5 @@
+-pvr_progs = [ 'pvr_gem',
++pvr_progs = [ 'pvr_dev_query',
++	      'pvr_gem',
+ 	    ]
+ 
+ pvr_deps = test_deps
+diff --git a/tests/imagination/pvr_dev_query.c b/tests/imagination/pvr_dev_query.c
+new file mode 100644
+index 000000000..cda2b73cc
+--- /dev/null
++++ b/tests/imagination/pvr_dev_query.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
++
++#include "igt.h"
++#include "igt_pvr.h"
++
++#include "pvr_drm.h"
++
++#include <errno.h>
++#include <stdint.h>
++#include <unistd.h>
++
++int igt_main()
++{
++	const enum drm_pvr_dev_query types[] = {
++		DRM_PVR_DEV_QUERY_GPU_INFO_GET,
++		DRM_PVR_DEV_QUERY_RUNTIME_INFO_GET,
++		DRM_PVR_DEV_QUERY_QUIRKS_GET,
++		DRM_PVR_DEV_QUERY_ENHANCEMENTS_GET,
++		DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
++		DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
++	};
++
++	const uint64_t sizes[] = {
++		[DRM_PVR_DEV_QUERY_GPU_INFO_GET] =
++			sizeof(struct drm_pvr_dev_query_gpu_info),
++		[DRM_PVR_DEV_QUERY_RUNTIME_INFO_GET] =
++			sizeof(struct drm_pvr_dev_query_runtime_info),
++		[DRM_PVR_DEV_QUERY_QUIRKS_GET] =
++			sizeof(struct drm_pvr_dev_query_quirks),
++		[DRM_PVR_DEV_QUERY_ENHANCEMENTS_GET] =
++			sizeof(struct drm_pvr_dev_query_enhancements),
++		[DRM_PVR_DEV_QUERY_HEAP_INFO_GET] =
++			sizeof(struct drm_pvr_dev_query_heap_info),
++		[DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET] =
++			sizeof(struct drm_pvr_dev_query_static_data_areas),
++	};
++
++	struct drm_pvr_dev_query_gpu_info gpu_info = {0};
++	struct drm_pvr_dev_query_runtime_info runtime_info = {0};
++	struct drm_pvr_dev_query_quirks quirks = {0};
++	struct drm_pvr_dev_query_enhancements enhancements = {0};
++	struct drm_pvr_dev_query_heap_info heap_info = {0};
++	struct drm_pvr_dev_query_static_data_areas static_data_areas = {0};
++
++	void *const containers[] = {
++		[DRM_PVR_DEV_QUERY_GPU_INFO_GET] = &gpu_info,
++		[DRM_PVR_DEV_QUERY_RUNTIME_INFO_GET] = &runtime_info,
++		[DRM_PVR_DEV_QUERY_QUIRKS_GET] = &quirks,
++		[DRM_PVR_DEV_QUERY_ENHANCEMENTS_GET] = &enhancements,
++		[DRM_PVR_DEV_QUERY_HEAP_INFO_GET] = &heap_info,
++		[DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET] = &static_data_areas,
++	};
++
++	int fd;
++
++	static_assert(ARRAY_SIZE(types) == ARRAY_SIZE(sizes));
++	static_assert(ARRAY_SIZE(types) == ARRAY_SIZE(containers));
++
++	igt_fixture()
++	{
++		fd = drm_open_driver(DRIVER_POWERVR);
++
++		for (int i = 0; i < ARRAY_SIZE(types); i++)
++			memset(containers[i], 0, sizes[i]);
++	}
++
++	igt_describe("Test invalid dev query");
++	igt_subtest("dev-query-invalid") {
++		igt_pvr_ioctl_dev_query(fd, (enum drm_pvr_dev_query)-1, 0, NULL,
++					EINVAL);
++	}
++
++	igt_describe("Test valid dev query");
++	igt_subtest("dev-query-success-all") {
++		for (int i = 0; i < ARRAY_SIZE(types); i++) {
++			struct drm_pvr_ioctl_dev_query_args args =
++				igt_pvr_ioctl_dev_query(fd, types[i], 0, NULL, 0);
++
++			igt_assert(args.size);
++			igt_assert(args.size <= sizes[i]);
++
++			igt_pvr_ioctl_dev_query(fd, types[i], args.size, containers[i], 0);
++		}
++	}
++
++	igt_describe("Test dev query with too small size");
++	igt_subtest("dev-query-fail-too-small") {
++		for (int i = 0; i < ARRAY_SIZE(types); i++) {
++			igt_pvr_ioctl_dev_query(fd, types[i], 0, containers[i], EINVAL);
++			igt_pvr_ioctl_dev_query(fd, types[i], 1, containers[i],	EINVAL);
++		}
++	}
++
++	igt_fixture()
++	{
++		close(fd);
++	}
++}
 
-I don't think it's a good idea to keep a custom parser inside IGT that 
-isn't always used, especially when it behaves differently (no character 
-escaping, first key value is used versus the last, 1/true/yes versus 
-1/true for booleans, spaces around =, etc.).
-
-I agree that external dependencies can be a pain to manage and are 
-sometimes unavailable. After a quick look, extracting the full GLib 
-parser doesn't seem feasible (it's tightly coupled to GLib internals). 
-However, IGT could easily implement a minimal subset, as you have 
-already done. That way, GLib would only be required for a few tests.
-
-I don't know what maintainers thinks about it?
-
-> [How]
-> Expand the dummy GKeyFile structure to record the file path upon calling
-> g_key_file_load_from_file. Implement a minimal internal INI parser function
-> (__android_g_key_file_get) inside g_key_file_get_string to traverse the file
-> line-by-line, matching requested [group] and key strings, stripping trailing
-> newlines, and returning a heap-allocated duplicate string (strdup).
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@google.com>
-
-Anyway, if there is a v2 of this patch, can you run checkpatch and fix 
-the issues?
-
-> ---
->   include/android/glib.h | 120 +++++++++++++++++++++++++++++++++++++----
->   1 file changed, 111 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/android/glib.h b/include/android/glib.h
-> index 0b6658287..5b8ba86c7 100644
-> --- a/include/android/glib.h
-> +++ b/include/android/glib.h
-> @@ -16,8 +16,7 @@ typedef struct _GError {
->   } GError;
->   
->   typedef struct _GKeyFile {
-> -	char *key;
-> -	char *value;
-> +	char path[512];
->   } GKeyFile;
->   
->   typedef struct _GMatchInfo {
-> @@ -45,16 +44,119 @@ static inline void g_error_free(GError *error) { }
->   
->   static inline const char *g_get_home_dir(void) { return "/data/local/tmp/igt"; }
->   
-> -static inline void g_key_file_free(GKeyFile *file) { }
-> -static inline GKeyFile *g_key_file_new(void) { return NULL; }
-> +/*
-> + * __android_g_key_file_get: Minimal INI parser to mock GLib's GKeyFile getters.
-> + *
-> + * This function manually traverses a provided INI-style configuration file
-> + * (e.g., .igtrc) searching for a specific [group] and key. It parses line-by-line
-> + * without relying on the heavy libglib2 parsing dictionary framework natively
-> + * required by standard IGT.
-> + *
-> + * It operates strictly on the specific file path saved in the GKeyFile struct during
-> + * g_key_file_load_from_file(). This ensures it properly acts as a decoupled file
-> + * parser and prevents it from hijacking other distinct config operations.
-> + *
-> + * Parameters:
-> + * - key_file: The mocked GKeyFile struct holding the parsed file path.
-> + * - target_group: The [group] section to search within (e.g. "Unigraf").
-> + * - target_key: The key to matching inside the group (e.g. "Connector").
-> + *
-> + * Returns:
-> + * A newly allocated string (`strdup`) containing the right-side value of the
-> + * matched key, or NULL if not found. The caller is responsible for freeing it.
-> + */
-> +static inline char *__android_g_key_file_get(GKeyFile *key_file, const char *target_group, const char *target_key)
-> +{
-> +	/* Ensure a valid file path was actively loaded into our GKeyFile mock */
-> +	if (!key_file || !key_file->path[0]) return NULL;
-> +
-> +	FILE *fp = fopen(key_file->path, "r");
-> +	if (!fp)
-> +		return NULL;
-> +
-> +	char line[256];
-> +	bool in_group = false;
-> +	size_t key_len = strlen(target_key);
-> +
-> +	while (fgets(line, sizeof(line), fp)) {
-
-You may read twice the same line if the line is longer than 256 chars 
-(probably not an issue, but that a limitation that should be documented 
-somewhere).
-
-> +		char *trim = line;
-> +
-> +		/* Skip any leading whitespace (spaces or tabs) for the current line */
-> +		while (*trim == ' ' || *trim == '\t') trim++;
-> +
-> +		/* Check if this line declares a new [Group] section */
-> +		if (trim[0] == '[') {
-> +			/* Verify if it perfectly matches the user's requested [target_group] */
-> +			in_group = (strncmp(trim + 1, target_group, strlen(target_group)) == 0 &&
-> +				    trim[1 + strlen(target_group)] == ']');
-> +			continue; /* Move to the next line of the file */
-> +		}
-> +
-> +		/* If we are inside the correct group, evaluate if the line starts with `target_key=` */
-> +		if (in_group && strncmp(trim, target_key, key_len) == 0 && trim[key_len] == '=') {
-
-If you want to stick with glib behavior: there could be a space between 
-the key and the =
-
-> +			/* Pointer to the start of the value (immediately right of '=') */
-> +			char *val = trim + key_len + 1;
-
-Same, there can be spaces after the =
-
-> +			char *end = val + strlen(val);
-
-The line may ends with some spaces.
-
-> +			/* Strip any trailing whitespace, carriage returns, or newlines by inserting null terminators */
-> +			while (end > val && (end[-1] == '\r' || end[-1] == '\n' || end[-1] == ' ' || end[-1] == '\t'))
-> +				end[-1] = '\0';
-
-Why did you use a while and not a if here?
-
-> +
-> +			fclose(fp);
-> +			/* Return a standard heap-allocated copy of the value string just as GLib would */
-> +			return strdup(val);
-
-If you want to stick with glib behavior: you must return the last value, 
-not the first.
-
-> +		}
-> +	}
-> +
-> +	fclose(fp);
-> +	return NULL;
-> +}
-> +
-> +static inline void g_key_file_free(GKeyFile *file) { free(file); }
-> +
-> +static inline GKeyFile *g_key_file_new(void) { return (GKeyFile *)calloc(1, sizeof(GKeyFile)); }
-> +
->   static inline int g_key_file_get_integer(GKeyFile *key_file,
-> -	const char *group_name, const char *key, GError **error) { return 0; }
-> +	const char *group_name, const char *key, GError **error) {
-
-That could be nice to fill error in case of error, many places rely on 
-the error pointer content to detect issues during parsing.
-
-> +	char *val = __android_g_key_file_get(key_file, group_name, key);
-> +	if (!val) return 0;
-> +	int res = atoi(val);
-
-If you fill the error pointer, you can use strtol to check the result.
-
-> +	free(val);
-> +	return res;
-> +}
-> +
->   static inline char *g_key_file_get_string(GKeyFile *key_file,
-> -	const char *group_name, const char *key, GError **error) { return NULL; }
-> +	const char *group_name, const char *key, GError **error) {
-> +	return __android_g_key_file_get(key_file, group_name, key);
-> +}
-> +
->   static inline double g_key_file_get_double(GKeyFile *key_file,
-> -	const char *group_name, const char *key, GError **error) { return 0.0; }
-> -static inline bool g_key_file_load_from_file(GKeyFile *key_file,
-> -	const char *file, int flags, GError **error) { return false; }
-> +	const char *group_name, const char *key, GError **error) {
-> +	char *val = __android_g_key_file_get(key_file, group_name, key);
-> +	if (!val) return 0.0;
-
-The caller need to know if the value is set to 0 (then use 0) or not 
-present (then use some default value), see usage for DisplayDetectTimeout.
-
-> +	double res = strtod(val, NULL);
-> +	free(val);
-> +	return res;
-> +}
-> +
-> +static inline bool g_key_file_get_boolean(GKeyFile *key_file,
-> +	const char *group_name, const char *key, GError **error) {
-> +	char *val = __android_g_key_file_get(key_file, group_name, key);
-> +	if (!val) return false;
-> +	bool res = (strcmp(val, "true") == 0 || strcmp(val, "1") == 0 || strcmp(val, "yes") == 0);
-
-To stick with glib behavior: only true/1 and false/0 are valid booleans.
-
-> +	free(val);
-> +	return res;
-> +}
-> +
-> +static inline bool
-> +		g_key_file_load_from_file(GKeyFile *key_file,
-> +	const char *file, int flags, GError **error) {
-> +	if (key_file && file) {
-> +		snprintf(key_file->path, sizeof(key_file->path), "%s", file);
-> +		return true;
-> +	}
-> +	return false;
-> +}
->   
->   static inline GRegex *g_regex_new(const char *pattern, int compile_options,
->   	int match_options, GError **error) { return NULL; }
+-- 
+2.43.0
 
