@@ -4,58 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81E14C44507
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 10:28:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 569B6C4451C
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 10:34:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 205DF10F4E2;
-	Fri, 17 Jul 2026 10:28:27 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FEpQLuui";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 516A210F4E2
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 10:27:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784284077; x=1815820077;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=AekQQSJU3dBcWYsy2MLqwWO9h5IdIHwLtvnnISSFkNQ=;
- b=FEpQLuuiXYKud3btWd00z0QQtcIniub0P62CstGGcegzMf6hhLjmGPjh
- i320hggOn5HNdZ/Z2YvzqFuELatuRCffRI6FnQB5eVXHG62toEUBSa+ou
- BHq1Zaato0Yq/OWlpNz5kuhF2kvxKL5dgZDjjREC1kwUqR8s/Ks1SrkMQ
- oB/5tUPDwSnr1fpzYMGi4SCLa71tPgJ8Car2q9VT3TjVSVgq1535XseIi
- Q0Av4PqNobg/b1nNz22lDQNpGkJFIppS4U7lq/mR/bByZFB6XjKogkEjR
- 0ZsVMwzE2jK9GzN1tMrBMsByjlC43TAGh2l2aOsrzN+1dGP0pofNNxSSd g==;
-X-CSE-ConnectionGUID: cOnRQtLbQPSh3EtE/DgxbQ==
-X-CSE-MsgGUID: yIODUG//RZKY4+iWFHPXdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="85045380"
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="85045380"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2026 03:27:57 -0700
-X-CSE-ConnectionGUID: Q513WXZeRcmk6nmmg7XRfA==
-X-CSE-MsgGUID: d0rWLMf8TFyQzw9jXoFlUw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="254118263"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 03:27:55 -0700
-Date: Fri, 17 Jul 2026 12:27:53 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Mark Yacoub <markyacoub@google.com>
-Cc: igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com
-Subject: Re: [PATCH 1/3] android: Implement lightweight GKeyFile INI string
- parser in glib shim
-Message-ID: <20260717102753.dzvxyhu47ahwlcg4@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org,
- louis.chauvet@bootlin.com
-References: <20260715192949.1984280-1-markyacoub@google.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 94CA810F4E2;
+	Fri, 17 Jul 2026 10:34:17 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 905BB10F4E2;
+ Fri, 17 Jul 2026 10:33:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0340690213325692287=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260715192949.1984280-1-markyacoub@google.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2C1/2=5D_Revert_=22lib/kms=3A_Set_display-=3Ehas=5Fplane=5Fcol?=
+ =?utf-8?q?or=5Fpipeline_automatically=22_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 17 Jul 2026 10:33:45 -0000
+Message-ID: <178428442558.200513.3755583426737795866@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260714144532.351294-1-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20260714144532.351294-1-chaitanya.kumar.borah@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,70 +38,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Mark,
-On 2026-07-15 at 15:29:47 -0400, Mark Yacoub wrote:
+--===============0340690213325692287==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I will comment on only a few small nits spotted.
+== Series Details ==
 
-> [Why]
-> Android's Bionic C library lacks libglib2, requiring IGT to build against
-> an Android-specific mock header (include/android/glib.h). The existing mock
-> implementation of GKeyFile and g_key_file_load_from_file is a hardcoded
-> no-op returning NULL, which prevents tests relying on configuration files
-> (such as .igtrc) from dynamically retrieving values on Android.
-> 
-> [How]
-> Expand the dummy GKeyFile structure to record the file path upon calling
-> g_key_file_load_from_file. Implement a minimal internal INI parser function
-> (__android_g_key_file_get) inside g_key_file_get_string to traverse the file
-> line-by-line, matching requested [group] and key strings, stripping trailing
-> newlines, and returning a heap-allocated duplicate string (strdup).
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@google.com>
-> ---
->  include/android/glib.h | 120 +++++++++++++++++++++++++++++++++++++----
->  1 file changed, 111 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/android/glib.h b/include/android/glib.h
-> index 0b6658287..5b8ba86c7 100644
-> --- a/include/android/glib.h
-> +++ b/include/android/glib.h
-> @@ -16,8 +16,7 @@ typedef struct _GError {
->  } GError;
->  
->  typedef struct _GKeyFile {
-> -	char *key;
-> -	char *value;
-> +	char path[512];
+Series: series starting with [i-g-t,1/2] Revert "lib/kms: Set display->has_plane_color_pipeline automatically" (rev2)
+URL   : https://patchwork.freedesktop.org/series/170421/
+State : success
 
-Why it was dropped? Why is there a path name, it suggest one
-purpose use only now.
+== Summary ==
 
->  } GKeyFile;
->  
-[cut]
+CI Bug Log - changes from XEIGT_9012_BAT -> XEIGTPW_15551_BAT
+====================================================
 
-> +
-> +			/* Strip any trailing whitespace, carriage returns, or newlines by inserting null terminators */
-> +			while (end > val && (end[-1] == '\r' || end[-1] == '\n' || end[-1] == ' ' || end[-1] == '\t'))
-> +				end[-1] = '\0';
+Summary
+-------
 
-Where is a decrement for end? Now it looks like an endless loop.
-imho simple should be better:
+  **SUCCESS**
 
-	while (--end >= val)
-		if (*end == '\r' || *end == '\n' || *end == ' ' || *end == '\t')
-			*end = '\0';
-		else
-			break;
+  No regressions found.
 
-Or place this function in igt_strings.c?
+  
 
-Regards,
-Kamil
+Participating hosts (13 -> 13)
+------------------------------
 
-[cut]
+  No changes in participating hosts
 
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9012 -> IGTPW_15551
+
+  IGTPW_15551: 15551
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5424-22852552aa1b7198931842ddf824af4dd09e2814: 22852552aa1b7198931842ddf824af4dd09e2814
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15551/index.html
+
+--===============0340690213325692287==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] Revert &quot;lib/kms: Set display-&gt;has_plane_color_pipeline automatically&quot; (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170421/">https://patchwork.freedesktop.org/series/170421/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15551/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15551/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9012_BAT -&gt; XEIGTPW_15551_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9012 -&gt; IGTPW_15551</li>
+</ul>
+<p>IGTPW_15551: 15551<br />
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5424-22852552aa1b7198931842ddf824af4dd09e2814: 22852552aa1b7198931842ddf824af4dd09e2814</p>
+
+</body>
+</html>
+
+--===============0340690213325692287==--
