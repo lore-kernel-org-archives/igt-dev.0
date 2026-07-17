@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2674AC4451C
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:01:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61373C44520
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:01:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C4DA010E435;
-	Fri, 17 Jul 2026 12:01:04 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yz+MoxyS";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C21A10E43D
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 12:00:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784289609; x=1815825609;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ogE/ODNe46A//azSUUhLc+Rr1A2NccWRVJ1katU42Oc=;
- b=Yz+MoxyS8Tkk168Js9nIuR0QUj+KrS/yw4bQOJzmuHmqt/187AVMzJ5m
- 55yiX7sc1+lUFjSXGAdHOyWk+84+dFuyT9/rhhKWrTDrzASI/qq3S1Nov
- 0ZSoITPxwZQLISxev3TAWApySYtpL/QAEgZnAlURKq2PuaJ+PeA0oZ7Bz
- 9ltI20z9jE5bnS3yp03wG1ARgpJ/V4iIKSuts4tytSWHjtSeXFmZy7JMa
- mit+EIHHNXNZGsLo9jvUkwyNwwG6Jv30HV30sI6vNb5/k0NkDg1yW2qia
- L2FoFi49j5305E+IIyZjkZnaAlDRMHIgQsImGwFPa/3z4jpvFOhwixRTs A==;
-X-CSE-ConnectionGUID: FhK0pYCgQxyRQ1I6nLovOA==
-X-CSE-MsgGUID: T2rtaa60QH6YXHOJJHBEOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="84914848"
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="84914848"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2026 05:00:08 -0700
-X-CSE-ConnectionGUID: 4gMbEoTBS3OMFSzw1k4P0Q==
-X-CSE-MsgGUID: iTQ/YLTaQj6J/hDyzrqZbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="254135521"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 05:00:06 -0700
-Date: Fri, 17 Jul 2026 13:59:47 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Robert Mazur <robert.mazur@imgtec.com>
-Cc: igt-dev@lists.freedesktop.org, Matt Coster <matt.coster@imgtec.com>
-Subject: Re: [PATCH i-g-t 01/10] tests/imagination: Add framework for
- Imagination tests
-Message-ID: <20260717115947.xw4sx5roogdojl3z@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Robert Mazur <robert.mazur@imgtec.com>,
- igt-dev@lists.freedesktop.org, Matt Coster <matt.coster@imgtec.com>
-References: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
- <20260717-test-imagination-add-support-v1-1-2f02f9cc3b53@imgtec.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 108A710E435;
+	Fri, 17 Jul 2026 12:01:42 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EF4710E43D;
+ Fri, 17 Jul 2026 12:01:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8909322364496170239=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260717-test-imagination-add-support-v1-1-2f02f9cc3b53@imgtec.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Feld=3A_Poll_for_a?=
+ =?utf-8?q?sync_HDA_codec_probe_in_eld=5Fis=5Fsupported=28=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Uma Shankar" <uma.shankar@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 17 Jul 2026 12:01:12 -0000
+Message-ID: <178428967244.200513.1352377749630558395@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260717095110.4193078-1-uma.shankar@intel.com>
+In-Reply-To: <20260717095110.4193078-1-uma.shankar@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,378 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Robert,
-On 2026-07-17 at 09:48:08 +0200, Robert Mazur wrote:
-> From: Matt Coster <matt.coster@imgtec.com>
-> 
-> Also added initial GEM buffer object creation tests.
+--===============8909322364496170239==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This is your first patch, so do not start with 'Also'.
-imho rather write down what and why you wrote this.
+== Series Details ==
 
-imho add also a link(s) to lore kernel org with your proposed
-driver added in upstream linux kernel.
+Series: lib/igt_eld: Poll for async HDA codec probe in eld_is_supported()
+URL   : https://patchwork.freedesktop.org/series/170629/
+State : success
 
-Few more comments on style below.
+== Summary ==
 
-> 
-> Signed-off-by: Matt Coster <matt.coster@imgtec.com>
-> Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
-> ---
->  docs/platforms.md             |  1 +
->  lib/drmtest.c                 | 11 +++++++
->  lib/drmtest.h                 |  3 ++
->  lib/igt_pvr.c                 | 56 ++++++++++++++++++++++++++++++++++++
->  lib/igt_pvr.h                 | 17 +++++++++++
->  lib/meson.build               |  1 +
->  meson.build                   |  9 ++++++
->  tests/imagination/meson.build | 13 +++++++++
->  tests/imagination/pvr_gem.c   | 67 +++++++++++++++++++++++++++++++++++++++++++
->  tests/meson.build             |  2 ++
->  10 files changed, 180 insertions(+)
-> 
-> diff --git a/docs/platforms.md b/docs/platforms.md
-> index 214f53c1d..ea86a89c9 100644
-> --- a/docs/platforms.md
-> +++ b/docs/platforms.md
-> @@ -25,6 +25,7 @@ Support exists for the following platforms:
->  - Panthor
->  - Virtual GPUs (e.g., virtio_gpu in QEMU/KVM/AVD or vmwgfx)
->  - Virtual display (vkms)
-> +- Imagination (powervr)
->  
->  #### Intel
->  
-> diff --git a/lib/drmtest.c b/lib/drmtest.c
-> index b0be06a75..1e789d2af 100644
-> --- a/lib/drmtest.c
-> +++ b/lib/drmtest.c
-> @@ -143,6 +143,11 @@ bool is_msm_device(int fd)
->  	return __is_device(fd, "msm");
->  }
->  
-> +bool is_pvr_device(int fd)
-> +{
-> +	return __is_device(fd, "powervr");
-> +}
-> +
->  bool is_nouveau_device(int fd)
->  {
->  	/* Currently all nouveau-specific codepaths require libdrm */
-> @@ -227,6 +232,7 @@ static const struct module {
->  	{ DRIVER_MSM, "msm" },
->  	{ DRIVER_PANFROST, "panfrost" },
->  	{ DRIVER_PANTHOR, "panthor" },
-> +	{ DRIVER_POWERVR, "powervr" },
->  	{ DRIVER_V3D, "v3d" },
->  	{ DRIVER_VC4, "vc4" },
->  	{ DRIVER_VGEM, "vgem" },
-> @@ -988,6 +994,11 @@ void igt_require_amdgpu(int fd)
->  	igt_require(is_amdgpu_device(fd));
->  }
->  
-> +void igt_require_imagination(int fd)
-> +{
-> +	igt_require(is_pvr_device(fd));
-> +}
-> +
->  void igt_require_intel(int fd)
->  {
->  	igt_require(is_intel_device(fd));
-> diff --git a/lib/drmtest.h b/lib/drmtest.h
-> index 9d488b274..012de9dee 100644
-> --- a/lib/drmtest.h
-> +++ b/lib/drmtest.h
-> @@ -59,6 +59,7 @@ int __get_drm_device_name(int fd, char *name, int name_size);
->  #define DRIVER_VIRTIO	(1 << 10)
->  #define DRIVER_PANTHOR	(1 << 11)
->  #define DRIVER_ASAHI	(1 << 12)
-> +#define DRIVER_POWERVR	(1 << 13)
->  
->  /*
->   * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if you run
-> @@ -137,6 +138,7 @@ int drm_prepare_filtered_multigpu(int chipset);
->  int drm_open_filtered_card(int idx);
->  
->  void igt_require_amdgpu(int fd);
-> +void igt_require_imagination(int fd);
->  void igt_require_intel(int fd);
->  void igt_require_i915(int fd);
->  void igt_require_nouveau(int fd);
-> @@ -150,6 +152,7 @@ bool is_i915_device(int fd);
->  bool is_mtk_device(int fd);
->  bool is_msm_device(int fd);
->  bool is_nouveau_device(int fd);
-> +bool is_pvr_device(int fd);
->  bool is_vc4_device(int fd);
->  bool is_xe_device(int fd);
->  bool is_intel_device(int fd);
-> diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
-> new file mode 100644
-> index 000000000..957d459b1
-> --- /dev/null
-> +++ b/lib/igt_pvr.c
-> @@ -0,0 +1,56 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-> +
-> +#include "igt_pvr.h"
-> +
-> +#include "drmtest.h"
-> +#include "ioctl_wrappers.h"
-> +
-> +#include "pvr_drm.h"
+CI Bug Log - changes from XEIGT_9012_BAT -> XEIGTPW_15553_BAT
+====================================================
 
-We use other way, first systems headers, then igt ones.
+Summary
+-------
 
-> +
-> +#include <limits.h>
-> +#include <stddef.h>
-> +#include <stdint.h>
-> +
-> +#include <sys/types.h>
-> +
-> +/**
-> + * SECTION:igt_pvr
-> + * @short_description: PowerVR support library
-> + * @title: pvr
-> + * @include: igt.h
-> + *
-> + * This library provides various auxiliary helper functions for writing PowerVR
-> + * tests.
-> + */
-> +
+  **SUCCESS**
 
-All new library functions needs a documentation, see other libs
-about a format to use.
+  No regressions found.
 
-> +uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size)
-> +{
-> +	struct drm_pvr_ioctl_create_bo_args arg = {
-> +		.size = *size,
-> +	};
-> +
-> +	do_ioctl(fd, DRM_IOCTL_PVR_CREATE_BO, &arg);
-> +
-> +	igt_assert(arg.size >= *size && arg.size <= SIZE_MAX);
-> +	*size = (size_t)arg.size;
-> +
-> +	return arg.handle;
-> +}
-> +
-> +off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle)
-> +{
-> +	struct drm_pvr_ioctl_get_bo_mmap_offset_args arg = {
-> +		.handle = handle,
-> +	};
-> +
-> +	do_ioctl(fd, DRM_IOCTL_PVR_GET_BO_MMAP_OFFSET, &arg);
-> +
-> +	/*
-> +	 * There is no OFF_MAX equivalent to SIZE_MAX; use the identical (by
-> +	 * definition) PTRDIFF_MAX instead.
-> +	 */
-> +	igt_assert(arg.offset <= PTRDIFF_MAX);
-> +
-> +	return (off_t)arg.offset;
-> +}
-> diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
-> new file mode 100644
-> index 000000000..33d826077
-> --- /dev/null
-> +++ b/lib/igt_pvr.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
-> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-> +
-> +#ifndef IGT_PVR_H
-> +#define IGT_PVR_H
-> +
-> +#include "pvr_drm.h"
+  
 
-Move this after system ones.
-> +
-> +#include <stddef.h>
-> +#include <stdint.h>
-> +
+Participating hosts (13 -> 12)
+------------------------------
 
-imho no need for newline here.
-
-> +#include <sys/types.h>
-> +
-> +uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size);
-> +off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle);
-> +
-> +#endif /* IGT_PVR_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index c45a96530..c1bc81bab 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -135,6 +135,7 @@ lib_sources = [
->  	'xe/xe_sriov_debugfs.c',
->  	'xe/xe_sriov_provisioning.c',
->  	'xe/xe_util.c',
-> +	'igt_pvr.c',
-
-Move this up to keep alphabetical order.
-
->  
->  	# Vendored libraries:
->  	'vendor/uwildmat/uwildmat.c',
-> diff --git a/meson.build b/meson.build
-> index e09122a09..55c39c2ea 100644
-> --- a/meson.build
-> +++ b/meson.build
-> @@ -289,6 +289,7 @@ asahidir = join_paths(libexecdir, 'asahi')
->  msmdir = join_paths(libexecdir, 'msm')
->  panfrostdir = join_paths(libexecdir, 'panfrost')
->  panthordir = join_paths(libexecdir, 'panthor')
-> +pvrdir = join_paths(libexecdir, 'imagination')
->  unigrafdir = join_paths(libexecdir, 'unigraf')
->  v3ddir = join_paths(libexecdir, 'v3d')
->  vc4dir = join_paths(libexecdir, 'vc4')
-> @@ -384,6 +385,13 @@ if get_option('use_rpath')
->  		vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, '..')
->  	endforeach
->  	vmwgfx_rpathdir = join_paths(vmwgfx_rpathdir, libdir)
-> +
-> +	pvrdir_rpathdir = '$ORIGIN'
-> +	foreach p : pvrdir.split('/')
-> +		pvrdir_rpathdir = join_paths(pvrdir_rpathdir, '..')
-> +	endforeach
-> +	pvrdir_rpathdir = join_paths(pvrdir_rpathdir, libdir)
-> +
->  else
->  	bindir_rpathdir = ''
->  	libexecdir_rpathdir = ''
-> @@ -397,6 +405,7 @@ else
->  	vkms_rpathdir = ''
->  	unigraf_rpathdir = ''
->  	vmwgfx_rpathdir = ''
-> +	pvrdir_rpathdir = ''
-
-Same here, keep alphabetical order.
-
->  endif
->  
->  build_testplan = get_option('testplan')
-> diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
-> new file mode 100644
-> index 000000000..65b90c39f
-> --- /dev/null
-> +++ b/tests/imagination/meson.build
-> @@ -0,0 +1,13 @@
-> +pvr_progs = [ 'pvr_gem',
-> +	    ]
-> +
-> +pvr_deps = test_deps
-> +
-> +foreach prog : pvr_progs
-> +	test_executables += executable(prog, prog + '.c',
-> +				       dependencies : pvr_deps,
-> +				       install_dir : pvrdir,
-> +				       install_rpath : pvrdir_rpathdir,
-> +				       install : true)
-> +	test_list += join_paths('pvr', prog)
-> +endforeach
-> diff --git a/tests/imagination/pvr_gem.c b/tests/imagination/pvr_gem.c
-> new file mode 100644
-> index 000000000..b80d202a2
-> --- /dev/null
-> +++ b/tests/imagination/pvr_gem.c
-> @@ -0,0 +1,67 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-> +
-> +#include "igt.h"
-> +#include "igt_pvr.h"
-> +
-> +#include "pvr_drm.h"
-> +
-
-Same here, move after systems ones.
-
-> +#include <linux/errno.h>
-> +
-> +#include <stddef.h>
-> +#include <stdint.h>
-> +
-> +int igt_main()
-> +{
-> +	int fd;
-> +
-> +	igt_fixture()
-> +	{
-> +		fd = drm_open_driver(DRIVER_POWERVR);
-> +	}
-> +
-> +	igt_describe("Test valid buffer object creation");
-> +	igt_subtest("create-bo-4096")
-> +	{
-> +		size_t size = 4096;
-> +		uint32_t handle = igt_pvr_ioctl_create_bo(fd, &size);
-> +
-> +		gem_close(fd, handle);
-> +	}
-> +
-> +	igt_describe("Test buffer object creation with 0 size");
-> +	igt_subtest("create-bo-0")
-> +	{
-> +		struct drm_pvr_ioctl_create_bo_args arg = {
-> +			.size = 0,
-> +		};
-> +
-> +		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_BO, &arg, EINVAL);
-> +	}
-> +
-> +	igt_describe("Test buffer object creation with bad padding");
-> +	igt_subtest("create-bo-bad-padding")
-> +	{
-> +		struct drm_pvr_ioctl_create_bo_args arg = {
-> +			.size = 4096,
-> +			._padding_c = 0xbad6bad6,
-> +		};
-> +
-> +		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_BO, &arg, EINVAL);
-> +	}
-> +
-> +	igt_describe("Test buffer object creation with unaligned size");
-> +	igt_subtest("create-bo-unaligned-fail")
-> +	{
-> +		struct drm_pvr_ioctl_create_bo_args arg = {
-> +			.size = 4000,
-> +		};
-> +
-> +		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_BO, &arg, EINVAL);
-> +	}
-> +
-> +	igt_fixture()
-> +	{
-> +		close(fd);
-
-Use drm_close_driver() - a counterpart of drm_open_driver().
+  Missing    (1): bat-bmg-2 
 
 
+Changes
+-------
 
-Regards,
-Kamil
+  No changes found
 
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 6d90627b9..63adc61b9 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -561,3 +561,5 @@ if not meson.is_cross_build()
->  endif
->  
->  subdir('intel-ci')
-> +
-> +subdir('imagination')
-> 
-> -- 
-> 2.43.0
-> 
+
+Build changes
+-------------
+
+  * IGT: IGT_9012 -> IGTPW_15553
+
+  IGTPW_15553: 15553
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5424-22852552aa1b7198931842ddf824af4dd09e2814: 22852552aa1b7198931842ddf824af4dd09e2814
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15553/index.html
+
+--===============8909322364496170239==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_eld: Poll for async HDA codec probe in eld_is_supported()</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170629/">https://patchwork.freedesktop.org/series/170629/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15553/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15553/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9012_BAT -&gt; XEIGTPW_15553_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-bmg-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9012 -&gt; IGTPW_15553</li>
+</ul>
+<p>IGTPW_15553: 15553<br />
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5424-22852552aa1b7198931842ddf824af4dd09e2814: 22852552aa1b7198931842ddf824af4dd09e2814</p>
+
+</body>
+</html>
+
+--===============8909322364496170239==--
