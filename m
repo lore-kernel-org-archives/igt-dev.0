@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CAABC4451C
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:39:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA1AC44516
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:40:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2D7710E460;
-	Fri, 17 Jul 2026 12:39:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nDTun2lE";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E228F10F548
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 12:39:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784291955; x=1815827955;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=U+T/GpSZXVFZAIczfpx0gez3MPWTp76oH0H4LjOpE14=;
- b=nDTun2lEHPXlNRACi7ZfXUea3GkXpj/AyfN9PuEcaJM55O0u8caGsHTJ
- p9dS3rK/wJSYwSiGgyun7gaV934qQaqzH2Aft0/JpAa7StvB4k2zulhQf
- CVEKEOnxOf6WskSsxQqI1V/5sTuFkwzXk//tMFzLL1TLUAUZa4Ys/xkcB
- W80F6bdRXo5RU6SgJqVJ6OxV6eMtzsuAvYzKL0dEtCQXZe/l7GWkJYPRE
- x9WDpQNpqRlNRRymB6B0CXju5WQRBUjxoUZpqqBTKSiF/ptJOmgy4fceg
- TmnlutaTwzXXhDPD8UohxdNjzlRCSfjLfCK4R+Jo6aD8sFdqPFsBDNUkj A==;
-X-CSE-ConnectionGUID: 9ab4WapMR26BZd2B2RadFw==
-X-CSE-MsgGUID: MZh+X0eYRUyRpQ0BUZTNoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="96097023"
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="96097023"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2026 05:39:15 -0700
-X-CSE-ConnectionGUID: yhXn35UcQY6g66ggTbU9gQ==
-X-CSE-MsgGUID: myS/wo6oTg+YOgy1Ur/IFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="255016474"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 05:39:14 -0700
-Date: Fri, 17 Jul 2026 14:39:11 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <jason-jh.lin@mediatek.com>
-Subject: Re: =?utf-8?Q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tests=2Fkms?=
- =?utf-8?B?X2hkcjo=?= Skip unsupported formats in bpc-switch test (rev4)
-Message-ID: <20260717123911.gvyaqnbxlypr4nrf@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <jason-jh.lin@mediatek.com>
-References: <20260709073913.1645371-1-jason-jh.lin@mediatek.com>
- <178421937290.198460.1077575576675113295@6beec6c84f66>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 91F1F10E460;
+	Fri, 17 Jul 2026 12:40:45 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3604A10E460;
+ Fri, 17 Jul 2026 12:40:16 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8166099074515637892=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <178421937290.198460.1077575576675113295@6beec6c84f66>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Update_PTL_Core?=
+ =?utf-8?q?_blocklist?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: aditya.chauhan@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 17 Jul 2026 12:40:16 -0000
+Message-ID: <178429201621.201623.2935643380040410498@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260717103852.420934-1-aditya.chauhan@intel.com>
+In-Reply-To: <20260717103852.420934-1-aditya.chauhan@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,83 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-07-16 at 16:29:32 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/kms_hdr: Skip unsupported formats in bpc-switch test (rev4)
-> URL   : https://patchwork.freedesktop.org/series/166923/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_9008_FULL -> XEIGTPW_15541_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_15541_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_15541_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (2 -> 2)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_15541_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip:
->     - shard-lnl:          [PASS][1] -> [FAIL][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9008/shard-lnl-4/igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15541/shard-lnl-8/igt@kms_big_fb@x-tiled-max-hw-stride-32bpp-rotate-180-hflip-async-flip.html
-> 
->   * igt@runner@aborted:
->     - shard-lnl:          NOTRUN -> [FAIL][3]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15541/shard-lnl-5/igt@runner@aborted.html
-> 
->   * igt@xe_sriov_scheduling@equal-throughput-low-priority@numvfs-random-gt1-vcs0:
->     - shard-bmg:          NOTRUN -> [FAIL][4]
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15541/shard-bmg-2/igt@xe_sriov_scheduling@equal-throughput-low-priority@numvfs-random-gt1-vcs0.html
-> 
->   
-> #### Warnings ####
-> 
->   * igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-plflip-blt:
->     - shard-bmg:          [SKIP][5] ([Intel XE#2313]) -> [ABORT][6]
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9008/shard-bmg-9/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-plflip-blt.html
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15541/shard-bmg-1/igt@kms_frontbuffer_tracking@fbcpsr-2p-primscrn-indfb-plflip-blt.html
-> 
+--===============8166099074515637892==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Unrelated.
+== Series Details ==
+
+Series: intel-ci: Update PTL Core blocklist
+URL   : https://patchwork.freedesktop.org/series/170631/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9012_BAT -> XEIGTPW_15554_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 12)
+------------------------------
+
+  Missing    (1): bat-bmg-2 
 
 
+Changes
+-------
 
-Regards,
-Kamil
+  No changes found
 
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_15541_FULL that come from known issues:
-> 
-...cut...
+
+Build changes
+-------------
+
+  * IGT: IGT_9012 -> IGTPW_15554
+
+  IGTPW_15554: 15554
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5424-22852552aa1b7198931842ddf824af4dd09e2814: 22852552aa1b7198931842ddf824af4dd09e2814
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15554/index.html
+
+--===============8166099074515637892==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Update PTL Core blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170631/">https://patchwork.freedesktop.org/series/170631/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15554/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15554/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9012_BAT -&gt; XEIGTPW_15554_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-bmg-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9012 -&gt; IGTPW_15554</li>
+</ul>
+<p>IGTPW_15554: 15554<br />
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5424-22852552aa1b7198931842ddf824af4dd09e2814: 22852552aa1b7198931842ddf824af4dd09e2814</p>
+
+</body>
+</html>
+
+--===============8166099074515637892==--
