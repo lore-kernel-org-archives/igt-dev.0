@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0109C4451B
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 21:01:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C446C44515
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 21:02:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5AC3910F609;
-	Fri, 17 Jul 2026 21:01:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3871110F609;
+	Fri, 17 Jul 2026 21:02:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kpXWIapW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PAePiJlq";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB7B110F606
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 21:00:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14AA010F5F3
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 21:00:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784322034; x=1815858034;
+ t=1784322035; x=1815858035;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=1GYMwhES4n0HIkx27J+g3jWx2O802TOZsVoSJMyN1oE=;
- b=kpXWIapWltuZpJyjFQk3odUgyBxiJ7eboyDuhG7s9MBBlVjYmxY6mjJw
- Cct6L/Cp2JWPpzc067qwgmuOIO5OQTzLnB36CS00VMwLoOCnRJ1NsZLEy
- 1pHYXRc2IkynTnk2odzlICejefIxmRNuhqQs5rN4LStBvG0NsWNEkP4IO
- paHNkTz/ISCGOJxSLYIwFB6AyLJs1B7fkfsTtYJX923JKtvFifeTh+DbS
- rqViFS13MXIhLEZm93BowvzPHafgv55xfzvgOcEMVd7U4RuVJSSguyd9c
- VSm/xD0VJVgwFQzr/s1oB4g7fLWBSbh68IpRH26gVUQ+F7GaWfdhuWCRt g==;
-X-CSE-ConnectionGUID: 7GRDoKxZSzO9AwWhI5B6PQ==
-X-CSE-MsgGUID: F4vh1Q0dR5CYD3wSJR0qyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="84774459"
-X-IronPort-AV: E=Sophos;i="6.25,170,1779174000"; d="scan'208";a="84774459"
+ bh=XY2aqbGWUNCfkxTv5MHRNUYpF0ufL1IxNTOWJS1EYdo=;
+ b=PAePiJlqIPqv17gbOTQjLyPOY0GOS7VcDqkRdT3hOBM2NxXuTJ4shDr8
+ kOyh09LclJiLD+hxPRwIwXlxayXvvD+AVkzDihGCLPpA0hiV9FcEd0SZL
+ gOYWVHJjTg/nX5PHUlsSWgX7Qq0vtkAPkyFcBlU46gU9tSo+7UZQW3Dzd
+ wucNffR58kSXfFEeRVc0Ca8rbtwBOoUJUl5RFqhxrSDmrIzF7g/B2vKME
+ emNaP0H4YrgVjU+UBo7jYk6kqa4y6dBJn9yrxXVJ8EJlRybl7TQ4k4Iy/
+ rZ2N61u7ErfDxk/CN4nAi2VQ3VhUbS4bEjoqvBfYl0iC1aV27t0KmmVxF Q==;
+X-CSE-ConnectionGUID: M+0d36aYRzeLWcJ0L1gXNA==
+X-CSE-MsgGUID: Qf91DHl9Sia2OuXhTnUZ1w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11849"; a="84774460"
+X-IronPort-AV: E=Sophos;i="6.25,170,1779174000"; d="scan'208";a="84774460"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  17 Jul 2026 14:00:34 -0700
-X-CSE-ConnectionGUID: jJHEgUggQXS/eICNv60OVw==
-X-CSE-MsgGUID: 2kvSpIbVQfWo3xG7j9SB9g==
+X-CSE-ConnectionGUID: vNuRVAdBSaWADi4ByWJ25w==
+X-CSE-MsgGUID: Nr1UY9JoQIqv01ysotRqfA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,170,1779174000"; d="scan'208";a="261854702"
+X-IronPort-AV: E=Sophos;i="6.25,170,1779174000"; d="scan'208";a="261854705"
 Received: from orsosgc001.jf.intel.com ([10.88.27.185])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  17 Jul 2026 14:00:33 -0700
 From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH 1/4] tests/intel/xe_oa: Allow disabling load helper from
- command line
-Date: Fri, 17 Jul 2026 14:00:29 -0700
-Message-ID: <20260717210027.2008255-7-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH 2/4] tests/intel/xe_oa: Do not assume OA buffer is prefilled
+ with zeroes
+Date: Fri, 17 Jul 2026 14:00:30 -0700
+Message-ID: <20260717210027.2008255-8-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260717210027.2008255-6-umesh.nerlige.ramappa@intel.com>
 References: <20260717210027.2008255-6-umesh.nerlige.ramappa@intel.com>
@@ -68,114 +68,77 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In some test runs, it is useful to assess behavior with and without load
-helper.  Add a command line switch to disable the load helper if needed.
+The tail address test assumes that the OA buffer is preset to zeroes. Modify
+logic to be independent of this assumption.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 ---
- tests/intel/xe_oa.c | 29 +++++++++++++++++++++++++++--
- 1 file changed, 27 insertions(+), 2 deletions(-)
+ tests/intel/xe_oa.c | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 68c7537d3888..e7e4f5601b61 100644
+index e7e4f5601b61..98f00d377a86 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -1798,10 +1798,14 @@ static struct load_helper {
- 	bool exit;
- 	struct igt_helper_process igt_proc;
- 	struct intel_buf src, dst;
-+	bool disabled;
- } lh = { 0, };
+@@ -4634,7 +4634,7 @@ static void closed_fd_and_unmapped_access(const struct drm_xe_oa_unit *oau)
+  * format size is not a power of 2. This means that the last report will not be
+  * broken down across the OA buffer end. Instead it will be written to the
+  * beginning of the OA buffer. We will check the end of the buffer to ensure it
+- * has zeroes in it.
++ * has not been written into.
+  */
+ static void
+ test_tail_address_wrap(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
+@@ -4649,6 +4649,7 @@ test_tail_address_wrap(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, test_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, exponent,
++		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
+ 		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, buffer_size,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+@@ -4656,25 +4657,31 @@ test_tail_address_wrap(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
+ 		.properties_ptr = to_user_pointer(properties),
+ 	};
+ 	u32 fmt_size = get_oa_format(fmt).size;
+-	u32 zero_size = buffer_size % fmt_size;
+-	u32 *zero_area, *buffer_end, *buffer_start;
++	u32 area_size = buffer_size % fmt_size;
++	u32 *area, *buffer_end, *buffer_start;
++	u32 *content = malloc(area_size);
  
- static void load_helper_signal_handler(int sig)
- {
-+	if (lh.disabled)
-+		return;
+-	igt_require(zero_size);
++	igt_require(area_size);
++	igt_require(content);
+ 
+ 	stream_fd = __perf_open(drm_fd, &param, false);
+ 	set_fd_flags(stream_fd, O_CLOEXEC);
+-
+-	wait_for_oa_buffer_overflow(stream_fd, 100);
+-
+ 	buffer_start = mmap(0, buffer_size, PROT_READ, MAP_PRIVATE, stream_fd, 0);
+ 	igt_assert(buffer_start);
+ 
+-	zero_area = buffer_start + (buffer_size - zero_size) / 4;
++	area = buffer_start + (buffer_size - area_size) / 4;
+ 	buffer_end = buffer_start + buffer_size / 4;
+ 
+-	dump_report(zero_area, zero_size / 4, "zero_area");
+-	while (zero_area < buffer_end)
+-		igt_assert_eq(*zero_area++, 0);
++	memcpy(content, area, area_size);
++	dump_report(area, area_size / 4, "contents before");
 +
- 	if (sig == SIGUSR2)
- 		lh.load = lh.load == LOW ? HIGH : LOW;
- 	else
-@@ -1812,6 +1816,9 @@ static void load_helper_set_load(enum load load)
- {
- 	igt_assert(lh.igt_proc.running);
- 
-+	if (lh.disabled)
-+		return;
++	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
++	wait_for_oa_buffer_overflow(stream_fd, 100);
++	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
 +
- 	if (lh.load == load)
- 		return;
++	dump_report(area, area_size / 4, "contents after");
++	while (area < buffer_end)
++		igt_assert_eq(*area++, *content++);
  
-@@ -1821,6 +1828,9 @@ static void load_helper_set_load(enum load load)
+ 	munmap(buffer_start, buffer_size);
  
- static void load_helper_run(enum load load)
- {
-+	if (lh.disabled)
-+		return;
-+
- 	if (!render_copy)
- 		return;
- 
-@@ -1856,6 +1866,9 @@ static void load_helper_run(enum load load)
- 
- static void load_helper_stop(void)
- {
-+	if (lh.disabled)
-+		return;
-+
- 	if (!render_copy)
- 		return;
- 
-@@ -1865,6 +1878,9 @@ static void load_helper_stop(void)
- 
- static void load_helper_init(void)
- {
-+	if (lh.disabled)
-+		return;
-+
- 	if (!render_copy) {
- 		igt_info("Running test without render_copy\n");
- 		return;
-@@ -1884,6 +1900,9 @@ static void load_helper_init(void)
- 
- static void load_helper_fini(void)
- {
-+	if (lh.disabled)
-+		return;
-+
- 	if (!render_copy)
- 		return;
- 
-@@ -4981,6 +5000,10 @@ static int opt_handler(int opt, int opt_index, void *data)
- 		oa_trace = true;
- 		igt_debug("Trace enabled\n");
- 		break;
-+	case 'd':
-+		lh.disabled = true;
-+		igt_info("Load helper disabled\n");
-+		break;
- 	default:
- 		return IGT_OPT_HANDLER_ERROR;
- 	}
-@@ -4989,15 +5012,17 @@ static int opt_handler(int opt, int opt_index, void *data)
- }
- 
- static const char *help_str =  "  --trace		| -t\t\tEnable ftrace\n"
--			       "  --trace_buf_size_mb	| -b\t\tSet ftrace buffer size in MB (default = 1, min = 1, max = 20)\n";
-+			       "  --trace_buf_size_mb	| -b\t\tSet ftrace buffer size in MB (default = 1, min = 1, max = 20)\n"
-+			       "  --disable-load-helper | -d\t\tDisable load helper\n";
- 
- static struct option long_options[] = {
- 	{"trace", 0, 0, 't'},
- 	{"trace_buf_size_mb", 0, 0, 'b'},
-+	{"disable-load-helper", 0, 0, 'd'},
- 	{ NULL, 0, 0, 0 }
- };
- 
--int igt_main_args("b:t", long_options, help_str, opt_handler, NULL)
-+int igt_main_args("b:td", long_options, help_str, opt_handler, NULL)
- {
- 	const struct sync_section {
- 		const char *name;
 -- 
 2.51.0
 
