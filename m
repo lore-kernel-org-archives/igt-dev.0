@@ -4,82 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8302C44507
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 07:50:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58695C44507
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 07:51:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7C10D10F486;
-	Fri, 17 Jul 2026 07:50:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0363F10F489;
+	Fri, 17 Jul 2026 07:51:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="ex7rJEFs";
+	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="y7bVfSKo";
 	dkim-atps=neutral
 Received: from mx08-00376f01.pphosted.com (mx08-00376f01.pphosted.com
  [91.207.212.86])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A34310F486
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 07:49:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0E71610F485
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 07:49:10 +0000 (UTC)
 Received: from pps.filterd (m0168888.ppops.net [127.0.0.1])
  by mx08-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 66H7GWLF2965623
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:12 +0100
+ 66H7A2d52952494
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=dk201812; bh=b
- 5rVuoLOeRPPr23UjVpaXuQEfTzV+bo421stsVlYReU=; b=ex7rJEFs2u7HQnX2L
- G87XKxh6XLEdqdHPjfDVMI3K0GTydAvhOkxi8DqNPMKb9sreYiRHEpeo0F7MKzUF
- Tl+/rxRj7zNhV5aWbLbmzz2fmJMe7V44e3Wx9SYDJt6HP2sP123uH85puLh4MCHl
- vOxvfAT/+pVUG1QNSXsehV1idxXDcn2ThxKqL0MdpT+7xyhcWOD0QD4xHLVli+06
- OxEM3PDV5PeLJzR8ra0YoniY5StrzYj5kzUWagLYRy3NiK4smEc8BtyURD9Gedp1
- lhcvYpKUPy1DXbhY73Fmcr262TUnkJGrokLcRNln9tl2uyw3vgyic/SgjvPz07dG
- 1/CGA==
+ :message-id:mime-version:references:subject:to; s=dk201812; bh=x
+ fX1b7XFlX9ivlao4k61NGZD4Cpfl0tT4OiAdSTZMWo=; b=y7bVfSKo9HKhLFo5h
+ Shi9pjhfBDb6fZqS2BJibU7Gwmrn1XKoaHSsWhQP+eYQYVv0XumnEhmD2JdcHIAN
+ hfnxXsqELf36KgYOXBVPG25YHCuhrHyBD8lLpz5lr6xkGjUWavzsmbh9UibpBJv3
+ BA6YRr2jYW5f/Cu8dYeG0326U3djuab0IHKgizKKmIBLEMj7fqqbdrNZmQDREHOG
+ L96bu5wogLpHV+ZT9X1ojOb1UCri42hE5jGHHsn7bJFJf78S6l1QN5+I0khJmV8F
+ ts5aQqNwqzXeoa+kSUKXHEgHyf71v9gn3adN6uJ3GM1/86etlpxRKM/d/54BQEW7
+ 3aZyw==
 Received: from hhmail01.hh.imgtec.org
  (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
- by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4fbcp7cwrj-2
+ by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4fbcp7cwrh-3
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:11 +0100 (BST)
+ for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 08:49:09 +0100 (BST)
 Received: from [127.0.1.1] (172.25.9.35) by HHMAIL01.hh.imgtec.org
  (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Fri, 17 Jul
- 2026 08:49:11 +0100
+ 2026 08:49:08 +0100
 From: Robert Mazur <robert.mazur@imgtec.com>
-Date: Fri, 17 Jul 2026 09:48:13 +0200
-Subject: [PATCH i-g-t 06/10] tests/imagination: Add DEV_QUERY static data
- area tests
+Date: Fri, 17 Jul 2026 09:48:09 +0200
+Subject: [PATCH i-g-t 02/10] tests/imagination: Add GEM mmap tests
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260717-test-imagination-add-support-v1-6-2f02f9cc3b53@imgtec.com>
+Message-ID: <20260717-test-imagination-add-support-v1-2-2f02f9cc3b53@imgtec.com>
 References: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
 In-Reply-To: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Robert Mazur <robert.mazur@imgtec.com>, Donald Robson
- <donald.robson@imgtec.com>
+CC: Robert Mazur <robert.mazur@imgtec.com>, Matt Coster
+ <matt.coster@imgtec.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784274547; l=3226;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784274547; l=1832;
  i=robert.mazur@imgtec.com; s=20260324; h=from:subject:message-id;
- bh=rU1WyAAlWc21h+z9KNnY6j8GiolzUNoc/p8x29M4X+c=;
- b=O3kk5sE1RVRSY12PVPEoOZrJZnY9hdysnnpHPqpO8XS+az7kIzZGH046+quyTsgjh/xUN1bO9
- mTo2V/pf2oiAnV0LAiXIEjAqdM2lmjJ+L6nVPgned0JB+l4CQ0Sv9Jz
+ bh=Xe/Hh6ZCWAOcaQaupRy7GfHMUqrVptFz2/Xqdg0erAA=;
+ b=BWg/uvOcfof7Nlh36SJGGwNwvh4JJgTn2ZsX4lNePRvAHhHZykO08Xvtd/NKrIUaDd5gAFnBa
+ I8A/buqdDbsB5c9FNHuZWvnd1m0gP78f8vDjqJ28AbPy3+hw/zkNze7
 X-Developer-Key: i=robert.mazur@imgtec.com; a=ed25519;
  pk=X5uhazsNnVDpw/srawR3m7WOmgzFZXdecapAeML2ZgM=
 X-Originating-IP: [172.25.9.35]
-X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfX+gdgf7HfzB3J
- YAGo1xpOoMc29F8NMAPgo8xrvMIKFTl5rXdFmqTMs5wdFBxuX0YTed0WDeBjbWIrt2sv7AvE/du
- xEvjUW434RE3cBZZ6HbhP5I2srZPEwo=
-X-Proofpoint-GUID: 8pHTcg0-rSEmJBqUTTEnFUC_Rpy03_qu
-X-Proofpoint-ORIG-GUID: 8pHTcg0-rSEmJBqUTTEnFUC_Rpy03_qu
-X-Authority-Analysis: v=2.4 cv=AYOB2XXG c=1 sm=1 tr=0 ts=6a59de77 cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfXw/xws17tGweF
+ D/fqLeAASsK6rXW49lTdjZJ/LGGLoAXivmWD0tetoXJjiRq1x01oRdihZ2J4w9khjkYg3562jdt
+ vZ0CntVKGsHNRmmYPLWFu8qSkBEY+4o=
+X-Proofpoint-GUID: zMlPx8KEiJEIj0DOzSIW94vgKNJYiBuv
+X-Proofpoint-ORIG-GUID: zMlPx8KEiJEIj0DOzSIW94vgKNJYiBuv
+X-Authority-Analysis: v=2.4 cv=AYOB2XXG c=1 sm=1 tr=0 ts=6a59de75 cx=c_pps
  a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
  a=CNmLAE0vrksA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=qZQ2PDNLMSdLoqI-hfl9:22
- a=r_1tXGB3AAAA:8 a=NDabtZqKMSvLAD6k1PcA:9 a=QEXdDO2ut3YA:10
+ a=r_1tXGB3AAAA:8 a=L8LdILqEO6YnCbYE5soA:9 a=QEXdDO2ut3YA:10
  a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfX99Emw8ilT50s
- zVc0l5QKCjyTSJNsjBrNoonPmxX3Dx8c+42oOO7UFo2ndQoQ1F79tNKoCsNOFuC884wAgoi0m35
- pfPHH5CvrOwNQofQIwo9Wa5Hzs04mCYUa0kqvdlxXxr6e9L7jNoBWsjB0TXWk/QDdEl+EGj8alV
- IP5bmIR1eI51RHfqZMiPNc/GsdiNZjKzKTYTRo/ubPJ/uL0xXCr8oeBf2rShkIKf4RcApIHoEWF
- 54sxn5EGqMer9WhExVvEwavs7MmQJOplT4VkLkVQ2L261LTE92NXVUC5bu7OCXIa1LJ6feIL6uk
- D7N5QyjVJPh8m4OA9uW6yMGFzxGh0/SIexvR3D5Q/g+b0X3ZwlIxGV6O8EBDFcEGIMzP0+oTP3M
- oe5ed0IrOiSVoHkyasYfuoMdcR5n/+gOpNGPmdtKMbwLBBxkMBvzag2g/5/QtyfV2ohhuTaBhPF
- b6WktS1jLBwVPNdJsAw==
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzE3MDA3NiBTYWx0ZWRfX8LC/EzB71dSu
+ 0ok+DKXzsLY7sRf7SPnA7xrcrOQjr8VtDedvQ09EH5Izr1FNsaDRoj+hgpieoK+Gr2glwQXAd9c
+ gImyiiBB2N5tsaA9YOwGqyVUiPZmUs+VI4jB5cBXhspG5/NmATFDvvU9jXdQbwDiD++0q58Xf/X
+ XlXUj752+t9OMSyF/XbGTuQyA18MypFi5p7T5031kPzWI7/cwEiNfgV1mBMYc9dJK64St242tnY
+ dFiuAWiRaU0rJmzQsjwduJ+fCeAMecEtbrlVJQLwtVWPN3jeyy4SLvTedZcV442shBKVJRoicQz
+ WXgHAcnH21K+TrdZkyUbqK1UVqgAIpLDz+8FZCaI3HDn5rwGGGgGYvrIixlDsmhqGZXrhsS53EF
+ eR81BJDjNraHBVAnts1FxODMM2tghSeI0HP6lk/8jK9rpWL6Qv9W6maf//LVRi4CF74DbWqQ5Cw
+ 9Vut3t91lJTZKlL/7dw==
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,102 +94,66 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Donald Robson <donald.robson@imgtec.com>
+From: Matt Coster <matt.coster@imgtec.com>
 
-Add subtest validating static data areas returned by DEV_QUERY.
+Add subtests for mmap operations on GEM buffer objects.
 
-Signed-off-by: Donald Robson <donald.robson@imgtec.com>
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
 Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
 ---
- lib/igt_pvr.c                     | 19 +++++++++++++++++++
- lib/igt_pvr.h                     |  2 ++
- tests/imagination/pvr_heap_info.c | 39 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 60 insertions(+)
+ tests/imagination/pvr_gem.c | 44 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
-index a190cd67b..437362dbc 100644
---- a/lib/igt_pvr.c
-+++ b/lib/igt_pvr.c
-@@ -94,3 +94,22 @@ igt_pvr_get_heap_info(int fd, uint32_t *array_len_out)
- 	return heaps;
- }
- 
-+struct drm_pvr_static_data_area *
-+igt_pvr_get_static_data_areas(int fd, uint32_t *array_len_out)
-+{
-+	struct drm_pvr_static_data_area *sdas =
-+		calloc(DRM_PVR_STATIC_DATA_AREA_YUV_CSC + 1, sizeof(*sdas));
-+	struct drm_pvr_dev_query_static_data_areas sdas_get = {
-+		.static_data_areas =
-+			DRM_PVR_OBJ_ARRAY(DRM_PVR_STATIC_DATA_AREA_YUV_CSC + 1,
-+					  sdas),
-+	};
-+
-+	igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+				sizeof(sdas_get), &sdas_get, 0);
-+
-+	if (array_len_out)
-+		*array_len_out = sdas_get.static_data_areas.count;
-+
-+	return sdas;
-+}
-diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
-index 181a0e843..e7fbdc82f 100644
---- a/lib/igt_pvr.h
-+++ b/lib/igt_pvr.h
-@@ -19,5 +19,7 @@ igt_pvr_ioctl_dev_query(int fd, enum drm_pvr_dev_query type, uint64_t size,
- 			void *pointer, int expect_err);
- struct drm_pvr_heap *
- igt_pvr_get_heap_info(int fd, uint32_t *array_len_out);
-+struct drm_pvr_static_data_area *
-+igt_pvr_get_static_data_areas(int fd, uint32_t *array_len_out);
- 
- #endif /* IGT_PVR_H */
-diff --git a/tests/imagination/pvr_heap_info.c b/tests/imagination/pvr_heap_info.c
-index b498214d9..590e4ac87 100644
---- a/tests/imagination/pvr_heap_info.c
-+++ b/tests/imagination/pvr_heap_info.c
-@@ -123,6 +123,45 @@ int igt_main()
- 		free(heaps);
+diff --git a/tests/imagination/pvr_gem.c b/tests/imagination/pvr_gem.c
+index b80d202a2..fec98a1f2 100644
+--- a/tests/imagination/pvr_gem.c
++++ b/tests/imagination/pvr_gem.c
+@@ -60,6 +60,50 @@ int igt_main()
+ 		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_BO, &arg, EINVAL);
  	}
  
-+	igt_describe("Test validity of static data areas");
-+	igt_subtest("heap-info-static-data-areas-valid")
++	igt_describe("Test valid buffer object mapping");
++	igt_subtest("mmap-bo-4096")
 +	{
-+		uint32_t heaps_count = 0;
-+		struct drm_pvr_heap *heaps =
-+			igt_pvr_get_heap_info(fd, &heaps_count);
++		size_t size = 4096;
++		uint32_t handle = igt_pvr_ioctl_create_bo(fd, &size);
 +
-+		uint32_t sda_count = 0;
-+		struct drm_pvr_static_data_area *static_data_areas =
-+			igt_pvr_get_static_data_areas(fd, &sda_count);
++		off_t offset = igt_pvr_ioctl_get_bo_mmap_offset(fd, handle);
 +
-+		igt_assert(heaps);
-+		igt_assert(static_data_areas);
++		char *mapped = mmap(NULL, size, PROT_WRITE, MAP_SHARED,
++				    fd, offset);
++		igt_assert(mapped != MAP_FAILED);
 +
-+		for (uint32_t i = 0; i < sda_count; i++) {
-+			const uint64_t start_offset = static_data_areas[i].offset;
-+			const uint64_t end_offset =
-+				start_offset + static_data_areas[i].size;
-+			const struct drm_pvr_heap *const heap =
-+				&heaps[static_data_areas[i].location_heap_id];
++		/* Test writing to beginning and end of mapped range. */
++		mapped[0] = 0xff;
++		mapped[size - 1] = 0xff;
 +
-+			igt_assert_lte(static_data_areas[i].area_usage,
-+				       DRM_PVR_STATIC_DATA_AREA_YUV_CSC);
-+			igt_assert_lt(static_data_areas[i].location_heap_id,
-+				      DRM_PVR_HEAP_COUNT);
++		munmap(mapped, size);
++		gem_close(fd, handle);
++	}
 +
-+			if (!static_data_areas[i].size)
-+				/* Not present for device. */
-+				continue;
++	igt_describe("Test buffer object mapping with bad handle");
++	igt_subtest("mmap-bo-bad-handle")
++	{
++		struct drm_pvr_ioctl_get_bo_mmap_offset_args arg = {
++			.handle = 0xbad6bad6,
++		};
 +
-+			/* Ensure reported range is inside the heap. */
-+			igt_assert_lte_u64(start_offset, heap->size);
-+			igt_assert_lte_u64(end_offset, heap->size);
-+		}
++		do_ioctl_err(fd, DRM_IOCTL_PVR_GET_BO_MMAP_OFFSET, &arg, ENOENT);
++	}
 +
-+		free(heaps);
-+		free(static_data_areas);
++	igt_describe("Test buffer object mapping with bad padding");
++	igt_subtest("mmap-bo-bad-padding")
++	{
++		size_t size = 4096;
++		uint32_t handle = igt_pvr_ioctl_create_bo(fd, &size);
++
++		struct drm_pvr_ioctl_get_bo_mmap_offset_args arg = {
++			.handle = handle,
++			._padding_4 = 0xbad6bad6,
++		};
++
++		do_ioctl_err(fd, DRM_IOCTL_PVR_GET_BO_MMAP_OFFSET, &arg, EINVAL);
 +	}
 +
  	igt_fixture()
