@@ -4,61 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8406BC4451C
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:07:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD936C44520
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:08:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 30CC910E43D;
-	Fri, 17 Jul 2026 12:07:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 724C410F526;
+	Fri, 17 Jul 2026 12:08:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m5mhjahS";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="ffLZuGli";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F6F610EAB0
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 12:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784289954; x=1815825954;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=0ysmm0TzWulre1aynh+3JbnbuxcWoNq8PZW6eMJQvlo=;
- b=m5mhjahSYEUipV99mVPn8JqY8A9RTWrDVb7deV/w0tptSZFbVPE6Qsav
- UESsRFCNixSuW9EyLIqQaD+uCm+RoHvI55rJudkI6mQznleYsRDGjthbi
- eZO/KIu9li13vYuVWM0SU0T8dz0IEbRUJ/imEPeaZnKoJ7QGTsZlZ2VNc
- 3o253OMQKRSAcaIvtxeSAFHZN7VtRtqcmbgL8+dZ6497PrYphljAYCQ8F
- oWa8zoASxuQV+ZYKQu57g7K5/ppwGl7apf2mwQduPZpqWhsqGbVuRw216
- RB9xi64ZyoUTZtkv44nEPg2soN0CKtRDpU1C9Pv54UPjx6iWDnhQjH2q2 w==;
-X-CSE-ConnectionGUID: A5Nt/JCITP+UHrAf381uRQ==
-X-CSE-MsgGUID: gJHDtscLRpug/3TKnhH/AQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="96324245"
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="96324245"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2026 05:05:51 -0700
-X-CSE-ConnectionGUID: 8XmVVfWiQiCWhaYN51j7pg==
-X-CSE-MsgGUID: ZIVvnfqEQUWYv9JuMKlolw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="250419103"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 05:05:50 -0700
-Date: Fri, 17 Jul 2026 14:05:48 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "B, Jeevan" <jeevan.b@intel.com>
-Cc: "Sharma, Swati2" <swati2.sharma@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-Subject: Re: [PATCH i-g-t] intel-ci: remove dc3co-vpb-simulation from NVL
- blocklist
-Message-ID: <20260717120548.flfbxvygmsnslbff@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "B, Jeevan" <jeevan.b@intel.com>,
- "Sharma, Swati2" <swati2.sharma@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20260716184422.3255515-1-swati2.sharma@intel.com>
- <DM4PR11MB63127885A672C8E14ED6B5C290C62@DM4PR11MB6312.namprd11.prod.outlook.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9E4210E59B;
+ Fri, 17 Jul 2026 12:05:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
+ Date:Subject:Cc:To:From:From:Reply-To;
+ bh=UZZZIyK2AovRwfjZ0N/6ajWt/Sn0YJbtCsW3Hgfz5Kw=; b=ffLZuGlifFHz9ix2FmdwQi7+o0
+ BiMzeQ/ZrZwgDfkDvpRBDE9s8lYUIgv3z3WYLxU7Cpz2Otk7EW8GROMsyZ8hQyG04Hfr5Uah2MatN
+ YU8srfUkJwOZvhOwMEMfi/F5N6HrF0P8nkMkfrwCprbLt/pC7nx/2GuAuO31+C0BGr4UlplvqNJdC
+ cb2G1vqXYm2kFyIWIC6DksesnzrLCL3gYf/p7+vTyXpyRjYv/qVxVvy+QCSMZn3/4Nvo/35pqvUBb
+ dfglIy+z51+H6P4CUu6nUk4uA5wUF9IYDmw3kBqTvsFEAkHMFtMJm5BduyyPmn/4fK2SzV0SToxWZ
+ Avjz6Ojw==;
+Received: from 179-125-86-98-dinamico.pombonet.net.br ([179.125.86.98]
+ helo=quatroqueijos.lan) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1wkhJe-00GPAm-Ir; Fri, 17 Jul 2026 14:05:18 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: igt-dev@lists.freedesktop.org
+Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ Christian Koenig <christian.koenig@amd.com>,
+ maarten.lankhorst@linux.intel.com,
+ =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Natalie Vock <natalie.vock@gmx.de>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
+Subject: [PATCH i-g-t v4 2/7] tests/cgroup_dmem: add dmem cgroup controller
+ test
+Date: Fri, 17 Jul 2026 09:04:42 -0300
+Message-ID: <20260717120447.1837818-3-cascardo@igalia.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260717120447.1837818-1-cascardo@igalia.com>
+References: <20260717120447.1837818-1-cascardo@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <DM4PR11MB63127885A672C8E14ED6B5C290C62@DM4PR11MB6312.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,55 +67,136 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevan,
-On 2026-07-17 at 03:28:47 +0000, B, Jeevan wrote:
-> > -----Original Message-----
-> > From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
-> > Sharma
-> > Sent: Friday, July 17, 2026 12:14 AM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: Sharma, Swati2 <swati2.sharma@intel.com>
-> > Subject: [PATCH i-g-t] intel-ci: remove dc3co-vpb-simulation from NVL blocklist
-> Update intel-ci to tests/intel-ci: 
-> 
-> With this PLTM. 
-> 
->  Reviewed-by: Jeevan B <jeevan.b@intel.com>
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-Can you start line with your r-b without a space?
-Our patchwork software cannot cope with it and
-do not mark a patch with r-b.
+Add a test that exercises the cgroup v2 dmem controller interface using
+the new igt_cgroup library.
 
-Regards,
-Kamil
+The test uses igt_simple_main and:
+  - Skips if no dmem regions are registered (no cgroup v2 or no
+   dmem-capable device).
+  - Creates a sub-cgroup and moves the test process into it.
+  - Enumerates all registered device memory regions and prints their
+   capacity, system-wide current usage, per-cgroup current usage, and
+   configured min, low and max limits.
+  - Destroys the cgroup on completion.
 
-> > 
-> > Remove simulation-only kms_pm_dc subtest from the NVL display blocklist.
-> > 
-> > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> > ---
-> >  tests/intel-ci/xe.nvl.display.blocklist.txt | 1 -
-> >  1 file changed, 1 deletion(-)
-> > 
-> > diff --git a/tests/intel-ci/xe.nvl.display.blocklist.txt b/tests/intel-
-> > ci/xe.nvl.display.blocklist.txt
-> > index e6390d16b..d44c4030f 100644
-> > --- a/tests/intel-ci/xe.nvl.display.blocklist.txt
-> > +++ b/tests/intel-ci/xe.nvl.display.blocklist.txt
-> > @@ -81,7 +81,6 @@ igt@kms_plane_scaling@planes-.*upscale-.*downscale.*
-> > 
-> > #################################################################
-> > #############
-> >  # Valid skip: Simulation specific
-> > 
-> > #################################################################
-> > #############
-> > -igt@kms_pm_dc@dc3co-vpb-simulation
-> >  igt@kms_simulation_hpd@sim-hpd
-> > 
-> > #################################################################
-> > #############
-> >  # Valid skip: Mei interface not supported MTL+
-> > --
-> > 2.25.1
-> 
+Assisted-by: GitHub Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ tests/cgroup_dmem.c | 92 +++++++++++++++++++++++++++++++++++++++++++++
+ tests/meson.build   |  1 +
+ 2 files changed, 93 insertions(+)
+ create mode 100644 tests/cgroup_dmem.c
+
+diff --git a/tests/cgroup_dmem.c b/tests/cgroup_dmem.c
+new file mode 100644
+index 000000000000..442c965f9bbf
+--- /dev/null
++++ b/tests/cgroup_dmem.c
+@@ -0,0 +1,92 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2025 Intel Corporation
++ */
++
++/**
++ * TEST: cgroup dmem
++ * Description: Exercises the cgroup v2 dmem controller interface.  Creates a
++ *              cgroup, moves the process into it, enumerates all dmem regions,
++ *              prints their capacity, system-wide current usage, per-cgroup
++ *              current usage and configured limits, then destroys the cgroup.
++ * Category: Core
++ * Mega feature: General Core features
++ * Sub-category: uapi
++ * Functionality: cgroup
++ * Feature: dmem
++ * Test category: uapi
++ */
++
++#include <inttypes.h>
++
++#include "igt.h"
++#include "igt_cgroup.h"
++
++IGT_TEST_DESCRIPTION("Exercises the cgroup v2 dmem controller interface.");
++
++static void fmt_bytes(uint64_t v, char *buf, size_t len)
++{
++	if (v == IGT_CGROUP_DMEM_MAX)
++		snprintf(buf, len, "max");
++	else
++		snprintf(buf, len, "%" PRIu64, v);
++}
++
++int igt_simple_main()
++{
++	struct igt_cgroup *cg;
++	const char *region;
++	char **regions;
++	uint64_t capacity, sys_current, cg_current, min, low, max;
++	char cap_s[32], sys_s[32], cg_s[32];
++	char min_s[32], low_s[32], max_s[32];
++	int i;
++
++	igt_require_f(igt_cgroup_dmem_available(),
++		      "No dmem regions found; is cgroup v2 with the "
++		      "dmem controller available?\n");
++
++	cg = igt_cgroup_new("igt-cgroup-dmem-test");
++	igt_assert_f(cg, "Failed to create cgroup\n");
++
++	igt_cgroup_move_current(cg);
++
++	regions = igt_cgroup_dmem_regions();
++	igt_assert_f(regions, "Failed to enumerate dmem regions\n");
++
++	igt_info("%-40s %16s %16s %16s %16s %16s %16s\n",
++		 "region", "capacity", "system-current",
++		 "cgroup-current", "min", "low", "max");
++	igt_info("%-40s %16s %16s %16s %16s %16s %16s\n",
++		 "------", "--------", "--------------",
++		 "--------------", "---", "---", "---");
++
++	for (i = 0; regions[i]; i++) {
++		region = regions[i];
++
++		igt_cgroup_dmem_get_capacity(region, &capacity);
++		fmt_bytes(capacity, cap_s, sizeof(cap_s));
++
++		igt_cgroup_dmem_get_system_current(region, &sys_current);
++		fmt_bytes(sys_current, sys_s, sizeof(sys_s));
++
++		igt_cgroup_dmem_get_current(cg, region, &cg_current);
++		fmt_bytes(cg_current, cg_s, sizeof(cg_s));
++
++		igt_cgroup_dmem_get_min(cg, region, &min);
++		fmt_bytes(min, min_s, sizeof(min_s));
++
++		igt_cgroup_dmem_get_low(cg, region, &low);
++		fmt_bytes(low, low_s, sizeof(low_s));
++
++		igt_cgroup_dmem_get_max(cg, region, &max);
++		fmt_bytes(max, max_s, sizeof(max_s));
++
++		igt_info("%-40s %16s %16s %16s %16s %16s %16s\n",
++			 region, cap_s, sys_s, cg_s,
++			 min_s, low_s, max_s);
++	}
++
++	igt_cgroup_dmem_regions_free(regions);
++	igt_cgroup_free(cg);
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 9c266569df25..880f6f5410ba 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -1,4 +1,5 @@
+ test_progs = [
++	'cgroup_dmem',
+ 	'core_auth',
+ 	'core_debugfs',
+ 	'core_getclient',
+-- 
+2.47.3
+
