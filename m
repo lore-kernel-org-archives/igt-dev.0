@@ -4,74 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E671C44520
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:37:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D17BC44520
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 12:39:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C508310F547;
-	Fri, 17 Jul 2026 12:37:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AAB7410F547;
+	Fri, 17 Jul 2026 12:39:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h3rZM/qv";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mhyoA4F4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E797B10F547
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 12:36:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9263910F547;
+ Fri, 17 Jul 2026 12:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784291819; x=1815827819;
+ t=1784291924; x=1815827924;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=ixyNwR/rKR1bPcAiwaoLE7F10snWV+eJVCXGb3gpyWk=;
- b=h3rZM/qvGJXXdLIRBd0K1gdB8jfBXGl9DVzbTdYhRwA3YsenYSWAZw5q
- 9h5eKmIS8nZSN9CGpwz4v6KvSHXg7AY+nwtwtWVqAtV1274RKiM0jizIq
- uoC3nEi/RwAYnsMFWqwi435ZYodE9OGl9ljqcI8+VrTWARKrNzFHIjuap
- kM5xSKdUdsmqLQggSozLHpZrvZwTlK/lK6nykhEErOgJVRofYNcn3tRnX
- xtU6S8W60+dlJm5XwtnM4HE/2r0M+ZHDIJMv+YVDAb+zzGrpPCq8yP5Qt
- M+mIIwWQow1l5mGKG410fbE7yrYiPbLngQHqGN5p3+Wzui5Gc7/xR+lzQ g==;
-X-CSE-ConnectionGUID: c2Y6K/WCS1a+4Subnr3jxw==
-X-CSE-MsgGUID: tiwj/wiBTAaEGlqHchkACw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="96474057"
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="96474057"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2026 05:36:59 -0700
-X-CSE-ConnectionGUID: 1i/9wZQpSVmD19vuyhRaoQ==
-X-CSE-MsgGUID: kyco0r5sRMGFYe6SQvtErw==
+ bh=UgvpUNzodqNbsxLYNUkHXVMBprl+cePU2iqrLgAZJPw=;
+ b=mhyoA4F4s4KxamcnPbuDY/Xj9r2Qn09r9i8KQf7YpDf6SbtoJCbcEZou
+ Y/Q8CxBZedqP0rx0LYDynk9RJEy/C0ST18ARv9lV94knzedhCG3akXEE+
+ T47Uvr1dAHqSAeM5xcnCapvaUlHl+AEsoA7RqU/A6DCW5hubdMIo0N2hB
+ ef9aOF+nB/sCxVvFvLEh6jz/TyscdRuw1DhBxDKUfrEakxiXvfPQ1d8Ds
+ wXLhP7omjLA9MttBSrBQ5PSazSThuDj/oV/RQFnlemGGObWNWV2yoqaMt
+ 6QDn2a8HBVh2OsUe2G43rShg8zq4u4v/YP+fiugYc8KHy3bIQoAgowaKd A==;
+X-CSE-ConnectionGUID: 93BCjkKRTj6rotQwTb6xkQ==
+X-CSE-MsgGUID: 19Ls/YbxR6GMhMXHKM9nJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="84818233"
+X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="84818233"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Jul 2026 05:38:44 -0700
+X-CSE-ConnectionGUID: BeratKUSRFqG2CTypBb1Xw==
+X-CSE-MsgGUID: hcD7A6oQTbmkV0vHBpAG7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="250423858"
+X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="286856894"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 05:36:55 -0700
-Date: Fri, 17 Jul 2026 14:36:53 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jul 2026 05:38:43 -0700
+Date: Fri, 17 Jul 2026 14:38:39 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jason-JH Lin <jason-jh.lin@mediatek.com>
-Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Ville Syrjala <ville.syrjala@linux.intel.com>,
- Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>,
- Lancelot Wu <Lancelot.Wu@mediatek.com>,
- Manasi Navare <navaremanasi@google.com>,
- Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
-Subject: Re: [PATCH i-g-t v3] tests/kms_hdr: Skip unsupported formats in
- bpc-switch test
-Message-ID: <20260717123653.ncv3xmnc7lphelkj@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <jason-jh.lin@mediatek.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?Q?=E2=9C=97_i915=2ECI=2EFull=3A_failure_for_tests=2Fk?=
+ =?utf-8?Q?ms=5Fhdr=3A?= Skip unsupported formats in bpc-switch test (rev4)
+Message-ID: <20260717123839.kkozfaozdanfjol6@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jason-JH Lin <jason-jh.lin@mediatek.com>,
- igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Ville Syrjala <ville.syrjala@linux.intel.com>,
- Fei Shao <fshao@chromium.org>, Jani <jani.nikula@intel.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>,
- Lancelot Wu <Lancelot.Wu@mediatek.com>,
- Manasi Navare <navaremanasi@google.com>,
- Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- Project_Global_Chrome_Upstream_Group@mediatek.com
+ igt-dev@lists.freedesktop.org,
+ Jason-JH Lin =?utf-8?B?KOael+edv+elpSk=?= <jason-jh.lin@mediatek.com>,
+ I915-ci-infra@lists.freedesktop.org
 References: <20260709073913.1645371-1-jason-jh.lin@mediatek.com>
+ <178422983609.199043.2967505601516285899@6beec6c84f66>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260709073913.1645371-1-jason-jh.lin@mediatek.com>
+In-Reply-To: <178422983609.199043.2967505601516285899@6beec6c84f66>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,51 +74,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jason-JH,
-On 2026-07-09 at 15:38:52 +0800, Jason-JH Lin wrote:
-> Check if the primary plane supports the test format before attempting
-> to create framebuffer. This allows the test to gracefully skip formats
-> not supported by the hardware (e.g., FP16 formats on MediaTek) instead
-> of failing with assertion errors.
+Hi igt-dev,
+On 2026-07-16 at 19:23:56 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Fixes: 5d46625cfb21 ("tests/kms_hdr: add FP16 format coverage")
-> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+> Series: tests/kms_hdr: Skip unsupported formats in bpc-switch test (rev4)
+> URL   : https://patchwork.freedesktop.org/series/166923/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_9008_full -> IGTPW_15541_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_15541_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_15541_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15541/index.html
+> 
+> Participating hosts (10 -> 10)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_15541_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@perf_pmu@multi-client:
+>     - shard-snb:          [PASS][1] -> [FAIL][2] +1 other test fail
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9008/shard-snb1/igt@perf_pmu@multi-client.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15541/shard-snb4/igt@perf_pmu@multi-client.html
+> 
 
-You got r-b from Swati and you didn't change code
-so in such cases, when you resend, please add r-b.
+Unrelated.
 
-Btw I apllied this today, thx!
+
 
 Regards,
 Kamil
 
-> ---
->  tests/kms_hdr.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+>   
+> New tests
+> ---------
 > 
-> diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-> index 5d6337c1bd65..e23d5e4691aa 100644
-> --- a/tests/kms_hdr.c
-> +++ b/tests/kms_hdr.c
-> @@ -299,9 +299,17 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
->  
->  				igt_dynamic_f("pipe-%s-%s-%s",
->  					      igt_crtc_name(crtc), output->name,
-> -					      igt_format_str(hdr_test_formats[i]))
-> +					      igt_format_str(hdr_test_formats[i])) {
-> +					igt_require_f(igt_plane_has_format_mod(data->primary,
-> +									       hdr_test_formats[i],
-> +									       DRM_FORMAT_MOD_LINEAR),
-> +						      "%s: Primary plane doesn't support format %s.\n",
-> +						      igt_output_name(output),
-> +						      igt_format_str(hdr_test_formats[i]));
-> +
->  					test_bpc_switch_on_output(data, crtc, output,
->  								  hdr_test_formats[i], flags);
-> +				}
->  
->  				test_fini(data);
->  			}
-> -- 
-> 2.43.0
+>   New tests have been introduced between IGT_9008_full and IGTPW_15541_full:
 > 
+> ### New IGT tests (5) ###
+> 
+>   * igt@kms_flip@dpms-vs-vblank-race-interruptible@a-hdmi-a4:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [3.12] s
+> 
+>   * igt@kms_flip@dpms-vs-vblank-race-interruptible@b-hdmi-a4:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.97] s
+> 
+>   * igt@kms_flip@dpms-vs-vblank-race-interruptible@c-hdmi-a4:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [3.01] s
+> 
+>   * igt@kms_flip@dpms-vs-vblank-race-interruptible@d-hdmi-a4:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [2.99] s
+> 
+>   * igt@kms_rmfb@close-fd@pipe-c-hdmi-a-2:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.23] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_15541_full that come from known issues:
+> 
+...cut...
