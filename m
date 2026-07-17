@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C58BC44507
-	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 09:32:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5BE4C44516
+	for <igt-dev@archiver.kernel.org>; Fri, 17 Jul 2026 09:34:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED1EE10F4CF;
-	Fri, 17 Jul 2026 09:32:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LUyvFI7x";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6DFC10F4C6
- for <igt-dev@lists.freedesktop.org>; Fri, 17 Jul 2026 09:32:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784280725; x=1815816725;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=PF7ZbSslockfnq7QL3rNdPWzYiynx8CDZAM0HKfFMXw=;
- b=LUyvFI7x46VvDuWwUA+5UsbylgYI8580kcuzEXiLvjIkgotOF5Evn8+6
- a+RfcYUB9BdD0vDfimSm2ivHq/0UEdJwLqtdYgJTkeME+WmLlj8t0R6hK
- 3lKGET/jyH9e5oGCt2Nn8eCe61kdAl8lJLib6/oTRN4GBsdKNI0f0mfg9
- C+nVbCGOL9b2J4HIJxEmgyjqbN3JLfT3m37w90OgYCewjyRZn3eNIN/sy
- MebD7135nzzFu3VqpqDGohYE7qSa/w69cVDoWxlkr/IjTrhXYqyRU11vj
- G5GEAoPSbgbqGISGj4vK2R26ZoeAkJhtT6NKDGWFAurxnfTWFOxrd6E8O A==;
-X-CSE-ConnectionGUID: w+OF9MSuSieAzFA3Jsgx0Q==
-X-CSE-MsgGUID: kCegA6W+RwmHAvh9BDbG3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11848"; a="84071272"
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="84071272"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Jul 2026 02:32:05 -0700
-X-CSE-ConnectionGUID: utk7AbYPStGFWs+BNrlKPA==
-X-CSE-MsgGUID: tTN/5v6cTY2aXtyAlNdgjQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,169,1779174000"; d="scan'208";a="261026813"
-Received: from cfl-desktop.iind.intel.com ([10.190.239.20])
- by orviesa005.jf.intel.com with ESMTP; 17 Jul 2026 02:32:04 -0700
-From: Uma Shankar <uma.shankar@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jeevan.b@intel.com,
-	Uma Shankar <uma.shankar@intel.com>
-Subject: [PATCH] lib/igt_eld: Poll for async HDA codec probe in
- eld_is_supported()
-Date: Fri, 17 Jul 2026 15:21:10 +0530
-Message-ID: <20260717095110.4193078-1-uma.shankar@intel.com>
-X-Mailer: git-send-email 2.50.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id 786B910F4D0;
+	Fri, 17 Jul 2026 09:34:56 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F214810F4D0;
+ Fri, 17 Jul 2026 09:34:24 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1785371467621562328=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/imagination=3A_Add_in?=
+ =?utf-8?q?itial_test_coverage_for_Imagination_DRM_driver?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Robert Mazur" <robert.mazur@imgtec.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 17 Jul 2026 09:34:24 -0000
+Message-ID: <178428086498.200519.9535472511641558116@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
+In-Reply-To: <20260717-test-imagination-add-support-v1-0-2f02f9cc3b53@imgtec.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,84 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The ALSA HDA HDMI/DP codec enumerates and creates its eld# procfs nodes
-asynchronously with respect to the graphics driver load and the
-i915/xe <-> snd_hda_intel audio-component binding. When eld_is_supported()
-is queried before that probe completes (e.g. shortly after boot or a driver
-reload), the glob for /proc/asound/card*/eld#* returns no match and the
-caller skips, producing sporadic skips of tests such as
-kms_hdmi_inject@inject-audio and kms_chamelium_audio.
+--===============1785371467621562328==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Split the glob check into eld_has_nodes() and poll it via igt_wait() for a
-bounded 2s before giving up. The common case where the nodes already exist
-returns immediately, so there is no added cost when audio is already up.
+== Series Details ==
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Uma Shankar <uma.shankar@intel.com>
----
- lib/igt_eld.c | 26 +++++++++++++++++++++++---
- 1 file changed, 23 insertions(+), 3 deletions(-)
+Series: tests/imagination: Add initial test coverage for Imagination DRM driver
+URL   : https://patchwork.freedesktop.org/series/170620/
+State : success
 
-diff --git a/lib/igt_eld.c b/lib/igt_eld.c
-index 6cec9abdd..4a6f867ab 100644
---- a/lib/igt_eld.c
-+++ b/lib/igt_eld.c
-@@ -33,12 +33,22 @@
- #include <stdio.h>
- #include <string.h>
- 
-+#include "igt_aux.h"
- #include "igt_core.h"
- #include "igt_eld.h"
- 
- #define ELD_PREFIX "eld#"
- #define ELD_DELIM " \t"
- 
-+/*
-+ * The ALSA HDA HDMI/DP codec enumerates and creates its eld# procfs nodes
-+ * asynchronously with respect to the graphics driver load and the
-+ * i915/xe <-> snd_hda_intel audio-component binding. Poll for a short while
-+ * so a not-yet-probed codec doesn't cause a spurious skip.
-+ */
-+#define ELD_SUPPORTED_TIMEOUT_MS 2000
-+#define ELD_SUPPORTED_INTERVAL_MS 100
-+
- /**
-  * EDID-Like Data (ELD) is metadata parsed and exposed by ALSA for HDMI and
-  * DisplayPort connectors supporting audio. This includes the monitor name and
-@@ -266,9 +276,8 @@ bool eld_has_igt(void)
- 	return eld_get_igt(&eld);
- }
- 
--/** eld_is_supported: check whether the ALSA procfs is enabled, audio cards
-- * are found and ELDs are supported */
--bool eld_is_supported(void)
-+/* eld_has_nodes: check whether any ALSA eld# procfs node exists */
-+static bool eld_has_nodes(void)
- {
- 	glob_t glob_buf = {0};
- 	int ret;
-@@ -285,6 +294,17 @@ bool eld_is_supported(void)
- 	return has_elds;
- }
- 
-+/** eld_is_supported: check whether the ALSA procfs is enabled, audio cards
-+ * are found and ELDs are supported.
-+ *
-+ * The eld# nodes are created asynchronously by the HDA HDMI codec, so poll
-+ * for a bounded amount of time before giving up to avoid spurious skips. */
-+bool eld_is_supported(void)
-+{
-+	return igt_wait(eld_has_nodes(), ELD_SUPPORTED_TIMEOUT_MS,
-+			ELD_SUPPORTED_INTERVAL_MS);
-+}
-+
- #define ELD_MAX_SIZE 256
- #define MONITOR_NAME_OFFSET 20
- #define MONITOR_NAME_MAX_SIZE 16
--- 
-2.50.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_9012_BAT -> XEIGTPW_15549_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9012 -> IGTPW_15549
+
+  IGTPW_15549: 15549
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5424-22852552aa1b7198931842ddf824af4dd09e2814: 22852552aa1b7198931842ddf824af4dd09e2814
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15549/index.html
+
+--===============1785371467621562328==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/imagination: Add initial test coverage for Imagination DRM driver</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170620/">https://patchwork.freedesktop.org/series/170620/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15549/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15549/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9012_BAT -&gt; XEIGTPW_15549_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9012 -&gt; IGTPW_15549</li>
+</ul>
+<p>IGTPW_15549: 15549<br />
+  IGT_9012: d94a55886c7eec82a791728d3cc1c4a6aa945281 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5424-22852552aa1b7198931842ddf824af4dd09e2814: 22852552aa1b7198931842ddf824af4dd09e2814</p>
+
+</body>
+</html>
+
+--===============1785371467621562328==--
