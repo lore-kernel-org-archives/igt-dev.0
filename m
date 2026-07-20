@@ -4,72 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49693C44520
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Jul 2026 12:26:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67612C44515
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Jul 2026 15:14:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA67D10E18F;
-	Mon, 20 Jul 2026 12:26:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 07CFC10E19D;
+	Mon, 20 Jul 2026 15:14:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Lnxeqwqi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YUYPg4v7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E55C2890B2
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2026 12:26:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1681510E986
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2026 15:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784550373; x=1816086373;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=EFzVmdbtIV+RRkMe8hascsw1qYCIwIMF2N5dWTKZF2I=;
- b=LnxeqwqiRMNo9emwrm/rYOTzdz3HTTnTIUPomAmMW97Z1f1PqKSr7QkT
- r6S8cU/Z2TimMp6AZcr6R5TInN3zxxFbT2aRQ1uxiLalynrHASa72Rg4x
- f2lT1qNHpYiLCjpmHo87RH97TazyJDwKfOojxAmIiLVj5nnVgcXZzUk9I
- XwHX9DIcI+fsWG3Z1DQIx4QCJkvukTJXANIR9g/mM/1iNuz/zqD+K8BYz
- SlWzb6X/IG+u0PXxCqlQHUtGTpZfGg0PXR6tKEojJZcS67bV3XUBGt6VU
- q5jO8O+ParWRP/0LAgFKrb3zVfIs+qRZFlKKLe3uNHlgipKkrOHxMum40 g==;
-X-CSE-ConnectionGUID: LvJL253HR8ehfQtji71Ezw==
-X-CSE-MsgGUID: Lp3SIHAATYGsF+Gs3m1C5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="87669446"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; d="scan'208";a="87669446"
+ t=1784560442; x=1816096442;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=95R0wrGMICkFgSQWDrO3VjTTk/Bmmz0GS9KdsJ+eCUA=;
+ b=YUYPg4v7dlr00ja5r2HvZp0S4XvvGn8w1S3fTFiNF6diluWmlpLNg0E5
+ 95actU4586xOkjxMyzuD2NRdsf567rqY/RfrjRoAPl4ozlANAHFY/834G
+ 7y+lkGoEDzWfkwY5BZq9LwoVTdG8CX+S9NWpOmGGmydFyX0AEeoYpv7tX
+ xzy/lJTGG0fVoqHU988EmFKHpRZMB10Hrakaf2WCKXY+Y/fOBKx/P3/bl
+ a/nd/WXI3PidbwMFNjKT9Z4Q6Ex+4gt8OmoBZKDOf/alOFY+bwQjvOgvP
+ mQtTpNYBJJRTu1dTxiN86qnPs1aKtNLvD88aHwlNxiF+epLstwDqCHTUH Q==;
+X-CSE-ConnectionGUID: WGrGf0QMSaagmZbOG5MTqQ==
+X-CSE-MsgGUID: bZF2QU8MTFiQzwlbSGe4+Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="85019519"
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; d="scan'208,223";a="85019519"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jul 2026 05:26:12 -0700
-X-CSE-ConnectionGUID: cKsgch6jRSqRa1ZHY4KYcg==
-X-CSE-MsgGUID: HrGbcDoJS0WOtgwmi06Z9Q==
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jul 2026 08:14:02 -0700
+X-CSE-ConnectionGUID: VhM6MRK6R9eBy/e7ps8trg==
+X-CSE-MsgGUID: McvedvRoQKu8XPOAD2G0wg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; d="scan'208";a="257507437"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jul 2026 05:26:09 -0700
-Date: Mon, 20 Jul 2026 14:25:52 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Subject: Re: [PATCH 1/3] android: Implement lightweight GKeyFile INI string
- parser in glib shim
-Message-ID: <20260720122552.gkc3zs3ufhkabbsz@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-References: <20260715192949.1984280-1-markyacoub@google.com>
- <11a2d7a3-bee7-4533-a29f-d9a7f9b9e154@bootlin.com>
- <20260717101803.lef2fjwyrptuq6ol@kamilkon-DESK.igk.intel.com>
- <b324163f-69d1-4f4b-b4ad-f48df1fc0bfb@bootlin.com>
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
+ d="scan'208,223";a="257541953"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO
+ vgovind2-mobl4.intel.com) ([10.245.244.91])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jul 2026 08:14:00 -0700
+From: Vinod Govindapillai <vinod.govindapillai@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
+ swati2.sharma@intel.com
+Subject: [PATCH i-g-t v2] lib/i915/fbc: xe3_lpd+ update the plane size checks
+ for FBC support
+Date: Mon, 20 Jul 2026 18:13:49 +0300
+Message-ID: <20260720151349.130812-1-vinod.govindapillai@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <b324163f-69d1-4f4b-b4ad-f48df1fc0bfb@bootlin.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,93 +71,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Louis,
-On 2026-07-17 at 21:23:17 +0200, Louis Chauvet wrote:
-> 
-> 
-> On 7/17/26 12:18, Kamil Konieczny wrote:
-> > Hi Louis,
-> > On 2026-07-17 at 10:20:30 +0200, Louis Chauvet wrote:
-> > > 
-> > > 
-> > > On 7/15/26 21:29, Mark Yacoub wrote:
-> > > > [Why]
-> > > > Android's Bionic C library lacks libglib2, requiring IGT to build against
-> > > > an Android-specific mock header (include/android/glib.h). The existing mock
-> > > > implementation of GKeyFile and g_key_file_load_from_file is a hardcoded
-> > > > no-op returning NULL, which prevents tests relying on configuration files
-> > > > (such as .igtrc) from dynamically retrieving values on Android.
-> > > 
-> > > Hello Mark,
-> > > 
-> > > I don't think it's a good idea to keep a custom parser inside IGT that isn't
-> > > always used, especially when it behaves differently (no character escaping,
-> > > first key value is used versus the last, 1/true/yes versus 1/true for
-> > > booleans, spaces around =, etc.).
-> > > 
-> > > I agree that external dependencies can be a pain to manage and are sometimes
-> > > unavailable. After a quick look, extracting the full GLib parser doesn't
-> > > seem feasible (it's tightly coupled to GLib internals). However, IGT could
-> > > easily implement a minimal subset, as you have already done. That way, GLib
-> > > would only be required for a few tests.
-> > > 
-> > > I don't know what maintainers thinks about it?
-> > > 
-> > 
-> > This is a good idea to have as little as possible number of
-> > external libs linked. I am afraid removing glib would be hard as
-> > there are some other parts used in igt, like udev changes
-> > monitoring.
-> 
-> I did not explore the whole codebase, just android/glib.h. I think that the
-> tests requiring udev don't use glib but libudev?
-> 
-> > What about placing this code in lib with name igt_ini.c?
-> > Or igt_config.c?
-> 
-> There is already igt_rc.h, why not igt_rc.c?
-> 
+From xe3_lpd+ there is no specific restriction on the plane
+width to enable FBC. Width can be the maximum supported width
+per platform.  The restriction on the number of lines still
+holds. Update the plane size check function accordingly so that
+FBC tests dont get skipped for valid plane sizes.
 
-Right, it is a good place. +cc Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+v2: copy the values from the driver.
 
-Regards,
-Kamil
+Bspec: 69560
+Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
+---
+ lib/i915/intel_fbc.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> > +cc Ashutosh, Karthik, Swati and Zbigniew
-> > 
-> > > > [How]
-> > > > Expand the dummy GKeyFile structure to record the file path upon calling
-> > > > g_key_file_load_from_file. Implement a minimal internal INI parser function
-> > > > (__android_g_key_file_get) inside g_key_file_get_string to traverse the file
-> > > > line-by-line, matching requested [group] and key strings, stripping trailing
-> > > > newlines, and returning a heap-allocated duplicate string (strdup).
-> > > > 
-> > > > Signed-off-by: Mark Yacoub <markyacoub@google.com>
-> > > 
-> > > Anyway, if there is a v2 of this patch, can you run checkpatch and fix the
-> > > issues?
-> > > 
-> > > > ---
-> > > >    include/android/glib.h | 120 +++++++++++++++++++++++++++++++++++++----
-> > > >    1 file changed, 111 insertions(+), 9 deletions(-)
-> > > > 
-> > > > diff --git a/include/android/glib.h b/include/android/glib.h
-> > > > index 0b6658287..5b8ba86c7 100644
-> > > > --- a/include/android/glib.h
-> > > > +++ b/include/android/glib.h
-> > > > @@ -16,8 +16,7 @@ typedef struct _GError {
-> > > >    } GError;
-> > > >    typedef struct _GKeyFile {
-> > > > -	char *key;
-> > > > -	char *value;
-> > > > +	char path[512];
-> > 
-> > Why did you drop key/value from here?
-> > 
-> > > >    } GKeyFile;
-> > > >    typedef struct _GMatchInfo {
-> > [cut]
-> > 
-> > Regards,
-> > Kamil
-> 
+diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
+index b8c714d43..9aa7b3408 100644
+--- a/lib/i915/intel_fbc.c
++++ b/lib/i915/intel_fbc.c
+@@ -127,7 +127,10 @@ static void intel_fbc_max_plane_size(igt_display_t *display, uint32_t *width, ui
+ 	const struct intel_device_info *info = intel_get_device_info(dev_id);
+ 	int ver = info->graphics_ver;
+ 
+-	if (ver >= 10) {
++	if (ver >= 30) {
++		*width = 6144;
++		*height = 4096;
++	} else if (ver >= 10) {
+ 		*width = 5120;
+ 		*height = 4096;
+ 	} else if (ver >= 8 || IS_HASWELL(fd)) {
+-- 
+2.43.0
+
