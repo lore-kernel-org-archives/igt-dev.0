@@ -4,155 +4,157 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A35ACC44515
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Jul 2026 05:20:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97560C4451B
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Jul 2026 06:00:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4F8E510E105;
-	Mon, 20 Jul 2026 05:20:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 21B1810E0BA;
+	Mon, 20 Jul 2026 06:00:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VGo/Xrzj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nCzZGR8W";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AFDE710E105
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2026 05:19:37 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9A28710E0BA
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2026 05:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784524778; x=1816060778;
+ t=1784527187; x=1816063187;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=la4iOfy9HsaHnJ2P9Y1qXzlaJoMn9ZxgdubttR7ceec=;
- b=VGo/Xrzj+CwAaYkYwX4KXGQ6qxzwEmcgOYoyqg+3xDisxjDiHVFRSSzf
- PnYv1CsIQm1NkOKpezNYhwq/G5uFYG64956UW5f0Ir1nyTdOfOSkuTAa6
- 26YffqVYVSrix7bZfh6CcGiHp455qn85zVp4frkn1kwyUbYI1o2tQFYzV
- JJpPJrnpWeYzjIL8jxgr760xF3/kWx/BMMJM4YEHE8hE4XsCBeI0YTrvx
- BbrXjEWs05xlkC6TVRp/CfEwGj8CKT0Q1MJQAvtdQgeh9z9pWjmPUyZcg
- W/6hJsJFJBku5WimTBrnVDrTlgjbN0pSgQHarD3h04FHkvN2lsQnvgUuq w==;
-X-CSE-ConnectionGUID: xHfPF1ZuSuyTmFhO9xy1VQ==
-X-CSE-MsgGUID: 9bdGypGBQFSvjGzQZMEjTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="84083586"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; d="scan'208";a="84083586"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jul 2026 22:19:38 -0700
-X-CSE-ConnectionGUID: Z1O0jCdPRTqWqgUZ3aI37g==
-X-CSE-MsgGUID: RicxCOBORvqCzB9lbYS7fw==
+ bh=bXlkbky8EbrCDKWGH4AkJmNSMOhXZwEqJYW4+mXGV+I=;
+ b=nCzZGR8W0nMlyBHG3HA5I7wOigaxlW+Fv9vr/u69ehzqdRsGqsm/rZCU
+ 5FCsMa8oeh8jeisOZYkaa0arvDd88/yGev0GnyYLBRH7uJqFGB1LIuODn
+ J9X0B/bezjOWrwcfsiRJGH0fuuJqTEm0R/HgQkvB2xlrnXebzCau0Hcvs
+ KeZdkjwh0HfMb/t/6b+4upIsQnxvTzQQ0X/0e2QwkmDCOh2jQeKsfWmkd
+ ZjNBn0KXwVwrP+26tKXpGcB2QwysEPAS3IC1ZX2Bx2RJWZrihr7IpOAlZ
+ MFc9fFCFzro2M0oRRr0w0AazUukLqsst5iDZjr5nIxietw7GisCwHyDRp Q==;
+X-CSE-ConnectionGUID: G/p0BfAyQKC4eZTBNbFl0g==
+X-CSE-MsgGUID: ZeqJPagsTU+WnehNW9oL8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11851"; a="95457622"
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; d="scan'208";a="95457622"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jul 2026 22:59:46 -0700
+X-CSE-ConnectionGUID: nDl/+FONRHa5Vk0qLzA8hQ==
+X-CSE-MsgGUID: f0JAWIhARiqGcDwRXYS7JA==
 X-ExtLoop1: 1
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Jul 2026 22:19:37 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; d="scan'208";a="262327211"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Jul 2026 22:59:45 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Sun, 19 Jul 2026 22:19:36 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.43; Sun, 19 Jul 2026 22:59:44 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Sun, 19 Jul 2026 22:19:36 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.31) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.43 via Frontend Transport; Sun, 19 Jul 2026 22:59:44 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.67) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Sun, 19 Jul 2026 22:19:36 -0700
+ 15.2.2562.43; Sun, 19 Jul 2026 22:59:43 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bKb7vh/t5cS6ULRryBwWFpKYo7gpBqxZIth3FpfVx4nf9V119E+U1McteFNYZfdAa0zUas1+d1lo7b1dnj3TqVgSUDp5V4QhgAD9OgfDIpDir5IytrZuZ15ftaNkgKKBiVPH6qQmVGyLtTMKwQ04SskVXNokl6Zc0vq2v/wWfdb6KMZeeaCXEjJnDYoF5rWBHfLWubf1t+ynyV0djsq90OfuG1YrbguKQvp/5ZrUyiA3OCw4OLPpt9w3i83pj4FrkV37+DVsDwE3G+ONdDqj7lGWx7q76SZPVAUmHkECwcaxRPY9y9+s+lRd/9w/6GK+I+p6iQ24+xYDeJwTldwOCg==
+ b=In3ODKf28w5G1yhZt/q7VPvfdTMn20IqI0VCPrxD+2d4rJbjRCxQ0kMRE3XdEXIq8woCR6ZA6uSNeaxIEb3zg4bAev1G+S0CSc7Y6ZxHlp1vA2x0afEe/IeLukRXzil35IgLGLGyqsvHZxvpU+s8Pkn9hR7DX8vHWLeEmYzSPTOfT/NJPI7OnuzkYkdYRgRWjtwM4CMV4fE+b7jaFsZ8PKzCFlnSjPMMODz5WJynJtUT7gpVwpvK8z5VEpcsrhopZrzKZz6yBVtLnh4plljplKmUicoE7sRQOzOT5aBXwpeSlp3up1gIN/HH+isqhpSsVPJmNDHt0Pa1otV/RZNUdA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xCfLI7wXJrtGMELFuOzS6c3mDLP/yu8A5TZ1saKXraM=;
- b=OEFuVCMmsFq8LgK4YE56qlOPBpBvliNIeYDkSHIgzeRLt/aglkVllJINPxu/eUivkImcxr+QJ/rDFG7dGlBRLSnXZR4Cj1rdn0V/aL6HVZqMFuUPi/xUCO+NYQDhPsv5dT/EcL54y9HKebkVhQiOEYywpnIj8KjTlK5a2nEfPmWOBGUUOKExscVOjOdThOKrzknREvBoWtYnvUocv+0fxAGi0PK4aK091pvlvYf3yXK/vwjeR++SoXOChKquIKy8I3aGsWZ4YWc3jCkVNuNWkhnYISkxhlvTeTidrDPF5v545Dhae4nbt2f2y2kP1uMMNM2JqlT/Zcojafjeb2WRtQ==
+ bh=dnIJcz1oY1ABNoUVCthgahoexsH6/wnUdQrT3Cgpnyw=;
+ b=EAiaRpKOaMk092b0yA1r5ojIpAQRJ5srsUymIt3Uhu7xOKgkqBmn6HnrWYSYXFRVi7i5xSXSPxzW5bTL1UuM4di2XRgSWQzXxi8Hg5qn38UK+qENKbYEYcFx22/dBJnnyNcFno3gvOvEkURXBj+k8wyZZjMln7+I2Z49FD040lleFuAclGTTulsJySYT2eoHg/1KtxxX1HzAE5pHGwjHE5/3MtN1MGOuqhcrdYxXLfwcbHEgHfjl1k8OBqggN03Tk+0+AADm43z6rXtmQmKFqPW5QwSOkbHaIxkVSgXinDeA90R1/jkoSnmLD/VnnHSsiUOVW9jFkI5vSwBzlb9tDw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DM4PR11MB7183.namprd11.prod.outlook.com (2603:10b6:8:111::10)
- by SA2PR11MB4777.namprd11.prod.outlook.com (2603:10b6:806:115::24) with
+ by BL1PR11MB5255.namprd11.prod.outlook.com (2603:10b6:208:31a::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.16; Mon, 20 Jul
- 2026 05:19:34 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.223.18; Mon, 20 Jul
+ 2026 05:59:41 +0000
 Received: from DM4PR11MB7183.namprd11.prod.outlook.com
  ([fe80::d9c7:d2fb:680d:1ee1]) by DM4PR11MB7183.namprd11.prod.outlook.com
  ([fe80::d9c7:d2fb:680d:1ee1%5]) with mapi id 15.21.0223.012; Mon, 20 Jul 2026
- 05:19:34 +0000
-Message-ID: <db573a55-2f2b-46d3-a020-22c81d6bed10@intel.com>
-Date: Mon, 20 Jul 2026 10:49:27 +0530
+ 05:59:40 +0000
+Message-ID: <acd6bd12-8270-42d3-8f3c-5062c30ec886@intel.com>
+Date: Mon, 20 Jul 2026 11:29:33 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] tests/intel/kms_pm_dc: Detect frame drops via
- page-flip events
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/kms_pm_dc: Add test to validate
+ YUV420 with DC3CO
 To: Jeevan B <jeevan.b@intel.com>, <igt-dev@lists.freedesktop.org>
 CC: <ramanaidu.naladala@intel.com>
-References: <20260709050905.4077066-1-jeevan.b@intel.com>
+References: <20260717035658.857405-1-jeevan.b@intel.com>
+ <20260717035658.857405-3-jeevan.b@intel.com>
 Content-Language: en-US
 From: Dibin Moolakadan Subrahmanian <dibin.moolakadan.subrahmanian@intel.com>
-In-Reply-To: <20260709050905.4077066-1-jeevan.b@intel.com>
+In-Reply-To: <20260717035658.857405-3-jeevan.b@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0329.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:222::16) To DM4PR11MB7183.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0097.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:af::14) To DM4PR11MB7183.namprd11.prod.outlook.com
  (2603:10b6:8:111::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR11MB7183:EE_|SA2PR11MB4777:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8e38951-9288-4c25-25fd-08dee61e7be0
+X-MS-TrafficTypeDiagnostic: DM4PR11MB7183:EE_|BL1PR11MB5255:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ca307b7-31a9-4b88-16f6-08dee624165e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|23010399003|376014|18002099003|22082099003|3023799007|10067099003|56012099006|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info: nW8fR+Ay2waTYdkdgRh8JamHRGm1pPUPgNANMKneo5wyDbVEdwpKXzqhQckSWsyzwHlsJAI98/H2zyy1ziH6B1V/9y75KFK6LfwWSumHIfGVSWoDGR9z8bJrLjHtQRypzpzFZ968+DU6wweuZSIEzd3NZAJTcYta5FOF90jtqWhfC992qwL0ajEiPiRERRi+kpyaHWnIYd+pkJ2g5NM/RHrLbUnshSfIvStAnZS0Rl9cEAwdIYx0/y+ynYhzY1LyDnKFEqlYA3v5HFVYislfS8NIwPDyVo4Co/95H2PMXVThC52ywux2UjAauUf9DwdB0osqE/Rp5c7/k2tH18ADX/t1PJjA/D8rABwusB0z3VYgxMx5bimXMSZt3UjG1LP+klIhCyqVFFkb8+ElQV3V5V+5Ygkcs47Nt7dTU96Cbxu1ua/nrBvAV1HjvQaMJfFecMdQoqrVeuer6er9OuJWygb7chQT75kr53M1/kZOMaej7T9q0Byd4pnkkw2MGagHGcoNsUaNI0OCe5dLEH5L85TqarhanOGWEGD4IOSvzqvK620YGehdoYSfr91Hk2n7TRPEhvInaLPhSh8an9XZYcYGp+5CpfaDa/EdD/HJOP0R+m8T6SNFj9M2JOSJJCGw9XVgQDcMCW/1iO7nvjWcPTqPb7HpxhNLWQEj5GRTBns=
+ ARA:13230040|23010399003|366016|1800799024|376014|56012099006|4143699003|11063799006|10067099003|3023799007|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: lInUMaSQguT5maPT/N8rjIa1wet5CSt+SDXoCV7FrQW+oLyoOKmN5MmKtLj+YC3ogGFOZs69PSomhDGpX9kCdKLFXYKHkAXrX9iD3RWIxVbeNtHXg1TcJkBZpZ1FfiSXPa6o23j+rEIXMu5ckcnPakmcfn0PwgxaGrq/LaRzGQ0YXwBQxyNkvUMOqZTR1U/fSqLwJGEzg3BPabwH1cQCXawKqR+inkDwJZ0ha/9hZ1ZIh1Bq8eno7F8jSxinDXLN13jS2Wu4wObeISdUTON6z1oxx409p1KG+3eW/HO6qGBH9Rufxr89/iyZc9kaoknPPuPAATTGnwMef6pi0VQT0eqWSvPzzT1xmyZ3PD8fQQisLPXtrF9ZDVzbChfI+3EBEGg8bdU7py7D1HRKPx+OiIbnQGh7sAcyfLiWopyhL5Npb9O4B/3KeqfOqTVCnREgPBOU8qRxXW2fcCB8qXUcd69789wLkBtKbUZWiqTHFlSyzvv2kZoQRR9I95eqiin/MqN+SKXrn4rt2T8kNPpoZHvCVyQgA7DWwyGQCwSTRZfoLeGfF0EzpDCE+pCj91CHXEp5AFlFRMnM/NOdcIH2zeZllil8ICOMoxnAnX189uA7mk9+PKkH+MoOsAdcLdTwd1jU3QXfbDPX8cjbX88YLD973RY8/+J5eRipKnbx+zc=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR11MB7183.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(18002099003)(22082099003)(3023799007)(10067099003)(56012099006)(11063799006)(5023799004);
+ SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(56012099006)(4143699003)(11063799006)(10067099003)(3023799007)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UmR1WHZTVG9UVUNkbllsem9BN0JTcVQwZk9PaXYvdEpCQlU5dEN1c1JOVUJz?=
- =?utf-8?B?c3MzbHdJRG1Edis0eHpVRFJwdWFFdCtJdks3eTdMQS80dWdYWHJNMjJkYzBN?=
- =?utf-8?B?MCtiUkc1aDZKY2JQb2xEaWx1L05nSlFMUWhRWnZJbEhYSS9EOXFVSHdrVExj?=
- =?utf-8?B?c2ZVWnRFbW52enZQMXkzajRJNUtHRUYzZkNOYzk3TkhRdEphNlRKN1lEWjVT?=
- =?utf-8?B?eE1CbWNBVkhEeUdML1RPYzFzdThzZkc1VENEU3JSc1dVdTBJQTUvSHNObEtz?=
- =?utf-8?B?TU1JeHFHc2F5R3NLTnVBd1VyWkhabDlSWlAwZEwzRnBRM2JOZlg3M1ZsaldX?=
- =?utf-8?B?SlhsK05BM2s3N0FNdEdoUmFNSXJVSzhreVhSbkU1YjRHczBRZm5GZTBWcTYw?=
- =?utf-8?B?bkNURis4WWd5Nnk5dUtzN1ExSWhxTEtoN2lvcUc4T21OQXUvM21UOTd3VU9p?=
- =?utf-8?B?Y2ViY2o0VFlnTUlJRFozU283Nm4vN2t5ZHZnM3JWV3Qxci9Na2VmMlNha3dn?=
- =?utf-8?B?eGp1anNnaEV0aVhnOHFWaGI2bERMQXVKdzAvdVV4UlZvWS9IT3ZNOXUydFJC?=
- =?utf-8?B?a0Q4MVRhS3VMRVhtWE9RSlU0TmIwZGd1UGFQaTQzTWtMdnJ3bTl3V2ExZDdC?=
- =?utf-8?B?b3U1QUlkUWQvVGc5YXNXSWh0YkFzMEhWcFVnenIyMkxEd3RHaEx3RGRZbHpT?=
- =?utf-8?B?TXIrWi82RjR5NFZvcnFxUXluNjd3SWF2OXg3YU1MUmE2NDdEYlYzQTg0UmlW?=
- =?utf-8?B?ckdXd0tyVWFQTkVHejVjYm5mRUgzSEVFOTBWMWRxcHVaTVhXUzc0SEJ5OEJv?=
- =?utf-8?B?TnRVbE13MFRpeDRSM2JWcURWSi9tQzVjODhzNWJmOForMjJGNjJaVEcwQndT?=
- =?utf-8?B?MVVCR1FlNW5wemNKZkdXQk9GdHRWSEZrcmlxWitQRjJpVnQzZ2NyVzJCMFBP?=
- =?utf-8?B?RklFR25RbVV2L1Z6aHBSV0p2TDlyWVk2V3k4cnRzRWxIOEVDZTJnRTh4R0JJ?=
- =?utf-8?B?VzJFL1QvVllkRkZMelhRby9KV0lPQ0xJQkR3Q2trc1lsRWlORlF1MHozTTFC?=
- =?utf-8?B?bll6NjBBUnQ3R1gvNWRJSFA5anQwaHpQNDBxTGZiR2tJb0F4VEJoTk84alZI?=
- =?utf-8?B?MFZ2QSt5ZG5CUDJxSGJSdTR1SEhyN0hlMkZFVUNLTHZTREhCWVlBN3NOaHM2?=
- =?utf-8?B?V2U0Y1VIalNzOVNrdFhmbGVRS284TTI3SzUrbGpWRE8vQjl1TVBPOUd0YWxO?=
- =?utf-8?B?L05NM3NkNE5NeXNCL095ZHR4RmxhVi9tYzg0RlgzSW5qcmVhVWRDdWZYNlo4?=
- =?utf-8?B?ZFZuV1JVSFA3MU50S1p4cUdLdHFrS2E3WndtZm9wYTRyemlwMmdUNnVGS0M1?=
- =?utf-8?B?djNnWlM0aS9iT1dyYUp5dCtsSGJSMUFPbk1OQndxbVVVMzdHWFhaOVJEZnor?=
- =?utf-8?B?Nk4xV3ZoVGNtaXF1VzZuK2c0SzErMDhVVFVHQXQxcWgvb2dPYUd0UFhUeU51?=
- =?utf-8?B?K2MwM0RBb0FyV2hPS09iQTdCZXVUTVp6WGZuVnNlTEVJQ0VsN0I0ak1Cejk1?=
- =?utf-8?B?VXBjeUJUajdWeDJMSVlWUjlOSmFhMnp2VG43d1lZZldEeTVZdGE2TFJGMDhN?=
- =?utf-8?B?MEU1TFRWNzV6NFc4ZW5rMjhNQ3h2YWo5UTJvVWR2cS9zVEJ1YTVhZ0g0bVdw?=
- =?utf-8?B?K0JZbXVncWFOdnhWTFlTQU92WHhUOUFEelVDVUlCOWc2UUx5VnBad1BWUWtK?=
- =?utf-8?B?K2RkMXY5OUdEZktPQ0NRampYTnowZmxvcDRMV1cybVI4aTVmTXd6Z1F6Z1Yz?=
- =?utf-8?B?bHZnQVlYeFZ3SGlPNEFlL3NTamV2cFFSNmI1U01EdUZUZVVqbTQ4RHlXOGNn?=
- =?utf-8?B?NTdpSmFLREorZk9MRTNRdDNObnhYUmRlbzNSNGJWNEJ4ZHNqTjA1ZlBPM1JS?=
- =?utf-8?B?bUg5Umg1WmZwMnVSZzFsZ1RhVXkreDlodzduVWY2cVJnMU8rSHFNQjlKaXdX?=
- =?utf-8?B?MFhBUktDWXRpMC8rc3ZCTkZUbGU5TEdhQkVkcWZKYnlsOE1vc3lTUzBHdjV6?=
- =?utf-8?B?RWpDUk1vUm8xTWRxTXl2Y081amdhcmJzeFlhVlBJdWlkMm5ET2JGdmZLSFNo?=
- =?utf-8?B?bkFPRkVrUzIzK3RRZGFHQUxOVk9PR2pPaXpnaFovcWFkeTV6dENTbXk1bFpT?=
- =?utf-8?B?RjBvdWFkMEEwcDJhbGdkcE5hemtTOS9PMlY0WkRWQWJZdWhrb2lHcGlwdEYz?=
- =?utf-8?B?QXdsdC9EVzg2Y2I4N2dLT0NneEVIUDV3R3hCUjNoV1pqNWFZTjl3TFM0OUUr?=
- =?utf-8?B?SWlLUktVRkNNWG5pMjRkQ3dkN0tYL3RXWmRQdWxwYXdVeHE3eE9oaFpRN2tn?=
- =?utf-8?Q?Ohy1FRPmxQIjiegWG30Cf74DFXwQnXn0EDJNt?=
-X-Exchange-RoutingPolicyChecked: ar0X+AJdkkhydHTtDEHUGhi8T5TI9/UhXtSedFj6Ftsx/ev+PLsmKcR5jOZjp2taYoXnn/TU77qmz/p+eU3V7BSInOkL3POgaOAX1puZv4wj7E/M4zza9Ypyp3Nkrv0n0td5hDstSnjCQGJHY9bZbuiHNo5b/Mx8++mNBhFw0zgenv0EFmjPyq3Htb8ZvSKiwOz9j+OqhR3p0NBGO4c5QhB/RnXeGOQ6EhsvUz/cY3Jag2r1xvJKqDqGaiw6VwPaL35bEye+3nOhjP6yWYSIZJ7+nxHIQVnF8VTrk4eoBlYxPVbW/lP5rY7ZH86gFqTQVYMyrt7T/wPyfJz1aAJYCw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8e38951-9288-4c25-25fd-08dee61e7be0
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZHI3UVZXZ1lHNVdML0szYjY0bUpqTUFaNHljUWNmamNlU3VYU29mck5EUTdu?=
+ =?utf-8?B?SE8wVHE2c0dGZ0orZU0vMFJ5bmFpRjBUZ0lGUHVWRy9zK2RpUmt1VkFlSUw2?=
+ =?utf-8?B?WFlyTWo3WGZqSllaSS9aQTdXejJKcUxUTEpwZFU1UWRzQnFNS2R4WTllbGU4?=
+ =?utf-8?B?VkZWcGUxM3JROTBiRDJXQ3JiNkFXRm5kUDREbGZnZWdRRlJ1Q3ZpQjl3d0FQ?=
+ =?utf-8?B?a2V4L2ovdWwwcjNRMXFpTGFOSUJNMmtNOWlvMGZpNVpFL0ZHYzNVUEhwMEZF?=
+ =?utf-8?B?cmF1UC8wczVXM2RlV0xnVStQekFQY2ZISngzSjdTaFVBVWpTRkpLbllLb0RQ?=
+ =?utf-8?B?b3N5NjQ3amJXYktZTFY5MHdYV1NqcUY5eDE5S0IvT0NzTFFDTkVvNHFqNGZm?=
+ =?utf-8?B?S08waHl5NzNmSDViUk5lKzN2SmFza3Z4Z1lUb3o4aWdDSHVtWXBBTVRmQkxL?=
+ =?utf-8?B?Ry9SQitKYVVuNHlkbUE2cXlyeXM2QzBoWGtPcEFxajdFVVZXSGxWZmxDazY1?=
+ =?utf-8?B?QmNKQk5KTmdTWW1OVEdoU1RFSk43dUhPOEpwTFJUUTFFZWxQM2lnWU9qSjJt?=
+ =?utf-8?B?Nm1qaGdtOTB3c3JtaDZUaUp2T0RnbmJ4R3RaU214djdHZlZBRU5RNk5iVEsy?=
+ =?utf-8?B?eE95dW05Y2hjWWFVc1ZWZ2tXNU91YjE2RlY2L0FkL0hxSkMwbmtFY2Uza0JD?=
+ =?utf-8?B?eVVkZE1zQ3JBOER4ZmdVanE1N2VtckU4dVVjSDFqM0FMMUFLRTdpSHg2bTgr?=
+ =?utf-8?B?MnJ2U2ZxU0kyYWpiSnVnaUN4KzR2eFN6THZNTWxpNEgvcER6Vzl6ZVduamly?=
+ =?utf-8?B?QjVkQUhacWZzYU1NOTRDbnJEY1FmaHE3OUZka3pPZlpLbkNYNlI5WkI3bk5y?=
+ =?utf-8?B?bmh0OFROUHpFZmVCb1d4ZEhZR1YzbWdwK2hUOW1rUmgwZTZjKzRndUg3OStn?=
+ =?utf-8?B?OE1aYlY0YjI4V0xxNHU1a3IvVEFlQVdNamI3ZUE0WHR6T3VnQ0k2UUpscWFG?=
+ =?utf-8?B?alFvbDhDR1NOaHhjdzZ2N0dWVEJQWFQzMk1TUCttNG0zeEIyb1M2V1UzYi9u?=
+ =?utf-8?B?SDRUeFF1dDlTbTRNLzRPeWoyR2ZvZkdkOTMzSDcyUmhqRVJTOE52S1Y3akh2?=
+ =?utf-8?B?dUREWm4vbFEvdFl3UTBkZzA0ckJKZWl6N2NOOG9jcWd2WEpUd1BOaFhMamR2?=
+ =?utf-8?B?S0ZDaFV3UjhUY3hPZHZQYWF6YzNQSDgxc1VTOEtPZHNQOHA5OStFZmZ6NStX?=
+ =?utf-8?B?Tys2VWpvSG0vcGh2dFFsNHVOdXQxam04dGc2VEtXUHJKV1VxZXpybjU2Zkt3?=
+ =?utf-8?B?RyszMDcwcGdjVzB6aHBWekt0UFNaL0R0N01tdWN5Vy9XQ2JCRG44cnJYdUhW?=
+ =?utf-8?B?amZoV25UUktEeENDTWZ5cldDZUYvY1FDMEJmRGJzTDI2bWZOdFg4bkxNMjR1?=
+ =?utf-8?B?MnlYQy9PajhBSkgwZWszcHNBTFBDWmxHWUE5TytPQWdLS1hGOFlWWkgxTHFO?=
+ =?utf-8?B?QXhiZlNONTY5RGRQaG5UUmVIdlcxcFNiaUdlNGpJRG9qdWNjV25YdDhBUVBp?=
+ =?utf-8?B?WEJDUjBPQ2Y2TG1jdlJybmRKSmNCUFRZYXo3TVFWSWNJS1ozeCswVEFac0V5?=
+ =?utf-8?B?eFNkY1UwZ2FieXJkSlkxVWswZWFpT2srUHVXaWR3dllVdWx0RVJoeDFCYytu?=
+ =?utf-8?B?c1BnR05CZHYzbzRETXZJclloODQ1VEhlVGhDS0tQK1IyNTh3SWxGbWxCVU1M?=
+ =?utf-8?B?YnR5WUJHU1BvVFZmY1ZtVHExRHB0clZXV0dYd0U2VFZRMkltY25DdE96eUNS?=
+ =?utf-8?B?S2QrUkZnRUZicnlmaHVKV0t5MmhKSnNJdERHODIyYm1vSjZuNFVaSk1qWndL?=
+ =?utf-8?B?UUhlbWszMmdITk53aWM1TXA1NGNrV3VwZEt3RDBoMGdEbkVBOXpYTXJBSlk3?=
+ =?utf-8?B?enVxRS9BL1hkb1EvNmZ5NWlXUFo2OWhaQjNrZDM4ZE44L1hScncraWVRUk56?=
+ =?utf-8?B?d1RiOEpTU0psWi9QZERkbW5SVkhGM2dHRmRTcDJDTnNjSGM0MTkrTGJpbnRi?=
+ =?utf-8?B?L3J4OEdQbVJqVWRoeG02L0ZDR0owTWtVV0xyeEJtSXR3Y3hTYnJGdHVPYURh?=
+ =?utf-8?B?L0Q3ZVl1UnpQTjZMVXpjT0NuNUdEYmVnQ1gxdGVNYnJtSmdPL1NOYmZUWVRQ?=
+ =?utf-8?B?VXlLMzVUV0J3eVFxdnNNMU1nOEEzK2pmNVhNSnJvSjc2SXR3cjZJeUM4RmRy?=
+ =?utf-8?B?TUQvdDJyM1VvMk8vWGFQL2I0L2MvRnFVUVhkV20rZGxYQ3V6ajVjTDUxYmtI?=
+ =?utf-8?B?QnZKY1kvdERTY2M2S2N5YndzaC9wQUxWT2NwelZucGpWSlh0SFVqc2pOdDQx?=
+ =?utf-8?Q?f6ne5+tJCC+FopTxsr7y1OBBussvBz5ToJFzb?=
+X-Exchange-RoutingPolicyChecked: pbmd/u2JIiLR1p5do5Tu/Wx+1Wf8qCLvRoNs+M5Nqow0Vrngd0JcitTpW9WdWrP6EePzycGs5t2LwKOG9G50Oyh1PBjn7pcZQbPuqsLiOXaaODBEgyaFAnxVuMemZ0Zy37UnqbQBgvovb6piXwNIHiPaC4oFrc03tDc7wKoILbYCuZ7XASv3zQ+N6h2WSn5MDYVlH3pt4bdBpJRuhmDyETCM1BHOUBydzijxNH5H3YhhXf53kM0o7TG0wxVvHbE4f0j1jT7sjKmgkICz2zZQ6K0hn1sB0yVHAAcm+QgFgarPs+lyAOTn4lrJ+Z9akFISt5vC+r/8AySh12/ltfwOQg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ca307b7-31a9-4b88-16f6-08dee624165e
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB7183.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 05:19:34.0792 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jul 2026 05:59:40.8894 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BIIEJdLnNykawxbPNdCRW6Dbfv7+K09ag6IGNwPHPCcyDyPPrgsKKrldlGQDTlcyaouQhbZ+W9Mxvtcrun3VcgONZeMzYy0sWpQ+dkz21iLn6CVycfaANQ/mdi9gSY14
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA2PR11MB4777
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ml4itZDTX7WqSdP4wCvwOzfK7UZ5Hbe966BwTrdJ/QAdZ8dfyKPuZA4DhVUURXn8JWJ3rTNEsbnNbUsDunr8Kn1Y6xuzHXKIyQ5AS34pQgeMjHq5FoQt4GX5yXYMg4Vr
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR11MB5255
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -169,139 +171,168 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On 7/9/2026 10:39 AM, Jeevan B wrote:
-> The DC3CO frame-drop test currently waits for a vblank after committing
-> a new framebuffer, which does not guarantee that the frame was actually
-> presented.
+On 7/17/2026 9:26 AM, Jeevan B wrote:
+> Add a new validation test to ensure YUV420 works correctly when
+> DC3CO is enabled.
 >
-> Switch to page flips and wait for the corresponding completion event,
-> which confirms that the frame reached scanout. The test now alternates
-> between two framebuffers using page flips, preserving the playback-like
-> cadence needed to exercise DC3CO entry/exit transitions.
->
-> Keep the existing vblank-gap validation, but derive the sequence number
-> from the completed page flip instead of an independently waited vblank.
+> v2: Add YUV420 support for all DC3CO tests.
 >
 > Signed-off-by: Jeevan B <jeevan.b@intel.com>
 > ---
->   tests/intel/kms_pm_dc.c | 69 +++++++++++++++++++++++++++++++----------
->   1 file changed, 52 insertions(+), 17 deletions(-)
+>   tests/intel/kms_pm_dc.c | 70 ++++++++++++++++++++++-------------------
+>   1 file changed, 37 insertions(+), 33 deletions(-)
 >
 > diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-> index ef53c5f96..da077a2dc 100644
+> index 018def5e4..52f0be183 100644
 > --- a/tests/intel/kms_pm_dc.c
 > +++ b/tests/intel/kms_pm_dc.c
-> @@ -362,30 +362,60 @@ static void test_dc3co_vpb_simulation(data_t *data)
->   	cleanup_dc3co_fbs(data);
->   }
+> @@ -125,16 +125,24 @@ typedef struct {
+>   	igt_display_t display;
+>   	struct igt_fb fb_white, fb_rgb, fb_rgr;
+>   	enum psr_mode op_psr_mode;
+> +	uint32_t dc3co_fb_format;
+>   	drmModeModeInfo *mode;
+>   	igt_output_t *output;
+>   	bool runtime_suspend_disabled;
+>   } data_t;
 >   
-> -static uint32_t wait_for_next_vblank_seq(data_t *data)
-> +struct dc3co_flip {
-> +	bool done;
-> +	unsigned int seq;
+> -struct dc3co_test_mode {
+> +struct dc3co_test_case {
+>   	enum psr_mode mode;
+> +	uint32_t fb_format;
+>   	const char *name;
+>   };
+>   
+> +static const struct dc3co_test_case dc3co_cases[] = {
+> +	{ PSR_MODE_2, DRM_FORMAT_XRGB8888, "psr2-xrgb8888" },
+> +	{ PSR_MODE_2, DRM_FORMAT_NV12,     "psr2-yuv420" },
+> +	{ PR_MODE,    DRM_FORMAT_XRGB8888, "pr-xrgb8888" },
 > +};
 > +
-> +static void dc3co_flip_handler(int fd, unsigned int seq, unsigned int tv_sec,
-> +			       unsigned int tv_usec, void *user_data)
+>   static void assert_dc_counter(data_t *data, int dc_flag, uint32_t prev_dc_count);
+>   
+>   static void set_output_on_pipe_b(data_t *data)
+> @@ -275,7 +283,7 @@ static void create_color_fb(data_t *data, igt_fb_t *fb, color_t *fb_color)
+>   	fb_id = igt_create_fb(data->drm_fd,
+>   			      data->mode->hdisplay,
+>   			      data->mode->vdisplay,
+> -			      DRM_FORMAT_XRGB8888,
+> +			      data->dc3co_fb_format,
+>   			      DRM_FORMAT_MOD_LINEAR,
+>   			      fb);
+>   	igt_assert(fb_id);
+> @@ -300,6 +308,15 @@ static void assert_dc_counter_negative(data_t *data, int dc_flag, uint32_t prev_
+>   
+>   static void setup_videoplayback(data_t *data)
 >   {
-> -	drmVBlank wait = {};
-> -	igt_crtc_t *crtc = data->output->pending_crtc;
-> +	struct dc3co_flip *flip = user_data;
->   
-> -	igt_assert_f(crtc, "No CRTC bound to output for vblank wait\n");
-> +	flip->seq = seq;
-> +	flip->done = true;
-> +}
->   
-> -	wait.request.type = kmstest_get_vbl_flag(crtc->crtc_index) |
-> -						 DRM_VBLANK_RELATIVE |
-> -						 DRM_VBLANK_NEXTONMISS;
-> -	wait.request.sequence = 1;
-> -	igt_assert_eq(drmWaitVBlank(data->drm_fd, &wait), 0);
-> +static unsigned int dc3co_flip_and_wait(data_t *data, uint32_t crtc_id,
-> +					uint32_t fb_id, int frame_time_us)
-> +{
-> +	drmEventContext evctx = {
-> +		.version = 2,
-> +		.page_flip_handler = dc3co_flip_handler,
-> +	};
-> +	struct dc3co_flip flip = {};
-> +	struct pollfd pfd = {
-> +		.fd = data->drm_fd,
-> +		.events = POLLIN,
-> +	};
-> +	int timeout_ms = (DC3CO_MAX_VBLANK_GAP + 2) * frame_time_us / 1000;
+> +	igt_plane_t *primary;
 > +
-> +	if (timeout_ms < 50)
-> +		timeout_ms = 50;
->   
-> -	return wait.reply.sequence;
-> +	igt_assert_eq(drmModePageFlip(data->drm_fd, crtc_id, fb_id,
-> +				      DRM_MODE_PAGE_FLIP_EVENT, &flip), 0);
+> +	primary = igt_output_get_plane_type(data->output,
+> +					    DRM_PLANE_TYPE_PRIMARY);
+> +	igt_require_f(igt_plane_has_format_mod(primary, data->dc3co_fb_format,
+> +					       DRM_FORMAT_MOD_LINEAR),
+> +					       "Primary plane does not support format %s\n",
+> +					       igt_format_str(data->dc3co_fb_format));
 > +
-> +	while (!flip.done) {
-> +		igt_assert_f(poll(&pfd, 1, timeout_ms) > 0,
-> +			     "Frame dropped: no page flip completion within %d ms "
-> +			     "during DC3CO entry/exit\n", timeout_ms);
-> +		igt_assert_eq(drmHandleEvent(data->drm_fd, &evctx), 0);
-> +	}
-> +
-> +	return flip.seq;
->   }
->   
->   static void detect_dc3co_framedrop(data_t *data)
->   {
->   	igt_plane_t *primary;
-> +	igt_crtc_t *crtc;
->   	uint32_t dc3co_prev_cnt;
->   	uint32_t dc3co_cur_cnt;
->   	uint32_t prev_vblank_seq = 0;
->   	uint32_t vblank_seq;
->   	uint32_t vblank_gap;
-> +	int frame_time_us;
->   	int delay;
->   	int committed = 0;
->   	bool dc3co_after_target = false;
-> @@ -393,25 +423,30 @@ static void detect_dc3co_framedrop(data_t *data)
->   
->   	igt_require_f(data->mode->vrefresh != 0, "Invalid vrefresh rate of 0\n");
->   
-> +	crtc = data->output->pending_crtc;
-> +	igt_assert_f(crtc, "No CRTC bound to output\n");
-> +
->   	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-> -	igt_plane_set_fb(primary, NULL);
-> +
-> +	igt_plane_set_fb(primary, &data->fb_rgb);
->   	igt_display_commit(&data->display);
->   
->   	dc3co_prev_cnt = igt_read_dc_counter(data->debugfs_fd, IGT_INTEL_CHECK_DC3CO);
->   
-> -	delay = (int)(DC3CO_FRAME_DELAY_FACTOR * (1000000 / data->mode->vrefresh));
-> +	frame_time_us = 1000000 / data->mode->vrefresh;
-> +	delay = (int)(DC3CO_FRAME_DELAY_FACTOR * frame_time_us);
->   
->   	while (committed < DC3CO_VERIFY_COMMITS) {
->   		front = !front;
-> -		igt_plane_set_fb(primary, front ? &data->fb_rgr : &data->fb_rgb);
-> -		igt_display_commit(&data->display);
+>   	color_t red_green_blue[] = {
+>   		{ 1.0, 0.0, 0.0 },
+>   		{ 0.0, 1.0, 0.0 },
+> @@ -893,14 +910,10 @@ int igt_main()
+>   	igt_describe("In this test we make sure that system enters DC3CO "
+>   		     "when PSR2 or PR is active and system is in SLEEP state");
+>   	igt_subtest_with_dynamic("dc3co-vpb-simulation") {
+> -		static const struct dc3co_test_mode dc3co_modes[] = {
+> -			{ PSR_MODE_2, "psr2" },
+> -			{ PR_MODE,    "pr"   },
+> -		};
 > -
-> -		vblank_seq = wait_for_next_vblank_seq(data);
-> +		vblank_seq = dc3co_flip_and_wait(data, crtc->crtc_id,
-> +						 front ? data->fb_rgr.fb_id :
-> +							 data->fb_rgb.fb_id,
-> +						 frame_time_us);
->   		if (prev_vblank_seq) {
->   			vblank_gap = vblank_seq - prev_vblank_seq;
->   			igt_assert_f(igt_vblank_after(vblank_seq, prev_vblank_seq) &&
->   				     vblank_gap <= DC3CO_MAX_VBLANK_GAP,
-> -				     "Unexpected vblank gap %u after commit %d (prev=%u, cur=%u)\n",
-> +				     "Frame drop: unexpected vblank gap %u after commit %d (prev=%u, cur=%u)\n",
->   				     vblank_gap, committed + 1, prev_vblank_seq, vblank_seq);
->   		}
->   		prev_vblank_seq = vblank_seq;
+> -		for (int i = 0; i < ARRAY_SIZE(dc3co_modes); i++) {
+> -			const char *name = dc3co_modes[i].name;
+> -			data.op_psr_mode = dc3co_modes[i].mode;
+> +		for (int i = 0; i < ARRAY_SIZE(dc3co_cases); i++) {
+> +			const char *name = dc3co_cases[i].name;
+> +			data.op_psr_mode = dc3co_cases[i].mode;
+> +			data.dc3co_fb_format = dc3co_cases[i].fb_format;
+>   
+>   			igt_dynamic_f("%s", name) {
+>   				igt_require_f(intel_display_ver(data.devid) >= 35,
+> @@ -919,14 +932,10 @@ int igt_main()
+>   	igt_describe("Validate that no frame drops occur during DC3CO entry "
+>   			     "while alternating framebuffers with PSR2 or Panel Replay active");
+>   	igt_subtest_with_dynamic("dc3co-framedrop-check") {
+> -		static const struct dc3co_test_mode dc3co_modes[] = {
+> -			{ PSR_MODE_2, "psr2" },
+> -			{ PR_MODE,    "pr"   },
+> -		};
+> -
+> -		for (int i = 0; i < ARRAY_SIZE(dc3co_modes); i++) {
+> -			const char *name = dc3co_modes[i].name;
+> -			data.op_psr_mode = dc3co_modes[i].mode;
+> +		for (int i = 0; i < ARRAY_SIZE(dc3co_cases); i++) {
+> +			const char *name = dc3co_cases[i].name;
+> +			data.op_psr_mode = dc3co_cases[i].mode;
+> +			data.dc3co_fb_format = dc3co_cases[i].fb_format;
+>   
+>   			igt_dynamic_f("%s", name) {
+>   				igt_require_f(intel_display_ver(data.devid) >= 35,
+> @@ -945,17 +954,14 @@ int igt_main()
+>   	igt_describe("Verify DC3CO entry is still functional after a DC6 entry "
+>   		     "and exit cycle");
+>   	igt_subtest_with_dynamic("dc3co-after-dc6") {
+> -		static const struct dc3co_test_mode dc3co_modes[] = {
+> -			{ PSR_MODE_2, "psr2" },
+> -			{ PR_MODE,    "pr"   },
+> -		};
+>   
+>   		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+>   			      "PC8+ residencies not supported\n");
+>   
+> -		for (int i = 0; i < ARRAY_SIZE(dc3co_modes); i++) {
+> -			const char *name = dc3co_modes[i].name;
+> -			data.op_psr_mode = dc3co_modes[i].mode;
+> +		for (int i = 0; i < ARRAY_SIZE(dc3co_cases); i++) {
+> +			const char *name = dc3co_cases[i].name;
+> +			data.op_psr_mode = dc3co_cases[i].mode;
+> +			data.dc3co_fb_format = dc3co_cases[i].fb_format;
+>   
+>   			igt_dynamic_f("%s", name) {
+>   				igt_require_f(intel_display_ver(data.devid) >= 35,
+> @@ -974,14 +980,10 @@ int igt_main()
+>   	igt_describe("Validate DC3CO counter increments before and after a delay "
+>   		     "greater than 6 frame gaps during video-like load with PSR2/PR active");
+>   	igt_subtest_with_dynamic("dc3co-vpb-framegap") {
+> -		static const struct dc3co_test_mode dc3co_modes[] = {
+> -			{ PSR_MODE_2, "psr2" },
+> -			{ PR_MODE,    "pr"   },
+> -		};
+> -
+> -		for (int i = 0; i < ARRAY_SIZE(dc3co_modes); i++) {
+> -			const char *name = dc3co_modes[i].name;
+> -			data.op_psr_mode = dc3co_modes[i].mode;
+> +		for (int i = 0; i < ARRAY_SIZE(dc3co_cases); i++) {
+> +			const char *name = dc3co_cases[i].name;
+> +			data.op_psr_mode = dc3co_cases[i].mode;
+> +			data.dc3co_fb_format = dc3co_cases[i].fb_format;
+>   
+>   			igt_dynamic_f("%s", name) {
+>   				igt_require_f(intel_display_ver(data.devid) >= 35,
+> @@ -1025,6 +1027,7 @@ int igt_main()
+>   		igt_require_f(igt_pm_pc8_plus_residencies_enabled(data.msr_fd),
+>   			      "PC8+ residencies not supported\n");
+>   		igt_require(intel_display_ver(data.devid) >= 20);
+> +		data.dc3co_fb_format = DRM_FORMAT_XRGB8888;
+>   		test_deep_pkgc_state(&data);
+>   	}
+>   
+> @@ -1053,6 +1056,7 @@ int igt_main()
+>   		igt_require(psr_sink_support(data.drm_fd, data.debugfs_fd,
+>   					     PSR_MODE_1, NULL));
+>   		data.op_psr_mode = PSR_MODE_1;
+> +		data.dc3co_fb_format = DRM_FORMAT_XRGB8888;
+>   		psr_enable(data.drm_fd, data.debugfs_fd, data.op_psr_mode, NULL);
+>   		igt_require(!psr_disabled_check(data.debugfs_fd));
+>   		test_dc5_pageflip_negative(&data, IGT_INTEL_CHECK_DC5);
 
-Page flips fit video-playback simulation better than the vblank wait.
 LGTM.
 Reviewed-by: Dibin Moolakadan Subrahmanian <dibin.moolakadan.subrahmanian@intel.com>
 
