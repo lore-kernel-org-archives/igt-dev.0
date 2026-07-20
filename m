@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA0E8C44520
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Jul 2026 16:16:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F90C44520
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Jul 2026 16:17:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6206D10E9D6;
-	Mon, 20 Jul 2026 16:16:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AE5B010E9E5;
+	Mon, 20 Jul 2026 16:17:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A0Xs5jHn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TVULbwmS";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA23310E9D0
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2026 16:15:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5BA6310E9D0
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2026 16:15:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784564139; x=1816100139;
+ t=1784564134; x=1816100134;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=VuDHFpmKt5dCf3wxUeC1f7ZCYNKDO+bF5ZDVr2vWe/g=;
- b=A0Xs5jHnohvdWm1A64iBP5eKreC+zogygnINSR4l4YGKcUxdAgcOyRTG
- dDsCOqHjhZsNXwPmeMyahjLxULMBanIndHC4R7Tpg+gMdge1EuSw5Cefy
- dIeCrS6fcAFfXXCz9IbZbvc9GEqGB5THoe0UbfReidsocESgTSlK7ss7s
- WzZEc0TI5Kjll49uPdYgw3z6THBjw1H+OM3EoC9Thi+9D6PzGWsiMStJh
- Jovm+u+iq6KTtOqHrKSJMz9aquuxXVlVdjHBdKhBHgYdoiQ3w3Lq444EZ
- fBS+f+3ZPdINGCYVWnJPtcPvx58NZH6Qg5n/HMceUPR+PidJES2xGUQtX Q==;
-X-CSE-ConnectionGUID: djw3eBNCRzGspDDGEYm/4A==
-X-CSE-MsgGUID: PQkLfNn/TOyP3l760e4sSQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="85188571"
-X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; d="scan'208";a="85188571"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jul 2026 09:15:38 -0700
-X-CSE-ConnectionGUID: QvIp+vhfSDigSEa9bTCPIg==
-X-CSE-MsgGUID: wds5YUkXSJOXNBj+cwSIXg==
+ bh=eCgP9QTTIZAeU/yQAg4htdw3bUdhDYzznH2dRuq8b5c=;
+ b=TVULbwmSZSGaHizy0PWR+JI3zTzhYL6VaCcjqahn6PY6dLvYO9+kpUR6
+ oH+4tW+afpswqKLQHeN9vLlFSYDrlu3KFG1aWggqxPOXqypFT+tYPYmuw
+ T3oVhg9Z2z1gNHXWzCL350DpUoxolz+xHVTDt2BYAXTaYCfXaLzZbLZUW
+ rAIuiUK0qqnp4mffX5ezRwWso3IWccJr2EDL1jFzRRkSHYnzeMNHadWK9
+ oOkpsT+9LdTjxzMEMmyww+WJmIM78ENw7bL9qKPL4aL0vAJZYKjdRbu3m
+ zb8b8aBCH5Q4sIZsaqwazkaQo5wh7JN/x5ECZcipozGSg5fRj5pLq9Q3Q w==;
+X-CSE-ConnectionGUID: PtJ3JfnyQTuZ/biGberOjg==
+X-CSE-MsgGUID: 61enaHnYQsSvtImVzqo1Rg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="95743141"
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; d="scan'208";a="95743141"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jul 2026 09:15:34 -0700
+X-CSE-ConnectionGUID: dfz9PO2LSxuvREQX/3aOQg==
+X-CSE-MsgGUID: hb2R5zVDQ8enup8ZcedyYw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; d="scan'208";a="261299615"
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; d="scan'208";a="281975825"
 Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.244.152])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jul 2026 09:15:37 -0700
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jul 2026 09:15:33 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v1 2/2] runner: Create new option for incremental results
-Date: Mon, 20 Jul 2026 18:15:26 +0200
-Message-ID: <20260720161526.64709-3-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 1/2] runner: Create results after each tests end
+Date: Mon, 20 Jul 2026 18:15:25 +0200
+Message-ID: <20260720161526.64709-2-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260720161526.64709-1-kamil.konieczny@linux.intel.com>
 References: <20260720161526.64709-1-kamil.konieczny@linux.intel.com>
@@ -68,131 +68,124 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Create new option --inc-results which will make results.json
-after each test was run, not only after last one.
+Sometimes it is desireable to have results present after an
+execution of each test, so if any unexpected reboot happen, there
+is at least result with already executed ones. Before creating
+new results.json, previous one from test before is saved into
+results.old file.
 
-Please note that this could be somewhat misleading when a kernel
-panic happens during an execution, as a real test causing this
-will not be there. In such cases one still needs to run
-igt_results to add that last one to results.
+This will have one drawback of not containing any info about last
+test which causes sudden machine reboot.
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- runner/executor.c | 19 +++++++++++++------
- runner/settings.c |  8 ++++++++
- runner/settings.h |  1 +
- 3 files changed, 22 insertions(+), 6 deletions(-)
+ runner/executor.c  | 50 ++++++++++++++++++++++++++++++++++++++++++----
+ runner/resultgen.c |  6 +++++-
+ 2 files changed, 51 insertions(+), 5 deletions(-)
 
 diff --git a/runner/executor.c b/runner/executor.c
-index b204fdffc..7c923bed3 100644
+index a8907c575..b204fdffc 100644
 --- a/runner/executor.c
 +++ b/runner/executor.c
-@@ -2045,6 +2045,11 @@ static bool clear_old_results(char *path)
- 		return false;
- 	}
+@@ -41,6 +41,7 @@
+ #include "executor.h"
+ #include "kmemleak.h"
+ #include "output_strings.h"
++#include "resultgen.h"
+ #include "runnercomms.h"
  
-+	if (remove_file(dirfd, "results.old")) {
-+		errf("Error clearing results.old : %m\n");
-+		return false;
+ #define KMSG_HEADER "[IGT] "
+@@ -2466,6 +2467,40 @@ static int open_comms_if_valid(int resdirfd, size_t testidx)
+ 	return -1;
+ }
+ 
++static void write_endtime(int resdirfd, double a_time)
++{
++	int timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666);
++
++	if (timefd >= 0) {
++		dprintf(timefd, "%f\n", a_time);
++		close(timefd);
++	}
++}
++
++static bool generate_results_with_endtime(int resdirfd, struct settings *settings)
++{
++	char *results_path = settings->results_path;
++	double beg_time = timeofday_double();
++	double end_time;
++	bool ret;
++
++	remove_file(resdirfd, "results.bak");
++	renameat(resdirfd, "results.json", resdirfd, "results.bak");
++
++	write_endtime(resdirfd, beg_time);
++	ret = generate_results_path(results_path);
++	if (settings->sync)
++		fsync(resdirfd);
++
++	end_time = timeofday_double();
++	if (settings->log_level >= LOG_LEVEL_NORMAL) {
++		outf("generating results took: %.6ffs\n", end_time - beg_time);
++		fflush(stdout);
 +	}
 +
- 	for (i = 0; true; i++) {
- 		struct stat st;
- 
-@@ -2484,6 +2489,9 @@ static bool generate_results_with_endtime(int resdirfd, struct settings *setting
- 	double end_time;
- 	bool ret;
- 
-+	if (!settings->inc_results)
-+		return true;
++	return ret;
++}
 +
- 	remove_file(resdirfd, "results.bak");
- 	renameat(resdirfd, "results.json", resdirfd, "results.bak");
- 
-@@ -2758,12 +2766,11 @@ bool execute(struct execute_state *state,
+ bool execute(struct execute_state *state,
+ 	     struct settings *settings,
+ 	     struct job_list *job_list)
+@@ -2718,8 +2753,18 @@ bool execute(struct execute_state *state,
+ 			if (!initialize_execute_state_from_resume(resdirfd, state, settings, job_list))
  				return false;
- 
+ 			state->time_left = time_left;
++			/* it should check option, also measure time taken */
++			if (!generate_results_with_endtime(resdirfd, settings))
++				return false;
++
  			return execute(state, settings, job_list);
--		}
--
--		/* it should check option, also measure time taken */
--		if (!generate_results_with_endtime(resdirfd, settings)) {
--			status = false;
--			break;
-+		} else {
-+			if (!generate_results_with_endtime(resdirfd, settings)) {
-+				status = false;
-+				break;
-+			}
  		}
++
++		/* it should check option, also measure time taken */
++		if (!generate_results_with_endtime(resdirfd, settings)) {
++			status = false;
++			break;
++		}
  	}
  
-diff --git a/runner/settings.c b/runner/settings.c
-index 3ccf71870..c52fed92b 100644
---- a/runner/settings.c
-+++ b/runner/settings.c
-@@ -23,6 +23,7 @@ enum {
- 	OPT_DISK_USAGE_LIMIT,
- 	OPT_TEST_LIST,
- 	OPT_IGNORE_MISSING,
-+	OPT_INC_RESULTS,
- 	OPT_PIGLIT_DMESG,
- 	OPT_DMESG_WARN_LEVEL,
- 	OPT_OVERALL_TIMEOUT,
-@@ -309,6 +310,7 @@ static const char *usage_str =
- 	"                        Set an environment variable for the test process.\n"
- 	"                        If only the key is provided, the current value is read\n"
- 	"                        from the runner's environment (and saved for resumes).\n"
-+	"  --inc-results         Save results incrementally after each test was run\n"
- 	"  -L, --list-all        List all matching subtests instead of running\n"
- 	"  --collect-code-cov    Enables gcov-based collect of code coverage for tests.\n"
- 	"                        Requires --collect-script FILENAME\n"
-@@ -693,6 +695,7 @@ bool parse_options(int argc, char **argv,
- 		{"abort-on-monitored-error", optional_argument, NULL, OPT_ABORT_ON_ERROR},
- 		{"disk-usage-limit", required_argument, NULL, OPT_DISK_USAGE_LIMIT},
- 		{"facts", no_argument, NULL, OPT_FACTS},
-+		{"inc-results", no_argument, NULL, OPT_INC_RESULTS},
- 		{"kmemleak", optional_argument, NULL, OPT_KMEMLEAK},
- 		{"sync", no_argument, NULL, OPT_SYNC},
- 		{"log-level", required_argument, NULL, OPT_LOG_LEVEL},
-@@ -768,6 +771,9 @@ bool parse_options(int argc, char **argv,
- 		case OPT_FACTS:
- 			settings->facts = true;
- 			break;
-+		case OPT_INC_RESULTS:
-+			settings->inc_results = true;
-+			break;
- 		case OPT_KMEMLEAK:
- 			/* The default is once */
- 			settings->kmemleak = true;
-@@ -1235,6 +1241,7 @@ bool serialize_settings(struct settings *settings)
- 	SERIALIZE_INT(f, settings, dry_run);
- 	SERIALIZE_INT(f, settings, allow_non_root);
- 	SERIALIZE_INT(f, settings, facts);
-+	SERIALIZE_INT(f, settings, inc_results);
- 	SERIALIZE_INT(f, settings, kmemleak);
- 	SERIALIZE_INT(f, settings, kmemleak_each);
- 	SERIALIZE_INT(f, settings, sync);
-@@ -1353,6 +1360,7 @@ bool read_settings_from_file(struct settings *settings, FILE *f)
- 		PARSE_INT(settings, name, val, dry_run);
- 		PARSE_INT(settings, name, val, allow_non_root);
- 		PARSE_INT(settings, name, val, facts);
-+		PARSE_INT(settings, name, val, inc_results);
- 		PARSE_INT(settings, name, val, kmemleak);
- 		PARSE_INT(settings, name, val, kmemleak_each);
- 		PARSE_INT(settings, name, val, sync);
-diff --git a/runner/settings.h b/runner/settings.h
-index 6c58c3282..10f95f286 100644
---- a/runner/settings.h
-+++ b/runner/settings.h
-@@ -62,6 +62,7 @@ struct settings {
- 	struct igt_list_head env_vars;
- 	struct igt_vec hook_strs;
- 	bool facts;
-+	bool inc_results;
- 	bool kmemleak;
- 	bool kmemleak_each;
- 	bool sync;
+ 	/* Collect facts after the last test runs */
+@@ -2731,10 +2776,7 @@ bool execute(struct execute_state *state,
+ 				     settings->kmemleak_each, settings->sync))
+ 			errf("Failed to collect kmemleak logs after the last test\n");
+ 
+-	if ((timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666)) >= 0) {
+-		dprintf(timefd, "%f\n", timeofday_double());
+-		close(timefd);
+-	}
++	write_endtime(resdirfd, timeofday_double());
+ 
+  end:
+ 	if (settings->enable_code_coverage && !settings->cov_results_per_test) {
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 1ee167fb0..f5a91f542 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -2555,9 +2555,13 @@ bool generate_results(int dirfd)
+ bool generate_results_path(char *resultspath)
+ {
+ 	int dirfd = open(resultspath, O_DIRECTORY | O_RDONLY);
++	bool ret;
+ 
+ 	if (dirfd < 0)
+ 		return false;
+ 
+-	return generate_results(dirfd);
++	ret = generate_results(dirfd);
++	close(dirfd);
++
++	return ret;
+ }
 -- 
 2.54.0
 
