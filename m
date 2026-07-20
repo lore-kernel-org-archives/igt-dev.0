@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67612C44515
-	for <igt-dev@archiver.kernel.org>; Mon, 20 Jul 2026 15:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3662C44520
+	for <igt-dev@archiver.kernel.org>; Mon, 20 Jul 2026 16:16:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 07CFC10E19D;
-	Mon, 20 Jul 2026 15:14:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 817BF10E9D0;
+	Mon, 20 Jul 2026 16:16:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YUYPg4v7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d02Zg/KN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1681510E986
- for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2026 15:14:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E4FA10E9D0
+ for <igt-dev@lists.freedesktop.org>; Mon, 20 Jul 2026 16:15:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784560442; x=1816096442;
+ t=1784564131; x=1816100131;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=95R0wrGMICkFgSQWDrO3VjTTk/Bmmz0GS9KdsJ+eCUA=;
- b=YUYPg4v7dlr00ja5r2HvZp0S4XvvGn8w1S3fTFiNF6diluWmlpLNg0E5
- 95actU4586xOkjxMyzuD2NRdsf567rqY/RfrjRoAPl4ozlANAHFY/834G
- 7y+lkGoEDzWfkwY5BZq9LwoVTdG8CX+S9NWpOmGGmydFyX0AEeoYpv7tX
- xzy/lJTGG0fVoqHU988EmFKHpRZMB10Hrakaf2WCKXY+Y/fOBKx/P3/bl
- a/nd/WXI3PidbwMFNjKT9Z4Q6Ex+4gt8OmoBZKDOf/alOFY+bwQjvOgvP
- mQtTpNYBJJRTu1dTxiN86qnPs1aKtNLvD88aHwlNxiF+epLstwDqCHTUH Q==;
-X-CSE-ConnectionGUID: WGrGf0QMSaagmZbOG5MTqQ==
-X-CSE-MsgGUID: bZF2QU8MTFiQzwlbSGe4+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="85019519"
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; d="scan'208,223";a="85019519"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jul 2026 08:14:02 -0700
-X-CSE-ConnectionGUID: VhM6MRK6R9eBy/e7ps8trg==
-X-CSE-MsgGUID: McvedvRoQKu8XPOAD2G0wg==
+ bh=KqbUMs0GA+BGgxb+gq0YNMHgEkJgL7CUSNO3XP09dig=;
+ b=d02Zg/KNyfz76Q24zRjIT9I2JOhRSqdcoW8TatzG3Xg+RFXU39m8iTHN
+ KQ6cpJvlLL+oUHs7yyfv1QA3kvMxosmb4+zGFOlOnN3VQGiKzCRKKXZMq
+ k87IAhK4BYnzxQTnzYtnh5OON6F1mlSNbNSjkvejU816dgP6FQeL8OXDg
+ ySIqdPIAY46LKg1O/823ZmvRYM224kCSFKM9MQ/yYsMg3qzcwDqLd6kja
+ mKVqHu4pLViQJQAy5XWWj9myVW7iuaA70aFiBZ/H/KAlVwIUuCn6sSF39
+ OpiktZ+5FmoP7ir/WOm5pSSi4Nc8qw4botC7OXt0ze3mDz+yjhgX5cfeg A==;
+X-CSE-ConnectionGUID: M8Un8p2mRkKPbz4eYwbkjw==
+X-CSE-MsgGUID: fFvXWo3FSVqQoZlNiv54cg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11852"; a="95743138"
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; d="scan'208";a="95743138"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jul 2026 09:15:31 -0700
+X-CSE-ConnectionGUID: 41s5a0q0SeOsHbnuih3WLQ==
+X-CSE-MsgGUID: 4ZGylrGjREWRPbkrHt+3kw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,174,1779174000"; 
- d="scan'208,223";a="257541953"
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO
- vgovind2-mobl4.intel.com) ([10.245.244.91])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Jul 2026 08:14:00 -0700
-From: Vinod Govindapillai <vinod.govindapillai@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,175,1779174000"; d="scan'208";a="281975815"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.152])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Jul 2026 09:15:29 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: vinod.govindapillai@intel.com, santhosh.reddy.guddati@intel.com,
- swati2.sharma@intel.com
-Subject: [PATCH i-g-t v2] lib/i915/fbc: xe3_lpd+ update the plane size checks
- for FBC support
-Date: Mon, 20 Jul 2026 18:13:49 +0300
-Message-ID: <20260720151349.130812-1-vinod.govindapillai@intel.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ewelina Musial <ewelina.musial@intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: [PATCH i-g-t RFC v1 0/2] runner: create results incrementally
+Date: Mon, 20 Jul 2026 18:15:24 +0200
+Message-ID: <20260720161526.64709-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,36 +69,29 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From xe3_lpd+ there is no specific restriction on the plane
-width to enable FBC. Width can be the maximum supported width
-per platform.  The restriction on the number of lines still
-holds. Update the plane size check function accordingly so that
-FBC tests dont get skipped for valid plane sizes.
+Create results incementally during run, e.g. after each test end
+its execution create results.json up to last one executed.
 
-v2: copy the values from the driver.
+One caveat is that it will still not hold last one at which
+sudden reboot happens, for example after a kernel panic.
 
-Bspec: 69560
-Signed-off-by: Vinod Govindapillai <vinod.govindapillai@intel.com>
----
- lib/i915/intel_fbc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+In such cases there is still a need for calling igt_results to
+collect all data.
 
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index b8c714d43..9aa7b3408 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -127,7 +127,10 @@ static void intel_fbc_max_plane_size(igt_display_t *display, uint32_t *width, ui
- 	const struct intel_device_info *info = intel_get_device_info(dev_id);
- 	int ver = info->graphics_ver;
- 
--	if (ver >= 10) {
-+	if (ver >= 30) {
-+		*width = 6144;
-+		*height = 4096;
-+	} else if (ver >= 10) {
- 		*width = 5120;
- 		*height = 4096;
- 	} else if (ver >= 8 || IS_HASWELL(fd)) {
+Cc: Ewelina Musial <ewelina.musial@intel.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+
+Kamil Konieczny (2):
+  runner: Create results after each tests end
+  runner: Create new option for incremental results
+
+ runner/executor.c  | 57 ++++++++++++++++++++++++++++++++++++++++++----
+ runner/resultgen.c |  6 ++++-
+ runner/settings.c  |  8 +++++++
+ runner/settings.h  |  1 +
+ 4 files changed, 67 insertions(+), 5 deletions(-)
+
 -- 
-2.43.0
+2.54.0
 
