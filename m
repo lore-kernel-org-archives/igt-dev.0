@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51C74C44515
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Jul 2026 02:20:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 353CAC44524
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Jul 2026 02:29:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBAC510E257;
-	Tue, 21 Jul 2026 02:20:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B510C10E26B;
+	Tue, 21 Jul 2026 02:29:15 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9850E10E257;
- Tue, 21 Jul 2026 02:20:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2EE6B10E26B;
+ Tue, 21 Jul 2026 02:28:45 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3554725425540624975=="
+ boundary="===============2845254785858290585=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tools=3A_remove_unnecessary?=
- =?utf-8?q?_shared_library_dependencies_from_standalone_tools_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/intel/kms=5Fpm=5Fdc?=
+ =?utf-8?q?=3A_Fix_compilation_on_arm64?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sebastian Brzezinka" <sebastian.brzezinka@intel.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 21 Jul 2026 02:20:09 -0000
-Message-ID: <178460040961.209513.4756547986842922806@6beec6c84f66>
+Date: Tue, 21 Jul 2026 02:28:45 -0000
+Message-ID: <178460092518.209011.6816194677200580661@6beec6c84f66>
 X-Patchwork-Hint: ignore
-References: <cover.1784117512.git.sebastian.brzezinka@intel.com>
-In-Reply-To: <cover.1784117512.git.sebastian.brzezinka@intel.com>
+References: <20260720114835.35398-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260720114835.35398-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,57 +41,24 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3554725425540624975==
+--===============2845254785858290585==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tools: remove unnecessary shared library dependencies from standalone tools (rev2)
-URL   : https://patchwork.freedesktop.org/series/170485/
-State : success
+Series: tests/intel/kms_pm_dc: Fix compilation on arm64
+URL   : https://patchwork.freedesktop.org/series/170739/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9015_BAT -> XEIGTPW_15564_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
+Series 170739 revision 1 was fully merged or fully failed: no git log
 
 
-Changes
--------
 
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9015 -> IGTPW_15564
-
-  IGTPW_15564: 15564
-  IGT_9015: c656c9ccd7e45834f4ca191dbf729e7ba4676f6b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5443-b521b0cb70bcb6e524b6c2ee6f86f5c6f0803405: b521b0cb70bcb6e524b6c2ee6f86f5c6f0803405
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15564/index.html
-
---===============3554725425540624975==
+--===============2845254785858290585==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,32 +78,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tools: remove unnecessary shared library dependencies from standalone tools (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170485/">https://patchwork.freedesktop.org/series/170485/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15564/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15564/index.html</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_pm_dc: Fix compilation on arm64</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170739/">https://patchwork.freedesktop.org/series/170739/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9015_BAT -&gt; XEIGTPW_15564_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9015 -&gt; IGTPW_15564</li>
-</ul>
-<p>IGTPW_15564: 15564<br />
-  IGT_9015: c656c9ccd7e45834f4ca191dbf729e7ba4676f6b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5443-b521b0cb70bcb6e524b6c2ee6f86f5c6f0803405: b521b0cb70bcb6e524b6c2ee6f86f5c6f0803405</p>
+    <p>Series 170739 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============3554725425540624975==--
+--===============2845254785858290585==--
