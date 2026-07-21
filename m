@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB1A2C4451C
-	for <igt-dev@archiver.kernel.org>; Tue, 21 Jul 2026 19:04:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20B1CC4452B
+	for <igt-dev@archiver.kernel.org>; Tue, 21 Jul 2026 19:04:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7700310E3BF;
-	Tue, 21 Jul 2026 19:04:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B966A10E3BD;
+	Tue, 21 Jul 2026 19:04:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ahJLtBC6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V+W662rQ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DBC810E3AA
- for <igt-dev@lists.freedesktop.org>; Tue, 21 Jul 2026 19:00:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7111110E3AA
+ for <igt-dev@lists.freedesktop.org>; Tue, 21 Jul 2026 19:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784660442; x=1816196442;
+ t=1784660443; x=1816196443;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=7fGPpGEHZTVjaSGqvIxd/1R1SWVwqCLFKkI1PwwCNXM=;
- b=ahJLtBC65/E34C+Qw8T4f/6aTm6f/bossbduAGmGNwtRPs9fJbkgAtGr
- 0bNhZYuLu9+6cWCDk4ohxt6E8aF0GRJ1CvJxz/nB6W/s9r7VxAKuuT6yO
- zonIfeUB2Lj9qZKMMDEkkdAxHXfQJHhcIKiDL0UywsA7kr5gu7aNz3bGR
- v7rbNoy0SH49Gil9m4GbAahVygQz+D/B/MHi3DULfIvdr4xl03sEaCtYF
- 7xUNy1WWAFTbaFXHZPOLPrEV2otvvHknwOPF+YGJu0NKwn1zIdoMCXcJH
- /fZIgWsBF/25wzQOZvkXs2ZzmyTtcfREMqnF6+N9omW3fchSebJXwOEA0 w==;
-X-CSE-ConnectionGUID: eIQYNOR4SbSulKj+SCMyjQ==
-X-CSE-MsgGUID: U0s8qgckQFGu+mwu58hx5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="95637712"
-X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; d="scan'208";a="95637712"
+ bh=JgXGRevCZzJlTzvGPew5qD7xF3lwA6hsYwq3uPDfsMU=;
+ b=V+W662rQXiPFB70fV1tw7OYrf7koL9gt52bQFzBW0kvxVTENTlDq7E4X
+ aoWDRin68uq7jIigHBG99bsWL199R/rMsUMsS88M2FzEczihB8geXDkLj
+ sYkpYR6yY1yFW98bMbdp5m1tWIwqsZeVxVhiw4LwyVuES/Q9KFPda4J6p
+ ubZ6RmlcTBWOXaOHxpZPUXmFzs5sNFCn7E+CxAUMqlIdRblPiQsgEaX65
+ tbHSeQqRva0Rlsx+E/c5vlXdmkPlxSSMjkXzT04rXYEEY4V89ZQyM22vm
+ jEqop5cpW8q2gH+5pgmy69V1W+8zin9Tjokdh8LEMwafDmyJOf4JgS9N2 g==;
+X-CSE-ConnectionGUID: WX6vIhvXTKuSg7AXtEfKZQ==
+X-CSE-MsgGUID: WhiR22w8R0qAz+vqTtpPxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="95637715"
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; d="scan'208";a="95637715"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jul 2026 12:00:42 -0700
-X-CSE-ConnectionGUID: NrWLMUO3RdqoMaqg2a5FFQ==
-X-CSE-MsgGUID: AbWaB6IcRnaQ5zef/F9pOg==
+ 21 Jul 2026 12:00:43 -0700
+X-CSE-ConnectionGUID: j+OSbBkXQSe+C6Yah8uPNw==
+X-CSE-MsgGUID: WsHyJ0miTpe+WhUXCx+sLg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; d="scan'208";a="258516616"
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; d="scan'208";a="258516624"
 Received: from rosenzwe-mobl1.amr.corp.intel.com (HELO [192.168.1.16])
  ([10.124.221.232])
  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Jul 2026 12:00:40 -0700
+ 21 Jul 2026 12:00:41 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
-Date: Tue, 21 Jul 2026 16:00:02 -0300
-Subject: [PATCH i-g-t 09/10] lib/intel_pat: Pass xe_device to
- xe_get_pat_config()
+Date: Tue, 21 Jul 2026 16:00:03 -0300
+Subject: [PATCH i-g-t 10/10] intel: Implement Wa_14026539277
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260721-wa_14026539277-v1-9-0c147eeefefa@intel.com>
+Message-Id: <20260721-wa_14026539277-v1-10-0c147eeefefa@intel.com>
 References: <20260721-wa_14026539277-v1-0-0c147eeefefa@intel.com>
 In-Reply-To: <20260721-wa_14026539277-v1-0-0c147eeefefa@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -70,71 +69,113 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In an upcoming change, we will need to check for a workaround as part
-of xe_get_pat_config().  Since xe_get_pat_config() also gets called
-during xe_device_get(), we will need to use xe_wa_from_cache() instead
-of the regular xe_wa() function.  In preparation for that, make sure
-that xe_get_pat_config() gets called with the xe_device struct instead
-of the drm file descriptor.
+Implement the adaptations in IGT required for Wa_14026539277, which is
+basically selecting an alternative PAT index instead of 2-way-coherent
+ones.
+
+Because xe_pat_cache->wb is expected to be at least 1-way-coherent, we
+need to select an alternative that fulfills that requirement.  Let's
+use the XA 1-way-coherent index for that (PAT index 19), because other
+1-way coherent configurations do not cause GPU caches to be
+automatically flushed at the end of a batch in certain occasions due
+to the L2 Flush Optimization feature in Xe3p.
+
+In the specific case of the xe_pat "false-sharing" subtest, it already
+checks for XA 1-way-coherent, so it is just simpler to skip the
+creation of the dynamic subtest for the 2-way-coherent PAT indices,
+which are tagged as reserved by the KMD on the debugfs dump of
+pat_sw_config when the workaround is active.
 
 Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- lib/intel_pat.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ lib/intel_pat.c      |  4 ++++
+ tests/intel/xe_pat.c | 28 ++++++++++++++++++++--------
+ 2 files changed, 24 insertions(+), 8 deletions(-)
 
 diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index 14935e3c4692..ebf5cd428c68 100644
+index ebf5cd428c68..caac00ad68fc 100644
 --- a/lib/intel_pat.c
 +++ b/lib/intel_pat.c
-@@ -24,7 +24,7 @@ enum xe_pat_config {
-  * Returns: The number of PAT entries successfully read on success, or a negative error
-  *          code on failure
-  */
--static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cache,
-+static int32_t xe_get_pat_config(struct xe_device *xe_dev, struct intel_pat_cache *xe_pat_cache,
- 				 int gt, enum xe_pat_config pat_config)
- {
- 	char *line = NULL;
-@@ -40,7 +40,7 @@ static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cach
- 	else
- 		snprintf(config, sizeof(config), "gt%d/pat", gt);
+@@ -7,6 +7,7 @@
+ #include "igt.h"
+ #include "intel_pat.h"
+ #include "xe/xe_query.h"
++#include "xe/xe_wa.h"
  
--	dbgfs_fd = igt_debugfs_open(drm_fd, config, O_RDONLY);
-+	dbgfs_fd = igt_debugfs_open(xe_dev->fd, config, O_RDONLY);
- 	if (dbgfs_fd < 0)
- 		return dbgfs_fd;
- 	dbgfs_file = fdopen(dbgfs_fd, "r");
-@@ -125,7 +125,9 @@ static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cach
-  */
- int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
- {
--	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_SW_CONFIG);
-+	struct xe_device *xe_dev = xe_device_get(drm_fd);
+ enum xe_pat_config {
+ 	PAT_SW_CONFIG,
+@@ -109,6 +110,9 @@ static int32_t xe_get_pat_config(struct xe_device *xe_dev, struct intel_pat_cach
+ 	free(line);
+ 	fclose(dbgfs_file);
+ 
++	if (xe_wa_from_cache(xe_dev, "14026539277"))
++		xe_pat_cache->wb = 19; /* XA 1-way-coherent. */
 +
-+	return xe_get_pat_config(xe_dev, xe_pat_cache, gt, PAT_SW_CONFIG);
+ 	return parsed;
  }
  
- /**
-@@ -141,7 +143,9 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, i
-  */
- int32_t xe_get_pat_hw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
- {
--	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_HW_CONFIG);
-+	struct xe_device *xe_dev = xe_device_get(drm_fd);
+diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+index bb2975b545e6..e1d329637aa1 100644
+--- a/tests/intel/xe_pat.c
++++ b/tests/intel/xe_pat.c
+@@ -32,6 +32,7 @@
+ #include "xe/xe_ioctl.h"
+ #include "xe/xe_query.h"
+ #include "xe/xe_util.h"
++#include "xe/xe_wa.h"
+ 
+ #define XE_COH_NONE          1
+ #define XE_COH_AT_LEAST_1WAY 2
+@@ -1865,30 +1866,41 @@ static void false_sharing(int fd)
+ 	uint16_t dev_id = intel_get_drm_devid(fd);
+ 	uint32_t graphics_ver = intel_get_device_info(dev_id)->graphics_ver;
+ 	bool is_dgfx = xe_has_vram(fd);
+-
+ 	const struct fs_pat_entry *fs_entries;
+-	int num_entries;
++	int num_fs_entries;
++	struct intel_pat_cache pat_sw_config;
++	int num_pat_entries;
 +
-+	return xe_get_pat_config(xe_dev, xe_pat_cache, gt, PAT_HW_CONFIG);
- }
++	if (xe_wa(fd, "14026539277"))
++		num_pat_entries = xe_fetch_pat_sw_config(fd, &pat_sw_config);
  
- void intel_pat_build_xe_cache(struct xe_device *xe_dev)
-@@ -151,7 +155,7 @@ void intel_pat_build_xe_cache(struct xe_device *xe_dev)
- 	pat_cache = calloc(1, sizeof(*pat_cache));
- 	igt_assert(pat_cache);
- 
--	if (igt_debug_on(xe_get_pat_sw_config(xe_dev->fd, pat_cache, 0) <= 0)) {
-+	if (igt_debug_on(xe_get_pat_config(xe_dev, pat_cache, 0, PAT_SW_CONFIG) <= 0)) {
- 		free(pat_cache);
- 		return;
+ 	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
+-		num_entries = ARRAY_SIZE(fs_xe3p_xpc);
++		num_fs_entries = ARRAY_SIZE(fs_xe3p_xpc);
+ 		fs_entries = fs_xe3p_xpc;
+ 	} else if (intel_graphics_ver(dev_id) == IP_VER(35, 10)) {
+-		num_entries = ARRAY_SIZE(fs_xe3p_lpg);
++		num_fs_entries = ARRAY_SIZE(fs_xe3p_lpg);
+ 		fs_entries = fs_xe3p_lpg;
+ 	} else if (graphics_ver == 20) {
+ 		if (is_dgfx) {
+-			num_entries = ARRAY_SIZE(fs_xe2_discrete);
++			num_fs_entries = ARRAY_SIZE(fs_xe2_discrete);
+ 			fs_entries = fs_xe2_discrete;
+ 		} else {
+-			num_entries = ARRAY_SIZE(fs_xe2_integrated);
++			num_fs_entries = ARRAY_SIZE(fs_xe2_integrated);
+ 			fs_entries = fs_xe2_integrated;
+ 		}
+ 	} else {
+-		num_entries = ARRAY_SIZE(fs_xe3);
++		num_fs_entries = ARRAY_SIZE(fs_xe3);
+ 		fs_entries = fs_xe3;
  	}
+ 
+-	for (int i = 0; i < num_entries; i++) {
++	for (int i = 0; i < num_fs_entries; i++) {
++		if (xe_wa(fd, "14026539277")) {
++			igt_assert(fs_entries[i].pat_index < num_pat_entries);
++
++			if (pat_sw_config.entries[fs_entries[i].pat_index].rsvd)
++				continue;
++		}
++
+ 		igt_dynamic_f("%s", fs_entries[i].name) {
+ 			__false_sharing(fd, &fs_entries[i]);
+ 		}
 
 -- 
 2.55.0
