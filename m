@@ -4,104 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D9BAC4451C
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jul 2026 06:22:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 04D56C44512
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jul 2026 06:24:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0887910E2AC;
-	Wed, 22 Jul 2026 06:22:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A9D2110E2AC;
+	Wed, 22 Jul 2026 06:24:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="BCfq8jY5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QxjxVejl";
 	dkim-atps=neutral
-Received: from PH8PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11012040.outbound.protection.outlook.com [40.107.209.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1300310E2AC
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2026 06:21:58 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DA8F310EC52
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2026 06:23:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1784701413; x=1816237413;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=pWfyW41KgjePR2BQ48Q8jjG/+y5YSZ3pylqFqruWHQs=;
+ b=QxjxVejlpMPRPnUNjUXdBSobfOBqYsWfpzp67N8YDx3dPLwG9JgSoxPv
+ 3E1k8v+pZf1hoJb6SmbeqPNjLZICyHhu29pwBRSetbWMc6f+qb59sxIW9
+ e9PROGXCKqKsZGy+flP+9dOLp8rebbxyu2y8PEMnMUKoLG6hhlsyWCJVz
+ wTAJczTaSki9AFI1QLRDus9DG0MjeJiU04neid6BidL2QWwX7Puk3h763
+ dLlscSv+GvrKjtVT5pGxeqoVsnH2mBF54zyfZIwFRfqYdvY5eZFAfXxUN
+ +f3sIE+mXdmaDs7MxtpDKvY1x+hPC/f3cEQPcVqYRsRwsp6DSzBBPcppZ Q==;
+X-CSE-ConnectionGUID: n9Dve43/TQ6yxEDRP990aw==
+X-CSE-MsgGUID: ++8CVjTDTcy3wgcnevuYlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11853"; a="85268162"
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; d="scan'208";a="85268162"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jul 2026 23:23:32 -0700
+X-CSE-ConnectionGUID: vrSySvcASbeAW4BvIV61Rw==
+X-CSE-MsgGUID: 6er0k8ruQQSmf7uouoAQ2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,177,1779174000"; d="scan'208";a="262930809"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Jul 2026 23:23:32 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 21 Jul 2026 23:23:31 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43 via Frontend Transport; Tue, 21 Jul 2026 23:23:31 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.58) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.43; Tue, 21 Jul 2026 23:23:31 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oOuUhXsIFdv10l6yhfX6VbRz5yiF8PUWUnzNEaoIbOCy9QvfD8V7L3ZuZUoltxub20Nmv/DrvBiQ7GMA2J2r0gLbB+v2YOGmVkZ7dgv6NmkHuf0iuLzcWvVIAhHnE58kYo5jAYDH/KRbNeTa0oCl6/cvW2WJvxygCOmYaTNEde+sCz8yVzlRBVDAHGHysN7Bp0d3KlX0/OeM3qv5/YpZnc5LrpRMuIHJjxR4VWSp/YOBXOIKSOwCs/21hbVMjpKS7KM2iyrsKXdUOeyo2vYj87tGX88PV06gEX7hqi5DLRjcOsm7YqXPGinSch8tm3QdsGFgNISiUElL28RwpoVHKw==
+ b=a4UK3AlGkCwSIMNRGaTONQv++NAJJODpeHv1zV220cKosU0jRWJzMCYcy4L3wPH7wLcDZFwIedxgBI21LMtZ2LnEShBP6LwLE86+e3o3x0niLSOMEYmd+MHSAh90wKba1NSDP6IsFJJyVyUtjtVpXoE3Pky/9zikHaXgGxdx6lyIVLbgIENdqmrfUsHCu3qo629k37ajyAk16EL0BzaF9QUPRgbG+LOMSiQTfanQhx48Gak1Xl/zXa5NbEOI8GJS1nniyJBGyj8iDfS5kZGtuWiaNzVZDXhPmw1bdKS3MorGhNtv87/7gJnjvBHWwnDu+rlKApJNEP5eF/eJOvwmjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=VOHkBCP+qnfsi6KlL7TJ0+u+Ri5BX7sDVrYVMUVcLiE=;
- b=A30UVNxgxVMKt90gSvqnmHErrP5QSwl3qoeHjnZ02lFrdWmpMI72iq0TH759l3Bu6EWK25ltIQ30CMSePJ+WwYkYKFJK+DMpZ9JI45jNno5u8t0fcUt/JclcHxVgkjP44Wzyjx7zh+aip68VdTtLC4120eLsqAthXsPfn8fBWTuX3wU45rzfbYiNYSu6NlG6+oXOxuBVdTaIEiGuvoVB1T0fjSN4NCwWZe5ZGbgmsz25jI2elm0iotHTPb0b2bdjY+ky2QD6Cu+LsPtCVIQI2hCGKr6+0QoLaUKOQZLmEXD1WNIbz5nGp4LE7SGEP7B+7+NVTLVF5carfP736kdlLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VOHkBCP+qnfsi6KlL7TJ0+u+Ri5BX7sDVrYVMUVcLiE=;
- b=BCfq8jY5aQxhUrizIUc5INa8X/FNifaYEkAfP3d4HwqhlSQJ5qq/xhUGEicT3T/GPIf/g292PhtrohPOpJpw0vybvPRm1ddouaoPsWVlXd9NH3i2873zFgN6X3Ms67tqMhXsDq9TwcL7UHwID1jhj9nPXSoeJye07PbWKH897oA=
-Received: from CY5PR15CA0024.namprd15.prod.outlook.com (2603:10b6:930:14::16)
- by BY5PR12MB4258.namprd12.prod.outlook.com (2603:10b6:a03:20d::10)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=NMVB91KRQSLE3YRA4/SUiY442vEWnBPSu5AbVPize/U=;
+ b=Qn8FJyDo88c0+4yJiPk+VmJU2vwR7dwX5xNiulJ7j9xF4YNRmrV7AD1Vm3BvvsNn0eYA+B9pRyN2gMdUKqoBtjMepJGLRjBO+JmZ6+mVnlp1/vbb0U9ttzpjQCd7Tl1XVwyZoGCG7vcw7o9FAngM17miGoQlzHoXcUFN3Lwth5wF1cB3c3/pIBIEKkgPFuIPk2Pi5CY/04iYvavTJWUIMbO3qAi5sWjXMNKdRLWSYyCzVtI8xU3QYUsuXeA4t8O95fiycqIrflkry3u563cUslba/NwxndfJW4p9R2MUbMTz/jM6io1G2EjXzTHy3kPm5NLoK7lhfDX7ZHXMHNbSYg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB5880.namprd11.prod.outlook.com (2603:10b6:510:143::14)
+ by CO1PR11MB5139.namprd11.prod.outlook.com (2603:10b6:303:95::5) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Wed, 22 Jul
- 2026 06:21:52 +0000
-Received: from CY4PEPF0000EE37.namprd05.prod.outlook.com
- (2603:10b6:930:14:cafe::43) by CY5PR15CA0024.outlook.office365.com
- (2603:10b6:930:14::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.245.10 via Frontend Transport; Wed,
- 22 Jul 2026 06:21:52 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CY4PEPF0000EE37.mail.protection.outlook.com (10.167.242.43) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.245.5 via Frontend Transport; Wed, 22 Jul 2026 06:21:52 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Wed, 22 Jul
- 2026 01:21:51 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 21 Jul
- 2026 23:21:51 -0700
-Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Wed, 22 Jul 2026 01:21:44 -0500
-From: Jesse Zhang <Jesse.Zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Jesse Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH i-g-t V2 2/2] tests/amdgpu/amd_deadlock: add gfx user-queue
- priv-fault reset test
-Date: Wed, 22 Jul 2026 14:21:15 +0800
-Message-ID: <20260722062137.3019454-2-Jesse.Zhang@amd.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260722062137.3019454-1-Jesse.Zhang@amd.com>
-References: <20260722062137.3019454-1-Jesse.Zhang@amd.com>
-MIME-Version: 1.0
+ 2026 06:23:28 +0000
+Received: from PH0PR11MB5880.namprd11.prod.outlook.com
+ ([fe80::b706:268e:9753:cdfd]) by PH0PR11MB5880.namprd11.prod.outlook.com
+ ([fe80::b706:268e:9753:cdfd%6]) with mapi id 15.21.0223.015; Wed, 22 Jul 2026
+ 06:23:27 +0000
+Message-ID: <7a0afc4a-0d28-4dba-8ab3-e06886053f88@intel.com>
+Date: Wed, 22 Jul 2026 11:53:18 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/2] Revert "lib/kms: Set
+ display->has_plane_color_pipeline automatically"
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: John Harrison <John.Harrison@Igalia.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>
+References: <20260714144532.351294-1-chaitanya.kumar.borah@intel.com>
+ <88217722-843f-46b7-a2e5-a05262243b4c@intel.com>
+ <63abb020-7f9a-4974-85d9-d9a7f3a0dc81@intel.com>
+Content-Language: en-US
+From: "Sharma, Swati2" <swati2.sharma@intel.com>
+In-Reply-To: <63abb020-7f9a-4974-85d9-d9a7f3a0dc81@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
+X-ClientProxiedBy: MA5PR01CA0250.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:223::11) To PH0PR11MB5880.namprd11.prod.outlook.com
+ (2603:10b6:510:143::14)
+MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE37:EE_|BY5PR12MB4258:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a5484c9-a152-467e-9116-08dee7b98522
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5880:EE_|CO1PR11MB5139:EE_
+X-MS-Office365-Filtering-Correlation-Id: a794b767-dc75-463d-b09c-08dee7b9bda1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|1800799024|36860700016|376014|23010399003|18002099003|22082099003|10067099003|11063799006|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info: Np88OaVEOlXr50pTAGOB7FuWvjSxCtjpDLIYFHhc+wAH8OulYEiTyVsTWEsoPLASBopGPZ7ipjD8fdz9K++b23ZpRWxLnLEtHHpHlyXsQ51+NJTj/BuT4800r143iGkIR3IIP8Ele7/LEVJASUmXSSurEbfUiRudRsfEVi/+fJtdMWTww/Okab2pDs0Nuw7O8O3j6VSut+DqQPPZxdTa+n9BYqTK37e4AlkzxjIoEuPr4j8C1JKT0KYWP7HIn6TNQ4YW8L2rek0q4Ew7JRJHcJwlub9H/qLP7iJR+sqy5gneIXEzwVEnsGJgfIl2taVFdT7bbvSr0ptVIMJ+++i+oQxnUJX06sdI57kRWONckpuL2tld3ys1zJ9mXa5xXVXvhOnmlKolw3+wcb4R9NBo7TSe/GpB773sEptEMeeccbh3HqLiNDcg5wCDuZGzaEvQcRF7Ri2F59aWBaEze6vM0CtyCyW2i7VgCFqN1XC736sHbExIn39fEFa6mQXrE/PHVSuvqHZ732Cnmo4pn0yClWtgh3PLgIA2VU+meYY4xWLGdsFxGbMnWOEBs/7YyGXjFrayJSVGrUvhtY/ee5kjGoNM6MjYVrbp67vkhACyTxyDMdLo8dzoHxQVgofzrxh3kJ83Bzb1WPNF44evB5o2zG6Uz6Lw+4K7ga0FiaYyxF6Kz0Wc193viZXtVY+V4TDJ1VHOeKgcSJcyZI+Ktzxemg==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(23010399003)(18002099003)(22082099003)(10067099003)(11063799006)(56012099006)(6133799003);
+ ARA:13230040|366016|23010399003|376014|1800799024|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: ZqJPiYb+f31oIPRj+Vyoh3EIseF7MgABdHqBTbA7+gta38CXyCwWPkb6G4XLyt6yR6BM26byS/Y/s4jJeB7IpncsZxuQQlJXCdyXafet9kXNn046/mdQYbAQHc93vhYsTV2SsbZiZKTGEGKCjt8m83yTrAA/tZBnKiB5CRJ1KHz5TlJVfb8tmyQardFuH37ZklhIcKlEvt/1xBIJdzZE5RnvMbJ+c/KvRj4PrU9y/Xqa5nDeFw+EnclWB90QNWH5PnXyVwk31tfItpReA+vCaaQcPHaoaBmVnWn8zoBINjaX2/h910/7kAlvk9Doi02nHUX3BsuBa5N24o1OW01y/7lyMfRYLYdWmJh0VTPOm/5VfXnanvB7Z4DH4wBdk+kKrF3Rkk0BZjLtYHkvdseWeh5fMs0Fhofml3SI/eyyJU57G/YF7xuyo/s54NoIi3wX8CAtD+cdYTgkYIqJaS6m8YtfQ63g6TMaKAkorBQMEkBEFBEvcSLD5ABHwy1yWFUNo4oDjLGQAHcS5ivivC0td2wbG5BA2BFI9HFBo0N9LQq7sStzCDLfQM4jwTvE/9jwBX2Uy3lFwb5Ui/UNcvliDKsdqpxd5gsFkYuBneuvutY9RJGOW38tzjoWDARLWy6ieM8WvVd7Olk1Ss29Rgj21CQUW71fxpnjHGm2usEQdME=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR11MB5880.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: EQlIeTNHvM/rWzXwqmVFBF9ukk3xY3GuNUpsOdfMJI/P8VtoHIoa6JvBowJ7418AdrjMKCmQrpw+ds4dcJy1u8sKMqc6MlZ3mtK9ZaKy4omMJIv9m0w1KUuo/xrZ5mKb/QQfrIa3tQC0Qyr2SdEfttiZnDOA13aH2wZ3Hq193ZVjh0KwXEQMjz8AvUN+5dFwvuUZkezj1+uNu95LWT1hDi3r3OTPSJujgZNN3m6SJRvfnFpjGaunA1NFZdIJnhHjxxPtw6iKj0AkYDRlW041OeR/0UIV1mC6+ri278jg5OqFmYM3tjpMPFx+WktrYmRFU6DwVlE5xni8LqlgXcD1MsewZ8WhHn4EV5K1TDI4A9G9hEM00sXBFrudbOau61I/ekPFYuF9nemNFUUYQR5tO+E5XL0ZGUTN3/6TsQ1hFPjdQt3t+zlnvfdiyhDphKAA
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 06:21:52.0913 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a5484c9-a152-467e-9116-08dee7b98522
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EE37.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4258
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RmZHcGVQM1ptNmhPT09YS1RoQUh3RWVlL3Z1VGJYUUJaeE1nUUh0dmM2a2ti?=
+ =?utf-8?B?MGgvOCtXN3JyWHdGVVpieGpVMWhiVUY4QkpyWkVqUE5jYytwR0FiR0dnRVlL?=
+ =?utf-8?B?R0ltRWg4ZXlYd3JieXowVzI0Y1F4UGVBc1o2L1QrZFo1UTFNbTBzSTNVL0N4?=
+ =?utf-8?B?QmhjaDdDMExkTFlxYnV2eGMxdlJVdmJ0aFdTalNHbzZJUWJnNlZxQ2wyNTIv?=
+ =?utf-8?B?ZWg1cUFBRUVXV0lvWCtEZmZSL2REQTNQc1hXTktBdGZYbjk3cE5mc05DY0RR?=
+ =?utf-8?B?MGdkUDNVV3hVU01Mb1BxbkFqRnorYWhKMk44T2dsTUMwci82M2lYak4zV1hh?=
+ =?utf-8?B?TlZrcEtZTWxLaVE5VGEvdk9xRHgvZVJwMHF6bnRIZkZMbklMdFNCS2Z3NnZ4?=
+ =?utf-8?B?MVlhYy8rNW1XMEI2eFZFckpDYU1GMW5JUDQweFBDdHE2bElJN1VuNFJsK2Fx?=
+ =?utf-8?B?ZkRSM1JUT2tsRWl1cHkzTThwK0V5M3VzZ2s2Y1dMTnk4cjlmZ0VIK0JJM2VP?=
+ =?utf-8?B?THd6alFKbk1oTkRIL3VDTTY1djhTb0JMV0J1NjNqUFBhRjM2ZU9sTmlwUTlJ?=
+ =?utf-8?B?TFpxZjJqaTF4WThZbWsxakZwQTVzRlJkekVpdVpzam1YN00yVGptbktSQldr?=
+ =?utf-8?B?VjJlZVZadXRCWVdBNng0MGx6cFkwQWw5R2JpRTdqVzYzWW4yVDMzdzhxRGRa?=
+ =?utf-8?B?WXYzTkwrTUdpVVdQQk9hdFFCSk9PM0dTSU83bWE2M0JFREFNdlloMEUyM0k3?=
+ =?utf-8?B?NWFCUTlHUUJ0MkZFQXh3Y09CM0kycitsS0RyYmhMZ1hvTW0zUGdwSEMxQ2g1?=
+ =?utf-8?B?OEphck42Q0pMRzUyK0VwVDhSTjdhdXN1QWw0SlpLaXBzZzI3dXIvUXBvNENH?=
+ =?utf-8?B?eG9lakRXdlF5Vk9UOXFmREd3WWRpbWFmUjF1akwvLzJEaG1MTWt4cjFrbnV2?=
+ =?utf-8?B?Wi9OcXFhaE1VQURENk8wcWNYSmlGVDVjcXJuMytXams5T2Y0T3IvcWM1VmtC?=
+ =?utf-8?B?UlR2aFV2TVBSNEZ5VElNaVR1UTMwS24xczJnekR0RmI0aW5FdHh1MGg2a29i?=
+ =?utf-8?B?R3FxZnQ5eU56c2ZHSG9DbGNlUjhGRkpXMStuN1ZGL1AvZFlXU3hPQTNXRFJZ?=
+ =?utf-8?B?WEV3ZXJzdkpFU24vaENUQUZDK2E2dFk1WW1iSGs5bjJ0SVo0YmJEVDkvWGlR?=
+ =?utf-8?B?SjV2RE9VRXlPNjEvRkdLZ1B5UHFDYXNneDduamk0ZnRPc21NR3hOWkg2eVdT?=
+ =?utf-8?B?QkNRcTZmY1JES1dpZWY1SllSd0tHWE9wODhpYXRpb2NEWVdFRno3bHRtRlc2?=
+ =?utf-8?B?T1JneWltWXZtUmdVMWxrQkFrc0RNMHNqb1dITGowUDE4dHBONHVycTF6ZThh?=
+ =?utf-8?B?UUlhaEppNmt4NzlGNlJGTWg1QTIvRzNHekxsc0ZGR1RGTGxzbHE0NlM2b1VX?=
+ =?utf-8?B?L2pXNDBGSVAwVjgwWkNlYVBRTGt3bVZLV2NQcGxCM3huTEpmZ0g0U1JMMyt4?=
+ =?utf-8?B?YlZaeFM4Z3NoWGRBQnJ4dUx2Y0hkWW9kQkVXRmd2akwrMG9jRXNjR0xqR2h3?=
+ =?utf-8?B?N2hoY3FoNFhBcjVWalQzdjVJZUFxQzZCYjBnYURqTnpNdGFyWVlRU2Q5US9k?=
+ =?utf-8?B?dXZaVW83VVFsc3RnSzJNUWNYaldyeGNOb3dXL3VZdEpheGZiMVFzNWcxT2pD?=
+ =?utf-8?B?N2Vqc3kvaERGZndTSzlLdUw2VHRhTTFLU0ExQ3JJS3B6Y2hUVUlRUXVTQWdT?=
+ =?utf-8?B?bTI3aWszMENyTW8wb0NLUVBscStUc1pHVTAyU2o3MGFFVU5VeDl0RG5jTGFm?=
+ =?utf-8?B?SUdIMGpuRVgzRm9sOXYyOXphMVJTUklTRmdCRHJrVGM5VkhNVEVxQTF0Wm45?=
+ =?utf-8?B?RnZOMjR2WjRsdzkwcmJ3Si9qV1orbFR4ZG5yWUh1NTdyTVhTajc3cDFrbzlN?=
+ =?utf-8?B?REN2WW9HVXlTK2tXU24yT3dWeXJwRnNLYlFvSkxMbDN1bVNaQjNJMnRLY0Jt?=
+ =?utf-8?B?em80MU9PRElUMDlUMGRVbFBmclFrM2lRdmZYYksvcTBLTzhLVUpqVDZ6amRr?=
+ =?utf-8?B?aXhCc3V1dnFzZGNQUlNxQW56SGdHSTZ5TkNIT1V6eVcyWFJSVjdON05IVUlT?=
+ =?utf-8?B?R3lrWUhMeU5lUFJCamdiSDRJWVcwd1YrbjBoSW9IOEprN1VZWmV5bC9BUkZS?=
+ =?utf-8?B?Yk5EMlNnc0RVbi9ZSTNwSVR1UFI4d2M3ZHhKamZFVHFydlBORUxIMmVxNE5J?=
+ =?utf-8?B?a2tBdEdlVEduNDBDM0lYcDl2clJEWGJZNDNIYVZjNkVUVEZOUmUzdU5iSGJC?=
+ =?utf-8?B?dnZCL1ViVTBOcWRPM0FhMHAvbWt3OXRhZ3Y5QVM4ZWlUZy9xQm84UT09?=
+X-Exchange-RoutingPolicyChecked: pZHRNy6q+kK6ucs7K6B2FY26+28OUwBm80RMnFcmSJVvLTKP5RXrX3KSKYRnWmCfOovz/UNHzOXj0NeFtERIX7qTn1o041KkGOB8Zhx3ogFNXaXZCPoLlVj87+izJNXFZwltOeoB+bXfORXRZNeyenWCyDULrmPxwgU/rVgnX6tbXx4cUcyNuL+hsbEc2ie5iMuImUCE+cELPoGIJBg0DjMkYgdhscsPMYAXC1Z2fQpuPJ8fqOH0Pbpky0NiIlC96pACQPEJR7kBR+aYZoiK3wAYUkkZ4RsLpaPXOzB5r+RlEbPqQqlU96AicKErYTdYNIx1aNigQREzc8BmpyMnxg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: a794b767-dc75-463d-b09c-08dee7b9bda1
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5880.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jul 2026 06:23:27.5645 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: s31l4SfzTTsNMRJFzSqxc5oUn8UTa9ytdls13uGME38rFGjq3kUAxRR7IEyptAJkulgf6qqOlDwA7ri6r1u8ZQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5139
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,318 +173,118 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Submit a gfx user-queue job that raises a priv-fault interrupt and then
-hangs cleanly: a minimal invalid opcode (0xf2) makes the CP raise
-CP_BAD_OPCODE_ERROR without running off into memory, and a trailing
-WAIT_REG_MEM that never completes keeps the queue hung. The driver recovers
-it with a per-queue reset instead of a full GPU reset. The job is submitted
-on the synchronised path so it blocks until the reset completes the fence.
-Add it as the amdgpu-gfx-priv-fault-umq subtest, gated on
-AMDGPU_ENABLE_USERQTEST and per-queue reset capability.
+Hi Chaitanya
 
-v2: move all hang packet creation into ip-block hooks wait_reg_mem_hang
-    and priv_fault_hang in amd_ip_blocks_ex.c; deadlock helpers now call
-    the hooks only, no direct PACKET3() in test code (Vitaly)
+On 21-07-2026 04:30 pm, Borah, Chaitanya Kumar wrote:
+>
+>
+> On 7/21/2026 4:25 PM, Sharma, Swati2 wrote:
+>> Hi Chaitanya,
+>>
+>> On 14-07-2026 08:15 pm, Chaitanya Kumar Borah wrote:
+>>> This reverts commit be4e98c3b79e8bb843f7bb762616742691fee72e.
+>>>
+>>> Enabling DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE from the common
+>>> igt_display_require() path makes all IGT display clients opt into the
+>>> new plane color pipeline UAPI.
+>>>
+>>> With the color pipeline client cap enabled, legacy plane COLOR_ENCODING
+>>> and COLOR_RANGE properties are ignored during commit preparation.
+>>> The driver cannot distinguish this case, because enum 
+>>> drm_color_encoding
+>>> and enum drm_color_range do not provide an explicit uninitialized 
+>>> value.
+>>>
+>>> Revert the global opt-in and keep the cap enablement local to the
+>>> color-pipeline-aware tests. kms_properties colorop coverage shall be
+>>> preserved separately.
+>>>
+>>> Cc: John Harrison <John.Harrison@Igalia.com>
+>>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>>> Cc: Swati Sharma <swati2.sharma@intel.com>
+>>> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+>>> ---
+>>>   lib/igt_kms.c              | 2 --
+>>>   tests/kms_color_pipeline.c | 5 +++++
+>>>   tests/kms_colorop.c        | 4 ++++
+>>>   3 files changed, 9 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+>>> index 2eefb773b..c56127c42 100644
+>>> --- a/lib/igt_kms.c
+>>> +++ b/lib/igt_kms.c
+>>> @@ -3201,8 +3201,6 @@ void igt_display_require(igt_display_t 
+>>> *display, int drm_fd)
+>>>       if (drmSetClientCap(drm_fd, 
+>>> LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
+>>>           display->has_virt_cursor_plane = 1;
+>>> -    if (drmSetClientCap(drm_fd, 
+>>> DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+>>> -        display->has_plane_color_pipeline = 1;
+>>>       plane_resources = drmModeGetPlaneResources(display->drm_fd);
+>>>       igt_assert(plane_resources);
+>>> diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+>>> index 6119a830f..78860a845 100644
+>>> --- a/tests/kms_color_pipeline.c
+>>> +++ b/tests/kms_color_pipeline.c
+>>> @@ -349,6 +349,7 @@ run_tests_for_plane(data_t *data)
+>>>   int igt_main()
+>>>   {
+>>> +    int has_plane_color_pipeline = 0;
+>>>       data_t data = {};
+>>>       igt_fixture() {
+>>> @@ -363,9 +364,13 @@ int igt_main()
+>>>           if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_ATOMIC, 1) 
+>>> == 0)
+>>>               data.display.is_atomic = 1;
+>>> +        if (drmSetClientCap(data.drm_fd, 
+>>> DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+>>> +            has_plane_color_pipeline = 1;
+>>> +
+>>>           kmstest_set_vt_graphics_mode();
+>>>           igt_display_require(&data.display, data.drm_fd);
+>>> +        data.display.has_plane_color_pipeline = 
+>>> has_plane_color_pipeline;
+>>>           igt_require(data.display.is_atomic);
+>>>       }
+>>> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+>>> index 4db83470d..16db0b8ad 100644
+>>> --- a/tests/kms_colorop.c
+>>> +++ b/tests/kms_colorop.c
+>>> @@ -418,10 +418,14 @@ int igt_main_args("d", long_options, help_str, 
+>>> opt_handler, NULL)
+>>>           igt_require_f(!ret, "error setting 
+>>> DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
+>>>           igt_display_require(&display, display.drm_fd);
+>>> +        if (drmSetClientCap(display.drm_fd, 
+>>> DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+>>> +            display.has_plane_color_pipeline = 1;
+>>>           kmstest_set_vt_graphics_mode();
+>>>           igt_display_require(&display, display.drm_fd);
+>>> +        if (drmSetClientCap(display.drm_fd, 
+>>> DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+>>> +            display.has_plane_color_pipeline = 1;
+>>
+>> Can't we follow same local variable pattern as kms_color_pipeline? 
+>> That will avoid calling drmSetClientCap() twice.
+>>
+>
+> We can but since this is a pure revert we can take it up in a separate 
+> patch.
+>
+> I can float one if this gets approved.
 
-Co-developed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
----
- lib/amdgpu/amd_deadlock_helpers.c | 110 ++++++++++++++++++++++++++----
- lib/amdgpu/amd_deadlock_helpers.h |   4 ++
- lib/amdgpu/amd_ip_blocks.h        |  22 ++++++
- lib/amdgpu/amd_ip_blocks_ex.c     |  68 ++++++++++++++++++
- tests/amdgpu/amd_deadlock.c       |   9 +++
- 5 files changed, 201 insertions(+), 12 deletions(-)
+Sure, lets get this fixed as well as part of a new patch.
 
-diff --git a/lib/amdgpu/amd_deadlock_helpers.c b/lib/amdgpu/amd_deadlock_helpers.c
-index 4395fc527..92d816e13 100644
---- a/lib/amdgpu/amd_deadlock_helpers.c
-+++ b/lib/amdgpu/amd_deadlock_helpers.c
-@@ -416,21 +416,16 @@ bad_access_helper(amdgpu_device_handle device_handle, unsigned int cmd_error,
- /*
-  * Emit a WAIT_REG_MEM that waits forever: poll bo_mc (initialised to 0) for a
-  * value != 0. This is a valid packet that never completes, i.e. a clean hang
-- * with no page fault, so it can be recovered by a per-queue reset.
-+ * with no page fault, so it can be recovered by a per-queue reset. All packet
-+ * creation lives in the IP block hook for ASIC portability.
-  */
--static void gfx_ring_emit_wait_reg_mem_hang(struct amdgpu_ring_context *ring_context)
-+static void gfx_ring_emit_wait_reg_mem_hang(
-+	const struct amdgpu_ip_block_version *ip_block,
-+	struct amdgpu_ring_context *ring_context)
- {
- 	uint32_t i = 0;
- 
--	ring_context->pm4[i++] = PACKET3(PACKET3_WAIT_REG_MEM, 5);
--	ring_context->pm4[i++] = WAIT_REG_MEM_MEM_SPACE(1)  | /* memory */
--				 WAIT_REG_MEM_FUNCTION(4)  | /* != */
--				 WAIT_REG_MEM_ENGINE(0);     /* me */
--	ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc) & 0xfffffffc;
--	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
--	ring_context->pm4[i++] = 0;          /* reference value */
--	ring_context->pm4[i++] = 0xffffffff; /* and mask */
--	ring_context->pm4[i++] = 0x00000004; /* poll interval */
-+	ip_block->funcs->wait_reg_mem_hang(ip_block->funcs, ring_context, &i);
- 	ring_context->pm4_dw = i;
- }
- 
-@@ -490,7 +485,98 @@ void amdgpu_hang_ring_helper(amdgpu_device_handle device_handle, unsigned int ip
- 	memset((void *)ring_context->bo_cpu, 0, ring_context->write_length * sizeof(uint32_t));
- 	ring_context->resources[0] = ring_context->bo;
- 
--	gfx_ring_emit_wait_reg_mem_hang(ring_context);
-+	gfx_ring_emit_wait_reg_mem_hang(ip_block, ring_context);
-+
-+	amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context, 0);
-+
-+	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle, ring_context->bo_mc,
-+				 ring_context->write_length * sizeof(uint32_t));
-+	if (user_queue) {
-+		ip_block->funcs->userq_destroy(device_handle, ring_context, ip_type);
-+	} else {
-+		free(ring_context->pm4);
-+		free(ring_context);
-+	}
-+}
-+
-+/*
-+ * Build a packet stream that raises a gfx priv-fault interrupt and then hangs
-+ * the queue cleanly: a minimal invalid opcode (CP_BAD_OPCODE_ERROR) followed by
-+ * a WAIT_REG_MEM that never completes. The bad opcode alone would let the CP
-+ * run to completion (self-recovering), and a bad opcode with a mis-parseable
-+ * body drags the CP into a page fault (only recoverable by a full GPU reset).
-+ * Combining a minimal bad opcode with a clean wait gives the wanted case: the
-+ * priv-fault interrupt fires, the queue hangs without faulting the CP, and the
-+ * driver recovers it with a per-queue reset.
-+ */
-+static void gfx_ring_emit_priv_fault_hang(
-+	const struct amdgpu_ip_block_version *ip_block,
-+	struct amdgpu_ring_context *ring_context)
-+{
-+	uint32_t i = 0;
-+
-+	ip_block->funcs->priv_fault_hang(ip_block->funcs, ring_context, &i);
-+	ring_context->pm4_dw = i;
-+}
-+
-+/*
-+ * Fault a user queue with an invalid opcode followed by an endless wait: the
-+ * bad opcode raises the gfx priv-fault interrupt and the wait hangs the queue
-+ * cleanly, so the driver recovers it with a per-queue reset (no full GPU
-+ * reset). The faulting submit uses the normal (synchronised) path so it blocks
-+ * until the per-queue reset completes the fence.
-+ */
-+void amdgpu_priv_fault_ring_helper(amdgpu_device_handle device_handle, unsigned int ip_type,
-+				   struct pci_addr *pci, bool user_queue)
-+{
-+	const struct amdgpu_ip_block_version *ip_block;
-+	const int write_length = 128;
-+	const int pm4_dw = 256;
-+	struct amdgpu_ring_context *ring_context;
-+	int r = 0;
-+
-+	ip_block = get_ip_block(device_handle, ip_type);
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	igt_assert(ring_context);
-+
-+	if (user_queue) {
-+		ip_block->funcs->userq_create(device_handle, ring_context, ip_type);
-+	} else {
-+		r = amdgpu_cs_ctx_create(device_handle, &ring_context->context_handle);
-+		igt_assert_eq(r, 0);
-+	}
-+
-+	ring_context->write_length = write_length;
-+	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
-+	ring_context->pm4_size = pm4_dw;
-+	ring_context->res_cnt = 1;
-+	ring_context->ring_id = 0;
-+	ring_context->user_queue = user_queue;
-+	igt_assert(ring_context->pm4);
-+
-+	r = amdgpu_bo_alloc_and_map_sync(device_handle,
-+				    ring_context->write_length * sizeof(uint32_t),
-+				    4096, AMDGPU_GEM_DOMAIN_GTT,
-+				    AMDGPU_GEM_CREATE_CPU_GTT_USWC,
-+				    AMDGPU_VM_MTYPE_UC,
-+				    &ring_context->bo,
-+				    (void **)&ring_context->bo_cpu,
-+				    &ring_context->bo_mc,
-+				    &ring_context->va_handle,
-+				    ring_context->timeline_syncobj_handle,
-+				    ++ring_context->point, user_queue);
-+	igt_assert_eq(r, 0);
-+	if (user_queue) {
-+		r = amdgpu_timeline_syncobj_wait(device_handle,
-+			ring_context->timeline_syncobj_handle,
-+			ring_context->point);
-+		igt_assert_eq(r, 0);
-+	}
-+
-+	memset((void *)ring_context->bo_cpu, 0, ring_context->write_length * sizeof(uint32_t));
-+	ring_context->resources[0] = ring_context->bo;
-+
-+	gfx_ring_emit_priv_fault_hang(ip_block, ring_context);
- 
- 	amdgpu_test_exec_cs_helper(device_handle, ip_block->type, ring_context, 0);
- 
-diff --git a/lib/amdgpu/amd_deadlock_helpers.h b/lib/amdgpu/amd_deadlock_helpers.h
-index accbf2e41..6e69e62cb 100644
---- a/lib/amdgpu/amd_deadlock_helpers.h
-+++ b/lib/amdgpu/amd_deadlock_helpers.h
-@@ -37,5 +37,9 @@ amdgpu_hang_sdma_ring_helper(amdgpu_device_handle device_handle, uint8_t hang_ty
- void
- amdgpu_hang_ring_helper(amdgpu_device_handle device_handle, unsigned int ip_type,
- 			struct pci_addr *pci, bool user_queue);
-+
-+void
-+amdgpu_priv_fault_ring_helper(amdgpu_device_handle device_handle, unsigned int ip_type,
-+			      struct pci_addr *pci, bool user_queue);
- #endif
- 
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 2adea2f58..6e8ac1511 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -426,6 +426,28 @@ struct amdgpu_ip_funcs {
- 		bool wr_confirm
- 	);
- 
-+	/*
-+	 * Emit PACKET3_WAIT_REG_MEM for deadlock/hang tests. Uses FUNCTION(4)
-+	 * for != comparison and polls ring_context->bo_mc (initialised to 0)
-+	 * for a value that never arrives, hanging the queue for reset testing.
-+	 */
-+	int (*wait_reg_mem_hang)(
-+		const struct amdgpu_ip_funcs *func,
-+		const struct amdgpu_ring_context *context,
-+		uint32_t *pm4_dw
-+	);
-+
-+	/*
-+	 * Emit an invalid opcode followed by a WAIT_REG_MEM hang for priv-fault
-+	 * tests: the bad opcode raises CP_BAD_OPCODE_ERROR, then the queue hangs
-+	 * cleanly so the driver recovers it with a per-queue reset.
-+	 */
-+	int (*priv_fault_hang)(
-+		const struct amdgpu_ip_funcs *func,
-+		const struct amdgpu_ring_context *context,
-+		uint32_t *pm4_dw
-+	);
-+
- };
- 
- extern const struct amdgpu_ip_block_version gfx_v6_0_ip_block;
-diff --git a/lib/amdgpu/amd_ip_blocks_ex.c b/lib/amdgpu/amd_ip_blocks_ex.c
-index b3b708507..cec0f4d66 100644
---- a/lib/amdgpu/amd_ip_blocks_ex.c
-+++ b/lib/amdgpu/amd_ip_blocks_ex.c
-@@ -217,6 +217,13 @@ static void gfx_write_data_mem_default(
- }
- 
- 
-+static int gfx_ring_wait_reg_mem_hang(const struct amdgpu_ip_funcs *func,
-+				      const struct amdgpu_ring_context *ring_context,
-+				      uint32_t *pm4_dw);
-+static int gfx_ring_priv_fault_hang(const struct amdgpu_ip_funcs *func,
-+				    const struct amdgpu_ring_context *ring_context,
-+				    uint32_t *pm4_dw);
-+
- void amd_ip_blocks_ex_init(struct amdgpu_ip_funcs *funcs)
- {
- 	funcs->gfx_program_compute = gfx_program_compute_default;
-@@ -225,6 +232,10 @@ void amd_ip_blocks_ex_init(struct amdgpu_ip_funcs *funcs)
- 	funcs->gfx_emit_nops = gfx_emit_nops_default;
- 	funcs->gfx_write_data_mem = gfx_write_data_mem_default;
- 
-+	/* Deadlock/hang test hooks */
-+	funcs->wait_reg_mem_hang = gfx_ring_wait_reg_mem_hang;
-+	funcs->priv_fault_hang = gfx_ring_priv_fault_hang;
-+
- 	switch (funcs->family_id) {
- 	case AMDGPU_FAMILY_RV:
- 	case AMDGPU_FAMILY_NV:
-@@ -251,3 +262,60 @@ void amd_ip_blocks_ex_init(struct amdgpu_ip_funcs *funcs)
- 	}
- }
- 
-+/*
-+ * Emit PACKET3_WAIT_REG_MEM for deadlock/hang tests. Uses FUNCTION(4) for !=
-+ * comparison, polling a memory location (initialised to 0) for a value that
-+ * never arrives, so the queue hangs cleanly for per-queue reset testing.
-+ */
-+static int
-+gfx_ring_wait_reg_mem_hang(const struct amdgpu_ip_funcs *func,
-+			   const struct amdgpu_ring_context *ring_context,
-+			   uint32_t *pm4_dw)
-+{
-+	uint32_t i = *pm4_dw;
-+
-+	ring_context->pm4[i++] = PACKET3(PACKET3_WAIT_REG_MEM, 5);
-+	ring_context->pm4[i++] = (WAIT_REG_MEM_MEM_SPACE(1) | /* memory */
-+				  WAIT_REG_MEM_FUNCTION(4) | /* != */
-+				  WAIT_REG_MEM_ENGINE(0));   /* me */
-+	ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc) & 0xfffffffc;
-+	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-+	ring_context->pm4[i++] = 0;          /* reference value */
-+	ring_context->pm4[i++] = 0xffffffff; /* and mask */
-+	ring_context->pm4[i++] = 0x00000004; /* poll interval */
-+	*pm4_dw = i;
-+
-+	return 0;
-+}
-+
-+/*
-+ * Emit an invalid opcode followed by a WAIT_REG_MEM hang for priv-fault tests.
-+ * The invalid opcode raises CP_BAD_OPCODE_ERROR (a gfx priv-fault) without
-+ * running the CP off into memory, then the WAIT_REG_MEM hangs the queue cleanly.
-+ */
-+static int
-+gfx_ring_priv_fault_hang(const struct amdgpu_ip_funcs *func,
-+			 const struct amdgpu_ring_context *ring_context,
-+			 uint32_t *pm4_dw)
-+{
-+	uint32_t i = *pm4_dw;
-+
-+	/* Invalid opcode: CP raises CP_BAD_OPCODE_ERROR (gfx priv-fault). */
-+	ring_context->pm4[i++] = PACKET3(0xf2, 0);
-+	ring_context->pm4[i++] = 0x0;
-+
-+	/* Then hang cleanly on a WAIT_REG_MEM that never completes. */
-+	ring_context->pm4[i++] = PACKET3(PACKET3_WAIT_REG_MEM, 5);
-+	ring_context->pm4[i++] = (WAIT_REG_MEM_MEM_SPACE(1) |
-+				  WAIT_REG_MEM_FUNCTION(4) |
-+				  WAIT_REG_MEM_ENGINE(0));
-+	ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc) & 0xfffffffc;
-+	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-+	ring_context->pm4[i++] = 0;          /* reference value */
-+	ring_context->pm4[i++] = 0xffffffff; /* and mask */
-+	ring_context->pm4[i++] = 0x00000004; /* poll interval */
-+	*pm4_dw = i;
-+
-+	return 0;
-+}
-+
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-index 118948992..0d0e4ba6e 100644
---- a/tests/amdgpu/amd_deadlock.c
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -255,6 +255,15 @@ int igt_main()
- 			amdgpu_hang_ring_helper(device, AMDGPU_HW_IP_GFX, &pci, true);
- 		}
- 	}
-+
-+	igt_describe("Test-per-queue-reset-recovery-of-a-gfx-user-queue-priv-fault");
-+	igt_subtest_with_dynamic("amdgpu-gfx-priv-fault-umq") {
-+		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
-+			is_reset_enable(AMD_IP_GFX, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
-+			igt_dynamic_f("amdgpu-gfx-priv-fault-umq")
-+			amdgpu_priv_fault_ring_helper(device, AMDGPU_HW_IP_GFX, &pci, true);
-+		}
-+	}
- #endif
- 
- 	igt_fixture() {
--- 
-2.49.0
+Above changes LGTM
 
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+
+>
+> ==
+> Chaitanya
+>
+>>
+>>> igt_require(display.is_atomic);
+>>>       }
+>
