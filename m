@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69A5DC4453C
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jul 2026 16:30:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E540C4453D
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jul 2026 16:45:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0821510E0EA;
-	Wed, 22 Jul 2026 16:30:02 +0000 (UTC)
-Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D30CA10E0EA;
- Wed, 22 Jul 2026 16:29:29 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2974737994687049511=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 47C1110E4AA;
+	Wed, 22 Jul 2026 16:45:06 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OYWgPsCc";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E66910E486
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2026 16:44:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1784738673; x=1816274673;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=ZdousgcgRIMaVM/TmFyI9WQwkAR3DXHA3o0vBllBEM8=;
+ b=OYWgPsCc4JCVz7MfTSXHuAnve7hI5UyxusI/m+0K7RlwOtElG2CpPj25
+ Rs1lIPP62pktVx559rfprgSzTcarNmjMsRVzzuJGOAsKnFqqkjr3UD+2R
+ 8f+G+o//0DdWSanh8MIjVx7vdkrsd5Rrv3RfYqRot/lP4ohmlAjH9ylyq
+ wExieOogh8QNcmVK+GrcviN4FIaYJEg7HyDAuOkeWkum73aigc4BhJcP2
+ p4+CCaNHAZ81pthIDSTp95tdU5naXh5fU0C8O9xcjoepuPEEfc6KjJ4Le
+ z+TqS03LaO8G/tZtma1dJSGt/vE962jDiiVK7bb2yVFcB3isAJ5+TNjkB g==;
+X-CSE-ConnectionGUID: WT2SSi2tTkOx0t+k0NYgaQ==
+X-CSE-MsgGUID: lvYHqlE1QaGhbA2yWBhl1g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85500053"
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; d="scan'208";a="85500053"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2026 09:44:33 -0700
+X-CSE-ConnectionGUID: 3MPY67c3Qii0X5+lIsPzQg==
+X-CSE-MsgGUID: 2h5mbkFRR/KbGUrkxZweJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; d="scan'208";a="253774659"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
+ ([10.245.244.22])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2026 09:44:30 -0700
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t] intel-ci: Rename drm_buddy to gpu_buddy in blocklist
+Date: Wed, 22 Jul 2026 18:44:17 +0200
+Message-ID: <20260722164416.41225-2-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Remove_EUdebug_meson_option?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Dominik_Karol_Pi=C4=85tkowski?=
- <dominik.karol.piatkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 22 Jul 2026 16:29:29 -0000
-Message-ID: <178473776985.217520.18186755634748938994@6beec6c84f66>
-X-Patchwork-Hint: ignore
-References: <20260722072959.12790-1-dominik.karol.piatkowski@intel.com>
-In-Reply-To: <20260722072959.12790-1-dominik.karol.piatkowski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +68,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2974737994687049511==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The drm_buddy kunit test was renamed to gpu_buddy, but the blocklist
+wasn't changed accordingly in the series where the renaming was done.
+Change the name in the blocklist.
 
-== Series Details ==
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+---
+ tests/intel-ci/xe.blocklist.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Series: Remove EUdebug meson option
-URL   : https://patchwork.freedesktop.org/series/170894/
-State : success
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index 80cc98608..8ac4147c5 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -29,7 +29,7 @@ igt@.*@i915.*
+ # time on Intel CI
+ #################################################################
+ igt@dmabuf.*
+-igt@drm_buddy
++igt@gpu_buddy
+ igt@drm_mm
+ igt@kms_selftest.*
+ ##################################################################
+-- 
+2.55.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_9018_BAT -> XEIGTPW_15581_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (13 -> 13)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9018 -> IGTPW_15581
-  * Linux: xe-5453-5726f9c4bde0290e5e60e636b9632bb03a57498c -> xe-5459-766692482abf46aeeca6881abdf0d4dfb32466a7
-
-  IGTPW_15581: cc1e9da014ed2ec1873880aab715cf6fb83ab239 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9018: f4345861cbd5d97fd50b73bf7af5fe3286fca056 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5453-5726f9c4bde0290e5e60e636b9632bb03a57498c: 5726f9c4bde0290e5e60e636b9632bb03a57498c
-  xe-5459-766692482abf46aeeca6881abdf0d4dfb32466a7: 766692482abf46aeeca6881abdf0d4dfb32466a7
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15581/index.html
-
---===============2974737994687049511==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Remove EUdebug meson option</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170894/">https://patchwork.freedesktop.org/series/170894/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15581/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15581/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9018_BAT -&gt; XEIGTPW_15581_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9018 -&gt; IGTPW_15581</li>
-<li>Linux: xe-5453-5726f9c4bde0290e5e60e636b9632bb03a57498c -&gt; xe-5459-766692482abf46aeeca6881abdf0d4dfb32466a7</li>
-</ul>
-<p>IGTPW_15581: cc1e9da014ed2ec1873880aab715cf6fb83ab239 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9018: f4345861cbd5d97fd50b73bf7af5fe3286fca056 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5453-5726f9c4bde0290e5e60e636b9632bb03a57498c: 5726f9c4bde0290e5e60e636b9632bb03a57498c<br />
-  xe-5459-766692482abf46aeeca6881abdf0d4dfb32466a7: 766692482abf46aeeca6881abdf0d4dfb32466a7</p>
-
-</body>
-</html>
-
---===============2974737994687049511==--
