@@ -4,67 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5980C44536
-	for <igt-dev@archiver.kernel.org>; Wed, 22 Jul 2026 14:14:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71897C44536
+	for <igt-dev@archiver.kernel.org>; Wed, 22 Jul 2026 14:15:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 786B610EDFA;
-	Wed, 22 Jul 2026 14:14:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0DA0410E44C;
+	Wed, 22 Jul 2026 14:15:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Wz8aBA2z";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CLdRrYwz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3CCBE10EDFC
- for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2026 14:13:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7423E10E44C
+ for <igt-dev@lists.freedesktop.org>; Wed, 22 Jul 2026 14:14:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784729634; x=1816265634;
+ t=1784729695; x=1816265695;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=4MZt96wu33L0QrrVnadpVb0ZAhk2MJOkGC6QBcgMSvc=;
- b=Wz8aBA2zu8ZaljJzQbSyodtJPDD2EQTk4gPBqqp2nNw5OXZBE7LDjvsq
- KT/dmrAb3PHO16IrPUY+flDnuYi+hdRAo19YybbzKJOh1BXbCZVYMlUGM
- fECFecmmZ8SIWyF8Hy7ryqoobWKx/GR4mEtMQ8FGRbS86C9UfalX6MbEz
- QkNOHCp86iT5LIkwCBM0woTmnjZem4PWNW0v1lVYg8ZY8QtkV9LNvAqCq
- TLQtnrNxmAhjGy4VJrDoPA37DurTQbcGVwPzfWpfn8I1ltMipTs6r2bXs
- VA3H5WhVVa2WtMKE1UArv6zJ7UxvPN4T6KCRWqmUTr/6F6SaABfB3lPT4 w==;
-X-CSE-ConnectionGUID: 1HhKkdZESse1TrW5lnfLgw==
-X-CSE-MsgGUID: YjletbvWRkaR7pTNUdxE3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="85128762"
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; d="scan'208";a="85128762"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2026 07:13:53 -0700
-X-CSE-ConnectionGUID: 4q+HUjCJQiW/iHmgEs5V5g==
-X-CSE-MsgGUID: L4vEqdAQSOKTrkPKuSzKJg==
+ bh=4zXdjSVtGZkJUUZUzqJ3fnrq6NL+uGrufiijLyXtL7Q=;
+ b=CLdRrYwzceS4VZgp5Ra4j9FNk9xlWaiyoiyp+lfa3wv3os1ZUsknfOXN
+ 3M/0+NiqMAqT5gUAz3KYHKD1imInq/ts588T1z7jtWv1G5A41f4iOwqOd
+ yPPnpN1tn682ENc1DuF++cQjltiRW3A+Y52aKI3Yav2IeB2Q+yQ+6E/G0
+ 5PkNDgrMgxIA2aburBECCKva5FP5NhYH2j9ucg6Quw/JBisTGca7mmiNX
+ ie/XoiBJsCB0avR7ADlhaHZ7gyDclJsqn1hsTJumU+tXsq25tt72oXnm8
+ Mv6AhEmNlF5iXfgqyniDCigueyzeLQ2b2so6Ar8pPo1agNEwxb8d6uRdZ A==;
+X-CSE-ConnectionGUID: 85Gzk18aSI6p4QAJnw721w==
+X-CSE-MsgGUID: 344VM+E/RDqgkntJv3ZnYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="95954420"
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; d="scan'208";a="95954420"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Jul 2026 07:14:55 -0700
+X-CSE-ConnectionGUID: uLvRfBP/Rlyq6ecnkjRVTw==
+X-CSE-MsgGUID: 9ns4lYCWSx22UnsTGsNZOg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; d="scan'208";a="253742187"
+X-IronPort-AV: E=Sophos;i="6.25,178,1779174000"; d="scan'208";a="288097291"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 07:13:51 -0700
-Date: Wed, 22 Jul 2026 16:13:49 +0200
+ by orviesa002-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jul 2026 07:14:53 -0700
+Date: Wed, 22 Jul 2026 16:14:50 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Robert Mazur <robert.mazur@imgtec.com>
 Cc: igt-dev@lists.freedesktop.org, Alessio Belle <alessio.belle@imgtec.com>,
  Luigi Santivetti <luigi.santivetti@imgtec.com>,
  Brajesh Gupta <brajesh.gupta@imgtec.com>,
- Frank Binns <frank.binns@imgtec.com>,
- Donald Robson <donald.robson@imgtec.com>
-Subject: Re: [PATCH i-g-t v3 04/10] tests/imagination: Add GPU ID test
-Message-ID: <20260722141349.r34qpyayzkohxw2z@kamilkon-DESK.igk.intel.com>
+ Sarah Walker <sarah.walker@imgtec.com>
+Subject: Re: [PATCH i-g-t v3 05/10] tests/imagination: Add DEV_QUERY heap
+ info tests
+Message-ID: <20260722141450.ioqch63xu7gvg74l@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Robert Mazur <robert.mazur@imgtec.com>,
  igt-dev@lists.freedesktop.org,
  Alessio Belle <alessio.belle@imgtec.com>,
  Luigi Santivetti <luigi.santivetti@imgtec.com>,
  Brajesh Gupta <brajesh.gupta@imgtec.com>,
- Frank Binns <frank.binns@imgtec.com>,
- Donald Robson <donald.robson@imgtec.com>
+ Sarah Walker <sarah.walker@imgtec.com>
 References: <20260717-test-imagination-add-support-v3-0-ce69f9ad330c@imgtec.com>
- <20260717-test-imagination-add-support-v3-4-ce69f9ad330c@imgtec.com>
+ <20260717-test-imagination-add-support-v3-5-ce69f9ad330c@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260717-test-imagination-add-support-v3-4-ce69f9ad330c@imgtec.com>
+In-Reply-To: <20260717-test-imagination-add-support-v3-5-ce69f9ad330c@imgtec.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,36 +80,96 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Robert,
-On 2026-07-17 at 16:21:36 +0200, Robert Mazur wrote:
-> From: Frank Binns <frank.binns@imgtec.com>
+On 2026-07-17 at 16:21:37 +0200, Robert Mazur wrote:
+> From: Sarah Walker <sarah.walker@imgtec.com>
 > 
-> Add a basic GPU ID validation subtest.
+> Add subtests for DRM_IOCTL_PVR_DEV_QUERY heap info queries.
 > 
-> Signed-off-by: Frank Binns <frank.binns@imgtec.com>
-> Signed-off-by: Donald Robson <donald.robson@imgtec.com>
+> Signed-off-by: Sarah Walker <sarah.walker@imgtec.com>
 > Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
+
+LGTM
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+
 > ---
->  tests/imagination/meson.build    |  1 +
->  tests/imagination/pvr_gpu_info.c | 54 ++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 55 insertions(+)
+>  lib/igt_pvr.c                     |  31 +++++++++
+>  lib/igt_pvr.h                     |   2 +
+>  tests/imagination/meson.build     |   1 +
+>  tests/imagination/pvr_heap_info.c | 130 ++++++++++++++++++++++++++++++++++++++
+>  4 files changed, 164 insertions(+)
 > 
+> diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
+> index 421cbc24c..a26b4edad 100644
+> --- a/lib/igt_pvr.c
+> +++ b/lib/igt_pvr.c
+> @@ -104,3 +104,34 @@ igt_pvr_ioctl_dev_query(int fd, enum drm_pvr_dev_query type, uint64_t size,
+>  	return args;
+>  }
+>  
+> +/**
+> + * igt_pvr_get_heap_info:
+> + * @fd: The file descriptor of the DRM device.
+> + * @array_len_out: Pointer to store the number of heaps.
+> + *
+> + * Function to get information about the device heaps.
+> + *
+> + * Returns: An array of drm_pvr_heap structures. The caller is responsible
+> + * for freeing the array.
+> + */
+> +struct drm_pvr_heap *
+> +igt_pvr_get_heap_info(int fd, uint32_t *array_len_out)
+> +{
+> +	struct drm_pvr_heap *heaps =
+> +		calloc(DRM_PVR_HEAP_COUNT, sizeof(*heaps));
+> +	struct drm_pvr_dev_query_heap_info heap_info_get = {
+> +		.heaps = DRM_PVR_OBJ_ARRAY(DRM_PVR_HEAP_COUNT, heaps),
+> +	};
+> +
+> +	if (!heaps)
+> +		return NULL;
+> +
+> +	igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
+> +				sizeof(heap_info_get), &heap_info_get, 0);
+> +
+> +	if (array_len_out)
+> +		*array_len_out = heap_info_get.heaps.count;
+> +
+> +	return heaps;
+> +}
+> +
+> diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
+> index b25fb1867..ca09f39e1 100644
+> --- a/lib/igt_pvr.h
+> +++ b/lib/igt_pvr.h
+> @@ -16,5 +16,7 @@ off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle);
+>  struct drm_pvr_ioctl_dev_query_args
+>  igt_pvr_ioctl_dev_query(int fd, enum drm_pvr_dev_query type, uint64_t size,
+>  			void *pointer, int expect_err);
+> +struct drm_pvr_heap *
+> +igt_pvr_get_heap_info(int fd, uint32_t *array_len_out);
+>  
+>  #endif /* IGT_PVR_H */
 > diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
-> index 62930da2b..c5899972b 100644
+> index c5899972b..fc24d0220 100644
 > --- a/tests/imagination/meson.build
 > +++ b/tests/imagination/meson.build
-> @@ -1,5 +1,6 @@
+> @@ -1,6 +1,7 @@
 >  pvr_progs = [ 'pvr_dev_query',
 >  	      'pvr_gem',
-> +	      'pvr_gpu_info',
+>  	      'pvr_gpu_info',
+> +	      'pvr_heap_info',
 >  	    ]
 >  
 >  pvr_deps = test_deps
-> diff --git a/tests/imagination/pvr_gpu_info.c b/tests/imagination/pvr_gpu_info.c
+> diff --git a/tests/imagination/pvr_heap_info.c b/tests/imagination/pvr_heap_info.c
 > new file mode 100644
-> index 000000000..24ab18491
+> index 000000000..7d953044e
 > --- /dev/null
-> +++ b/tests/imagination/pvr_gpu_info.c
-> @@ -0,0 +1,54 @@
+> +++ b/tests/imagination/pvr_heap_info.c
+> @@ -0,0 +1,130 @@
 > +// SPDX-License-Identifier: GPL-2.0 or MIT
 > +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
 > +
@@ -123,57 +182,123 @@ On 2026-07-17 at 16:21:36 +0200, Robert Mazur wrote:
 > +
 > +#include "pvr_drm.h"
 > +
-> +IGT_TEST_DESCRIPTION("Check that igt/imagination knows about this GPU ID");
+> +enum pvr_page_size {
+> +	PVR_PAGE_SIZE_4K = 12,
+> +	PVR_PAGE_SIZE_16K = 14,
+> +	PVR_PAGE_SIZE_64K = 16,
+> +	PVR_PAGE_SIZE_256K = 18,
+> +	PVR_PAGE_SIZE_1M = 20,
+> +	PVR_PAGE_SIZE_2M = 21
+> +};
 > +
-> +static bool
-> +has_known_gpu_id(int fd, const struct drm_pvr_dev_query_gpu_info *gpu_info)
+> +int igt_main()
 > +{
-> +#define PVR_BVNC_ID(b, v, n, c) \
-> +	(((uint64_t)(b) << 48) | \
-> +	((uint64_t)(v) << 32) | \
-> +	((uint64_t)(n) << 16) | \
-> +	((uint64_t)(c)))
+> +	int fd;
 > +
-> +	switch (gpu_info->gpu_id) {
-> +	case PVR_BVNC_ID(4, 40, 2, 51):
-> +	case PVR_BVNC_ID(33, 15, 11, 3):
-> +	case PVR_BVNC_ID(36, 53, 104, 796):
-> +		break;
-> +	default:
-> +		igt_warn("Unknown GPU ID: 0x%016llx\n", gpu_info->gpu_id);
-> +		return false;
+> +	igt_fixture()
+> +	{
+> +		fd = drm_open_driver(DRIVER_POWERVR);
 > +	}
-> +#undef PVR_BVNC_ID
 > +
-> +	igt_info("GPU BVNC: %u.%u.%u.%u\n",
-> +		 (unsigned int)(gpu_info->gpu_id >> 48 & 0xffff),
-> +		 (unsigned int)(gpu_info->gpu_id >> 32 & 0xffff),
-> +		 (unsigned int)(gpu_info->gpu_id >> 16 & 0xffff),
-> +		 (unsigned int)(gpu_info->gpu_id & 0xffff));
+> +	igt_describe("Test getting the size of an array from the kernel");
+> +	igt_subtest("heap-info-get-size")
+> +	{
+> +		/* Check we can get the size of the array kernel side. */
+> +		struct drm_pvr_dev_query_heap_info heap_info_get = {0};
 > +
-> +	return true;
-> +}
+> +		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
+> +					sizeof(heap_info_get), &heap_info_get, 0);
+> +		igt_assert_neq(heap_info_get.heaps.count, 0);
+> +		igt_assert_neq(heap_info_get.heaps.stride, 0);
+> +	}
 > +
-> +int igt_simple_main()
-
-I would prefer igt_main() as it has proper startup/cleanup.
-Up to you, LGTM
-
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Regards,
-Kamil
-
-
-> +{
-> +	int fd = drm_open_driver(DRIVER_POWERVR);
-> +	struct drm_pvr_dev_query_gpu_info gpu_info = {0};
+> +	igt_describe("Test copying a single heap info from the kernel");
+> +	igt_subtest("heap-info-copy-single")
+> +	{
+> +		struct drm_pvr_heap *heaps =
+> +			calloc(DRM_PVR_HEAP_COUNT, sizeof(*heaps));
 > +
-> +	igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_GPU_INFO_GET,
-> +				sizeof(gpu_info), &gpu_info, 0);
+> +		/* Try copying a single heap. */
+> +		struct drm_pvr_dev_query_heap_info heap_info_get = {
+> +			.heaps = DRM_PVR_OBJ_ARRAY(1, heaps),
+> +		};
 > +
-> +	igt_assert(has_known_gpu_id(fd, &gpu_info));
-> +	igt_assert_neq(gpu_info.num_phantoms, 0);
+> +		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
+> +					sizeof(heap_info_get), &heap_info_get, 0);
+> +
+> +		/* Kernel should stop copying after a single heap. */
+> +		igt_assert_eq(heap_info_get.heaps.count, 1);
+> +		igt_assert_eq(heaps[1].size, 0);
+> +
+> +		/* Kernel should respect the user side array stride. */
+> +		igt_assert_eq(heap_info_get.heaps.stride, sizeof(*heaps));
+> +	}
+> +
+> +	igt_describe("Test copying all heaps info from the kernel");
+> +	igt_subtest("heap-info-copy-all")
+> +	{
+> +		struct drm_pvr_dev_query_heap_info heap_info_get = {0};
+> +		struct drm_pvr_heap *heaps =
+> +			calloc(DRM_PVR_HEAP_COUNT, sizeof(*heaps));
+> +		uint32_t kernel_array_size = 0;
+> +
+> +		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
+> +					sizeof(heap_info_get), &heap_info_get, 0);
+> +
+> +		kernel_array_size = heap_info_get.heaps.count;
+> +
+> +		heap_info_get.heaps =
+> +			(struct drm_pvr_obj_array)DRM_PVR_OBJ_ARRAY(DRM_PVR_HEAP_COUNT,
+> +								    heaps);
+> +
+> +		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
+> +					sizeof(heap_info_get), &heap_info_get, 0);
+> +
+> +		igt_assert(heap_info_get.heaps.count == DRM_PVR_HEAP_COUNT ||
+> +			   heap_info_get.heaps.count == kernel_array_size);
+> +
+> +		/* Kernel should respect the user side array stride. */
+> +		igt_assert_eq(heap_info_get.heaps.stride, sizeof(*heaps));
+> +	}
+> +
+> +	igt_describe("Test validity of all heaps");
+> +	igt_subtest("heap-info-heaps-valid")
+> +	{
+> +		uint32_t heaps_count = 0;
+> +		struct drm_pvr_heap *heaps =
+> +			igt_pvr_get_heap_info(fd, &heaps_count);
+> +
+> +		igt_assert(heaps);
+> +
+> +		for (int heap_id = 0; heap_id < heaps_count; heap_id++) {
+> +			const uint64_t page_mask =
+> +				(1ull << heaps[heap_id].page_size_log2) - 1;
+> +
+> +			/* This heap isn't present for all devices. */
+> +			if (heap_id == (int)DRM_PVR_HEAP_RGNHDR)
+> +				continue;
+> +
+> +			igt_assert(heaps[heap_id].page_size_log2 == PVR_PAGE_SIZE_4K ||
+> +				   heaps[heap_id].page_size_log2 == PVR_PAGE_SIZE_16K ||
+> +				   heaps[heap_id].page_size_log2 == PVR_PAGE_SIZE_64K ||
+> +				   heaps[heap_id].page_size_log2 == PVR_PAGE_SIZE_256K ||
+> +				   heaps[heap_id].page_size_log2 == PVR_PAGE_SIZE_1M ||
+> +				   heaps[heap_id].page_size_log2 == PVR_PAGE_SIZE_2M);
+> +
+> +			igt_assert_neq_u64(heaps[heap_id].size, 0);
+> +			igt_assert(!(heaps[heap_id].size & page_mask));
+> +			igt_assert(!(heaps[heap_id].base & page_mask));
+> +
+> +			igt_assert(heaps[heap_id].flags == 0);
+> +		}
+> +
+> +		free(heaps);
+> +	}
+> +
+> +	igt_fixture()
+> +	{
+> +		drm_close_driver(fd);
+> +	}
 > +}
 > 
 > -- 
