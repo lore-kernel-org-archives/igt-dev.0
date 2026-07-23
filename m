@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A75CC4453A
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 02:33:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61AE5C44524
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 03:59:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 05F0E10E505;
-	Thu, 23 Jul 2026 02:33:29 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C1UM9jHz";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7914710E505
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2026 02:32:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784773974; x=1816309974;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=xH7xv62S2kZ33uNi55EYAn9NpM3AkHO90Mya7LpWjOU=;
- b=C1UM9jHzWEuqZ/xxBLsSgV4vjLC4utg3H/G+1lZFUtWyQ8IPl+DAG4FJ
- 0ttDEuS/Cdg+Kj8IIh4j/CcQUWtLF2eIeoIj1Bl/EcRVuMzPRaO0dZRnv
- z88DvlCtw799ucbj239tJU8rQNMo17177liaAizYkZ5Jdc9rpW+WEphua
- 8lqDi9PeF1EOrP8avzZ0CLWASXCkkKBDsOOcpuSnTCg/Kt6AWvuFRuLka
- 3830Zcmv6VbLzhbRruG3UiSxEifY4SMdVwvNMhPCznRDVAhFDQ//ZamT1
- WUommrfLLUKVeaAD6cmuNbLtZ06ppgJldS71TlQ6ExAW9KYNeb9lM/Sqp g==;
-X-CSE-ConnectionGUID: UXRryP8yS8aUKyWo446iEg==
-X-CSE-MsgGUID: q4CrA//oS3CU7Gnn7uq2kw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96561991"
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; d="scan'208";a="96561991"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Jul 2026 19:32:54 -0700
-X-CSE-ConnectionGUID: qAA5LIrYSwKHXO/PA3m/iA==
-X-CSE-MsgGUID: Aa+kgSJgSn+WXoFxAFvbjg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,179,1779174000"; d="scan'208";a="262596923"
-Received: from himanshu-h97m-d3h.iind.intel.com ([10.223.55.10])
- by orviesa005.jf.intel.com with ESMTP; 22 Jul 2026 19:32:53 -0700
-From: himanshu.girotra@intel.com
-To: igt-dev@lists.freedesktop.org
-Cc: ramadevi.gandi@intel.com, priyanka.dandamudi@intel.com,
- kamil.konieczny@intel.com
-Subject: [PATCH i-g-t] tests/intel/xe_exec_threads: ignore expected hang
- timeout
-Date: Thu, 23 Jul 2026 08:02:51 +0530
-Message-ID: <20260723023251.4522-1-himanshu.girotra@intel.com>
-X-Mailer: git-send-email 2.50.1
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECDE710E51F;
+	Thu, 23 Jul 2026 03:59:36 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4419D10E51F;
+ Thu, 23 Jul 2026 03:59:04 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5033067119284523759=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fthr?=
+ =?utf-8?q?eads=3A_ignore_expected_hang_timeout?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: himanshu.girotra@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 23 Jul 2026 03:59:04 -0000
+Message-ID: <178477914427.219721.9590066421491720691@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260723023251.4522-1-himanshu.girotra@intel.com>
+In-Reply-To: <20260723023251.4522-1-himanshu.girotra@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,56 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Himanshu Girotra <himanshu.girotra@intel.com>
+--===============5033067119284523759==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The hang subtests hang a queue and reset to recover. Jobs that were
-queued but never started are logged by the KMD at warn level as
-"Check job timeout: ... not started".
+== Series Details ==
 
-This warn is expected, but CI flags warn-level dmesg lines and fails
-the subtest even though it passes. Whitelist it for the hang subtests.
+Series: tests/intel/xe_exec_threads: ignore expected hang timeout
+URL   : https://patchwork.freedesktop.org/series/170948/
+State : success
 
-v2: Rework description and comment to be generic (Priyanka,Kamil)
+== Summary ==
 
-Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
----
- tests/intel/xe_exec_threads.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+CI Bug Log - changes from XEIGT_9020_BAT -> XEIGTPW_15584_BAT
+====================================================
 
-diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index 0480df779..2974fc312 100644
---- a/tests/intel/xe_exec_threads.c
-+++ b/tests/intel/xe_exec_threads.c
-@@ -1468,6 +1468,16 @@ static void threads(int fd, int flags)
- 	pthread_barrier_destroy(&barrier);
- }
- 
-+/*
-+ * Hang subtests reset the GPU to recover, so jobs that never started are
-+ * logged as "Check job timeout: ... not started". This warn is expected;
-+ * whitelist it to avoid spurious dmesg-warn failures in CI.
-+ */
-+static void ignore_multi_queue_hang_warnings_in_dmesg(void)
-+{
-+	igt_emit_ignore_dmesg_regex("Check job timeout: .*not started");
-+}
-+
- int igt_main()
- {
- 	const struct section {
-@@ -1735,6 +1745,9 @@ int igt_main()
- 				igt_assert(!(s->flags & BALANCER));
- 			}
- 
-+			if ((s->flags & MULTI_QUEUE) && (s->flags & HANG))
-+				ignore_multi_queue_hang_warnings_in_dmesg();
-+
- 			threads(fd, s->flags);
- 		}
- 	}
--- 
-2.50.1
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9020 -> IGTPW_15584
+  * Linux: xe-5462-447a47cf86f97a1f5362d0675d65d129be27b004 -> xe-5464-810272589ea054b3cfea435b9fea2ad4a1635caa
+
+  IGTPW_15584: 42da6f5af6ebfccf8dd5d9d3d7a4edeb2a9be202 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9020: 9020
+  xe-5462-447a47cf86f97a1f5362d0675d65d129be27b004: 447a47cf86f97a1f5362d0675d65d129be27b004
+  xe-5464-810272589ea054b3cfea435b9fea2ad4a1635caa: 810272589ea054b3cfea435b9fea2ad4a1635caa
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15584/index.html
+
+--===============5033067119284523759==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_threads: ignore expected hang timeout</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170948/">https://patchwork.freedesktop.org/series/170948/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15584/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15584/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9020_BAT -&gt; XEIGTPW_15584_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9020 -&gt; IGTPW_15584</li>
+<li>Linux: xe-5462-447a47cf86f97a1f5362d0675d65d129be27b004 -&gt; xe-5464-810272589ea054b3cfea435b9fea2ad4a1635caa</li>
+</ul>
+<p>IGTPW_15584: 42da6f5af6ebfccf8dd5d9d3d7a4edeb2a9be202 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9020: 9020<br />
+  xe-5462-447a47cf86f97a1f5362d0675d65d129be27b004: 447a47cf86f97a1f5362d0675d65d129be27b004<br />
+  xe-5464-810272589ea054b3cfea435b9fea2ad4a1635caa: 810272589ea054b3cfea435b9fea2ad4a1635caa</p>
+
+</body>
+</html>
+
+--===============5033067119284523759==--
