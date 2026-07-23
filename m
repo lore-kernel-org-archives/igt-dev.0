@@ -4,31 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EF8EDC531CC
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 19:45:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 787C4C531D0
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 19:46:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9ED5C10E5FD;
-	Thu, 23 Jul 2026 19:45:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 254A310E5EF;
+	Thu, 23 Jul 2026 19:46:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="h346eplR";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="gyuQ0vCu";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76DC910E5F6;
- Thu, 23 Jul 2026 19:44:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44E1A10E5FA;
+ Thu, 23 Jul 2026 19:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Date:Subject:Cc:To:From:From:Reply-To;
- bh=ANM+eSpahzqvwTWIXh7CuP5Wcj+NwCM3k9v5P8p6HW0=; b=h346eplRPhHoYuGW8wVYekjxMu
- QghtysnX7QdBNz76NJWqgX1UieBEchDa1n4Ewbmj8kA2K7ANCrkH3j9Id6wWcld1FERJJMfsEo0Ww
- vyU1hzzCtw+vWSvdGkDZbhsG1ZNfhe2F4WNoRqxOIJdVu9UADC8Ckf/qu3rIfbpinrQ3+SBDB1SFd
- it2pmEC++g4RIOkFY3bTQIGyxDzVJibzpNd5ThjLmOn7TdGPeXZKBjurV5YGVgAWeE/lPltISN2rf
- kHnYVByUKevjr+MqUxJwKwXdvDFXUlaNzrr4yXHRqtHdlSjNl3HpG8Uq9Czlc8vLnroNZTylrq1aB
- BVXPXryQ==;
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:From:Reply-To; bh=EL2t/09vcN9V6Rkygrdza4kyop6teAGJd5C5hkrlR48=; b=
+ gyuQ0vCuAl0iVLFGO+I4RaJhmrLPqnw0d+Vx+cjCAy914FPygO3x8xSxNcRvidrfj3JD4x6kt4r/7
+ 41sXLMcyHdA1Z2NcYygsZ21bhKdoBl8FAhIFgbU4kDOzTVa+6SdRMFErsGibRRAI+rK67UtVttcCh
+ 5IDcmVELfpVv5eA05rt4eCUukybY2feB0dNa2cXflAe3n5ZIXFk3FaEI8HJwcfasVoJ62xvqDrm6x
+ 3rR1aNfJDxAjpuSz/rWjqsoF8tDuKIbhMN5XyhqTs103sDwFCTWUoC4aLtsODQcIP1HCbKhSgLv91
+ 2C8kAdu4FtkoxUTGNx5XgC6tZLodCbNamw==;
 Received: from 179-125-91-91-dinamico.pombonet.net.br ([179.125.91.91]
  helo=quatroqueijos.lan) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wmzL4-003a1P-U0; Thu, 23 Jul 2026 21:44:15 +0200
+ id 1wmzLM-003a1P-Uh; Thu, 23 Jul 2026 21:44:33 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: igt-dev@lists.freedesktop.org
 Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
@@ -42,14 +41,13 @@ Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
  Vitaly Prosyak <vitaly.prosyak@amd.com>,
  Natalie Vock <natalie.vock@gmx.de>,
  Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v5 3/7] lib/xe: add xe_cgroup_region_name() helper
-Date: Thu, 23 Jul 2026 16:43:09 -0300
-Message-ID: <20260723194313.2748143-4-cascardo@igalia.com>
+Subject: [PATCH i-g-t v5 6/7] lib/amdgpu: add amdgpu support to igt_dmem_driver
+Date: Thu, 23 Jul 2026 16:43:12 -0300
+Message-ID: <20260723194313.2748143-7-cascardo@igalia.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260723194313.2748143-1-cascardo@igalia.com>
 References: <20260723194313.2748143-1-cascardo@igalia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,91 +64,148 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+This allows dmem cgroups tests to run on top of amdgpu driver, adding
+support to allocate and release VRAM memory.
 
-Add xe_cgroup_region_name(fd, region) which constructs the dmem cgroup
-region path for a given xe memory region.  The returned string has the
-form "drm/<pci-slot>/<region>" (e.g. "drm/0000:03:00.0/vram0"),
-matching the name registered by the kernel via drmm_cgroup_register_region().
+This does this by allocating a BO from VRAM domain, which will try to
+place BOs on VRAM, but may fallback to GTT.
 
-Only VRAM regions are tracked by the dmem controller; system and stolen
-memory regions return NULL.
-
-Assisted-by: GitHub Copilot:claude-sonnet-4.6
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- lib/xe/xe_query.c | 32 ++++++++++++++++++++++++++++++++
- lib/xe/xe_query.h |  2 ++
- 2 files changed, 34 insertions(+)
+ lib/amdgpu/amd_dmem.c | 99 +++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_dmem_driver.h |  1 +
+ lib/meson.build       |  1 +
+ 3 files changed, 101 insertions(+)
+ create mode 100644 lib/amdgpu/amd_dmem.c
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 68e60ddc75a2..e2b25be21140 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -7,6 +7,7 @@
-  */
- 
- #include <fcntl.h>
-+#include <limits.h>
- #include <stdlib.h>
- #include <pthread.h>
- 
-@@ -21,6 +22,7 @@
- 
- #include "drmtest.h"
- #include "igt_debugfs.h"
-+#include "igt_device.h"
- #include "ioctl_wrappers.h"
- #include "igt_map.h"
- #include "intel_common.h"
-@@ -1304,6 +1306,36 @@ int xe_query_eu_thread_count(int fd, int gt)
- 		xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU);
- }
- 
-+/**
-+ * xe_cgroup_region_name() - Build the dmem cgroup region name for an xe memory region.
-+ * @fd: xe device fd.
-+ * @region: Region mask (as used by xe_mem_region(), xe_region_name(), etc.).
-+ *
-+ * Constructs the full dmem cgroup region path for @region on the device
-+ * identified by @fd.  The returned string has the form
-+ * ``drm/<pci-slot>/<region>`` (e.g. ``drm/0000:03:00.0/vram0``), matching
-+ * the name registered by the kernel driver via drmm_cgroup_register_region().
-+ *
-+ * Only VRAM regions are registered with the dmem controller; passing a
-+ * system-memory region returns %NULL.
-+ *
-+ * Return: A newly allocated string that the caller must free(), or %NULL if
-+ * @region is not tracked by the dmem cgroup controller.
+diff --git a/lib/amdgpu/amd_dmem.c b/lib/amdgpu/amd_dmem.c
+new file mode 100644
+index 000000000000..5ff6437dc78a
+--- /dev/null
++++ b/lib/amdgpu/amd_dmem.c
+@@ -0,0 +1,99 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright 2026 Valve Corporation
++ * Authors:
++ *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 + */
-+char *xe_cgroup_region_name(int fd, uint64_t region)
++
++#include <errno.h>
++
++#include "igt.h"
++#include "igt_cgroup.h"
++#include "igt_dmem_driver.h"
++#include "lib/amdgpu/amd_memory.h"
++
++struct amdgpu_dmem_ctx {
++	int fd;
++	amdgpu_device_handle device;
++	amdgpu_bo_handle *handles;
++	int max_bo;
++};
++
++static int amdgpu_dmem_init(void **ctx, int fd, int max_bo)
 +{
-+	char pci_slot[NAME_MAX];
-+	char *name;
++	struct amdgpu_dmem_ctx *actx;
++	uint32_t major, minor;
++	int err = -ENOMEM;
 +
-+	if (xe_region_class(fd, region) != DRM_XE_MEM_REGION_CLASS_VRAM)
-+		return NULL;
++	actx = malloc(sizeof(*actx));
++	if (!actx)
++		return -ENOMEM;
 +
-+	igt_device_get_pci_slot_name(fd, pci_slot);
++	actx->handles = calloc(max_bo, sizeof(actx->handles[0]));
++	if (!actx->handles)
++		goto out;
 +
-+	igt_assert(asprintf(&name, "drm/%s/%s", pci_slot, xe_region_name(region)) > 0);
-+	return name;
++	actx->max_bo = max_bo;
++
++	err = amdgpu_device_initialize(fd, &major, &minor, &actx->device);
++	if (err)
++		goto out;
++
++	*ctx = actx;
++
++	return 0;
++
++out:
++	if (actx->handles)
++		free(actx->handles);
++	free(actx);
++
++	return err;
 +}
 +
- igt_constructor
- {
- 	xe_device_cache_init();
-diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
-index 59330d80fd1b..a6ef9cab9aa1 100644
---- a/lib/xe/xe_query.h
-+++ b/lib/xe/xe_query.h
-@@ -206,4 +206,6 @@ void xe_device_put(int fd);
- int xe_query_eu_count(int fd, int gt);
- int xe_query_eu_thread_count(int fd, int gt);
- 
-+char *xe_cgroup_region_name(int fd, uint64_t region);
++static void amdgpu_dmem_deinit(void *ctx)
++{
++	struct amdgpu_dmem_ctx *actx = ctx;
 +
- #endif	/* XE_QUERY_H */
++	amdgpu_device_deinitialize(actx->device);
++	free(actx->handles);
++	free(actx);
++}
++
++static int amdgpu_dmem_allocate_vram(void *ctx, int n_bo, size_t len)
++{
++	struct amdgpu_dmem_ctx *actx = ctx;
++	amdgpu_bo_handle handle;
++	int err;
++
++	if (n_bo >= actx->max_bo)
++		return -ENOMEM;
++
++	err = amdgpu_bo_alloc_wrap(actx->device, len, 4096,
++				   AMDGPU_GEM_DOMAIN_VRAM, 0, &handle);
++	if (err)
++		return err;
++
++	actx->handles[n_bo] = handle;
++
++	return 0;
++}
++
++static void amdgpu_dmem_free_vram(void *ctx, int n_bo)
++{
++	struct amdgpu_dmem_ctx *actx = ctx;
++	if (n_bo >= actx->max_bo)
++		return;
++	if (actx->handles[n_bo])
++		amdgpu_bo_free(actx->handles[n_bo]);
++	actx->handles[n_bo] = 0;
++}
++
++const struct igt_dmem_driver amdgpu_dmem_driver = {
++	.name = "amdgpu",
++	.get_region_name = amdgpu_cgroup_region_name,
++	.init = amdgpu_dmem_init,
++	.deinit = amdgpu_dmem_deinit,
++	.allocate_vram = amdgpu_dmem_allocate_vram,
++	.free_vram = amdgpu_dmem_free_vram,
++};
+diff --git a/lib/igt_dmem_driver.h b/lib/igt_dmem_driver.h
+index 2f4a4673ab16..d34c839740a5 100644
+--- a/lib/igt_dmem_driver.h
++++ b/lib/igt_dmem_driver.h
+@@ -20,5 +20,6 @@ struct igt_dmem_driver {
+ };
+ 
+ extern const struct igt_dmem_driver xe_dmem_driver;
++extern const struct igt_dmem_driver amdgpu_dmem_driver;
+ 
+ #endif
+diff --git a/lib/meson.build b/lib/meson.build
+index 012802475de0..27177f385ae6 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -199,6 +199,7 @@ if libdrm_amdgpu.found()
+ 		'amdgpu/amd_mmd_shared.c',
+ 		'amdgpu/amd_jpeg_shared.c',
+ 		'amdgpu/amd_utils.c',
++		'amdgpu/amd_dmem.c',
+ 		'amdgpu/amd_vcn_shared.c'
+ 	]
+ 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
 -- 
 2.47.3
 
