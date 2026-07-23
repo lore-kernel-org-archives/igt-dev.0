@@ -4,67 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34D6CC531D4
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 14:42:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F1F3C531D2
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 14:50:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BB54910E331;
-	Thu, 23 Jul 2026 14:42:40 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ja6evpon";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0E8CC10E331
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2026 14:42:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784817729; x=1816353729;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=61LaGP0vmVgeV5x9jVCtTZJQFerHUZLqtmtVSs+uMxo=;
- b=ja6evpondTVx4MrddwAEBz1CohKcIe62vSpJBSuMqVZXDECGmlpvP095
- 7EY0CbWYzOYezz5jaAzhUw7XvjbtD1PhN2H/hoyIHy2NtHtLKMYI4BFPG
- 8YxfaKvJLHjXfLZ1gFA2LgMko8wufSznm0r1o5xFI3UxtNw7AOqxoGVMR
- PygcKestAB4eDqVf/SjYyigIiNXiXtCrMwPRKdEs50gn40A2bpxelYE2+
- HfNw/wHn/IxCc5a7IAlEUZrJ5ECnLckk0yl5UxD8Q0wVXDJ+94jLOC0x1
- 2xyoOP1Aoq/getRoUr+/4UHnwPGS6PGRUtTgtobtl/nKBnDZortbTQDAR w==;
-X-CSE-ConnectionGUID: p/R+2WGCSQ+ONSW1sdBGCg==
-X-CSE-MsgGUID: 8Ds4LTq2SOWERk1YGqoX3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="111015559"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; d="scan'208";a="111015559"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2026 07:42:08 -0700
-X-CSE-ConnectionGUID: 88fhAkR7TQ6TbI3O//Ebnw==
-X-CSE-MsgGUID: xhukyWU2TAmzJaMh1I3lGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; d="scan'208";a="262743284"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 07:42:07 -0700
-Date: Thu, 23 Jul 2026 16:42:04 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jing-Ping Jan <jingpingjan@google.com>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
- Chris Wilson <chris.p.wilson@intel.com>,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Swati Sharma <swati2.sharma@intel.com>, Karthik B S <karthik.b.s@intel.com>
-Subject: Re: [PATCH i-g-t v5] lib/igt_kms: Add plane type verification in
- igt_crtc_get_plane_type
-Message-ID: <20260723144204.hbc7tuxsn34cbzgf@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jing-Ping Jan <jingpingjan@google.com>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
- Chris Wilson <chris.p.wilson@intel.com>,
- Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-References: <20260715125711.uke2opej6fski6cp@kamilkon-DESK.igk.intel.com>
- <20260723091803.3883040-1-jingpingjan@google.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id F285B10E58E;
+	Thu, 23 Jul 2026 14:50:14 +0000 (UTC)
+Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6DB0D10E58E;
+ Thu, 23 Jul 2026 14:49:42 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6348561436935009274=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260723091803.3883040-1-jingpingjan@google.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_platform-specific_joine?=
+ =?utf-8?q?r_exception_mode_handling?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sowmiya S" <sowmiya.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 23 Jul 2026 14:49:42 -0000
+Message-ID: <178481818244.221667.11682765795056975497@6beec6c84f66>
+X-Patchwork-Hint: ignore
+References: <20260723134355.337709-1-sowmiya.s@intel.com>
+In-Reply-To: <20260723134355.337709-1-sowmiya.s@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,69 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jing-Ping,
-On 2026-07-23 at 17:18:02 +0800, Jing-Ping Jan wrote:
-> Verify plane type matches requested type to avoid returning invalid
-> planes.
-> 
-> Fixes: 5426dc0a889a ("lib/kms: Skip rather than fail when a suitable plane can't be found")
-> Cc: Chris Wilson <chris.p.wilson@intel.com>
-> Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Signed-off-by: Jing-Ping Jan <jingpingjan@google.com>
-> ---
-> v5:
->  - update Chris's email
->  - update commit subject
->  - print found type value only
-> v4:
->  - Remove unintended changes
-> v3:
->  - Moving condition after old one
->  - print type string instead of enum value
-> v2:
->  - Cc Swati and Karthik.
->  - split condition with additional branch
-> 
->  lib/igt_kms.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 2eefb773b..6b4d58237 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -3537,6 +3537,13 @@ igt_plane_t *igt_crtc_get_plane_type(igt_crtc_t *crtc, int plane_type)
->  		      "Valid pipe->planes idx not found. plane_idx=%d plane_type=%d n_planes=%d\n",
->  		      plane_idx, plane_type, crtc->n_planes);
->  
-> +	igt_require_f(crtc->planes[plane_idx].type == plane_type,
-> +		      "Unexpected plane type, found plane_idx=%d, "
-> +		      "type=%d != requested plane_type=%d (%s)\n", plane_idx,
-> +                      crtc->planes[plane_idx].type,
+--===============6348561436935009274==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-You should use tabs here, then spaces, to align.
+== Series Details ==
 
-> +                      plane_type,
+Series: Add platform-specific joiner exception mode handling
+URL   : https://patchwork.freedesktop.org/series/170996/
+State : success
 
-Same here.
+== Summary ==
 
-With above fixed this is
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+CI Bug Log - changes from XEIGT_9022_BAT -> XEIGTPW_15587_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
-PS. no need for resend, this could be fixed at merge time.
+  **SUCCESS**
 
-> +		      plane_type == DRM_PLANE_TYPE_PRIMARY ? "PRIMARY" : "CURSOR");
-> +
->  	return &crtc->planes[plane_idx];
->  }
->  
-> -- 
-> 2.55.0.229.g6434b31f56-goog
-> 
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 12)
+------------------------------
+
+  Missing    (1): bat-bmg-2 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9022 -> IGTPW_15587
+
+  IGTPW_15587: 10cb29f438d369add31f76dc029341b761b07882 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9022: 9022
+  xe-5467-2c64192f1ad194a53800f6dd8c779d5b4bbc1831: 2c64192f1ad194a53800f6dd8c779d5b4bbc1831
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15587/index.html
+
+--===============6348561436935009274==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add platform-specific joiner exception mode handling</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170996/">https://patchwork.freedesktop.org/series/170996/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15587/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15587/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9022_BAT -&gt; XEIGTPW_15587_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-bmg-2 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9022 -&gt; IGTPW_15587</li>
+</ul>
+<p>IGTPW_15587: 10cb29f438d369add31f76dc029341b761b07882 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9022: 9022<br />
+  xe-5467-2c64192f1ad194a53800f6dd8c779d5b4bbc1831: 2c64192f1ad194a53800f6dd8c779d5b4bbc1831</p>
+
+</body>
+</html>
+
+--===============6348561436935009274==--
