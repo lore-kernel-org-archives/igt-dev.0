@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC012C531CB
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 09:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 98BF0C531CB
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 09:58:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4F2DE10F054;
-	Thu, 23 Jul 2026 09:57:46 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4827E10F054;
+	Thu, 23 Jul 2026 09:58:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JK8xjWLl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e5oTbWgJ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 999DA10F054
- for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2026 09:57:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C282410F054
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2026 09:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1784800634; x=1816336634;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=a7tSSOLXnSBp4l8ARyk/iCtHbwnC0Noav2U6nOhneFI=;
- b=JK8xjWLl3XuJ5nENi9WGquob1jTNY9zhdyW/5l6pDMAJMFQGoLgX8EGP
- 18U3GCt4fsHW6eV7VsyQoOYkfoDfevr5cwejvPgrJu+wMny7qBWalLJvy
- /Qd2lEL6WZ25wSCupCtm7JBEUDrNNRrzvo5E//l+znquoKJJQ85mq/u6T
- yW3phAysFuDfe9lvdrUHhhQcllRq6kCbEtIE6vyG9Y64hySA3WJhMkH6U
- dmXgsdItRvCvSDCJqs1ysMtDfTOXszoR7/+46SyUyIubZqURoTGhr/nQJ
- loRTvudKGuOukCyNLS3qiLFFwUe/2435oNL0xDAkbIsguw1gWADhJX1RZ w==;
-X-CSE-ConnectionGUID: R6v6chZFRCGFLJwH8sEw9Q==
-X-CSE-MsgGUID: u9UhywAYRCKIGG8T6qjc1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96826191"
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; d="scan'208";a="96826191"
+ t=1784800638; x=1816336638;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=r/E3WnWHRH0foAH9jt6Qri71hj633xTAhQK3OyqAxuw=;
+ b=e5oTbWgJSZcBwi/EKZbt3eD5iJZ51iPAak0Tbe8YULpuXtvIipMo/5li
+ rwUVxHfxrjl3TT8Y5DuCV/EDdBy+6QIGzQgsx0Z3aoIE95bQzU0FUG6VM
+ cxKK4XDFNdTNVizSrm94xT/vT0bEfZgoPMRuwg6i4fMmSP/ohqPQtNLOD
+ btFThfEyPZVWurQe+N/G8u6bxHkGGf+3+C2VRfwrv8qbVZEyeTe4wVH0h
+ Sg5jxUxBMEKnK4sd/mC4RJ771tRC8lWgq+HthrXQMBptylelilVRRaoCb
+ WDOpIu6ubxGbL/ASElbAzb/ZFs55g0tGsViKgIKQI2MQKgSow9EEx77L2 g==;
+X-CSE-ConnectionGUID: YSrThz+lTbqnAjUzesIoqQ==
+X-CSE-MsgGUID: VVoY3jSpSjOZgyq1SBK/Zg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96826194"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; d="scan'208";a="96826194"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2026 02:57:14 -0700
-X-CSE-ConnectionGUID: Mre/Mn0WQM6zD2CjvTzhng==
-X-CSE-MsgGUID: MoPPBPG4TR6jSddGTPxe+w==
+ 23 Jul 2026 02:57:18 -0700
+X-CSE-ConnectionGUID: kLFV0w58SbeyFDPcQ3Plgg==
+X-CSE-MsgGUID: tVlYM7r9SUOVVvruV4VpfQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; d="scan'208";a="254016160"
+X-IronPort-AV: E=Sophos;i="6.25,180,1779174000"; d="scan'208";a="254016178"
 Received: from dev-150.igk.intel.com (HELO localhost) ([10.91.214.40])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Jul 2026 02:57:13 -0700
+ 23 Jul 2026 02:57:17 -0700
 From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: marcin.bernatowicz@intel.com,
 	janusz.krzysztofik@intel.com
-Subject: [PATCH 1/2] lib/igt_device: Extract helper setting device filter from
- fd
-Date: Thu, 23 Jul 2026 11:57:00 +0200
-Message-ID: <20260723095701.528790-1-lukasz.laguna@intel.com>
+Subject: [PATCH 2/2] tests/sriov_basic: Validate PF unbind with VFs enabled
+Date: Thu, 23 Jul 2026 11:57:01 +0200
+Message-ID: <20260723095701.528790-2-lukasz.laguna@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260723095701.528790-1-lukasz.laguna@intel.com>
+References: <20260723095701.528790-1-lukasz.laguna@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,107 +68,143 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Helper sets device filter to the device corresponding to DRM device file
-descriptor. Move the implementation from core_hotunplug test into the
-library, so it can be reused in other tests.
+Add new subtests covering PF driver unbind with VFs enabled in two
+scenarios:
+- with all VFs enabled,
+- with one VF enabled and probed.
+
+The tests verify that PF ends up unbound and VFs are disabled.
 
 Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- lib/igt_device.c       | 22 ++++++++++++++++++++++
- lib/igt_device.h       |  1 +
- tests/core_hotunplug.c | 18 ++----------------
- 3 files changed, 25 insertions(+), 16 deletions(-)
+v2:
+ - close PF fd before unbind (Marcin),
+ - ensure to reopen the same device (Marcin).
+---
+ tests/sriov_basic.c | 93 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 93 insertions(+)
 
-diff --git a/lib/igt_device.c b/lib/igt_device.c
-index c617a98bc..b7227dc91 100644
---- a/lib/igt_device.c
-+++ b/lib/igt_device.c
-@@ -31,6 +31,7 @@
- #endif
- #include "igt.h"
- #include "igt_device.h"
-+#include "igt_device_scan.h"
- #include "igt_sysfs.h"
- #include "igt_pci.h"
+diff --git a/tests/sriov_basic.c b/tests/sriov_basic.c
+index 1e563cee9..510fd02c0 100644
+--- a/tests/sriov_basic.c
++++ b/tests/sriov_basic.c
+@@ -3,8 +3,12 @@
+  * Copyright(c) 2023 Intel Corporation. All rights reserved.
+  */
  
-@@ -351,3 +352,24 @@ igt_device_get_pci_upstream_port(int fd)
++#include <dirent.h>
++
+ #include "drmtest.h"
+ #include "igt_core.h"
++#include "igt_device.h"
++#include "igt_pci.h"
+ #include "igt_sriov_device.h"
  
- 	return NULL;
+ IGT_TEST_DESCRIPTION("Basic tests for enabling SR-IOV Virtual Functions");
+@@ -118,6 +122,67 @@ static void bind_unbind_vf(int pf_fd, unsigned int vf_num)
+ 	igt_sriov_disable_vfs(pf_fd);
  }
+ 
++static unsigned int count_pci_virtfn_entries(const char *pci_slot)
++{
++	char path[PATH_MAX];
++	unsigned int count = 0;
++	struct dirent *de;
++	DIR *dir;
++
++	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s", pci_slot);
++	dir = opendir(path);
++	igt_assert_f(dir, "Failed to open %s\n", path);
++
++	while ((de = readdir(dir))) {
++		if (!strncmp(de->d_name, "virtfn", strlen("virtfn")))
++			count++;
++	}
++
++	closedir(dir);
++
++	return count;
++}
 +
 +/**
-+ * igt_device_set_filter_from_fd:
-+ * @fd: DRM device file descriptor
++ * SUBTEST: pf-unbind-with-vfs-enabled-numvfs-all
++ * Description:
++ *   Verify the PF driver unbind when all VFs are enabled.
 + *
-+ * Set device filter to the device corresponding to @fd.
++ * SUBTEST: pf-unbind-with-vf-probed
++ * Description:
++ *   Verify the PF driver unbind when one VF is enabled and probed.
 + */
-+void igt_device_set_filter_from_fd(int fd)
++static void pf_unbind_with_vfs_enabled(int *pf_fd, unsigned int num_vfs, bool vf_probe)
 +{
-+	const char *filter_type = "sys:";
-+	char filter[strlen(filter_type) + PATH_MAX + 1];
-+	char *dst = stpcpy(filter, filter_type);
-+	char path[PATH_MAX + 1];
++	char pci_slot[NAME_MAX];
 +
-+	igt_assert(igt_sysfs_path(fd, path, PATH_MAX));
-+	igt_ignore_warn(strncat(path, "/device", PATH_MAX - strlen(path)));
-+	igt_assert(realpath(path, dst));
++	vf_probe ? igt_sriov_enable_driver_autoprobe(*pf_fd) :
++		   igt_sriov_disable_driver_autoprobe(*pf_fd);
++	igt_sriov_enable_vfs(*pf_fd, num_vfs);
 +
-+	igt_device_filter_free_all();
-+	igt_assert_eq(igt_device_filter_add(filter), 1);
++	igt_device_get_pci_slot_name(*pf_fd, pci_slot);
++	igt_assert_eq(count_pci_virtfn_entries(pci_slot), num_vfs);
++	igt_assert(!drm_close_driver(*pf_fd));
++	*pf_fd = -1;
++	igt_assert(!igt_pci_device_unbind(pci_slot));
++	igt_assert(!igt_pci_get_bound_driver_name(pci_slot, NULL, 0));
++	igt_assert_eq(count_pci_virtfn_entries(pci_slot), 0);
 +}
-diff --git a/lib/igt_device.h b/lib/igt_device.h
-index 781a72235..3ad08d3ee 100644
---- a/lib/igt_device.h
-+++ b/lib/igt_device.h
-@@ -38,4 +38,5 @@ struct pci_device *igt_device_get_pci_root_port(int fd);
- struct pci_device *igt_device_get_pci_upstream_port(int fd);
- 
- void igt_device_get_pci_slot_name(int fd, char *pci_slot_name);
-+void igt_device_set_filter_from_fd(int fd);
- #endif /* __IGT_DEVICE_H__ */
-diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-index 7c9dae1bf..c6e9d4854 100644
---- a/tests/core_hotunplug.c
-+++ b/tests/core_hotunplug.c
-@@ -35,6 +35,7 @@
- #include "i915/gem_create.h"
- #include "i915/perf.h"
- #include "igt.h"
-+#include "igt_device.h"
- #include "igt_device_scan.h"
- #include "igt_kmod.h"
- #include "igt_sysfs.h"
-@@ -550,21 +551,6 @@ static void post_healthcheck(struct hotunplug *priv)
- 	cleanup(priv);
- }
- 
--static void set_filter_from_device(int fd)
--{
--	const char *filter_type = "sys:";
--	char filter[strlen(filter_type) + PATH_MAX + 1];
--	char *dst = stpcpy(filter, filter_type);
--	char path[PATH_MAX + 1];
--
--	igt_assert(igt_sysfs_path(fd, path, PATH_MAX));
--	igt_ignore_warn(strncat(path, "/device", PATH_MAX - strlen(path)));
--	igt_assert(realpath(path, dst));
--
--	igt_device_filter_free_all();
--	igt_assert_eq(igt_device_filter_add(filter), 1);
--}
--
- /* Subtests */
- 
- static void unbind_rebind(struct hotunplug *priv)
-@@ -713,7 +699,7 @@ int igt_main()
++
++static void restore_pf_after_unbind(int *pf_fd, const char *pci_slot, const char *driver)
++{
++	int ret;
++
++	ret = igt_pci_get_bound_driver_name(pci_slot, NULL, 0);
++	if (!ret)
++		igt_assert(!igt_pci_driver_bind(driver, pci_slot));
++	else
++		igt_assert_eq(ret, 1);
++
++	if (*pf_fd < 0)
++		*pf_fd = drm_open_driver(DRIVER_ANY);
++}
++
+ int igt_main()
+ {
+ 	int pf_fd;
+@@ -210,7 +275,35 @@ int igt_main()
  		}
+ 	}
  
- 		/* Make sure subtests always reopen the same device */
--		set_filter_from_device(fd_drm);
-+		igt_device_set_filter_from_fd(fd_drm);
- 
- 		igt_assert_eq(close_device(fd_drm, "", "selected "), -1);
- 
++	igt_subtest_group() {
++		char pci_slot[NAME_MAX];
++		char driver[NAME_MAX];
++
++		igt_fixture() {
++			igt_device_set_filter_from_fd(pf_fd);
++			igt_device_get_pci_slot_name(pf_fd, pci_slot);
++			igt_assert(igt_pci_get_bound_driver_name(pci_slot, driver, sizeof(driver)));
++		}
++
++		igt_describe("Test unbinds the PF driver when all VFs are enabled");
++		igt_subtest("pf-unbind-with-vfs-enabled-numvfs-all") {
++			for_max_sriov_num_vfs(pf_fd, num_vfs) {
++				pf_unbind_with_vfs_enabled(&pf_fd, num_vfs, false);
++			}
++		}
++
++		igt_describe("Test unbinds the PF driver when one VF is enabled and probed");
++		igt_subtest("pf-unbind-with-vf-probed") {
++			pf_unbind_with_vfs_enabled(&pf_fd, 1, true);
++		}
++
++		igt_fixture() {
++			restore_pf_after_unbind(&pf_fd, pci_slot, driver);
++		}
++	}
++
+ 	igt_fixture() {
++		igt_abort_on_f(pf_fd < 0, "Device is not accessible\n");
+ 		igt_sriov_disable_vfs(pf_fd);
+ 		/* abort to avoid execution of next tests with enabled VFs */
+ 		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
 -- 
 2.43.0
 
