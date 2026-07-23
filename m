@@ -4,49 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7032CC531D0
-	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 19:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A44FDC531CC
+	for <igt-dev@archiver.kernel.org>; Thu, 23 Jul 2026 20:01:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 106D810E5FD;
-	Thu, 23 Jul 2026 19:47:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4634A10E5E3;
+	Thu, 23 Jul 2026 20:01:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="JSyFW48C";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JMuzUkCv";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A67FE10E0FF;
- Thu, 23 Jul 2026 19:44:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=I6Lp4nixbOv2LqJ07br1/AHEIE91d9ecDtIof3D1v7A=; b=
- JSyFW48CGwVM96Gz4jXk2Mqz5fzr1eOhpp/5UzObNzxLAEsM6HKrzXY0g+abZhxGvusjXwCLYEuJK
- OdViJuFSHF6u2QZ3V/hw1c1aM0xWPGNccoxXRPzpqLIUVaxHLLvCFA5sb0BOiP+j/3SxmJaWyml87
- nEJK9upijIajSZjmdM6Xcd4QSyvRWUwyC5v3Ll1pcuNjmTFi+28nm1kNzRBn5UoI/AzVPHh2ixYNh
- B1WoJHwDwTl7iTKSfHh7qlEK6uW/lXD/oxo3OUVF6gbshZYONAek27FmIYvQi0QoFTD3NPfhFRX09
- tY3U7r02JzSdl6IUnsm9tRspDo4m/JLohQ==;
-Received: from 179-125-91-91-dinamico.pombonet.net.br ([179.125.91.91]
- helo=quatroqueijos.lan) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wmzLH-003a1P-0a; Thu, 23 Jul 2026 21:44:27 +0200
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63EC010E5E3
+ for <igt-dev@lists.freedesktop.org>; Thu, 23 Jul 2026 20:01:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1784836863; x=1816372863;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=s/7xmCq1b/EfElMUQA3+FLW3JOJwst5+m4R7tkFGvY4=;
+ b=JMuzUkCvYckJQAaGCGDrFXkUWoCOAhcNTem9ki6/UdVodAIQ2c5HXBgw
+ syfe4fn5mole5JucyrfSivdbuY7fQkQjTCWG0R7SvVrf2yWToj5kOXqAD
+ lwUmMxb68WUkUvzFmTrKv7tHneJ9OHg1jlBjavw/QsQ6+etFPURsU5Zih
+ DcTzZ2ziSyswl2rSrAUfezSdFEJzPf2xZUlgsZUdWC5MzPP/3xpLXU72A
+ P+vBPpVJ8GEs+es70uALbQCum8MeVo6jtky3aJhzeB+J/KGSQmwjeeWDP
+ 4J7bmY0aheWvWGDI0F+MaHV2Se2zlX6QX8/Lz3ECGboa53+cxaY6ieYrY A==;
+X-CSE-ConnectionGUID: pzeG9+tfTjCmXJgL6Wjg4g==
+X-CSE-MsgGUID: OZccSJH1SmiwNvXUtgRcPg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11854"; a="96094489"
+X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; d="scan'208";a="96094489"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Jul 2026 13:00:52 -0700
+X-CSE-ConnectionGUID: m8EL1xApSRySrNH0He0a4w==
+X-CSE-MsgGUID: KkZQiN4ZS8mmQf+97PteNw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,181,1779174000"; d="scan'208";a="256723762"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
+ by orviesa006-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jul 2026 13:00:51 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Christian Koenig <christian.koenig@amd.com>,
- maarten.lankhorst@linux.intel.com,
- =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Natalie Vock <natalie.vock@gmx.de>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v5 5/7] lib/amdgpu: add amdgpu_cgroup_region_name
-Date: Thu, 23 Jul 2026 16:43:11 -0300
-Message-ID: <20260723194313.2748143-6-cascardo@igalia.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260723194313.2748143-1-cascardo@igalia.com>
-References: <20260723194313.2748143-1-cascardo@igalia.com>
+Cc: mitulkumar.ajitkumar.golani@intel.com, ankit.k.nautiyal@intel.com,
+ jeevan.b@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1] tests/kms_vrr: Allow low refresh modes with
+ identical clocks
+Date: Fri, 24 Jul 2026 01:31:01 +0530
+Message-ID: <20260723200101.3944213-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,74 +67,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The amdgpu dmem region name uses its PCI address, just like the one from
-Xe, but there is only a single VRAM region.
+Some panels expose multiple modes with the same resolution
+and pixel clock, varying only in vertical blanking timings
+to achieve different refresh rates.
 
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+The existing selection logic requires a strictly lower pixel
+clock, which incorrectly excludes valid low-refresh-rate modes
+when the clock remains unchanged.
+
+For example:
+"2880x1800": 60  678528 2880 2928 2960 3040 1800 3711 3717 3720 0x48 0xa
+"2880x1800": 120 678528 2880 2928 2960 3040 1800 1851 1857 1860 0x40 0xa
+
+Both modes share the same pixel clock (678528) and resolution,
+differing only in vertical timings. Under the old logic, the
+60 Hz mode is skipped because its clock is not lower than the
+current mode.
+
+Relax the constraint so that modes with identical clocks remain
+eligible and select the lowest refresh rate among same-resolution
+modes.
+
+Fixes: 771fcec0819 ("tests/kms_vrr: Add new subtest to switch RR without modeset")
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 ---
- lib/amdgpu/amd_memory.c | 25 +++++++++++++++++++++++++
- lib/amdgpu/amd_memory.h |  2 ++
- 2 files changed, 27 insertions(+)
+ tests/kms_vrr.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/lib/amdgpu/amd_memory.c b/lib/amdgpu/amd_memory.c
-index 12fe23c65ab2..2da4a8a4baee 100644
---- a/lib/amdgpu/amd_memory.c
-+++ b/lib/amdgpu/amd_memory.c
-@@ -30,9 +30,11 @@
- #include <amdgpu_drm.h>
- #include <stdio.h>
- #include <string.h>
-+#include <limits.h>
- #include <unistd.h>
- #include <sys/mman.h>
- #include <inttypes.h>
-+#include "igt_device.h"
- 
- /**
-  *
-@@ -679,6 +681,29 @@ bool virtual_free_memory(void *address, unsigned int size)
- 	}
- }
- 
-+/**
-+ * amdgpu_cgroup_region_name() - Build the dmem cgroup region name for an amdgpu.
-+ * @fd: amdgpu device fd.
-+ *
-+ * Constructs the full dmem cgroup region path for VRAM on the device
-+ * identified by @fd.  The returned string has the form
-+ * ``drm/<pci-slot>/vram`` (e.g. ``drm/0000:03:00.0/vram``), matching
-+ * the name registered by the kernel driver via drmm_cgroup_register_region().
-+ *
-+ * Return: A newly allocated string that the caller must free(), or %NULL if
-+ * @region is not tracked by the dmem cgroup controller.
-+ */
-+char *amdgpu_cgroup_region_name(int fd)
-+{
-+	char pci_slot[NAME_MAX];
-+	char *name;
-+
-+	igt_device_get_pci_slot_name(fd, pci_slot);
-+
-+	igt_assert(asprintf(&name, "drm/%s/vram", pci_slot) > 0);
-+	return name;
-+}
-+
- /**
-  * Wait for specific value in memory with timeout
-  */
-diff --git a/lib/amdgpu/amd_memory.h b/lib/amdgpu/amd_memory.h
-index e26c85bc4b0a..de169e580c1b 100644
---- a/lib/amdgpu/amd_memory.h
-+++ b/lib/amdgpu/amd_memory.h
-@@ -105,6 +105,8 @@ void
- bool
- virtual_free_memory(void *address, unsigned int size);
- 
-+char *amdgpu_cgroup_region_name(int fd);
-+
- bool
- wait_on_value(unsigned int *ptr, unsigned int expected);
- #endif
+diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
+index 82eb8554a..27f18e8d0 100644
+--- a/tests/kms_vrr.c
++++ b/tests/kms_vrr.c
+@@ -231,7 +231,6 @@ low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
+ 	for (i = 0; i < connector->count_modes; i++)
+ 		if (connector->modes[i].hdisplay == mode.hdisplay &&
+ 		    connector->modes[i].vdisplay == mode.vdisplay &&
+-		    connector->modes[i].clock < mode.clock &&
+ 		    connector->modes[i].vrefresh < mode.vrefresh &&
+ 		    connector->modes[i].vrefresh >= vrr_min)
+ 			mode = connector->modes[i];
 -- 
-2.47.3
+2.43.0
 
