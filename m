@@ -4,122 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9DFFDC531C9
-	for <igt-dev@archiver.kernel.org>; Sat, 25 Jul 2026 07:05:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F5C4C531F9
+	for <igt-dev@archiver.kernel.org>; Sat, 25 Jul 2026 07:06:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 40D4710E0F4;
-	Sat, 25 Jul 2026 07:05:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DCE5F10E0F4;
+	Sat, 25 Jul 2026 07:06:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="F4QHeuz9";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="bUrQpqM5";
 	dkim-atps=neutral
-Received: from CH1PR05CU001.outbound.protection.outlook.com
- (mail-northcentralusazon11010060.outbound.protection.outlook.com
- [52.101.193.60])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D495D10E0F4
- for <igt-dev@lists.freedesktop.org>; Sat, 25 Jul 2026 07:05:06 +0000 (UTC)
+Received: from CY7PR03CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11010030.outbound.protection.outlook.com
+ [40.93.198.30])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E8BE10E0F4
+ for <igt-dev@lists.freedesktop.org>; Sat, 25 Jul 2026 07:05:30 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eXLHhhlitKSgh+/4xbv4tvE7eoRLhAuWz8W8k7ULW03wxJaR/9Ex4+SgL3drhxSlP3veDAG27MIVK98tWpRfq5TiubHnXq6vdPM0Fz3O9v2znKmCVMzUtA94JTvC396ahZX5SFfUNaPv+9ijXab1fJA7wtvVsVnws+IqHYDteAVDZ7Txgc7tAe1zFXp+0eTFY1Fj+8Z0Dr/wjYqqr/9R0IDm2EjCZP4qQlOrrArk9U6GvIhE+bAeIPVsVzuZxXPjk9meX4sbtL70b1+k0+nvdOWGo0uT0V8BrXqbt0sM+bm0etYPqL4iK4cfwz5d5nU2reAw03p9Z+DnCgIfbtfqIw==
+ b=NvQkcC5rrR71WUmnDf/3HNoEgKJ/CCu0pDP9lCGP2JBgkBjJHM5sUmlnG66JroalLjSYebpgx3ZOjZjkYkc2hscMvZnUSnoQtqWFTmgWnEARpe2gsPy2yxbK5MCQjH1jeLU5IknebpcbDFvqmOJOCC967fNRvuXKJdy1Qk0eQMGhBB1NbvVM90qkbA7ltVUp0rJpnnwx+Bsr2b5jrUQfZvWUIKsna9LiuCSgy4UGNLY9/8NN73zR2IuqYdktkp2QMH2xiV0pgLqHGi/PKkdE3HgbjzhOFYzQrK0oymjjTlboCr/cWGrfQOWJlV/wbIuqniS3ifQTW0Unqppzll7GEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rvXytQ67lJAnh+mdixPbz89hme63Ad5a1L7FNJb5TC8=;
- b=arUVYV/LQCRfpdSfYKldMdJylTrX8/gM2xJOgZBMKq51FnLR/tZIfdglDubOo7xfypa+Y0UehIBJ6luGGV9eJfYHFGvnKZgdTY3miMjgmrkL6hbmYMM2cyQT8RaEglvQ5NY6EiOql/B/rOfTf5hPQ+RJq9lfi1blaCt3BlwXHEbRQTeHi7IxbxEZQiLl+eFHeZPtD5HBIZPHt6Dggm7qorUb6TG92IpFMuGIWXla8RaDLp4FlJkXgdyEivVnvvBWtm/Bf+GTW8whTdTTG4sA5cgPCAB8rzSCTItrzrH5jGi2LS48DJOnKC+JEMKupZb/glKlevpwOWMJ1u/Mmmd33g==
+ bh=uHnGQQaj6S0ZIVza8C7WhGCxMv9pJA6Aa0X/7tWvV2A=;
+ b=RsI63zbaPivEu5450SuYnoD+H6pjVTaMgLkIkvI47i1UCV7+y0RKfxZcHvnphmA0Mbj9y5nkKaEVTf9tRc1+g8YQJXBQuhOR3yNctwaJNvZPdrtS6+xep6gR/Vd+zQ/eTu1fC2C+ltPv3vuOBZ7z2Gdr9bAN+/xXKBgbw7kp34MFhEaWHy+KZ4APAvwzj5BVJRkdQ7fq7yU6WTKpXVSAbQ53BYczh80OJaQDjiDO4GaM00LvePvtRkL5GZItwjNv4Xw4F14pmpM6Iwo8IasQsz9rFfp0JHGKyr3YcV+YayCqoBqaUVjCNFCSmbKXySyVkCnJCryBAXFxGDWXFYuqtQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rvXytQ67lJAnh+mdixPbz89hme63Ad5a1L7FNJb5TC8=;
- b=F4QHeuz9yq9NT8Z+J7TzXgodRYE1PFSR1idaphHzPfhIE4XFnl+Rgk+U/f0wRZqhdaHB34EGBdUNCKbiuraRVIrF1HRKLbuoz8vTscosOSQTTQOAHuhp2E6hDLCfAqyg2GR4iWNJVm9uigW8rkAEvdbq7Tw7vxsQS7JZIyAasPw=
+ bh=uHnGQQaj6S0ZIVza8C7WhGCxMv9pJA6Aa0X/7tWvV2A=;
+ b=bUrQpqM5YLPchG70AXi7qgSW+CX40Zx4RZmSLgt8tc83nOsnIq0uxskJ+iXdZioEYlY+82Ih79VhdG13r+GRBm5VMBgLlMeWWojQNvZyAPOcnvh6aDyzCRhR3466/hO/Qavm9RDjn6wW0GOb2bzdX0s5z4j5J3pekg6HE4Q6jJ4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
  by DS2PR12MB9664.namprd12.prod.outlook.com (2603:10b6:8:27b::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Sat, 25 Jul
- 2026 07:05:03 +0000
+ 2026 07:05:27 +0000
 Received: from DM4PR12MB8476.namprd12.prod.outlook.com
  ([fe80::2d79:122f:c62b:1cd8]) by DM4PR12MB8476.namprd12.prod.outlook.com
  ([fe80::2d79:122f:c62b:1cd8%6]) with mapi id 15.21.0245.012; Sat, 25 Jul 2026
- 07:05:03 +0000
-Message-ID: <248fda45-9eb4-46cd-af59-f4d5c7224fff@amd.com>
-Date: Sat, 25 Jul 2026 01:05:01 -0600
+ 07:05:26 +0000
+Message-ID: <89545447-18bc-4afa-8727-2c129ce83e15@amd.com>
+Date: Sat, 25 Jul 2026 01:05:25 -0600
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/12] lib/igt_fb: Add YUV color pattern framebuffer
+Subject: Re: [PATCH v3 06/12] lib/igt_color_encoding: Add XRGB2101010 format
  support
 To: Harry Wentland <harry.wentland@amd.com>, igt-dev@lists.freedesktop.org
 References: <20260623175737.171142-1-harry.wentland@amd.com>
- <20260623175737.171142-6-harry.wentland@amd.com>
+ <20260623175737.171142-7-harry.wentland@amd.com>
 Content-Language: en-US
 From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20260623175737.171142-6-harry.wentland@amd.com>
+In-Reply-To: <20260623175737.171142-7-harry.wentland@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR02CA0004.namprd02.prod.outlook.com
- (2603:10b6:303:16d::19) To DM4PR12MB8476.namprd12.prod.outlook.com
+X-ClientProxiedBy: MW4PR02CA0022.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::15) To DM4PR12MB8476.namprd12.prod.outlook.com
  (2603:10b6:8:17e::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|DS2PR12MB9664:EE_
-X-MS-Office365-Filtering-Correlation-Id: 60dca378-30c5-4586-a94c-08deea1b0c97
+X-MS-Office365-Filtering-Correlation-Id: 4d7d2a22-824f-45a2-4178-08deea1b1ac7
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|366016|376014|23010399003|1800799024|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: 4L7314DO7u9S1yWpCIKWsO8sT++mD/aupjXhj75ae1A4YIpOYCLBrk+kXdOlD2pGcMXhhJJefWwJ91ev70n5RpqmYYKCxEd8sNJo6erDKIvwj0X2kT46LZkalEw6sM1PScsEGMiiE2k6j5yiVKsVny09VuL9PGpYRVrPsvfyDoDmgFbhJF0zQY3clmmT+35tLyR+8KJW3rPH1Pfp/TWKbyWGym2xKJIquyp70CzaVJYZOsB2gy3sLfCUQD6f9fCRU1mDBDd13sTUjHti5lf6xga5duyIoV1CmrrC2oP0GlV+en7zKjEFhtZTdgxWE6q1EKcNJnORSzMAoEOUFPjWOGY/w8wM+HWhGOI1+txScUFes2LHBoX7yxO5p4gtVnksLjBaN8yeHl1UZzmb7F3DBwu+WjX9du6r8y2sYdLOjpxinzFAwOfyNLNvtHh7mLvhdo2BBuDUqKHz3wSe0GFAaVAiWiKYq3D7tSrE6JSSoENAR/otpAwWLpBraUsPEP484d+won4fA3uXeStRhUUOaeLVGdT9G4qBIO+HWDGspHl1ZLJ2vEGeyftPkwO6kpZ90D3SCTbT6T4tZClON5mTI/2x9iqFmt9/Ofqpi+I0GvRWHwC+zTc22+cNYYlQzCGicZZx/pUtHLbVs8Yvf0h78WLgcLeZFFJc2KNB3k7wM7s=
+X-Microsoft-Antispam-Message-Info: cTcVzenHTVOPNppSuJsE4Pvui7KgCXRJu4D0HYzuT/jQekBdRo0r6R7is4KqObrSWzTcUjMC90Nx4RYGCkCBvF6gAC7Q5z8ecQ5IaKOFTViaE+atkPBR0fcYUO96h/7T0OKB8CnXpRRviYzQSmzHD7tKaMF2D0vVnw4X/86xMh0LxWAUhjZG7hkOhHnf+4QMjqXbSY9xBG2bttpCvy+tnwOatdpmRG1x6ZgOdirVHCCS+Kwdxpqj+q6dC+d5JSAUGqSp8DVScDB5auIEXPXDYV5IosSZaX1AFrxNr4KJ5aFR7lf1rX/pyEXZG33CZCDQQ2HXoFAgEYVaHszEKpHm1eCj4eX3X4IYDmyOd4fBH6PgZ+UMZDkg6CeePqtGzyWVq/CdqBsvBh1nT1CsJqwvX0T/OEqFquzoAax5sfkrf7fGLMdXVVD6sIElvzV05bK4+9mIguFGaJNn5VifIMyKq/HQxJ0ah7SpJQ0YIF3MruhPFjzqpOXSeuFojOSBk0pYH3G1BRuY8B5P8AuzvkVwsvCRUMel+KJCm3kSaVHMaQy+wtz6t9iWW2LHIbuvuzK8GDHJN9LqZeMmvcWMqOtYhQTR9uI7gyuZY8S/c5y4Yt6P8SuC0u3JGi2LgWki/M6xtKvqvYfMpE/g72PX+v8feG2dLAiKja/6T2LS1kKwQcg=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR12MB8476.namprd12.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NGFHQ3FzMUpGU0NKeHFHd3J2WkFrdTcyVG5kQjhpTGhBWE9OQjlRQVBUbEZX?=
- =?utf-8?B?bnZlZmdsa2JCN3JDSTFYR25aZTBVWmVULzlJVTlZdzNmMlBZSmFuOEF4NHJ1?=
- =?utf-8?B?WjNGdkFmRm9kY212eU40azE3Nm5BTEt0WndsaGljVlYycGgxVWlaaUNOa28y?=
- =?utf-8?B?UkhDTXJKdmg2eCtsYUhBbTJUNXdaaFQ5aStqY1RpNEJXeDBSWmpRQUJlV1Jk?=
- =?utf-8?B?ajNVQ0RaTzF2a3BoQ3kyU0pGeDhIczJRcVEvejBxdzJ2anp5Z1VPOWVXdS9l?=
- =?utf-8?B?dGVja3hvcEhuNHQrQnZDVmc1S2JMdGgyMG5BNXg1QStObHNuV1F5cDA5SmdK?=
- =?utf-8?B?VGtRbVcxbmhzVWNPMnpJczFGdWpjVFlUT0tFUUZGYmhWQjRuQlN5SjcrLzlV?=
- =?utf-8?B?QWVqK0g4YXNpYnhtdWt5MmZ2M3k3M3RyVGlHV0VBYjZ1TVdaOWtyK1FiWEU2?=
- =?utf-8?B?QVd3QWVYZ1VDODVIL09pRDhqd0lEUkMrZWhUWjRmSmxWOHgxSkJkQWR3VXRp?=
- =?utf-8?B?L2ozb09ZOHRTOFdqMnQyUmxNWXBoTis4Z1oyQnZZVGJWZGNTR3VTZ0szdGto?=
- =?utf-8?B?MlpXTHBWK1pQNkJ3Y3MyZmE0TTI1VzZzV25lSUJsYml3ZkRwclU3bTFZUy9h?=
- =?utf-8?B?b3R6SHcxSFE1RnRnWWNQcDlac2JtWkcyd1NXZ1hvRFd2Z21GRS9UT2RIT1BS?=
- =?utf-8?B?MmtabUZUUmZFNk90NWlqSlJaMko1akV5MFdpMm8rWURIU2QzVnlrL21SK0Qr?=
- =?utf-8?B?UWJOVFJCTTRvMlhqQ0hMaGQ0YTh5MXFKOTlJMk8ycENKM3dMc0lQRmFSbEI5?=
- =?utf-8?B?b21aYkllalU0cXNqanoybFk4Zm13VzhZQUxzclVLbmNqbjB4U0tDdDdvdlN0?=
- =?utf-8?B?VGFZNVFLYmMxUTlQNWpiQ2FwazhCY3NHWmtSVVpLNm4welpBOW1CRWYzc25F?=
- =?utf-8?B?azlTdnhUT1dzK1hKbnppTXJaV2pDeE1XK0lSajh6RXE1cEVUSFUvT2FNNk9m?=
- =?utf-8?B?WnRaYjN0dUpITEkwZ1FrMGFoSkFyUHBBTHZCY3g4VnFrZmlVay9MdkFIZ2Yy?=
- =?utf-8?B?SUNwNzJvY2F0bGFWSUV2VWhOM0d4RG5ZT1RDOWgvZGk4N3kvdWNyTUdmWkxD?=
- =?utf-8?B?U3VkYnhVZlJtY2I1OUJUM3VUcGFzcG16VGhCWnU0YURlQUJRS3YxbUsxRXYy?=
- =?utf-8?B?N1B2bk1VaWkrb1VsUlpVWE5CTWF3dVNEWXNDRTVoTzZHdXlPVzd2c1VUdzQ1?=
- =?utf-8?B?N2xhQ0NrL3hidWMxNEJtUjYxNnpzbjZKblpraithQm0wTDA4cjdkdkovQlBC?=
- =?utf-8?B?OWx6U1Y1aW9HalBYUGhuOU90cDIxQ1hoeW9WUnpZaFZsNGFyeWpLQmRTYktC?=
- =?utf-8?B?aXkzdkErU0FUUldvQlo0bnowL1VtWm8yZUVPRmdhYkdGLzBwcWhOaTc1WU1E?=
- =?utf-8?B?eFRBeTNodEk1VzFEMmQ2UmNwWjNwOHZIUUZIUUJzRDI1U3RmNWsvTUswVU9p?=
- =?utf-8?B?VUp5emxqeUxWMFk2Vm01ZEJ2RnVJYUV1d3RZYzRETEw2WnR6c1Z3c2FOcW9G?=
- =?utf-8?B?eUMzVjBpUXppbU1GenN2bmN3ZldNR3dzYUhhQWtQYjRWa21rVUlQenNIRi8z?=
- =?utf-8?B?Zk1PQUVieThrdGoyQUdLOTVqRHo2dUJiN24yWjBsa0NoUzJaUUVubk5EeldY?=
- =?utf-8?B?TmNGZ0YxWC9DL1BKNVpBYm5rb0F4ZDVGSVZXYkh3SkxRbS9ad3JQQkFPMEEx?=
- =?utf-8?B?cklQQ0N5VzZHdW4ySUlERmpXd0F0NVZrbzNvVWhscWZlVFpXOHFyaHNYbi9r?=
- =?utf-8?B?ME1USkRNdmxZejhSWjZzZkw3YVRmQS9VcXEwSS9aL0J3VmtlSExkSnp0Zjgz?=
- =?utf-8?B?ZFliLzJOZlBvZ29na2pFQ0tBbldTVUZ1Sk5jLzZkb2lYeGE2Zy9ETHNxcHpH?=
- =?utf-8?B?N1AwVTd5VGtRTlFIUmlFMWxEbVNLYWxtWnpuZ1R4VVJZZEFnM1ZjbjdWeG9B?=
- =?utf-8?B?OFJZTWFqaU5xb05rbjhwNlh6MklKYStETzl0aDd2bnFHQ0xVbENXUmhEdnh4?=
- =?utf-8?B?VHRsenZ5ME5HMDVSL0lVR1k3ZVRudjdBczBIMlRtU05KV3UzMHV1aTNDTnF6?=
- =?utf-8?B?K081VGZKbTFzdVJWU1ByL2hPamtXdWhiSjRlNkJPL0JWSlJ4a0tNZXdCem1y?=
- =?utf-8?B?NW5LUjUvZ1dKUldVb3VtTmZhNkg1RHNKVE9GQmFQejZUY0IzOTd6WEVVOXo3?=
- =?utf-8?B?ZURRR1RsYmQ5ZloxK3ROVkx2dXlhQlVwaGNFZ09FcHY2ZXI5OUNBTlBZTVkv?=
- =?utf-8?Q?Mu83XhB7zFWFGpsS74?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OTJkbkJtZ1ZhWC9zMXA2ME9oOVUzUm05UjRTZGYrRWhRUGNsdGI5M2FlS1c1?=
+ =?utf-8?B?WFpHNGl4WTczT0hSWVhCOEJHQ2sxdEwzbHpPWThTek5tR2Vlbk1zSWkzNjBo?=
+ =?utf-8?B?U1A5cjEwZWRNMUtWMHNiNjd5bDd2amZqSHdtSnZDaGlVWkU2ZWVYVmMyenBY?=
+ =?utf-8?B?aVhrbnV1eENsWUZlZkg1MlBPVkFCRE9zcWlpdlptaDRhNUtFczdqWWlZNmts?=
+ =?utf-8?B?bVhNL0FHRk1xWXJQRERPTDVkS2FjNW1vTURUSUFPcEZPYjBSaXpvWTVZU0JZ?=
+ =?utf-8?B?Qlhnc2xHMlV3TVAyekY3ZzlSVUNiQlc5Zml1R2VER2lwM1BrRlptd0tQRUhp?=
+ =?utf-8?B?WjlCZXpRaTJqbkc2V2JNYW8xNTZob2pUeVNSNHR5VjNMVDFRaWZzOFhCQVFT?=
+ =?utf-8?B?OHRkL3dqNXpQQTEwSUpxVVFiVDM1Z05mZVc2SUNOdm03dUJpV0o3RmE5QTFz?=
+ =?utf-8?B?citTY1BYaWZ4SHJJaml4WEtkL3VOTVZBQ2tSaTBGTjFzVVNsN3VqYmRORkNN?=
+ =?utf-8?B?R0Q0MTJwU05URk8zNkxydUJYalpCWCtBLzM0UzRVUThobHlnUFZRaGtGeEJL?=
+ =?utf-8?B?dWRrMFZvTHhzVVRwaDlwMEo0dzQ2T1ZIV2h6NlkrZmRreUcwSHE5UDc2SUlU?=
+ =?utf-8?B?Umd2cW1PcnNmUTZWWFJESHBucHNJRTNHc2JnYTFHUDRaSi92QURDcUpXM3Zk?=
+ =?utf-8?B?bkFXMFZDZkQxTDd6a2NTSVlVdFRIbEllNFg1L25DeU05dWdZVW9qVHJlam15?=
+ =?utf-8?B?dDdqSEI0STBMK2VLUHp0VnRtTHZaM0ZmOFNuakswaEx0dDExR2VNL1lJVWlv?=
+ =?utf-8?B?clVVZ2JvTVFDRVdKZk1xa2NOTHNvRVRiQlFQWHlyb0VKZEM3ZXIyMmRNeUxa?=
+ =?utf-8?B?VElFQW41STlock5hYlhMeEJhbmNsVndCSTc4Sk9VcXl0cnRkV2xweFhnNlY1?=
+ =?utf-8?B?c0Z2MjFlYmFjZnVJL3JIWUZST1UyNlU4Yk1CQzU0dTVQK3dsbEsxQk5PcHFy?=
+ =?utf-8?B?UGFjM3BWR2p2NlhSTHNZbGxCNzR4M292dGlVS2N1NzJBbWNtNnBKaWZrc21Y?=
+ =?utf-8?B?Z0lKSDA4UlY1Y0VKV1E1TU1EWWYxMk1SS2lXRkNRZ0tMN0hPUVZWcHdnZTkz?=
+ =?utf-8?B?OVJPbzVrRjZLejlmQi9xZXBhWFl4S1BpN2JnOU9KcHE2WDFMTE16Q25XT2xX?=
+ =?utf-8?B?SjFkY2hzWEs0Q1hwVUYyYSs0N2lyT2xmT1J4QWdxdjI5TXo5RTRmemlBQ0Er?=
+ =?utf-8?B?Q09RMkIyWEFNaXgrNEJLRlVobXFzQnlUU1ZmcjlFUTZQNlAzSXpWWTBmSDBI?=
+ =?utf-8?B?VWJtQlUxMzFlWWpJSDNUV2NsVXFZUW40NEJGV1FlWnBsZWZuZUxiNEFrOHcw?=
+ =?utf-8?B?bXBzWHZYUlRtaElacjh6ZEFiYlUxcXp6VndIYnEvdWtYUWxqUkVpbkJUZ3dC?=
+ =?utf-8?B?UlZBQ0lXRXphQWphZXkzMzRJUkVBSGpJbG9rWTNSNjV5Z3VPTUsrbUJMYlJC?=
+ =?utf-8?B?RlBpQ05TUVZiMjdFeU5hR0FqSDdHUXZ5SlAzVzI3SVVEMDdiem1heVFZUm45?=
+ =?utf-8?B?U2dKT0pQSjB4bGRvbFdtK0daZ0E2cWs4VlNEMnEzbUpudGRBYVpTZTZhbS83?=
+ =?utf-8?B?UjZQSFlFVUR1RmRvWEliY2pOQlg2Y0tiSlBUeDVhY2tJemF0TGNJRkY4YTJ2?=
+ =?utf-8?B?YkdWM3lMV29CaEYvZVFpZmVZRGxqVSszTjNPdFFVSzV6bFRMcnJZL0drdGtZ?=
+ =?utf-8?B?MGhvc3U3UDhmd1hUTHJlUUhvZkZEMnFvTmR3bDE5bDUyOHluOW01U1Fmc2gv?=
+ =?utf-8?B?VFl2UEtZaGZnSUdKR2JCbzlyN3N0Qm5BM2xpY1IwSkFjblRvL0VPb2FwSTI1?=
+ =?utf-8?B?RzZFc3BFbEhoa0MzYzR5VVJBSVZ0cCszZXZnSjZ2d2NoU1JNSlRtT1c5M1hQ?=
+ =?utf-8?B?OTVQc0tJTUtWTU9KNGVicm1PZWNhMEZnMGM1M0c1RVVkWksyTjN1K0cxZW9D?=
+ =?utf-8?B?QlpSVkNiSXdqQi9BcWVVYk9FaWNGV2M2R25LNjJIdGI3NDc4SUhDeUwxZmNo?=
+ =?utf-8?B?SEl1MUl1K1pqM1FhczZNNitLaHVlKzBWZ3U2VVlMTDc1Y05LdnlXdVpJeUxp?=
+ =?utf-8?B?ZC93T3ZmUFYvRG1td0ZaNmw3SmtyOUF0ZnJNTVJxeDBxcklRQUhDR3lRTVAz?=
+ =?utf-8?B?a09WOEZXY0x4ZUNSWnA4YndncC9rUE1BSXdWWlJDZHBUWk9qMHJ4c0xDU1RC?=
+ =?utf-8?B?ZnFuSkRTUFNlejE3aVovVmNVekIvMnNjbzRvakt5bVUwUCtSWjJhZHNsNWRU?=
+ =?utf-8?Q?/mSB/gGToF5OQ//Y7n?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 60dca378-30c5-4586-a94c-08deea1b0c97
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d7d2a22-824f-45a2-4178-08deea1b1ac7
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2026 07:05:03.1216 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2026 07:05:26.9046 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7ujLjrJQKSebqRjTkW9Kectp1Iqh6oyt+rfUptmuiCpIOcKbgntM4Ie8KvRkxKm2WS9DBONXyuQWV80gOkgaJQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FtxSs1o+Z+eAV/lGgOjfFC8Xb48rTaWQPHH0ugNVgGqr78EqkcWoTqcTX9C1+580tYhvab9g3+bsuKGEiDSR0A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9664
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -139,85 +139,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Reviewed-by: Alex Hung <alex.hung@amd.com>
 
 On 6/23/26 11:57, Harry Wentland wrote:
-> Add igt_create_color_pattern_fb_yuv() function to create test pattern
-> framebuffers in YUV formats. This extends the existing color pattern
-> functionality to support YUV testing, handling proper conversion from
-> RGB test patterns to YUV color spaces with correct encoding and range.
+> Add XRGB2101010 (10-bit RGB) to the color encoding format list. This
+> enables proper color encoding handling for 10-bit RGB formats used in
+> CSC testing scenarios.
 > 
 > Assisted-by: Claude:claude-sonnet-4-5
 > Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 > ---
->   lib/igt_fb.c | 41 +++++++++++++++++++++++++++++++++++++++++
->   lib/igt_fb.h |  6 ++++++
->   2 files changed, 47 insertions(+)
+>   lib/igt_color_encoding.c | 1 +
+>   1 file changed, 1 insertion(+)
 > 
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index e623b2f64d7c..6c3b9b0b9208 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -2403,6 +2403,47 @@ unsigned int igt_create_color_pattern_fb(int fd, int width, int height,
->   	return fb_id;
->   }
->   
-> +/**
-> + * igt_create_color_pattern_fb_yuv:
-> + * @fd: open drm file descriptor
-> + * @width: width of the framebuffer in pixel
-> + * @height: height of the framebuffer in pixel
-> + * @format: drm fourcc pixel format code
-> + * @modifier: tiling layout of the framebuffer
-> + * @color_encoding: color encoding for YUV formats (e.g., BT.601, BT.709, BT.2020)
-> + * @color_range: color range for YUV formats (limited or full range)
-> + * @r: red value to use as background, 0.0 for black, 1.0 for red
-> + * @g: green value to use as background, 0.0 for black, 1.0 for green
-> + * @b: blue value to use as background, 0.0 for black, 1.0 for blue
-> + * @fb: pointer to an #igt_fb structure
-> + *
-> + * This creates a framebuffer for YUV formats with the specified color encoding
-> + * and range. Cairo is used to draw the background color and test pattern, with
-> + * automatic RGB to YUV conversion based on the specified encoding and range.
-> + *
-> + * Returns:
-> + * The kms id of the created framebuffer on success or a negative error code on
-> + * failure.
-> + */
-> +unsigned int igt_create_color_pattern_fb_yuv(int fd, int width, int height,
-> +					     uint32_t format, uint64_t modifier,
-> +					     enum igt_color_encoding color_encoding,
-> +					     enum igt_color_range color_range,
-> +					     double r, double g, double b,
-> +					     struct igt_fb *fb /* out */)
-> +{
-> +	unsigned int fb_id;
-> +
-> +	fb_id = igt_create_fb_with_bo_size(fd, width, height, format, modifier,
-> +					   color_encoding, color_range,
-> +					   fb, 0, 0);
-> +	igt_assert(fb_id);
-> +
-> +	igt_paint_test_pattern_color_fb(fd, fb, r, g, b);
-> +
-> +	return fb_id;
-> +}
-> +
->   /**
->    * igt_create_image_fb:
->    * @drm_fd: open drm file descriptor
-> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-> index 8e5907dabed4..213e2d77795d 100644
-> --- a/lib/igt_fb.h
-> +++ b/lib/igt_fb.h
-> @@ -153,6 +153,12 @@ unsigned int igt_create_color_pattern_fb(int fd, int width, int height,
->   					 uint32_t format, uint64_t modifier,
->   					 double r, double g, double b,
->   					 struct igt_fb *fb /* out */);
-> +unsigned int igt_create_color_pattern_fb_yuv(int fd, int width, int height,
-> +					     uint32_t format, uint64_t modifier,
-> +					     enum igt_color_encoding color_encoding,
-> +					     enum igt_color_range color_range,
-> +					     double r, double g, double b,
-> +					     struct igt_fb *fb /* out */);
->   unsigned int igt_create_image_fb(int drm_fd,  int width, int height,
->   				 uint32_t format, uint64_t modifier,
->   				 const char *filename,
+> diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
+> index da56b2b10593..1d01c7eb0583 100644
+> --- a/lib/igt_color_encoding.c
+> +++ b/lib/igt_color_encoding.c
+> @@ -135,6 +135,7 @@ static const struct color_encoding_format {
+>   	float ofs_y, max_y, ofs_cbcr, mid_cbcr, max_cbcr;
+>   } formats[] = {
+>   	{ DRM_FORMAT_XRGB8888, 255.f, },
+> +	{ DRM_FORMAT_XRGB2101010, 1023.f, },
+>   	{ IGT_FORMAT_FLOAT, 1.f, },
+>   	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+>   	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
 
