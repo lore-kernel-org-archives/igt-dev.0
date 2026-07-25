@@ -4,123 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F5C4C531F9
-	for <igt-dev@archiver.kernel.org>; Sat, 25 Jul 2026 07:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F6A7C531F9
+	for <igt-dev@archiver.kernel.org>; Sat, 25 Jul 2026 07:10:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DCE5F10E0F4;
-	Sat, 25 Jul 2026 07:06:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ACF048825E;
+	Sat, 25 Jul 2026 07:10:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="bUrQpqM5";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Y8iZg3kt";
 	dkim-atps=neutral
-Received: from CY7PR03CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11010030.outbound.protection.outlook.com
- [40.93.198.30])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E8BE10E0F4
- for <igt-dev@lists.freedesktop.org>; Sat, 25 Jul 2026 07:05:30 +0000 (UTC)
+Received: from SN4PR0501CU005.outbound.protection.outlook.com
+ (mail-southcentralusazon11011002.outbound.protection.outlook.com
+ [40.93.194.2])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 27D8F8825E
+ for <igt-dev@lists.freedesktop.org>; Sat, 25 Jul 2026 07:10:08 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NvQkcC5rrR71WUmnDf/3HNoEgKJ/CCu0pDP9lCGP2JBgkBjJHM5sUmlnG66JroalLjSYebpgx3ZOjZjkYkc2hscMvZnUSnoQtqWFTmgWnEARpe2gsPy2yxbK5MCQjH1jeLU5IknebpcbDFvqmOJOCC967fNRvuXKJdy1Qk0eQMGhBB1NbvVM90qkbA7ltVUp0rJpnnwx+Bsr2b5jrUQfZvWUIKsna9LiuCSgy4UGNLY9/8NN73zR2IuqYdktkp2QMH2xiV0pgLqHGi/PKkdE3HgbjzhOFYzQrK0oymjjTlboCr/cWGrfQOWJlV/wbIuqniS3ifQTW0Unqppzll7GEA==
+ b=MMIrY7OZz9b5hbmPR7UJiolUhgvE1fAw2gX6y05qx63/cTBzhH33WYHuvBIikusdgu2I8nRWtqqqycLuOFkUvn6Y36UTQWxaQQ4Y9eommgENbWtpjsOzCbo8R96e4OowPxgQgUXGdehgVK+9a4Pu9nOkTRtQdEZWUHBCvGxdwzm62/7gO/7WyVQnunCyxgh9ltpoNyryIUSr8mZJI6szbBrpQDVuwVgCbCg/RbEiDwa24c+80mAO6QHcblTqk9Cxp4Q3rNKcsnIKOQWsbEgLiBnvr0stL/btnlD/7aKJUbHGrPVxt1OJHNbDcFnpy9dNTK5+0+lxhg7h7j6icBi9mw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uHnGQQaj6S0ZIVza8C7WhGCxMv9pJA6Aa0X/7tWvV2A=;
- b=RsI63zbaPivEu5450SuYnoD+H6pjVTaMgLkIkvI47i1UCV7+y0RKfxZcHvnphmA0Mbj9y5nkKaEVTf9tRc1+g8YQJXBQuhOR3yNctwaJNvZPdrtS6+xep6gR/Vd+zQ/eTu1fC2C+ltPv3vuOBZ7z2Gdr9bAN+/xXKBgbw7kp34MFhEaWHy+KZ4APAvwzj5BVJRkdQ7fq7yU6WTKpXVSAbQ53BYczh80OJaQDjiDO4GaM00LvePvtRkL5GZItwjNv4Xw4F14pmpM6Iwo8IasQsz9rFfp0JHGKyr3YcV+YayCqoBqaUVjCNFCSmbKXySyVkCnJCryBAXFxGDWXFYuqtQ==
+ bh=3s9WHYScC/d9X2SO1joUGbLPJQ6VrJoyd2r9hiOssJw=;
+ b=xBEF2ATL/T9MqwsZ8i7yLBcCBjD6RKwtm6cUip03JoZPjUjyiLch+/rzqiFYmDjU6bTH1Cvnfhr/zHx/CancyqGIIoiNG7NyTc/Qlfocz77eiCI393dJv/vYddoqK5RccfsAzhwQOVA2lL6xkqVKdQvUOBrUDC31/ZxGoEBfPrnh5ENVZldq9ZwhZ1xo++vPyopVL/q+472ha82+NsMVCBp908AC6nrNhhvjLfH15jpb3gdZksO7FqSWoHVq8xnCKcHg+LDsjT+YFCMOxxWEMf5/dsWEotZdaREcZJ+aFISjeidUK0dWXxFwX7z3jvLOLlyA+C19wyncx6608ltG2Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uHnGQQaj6S0ZIVza8C7WhGCxMv9pJA6Aa0X/7tWvV2A=;
- b=bUrQpqM5YLPchG70AXi7qgSW+CX40Zx4RZmSLgt8tc83nOsnIq0uxskJ+iXdZioEYlY+82Ih79VhdG13r+GRBm5VMBgLlMeWWojQNvZyAPOcnvh6aDyzCRhR3466/hO/Qavm9RDjn6wW0GOb2bzdX0s5z4j5J3pekg6HE4Q6jJ4=
+ bh=3s9WHYScC/d9X2SO1joUGbLPJQ6VrJoyd2r9hiOssJw=;
+ b=Y8iZg3ktPeigATt45sHqfjw5emw5bJndF2V+M+jg013ctnLZXr0TKTlHDNequVXAQJsBDQ4yJICpGKjnGLbo/hbWqW1tDbTfVedAZGjMhE3g46QvPHjQzDpzEklegFHiDM6idJK2s7uU3ogYMYDxzSiPWy+x7kT1T0FzHuzp1V0=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
- by DS2PR12MB9664.namprd12.prod.outlook.com (2603:10b6:8:27b::10) with
+ by MN6PR12MB8566.namprd12.prod.outlook.com (2603:10b6:208:47c::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.11; Sat, 25 Jul
- 2026 07:05:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Sat, 25 Jul
+ 2026 07:10:02 +0000
 Received: from DM4PR12MB8476.namprd12.prod.outlook.com
  ([fe80::2d79:122f:c62b:1cd8]) by DM4PR12MB8476.namprd12.prod.outlook.com
  ([fe80::2d79:122f:c62b:1cd8%6]) with mapi id 15.21.0245.012; Sat, 25 Jul 2026
- 07:05:26 +0000
-Message-ID: <89545447-18bc-4afa-8727-2c129ce83e15@amd.com>
-Date: Sat, 25 Jul 2026 01:05:25 -0600
+ 07:10:02 +0000
+Message-ID: <acb18562-50df-4111-8a04-1ec88493d216@amd.com>
+Date: Sat, 25 Jul 2026 01:10:00 -0600
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/12] lib/igt_color_encoding: Add XRGB2101010 format
- support
+Subject: Re: [PATCH v3 07/12] lib/igt_color: Add YUV pixel reading support
 To: Harry Wentland <harry.wentland@amd.com>, igt-dev@lists.freedesktop.org
 References: <20260623175737.171142-1-harry.wentland@amd.com>
- <20260623175737.171142-7-harry.wentland@amd.com>
+ <20260623175737.171142-8-harry.wentland@amd.com>
 Content-Language: en-US
 From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20260623175737.171142-7-harry.wentland@amd.com>
+In-Reply-To: <20260623175737.171142-8-harry.wentland@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR02CA0022.namprd02.prod.outlook.com
- (2603:10b6:303:16d::15) To DM4PR12MB8476.namprd12.prod.outlook.com
+X-ClientProxiedBy: MW4PR04CA0352.namprd04.prod.outlook.com
+ (2603:10b6:303:8a::27) To DM4PR12MB8476.namprd12.prod.outlook.com
  (2603:10b6:8:17e::15)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|DS2PR12MB9664:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d7d2a22-824f-45a2-4178-08deea1b1ac7
+X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|MN6PR12MB8566:EE_
+X-MS-Office365-Filtering-Correlation-Id: 886a1b19-be9a-4e60-e57b-08deea1bbeea
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|23010399003|1800799024|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: cTcVzenHTVOPNppSuJsE4Pvui7KgCXRJu4D0HYzuT/jQekBdRo0r6R7is4KqObrSWzTcUjMC90Nx4RYGCkCBvF6gAC7Q5z8ecQ5IaKOFTViaE+atkPBR0fcYUO96h/7T0OKB8CnXpRRviYzQSmzHD7tKaMF2D0vVnw4X/86xMh0LxWAUhjZG7hkOhHnf+4QMjqXbSY9xBG2bttpCvy+tnwOatdpmRG1x6ZgOdirVHCCS+Kwdxpqj+q6dC+d5JSAUGqSp8DVScDB5auIEXPXDYV5IosSZaX1AFrxNr4KJ5aFR7lf1rX/pyEXZG33CZCDQQ2HXoFAgEYVaHszEKpHm1eCj4eX3X4IYDmyOd4fBH6PgZ+UMZDkg6CeePqtGzyWVq/CdqBsvBh1nT1CsJqwvX0T/OEqFquzoAax5sfkrf7fGLMdXVVD6sIElvzV05bK4+9mIguFGaJNn5VifIMyKq/HQxJ0ah7SpJQ0YIF3MruhPFjzqpOXSeuFojOSBk0pYH3G1BRuY8B5P8AuzvkVwsvCRUMel+KJCm3kSaVHMaQy+wtz6t9iWW2LHIbuvuzK8GDHJN9LqZeMmvcWMqOtYhQTR9uI7gyuZY8S/c5y4Yt6P8SuC0u3JGi2LgWki/M6xtKvqvYfMpE/g72PX+v8feG2dLAiKja/6T2LS1kKwQcg=
+ ARA:13230040|376014|1800799024|23010399003|366016|11063799006|10067099003|18002099003|4143699003|6133799003|56012099006|3023799007|22082099003;
+X-Microsoft-Antispam-Message-Info: /6rzqVlofyMc9PshQhqHm+ItBnofVGYzAFjZZfC44rzUDRwhDKPqOsyIIdQVio7ge2KyPCr3hElNMlYy+VXpRy3Fc7j3YmkMTcfINI07/yNOqNe8+9WeBPAoKvL2Kd1eV/72rUSeqVhU53aivWdemgCoXIIOi6BAqleX86GddTbf8/nPQErJo77mKno+ec2sfPZc1bg9gto5Zvq8Q22gDLhXZheVYwXnKwRTPjYKIK5Da982JKHMo1A3yD0YD7TDGMNKlivNy0mQayGBuhVFwSdUdrd6LpyBxgMvQGl5Ny/OC/iN8ZhecAOjQ0r7x66v/aVycyFlZ8QYyZqK8l5MzYGGUhajj68zH82XpKdfIFJ1xKrZ+LT8iK6uF1CtP9dClOg8XLqlMP1WDH045YigWeRaMZ+dUFmHSA56WSGD7PIqniB8dtZHdvKTmMkiluxohHmvKyS5g5GHLcuPicoeZZFEvICR07geZJ9txBk4iIUCKuA5uVKqHQIa2Q48P48oVA/+vqK6flN/hBFGlXGlnUh4b2QUSGSfsYlNNSMY4w6FHUbhheh21VAeaL04UCvo0GDxlNHSUKN1e4o7/Rg5u1ScLnI3OcMQmznndOKyphOadPAqU9DRkwf8Kb4sTXNK9EMHPyBezsCsnKw1yK3MKWl9Xqvq9jhP8hokA2XxYF8=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DM4PR12MB8476.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);
+ SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(11063799006)(10067099003)(18002099003)(4143699003)(6133799003)(56012099006)(3023799007)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OTJkbkJtZ1ZhWC9zMXA2ME9oOVUzUm05UjRTZGYrRWhRUGNsdGI5M2FlS1c1?=
- =?utf-8?B?WFpHNGl4WTczT0hSWVhCOEJHQ2sxdEwzbHpPWThTek5tR2Vlbk1zSWkzNjBo?=
- =?utf-8?B?U1A5cjEwZWRNMUtWMHNiNjd5bDd2amZqSHdtSnZDaGlVWkU2ZWVYVmMyenBY?=
- =?utf-8?B?aVhrbnV1eENsWUZlZkg1MlBPVkFCRE9zcWlpdlptaDRhNUtFczdqWWlZNmts?=
- =?utf-8?B?bVhNL0FHRk1xWXJQRERPTDVkS2FjNW1vTURUSUFPcEZPYjBSaXpvWTVZU0JZ?=
- =?utf-8?B?Qlhnc2xHMlV3TVAyekY3ZzlSVUNiQlc5Zml1R2VER2lwM1BrRlptd0tQRUhp?=
- =?utf-8?B?WjlCZXpRaTJqbkc2V2JNYW8xNTZob2pUeVNSNHR5VjNMVDFRaWZzOFhCQVFT?=
- =?utf-8?B?OHRkL3dqNXpQQTEwSUpxVVFiVDM1Z05mZVc2SUNOdm03dUJpV0o3RmE5QTFz?=
- =?utf-8?B?citTY1BYaWZ4SHJJaml4WEtkL3VOTVZBQ2tSaTBGTjFzVVNsN3VqYmRORkNN?=
- =?utf-8?B?R0Q0MTJwU05URk8zNkxydUJYalpCWCtBLzM0UzRVUThobHlnUFZRaGtGeEJL?=
- =?utf-8?B?dWRrMFZvTHhzVVRwaDlwMEo0dzQ2T1ZIV2h6NlkrZmRreUcwSHE5UDc2SUlU?=
- =?utf-8?B?Umd2cW1PcnNmUTZWWFJESHBucHNJRTNHc2JnYTFHUDRaSi92QURDcUpXM3Zk?=
- =?utf-8?B?bkFXMFZDZkQxTDd6a2NTSVlVdFRIbEllNFg1L25DeU05dWdZVW9qVHJlam15?=
- =?utf-8?B?dDdqSEI0STBMK2VLUHp0VnRtTHZaM0ZmOFNuakswaEx0dDExR2VNL1lJVWlv?=
- =?utf-8?B?clVVZ2JvTVFDRVdKZk1xa2NOTHNvRVRiQlFQWHlyb0VKZEM3ZXIyMmRNeUxa?=
- =?utf-8?B?VElFQW41STlock5hYlhMeEJhbmNsVndCSTc4Sk9VcXl0cnRkV2xweFhnNlY1?=
- =?utf-8?B?c0Z2MjFlYmFjZnVJL3JIWUZST1UyNlU4Yk1CQzU0dTVQK3dsbEsxQk5PcHFy?=
- =?utf-8?B?UGFjM3BWR2p2NlhSTHNZbGxCNzR4M292dGlVS2N1NzJBbWNtNnBKaWZrc21Y?=
- =?utf-8?B?Z0lKSDA4UlY1Y0VKV1E1TU1EWWYxMk1SS2lXRkNRZ0tMN0hPUVZWcHdnZTkz?=
- =?utf-8?B?OVJPbzVrRjZLejlmQi9xZXBhWFl4S1BpN2JnOU9KcHE2WDFMTE16Q25XT2xX?=
- =?utf-8?B?SjFkY2hzWEs0Q1hwVUYyYSs0N2lyT2xmT1J4QWdxdjI5TXo5RTRmemlBQ0Er?=
- =?utf-8?B?Q09RMkIyWEFNaXgrNEJLRlVobXFzQnlUU1ZmcjlFUTZQNlAzSXpWWTBmSDBI?=
- =?utf-8?B?VWJtQlUxMzFlWWpJSDNUV2NsVXFZUW40NEJGV1FlWnBsZWZuZUxiNEFrOHcw?=
- =?utf-8?B?bXBzWHZYUlRtaElacjh6ZEFiYlUxcXp6VndIYnEvdWtYUWxqUkVpbkJUZ3dC?=
- =?utf-8?B?UlZBQ0lXRXphQWphZXkzMzRJUkVBSGpJbG9rWTNSNjV5Z3VPTUsrbUJMYlJC?=
- =?utf-8?B?RlBpQ05TUVZiMjdFeU5hR0FqSDdHUXZ5SlAzVzI3SVVEMDdiem1heVFZUm45?=
- =?utf-8?B?U2dKT0pQSjB4bGRvbFdtK0daZ0E2cWs4VlNEMnEzbUpudGRBYVpTZTZhbS83?=
- =?utf-8?B?UjZQSFlFVUR1RmRvWEliY2pOQlg2Y0tiSlBUeDVhY2tJemF0TGNJRkY4YTJ2?=
- =?utf-8?B?YkdWM3lMV29CaEYvZVFpZmVZRGxqVSszTjNPdFFVSzV6bFRMcnJZL0drdGtZ?=
- =?utf-8?B?MGhvc3U3UDhmd1hUTHJlUUhvZkZEMnFvTmR3bDE5bDUyOHluOW01U1Fmc2gv?=
- =?utf-8?B?VFl2UEtZaGZnSUdKR2JCbzlyN3N0Qm5BM2xpY1IwSkFjblRvL0VPb2FwSTI1?=
- =?utf-8?B?RzZFc3BFbEhoa0MzYzR5VVJBSVZ0cCszZXZnSjZ2d2NoU1JNSlRtT1c5M1hQ?=
- =?utf-8?B?OTVQc0tJTUtWTU9KNGVicm1PZWNhMEZnMGM1M0c1RVVkWksyTjN1K0cxZW9D?=
- =?utf-8?B?QlpSVkNiSXdqQi9BcWVVYk9FaWNGV2M2R25LNjJIdGI3NDc4SUhDeUwxZmNo?=
- =?utf-8?B?SEl1MUl1K1pqM1FhczZNNitLaHVlKzBWZ3U2VVlMTDc1Y05LdnlXdVpJeUxp?=
- =?utf-8?B?ZC93T3ZmUFYvRG1td0ZaNmw3SmtyOUF0ZnJNTVJxeDBxcklRQUhDR3lRTVAz?=
- =?utf-8?B?a09WOEZXY0x4ZUNSWnA4YndncC9rUE1BSXdWWlJDZHBUWk9qMHJ4c0xDU1RC?=
- =?utf-8?B?ZnFuSkRTUFNlejE3aVovVmNVekIvMnNjbzRvakt5bVUwUCtSWjJhZHNsNWRU?=
- =?utf-8?Q?/mSB/gGToF5OQ//Y7n?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SmxDbm5wMU4zcktic1R1WWcrMmNxWmZKeFNyQnBIRE1jSUF3VzR0Z2x6aEE5?=
+ =?utf-8?B?YlpNYlJCSmQ4cENsVnY3cHFVSlJKc0VPV1FNRlZRbWZ2b2hWUExKZFp6akhm?=
+ =?utf-8?B?VFNRbk56dFV1aHEvTFp0WndncEl1RXVYYm5EYlhuTGt0QkkwMTE0bkI4NmYy?=
+ =?utf-8?B?VERDMlI5N0dOMHBvTTVvb3l1QXhOL0lEUUJUM0pqN1dNdjFpQ285S0tJVGFw?=
+ =?utf-8?B?bFdYTFRrMGl1d0RqNWdLc0htelhWVjZMdHBvNHFDU2IzM1h6aE9LdHlCdzVX?=
+ =?utf-8?B?cUdTdzNUdXZTZXJBRy9DZmhMbDJFR2VlQmgybTdITDl0SmRTTWpFb3V3ZGlE?=
+ =?utf-8?B?VVFib0ZQdHcxMi9sRnRjNTZGK0pKNWJEK05PTlkvMlhmTmRkUGsyNXZqRG52?=
+ =?utf-8?B?c2luNVF2K1ZXOHYvaWNuVk9QWFZBL2V6d1Jhc3Jac0psLzJHRHMwKzhtUE1n?=
+ =?utf-8?B?UVY1eFllRTFTc2hzZDBxeXBveDBTTUZCUFdQdzIzR1Uza29Cc25qbEtjYzZa?=
+ =?utf-8?B?SzBhMlcvd3ZLeUFOQWFIVjlXRncvMzJwNjZnajJzbTlxdEJ4eVEzQkgveFFt?=
+ =?utf-8?B?RWtpMUpPajFGRGlBb1BkaE45ek5kT0JFYUxHYTBoK3FOdkNVMUdNNVBBNHlJ?=
+ =?utf-8?B?bXpBVjNvaHlaalFiY0paTGIwVUx0MnZxbXdQQTFDeUFmem4vS3BjM0wzcis4?=
+ =?utf-8?B?Yjk4VENVY0RrUjFNUXFxQUFQWkVGOGRDNkY5bGNHdFFENmJ1VEpBT2tJNnpt?=
+ =?utf-8?B?RXZkSmE1OWpBQ1Y1WTlFZHNubUNjeVBWamRTQ091QnErRVBVTy9laGc0Zkpp?=
+ =?utf-8?B?c2hhT1kvRVUxRGpjc0E1S0NQNDFDMWdPZEZVb3YvZWJnVmFqMHI1YktGRjJt?=
+ =?utf-8?B?VUp6cVR0VWR0bEdWOWQ5OEZtSHR1MmlqWWNZWk5YTk1OZTlKNGVxekVTTy95?=
+ =?utf-8?B?M293ZS9ockhJanE0aG9xOGJUVElpMnVLdTEvM2RyNHZ3aktmaXhSTUxZTFpO?=
+ =?utf-8?B?OUQ1RklZbXVmalI5K1BXYkNUWWpzOTh3aDF5VnZmRVZPOVhtSmN4cXZYWjZZ?=
+ =?utf-8?B?TEZ1Q2tMZGh6NUJxbDRmbTBqdnZKV05Vd2FuYzdrK05IWDE4VFVJcFd1N2w5?=
+ =?utf-8?B?ZitvU0pNOWNWL3YxS1pXNzhuUzZZWG04UHpqYUw5Y2hTaFJnRGlFSzY1UDQ1?=
+ =?utf-8?B?TXV4N3pKaXQvNnpIOVo0SEdpRjU2SGRiWXdRbEpmSU90YVA0MkU5LytXaGRJ?=
+ =?utf-8?B?dTV3alVFTzcvMVRvZFpjYmdlSDM3THljR2Q3WThmVWxycFkzTWp4WStTbmlo?=
+ =?utf-8?B?OEVKbGNQSGtlQU0wZDFtaTZreUNRWmF3WmJoc0ZxZ1lJWkw0ZCtjbExTUWYr?=
+ =?utf-8?B?L1BmSno1dkFvbk9xenJhakoxdmlGNFgyckVwZDIveGVUTEM4NlBuMVlYMUFX?=
+ =?utf-8?B?MmtYR1gzenFkemZtRml1TnZ1S1V1Q3dFeDBwL1U4OWxYUTlKQ1RSL0EvcFBX?=
+ =?utf-8?B?Q2tVdDNyS1EwVHNHcnlMTkxmbzJLaHZVVXlRbENIMEord0lnT0dSY3Q1WnpK?=
+ =?utf-8?B?TUswWkR3WHF4bjF4aFRLN2YrekVVMWFieURhc3l1QXpZK1d0QWdkVWw0c2Qv?=
+ =?utf-8?B?V3cxVm93aUJOaGJjWWFqa1JDcXAwMUNJeXFWSUVnL0ZEMCtMK1FDQ2VQSFQr?=
+ =?utf-8?B?Sk50dmozc0tDYWlIT1NoTmFYbE1SVGtndTk4UnZ3Mm5FMXI3SCtBWUZMaVBR?=
+ =?utf-8?B?aE5IVmZQTjhaTFRtU0JQeGdSNzcxVDdWNFJSOE1Ra09mSDgzNmpwZFhLd3p3?=
+ =?utf-8?B?b0NiK0pzeGNjdDZyT0s0ZzA4ajJWQjJ0L2tCWHBSckl5Znh6YlhORHRTcGpM?=
+ =?utf-8?B?YXl1V2tiYldlR3BlQmhzeEFZdHFMTjFIc2owRWxkcjhnd0pja2lJQmx2bC9k?=
+ =?utf-8?B?cEJzQ2QrbmdKMjBDZDRpeEZobW81TXdhQzRoMXNWeFhlZm1NQXpuRUhvRW83?=
+ =?utf-8?B?K25hWGpxVG8yME00NUxPa1F2ZDQrMnM0aDd5SlVKR2RJOUlnRkVHNDdPMHNo?=
+ =?utf-8?B?NTIxUGNFcTRjN0IvNnVPdmpIWXVSQUViOVB1UVh5NFBheEFjcEpKM3VZMnRu?=
+ =?utf-8?B?MUptcWI3VlRJcFo0WVpNREg2dmhzdXBxSXp2Y1FpdXBaOUFzZGZBRWxweDZ4?=
+ =?utf-8?B?UkE5TUUvaDc5RjA3Nng4UDluajBieWFXb0pkL3RxOWI2MEJOeVA1OEpVczRo?=
+ =?utf-8?B?b1JnY0w0MHJDa1Y4LzZMWHNjVFI0OW92aEVlTExCSjNDUG40ZVdZZWlyTVNn?=
+ =?utf-8?Q?M9GpSrqcKRIE4nEtZu?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d7d2a22-824f-45a2-4178-08deea1b1ac7
+X-MS-Exchange-CrossTenant-Network-Message-Id: 886a1b19-be9a-4e60-e57b-08deea1bbeea
 X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2026 07:05:26.9046 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Jul 2026 07:10:02.2945 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FtxSs1o+Z+eAV/lGgOjfFC8Xb48rTaWQPHH0ugNVgGqr78EqkcWoTqcTX9C1+580tYhvab9g3+bsuKGEiDSR0A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9664
+X-MS-Exchange-CrossTenant-UserPrincipalName: h4xQxSowTP3GwwOQMtfUdQX2ThGvlZaq6MhOiug6nr2oKKXMrmiEEfsenm3Koc5Yak0XJMIDpLZ6TSta31PXOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR12MB8566
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -139,26 +138,101 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Reviewed-by: Alex Hung <alex.hung@amd.com>
 
 On 6/23/26 11:57, Harry Wentland wrote:
-> Add XRGB2101010 (10-bit RGB) to the color encoding format list. This
-> enables proper color encoding handling for 10-bit RGB formats used in
-> CSC testing scenarios.
+> Add functions to read YUV pixel values from framebuffers. Supports
+> NV12 and P010 formats with proper handling of:
+> - Multi-planar Y/UV data layout
+> - 8-bit and 10-bit sample depths
+> - Chroma subsampling
+> 
+> This provides the foundation for YUV color transformation testing.
 > 
 > Assisted-by: Claude:claude-sonnet-4-5
 > Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 > ---
->   lib/igt_color_encoding.c | 1 +
->   1 file changed, 1 insertion(+)
+>   lib/igt_color.c | 72 +++++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 72 insertions(+)
 > 
-> diff --git a/lib/igt_color_encoding.c b/lib/igt_color_encoding.c
-> index da56b2b10593..1d01c7eb0583 100644
-> --- a/lib/igt_color_encoding.c
-> +++ b/lib/igt_color_encoding.c
-> @@ -135,6 +135,7 @@ static const struct color_encoding_format {
->   	float ofs_y, max_y, ofs_cbcr, mid_cbcr, max_cbcr;
->   } formats[] = {
->   	{ DRM_FORMAT_XRGB8888, 255.f, },
-> +	{ DRM_FORMAT_XRGB2101010, 1023.f, },
->   	{ IGT_FORMAT_FLOAT, 1.f, },
->   	{ DRM_FORMAT_NV12, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
->   	{ DRM_FORMAT_NV16, 255.f, 16.f, 235.f, 16.f, 128.f, 240.f },
+> diff --git a/lib/igt_color.c b/lib/igt_color.c
+> index 8c405275acf8..a451f5642bac 100644
+> --- a/lib/igt_color.c
+> +++ b/lib/igt_color.c
+> @@ -259,6 +259,78 @@ void igt_color_multiply_inv_125(igt_pixel_t *pixel)
+>   	igt_color_multiply(pixel, 1 / 125.0f);
+>   }
+>   
+> +/**
+> + * igt_color_extract_yuv_pixel - Extract raw Y, U, V values from YUV buffer
+> + * @fb: framebuffer
+> + * @x: x coordinate
+> + * @y: y coordinate
+> + * @y_plane: pointer to Y plane
+> + * @uv_plane: pointer to UV plane
+> + * @y_stride: stride of Y plane
+> + * @uv_stride: stride of UV plane
+> + * @out_y: output Y value (raw, not normalized)
+> + * @out_u: output U value (raw, not normalized)
+> + * @out_v: output V value (raw, not normalized)
+> + *
+> + * Extracts raw Y, U, V component values from a YUV framebuffer at the given
+> + * coordinates. Handles 4:2:0 subsampling for UV components. Values are raw
+> + * (not normalized) and format-specific.
+> + */
+> +static void
+> +igt_color_extract_yuv_pixel(igt_fb_t *fb, int x, int y,
+> +			    uint8_t *y_plane, uint8_t *uv_plane,
+> +			    int y_stride, int uv_stride,
+> +			    uint32_t *out_y, uint32_t *out_u, uint32_t *out_v)
+> +{
+> +	if (fb->drm_format == DRM_FORMAT_NV12) {
+> +		*out_y = y_plane[y * y_stride + x];
+> +		*out_u = uv_plane[(y / 2) * uv_stride + (x / 2) * 2 + 0];
+> +		*out_v = uv_plane[(y / 2) * uv_stride + (x / 2) * 2 + 1];
+> +	} else if (fb->drm_format == DRM_FORMAT_P010) {
+> +		uint16_t *y16 = (uint16_t *)y_plane;
+> +		uint16_t *uv16 = (uint16_t *)uv_plane;
+> +
+> +		*out_y = y16[y * (y_stride / 2) + x];
+> +		*out_u = uv16[(y / 2) * (uv_stride / 2) + (x / 2) * 2 + 0];
+> +		*out_v = uv16[(y / 2) * (uv_stride / 2) + (x / 2) * 2 + 1];
+> +	} else {
+> +		igt_skip("YUV pixel format support not implemented");
+> +	}
+> +}
+> +
+> +/**
+> + * igt_color_yuv_to_pixel - Convert raw Y, U, V values to normalized pixel
+> + * @drm_format: YUV format (NV12 or P010)
+> + * @raw_y: raw Y value
+> + * @raw_u: raw U value
+> + * @raw_v: raw V value
+> + * @pixel: output pixel structure
+> + *
+> + * Converts raw Y, U, V component values to a normalized igt_pixel_t structure.
+> + * For NV12 (8-bit), normalizes by 255. For P010 (10-bit in upper bits),
+> + * shifts and normalizes by 1023.
+> + *
+> + * Result: pixel->r = normalized Y, pixel->g = normalized U, pixel->b = normalized V
+> + */
+> +static void
+> +igt_color_yuv_to_pixel(uint32_t drm_format, uint32_t raw_y, uint32_t raw_u,
+> +		       uint32_t raw_v, igt_pixel_t *pixel)
+> +{
+> +	if (drm_format == DRM_FORMAT_NV12) {
+> +		/* Normalize 8-bit values to [0.0, 1.0] */
+> +		pixel->r = raw_y / 255.0f;
+> +		pixel->g = raw_u / 255.0f;
+> +		pixel->b = raw_v / 255.0f;
+> +	} else if (drm_format == DRM_FORMAT_P010) {
+> +		/* P010 uses upper 10 bits of 16-bit value */
+> +		pixel->r = (raw_y >> 6) / 1023.0f;
+> +		pixel->g = (raw_u >> 6) / 1023.0f;
+> +		pixel->b = (raw_v >> 6) / 1023.0f;
+> +	} else {
+> +		igt_skip("YUV pixel format support not implemented");
+> +	}
+> +}
+> +
+>   static int
+>   igt_get_lut3d_index_blue_fast(int r, int g, int b, long dim, int components)
+>   {
 
