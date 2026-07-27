@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EF08C53209
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jul 2026 18:48:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95761C531D0
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jul 2026 18:49:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C024810E6F4;
-	Mon, 27 Jul 2026 18:48:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4096E10E6D8;
+	Mon, 27 Jul 2026 18:49:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YrYA4TIh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VptgeWRR";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6EF7510E6D1
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jul 2026 18:46:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5181110E6CA
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jul 2026 18:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785177992; x=1816713992;
+ t=1785177995; x=1816713995;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Cj8IpYOIxlltkN8KtIPNmRBl0NluC8rxbmcn36gYnEA=;
- b=YrYA4TIh1qaOw+8j8MEAUJsIOL1MtSzcRwAiiSLEbt+H6JCICiFWAqL/
- 8dcMIWfWg4kvy+LQyYjZpdH9QUWx119bq6JZ1U63D2Wtdp0EQO1yYYG7x
- S0EHsayNiC4aFf5u8UMFD4O/6C2VVxunb8z53HZunR34YdxjLvPy2LLQZ
- c8fa8Y+Pnn5xmj5ZVT3M8B2F7fo2nZiDca/BFb4UpXSBibVrcnCmNbKUh
- GBBppnq/wIcTAauTtgjHuawiNmBfkLxpRoEbGN+eQclYPMSI784YQUNNm
- eHudSX46RgJyjqRnXWc/n/BO690AVBn8Gb1YaqDUnE5SmJfaAA06D6BCU A==;
-X-CSE-ConnectionGUID: 25R3tZutSqu228+N/qTx3Q==
-X-CSE-MsgGUID: duPrllD7RjaUaRGDY3rpGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="103296099"
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="103296099"
+ bh=08LTbNDGP+vZaLQxsZwxR+0LCHdVwOWnkING2NeOC3w=;
+ b=VptgeWRRWeWcC2NGeWLRQsGeP0HtqmAjW7JdR9N3Ij73+NFSYu/3yVJ7
+ iVNWA+F77OBstgSVHinEf/wMWEz+AqO508PnDNT5ZAo+rnSK7/YaMNP5v
+ GR0hwOhByOdmekDOk6EjGFPLtLQqlynXjgA2mwT4bljNd9IuY8WDitOOZ
+ nkqu36xJJsfdhUsxaFR3h37NyrxAp/vaVUDJ0jceTELOMJgcIRroAB5ve
+ LU/dP6EF9wIZB3UVk+/CQTuCy8s7FifNIM9+ZLviOr66lsEjUsWe3qipU
+ PZuq0kuncnSMBn2BFLjrwPTJ/4o9fgKT2ZZQR0OJwfR4LKWmFJ+nwCEUC A==;
+X-CSE-ConnectionGUID: 6urddoufTqO6a0zlkESKXQ==
+X-CSE-MsgGUID: eqNnc2USRC+2z6yoWK2YTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="103296102"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="103296102"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2026 11:46:32 -0700
-X-CSE-ConnectionGUID: I91vTatrQe+re5BHICqSHg==
-X-CSE-MsgGUID: G5xT+gN8SHmFJgPLWzOE6g==
+ 27 Jul 2026 11:46:35 -0700
+X-CSE-ConnectionGUID: Bn71zNMiR7CWkxh+pS97VQ==
+X-CSE-MsgGUID: UxUM+io3SOC8mvLnzc8ntg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="259545256"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="259545266"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 11:46:31 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 11:46:34 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 1/6] include/drm-uapi: Add DRM_COLOROP_FIXED_MATRIX
- definition
-Date: Tue, 28 Jul 2026 00:25:26 +0530
-Message-Id: <20260727185531.4046807-2-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 3/6] tests/kms_colorop_helper: Add FIXED_MATRIX colorop
+ support
+Date: Tue, 28 Jul 2026 00:25:28 +0530
+Message-Id: <20260727185531.4046807-4-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260727185531.4046807-1-swati2.sharma@intel.com>
 References: <20260727185531.4046807-1-swati2.sharma@intel.com>
@@ -68,44 +68,135 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add DRM_COLOROP_FIXED_MATRIX to the colorop type enumeration. This
-colorop type represents a pre-defined matrix operation selected via
-the FIXED_MATRIX_TYPE enum property. The driver advertises the
-supported operations through this property.
+Add KMS_COLOROP_FIXED_MATRIX type and helpers for configuring
+fixed-matrix colorops. The FIXED_MATRIX block selects from predefined
+hardware modes via the FIXED_MATRIX_TYPE enum property rather than
+programmable coefficients.
 
-Aligns with kernel commit introducing the Fixed Matrix colorop
-type for Intel display hardware.
+Supported FIXED_MATRIX modes:
+  - YCbCr 601 Full to RGB
+  - YCbCr 709 Full to RGB
+  - YCbCr 2020 Full NC to RGB
+  - YCbCr limited to full
+  - RGB709 to RGB2020
+
+Extends can_use_colorop(), set_colorop(), and reset_colorop() to
+handle the new FIXED_MATRIX type, and adds the FIXED_MATRIX enum
+name table.
 
 v2: -Naming changes (CSC_FF -> FIXED_MATRIX)
 
 Assisted-by: Claude Opus 4.6
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- include/drm-uapi/drm_mode.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tests/kms_colorop_helper.c | 20 ++++++++++++++++++++
+ tests/kms_colorop_helper.h | 20 +++++++++++++++++++-
+ 2 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index de10ce859..0924e38af 100644
---- a/include/drm-uapi/drm_mode.h
-+++ b/include/drm-uapi/drm_mode.h
-@@ -934,6 +934,17 @@ enum drm_colorop_type {
- 	 * LUT size is advertised via the SIZE property.
- 	 */
- 	DRM_COLOROP_3D_LUT,
-+
-+	/**
-+	 * @DRM_COLOROP_FIXED_MATRIX:
-+	 *
-+	 * enum string "Fixed Matrix"
-+	 *
-+	 * A Colorop block that performs a pre-defined matrix operation selected
-+	 * via the FIXED_MATRIX_TYPE enum property. The driver advertises the supported
-+	 * operations through this property.
-+	 */
-+	DRM_COLOROP_FIXED_MATRIX,
+diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+index aaee4e567..8b84f2604 100644
+--- a/tests/kms_colorop_helper.c
++++ b/tests/kms_colorop_helper.c
+@@ -200,6 +200,14 @@ kms_colorop_t kms_colorop_3dlut_17_12_rgb = {
+ 	.transform = &igt_color_3dlut_17_12_rgb,
  };
  
- /**
++const char * const kms_colorop_fixed_matrix_names[KMS_COLOROP_FIXED_MATRIX_NUM_ENUMS] = {
++	[KMS_COLOROP_FIXED_MATRIX_YCBCR601_FULL_RGB] = "YCbCr 601 Full to RGB",
++	[KMS_COLOROP_FIXED_MATRIX_YCBCR709_FULL_RGB] = "YCbCr 709 Full to RGB",
++	[KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_FULL_RGB] = "YCbCr 2020 NC Full to RGB",
++	[KMS_COLOROP_FIXED_MATRIX_YCBCR_LIMITED_FULL] = "YCbCr limited to full",
++	[KMS_COLOROP_FIXED_MATRIX_RGB709_RGB2020] = "RGB709 to RGB2020",
++};
++
+ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_colorop_t *desired)
+ {
+ 	switch (desired->type) {
+@@ -218,6 +226,13 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+ 		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_MULTIPLIER);
+ 	case KMS_COLOROP_LUT3D:
+ 		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_3D_LUT);
++	case KMS_COLOROP_FIXED_MATRIX:
++		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_FIXED_MATRIX &&
++		    igt_colorop_has_prop(colorop, IGT_COLOROP_FIXED_MATRIX_TYPE) &&
++		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_FIXED_MATRIX_TYPE,
++					    kms_colorop_fixed_matrix_names[desired->fixed_matrix_info.fixed_matrix]))
++			return true;
++		return false;
+ 	default:
+ 		return false;
+ 	}
+@@ -362,6 +377,10 @@ static void set_colorop(igt_display_t *display, kms_colorop_t *colorop)
+ 
+ 		configure_3dlut(display, colorop, lut_size);
+ 		break;
++	case KMS_COLOROP_FIXED_MATRIX:
++		igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_FIXED_MATRIX_TYPE,
++					  kms_colorop_fixed_matrix_names[colorop->fixed_matrix_info.fixed_matrix]);
++		break;
+ 	default:
+ 		igt_fail(IGT_EXIT_FAILURE);
+ 	}
+@@ -416,6 +435,7 @@ static void reset_colorop(kms_colorop_t *colorop)
+ 		igt_colorop_set_prop_value(colorop->colorop, IGT_COLOROP_MULTIPLIER, 1);
+ 		break;
+ 	case KMS_COLOROP_ENUMERATED_LUT1D:
++	case KMS_COLOROP_FIXED_MATRIX:
+ 	default:
+ 		return;
+ 	}
+diff --git a/tests/kms_colorop_helper.h b/tests/kms_colorop_helper.h
+index a081fa02d..3d98d9f8d 100644
+--- a/tests/kms_colorop_helper.h
++++ b/tests/kms_colorop_helper.h
+@@ -22,7 +22,8 @@ typedef enum kms_colorop_type {
+ 	KMS_COLOROP_CUSTOM_LUT1D,
+ 	KMS_COLOROP_CTM_3X4,
+ 	KMS_COLOROP_MULTIPLIER,
+-	KMS_COLOROP_LUT3D
++	KMS_COLOROP_LUT3D,
++	KMS_COLOROP_FIXED_MATRIX,
+ } kms_colorop_type_t;
+ 
+ typedef enum kms_colorop_lut1d_tf {
+@@ -50,6 +51,19 @@ typedef struct kms_colorop_lut3d_info {
+ 	enum drm_colorop_lut3d_interpolation_type interpolation;
+ } kms_colorop_lut3d_info_t;
+ 
++typedef enum kms_colorop_fixed_matrix {
++	KMS_COLOROP_FIXED_MATRIX_YCBCR601_FULL_RGB,
++	KMS_COLOROP_FIXED_MATRIX_YCBCR709_FULL_RGB,
++	KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_FULL_RGB,
++	KMS_COLOROP_FIXED_MATRIX_YCBCR_LIMITED_FULL,
++	KMS_COLOROP_FIXED_MATRIX_RGB709_RGB2020,
++	KMS_COLOROP_FIXED_MATRIX_NUM_ENUMS
++} kms_colorop_fixed_matrix_t;
++
++typedef struct kms_colorop_fixed_matrix_info {
++	kms_colorop_fixed_matrix_t fixed_matrix;
++} kms_colorop_fixed_matrix_info_t;
++
+ typedef struct kms_colorop {
+ 	kms_colorop_type_t type;
+ 
+@@ -61,6 +75,8 @@ typedef struct kms_colorop {
+ 		double multiplier;
+ 	};
+ 
++	kms_colorop_fixed_matrix_info_t fixed_matrix_info;
++
+ 	kms_colorop_lut3d_info_t lut3d_info;
+ 
+ 	const char *name;
+@@ -95,6 +111,8 @@ extern kms_colorop_t kms_colorop_multiply_125;
+ extern kms_colorop_t kms_colorop_multiply_inv_125;
+ extern kms_colorop_t kms_colorop_3dlut_17_12_rgb;
+ 
++extern const char * const kms_colorop_fixed_matrix_names[KMS_COLOROP_FIXED_MATRIX_NUM_ENUMS];
++
+ igt_colorop_t *get_color_pipeline(igt_display_t *display,
+ 			          igt_plane_t *plane,
+ 				  kms_colorop_t *colorops[]);
 -- 
 2.25.1
 
