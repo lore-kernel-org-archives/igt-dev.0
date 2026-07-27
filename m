@@ -4,52 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7609C53209
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jul 2026 18:33:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C7FC53209
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jul 2026 18:47:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6ACF410E6CA;
-	Mon, 27 Jul 2026 18:33:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CCAF610E6D5;
+	Mon, 27 Jul 2026 18:47:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CiTx+UAz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g8AL2kHC";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B14F10E6D1
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jul 2026 18:33:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4DF0D10E6CA
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jul 2026 18:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785177188; x=1816713188;
+ t=1785177992; x=1816713992;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=PiYrnvJyCbf3aGoaQawy+tdAT+ju/m36gka0M1+4dxk=;
- b=CiTx+UAz3tn3UwENKforJu1xPcQTYgh4ZKjzOKvN4iuYsrjhf2sjRHIr
- MDcqokzE+bFFgDWXc6rc9v6wnri3EjKxMDutm1VNaltgZ/q4OqLbRxmHL
- BhMFOVmgP2X8Fxp92ZO0pKavaiy5VSDetOv4mLosZGFj+bCKnmBNDZH/t
- 9kxOUD33xBDu3hXRrOZUEVz9y07voxo1b3T6uQkcOl4TfvPFVNbdrtNu2
- j8hDuc00KK0YCeEFIK7MJHyCacZNAh0zGm5E7arKpoEJWdlOQVD4Bzct7
- knqm1oCXHqP6D2mazi6K3ypShCIU1x7Owiive/5dXEqz7PbEK7JKy7WqV A==;
-X-CSE-ConnectionGUID: Xdr4xtJMQwiTD/P3OCWD7g==
-X-CSE-MsgGUID: HqLkYvBVTn+dnV6F0uz13Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="89422922"
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="89422922"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2026 11:33:08 -0700
-X-CSE-ConnectionGUID: gadrLan5T3uayNx+43Hg6w==
-X-CSE-MsgGUID: gOBD1V+2RQuoP3t65YraaA==
+ bh=U34OixJSSmDZtrcXu7QTCsj4g20EGdwrIzp2P8lZSHE=;
+ b=g8AL2kHCEiLDDMZxRUx8hMwgexJIHldMvblKFzkydkzmDsaVURos5L2g
+ Tp16HqEPc/zu/gBEIWUYTc+BbAMhhJRqLPBoTPyLjjFyQfOViVIB4eqlM
+ ncJbBhJcgsiwF2H0kM0z5SQlMwKdB7gp8nAyPCHUvALFiXFAHWlrndvDo
+ VtcQ5BJL7S+xo+S7BLzBTVXuRqaMR988ZkpqzFAPBgODCheUhcZ9kSrfV
+ GoJF0B2CgsSOxOA0ux4iUTWv9ogcA4v+LRxtY6obsjhaOH+5+AIxIi8YQ
+ Ho2Z7rOzLNdNaL8Hv2MfFSyXZ1qhLVNi6ITmuwpbNVhGC+muJBt8i4M8x A==;
+X-CSE-ConnectionGUID: Ewmh+KZVQEeT4F9sbA7k2w==
+X-CSE-MsgGUID: kTX1/SJ2TPedUcvZhZm51A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="103296098"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="103296098"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Jul 2026 11:46:31 -0700
+X-CSE-ConnectionGUID: abtnLwIrQEuItG+V+9xEzA==
+X-CSE-MsgGUID: mh/lCU/HS5KTGlqoOaFO0Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="261461161"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2026 11:33:02 -0700
-From: Sk Anirban <sk.anirban@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="259545252"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 11:46:30 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v2] tests/intel/xe_pm: include PCI domain in i2c adapter name
-Date: Mon, 27 Jul 2026 23:54:22 +0530
-Message-ID: <20260727182421.2872627-2-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 0/6] Add FIXED_MATRIX colorop tests
+Date: Tue, 28 Jul 2026 00:25:25 +0530
+Message-Id: <20260727185531.4046807-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,53 +65,45 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The i2c_designware adapter name only encoded bus and device, which
-fails on non-zero PCI domains. Include the full domain/bus/device and
-widen the format specifier.
-Also fix IGT by using the devfn in the adapter id to match the kernel.
+Add support for testing the DRM FIXED_MATRIX colorop type, which
+selects from predefined hardware color space conversion matrices
+rather than programmable coefficients.
 
-v2: Fix code (Raag)
+The series adds:
+- UAPI definition for DRM_COLOROP_FIXED_MATRIX
+- FIXED_MATRIX_TYPE property support in igt_kms
+- Colorop helper support for configuring FIXED_MATRIX blocks
+- Pipe-CRC based tests in kms_color_pipeline
+- Chamelium frame-capture based tests in kms_chamelium_color_pipeline
 
-Link: https://patchwork.freedesktop.org/series/170812/
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-Reviewed-by: Raag Jadav <raag.jadav@intel.com>
----
- tests/intel/xe_pm.c            | 5 +++--
- tests/intel/xe_survivability.c | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+Supported FIXED_MATRIX modes:
+  - YCbCr 601 Full NC to RGB
+  - YCbCr 709 Full NC to RGB
+  - YCbCr 2020 Full NC to RGB
+  - YCbCr limited to full
+  - RGB709 to RGB2020
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 6fbc13e43..7faba7c2b 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -866,8 +866,9 @@ static int find_i2c_adapter(device_t device, int sysfs_fd)
- 	/* Make sure the /dev/i2c-* files exist */
- 	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
- 
--	snprintf(adapter, sizeof(adapter), "%s.%hu", "device/i2c_designware",
--		 (device.pci_xe->bus << 8) | (device.pci_xe->dev));
-+	snprintf(adapter, sizeof(adapter), "%s.%d", "device/i2c_designware",
-+		 (device.pci_xe->domain << 16 | device.pci_xe->bus << 8 |
-+		  (device.pci_xe->dev << 3 | device.pci_xe->func)));
- 	adapter_fd = openat(sysfs_fd, adapter, O_RDONLY);
- 	igt_require_fd(adapter_fd);
- 
-diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-index 74488bbea..b4f1dfb38 100644
---- a/tests/intel/xe_survivability.c
-+++ b/tests/intel/xe_survivability.c
-@@ -126,8 +126,9 @@ static int find_i2c_adapter(struct pci_device *pci_xe)
- 
- 	igt_require(igt_kmod_load("i2c-dev", NULL) == 0);
- 
--	snprintf(device_path, sizeof(device_path), "/sys/bus/pci/devices/%s/%s.%hu", bus_addr,
--		 "i2c_designware", (pci_xe->bus << 8) | (pci_xe->dev));
-+	snprintf(device_path, sizeof(device_path), "/sys/bus/pci/devices/%s/%s.%d", bus_addr,
-+		 "i2c_designware", (pci_xe->domain << 16 | pci_xe->bus << 8 |
-+		  (pci_xe->dev << 3 | pci_xe->func)));
- 	device_dir = opendir(device_path);
- 
- 	if (!device_dir)
+The tests validate standalone FIXED_MATRIX, FIXED_MATRIX + 1D LUT,
+1D LUT + FIXED_MATRIX + 1D LUT, and YCbCr range correction pipelines
+matching the SDR plane hardware pipeline structure.
+
+Swati Sharma (6):
+  include/drm-uapi: Add DRM_COLOROP_FIXED_MATRIX definition
+  lib/igt_kms: Add FIXED_MATRIX_TYPE colorop property
+  tests/kms_colorop_helper: Add FIXED_MATRIX colorop support
+  tests/kms_color_pipeline: Add FIXED_MATRIX colorop tests
+  tests/kms_color_pipeline: Remove unused color_depth and drm_format
+  tests/kms_chamelium_color_pipeline: Add FIXED_MATRIX colorop tests
+
+ include/drm-uapi/drm_mode.h                   |  11 +
+ lib/igt_kms.c                                 |   1 +
+ lib/igt_kms.h                                 |   1 +
+ .../chamelium/kms_chamelium_color_pipeline.c  | 339 +++++++++++++++
+ tests/kms_color_pipeline.c                    | 391 +++++++++++++++++-
+ tests/kms_colorop_helper.c                    |  20 +
+ tests/kms_colorop_helper.h                    |  20 +-
+ 7 files changed, 776 insertions(+), 7 deletions(-)
+
 -- 
-2.43.0
+2.25.1
 
