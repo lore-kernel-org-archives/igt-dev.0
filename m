@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4B44C53209
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jul 2026 18:49:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E439DC53209
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jul 2026 18:50:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 84BFE10E6D9;
-	Mon, 27 Jul 2026 18:49:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9102510E093;
+	Mon, 27 Jul 2026 18:50:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FhB4sB2P";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="doebhR7U";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CBCF10E6CA
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jul 2026 18:46:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 91EDD10E6CA
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jul 2026 18:46:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785177997; x=1816713997;
+ t=1785178000; x=1816714000;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3f0ADA9FdzeZzMfFtJ8Wt5xtwqc3nDUzA3gwFXEQQSY=;
- b=FhB4sB2PRU1TSEtHJzmy23Qzk9h++DS6vTjWfb8DaXBQya0hTcHs+cf8
- XDxQgt2cHH5t2qSsAlVNyHcMdxoULQlJlsghTl8TZIGKHGWgk0DFT8RD+
- 1bLD145+BjfE8ZdyGO5enK5hkwNqFOfXjvb4bYyipijPKAsZt1/EkDQYv
- hE05FVrS+n9SLYfrbdQP6q0AQlUvQNU9XSQ8XAKrWVJtQWTbGSbCK4edt
- 1ysvo7I26BK/gUaMniUiKORAuG6KPyEv0I0wj8FSsi7LGpLRct8CaPMe9
- hV+hT0YHiu6YMkPDfHFXLIvS+FuKUY1XpUx1hyc2fOV0b4NaF6rloMCQD w==;
-X-CSE-ConnectionGUID: ayQT7yqgTHuhjEQY8AA9NA==
-X-CSE-MsgGUID: i6ste83HR0GVWdBx68VGdw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="103296105"
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="103296105"
+ bh=zPYWuBSRV1KAkGG2b82fHqJqKoxXw6PllB9iA/2xbJE=;
+ b=doebhR7Uz5eMII/A1MUUbZnV6QvEQk04YpvLPFL34gYXcMgYjo5QE3lt
+ TjsUmnGM1b32kBt8Ybg1w/kof1OGhBolqkcYSv0AvZUulUNkMIol8gb0s
+ 7qt8hzALCFn09ZF/zsxssp38/Qf65CZCi55vOfcsPIqJmo0+DFBZMmzPa
+ k6nTVTqIqv58crDXHwUF0tCI//rNNLys3DF0l1W4j+MVqCbmb0XlKrtwC
+ K6bgi5XisejYAvFqbCeqYY9DuIv3PLMzDINs/yn5G72cH6u99xNioR0p6
+ 9vj98doaKDLDK7ih/nxDNxycdLLCkrHpE6DTNUg2yTb1yhIGrS7fnEsJV A==;
+X-CSE-ConnectionGUID: nzjwIZE/TNmIhnLesBVU+w==
+X-CSE-MsgGUID: amVmfwjlRPG4VLZUxjkAFQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="103296109"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="103296109"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2026 11:46:37 -0700
-X-CSE-ConnectionGUID: dDGjmoZjSXS7j/mhnDtgfA==
-X-CSE-MsgGUID: y1Uk2APPTweeImY1GhMbOA==
+ 27 Jul 2026 11:46:40 -0700
+X-CSE-ConnectionGUID: ccd8hZG/QymN6yasfoNgTg==
+X-CSE-MsgGUID: iJLiAHa1TweMj8uhdVVTgg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="259545270"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="259545276"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 11:46:35 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 11:46:38 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 4/6] tests/kms_color_pipeline: Add FIXED_MATRIX colorop
- tests
-Date: Tue, 28 Jul 2026 00:25:29 +0530
-Message-Id: <20260727185531.4046807-5-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 6/6] tests/kms_chamelium_color_pipeline: Add
+ FIXED_MATRIX colorop tests
+Date: Tue, 28 Jul 2026 00:25:31 +0530
+Message-Id: <20260727185531.4046807-7-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260727185531.4046807-1-swati2.sharma@intel.com>
 References: <20260727185531.4046807-1-swati2.sharma@intel.com>
@@ -68,12 +68,20 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add plane color pipeline tests for the DRM_COLOROP_FIXED_MATRIX colorop,
-validating color space conversion through the color pipeline framework.
+Add Chamelium frame-capture equivalents of the FIXED_MATRIX colorop
+tests from kms_color_pipeline. Unlike the pipe-CRC variant, these
+validate the output using chamelium_frame_match_or_dump() with analog
+frame comparison, whose tolerance accommodates the small differences
+between the software color model and the hardware fixed-point matrix
+that a bit-exact pipe CRC cannot.
 
-With this, the SDR plane color pipeline looks like:
+The SW reference framebuffer is computed by converting the YUV input
+through igt_fb_convert(), which internally applies igt_ycbcr_to_rgb_matrix(),
+matching the reference computation used in the pipe-CRC variant.
 
-[YUV Range Correct] -> [1D LUT] -> [CSC] -> [1D LUT]
+Redundant *-yuv-full range correction subtests are omitted because the
+YCBCR_LIMITED_FULL colorop is a no-op on full-range input, making them
+equivalent to the plain plane-fixed-matrix-* tests.
 
 New subtests:
  - plane-fixed-matrix-yuv601-rgb601
@@ -89,234 +97,20 @@ New subtests:
  - plane-yuv-range-correct-fixed-matrix-bt709-yuv-lim
  - plane-yuv-range-correct-fixed-matrix-bt2020-yuv-lim
 
-The test works as follows:
-1. Creates a YUYV framebuffer with the appropriate color encoding
-2. Converts it to XRGB8888 in software using igt_fb_convert() which
-   internally uses igt_ycbcr_to_rgb_matrix() with the matching
-   coefficients
-3. Displays the SW-converted RGB fb and captures its CRC as reference
-4. Programs the HW color pipeline with the FIXED_MATRIX colorop set to
-   the corresponding matrix type
-5. Displays the original YUYV fb through the HW pipeline and compares
-   the resulting CRC against the SW reference
-
-This ensures the HW fixed matrix implementation matches the expected
-YCbCr-to-RGB conversion behavior.
-
-The YCbCr range correction tests validate the limited range (conversion
-active) path, standalone and chained with the FIXED_MATRIX colorop
-matching the SDR plane pipeline. Redundant *-yuv-full range correction
-subtests are omitted because the YCBCR_LIMITED_FULL colorop is a no-op
-on full-range input, making them equivalent to the plain
-plane-fixed-matrix-* tests.
-
-Also refactors ctm_colorop_only() into a generic colorop_type_only()
-helper that accepts the colorop type as a parameter.
-
-v2: -Naming changes (CSC_FF -> FIXED_MATRIX)
-    -Add YCbCr range correction tests
-    -Use SW-generated reference CRC (igt_fb_convert) for YUV tests
-    -Remove redundant tests
-
 Assisted-by: Claude Opus 4.6
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_color_pipeline.c | 388 ++++++++++++++++++++++++++++++++++++-
- 1 file changed, 385 insertions(+), 3 deletions(-)
+ .../chamelium/kms_chamelium_color_pipeline.c  | 339 ++++++++++++++++++
+ 1 file changed, 339 insertions(+)
 
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index 6119a830f..2bd6722a7 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -13,6 +13,7 @@
+diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
+index db6107221..254a4817d 100644
+--- a/tests/chamelium/kms_chamelium_color_pipeline.c
++++ b/tests/chamelium/kms_chamelium_color_pipeline.c
+@@ -34,6 +34,58 @@
+  * @lut3d-green-only:		3D LUT
+  */
  
- #include "kms_color_helper.h"
- #include "kms_colorop_helper.h"
-+#include "igt_color_encoding.h"
- 
- #define MAX_COLOROPS	5
- 
-@@ -69,7 +70,8 @@ static void test_setup(data_t *data, igt_crtc_t *crtc)
- 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- }
- 
--static bool ctm_colorop_only(kms_colorop_t *colorops[])
-+static bool colorop_type_only(kms_colorop_t *colorops[],
-+			      kms_colorop_type_t type)
- {
- 	int i;
- 
-@@ -77,7 +79,7 @@ static bool ctm_colorop_only(kms_colorop_t *colorops[])
- 		return false;
- 
- 	for (i = 0; colorops[i]; i++) {
--		if (colorops[i]->type != KMS_COLOROP_CTM_3X4)
-+		if (colorops[i]->type != type)
- 			return false;
- 	}
- 
-@@ -155,7 +157,7 @@ static void _test_plane_colorops(data_t *data,
- 	 * Use flat colors only when the pipeline
- 	 * contains CTM colorops exclusively.
- 	 */
--	if (ctm_colorop_only(colorops))
-+	if (colorop_type_only(colorops, KMS_COLOROP_CTM_3X4))
- 		paint_rectangles(data, mode, fb_colors, &fb);
- 	else
- 		paint_gradient_rectangles(data, mode, fb_colors, &fb);
-@@ -347,6 +349,383 @@ run_tests_for_plane(data_t *data)
- 	}
- }
- 
-+
-+/**
-+ * Capture reference CRC by converting a YUV framebuffer to RGB in software
-+ * using igt_fb_convert(), then displaying the resulting XRGB8888 framebuffer.
-+ */
-+static void
-+capture_sw_converted_ref_crc(data_t *data, igt_output_t *output,
-+			     struct igt_fb *yuv_fb, igt_crc_t *crc /* out */)
-+{
-+	struct igt_fb rgb_ref_fb;
-+	igt_plane_t *primary;
-+	char *crc_str;
-+	int ret;
-+
-+	primary = igt_output_get_plane(output, DRM_PLANE_TYPE_PRIMARY);
-+
-+	/* Convert YUV fb to XRGB8888 in software (uses igt_ycbcr_to_rgb_matrix) */
-+	igt_fb_convert(&rgb_ref_fb, yuv_fb, DRM_FORMAT_XRGB8888,
-+		       DRM_FORMAT_MOD_LINEAR);
-+
-+	igt_plane_set_fb(primary, &rgb_ref_fb);
-+	ret = igt_display_try_commit_atomic(&data->display, 0, NULL);
-+	igt_assert(!ret);
-+
-+	igt_wait_for_vblank(primary->crtc);
-+	igt_pipe_crc_collect_crc(data->pipe_crc, crc);
-+
-+	igt_plane_set_fb(primary, NULL);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	igt_remove_fb(data->drm_fd, &rgb_ref_fb);
-+
-+	crc_str = igt_crc_to_string(crc);
-+	igt_debug("CRC for SW-converted reference fb: %s\n", crc_str);
-+	free(crc_str);
-+}
-+
-+static void
-+_test_plane_fixed_matrix_colorops(data_t *data,
-+				  igt_plane_t *plane,
-+				  const color_t *fb_colors,
-+				  igt_crc_t *crc_ref,
-+				  kms_colorop_t *colorops[],
-+				  uint32_t input_format,
-+				  enum igt_color_encoding encoding,
-+				  enum igt_color_range range)
-+{
-+	igt_display_t *display = &data->display;
-+	drmModeModeInfo *mode = data->mode;
-+	igt_colorop_t *color_pipeline;
-+	igt_crc_t crc_pipe;
-+	struct igt_fb fb;
-+	bool is_yuv = igt_format_is_yuv(input_format);
-+
-+	color_pipeline = get_color_pipeline(display, plane, colorops);
-+	igt_skip_on(!color_pipeline);
-+
-+	if (is_yuv) {
-+		igt_assert(igt_create_fb_with_bo_size(data->drm_fd,
-+						      mode->hdisplay,
-+						      mode->vdisplay,
-+						      input_format,
-+						      DRM_FORMAT_MOD_LINEAR,
-+						      encoding, range,
-+						      &fb, 0, 0));
-+	} else {
-+		igt_assert(igt_create_fb(data->drm_fd,
-+					 mode->hdisplay,
-+					 mode->vdisplay,
-+					 input_format,
-+					 DRM_FORMAT_MOD_LINEAR,
-+					 &fb));
-+	}
-+
-+	/* Hardware pipeline CRC */
-+	set_color_pipeline(display, plane, colorops, color_pipeline);
-+	paint_rectangles(data, mode, fb_colors, &fb);
-+
-+	igt_plane_set_fb(plane, &fb);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+	igt_wait_for_vblank(plane->crtc);
-+	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_pipe);
-+
-+	igt_assert_crc_equal(crc_ref, &crc_pipe);
-+
-+	/* Cleanup per-test state */
-+	set_color_pipeline_bypass(plane);
-+	reset_colorops(colorops);
-+	igt_plane_set_fb(plane, NULL);
-+	igt_display_commit_atomic(&data->display, 0, NULL);
-+
-+	igt_remove_fb(data->drm_fd, &fb);
-+}
-+
-+static void test_plane_fixed_matrix_colorops(data_t *data, igt_crtc_t *crtc,
-+					     const color_t *fb_colors,
-+					     kms_colorop_t *colorops[],
-+					     uint32_t input_format,
-+					     enum igt_color_encoding encoding,
-+					     enum igt_color_range range)
-+{
-+	int n_planes = crtc->n_planes;
-+	igt_output_t *output = data->output;
-+	drmModeModeInfo *mode = data->mode;
-+	igt_plane_t *plane;
-+	igt_crc_t ref_crc;
-+	bool is_yuv = igt_format_is_yuv(input_format);
-+
-+	if (is_yuv) {
-+		struct igt_fb yuv_fb;
-+
-+		igt_require(mode);
-+
-+		/*
-+		 * Create a YUV input framebuffer and paint it with the
-+		 * test colors. Convert it to XRGB8888 in software to
-+		 * generate the reference CRC. This exercises the same
-+		 * YCbCr-to-RGB matrix in SW that the HW fixed matrix
-+		 * colorop should implement.
-+		 */
-+		igt_assert(igt_create_fb_with_bo_size(data->drm_fd,
-+						      mode->hdisplay,
-+						      mode->vdisplay,
-+						      input_format,
-+						      DRM_FORMAT_MOD_LINEAR,
-+						      encoding, range,
-+						      &yuv_fb, 0, 0));
-+		paint_rectangles(data, mode, fb_colors, &yuv_fb);
-+
-+		capture_sw_converted_ref_crc(data, output, &yuv_fb, &ref_crc);
-+		igt_remove_fb(data->drm_fd, &yuv_fb);
-+	} else {
-+		capture_ref_crc(data, output, fb_colors, &ref_crc);
-+	}
-+
-+	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
-+		plane = igt_output_get_plane(output, plane_id);
-+
-+		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
-+			continue;
-+
-+		igt_dynamic_f("pipe-%s-plane-%u", igt_crtc_name(crtc), plane_id)
-+			_test_plane_fixed_matrix_colorops(data, plane, fb_colors,
-+							  &ref_crc, colorops,
-+							  input_format,
-+							  encoding, range);
-+	}
-+}
-+
 +/**
 + * SUBTEST: plane-fixed-matrix-%s
 + * Description: Test FIXED_MATRIX colorop for color space conversion: %arg[1].
@@ -369,25 +163,134 @@ index 6119a830f..2bd6722a7 100644
 + * @bt2020-yuv-lim:		YCbCr BT.2020 limited range with CSC
 + */
 +
+ IGT_TEST_DESCRIPTION("Test to validate DRM plane color pipeline using Chamelium frame capture instead of pipe CRC");
+ 
+ static void test_cleanup(data_t *data)
+@@ -345,6 +397,290 @@ run_tests_for_plane(data_t *data)
+ 	}
+ }
+ 
++static void
++_test_plane_fixed_matrix_colorops(data_t *data,
++				  igt_plane_t *plane,
++				  const color_t *fb_colors,
++				  kms_colorop_t *colorops[],
++				  uint32_t input_format,
++				  enum igt_color_encoding encoding,
++				  enum igt_color_range range,
++				  struct chamelium_port *port)
++{
++	igt_display_t *display = &data->display;
++	drmModeModeInfo *mode = data->mode;
++	igt_colorop_t *color_pipeline;
++	struct igt_fb fb, fbref;
++	struct chamelium_frame_dump *frame;
++	bool is_yuv = igt_format_is_yuv(input_format);
++	bool ret;
++
++	color_pipeline = get_color_pipeline(display, plane, colorops);
++	igt_skip_on(!color_pipeline);
++
++	/* Create HW input framebuffer (YUV or RGB) */
++	if (is_yuv)
++		igt_assert(igt_create_fb_with_bo_size(data->drm_fd,
++						      mode->hdisplay,
++						      mode->vdisplay,
++						      input_format,
++						      DRM_FORMAT_MOD_LINEAR,
++						      encoding, range,
++						      &fb, 0, 0));
++	else
++		igt_assert(igt_create_fb(data->drm_fd,
++					 mode->hdisplay,
++					 mode->vdisplay,
++					 input_format,
++					 DRM_FORMAT_MOD_LINEAR,
++					 &fb));
++
++	/* Paint the input fb with test colors */
++	paint_rectangles(data, mode, fb_colors, &fb);
++
++	/*
++	 * Software reference: convert the input fb through igt_fb_convert()
++	 * which internally applies igt_ycbcr_to_rgb_matrix(). This matches
++	 * what the HW FIXED_MATRIX colorop should produce.
++	 * Chamelium analog comparison tolerates HW vs SW rounding differences.
++	 */
++	igt_fb_convert(&fbref, &fb, DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR);
++
++	/* Hardware path */
++	set_color_pipeline(display, plane, colorops, color_pipeline);
++
++	igt_plane_set_fb(plane, &fb);
++	igt_display_commit_atomic(&data->display, 0, NULL);
++
++	chamelium_port_wait_video_input_stable(data->chamelium, port, 5);
++	chamelium_capture(data->chamelium, port, 0, 0, 0, 0, 1);
++
++	frame = chamelium_read_captured_frame(data->chamelium, 0);
++
++	ret = chamelium_frame_match_or_dump(data->chamelium, port, frame,
++					    &fbref, CHAMELIUM_CHECK_ANALOG);
++	igt_assert(ret);
++
++	chamelium_destroy_frame_dump(frame);
++
++	/* Cleanup */
++	set_color_pipeline_bypass(plane);
++	reset_colorops(colorops);
++	igt_plane_set_fb(plane, NULL);
++	igt_display_commit_atomic(&data->display, 0, NULL);
++
++	igt_remove_fb(data->drm_fd, &fb);
++	igt_remove_fb(data->drm_fd, &fbref);
++}
++
++static void
++test_plane_fixed_matrix_colorops(data_t *data, igt_crtc_t *crtc,
++				 const color_t *fb_colors,
++				 kms_colorop_t *colorops[],
++				 uint32_t input_format,
++				 enum igt_color_encoding encoding,
++				 enum igt_color_range range,
++				 int port_idx)
++{
++	int n_planes = crtc->n_planes;
++	igt_output_t *output = data->output;
++	igt_plane_t *plane;
++
++	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
++		plane = igt_output_get_plane(output, plane_id);
++
++		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
++			continue;
++
++		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(crtc->pipe), plane_id)
++			_test_plane_fixed_matrix_colorops(data, plane,
++							  fb_colors,
++							  colorops, input_format,
++							  encoding, range,
++							  data->ports[port_idx]);
++	}
++}
++
 +static void
 +run_tests_for_fixed_matrix(data_t *data)
 +{
 +	igt_crtc_t *crtc;
 +	igt_output_t *output = NULL;
-+
++	int port_idx = 0;
 +	static const color_t colors_rgb[] = {
 +		{ 1.0, 0.0, 0.0 },
 +		{ 0.0, 1.0, 0.0 },
 +		{ 0.0, 0.0, 1.0 },
 +	};
-+
 +	kms_colorop_t lut1d_linear = {
 +		.type = KMS_COLOROP_CUSTOM_LUT1D,
 +		.name = "1D LUT (linear)",
 +		.lut1d = &igt_1dlut_linear,
 +		.transform = &igt_color_linear,
 +	};
-+
 +	kms_colorop_t fixed_matrix_yuv601_rgb601 = {
 +		.type = KMS_COLOROP_FIXED_MATRIX,
 +		.name = "FIXED_MATRIX YUV601 to RGB601",
@@ -531,14 +434,20 @@ index 6119a830f..2bd6722a7 100644
 +				if (!crtc_output_combo_valid(data, crtc))
 +					continue;
 +
-+				test_setup(data, crtc);
++				port_idx = test_setup(data, crtc);
++				if (port_idx < 0) {
++					test_cleanup(data);
++					continue;
++				}
 +
 +				test_plane_fixed_matrix_colorops(data, crtc,
 +								 fixed_matrix_tests[i].fb_colors,
 +								 fixed_matrix_tests[i].colorops,
 +								 fixed_matrix_tests[i].input_format,
 +								 fixed_matrix_tests[i].encoding,
-+								 fixed_matrix_tests[i].range);
++								 fixed_matrix_tests[i].range,
++								 port_idx);
++
 +				test_cleanup(data);
 +			}
 +		}
@@ -547,8 +456,8 @@ index 6119a830f..2bd6722a7 100644
 +
  int igt_main()
  {
- 	data_t data = {};
-@@ -372,6 +751,9 @@ int igt_main()
+ 	int i;
+@@ -404,6 +740,9 @@ int igt_main()
  	igt_subtest_group()
  		run_tests_for_plane(&data);
  
