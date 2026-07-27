@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E989DC53209
-	for <igt-dev@archiver.kernel.org>; Mon, 27 Jul 2026 18:48:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EF08C53209
+	for <igt-dev@archiver.kernel.org>; Mon, 27 Jul 2026 18:48:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7AA6010E6CA;
-	Mon, 27 Jul 2026 18:48:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C024810E6F4;
+	Mon, 27 Jul 2026 18:48:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AorILue4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YrYA4TIh";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6610F10E6CA
- for <igt-dev@lists.freedesktop.org>; Mon, 27 Jul 2026 18:46:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EF7510E6D1
+ for <igt-dev@lists.freedesktop.org>; Mon, 27 Jul 2026 18:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785177998; x=1816713998;
+ t=1785177992; x=1816713992;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=tqNbC8AvnyQs+H6BJ/F0cGwUAokmnKXM5vpBNNzSnkA=;
- b=AorILue4qLQUxnHwt82cd8mfTtrRTzge5Oqc/7bZl2eYegD3+VIKTdQR
- h4s/Td2U3016po1ngCSDmskopiry3A8eNEqolWXkGRNTEJXFqt3arl8dM
- ZcWbZjVBAvTdyZ308X8KUKlG1ZgeZu42+6OOQffHpuJIxgXJVHOZzqlO/
- M0OmfJQ7bkhiLq5rT725uXQyzpXdxzH4qhzymdZedr4q0NUQUBqFi4/wc
- pcEFtwBgFc/O7b36p4RaCDZxn7pip758TscCsMV4a2XiZMnTeQJ2srhDN
- G6CJj6WQA547QhB51Ecz8hhHnga3mcrxqNrSkhoA/s6ske3duWg+a6fka A==;
-X-CSE-ConnectionGUID: 3i6eUPKkTr+8UjwgZhK50Q==
-X-CSE-MsgGUID: zUVVKrBXSiCEIWCUM2L0Hg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="103296107"
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="103296107"
+ bh=Cj8IpYOIxlltkN8KtIPNmRBl0NluC8rxbmcn36gYnEA=;
+ b=YrYA4TIh1qaOw+8j8MEAUJsIOL1MtSzcRwAiiSLEbt+H6JCICiFWAqL/
+ 8dcMIWfWg4kvy+LQyYjZpdH9QUWx119bq6JZ1U63D2Wtdp0EQO1yYYG7x
+ S0EHsayNiC4aFf5u8UMFD4O/6C2VVxunb8z53HZunR34YdxjLvPy2LLQZ
+ c8fa8Y+Pnn5xmj5ZVT3M8B2F7fo2nZiDca/BFb4UpXSBibVrcnCmNbKUh
+ GBBppnq/wIcTAauTtgjHuawiNmBfkLxpRoEbGN+eQclYPMSI784YQUNNm
+ eHudSX46RgJyjqRnXWc/n/BO690AVBn8Gb1YaqDUnE5SmJfaAA06D6BCU A==;
+X-CSE-ConnectionGUID: 25R3tZutSqu228+N/qTx3Q==
+X-CSE-MsgGUID: duPrllD7RjaUaRGDY3rpGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="103296099"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="103296099"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Jul 2026 11:46:38 -0700
-X-CSE-ConnectionGUID: 5vKf5ozYReG8xbN9rx60Xg==
-X-CSE-MsgGUID: qA76I6evSnK8oEufd/goRQ==
+ 27 Jul 2026 11:46:32 -0700
+X-CSE-ConnectionGUID: I91vTatrQe+re5BHICqSHg==
+X-CSE-MsgGUID: G5xT+gN8SHmFJgPLWzOE6g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="259545273"
+X-IronPort-AV: E=Sophos;i="6.25,188,1779174000"; d="scan'208";a="259545256"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 11:46:37 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2026 11:46:31 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t 5/6] tests/kms_color_pipeline: Remove unused color_depth
- and drm_format
-Date: Tue, 28 Jul 2026 00:25:30 +0530
-Message-Id: <20260727185531.4046807-6-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 1/6] include/drm-uapi: Add DRM_COLOROP_FIXED_MATRIX
+ definition
+Date: Tue, 28 Jul 2026 00:25:26 +0530
+Message-Id: <20260727185531.4046807-2-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260727185531.4046807-1-swati2.sharma@intel.com>
 References: <20260727185531.4046807-1-swati2.sharma@intel.com>
@@ -68,30 +68,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Remove the data->color_depth and data->drm_format assignments from
-run_tests_for_plane() as they are not used anywhere in the color
-pipeline test path.
+Add DRM_COLOROP_FIXED_MATRIX to the colorop type enumeration. This
+colorop type represents a pre-defined matrix operation selected via
+the FIXED_MATRIX_TYPE enum property. The driver advertises the
+supported operations through this property.
+
+Aligns with kernel commit introducing the Fixed Matrix colorop
+type for Intel display hardware.
+
+v2: -Naming changes (CSC_FF -> FIXED_MATRIX)
 
 Assisted-by: Claude Opus 4.6
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/kms_color_pipeline.c | 3 ---
- 1 file changed, 3 deletions(-)
+ include/drm-uapi/drm_mode.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index 2bd6722a7..03c8a0d4b 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -336,9 +336,6 @@ run_tests_for_plane(data_t *data)
- 				test_setup(data,
- 					   crtc);
+diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
+index de10ce859..0924e38af 100644
+--- a/include/drm-uapi/drm_mode.h
++++ b/include/drm-uapi/drm_mode.h
+@@ -934,6 +934,17 @@ enum drm_colorop_type {
+ 	 * LUT size is advertised via the SIZE property.
+ 	 */
+ 	DRM_COLOROP_3D_LUT,
++
++	/**
++	 * @DRM_COLOROP_FIXED_MATRIX:
++	 *
++	 * enum string "Fixed Matrix"
++	 *
++	 * A Colorop block that performs a pre-defined matrix operation selected
++	 * via the FIXED_MATRIX_TYPE enum property. The driver advertises the supported
++	 * operations through this property.
++	 */
++	DRM_COLOROP_FIXED_MATRIX,
+ };
  
--				data->color_depth = 8;
--				data->drm_format = DRM_FORMAT_XRGB8888;
--
- 				test_plane_colorops(data, crtc,
- 						    plane_colorops_tests[i].fb_colors,
- 						    plane_colorops_tests[i].exp_colors,
+ /**
 -- 
 2.25.1
 
