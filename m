@@ -4,158 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 785C3C53219
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Jul 2026 07:03:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74646C54F4C
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Jul 2026 07:19:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1F09910E3E9;
-	Tue, 28 Jul 2026 07:03:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 19C9410E540;
+	Tue, 28 Jul 2026 07:19:54 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e9Goa9r8";
+	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="t8A0JaRG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A52CA10E3E9
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2026 07:03:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785222190; x=1816758190;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=3pdCOfHKN79o5FpWZUpG89OvpJLXBcTXgV4oug6qaH4=;
- b=e9Goa9r8pqtRgIyz/DhEMD8Y0BcN5fZ1r0mrphNKdc3DKdd4F+o7qhpd
- T4lmSh9cZqVDjsBld2Rn0iyKNotFV+dg8eeCydJ7/PFIQk9c+58nkn7w9
- MACnYKDsk79zFISsbiC/RWh/aNRRGwjr7uJ2wpcCJXTmTvu4r3baGsczd
- 714f3oT5+MQMt0HRvqYZZza4is/XK2BKNcBnmo42ZVfAOmUAVpIFE0Fy9
- t/8EDZwVeoNMFOBWGyF9lpKRknASY5uNcWWSfvRQkgMpEH/PdGm/cPOcj
- IEFS00lYPZ5SoNgjvp7GOncBHWzuh+0whEhONb4fuvHjuBFZtldMRaXd/ w==;
-X-CSE-ConnectionGUID: 9iI6TE/vTA6IfT318DxGpQ==
-X-CSE-MsgGUID: 0vBeFRdYT/KRBW5PlJUW8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="85811381"
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="85811381"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2026 00:03:10 -0700
-X-CSE-ConnectionGUID: J45l4BRCQkGf8sj2dThl2Q==
-X-CSE-MsgGUID: fE7FHd8STOuzbavxfZtL/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="260275342"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2026 00:03:09 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 28 Jul 2026 00:03:08 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43 via Frontend Transport; Tue, 28 Jul 2026 00:03:08 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.51) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Tue, 28 Jul 2026 00:02:34 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fFhYJaOutEykQzIUe0gAAEG9aYWmRsf8iAAHE0Zq1xEZqajMARDRGF7ctYjjunncDkIledjmHMYSZ0AtK85rcS3yRu3h1fGNIsu+VwNgEKWvDH2RnX/oLrZBTLiIabvZtmXFqmVb9MGY0MUZ2KDSUCwccOUPLEVTjvRTJwrxWsVxLKjmB7ooqlu4UYz3Ax7Ws81zDmQd4YLYUDyKGjLD0kcIa+WYqa6tbxTxGZj+VXo/NR0hoAIUDcsgIezDXhk1Cybm0gMC2gFpz/tuW0f5ys3PZHD7djKtO1CPsg1yLFpBnRc+x5H/JfH431mgsNWG6DOUc8ludNMHPc3wBhX28g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=22EwvN6HcLQT1u1q/jMVp4/QKrFrS/IEeTLvEzxqa/8=;
- b=V6q3B5ZbpDdLDghJIcWFEveP+Y2vdls7xSB0pXCTgMyXGojut0xhtGNqp51C6OpTZbR+0jLBVoLqY5kSb1hByyEMwMMTvt/vFyD9A6uAGnHoJWzo5/D7Ex5c67kHWjV2snokhi0es5Ba64P1E3B30U7LCuNH4dSUtTPpHaocGJn5A9KGpyvB+lFM/NkOvSrZFBkmBpVT/jLHsuzSTw6vYE/SHz9joWCMHnXNyI9bVrfUjW2sCiGH98wBZJGqeUa9DsvZfo+5Ao9PCn+h1btKHgRPxFztLMg5tZWwU+Eguo159yw16PM9B/bn1N40JfhHosaAz2RpC2PVnRCFgTSvkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CO1PR11MB4913.namprd11.prod.outlook.com (2603:10b6:303:9f::20)
- by LVUPR11MB9857.namprd11.prod.outlook.com (2603:10b6:408:38b::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.13; Tue, 28 Jul
- 2026 07:02:31 +0000
-Received: from CO1PR11MB4913.namprd11.prod.outlook.com
- ([fe80::938d:6d4c:e26f:ed03]) by CO1PR11MB4913.namprd11.prod.outlook.com
- ([fe80::938d:6d4c:e26f:ed03%6]) with mapi id 15.21.0245.012; Tue, 28 Jul 2026
- 07:02:31 +0000
-Message-ID: <0546473c-b3a0-4d6b-9ab2-244ddbd3c8f1@intel.com>
-Date: Tue, 28 Jul 2026 12:32:24 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v1 07/16] tests/kms_pipe_crc_basic: limit #crtcs
- tested during suspend
-To: =?UTF-8?Q?Micha=C5=82_Grzelak?= <michal.grzelak@intel.com>,
- <igt-dev@lists.freedesktop.org>
-References: <20260713085515.463575-1-michal.grzelak@intel.com>
- <20260713085515.463575-8-michal.grzelak@intel.com>
-Content-Language: en-GB
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-In-Reply-To: <20260713085515.463575-8-michal.grzelak@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0249.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ae::15) To CO1PR11MB4913.namprd11.prod.outlook.com
- (2603:10b6:303:9f::20)
+Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
+ [185.132.180.163])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4D41610E534
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2026 07:19:17 +0000 (UTC)
+Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
+ by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 66S6r4f71820224
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2026 08:19:15 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=dk201812; bh=h
+ Y133o8fkKdQYE0qoyepMzuX1McpyR8p8KVj9yujcho=; b=t8A0JaRGLaUEcgDUx
+ 1tXVpeRYirpcX1D3LLkmePAXz59/G470M0GRvTqGtMwQ7iVv6PEbPF2aUaozPaa8
+ HPQymjzdyZlLrG4yPsbmq3eP+zHfQPG1jBrLK19UUuFP03ZgVg0uFicGV2IEOn4W
+ +mMMefduL9Gn5sG27yt41lLKbVvs/v1KjoQaf2/6mtvBf782Bwmzm4D7pOl2497L
+ 0L6pRaUkLD89bEXd8k/WJbIPSEofyFoO38Mc59wZdL/khUq3YAkRqH0vqTdE0Zhs
+ XiUhTyHFEgRoUdo7WmZx9+YPTz9jzyox1j5N12Mr+38kp76GFmNIaDAPzvLaCIR4
+ CG5Cg==
+Received: from hhmail01.hh.imgtec.org
+ (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+ by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4fmn7s2f1p-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2026 08:19:15 +0100 (BST)
+Received: from [127.0.1.1] (172.25.9.35) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.43; Tue, 28 Jul
+ 2026 08:19:14 +0100
+From: Robert Mazur <robert.mazur@imgtec.com>
+Date: Tue, 28 Jul 2026 09:18:56 +0200
+Subject: [PATCH i-g-t v5 01/10] tests/imagination: Add framework for
+ Imagination tests
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR11MB4913:EE_|LVUPR11MB9857:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90d13927-5fd9-48bd-718b-08deec7631a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|23010399003|22082099003|18002099003|4143699003|56012099006|11063799006|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info: 6mjah0fEwTSQB3yFwAK9hAtXgKgE+p8rv4vYwt83eIihZJH8QdJoTypWqw4EpfqRItje6MdUjW2mgcOBxHpLtb9Naes8k7DeSMNw797gGKMOIWtuabfpyjuYkvMSUgRP2ArjRvUIv6/aTarsT3qzlbOiLPZ80XxHsbJhaKDgIvlwSBhUORQ/hWT5r/2+wUIcRWIhNM95M3DaWbhP7Aablf1hWiSasnnFMrFWjpOjled/QY/AhFJJ5WygNc+/aEr6Eldrn9jQPLVBlcV0zQjpqa8pxvl9FqS9awATParMmCl86XlHc4hCP+aOzAPhelmOiSNW8ZB/13VR1e8TN1InRotgR2/H3ewOatm6DsIcgryo5oc2YItEMv9lz7TouxK95HAuiXDC9quLGOHoe+2zijDZtMEcSd3aDCyCDP/GML+eJoyrnT2LzbgXPmTrTFtzl9eKXIDKo8UGXhLdf0qyeoTOXiXNhlq+OmpSXDdLAjDz/+ozDULKxKWtWsFN4dscyOiSCAjWKfPvWFbyvAx3wxvam5AXKacyATL3dXJoKm3hZuEYKi9aP/QpZGPyKxcXOw9Q4/FrdTjKEA9jemqe29lGhLWy38XqAg6or69Ubp6fcqXr24kSuDXapxtgRqZ7KwGOMt0+T2ChbqfXDb5DgoM6Vtlryn9THPcIfWarBIY=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CO1PR11MB4913.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(22082099003)(18002099003)(4143699003)(56012099006)(11063799006)(10067099003)(3023799007);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NDk0OWZGM3lhcDZjSXh3VlVNVWlMSDJyWlFpU3NsU1ZkdUluYlduQ0JOM3o4?=
- =?utf-8?B?NEFZYmxJL2tqbGI2MjNiakxpVzdHZ1FrTWkyZ1B3aU42RWtZSmNEeE4vcWNJ?=
- =?utf-8?B?MThrVjdyUmk1QjdoVEhmN3VoTWhiRVRTTGJWZUtyT1NtWEFXT3Q4VWVQRHp6?=
- =?utf-8?B?eXlMdUJ2eGc0TTdWUmVoeE1oUWdiemllaThFeHQwMEJkcUwrcE1VZjV1R3Vz?=
- =?utf-8?B?bEYzbEJIRVpKaHdaWnJOY3RMRjdFVi9nWWdNYStLcDkwajQ5YjRqeUc3bk5R?=
- =?utf-8?B?eklEQjN0N0tXdFdJYTdNWlZBeVlDeHJzM3RIV1BvdFRnOGxHYmRlMTlrelRT?=
- =?utf-8?B?dG9rYTMrRXNRWkZrbmZMRlBQTTVYR1Y3U0FZYWlEenNIOFV1QldleUR2S3FB?=
- =?utf-8?B?RlFIa0Mrd3FTaWFRb0RXWEthb2R6OTg1Y21kZG5raWlqSTJ0WEFudm4waVRC?=
- =?utf-8?B?Y3FHUWsyQzcwRTN6MHZVaWhqRGxyQmtDTWY1bGYzQzljTnVWMEdHVXdZUzRp?=
- =?utf-8?B?cjFicTBUUDhXQTJsRXE4T3ZPVnBDYjR6RDdCaUJLVCtMSTZKNjRjVTRWWE9D?=
- =?utf-8?B?d2dJaGk4aVRYd0xuWlphZy9VSXpvaGFnZlJ4M3ZhaFlPMzVnS284R2d6Q3V2?=
- =?utf-8?B?RURKYXQwNzhtLytrR2JETXY3d2ZBa1pveHNweHNzSktyRjc0ZzBuKzN1NDFy?=
- =?utf-8?B?T3B2Nkw2OWwxbkxoejBiZ05TUHVSM2RmM0VUMmgrVlJtVWx3K21DNnJtcFBm?=
- =?utf-8?B?RlFKSFpPYjREU21JcEY4OGJsMWRORjNsQkY3b2oreHhVZ1JPYnd3WEtPVVpQ?=
- =?utf-8?B?VW5YMko4bkZ5ZFpLaWFaaWM0cWxKYi93Zk0wQ0VXUlEvazV2SWZWMkdIOW9O?=
- =?utf-8?B?dUVFQ3VqVVo4OVoxdno0UlpxRWo1dW1mSEpPL1BTT0NxcHYrclVzNEZKRjJr?=
- =?utf-8?B?V3U2czJHRk1zbFRrcjVibE9YU1pRY281OUZIUEs1R0pJREdUMjNsUmZDa2JG?=
- =?utf-8?B?N3JtbmZGOWdYNzRUT3pUMUZETDBMQU5WV2xvV3BVeHRWZDk1ZEpLYjUvN3lQ?=
- =?utf-8?B?M1hhbndFY1ByY0RMQUFPdnl1M0V3NVFWR0hOYVVzck04Z0laN01FUEsrcnlJ?=
- =?utf-8?B?WC9JMWg3Um50TVBqV0dwU0pleHZXS2NxOENXSDlnZDR3U3NBNUt3UWJpTVhC?=
- =?utf-8?B?aWNIK25QYzcwRU5XSTVSbjYrZmxjR0Zmb1JWMnc2T3JjdVY3RmlVTnE3K1dL?=
- =?utf-8?B?cWVHOGJLRkw3SmJPMUF4Sk0yN1lURFdBTjY4L25UODlxeUxtZjN3djdRYjBI?=
- =?utf-8?B?TXVjWXR4VWJvR3YyTDFyWWZTenY2ZnlJR3NPeFJIZ01QL3RuY3lCM09yMk1w?=
- =?utf-8?B?azg3UWFqUXZsUnNNOWQwamVNQkNqdlA5cGlocSt5THljN0RoZlZhWUkrSzhM?=
- =?utf-8?B?S3AxcUhaSHRUMGp6UDVHdUJ1NVY2cUpVeFlIekdVNnJZVXRGVzJZN3h3N2dW?=
- =?utf-8?B?QlZCVzRodTYvRkJJVlFYMkxoaU0zSDdRbzlGc2RSWVh6UGdRMnZINTBrOTdv?=
- =?utf-8?B?L1RGQVFDc29ZQVpsdllKVTdUdVpaeGd1YUpubHRMeHpyaXpxMzVVU2dpNldP?=
- =?utf-8?B?Ylk1c1RLUnJsOVpXQ1V0bCtWMjZ3WkdJMjdIQVVQRnNBK3RyeXozdDdyN2Rz?=
- =?utf-8?B?dTFKTTkxTjdLZmhZNzRwYkR0UXVYSU5vTVhVU3hWUStIYzlYeFZ3cnFMRnp4?=
- =?utf-8?B?TThyeWp4UktxMVphSHhQNG9nZWpScmdoMXd2cE1DUDk3dll0M3gxMi9uNmlv?=
- =?utf-8?B?d1ZJeUNOcFVEL0J5S1A4UVJLQ2ozSC9BYzd4b01FN0ZubHhFUGRrenVUSHVo?=
- =?utf-8?B?bHRsVzEvTHdsUEJuZUFSL2QyM2JselR5bGpsZWMyVi9FbXZjUWJ3S0RpcmJu?=
- =?utf-8?B?c1lZSEU3VCtlT0VtVGE5RWJ3clVLdnVON0lDSVEvTlhVSVJIS21KVzNMRFA1?=
- =?utf-8?B?ZkxNek9TekVyM05yK1NGSHJRMkxSTWtWcDBPWFVHV3NXWThieDVKYmhKRFI3?=
- =?utf-8?B?LzhkOHJVQ2hVd2kyTFlJaU9hYzhoZXpIUkRKdzIwQXBvcDlaK1VTSVAzWGxB?=
- =?utf-8?B?TWNTRWVEMTMrdUN2NzloVEFFNXRseCtXTUUrSDI2bXpqVUYva1Yyd2JWWDRz?=
- =?utf-8?B?SGs4ZWZYYkRuNEFiOTBiU2ZwTm4rTGRLRFJHZjI2N3p5eHliRXdOMDRQdm9x?=
- =?utf-8?B?enI3TlBYVktMbHd3VE5ScmdieTQyYVFidUpLTnN6NUI5bEkwTmFqZTJ4b3pU?=
- =?utf-8?B?eWxmSTBHM2hSaExzZjdNclRsdnJCMnZhdEI2alM1MUNyTyt4bldsWXpicSs0?=
- =?utf-8?Q?9MyNzt1Hvy9hx3U0=3D?=
-X-Exchange-RoutingPolicyChecked: Z2XfdTZW0yfuqgqmawV6KxfDkah7pKrs2PRdOrL/ADYMI6MCliOzreGJiFzOWyXZKiUq2o+ovH92vYwJGijwpImf91sMeo2GDM7zvrqe5b+t5vJG+lxlFbMQspH0r3Dj26zISrLbmMUtLSu5G8kzZpT6iHP//ZhbhofQc9LMnwFjP7iOoxJw9wwfzYGHS3EP4ugT/cNfWto9vMjI6f9ldW6UVJivsiOXHMOk63qru6Ff9pFvpFpEfWA2u5bo/mWptVCx4YWJOEMfrTvg1/0Uxa3ENn6PRzVgxtUf1aFbmcdAPsCdsyqDMkkyuWmQcgIz6nrEsfF+etC0nVxp2d56cw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90d13927-5fd9-48bd-718b-08deec7631a4
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4913.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jul 2026 07:02:31.7596 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 1gsAAHojKVszdkBsn9rd1W83/pS82xLNz6j0MRRA5tDd2sBuwdkc+VGtO2k2kw05EK1jui61do5H8PSz918lxMmuoWexh4YhTvfeG5gxSBM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVUPR11MB9857
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260728-test-imagination-add-support-v5-1-33049f0d1937@imgtec.com>
+References: <20260728-test-imagination-add-support-v5-0-33049f0d1937@imgtec.com>
+In-Reply-To: <20260728-test-imagination-add-support-v5-0-33049f0d1937@imgtec.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Alessio Belle <alessio.belle@imgtec.com>, Luigi Santivetti
+ <luigi.santivetti@imgtec.com>, Brajesh Gupta <brajesh.gupta@imgtec.com>,
+ Robert Mazur <robert.mazur@imgtec.com>,
+ Matt Coster <matt.coster@imgtec.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785223153; l=9711;
+ i=robert.mazur@imgtec.com; s=20260324; h=from:subject:message-id;
+ bh=rsv6RGgbiw8UTDjLj+jsgEd+9ABpUUld617pVb797Vo=;
+ b=djJjyc2L1V5MQbkrY1SThJT53iOZGVvD+OWIplj6jhsEHfSXToPRJYk2EzASq7lwD4v/7kCTX
+ +TbL2DxjY+pAPeH3eKiadngbqGqyYHuPRu9oUrO3e8h8PvH/QXOr32n
+X-Developer-Key: i=robert.mazur@imgtec.com; a=ed25519;
+ pk=X5uhazsNnVDpw/srawR3m7WOmgzFZXdecapAeML2ZgM=
+X-Originating-IP: [172.25.9.35]
+X-Proofpoint-Spam-Info: AW1haW4tMjYwNzI4MDA2MiBTYWx0ZWRfX7FbNXA7aiolw
+ jlJl61FkIt2dGIdB99MmcurwEn9g+6AFy/c0VTthgXlPOJ91jXRuFnaEhioc2BhKsXQ40Cie7Y+
+ jCxL+AoWDvasA/S8VVZl+5S0E1ALoM4=
+X-Proofpoint-GUID: 09_V-HUboZsom4iCrcSvA0iqOZWtqq5f
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNzI4MDA2MiBTYWx0ZWRfX5jiXhh3X2JC3
+ iu77bErfLsOWclvoDGhxOl9HJMkMwOhwp14+6bos8EsVGRPa+DYuU76In3ec/uU5m0KHYehj/H3
+ NkPEvHNHU51t49wfDSuPJnbnt1NvU5NN/nic/FYhFEC2XhUPJEoO/M6BV9rmKThbDvfiJiRYH1E
+ eS+o3zg9PKql1Bvt08RwUvI/H8I9crVJ5OmidU/Ok+qC3Zt4YZMHL8eq7WTWz2agcwJnJFeRxmD
+ Ldoop9DK5K3p5kQduWVzngwMb7zdnzCL9U0BN4k91mpv+a/n4Ocipv2FAQ4BXBs0WgVoqhNTsnN
+ rt297u5bGCvjeqXWfGDn9g/c31ddKMiVmqf3a3dRdCzylqPdmahuzh+5VHU/+9fzH/pC6HloAUV
+ 0sBFlVCaEjP+Csd80UHpTSzxLRXK4uCsZDsZYsgd+xP8sRQ9Yb3Yec+1tLd8EL4Rm8OUbEjn+Fp
+ JcXGU7Edtc1EydadCBg==
+X-Authority-Analysis: v=2.4 cv=Fv41OWrq c=1 sm=1 tr=0 ts=6a6857f3 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=CNmLAE0vrksA:10 a=IkcTkHD0fZMA:10 a=RAioF0-LDSMA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
+ a=VwQbUJbxAAAA:8 a=r_1tXGB3AAAA:8 a=Q9A-fVuCs_m9Zx0QVbAA:9 a=QEXdDO2ut3YA:10
+ a=t8nPyN_e6usw4ciXM-Pk:22
+X-Proofpoint-ORIG-GUID: 09_V-HUboZsom4iCrcSvA0iqOZWtqq5f
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -171,48 +97,360 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+From: Matt Coster <matt.coster@imgtec.com>
 
-On 13-07-2026 02:25 pm, Michał Grzelak wrote:
-> Limit execution of suspend tests to first and last active CRTC unless
-> using `extended` flag. This helps with reducing default execution time
-> of the test which can lower number of hitting CI timeout.
->
-> Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
-> ---
->   tests/kms_pipe_crc_basic.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
->
-> diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-> index 42e1415452..9ea04a0f3b 100644
-> --- a/tests/kms_pipe_crc_basic.c
-> +++ b/tests/kms_pipe_crc_basic.c
-> @@ -127,6 +127,16 @@ enum {
->   	TEST_HANG = 1 << 3,
->   };
->   
-> +static bool suspend_constraint(unsigned flags, igt_crtc_t *crtc)
-> +{
-> +	if (!extended && (flags & TEST_SUSPEND) &&
-> +	    crtc->crtc_index != active_crtcs[0] &&
-> +	    crtc->crtc_index != active_crtcs[last_crtc_index])
-> +		return true;
-> +
-> +	return false;
-> +}
-> +
->   static void test_read_crc(data_t *data, igt_crtc_t *crtc,
->   			  igt_output_t *output, unsigned flags)
->   {
-> @@ -428,6 +438,9 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
->   				if(!crtc_output_combo_valid(&data.display, crtc, output))
->   					continue;
->   
-> +				if (suspend_constraint(tests[i].flags, crtc))
-> +					continue;
--->NIT:  Move suspend_constraint() before crtc_output_combo_valid()  as 
-it's  just arithmetic and no display state needed, can be avoids 
-unnecessary reset/validate on discarded combos.
-> +
->   				igt_dynamic_f("pipe-%s-%s",
->   					      igt_crtc_name(crtc),
->   					      output->name) {
+Add the initial IGT infrastructure for PowerVR (Imagination) GPUs and
+introduce the first GEM buffer object creation tests.
+
+The tests verify valid BO creation and validate error handling for
+invalid ioctl parameters.
+
+PowerVR DRM driver background:
+https://lore.kernel.org/dri-devel/cover.1700668843.git.donald.robson@imgtec.com/
+Driver documentation:
+https://docs.kernel.org/gpu/imagination/index.html
+
+Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
+---
+ docs/platforms.md             |  1 +
+ lib/drmtest.c                 | 11 +++++++
+ lib/drmtest.h                 |  3 ++
+ lib/igt_pvr.c                 | 75 +++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_pvr.h                 | 16 +++++++++
+ lib/meson.build               |  1 +
+ meson.build                   |  8 +++++
+ tests/imagination/meson.build | 13 ++++++++
+ tests/imagination/pvr_gem.c   | 66 +++++++++++++++++++++++++++++++++++++
+ tests/meson.build             |  2 ++
+ 10 files changed, 196 insertions(+)
+
+diff --git a/docs/platforms.md b/docs/platforms.md
+index 214f53c1d..ea86a89c9 100644
+--- a/docs/platforms.md
++++ b/docs/platforms.md
+@@ -25,6 +25,7 @@ Support exists for the following platforms:
+ - Panthor
+ - Virtual GPUs (e.g., virtio_gpu in QEMU/KVM/AVD or vmwgfx)
+ - Virtual display (vkms)
++- Imagination (powervr)
+ 
+ #### Intel
+ 
+diff --git a/lib/drmtest.c b/lib/drmtest.c
+index b0be06a75..1e789d2af 100644
+--- a/lib/drmtest.c
++++ b/lib/drmtest.c
+@@ -143,6 +143,11 @@ bool is_msm_device(int fd)
+ 	return __is_device(fd, "msm");
+ }
+ 
++bool is_pvr_device(int fd)
++{
++	return __is_device(fd, "powervr");
++}
++
+ bool is_nouveau_device(int fd)
+ {
+ 	/* Currently all nouveau-specific codepaths require libdrm */
+@@ -227,6 +232,7 @@ static const struct module {
+ 	{ DRIVER_MSM, "msm" },
+ 	{ DRIVER_PANFROST, "panfrost" },
+ 	{ DRIVER_PANTHOR, "panthor" },
++	{ DRIVER_POWERVR, "powervr" },
+ 	{ DRIVER_V3D, "v3d" },
+ 	{ DRIVER_VC4, "vc4" },
+ 	{ DRIVER_VGEM, "vgem" },
+@@ -988,6 +994,11 @@ void igt_require_amdgpu(int fd)
+ 	igt_require(is_amdgpu_device(fd));
+ }
+ 
++void igt_require_imagination(int fd)
++{
++	igt_require(is_pvr_device(fd));
++}
++
+ void igt_require_intel(int fd)
+ {
+ 	igt_require(is_intel_device(fd));
+diff --git a/lib/drmtest.h b/lib/drmtest.h
+index 9d488b274..012de9dee 100644
+--- a/lib/drmtest.h
++++ b/lib/drmtest.h
+@@ -59,6 +59,7 @@ int __get_drm_device_name(int fd, char *name, int name_size);
+ #define DRIVER_VIRTIO	(1 << 10)
+ #define DRIVER_PANTHOR	(1 << 11)
+ #define DRIVER_ASAHI	(1 << 12)
++#define DRIVER_POWERVR	(1 << 13)
+ 
+ /*
+  * Exclude DRIVER_VGEM and DRIVER_VIRTIO from DRIVER_ANY since if you run
+@@ -137,6 +138,7 @@ int drm_prepare_filtered_multigpu(int chipset);
+ int drm_open_filtered_card(int idx);
+ 
+ void igt_require_amdgpu(int fd);
++void igt_require_imagination(int fd);
+ void igt_require_intel(int fd);
+ void igt_require_i915(int fd);
+ void igt_require_nouveau(int fd);
+@@ -150,6 +152,7 @@ bool is_i915_device(int fd);
+ bool is_mtk_device(int fd);
+ bool is_msm_device(int fd);
+ bool is_nouveau_device(int fd);
++bool is_pvr_device(int fd);
+ bool is_vc4_device(int fd);
+ bool is_xe_device(int fd);
+ bool is_intel_device(int fd);
+diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
+new file mode 100644
+index 000000000..048ccab31
+--- /dev/null
++++ b/lib/igt_pvr.c
+@@ -0,0 +1,75 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
++
++#include <limits.h>
++#include <stddef.h>
++#include <stdint.h>
++#include <sys/types.h>
++
++#include "igt_pvr.h"
++
++#include "drmtest.h"
++#include "ioctl_wrappers.h"
++
++#include "pvr_drm.h"
++
++/**
++ * SECTION:igt_pvr
++ * @short_description: PowerVR support library
++ * @title: pvr
++ * @include: igt.h
++ *
++ * This library provides various auxiliary helper functions for writing PowerVR
++ * tests.
++ */
++
++/**
++ * igt_pvr_ioctl_create_bo:
++ * @fd: The file descriptor of the DRM device.
++ * @size: On entry, the requested size of the buffer object. On return, the
++ *        actual size of the buffer object.
++ *
++ * Function to create a buffer object.
++ *
++ * Returns: The handle of the created buffer object.
++ */
++uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size)
++{
++	struct drm_pvr_ioctl_create_bo_args arg = {
++		.size = *size,
++	};
++
++	do_ioctl(fd, DRM_IOCTL_PVR_CREATE_BO, &arg);
++
++	igt_assert(arg.size >= *size && arg.size <= SIZE_MAX);
++	*size = (size_t)arg.size;
++
++	return arg.handle;
++}
++
++
++/**
++ * igt_pvr_ioctl_get_bo_mmap_offset:
++ * @fd: The file descriptor of the DRM device.
++ * @handle: The handle of the buffer object.
++ *
++ * Function to get the mmap offset of a buffer object.
++ *
++ * Returns: The mmap offset of the buffer object.
++ */
++off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle)
++{
++	struct drm_pvr_ioctl_get_bo_mmap_offset_args arg = {
++		.handle = handle,
++	};
++
++	do_ioctl(fd, DRM_IOCTL_PVR_GET_BO_MMAP_OFFSET, &arg);
++
++	/*
++	 * There is no OFF_MAX equivalent to SIZE_MAX; use the identical (by
++	 * definition) PTRDIFF_MAX instead.
++	 */
++	igt_assert(arg.offset <= PTRDIFF_MAX);
++
++	return (off_t)arg.offset;
++}
+diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
+new file mode 100644
+index 000000000..e8b2d9026
+--- /dev/null
++++ b/lib/igt_pvr.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 or MIT */
++/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
++
++#ifndef IGT_PVR_H
++#define IGT_PVR_H
++
++#include <stddef.h>
++#include <stdint.h>
++#include <sys/types.h>
++
++#include "pvr_drm.h"
++
++uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size);
++off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle);
++
++#endif /* IGT_PVR_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index c45a96530..05632eede 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -110,6 +110,7 @@ lib_sources = [
+ 	'igt_asahi.c',
+ 	'igt_panfrost.c',
+ 	'igt_panthor.c',
++	'igt_pvr.c',
+ 	'igt_v3d.c',
+ 	'igt_vc4.c',
+ 	'igt_vmwgfx.c',
+diff --git a/meson.build b/meson.build
+index e09122a09..b30438e31 100644
+--- a/meson.build
++++ b/meson.build
+@@ -289,6 +289,7 @@ asahidir = join_paths(libexecdir, 'asahi')
+ msmdir = join_paths(libexecdir, 'msm')
+ panfrostdir = join_paths(libexecdir, 'panfrost')
+ panthordir = join_paths(libexecdir, 'panthor')
++pvrdir = join_paths(libexecdir, 'imagination')
+ unigrafdir = join_paths(libexecdir, 'unigraf')
+ v3ddir = join_paths(libexecdir, 'v3d')
+ vc4dir = join_paths(libexecdir, 'vc4')
+@@ -355,6 +356,12 @@ if get_option('use_rpath')
+ 	endforeach
+ 	panthor_rpathdir = join_paths(panthor_rpathdir, libdir)
+ 
++	pvrdir_rpathdir = '$ORIGIN'
++	foreach p : pvrdir.split('/')
++		pvrdir_rpathdir = join_paths(pvrdir_rpathdir, '..')
++	endforeach
++	pvrdir_rpathdir = join_paths(pvrdir_rpathdir, libdir)
++
+ 	v3d_rpathdir = '$ORIGIN'
+ 	foreach p : v3ddir.split('/')
+ 		v3d_rpathdir = join_paths(v3d_rpathdir, '..')
+@@ -392,6 +399,7 @@ else
+ 	msm_rpathdir = ''
+ 	panfrost_rpathdir = ''
+ 	panthor_rpathdir = ''
++	pvrdir_rpathdir = ''
+ 	v3d_rpathdir = ''
+ 	vc4_rpathdir = ''
+ 	vkms_rpathdir = ''
+diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
+new file mode 100644
+index 000000000..65b90c39f
+--- /dev/null
++++ b/tests/imagination/meson.build
+@@ -0,0 +1,13 @@
++pvr_progs = [ 'pvr_gem',
++	    ]
++
++pvr_deps = test_deps
++
++foreach prog : pvr_progs
++	test_executables += executable(prog, prog + '.c',
++				       dependencies : pvr_deps,
++				       install_dir : pvrdir,
++				       install_rpath : pvrdir_rpathdir,
++				       install : true)
++	test_list += join_paths('pvr', prog)
++endforeach
+diff --git a/tests/imagination/pvr_gem.c b/tests/imagination/pvr_gem.c
+new file mode 100644
+index 000000000..273f4d56f
+--- /dev/null
++++ b/tests/imagination/pvr_gem.c
+@@ -0,0 +1,66 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
++
++#include <linux/errno.h>
++#include <stddef.h>
++#include <stdint.h>
++
++#include "igt.h"
++#include "igt_pvr.h"
++
++#include "pvr_drm.h"
++
++int igt_main()
++{
++	int fd;
++
++	igt_fixture()
++	{
++		fd = drm_open_driver(DRIVER_POWERVR);
++	}
++
++	igt_describe("Test valid buffer object creation");
++	igt_subtest("create-bo-4096")
++	{
++		size_t size = 4096;
++		uint32_t handle = igt_pvr_ioctl_create_bo(fd, &size);
++
++		gem_close(fd, handle);
++	}
++
++	igt_describe("Test buffer object creation with 0 size");
++	igt_subtest("create-bo-0")
++	{
++		struct drm_pvr_ioctl_create_bo_args arg = {
++			.size = 0,
++		};
++
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_BO, &arg, EINVAL);
++	}
++
++	igt_describe("Test buffer object creation with bad padding");
++	igt_subtest("create-bo-bad-padding")
++	{
++		struct drm_pvr_ioctl_create_bo_args arg = {
++			.size = 4096,
++			._padding_c = 0xbad6bad6,
++		};
++
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_BO, &arg, EINVAL);
++	}
++
++	igt_describe("Test buffer object creation with unaligned size");
++	igt_subtest("create-bo-unaligned-fail")
++	{
++		struct drm_pvr_ioctl_create_bo_args arg = {
++			.size = 4000,
++		};
++
++		do_ioctl_err(fd, DRM_IOCTL_PVR_CREATE_BO, &arg, EINVAL);
++	}
++
++	igt_fixture()
++	{
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 6d90627b9..63adc61b9 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -561,3 +561,5 @@ if not meson.is_cross_build()
+ endif
+ 
+ subdir('intel-ci')
++
++subdir('imagination')
+
+-- 
+2.43.0
+
