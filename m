@@ -4,52 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 500E3C53219
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Jul 2026 10:28:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C98E5C53219
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Jul 2026 10:28:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EA5B410E414;
-	Tue, 28 Jul 2026 10:28:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6EE1010E414;
+	Tue, 28 Jul 2026 10:28:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bW3SlDv7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BeaxgR+m";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 99B2B10E495
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2026 10:27:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4185410E495
+ for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2026 10:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785234429; x=1816770429;
+ t=1785234434; x=1816770434;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=hkHlZLAo0Bsiq6K5Twx2qSIh+JdtGD2cZeNhrGCbmcU=;
- b=bW3SlDv7Ao0DwnZ20AUMR8HkSbk8J4Xp8anbRmzxyifQ3gnhLWzSme8N
- leQD/lSHHHMvJ+ZRJF/ER2ioYoE6LvMI4c+v8lYLsTxlp7fqE6LG3y19p
- 5bIA350cWC3kSUk2CQ3xnrXdyd3u4Jy+5ul+83QolRLGVgSx9uzND47vX
- Gvy+L4QzaxHlkLFaezL3YLks7Lgnz7Vnw4KTDtjXLsihiuRHQfu2roggo
- q20HW+01ECafxjKsImoj1xLO2Thk8kEIPrdEUYFBhcKoyt+Jd5/N40QGM
- jO/eirJU20uvk7NsbcClwEDu59EmwwjK1V+/ZPUFK7Wjva0YOj+a3Zj+b A==;
-X-CSE-ConnectionGUID: OuSjOzT9RlC2jpPd815cdQ==
-X-CSE-MsgGUID: nHJa8p4tRT2EBO+ytBgLFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="85827961"
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="85827961"
+ bh=ih1ohnQCavZchKm1v5LnF0YNgdrJJE4zxSWi2ZVNuQU=;
+ b=BeaxgR+my42Z4SPb8A2oN79D0gZO1Ak4CQJwPgggSJcoUhu9Xn73HJYD
+ r1aw/zdeiwCtdp+4k6YFm5p7W+UfxzqWmWCbVfObLCa+r0ki3MclzXQm3
+ wpYIAhCDGvzLJh3yfkfpAFBGozaCDixLyKk1e+jeicjPn3xf7/laY/Pa0
+ mA1WuY7SZXhrlP7mxTknSYHofIjmDK3js7zQtpYNW97d8pQcKCe9PuUE0
+ bmuQmPf/3qYSpqi6Iyyf1jH5w6/Da+SobXG2e5KOHMpYdYaVUp6cvkyxz
+ XzIZohCkK5CnLV3xrUcAgHAdhYDQwyg9/sKfriiBIxmkUi8T+j3Jf+hmq Q==;
+X-CSE-ConnectionGUID: E1QQW2VgS0WWH6+PFQF06g==
+X-CSE-MsgGUID: a7tyjJupSzqUl7Fv0wRNQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11858"; a="85827964"
+X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="85827964"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2026 03:27:09 -0700
-X-CSE-ConnectionGUID: oC0TZJBiQs6r7acEF9K94w==
-X-CSE-MsgGUID: KylYg6OeS72oOsz0DG2PVw==
+ 28 Jul 2026 03:27:14 -0700
+X-CSE-ConnectionGUID: sDu17D/oRJmI3c5Ax0qqGw==
+X-CSE-MsgGUID: rxzxsw1zTpmv4oAaRjpCtA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="257861966"
+X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="257861976"
 Received: from soc-5cg43972f8.clients.intel.com (HELO localhost)
  ([172.28.182.68])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2026 03:27:08 -0700
+ 28 Jul 2026 03:27:12 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: adam.miszczak@linux.intel.com, kamil.konieczny@linux.intel.com,
  lukasz.laguna@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t 1/2] lib/xe/xe_spin: initialize ticks_delta to ~0u
-Date: Tue, 28 Jul 2026 12:26:58 +0200
-Message-ID: <20260728102659.316861-2-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 2/2] benchmarks/gem_wsim: re-arm ticks_delta before
+ batch submission
+Date: Tue, 28 Jul 2026 12:26:59 +0200
+Message-ID: <20260728102659.316861-3-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260728102659.316861-1-marcin.bernatowicz@linux.intel.com>
 References: <20260728102659.316861-1-marcin.bernatowicz@linux.intel.com>
@@ -70,30 +71,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Initialize ticks_delta to ~0u instead of 0. This value does not satisfy
-the COND_BBE exit condition and prevents false batch termination.
+Write ~0u to ticks_delta for fixed-duration batches before submit.
+~0u is a safe value for potential stale cache data from previous batches.
+
+Fixes observed verification failure under looped runs:
+
+gem_wsim -w "1.RCS.5000.0.0,1.BCS.5000.0.0,1.CCS.5000.0.1,1.VCS.5000.0.0" -V -r 4000
+
+CRITICAL: Failed assertion: w->duration.requested_ticks <= ~w->xe.data->spin.ticks_delta
+CRITICAL: error: 96000 > 2
 
 Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- lib/xe/xe_spin.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ benchmarks/gem_wsim.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-index 874310789..331bed1d2 100644
---- a/lib/xe/xe_spin.c
-+++ b/lib/xe/xe_spin.c
-@@ -60,7 +60,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
- 	spin->start = 0;
- 	spin->end = 0xffffffff;
- 	spin->wait_cond = 0;
--	spin->ticks_delta = 0;
-+	spin->ticks_delta = ~0u;
+diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
+index 8be44d0c8..a66fd07d4 100644
+--- a/benchmarks/gem_wsim.c
++++ b/benchmarks/gem_wsim.c
+@@ -2663,7 +2663,11 @@ static void do_xe_exec(struct workload *wrk, struct w_step *w)
+ 				  .addr = w->xe.exec.address,
+ 				  .preempt = (w->preempt_us > 0),
+ 				  .ctx_ticks = w->duration.requested_ticks);
++	} else if (!w->duration.unbound) {
++		/* Reset sentinel for fixed-duration to prevent stale reads */
++		w->xe.data->spin.ticks_delta = ~0u;
+ 	}
++
+ 	xe_exec(fd, &w->xe.exec);
+ }
  
- 	if (opts->ctx_ticks) {
- 		/* store start timestamp */
 -- 
 2.43.0
 
