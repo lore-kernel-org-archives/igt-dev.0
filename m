@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13B78C54EFC
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Jul 2026 08:24:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC2CC54EFC
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Jul 2026 08:45:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A726210E535;
-	Tue, 28 Jul 2026 08:24:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 90A0710E563;
+	Tue, 28 Jul 2026 08:45:24 +0000 (UTC)
 Received: from 6beec6c84f66 (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 537E110E535;
- Tue, 28 Jul 2026 08:23:51 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 666A410E563;
+ Tue, 28 Jul 2026 08:44:47 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2995820167912194732=="
+ boundary="===============4146237897597702055=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/imagination=3A_Add_in?=
- =?utf-8?q?itial_test_coverage_for_Imagination_DRM_driver_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/imagination=3A_Add_?=
+ =?utf-8?q?initial_test_coverage_for_Imagination_DRM_driver_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Robert Mazur" <robert.mazur@imgtec.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 28 Jul 2026 08:23:51 -0000
-Message-ID: <178522703133.229879.4243145143697695125@6beec6c84f66>
+Date: Tue, 28 Jul 2026 08:44:47 -0000
+Message-ID: <178522828741.229903.12527765135375049274@6beec6c84f66>
 X-Patchwork-Hint: ignore
 References: <20260728-test-imagination-add-support-v5-0-33049f0d1937@imgtec.com>
 In-Reply-To: <20260728-test-imagination-add-support-v5-0-33049f0d1937@imgtec.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2995820167912194732==
+--===============4146237897597702055==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9027_BAT -> XEIGTPW_15600_BAT
+CI Bug Log - changes from IGT_9027 -> IGTPW_15600
 ====================================================
 
 Summary
@@ -64,12 +64,12 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/index.html
 
-Participating hosts (12 -> 12)
+Participating hosts (41 -> 39)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
 
 
 Changes
@@ -81,19 +81,21 @@ Changes
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_9027 -> IGTPW_15600
-  * Linux: xe-5484-3cbfb56ee0481aaabc9369045a4b120a20dfccc4 -> xe-5491-28e3f47d47a61b5e28e7566944479e9c9715d41d
+  * Linux: CI_DRM_18902 -> CI_DRM_18909
 
+  CI-20190529: 20190529
+  CI_DRM_18902: 3cbfb56ee0481aaabc9369045a4b120a20dfccc4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18909: 28e3f47d47a61b5e28e7566944479e9c9715d41d @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15600: 15600
   IGT_9027: 9027
-  xe-5484-3cbfb56ee0481aaabc9369045a4b120a20dfccc4: 3cbfb56ee0481aaabc9369045a4b120a20dfccc4
-  xe-5491-28e3f47d47a61b5e28e7566944479e9c9715d41d: 28e3f47d47a61b5e28e7566944479e9c9715d41d
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15600/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/index.html
 
---===============2995820167912194732==
+--===============4146237897597702055==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -117,30 +119,33 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170620/">https://patchwork.freedesktop.org/series/170620/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15600/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15600/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9027_BAT -&gt; XEIGTPW_15600_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9027 -&gt; IGTPW_15600</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/index.html</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9027 -&gt; IGTPW_15600</li>
-<li>Linux: xe-5484-3cbfb56ee0481aaabc9369045a4b120a20dfccc4 -&gt; xe-5491-28e3f47d47a61b5e28e7566944479e9c9715d41d</li>
+<li>Linux: CI_DRM_18902 -&gt; CI_DRM_18909</li>
 </ul>
-<p>IGTPW_15600: 15600<br />
-  IGT_9027: 9027<br />
-  xe-5484-3cbfb56ee0481aaabc9369045a4b120a20dfccc4: 3cbfb56ee0481aaabc9369045a4b120a20dfccc4<br />
-  xe-5491-28e3f47d47a61b5e28e7566944479e9c9715d41d: 28e3f47d47a61b5e28e7566944479e9c9715d41d</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18902: 3cbfb56ee0481aaabc9369045a4b120a20dfccc4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18909: 28e3f47d47a61b5e28e7566944479e9c9715d41d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15600: 15600<br />
+  IGT_9027: 9027</p>
 
 </body>
 </html>
 
---===============2995820167912194732==--
+--===============4146237897597702055==--
