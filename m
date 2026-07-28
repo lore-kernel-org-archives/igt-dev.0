@@ -4,65 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0F63C53219
-	for <igt-dev@archiver.kernel.org>; Tue, 28 Jul 2026 14:06:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B658FC53219
+	for <igt-dev@archiver.kernel.org>; Tue, 28 Jul 2026 14:10:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5F3A710E589;
-	Tue, 28 Jul 2026 14:06:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3CE2510E926;
+	Tue, 28 Jul 2026 14:10:37 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CUI96Hq/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xm7haw4g";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5D6B10E589
- for <igt-dev@lists.freedesktop.org>; Tue, 28 Jul 2026 14:05:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7256110E91A;
+ Tue, 28 Jul 2026 14:10:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785247556; x=1816783556;
+ t=1785247805; x=1816783805;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=rqyhTzAXtY9UQtG7tmIyvILljglFeFwMbQ3Ir5mNf0Y=;
- b=CUI96Hq/uG0nv4MDvTIRwjEyYVDtP6YhOBpVTYdvF0Vuc0Jkt9NDtdyX
- fNyF5hJTaUfwAWIuFLMcenZZolnmPw1W9o0eGrJXAnWkHcC+oi4jcRMiY
- Eg+gVOYLAuyNXbyDgyvWiJVPQbMXVyzXwvRPoQxAehTlrDZemqBvbCdzG
- xfgAD8d/OwgxM8tvp1UADQjxVtEZa1le8rOHWyzGY/7PAKp1Mfu9BPzfJ
- 5CB9roZ5uSyx/40TbKnXsi9SJ9eG1n4rSyl4bxUe6R8Oo22/u2UjGOfqW
- heKQUrXV2fGrUzJzo7b3siJH35U83L5rfConoRpNh3qERsjcZTcOzzsg+ w==;
-X-CSE-ConnectionGUID: 2duO/0lkSbCV6DjOMn7SLw==
-X-CSE-MsgGUID: mI8iwV5xQSidac/5W4yZBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85681359"
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="85681359"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Jul 2026 07:05:55 -0700
-X-CSE-ConnectionGUID: ccv9FyzfTCK4ZxysgOuIvg==
-X-CSE-MsgGUID: itHbLoQAQTSotLPe4f/Eew==
+ bh=0CbkdEtPngvdz26qjmC0tzQ4kxpQM1CTIQL+ZuaMI44=;
+ b=Xm7haw4gLx5tPjB2mlR8vpeGQGYv8wCDQqlw1RqB7YOcvVvdMazl6nTO
+ lFZpNlSxffOcTLB6dMqS8fcVcBPJhUyd+KRcBY428f8AUpmDO72AB+0eX
+ WipGItSVULwqVH2CfefD7/OH4KIXJF3vrHYHKKSu8Pnf3bAgKRLp3ZBc9
+ ByixAOg2Nyj4SDWYI9LWtU/OyDqC+WWwWw8ZJpgJ2XunMJshH2zCvYc65
+ /BTbRBZKQmkq8xHJbOSyyk0jsJYsjybu59SqmfIuu45XlcU0IjGCKLgsH
+ xJsweNAx3xs98hmYmOqxBYozpa9gLjoweBeXPjJ2sdAe1E2ns1+dlPtAN g==;
+X-CSE-ConnectionGUID: sS/lFuI6R++QyVs3aGDh+A==
+X-CSE-MsgGUID: +SjpoRhkRC6UYw9QsLGxGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="103372932"
+X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="103372932"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Jul 2026 07:10:01 -0700
+X-CSE-ConnectionGUID: tv5zW0IJQrKqlEIfDzItSQ==
+X-CSE-MsgGUID: 1m+UxeIJTtWzlxJM0a8cpQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="264017438"
+X-IronPort-AV: E=Sophos;i="6.25,190,1779174000"; d="scan'208";a="260364637"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 07:05:53 -0700
-Date: Tue, 28 Jul 2026 16:05:50 +0200
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Jul 2026 07:10:00 -0700
+Date: Tue, 28 Jul 2026 16:09:57 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Robert Mazur <robert.mazur@imgtec.com>
-Cc: igt-dev@lists.freedesktop.org, Alessio Belle <alessio.belle@imgtec.com>,
- Luigi Santivetti <luigi.santivetti@imgtec.com>,
- Brajesh Gupta <brajesh.gupta@imgtec.com>,
- Donald Robson <donald.robson@imgtec.com>
-Subject: Re: [PATCH i-g-t v5 03/10] tests/imagination: Add DEV_QUERY tests
-Message-ID: <20260728140550.xzbqhlcuvtnqoakk@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Robert Mazur <robert.mazur@imgtec.com>, I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?Q?=E2=9C=97_i915=2ECI=2EFull=3A_failure_for_tests=2Fi?=
+ =?utf-8?Q?magination?= =?utf-8?Q?=3A?= Add initial test coverage for
+ Imagination DRM driver (rev4)
+Message-ID: <20260728140957.mvp25mtwd4jvtrjb@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Robert Mazur <robert.mazur@imgtec.com>,
  igt-dev@lists.freedesktop.org,
- Alessio Belle <alessio.belle@imgtec.com>,
- Luigi Santivetti <luigi.santivetti@imgtec.com>,
- Brajesh Gupta <brajesh.gupta@imgtec.com>,
- Donald Robson <donald.robson@imgtec.com>
+ Robert Mazur <robert.mazur@imgtec.com>,
+ I915-ci-infra@lists.freedesktop.org
 References: <20260728-test-imagination-add-support-v5-0-33049f0d1937@imgtec.com>
- <20260728-test-imagination-add-support-v5-3-33049f0d1937@imgtec.com>
+ <178523896909.230870.10478200262801378536@6beec6c84f66>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260728-test-imagination-add-support-v5-3-33049f0d1937@imgtec.com>
+In-Reply-To: <178523896909.230870.10478200262801378536@6beec6c84f66>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,198 +74,188 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Robert,
-On 2026-07-28 at 09:18:58 +0200, Robert Mazur wrote:
-> From: Donald Robson <donald.robson@imgtec.com>
+Hi igt-dev,
+On 2026-07-28 at 11:42:49 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Add subtests exercising DRM_IOCTL_PVR_DEV_QUERY with invalid type,
-> successful query of all types, and undersized buffer error paths.
+> Series: tests/imagination: Add initial test coverage for Imagination DRM driver (rev4)
+> URL   : https://patchwork.freedesktop.org/series/170620/
+> State : failure
 > 
-> Signed-off-by: Donald Robson <donald.robson@imgtec.com>
-> Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
+> == Summary ==
+> 
+> CI Bug Log - changes from CI_DRM_18909_full -> IGTPW_15600_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_15600_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_15600_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/index.html
+> 
+> Participating hosts (10 -> 10)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_15600_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_async_flips@async-flip-with-page-flip-events-linear:
+>     - shard-dg2:          [PASS][1] -> [SKIP][2] +68 other tests skip
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-5/igt@kms_async_flips@async-flip-with-page-flip-events-linear.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_async_flips@async-flip-with-page-flip-events-linear.html
+> 
+>   * igt@kms_frontbuffer_tracking@fbcpsrhdr-1p-offscreen-pri-indfb-draw-mmap-cpu:
+>     - shard-dg2:          NOTRUN -> [SKIP][3] +29 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_frontbuffer_tracking@fbcpsrhdr-1p-offscreen-pri-indfb-draw-mmap-cpu.html
+> 
 
-For this and other patches in this series
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+These are non-Intel changes so above and below are unrelated.
 
 Regards,
 Kamil
 
-> ---
->  lib/igt_pvr.c                     | 31 ++++++++++++
->  lib/igt_pvr.h                     |  4 ++
->  tests/imagination/meson.build     |  3 +-
->  tests/imagination/pvr_dev_query.c | 99 +++++++++++++++++++++++++++++++++++++++
->  4 files changed, 136 insertions(+), 1 deletion(-)
+>   
+> #### Warnings ####
 > 
-> diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
-> index 048ccab31..2e6c4ade3 100644
-> --- a/lib/igt_pvr.c
-> +++ b/lib/igt_pvr.c
-> @@ -73,3 +73,34 @@ off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle)
->  
->  	return (off_t)arg.offset;
->  }
-> +
-> +/**
-> + * igt_pvr_ioctl_dev_query:
-> + * @fd: The file descriptor of the DRM device.
-> + * @type: The type of the device query.
-> + * @size: The size of the query structure.
-> + * @pointer: Pointer to the query structure.
-> + * @expect_err: Expected error code, or 0 if no error is expected.
-> + *
-> + * Function to perform a device query.
-> + *
-> + * Returns: The filled-in query arguments structure.
-> + */
-> +struct drm_pvr_ioctl_dev_query_args
-> +igt_pvr_ioctl_dev_query(int fd, enum drm_pvr_dev_query type, uint64_t size,
-> +			void *pointer, int expect_err)
-> +{
-> +	struct drm_pvr_ioctl_dev_query_args args = {
-> +		.type = type,
-> +		.size = size,
-> +		.pointer = to_user_pointer(pointer),
-> +	};
-> +
-> +	if (expect_err)
-> +		do_ioctl_err(fd, DRM_IOCTL_PVR_DEV_QUERY, &args, expect_err);
-> +	else
-> +		do_ioctl(fd, DRM_IOCTL_PVR_DEV_QUERY, &args);
-> +
-> +	return args;
-> +}
-> +
-> diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
-> index e8b2d9026..b25fb1867 100644
-> --- a/lib/igt_pvr.h
-> +++ b/lib/igt_pvr.h
-> @@ -13,4 +13,8 @@
->  uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size);
->  off_t igt_pvr_ioctl_get_bo_mmap_offset(int fd, uint32_t handle);
->  
-> +struct drm_pvr_ioctl_dev_query_args
-> +igt_pvr_ioctl_dev_query(int fd, enum drm_pvr_dev_query type, uint64_t size,
-> +			void *pointer, int expect_err);
-> +
->  #endif /* IGT_PVR_H */
-> diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
-> index 65b90c39f..62930da2b 100644
-> --- a/tests/imagination/meson.build
-> +++ b/tests/imagination/meson.build
-> @@ -1,4 +1,5 @@
-> -pvr_progs = [ 'pvr_gem',
-> +pvr_progs = [ 'pvr_dev_query',
-> +	      'pvr_gem',
->  	    ]
->  
->  pvr_deps = test_deps
-> diff --git a/tests/imagination/pvr_dev_query.c b/tests/imagination/pvr_dev_query.c
-> new file mode 100644
-> index 000000000..29c7eb550
-> --- /dev/null
-> +++ b/tests/imagination/pvr_dev_query.c
-> @@ -0,0 +1,99 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-> +
-> +#include <errno.h>
-> +#include <stdint.h>
-> +#include <unistd.h>
-> +
-> +#include "igt.h"
-> +#include "igt_pvr.h"
-> +
-> +#include "pvr_drm.h"
-> +
-> +int igt_main()
-> +{
-> +	const enum drm_pvr_dev_query types[] = {
-> +		DRM_PVR_DEV_QUERY_GPU_INFO_GET,
-> +		DRM_PVR_DEV_QUERY_RUNTIME_INFO_GET,
-> +		DRM_PVR_DEV_QUERY_QUIRKS_GET,
-> +		DRM_PVR_DEV_QUERY_ENHANCEMENTS_GET,
-> +		DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-> +		DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-> +	};
-> +
-> +	const uint64_t sizes[] = {
-> +		[DRM_PVR_DEV_QUERY_GPU_INFO_GET] =
-> +			sizeof(struct drm_pvr_dev_query_gpu_info),
-> +		[DRM_PVR_DEV_QUERY_RUNTIME_INFO_GET] =
-> +			sizeof(struct drm_pvr_dev_query_runtime_info),
-> +		[DRM_PVR_DEV_QUERY_QUIRKS_GET] =
-> +			sizeof(struct drm_pvr_dev_query_quirks),
-> +		[DRM_PVR_DEV_QUERY_ENHANCEMENTS_GET] =
-> +			sizeof(struct drm_pvr_dev_query_enhancements),
-> +		[DRM_PVR_DEV_QUERY_HEAP_INFO_GET] =
-> +			sizeof(struct drm_pvr_dev_query_heap_info),
-> +		[DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET] =
-> +			sizeof(struct drm_pvr_dev_query_static_data_areas),
-> +	};
-> +
-> +	struct drm_pvr_dev_query_gpu_info gpu_info = {0};
-> +	struct drm_pvr_dev_query_runtime_info runtime_info = {0};
-> +	struct drm_pvr_dev_query_quirks quirks = {0};
-> +	struct drm_pvr_dev_query_enhancements enhancements = {0};
-> +	struct drm_pvr_dev_query_heap_info heap_info = {0};
-> +	struct drm_pvr_dev_query_static_data_areas static_data_areas = {0};
-> +
-> +	void *const containers[] = {
-> +		[DRM_PVR_DEV_QUERY_GPU_INFO_GET] = &gpu_info,
-> +		[DRM_PVR_DEV_QUERY_RUNTIME_INFO_GET] = &runtime_info,
-> +		[DRM_PVR_DEV_QUERY_QUIRKS_GET] = &quirks,
-> +		[DRM_PVR_DEV_QUERY_ENHANCEMENTS_GET] = &enhancements,
-> +		[DRM_PVR_DEV_QUERY_HEAP_INFO_GET] = &heap_info,
-> +		[DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET] = &static_data_areas,
-> +	};
-> +
-> +	int fd;
-> +
-> +	static_assert(ARRAY_SIZE(types) == ARRAY_SIZE(sizes));
-> +	static_assert(ARRAY_SIZE(types) == ARRAY_SIZE(containers));
-> +
-> +	igt_fixture()
-> +	{
-> +		fd = drm_open_driver(DRIVER_POWERVR);
-> +
-> +		for (int i = 0; i < ARRAY_SIZE(types); i++)
-> +			memset(containers[i], 0, sizes[i]);
-> +	}
-> +
-> +	igt_describe("Test invalid dev query");
-> +	igt_subtest("dev-query-invalid") {
-> +		igt_pvr_ioctl_dev_query(fd, (enum drm_pvr_dev_query)-1, 0, NULL,
-> +					EINVAL);
-> +	}
-> +
-> +	igt_describe("Test valid dev query");
-> +	igt_subtest("dev-query-success-all") {
-> +		for (int i = 0; i < ARRAY_SIZE(types); i++) {
-> +			struct drm_pvr_ioctl_dev_query_args args =
-> +				igt_pvr_ioctl_dev_query(fd, types[i], 0, NULL, 0);
-> +
-> +			igt_assert(args.size);
-> +			igt_assert(args.size <= sizes[i]);
-> +
-> +			igt_pvr_ioctl_dev_query(fd, types[i], args.size, containers[i], 0);
-> +		}
-> +	}
-> +
-> +	igt_describe("Test dev query with too small size");
-> +	igt_subtest("dev-query-fail-too-small") {
-> +		for (int i = 0; i < ARRAY_SIZE(types); i++) {
-> +			igt_pvr_ioctl_dev_query(fd, types[i], 0, containers[i], EINVAL);
-> +			igt_pvr_ioctl_dev_query(fd, types[i], 1, containers[i],	EINVAL);
-> +		}
-> +	}
-> +
-> +	igt_fixture()
-> +	{
-> +		drm_close_driver(fd);
-> +	}
-> +}
+>   * igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels:
+>     - shard-dg2:          [SKIP][4] ([i915#1769] / [i915#3555]) -> [SKIP][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-1/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_atomic_transition@plane-all-modeset-transition-fencing-internal-panels.html
 > 
-> -- 
-> 2.43.0
+>   * igt@kms_ccs@ccs-on-another-bo-y-tiled-gen12-rc-ccs:
+>     - shard-dg2:          [SKIP][6] ([i915#10307] / [i915#6095]) -> [SKIP][7] +9 other tests skip
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-8/igt@kms_ccs@ccs-on-another-bo-y-tiled-gen12-rc-ccs.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_ccs@ccs-on-another-bo-y-tiled-gen12-rc-ccs.html
 > 
+>   * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs:
+>     - shard-dg2:          [SKIP][8] ([i915#12805]) -> [SKIP][9]
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-3/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs.html
+> 
+>   * igt@kms_ccs@crc-primary-suspend-y-tiled-ccs:
+>     - shard-dg2:          [SKIP][10] ([i915#6095]) -> [SKIP][11]
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-1/igt@kms_ccs@crc-primary-suspend-y-tiled-ccs.html
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_ccs@crc-primary-suspend-y-tiled-ccs.html
+> 
+>   * igt@kms_cdclk@mode-transition:
+>     - shard-dg2:          [SKIP][12] ([i915#13781]) -> [SKIP][13]
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-7/igt@kms_cdclk@mode-transition.html
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_cdclk@mode-transition.html
+> 
+>   * igt@kms_cdclk@mode-transition-all-outputs:
+>     - shard-dg2:          [SKIP][14] ([i915#16017]) -> [SKIP][15]
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-5/igt@kms_cdclk@mode-transition-all-outputs.html
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_cdclk@mode-transition-all-outputs.html
+> 
+>   * igt@kms_content_protection@dp-mst-type-1:
+>     - shard-dg2:          [SKIP][16] ([i915#15330] / [i915#3299]) -> [SKIP][17] +1 other test skip
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-8/igt@kms_content_protection@dp-mst-type-1.html
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_content_protection@dp-mst-type-1.html
+> 
+>   * igt@kms_content_protection@type1:
+>     - shard-dg2:          [SKIP][18] ([i915#15865]) -> [SKIP][19] +1 other test skip
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-3/igt@kms_content_protection@type1.html
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_content_protection@type1.html
+> 
+>   * igt@kms_cursor_crc@cursor-random-32x10:
+>     - shard-dg2:          [SKIP][20] ([i915#3555]) -> [SKIP][21] +1 other test skip
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-5/igt@kms_cursor_crc@cursor-random-32x10.html
+>    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_cursor_crc@cursor-random-32x10.html
+> 
+>   * igt@kms_cursor_crc@cursor-random-512x512:
+>     - shard-dg2:          [SKIP][22] ([i915#13049]) -> [SKIP][23] +1 other test skip
+>    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-8/igt@kms_cursor_crc@cursor-random-512x512.html
+>    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_cursor_crc@cursor-random-512x512.html
+> 
+>   * igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size:
+>     - shard-dg2:          [SKIP][24] ([i915#13046] / [i915#5354]) -> [SKIP][25] +4 other tests skip
+>    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-3/igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size.html
+>    [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_cursor_legacy@cursorb-vs-flipb-varying-size.html
+> 
+>   * igt@kms_dirtyfb@psr-dirtyfb-ioctl:
+>     - shard-dg2:          [SKIP][26] ([i915#9833]) -> [SKIP][27]
+>    [26]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-4/igt@kms_dirtyfb@psr-dirtyfb-ioctl.html
+>    [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_dirtyfb@psr-dirtyfb-ioctl.html
+> 
+>   * igt@kms_dp_linktrain_fallback@dp-fallback:
+>     - shard-dg2:          [SKIP][28] ([i915#13707]) -> [SKIP][29]
+>    [28]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-5/igt@kms_dp_linktrain_fallback@dp-fallback.html
+>    [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_dp_linktrain_fallback@dp-fallback.html
+> 
+>   * igt@kms_draw_crc@draw-method-mmap-wc:
+>     - shard-dg2:          [SKIP][30] ([i915#8812]) -> [SKIP][31]
+>    [30]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-4/igt@kms_draw_crc@draw-method-mmap-wc.html
+>    [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_draw_crc@draw-method-mmap-wc.html
+> 
+>   * igt@kms_dsc@dsc-with-output-formats-with-bpc-bigjoiner:
+>     - shard-dg2:          [SKIP][32] ([i915#16361]) -> [SKIP][33] +4 other tests skip
+>    [32]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-7/igt@kms_dsc@dsc-with-output-formats-with-bpc-bigjoiner.html
+>    [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_dsc@dsc-with-output-formats-with-bpc-bigjoiner.html
+> 
+>   * igt@kms_frontbuffer_tracking@fbchdr-rgb565-draw-mmap-cpu:
+>     - shard-dg2:          [SKIP][34] ([i915#15989]) -> [SKIP][35] +14 other tests skip
+>    [34]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-1/igt@kms_frontbuffer_tracking@fbchdr-rgb565-draw-mmap-cpu.html
+>    [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_frontbuffer_tracking@fbchdr-rgb565-draw-mmap-cpu.html
+> 
+>   * igt@kms_frontbuffer_tracking@fbcpsrhdr-1p-primscrn-pri-indfb-draw-blt:
+>     - shard-dg2:          [SKIP][36] ([i915#15102]) -> [SKIP][37] +12 other tests skip
+>    [36]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-6/igt@kms_frontbuffer_tracking@fbcpsrhdr-1p-primscrn-pri-indfb-draw-blt.html
+>    [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_frontbuffer_tracking@fbcpsrhdr-1p-primscrn-pri-indfb-draw-blt.html
+> 
+>   * igt@kms_frontbuffer_tracking@fbcpsrhdr-2p-shrfb-fliptrack-mmap-gtt:
+>     - shard-dg2:          [SKIP][38] ([i915#15990]) -> [SKIP][39] +23 other tests skip
+>    [38]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-5/igt@kms_frontbuffer_tracking@fbcpsrhdr-2p-shrfb-fliptrack-mmap-gtt.html
+>    [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_frontbuffer_tracking@fbcpsrhdr-2p-shrfb-fliptrack-mmap-gtt.html
+> 
+>   * igt@kms_frontbuffer_tracking@hdr-2p-primscrn-pri-shrfb-draw-blt:
+>     - shard-dg2:          [SKIP][40] ([i915#15991]) -> [SKIP][41] +31 other tests skip
+>    [40]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-1/igt@kms_frontbuffer_tracking@hdr-2p-primscrn-pri-shrfb-draw-blt.html
+>    [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_frontbuffer_tracking@hdr-2p-primscrn-pri-shrfb-draw-blt.html
+> 
+>   * igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-indfb-draw-mmap-wc:
+>     - shard-dg2:          [SKIP][42] ([i915#15104] / [i915#15990]) -> [SKIP][43] +1 other test skip
+>    [42]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-6/igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-indfb-draw-mmap-wc.html
+>    [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_frontbuffer_tracking@psr-1p-offscreen-pri-indfb-draw-mmap-wc.html
+> 
+>   * igt@kms_hdr@static-swap:
+>     - shard-dg2:          [SKIP][44] ([i915#16518] / [i915#3555] / [i915#8228]) -> [SKIP][45]
+>    [44]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-4/igt@kms_hdr@static-swap.html
+>    [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_hdr@static-swap.html
+> 
+>   * igt@kms_rotation_crc@sprite-rotation-270:
+>     - shard-dg2:          [SKIP][46] ([i915#12755] / [i915#15867]) -> [SKIP][47]
+>    [46]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-7/igt@kms_rotation_crc@sprite-rotation-270.html
+>    [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_rotation_crc@sprite-rotation-270.html
+> 
+>   * igt@kms_tiled_display@basic-test-pattern-with-chamelium:
+>     - shard-dg2:          [SKIP][48] ([i915#8623]) -> [SKIP][49]
+>    [48]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_18909/shard-dg2-6/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html
+>    [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15600/shard-dg2-10/igt@kms_tiled_display@basic-test-pattern-with-chamelium.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_15600_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+...cut...
