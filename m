@@ -4,60 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDA0AC54FD1
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Jul 2026 10:52:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12361C53200
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Jul 2026 11:01:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9573510E035;
-	Wed, 29 Jul 2026 10:52:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B1D2810E4B4;
+	Wed, 29 Jul 2026 11:01:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hza0yYSu";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kbju+Ybh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E373710E1C4;
- Wed, 29 Jul 2026 10:52:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1943110E4B4
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jul 2026 11:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785322332; x=1816858332;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=dhxsRwh2a5OdSbS2m5Cebu8YkHo0c/PwZUK80M3fWmA=;
- b=hza0yYSux5z7RrGEfrgPHD8I5Bs/9q4l4JQVsIK6vBN7EViQD68TJMpo
- rDCRK/MjHCl9SsU9Gbfk4h67Lh/TF0q9/IB52nKr1cs4IZe5pHEMdGkc1
- hftBU+H2Y0xilvLUpBr6FWoL0Tql/sGweHCUrToalAtouzxKFq6tLxDcQ
- rutzKHh7zT94dFc/wnd82f/+1uuJQPc6Nq35lDQuxXpbBQ6r//LoI5n8J
- EzO0AHQ5dpq30aysn+TEX14CYVNl5y1tGYvwPPeBhljSYX3l9W2EQKLgb
- wG47c2jmhJXHjuKh0FgrzKvDOzIM0ki7TVrDWt28DxbptrStWZFz5a/I3 g==;
-X-CSE-ConnectionGUID: +KI76ZIGSJqVmTrI2CVL2w==
-X-CSE-MsgGUID: NaGoHRveSo2wBcHy9Jg6Vg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="84900101"
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="84900101"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2026 03:52:11 -0700
-X-CSE-ConnectionGUID: 2mD+BDzMR8OMMRAmmosecw==
-X-CSE-MsgGUID: 0HgK1mHnRtOvffllcVo2zA==
+ t=1785322844; x=1816858844;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=d6CP7wHTrr9BjAgfc4Xqzr+PTJja1wqFR5nwF/2yEKY=;
+ b=kbju+YbhqQnEpXqGdUxHdhabJDna7ThY3q84CCFG43RLvZxFmUq0VMyg
+ YZzWLOueFpCZGRnZT2E6wYZwTI1sND+dOWOTw49Y0vtdi3fC7iuBxQi1j
+ J7pQJumb2Qg9CnnEHhHsVriScjiisMX4sguW+Rsb+gS/PT86lnAlLS/Dj
+ 0cciMi2mx14joFnGYJfYotynh028rlYDCCp8jyUZNuaZ2d2idNyEXjXZP
+ HRSsgeK8AclhW9eWn56lmqphQQQysjnYHMg6L8plmOyIhTjkhGHONDBLQ
+ KppYZ3JNTtujgCbqla8VjEJg6EeWaC/+maiXjpk2w9oM8IIESr3RPJPme Q==;
+X-CSE-ConnectionGUID: 9J1gXIghR7eaWItt2swGJg==
+X-CSE-MsgGUID: zs0iIC5hSeiSQoWD1NXinA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="73459368"
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="73459368"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2026 04:00:39 -0700
+X-CSE-ConnectionGUID: yIN9++PdSmagWCRmbQsJSg==
+X-CSE-MsgGUID: 7jYE0+E1T2mlHBVdmep/LA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="263472852"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 03:52:11 -0700
-Date: Wed, 29 Jul 2026 12:52:08 +0200
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="260040652"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.5])
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2026 04:00:36 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Robert Mazur <robert.mazur@imgtec.com>, I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZVTEw=?= =?utf-8?Q?=3A?= failure for
- tests/imagination: Additional DEV_QUERY tests
-Message-ID: <20260729105208.w2kzz4bm6uxt6qek@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Robert Mazur <robert.mazur@imgtec.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20260728-test-imagination-additional-dev_query-tests-v1-0-f361c7c2b513@imgtec.com>
- <178528708674.233181.1910225637970090575@6beec6c84f66>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] intel-ci: Block non-Intel pvr* Imagination tests
+Date: Wed, 29 Jul 2026 13:00:31 +0200
+Message-ID: <20260729110031.80284-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <178528708674.233181.1910225637970090575@6beec6c84f66>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,73 +68,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-07-29 at 01:04:46 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/imagination: Additional DEV_QUERY tests
-> URL   : https://patchwork.freedesktop.org/series/171212/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_9029_FULL -> XEIGTPW_15602_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_15602_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_15602_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (2 -> 2)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_15602_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@xe_compute_preempt@compute-preempt-many-vram:
->     - shard-bmg:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9029/shard-bmg-4/igt@xe_compute_preempt@compute-preempt-many-vram.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15602/shard-bmg-3/igt@xe_compute_preempt@compute-preempt-many-vram.html
-> 
+Block all non-Intel Imagination tests with prefix pvr.
 
-Unrelated.
+Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ tests/intel-ci/i915.blocklist.txt | 4 ++++
+ tests/intel-ci/xe.blocklist.txt   | 1 +
+ 2 files changed, 5 insertions(+)
 
+diff --git a/tests/intel-ci/i915.blocklist.txt b/tests/intel-ci/i915.blocklist.txt
+index bfb1e6b5a..da467ae49 100644
+--- a/tests/intel-ci/i915.blocklist.txt
++++ b/tests/intel-ci/i915.blocklist.txt
+@@ -126,6 +126,10 @@ igt@panfrost.*
+ ###############################################
+ igt@panthor.*
+ ###############################################
++# Imagination
++###############################################
++igt@pvr.*
++###############################################
+ # Qualcomm
+ ###############################################
+ igt@msm.*
+diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
+index 0e6babd0b..410f43b17 100644
+--- a/tests/intel-ci/xe.blocklist.txt
++++ b/tests/intel-ci/xe.blocklist.txt
+@@ -9,6 +9,7 @@ igt@msm.*
+ igt@nouveau_.*
+ igt@panfrost.*
+ igt@panthor.*
++igt@pvr.*
+ igt@v3d.*
+ igt@vc4.*
+ igt@vgem_.*
+-- 
+2.54.0
 
-
-Regards,
-Kamil
-
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_15602_FULL that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@kms_async_flips@alternate-sync-async-flip:
->     - shard-bmg:          [PASS][3] -> [FAIL][4] ([Intel XE#3718] / [Intel XE#6078])
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9029/shard-bmg-9/igt@kms_async_flips@alternate-sync-async-flip.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15602/shard-bmg-10/igt@kms_async_flips@alternate-sync-async-flip.html
-> 
-...cut...
