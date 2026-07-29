@@ -4,64 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D3F6C54F51
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Jul 2026 10:50:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09451C54FCD
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Jul 2026 10:52:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0209210E035;
-	Wed, 29 Jul 2026 10:50:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A3E6D10E035;
+	Wed, 29 Jul 2026 10:52:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DT6VOF9V";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="esgwXjoV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD36A10E1C4
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jul 2026 10:50:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B421710E035;
+ Wed, 29 Jul 2026 10:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785322208; x=1816858208;
+ t=1785322290; x=1816858290;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=r7hrJwP5V32LkrMq2mdi8kBtHGkOHvTLgVmZFkGJGws=;
- b=DT6VOF9VYCWs78Rdzzwlymc57kDmP2VHE/Hy8Rq82Dd7slB76toYSh7a
- VLGL7HDPy7cAMDAT2/5TfE26BkfPTp0BiJa93b7XqvbYkCj1uv8pLOYpl
- 3IBIISeqGlnN2nPtGS3t7mq6cWKORk+d6bsBhDDcS7UrQFsC8PPPvBPsX
- E5w8Ld/2m0zR1UK/5Ty6qFg2UKJO/x3Kk6IiH24Qksa7m7SGKN65EgtDb
- cm2RpBdPw//ZdEOb6KE2tSUqJ22G8iMn6CSSpf7d77w+Ls0ilRhxJTlS/
- cg8sCBk39LLGbog+N4P7wzFgrAL5fAeexXVkxzgIVgACF1rlLfDFer011 w==;
-X-CSE-ConnectionGUID: If+Vhk18RYGHLLJAie1Ovw==
-X-CSE-MsgGUID: rxTK6pqZRSO6GJk798nHBA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="73458521"
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="73458521"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2026 03:50:07 -0700
-X-CSE-ConnectionGUID: TzPWgXZ8R5C0BcQrphk40w==
-X-CSE-MsgGUID: TXQqukDKQgOWTvxwSCDvTg==
+ bh=p/MGSr6BzwSc7fSUlU/DUjDZiz6kP6sBw1KQ4mqqd70=;
+ b=esgwXjoVY5Pwd+cCmkAHDU5JU/k0PXBb02TXuIn+Hxgt6WLXSAyhNpG9
+ oOIPxRYwBoZ6dbBDdVU/wd+TQNSwXrZ16q20XwVhwgynBl1011GQuDeUl
+ W1S4DXlCaN3NhtTOT9ijYRsK6lVOrDz2kv9rxpKYwDs27esuUOdP7B58K
+ 2kEjt8vjE2TOshGfHFF1o/N77JYBON+jrw4Mv38r90Fi5h4F9zLkdx4aL
+ vbqY/ZNKcEkHPuc6BqzvQMsrij/vch73tsNaS/RFVLfaNpLUTSfdbn8T6
+ iSmOwMSXvRPaLNz6CpyqDLAjJsuUbum0HKsQckXjgtnqhZpVj4oMVVFB4 A==;
+X-CSE-ConnectionGUID: pIhXJSMNT7+2FaA5Yj1BTQ==
+X-CSE-MsgGUID: UASvbZMpQWCcCl5Hu/1GGg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="89811937"
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="89811937"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2026 03:51:30 -0700
+X-CSE-ConnectionGUID: XtQ4kOI3SD297TyXr0CMeg==
+X-CSE-MsgGUID: Wp1t4LvCTHCZhjgjV3oKiw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="260037444"
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="256055386"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa007-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 03:50:06 -0700
-Date: Wed, 29 Jul 2026 12:49:50 +0200
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jul 2026 03:51:28 -0700
+Date: Wed, 29 Jul 2026 12:51:25 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Robert Mazur <robert.mazur@imgtec.com>
-Cc: igt-dev@lists.freedesktop.org, Alessio Belle <alessio.belle@imgtec.com>,
- Luigi Santivetti <luigi.santivetti@imgtec.com>,
- Brajesh Gupta <brajesh.gupta@imgtec.com>
-Subject: Re: [PATCH i-g-t 2/2] tests/imagination: Add DEV_QUERY runtime_info
- tests
-Message-ID: <20260729104950.2cigmyi44du7s6ru@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Robert Mazur <robert.mazur@imgtec.com>, I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
+ tests/imagination: Additional DEV_QUERY tests
+Message-ID: <20260729105125.qmyuwvdmg4dlh4kn@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Robert Mazur <robert.mazur@imgtec.com>,
  igt-dev@lists.freedesktop.org,
- Alessio Belle <alessio.belle@imgtec.com>,
- Luigi Santivetti <luigi.santivetti@imgtec.com>,
- Brajesh Gupta <brajesh.gupta@imgtec.com>
+ Robert Mazur <robert.mazur@imgtec.com>,
+ I915-ci-infra@lists.freedesktop.org
 References: <20260728-test-imagination-additional-dev_query-tests-v1-0-f361c7c2b513@imgtec.com>
- <20260728-test-imagination-additional-dev_query-tests-v1-2-f361c7c2b513@imgtec.com>
+ <178528486367.232538.2806744058627848232@6beec6c84f66>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260728-test-imagination-additional-dev_query-tests-v1-2-f361c7c2b513@imgtec.com>
+In-Reply-To: <178528486367.232538.2806744058627848232@6beec6c84f66>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,76 +73,200 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Robert,
-On 2026-07-28 at 21:39:34 +0200, Robert Mazur wrote:
-> From: Donald Robson <donald.robson@imgtec.com>
+Hi igt-dev,
+On 2026-07-29 at 00:27:43 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Add test validating runtime info fields from DEV_QUERY.
+> Series: tests/imagination: Additional DEV_QUERY tests
+> URL   : https://patchwork.freedesktop.org/series/171212/
+> State : failure
 > 
-> Signed-off-by: Donald Robson <donald.robson@imgtec.com>
-> Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
-> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> == Summary ==
+> 
+> CI Bug Log - changes from IGT_9029_full -> IGTPW_15602_full
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with IGTPW_15602_full absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in IGTPW_15602_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/index.html
+> 
+> Participating hosts (10 -> 10)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in IGTPW_15602_full:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@kms_color_pipeline@plane-lut1d-post-ctm3x4:
+>     - shard-dg2:          [PASS][1] -> [SKIP][2] +86 other tests skip
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-4/igt@kms_color_pipeline@plane-lut1d-post-ctm3x4.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_color_pipeline@plane-lut1d-post-ctm3x4.html
+> 
+>   * igt@kms_frontbuffer_tracking@hdr-1p-primscrn-pri-shrfb-draw-mmap-cpu:
+>     - shard-dg2:          NOTRUN -> [SKIP][3] +13 other tests skip
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_frontbuffer_tracking@hdr-1p-primscrn-pri-shrfb-draw-mmap-cpu.html
+> 
 
-Applied, thank you.
+Unrelated, this is non-Intel test.
+
+
 
 Regards,
 Kamil
 
-> ---
->  tests/imagination/meson.build        |  1 +
->  tests/imagination/pvr_runtime_info.c | 31 +++++++++++++++++++++++++++++++
->  2 files changed, 32 insertions(+)
+
+>   
+> #### Warnings ####
 > 
-> diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
-> index dc08a5d8b..59749b51e 100644
-> --- a/tests/imagination/meson.build
-> +++ b/tests/imagination/meson.build
-> @@ -5,6 +5,7 @@ pvr_progs = [ 'pvr_dev_query',
->  	      'pvr_heap_info',
->  	      'pvr_hwrt',
->  	      'pvr_quirks_enhancements',
-> +	      'pvr_runtime_info',
->  	      'pvr_vm_context',
->  	    ]
->  
-> diff --git a/tests/imagination/pvr_runtime_info.c b/tests/imagination/pvr_runtime_info.c
-> new file mode 100644
-> index 000000000..02496e043
-> --- /dev/null
-> +++ b/tests/imagination/pvr_runtime_info.c
-> @@ -0,0 +1,31 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-> +
-> +#include <stdbool.h>
-> +
-> +#include "igt.h"
-> +#include "igt_pvr.h"
-> +
-> +#include "pvr_drm.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test that the runtime info query returns valid data");
-> +
-> +int igt_simple_main()
-> +{
-> +	int fd = drm_open_driver(DRIVER_POWERVR);
-> +	struct drm_pvr_dev_query_runtime_info runtime_info = {0};
-> +
-> +	igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_RUNTIME_INFO_GET,
-> +				sizeof(runtime_info), &runtime_info, 0);
-> +
-> +	igt_assert_neq_u64(runtime_info.free_list_min_pages, 0);
-> +	igt_assert_lt_u64(runtime_info.free_list_min_pages,
-> +			  runtime_info.free_list_max_pages);
-> +
-> +	igt_assert_neq(runtime_info.common_store_alloc_region_size, 0);
-> +	igt_assert_neq(runtime_info.common_store_partition_space_size, 0);
-> +
-> +	igt_assert_neq(runtime_info.max_coeffs, 0);
-> +
-> +	igt_assert_neq(runtime_info.cdm_max_local_mem_size_regs, 0);
-> +}
+>   * igt@kms_atomic@plane-primary-overlay-mutable-zpos:
+>     - shard-dg2:          [SKIP][4] ([i915#9531]) -> [SKIP][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-3/igt@kms_atomic@plane-primary-overlay-mutable-zpos.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_atomic@plane-primary-overlay-mutable-zpos.html
 > 
-> -- 
-> 2.43.0
+>   * igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip:
+>     - shard-dg2:          [SKIP][6] ([i915#3828]) -> [SKIP][7]
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-3/igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip.html
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_big_fb@linear-max-hw-stride-64bpp-rotate-0-hflip.html
 > 
+>   * igt@kms_ccs@crc-primary-rotation-180-4-tiled-lnl-ccs:
+>     - shard-dg2:          [SKIP][8] ([i915#12313]) -> [SKIP][9] +2 other tests skip
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-3/igt@kms_ccs@crc-primary-rotation-180-4-tiled-lnl-ccs.html
+>    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_ccs@crc-primary-rotation-180-4-tiled-lnl-ccs.html
+> 
+>   * igt@kms_ccs@crc-primary-suspend-y-tiled-ccs:
+>     - shard-dg2:          [SKIP][10] ([i915#6095]) -> [SKIP][11] +1 other test skip
+>    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-1/igt@kms_ccs@crc-primary-suspend-y-tiled-ccs.html
+>    [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_ccs@crc-primary-suspend-y-tiled-ccs.html
+> 
+>   * igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc:
+>     - shard-dg2:          [SKIP][12] ([i915#10307] / [i915#6095]) -> [SKIP][13] +10 other tests skip
+>    [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-6/igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc.html
+>    [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_ccs@random-ccs-data-y-tiled-gen12-rc-ccs-cc.html
+> 
+>   * igt@kms_content_protection@uevent-hdcp14:
+>     - shard-dg2:          [SKIP][14] ([i915#15865]) -> [SKIP][15] +2 other tests skip
+>    [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-6/igt@kms_content_protection@uevent-hdcp14.html
+>    [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_content_protection@uevent-hdcp14.html
+> 
+>   * igt@kms_cursor_crc@cursor-rapid-movement-512x170:
+>     - shard-dg2:          [SKIP][16] ([i915#13049]) -> [SKIP][17]
+>    [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-1/igt@kms_cursor_crc@cursor-rapid-movement-512x170.html
+>    [17]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_cursor_crc@cursor-rapid-movement-512x170.html
+> 
+>   * igt@kms_cursor_crc@cursor-sliding-32x10:
+>     - shard-dg2:          [SKIP][18] ([i915#3555]) -> [SKIP][19] +2 other tests skip
+>    [18]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-3/igt@kms_cursor_crc@cursor-sliding-32x10.html
+>    [19]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_cursor_crc@cursor-sliding-32x10.html
+> 
+>   * igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size:
+>     - shard-dg2:          [SKIP][20] ([i915#13046] / [i915#5354]) -> [SKIP][21] +4 other tests skip
+>    [20]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-5/igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size.html
+>    [21]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size.html
+> 
+>   * igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot:
+>     - shard-dg2:          [SKIP][22] ([i915#9067]) -> [SKIP][23]
+>    [22]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-1/igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot.html
+>    [23]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_cursor_legacy@modeset-atomic-cursor-hotspot.html
+> 
+>   * igt@kms_dp_link_training@non-uhbr-sst:
+>     - shard-dg2:          [SKIP][24] ([i915#13749]) -> [SKIP][25]
+>    [24]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-4/igt@kms_dp_link_training@non-uhbr-sst.html
+>    [25]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_dp_link_training@non-uhbr-sst.html
+> 
+>   * igt@kms_dp_link_training@uhbr-sst:
+>     - shard-dg2:          [SKIP][26] ([i915#13748]) -> [SKIP][27]
+>    [26]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-7/igt@kms_dp_link_training@uhbr-sst.html
+>    [27]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_dp_link_training@uhbr-sst.html
+> 
+>   * igt@kms_dp_linktrain_fallback@dsc-fallback:
+>     - shard-dg2:          [SKIP][28] ([i915#13707]) -> [SKIP][29]
+>    [28]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-8/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+>    [29]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_dp_linktrain_fallback@dsc-fallback.html
+> 
+>   * igt@kms_dsc@dsc-with-bpc-formats:
+>     - shard-dg2:          [SKIP][30] ([i915#16361]) -> [SKIP][31] +2 other tests skip
+>    [30]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-6/igt@kms_dsc@dsc-with-bpc-formats.html
+>    [31]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_dsc@dsc-with-bpc-formats.html
+> 
+>   * igt@kms_frontbuffer_tracking@fbchdr-2p-scndscrn-cur-indfb-draw-pwrite:
+>     - shard-dg2:          [SKIP][32] ([i915#15991]) -> [SKIP][33] +40 other tests skip
+>    [32]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-7/igt@kms_frontbuffer_tracking@fbchdr-2p-scndscrn-cur-indfb-draw-pwrite.html
+>    [33]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_frontbuffer_tracking@fbchdr-2p-scndscrn-cur-indfb-draw-pwrite.html
+> 
+>   * igt@kms_frontbuffer_tracking@fbchdr-tiling-y:
+>     - shard-dg2:          [SKIP][34] ([i915#10055]) -> [SKIP][35]
+>    [34]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-4/igt@kms_frontbuffer_tracking@fbchdr-tiling-y.html
+>    [35]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_frontbuffer_tracking@fbchdr-tiling-y.html
+> 
+>   * igt@kms_frontbuffer_tracking@hdr-1p-primscrn-spr-indfb-draw-pwrite:
+>     - shard-dg2:          [SKIP][36] ([i915#15989]) -> [SKIP][37] +13 other tests skip
+>    [36]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-1/igt@kms_frontbuffer_tracking@hdr-1p-primscrn-spr-indfb-draw-pwrite.html
+>    [37]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_frontbuffer_tracking@hdr-1p-primscrn-spr-indfb-draw-pwrite.html
+> 
+>   * igt@kms_frontbuffer_tracking@hdr-rgb101010-draw-mmap-wc:
+>     - shard-dg2:          [SKIP][38] ([i915#15990]) -> [SKIP][39] +25 other tests skip
+>    [38]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-4/igt@kms_frontbuffer_tracking@hdr-rgb101010-draw-mmap-wc.html
+>    [39]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_frontbuffer_tracking@hdr-rgb101010-draw-mmap-wc.html
+> 
+>   * igt@kms_frontbuffer_tracking@psrhdr-suspend:
+>     - shard-dg2:          [SKIP][40] ([i915#15102]) -> [SKIP][41] +16 other tests skip
+>    [40]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-3/igt@kms_frontbuffer_tracking@psrhdr-suspend.html
+>    [41]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_frontbuffer_tracking@psrhdr-suspend.html
+> 
+>   * igt@kms_hdr@invalid-metadata-sizes:
+>     - shard-dg2:          [SKIP][42] ([i915#16518] / [i915#3555] / [i915#8228]) -> [SKIP][43] +1 other test skip
+>    [42]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-6/igt@kms_hdr@invalid-metadata-sizes.html
+>    [43]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_hdr@invalid-metadata-sizes.html
+> 
+>   * igt@kms_plane_multiple@tiling-y:
+>     - shard-dg2:          [SKIP][44] ([i915#14259]) -> [SKIP][45]
+>    [44]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-4/igt@kms_plane_multiple@tiling-y.html
+>    [45]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_plane_multiple@tiling-y.html
+> 
+>   * igt@kms_rotation_crc@exhaust-fences:
+>     - shard-dg2:          [SKIP][46] ([i915#4235]) -> [SKIP][47]
+>    [46]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-4/igt@kms_rotation_crc@exhaust-fences.html
+>    [47]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_rotation_crc@exhaust-fences.html
+> 
+>   * igt@kms_vrr@lobf:
+>     - shard-dg2:          [SKIP][48] ([i915#11920]) -> [SKIP][49]
+>    [48]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-1/igt@kms_vrr@lobf.html
+>    [49]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_vrr@lobf.html
+> 
+>   * igt@kms_vrr@seamless-rr-switch-vrr:
+>     - shard-dg2:          [SKIP][50] ([i915#9906]) -> [SKIP][51]
+>    [50]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9029/shard-dg2-8/igt@kms_vrr@seamless-rr-switch-vrr.html
+>    [51]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-dg2-10/igt@kms_vrr@seamless-rr-switch-vrr.html
+> 
+>   
+> Known issues
+> ------------
+> 
+>   Here are the changes found in IGTPW_15602_full that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@api_intel_bb@blit-reloc-purge-cache:
+>     - shard-rkl:          NOTRUN -> [SKIP][52] ([i915#14544] / [i915#8411])
+>    [52]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15602/shard-rkl-6/igt@api_intel_bb@blit-reloc-purge-cache.html
+> 
+...cut...
