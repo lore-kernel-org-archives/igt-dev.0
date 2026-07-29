@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 076C8C53200
-	for <igt-dev@archiver.kernel.org>; Wed, 29 Jul 2026 12:24:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30184C54F51
+	for <igt-dev@archiver.kernel.org>; Wed, 29 Jul 2026 12:24:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B2AF010EBD6;
-	Wed, 29 Jul 2026 12:24:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D34C010E03A;
+	Wed, 29 Jul 2026 12:24:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZGg+K9kG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EWdNj9rK";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1645010E046
- for <igt-dev@lists.freedesktop.org>; Wed, 29 Jul 2026 12:21:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC9CE10E046
+ for <igt-dev@lists.freedesktop.org>; Wed, 29 Jul 2026 12:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785327677; x=1816863677;
+ t=1785327683; x=1816863683;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0FZ+7LZE7qfcfHD5RsKlXqJp7ciMh0J2g5uHOwqLad0=;
- b=ZGg+K9kGY9Pv0STyRqS+Ev55h5jyfLHbk2m61G/AMkiUxtEiyX0ztUFi
- KMXkxydJHAxubYIySRaTAM6GmCCT56ILDtorVxwC0w7m36PKxKesGOUCI
- sVKdb1lck7WVLnmo7MMby5aLcHZnpcBmXbGM2dbxHD2MwnT1NzoEX/zcH
- Jy3AAPG2J112V9Rp/AWg9UG6gtQwPk4P2BzORGYc80HCvlcU3vzHjxMEa
- X1c6sidnkESPyOI3+y1XcAAbffvR7NUJwmIz5NuvtJrSzrasGFKrRj7kv
- 540VU8MYYv/T9mCG1bd3z4jq5juRGCV6eKhBGPzfHJGgMfBT5z7i4Hquw A==;
-X-CSE-ConnectionGUID: 7xbhcR1yQxaKzKqdrHERow==
-X-CSE-MsgGUID: OnFiUywJTx6bUBip1TY8FA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="108725203"
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="108725203"
+ bh=nfPEC5phUGbZvOrh5ENN38qN6GOTyTxuo2VCgTDga6w=;
+ b=EWdNj9rKiigSTRw1n/82mD/uv3nfV/NeS9Xt7FAWLBkZ6mAvB/Qs04mD
+ +GGyD0xc5E3xaPctBB/mN6m4CP+YJ002c149MBWQbDy7Xoppz+1slVDSV
+ VO5GBbflUhoF+07wNfEQ4d8lHDeyynjTIkqUnMZQ7D8LM7hF/h4/AwnX6
+ NtD5hV8jB1XbL8fS+1s/TQPCbwU/EHz2J7eGPSkfvzGImFt0Jay60xTi5
+ fcsix6LIs3EpA79g6wA36sxgE2wymIFnyCZtNMAETNjYkh/B03off75ZP
+ V0t644ewzjJU96yWM0IHQDVCvhaxyyu4C08Vo2e3AkC+SSr/m+w59O5I6 Q==;
+X-CSE-ConnectionGUID: hcbGsulzQN2FUEgvXrVB7A==
+X-CSE-MsgGUID: GLSz8nkNRPmWYxSyWjJdYg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="108725213"
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="108725213"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2026 05:21:16 -0700
-X-CSE-ConnectionGUID: Sd3tvVk5QOy3qM/nn1Ckqg==
-X-CSE-MsgGUID: HWCuSZ6hTsOqgnI5aW4c5Q==
+ 29 Jul 2026 05:21:23 -0700
+X-CSE-ConnectionGUID: smJU9W4RQOCphfKfeRyJzA==
+X-CSE-MsgGUID: cPPbSwaATCq3vZkwgEvGEA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="263802341"
+X-IronPort-AV: E=Sophos;i="6.25,192,1779174000"; d="scan'208";a="263802400"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2026 05:21:14 -0700
+ 29 Jul 2026 05:21:21 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  mallesh.koujalagi@intel.com, raag.jadav@intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH 6/8] lib/igt_drm_netlink: add event notify subscription and
- event wait support
-Date: Wed, 29 Jul 2026 17:49:57 +0530
-Message-Id: <20260729121959.603890-7-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH 7/8] tests/intel/xe_err_injection: Add tests for L2 bank Corr
+ err threshold scenarios
+Date: Wed, 29 Jul 2026 17:49:58 +0530
+Message-Id: <20260729121959.603890-8-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260729121959.603890-1-ravi.kishore.koppuravuri@intel.com>
 References: <20260729121959.603890-1-ravi.kishore.koppuravuri@intel.com>
@@ -70,183 +70,316 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Added event notification support with subscribe for an error-notify event and
-wait for the event notification functionalities.
+Introduced L2 bank correctable error threshold subtests:
+   - single correctable error
+   - Correctable error with threshold set to 1
+   - 16 Correctable error injections with threshold set to 0xF
+
+Add DRM RAS netlink error-notify event subscription to verify
+correctable error detection across all the above subtests.
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 ---
- lib/igt_drm_netlink.c | 108 ++++++++++++++++++++++++++++++++++++++++++
- lib/igt_drm_netlink.h |   6 +++
- 2 files changed, 114 insertions(+)
+ tests/intel/xe_err_injection.c | 252 +++++++++++++++++++++++++++++++++
+ tests/intel/xe_err_injection.h |  10 ++
+ 2 files changed, 262 insertions(+)
 
-diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
-index 4738090af..b72fb343d 100644
---- a/lib/igt_drm_netlink.c
-+++ b/lib/igt_drm_netlink.c
-@@ -6,6 +6,7 @@
- #include <stdbool.h>
- #include <stdint.h>
- #include <errno.h>
-+#include <poll.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -31,6 +32,26 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
- 	switch (gnlh->cmd) {
- 	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
- 		break;
-+	case DRM_RAS_CMD_ERROR_EVENT: {
-+		struct nlattr *attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_MAX + 1];
-+
-+		ret = genlmsg_parse(nlh, 0, attrs,
-+				    DRM_RAS_A_ERROR_EVENT_ATTRS_MAX, NULL);
-+		if (ret < 0)
-+			return NL_SKIP;
-+
-+		if (!attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID] ||
-+		    !attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID] ||
-+		    !attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE])
-+			return NL_SKIP;
-+
-+		ctx->event_node_id = nla_get_u32(attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID]);
-+		ctx->event_error_id = nla_get_u32(attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID]);
-+		ctx->event_error_value =
-+			nla_get_u32(attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE]);
-+		ctx->event_received = true;
-+		break;
-+	}
- 	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
- 		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
- 
-@@ -171,6 +192,10 @@ int init_app_context(struct app_context *ctx)
- 	ctx->error_id = UINT32_MAX;
- 	ctx->error_value = 0;
- 	ctx->error_threshold = 0;
-+	ctx->event_node_id = UINT32_MAX;
-+	ctx->event_error_id = UINT32_MAX;
-+	ctx->event_error_value = 0;
-+	ctx->event_received = false;
- 	ctx->family_id = -1;
- 
- 	return 0;
-@@ -186,6 +211,10 @@ void cleanup_app_context(struct app_context *ctx)
- 	ctx->error_id = UINT32_MAX;
- 	ctx->error_value = 0;
- 	ctx->error_threshold = 0;
-+	ctx->event_node_id = UINT32_MAX;
-+	ctx->event_error_id = UINT32_MAX;
-+	ctx->event_error_value = 0;
-+	ctx->event_received = false;
- 	ctx->family_id = -1;
- }
- 
-@@ -319,3 +348,82 @@ int set_error_threshold(struct app_context *ctx)
- 
- 	return 0;
- }
-+
-+int subscribe_error_notify(struct app_context *ctx, const char *notify_group_name)
-+{
-+	int grp_id;
-+	int ret;
-+
-+	if (!ctx || !ctx->sock || ctx->family_id < 0 ||
-+	    !notify_group_name || notify_group_name[0] == '\0')
-+		return -EINVAL;
-+
-+	grp_id = genl_ctrl_resolve_grp(ctx->sock,
-+				       DRM_RAS_FAMILY_NAME,
-+				       notify_group_name);
-+	if (grp_id < 0)
-+		return grp_id;
-+
-+	ret = nl_socket_add_membership(ctx->sock, grp_id);
-+	if (ret < 0)
-+		return ret;
-+
-+	igt_debug("Subscribed to DRM RAS multicast group '%s' (id=%d).\n",
-+		  notify_group_name, grp_id);
-+
-+	return 0;
-+}
-+
-+int wait_for_error_notify_event(struct app_context *ctx, int timeout_ms)
-+{
-+	struct nl_cb *cb;
-+	struct pollfd pfd;
-+	int ret;
-+
-+	if (!ctx || !ctx->sock || ctx->family_id < 0)
-+		return -EINVAL;
-+
-+	if (timeout_ms < -1)
-+		return -EINVAL;
-+
-+	cb = nl_cb_alloc(NL_CB_DEFAULT);
-+	if (!cb)
-+		return -ENOMEM;
-+
-+	ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, ctx);
-+	if (ret < 0) {
-+		nl_cb_put(cb);
-+		return ret;
-+	}
-+
-+	ctx->event_received = false;
-+
-+	pfd.fd = nl_socket_get_fd(ctx->sock);
-+	pfd.events = POLLIN;
-+	pfd.revents = 0;
-+
-+	ret = poll(&pfd, 1, timeout_ms);
-+	if (ret == 0) {
-+		nl_cb_put(cb);
-+		return -ETIMEDOUT;
-+	}
-+
-+	if (ret < 0) {
-+		ret = -errno;
-+		nl_cb_put(cb);
-+		return ret;
-+	}
-+
-+	ret = nl_recvmsgs(ctx->sock, cb);
-+	nl_cb_put(cb);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!ctx->event_received)
-+		return -ENOMSG;
-+
-+	igt_debug("Received error-notify event: node_id=%u error_id=%u value=%u\n",
-+		  ctx->event_node_id, ctx->event_error_id, ctx->event_error_value);
-+
-+	return 0;
-+}
-diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
-index c44486ffa..b04221a23 100644
---- a/lib/igt_drm_netlink.h
-+++ b/lib/igt_drm_netlink.h
-@@ -24,6 +24,10 @@ struct app_context {
- 	uint32_t error_id;
- 	uint32_t error_value;
- 	uint32_t error_threshold;
-+	uint32_t event_node_id;
-+	uint32_t event_error_id;
-+	uint32_t event_error_value;
-+	bool event_received;
- 	int family_id;
+diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
+index afbaf0646..0303f4a56 100644
+--- a/tests/intel/xe_err_injection.c
++++ b/tests/intel/xe_err_injection.c
+@@ -35,6 +35,14 @@ enum {
+ 	RECOVERY_TIMEOUT = 3,
  };
  
-@@ -34,6 +38,8 @@ int init_nl_socket(struct app_context *ctx);
- int get_error_counter(struct app_context *ctx);
- int get_error_threshold(struct app_context *ctx);
- int set_error_threshold(struct app_context *ctx);
-+int subscribe_error_notify(struct app_context *ctx, const char *notify_group_name);
-+int wait_for_error_notify_event(struct app_context *ctx, int timeout_ms);
++time_t event_timeout = 10 * 1000; /* 10 seconds */
++
++/* Cleanup helper for injection test functions */
++#define CLEANUP_ON_ERROR(ctx, fw_handle) do { \
++	cleanup_nl_socket(&ctx); \
++	release_forcewake(fw_handle); \
++} while (0)
++
+ static void run_xe_compute_on_all_engines(int fd, bool state)
+ {
+ 	struct drm_xe_engine_class_instance *hwe;
+@@ -268,6 +276,238 @@ static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
+ 	gt_uc_wkr_parity_recovered = true;
+ }
  
- #endif /* IGT_DRM_NETLINK_H */
++/* Inject a GT correctable error */
++static void l2_bank_corr_err_injection(struct xe_mmio *mmio, int fd)
++{
++	/* Arm the Injection */
++	write_reg(mmio, L2_BANK_ERR_INJ, L2_BANK_DATA_1BIT_ERR_INJ_CONFIG);
++	igt_info("Armed L2 Bank Correctable Error Injection\n");
++}
++
++/**
++ * SUBTEST: l2-bank-corr-err-threshold-1
++ * Description: Inject single bit error injection in SSA data array when this bit is written
++ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
++ * Functionality: error injection
++ */
++static void l2_bank_corr_err_injection_with_threshold_1(struct xe_mmio *mmio, int fd)
++{
++	int fw_handle;
++	int ret;
++	uint32_t current_threshold = UINT32_MAX;
++	struct app_context ctx;
++
++	fw_handle = acquire_forcewake(fd);
++
++	ret = init_nl_socket(&ctx);
++	if (ret < 0) {
++		release_forcewake(fw_handle);
++		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
++	}
++
++	/* Subscribe to error-notify */
++	ret = subscribe_error_notify(&ctx, DRM_RAS_MCGRP_ERROR_NOTIFY);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false, "Failed to subscribe to error-notify (ret=%d)\n", ret);
++	}
++
++	/* get current GT Correctable error threshold */
++	ctx.node_id = 0;
++	ctx.error_id = 1;
++	ret = get_error_threshold(&ctx);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false, "Failed to query GT correctable error threshold before injection\n");
++	}
++	current_threshold = ctx.error_threshold;
++	igt_info("Current GT Correctable error threshold: %u\n", current_threshold);
++
++	/* Set GT Correctable error threshold to 1 */
++	ctx.error_threshold = 1;
++	ret = set_error_threshold(&ctx);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false, "Failed to set GT correctable error threshold before injection\n");
++	}
++
++	/* Inject a GT correctable error */
++	l2_bank_corr_err_injection(mmio, fd);
++
++	ret = wait_for_error_notify_event(&ctx, event_timeout); /* wait for 10 secs */
++	if (ret == 0 && ctx.event_error_value == 1) {
++		log_status(true, "L2 Bank Correctable Error with threshold 1");
++	} else {
++		log_status(false, "L2 Bank Correctable Error with threshold 1");
++		/* restore threshold before failing */
++		ctx.error_threshold = current_threshold;
++		set_error_threshold(&ctx);
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false, "Did not receive expected RAS event or error_value after injection\n");
++	}
++
++	/* restore GT Correctable error threshold to original value */
++	ctx.error_threshold = current_threshold;
++	ret = set_error_threshold(&ctx);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false, "Failed to restore GT correctable error threshold after injection\n");
++	}
++
++	CLEANUP_ON_ERROR(ctx, fw_handle);
++}
++
++/**
++ * SUBTEST: l2-bank-corr-err-16-times
++ * Description: Inject single bit error injection in SSA data array when this bit is written
++ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
++ * Functionality: error injection
++ */
++static void l2_bank_corr_err_injection_16_times(struct xe_mmio *mmio, int fd)
++{
++	int fw_handle;
++	uint32_t current_threshold = UINT32_MAX;
++	uint32_t gt_corr_counter_before = 0, gt_corr_counter_current = 0;
++	int ret;
++	struct app_context ctx;
++
++	fw_handle = acquire_forcewake(fd);
++
++	ret = init_nl_socket(&ctx);
++	if (ret < 0) {
++		release_forcewake(fw_handle);
++		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
++	}
++
++	ret = subscribe_error_notify(&ctx, DRM_RAS_MCGRP_ERROR_NOTIFY);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false, "Failed to subscribe to error-notify (ret=%d)\n", ret);
++	}
++
++	/* Query error counter before injection */
++	ctx.node_id = 0;
++	ctx.error_id = 1;
++	ret = get_error_counter(&ctx);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false,
++			     "Failed to query GT correctable error counter before injection\n");
++	}
++	gt_corr_counter_before = ctx.error_value;
++
++	/* get current GT Correctable error threshold */
++	ret = get_error_threshold(&ctx);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false,
++			     "Failed to query GT correctable error threshold before injection\n");
++	}
++	current_threshold = ctx.error_threshold;
++	igt_info("Current GT Correctable error threshold: %u\n", current_threshold);
++
++	for (int i = 0; i < 16; i++) {
++		igt_info("****** Injection iteration: %d ***********\n", i + 1);
++		/* Inject a GT correctable error */
++		l2_bank_corr_err_injection(mmio, fd);
++
++		/* Query error counter after injection */
++		ret = get_error_counter(&ctx);
++		if (ret < 0) {
++			CLEANUP_ON_ERROR(ctx, fw_handle);
++			igt_assert_f(false,
++				     "Failed to query GT correctable error counter:iteration %d\n",
++				     i + 1);
++		}
++		gt_corr_counter_current = ctx.error_value;
++		igt_info("GT Correctable error counter incremented by : %u "
++			 "since before initial injection\n",
++			 gt_corr_counter_current - gt_corr_counter_before);
++	}
++
++	/* Confirm whether error counter incremented by 16 after 16 injections */
++	if ((gt_corr_counter_current - gt_corr_counter_before) == 16) {
++		log_status(true, "L2 Bank Correctable Error Injection 16 times");
++	} else {
++		log_status(false, "L2 Bank Correctable Error Injection 16 times");
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false,
++			     "GT Correctable error counter didn't increment "
++			     "by 16 after 16 injections\n");
++	}
++
++	ret = wait_for_error_notify_event(&ctx, event_timeout);
++	if (ret == 0 && ctx.event_error_value == 1) {
++		log_status(true, "L2 Bank Correctable Error Injection 16 times");
++	} else {
++		log_status(false, "L2 Bank Correctable Error Injection 16 times");
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false, "Did not receive expected MSI event or "
++			     "error_value after injection\n");
++	}
++
++	CLEANUP_ON_ERROR(ctx, fw_handle);
++}
++
++/**
++ * SUBTEST: l2-bank-single-corr-err
++ * Description: Inject single bit error injection in SSA data array when this bit is written
++ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
++ * Functionality: error injection
++ */
++static void l2_bank_single_corr_err_injection(struct xe_mmio *mmio, int fd)
++{
++	int fw_handle;
++	int ret;
++	uint32_t gt_corr_counter_before = 0, gt_corr_counter_after = 0;
++	struct app_context ctx;
++
++	fw_handle = acquire_forcewake(fd);
++
++	ret = init_nl_socket(&ctx);
++	if (ret < 0) {
++		release_forcewake(fw_handle);
++		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
++	}
++
++	/* Query error counter before injection */
++	ctx.node_id = 0;
++	ctx.error_id = 1;
++	ret = get_error_counter(&ctx);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false,
++			     "Failed to query GT correctable error counter before injection\n");
++	}
++	gt_corr_counter_before = ctx.error_value;
++	igt_info("GT Correctable error counter before injection: %u\n", gt_corr_counter_before);
++
++	/* Inject a GT correctable error */
++	l2_bank_corr_err_injection(mmio, fd);
++
++	/* Query error counter after injection */
++	ret = get_error_counter(&ctx);
++	if (ret < 0) {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false,
++			     "Failed to query GT correctable error counter after injection\n");
++	}
++	gt_corr_counter_after = ctx.error_value;
++	igt_info("GT Correctable error counter after injection: %u\n", gt_corr_counter_after);
++
++	if (gt_corr_counter_after > gt_corr_counter_before) {
++		igt_info("GT Correctable error counter incremented by %u after injection\n",
++			 gt_corr_counter_after - gt_corr_counter_before);
++		log_status(true, "L2 Bank Correctable Error");
++	} else {
++		CLEANUP_ON_ERROR(ctx, fw_handle);
++		igt_assert_f(false,
++			     "L2 Bank (GT) Correctable Error Injection count not incremented\n");
++	}
++
++	CLEANUP_ON_ERROR(ctx, fw_handle);
++}
++
+ static void inject_error(const char *injection, struct xe_mmio *mmio, int fd)
+ {
+ 	igt_info("Starting Error Injection test: %s\n", injection);
+@@ -306,6 +546,18 @@ int igt_main()
+ 		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
+ 	}
  
++	igt_describe("Inject GT correctable error and validate error-notify event with threshold set to 1.");
++	igt_subtest("l2-bank-corr-err-threshold-1")
++		l2_bank_corr_err_injection_with_threshold_1(&mmio, fd);
++
++	igt_describe("Inject GT correctable error 16 times and validate counter/event behavior.");
++	igt_subtest("l2-bank-corr-err-16-times")
++		l2_bank_corr_err_injection_16_times(&mmio, fd);
++
++	igt_describe("Inject a single GT correctable error and validate counter increment.");
++	igt_subtest("l2-bank-single-corr-err")
++		l2_bank_single_corr_err_injection(&mmio, fd);
++
+ 	igt_fixture() {
+ 		xe_mmio_access_fini(&mmio);
+ 		drm_close_driver(fd);
+diff --git a/tests/intel/xe_err_injection.h b/tests/intel/xe_err_injection.h
+index d7efc2fd2..1a9ea2f2e 100644
+--- a/tests/intel/xe_err_injection.h
++++ b/tests/intel/xe_err_injection.h
+@@ -15,4 +15,14 @@
+ #define POST_RECOVERY_WL 1
+ #define POST_ARMING_INJECTION_WL 0
+ 
++/* L2 Bank (LBCFLOCKMSGREG) error injection */
++#define L2_BANK_ERR_INJ 0xB1B4
++#define DATA_1BIT_ERR_INJ_REQ (1 << 3)
++#define FUSA_TEST_MODE_ERR_INJ_REQ (1 << 2)
++#define MASK_BIT_FOR_DATA_1BIT_ERR_INJ_REQ (1 << 19)
++#define MASK_BIT_FOR_FUSA_TEST_MODE_ERR_INJ_REQ (1 << 18)
++#define L2_BANK_DATA_1BIT_ERR_INJ_CONFIG \
++	(DATA_1BIT_ERR_INJ_REQ | FUSA_TEST_MODE_ERR_INJ_REQ | \
++	 MASK_BIT_FOR_DATA_1BIT_ERR_INJ_REQ | MASK_BIT_FOR_FUSA_TEST_MODE_ERR_INJ_REQ)
++
+ #endif /* XE_ERR_INJECTION_H */
 -- 
 2.34.1
 
