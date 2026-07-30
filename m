@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 929E0C54FD2
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jul 2026 02:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EEF85C54FD2
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jul 2026 02:55:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 054B510E0CF;
-	Thu, 30 Jul 2026 02:47:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 841DD10E0CF;
+	Thu, 30 Jul 2026 02:55:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eAolO8Pz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TRiCJs7b";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C880F10E0CF
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jul 2026 02:46:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E43E610E0CF
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jul 2026 02:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785379617; x=1816915617;
+ t=1785380090; x=1816916090;
  h=date:message-id:from:to:cc:subject:in-reply-to:
  references:mime-version;
- bh=arG4GjSERRSc+kyAOs2OlE0g4gQin5uApD2yit0GgRw=;
- b=eAolO8PzhXLC4l3TXlkCGoojWCkYowHxMCWS5pzPBXfd2mZjNTuBlzBV
- C6CiXMkKyLSGtc28oqZItv0+1GC0cOG4Kx0SGVy8q4q+m5qffTxV1mKqg
- SwfpFsMTISBJJWfgXxodWjKzMIAVJCYANInsaQUaVjXPKV3dc60Edqeth
- e8QHLYINjhl6ZFE1j5qjV9HeEkBmNudCqvpEWk2E1tRgk+TQJbSTGm4wc
- nYqxo46mkqCX1dfIrgEk45HoOePlfNxkxviFOKhJiKF9miSwhTxXMOGjk
- wpsPSI+qutgHTPWrzQm3AFYEEOlFjxDPzboHd33DJK80Encpuffv4gAI2 Q==;
-X-CSE-ConnectionGUID: B7WW5GotQ4eHU3NRbG/vyw==
-X-CSE-MsgGUID: +PkVMupxSgGK7xISc51aTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="97367447"
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; d="scan'208";a="97367447"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2026 19:46:57 -0700
-X-CSE-ConnectionGUID: Nq9ZR9g4TEWC+PBIXYjSag==
-X-CSE-MsgGUID: 2a79baf0RqKMgoLFLavRkA==
+ bh=L8TKJA4gwiPwcUQ+ItQ1Qx2Pph80pssc8RsvdVhRubM=;
+ b=TRiCJs7bRDy+AVWKV320MR3V5jNBJzhdYbpjpu28QQ2kLAty5krDT2Ah
+ UQh0VrIRY/JzyD8zIw+oqtDfsuHR59D2xR0QcDUwGQIM/DyjTjeyrwtW6
+ ee1PQEjHPwbwThDmOkG/81TvlOmgmbf9DsBPqszdh1ErLbOijluiNiqVg
+ Xw/2mN6iFNzHcRAh24uRLXQFDZRiqDW6brw4Rtl+zP6Zj1b3zv+CIpSco
+ W0r42/s9hb8EQJUvoCYpKx4wajZdmjy6Xgv2cgXQf4RdQkbwf6TyFlDcr
+ fmwgJHESebakHagkKPETaPACHkAf69UOb/WOQSecN6H5utiZrnEAlrH97 A==;
+X-CSE-ConnectionGUID: JpabVu23QaqmIl6/H9eujA==
+X-CSE-MsgGUID: lRsFjP4pSRSV7wZr6igtjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="84972311"
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; d="scan'208";a="84972311"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2026 19:54:49 -0700
+X-CSE-ConnectionGUID: CEpA86vNSZCw4OdbbF9jsw==
+X-CSE-MsgGUID: GDEA9/aIRKSgB/k4oUJ9wQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; d="scan'208";a="255862973"
+X-IronPort-AV: E=Sophos;i="6.25,193,1779174000"; d="scan'208";a="263665849"
 Received: from mcapezzu-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
  ([10.125.38.25])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Jul 2026 19:46:57 -0700
-Date: Wed, 29 Jul 2026 19:46:56 -0700
-Message-ID: <87a4r9gpnj.wl-ashutosh.dixit@intel.com>
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Jul 2026 19:54:49 -0700
+Date: Wed, 29 Jul 2026 19:54:49 -0700
+Message-ID: <878q6tgpae.wl-ashutosh.dixit@intel.com>
 From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
 To: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Cc: <igt-dev@lists.freedesktop.org>
+Cc: <igt-dev@lists.freedesktop.org>,
+ Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 Subject: Re: [PATCH] tools/xe-perf-recorder: expose some OA stream open
  properties
-In-Reply-To: <715ff9f8-217c-4ac6-818d-e79aaa4a4758@intel.com>
-References: <20260728063606.2874276-1-shekhar.chauhan@intel.com>	<715ff9f8-217c-4ac6-818d-e79aaa4a4758@intel.com>
+In-Reply-To: <20260728063606.2874276-1-shekhar.chauhan@intel.com>
+References: <20260728063606.2874276-1-shekhar.chauhan@intel.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
  Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -71,25 +72,241 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 27 Jul 2026 23:40:50 -0700, Shekhar Chauhan wrote:
+On Mon, 27 Jul 2026 23:36:06 -0700, Shekhar Chauhan wrote:
 >
-> Couple of things to note:
+> xe-perf-recorder only passes 5 of the OA stream open properties to
+> DRM_XE_OBSERVATION_OP_STREAM_OPEN, leaving the rest without an open
+> source consumer. Add few of the remaining ones.
 >
-> On 7/28/2026 12:06, Shekhar Chauhan wrote:
-> > xe-perf-recorder only passes 5 of the OA stream open properties to
-> > DRM_XE_OBSERVATION_OP_STREAM_OPEN, leaving the rest without an open
-> > source consumer. Add few of the remaining ones.
-> 1. I missed out on adding "PATCH i-g-t" prefix, I did send it with a
-> subject-prefix="PATCH i-g-t" hoping it'll append that, but turns out, it
-> didn't, so I think I should explicitly do that while doing a git
-> format-patch. I remember being told to add it in the gitconfig, but, I
-> didn't wanna do it for all the patches that I send, so I didn't add there.
+> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+> ---
+>  tools/xe-perf/xe_perf_recorder.c | 105 ++++++++++++++++++++++++++++---
+>  1 file changed, 98 insertions(+), 7 deletions(-)
+>
+> diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+> index c69050b43..06d1016a0 100644
+> --- a/tools/xe-perf/xe_perf_recorder.c
+> +++ b/tools/xe-perf/xe_perf_recorder.c
+> @@ -26,6 +26,7 @@
+>  #include <unistd.h>
+>
+>  #include "igt_core.h"
+> +#include "igt_sizes.h"
 
-No, this is is what I said:
+Not needed, see below.
 
-	 This can be configured in your .git/config:
+>  #include "intel_batchbuffer.h"
+>  #include "intel_chipset.h"
+>  #include "ioctl_wrappers.h"
+> @@ -364,6 +365,16 @@ struct recording_context {
+>	struct drm_xe_oa_unit *oa_unit;
+>	struct drm_xe_engine_class_instance *hwe;
+>
+> +	/* Optional OA stream open properties */
+> +	bool oa_disabled;
+> +	bool no_preempt;
+> +	bool exec_queue_id_set;
+> +	uint32_t exec_queue_id;
+> +	bool oa_engine_instance_set;
+> +	uint32_t oa_engine_instance;
+> +	uint64_t oa_buffer_size;
+> +	uint64_t wait_num_reports;
+> +
+>	uint32_t vm;
+>	uint32_t exec_queue;
+>	struct intel_bb *ibb;
+> @@ -477,7 +488,7 @@ perf_open(struct recording_context *ctx)
+>  {
+>	int stream_fd;
+>
+> -	uint64_t properties[] = {
+> +	uint64_t properties[32] = {
+>		DRM_XE_OA_PROPERTY_OA_UNIT_ID, ctx->oa_unit->oa_unit_id,
+>
+>		/* Include OA reports in samples */
+> @@ -488,10 +499,39 @@ perf_open(struct recording_context *ctx)
+>		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(ctx->metric_set->perf_oa_format),
+>		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, ctx->oa_exponent,
+>	};
+> -	struct intel_xe_oa_open_prop param = {
+> -		.num_properties = ARRAY_SIZE(properties) / 2,
+> -		.properties_ptr = to_user_pointer(properties),
+> -	};
+> +	struct intel_xe_oa_open_prop param = { 0 };
+> +	uint32_t n = 10; /* 5 mandatory properties (10 u64 slots) set above */
+> +
+> +	/* Optional properties, only passed when given on the command line */
 
-	 [format]
-	 	subjectprefix = PATCH i-g-t
+Let us not do this new business of mandatory and optional properties. Just
+add the two properties we are adding in this patch (see below) to the
+properties array above and populate their default values: 64 MB for
+oa_buffer_size and 1 for wait_num_reports (and override the defaults if
+commond line input is provided), similar to what is done for the previously
+existing properties.
 
-So this .git/config in your IGT repo, not your global ~/.gitconfig.
+> +	if (ctx->oa_disabled) {
+> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_DISABLED;
+> +		properties[n++] = 1;
+> +	}
+> +	if (ctx->exec_queue_id_set) {
+> +		properties[n++] = DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID;
+> +		properties[n++] = ctx->exec_queue_id;
+> +	}
+> +	if (ctx->oa_engine_instance_set) {
+> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE;
+> +		properties[n++] = ctx->oa_engine_instance;
+> +	}
+> +	if (ctx->no_preempt) {
+> +		properties[n++] = DRM_XE_OA_PROPERTY_NO_PREEMPT;
+> +		properties[n++] = 1;
+> +	}
+> +	if (ctx->oa_buffer_size) {
+> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE;
+> +		properties[n++] = ctx->oa_buffer_size;
+> +	}
+> +	if (ctx->wait_num_reports) {
+> +		properties[n++] = DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS;
+> +		properties[n++] = ctx->wait_num_reports;
+> +	}
+> +
+> +	igt_assert(n <= ARRAY_SIZE(properties));
+> +
+> +	param.num_properties = n / 2;
+> +	param.properties_ptr = to_user_pointer(properties);
+>
+>	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &param);
+>	if (stream_fd < 0) {
+> @@ -924,7 +964,14 @@ usage(const char *name)
+>		"     --output,             -o <path>   Output file (default = xe_perf.record)\n"
+>		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
+>		"                                       Values: boot, mono, mono_raw (default = mono)\n"
+> -		"     --oa-unit-id          -u <value>  OA unit id for the capture.\n",
+> +		"     --oa-unit-id          -u <value>  OA unit id for the capture.\n"
+> +		"     --oa-disabled         -D          Open the OA stream in the disabled state\n"
+> +		"                                       (the stream is enabled right after open)\n"
+> +		"     --exec-queue-id       -q <value>  Exec queue id for context scoped capture\n"
+> +		"     --oa-engine-instance  -e <value>  Engine instance for context scoped capture\n"
+> +		"     --no-preempt          -n          Disable preemption (requires --exec-queue-id)\n"
+> +		"     --oa-buffer-size      -b <value>  OA buffer size in bytes (pow2, 128K - 128M)\n"
+> +		"     --wait-num-reports    -w <value>  Min reports before poll()/read() unblocks\n",
+>		name);
+>  }
+>
+> @@ -1038,6 +1085,12 @@ main(int argc, char *argv[])
+>		{"command-fifo",	required_argument, 0, 'f'},
+>		{"cpu-clock",		required_argument, 0, 'k'},
+>		{"oa-unit-id",		required_argument, 0, 'u'},
+> +		{"oa-disabled",		no_argument,	   0, 'D'},
+
+There is no point adding this command line option, if we are just going to
+re-enable the stream right after.
+
+Let us remove this command line option. But then always add the
+DRM_XE_OA_PROPERTY_OA_DISABLED internally, and re-enable the stream right
+after opening it.
+
+> +		{"exec-queue-id",	required_argument, 0, 'q'},
+> +		{"oa-engine-instance",	required_argument, 0, 'e'},
+> +		{"no-preempt",		no_argument,	   0, 'n'},
+
+I don't think these 3 can be command line options. Because we are not doing
+anything with them in xe_perf_recorder yet.
+
+The issue is: to pass exec-queue-id, the user will have to create an
+exec_queue, and then pass in the exec-queue-id. But even if the caller does
+this (say fork the xe_perf_recorder process), the exec-queue-id is created
+against the drm_fd in the parent process and the xe_perf_recorder will not
+find the exec_queue. So the command line option is useless.
+
+So in this patch I think just drop these 3 command line options. These will
+need to be implemented internally in xe_perf_recorder later and actually
+used (by creating a context specific buffer and issuing a
+MI_REPORT_PERF_COUNT command there and then dumping that report out,
+similar to what we do for mmio_trigger.
+
+So let's drop these 3 args from this patch. I will also confirm this with
+Umesh.
+
+> +		{"oa-buffer-size",	required_argument, 0, 'b'},
+> +		{"wait-num-reports",	required_argument, 0, 'w'},
+
+These two can be added in this patch.
+
+>		{0, 0, 0, 0}
+>	};
+>	const struct {
+> @@ -1068,7 +1121,7 @@ main(int argc, char *argv[])
+>		.oa_unit_id = 0,
+>	};
+>
+> -	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:u:", long_options, NULL)) != -1) {
+> +	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:u:Dq:e:nb:w:", long_options, NULL)) != -1) {
+>		switch (opt) {
+>		case 'h':
+>			usage(argv[0]);
+> @@ -1119,6 +1172,26 @@ main(int argc, char *argv[])
+>		case 'u':
+>			ctx.oa_unit_id = atoi(optarg);
+>			break;
+> +		case 'D':
+> +			ctx.oa_disabled = true;
+> +			break;
+> +		case 'q':
+> +			ctx.exec_queue_id = strtoul(optarg, NULL, 0);
+> +			ctx.exec_queue_id_set = true;
+> +			break;
+> +		case 'e':
+> +			ctx.oa_engine_instance = strtoul(optarg, NULL, 0);
+> +			ctx.oa_engine_instance_set = true;
+> +			break;
+> +		case 'n':
+> +			ctx.no_preempt = true;
+> +			break;
+> +		case 'b':
+> +			ctx.oa_buffer_size = strtoull(optarg, NULL, 0);
+> +			break;
+> +		case 'w':
+> +			ctx.wait_num_reports = strtoull(optarg, NULL, 0);
+> +			break;
+>		default:
+>			fprintf(stderr, "Internal error: "
+>				"unexpected getopt value: %d\n", opt);
+> @@ -1127,6 +1200,17 @@ main(int argc, char *argv[])
+>		}
+>	}
+>
+> +	if (ctx.no_preempt && !ctx.exec_queue_id_set) {
+> +		fprintf(stderr, "--no-preempt requires --exec-queue-id\n");
+> +		return EXIT_FAILURE;
+> +	}
+> +	if (ctx.oa_buffer_size &&
+> +	    ((ctx.oa_buffer_size & (ctx.oa_buffer_size - 1)) ||
+> +	     ctx.oa_buffer_size < SZ_128K || ctx.oa_buffer_size > SZ_128M)) {
+> +		fprintf(stderr, "--oa-buffer-size must be a power of 2 in [128K, 128M]\n");
+> +		return EXIT_FAILURE;
+> +	}
+
+No need to do this check here. Kernel will check and fail the OA stream
+open if a weird size is passed in :-)
+
+> +
+>	if (dev_node_id == -2) {
+>		print_intel_devices();
+>		return EXIT_SUCCESS;
+> @@ -1291,6 +1375,13 @@ main(int argc, char *argv[])
+>		goto fail;
+>	}
+>
+> +	if (ctx.oa_disabled &&
+> +	    perf_ioctl(ctx.perf_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0) < 0) {
+> +		fprintf(stderr, "Unable to enable xe oa stream: %s\n",
+> +			strerror(errno));
+> +		goto fail;
+> +	}
+> +
+>	init_mmio_trigger_ctx(&ctx);
+>	emit_oa_trigger(&ctx, 0xc0ffee01);
+>
+> --
+> 2.53.0
+>
