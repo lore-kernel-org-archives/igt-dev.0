@@ -4,158 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40930C531D0
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jul 2026 08:14:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A513C54FDF
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jul 2026 08:25:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E3F7D10E0BA;
-	Thu, 30 Jul 2026 08:14:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CA1CF10EE27;
+	Thu, 30 Jul 2026 08:25:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SS4yWBsc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HfR3av/g";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D397A10E0BA
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jul 2026 08:13:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C1E7810EE27
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jul 2026 08:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785399211; x=1816935211;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=AvhnIqWzubl9h+Ho5/qNQti/Pa2/Gd66iO8jSQDain4=;
- b=SS4yWBscMQiHFSJ8Fv5XzM9XXno9FFnHJp6hbHaQspRsY73NqJenzz43
- EBuJYIvtgGZ4zUKNV1o+9MjGnbPAyccL/FhnIZvjQy1XzBrovSE4283dy
- GuKbTMLWjl8ReG8IgLv7LmeexBybHN5oo2L//YjOYsFjl4AglcmtepWzy
- 44cv9TVbWJod26XlIQuk347T1eJ4ci2YG3dHcKLKK2IJYvQ6VtSanvMEC
- etBM08hc7PIm2z3OmnWLKlnJX9oORNvjpn0Jl+2XHxobAmh71lEoZ/JrV
- qqlwM3ixO1gxKgIXm52tywTXhTu6chZapygcrb6JJCYM7O0TbeohREHNE g==;
-X-CSE-ConnectionGUID: DxBO157BR9mpCVH7WGYexw==
-X-CSE-MsgGUID: OYP6MaDDQMKkNk5krA4RZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="85961547"
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; d="scan'208";a="85961547"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2026 01:13:31 -0700
-X-CSE-ConnectionGUID: 0oHHeQqVQoeSjDTZpU3A9Q==
-X-CSE-MsgGUID: kawqDxhlREqGmmTvKjgocw==
+ t=1785399898; x=1816935898;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=Gsn9iFr7WXYpzLEpiAvYCeTIindEIqAt/3hZ2Anz5NM=;
+ b=HfR3av/gtTYZ61uRgBXB9nZ3NX+/TZYTK2D3yW4MAluiZQUNLGhsfi/D
+ /1njPfvZSDl7tcWli62442lT56qFGmMv+lab3H7GfNR7CHQTM1eLykuW3
+ 1lbvoeMD2LhyBH8jrZAM98R2bCemgZxupyziZDXRxdFuFJB5B7qz6QD5m
+ Su29defPU76chUW4WwHFmGELb0PlvuR2KwcZaigcPHkX4hzpdDh2xqzuT
+ jBibLUCJ4B6QQwtUPuBP0sbuN0ECObwe1JCaCWWSb0VyIuvKT7gAsVrlj
+ X6C7QB+Uxa52P6eo6j+xYgYTs/Frjtn875aSg4nV42MUQAZPevPKMBb05 g==;
+X-CSE-ConnectionGUID: 29gYiQoPTxWb4qpgaRZOkA==
+X-CSE-MsgGUID: JryMcTPSRWiaS92xWmWQzg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11859"; a="86204517"
+X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; d="scan'208";a="86204517"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jul 2026 01:24:58 -0700
+X-CSE-ConnectionGUID: W+EjTuJFTn2ye/ru+tjSjA==
+X-CSE-MsgGUID: 3AamGJelSDmHa3/cJ/8zoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; d="scan'208";a="255935149"
+X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; d="scan'208";a="253908189"
 Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2026 01:13:30 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jul 2026 01:24:57 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
  fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 30 Jul 2026 01:13:29 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.45; Thu, 30 Jul 2026 01:24:56 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Thu, 30 Jul 2026 01:13:29 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.49) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.45 via Frontend Transport; Thu, 30 Jul 2026 01:24:56 -0700
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.30)
+ by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 30 Jul 2026 01:13:28 -0700
+ 15.2.2562.45; Thu, 30 Jul 2026 01:24:56 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OK/yLDSMJLsHSeDn3xWfPJ8R6v0zT0m0ytcFbw/T8UQD2Ffi/P3Al4tOS/7/MU41hHxMgbWCQ04akRS2hvaV9CHyodt+GI41WtZLp50n9Gu8UfVQFVuZhG6Ouj72jijdAjeotjB+i2ySSg7u4rGFvfAey4EPhn89Zg10256bFn0UA9tPta7T8daTM4aDhtBwRnfgL3KKz0KN4g5MYPj+4FItWWZolV8fTCzkn3XfvkmjzWvhCSuKjMjMmdib8NTCV51Zi4sEV+P8vMXLhBSnBPVOQB8sPcSm/HTEhWyQGIRRnrsnHfGvb67pSTUwzs1fqv3zXHHH871zaZgUBvA+DQ==
+ b=s4U7mvpPYYjfocwig6/KGCXSW0Iv/7bharfLh9zrr630ZwKzkOUceyj3m0S6ib6WSCeb8PXFp8/xPux+ZPaAPjf7scJ3/V+n2nwYioT+AMLfO9VQ3d1ibquo/RnqxIQ00AGWJFvgsYxsqKJVSxujZ5zlR0ZGms/aODHOHXM5IZDbLt6203D6Q7a+aJ+B60lKgpRsQ3rHgEsnVxHN/2GlzmsdJBh0sKqTr/K0wV8lvoBIhwL/JyREBCTWC0eiktBd+wZ+xurSx0THb/UM1e1Gd3uoezyDm78jY9pXQreEhs87UpMStgzehiUeB2UqMEJk16HrkfJmeQ6un/wxv8t/SQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pMs27xM3oGgfH1IbpGZSiE97RjvsyjpVUjz5xGj0DE0=;
- b=ndTd4FpAFh4tYB6C08aowPfwv2Wj6PcIUtYhQ0dwLu5pUGXc3i3qhEmSAsdIGP4aWEMWYB7AFQdGI8ZWHYWfvrGsF7N4hA4XkwM6XyFBEofQGieM4wHNrRZt+IHfS/9JdzpXSaIA3AsLahvsr2in2WAGuw3iz6LZKPXT/b2yN3gWp15BzWvme6clyf1BiWxhRgfrEECR00hnHaufhu3VZCYJgsuIeJ4jHKTjvbWe995aBbiH/xDmbAtEXRFU6pWFXO+bsDitDGrbMVFZMWYzWkG2xNEAAh1l8o2+gh9bhm0r0dq9BsV+5LTvGu1alVsHzD1ufjZ5E+UYJ32l8Qqlsg==
+ bh=ynZ7603pioVDWGnHtGNzK45tgDmqiPON5/ogg0A1c9M=;
+ b=r6RaiD39nlqFabmyfDCn45dO0TNt00PFzClNj+hWLxOmmNFd6SSrXydH+Owkc9+BCQTJXR3q1KE73Lvtww/GmjSg9kLexmtSq/dDdicCNofhPnzjTvmMlG5P08DVd2kkU0MYNOv+9hqHFBJm8lEu7WROHweAXb/BdV7ZowYfIIKGNBFs01UJ+6/1fzQgnYaIyNdTMYdCj6SVK+2iB56kDm8ehIONkI+sw8VjW2S5Q1tyFPpl6WyoZBn//Wo6QRB332KtCLpCnPxegcSls2Oo37LwdE9D6lrmFhumDhW/pRNXg0rNs2A8qACk/H0wxN0hXkH9lYBHMRlliMDFfha8pA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from LV8PR11MB8607.namprd11.prod.outlook.com (2603:10b6:408:1ec::18)
- by DS0PR11MB7309.namprd11.prod.outlook.com (2603:10b6:8:13e::17) with
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com (2603:10b6:8:a5::11) by
+ PH7PR11MB7449.namprd11.prod.outlook.com (2603:10b6:510:27a::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
- 2026 08:13:26 +0000
-Received: from LV8PR11MB8607.namprd11.prod.outlook.com
- ([fe80::70de:934:a004:9c56]) by LV8PR11MB8607.namprd11.prod.outlook.com
- ([fe80::70de:934:a004:9c56%5]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
- 08:13:26 +0000
-Message-ID: <ce7ceed0-79c4-4280-9afe-827d17547b69@intel.com>
-Date: Thu, 30 Jul 2026 13:43:19 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/xe-perf-recorder: expose some OA stream open
- properties
-To: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Umesh Nerlige Ramappa
- <umesh.nerlige.ramappa@intel.com>
-References: <20260728063606.2874276-1-shekhar.chauhan@intel.com>
- <878q6tgpae.wl-ashutosh.dixit@intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.14; Thu, 30 Jul
+ 2026 08:24:53 +0000
+Received: from DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::9d51:565a:7572:5318]) by DM4PR11MB6312.namprd11.prod.outlook.com
+ ([fe80::9d51:565a:7572:5318%5]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
+ 08:24:53 +0000
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Shankar, Uma" <uma.shankar@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>
+Subject: RE: [PATCH] lib/igt_eld: Poll for async HDA codec probe in
+ eld_is_supported()
+Thread-Topic: [PATCH] lib/igt_eld: Poll for async HDA codec probe in
+ eld_is_supported()
+Thread-Index: AQHdFc8wfVZ2/CxBOkevtsW+D2WZV7aFzhKA
+Date: Thu, 30 Jul 2026 08:24:53 +0000
+Message-ID: <DM4PR11MB6312A7B8AD9D90BB7259E73690C92@DM4PR11MB6312.namprd11.prod.outlook.com>
+References: <20260717095110.4193078-1-uma.shankar@intel.com>
+In-Reply-To: <20260717095110.4193078-1-uma.shankar@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: Shekhar Chauhan <shekhar.chauhan@intel.com>
-In-Reply-To: <878q6tgpae.wl-ashutosh.dixit@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0205.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ab::14) To LV8PR11MB8607.namprd11.prod.outlook.com
- (2603:10b6:408:1ec::18)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR11MB8607:EE_|DS0PR11MB7309:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03dd0e83-3ca4-462f-d13a-08deee126e74
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|376014|366016|1800799024|6133799003|7136999003|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info: pT8wxtyYHMBfTK8xpQYWGIvSDxeemMywKLJ9aeCFymrezZcO7wEwKfTFBouoxOVQtqo/pA954gBp41Z9C7e4mIxf0GUzkxDR9oAGMqkizMsvoz07F/WZdGI7MENBhgYEKjglexTzlyB/6k+OXpdW29TNPykIz95z+RM527ii5l2fQN1OavSbhKEbHGnnKQK++dUDnFvzLbFfh3FMZps2oc/AVCsVIEargAiut3yYmNVOJW0hLa5SIYkJeAhiU0FgZ+r560z4+ycrRECBitav1y+ybMxbu5OLYycAchzIpkS5JyRNW8Wys359/+GvuwuWPH1mJREZqcrx+jrakpBR9DEj/f9yGZcUwKyplzQlb6K/J+SiLKfOT4EsYotdiTtshpnlp1Nb1lZHdnzkQibiUa4OV6YjndOwlHjMMqxM82dxJdR6Hrk5Bc1Qxwbw0cxG56JFIieJQ7W9NlKokIBkMI/Jnm+FwLr346IdhqUTMqYcLAaptVKYa4QslXALCeIaKH54wKq9Hm1G8sslY6Xd1J7bLnwZFCPa4J6oz89EzEkRe8yDheZJKKzvUVsGDuIW+CvXAKhwveRcNGmgyNUQvuzi0XDTH39+44iTirZd9O/Xykw+QjA0AcOxU2XVywbiWPM1LDZCY4IhR4mn++UJoBzduAH7No/Ow/nR661L0p0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LV8PR11MB8607.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(6133799003)(7136999003)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003)(3023799007);
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DM4PR11MB6312:EE_|PH7PR11MB7449:EE_
+x-ms-office365-filtering-correlation-id: ed294a69-7170-4612-4da7-08deee14081a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|23010399003|1800799024|366016|38070700021|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003|3023799007;
+x-microsoft-antispam-message-info: 4+4DbyXEZ9ayz3D/YYCJEMqV3UTvTsYK3nqVBNCSGQFWgGe/ZJIAVANHamhXJjEEvKuNiT07gOKPdbGx33qES0QltxImGt+FE8MlRKXnVOAhosfEKwdL5IzTm0WAuZoWn7gopG3JH//KD8lvLglLs4GCK7E+DXV3wVZyeJlCtEaytoR9wmwM4BCwyN3tMn/vYFIGsQb4XPmMGzgr8ES5lJeGIWxCcRmOrUYQnnva45yiL+Rfj3tfxmuEENuvSiID9a/ROtiPl4wSyfJUhigDGPxGbqTGHisAAX6TnxvbEf5HcxxM56+eRFJpp1Pefo0PertcNPyWOL25vtvgi03Y3lbLg05txjCD9+cYeUq6UuxKPEUYXEW9uzfcTR0WhLZPrehkoNgCNyDZZAdB0cCA2Jf1QP0nyZ+3E79LW/cYnnhoQJy3RfJJd1s4uy81IjilO0FLSxKmNxMCfxhB5wa0MrdowXU/iScYL5a2VyGzbe9sQOiXu/lrZmb0WbbRmEtC7HpTcUUC6B0UKnLRUZyqd635EYA530cJM6TNxl0tzXc9Shyv44ZI/IaiV1DPyFoTYt0knbYxAmZV5v2CTtQ/ki6TPldp93i2DiG5xMGfymtdG5PulVIk3PrOVqEAkxBIsSrCNhAwjJWxmuRmcW7yQW/5O0krEHct9SyPsp3iQIqvhiiDsrVdLDJC6UjgPn2sEob79KeTiSv5rHycBFXxDQi97t83oHwk/ILU0TC0epo=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB6312.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(38070700021)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003)(3023799007);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WTdreE1HbHFhekp2M1B6RmkxblpUQStUNTd6RElKdFVyZGRKbjZGa2d5QThy?=
- =?utf-8?B?bEhjNXZtL1pFSDNNdjkvVEtQdEE5QlFxUmQrTE1XOWR4TlNOaVFSb3NKSCsv?=
- =?utf-8?B?eEEyKzVLYXQ2dFU4Y2FEU2dsOEp5MGpOUEJRYmRNWTQzay9MMW1pUHpOdWln?=
- =?utf-8?B?VGZyazJ4WmVKWlRadVRHQ05tQW5oSktEcTRMWUNScDMvSExzVHM1RUNIanox?=
- =?utf-8?B?S2l2MlJJM1ozNndOOEs5WTBDYTdnUU5FU1l4VFFKR1BOR1JOb3U1bG0xLzlP?=
- =?utf-8?B?dW1IQXpwNGowVC9CMWIrYWlGYm9Oc3R3K045c284SlQ5NHZ2K0RBK1FWQTIw?=
- =?utf-8?B?emlPaTYyZ3FYWlc4ZEZDZCtGQVNXeG5CKzlGb3BqMUJRcUxPYVQ5YzBUUE0y?=
- =?utf-8?B?aTZSYjVSMTA5cGtLNUZydy9CczI0RDVWa0NSMm13bG91dHhycU02VWV3ZVpu?=
- =?utf-8?B?ZG5LdEhuRGJHWW1kR3g5bnB4dENyK21FRkQyVzNMTkQ1Wmx1b1piamdjUnJj?=
- =?utf-8?B?RlZmaVI4bnphNzVmSFFoWHhCZzRYQVhBS2w3a2V4ZTl0WHVkUmR1VEFub0FG?=
- =?utf-8?B?dVdNK2VuMllLSGxvQU1RQmpGNit6UjIwcGIxbTBGNjljaXgxQUlSYUhITHh2?=
- =?utf-8?B?cWdDamVHTEMwcnVhZjZXY05GaVRKYitsZVJwQW5jT2QyNm9vemV4ZWhQUkZG?=
- =?utf-8?B?aTBYMERIS1BoWjRZcnRHQ3J4bWExc2pnRGZvblJWeE1UU0E4QWF5ZE5QNzNH?=
- =?utf-8?B?SFNxMmZqK0Y4dHNvN1RsSHFOL2xTTmZWeGo5MEQ5NTNESTJub2ZBZkJVVER0?=
- =?utf-8?B?c1FMT25oalNWQW9HdmlaZW45ak5tYXE1L0FoWTIxVnBnSkFBdHFXUmk3RW9W?=
- =?utf-8?B?Qm1xTlRaQ0piUUdwRWNOT1U0ZXVidldsQzdnV3NxeEFJc0QxTnRzYVFYQlNs?=
- =?utf-8?B?M0FzVkFmQTlrVUZQUWhha0wyeWhvTXVteTF4M2puZW5RaDNqTVplOUNTTjZt?=
- =?utf-8?B?NXh6amtjS2dUN0hGbHdJUjZlS3d6TEtSRVRiSnd2MFFFY0s4eFhhS0VpWUZU?=
- =?utf-8?B?NDRhUi9IYkRNTExVbm5lejNwTkoydFRkc3hjN2dXZFdaeDhKNlBETDRQeEgx?=
- =?utf-8?B?aFNIMDljYmlKT3ByWXJUZ1hOQ3d3MFowbGdWUGRCUTBZS1RhYlgyOUlNMFVS?=
- =?utf-8?B?SW4rZkZUVG9nU3FKbzc4RnlEMVJDbkNSa3YydW85bDkzSzZyekVrN3NDdzJ3?=
- =?utf-8?B?RWhoUUdvUm9jdUZzTmJLaVlvMWRORmd0NUZrZjBFUk1lTDVIQXdueGh6NXVv?=
- =?utf-8?B?TjhsaW1CamxCb0Y3Z2hGL1FzelJhUGtKY0VORGNZVUdGRVc4R2tFRjlqU2Zv?=
- =?utf-8?B?eVhSb0lSSEJ0Mzhqd21nanRaY0Ztc01qRjRZR2hMOGtrV3hJZzRvQmQ5TWYy?=
- =?utf-8?B?OXlYT0xNNGx2Mm9kd3AzRmdwS2NSbUdRVEpON1FNREFmNmVIb0Ira2JjZjBu?=
- =?utf-8?B?aktPT1BHTERwZUFxVHp6cHN0YnZqMTBnbEM1djZtN21DUW5oSStYenAyT3FC?=
- =?utf-8?B?N09wa01EK01hWnF5Sis3ZDRqaHFLampPcmpKYUwvYVpRSUhkaCtBZW5GbkQv?=
- =?utf-8?B?SlRKbTJZRTdGU3JaY1RUMmtiU1dYdm9uV3JqYzJvelRKbnR3WHhwWW95RlNi?=
- =?utf-8?B?YlIvYmVBYkRmZzQ2MW82bHdJWFZ5UWZZbFBFcDd1cE5kSFQyZjNXdE5URnd4?=
- =?utf-8?B?Umhwb1BSZllHbHdBQWw2d1l6aHJBWVVmUmxFVjMzQ1FpdkdMQ1J0ZGZhUFJs?=
- =?utf-8?B?dHhpcXhnVWZweUgvZWF6am9GYTNTOUwwVEpoVEFBWWNTbXl6aTdlYUFkMkl2?=
- =?utf-8?B?aW9PclJWY0NPS0RraGkxQjBNUVNiUmIxZHhHemZVQUw1V1M0N1JxWWhZY2Nl?=
- =?utf-8?B?N1k3NGhhdXREM0RQRHhnR3AzTVo4QmVTdVc4U2EzYUtwT3BQOHNHbXJrUDRk?=
- =?utf-8?B?TllFdDhJbGxDdWYrODdSOHUwU0d3VURlaS9zcEtBcm5rblF5eC9hb2hNR3U0?=
- =?utf-8?B?T3N5UXFHa3JRaDluMkxWWG9YMjlMbU1STW1GcmUrVUVwVWg2U0JmZ05oZ2J0?=
- =?utf-8?B?L0pzQllFdjhsMEFvQUVWTVVHYVNyQzRNQ0NRNjJIZnFQMmxvMUgyQlNXelpN?=
- =?utf-8?B?WnY3V2tiZ21vTHBiRm9zaEtjQWJ4eHVTRUtRaDlyOWg1S21PeFdzRzdoY2hN?=
- =?utf-8?B?am9qdnAzK1EwazJPd1ZjRDMxV1o4QWtyZ2ZsajRWcjZiL3pCdk9Nb0hYcVNF?=
- =?utf-8?B?alBicEtJY2d3cG0wZDlkdUZTRzQ5RzlLV2VmTE0xQTNSeE5nNkNVa241c2pq?=
- =?utf-8?Q?GNbNDHTJIvxxqLw8=3D?=
-X-Exchange-RoutingPolicyChecked: OwBMRifyd9ej8h1c2AmOy8+TQVA3pfg67YehjdCPVnajIhYlgGC2JVdLEICHPFk9I4CwTbqKzL97epZKIE964WlkVeXDo+lpUgRn+nbDiRv/zufY/UQdIgPNzc1Re4CE6E15G9fKdoV+qw8y7Di4uWPC5nEIZaBmg6ts6cnhwP4wit9SD/jMOIv6DN2ZzxvUd6b9K4LlU2Q/zmJB3seIInDhi1SRJC/PIz8GzEAJjycARsmf+2H3RRX5T5v09KGeDx8vxxXnd9Q7zdGS8Aa0aANdp6mkoLWEiQENX4y8OdWcuKzGwQL/S+OLFoT+Hg9wsnALPQuIsyxOa57GamyHeA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03dd0e83-3ca4-462f-d13a-08deee126e74
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR11MB8607.namprd11.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?zqUMHBcIrjAmoouIiglNcejcGifXm120MO1zIFrAYN5n/Ikly9HpBDIq1m3X?=
+ =?us-ascii?Q?Bl/Et+/n+DhlxK1kKwtf3+x1rPEdAN5rCdfYUnwHUxqIeTCkFQmAssbna/50?=
+ =?us-ascii?Q?bUkSzkFlhBxkloqQHN3rtTO4sQOhOyxXaaLQ5QoGMub+4VqNhNxx5k3qNOvy?=
+ =?us-ascii?Q?9iNOQUUZymkb1QH33MLd0bR1fsYDKVSTP6w3J9PfZtsUlpAJiKixBH1+7QZJ?=
+ =?us-ascii?Q?6XEBAD6rlzOm8T0VOzY6YpqUPBifm8I+OKJh7G1gdzuq+GW1c2kXpga8Qpx+?=
+ =?us-ascii?Q?c1SVG9nu6XbZT/sCSGZavi7q4yoycvV31AzpW8UHuMHnSnzjXAUVnOvRVEC2?=
+ =?us-ascii?Q?AcdxyLpRDEA/BtSAdbyi+jTIigh4SmoyRs6u348bxguN5pIGf10NIzZG3Hm5?=
+ =?us-ascii?Q?Jn5t7o0Ti7pileihpYUoBI0cQ09FVJ8LJQCSMqQmWe87xDVVoAUFnfhiqwXB?=
+ =?us-ascii?Q?+AQtOeRFzZNKaht64FgK9E5ocaTH2kO4gbJaKQR8+Sygm6kpGEWfSvKlWBcT?=
+ =?us-ascii?Q?KZgpgI8cSybDSdDjl8PNNyg1pme/XD8dFml1Gza0tMbBXwjlQ8RkEiBKCGOA?=
+ =?us-ascii?Q?wgbifex6FhExelSIWg0LxqLQMC7cy/4+wi+mRRCYoh0p2Ukej3JAX7EsmSyK?=
+ =?us-ascii?Q?8cy65TfPDJQL4fEd/sINV7KIqVFLyThOPHG7lUmExekyUnJY7v7Pol+q9aea?=
+ =?us-ascii?Q?yKWtUdvSDd2rKawWTd6NBZCzbmBhVVBJ3MtVRZ3DzXGkTOCzhvZLAQU782d7?=
+ =?us-ascii?Q?VaGppmFi8R/4kE0U8xNINyN4FTfc7v+cJRnDEF7FsaiBpqVgP+GvrRyo6APD?=
+ =?us-ascii?Q?hbacV8O11ftqPMAHCw9g4YK7Z87R3x+HWJSK9f1u/Q+6C2avAx8WjZDNmN1W?=
+ =?us-ascii?Q?hMNSPKzk0YpIBqMSvLWwKu+eCPBHnoTeR3bGqDNFFoZ66Q30CxFZ3cFS9QtO?=
+ =?us-ascii?Q?H7wbTBrCvbJ3i6Oc9AWN1qY+5KEwII+4JYhYkkdlMAvCHc0wIjbtcSdO6Tw2?=
+ =?us-ascii?Q?2Mv6hRenAn5PYdU2VeGGgjQDiV86pvkoZBw+BEAX/KCA43/sJnSpEkrnOTxm?=
+ =?us-ascii?Q?Ebx3lSy/03E4RTptioBhKd5ETGzU4Xuhdwj+1A8Rrowpse2hv9Jsb7VcKVAo?=
+ =?us-ascii?Q?VAVtPOv1QPSPOiax3RFhIVG6rU9bizoRIROBgZ+EHYjEBZByMG8VM3TPM9nW?=
+ =?us-ascii?Q?TwJhmNz+wmyEjeiKFZgsy3AG/YUf9nkwQHVMQXra/7L7tYVsvN77gbJDxBSE?=
+ =?us-ascii?Q?/tupu/rYmf6lmG93eLLDr6trtSIU0mRe0delI1EC1GEm7AYVcZ3Rfc162Ysa?=
+ =?us-ascii?Q?odtYn18gvFheswvyegZc3Yp+U6Yoxd/DhXhe9gf2TKs7oBTIZNxsXNo1PGHb?=
+ =?us-ascii?Q?pUVc0l+hcL4jW3dJhg5S927lelw/8vSijdpRWo59vM4R2yESwpZ67FqWQIWk?=
+ =?us-ascii?Q?Mb2Rv5Gr/r6ad9DZGBJRXe67DgW6STxTWfnklEJOlvXBVWp11ompMuS5yy0J?=
+ =?us-ascii?Q?K8O0AbOtAFyOQwqdZ2p9ESAXiDZ0aoG2/8ZfbK1J5eK1JB0TQQJ17Mz5CvTI?=
+ =?us-ascii?Q?dI+nK3Ix9s+TZQZfDEVjtbIzuz8V4XJ6Koa3QPg1n4O1bRItvLSpjxt/deZR?=
+ =?us-ascii?Q?gKaYkZCMEuXNwPqdbL2B3XkyLOYDy1hxjxSWifO1F6OZYr7S99uKq9LS8792?=
+ =?us-ascii?Q?0Y8ngJHx5rhE5RcYnhJ9mJbT0+J3KQDuk6XZy0Dv7a8SgZQk?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: dpQau7zAxsDyDXLJR6weL215Sq7LoFXfD+EMJp3Erfi8HQTtcIiFrRLl2S+cySnHuMoDtuEk7L5mqVBHE3/msdzeC8fI4I/O6CEfRPKJz0TBcADX926QyiK9UYaFyGxxyxGIhchhBE3vVYra5ujelWrlmodLU4fw+gLkh1SWIVMXOHequKACRIpCSuO4bfgplw5tbaTeP7n9kpc+GdQHzLGu2osPfPLehFWzvRAEg9k2qDVRipR2x5EPAc0t0R3UOUi0UxMHxBY9eRjR+/ioJStGwJ2SGli/wS/LSgE7kBHNpll7+rEDqK2av36k/GozrjdwluWlPUlXvaUFH2niSw==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 08:13:26.4667 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 89awO8HhBHAK9gQZkJUg+72h34UekfBes9XcDalMTJ10oePFiyJ4fmyY17aHrMMbLE3cPJwqlFu4Efd+St6j1QPvCsn9BeVj7EiMbt1fPlI=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7309
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6312.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed294a69-7170-4612-4da7-08deee14081a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2026 08:24:53.5300 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: zFbmPyQk6v86VOgIebZXriumm2mAwQJFE9ejhhymARG93kKq0qyuDVmY4d/EswpwjUzVaUB7B8Z79tHOk9Ss1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB7449
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -172,253 +161,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Patch LGTM.=20
 
-On 7/30/2026 8:24, Dixit, Ashutosh wrote:
-> On Mon, 27 Jul 2026 23:36:06 -0700, Shekhar Chauhan wrote:
->> xe-perf-recorder only passes 5 of the OA stream open properties to
->> DRM_XE_OBSERVATION_OP_STREAM_OPEN, leaving the rest without an open
->> source consumer. Add few of the remaining ones.
->>
->> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
->> ---
->>   tools/xe-perf/xe_perf_recorder.c | 105 ++++++++++++++++++++++++++++---
->>   1 file changed, 98 insertions(+), 7 deletions(-)
->>
->> diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
->> index c69050b43..06d1016a0 100644
->> --- a/tools/xe-perf/xe_perf_recorder.c
->> +++ b/tools/xe-perf/xe_perf_recorder.c
->> @@ -26,6 +26,7 @@
->>   #include <unistd.h>
->>
->>   #include "igt_core.h"
->> +#include "igt_sizes.h"
-> Not needed, see below.
->
->>   #include "intel_batchbuffer.h"
->>   #include "intel_chipset.h"
->>   #include "ioctl_wrappers.h"
->> @@ -364,6 +365,16 @@ struct recording_context {
->> 	struct drm_xe_oa_unit *oa_unit;
->> 	struct drm_xe_engine_class_instance *hwe;
->>
->> +	/* Optional OA stream open properties */
->> +	bool oa_disabled;
->> +	bool no_preempt;
->> +	bool exec_queue_id_set;
->> +	uint32_t exec_queue_id;
->> +	bool oa_engine_instance_set;
->> +	uint32_t oa_engine_instance;
->> +	uint64_t oa_buffer_size;
->> +	uint64_t wait_num_reports;
->> +
->> 	uint32_t vm;
->> 	uint32_t exec_queue;
->> 	struct intel_bb *ibb;
->> @@ -477,7 +488,7 @@ perf_open(struct recording_context *ctx)
->>   {
->> 	int stream_fd;
->>
->> -	uint64_t properties[] = {
->> +	uint64_t properties[32] = {
->> 		DRM_XE_OA_PROPERTY_OA_UNIT_ID, ctx->oa_unit->oa_unit_id,
->>
->> 		/* Include OA reports in samples */
->> @@ -488,10 +499,39 @@ perf_open(struct recording_context *ctx)
->> 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(ctx->metric_set->perf_oa_format),
->> 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, ctx->oa_exponent,
->> 	};
->> -	struct intel_xe_oa_open_prop param = {
->> -		.num_properties = ARRAY_SIZE(properties) / 2,
->> -		.properties_ptr = to_user_pointer(properties),
->> -	};
->> +	struct intel_xe_oa_open_prop param = { 0 };
->> +	uint32_t n = 10; /* 5 mandatory properties (10 u64 slots) set above */
->> +
->> +	/* Optional properties, only passed when given on the command line */
-> Let us not do this new business of mandatory and optional properties. Just
-> add the two properties we are adding in this patch (see below) to the
-> properties array above and populate their default values: 64 MB for
-> oa_buffer_size and 1 for wait_num_reports (and override the defaults if
-> commond line input is provided), similar to what is done for the previously
-> existing properties.
->
->> +	if (ctx->oa_disabled) {
->> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_DISABLED;
->> +		properties[n++] = 1;
->> +	}
->> +	if (ctx->exec_queue_id_set) {
->> +		properties[n++] = DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID;
->> +		properties[n++] = ctx->exec_queue_id;
->> +	}
->> +	if (ctx->oa_engine_instance_set) {
->> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE;
->> +		properties[n++] = ctx->oa_engine_instance;
->> +	}
->> +	if (ctx->no_preempt) {
->> +		properties[n++] = DRM_XE_OA_PROPERTY_NO_PREEMPT;
->> +		properties[n++] = 1;
->> +	}
->> +	if (ctx->oa_buffer_size) {
->> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE;
->> +		properties[n++] = ctx->oa_buffer_size;
->> +	}
->> +	if (ctx->wait_num_reports) {
->> +		properties[n++] = DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS;
->> +		properties[n++] = ctx->wait_num_reports;
->> +	}
->> +
->> +	igt_assert(n <= ARRAY_SIZE(properties));
->> +
->> +	param.num_properties = n / 2;
->> +	param.properties_ptr = to_user_pointer(properties);
->>
->> 	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &param);
->> 	if (stream_fd < 0) {
->> @@ -924,7 +964,14 @@ usage(const char *name)
->> 		"     --output,             -o <path>   Output file (default = xe_perf.record)\n"
->> 		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
->> 		"                                       Values: boot, mono, mono_raw (default = mono)\n"
->> -		"     --oa-unit-id          -u <value>  OA unit id for the capture.\n",
->> +		"     --oa-unit-id          -u <value>  OA unit id for the capture.\n"
->> +		"     --oa-disabled         -D          Open the OA stream in the disabled state\n"
->> +		"                                       (the stream is enabled right after open)\n"
->> +		"     --exec-queue-id       -q <value>  Exec queue id for context scoped capture\n"
->> +		"     --oa-engine-instance  -e <value>  Engine instance for context scoped capture\n"
->> +		"     --no-preempt          -n          Disable preemption (requires --exec-queue-id)\n"
->> +		"     --oa-buffer-size      -b <value>  OA buffer size in bytes (pow2, 128K - 128M)\n"
->> +		"     --wait-num-reports    -w <value>  Min reports before poll()/read() unblocks\n",
->> 		name);
->>   }
->>
->> @@ -1038,6 +1085,12 @@ main(int argc, char *argv[])
->> 		{"command-fifo",	required_argument, 0, 'f'},
->> 		{"cpu-clock",		required_argument, 0, 'k'},
->> 		{"oa-unit-id",		required_argument, 0, 'u'},
->> +		{"oa-disabled",		no_argument,	   0, 'D'},
-> There is no point adding this command line option, if we are just going to
-> re-enable the stream right after.
->
-> Let us remove this command line option. But then always add the
-> DRM_XE_OA_PROPERTY_OA_DISABLED internally, and re-enable the stream right
-> after opening it.
-But then, why do we even have this thing? Having a disabled option but 
-not giving it as a command line param, not allowing the user to disable 
-the stream, and even just add the DISABLED flag and then re-enable the 
-stream again, makes it counter-intuitive.
+Reviewed-by: Jeevan B <jeevan.b@intel.com>
 
-Or is this because we can't touch the kernel code or if that thing is 
-now part of the uAPI and we can't edit it now.?
-
-I'll address rest of the changes as you asked.
-
--shekhar
-
->
->> +		{"exec-queue-id",	required_argument, 0, 'q'},
->> +		{"oa-engine-instance",	required_argument, 0, 'e'},
->> +		{"no-preempt",		no_argument,	   0, 'n'},
-> I don't think these 3 can be command line options. Because we are not doing
-> anything with them in xe_perf_recorder yet.
->
-> The issue is: to pass exec-queue-id, the user will have to create an
-> exec_queue, and then pass in the exec-queue-id. But even if the caller does
-> this (say fork the xe_perf_recorder process), the exec-queue-id is created
-> against the drm_fd in the parent process and the xe_perf_recorder will not
-> find the exec_queue. So the command line option is useless.
->
-> So in this patch I think just drop these 3 command line options. These will
-> need to be implemented internally in xe_perf_recorder later and actually
-> used (by creating a context specific buffer and issuing a
-> MI_REPORT_PERF_COUNT command there and then dumping that report out,
-> similar to what we do for mmio_trigger.
->
-> So let's drop these 3 args from this patch. I will also confirm this with
-> Umesh.
->
->> +		{"oa-buffer-size",	required_argument, 0, 'b'},
->> +		{"wait-num-reports",	required_argument, 0, 'w'},
-> These two can be added in this patch.
->
->> 		{0, 0, 0, 0}
->> 	};
->> 	const struct {
->> @@ -1068,7 +1121,7 @@ main(int argc, char *argv[])
->> 		.oa_unit_id = 0,
->> 	};
->>
->> -	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:u:", long_options, NULL)) != -1) {
->> +	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:u:Dq:e:nb:w:", long_options, NULL)) != -1) {
->> 		switch (opt) {
->> 		case 'h':
->> 			usage(argv[0]);
->> @@ -1119,6 +1172,26 @@ main(int argc, char *argv[])
->> 		case 'u':
->> 			ctx.oa_unit_id = atoi(optarg);
->> 			break;
->> +		case 'D':
->> +			ctx.oa_disabled = true;
->> +			break;
->> +		case 'q':
->> +			ctx.exec_queue_id = strtoul(optarg, NULL, 0);
->> +			ctx.exec_queue_id_set = true;
->> +			break;
->> +		case 'e':
->> +			ctx.oa_engine_instance = strtoul(optarg, NULL, 0);
->> +			ctx.oa_engine_instance_set = true;
->> +			break;
->> +		case 'n':
->> +			ctx.no_preempt = true;
->> +			break;
->> +		case 'b':
->> +			ctx.oa_buffer_size = strtoull(optarg, NULL, 0);
->> +			break;
->> +		case 'w':
->> +			ctx.wait_num_reports = strtoull(optarg, NULL, 0);
->> +			break;
->> 		default:
->> 			fprintf(stderr, "Internal error: "
->> 				"unexpected getopt value: %d\n", opt);
->> @@ -1127,6 +1200,17 @@ main(int argc, char *argv[])
->> 		}
->> 	}
->>
->> +	if (ctx.no_preempt && !ctx.exec_queue_id_set) {
->> +		fprintf(stderr, "--no-preempt requires --exec-queue-id\n");
->> +		return EXIT_FAILURE;
->> +	}
->> +	if (ctx.oa_buffer_size &&
->> +	    ((ctx.oa_buffer_size & (ctx.oa_buffer_size - 1)) ||
->> +	     ctx.oa_buffer_size < SZ_128K || ctx.oa_buffer_size > SZ_128M)) {
->> +		fprintf(stderr, "--oa-buffer-size must be a power of 2 in [128K, 128M]\n");
->> +		return EXIT_FAILURE;
->> +	}
-> No need to do this check here. Kernel will check and fail the OA stream
-> open if a weird size is passed in :-)
->
->> +
->> 	if (dev_node_id == -2) {
->> 		print_intel_devices();
->> 		return EXIT_SUCCESS;
->> @@ -1291,6 +1375,13 @@ main(int argc, char *argv[])
->> 		goto fail;
->> 	}
->>
->> +	if (ctx.oa_disabled &&
->> +	    perf_ioctl(ctx.perf_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0) < 0) {
->> +		fprintf(stderr, "Unable to enable xe oa stream: %s\n",
->> +			strerror(errno));
->> +		goto fail;
->> +	}
->> +
->> 	init_mmio_trigger_ctx(&ctx);
->> 	emit_oa_trigger(&ctx, 0xc0ffee01);
->>
->> --
->> 2.53.0
->>
--- 
-Shekhar Chauhan
-Linux Graphics Software Engineer
-Intel Corporation
+> -----Original Message-----
+> From: Shankar, Uma <uma.shankar@intel.com>
+> Sent: Friday, July 17, 2026 3:21 PM
+> To: igt-dev@lists.freedesktop.org
+> Cc: B, Jeevan <jeevan.b@intel.com>; Shankar, Uma <uma.shankar@intel.com>
+> Subject: [PATCH] lib/igt_eld: Poll for async HDA codec probe in eld_is_su=
+pported()
+>=20
+> The ALSA HDA HDMI/DP codec enumerates and creates its eld# procfs nodes
+> asynchronously with respect to the graphics driver load and the i915/xe <=
+->
+> snd_hda_intel audio-component binding. When eld_is_supported() is queried
+> before that probe completes (e.g. shortly after boot or a driver reload),=
+ the glob
+> for /proc/asound/card*/eld#* returns no match and the caller skips, produ=
+cing
+> sporadic skips of tests such as kms_hdmi_inject@inject-audio and
+> kms_chamelium_audio.
+>=20
+> Split the glob check into eld_has_nodes() and poll it via igt_wait() for =
+a bounded
+> 2s before giving up. The common case where the nodes already exist return=
+s
+> immediately, so there is no added cost when audio is already up.
+>=20
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Uma Shankar <uma.shankar@intel.com>
+> ---
+>  lib/igt_eld.c | 26 +++++++++++++++++++++++---
+>  1 file changed, 23 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/lib/igt_eld.c b/lib/igt_eld.c index 6cec9abdd..4a6f867ab 100=
+644
+> --- a/lib/igt_eld.c
+> +++ b/lib/igt_eld.c
+> @@ -33,12 +33,22 @@
+>  #include <stdio.h>
+>  #include <string.h>
+>=20
+> +#include "igt_aux.h"
+>  #include "igt_core.h"
+>  #include "igt_eld.h"
+>=20
+>  #define ELD_PREFIX "eld#"
+>  #define ELD_DELIM " \t"
+>=20
+> +/*
+> + * The ALSA HDA HDMI/DP codec enumerates and creates its eld# procfs
+> +nodes
+> + * asynchronously with respect to the graphics driver load and the
+> + * i915/xe <-> snd_hda_intel audio-component binding. Poll for a short
+> +while
+> + * so a not-yet-probed codec doesn't cause a spurious skip.
+> + */
+> +#define ELD_SUPPORTED_TIMEOUT_MS 2000
+> +#define ELD_SUPPORTED_INTERVAL_MS 100
+> +
+>  /**
+>   * EDID-Like Data (ELD) is metadata parsed and exposed by ALSA for HDMI =
+and
+>   * DisplayPort connectors supporting audio. This includes the monitor na=
+me and
+> @@ -266,9 +276,8 @@ bool eld_has_igt(void)
+>  	return eld_get_igt(&eld);
+>  }
+>=20
+> -/** eld_is_supported: check whether the ALSA procfs is enabled, audio ca=
+rds
+> - * are found and ELDs are supported */
+> -bool eld_is_supported(void)
+> +/* eld_has_nodes: check whether any ALSA eld# procfs node exists */
+> +static bool eld_has_nodes(void)
+>  {
+>  	glob_t glob_buf =3D {0};
+>  	int ret;
+> @@ -285,6 +294,17 @@ bool eld_is_supported(void)
+>  	return has_elds;
+>  }
+>=20
+> +/** eld_is_supported: check whether the ALSA procfs is enabled, audio
+> +cards
+> + * are found and ELDs are supported.
+> + *
+> + * The eld# nodes are created asynchronously by the HDA HDMI codec, so
+> +poll
+> + * for a bounded amount of time before giving up to avoid spurious
+> +skips. */ bool eld_is_supported(void) {
+> +	return igt_wait(eld_has_nodes(), ELD_SUPPORTED_TIMEOUT_MS,
+> +			ELD_SUPPORTED_INTERVAL_MS);
+> +}
+> +
+>  #define ELD_MAX_SIZE 256
+>  #define MONITOR_NAME_OFFSET 20
+>  #define MONITOR_NAME_MAX_SIZE 16
+> --
+> 2.50.1
 
