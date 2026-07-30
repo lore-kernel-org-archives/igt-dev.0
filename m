@@ -4,124 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A76C4C55162
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jul 2026 16:17:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB2AAC55162
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jul 2026 16:21:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 501B510EFC5;
-	Thu, 30 Jul 2026 16:17:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B52010E4D5;
+	Thu, 30 Jul 2026 16:21:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="PmdHSYQ5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ficZxMSd";
 	dkim-atps=neutral
-Received: from PH7PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11010060.outbound.protection.outlook.com [52.101.201.60])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C527110EFF3
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jul 2026 16:16:56 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=n0314pki1LBMGpc2vcdtkj0w26+t3ZgwoowojotwpUJHek0viPeBlzk+78F1oGRGbxkSNWdUHTSz3x6p9+k6GYRjZ258UwnMq8Z3TyaLC+pSV0O3LPjGrzeSsuXwXfI4VhR1CbPBDKt31ufpBPYM8X1LyIxR1JuIJP3+fy55w+Vaw9TAgotMc8K6fT5boCetOpUBUqn4fXY5FBDPOoSPnN+b6tsFILZswUkZ7FBWGenmVPtwiZhCX0ogqdcd0bYx6Dza3tdk73w/WUzVRNOyGVBrKo3r9lBK8ZQa0Ctgz6lg2lX7VZu2KASxMMlBEaIsjJqQcMmX5HO83TVOq36xsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CGBZLnAnW/gI2YWwd2ELlwmsezLP2YZdiJfqZt25LW8=;
- b=CCmyLozS+oi6XbFH9bw8e12LlEmO4Bl6KM3xOUgNfyeXKGFbS6QLtsOPfPPUvh8C5Exz3Uu6qaBotXRvXdWPcg+eOyrSqzEcFNeNNan9HDwZRONvRYElqFlBxCGVzE875NjeeWk3mXFkk6UMX/0pVx/YvtMicuqK1/L2DaFg7CMFam0DfOEpfkNwAZIRZD0Xlxrb6xCBPD3xIolPnyIIda8YXLJtwVb8Eic1lmyE4ezYKqeYZ44Fqc+KK04eKFk3wa6SL0If3LofvXuCdTwZtajV/V41Cz9c2mNPKIZF3F12wqxB5SIys+CzHxnZ/w906v5Ymj9fpiHMMPT33mlKLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CGBZLnAnW/gI2YWwd2ELlwmsezLP2YZdiJfqZt25LW8=;
- b=PmdHSYQ5hKVLy49aWKm/5gTFTP7o/vwF5vDnKMSqjeJnVqtePomlf2Gz74sjcn9TaMGaHqakGu/m/XgMFkcV9wbHp9MZxVOToziAcvAqkzRMW3gKjGLQxs9PY8NXc/m+dukh+OM6htyq4yPANDhj8gqiNUYi/Rk6tA9yQuPpv3E=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA1PR12MB8495.namprd12.prod.outlook.com (2603:10b6:208:44d::9)
- by CY8PR12MB7562.namprd12.prod.outlook.com (2603:10b6:930:95::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Thu, 30 Jul
- 2026 16:16:52 +0000
-Received: from IA1PR12MB8495.namprd12.prod.outlook.com
- ([fe80::bfce:c745:c822:204f]) by IA1PR12MB8495.namprd12.prod.outlook.com
- ([fe80::bfce:c745:c822:204f%4]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
- 16:16:52 +0000
-Message-ID: <126ecc11-5900-4d7b-a36b-d876f1c36af6@amd.com>
-Date: Thu, 30 Jul 2026 10:16:50 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 02/12] lib/igt_kms: Add IGT_COLOROP_FIXED_MATRIX
- property
-To: Harry Wentland <harry.wentland@amd.com>, igt-dev@lists.freedesktop.org
-References: <20260623175737.171142-1-harry.wentland@amd.com>
- <20260623175737.171142-3-harry.wentland@amd.com>
- <e4dcc6bd-95ff-468c-9431-cbbcf0436ccc@amd.com>
- <cd537d9a-4abe-490d-92ab-089b23753cd1@amd.com>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <cd537d9a-4abe-490d-92ab-089b23753cd1@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MW4PR04CA0385.namprd04.prod.outlook.com
- (2603:10b6:303:81::30) To IA1PR12MB8495.namprd12.prod.outlook.com
- (2603:10b6:208:44d::9)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB8495:EE_|CY8PR12MB7562:EE_
-X-MS-Office365-Filtering-Correlation-Id: fae469a2-4e07-4540-2e9c-08deee55f744
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|376014|1800799024|366016|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: HRIOq5kc1o27ljE62kfZNgCUR+Oc3S86crljV3C39hDffDYHrM5B3DiY94RX8ndTRl0dVMh64845FNBz7SbnAtxyr8n0sfoi4USmnQItftO6IanigYRjUaDWIsYTK8ODRKzTeOqN/3L4VbPytAgO/OcmjPniSqLRR1tw15akx5iLXq84ajiY8jZuo9QhK8EYl23Xve9TPVdSxHyO+/eRX80wxKh81aTq2svcJ7T8AU3/x+tfdnCSx9mRkMOjDV3ypPr4lfwfKKvWsbT2N39swVqRjmpxms6yeFlXzQk4/uG37xbDSc2Cy6v1x/JY8PxWjrAm9SkOVzPJ+X4yc/EcH+DXbjF9kxMSlulaBXUYtI+Oww8KIJyvLO+kkdsSEpW1Ec76HHQ8lNpGiaOo8g0iPSthLsm5ME4WNpBpdfUJtdRnbdkn8ehKZhjp/w6mcPJ7IxKbsnb0IzsjfB/0pYxysPxQi6Gdpu1CU3i97MeZMTTqkBgAKHUTA3p7Xr2Pmre2lLrue9Z64f5vt+tzA0/BmSsUgBZWvklZ68eWuAScP7VQd/x3ceOyt2yeO1X9e9ZL4LQhjJuDiV9snHJVEN02BhftyqFj3m02UTsJbENQcAca2gNBMOHVdrQD3BfKkwKCpn1IwfWrRVMSJN8M5AQ/d7Jn2JGnTwppCrAx4gO4te8=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR12MB8495.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OHozKzdFQUZLNEdWdEQralo0RGowRWdraXlxOHhDMDNEV082WEphVElqazZB?=
- =?utf-8?B?V1dsSWFiZWRtREFZeWxzZUdnZ2MySDJPSHVQUGlINHNWUTZvekorRkFVaWxk?=
- =?utf-8?B?Ti84cUp5ZjBhNDhNanh6Y2RjcC81b2gzQWN4VlpQRThoRHMva0oxYk9wUm84?=
- =?utf-8?B?anNtVVFmd3RaT2RVOE5pSlVIL21SeUI2RE1BYjJzUFJ5L0VEMUhIbm1IcExw?=
- =?utf-8?B?dGk3VzFhYkNLVjhZRUhSSE8valVKa3ZUSjlLWjZWWThCbHJVSzVaRFFDdk43?=
- =?utf-8?B?QmJLNHhRbUlBZzZ1MENtbVVwMllYRTdrdzFBTEJCYnkzVVNWNjJJZ1lnM25j?=
- =?utf-8?B?QVFyV1BONnV6ZWs1K0YzYkFYVVpnODltTCtsNml6ZGxNRkVGM2FGcGYvNFhX?=
- =?utf-8?B?OUVpcE1QSDViWXhMcDMwWk1GdURJNkFYYjljSzhTM0xqdFFSc3czTGdLL0oy?=
- =?utf-8?B?YmVWczZXb2NVSUx2dnlTYzJhWHdUbU55bk5XbjVxTWttWWlmUEh2M0hlWWpS?=
- =?utf-8?B?S3ZtMHNCeUtqZWRCRHlTN0tod0xMeWtVMUtraE8zVUlSUmI5clVkVEdnNDdP?=
- =?utf-8?B?TGE5WTlZSStheDV4MWdxUTNHWllMRldYRGx2Mk1HWEN3bzlHdXZDU3Y2ZXd5?=
- =?utf-8?B?NmtVSUE3cW4rQVh3VHQ4R2ZGUEdCdWxmd2JnRFhJQTl3QTR0YkhIK3hqUDVI?=
- =?utf-8?B?SEwxQ04xL2VEbUVudUNWc0Z6WFR5c2ZNUmN4dlh2ZWFqdVRRSnplQWQ4SG90?=
- =?utf-8?B?bjIwUEIrdXZZUjlMSExBTjBxTXltMUdGbEowRHhOUEJwWjJTMHBpTzBMMmk3?=
- =?utf-8?B?NXlISWtCUmFsRzhWM2tSZVFuUzJUMWY2NVViTnU3RVhkUmhvWTQvWnpPTFRj?=
- =?utf-8?B?amJJM3BNV0ZEY0ErdmxNWUQzUGZrQ3lJY2Y3TnZpRWhzSUdHK1dvYjlFQ0c2?=
- =?utf-8?B?cWQ5am1rcXp2Yi9pQUR1SkswdzVYT3ovUmxhV010NEtyQkgrR3lNNXF0Sk5N?=
- =?utf-8?B?VWFzeHdkN1hpK0xtL0h2QXgxazI5T1VTVkhQUG1IRTVoSG9MaWZNQ2dqdGN1?=
- =?utf-8?B?TzFzTlpxd3hmdWwvbGoyRURGd1FhRzBmRC9MVVdjM0J6RHUrODhqU1pqY1My?=
- =?utf-8?B?Tm9uZDVEbHNOVXpkN3V4QjZ4VjFnTEh6VFJZSDNDRHNERkNXRGZKWndvWm9F?=
- =?utf-8?B?RjN0VUJFbmpxTjdEbkk4UkZkR3Y4SlhrY1d1NE9kOUNmVXZjaHVvb2NTcmdj?=
- =?utf-8?B?Zml2c2tGek0vTHQrTVBRcS9seE1WWTQ2VjVCTUxXTlY3c1l5TGtKRjEvVWFr?=
- =?utf-8?B?WVN1R1BPVngxZWRVZzZXTUtFVDFFMWx2ZWVzWHE4dC9VT2FwSlhlTWVMN0dp?=
- =?utf-8?B?VStGRjZneHhmV3k4ZTU4VkU4RlRIaXh4aGVvOVZRTHVUR3pUM1JiOXZiSml5?=
- =?utf-8?B?cnU0NGJNTmJBV0MrQ2dMR1huWXBXQUtWU3h6MkhzMjdXN1gyL04yVE1DanFr?=
- =?utf-8?B?OS9jbjVzb2xJZFBjTUdhMTFtVmJJNnIyM0E4bG5mQ1kyT2xRejlOZ1YzTEZu?=
- =?utf-8?B?aWhTN25zWjE4dlRta3lCTkZxeEw3STBhbDF1SHpLQzNBQmUzYnZqdmlES2FJ?=
- =?utf-8?B?Sk03Mm1Bd0taanhrTExwQTBZbllhSy9yVWExZk5QbDBoRnEyV0pCcno2Rmh2?=
- =?utf-8?B?VTBUcC9Pc0ZQRkRLNEZ6cFFZUHlLSXlBNWpPbXB0SHdsdFppeDRoZ0RNNkVx?=
- =?utf-8?B?WjJHNnQvdEU4RWF3RkpxU3NQK20rYStKTW1xOGpjeTd3VVU1eVhadEJSb1hX?=
- =?utf-8?B?eWJteHN5VVJ5MXdtYUJjT1J5K3ZpeG9LVlRvMXNucGdlUHdnaWh2TTZ1WmtR?=
- =?utf-8?B?T1ZxOFRpK2h6OVVod1BOVUJONlRsNWRhTnIxTXoyLzRRVEkrdllSMjhyeSs5?=
- =?utf-8?B?SjNRUlNOc0NuY01Ta2FobUFaTmpIWXdESTlLK2xYM2ludlNGVkJZa2VaVXMw?=
- =?utf-8?B?Uk9EM1lVQ1R2NWNxRDdsTFBNT2phejk1ZlBPcEVSb0YvN3huL2RQQUlNSlVS?=
- =?utf-8?B?R0wvSDJaKzdIb0R4L3dMek5EMi9mRFpUVkVLT2F0MDV5N2xpNy9MaW5IRzFy?=
- =?utf-8?B?dnVQOFo5S3RaMmFudWdMZ2JYR0NnUFBhaFNwak5yY2hobDdKZmN3V2hLcXNE?=
- =?utf-8?B?WmFxV3BFeUNTR0lJOEtLRDhIZTF6NmZZTDdSdmVabnVwVDNpTjVsMUw0V3N5?=
- =?utf-8?B?Y2VLQXhENHRxdG1oR0MxNXMvaU9Ba3NFRDhZK1gxWUFsUFE4WEpHcW9KcThI?=
- =?utf-8?B?Q2ZKM1ZEejZxeGpycldUb2NJZm5QM2htbnZIbHF5NGNRNXN3YzM3dz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fae469a2-4e07-4540-2e9c-08deee55f744
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8495.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 16:16:52.2848 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LhOE32lzlf6AmXfCLyN1G6ksq51Uis7qpM8T+UIfuiHZL0yrPNIByEugRNR8bouI708fyj/MKZ02/EQRCC70NA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7562
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3116210E4D5
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jul 2026 16:20:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1785428430; x=1816964430;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=jJnXMDYU9XN0MKlXTxxcFLxLxj4KiI9+9i0xT68zcqs=;
+ b=ficZxMSdNs/Av8TvhGOpXuI1ei/kNt7DwTpfdDv4nh5rIH2FAN4ZDFPL
+ 43oo552Y9psOo6H2jKrPGYHmG9Qj3ohpMG/5cDtPScH36XNHFpCH7lJ+7
+ W2SlMZxNymrBza95MZQTMqpip/rJoJt3lq1nFgLq5rCcCQ71OCsWcVtV1
+ AtmjFuSt1m4FMLW0DFbb+oliEfI1++88u0S7ZLOCYzmNWyW+XO7v1pieo
+ 7/HM/GTd7KiyD6AQtHZzwjvsa8L14If4MIDyrTFpBC3dgP6VS4xCNNf5d
+ 5AnfFW44DH1yv/B3wi5d2JKZASAh1DpAeOwt8/M49fs0aYwkGK57U4+xQ w==;
+X-CSE-ConnectionGUID: Na4IqqxEQWe/yCgKI+DLkA==
+X-CSE-MsgGUID: yaSJdI2SSISz+UFYku/yBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86067526"
+X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; d="scan'208";a="86067526"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jul 2026 09:20:29 -0700
+X-CSE-ConnectionGUID: BnGSHf65QYSLXv31lV7D3Q==
+X-CSE-MsgGUID: 3OdehuBqSamseuLw5/HDOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; d="scan'208";a="283685687"
+Received: from mcapezzu-mobl1.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.38.25])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jul 2026 09:20:29 -0700
+Date: Thu, 30 Jul 2026 09:20:28 -0700
+Message-ID: <877bmch2k3.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Cc: <igt-dev@lists.freedesktop.org>, Umesh Nerlige Ramappa
+ <umesh.nerlige.ramappa@intel.com>
+Subject: Re: [PATCH] tools/xe-perf-recorder: expose some OA stream open
+ properties
+In-Reply-To: <ce7ceed0-79c4-4280-9afe-827d17547b69@intel.com>
+References: <20260728063606.2874276-1-shekhar.chauhan@intel.com>
+ <878q6tgpae.wl-ashutosh.dixit@intel.com>
+ <ce7ceed0-79c4-4280-9afe-827d17547b69@intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -137,63 +74,262 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+On Thu, 30 Jul 2026 01:13:19 -0700, Shekhar Chauhan wrote:
+> On 7/30/2026 8:24, Dixit, Ashutosh wrote:
+> > On Mon, 27 Jul 2026 23:36:06 -0700, Shekhar Chauhan wrote:
+> >> xe-perf-recorder only passes 5 of the OA stream open properties to
+> >> DRM_XE_OBSERVATION_OP_STREAM_OPEN, leaving the rest without an open
+> >> source consumer. Add few of the remaining ones.
+> >>
+> >> Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+> >> ---
+> >>   tools/xe-perf/xe_perf_recorder.c | 105 ++++++++++++++++++++++++++++---
+> >>   1 file changed, 98 insertions(+), 7 deletions(-)
+> >>
+> >> diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+> >> index c69050b43..06d1016a0 100644
+> >> --- a/tools/xe-perf/xe_perf_recorder.c
+> >> +++ b/tools/xe-perf/xe_perf_recorder.c
+> >> @@ -26,6 +26,7 @@
+> >>   #include <unistd.h>
+> >>
+> >>   #include "igt_core.h"
+> >> +#include "igt_sizes.h"
+> > Not needed, see below.
+> >
+> >>   #include "intel_batchbuffer.h"
+> >>   #include "intel_chipset.h"
+> >>   #include "ioctl_wrappers.h"
+> >> @@ -364,6 +365,16 @@ struct recording_context {
+> >>	struct drm_xe_oa_unit *oa_unit;
+> >>	struct drm_xe_engine_class_instance *hwe;
+> >>
+> >> +	/* Optional OA stream open properties */
+> >> +	bool oa_disabled;
+> >> +	bool no_preempt;
+> >> +	bool exec_queue_id_set;
+> >> +	uint32_t exec_queue_id;
+> >> +	bool oa_engine_instance_set;
+> >> +	uint32_t oa_engine_instance;
+> >> +	uint64_t oa_buffer_size;
+> >> +	uint64_t wait_num_reports;
+> >> +
+> >>	uint32_t vm;
+> >>	uint32_t exec_queue;
+> >>	struct intel_bb *ibb;
+> >> @@ -477,7 +488,7 @@ perf_open(struct recording_context *ctx)
+> >>   {
+> >>	int stream_fd;
+> >>
+> >> -	uint64_t properties[] = {
+> >> +	uint64_t properties[32] = {
+> >>		DRM_XE_OA_PROPERTY_OA_UNIT_ID, ctx->oa_unit->oa_unit_id,
+> >>
+> >>		/* Include OA reports in samples */
+> >> @@ -488,10 +499,39 @@ perf_open(struct recording_context *ctx)
+> >>		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(ctx->metric_set->perf_oa_format),
+> >>		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, ctx->oa_exponent,
+> >>	};
+> >> -	struct intel_xe_oa_open_prop param = {
+> >> -		.num_properties = ARRAY_SIZE(properties) / 2,
+> >> -		.properties_ptr = to_user_pointer(properties),
+> >> -	};
+> >> +	struct intel_xe_oa_open_prop param = { 0 };
+> >> +	uint32_t n = 10; /* 5 mandatory properties (10 u64 slots) set above */
+> >> +
+> >> +	/* Optional properties, only passed when given on the command line */
+> > Let us not do this new business of mandatory and optional properties. Just
+> > add the two properties we are adding in this patch (see below) to the
+> > properties array above and populate their default values: 64 MB for
+> > oa_buffer_size and 1 for wait_num_reports (and override the defaults if
+> > commond line input is provided), similar to what is done for the previously
+> > existing properties.
+> >
+> >> +	if (ctx->oa_disabled) {
+> >> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_DISABLED;
+> >> +		properties[n++] = 1;
+> >> +	}
+> >> +	if (ctx->exec_queue_id_set) {
+> >> +		properties[n++] = DRM_XE_OA_PROPERTY_EXEC_QUEUE_ID;
+> >> +		properties[n++] = ctx->exec_queue_id;
+> >> +	}
+> >> +	if (ctx->oa_engine_instance_set) {
+> >> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_ENGINE_INSTANCE;
+> >> +		properties[n++] = ctx->oa_engine_instance;
+> >> +	}
+> >> +	if (ctx->no_preempt) {
+> >> +		properties[n++] = DRM_XE_OA_PROPERTY_NO_PREEMPT;
+> >> +		properties[n++] = 1;
+> >> +	}
+> >> +	if (ctx->oa_buffer_size) {
+> >> +		properties[n++] = DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE;
+> >> +		properties[n++] = ctx->oa_buffer_size;
+> >> +	}
+> >> +	if (ctx->wait_num_reports) {
+> >> +		properties[n++] = DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS;
+> >> +		properties[n++] = ctx->wait_num_reports;
+> >> +	}
+> >> +
+> >> +	igt_assert(n <= ARRAY_SIZE(properties));
+> >> +
+> >> +	param.num_properties = n / 2;
+> >> +	param.properties_ptr = to_user_pointer(properties);
+> >>
+> >>	stream_fd = intel_xe_perf_ioctl(ctx->drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &param);
+> >>	if (stream_fd < 0) {
+> >> @@ -924,7 +964,14 @@ usage(const char *name)
+> >>		"     --output,             -o <path>   Output file (default = xe_perf.record)\n"
+> >>		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
+> >>		"                                       Values: boot, mono, mono_raw (default = mono)\n"
+> >> -		"     --oa-unit-id          -u <value>  OA unit id for the capture.\n",
+> >> +		"     --oa-unit-id          -u <value>  OA unit id for the capture.\n"
+> >> +		"     --oa-disabled         -D          Open the OA stream in the disabled state\n"
+> >> +		"                                       (the stream is enabled right after open)\n"
+> >> +		"     --exec-queue-id       -q <value>  Exec queue id for context scoped capture\n"
+> >> +		"     --oa-engine-instance  -e <value>  Engine instance for context scoped capture\n"
+> >> +		"     --no-preempt          -n          Disable preemption (requires --exec-queue-id)\n"
+> >> +		"     --oa-buffer-size      -b <value>  OA buffer size in bytes (pow2, 128K - 128M)\n"
+> >> +		"     --wait-num-reports    -w <value>  Min reports before poll()/read() unblocks\n",
+> >>		name);
+> >>   }
+> >>
+> >> @@ -1038,6 +1085,12 @@ main(int argc, char *argv[])
+> >>		{"command-fifo",	required_argument, 0, 'f'},
+> >>		{"cpu-clock",		required_argument, 0, 'k'},
+> >>		{"oa-unit-id",		required_argument, 0, 'u'},
+> >> +		{"oa-disabled",		no_argument,	   0, 'D'},
+> > There is no point adding this command line option, if we are just going to
+> > re-enable the stream right after.
+> >
+> > Let us remove this command line option. But then always add the
+> > DRM_XE_OA_PROPERTY_OA_DISABLED internally, and re-enable the stream right
+> > after opening it.
+> But then, why do we even have this thing? Having a disabled option but not
+> giving it as a command line param, not allowing the user to disable the
+> stream, and even just add the DISABLED flag and then re-enable the stream
+> again, makes it counter-intuitive.
+>
+> Or is this because we can't touch the kernel code or if that thing is now
+> part of the uAPI and we can't edit it now.?
+>
+> I'll address rest of the changes as you asked.
+
+So the issue is not the command line options, the issue is that we want to
+exercise the kernel uAPI from xe_perf_recorder. So if the command line
+options also can be exposed, good. But if exposing command line options
+doesn't make sense, we need to implement things internally in
+xe_perf_recorder to exercise the kernel uAPI.
+
+So in this case we should add DRM_XE_OA_PROPERTY_OA_DISABLED internally and
+not expose it in the command line options. Thanks.
 
 
-On 7/30/26 09:34, Harry Wentland wrote:
-> 
-> 
-> On 2026-07-25 02:56, Alex Hung wrote:
->>
->>
->> On 6/23/26 11:57, Harry Wentland wrote:
->>> Add support for the Fixed Matrix colorop property:
->>> - Add IGT_COLOROP_FIXED_MATRIX property to the colorop property enum
->>>     and names array in igt_kms
->>>
->>> Assisted-by: Claude:claude-opus-4-6
->>> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
->>> ---
->>>    lib/igt_kms.c | 1 +
->>>    lib/igt_kms.h | 1 +
->>>    2 files changed, 2 insertions(+)
->>>
->>> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->>> index e82d32130666..9003b2b9e670 100644
->>> --- a/lib/igt_kms.c
->>> +++ b/lib/igt_kms.c
->>> @@ -725,6 +725,7 @@ const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
->>>        [IGT_COLOROP_MULTIPLIER] = "MULTIPLIER",
->>>        [IGT_COLOROP_LUT3D_INTERPOLATION] = "LUT3D_INTERPOLATION",
->>>        [IGT_COLOROP_NEXT] = "NEXT",
->>> +    [IGT_COLOROP_FIXED_MATRIX] = "FIXED_MATRIX_TYPE",
->> Should we move IGT_COLOROP_FIXED_MATRIX before NEXT?
->>>    };
->>>      const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
->>> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
->>> index 3df3ba86630e..1be58288e119 100644
->>> --- a/lib/igt_kms.h
->>> +++ b/lib/igt_kms.h
->>> @@ -363,6 +363,7 @@ enum igt_atomic_colorop_properties {
->>>        IGT_COLOROP_MULTIPLIER,
->>>        IGT_COLOROP_LUT3D_INTERPOLATION,
->>>        IGT_COLOROP_NEXT,
->>> +    IGT_COLOROP_FIXED_MATRIX,
->> Should we move IGT_COLOROP_FIXED_MATRIX before NEXT?
-> 
-> I would prefer not to re-order existing enum values and
-> simply append new ones. I see no good reason why _NEXT
-> should be the last entry of the enum.
-
-Sounds good to me
-
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-
-> 
-> Harry
-> 
->>>        IGT_NUM_COLOROP_PROPS
->>>    };
->>>    
->>
-> 
-
+>
+> >
+> >> +		{"exec-queue-id",	required_argument, 0, 'q'},
+> >> +		{"oa-engine-instance",	required_argument, 0, 'e'},
+> >> +		{"no-preempt",		no_argument,	   0, 'n'},
+> > I don't think these 3 can be command line options. Because we are not doing
+> > anything with them in xe_perf_recorder yet.
+> >
+> > The issue is: to pass exec-queue-id, the user will have to create an
+> > exec_queue, and then pass in the exec-queue-id. But even if the caller does
+> > this (say fork the xe_perf_recorder process), the exec-queue-id is created
+> > against the drm_fd in the parent process and the xe_perf_recorder will not
+> > find the exec_queue. So the command line option is useless.
+> >
+> > So in this patch I think just drop these 3 command line options. These will
+> > need to be implemented internally in xe_perf_recorder later and actually
+> > used (by creating a context specific buffer and issuing a
+> > MI_REPORT_PERF_COUNT command there and then dumping that report out,
+> > similar to what we do for mmio_trigger.
+> >
+> > So let's drop these 3 args from this patch. I will also confirm this with
+> > Umesh.
+> >
+> >> +		{"oa-buffer-size",	required_argument, 0, 'b'},
+> >> +		{"wait-num-reports",	required_argument, 0, 'w'},
+> > These two can be added in this patch.
+> >
+> >>		{0, 0, 0, 0}
+> >>	};
+> >>	const struct {
+> >> @@ -1068,7 +1121,7 @@ main(int argc, char *argv[])
+> >>		.oa_unit_id = 0,
+> >>	};
+> >>
+> >> -	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:u:", long_options, NULL)) != -1) {
+> >> +	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:u:Dq:e:nb:w:", long_options, NULL)) != -1) {
+> >>		switch (opt) {
+> >>		case 'h':
+> >>			usage(argv[0]);
+> >> @@ -1119,6 +1172,26 @@ main(int argc, char *argv[])
+> >>		case 'u':
+> >>			ctx.oa_unit_id = atoi(optarg);
+> >>			break;
+> >> +		case 'D':
+> >> +			ctx.oa_disabled = true;
+> >> +			break;
+> >> +		case 'q':
+> >> +			ctx.exec_queue_id = strtoul(optarg, NULL, 0);
+> >> +			ctx.exec_queue_id_set = true;
+> >> +			break;
+> >> +		case 'e':
+> >> +			ctx.oa_engine_instance = strtoul(optarg, NULL, 0);
+> >> +			ctx.oa_engine_instance_set = true;
+> >> +			break;
+> >> +		case 'n':
+> >> +			ctx.no_preempt = true;
+> >> +			break;
+> >> +		case 'b':
+> >> +			ctx.oa_buffer_size = strtoull(optarg, NULL, 0);
+> >> +			break;
+> >> +		case 'w':
+> >> +			ctx.wait_num_reports = strtoull(optarg, NULL, 0);
+> >> +			break;
+> >>		default:
+> >>			fprintf(stderr, "Internal error: "
+> >>				"unexpected getopt value: %d\n", opt);
+> >> @@ -1127,6 +1200,17 @@ main(int argc, char *argv[])
+> >>		}
+> >>	}
+> >>
+> >> +	if (ctx.no_preempt && !ctx.exec_queue_id_set) {
+> >> +		fprintf(stderr, "--no-preempt requires --exec-queue-id\n");
+> >> +		return EXIT_FAILURE;
+> >> +	}
+> >> +	if (ctx.oa_buffer_size &&
+> >> +	    ((ctx.oa_buffer_size & (ctx.oa_buffer_size - 1)) ||
+> >> +	     ctx.oa_buffer_size < SZ_128K || ctx.oa_buffer_size > SZ_128M)) {
+> >> +		fprintf(stderr, "--oa-buffer-size must be a power of 2 in [128K, 128M]\n");
+> >> +		return EXIT_FAILURE;
+> >> +	}
+> > No need to do this check here. Kernel will check and fail the OA stream
+> > open if a weird size is passed in :-)
+> >
+> >> +
+> >>	if (dev_node_id == -2) {
+> >>		print_intel_devices();
+> >>		return EXIT_SUCCESS;
+> >> @@ -1291,6 +1375,13 @@ main(int argc, char *argv[])
+> >>		goto fail;
+> >>	}
+> >>
+> >> +	if (ctx.oa_disabled &&
+> >> +	    perf_ioctl(ctx.perf_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0) < 0) {
+> >> +		fprintf(stderr, "Unable to enable xe oa stream: %s\n",
+> >> +			strerror(errno));
+> >> +		goto fail;
+> >> +	}
+> >> +
+> >>	init_mmio_trigger_ctx(&ctx);
+> >>	emit_oa_trigger(&ctx, 0xc0ffee01);
+> >>
+> >> --
+> >> 2.53.0
+> >>
+> --
+> Shekhar Chauhan
+> Linux Graphics Software Engineer
+> Intel Corporation
+>
