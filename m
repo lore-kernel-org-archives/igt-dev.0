@@ -4,58 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 886E4C55162
-	for <igt-dev@archiver.kernel.org>; Thu, 30 Jul 2026 16:59:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49E1AC55162
+	for <igt-dev@archiver.kernel.org>; Thu, 30 Jul 2026 17:10:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3484710E1AD;
-	Thu, 30 Jul 2026 16:59:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D55A610F007;
+	Thu, 30 Jul 2026 17:10:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SR8a5He4";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Xvkfrhsk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5B82F10E0E7
- for <igt-dev@lists.freedesktop.org>; Thu, 30 Jul 2026 16:58:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785430721; x=1816966721;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cMJF4WQUaqKH3imo0T/cdWjt25yLiioMb3x4laKglqs=;
- b=SR8a5He4jlzl7uQEDV+iAFYRkQJcR7l6FlfsdXSqdoUrQXW+pDPy0hOU
- DsK89r00UGWj47ZVIQdCi1S72lp/SI5rDt2eJN1xCBOo4DON+ixYR1FNN
- dtbQKdVwhSFTBonD80UXIRpnQI1G16oD6XW5DSTqMqDkju+mXiCkvDVPv
- 4TJ9BR3Kg73MWcKyIetXouUjaYgkbXURqs66urvrO3sWB9+ciiYux7oLp
- HiUGIQQdnPewFsAH6AwOcbcnbmjw7E3Var1P7tNcJWtdUQNkw98l69sWR
- ce08G5l3gJVwrINYEKWMP2n5CgSssc1Is1kg4b2BSQ+F2jnntIw+fG6R1 A==;
-X-CSE-ConnectionGUID: fwINxN2/SZ+Em6pATGVciw==
-X-CSE-MsgGUID: f1soh+ORRWuDaMuTyc3dfg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="88590076"
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; d="scan'208";a="88590076"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2026 09:58:40 -0700
-X-CSE-ConnectionGUID: x8EnWsPuS5mKKAJcZ1+UFA==
-X-CSE-MsgGUID: oFWmHSmxS0maD/g6vf4q+g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,194,1779174000"; d="scan'208";a="262286649"
-Received: from sinjan-super-server.iind.intel.com ([10.190.239.39])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2026 09:58:36 -0700
-From: Karthik Poosa <karthik.poosa@intel.com>
+Received: from DM5PR21CU001.outbound.protection.outlook.com
+ (mail-centralusazon11011019.outbound.protection.outlook.com [52.101.62.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B626910E1E7
+ for <igt-dev@lists.freedesktop.org>; Thu, 30 Jul 2026 17:10:01 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tQmcwxgFQLBV4j3c28gT5l/b+jx8hzsgAw/urmTQ4V1ANq2+GdeAW2juSNQo2bPkN6Mu0FcgnoJGLfDz4HhgT1rQ5rogDyn6O6L8rthUQmQrhQJjpT5+wCHKTEGDAtaJHiOdNsxEbJpf2O1rKhie9+Z3L7L2xwezD9LIL2IDCzDAhL87XZ17MAsu3CBz3piAHFmceyGXI0iBqIAecbZrWv9myVo7vcvk2ikLKb/V6ZO20/+SXjFNCobSfrYZqYg+eXirMiQadvp6EKKa8s2lwwtZlcDzHI0HBxQv6POlQztUKUjSvNGNdJnPf/uyUhrC+tVogV0O7cFIgmwL8hDwdg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BtxUo5vvjMTa3xbbycIxWSleAinrzz7rfflWY6duYrU=;
+ b=B1Vlz7bI81EcCgDpvt3ipVeTIH+VVbKXU+MzyltwhWT2GwXIgjYTSMglOSyI6btept6oxOm9YSuJJVbGQVyogpGREYDr4S4vwMas8V1J82YxrQqabh9Rc/d1SWxpcALfgNSEIyhcgZGmw/36sKwpHz/XeTJqiuADAJuXouxTy6VTmBLXzNqgNr49iFcnC9d8lIT3o4JEqiOlTvuxIQAQkRetXIKv85JQ+RY9xlXKxylH2+c4xz2avVeOrUju0Qr8rnyGRpwOHw4JGZI41+WZL4Atai+dZ9XCQW625uzf+IfmzL0xVXEMT98P90bOC4szlXPYCjKzMp2E/2hv5BgkVA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BtxUo5vvjMTa3xbbycIxWSleAinrzz7rfflWY6duYrU=;
+ b=XvkfrhskVGT4YiIT3L5lx4ip7kvDxlXYuh4NMUEO8W+bmPNd6XE00qwnSkeJdLdV96PrIC1Yk3o2zvFERulX5sY75SRt2XijfcgCoeI6hnWAA1P3VmrIih/xZ+JWGvaSOPOaLwjLUpaR35vTZ3C1dc8W+IVlguTGbEoqnhO/kC0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA1PR12MB8495.namprd12.prod.outlook.com (2603:10b6:208:44d::9)
+ by SJ0PR12MB5673.namprd12.prod.outlook.com (2603:10b6:a03:42b::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.245.10; Thu, 30 Jul
+ 2026 17:09:58 +0000
+Received: from IA1PR12MB8495.namprd12.prod.outlook.com
+ ([fe80::bfce:c745:c822:204f]) by IA1PR12MB8495.namprd12.prod.outlook.com
+ ([fe80::bfce:c745:c822:204f%4]) with mapi id 15.21.0270.012; Thu, 30 Jul 2026
+ 17:09:58 +0000
+Message-ID: <319708b6-6a71-48c3-a11c-e07c9ad753c9@amd.com>
+Date: Thu, 30 Jul 2026 11:09:56 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 08/12] lib/igt_color: Refactor transform_pixels for
+ input/output FBs and CSC
 To: igt-dev@lists.freedesktop.org
-Cc: rodrigo.vivi@intel.com, anshuman.gupta@intel.com, badal.nilawar@intel.com,
- raag.jadav@intel.com, riana.tauro@intel.com, sk.anirban@intel.com,
- mallesh.koujalagi@intel.com, soham.purkait@intel.com,
- Karthik Poosa <karthik.poosa@intel.com>
-Subject: [PATCH i-g-t 1/1] tests/intel/hwmon: Add fan control test coverage
-Date: Thu, 30 Jul 2026 22:37:52 +0530
-Message-Id: <20260730170752.3750843-2-karthik.poosa@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260730170752.3750843-1-karthik.poosa@intel.com>
-References: <20260730170752.3750843-1-karthik.poosa@intel.com>
+References: <20260623175737.171142-1-harry.wentland@amd.com>
+ <20260623175737.171142-9-harry.wentland@amd.com>
+Content-Language: en-US
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20260623175737.171142-9-harry.wentland@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4P223CA0026.NAMP223.PROD.OUTLOOK.COM
+ (2603:10b6:303:80::31) To IA1PR12MB8495.namprd12.prod.outlook.com
+ (2603:10b6:208:44d::9)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB8495:EE_|SJ0PR12MB5673:EE_
+X-MS-Office365-Filtering-Correlation-Id: f9a4a7fa-77a6-4c76-ec6f-08deee5d61f4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|23010399003|366016|1800799024|376014|4143699003|11063799006|10067099003|56012099006|6133799003|3023799007|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: DnXAMJ2NeeKjh5tApVCwMQSgJOshZRFfkQKYbgUdYOqy6v0bMJ6ljDBd4vzGwVoOhHeb8n7SH/29eZZsqI0sOCF7N7bludhDhAdJDzIxDovDTDp4pfXuH5laPlrsp7ySg3PnWhr8RHPreiNEpiIEw/tJy/8sawuqKr6yl+mjbUmXXVpoS8SOHv8PWRX+M3k/jjJdXmld+7NFQOU6B0cdVxkuODsDMuO4kLuNWg/9w1GKl5onSEuPRSqAyVY3d3LY1JIsrVfkIZIDma8pIQnSr2bbO4aGP022QEvcja8Urxj6Oy98+dwSmdFRbldjSy763kRP3mgJDCQTEeQBGaQdPPp8Rr83NGFgktkHsbSPnAfMcGg5oPIld64UR+I8zDbjcgLmL+uJ0K+3x0cCBHVw1FrIUbb6vgYWemo5JhTT4mChuhgZPg1aetGKZfQy3iMbfOnb1dZ7AvC7hItWuFe+IwhGM4tn7MkNBFBM08yJn0oXwpyxIRkQWEe8qFf/VaKhhnujqkDSb4vL/H/1Lt7CGzuSDBsz6aoYxPvgKKWhGNiYbwyXKYI1y5xGY4oq2H6PX9AdQTDvny8amI5hDZ5+w2c6snPA3zmwbUGE9QdU2TNKz2JWycGRHxO81hpc+V96IbJKwPqakZ0J0iPwE8ZzdMrf38bFVzcr3kYqWkun8rk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR12MB8495.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(4143699003)(11063799006)(10067099003)(56012099006)(6133799003)(3023799007)(22082099003)(18002099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YVpEc1BMSVgvYWZnMGVNQjBlWkozQzJtWkI4ZmFydEVHY3dDRDRONkM5RElu?=
+ =?utf-8?B?NmpUbDNjSHMvV05hZVF4YzFGaENWWVVFYkhsZjl2R2dqalNQWWRYY05saGsz?=
+ =?utf-8?B?UEVERjMyMm0wUDluL3lGT05FV05LbFJ2cEswSFArOG9zMzMyTzh3dHFtSmR3?=
+ =?utf-8?B?QmpBaVFtNVBTcC9aeGFNUk9ZbVFrbGJicDFyeEJsVWNkRXN4OER6c2NtUUor?=
+ =?utf-8?B?Rk13QUMvZW5OZVNFNWtscGJmcmRPRjNRcHd1K1UzajBIZ0FZL092SGVLZDIx?=
+ =?utf-8?B?TGxPUDUzY3NZK2RIclMxdGZSY2hSTWFqcWtES3dHZ1JuY05sOTVGRkhsaWRq?=
+ =?utf-8?B?b2V3dUZ3bVFqVVBzU3N3M0VwUldnbFA1NHMyZEpRUGhMdVlhTHlaL09kNEto?=
+ =?utf-8?B?NS9ldG9vWVpTbHZ6eXpMUmFlbGo0N0dIQkxNam5BRlRnc2IySU9DNVVkdEdr?=
+ =?utf-8?B?ZHprQWJRb3h2TzE5cjhuOXdMdHFJQStabW95NFNXcVNRSWdTQUhWOEUrUUdC?=
+ =?utf-8?B?ekFNUytlQjg2K0l5NWw1NE1TUHVqNHBMQU5wT2V4WTNTN2txVnU0Rk1PVktu?=
+ =?utf-8?B?SktwZWE3Y3N6c1YwaWl1Qm5GdGRSb2h4bWhGeGhNTU5JODQxZnhWVEdRQXZG?=
+ =?utf-8?B?a05ES1FZbXJtQk0zNnZuakl4V0JNTVhGdGpVR2FLTnJzcEloSm5aSE12NXdv?=
+ =?utf-8?B?aVBxTmxreGc2b2JHM0JmbUhQc0psMThNWVpjb1MzaXhpWFEycmJCT2RZY3dK?=
+ =?utf-8?B?MWp4WVU1WTlubmY3aGJiQmZVUUd3OVYrcThZTTJXT2ZYazBlZHk1YzlTTG1P?=
+ =?utf-8?B?bkFHZ2NUNjZGV1g4NDhYNkhCb0JFTjR6TWNpOXdxNmo0aU1lbkpTTUVrRWE0?=
+ =?utf-8?B?RmVuZmVXNHFnZDZqRkFzU3lSdXpRKzFxc1FFeWYyazlBZ2dlSHRGZGVPSDdn?=
+ =?utf-8?B?VnFuUVg3S0dFQXlKNUhvRHV4MVFJNm03NXpVczhBZW9iOExmTXFabzh5RDZn?=
+ =?utf-8?B?emUrNFVmMDI2OEJpV2lsdFZ2SGxCempNUSs4L2ZzL1RvMXFQTFVvY09KS25B?=
+ =?utf-8?B?UEtDaDQyMytUOVZsMGhBeXhPdGU3WnFzckIvTEVjTU1ScnQ0OEtWTnlrWWU4?=
+ =?utf-8?B?SHJOWG43ajBBUGh1dmtJNFF6cVVTeDlSc0pMQitObXNVNE9hcHRTV3NwaUZQ?=
+ =?utf-8?B?U3VzemErekh4N05ESUQwc1hIQnVuZ0ozaXZPRk95aVJBWXVVWHJxeTllU1Nm?=
+ =?utf-8?B?ODl5U2lHaG1NQkVhRW5FdnBVa0J6TDY0dW9reWZKUy9nRGxSNnRydlFJNXlK?=
+ =?utf-8?B?R3NKZnhaeG1PVkoweHZHc0pLU1c3SkZ6VGVpMkNrOWgzUnpLWWI0T2wvb3pa?=
+ =?utf-8?B?bEJ4MklEeGtGbGVoZXV0OUZDTldXMVg1VzNPRzZFODR1Y05xZDJROFVOYXA5?=
+ =?utf-8?B?WUt3SWl1ZWg4U0JlNUFHYUJRZG9aL0RwQ093TjZKQjUzRW9ReHFQb3lsOXpv?=
+ =?utf-8?B?dDBkOVQ4ZWNlWXVua1ZqZmRKYjd6RncrbytmSFUvL0IzZzRNbXBJRmxPanpN?=
+ =?utf-8?B?M041cVZuR2UvYkxObkRUV1FxSC81K09EVDN0TDhvcWFrODVMMm1IenpQbUpK?=
+ =?utf-8?B?NmtiS3RzQlF2dDNLLzN6K3d2aVBrZGZBdGs3SnVUYWIvY2EzZk5xelNRaFg3?=
+ =?utf-8?B?YVpiQXJLMFIrYUd0WExlRWd3RSt6ZzF1OVcreUlmOU9ybWxZeDdEZU5jT3Fu?=
+ =?utf-8?B?WHRTOERaN1c3R08zbFhKYkpwMlVIeTFCMWFzbzFOVTVuTzg2bHB3c09QdzNa?=
+ =?utf-8?B?SFpDbkE2Z1JqZ21HMjVFZy81SHFCdHhiRFp4aDRTK285eEdkTUFqL0RudW5B?=
+ =?utf-8?B?WVFrK254aGFpeDc1bDdwWVBXOU8wZ1N2V0lHakFyVnlJREFNOVRMakdEWVFo?=
+ =?utf-8?B?MXg2YlVJeC9jNThDTUl2NWM5TVh6R3FBTFV3YkxiN0JXUVlWZnVqYVhHaW1s?=
+ =?utf-8?B?cjY2NTdTQTR2eXA0ekFqZ3lUK04vZU1rU3VKVERwK2lyUFFNc01EK1lwekRT?=
+ =?utf-8?B?N0x0QWw4czhGOXNMekVaRDdMaUFzclNLSExOQTZYV3ltMjAxSEFPWlJHSlF5?=
+ =?utf-8?B?OVd3Z1BpdjhPdjRKQXBDSktMMUc1VGx3a0szY2tSK3kzelhYNkZ1Q2wxQkRp?=
+ =?utf-8?B?NTRqQk5XbkNlU1pQR0R4SEVJV3h6ZGRUQnYzVVkwbmNKellFNllqYVp2NHNF?=
+ =?utf-8?B?QUFkWTVNQStXbDRXc3NOR1JKY0VYbzVoS1djR0xDYTd6d3laTUVqYTFRdTE2?=
+ =?utf-8?Q?snhuDONaHhKoQDMYM/?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f9a4a7fa-77a6-4c76-ec6f-08deee5d61f4
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8495.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jul 2026 17:09:57.8486 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FXNA/H7HiqK8z6sJFqn9kJ96IMe2QpXzwreaOdxZv/9X/YPvL7MtTfHARm8RXJPr4fja3zu9cjEwiwQXzIXvkQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5673
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,589 +135,331 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce a comprehensive set of fan-control hwmon tests, including:
 
-Validate pwm_enable modes (full-speed, manual, and automatic control).
-Program and verify user-defined fan curves with point-by-point and
-readback checks.
-Negative test coverage for invalid PWM values and fan-curve configuration
-writes.
-Suspend/resume validation of both user-defined and default fan tables
-across freeze, mem, and disk power states.
 
-Assisted-by: Copilot:GPT-5.3-Codex
-Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
----
- tests/intel/intel_hwmon.c | 523 +++++++++++++++++++++++++++++++++++++-
- 1 file changed, 522 insertions(+), 1 deletion(-)
+On 6/23/26 11:57, Harry Wentland wrote:
+> Refactor igt_color_transform_pixels() to accept separate input and
+> output framebuffers, plus optional YUV encoding/range parameters for
+> CSC conversion. This enables:
+> - Reading from YUV input (NV12/P010) and writing to RGB output
+> - Inline YUV-to-RGB CSC using the igt_color_encoding matrix library
+> - Skipping the first transform when CSC is applied (since it's done
+>    inline via the matrix)
+> 
+> Update apply_transforms() in kms_colorop.c to extract encoding/range
+> from the first colorop when it's a FIXED_MATRIX type, and pass both input
+> and output FBs to the refactored function.
+> 
+> Also update colorop_plane_test() to create sw_transform_fb with the
+> output format rather than copying the input FB.
+> 
+> Assisted-by: Claude:claude-sonnet-4-5
+> Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+> ---
+>   lib/igt_color.c     | 170 +++++++++++++++++++++++++++++++++++---------
+>   lib/igt_color.h     |   6 +-
+>   tests/kms_colorop.c |  38 ++++++----
+>   3 files changed, 166 insertions(+), 48 deletions(-)
+> 
+> diff --git a/lib/igt_color.c b/lib/igt_color.c
+> index a451f5642bac..cc425cfe5ac9 100644
+> --- a/lib/igt_color.c
+> +++ b/lib/igt_color.c
+> @@ -13,6 +13,7 @@
+>   
+>   #include "drmtest.h"
+>   #include "igt_color.h"
+> +#include "igt_color_encoding.h"
+>   #include "igt_core.h"
+>   #include "igt_x86.h"
+>   
+> @@ -578,58 +579,159 @@ igt_color_pixel_to_fourcc(uint32_t drm_format, igt_pixel_t *pixel)
+>   	return raw_pixel;
+>   }
+>   
+> -int igt_color_transform_pixels(igt_fb_t *fb, igt_pixel_transform transforms[], int num_transforms)
+> +int igt_color_transform_pixels(igt_fb_t *input_fb, igt_fb_t *output_fb,
+> +				  igt_pixel_transform transforms[],
+> +				  int num_transforms,
+> +				  int yuv_encoding,
+> +				  enum igt_color_range yuv_range)
+>   {
+> -	uint32_t *line = NULL;
+> -	void *map;
+> -	char *ptr;
+> -	int x, y, cpp = igt_drm_format_to_bpp(fb->drm_format) / 8;
+> -	uint32_t stride = igt_fb_calc_plane_stride(fb, 0);
+> +	uint32_t *input_line = NULL;
+> +	uint32_t *output_line = NULL;
+> +	void *input_map, *output_map;
+> +	char *input_ptr, *output_ptr;
+> +	int x, y;
+> +	int input_cpp = 0;
+> +	int output_cpp = igt_drm_format_to_bpp(output_fb->drm_format) / 8;
+> +	uint32_t input_stride = 0, output_stride = igt_fb_calc_plane_stride(output_fb, 0);
+> +	uint8_t *y_plane = NULL, *uv_plane = NULL;
+> +	int y_stride = 0, uv_stride = 0;
+> +	bool input_is_yuv = (input_fb->drm_format == DRM_FORMAT_NV12 ||
+> +			     input_fb->drm_format == DRM_FORMAT_P010);
+> +	bool output_is_yuv = (output_fb->drm_format == DRM_FORMAT_NV12 ||
+> +			      output_fb->drm_format == DRM_FORMAT_P010);
+> +	struct igt_mat4 csc_matrix;
+> +	bool apply_csc = false;
+>   
+> -	if (fb->num_planes != 1)
+> +	/* Validate framebuffer dimensions match */
+> +	igt_assert(input_fb->width == output_fb->width);
+> +	igt_assert(input_fb->height == output_fb->height);
+> +
+> +	if (input_is_yuv && yuv_encoding >= 0) {
+> +		apply_csc = true;
+> +
+> +		csc_matrix = igt_ycbcr_to_rgb_matrix(input_fb->drm_format,
+> +						     output_fb->drm_format,
+> +						     yuv_encoding, yuv_range);
+> +	}
+> +
+> +	/* Validate plane counts */
+> +	if (!input_is_yuv && input_fb->num_planes != 1)
+>   		return -EINVAL;
+>   
+> -	ptr = igt_fb_map_buffer(fb->fd, fb);
+> -	igt_assert(ptr);
+> -	map = ptr;
+> +	if (input_is_yuv && input_fb->num_planes != 2)
+> +		return -EINVAL;
+>   
+> -	/*
+> -	 * Framebuffers are often uncached, which can make byte-wise accesses
+> -	 * very slow. We copy each line of the FB into a local buffer to speed
+> -	 * up the hashing.
+> -	 */
+> -	line = malloc(stride);
+> -	if (!line) {
+> -		munmap(map, fb->size);
+> +	if (!output_is_yuv && output_fb->num_planes != 1)
+> +		return -EINVAL;
+> +
+> +	if (output_is_yuv && output_fb->num_planes != 2)
+> +		return -EINVAL;
+> +
+> +	/* Map input buffer */
+> +	input_ptr = igt_fb_map_buffer(input_fb->fd, input_fb);
+> +	igt_assert(input_ptr);
+> +	input_map = input_ptr;
+> +
+> +	/* For YUV input, set up plane pointers */
+> +	if (input_is_yuv) {
+> +		y_plane = input_map;
+> +		y_stride = input_fb->strides[0];
+> +		uv_plane = y_plane + input_fb->offsets[1];
+> +		uv_stride = input_fb->strides[1];
+> +	} else {
+> +		input_cpp = igt_drm_format_to_bpp(input_fb->drm_format) / 8;
+> +		input_stride = igt_fb_calc_plane_stride(input_fb, 0);
+> +	}
+> +
+> +	/* Map output buffer */
+> +	output_ptr = igt_fb_map_buffer(output_fb->fd, output_fb);
+> +	igt_assert(output_ptr);
+> +	output_map = output_ptr;
+> +
+> +	/* Allocate line buffers for speed */
+> +	if (!input_is_yuv) {
+> +		input_line = malloc(input_stride);
+> +		if (!input_line) {
+> +			igt_fb_unmap_buffer(output_fb, output_map);
+> +			igt_fb_unmap_buffer(input_fb, input_map);
+> +			return -ENOMEM;
+> +		}
+> +	}
+> +
+> +	output_line = malloc(output_stride);
+> +	if (!output_line) {
+> +		free(input_line);
+> +		igt_fb_unmap_buffer(output_fb, output_map);
+> +		igt_fb_unmap_buffer(input_fb, input_map);
+>   		return -ENOMEM;
+>   	}
+>   
+> -	for (y = 0; y < fb->height; y++, ptr += stride) {
+> +	for (y = 0; y < input_fb->height; y++) {
+> +		/* For RGB input, read line from input buffer */
+> +		if (!input_is_yuv)
+> +			igt_memcpy_from_wc(input_line, input_ptr + y * input_stride,
+> +					   input_fb->width * input_cpp);
+>   
+> -		/* get line from buffer */
+> -		igt_memcpy_from_wc(line, ptr, fb->width * cpp);
+> -
+> -		for (x = 0; x < fb->width; x++) {
+> -			uint32_t raw_pixel = le32_to_cpu(line[x]);
+> +		for (x = 0; x < input_fb->width; x++) {
+>   			igt_pixel_t pixel;
+>   			int i;
+> +			int start_transform;
+>   
+> -			igt_color_fourcc_to_pixel(raw_pixel, fb->drm_format, &pixel);
+> +			/* READ from input buffer */
+> +			if (input_is_yuv) {
+> +				uint32_t raw_y, raw_u, raw_v;
+> +				struct igt_vec4 yuv, rgb;
+>   
+> -			/* run transform on pixel */
+> -			for (i = 0; i < num_transforms; i++)
+> -				transforms[i](&pixel);
+> +				/* Extract raw Y, U, V from YUV input buffer */
+> +				igt_color_extract_yuv_pixel(input_fb, x, y, y_plane, uv_plane,
+> +							    y_stride, uv_stride,
+> +							    &raw_y, &raw_u, &raw_v);
+>   
+> -			/* write back to line */
+> -			line[x] = cpu_to_le32(igt_color_pixel_to_fourcc(fb->drm_format, &pixel));
+> +				/* Convert YUV to RGB using pre-computed CSC matrix */
+> +				if (apply_csc) {
+> +					float rgb_max;
+> +
+> +					/* Matrix expects raw format values */
+> +					yuv.d[0] = raw_y;
+> +					yuv.d[1] = raw_u;
+> +					yuv.d[2] = raw_v;
+> +					yuv.d[3] = 1.0f;
+> +
+> +					rgb = igt_matrix_transform(&csc_matrix, &yuv);
+> +
+> +					rgb_max = (output_fb->drm_format == DRM_FORMAT_XRGB2101010) ? 1023.0f : 255.0f;
+> +
+> +					pixel.r = rgb.d[0] / rgb_max;
+> +					pixel.g = rgb.d[1] / rgb_max;
+> +					pixel.b = rgb.d[2] / rgb_max;
+> +				} else {
+> +					igt_color_yuv_to_pixel(input_fb->drm_format, raw_y, raw_u, raw_v, &pixel);
+> +				}
+> +			} else {
+> +				uint32_t raw_pixel = le32_to_cpu(input_line[x]);
+> +				igt_color_fourcc_to_pixel(raw_pixel, input_fb->drm_format, &pixel);
+> +			}
+> +
+> +			/* Transform pixel through remaining transforms */
+> +			/* Skip first transform if it was a CSC that we already applied */
+> +			start_transform = apply_csc ? 1 : 0;
+> +			for (i = start_transform; i < num_transforms; i++)
+> +				if (transforms[i])
+> +					transforms[i](&pixel);
+> +
+> +			/* write to output buffer */
+> +			output_line[x] = cpu_to_le32(igt_color_pixel_to_fourcc(output_fb->drm_format, &pixel));
+>   		}
+>   
+> -		/* copy line back to fb buffer */
+> -		igt_memcpy_from_wc(ptr, line, fb->width * cpp);
+> +		/* Copy output line to output buffer */
+> +		memcpy(output_ptr + y * output_stride, output_line,
+> +		       output_fb->width * output_cpp);
 
-diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c
-index f185c1ca3..1ef69c983 100644
---- a/tests/intel/intel_hwmon.c
-+++ b/tests/intel/intel_hwmon.c
-@@ -4,7 +4,10 @@
-  */
- 
- #include <dirent.h>
-+#include <errno.h>
-+#include <stdlib.h>
- #include <sys/stat.h>
-+#include <unistd.h>
- #include "igt.h"
- #include "igt_hwmon.h"
- #include "igt_sysfs.h"
-@@ -22,10 +25,492 @@
-  *
-  * SUBTEST: hwmon-write
-  * Description: Verify writable hwmon attributes
-+ *
-+ * SUBTEST: fan-pwm-enable-modes
-+ * Description: Verify pwmN_enable mode transitions and full-speed behavior
-+ *
-+ * SUBTEST: fan-curve-setup
-+ * Description: Verify fan curve point programming and readback in manual mode
-+ *
-+ * SUBTEST: fan-negative-tests
-+ * Description: Verify invalid fan-control writes are rejected
-+ *
-+ * SUBTEST: fan-suspend-resume-with-user-table-%s
-+ * Description: Verify programmed user fan table persists across %arg[1] suspend/resume
-+ *
-+ * SUBTEST: fan-suspend-resume-without-user-table-%s
-+ * Description: Verify stock table mode remains active across %arg[1] suspend/resume
-+ *
-+ * arg[1]:
-+ *
-+ * @freeze: freeze
-+ * @mem: mem
-+ * @disk: disk
-  */
- 
- IGT_TEST_DESCRIPTION("Tests for intel hwmon");
- 
-+#define FAN_MAX_POINTS 10
-+#define HWMON_ATTR_NAME_MAX 64
-+
-+struct fan_curve_point {
-+	int temp;
-+	int pwm;
-+};
-+
-+struct fan_table {
-+	int point_count;
-+	struct fan_curve_point points[FAN_MAX_POINTS];
-+};
-+
-+enum fan_table_mode {
-+	FAN_TABLE_USER,
-+	FAN_TABLE_STOCK,
-+};
-+
-+/* Maximum number of fan channels to probe for. */
-+#define FAN_MAX_CHANNELS 32
-+
-+/* PWM tolerance for fan control tests. */
-+#define FAN_PWM_TOLERANCE 3
-+
-+static const struct {
-+	const char *name;
-+	enum igt_suspend_state state;
-+} suspend_states[] = {
-+	{ "freeze", SUSPEND_STATE_FREEZE },
-+	{ "mem", SUSPEND_STATE_MEM },
-+	{ "disk", SUSPEND_STATE_DISK },
-+	{ NULL, 0 },
-+};
-+
-+/* Check whether a hwmon sysfs node exists. */
-+static bool hwmon_has_attr(int hwm, const char *attr)
-+{
-+	return !faccessat(hwm, attr, F_OK, 0);
-+}
-+
-+/* Read a signed integer from a hwmon sysfs node and assert success. */
-+static int hwmon_read_int_attr(int hwm, const char *attr)
-+{
-+	int val;
-+
-+	igt_assert_eq(igt_sysfs_scanf(hwm, attr, "%d", &val), 1);
-+
-+	return val;
-+}
-+
-+/* Write a signed integer to a hwmon sysfs node. */
-+static int hwmon_write_int_attr(int hwm, const char *attr, int val)
-+{
-+	return igt_sysfs_printf(hwm, attr, "%d", val);
-+}
-+
-+/* Filter fan/pwm nodes from generic rw checks; fan logic is mode-sensitive. */
-+static bool is_fan_control_attr(const char *attr)
-+{
-+	return !strncmp(attr, "fan", 3) || !strncmp(attr, "pwm", 3);
-+}
-+
-+/* Detect available fan channels by counting fanX_input nodes. */
-+static int hwmon_count_fans(int hwm)
-+{
-+	char fan_input_attr[HWMON_ATTR_NAME_MAX];
-+	int num_fans = 0;
-+
-+	for (int fan = 1; fan <= FAN_MAX_CHANNELS; fan++) {
-+		snprintf(fan_input_attr, sizeof(fan_input_attr), "fan%d_input", fan);
-+		if (hwmon_has_attr(hwm, fan_input_attr))
-+			num_fans++;
-+	}
-+
-+	/* Temporary workaround */
-+	return num_fans - 1;
-+}
-+
-+/* Build pwmN_auto_pointM_{temp,pwm} node names for a specific fan/point. */
-+static void pwm_point_attr_name(char *attr, size_t size, int fan, int point, const char *kind)
-+{
-+	snprintf(attr, size, "pwm%d_auto_point%d_%s", fan, point, kind);
-+}
-+
-+/* Count exposed curve points for a fan based on matching temp/pwm point nodes. */
-+static int fan_curve_point_count(int hwm, int fan)
-+{
-+	char temp_attr[HWMON_ATTR_NAME_MAX];
-+	char pwm_attr[HWMON_ATTR_NAME_MAX];
-+	int point_count = 0;
-+
-+	for (int point = 1; point <= FAN_MAX_POINTS; point++) {
-+		pwm_point_attr_name(temp_attr, sizeof(temp_attr), fan, point, "temp");
-+		pwm_point_attr_name(pwm_attr, sizeof(pwm_attr), fan, point, "pwm");
-+
-+		if (!hwmon_has_attr(hwm, temp_attr) || !hwmon_has_attr(hwm, pwm_attr))
-+			break;
-+
-+		point_count++;
-+	}
-+
-+	igt_info("fan %d exposes %d curve points\n", fan, point_count);
-+	return point_count;
-+}
-+
-+/* Program a monotonic user fan table so readback and mode tests are deterministic. */
-+static void fan_program_user_table(int hwm, int fan, struct fan_table *table)
-+{
-+	char temp_attr[HWMON_ATTR_NAME_MAX];
-+	char pwm_attr[HWMON_ATTR_NAME_MAX];
-+
-+	igt_assert_f(table->point_count > 0, "no fan curve points available\n");
-+
-+	for (int point = 1; point <= table->point_count; point++) {
-+		int temp, pwm;
-+
-+		table->points[point - 1].temp = 30000 + point * 3000;
-+		table->points[point - 1].pwm = 190 + point * 6;
-+
-+		table->points[point - 1].pwm = min(table->points[point - 1].pwm, 250);
-+
-+		pwm_point_attr_name(temp_attr, sizeof(temp_attr), fan, point, "temp");
-+		pwm_point_attr_name(pwm_attr, sizeof(pwm_attr), fan, point, "pwm");
-+
-+		temp = table->points[point - 1].temp;
-+		pwm = table->points[point - 1].pwm;
-+
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, temp_attr, temp));
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_attr, pwm));
-+
-+		igt_debug("fan %d point %d programmed to temp=%d pwm=%d\n", fan, point, temp, pwm);
-+	}
-+}
-+
-+/* Verify that each programmed fan-table point can be read back from sysfs. */
-+static void fan_verify_table(int hwm, int fan, const struct fan_table *table)
-+{
-+	char temp_attr[HWMON_ATTR_NAME_MAX];
-+	char pwm_attr[HWMON_ATTR_NAME_MAX];
-+
-+	for (int point = 1; point <= table->point_count; point++) {
-+		int read_temp, read_pwm;
-+
-+		pwm_point_attr_name(temp_attr, sizeof(temp_attr), fan, point, "temp");
-+		pwm_point_attr_name(pwm_attr, sizeof(pwm_attr), fan, point, "pwm");
-+
-+		read_temp = hwmon_read_int_attr(hwm, temp_attr);
-+		read_pwm = hwmon_read_int_attr(hwm, pwm_attr);
-+
-+		igt_debug("fan %d point %d read back temp=%d pwm=%d\n",
-+			  fan, point, read_temp, read_pwm);
-+
-+		igt_assert_eq(read_temp, table->points[point - 1].temp);
-+		igt_assert_f(abs(read_pwm - table->points[point - 1].pwm) <= FAN_PWM_TOLERANCE,
-+			     "point %d pwm readback %d differs from %d by more than %d\n",
-+			     point, read_pwm, table->points[point - 1].pwm, FAN_PWM_TOLERANCE);
-+	}
-+}
-+
-+/* Snapshot the current fan-table points so they can be compared after resume. */
-+static void fan_read_table(int hwm, int fan, struct fan_table *table)
-+{
-+	char temp_attr[HWMON_ATTR_NAME_MAX];
-+	char pwm_attr[HWMON_ATTR_NAME_MAX];
-+
-+	for (int point = 1; point <= table->point_count; point++) {
-+		pwm_point_attr_name(temp_attr, sizeof(temp_attr), fan, point, "temp");
-+		pwm_point_attr_name(pwm_attr, sizeof(pwm_attr), fan, point, "pwm");
-+
-+		table->points[point - 1].temp = hwmon_read_int_attr(hwm, temp_attr);
-+		table->points[point - 1].pwm = hwmon_read_int_attr(hwm, pwm_attr);
-+	}
-+}
-+
-+/* Ensure basic nodes for fan control are present for the selected fan channel. */
-+static void fan_require_basic_controls(int hwm, int fan)
-+{
-+	char pwm_attr[HWMON_ATTR_NAME_MAX];
-+	char pwm_enable_attr[HWMON_ATTR_NAME_MAX];
-+	char fan_input_attr[HWMON_ATTR_NAME_MAX];
-+
-+	snprintf(pwm_attr, sizeof(pwm_attr), "pwm%d", fan);
-+	snprintf(pwm_enable_attr, sizeof(pwm_enable_attr), "pwm%d_enable", fan);
-+	snprintf(fan_input_attr, sizeof(fan_input_attr), "fan%d_input", fan);
-+
-+	igt_require_f(hwmon_has_attr(hwm, pwm_enable_attr),
-+		      "%s is not available\n", pwm_enable_attr);
-+	igt_require_f(hwmon_has_attr(hwm, pwm_attr),
-+		      "%s is not available\n", pwm_attr);
-+	igt_require_f(hwmon_has_attr(hwm, fan_input_attr),
-+		      "%s is not available\n", fan_input_attr);
-+	igt_require_f(hwmon_has_attr(hwm, "temp2_input"),
-+		      "package temperature sysfs %s is not available\n",
-+		      "temp2_input");
-+}
-+
-+/* Validate pwmN_enable mode behavior, including full-speed and stock/manual transitions. */
-+static void fan_test_pwm_enable_modes(int hwm)
-+{
-+	char pwm_attr[HWMON_ATTR_NAME_MAX], pwm_enable_attr[HWMON_ATTR_NAME_MAX];
-+	char fan_input_attr[HWMON_ATTR_NAME_MAX], fan_max_attr[HWMON_ATTR_NAME_MAX];
-+	int num_fans = hwmon_count_fans(hwm);
-+
-+	igt_require_f(num_fans > 0, "no fanX_input nodes found\n");
-+
-+	for (int fan = 1; fan <= num_fans; fan++) {
-+		int pwm, fan_max, fan_rpm, threshold;
-+
-+		snprintf(pwm_attr, sizeof(pwm_attr), "pwm%d", fan);
-+		snprintf(pwm_enable_attr, sizeof(pwm_enable_attr), "pwm%d_enable", fan);
-+		snprintf(fan_input_attr, sizeof(fan_input_attr), "fan%d_input", fan);
-+		snprintf(fan_max_attr, sizeof(fan_max_attr), "fan%d_max", fan);
-+
-+		fan_require_basic_controls(hwm, fan);
-+		igt_require_f(hwmon_has_attr(hwm, fan_max_attr),
-+			      "%s is not available\n", fan_max_attr);
-+
-+		/* Mode 0: full-speed override — firmware hands full duty cycle to hardware. */
-+		igt_info("Testing pwm%d_enable mode 0 (full-speed override) for fan %d\n",
-+			 fan, fan);
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 0));
-+		igt_assert_eq(hwmon_read_int_attr(hwm, pwm_enable_attr), 0);
-+
-+		igt_info("pwm%d_enable set to 0 (full-speed override) for fan %d\n", fan, fan);
-+
-+		/* Read pwmX, 255 is the maximum duty cycle in mode 0. */
-+		pwm = hwmon_read_int_attr(hwm, pwm_attr);
-+		igt_assert_f(pwm == 255,
-+			     "%s expected near full speed in mode 0, got %d\n", pwm_attr, pwm);
-+		igt_info("pwm set to %d for fan %d, PASSED\n", pwm, fan);
-+
-+		fan_max = hwmon_read_int_attr(hwm, fan_max_attr);
-+		igt_assert_f(fan_max > 0, "%s invalid: %d\n", fan_max_attr, fan_max);
-+
-+		/* 90% of max gives headroom for sensor lag while still confirming full-speed. */
-+		threshold = fan_max * 9 / 10;
-+		/* Poll up to 5 s for tach to spin up; fan must stay within rated max. */
-+		igt_assert_f(igt_wait((fan_rpm =
-+					hwmon_read_int_attr(hwm, fan_input_attr)) >=
-+				       threshold,
-+				       5000, 100),
-+			     "%s did not reach >=90%% of %s (%d), last=%d\n",
-+			     fan_input_attr, fan_max_attr, fan_max, fan_rpm);
-+		igt_warn_on_f(fan_rpm > fan_max,
-+			      "%s exceeded %s (%d), last=%d\n",
-+			      fan_input_attr, fan_max_attr, fan_max, fan_rpm);
-+
-+		igt_info("%s reached %d rpm (>=90%% of %s=%d)\n",
-+			 fan_input_attr, fan_rpm, fan_max_attr, fan_max);
-+
-+		igt_info("pwm%d_enable set to 0 (full-speed override) for fan %d PASSED\n",
-+			 fan, fan);
-+		/* Mode 1: manual — userspace sets PWM directly via pwmN. */
-+		igt_info("Testing pwm%d_enable mode 1 (manual) for fan %d\n", fan, fan);
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 1));
-+		igt_assert_eq(hwmon_read_int_attr(hwm, pwm_enable_attr), 1);
-+
-+		/* Sweep pwm values and verify writes stick within tolerance. */
-+		for (int i = 0; i <= 255; i++) {
-+			igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_attr, i));
-+			igt_assert_f(abs(hwmon_read_int_attr(hwm, pwm_attr) - i) <=
-+				     FAN_PWM_TOLERANCE,
-+				     "pwm write did not stick for %s\n", pwm_attr);
-+			igt_debug("manual mode pwm set to %d, ret %d for fan %d, PASSED\n",
-+				  i, hwmon_read_int_attr(hwm, pwm_attr), fan);
-+		}
-+		igt_info("pwm%d_enable set to manual for fan %d PASSED\n", fan, fan);
-+
-+		/* Mode 2: auto — firmware drives the fan from the stock/user curve table. */
-+		igt_info("Testing pwm%d_enable mode 2 (auto) for fan %d\n", fan, fan);
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 2));
-+		igt_assert_eq(hwmon_read_int_attr(hwm, pwm_enable_attr), 2);
-+		igt_info("pwm%d_enable set to auto for fan %d PASSED\n", fan, fan);
-+	}
-+}
-+
-+/* Validate user fan-curve programming and rough alignment with package temperature. */
-+static void fan_test_table(int hwm)
-+{
-+	char pwm_attr[HWMON_ATTR_NAME_MAX], pwm_enable_attr[HWMON_ATTR_NAME_MAX];
-+	int num_fans = hwmon_count_fans(hwm);
-+
-+	igt_require_f(num_fans > 0, "no fanX_input nodes found\n");
-+
-+	for (int fan = 1; fan <= num_fans; fan++) {
-+		struct fan_table table = {0};
-+
-+		snprintf(pwm_attr, sizeof(pwm_attr), "pwm%d", fan);
-+		snprintf(pwm_enable_attr, sizeof(pwm_enable_attr), "pwm%d_enable", fan);
-+
-+		fan_require_basic_controls(hwm, fan);
-+
-+		table.point_count = fan_curve_point_count(hwm, fan);
-+		igt_require_f(table.point_count > 0,
-+			      "no pwm%d_auto_point*_{{temp,pwm}} nodes found\n", fan);
-+
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 1));
-+
-+		fan_program_user_table(hwm, fan, &table);
-+		fan_verify_table(hwm, fan, &table);
-+
-+		/* If temp2_input is available, ensure runtime pwm sits near programmed band. */
-+		if (hwmon_has_attr(hwm, "temp2_input")) {
-+			int temp2 = hwmon_read_int_attr(hwm, "temp2_input");
-+			int cur_pwm = hwmon_read_int_attr(hwm, pwm_attr);
-+
-+			if (temp2 >= table.points[0].temp &&
-+			    temp2 <= table.points[table.point_count - 1].temp) {
-+				int idx = 0;
-+				int pwm_low, pwm_high;
-+
-+				while (idx < table.point_count && table.points[idx].temp < temp2)
-+					idx++;
-+
-+				if (idx == 0) {
-+					pwm_low = table.points[0].pwm;
-+					pwm_high = table.points[0].pwm;
-+				} else if (idx >= table.point_count) {
-+					pwm_low = table.points[table.point_count - 1].pwm;
-+					pwm_high = table.points[table.point_count - 1].pwm;
-+				} else {
-+					pwm_low = table.points[idx - 1].pwm;
-+					pwm_high = table.points[idx].pwm;
-+				}
-+
-+				igt_assert_f(cur_pwm >= pwm_low - 20 && cur_pwm <= pwm_high + 20,
-+					     "%s=%d is not aligned with programmed table at temp2_input=%d\n",
-+					     pwm_attr, cur_pwm, temp2);
-+			}
-+		}
-+	}
-+}
-+
-+/* Validate rejection of out-of-range writes and mode-invalid curve programming. */
-+static void fan_test_negative(int hwm)
-+{
-+	char temp_attr[HWMON_ATTR_NAME_MAX];
-+	char pwm_attr[HWMON_ATTR_NAME_MAX];
-+	char pwm_enable_attr[HWMON_ATTR_NAME_MAX];
-+	int stable_pwm = 160;
-+	int num_fans = hwmon_count_fans(hwm);
-+
-+	igt_require_f(num_fans > 0, "no fanX_input nodes found\n");
-+
-+	for (int fan = 1; fan <= num_fans; fan++) {
-+		int point_count;
-+
-+		snprintf(pwm_attr, sizeof(pwm_attr), "pwm%d", fan);
-+		snprintf(pwm_enable_attr, sizeof(pwm_enable_attr), "pwm%d_enable", fan);
-+
-+		fan_require_basic_controls(hwm, fan);
-+
-+		point_count = fan_curve_point_count(hwm, fan);
-+		igt_require_f(point_count > 0, "no fan curve points exposed for fan %d\n", fan);
-+
-+		/* Enter manual mode and set a known-good baseline before probing invalid values. */
-+		igt_info("fan %d: setting manual mode with baseline pwm=%d\n", fan, stable_pwm);
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 1));
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_attr, stable_pwm));
-+
-+		/* pwm range is 0-255; writes outside that must be rejected without side-effects. */
-+		igt_info("fan %d: testing out-of-range pwm writes (256 and -1)\n", fan);
-+		igt_assert_lt(hwmon_write_int_attr(hwm, pwm_attr, 256), 0);
-+		igt_assert_f(abs(hwmon_read_int_attr(hwm, pwm_attr) - stable_pwm) <=
-+			     FAN_PWM_TOLERANCE,
-+			     "%s changed after invalid >255 write\n", pwm_attr);
-+
-+		igt_assert_lt(hwmon_write_int_attr(hwm, pwm_attr, -1), 0);
-+		igt_assert_f(abs(hwmon_read_int_attr(hwm, pwm_attr) - stable_pwm) <=
-+			     FAN_PWM_TOLERANCE,
-+			     "%s changed after invalid negative write\n", pwm_attr);
-+		igt_info("fan %d: out-of-range pwm writes correctly rejected, PASSED\n", fan);
-+
-+		/* Kernel only exposes up to FAN_MAX_POINTS per fan; point 11 must not exist. */
-+		igt_info("fan %d: verifying point 11 nodes do not exist\n", fan);
-+		pwm_point_attr_name(temp_attr, sizeof(temp_attr), fan, 11, "temp");
-+		pwm_point_attr_name(pwm_attr, sizeof(pwm_attr), fan, 11, "pwm");
-+		igt_assert_f(!hwmon_has_attr(hwm, temp_attr),
-+			     "unexpected %s node exists\n", temp_attr);
-+		igt_assert_f(!hwmon_has_attr(hwm, pwm_attr),
-+			     "unexpected %s node exists\n", pwm_attr);
-+		igt_info("fan %d: point 11 nodes absent, PASSED\n", fan);
-+
-+		pwm_point_attr_name(temp_attr, sizeof(temp_attr), fan, 1, "temp");
-+		pwm_point_attr_name(pwm_attr, sizeof(pwm_attr), fan, 1, "pwm");
-+
-+		/* Curve writes must be blocked in mode 0 (full-speed) and mode 2 (auto). */
-+		igt_info("fan %d: testing curve writes rejected in mode 0 (full-speed)\n", fan);
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 0));
-+		igt_assert_lt(hwmon_write_int_attr(hwm, temp_attr, 40000), 0);
-+		igt_assert_lt(hwmon_write_int_attr(hwm, pwm_attr, 200), 0);
-+		igt_info("fan %d: curve writes in mode 0 correctly rejected, PASSED\n", fan);
-+
-+		igt_info("fan %d: testing curve writes rejected in mode 2 (auto)\n", fan);
-+		igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 2));
-+		igt_assert_lt(hwmon_write_int_attr(hwm, temp_attr, 42000), 0);
-+		igt_assert_lt(hwmon_write_int_attr(hwm, pwm_attr, 210), 0);
-+		igt_info("fan %d: curve writes in mode 2 correctly rejected, PASSED\n", fan);
-+
-+		/* Writing beyond the last exposed point must also be rejected. */
-+		if (point_count < FAN_MAX_POINTS) {
-+			igt_info("fan %d: testing write to unexposed point %d\n",
-+				 fan, point_count + 1);
-+			pwm_point_attr_name(temp_attr, sizeof(temp_attr), fan, point_count + 1, "temp");
-+			pwm_point_attr_name(pwm_attr, sizeof(pwm_attr), fan, point_count + 1, "pwm");
-+
-+			igt_assert_lt(hwmon_write_int_attr(hwm, temp_attr, 50000), 0);
-+			igt_assert_lt(hwmon_write_int_attr(hwm, pwm_attr, 220), 0);
-+			igt_info("fan %d: write to unexposed point %d correctly rejected, PASSED\n",
-+				 fan, point_count + 1);
-+		}
-+	}
-+}
-+
-+/* Validate that the selected fan table remains active and unchanged after resume. */
-+static void fan_test_suspend_resume_table(int hwm,
-+					  enum igt_suspend_state state,
-+					  const char *state_name,
-+					  enum fan_table_mode mode)
-+{
-+	char temp_attr[HWMON_ATTR_NAME_MAX], pwm_enable_attr[HWMON_ATTR_NAME_MAX];
-+	int num_fans = hwmon_count_fans(hwm);
-+
-+	igt_require_f(num_fans > 0, "no fanX_input nodes found\n");
-+
-+	for (int fan = 1; fan <= num_fans; fan++) {
-+		struct fan_table table = {0};
-+
-+		snprintf(pwm_enable_attr, sizeof(pwm_enable_attr), "pwm%d_enable", fan);
-+
-+		fan_require_basic_controls(hwm, fan);
-+
-+		table.point_count = fan_curve_point_count(hwm, fan);
-+		igt_require_f(table.point_count > 0,
-+			      "no fan curve points exposed for fan %d\n", fan);
-+
-+		if (mode == FAN_TABLE_USER) {
-+			igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 1));
-+			fan_program_user_table(hwm, fan, &table);
-+			fan_verify_table(hwm, fan, &table);
-+			igt_info("fan %d: suspending with programmed table using %s\n",
-+				 fan, state_name);
-+		} else {
-+			pwm_point_attr_name(temp_attr, sizeof(temp_attr), fan, 1, "temp");
-+			igt_assert_lt(0, hwmon_write_int_attr(hwm, pwm_enable_attr, 2));
-+			fan_read_table(hwm, fan, &table);
-+			igt_info("fan %d: suspending in stock-table mode using %s\n",
-+				 fan, state_name);
-+		}
-+
-+		igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
-+
-+		igt_assert_eq(hwmon_read_int_attr(hwm, pwm_enable_attr),
-+			      mode == FAN_TABLE_USER ? 1 : 2);
-+		fan_verify_table(hwm, fan, &table);
-+
-+		if (mode == FAN_TABLE_STOCK)
-+			igt_assert_lt(hwmon_write_int_attr(hwm, temp_attr, 41000), 0);
-+	}
-+}
-+
- static void check_if_temp_valid(int hwm, char *sysfs_name)
- {
- 	int32_t cur_temp = 0, limit = 0;
-@@ -66,7 +551,6 @@ static void hwmon_read(int hwm)
- 
- 		if (!strncmp(de->d_name, "temp", 4))
- 			check_if_temp_valid(hwm, de->d_name);
--
- 	}
- 	closedir(dir);
- }
-@@ -94,6 +578,10 @@ static void hwmon_write(int hwm)
- 		if (!(st.st_mode & 0222))
- 			continue;
- 
-+		/* Fan-control nodes require mode-aware writes and are tested separately. */
-+		if (is_fan_control_attr(de->d_name))
-+			continue;
-+
- 		rw.attr = de->d_name;
- 		igt_sysfs_rw_attr_verify(&rw);
- 	}
-@@ -120,6 +608,39 @@ int igt_main()
- 		hwmon_write(hwm);
- 	}
- 
-+	igt_describe("Verify pwmN_enable mode transitions and full-speed behavior");
-+	igt_subtest("fan-pwm-enable-modes") {
-+		fan_test_pwm_enable_modes(hwm);
-+	}
-+
-+	igt_describe("Verify fan curve programming and readback in manual mode");
-+	igt_subtest("fan-curve-setup") {
-+		fan_test_table(hwm);
-+	}
-+
-+	igt_describe("Verify invalid fan-control writes are rejected");
-+	igt_subtest("fan-negative-tests") {
-+		fan_test_negative(hwm);
-+	}
-+
-+	for (int i = 0; suspend_states[i].name; i++) {
-+		igt_describe("Verify user fan table state persists across suspend/resume");
-+		igt_subtest_f("fan-suspend-resume-with-user-table-%s", suspend_states[i].name) {
-+			igt_info("Testing suspend/resume with user fan table using %s\n",
-+				 suspend_states[i].name);
-+			fan_test_suspend_resume_table(hwm, suspend_states[i].state,
-+						      suspend_states[i].name,
-+						      FAN_TABLE_USER);
-+		}
-+
-+		igt_describe("Verify stock fan table mode persists across suspend/resume");
-+		igt_subtest_f("fan-suspend-resume-without-user-table-%s", suspend_states[i].name) {
-+			fan_test_suspend_resume_table(hwm, suspend_states[i].state,
-+						      suspend_states[i].name,
-+						      FAN_TABLE_STOCK);
-+		}
-+	}
-+
- 	igt_fixture() {
- 		close(hwm);
- 		drm_close_driver(fd);
--- 
-2.25.1
+Can it be igt_memcpy_from_wc instead of memcpy for consistency?
+
+>   	}
+>   
+> -	free(line);
+> -	igt_fb_unmap_buffer(fb, map);
+> +	free(output_line);
+> +	free(input_line);
+> +	igt_fb_unmap_buffer(output_fb, output_map);
+> +	igt_fb_unmap_buffer(input_fb, input_map);
+>   
+>   	return 0;
+>   }
+> diff --git a/lib/igt_color.h b/lib/igt_color.h
+> index 722446400f01..d66cfebc4191 100644
+> --- a/lib/igt_color.h
+> +++ b/lib/igt_color.h
+> @@ -72,7 +72,11 @@ void igt_dump_fb(igt_display_t *display, igt_fb_t *fb, const char *path_name, co
+>   
+>   typedef void (*igt_pixel_transform)(igt_pixel_t *pixel);
+>   
+> -int igt_color_transform_pixels(igt_fb_t *fb, igt_pixel_transform transforms[], int num_transforms);
+> +int igt_color_transform_pixels(igt_fb_t *input_fb, igt_fb_t *output_fb,
+> +			       igt_pixel_transform transforms[],
+> +			       int num_transforms,
+> +			       int yuv_encoding,
+> +			       enum igt_color_range yuv_range);
+>   
+>   /* colorop helpers */
+>   
+> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+> index 4db83470df22..5cf1f688832f 100644
+> --- a/tests/kms_colorop.c
+> +++ b/tests/kms_colorop.c
+> @@ -195,15 +195,30 @@ static bool compare_with_bracket(igt_fb_t *in, igt_fb_t *out)
+>   
+>   #define MAX_COLOROPS 5
+>   
+> -static void apply_transforms(kms_colorop_t *colorops[], igt_fb_t *sw_transform_fb)
+> +static void apply_transforms(kms_colorop_t *colorops[], igt_fb_t *input_fb,
+> +			     igt_fb_t *sw_transform_fb)
+>   {
+>   	int i;
+> +	int yuv_encoding = -1;
+> +	enum igt_color_range yuv_range = IGT_COLOR_YCBCR_LIMITED_RANGE;
+>   	igt_pixel_transform transforms[MAX_COLOROPS];
+>   
+>   	for (i = 0; colorops[i]; i++)
+>   		transforms[i] = colorops[i]->transform;
+>   
+> -	igt_color_transform_pixels(sw_transform_fb, transforms, i);
+> +	/* If first colorop is CSC FF, extract encoding/range for sw reference */
+> +	if (colorops[0] && colorops[0]->type == KMS_COLOROP_FIXED_MATRIX) {
+> +		enum igt_color_encoding encoding;
+> +		enum igt_color_range range;
+> +
+> +		fixed_matrix_type_to_encoding_range(colorops[0]->fixed_matrix_info.fixed_matrix_type_name,
+> +					     &encoding, &range);
+> +		yuv_encoding = encoding;
+> +		yuv_range = range;
+> +	}
+> +
+> +	igt_color_transform_pixels(input_fb, sw_transform_fb, transforms, i,
+> +				   yuv_encoding, yuv_range);
+>   }
+>   
+>   static void colorop_plane_test(igt_display_t *display,
+> @@ -217,7 +232,7 @@ static void colorop_plane_test(igt_display_t *display,
+>   {
+>   	igt_colorop_t *color_pipeline = NULL;
+>   	igt_fb_t sw_transform_fb;
+> -	igt_crc_t input_crc, output_crc;
+> +	igt_crc_t input_crc;
+>   	int res;
+>   
+>   	igt_fb_get_fnv1a_crc(input_fb, &input_crc);
+
+input_crc is not used below so it can be removed too
+
+> @@ -235,18 +250,15 @@ static void colorop_plane_test(igt_display_t *display,
+>   				NULL);
+>   	igt_get_and_wait_out_fence(output);
+>   
+> -	/* Compare input and output buffers. They should be equal here. */
+> -	igt_fb_get_fnv1a_crc(output_fb, &output_crc);
+> -
+> -	igt_assert_crc_equal(&input_crc, &output_crc);
+> -
+> -	/* create sw transformed buffer */
+> -	res = igt_copy_fb(display->drm_fd, input_fb, &sw_transform_fb);
+> +	/* create sw transform buffer with output format */
+> +	res = igt_create_fb(display->drm_fd,
+> +			    input_fb->width, input_fb->height,
+> +			    output_fb->drm_format,
+> +			    DRM_FORMAT_MOD_LINEAR,
+> +			    &sw_transform_fb);
+>   	igt_assert_lte(0, res);
+>   
+> -	igt_assert(igt_cmp_fb_pixels(input_fb, &sw_transform_fb, 0, 0));
+> -
+> -	apply_transforms(colorops, &sw_transform_fb);
+> +	apply_transforms(colorops, input_fb, &sw_transform_fb);
+>   
+>   	if (data.dump_check)
+>   		igt_dump_fb(display, &sw_transform_fb, ".", "sw_transform");
 
