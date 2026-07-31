@@ -4,50 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2476C55173
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 17:49:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD1D9C5516D
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 18:02:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7897610F36A;
-	Fri, 31 Jul 2026 17:49:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5E74E10F36A;
+	Fri, 31 Jul 2026 18:02:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="DOgWOm7g";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="bFrUIyd+";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ECE5789289
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 17:48:32 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id A637A4E4105C;
- Fri, 31 Jul 2026 17:48:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7C3AE6039A;
- Fri, 31 Jul 2026 17:48:31 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 8E18411C16BDF; 
- Fri, 31 Jul 2026 19:48:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1785520111; h=from:subject:date:message-id:to:mime-version:content-type:
- content-transfer-encoding:content-language:in-reply-to:references;
- bh=k3Yjq9+HHEdu7j4mBfS0CzSy1Wmn/7nRIG5bImHsEpQ=;
- b=DOgWOm7gjlwzUhseDyFjEYwI6HwrvVGzCjhUPIaYYj2+3Hvgw1pCKSoJUmqGXdpmQXaXGs
- uoS20RW8UtZ6nvCI0q5Twk54WElWy7hjh8e+OP0n3fy7sRYV9QrknH64vEbmXeMgiEKv5w
- 3DMHZcAHKXoOIF+yddSXl7snkJ5TRDAEnitFvn2nE0V4GWBAHfGCO5un1dPG0nUjD7IXu0
- qR+mRyhSq9w3eVb82uuoAcq6T2w0IkKqSwMPQbp3r8CiycX5sMl7V+tGsRBsK/FvfUO4cR
- SS8A+RAyOAxaN6Z99Qk9mkpxiODjSKu/UokPn0YQvFuJSPkVnO9keNuMNHKfdQ==
-Message-ID: <dfd7fa67-6120-4e60-babb-f454e181f6f7@bootlin.com>
-Date: Fri, 31 Jul 2026 19:48:30 +0200
+Received: from SA9PR02CU001.outbound.protection.outlook.com
+ (mail-southcentralusazon11013030.outbound.protection.outlook.com
+ [40.93.196.30])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B788510F36A
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:02:12 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LcRGp8+r9xduRTUHBaKnUviGMPsiHKS3Jv77+7c4L66OeL6RsyB7iD769Xqc5aM8m77HIjd6kNDlVB/+dl6J7rXQ9TWqX2g6P46Deo3mkqICEo4xJ+2vb56iGxhpL3vmOBPlt1ZIcb2O0Phlo665boq99mncKvt/bdFrQimPjOn/zT08ZbGXduRzpG0o7wfKmYwoDtyT59PyM2JNSWJomaCjN6+XWwbXOQ0TlNRAo8ww2q6qVswCJj9yuwi6qQp+yl1W3Hz1iPlQQCEgOnRlSfQXMY7kQjzLQ9MDf9xCUdsHT/X5FSZMYrnrdY40pahZQ9dqsBkXGlFYv9YhsupHew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sZnD2p+Nd+8NqTR2YUYFFfGCUhCHTS4RCsHs5XUMNnw=;
+ b=pbHiWSBNUbCs7eMg+ZnT/8tkBjdbUEf3n7/4EatGse73tahG425fzEx7PUa7PvoaKiQnEg6X2reThhQxgnYBWSkt9mSkXiElUECgbdgQvf+tU4nXJgj0trKyU9nd9r4ul14ndMZG4qD+eNG0ENDSSRF6Kunjdz5xb3GYArkpQok4kAqqacAWRfQ0TqsMXz8WhQimgkq4ll0yLrJ+nm3TwUXkuEd23iHGakW9YcYk8xvv5bqzFIuUL866I9rU5jaCh0vFxEV6iPHozfl1/Sq4sIpkqBOpVIrUqkdAhmfAgc8kdPYnPfWHCRvNOMi4x1pMD8G7VPgtzBHf0RgwPj1o6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sZnD2p+Nd+8NqTR2YUYFFfGCUhCHTS4RCsHs5XUMNnw=;
+ b=bFrUIyd+3AyBus2wV2UCzjO0TN0/y7o+dSzmJyB8j2gR+tle9zG3wx2MQIZNJLlS85o5W+9EhQvwYEIjYMq0xTnsjg4X1LbYj7MZbWw88AClEMGuAuHlKDFbb7lkQrV3yXxzKG4c2C8kIkRo2OYDNWgKjZ6fs0pUwA/nkPr4FsM=
+Received: from CH0P221CA0037.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11d::12)
+ by SA5PPF06C91DA0C.namprd12.prod.outlook.com
+ (2603:10b6:80f:fc04::8c4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
+ 2026 18:02:09 +0000
+Received: from CH2PEPF0000013C.namprd02.prod.outlook.com
+ (2603:10b6:610:11d:cafe::7) by CH0P221CA0037.outlook.office365.com
+ (2603:10b6:610:11d::12) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.270.13 via Frontend Transport; Fri,
+ 31 Jul 2026 18:02:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CH2PEPF0000013C.mail.protection.outlook.com (10.167.244.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.292.8 via Frontend Transport; Fri, 31 Jul 2026 18:02:09 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 31 Jul
+ 2026 13:02:08 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Fri, 31 Jul
+ 2026 11:02:08 -0700
+Received: from hwentlanryzen (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
+ Transport; Fri, 31 Jul 2026 13:02:08 -0500
+From: Harry Wentland <harry.wentland@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Harry Wentland <harry.wentland@amd.com>, Alex Hung <alex.hung@amd.com>
+Subject: [PATCH v4 01/10] include/drm-uapi: Add DRM_COLOROP_FIXED_MATRIX
+Date: Fri, 31 Jul 2026 14:01:51 -0400
+Message-ID: <20260731180200.668795-2-harry.wentland@amd.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260731180200.668795-1-harry.wentland@amd.com>
+References: <20260731180200.668795-1-harry.wentland@amd.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tests/unigraf: Enhance link rate support checking and
- hardware retrain timing
-To: Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org
-References: <20260715192949.1984280-3-markyacoub@google.com>
- <20260720205355.321557-1-markyacoub@google.com>
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260720205355.321557-1-markyacoub@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000013C:EE_|SA5PPF06C91DA0C:EE_
+X-MS-Office365-Filtering-Correlation-Id: 34c87bea-9ddb-463f-997c-08deef2dd714
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|36860700016|23010399003|82310400026|1800799024|376014|56012099006|10067099003|18002099003|22082099003|11063799006;
+X-Microsoft-Antispam-Message-Info: IhKlBpUsgOuvW9SQQCPreGbpVcvJlDi1jdsomw8h1eraPyl+dvwR8RcYRUdpRnno5WgpoLwNqsB1+OBPn1d/A0EhOMQzlbO/IbkEccCSwejWvEfOK4tSL+FhQQhUasklNwacX9sXRzbfOdow6XqK8DPinsVmuewklu//mUy2cMzZsV0ET8kkg5KsI03kpWAoowG7pftBaARqqAKH9qyharvcN3xCOHB6kkaDAieC9hZkd22gLn2xUG1CBgIbLLcAEImQ/QIM8cv+NQUaJ8lJZnWv+xz8gCO5Fq2sWt1OwgBeXtdlZWIcsJwe1Lso6zRXJA/MdNJMcLHQbGF9ImB29KfK4/AwKaA4vqRFOJLOPiVTvPl6Fvn/rQqcuEA6/ecFOuI3KHZc4yzXrvJECxItnC7tRf6T3O9xOdWATCbdfAwPHC1MtKRfqfUSpl8y4xSOJNLo1rTOSXPtykrUQ0hqrAX1RPAQjpLTjqVJjOeOKSGptCbYMiUaJVv3leIi0NhiHCPQGls2ZO4TLB+BVMKsuzYh3F11srS0DtAloHHzOC1DxrwQCBWgJPiF/6i4d0eCel2II4WlsnAa/D5+RceWfID9WM60hmRCmxaFy8FdUN5mebih/XmStq7u+vXAOSCNnAeX6pHNTJgO+ZhEgOF8PdOiRRfRU3iLdsHN62w1tT/N3ZMS1fnLuyiHGu89XEmetDF2uP7o58aHR1a5jvSGSQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700016)(23010399003)(82310400026)(1800799024)(376014)(56012099006)(10067099003)(18002099003)(22082099003)(11063799006);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: eepce+4/b+YEOZP/ixXnfYtiKLFDueyvm3dlVec+sQSfLq2kgHL8ngry1Ln0vgozq3kLq7fobjj7jI1vxeFjHaWkwrGgBpIBtGP9Qe5gHyG7WQSh0ZyF8V/0REwp2lI9vw98BUC9f/i5dWFsSvbPCYROaSJXi8kY8u8b7LOdTNf8hIa2TJWluyV3B7jeEWN/b8YlmA4pPqiq0V2ujb7H3FS0BJQzJDhnnfCzk2WBaukgEGdGDpjakjRnQOmQwuvsaG24J1/BD9veReRbIjAFMa8CvBN3AWRPA7yl1W9+keveCt/Jz6w2YrwLwTV944S074y/qMTR4WNRJgX436tdKkMIJNOUpiEIotfLFR5H2DGboR/rJ2L0vBW1D+sUNujs6/m6hsVF0o1/QAeXmrKVrIQifXjOUAWG8qh2hoRHSgxNf37k9+Ids8Y8e+A6yMWg
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 18:02:09.3646 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 34c87bea-9ddb-463f-997c-08deef2dd714
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000013C.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF06C91DA0C
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,312 +115,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Add DRM_COLOROP_FIXED_MATRIX to the colorop type enumeration.
 
+Assisted-by: Claude:claude-opus-4-6
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+---
+ include/drm-uapi/drm_mode.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-On 7/20/26 22:53, Mark Yacoub wrote:
-> Refactor hardware capability checks to natively skip unsupported DP link parameters dynamically, moving validation cleanly into the core igt_dp abstraction layer robustly.
-> 
-> v2:
->   - Downgrade `igt_assert_f` checks across the `igt_dp` layer to `igt_require_f` (Louis)
->   - Extract link rate querying into generic `igt_dp_is_link_rate_supported` helper (Louis)
->   - Add `expected_new_connector_count` to `kms_wait_for_new_connectors` to fix discovery race conditions natively (Louis)
-> 
-> TAG=agy
-> CONV=35e8e1e4-2dfd-4bf2-8c0b-c9bbc6268d92
-> ---
->   lib/igt_dp.c                         | 50 ++++++++++++++++++++++++++--
->   lib/igt_dp.h                         |  1 +
->   lib/igt_kms.c                        | 15 ++++++---
->   lib/igt_kms.h                        |  4 ++-
->   lib/vendor/unigraf/unigraf.c         |  1 +
->   tests/unigraf/unigraf_connectivity.c | 19 +++++++++--
->   tests/unigraf/unigraf_lt.c           | 31 +++++++++++++----
->   7 files changed, 104 insertions(+), 17 deletions(-)
-> 
-> diff --git a/lib/igt_dp.c b/lib/igt_dp.c
-> index 9f71c9e72..20af6a967 100644
-> --- a/lib/igt_dp.c
-> +++ b/lib/igt_dp.c
-> @@ -107,7 +107,7 @@ int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
->   	if (is_intel_device(drm_fd))
->   		return i915_dp_get_max_lane_count(drm_fd, output);
->   
-> -	igt_assert_f(false, "Current drm device is not able to report max lane count\n");
-> +	igt_require_f(false, "Current drm device is not able to report max lane count\n");
->   	return -EINVAL;
->   }
->   
-> @@ -124,7 +124,51 @@ void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_cou
->   		return;
->   	}
->   
-> -	igt_assert_f(false, "Current drm device does not support link retraining\n");
-> +	igt_require_f(false, "Current drm device does not support link retraining\n");
-> +}
-> +
-> +/**
-> + * igt_dp_is_link_rate_supported: Tests if the specific link rate can be forced
-> + * @drm_fd:		DRM file descriptor
-> + * @output:		igt_output_t object representing the display port
-> + * @rate_kb:		Link rate in kbps to test
-> + *
-> + * Returns: true if device supports enforcing this rate, false otherwise
-> + */
-> +bool igt_dp_is_link_rate_supported(int drm_fd, igt_output_t *output, int rate_kb)
-> +{
-> +	if (is_intel_device(drm_fd)) {
-> +		char buf[512];
-> +		int res;
-> +		char *token;
-> +		int rate_tens = rate_kb / 10;
-> +
-> +		res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
-> +						      "i915_dp_force_link_rate",
-> +						      buf, sizeof(buf));
-> +		if (res < 0)
-> +			return false;
-> +
-> +		token = strtok(buf, " \n\t,:");
-> +		while (token) {
-> +			int rate;
-> +			char *endptr;
-> +
-> +			errno = 0;
-> +			rate = strtol(token, &endptr, 0);
-> +			/*
-> +			 * Robustly verify that a number was actually parsed (endptr != token)
-> +			 * allowing us to safely ignore formatting headers (e.g. "Rates:")
-> +			 */
-> +			if (!errno && endptr != token && rate == rate_tens)
-> +				return true;
-> +			token = strtok(NULL, " \n\t,:");
-> +		}
-> +
-> +		return false;
-> +	}
-> +
-> +	return igt_dp_get_max_supported_rate(drm_fd, output) >= rate_kb;
->   }
-
-That a bit strange to copy/paste the existing 
-i915_dp_get_max_supported_rate code here, did I miss something in your 
-implementation? Or is the existing implementation broken?
-
->   
->   /**
-> @@ -140,7 +184,7 @@ int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
->   	if (is_intel_device(drm_fd))
->   		return i915_dp_get_pending_retrain(drm_fd, output);
->   
-> -	igt_assert_f(false, "Current drm device does not support pending retrain count checking\n");
-> +	igt_require_f(false, "Current drm device does not support pending retrain count checking\n");
->   	return -EINVAL;
->   }
->   
-> diff --git a/lib/igt_dp.h b/lib/igt_dp.h
-> index 0c56ad2ec..e5cacad66 100644
-> --- a/lib/igt_dp.h
-> +++ b/lib/igt_dp.h
-> @@ -22,6 +22,7 @@ int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output);
->   int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output);
->   
->   void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
-> +bool igt_dp_is_link_rate_supported(int drm_fd, igt_output_t *output, int rate_kb);
->   
->   int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
->   
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 2eefb773b..041a3356b 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -8255,10 +8255,17 @@ get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b
->    */
->   int kms_wait_for_new_connectors(uint32_t **newly_connected,
->   				const uint32_t *already_connected,
-> -				int already_connected_count, int drm_fd)
-> +				int already_connected_count,
-> +				int expected_new_connector_count,
-> +				int drm_fd)
->   {
->   	int newly_connected_count;
->   	struct timespec start, end;
-> +	int timeout = igt_default_display_detect_timeout();
-> +
-> +	/* MST discovery may be serialized in the kernel; allocate extra time for topology settling */
-> +	if (expected_new_connector_count > 1)
-> +		timeout *= 2;
->   
->   	igt_assert(newly_connected);
->   	igt_assert_fd(drm_fd);
-> @@ -8269,10 +8276,10 @@ int kms_wait_for_new_connectors(uint32_t **newly_connected,
->   			free(*newly_connected);
->   		newly_connected_count = igt_get_connected_connectors(drm_fd, newly_connected);
->   		igt_assert_eq(igt_gettime(&end), 0);
-> -	} while (!get_array_diff(*newly_connected, newly_connected_count,
-> +	} while (get_array_diff(*newly_connected, newly_connected_count,
->   			       already_connected, already_connected_count,
-> -			       NULL) &&
-> -		 igt_time_elapsed(&start, &end) <= igt_default_display_detect_timeout());
-> +			       NULL) < expected_new_connector_count &&
-> +		 igt_time_elapsed(&start, &end) <= timeout);
->   
->   	return newly_connected_count;
->   }
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index 521a03c01..09cec556f 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1382,7 +1382,9 @@ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
->   
->   int kms_wait_for_new_connectors(uint32_t **newly_connected,
->   				const uint32_t *already_connected,
-> -				int already_connected_count, int drm_fd);
-> +				int already_connected_count,
-> +				int expected_new_connector_count,
-> +				int drm_fd);
->   int
->   get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b, int array_b_len,
->   	       uint32_t **diff);
-> diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-> index 30ee3c72b..bfb06bd0c 100644
-> --- a/lib/vendor/unigraf/unigraf.c
-> +++ b/lib/vendor/unigraf/unigraf.c
-> @@ -270,6 +270,7 @@ static void unigraf_autodetect_connector(int drm_fd)
->   	newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
->   							    already_connected,
->   							    already_connected_count,
-> +							    1,
->   							    drm_fd);
->   
->   	diff_len = get_array_diff(newly_connected, newly_connected_count,
-> diff --git a/tests/unigraf/unigraf_connectivity.c b/tests/unigraf/unigraf_connectivity.c
-> index 8ae9a2593..e813c9973 100644
-> --- a/tests/unigraf/unigraf_connectivity.c
-> +++ b/tests/unigraf/unigraf_connectivity.c
-> @@ -108,10 +108,20 @@ int igt_main()
->   
->   		/* i = 0 is SST so we need to process max_count + 1 streams */
->   		for (int i = 0; i <= max_count; i++) {
-> +			if (i == 1) {
-> +				/* Full physical HPD disconnect/reset between SST and MST iterations */
-> +				unigraf_unplug();
-> +				unigraf_hpd_deassert();
-> +				sleep(igt_default_display_detect_timeout());
-> +				unigraf_reset();
-> +				sleep(igt_default_display_detect_timeout());
-> +			}
-
-There is already a unplug/plug sequence just bellow, what is the 
-difference? The reset function don't do a lot of stuff except also 
-disconnecting the unigraf.
-
-> +			unigraf_unplug();
->   			unigraf_hpd_deassert();
->   			/* Let the hardware detect the new state  */
->   			sleep(igt_default_display_detect_timeout());
->   
-> +			unigraf_plug();
->   			unigraf_set_mst_stream_count(max(i, 1));
->   			if (!i)
->   				unigraf_set_sst();
-> @@ -125,13 +135,18 @@ int igt_main()
->   			newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
->   									    already_connected,
->   									    already_connected_count,
-> +									    max(i, 1),
->   									    drm_fd);
->   
->   			diff_len = get_array_diff(newly_connected, newly_connected_count,
->   						  already_connected, already_connected_count, &diff);
->   
-> -			igt_assert_f(diff_len == max(i, 1),
-> -				     "Invalid connected connector count, expected %d found %d\n",
-> +			/*
-> +			 * We allow diff_len to be between 1 and max(i, 1) because the DRM driver may incrementally
-> +			 * expose MST stream nodes rather than surfacing the entire topology at once.
-> +			 */
-> +			igt_assert_f(diff_len >= 1 && diff_len <= max(i, 1),
-> +				     "Invalid connected connector count, expected between 1 and %d found %d\n",
->   				     max(i, 1), diff_len);
-
-This change is a bit unexpected, the goal of this test is to properly 
-check if all connectors are detected. If one is not detected, it is 
-either a kernel bug or a hardware bug.
-
-If the issue is the DRM slowness, can you just try to increase the timeout?
-
->   		}
->   
-> diff --git a/tests/unigraf/unigraf_lt.c b/tests/unigraf/unigraf_lt.c
-> index 81e6ecd3f..b5989503d 100644
-> --- a/tests/unigraf/unigraf_lt.c
-> +++ b/tests/unigraf/unigraf_lt.c
-> @@ -107,11 +107,15 @@ int igt_main()
->   
->   		for (i = 0; i < ARRAY_SIZE(lane_counts); i++) {
->   			igt_dynamic_f("unigraf-dp-lane-count-%d", lane_counts[i]) {
-> +				/* Hardware PHY requires physical settle time before and after link constraints */
-> +				sleep(igt_default_display_detect_timeout());
->   				unigraf_reset();
->   				unigraf_set_max_lane_count(lane_counts[i]);
->   				unigraf_hpd_pulse(500000);
-> +				sleep(igt_default_display_detect_timeout());
->   
-> -				igt_display_require_output(&display);
-> +				igt_display_reset_outputs(&display);
-> +				connector = unigraf_get_connector(drm_fd);
->   				output = igt_output_from_connector(&display, connector);
->   				igt_assert(output);
->   				igt_dp_force_link_retrain(drm_fd, output, 2);
-> @@ -119,6 +123,9 @@ int igt_main()
->   
->   				current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
->   				igt_assert_eq(current_lanes, lane_counts[i]);
-> +
-> +				igt_modeset_disable_all_outputs(&display);
-> +				igt_display_commit2(&display, COMMIT_ATOMIC);
->   			}
->   		}
->   	}
-> @@ -134,14 +141,21 @@ int igt_main()
->   
->   		for (i = 0; i < ARRAY_SIZE(rates); i++) {
->   			igt_dynamic_f("unigraf-dp-link-rate-%d", rates[i]) {
-> -				unigraf_reset();
-> -				unigraf_set_max_link_rate(rates[i]);
-> -				unigraf_hpd_pulse(1000000);
-> -				igt_display_require_output(&display);
-> -				igt_display_reset(&display);
-> -				igt_display_require_output(&display);
-> +				connector = unigraf_get_connector(drm_fd);
->   				output = igt_output_from_connector(&display, connector);
->   				igt_assert(output);
-> +				
-> +				/* Fast-fail if graphic card does not support enforcing this link rate natively */
-> +				igt_require(igt_dp_is_link_rate_supported(drm_fd, output, unigraf_rate_to_kbs(rates[i])));
-> +
-> +				/* Hardware PHY requires physical settle time before and after link constraints */
-> +				sleep(igt_default_display_detect_timeout());
-
-Is this sleep before reset/pulse required?
-
-> +				unigraf_reset();
-> +				unigraf_set_max_link_rate(rates[i]);
-> +				unigraf_hpd_pulse(500000);
-> +				sleep(igt_default_display_detect_timeout());
-> +
-> +				igt_display_reset_outputs(&display);
->   				igt_dp_force_link_retrain(drm_fd, output, 2);
->   
->   				init_output_and_display_pattern(&display, output);
-> @@ -150,6 +164,9 @@ int igt_main()
->   				max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
->   				igt_require(max_supported_rate >= unigraf_rate_to_kbs(rates[i]));
->   				igt_assert_eq(current_rate, unigraf_rate_to_kbs(rates[i]));
-> +
-> +				igt_modeset_disable_all_outputs(&display);
-> +				igt_display_commit2(&display, COMMIT_ATOMIC);
->   			}
->   		}
->   	}
+diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
+index de10ce859fdb..0924e38af09c 100644
+--- a/include/drm-uapi/drm_mode.h
++++ b/include/drm-uapi/drm_mode.h
+@@ -934,6 +934,17 @@ enum drm_colorop_type {
+ 	 * LUT size is advertised via the SIZE property.
+ 	 */
+ 	DRM_COLOROP_3D_LUT,
++
++	/**
++	 * @DRM_COLOROP_FIXED_MATRIX:
++	 *
++	 * enum string "Fixed Matrix"
++	 *
++	 * A Colorop block that performs a pre-defined matrix operation selected
++	 * via the FIXED_MATRIX_TYPE enum property. The driver advertises the supported
++	 * operations through this property.
++	 */
++	DRM_COLOROP_FIXED_MATRIX,
+ };
+ 
+ /**
+-- 
+2.55.0
 
