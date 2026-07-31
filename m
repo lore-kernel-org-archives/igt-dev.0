@@ -4,65 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E895C55174
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 18:24:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9CAC55174
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 18:25:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA26210F39E;
-	Fri, 31 Jul 2026 18:24:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6EE2810E0F7;
+	Fri, 31 Jul 2026 18:25:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RRGpF05O";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="I6pozAHU";
 	dkim-atps=neutral
 Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B30C310F38E
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:22:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB42C10E210
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:23:55 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id 8A46C1A1370
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:22:18 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id B18AE1A1370
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:23:54 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 593266039A;
- Fri, 31 Jul 2026 18:22:18 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 8723F6039A;
+ Fri, 31 Jul 2026 18:23:54 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 88D5411C16C46; 
- Fri, 31 Jul 2026 20:22:17 +0200 (CEST)
+ with ESMTPSA id 652DF11C16C48; 
+ Fri, 31 Jul 2026 20:23:51 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1785522138; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:in-reply-to:references;
- bh=a2ePCB6024WoRjEyBOzPI1P2Sw0iwDdLvntvylBNR5Q=;
- b=RRGpF05Oh0tEVZKyqlQEuB3CwnJB7kYs4Mgecjz25Nc1gGbbIc0BWrwYuotYv2eg0TZaqO
- g7Jo+SNopDIba7KdLa2ryICYmKoRJORjx+jlkKrCGGWeXP7ekROigDyAaha9kUugcFBoUW
- YhJeajQKQAleHBRWDi+1XyRmkqve7z/CQ2avzwDqTCAp4rj0vKXCxLwSzv3yBk5wI6TQGH
- a8Lu45orQZWT4NXdf/pQqCjtErCcZh9KLvJWffOocKDMtU0hJgoE8BeHClzuBOTVRMUvQL
- zzogt+LF37Yppc8o0ncr1djcmsX3LICQMBjD4XVtvMqRX4tZLRrfCZYbLOWiEg==
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 31 Jul 2026 20:21:57 +0200
-Subject: [PATCH i-g-t 4/4] tests/kms_content_protection: Add test to ensure
- HDCP is properly detected by the DUT
+ t=1785522234; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:content-language:in-reply-to:references;
+ bh=8Lz8i9Rx1/oxDoHkQxOSw/5GhcVqDDYk7v+ymCsTzio=;
+ b=I6pozAHUIn/+hG0z/etl7som6lsLlyWtR+T71sE31MndOFCDv+eWIPZlNjW1A+F6e0uvlL
+ pKshdfV7JE2dmy0gvmcJBKo0A3jp2x5MyuJYAogU37eaYoMlyvj6K3TArYGaFhzzn8rBap
+ SBjkkgEEo37QweLyvuhS1f/eNwtv/hIJbVEPrJ+gMMDrF2sb/xrl18wQFrewrCQgCvVA3x
+ 3qvo/fMhIDfPK6qQG3rAWF0FDXUZFl6nJSnwVOit6gEXk4ReD9Af0KVrhV1l6AVNRiaVwu
+ M2Ij3O1YRtA4+jbha+dVWKOnXlIdZmYOGdjCubBAS4CHaoZorJf9Egp7w4Ugkw==
+Message-ID: <d85b0e6a-aebe-42d1-91c8-a1d35011f8d3@bootlin.com>
+Date: Fri, 31 Jul 2026 20:23:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-b4-unigraf-hdcp-v1-4-495df88ebbbd@google.com>
-References: <20260731-b4-unigraf-hdcp-v1-0-495df88ebbbd@google.com>
-In-Reply-To: <20260731-b4-unigraf-hdcp-v1-0-495df88ebbbd@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 2/4] lib/unigraf: Add HDCP management
 To: igt-dev@lists.freedesktop.org
-Cc: markyacoub@google.com, thomas.petazzoni@bootlin.com, 
- Louis Chauvet <louis.chauvet@bootlin.com>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1756; i=fomys@google.com;
- h=from:subject:message-id; bh=4gKK0ZosN6LYmt7hmreIExRdxnzuF/0jM57nLVOuvbQ=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBqbOfEvypif7wOJNG4r2mtSNJQXT39Dpc7HBEoR
- 2N/a8yG9caJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCamznxBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQIK0uxlsQLOLLBw//YqmVKl4TuDgF6kUcpvDTXnoY6KsBsE+
- LG9qkFaFsd8A/rI1GvD9gahmOlOOG77N5NiAykCjAzXbkbsk7md8MV7PF/mblwuLMFpnkkR9R8E
- FMCDts/bISeNRCTvhq9+fAwqk9dtqjtDSL1uO3BpkhH7+fqvYX2lg+dvxQVRgg9I5dhhUMrdv02
- utL9Zn8Lbb9NOgMgyFHsWYY+GAWhbCdibMpKVHA3Q4RaY8z6kNea5OjH4wUnA4qjYJMu5R3n6mp
- LdTh8iUoSfjGDzXjMdJ0j9o6RfHIIra4u15E+r6G0VtNNsmrUoxLQl1Hg5NHMoJilx3RI3b9zTf
- AUwynoD4qBywHVW63oaEKRjwnPa7MC4FXwl/cx+OfXqv0fa9VAwfFs/kVfrQcrsbAttpz3RzNDQ
- ezBO4UBvoD9gacwRY9t6c+NOSum0bKeDOOgGmMpASsRVPV1ElENSxwdxk9JyicIZsX+KGrEqBRw
- LA9AnqJn+CmJy4T6DGF16bOwl/tg+Mgi+W9vQwiGCZAsA8avNz3i4qTT7fie0ZETuQ0vec9puom
- mdInm6FNkj1VeHrQQhOzNh6pq5IfioOoDWT+4Jq0aT56H/QMJ7HosPOf2BwXKLhBBvAqT60FazC
- IFFUkUQk/qw7yykPCQfVGiW62MDpZgb+j7CAK0OlxdgYMOXrgLyM=
-X-Developer-Key: i=fomys@google.com; a=openpgp;
- fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
+Cc: markyacoub@google.com, thomas.petazzoni@bootlin.com,
+ fomys <fomys@google.com>
+References: <20260731-b4-unigraf-hdcp-v1-0-495df88ebbbd@google.com>
+ <20260731-b4-unigraf-hdcp-v1-2-495df88ebbbd@google.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260731-b4-unigraf-hdcp-v1-2-495df88ebbbd@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -79,61 +64,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a tests that ensure that the DUT properly detect an HDCP 2.2 sink.
 
-Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
----
- tests/kms_content_protection.c | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 680204981f58..30311f93a959 100644
---- a/tests/kms_content_protection.c
-+++ b/tests/kms_content_protection.c
-@@ -35,6 +35,7 @@
- #include <sys/epoll.h>
- #include <sys/stat.h>
- #include <libudev.h>
-+#include <xf86drmMode.h>
- #include "igt.h"
- #include "igt_edid.h"
- #include "igt_sysfs.h"
-@@ -89,7 +90,7 @@
-  * @legacy-hdcp14:  Test HDCP1.4 content protection with legacy style commit.
-  * @atomic-hdcp14:  Test HDCP1.4 content protection with atomic modesetting.
-  * @atomic-dpms-hdcp14: Test HDCP1.4 content protection with atomic modesetting and DPMS.
-- *
-+ * @detection:      content type 1 that can be handled only through HDCP2.2.
-  */
- 
- /**
-@@ -1271,6 +1272,25 @@ int igt_main()
- 		}
- 	}
- 
-+#if HAVE_UNIGRAF
-+	igt_describe("Check if the HDCP connection is properly detected by the driver");
-+	igt_subtest("detection") {
-+		drmModeConnectorPtr connector;
-+		igt_output_t *output;
-+
-+		unigraf_require_device(data.drm_fd);
-+		connector = unigraf_get_connector(data.drm_fd);
-+		output = igt_output_from_connector(&data.display, connector);
-+		igt_assert(output);
-+
-+		unigraf_disable_hdcp();
-+		igt_assert(!sink_hdcp2_capable(output));
-+		unigraf_enable_hdcp();
-+		sleep(igt_default_display_detect_timeout());
-+		igt_assert(sink_hdcp2_capable(output));
-+	}
-+#endif
-+
- 	igt_fixture() {
- 		test_content_protection_cleanup();
- 		igt_display_fini(&data.display);
+On 7/31/26 20:21, Louis Chauvet wrote:
+> From: fomys <fomys@google.com>
 
--- 
-2.54.0
+Tiny mistake on this patch, that indeed me. I will fix it for v2.
+
+> Unigraf is able to emulate HDCP, so add few helpers to enable/disable
+> it.
+> 
+> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
+> ---
+>   lib/vendor/unigraf/unigraf.c | 23 ++++++++++++++++++++++-
+>   lib/vendor/unigraf/unigraf.h |  4 ++++
+>   2 files changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+> index 30ee3c72bc74..5b416f605428 100644
+> --- a/lib/vendor/unigraf/unigraf.c
+> +++ b/lib/vendor/unigraf/unigraf.c
+> @@ -549,9 +549,10 @@ void unigraf_reset(void)
+>   	unigraf_set_mst_stream_count(1);
+>   	unigraf_set_sst();
+>   	unigraf_load_default_edid();
+> -	unigraf_hpd_assert();
+>   	unigraf_set_max_lane_count(4);
+>   	unigraf_set_max_link_rate(UNIGRAF_RATE_8_10_GHZ);
+> +	unigraf_enable_hdcp();
+> +	unigraf_hpd_assert();
+>   }
+>   
+>   /**
+> @@ -911,3 +912,23 @@ int unigraf_rate_to_kbs(enum unigraf_rate rate)
+>   		return 0;
+>   	}
+>   }
+> +
+> +/**
+> + * unigraf_enable_hdcp - Enable HDCP 2 support
+> + *
+> + * Unigraf is able to load production keys, but this will disable all recording
+> + * features.
+> + */
+> +void unigraf_enable_hdcp(void)
+> +{
+> +	unigraf_write_u32(TSI_HDCP_2X_COMMAND_W, H2_SINK_LOAD_PROD_KEYS);
+> +	unigraf_write_u32(TSI_HDCP_2X_COMMAND_W, H2_SINK_SET_CAPABLE);
+> +}
+> +
+> +/**
+> + * unigraf_disable_hdcp - Disable HDCP support
+> + */
+> +void unigraf_disable_hdcp(void)
+> +{
+> +	unigraf_write_u32(TSI_HDCP_2X_COMMAND_W, H2_SINK_CLEAR_CAPABLE);
+> +}
+> diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
+> index 1570be3feb96..498a2d4daab3 100644
+> --- a/lib/vendor/unigraf/unigraf.h
+> +++ b/lib/vendor/unigraf/unigraf.h
+> @@ -103,4 +103,8 @@ uint32_t unigraf_get_lt_rate(void);
+>   
+>   uint32_t unigraf_get_lt_lane_count(void);
+>   
+> +void unigraf_enable_hdcp(void);
+> +
+> +void unigraf_disable_hdcp(void);
+> +
+>   #endif // UNIGRAF_H
+> 
 
