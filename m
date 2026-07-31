@@ -4,51 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF9CAC55174
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 18:25:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38F96C55174
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 18:34:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6EE2810E0F7;
-	Fri, 31 Jul 2026 18:25:23 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="I6pozAHU";
-	dkim-atps=neutral
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB42C10E210
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:23:55 +0000 (UTC)
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-02.galae.net (Postfix) with ESMTPS id B18AE1A1370
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:23:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 8723F6039A;
- Fri, 31 Jul 2026 18:23:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 652DF11C16C48; 
- Fri, 31 Jul 2026 20:23:51 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1785522234; h=from:subject:date:message-id:to:cc:mime-version:content-type:
- content-transfer-encoding:content-language:in-reply-to:references;
- bh=8Lz8i9Rx1/oxDoHkQxOSw/5GhcVqDDYk7v+ymCsTzio=;
- b=I6pozAHUIn/+hG0z/etl7som6lsLlyWtR+T71sE31MndOFCDv+eWIPZlNjW1A+F6e0uvlL
- pKshdfV7JE2dmy0gvmcJBKo0A3jp2x5MyuJYAogU37eaYoMlyvj6K3TArYGaFhzzn8rBap
- SBjkkgEEo37QweLyvuhS1f/eNwtv/hIJbVEPrJ+gMMDrF2sb/xrl18wQFrewrCQgCvVA3x
- 3qvo/fMhIDfPK6qQG3rAWF0FDXUZFl6nJSnwVOit6gEXk4ReD9Af0KVrhV1l6AVNRiaVwu
- M2Ij3O1YRtA4+jbha+dVWKOnXlIdZmYOGdjCubBAS4CHaoZorJf9Egp7w4Ugkw==
-Message-ID: <d85b0e6a-aebe-42d1-91c8-a1d35011f8d3@bootlin.com>
-Date: Fri, 31 Jul 2026 20:23:50 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0F0310F38E;
+	Fri, 31 Jul 2026 18:34:14 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 400B510F38E;
+ Fri, 31 Jul 2026 18:33:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2886431575182732712=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/4] lib/unigraf: Add HDCP management
-To: igt-dev@lists.freedesktop.org
-Cc: markyacoub@google.com, thomas.petazzoni@bootlin.com,
- fomys <fomys@google.com>
-References: <20260731-b4-unigraf-hdcp-v1-0-495df88ebbbd@google.com>
- <20260731-b4-unigraf-hdcp-v1-2-495df88ebbbd@google.com>
-From: Louis Chauvet <louis.chauvet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260731-b4-unigraf-hdcp-v1-2-495df88ebbbd@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_YUV_Conversion_Colorop_test?=
+ =?utf-8?q?s_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Harry Wentland" <harry.wentland@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 31 Jul 2026 18:33:39 -0000
+Message-ID: <178552281925.10998.4561074210454197461@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260731180200.668795-1-harry.wentland@amd.com>
+In-Reply-To: <20260731180200.668795-1-harry.wentland@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,77 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============2886431575182732712==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: YUV Conversion Colorop tests (rev3)
+URL   : https://patchwork.freedesktop.org/series/164103/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9036_BAT -> XEIGTPW_15619_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
 
 
-On 7/31/26 20:21, Louis Chauvet wrote:
-> From: fomys <fomys@google.com>
+Changes
+-------
 
-Tiny mistake on this patch, that indeed me. I will fix it for v2.
+  No changes found
 
-> Unigraf is able to emulate HDCP, so add few helpers to enable/disable
-> it.
-> 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->   lib/vendor/unigraf/unigraf.c | 23 ++++++++++++++++++++++-
->   lib/vendor/unigraf/unigraf.h |  4 ++++
->   2 files changed, 26 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-> index 30ee3c72bc74..5b416f605428 100644
-> --- a/lib/vendor/unigraf/unigraf.c
-> +++ b/lib/vendor/unigraf/unigraf.c
-> @@ -549,9 +549,10 @@ void unigraf_reset(void)
->   	unigraf_set_mst_stream_count(1);
->   	unigraf_set_sst();
->   	unigraf_load_default_edid();
-> -	unigraf_hpd_assert();
->   	unigraf_set_max_lane_count(4);
->   	unigraf_set_max_link_rate(UNIGRAF_RATE_8_10_GHZ);
-> +	unigraf_enable_hdcp();
-> +	unigraf_hpd_assert();
->   }
->   
->   /**
-> @@ -911,3 +912,23 @@ int unigraf_rate_to_kbs(enum unigraf_rate rate)
->   		return 0;
->   	}
->   }
-> +
-> +/**
-> + * unigraf_enable_hdcp - Enable HDCP 2 support
-> + *
-> + * Unigraf is able to load production keys, but this will disable all recording
-> + * features.
-> + */
-> +void unigraf_enable_hdcp(void)
-> +{
-> +	unigraf_write_u32(TSI_HDCP_2X_COMMAND_W, H2_SINK_LOAD_PROD_KEYS);
-> +	unigraf_write_u32(TSI_HDCP_2X_COMMAND_W, H2_SINK_SET_CAPABLE);
-> +}
-> +
-> +/**
-> + * unigraf_disable_hdcp - Disable HDCP support
-> + */
-> +void unigraf_disable_hdcp(void)
-> +{
-> +	unigraf_write_u32(TSI_HDCP_2X_COMMAND_W, H2_SINK_CLEAR_CAPABLE);
-> +}
-> diff --git a/lib/vendor/unigraf/unigraf.h b/lib/vendor/unigraf/unigraf.h
-> index 1570be3feb96..498a2d4daab3 100644
-> --- a/lib/vendor/unigraf/unigraf.h
-> +++ b/lib/vendor/unigraf/unigraf.h
-> @@ -103,4 +103,8 @@ uint32_t unigraf_get_lt_rate(void);
->   
->   uint32_t unigraf_get_lt_lane_count(void);
->   
-> +void unigraf_enable_hdcp(void);
-> +
-> +void unigraf_disable_hdcp(void);
-> +
->   #endif // UNIGRAF_H
-> 
 
+Build changes
+-------------
+
+  * IGT: IGT_9036 -> IGTPW_15619
+
+  IGTPW_15619: 15619
+  IGT_9036: 9036
+  xe-5515-f9ef9f302ee01854066ec6da30550da6ea6cb03a: f9ef9f302ee01854066ec6da30550da6ea6cb03a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15619/index.html
+
+--===============2886431575182732712==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>YUV Conversion Colorop tests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164103/">https://patchwork.freedesktop.org/series/164103/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15619/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15619/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9036_BAT -&gt; XEIGTPW_15619_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9036 -&gt; IGTPW_15619</li>
+</ul>
+<p>IGTPW_15619: 15619<br />
+  IGT_9036: 9036<br />
+  xe-5515-f9ef9f302ee01854066ec6da30550da6ea6cb03a: f9ef9f302ee01854066ec6da30550da6ea6cb03a</p>
+
+</body>
+</html>
+
+--===============2886431575182732712==--
