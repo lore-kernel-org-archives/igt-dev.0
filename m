@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A50B8C55174
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 18:24:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E895C55174
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 18:24:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 52FDB10E0F7;
-	Fri, 31 Jul 2026 18:24:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA26210F39E;
+	Fri, 31 Jul 2026 18:24:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="K6vesVJ7";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="RRGpF05O";
 	dkim-atps=neutral
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E318510F38E
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:22:18 +0000 (UTC)
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B30C310F38E
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:22:19 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id AE2FB4E4105B;
- Fri, 31 Jul 2026 18:22:17 +0000 (UTC)
+ by smtpout-02.galae.net (Postfix) with ESMTPS id 8A46C1A1370
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 18:22:18 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 7C5096039A;
- Fri, 31 Jul 2026 18:22:17 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 593266039A;
+ Fri, 31 Jul 2026 18:22:18 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id 818B811C16C40; 
- Fri, 31 Jul 2026 20:22:12 +0200 (CEST)
+ with ESMTPSA id 88D5411C16C46; 
+ Fri, 31 Jul 2026 20:22:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1785522133; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1785522138; h=from:subject:date:message-id:to:cc:mime-version:content-type:
  content-transfer-encoding:in-reply-to:references;
- bh=WI+u9K1bVl/2O7uU+dlrqt1i9gA4M8m6+aNZpWruA34=;
- b=K6vesVJ7I4fIFQoeua5QXdemkvrjIhEiibkIURB9Edtkzl1TDoO0nyYVKojrOpF3+3mjzz
- kN06nprfrJu7SBV46AFVq+D/vlULPls5/wdU3tIRQ7XajtWlsB+JxF7/RNEhVtwtndIzFb
- 0lnu6KxcOZZ8khq9wfSyzDFjfUWCxm8GwpXaqPhhuxI7YIXrzB1o3hFo9sRyhpMkMR8eZB
- WrVbKOz4dK7Nxkn7+h75nf1hfPsJfAlR1fJ4Q+Xjcvn/PU1i1RGJTTkpBhEE5xt3iPB3Cc
- r82dYR7fwx4uwx1DT3dad1GGLy+pxYKUHZzlTuO3hgvwTnux63T/zqkFtAfVBg==
+ bh=a2ePCB6024WoRjEyBOzPI1P2Sw0iwDdLvntvylBNR5Q=;
+ b=RRGpF05Oh0tEVZKyqlQEuB3CwnJB7kYs4Mgecjz25Nc1gGbbIc0BWrwYuotYv2eg0TZaqO
+ g7Jo+SNopDIba7KdLa2ryICYmKoRJORjx+jlkKrCGGWeXP7ekROigDyAaha9kUugcFBoUW
+ YhJeajQKQAleHBRWDi+1XyRmkqve7z/CQ2avzwDqTCAp4rj0vKXCxLwSzv3yBk5wI6TQGH
+ a8Lu45orQZWT4NXdf/pQqCjtErCcZh9KLvJWffOocKDMtU0hJgoE8BeHClzuBOTVRMUvQL
+ zzogt+LF37Yppc8o0ncr1djcmsX3LICQMBjD4XVtvMqRX4tZLRrfCZYbLOWiEg==
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-Date: Fri, 31 Jul 2026 20:21:56 +0200
-Subject: [PATCH i-g-t 3/4] tests/kms_content_protection: Enable HDCP for
- unigraf if available
+Date: Fri, 31 Jul 2026 20:21:57 +0200
+Subject: [PATCH i-g-t 4/4] tests/kms_content_protection: Add test to ensure
+ HDCP is properly detected by the DUT
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260731-b4-unigraf-hdcp-v1-3-495df88ebbbd@google.com>
+Message-Id: <20260731-b4-unigraf-hdcp-v1-4-495df88ebbbd@google.com>
 References: <20260731-b4-unigraf-hdcp-v1-0-495df88ebbbd@google.com>
 In-Reply-To: <20260731-b4-unigraf-hdcp-v1-0-495df88ebbbd@google.com>
 To: igt-dev@lists.freedesktop.org
 Cc: markyacoub@google.com, thomas.petazzoni@bootlin.com, 
  Louis Chauvet <louis.chauvet@bootlin.com>
 X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1090; i=fomys@google.com;
- h=from:subject:message-id; bh=3bXLhBqqkcKhr4eBZOEZZU4u++dsQsN+haPPTlwD1U0=;
- b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBqbOfEjHNYp082+qvdvtTGnFu6EVVLWRkQBEv+6
- VP6BvhjbiCJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCamznxBsUgAAAAAAEAA5t
- YW51MiwyLjUrMS4xMiwyLDIACgkQIK0uxlsQLOK1Ug/9GoOULazz0hR8Tcf0kxWhse2pKbImIKc
- k+pVzT6EE02P7qcQ26AHJIdzpCYqn4hLDrFAwVr0ERdae+IBpBUEhUTmu8w7lpgmKj7xRGgw0d8
- kiMMu2txKbnAwQlAMF/piEvEvg2sHjEnGOIx+20B+vr/PO1W0oDsIX8QmptbVAcswZDQsoxG0Rt
- +rT8mv0Jkb4SSAaQIK9SqWhhi2nvETTDzNThDFcQtnWcliJ7CoJAlxIWbz9u3lDY3FsytOzUt/+
- OgJ3Xu77enMoVkxtHIUNItbcylxQDnIpxgEUZ2TGm1FF2vk9G9NecNnis82zldC9ccXaWqVOuEd
- CYgeOTdNKHacyyoJh02LmvH7guaKzfL8bbJYFlpEkM5aLojY5ZSeG6XtqzYUoRQgS49J5vckHr9
- MY5mwnVAIPfn49Sh0LhM0DznPa7SVHGe+T7cLffUJGYu1i6YR+845cDs1BQSVmJZKjP1VN2xYEA
- b4vvndWQrtFwzRoWe0xWrLUwtv7cDDMcBvZhL46sjAUv5eq8zOcrVL4l8MBfwBSpx4FYN/gio2W
- 1spsObZO0QHrGWChyDIE7F05QOtmRx/V5yV92vShUg0ZhDlxC1PBuA0V+aLJ1s15Iwqq/CqORpg
- /GiH5Dcd7ctQE2OhiqXAOHHhBVoIiJjk502BS9viQdYeSi8Gk6f0=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1756; i=fomys@google.com;
+ h=from:subject:message-id; bh=4gKK0ZosN6LYmt7hmreIExRdxnzuF/0jM57nLVOuvbQ=;
+ b=owEBiQJ2/ZANAwAIASCtLsZbECziAcsmYgBqbOfEvypif7wOJNG4r2mtSNJQXT39Dpc7HBEoR
+ 2N/a8yG9caJAk8EAAEIADkWIQRPj7g/vng8MQxQWQQgrS7GWxAs4gUCamznxBsUgAAAAAAEAA5t
+ YW51MiwyLjUrMS4xMiwyLDIACgkQIK0uxlsQLOLLBw//YqmVKl4TuDgF6kUcpvDTXnoY6KsBsE+
+ LG9qkFaFsd8A/rI1GvD9gahmOlOOG77N5NiAykCjAzXbkbsk7md8MV7PF/mblwuLMFpnkkR9R8E
+ FMCDts/bISeNRCTvhq9+fAwqk9dtqjtDSL1uO3BpkhH7+fqvYX2lg+dvxQVRgg9I5dhhUMrdv02
+ utL9Zn8Lbb9NOgMgyFHsWYY+GAWhbCdibMpKVHA3Q4RaY8z6kNea5OjH4wUnA4qjYJMu5R3n6mp
+ LdTh8iUoSfjGDzXjMdJ0j9o6RfHIIra4u15E+r6G0VtNNsmrUoxLQl1Hg5NHMoJilx3RI3b9zTf
+ AUwynoD4qBywHVW63oaEKRjwnPa7MC4FXwl/cx+OfXqv0fa9VAwfFs/kVfrQcrsbAttpz3RzNDQ
+ ezBO4UBvoD9gacwRY9t6c+NOSum0bKeDOOgGmMpASsRVPV1ElENSxwdxk9JyicIZsX+KGrEqBRw
+ LA9AnqJn+CmJy4T6DGF16bOwl/tg+Mgi+W9vQwiGCZAsA8avNz3i4qTT7fie0ZETuQ0vec9puom
+ mdInm6FNkj1VeHrQQhOzNh6pq5IfioOoDWT+4Jq0aT56H/QMJ7HosPOf2BwXKLhBBvAqT60FazC
+ IFFUkUQk/qw7yykPCQfVGiW62MDpZgb+j7CAK0OlxdgYMOXrgLyM=
 X-Developer-Key: i=fomys@google.com; a=openpgp;
  fpr=8B7104AE9A272D6693F527F2EC1883F55E0B40A5
 X-Last-TLS-Session-Version: TLSv1.3
@@ -79,40 +79,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-As unigraf can be automatically connected and can emulate HDCP 2.2 sink,
-enable it.
+Add a tests that ensure that the DUT properly detect an HDCP 2.2 sink.
 
 Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 ---
- tests/kms_content_protection.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tests/kms_content_protection.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
 diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-index 133060af3c0a..680204981f58 100644
+index 680204981f58..30311f93a959 100644
 --- a/tests/kms_content_protection.c
 +++ b/tests/kms_content_protection.c
-@@ -42,6 +42,9 @@
- #include "igt_kmod.h"
- #include "igt_panel.h"
+@@ -35,6 +35,7 @@
+ #include <sys/epoll.h>
+ #include <sys/stat.h>
+ #include <libudev.h>
++#include <xf86drmMode.h>
+ #include "igt.h"
+ #include "igt_edid.h"
+ #include "igt_sysfs.h"
+@@ -89,7 +90,7 @@
+  * @legacy-hdcp14:  Test HDCP1.4 content protection with legacy style commit.
+  * @atomic-hdcp14:  Test HDCP1.4 content protection with atomic modesetting.
+  * @atomic-dpms-hdcp14: Test HDCP1.4 content protection with atomic modesetting and DPMS.
+- *
++ * @detection:      content type 1 that can be handled only through HDCP2.2.
+  */
  
-+#ifdef HAVE_UNIGRAF
-+#include "unigraf/unigraf.h"
-+#endif
  /**
-  * SUBTEST: lic-type-0
-  * Description: Test for the integrity of link for type-0 content.
-@@ -769,6 +772,11 @@ test_content_protection(enum igt_commit_style commit_style, int content_type)
- 	int hdcp_panel_count;
- 	int i;
+@@ -1271,6 +1272,25 @@ int igt_main()
+ 		}
+ 	}
  
-+#ifdef HAVE_UNIGRAF
-+	if (content_type == HDCP_CONTENT_TYPE_1 && unigraf_open_device(data.drm_fd))
++#if HAVE_UNIGRAF
++	igt_describe("Check if the HDCP connection is properly detected by the driver");
++	igt_subtest("detection") {
++		drmModeConnectorPtr connector;
++		igt_output_t *output;
++
++		unigraf_require_device(data.drm_fd);
++		connector = unigraf_get_connector(data.drm_fd);
++		output = igt_output_from_connector(&data.display, connector);
++		igt_assert(output);
++
++		unigraf_disable_hdcp();
++		igt_assert(!sink_hdcp2_capable(output));
 +		unigraf_enable_hdcp();
++		sleep(igt_default_display_detect_timeout());
++		igt_assert(sink_hdcp2_capable(output));
++	}
 +#endif
 +
- 	if (data.cp_tests & CP_MEI_RELOAD)
- 		igt_require_f(igt_kmod_is_loaded("mei_hdcp"),
- 			      "mei_hdcp module is not loaded\n");
+ 	igt_fixture() {
+ 		test_content_protection_cleanup();
+ 		igt_display_fini(&data.display);
 
 -- 
 2.54.0
