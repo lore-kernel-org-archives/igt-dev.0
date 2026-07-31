@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFAE6C54F54
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 11:21:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3598C54F54
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 12:13:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 88DA210F21F;
-	Fri, 31 Jul 2026 11:21:06 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A54AF10F22D;
- Fri, 31 Jul 2026 11:20:33 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3304721266043332122=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1158910E1F0;
+	Fri, 31 Jul 2026 12:13:20 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gv0sMrpg";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1D2CE10F247
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 12:12:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1785499966; x=1817035966;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=mYhUYBF/CO6VjVFyHGh4xFJ1+ftvyIhTCAW6uikocaM=;
+ b=Gv0sMrpg+o1ikq1BfA8xTJMyP1f4UYepyMfHC7Zx4LlRMbNG7uRcf4dn
+ H5LGwE+hzPoB8QIdDgkWOlsUeus4HELthYKV+Enid54Wi0tRkCBUC418g
+ wcZDnmie1Jzx8Yip9YXtr/33KuxXtx/FJUOusyKhRK4Ju9cqaBQWKL4jY
+ k27r86U7/GhHHLgbxsnkef15CcBrcbC0fOg5jAr/xcfBFD1vQ/BJcNnJ7
+ JsYJmaoojGLxPCGkkn7NYYjHQZISYx8xgTaRkpa4Ar6LONlJ0/TU/ol5p
+ Z6s3dbx7plhYyN8JFw/C3RjQjnR0cv6dxZGZ7/vc1Moa2MYdLrf1uNPpw w==;
+X-CSE-ConnectionGUID: IyXyEefvSgqodh5B/9krBA==
+X-CSE-MsgGUID: 3T92s4/zSRO0FJUBhSr6/w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="85891499"
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="85891499"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2026 05:12:45 -0700
+X-CSE-ConnectionGUID: tY/N7UuFR0mlCXF/Ob2uNQ==
+X-CSE-MsgGUID: Y3Z4n3ibSmWw8QLSlYoZ2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="265630638"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Jul 2026 05:12:44 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 0/4] Add DSC compressed BPP subtest
+Date: Fri, 31 Jul 2026 17:51:41 +0530
+Message-Id: <20260731122145.4099468-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tools/intel=5Freg=3A_add_?=
- =?utf-8?q?MCR_steered_register_access_command?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 31 Jul 2026 11:20:33 -0000
-Message-ID: <178549683365.9107.7948312269190613109@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260731101236.11815-1-nishit.sharma@intel.com>
-In-Reply-To: <20260731101236.11815-1-nishit.sharma@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,115 +62,37 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3304721266043332122==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add support for testing DSC with specific compressed BPP values.
 
-== Series Details ==
+Patch 1-2 add the library and helper functions to force compressed
+BPP via the intel_force_link_bpp debugfs interface.
 
-Series: tools/intel_reg: add MCR steered register access command
-URL   : https://patchwork.freedesktop.org/series/171426/
-State : success
+Patch 3 adds a function to read the sink's negotiated compressed
+BPP from i915_display_info after a DSC-enabled modeset.
 
-== Summary ==
+Patch 4 adds the dsc-compressed-bpp subtest along with bigjoiner
+and ultrajoiner variants. For display version >= 13, it queries
+the sink's max compressed BPP and iterates through valid values.
+For older platforms, a fixed set of BPP values is used.
 
-CI Bug Log - changes from IGT_9034 -> IGTPW_15616
-====================================================
+v2: Rebase
 
-Summary
--------
+Swati Sharma (4):
+  lib/dsc: Add igt_force_dsc_enable_compressed_bpp()
+  tests/intel/kms_dsc_helper: Add helper to force compressed BPP
+  lib/dsc: Add igt_get_dsc_sink_compressed_bpp()
+  tests/intel/kms_dsc: Add dsc-compressed-bpp subtest
 
-  **SUCCESS**
+ lib/igt_dsc.c                | 56 ++++++++++++++++++++++
+ lib/igt_dsc.h                |  2 +
+ tests/intel/kms_dsc.c        | 90 +++++++++++++++++++++++++++++++++++-
+ tests/intel/kms_dsc_helper.c | 10 ++++
+ tests/intel/kms_dsc_helper.h |  1 +
+ 5 files changed, 157 insertions(+), 2 deletions(-)
 
-  No regressions found.
+-- 
+2.25.1
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15616/index.html
-
-Participating hosts (41 -> 38)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9034 -> IGTPW_15616
-  * Linux: CI_DRM_18925 -> CI_DRM_18931
-
-  CI-20190529: 20190529
-  CI_DRM_18925: 5e24f68d311764bf343f9def49b752b509dfd5fd @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18931: f584d11df22f39e3a4e97cbd2bdb76bb2a11b19c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15616: 15616
-  IGT_9034: be1d1af352dbd4ca4557202a8ed0d6d60f95e0bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15616/index.html
-
---===============3304721266043332122==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tools/intel_reg: add MCR steered register access command</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171426/">https://patchwork.freedesktop.org/series/171426/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15616/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15616/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9034 -&gt; IGTPW_15616</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15616/index.html</p>
-<h2>Participating hosts (41 -&gt; 38)</h2>
-<p>Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9034 -&gt; IGTPW_15616</li>
-<li>Linux: CI_DRM_18925 -&gt; CI_DRM_18931</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18925: 5e24f68d311764bf343f9def49b752b509dfd5fd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18931: f584d11df22f39e3a4e97cbd2bdb76bb2a11b19c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15616: 15616<br />
-  IGT_9034: be1d1af352dbd4ca4557202a8ed0d6d60f95e0bf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3304721266043332122==--
