@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B932C5516F
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 17:49:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2476C55173
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 17:49:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2DC9510F38F;
-	Fri, 31 Jul 2026 17:49:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7897610F36A;
+	Fri, 31 Jul 2026 17:49:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="zD7E37LS";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="DOgWOm7g";
 	dkim-atps=neutral
 Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4149189289
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ECE5789289
  for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 17:48:32 +0000 (UTC)
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
- by smtpout-03.galae.net (Postfix) with ESMTPS id 98F074E4105B;
- Fri, 31 Jul 2026 17:48:30 +0000 (UTC)
+ by smtpout-03.galae.net (Postfix) with ESMTPS id A637A4E4105C;
+ Fri, 31 Jul 2026 17:48:31 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
- by smtpout-01.galae.net (Postfix) with ESMTPS id 6DC9B6039A;
- Fri, 31 Jul 2026 17:48:30 +0000 (UTC)
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 7C3AE6039A;
+ Fri, 31 Jul 2026 17:48:31 +0000 (UTC)
 Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
- with ESMTPSA id EA3E711C16BDF; 
- Fri, 31 Jul 2026 19:48:27 +0200 (CEST)
+ with ESMTPSA id 8E18411C16BDF; 
+ Fri, 31 Jul 2026 19:48:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
- t=1785520110; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ t=1785520111; h=from:subject:date:message-id:to:mime-version:content-type:
  content-transfer-encoding:content-language:in-reply-to:references;
- bh=SpSA12YTFanj2SP0cmChNVTDypn80fubiPyxbYcQqoc=;
- b=zD7E37LSohvOgiEzit6M1BUVLgYu7qWAK1wcLjsc7g8PitpmhcxiFte/8XAulsalhSSaOI
- 5FBOghGN4kWPAJMurdJMBQ1gQSFF8GHHzQgHUQUgZW96DF+CGNlkbKaFmfwX/fhDCXSLb9
- MFrlSPwC2FBNR/75ODHFSiM7tlzmNY05UpEheNjbvuVlAq9Q4/IiH5CZ3Rn1smTQfof05o
- MvuGBErQVXA0GJKyf6Qi3NL5E/Co2FhbsrQx3JYZh+LdMYSj1U7dY1XK+rJOfNrL9Q0G/+
- ezTX1ptT9pHLKFIjEtAr1zZe0Dz7UF+YUrCDZtZ394yu3qdJQtL4IRwKp8meuA==
-Message-ID: <2a7b89cc-977d-47f9-8b6b-1aa0fcc64ea7@bootlin.com>
-Date: Fri, 31 Jul 2026 19:48:26 +0200
+ bh=k3Yjq9+HHEdu7j4mBfS0CzSy1Wmn/7nRIG5bImHsEpQ=;
+ b=DOgWOm7gjlwzUhseDyFjEYwI6HwrvVGzCjhUPIaYYj2+3Hvgw1pCKSoJUmqGXdpmQXaXGs
+ uoS20RW8UtZ6nvCI0q5Twk54WElWy7hjh8e+OP0n3fy7sRYV9QrknH64vEbmXeMgiEKv5w
+ 3DMHZcAHKXoOIF+yddSXl7snkJ5TRDAEnitFvn2nE0V4GWBAHfGCO5un1dPG0nUjD7IXu0
+ qR+mRyhSq9w3eVb82uuoAcq6T2w0IkKqSwMPQbp3r8CiycX5sMl7V+tGsRBsK/FvfUO4cR
+ SS8A+RAyOAxaN6Z99Qk9mkpxiODjSKu/UokPn0YQvFuJSPkVnO9keNuMNHKfdQ==
+Message-ID: <dfd7fa67-6120-4e60-babb-f454e181f6f7@bootlin.com>
+Date: Fri, 31 Jul 2026 19:48:30 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] lib/igt_rc: Introduce generic config parser
+Subject: Re: [PATCH v2] tests/unigraf: Enhance link rate support checking and
+ hardware retrain timing
 To: Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com
-References: <20260715192949.1984280-1-markyacoub@google.com>
- <20260720185026.93121-1-markyacoub@google.com>
-Content-Language: en-US
+References: <20260715192949.1984280-3-markyacoub@google.com>
+ <20260720205355.321557-1-markyacoub@google.com>
 From: Louis Chauvet <louis.chauvet@bootlin.com>
-In-Reply-To: <20260720185026.93121-1-markyacoub@google.com>
+Content-Language: en-US
+In-Reply-To: <20260720205355.321557-1-markyacoub@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -65,467 +65,310 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-On 7/20/26 20:50, Mark Yacoub wrote:
-> Currently, libraries like unigraf explicitly rely on GKeyFile
-> for reading configuration from .igtrc. Android builds do not
-> natively supply glib, meaning these tools cannot be cleanly
-> compiled.
+On 7/20/26 22:53, Mark Yacoub wrote:
+> Refactor hardware capability checks to natively skip unsupported DP link parameters dynamically, moving validation cleanly into the core igt_dp abstraction layer robustly.
 > 
-> This patch abstracts config parsing into a dedicated `igt_rc` module.
-> On standard Linux, `igt_rc` seamlessly wraps glib's native methods.
-> On Android environments, `igt_rc` natively parses `.igtrc` using
-> a stripped-down, thread-safe linked-list implementation (lib/android/igt_rc.c).
-
-Can you add documentation to all public functions? I think you must at 
-least mention who is responsible to free which pointer.
-
 > v2:
->   - Drop the GKeyFile abstraction fakes from android/glib.h (Review feedback)
->   - Introduce a generic wrapper (igt_rc.h) instead of modifying glib.h.
->   - Provide a pure glib backend for Linux to avoid regressions.
->   - Isolate Android parsing implementation cleanly into lib/android/igt_rc.c.
-> ---
->   lib/android/igt_rc.c         | 172 +++++++++++++++++++++++++++++++++++
->   lib/igt_rc.c                 |  61 +++++++++++++
->   lib/igt_rc.h                 |   5 +
->   lib/meson.build              |   1 +
->   lib/vendor/unigraf/unigraf.c |  92 ++++++++-----------
->   5 files changed, 279 insertions(+), 52 deletions(-)
->   create mode 100644 lib/android/igt_rc.c
->   create mode 100644 lib/igt_rc.c
+>   - Downgrade `igt_assert_f` checks across the `igt_dp` layer to `igt_require_f` (Louis)
+>   - Extract link rate querying into generic `igt_dp_is_link_rate_supported` helper (Louis)
+>   - Add `expected_new_connector_count` to `kms_wait_for_new_connectors` to fix discovery race conditions natively (Louis)
 > 
-> diff --git a/lib/android/igt_rc.c b/lib/android/igt_rc.c
-> new file mode 100644
-> index 000000000..6d9b348f7
-> --- /dev/null
-> +++ b/lib/android/igt_rc.c
-
-I think the goal is to avoid all android-specific implementation, those 
-functions should be in the generic igt_rc.c I think.
-
-> @@ -0,0 +1,172 @@
-> +#include "igt_rc.h"
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <strings.h>
-> +#include <ctype.h>
-> +#include <pthread.h>
-> +
-> +struct igt_key_entry {
-> +	char *group;
-> +	char *key;
-> +	char *value;
-> +	struct igt_key_entry *next;
-> +};
-> +
-> +static struct igt_key_entry *rc_entries = NULL;
-> +static pthread_once_t rc_once_control = PTHREAD_ONCE_INIT;
-> +
-> +static char *trim_whitespace(char *str)
-> +{
-> +	char *end;
-> +
-> +	while (isspace((unsigned char)*str))
-> +		str++;
-> +
-> +	if (*str == 0)
-> +		return str;
-> +
-> +	end = str + strlen(str) - 1;
-> +	while (end > str && isspace((unsigned char)*end))
-> +		end--;
-> +
-> +	end[1] = '\0';
-> +	return str;
-> +}
-> +
-> +static void load_igtrc_once(void)
-> +{
-> +	FILE *fp;
-> +	char *line = NULL;
-> +	size_t len = 0;
-> +	ssize_t read;
-> +	char *current_group = NULL;
-> +	struct igt_key_entry *tail = NULL;
-> +	char path[512];
-> +
-> +	snprintf(path, sizeof(path), "%s/.igtrc", "/data/local/tmp/igt");
-
-I think you must keep the behavior of igt_load_igtrc to choose the file 
-and at least keep a way to override this hardcoded path with an 
-environment variable.
-
-> +	fp = fopen(path, "r");
-> +	if (!fp)
-> +		return;
-> +
-> +	while ((read = getline(&line, &len, fp)) != -1) {
-> +		char *trimmed = trim_whitespace(line);
-> +
-> +		if (*trimmed == '\0' || *trimmed == '#' || *trimmed == ';')
-
-Can you use [0] instead of dereference? It is easier to read.
-
-> +			continue;
-> +
-> +		if (trimmed[0] == '[' && trimmed[strlen(trimmed) - 1] == ']') {
-> +			free(current_group);
-> +			trimmed[strlen(trimmed) - 1] = '\0';
-> +			current_group = strdup(trimmed + 1);
-> +			continue;
-> +		}
-> +
-> +		if (current_group) {
-> +			char *eq = strchr(trimmed, '=');
-> +
-> +			if (eq) {
-> +				char *key;
-> +				char *value;
-> +				struct igt_key_entry *entry;
-> +
-> +				*eq = '\0';
-
-Can you store here the "value" pointer?
-
-value = eq+1;
-
-> +				key = trim_whitespace(trimmed);
-> +				value = trim_whitespace(eq + 1);
-
-This way it is easier to understand here that you are trimming a valid data.
-
-> +
-> +				entry = calloc(1, sizeof(*entry));
-> +				entry->group = strdup(current_group);
-> +				entry->key = strdup(key);
-> +				entry->value = strdup(value);
-> +				entry->next = NULL;
-> +
-> +				if (!rc_entries) {
-> +					rc_entries = entry;
-> +					tail = entry;
-> +				} else {
-> +					tail->next = entry;
-> +					tail = entry;
-> +				}
-
-I think you could use igt_list.h to avoid this manual manipulation.
-
-> +			}
-> +		}
-> +	}
-> +
-> +	free(current_group);
-> +	free(line);
-> +	fclose(fp);
-> +}
-> +
-> +__attribute__((destructor))
-> +static void free_igtrc(void)
-> +{
-> +	struct igt_key_entry *curr, *next;
-> +
-> +	curr = rc_entries;
-> +	while (curr) {
-> +		next = curr->next;
-> +		free(curr->group);
-> +		free(curr->key);
-> +		free(curr->value);
-> +		free(curr);
-> +		curr = next;
-> +	}
-
-Same thing, I think you can use igt_list_for_each_entry_safe.
-
-> +	rc_entries = NULL;
-> +}
-> +
-> +char *igt_rc_get_string(const char *group_name, const char *key)
-> +{
-> +	char *last_match = NULL;
-> +	struct igt_key_entry *curr;
-> +
-> +	pthread_once(&rc_once_control, load_igtrc_once);
-> +
-> +	curr = rc_entries;
-> +	while (curr) {
-
-igt_list_for_each_entry
-
-> +		if (strcmp(curr->group, group_name) == 0 && strcmp(curr->key, key) == 0)
-> +			last_match = curr->value;
-> +		curr = curr->next;
-> +	}
-> +
-> +	return last_match ? strdup(last_match) : NULL;
-> +}
-> +
-> +bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out)
-> +{
-> +	char *val = igt_rc_get_string(group_name, key);
-> +
-> +	if (!val)
-> +		return false;
-> +
-> +	if (strcasecmp(val, "true") == 0 || strcmp(val, "1") == 0) {
-> +		*out = true;
-> +	} else if (strcasecmp(val, "false") == 0 || strcmp(val, "0") == 0) {
-> +		*out = false;
-> +	} else {
-> +		free(val);
-> +		return false;
-> +	}
-> +
-> +	free(val);
-> +	return true;
-> +}
-> +
-> +int igt_rc_get_integer(const char *group_name, const char *key, int *out)
-> +{
-> +	char *val = igt_rc_get_string(group_name, key);
-> +	char *endptr;
-> +	long lval;
-> +
-> +	if (!val)
-> +		return false;
-> +
-> +	lval = strtol(val, &endptr, 10);
-> +	if (*endptr != '\0') {
-> +		free(val);
-> +		return false;
-> +	}
-> +
-> +	*out = (int)lval;
-> +	free(val);
-> +	return true;
-
-I think you should change the return type of the function to be a boolean?
-
-> +}
-> diff --git a/lib/igt_rc.c b/lib/igt_rc.c
-> new file mode 100644
-> index 000000000..31eb07bc0
-> --- /dev/null
-> +++ b/lib/igt_rc.c
-> @@ -0,0 +1,61 @@
-> +#include "igt_rc.h"
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <strings.h>
-> +#include <ctype.h>
-> +
-> +#include <glib.h>
-> +
-> +char *igt_rc_get_string(const char *group_name, const char *key)
-> +{
-> +	GError *error = NULL;
-
-The goal is to completly replace rc parsing from glib by a custom parser 
-(please correct me if I am wrong @Kamil).
-
-So I think here you can just copy/paste the code you created for android.
-
-And I think there are more places where you should replace 
-g_key_file_get_* functions.
-
-> +	char *val;
-> +
-> +	if (!igt_key_file)
-> +		return NULL;
-> +
-> +	val = g_key_file_get_string(igt_key_file, group_name, key, &error);
-> +	if (error) {
-> +		g_error_free(error);
-> +		return NULL;
-> +	}
-> +
-> +	return val;
-> +}
-> +
-> +bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out)
-> +{
-> +	GError *error = NULL;
-> +	gboolean val;
-> +
-> +	if (!igt_key_file)
-> +		return false;
-> +
-> +	val = g_key_file_get_boolean(igt_key_file, group_name, key, &error);
-> +	if (error) {
-> +		g_error_free(error);
-> +		return false;
-> +	}
-> +
-> +	*out = val;
-> +	return true;
-> +}
-> +
-> +int igt_rc_get_integer(const char *group_name, const char *key, int *out)
-> +{
-> +	GError *error = NULL;
-> +	int val;
-> +
-> +	if (!igt_key_file)
-> +		return false;
-> +
-> +	val = g_key_file_get_integer(igt_key_file, group_name, key, &error);
-> +	if (error) {
-> +		g_error_free(error);
-> +		return false;
-> +	}
-> +
-> +	*out = val;
-> +	return true;
-> +}
-> diff --git a/lib/igt_rc.h b/lib/igt_rc.h
-> index d871b3b26..a0942f8d0 100644
-> --- a/lib/igt_rc.h
-> +++ b/lib/igt_rc.h
-> @@ -1,3 +1,4 @@
-> +#include <stdbool.h>
->   /*
->    * Copyright © 2017 Intel Corporation
->    *
-> @@ -33,4 +34,8 @@
+> TAG=agy
+> CONV=35e8e1e4-2dfd-4bf2-8c0b-c9bbc6268d92
+> ---
+>   lib/igt_dp.c                         | 50 ++++++++++++++++++++++++++--
+>   lib/igt_dp.h                         |  1 +
+>   lib/igt_kms.c                        | 15 ++++++---
+>   lib/igt_kms.h                        |  4 ++-
+>   lib/vendor/unigraf/unigraf.c         |  1 +
+>   tests/unigraf/unigraf_connectivity.c | 19 +++++++++--
+>   tests/unigraf/unigraf_lt.c           | 31 +++++++++++++----
+>   7 files changed, 104 insertions(+), 17 deletions(-)
+> 
+> diff --git a/lib/igt_dp.c b/lib/igt_dp.c
+> index 9f71c9e72..20af6a967 100644
+> --- a/lib/igt_dp.c
+> +++ b/lib/igt_dp.c
+> @@ -107,7 +107,7 @@ int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output)
+>   	if (is_intel_device(drm_fd))
+>   		return i915_dp_get_max_lane_count(drm_fd, output);
 >   
->   extern GKeyFile *igt_key_file;
+> -	igt_assert_f(false, "Current drm device is not able to report max lane count\n");
+> +	igt_require_f(false, "Current drm device is not able to report max lane count\n");
+>   	return -EINVAL;
+>   }
 >   
-> +char *igt_rc_get_string(const char *group_name, const char *key);
-> +bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out);
-> +int igt_rc_get_integer(const char *group_name, const char *key, int *out);
-> +
->   #endif /* IGT_RC_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 8db9fffde..20c2f34d7 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -97,6 +97,7 @@ lib_sources = [
->   	'igt_kms.c',
->   	'igt_fb.c',
->   	'igt_core.c',
-> +	'igt_rc.c',
->   	'igt_dir.c',
->   	'igt_draw.c',
->   	'igt_list.c',
-> diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-> index 30ee3c72b..64268db34 100644
-> --- a/lib/vendor/unigraf/unigraf.c
-> +++ b/lib/vendor/unigraf/unigraf.c
-> @@ -364,7 +364,6 @@ int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id)
->   bool unigraf_open_device(int drm_fd)
->   {
->   	TSI_RESULT r;
-> -	GError *cfg_error = NULL;
->   	char *cfg_device = NULL;
->   	char *cfg_role = NULL;
->   	char *cfg_input = NULL;
-> @@ -382,63 +381,52 @@ bool unigraf_open_device(int drm_fd)
->   
->   	unigraf_init();
->   
-> -	if (igt_key_file) {
-> -		cfg_device = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						   UNIGRAF_CONFIG_DEVICE_NAME, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No device name configured, uses first device available.\n");
-> -			cfg_device = NULL;
-> -		}
-> +	cfg_device = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +				       UNIGRAF_CONFIG_DEVICE_NAME);
-> +	if (!cfg_device) {
-> +		unigraf_debug("No device name configured, uses first device available.\n");
-> +		cfg_device = NULL;
-> +	}
->   
-> -		cfg_error = NULL;
-> -		cfg_role = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						 UNIGRAF_CONFIG_DEVICE_ROLE, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No device role configured.\n");
-> -			cfg_role = NULL;
-> -		}
-> +	cfg_role = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +				     UNIGRAF_CONFIG_DEVICE_ROLE);
-> +	if (!cfg_role) {
-> +		unigraf_debug("No device role configured.\n");
-> +		cfg_role = NULL;
-> +	}
->   
-> -		cfg_error = NULL;
-> -		cfg_input = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						  UNIGRAF_CONFIG_INPUT_NAME, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No input name configured.\n");
-> -			cfg_input = NULL;
-> -		}
-> +	cfg_input = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +				      UNIGRAF_CONFIG_INPUT_NAME);
-> +	if (!cfg_input) {
-> +		unigraf_debug("No input name configured.\n");
-> +		cfg_input = NULL;
-> +	}
->   
-> -		cfg_error = NULL;
-> -		unigraf_connector_name = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -							       UNIGRAF_CONFIG_CONNECTOR_NAME,
-> -							       &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No connector name configured, will autodetect.\n");
-> -			unigraf_connector_name = NULL;
-> -		}
-> +	unigraf_connector_name = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +						   UNIGRAF_CONFIG_CONNECTOR_NAME);
-> +	if (!unigraf_connector_name) {
-> +		unigraf_debug("No connector name configured, will autodetect.\n");
-> +		unigraf_connector_name = NULL;
-> +	}
->   
-> -		cfg_error = NULL;
-> -		cfg_edid_name = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						      UNIGRAF_CONFIG_EDID_NAME, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No default EDID set, use IGT default.\n");
-> -			cfg_edid_name = NULL;
-> -		}
-> +	cfg_edid_name = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +					  UNIGRAF_CONFIG_EDID_NAME);
-> +	if (!cfg_edid_name) {
-> +		unigraf_debug("No default EDID set, use IGT default.\n");
-
-While on it, can you correct the typo `use` => `using`?
-
-> +		cfg_edid_name = NULL;
-> +	}
->   
-> -		cfg_error = NULL;
-> -		unigraf_crc = g_key_file_get_boolean(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						     UNIGRAF_CONFIG_USE_CRC_NAME, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
-> -			unigraf_crc = true;
-> -		}
-> +	if (!igt_rc_get_boolean(UNIGRAF_CONFIG_GROUP,
-> +				UNIGRAF_CONFIG_USE_CRC_NAME, &unigraf_crc)) {
-> +		unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
-> +		unigraf_crc = true;
-> +	}
->   
-> -		cfg_error = NULL;
-> -		unigraf_stream_count = g_key_file_get_integer(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -							      UNIGRAF_CONFIG_MST_STREAM_COUNT,
-> -							      &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("MST usage not configured, using SST.\n");
-> -			unigraf_stream_count = 0;
-> -		}
-> +	if (!igt_rc_get_integer(UNIGRAF_CONFIG_GROUP,
-> +				UNIGRAF_CONFIG_MST_STREAM_COUNT,
-> +				&unigraf_stream_count)) {
-> +		unigraf_debug("MST usage not configured, using SST.\n");
-> +		unigraf_stream_count = 0;
+> @@ -124,7 +124,51 @@ void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_cou
+>   		return;
 >   	}
 >   
->   	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
+> -	igt_assert_f(false, "Current drm device does not support link retraining\n");
+> +	igt_require_f(false, "Current drm device does not support link retraining\n");
+> +}
+> +
+> +/**
+> + * igt_dp_is_link_rate_supported: Tests if the specific link rate can be forced
+> + * @drm_fd:		DRM file descriptor
+> + * @output:		igt_output_t object representing the display port
+> + * @rate_kb:		Link rate in kbps to test
+> + *
+> + * Returns: true if device supports enforcing this rate, false otherwise
+> + */
+> +bool igt_dp_is_link_rate_supported(int drm_fd, igt_output_t *output, int rate_kb)
+> +{
+> +	if (is_intel_device(drm_fd)) {
+> +		char buf[512];
+> +		int res;
+> +		char *token;
+> +		int rate_tens = rate_kb / 10;
+> +
+> +		res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
+> +						      "i915_dp_force_link_rate",
+> +						      buf, sizeof(buf));
+> +		if (res < 0)
+> +			return false;
+> +
+> +		token = strtok(buf, " \n\t,:");
+> +		while (token) {
+> +			int rate;
+> +			char *endptr;
+> +
+> +			errno = 0;
+> +			rate = strtol(token, &endptr, 0);
+> +			/*
+> +			 * Robustly verify that a number was actually parsed (endptr != token)
+> +			 * allowing us to safely ignore formatting headers (e.g. "Rates:")
+> +			 */
+> +			if (!errno && endptr != token && rate == rate_tens)
+> +				return true;
+> +			token = strtok(NULL, " \n\t,:");
+> +		}
+> +
+> +		return false;
+> +	}
+> +
+> +	return igt_dp_get_max_supported_rate(drm_fd, output) >= rate_kb;
+>   }
+
+That a bit strange to copy/paste the existing 
+i915_dp_get_max_supported_rate code here, did I miss something in your 
+implementation? Or is the existing implementation broken?
+
+>   
+>   /**
+> @@ -140,7 +184,7 @@ int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output)
+>   	if (is_intel_device(drm_fd))
+>   		return i915_dp_get_pending_retrain(drm_fd, output);
+>   
+> -	igt_assert_f(false, "Current drm device does not support pending retrain count checking\n");
+> +	igt_require_f(false, "Current drm device does not support pending retrain count checking\n");
+>   	return -EINVAL;
+>   }
+>   
+> diff --git a/lib/igt_dp.h b/lib/igt_dp.h
+> index 0c56ad2ec..e5cacad66 100644
+> --- a/lib/igt_dp.h
+> +++ b/lib/igt_dp.h
+> @@ -22,6 +22,7 @@ int igt_dp_get_max_supported_rate(int drm_fd, igt_output_t *output);
+>   int igt_dp_get_max_lane_count(int drm_fd, igt_output_t *output);
+>   
+>   void igt_dp_force_link_retrain(int drm_fd, igt_output_t *output, int retrain_count);
+> +bool igt_dp_is_link_rate_supported(int drm_fd, igt_output_t *output, int rate_kb);
+>   
+>   int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
+>   
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 2eefb773b..041a3356b 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -8255,10 +8255,17 @@ get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b
+>    */
+>   int kms_wait_for_new_connectors(uint32_t **newly_connected,
+>   				const uint32_t *already_connected,
+> -				int already_connected_count, int drm_fd)
+> +				int already_connected_count,
+> +				int expected_new_connector_count,
+> +				int drm_fd)
+>   {
+>   	int newly_connected_count;
+>   	struct timespec start, end;
+> +	int timeout = igt_default_display_detect_timeout();
+> +
+> +	/* MST discovery may be serialized in the kernel; allocate extra time for topology settling */
+> +	if (expected_new_connector_count > 1)
+> +		timeout *= 2;
+>   
+>   	igt_assert(newly_connected);
+>   	igt_assert_fd(drm_fd);
+> @@ -8269,10 +8276,10 @@ int kms_wait_for_new_connectors(uint32_t **newly_connected,
+>   			free(*newly_connected);
+>   		newly_connected_count = igt_get_connected_connectors(drm_fd, newly_connected);
+>   		igt_assert_eq(igt_gettime(&end), 0);
+> -	} while (!get_array_diff(*newly_connected, newly_connected_count,
+> +	} while (get_array_diff(*newly_connected, newly_connected_count,
+>   			       already_connected, already_connected_count,
+> -			       NULL) &&
+> -		 igt_time_elapsed(&start, &end) <= igt_default_display_detect_timeout());
+> +			       NULL) < expected_new_connector_count &&
+> +		 igt_time_elapsed(&start, &end) <= timeout);
+>   
+>   	return newly_connected_count;
+>   }
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 521a03c01..09cec556f 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -1382,7 +1382,9 @@ uint32_t igt_get_connector_id_from_mst_path(int drm_fd, const void *mst_path);
+>   
+>   int kms_wait_for_new_connectors(uint32_t **newly_connected,
+>   				const uint32_t *already_connected,
+> -				int already_connected_count, int drm_fd);
+> +				int already_connected_count,
+> +				int expected_new_connector_count,
+> +				int drm_fd);
+>   int
+>   get_array_diff(const uint32_t *array_a, int array_a_len, const uint32_t *array_b, int array_b_len,
+>   	       uint32_t **diff);
+> diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+> index 30ee3c72b..bfb06bd0c 100644
+> --- a/lib/vendor/unigraf/unigraf.c
+> +++ b/lib/vendor/unigraf/unigraf.c
+> @@ -270,6 +270,7 @@ static void unigraf_autodetect_connector(int drm_fd)
+>   	newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
+>   							    already_connected,
+>   							    already_connected_count,
+> +							    1,
+>   							    drm_fd);
+>   
+>   	diff_len = get_array_diff(newly_connected, newly_connected_count,
+> diff --git a/tests/unigraf/unigraf_connectivity.c b/tests/unigraf/unigraf_connectivity.c
+> index 8ae9a2593..e813c9973 100644
+> --- a/tests/unigraf/unigraf_connectivity.c
+> +++ b/tests/unigraf/unigraf_connectivity.c
+> @@ -108,10 +108,20 @@ int igt_main()
+>   
+>   		/* i = 0 is SST so we need to process max_count + 1 streams */
+>   		for (int i = 0; i <= max_count; i++) {
+> +			if (i == 1) {
+> +				/* Full physical HPD disconnect/reset between SST and MST iterations */
+> +				unigraf_unplug();
+> +				unigraf_hpd_deassert();
+> +				sleep(igt_default_display_detect_timeout());
+> +				unigraf_reset();
+> +				sleep(igt_default_display_detect_timeout());
+> +			}
+
+There is already a unplug/plug sequence just bellow, what is the 
+difference? The reset function don't do a lot of stuff except also 
+disconnecting the unigraf.
+
+> +			unigraf_unplug();
+>   			unigraf_hpd_deassert();
+>   			/* Let the hardware detect the new state  */
+>   			sleep(igt_default_display_detect_timeout());
+>   
+> +			unigraf_plug();
+>   			unigraf_set_mst_stream_count(max(i, 1));
+>   			if (!i)
+>   				unigraf_set_sst();
+> @@ -125,13 +135,18 @@ int igt_main()
+>   			newly_connected_count = kms_wait_for_new_connectors(&newly_connected,
+>   									    already_connected,
+>   									    already_connected_count,
+> +									    max(i, 1),
+>   									    drm_fd);
+>   
+>   			diff_len = get_array_diff(newly_connected, newly_connected_count,
+>   						  already_connected, already_connected_count, &diff);
+>   
+> -			igt_assert_f(diff_len == max(i, 1),
+> -				     "Invalid connected connector count, expected %d found %d\n",
+> +			/*
+> +			 * We allow diff_len to be between 1 and max(i, 1) because the DRM driver may incrementally
+> +			 * expose MST stream nodes rather than surfacing the entire topology at once.
+> +			 */
+> +			igt_assert_f(diff_len >= 1 && diff_len <= max(i, 1),
+> +				     "Invalid connected connector count, expected between 1 and %d found %d\n",
+>   				     max(i, 1), diff_len);
+
+This change is a bit unexpected, the goal of this test is to properly 
+check if all connectors are detected. If one is not detected, it is 
+either a kernel bug or a hardware bug.
+
+If the issue is the DRM slowness, can you just try to increase the timeout?
+
+>   		}
+>   
+> diff --git a/tests/unigraf/unigraf_lt.c b/tests/unigraf/unigraf_lt.c
+> index 81e6ecd3f..b5989503d 100644
+> --- a/tests/unigraf/unigraf_lt.c
+> +++ b/tests/unigraf/unigraf_lt.c
+> @@ -107,11 +107,15 @@ int igt_main()
+>   
+>   		for (i = 0; i < ARRAY_SIZE(lane_counts); i++) {
+>   			igt_dynamic_f("unigraf-dp-lane-count-%d", lane_counts[i]) {
+> +				/* Hardware PHY requires physical settle time before and after link constraints */
+> +				sleep(igt_default_display_detect_timeout());
+>   				unigraf_reset();
+>   				unigraf_set_max_lane_count(lane_counts[i]);
+>   				unigraf_hpd_pulse(500000);
+> +				sleep(igt_default_display_detect_timeout());
+>   
+> -				igt_display_require_output(&display);
+> +				igt_display_reset_outputs(&display);
+> +				connector = unigraf_get_connector(drm_fd);
+>   				output = igt_output_from_connector(&display, connector);
+>   				igt_assert(output);
+>   				igt_dp_force_link_retrain(drm_fd, output, 2);
+> @@ -119,6 +123,9 @@ int igt_main()
+>   
+>   				current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
+>   				igt_assert_eq(current_lanes, lane_counts[i]);
+> +
+> +				igt_modeset_disable_all_outputs(&display);
+> +				igt_display_commit2(&display, COMMIT_ATOMIC);
+>   			}
+>   		}
+>   	}
+> @@ -134,14 +141,21 @@ int igt_main()
+>   
+>   		for (i = 0; i < ARRAY_SIZE(rates); i++) {
+>   			igt_dynamic_f("unigraf-dp-link-rate-%d", rates[i]) {
+> -				unigraf_reset();
+> -				unigraf_set_max_link_rate(rates[i]);
+> -				unigraf_hpd_pulse(1000000);
+> -				igt_display_require_output(&display);
+> -				igt_display_reset(&display);
+> -				igt_display_require_output(&display);
+> +				connector = unigraf_get_connector(drm_fd);
+>   				output = igt_output_from_connector(&display, connector);
+>   				igt_assert(output);
+> +				
+> +				/* Fast-fail if graphic card does not support enforcing this link rate natively */
+> +				igt_require(igt_dp_is_link_rate_supported(drm_fd, output, unigraf_rate_to_kbs(rates[i])));
+> +
+> +				/* Hardware PHY requires physical settle time before and after link constraints */
+> +				sleep(igt_default_display_detect_timeout());
+
+Is this sleep before reset/pulse required?
+
+> +				unigraf_reset();
+> +				unigraf_set_max_link_rate(rates[i]);
+> +				unigraf_hpd_pulse(500000);
+> +				sleep(igt_default_display_detect_timeout());
+> +
+> +				igt_display_reset_outputs(&display);
+>   				igt_dp_force_link_retrain(drm_fd, output, 2);
+>   
+>   				init_output_and_display_pattern(&display, output);
+> @@ -150,6 +164,9 @@ int igt_main()
+>   				max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
+>   				igt_require(max_supported_rate >= unigraf_rate_to_kbs(rates[i]));
+>   				igt_assert_eq(current_rate, unigraf_rate_to_kbs(rates[i]));
+> +
+> +				igt_modeset_disable_all_outputs(&display);
+> +				igt_display_commit2(&display, COMMIT_ATOMIC);
+>   			}
+>   		}
+>   	}
 
