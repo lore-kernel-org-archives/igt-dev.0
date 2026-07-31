@@ -4,60 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE468C54F54
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 05:17:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1419C55167
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 05:46:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 346CC10F148;
-	Fri, 31 Jul 2026 05:17:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 90CD510F16E;
+	Fri, 31 Jul 2026 05:46:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z+6CkWkA";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F3DJnZj1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2B8210E1DA
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 05:17:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67B4D10F148
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 05:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785475023; x=1817011023;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=4/kNy88oyF3MvaSDjU4A6vodag3a5b30uc9XB3I/rBE=;
- b=Z+6CkWkAnoEp3cA4I5bTbbpfZvgtlx5gxRYDOwugVQ/JqiiuUAop+5vd
- eNX1L3iiBczbhAKGNdcyvG1fu/2Mzw7HM8Wunqq1TNu5sozsxfIW6o9Sm
- LHmRJe/Gpm/pUzWLbOTEpBrzwHVpEUNhMYznKl8cs5pfxq+pbd4lrDRfz
- /9rbW3nyoWY7Cv6Pe4d1G1hTUx/KXIQ6IS+vWV1+VBfCXzGh8OhP5IcP5
- 6+UAoUFwGT7yz8n1yBTvXrj0MuT3KEg8H/4/x3vixpaHPXv3gh5pCmscP
- RjISNXpYa7cYjKRj9RsYa5Kw1/VOiUpJ0YMdnXI7E7sMe3t+NAe30U5gv w==;
-X-CSE-ConnectionGUID: G2qs6uOPSP+AboFOEFIsSg==
-X-CSE-MsgGUID: 6ObRG7sYQfqT+kzE6lMCTw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="73634760"
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; d="scan'208";a="73634760"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ t=1785476754; x=1817012754;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tcaiMSFGxhnwBBeJFp25HHeKcNQqDqOW73Sg4W2k3r8=;
+ b=F3DJnZj1v7Mm5+c5Z/bZXG5siOF/qpEqf7saqCZ2IuEByNeqml/cOi/l
+ XY0Eb8yjcEKRZmeWI3T4TtezCgsyGbh61dZ0WQOP8qUEEhb0Gtmbwrgyp
+ ipU1vUUfwWMlt3rUft72Mv9tvzdCDZBp/FG9IqmM58MRJil9+jW2re7fJ
+ ACn7Hh7Na3NRI6CINr7sTP3rUUlxQn5fVv60l4AQ0ruvqsjIq5/JDkebY
+ jcTLu2fHpXCgM7o9nHtKjbnbuVzAdfQCI+QrVp87naaGJrzv5z7qRF+XK
+ /mRZYfvYiI7n21kcCW4McYkHmvSmT5PGOI+4IGy4zmVhxxeuUVJf3gzBo Q==;
+X-CSE-ConnectionGUID: E0onvWRYTtaPbAXnRn/yKA==
+X-CSE-MsgGUID: XBYG0mhISYKpbmGVVj983A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="73636085"
+X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; d="scan'208";a="73636085"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2026 22:17:03 -0700
-X-CSE-ConnectionGUID: /sNck3OcSna8s4suLmiuQg==
-X-CSE-MsgGUID: EZFmWw64TLif1iWHhwnAFA==
+ 30 Jul 2026 22:45:54 -0700
+X-CSE-ConnectionGUID: tQnArpn2QwikndG6Yhhz5w==
+X-CSE-MsgGUID: 0qLkdTdJQnidzQR+MmpoXA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; d="scan'208";a="261094892"
-Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.8])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Jul 2026 22:17:01 -0700
-Date: Fri, 31 Jul 2026 07:16:58 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, adam.miszczak@linux.intel.com, 
- kamil.konieczny@linux.intel.com, lukasz.laguna@intel.com
-Subject: Re: [PATCH i-g-t 1/2] lib/xe/xe_spin: initialize ticks_delta to ~0u
-Message-ID: <6jnwgnmcua4feocaej36rs7umd4whp457onxpy3axtpneha4ic@ebguddcckru3>
-References: <20260728102659.316861-1-marcin.bernatowicz@linux.intel.com>
- <20260728102659.316861-2-marcin.bernatowicz@linux.intel.com>
- <p5dtghxjmq72gubqeydls5spgmtlonwlb5rdhs2iaapsubxqfr@ucwnjmu3diio>
- <a3771498-6f76-4355-98af-d4c1f623d13e@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,195,1779174000"; d="scan'208";a="257815789"
+Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Jul 2026 22:45:51 -0700
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ashutosh.dixit@intel.com,
+	shekhar.chauhan@intel.com
+Subject: [PATCH i-g-t v2] tools/xe-perf-recorder: expose some OA stream open
+ properties
+Date: Fri, 31 Jul 2026 11:15:43 +0530
+Message-ID: <20260731054543.3246926-1-shekhar.chauhan@intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a3771498-6f76-4355-98af-d4c1f623d13e@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,101 +67,104 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Jul 30, 2026 at 12:05:10PM +0200, Bernatowicz, Marcin wrote:
-> 
-> On 7/29/2026 11:42 AM, Zbigniew Kempczyński wrote:
-> > On Tue, Jul 28, 2026 at 12:26:58PM +0200, Marcin Bernatowicz wrote:
-> > > Initialize ticks_delta to ~0u instead of 0. This value does not satisfy
-> > > the COND_BBE exit condition and prevents false batch termination.
-> > May you elaborate? Does it mean STORE-DWORD (loop) is not visible in the memory
-> > before COND_BBE is executed? IIUC with ~0 we could also drop this loop.
+xe-perf-recorder only passes 5 of the OA stream open properties to
+DRM_XE_OBSERVATION_OP_STREAM_OPEN, leaving the rest without an open
+source consumer. Add few of the remaining ones.
 
-> The issue is not about the STORE-DWORDs (loop) visibility within a single
-> batch; that's what the pad is for and that path works fine.
+Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+---
+ tools/xe-perf/xe_perf_recorder.c | 34 ++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
 
-I see two scenarios here:
+diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+index c69050b43..01ec84cbb 100644
+--- a/tools/xe-perf/xe_perf_recorder.c
++++ b/tools/xe-perf/xe_perf_recorder.c
+@@ -364,6 +364,10 @@ struct recording_context {
+ 	struct drm_xe_oa_unit *oa_unit;
+ 	struct drm_xe_engine_class_instance *hwe;
+ 
++	/* OA stream open properties (defaults overridable via command line) */
++	uint64_t oa_buffer_size;
++	uint64_t wait_num_reports;
++
+ 	uint32_t vm;
+ 	uint32_t exec_queue;
+ 	struct intel_bb *ibb;
+@@ -487,6 +491,13 @@ perf_open(struct recording_context *ctx)
+ 		DRM_XE_OA_PROPERTY_OA_METRIC_SET, ctx->metric_set->perf_oa_metrics_set,
+ 		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(ctx->metric_set->perf_oa_format),
+ 		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, ctx->oa_exponent,
++
++		/* Open disabled; the stream is enabled right after open */
++		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
++
++		/* OA buffer size and wait-num-reports (overridable via cmdline) */
++		DRM_XE_OA_PROPERTY_OA_BUFFER_SIZE, ctx->oa_buffer_size,
++		DRM_XE_OA_PROPERTY_WAIT_NUM_REPORTS, ctx->wait_num_reports,
+ 	};
+ 	struct intel_xe_oa_open_prop param = {
+ 		.num_properties = ARRAY_SIZE(properties) / 2,
+@@ -924,7 +935,10 @@ usage(const char *name)
+ 		"     --output,             -o <path>   Output file (default = xe_perf.record)\n"
+ 		"     --cpu-clock,          -k <path>   Cpu clock to use for correlations\n"
+ 		"                                       Values: boot, mono, mono_raw (default = mono)\n"
+-		"     --oa-unit-id          -u <value>  OA unit id for the capture.\n",
++		"     --oa-unit-id          -u <value>  OA unit id for the capture.\n"
++		"     --oa-buffer-size      -b <value>  OA buffer size in bytes (default = 64M)\n"
++		"     --wait-num-reports    -w <value>  Min reports before poll()/read() unblocks\n"
++		"                                       (default = 1)\n",
+ 		name);
+ }
+ 
+@@ -1038,6 +1052,8 @@ main(int argc, char *argv[])
+ 		{"command-fifo",	required_argument, 0, 'f'},
+ 		{"cpu-clock",		required_argument, 0, 'k'},
+ 		{"oa-unit-id",		required_argument, 0, 'u'},
++		{"oa-buffer-size",	required_argument, 0, 'b'},
++		{"wait-num-reports",	required_argument, 0, 'w'},
+ 		{0, 0, 0, 0}
+ 	};
+ 	const struct {
+@@ -1066,9 +1082,11 @@ main(int argc, char *argv[])
+ 		.command_fifo_fd = -1,
+ 
+ 		.oa_unit_id = 0,
++		.oa_buffer_size = 64 * 1024 * 1024,
++		.wait_num_reports = 1,
+ 	};
+ 
+-	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:u:", long_options, NULL)) != -1) {
++	while ((opt = getopt_long(argc, argv, "hc:d:p:m:Co:s:f:k:P:u:b:w:", long_options, NULL)) != -1) {
+ 		switch (opt) {
+ 		case 'h':
+ 			usage(argv[0]);
+@@ -1119,6 +1137,12 @@ main(int argc, char *argv[])
+ 		case 'u':
+ 			ctx.oa_unit_id = atoi(optarg);
+ 			break;
++		case 'b':
++			ctx.oa_buffer_size = strtoull(optarg, NULL, 0);
++			break;
++		case 'w':
++			ctx.wait_num_reports = strtoull(optarg, NULL, 0);
++			break;
+ 		default:
+ 			fprintf(stderr, "Internal error: "
+ 				"unexpected getopt value: %d\n", opt);
+@@ -1291,6 +1315,12 @@ main(int argc, char *argv[])
+ 		goto fail;
+ 	}
+ 
++	if (perf_ioctl(ctx.perf_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0) < 0) {
++		fprintf(stderr, "Unable to enable xe oa stream: %s\n",
++			strerror(errno));
++		goto fail;
++	}
++
+ 	init_mmio_trigger_ctx(&ctx);
+ 	emit_oa_trigger(&ctx, 0xc0ffee01);
+ 
+-- 
+2.53.0
 
-- loop causes delay to allow write to land in memory, where COND_BBE can
-  read it. If there's stale read that means loop is too short.
-
-- we got two competing writes to same memory - one from cpu side
-  (spin->ticks_delta = 0) and one from gpu - SRM. If this is possible
-  COND_BBE could read cpu write (0 in this case, we don't know which
-  will be visible at comparison time) so this causes premature spinner termination.
-
-> The problem is a cross-iteration potential stale cache read: when the same
-> BO is re-submitted, COND_BBE can read the ticks_delta value leftover
-> from the previous batch execution - which is <= ctx_ticks (since that's the
-> exit condition) - and immediately exit before the new SRM write propagates.
-> 
-> With ticks_delta = 0 (or any value <= ctx_ticks at prev-iteration exit), a
-> stale read satisfies COND_BBE.
-> With ~0u, even a stale read of the sentinel gives 0xFFFFFFFF <= ctx_ticks ->
-> false -> batch continues safely.
-
-I did some experiments, MI_MATH_STOREINV() stores negative value to
-memory, so I assumed we're comparing signed values (and then 0 is fine
-as it larger than negative opts->ctx_ticks). But this comparison is done
-on unsigned values and 0 in ticks_delta is smaller than opts->ctx_ticks
-casted to unsigned and spinner is terminating.
-
-I think for sake of clearity instead of initializing ticks_delta to ~0u
-I would change MI_MATH_STOREINV() to MI_MATH_STORE(), replace ~opts->ctx_ticks
-to opts->ctx_ticks and add MAD_LT_IDD in COND_BBE.
-
---
-Zbigniew
-
-> 
-> To reproduce: each gem_wsim invocation does 4000 submit/wait cycles on the
-> same BO (5 engines × 5ms each).
-> The failure appears only after many outer iterations under sustained load:
-> 
-> i=1; while true; do
->     echo "Iteration: $i"
->     gem_wsim -w
-> "1.RCS.5000.0.0,1.BCS.5000.0.0,1.CCS.5000.0.1,1.VCS.5000.0.0,1.VECS.5000.0.0"
-> -VV -r 4000 || break
->     ((i++))
-> done
-> 
-> Typical failure after ~60 outer iterations:
-> 
-> CRITICAL: Failed assertion: w->duration.requested_ticks <=
-> ~w->xe.data->spin.ticks_delta
-> CRITICAL: error: 96000 > 2 (sometimes 0, 1)
-> 
-> With the sentinel reset before each submission, ran two days without
-> failure.
-> 
-> --
-> 
-> Marcin
-> 
-> > 
-> > --
-> > Zbigniew
-> > 
-> > > Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> > > Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > > Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-> > > ---
-> > >   lib/xe/xe_spin.c | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
-> > > index 874310789..331bed1d2 100644
-> > > --- a/lib/xe/xe_spin.c
-> > > +++ b/lib/xe/xe_spin.c
-> > > @@ -60,7 +60,7 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
-> > >   	spin->start = 0;
-> > >   	spin->end = 0xffffffff;
-> > >   	spin->wait_cond = 0;
-> > > -	spin->ticks_delta = 0;
-> > > +	spin->ticks_delta = ~0u;
-> > >   	if (opts->ctx_ticks) {
-> > >   		/* store start timestamp */
-> > > -- 
-> > > 2.43.0
-> > > 
