@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10377C5516D
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 14:18:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 72551C54F54
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 14:19:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B61E510E20D;
-	Fri, 31 Jul 2026 14:18:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0EDFE10E20D;
+	Fri, 31 Jul 2026 14:19:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jl1GKofZ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fWB7eDVn";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AA6D10E20D
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 14:18:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9F36310E20D
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 14:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785507502; x=1817043502;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=3B3M9kibcbJ8zLdSXT++49hmHBEmzuazmP8/DIUqjCo=;
- b=jl1GKofZJazD+wl5XyNovbLA17beud7z3ECkN1Tx+bT01WegC5QTW66Z
- vH/lUVkrPQdwvRRGHz8nPf6k8eeKcJ+TqtehtKaJOsq+G5DoAe/yqJ3bL
- f1Jbe/1BQ+j5yXJf6Io8g1xD0/laArJu1UIXlLIssQ58rfvtwTBFKn//b
- HTw5QQtC9zEvaKjt3egaJ811St/tp+dlY1+K2SF/u1NjxjYtUYYKEY4k+
- Zh/yLGt4L8OS95QPEy9HLIM+N523yd6X0l9AeyeQVqqljde/v103PR9b3
- x7D8+/S9CO2gIFqJ1cghSvpRX8PA0hZB/MXIsBLkXKKyluVz7EL2Bmu2M Q==;
-X-CSE-ConnectionGUID: LdPI7/KySbCKYJttF7jOrg==
-X-CSE-MsgGUID: 194BxKY9TP2KwFPBNCI39Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11861"; a="89945039"
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="89945039"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ t=1785507507; x=1817043507;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=FaELYVY+eAluYIfVzBCQ76r2+Kya95sOKWIw/UUflu4=;
+ b=fWB7eDVn9sR4jz7jsAnF8vdxbuMe+Gv0U0+pFQvFSMlMbiN64qpn/CGy
+ Jfo/vFvb8DU9TimZTEFxEkmROJrlpMlhH3+WSE+s3cQl4wxEVbGE3wTZ9
+ 4pSpxeStj0NCW9mIMLRocIpRMeqi6HsAMbzQOpW79NB0X3fjY7/QV7zss
+ 3M1B5Gl6aW3usrHY1IiW2IFMLfVMrsmhD1WqKZLUwHVv/exi1HrKgf2TZ
+ xHjNRNynyImiYpSy+bpE0XHAxzlj/fYP/Ax11ujjUt31I8G7QcNZ90C/C
+ 15ZMpYpeQEu+5DmzcfmYC1v2tnBtLLS7SeR8VSSVmiu00BXwEusYyUbxM g==;
+X-CSE-ConnectionGUID: DbY4oTsET2S60hrB+bCunQ==
+X-CSE-MsgGUID: 7ZqdIKKFQ36hUGvtJj+zkg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11861"; a="89945045"
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="89945045"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2026 07:18:22 -0700
-X-CSE-ConnectionGUID: 3cwnIlMyQx29SLKyjrU6cQ==
-X-CSE-MsgGUID: 3iMWTOIGQl6CJzWJqOsP6g==
+ 31 Jul 2026 07:18:27 -0700
+X-CSE-ConnectionGUID: YkOiMIVYRb2c3QiJjA3ZEw==
+X-CSE-MsgGUID: wuBy2jfUQW2uHkMarm3ceg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="262550898"
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="254283815"
 Received: from unknown (HELO localhost) ([10.94.249.102])
- by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2026 07:18:20 -0700
+ by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Jul 2026 07:18:26 -0700
 From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: adam.miszczak@linux.intel.com, kamil.konieczny@linux.intel.com,
  lukasz.laguna@intel.com, zbigniew.kempczynski@intel.com,
  Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t 0/3] gem_wsim: fix batch premature completion
-Date: Fri, 31 Jul 2026 16:18:03 +0200
-Message-ID: <20260731141806.890207-1-marcin.bernatowicz@linux.intel.com>
+Subject: [PATCH i-g-t 1/3] lib/xe/xe_spin: fix premature batch exit on BO
+ resubmission
+Date: Fri, 31 Jul 2026 16:18:04 +0200
+Message-ID: <20260731141806.890207-2-marcin.bernatowicz@linux.intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260731141806.890207-1-marcin.bernatowicz@linux.intel.com>
+References: <20260731141806.890207-1-marcin.bernatowicz@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -68,42 +71,97 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fixes observed verification failure under looped runs:
+COND_BBE reads ticks_delta from memory. When the same BO is resubmitted,
+COND_BBE can read the value left by the previous batch(elapsed >= ctx_ticks
+at that batch's exit), satisfying the exit condition on the very first loop
+iteration before any new elapsed time is stored.
 
-gem_wsim -w "1.RCS.5000.0.0,1.BCS.5000.0.0,1.CCS.5000.0.1,1.VCS.5000.0.0"
-  -V -r 4000
+Write sentinel 0 to ticks_delta at batch start and use
+MI_SEMAPHORE_WAIT to poll until it is visible in memory before entering
+the loop. This guarantees COND_BBE cannot read the stale value from the
+previous batch.
 
-CRITICAL: Failed assertion:
-  w->duration.requested_ticks <= ~w->xe.data->spin.ticks_delta
-CRITICAL: error: 96000 > 2
+Also switch from inverted ticks_delta logic (STOREINV + ~ctx_ticks) to
+direct elapsed ticks (STORE + MAD_LT_IDD + ctx_ticks) for readability.
+The pad loop between SRM and COND_BBE is removed as it does not help.
 
-V1 attempted to fix the issue by initializing ticks_delta to ~0u in
-xe_spin and resetting it from the host before each fixed-duration
-submission in gem_wsim.
+Suggested-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+---
+ lib/xe/xe_spin.c | 31 +++++++++++++++++--------------
+ 1 file changed, 17 insertions(+), 14 deletions(-)
 
-V2 fix (suggested by Zbigniew): write sentinel 0 to ticks_delta and use
-MI_SEMAPHORE_WAIT to confirm it's in memory before entering the loop.
-This is a self-contained GPU-side fix - no host-side reset per submission
-needed. Also switches from inverted ticks_delta (STOREINV + ~ctx_ticks)
-to direct elapsed (STORE + MAD_LT_IDD + ctx_ticks) for readability.
-
-V1 -> V2:
-- Replace host-side ticks_delta reset with GPU-side SDW+SEMAPHORE_WAIT
-- Switch from inverted to direct elapsed ticks logic
-- Remove ineffective pad loop between SRM and COND_BBE
-- Add xe_sriov_scheduling.c fix for the same ticks_delta check
-
-Marcin Bernatowicz (3):
-  lib/xe/xe_spin: fix premature batch exit on BO resubmission
-  benchmarks/gem_wsim: fix ticks_delta assertion for non-inverted logic
-  tests/xe_sriov_scheduling: fix ticks_delta check for non-inverted
-    logic
-
- benchmarks/gem_wsim.c             |  2 +-
- lib/xe/xe_spin.c                  | 31 +++++++++++++++++--------------
- tests/intel/xe_sriov_scheduling.c |  2 +-
- 3 files changed, 19 insertions(+), 16 deletions(-)
-
+diff --git a/lib/xe/xe_spin.c b/lib/xe/xe_spin.c
+index 874310789..2863d2163 100644
+--- a/lib/xe/xe_spin.c
++++ b/lib/xe/xe_spin.c
+@@ -52,7 +52,6 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 	uint64_t start_addr = opts->addr + offsetof(struct xe_spin, start);
+ 	uint64_t end_addr = opts->addr + offsetof(struct xe_spin, end);
+ 	uint64_t ticks_delta_addr = opts->addr + offsetof(struct xe_spin, ticks_delta);
+-	uint64_t pad_addr = opts->addr + offsetof(struct xe_spin, pad);
+ 	uint64_t timestamp_addr = opts->addr + offsetof(struct xe_spin, timestamp);
+ 	int b = 0;
+ 	uint32_t devid;
+@@ -77,6 +76,18 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 	spin->batch[b++] = start_addr >> 32;
+ 	spin->batch[b++] = 0xc0ffee;
+ 
++	if (opts->ctx_ticks) {
++		/* Write sentinel and wait until it is visible in memory before loop. */
++		spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		spin->batch[b++] = ticks_delta_addr;
++		spin->batch[b++] = ticks_delta_addr >> 32;
++		spin->batch[b++] = 0;
++		spin->batch[b++] = MI_SEMAPHORE_WAIT | MI_SEMAPHORE_POLL | MI_SEMAPHORE_SAD_EQ_SDD;
++		spin->batch[b++] = 0;
++		spin->batch[b++] = ticks_delta_addr;
++		spin->batch[b++] = ticks_delta_addr >> 32;
++	}
++
+ 	loop_addr = opts->addr + b * sizeof(uint32_t);
+ 
+ 	if (opts->preempt)
+@@ -101,12 +112,12 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 		spin->batch[b++] = opts->use_queue_timestamp ? QUEUE_TIMESTAMP : CTX_TIMESTAMP;
+ 		spin->batch[b++] = CS_GPR(NOW_TS);
+ 
+-		/* delta = now - start; inverted to match COND_BBE */
++		/* delta = now - start */
+ 		spin->batch[b++] = MI_MATH(4);
+ 		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(NOW_TS));
+ 		spin->batch[b++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(START_TS));
+ 		spin->batch[b++] = MI_MATH_SUB;
+-		spin->batch[b++] = MI_MATH_STOREINV(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
++		spin->batch[b++] = MI_MATH_STORE(MI_MATH_REG(NOW_TS), MI_MATH_REG_ACCU);
+ 
+ 		/* Save delta for reading by COND_BBE */
+ 		spin->batch[b++] = MI_STORE_REGISTER_MEM_GEN8 | MI_SRM_CS_MMIO;
+@@ -114,17 +125,9 @@ void xe_spin_init(struct xe_spin *spin, struct xe_spin_opts *opts)
+ 		spin->batch[b++] = ticks_delta_addr;
+ 		spin->batch[b++] = ticks_delta_addr >> 32;
+ 
+-		/* Delay between SRM and COND_BBE to post the writes */
+-		for (int n = 0; n < 8; n++) {
+-			spin->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
+-			spin->batch[b++] = pad_addr;
+-			spin->batch[b++] = pad_addr >> 32;
+-			spin->batch[b++] = 0xc0ffee;
+-		}
+-
+-		/* Break if delta [time elapsed] > ns */
+-		spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | 2;
+-		spin->batch[b++] = ~(opts->ctx_ticks);
++		/* Break if delta [time elapsed] >= ns */
++		spin->batch[b++] = MI_COND_BATCH_BUFFER_END | MI_DO_COMPARE | MAD_LT_IDD | 2;
++		spin->batch[b++] = opts->ctx_ticks;
+ 		spin->batch[b++] = ticks_delta_addr;
+ 		spin->batch[b++] = ticks_delta_addr >> 32;
+ 	}
 -- 
 2.43.0
 
