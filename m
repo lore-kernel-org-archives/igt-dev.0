@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F2FCC5516D
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 08:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90693C5516D
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 08:27:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CA13210E1C5;
-	Fri, 31 Jul 2026 08:26:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3A0BD10E1C5;
+	Fri, 31 Jul 2026 08:27:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nnGHy/8G";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tt9XFOFb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7028310E1D5
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 08:25:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FF6A10E1C5
+ for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 08:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785486355; x=1817022355;
+ t=1785486388; x=1817022388;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=g5j+swB7G1kkDIMWAU8ZGA9p+Fd9u3qrRrhsPnKEB2g=;
- b=nnGHy/8GhYpyVUDsIcqxOMQ8rzehPjMrDs9/MVjbQ+9PGCkryhpH+3Wt
- +idYN1S2FKtFDGB/DABJ87aUlG6IfjIP6NO4c1IIY9luzyfuXJqEFr4YV
- IUto8+3rbWxnk1JXjbUVBdwfXOXmlc1RfzrLa3dz0O1iRCRMx9LDiQImx
- jm10AIPkOrAAmrFl5seyBANhWE2EPxL5mSF8INxdM1ycSz169E4mIdYs1
- Pxi7368BSG5nI8tSHuqqMb7EZsTK5peL6UE11TCK+M133KhSeG1WH6IFx
- m605GSd/bYXb8Coo8V9yy4AtwDwGAwX/bXKhddVtrlA1S4Gae4vwsmEMl g==;
-X-CSE-ConnectionGUID: Uc4be645SruUm317CnpY7Q==
-X-CSE-MsgGUID: bqL9FESRTpSu7M/pm2EQLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86060874"
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="86060874"
+ bh=0f4uY+bWsQ4sfniM0vp55NJvkiL2TyKVUaxHhojNUoc=;
+ b=Tt9XFOFbdBdbVOsOqII75FWNDNwf+2C9KaOv4Ovuzuop3KYTtx1IdL6w
+ yC8lh0gDpvUatMm1FTjIlyOJWjVu36sS1UWrS7Saw61nutPEogXOXk0Wa
+ BRdldOIq5QOsVt0Oq/rTmAd01Y6At+kja0nT0T0n/34bBQ8zgH9djRVR6
+ YkfFzqoeph6RY8mkwinao3fvOiDi/sUNE8dcVJOvlZoXAExfwK/PW2QXe
+ KiBOnZnwwwbQ4laKLjkU3EAXY/4VGCsmxVQbDKObB65fjYBNysxi0OUGJ
+ ZjAkStOJMi8CCPXLR8tKjW4GR5Yowk1DRvGOPozVrw/v/KNS5n1YGVTgf w==;
+X-CSE-ConnectionGUID: mp87UP96SpGkvNuLhJpWUQ==
+X-CSE-MsgGUID: PSkTqqnpRdq29sMFexK14A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11860"; a="86060950"
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="86060950"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2026 01:25:54 -0700
-X-CSE-ConnectionGUID: 3i46Rck8TBmVErKa2ZA/+A==
-X-CSE-MsgGUID: gZsb/8JlRaqrHtyNNPk0HA==
+ 31 Jul 2026 01:26:26 -0700
+X-CSE-ConnectionGUID: /rFoJWEoRnGGNy+rF+NIVw==
+X-CSE-MsgGUID: PPlSy3DjQnK1zNCQMBvp4g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="254207568"
+X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="254207840"
 Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
  by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2026 01:25:54 -0700
+ 31 Jul 2026 01:26:26 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 31 Jul 2026 01:25:53 -0700
+ 15.2.2562.45; Fri, 31 Jul 2026 01:26:25 -0700
 Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Fri, 31 Jul 2026 01:25:53 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.4) by
+ 15.2.2562.45 via Frontend Transport; Fri, 31 Jul 2026 01:26:25 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.46) by
  edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Fri, 31 Jul 2026 01:25:52 -0700
+ 15.2.2562.45; Fri, 31 Jul 2026 01:26:25 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DF7dg6Qys16IuQdgToWBriX6ts9Zb6FxJS4D+2udl+WGVg+xqIa+XL3HyUunn/l2Zpps3tUSoIuFdmsGZ3oAPEk0o/NfRPcWJaLTxk4zI9UI0s0+H/0HMp+S0Y11c0e4syatU3z2piSwG8mk0HF8FRFnp18GAG5P5kztPTut5XZTNt8PPCSn8MUL5Zdf/0U3dcgDIZDF+OahL4hGvZ60gVIx9ABuJBAnPbU68rHwNi611dntF3ypqjDO/2VOsl2cyYLPxSmnP756hpsMJrUXx29B29qkQ0ajqTJKXh3S0znWkkHTy8UFgFeg5zWlBl7Zgg2XxcKvjyJ+o8HjUm3Jmg==
+ b=qQz/uqlDsLug+P3PiSrLcDyQTk9tNt8KziAxuZlNhEurZC4Fhw4EWDDVu7g0KbEgP/ncvJKdvEeD/VcHX2Z8rWBST40a8sOaWjshcdsRuxuJeIXdwHrDkCDgCWFUXsFRd/fVcoZY3shas/RQg7dBGJVMB6IWbU7LcBMtamQe3xq1fbyWrTkFqOFEslA7dpikkwsCBvY5Fzsir1pGTdF7d4XHnhRULZdOJ5uu8CN4zTNZ6yOD68DpQmHVlV60E/qSyouo1VaDm6pMUQanvpKXSN2EmgDS68jYl6IVnsbw0bHBsS8fQJyLvudDAkI/lAQHaCXi5kLLnZgyzBmaQ8x6CA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=45cLkDYiVxBa5vB1h5N3BymhelzF7VmyoRtrOFZOkqQ=;
- b=whIGu/9U1jO+M6LkhnQSz6ctJGts9XbOxDw59WfYoSKvdo3b61hmOX6gBedw7dT7sjHmBm3CnbySUR1/OIDIMgKTv8YZ1MccyaWuIMi4v9Yc3X2O4Yn9QNlqHRYcTXOV1ZY8jAtWpqVShwZVBEIs4GW5/03+i9AhsCHYw1amtHk9ea9oVKOCA79+0IKiKFMF9aBH2uGJ87Ra5wRoa0xmW2ioAJlHunFbJAt8cNr25EDKuVrvWk1JOfSWMO+yWV/uL+3hwKyScztn0XtkSF/ipjhXYSsPYuZap2JKGYYDJxAGemRO+aJJ0+ob6P1P1PTXWms32SGMyS4vEMb8lwiicg==
+ bh=keqJaTquDYVsXiDYp6Yrcc041uvdvq4NECLN7TgPr6M=;
+ b=FQEg94LOiVeEb35EzPkrQiGdKdmamVwgHnHO/InaLg+dCI8p2Scb60bUciXMp3XIh2YistfmrRHbOU2rOlVu+Z2yI3J4ePg7d9IJPEreyoVY1pFTucgAM9W7okW9iv7errpxggMMdNa4m7oKtn3aJmANphA13j+mNJ4Qps9TkeFmOx5vFzUwJwepmXz84qOAOgcIkudxQ0T/PKcxWLAI8TYSU6Q0iWmipTzeb0oXWHHjjwxR8FxviNTDMxs5vuz6ChyervZwBSuLjiB+XBQrZ171Kzq8x2Atq/Q4Lvw8yEC3AoPohy0EPtyfqKS1pHZSqD7bnQeR8sEDYKaGcdo83Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,16 +69,16 @@ Received: from PH0PR11MB7636.namprd11.prod.outlook.com (2603:10b6:510:26f::13)
  by SA1PR11MB6920.namprd11.prod.outlook.com (2603:10b6:806:2bb::9)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.270.15; Fri, 31 Jul
- 2026 08:25:45 +0000
+ 2026 08:26:17 +0000
 Received: from PH0PR11MB7636.namprd11.prod.outlook.com
  ([fe80::d611:6fa9:bc34:46b]) by PH0PR11MB7636.namprd11.prod.outlook.com
  ([fe80::d611:6fa9:bc34:46b%5]) with mapi id 15.21.0270.012; Fri, 31 Jul 2026
- 08:25:45 +0000
-Message-ID: <ad3f5901-492a-4217-8d4f-5a45655217d5@intel.com>
-Date: Fri, 31 Jul 2026 13:55:26 +0530
+ 08:26:17 +0000
+Message-ID: <7f271137-41a9-4389-848e-344d4c1d769a@intel.com>
+Date: Fri, 31 Jul 2026 13:56:07 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 1/4] lib/igt_kms: clear colorop-changed flag
- after commit
+Subject: Re: [PATCH i-g-t v2 2/4] test/kms_colorop_helper: only check if a
+ given enum value exist
 To: Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
  Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
  <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
@@ -91,78 +91,78 @@ CC: <igt-dev@lists.freedesktop.org>, <kernel-dev@igalia.com>, Alex Hung
  <contact@emersion.fr>, Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland
  <harry.wentland@amd.com>, Uma Shankar <uma.shankar@intel.com>
 References: <20260602211259.898147-1-mwen@igalia.com>
- <20260602211259.898147-2-mwen@igalia.com>
+ <20260602211259.898147-3-mwen@igalia.com>
 Content-Language: en-GB
 From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20260602211259.898147-2-mwen@igalia.com>
+In-Reply-To: <20260602211259.898147-3-mwen@igalia.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0156.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1ac::6) To PH0PR11MB7636.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA5PR01CA0154.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ac::15) To PH0PR11MB7636.namprd11.prod.outlook.com
  (2603:10b6:510:26f::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR11MB7636:EE_|SA1PR11MB6920:EE_
-X-MS-Office365-Filtering-Correlation-Id: 434c0412-f152-4e02-ff01-08deeedd5111
+X-MS-Office365-Filtering-Correlation-Id: 225c8ac2-a285-4af0-c67d-08deeedd6424
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|366016|1800799024|7416014|376014|18002099003|22082099003|4143699003|5023799004|11063799006|10067099003|56012099006|6133799003;
-X-Microsoft-Antispam-Message-Info: B+elMm2Yghq/IUBBU2lm/ASo6z+70h7J01yidl+vygdQpwGi8YyGagtpWsnZLsm9YGy/aUuLJH6Eg1TI5rQtNVWpxK3f0Tv+Hf+4xCadhUaJYPvURpT1quefcYNO0pkBjeSLomzGsjLk0noKtxiY462aPaW2Ipq3T6Rvbsks3AG1/IJcmRGr0d0YXhI89Bt5hqp2rpbIzHOnOAh6549B1j7DVv20XtmM5Kvn5FIemB0pNmf5iahD6B2LeP4zm4uqF7GSzWSVDi0aHNkYg76bGoOeMKvMN8X3d4QmsfrShhVn0qE2M9DPFoW/RRTIpGOZIQJS0ZMd8ySjtWN/qOx+hs8PTgDcz1Chq+YSzrhU9Kr2rJ0i2zlTNTTxofTB7VFuMCEVoHyeka2CGIj8wllnij+xkqaNXkz0rna3g0IZpoaEszJf9eJYHWH55s6y6jMQQdPdmiwIE2pjmiPAnLxKa/+5iw5M9C1dB+BRlR8tk3+qqmlR2F4Q4EN20gTXj47AVjGyapF75KsiAg2+EJn6yp0gpEM8Mspj6Rf7E4XCflMWtUwB3mxOdyxBS09/VW1Cs0+6/ORmNOLWmaVXp9B3mzkRMmle8rcHpXvJHHPPQS4i63HWtxbj5eJ6tkS0G9T+Fu8zyl2aQ8hcNUf+X3t/z2tJMwtARePHHwF8Q+D4w8A=
+ ARA:13230040|23010399003|366016|1800799024|7416014|376014|18002099003|22082099003|4143699003|11063799006|3023799007|10067099003|56012099006|6133799003;
+X-Microsoft-Antispam-Message-Info: km01LRyr0f7KufUSgtGF4xFVr9+If3nP5zzhI6042reqzn+lkhYNUCzCwl0Hb8HV3wCqIR1IHV0FfpycwQv6z8eIUK+m6o38A7yY7UiqNQm1CegE5vhKncK2pLeJAkEnUR5tLvDmiJqaRB6gFafPylF/oIRvbIZeDjfCXleguiicAr0C4UPZY8Fj6Jv2EkNRPSJqHDf3bzXi4EyYDK8M12rXAAEEJ/L/gHJk6K0gl261Jx6Tt+pX1FM5gCW6eSxf+QIjp/kYEv9vLROB9bqv3buaum9p4w/kMghh8izpQjgxRdI+R22oJOdAb4MLn0LUTSe0Z++1Fz82LrQB5/fLl3G0idzdbzc9o1fH6ivXwPVb+oWRW2xsTHjtNL9CS40wcFl7pQe5mxL1gb4n2WkRrwRe/ZLv8LJIclx+Kf/yYo9rCHsaJ10Iz/CErmgJxonLBdhQpssHGEasGJjX5vMAUOSP9JazKzvggGywA+hWzxx531AcpFPBTgUislC3VGC1RN0m6xb/CQBuVnIyvFuw7a53Yd4fwaMBtMT1rHw1Ypx1q5uQw51uF0aMt9PjXF45Pe6wdtMEylj34TuuMOjSLjZO08LAvqmV5qtNCDUD2BGZDbIeVw8W0jx4CRSaZa1Nt+kp3l/X09MmGVMbTw/VpoJ8gu8SuVR/MtCaHKZV518=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR11MB7636.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(4143699003)(5023799004)(11063799006)(10067099003)(56012099006)(6133799003);
+ SFS:(13230040)(23010399003)(366016)(1800799024)(7416014)(376014)(18002099003)(22082099003)(4143699003)(11063799006)(3023799007)(10067099003)(56012099006)(6133799003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dnJIaHp2QTlnZGlRcjF5SXNia2Z6amI3emZNTnpxbzg3UmxiZncxSDMvNG5u?=
- =?utf-8?B?eEJoRG9za3RXQUVHTDlCajZ2Z09RWXpNTHNsN21hbnNkNWUvcDhWNStFQzlE?=
- =?utf-8?B?VlhaU3g1UGRSdUhmTFRJMzNCWkJFVXBlZlh6dG9kWXFuMGZYRXZjZmF5Qmw4?=
- =?utf-8?B?V3c2RUVLR1FGM2FPWGd2MG9rUzlhc1Q4MTBNQUtrdzBiRWpZd3V1Sm9FdlIv?=
- =?utf-8?B?aHZsMDdsbkNzY2pWdzZuTVYxQWVRblFSVW0zSVk4YStKeUZoQ0ZZUnZMeWFp?=
- =?utf-8?B?alltYmhCMkVxQ24zYVFENUpLcVhwaytGNUwrdTJPZHVPV0hUL1lnY1VxT3ZE?=
- =?utf-8?B?d0FpRmJQR1ZBbVNjOG4wWnlITXl5Q084VXkzdXdVdWszcndWOGpHY3V4eThu?=
- =?utf-8?B?MklpMmNKWmE0U2doblAzaUltK3RaSHo1YURET0hzcjhCVTkzNTlLVUJ0K3NX?=
- =?utf-8?B?OFZPZ3NqcmNzQ0JoSkV5dW9SODllT2F3SHZXV2tOZnlmTDJDWndyQ2hYaEtQ?=
- =?utf-8?B?U2VISmlrRmp4d3NDaFpBTDNGdUZlNXlyN1A2UGZacEFwNllxNzcyZW0rZVZP?=
- =?utf-8?B?VVNGQ0NwWXFxMWpWK1JONkhLc1RNTHVrWXh3OW9Fd3oweXoyYWJzdEVROWh4?=
- =?utf-8?B?K0ZkRlhRUTk2bG5SNmN5bGptck5pNzBhTE85Q280Uk1NcjJNNlJkdmo0WkVa?=
- =?utf-8?B?KzZkMmplYTJ4bW9wRGtNYjltL3c3TzEwUnR3RzdWTlVwbEl6WXF3S2JZQndY?=
- =?utf-8?B?MHVlK0JuR0hSQXVycVJWeVBNMHRieVl4T0hXV3NqNDdya2FUTmRPM0RuL3ho?=
- =?utf-8?B?WmF4N09LbWpzZ3I2T3Qza3c1YzI2alVXMTBxLzNnVkloWGRDZkRpRXIvakFw?=
- =?utf-8?B?NWZmL2pibU9UTDN2cU1hcjZhRkxuYklhcDlUOHM5Z2VxNkJveWtCQUVYMHgr?=
- =?utf-8?B?c3Q1RHBJWmM5T2EyUXI2TWREQkdadk1LVkZlL2xoTTZMRVBpVzVWeklSQ3RB?=
- =?utf-8?B?L2tzSGZaZW1aZWtGUGplYXJ0Rnk3S0ZFWU52N2RQUzFmVHpWY0tGMHA4ZnZW?=
- =?utf-8?B?UFMvWU5BWGpndkR1Q1M3TlRXNjNzZDYxYkpQd3NvY3V3YTQySlFxMDdNUmY1?=
- =?utf-8?B?czF6RUhRY0xxU1NLU1BIdk1ha2pOUU91b3B0d1EzemdzWFdtckswbzg1R3F3?=
- =?utf-8?B?Z0diMUtQYVBkc0NscHpyN3hUbnQ5YzBDZHFtOTBiSloxOVNjRjhKVFFqbjRk?=
- =?utf-8?B?YUVUWk9sQ2FhcVNoc1FGZmRPd3lVaVllbzZCR01NblJzSkFLWkh4QkNqQUtm?=
- =?utf-8?B?amZ1ZEJlSGQ3WTE3ckhHMkxjWTBSMllkMUFSc2wzQzdNWWtjUEhhU0ZmMmQy?=
- =?utf-8?B?QWQxNVNMNU1CaUU4T2lmVkpXZFNBSXc5Nk5jRWp2eEdPYzdsYWtmLy9vR0hI?=
- =?utf-8?B?R2FKbGVORjhTOTlYTTZ4RzhveldUT2NIbmMrTURPNFd3RnI0bVlmS3pyUFhy?=
- =?utf-8?B?QkRqbkoxOWJlaGYreCtvSVNOb2xIY0FwWU9Ib1AwVGRZeXdFYkNRVUZvU2wr?=
- =?utf-8?B?cTEyVTJrVDFrbkN3Z0VyN3QydGlBODAyR0VTNU5MUTVuSVQwaUZXRktBYUlI?=
- =?utf-8?B?S3dWTThkME9kM1ZFbG1GNkFxb2JFTWd4Vmp3dmNxTHhqdjhleFNLeTFXTVVO?=
- =?utf-8?B?NlFVQmhZcUt0cnJNNjlDQmFndXl0Mm9rTFppVWp2QTBvSTh5bmw3aW0xcDJo?=
- =?utf-8?B?NnNiU2dwa2tUb3BnS0tRazFaM0hodThVb05Ta1BZRGlyQS8wTDV1UGNRdkVr?=
- =?utf-8?B?TzFXblpSTWVpTnV3QXJJQ2FMUm9aN20rWitNaVF4TU9wRHdIekZURU92QWg1?=
- =?utf-8?B?cVRacUk3RkhzTDAzWTZPYVF2SEdvblJlRFA5T1N5TWwrTHpZTzFhTGh5ZUlB?=
- =?utf-8?B?QSs3V25kbUZ5ODlldEp3TTQrN1BqcHM0WDY3UDFBbTc1a1pWbFVwc3c4NXFP?=
- =?utf-8?B?WVMyaDVBVzZwRHVJRnJ3L0FRQjJHWXIycmQ5eFdZOHNtS1h3emVWbnhzR1c1?=
- =?utf-8?B?eG8zY1AwQTUrRzBpU1loVWZ2MmxNSzdFV0l6V05jRUdvbk1IV2ZLcTdpaDAy?=
- =?utf-8?B?MWdhVExaYXB2V256Uzg0T0R5VW5zL1JKVE5IQVVseHZtS05ZY0s5TDlsaGpG?=
- =?utf-8?B?ejNiYStrbDh2TFdHVUNldWRqZkxsRnVISldub2YzUjdScWdKUHRENG4xaG1Y?=
- =?utf-8?B?aElySkJZM0lDNE9CellsYUk1UlBzU05wWnZjemhaUUtLS3ZlakpFanRNVUdL?=
- =?utf-8?B?VFdXaThiUkRMMWk0ai9JWFkwcnI4QmZTMWJhYnFEQVJ5emgvY2VGczJ2MU9o?=
- =?utf-8?Q?uIWjuee8I+rNHAnM=3D?=
-X-Exchange-RoutingPolicyChecked: UXwjwPeXuJHfEt/O8EKTN2y9eutxvyEH8f/nQkCgRKV9jWIPXm9fHL7k3RlajpsXv+1/TCTW6liiCCwtpwQm9UuZ/7TY5n2GrW3Nhrk+OIMJ8kkq0GKPv+eTez+66ljFUktTOc9EDQecvjMgROgIFzgT8aMynARhxVNy/xesvfIhxO4x2jKp0SEA/FYXq3lnEYHMaND+CrWnOTkeWGhXZ7W/Vmi/pFsqynMghcY3hLEkOBWrSRTkC0saD2O4fzgeaj3/UFrAfRQNHSeira/H3px+Vd1p2zw/352DbQEUkraFT0jebBILOVTNmLg7QzQwvdaN2JeVPzBn70l6XQVUhw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 434c0412-f152-4e02-ff01-08deeedd5111
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QmorZFdDbWhJVWFya0p4aTRqU3RrbnNxbml3Z25EWVowTjhmc1VVbllrWnEv?=
+ =?utf-8?B?bDZKTXNXM3ozY2UwTnY3YkdtdzV0Uk85cXJlVmFwM09PMU91K20yaHJJWHBz?=
+ =?utf-8?B?QWhjeitNbkt5RlFVYUR3VThYZnpTa0xJd2lrUmlLaDZQVkZZVnh0R3ExK0pt?=
+ =?utf-8?B?bmxtOS9MSTNKbUNVNUxhK2VadnNZeENkNnByTDZmUkR5WDdGdVV6M0xGUVhU?=
+ =?utf-8?B?ejU4S2RPSjVpWnRIY0MwaFFEU3R4c0cwRlY5Y0ZvWk5iWmJTdWRsUU9Obkg1?=
+ =?utf-8?B?WUw0U2RQWGJPMngyQzNkeS9NMWF0emJ4b2JmSksvS0JucmNZcElOWGFNdWtE?=
+ =?utf-8?B?aGhBNU13VnYycE4vcVU0QllmeWlVTFlaYjNUQ3pnZGU3RnVXK0NjNXhKSjhD?=
+ =?utf-8?B?MVlSSHN6MTRLb2htU1BMaWxpbW44TXhOWE5Sc3BpQW9Oc3BzeFUyOGhYdWdZ?=
+ =?utf-8?B?U1ZQb0FYWSt4VXAwUS9INldWb3k5OHEyclFHQ2phWUZ5MUltdzZEYzczazN1?=
+ =?utf-8?B?N3cvL0RJc3FRaUpPRkloVlJpK1BobHU3bE9ueHBIQWk0Q0VPNXJhTm5vNXNz?=
+ =?utf-8?B?NDVXbmxzaCsrUE1FSUJZaHhFU0w2UWRVNFFFTEYxeHVYNUVlVE92d25FMmNE?=
+ =?utf-8?B?MUdZYUFlY3o3TWwrQUhZajRVSis1cWkrMDBSWUVKT214bmtTVFJzVHBDeXUx?=
+ =?utf-8?B?SHl4MTYrTHM1T05mWm5zb0JjTmhNUHpVMDR5Nmt3dHhLd0wyKzArRXdPSXNR?=
+ =?utf-8?B?d1lETmUzOUhjM21sNTJFamdpN2hpalFBcTVLSmJIcDRzcnR4c3dVVFRyUTlh?=
+ =?utf-8?B?bnZvNW5SYkpoSThXWG01OUFTMksvZEdpRkNtV0lLWHEvQjlUcWRJMUttUWFz?=
+ =?utf-8?B?Q096cE5KbVNiTENrSG9wNWNzMmVHZ2VmcWwvN2ZoZHVTQm1GSVorZnltcVly?=
+ =?utf-8?B?YUVSdEVpd3FHYjJZQVpvb21HV250UGVKSlZlWkVpV0Y3T2FPaGNRSDdtMnBq?=
+ =?utf-8?B?YXVML1htZWR0RjhMbkRnc2hNa1FzczlhUG9nb1JNZm8yeXh5MGs1aDh2amdi?=
+ =?utf-8?B?SEVVMDI1b1djRmNVUkhDbE5GdnAxcWx5QndxdU04WGRFNFVvblZ4SmJVSHdR?=
+ =?utf-8?B?K3NFVEx6cm1yMUNUZHBkdnZpRHRSMzc3UGxaTkkwaDNKMldSMTZMQy9NYkNG?=
+ =?utf-8?B?VUdRZElpcVZqejZDN05FNkRJWnBnMjBKa1Fud21vWTB5dVF5MnJXNTR3amxm?=
+ =?utf-8?B?a2c0NnBUeVJPb1RGdm40aGl6a3lxbnZhaUtMTjZrOGJveE9DVXRKeVJ3TFVX?=
+ =?utf-8?B?aklsUHB6MmVIZUFac25OZUQ0ci9oNGwrbFBZUHd2d0xoWnNoYmM3ckVuSDlm?=
+ =?utf-8?B?d0NWRnVFTGQ2cXJQRG1IanZPRWRycmJBSi9MUnJveVJEYlAxZTNKVzNkeGN3?=
+ =?utf-8?B?VzJnN2V6aDJIUlZvVWtSOWVkTDU1UFV3NC9CQUdJdDNPYVA3SWFGTlNHWDJr?=
+ =?utf-8?B?S2R5L1RNcFhBOVQ4RnFrN2hBdWVRVktDWVcvbHBhVXhhK0x5RUsrd0xnZ1JI?=
+ =?utf-8?B?Q2I3WE81dERlRk1pTThTMUhFcTdEdTJmdEV5Vm1NZm9uQ3NUS2VFRmJHZ0pT?=
+ =?utf-8?B?d2kvcTdYanpLR0Z4bzROMStITEZSZ29rQXJYS0tLMVk5N3ExbnF6cmRKbUo2?=
+ =?utf-8?B?ZzY0Wm93Z2tSWklHTE1aUXNFNm0wVTVQRTc4aWRMbFlSN09GS2ZsOG5LV0x2?=
+ =?utf-8?B?QU5YZVBaVGJtdFJBR0piK3FvWGhzbDNMVmhtUzBNa3REUGtFNmc3NlROaEt2?=
+ =?utf-8?B?cXBMUHcvcVNQZmRjRStzUm1sMU1kYXZFUlovMkU0bWhHUWxTc2EzajRiaDFw?=
+ =?utf-8?B?MFQxN0V5VE9lQVVpeEVKbEZyYlZuMER2dUJ1VklCRzhHWTNzQ0Y1YzVuaTcw?=
+ =?utf-8?B?UUJPU0RGRDV0NmNGZ2VJSFpmN205NmIyUmoxa3lidUs5NFNUcjFoTUk0NENU?=
+ =?utf-8?B?MzYySWFkYkFpY3R3ZmZZU3EvNERXTlg1NlZDR0hDQTZXci9kY0loRFN5aEtO?=
+ =?utf-8?B?TUxQcmE5TlhSQS9ZVnAvaWF3aHhhMWJrRTNxRnhmN3dabXRjR0VmS0RienFs?=
+ =?utf-8?B?N2ppUStlQW9qTTUzWFNjSkdDY2Y2QnZZS1ZVOTRPNDlrSDJzWlkxZjU1SWw2?=
+ =?utf-8?B?TXdkb1B3VC9nak1BSDhvU1JRWTVuNWFWc3BmdHJQdFNhbFlFcDFIaUpwTEJJ?=
+ =?utf-8?B?eDRkNWZqYjBIdDVSNjRtbVUwaG0yT3kwY05qdmlCT3I3N2dLNXlUQzRGNUoz?=
+ =?utf-8?B?U0ZvejA5ZXRibktoVjNDa0VUTUV1SjhtUHZwK0ZyU3dtRTE0WG84djJGNmUr?=
+ =?utf-8?Q?ls/5ACIlTet/dhf4=3D?=
+X-Exchange-RoutingPolicyChecked: FzZ5YrReFzHkNbQDbDpwtZ99FtBrmW1LAhI7e+Cz7E/36Hd6YOU7psyjUe1nafalPgru1fsYgaM/GkGnmBeZoZUKZRiHxOh9qhx+/B3ycirs52QjWH8xjSgmQE6AYbepvEcwaNnovxEdiq8KTIYZmkPORwY30+2CQRnzWsqhJPjG7iLJOvdd1GkdT8MuEQw7fFjnkw+dreI87Q5OoZpZn/il9IU7U1aQuT7vHc3N68a7EsrHN1ih2pHcxaJNKOUjaEEi4/aH2T5T53YOPbJ4eseeLud+Eec/19cugshnTT4KyAkv72LJjKfmyNr359tkBXgWdfe0Hyehb3O/dNXo7g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 225c8ac2-a285-4af0-c67d-08deeedd6424
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7636.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 08:25:45.1476 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jul 2026 08:26:17.1451 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DXk4giFFzm9m6nz3ZrY/cH8BmpCMHFs7L+P2ZYnwAOXsnIsvHDquz1wLAQ8NQR9iBMFPA+9ZXupsJkp+2B/DhowGwfTi6syuiSCga36ol8U=
+X-MS-Exchange-CrossTenant-UserPrincipalName: wvRHphrmyyLXH9Bc3449jMNFOKgKVQtbgkQCICGDuOiDcakmjP/PV9w+7raCBPUKVIV9gnPlL3sAC12v6hc37PK2y5t+NxKnHP+uSlFiT8E=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6920
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -183,73 +183,90 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 6/3/2026 2:36 AM, Melissa Wen wrote:
-> Don't request colorop updates if there is no change in the atomic
-> commit. It fixes atomic rejection after test skips that was caused by
-> incorrect attempts of changing inactive colorop properties, since
-> userspace can update only current active colorops or colorops that will
-> be activated or deactivated in the same commit. Active colorop means a
-> colorop that is in the chain of an active color pipeline, i.e.  the
-> pipeline in plane COLOR_PIPELINE property.
+> Don't trigger unnecessary colorop property changes to just probe that a
+> prop enum exists and can be apply. Make can_use_colorop() read-only.
 > 
-
-The patch overlooks an issue where we don't update the 
-assigned_color_pipeline to NULL even when pipeline set to Bypass. Though 
-unlikely,  if anything later sets a property on one of colorops in the 
-now bypassed pipeline, the next atomic commit will still walk that stale 
-chain via igt_atomic_prepare_colorop_commit() and try to send the change 
-which the kernel should reject.
-
-I tried to solve it in [1] but it had the side-effect of making 
-reset_colorops() a no-op (done in a single commit with bypass). That is 
-again because igt_atomic_prepare_colorop_commit() uses
-plane->assigned_color_pipeline to walk through the pipeline. One 
-solution could be tracking both the old and new pipeline.
-
-However, that should not block this change. So this LGTM.
-
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-
-[1] 
-https://lore.kernel.org/igt-dev/20260521092620.3637270-1-chaitanya.kumar.borah@intel.com/
-
 > Assisted-by: Claude:claude-opus-4-7
 > Tested-by: Alex Hung <alex.hung@amd.com>
 > Signed-off-by: Melissa Wen <mwen@igalia.com>
 > ---
->   lib/igt_kms.c | 15 +++++++++++++++
->   1 file changed, 15 insertions(+)
+>   lib/igt_kms.c              | 26 ++++++++++++++++++++++++++
+>   lib/igt_kms.h              |  4 ++++
+>   tests/kms_colorop_helper.c |  4 +++-
+>   3 files changed, 33 insertions(+), 1 deletion(-)
 > 
 > diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e20307923..d46f15c01 100644
+> index d46f15c01..ef27feb89 100644
 > --- a/lib/igt_kms.c
 > +++ b/lib/igt_kms.c
-> @@ -4858,6 +4858,7 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
->   {
->   	int i;
->   	igt_crtc_t *crtc;
-> +	igt_colorop_t *colorop;
+> @@ -4502,6 +4502,32 @@ igt_colorop_replace_prop_blob(igt_colorop_t *colorop, enum igt_atomic_colorop_pr
+>   	igt_colorop_set_prop_changed(colorop, prop);
+>   }
 >   
->   	for_each_crtc(display, crtc) {
->   		igt_plane_t *plane;
-> @@ -4887,6 +4888,20 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
->   				int fd;
->   				plane->changed = 0;
+> +/**
+> + * igt_colorop_has_prop_enum_value:
+> + * @colorop: Target colorop.
+> + * @prop: Enum property to check.
+> + * @val: Enum value (as string) to look up.
+> + *
+> + * Read-only counterpart to igt_colorop_try_prop_enum(): returns whether
+> + * @colorop's @prop accepts the enum value @val, without setting it or
+> + * marking @prop as changed in IGT's cache.
+> + *
+> + * Returns: true if @val is a valid value of the enum @prop on @colorop.
+> + */
+> +bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
+> +				     enum igt_atomic_colorop_properties prop,
+> +				     const char *val)
+> +{
+> +	igt_display_t *display = colorop->plane->crtc->display;
+> +	uint64_t uval;
+> +
+> +	igt_assert(colorop->props[prop]);
+> +
+> +	return igt_mode_object_get_prop_enum_value(display->drm_fd,
+> +						   colorop->props[prop],
+> +						   val, &uval);
+> +}
+> +
+>   /**
+>    * igt_colorop_try_prop_enum:
+>    * @colorop: Target colorop.
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index c2a3099de..f080bd09c 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -954,6 +954,10 @@ uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, en
+>   	} while (0)
 >   
-> +				/* clear changed flags on every colorop in the assigned chain
-> +				 * so already-committed property values aren't re-emitted on
-> +				 * the next commit.
-> +				 */
-> +				colorop = plane->assigned_color_pipeline;
-> +				while (colorop) {
-> +					int next_val;
+>   
+> +extern  bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
+
+extra space between extern and bool.
+
+Otherwise LGTM,
+
+Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+
+> +					     enum igt_atomic_colorop_properties prop,
+> +					     const char *val);
 > +
-> +					colorop->changed = 0;
-> +					next_val = igt_colorop_get_prop(display, colorop,
-> +									IGT_COLOROP_NEXT);
-> +					colorop = igt_find_colorop(display, next_val);
-> +				}
-> +
->   				fd = plane->values[IGT_PLANE_IN_FENCE_FD];
->   				if (fd != -1)
->   					close(fd);
+>   extern bool igt_colorop_try_prop_enum(igt_colorop_t *colorop,
+>   				      enum igt_atomic_colorop_properties prop,
+>   				      const char *val);
+> diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+> index aaee4e567..5b79fe789 100644
+> --- a/tests/kms_colorop_helper.c
+> +++ b/tests/kms_colorop_helper.c
+> @@ -205,7 +205,9 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+>   	switch (desired->type) {
+>   	case KMS_COLOROP_ENUMERATED_LUT1D:
+>   		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE &&
+> -		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
+> +		    igt_colorop_has_prop_enum_value(colorop,
+> +						    IGT_COLOROP_CURVE_1D_TYPE,
+> +						    kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
+>   			return true;
+>   		return false;
+>   	case KMS_COLOROP_CTM_3X4:
 
