@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A167C54F54
-	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 14:20:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EAD4C54F54
+	for <igt-dev@archiver.kernel.org>; Fri, 31 Jul 2026 14:53:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2AC3E10F291;
-	Fri, 31 Jul 2026 14:20:38 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dhW2RzHu";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CE4E10E20D
- for <igt-dev@lists.freedesktop.org>; Fri, 31 Jul 2026 14:18:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785507512; x=1817043512;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=+R3B+KGNslh/QXVZbT0TuX9TsHl2Xl/jpaG84QT9Qd0=;
- b=dhW2RzHu2Wusq1J0nj/DBzbmOxA+P666FyD++Qfm6VChkbXBF22PhLJo
- x2fs+E5rYln8pKDzgBuXN94VuBbOOblV1qD9wMd/8p/3cFqXtkW3PbjUm
- lRvNVMp33IlbY5q3B0b11TQRKApNXesNXHx6XW6ARVUejkeueLu8FBKf2
- OZWwpRbFSxeD0iTsvp6OCllfQ7RdWb1ssGpocOVp/zTxt2RWLdmUT0JKH
- 6Outeo/FsX8n3iPrBbV/4yBgGBSOhAl8KCeHC6OwLG7Z9y5/v5+rNuIVR
- Z0QnLsdo35aKFrS+OBZZqVAZBTBVfC70L/muGcqo47S9lYG6MbNTmk8z6 A==;
-X-CSE-ConnectionGUID: oUg0LmvJTbWq5M1PxhH+Nw==
-X-CSE-MsgGUID: ByS9VGDpTIuvyjYhf/n+FQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11861"; a="89945052"
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="89945052"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2026 07:18:32 -0700
-X-CSE-ConnectionGUID: IfH74qKaT8ObLaLCt9coIw==
-X-CSE-MsgGUID: hHLc3uz2RmS5kU3FRSnHfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,196,1779174000"; d="scan'208";a="254283824"
-Received: from unknown (HELO localhost) ([10.94.249.102])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Jul 2026 07:18:31 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: adam.miszczak@linux.intel.com, kamil.konieczny@linux.intel.com,
- lukasz.laguna@intel.com, zbigniew.kempczynski@intel.com,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH i-g-t 2/3] benchmarks/gem_wsim: fix ticks_delta assertion for
- non-inverted logic
-Date: Fri, 31 Jul 2026 16:18:05 +0200
-Message-ID: <20260731141806.890207-3-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260731141806.890207-1-marcin.bernatowicz@linux.intel.com>
-References: <20260731141806.890207-1-marcin.bernatowicz@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0DD4510E16D;
+	Fri, 31 Jul 2026 14:53:46 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6BACE10E16D;
+ Fri, 31 Jul 2026 14:53:13 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8622594319209619222=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_gem=5Fwsim=3A_fix_batch_pre?=
+ =?utf-8?q?mature_completion_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 31 Jul 2026 14:53:13 -0000
+Message-ID: <178550959343.9497.4419771778905374145@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260731141806.890207-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260731141806.890207-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,34 +37,106 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xe_spin now stores elapsed ticks directly in ticks_delta (not inverted).
-Update the post-execution assertion accordingly.
+--===============8622594319209619222==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
----
- benchmarks/gem_wsim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 8be44d0c8..462188708 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -2676,7 +2676,7 @@ static void xe_w_step_sync_and_verify(struct w_step *w)
- 
- 	if (!w->duration.unbound) {
- 		igt_assert(w->duration.requested_ticks && w->xe.data->spin.ticks_delta);
--		igt_assert_lte(w->duration.requested_ticks, ~w->xe.data->spin.ticks_delta);
-+		igt_assert_lte(w->duration.requested_ticks, w->xe.data->spin.ticks_delta);
- 	}
- }
- 
--- 
-2.43.0
+Series: gem_wsim: fix batch premature completion (rev2)
+URL   : https://patchwork.freedesktop.org/series/171174/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9035_BAT -> XEIGTPW_15618_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (12 -> 12)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9035 -> IGTPW_15618
+
+  IGTPW_15618: 15618
+  IGT_9035: 61674acebe1520ef02165573257f552366c2879c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5515-f9ef9f302ee01854066ec6da30550da6ea6cb03a: f9ef9f302ee01854066ec6da30550da6ea6cb03a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15618/index.html
+
+--===============8622594319209619222==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>gem_wsim: fix batch premature completion (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171174/">https://patchwork.freedesktop.org/series/171174/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15618/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15618/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9035_BAT -&gt; XEIGTPW_15618_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (12 -&gt; 12)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9035 -&gt; IGTPW_15618</li>
+</ul>
+<p>IGTPW_15618: 15618<br />
+  IGT_9035: 61674acebe1520ef02165573257f552366c2879c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5515-f9ef9f302ee01854066ec6da30550da6ea6cb03a: f9ef9f302ee01854066ec6da30550da6ea6cb03a</p>
+
+</body>
+</html>
+
+--===============8622594319209619222==--
