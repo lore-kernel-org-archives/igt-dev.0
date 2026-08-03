@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C57BC55179
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Aug 2026 12:25:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31ADAC55179
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Aug 2026 12:26:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E184C10E00A;
-	Mon,  3 Aug 2026 12:25:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF64A10E00A;
+	Mon,  3 Aug 2026 12:26:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J+Hjf+dl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K3YNRCi6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40B5D10E00A
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Aug 2026 12:24:49 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E481F10E056
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Aug 2026 12:26:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785759889; x=1817295889;
+ t=1785759972; x=1817295972;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=IcA2Sul8+3+2Lnf9nP3tCHUUoERSbIebtABQCOP5ItY=;
- b=J+Hjf+dlKoePyB6Bz584VVQh2p3WBTrSWgrh/NThNNLofrgh8fm+FmAt
- 9vxrdL6zThP0Afl/fWDsw9FKbnJiIlMCE2kH5JWJxTEZLmrs5yd0smQDw
- vZ61B0Oh1aON250tGXXi6bTApu3C0wPhZDuquAzIIBFkA7UPo2D4iz+qD
- Esq9fW0GUHKtlZXBc7VZJtKU9BJDbDYU7zaXSGmdMAmwnjG1AkJ+tf876
- yNu21Td8wsO6QKVR1Hgb6M9k5nDQ8eGC1R50oty9/1RdcCRMcWVCItVRa
- s317ySP2Zz8w9D57Y57izOl+6Gy0BwVixU2wFPbx85zKQ1KARmAYuoJRb w==;
-X-CSE-ConnectionGUID: /bY7uPT1Q+ev7dd9ppybCQ==
-X-CSE-MsgGUID: 50q+GgMmT76SPvv7PUcjew==
-X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="97454001"
-X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; d="scan'208";a="97454001"
+ bh=A3tlfLgt2hxjpk0LzT04THOgTiQ/VlJDpef9aewVFHs=;
+ b=K3YNRCi6DfnqSRMWA6rTNXOVnoDvg0/gA7GjueuC2O0z+oLiHQYNqyLg
+ hvrQg+NUbbYGq/k9vAAA7+K5LplQtKjSZn2k1JPka5Ma2FqszmnDL+s1Z
+ eTfYCIibqf1FtgNtSlFioYWlWAY5Aokacio/BbSQs4+l7QtzuksSiO/av
+ Hwlu05lwHFVtvlJIsX4qAWYmBlrWvkOrDZKfhawBAD2iA3jBR+xYNik10
+ QbGa2JlV3hMVRzDEfIlp5JK+z3Eem6Zt9HvFfmGGuPEUUsIqKzdJxHzCR
+ 872P9AHNw9BLUJ4frV1tKqJNSH9rnFXj0EaT/nRkGL0PsduQiQHLLjzrc w==;
+X-CSE-ConnectionGUID: wFwSSGWZTsuOcpFolfw5TQ==
+X-CSE-MsgGUID: ZFlKrgVFQ/+66FNDP8K1Jw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="97454075"
+X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; d="scan'208";a="97454075"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2026 05:24:49 -0700
-X-CSE-ConnectionGUID: WSw1sKxgR2WKr42a0aSg7A==
-X-CSE-MsgGUID: Fj3QKG45SSaArQIG7idKXg==
+ 03 Aug 2026 05:26:11 -0700
+X-CSE-ConnectionGUID: IPvhzpy6QMeb04YFdegvJg==
+X-CSE-MsgGUID: 9CKrOD5sTEOivHqkl7wLiA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; d="scan'208";a="256882995"
+X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; d="scan'208";a="256883206"
 Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.68])
  ([172.28.182.68])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2026 05:24:47 -0700
-Message-ID: <566d0750-aff3-4594-90f8-c2f0175d0131@linux.intel.com>
-Date: Mon, 3 Aug 2026 14:24:45 +0200
+ 03 Aug 2026 05:26:10 -0700
+Message-ID: <ea3f0b58-2790-49cf-91b5-db1c067b982a@linux.intel.com>
+Date: Mon, 3 Aug 2026 14:26:08 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] lib/xe/xe_ggtt: Extract generic GGTT code into library
+Subject: Re: [PATCH 2/2] tests/intel/xe_sriov_flr: Extend GGTT clearing checks
 To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
 Cc: marcin.bernatowicz@intel.com
 References: <20260730093807.926456-1-lukasz.laguna@intel.com>
- <20260730093807.926456-2-lukasz.laguna@intel.com>
+ <20260730093807.926456-3-lukasz.laguna@intel.com>
 Content-Language: en-US
 From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260730093807.926456-2-lukasz.laguna@intel.com>
+In-Reply-To: <20260730093807.926456-3-lukasz.laguna@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -73,192 +73,114 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 7/30/2026 11:38 AM, Lukasz Laguna wrote:
-> Add a shared xe_ggtt library with a common GGTT definitions, including
-> bitfields, bitmasks and helpers.
+> In addition to GPA clearing, verify that VFID and the page present bit
+> are correctly set after VF FLR.
 >
 > Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
 > ---
->   lib/meson.build            |  1 +
->   lib/xe/xe_ggtt.c           | 22 ++++++++++++++++++++++
->   lib/xe/xe_ggtt.h           | 21 +++++++++++++++++++++
->   lib/xe/xe_mmio.h           |  3 +--
->   tests/intel/xe_sriov_flr.c | 31 ++++++++++++++++---------------
->   5 files changed, 61 insertions(+), 17 deletions(-)
->   create mode 100644 lib/xe/xe_ggtt.c
->   create mode 100644 lib/xe/xe_ggtt.h
+>   lib/xe/xe_ggtt.c           | 15 +++++++++++++++
+>   lib/xe/xe_ggtt.h           |  9 +++++++++
+>   tests/intel/xe_sriov_flr.c | 21 +++++++++++++++++++++
+>   3 files changed, 45 insertions(+)
 >
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 12d78de20..3001b473e 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -126,6 +126,7 @@ lib_sources = [
->   	'igt_msm.c',
->   	'igt_dsc.c',
->   	'igt_hook.c',
-> +	'xe/xe_ggtt.c',
->   	'xe/xe_gt.c',
->   	'xe/xe_ioctl.c',
->   	'xe/xe_legacy.c',
 > diff --git a/lib/xe/xe_ggtt.c b/lib/xe/xe_ggtt.c
-> new file mode 100644
-> index 000000000..96b189b7a
-> --- /dev/null
+> index 96b189b7a..8a98e9027 100644
+> --- a/lib/xe/xe_ggtt.c
 > +++ b/lib/xe/xe_ggtt.c
-> @@ -0,0 +1,22 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright(c) 2026 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#include "igt.h"
-> +#include "xe/xe_ggtt.h"
-> +
-> +xe_ggtt_pte_mask_t xe_ggtt_get_gpa_mask(int pf_fd)
+> @@ -6,6 +6,14 @@
+>   #include "igt.h"
+>   #include "xe/xe_ggtt.h"
+>   
+> +xe_ggtt_pte_mask_t xe_ggtt_get_vfid_mask(int pf_fd)
 > +{
-> +	if (IS_TIGERLAKE(intel_get_drm_devid(pf_fd)))
-> +		return TGL_GGTT_PTE_ADDR_MASK;
+> +	uint16_t dev_id = intel_get_drm_devid(pf_fd);
 > +
-> +	return GGTT_PTE_ADDR_MASK;
+> +	return (intel_graphics_ver(dev_id) >= IP_VER(12, 50)) ?
+> +		GGTT_PTE_VFID_MASK : TGL_GGTT_PTE_VFID_MASK;
 > +}
 > +
-> +uint64_t xe_ggtt_pte_get_gpa(int pf_fd, xe_ggtt_pte_t pte)
+>   xe_ggtt_pte_mask_t xe_ggtt_get_gpa_mask(int pf_fd)
+>   {
+>   	if (IS_TIGERLAKE(intel_get_drm_devid(pf_fd)))
+> @@ -14,6 +22,13 @@ xe_ggtt_pte_mask_t xe_ggtt_get_gpa_mask(int pf_fd)
+>   	return GGTT_PTE_ADDR_MASK;
+>   }
+>   
+> +uint8_t xe_ggtt_pte_get_vfid(int pf_fd, xe_ggtt_pte_t pte)
 > +{
-> +	xe_ggtt_pte_mask_t mask = xe_ggtt_get_gpa_mask(pf_fd);
+> +	xe_ggtt_pte_mask_t mask = xe_ggtt_get_vfid_mask(pf_fd);
 > +
-> +	return (uint64_t)((pte & mask) >> GGTT_PTE_ADDR_SHIFT);
+> +	return (uint8_t)((pte & mask) >> GGTT_PTE_VFID_SHIFT);
 > +}
+> +
+>   uint64_t xe_ggtt_pte_get_gpa(int pf_fd, xe_ggtt_pte_t pte)
+>   {
+>   	xe_ggtt_pte_mask_t mask = xe_ggtt_get_gpa_mask(pf_fd);
 > diff --git a/lib/xe/xe_ggtt.h b/lib/xe/xe_ggtt.h
-> new file mode 100644
-> index 000000000..5e4038591
-> --- /dev/null
+> index 5e4038591..ada7ddbb0 100644
+> --- a/lib/xe/xe_ggtt.h
 > +++ b/lib/xe/xe_ggtt.h
-> @@ -0,0 +1,21 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright(c) 2026 Intel Corporation. All rights reserved.
-> + */
-> +
-> +#ifndef __XE_GGTT_H__
-> +#define __XE_GGTT_H__
-> +
-> +#include <stdint.h>
-> +
-> +#define GGTT_PTE_ADDR_MASK		GENMASK_ULL(45, 12)
-> +#define TGL_GGTT_PTE_ADDR_MASK		GENMASK_ULL(38, 12)
-> +#define   GGTT_PTE_ADDR_SHIFT		12
-> +
-> +typedef uint64_t xe_ggtt_pte_t;
-> +typedef uint64_t xe_ggtt_pte_mask_t;
-> +
-> +xe_ggtt_pte_mask_t xe_ggtt_get_gpa_mask(int pf_fd);
-> +uint64_t xe_ggtt_pte_get_gpa(int pf_fd, xe_ggtt_pte_t pte);
-> +
-> +#endif /* __XE_GGTT_H__ */
-> diff --git a/lib/xe/xe_mmio.h b/lib/xe/xe_mmio.h
-> index 030c50a2e..65aea65ea 100644
-> --- a/lib/xe/xe_mmio.h
-> +++ b/lib/xe/xe_mmio.h
-> @@ -5,6 +5,7 @@
+> @@ -12,10 +12,19 @@
+>   #define TGL_GGTT_PTE_ADDR_MASK		GENMASK_ULL(38, 12)
+>   #define   GGTT_PTE_ADDR_SHIFT		12
 >   
->   #include "lib/intel_io.h"
->   #include "lib/igt_sizes.h"
-> +#include "lib/xe/xe_ggtt.h"
+> +#define GGTT_PTE_VFID_MASK		GENMASK_ULL(11, 2)
+> +#define TGL_GGTT_PTE_VFID_MASK		GENMASK_ULL(4, 2)
+> +#define   GGTT_PTE_VFID_SHIFT		2
+> +
+> +#define GGTT_PAGE_PRESENT		GENMASK_ULL(0, 0)
+> +
+>   typedef uint64_t xe_ggtt_pte_t;
+>   typedef uint64_t xe_ggtt_pte_mask_t;
 >   
->   #ifndef XE_MMIO_H
->   #define XE_MMIO_H
-> @@ -12,8 +13,6 @@
->   #define TILE_MMIO_SIZE		SZ_16M
->   #define GGTT_OFFSET_IN_TILE	SZ_8M
+> +xe_ggtt_pte_mask_t xe_ggtt_get_vfid_mask(int pf_fd);
+>   xe_ggtt_pte_mask_t xe_ggtt_get_gpa_mask(int pf_fd);
+> +
+> +uint8_t xe_ggtt_pte_get_vfid(int pf_fd, xe_ggtt_pte_t pte);
+>   uint64_t xe_ggtt_pte_get_gpa(int pf_fd, xe_ggtt_pte_t pte);
 >   
-> -typedef uint64_t xe_ggtt_pte_t;
-> -
->   struct xe_mmio {
->   	int fd;
->   	bool init;
+>   #endif /* __XE_GGTT_H__ */
 > diff --git a/tests/intel/xe_sriov_flr.c b/tests/intel/xe_sriov_flr.c
-> index bb702d354..556979d7b 100644
+> index 556979d7b..34a379586 100644
 > --- a/tests/intel/xe_sriov_flr.c
 > +++ b/tests/intel/xe_sriov_flr.c
-> @@ -16,6 +16,7 @@
->   #include "intel_chipset.h"
->   #include "intel_vram.h"
->   #include "linux_scaffold.h"
-> +#include "xe/xe_ggtt.h"
->   #include "xe/xe_mmio.h"
->   #include "xe/xe_query.h"
->   #include "xe/xe_sriov_provisioning.h"
-> @@ -646,8 +647,6 @@ static int execute_parallel_flr_twice(int pf_fd, int num_vfs,
+> @@ -709,6 +709,16 @@ static bool check_pte_gpa(int pf_fd, xe_ggtt_pte_t pte, uint8_t expected)
+>   	return (xe_ggtt_pte_get_gpa(pf_fd, pte) == expected);
 >   }
 >   
->   #define GEN12_VF_CAP_REG			0x1901f8
-> -#define GGTT_PTE_TEST_FIELD_MASK		GENMASK_ULL(19, 12)
-> -#define GGTT_PTE_ADDR_SHIFT			12
->   
->   struct ggtt_ops {
->   	void (*set_pte)(struct xe_mmio *mmio, uint8_t tile, uint32_t pte_offset, xe_ggtt_pte_t pte);
-> @@ -693,26 +692,21 @@ static void intel_mtl_set_pte(struct xe_mmio *mmio, uint8_t tile,
->   static bool set_pte_gpa(struct ggtt_ops *ggtt, struct xe_mmio *mmio, uint8_t tile,
->   			uint32_t pte_offset, uint8_t gpa, xe_ggtt_pte_t *out)
->   {
-> +	xe_ggtt_pte_mask_t mask = xe_ggtt_get_gpa_mask(mmio->fd);
->   	xe_ggtt_pte_t pte;
->   
->   	pte = ggtt->get_pte(mmio, tile, pte_offset);
-> -	pte &= ~GGTT_PTE_TEST_FIELD_MASK;
-> -	pte |= ((xe_ggtt_pte_t)gpa << GGTT_PTE_ADDR_SHIFT) & GGTT_PTE_TEST_FIELD_MASK;
-> +	pte &= ~mask;
-> +	pte |= ((xe_ggtt_pte_t)gpa << GGTT_PTE_ADDR_SHIFT) & mask;
->   	ggtt->set_pte(mmio, tile, pte_offset, pte);
->   	*out = ggtt->get_pte(mmio, tile, pte_offset);
->   
->   	return *out == pte;
->   }
->   
-> -static bool check_pte_gpa(struct ggtt_ops *ggtt, struct xe_mmio *mmio, uint8_t tile,
-> -			  uint32_t pte_offset, uint8_t expected_gpa, xe_ggtt_pte_t *out)
-> +static bool check_pte_gpa(int pf_fd, xe_ggtt_pte_t pte, uint8_t expected)
->   {
-> -	uint8_t val;
-> -
-> -	*out = ggtt->get_pte(mmio, tile, pte_offset);
-> -	val = (uint8_t)((*out & GGTT_PTE_TEST_FIELD_MASK) >> GGTT_PTE_ADDR_SHIFT);
-> -
-> -	return val == expected_gpa;
-> +	return (xe_ggtt_pte_get_gpa(pf_fd, pte) == expected);
->   }
->   
->   static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
-> @@ -817,17 +811,24 @@ static void ggtt_subcheck_prepare_vf(int vf_id, struct subcheck_data *data)
->   static void ggtt_subcheck_verify_vf(int vf_id, int flr_vf_id, struct subcheck_data *data)
->   {
->   	struct ggtt_data *gdata = (struct ggtt_data *)data;
-> -	uint8_t expected = (vf_id == flr_vf_id) ? 0 : vf_id;
->   	struct xe_mmio *mmio = xe_mmio_for_vf(0);
-> +	int pf_fd = gdata->base.pf_fd;
->   	xe_ggtt_pte_t pte;
->   	uint32_t pte_offset;
-> +	bool failed = false;
->   
->   	if (data->stop_reason)
->   		return;
->   
->   	for_each_pte_offset(pte_offset, &gdata->pte_offsets[vf_id]) {
-> -		if (!check_pte_gpa(&gdata->ggtt, mmio, data->tile, pte_offset,
-> -				   expected, &pte)) {
-> +		pte = gdata->ggtt.get_pte(mmio, data->tile, pte_offset);
+> +static bool check_pte_vfid(int pf_fd, xe_ggtt_pte_t pte, uint8_t expected)
+> +{
+> +	return (xe_ggtt_pte_get_vfid(pf_fd, pte) == expected);
+> +}
 > +
-> +		if (!check_pte_gpa(pf_fd, pte, (vf_id == flr_vf_id) ? 0 : vf_id)) {
-> +			igt_debug("Wrong GGTT GPA on VF%u after VF%u FLR\n", vf_id, flr_vf_id);
+> +static bool check_pte_valid(int pf_fd, xe_ggtt_pte_t pte)
+> +{
+> +	return (pte & GGTT_PAGE_PRESENT);
+> +}
+> +
+>   static int populate_ggtt_pte_offsets(struct ggtt_data *gdata)
+>   {
+>   	int ret, pf_fd = gdata->base.pf_fd, num_vfs = gdata->base.num_vfs;
+> @@ -828,6 +838,17 @@ static void ggtt_subcheck_verify_vf(int vf_id, int flr_vf_id, struct subcheck_da
+>   			failed = true;
+>   		}
+>   
+> +		if (!check_pte_vfid(pf_fd, pte, vf_id)) {
+> +			igt_debug("Wrong GGTT VFID on VF%u after VF%u FLR\n", vf_id, flr_vf_id);
 > +			failed = true;
 > +		}
 > +
-> +		if (failed) {
-
+> +		if (!check_pte_valid(pf_fd, pte)) {
+> +			igt_debug("GGTT page present bit not set on VF%u after VF%u FLR\n",
+> +				  vf_id, flr_vf_id);
+> +			failed = true;
+> +		}
+> +
 
 LGTM,
 
 Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
+>   		if (failed) {
 >   			set_fail_reason(data,
 >   					"GGTT check after VF%u FLR failed on VF%u: Read PTE: %#" PRIx64 " at offset: %#x\n",
->   					flr_vf_id, vf_id, pte, pte_offset);
