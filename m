@@ -4,161 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1DB3C55175
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Aug 2026 10:09:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 968E0C55179
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Aug 2026 11:56:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59FE910E15A;
-	Mon,  3 Aug 2026 10:09:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4331710E2FF;
+	Mon,  3 Aug 2026 11:56:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ftWZofQJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FyVUQFRu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7A59F10E15A
- for <igt-dev@lists.freedesktop.org>; Mon,  3 Aug 2026 10:09:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5B06C10E2FF
+ for <igt-dev@lists.freedesktop.org>; Mon,  3 Aug 2026 11:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785751744; x=1817287744;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=hhmA9wKK7CGkLIqyJj+lEYFdP6kN/Y7vysfGyxEMc/M=;
- b=ftWZofQJ2MEPlqOsiLovNsrsZ+7WvNSOBjNSg523jIzxOTKUm7nBCDQR
- ZIBH1l1+7DkoLS9+90b1prh68RArnTXT55pBgkWER43HXvRH92xquygfw
- jAyYyVQ10eU32KcX+8SY2mEyjFvP8NgINepyfWF7d2Y1jB5aelzHI84kg
- CS2+8CAUYyIzQkbVLkdd7Mnmz6ajvObJSUVQvoQhYR8kJLoaKNZLGcdQk
- c4Zc7ekUNhUxyLwUnhq+9EWIrajvc6rGr+tWv9aJIOSU1TdHdFWdGYbsk
- WB196DUKtOHAc65O3KnUk7J7XRthJkl96W+YC+7XdRm1Hu5GNm8VEGBU/ Q==;
-X-CSE-ConnectionGUID: HCRgXQUrRYG8EmSXO6bRhg==
-X-CSE-MsgGUID: 2wS3BLkkT5KHm2/KZBFkuA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11863"; a="96643899"
-X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; d="scan'208";a="96643899"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2026 03:09:03 -0700
-X-CSE-ConnectionGUID: VSThWtZzSJG6BsbZJNoICg==
-X-CSE-MsgGUID: jSzyDH1UTMidabvOGMW3Yw==
+ t=1785758167; x=1817294167;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=fHovqSgHlVr6CwPzs8Ls0CkktgXsRm9tvoPEN6zUkb0=;
+ b=FyVUQFRuvgAuEOsPopbSLlW7ydN7jI6yXugEQe0wstFh/YIolJvvCP4a
+ 2uNYidhA1E7TdzeEaTN2mV21B217aMhrlbAzd+dL12ukyOOKE8f8ooU1e
+ JcEJiAxwu4SfcZ9iJPqiaLoHHMQFTHHGlV9ZMnu4iI2g06nRhOFx6qtt+
+ 2n2Us+o5y8DrW17ZZyp1x9QbU3NGqqQ6zi3Ra7kHe3GmsTnw6diNvAjj9
+ dNjzAI5KhwCtKBFBmTO3vnpcZewQPqERROaTdd5gv8cCR/dCr83+PPx0X
+ s5QWs4LQcLvBWrEIjBuKgs6TGsBVoO5+z2I9hW8qAtnfKXed1tYpSJreV Q==;
+X-CSE-ConnectionGUID: qXjg7oPeSAG5VCremfYagA==
+X-CSE-MsgGUID: VkgzY9/JSQ6FhpLTBYkCCA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11863"; a="90103066"
+X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; d="scan'208";a="90103066"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Aug 2026 04:56:06 -0700
+X-CSE-ConnectionGUID: KPvB7LBXSnueR76eLyXyzA==
+X-CSE-MsgGUID: rat07IkHRXqs1DeroZsHnw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; d="scan'208";a="258515344"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Aug 2026 03:07:28 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 3 Aug 2026 03:07:27 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Mon, 3 Aug 2026 03:07:27 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.5) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 3 Aug 2026 03:07:27 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dsj8WLZdkA8vZNr+OnC1ecNVFNIPvSJ4PXtRVP09r7mzc+c8AMozjyUSYmUe3/R2HyQuNJi/GyBcgCJbFueANoFjy1QV4dfIa2YRLpmDD1ozhoGJ2tqu+Zi+XR/PG1CnqCfKyFXfaTzderxzCB9ojxCyCQRMKicaYzpXqhOnF7q/6O25+fDO1tZWpR507Bkv3dYg5KSNg4bt2pKc+LyvnI+g4x3IiQPwkAsLIrgyeTlZdIB9SxrYGyhqmfuzLAgi8TxvKmdiwlXy3lWxq8aurXNojBHhg6W0+2rsQvTuSBr+MthBqPbMYNZuSuE4mOk3mfS4mdrQvGHAvbyzD0ZauA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hhmA9wKK7CGkLIqyJj+lEYFdP6kN/Y7vysfGyxEMc/M=;
- b=hc55vPMfIrIm8VAPns34N1gkhzW6UvgNLoSUus12BusxD/Mpkbuk0nleYdYbh31/HjBo364BiKyuygtySfC5z1eWndDDRMFyRPoY2XxOw9HZ45BHIoevAYOSou7H03k5+40DTISiZJ0IeH0VZU/yQGrnJd7cwuUefF0loqg0CxB/O2RJLWGe8un91/yX9OIWK83NDcuZICtixLKWYxkGZe9DIrYoymPVHTnfHhAC2/IqOTObH8c4x7BgixousjD6W84My6q3/62Psrq3MfWvFSA8izkrrnxTieSSbJ+BDOMBQlXV5oQWa2Q9ccrcFqqMAxH7mSoRJuvSDpMDjSoeLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DS7PR11MB7907.namprd11.prod.outlook.com (2603:10b6:8:db::13) by
- IA0PR11MB7749.namprd11.prod.outlook.com (2603:10b6:208:442::7) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.270.17; Mon, 3 Aug 2026 10:07:20 +0000
-Received: from DS7PR11MB7907.namprd11.prod.outlook.com
- ([fe80::12f4:5e22:c1b2:3809]) by DS7PR11MB7907.namprd11.prod.outlook.com
- ([fe80::12f4:5e22:c1b2:3809%6]) with mapi id 15.21.0270.016; Mon, 3 Aug 2026
- 10:07:20 +0000
-From: "Piatkowski, Dominik Karol" <dominik.karol.piatkowski@intel.com>
-To: "Kempczynski, Zbigniew" <zbigniew.kempczynski@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: Dominik Grzegorzek <dominik.grzegorzek@intel.com>
-Subject: RE: [PATCH i-g-t v2 2/2] lib/gpgpu_fill: Implement gpgpu_fill for XE3
- which uses ugm instead of tgm
-Thread-Topic: [PATCH i-g-t v2 2/2] lib/gpgpu_fill: Implement gpgpu_fill for
- XE3 which uses ugm instead of tgm
-Thread-Index: AQHdIwdAMtO6w7pCLUeNF7mdaLosjLaMGajg
-Date: Mon, 3 Aug 2026 10:07:20 +0000
-Message-ID: <DS7PR11MB790702983B79C53AE244220BD9D52@DS7PR11MB7907.namprd11.prod.outlook.com>
-References: <20260803051608.61167-4-zbigniew.kempczynski@intel.com>
- <20260803051608.61167-6-zbigniew.kempczynski@intel.com>
-In-Reply-To: <20260803051608.61167-6-zbigniew.kempczynski@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS7PR11MB7907:EE_|IA0PR11MB7749:EE_
-x-ms-office365-filtering-correlation-id: 3c6ff71a-1353-4add-02e2-08def1470190
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|23010399003|376014|1800799024|4143699003|38070700021|56012099006|11063799006|10067099003|6133799003|22082099003|18002099003;
-x-microsoft-antispam-message-info: JSEF8AJ4tWNjYNLrdskNjjqcG8D3BWCfrGQJucLw5F2TajRn4Cala9e3bRkrsybUkWYQvXVW8NeVRSd37QLKSoEOEbC5ilSN3CI6g4UgTPYNqmNVhoVQOigHHmanqQjHkX1reDsrLGiEpjGuVjg9GlWBni7gSGuYAbRjnUwSpYfxNV6K2LS9GCYOimtiQre9owfxTls+F+w4LXe2pmh+liZYdsKKWnPO1msG/Bvhnm6kzK8SAcdauxEUWsd8xYDYAvp2yJF+MifBheKmpqMxb3F+pttWPR+CUH8FFaz9wX8B+8L00rrTyGAag5KCLHAd4Y5eujvhon36YqFQSMaOiNjwXrsTEVEvuHL3mT3q1+KM5LQ4WGV+2WdBPUm8h62OPuPQ5P/3l58khT5NnIBQa6ES0UMO7/gI99nkYq/vB1MA4QCEhC+AEQXxAn/jp4jOG6iX58wZAhTuAYFgthLzK/E32jFnzehE/JCNV8C7uf6Ic7yfYhKbI0SHb+oHZrPGVaFrVS01Gdy8zvwIo02Zgnzl1DsK3hgr1NXzjFX5En/tYpfJZA6ckmT2zHwACRybMykmT/kdhUu+SFIOmuKvINIylq6u4F+IJVgaOA3AGUWGUcL03OtA4yaZ34/s090Ek4+6MomjKu79YxPG3FhFmcKM8JzieeM2jcgRnHxkAvX3+mEktVjt1WwdDBsU2bEoe2y5uTTtQAPfx5xEH0rvhS86dEoLB8/vRrNSJN70TzQ=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS7PR11MB7907.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(4143699003)(38070700021)(56012099006)(11063799006)(10067099003)(6133799003)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?YUhQQlVyZ3RoOGpWRTcvb28xclhBRnJzVEFBc0ovd2E0aEJvU0NiQlNGczhq?=
- =?utf-8?B?NW1YV01hWGF2dWlxYTU5d2cyQXdNQ2pzd1JhMEVYMnhLQzN0YlJpZXE0aENY?=
- =?utf-8?B?YTFsaTFqUjZTZk94SkNpQnAwSXFrNVBVcWUrTzJuUmtaNHcwWjdLK0l6ck9t?=
- =?utf-8?B?K0I0UGNOajZ1N2VKMG8zazkwUFpXRzBSVk44NXlGSkx3NDk2azFOeTVXTFBG?=
- =?utf-8?B?ZmN3M0lLbXZlWW96cDhhSUFzRmpKWi9tZEhucTdJLy9BcERodm9IMlBqY2NC?=
- =?utf-8?B?Vm8wRVZGcktkQkpPRlRBYWRTV2lxZ216K2lobDVTRXk1WXRwTXBTQWhZSGNH?=
- =?utf-8?B?eTlyVWpRNE95NENHWUFLdEpONktJY1BNdHREMDNDM2RWejZFSUdmeDBVYm5N?=
- =?utf-8?B?M045Mkc0dVUyVWl6QmFOV3UyTkxwUDhyN0hFeFo2TmZlY09GV2JrdVdPMW1I?=
- =?utf-8?B?ZXVaZ1N6WXhIT0xUdHl4NjVZTzZwVHROVFI1TWxqWHRzS2hSM3JRZ0pjMHM1?=
- =?utf-8?B?anJkT0pxdml3Nk9SbldiS2VHNHJqSHlWNlYxOThYMjB6SllkbTdOMWRobytX?=
- =?utf-8?B?d01NWXRlYzNFNjV0Yy9ZRlE0Yjl3RWo4RmIwSVJ4b3l0bDVISjJZeCtvY3dB?=
- =?utf-8?B?RGZZc3c2RGpkcUtPRndDSnhYcE8yemhCa3VJRXQ3Tit2c3ZTeG51dHZvWmRw?=
- =?utf-8?B?dWQrZy9vb3hseWFnaDREbHpEUkhrVWd5Q2s3RTZSb2lwdzRHd0F2Q1ZxbEpq?=
- =?utf-8?B?MVZXN1UwMHRGNE51WE5rYU0wUHMvT0VWNVUyREZBWC9UUWRjM2FUcXFudnRX?=
- =?utf-8?B?bThUdzYvbm4vNUdGa3F4TThCZ2RVbHpHeXVxWUNINW5RTFlId1NtNDdDSlB5?=
- =?utf-8?B?VkNxS2ljRnlTQU15QStPL2RTaU5lQXI4TlBnRXJ5dndIYUZTc0kvc2c5NU5Y?=
- =?utf-8?B?UkNXRjZialVXLzY2aTJxY1ZqNlpBVGx0UUxIc2tjSGtOZGFsdTRnblYyaThI?=
- =?utf-8?B?SVJ5Wko5a1pNcGorMk9qVm55SGRRQWxGSEt1eUNETEJFeWJCazNCZ1dnM3Z1?=
- =?utf-8?B?QzdWVU5wRU1ieWhMNXRSa2xHcDQxa3pFaTlYblRVdnBqUXlIcFZPelp1eVhB?=
- =?utf-8?B?M0ViaUpuNC9nMkg0UVBYaVpYOEFrMUJoclFQalNOZGQ5aysxdzh6c0dUU0FY?=
- =?utf-8?B?MVlZaS9rZ1V5WUhaOElnNG5jNG12eWlud0haQ2g2dXFCdzFsQUErZHlqM3Ey?=
- =?utf-8?B?a2x4Z0tkcEVYOXdQdGNoS2F5amZXeG1wWXpQZzdOTXpvNWNET1hMdGlqaXZ0?=
- =?utf-8?B?WFV6Nm5nNGpyRWJTbDJKUjQ0Mm9DTzlnb3BReHpoSjJCQTdzTE5jdm9rTHVD?=
- =?utf-8?B?dXd1STFVVVdKRnVOMjYvUHBMMjhEREttOHZTVW5JcE56V3AyQ0YrRUllSU9x?=
- =?utf-8?B?Nis4SmM2RnkvMHpoK1hLd2RKYjJaODd2eElpOWcwczJhcmhUbmtLR2w5RHJ3?=
- =?utf-8?B?OHJDeGZDNThFUGRZeXBRVEJmQ0llanFlcTdlUjROSVdrcUdpR0VwRmpoc2NZ?=
- =?utf-8?B?TWY3b1R2OGRHcnFMYWF1MVAwOEJvZncwRWNydVpGZkoreHlxaTlTWGJYb29G?=
- =?utf-8?B?N1IzUkZSSXQzWW1TTVFhZ2FvdW1BQmt0dlhRQVU3a250aG5QRnBzc1JnajNv?=
- =?utf-8?B?YW9aRDJpZkUxTVhuQm1qV28zbHlTSm1XL0tZcW1yYmFFek9GQWdWWG52THdk?=
- =?utf-8?B?bUxVcDE2UldRWTMyVkpFeWRkSnAvVVoxR29lQjh3SFBVNTE5a2swTjZUY1R2?=
- =?utf-8?B?M0o1MkVPREFwVzF5UktBcy9QYWVqVGhYd2d4YUVyTzhrajNGUDZzbzRUb2Zh?=
- =?utf-8?B?cTcxKy96UTFSMVhwWUdQRkJwbFlRVlJDTnAwTm1rMmF2RDNoaVhNTU8ydWQx?=
- =?utf-8?B?U2hqRVRDTThzRVRxZDQ3K2VYUjFpT2VpTVQ0ZER0NSttdTV5NXR4dk5VcE0w?=
- =?utf-8?B?K0VSS21Sbzc5dGVLVHdUMEV2SDJZT1d4a0xmeWs4K0MyaURxeVltT3orTTVN?=
- =?utf-8?B?YnRoTUhZVlkyam1Cd09hVmVZRmI1Y0g3NmwvaUZpTy8rTU5mU3JPVGJVOEUz?=
- =?utf-8?B?NlZmbUFFR3RDWFNpdGxRbm1wYVhXYllLVEp3R2V0NWxMNHRKb1VvcERwUndX?=
- =?utf-8?B?NHFwbWdlbXZPeVIyYjZscHp0a296UXZkaGdaaDRON3RHcy9hMUtRdnhTZENF?=
- =?utf-8?B?dEpVbkUzTWV4VGhMdDN0ZXFPMU1ncXRXNFA4aEtIUVI5WFBxdXo5bkswTE5B?=
- =?utf-8?B?QXVvZDBNUU5uZFNDVTRqNWl5cjJlamMyUnZqQTN2NFBoTWszQXg1WTRFWHNP?=
- =?utf-8?Q?Y17IfwdtdhHYe0Ao=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+X-IronPort-AV: E=Sophos;i="6.25,202,1779174000"; d="scan'208";a="291132348"
+Received: from rbalaar-mobl1.gar.corp.intel.com (HELO [10.247.151.71])
+ ([10.247.151.71])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Aug 2026 04:56:04 -0700
+Message-ID: <52f8c63a-2b4f-4d31-a439-b0c746415d6d@intel.com>
+Date: Mon, 3 Aug 2026 17:24:41 +0530
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: OWPYzPTxT3PcCczrkCbm/s9XbI9RB14rflo4WzHE60LBqREteLANd8gOFN2TyRROTYuGHY8W36KaaPE1uO43PL/I1X3W+IVLxzNFAKrBgHewW2nHjs5TQqPgvjQSdNbCuQEY+f0046UA//V97YXfi8x1LEoCM9hUnceYNCv045FA/ZI3uJYRcrXZHttWK6wjiBUGwDFx/nGgjOo9WYqnJNAcbrmNXB/q3DDJ0Da2CE0a46rg3femNy5nDBLfS9gM3C7Qn86hF17Yz/gdKTuxKZ3moT7lJAsI9i1gngu/j6jHdUy+RAcZ6WEdz3xbgHxZopKZ0H1Q+RsK3sMgFbkaqw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB7907.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c6ff71a-1353-4add-02e2-08def1470190
-X-MS-Exchange-CrossTenant-originalarrivaltime: 03 Aug 2026 10:07:20.4066 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0us3RvZtjugtqS8SJ+pYRnOsi24me9Opj3MjAA/PwszEaLKBCBJKctd5KCX+LsnLWKJTGGRNYP97eV9I4ye+mhV4OmsUZDPztpDx48OBRx6PaLJxIy9LaQuJd4cbcSGz
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7749
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2] tests/intel/kms_dp_linktrain_fallback: Add
+ UHBR-to-HBR fallback subtest
+To: Sowmiya S <sowmiya.s@intel.com>, igt-dev@lists.freedesktop.org
+Cc: swati2.sharma@intel.com
+References: <20260803080514.687715-1-sowmiya.s@intel.com>
+Content-Language: en-US
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+In-Reply-To: <20260803080514.687715-1-sowmiya.s@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -174,114 +71,522 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-UmV2aWV3ZWQtYnk6IERvbWluaWsgS2Fyb2wgUGnEhXRrb3dza2kgPGRvbWluaWsua2Fyb2wucGlh
-dGtvd3NraUBpbnRlbC5jb20+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJv
-bTogS2VtcGN6eW5za2ksIFpiaWduaWV3IDx6Ymlnbmlldy5rZW1wY3p5bnNraUBpbnRlbC5jb20+
-DQo+IFNlbnQ6IE1vbmRheSwgQXVndXN0IDMsIDIwMjYgNzoxNiBBTQ0KPiBUbzogaWd0LWRldkBs
-aXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IERvbWluaWsgR3J6ZWdvcnplayA8ZG9taW5pay5n
-cnplZ29yemVrQGludGVsLmNvbT47IEtlbXBjenluc2tpLA0KPiBaYmlnbmlldyA8emJpZ25pZXcu
-a2VtcGN6eW5za2lAaW50ZWwuY29tPjsgUGlhdGtvd3NraSwgRG9taW5payBLYXJvbA0KPiA8ZG9t
-aW5pay5rYXJvbC5waWF0a293c2tpQGludGVsLmNvbT4NCj4gU3ViamVjdDogW1BBVENIIGktZy10
-IHYyIDIvMl0gbGliL2dwZ3B1X2ZpbGw6IEltcGxlbWVudCBncGdwdV9maWxsIGZvciBYRTMNCj4g
-d2hpY2ggdXNlcyB1Z20gaW5zdGVhZCBvZiB0Z20NCj4gDQo+IEZyb206IERvbWluaWsgR3J6ZWdv
-cnplayA8ZG9taW5pay5ncnplZ29yemVrQGludGVsLmNvbT4NCj4gDQo+IFVzZSB1Z20gc2hhcmVk
-IGZ1bmN0aW9uICh1bnR5cGVkIDJkIGJsb2NrIHN0b3JlKSBpbnN0ZWFkIG9mIHRnbQ0KPiAodHlw
-ZWQgMmQgYmxvY2sgc3RvcmUpIG9uIFhFMyBwbGF0Zm9ybXMuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5
-OiBEb21pbmlrIEdyemVnb3J6ZWsgPGRvbWluaWsuZ3J6ZWdvcnpla0BpbnRlbC5jb20+DQo+IFNp
-Z25lZC1vZmYtYnk6IFpiaWduaWV3IEtlbXBjennFhHNraSA8emJpZ25pZXcua2VtcGN6eW5za2lA
-aW50ZWwuY29tPg0KPiBDYzogRG9taW5payBLYXJvbCBQacSFdGtvd3NraSA8ZG9taW5pay5rYXJv
-bC5waWF0a293c2tpQGludGVsLmNvbT4NCj4gLS0tDQo+ICBsaWIvZ3BncHVfZmlsbC5jICAgICAg
-ICAgICAgICAgICAgIHwgNDMgKysrKysrKysrKysrKysrKysrKysrKysrKysrLS0tDQo+ICBsaWIv
-Z3BncHVfZmlsbC5jLmdlbi5pZ2E2NF9jb2Rlcy5jIHwgMjAgKysrKysrKysrKysrKy0NCj4gIGxp
-Yi9ncHVfY21kcy5jICAgICAgICAgICAgICAgICAgICAgfCAgMiArLQ0KPiAgMyBmaWxlcyBjaGFu
-Z2VkLCA1OSBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBh
-L2xpYi9ncGdwdV9maWxsLmMgYi9saWIvZ3BncHVfZmlsbC5jDQo+IGluZGV4IGU3YzljM2NkMjEu
-LmIzNTFhMTRjZDYgMTAwNjQ0DQo+IC0tLSBhL2xpYi9ncGdwdV9maWxsLmMNCj4gKysrIGIvbGli
-L2dwZ3B1X2ZpbGwuYw0KPiBAQCAtMjgyLDkgKzI4MiwxNSBAQCBfX2dlbjlfZ3BncHVfZmlsbGZ1
-bmMoaW50IGk5MTUsDQo+ICAJaW50ZWxfYmJfZGVzdHJveShpYmIpOw0KPiAgfQ0KPiANCj4gLXN0
-YXRpYyBzdHJ1Y3QgZ3BncHVfc2hhZGVyICpfX3hlaHBfZ3BncHVfa2VybmVsKGludCBmZCkNCj4g
-K3N0YXRpYyBzdHJ1Y3QgZ3BncHVfc2hhZGVyICpfX3hlaHBfZ3BncHVfa2VybmVsKGludCBmZCwg
-c3RydWN0IGludGVsX2J1Zg0KPiAqYnVmKQ0KPiAgew0KPiAgCXN0cnVjdCBncGdwdV9zaGFkZXIg
-Kmtlcm5lbCA9IGdwZ3B1X3NoYWRlcl9jcmVhdGUoZmQpOw0KPiArCXVpbnQ2NF90IG9mZnNldDsN
-Cj4gKw0KPiArCWlmIChpc194ZV9kZXZpY2UoZmQpKQ0KPiArCQlvZmZzZXQgPSB4ZV9jYW5vbmlj
-YWxfdmEoZmQsIGJ1Zi0+YWRkci5vZmZzZXQpOw0KPiArCWVsc2UNCj4gKwkJb2Zmc2V0ID0gQ0FO
-T05JQ0FMKGJ1Zi0+YWRkci5vZmZzZXQpOw0KPiANCj4gIAllbWl0X2lnYTY0X2NvZGUoa2VybmVs
-LCBncGdwdV9maWxsLCBSIigNCj4gIC8vIGZpbGwgdXAgcjEgd2l0aCB0YXJnZXQgY29sb3VyDQo+
-IEBAIC0zMTMsNyArMzE5LDcgQEAgbW92ICgxfE0wKQkJcjQuNDwxPjp1ZA0KPiAJcjAuNTwwOzEs
-MD46dWQNCj4gIC8vCVsxODoxNF0JCU1lc3NhZ2VUeXBlOiAweEEgKG1lZGlhIGJsb2NrIHdyaXRl
-KQ0KPiAgLy8JWzc6MF0JCUJUSTogMA0KPiAgc2VuZC5kYzEgKDE2fE0wKQludWxsCXI0CXNyYzFf
-bnVsbAkweDAJMHg0MEE4MDAwDQo+IC0jZWxzZQ0KPiArI2VsaWYgR0ZYX1ZFUiA8IDMwMDANCj4g
-IC8vIGxvYWQgYmxvY2sgb2Zmc2V0cyBpbnRvIG1lc3NhZ2UgaGVhZGVyIHBheWxvYWQNCj4gIG1v
-diAoMnxNMCkJCXI0LjU8MT46dWQJcjIuMDwyOzIsMT46dWQNCj4gIC8vIGxvYWQgYmxvY2sgd2lk
-dGgNCj4gQEAgLTMyNyw4ICszMzMsMzcgQEAgbW92ICgxfE0wKQkJIHI0LjE0PDE+OncJMHhGOncN
-Cj4gIC8vCVsxOToxN10JCUNhY2hpbmc6IDAgICh1c2Ugc3RhdGUgc2V0dGluZ3MgZm9yIGJvdGgg
-TDEgYW5kIEwzKQ0KPiAgLy8JWzU6MF0JCU9wY29kZTogMHgwNyAgKHN0b3JlX2Jsb2NrMmQpDQo+
-ICBzZW5kLnRnbSAoMTZ8TTApCW51bGwJcjQJbnVsbAkweDAJMHg2NDAwMDAwNw0KPiArI2Vsc2UN
-Cj4gKy8vIGxvYWQgQTY0IGJhc2Ugc3VyZmFjZSBzdGF0ZSBvZmZzZXQgaW50byBhZGRyZXNzIHBh
-eWxvYWQNCj4gK21vdiAoMXxNMCkJCXI0LjA8MT46dWQJQVJHKDApOnVkDQo+ICttb3YgKDF8TTAp
-CQlyNC4xPDE+OnVkCUFSRygxKTp1ZA0KPiArLy8gbG9hZCBzdXJmYWNlIHdpZHRoDQo+ICttb3Yg
-KDF8TTApCQlyNC4yPDE+OnVkCUFSRygyKTp1ZA0KPiArLy8gbG9hZCBzdXJmYWNlIGhlaWdodA0K
-PiArbW92ICgxfE0wKQkJcjQuMzwxPjp1ZAlBUkcoMyk6dWQNCj4gKy8vIGxvYWQgc3VyZmFjZSBw
-aXRjaA0KPiArbW92ICgxfE0wKQkJcjQuNDwxPjp1ZAlBUkcoNCk6dWQNCj4gKy8vIGxvYWQgYmxv
-Y2sgb2Zmc2V0cw0KPiArbW92ICgyfE0wKQkJcjQuNTwxPjp1ZAlyMi4wPDI7MiwxPjp1ZA0KPiAr
-Ly8gbG9hZCBibG9jayB3aWR0aA0KPiArbW92ICgxfE0wKQkJcjQuMTQ8MT46dwkweEY6dw0KPiAr
-Ly8gVW50eXBlZCAyRCBibG9jayBzdG9yZQ0KPiArLy8gTWVzc2FnZSBEZXNjcmlwdG9yDQo+ICsv
-Lwlic3BlYzo2Mzk4MQ0KPiArLy8JMHgyMDIwMDA3Og0KPiArLy8JWzMwOjI5XQkJQWRkclR5cGU6
-IDAgKEZsYXQpDQo+ICsvLwlbMjg6MjVdCQlNbGVuOiAxIGFkZHJlc3MgcmVnaXN0ZXIgd3JpdHRl
-bg0KPiArLy8JWzI0OjIwXQkJUmxlbjogMCByZWdpc3RlcnMgcmVhZCBiYWNrDQo+ICsvLwlbMTk6
-MTddCQlDYWNoaW5nOiAxICAoTDEgdW5jYWNoZWQsIEwzIHVuY2FjaGVkKQ0KPiArLy8JWzE1XQkJ
-RGF0YU9yZGVyOiAwICBub24tdHJhbnNwb3NlZA0KPiArLy8JWzExOjldCQlEYXRhU2l6ZTogMCAg
-KDhiIHBlciBkYXRhIGVsZW1lbnQpDQo+ICsvLwlbNTowXQkJT3Bjb2RlOiAweDA3ICAoc3RvcmVf
-YmxvY2syZCkNCj4gK3NlbmQudWdtICgxfE0wKQkJbnVsbAlyNAlyNToxCTB4MAkweDIwMjAwMDcN
-Cj4gICNlbmRpZg0KPiAtCSkiKTsNCj4gKwkpIiwgb2Zmc2V0ICYgMHhmZmZmZmZmZiwgb2Zmc2V0
-ID4+IDMyLA0KPiArCWludGVsX2J1Zl93aWR0aChidWYpICogYnVmLT5icHAvOCAtIDEsIGludGVs
-X2J1Zl9oZWlnaHQoYnVmKSAtIDEsDQo+ICsJYnVmLT5zdXJmYWNlWzBdLnN0cmlkZSAtIDEpOw0K
-PiArDQo+ICAJZ3BncHVfc2hhZGVyX19lb3Qoa2VybmVsKTsNCj4gIAlyZXR1cm4ga2VybmVsOw0K
-PiAgfQ0KPiBAQCAtNDIyLDcgKzQ1Nyw3IEBAIHZvaWQgeGVocF9ncGdwdV9maWxsZnVuYyhpbnQg
-ZmQsDQo+IA0KPiAgCWludGVsX2JiX3B0cl9zZXQoaWJiLCBCQVRDSF9TVEFURV9TUExJVCk7DQo+
-IA0KPiAtCWtlcm5lbCA9IF9feGVocF9ncGdwdV9rZXJuZWwoZmQpOw0KPiArCWtlcm5lbCA9IF9f
-eGVocF9ncGdwdV9rZXJuZWwoZmQsIGJ1Zik7DQo+ICAJeGVocF9maWxsX2ludGVyZmFjZV9kZXNj
-cmlwdG9yKGliYiwgYnVmLCBrZXJuZWwtPmluc3RyLA0KPiAgCQkJCSAgICAgICBrZXJuZWwtPnNp
-emUgKiA0LCAmaWRkKTsNCj4gIAlncGdwdV9zaGFkZXJfZGVzdHJveShrZXJuZWwpOw0KPiBkaWZm
-IC0tZ2l0IGEvbGliL2dwZ3B1X2ZpbGwuYy5nZW4uaWdhNjRfY29kZXMuYw0KPiBiL2xpYi9ncGdw
-dV9maWxsLmMuZ2VuLmlnYTY0X2NvZGVzLmMNCj4gaW5kZXggZjE1YTlhMjNhYi4uMTk5MDU2NTll
-OSAxMDA2NDQNCj4gLS0tIGEvbGliL2dwZ3B1X2ZpbGwuYy5nZW4uaWdhNjRfY29kZXMuYw0KPiAr
-KysgYi9saWIvZ3BncHVfZmlsbC5jLmdlbi5pZ2E2NF9jb2Rlcy5jDQo+IEBAIC0zLDcgKzMsNyBA
-QA0KPiANCj4gICNpbmNsdWRlICJncGdwdV9zaGFkZXIuaCINCj4gDQo+IC0jZGVmaW5lIE1ENV9T
-VU1fSUdBNjRfQVNNUyAyMzk3NGE5ZmE3MjdhODFiMzIwNThiYmFhOGQzZWJiYw0KPiArI2RlZmlu
-ZSBNRDVfU1VNX0lHQTY0X0FTTVMgNTBhNmVhN2Q0MzVkYjNiYWI3NGM3NDJjZTI1MjY1YzANCj4g
-DQo+ICBzdHJ1Y3QgaWdhNjRfdGVtcGxhdGUgY29uc3QgaWdhNjRfY29kZV94ZTNwX2dwZ3B1X2Zp
-bGxbXSA9IHsNCj4gIAl7IC5nZnhfdmVyID0gMzUwMCwgLnNpemUgPSAxNDQsIC5jb2RlID0gKGNv
-bnN0IHVpbnQzMl90IFtdKSB7DQo+IEBAIC01MCw2ICs1MCwyNCBAQCBzdHJ1Y3QgaWdhNjRfdGVt
-cGxhdGUgY29uc3QNCj4gaWdhNjRfY29kZV94ZTNwX2dwZ3B1X2ZpbGxbXSA9IHsNCj4gIH07DQo+
-IA0KPiAgc3RydWN0IGlnYTY0X3RlbXBsYXRlIGNvbnN0IGlnYTY0X2NvZGVfZ3BncHVfZmlsbFtd
-ID0gew0KPiArCXsgLmdmeF92ZXIgPSAzMDAwLCAuc2l6ZSA9IDY0LCAuY29kZSA9IChjb25zdCB1
-aW50MzJfdCBbXSkgew0KPiArCQkweDAwMDgwMDYxLCAweDAxMDUwMDAwLCAweDAwMDAwMTA0LCAw
-eDAwMDAwMDAwLA0KPiArCQkweDAwMDAwMDY5LCAweDAyMDU4MjIwLCAweDAyMDAwMDE0LCAweDAw
-MDAwMDA0LA0KPiArCQkweDAwMDAwMDYxLCAweDAyMTUwMjIwLCAweDAwMDAwMDY0LCAweDAwMDAw
-MDAwLA0KPiArCQkweDAwMGMwMDYxLCAweDA0MDU0MjIwLCAweDAwMDAwMDAwLCAweDAwMDAwMDAw
-LA0KPiArCQkweDAwMTAxYzYxLCAweDA1MDUwMjIwLCAweDAwMDAwMTA0LCAweDAwMDAwMDAwLA0K
-PiArCQkweDAwMDAwMDYxLCAweDA0MDU0MjIwLCAweDAwMDAwMDAwLCAweGMwZGVkMDAwLA0KPiAr
-CQkweDAwMDAwMDYxLCAweDA0MTU0MjIwLCAweDAwMDAwMDAwLCAweGMwZGVkMDAxLA0KPiArCQkw
-eDAwMDAwMDYxLCAweDA0MjU0MjIwLCAweDAwMDAwMDAwLCAweGMwZGVkMDAyLA0KPiArCQkweDAw
-MDAwMDYxLCAweDA0MzU0MjIwLCAweDAwMDAwMDAwLCAweGMwZGVkMDAzLA0KPiArCQkweDAwMDAw
-MDYxLCAweDA0NDU0MjIwLCAweDAwMDAwMDAwLCAweGMwZGVkMDA0LA0KPiArCQkweDAwMDQxZjYx
-LCAweDA0NTUwMjIwLCAweDAwMjIwMjA1LCAweDAwMDAwMDAwLA0KPiArCQkweDAwMDAwMDYxLCAw
-eDA0NzU0NTUwLCAweDAwMDAwMDAwLCAweDAwMGYwMDBmLA0KPiArCQkweDAwMDMyMDMxLCAweDAw
-MDAwMDAwLCAweGYwMGUwNDBjLCAweDAwODAwNTBjLA0KPiArCQkweDgwMDAwMDAxLCAweDAwMDEw
-MDAwLCAweDIwMDAwMDAwLCAweDAwMDAwMDAwLA0KPiArCQkweDgwMDAwMDAxLCAweDAwMDEwMDAw
-LCAweDMwMDAwMDAwLCAweDAwMDAwMDAwLA0KPiArCQkweDgwMDAwOTAxLCAweDAwMDEwMDAwLCAw
-eDAwMDAwMDAwLCAweDAwMDAwMDAwLA0KPiArCX19LA0KPiAgCXsgLmdmeF92ZXIgPSAyMDAwLCAu
-c2l6ZSA9IDQ0LCAuY29kZSA9IChjb25zdCB1aW50MzJfdCBbXSkgew0KPiAgCQkweDAwMDgwMDYx
-LCAweDAxMDUwMDAwLCAweDAwMDAwMTA0LCAweDAwMDAwMDAwLA0KPiAgCQkweDAwMDAwMDY5LCAw
-eDAyMDU4MjIwLCAweDAyMDAwMDE0LCAweDAwMDAwMDA0LA0KPiBkaWZmIC0tZ2l0IGEvbGliL2dw
-dV9jbWRzLmMgYi9saWIvZ3B1X2NtZHMuYw0KPiBpbmRleCA5ZGFkNzNiNmRmLi43YTcyMTY2YTBl
-IDEwMDY0NA0KPiAtLS0gYS9saWIvZ3B1X2NtZHMuYw0KPiArKysgYi9saWIvZ3B1X2NtZHMuYw0K
-PiBAQCAtMTAyMSw3ICsxMDIxLDcgQEAgeGVocF9lbWl0X2NmZV9zdGF0ZShzdHJ1Y3QgaW50ZWxf
-YmIgKmliYiwgdWludDMyX3QNCj4gdGhyZWFkcykNCj4gDQo+ICAjZGVmaW5lIF9MRUdBQ1lfTU9E
-RSAoMSA8PCA2KQ0KPiAgCS8qIG51bWJlciBvZiB0aHJlYWRzICYgdXJiIGVudHJpZXMgKi8NCj4g
-LQlpbnRlbF9iYl9vdXQoaWJiLCAobWF4X3QodGhyZWFkcywgdGhyZWFkcywgNjQpIC0gMSkgPDwg
-MTYgfCAoZGZldWQgPw0KPiBfTEVHQUNZX01PREUgOiAwKSk7DQo+ICsJaW50ZWxfYmJfb3V0KGli
-YiwgKG1heF90KHRocmVhZHMsIHRocmVhZHMsIDEyOCkgLSAxKSA8PCAxNiB8IChkZmV1ZCA/DQo+
-IF9MRUdBQ1lfTU9ERSA6IDApKTsNCj4gDQo+ICAJaW50ZWxfYmJfb3V0KGliYiwgMCk7DQo+ICAJ
-aW50ZWxfYmJfb3V0KGliYiwgMCk7DQo+IC0tDQo+IDIuNTQuMA0KDQo=
+Hello Sowmiya,
+
+Please find review comments inline,
+I see checkpatch flag below issues please fix those,
+_______________________________________________________________________________
+32: ERROR:EXECUTE_PERMISSIONS: do not set execute permissions for source 
+files
+#32: FILE: tests/intel/kms_dp_linktrain_fallback.c
+
+223: ERROR:SPACING: space required after that ',' (ctx:VxV)
+#223: FILE: tests/intel/kms_dp_linktrain_fallback.c:540:
++ igt_output_name(data->output),prev_link_rate);
+                                                       ^
+total: 2 errors, 0 warnings, 0 checks, 283 lines checked
+_______________________________________________________________________________
+
+On 03-08-2026 13:35, Sowmiya S wrote:
+
+> Cover the UHBR (128b/132b) to HBR3 (8b/10b) encoding boundary missed
+> by dp-fallback. Add uhbr-to-hbr-fallback to pin the link at the
+> highest sustainable UHBR rate, force repeated link training failures,
+> and verify the rate drops below UHBR10 (1,000,000 kbps). Stop at
+> that threshold and leave the HBR step-down to dp-fallback. Exercise
+> both SST and MST outputs since MST siblings share the physical link.
+NIT: Fix Units in subject message, code and the logs
+DP link rates in i915/DRM are in 10 kbit/s units, see drm_dp_is_uhbr_rate
+>
+> v2: Improve UHBR fallback subtest
+NIT: Please spell out what actually changed in v2
+"Improve UHBR fallback subtest" is too generic
+>
+> Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+> ---
+>   tests/intel/kms_dp_linktrain_fallback.c | 205 ++++++++++++++++++++++--
+>   1 file changed, 191 insertions(+), 14 deletions(-)
+>   mode change 100644 => 100755 tests/intel/kms_dp_linktrain_fallback.c
+>
+> diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
+> old mode 100644
+> new mode 100755
+> index 115183d2dc..c691443aa8
+> --- a/tests/intel/kms_dp_linktrain_fallback.c
+> +++ b/tests/intel/kms_dp_linktrain_fallback.c
+> @@ -24,6 +24,14 @@
+>    *
+>    * SUBTEST: dsc-fallback
+>    * Description: Test fallback to DSC when BW isn't sufficient
+> + *
+> + * SUBTEST: uhbr-to-hbr-fallback
+> + * Description: Verify fallback from UHBR (>= 10 Gbps, 128b/132b) to HBR3 or
+> + *              lower (8b/10b) on a UHBR-capable DP connector by forcing
+> + *              repeated link training failures, exercising the port slice
+> + *              reset path on the transition. Supports both SST and MST
+> + *              (topology-wide) outputs; MST siblings share the physical
+> + *              link so fallback applies to the whole topology.
+>    */
+"exercising the port slice reset path on the transition" - nothing in 
+the test
+observes that. The subtest only reads back the link rate from debugfs, so it
+cannot tell a port-slice reset from any other retrain. Please drop that 
+clause
+(or move it to the commit message as motivation), otherwise the documented
+scope of the subtest does not match what it verifies.
+
+>   
+>   #define RETRAIN_COUNT 1
+> @@ -33,6 +41,12 @@
+>    */
+>   #define LT_FAILURE_REDUCED_CAPS 2
+>   #define SPURIOUS_HPD_RETRY 3
+> +/*
+> + * UHBR10 link rate threshold in Kbps.
+> + * Rates at or above this value use 128b/132b encoding (UHBR10/13.5/20).
+> + * Rates below this value use 8b/10b encoding (HBR3 and lower).
+> + */
+> +#define UHBR10_LINK_RATE 1000000
+NIT: Instead of having a definition we can have a reusable helper that 
+can be used by other tests
+to check given rate is uhbr or not.
+>   
+>   static int traversed_mst_outputs[IGT_MAX_PIPES];
+>   static int traversed_mst_output_count;
+> @@ -73,9 +87,10 @@ static bool setup_mst_outputs(data_t *data, igt_output_t *mst_output[],
+>   		output = mst_output[i];
+>   		if (traversed_mst_output_count < IGT_MAX_PIPES) {
+>   			traversed_mst_outputs[traversed_mst_output_count++] = output->config.connector->connector_id;
+> -			igt_info("Output %s is in same topology as %s\n",
+> -				 igt_output_name(output),
+> -				 igt_output_name(data->output));
+> +			if (output->id != data->output->id)
+> +				igt_info("Output %s is in same MST topology as %s\n",
+> +					 igt_output_name(output),
+> +					 igt_output_name(data->output));
+This hunk is an unrelated cosmetic change - it suppresses the 
+self-referential
+log line and rewords an existing message. It has nothing to do with UHBR
+fallback, and rewording an existing igt_info() can break whatever people 
+grep
+for in CI logs. Please split it into its own patch (or drop it).
+
+>   		} else {
+>   			igt_assert_f(false, "Unable to save traversed output\n");
+>   			return false;
+> @@ -347,7 +362,7 @@ static bool fix_link_status_and_recommit(data_t *data,
+>   	return true;
+>   }
+>   
+> -static void test_fallback(data_t *data, bool is_mst)
+> +static bool test_fallback(data_t *data, bool is_mst, bool force_uhbr)
+Worth documenting what the bool means, because it is doing double duty 
+below:
+for the !force_uhbr callers it is ignored entirely, and for force_uhbr 
+it feeds
+igt_require_f(), i.e. false == "skip"
+>   {
+>   	int output_count, retries;
+>   	int max_link_rate, curr_link_rate, prev_link_rate;
+> @@ -361,14 +376,94 @@ static void test_fallback(data_t *data, bool is_mst)
+>   	retries = SPURIOUS_HPD_RETRY;
+>   
+>   	igt_display_reset(&data->display);
+> -	i915_dp_reset_link_params(data->drm_fd, data->output);
+> -	if (!setup_outputs(data, is_mst, outputs,
+> -			   &output_count, modes, fbs,
+> -			   primaries))
+> -		return;
+>   
+> -	igt_info("Testing link training fallback on %s\n",
+> -		 igt_output_name(data->output));
+> +	/*
+> +	 * For the UHBR-to-HBR fallback case, pin the link to the sink's
+> +	 * negotiated max rate (i915_dp_get_max_link_rate() — the common
+stick to ASCII punctuation ("-")
+> +	 * source/sink rate, not i915_dp_get_max_supported_rate() which lists
+> +	 * every rate the *source* can generate, including ones the sink
+> +	 * doesn't advertise in its DPCD). If the physical link still can't
+> +	 * sustain that rate (cable limit), fall back to the next-lower UHBR
+> +	 * rate advertised in the debugfs list and retry. Skip the test if no
+> +	 * UHBR rate is achievable.
+> +	 */
+[X]
+Change dropped the unconditional i915_dp_reset_link_params() (removed a few
+lines up) and only kept it in the !force_uhbr branch. So on this path
+i915_dp_get_max_link_rate() is now read before anything is reset. That
+debugfs file is not the sink's static maximum - it is the currently allowed
+maximum.
+
+Those limits shrink on every fallback. Concretely: the second and later
+outputs sharing an intel_dp (MST siblings), or a full-binary run where
+dp-fallback already walked this connector down to 2.7 Gbps, will read
+max=270000 here and print "does not support UHBR (max=270000 kbps),
+skipping" on a panel that very much does support UHBR.
+> +	if (force_uhbr) {
+> +		char buf[512], rate_str[16], lane_auto[] = "auto";
+> +		int try_rate = i915_dp_get_max_link_rate(data->drm_fd,
+> +							 data->output);
+> +		/* Preserve MST state for fallback retries; keep final discovery cached.*/
+> +		int saved_mst_count = traversed_mst_output_count;
+> +
+> +		if (try_rate < UHBR10_LINK_RATE) {
+> +			igt_info("Output %s does not support UHBR (max=%d kbps), skipping\n",
+> +				 igt_output_name(data->output), try_rate);
+> +			return false;
+> +		}
+This is one of two different "does not support UHBR" skips, the other 
+being the
+i915_dp_get_max_supported_rate() gate in run_uhbr_to_hbr_fallback_test(). An
+output that passes the outer gate (source can do UHBR) and fails here (sink
+cannot) prints both messages, which reads like a bug in the test. Please 
+gate
+once, in one place, on the same helper.
+> +
+> +		curr_link_rate = 0;
+> +		while (try_rate >= UHBR10_LINK_RATE) {
+> +			char *token;
+> +			int next = 0;
+> +
+> +			/* Allow MST re-discovery on every UHBR-rate attempt. */
+> +			traversed_mst_output_count = saved_mst_count;
+> +
+> +			snprintf(rate_str, sizeof(rate_str), "%d", try_rate);
+> +			i915_dp_set_link_params(data->drm_fd, data->output,
+> +						rate_str, lane_auto);
+lane_auto[] only exists because i915_dp_set_link_params() takes "char *" 
+rather
+than "const char *", so a string literal would warn. Rather than working 
+around
+it at every call site, please fix the helper in a small prep patch.
+> +
+> +			if (!setup_outputs(data, is_mst, outputs,
+> +					   &output_count, modes, fbs, primaries)) {
+> +				i915_dp_reset_link_params(data->drm_fd,
+> +							  data->output);
+> +				return false;
+> +			}
+> +
+> +			curr_link_rate = i915_dp_get_current_link_rate(data->drm_fd,
+> +								       data->output);
+> +			if (curr_link_rate >= UHBR10_LINK_RATE) {
+> +				igt_info("Link trained at UHBR %d kbps on %s\n",
+> +					 curr_link_rate,
+> +					 igt_output_name(data->output));
+> +				break;
+> +			}
+> +
+> +			igt_info("Rate %d not sustained (got %d kbps) on %s, trying next-lower UHBR\n",
+> +				 try_rate, curr_link_rate,
+> +				 igt_output_name(data->output));
+> +			igt_display_reset(&data->display);
+> +
+> +			igt_debugfs_read_connector_file(data->drm_fd,
+> +							igt_output_name(data->output),
+> +							"i915_dp_force_link_rate",
+> +							buf, sizeof(buf));
+> +			for (token = strtok(buf, " \t\n"); token;
+> +			     token = strtok(NULL, " \t\n")) {
+> +				int r = (int)strtol(token, NULL, 0);
+> +
+> +				if (r >= UHBR10_LINK_RATE && r < try_rate && r > next)
+> +					next = r;
+> +			}
+A few things about this block:
+
+(a) The return value of igt_debugfs_read_connector_file() is dropped and 
+buf[]
+     is uninitialised, so if the read fails you strtok() over uninitialised
+     stack. Every other caller in lib/i915/i915_dp.c asserts on the result:
+
+         res = igt_debugfs_read_connector_file(...);
+         igt_assert_f(res == 0, "Unable to read 
+%s/i915_dp_force_link_rate\n", ...);
+
+     Please do the same (or better, see (c)).
+
+(b) The list you are parsing is intel_dp->source_rates - the show 
+handler is:
+
+         seq_printf(m, "%sauto%s", ...);
+         for (i = 0; i < intel_dp->num_source_rates; i++)
+                 seq_printf(m, " %s%d%s%s",
+                            intel_dp->source_rates[i] == force_rate ? 
+"[" : "",
+                            intel_dp->source_rates[i],
+                            intel_dp->source_rates[i] == current_rate ? 
+"*" : "",
+                            intel_dp->source_rates[i] == force_rate ? 
+"]" : "");
+
+     i.e. "[auto] 162000 216000 ... 810000* 1000000 1350000 2000000", 
+and the
+     write handler validates only against source_rates too. 
+UHBR10/13.5/20 are
+     advertised independently by the sink, so a sink that does UHBR20 
+but not
+     UHBR13.5 will send you to 1350000, the write will succeed, and you will
+     then quietly train at whatever the driver falls back to. The
+     intel_dp_allowed_link_configs debugfs file (source AND sink AND current
+     limits, printed as "<lanes>x<rate>") is the right source for this 
+if you
+     need to enumerate.
+
+(c) The tokenising only works by accident. "auto" -> strtol() returns 0, 
+and the
+     forced entry is bracketed - "[1000000*]" -> strtol() also returns 0. It
+     happens not to matter because candidates must be < try_rate, but please
+     parse explicitly (skip "auto", strip '[', '*', ']') instead of 
+relying on
+     strtol() bailing out. While there: use strtok_r(), base 10 rather 
+than 0,
+     and check endptr/errno.
+
+     Given the amount of parsing, this really wants to live in 
+lib/i915/i915_dp.c
+     next to i915_dp_get_max_supported_rate() - something like
+     i915_dp_get_next_lower_rate(fd, output, rate) - rather than 
+open-coded in
+     the test.
+
+> +			try_rate = next;
+> +		}
+> +
+> +		if (curr_link_rate < UHBR10_LINK_RATE) {
+> +			igt_info("Output %s cannot sustain any UHBR rate, skipping\n",
+> +				 igt_output_name(data->output));
+> +			i915_dp_reset_link_params(data->drm_fd, data->output);
+> +			return false;
+> +		}
+> +
+> +		/* Clear the pin so the fallback loop below can reduce rate. */
+> +		i915_dp_reset_link_params(data->drm_fd, data->output);
+This does considerably more than "clear the pin". The write handler is:
+
+         intel_dp_reset_link_params(intel_dp);
+         link_caps->forced_params.rate = rate;
+
+and intel_dp_reset_link_params() -> intel_dp_link_caps_reset() ->
+reset_max_link_limits_reenable_all(), i.e. it re-enables *all* link 
+configs and
+throws away accumulated fallback state, right before you start forcing
+failures.
+
+On the interesting path - the one where the loop above had to walk down 
+because
+the cable could not sustain the sink's max - this hands the driver back 
+exactly
+the rate you just proved unusable. Have you confirmed on real hardware 
+that the
+first post-unpin retrain steps down from the pinned rate rather than
+re-selecting the max? If it re-selects, curr_link_rate can come back 
+*higher*
+than prev_link_rate and the existing igt_assert_f("Fallback unsuccessful")
+below will fire.
+
+Related: max_link_rate is now read after this reset, so it is the full
+source/sink max rather than the rate you pinned. The
+"curr_link_rate == max_link_rate && ... && --retries" spurious-HPD escape
+therefore can never trigger on this path. Not necessarily wrong, but it is a
+behavioural difference from dp-fallback that is worth a comment.
+
+> +	} else {
+> +		i915_dp_reset_link_params(data->drm_fd, data->output);
+> +
+> +		if (!setup_outputs(data, is_mst, outputs,
+> +				   &output_count, modes, fbs,
+> +				   primaries))
+> +			return false;
+> +	}
+>   	max_link_rate = i915_dp_get_max_link_rate(data->drm_fd, data->output);
+>   	max_lane_count = i915_dp_get_max_lane_count(data->drm_fd, data->output);
+>   	prev_link_rate = i915_dp_get_current_link_rate(data->drm_fd, data->output);
+> @@ -390,7 +485,7 @@ static void test_fallback(data_t *data, bool is_mst)
+>   		if (i915_dp_get_link_retrain_disabled(data->drm_fd,
+>   						      data->output)) {
+>   			igt_reset_connectors();
+> -			return;
+> +			return false;
+>   		}
+>   
+>   		igt_assert_f(wait_for_hotplug_and_check_bad(data->drm_fd,
+> @@ -421,9 +516,32 @@ static void test_fallback(data_t *data, bool is_mst)
+>   			     ((curr_link_rate == max_link_rate && curr_lane_count == max_lane_count) && --retries),
+>   			     "Fallback unsuccessful\n");
+>   
+> +		/*
+> +		 * This subtest only cares about the single UHBR -> HBR
+> +		 * transition (128b/132b to 8b/10b encoding). Stop as soon as
+> +		 * we've dropped below UHBR10, instead of cascading all the
+> +		 * way down through the legacy HBR/HBR2/HBR3 rates, which is
+> +		 * already covered by dp-fallback.
+> +		 */
+> +		if (force_uhbr && curr_link_rate < UHBR10_LINK_RATE) {
+> +			igt_info("UHBR to HBR fallback confirmed on %s: %d kbps -> %d kbps\n",
+> +				 igt_output_name(data->output),
+> +				 prev_link_rate, curr_link_rate);
+> +			return true;
+> +		}
+This early return leaves the link in the reduced state and skips the
+igt_reset_connectors() that the retrain-disabled path does. Combined 
+with [X] in
+my comment on the max_link_rate read, that is what makes the next output 
+on the
+same intel_dp mis-detect its UHBR capability. Resetting the link params 
+before
+returning would make each output's run self-contained.
+> +
+>   		prev_link_rate = curr_link_rate;
+>   		prev_lane_count = curr_lane_count;
+>   	}
+> +
+> +	/* force_uhbr: fallback not confirmed, don't count this run. */
+> +	if (force_uhbr) {
+> +		igt_info("UHBR to HBR fallback not reached on %s(last link rate %d kbps)\n",
+> +			 igt_output_name(data->output),prev_link_rate);
+> +		return false;
+> +	}
+"capable output, trained at UHBR,
+forced failures until retrain was disabled, and it never dropped below 
+UHBR10"
+is a failure, not a skip. As written it returns false, run_*() leaves ran ==
+false, and igt_require_f() turns the whole thing into SKIP.
+
+Please separate the two verdicts. Keep "return false" for the genuinely
+skippable cases (no UHBR support, output already covered as an MST sibling,
+setup_outputs() bailed), and make this one fail. Replacing the whole 
+if-block
+with an unconditional assert on the way out of the loop reads well:
+> +
+> +	return true;
+>   }
+>   
+>   static bool run_lt_fallback_test(data_t *data)
+> @@ -431,6 +549,8 @@ static bool run_lt_fallback_test(data_t *data)
+>   	bool ran = false;
+>   	igt_output_t *output;
+>   
+> +	traversed_mst_output_count = 0;
+> +
+traversed_mst_output_count is file-static and never reset,
+so a full-binary run leaks MST traversal state between subtests - but it is
+independent of the new subtest. Please split it out as a prep patch with 
+its own
+justification.
+>   	for_each_connected_output(&data->display, output) {
+>   		data->output = output;
+>   
+> @@ -454,11 +574,11 @@ static bool run_lt_fallback_test(data_t *data)
+>   		if (igt_check_output_is_dp_mst(data->output)) {
+>   			igt_info("Testing MST output %s\n",
+>   				 igt_output_name(data->output));
+> -			test_fallback(data, true);
+> +			test_fallback(data, true, false);
+>   		} else {
+>   			igt_info("Testing DP output %s\n",
+>   				 igt_output_name(data->output));
+> -			test_fallback(data, false);
+> +			test_fallback(data, false, false);
+>   		}
+>   	}
+>   	return ran;
+> @@ -574,11 +694,63 @@ static void test_dsc_sst_fallback(data_t *data)
+>   	igt_assert_f(dsc_fallback_successful, "DSC fallback unsuccessful\n");
+>   }
+>   
+> +static bool run_uhbr_to_hbr_fallback_test(data_t *data)
+> +{
+> +	bool ran = false;
+> +	igt_output_t *output;
+> +
+> +	traversed_mst_output_count = 0;
+> +
+> +	for_each_connected_output(&data->display, output) {
+> +		data->output = output;
+> +
+> +		if (!i915_dp_has_force_link_training_failure_debugfs(data->drm_fd,
+> +								     data->output)) {
+> +			igt_info("Output %s doesn't support forcing link training failure\n",
+> +				 igt_output_name(data->output));
+> +			continue;
+> +		}
+> +
+> +		if (output->config.connector->connector_type != DRM_MODE_CONNECTOR_DisplayPort) {
+> +			igt_info("Skipping output %s as it's not DP\n", output->name);
+> +			continue;
+> +		}
+> +
+> +		if (i915_dp_get_max_supported_rate(data->drm_fd, data->output) < UHBR10_LINK_RATE) {
+> +			igt_info("Skipping output %s: does not support UHBR\n",
+> +				 igt_output_name(data->output));
+> +			continue;
+> +		}
+This gate uses i915_dp_get_max_supported_rate() (source rates) while
+test_fallback() gates on i915_dp_get_max_link_rate() (currently allowed 
+max),
+so the two disagree and an output can be "UHBR capable" here and "not UHBR
+capable" fifteen lines later. Pick one - I would gate here on
+i915_dp_get_max_link_rate() after a reset, and drop the duplicate check 
+inside
+test_fallback(), so there is exactly one skip reason and one message.
+
+> +
+> +		/*
+> +		 * MST siblings share the same physical DP link, so UHBR->HBR
+> +		 * fallback applies to MST too. Reuse the same is_mst branching
+> +		 * as dp-fallback so the whole topology is driven while the
+> +		 * shared link is retrained.
+> +		 */
+> +		if (igt_check_output_is_dp_mst(data->output)) {
+> +			igt_info("Testing UHBR-to-HBR fallback on MST output %s\n",
+> +				 igt_output_name(data->output));
+> +			if (test_fallback(data, true, true))
+> +				ran = true;
+> +		} else {
+> +			igt_info("Testing UHBR-to-HBR fallback on DP output %s\n",
+> +				 igt_output_name(data->output));
+> +			if (test_fallback(data, false, true))
+> +				ran = true;
+> +		}
+> +	}
+> +
+> +	return ran;
+> +}
+This function is run_lt_fallback_test() with one extra gate and a return 
+value.
+~45 duplicated lines is a lot to maintain in parallel - the next person 
+to fix
+the output-iteration logic will fix one copy and not the other. Since you
+already threaded force_uhbr through test_fallback(), please do the same 
+here.
+
+> +
+>   static bool run_dsc_sst_fallaback_test(data_t *data)
+>   {
+>   	bool ran = false;
+>   	igt_output_t *output;
+>   
+> +	traversed_mst_output_count = 0;
+> +
+Unrelated and dead: the DSC path never reaches
+setup_mst_outputs(), so traversed_mst_output_count is not consulted anywhere
+below this line. Please drop it, or if it is defensive, say so in a comment.
+
+
+Thanks and Regards
+Kunal Joshi
+>   	if (!is_dsc_supported_by_source(data->drm_fd)) {
+>   		igt_info("DSC not supported by source.\n");
+>   		return ran;
+> @@ -646,6 +818,11 @@ int igt_main()
+>   			      "Skipping test as DSC fallback conditions not met.\n");
+>   	}
+>   
+> +	igt_subtest("uhbr-to-hbr-fallback") {
+> +		igt_require_f(run_uhbr_to_hbr_fallback_test(&data),
+> +			      "Skipping test: no UHBR-capable DP output found or fallback not reached\n");
+> +	}
+> +
+>   	igt_fixture() {
+>   		igt_remove_fb(data.drm_fd, &data.fb);
+>   		igt_display_fini(&data.display);
