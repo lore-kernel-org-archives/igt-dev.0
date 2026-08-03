@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FBEDC55182
-	for <igt-dev@archiver.kernel.org>; Mon,  3 Aug 2026 19:33:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73A22C55182
+	for <igt-dev@archiver.kernel.org>; Mon,  3 Aug 2026 20:49:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3BEBC10E058;
-	Mon,  3 Aug 2026 19:33:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 175EF10E043;
+	Mon,  3 Aug 2026 20:49:42 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 276E110E058;
- Mon,  3 Aug 2026 19:33:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24E5810E077;
+ Mon,  3 Aug 2026 20:49:08 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5539476887589040822=="
+ boundary="===============4325289345963217990=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tests/kms=5Fcolorop=3A_Use?=
- =?utf-8?q?_local_variable_for_color_pipeline_cap?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tests/intel/xe=5Fconfigfs?=
+ =?utf-8?q?=3A_reuse_pre-existing_configfs_group?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+To: "Sk Anirban" <sk.anirban@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 03 Aug 2026 19:33:24 -0000
-Message-ID: <178578560415.13963.10136165851162463867@61270ab9df2a>
+Date: Mon, 03 Aug 2026 20:49:08 -0000
+Message-ID: <178579014814.13963.6582398895704737291@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260803080340.2088027-1-chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20260803080340.2088027-1-chaitanya.kumar.borah@intel.com>
+References: <20260803094954.3087948-2-sk.anirban@intel.com>
+In-Reply-To: <20260803094954.3087948-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5539476887589040822==
+--===============4325289345963217990==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_colorop: Use local variable for color pipeline cap
-URL   : https://patchwork.freedesktop.org/series/171493/
+Series: tests/intel/xe_configfs: reuse pre-existing configfs group
+URL   : https://patchwork.freedesktop.org/series/171501/
 State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9036_FULL -> XEIGTPW_15623_FULL
+CI Bug Log - changes from XEIGT_9036_FULL -> XEIGTPW_15624_FULL
 ====================================================
 
 Summary
@@ -62,11 +62,11 @@ Summary
 
   **FAILURE**
 
-  Serious unknown changes coming with XEIGTPW_15623_FULL absolutely need to be
+  Serious unknown changes coming with XEIGTPW_15624_FULL absolutely need to be
   verified manually.
   
   If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_15623_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  introduced in XEIGTPW_15624_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
   to document this new failure mode, which will reduce false positives in CI.
 
   
@@ -74,7 +74,7 @@ Summary
 Participating hosts (2 -> 0)
 ------------------------------
 
-  ERROR: It appears as if the changes made in XEIGTPW_15623_FULL prevented too many machines from booting.
+  ERROR: It appears as if the changes made in XEIGTPW_15624_FULL prevented too many machines from booting.
 
   Missing    (2): shard-bmg shard-lnl 
 
@@ -88,19 +88,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_9036 -> IGTPW_15623
+  * IGT: IGT_9036 -> IGTPW_15624
   * Linux: xe-5515-f9ef9f302ee01854066ec6da30550da6ea6cb03a -> xe-5521-f8d080b47819f01011c1b9c3c875badbb67ec955
 
-  IGTPW_15623: 135672cceed01c6721a58b2c64092ce9cfafb0b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15624: 19894213279006d4700bf74a4cab8b56e61236de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9036: 9036
   xe-5515-f9ef9f302ee01854066ec6da30550da6ea6cb03a: f9ef9f302ee01854066ec6da30550da6ea6cb03a
   xe-5521-f8d080b47819f01011c1b9c3c875badbb67ec955: f8d080b47819f01011c1b9c3c875badbb67ec955
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15623/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15624/index.html
 
---===============5539476887589040822==
+--===============4325289345963217990==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -120,34 +120,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_colorop: Use local variable for color pipeline cap</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171493/">https://patchwork.freedesktop.org/series/171493/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: reuse pre-existing configfs group</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171501/">https://patchwork.freedesktop.org/series/171501/</a></td></tr>
 <tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15623/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15623/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15624/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15624/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9036_FULL -&gt; XEIGTPW_15623_FULL</h1>
+    <h1>CI Bug Log - changes from XEIGT_9036_FULL -&gt; XEIGTPW_15624_FULL</h1>
 <h2>Summary</h2>
 <p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_15623_FULL absolutely need to be<br />
+<p>Serious unknown changes coming with XEIGTPW_15624_FULL absolutely need to be<br />
   verified manually.</p>
 <p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_15623_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  introduced in XEIGTPW_15624_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
   to document this new failure mode, which will reduce false positives in CI.</p>
 <h2>Participating hosts (2 -&gt; 0)</h2>
-<p>ERROR: It appears as if the changes made in XEIGTPW_15623_FULL prevented too many machines from booting.</p>
+<p>ERROR: It appears as if the changes made in XEIGTPW_15624_FULL prevented too many machines from booting.</p>
 <p>Missing    (2): shard-bmg shard-lnl </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9036 -&gt; IGTPW_15623</li>
+<li>IGT: IGT_9036 -&gt; IGTPW_15624</li>
 <li>Linux: xe-5515-f9ef9f302ee01854066ec6da30550da6ea6cb03a -&gt; xe-5521-f8d080b47819f01011c1b9c3c875badbb67ec955</li>
 </ul>
-<p>IGTPW_15623: 135672cceed01c6721a58b2c64092ce9cfafb0b7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_15624: 19894213279006d4700bf74a4cab8b56e61236de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_9036: 9036<br />
   xe-5515-f9ef9f302ee01854066ec6da30550da6ea6cb03a: f9ef9f302ee01854066ec6da30550da6ea6cb03a<br />
   xe-5521-f8d080b47819f01011c1b9c3c875badbb67ec955: f8d080b47819f01011c1b9c3c875badbb67ec955</p>
@@ -155,4 +155,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============5539476887589040822==--
+--===============4325289345963217990==--
