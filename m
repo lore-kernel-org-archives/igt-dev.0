@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D193C55184
-	for <igt-dev@archiver.kernel.org>; Tue,  4 Aug 2026 14:10:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7891C55184
+	for <igt-dev@archiver.kernel.org>; Tue,  4 Aug 2026 14:24:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EAB5B10EA87;
-	Tue,  4 Aug 2026 14:10:58 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="l4nvTJcl";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4524F10EA7E
- for <igt-dev@lists.freedesktop.org>; Tue,  4 Aug 2026 14:10:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785852624; x=1817388624;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=ioj0grclwAG4ku3UxdNECUgoQ23hKmucGkgLJBqdAek=;
- b=l4nvTJcl2GmCvBcN/YPJPthWEJ6jHeAUYyo4tu09FzcrjTr4/UYNUkLX
- 1k9WS201aVjwlTIIDmz525SD3YUMjv/coX/QFZoCqMXtm+2cxak6RYE78
- EOHL/Eg0ts+hhQXQu6DiSGRZ2eOfxr1nuKuJj4DIUxFzTZXUqdMgCuOgh
- KjUKch9x6LhqiX5KYTKULEagnQBReYoGm4Ps3VW3DuFoXqzYg3FzqAO4s
- 08mb5iqHMThbbnY8irbKpM+ncL2b92ITKIUO9ariIr2lur1WM9jr6IqIX
- DRtyTrSWvATDU1ycv5OXNiSQYhGAkI4NhODgL/vkuGgBSuwUiNauuO1CP w==;
-X-CSE-ConnectionGUID: QLbrw8gVR1mM4CBFPfzpcQ==
-X-CSE-MsgGUID: 2J/ZI0B4TgmXkFtOzKR0CA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11864"; a="96996295"
-X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; d="scan'208";a="96996295"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Aug 2026 07:10:22 -0700
-X-CSE-ConnectionGUID: aeAb8NhWTSS41cVDCiXkuA==
-X-CSE-MsgGUID: VUzvE4MKRXOCiD7h6FfEHQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,204,1779174000"; d="scan'208";a="257188955"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.68])
- ([172.28.182.68])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Aug 2026 07:10:20 -0700
-Message-ID: <16c0d74e-4e28-42fa-813f-448886509c39@linux.intel.com>
-Date: Tue, 4 Aug 2026 16:10:18 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6374410EAAF;
+	Tue,  4 Aug 2026 14:24:21 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A49BC10EA06;
+ Tue,  4 Aug 2026 14:23:46 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7678448043693585206=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] lib/igt_device_scan: Extract helper setting device
- filter from fd
-To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com, janusz.krzysztofik@intel.com
-References: <20260729100918.842807-1-lukasz.laguna@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260729100918.842807-1-lukasz.laguna@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fconfigfs?=
+ =?utf-8?q?=3A_reuse_pre-existing_configfs_group?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Sk Anirban" <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 04 Aug 2026 14:23:46 -0000
+Message-ID: <178585342662.18450.8749808170113947643@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260803094954.3087948-2-sk.anirban@intel.com>
+In-Reply-To: <20260803094954.3087948-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,104 +37,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============7678448043693585206==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 7/29/2026 12:09 PM, Lukasz Laguna wrote:
-> Helper sets device filter to the device corresponding to DRM device file
-> descriptor. Move the implementation from core_hotunplug test into the
-> library, so it can be reused in other tests.
->
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
-> v3:
->   - move it to igt_device_scan (Janusz)
-> ---
->   lib/igt_device_scan.c  | 23 +++++++++++++++++++++++
->   lib/igt_device_scan.h  |  2 ++
->   tests/core_hotunplug.c | 17 +----------------
->   3 files changed, 26 insertions(+), 16 deletions(-)
->
-> diff --git a/lib/igt_device_scan.c b/lib/igt_device_scan.c
-> index 7c7995224..decf19646 100644
-> --- a/lib/igt_device_scan.c
-> +++ b/lib/igt_device_scan.c
-> @@ -2477,3 +2477,26 @@ int igt_device_prepare_filtered_view(const char *vendor)
->   
->   	return gpu_count;
->   }
-> +
-> +/**
-> + * igt_device_set_filter_from_fd:
-> + * @fd: DRM device file descriptor
-> + *
-> + * Set device filter to the device corresponding to @fd.
-> + */
-> +void igt_device_set_filter_from_fd(int fd)
-> +{
-> +	const char *filter_type = "sys:";
-> +	char filter[strlen(filter_type) + PATH_MAX + 1];
-> +	char *dst = stpcpy(filter, filter_type);
-> +	char path[PATH_MAX + 1];
-> +	struct stat st;
-> +
-> +	igt_assert(!fstat(fd, &st) && S_ISCHR(st.st_mode));
-> +	snprintf(path, sizeof(path), "/sys/dev/char/%d:%d/device",
-> +		 major(st.st_rdev), minor(st.st_rdev));
-> +	igt_assert(realpath(path, dst));
-> +
-> +	igt_device_filter_free_all();
-> +	igt_assert_eq(igt_device_filter_add(filter), 1);
-> +}
-> diff --git a/lib/igt_device_scan.h b/lib/igt_device_scan.h
-> index f24a193cd..ac75fea8c 100644
-> --- a/lib/igt_device_scan.h
-> +++ b/lib/igt_device_scan.h
-> @@ -103,4 +103,6 @@ int igt_open_render(struct igt_device_card *card);
->   /* Add or use filters to match multiGPU devices */
->   int igt_device_prepare_filtered_view(const char *vendor);
->   
-> +void igt_device_set_filter_from_fd(int fd);
-> +
->   #endif /* __IGT_DEVICE_SCAN_H__ */
-> diff --git a/tests/core_hotunplug.c b/tests/core_hotunplug.c
-> index 7c9dae1bf..33de65369 100644
-> --- a/tests/core_hotunplug.c
-> +++ b/tests/core_hotunplug.c
-> @@ -550,21 +550,6 @@ static void post_healthcheck(struct hotunplug *priv)
->   	cleanup(priv);
->   }
->   
-> -static void set_filter_from_device(int fd)
-> -{
-> -	const char *filter_type = "sys:";
-> -	char filter[strlen(filter_type) + PATH_MAX + 1];
-> -	char *dst = stpcpy(filter, filter_type);
-> -	char path[PATH_MAX + 1];
-> -
-> -	igt_assert(igt_sysfs_path(fd, path, PATH_MAX));
-> -	igt_ignore_warn(strncat(path, "/device", PATH_MAX - strlen(path)));
-> -	igt_assert(realpath(path, dst));
-> -
-> -	igt_device_filter_free_all();
-> -	igt_assert_eq(igt_device_filter_add(filter), 1);
-> -}
-> -
->   /* Subtests */
->   
->   static void unbind_rebind(struct hotunplug *priv)
-> @@ -713,7 +698,7 @@ int igt_main()
->   		}
->   
->   		/* Make sure subtests always reopen the same device */
-> -		set_filter_from_device(fd_drm);
-> +		igt_device_set_filter_from_fd(fd_drm);
->   
->   		igt_assert_eq(close_device(fd_drm, "", "selected "), -1);
->   
+== Series Details ==
 
-LGTM,
+Series: tests/intel/xe_configfs: reuse pre-existing configfs group
+URL   : https://patchwork.freedesktop.org/series/171501/
+State : success
 
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+== Summary ==
 
+CI Bug Log - changes from IGT_9036 -> IGTPW_15624
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15624/index.html
+
+Participating hosts (41 -> 39)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15624 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#15673]) +78 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9036/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15624/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9036 -> IGTPW_15624
+  * Linux: CI_DRM_18932 -> CI_DRM_18938
+
+  CI-20190529: 20190529
+  CI_DRM_18932: f9ef9f302ee01854066ec6da30550da6ea6cb03a @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18938: f8d080b47819f01011c1b9c3c875badbb67ec955 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15624: 19894213279006d4700bf74a4cab8b56e61236de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9036: 9036
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15624/index.html
+
+--===============7678448043693585206==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_configfs: reuse pre-existing configfs group</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171501/">https://patchwork.freedesktop.org/series/171501/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15624/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15624/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9036 -&gt; IGTPW_15624</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15624/index.html</p>
+<h2>Participating hosts (41 -&gt; 39)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15624 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9036/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15624/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) +78 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9036 -&gt; IGTPW_15624</li>
+<li>Linux: CI_DRM_18932 -&gt; CI_DRM_18938</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18932: f9ef9f302ee01854066ec6da30550da6ea6cb03a @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18938: f8d080b47819f01011c1b9c3c875badbb67ec955 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15624: 19894213279006d4700bf74a4cab8b56e61236de @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9036: 9036</p>
+
+</body>
+</html>
+
+--===============7678448043693585206==--
