@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61765C55822
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Aug 2026 08:47:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0AA25C55822
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Aug 2026 08:52:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 12EBF10ED8C;
-	Wed,  5 Aug 2026 08:47:32 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nRNDBtSb";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 824EB10ED90
- for <igt-dev@lists.freedesktop.org>; Wed,  5 Aug 2026 08:44:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1785919481; x=1817455481;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0D0CHDoli2KR9PQBoIm0PpLYz6BONIZYc7w8mrqPq6c=;
- b=nRNDBtSbzUDHYOi7lOBqyMSgdr2gCg5II5AbHuGwjINQvXpiUtkLQjzG
- 3v4y0sZ7d4ursDdMrPFh4cEszwXuFpH3t2epeK/LPhx6Z0R/KVBab/Iwv
- k89d4Jh4PTSQyum/jyXkePirT9qgh76fHh6MwB/hQZpboXlv2VO1klYHI
- cegEmhEz2tmjBuEOgsLLiv9YHPH51a/nGeLuUzd/WggKF+iREknf9+gu1
- tTxeMrgTDHUldQd7L/qcxWJP6PoKayA+gSEPiKLoxotkjAXK5ttAAZKFr
- G9F464dRWq+I0ZleSOEzM6FmGzeGj74YHi0fiJC7SO5vdf2xiIEf5biCC w==;
-X-CSE-ConnectionGUID: Qyq/bDwQRPSZZh8HcQafOg==
-X-CSE-MsgGUID: cgVic2i7SZieBxAZ94dPGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="97647246"
-X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; d="scan'208";a="97647246"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2026 01:44:41 -0700
-X-CSE-ConnectionGUID: PL2RgpHwQQOBMEHsZoCK7A==
-X-CSE-MsgGUID: 8RvfxXWtQZCK5C4VzO2CDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; d="scan'208";a="261186769"
-Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Aug 2026 01:44:39 -0700
-From: Sowmiya S <sowmiya.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
- Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v3 1/3] lib/i915/i915_dp: add UHBR helpers and
- const-correct set_link_params
-Date: Wed,  5 Aug 2026 14:14:25 +0530
-Message-ID: <20260805084428.708501-2-sowmiya.s@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260805084428.708501-1-sowmiya.s@intel.com>
-References: <20260805084428.708501-1-sowmiya.s@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id ACB3510ED92;
+	Wed,  5 Aug 2026 08:52:13 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 888A110ED90;
+ Wed,  5 Aug 2026 08:51:39 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3158932970681601559=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tools/amd=5Fhdmi=5Fcomplian?=
+ =?utf-8?q?ce=3A_Add_ALLM_content_type_toggle_test?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Fangzhi Zuo" <jerry.zuo@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 05 Aug 2026 08:51:39 -0000
+Message-ID: <178591989955.21322.6436876046471702989@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260804194735.1577182-1-jerry.zuo@amd.com>
+In-Reply-To: <20260804194735.1577182-1-jerry.zuo@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,112 +37,134 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-- const char * for i915_dp_set_link_params() to allow string literals
-- Add i915_dp_is_uhbr_rate(): returns true for link rates >= 10 Gbps
-- Add i915_dp_get_next_lower_rate(): parses force_link_rate debugfs list
-  using strtok_r(), base-10 strtol() with errno/endptr checks
+--===============3158932970681601559==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
----
- lib/i915/i915_dp.c | 62 +++++++++++++++++++++++++++++++++++++++++++++-
- lib/i915/i915_dp.h |  4 ++-
- 2 files changed, 64 insertions(+), 2 deletions(-)
+== Series Details ==
 
-diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
-index e54058580..bf66347f5 100644
---- a/lib/i915/i915_dp.c
-+++ b/lib/i915/i915_dp.c
-@@ -334,7 +334,7 @@ void i915_dp_reset_link_params(int drm_fd, igt_output_t *output)
-  * to set link rate and lane count to auto on exit
-  */
- void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
--			     char *link_rate, char *lane_count)
-+			     const char *link_rate, const char *lane_count)
- {
- 	bool valid;
- 	drmModeConnector *temp;
-@@ -390,3 +390,63 @@ int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
- 
- 	return max_rate;
- }
-+
-+/**
-+ * i915_dp_is_uhbr_rate:
-+ * @link_rate: DP link rate in 10 kbit/s units, as reported by the
-+ *	       i915_dp_*_link_rate debugfs files
-+ *
-+ * UHBR (Ultra High Bit Rate) link rates use 128b/132b channel encoding,
-+ * everything below uses legacy 8b/10b. UHBR10 is 10 Gbps, i.e. 1000000 in
-+ * 10 kbit/s units. Mirrors the kernel's drm_dp_is_uhbr_rate().
-+ *
-+ * Returns: true if @link_rate is a UHBR rate, false otherwise.
-+ */
-+bool i915_dp_is_uhbr_rate(int link_rate)
-+{
-+	return link_rate >= 1000000;
-+}
-+
-+/**
-+ * i915_dp_get_next_lower_rate:
-+ * @drm_fd: A drm file descriptor
-+ * @output: Target output
-+ * @rate: reference link rate in 10 kbit/s units
-+ *
-+ * Parses the i915_dp_force_link_rate debugfs list (the source rates, printed
-+ * with an "auto" entry and "[..]"/"*" markers) and returns the highest
-+ * supported link rate strictly below @rate.
-+ *
-+ * Returns: highest supported rate below @rate in 10 kbit/s units, or 0 if none.
-+ */
-+int i915_dp_get_next_lower_rate(int drm_fd, igt_output_t *output, int rate)
-+{
-+	char buf[512], *token, *saveptr = NULL;
-+	int res, next = 0;
-+
-+	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
-+					      "i915_dp_force_link_rate",
-+					      buf, sizeof(buf));
-+	igt_assert_f(res == 0, "Unable to read %s/i915_dp_force_link_rate\n",
-+		     igt_output_name(output));
-+
-+	/* Delimiters strip the "auto" whitespace and the [ ] * markers. */
-+	for (token = strtok_r(buf, " \t\n[]*", &saveptr); token;
-+	     token = strtok_r(NULL, " \t\n[]*", &saveptr)) {
-+		char *endptr;
-+		long r;
-+
-+		if (!strcmp(token, "auto"))
-+			continue;
-+
-+		errno = 0;
-+		r = strtol(token, &endptr, 10);
-+		if (errno || endptr == token || *endptr)
-+			continue;
-+
-+		if (r < rate && r > next)
-+			next = r;
-+	}
-+
-+	return next;
-+}
-diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
-index b13629147..6b39d0560 100644
---- a/lib/i915/i915_dp.h
-+++ b/lib/i915/i915_dp.h
-@@ -17,7 +17,9 @@ int i915_dp_get_pending_lt_failures(int drm_fd, igt_output_t *output);
- int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
- void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
- void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
--			     char *link_rate, char *lane_count);
-+			     const char *link_rate, const char *lane_count);
- int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
-+int i915_dp_get_next_lower_rate(int drm_fd, igt_output_t *output, int rate);
-+bool i915_dp_is_uhbr_rate(int link_rate);
- 
- #endif
--- 
-2.51.0
+Series: tools/amd_hdmi_compliance: Add ALLM content type toggle test
+URL   : https://patchwork.freedesktop.org/series/171606/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9037_BAT -> XEIGTPW_15631_BAT
+====================================================
+
+Summary
+-------
+
+  **WARNING**
+
+  Minor unknown changes coming with XEIGTPW_15631_BAT need to be verified
+  manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15631_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (14 -> 13)
+------------------------------
+
+  Missing    (1): bat-nvls-2 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_15631_BAT:
+
+### IGT changes ###
+
+#### Warnings ####
+
+  * igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:
+    - bat-nvls-1:         [SKIP][1] ([Intel XE#8740]) -> [SKIP][2] +30 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9037/bat-nvls-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15631/bat-nvls-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html
+
+  
+  [Intel XE#8740]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8740
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9037 -> IGTPW_15631
+
+  IGTPW_15631: 15631
+  IGT_9037: 9037
+  xe-5543-c2cb32e2a8efaf9fa8d472f7bf3d5fe77ea7ec23: c2cb32e2a8efaf9fa8d472f7bf3d5fe77ea7ec23
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15631/index.html
+
+--===============3158932970681601559==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tools/amd_hdmi_compliance: Add ALLM content type toggle test</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171606/">https://patchwork.freedesktop.org/series/171606/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15631/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15631/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9037_BAT -&gt; XEIGTPW_15631_BAT</h1>
+<h2>Summary</h2>
+<p><strong>WARNING</strong></p>
+<p>Minor unknown changes coming with XEIGTPW_15631_BAT need to be verified<br />
+  manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15631_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (14 -&gt; 13)</h2>
+<p>Missing    (1): bat-nvls-2 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15631_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Warnings</h4>
+<ul>
+<li>igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24:<ul>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9037/bat-nvls-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8740">Intel XE#8740</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15631/bat-nvls-1/igt@kms_pipe_crc_basic@compare-crc-sanitycheck-xr24.html">SKIP</a> +30 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9037 -&gt; IGTPW_15631</li>
+</ul>
+<p>IGTPW_15631: 15631<br />
+  IGT_9037: 9037<br />
+  xe-5543-c2cb32e2a8efaf9fa8d472f7bf3d5fe77ea7ec23: c2cb32e2a8efaf9fa8d472f7bf3d5fe77ea7ec23</p>
+
+</body>
+</html>
+
+--===============3158932970681601559==--
