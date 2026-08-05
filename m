@@ -4,26 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16C24C55174
-	for <igt-dev@archiver.kernel.org>; Wed,  5 Aug 2026 12:30:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51D2AC55ABA
+	for <igt-dev@archiver.kernel.org>; Wed,  5 Aug 2026 13:50:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8635A10EE33;
-	Wed,  5 Aug 2026 12:30:05 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0440C10EE33;
- Wed,  5 Aug 2026 12:29:25 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1204428120828852168=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id F208010EE95;
+	Wed,  5 Aug 2026 13:49:59 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YaijbONB";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BE3710EEA8
+ for <igt-dev@lists.freedesktop.org>; Wed,  5 Aug 2026 13:49:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1785937764; x=1817473764;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=FoKjG1tu0iuDR/p7Lm4na/l3TePVOTK6NBEcOraFpqw=;
+ b=YaijbONBKIEmvNR+LitiU88ffa/llrjXf8QrwW8quzFAFSagKkl2x3Nm
+ hdMzRV7RDj2K1Y0aOtOA6B4xUrT/k0G4OhsU5iS8DY6dmBFmSvI/E8rgD
+ CmC6RMhSxr+Xj/G1Blogrcit6xgP7ELLkWCM7dDZYFvnYAO/pROMNV9mB
+ oSXEuuhU99yn6ZBZgMQqij2m+9wkn+KxHrSXpdXUVSKiMYPto08v/Buhb
+ HCTb7KJGNpyjro5dwvgVeBls2/CDnXI3c7rE7UjUWJFRkZprjOXK3tE4V
+ W0xC93HeCboGDhbANfZTpJdERTvPbmVJbGiR8M4dW7cT3D+bRMnFi4Y/t Q==;
+X-CSE-ConnectionGUID: EVd7Jtg3RDOzvLmYqF+cDw==
+X-CSE-MsgGUID: lv4cS1lRS3GeVHjvWqabaQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11865"; a="97158238"
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; d="scan'208";a="97158238"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2026 06:49:24 -0700
+X-CSE-ConnectionGUID: mUsb6KMCR76+8X+UmZMKZA==
+X-CSE-MsgGUID: pgbE0Ht1RByXjDXhzeH1BA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,206,1779174000"; d="scan'208";a="266940892"
+Received: from sinjan-super-server.iind.intel.com ([10.190.239.39])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Aug 2026 06:49:21 -0700
+From: Karthik Poosa <karthik.poosa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: rodrigo.vivi@intel.com, anshuman.gupta@intel.com, badal.nilawar@intel.com,
+ raag.jadav@intel.com, riana.tauro@intel.com, sk.anirban@intel.com,
+ mallesh.koujalagi@intel.com, soham.purkait@intel.com,
+ Karthik Poosa <karthik.poosa@intel.com>
+Subject: [PATCH i-g-t] tests/intel/intel_hwmon: Warn on zero-valued numeric
+ attributes
+Date: Wed,  5 Aug 2026 19:28:42 +0530
+Message-Id: <20260805135842.34736-1-karthik.poosa@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_CMRR_subtests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 05 Aug 2026 12:29:25 -0000
-Message-ID: <178593296501.21461.16204043898411859519@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260804231702.602029-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20260804231702.602029-1-ramanaidu.naladala@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,156 +66,82 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1204428120828852168==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add a check for numeric hwmon attribute values and emit a warning when a
+valid numeric attribute reports 0.
+This acts as a sanity check for valid telemetry data reported via hwmon.
 
-== Series Details ==
+Exclude *_label attributes from this validation to avoid false warnings on
+non-numeric label entries.
 
-Series: Add CMRR subtests
-URL   : https://patchwork.freedesktop.org/series/171615/
-State : success
+Also include the necessary headers required for numeric parsing helpers.
 
-== Summary ==
+Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+Assisted-by: GitHub-Copilot:GPT-5.3-Codex
+---
+ tests/intel/intel_hwmon.c | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-CI Bug Log - changes from IGT_9038 -> IGTPW_15632
-====================================================
+diff --git a/tests/intel/intel_hwmon.c b/tests/intel/intel_hwmon.c
+index f185c1ca3..6fe57a334 100644
+--- a/tests/intel/intel_hwmon.c
++++ b/tests/intel/intel_hwmon.c
+@@ -4,6 +4,8 @@
+  */
+ 
+ #include <dirent.h>
++#include <errno.h>
++#include <stdlib.h>
+ #include <sys/stat.h>
+ #include "igt.h"
+ #include "igt_hwmon.h"
+@@ -26,6 +28,31 @@
+ 
+ IGT_TEST_DESCRIPTION("Tests for intel hwmon");
+ 
++static bool value_is_numeric_zero(const char *val)
++{
++	char *end;
++	long long num;
++
++	errno = 0;
++	num = strtoll(val, &end, 10);
++	if (errno || *val == '\0' || *end != '\0')
++		return false;
++
++	return num == 0;
++}
++
++static bool is_hmwon_label(const char *name)
++{
++	const char *suffix = "_label";
++	size_t name_len = strlen(name);
++	size_t suffix_len = strlen(suffix);
++
++	if (name_len < suffix_len)
++		return false;
++
++	return !strcmp(name + name_len - suffix_len, suffix);
++}
++
+ static void check_if_temp_valid(int hwm, char *sysfs_name)
+ {
+ 	int32_t cur_temp = 0, limit = 0;
+@@ -64,9 +91,11 @@ static void hwmon_read(int hwm)
+ 		igt_assert(igt_sysfs_scanf(hwm, de->d_name, "%127s", val) == 1);
+ 		igt_debug("'%s': %s\n", de->d_name, val);
+ 
++		if (!is_hmwon_label(de->d_name) && value_is_numeric_zero(val))
++			igt_warn("hwmon sysfs entry '%s' has zero value\n", de->d_name);
++
+ 		if (!strncmp(de->d_name, "temp", 4))
+ 			check_if_temp_valid(hwm, de->d_name);
+-
+ 	}
+ 	closedir(dir);
+ }
+-- 
+2.25.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/index.html
-
-Participating hosts (41 -> 38)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15632 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-adlp-6:         [DMESG-WARN][1] ([i915#15673]) -> [PASS][2] +78 other tests pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9038/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live:
-    - bat-adlp-9:         [DMESG-WARN][3] ([i915#16404]) -> [PASS][4] +1 other test pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9038/bat-adlp-9/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/bat-adlp-9/igt@i915_selftest@live.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [SKIP][5] ([i915#13030]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9038/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#13030]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13030
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#16404]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16404
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9038 -> IGTPW_15632
-
-  CI-20190529: 20190529
-  CI_DRM_18945: 814bd7de7f09446c4b9401eecb8b30c3285af78b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15632: 15632
-  IGT_9038: 9038
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/index.html
-
---===============1204428120828852168==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add CMRR subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171615/">https://patchwork.freedesktop.org/series/171615/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9038 -&gt; IGTPW_15632</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/index.html</p>
-<h2>Participating hosts (41 -&gt; 38)</h2>
-<p>Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15632 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9038/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> +78 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-adlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9038/bat-adlp-9/igt@i915_selftest@live.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16404">i915#16404</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/bat-adlp-9/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9038/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13030">i915#13030</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15632/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9038 -&gt; IGTPW_15632</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18945: 814bd7de7f09446c4b9401eecb8b30c3285af78b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15632: 15632<br />
-  IGT_9038: 9038</p>
-
-</body>
-</html>
-
---===============1204428120828852168==--
