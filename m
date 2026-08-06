@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0E66C56208
-	for <igt-dev@archiver.kernel.org>; Thu,  6 Aug 2026 11:55:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3DF25C56208
+	for <igt-dev@archiver.kernel.org>; Thu,  6 Aug 2026 11:56:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 560A510EA23;
-	Thu,  6 Aug 2026 11:55:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E004110EA23;
+	Thu,  6 Aug 2026 11:56:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C7gbGpzh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oJZtCsH+";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1CB1210EA23
- for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2026 11:54:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF30410F19D
+ for <igt-dev@lists.freedesktop.org>; Thu,  6 Aug 2026 11:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786017295; x=1817553295;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=mOD1WU7SISYeztN2Q+glSEMXnO0LD+r2+RuCnx2fK0w=;
- b=C7gbGpzh4F6AbLOR9ctdE3fXBteU61dNmVQ6sPFD4srfmWnayx1PKP/M
- HBf24UWbCH/ggWBVflal8kh6X8yvDXdS0DMrkrUAVcgM4SmChQWlphp3s
- s0l0+inKKeP4A7tNEvSTAdKc/1PoPgpmQCgEkY4gptNvFiSsFTMR/0sop
- aSPgXcrmiP5ryB6CXNiWHlTgit7xxEo/iZwmFoOqs2GNZ+rJD0i7vbpOT
- FOW2KelYSBIuIpSPZdQEhCPNO3HyIgDC0hJ5ICh2Ow1BmgT+wWlZy1030
- KGbt6zdXkY0+Ejz9yMYHf55uS7+EjTbsJvsocQxhk1ICvJPMe6iV+l3WO g==;
-X-CSE-ConnectionGUID: apex0IwzSSuqz8JlGaouww==
-X-CSE-MsgGUID: KC583AuJQfqJzff09SG9DA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="97204764"
-X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; d="scan'208";a="97204764"
+ t=1786017300; x=1817553300;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=s2Xci0dkQryDSc0nvJiC2Jr+FHnNqaAR0SPxp8uRDWg=;
+ b=oJZtCsH+fvzC0HRIq5Ac5uJ9JxxxVYfSuu8D3vKwq5oLHTjLtArrRVrj
+ 4Wcisa9lslsKhwTPe7Re72Qiv8EjbBQXhv8e3JY1jfcLosXc3NfDa3aAB
+ kU5APmGqrzSkOTaGjaoo4NHQJrRy8mSDID4yxgas0ZHrqz9fKsDT15zae
+ HiCDVP2GeS1bQTgqq4vCuzx1uy9n5TrWsjpO3kaaghX66EEVLRvVK2tyN
+ JQFbdTHv5Ak+9tg7Z7YSvleklBHKWZcHSfqKH5jjpSzqpkFWY5RtBWIxe
+ tLu0a5FAy/Q+44cotNxW99vdQ63y+3ujFRtDR3aJafcnfkwoJX2LG00iq g==;
+X-CSE-ConnectionGUID: BANihqdgTR+AachqUv0Aog==
+X-CSE-MsgGUID: 57hFcalRQ56PybrNTfKjpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11866"; a="97204783"
+X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; d="scan'208";a="97204783"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Aug 2026 04:54:55 -0700
-X-CSE-ConnectionGUID: DAOljfraQOCEro7bsAQPeA==
-X-CSE-MsgGUID: KyK8kajySpeQXR3ksQU2Lg==
+ 06 Aug 2026 04:55:00 -0700
+X-CSE-ConnectionGUID: aTWLzurKT46I9Tdf68si+Q==
+X-CSE-MsgGUID: KtOQ0Z89QeSTv63vIwbXjg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; d="scan'208";a="261552826"
+X-IronPort-AV: E=Sophos;i="6.25,208,1779174000"; d="scan'208";a="261552852"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 04:54:53 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Aug 2026 04:54:58 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t v3 0/6] Add FIXED_MATRIX colorop tests
-Date: Thu,  6 Aug 2026 17:33:39 +0530
-Message-Id: <20260806120345.19406-1-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 4/6] tests/kms_color_pipeline: Add FIXED_MATRIX colorop
+ tests
+Date: Thu,  6 Aug 2026 17:33:43 +0530
+Message-Id: <20260806120345.19406-5-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260806120345.19406-1-swati2.sharma@intel.com>
+References: <20260806120345.19406-1-swati2.sharma@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,54 +68,449 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support for testing the DRM FIXED_MATRIX colorop type, which
-selects from predefined hardware color space conversion matrices
-rather than programmable coefficients.
-
-The series adds:
-- UAPI definition for DRM_COLOROP_FIXED_MATRIX
-- FIXED_MATRIX_TYPE property support in igt_kms
-- Colorop helper support for configuring FIXED_MATRIX blocks
-- Pipe-CRC based tests in kms_color_pipeline
-- Chamelium frame-capture based tests in kms_chamelium_color_pipeline
+Add plane color pipeline tests for the DRM_COLOROP_FIXED_MATRIX colorop,
+validating color space conversion through the color pipeline framework.
 
 With this, the SDR plane color pipeline looks like:
 
 [YUV Full/Limited -> RGB] -> [1D LUT]
 
-A single FIXED_MATRIX colorop handles both full and limited range
+A single FIXED_MATRIX colorop now handles both full and limited range
 YCbCr to RGB conversion.
 
-Supported FIXED_MATRIX modes:
-  - YCbCr 601 Full to RGB
-  - YCbCr 601 Limited to RGB
-  - YCbCr 709 Full to RGB
-  - YCbCr 709 Limited to RGB
-  - YCbCr 2020 NC Full to RGB
-  - YCbCr 2020 NC Limited to RGB
+New subtests:
+ - plane-fixed-matrix-yuv-rgb-bt601
+ - plane-fixed-matrix-yuv-rgb-bt709
+ - plane-fixed-matrix-yuv-rgb-bt2020
+ - plane-fixed-matrix-yuv-rgb-bt601-lim
+ - plane-fixed-matrix-yuv-rgb-bt709-lim
+ - plane-fixed-matrix-yuv-rgb-bt2020-lim
+ - plane-fixed-matrix-yuv-rgb-bt601-lut1d
+ - plane-fixed-matrix-yuv-rgb-bt709-lut1d
+ - plane-fixed-matrix-yuv-rgb-bt2020-lut1d
+ - plane-fixed-matrix-yuv-rgb-bt601-lim-lut1d
+ - plane-fixed-matrix-yuv-rgb-bt709-lim-lut1d
+ - plane-fixed-matrix-yuv-rgb-bt2020-lim-lut1d
+
+The test works as follows:
+1. Creates a YUYV framebuffer with the appropriate color encoding
+2. Converts it to XRGB8888 in software using igt_fb_convert() which
+   internally uses igt_ycbcr_to_rgb_matrix() with the matching
+   coefficients
+3. Displays the SW-converted RGB fb and captures its CRC as reference
+4. Programs the HW color pipeline with the FIXED_MATRIX colorop set to
+   the corresponding matrix type
+5. Displays the original YUYV fb through the HW pipeline and compares
+   the resulting CRC against the SW reference
+
+This ensures the HW fixed matrix implementation matches the expected
+YCbCr-to-RGB conversion behavior.
+
+Also refactors ctm_colorop_only() into a generic colorop_type_only()
+helper that accepts the colorop type as a parameter.
 
 v2: -Naming changes (CSC_FF -> FIXED_MATRIX)
+    -Use SW-generated reference CRC (igt_fb_convert) for YUV tests
+    -Remove redundant tests
 v3: -Drop YCbCr limited to full and RGB709 to RGB2020 matrices
      until we have non-IGT userspace that shows their use
-    -Rename subtests to yuv-rgb-btXXX with limited range variants
-    -Add limited range test coverage
+    -Add limited range YCbCr to RGB tests
+    -Consolidate all tests under single plane-fixed-matrix prefix
 
-Swati Sharma (6):
-  include/drm-uapi: Add DRM_COLOROP_FIXED_MATRIX definition
-  lib/igt_kms: Add FIXED_MATRIX_TYPE colorop property
-  tests/kms_colorop_helper: Add FIXED_MATRIX colorop support
-  tests/kms_color_pipeline: Add FIXED_MATRIX colorop tests
-  tests/kms_color_pipeline: Remove unused color_depth and drm_format
-  tests/kms_chamelium_color_pipeline: Add FIXED_MATRIX colorop tests
+Assisted-by: Claude Opus 4.6
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_color_pipeline.c | 342 ++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 339 insertions(+), 3 deletions(-)
 
- include/drm-uapi/drm_mode.h                   |  11 +
- lib/igt_kms.c                                 |   1 +
- lib/igt_kms.h                                 |   1 +
- .../chamelium/kms_chamelium_color_pipeline.c  | 307 ++++++++++++++++
- tests/kms_color_pipeline.c                    | 345 +++++++++++++++++-
- tests/kms_colorop_helper.c                    |  21 ++
- tests/kms_colorop_helper.h                    |  21 +-
- 7 files changed, 700 insertions(+), 7 deletions(-)
-
+diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+index 78860a845..3e821f8de 100644
+--- a/tests/kms_color_pipeline.c
++++ b/tests/kms_color_pipeline.c
+@@ -13,6 +13,7 @@
+ 
+ #include "kms_color_helper.h"
+ #include "kms_colorop_helper.h"
++#include "igt_color_encoding.h"
+ 
+ #define MAX_COLOROPS	5
+ 
+@@ -69,7 +70,8 @@ static void test_setup(data_t *data, igt_crtc_t *crtc)
+ 	igt_display_commit_atomic(&data->display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ }
+ 
+-static bool ctm_colorop_only(kms_colorop_t *colorops[])
++static bool colorop_type_only(kms_colorop_t *colorops[],
++			      kms_colorop_type_t type)
+ {
+ 	int i;
+ 
+@@ -77,7 +79,7 @@ static bool ctm_colorop_only(kms_colorop_t *colorops[])
+ 		return false;
+ 
+ 	for (i = 0; colorops[i]; i++) {
+-		if (colorops[i]->type != KMS_COLOROP_CTM_3X4)
++		if (colorops[i]->type != type)
+ 			return false;
+ 	}
+ 
+@@ -155,7 +157,7 @@ static void _test_plane_colorops(data_t *data,
+ 	 * Use flat colors only when the pipeline
+ 	 * contains CTM colorops exclusively.
+ 	 */
+-	if (ctm_colorop_only(colorops))
++	if (colorop_type_only(colorops, KMS_COLOROP_CTM_3X4))
+ 		paint_rectangles(data, mode, fb_colors, &fb);
+ 	else
+ 		paint_gradient_rectangles(data, mode, fb_colors, &fb);
+@@ -347,6 +349,337 @@ run_tests_for_plane(data_t *data)
+ 	}
+ }
+ 
++
++/**
++ * Capture reference CRC by converting a YUV framebuffer to RGB in software
++ * using igt_fb_convert(), then displaying the resulting XRGB8888 framebuffer.
++ */
++static void
++capture_sw_converted_ref_crc(data_t *data, igt_output_t *output,
++			     struct igt_fb *yuv_fb, igt_crc_t *crc /* out */)
++{
++	struct igt_fb rgb_ref_fb;
++	igt_plane_t *primary;
++	char *crc_str;
++	int ret;
++
++	primary = igt_output_get_plane(output, DRM_PLANE_TYPE_PRIMARY);
++
++	/* Convert YUV fb to XRGB8888 in software (uses igt_ycbcr_to_rgb_matrix) */
++	igt_fb_convert(&rgb_ref_fb, yuv_fb, DRM_FORMAT_XRGB8888,
++		       DRM_FORMAT_MOD_LINEAR);
++
++	igt_plane_set_fb(primary, &rgb_ref_fb);
++	ret = igt_display_try_commit_atomic(&data->display, 0, NULL);
++	igt_assert(!ret);
++
++	igt_wait_for_vblank(primary->crtc);
++	igt_pipe_crc_collect_crc(data->pipe_crc, crc);
++
++	igt_plane_set_fb(primary, NULL);
++	igt_display_commit_atomic(&data->display, 0, NULL);
++
++	igt_remove_fb(data->drm_fd, &rgb_ref_fb);
++
++	crc_str = igt_crc_to_string(crc);
++	igt_debug("CRC for SW-converted reference fb: %s\n", crc_str);
++	free(crc_str);
++}
++
++static void
++_test_plane_fixed_matrix_colorops(data_t *data,
++				  igt_plane_t *plane,
++				  const color_t *fb_colors,
++				  igt_crc_t *crc_ref,
++				  kms_colorop_t *colorops[],
++				  uint32_t input_format,
++				  enum igt_color_encoding encoding,
++				  enum igt_color_range range)
++{
++	igt_display_t *display = &data->display;
++	drmModeModeInfo *mode = data->mode;
++	igt_colorop_t *color_pipeline;
++	igt_crc_t crc_pipe;
++	struct igt_fb fb;
++
++	color_pipeline = get_color_pipeline(display, plane, colorops);
++	igt_skip_on(!color_pipeline);
++
++	igt_assert(igt_create_fb_with_bo_size(data->drm_fd,
++					      mode->hdisplay,
++					      mode->vdisplay,
++					      input_format,
++					      DRM_FORMAT_MOD_LINEAR,
++					      encoding, range,
++					      &fb, 0, 0));
++
++	/* Hardware pipeline CRC */
++	set_color_pipeline(display, plane, colorops, color_pipeline);
++	paint_rectangles(data, mode, fb_colors, &fb);
++
++	igt_plane_set_fb(plane, &fb);
++	igt_display_commit_atomic(&data->display, 0, NULL);
++	igt_wait_for_vblank(plane->crtc);
++	igt_pipe_crc_collect_crc(data->pipe_crc, &crc_pipe);
++
++	igt_assert_crc_equal(crc_ref, &crc_pipe);
++
++	/* Cleanup per-test state */
++	set_color_pipeline_bypass(plane);
++	reset_colorops(colorops);
++	igt_plane_set_fb(plane, NULL);
++	igt_display_commit_atomic(&data->display, 0, NULL);
++
++	igt_remove_fb(data->drm_fd, &fb);
++}
++
++static void test_plane_fixed_matrix_colorops(data_t *data, igt_crtc_t *crtc,
++					     const color_t *fb_colors,
++					     kms_colorop_t *colorops[],
++					     uint32_t input_format,
++					     enum igt_color_encoding encoding,
++					     enum igt_color_range range)
++{
++	int n_planes = crtc->n_planes;
++	igt_output_t *output = data->output;
++	drmModeModeInfo *mode = data->mode;
++	igt_plane_t *plane;
++	igt_crc_t ref_crc;
++	struct igt_fb yuv_fb;
++
++	igt_require(mode);
++
++	igt_assert(igt_create_fb_with_bo_size(data->drm_fd,
++					      mode->hdisplay,
++					      mode->vdisplay,
++					      input_format,
++					      DRM_FORMAT_MOD_LINEAR,
++					      encoding, range,
++					      &yuv_fb, 0, 0));
++	paint_rectangles(data, mode, fb_colors, &yuv_fb);
++
++	capture_sw_converted_ref_crc(data, output, &yuv_fb, &ref_crc);
++	igt_remove_fb(data->drm_fd, &yuv_fb);
++
++	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
++		plane = igt_output_get_plane(output, plane_id);
++
++		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
++			continue;
++
++		igt_dynamic_f("pipe-%s-plane-%u", igt_crtc_name(crtc), plane_id)
++			_test_plane_fixed_matrix_colorops(data, plane, fb_colors,
++							  &ref_crc, colorops,
++							  input_format,
++							  encoding, range);
++	}
++}
++
++/**
++ * SUBTEST: plane-fixed-matrix-%s
++ * Description: Test FIXED_MATRIX colorop for color space conversion: %arg[1].
++ *
++ * arg[1]:
++ *
++ * @yuv-rgb-bt601:		YUV BT.601 full range to RGB BT.601
++ * @yuv-rgb-bt709:		YUV BT.709 full range to RGB BT.709
++ * @yuv-rgb-bt2020:		YUV BT.2020 full range to RGB BT.2020
++ * @yuv-rgb-bt601-lim:		YUV BT.601 limited range to RGB BT.601
++ * @yuv-rgb-bt709-lim:		YUV BT.709 limited range to RGB BT.709
++ * @yuv-rgb-bt2020-lim:	YUV BT.2020 limited range to RGB BT.2020
++ * @yuv-rgb-bt601-lut1d:	YUV BT.601 full range to RGB BT.601, then 1D LUT
++ * @yuv-rgb-bt709-lut1d:	YUV BT.709 full range to RGB BT.709, then 1D LUT
++ * @yuv-rgb-bt2020-lut1d:	YUV BT.2020 full range to RGB BT.2020, then 1D LUT
++ * @yuv-rgb-bt601-lim-lut1d:	YUV BT.601 limited range to RGB BT.601, then 1D LUT
++ * @yuv-rgb-bt709-lim-lut1d:	YUV BT.709 limited range to RGB BT.709, then 1D LUT
++ * @yuv-rgb-bt2020-lim-lut1d:	YUV BT.2020 limited range to RGB BT.2020, then 1D LUT
++ */
++
++static void
++run_tests_for_fixed_matrix(data_t *data)
++{
++	igt_crtc_t *crtc;
++	igt_output_t *output = NULL;
++
++	static const color_t colors_rgb[] = {
++		{ 1.0, 0.0, 0.0 },
++		{ 0.0, 1.0, 0.0 },
++		{ 0.0, 0.0, 1.0 },
++	};
++
++	kms_colorop_t lut1d_linear = {
++		.type = KMS_COLOROP_CUSTOM_LUT1D,
++		.name = "1D LUT (linear)",
++		.lut1d = &igt_1dlut_linear,
++		.transform = &igt_color_linear,
++	};
++
++	kms_colorop_t fixed_matrix_yuv601_rgb601 = {
++		.type = KMS_COLOROP_FIXED_MATRIX,
++		.name = "FIXED_MATRIX YUV601 to RGB601",
++		.fixed_matrix_info = { .fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR601_FULL_RGB },
++	};
++	kms_colorop_t fixed_matrix_yuv709_rgb709 = {
++		.type = KMS_COLOROP_FIXED_MATRIX,
++		.name = "FIXED_MATRIX YUV709 to RGB709",
++		.fixed_matrix_info = { .fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR709_FULL_RGB },
++	};
++	kms_colorop_t fixed_matrix_yuv2020_rgb2020 = {
++		.type = KMS_COLOROP_FIXED_MATRIX,
++		.name = "FIXED_MATRIX YUV2020 to RGB2020",
++		.fixed_matrix_info = { .fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_FULL_RGB },
++	};
++	kms_colorop_t fixed_matrix_yuv601_rgb601_lim = {
++		.type = KMS_COLOROP_FIXED_MATRIX,
++		.name = "FIXED_MATRIX YUV601 limited to RGB601",
++		.fixed_matrix_info = { .fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR601_LIMITED_RGB },
++	};
++	kms_colorop_t fixed_matrix_yuv709_rgb709_lim = {
++		.type = KMS_COLOROP_FIXED_MATRIX,
++		.name = "FIXED_MATRIX YUV709 limited to RGB709",
++		.fixed_matrix_info = { .fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR709_LIMITED_RGB },
++	};
++	kms_colorop_t fixed_matrix_yuv2020_rgb2020_lim = {
++		.type = KMS_COLOROP_FIXED_MATRIX,
++		.name = "FIXED_MATRIX YUV2020 limited to RGB2020",
++		.fixed_matrix_info = { .fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_LIMITED_RGB },
++	};
++
++	struct {
++		const char *name;
++		const char *subtest_prefix;
++		const color_t *fb_colors;
++		kms_colorop_t *colorops[MAX_COLOROPS];
++		uint32_t input_format;
++		enum igt_color_encoding encoding;
++		enum igt_color_range range;
++	} fixed_matrix_tests[] = {
++		{ .name = "yuv-rgb-bt601",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv601_rgb601, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT601,
++		  .range = IGT_COLOR_YCBCR_FULL_RANGE,
++		},
++		{ .name = "yuv-rgb-bt709",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv709_rgb709, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT709,
++		  .range = IGT_COLOR_YCBCR_FULL_RANGE,
++		},
++		{ .name = "yuv-rgb-bt2020",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv2020_rgb2020, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT2020,
++		  .range = IGT_COLOR_YCBCR_FULL_RANGE,
++		},
++		{ .name = "yuv-rgb-bt601-lim",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv601_rgb601_lim, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT601,
++		  .range = IGT_COLOR_YCBCR_LIMITED_RANGE,
++		},
++		{ .name = "yuv-rgb-bt709-lim",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv709_rgb709_lim, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT709,
++		  .range = IGT_COLOR_YCBCR_LIMITED_RANGE,
++		},
++		{ .name = "yuv-rgb-bt2020-lim",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv2020_rgb2020_lim, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT2020,
++		  .range = IGT_COLOR_YCBCR_LIMITED_RANGE,
++		},
++		{ .name = "yuv-rgb-bt601-lut1d",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv601_rgb601, &lut1d_linear, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT601,
++		  .range = IGT_COLOR_YCBCR_FULL_RANGE,
++		},
++		{ .name = "yuv-rgb-bt709-lut1d",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv709_rgb709, &lut1d_linear, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT709,
++		  .range = IGT_COLOR_YCBCR_FULL_RANGE,
++		},
++		{ .name = "yuv-rgb-bt2020-lut1d",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv2020_rgb2020, &lut1d_linear, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT2020,
++		  .range = IGT_COLOR_YCBCR_FULL_RANGE,
++		},
++		{ .name = "yuv-rgb-bt601-lim-lut1d",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv601_rgb601_lim, &lut1d_linear, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT601,
++		  .range = IGT_COLOR_YCBCR_LIMITED_RANGE,
++		},
++		{ .name = "yuv-rgb-bt709-lim-lut1d",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv709_rgb709_lim, &lut1d_linear, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT709,
++		  .range = IGT_COLOR_YCBCR_LIMITED_RANGE,
++		},
++		{ .name = "yuv-rgb-bt2020-lim-lut1d",
++		  .subtest_prefix = "plane-fixed-matrix",
++		  .fb_colors = colors_rgb,
++		  .colorops = { &fixed_matrix_yuv2020_rgb2020_lim, &lut1d_linear, NULL },
++		  .input_format = DRM_FORMAT_YUYV,
++		  .encoding = IGT_COLOR_YCBCR_BT2020,
++		  .range = IGT_COLOR_YCBCR_LIMITED_RANGE,
++		},
++	};
++
++	for (int i = 0; i < ARRAY_SIZE(fixed_matrix_tests); i++) {
++		igt_describe_f("Test FIXED_MATRIX pipeline: %s-%s",
++			       fixed_matrix_tests[i].subtest_prefix,
++			       fixed_matrix_tests[i].name);
++		igt_subtest_with_dynamic_f("%s-%s",
++					   fixed_matrix_tests[i].subtest_prefix,
++					   fixed_matrix_tests[i].name) {
++			for_each_crtc_with_single_output(&data->display, crtc,
++							 output) {
++				data->output = output;
++
++				if (!crtc_output_combo_valid(data, crtc))
++					continue;
++
++				test_setup(data, crtc);
++
++				test_plane_fixed_matrix_colorops(data, crtc,
++								 fixed_matrix_tests[i].fb_colors,
++								 fixed_matrix_tests[i].colorops,
++								 fixed_matrix_tests[i].input_format,
++								 fixed_matrix_tests[i].encoding,
++								 fixed_matrix_tests[i].range);
++				test_cleanup(data);
++			}
++		}
++	}
++}
++
+ int igt_main()
+ {
+ 	int has_plane_color_pipeline = 0;
+@@ -377,6 +710,9 @@ int igt_main()
+ 	igt_subtest_group()
+ 		run_tests_for_plane(&data);
+ 
++	igt_subtest_group()
++		run_tests_for_fixed_matrix(&data);
++
+ 	igt_fixture() {
+ 		igt_display_fini(&data.display);
+ 		drm_close_driver(data.drm_fd);
 -- 
 2.25.1
+
