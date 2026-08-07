@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 283C4C5AC7C
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Aug 2026 09:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51F20C5AC7C
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Aug 2026 09:10:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B496310E3FF;
-	Fri,  7 Aug 2026 09:06:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 021A010E3FF;
+	Fri,  7 Aug 2026 09:10:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dwUEX7t9";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lpF2NG9t";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 130E610E3FF
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Aug 2026 09:05:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 73AE410E3FF
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Aug 2026 09:09:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786093558; x=1817629558;
+ t=1786093781; x=1817629781;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
  bh=JBEmsXHzcOjjVrdcYf0uFBca3XpiXqYOcE4i/ROx02Y=;
- b=dwUEX7t9pnofLzK0iP6U/UDVKyC91NKxrkYwIXJfFDmzluqcmyK02ycl
- axA+4nvs/jL0XavbYEueM97aidlkemcElGehMD/YjdGAn5HVVZQ18Wc6Y
- Ny5SIzk6k5KPQPGCJdT5WuuJwwB/9WimSIBoXdWvc4Wv2j07TD9S9MXDQ
- G0tpXcG5QaO9IrFu/Ug4OyVlIQFHUQeTC80yH83MOEjCUJFgLO4310+gv
- 44EoBfIDDTp5GrnhxRJmeJ1fSgNpiS7M8JIWlc+XCiL1hpcAMCzO8bUn8
- yDugP/TmJUGk2eMx1aYaufIlzXNTvOhvFR5sNQ/lt96f0r+XUHnE9J67O A==;
-X-CSE-ConnectionGUID: RMETB+DuQL2Q7JcRsupGCA==
-X-CSE-MsgGUID: D6h/nIrzQ9qPiB+VGTNidQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="90578714"
-X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="90578714"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2026 02:05:57 -0700
-X-CSE-ConnectionGUID: Sprf4D5BSLiZ56+u/G5sMg==
-X-CSE-MsgGUID: M8ACAZ6xQOWHRCkKBpkMhQ==
+ b=lpF2NG9tLhaKvCptN7/nVUxvbMLV/Z/7Q/xerqnaReJ/dfP3sCapR0Be
+ 0qat8qJ1dYn5jHwduquaAOpHDbGa25q9ooDvhHFX+6Fjevv26034sQGS4
+ wKhxeMKt45L3mk0xrkM5/d4h4U5vkFxarpgz9PlxOsy/2hl4PX8+vvLrX
+ plimYRLk9QaaiYiof1SJrQ6HiWuV5Do/Zej48BJtd3cOk1cGrI++/r4uT
+ MvIkDeE4yi8wfkI4rnNE45XSIAnO2YK5b9E3aD9CoXs1AEo6DVIEYhC41
+ quTdYCPxSEt0D38MOyq6DoCqc6Oazm/EoJUFwfki4+JPrbt+M2/tP7qaf g==;
+X-CSE-ConnectionGUID: YUsh4peQT/2cEQZ5FujNGQ==
+X-CSE-MsgGUID: cV1rWdHyQMW4yGg0SN0urw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11867"; a="97348061"
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="97348061"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Aug 2026 02:09:40 -0700
+X-CSE-ConnectionGUID: fwXNG41VRlKgvHUGTXYQ2g==
+X-CSE-MsgGUID: sqC9HtQdQiadPz5sFrpt5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="287025157"
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="265823931"
 Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
- by fmviesa001.fm.intel.com with ESMTP; 07 Aug 2026 02:05:14 -0700
+ by orviesa003.jf.intel.com with ESMTP; 07 Aug 2026 02:09:40 -0700
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	matthew.brost@intel.com
 Cc: nishit.sharma@intel.com
 Subject: [PATCH i-g-t v1] tests/intel: add BO allocation oversubscription
  stress coverage
-Date: Fri,  7 Aug 2026 09:05:13 +0000
-Message-ID: <20260807090513.529935-1-sobin.thomas@intel.com>
+Date: Fri,  7 Aug 2026 09:09:40 +0000
+Message-ID: <20260807090940.530011-1-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
