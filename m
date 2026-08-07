@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F3AF5C5AD05
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Aug 2026 22:53:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C790CC5AD2B
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Aug 2026 22:54:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A16D610E463;
-	Fri,  7 Aug 2026 22:53:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 62E4810E463;
+	Fri,  7 Aug 2026 22:54:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YeevUPOJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EzkNZ/V2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6DA0510E463
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Aug 2026 22:47:59 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CF63610E463
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Aug 2026 22:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786142880; x=1817678880;
+ t=1786142881; x=1817678881;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lMX3d7MdoTKaMn6nFNjlgZt4yp9bE0xDvLY2DPWUlfY=;
- b=YeevUPOJzO70M7lM6xtyC6RWOLsid+G0BVMPaiOXVEy+dkqafqVCYN4+
- H5hMaeObw+dhR7ypfoBn91OR+mzZJDL7gAoAc3jgYvIaByMoXbZApDaop
- sbljneHNDwDK+ElgVpAM8ULizJk5qdUj4wyNIpaxd1cE401u2QvNujSGj
- 4eBlKZe6w7hIwtYf2kUdgy7RUVq5OlL7pQsu3uUFuVJxLgJxnk8/Idv2/
- E0/3vRY7QU8RGf/prJd12bAPRxrBX/PlDePtbcMkdN0Ckp0FIgCRLd0EJ
- Hd2CT+QqMiyAHAQr559PDQja7OTP/+/zfmHB36IZ2So3w/KVS/zZWT9U2 w==;
-X-CSE-ConnectionGUID: wGietiFtSsy0Q9UCemc2+Q==
-X-CSE-MsgGUID: MxNGfgsBQ4SoLaOf923hvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11868"; a="86835807"
-X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="86835807"
+ bh=e2M4gUlXa89awPENLiWnQUMb/47y2SsqTv/3ahzOO8A=;
+ b=EzkNZ/V2ODM/Y0HIJpnpqtgt5XUC3LyExX2pqQZJoK4UFSNB8PPiZQZw
+ 8IU6E16SXVs38pOa86XlGEBJ4eeXbM5jUThfhkwwWOdZETQjOSbNDtKWu
+ dvYyDbrKw+ClCUXL4o+Oq4INkO5I0rV7g7E7eEm5D5efeH8hdBzpq1OjR
+ yKb83uwLgtoaiY1euizLzIA4adrKCymGwytEwu2ZcuwbY76YWgxfi+0Nu
+ ACTur8ZhYwUQupU/ZKST7HR/opndeIkjPB0A9jPkMnHVieBYLAE5V+wnz
+ bJi/pjFxQH+6Riw/D5LOBqYJnsdi7z8F/eGKrX1DieX1rjrWvlbmMZcq4 g==;
+X-CSE-ConnectionGUID: fVGmt8xSQZCRvxwCHplz9g==
+X-CSE-MsgGUID: xLc8xsOURmeODr5yZ+KeeQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11868"; a="86835814"
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="86835814"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2026 15:47:59 -0700
-X-CSE-ConnectionGUID: 7/WFElPWTsW7WGqi3eqr9g==
-X-CSE-MsgGUID: ctB4V0zBTWGczRsY8m9h9g==
+ 07 Aug 2026 15:48:01 -0700
+X-CSE-ConnectionGUID: J7B3d9tnRq67FiJSmNnerA==
+X-CSE-MsgGUID: uoj/uzBuTEG/3atqq8j2hw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="258655426"
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="258655433"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa010.fm.intel.com with ESMTP; 07 Aug 2026 15:47:58 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 07 Aug 2026 15:47:59 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: nemesa.garg@intel.com, mohammed.thasleem@intel.com, karthik.b.s@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v2 07/16] tests/kms_pipe_crc_basic: limit #crtcs tested
- during suspend
-Date: Sat,  8 Aug 2026 00:47:37 +0200
-Message-ID: <20260807224746.3554064-8-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v2 08/16] tests/kms_psr: limit #outputs tested during
+ suspend
+Date: Sat,  8 Aug 2026 00:47:38 +0200
+Message-ID: <20260807224746.3554064-9-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260807224746.3554064-1-michal.grzelak@intel.com>
 References: <20260807224746.3554064-1-michal.grzelak@intel.com>
@@ -71,49 +71,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Limit execution of suspend tests to first and last active CRTC unless
-using `extended` flag. This helps with reducing default execution time
-of the test which can lower number of hitting CI timeout.
+We are iterating through each output while testing suspend. This results
+in extended execution time. In turn this leads to hitting CI enforced
+timeout.
+
+By default limit number of tested outputs to 2. Test each connected
+output when passing command-line parameter.
 
 v1->v2
-- move constraint before crtc_output_combo_valid() (Mohammed)
+- s/OUTPUT_LIMIT/SUSPEND_OUTPUT_LIMIT/ (Mohammed)
+- fix typos (Mohammed)
+- fix off-by-one error (Mohammed)
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tests/kms_pipe_crc_basic.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ tests/intel/kms_psr.c | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
-index 42e1415452..f1f89f11f8 100644
---- a/tests/kms_pipe_crc_basic.c
-+++ b/tests/kms_pipe_crc_basic.c
-@@ -127,6 +127,16 @@ enum {
- 	TEST_HANG = 1 << 3,
- };
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index 7b02dd2072..41ce436ee5 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -275,6 +275,9 @@
+  * @plane-move:         Move plane position
+  */
  
-+static bool suspend_constraint(unsigned flags, igt_crtc_t *crtc)
-+{
-+	if (!extended && (flags & TEST_SUSPEND) &&
-+	    crtc->crtc_index != active_crtcs[0] &&
-+	    crtc->crtc_index != active_crtcs[last_crtc_index])
-+		return true;
++#define SUSPEND_OUTPUT_LIMIT 2
 +
-+	return false;
++
+ enum operations {
+ 	PAGE_FLIP,
+ 	MMAP_GTT,
+@@ -318,6 +321,7 @@ typedef struct {
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output;
+ 	bool fbc_flag;
++	bool all_outputs;
+ } data_t;
+ 
+ static void create_cursor_fb(data_t *data)
+@@ -767,9 +771,27 @@ static void dpms_off_on(data_t *data)
+ 				   DRM_MODE_DPMS_ON);
+ }
+ 
++static int opt_handler(int opt, int opt_index, void *opt_data)
++{
++	data_t *data = opt_data;
++
++	switch (opt) {
++		case 'o':
++			data->all_outputs = true;
++			break;
++		default:
++			return IGT_OPT_HANDLER_ERROR;
++	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
 +}
 +
- static void test_read_crc(data_t *data, igt_crtc_t *crtc,
- 			  igt_output_t *output, unsigned flags)
- {
-@@ -425,6 +435,9 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 				if (simulation_constraint(crtc))
- 					continue;
+ data_t data = {};
  
-+				if (suspend_constraint(tests[i].flags, crtc))
-+					continue;
+-int igt_main()
++const char *help_str =
++	" -o \tRun on all connectors. By default suspend subtests will run on 2 connectors\n";
 +
- 				if(!crtc_output_combo_valid(&data.display, crtc, output))
- 					continue;
- 
++int igt_main_args("o", NULL, help_str, opt_handler, &data)
+ {
+ 	int z, y;
+ 	enum operations op;
+@@ -945,10 +967,15 @@ int igt_main()
+ 				     "performed with suspend resume cycles");
+ 			igt_subtest_with_dynamic_f("%s%ssuspend", append_fbc_subtest[y],
+ 						   append_subtest_name[z]) {
++				int output_count = 0;
++
+ 				for_each_connected_output(&data.display, output) {
+ 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 							      data.op_psr_mode, output))
+ 						continue;
++					if (!data.all_outputs && output_count >= SUSPEND_OUTPUT_LIMIT)
++						continue;
++					output_count++;
+ 					igt_display_reset(&data.display);
+ 					data.output = output;
+ 					igt_dynamic_f("%s", data.output->name) {
 -- 
 2.45.2
 
