@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C5D2C5AD2B
-	for <igt-dev@archiver.kernel.org>; Fri,  7 Aug 2026 22:56:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D277CC5AD2B
+	for <igt-dev@archiver.kernel.org>; Fri,  7 Aug 2026 22:56:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 39DE510E3E1;
-	Fri,  7 Aug 2026 22:56:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8611810E3E1;
+	Fri,  7 Aug 2026 22:56:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nLjipnWM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WJ/fP0uX";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12FED10E463
- for <igt-dev@lists.freedesktop.org>; Fri,  7 Aug 2026 22:47:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BECD210E463
+ for <igt-dev@lists.freedesktop.org>; Fri,  7 Aug 2026 22:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786142878; x=1817678878;
+ t=1786142884; x=1817678884;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=h4m6Ddxvye1co/Ipze7Lxq9NfEk0rF4ESVmnCHPssXk=;
- b=nLjipnWMgh1zdMP2QedIhB4nr1cNm7lBCh9Ep2U0jQ+U4L6p0E2trtX7
- Hr8UMQ2UPscA/X7BVASayNJLkx05b3i3HiJgoblpJfF+HiyNy0O5Msq8p
- J2RzJ3kKXih6x0kHi/kjZ9eCr/5w0IIcqthxiiRu0E2sNR9/TrRy626ui
- TBIGGem2Rbr066dbnnAqwaBatu8Re4gVCb1/uio3QzzLuWrB+b5b4riKX
- OTnnpGAvjDHrCXGD24AMUZHYvCfoGO8ZgE1tn2ux0MeaXuD7TbsFqTdqj
- x0CINQmYAjSFmH+e6Tiru+nfbIyd+q90dV4TE3IlT5KUG4o5EWDlFxmP3 g==;
-X-CSE-ConnectionGUID: LJCtWiNUSSGI48X9qtvCSg==
-X-CSE-MsgGUID: g/jdmBGIRFOQnD1jTV2FFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11868"; a="86835805"
-X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="86835805"
+ bh=YFA/hOxVuZz00mbVqztS5h0pc3Jk0b3VUD8GzRH+erQ=;
+ b=WJ/fP0uXq7WUWqGedpdlQAjcGXl1IUUzCN0uE/6V5ygnvVUVW1+f0ah3
+ UbnfbBfVqH1wCqPzyXQxtkqoUUR4wSNZlQ1PVUdwozCAocf3gr5f9JOCd
+ 4SByJDx0hUy/8tiTHRySW4/F41AOhXmHQOOq0GC+G480eGfRYqIDkeYFS
+ I6N1To+WIDmltN3TQTqoGr3Dffh96ouA3McPU5QOG3XkhMbb0q0g8mL67
+ HYMr89JUyHPIsYFvbcREZZ2A5oLH7eWPjkVfMaBBlj2X+r9XceJd23xLa
+ OB9fWSIN+FARxfxjNsAQUeAZi+V3118df8Lt8Qra3Yn/zyf/G4MMHGIYj Q==;
+X-CSE-ConnectionGUID: L3yQUILnSH610m5GEyquaQ==
+X-CSE-MsgGUID: u6qjUGnmQCqR1TxrIVYoWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11868"; a="86835823"
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="86835823"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Aug 2026 15:47:58 -0700
-X-CSE-ConnectionGUID: CdHWh/hETL+unNCR10IkBg==
-X-CSE-MsgGUID: SAXDjUSZT1KebqA9D95qiA==
+ 07 Aug 2026 15:48:04 -0700
+X-CSE-ConnectionGUID: hj8m4MSWRY6h9GaPbi02UA==
+X-CSE-MsgGUID: QtudLszVTm+aRLjffRoGlA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="258655418"
+X-IronPort-AV: E=Sophos;i="6.25,210,1779174000"; d="scan'208";a="258655442"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa010.fm.intel.com with ESMTP; 07 Aug 2026 15:47:57 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 07 Aug 2026 15:48:02 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: nemesa.garg@intel.com, mohammed.thasleem@intel.com, karthik.b.s@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v2 06/16] tests/kms_frontbuffer_tracking: remove
- TEST_MODE_ITER_BEGIN() from `fliptrack`
-Date: Sat,  8 Aug 2026 00:47:36 +0200
-Message-ID: <20260807224746.3554064-7-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v2 10/16] tests/kms_vblank: limit #outputs tested during
+ suspend
+Date: Sat,  8 Aug 2026 00:47:40 +0200
+Message-ID: <20260807224746.3554064-11-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260807224746.3554064-1-michal.grzelak@intel.com>
 References: <20260807224746.3554064-1-michal.grzelak@intel.com>
@@ -71,76 +71,103 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt@kms_frontbuffer_tracking uses TEST_MODE_ITER_BEGIN(t) which consists
-of nested for loops. However many loops can be omitted due to continue
-statements. This obfuscates following the execution of any given
-codepath. Replace TEST_MODE_ITER_BEGIN(t) for fliptrack tests with macro
-definition and remove loops that are skipped.
+We are iterating through each output while testing suspend. This results
+in extended execution time. In turn this leads to hitting CI enforced
+timeout.
+
+By default limit number of tested outputs to 2. Test each connected
+output when passing command-line parameter.
 
 v1->v2
-- indent for-loops (Mohammed)
+- fix off-by-one error (Mohammed)
+- reset output_count before subtest (Mohammed)
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 44 ++++++++++++++++----------
- 1 file changed, 28 insertions(+), 16 deletions(-)
+ tests/kms_vblank.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 406018c88a..6266297553 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -4482,23 +4482,35 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 			}
- 	TEST_MODE_ITER_END
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 47b733af15..7995528c3f 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -109,7 +109,10 @@ typedef struct {
+ #define RPM	0x80
+ } data_t;
  
--	TEST_MODE_ITER_BEGIN(t)
--		if (t.plane != PLANE_PRI ||
--		    t.screen != SCREEN_PRIM ||
--		    t.method != IGT_DRAW_MMAP_GTT ||
--		    (t.feature & FEATURE_FBC) == 0)
--			continue;
-+	t.format = FORMAT_DEFAULT;
-+	t.flip = FLIP_PAGEFLIP;
-+	t.tiling = opt.tiling;
-+	t.plane = PLANE_PRI;
-+	t.screen = SCREEN_PRIM;
-+	t.method = IGT_DRAW_MMAP_GTT;
- 
--		igt_subtest_f("%s-%s-%s-fliptrack-%s",
--			      feature_str(t.feature),
--			      pipes_str(t.pipes),
--			      fbs_str(t.fbs),
--			      igt_draw_get_method_name(t.method))
--		{
--			igt_require(igt_draw_supports_method(drm.fd, t.method));
--			fliptrack_subtest(&t, FLIP_PAGEFLIP);
--		}
--	TEST_MODE_ITER_END
-+	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {
-+		for (t.pipes = 0; t.pipes < PIPE_COUNT; t.pipes++) {
-+			for (t.fbs = 0; t.fbs < FBS_COUNT; t.fbs++) {
-+				if (!opt.show_hidden && t.feature == FEATURE_NONE)
-+					continue;
-+				if ((t.feature & FEATURE_PSR) && (t.feature & FEATURE_DRRS))
-+					continue;
-+				if ((t.feature & FEATURE_FBC) == 0)
-+					continue;
++#define OUTPUT_LIMIT 2
 +
-+				igt_subtest_f("%s-%s-%s-fliptrack-%s",
-+					      feature_str(t.feature),
-+					      pipes_str(t.pipes),
-+					      fbs_str(t.fbs),
-+					      igt_draw_get_method_name(t.method))
-+				{
-+					igt_require(igt_draw_supports_method(drm.fd, t.method));
-+					fliptrack_subtest(&t, FLIP_PAGEFLIP);
-+				}
-+					}
-+			}
-+	}
+ static bool all_pipes;
++static bool all_outputs;
+ static int active_crtcs[IGT_MAX_PIPES];
+ static uint32_t last_crtc_index;
  
- 	TEST_MODE_ITER_BEGIN(t)
- 		if (t.screen == SCREEN_OFFSCREEN ||
+@@ -476,6 +479,7 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
+ static void run_subtests(data_t *data)
+ {
+ 	igt_crtc_t *crtc;
++	int output_count = 0;
+ 	const struct {
+ 		const char *name;
+ 		void (*func)(data_t *, int, int);
+@@ -513,9 +517,16 @@ static void run_subtests(data_t *data)
+ 			if (m->flags & ~(f->valid | NOHANG))
+ 				continue;
+ 
++			output_count = 0;
++
+ 			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
+ 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
+ 				for_each_connected_output(&data->display, data->output) {
++					if (!all_outputs && (m->flags & SUSPEND) && output_count >= OUTPUT_LIMIT) {
++						igt_info("Skipping output %s\n", data->output->name);
++						continue;
++					}
++
+ 					for_each_crtc(&data->display, crtc) {
+ 						if(!igt_crtc_connector_valid(crtc, data->output))
+ 							continue;
+@@ -538,6 +549,8 @@ static void run_subtests(data_t *data)
+ 							run_test(data, f->func);
+ 						}
+ 					}
++
++					output_count++;
+ 				}
+ 			}
+ 
+@@ -545,6 +558,8 @@ static void run_subtests(data_t *data)
+ 			if (f->valid & NOHANG || m->flags & NOHANG)
+ 				continue;
+ 
++			output_count = 0;
++
+ 			igt_describe("Check if injected hang is working properly.");
+ 			igt_subtest_with_dynamic_f("%s-%s-hang", f->name, m->name) {
+ 				igt_hang_t hang;
+@@ -628,6 +643,9 @@ static int opt_handler(int opt, int opt_index, void *data)
+ 		case 'e':
+ 			all_pipes = true;
+ 			break;
++		case 'o':
++			all_outputs = true;
++			break;
+ 		default:
+ 			return IGT_OPT_HANDLER_ERROR;
+ 	}
+@@ -636,9 +654,10 @@ static int opt_handler(int opt, int opt_index, void *data)
+ }
+ 
+ const char *help_str =
+-	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n";
++	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n"
++	"  -o \tRun on all outputs. (By default subtests will run on three outputs)\n";
+ 
+-int igt_main_args("e", NULL, help_str, opt_handler, NULL)
++int igt_main_args("eo", NULL, help_str, opt_handler, NULL)
+ {
+ 	igt_crtc_t *crtc;
+ 	int fd;
 -- 
 2.45.2
 
