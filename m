@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48CE8C5AC67
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 08:03:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0079C5B574
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 08:03:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF1B410EAC0;
-	Tue, 11 Aug 2026 08:02:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 61EF410EAC9;
+	Tue, 11 Aug 2026 08:03:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="lSz3zl5D";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="YsTHvIba";
 	dkim-atps=neutral
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
- [209.85.221.49])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE84110E9C0
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2026 20:02:26 +0000 (UTC)
-Received: by mail-wr1-f49.google.com with SMTP id
- ffacd0b85a97d-47fe2d179e2so1330185f8f.1
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2026 13:02:26 -0700 (PDT)
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
+ [209.85.128.54])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A422D10E93D
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2026 17:00:32 +0000 (UTC)
+Received: by mail-wm1-f54.google.com with SMTP id
+ 5b1f17b1804b1-4953e04ef16so18827475e9.2
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2026 10:00:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1786392145; x=1786996945; darn=lists.freedesktop.org;
+ d=gmail.com; s=20251104; t=1786381231; x=1786986031; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
- bh=l7b9fFXQc2UYogN2ntuI66V0vcJ+WadNWvdyAw9GyHU=;
- b=lSz3zl5DJdeDC2Py5S0Ss1djVFMlgURCXN4XWXHAYj4akRkJDlAn36FRLLAeABt4ym
- qQwe7Ijz/8uh+V1RNUnKMe4O5xoj6mfhHQwM3eyr6f0YFJtUi5NmbtEuk+dE2fdStx4s
- 9cuCmBY6hkzUpoJOUuIcsSzZtKF7q7isjIr9GCo6Vm9PodugtmvJZ0Hb7v2MM1jdCO9O
- 17wAlp2qq6URQyrT6oyAU4XNcR/oUho7H+UsXZexpcg0pckeZuZBZgnuSTMBn479paTm
- xFmgORRSv4jyn/idZ2FpmwaVUqynATKzg8oAAbGXoifYG3bi0dvTIG9VyCBalzks0jjf
- jIzw==
+ bh=bBSIGkkyITXMJF/IzgXQOmkDY1W3N7M1eyq3mP4entc=;
+ b=YsTHvIbaHhKv++ZEDxjbQIClproK8nUUJJNOto2WW6o2ikMQQUfZcT6Gg/BzYLxVfv
+ IKCaxi9++BsKPVbnkfrpzYEQPW8Sr2tq7PBeOgJ0n0ZUxBaTgLWUUgQyn2YawBiIkxBQ
+ OV1FwqSdrjxWnd4bKIG9VpNDPV49YZYrC6agyDo3VVOOyMB/dRptgUZXVrqZbZ+VlbcC
+ zGyS3J9G0r6LO5vNqRVLo+GAFMzlK+SdDWY/m+yFvbRIta1SIxInuBJNfHcZ+4RmPfje
+ 0o3M03I5CZkIMAhmueCvKsGr+R3OqCHcPxlVZlKv9OdIICC/La7ojFIgmCkIMORxtwhH
+ 4vCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1786392145; x=1786996945;
+ d=1e100.net; s=20251104; t=1786381231; x=1786986031;
  h=content-transfer-encoding:mime-version:message-id:date:subject:cc
  :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to:content-type;
- bh=l7b9fFXQc2UYogN2ntuI66V0vcJ+WadNWvdyAw9GyHU=;
- b=UZGCaLnMgpk4XzLPelF9/nxHhR71TSn+M3UIiQYJgkAROn+Usbznht5qRnM7QlGjel
- KQ7hyNWeNSPy6Pm13CgCkucbuMrF2xS/YnBw9tARLVsgl5f0EwK253PFxA/cgpe52zDx
- kjoHGW4efQCcrDoNzeCCi9iA4lcCJLJiN2aoyvSU3MdXpouwz9gwa7EXsffECSL7yyPP
- kKVABmRGSZilxzEFDVp3a5i57ncwMqJ11nbIsKXupxE7NqSKeRRB0AOiXTHsIa8UheuH
- ymGzStxyQt4b2PT0kGAOsh+ndkxx+9cYrwFbhkXGIc9zdIAzuCFyrhmpjtYkB4Y3tRZx
- +GmA==
-X-Gm-Message-State: AOJu0YyMd1i6MGoWb15HDav2j+w4bItnPmjSykzRkmra7Lfvv8sLIcgy
- eR21OWvkCO2Bfj7bWtSQTofGjjaQgmp9ULc1zw3LjwwScRVC8UjkfjVD1dBcyv4A
-X-Gm-Gg: AR+sD111Afuymvntvt20bqlsZG8AO2gbAU80ehdwAU2AU4Rug4Fu17OLcgdc5LqvAVk
- V0AIN4lz35v0G+c4c8cyT6df+RhJYtGh5uYQB/f4VzICENhCZrvJiGOmP+lxOpWvilV5D2kBNAa
- 6WuEVpqC44Gepam8chjl7+KSXkACUCjQnYrigdQVokxNz736/Jn8F1rJDV2Bm7b32HFYzwJAp62
- Bvs1D4eOhL9TIuIfeg7O/0BHLE/OjiSAYBojh6mfwwR2Q3W1XYn6lpzFdIKVNzu4ELshe1IIEQB
- Xp9yFaFuifWRn7BSqgvS1bKwUCTkdgA9dqjcSIzxEf/z2HqxPq/gcv8ASLXGUiCKrPAi2sdSNxp
- 6fz4mNuo9/tPQgOy/W3Up5OxBlgZIgINalyt9qmKUpCI9pUZjaQuszZV9jJ08k2qzL9gJeDWHjx
- oj/E4bH389yn0Rsyb0fqCM2HUyyvBsoKZ2jS9EMp5eBYDRBMNuDKIuPLPupMt0ziM8Imp8pmlxK
- 81WTE5xfCvUM8TLxSiPXn4QgI57D6bYLu7iqBxTVqo=
-X-Received: by 2002:a05:6000:4613:b0:474:530:9d with SMTP id
- ffacd0b85a97d-481455f33fdmr6946402f8f.13.1786392145146; 
- Mon, 10 Aug 2026 13:02:25 -0700 (PDT)
+ bh=bBSIGkkyITXMJF/IzgXQOmkDY1W3N7M1eyq3mP4entc=;
+ b=D3IXBgBMvzwIcg2bwQzhS62fzG7U9H5OMjHCgmxrLsfYk5pvnoKLXFX4ZcYyL1BZ33
+ b8MoccZ+LIGyaosOFwEOv2HR5/sMO4VyIr5/jL9hejhdjjscNV25Cc4pa8/Kx5NET6JM
+ SvzZlb2UA5+UV1rhOS8QiUTFG/w8wE0mdslBjLXHN+VcwGCPMfIVD8hJ9WQeaJrOR+lU
+ MagKEZmya7/a/ey0GXu5CglzxHpfJYtgdeNvh6OiEeHujgFctP56BsPHGP26co6RNb3z
+ 6AwW8V2f7w9KgL+tWGrLtCP0b1JaFEWUHxfzKD8ZkwOB4g6Oly8KbWbOT5ad6VnL3Hfh
+ Og3Q==
+X-Gm-Message-State: AOJu0YwmZt+xv3qHhvmuvE+vSpwdnXo3GXeIh3SjSy8Jvjn0J8T6o0JQ
+ /AawkrnMAVEtsfkhKudYMMjf/KorokdV1ZZ/6spp2v9jDi7PQSycAuDRsaaR9Nv2
+X-Gm-Gg: AR+sD13CMrBU3X4VTBdyowhSGcIEjZ4L/AUTu99/QM7GqvXzadXGd/8VeyK8jF1gzv7
+ jVzAuxohaaMVGxIKGTPkuprjd6UsAFccG+rTaIpDCwcqaU/mr3SkdiqJGFGzPQ8JigflG91jykl
+ kIrXOqw3LghIH5PIvmIopVNa66J6KRcddzxy2rqsZIhuyMQF7Bl9T4gXjcOs66yY2ugino/IP3O
+ 7XdQ8ZsmtV4INqr9VdlLerI2+Vasa11AZLkQkonpKaKlCeX+cJztzFR2OSOu+8uUFOHoLeXCiTK
+ oAjDygztVtIJeUQRewEVcuzQ03Pk5MugeZEYqfFnh4lRhMED4Jw/IkyxffBXqNoqGR6mzuU3kzz
+ 6kgmIrQf1aH1pWBVi+6HWk/4o58UP+gWnnDOkryXNJJl0e2aVOUmrwcEr93Xm71dTiANNfobEom
+ xSzI2fag+7SUkEK2Qqpe7KNxWFnYAp20mZtuNNO16MgUJmqHm+lpsTY7LpLlB0xjBHSsMHsy2FG
+ O5goFJ4t2Dh2oHzE60DTWUxYIbAeW3QhcS4qecKZA4=
+X-Received: by 2002:a05:600c:3ba6:b0:495:779a:ed33 with SMTP id
+ 5b1f17b1804b1-49959e0c481mr391537155e9.7.1786381230835; 
+ Mon, 10 Aug 2026 10:00:30 -0700 (PDT)
 Received: from flumenarch.lan (83.10.193.118.ipv4.supernova.orange.pl.
  [83.10.193.118]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-480021e7b3fsm40394186f8f.20.2026.08.10.13.02.23
+ ffacd0b85a97d-480021e8b09sm40587325f8f.23.2026.08.10.10.00.28
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Mon, 10 Aug 2026 13:02:23 -0700 (PDT)
+ Mon, 10 Aug 2026 10:00:28 -0700 (PDT)
 From: Luka Mamrikishvili <lmamrikishvili01@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Luka Mamrikishvili <lmamrikishvili01@gmail.com>
-Subject: [PATCH i-g-t v2] tests/sw_sync: fix invalid fd test
-Date: Mon, 10 Aug 2026 22:02:13 +0200
-Message-ID: <20260810200213.10438-1-lmamrikishvili01@gmail.com>
+Subject: [PATCH] tests/sw_sync: fix invalid fd test
+Date: Mon, 10 Aug 2026 19:00:19 +0200
+Message-ID: <20260810170019.479199-1-lmamrikishvili01@gmail.com>
 X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -94,10 +94,6 @@ Close the device fd after its test and retain the temporary file fd
 for the file fd test.
 
 Signed-off-by: Luka Mamrikishvili <lmamrikishvili01@gmail.com>
-
-v2:
-- Add the i-g-t subject tag for CI.
-
 ---
  tests/sw_sync.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
