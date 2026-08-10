@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9743EC5AD55
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Aug 2026 13:34:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37773C5AD55
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Aug 2026 13:35:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2C92E10E864;
-	Mon, 10 Aug 2026 13:34:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B7D7210E841;
+	Mon, 10 Aug 2026 13:35:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MqAHLc+Y";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VPyG/HMO";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00C9D10E860
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2026 13:32:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5154610E86A
+ for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2026 13:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786368745; x=1817904745;
+ t=1786368744; x=1817904744;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ixQvG2IAfmc+F6AKqc0XftXV840/MTeH66lMZedypTI=;
- b=MqAHLc+YZl/qkJS+t6g0lo9NN7dnxfbNcYnWhoaGiyLaRyRyFcWkm5g4
- 5tAZamEDqiFNslI/+t0zK9pl1AD3ttUP2b6hbRqd/vmAwNkYwIygkT9ai
- eTl2L+1iUyYZruCNd9hnxxltnB1+D3AODyAZVKMuqusGjJ1rfm2jHlEzN
- Ldg69xe+eKbx7pmcWkvF0MI9NSU61wUGL1abFfU9wWgQq0osj5LwG5ERo
- ajJmZeqCqCseORvYpXaesgd/GU/GKSjE06faV1c5x7hfvAXHYCNMU+t4B
- bE8AbnBeqpiull35cuPLApdCta1Sg/YMgJkdjr6BS1HtDWoDLngdT15YI A==;
-X-CSE-ConnectionGUID: 62ky3hevTp+L1K6ydb9bAA==
-X-CSE-MsgGUID: rVXwqBkLTE6zk2BiS/d3MQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="98396769"
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; d="scan'208";a="98396769"
+ bh=YV6DYnzNJ+Zh0nLgoKInq4aL7RBYwAPJ0sDGm8uVL/U=;
+ b=VPyG/HMO5ivo/KEHCFNRlFcXhc9/Ih4Nd9Zsw0kPLHUtuk+S/n8Ib91n
+ bC0G0B5zZJrBYXEzwMiQH5gvrncV0tqC6kzCpRJRSTXkGGNFxm05T1brM
+ FH08izvkE4zf00N75Xw57WByhYX9ox5otiu6ct8MDRq9xLnRZjGeHZJGx
+ Br85hwGXjeimG1v5PlQvLzRpLFMM2BAGo7CkfXVuPJG9QJq25FMYWUkkF
+ hcOyEaZNqWufhHFjgAFkKXV3u6lehLagmJ/8vvL78UeaQ9+2fRIrmWKz2
+ yyLBQfJ+CjvDc4p3FIZTpAhQH9fEGREW0E1B7L+NaeOkZ/8rKOuVSWeiB g==;
+X-CSE-ConnectionGUID: FspauoZKQQK0ItFhbLf1+w==
+X-CSE-MsgGUID: NdMpN5NNQUu3cUwTJDIsqw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="98396768"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; d="scan'208";a="98396768"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Aug 2026 06:32:25 -0700
-X-CSE-ConnectionGUID: UnsKUgvBQWaxVq8+LZSXpg==
-X-CSE-MsgGUID: yvyak6xrTWq/peVenFHlIA==
+ 10 Aug 2026 06:32:24 -0700
+X-CSE-ConnectionGUID: IO+AOKERR+qXQfU1l6uf6g==
+X-CSE-MsgGUID: BJ7RkatvRvejZ/h71bonUw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; d="scan'208";a="266534854"
+X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; d="scan'208";a="266534850"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Aug 2026 06:32:24 -0700
+ 10 Aug 2026 06:32:22 -0700
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v4 2/3] tests/intel/kms_dp_linktrain_fallback: Reset
- traversed MST output count
-Date: Mon, 10 Aug 2026 19:02:10 +0530
-Message-ID: <20260810133212.829168-3-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v4 1/3] lib/i915/i915_dp: Add UHBR helpers and
+ const-correct set_link_params
+Date: Mon, 10 Aug 2026 19:02:09 +0530
+Message-ID: <20260810133212.829168-2-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260810133212.829168-1-sowmiya.s@intel.com>
 References: <20260810133212.829168-1-sowmiya.s@intel.com>
@@ -69,42 +69,148 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-run_lt_fallback_test() tracks which MST outputs it has already
-traversed in a file-static counter that is never cleared. Today it
-has a single caller so the counter is implicitly zero, but a second
-caller would silently inherit the first run's state and skip every
-MST sibling as "already visited".
+Add i915_dp_is_uhbr_rate() and i915_dp_get_next_lower_rate(), prep for
+the UHBR-to-HBR fallback subtest later in this series; no caller yet.
 
-Reset the counter on entry so the function is safe to call more than
-once per binary. The DSC path never reaches setup_mst_outputs(), so
-run_dsc_sst_fallaback_test() does not need the same treatment.
+i915_dp_get_next_lower_rate() parses intel_dp_allowed_link_configs
+(source & sink & current limits) rather than i915_dp_force_link_rate,
+since the latter is source-only and lets the kernel silently clamp a
+rate the sink never advertised.
 
-v4: reworded commit message to explain this is a no-op prep patch
-    until run_lt_fallback_test() gains a second caller (Kunal)
+Also take link_rate/lane_count as const char * in
+i915_dp_set_link_params() so callers can pass string literals.
+
+v4: - name the UHBR10 threshold and make i915_dp_is_uhbr_rate() a
+      static inline in the header to avoid a cross-TU call (Kunal)
+    - parse intel_dp_allowed_link_configs instead of the source-only
+      i915_dp_force_link_rate list in i915_dp_get_next_lower_rate()
+      (Kunal)
+    - avoid the implicit long to int narrowing on the return value
+      (Kunal)
 
 Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
 ---
- tests/intel/kms_dp_linktrain_fallback.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/i915/i915_dp.c | 58 +++++++++++++++++++++++++++++++++++++++++++++-
+ lib/i915/i915_dp.h | 24 ++++++++++++++++++-
+ 2 files changed, 80 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/kms_dp_linktrain_fallback.c b/tests/intel/kms_dp_linktrain_fallback.c
-index 115183d2d..44b875ab9 100644
---- a/tests/intel/kms_dp_linktrain_fallback.c
-+++ b/tests/intel/kms_dp_linktrain_fallback.c
-@@ -431,6 +431,13 @@ static bool run_lt_fallback_test(data_t *data)
- 	bool ran = false;
- 	igt_output_t *output;
+diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+index e54058580..3d570f7cc 100644
+--- a/lib/i915/i915_dp.c
++++ b/lib/i915/i915_dp.c
+@@ -334,7 +334,7 @@ void i915_dp_reset_link_params(int drm_fd, igt_output_t *output)
+  * to set link rate and lane count to auto on exit
+  */
+ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+-			     char *link_rate, char *lane_count)
++			     const char *link_rate, const char *lane_count)
+ {
+ 	bool valid;
+ 	drmModeConnector *temp;
+@@ -390,3 +390,59 @@ int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
  
-+	/*
-+	 * Reset per invocation so MST traversal state from a previous subtest
-+	 * (e.g. dp-fallback followed by dsc-fallback) doesn't leak and cause
-+	 * MST siblings to be silently skipped as "already visited".
-+	 */
-+	traversed_mst_output_count = 0;
+ 	return max_rate;
+ }
 +
- 	for_each_connected_output(&data->display, output) {
- 		data->output = output;
++/**
++ * i915_dp_get_next_lower_rate:
++ * @drm_fd: A drm file descriptor
++ * @output: Target output
++ * @rate: reference link rate in 10 kbit/s units
++ *
++ * Parse the intel_dp_allowed_link_configs debugfs file and return the highest
++ * allowed link rate strictly below @rate.
++ *
++ * This file lists the configurations the driver would actually pick from, i.e.
++ * the intersection of the source rates, the rates the sink advertises and the
++ * current link limits, as "<lanes>x<rate>" entries. The i915_dp_force_link_rate
++ * list is only the source rates: writing a rate from it that the sink never
++ * advertised still succeeds and the kernel silently clamps the effective rate
++ * down, so the caller would report a rate the link was never trained at.
++ *
++ * Returns: highest allowed rate below @rate in 10 kbit/s units, or 0 if none.
++ */
++int i915_dp_get_next_lower_rate(int drm_fd, igt_output_t *output, int rate)
++{
++	char buf[4096];
++	const char *p;
++	int res, next = 0;
++
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
++					      "intel_dp_allowed_link_configs",
++					      buf, sizeof(buf));
++	igt_assert_f(res == 0,
++		     "Unable to read %s/intel_dp_allowed_link_configs\n",
++		     igt_output_name(output));
++
++	/*
++	 * Entries are "<lanes>x<rate>". Key off the 'x' separator rather than
++	 * tokenising the whole file, so the header and any decoration around
++	 * the list are skipped without having to model them.
++	 */
++	for (p = buf; (p = strchr(p, 'x')); p++) {
++		char *endptr;
++		long r;
++
++		/* Must be preceded by the lane count to be a config entry. */
++		if (p == buf || !isdigit((unsigned char)p[-1]))
++			continue;
++
++		errno = 0;
++		r = strtol(p + 1, &endptr, 10);
++		if (errno || endptr == p + 1)
++			continue;
++
++		if (r < rate && r > next)
++			next = (int)r;
++	}
++
++	return next;
++}
+diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
+index b13629147..5d17713e2 100644
+--- a/lib/i915/i915_dp.h
++++ b/lib/i915/i915_dp.h
+@@ -3,8 +3,29 @@
+ #ifndef _I915_DP_H_
+ #define _I915_DP_H_
  
++#include <stdbool.h>
++
+ #include "igt_kms.h"
+ 
++/* DP link rates are in 10 kbit/s units; UHBR10 is 10 Gbps. */
++#define I915_DP_UHBR10_LINK_RATE	1000000
++
++/**
++ * i915_dp_is_uhbr_rate:
++ * @link_rate: DP link rate in 10 kbit/s units, as reported by the
++ *	       i915_dp_*_link_rate debugfs files
++ *
++ * UHBR (Ultra High Bit Rate) link rates use 128b/132b channel encoding,
++ * everything below uses legacy 8b/10b. Mirrors the kernel's
++ * drm_dp_is_uhbr_rate().
++ *
++ * Returns: true if @link_rate is a UHBR rate, false otherwise.
++ */
++static inline bool i915_dp_is_uhbr_rate(int link_rate)
++{
++	return link_rate >= I915_DP_UHBR10_LINK_RATE;
++}
++
+ int i915_dp_get_current_link_rate(int drm_fd, igt_output_t *output);
+ int i915_dp_get_current_lane_count(int drm_fd, igt_output_t *output);
+ int i915_dp_get_max_link_rate(int drm_fd, igt_output_t *output);
+@@ -17,7 +38,8 @@ int i915_dp_get_pending_lt_failures(int drm_fd, igt_output_t *output);
+ int i915_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
+ void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
+ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+-			     char *link_rate, char *lane_count);
++			     const char *link_rate, const char *lane_count);
+ int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
++int i915_dp_get_next_lower_rate(int drm_fd, igt_output_t *output, int rate);
+ 
+ #endif
 -- 
 2.51.0
 
