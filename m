@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA655C5AD4E
-	for <igt-dev@archiver.kernel.org>; Mon, 10 Aug 2026 09:42:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1556CC5AD55
+	for <igt-dev@archiver.kernel.org>; Mon, 10 Aug 2026 11:25:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C3F810E76E;
-	Mon, 10 Aug 2026 09:42:04 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OW4CMh+S";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E47DF10E76E
- for <igt-dev@lists.freedesktop.org>; Mon, 10 Aug 2026 09:40:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786354803; x=1817890803;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=q+bFyTnnjkPtS3SSmlzsPfT3HUlkl1uFvccs3sBTrhk=;
- b=OW4CMh+SJHbYv8UNLKXmqDm0wHb5JaABXXpT2xoCnnnHIugHlp4h+0jZ
- etEs/rSEPQ21leT1mVsU0yJyd0ueRTANaeWm4XmAnDvNxAtXusnuAvhBU
- JiubLyIynLkiWsiM27TnQoFJIx3Ky1r5UU1oG+FYXzwp2gRl4+0MRU4Vq
- DH0/VdFFlyLKHWQ+q+7rMhIipJNw/Am0OCyw/n5fwPFwxanjlLZvJ3rXF
- aO3gfS+q+fuDeE4wjv7rJqABSzzSNX2Px2VGhbUqiVNxwHMOGgm/hCsFF
- Ach92k2YSVyvydDgj/kL/RWWEOdA3sVLDmhBxZrQbbSJlLq8XWTDddfTB g==;
-X-CSE-ConnectionGUID: 8hzXUFFbTWK9dUR3uTKD8A==
-X-CSE-MsgGUID: +TjJR7SjTLKMGIzCuXH5Mg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11870"; a="104256443"
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; d="scan'208";a="104256443"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Aug 2026 02:40:03 -0700
-X-CSE-ConnectionGUID: PPZZ5yDgTUiDamkmUxt+xw==
-X-CSE-MsgGUID: Y4xOPwsoSNi8q09wDI3lzg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,215,1779174000"; d="scan'208";a="266487672"
-Received: from unknown (HELO localhost) ([10.94.249.102])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Aug 2026 02:40:01 -0700
-From: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: adam.miszczak@linux.intel.com, kamil.konieczny@linux.intel.com,
- lukasz.laguna@intel.com, tvrtko.ursulin@igalia.com,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Subject: [PATCH v2 i-g-t 1/2] benchmarks/gem_wsim: add explicit VM
- create/assign steps
-Date: Mon, 10 Aug 2026 11:39:49 +0200
-Message-ID: <20260810093950.1696330-2-marcin.bernatowicz@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260810093950.1696330-1-marcin.bernatowicz@linux.intel.com>
-References: <20260810093950.1696330-1-marcin.bernatowicz@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BBA2E10E7D6;
+	Mon, 10 Aug 2026 11:25:09 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DAFC910E7CE;
+ Mon, 10 Aug 2026 11:24:33 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3427346772551083274=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_benchmarks/gem=5Fwsim=3A_?=
+ =?utf-8?q?explicit_VM_create/assign_+_LR_mode_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 10 Aug 2026 11:24:33 -0000
+Message-ID: <178636107388.34065.15190290671914940263@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260810093950.1696330-1-marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260810093950.1696330-1-marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,316 +37,303 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add explicit VM (Virtual Memory) management to workload descriptors so Xe
-runs can model VM topology directly.
+--===============3427346772551083274==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Introduce two new descriptor steps:
-- V.N     create VM id N (1-based)
-- v.N.M   assign VM N to context M
+== Series Details ==
 
-Implementation details:
-- Add VM_CREATE and CTX_VM step types and vm_id storage in w_step.
-- Parse V/v syntax with validation and clear error messages.
-- Add allocate_vms() pre-scan to size and allocate vm_list from V steps.
-- Update xe_prepare_contexts() to support explicit VM mode:
-  - create all explicit VMs
-  - default contexts to VM 0
-  - apply per-context VM assignments from v steps
-  - retain implicit single-VM fallback when no V steps are present
-- Make get_vm() use per-context VM linkage.
+Series: benchmarks/gem_wsim: explicit VM create/assign + LR mode (rev2)
+URL   : https://patchwork.freedesktop.org/series/170422/
+State : success
 
-Documentation:
-- Add VM (Virtual Memory) management step documentation into
-  benchmarks/wsim/README.
+== Summary ==
 
-This keeps i915 behavior unchanged while enabling explicit VM topology
-control for Xe workloads.
+CI Bug Log - changes from IGT_9047 -> IGTPW_15647
+====================================================
 
-Suggested-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Signed-off-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Cc: Adam Miszczak <adam.miszczak@linux.intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by: Adam Miszczak <adam.miszczak@linux.intel.com>
----
-v2: Clarify that VM means Virtual Memory (Kamil, Adam)
----
- benchmarks/gem_wsim.c  | 143 +++++++++++++++++++++++++++++++++++++----
- benchmarks/wsim/README |  19 ++++++
- 2 files changed, 150 insertions(+), 12 deletions(-)
+Summary
+-------
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 462188708..7d9363582 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -130,6 +130,8 @@ enum w_type {
- 	TERMINATE,
- 	SSEU,
- 	WORKINGSET,
-+	VM_CREATE,
-+	CTX_VM,
- };
- 
- struct dep_entry {
-@@ -210,6 +212,7 @@ struct w_step {
- 		struct bond bond;
- 		int sseu;
- 		struct working_set working_set;
-+		int vm_id;
- 	};
- 
- 	/* Implementation details */
-@@ -241,6 +244,7 @@ struct w_step {
- 
- struct vm {
- 	uint32_t id;
-+	bool declared;
- 	bool compute_mode;
- 	uint64_t ahnd;
- };
-@@ -1240,6 +1244,55 @@ parse_workload(struct w_arg *arg, unsigned int flags, double scale_dur,
- 
- 				step.type = WORKINGSET;
- 				goto add_step;
-+			} else if (!strcmp(field, "V")) {
-+				/*
-+				 * V.N  - create VM with id N (xe only, ignored on i915)
-+				 * VM ids are 1-based in the descriptor.
-+				 */
-+				field = strtok_r(fstart, ".", &fctx);
-+				check_arg(!field, "Missing VM id at step %u!\n",
-+					  nr_steps);
-+				tmp = atoi(field);
-+				check_arg(tmp <= 0, "Invalid VM id at step %u!\n",
-+					  nr_steps);
-+				step.vm_id = tmp;
-+				step.type = VM_CREATE;
-+				goto add_step;
-+			} else if (!strcmp(field, "v")) {
-+				/*
-+				 * v.N.M  - assign VM N to ctx M
-+				 * (xe only, ignored on i915)
-+				 */
-+				unsigned int nr = 0;
-+				int vm = 0, ctx_id = 0;
-+
-+				while ((field = strtok_r(fstart, ".", &fctx))) {
-+					fstart = NULL;
-+					tmp = atoi(field);
-+					if (nr == 0) {
-+						check_arg(tmp <= 0,
-+							  "Invalid VM id at step %u!\n",
-+							  nr_steps);
-+						vm = tmp;
-+					} else if (nr == 1) {
-+						check_arg(tmp <= 0,
-+							  "Invalid ctx id at step %u!\n",
-+							  nr_steps);
-+						ctx_id = tmp;
-+					} else {
-+						check_arg(1,
-+							  "Too many fields in v step at step %u!\n",
-+							  nr_steps);
-+					}
-+					nr++;
-+				}
-+				check_arg(nr != 2,
-+					  "v step requires VM id and ctx id at step %u!\n",
-+					  nr_steps);
-+				step.vm_id = vm;
-+				step.context = ctx_id;
-+				step.type = CTX_VM;
-+				goto add_step;
- 			}
- 
- 			if (!field) {
-@@ -1665,6 +1718,14 @@ xe_get_eq(struct workload *wrk, const struct w_step *w)
- static struct vm *
- get_vm(struct workload *wrk, const struct w_step *w)
- {
-+	struct ctx *ctx = __get_ctx(wrk, w);
-+
-+	/* If the ctx has been linked to an explicit VM, use it; otherwise
-+	 * fall back to the implicit single vm_list[0].
-+	 */
-+	if (ctx->vm)
-+		return ctx->vm;
-+
- 	return wrk->vm_list;
- }
- 
-@@ -2087,6 +2148,33 @@ static void xe_exec_queue_create_(struct ctx *ctx, struct xe_exec_queue *eq)
- 	eq->id = create.exec_queue_id;
- }
- 
-+static void allocate_vms(struct workload *wrk)
-+{
-+	int max_vm = 0;
-+	struct w_step *w;
-+
-+	/*
-+	 * Slot 0 is always the implicit/default VM. Descriptor VM ids are
-+	 * 1-based and map directly to vm_list[N] for explicit V.N steps.
-+	 */
-+	for_each_w_step(w, wrk) {
-+		if (w->type != VM_CREATE)
-+			continue;
-+		if (w->vm_id > max_vm)
-+			max_vm = w->vm_id;
-+	}
-+
-+	wrk->nr_vms = max_vm + 1;
-+	wrk->vm_list = calloc(wrk->nr_vms, sizeof(*wrk->vm_list));
-+	igt_assert(wrk->vm_list);
-+
-+	for_each_w_step(w, wrk) {
-+		if (w->type == VM_CREATE)
-+			/* Mark only explicitly declared VMs; slot 0 stays implicit. */
-+			wrk->vm_list[w->vm_id].declared = true;
-+	}
-+}
-+
- static void allocate_contexts(unsigned int id, struct workload *wrk)
- {
- 	int max_ctx = -1;
-@@ -2094,13 +2182,19 @@ static void allocate_contexts(unsigned int id, struct workload *wrk)
- 
- 	/*
- 	 * Pre-scan workload steps to allocate context list storage.
-+	 * Skip VM management steps whose context field is unused.
- 	 */
- 	for_each_w_step(w, wrk) {
--		int ctx = w->context + 1;
-+		int ctx;
- 		int delta;
- 
- 		w->wrk = wrk;
- 
-+		if (w->type == VM_CREATE)
-+			continue;
-+
-+		ctx = w->context + 1;
-+
- 		if (ctx <= max_ctx)
- 			continue;
- 
-@@ -2333,18 +2427,38 @@ static int xe_prepare_contexts(unsigned int id, struct workload *wrk)
- 	struct ctx *ctx;
- 	unsigned int i;
- 
--	/* shortcut, create one vm */
--	wrk->nr_vms = 1;
--	wrk->vm_list = calloc(wrk->nr_vms, sizeof(struct vm));
--	igt_assert(wrk->vm_list);
--	wrk->vm_list->compute_mode = false;
--	xe_vm_create_(wrk->vm_list);
--	wrk->vm_list->ahnd = intel_allocator_open(fd, wrk->vm_list->id,
--						  INTEL_ALLOCATOR_RELOC);
-+	/* Slot 0 is the implicit/default VM. */
-+	xe_vm_create_(&wrk->vm_list[0]);
-+	wrk->vm_list[0].ahnd = intel_allocator_open(fd, wrk->vm_list[0].id,
-+						    INTEL_ALLOCATOR_RELOC);
-+
-+	for (i = 1; i < wrk->nr_vms; i++) {
-+		if (!wrk->vm_list[i].declared)
-+			continue;
-+
-+		xe_vm_create_(&wrk->vm_list[i]);
-+		wrk->vm_list[i].ahnd =
-+			intel_allocator_open(fd, wrk->vm_list[i].id,
-+					     INTEL_ALLOCATOR_RELOC);
-+	}
-+
-+	/*
-+	 * Process CTX_VM steps to link each ctx to an explicit VM. Contexts
-+	 * without a v.N.M mapping remain on the implicit VM in slot 0.
-+	 */
-+	__for_each_ctx(ctx, wrk, ctx_idx)
-+		ctx->vm = &wrk->vm_list[0];
-+
-+	for_each_w_step(w, wrk) {
-+		if (w->type != CTX_VM)
-+			continue;
-+		igt_assert_lt((unsigned int)w->vm_id, wrk->nr_vms);
-+		igt_assert(wrk->vm_list[w->vm_id].declared);
-+		igt_assert_lt((unsigned int)w->context, wrk->nr_ctxs);
-+		wrk->ctx_list[w->context].vm = &wrk->vm_list[w->vm_id];
-+	}
- 
- 	__for_each_ctx(ctx, wrk, ctx_idx) {
--		/* link with vm */
--		ctx->vm = wrk->vm_list;
- 		for_each_w_step(w, wrk) {
- 			if (w->context != ctx_idx)
- 				continue;
-@@ -2537,6 +2651,9 @@ static int prepare_workload(unsigned int id, struct workload *wrk)
- 
- 	allocate_contexts(id, wrk);
- 
-+	if (is_xe)
-+		allocate_vms(wrk);
-+
- 	if (is_xe)
- 		ret = xe_prepare_contexts(id, wrk);
- 	else
-@@ -2857,7 +2974,9 @@ static void *run_workload(void *data)
- 				   w->type == ENGINE_MAP ||
- 				   w->type == LOAD_BALANCE ||
- 				   w->type == BOND ||
--				   w->type == WORKINGSET) {
-+				   w->type == WORKINGSET ||
-+				   w->type == VM_CREATE ||
-+				   w->type == CTX_VM) {
- 				   /* No action for these at execution time. */
- 				continue;
- 			}
-diff --git a/benchmarks/wsim/README b/benchmarks/wsim/README
-index e43813335..364759da0 100644
---- a/benchmarks/wsim/README
-+++ b/benchmarks/wsim/README
-@@ -11,6 +11,8 @@ P|S|X.<uint>.<int>
- d|p|s|t|q|a|T.<int>,...
- b.<uint>.<str>[|<str>].<str>
- w|W.<uint>.<str>[/<str>]...
-+V.<uint>
-+v.<uint>.<uint>
- f
- 
- For duration a range can be given from which a random value will be picked
-@@ -39,6 +41,11 @@ Additional workload steps are also supported:
-  'W' - Shared working set.
-  'X' - Context preemption control.
- 
-+VM (Virtual Memory) management steps (Xe: active; i915: ignored):
-+
-+ 'V' - Create VM with id N (V.N, VM ids are 1-based).
-+ 'v' - Assign VM N to context/queue M (v.N.M).
-+
- Engine ids: DEFAULT, RCS, BCS, VCS, VCS1, VCS2, VECS
- 
- Example (leading spaces must not be present in the actual file):
-@@ -88,6 +95,18 @@ Batch durations can also be specified as infinite by using the '*' in the
- duration field. Such batches must be ended by the terminate command ('T')
- otherwise they will cause a GPU hang to be reported.
- 
-+VM Example:
-+
-+  V.1
-+  M.1.VCS
-+  v.1.1
-+  B.1
-+  1.VCS.1000.0.0
-+
-+Creates VM 1, configures context 1 with a VCS engine map, assigns context 1
-+to VM 1, enables load balancing for context 1, and runs a single 1ms VCS
-+batch.
-+
- Xe and i915 differences
- ------------------------
- 
--- 
-2.43.0
+  **SUCCESS**
 
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/index.html
+
+Participating hosts (38 -> 35)
+------------------------------
+
+  Additional (1): bat-dg2-9 
+  Missing    (4): bat-dg2-14 bat-dg2-13 fi-snb-2520m fi-pnv-d510 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15647 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_mmap@basic:
+    - bat-dg2-9:          NOTRUN -> [SKIP][1] ([i915#4083])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@gem_mmap@basic.html
+
+  * igt@gem_mmap_gtt@basic:
+    - bat-dg2-9:          NOTRUN -> [SKIP][2] ([i915#4077]) +2 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@gem_mmap_gtt@basic.html
+
+  * igt@gem_render_tiled_blits@basic:
+    - bat-dg2-9:          NOTRUN -> [SKIP][3] ([i915#4079])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@gem_render_tiled_blits@basic.html
+
+  * igt@gem_tiled_pread_basic@basic:
+    - bat-dg2-9:          NOTRUN -> [SKIP][4] ([i915#15657])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@gem_tiled_pread_basic@basic.html
+
+  * igt@i915_pm_rps@basic-api:
+    - bat-dg2-9:          NOTRUN -> [SKIP][5] ([i915#11681] / [i915#6621])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@i915_pm_rps@basic-api.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-dg2-9:          NOTRUN -> [SKIP][6] ([i915#5190])
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_addfb_basic@basic-y-tiled-legacy:
+    - bat-dg2-9:          NOTRUN -> [SKIP][7] ([i915#4215] / [i915#5190])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_addfb_basic@basic-y-tiled-legacy.html
+
+  * igt@kms_addfb_basic@framebuffer-vs-set-tiling:
+    - bat-dg2-9:          NOTRUN -> [SKIP][8] ([i915#4212]) +7 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-dg2-9:          NOTRUN -> [SKIP][9] ([i915#4103]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-dg2-9:          NOTRUN -> [SKIP][10]
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-dg2-9:          NOTRUN -> [SKIP][11] ([i915#12343] / [i915#5354])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-dg2-9:          NOTRUN -> [SKIP][12] ([i915#1072] / [i915#9732]) +3 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-dg2-9:          NOTRUN -> [SKIP][13] ([i915#3555])
+   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-flip:
+    - bat-dg2-9:          NOTRUN -> [SKIP][14] ([i915#3708])
+   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@prime_vgem@basic-fence-flip.html
+
+  * igt@prime_vgem@basic-fence-mmap:
+    - bat-dg2-9:          NOTRUN -> [SKIP][15] ([i915#3708] / [i915#4077]) +1 other test skip
+   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@prime_vgem@basic-fence-mmap.html
+
+  * igt@prime_vgem@basic-write:
+    - bat-dg2-9:          NOTRUN -> [SKIP][16] ([i915#3291] / [i915#3708]) +2 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@prime_vgem@basic-write.html
+
+  
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#11681]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681
+  [i915#12343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12343
+  [i915#15657]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15657
+  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#3708]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708
+  [i915#4077]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077
+  [i915#4079]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079
+  [i915#4083]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4212]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212
+  [i915#4215]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4215
+  [i915#5190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#6621]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9047 -> IGTPW_15647
+  * Linux: CI_DRM_18962 -> CI_DRM_18972
+
+  CI-20190529: 20190529
+  CI_DRM_18962: 01d30c194951b8794c33f0d7f559bc4a1c9b7630 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18972: 64945e34f2f3505d1def53d6752c04ddca144a92 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15647: 3448f4dd0308771686f55c11b3e7958f3c420fd3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9047: 9047
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/index.html
+
+--===============3427346772551083274==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>benchmarks/gem_wsim: explicit VM create/assign + LR mode (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170422/">https://patchwork.freedesktop.org/series/170422/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9047 -&gt; IGTPW_15647</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/index.html</p>
+<h2>Participating hosts (38 -&gt; 35)</h2>
+<p>Additional (1): bat-dg2-9 <br />
+  Missing    (4): bat-dg2-14 bat-dg2-13 fi-snb-2520m fi-pnv-d510 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15647 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_mmap@basic:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@gem_mmap@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4083">i915#4083</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_mmap_gtt@basic:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@gem_mmap_gtt@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_render_tiled_blits@basic:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@gem_render_tiled_blits@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4079">i915#4079</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic@basic:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@gem_tiled_pread_basic@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15657">i915#15657</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_pm_rps@basic-api:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@i915_pm_rps@basic-api.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11681">i915#11681</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/6621">i915#6621</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@basic-y-tiled-legacy:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_addfb_basic@basic-y-tiled-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4215">i915#4215</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5190">i915#5190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@framebuffer-vs-set-tiling:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_addfb_basic@framebuffer-vs-set-tiling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4212">i915#4212</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12343">i915#12343</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-flip:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-mmap:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@prime_vgem@basic-fence-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4077">i915#4077</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-write:</p>
+<ul>
+<li>bat-dg2-9:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15647/bat-dg2-9/igt@prime_vgem@basic-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3708">i915#3708</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9047 -&gt; IGTPW_15647</li>
+<li>Linux: CI_DRM_18962 -&gt; CI_DRM_18972</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18962: 01d30c194951b8794c33f0d7f559bc4a1c9b7630 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18972: 64945e34f2f3505d1def53d6752c04ddca144a92 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15647: 3448f4dd0308771686f55c11b3e7958f3c420fd3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9047: 9047</p>
+
+</body>
+</html>
+
+--===============3427346772551083274==--
