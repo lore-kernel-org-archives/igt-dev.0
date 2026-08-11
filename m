@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50768C5CFCF
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 16:15:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103D0C5CFEB
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 16:38:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F149F10ECBA;
-	Tue, 11 Aug 2026 16:15:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9EB4410E33D;
+	Tue, 11 Aug 2026 16:38:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="gxF1Cy+6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cgAmfbAP";
 	dkim-atps=neutral
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2A1E510E330
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 16:14:23 +0000 (UTC)
-X-UUID: b4bfa96e959f11f1b1788b6acf885367-20260812
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
- s=dk; 
- h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From;
- bh=jZLJ2aswHiqu6bu1yts88ZdzJuxMAxwXxqSJBMWeK7E=; 
- b=gxF1Cy+6UeWAeWEJFTmqEf+Omj7+M5DwPVnTmHLBeTcKR6ngQBX6VBGXYKRoahCClq8zqOOx6LdUOww1yb8OZ+0sVUhEJof58SdsgLyEiQCRpUnnLzoM7fmyPJxwD28b8dHLOsq6NNQcXjVtX3k1fCnB3G/52nXr5Y+zzm88GaY=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19, REQID:98a90c80-8f96-49cc-8aa3-4c8fcd39885d, IP:0,
- U
- RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
- release,TS:0
-X-CID-META: VersionHash:7db8b62, CLOUDID:f791e5a7-8a7b-4c49-a0c0-42d13e7adac0,
- B
- ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
- DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
- AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: b4bfa96e959f11f1b1788b6acf885367-20260812
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by
- mailgw01.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
- with ESMTP id 1558564144; Wed, 12 Aug 2026 00:14:18 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Wed, 12 Aug 2026 00:14:17 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Wed, 12 Aug 2026 00:14:17 +0800
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
-To: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Ville Syrjala
- <ville.syrjala@linux.intel.com>, Fei Shao <fshao@chromium.org>
-CC: Jani <jani.nikula@intel.com>, Jason-JH Lin <jason-jh.lin@mediatek.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>, Lancelot Wu
- <Lancelot.Wu@mediatek.com>, Manasi Navare <navaremanasi@google.com>, Gil
- Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Subject: [PATCH i-g-t v2] tests/kms_plane: Remove redundant CRC frame sequence
- check
-Date: Wed, 12 Aug 2026 00:14:00 +0800
-Message-ID: <20260811161417.716771-1-jason-jh.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F03E510E33D
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 16:38:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1786466285; x=1818002285;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=T43tjJMPEP87ICH9wq17FoOUN2s8W8crGgzzXbBrANM=;
+ b=cgAmfbAPmtze5b9BdgLPlN6wI+UILBI5wnOAE3urmE0Ww+PycEjteaeE
+ cTFeK9EOshkPhjvo3LuihOChPOqdcn4nV++bICejkfK7Pr218y368ZHId
+ bMwTwVsuuiJu1RnXW44sf0OySeF36TXTSq4eZIjkveVo8oDsFEp3oLjAk
+ KEqF1riPyHIQF5Dk6sth/BgJVBPa9/DAFPIqfy9krIGA/Kpmx85/KAlZG
+ 0SZfVVcFOmwbExS48TWeloXSebWyVVMuWGcdgA+3FfRd6jSptKHNqcBSA
+ giwh/1fSstW2n5GR1JMkbfePdC4fWPF5Jh5fJ61chR+sHEnEqXkb3pxbS Q==;
+X-CSE-ConnectionGUID: J3dP1kC+QMWmrhfXjrCpbA==
+X-CSE-MsgGUID: /imFuZqzTlec2w6WqEIdhA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97662630"
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; d="scan'208";a="97662630"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 09:38:04 -0700
+X-CSE-ConnectionGUID: Zq4C+m43T7GJgwBhKFNvbA==
+X-CSE-MsgGUID: eSgSu+6cT76tZRJk4/Htlg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; d="scan'208";a="268541240"
+Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.254])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 09:38:00 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
+ <bhanuprakash.modem@gmail.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ igt-dev@lists.freedesktop.org, kernel-dev@igalia.com, Alex Hung
+ <alex.hung@amd.com>, Swati Sharma <swati2.sharma@intel.com>, John Harrison
+ <John.Harrison@Igalia.com>, Rodrigo Siqueira <siqueira@igalia.com>, Simon
+ Ser <contact@emersion.fr>, Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland
+ <harry.wentland@amd.com>, Uma Shankar <uma.shankar@intel.com>
+Subject: Re: [PATCH i-g-t v3 1/6] lib/igt_kms: clear colorop-changed flag
+ after commit
+In-Reply-To: <20260811143558.141813-2-mwen@igalia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260811143558.141813-1-mwen@igalia.com>
+ <20260811143558.141813-2-mwen@igalia.com>
+Date: Tue, 11 Aug 2026 19:37:57 +0300
+Message-ID: <ba7f8fba1de393dd4ec165804d9a01694ac3f156@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-MTK: N
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,39 +81,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The capture_crc() function validated that the CRC frame sequence
-returned by igt_pipe_crc_get_for_frame() matches the expected value.
-However, igt_pipe_crc_get_for_frame() already guarantees
-crc->frame >= expected via its internal loop:
+On Tue, 11 Aug 2026, Melissa Wen <mwen@igalia.com> wrote:
+> Don't request colorop updates if there is no change in the atomic
+> commit. It fixes atomic rejection after test skips that was caused by
+> incorrect attempts of changing inactive colorop properties, since
+> userspace can update only current active colorops or colorops that will
+> be activated or deactivated in the same commit. Active colorop means a
+> colorop that is in the chain of an active color pipeline, i.e.  the
+> pipeline in plane COLOR_PIPELINE property.
+>
+> Assisted-by: Claude:claude-opus-4-7
+> Tested-by: Alex Hung <alex.hung@amd.com>
+> Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> ---
+>  lib/igt_kms.c | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 42cc7c3bd..1e3cea781 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -4862,6 +4862,7 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
+>  {
+>  	int i;
+>  	igt_crtc_t *crtc;
+> +	igt_colorop_t *colorop;
+>  
+>  	for_each_crtc(display, crtc) {
+>  		igt_plane_t *plane;
+> @@ -4891,6 +4892,20 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
+>  				int fd;
+>  				plane->changed = 0;
+>  
+> +				/* clear changed flags on every colorop in the assigned chain
+> +				 * so already-committed property values aren't re-emitted on
+> +				 * the next commit.
+> +				 */
+> +				colorop = plane->assigned_color_pipeline;
+> +				while (colorop) {
+> +					int next_val;
+> +
+> +					colorop->changed = 0;
+> +					next_val = igt_colorop_get_prop(display, colorop,
+> +									IGT_COLOROP_NEXT);
+> +					colorop = igt_find_colorop(display, next_val);
+> +				}
 
-    do {
-        read_one_crc(pipe_crc, crc);
-    } while (igt_vblank_before(crc->frame, vblank));
+Seems like it would be useful to have iterator macros for going through
+pipelines/colorops.
 
-The additional check in capture_crc() is therefore redundant.
-Remove it and rely on the library's existing guarantee.
+BR,
+Jani.
 
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
----
- tests/kms_plane.c | 5 -----
- 1 file changed, 5 deletions(-)
+> +
+>  				fd = plane->values[IGT_PLANE_IN_FENCE_FD];
+>  				if (fd != -1)
+>  					close(fd);
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 12dfbfe1d82b..fe8ee2ab26ab 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -765,11 +765,6 @@ static int num_unique_crcs(const igt_crc_t crc[], int num_crc)
- static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc)
- {
- 	igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc, vblank, crc);
--
--	igt_fail_on_f(!igt_skip_crc_compare && !igt_run_in_simulation() &&
--		      crc->has_valid_frame && crc->frame != vblank,
--		      "Got CRC for the wrong frame (got %u, expected %u). CRC buffer overflow?\n",
--		      crc->frame, vblank);
- }
- 
- static void capture_format_crcs_single(data_t *data, igt_crtc_t *crtc,
 -- 
-2.43.0
-
+Jani Nikula, Intel
