@@ -4,27 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 526BAC5B572
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 16:08:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50768C5CFCF
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 16:15:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB7A710E378;
-	Tue, 11 Aug 2026 16:08:48 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0015210ECAF;
- Tue, 11 Aug 2026 16:08:10 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5148348443411003670=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id F149F10ECBA;
+	Tue, 11 Aug 2026 16:15:00 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="gxF1Cy+6";
+	dkim-atps=neutral
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A1E510E330
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 16:14:23 +0000 (UTC)
+X-UUID: b4bfa96e959f11f1b1788b6acf885367-20260812
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
+ s=dk; 
+ h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From;
+ bh=jZLJ2aswHiqu6bu1yts88ZdzJuxMAxwXxqSJBMWeK7E=; 
+ b=gxF1Cy+6UeWAeWEJFTmqEf+Omj7+M5DwPVnTmHLBeTcKR6ngQBX6VBGXYKRoahCClq8zqOOx6LdUOww1yb8OZ+0sVUhEJof58SdsgLyEiQCRpUnnLzoM7fmyPJxwD28b8dHLOsq6NNQcXjVtX3k1fCnB3G/52nXr5Y+zzm88GaY=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19, REQID:98a90c80-8f96-49cc-8aa3-4c8fcd39885d, IP:0,
+ U
+ RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+ release,TS:0
+X-CID-META: VersionHash:7db8b62, CLOUDID:f791e5a7-8a7b-4c49-a0c0-42d13e7adac0,
+ B
+ ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
+ DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
+ AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: b4bfa96e959f11f1b1788b6acf885367-20260812
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by
+ mailgw01.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
+ (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+ with ESMTP id 1558564144; Wed, 12 Aug 2026 00:14:18 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.29; Wed, 12 Aug 2026 00:14:17 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.2562.29 via Frontend Transport; Wed, 12 Aug 2026 00:14:17 +0800
+From: Jason-JH Lin <jason-jh.lin@mediatek.com>
+To: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Ville Syrjala
+ <ville.syrjala@linux.intel.com>, Fei Shao <fshao@chromium.org>
+CC: Jani <jani.nikula@intel.com>, Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Paul-PL Chen <paul-pl.chen@mediatek.com>, Lancelot Wu
+ <Lancelot.Wu@mediatek.com>, Manasi Navare <navaremanasi@google.com>, Gil
+ Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ <Project_Global_Chrome_Upstream_Group@mediatek.com>
+Subject: [PATCH i-g-t v2] tests/kms_plane: Remove redundant CRC frame sequence
+ check
+Date: Wed, 12 Aug 2026 00:14:00 +0800
+Message-ID: <20260811161417.716771-1-jason-jh.lin@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/device=5Freset=3A_A?=
- =?utf-8?q?dd_Xe_healthcheck_to_post-reset_validation?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lukasz Laguna" <lukasz.laguna@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Aug 2026 16:08:10 -0000
-Message-ID: <178646449099.39807.11159330529197313295@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260811141426.1642321-1-lukasz.laguna@intel.com>
-In-Reply-To: <20260811141426.1642321-1-lukasz.laguna@intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,192 +78,42 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5148348443411003670==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The capture_crc() function validated that the CRC frame sequence
+returned by igt_pipe_crc_get_for_frame() matches the expected value.
+However, igt_pipe_crc_get_for_frame() already guarantees
+crc->frame >= expected via its internal loop:
 
-== Series Details ==
+    do {
+        read_one_crc(pipe_crc, crc);
+    } while (igt_vblank_before(crc->frame, vblank));
 
-Series: tests/device_reset: Add Xe healthcheck to post-reset validation
-URL   : https://patchwork.freedesktop.org/series/172005/
-State : failure
+The additional check in capture_crc() is therefore redundant.
+Remove it and rely on the library's existing guarantee.
 
-== Summary ==
+Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+---
+ tests/kms_plane.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-CI Bug Log - changes from IGT_9051 -> IGTPW_15657
-====================================================
+diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+index 12dfbfe1d82b..fe8ee2ab26ab 100644
+--- a/tests/kms_plane.c
++++ b/tests/kms_plane.c
+@@ -765,11 +765,6 @@ static int num_unique_crcs(const igt_crc_t crc[], int num_crc)
+ static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc)
+ {
+ 	igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc, vblank, crc);
+-
+-	igt_fail_on_f(!igt_skip_crc_compare && !igt_run_in_simulation() &&
+-		      crc->has_valid_frame && crc->frame != vblank,
+-		      "Got CRC for the wrong frame (got %u, expected %u). CRC buffer overflow?\n",
+-		      crc->frame, vblank);
+ }
+ 
+ static void capture_format_crcs_single(data_t *data, igt_crtc_t *crtc,
+-- 
+2.43.0
 
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_15657 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_15657, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/index.html
-
-Participating hosts (37 -> 36)
-------------------------------
-
-  Additional (1): fi-glk-j4005 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_15657:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live:
-    - bat-arlh-3:         [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9051/bat-arlh-3/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/bat-arlh-3/igt@i915_selftest@live.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15657 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][3] ([i915#2190])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][4] ([i915#4613]) +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/fi-glk-j4005/igt@gem_lmem_swapping@basic.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][5] +11 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9051 -> IGTPW_15657
-  * Linux: CI_DRM_18977 -> CI_DRM_18978
-
-  CI-20190529: 20190529
-  CI_DRM_18977: dc462ab791b686c48545c160ecc81be64f77a846 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18978: 6ed371d40ec5cba972c0bdcf7e61fcadc7b5e7b0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15657: 15657
-  IGT_9051: 9051
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/index.html
-
---===============5148348443411003670==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/device_reset: Add Xe healthcheck to post-reset validation</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172005/">https://patchwork.freedesktop.org/series/172005/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9051 -&gt; IGTPW_15657</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_15657 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_15657, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/index.html</p>
-<h2>Participating hosts (37 -&gt; 36)</h2>
-<p>Additional (1): fi-glk-j4005 <br />
-  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_15657:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9051/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/bat-arlh-3/igt@i915_selftest@live.html">INCOMPLETE</a> +1 other test incomplete</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15657 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/fi-glk-j4005/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15657/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> +11 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9051 -&gt; IGTPW_15657</li>
-<li>Linux: CI_DRM_18977 -&gt; CI_DRM_18978</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18977: dc462ab791b686c48545c160ecc81be64f77a846 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18978: 6ed371d40ec5cba972c0bdcf7e61fcadc7b5e7b0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15657: 15657<br />
-  IGT_9051: 9051</p>
-
-</body>
-</html>
-
---===============5148348443411003670==--
