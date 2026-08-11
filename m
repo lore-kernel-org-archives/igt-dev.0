@@ -4,54 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA87DC5B572
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 13:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B856C5B56A
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 14:15:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4237889C86;
-	Tue, 11 Aug 2026 13:32:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6073710E0CA;
+	Tue, 11 Aug 2026 14:15:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WzktSV1r";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="blrI9sz8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DFD3810E500
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 13:30:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5863210E0CA
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 14:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786455013; x=1817991013;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=uGZcc5QAmNzmF4mX6ezqFrA+CiysNEmfnMKZVNGSPdc=;
- b=WzktSV1r/7a2oqFb5xQdKml7pTTCH2YXG6JhYKfQzGALY+34M9GyfYtx
- Q5nsXgl4I3G6g+FIHL1fEX0IOCM0j9VJ/CjReI6N1ZIjLiN59WJ48zNpy
- ZarVJJLokMvHDZ9icZpDedDK0tK1FOhYU/ZBwS/3tImmT/kCDE5G0cWn4
- 0RKXazhO8MyQrRmWZv2baJIJjJ8vJFJkuc0FfIzUf0wlgBaIwI23jMkJa
- J887I7ZSfjgc7Pxhq7Ktps6WsQuubMOZ/POU6G5TEqYwfba7v3T3MbI4I
- U7GGpSrmScbd3YLl6MruU9PIK5dL5Py4cxXbwwzEpqSiPcWM9m0POScnA w==;
-X-CSE-ConnectionGUID: Gx9eqaU5T4GHY1kXGo7zQw==
-X-CSE-MsgGUID: I/2McDFHSWmkuJZzB9EZJA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="87199908"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="87199908"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 06:30:13 -0700
-X-CSE-ConnectionGUID: 4LqKGdjaQJGZ4FNjPGN3mw==
-X-CSE-MsgGUID: e3111kwxSiGGaIKYnBuCQw==
+ t=1786457689; x=1817993689;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=78Z8H5DbicYAJg5RzE2PYRMKQpwO8ReqXrhsExKLzww=;
+ b=blrI9sz8tISHjNuyfWi8sF1EFYmNLzCd2vC+j1xLdGyXivVgm0Vzndec
+ bdAmIFtc7ev7+djSGCOeF40RXsT9zl9CooLVqKN0upLRO4i8c0W2hKWm4
+ F9TDyCptP1wOe2M29MASOQWIWpmqK4THOaACvkLVolkAktFT3oydEEM0O
+ mIyxD/DmtCSISOjlw/bOwijyWGm/rB6hxyd1NrH3lte5sIJ9Sdczh/E+E
+ gGzrL5NOHopvw0nnd/BFNycWhdTxMWOIATyh3Y/GhFRm0QwzxO5IX0Kjy
+ NZwpdSy0oL6fgtUaAS5hCT+2tq79NwXBc1K5eK6KEer3ctYTjVkEKGfbU w==;
+X-CSE-ConnectionGUID: fUELUKFxRiOQmA+RWYnmyA==
+X-CSE-MsgGUID: KBvQSkcKSG2uyo9gBdAk5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="74524252"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="74524252"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 07:14:48 -0700
+X-CSE-ConnectionGUID: 3FIGETTiT1yyAwPIcjU1Tg==
+X-CSE-MsgGUID: 4SVHhALtTAuzZHp+20MrVA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="259078057"
-Received: from x299.igk.intel.com ([10.211.131.197])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 06:30:11 -0700
-From: "Tahvanainen, Jari" <jari.tahvanainen@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="301570254"
+Received: from dev-150.igk.intel.com (HELO localhost) ([10.91.214.40])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 07:14:47 -0700
+From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: mchehab@kernel.org,
-	"Tahvanainen, Jari" <jari.tahvanainen@intel.com>
-Subject: [PATCH 2/2] scripts/code_cov_parse_info: add display include and
- exclude in only_xe
-Date: Tue, 11 Aug 2026 16:34:11 +0300
-Message-ID: <20260811133411.720679-3-jari.tahvanainen@intel.com>
+Cc: marcin.bernatowicz@intel.com, raag.jadav@intel.com, lukasz.laguna@intel.com
+Subject: [PATCH v1 0/2] tests/device_reset: Add Xe healthcheck to post-reset
+ validation
+Date: Tue, 11 Aug 2026 16:14:24 +0200
+Message-ID: <20260811141426.1642321-1-lukasz.laguna@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260811133411.720679-1-jari.tahvanainen@intel.com>
-References: <20260811133411.720679-1-jari.tahvanainen@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,61 +66,21 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Only_xe was missing display, so let's add that.
-Xe build do not include all the files from i915/display, so let's exclude
-those as obsolete.
+Extend the healthcheck for Xe devices to validate basic command
+submission after reset.
 
-Signed-off-by: "Tahvanainen, Jari" <jari.tahvanainen@intel.com>
----
- scripts/code_cov_parse_info | 35 +++++++++++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+Lukasz Laguna (2):
+  lib/xe/xe_device: Add helper for device healthcheck
+  tests/device_reset: Add Xe healthcheck to post-reset validation
 
-diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index 97f325c85..5f5d34dfa 100755
---- a/scripts/code_cov_parse_info
-+++ b/scripts/code_cov_parse_info
-@@ -1548,6 +1548,41 @@ if ($only_xe) {
- 	# Please keep in sync with the documentation
- 	push @src_exclude_regexes, "selftest";
- 	push @src_include_regexes, "drm/xe";
-+        push @src_include_regexes, "drm/i915/display";
-+        #For xe the following display related sources are not part of the build
-+        push @src_exclude_regexes, "drm/i915/display/dvo";
-+        push @src_exclude_regexes, "drm/i915/display/g4x";
-+        push @src_exclude_regexes, "drm/i915/display/hsw_ips.c";
-+        push @src_exclude_regexes, "drm/i915/display/i9xx";
-+        push @src_exclude_regexes, "drm/i915/display/.*_dsi";
-+        push @src_exclude_regexes, "drm/i915/display/intel_bo.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_crt.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_display_presi.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_display_reset.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_display_rps.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_display_snapshot.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_dp\.h\$";
-+        push @src_exclude_regexes, "drm/i915/display/intel_dpio_phy\.";
-+        push @src_exclude_regexes, "drm/i915/display/intel_dpll\.c\$";
-+        push @src_exclude_regexes, "drm/i915/display/intel_dpt\.c\$";
-+        push @src_exclude_regexes, "drm/i915/display/intel_dsb_buffer.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_dvo.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_fb_bo.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_fb_pin.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_fbdev_fb.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_fdi\.c\$";
-+        push @src_exclude_regexes, "drm/i915/display/intel_hdcp_gsc\.c\$";
-+        push @src_exclude_regexes, "drm/i915/display/intel_load_detect.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_lpe_audio.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_lspcon\.c\$";
-+        push @src_exclude_regexes, "drm/i915/display/intel_lvds.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_overlay.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_pch_";
-+        push @src_exclude_regexes, "drm/i915/display/intel_pfit\.c\$";
-+        push @src_exclude_regexes, "drm/i915/display/intel_plane_initial.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_svdo.c";
-+        push @src_exclude_regexes, "drm/i915/display/intel_sprite";
-+        push @src_exclude_regexes, "drm/i915/display/intel_tv.c";
- #	push @src_include_regexes, "drm/ttm";
- #	push @src_include_regexes, "drm/vgem";
- }
+ lib/meson.build      |  1 +
+ lib/xe/xe_device.c   | 73 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_device.h   | 11 +++++++
+ tests/device_reset.c | 13 ++++++--
+ 4 files changed, 95 insertions(+), 3 deletions(-)
+ create mode 100644 lib/xe/xe_device.c
+ create mode 100644 lib/xe/xe_device.h
+
 -- 
 2.43.0
 
