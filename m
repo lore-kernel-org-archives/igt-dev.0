@@ -4,161 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5B29C5AC67
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 11:48:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31B4CC5AC67
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 11:54:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3A0E410E30A;
-	Tue, 11 Aug 2026 11:48:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BB0F910E6FF;
+	Tue, 11 Aug 2026 11:54:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BMYSOJVN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dz3K6M55";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E514610E27F
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 11:47:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C6D610E27F
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 11:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786448875; x=1817984875;
+ t=1786449216; x=1817985216;
  h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=kbfiVTTfClBUEHANdL79oJ1x8CkLbMBYFvrXqqCWSnY=;
- b=BMYSOJVNKiOwR+jm2IgPnUwDUiiDBVqTvNJIdjYOBgqdOGNORXBA9fWn
- l20Ab4z0aoQq6ZzpNOFObp0OVSyBVbQtzQACp4WIhPMoN5cZw+iiAzEpV
- W8P3L9xnNeWsnFLS8CXbURO1r8sDvFcwLbdId2B8I1/yIg1Gpn/ZGR5RW
- mQ3B9mmNOYbSDtUQMCaqQuZ6OKAL9Ca7JjMWhmEfQL7Nx7+bPaJXyypQo
- /QWD4CaMHbEjSFTgxPBdQ/godnEay0dqRyEGh+p6AJKBfQoi1ywMEw8ZI
- nvbJ03f+7vBbPLtWOWwI9hpKDuZgWZ/CpljPfKBdxFq/SXxazhtxKgyZ6 Q==;
-X-CSE-ConnectionGUID: TQn9rQjCRSW+cIPvboF21g==
-X-CSE-MsgGUID: CusaUB1gTS2ar/8ItUWedw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="86856226"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208,217";a="86856226"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 04:47:55 -0700
-X-CSE-ConnectionGUID: ftgHBk47QLSGqp1hUwalEQ==
-X-CSE-MsgGUID: TROinoobQhe+3N3hL4ZbJQ==
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=6unCOfvUdpg1cACJuZcFkZA6PuzQbbFwVapF3iy+7S0=;
+ b=dz3K6M55vVrSZji6UshYmYq9O0RMG8xo4UgVMYb26nG9wwhgbJwcEt8E
+ MbF1wgyLsyNa6DUiWxPDQDELbmIczGxKfnIIdVl7Zl+1+nJuQHq5vr0iY
+ 7Wk3AJtJylLC5VuXqyb12EGWJ3VXF0kptJD+8VKET4ZIGAD18qhZCeJeW
+ xTt1jXpYNokkMO8xz4IycHH6ssEp5K/1u+a+J8BnZ/JKQaWn5hMwbEXsJ
+ BJivXg0+qRquOAfbl39lubMrczNQXJoMJO2xeUn9s52jnv74I/9yuTZPq
+ T0ZNVyVYyLru92ULIqGsiCbM0awyFrA9BDmohGkWQTj955/feYBefzJ9I A==;
+X-CSE-ConnectionGUID: 0tHZgWFpT/Cl5dxelRRUKw==
+X-CSE-MsgGUID: gdASoIRrQRe1RwuOmrwKqQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="74510943"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="74510943"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 04:53:36 -0700
+X-CSE-ConnectionGUID: kL4CEx24Tgm7E5MfY+IQaA==
+X-CSE-MsgGUID: 0ZLScnZjSxyoSMHtl/h39g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; 
- d="scan'208,217";a="259478304"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 04:47:54 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="301537423"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 04:53:35 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 11 Aug 2026 04:47:53 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.45; Tue, 11 Aug 2026 04:53:34 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Tue, 11 Aug 2026 04:47:53 -0700
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.69) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.45 via Frontend Transport; Tue, 11 Aug 2026 04:53:34 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.34) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 11 Aug 2026 04:47:52 -0700
+ 15.2.2562.45; Tue, 11 Aug 2026 04:53:31 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DZXiTafEoy1FfzH7sRUBlFylDsKEGA9gMemuIdK03MrmjPfVSSPT5NXU8kQT4qrIB/cVoaaPBW4AZuMy/p9tpBo84slgapV1PfaESS2W0zXQPys7SVJgqrDjQp0vtl8L55Chw4gcOjVHDenthdXIN41sWnfj1jtcxGPQOturBt1RaTicoYVjTZtLaq3OSDcYOYpfZMZjTrWY/lmAtqcEPHIP5c7gQzalMid+ugZ0UxYR0gFG9cBmh3sFOPQFFkU/Lx13C8hTjfJ5Wnvggh1YtHG/Vq+dOSRF2H+N/F4xssYbqJjG+QFuwPG7vu+ouS/8dEKYYxs+hetNJHMSqy6mmA==
+ b=PtqBKTvFfCxQAk6eUpRbF4WdsY9WpTVj6UaXQcX5p4K79K0NVPcfC1Zj4WVWjqmSDlRHTXsFBVT1qa7NVy8I/F4x5vA3VvevMSU0uHXw5fUnE9wKZa9Hw/Ff8n6Id79eZIbd+0J1DUS9ntM0d9dVHtymkniZVcvbx345KdqcUwNrFjl/LxyKEiQqQHd7dOwMJ9e74CI4OS56869qH9vMowHUgaUpdgL2FmIqYFq/k4iPrubpW68MlP2/6Eb/FcHtvJmNkBCeZi8xgoZtM1krOc7nYFGgJ39dJE4zvhio3SumX9SjFx7vtsq5g0Ri/hCvM7Zx5RK4D/M1xAeFAeXKHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7ZNF4PKSesfVpkNxX7BTUkBAFq8V1Anrsd4kUIdCIFc=;
- b=e96eI1gLbt2p2/87e+Pcv4uCP6hmvVzS69YowuVO1THyt1yF2VehtVHnDZGEfBt/orVEBHVdYI6YAeUs3C0r0JzueO7Z7RS9ZKwezxvWOLWz1ZtVFUgNoYV4Znf2byUgi2FyGKjMyQ4NRIK/JiJemPJC0ruBMnlAiZiplwTOTE0IGSpDEfR/dlf5ZNHyW9j3De4D/bNc5muSmHK4vQneAHkZG4neD5YPUy7OrkjBaUi0ZLJRwwxG6GyT7tIOoc0YukRdCUvKGXLIqdAaiwDuCGxLnvl60HOnWbhKZVLhIxqzhPymJA9N46s0eZiN4yGX8fcV2/6bCd0E+rt6pImxtg==
+ bh=1RTaOQ2Zzx49NZKjZHIxOzTbl8YQtglAwNol5oPMzMs=;
+ b=g6+zwgwokuiqShqnN59SsJcKWSsybLIK0oxZYLerpckwZvi088rZVriUxtjfJrmeCyjVt6SIRdRjgqmUwdTI4SGalokwthDyQdwfaoV0/6HzDOC3RWp/PJja5EpOeB1IUrxt5HtRxjxzX20m3RXz0XaAEKZjYiKA67JnMfQIPSH79qspm04yl8miKOnhILJAT1suFVqBfaX6UsmlbGFSU6IV29RoTn+hstHNf/t0gp/sUIk4L4Hq15UJEyulvd+B6hMpC7jssjkZSTumMoWBhIiuJpvN02hrKFSmiLOvTTM/aeaba9l/fR6h2aIb9sQtIMR1HOWoT5Yf53jgHENDGQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB7651.namprd11.prod.outlook.com (2603:10b6:8:149::8) by
- SA3PR11MB7433.namprd11.prod.outlook.com (2603:10b6:806:31e::20) with
+ IA0PR11MB7861.namprd11.prod.outlook.com (2603:10b6:208:3de::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Tue, 11 Aug
- 2026 11:47:50 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.11; Tue, 11 Aug
+ 2026 11:53:29 +0000
 Received: from DS0PR11MB7651.namprd11.prod.outlook.com
  ([fe80::901e:b308:292b:1b2f]) by DS0PR11MB7651.namprd11.prod.outlook.com
  ([fe80::901e:b308:292b:1b2f%4]) with mapi id 15.21.0292.024; Tue, 11 Aug 2026
- 11:47:50 +0000
-Content-Type: multipart/alternative;
- boundary="------------kYW58oV6evH0RY42arNJVVVN"
-Message-ID: <9282cef9-45a8-438c-8df7-53a41b3525db@intel.com>
-Date: Tue, 11 Aug 2026 17:17:42 +0530
+ 11:53:29 +0000
+Message-ID: <0118cf0a-a1cd-4654-997f-c61696244693@intel.com>
+Date: Tue, 11 Aug 2026 17:23:20 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/8] lib/igt_drm_netlink: add set_error_threshold command
+Subject: Re: [PATCH 3/8] lib/igt_drm_netlink: add get_error_threshold command
  support
 To: Harish Chegondi <harish.chegondi@intel.com>
 CC: <igt-dev@lists.freedesktop.org>, <riana.tauro@intel.com>,
  <anshuman.gupta@intel.com>, <mallesh.koujalagi@intel.com>,
  <raag.jadav@intel.com>
 References: <20260729121959.603890-1-ravi.kishore.koppuravuri@intel.com>
- <20260729121959.603890-5-ravi.kishore.koppuravuri@intel.com>
- <anZokYJr2DxQZjWm@intel.com>
+ <20260729121959.603890-4-ravi.kishore.koppuravuri@intel.com>
+ <anZm7vt-fj_qtHph@intel.com>
 Content-Language: en-US
 From: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>
-In-Reply-To: <anZokYJr2DxQZjWm@intel.com>
-X-ClientProxiedBy: MA5P287CA0099.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1d4::10) To DS0PR11MB7651.namprd11.prod.outlook.com
+In-Reply-To: <anZm7vt-fj_qtHph@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0090.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d4::14) To DS0PR11MB7651.namprd11.prod.outlook.com
  (2603:10b6:8:149::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7651:EE_|SA3PR11MB7433:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9839767f-4261-4de7-3c0f-08def79e5ed6
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7651:EE_|IA0PR11MB7861:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97ba59b9-7d0e-42b7-ea5f-08def79f28e8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|23010399003|366016|1800799024|10067099003|11063799006|56012099006|4143699003|8096899003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: nbl1IljcRyuXudDeNnqqQu1HdR9H/w8Y+M77xt/qkuqUo8puDQi5BQxs0oregMERjVKDIwPsPMpPB5q4ndJRv4w20bUHogJvNxD4iK3iugLAaLH+1x4l4HLjROb1k9gkH90GP/ORrsXn/UY+xyN2jcOoXVSzQBE+K2TRQQjIjHxfJz+4vEjNEtsvY7EKM/beq3CAc/k6H7DDQLxkDUwG6mheY5nYG5eJpMI44sVcFpJiFCRbw/ICf+bUjj7aVl4sfr/+hv4gwlagX6/p10tHCrXf9Pi069D9G++baYYk7WDakhdLyQNOhRD6wtiOSwjU3kurF7KRtXNWBPsKd5oDNUrwkoeSf63/hjMo/dj09w4s/p3WTODsQafB8jEifaEQ68A+y7bfGWbBM/5TKDsWi5aHapircoWRvu9JkQh80WDWwVqMDHta6FV+zNh7JIuEIOyWkUNzp3Oj3DbANE8o7vnfapb95mlNnUl+Dyk5NzschH2g2ov7qZIv/IgtYA4a3pzLQbHg/v+fNvwx2BFJAMqJ5obvwtnARYJ1eDC2b5WkFgNjs3AruR0f9JsS38CSw8N4qas31msfx/oc5eAlEHdPGXiWuE2oHL2A9VIAADATy+VwbrkVMFSs9g8EIOx0r4EhuetEKLnf3DsGHkqyaHSmEeNMOxCAnvxTc6Mfe/4=
+ ARA:13230040|1800799024|376014|366016|23010399003|22082099003|18002099003|56012099006|11063799006|4143699003|10067099003;
+X-Microsoft-Antispam-Message-Info: RaBeTJVs9BZFa6pia6NOf0tE9y6JEEyoHs2jsFf30ygm29jlMrex534GnO5lVB3qyN2R6Ejhj0iTM7QXcdeNdwgEv/9mdeb+Unk5XrmxD7k1q0jrh2kYQryKuSFldOT3SO0IKMbRsHzSLCboAiCpXrVNX2QvMbc//sKWcv8AtsFvUVTBgTc7yaCnOeHDaQX9cHKYSgaCqSkXjsOZf/6JJ2lmzMNxrzoyDdk5H2aUC83Xs2l1/mmMuuiXT9ubgj+86NBUDtNsp2aOz3gQcFgihNmVSxrwCTI8OrLiqyfMCZkGFFtn2kZCrRry5ZT2Tmflf0EQ0UeLFeIXRpWCDv41GPWaUUV79286vliLoJuSD4FFyT2XjmT7ROcIv/afFxdLjUXiANtfLUa1l/s44RMLJ9HUZewf4Mke/p8yPijX0w/iQ0Oc3Y9QfBc/8LeXo+1RdaZ52fuHPHuOI6VPLTIxNLZIBwt3rEnyyPnncF4GGfUaf48FrsjAaWNxl7NpDw/uoZ9Dv/kz3eo8f7ltW7mc41JAZwoCcwfbcGjlf649r02aN6X7vVyc6UQpLiQH2+ZIy/h0iJ2Uh8AkPtIwdcEoDTsaXvxdp0Bx27JvcwO2ZdNixk9NpEMBBFUKnnKV9sCFsMejOIiErikRafAQJJNHLHSo4+FxyEKMiVL8tFJJq3k=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7651.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(10067099003)(11063799006)(56012099006)(4143699003)(8096899003)(18002099003)(22082099003);
+ SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(4143699003)(10067099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YStsZkVteDMyTEtncjZtTTVYaGtVRitEMnRjQjVTWUxaUDB1WEZDMERYNXE2?=
- =?utf-8?B?c1RVRW4xUzJSSm1CQ0d0T0hmNTJlU1BWRVNaYmgzYm50OUN4MWJGdWJUR2l5?=
- =?utf-8?B?REVmNGNic1lFc0drVGordDJYMEQ2b0d4MFYyNVJHKzJhWG9yaWt3Smc1cXBW?=
- =?utf-8?B?bS9Gd0grZGVjQnVSM0JaMFVmYmVxb3hZcjRsMFZxdk5YZ3U0RkdJSVpuWVo2?=
- =?utf-8?B?SnRnemd4QjkrWjB5UzdsS2gzTUpkcUpML2JTRG95N1pEdmNkTVh1UHpBZS85?=
- =?utf-8?B?dksrWUN0dUE0OHJ5TUJZeVdtTVFKM3I4WFBob3Bhb3RmTW1WQlR5ZStVVUtL?=
- =?utf-8?B?Ym5YWkI3UnU1YzN6M1pWd2VnZHNnUllnMlV2Y2JjQkl2aS8xVURGVm4vWWc0?=
- =?utf-8?B?RlFaUTNnd3I1ZXBtajV3OTgwUEFXQnhBVDlvd3dpRFQxMW4vK1M4ZEY2L2Fl?=
- =?utf-8?B?aXNhaDBkT3RsTGl6aUEwVm5DeGd4L2ljUEVPdDFteEczUzk5SmlZUzJ0VDl1?=
- =?utf-8?B?UTF6NHAvL01SN3JsdEY1OXQ1WnJWSDcvaG82elpQUENHK0tEbk5Va2tYd1BX?=
- =?utf-8?B?ZUpOT0F2M1pHS0kyWktjUTNpSTBlWEpyaG8waXFCdEhLd0FaV1k3K3hZRk1m?=
- =?utf-8?B?MWdSNUxUdW41VDVMQVlEZGg1VWhkc1M1M3owOHpmc3lMbUE5cEU2MzlkcWs4?=
- =?utf-8?B?UzcyaXpsQ0FNM1drK3JNdHBXOHZoTW9xK2dwTm50RXpndGU3SElhL2RmVWtT?=
- =?utf-8?B?anZoU2VFQ3NXQndHd3pQK3kxdWVPdWFxSWdESm9GMzBoL0kzSGNySFF1bTZo?=
- =?utf-8?B?dUw2VlhiZGNiVmx2L1VMMm9JdmI5ZWdZNXBBWThCRGN3QjBHaTRBNEM4dTZl?=
- =?utf-8?B?bmZZbXQxVmdzM3JDMzEzZCsva2p2djBGRkx6N253K1FvVjNnZVA3UFdVTlVU?=
- =?utf-8?B?a3ZsdFpCUjZGZ0NLL1JRdHJpNEVkUVA5Q01vYlc3MnJvS1BuMHFLeDNwQ0gw?=
- =?utf-8?B?bGpKUUZ0NzR0K2cwZU5LakE2cmt3TUZhTFBuSGpreU8yR0FNdUxNQVNZdzRD?=
- =?utf-8?B?eGU3YUNrdWNlV0R1WnVhSXJXMHZyYUNKSFpuZjdQNGdFZkhYWXhQMlY0Mlg5?=
- =?utf-8?B?QW1sZVB1ZCs2WXhqRnA0alVXS29SUmVKTG1IeFh3NWdEVkFmZ1hnMmNuL01N?=
- =?utf-8?B?aEs1Y2l4Ty9xdlFxbFgxbXdZQWJsL3F1TUo5Vnk2M2FRMll6aW9LNlBGN3Qx?=
- =?utf-8?B?STB5QW9hOUg3bnBHRGtUcnExR3VvNTY2cU42V2JHWEtIN0ZmKzNIUWNyUGpX?=
- =?utf-8?B?OWdCZ2l5S2hvajRpYngwbU9pR3hzMmhMYStrMkFBTm5wWG5SYzNTREtRc2hB?=
- =?utf-8?B?SWVTa0puNUZRd2pyWU1XdHN6Zm5vcHRiSnNTeldZY0J6SC92YzgxRHVybVZD?=
- =?utf-8?B?aXRVb0pRbXNVVng1dm1acWlVR3dRRWV1Q0M1SHJvV0dFSktZSXIyQzNSTFhy?=
- =?utf-8?B?VUt1QkNkQTdZa0NmNnlMK2lLQ2w5Ymx3dSsyREYydE02eVhHbWZ6OGhUK3pZ?=
- =?utf-8?B?MW0rZmxLaW9wYWIrOGxTd2Y0K243NUFXK0luZjBLZ0dGSThrR3dockE2RUFV?=
- =?utf-8?B?RDBQdzVKZVpES0Q2NmRIV3lPN2FicEdxdXNId01hdjZJNE5meFVpK1NEa3U2?=
- =?utf-8?B?TXNibitTOVh6RDdFVTkwWWdQMUtoYTdja08vbERPU3JqaVlCcnRsWG1Uam14?=
- =?utf-8?B?M2dTUUQ5VzBtbVNlNmNEZkF6MTk1QXk1b2hHRFZieHE5UTc5MXVJeHYxbjND?=
- =?utf-8?B?OVdmT2RnSERzbTRMZEp5bGRWMlJCempHWXovWlVGZnRSeGhOWnlYTGFwTnd2?=
- =?utf-8?B?Nk16ajZza3BUeVl6NXdDVS9za3htNUdncFdkR2psZEQ3NU1LUmthZlZTSkIr?=
- =?utf-8?B?UXJYcUVlZGtPc3YwMlp5bEh3ZVpyVVlWK3hiem9qUjlnaGw0cmdHVmw4SVRa?=
- =?utf-8?B?aDZVcnZMVld3N1lMNVplamRFVGxnTytlM1Y3b1pCdkRtOVNhUTJQSzN5MnRj?=
- =?utf-8?B?c3ZuTUR4NWplVitIdVpvQ3VUTE9qMnMrc3o1L3prRFBRajVUYmthV1BEWGZp?=
- =?utf-8?B?T3ZuNitxWkJQOXFicUYxajluYm10RkJYaHV2aGpxblJvdDF6a0NqR1d3VkhC?=
- =?utf-8?B?TE5sSk5vb0gzbE9CWmRaWXp4aUJmQlZzcURnQ25PSXJkdmNpcktNdy9MUmhC?=
- =?utf-8?B?V1NkdFpSZU5xNVJUMGQyWDI3Y0V2d0FzUm02YzlkTEhhVWUwbUlQQ1Frdmhq?=
- =?utf-8?B?NVhRT0VMWXFoMHo0UHpuRkxRSnVUSWEvQjhnVUdnRldiOGFJNE1RSHpUc0Iv?=
- =?utf-8?Q?0jztHYZz3sFXCa6/3sKoC1x/vUj9ZixB/94H6?=
-X-Exchange-RoutingPolicyChecked: hUddja4f4XgpPfip5FEPsbMaXT2OqnZs/qut5zbH5kLsC/fansxkKCNUTU4wpGmEq+mBG9E00Jo54bJrRGVXn+WYwaVwmM5ylCDF4q8gT7zUdC7KXkBQ5YsndEbnGED4WFYR6FqZKSlso0PG7yTZCCvmGurStLm7//U/7HEmX1AD9x4hveykJ+A6edW/EVW6Jbq1caYN293UrWfih50CZnERObRcMesRD4Dij5cgxvpkdTp74VCWf8d8hl7NA4LN407C31v9dZSWqQ4OMEUfp42u/vh4immIiPpeR+Nr5yM0Txwvyl75P45KVVgE1d6KqCDpuhr7CwsS/np3BkfF6w==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9839767f-4261-4de7-3c0f-08def79e5ed6
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WjRQbFdIQW1NOGljVkV2VVpscGdxZU5ydUVDdXgrM0tRQVVrUERvcnVpRFVw?=
+ =?utf-8?B?TUdmMzRyQXRCZ2RQYS9IMmZtdUZQajlSYnZRVDJ6aTMvcVUyZnRYb2VrSWdH?=
+ =?utf-8?B?SUpXdkloeFVxVHY1d292Q3RyYWdOOU5weFNhMit3T1JqVXBqZlRCWEdIZDRq?=
+ =?utf-8?B?cDNNbFJueGt6dzJqUWVvTEZTTEpMTzJ6dUk0MlBRUXlpY0s3WFNQU1lxVTla?=
+ =?utf-8?B?Y0E5V2Z6ZFZsb2RLSStyRkoySWdQOExGOVFlM3FJVmoyb1pTODYrU2RYdUpt?=
+ =?utf-8?B?NSt3Tm1xZkFYVkI3eDlKUVpHeDBmWmkyaVI2NGlmejhWRUNxQ3Y0QjJ2TlJh?=
+ =?utf-8?B?NGR4YXVkSEx1bjM0ZmZRek9iZG83bHZ3Zy9Wam5kbWszbThIZHd3SkIvL0Nv?=
+ =?utf-8?B?bnVUc0tHM0tzamwwRElUTmhrZXdZY202N3lFN21wQ0tmeVVLUVdJVkU0NDJ2?=
+ =?utf-8?B?K1pJZXUyVCswT0Rac25WUXdlclcydUhYV3VqNGU2UDl4QnNENmo5MmpQRUZR?=
+ =?utf-8?B?MHZldXNJMUd3TDZOUndCTE1NdFl2TnljRnR6OHBjRzRVbWhrcWhnNFA3bHZI?=
+ =?utf-8?B?OVNUMU5tQ05jUFVUaUJ1ZVM5UC9CaVczZjNVclFuNkx4SlM0R2V2WE9KNU9B?=
+ =?utf-8?B?YTRaWlVyQUpXNjR6RUJHTjc5WTk5djRtQzQrN0JqclBLZmk3aFQ2RzRlelg2?=
+ =?utf-8?B?Um9LMTg2eXhjdjRZUWtMYWhCWis1VmM0SHBaRGNUQ1YyMXRSSVFLV0p1NXA3?=
+ =?utf-8?B?OTlPVXlNVnpqS0hCSXBnbDVScmJOc21QcDdyWVVWclBBZGpEVzNhSDhTcXJ4?=
+ =?utf-8?B?NWxNdUtuSWtHMjNndWo0cFJsVnNBWEloVFhiNFkxV1Y1YzRrTWhJdnJsR0tX?=
+ =?utf-8?B?S09ZYThTZHIzOGxlSHJ3RkRYd0xSV0t3UkZqRFkzQXZTcVQ5OGFWVTJJMERL?=
+ =?utf-8?B?ZFpxaTVnZ0VaNFZNbmxZYWlwdTZkWU1lWUlyUDlqaVY0THlzWjVRSWhoU3JU?=
+ =?utf-8?B?eGJ3ZEFaa1BEVGRrSU0vZlErdzlWc0crd2RhU0h0amVibFJwMFZ5akFGcXJa?=
+ =?utf-8?B?ZmR6bzJyVllKZ3pzOGZ2V2F5MXZpL2l4RVVYclNSWmFBR1JkcjFYNXgzYk41?=
+ =?utf-8?B?b3llNUp5NUxBNktqV0dLV1pPQ2tUbGpPUXQxNzJkdVE5YUhmTGhiYlFrWWRt?=
+ =?utf-8?B?MjZ6ZGFoS09STzcxdUEyeklMcnJINXp0S3RTdlIzczlFVXZnMzNDRGFia0FK?=
+ =?utf-8?B?QUtadlhzNlY1NUhWK01DUFdxSk8wSUwyZGVTMlJHSEwzSm5SWEloK3lnZUxF?=
+ =?utf-8?B?S1QzcHVjZCtaQzExVHcrM3ZlNU9JK1hDaXFBVW5qVVFuR0IzZlRpc2NzbVFw?=
+ =?utf-8?B?WGVjdzMxeFlmNWFpa0swdm4vMHR1MVU3aXRQSkNqSnNGN3FCd2szU1VCU0ll?=
+ =?utf-8?B?Qi93Q3ROZEYyWEpzM2VhZWtxUDJibEJxanJCVE91M253b2liYnh5bnNHbm96?=
+ =?utf-8?B?bGNreU9MUGJ2Tit1dGxFa0Y0OXdsMm94NkFhekx5ZEJaNDN4T09xemxLbWVl?=
+ =?utf-8?B?eWpCdWdxaERMdFhIaFJIZk5sVWUzRW5WV1VPaHpiemlyVkFhU2dkYjYwaXpD?=
+ =?utf-8?B?ejVjK2xjM09vZkxxeXkvQVlwaE9LMjFVZzBPYlJkamVDak9hY0lXbkpvNCtZ?=
+ =?utf-8?B?Umo0eW5rOUhkWFJXSTVMRTZoMmkweEV4b0llZmRIU1MraUptaGNXekZtdEtQ?=
+ =?utf-8?B?UC9yOVF6QUNKVnNiVXNHdEpPSEM0VVFRaTVHNFU2cTRoRXVlQWtucWE4VDVw?=
+ =?utf-8?B?WUV1SENUQm93UWRyT1FnRzBVV3JKanRuSVZsdWdXaGhXeE55UklGVkhwMStD?=
+ =?utf-8?B?MGZZeWY2ajlISzRpSUFmVkxJaTE0R3FpLzl6Y2h6STc1S0hVOHZ1dEtONWNq?=
+ =?utf-8?B?T3hCSEtBSkFMaURIQ1RMOUhHdDBrZVRNVDFjWWE5TjR4ZW8xV2RoRi96ZHND?=
+ =?utf-8?B?VHo0QnZDYmgzeThTMzFQWlZUYkJjaTRIS1VPN0phM3lZYXlYTS8xTkVvTGx0?=
+ =?utf-8?B?d3ZNdzBic21KUjdTWEhkUmt2UG1KMko4R29sQUhHQWNKNHBwMzhyeHhDT25a?=
+ =?utf-8?B?U2M5elZHaHBFVC85QVpMN0ZZSTI0cVF2b2Z5eUlZMjBXYVdRWU9FZUFseDlh?=
+ =?utf-8?B?cGtaYTRzdXY1RWZNMzZkaGxvcDZWUUg2T2tzSVZPeW5oU1BHOGF2SXhCZkNK?=
+ =?utf-8?B?MmxhcTBUZG1VdURreFJseUE5U2hqRm1WbGo2QmN6VkJFdU1aTGRJSEdsNFA2?=
+ =?utf-8?B?cmpaSFd0ZGRCa0h2SXdkRzZ6NDNhNlhaSVJTck0raXc3ZzRobWZqUlJjVWJX?=
+ =?utf-8?Q?YSvbiHREfBooBC+D4adf1cUtVE+CYEw8cFspN?=
+X-Exchange-RoutingPolicyChecked: gdpaF5/tDpZcL4oHleBEIAPcWX/F3AB4Nlkl38Fmao624ONDeIDboActnNt8v9WIcdQqDVC6y64cOcp0PtQZB3KTlpzRUgucGmQbJkOryFm6UUpnSHwetBJs+lLn7xJvutDbJ8ZaBJrmlPWsKUlTD3qjas4tGI9HBwcFYmHms8Tk5vPGKvdXyI+i6vFcJwKWe2tq+G01t2rmwkZwLhFVN2peaRWYvNzbSUZuP5Vcr/wcPPWgtLNw7MPJL651SL8Pr1q2ztUsWEx7dxpxKIte+LzQp3xRK7KiIPyLMxm4j0RDZLpc1PHEYFVr1R15EGfnZRuQUN8t4poo5mRIbjjQAg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97ba59b9-7d0e-42b7-ea5f-08def79f28e8
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7651.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 11:47:50.2728 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Aug 2026 11:53:29.5131 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UzXeB6Cgd7Bs1QQUCViV3EPZyPRRg664JHqXIjS8pD9cGk/OT/WZdtoMxGVd3GDzIWGoOSRMJVbJAevIkQSkknVsZIr08ooi8SCqMB3WY3IcGZ0k7Al1KdZQrhwugrtT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7433
+X-MS-Exchange-CrossTenant-UserPrincipalName: kCxt0Av69wi8DKIbgZxaiDymkWMD2UPxuEj7T70bEc9FF/6KatqcxiYsWaasXiTCAX3SV8xs8gdQR7MOiBYS4SPEqu8H+0aFP3FbVmR57clHh2HSIiqUSLLabPMm1h6c
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7861
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -175,252 +174,194 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------kYW58oV6evH0RY42arNJVVVN
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
 
-
-On 08-08-2026 04:51, Harish Chegondi wrote:
-> On Wed, Jul 29, 2026 at 05:49:55PM +0530, Ravi Kishore Koppuravuri wrote:
->> Add support for SET_ERROR_THRESHOLD to set the custom error threshold
->> value
+On 08-08-2026 04:44, Harish Chegondi wrote:
+> On Wed, Jul 29, 2026 at 05:49:54PM +0530, Ravi Kishore Koppuravuri wrote:
+>> Add support for GET_ERROR_THRESHOLD to fetch the current value of error
+>> threshold
 >>
->> Signed-off-by: Ravi Kishore Koppuravuri<ravi.kishore.koppuravuri@intel.com>
+>> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 >> ---
->>   lib/igt_drm_netlink.c | 39 +++++++++++++++++++++++++++++++++++++++
->>   lib/igt_drm_netlink.h |  1 +
->>   2 files changed, 40 insertions(+)
+>>   include/drm-uapi/drm_ras.h | 18 +++++++++++++
+>>   lib/igt_drm_netlink.c      | 53 +++++++++++++++++++++++++++++++++++---
+>>   lib/igt_drm_netlink.h      |  2 ++
+>>   3 files changed, 70 insertions(+), 3 deletions(-)
 >>
+>> diff --git a/include/drm-uapi/drm_ras.h b/include/drm-uapi/drm_ras.h
+>> index 218a3ee86..60611833b 100644
+>> --- a/include/drm-uapi/drm_ras.h
+>> +++ b/include/drm-uapi/drm_ras.h
+>> @@ -33,18 +33,36 @@ enum {
+>>   	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
+>>   	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME,
+>>   	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE,
+>> +	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
+>>   
+>>   	__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX,
+>>   	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
+>>   };
+>>   
+>> +enum {
+>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_DEVICE_NAME = 1,
+>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID,
+>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_NAME,
+>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID,
+>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_NAME,
+>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE,
+>> +
+>> +	__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX,
+>> +	DRM_RAS_A_ERROR_EVENT_ATTRS_MAX = (__DRM_RAS_A_ERROR_EVENT_ATTRS_MAX - 1)
+> The above enums are not used anywhere in this patch?
+
+Same response as mentioned for previous commits. This file is the UAPI 
+header file directly taken from the Kernel (as it
+is, not modified anything here). In my opinion, better not to alter 
+anything in this header
+
+>> +};
+>> +
+>>   enum {
+>>   	DRM_RAS_CMD_LIST_NODES = 1,
+>>   	DRM_RAS_CMD_GET_ERROR_COUNTER,
+>>   	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
+>> +	DRM_RAS_CMD_GET_ERROR_THRESHOLD,
+>> +	DRM_RAS_CMD_SET_ERROR_THRESHOLD,
+>> +	DRM_RAS_CMD_ERROR_EVENT,
+> DRM_RAS_CMD_SET_ERROR_THRESHOLD and DRM_RAS_CMD_ERROR_EVENT are not
+> used in this patch?
+>>   
+>>   	__DRM_RAS_CMD_MAX,
+>>   	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
+>>   };
+>>   
+>> +#define DRM_RAS_MCGRP_ERROR_NOTIFY	"error-notify"
+> Same here. DRM_RAS_MCGRP_ERROR_NOTIFY not used in this patch?
+>> +
+>>   #endif /* _UAPI_LINUX_DRM_RAS_H */
 >> diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
->> index 036660a6a..4738090af 100644
+>> index 4d543275d..036660a6a 100644
 >> --- a/lib/igt_drm_netlink.c
 >> +++ b/lib/igt_drm_netlink.c
->> @@ -29,6 +29,8 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
->>   	gnlh = nlmsg_data(nlh);
->>   
->>   	switch (gnlh->cmd) {
->> +	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
-> The definition of DRM_RAS_CMD_SET_ERROR_THRESHOLD needs to be added in
-> this patch instead of the previous patch.
-This file is the UAPI header file directly taken from the Kernel (as it
-is, not modified anything here). In my opinion, better not to alter
-anything in this header
+>> @@ -43,6 +43,21 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+>>   		ctx->error_value = nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE]);
+>>   		break;
+>>   	}
+>> +	case DRM_RAS_CMD_GET_ERROR_THRESHOLD: {
+>> +		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
+>> +
+>> +		ret = genlmsg_parse(nlh, 0, attrs,
+>> +				    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
+>> +		if (ret < 0)
+>> +			return NL_SKIP;
+>> +
+>> +		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD])
+>> +			return NL_SKIP;
+>> +
+>> +		ctx->error_threshold =
+>> +			nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]);
 >> +		break;
->>   	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
->>   		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
->>   
->> @@ -109,6 +111,7 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
+>> +	}
+>>   	default:
+>>   		return NL_SKIP;
+>>   	}
+>> @@ -94,6 +109,7 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
 >>   	}
 >>   
 >>   	switch (cmd) {
->> +	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
->>   	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
+>> +	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
 >>   	case DRM_RAS_CMD_GET_ERROR_COUNTER:
 >>   		ret = nla_put_u32(msg,
->> @@ -126,6 +129,16 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
->>   			nlmsg_free(msg);
->>   			return ret;
->>   		}
->> +
->> +		if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD) {
->> +			ret = nla_put_u32(msg,
->> +					  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
->> +					  ctx->error_threshold);
->> +			if (ret < 0) {
->> +				nlmsg_free(msg);
->> +				return ret;
->> +			}
->> +		}
->>   		break;
->>   	default:
->>   		nlmsg_free(msg);
->> @@ -238,6 +251,14 @@ static int validate_inputs(struct app_context *ctx, uint8_t cmd)
+>>   				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
+>> @@ -141,6 +157,7 @@ int init_app_context(struct app_context *ctx)
+>>   	ctx->node_id = UINT32_MAX;
+>>   	ctx->error_id = UINT32_MAX;
+>>   	ctx->error_value = 0;
+>> +	ctx->error_threshold = 0;
+>>   	ctx->family_id = -1;
+>>   
+>>   	return 0;
+>> @@ -155,6 +172,7 @@ void cleanup_app_context(struct app_context *ctx)
+>>   	ctx->node_id = UINT32_MAX;
+>>   	ctx->error_id = UINT32_MAX;
+>>   	ctx->error_value = 0;
+>> +	ctx->error_threshold = 0;
+>>   	ctx->family_id = -1;
+>>   }
+>>   
+>> @@ -206,10 +224,8 @@ int init_nl_socket(struct app_context *ctx)
+>>   	return 0;
+>>   }
+>>   
+>> -int get_error_counter(struct app_context *ctx)
+>> +static int validate_inputs(struct app_context *ctx, uint8_t cmd)
+>>   {
+>> -	int ret;
+>> -
+>>   	if (!ctx || !ctx->sock || ctx->family_id < 0)
+>>   		return -EINVAL;
+>>   
+>> @@ -222,6 +238,17 @@ int get_error_counter(struct app_context *ctx)
 >>   		return -EINVAL;
 >>   	}
 >>   
->> +	if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD &&
->> +	    (ctx->error_threshold < 1 || ctx->error_threshold > 16)) {
->> +		igt_warn("Invalid error_threshold (%u) provided. "
->> +			 "error_threshold should be >= 1 and <= 16.\n",
->> +			 ctx->error_threshold);
->> +		return -EINVAL;
->> +	}
+>> +	return 0;
+>> +}
 >> +
->>   	return 0;
->>   }
->>   
->> @@ -280,3 +301,21 @@ int get_error_threshold(struct app_context *ctx)
->>   
->>   	return 0;
->>   }
->> +
->> +int set_error_threshold(struct app_context *ctx)
+>> +int get_error_counter(struct app_context *ctx)
 >> +{
 >> +	int ret;
 >> +
->> +	ret = validate_inputs(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
+>> +	ret = validate_inputs(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER);
 >> +	if (ret < 0)
 >> +		return ret;
 >> +
->> +	ret = send_command(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
+>>   	ctx->error_value = 0;
+>>   
+>>   	ret = send_command(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER);
+>> @@ -233,3 +260,23 @@ int get_error_counter(struct app_context *ctx)
+>>   
+>>   	return 0;
+>>   }
+>> +
+>> +int get_error_threshold(struct app_context *ctx)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = validate_inputs(ctx, DRM_RAS_CMD_GET_ERROR_THRESHOLD);
 >> +	if (ret < 0)
 >> +		return ret;
 >> +
->> +	igt_debug("Set error threshold: node_id=%u error_id=%u threshold=%u\n",
+>> +	ctx->error_threshold = 0;
+>> +
+>> +	ret = send_command(ctx, DRM_RAS_CMD_GET_ERROR_THRESHOLD);
+>> +	if (ret < 0)
+>> +		return ret;
+>> +
+>> +	igt_debug("Retrieved error threshold: node_id=%u error_id=%u threshold=%u\n",
 >> +		  ctx->node_id, ctx->error_id, ctx->error_threshold);
 >> +
 >> +	return 0;
 >> +}
 >> diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
->> index fae9b0e06..c44486ffa 100644
+>> index e539bc030..fae9b0e06 100644
 >> --- a/lib/igt_drm_netlink.h
 >> +++ b/lib/igt_drm_netlink.h
->> @@ -33,6 +33,7 @@ void cleanup_nl_socket(struct app_context *ctx);
+>> @@ -23,6 +23,7 @@ struct app_context {
+>>   	uint32_t node_id;
+>>   	uint32_t error_id;
+>>   	uint32_t error_value;
+>> +	uint32_t error_threshold;
+>>   	int family_id;
+>>   };
+>>   
+>> @@ -31,6 +32,7 @@ void cleanup_app_context(struct app_context *ctx);
+>>   void cleanup_nl_socket(struct app_context *ctx);
 >>   int init_nl_socket(struct app_context *ctx);
 >>   int get_error_counter(struct app_context *ctx);
->>   int get_error_threshold(struct app_context *ctx);
->> +int set_error_threshold(struct app_context *ctx);
+>> +int get_error_threshold(struct app_context *ctx);
 >>   
 >>   #endif /* IGT_DRM_NETLINK_H */
 >>   
 >> -- 
 >> 2.34.1
 >>
---------------kYW58oV6evH0RY42arNJVVVN
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 08-08-2026 04:51, Harish Chegondi
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:anZokYJr2DxQZjWm@intel.com">
-      <pre wrap="" class="moz-quote-pre">On Wed, Jul 29, 2026 at 05:49:55PM +0530, Ravi Kishore Koppuravuri wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">Add support for SET_ERROR_THRESHOLD to set the custom error threshold
-value
-
-Signed-off-by: Ravi Kishore Koppuravuri <a class="moz-txt-link-rfc2396E" href="mailto:ravi.kishore.koppuravuri@intel.com">&lt;ravi.kishore.koppuravuri@intel.com&gt;</a>
----
- lib/igt_drm_netlink.c | 39 +++++++++++++++++++++++++++++++++++++++
- lib/igt_drm_netlink.h |  1 +
- 2 files changed, 40 insertions(+)
-
-diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
-index 036660a6a..4738090af 100644
---- a/lib/igt_drm_netlink.c
-+++ b/lib/igt_drm_netlink.c
-@@ -29,6 +29,8 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
- 	gnlh = nlmsg_data(nlh);
- 
- 	switch (gnlh-&gt;cmd) {
-+	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">The definition of DRM_RAS_CMD_SET_ERROR_THRESHOLD needs to be added in
-this patch instead of the previous patch.</pre>
-    </blockquote>
-    <span style="color: rgb(36, 36, 36); font-family: &quot;Segoe UI&quot;, &quot;Segoe UI Web (West European)&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14.6667px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">This
-      file is the UAPI header file directly taken from the Kernel (as it</span><br style="color: rgb(36, 36, 36); font-family: &quot;Segoe UI&quot;, &quot;Segoe UI Web (West European)&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14.6667px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">
-    <span style="color: rgb(36, 36, 36); font-family: &quot;Segoe UI&quot;, &quot;Segoe UI Web (West European)&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14.6667px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">is,
-      not modified anything here). In my opinion, better not to alter</span><br style="color: rgb(36, 36, 36); font-family: &quot;Segoe UI&quot;, &quot;Segoe UI Web (West European)&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14.6667px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;">
-    <span style="color: rgb(36, 36, 36); font-family: &quot;Segoe UI&quot;, &quot;Segoe UI Web (West European)&quot;, -apple-system, BlinkMacSystemFont, Roboto, &quot;Helvetica Neue&quot;, sans-serif; font-size: 14.6667px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(255, 255, 255); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;">anything
-      in this header</span>
-    <blockquote type="cite" cite="mid:anZokYJr2DxQZjWm@intel.com">
-      <pre wrap="" class="moz-quote-pre">
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">+		break;
- 	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
- 		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
- 
-@@ -109,6 +111,7 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
- 	}
- 
- 	switch (cmd) {
-+	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
- 	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
- 	case DRM_RAS_CMD_GET_ERROR_COUNTER:
- 		ret = nla_put_u32(msg,
-@@ -126,6 +129,16 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
- 			nlmsg_free(msg);
- 			return ret;
- 		}
-+
-+		if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD) {
-+			ret = nla_put_u32(msg,
-+					  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
-+					  ctx-&gt;error_threshold);
-+			if (ret &lt; 0) {
-+				nlmsg_free(msg);
-+				return ret;
-+			}
-+		}
- 		break;
- 	default:
- 		nlmsg_free(msg);
-@@ -238,6 +251,14 @@ static int validate_inputs(struct app_context *ctx, uint8_t cmd)
- 		return -EINVAL;
- 	}
- 
-+	if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD &amp;&amp;
-+	    (ctx-&gt;error_threshold &lt; 1 || ctx-&gt;error_threshold &gt; 16)) {
-+		igt_warn(&quot;Invalid error_threshold (%u) provided. &quot;
-+			 &quot;error_threshold should be &gt;= 1 and &lt;= 16.\n&quot;,
-+			 ctx-&gt;error_threshold);
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
-@@ -280,3 +301,21 @@ int get_error_threshold(struct app_context *ctx)
- 
- 	return 0;
- }
-+
-+int set_error_threshold(struct app_context *ctx)
-+{
-+	int ret;
-+
-+	ret = validate_inputs(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
-+	if (ret &lt; 0)
-+		return ret;
-+
-+	ret = send_command(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
-+	if (ret &lt; 0)
-+		return ret;
-+
-+	igt_debug(&quot;Set error threshold: node_id=%u error_id=%u threshold=%u\n&quot;,
-+		  ctx-&gt;node_id, ctx-&gt;error_id, ctx-&gt;error_threshold);
-+
-+	return 0;
-+}
-diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
-index fae9b0e06..c44486ffa 100644
---- a/lib/igt_drm_netlink.h
-+++ b/lib/igt_drm_netlink.h
-@@ -33,6 +33,7 @@ void cleanup_nl_socket(struct app_context *ctx);
- int init_nl_socket(struct app_context *ctx);
- int get_error_counter(struct app_context *ctx);
- int get_error_threshold(struct app_context *ctx);
-+int set_error_threshold(struct app_context *ctx);
- 
- #endif /* IGT_DRM_NETLINK_H */
- 
--- 
-2.34.1
-
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------kYW58oV6evH0RY42arNJVVVN--
