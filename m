@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A401C5CFC1
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 09:31:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CBDEC5CFC1
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 09:41:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B690310E1F6;
-	Tue, 11 Aug 2026 09:31:08 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9670310E2AB;
- Tue, 11 Aug 2026 09:30:28 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4497858102280823577=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id BEB7710E2C2;
+	Tue, 11 Aug 2026 09:41:01 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dEVXKvpF";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E55D410E2C2
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 09:40:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1786441225; x=1817977225;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=M3530eclzHb4pFXPexuuJH0kBVhlChx8gcNtlFINVr4=;
+ b=dEVXKvpFdKauE6l327Wi099YL5iNB3KfAnlTDLIjjVsN2KoZ6BUltKEu
+ +WyjWfgM45jXVjGd/BT3nAws6e9+4qIgnvKUAI/eXjOnnL6wwWCDw3O1r
+ UUx3n7nzDNuJfhTb3dAbphEToIxE1GFXekklM7T1EHnjRSW05fmv+UV2K
+ 7o1h6IswGO0EbPXsaDA8UJjRQbiowN71ELTotads53jFKIsVz1mGHTwQv
+ JiWB9AqbEEHDKdoMjDohI3k40xx88v1VjRQoqMEwT0k6VmY93A9j5M7Rz
+ GUc2+mF52I9LCLCrnBtJRlbs4XUH+PwAoUSA5L1Om4aZlxymUR/t4Hn8c w==;
+X-CSE-ConnectionGUID: jtZqn8tYQee7s702xbjQLA==
+X-CSE-MsgGUID: 9M6URBXvRhuPEstZyMgIBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="86089193"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="86089193"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 02:40:24 -0700
+X-CSE-ConnectionGUID: UQQODvVrT6qsn7nHPRWP9A==
+X-CSE-MsgGUID: GJEY4w3dShmuPV7wiCfEJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="259027099"
+Received: from display-adls.igk.intel.com ([10.211.131.198])
+ by fmviesa006.fm.intel.com with ESMTP; 11 Aug 2026 02:40:23 -0700
+From: Mika Kahola <mika.kahola@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mika Kahola <mika.kahola@intel.com>
+Subject: [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: skip PSR/FBC
+ subtests disabled by modparam
+Date: Tue, 11 Aug 2026 09:40:21 +0000
+Message-ID: <20260811094021.2094676-1-mika.kahola@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpm=3A_ad?=
- =?utf-8?q?d_coverage_for_xe=5Fdevice=5Fsysfs?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: shivtej.eknath.patil@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Aug 2026 09:30:28 -0000
-Message-ID: <178644062860.37182.18406885429920971702@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260811080831.20455-1-shivtej.eknath.patil@intel.com>
-In-Reply-To: <20260811080831.20455-1-shivtej.eknath.patil@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,154 +62,123 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4497858102280823577==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The enable_fbc and enable_psr module parameters can force FBC and PSR
+off regardless of chipset or sink support, but setup_fbc() and
+setup_psr() didn't check for that, so the related subtests ran and
+failed instead of being skipped.
 
-== Series Details ==
+Check intel_fbc_enable_possible() and is_psr_enable_possible() (also
+against PR_MODE, since a sink may use Panel Replay instead of PSR1) in
+setup_fbc()/setup_psr() so fbc.can_test/psr.can_test reflect the
+modparam state.
 
-Series: tests/intel/xe_pm: add coverage for xe_device_sysfs
-URL   : https://patchwork.freedesktop.org/series/171980/
-State : success
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+---
+ lib/i915/intel_fbc.c                   | 22 ++++++++++++++++++++++
+ lib/i915/intel_fbc.h                   |  1 +
+ tests/intel/kms_frontbuffer_tracking.c | 24 ++++++++++++++++++++++--
+ 3 files changed, 45 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
+index ad78ee2a3..9833cc9e3 100644
+--- a/lib/i915/intel_fbc.c
++++ b/lib/i915/intel_fbc.c
+@@ -20,6 +20,28 @@ void intel_fbc_disable(igt_display_t *display)
+ 	igt_set_module_param_int(display->drm_fd, "enable_fbc", 0);
+ }
+ 
++/**
++ * intel_fbc_enable_possible:
++ * @drm_fd: Device file descriptor
++ *
++ * Check if FBC is allowed to be enabled by reading the enable_fbc modparam.
++ *
++ * Returns:
++ * true if enable_fbc modparam allows FBC to be enabled, false otherwise.
++ */
++bool intel_fbc_enable_possible(int drm_fd)
++{
++	char *param_value;
++	int enable_fbc;
++
++	param_value = __igt_params_get(drm_fd, "enable_fbc");
++	igt_assert_f(param_value, "Could not read enable_fbc modparam\n");
++	enable_fbc = atoi(param_value);
++	free(param_value);
++
++	return enable_fbc != 0;
++}
++
+ /**
+  * intel_fbc_get_status_crtc_index
+  * @device: fd of the device
+diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
+index a82a96d20..1192ebf1b 100644
+--- a/lib/i915/intel_fbc.h
++++ b/lib/i915/intel_fbc.h
+@@ -14,6 +14,7 @@ enum psr_mode;
+ 
+ void intel_fbc_enable(igt_display_t *display);
+ void intel_fbc_disable(igt_display_t *display);
++bool intel_fbc_enable_possible(int drm_fd);
+ bool intel_fbc_supported(igt_crtc_t *crtc);
+ bool intel_fbc_wait_until_enabled(igt_crtc_t *crtc);
+ bool intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level);
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 594644632..4dd2f4e70 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -2195,6 +2195,12 @@ static void setup_fbc(void)
+ 		return;
+ 	}
+ 
++	if (!intel_fbc_enable_possible(drm.fd)) {
++		igt_info("Can't test FBC: disabled by enable_fbc modparam\n");
++		fbc.can_test = false;
++		return;
++	}
++
+ 	fbc.can_test = true;
+ 
+ 	fbc_setup_last_action();
+@@ -2227,6 +2233,20 @@ static void setup_psr(void)
+ 		igt_info("Can't test PSR: not supported by sink.\n");
+ 		return;
+ 	}
++
++	if (!is_psr_enable_possible(drm.fd, PSR_MODE_1)) {
++		igt_info("Can't test PSR: disabled by enable_psr modparam\n");
++		psr.can_test = false;
++		return;
++	}
++
++	if (psr_sink_support(drm.fd, drm.debugfs, PR_MODE, NULL) &&
++	    !is_psr_enable_possible(drm.fd, PR_MODE)) {
++		igt_info("Can't test Panel Replay: Panel Replay disabled by enable_panel_replay modparam\n");
++		psr.can_test = false;
++		return;
++	}
++
+ 	psr.can_test = true;
+ }
+ 
+@@ -2688,11 +2708,11 @@ static void check_test_requirements(const struct test_mode *t)
+ 
+ 	if (t->feature & FEATURE_FBC)
+ 		igt_require_f(fbc.can_test,
+-			      "Can't test FBC with this chipset\n");
++			      "Can't test FBC (unsupported or disabled by enable_fbc modparam)\n");
+ 
+ 	if (t->feature & FEATURE_PSR) {
+ 		igt_require_f(psr.can_test,
+-			      "Can't test PSR with the current outputs\n");
++			      "Can't test PSR (unsupported or disabled by enable_psr modparam)\n");
+ 	}
+ 
+ 	if (t->feature & FEATURE_DRRS)
+-- 
+2.43.0
 
-CI Bug Log - changes from IGT_9050 -> IGTPW_15654
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/index.html
-
-Participating hosts (37 -> 36)
-------------------------------
-
-  Additional (1): fi-glk-j4005 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15654 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@basic:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/fi-glk-j4005/igt@gem_lmem_swapping@basic.html
-
-  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][3] +11 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
-
-  
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9050 -> IGTPW_15654
-
-  CI-20190529: 20190529
-  CI_DRM_18977: dc462ab791b686c48545c160ecc81be64f77a846 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15654: 15654
-  IGT_9050: 9050
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/index.html
-
---===============4497858102280823577==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pm: add coverage for xe_device_sysfs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171980/">https://patchwork.freedesktop.org/series/171980/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9050 -&gt; IGTPW_15654</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/index.html</p>
-<h2>Participating hosts (37 -&gt; 36)</h2>
-<p>Additional (1): fi-glk-j4005 <br />
-  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15654 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@basic:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/fi-glk-j4005/igt@gem_lmem_swapping@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15654/fi-glk-j4005/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> +11 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9050 -&gt; IGTPW_15654</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18977: dc462ab791b686c48545c160ecc81be64f77a846 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15654: 15654<br />
-  IGT_9050: 9050</p>
-
-</body>
-</html>
-
---===============4497858102280823577==--
