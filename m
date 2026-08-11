@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9724EC5AC67
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 20:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E181C5AC67
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 21:07:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0643F10E387;
-	Tue, 11 Aug 2026 20:56:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3083E10ED8A;
+	Tue, 11 Aug 2026 21:07:33 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBF7010E387;
- Tue, 11 Aug 2026 20:55:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BB7B10E3A8;
+ Tue, 11 Aug 2026 21:06:54 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8936050100828992316=="
+ boundary="===============1862561071758691939=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/sw=5Fsync=3A_fix_inva?=
- =?utf-8?q?lid_fd_test_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/sw=5Fsync=3A_fix_in?=
+ =?utf-8?q?valid_fd_test_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Luka Mamrikishvili" <lmamrikishvili01@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Aug 2026 20:55:37 -0000
-Message-ID: <178648173776.41437.1733035097330896609@61270ab9df2a>
+Date: Tue, 11 Aug 2026 21:06:54 -0000
+Message-ID: <178648241423.41438.14995661206433161845@61270ab9df2a>
 X-Patchwork-Hint: ignore
 References: <20260810170019.479199-1-lmamrikishvili01@gmail.com>
 In-Reply-To: <20260810170019.479199-1-lmamrikishvili01@gmail.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8936050100828992316==
+--===============1862561071758691939==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9052_BAT -> XEIGTPW_15660_BAT
+CI Bug Log - changes from IGT_9052 -> IGTPW_15660
 ====================================================
 
 Summary
@@ -64,12 +64,12 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15660/index.html
 
-Participating hosts (13 -> 12)
+Participating hosts (38 -> 36)
 ------------------------------
 
-  Missing    (1): bat-bmg-2 
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
 
 
 Changes
@@ -81,17 +81,19 @@ Changes
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_9052 -> IGTPW_15660
 
+  CI-20190529: 20190529
+  CI_DRM_18980: aabf41c0ea0ad661a2e384e51955b24343f6ca25 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15660: 15660
   IGT_9052: 9052
-  xe-5578-aabf41c0ea0ad661a2e384e51955b24343f6ca25: aabf41c0ea0ad661a2e384e51955b24343f6ca25
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15660/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15660/index.html
 
---===============8936050100828992316==
+--===============1862561071758691939==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -115,28 +117,31 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171977/">https://patchwork.freedesktop.org/series/171977/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15660/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15660/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15660/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15660/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9052_BAT -&gt; XEIGTPW_15660_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9052 -&gt; IGTPW_15660</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 12)</h2>
-<p>Missing    (1): bat-bmg-2 </p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15660/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9052 -&gt; IGTPW_15660</li>
 </ul>
-<p>IGTPW_15660: 15660<br />
-  IGT_9052: 9052<br />
-  xe-5578-aabf41c0ea0ad661a2e384e51955b24343f6ca25: aabf41c0ea0ad661a2e384e51955b24343f6ca25</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18980: aabf41c0ea0ad661a2e384e51955b24343f6ca25 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15660: 15660<br />
+  IGT_9052: 9052</p>
 
 </body>
 </html>
 
---===============8936050100828992316==--
+--===============1862561071758691939==--
