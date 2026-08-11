@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C45C5AC67
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 13:30:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AFE2C5AC67
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 13:31:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D954110E40D;
-	Tue, 11 Aug 2026 13:30:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D9AE289C86;
+	Tue, 11 Aug 2026 13:31:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yxz4qDLS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EPrrufrl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F06B010E500
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 13:30:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BEDF310E500
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 13:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786455011; x=1817991011;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=RNd/nXw1QAffZw51gKmOz9+pJnFUkJJIGkmwvQuE6j0=;
- b=Yxz4qDLSMXHQLsBEYwV0ldJK9DJPCuwC/Tdug7q3BTMCCs6/OtASPnVQ
- eaLudbyntW3WNtuoYgRLlUhmqahxMsjA0m/5vmnIaoBuYkxY9IQzvl8gX
- R2eHGcRZNqhDRhIU2HiCD9bAExFmkIGUlwfYUmm9pHgCMEF9cFy3aI7LA
- DvaNzOhdRpwtfTflsLDeSIhA/yOprb+xEwhA1D9GE/7C3fiX8w9x7PeoP
- kJrtmaZHniVMmc2eQmq6iw3drm7/Uf6eeAnx3ya6UioKVGUYVvr+7DDG7
- +K8R4Wd6uP8HTNeQcskk0fuK1s4RKeLHFCeSRtJvU/mDYyiDf5pMFS27i A==;
-X-CSE-ConnectionGUID: gRnsXYmkTymUPh4Z46hJOw==
-X-CSE-MsgGUID: v7AmQ9+1R2+EtI7CMFAvAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="87199900"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="87199900"
+ t=1786455012; x=1817991012;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=0nDH3Aq0hIwlxRLEYTuM3N5ubBGuVF/3q+t1FeOUiOg=;
+ b=EPrrufrltC7Rtzs/gyfNgtXZSyM/Ax0sqg2SoXN8lBEGNizVSGS4ve9f
+ qspYO4H+rWVUiIqIsWzXYSnrp2h8JYNV1sPUSw2rzd6KKz31biWiCrZ2D
+ RqZ8XbAs8ZTLouOOU/CnJy5iICWuVfKzGDgtxftQqNKCyg2UMuTkrBxDl
+ qYO+ic69ym0kg566IydX2TJ/SGA1aBz6JL47ueZjhvIXaahZGWcyG6lb+
+ eosL+2rzCp+Zne93XuL/x3YWYm+yGDXo2G1d52PWyhfTxsAWknKKXHKJk
+ JDgmZ7nYSMxDOq6uLCH/Rak86bIizaUya1IMBVuHuT/k7lGzgHls4jfzc g==;
+X-CSE-ConnectionGUID: BYZNZ/tsSO+BvhOVliu5iw==
+X-CSE-MsgGUID: YSr+ylkfQ66EgeDpfyOjUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="87199904"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="87199904"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 06:30:11 -0700
-X-CSE-ConnectionGUID: 7sg/O3ivSEelmCqc3cUYmA==
-X-CSE-MsgGUID: MnLsYhkeQeu3bEILk+0OUw==
+ 11 Aug 2026 06:30:12 -0700
+X-CSE-ConnectionGUID: KqYMXCNjTLmk7BK7LkqAng==
+X-CSE-MsgGUID: 8MeuLnEyR/K56rYjF1T/rw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="259078017"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="259078040"
 Received: from x299.igk.intel.com ([10.211.131.197])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 06:30:09 -0700
+ 11 Aug 2026 06:30:10 -0700
 From: "Tahvanainen, Jari" <jari.tahvanainen@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: mchehab@kernel.org,
 	"Tahvanainen, Jari" <jari.tahvanainen@intel.com>
-Subject: [PATCH 0/2] Update scripts/code_cov_parse_info
-Date: Tue, 11 Aug 2026 16:34:09 +0300
-Message-ID: <20260811133411.720679-1-jari.tahvanainen@intel.com>
+Subject: [PATCH 1/2] scripts/code_cov_parse_info: add support for lcov/geninfo
+ >1.14 formats
+Date: Tue, 11 Aug 2026 16:34:10 +0300
+Message-ID: <20260811133411.720679-2-jari.tahvanainen@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260811133411.720679-1-jari.tahvanainen@intel.com>
+References: <20260811133411.720679-1-jari.tahvanainen@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,8 +69,8 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support changes related function coverage data within 
-.info files produced by recent compiler/toolchain versions.
+Add support changes related function coverage data format within .info
+files produced by the recent compiler/toolchain versions.
 
 Current assumed/supported .info file is for lcov/geninfo 1.14.
    FN:<line number of function start>,<function name>
@@ -77,33 +80,188 @@ Current assumed/supported .info file is for lcov/geninfo 1.14.
 
 There is change caused by gcc 9 tool chain, requiring lcov/geninfo 2.0.
    https://manpages.ubuntu.com/manpages/noble/man1/geninfo.1.html
-   FN:<line number of function start>,[<line number of function end>,]<function name>
-   The 'end' line number is optional, and is generated only if the compiler/toolchain
-   version is recent enough to generate the data (e.g., gcc 9 or newer)
+   FN:<line number of function start>,[<function end>,]<function name>
+   The 'end' line number is optional, and is generated only if the 
+   compiler/toolchain version is recent enough to generate the data.
 
-The format of the function coverage data has changed from LCOV 2.2 onward.
+ The format of the function coverage data has changed from LCOV 2.2 onward.
    https://manpages.ubuntu.com/manpages/questing/man1/geninfo.1.html
    First, the leader:
-   FNL:<index>,<line number of function start>[,line number of function end>]
+   FNL:<index>,<line number of function start>[,line nbr of function end>]
    Then the aliases of the function; there will be at least one alias.
    All aliases of a particular function share the same index.
    FNA:<index>,<execution count>,<name>
    The now-obsolete function data format is:
-   FN:<line number of function start>,[<line number of function end>,]<function name>
+   FN:<line number of function start>,[<function end>,]<function name>
 
-Add i915/display files in only_xe definitions excluding non-xe related
-i915/display sources.
+Signed-off-by: "Tahvanainen, Jari" <jari.tahvanainen@intel.com>
+---
+ scripts/code_cov_parse_info | 106 ++++++++++++++++++++++++++++++++++--
+ 1 file changed, 100 insertions(+), 6 deletions(-)
 
-
-Tahvanainen, Jari (2):
-  scripts/code_cov_parse_info: add support for lcov/geninfo >1.14
-    formats
-  scripts/code_cov_parse_info: add display include and exclude in
-    only_xe
-
- scripts/code_cov_parse_info | 141 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 135 insertions(+), 6 deletions(-)
-
+diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
+index a3fef1d59..97f325c85 100755
+--- a/scripts/code_cov_parse_info
++++ b/scripts/code_cov_parse_info
+@@ -37,6 +37,10 @@ my $verbose = 0;
+ my $ignore_unused = 0;
+ my $skip_func = 0;
+ 
++my $lcov_version = eval {
++	my $var = `lcov --version|grep -Eo '[0-9]+(\.[0-9]+)'|head -1`;
++	$var;
++};
+ my $has_json_support = eval {
+ 	require Cpanel::JSON::XS;
+ 	Cpanel::JSON::XS->import(qw(decode_json));
+@@ -459,6 +463,7 @@ sub read_info($)
+ 	my $ignore = 0;
+ 	my $source = $before_sf;
+ 	my $func = $before_sf;
++	my $alias = $before_sf;
+ 	my $cur_test = "";
+ 	my %cached;
+ 
+@@ -526,13 +531,56 @@ sub read_info($)
+ 
+ 		next if ($ignore);
+ 
++		# Function coverage, the leader
++		# FN:<function index>,<line number of the function start><line number of the function end>
++		# this seems to be format for lcov/geninfo package 2.3
++		if (m/^FNL:(-?\d+),(-?\d+),(-?\d+)/) {
++			my $ln = $2;
++			my $end_ln = $3;
++
++			$func = $1;
++			$has_func = 1;
++
++			if (is_function_excluded($func)) {
++				$skip_func = 1;
++				next;
++			}
++
++			$skip_func = 0;
++
++			$record{files}{$source}{func}{$func}{start_line} = $ln;
++			$record{files}{$source}{func}{$func}{end_line} = $end_ln;
++			$all_func{$func}{$source}->{ln} = $ln;
++			next;
++		}
+ 		# Function coverage
++		# FN:<line number of function start>,<line number of the function end><function name>
++		# this seems to be format for lcov/geninfo 2.0, obsoleted on 2.3
++		elsif (m/^FN:(-?\d+),(-?\d+),(\w+)/) {
++			my $ln = $1;
++			my $end_ln = $2;
++
++			$func = $3;
++			$has_func = 1;
++
++			if (is_function_excluded($func)) {
++				$skip_func = 1;
++				next;
++			}
++
++			$skip_func = 0;
+ 
++			$record{files}{$source}{func}{$func}{start_line} = $ln;
++			$record{files}{$source}{func}{$func}{end_line} = $end_ln;
++			$all_func{$func}{$source}->{ln} = $ln;
++			next;
++		}
+ 		# FN:<line number of function start>,<function name>
+ 		# Note: /w+ intentionally removes IPA gcc-optimization names, as
+ 		# this is more related to branch coverage
+-		if (m/^FN:(-?\d+),(\w+)/) {
++		elsif (m/^FN:(-?\d+),(\w+)/) {
+ 			my $ln = $1;
++			my $start_ln = $2;
+ 
+ 			$func = $2;
+ 			$has_func = 1;
+@@ -549,11 +597,38 @@ sub read_info($)
+ 			next;
+ 		}
+ 
+-		# Parse functions that were actually used
++		# Parse functions that were actually used (package version >2.0)
++		# FNA:<function index>,<execution count><function name>
++		if (m/^FNA:(-?\d+),(-?\d+),(\w+)/) {
++			my $count = $2;
++
++			# Negative gcov results are possible, as reported at:
++			# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
++			# Lcov ignores those. So, let's do the same here.
++			next if ($count <= 0);
++
++			$func = $1;
++			$alias = $3;
++			$has_func = 1;
++
++			if (is_function_excluded($alias)) {
++				$skip_func = 1;
++				next;
++			}
++
++			$skip_func = 0;
++			$was_used = 1;
++
++			$record{files}{$source}{func}{$func}{execution_count} += $count;
++			$record{files}{$source}{func}{$func}{alias} = $alias;
++			$used_func{$func}{$source}->{count} += $count;
++			next;
++		}
++		# Parse functions that were actually used (package version <=2.0)
+ 		# FNDA:<execution count>,<function name>
+ 		# Note: /w+ intentionally removes IPA gcc-optimization names, as
+ 		# this is more related to branch coverage
+-		if (m/^FNDA:(-?\d+),(\w+)/) {
++		elsif (m/^FNDA:(-?\d+),(\w+)/) {
+ 			my $count = $1;
+ 
+ 			# Negative gcov results are possible, as reported at:
+@@ -745,6 +820,7 @@ sub write_info_file($)
+ 	# Fills $data with the contents to be stored at the file
+ 	foreach my $source(sort keys %{$record{files}}) {
+ 		next if (!$used_source{$source});
++		next if is_file_excluded($source);
+ 
+ 		if ($source ne $before_sf) {
+ 			$data .= "SF:$source\n";
+@@ -754,11 +830,29 @@ sub write_info_file($)
+ 			if ($func ne $before_sf) {
+ 				my $fn;
+ 				my $fnda;
+-
+-				if (defined($record{files}{$source}{func}{$func}{start_line})) {
++				#lcov/geninfo 2.3 (>2.0) has additional leader
++				#https://manpages.ubuntu.com/manpages/questing/man1/geninfo.1.html
++				if ($lcov_version>2.0) {
++					$data .= "FNL:$func," . $record{files}{$source}{func}{$func}{start_line} . "," . $record{files}{$source}{func}{$func}{end_line} . "\n";
++				}
++				#lcov/geninfo 2.0 (>1.14) has also end_line defined for FN
++				#https://manpages.ubuntu.com/manpages/noble/man1/geninfo.1.html
++				elsif ($lcov_version==2.0) {
++					$data .= "FN:" . $record{files}{$source}{func}{$func}{start_line} . "," . $record{files}{$source}{func}{$func}{end_line} . ",$func\n";
++				}
++				#lcov/geninfo 1.14
++				elsif (defined($record{files}{$source}{func}{$func}{start_line})) {
+ 					$data .= "FN:" . $record{files}{$source}{func}{$func}{start_line} . ",$func\n";
+ 				}
+-				if (defined($record{files}{$source}{func}{$func}{execution_count})) {
++				#lcov/geninfo 2.3 (>2.0) has the function covered as FNA line
++				#https://manpages.ubuntu.com/manpages/questing/man1/geninfo.1.html
++				if ($lcov_version>2.0) {
++					if ($record{files}{$source}{func}{$func}{alias}) {
++						$data .= "FNA:$func," . $record{files}{$source}{func}{$func}{execution_count} . "," . $record{files}{$source}{func}{$func}{alias} . "\n";
++					}
++				}
++				#lcov/geninfo 1.14 has the function covered as FNDA line
++				elsif (defined($record{files}{$source}{func}{$func}{execution_count})) {
+ 					$data .= "FNDA:" . $record{files}{$source}{func}{$func}{execution_count} . ",$func\n";
+ 				}
+ 
 -- 
 2.43.0
 
