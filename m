@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7AFE2C5AC67
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 13:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA87DC5B572
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 13:32:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D9AE289C86;
-	Tue, 11 Aug 2026 13:31:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4237889C86;
+	Tue, 11 Aug 2026 13:32:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EPrrufrl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WzktSV1r";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BEDF310E500
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 13:30:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DFD3810E500
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 13:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786455012; x=1817991012;
+ t=1786455013; x=1817991013;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=0nDH3Aq0hIwlxRLEYTuM3N5ubBGuVF/3q+t1FeOUiOg=;
- b=EPrrufrltC7Rtzs/gyfNgtXZSyM/Ax0sqg2SoXN8lBEGNizVSGS4ve9f
- qspYO4H+rWVUiIqIsWzXYSnrp2h8JYNV1sPUSw2rzd6KKz31biWiCrZ2D
- RqZ8XbAs8ZTLouOOU/CnJy5iICWuVfKzGDgtxftQqNKCyg2UMuTkrBxDl
- qYO+ic69ym0kg566IydX2TJ/SGA1aBz6JL47ueZjhvIXaahZGWcyG6lb+
- eosL+2rzCp+Zne93XuL/x3YWYm+yGDXo2G1d52PWyhfTxsAWknKKXHKJk
- JDgmZ7nYSMxDOq6uLCH/Rak86bIizaUya1IMBVuHuT/k7lGzgHls4jfzc g==;
-X-CSE-ConnectionGUID: BYZNZ/tsSO+BvhOVliu5iw==
-X-CSE-MsgGUID: YSr+ylkfQ66EgeDpfyOjUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="87199904"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="87199904"
+ bh=uGZcc5QAmNzmF4mX6ezqFrA+CiysNEmfnMKZVNGSPdc=;
+ b=WzktSV1r/7a2oqFb5xQdKml7pTTCH2YXG6JhYKfQzGALY+34M9GyfYtx
+ Q5nsXgl4I3G6g+FIHL1fEX0IOCM0j9VJ/CjReI6N1ZIjLiN59WJ48zNpy
+ ZarVJJLokMvHDZ9icZpDedDK0tK1FOhYU/ZBwS/3tImmT/kCDE5G0cWn4
+ 0RKXazhO8MyQrRmWZv2baJIJjJ8vJFJkuc0FfIzUf0wlgBaIwI23jMkJa
+ J887I7ZSfjgc7Pxhq7Ktps6WsQuubMOZ/POU6G5TEqYwfba7v3T3MbI4I
+ U7GGpSrmScbd3YLl6MruU9PIK5dL5Py4cxXbwwzEpqSiPcWM9m0POScnA w==;
+X-CSE-ConnectionGUID: Gx9eqaU5T4GHY1kXGo7zQw==
+X-CSE-MsgGUID: I/2McDFHSWmkuJZzB9EZJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="87199908"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="87199908"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 06:30:12 -0700
-X-CSE-ConnectionGUID: KqYMXCNjTLmk7BK7LkqAng==
-X-CSE-MsgGUID: 8MeuLnEyR/K56rYjF1T/rw==
+ 11 Aug 2026 06:30:13 -0700
+X-CSE-ConnectionGUID: 4LqKGdjaQJGZ4FNjPGN3mw==
+X-CSE-MsgGUID: e3111kwxSiGGaIKYnBuCQw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="259078040"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="259078057"
 Received: from x299.igk.intel.com ([10.211.131.197])
  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 06:30:10 -0700
+ 11 Aug 2026 06:30:11 -0700
 From: "Tahvanainen, Jari" <jari.tahvanainen@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: mchehab@kernel.org,
 	"Tahvanainen, Jari" <jari.tahvanainen@intel.com>
-Subject: [PATCH 1/2] scripts/code_cov_parse_info: add support for lcov/geninfo
- >1.14 formats
-Date: Tue, 11 Aug 2026 16:34:10 +0300
-Message-ID: <20260811133411.720679-2-jari.tahvanainen@intel.com>
+Subject: [PATCH 2/2] scripts/code_cov_parse_info: add display include and
+ exclude in only_xe
+Date: Tue, 11 Aug 2026 16:34:11 +0300
+Message-ID: <20260811133411.720679-3-jari.tahvanainen@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260811133411.720679-1-jari.tahvanainen@intel.com>
 References: <20260811133411.720679-1-jari.tahvanainen@intel.com>
@@ -69,199 +69,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support changes related function coverage data format within .info
-files produced by the recent compiler/toolchain versions.
-
-Current assumed/supported .info file is for lcov/geninfo 1.14.
-   FN:<line number of function start>,<function name>
-   FNDA:<execution count>,<function name>
-   FNF:<number of functions found>
-   FNH:<number of function hit>
-
-There is change caused by gcc 9 tool chain, requiring lcov/geninfo 2.0.
-   https://manpages.ubuntu.com/manpages/noble/man1/geninfo.1.html
-   FN:<line number of function start>,[<function end>,]<function name>
-   The 'end' line number is optional, and is generated only if the 
-   compiler/toolchain version is recent enough to generate the data.
-
- The format of the function coverage data has changed from LCOV 2.2 onward.
-   https://manpages.ubuntu.com/manpages/questing/man1/geninfo.1.html
-   First, the leader:
-   FNL:<index>,<line number of function start>[,line nbr of function end>]
-   Then the aliases of the function; there will be at least one alias.
-   All aliases of a particular function share the same index.
-   FNA:<index>,<execution count>,<name>
-   The now-obsolete function data format is:
-   FN:<line number of function start>,[<function end>,]<function name>
+Only_xe was missing display, so let's add that.
+Xe build do not include all the files from i915/display, so let's exclude
+those as obsolete.
 
 Signed-off-by: "Tahvanainen, Jari" <jari.tahvanainen@intel.com>
 ---
- scripts/code_cov_parse_info | 106 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 100 insertions(+), 6 deletions(-)
+ scripts/code_cov_parse_info | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
 diff --git a/scripts/code_cov_parse_info b/scripts/code_cov_parse_info
-index a3fef1d59..97f325c85 100755
+index 97f325c85..5f5d34dfa 100755
 --- a/scripts/code_cov_parse_info
 +++ b/scripts/code_cov_parse_info
-@@ -37,6 +37,10 @@ my $verbose = 0;
- my $ignore_unused = 0;
- my $skip_func = 0;
- 
-+my $lcov_version = eval {
-+	my $var = `lcov --version|grep -Eo '[0-9]+(\.[0-9]+)'|head -1`;
-+	$var;
-+};
- my $has_json_support = eval {
- 	require Cpanel::JSON::XS;
- 	Cpanel::JSON::XS->import(qw(decode_json));
-@@ -459,6 +463,7 @@ sub read_info($)
- 	my $ignore = 0;
- 	my $source = $before_sf;
- 	my $func = $before_sf;
-+	my $alias = $before_sf;
- 	my $cur_test = "";
- 	my %cached;
- 
-@@ -526,13 +531,56 @@ sub read_info($)
- 
- 		next if ($ignore);
- 
-+		# Function coverage, the leader
-+		# FN:<function index>,<line number of the function start><line number of the function end>
-+		# this seems to be format for lcov/geninfo package 2.3
-+		if (m/^FNL:(-?\d+),(-?\d+),(-?\d+)/) {
-+			my $ln = $2;
-+			my $end_ln = $3;
-+
-+			$func = $1;
-+			$has_func = 1;
-+
-+			if (is_function_excluded($func)) {
-+				$skip_func = 1;
-+				next;
-+			}
-+
-+			$skip_func = 0;
-+
-+			$record{files}{$source}{func}{$func}{start_line} = $ln;
-+			$record{files}{$source}{func}{$func}{end_line} = $end_ln;
-+			$all_func{$func}{$source}->{ln} = $ln;
-+			next;
-+		}
- 		# Function coverage
-+		# FN:<line number of function start>,<line number of the function end><function name>
-+		# this seems to be format for lcov/geninfo 2.0, obsoleted on 2.3
-+		elsif (m/^FN:(-?\d+),(-?\d+),(\w+)/) {
-+			my $ln = $1;
-+			my $end_ln = $2;
-+
-+			$func = $3;
-+			$has_func = 1;
-+
-+			if (is_function_excluded($func)) {
-+				$skip_func = 1;
-+				next;
-+			}
-+
-+			$skip_func = 0;
- 
-+			$record{files}{$source}{func}{$func}{start_line} = $ln;
-+			$record{files}{$source}{func}{$func}{end_line} = $end_ln;
-+			$all_func{$func}{$source}->{ln} = $ln;
-+			next;
-+		}
- 		# FN:<line number of function start>,<function name>
- 		# Note: /w+ intentionally removes IPA gcc-optimization names, as
- 		# this is more related to branch coverage
--		if (m/^FN:(-?\d+),(\w+)/) {
-+		elsif (m/^FN:(-?\d+),(\w+)/) {
- 			my $ln = $1;
-+			my $start_ln = $2;
- 
- 			$func = $2;
- 			$has_func = 1;
-@@ -549,11 +597,38 @@ sub read_info($)
- 			next;
- 		}
- 
--		# Parse functions that were actually used
-+		# Parse functions that were actually used (package version >2.0)
-+		# FNA:<function index>,<execution count><function name>
-+		if (m/^FNA:(-?\d+),(-?\d+),(\w+)/) {
-+			my $count = $2;
-+
-+			# Negative gcov results are possible, as reported at:
-+			# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67937
-+			# Lcov ignores those. So, let's do the same here.
-+			next if ($count <= 0);
-+
-+			$func = $1;
-+			$alias = $3;
-+			$has_func = 1;
-+
-+			if (is_function_excluded($alias)) {
-+				$skip_func = 1;
-+				next;
-+			}
-+
-+			$skip_func = 0;
-+			$was_used = 1;
-+
-+			$record{files}{$source}{func}{$func}{execution_count} += $count;
-+			$record{files}{$source}{func}{$func}{alias} = $alias;
-+			$used_func{$func}{$source}->{count} += $count;
-+			next;
-+		}
-+		# Parse functions that were actually used (package version <=2.0)
- 		# FNDA:<execution count>,<function name>
- 		# Note: /w+ intentionally removes IPA gcc-optimization names, as
- 		# this is more related to branch coverage
--		if (m/^FNDA:(-?\d+),(\w+)/) {
-+		elsif (m/^FNDA:(-?\d+),(\w+)/) {
- 			my $count = $1;
- 
- 			# Negative gcov results are possible, as reported at:
-@@ -745,6 +820,7 @@ sub write_info_file($)
- 	# Fills $data with the contents to be stored at the file
- 	foreach my $source(sort keys %{$record{files}}) {
- 		next if (!$used_source{$source});
-+		next if is_file_excluded($source);
- 
- 		if ($source ne $before_sf) {
- 			$data .= "SF:$source\n";
-@@ -754,11 +830,29 @@ sub write_info_file($)
- 			if ($func ne $before_sf) {
- 				my $fn;
- 				my $fnda;
--
--				if (defined($record{files}{$source}{func}{$func}{start_line})) {
-+				#lcov/geninfo 2.3 (>2.0) has additional leader
-+				#https://manpages.ubuntu.com/manpages/questing/man1/geninfo.1.html
-+				if ($lcov_version>2.0) {
-+					$data .= "FNL:$func," . $record{files}{$source}{func}{$func}{start_line} . "," . $record{files}{$source}{func}{$func}{end_line} . "\n";
-+				}
-+				#lcov/geninfo 2.0 (>1.14) has also end_line defined for FN
-+				#https://manpages.ubuntu.com/manpages/noble/man1/geninfo.1.html
-+				elsif ($lcov_version==2.0) {
-+					$data .= "FN:" . $record{files}{$source}{func}{$func}{start_line} . "," . $record{files}{$source}{func}{$func}{end_line} . ",$func\n";
-+				}
-+				#lcov/geninfo 1.14
-+				elsif (defined($record{files}{$source}{func}{$func}{start_line})) {
- 					$data .= "FN:" . $record{files}{$source}{func}{$func}{start_line} . ",$func\n";
- 				}
--				if (defined($record{files}{$source}{func}{$func}{execution_count})) {
-+				#lcov/geninfo 2.3 (>2.0) has the function covered as FNA line
-+				#https://manpages.ubuntu.com/manpages/questing/man1/geninfo.1.html
-+				if ($lcov_version>2.0) {
-+					if ($record{files}{$source}{func}{$func}{alias}) {
-+						$data .= "FNA:$func," . $record{files}{$source}{func}{$func}{execution_count} . "," . $record{files}{$source}{func}{$func}{alias} . "\n";
-+					}
-+				}
-+				#lcov/geninfo 1.14 has the function covered as FNDA line
-+				elsif (defined($record{files}{$source}{func}{$func}{execution_count})) {
- 					$data .= "FNDA:" . $record{files}{$source}{func}{$func}{execution_count} . ",$func\n";
- 				}
- 
+@@ -1548,6 +1548,41 @@ if ($only_xe) {
+ 	# Please keep in sync with the documentation
+ 	push @src_exclude_regexes, "selftest";
+ 	push @src_include_regexes, "drm/xe";
++        push @src_include_regexes, "drm/i915/display";
++        #For xe the following display related sources are not part of the build
++        push @src_exclude_regexes, "drm/i915/display/dvo";
++        push @src_exclude_regexes, "drm/i915/display/g4x";
++        push @src_exclude_regexes, "drm/i915/display/hsw_ips.c";
++        push @src_exclude_regexes, "drm/i915/display/i9xx";
++        push @src_exclude_regexes, "drm/i915/display/.*_dsi";
++        push @src_exclude_regexes, "drm/i915/display/intel_bo.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_crt.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_display_presi.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_display_reset.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_display_rps.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_display_snapshot.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_dp\.h\$";
++        push @src_exclude_regexes, "drm/i915/display/intel_dpio_phy\.";
++        push @src_exclude_regexes, "drm/i915/display/intel_dpll\.c\$";
++        push @src_exclude_regexes, "drm/i915/display/intel_dpt\.c\$";
++        push @src_exclude_regexes, "drm/i915/display/intel_dsb_buffer.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_dvo.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_fb_bo.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_fb_pin.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_fbdev_fb.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_fdi\.c\$";
++        push @src_exclude_regexes, "drm/i915/display/intel_hdcp_gsc\.c\$";
++        push @src_exclude_regexes, "drm/i915/display/intel_load_detect.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_lpe_audio.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_lspcon\.c\$";
++        push @src_exclude_regexes, "drm/i915/display/intel_lvds.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_overlay.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_pch_";
++        push @src_exclude_regexes, "drm/i915/display/intel_pfit\.c\$";
++        push @src_exclude_regexes, "drm/i915/display/intel_plane_initial.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_svdo.c";
++        push @src_exclude_regexes, "drm/i915/display/intel_sprite";
++        push @src_exclude_regexes, "drm/i915/display/intel_tv.c";
+ #	push @src_include_regexes, "drm/ttm";
+ #	push @src_include_regexes, "drm/vgem";
+ }
 -- 
 2.43.0
 
