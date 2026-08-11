@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25E7EC5AC67
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 20:39:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9724EC5AC67
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 20:56:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8CA2610E37C;
-	Tue, 11 Aug 2026 20:39:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0643F10E387;
+	Tue, 11 Aug 2026 20:56:20 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C604010E37C;
- Tue, 11 Aug 2026 20:38:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BBF7010E387;
+ Tue, 11 Aug 2026 20:55:37 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6747893725125762297=="
+ boundary="===============8936050100828992316=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=3A_Remove?=
- =?utf-8?q?_redundant_CRC_frame_sequence_check?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/sw=5Fsync=3A_fix_inva?=
+ =?utf-8?q?lid_fd_test_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jason-JH Lin" <jason-jh.lin@mediatek.com>
+To: "Luka Mamrikishvili" <lmamrikishvili01@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 11 Aug 2026 20:38:46 -0000
-Message-ID: <178648072680.41349.3049418826940771398@61270ab9df2a>
+Date: Tue, 11 Aug 2026 20:55:37 -0000
+Message-ID: <178648173776.41437.1733035097330896609@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260811161417.716771-1-jason-jh.lin@mediatek.com>
-In-Reply-To: <20260811161417.716771-1-jason-jh.lin@mediatek.com>
+References: <20260810170019.479199-1-lmamrikishvili01@gmail.com>
+In-Reply-To: <20260810170019.479199-1-lmamrikishvili01@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6747893725125762297==
+--===============8936050100828992316==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_plane: Remove redundant CRC frame sequence check
-URL   : https://patchwork.freedesktop.org/series/172015/
+Series: tests/sw_sync: fix invalid fd test (rev3)
+URL   : https://patchwork.freedesktop.org/series/171977/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9052_BAT -> XEIGTPW_15659_BAT
+CI Bug Log - changes from XEIGT_9052_BAT -> XEIGTPW_15660_BAT
 ====================================================
 
 Summary
@@ -66,10 +66,10 @@ Summary
 
   
 
-Participating hosts (13 -> 13)
+Participating hosts (13 -> 12)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): bat-bmg-2 
 
 
 Changes
@@ -81,17 +81,17 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_9052 -> IGTPW_15659
+  * IGT: IGT_9052 -> IGTPW_15660
 
-  IGTPW_15659: 8ae4ee54c55da4726d69fa81f836d76e3b599579 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15660: 15660
   IGT_9052: 9052
   xe-5578-aabf41c0ea0ad661a2e384e51955b24343f6ca25: aabf41c0ea0ad661a2e384e51955b24343f6ca25
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15659/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15660/index.html
 
---===============6747893725125762297==
+--===============8936050100828992316==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -111,32 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_plane: Remove redundant CRC frame sequence check</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172015/">https://patchwork.freedesktop.org/series/172015/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/sw_sync: fix invalid fd test (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171977/">https://patchwork.freedesktop.org/series/171977/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15659/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15659/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15660/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15660/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9052_BAT -&gt; XEIGTPW_15659_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_9052_BAT -&gt; XEIGTPW_15660_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-bmg-2 </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9052 -&gt; IGTPW_15659</li>
+<li>IGT: IGT_9052 -&gt; IGTPW_15660</li>
 </ul>
-<p>IGTPW_15659: 8ae4ee54c55da4726d69fa81f836d76e3b599579 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_15660: 15660<br />
   IGT_9052: 9052<br />
   xe-5578-aabf41c0ea0ad661a2e384e51955b24343f6ca25: aabf41c0ea0ad661a2e384e51955b24343f6ca25</p>
 
 </body>
 </html>
 
---===============6747893725125762297==--
+--===============8936050100828992316==--
