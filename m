@@ -4,53 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B757C5B572
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 14:16:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F1CAC5B56A
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 14:38:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ECC3510E72A;
-	Tue, 11 Aug 2026 14:16:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B209610EC50;
+	Tue, 11 Aug 2026 14:38:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bONEYPvn";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="DXh0fVss";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91C2010E0CA
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 14:14:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786457693; x=1817993693;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=R/Tjuw5/QlPu2C6oR59W7HEUj3cj7kuQVAvnHWrWGsw=;
- b=bONEYPvn/37B1RJxCRZ9YSosz/1PGCqGTJoK1e2aB1/Zz1/E9uxWeHur
- t5LATc9QAMSGhxZzJt4pySYi+uyFxOQOJtpBymFms8kYuhgV2cN1sBPTI
- 7IuaXLy9ozdEodM/huD1tzWZgRa40IYHsINVAmhyJMk1rRtKXcCuQCPx+
- yQaOjVFGKXG3IGQitd4JyY/SDFRqvr2VFOBX6yiWEhc58e5CSYD0ahfH1
- Qu/UReEBJ4ePCgAuqnl0gJbUYeA0u4lmN4/VCQpDbmISqaui6DWQxtoBV
- J0xkiJxqWWLAObYYbgrz+Y8UX1Znz+IUvgCgdiN+Cq3xzxtMk0WaVtgxb Q==;
-X-CSE-ConnectionGUID: SvrTx1G1TYCEcgcjRGRYeA==
-X-CSE-MsgGUID: Be94X5aPRg6FMZE2O3aUag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="104519708"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="104519708"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 07:14:53 -0700
-X-CSE-ConnectionGUID: D1PKHO6uSzGTXUI6KFa9XQ==
-X-CSE-MsgGUID: gqcVJVU1TDKLrgwk47v6Wg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="260737261"
-Received: from dev-150.igk.intel.com (HELO localhost) ([10.91.214.40])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 07:14:53 -0700
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com, raag.jadav@intel.com, lukasz.laguna@intel.com
-Subject: [PATCH v1 2/2] tests/device_reset: Add Xe healthcheck to post-reset
- validation
-Date: Tue, 11 Aug 2026 16:14:26 +0200
-Message-ID: <20260811141426.1642321-3-lukasz.laguna@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260811141426.1642321-1-lukasz.laguna@intel.com>
-References: <20260811141426.1642321-1-lukasz.laguna@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5C03510EC50
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 14:37:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:From:Reply-To; bh=dX/Q9k0KLrwFOUDvWhzS09zr5hPjK0AKT88gAngsum0=; b=
+ DXh0fVss/dDgCNlldmU6m6/p7qHsvmzq4pRwSVM9V24orPF2mrWSbzsoxAPAKt0avX5fj+UcmCe/s
+ N93wfA3C0fgEjlzGdQjssJ0hdBo7UaECvphLqXZD5DGG93VC+htn52MvIc02BcJZxZEj3UgHF6/zd
+ USjH3MchK7fM/GdKJu0ElXD46zfUzxFdl1kuhnEpmIJI3UI0c+Sp673i7HI6RY+vjnZAftIREm1xL
+ LedTOD5p8n/dpuEBUyIfbOioRN4G8rq2B5Pextwk8DoYrxuiD2hnHXcyggD+WuWYdA+zFj2k0GXBe
+ 4WrZJjE95mLF3z/+Lho3zEYuyypsVqC3mQ==;
+Received: from 154.red-79-147-121.dynamicip.rima-tde.net ([79.147.121.154]
+ helo=killbill.Home) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1wtnbN-00HCVy-L7; Tue, 11 Aug 2026 16:37:13 +0200
+From: Melissa Wen <mwen@igalia.com>
+To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
+ Alex Hung <alex.hung@amd.com>, Swati Sharma <swati2.sharma@intel.com>,
+ John Harrison <John.Harrison@Igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>, Simon Ser <contact@emersion.fr>,
+ Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
+ Uma Shankar <uma.shankar@intel.com>
+Subject: [PATCH i-g-t v3 0/6] test/kms_colorop_helper: don't request colorop
+ updates indefinitely
+Date: Tue, 11 Aug 2026 16:23:00 +0200
+Message-ID: <20260811143558.141813-1-mwen@igalia.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -68,53 +64,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend the healthcheck for Xe devices to validate basic command
-submission after reset.
+After committing colorop settings, colorops are still flagged as
+changed, even if there is no new request for updates. This v3 addresses
+Chaitanya's comments [v2] to fix an extra space and split one commit
+into three, as follows:
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
- tests/device_reset.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+- Patch 1 clears colorop flag after commit so that the next patch
+  doesn't try to re-submit changes on inactive color pipeline.
 
-diff --git a/tests/device_reset.c b/tests/device_reset.c
-index b281f4ece..70ca511e0 100644
---- a/tests/device_reset.c
-+++ b/tests/device_reset.c
-@@ -14,6 +14,8 @@
- #include "igt_pci.h"
- #include "igt_sysfs.h"
- #include "igt_kmod.h"
-+#include "xe/xe_device.h"
-+
- /**
-  * TEST: device reset
-  * Description: Examine behavior of a driver on device sysfs reset
-@@ -392,6 +394,8 @@ static bool is_i915_wedged(int i915)
-  */
- static void healthcheck(struct device_fds *dev)
- {
-+	int fd;
-+
- 	if (dev->fds.dev == -1) {
- 		/* give the kernel a breath for re-creating device nodes in devtmpfs */
- 		sleep(1);
-@@ -400,10 +404,13 @@ static void healthcheck(struct device_fds *dev)
- 		igt_debug("reopen the device\n");
- 		dev->fds.dev = __drm_open_driver(DRIVER_ANY);
- 	}
--	igt_assert_fd(dev->fds.dev);
-+	fd = dev->fds.dev;
-+	igt_assert_fd(fd);
- 
--	if (is_i915_device(dev->fds.dev))
--		igt_assert(!is_i915_wedged(dev->fds.dev));
-+	if (is_i915_device(fd))
-+		igt_assert(!is_i915_wedged(fd));
-+	else if (is_xe_device(fd))
-+		xe_healthcheck(fd);
- }
- 
- /**
+- Patch 2 prevents colorop to be marked as changed just because it was
+  checking if a property enum value is supported. These changes are
+  consistent with the current expetation of allowing property changes in
+  colorop that are part of a current active color pipeline or a color
+  pipeline that will be activated or deactived in the same atomic commit;
+  but rejecting attempts to change inactive colorops.
+
+- Patch 3 (new): was detached from previous-version patch 3 to only
+  verify colorop properties in planes that support plane COLOR_PIPELINE
+  property, i.e. planes that has a colorop pipeline, since not all planes
+  have to support it.
+
+- Patch 4 (new): was also detached from previous-version patch 3 and now
+  it basically keeps a primary plane always active for a given CRTC,
+  even though colorop properties of an overlay plane is under testing.
+
+- Patch 5: is the main change of previous-version patch 3 that fixes
+  kms_properties to match colorop update requirements of an active plane
+  color pipeline.
+
+- Patch 6 just ensure that kms_color_pipeline expects an intel device
+  and will not run otherwise. As color validation works better with
+  writeback then CRC, other devices should prefer kms_colorop if they have
+  writeback support. If not, they should work on adapting
+  kms_color_pipeline according to their specs.
+
+[v1] https://lore.kernel.org/igt-dev/20260602211259.898147-1-mwen@igalia.com/
+
+Lemme know your thought!
+
+Melissa
+
+Melissa Wen (6):
+  lib/igt_kms: clear colorop-changed flag after commit
+  test/kms_colorop_helper: only check if a given enum value exist
+  tests/kms_properties: don't check colorop if no plane color pipeline prop
+  tests/kms_properties: keep primary plane enabled for each CRTC
+  tests/kms_properties: check colorop properties on active color pipelines
+  tests/kms_color_pipeline: skip if not an intel device
+
+ lib/igt_kms.c              | 41 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h              |  4 ++++
+ tests/kms_color_pipeline.c |  1 +
+ tests/kms_colorop_helper.c |  4 +++-
+ tests/kms_properties.c     | 26 ++++++++++++++++++++++--
+ 5 files changed, 73 insertions(+), 3 deletions(-)
+
 -- 
-2.43.0
+2.53.0
 
