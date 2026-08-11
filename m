@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE002C5B56A
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 14:41:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FB52C5B572
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 14:42:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 75F2710EC55;
-	Tue, 11 Aug 2026 14:41:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D840210EC57;
+	Tue, 11 Aug 2026 14:42:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="RK2jdlyP";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="gXzgJWLM";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6A61110EC5A
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 14:38:10 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5848710EC51
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 14:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=d8GkZk00f9Dmd7daqbhbyshvnop+OJWJbXhvFvEmp/w=; b=
- RK2jdlyPlxRuaytrD13YD1eK2VOtMf6toRChVKJ/ZbaHc+2h9h8VtDT2a6toSk9GJmYK7U+hRX8Tn
- ucyY5utfuJF86UOpaLmfYcw+kK1JxqihEfo1b9Wr2zResxbvrFp2SNgiLvvKJ91hWaSqqNrBz4B7V
- m8SO5ktHSsZ6XlQP/l+fou42gyaoUnZYnyWH+rc7ms/YivTxY1duWzmhv5Y+pAdPPin0x36UtqGV0
- 5eogxjiioD0vCu8bh0KM+wbXq8EPd7B2H4Hti3KuG58+sEiwIbRfUJUpdvZm0W1fWAlSi/MrhOwT+
- Pzd3KSYSEhT0q4hlkUmfa9nV5DIjwNTAbA==;
+ Cc:To:From:From:Reply-To; bh=6TTt0bu24HasWTf6kUE52aOMnZrGhCxv2VRwfd95C1w=; b=
+ gXzgJWLMEbWHe3PCO2R9Z8dE13HIIvgzPumhJyxPISg6XdC4YazaYsT/uFhpvNk/CSjDF6zWaumL3
+ sp286mHApwXHm0b6OAV/qhIW3WBvhpVCQMnb+YLVOmv1mVThkrwEZTW1gZVurwCQsMkr6MMkji7pX
+ UqaYLmZvY3nuj6AGvQ9v3ehks9NvnPxxUPo9MGXXRG9TXCTqQE3IEvVFB3H4XO6gc/REGwd289niG
+ kv/vxTAa6loODbF9gR3LelYvxIdumrPwEYuNXyL551Zj6OP4LfKe9Vv18H7RWbSDQA6hpjWum9oEa
+ Vcz+t21MqfIZxJutFGUB9rOKZUsHTi8uuw==;
 Received: from 154.red-79-147-121.dynamicip.rima-tde.net ([79.147.121.154]
  helo=killbill.Home) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wtncC-00HCVy-Ki; Tue, 11 Aug 2026 16:38:05 +0200
+ id 1wtnbY-00HCVy-Qg; Tue, 11 Aug 2026 16:37:28 +0200
 From: Melissa Wen <mwen@igalia.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -42,10 +42,10 @@ Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
  Rodrigo Siqueira <siqueira@igalia.com>, Simon Ser <contact@emersion.fr>,
  Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
  Uma Shankar <uma.shankar@intel.com>
-Subject: [PATCH i-g-t v3 4/6] tests/kms_properties: keep primary plane enabled
- for each CRTC
-Date: Tue, 11 Aug 2026 16:23:04 +0200
-Message-ID: <20260811143558.141813-5-mwen@igalia.com>
+Subject: [PATCH i-g-t v3 1/6] lib/igt_kms: clear colorop-changed flag after
+ commit
+Date: Tue, 11 Aug 2026 16:23:01 +0200
+Message-ID: <20260811143558.141813-2-mwen@igalia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260811143558.141813-1-mwen@igalia.com>
 References: <20260811143558.141813-1-mwen@igalia.com>
@@ -66,49 +66,55 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-For AMD, a primary plane must be active to keep CRTC active. So stop
-reusing primary plane fb for overlays, give the latter its own fb.
+Don't request colorop updates if there is no change in the atomic
+commit. It fixes atomic rejection after test skips that was caused by
+incorrect attempts of changing inactive colorop properties, since
+userspace can update only current active colorops or colorops that will
+be activated or deactivated in the same commit. Active colorop means a
+colorop that is in the chain of an active color pipeline, i.e.  the
+pipeline in plane COLOR_PIPELINE property.
 
+Assisted-by: Claude:claude-opus-4-7
+Tested-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 Signed-off-by: Melissa Wen <mwen@igalia.com>
-
 ---
+ lib/igt_kms.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-v2:
-- detach different changes from a single commit (Chaitanya)
----
- tests/kms_properties.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index 292a04a2a..87614346a 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -237,7 +237,7 @@ static void run_colorop_property_tests(igt_display_t *display,
- 				       igt_crtc_t *crtc, igt_output_t *output,
- 				       bool atomic)
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 42cc7c3bd..1e3cea781 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -4862,6 +4862,7 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
  {
--	struct igt_fb fb;
-+	struct igt_fb fb, afb;
- 	igt_plane_t *plane;
- 	igt_colorop_t *colorop;
  	int i;
-@@ -255,6 +255,16 @@ static void run_colorop_property_tests(igt_display_t *display,
- 			 igt_crtc_name(crtc), plane->index,
- 			 kmstest_plane_type_name(plane->type), output->name);
+ 	igt_crtc_t *crtc;
++	igt_colorop_t *colorop;
  
-+		/* AMD requires primary plane enabled to keep CRTC enabled */
-+		if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
-+			drmModeModeInfo *mode = igt_output_get_mode(output);
+ 	for_each_crtc(display, crtc) {
+ 		igt_plane_t *plane;
+@@ -4891,6 +4892,20 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
+ 				int fd;
+ 				plane->changed = 0;
+ 
++				/* clear changed flags on every colorop in the assigned chain
++				 * so already-committed property values aren't re-emitted on
++				 * the next commit.
++				 */
++				colorop = plane->assigned_color_pipeline;
++				while (colorop) {
++					int next_val;
 +
-+			igt_create_pattern_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
-+					      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &afb);
++					colorop->changed = 0;
++					next_val = igt_colorop_get_prop(display, colorop,
++									IGT_COLOROP_NEXT);
++					colorop = igt_find_colorop(display, next_val);
++				}
 +
-+			igt_plane_set_fb(plane, &afb);
-+		}
-+
- 		/* iterate over all color pipelines on plane */
- 		for (i = 0; i < plane->num_color_pipelines; ++i) {
- 			/* iterate over all colorops in pipeline*/
+ 				fd = plane->values[IGT_PLANE_IN_FENCE_FD];
+ 				if (fd != -1)
+ 					close(fd);
 -- 
 2.53.0
 
