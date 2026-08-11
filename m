@@ -4,68 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 103D0C5CFEB
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 16:38:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2056AC5B572
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 16:44:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9EB4410E33D;
-	Tue, 11 Aug 2026 16:38:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cgAmfbAP";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F03E510E33D
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 16:38:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786466285; x=1818002285;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=T43tjJMPEP87ICH9wq17FoOUN2s8W8crGgzzXbBrANM=;
- b=cgAmfbAPmtze5b9BdgLPlN6wI+UILBI5wnOAE3urmE0Ww+PycEjteaeE
- cTFeK9EOshkPhjvo3LuihOChPOqdcn4nV++bICejkfK7Pr218y368ZHId
- bMwTwVsuuiJu1RnXW44sf0OySeF36TXTSq4eZIjkveVo8oDsFEp3oLjAk
- KEqF1riPyHIQF5Dk6sth/BgJVBPa9/DAFPIqfy9krIGA/Kpmx85/KAlZG
- 0SZfVVcFOmwbExS48TWeloXSebWyVVMuWGcdgA+3FfRd6jSptKHNqcBSA
- giwh/1fSstW2n5GR1JMkbfePdC4fWPF5Jh5fJ61chR+sHEnEqXkb3pxbS Q==;
-X-CSE-ConnectionGUID: J3dP1kC+QMWmrhfXjrCpbA==
-X-CSE-MsgGUID: /imFuZqzTlec2w6WqEIdhA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97662630"
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; d="scan'208";a="97662630"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 09:38:04 -0700
-X-CSE-ConnectionGUID: Zq4C+m43T7GJgwBhKFNvbA==
-X-CSE-MsgGUID: eSgSu+6cT76tZRJk4/Htlg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,218,1779174000"; d="scan'208";a="268541240"
-Received: from abityuts-desk.ger.corp.intel.com (HELO localhost)
- ([10.245.244.254])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 09:38:00 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@gmail.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- igt-dev@lists.freedesktop.org, kernel-dev@igalia.com, Alex Hung
- <alex.hung@amd.com>, Swati Sharma <swati2.sharma@intel.com>, John Harrison
- <John.Harrison@Igalia.com>, Rodrigo Siqueira <siqueira@igalia.com>, Simon
- Ser <contact@emersion.fr>, Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland
- <harry.wentland@amd.com>, Uma Shankar <uma.shankar@intel.com>
-Subject: Re: [PATCH i-g-t v3 1/6] lib/igt_kms: clear colorop-changed flag
- after commit
-In-Reply-To: <20260811143558.141813-2-mwen@igalia.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260811143558.141813-1-mwen@igalia.com>
- <20260811143558.141813-2-mwen@igalia.com>
-Date: Tue, 11 Aug 2026 19:37:57 +0300
-Message-ID: <ba7f8fba1de393dd4ec165804d9a01694ac3f156@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C3BE310E342;
+	Tue, 11 Aug 2026 16:44:35 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CEDA10E338;
+ Tue, 11 Aug 2026 16:43:56 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7912245264668342737=="
 MIME-Version: 1.0
-Content-Type: text/plain
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_test/kms=5Fcolorop=5Fhelper?=
+ =?utf-8?q?=3A_don=27t_request_colorop_updates_indefinitely_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Melissa Wen" <mwen@igalia.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 11 Aug 2026 16:43:56 -0000
+Message-ID: <178646663624.40134.9068825239252641071@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260811143558.141813-1-mwen@igalia.com>
+In-Reply-To: <20260811143558.141813-1-mwen@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,66 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, 11 Aug 2026, Melissa Wen <mwen@igalia.com> wrote:
-> Don't request colorop updates if there is no change in the atomic
-> commit. It fixes atomic rejection after test skips that was caused by
-> incorrect attempts of changing inactive colorop properties, since
-> userspace can update only current active colorops or colorops that will
-> be activated or deactivated in the same commit. Active colorop means a
-> colorop that is in the chain of an active color pipeline, i.e.  the
-> pipeline in plane COLOR_PIPELINE property.
->
-> Assisted-by: Claude:claude-opus-4-7
-> Tested-by: Alex Hung <alex.hung@amd.com>
-> Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
-> ---
->  lib/igt_kms.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 42cc7c3bd..1e3cea781 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -4862,6 +4862,7 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
->  {
->  	int i;
->  	igt_crtc_t *crtc;
-> +	igt_colorop_t *colorop;
->  
->  	for_each_crtc(display, crtc) {
->  		igt_plane_t *plane;
-> @@ -4891,6 +4892,20 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
->  				int fd;
->  				plane->changed = 0;
->  
-> +				/* clear changed flags on every colorop in the assigned chain
-> +				 * so already-committed property values aren't re-emitted on
-> +				 * the next commit.
-> +				 */
-> +				colorop = plane->assigned_color_pipeline;
-> +				while (colorop) {
-> +					int next_val;
-> +
-> +					colorop->changed = 0;
-> +					next_val = igt_colorop_get_prop(display, colorop,
-> +									IGT_COLOROP_NEXT);
-> +					colorop = igt_find_colorop(display, next_val);
-> +				}
+--===============7912245264668342737==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Seems like it would be useful to have iterator macros for going through
-pipelines/colorops.
+== Series Details ==
 
-BR,
-Jani.
+Series: test/kms_colorop_helper: don't request colorop updates indefinitely (rev2)
+URL   : https://patchwork.freedesktop.org/series/167775/
+State : success
 
-> +
->  				fd = plane->values[IGT_PLANE_IN_FENCE_FD];
->  				if (fd != -1)
->  					close(fd);
+== Summary ==
 
--- 
-Jani Nikula, Intel
+CI Bug Log - changes from XEIGT_9051_BAT -> XEIGTPW_15658_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 12)
+------------------------------
+
+  Missing    (1): bat-wcl-1 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9051 -> IGTPW_15658
+  * Linux: xe-5575-dc462ab791b686c48545c160ecc81be64f77a846 -> xe-5576-6ed371d40ec5cba972c0bdcf7e61fcadc7b5e7b0
+
+  IGTPW_15658: 86ce6fe7655d898c9e3f2c7434557c2b0fbc2471 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9051: 9051
+  xe-5575-dc462ab791b686c48545c160ecc81be64f77a846: dc462ab791b686c48545c160ecc81be64f77a846
+  xe-5576-6ed371d40ec5cba972c0bdcf7e61fcadc7b5e7b0: 6ed371d40ec5cba972c0bdcf7e61fcadc7b5e7b0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15658/index.html
+
+--===============7912245264668342737==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>test/kms_colorop_helper: don&#x27;t request colorop updates indefinitely (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167775/">https://patchwork.freedesktop.org/series/167775/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15658/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15658/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9051_BAT -&gt; XEIGTPW_15658_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-wcl-1 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9051 -&gt; IGTPW_15658</li>
+<li>Linux: xe-5575-dc462ab791b686c48545c160ecc81be64f77a846 -&gt; xe-5576-6ed371d40ec5cba972c0bdcf7e61fcadc7b5e7b0</li>
+</ul>
+<p>IGTPW_15658: 86ce6fe7655d898c9e3f2c7434557c2b0fbc2471 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9051: 9051<br />
+  xe-5575-dc462ab791b686c48545c160ecc81be64f77a846: dc462ab791b686c48545c160ecc81be64f77a846<br />
+  xe-5576-6ed371d40ec5cba972c0bdcf7e61fcadc7b5e7b0: 6ed371d40ec5cba972c0bdcf7e61fcadc7b5e7b0</p>
+
+</body>
+</html>
+
+--===============7912245264668342737==--
