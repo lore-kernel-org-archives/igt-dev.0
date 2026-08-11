@@ -4,52 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CBDEC5CFC1
-	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 09:41:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 750ABC5AC67
+	for <igt-dev@archiver.kernel.org>; Tue, 11 Aug 2026 10:15:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BEB7710E2C2;
-	Tue, 11 Aug 2026 09:41:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2230510E2C5;
+	Tue, 11 Aug 2026 10:15:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dEVXKvpF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="i23o0qLI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E55D410E2C2
- for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 09:40:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5825F10E2F2
+ for <igt-dev@lists.freedesktop.org>; Tue, 11 Aug 2026 10:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786441225; x=1817977225;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=M3530eclzHb4pFXPexuuJH0kBVhlChx8gcNtlFINVr4=;
- b=dEVXKvpFdKauE6l327Wi099YL5iNB3KfAnlTDLIjjVsN2KoZ6BUltKEu
- +WyjWfgM45jXVjGd/BT3nAws6e9+4qIgnvKUAI/eXjOnnL6wwWCDw3O1r
- UUx3n7nzDNuJfhTb3dAbphEToIxE1GFXekklM7T1EHnjRSW05fmv+UV2K
- 7o1h6IswGO0EbPXsaDA8UJjRQbiowN71ELTotads53jFKIsVz1mGHTwQv
- JiWB9AqbEEHDKdoMjDohI3k40xx88v1VjRQoqMEwT0k6VmY93A9j5M7Rz
- GUc2+mF52I9LCLCrnBtJRlbs4XUH+PwAoUSA5L1Om4aZlxymUR/t4Hn8c w==;
-X-CSE-ConnectionGUID: jtZqn8tYQee7s702xbjQLA==
-X-CSE-MsgGUID: 9M6URBXvRhuPEstZyMgIBQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="86089193"
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="86089193"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Aug 2026 02:40:24 -0700
-X-CSE-ConnectionGUID: UQQODvVrT6qsn7nHPRWP9A==
-X-CSE-MsgGUID: GJEY4w3dShmuPV7wiCfEJg==
+ t=1786443313; x=1817979313;
+ h=message-id:date:mime-version:subject:to:references:from:
+ in-reply-to:content-transfer-encoding;
+ bh=CFyY/pW3inezGNkQXF+xohQVeL2zl++GRzFG8RW8yaU=;
+ b=i23o0qLIpb7erUSdIsF45+OLW/YxKe9zCexL7Uin+lS7VoaY0XjrZX35
+ 0f70CNjunp8F2F9SejkXbOW2pqoxchJUfoGnQyZYQLajnFuscHj4jAKnp
+ DQVlVEqtPPuNYkQfDhajMxJnq0NFFq6Co/XInW8JX+x+4OO0teoczW3vA
+ Txa5ybQ+9ScmoLUjs3kqbqx1SoQyq2fD+DH02ba/GMkj2AUNqS2MH2yb2
+ +FUGARA5qHg4yMrVv3QLZS2KK6Rtla58eCeHWDl4/hF8Xus4CsSzuIdS8
+ AhUXvEgHE9UGtBDAhs7xLdOvVdmV0Fb1GSMtN20wthbK0qa1uZeC02BOA g==;
+X-CSE-ConnectionGUID: nyeB/AclT5SN9ghFWrP/Pw==
+X-CSE-MsgGUID: Q/cwTog2SKmd4ae3jaoS7Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11871"; a="98118542"
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="98118542"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 03:15:13 -0700
+X-CSE-ConnectionGUID: 4+aFVQCbSFaGR3MjyjNfAg==
+X-CSE-MsgGUID: /DkVrwWfRQmRNkNOj5bwXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="259027099"
-Received: from display-adls.igk.intel.com ([10.211.131.198])
- by fmviesa006.fm.intel.com with ESMTP; 11 Aug 2026 02:40:23 -0700
-From: Mika Kahola <mika.kahola@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Mika Kahola <mika.kahola@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_frontbuffer_tracking: skip PSR/FBC
- subtests disabled by modparam
-Date: Tue, 11 Aug 2026 09:40:21 +0000
-Message-ID: <20260811094021.2094676-1-mika.kahola@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.25,217,1779174000"; d="scan'208";a="262796445"
+Received: from yherrera-mobl1.amr.corp.intel.com (HELO [10.245.113.176])
+ ([10.245.113.176])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Aug 2026 03:15:13 -0700
+Message-ID: <f44dcf80-823b-45f8-ae4c-dc727794149a@linux.intel.com>
+Date: Tue, 11 Aug 2026 12:15:04 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: =?UTF-8?Q?Re=3A_=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_benchmarks/?=
+ =?UTF-8?Q?gem=5Fwsim=3A_explicit_VM_create/assign_+_LR_mode_=28rev2=29?=
+To: igt-dev@lists.freedesktop.org
+References: <20260810093950.1696330-1-marcin.bernatowicz@linux.intel.com>
+ <178637056639.35122.13899754760417402769@61270ab9df2a>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <178637056639.35122.13899754760417402769@61270ab9df2a>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,120 +71,81 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The enable_fbc and enable_psr module parameters can force FBC and PSR
-off regardless of chipset or sink support, but setup_fbc() and
-setup_psr() didn't check for that, so the related subtests ran and
-failed instead of being skipped.
 
-Check intel_fbc_enable_possible() and is_psr_enable_possible() (also
-against PR_MODE, since a sink may use Panel Replay instead of PSR1) in
-setup_fbc()/setup_psr() so fbc.can_test/psr.can_test reflect the
-modparam state.
+On 8/10/2026 4:02 PM, Patchwork wrote:
+> == Series Details ==
+>
+> Series: benchmarks/gem_wsim: explicit VM create/assign + LR mode (rev2)
+> URL   : https://patchwork.freedesktop.org/series/170422/
+> State : failure
+>
+> == Summary ==
+>
+> CI Bug Log - changes from XEIGT_9047_FULL -> XEIGTPW_15647_FULL
+> ====================================================
+>
+> Summary
+> -------
+>
+>    **FAILURE**
+>
+>    Serious unknown changes coming with XEIGTPW_15647_FULL absolutely need to be
+>    verified manually.
+>    
+>    If you think the reported changes have nothing to do with the changes
+>    introduced in XEIGTPW_15647_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>    to document this new failure mode, which will reduce false positives in CI.
+>
+>    
+>
+> Participating hosts (2 -> 2)
+> ------------------------------
+>
+>    No changes in participating hosts
+>
+> Possible new issues
+> -------------------
+>
+>    Here are the unknown changes that may have been introduced in XEIGTPW_15647_FULL:
+>
+> ### IGT changes ###
+>
+> #### Possible regressions ####
+>
+>    * igt@core_hotunplug@hotreplug:
+>      - shard-bmg:          [PASS][1] -> [SKIP][2] +1 other test skip
+>     [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9047/shard-bmg-7/igt@core_hotunplug@hotreplug.html
+>     [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15647/shard-bmg-5/igt@core_hotunplug@hotreplug.html
+>
+>    * igt@kms_rotation_crc@multiplane-rotation-cropping-top:
+>      - shard-bmg:          [PASS][3] -> [DMESG-FAIL][4]
+>     [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9047/shard-bmg-6/igt@kms_rotation_crc@multiplane-rotation-cropping-top.html
+>     [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15647/shard-bmg-5/igt@kms_rotation_crc@multiplane-rotation-cropping-top.html
+>
+Not related to the change.
 
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
----
- lib/i915/intel_fbc.c                   | 22 ++++++++++++++++++++++
- lib/i915/intel_fbc.h                   |  1 +
- tests/intel/kms_frontbuffer_tracking.c | 24 ++++++++++++++++++++++--
- 3 files changed, 45 insertions(+), 2 deletions(-)
+--
 
-diff --git a/lib/i915/intel_fbc.c b/lib/i915/intel_fbc.c
-index ad78ee2a3..9833cc9e3 100644
---- a/lib/i915/intel_fbc.c
-+++ b/lib/i915/intel_fbc.c
-@@ -20,6 +20,28 @@ void intel_fbc_disable(igt_display_t *display)
- 	igt_set_module_param_int(display->drm_fd, "enable_fbc", 0);
- }
- 
-+/**
-+ * intel_fbc_enable_possible:
-+ * @drm_fd: Device file descriptor
-+ *
-+ * Check if FBC is allowed to be enabled by reading the enable_fbc modparam.
-+ *
-+ * Returns:
-+ * true if enable_fbc modparam allows FBC to be enabled, false otherwise.
-+ */
-+bool intel_fbc_enable_possible(int drm_fd)
-+{
-+	char *param_value;
-+	int enable_fbc;
-+
-+	param_value = __igt_params_get(drm_fd, "enable_fbc");
-+	igt_assert_f(param_value, "Could not read enable_fbc modparam\n");
-+	enable_fbc = atoi(param_value);
-+	free(param_value);
-+
-+	return enable_fbc != 0;
-+}
-+
- /**
-  * intel_fbc_get_status_crtc_index
-  * @device: fd of the device
-diff --git a/lib/i915/intel_fbc.h b/lib/i915/intel_fbc.h
-index a82a96d20..1192ebf1b 100644
---- a/lib/i915/intel_fbc.h
-+++ b/lib/i915/intel_fbc.h
-@@ -14,6 +14,7 @@ enum psr_mode;
- 
- void intel_fbc_enable(igt_display_t *display);
- void intel_fbc_disable(igt_display_t *display);
-+bool intel_fbc_enable_possible(int drm_fd);
- bool intel_fbc_supported(igt_crtc_t *crtc);
- bool intel_fbc_wait_until_enabled(igt_crtc_t *crtc);
- bool intel_fbc_is_enabled(igt_crtc_t *crtc, int log_level);
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 594644632..4dd2f4e70 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -2195,6 +2195,12 @@ static void setup_fbc(void)
- 		return;
- 	}
- 
-+	if (!intel_fbc_enable_possible(drm.fd)) {
-+		igt_info("Can't test FBC: disabled by enable_fbc modparam\n");
-+		fbc.can_test = false;
-+		return;
-+	}
-+
- 	fbc.can_test = true;
- 
- 	fbc_setup_last_action();
-@@ -2227,6 +2233,20 @@ static void setup_psr(void)
- 		igt_info("Can't test PSR: not supported by sink.\n");
- 		return;
- 	}
-+
-+	if (!is_psr_enable_possible(drm.fd, PSR_MODE_1)) {
-+		igt_info("Can't test PSR: disabled by enable_psr modparam\n");
-+		psr.can_test = false;
-+		return;
-+	}
-+
-+	if (psr_sink_support(drm.fd, drm.debugfs, PR_MODE, NULL) &&
-+	    !is_psr_enable_possible(drm.fd, PR_MODE)) {
-+		igt_info("Can't test Panel Replay: Panel Replay disabled by enable_panel_replay modparam\n");
-+		psr.can_test = false;
-+		return;
-+	}
-+
- 	psr.can_test = true;
- }
- 
-@@ -2688,11 +2708,11 @@ static void check_test_requirements(const struct test_mode *t)
- 
- 	if (t->feature & FEATURE_FBC)
- 		igt_require_f(fbc.can_test,
--			      "Can't test FBC with this chipset\n");
-+			      "Can't test FBC (unsupported or disabled by enable_fbc modparam)\n");
- 
- 	if (t->feature & FEATURE_PSR) {
- 		igt_require_f(psr.can_test,
--			      "Can't test PSR with the current outputs\n");
-+			      "Can't test PSR (unsupported or disabled by enable_psr modparam)\n");
- 	}
- 
- 	if (t->feature & FEATURE_DRRS)
--- 
-2.43.0
+marcin
 
+>    
+> Known issues
+> ------------
+[cut]
+>
+>
+> Build changes
+> -------------
+>
+>    * IGT: IGT_9047 -> IGTPW_15647
+>    * Linux: xe-5562-2fb212a145eaedc46c59605710573661f6ab1d70 -> xe-5569-2de1755571efc432ef6cc8512d080f68203a1d3a
+>
+>    IGTPW_15647: 3448f4dd0308771686f55c11b3e7958f3c420fd3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>    IGT_9047: 9047
+>    xe-5562-2fb212a145eaedc46c59605710573661f6ab1d70: 2fb212a145eaedc46c59605710573661f6ab1d70
+>    xe-5569-2de1755571efc432ef6cc8512d080f68203a1d3a: 2de1755571efc432ef6cc8512d080f68203a1d3a
+>
+> == Logs ==
+>
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15647/index.html
+>
