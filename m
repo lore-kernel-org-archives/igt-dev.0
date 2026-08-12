@@ -4,63 +4,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E69F0C5B572
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Aug 2026 12:44:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14B5AC5B56A
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Aug 2026 12:50:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8E0F010E405;
-	Wed, 12 Aug 2026 12:44:37 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Gxbyfnn5";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CBAC710E405
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Aug 2026 12:44:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786538641; x=1818074641;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=cY6SVaPhD4iSuGlmWgrGXYfIljeW+vTBSi8v/jh/WzM=;
- b=Gxbyfnn5kprTaMB5TJOvWMumzSqLXebg2KvPsN/4Z9WGpZN6MHpJAW9p
- UQ/vGnIe+p79y0Pj/ZZgN1wo6070Z9UtJh681hjhCXGTJN4h17Maly/9n
- u4uBS6dULvi4pf9KSG22uPpvYf79zULpiJQNHgUoixivSlr8dgCz4LdW0
- GmfgP1inWuOPUB1v2bdfmRA0qu1EnOEuFfZRkoOR+w3l2+Z4Auz25JuyE
- gT1BxgiWfU4xjgYiPR8p4MIpRzD6gQMyTlDLdJyu2RQ6qa5hlE5gzFIzj
- iCX5lkHu1eTEzY8lh1PRI+BcVCvmuUIfzH3JFCBysQI+LZzqhcH/jkEYb Q==;
-X-CSE-ConnectionGUID: tkOcx7ApQ++TZQiqJmPbdQ==
-X-CSE-MsgGUID: oxPGKmzMR3u1fwMJL40JmQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="86051056"
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; d="scan'208";a="86051056"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Aug 2026 05:44:00 -0700
-X-CSE-ConnectionGUID: s/zFF+exTxmW0tmcRvDkcA==
-X-CSE-MsgGUID: E2ByxA1MSUy4MNfZVNJaww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; d="scan'208";a="287069256"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 05:43:59 -0700
-Date: Wed, 12 Aug 2026 14:43:34 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Lukasz Laguna <lukasz.laguna@intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: Re: [PATCH] intel-ci/i915/blocklist: Add sriov tests to blocklist
-Message-ID: <20260812124334.yzoulkjsvwxwh35k@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- igt-dev@lists.freedesktop.org,
- Lukasz Laguna <lukasz.laguna@intel.com>,
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-References: <20260812094514.1362168-1-krzysztof.karas@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9575F10EFA9;
+	Wed, 12 Aug 2026 12:50:04 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 822CB10EFA9;
+ Wed, 12 Aug 2026 12:49:29 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0881147265282742366=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci/i915/blocklist=3A_?=
+ =?utf-8?q?Add_sriov_tests_to_blocklist?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Krzysztof Karas" <krzysztof.karas@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 12 Aug 2026 12:49:29 -0000
+Message-ID: <178653896952.43282.5396325718038851216@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260812094514.1362168-1-krzysztof.karas@intel.com>
 In-Reply-To: <20260812094514.1362168-1-krzysztof.karas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -74,56 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
-On 2026-08-12 at 09:45:14 +0000, Krzysztof Karas wrote:
+--===============0881147265282742366==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-please make prefix short, it could be:
+== Series Details ==
 
-[PATCH] intel-ci: Block sriov tests on i915
+Series: intel-ci/i915/blocklist: Add sriov tests to blocklist
+URL   : https://patchwork.freedesktop.org/series/172060/
+State : success
 
-> With addition of commit c9a41149d843
-> ("tests/sriov_basic: Validate PF unbind with VFs enabled")
-> a set of sriov tests was enabled on i915 machines what,
-> expectedly, produces multitude of SKIPs in our CI [1].
-> 
-> Amend the problem by disabling all sriov testing on i915.
-> 
-> [1] https://gfx-ci.igk.intel.com/cibuglog-ng/issue/24557?table=&page=3&page_size=100#query_key=dc51d83bc41c2b44b58762c6cd35195d043d85ce
-> 
-> Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
-> ---
->  tests/intel-ci/i915.blocklist.txt | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/tests/intel-ci/i915.blocklist.txt b/tests/intel-ci/i915.blocklist.txt
-> index da467ae49..9f7aef0a5 100644
-> --- a/tests/intel-ci/i915.blocklist.txt
-> +++ b/tests/intel-ci/i915.blocklist.txt
-> @@ -221,3 +221,6 @@ igt@kms_vrr@lobf-dc3co
->  ##################################################################
->  igt@kms_setmode@basic-no-cpu-idle
->  ##################################################################
-> +# Valid skip :- SRIOV is not supported by i915
+== Summary ==
 
-Please make it short, basically all are valid reasons so just:
+CI Bug Log - changes from XEIGT_9052_BAT -> XEIGTPW_15662_BAT
+====================================================
 
-# SRIOV is not supported by i915
+Summary
+-------
 
-> +##################################################################
-> +igt@sriov_basic.*
+  **SUCCESS**
 
-If you want all, better:
-igt@.*sriov.*
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 12)
+------------------------------
+
+  Missing    (1): bat-nvls-1 
 
 
+Changes
+-------
 
-Regards,
-Kamil
+  No changes found
 
 
-> -- 
-> 2.34.1
-> 
+Build changes
+-------------
+
+  * IGT: IGT_9052 -> IGTPW_15662
+  * Linux: xe-5578-aabf41c0ea0ad661a2e384e51955b24343f6ca25 -> xe-5580-96ddbb14986632af742523e68f90d51c138c57f0
+
+  IGTPW_15662: 15662
+  IGT_9052: 9052
+  xe-5578-aabf41c0ea0ad661a2e384e51955b24343f6ca25: aabf41c0ea0ad661a2e384e51955b24343f6ca25
+  xe-5580-96ddbb14986632af742523e68f90d51c138c57f0: 96ddbb14986632af742523e68f90d51c138c57f0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15662/index.html
+
+--===============0881147265282742366==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci/i915/blocklist: Add sriov tests to blocklist</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172060/">https://patchwork.freedesktop.org/series/172060/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15662/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15662/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9052_BAT -&gt; XEIGTPW_15662_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-nvls-1 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9052 -&gt; IGTPW_15662</li>
+<li>Linux: xe-5578-aabf41c0ea0ad661a2e384e51955b24343f6ca25 -&gt; xe-5580-96ddbb14986632af742523e68f90d51c138c57f0</li>
+</ul>
+<p>IGTPW_15662: 15662<br />
+  IGT_9052: 9052<br />
+  xe-5578-aabf41c0ea0ad661a2e384e51955b24343f6ca25: aabf41c0ea0ad661a2e384e51955b24343f6ca25<br />
+  xe-5580-96ddbb14986632af742523e68f90d51c138c57f0: 96ddbb14986632af742523e68f90d51c138c57f0</p>
+
+</body>
+</html>
+
+--===============0881147265282742366==--
