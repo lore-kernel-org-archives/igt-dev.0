@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C3A4C5AD5A
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Aug 2026 08:01:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C42B7C5CFDB
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Aug 2026 08:56:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B988E10E3E5;
-	Wed, 12 Aug 2026 08:01:14 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JqChsiNt";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1905110EDCF
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Aug 2026 07:59:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786521545; x=1818057545;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=7T8rs/+Kv7CAEDiW7fgb6B/xcz6w+gBsIVMA3ClF9qs=;
- b=JqChsiNtpVwl9R+NGymyLAWtgG16F4d65c5GtgL5Ubr+SVo/1dr/Eik5
- Y/PJeCHkV9ohJI+TJ3+3L7pTm2X4/LniI5FZ5KgIWuzF/c4qV9W3bsHRv
- D7xgfDpT78pd6/5mrtpvENDC0lGsVxxLnpLPoFEMdXlN0aVDVtR44cL2N
- OdCS5ZmEvkcZ4OltOCIdyt4T8OpR0ME6XfTAt3/7zPbto4IKvfHTo0tx4
- ThbxhleNhwqz61IrduwCH5jQoaRTb3nzeORReAgACESov+8etace8cKPq
- 9UxZGVbkDkLXIFuggaNCEkUbHaI0CLHKECzr9B/e5F1FwIBrhte1WYX+Z A==;
-X-CSE-ConnectionGUID: OmO+YG96R62kxGq4MH+aQw==
-X-CSE-MsgGUID: AKlZbio1SzakyCVcHrMLOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11872"; a="97730394"
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; d="scan'208";a="97730394"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Aug 2026 00:59:05 -0700
-X-CSE-ConnectionGUID: TJILCxRTSk6H3obUSTxWlQ==
-X-CSE-MsgGUID: 4xbw3V0iRmqqHyOb0PpZVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; d="scan'208";a="267067126"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2026 00:59:03 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: chaitanya.kumar.borah@intel.com, mitulkumar.ajitkumar.golani@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v3 1/2] lib/igt_vrr:Add VRR helper library for display
- refresh rate testing
-Date: Wed, 12 Aug 2026 13:29:14 +0530
-Message-ID: <20260812075916.1212493-2-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260812075916.1212493-1-ramanaidu.naladala@intel.com>
-References: <20260812075916.1212493-1-ramanaidu.naladala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E7B110EF02;
+	Wed, 12 Aug 2026 08:56:12 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4239310EEFF;
+ Wed, 12 Aug 2026 08:55:30 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8817245176346599359=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_CMRR_subtests_=28rev3?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 12 Aug 2026 08:55:30 -0000
+Message-ID: <178652493026.42156.8193812762604347673@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260812075916.1212493-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20260812075916.1212493-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,248 +37,115 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce a new helper library for Variable Refresh Rate (VRR).
+--===============8817245176346599359==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add helpers to validate targeted refresh-rate testing.
+== Series Details ==
 
-v2: Modify debugfs with helpers.
-v3: Add helper to check cmrr support.
-    Address review comments. (Mitul)
+Series: Add CMRR subtests (rev3)
+URL   : https://patchwork.freedesktop.org/series/171615/
+State : success
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- lib/igt_vrr.c   | 154 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_vrr.h   |  44 ++++++++++++++
- lib/meson.build |   1 +
- 3 files changed, 199 insertions(+)
- create mode 100644 lib/igt_vrr.c
- create mode 100644 lib/igt_vrr.h
+== Summary ==
 
-diff --git a/lib/igt_vrr.c b/lib/igt_vrr.c
-new file mode 100644
-index 000000000..704eaa3a3
---- /dev/null
-+++ b/lib/igt_vrr.c
-@@ -0,0 +1,154 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#include <inttypes.h>
-+
-+#include "igt_vrr.h"
-+#include "igt_sysfs.h"
-+
-+const uint32_t igt_vrr_standard_video_timing_fps[] = {
-+	24, 25, 30, 48, 50, 60, 75, 90, 96, 100, 120, 144, 165, 180, 200, 240,
-+};
-+
-+const size_t igt_vrr_standard_video_timing_fps_count =
-+	ARRAY_SIZE(igt_vrr_standard_video_timing_fps);
-+
-+/**
-+ * igt_target_rr_debugfs_write:
-+ * @fd: DRM file descriptor.
-+ * @crtc_index: Index of the CRTC.
-+ * @vrefresh: Target refresh rate to program.
-+ * @numerator: Numerator component of the target refresh rate fraction.
-+ * @denominator: Denominator component of the target refresh rate fraction.
-+ *
-+ * Write the target refresh rate configuration to the per-CRTC
-+ * VRR debugfs interface.
-+ *
-+ * Returns: None.
-+ */
-+void
-+igt_target_rr_debugfs_write(int fd, int crtc_index,
-+			    uint32_t vrefresh,
-+			    uint32_t numerator,
-+			    uint32_t denominator)
-+{
-+	char buf[32];
-+	int ret, dir;
-+	uint64_t val;
-+
-+	val = vrefresh * numerator;
-+
-+	snprintf(buf, sizeof(buf), "%" PRIu64 "/%u",
-+		 val, denominator);
-+
-+	dir = igt_debugfs_crtc_dir(fd, crtc_index);
-+	igt_require_fd(dir);
-+
-+	ret = igt_sysfs_write(dir, "intel_vrr_target_refresh_rate",
-+			      buf, sizeof(buf) - 1);
-+	 close(dir);
-+	 igt_assert_f(ret == (sizeof(buf) - 1), "debugfs_write failed");
-+}
-+
-+/**
-+ * igt_cmrr_debugfs_read:
-+ * @fd: DRM file descriptor.
-+ * @crtc_index: Index of the CRTC.
-+ *
-+ * Read the configured refresh rate from the per-CRTC VRR debugfs node.
-+ *
-+ * Return: None.
-+ */
-+void
-+igt_target_rr_debugfs_read(int fd, int crtc_index)
-+{
-+	char buf[32];
-+	int ret, dir;
-+
-+	dir = igt_debugfs_crtc_dir(fd, crtc_index);
-+	igt_require_fd(dir);
-+
-+	ret = igt_sysfs_read(dir, "intel_vrr_target_refresh_rate",
-+			     buf,  sizeof(buf) - 1);
-+	close(dir);
-+	igt_assert_f(ret >= 0,
-+		     "Failed to read intel_vrr_target_refresh_rate.\n");
-+
-+	buf[ret] = '\0';
-+
-+	igt_info("vrr target RR: %s\n", buf);
-+}
-+
-+/**
-+ * igt_vrr_mode_line_refresh_hz:
-+ * @mode: DRM display mode used for the calculation
-+ *
-+ * Compute the refresh rate directly from the mode timing parameters.
-+ *
-+ * Returns: Refresh rate in Hz as a floating-point value.
-+ */
-+double igt_vrr_mode_line_refresh_hz(const drmModeModeInfo *mode)
-+{
-+	return (double)mode->clock * 1000.0 / ((double)mode->htotal * (double)mode->vtotal);
-+}
-+
-+/**
-+ * igt_vrr_get_mode_with_video_timing:
-+ * @output: Display output containing connector mode list
-+ * @fps: Requested integer refresh rate in Hz
-+ * @matched_mode: Returned mode that matches @fps
-+ *
-+ * Find and return a connector mode that matches the requested
-+ * video timing refresh rate in Hz.
-+ *
-+ * Returns: true when a mode is found, false otherwise
-+ */
-+
-+bool igt_vrr_get_mode_with_video_timing(igt_output_t *output,
-+					uint32_t fps,
-+					drmModeModeInfo *matched_mode)
-+{
-+	drmModeConnectorPtr connector;
-+
-+	connector = output->config.connector;
-+	if (!connector)
-+		return false;
-+
-+	for (int i = 0; i < connector->count_modes; i++) {
-+		if (connector->modes[i].vrefresh == fps) {
-+			*matched_mode = connector->modes[i];
-+			return true;
-+		}
-+	}
-+	return false;
-+}
-+
-+/**
-+ * cmrr_supported:
-+ * @fd: DRM device file descriptor.
-+ * @crtc_index: Index of the CRTC.
-+ *
-+ * Checks whether the intel_vrr_target_refresh_rate debugfs node is present
-+ * for the specified CRTC, indicating CMRR support.
-+ *
-+ * Returns: true if CMRR is supported, false otherwise.
-+ */
-+bool cmrr_supported(int fd, int crtc_index)
-+{
-+	int dir;
-+
-+	dir = igt_debugfs_crtc_dir(fd, crtc_index);
-+
-+	if (dir < 0)
-+		return false;
-+
-+	if (faccessat(dir, "intel_vrr_target_refresh_rate", F_OK, 0) == 0) {
-+		close(dir);
-+		return true;
-+	}
-+
-+	close(dir);
-+	return false;
-+}
-diff --git a/lib/igt_vrr.h b/lib/igt_vrr.h
-new file mode 100644
-index 000000000..a317d4684
---- /dev/null
-+++ b/lib/igt_vrr.h
-@@ -0,0 +1,44 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#ifndef IGT_VRR_H
-+#define IGT_VRR_H
-+
-+#include <stdbool.h>
-+#include <stdint.h>
-+#include "igt.h"
-+#include "igt_kms.h"
-+
-+#define CMRR_NUMERATOR 1000ULL
-+#define CMRR_DENOMINATOR 1000ULL
-+#define CMRR_VIDEO_MODE_DENOMINATOR 1001ULL
-+#define TARGET_RR_SAMP_COUNT 100
-+
-+enum {
-+	CMRR_VIDEO_MODE,
-+	CMRR_NON_VIDEO_MODE,
-+	CMRR_DISABLE,
-+};
-+
-+extern const uint32_t igt_vrr_standard_video_timing_fps[];
-+extern const size_t igt_vrr_standard_video_timing_fps_count;
-+
-+void
-+igt_target_rr_debugfs_write(int fd, int crtc_index,
-+			    uint32_t vrefresh,
-+			    uint32_t numerator,
-+			    uint32_t denominator);
-+void
-+igt_target_rr_debugfs_read(int fd, int crtc_index);
-+
-+double igt_vrr_mode_line_refresh_hz(const drmModeModeInfo *mode);
-+
-+bool igt_vrr_get_mode_with_video_timing(igt_output_t *output,
-+					uint32_t fps,
-+					drmModeModeInfo *matched_mode);
-+
-+bool cmrr_supported(int fd, int crtc_index);
-+
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index 3001b473e..8675bd4a6 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -22,6 +22,7 @@ lib_sources = [
- 	'igt_configfs.c',
- 	'igt_facts.c',
- 	'igt_crc.c',
-+        'igt_vrr.c',
- 	'igt_debugfs.c',
- 	'igt_device.c',
- 	'igt_device_scan.c',
--- 
-2.43.0
+CI Bug Log - changes from IGT_9052 -> IGTPW_15661
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15661/index.html
+
+Participating hosts (38 -> 36)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9052 -> IGTPW_15661
+  * Linux: CI_DRM_18980 -> CI_DRM_18981
+
+  CI-20190529: 20190529
+  CI_DRM_18980: aabf41c0ea0ad661a2e384e51955b24343f6ca25 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_18981: 022f0029796a06c77f3856313a38ea226a652264 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15661: a82765a18767e0ca313aed86401d1d25b13ac9c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9052: 9052
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15661/index.html
+
+--===============8817245176346599359==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add CMRR subtests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171615/">https://patchwork.freedesktop.org/series/171615/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15661/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15661/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9052 -&gt; IGTPW_15661</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15661/index.html</p>
+<h2>Participating hosts (38 -&gt; 36)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9052 -&gt; IGTPW_15661</li>
+<li>Linux: CI_DRM_18980 -&gt; CI_DRM_18981</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_18980: aabf41c0ea0ad661a2e384e51955b24343f6ca25 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_18981: 022f0029796a06c77f3856313a38ea226a652264 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15661: a82765a18767e0ca313aed86401d1d25b13ac9c8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9052: 9052</p>
+
+</body>
+</html>
+
+--===============8817245176346599359==--
