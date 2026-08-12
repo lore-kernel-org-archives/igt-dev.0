@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7C40BC5B572
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Aug 2026 14:44:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C0A8C5B56A
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Aug 2026 14:46:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04F9510F040;
-	Wed, 12 Aug 2026 14:44:52 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BAB0910F038;
- Wed, 12 Aug 2026 14:44:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3700483803113119518=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1EA8C10F040;
+	Wed, 12 Aug 2026 14:46:36 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RhabdrZ4";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7BB410F040
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Aug 2026 14:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1786545954; x=1818081954;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=XHgQZwo8jId9RES+a3oRgKrks5tiDwjByNH0XZWFw2k=;
+ b=RhabdrZ4ajpqq32gguDGlxRsQuKtBhay3fAZaMOTlDK/jnYPYMiqh39P
+ g1tnOpMGkTlXJO3lje8kenLMv8+LiwShghsEUYHyJgqx3bJMvGl4neNQS
+ PGqrdH0ZXOopTXpc/0VFyu80bwmqzViUI/OthabuC95FdMAP9SlMwqw3W
+ rwul3hnKZ4GVBy50h7t2lTIzDKlxl2muu0SecOT2o+JVcN04FsPgyh4pq
+ Ceqf+c75YHjjY+RINWgzLc/aQmUseI9ueMRvgOYuyfPhM0oZmwQmDVxCd
+ oBKHJI4x59wb4dMBReQJO0u8Rz3bGUZIPW/Y4xXKIWGNPE0Bo+RR9jNwQ g==;
+X-CSE-ConnectionGUID: U6KT7nRSQgaIbkV1bMXa7g==
+X-CSE-MsgGUID: iYQSI8GgTiGyx7bybU1xpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="104636425"
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; d="scan'208";a="104636425"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2026 07:45:53 -0700
+X-CSE-ConnectionGUID: e0XNincbQYqzUJL7FsyiFQ==
+X-CSE-MsgGUID: 846td2HOTOOtOb3hayB+Zw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; d="scan'208";a="288436221"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
+ ([10.245.245.183])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2026 07:45:50 -0700
+From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: [PATCH i-g-t] tests/intel/gem_exec_params: add
+ invalid-offset-multiple-buffers test
+Date: Wed, 12 Aug 2026 16:43:32 +0200
+Message-ID: <20260812144331.41158-2-krzysztof.niemiec@intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_intel-ci=3A_Add_xe=5Fsrio?=
- =?utf-8?q?v=5Fvram_to_NVL_blocklist_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jakub Kolakowski" <jakub1.kolakowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 12 Aug 2026 14:44:02 -0000
-Message-ID: <178654584275.43908.7792253047490357774@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260812142134.1371609-1-jakub1.kolakowski@intel.com>
-In-Reply-To: <20260812142134.1371609-1-jakub1.kolakowski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,160 +69,91 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3700483803113119518==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add coverage for the case where the batch start offset is invalid with
+multiple BOs submitted, which was buggy in the kernel until 4fe2bd195435
+("drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer")
 
-== Series Details ==
+Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+---
+ tests/intel/gem_exec_params.c | 48 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-Series: intel-ci: Add xe_sriov_vram to NVL blocklist (rev2)
-URL   : https://patchwork.freedesktop.org/series/172067/
-State : success
+diff --git a/tests/intel/gem_exec_params.c b/tests/intel/gem_exec_params.c
+index 3ba4c530b..757115a21 100644
+--- a/tests/intel/gem_exec_params.c
++++ b/tests/intel/gem_exec_params.c
+@@ -85,6 +85,8 @@
+  *
+  * SUBTEST: invalid-flag
+  *
++ * SUBTEST: invalid-offset-multiple-buffers
++ *
+  * SUBTEST: invalid-ring
+  *
+  * SUBTEST: invalid-ring2
+@@ -404,6 +406,49 @@ static void test_invalid_batch_start(int fd)
+ 	gem_close(fd, exec.handle);
+ }
+ 
++/*
++ * this test is checking for a NULL deref in eb_release_vmas()
++ * (see 4fe2bd195435 for kernel fix).
++ *
++ * this is always going to fail with an EINVAL but will trigger a crash
++ * in the kernel on affected systems.
++ */
++
++static void test_invalid_offset_multiple_buffers(int fd)
++{
++	struct drm_i915_gem_exec_object2 exec[2];
++	struct drm_i915_gem_execbuffer2 execbuf;
++	const intel_ctx_t *ctx;
++	uint32_t size = 0x1000;
++
++	/*
++	 * clear out junk from the argument structs, since it makes the ioctl
++	 * fail due to invalid flags, which is not the failure we want to
++	 * invoke here.
++	 */
++
++	memset(exec, 0, sizeof(exec));
++	memset(&execbuf, 0, sizeof(execbuf));
++
++	ctx = intel_ctx_create_all_physical(fd);
++	exec[0].handle = batch_create_size(fd, size);
++	exec[1].handle = batch_create_size(fd, size);
++
++	/* this triggers a fail precisely in eb_add_vma() */
++	execbuf.buffers_ptr = to_user_pointer(exec);
++	execbuf.buffer_count = 2;
++	execbuf.batch_start_offset = size;
++	execbuf.rsvd2 = ctx->id;
++
++	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
++
++	gem_sync(fd, exec[0].handle);
++	gem_sync(fd, exec[1].handle);
++
++	gem_close(fd, exec[0].handle);
++	gem_close(fd, exec[1].handle);
++}
++
+ static void test_larger_than_life_batch(int fd)
+ {
+ 	const struct intel_execution_engine2 *e;
+@@ -705,6 +750,9 @@ int igt_main()
+ 	igt_subtest("larger-than-life-batch")
+ 		test_larger_than_life_batch(fd);
+ 
++	igt_subtest("invalid-offset-multiple-buffers")
++		test_invalid_offset_multiple_buffers(fd);
++
+ #define DIRT(name) \
+ 	igt_subtest(#name "-dirt") { \
+ 		execbuf.flags = 0; \
+-- 
+2.55.0
 
-== Summary ==
-
-CI Bug Log - changes from IGT_9052 -> IGTPW_15665
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/index.html
-
-Participating hosts (38 -> 35)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15665 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +79 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9052/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [PASS][3] -> [DMESG-WARN][4] ([i915#13735] / [i915#180])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9052/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [PASS][5] -> [DMESG-WARN][6] ([i915#13735] / [i915#15673] / [i915#180]) +52 other tests dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9052/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9052 -> IGTPW_15665
-  * Linux: CI_DRM_18980 -> CI_DRM_18982
-
-  CI-20190529: 20190529
-  CI_DRM_18980: aabf41c0ea0ad661a2e384e51955b24343f6ca25 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_18982: 96ddbb14986632af742523e68f90d51c138c57f0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15665: 15665
-  IGT_9052: 9052
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/index.html
-
---===============3700483803113119518==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel-ci: Add xe_sriov_vram to NVL blocklist (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172067/">https://patchwork.freedesktop.org/series/172067/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9052 -&gt; IGTPW_15665</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/index.html</p>
-<h2>Participating hosts (38 -&gt; 35)</h2>
-<p>Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15665 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9052/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +79 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9052/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9052/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15665/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +52 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9052 -&gt; IGTPW_15665</li>
-<li>Linux: CI_DRM_18980 -&gt; CI_DRM_18982</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_18980: aabf41c0ea0ad661a2e384e51955b24343f6ca25 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_18982: 96ddbb14986632af742523e68f90d51c138c57f0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15665: 15665<br />
-  IGT_9052: 9052</p>
-
-</body>
-</html>
-
---===============3700483803113119518==--
