@@ -4,70 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71EE2C5B572
-	for <igt-dev@archiver.kernel.org>; Wed, 12 Aug 2026 14:59:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CF47C5B56A
+	for <igt-dev@archiver.kernel.org>; Wed, 12 Aug 2026 15:02:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1DC210F04F;
-	Wed, 12 Aug 2026 14:59:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 279B310E17C;
+	Wed, 12 Aug 2026 15:02:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="QhDOuq5k";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eYEylB/d";
 	dkim-atps=neutral
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9B1E210F04F
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Aug 2026 14:58:25 +0000 (UTC)
-Received: by mail-qk1-f199.google.com with SMTP id
- af79cd13be357-934963b2bc0so102486585a.3
- for <igt-dev@lists.freedesktop.org>; Wed, 12 Aug 2026 07:58:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20251104; t=1786546704; x=1787151504;
- darn=lists.freedesktop.org; 
- h=content-transfer-encoding:content-type:cc:to:from:subject
- :message-id:references:mime-version:in-reply-to:date:from:to:cc
- :subject:date:message-id:reply-to:content-type;
- bh=qrhjGhI6jc0SDXk+t/4+dD7GyJ3EvuQZDcOyQNKSM68=;
- b=QhDOuq5k6LsWTqMwHlrOKIZSsNJk9vvuJXBTn7uo16RrAczJquKIByGv0tbU2sFbwa
- 2dum9c4FYn+04P0bUc6MqdhiPEaJiMshiM28FDl0FHNyR0kgK2bo749tJFdpChTwIjlo
- shbdB+DKdhTIjZ/bxqYu8zlbD7GOoED3A5GaPyo7I6c8cZBX/21hr1cwgzqPfvLNFVSp
- /PqhnNUTXAnJHvUZDIybjY3CCfEoiyiYF0JxZpFPgh6H1CciyqBJ1Fkdof6gNR1bndPV
- FSjAp3wVpoQwEf8geZxBJUI59ECXC/NsGiOT2ClX0AhYvKTxDsXEPeVn8AXLjrHbKzos
- ji8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1786546704; x=1787151504;
- h=content-transfer-encoding:content-type:cc:to:from:subject
- :message-id:references:mime-version:in-reply-to:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
- :content-type;
- bh=qrhjGhI6jc0SDXk+t/4+dD7GyJ3EvuQZDcOyQNKSM68=;
- b=RLDzIV/NyxFG2j3V1yTW4o4bUJTV+755V5iz/dKLlCZnAJ9bBpO8DyMTl5q2R9RP93
- 1uIZgwJJ5oAn6FaMysBV9sPIq7/ull1taubBghrY2khFs/Wp13vPeq8p+8dHOtcnNcDk
- Hd7mvJT6JfY37g3o4WQUbnPdlvY6nAu178ia/7hCcebI4/ccdRuxb0ASTgpDwyOXd4Fr
- PMl6SDevT3H4pJ/ve2xapFV5zOfZSclFSDnSfcj7XgOgcKUGtuUmKFPbnWh0qMc0GqCG
- sGI/vSlwq/2BLeEu8bdGGQkv2aXpMpqeCKXznT+me8Bi8L61HBt4aVC2nK0cCnQuiPbe
- eRjg==
-X-Gm-Message-State: AOJu0Yzv7LEBZrxsXQ+7LCCBHrQkrfgba/isnVh2/Fre/Vdjm3n3E+fO
- wG9CZ3FGWy+96euJjnHdvAtUqATKgyLvBqelG87QzbGHGWPjBgLJ1BuZxO5bl+J+vVKcsmKJSkw
- +EOkFt76vI/9zUljtRpfWze3VuJdkl8XNWWDgSdH1kCZrWdVhIPY2CnlPeTmXsEiIsG55cWvi+j
- 0O5B7IKzkyIjVeFwovNmj4EMZUUh8fOnrDOsaRd3Qts+9pzdCYWvDJ4h8wRF1G/n++ZWc=
-X-Received: from qkak24-n2.prod.google.com
- ([2002:a05:620a:a0d8:20b0:930:f57c:62dc])
- (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:370b:b0:934:9524:2e89 with SMTP id
- af79cd13be357-936b3a75a97mr440157485a.13.1786546703750; 
- Wed, 12 Aug 2026 07:58:23 -0700 (PDT)
-Date: Wed, 12 Aug 2026 10:58:09 -0400
-In-Reply-To: <20260720185026.93121-1-markyacoub@google.com>
-Mime-Version: 1.0
-References: <20260720185026.93121-1-markyacoub@google.com>
-X-Mailer: git-send-email 2.55.0.679.g6767b8d81c-goog
-Message-ID: <20260812145822.3349593-1-markyacoub@google.com>
-Subject: [PATCH v4] lib/igt_rc: Introduce generic config parser
-From: Mark Yacoub <markyacoub@google.com>
-To: igt-dev@lists.freedesktop.org
-Cc: louis.chauvet@bootlin.com, kamil.konieczny@linux.intel.com, 
- Mark Yacoub <markyacoub@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9C77610E17C
+ for <igt-dev@lists.freedesktop.org>; Wed, 12 Aug 2026 15:01:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1786546896; x=1818082896;
+ h=from:to:cc:subject:date:message-id:
+ content-transfer-encoding:mime-version;
+ bh=XvliavH7KMnDkz6t68MEECIcNeFslRVf7clCBlTLtI8=;
+ b=eYEylB/dDAdLO8FsTEPd3w4ij+iKyuEvbpKzXeoTIAck6uSJodoF8gH1
+ N5oGoHGxwOngczzAjlObmjucMafBCO+qIdr1KhWs6xjyGWP7YwzfI7W0B
+ weMaJKZkHAg+Q0RwR94DIz1k0WXGzkIZV/C19tgiet55Yd7D0H48oNUSJ
+ GlBGp7M5QPd006syqJsUE1KemjJCYduXKbHEcwc9Qz29yhDdIdQcYDzon
+ M8C8WXm1EQwldEDAQkHzCfOQRAR4ReaFFM9II1YfSLQB2KTa4YialeX2h
+ mCZWk4D+Cf4H/pzVKL0jrGdP0Ne64/McKEHWtSV58fC1w9eV36JlAD9BG g==;
+X-CSE-ConnectionGUID: adbn25/wTrG2VqfA1deuNA==
+X-CSE-MsgGUID: SSdpTRkKTQG+Er2zpxeriw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="86223641"
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; d="scan'208";a="86223641"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2026 08:01:35 -0700
+X-CSE-ConnectionGUID: nfIn3s10S8SfVFmH20+OFg==
+X-CSE-MsgGUID: 4lk3PxkPQA+cqs5nobuQag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,219,1779174000"; d="scan'208";a="259837240"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Aug 2026 08:01:35 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 12 Aug 2026 08:01:35 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Wed, 12 Aug 2026 08:01:34 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.34) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 12 Aug 2026 08:01:34 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AUBXgNkGORBcDo0+bdYHty9lCnWwVtlmO07iQllBxthtqdUvftnLhtyyc9I0GRlmRHT9ptczIhI3zzTWClNiGfCG+HMIRIwolsMwo4UHNSwbKE5rWkCUGj5jiB0o2+x9gIZOZeT5RVtAHSdx0TPXLulQqoTAYPSS/2E+b3GrCh4HvsSvRgqvoBye/hMqtc5ZaUtikxgKKJdKYcNPFcw1AB4+PF7koSq/h6jQivE+AdwzX41qAxnUAq0Smnfr0UZsAIMbfHEX1uOwJgFbEPavw4rPR3E6VwDuC4A6soGfZbXsS7LtCxXJWx4h7ucgEASSamf84D6Ox1cW5dnD+16b7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=x5k9MGSu6F9zQLuZJfUajymZA/UUk4l3YlWHPA4qq3E=;
+ b=gidl9eFi15ZUnFBO7w/Y5BLOlXX94heFxtX4I0eCkubeyo6d3cmCskwu264IrGYxA5zkQiZAqdw0c0tsMUafV0MPxXZZdlq8V2ed0gP6RqxuAjtQwoeKkv8YzYzOsESMa8uAvmLb29kM9WZ5yAjw7233p22N7T/o36EOW1sHEZLQqXz7c3oTXPI6BGgEIUf6Mw0vkFZTImQxP+grKhiB/VVMLAg53Oi4a/EkOtegvNw4Y1NDloQ59BJGb91s4HWbEFRxzbUYxJ2dAJOzaTmVjIdJjHWfAZpK1uVRkfhPZeR+T43FnGYgSTGzwpUjbEOWhaQDv8wT67IkPRY5Wbb3VA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB7424.namprd11.prod.outlook.com (2603:10b6:510:287::7)
+ by IA1PR11MB8785.namprd11.prod.outlook.com (2603:10b6:208:599::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Wed, 12 Aug
+ 2026 15:01:31 +0000
+Received: from PH0PR11MB7424.namprd11.prod.outlook.com
+ ([fe80::c448:1138:6981:52e2]) by PH0PR11MB7424.namprd11.prod.outlook.com
+ ([fe80::c448:1138:6981:52e2%5]) with mapi id 15.21.0315.011; Wed, 12 Aug 2026
+ 15:01:31 +0000
+From: Krzysztof Karas <krzysztof.karas@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Lukasz Laguna
+ <lukasz.laguna@intel.com>, Marcin Bernatowicz
+ <marcin.bernatowicz@linux.intel.com>, Sebastian Brzezinka
+ <sebastian.brzezinka@intel.com>, Krzysztof Niemiec
+ <krzysztof.niemiec@intel.com>, Krzysztof Karas <krzysztof.karas@intel.com>
+Subject: [PATCH v2] intel-ci: Block sriov tests on i915
+Date: Wed, 12 Aug 2026 15:01:22 +0000
+Message-ID: <20260812150122.1380284-1-krzysztof.karas@intel.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: VI1PR04CA0057.eurprd04.prod.outlook.com
+ (2603:10a6:802:2::28) To PH0PR11MB7424.namprd11.prod.outlook.com
+ (2603:10b6:510:287::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR11MB7424:EE_|IA1PR11MB8785:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0e496b5a-a5d8-43f8-d420-08def88297bb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|23010399003|10067099003|18002099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info: x3HhvMkwd8bAqP+D7PyRXIleYTQN6H4mm1ArrSbYuPahX6fdNOHW+WDFCid3PBlPKirVuHzNYlKLmQgfK21nDYnQd4XTRaP0ED6nXD+nx61P8TgKdLWE2yW/fx5s3U5adC9iTUpGavkpLFLt6DV/gG0yx99bl2ta5HEeCwc4Bg6aQyGss+n9TqyeUgQ0UBWt6SH9Di412g4r20JePc42oDtbv5dbZ3GVJKBoNV+z0ZPEOZ+rPBjh/2a0AGiHsYL7PFcP4CAXwN3RzaLv5QCbOohGbo5UPk92qTZYJHt4M0krHdcdMATt67mOqW+lhlqTRWHQD5My9NB7WcweSlA+DZU3a98rTR17PGigKf0IZLYcPZll08RAR+xuCydGeWZhrcymOeSgSXxRk4/asfUcSkMWj6ao5Vnjwg4VLe6KqiTPSPEuBgd32K9diV9+4qAjzULimH7Uai6KOIKxspKY/QNcnjd86nSijwCPyOZh9NCPvjfvzDRM22oxDeQ6PSOhw4hGr/oiLhyFVnjcHOVh6FvCeyBI/Bkru5eZRn90LLwPk4+GoER4FaVJOVt/Hela42rGjJrIvXwI6oaLZhVCf/tFxjRDaoWTYYOMXewXNALPpFFlPjWX3aD99xiQyc2UiuLiC0gw8E9mN0aUS3A0txRDDwoL8HPjrvYQ37YlQeQ=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH0PR11MB7424.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(10067099003)(18002099003)(56012099006)(11063799006);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?CrpTcW5G9z8P5bxl+U7h/Avkfu5BaKk4T8BqGhR4trrD2qqNaK7O+D2li4OZ?=
+ =?us-ascii?Q?cAoL0vzGgJ4IDewcWn/eyjHFZW67Qqqn5e3M6rHju/cqEawBVh0RAPTv/Wme?=
+ =?us-ascii?Q?pTW86wm1IOl85COFw0BYIhkzwAqU01bFDydxs+YoeCnquCiZwPgI6fqnCxa5?=
+ =?us-ascii?Q?EmBQkVmlXs39B/3dE5THnJ9kYfp+0BDnH84/xvHo8ktePDNOEWtx4SdN2eDn?=
+ =?us-ascii?Q?XY11QxGtYiZBwUGMdp2tVlP6qc6Sc1TTuYGL4m8jod4auWSjTL1PpFVz+V/D?=
+ =?us-ascii?Q?9MKmdVgAeWIfBpE9dD1fS59wkZGEB1BB71mLS3Gu9O3D0QMLekj9RlGcLJL1?=
+ =?us-ascii?Q?apFDYgZkVQdwTVcju2bHvjJoLi3tvktst4ZGJIxgZmYDqF9w8FwRaNMdYMxn?=
+ =?us-ascii?Q?fcCpmS767gxxJb5xDd/XpFTH/wjHNprmDjwyFKFdkvPgXrRAKAoAouVszTJW?=
+ =?us-ascii?Q?32+43vOULmZvkffAf5N+r6t8HxzJ4cUsXDynP6nng0ip9QDST6nRLIYS6877?=
+ =?us-ascii?Q?zxmNIsTUt+bYWwpMFtBDMA3RWBlejcFG0WCxjDuoJfIajww84th5Ww3i+Fz5?=
+ =?us-ascii?Q?kCEiVWT3qgaX3groXGmhTJw3MfWVTNxQu9yk5oS/AJOMrCOL9ISWWBW0yK80?=
+ =?us-ascii?Q?F/ScioaPsRNT5DHUn8kfbDMD8EEvGDyYcodXvI6Cu23q9GbHvZ6xCuIE38Q8?=
+ =?us-ascii?Q?PK/cQfjdWJeBOLw9mZJHElpeLA6XsL2fVjoSkNf3NjjcJ6yNAB3ZCRLdJAJc?=
+ =?us-ascii?Q?bJ8rbOfNZAXU9gfhihciyR0E9srAXRAK+zYkbyf6HaF/TkPEGlo4NkYDxMvG?=
+ =?us-ascii?Q?KeBhiIqCrZxq6bkCWo0ehF8C966mp151TsxlJnmaX0yOML7lVkNNIU2mtNkY?=
+ =?us-ascii?Q?CKGWaZ0f7a8uk0jlRlxM4RJWYDc1tuvVHAS+LO6N3armU/0hGo7ZZxeWZ2R6?=
+ =?us-ascii?Q?iF2wrtS9vej9/Qd3NYehp0d/ZgEaQalWNDXZes6yXF4cRvaLRxbCz1RBU3Vq?=
+ =?us-ascii?Q?xOpCDAP8G+c2xhGOfEIwuXB5xaqFfPl7Cn0uVYP+wvFg/CFzjhFgsGg4EwuB?=
+ =?us-ascii?Q?iJ0iK2PdzZmCTOb0wfWX5D90EOSWe9hgQwvQ35ulPRb1LucRFNetDbV1xoCm?=
+ =?us-ascii?Q?ULruNe9f/RvG6Xekpfb3mQPo3/t3Ac5Dhl6L+P4oezo+zKyNvcEPEUn7BtaT?=
+ =?us-ascii?Q?MUVzNaErVYbL3c2euPa0pSyMWsjRNI3u0KcPMpZhpebL3ILpq3KNcNFSCumK?=
+ =?us-ascii?Q?MepwUWSXWOhk6SwL0EFlyR5TSL2qYch736BqOp9aMFZc2XIhsMMKjrOb9wL3?=
+ =?us-ascii?Q?++cNhBgv5ApvoXUAuMnnHaXd/gBmWlpaEIl0DHfUtMdLsJneEJWmGKWB2AR7?=
+ =?us-ascii?Q?auO6myfg5YUOQCiu44nZFzx/HXxlrrpoMFj7k3ZKBoaPs71G0PsSi/1dSLGp?=
+ =?us-ascii?Q?L63J5Rjq0iVb3y719QQhSgTnbBx93pbI4suDL+MLO7MGkQq1wlnmdLCYxxiY?=
+ =?us-ascii?Q?IRpRw0wqUyr6y60zKATdjcAjFk59uMtUobWZ0i8+vd1RfEQJMAEjLxideu6N?=
+ =?us-ascii?Q?JzNKci1yjYGWUGLYAkezdwsgB8VWwv2viJbU+ZR5DU1Q4uYSUJXfRN+AUet6?=
+ =?us-ascii?Q?RBAd8HY6szRL+lv8453RnGWN4YWyBFHYxt042duPeSe5lKRfKLMKlzX/056C?=
+ =?us-ascii?Q?I1xdKPso98JaohjVqHTYOjzsTLeCZ/5EB+pKI4ntW6+7Y3e329tIU0/oHmQb?=
+ =?us-ascii?Q?ZzeyWjagv50TStlie/A7UfRf6eHnnRo=3D?=
+X-Exchange-RoutingPolicyChecked: qj2TyByiFd+Jm0o/FMxw4eogmTt55tNTeX7mtxN1Q6flpaz0sqiR5vJeZmLP0xzrl8uPSGbQ3qVIdo45/meiVub9x07mGuR7RJvowZsUuK9TEYfWXgu/5PjY8nIfrB4stapdiCNbzTHWIsm9MRm2I1zbDnrOrNCxs9k6+fPmJmIbv3RHSeJZjYC5VYKd+Sia6vno+k3et3fKHVCj7/6cubJBaiOauIOr4D3yKVaimXxjJb2yw4e//ypqsTVIyEhs4wwmvkGKPwMcVYN3iOsy4X0pvbAL2AS9UbGxOalRNkcXuOfB9SBKmLqpk+ufLxyuP3oVzSCuEBLva00CH32xmA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0e496b5a-a5d8-43f8-d420-08def88297bb
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7424.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2026 15:01:31.1850 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: y6NCcPWgQKmmiTRktehoJZAz/KVzPWvYUW0YTlQzEoUEVa/k9kxQpCrulxgiZN+Fo7N8PPvKO/9u8U8pu2eTVvHex3F4sl5gQyMxjR1ijGw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8785
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,485 +160,36 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently, libraries like unigraf and igt_core explicitly rely on GKeyFile
-for reading configuration from .igtrc. Android builds do not
-natively supply glib, meaning these tools cannot be cleanly
-compiled.
+With addition of commit c9a41149d843
+("tests/sriov_basic: Validate PF unbind with VFs enabled")
+a set of sriov tests was enabled on i915 machines what,
+expectedly, produces multitude of SKIPs in our CI [1].
 
-This patch abstracts config parsing into a dedicated `igt_rc` module.
-To avoid platform-specific diverging implementations and glib dependencies,
-`igt_rc` now natively parses `.igtrc` using a stripped-down, thread-safe
-`igt_list` implementation for all platforms.
+Amend the problem by disabling all sriov testing on i915.
 
-v4:
- - Implement igt_rc_get_double() to parse floating point configs natively.
- - Migrate igt_core.c over to igt_rc_get_double() to drop GKeyFile dependen=
-cies.
- - Add robust standard bounds checking (ERANGE and unmatched digits) to num=
-ber parsers.
+[1] https://gfx-ci.igk.intel.com/cibuglog-ng/issue/24557?table=&page=3&page_size=100#query_key=dc51d83bc41c2b44b58762c6cd35195d043d85ce
 
-v3:
- - Drop Android-specific fallback paths; use IGT_CONFIG_PATH natively.
- - Drop glib Linux wrappers entirely; unify a single generic parser for all=
- platforms.
- - Port manual linked-list tracking over to standard igt_list.h APIs.
- - Inherit base 0 for strtol to safely parse hex masks.
- - Use robust PATH_MAX for dynamic config paths.
- - Update pointer assignments, array indexing [0], and public docstrings (L=
-ouis Chauvet).
-
-v2:
- - Drop the GKeyFile abstraction fakes from android/glib.h.
- - Introduce a generic wrapper (igt_rc.h) instead of modifying glib.h.
+Signed-off-by: Krzysztof Karas <krzysztof.karas@intel.com>
 ---
- lib/igt_core.c               |   7 +-
- lib/igt_rc.c                 | 245 +++++++++++++++++++++++++++++++++++
- lib/igt_rc.h                 |   6 +
- lib/meson.build              |   1 +
- lib/vendor/unigraf/unigraf.c |  92 ++++++-------
- 5 files changed, 293 insertions(+), 58 deletions(-)
- create mode 100644 lib/igt_rc.c
+v2 (Kamil):
+ * shorten the patch title,
+ * shorten the reason for SKIP,
+ * and capture all sriov tests in regex.
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index a7c097d9e..433727644 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -1044,16 +1044,11 @@ static void common_init_config(void)
- 	if (ret !=3D 0)
- 		igt_set_autoresume_delay(ret);
-=20
--	if (igt_key_file)
--		timeout =3D g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTim=
-eout",
--						&error);
--	if (error) {
-+	if (!igt_rc_get_double("DUT", "DisplayDetectTimeout", &timeout)) {
- 		igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",
- 			  DEFAULT_DETECT_TIMEOUT);
--		g_clear_error(&error);
- 		timeout =3D DEFAULT_DETECT_TIMEOUT;
- 	}
--	g_clear_error(&error);
- 	igt_set_default_display_detect_timeout(timeout);
-=20
- 	/* Adding filters, order .igtrc, IGT_DEVICE, --device filter */
-diff --git a/lib/igt_rc.c b/lib/igt_rc.c
-new file mode 100644
-index 000000000..2a1cd0532
---- /dev/null
-+++ b/lib/igt_rc.c
-@@ -0,0 +1,245 @@
-+#include "igt_rc.h"
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <errno.h>
-+#include <locale.h>
-+#include <string.h>
-+#include <strings.h>
-+#include <ctype.h>
-+#include <pthread.h>
-+#include <limits.h>
-+#include "igt_list.h"
-+
-+struct igt_key_entry {
-+	char *group;
-+	char *key;
-+	char *value;
-+	struct igt_list_head link;
-+};
-+
-+static IGT_LIST_HEAD(rc_entries);
-+static pthread_once_t rc_once_control =3D PTHREAD_ONCE_INIT;
-+
-+static char *trim_whitespace(char *str)
-+{
-+	char *end;
-+
-+	while (isspace((unsigned char)str[0]))
-+		str++;
-+
-+	if (str[0] =3D=3D 0)
-+		return str;
-+
-+	end =3D str + strlen(str) - 1;
-+	while (end > str && isspace((unsigned char)end[0]))
-+		end--;
-+
-+	end[1] =3D '\0';
-+	return str;
-+}
-+
-+static void load_igtrc_once(void)
-+{
-+	FILE *fp;
-+	char *line =3D NULL;
-+	size_t len =3D 0;
-+	ssize_t read;
-+	char *current_group =3D NULL;
-+	char path[PATH_MAX];
-+
-+	char *config_path =3D getenv("IGT_CONFIG_PATH");
-+	if (config_path) {
-+		snprintf(path, sizeof(path), "%s", config_path);
-+	} else {
-+		char *home =3D getenv("HOME");
-+		if (!home)
-+			home =3D "";
-+		snprintf(path, sizeof(path), "%s/.igtrc", home);
-+	}
-+
-+	fp =3D fopen(path, "r");
-+	if (!fp)
-+		return;
-+
-+	while ((read =3D getline(&line, &len, fp)) !=3D -1) {
-+		char *trimmed =3D trim_whitespace(line);
-+
-+		if (trimmed[0] =3D=3D '\0' || trimmed[0] =3D=3D '#' || trimmed[0] =3D=3D=
- ';')
-+			continue;
-+
-+		if (trimmed[0] =3D=3D '[' && trimmed[strlen(trimmed) - 1] =3D=3D ']') {
-+			free(current_group);
-+			trimmed[strlen(trimmed) - 1] =3D '\0';
-+			current_group =3D strdup(trimmed + 1);
-+			continue;
-+		}
-+
-+		if (current_group) {
-+			char *eq =3D strchr(trimmed, '=3D');
-+
-+			if (eq) {
-+				char *key;
-+				char *value;
-+				struct igt_key_entry *entry;
-+
-+				eq[0] =3D '\0';
-+				value =3D eq + 1;
-+				key =3D trim_whitespace(trimmed);
-+				value =3D trim_whitespace(value);
-+
-+				entry =3D calloc(1, sizeof(*entry));
-+				entry->group =3D strdup(current_group);
-+				entry->key =3D strdup(key);
-+				entry->value =3D strdup(value);
-+				igt_list_add_tail(&entry->link, &rc_entries);
-+			}
-+		}
-+	}
-+
-+	free(current_group);
-+	free(line);
-+	fclose(fp);
-+}
-+
-+__attribute__((destructor))
-+static void free_igtrc(void)
-+{
-+	struct igt_key_entry *curr, *tmp;
-+
-+	igt_list_for_each_entry_safe(curr, tmp, &rc_entries, link) {
-+		free(curr->group);
-+		free(curr->key);
-+		free(curr->value);
-+		free(curr);
-+	}
-+	IGT_INIT_LIST_HEAD(&rc_entries);
-+}
-+
-+/**
-+ * igt_rc_get_string:
-+ * @group_name: The group name in the config file.
-+ * @key: The key to look up.
-+ *
-+ * Looks up a string configuration value in the `.igtrc` file.
-+ * The returned string is newly allocated and must be freed by=20
-+ * the caller using free().
-+ *
-+ * Returns: A newly allocated string containing the value, or NULL if not =
-found.
-+ */
-+char *igt_rc_get_string(const char *group_name, const char *key)
-+{
-+	char *last_match =3D NULL;
-+	struct igt_key_entry *curr;
-+
-+	pthread_once(&rc_once_control, load_igtrc_once);
-+
-+	igt_list_for_each_entry(curr, &rc_entries, link) {
-+		if (strcmp(curr->group, group_name) =3D=3D 0 && strcmp(curr->key, key) =
-=3D=3D 0)
-+			last_match =3D curr->value;
-+	}
-+
-+	return last_match ? strdup(last_match) : NULL;
-+}
-+
-+/**
-+ * igt_rc_get_boolean:
-+ * @group_name: The group name in the config file.
-+ * @key: The key to look up.
-+ * @out: Pointer to a boolean where the result will be stored.
-+ *
-+ * Looks up a boolean configuration value in the `.igtrc` file.
-+ * Parses standard boolean representations like "true", "false", "1", "0".
-+ *
-+ * Returns: true if the key exists and was successfully parsed, false othe=
-rwise.
-+ */
-+bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out=
-)
-+{
-+	char *val =3D igt_rc_get_string(group_name, key);
-+
-+	if (!val)
-+		return false;
-+
-+	if (strcasecmp(val, "true") =3D=3D 0 || strcmp(val, "1") =3D=3D 0) {
-+		*out =3D true;
-+	} else if (strcasecmp(val, "false") =3D=3D 0 || strcmp(val, "0") =3D=3D 0=
-) {
-+		*out =3D false;
-+	} else {
-+		free(val);
-+		return false;
-+	}
-+
-+	free(val);
-+	return true;
-+}
-+
-+/**
-+ * igt_rc_get_integer:
-+ * @group_name: The group name in the config file.
-+ * @key: The key to look up.
-+ * @out: Pointer to an integer where the result will be stored.
-+ *
-+ * Looks up an integer configuration value in the `.igtrc` file.
-+ *
-+ * Returns: true if the key exists and was successfully parsed, false othe=
-rwise.
-+ */
-+bool igt_rc_get_integer(const char *group_name, const char *key, int *out)
-+{
-+	char *val =3D igt_rc_get_string(group_name, key);
-+	char *endptr;
-+	long lval;
-+
-+	if (!val)
-+		return false;
-+
-+	errno =3D 0;
-+	lval =3D strtol(val, &endptr, 0);
-+	if (endptr =3D=3D val || endptr[0] !=3D '\0' || errno =3D=3D ERANGE) {
-+		free(val);
-+		return false;
-+	}
-+
-+	*out =3D (int)lval;
-+	free(val);
-+	return true;
-+}
-+
-+/**
-+ * igt_rc_get_double:
-+ * @group_name: The group name in the config file.
-+ * @key: The key to look up.
-+ * @out: Pointer to a double where the result will be stored.
-+ *
-+ * Looks up a double configuration value in the `.igtrc` file.
-+ *
-+ * Returns: true if the key exists and was successfully parsed, false othe=
-rwise.
-+ */
-+bool igt_rc_get_double(const char *group_name, const char *key, double *ou=
-t)
-+{
-+	char *val =3D igt_rc_get_string(group_name, key);
-+	char *endptr;
-+	double dval;
-+
-+	char *dot;
-+	struct lconv *lc;
-+
-+	if (!val)
-+		return false;
-+
-+	/* Handle locale-specific decimal separator for strtod */
-+	dot =3D strchr(val, '.');
-+	lc =3D localeconv();
-+	if (dot && lc && lc->decimal_point && lc->decimal_point[0] !=3D '.') {
-+		*dot =3D lc->decimal_point[0];
-+	}
-+
-+	errno =3D 0;
-+	dval =3D strtod(val, &endptr);
-+	if (endptr =3D=3D val || endptr[0] !=3D '\0' || errno =3D=3D ERANGE) {
-+		free(val);
-+		return false;
-+	}
-+
-+	*out =3D dval;
-+	free(val);
-+	return true;
-+}
-diff --git a/lib/igt_rc.h b/lib/igt_rc.h
-index d871b3b26..f5f8d6081 100644
---- a/lib/igt_rc.h
-+++ b/lib/igt_rc.h
-@@ -1,3 +1,4 @@
-+#include <stdbool.h>
- /*
-  * Copyright =C2=A9 2017 Intel Corporation
-  *
-@@ -33,4 +34,9 @@
-=20
- extern GKeyFile *igt_key_file;
-=20
-+char *igt_rc_get_string(const char *group_name, const char *key);
-+bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out=
-);
-+bool igt_rc_get_integer(const char *group_name, const char *key, int *out)=
-;
-+bool igt_rc_get_double(const char *group_name, const char *key, double *ou=
-t);
-+
- #endif /* IGT_RC_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index 12d78de20..5348f2da0 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -97,6 +97,7 @@ lib_sources =3D [
- 	'igt_kms.c',
- 	'igt_fb.c',
- 	'igt_core.c',
-+	'igt_rc.c',
- 	'igt_dir.c',
- 	'igt_draw.c',
- 	'igt_list.c',
-diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-index 30ee3c72b..a6b3008eb 100644
---- a/lib/vendor/unigraf/unigraf.c
-+++ b/lib/vendor/unigraf/unigraf.c
-@@ -364,7 +364,6 @@ int unigraf_get_connector_id_by_stream(int drm_fd, int =
-stream_id)
- bool unigraf_open_device(int drm_fd)
- {
- 	TSI_RESULT r;
--	GError *cfg_error =3D NULL;
- 	char *cfg_device =3D NULL;
- 	char *cfg_role =3D NULL;
- 	char *cfg_input =3D NULL;
-@@ -382,63 +381,52 @@ bool unigraf_open_device(int drm_fd)
-=20
- 	unigraf_init();
-=20
--	if (igt_key_file) {
--		cfg_device =3D g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
--						   UNIGRAF_CONFIG_DEVICE_NAME, &cfg_error);
--		if (cfg_error) {
--			unigraf_debug("No device name configured, uses first device available.\=
-n");
--			cfg_device =3D NULL;
--		}
-+	cfg_device =3D igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-+				       UNIGRAF_CONFIG_DEVICE_NAME);
-+	if (!cfg_device) {
-+		unigraf_debug("No device name configured, uses first device available.\n=
-");
-+		cfg_device =3D NULL;
-+	}
-=20
--		cfg_error =3D NULL;
--		cfg_role =3D g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
--						 UNIGRAF_CONFIG_DEVICE_ROLE, &cfg_error);
--		if (cfg_error) {
--			unigraf_debug("No device role configured.\n");
--			cfg_role =3D NULL;
--		}
-+	cfg_role =3D igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-+				     UNIGRAF_CONFIG_DEVICE_ROLE);
-+	if (!cfg_role) {
-+		unigraf_debug("No device role configured.\n");
-+		cfg_role =3D NULL;
-+	}
-=20
--		cfg_error =3D NULL;
--		cfg_input =3D g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
--						  UNIGRAF_CONFIG_INPUT_NAME, &cfg_error);
--		if (cfg_error) {
--			unigraf_debug("No input name configured.\n");
--			cfg_input =3D NULL;
--		}
-+	cfg_input =3D igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-+				      UNIGRAF_CONFIG_INPUT_NAME);
-+	if (!cfg_input) {
-+		unigraf_debug("No input name configured.\n");
-+		cfg_input =3D NULL;
-+	}
-=20
--		cfg_error =3D NULL;
--		unigraf_connector_name =3D g_key_file_get_string(igt_key_file, UNIGRAF_C=
-ONFIG_GROUP,
--							       UNIGRAF_CONFIG_CONNECTOR_NAME,
--							       &cfg_error);
--		if (cfg_error) {
--			unigraf_debug("No connector name configured, will autodetect.\n");
--			unigraf_connector_name =3D NULL;
--		}
-+	unigraf_connector_name =3D igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-+						   UNIGRAF_CONFIG_CONNECTOR_NAME);
-+	if (!unigraf_connector_name) {
-+		unigraf_debug("No connector name configured, will autodetect.\n");
-+		unigraf_connector_name =3D NULL;
-+	}
-=20
--		cfg_error =3D NULL;
--		cfg_edid_name =3D g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GRO=
-UP,
--						      UNIGRAF_CONFIG_EDID_NAME, &cfg_error);
--		if (cfg_error) {
--			unigraf_debug("No default EDID set, use IGT default.\n");
--			cfg_edid_name =3D NULL;
--		}
-+	cfg_edid_name =3D igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-+					  UNIGRAF_CONFIG_EDID_NAME);
-+	if (!cfg_edid_name) {
-+		unigraf_debug("No default EDID set, using IGT default.\n");
-+		cfg_edid_name =3D NULL;
-+	}
-=20
--		cfg_error =3D NULL;
--		unigraf_crc =3D g_key_file_get_boolean(igt_key_file, UNIGRAF_CONFIG_GROU=
-P,
--						     UNIGRAF_CONFIG_USE_CRC_NAME, &cfg_error);
--		if (cfg_error) {
--			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
--			unigraf_crc =3D true;
--		}
-+	if (!igt_rc_get_boolean(UNIGRAF_CONFIG_GROUP,
-+				UNIGRAF_CONFIG_USE_CRC_NAME, &unigraf_crc)) {
-+		unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
-+		unigraf_crc =3D true;
-+	}
-=20
--		cfg_error =3D NULL;
--		unigraf_stream_count =3D g_key_file_get_integer(igt_key_file, UNIGRAF_CO=
-NFIG_GROUP,
--							      UNIGRAF_CONFIG_MST_STREAM_COUNT,
--							      &cfg_error);
--		if (cfg_error) {
--			unigraf_debug("MST usage not configured, using SST.\n");
--			unigraf_stream_count =3D 0;
--		}
-+	if (!igt_rc_get_integer(UNIGRAF_CONFIG_GROUP,
-+				UNIGRAF_CONFIG_MST_STREAM_COUNT,
-+				&unigraf_stream_count)) {
-+		unigraf_debug("MST usage not configured, using SST.\n");
-+		unigraf_stream_count =3D 0;
- 	}
-=20
- 	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
---=20
-2.55.0.679.g6767b8d81c-goog
+ tests/intel-ci/i915.blocklist.txt | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tests/intel-ci/i915.blocklist.txt b/tests/intel-ci/i915.blocklist.txt
+index da467ae49..a6077dee2 100644
+--- a/tests/intel-ci/i915.blocklist.txt
++++ b/tests/intel-ci/i915.blocklist.txt
+@@ -221,3 +221,6 @@ igt@kms_vrr@lobf-dc3co
+ ##################################################################
+ igt@kms_setmode@basic-no-cpu-idle
+ ##################################################################
++# SRIOV is not supported by i915
++##################################################################
++igt@.*sriov.*
+-- 
+2.34.1
 
