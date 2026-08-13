@@ -4,65 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41779C5B572
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 18:30:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C075DC5B572
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 18:43:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D353B10F4C8;
-	Thu, 13 Aug 2026 18:30:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6AE4D10E2F0;
+	Thu, 13 Aug 2026 18:43:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="WRrwLxL2";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="cXdAMuUJ";
 	dkim-atps=neutral
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F5C210E50A
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 18:29:30 +0000 (UTC)
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-51a8b0a08d2so2117501cf.0
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 11:29:30 -0700 (PDT)
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 90B6310E2F0
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 18:42:31 +0000 (UTC)
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-930edb4362dso19699885a.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 11:42:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20251104; t=1786645769; x=1787250569;
+ d=google.com; s=20251104; t=1786646550; x=1787251350;
  darn=lists.freedesktop.org; 
- h=content-type:cc:to:from:subject:message-id:mime-version:date:from
- :to:cc:subject:date:message-id:reply-to:content-type;
- bh=TleDI5SND0foOf7NVNCx/7dZoNDJOJserhsVSHHntk8=;
- b=WRrwLxL24kAVwJ4G6e9+e7g6wXJZXj8mODTmeaqHj+YlKFOarUwGs6qppBDkbNYaU1
- K7tizqvW5PFLupWLdHtN9qypPS5rQhPVz7+7RONsrfgPJoZQGLmGenO5O2BRyUpGd3HN
- 10kG+1BL/X8uH++drswNOmFeJ1Nw16vKyth5utoI8u+TvgSI0YO7GqEYTSoga7A4q4SH
- kkeBjOFT/ZAiumjVmVUufPEMBEPAtOwOJ/kmzMYypD4GJLGuhNQfa3vzqXdIrQT3o+vX
- SHBcza55yd3Say+fEKVxSdZcQbzoqmM/zWXQ17wKm3niX2acI8PSPQXNrZwEN5OLF3Cb
- Q04g==
+ h=content-transfer-encoding:content-type:cc:to:from:subject
+ :message-id:mime-version:date:from:to:cc:subject:date:message-id
+ :reply-to:content-type;
+ bh=+40iO+7DuogvMRtRyygOIsY7CFf55VI3v08Lm94+sDs=;
+ b=cXdAMuUJqP+HaU/qMUqMMpvPwVcyGMe9Vmoppe6mqMm2Pkaouz8azTR1ngvEu5Wmjl
+ bgF9+fAnZRI1wtw/U8Px7Knl6DpOSkOIjjC40jcdC4LYHF+Sp72DxGIskREfeGnQr5Uq
+ gHciGuOKsH7h+eUaar1WM9zfH3LTjPMSP+UGZSB2Qd4OjsFgINc8wAmtlRQBfZRszwAP
+ jFYPRJjyQ37sxfFBKD/7yp7zXb70Wg7/Y8rur7lCbKVsIbOpkKwbNzRaHbPImS57wg5q
+ 8yoVEToo3wsV5+8fattA6Lrg1L+BQJqmQ68MpelIHbpkVE2OVmDHi0e1JBfjHlmpxKp6
+ xswA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1786645769; x=1787250569;
- h=content-type:cc:to:from:subject:message-id:mime-version:date
- :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
- :content-type;
- bh=TleDI5SND0foOf7NVNCx/7dZoNDJOJserhsVSHHntk8=;
- b=UbxXKUCGDToWnHqlnh9KrOu4eEg0M+/fs+Ez7B9gh3crm9OF1YDhRS4ny6cLIxcDLU
- XcFcLPpRRZXHj1TuPA5r6M/sD7ZlVnj6tAnWD0s8kMWWqeVLI19Wj6ALZ2q1SPi8kT/D
- Z35aHXrIU7NEBrOkhLkvNOoOVe54R5VQqmVZXbWjqXwMQcLv2XGX2slDtKYLzUrKS3dF
- /8fg6CF1eWsNpzyInAtfP5w2piIgAD3882WVtOktuOMb+C6cE7W5IG0UU3BD+Cr9z/4J
- 4FT5cd+rD0Bd0Qy0wd2obqHa9bNDWEW5vtQgjN7qlz78iLQ5XLtQO0VOZZVSxCBUNH76
- JW8w==
-X-Gm-Message-State: AOJu0Yzj1bATG2VcNPAkxkZj38C6ahk2j3GgpOrzjFcG8DPrE+fUrMbE
- u8KX8UIrnT/wvRwMQbQlSEpijo/r0D3+t/lBEDfU2w1c7t2drGSyr5iwdSJlSkotwO8gn2SFHBK
- rhQc1bqbc0qQujmiQoU0kk7HFeIl1e7j195g7ChWPD6pS7Uy+AIXcrimQ+HlAjrbeMTeAIWRyW0
- hc1Rgk8j88NUl5sTKotrzRYi0pdLc+UiFhVkYf3/SBQvn4q8dfotJdrsxnIr/yjxVzTKc=
-X-Received: from qtxt3.prod.google.com ([2002:a05:622a:1483:b0:51c:1643:b82e])
+ d=1e100.net; s=20251104; t=1786646550; x=1787251350;
+ h=content-transfer-encoding:content-type:cc:to:from:subject
+ :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
+ :date:message-id:reply-to:content-type;
+ bh=+40iO+7DuogvMRtRyygOIsY7CFf55VI3v08Lm94+sDs=;
+ b=ib/ZNjMgHJRdQRYnKD6V8Dfi6xfg/fsf65vDK6NT80gMOjb53+l+2dOqoc/w0wP4jp
+ CZHDKI/UepZr1ghCRV5hQUR3+tcR+iCUCj/E7L6y9RNq5EVvmOH+twG69LoY0WO9tmBF
+ D1VT7FWyIUaRJQma8ydkhq6TWlBylGkF6MXfU+0rmb5S/BrqiLVSKE438sg+VkhrpoVn
+ e3L7qh9EokPTFe6iWwgi4H/ddii1MebGn+DeLAhbQPmvv1k/VUva8DbttQ4x9vzDpykV
+ wHDn5SM6+1OVo9cWkpSrv3CzJNlNzJ5nhcHor0aST6MXEYgcsTYFqrNMivIxoCFjD9UA
+ DWRA==
+X-Gm-Message-State: AOJu0Yw+8v4aQUyMRye1g/hfdGBGd30LX9uMY6HIKncU7lHwemQ/dvmy
+ kgCS8UsmJTwJurOQ2F7T8MR6QazptPZzHxIyeouo77gEe2xLi4FU41g4jQ6uSkHHIrnui74Wc2W
+ zdXu53bKFxSeLsBAcrFV1X/Ldx8WtXrZm3zEKUIXplg7fNURlQUyXPgS4UnBIew4eeZW2Y8ZrVt
+ iGV1lxgdjbBrixCfXNxeeFFEpks6iF68tsuxIqzM+/Of6VE/EuYYPsrpia7fy57A5tzmo=
+X-Received: from qknry14.prod.google.com
+ ([2002:a05:620a:914e:b0:936:c78d:8d54])
  (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:5907:0:b0:517:8011:3a4b with SMTP id
- d75a77b69052e-52d73d8a4e7mr77567981cf.21.1786645768770; 
- Thu, 13 Aug 2026 11:29:28 -0700 (PDT)
-Date: Thu, 13 Aug 2026 14:29:24 -0400
+ 2002:a05:620a:a20f:b0:936:af32:aea8 with SMTP id
+ af79cd13be357-936bfa33feemr761805385a.31.1786646549987; 
+ Thu, 13 Aug 2026 11:42:29 -0700 (PDT)
+Date: Thu, 13 Aug 2026 14:42:27 -0400
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
-Message-ID: <20260813182924.2508072-1-markyacoub@google.com>
-Subject: [PATCH] tests/unigraf: Hoist static DP link rate bounds and purge eDP
- rate
+Message-ID: <20260813184227.2532503-1-markyacoub@google.com>
+Subject: [PATCH] tests/unigraf: Mitigate EDID cache races and zero-mode
+ fallback panics
 From: Mark Yacoub <markyacoub@google.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
- Mark Yacoub <markyacoub@google.com>
+Cc: louis.chauvet@bootlin.com, Mark Yacoub <markyacoub@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,64 +80,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently, the link rate subtest dynamically iterates across
-UNIGRAF_RATE_6_75_GHZ during its testing sweep. However, 6.75 Gbps is
-structurally an exclusive eDP link rate parameter that physical external
-DP sink testbeds do not natively map to. Iterating over it on external
-chassis outputs reliably wastes execution cycles only to inevitably fail
-a hardware constraint validation.
+When initializing the active output geometry directly following an external
+unigraf_hpd_pulse(), the legacy execution queried the DRM software cache fo=
+r
+the current mode.
 
-Additionally, the existing igt_require(max_supported_rate... validation
-is currently executed at the very end of the loop, specifically after
-the testbed has already triggered an expensive HPD pulse, retrained the
-physical link, and rebuilt the IGT output wrapper.
+Because the kernel utilizes an asynchronous background interrupt thread to
+negotiate DP AUX EDID transactions, dynamically querying the software cache
+right as the kernel is processing the HPD pulse frequently yields 0 structu=
+ral
+modes. Furthermore, since igt_output_get_mode() does not return a clean NUL=
+L
+pointer when count_modes =3D=3D 0=E2=80=94but instead returns a pointer to =
+an uninitialized
+geometry plane=E2=80=94dynamically assigning this blank pipe downstream fat=
+ally crashes
+the test execution suite when it attempts to allocate a 0x0 coordinate bloc=
+k.
 
-This patch cleans out the test execution array, and physically hoists
-the igt_dp_get_max_supported_rate() capability check completely outside
-the active dynamic initialization context to serve strictly as a
-zero-cost pre-flight evaluator. The subtest now cleanly skips
-hardware-unsupported rate ceilings in 0.00s natively, significantly
-shrinking the cumulative latency footprint of an automated CI pipeline.
+This patch stabilizes the execution vectors fundamentally:
+
+1. It replaces igt_output_get_mode() with an active, polling drmModeGetConn=
+ector()
+   evaluation loop configured to block until conn->count_modes > 0. This en=
+forces
+   strict timing synchronicity between the unigraf HPD pulse and the kernel
+   DP AUX handler.
+2. It hoists the mode fetching logic strictly before establishing and bindi=
+ng
+   the software pipe to the CRTC, guaranteeing that the baseline hardware p=
+referred
+   mode is secured before any DRM surfaces are allocated.
+
+Signed-off-by: Mark Yacoub <markyacoub@google.com>
 ---
- tests/unigraf/unigraf_lt.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tests/unigraf/unigraf_lt.c | 34 ++++++++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
 diff --git a/tests/unigraf/unigraf_lt.c b/tests/unigraf/unigraf_lt.c
-index 81e6ecd3f..c82607e14 100644
+index 81e6ecd3f..0cac014e8 100644
 --- a/tests/unigraf/unigraf_lt.c
 +++ b/tests/unigraf/unigraf_lt.c
-@@ -127,13 +127,20 @@ int igt_main()
- 		int rates[] = {UNIGRAF_RATE_1_62_GHZ,
- 			       UNIGRAF_RATE_2_7_GHZ,
- 			       UNIGRAF_RATE_5_4_GHZ,
--			       UNIGRAF_RATE_6_75_GHZ,
- 			       UNIGRAF_RATE_8_10_GHZ};
- 		int current_rate;
--		int max_supported_rate;
-+		int max_supported_rate = 0;
+@@ -38,19 +38,45 @@ static void init_output_and_display_pattern(igt_display=
+_t *display, igt_output_t
+ 	igt_crtc_t *crtc;
+ 	struct igt_fb fb;
+ 	igt_plane_t *primary;
+-	drmModeModeInfo *mode;
++	drmModeModeInfo *mode =3D NULL;
+ 	int fb_id;
++	int retries =3D 10;
+=20
+ 	igt_modeset_disable_all_outputs(display);
+ 	igt_display_reset(display);
+=20
++	/* Get the current mode */
 +
-+		output = igt_output_from_connector(&display, connector);
-+		if (output)
-+			max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
- 
- 		for (i = 0; i < ARRAY_SIZE(rates); i++) {
- 			igt_dynamic_f("unigraf-dp-link-rate-%d", rates[i]) {
-+				igt_require_f(max_supported_rate >= unigraf_rate_to_kbs(rates[i]),
-+					      "Host port physically caps below test rate bounds (Host: %d, Test: %d)\n",
-+					      max_supported_rate, unigraf_rate_to_kbs(rates[i]));
++	while (retries--) {
++		/* Force an active hardware probe instead of a cached one */
++		drmModeConnector *conn =3D drmModeGetConnector(display->drm_fd, output->=
+id);
 +
- 				unigraf_reset();
- 				unigraf_set_max_link_rate(rates[i]);
- 				unigraf_hpd_pulse(1000000);
-@@ -147,8 +154,6 @@ int igt_main()
- 				init_output_and_display_pattern(&display, output);
- 
- 				current_rate = igt_dp_get_max_link_rate(drm_fd, output);
--				max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
--				igt_require(max_supported_rate >= unigraf_rate_to_kbs(rates[i]));
- 				igt_assert_eq(current_rate, unigraf_rate_to_kbs(rates[i]));
- 			}
- 		}
--- 
++		if (conn && conn->count_modes > 0) {
++			/* Found dynamically probed modes! Update the output config */
++			drmModeFreeConnector(output->config.connector);
++			output->config.connector =3D conn;
++
++			/* DO NOT call igt_output_refresh here! It would free our probed
++			 * connector and replace it with drmModeGetConnectorCurrent. */
++			mode =3D &conn->modes[0];
++			if (mode && mode->hdisplay > 0)
++				break;
++		} else if (conn) {
++			drmModeFreeConnector(conn);
++		}
++
++		igt_info("Waiting for connector modes to repopulate after HPD pulse... (=
+%d)\n",
++			 retries);
++		sleep(1);
++	}
++
++	igt_assert(mode);
++
+ 	igt_output_set_crtc(output, 0);
+ 	crtc =3D igt_get_crtc_for_output(display, output);
+ 	igt_output_set_crtc(output, crtc);
+=20
+-	/* Get the current mode */
+-	mode =3D igt_output_get_mode(output);
+-	igt_assert(mode);
++	igt_info("Final Mode: %dx%d\n", mode->hdisplay, mode->vdisplay);
+=20
+ 	/* Create a framebuffer with a solid color pattern */
+ 	fb_id =3D igt_create_color_pattern_fb(display->drm_fd, mode->hdisplay,
+--=20
 2.55.0.691.gc56d675ccc-goog
 
