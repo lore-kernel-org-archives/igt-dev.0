@@ -4,123 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B8BDC5CFCF
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 16:31:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3272C5CFCF
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 16:33:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B90AF10E50A;
-	Thu, 13 Aug 2026 16:31:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 27AC110F425;
+	Thu, 13 Aug 2026 16:33:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="3kb4Fc4Y";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="XtWwWyWR";
 	dkim-atps=neutral
-Received: from CY3PR05CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11013025.outbound.protection.outlook.com
- [40.93.201.25])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A360B10F425
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 16:30:34 +0000 (UTC)
+Received: from BL2PR02CU003.outbound.protection.outlook.com
+ (mail-eastusazon11011025.outbound.protection.outlook.com [52.101.52.25])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 05E9710F425
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 16:32:41 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BnPM+OpBEPbWB4BcYrH9w74wyAB6OK2r8DGExUkudsE+k1UWZIlQVLBCwMf8xMgjkDUiVsHcY5fwjdzN0cdNHoxt4QG1SB6ocLcn1eAXJc0GmS69M7jEz1ljN7wYHvidldLnWA3rHnm0SUQdyJexrlSyhy7aElYG+OPbU5CkFsAIYcMqxstFag34pz5R0e/+AD9Es9kSCxsXHajOi1Sua4mfYG8ypgtK54/BDtRo/Zap+FlvARWWNnR7At1W5Tz+facobqakK48Y2a86CMZskeMbpCXFx+aJY0ApxlAs+vVg9Ksag8DxgDxgWAlu45uZTopiDjMC7ZrhoIjV43sXQg==
+ b=BcAK/CjGXD13wOeHGzXoXaQT0DyOlr40/YYqWv5phsGB8BT/fSe4QQkUhqty7RW9xpY9OqvxrflmaLSs6SD/ANN2kVx0PrrclPHgv3/5pkwuENFot2eADVuHi0d0k6+tixMf3GWp+Pol7SGLtODutMIRCwTGaXsZEUMvh1mI2KZCxKqq2f/3U81k+aMNadlpRC+e3elGyhY58AQdwyFM6FeGPjtf/Tz2lDZYXnOxp7GyXzfLkUZIH0t0jVcgFmz/Ly48dB36ztjFlKHdqR4Pn11gUUyNUsAmO5hqD9ykayo/eDUCtF6Dhvz+L5x4v8iqCLskqQlw8sjLT+YYj3IuNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7vGMxL8+s9EmwuJKVyeNrN1VasSLbxGJsfqP1JwpFyk=;
- b=hvScpJh4cxfpsDupqemCvzsvhn9AlLMaMIk4pd4aNrpkktmWwqRBjIBdKFMpl7qFX+tykCpRXNu+luDr6p9u8bvtRo9Gn3cwdHfTlKungdxwX9z2T+ybgblvvNNdNc02SH2xXkzjNp9HAzvQOEkYerna4TjdL/GQPvlU/qNAEP/8Ol3Ouz0suseutm/d6+LoZvpQE0q9Mkj9Shqw3k2T6FDydJIRhuWHSlKZyW94pZFPQLYiKfep1j+AdhBqbIrulEQi6NzGIVtiIjgo/zJ2HdlmYKrteHVAg2BSKPsNPmQOzOJpy7y6V1SOZ8lMCoZVuAYVCIeSTUzTvGU68SPGtQ==
+ bh=BjQRrAd3ZBPKix3TKx9oUDuT0U/FkNRiaCrcsUzL81U=;
+ b=IJjxLOCcq4VzF2OwLtnOTqzWTO0I2BZbLmJHLC69ktrENBLnKl2N7gibNs5HNvotNKvUlMFnhUhS3wF4IeGRi2rmOrq1HNi34MEWCmRtVAfrLlQkDgprCuYjGIvogsQP4kIP1hwN4Vg9EGpdWSsmth4C6j5JkC8q3BrIpSKbmyQXSup6BgsBJKjHRwxv5CIn6QZPvSQnXSswmJxFRkH7mVMzna39xM0vAamtuMKg+gd1+Emn+gA/u0AqTMctPVRXa/tpQQxGUCctEHl47lkaHGp9f7okHLoO7kwNj2n1rqxTYhZPuYdfeaDlf1IGGiCib9Bc8hjRYy++xLCH/frjsw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7vGMxL8+s9EmwuJKVyeNrN1VasSLbxGJsfqP1JwpFyk=;
- b=3kb4Fc4YhRDSd+URFz+V5eatKOJxAAH7wvomFkix4wz8pXPoDkI2Bt/iM8CpsTPnF/k8nAcy6bDFDeOyt5nGgNg9Sk9ezNI+reWEZosuFNm+7owrGEvZq66/drc5pukHDX5xBWwoPGRnX7+rnUmeAIEllf5kZBevCXn8AfGIhlY=
+ bh=BjQRrAd3ZBPKix3TKx9oUDuT0U/FkNRiaCrcsUzL81U=;
+ b=XtWwWyWR1ABsdh7ShSo05t8NJERnACx5L+JSqwEGfSVLDJ5K+ynI+LBkgw7zPOy8XZEvjw+qBLz4KPG1xoyr92neXl+rOezI2ijutRZVOoUBemXuxgKMMm+iBoE1SqoXpjh9GpBpSFCnPf4eZSYVNf3U+Z4+RuEdx5VpQbGLxQQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7)
- by DM6PR12MB4172.namprd12.prod.outlook.com (2603:10b6:5:212::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.21; Thu, 13 Aug
- 2026 16:30:30 +0000
+ by CY8PR12MB8268.namprd12.prod.outlook.com (2603:10b6:930:6c::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.14; Thu, 13 Aug
+ 2026 16:32:36 +0000
 Received: from IA1PR12MB8190.namprd12.prod.outlook.com
  ([fe80::c581:f5cc:c58f:c5de]) by IA1PR12MB8190.namprd12.prod.outlook.com
  ([fe80::c581:f5cc:c58f:c5de%5]) with mapi id 15.21.0315.014; Thu, 13 Aug 2026
- 16:30:30 +0000
+ 16:32:36 +0000
 Content-Type: multipart/alternative;
- boundary="------------As89iYaG9vjSV83o9SGDqasb"
-Message-ID: <1b077dbd-99ce-4b48-92d4-dbe6d2eeb138@amd.com>
-Date: Thu, 13 Aug 2026 12:30:27 -0400
+ boundary="------------0kbS04fQoNv9cjLgEzBuL4w7"
+Message-ID: <800efc38-a2ff-4943-aecf-247d6f70746d@amd.com>
+Date: Thu, 13 Aug 2026 12:32:33 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/4] Add platform filtering framework for IGT tests
+Subject: Re: [PATCH v5 0/2] IGT tests for DRM_IOCTL_GEM_CHANGE_HANDLE (race
+ conditions + edge cases)
 To: vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, pawel.sikora@intel.com,
- jani.nikula@linux.intel.com, jesse.zhang@amd.com
-References: <20260805202856.147163-1-vitaly.prosyak@amd.com>
+Cc: kamil.konieczny@linux.intel.com, simona@ffwll.ch, jesse.zhang@amd.com
+References: <20260806021232.200317-1-vitaly.prosyak@amd.com>
 Content-Language: en-US
 From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20260805202856.147163-1-vitaly.prosyak@amd.com>
-X-ClientProxiedBy: YT4PR01CA0244.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10f::17) To IA1PR12MB8190.namprd12.prod.outlook.com
+In-Reply-To: <20260806021232.200317-1-vitaly.prosyak@amd.com>
+X-ClientProxiedBy: YT4PR01CA0116.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d7::27) To IA1PR12MB8190.namprd12.prod.outlook.com
  (2603:10b6:208:3f2::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB8190:EE_|DM6PR12MB4172:EE_
-X-MS-Office365-Filtering-Correlation-Id: 89faab5b-b41a-4e74-d5be-08def9583057
+X-MS-TrafficTypeDiagnostic: IA1PR12MB8190:EE_|CY8PR12MB8268:EE_
+X-MS-Office365-Filtering-Correlation-Id: d61a1b31-6625-44fb-c608-08def9587b9e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|366016|1800799024|376014|10067099003|56012099006|11063799006|22082099003|18002099003|8096899003;
-X-Microsoft-Antispam-Message-Info: RvAuvkne40RUIMRWRDuKxWIIdtc3viASJDkxQzzT4jBnSi9n8MvStrL7mMm7NttD0S6RpCkBAk6fDBeacPA16gm0Wnrx1os7W9MizhNlEE2YoE0vcNzbEbbi36mTevp7b1clECuASM3+v47mavcO3MNabORymdQMVXKxILm1zaqCud6L6Z313u4cJusdpAChn06oAXj2wMUMM1I/tZG5n03tNFZwBNJKAXp3ThetJkTHP41hiuTk/yg0d91TTPDCXEeZooAO8vOyNKvqEl2Hr2BDxV9FnitHXwlhN4KRdQp7P05ufB/TU9k3ciZAKuT6TH1Y22EDCptQ4bCSBn6GRjMIla8soYoNFaVpmwdNoqcJkZPVukV13bFc8s/WxaMzWXYktgVCkCcd0Zz9ScBxYJ+zXpEuFejEW5/bISHxj2lt6S5o+JX11ZCQn9IZrud+PIwmWHfOKDukTGe6XSpDgnPJ7WQw+0Q/DHRIWM6qtrhkQcBLkAZxhkQxEUA2QPy31wsb72nJfEzJJT8ipgliskMoLdTrRcpgxE/yMX3UbqUlF8D5dxfbEXHEs6e/BxkNX8iW1wlDUSz/7h32T3/yZoiJ4OreVgGQBZpq3mHT4FvY2Tr9aHw69TImp6HntsQn7xnVABMhBhwmMHXHON/K88Yk2sUkDQYz7I56wWTc0Sg=
+ ARA:13230040|1800799024|23010399003|376014|366016|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003|8096899003;
+X-Microsoft-Antispam-Message-Info: PV2BjVqjF9LtOX0YmucopgaNBfOfVGJDiVPZOzwqKeuyTp0OlDDfySTR9AINlyiFdv77c05pqG/eol46btfWWWOi3v9h77fY5MUtNw3xq6JFmvPkrbCeaEiKbAUe/qgEtvsWBzqBz5gl2W/gPuqFA3BKTnWYDQw1D/ygV7tu8sHtK7X4Acu6wEMSemBXXa6xqAfrpoYWErIL1lJGUkp9Pg9pzZSee//F+5+hIpKH6xSV3f8U8VmH/o278x5yMxyYyknIa8LmUag+GVTWaFpQyh+cDLXLJsGkBzOLGxPK5f3S4uhOjfNWG77u6caRAW5CPSZADGVjl5T9xneWn4BbXdaX/fJaBiSqGgCb2EfAlbc4HqUxt1qaU8O4yzbnG9e8nn6/+MkGyXl96KjKVpRX5Nr5qf+RXtSk0U7gvygkd1fpX4PPTJWNl5Pq7QmKR/E2VzgIuXE9dgj+v8OKezW8E+2ivXKRygJqoio0hLUY58Od7YeHakc2VTJkSl21dfUqi30Km6OIG+5d2q4uAjsosqg2DlN1A02Zk3gyow51l6Ekkp3qadR/alMNotsoNcZu0Xakx1ycs8mX7cSmRlbBIhsit2vc0U1RSejqNhzI7yW1HsdQQWg6q+17M5DDf4dU2Y7sCO/FJ00TGPD4Djhru7L+tw1zmlv6WXjULuF9WBs=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR12MB8190.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003)(8096899003);
+ SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003)(8096899003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?OHMvdlN1alZ4R01nL051Q1lrQjREQStWU25ibEtVT2ZJb3VkQnFNNXRyVzFR?=
- =?utf-8?B?NTFEc29xWGM2Zi84UUhvRnZXbkhHaVQwMkdqUVg5SVN4L1BLUCtvZEpMbVNG?=
- =?utf-8?B?SG5LaDdQLzlzRG43c04zWW9aRXBqR1l4ZHpGWHB4blo5VlFWaSs5aHl2enQy?=
- =?utf-8?B?S1dKNWFESVNVZEtvd3FmUklpK1ZpcUhXeWx3aVFwM2RZK1lybVRPU29nZUVC?=
- =?utf-8?B?bEpNdXFiSnRpbXdnLzBkU2ttYnJVeXFpV0RaS1BSeTBXaXYya091b3RiZzFu?=
- =?utf-8?B?cTVLVGhhOW1DWE1KbGJqeFd2dUtEdnpOR0krM0lES2Jua25qdGMxdTN6NFZY?=
- =?utf-8?B?T3pSbHhMcUEyaGNQaXpkeDFvbitkeS81ZkowcUJmZ2I2eG5EMkhwektCZFNo?=
- =?utf-8?B?UVFVKzNrTkw0RFZVVEdkWlRPQm9GSG9rTnJERS82R24rUTRhOVN0Z2RxcE1t?=
- =?utf-8?B?T3JWK1dqQ3JIK3FITG5mckRnZU5UNFQzRW0ycnNkVGhiM2Q3cmNQak0rOFpy?=
- =?utf-8?B?b3ZidzR5N3k5SVBzVSs0Mi8rMWxIMnBSU0FzZW1OVTRGcGNFVjNBUG1hQmRY?=
- =?utf-8?B?WDJGdU5XRHBDaG9zZFU0L2NCdlZ5TnpHZE1Lbm1FNjQ5VDI1MEIyakZrVzZH?=
- =?utf-8?B?MHMzR0RmNVlKNmoyS3F3Snd2UktiQTR0UW1DMzlGQTZNTXZxck5RQ1RHbTQ3?=
- =?utf-8?B?YUhXS3RnSktoOVRkQjJya2J6blcyaFJma1p3ZCthL3k1WkpBVTZhdmY5Q0tZ?=
- =?utf-8?B?VjZzQmZxV0NjZE5GbDFMMTVPWUhJTnFxOFBsQ2JzV2F0OGwvMXMwb04ySndY?=
- =?utf-8?B?WStHcXpNQXN0eFJ0YzloOU83VVEvdVpzMWJzK3VZRjcrWU9UQzJSclYraHAv?=
- =?utf-8?B?ZjBMVldRMjZGeHc5bDFETGdZVUtEcGc2UlFVWWplWGk4Ymc1TDh0cUZYTWNE?=
- =?utf-8?B?ZVpzT1d0TXFnL1FVRnFlYkFIUStSRzFETEplOG9vSzIxS0NFRC9udklMOXFS?=
- =?utf-8?B?SnQ5WTBBUS9MM2RlcGFNMkQxdWltMDNHSlYyRU1vTitJNWZPejBmZmRqYXVr?=
- =?utf-8?B?M2IvblQ1UmVWUUpKWTdwYkRJbng2ZmJndnF6MHp1Qms2VnZTTjhqMTgzN3J4?=
- =?utf-8?B?TG5JVFFEb2FiZXJEZXRYaDhIQmd3V1k3TTVGKzNWNVVwRWRQNnpTMW9lamUw?=
- =?utf-8?B?YlByczFsbU1MalFEc28rZ2dzdW9iU0RrTWFpaDBFZ01HOGFGc0NVdnVuaUlQ?=
- =?utf-8?B?aFRHRFNiaS9MczZ3RVBtN09uakYvMWNLQ0FxbjV1blEyVVF6aFQrQTQ1OW55?=
- =?utf-8?B?bjBPd1hmV0xqY3A2N0NJYWYvdldhUmxoUllpUWIxTEY5M2QyK0dJZ3IyZStV?=
- =?utf-8?B?U3BIYXhzcEIyR3d4ZGtVUlBMQTFrdjMvN0I3V1hRRzhlN251OTZyblY3bThO?=
- =?utf-8?B?K1JQKzFzME9VTkNndVpHKzR5TnpOZXBGbUpuRzJ1SUk3Skg1d20yeU0vV052?=
- =?utf-8?B?d0xTT1BWWXRRVjEyT0VjckFGbUtLbHAyeEdmUlZ2Ty9xdUs5ZGV4QitKWEty?=
- =?utf-8?B?c1Z4MVRIUk1sL2RvMUpmUzZYUkg0YkVabG9lQXVqVUJQaDROUjFwb3VZay9w?=
- =?utf-8?B?ak4xVHZwSVBDdi9kZUhWRnF6STljenFoUVhoMmcvTmVKMlBpZUJxVzlFNjF4?=
- =?utf-8?B?MjU3Wm9pYVJjY1kwNDA3UXRQOGRVZkNsY1ZiUkVqMEo2TWdhS3JjWDJhWG1z?=
- =?utf-8?B?OHJkbEROTnhiOTZlRU1wWE94YzNVRnRlL0hES0NHak5tbENtTU4yY2NLb2g0?=
- =?utf-8?B?bmhjTGhLTFF2cHI4TFB1TVUyYjFYNytYVzBIUVRPOEZGZkh4bUQ3R0MwY01u?=
- =?utf-8?B?aVQ0UFRvUEJIRS9DeWloc0p3aGFnMFFkSXpyZlZmcFVSa0MrU2hFaDAyWUQx?=
- =?utf-8?B?aTRBcDJPREhVaXZENGJqVW9XL0szN1dzYkhpRGRZSXE3dWVnQmdvSWZ2bm50?=
- =?utf-8?B?aDJxdU9tVUs5MUNzRjRDZjNZOWtNbUdLamI5Z0QyMGFBSnRydUtFaUVJeTNz?=
- =?utf-8?B?NE42TmtHejZoNW0wRzJQZ0tsTHJqQnRVL09yWVA0MjRNTnJmbWM1MWMyTStz?=
- =?utf-8?B?NGJaTmZraXFuSm15YUFoWDFpOW9uanVLNjFBZzlZSFd6OU92djdXTjhGeWRF?=
- =?utf-8?B?SWdOUit4a3dBWDlPTTRreG4yaGR1c0VwcFl3ZHd1NlhtKzI1ZWdXVWFDTjBr?=
- =?utf-8?B?ZzJYV3UrbzBIRE1oODAxNmN5VXZkY1dzRUVxWTZLazNVZCswSnhtVEpoYnFv?=
- =?utf-8?B?ZFNpUlhIbVZVb0phelgrN25pR0VnN3JzU1pRZkhjQTFEYVJ0RUNOQT09?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dGZpQkZxNzBpSDF4UmoxaXB5cXlrTkJmMVlxbmxGWnNHcVZ5MGFSZDJzdkJK?=
+ =?utf-8?B?NDF2bzdCdVlaNXordnRMUkFwZWFNRDNONEYrTTdmOS9TdnRqbGdvR2VOcmE3?=
+ =?utf-8?B?NFBRVFJSazBOYlRDRmFwdHQzOU52MmJXRGVMOVZXT3RMTnl3YzhjT0JJZmNB?=
+ =?utf-8?B?eEpiZk02c1RCOWI5SjNUVmFtTWFpVTd4amw3dlJyNFI2OWZncGNONVVxaUZ5?=
+ =?utf-8?B?aTJHelZNWjhib0N6MVZ4T2V5TTN4ZDZHVVAvdHZmMHV2ZkMxeXZHZkxjekV4?=
+ =?utf-8?B?M3EvSVVVUjNvSTkvd2loNHAydDl3RDA5a3Z6bk5DTkNxT2lOOEUyZXpoUmMy?=
+ =?utf-8?B?WXYxbVJpbVM1MkgvK3Q2Z0pZNnExNFZGcnVTUjNJL1Z4d0FiNWJhU21lRzY4?=
+ =?utf-8?B?YWZ6T3dMTS9TREVFK1QvQUZueGxhZmJuUmoyNFdmeWtXMkdnRExUNU5CTmk3?=
+ =?utf-8?B?akcxbHhRbkM0WVZoeGxZdlBmT1ZHTlhNUGVRWEVEelovL042YTgzZEhTb0lM?=
+ =?utf-8?B?MVVSelNKRzhXNVBVRlpOWnQxUjNKZFNCMU1pREIzTHNxc2pHZGliZFpMMGth?=
+ =?utf-8?B?UWhpeGNTb0J0ckdDUHFUNVVlQit1Wmh0cUZaZDJBZ2NsaEdxSHY5QTNsaVND?=
+ =?utf-8?B?dXA1dm01YmRKNTJnSHpibUUxRUkzUkFIbkJObkxRUi9laGR5R3BWSDZ5VDFE?=
+ =?utf-8?B?VGNpS0ZDbjRXeDZ3SmN0QzlsSkxUNVlEeFdsTmplckZWM0dVYVg2REhya0h6?=
+ =?utf-8?B?WlozcUYrTnkreDZMajhqMGVWU0V6NjRyZ0NCSTVZeDhLem41aytyeWdrd0th?=
+ =?utf-8?B?QWpJMUMwYnpKdmxyeXVmODRDdXVweE9FMWo0QUZyNkl5MG5qNVZ6QTVpdy9L?=
+ =?utf-8?B?ak51R2FtVFlsNks3dDI0ZUhOVzVjTStqYTJYVFVHdFA5bndiWVAvYW9wRFBZ?=
+ =?utf-8?B?cTdpN2hDNWNOd0VHdlRhSHY4TTEwVWRRcVJpUVFOVjNqcG4vQnFFaXhqRjRE?=
+ =?utf-8?B?Yko5SkJneURQcUtrZXV0VDZBR0FpS3dEc1J2cnZtbFY2VFptRktCTmJHblU2?=
+ =?utf-8?B?RnFoMGUvSk0rVnY3QWtYaHBNemV6M2dZNi9KZkRPcDErdDl5czZvcWpabFZI?=
+ =?utf-8?B?UEdMcHBUeXpSRCtUUG0wajhoVUZEZnlMNzNYMCt3N1gvVGIyMHVsNDUvUWV6?=
+ =?utf-8?B?dkFwOGNmNTdVMEVDZCtMOE16UEkvQXZHRGR1OTJ5bStyc3psZW1CVnZQUDhq?=
+ =?utf-8?B?dzQ1NjAxdWVoazBDZi8raGRUblpvUUdZTEh3YTljSXdKZldPNVplR3JkdW50?=
+ =?utf-8?B?Z2J5QmhFUVkwaUlmVU1OdktDeHh6bVBrMFBTR3BKOTh6elU2U3pPL1pCZW5j?=
+ =?utf-8?B?YkwwMGxIa256RGlHQ1AyeU1GTlYxdlZKUVRiQVI3OWlVRDhNMmkzQjFvL1NG?=
+ =?utf-8?B?M29kblVROW9yaG5Ickxvazlrc1h0TUhnaFZ4SVZQNUg3U21uVktLQXR0bU1u?=
+ =?utf-8?B?V09HTlVZb2VtT2RwVlFxSnJpbE9ERDZVVzZ5ckNUNXcyR1FiY3pGYkZZZlg3?=
+ =?utf-8?B?cDZpUEM3UFZiNmZwQnYzZHpYeFNsR3orMkRLWTlkMDVSdFJIOG1MQ01UUkkv?=
+ =?utf-8?B?d25HUDU4cnZQc0FmUXNWRlA1Y1JzbjJnU3ZJekFTSUZxckFxUk1sQitPU0py?=
+ =?utf-8?B?R1FaRm5oWTN5RHlZc0ZSREZMSml6Tk10b095OTVuUkgvcnM0UHR3Z2xtamVt?=
+ =?utf-8?B?dUF0all2RkhhUnpLWTF2bUllbERHTUFCQUhGakpRRFFGRm1YNGpQT0VQRGY5?=
+ =?utf-8?B?M0xoSU1GbmZVcERnQzVwanU1dHZ4SG40NktCaFZlVnM5dWpLdEpIZ2JDMGtw?=
+ =?utf-8?B?QVhmeHZ2UmdjRFUwb1RleTdET2JKbi9aY0padkFZclRhQ1c5MS8wR2dzN1o0?=
+ =?utf-8?B?NTRNZFZtTjRBVEQ3N3UyQ0ErWGQ5ZTFYZEkvT3RrL0Q3dkgyRDRBSnJkYndq?=
+ =?utf-8?B?c0E0cVYrNzhLOVk5Tng5bmZxWlY0RXJPSmpoRW41cE15VCtsb2FFYnRNUWpY?=
+ =?utf-8?B?b1RQek5RK2tVV2FaY2pvd01ndHZySitwc0tUdENTR0gyaXEyWXZ0b0drdkE2?=
+ =?utf-8?B?eW9JZnU0d0xCVkkzK1pNanRSQUw2cmhtc1pWT3pHUFF1RjMxd1ZMSnFFaDJM?=
+ =?utf-8?B?c2x4aVIzbXQwZmNVUWU4N2lvejB2ekpOejB0YVIrZzRXbkNUcDVDbVJMWVpr?=
+ =?utf-8?B?NmdwZ1oyTm9SNGZhcnlPSTdxSEcyUTFqVmQ3NlU2aUZmRWRONVRab2ZIUWwy?=
+ =?utf-8?B?QWxVOTdxckJmVUNKNGdzc1ArNjYvc3grcFdkVDNJdVJGNHNEVk4zQT09?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 89faab5b-b41a-4e74-d5be-08def9583057
+X-MS-Exchange-CrossTenant-Network-Message-Id: d61a1b31-6625-44fb-c608-08def9587b9e
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8190.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 16:30:29.9332 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 16:32:36.2261 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EBZOzA8+8u0vbvAqN2KaOW1tEaLczV3jnVxm1pZfqJoUnyhZ7u4JtPgMRUcca5Zc9DWSz2w1M2fzTJTiD39tsg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4172
+X-MS-Exchange-CrossTenant-UserPrincipalName: ysoE46YgZSkJ1Y5KVpVBSI1zbXqJtaSf68yCNW15BE96A2T1u7BAjiwiP5qASFUEjEtl0Osf/PaCcIX5U6ySaA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8268
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -136,54 +135,73 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------As89iYaG9vjSV83o9SGDqasb
+--------------0kbS04fQoNv9cjLgEzBuL4w7
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 Hi Kamil,
-I wanted to gently ping this patch thread to see if you've had a chance to look it over. Introducing this filtering feature is quite important for our workflow.
+I wanted to gently ping this patch thread to see if you've had a chance to look it over. 
 Thanks ,Vitaly
 
 
-On 2026-08-05 16:28, vitaly.prosyak@amd.com wrote:
+On 2026-08-05 22:12, vitaly.prosyak@amd.com wrote:
 > From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 >
-> This series introduces a generic platform filtering framework for IGT tests,
-> allowing tests to be skipped based on platform characteristics without modifying
-> test source code. Three filtering methods are supported with priority ordering:
-> built-in rules (highest), config file (recommended), and environment variable
-> (lowest).
+> This series adds IGT tests for the proposed DRM_IOCTL_GEM_CHANGE_HANDLE
+> ioctl, which allows renaming a GEM buffer object handle within a DRM
+> file descriptor without closing and reopening it.
 >
-> v5 addresses review feedback from Kamil Konieczny:
-> - Replaced emoji with ASCII equivalents in documentation
-> - Removed Gerrit Change-Id metadata
-> - Restructured commit message per upstream standards
-> - Added Pawel Sikora to Cc list
+> The ioctl is needed to close a TOCTOU race window in userspace GPU
+> command submission: an application reads a handle, the handle is
+> renamed before the kernel validates it, causing the kernel to operate
+> on a different object than the application intended.
 >
-> Vitaly Prosyak (4):
->   lib: Add generic platform filtering framework
->   lib/amdgpu: Add AMD platform filtering backend
->   lib/igt_core: Enable automatic platform filtering in subtest execution
->   docs: Update platform filtering documentation per review feedback
+> Test structure (2 patches):
 >
->  docs/platform_filtering.md | 351 +++++++++++++++++++++++
->  lib/amdgpu/amd_platform.c  | 328 +++++++++++++++++++++
->  lib/amdgpu/amd_platform.h  |  53 ++++
->  lib/igt_core.c             |  18 +-
->  lib/igt_platform_filter.c  | 574 +++++++++++++++++++++++++++++++++++++
->  lib/igt_platform_filter.h  | 124 ++++++++
->  lib/meson.build            |   2 +
->  mkdocs.yml                 |   1 +
->  8 files changed, 1450 insertions(+), 1 deletion(-)
->  create mode 100644 docs/platform_filtering.md
->  create mode 100644 lib/amdgpu/amd_platform.c
->  create mode 100644 lib/amdgpu/amd_platform.h
->  create mode 100644 lib/igt_platform_filter.c
->  create mode 100644 lib/igt_platform_filter.h
+>   Patch 1 - 7 race condition subtests validating that the kernel's
+>   locking prevents concurrent-access bugs:
+>     - race-change-vs-close
+>     - race-change-vs-change
+>     - race-change-vs-prime
+>     - race-aggressive-change-vs-close
+>     - race-exploit-single-thread
+>     - race-exploit-random-handles
+>     - race-close-before-lock
 >
---------------As89iYaG9vjSV83o9SGDqasb
+>   Patch 2 - 5 edge-case and functional subtests validating correct
+>   error handling and basic operation:
+>     - noop-same-handle
+>     - invalid-new-handle-exceeds-int-max
+>     - invalid-handle-nonexistent
+>     - edge-new-handle-zero
+>     - functional-rename-verification
+>
+> The tests are GPU-agnostic and work with both Intel i915 and AMD amdgpu
+> drivers via DRM core. They are placed in tests/intel/ following the IGT
+> convention for all gem_* tests.
+>
+> Detection method: KASAN reports in dmesg (requires CONFIG_KASAN=y on
+> the test kernel) for concurrent-access races; errno validation for
+> error-handling tests.
+>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>
+> Vitaly Prosyak (2):
+>   tests/intel: Add gem_change_handle_race test suite
+>   tests/intel/gem_change_handle_race: Add edge-case and functional
+>     subtests
+>
+>  tests/intel/gem_change_handle_race.c | 1971 ++++++++++++++++++++++++++
+>  tests/meson.build                    |    1 +
+>  2 files changed, 1972 insertions(+)
+>  create mode 100644 tests/intel/gem_change_handle_race.c
+>
+--------------0kbS04fQoNv9cjLgEzBuL4w7
 Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 <!DOCTYPE html><html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -193,54 +211,72 @@ Content-Transfer-Encoding: 7bit
       Kamil,</div>
     <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAICRAC" data-complete="true" aria-owns="action-menu-parent-container" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">I
       wanted to gently ping this patch thread to see if you've had a
-      chance to look it over. Introducing this filtering feature is
-      quite important for our workflow.</div>
+      chance to look it over.&nbsp;</div>
     <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAICRAC" data-complete="true" aria-owns="action-menu-parent-container" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Thanks
       ,Vitaly</div>
     <p><br>
     </p>
-    <div class="moz-cite-prefix">On 2026-08-05 16:28,
+    <div class="moz-cite-prefix">On 2026-08-05 22:12,
       <a class="moz-txt-link-abbreviated" href="mailto:vitaly.prosyak@amd.com">vitaly.prosyak@amd.com</a> wrote:<br>
     </div>
-    <blockquote type="cite" cite="mid:20260805202856.147163-1-vitaly.prosyak@amd.com">
+    <blockquote type="cite" cite="mid:20260806021232.200317-1-vitaly.prosyak@amd.com">
       <pre wrap="" class="moz-quote-pre">From: Vitaly Prosyak <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
 
-This series introduces a generic platform filtering framework for IGT tests,
-allowing tests to be skipped based on platform characteristics without modifying
-test source code. Three filtering methods are supported with priority ordering:
-built-in rules (highest), config file (recommended), and environment variable
-(lowest).
+This series adds IGT tests for the proposed DRM_IOCTL_GEM_CHANGE_HANDLE
+ioctl, which allows renaming a GEM buffer object handle within a DRM
+file descriptor without closing and reopening it.
 
-v5 addresses review feedback from Kamil Konieczny:
-- Replaced emoji with ASCII equivalents in documentation
-- Removed Gerrit Change-Id metadata
-- Restructured commit message per upstream standards
-- Added Pawel Sikora to Cc list
+The ioctl is needed to close a TOCTOU race window in userspace GPU
+command submission: an application reads a handle, the handle is
+renamed before the kernel validates it, causing the kernel to operate
+on a different object than the application intended.
 
-Vitaly Prosyak (4):
-  lib: Add generic platform filtering framework
-  lib/amdgpu: Add AMD platform filtering backend
-  lib/igt_core: Enable automatic platform filtering in subtest execution
-  docs: Update platform filtering documentation per review feedback
+Test structure (2 patches):
 
- docs/platform_filtering.md | 351 +++++++++++++++++++++++
- lib/amdgpu/amd_platform.c  | 328 +++++++++++++++++++++
- lib/amdgpu/amd_platform.h  |  53 ++++
- lib/igt_core.c             |  18 +-
- lib/igt_platform_filter.c  | 574 +++++++++++++++++++++++++++++++++++++
- lib/igt_platform_filter.h  | 124 ++++++++
- lib/meson.build            |   2 +
- mkdocs.yml                 |   1 +
- 8 files changed, 1450 insertions(+), 1 deletion(-)
- create mode 100644 docs/platform_filtering.md
- create mode 100644 lib/amdgpu/amd_platform.c
- create mode 100644 lib/amdgpu/amd_platform.h
- create mode 100644 lib/igt_platform_filter.c
- create mode 100644 lib/igt_platform_filter.h
+  Patch 1 - 7 race condition subtests validating that the kernel's
+  locking prevents concurrent-access bugs:
+    - race-change-vs-close
+    - race-change-vs-change
+    - race-change-vs-prime
+    - race-aggressive-change-vs-close
+    - race-exploit-single-thread
+    - race-exploit-random-handles
+    - race-close-before-lock
+
+  Patch 2 - 5 edge-case and functional subtests validating correct
+  error handling and basic operation:
+    - noop-same-handle
+    - invalid-new-handle-exceeds-int-max
+    - invalid-handle-nonexistent
+    - edge-new-handle-zero
+    - functional-rename-verification
+
+The tests are GPU-agnostic and work with both Intel i915 and AMD amdgpu
+drivers via DRM core. They are placed in tests/intel/ following the IGT
+convention for all gem_* tests.
+
+Detection method: KASAN reports in dmesg (requires CONFIG_KASAN=y on
+the test kernel) for concurrent-access races; errno validation for
+error-handling tests.
+
+Cc: Kamil Konieczny <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@linux.intel.com">&lt;kamil.konieczny@linux.intel.com&gt;</a>
+Cc: Christian König <a class="moz-txt-link-rfc2396E" href="mailto:christian.koenig@amd.com">&lt;christian.koenig@amd.com&gt;</a>
+Cc: Simona Vetter <a class="moz-txt-link-rfc2396E" href="mailto:simona@ffwll.ch">&lt;simona@ffwll.ch&gt;</a>
+Signed-off-by: Vitaly Prosyak <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
+
+Vitaly Prosyak (2):
+  tests/intel: Add gem_change_handle_race test suite
+  tests/intel/gem_change_handle_race: Add edge-case and functional
+    subtests
+
+ tests/intel/gem_change_handle_race.c | 1971 ++++++++++++++++++++++++++
+ tests/meson.build                    |    1 +
+ 2 files changed, 1972 insertions(+)
+ create mode 100644 tests/intel/gem_change_handle_race.c
 
 </pre>
     </blockquote>
   </body>
 </html>
 
---------------As89iYaG9vjSV83o9SGDqasb--
+--------------0kbS04fQoNv9cjLgEzBuL4w7--
