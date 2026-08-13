@@ -4,102 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECDF2C5B572
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 08:05:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA896C5B572
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 08:06:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 80E3310E0D2;
-	Thu, 13 Aug 2026 08:05:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3328910F1DC;
+	Thu, 13 Aug 2026 08:06:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="CHC+QMEd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WxrfE0Re";
 	dkim-atps=neutral
-Received: from PH0PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11011044.outbound.protection.outlook.com [40.107.208.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDC7010E0D2
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 08:04:58 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DDxx2ZIRXmZcog5yrkYniLw07db4c1MXGFpeHdQhjgGvp3i3kYtrn1AJHGBecfTgfWtzQQ655EVgr/1BheK9L610TGhTuDhEoowUp8qLvbHqBN83FxX41MzsH4SHGmZQsBg9LsnfCQhMMSRXBpBAIzApKmH3hFl4ecj4gfAqb5hOCIouVZ3JC8Ms0H3WMrKlqwx2/1RYvk6YF+YmstDnFL22p9wapW9wl3belPkqbdz+T9pz/MTrie5kimnokhgm+TNOupXbH9/PVkXZiTxJEi+/wurnXin+dbUD2cljGuSgRBAaWGlyaGZMh2FoZzorqzxmhqpTl0/5csBy9th3JQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BN4UdafGKZbyRPeTDqqTdKTMSPqi9/dKD6kaWM49230=;
- b=EDn2OuABHNEPWRJWCYks02eXNQPBQgBNAPDX7Bam5Y05inz/yHyHOOwNK1fAml6LNxE9MlUasL4py+04y4ZtsiyJLHaFQ789oQbNv32ruJvfenJzE5oqv/VBOcLHqRhLhkgkVKVJCq/X6tbyOpIXwWXYal3LjFUwfw9uosnYoP1rBLbV6Ra1CURxhu6LEJ6jWttI1KYLd7HJwJi1HcF+ArlUODhlPE9sMIhEb/vUe7GQbPInR5eNvJNrYqTj94pUUWsB4u1Hw7ig0EhnmWiLZK+gxg4OxLlVnbsvf2OYQNsPW4qedUqW1RysTwUUA6ZxeLy1Z/dpGWOmxk6FoCU0xg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BN4UdafGKZbyRPeTDqqTdKTMSPqi9/dKD6kaWM49230=;
- b=CHC+QMEd5vA5BSGrkwYsc3yP8PB5Cmj1wKjZgBHaBHzEiRuL4OopkkWWlYh/nEwK1dHmwZkqCRw/QrwEka6NaMOzvuiSeHb6I8IVKQAgStck7XekWzrMEyQ5PA04CftJO+T5CGiAKeffaZ/ZU3RhsABAt4Ad5C9LoAv5sxFQY+A=
-Received: from CY8P220CA0037.NAMP220.PROD.OUTLOOK.COM (2603:10b6:930:47::7) by
- CH1PPF189669351.namprd12.prod.outlook.com (2603:10b6:61f:fc00::608)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.23; Thu, 13 Aug
- 2026 08:03:40 +0000
-Received: from CY4PEPF0000EDD1.namprd03.prod.outlook.com
- (2603:10b6:930:47:cafe::9e) by CY8P220CA0037.outlook.office365.com
- (2603:10b6:930:47::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.15 via Frontend Transport; Thu,
- 13 Aug 2026 08:03:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CY4PEPF0000EDD1.mail.protection.outlook.com (10.167.241.197) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.339.3 via Frontend Transport; Thu, 13 Aug 2026 08:03:39 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 13 Aug
- 2026 03:03:39 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 13 Aug
- 2026 03:03:39 -0500
-Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
- Transport; Thu, 13 Aug 2026 03:03:38 -0500
-From: Jesse Zhang <Jesse.Zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Jesse Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t 1/2] lib/amdgpu: fix NULL deref computing
- available_rings in amdgpu_create_ip_queues
-Date: Thu, 13 Aug 2026 16:03:22 +0800
-Message-ID: <20260813080337.3327962-1-Jesse.Zhang@amd.com>
-X-Mailer: git-send-email 2.49.0
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2932D10E0D2
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 08:05:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1786608332; x=1818144332;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7lix5DKKKV+rnYHYn+BI2dwPW5DyGB5+bz7Pihwq13M=;
+ b=WxrfE0RemEV0bIPkbCP2Ip3HF7zhZiB2yo/uoX1SuiSmvZLFgOrNQl4d
+ /MpRJptNAlKk7jP++WZttz8RwSMDGQNwx/SaLGiYZVBf5yxeisG7LGzHL
+ DVAm8IsDw/Qsqw57/J6Vjp6wUScwQk5wKwRKBXuCxoToMfRgMj4Hb7XRv
+ Ebzj8Ob3468RvjgzkzcVWC91slr1LoBhsxAyBnfX5Ei6ELTOHg/2D6i5A
+ a+tqSy3ZAjjx11jAqnRPNL2+4owEK39ujCZeBWqeseBH4/c44VdxqfcmC
+ uyF617i+4khziCz1KpvnxlAOC9QabF5mZicmZ2YBUmps/ojXTJ9VGB6XS Q==;
+X-CSE-ConnectionGUID: gAccsNfpSbi2mPxXvUWWFA==
+X-CSE-MsgGUID: BMCY2NlqT3SZCcFOuxl39g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="104709629"
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; d="scan'208";a="104709629"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2026 01:05:31 -0700
+X-CSE-ConnectionGUID: GxwGj/r/SHuTWznH5LKArQ==
+X-CSE-MsgGUID: mysZdFlgQtuR1d/Wa3145g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; d="scan'208";a="288671145"
+Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
+ by fmviesa001.fm.intel.com with ESMTP; 13 Aug 2026 01:05:30 -0700
+From: Raag Jadav <raag.jadav@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: riana.tauro@intel.com, ravi.kishore.koppuravuri@intel.com,
+ mallesh.koujalagi@intel.com, Raag Jadav <raag.jadav@intel.com>
+Subject: [PATCH v1] tests/intel/xe_ras: Introduce error threshold
+Date: Thu, 13 Aug 2026 13:35:13 +0530
+Message-ID: <20260813080513.254848-1-raag.jadav@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD1:EE_|CH1PPF189669351:EE_
-X-MS-Office365-Filtering-Correlation-Id: f97b69ab-088f-4408-4337-08def91162ca
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|23010399003|82310400026|36860700016|376014|18002099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info: WUemPPOpKSrK9p6H35sQdwKvefDtsGusSmF6ml6FIGDGXWxndBaIQvFbKRNHy32XvxiosNmmbaKC83YaBx7+sj9HUQAWZy/nM1lzRVnosPuf4bDrZMSjDolHW0x7gD1y/HeUawdqcjsJeLZ4jpZLhf/3sLEADagcM4As5o50ABtO/+9RQFPbDjNuTykqAO5133pjB6JmnM2g2bTeKtudcETpvE/MHGS4/qY8/oyiptOoYh5IqoDaqFdRyQHcMEBTdcGtBORfO9MQCfm9x9P26KD93Q32ll6KdMvrRZgznUM6/obhtQtOObzqAKJi8Qzf1SZMqkq+B0ae7ZqV52faUq9wyHOj8Ad8EEUG1i+dIbX86KrOlWQbfD/D6QsJsha216iDq/nX5iSaQTFayU04cV2W3a4x/TnA53OdTqM+Pzyx/yBuPkQVa7nBtj1t6pEqyeMHqxgMLNjNyNMXc/6y/D0cmW7hTZ8V+8Vje2yMzYnQ1TgG6F8pLrEvlorTCqPMwto/CXbHgSBFLQsEnaTZgln/gN617D/wvTrrvOQyVq7w3I9LT99/Hu9Zlsl3QIrkp5xUBjAS8rEvuGxX3hAwBLMBLdWO92cvnK43OltfDY+tL4ysKe4crX+0aZ/bOXZUX4X8zxJ2mGUwj8DHXT1FHa/kQ335CQyTCdytynHwBh8wEIKaJQIg1FtgyLmHIoDgXC59mBtIJJO73e19Vvnd2Q==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(23010399003)(82310400026)(36860700016)(376014)(18002099003)(56012099006)(11063799006)(10067099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: tuir4AFAdWHQIQpcjx1iimsNdoBm3/uCm1E3eZ/eS3mfS1AWdAZ3R8wH8znrwhFl7OVhYzbLfkQ1Ah1j56Fpwf4FipTwI4j750TyoJhtreG8GMwh+co6msoFkQNyVfvO3KeWSzPODg9AR1XQqIP/767AzNyS/rBLDCarKle3dOJVUV8vGPfxnOzbjtruu9Wt9a8/iD41tlwuQEXel9kCZ6a5calbP+ZWqwPJldaq1DR9e4wez5UxxT5KJ7eeeGRfdxmZyqDmvpdF5OAXnAn+0LWIZkNY9/lH55U2082UZPuLWp37DuCCrcoPypXDZe8QgsuKc6zGK4w0FPL1+rMOKD2qFN0NCHTvzQw2FnIbIp0PhCXPXXZ/ZVIO6tyqM2R+mhMGBdGDH/QY8Jrml5FD6ETokeuEWeBz14zG2Ps7YOOxt64JEVuNzx18fbhRK61/
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 08:03:39.9532 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f97b69ab-088f-4408-4337-08def91162ca
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD1.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPF189669351
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -115,38 +66,360 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-amdgpu_create_ip_queues() dereferenced ring_context->hw_ip_info to compute
-available_rings while ring_context was still NULL - it is only allocated later
-via calloc(). This crashed the all-queues-with-umq subtest with a SIGSEGV in
-amdgpu_create_ip_queues() before any queue was created.
+Introduce error threshold test as part of xe_ras. This will serve as a
+foundation for all RAS related tests moving forward.
 
-The HW IP info is already queried into the local hw_ip_info at the top of the
-function, so read available_rings from that instead of the not-yet-allocated
-ring_context.
-
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Raag Jadav <raag.jadav@intel.com>
 ---
- lib/amdgpu/amd_command_submission.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/drm-uapi/drm_ras.h |  53 ++++++++
+ meson.build                |   3 +
+ tests/intel/xe_ras.c       | 242 +++++++++++++++++++++++++++++++++++++
+ tests/meson.build          |   2 +
+ 4 files changed, 300 insertions(+)
+ create mode 100644 include/drm-uapi/drm_ras.h
+ create mode 100644 tests/intel/xe_ras.c
 
-diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index 0334c2ded..7210cffb9 100644
---- a/lib/amdgpu/amd_command_submission.c
-+++ b/lib/amdgpu/amd_command_submission.c
-@@ -181,10 +181,10 @@ static void amdgpu_create_ip_queues(amdgpu_device_handle device,
- 	amdgpu_dma_limits_query(device, &limits);
+diff --git a/include/drm-uapi/drm_ras.h b/include/drm-uapi/drm_ras.h
+new file mode 100644
+index 000000000..27c689564
+--- /dev/null
++++ b/include/drm-uapi/drm_ras.h
+@@ -0,0 +1,53 @@
++/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/drm_ras.yaml */
++/* YNL-GEN uapi header */
++/* To regenerate run: tools/net/ynl/ynl-regen.sh */
++
++#ifndef _UAPI_LINUX_DRM_RAS_H
++#define _UAPI_LINUX_DRM_RAS_H
++
++#define DRM_RAS_FAMILY_NAME	"drm-ras"
++#define DRM_RAS_FAMILY_VERSION	1
++
++/*
++ * Type of the node. Currently, only error-counter nodes are supported, which
++ * expose reliability counters for a hardware/software component.
++ */
++enum drm_ras_node_type {
++	DRM_RAS_NODE_TYPE_ERROR_COUNTER = 1,
++};
++
++enum {
++	DRM_RAS_A_NODE_ATTRS_NODE_ID = 1,
++	DRM_RAS_A_NODE_ATTRS_DEVICE_NAME,
++	DRM_RAS_A_NODE_ATTRS_NODE_NAME,
++	DRM_RAS_A_NODE_ATTRS_NODE_TYPE,
++
++	__DRM_RAS_A_NODE_ATTRS_MAX,
++	DRM_RAS_A_NODE_ATTRS_MAX = (__DRM_RAS_A_NODE_ATTRS_MAX - 1)
++};
++
++enum {
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID = 1,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
++
++	__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
++};
++
++enum {
++	DRM_RAS_CMD_LIST_NODES = 1,
++	DRM_RAS_CMD_GET_ERROR_COUNTER,
++	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
++	DRM_RAS_CMD_GET_ERROR_THRESHOLD,
++	DRM_RAS_CMD_SET_ERROR_THRESHOLD,
++
++	__DRM_RAS_CMD_MAX,
++	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
++};
++
++#endif /* _UAPI_LINUX_DRM_RAS_H */
+diff --git a/meson.build b/meson.build
+index 980fb6421..5ef0b4edf 100644
+--- a/meson.build
++++ b/meson.build
+@@ -153,6 +153,9 @@ libpci = dependency('libpci', required : true)
+ libudev = dependency('libudev', required : true)
+ glib = dependency('glib-2.0', required : true)
  
- 	if (user_queue)
--		available_rings = ring_context->hw_ip_info.num_userq_slots ?
--			((1 << ring_context->hw_ip_info.num_userq_slots) -1) : 1;
-+		available_rings = hw_ip_info.num_userq_slots ?
-+			((1 << hw_ip_info.num_userq_slots) - 1) : 1;
- 	else
--		available_rings = ring_context->hw_ip_info.available_rings;
-+		available_rings = hw_ip_info.available_rings;
++libnl = dependency('libnl-3.0', required: true)
++libnl_genl = dependency('libnl-genl-3.0', required: true)
++
+ libtsi = cc.find_library('TSI', required : false)
  
- 	if (available_rings <= 0) {
- 		*ring_context_out = NULL;
+ if libtsi.found()
+diff --git a/tests/intel/xe_ras.c b/tests/intel/xe_ras.c
+new file mode 100644
+index 000000000..91f624d9f
+--- /dev/null
++++ b/tests/intel/xe_ras.c
+@@ -0,0 +1,242 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++/**
++ * TEST: Check Reliability Availability Serviceability
++ * Category: Core
++ * Mega feature: RAS
++ * Sub-category: Error handling tests
++ * Test category: functionality test
++ */
++
++#include <limits.h>
++#include <netlink/socket.h>
++#include <netlink/genl/ctrl.h>
++#include <netlink/genl/genl.h>
++
++#include "igt.h"
++#include "lib/igt_device.h"
++#include "lib/igt_sysfs.h"
++
++#include "xe_drm.h"
++#include "drm_ras.h"
++
++static const char * const error_severity[] = DRM_XE_RAS_ERROR_SEVERITY_NAMES;
++
++typedef struct {
++	int fd_xe;
++	int sysfs_fd;
++	struct pci_device *pci_xe;
++	struct nl_sock *sock;
++	struct nl_cb *cb;
++	int family_id;
++	uint32_t node_id;
++	uint32_t error_id;
++	uint32_t threshold;
++} xe_ras_t;
++
++static void init_ras_ctx(xe_ras_t *ctx)
++{
++	int ret;
++
++	ctx->fd_xe = drm_open_driver(DRIVER_XE);
++	ctx->sysfs_fd = igt_sysfs_open(ctx->fd_xe);
++	ctx->pci_xe = igt_device_get_pci_device(ctx->fd_xe);
++
++	ctx->sock = nl_socket_alloc();
++	igt_assert_f(ctx->sock, "Failed to allocate nl_sock");
++
++	ret = genl_connect(ctx->sock);
++	igt_assert_f(!ret, "Failed to connect nl_sock: %s\n", nl_geterror(ret));
++
++	ctx->family_id = genl_ctrl_resolve(ctx->sock, DRM_RAS_FAMILY_NAME);
++	igt_require_f(ctx->family_id >= 0, "drm-ras family not found\n");
++}
++
++static void cleanup_ras_ctx(xe_ras_t *ctx)
++{
++	nl_close(ctx->sock);
++	nl_socket_free(ctx->sock);
++
++	close(ctx->sysfs_fd);
++	drm_close_driver(ctx->fd_xe);
++}
++
++static uint32_t nlattr_max(uint32_t cmd)
++{
++	if (cmd == DRM_RAS_CMD_LIST_NODES)
++		return DRM_RAS_A_NODE_ATTRS_MAX;
++	else
++		return DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX;
++}
++
++static int nl_cb(struct nl_msg *msg, void *arg)
++{
++	struct nlmsghdr *nlh = nlmsg_hdr(msg);
++	struct genlmsghdr *gnlh = nlmsg_data(nlh);
++	struct nlattr *attrs[UCHAR_MAX];
++	int ret, cmd = gnlh->cmd;
++	xe_ras_t *ctx = arg;
++
++	ret = genlmsg_parse(nlh, 0, attrs, nlattr_max(cmd), NULL);
++	if (ret) {
++		igt_warn("Failed to parse nl msg: %s\n", nl_geterror(ret));
++		return NL_SKIP;
++	}
++
++	switch (cmd) {
++	case DRM_RAS_CMD_LIST_NODES: {
++		char *device_name, *node_name, pci_name[UCHAR_MAX];
++		struct pci_device *pci = ctx->pci_xe;
++
++		if (!attrs[DRM_RAS_A_NODE_ATTRS_DEVICE_NAME]) {
++			igt_warn("Device name attribute not found\n");
++			return NL_SKIP;
++		}
++
++		if (!attrs[DRM_RAS_A_NODE_ATTRS_NODE_NAME]) {
++			igt_warn("Node name attribute not found\n");
++			return NL_SKIP;
++		}
++
++		if (!attrs[DRM_RAS_A_NODE_ATTRS_NODE_ID]) {
++			igt_warn("Node id attribute not found\n");
++			return NL_SKIP;
++		}
++
++		device_name = nla_get_string(attrs[DRM_RAS_A_NODE_ATTRS_DEVICE_NAME]);
++		node_name = nla_get_string(attrs[DRM_RAS_A_NODE_ATTRS_NODE_NAME]);
++
++		snprintf(pci_name, UCHAR_MAX, "%04x:%02x:%02x.%01x",
++			 pci->domain, pci->bus, pci->dev, pci->func);
++
++		if (strcmp(node_name, error_severity[DRM_XE_RAS_ERR_SEV_CORRECTABLE]) ||
++		    strcmp(device_name, pci_name))
++			return NL_SKIP;
++
++		ctx->node_id = nla_get_u32(attrs[DRM_RAS_A_NODE_ATTRS_NODE_ID]);
++		return NL_OK;
++	}
++	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
++		return NL_OK;
++	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
++		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]) {
++			igt_warn("Error threshold attribute not found\n");
++			return NL_SKIP;
++		}
++
++		ctx->threshold = nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]);
++		return NL_OK;
++	default:
++		return NL_SKIP;
++	}
++}
++
++static void prepare_nl_msg(xe_ras_t *ctx, struct nl_msg *msg, uint32_t cmd)
++{
++	int ret;
++
++	switch (cmd) {
++	case DRM_RAS_CMD_LIST_NODES:
++		break;
++	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
++		ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD, ctx->threshold);
++		igt_assert_f(!ret, "Failed to put error threshold: %s\n", nl_geterror(ret));
++		/* fallthrough */
++	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
++		ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID, ctx->node_id);
++		igt_assert_f(!ret, "Failed to put node id: %s\n", nl_geterror(ret));
++
++		ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID, ctx->error_id);
++		igt_assert_f(!ret, "Failed to put error id: %s\n", nl_geterror(ret));
++		break;
++	default:
++		igt_assert_f(0, "Invalid command: %u\n", cmd);
++	}
++}
++
++static uint32_t nlmsg_flags(uint32_t cmd)
++{
++	uint32_t flags = NLM_F_REQUEST | NLM_F_ACK;
++
++	if (cmd == DRM_RAS_CMD_LIST_NODES)
++		flags |= NLM_F_DUMP;
++
++	return flags;
++}
++
++static void test_cmd(xe_ras_t *ctx, uint32_t cmd)
++{
++	struct nl_msg *msg;
++	void *msg_head;
++	int ret;
++
++	msg = nlmsg_alloc();
++	igt_assert_f(msg, "Failed to allocate nl_msg\n");
++
++	msg_head = genlmsg_put(msg, NL_AUTO_PORT, NL_AUTO_SEQ, ctx->family_id, 0,
++			       nlmsg_flags(cmd), cmd, DRM_RAS_FAMILY_VERSION);
++	igt_require_f(msg_head, "Failed to add nl msg header\n");
++
++	prepare_nl_msg(ctx, msg, cmd);
++
++	ret = nl_socket_modify_cb(ctx->sock, NL_CB_VALID, NL_CB_CUSTOM, nl_cb, ctx);
++	igt_assert_f(!ret, "Failed to modify cb: %s\n", nl_geterror(ret));
++
++	ret = nl_send_auto(ctx->sock, msg);
++	igt_assert_f(ret > 0, "Failed to send nl msg: %s\n", nl_geterror(ret));
++
++	ret = nl_recvmsgs_default(ctx->sock);
++	igt_assert_f(!ret, "Failed to receive nl msg: %s\n", nl_geterror(ret));
++
++	nlmsg_free(msg);
++}
++
++/**
++ * SUBTEST: error-threshold
++ * Description: test get/set error threshold of the counter
++ * Functionality: RAS
++ * GPU requirements: DRM RAS feature should be supported
++ */
++static void test_error_threshold(xe_ras_t *ctx)
++{
++	ctx->node_id = UINT_MAX;
++
++	test_cmd(ctx, DRM_RAS_CMD_LIST_NODES);
++
++	/* drm_ras is missing */
++	igt_skip_on(ctx->node_id == UINT_MAX);
++	igt_info("node id: %d\n", ctx->node_id);
++
++	ctx->error_id = DRM_XE_RAS_ERR_COMP_CORE_COMPUTE;
++	igt_info("error id: %d\n", ctx->error_id);
++
++	test_cmd(ctx, DRM_RAS_CMD_GET_ERROR_THRESHOLD);
++	igt_info("get error threshold: %u\n", ctx->threshold);
++
++	test_cmd(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
++	igt_info("set error threshold: %u\n", ctx->threshold);
++}
++
++int igt_main()
++{
++	xe_ras_t ctx;
++
++	igt_fixture() {
++		memset(&ctx, 0, sizeof(ctx));
++		init_ras_ctx(&ctx);
++
++		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
++		update_debug_mask_if_ci(DRM_UT_KMS);
++	}
++
++	igt_subtest_f("error-threshold") {
++		test_error_threshold(&ctx);
++	}
++
++	igt_fixture() {
++		cleanup_ras_ctx(&ctx);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index a62f447df..2ebdc74da 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -333,6 +333,7 @@ intel_xe_progs = [
+ 	'xe_prime_self_import',
+ 	'xe_pxp',
+ 	'xe_query',
++	'xe_ras',
+ 	'xe_render_copy',
+ 	'xe_vm',
+ 	'xe_userptr_pressure',
+@@ -429,6 +430,7 @@ extra_dependencies = {
+ 	'xe_fault_injection': [ lib_igt_xe_oa ],
+ 	'xe_oa': [ lib_igt_xe_oa ],
+         'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
++	'xe_ras': [ libnl, libnl_genl ],
+ }
+ 
+ test_executables = []
 -- 
-2.49.0
+2.43.0
 
