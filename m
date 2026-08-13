@@ -4,54 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 658A7C5CFCF
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 18:13:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41779C5B572
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 18:30:06 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C7D4D10F4D9;
-	Thu, 13 Aug 2026 18:13:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D353B10F4C8;
+	Thu, 13 Aug 2026 18:30:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FXGtbPUo";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="WRrwLxL2";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5512F10F4D9
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 18:13:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786644783; x=1818180783;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=TjWmgvWSgfhGId3Q+x7pHdg0McAiMuNCC8gZOF3NBfQ=;
- b=FXGtbPUor84l2YtWyR4bCRDDpwwnQ2F0heLXeE0enufJ26S15C1yoeI2
- 7dq04eRi/X5oVhcrOi+CgbP4XYPERjKU4msn+1F/2GlPGIagGPUqelPbr
- PEojl6EP/oGx2fWlFEK4NSe8/HTQNCA7oVg0sNk9oLkDV6tHWL97opw0H
- iI0j0pzJjsPfk0a8DJJlD+LlYVSVswWi33qsV/iMBZVTp1oFqAyS3WZ05
- NEOG9GPpyMAW1v0YJrhgiM5VLAg+gnogstHAnMCJa6SBwm4dZHjhDmAmg
- ALNjZpJq3j/UBecED5NN19FR95TbgOBhMC3OAee+2rQfZK1VkN+BRqUSG g==;
-X-CSE-ConnectionGUID: Yz6hXm9+RGSHIxCRCto+/g==
-X-CSE-MsgGUID: +MDNJzVJRcizSmJIyIB5rw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11874"; a="89748189"
-X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; d="scan'208";a="89748189"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2026 11:13:03 -0700
-X-CSE-ConnectionGUID: /qAi7KRSSr2IYos7GxY84Q==
-X-CSE-MsgGUID: R32dCTW7Qjm6DHpVDsG5UQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; d="scan'208";a="261375348"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.68])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2026 11:13:02 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6F5C210E50A
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 18:29:30 +0000 (UTC)
+Received: by mail-qt1-f197.google.com with SMTP id
+ d75a77b69052e-51a8b0a08d2so2117501cf.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 11:29:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20251104; t=1786645769; x=1787250569;
+ darn=lists.freedesktop.org; 
+ h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+ :to:cc:subject:date:message-id:reply-to:content-type;
+ bh=TleDI5SND0foOf7NVNCx/7dZoNDJOJserhsVSHHntk8=;
+ b=WRrwLxL24kAVwJ4G6e9+e7g6wXJZXj8mODTmeaqHj+YlKFOarUwGs6qppBDkbNYaU1
+ K7tizqvW5PFLupWLdHtN9qypPS5rQhPVz7+7RONsrfgPJoZQGLmGenO5O2BRyUpGd3HN
+ 10kG+1BL/X8uH++drswNOmFeJ1Nw16vKyth5utoI8u+TvgSI0YO7GqEYTSoga7A4q4SH
+ kkeBjOFT/ZAiumjVmVUufPEMBEPAtOwOJ/kmzMYypD4GJLGuhNQfa3vzqXdIrQT3o+vX
+ SHBcza55yd3Say+fEKVxSdZcQbzoqmM/zWXQ17wKm3niX2acI8PSPQXNrZwEN5OLF3Cb
+ Q04g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1786645769; x=1787250569;
+ h=content-type:cc:to:from:subject:message-id:mime-version:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+ :content-type;
+ bh=TleDI5SND0foOf7NVNCx/7dZoNDJOJserhsVSHHntk8=;
+ b=UbxXKUCGDToWnHqlnh9KrOu4eEg0M+/fs+Ez7B9gh3crm9OF1YDhRS4ny6cLIxcDLU
+ XcFcLPpRRZXHj1TuPA5r6M/sD7ZlVnj6tAnWD0s8kMWWqeVLI19Wj6ALZ2q1SPi8kT/D
+ Z35aHXrIU7NEBrOkhLkvNOoOVe54R5VQqmVZXbWjqXwMQcLv2XGX2slDtKYLzUrKS3dF
+ /8fg6CF1eWsNpzyInAtfP5w2piIgAD3882WVtOktuOMb+C6cE7W5IG0UU3BD+Cr9z/4J
+ 4FT5cd+rD0Bd0Qy0wd2obqHa9bNDWEW5vtQgjN7qlz78iLQ5XLtQO0VOZZVSxCBUNH76
+ JW8w==
+X-Gm-Message-State: AOJu0Yzj1bATG2VcNPAkxkZj38C6ahk2j3GgpOrzjFcG8DPrE+fUrMbE
+ u8KX8UIrnT/wvRwMQbQlSEpijo/r0D3+t/lBEDfU2w1c7t2drGSyr5iwdSJlSkotwO8gn2SFHBK
+ rhQc1bqbc0qQujmiQoU0kk7HFeIl1e7j195g7ChWPD6pS7Uy+AIXcrimQ+HlAjrbeMTeAIWRyW0
+ hc1Rgk8j88NUl5sTKotrzRYi0pdLc+UiFhVkYf3/SBQvn4q8dfotJdrsxnIr/yjxVzTKc=
+X-Received: from qtxt3.prod.google.com ([2002:a05:622a:1483:b0:51c:1643:b82e])
+ (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:5907:0:b0:517:8011:3a4b with SMTP id
+ d75a77b69052e-52d73d8a4e7mr77567981cf.21.1786645768770; 
+ Thu, 13 Aug 2026 11:29:28 -0700 (PDT)
+Date: Thu, 13 Aug 2026 14:29:24 -0400
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.691.gc56d675ccc-goog
+Message-ID: <20260813182924.2508072-1-markyacoub@google.com>
+Subject: [PATCH] tests/unigraf: Hoist static DP link rate bounds and purge eDP
+ rate
+From: Mark Yacoub <markyacoub@google.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH i-g-t] checkpatch: Ignore camelcase and igt_main()
-Date: Thu, 13 Aug 2026 20:12:55 +0200
-Message-ID: <20260813181255.162149-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.55.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Cc: Louis Chauvet <louis.chauvet@bootlin.com>,
+ Mark Yacoub <markyacoub@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,26 +78,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Camelcase is used by both drm and glib and igt_main() is a macro
-without parameters. Both are valid usecases in igt so instruct
-checkpatch to ignore them in patches.
+Currently, the link rate subtest dynamically iterates across
+UNIGRAF_RATE_6_75_GHZ during its testing sweep. However, 6.75 Gbps is
+structurally an exclusive eDP link rate parameter that physical external
+DP sink testbeds do not natively map to. Iterating over it on external
+chassis outputs reliably wastes execution cycles only to inevitably fail
+a hardware constraint validation.
 
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Additionally, the existing igt_require(max_supported_rate... validation
+is currently executed at the very end of the loop, specifically after
+the testbed has already triggered an expensive HPD pulse, retrained the
+physical link, and rebuilt the IGT output wrapper.
+
+This patch cleans out the test execution array, and physically hoists
+the igt_dp_get_max_supported_rate() capability check completely outside
+the active dynamic initialization context to serve strictly as a
+zero-cost pre-flight evaluator. The subtest now cleanly skips
+hardware-unsupported rate ceilings in 0.00s natively, significantly
+shrinking the cumulative latency footprint of an automated CI pipeline.
 ---
- .checkpatch.conf | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/unigraf/unigraf_lt.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/.checkpatch.conf b/.checkpatch.conf
-index dba22494b..30935c50c 100644
---- a/.checkpatch.conf
-+++ b/.checkpatch.conf
-@@ -2,4 +2,4 @@
- --strict
- --show-types
- --max-line-length=100
----ignore=BIT_MACRO,SPLIT_STRING,LONG_LINE_STRING,BOOL_MEMBER,PREFER_KERNEL_TYPES
-+--ignore=BIT_MACRO,BOOL_MEMBER,CAMELCASE,FUNCTION_WITHOUT_ARGS,LONG_LINE_STRING,PREFER_KERNEL_TYPES,SPLIT_STRING
+diff --git a/tests/unigraf/unigraf_lt.c b/tests/unigraf/unigraf_lt.c
+index 81e6ecd3f..c82607e14 100644
+--- a/tests/unigraf/unigraf_lt.c
++++ b/tests/unigraf/unigraf_lt.c
+@@ -127,13 +127,20 @@ int igt_main()
+ 		int rates[] = {UNIGRAF_RATE_1_62_GHZ,
+ 			       UNIGRAF_RATE_2_7_GHZ,
+ 			       UNIGRAF_RATE_5_4_GHZ,
+-			       UNIGRAF_RATE_6_75_GHZ,
+ 			       UNIGRAF_RATE_8_10_GHZ};
+ 		int current_rate;
+-		int max_supported_rate;
++		int max_supported_rate = 0;
++
++		output = igt_output_from_connector(&display, connector);
++		if (output)
++			max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
+ 
+ 		for (i = 0; i < ARRAY_SIZE(rates); i++) {
+ 			igt_dynamic_f("unigraf-dp-link-rate-%d", rates[i]) {
++				igt_require_f(max_supported_rate >= unigraf_rate_to_kbs(rates[i]),
++					      "Host port physically caps below test rate bounds (Host: %d, Test: %d)\n",
++					      max_supported_rate, unigraf_rate_to_kbs(rates[i]));
++
+ 				unigraf_reset();
+ 				unigraf_set_max_link_rate(rates[i]);
+ 				unigraf_hpd_pulse(1000000);
+@@ -147,8 +154,6 @@ int igt_main()
+ 				init_output_and_display_pattern(&display, output);
+ 
+ 				current_rate = igt_dp_get_max_link_rate(drm_fd, output);
+-				max_supported_rate = igt_dp_get_max_supported_rate(drm_fd, output);
+-				igt_require(max_supported_rate >= unigraf_rate_to_kbs(rates[i]));
+ 				igt_assert_eq(current_rate, unigraf_rate_to_kbs(rates[i]));
+ 			}
+ 		}
 -- 
-2.55.0
+2.55.0.691.gc56d675ccc-goog
 
