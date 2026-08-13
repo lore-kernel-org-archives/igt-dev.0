@@ -4,53 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA896C5B572
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 08:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90B0EC5CFEB
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 09:46:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3328910F1DC;
-	Thu, 13 Aug 2026 08:06:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1652A10F272;
+	Thu, 13 Aug 2026 09:46:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WxrfE0Re";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E0w5Q3Bh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2932D10E0D2
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 08:05:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBA1410F272
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 09:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786608332; x=1818144332;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=7lix5DKKKV+rnYHYn+BI2dwPW5DyGB5+bz7Pihwq13M=;
- b=WxrfE0RemEV0bIPkbCP2Ip3HF7zhZiB2yo/uoX1SuiSmvZLFgOrNQl4d
- /MpRJptNAlKk7jP++WZttz8RwSMDGQNwx/SaLGiYZVBf5yxeisG7LGzHL
- DVAm8IsDw/Qsqw57/J6Vjp6wUScwQk5wKwRKBXuCxoToMfRgMj4Hb7XRv
- Ebzj8Ob3468RvjgzkzcVWC91slr1LoBhsxAyBnfX5Ei6ELTOHg/2D6i5A
- a+tqSy3ZAjjx11jAqnRPNL2+4owEK39ujCZeBWqeseBH4/c44VdxqfcmC
- uyF617i+4khziCz1KpvnxlAOC9QabF5mZicmZ2YBUmps/ojXTJ9VGB6XS Q==;
-X-CSE-ConnectionGUID: gAccsNfpSbi2mPxXvUWWFA==
-X-CSE-MsgGUID: BMCY2NlqT3SZCcFOuxl39g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="104709629"
-X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; d="scan'208";a="104709629"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2026 01:05:31 -0700
-X-CSE-ConnectionGUID: GxwGj/r/SHuTWznH5LKArQ==
-X-CSE-MsgGUID: mysZdFlgQtuR1d/Wa3145g==
+ t=1786614344; x=1818150344;
+ h=content-transfer-encoding:date:message-id:cc:subject:
+ from:to:references:in-reply-to:mime-version;
+ bh=76UPLkD0Ur/8GEw2Upcdpl5MPezw+CqTkB0i7y8BFFE=;
+ b=E0w5Q3BhjtyONPpJGzIWzYtZfgVtEK63res6UvtInliH/8ZkeoTF8GIu
+ GbNArybgY3IKzpwHdZAGpAMECvI9bXOOM5kMUzcogzI3Lo6Vw2qlyIsC6
+ 6mFXNXoYBHw6Oqgvh9U1rLyuugjdxWxK9g2CDNCjKyIbCp/neIj8FrIPd
+ fXRG/IYUEV8njEvbh5vxItftDTFZTLxzYeGlYt7TboGomZO+LntwWHi3T
+ djm/P+hvxFEV5XktwKk+QTw6UaGn9kx+ZcbPTTeIpy4erpl9T/Jb4b+WO
+ 7478HEYkGaa4L2wizRdyhydPAHOj3OLFaTx5l73wiIAZ/orlkdFhyqoLR g==;
+X-CSE-ConnectionGUID: mEVPAPvGTUGTfARGTff+bg==
+X-CSE-MsgGUID: 80u//y4BSS2tPUr269iPPQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="87400440"
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; d="scan'208";a="87400440"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2026 02:45:42 -0700
+X-CSE-ConnectionGUID: 2zysqe39QX2tTpBdOIgieg==
+X-CSE-MsgGUID: CqLNl2AXSmaDCCjjfr96XA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; d="scan'208";a="288671145"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
- by fmviesa001.fm.intel.com with ESMTP; 13 Aug 2026 01:05:30 -0700
-From: Raag Jadav <raag.jadav@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com, ravi.kishore.koppuravuri@intel.com,
- mallesh.koujalagi@intel.com, Raag Jadav <raag.jadav@intel.com>
-Subject: [PATCH v1] tests/intel/xe_ras: Introduce error threshold
-Date: Thu, 13 Aug 2026 13:35:13 +0530
-Message-ID: <20260813080513.254848-1-raag.jadav@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.25,221,1779174000"; d="scan'208";a="260083768"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Aug 2026 02:45:43 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 13 Aug 2026 02:45:42 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Thu, 13 Aug 2026 02:45:42 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.19) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Thu, 13 Aug 2026 02:45:42 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=azXLKO9m9lXQahs8gKAuaPib6wT2vc2kWsCBykDZPGELB/VnSLF9F1TRjujIcanHv0z+fz7WJEr9L401jLYSYqY8MMYf33cR/bMVQWVGEYUji4khwK+xEADgUjiLL44bDDkfbxKyzzYoIa7x2/on207XORXuLxwB8VyqNZOsyOksIGT9rGdwbK/ZmVe3JBzG0F0IpWqeGy90sni5ZZlDV6n+f8rt5QR6E35r6BWDUgrx8O77gjxFj3+SPnEin8mfmw5Em/Qx4R/eLtemHld0mj4GsGFFxa06sWiYYQOFOIzusD6H4QWZWbxrZY8szkAtrDT7Bh5HjyByAiJC3X+P0Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=E8tPqG/a/WJibqWVt2n0E+HBN0yj5v/KXf4tf+ZQEbA=;
+ b=b+Se7lrmo9wikmjVHzeBI8GzubmYsGCdGzgzHSnw+f8TaAv0De/A2KV4deEIXJGwfAnQB+tNrlsjczOfwbgoBkJrAwIie7a4rM4utJW7G0Bi1qoU9WmSr9238ZvHm6P5wQdUvdJICXcEQ0dxc0MSz0B+yEhZlcdcqA/npiYqwDfC+nlAK//UWbUr6A904XLUgs0vQtEfYnI1t5vArOT2s8S3Pxe3uWJmZ6o5ndjlJVVQ68aFs7sSeJFGNFb5tszW5etSHIBl8iooBsqGCm/7FC0P+IF62qTSjjXhrrn4DdLjC6yBP+16Uv2wEG+F3zsxsl0WdzmBb/A5qFLDUovgbg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW4PR11MB6909.namprd11.prod.outlook.com (2603:10b6:303:224::12)
+ by SJ0PR11MB5087.namprd11.prod.outlook.com (2603:10b6:a03:2ad::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.15; Thu, 13 Aug
+ 2026 09:43:30 +0000
+Received: from MW4PR11MB6909.namprd11.prod.outlook.com
+ ([fe80::9eab:962:806:3794]) by MW4PR11MB6909.namprd11.prod.outlook.com
+ ([fe80::9eab:962:806:3794%4]) with mapi id 15.21.0315.014; Thu, 13 Aug 2026
+ 09:43:30 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="UTF-8"
+Date: Thu, 13 Aug 2026 11:44:59 +0200
+Message-ID: <DKNPWUA9CF93.HAQDPIZBBQZT@intel.com>
+CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Krzysztof Karas
+ <krzysztof.karas@intel.com>, Sebastian Brzezinka
+ <sebastian.brzezinka@intel.com>, Janusz Krzysztofik
+ <janusz.krzysztofik@linux.intel.com>, Andi Shyti <andi.shyti@linux.intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/gem_exec_params: add
+ invalid-offset-multiple-buffers test
+From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+To: Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+X-Mailer: aerc 0.22.0
+References: <20260812144331.41158-2-krzysztof.niemiec@intel.com>
+In-Reply-To: <20260812144331.41158-2-krzysztof.niemiec@intel.com>
+X-ClientProxiedBy: DUZPR01CA0211.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b4::24) To MW4PR11MB6909.namprd11.prod.outlook.com
+ (2603:10b6:303:224::12)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW4PR11MB6909:EE_|SJ0PR11MB5087:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c8522fb-31bf-461a-f946-08def91f5505
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|23010399003|376014|1800799024|366016|6133799003|10067099003|56012099006|5023799004|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: Zlr7F2Uzfy8BFbxb1yLXTC0SQaSKr/6eFtrW2vKlUIiHJAmhXMGJqrM6Hy8oJag7GtQ9wn3OXCtiyand9JSzX/C0Ww1zSk5n8I0Tgsd6xWo4K1hYqt9l+4CASSYSzUF8qEgXcYK0vVtPn4ZMt2Pth1RAnbFuKPNiBBO4x61kb4fHItLrUbJd5SO9rsevOZpIs/XWbXiklWquXP1888CvByJ/4sL4m9esSRsaJ9byltBHbYypt1abRh9j0+xAP6Pyk8U4lx+zndwepEVPKGThvcOYCK1YlQXsfbtUvf5wqwVo4Yt5Wedhai5kiusvhZeNDgL8jEV7n74oJ+Dbo+0bxJGWsSegmqON732enf1H2sci5s86k4ZFOzs48yhdva/uVTAMq3svrzOpf3KZiTkBV/8Br3oW6045hWrkK4nGqCW9Rn0mS/V+WSqDBMtp+wzAVqxYZRsMvl+bIggREZIAdZvHhsWNQkSrtZTA/+8g8eMTMnCsdj790AFU7ACp8aq6ko0IgJPMyHW8iAva6ML6vug9iMLbWMcKgpc9w9WT3JsysbcvtsIirzHHlCnSeowsnM1XcNpPn8SnxMfCfQ2Ei74E/wZ4X/F+GglysvbhIp8rIRQQJQCw+XbupyZSkoWNEfiMt3S6yPYe75DO3Uyd/Oq38+LZb7FoMpWzw5m1PXw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW4PR11MB6909.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(6133799003)(10067099003)(56012099006)(5023799004)(11063799006)(18002099003)(22082099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Unp2cmUrcVA1alVpWURXZUE3OCs2ZGM4YnJMb0VkeUc3aE8vVW8yOXk4OUlv?=
+ =?utf-8?B?bXl6dHl3ZG9sNHBZQUR0QkZVUjhXMTF2TUVyeWdsc1ZaYmNHRS9WWjBTMDUw?=
+ =?utf-8?B?aU13SDhiZm9TdFNqZ3ZOcXpFK2ZhL0xQK3FSVmprR29EUlJFNjB5SzJjUUFu?=
+ =?utf-8?B?UEVWemhsRW5YbXRPTWhJRFdQeG01ekdRcG5pbjdKbTNDenlqMFBlQVkvQjJi?=
+ =?utf-8?B?d3FrOHlvUllmTDJ5a1ptUGNxV2V0eFdVV2dRaTl5WklBVnIyaTRLc2xYRTVK?=
+ =?utf-8?B?YzFNcUdNYmdhRVFPVGtqWUlmTlZMdEpxSHh6QUZ5NlVlT1gzZVgzdEVNUGlN?=
+ =?utf-8?B?K1lha29wdGhrc0pza0ZYdEF0bGJVU0tFTy90L3U3VWs2WWlGRG5wSW92c2U0?=
+ =?utf-8?B?a3JsYkQrc3BUVFBVMkgzNk9zUmNoMFRFODhscXc4NndVYkw4aEY3RStydkJG?=
+ =?utf-8?B?RUZyTHNMUk43TkRaRkpuYUtqaWtFYlRNQjZMMnhwWWdxL3BGS0NTNDRQZjI4?=
+ =?utf-8?B?dVJCNFdEVHJ0Q2F2VXREWnNETDNEZlF6NGh0SGJZL1lMUEJKQWZiTGRIQ1pw?=
+ =?utf-8?B?ZFBpVDR1eVAwS3AvQklkZnFUUGVFeXh6bnhBOUdpMnp3OUw2VVJMTW5LYzFY?=
+ =?utf-8?B?MjlnVlZhRmFuZGdHYXIwVWRxQTVmRW5CaEpRNWV2YjBjMTVRTFdpUEFlQXJm?=
+ =?utf-8?B?OWtXYldOcWRWbVV5S252UmFQME5IZmJ5KzVkenhTQUpPcm5pTmo2NVpUU3FI?=
+ =?utf-8?B?aTF4dE1DS1lrcHArVVdrZTFBNVpGWE9VODAzakg1S1k2cjJrbk1zUC9IU3Fm?=
+ =?utf-8?B?N2pmT2wrTHNSODJVUm5LQ0U1VmdTNVM1RHlBZk1NZlg2TndrWCtQczBOb2lG?=
+ =?utf-8?B?WVZqaHVTK2pKcmt6TlI5bVowSnNLb1BZV041MmRsanhlNFhxMmVmQUVFQTQv?=
+ =?utf-8?B?bU1VcmF2OTdhT2p0aFViejErbTFRVE1TSy90amx5UlF3SGpnelVTVnRrRXda?=
+ =?utf-8?B?YmdpZkFrQ1VCL01PenhoZ3VNTkRzTmZTZEtYZVkzNW9iMGttSFFCQmRUcERN?=
+ =?utf-8?B?K0N4WTdjZitzanorWFpwQ2hyR2dtVzh2Q0J6Y05OcHRzK21HcXJlTlZkcUE1?=
+ =?utf-8?B?NDJIQ1loQWxPV0lENGg5QlZEdndWRkJWdEhnZkd6a3lQUG53djlSNkFHMDg1?=
+ =?utf-8?B?dk9oSUQ1Z1E4VWlRM0FjQjZnS1k4WEZhTi9PUWVrVnZKMkNiOGlqalJ0TFFF?=
+ =?utf-8?B?SDlsTmJOQ1Y1WEhnQmlUSld0QlJGVUpGR00wQUdLM0wxaUE4TmJvd3lNUVVM?=
+ =?utf-8?B?b2VmeUF1U0lnUnpQNzNGVEpVWEJTMTRJazRlL0lLTUFkOWtMOW92OGFFY3Bs?=
+ =?utf-8?B?RE92YVhTOVNwN2ltU1M2TWhxb292akZyQ1lscUR5MEowK2RRdDBYeGlTdDZl?=
+ =?utf-8?B?b3gxYUJzT1I3WWkxMFZrRmtGQlF3Vmg0b0hxdzdjWWl3QS8yTHR4U1dTdHBM?=
+ =?utf-8?B?VGtqSk5vbjdWM3FMcFFJcHQvMjUxaXBhaWo3MjRyUmxBSytxaHc5Y1FsaUlD?=
+ =?utf-8?B?MElVZWRuWnpkM0hSMzJQNHJXQ05ROHBHZ2huWEZXMUtLc3JUZHJsd1JkNi81?=
+ =?utf-8?B?WVh3R0NaYzFIaFlhMlJOYjgvcTdpWENScVkwL0lqblRSRE1LT1piUXdqM2N6?=
+ =?utf-8?B?Znlya0JtRlp3ZHp5QkNtdjFPMlhWS0ZFU0RuZDE0cHRyYzg1MDdqajhlQW5Q?=
+ =?utf-8?B?amZCenV1dU51YXpGNUw3U1pYcXNPc1RaZStjSjZUQ293cUZpQ0ZuOFdWeXQ1?=
+ =?utf-8?B?NjNKSExoN0d6Ty9VVHJSVFQ0ZkhtdHp2MzJCdzlYTXBaSUtLK2R6TGdjUEg4?=
+ =?utf-8?B?V01uOEN3VEtvdFExck9sMU45SUtVM1k3NkMwdGl1UFNzMjhleGVDT2RrTVh1?=
+ =?utf-8?B?Uy8vZnpiK2h4VDBhNkJ0bzRyT2ltT2lyV1FMVTdZRHB1a0txdWpJQmRGZG1Y?=
+ =?utf-8?B?Y1NlNE5CT05FSjFLMjFBVHNhWkJnN3V0ZDJ1UzNWY3BhVTlMbEVXdjVFM21r?=
+ =?utf-8?B?b1dyYVdkTFZIUHdadHJUeDNlVHMrM0NOUTVPeEVaRCtTTzlrKzRQT0lZd0g0?=
+ =?utf-8?B?VExiSE9xdVl2SGYyc1VVNW9Da0Z5ZGY2ZkhEWWVubS9BSGw0TUdleVVJei90?=
+ =?utf-8?B?MFRFYlFEQnhGVGlaNDN2QVJYTk93eStxa2JVS2czZ3MzR3ZIc2ZrNjBySTdJ?=
+ =?utf-8?B?c3lPRWJKb0FMYURUMStWaEQzdTVYT1NZY3FLZVR2aDBqYVd6aGV5MDA0MmtJ?=
+ =?utf-8?B?b1RPSitYTVFrR3h6d29PZU5tK3JiMWtNUHFUT0tteHFoQUhXaWF5VXBMUFVI?=
+ =?utf-8?Q?Y1IgIi8GY/xJShUw=3D?=
+X-Exchange-RoutingPolicyChecked: gVF+jsD3rZxdeW+af7Qw/xlfAtSETfCKHDsAZ1pYrYRBa9/ZaMisCbf3Hg5uF0D6G7UNFO1CqGvqWlglZNu7ASfxZWFqAHLJXhinroEWWp7jFGjGuzhTqUg8Gs9cDTuE5Q2PvERHQA+CW6GvpptdQJsLRXBfO/bMUafxeragLt8+PRU226BXb0PPeWljh4x7PLgJJljF77tTKgdre5tfZiypEiZ8bx0QuQVfc4qLkvx9Tx/OEDP2nkrUIWDQkQz0J7pdo7BdHDJd6PQ+O4bgUvSqaHdcC3Z3wRQYGa2XGyznOmSH7Yasnc+c19nNelyLy3SPWaWxfumO1pnapLPuPQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c8522fb-31bf-461a-f946-08def91f5505
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6909.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 09:43:30.0852 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3ZaUsxMs4SL7Lci03mQztM3QGYpY+1TqDpkvxNJr6Uj+YHkPfphLGDOLcnK4t8U1vQxRCXDMzo2BIRyP6O1Uz+dT8gOeQEq/B8ErDNaZcng=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5087
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,360 +173,111 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce error threshold test as part of xe_ras. This will serve as a
-foundation for all RAS related tests moving forward.
+Hi Krzysztof,
+On Wed Aug 12, 2026 at 4:43 PM CEST, Krzysztof Niemiec wrote:
+> Add coverage for the case where the batch start offset is invalid with
+> multiple BOs submitted, which was buggy in the kernel until 4fe2bd195435
+> ("drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffe=
+r")
+>
+> Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+> ---
+>  tests/intel/gem_exec_params.c | 48 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 48 insertions(+)
+>
+> diff --git a/tests/intel/gem_exec_params.c b/tests/intel/gem_exec_params.=
+c
+> index 3ba4c530b..757115a21 100644
+> --- a/tests/intel/gem_exec_params.c
+> +++ b/tests/intel/gem_exec_params.c
+> @@ -85,6 +85,8 @@
+>   *
+>   * SUBTEST: invalid-flag
+>   *
+> + * SUBTEST: invalid-offset-multiple-buffers
+> + *
+>   * SUBTEST: invalid-ring
+>   *
+>   * SUBTEST: invalid-ring2
+> @@ -404,6 +406,49 @@ static void test_invalid_batch_start(int fd)
+>  	gem_close(fd, exec.handle);
+>  }
+> =20
+> +/*
+> + * this test is checking for a NULL deref in eb_release_vmas()
+> + * (see 4fe2bd195435 for kernel fix).
+> + *
+> + * this is always going to fail with an EINVAL but will trigger a crash
+> + * in the kernel on affected systems.
+> + */
+> +
+> +static void test_invalid_offset_multiple_buffers(int fd)
+> +{
+> +	struct drm_i915_gem_exec_object2 exec[2];
+> +	struct drm_i915_gem_execbuffer2 execbuf;
+> +	const intel_ctx_t *ctx;
+> +	uint32_t size =3D 0x1000;
+> +
+> +	/*
+> +	 * clear out junk from the argument structs, since it makes the ioctl
+> +	 * fail due to invalid flags, which is not the failure we want to
+> +	 * invoke here.
+> +	 */
+I think you can omit this comment.
 
-Signed-off-by: Raag Jadav <raag.jadav@intel.com>
----
- include/drm-uapi/drm_ras.h |  53 ++++++++
- meson.build                |   3 +
- tests/intel/xe_ras.c       | 242 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   2 +
- 4 files changed, 300 insertions(+)
- create mode 100644 include/drm-uapi/drm_ras.h
- create mode 100644 tests/intel/xe_ras.c
+> +	memset(exec, 0, sizeof(exec));
+> +	memset(&execbuf, 0, sizeof(execbuf));
+> +
+> +	ctx =3D intel_ctx_create_all_physical(fd);
+intel_ctx_destroy(i915, ctx) may be missing. I was looking at usage in
+gem_test_all_engines, lib/i915/gem_submission.c so it may be diffrent
+usecase.
 
-diff --git a/include/drm-uapi/drm_ras.h b/include/drm-uapi/drm_ras.h
-new file mode 100644
-index 000000000..27c689564
---- /dev/null
-+++ b/include/drm-uapi/drm_ras.h
-@@ -0,0 +1,53 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-+/* Do not edit directly, auto-generated from: */
-+/*	Documentation/netlink/specs/drm_ras.yaml */
-+/* YNL-GEN uapi header */
-+/* To regenerate run: tools/net/ynl/ynl-regen.sh */
-+
-+#ifndef _UAPI_LINUX_DRM_RAS_H
-+#define _UAPI_LINUX_DRM_RAS_H
-+
-+#define DRM_RAS_FAMILY_NAME	"drm-ras"
-+#define DRM_RAS_FAMILY_VERSION	1
-+
-+/*
-+ * Type of the node. Currently, only error-counter nodes are supported, which
-+ * expose reliability counters for a hardware/software component.
-+ */
-+enum drm_ras_node_type {
-+	DRM_RAS_NODE_TYPE_ERROR_COUNTER = 1,
-+};
-+
-+enum {
-+	DRM_RAS_A_NODE_ATTRS_NODE_ID = 1,
-+	DRM_RAS_A_NODE_ATTRS_DEVICE_NAME,
-+	DRM_RAS_A_NODE_ATTRS_NODE_NAME,
-+	DRM_RAS_A_NODE_ATTRS_NODE_TYPE,
-+
-+	__DRM_RAS_A_NODE_ATTRS_MAX,
-+	DRM_RAS_A_NODE_ATTRS_MAX = (__DRM_RAS_A_NODE_ATTRS_MAX - 1)
-+};
-+
-+enum {
-+	DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID = 1,
-+	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
-+	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME,
-+	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE,
-+	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
-+
-+	__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX,
-+	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
-+};
-+
-+enum {
-+	DRM_RAS_CMD_LIST_NODES = 1,
-+	DRM_RAS_CMD_GET_ERROR_COUNTER,
-+	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
-+	DRM_RAS_CMD_GET_ERROR_THRESHOLD,
-+	DRM_RAS_CMD_SET_ERROR_THRESHOLD,
-+
-+	__DRM_RAS_CMD_MAX,
-+	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
-+};
-+
-+#endif /* _UAPI_LINUX_DRM_RAS_H */
-diff --git a/meson.build b/meson.build
-index 980fb6421..5ef0b4edf 100644
---- a/meson.build
-+++ b/meson.build
-@@ -153,6 +153,9 @@ libpci = dependency('libpci', required : true)
- libudev = dependency('libudev', required : true)
- glib = dependency('glib-2.0', required : true)
- 
-+libnl = dependency('libnl-3.0', required: true)
-+libnl_genl = dependency('libnl-genl-3.0', required: true)
-+
- libtsi = cc.find_library('TSI', required : false)
- 
- if libtsi.found()
-diff --git a/tests/intel/xe_ras.c b/tests/intel/xe_ras.c
-new file mode 100644
-index 000000000..91f624d9f
---- /dev/null
-+++ b/tests/intel/xe_ras.c
-@@ -0,0 +1,242 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Check Reliability Availability Serviceability
-+ * Category: Core
-+ * Mega feature: RAS
-+ * Sub-category: Error handling tests
-+ * Test category: functionality test
-+ */
-+
-+#include <limits.h>
-+#include <netlink/socket.h>
-+#include <netlink/genl/ctrl.h>
-+#include <netlink/genl/genl.h>
-+
-+#include "igt.h"
-+#include "lib/igt_device.h"
-+#include "lib/igt_sysfs.h"
-+
-+#include "xe_drm.h"
-+#include "drm_ras.h"
-+
-+static const char * const error_severity[] = DRM_XE_RAS_ERROR_SEVERITY_NAMES;
-+
-+typedef struct {
-+	int fd_xe;
-+	int sysfs_fd;
-+	struct pci_device *pci_xe;
-+	struct nl_sock *sock;
-+	struct nl_cb *cb;
-+	int family_id;
-+	uint32_t node_id;
-+	uint32_t error_id;
-+	uint32_t threshold;
-+} xe_ras_t;
-+
-+static void init_ras_ctx(xe_ras_t *ctx)
-+{
-+	int ret;
-+
-+	ctx->fd_xe = drm_open_driver(DRIVER_XE);
-+	ctx->sysfs_fd = igt_sysfs_open(ctx->fd_xe);
-+	ctx->pci_xe = igt_device_get_pci_device(ctx->fd_xe);
-+
-+	ctx->sock = nl_socket_alloc();
-+	igt_assert_f(ctx->sock, "Failed to allocate nl_sock");
-+
-+	ret = genl_connect(ctx->sock);
-+	igt_assert_f(!ret, "Failed to connect nl_sock: %s\n", nl_geterror(ret));
-+
-+	ctx->family_id = genl_ctrl_resolve(ctx->sock, DRM_RAS_FAMILY_NAME);
-+	igt_require_f(ctx->family_id >= 0, "drm-ras family not found\n");
-+}
-+
-+static void cleanup_ras_ctx(xe_ras_t *ctx)
-+{
-+	nl_close(ctx->sock);
-+	nl_socket_free(ctx->sock);
-+
-+	close(ctx->sysfs_fd);
-+	drm_close_driver(ctx->fd_xe);
-+}
-+
-+static uint32_t nlattr_max(uint32_t cmd)
-+{
-+	if (cmd == DRM_RAS_CMD_LIST_NODES)
-+		return DRM_RAS_A_NODE_ATTRS_MAX;
-+	else
-+		return DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX;
-+}
-+
-+static int nl_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct nlmsghdr *nlh = nlmsg_hdr(msg);
-+	struct genlmsghdr *gnlh = nlmsg_data(nlh);
-+	struct nlattr *attrs[UCHAR_MAX];
-+	int ret, cmd = gnlh->cmd;
-+	xe_ras_t *ctx = arg;
-+
-+	ret = genlmsg_parse(nlh, 0, attrs, nlattr_max(cmd), NULL);
-+	if (ret) {
-+		igt_warn("Failed to parse nl msg: %s\n", nl_geterror(ret));
-+		return NL_SKIP;
-+	}
-+
-+	switch (cmd) {
-+	case DRM_RAS_CMD_LIST_NODES: {
-+		char *device_name, *node_name, pci_name[UCHAR_MAX];
-+		struct pci_device *pci = ctx->pci_xe;
-+
-+		if (!attrs[DRM_RAS_A_NODE_ATTRS_DEVICE_NAME]) {
-+			igt_warn("Device name attribute not found\n");
-+			return NL_SKIP;
-+		}
-+
-+		if (!attrs[DRM_RAS_A_NODE_ATTRS_NODE_NAME]) {
-+			igt_warn("Node name attribute not found\n");
-+			return NL_SKIP;
-+		}
-+
-+		if (!attrs[DRM_RAS_A_NODE_ATTRS_NODE_ID]) {
-+			igt_warn("Node id attribute not found\n");
-+			return NL_SKIP;
-+		}
-+
-+		device_name = nla_get_string(attrs[DRM_RAS_A_NODE_ATTRS_DEVICE_NAME]);
-+		node_name = nla_get_string(attrs[DRM_RAS_A_NODE_ATTRS_NODE_NAME]);
-+
-+		snprintf(pci_name, UCHAR_MAX, "%04x:%02x:%02x.%01x",
-+			 pci->domain, pci->bus, pci->dev, pci->func);
-+
-+		if (strcmp(node_name, error_severity[DRM_XE_RAS_ERR_SEV_CORRECTABLE]) ||
-+		    strcmp(device_name, pci_name))
-+			return NL_SKIP;
-+
-+		ctx->node_id = nla_get_u32(attrs[DRM_RAS_A_NODE_ATTRS_NODE_ID]);
-+		return NL_OK;
-+	}
-+	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
-+		return NL_OK;
-+	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
-+		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]) {
-+			igt_warn("Error threshold attribute not found\n");
-+			return NL_SKIP;
-+		}
-+
-+		ctx->threshold = nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]);
-+		return NL_OK;
-+	default:
-+		return NL_SKIP;
-+	}
-+}
-+
-+static void prepare_nl_msg(xe_ras_t *ctx, struct nl_msg *msg, uint32_t cmd)
-+{
-+	int ret;
-+
-+	switch (cmd) {
-+	case DRM_RAS_CMD_LIST_NODES:
-+		break;
-+	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
-+		ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD, ctx->threshold);
-+		igt_assert_f(!ret, "Failed to put error threshold: %s\n", nl_geterror(ret));
-+		/* fallthrough */
-+	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
-+		ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID, ctx->node_id);
-+		igt_assert_f(!ret, "Failed to put node id: %s\n", nl_geterror(ret));
-+
-+		ret = nla_put_u32(msg, DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID, ctx->error_id);
-+		igt_assert_f(!ret, "Failed to put error id: %s\n", nl_geterror(ret));
-+		break;
-+	default:
-+		igt_assert_f(0, "Invalid command: %u\n", cmd);
-+	}
-+}
-+
-+static uint32_t nlmsg_flags(uint32_t cmd)
-+{
-+	uint32_t flags = NLM_F_REQUEST | NLM_F_ACK;
-+
-+	if (cmd == DRM_RAS_CMD_LIST_NODES)
-+		flags |= NLM_F_DUMP;
-+
-+	return flags;
-+}
-+
-+static void test_cmd(xe_ras_t *ctx, uint32_t cmd)
-+{
-+	struct nl_msg *msg;
-+	void *msg_head;
-+	int ret;
-+
-+	msg = nlmsg_alloc();
-+	igt_assert_f(msg, "Failed to allocate nl_msg\n");
-+
-+	msg_head = genlmsg_put(msg, NL_AUTO_PORT, NL_AUTO_SEQ, ctx->family_id, 0,
-+			       nlmsg_flags(cmd), cmd, DRM_RAS_FAMILY_VERSION);
-+	igt_require_f(msg_head, "Failed to add nl msg header\n");
-+
-+	prepare_nl_msg(ctx, msg, cmd);
-+
-+	ret = nl_socket_modify_cb(ctx->sock, NL_CB_VALID, NL_CB_CUSTOM, nl_cb, ctx);
-+	igt_assert_f(!ret, "Failed to modify cb: %s\n", nl_geterror(ret));
-+
-+	ret = nl_send_auto(ctx->sock, msg);
-+	igt_assert_f(ret > 0, "Failed to send nl msg: %s\n", nl_geterror(ret));
-+
-+	ret = nl_recvmsgs_default(ctx->sock);
-+	igt_assert_f(!ret, "Failed to receive nl msg: %s\n", nl_geterror(ret));
-+
-+	nlmsg_free(msg);
-+}
-+
-+/**
-+ * SUBTEST: error-threshold
-+ * Description: test get/set error threshold of the counter
-+ * Functionality: RAS
-+ * GPU requirements: DRM RAS feature should be supported
-+ */
-+static void test_error_threshold(xe_ras_t *ctx)
-+{
-+	ctx->node_id = UINT_MAX;
-+
-+	test_cmd(ctx, DRM_RAS_CMD_LIST_NODES);
-+
-+	/* drm_ras is missing */
-+	igt_skip_on(ctx->node_id == UINT_MAX);
-+	igt_info("node id: %d\n", ctx->node_id);
-+
-+	ctx->error_id = DRM_XE_RAS_ERR_COMP_CORE_COMPUTE;
-+	igt_info("error id: %d\n", ctx->error_id);
-+
-+	test_cmd(ctx, DRM_RAS_CMD_GET_ERROR_THRESHOLD);
-+	igt_info("get error threshold: %u\n", ctx->threshold);
-+
-+	test_cmd(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
-+	igt_info("set error threshold: %u\n", ctx->threshold);
-+}
-+
-+int igt_main()
-+{
-+	xe_ras_t ctx;
-+
-+	igt_fixture() {
-+		memset(&ctx, 0, sizeof(ctx));
-+		init_ras_ctx(&ctx);
-+
-+		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
-+		update_debug_mask_if_ci(DRM_UT_KMS);
-+	}
-+
-+	igt_subtest_f("error-threshold") {
-+		test_error_threshold(&ctx);
-+	}
-+
-+	igt_fixture() {
-+		cleanup_ras_ctx(&ctx);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index a62f447df..2ebdc74da 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -333,6 +333,7 @@ intel_xe_progs = [
- 	'xe_prime_self_import',
- 	'xe_pxp',
- 	'xe_query',
-+	'xe_ras',
- 	'xe_render_copy',
- 	'xe_vm',
- 	'xe_userptr_pressure',
-@@ -429,6 +430,7 @@ extra_dependencies = {
- 	'xe_fault_injection': [ lib_igt_xe_oa ],
- 	'xe_oa': [ lib_igt_xe_oa ],
-         'xe_compute': [ igt_deps,lib_igt_perf,lib_igt_profiling,math ],
-+	'xe_ras': [ libnl, libnl_genl ],
- }
- 
- test_executables = []
--- 
-2.43.0
+> +	exec[0].handle =3D batch_create_size(fd, size);
+> +	exec[1].handle =3D batch_create_size(fd, size);
+> +
+> +	/* this triggers a fail precisely in eb_add_vma() */
+This may be a good place to explain how exactly you trigger this bug
+
+> +	execbuf.buffers_ptr =3D to_user_pointer(exec);
+> +	execbuf.buffer_count =3D 2;
+> +	execbuf.batch_start_offset =3D size;
+> +	execbuf.rsvd2 =3D ctx->id;
+Most tests use execbuf.rsvd1=C2=A0to store ctx->id, is that part of the
+bug reproduction?
+
+BR
+Seba
+
+> +
+> +	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
+> +
+> +	gem_sync(fd, exec[0].handle);
+> +	gem_sync(fd, exec[1].handle);
+> +
+> +	gem_close(fd, exec[0].handle);
+> +	gem_close(fd, exec[1].handle);
+> +}
+> +
+>  static void test_larger_than_life_batch(int fd)
+>  {
+>  	const struct intel_execution_engine2 *e;
+> @@ -705,6 +750,9 @@ int igt_main()
+>  	igt_subtest("larger-than-life-batch")
+>  		test_larger_than_life_batch(fd);
+> =20
+> +	igt_subtest("invalid-offset-multiple-buffers")
+> +		test_invalid_offset_multiple_buffers(fd);
+> +
+>  #define DIRT(name) \
+>  	igt_subtest(#name "-dirt") { \
+>  		execbuf.flags =3D 0; \
+
+
+
+
+
+--=20
+Best regards,
+Sebastian
 
