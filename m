@@ -4,28 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0C4DC5B572
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 10:59:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92592C5B572
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 11:08:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7134A10F2B8;
-	Thu, 13 Aug 2026 10:59:50 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B0B2410F2B8;
- Thu, 13 Aug 2026 10:59:11 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4544176186254272969=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD33110E051;
+	Thu, 13 Aug 2026 11:08:04 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="BZLK/beO";
+	dkim-atps=neutral
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com
+ [209.85.214.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E3A28902A
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 11:07:28 +0000 (UTC)
+Received: by mail-pl1-f172.google.com with SMTP id
+ d9443c01a7336-2cf452def93so7125965ad.1
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 04:07:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20251104; t=1786619248; x=1787224048; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:content-type:in-reply-to:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to
+ :content-type; bh=syv25zTXcLsOh9PR3GahytNYcXhfy+uUJQj+9jDI6NA=;
+ b=BZLK/beOInUkFWs+RN6SfdMtYALA7f2wkw4CBEVMkQCU/HodKIXvtdqA6Crit7wLep
+ Ba7AOovM/NbmTnGV2oGcJPl8YfIaAvDVsW3huCWFFjT5sXuVKBX8Sy5qDx2Cwro+Xcih
+ vNLCcQiMedJFXOgU7InCAeMOcpf96XLAo2hR9YE33fXWtx2WzNneEawJer0vUTmZQ5hP
+ caF4ohNHi06Nz4C/IDfOWgKkI28fNAG7yQBK48doeuv0O4kRZA+kOWFrv805ecE+c87P
+ I5PsrG0DkkATomEqTrA1nsuL9aYbJVtAsj7XrsHv4cvKHinSzhV2beH3etRqQe3/x8zI
+ +J4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1786619248; x=1787224048;
+ h=content-transfer-encoding:content-type:in-reply-to:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to:content-type;
+ bh=syv25zTXcLsOh9PR3GahytNYcXhfy+uUJQj+9jDI6NA=;
+ b=RNPhdAOnLtNwAjfo7pJkJwJqukjwtzl336ajTb7mtqrBtHSW/v6n1S/9f/EoRtKEx2
+ 8FJrDY3iLjiezEBaNWuSMzxRyJoER+hzqUk0YqGd/l1BEU2sqrN/wHF2gFPhrMjwWAP3
+ r20ZFjW1jJW43F9dzKiYgjF05Dtr28Jm7U3uWWYDqGdj61eKs5fvMnsrS59cKkgsAYtV
+ fvieUepkgUvHFmjkPNhtPmu8yxPgfVG+D68hFcPeqwWqeyH0Oy1qnvrxzagyW52jZech
+ dJZ50IXF6josb0CWCyiHnkc0LNaKLngJ6TuYSzIeqiT1kVLUE1uYXjl7ZKWQIkC5ZS7r
+ diQQ==
+X-Forwarded-Encrypted: i=1;
+ AHgh+RoDnPRrIey1BxbM03Fwp5kMH2iJNis2jlcnK7JEBX/Y+It4Uu7oceleujoNrCiiAVH6b6iqCPym@lists.freedesktop.org
+X-Gm-Message-State: AOJu0Yw7OJa2WF6ZRkpiMvUAFn1HG6NfZQUfXGXnAE6N+rDakkBGMJvV
+ iYu55L/6qjMWYk8bHHe6872ZWw0BrHmoIFCqS89vim+Au/KsdBAMAoRvm9GjzwK81aci7dEn
+X-Gm-Gg: AR+sD13lgedKhOtbWdcVmUkbjo9v4ZVnU01Y3uoHB1X2b+zA61qZvA+zEsn6aKTDYaf
+ 0t4sRh+HJAKv7VL7JFgrwTNm/dke8rsGCNMHPcDYrLIzkDzlwuHmnA9teLACEUnkio+/SYhowqc
+ KltRo/nkYtnSiFoCo1lZAyzZ8iqqoLIGVYbykKV1h9vGAa2MOsNvYwN847QX2PmTmDRL1r8cONy
+ OikRp2oQtSvgxLjqrgD/QJphtbPK/xqUy29XxvbL6c6MVY+2XbkgUSfAYdAaxyPRj2DWT4fJCpU
+ vuYAL84qNbnGjI7AT0H7xgjpHBwor7QjGxWvaTVw/p7Zb7rqlAfEhbw3/eURXUip497lMsmam1T
+ PPzhMSNYFUH7+9X3LcnX1sdRHF0mONcKT5g58VFvjpj6vfQlAaCzZbn4HgzXgN6IYpCD7wo4All
+ Z4vnRmgR8HyQ2AHipOf5G+g9M1NsSLkVaWumQ97ZRwd8kmeuT8o17uPko8AQhjSHNHMkzVOehPV
+ 5OAIR/JRrRlEuINqD7ytYgH3W3BNbPt0Khx
+X-Received: by 2002:a17:902:d4c8:b0:2cf:b9f9:18bb with SMTP id
+ d9443c01a7336-2d3804b012dmr26202705ad.4.1786619247517; 
+ Thu, 13 Aug 2026 04:07:27 -0700 (PDT)
+Received: from [134.134.137.76] ([134.134.137.76])
+ by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2d37c20001esm7885275ad.16.2026.08.13.04.07.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Thu, 13 Aug 2026 04:07:26 -0700 (PDT)
+Message-ID: <eeba8678-224a-4c9a-8e96-a0507faea016@gmail.com>
+Date: Thu, 13 Aug 2026 14:07:19 +0300
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/2=5D_lib/amdgpu=3A_fix_NULL_deref_computing_available=5Fri?=
- =?utf-8?q?ngs_in_amdgpu=5Fcreate=5Fip=5Fqueues?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse Zhang" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 13 Aug 2026 10:59:11 -0000
-Message-ID: <178661875171.47795.360377270536615265@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260813080337.3327962-1-Jesse.Zhang@amd.com>
-In-Reply-To: <20260813080337.3327962-1-Jesse.Zhang@amd.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v2] tests/kms_plane: Remove redundant CRC frame
+ sequence check
+To: Karthik B S <karthik.b.s@intel.com>,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>, igt-dev@lists.freedesktop.org,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ville Syrjala <ville.syrjala@linux.intel.com>, Fei Shao <fshao@chromium.org>
+Cc: Jani <jani.nikula@intel.com>, Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Lancelot Wu <Lancelot.Wu@mediatek.com>,
+ Manasi Navare <navaremanasi@google.com>, Gil Dekel <gildekel@google.com>,
+ Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20260811161417.716771-1-jason-jh.lin@mediatek.com>
+ <7244584b-4bed-4756-bdae-e06b0054d2b7@intel.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+In-Reply-To: <7244584b-4bed-4756-bdae-e06b0054d2b7@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,274 +99,72 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4544176186254272969==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
 
-== Series Details ==
+On 13/08/2026 06.37, Karthik B S wrote:
+> Hi Jason-JH,
+> 
+> On 8/11/2026 9:44 PM, Jason-JH Lin wrote:
+>> The capture_crc() function validated that the CRC frame sequence
+>> returned by igt_pipe_crc_get_for_frame() matches the expected value.
+>> However, igt_pipe_crc_get_for_frame() already guarantees
+>> crc->frame >= expected via its internal loop:
+>>
+>>      do {
+>>          read_one_crc(pipe_crc, crc);
+>>      } while (igt_vblank_before(crc->frame, vblank));
+> This isn't fully true IMHO. The capture CRC function actually ensured 
+> the exact match of frame sequence and with this patch we're just 
+> guaranteeing '>='.
 
-Series: series starting with [i-g-t,1/2] lib/amdgpu: fix NULL deref computing available_rings in amdgpu_create_ip_queues
-URL   : https://patchwork.freedesktop.org/series/172119/
-State : success
+as Karthik said; the claim it not true. What this change would do is 
+relax the sequence check to be open ended .. while current check is 
+making exact expectation. In other words, we _expect_ to see certain crc 
+with correct vblank number, with the proposed change if expected crc 
+never arrived in correct sequence we would be unaware of it.
 
-== Summary ==
+Let's not do this.
 
-CI Bug Log - changes from XEIGT_9054_BAT -> XEIGTPW_15673_BAT
-====================================================
+> So we need more context here from: https://patchwork.freedesktop.org/ 
+> series/168037/
+>>
+>> The additional check in capture_crc() is therefore redundant.
+>> Remove it and rely on the library's existing guarantee.
+>>
+>> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+>> ---
+>>   tests/kms_plane.c | 5 -----
+>>   1 file changed, 5 deletions(-)
+>>
+>> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+>> index 12dfbfe1d82b..fe8ee2ab26ab 100644
+>> --- a/tests/kms_plane.c
+>> +++ b/tests/kms_plane.c
+>> @@ -765,11 +765,6 @@ static int num_unique_crcs(const igt_crc_t crc[], 
+>> int num_crc)
+>>   static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t 
+>> *crc)
+>>   {
+>>       igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc, vblank, 
+>> crc);
+> 
+> Also if this is only igt_pipe_crc_get_for_frame now, ideally we can just 
+> remove this function itself and call the helper directly. But before 
+> doing that, as the existing assert was added by a patch from Ville and 
+> rb'ed by JP, I'll request an ack from them or if they have any inputs on 
+> this.
+> 
+> Regards,
+> Karthik.B.S
+>> -
+>> -    igt_fail_on_f(!igt_skip_crc_compare && !igt_run_in_simulation() &&
+>> -              crc->has_valid_frame && crc->frame != vblank,
+>> -              "Got CRC for the wrong frame (got %u, expected %u). CRC 
+>> buffer overflow?\n",
+>> -              crc->frame, vblank);
+>>   }
+>>   static void capture_format_crcs_single(data_t *data, igt_crtc_t *crtc,
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 12)
-------------------------------
-
-  Additional (1): bat-nvls-1 
-  Missing    (1): bat-bmg-2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15673_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-nvls-1:         NOTRUN -> [SKIP][1] ([Intel XE#8757])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_dsc@dsc-basic:
-    - bat-nvls-1:         NOTRUN -> [SKIP][2] ([Intel XE#8759])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@kms_dsc@dsc-basic.html
-
-  * igt@xe_evict@evict-small-multi-vm:
-    - bat-nvls-1:         NOTRUN -> [SKIP][3] ([Intel XE#8777]) +9 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_evict@evict-small-multi-vm.html
-
-  * igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:
-    - bat-nvls-1:         NOTRUN -> [SKIP][4] ([Intel XE#8744]) +1 other test skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html
-
-  * igt@xe_exec_balancer@twice-virtual-userptr-invalidate:
-    - bat-nvls-1:         NOTRUN -> [SKIP][5] ([Intel XE#8741]) +17 other tests skip
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_exec_balancer@twice-virtual-userptr-invalidate.html
-
-  * igt@xe_exec_multi_queue@many-queues-userptr-invalidate:
-    - bat-nvls-1:         NOTRUN -> [SKIP][6] ([Intel XE#8377]) +13 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html
-
-  * igt@xe_huc_copy@huc_copy:
-    - bat-nvls-1:         NOTRUN -> [SKIP][7] ([Intel XE#8746])
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_huc_copy@huc_copy.html
-
-  * igt@xe_live_ktest@xe_bo:
-    - bat-nvls-1:         NOTRUN -> [SKIP][8] ([Intel XE#8792])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_live_ktest@xe_bo.html
-
-  * igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:
-    - bat-nvls-1:         NOTRUN -> [SKIP][9] ([Intel XE#8791] / [Intel XE#8792])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
-
-  * igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:
-    - bat-nvls-1:         NOTRUN -> [SKIP][10] ([Intel XE#8791])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html
-
-  * igt@xe_mmap@vram:
-    - bat-nvls-1:         NOTRUN -> [SKIP][11] ([Intel XE#8747])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_mmap@vram.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-nvls-1:         NOTRUN -> [SKIP][12] ([Intel XE#8748])
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-nvls-1:         NOTRUN -> [SKIP][13] ([Intel XE#8743])
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-nvls-1:         NOTRUN -> [SKIP][14] ([Intel XE#8745])
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_pat@pat-index-xelpg.html
-
-  
-  [Intel XE#8377]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8377
-  [Intel XE#8741]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8741
-  [Intel XE#8743]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8743
-  [Intel XE#8744]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8744
-  [Intel XE#8745]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8745
-  [Intel XE#8746]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8746
-  [Intel XE#8747]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8747
-  [Intel XE#8748]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8748
-  [Intel XE#8757]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8757
-  [Intel XE#8759]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8759
-  [Intel XE#8777]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8777
-  [Intel XE#8791]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8791
-  [Intel XE#8792]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8792
-
-
-Build changes
--------------
-
-  * IGT: IGT_9054 -> IGTPW_15673
-  * Linux: xe-5582-43db79ba5c8eac68b393cca2faa0b13a6505de1a -> xe-5588-ce212c90b6b1f5c50c99d1ad8770d4e45ea19c98
-
-  IGTPW_15673: 15673
-  IGT_9054: 3d819a8f511b2bcd844647bcf7e433b9407d058e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5582-43db79ba5c8eac68b393cca2faa0b13a6505de1a: 43db79ba5c8eac68b393cca2faa0b13a6505de1a
-  xe-5588-ce212c90b6b1f5c50c99d1ad8770d4e45ea19c98: ce212c90b6b1f5c50c99d1ad8770d4e45ea19c98
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/index.html
-
---===============4544176186254272969==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/2] lib/amdgpu: fix NULL deref computing available_rings in amdgpu_create_ip_queues</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172119/">https://patchwork.freedesktop.org/series/172119/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9054_BAT -&gt; XEIGTPW_15673_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 12)</h2>
-<p>Additional (1): bat-nvls-1 <br />
-  Missing    (1): bat-bmg-2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15673_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8757">Intel XE#8757</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_dsc@dsc-basic:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8759">Intel XE#8759</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict@evict-small-multi-vm:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_evict@evict-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8777">Intel XE#8777</a>) +9 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_evict_ccs@evict-overcommit-parallel-nofree-samefd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8744">Intel XE#8744</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_balancer@twice-virtual-userptr-invalidate:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_exec_balancer@twice-virtual-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8741">Intel XE#8741</a>) +17 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_multi_queue@many-queues-userptr-invalidate:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8377">Intel XE#8377</a>) +13 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_huc_copy@huc_copy:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_huc_copy@huc_copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8746">Intel XE#8746</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_live_ktest@xe_bo.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8792">Intel XE#8792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8791">Intel XE#8791</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8792">Intel XE#8792</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_live_ktest@xe_migrate@xe_validate_ccs_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8791">Intel XE#8791</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_mmap@vram:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8747">Intel XE#8747</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8748">Intel XE#8748</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8743">Intel XE#8743</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15673/bat-nvls-1/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8745">Intel XE#8745</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9054 -&gt; IGTPW_15673</li>
-<li>Linux: xe-5582-43db79ba5c8eac68b393cca2faa0b13a6505de1a -&gt; xe-5588-ce212c90b6b1f5c50c99d1ad8770d4e45ea19c98</li>
-</ul>
-<p>IGTPW_15673: 15673<br />
-  IGT_9054: 3d819a8f511b2bcd844647bcf7e433b9407d058e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5582-43db79ba5c8eac68b393cca2faa0b13a6505de1a: 43db79ba5c8eac68b393cca2faa0b13a6505de1a<br />
-  xe-5588-ce212c90b6b1f5c50c99d1ad8770d4e45ea19c98: ce212c90b6b1f5c50c99d1ad8770d4e45ea19c98</p>
-
-</body>
-</html>
-
---===============4544176186254272969==--
