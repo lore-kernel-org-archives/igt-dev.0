@@ -4,54 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92412C5CFDB
-	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 07:57:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBA4EC5B572
+	for <igt-dev@archiver.kernel.org>; Thu, 13 Aug 2026 08:04:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 219E310F1D9;
-	Thu, 13 Aug 2026 07:57:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4437D10E0D2;
+	Thu, 13 Aug 2026 08:04:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iBF/n2wH";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="DITl0iYY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 37D0110F1D9
- for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 07:56:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786607784; x=1818143784;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=knzjQ6d/U+XAN1gakR1nicKJH0+TGmHQnhRBO+a2ynI=;
- b=iBF/n2wHcG+1ol0Ft52t2io3Innd74KlTp1NWrgGg6uY7Jb2JwpKA6l6
- ijCUsO6OvDeGVglyi0szkxnzOOCkZOVkOm2X2Z6C5LEnWdoOQL8lPEhSJ
- GXUi7b1wah53UxtPFJ6ETZSXoFmUFapIJQrzCUDvcUsrbcV/SLviyndgq
- TgDu3gX1D4UJMo4wpnlIFpKorBcrvcahr6amZ+EWRUGG38g6LJdpm4GX0
- 15yvgPT3KXuWNyy1CKSWCPHzECcTcn/0xVPYzXhNfA30pEEffxHihS/wA
- DIqCXBcJ19+TtnTsSZNTX1fOD/jCO2iOmlerTr3Fgk2iV/mW8V8wQ/yhO A==;
-X-CSE-ConnectionGUID: NY1UC+WkSPegVGxN8VQy4w==
-X-CSE-MsgGUID: alGPRUqNTH2rRbuPgOuK3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11873"; a="87299912"
-X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; d="scan'208";a="87299912"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Aug 2026 00:56:24 -0700
-X-CSE-ConnectionGUID: yaOmYAPkRQ64d8Sm1DPi+g==
-X-CSE-MsgGUID: idhbiBeIQ260QbgCLswWmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,220,1779174000"; d="scan'208";a="261251359"
-Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Aug 2026 00:56:22 -0700
-From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: swati2.sharma@intel.com, karthik.b.s@intel.com, ankit.k.nautiyal@intel.com,
- Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1] tests/intel/kms_joiner: vblank test for joiner
- secondary crtc
-Date: Thu, 13 Aug 2026 13:24:09 +0530
-Message-ID: <20260813075409.57087-1-santhosh.reddy.guddati@intel.com>
-X-Mailer: git-send-email 2.43.0
+Received: from BN8PR05CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11011068.outbound.protection.outlook.com [52.101.57.68])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5690F10E0D2
+ for <igt-dev@lists.freedesktop.org>; Thu, 13 Aug 2026 08:03:45 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ifam34xZrgxIUYRnnY/3/RhE9+PU1nE2QI5LgCN0VRqjCPM9Y1WGjTliBrO4kRiPoG29jeWp4hnecfBzJ+oCufsBnrj5yef7Y5AXcY0f9wdrnipg0yko6BKzuNNLqaRZrUe1pHpsm72pxKwGrHm4j3gp6A0PujTJEd+5WYE6jywKyJPBrinp1E95+JtigJonhOypibfqBV/7H154VeYMKdSQhV3GBKJLJYVl+Nq1wGRTauqba+3U85tJ3LQ6UkExEsAeUhrBgEkNSX15a6ZzBGKLyG2k1Y1Lej9DLtBPPNwA6uGUnwH5RK1nvBlYmXOwpzfzNHH5w/+60wVX/EAmfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/kQa51z/An9tQ4OC2RV1QJmgUmbgr282DBm2ziE4+Xg=;
+ b=F7Znrl034Z8pNsLG08XYMMst8cygWDX8AP/S2HPm4yL1tzrVo8XlKKmK/gogIYWQJAKTOEP+9W13nXY9yArZ/gc1j4EtMB6W0LRmmQ7Ed0eH/79r8EHvbXaU+OK8QYc2p2aJVXrY5GsTsvXpKZR9BC3HBhPuOL1HYEvAf1MxZ7Vh6Ag0vfer39K50BeCOGqakNoKW8YB8OZBuxWBiioAfrUV0JXFRKGICNIfRPDDimHKU4VBvSGKpvdl7Wva4y+g+z/zEFbBm1rE8bn9klzm8EvbpzKreu1b/Xt5Fdf7kylT26AaQxY0c17zDuS+8eAHoC7I4YaSDzWaUQO/kUhWLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/kQa51z/An9tQ4OC2RV1QJmgUmbgr282DBm2ziE4+Xg=;
+ b=DITl0iYYrx9s7RBiCr0Wz08aQoFQXbbkLEI/BbxclTBgDaPiR8SgIRWP5DG3ulWEP7itetfy1fqlmL6j3HGXSVgYhG+jAJMc3ZI8t7Ed00bY4ZN5wgONFk7CeX/SflMIekjegYliMFePtcJ3SmMcNKeuD6C+nKy6o/asMbNm6Z8=
+Received: from CY8P220CA0033.NAMP220.PROD.OUTLOOK.COM (2603:10b6:930:47::23)
+ by CH8PR12MB999205.namprd12.prod.outlook.com (2603:10b6:610:35a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.292.25; Thu, 13 Aug
+ 2026 08:03:41 +0000
+Received: from CY4PEPF0000EDD1.namprd03.prod.outlook.com
+ (2603:10b6:930:47:cafe::20) by CY8P220CA0033.outlook.office365.com
+ (2603:10b6:930:47::23) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.315.15 via Frontend Transport; Thu,
+ 13 Aug 2026 08:03:41 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CY4PEPF0000EDD1.mail.protection.outlook.com (10.167.241.197) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.3 via Frontend Transport; Thu, 13 Aug 2026 08:03:41 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 13 Aug
+ 2026 03:03:41 -0500
+Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
+ Transport; Thu, 13 Aug 2026 03:03:39 -0500
+From: Jesse Zhang <Jesse.Zhang@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
+ Jesse Zhang <Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t 2/2] lib/amdgpu: add gfx12 shader blob for
+ sync_dependency_test
+Date: Thu, 13 Aug 2026 16:03:23 +0800
+Message-ID: <20260813080337.3327962-2-Jesse.Zhang@amd.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260813080337.3327962-1-Jesse.Zhang@amd.com>
+References: <20260813080337.3327962-1-Jesse.Zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD1:EE_|CH8PR12MB999205:EE_
+X-MS-Office365-Filtering-Correlation-Id: 27aafa60-3c87-4cd8-695f-08def91163b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|23010399003|376014|1800799024|36860700016|10067099003|11063799006|56012099006|3023799007|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: eu27vGjJvK0AD+f2x40AJLGWroHDgGGlq0Rbe0GcoCEJaeq49VWNJ9/OPZx8d1q+hhJUodbWGCvZvvaQZ5L14oxt63QHz3Eb1VQNQZ0+kPW7nSyDl98T2HM/YqpfcrApIZ3OBZ63s3RmSbSHe5YTr5GuylEefIRcah9isjtJRFEj/Nv2ru6HjrwMD2i8bH6qqlvezb4fN0GlAIxNXopzga8OEMl2ZOBDel7EpGWhXdBWfjaA9K07hbDMmjsrGk4bfjsr4jBJMuuNJvLqzjbqebDESir7r6akP3HDJb1dWsC+rGBWwbQOl/FbyXKR29MImP3HZIkY9hjbcQn6ZqFn4HyTvbFtJ8F4WXFNMGyBPNPSrdXOEmd+5DeH6jLWl/sDlMYOAH+UshFief+sDMB8RGwNRjkUlIVuKsYOj1jE8v0iYyjfuAKwDTR/Z4KGqoynHgCtYekLXJQTCkN+USDn/HMFQa4xGd4yYBr7Z8qRFT8QtLM+jbRgQ4sgzwCeIGRCyWoUayz8cHAh6Zz9mvzdVBf0Mi53/l3rP8jw1jPOI2j9yaoqI1+48wmA+f7S35ZwkpLcA4MoxpY7T0kOkIJOY7+wKesAg48iejs9ewdLYSD47K8cz/GGGU49gFTQohcJ5LtscUL2HVFy6Zq/Nci7tCEEYCVmgLxq22itF74fDezbtZHnBIzpTNVtqhV8Qj1taQLNzww4UjFM6ozDZPeduw==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(23010399003)(376014)(1800799024)(36860700016)(10067099003)(11063799006)(56012099006)(3023799007)(18002099003)(22082099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: zzEGEOSSb8/wT0KXGMOm9xz8yqqodMW3lpNfnSWERIKOIieTuR1I5kiYmOtIy1RHpgieBvLUd4gm+2mSoyQB4XzM2fAXUdCUxLA85qjMmqcssJRyEpmjZeG9JZNf0qQ9CHrMej/ed2S9rfkas/OV6c4WKoo2Z9b78j3xgBAEO/gHkI1sJyAi++8SiZ3XYIzHfzDbtGYl5S3xV2pXu4ddcBD8fHVncSQ9mkfQNo6UI9frnZrryW3HNt5USacHDJY8hWI0VbaV26CoLXYT/rTTuqQsO1b62R9x2vJiwkCrDqcq7K3Vx/zC3HTVt0k65AfxP15FWkrjItvficfYOXFmkcjIAI2aY1uRVqn3jteU5MyTis5OChYuobGO3agIM0CDQCw8NNYfwMAaCO00evNIwNI5riKn+TgEMFrcbiTSoi5TpDKpiHBdHkLJ+ypDhbNW
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2026 08:03:41.5080 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 27aafa60-3c87-4cd8-695f-08def91163b7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000EDD1.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB999205
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,134 +113,101 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In joiner mode, add new subtests to validate vblank events are delivered
-on secondary crtc.
+The shader blob used by amdgpu_sync_dependency_test() is a GFX11 (RDNA3)
+assembly. GFX12 (RDNA4) re-encoded several of the SOP/FLAT opcodes it uses
+(s_endpgm, s_cbranch_scc0 and the store), so on gfx1200 the GFX11 blob decodes
+into different instructions: the shader neither terminates nor stores its
+result, and the test hangs/fails.
 
-Assisted-by: Claude:claude-opus-4-8
-Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Add a gfx1200 re-assembled copy of the same kernel and select it in
+get_shader_bin() by family_id, falling back to the existing GFX11 blob for
+everything else.
+
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 ---
- tests/intel/kms_joiner.c | 94 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 94 insertions(+)
+ lib/amdgpu/shaders/amd_shaders.c | 35 ++++++++++++++++++++++++++++++--
+ lib/amdgpu/shaders/amd_shaders.h |  3 ++-
+ tests/amdgpu/amd_basic.c         |  3 ++-
+ 3 files changed, 37 insertions(+), 4 deletions(-)
 
-diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-index dfcb24004..ff33256a3 100644
---- a/tests/intel/kms_joiner.c
-+++ b/tests/intel/kms_joiner.c
-@@ -76,6 +76,10 @@
-  * SUBTEST: basic-max-non-joiner
-  * Description: Validate basic max non-joiner modeset by selecting the max mode
-  *		supported on single pipe.
-+ *
-+ * SUBTEST: vblank-joiner-secondary
-+ * Description: Verify that vblank interrupts are generated on all pipes in a
-+ *		joiner configuration including the secondary pipe.
-  */
- IGT_TEST_DESCRIPTION("Test joiner / force joiner");
+diff --git a/lib/amdgpu/shaders/amd_shaders.c b/lib/amdgpu/shaders/amd_shaders.c
+index adc4fc051..07489706e 100644
+--- a/lib/amdgpu/shaders/amd_shaders.c
++++ b/lib/amdgpu/shaders/amd_shaders.c
+@@ -109,12 +109,43 @@ uint32_t shader_bin[] = {
+ 	SWAP_32(0x000070e0), SWAP_32(0x00000080), SWAP_32(0x000081bf)
+ };
  
-@@ -275,6 +279,74 @@ static void switch_modeset_ultra_joiner_big_joiner(data_t *data, igt_output_t *o
- 	}
++/*
++ * GFX12 (RDNA4) re-encoded several of the SOP/FLAT opcodes used above
++ * (s_endpgm, s_cbranch_scc0, the store), so the GFX11 blob decodes into
++ * different instructions and the shader neither terminates nor stores its
++ * result. This is the same kernel re-assembled for gfx1200:
++ *
++ *	s_mov_b32 s2, 0
++ * .Lloop:
++ *	s_add_co_i32 s2, s2, 1
++ *	s_cmp_gt_u32 s2, 0x0098967f
++ *	s_cbranch_scc0 .Lloop
++ *	v_mov_b32_e32 v0, 42
++ *	v_mov_b32_e32 v1, s0
++ *	v_mov_b32_e32 v2, s1
++ *	flat_store_b32 v[1:2], v0
++ *	s_endpgm
++ */
++static  const
++uint32_t shader_bin_gfx12[] = {
++	SWAP_32(0x800082be), SWAP_32(0x02810281), SWAP_32(0x02ff08bf), SWAP_32(0x7f969800),
++	SWAP_32(0xfcffa1bf), SWAP_32(0xaa02007e), SWAP_32(0x0002027e), SWAP_32(0x0102047e),
++	SWAP_32(0x7c8006ec), SWAP_32(0x00000000), SWAP_32(0x01000000), SWAP_32(0x0000b0bf)
++};
++
+ const uint32_t *
+-get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset)
++get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset,
++	       uint32_t family_id)
+ {
+-	*size_bytes = sizeof(shader_bin);
+ 	*code_offset =  CODE_OFFSET;
+ 	*data_offset = DATA_OFFSET;
++
++	if (family_id == AMDGPU_FAMILY_GC_12_0_0) {
++		*size_bytes = sizeof(shader_bin_gfx12);
++		return shader_bin_gfx12;
++	}
++
++	*size_bytes = sizeof(shader_bin);
+ 	return shader_bin;
  }
  
-+static void test_joiner_vblank(data_t *data, bool force_joiner)
-+{
-+	int i;
-+	enum pipe pipe, master_pipe;
-+	uint32_t available_pipe_mask = BIT(data->n_pipes) - 1;
-+	igt_output_t *output;
-+	igt_plane_t *primary;
-+	igt_output_t **outputs;
-+	igt_fb_t fb;
-+	drmModeModeInfo *mode;
-+	int count;
-+	drmVBlank wait_vbl;
-+	uint32_t pipe_flag;
-+
-+	outputs = force_joiner ? data->non_big_joiner_output : data->big_joiner_output;
-+	count = force_joiner ? data->non_big_joiner_output_count : data->big_joiner_output_count;
-+	igt_display_reset(&data->display);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	for (i = 0; i < count; i++) {
-+		output = outputs[i];
-+		for (pipe = 0; pipe < data->n_pipes - 1; pipe++) {
-+			igt_crtc_t *primary_crtc, *secondary_crtc;
-+			int ret;
-+
-+			master_pipe = setup_pipe(data, output, pipe, available_pipe_mask);
-+			if (master_pipe == PIPE_NONE)
-+				continue;
-+
-+			mode = igt_output_get_mode(output);
-+			primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+			igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
-+					      DRM_FORMAT_XRGB8888,
-+					      DRM_FORMAT_MOD_LINEAR, &fb);
-+			igt_plane_set_fb(primary, &fb);
-+			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+			primary_crtc = igt_crtc_for_pipe(&data->display, master_pipe);
-+			secondary_crtc = igt_crtc_for_pipe(&data->display, master_pipe + 1);
-+
-+			/* Verify vblank works on the primary joiner pipe */
-+			igt_wait_for_vblank(primary_crtc);
-+			igt_info("Pipe %s (primary): vblank wait OK\n",
-+				 kmstest_pipe_name(master_pipe));
-+
-+			/* Verify vblank works on the secondary joiner pipe */
-+			pipe_flag = kmstest_get_vbl_flag(secondary_crtc->crtc_index);
-+			memset(&wait_vbl, 0, sizeof(wait_vbl));
-+
-+			wait_vbl.request.type = DRM_VBLANK_RELATIVE | pipe_flag;
-+			wait_vbl.request.sequence = 1;
-+			ret = drmWaitVBlank(data->drm_fd, &wait_vbl);
-+
-+			igt_assert_f(ret == 0,
-+				     "Pipe %s (joiner secondary): vblank wait timed out - "
-+				     "no vblank interrupt delivered\n",
-+				     kmstest_pipe_name(master_pipe + 1));
-+			igt_info("Pipe %s (secondary): vblank wait OK\n",
-+				 kmstest_pipe_name(master_pipe + 1));
-+
-+			igt_plane_set_fb(primary, NULL);
-+			igt_output_set_crtc(output, NULL);
-+			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+			igt_remove_fb(data->drm_fd, &fb);
-+		}
-+	}
-+}
-+
- static void test_single_joiner(data_t *data, int output_count, bool force_joiner)
- {
- 	int i;
-@@ -836,6 +908,28 @@ int igt_main()
- 			test_basic_max_non_joiner(&data);
+diff --git a/lib/amdgpu/shaders/amd_shaders.h b/lib/amdgpu/shaders/amd_shaders.h
+index f7d4cab07..284c1b2f8 100644
+--- a/lib/amdgpu/shaders/amd_shaders.h
++++ b/lib/amdgpu/shaders/amd_shaders.h
+@@ -30,7 +30,8 @@
+ #include "amdgpu/compute_utils/amd_shared_dispatch.h"
+ 
+ const uint32_t *
+-get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset);
++get_shader_bin(uint32_t *size_bytes, uint32_t *code_offset, uint32_t *data_offset,
++	       uint32_t family_id);
+ 
+ int
+ amdgpu_dispatch_load_cs_shader_hang_slow(uint32_t *ptr, uint32_t family_id);
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 3ad023472..84a6d8618 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -553,7 +553,8 @@ amdgpu_sync_dependency_test(amdgpu_device_handle device_handle, bool user_queue)
+ 		igt_assert_eq(r, 0);
  	}
  
-+	igt_describe("Verify vblank interrupts arrive on joiner secondary pipes");
-+	igt_subtest_with_dynamic("vblank-joiner-secondary") {
-+		igt_require_f(data.n_pipes >= 2, "Minimum 2 pipes required\n");
-+		igt_require_f(data.big_joiner_output_count > 0 ||
-+			      data.non_big_joiner_output_count > 0,
-+			      "No big joiner or force big joiner output found\n");
-+
-+		if (data.big_joiner_output_count > 0) {
-+			igt_dynamic_f("big-joiner") {
-+				test_joiner_vblank(&data, false);
-+			}
-+		}
-+
-+		if (data.non_big_joiner_output_count > 0) {
-+			igt_dynamic_f("force-big-joiner") {
-+				enable_force_joiner_on_all_non_big_joiner_outputs(&data);
-+				test_joiner_vblank(&data, true);
-+				igt_reset_connectors();
-+			}
-+		}
-+	}
-+
- 	igt_fixture() {
- 		igt_display_fini(&data.display);
- 		drm_close_driver(data.drm_fd);
+-	shader = get_shader_bin(&size_bytes, &code_offset, &data_offset);
++	shader = get_shader_bin(&size_bytes, &code_offset, &data_offset,
++				ip_block->funcs->family_id);
+ 
+ 	/* assign cmd buffer */
+ 	base->attach_buf(base, ib_result_cpu, const_size);
 -- 
-2.43.0
+2.49.0
 
