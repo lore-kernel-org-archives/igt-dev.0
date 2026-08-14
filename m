@@ -4,69 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 973BCC5CFC1
-	for <igt-dev@archiver.kernel.org>; Fri, 14 Aug 2026 17:30:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB2C9C5B572
+	for <igt-dev@archiver.kernel.org>; Fri, 14 Aug 2026 18:51:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4EA9910F6D7;
-	Fri, 14 Aug 2026 17:30:27 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="JUxCuZj3";
-	dkim-atps=neutral
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8FF5210F6D5
- for <igt-dev@lists.freedesktop.org>; Fri, 14 Aug 2026 17:29:47 +0000 (UTC)
-X-UUID: bc525bd2980511f18dc8c9802ae25ab1-20260815
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
- s=dk; 
- h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From;
- bh=1uygghHKrhyBLT+6GBnPu3zZMd0sdF1iDWDWrPi3O0c=; 
- b=JUxCuZj3Ub2FuiMI1T0RwbcXrnjDRm7PCXEd+QQ1SrOK4BqGHZgHIqPRUwObP2SU2tugNgqX+PAIkozOSvzi+lEWRgUw/oqtKDrfjxOuQ7yMfKuDXoJeL0Yctde69IDfacl5Mp5TKRJNrim0r8Oh635hK3rHXQ71VnUaawc/ne4=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19, REQID:074fc484-649f-45cf-b90e-deda9319fb45, IP:0,
- U
- RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
- release,TS:0
-X-CID-META: VersionHash:7db8b62, CLOUDID:2017e1f1-0685-46a3-9cac-19d8f3a05ae7,
- B
- ulkID:nil,BulkQuantity:0,SF:102|836|865|888|898,TC:-5,Content:0|15|50|99,E
- DM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,OSA:0,
- AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: bc525bd2980511f18dc8c9802ae25ab1-20260815
-Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by
- mailgw02.mediatek.com (envelope-from <jason-jh.lin@mediatek.com>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
- with ESMTP id 571957499; Sat, 15 Aug 2026 01:29:42 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Sat, 15 Aug 2026 01:29:41 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Sat, 15 Aug 2026 01:29:41 +0800
-From: Jason-JH Lin <jason-jh.lin@mediatek.com>
-To: <igt-dev@lists.freedesktop.org>, Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Ville Syrjala
- <ville.syrjala@linux.intel.com>, =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?=
- <juhapekka.heikkila@gmail.com>, Fei Shao <fshao@chromium.org>
-CC: Jani <jani.nikula@intel.com>, Jason-JH Lin <jason-jh.lin@mediatek.com>,
- Paul-PL Chen <paul-pl.chen@mediatek.com>, Lancelot Wu
- <Lancelot.Wu@mediatek.com>, Manasi Navare <navaremanasi@google.com>, Gil
- Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
- <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Subject: [PATCH i-g-t v3] tests/kms_plane: Skip CRC frame sequence check on
- MediaTek
-Date: Sat, 15 Aug 2026 01:28:36 +0800
-Message-ID: <20260814172940.3190510-1-jason-jh.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8FE9410E141;
+	Fri, 14 Aug 2026 18:51:22 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E835710E141;
+ Fri, 14 Aug 2026 18:50:45 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8119250292144137512=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-MTK: N
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fplane=3A_Skip?=
+ =?utf-8?q?_CRC_frame_sequence_check_on_MediaTek?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jason-JH Lin" <jason-jh.lin@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 14 Aug 2026 18:50:45 -0000
+Message-ID: <178673344593.54457.13547840469813401870@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260814172940.3190510-1-jason-jh.lin@mediatek.com>
+In-Reply-To: <20260814172940.3190510-1-jason-jh.lin@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,44 +37,168 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-MediaTek's DRM driver uses an internal per-commit CRC queue that
-reports CRC entries with a frame number offset due to pipeline delay
-(3 vblanks after commit). This causes crc->frame > expected_vblank,
-which fails the exact-match validation in capture_crc().
+--===============8119250292144137512==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Since igt_pipe_crc_get_for_frame() already guarantees crc->frame >=
-vblank via its internal loop, the exact-match check is overly strict
-for queued CRC drivers. Skip it on MediaTek while preserving the
-validation for other platforms.
+== Series Details ==
 
-Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
----
- tests/kms_plane.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+Series: tests/kms_plane: Skip CRC frame sequence check on MediaTek
+URL   : https://patchwork.freedesktop.org/series/172241/
+State : success
 
-diff --git a/tests/kms_plane.c b/tests/kms_plane.c
-index 12dfbfe1d82b..14d2d810f1a0 100644
---- a/tests/kms_plane.c
-+++ b/tests/kms_plane.c
-@@ -766,6 +766,15 @@ static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc)
- {
- 	igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc, vblank, crc);
- 
-+	/*
-+	 * Platforms with an internal CRC queue (e.g. MediaTek) report CRC
-+	 * entries with a frame number greater than the requested vblank due
-+	 * to pipeline delay. Since igt_pipe_crc_get_for_frame() already
-+	 * guarantees crc->frame >= vblank, skip the exact-match check.
-+	 */
-+	if (is_mtk_device(data->drm_fd))
-+		return;
-+
- 	igt_fail_on_f(!igt_skip_crc_compare && !igt_run_in_simulation() &&
- 		      crc->has_valid_frame && crc->frame != vblank,
- 		      "Got CRC for the wrong frame (got %u, expected %u). CRC buffer overflow?\n",
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from IGT_9057 -> IGTPW_15685
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/index.html
+
+Participating hosts (36 -> 34)
+------------------------------
+
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15685 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live@requests:
+    - bat-atsm-1:         [PASS][1] -> [ABORT][2] ([i915#14564]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/bat-atsm-1/igt@i915_selftest@live@requests.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/bat-atsm-1/igt@i915_selftest@live@requests.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7567u:       [PASS][3] -> [DMESG-WARN][4] ([i915#13735]) +65 other tests dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@kms_busy@basic@flip:
+    - fi-kbl-7567u:       [PASS][5] -> [DMESG-WARN][6] ([i915#13735] / [i915#180])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/fi-kbl-7567u/igt@kms_busy@basic@flip.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/fi-kbl-7567u/igt@kms_busy@basic@flip.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-7567u:       [PASS][7] -> [DMESG-WARN][8] ([i915#13735] / [i915#15673] / [i915#180]) +52 other tests dmesg-warn
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#14564]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9057 -> IGTPW_15685
+
+  CI-20190529: 20190529
+  CI_DRM_19000: 9832bc7a458a4a67e68dcf96927588859c1994f3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15685: 55c4949b69f0dec52e7d20ed7a2b2c57042bf6ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9057: 8f7d5198bdb1c5af7c97b967a0bcbe77b653e8a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/index.html
+
+--===============8119250292144137512==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_plane: Skip CRC frame sequence check on MediaTek</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172241/">https://patchwork.freedesktop.org/series/172241/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9057 -&gt; IGTPW_15685</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/index.html</p>
+<h2>Participating hosts (36 -&gt; 34)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15685 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@requests:</p>
+<ul>
+<li>bat-atsm-1:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/bat-atsm-1/igt@i915_selftest@live@requests.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/bat-atsm-1/igt@i915_selftest@live@requests.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14564">i915#14564</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +65 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15685/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +52 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9057 -&gt; IGTPW_15685</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19000: 9832bc7a458a4a67e68dcf96927588859c1994f3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15685: 55c4949b69f0dec52e7d20ed7a2b2c57042bf6ed @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9057: 8f7d5198bdb1c5af7c97b967a0bcbe77b653e8a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8119250292144137512==--
