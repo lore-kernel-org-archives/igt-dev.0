@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D824C5DF67
-	for <igt-dev@archiver.kernel.org>; Sat, 15 Aug 2026 14:32:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28C73C5B572
+	for <igt-dev@archiver.kernel.org>; Sun, 16 Aug 2026 18:10:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C1F0D10E0EB;
-	Sat, 15 Aug 2026 14:32:33 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 87C4C10E0EB;
- Sat, 15 Aug 2026 14:31:58 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B69110E0B7;
+	Sun, 16 Aug 2026 18:10:00 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bSMRmIid";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0A7D10E0B7
+ for <igt-dev@lists.freedesktop.org>; Sun, 16 Aug 2026 18:09:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1786903766; x=1818439766;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=nGuw4+gthlyHiVau4iMDaLTUkvnky5oynD9PvB1E5AU=;
+ b=bSMRmIidzJEi62DIZHjjRRuPuz2g6GbGBnNc/Uc/GxKrJkOj487AS2Jv
+ Xia0wGe/hVWko7NqOiNYMLKb5nH0cwAfvSBmHwyN9fXshpOKvKSTLh6Jo
+ yvQL6HSQWt/wkOnIfiM24S2gzqZBGIH53frrNzDKz6FTalyIQIYNs10NL
+ VcEv2xQqlmDCu77gP+bJYL9rs2SMmAwRDAga3wTDwpSrRkzgi5E7yA7aO
+ iDCsSsJGQ+wAsdcKV62aTStRGzEEkr6qej8x63IKMb6wZLY1pGUPIkp1t
+ N/dYyrM1LEOYOXhj8c5LiYgHXttQi/KO5jRhtYGnU8PsTUsfuNj2xDOTs w==;
+X-CSE-ConnectionGUID: 6NOckeyATua2ua5Wm5fPJQ==
+X-CSE-MsgGUID: nPMNKCJjSVKRJsL3JdFdBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="87313285"
+X-IronPort-AV: E=Sophos;i="6.25,227,1779174000"; d="scan'208";a="87313285"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Aug 2026 11:09:25 -0700
+X-CSE-ConnectionGUID: bVO9AB4+Rh2hiyxRpdN7xw==
+X-CSE-MsgGUID: NMQTWFifTPa2ZNBbNS/eYg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,227,1779174000"; d="scan'208";a="269909692"
+Received: from art-dev-395.igk.intel.com ([10.211.135.233])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Aug 2026 11:09:23 -0700
+From: Jan Maslak <jan.maslak@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: matthew.brost@intel.com,
+	Jan Maslak <jan.maslak@intel.com>
+Subject: [PATCH 0/1] tests/intel/xe_exec_capture: Add coredump decode
+ validation subtests
+Date: Sun, 16 Aug 2026 20:09:05 +0200
+Message-ID: <20260816180906.884247-1-jan.maslak@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_LGCI=2EVerificationFailed=3A_failure_for_tests/sw=5Fsync?=
- =?utf-8?q?=3A_fix_invalid_fd_test_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Luka Mamrikishvili" <lmamrikishvili01@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Sat, 15 Aug 2026 14:31:58 -0000
-Message-ID: <178680431854.56256.872677654404351698@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260815142146.370294-1-lmamrikishvili01@gmail.com>
-In-Reply-To: <20260815142146.370294-1-lmamrikishvili01@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,21 +64,20 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-== Series Details ==
+This series adds coredump decode validation subtests to xe_exec_capture.
 
-Series: tests/sw_sync: fix invalid fd test (rev4)
-URL   : https://patchwork.freedesktop.org/series/171977/
-State : failure
+The tests create dumpable VM buffers with deterministic contents, trigger an
+engine hang, and validate every ASCII85 blob in the resulting devcoredump.
+The large variant exercises coredump chunking and the legacy rendering limit.
 
-== Summary ==
+Jan Maslak (1):
+  tests/intel/xe_exec_capture: Add coredump decode validation subtests
 
-Series author address 'lmamrikishvili01@gmail.com' is not on the allowlist, which prevents CI from being automatically triggered.
-If you want CI to run for this series, ask Patchwork project owners to click 'retest' on the series in Patchwork.
-Exception occurred during validation, bailing out!
-Build URL: http://gfx-ci.igk.intel.com:8080/job/CI_IGTPW_check/239922/ (on cidrm1)
+ tests/intel/xe_exec_capture.c | 549 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 548 insertions(+), 1 deletion(-)
 
-
+-- 
+2.43.0
