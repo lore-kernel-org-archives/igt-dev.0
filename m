@@ -4,56 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AC13C5DF6D
-	for <igt-dev@archiver.kernel.org>; Sun, 16 Aug 2026 18:10:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4418EC5DF6D
+	for <igt-dev@archiver.kernel.org>; Sun, 16 Aug 2026 18:42:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C627510E0B7;
-	Sun, 16 Aug 2026 18:10:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CEC5B10E0B7;
+	Sun, 16 Aug 2026 18:42:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U/yzyD5+";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="rHWfhqsm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 566F310E0B7
- for <igt-dev@lists.freedesktop.org>; Sun, 16 Aug 2026 18:09:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786903767; x=1818439767;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=g5Jb6m+BRB+9nZx2wlI+Ih+kMKJUYEkf4vIA2UKcc/s=;
- b=U/yzyD5+tsRF5eD5CwrhtEuY9ectHLOY+DgGKJu3EvtlvMUpdMUQZGGA
- clquN6udSz0FZGgvyShAzNkoQI+jWVnua63hqzlu8irvYrIvhUOXvv4BP
- yhh/28lFkM7ocQMz+U1j4M9SuLFqx5NrZ+JHSyS+iTqnIFsEWBrvCVqB5
- va9BBnhGQoxqx4qg0cGRo/PbeiFudxjf7kGX7rAG0kKjn6yPZzHwd51Cn
- tXrxm93kKaF8iySuVAfoIfYyZZ2oeiJNahIjAyp+zXfP0oBaxaPPZiTpY
- BOluDCsXFXUPIWaB3PrhxP7U/rawFZyhahDLXNY0pIKWyeFfoxbg2Grvh w==;
-X-CSE-ConnectionGUID: 6rCGGEZIRuqx0skfmqvL7w==
-X-CSE-MsgGUID: yTtKhXxoQAW4E09Mp4Sjgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="87313286"
-X-IronPort-AV: E=Sophos;i="6.25,227,1779174000"; d="scan'208";a="87313286"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2026 11:09:27 -0700
-X-CSE-ConnectionGUID: lMOrjss6QzqlthyTcvht4g==
-X-CSE-MsgGUID: Tl2m13WHS3aK4Fdp4ltunA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,227,1779174000"; d="scan'208";a="269909701"
-Received: from art-dev-395.igk.intel.com ([10.211.135.233])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2026 11:09:24 -0700
-From: Jan Maslak <jan.maslak@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: matthew.brost@intel.com,
-	Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 1/1] tests/intel/xe_exec_capture: Add coredump decode
- validation subtests
-Date: Sun, 16 Aug 2026 20:09:06 +0200
-Message-ID: <20260816180906.884247-2-jan.maslak@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260816180906.884247-1-jan.maslak@intel.com>
-References: <20260816180906.884247-1-jan.maslak@intel.com>
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com
+ [209.85.215.178])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BD9710E0B7
+ for <igt-dev@lists.freedesktop.org>; Sun, 16 Aug 2026 18:41:28 +0000 (UTC)
+Received: by mail-pg1-f178.google.com with SMTP id
+ 41be03b00d2f7-cc11a905ba5so1046249a12.2
+ for <igt-dev@lists.freedesktop.org>; Sun, 16 Aug 2026 11:41:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20251104; t=1786905688; x=1787510488; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:content-type:in-reply-to:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:from:to:cc:subject:date:message-id:reply-to
+ :content-type; bh=SttL8a9S76iy8kA9gX9vitDTftXPuWaPMIxCyvyfHRE=;
+ b=rHWfhqsmbESNb3cArnzTN7kkiZ3ApOuvg576fV+eUQpw2Be2f7KWHG7D+B9AmNHbq0
+ PyHGnx2neQoXGsUVOsVG5RQDEIrwgaJM0S5MEZi5gTzQLBNj3hDQ7kxywuw+/lYbT8v7
+ Vozpy+sTbkSNAa/xRArp+VXhfeKD3M2EHDnV8+bZ9mG3Q/lRKaSj5gw5R228x7ptB9Fb
+ I3OYB5nteiJiYohaLWem8Ed6ZGooB9O+obtkA9R2+ErniUKUZvw5ztZVhSJi0jL/OM17
+ 3f6CxFFoMAe/PeiuMweEauofCeBLMkgWpfbMAq/5di0NdIbA1SllEb+R1J4n6BcDe4Tq
+ Vt2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1786905688; x=1787510488;
+ h=content-transfer-encoding:content-type:in-reply-to:from
+ :content-language:references:cc:to:subject:user-agent:mime-version
+ :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to:content-type;
+ bh=SttL8a9S76iy8kA9gX9vitDTftXPuWaPMIxCyvyfHRE=;
+ b=CbOfvde4/EsNs/RwUy2IarMySersKWLI4lQoQy+NDACxXfQnXxKbvzK1itkzOi6HOe
+ bK2maFYiuhOMp7MgcW/S48SaBLCZngMcUd2ugQ+VVng/6MxzrIQuZ/+Oin2ahV65yIjX
+ s6b+bvhPElUMXm0qBzOJP0WEF2+/E/gcHx4IGqoi0XTK8dCKyt0cO4TYFyR4FifycyXl
+ a0RhGxAXDvc7/L0jyvLNpFzJ2dDizQqbkFDWfchthI/+ZHqX5CAixhdwmfMWLZYvWlVI
+ 5RpYJhiZ2i016usRla/FF1qI5wbZoSEjmn62YK/7Lpet9zWqe9A2OBkPvRj5r7Gzf4Dt
+ EgVw==
+X-Forwarded-Encrypted: i=1;
+ AHgh+Ro6YBPjjq87LYIOOId5IDZ4VJOmzXet8TQ5evXYlLg1AAfIHMYUYiFji4EkjnpAlf5b4YiP1pHD@lists.freedesktop.org
+X-Gm-Message-State: AOJu0Yztnq3SI9JM8zqKr+jvMUYS7H8kmldnpxylmd99i7qcebbcr0oG
+ 1JXh+0bks2R80QqTb76dHUKMirGA1jcxlrEPnRyw6I7SJZunqY1Z1zBzjq8ArwvZYKW+2KBG
+X-Gm-Gg: AR+sD12QKNBTtJ7MB1os2eqKVJNGLppP5vOByDPX5L07gjGE1I6rZOPEgZFlTis8Owq
+ oLKTCyyWPwniTqVNIZCijAJg+nKF7FWNjkcdl2rAjPL+6nTWqjPQwAlBYQdP0zgspHISsiU9lkx
+ A30UE4iuciK6dNJKjKLbN6ack9MwizC4lWcO6c8lcsUkSpnXT140ODVOFwsVrou/w0/K5J7SScm
+ ZR63p6Hxh5aQF3RiXZCSWIDDBBnGSVdBfE4da+BJWQY6n58DkfTAQQMvNsqQkzzAsG23X8y0frP
+ N7hKOIOlwjH5YfXLxFk3ahl8w3GuvEqAX3A6XvogpnIcMAW6434A3QS4yyQ7V3IwBM1aQLHYIts
+ KZy7mtdJbwaWL5ELhhT/4hK/te1bc62zVenHpQ9wG9gjEHnD9Tuo1GgTHSZfW+Kj6Bq7P4SARbB
+ GeGfIoWIJWBbD4SpvOEwoO6UQbLFJN5BfElCoHRqXmu7MhutK2oQQJc5Ffi1UdQh8jDlbJ7cE0I
+ bBsdL+bf9UVbgAknBcJf+EKIqcIAitrUWlD
+X-Received: by 2002:a05:6a21:a4a:b0:3cb:d156:d362 with SMTP id
+ adf61e73a8af0-3cc7196e785mr22268687637.3.1786905687471; 
+ Sun, 16 Aug 2026 11:41:27 -0700 (PDT)
+Received: from [192.55.54.45] ([192.55.54.45])
+ by smtp.gmail.com with ESMTPSA id
+ 5a478bee46e88-323050db573sm22736155eec.9.2026.08.16.11.41.22
+ (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+ Sun, 16 Aug 2026 11:41:26 -0700 (PDT)
+Message-ID: <ded76357-f796-436f-9410-f9b7670c511e@gmail.com>
+Date: Sun, 16 Aug 2026 21:41:19 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3] tests/kms_plane: Skip CRC frame sequence check
+ on MediaTek
+To: Jason-JH Lin <jason-jh.lin@mediatek.com>, igt-dev@lists.freedesktop.org,
+ Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ville Syrjala <ville.syrjala@linux.intel.com>, Fei Shao <fshao@chromium.org>
+Cc: Jani <jani.nikula@intel.com>, Paul-PL Chen <paul-pl.chen@mediatek.com>,
+ Lancelot Wu <Lancelot.Wu@mediatek.com>,
+ Manasi Navare <navaremanasi@google.com>, Gil Dekel <gildekel@google.com>,
+ Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com
+References: <20260814172940.3190510-1-jason-jh.lin@mediatek.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
+In-Reply-To: <20260814172940.3190510-1-jason-jh.lin@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,629 +100,46 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add decode-data and decode-data-large subtests that create dumpable VM
-buffers with deterministic contents, hang an engine, and validate the
-resulting devcoredump.
+Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-Decode every ASCII85 blob and verify its decoded size matches the
-advertised length. For test-created VM blobs, also verify the decoded
-contents. The large variant crosses the kernel coredump chunking
-threshold and legacy rendering limit.
+Do you need help merging this?
 
-Signed-off-by: Jan Maslak <jan.maslak@intel.com>
----
- tests/intel/xe_exec_capture.c | 549 +++++++++++++++++++++++++++++++++-
- 1 file changed, 548 insertions(+), 1 deletion(-)
+/Juha-Pekka
 
-diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
-index 6e454cfff3..2d726cabf9 100644
---- a/tests/intel/xe_exec_capture.c
-+++ b/tests/intel/xe_exec_capture.c
-@@ -17,10 +17,13 @@
- #include <inttypes.h>
- #include <regex.h>
- #include <stdio.h>
-+#include <stdlib.h>
- #include <string.h>
-+#include <sys/mman.h>
- 
- #include "igt.h"
- #include "igt_device.h"
-+#include "igt_os.h"
- #include "igt_sriov_device.h"
- #include "igt_sysfs.h"
- #include "lib/igt_syncobj.h"
-@@ -82,6 +85,43 @@
- #define INDEX_VM_LENGTH			2
- #define INDEX_VM_SIZE			3
- 
-+/*
-+ * Binary sections of the dump are encoded with the kernel's
-+ * include/linux/ascii85.h: a zero dword becomes a single 'z', every other
-+ * dword becomes 5 characters in the '!'..'u' range.
-+ */
-+#define ASCII85_ZERO			'z'
-+#define ASCII85_MIN			'!'
-+#define ASCII85_MAX			'u'
-+#define ASCII85_GROUP_LEN		5
-+
-+#define LENGTH_SUFFIX			"].length:"
-+#define DATA_SUFFIX			"].data:"
-+#define ERROR_SUFFIX			"].error:"
-+#define MAX_BLOB_NAME_LEN		64
-+
-+#define CAPTURE_SPIN_ADDRESS		0x1a0000ull
-+#define CAPTURE_PAYLOAD_ADDRESS		0x100000000ull
-+
-+/* Largest dump size the kernel could render before it learned to chunk (VLK-71080) */
-+#define DEVCOREDUMP_LEGACY_MAX_SIZE	((uint64_t)INT_MAX)
-+
-+/*
-+ * The test payloads contain no zero dwords, so their ASCII85 size is exactly
-+ * 5/4 of their binary size. The decoder still supports zero dwords.
-+ */
-+#define ASCII85_ENCODED_SIZE(bytes)	((bytes) / 4 * 5)
-+
-+/* Small, but already far past any line-oriented parser */
-+#define DECODE_PAYLOAD_SIZE		SZ_2M
-+#define DECODE_PAYLOAD_COUNT		2
-+
-+#define LARGE_PAYLOAD_SIZE		SZ_64M
-+/* One extra buffer makes the encoded payload exceed the legacy cap */
-+#define LARGE_PAYLOAD_COUNT		\
-+	((int)(DEVCOREDUMP_LEGACY_MAX_SIZE / \
-+	       ASCII85_ENCODED_SIZE(LARGE_PAYLOAD_SIZE)) + 1)
-+
- static u64
- xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
- {
-@@ -224,6 +264,323 @@ static bool rm_devcoredump(char *path)
- 	return false;
- }
- 
-+static bool devcoredump_exists(char *path)
-+{
-+	return access_devcoredump(path, NULL, NULL) != 0;
-+}
-+
-+/**
-+ * struct payload_bo - A buffer object the test fills with known dword values
-+ * @handle: GEM handle
-+ * @addr: GPU virtual address the buffer is bound at, which is also the name the
-+ *	  dump gives it, i.e. "[<addr>].data:"
-+ * @size: buffer size in bytes
-+ * @payload_index: zero-based payload index, used to generate this buffer's
-+ *		   dword values
-+ * @seen: set once the dump has been found to carry this buffer intact
-+ */
-+struct payload_bo {
-+	uint32_t handle;
-+	uint64_t addr;
-+	uint64_t size;
-+	uint32_t payload_index;
-+	bool seen;
-+};
-+
-+/* Keep each payload's dword values distinct and non-zero. */
-+#define PAYLOAD_INDEX_STRIDE		0x04000000u
-+
-+/**
-+ * payload_dword - Return the expected dword at a payload offset
-+ * @payload_index: zero-based payload index
-+ * @dword_index: dword offset in the payload
-+ *
-+ * Returns: expected dword value
-+ */
-+static uint32_t payload_dword(uint32_t payload_index, uint64_t dword_index)
-+{
-+	return (payload_index + 1) * PAYLOAD_INDEX_STRIDE + (uint32_t)dword_index;
-+}
-+
-+/**
-+ * struct ascii85_decoder - Position within one encoded blob
-+ * @pos: next character to consume
-+ * @bad: set once a group is found that no encoder could have produced
-+ * @truncated: set when the blob ends part way through a group
-+ */
-+struct ascii85_decoder {
-+	const char *pos;
-+	bool bad;
-+	bool truncated;
-+};
-+
-+/**
-+ * ascii85_next_dword - Decode the next dword of a blob
-+ * @dec: decoder positioned at the start of a group
-+ * @out: filled with the decoded value
-+ *
-+ * Returns: false at the end of the blob, on the first malformed group or on a
-+ * group cut short, the last two reported through @dec->bad and @dec->truncated.
-+ */
-+static bool ascii85_next_dword(struct ascii85_decoder *dec, uint32_t *out)
-+{
-+	uint64_t acc = 0;
-+	int i;
-+
-+	if (!*dec->pos || *dec->pos == '\n')
-+		return false;
-+
-+	/* A zero dword is abbreviated to one character */
-+	if (*dec->pos == ASCII85_ZERO) {
-+		dec->pos++;
-+		*out = 0;
-+		return true;
-+	}
-+
-+	/* Otherwise five base-85 digits, most significant first */
-+	for (i = 0; i < ASCII85_GROUP_LEN; i++) {
-+		if (!dec->pos[i] || dec->pos[i] == '\n') {
-+			dec->truncated = true;
-+			return false;
-+		}
-+		if (dec->pos[i] < ASCII85_MIN || dec->pos[i] > ASCII85_MAX) {
-+			dec->bad = true;
-+			return false;
-+		}
-+		acc = acc * 85 + (dec->pos[i] - ASCII85_MIN);
-+	}
-+
-+	/* 85^5 exceeds 2^32, so not every group is encodable */
-+	if (acc > UINT32_MAX) {
-+		dec->bad = true;
-+		return false;
-+	}
-+
-+	dec->pos += ASCII85_GROUP_LEN;
-+	*out = acc;
-+
-+	return true;
-+}
-+
-+/**
-+ * parse_blob_field - Split a "[<name>]<suffix> <value>" devcoredump line
-+ * @line: line to match, e.g. "[4e4800000].length: 0x4000000"
-+ * @suffix: LENGTH_SUFFIX, DATA_SUFFIX or ERROR_SUFFIX, matched literally so that
-+ *	    "].replay_length:" does not look like "].length:"
-+ * @name: filled with the bracketed name on success
-+ * @name_size: size of @name
-+ * @value: set to the first character of the value on success
-+ *
-+ * Returns: true when @line carries @suffix, false otherwise.
-+ */
-+static bool
-+parse_blob_field(const char *line, const char *suffix, char *name, size_t name_size,
-+		 const char **value)
-+{
-+	const char *open = strchr(line, '[');
-+	const char *close;
-+	size_t len;
-+
-+	if (!open)
-+		return false;
-+
-+	open++;
-+	close = strchr(open, ']');
-+	if (!close || strncmp(close, suffix, strlen(suffix)))
-+		return false;
-+
-+	len = close - open;
-+	if (len >= name_size)
-+		return false;
-+
-+	memcpy(name, open, len);
-+	name[len] = '\0';
-+
-+	*value = close + strlen(suffix);
-+	while (**value == ' ' || **value == '\t')
-+		(*value)++;
-+
-+	return true;
-+}
-+
-+/**
-+ * payload_by_name - Find the payload a blob name refers to
-+ * @name: bracketed blob name, e.g. "4e4800000" or "HWSP"
-+ * @payloads: buffers the test bound before hanging, or NULL
-+ * @n_payloads: number of entries in @payloads
-+ *
-+ * Returns: the matching payload, or NULL when @name is not one of them. The
-+ * dump also uses labels such as "HWSP" and "CTB" for driver-owned sections;
-+ * names that are not entirely hexadecimal never match, which keeps "CTB" from
-+ * resolving as the address 0xc.
-+ */
-+static struct payload_bo *
-+payload_by_name(const char *name, struct payload_bo *payloads, int n_payloads)
-+{
-+	uint64_t addr;
-+	char *end;
-+	int i;
-+
-+	if (!payloads)
-+		return NULL;
-+
-+	addr = strtoull(name, &end, 16);
-+	if (end == name || *end)
-+		return NULL;
-+
-+	for (i = 0; i < n_payloads; i++)
-+		if (payloads[i].addr == addr)
-+			return &payloads[i];
-+
-+	return NULL;
-+}
-+
-+/**
-+ * check_blob - Validate one ".length"/".data" pair of a devcoredump
-+ * @name: bracketed blob name, a hex VMA address for VM state sections
-+ * @length: byte count advertised by the ".length" line
-+ * @data: encoded payload of the ".data" line
-+ * @payloads: buffers the test bound before hanging, or NULL
-+ * @n_payloads: number of entries in @payloads
-+ *
-+ * Asserts that the blob is valid ASCII85 and decodes to exactly @length bytes.
-+ * Test-created payloads are also checked against their expected contents.
-+ */
-+static void
-+check_blob(const char *name, uint64_t length, const char *data,
-+	   struct payload_bo *payloads, int n_payloads)
-+{
-+	struct ascii85_decoder dec = { .pos = data };
-+	struct payload_bo *expected_payload;
-+	uint64_t expected_dwords = 0;
-+	uint64_t dwords = 0;
-+	uint32_t val;
-+
-+	expected_payload = payload_by_name(name, payloads, n_payloads);
-+	if (expected_payload) {
-+		igt_assert_f(length == expected_payload->size,
-+			     "[%s]: .length reports 0x%" PRIx64
-+			     " bytes, bound VMA is 0x%" PRIx64 " bytes\n",
-+			     name, length, expected_payload->size);
-+		expected_dwords = expected_payload->size / sizeof(uint32_t);
-+	}
-+
-+	/*
-+	 * Decode every blob for structural validation. Only test-created payloads
-+	 * need the additional content comparison.
-+	 */
-+	while (ascii85_next_dword(&dec, &val)) {
-+		if (expected_payload) {
-+			igt_assert_f(dwords < expected_dwords,
-+				     "[%s]: .data contains more dwords than the bound payload\n",
-+				     name);
-+			igt_assert_f(val == payload_dword(expected_payload->payload_index,
-+							  dwords),
-+				     "[%s]: decoded dword %" PRIu64
-+				     " differs from the content written to the buffer\n",
-+				     name, dwords);
-+		}
-+		dwords++;
-+	}
-+
-+	igt_assert_f(!dec.truncated,
-+		     "[%s]: .data ends mid-ASCII85 group after %" PRIu64 " of %" PRIu64
-+		     " dwords, the dump was cut short\n",
-+		     name, dwords, length / sizeof(uint32_t));
-+
-+	igt_assert_f(!dec.bad,
-+		     "[%s]: .data is not valid ASCII85 at dword %" PRIu64
-+		     " of %" PRIu64 " announced by .length\n",
-+		     name, dwords, length / sizeof(uint32_t));
-+
-+	igt_assert_f(dwords * sizeof(uint32_t) == length,
-+		     "[%s]: .length reports 0x%" PRIx64 " bytes but .data decodes to"
-+		     " 0x%" PRIx64 " bytes\n",
-+		     name, length, dwords * sizeof(uint32_t));
-+
-+	if (!expected_payload)
-+		return;
-+
-+	expected_payload->seen = true;
-+	igt_debug("Cross-validated 0x%" PRIx64 " bytes of VMA [%s]\n", length, name);
-+}
-+
-+/**
-+ * validate_devcoredump - Check every ASCII85 blob of a devcoredump
-+ * @path: path of the devcoredump data file
-+ * @payloads: buffers the test bound before hanging, or NULL
-+ * @n_payloads: number of entries in @payloads
-+ *
-+ * Walks the whole dump, checks each blob's decoded size, and verifies that all
-+ * test-created payloads are present with the expected contents.
-+ */
-+static void
-+validate_devcoredump(const char *path, struct payload_bo *payloads, int n_payloads)
-+{
-+	char pending_name[MAX_BLOB_NAME_LEN] = {0};
-+	char name[MAX_BLOB_NAME_LEN];
-+	uint64_t pending_length = 0;
-+	bool have_pending = false;
-+	bool read_error;
-+	size_t line_size = 0;
-+	char *line = NULL;
-+	const char *value;
-+	int n_blobs = 0, read_errno, i;
-+	FILE *f;
-+
-+	f = fopen(path, "r");
-+	igt_assert_f(f, "Failed to open %s, errno=%d\n", path, errno);
-+
-+	/* .data lines can be megabytes long, so let getline() grow the buffer. */
-+	while (getline(&line, &line_size, f) > 0) {
-+		if (parse_blob_field(line, LENGTH_SUFFIX, name, sizeof(name), &value)) {
-+			pending_length = strtoull(value, NULL, 0);
-+			memcpy(pending_name, name, strlen(name) + 1);
-+			have_pending = true;
-+			continue;
-+		}
-+
-+		if (parse_blob_field(line, ERROR_SUFFIX, name, sizeof(name), &value)) {
-+			if (have_pending && !strcmp(name, pending_name))
-+				have_pending = false;
-+
-+			igt_assert_f(!payload_by_name(name, payloads, n_payloads),
-+				     "[%s]: kernel could not snapshot the buffer: %s",
-+				     name, value);
-+			continue;
-+		}
-+
-+		if (!parse_blob_field(line, DATA_SUFFIX, name, sizeof(name), &value))
-+			continue;
-+
-+		igt_assert_f(have_pending && !strcmp(name, pending_name),
-+			     "[%s].data is not preceded by a matching .length line\n",
-+			     name);
-+
-+		have_pending = false;
-+		n_blobs++;
-+		check_blob(name, pending_length, value, payloads, n_payloads);
-+	}
-+
-+	read_error = ferror(f);
-+	read_errno = read_error ? errno : 0;
-+	free(line);
-+	fclose(f);
-+
-+	igt_assert_f(!read_error, "Failed to read %s, errno=%d\n", path, read_errno);
-+	igt_assert_f(!have_pending,
-+		     "[%s].length has no matching .data or .error line\n",
-+		     pending_name);
-+
-+	igt_assert_f(n_blobs, "No ASCII85 blob found in %s\n", path);
-+	igt_debug("Validated %d ASCII85 blobs\n", n_blobs);
-+
-+	for (i = 0; i < n_payloads; i++)
-+		igt_assert_f(payloads[i].seen,
-+			     "VMA 0x%" PRIx64 " missing from the devcoredump VM state\n",
-+			     payloads[i].addr);
-+}
-+
- static char
- *get_coredump_item(regex_t *regex, char **lines, const char *tag, int tag_index, int target_index)
- {
-@@ -392,6 +749,8 @@ static void test_card(int fd)
- 		check_item_u64(&regex, lines, "length:", addr,
- 			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_VALUE, INDEX_KEY);
- 
-+		validate_devcoredump(path, NULL, 0);
-+
- 		/* clear devcoredump */
- 		rm_devcoredump(path);
- 		sleep(1);
-@@ -404,10 +763,183 @@ static void test_card(int fd)
- 	regfree(&regex);
- }
- 
-+/**
-+ * hang_with_payloads - Hang @eci with dumpable buffers of known content
-+ * @fd: xe device file descriptor
-+ * @eci: engine to hang
-+ * @payloads: buffers to create, fill and bind; handles are returned to the
-+ *	      caller, which owns them
-+ * @n_payloads: number of entries in @payloads
-+ *
-+ * Submits a batch that spins forever, so the job timeout fires and the driver
-+ * writes a devcoredump. The payloads share the address space of that batch and
-+ * are bound DUMPABLE, which is what tells the driver to copy their contents
-+ * into the dump, giving us blobs whose expected bytes are known exactly.
-+ */
-+static void
-+hang_with_payloads(int fd, struct drm_xe_engine_class_instance *eci,
-+		   struct payload_bo *payloads, int n_payloads)
-+{
-+	struct drm_xe_sync sync = {
-+		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+	};
-+	struct drm_xe_exec exec = {
-+		.num_batch_buffer = 1,
-+		.num_syncs = 1,
-+		.syncs = to_user_pointer(&sync),
-+	};
-+	struct xe_spin_opts spin_opts = { .addr = CAPTURE_SPIN_ADDRESS };
-+	uint64_t spin_size = xe_bb_size(fd, sizeof(struct xe_spin));
-+	uint32_t vm = xe_vm_create(fd, 0, 0);
-+	uint32_t spin_bo, exec_queue, bind_syncobj, exec_syncobj;
-+	struct xe_spin *spin;
-+	int i;
-+
-+	spin_bo = xe_bo_create(fd, vm, spin_size, vram_if_possible(fd, eci->gt_id),
-+			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+	spin = xe_bo_map(fd, spin_bo, spin_size);
-+
-+	bind_syncobj = syncobj_create(fd, 0);
-+	sync.handle = bind_syncobj;
-+
-+	__xe_vm_bind_assert(fd, vm, 0, spin_bo, 0, CAPTURE_SPIN_ADDRESS, spin_size,
-+			    DRM_XE_VM_BIND_OP_MAP, DRM_XE_VM_BIND_FLAG_DUMPABLE,
-+			    &sync, 1, 0, 0);
-+	igt_assert(syncobj_wait(fd, &bind_syncobj, 1, INT64_MAX, 0, NULL));
-+
-+	for (i = 0; i < n_payloads; i++) {
-+		uint32_t *map;
-+		uint64_t j;
-+
-+		/* Use system memory so the large capture does not require large VRAM. */
-+		payloads[i].handle = xe_bo_create(fd, vm, payloads[i].size,
-+						  system_memory(fd), 0);
-+		map = xe_bo_map(fd, payloads[i].handle, payloads[i].size);
-+		for (j = 0; j < payloads[i].size / sizeof(*map); j++)
-+			map[j] = payload_dword(payloads[i].payload_index, j);
-+		munmap(map, payloads[i].size);
-+
-+		syncobj_reset(fd, &bind_syncobj, 1);
-+		__xe_vm_bind_assert(fd, vm, 0, payloads[i].handle, 0, payloads[i].addr,
-+				    payloads[i].size, DRM_XE_VM_BIND_OP_MAP,
-+				    DRM_XE_VM_BIND_FLAG_DUMPABLE, &sync, 1, 0, 0);
-+		igt_assert(syncobj_wait(fd, &bind_syncobj, 1, INT64_MAX, 0, NULL));
-+	}
-+
-+	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
-+	exec_syncobj = syncobj_create(fd, 0);
-+
-+	xe_spin_init(spin, &spin_opts);
-+
-+	sync.handle = exec_syncobj;
-+	exec.exec_queue_id = exec_queue;
-+	exec.address = CAPTURE_SPIN_ADDRESS;
-+	xe_exec(fd, &exec);
-+
-+	xe_spin_wait_started(spin);
-+
-+	/* The job timeout resets the queue, which is what creates the dump */
-+	igt_assert(syncobj_wait(fd, &exec_syncobj, 1, INT64_MAX, 0, NULL));
-+
-+	syncobj_destroy(fd, exec_syncobj);
-+	syncobj_destroy(fd, bind_syncobj);
-+	xe_exec_queue_destroy(fd, exec_queue);
-+	munmap(spin, spin_size);
-+	gem_close(fd, spin_bo);
-+	xe_vm_destroy(fd, vm);
-+}
-+
-+/**
-+ * SUBTEST: decode-data
-+ * Description: Create payloads with known contents, hang an engine, and
-+ * 		verify the resulting coredump's blob lengths and payload
-+ * 		contents before removing it
-+ *
-+ * SUBTEST: decode-data-large
-+ * Description: Same as decode-data, but with enough data to exercise kernel's
-+ * 		coredump chunking and the legacy size limit
-+ */
-+static void
-+test_capture_payload(int fd, struct drm_xe_engine_class_instance *eci,
-+		     int n_payloads, uint64_t payload_size)
-+{
-+	char path[MAX_SYSFS_PATH_LEN];
-+	struct payload_bo *payloads;
-+	int i;
-+
-+	/* Every buffer needs its own slice of the 32-bit value space */
-+	igt_assert(payload_size / sizeof(uint32_t) <= PAYLOAD_INDEX_STRIDE &&
-+		   n_payloads <= UINT32_MAX / PAYLOAD_INDEX_STRIDE);
-+
-+	payloads = calloc(n_payloads, sizeof(*payloads));
-+	igt_assert(payloads);
-+
-+	for (i = 0; i < n_payloads; i++) {
-+		payloads[i].addr = CAPTURE_PAYLOAD_ADDRESS + i * payload_size;
-+		payloads[i].size = payload_size;
-+		payloads[i].payload_index = i;
-+	}
-+
-+	get_devcoredump_path(igt_device_get_card_index(fd), path);
-+	rm_devcoredump(path);
-+
-+	/* Wait for the previous coredump to disappear before creating another. */
-+	igt_assert_f(igt_wait(!devcoredump_exists(path), 5000, 100),
-+		     "Devcoredump not removed, errno=%d.\n", errno);
-+
-+	hang_with_payloads(fd, eci, payloads, n_payloads);
-+
-+	/*
-+	 * Close our BO handles; the snapshot holds BO references until it copies
-+	 * their contents into kernel-owned buffers for the coredump.
-+	 */
-+	for (i = 0; i < n_payloads; i++)
-+		gem_close(fd, payloads[i].handle);
-+
-+	igt_assert_f(igt_wait(devcoredump_exists(path), 5000, 100),
-+		     "Devcoredump not created, a previous dump may still be held\n");
-+
-+	validate_devcoredump(path, payloads, n_payloads);
-+
-+	free(payloads);
-+
-+	rm_devcoredump(path);
-+
-+	/* Wait for the dump to disappear so its large buffers can be released. */
-+	igt_assert_f(igt_wait(!devcoredump_exists(path), 5000, 100),
-+		     "Devcoredump not removed, errno=%d.\n", errno);
-+}
-+
-+/**
-+ * require_capture_memory - Skip unless the machine can hold the whole capture
-+ * @n_payloads: number of buffers the subtest binds
-+ * @payload_size: size of each buffer
-+ *
-+ * Upper bound on the footprint: the payloads, the snapshot copy the kernel
-+ * takes of them, the chunk the kernel renders and the longest line getline()
-+ * has to buffer. Not all of them peak at the same instant. The rendering buffer
-+ * is sized for the unfixed kernel, which is the one this has to survive.
-+ */
-+static void require_capture_memory(int n_payloads, uint64_t payload_size)
-+{
-+	uint64_t payload = (uint64_t)n_payloads * payload_size;
-+	uint64_t encoded = ASCII85_ENCODED_SIZE(payload);
-+	uint64_t rendered = encoded < DEVCOREDUMP_LEGACY_MAX_SIZE ?
-+			    encoded : DEVCOREDUMP_LEGACY_MAX_SIZE;
-+
-+	igt_require_memory(1, 2 * payload + rendered +
-+			   ASCII85_ENCODED_SIZE(payload_size), CHECK_RAM);
-+}
-+
- int igt_main()
- {
- 	int xe;
--	struct drm_xe_engine_class_instance *hwe;
-+	/*
-+	 * The payload tests exercise VM capture and need one engine to trigger it.
-+	 * The reset subtest separately iterates over every available engine.
-+	 */
-+	struct drm_xe_engine_class_instance *hwe, *hang_hwe = NULL;
- 	u64 timeouts[DRM_XE_ENGINE_CLASS_VM_BIND] = {0};
- 
- 	igt_fixture() {
-@@ -416,6 +948,8 @@ int igt_main()
- 			/* Skip kernel only classes */
- 			if (hwe->engine_class >= DRM_XE_ENGINE_CLASS_VM_BIND)
- 				continue;
-+			if (!hang_hwe)
-+				hang_hwe = hwe;
- 			/* Skip classes already set */
- 			if (timeouts[hwe->engine_class])
- 				continue;
-@@ -433,6 +967,19 @@ int igt_main()
- 	igt_subtest("reset")
- 		test_card(xe);
- 
-+	igt_subtest("decode-data") {
-+		igt_require(hang_hwe);
-+		test_capture_payload(xe, hang_hwe, DECODE_PAYLOAD_COUNT,
-+				     DECODE_PAYLOAD_SIZE);
-+	}
-+
-+	igt_subtest("decode-data-large") {
-+		igt_require(hang_hwe);
-+		require_capture_memory(LARGE_PAYLOAD_COUNT, LARGE_PAYLOAD_SIZE);
-+		test_capture_payload(xe, hang_hwe, LARGE_PAYLOAD_COUNT,
-+				     LARGE_PAYLOAD_SIZE);
-+	}
-+
- 	igt_fixture() {
- 		xe_for_each_engine(xe, hwe) {
- 			u64 store, timeout;
--- 
-2.43.0
+On 14/08/2026 20.28, Jason-JH Lin wrote:
+> MediaTek's DRM driver uses an internal per-commit CRC queue that
+> reports CRC entries with a frame number offset due to pipeline delay
+> (3 vblanks after commit). This causes crc->frame > expected_vblank,
+> which fails the exact-match validation in capture_crc().
+> 
+> Since igt_pipe_crc_get_for_frame() already guarantees crc->frame >=
+> vblank via its internal loop, the exact-match check is overly strict
+> for queued CRC drivers. Skip it on MediaTek while preserving the
+> validation for other platforms.
+> 
+> Signed-off-by: Jason-JH Lin <jason-jh.lin@mediatek.com>
+> ---
+>   tests/kms_plane.c | 9 +++++++++
+>   1 file changed, 9 insertions(+)
+> 
+> diff --git a/tests/kms_plane.c b/tests/kms_plane.c
+> index 12dfbfe1d82b..14d2d810f1a0 100644
+> --- a/tests/kms_plane.c
+> +++ b/tests/kms_plane.c
+> @@ -766,6 +766,15 @@ static void capture_crc(data_t *data, unsigned int vblank, igt_crc_t *crc)
+>   {
+>   	igt_pipe_crc_get_for_frame(data->drm_fd, data->pipe_crc, vblank, crc);
+>   
+> +	/*
+> +	 * Platforms with an internal CRC queue (e.g. MediaTek) report CRC
+> +	 * entries with a frame number greater than the requested vblank due
+> +	 * to pipeline delay. Since igt_pipe_crc_get_for_frame() already
+> +	 * guarantees crc->frame >= vblank, skip the exact-match check.
+> +	 */
+> +	if (is_mtk_device(data->drm_fd))
+> +		return;
+> +
+>   	igt_fail_on_f(!igt_skip_crc_compare && !igt_run_in_simulation() &&
+>   		      crc->has_valid_frame && crc->frame != vblank,
+>   		      "Got CRC for the wrong frame (got %u, expected %u). CRC buffer overflow?\n",
 
