@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 945ECC5DF66
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 15:11:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E803BC5B572
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 15:12:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4906C10E838;
-	Mon, 17 Aug 2026 15:11:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9988910E428;
+	Mon, 17 Aug 2026 15:12:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="a34GwEdE";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="Q90K7q8G";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CFFB10E836
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 15:08:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 64C1810E82E
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 15:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=dxg3CLOUyqvyjnE8yPmCr8ofpSZVQRhQMMc1c/lV9XE=; b=
- a34GwEdE4mc+2WIBakraszYSEJ88/ZhxxC4r5xxv/3sPq7QsWyzlm50mGX4rYw72YJbLZ6k7mjxu0
- ki93MTwxDHKazUrjRN4L7DT5rZ/y2btXmcaS/Y1/LxwUsK1hNP5bCOK85K1c9XKYZiCS8+XAhFW7O
- tZUMAzckvc62lhVaMYDkQsxfVCZNeyH4HEd+SXXETNQX6/AJWcIaMyQwgv6eRjSAsidp3mqvlFWVY
- Umc0qo4bg4M2T+8auQKCZPmblJFppdSWAToxPrJWSVYmvRXladRGKXydbl19lRnorkRRyzwJ2Vkan
- 8F5lNkIZD7f51jPqhvZseloGg9ciOoQgAg==;
+ Cc:To:From:From:Reply-To; bh=IUgLkkqKB9tSkOLh9vmBtxZIdeTR3AheLZySzcJcr00=; b=
+ Q90K7q8GH0NBuv9pmdsoE00NwRhIQe8Ycf5os0Y6CJSRiCTg9gr9rTf0SMgX0DmKWhem71R703iZQ
+ GiQlxufBWeiQ2o3AfrEhdKGPiNfop60V3nMjvemdheUtqHBNGSYaPOeCUa7UKLww+/YxPVjvmxbIL
+ v9jQ3NG2ENaDZbeCGS1OilEwRKexsd55HfsSFwaRvu34I1fUzrz7+nurVgGOplKz0Q9AuR73PlMOi
+ N9daBY3U9G20k0YkrS6Y+yRLz1OSZ1OHoeQl+kCHiPck3Pq0kkiYXIXxTXmKOPu/PojfkFyzKy2YT
+ RYkskRUSFClcEfZl7f3VBZ9cKf9Z+OO1qw==;
 Received: from 154.red-79-147-121.dynamicip.rima-tde.net ([79.147.121.154]
  helo=killbill) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wvywp-004dea-1j; Mon, 17 Aug 2026 17:08:23 +0200
+ id 1wvywn-004dea-Iz; Mon, 17 Aug 2026 17:08:21 +0200
 From: Melissa Wen <mwen@igalia.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -42,10 +42,10 @@ Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
  Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
  Uma Shankar <uma.shankar@intel.com>, Jani Nikula <jani.nikula@intel.com>,
  igt-dev@lists.freedesktop.org, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v4 4/8] tests/kms_properties: give non-primary planes
- their own fb
-Date: Mon, 17 Aug 2026 17:07:45 +0200
-Message-ID: <20260817150749.66509-5-mwen@igalia.com>
+Subject: [PATCH i-g-t v4 2/8] tests/kms_colorop_helper: only check if a given
+ enum value exists
+Date: Mon, 17 Aug 2026 17:07:43 +0200
+Message-ID: <20260817150749.66509-3-mwen@igalia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260817150749.66509-1-mwen@igalia.com>
 References: <20260817150749.66509-1-mwen@igalia.com>
@@ -66,73 +66,90 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Testing colorop properties requires the color pipeline to be active,
-which in turn requires the plane that owns it to be active. On AMD, a
-CRTC only stays active while its primary plane is enabled, so handing
-the primary's fb over to a non-primary plane would take the CRTC down
-with it.
+Don't trigger unnecessary colorop property changes just to probe that a
+prop enum exists and can be applied. Make can_use_colorop() read-only.
 
-Create a dedicated fb for each non-primary plane before testing its
-colorops and drop it again afterwards, leaving the primary plane and its
-fb from prepare_crtc() untouched. This is groundwork for the next
-commit, which checks colorop properties on an active color pipeline.
-
+Assisted-by: Claude:claude-opus-4-7
+Tested-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 Signed-off-by: Melissa Wen <mwen@igalia.com>
 ---
 
 v2:
-- detach different changes from a single commit (Chaitanya)
-v3:
-- move hunk from next patch to fix mem leak (Alex H/Chaitanya)
+- remove extra space (Chaitanya)
 ---
- tests/kms_properties.c | 20 +++++++++++++++++++-
- 1 file changed, 19 insertions(+), 1 deletion(-)
+ lib/igt_kms.c              | 26 ++++++++++++++++++++++++++
+ lib/igt_kms.h              |  4 ++++
+ tests/kms_colorop_helper.c |  4 +++-
+ 3 files changed, 33 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index 2b4cb152b..c55a271da 100644
---- a/tests/kms_properties.c
-+++ b/tests/kms_properties.c
-@@ -237,7 +237,7 @@ static void run_colorop_property_tests(igt_display_t *display,
- 				       igt_crtc_t *crtc, igt_output_t *output,
- 				       bool atomic)
- {
--	struct igt_fb fb;
-+	struct igt_fb fb, afb;
- 	igt_plane_t *plane;
- 	igt_colorop_t *colorop;
- 	int i;
-@@ -255,6 +255,18 @@ static void run_colorop_property_tests(igt_display_t *display,
- 			 igt_crtc_name(crtc), plane->index,
- 			 kmstest_plane_type_name(plane->type), output->name);
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 4b8f1c2a0..00fd7ee2a 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -4506,6 +4506,32 @@ igt_colorop_replace_prop_blob(igt_colorop_t *colorop, enum igt_atomic_colorop_pr
+ 	igt_colorop_set_prop_changed(colorop, prop);
+ }
  
-+		/* A non-primary plane needs an fb of its own: AMD keeps the
-+		 * CRTC active only while the primary plane is enabled.
-+		 */
-+		if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
-+			drmModeModeInfo *mode = igt_output_get_mode(output);
++/**
++ * igt_colorop_has_prop_enum_value:
++ * @colorop: Target colorop.
++ * @prop: Enum property to check.
++ * @val: Enum value (as string) to look up.
++ *
++ * Read-only counterpart to igt_colorop_try_prop_enum(): returns whether
++ * @colorop's @prop accepts the enum value @val, without setting it or
++ * marking @prop as changed in IGT's cache.
++ *
++ * Returns: true if @val is a valid value of the enum @prop on @colorop.
++ */
++bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
++				     enum igt_atomic_colorop_properties prop,
++				     const char *val)
++{
++	igt_display_t *display = colorop->plane->crtc->display;
++	uint64_t uval;
 +
-+			igt_create_pattern_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
-+					      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &afb);
++	igt_assert(colorop->props[prop]);
 +
-+			igt_plane_set_fb(plane, &afb);
-+		}
++	return igt_mode_object_get_prop_enum_value(display->drm_fd,
++						   colorop->props[prop],
++						   val, &uval);
++}
 +
- 		/* iterate over all color pipelines on plane */
- 		for (i = 0; i < plane->num_color_pipelines; ++i) {
- 			/* iterate over all colorops in pipeline*/
-@@ -272,6 +284,12 @@ static void run_colorop_property_tests(igt_display_t *display,
- 				colorop = igt_find_colorop(display, colorop_id);
- 			}
- 		}
-+
-+		/* only the fb created above needs to go away here */
-+		if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
-+			igt_plane_set_fb(plane, NULL);
-+			igt_remove_fb(display->drm_fd, &afb);
-+		}
- 	}
+ /**
+  * igt_colorop_try_prop_enum:
+  * @colorop: Target colorop.
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 521a03c01..ace8c2b1f 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1023,6 +1023,10 @@ uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, en
+ 	} while (0)
  
- 	cleanup_crtc(display, crtc, output,
+ 
++extern bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
++					    enum igt_atomic_colorop_properties prop,
++					    const char *val);
++
+ extern bool igt_colorop_try_prop_enum(igt_colorop_t *colorop,
+ 				      enum igt_atomic_colorop_properties prop,
+ 				      const char *val);
+diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+index aaee4e567..5b79fe789 100644
+--- a/tests/kms_colorop_helper.c
++++ b/tests/kms_colorop_helper.c
+@@ -205,7 +205,9 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+ 	switch (desired->type) {
+ 	case KMS_COLOROP_ENUMERATED_LUT1D:
+ 		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE &&
+-		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
++		    igt_colorop_has_prop_enum_value(colorop,
++						    IGT_COLOROP_CURVE_1D_TYPE,
++						    kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
+ 			return true;
+ 		return false;
+ 	case KMS_COLOROP_CTM_3X4:
 -- 
 2.53.0
 
