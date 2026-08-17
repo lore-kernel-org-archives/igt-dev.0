@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7841C5B572
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 13:28:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43E9BC5B572
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 15:09:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2C1DF10E7D1;
-	Mon, 17 Aug 2026 13:28:54 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1CEB10E7D4;
- Mon, 17 Aug 2026 13:28:18 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6952220200528723199=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D566A10E428;
+	Mon, 17 Aug 2026 15:09:24 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="Aq02I5zT";
+	dkim-atps=neutral
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 049BF10E835
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 15:08:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+ Cc:To:From:From:Reply-To; bh=DxAWDPUstq6bWhYs34HVYlITP+CMSnvDZOukcUlmp0Y=; b=
+ Aq02I5zTowRxWfABlO4aRkEo3iaCGqhcoEvAGAicBn4vNzHPXGizmrvQMzD9LnwYwe13ZHb22mrrH
+ SRqwXbY4H6F5HGpXo+otvrA3n4p6qz8CvP+sM1LYsejijgTvLQFXEtTNnMoUd32HIrqCxUi8q1IR4
+ j3YRkgNCnHo6w5+h45Hxf/xXwvbROKk1/zbxi/mU0zdqT75nIaE/nrf/ONxuReBBIL8Fy9qUKYIar
+ /jmevB514WcHkGlbKH3TB5TukMnS6I5DCg4Pnx9t3dX1abFokVNHt5XeF0GdEWgj8Y3VoOf2xa64H
+ sN0KhnlVXF77pYC3syLTcA01NMHewEX7lg==;
+Received: from 154.red-79-147-121.dynamicip.rima-tde.net ([79.147.121.154]
+ helo=killbill) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1wvywq-004dea-Ix; Mon, 17 Aug 2026 17:08:24 +0200
+From: Melissa Wen <mwen@igalia.com>
+To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ Alex Hung <alex.hung@amd.com>, Swati Sharma <swati2.sharma@intel.com>,
+ John Harrison <John.Harrison@Igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>, Simon Ser <contact@emersion.fr>,
+ Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
+ Uma Shankar <uma.shankar@intel.com>, Jani Nikula <jani.nikula@intel.com>,
+ igt-dev@lists.freedesktop.org, kernel-dev@igalia.com
+Subject: [PATCH i-g-t v4 6/8] tests/kms_properties: check colorop properties
+ on active color pipelines
+Date: Mon, 17 Aug 2026 17:07:47 +0200
+Message-ID: <20260817150749.66509-7-mwen@igalia.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260817150749.66509-1-mwen@igalia.com>
+References: <20260817150749.66509-1-mwen@igalia.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_BO_Allocation_and_VM_?=
- =?utf-8?q?Bind_stress_infra?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Aug 2026 13:28:18 -0000
-Message-ID: <178697329891.59130.11361712402331475172@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260817053107.887805-1-sobin.thomas@intel.com>
-In-Reply-To: <20260817053107.887805-1-sobin.thomas@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,134 +63,49 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6952220200528723199==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+A colorop property can only be changed if its color pipeline is active,
+i.e. the colorop is in the chain of the color pipeline set in the plane
+COLOR_PIPELINE property and the plane is active. Set each color pipeline
+active before checking the properties of its colorops, and restore
+Bypass afterwards.
 
-== Series Details ==
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+---
 
-Series: Add BO Allocation and VM Bind stress infra
-URL   : https://patchwork.freedesktop.org/series/172310/
-State : success
+v2:
+- detach different changes from a single commit (Chaitanya)
+v3:
+- move hunk to the previous commit (Chaitanya)
+---
+ tests/kms_properties.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-== Summary ==
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index c55a271da..764c77963 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -271,6 +271,9 @@ static void run_colorop_property_tests(igt_display_t *display,
+ 		for (i = 0; i < plane->num_color_pipelines; ++i) {
+ 			/* iterate over all colorops in pipeline*/
+ 			colorop = plane->color_pipelines[i];
++			igt_plane_set_color_pipeline(plane, colorop);
++			igt_display_commit2(display, COMMIT_ATOMIC);
++
+ 			while (colorop) {
+ 				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
+ 					  igt_crtc_name(crtc), plane->index,
+@@ -285,6 +288,8 @@ static void run_colorop_property_tests(igt_display_t *display,
+ 			}
+ 		}
+ 
++		igt_plane_set_color_pipeline(plane, NULL);
++
+ 		/* only the fb created above needs to go away here */
+ 		if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
+ 			igt_plane_set_fb(plane, NULL);
+-- 
+2.53.0
 
-CI Bug Log - changes from IGT_9057 -> IGTPW_15687
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15687/index.html
-
-Participating hosts (36 -> 32)
-------------------------------
-
-  Missing    (4): bat-dg2-13 bat-jsl-5 fi-snb-2520m bat-adlp-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15687 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@perf:
-    - fi-kbl-7567u:       [DMESG-WARN][1] ([i915#13735]) -> [PASS][2] +13 other tests pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/fi-kbl-7567u/igt@i915_selftest@live@perf.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15687/fi-kbl-7567u/igt@i915_selftest@live@perf.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9057 -> IGTPW_15687
-  * Linux: CI_DRM_19000 -> CI_DRM_19006
-
-  CI-20190529: 20190529
-  CI_DRM_19000: 9832bc7a458a4a67e68dcf96927588859c1994f3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19006: b801f94c49ffdb0f65e37baf31d68570356d4983 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15687: 15687
-  IGT_9057: 8f7d5198bdb1c5af7c97b967a0bcbe77b653e8a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15687/index.html
-
---===============6952220200528723199==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add BO Allocation and VM Bind stress infra</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172310/">https://patchwork.freedesktop.org/series/172310/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15687/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15687/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9057 -&gt; IGTPW_15687</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15687/index.html</p>
-<h2>Participating hosts (36 -&gt; 32)</h2>
-<p>Missing    (4): bat-dg2-13 bat-jsl-5 fi-snb-2520m bat-adlp-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15687 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_selftest@live@perf:<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9057/fi-kbl-7567u/igt@i915_selftest@live@perf.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15687/fi-kbl-7567u/igt@i915_selftest@live@perf.html">PASS</a> +13 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9057 -&gt; IGTPW_15687</li>
-<li>Linux: CI_DRM_19000 -&gt; CI_DRM_19006</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19000: 9832bc7a458a4a67e68dcf96927588859c1994f3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19006: b801f94c49ffdb0f65e37baf31d68570356d4983 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15687: 15687<br />
-  IGT_9057: 8f7d5198bdb1c5af7c97b967a0bcbe77b653e8a0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6952220200528723199==--
