@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 454B4C5B572
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 19:58:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A42A1C5DF7A
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 20:01:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 75D9610E44F;
-	Mon, 17 Aug 2026 19:58:10 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1A3310E42E;
- Mon, 17 Aug 2026 19:57:35 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6395653342681363944=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4C99410E44F;
+	Mon, 17 Aug 2026 20:01:15 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n4JnUKZO";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B83010E44F
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 20:00:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1786996839; x=1818532839;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=uMW1TC/puB7/vgO+DYdj71bBltPaHXRPWkKm+kAF7oA=;
+ b=n4JnUKZO75bwtH2KRWunF1dQbiMb5oa54pKLdAvq5oVBkML8KpS/p5ZF
+ uA2VkdXEfMxolO8GFmvGY7Z5vyHopjAQGAYmtOExC7IfhlztfUmKRiw1g
+ YfpYE8hz14IXmChIth9J8BzB5Gez/zUrTZOMqdxtDtZetLxCBbFA6Orsm
+ DNwqg2aeLt3Oz7fqwKGsoV52BVLduKLm5bIMT98EApHZKsL/niYZM6Cn6
+ VHRHZ/GKmA5gml9jgUbmUyX954eGYHdf6ANAGVfGmyacROc7+UX1C9aCX
+ IYtj0E3pKF+OrVhrnJxCRQZo7Km9HIQvaSiNSH3zk6gjsc1NsMIJQYCs2 A==;
+X-CSE-ConnectionGUID: uU09iK53QF+UhPidIxMHOg==
+X-CSE-MsgGUID: DYlJHQr/SPOKFEHclyFMYA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="87688335"
+X-IronPort-AV: E=Sophos;i="6.25,229,1779174000"; d="scan'208";a="87688335"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Aug 2026 13:00:39 -0700
+X-CSE-ConnectionGUID: PjVdoEE1SP2+IksJKQuYtQ==
+X-CSE-MsgGUID: hzO2A9lSQRyZSRVNjkEaGA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,229,1779174000"; d="scan'208";a="303243746"
+Received: from live-gta-imageloader.iind.intel.com (HELO
+ DUT2031NVLP.iind.intel.com) ([10.190.232.106])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Aug 2026 13:00:38 -0700
+From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: niranjana.vishwanathapura@intel.com,
+ Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Subject: [i-g-t] tests/intel/xe_exec_mix_modes: Add multi-queue LR spinner
+ switch subtest
+Date: Mon, 17 Aug 2026 20:00:28 +0000
+Message-ID: <20260817200029.16006-1-jagmeet.randhawa@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_intel-ci=3A_Update_Core_Blo?=
- =?utf-8?q?cklists_for_LNL=2CPTL=2ENVL?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: aditya.chauhan@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 17 Aug 2026 19:57:35 -0000
-Message-ID: <178699665598.60298.13442085910795086761@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260817105411.1695841-1-aditya.chauhan@intel.com>
-In-Reply-To: <20260817105411.1695841-1-aditya.chauhan@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,241 +65,188 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6395653342681363944==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add exec-multi-queue-spinner-interrupted-lr, which runs preemptible
+spinners on every queue in a multi-queue exec queue group in long
+running mode, then submits a dma-fence job on the same engine to force
+the group from FAULT into DMA_FENCE mode.
 
-== Series Details ==
+Each spinner is armed with a queue-switch semaphore
+(multi_queue_switch_on_wait + xe_spin_preempt_wait) so it yields the
+shared engine to its sibling once scheduled, instead of busy-looping
+and starving the rest of the group. This lets every queue in the group
+be genuinely resident when the interrupting job forces the mode
+switch, exercising suspend/resume of the secondary queues rather than
+just the primary.
 
-Series: intel-ci: Update Core Blocklists for LNL,PTL.NVL
-URL   : https://patchwork.freedesktop.org/series/172334/
-State : success
+The dma-fence and LR (preempt) multi-queue suspend/resume paths are
+already covered by the userptr-invalidation tests; this adds the
+missing FAULT-mode coverage.
 
-== Summary ==
+Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+---
+ tests/intel/xe_exec_mix_modes.c | 111 ++++++++++++++++++++++++++++++++
+ 1 file changed, 111 insertions(+)
 
-CI Bug Log - changes from XEIGT_9059_BAT -> XEIGTPW_15689_BAT
-====================================================
+diff --git a/tests/intel/xe_exec_mix_modes.c b/tests/intel/xe_exec_mix_modes.c
+index 209825f58..d9ebb8283 100644
+--- a/tests/intel/xe_exec_mix_modes.c
++++ b/tests/intel/xe_exec_mix_modes.c
+@@ -27,6 +27,7 @@
+ 
+ #define FLAG_EXEC_MODE_LR	(0x1 << 0)
+ #define FLAG_JOB_TYPE_SIMPLE	(0x1 << 1)
++#define FLAG_MULTI_QUEUE	(0x1 << 2)
+ 
+ #define NUM_INTERRUPTING_JOBS	1
+ #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
+@@ -34,6 +35,7 @@
+ #define SPIN_DATA		1
+ #define EXEC_DATA		2
+ #define DATA_COUNT		3
++#define N_GROUP_QUEUES		2
+ 
+ struct data {
+ 	struct xe_spin spin;
+@@ -221,6 +223,104 @@ run_job(int fd, struct drm_xe_engine_class_instance *hwe,
+ 	xe_vm_destroy(fd, vm);
+ }
+ 
++static void
++run_job_multi_queue(int fd, struct drm_xe_engine_class_instance *hwe)
++{
++	struct drm_xe_sync sync = {
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		.timeline_value = USER_FENCE_VALUE,
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.num_syncs = 1,
++		.syncs = to_user_pointer(&sync),
++	};
++	uint32_t exec_queues[N_GROUP_QUEUES];
++	struct xe_spin *spin[N_GROUP_QUEUES];
++	uint64_t addr[N_GROUP_QUEUES];
++	uint64_t base_addr = 0x1a0000;
++	int64_t fence_timeout = NSEC_PER_SEC;
++	int64_t timeout_short = 1;
++	uint64_t vm_sync = 0;
++	size_t bo_size, spin_size;
++	uint32_t vm, bo;
++	void *map;
++	int i;
++
++	igt_require(xe_has_multi_queue_engine(fd));
++
++	vm = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_LR_MODE |
++			      DRM_XE_VM_CREATE_FLAG_FAULT_MODE, 0);
++
++	/* exec_queues[0] is the primary, the rest join its group. */
++	for (i = 0; i < N_GROUP_QUEUES; i++) {
++		struct drm_xe_ext_set_property multi_queue = {
++			.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++			.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
++		};
++		uint64_t ext = to_user_pointer(&multi_queue);
++
++		multi_queue.value = i ? exec_queues[0] : DRM_XE_MULTI_GROUP_CREATE;
++		exec_queues[i] = xe_exec_queue_create(fd, vm, hwe, ext);
++	}
++
++	spin_size = xe_bb_size(fd, sizeof(struct xe_spin));
++	bo_size = spin_size * N_GROUP_QUEUES;
++	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, hwe->gt_id),
++			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
++	map = xe_bo_map(fd, bo, bo_size);
++	for (i = 0; i < N_GROUP_QUEUES; i++) {
++		spin[i] = (struct xe_spin *)((char *)map + i * spin_size);
++		addr[i] = base_addr + i * spin_size;
++	}
++
++	sync.addr = to_user_pointer(&vm_sync);
++	xe_vm_bind_async(fd, vm, 0, bo, 0, base_addr, bo_size, &sync, 1);
++	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
++	vm_sync = 0;
++
++	for (i = 0; i < N_GROUP_QUEUES; i++) {
++		/* Yield the shared engine at a switch point instead of busy-spinning. */
++		xe_spin_init_opts(spin[i], .addr = addr[i], .preempt = true,
++				  .multi_queue_switch_on_wait = true);
++		xe_spin_preempt_wait(spin[i]);
++		sync.addr = addr[i] + (char *)&spin[i]->exec_sync - (char *)spin[i];
++		exec.exec_queue_id = exec_queues[i];
++		exec.address = addr[i];
++		xe_exec(fd, &exec);
++		xe_spin_wait_started(spin[i]);
++	}
++
++	/* Force the group from FAULT into DMA_FENCE mode. */
++	run_job(fd, hwe, EXEC_MODE_DMA_FENCE, SIMPLE_BATCH_STORE, false, NULL);
++
++	/* Spinners must have been suspended, not completed, during the switch. */
++	for (i = 0; i < N_GROUP_QUEUES; i++)
++		igt_assert_neq(0, __xe_wait_ufence(fd, &spin[i]->exec_sync,
++						   USER_FENCE_VALUE, exec_queues[i],
++						   &timeout_short));
++
++	for (i = 0; i < N_GROUP_QUEUES; i++) {
++		xe_spin_end(spin[i]);
++		xe_spin_preempt_nowait(spin[i]);
++	}
++
++	for (i = 0; i < N_GROUP_QUEUES; i++)
++		xe_wait_ufence(fd, &spin[i]->exec_sync, USER_FENCE_VALUE,
++			       exec_queues[i], fence_timeout);
++
++	sync.addr = to_user_pointer(&vm_sync);
++	xe_vm_unbind_async(fd, vm, 0, 0, base_addr, bo_size, &sync, 1);
++	xe_wait_ufence(fd, &vm_sync, USER_FENCE_VALUE, 0, fence_timeout);
++
++	for (i = 0; i < N_GROUP_QUEUES; i++)
++		xe_exec_queue_destroy(fd, exec_queues[i]);
++	munmap(map, bo_size);
++	gem_close(fd, bo);
++	xe_vm_destroy(fd, vm);
++}
++
+ /**
+  * SUBTEST: exec-simple-batch-store-lr
+  * Description: Execute a simple batch store job in long running mode
+@@ -235,6 +335,11 @@ run_job(int fd, struct drm_xe_engine_class_instance *hwe,
+  * SUBTEST: exec-spinner-interrupted-dma-fence
+  * Description: Spin in dma fence mode then get interrupted by a simple
+  *              batch store job in long running mode
++ *
++ * SUBTEST: exec-multi-queue-spinner-interrupted-lr
++ * Description: Run preemptible spinners on a multi-queue exec queue group
++ *              in long running mode, then get interrupted by a simple
++ *              batch store job in dma fence mode
+  */
+ static void
+ test_exec(int fd, struct drm_xe_engine_class_instance *hwe,
+@@ -243,6 +348,11 @@ test_exec(int fd, struct drm_xe_engine_class_instance *hwe,
+ 	enum engine_execution_mode engine_execution_mode;
+ 	enum job_type job_type;
+ 
++	if (flags & FLAG_MULTI_QUEUE) {
++		run_job_multi_queue(fd, hwe);
++		return;
++	}
++
+ 	if (flags & FLAG_EXEC_MODE_LR)
+ 		engine_execution_mode = EXEC_MODE_LR;
+ 	else
+@@ -267,6 +377,7 @@ int igt_main()
+ 		{ "simple-batch-store-dma-fence", FLAG_JOB_TYPE_SIMPLE },
+ 		{ "spinner-interrupted-lr", FLAG_EXEC_MODE_LR },
+ 		{ "spinner-interrupted-dma-fence", 0 },
++		{ "multi-queue-spinner-interrupted-lr", FLAG_EXEC_MODE_LR | FLAG_MULTI_QUEUE },
+ 		{ NULL },
+ 	};
+ 	int fd;
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (12 -> 13)
-------------------------------
-
-  Additional (1): bat-bmg-2 
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15689_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@write:
-    - bat-bmg-2:          NOTRUN -> [SKIP][1] ([Intel XE#2134]) +4 other tests skip
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@fbdev@write.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - bat-bmg-2:          NOTRUN -> [SKIP][2] ([Intel XE#2233])
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
-    - bat-bmg-2:          NOTRUN -> [SKIP][3] ([Intel XE#2489] / [Intel XE#3419]) +13 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
-
-  * igt@kms_flip@basic-flip-vs-modeset:
-    - bat-bmg-2:          NOTRUN -> [SKIP][4] ([Intel XE#2482]) +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - bat-bmg-2:          NOTRUN -> [SKIP][5] ([Intel XE#2434] / [Intel XE#2548] / [Intel XE#6314])
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_psr@psr-sprite-plane-onoff:
-    - bat-bmg-2:          NOTRUN -> [SKIP][6] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html
-
-  * igt@xe_exec_multi_queue@priority:
-    - bat-bmg-2:          NOTRUN -> [SKIP][7] ([Intel XE#8364]) +13 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_exec_multi_queue@priority.html
-
-  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
-    - bat-bmg-2:          NOTRUN -> [SKIP][8] ([Intel XE#2229])
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
-
-  * igt@xe_pat@pat-index-xehpc:
-    - bat-bmg-2:          NOTRUN -> [SKIP][9] ([Intel XE#1420] / [Intel XE#7590])
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html
-
-  * igt@xe_pat@pat-index-xelp:
-    - bat-bmg-2:          NOTRUN -> [SKIP][10] ([Intel XE#2245] / [Intel XE#7590])
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_pat@pat-index-xelp.html
-
-  * igt@xe_pat@pat-index-xelpg:
-    - bat-bmg-2:          NOTRUN -> [SKIP][11] ([Intel XE#2236] / [Intel XE#7590])
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html
-
-  
-  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
-  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
-  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
-  [Intel XE#2233]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233
-  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
-  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
-  [Intel XE#2245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245
-  [Intel XE#2434]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434
-  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
-  [Intel XE#2489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489
-  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
-  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
-  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
-  [Intel XE#6314]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6314
-  [Intel XE#7590]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590
-  [Intel XE#8364]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364
-
-
-Build changes
--------------
-
-  * IGT: IGT_9059 -> IGTPW_15689
-
-  IGTPW_15689: 15689
-  IGT_9059: f5a4ff79434df36db1d6b13deb37c90a6602565e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5607-24a2127c5f2bce93dbb33cbbee84666272a5e716: 24a2127c5f2bce93dbb33cbbee84666272a5e716
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/index.html
-
---===============6395653342681363944==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>intel-ci: Update Core Blocklists for LNL,PTL.NVL</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172334/">https://patchwork.freedesktop.org/series/172334/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9059_BAT -&gt; XEIGTPW_15689_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (12 -&gt; 13)</h2>
-<p>Additional (1): bat-bmg-2 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15689_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@write:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489">Intel XE#2489</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +13 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434">Intel XE#2434</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6314">Intel XE#6314</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_exec_multi_queue@priority:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_exec_multi_queue@priority.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364">Intel XE#8364</a>) +13 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xehpc:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelp:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_pat@pat-index-xelpg:</p>
-<ul>
-<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15689/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9059 -&gt; IGTPW_15689</li>
-</ul>
-<p>IGTPW_15689: 15689<br />
-  IGT_9059: f5a4ff79434df36db1d6b13deb37c90a6602565e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5607-24a2127c5f2bce93dbb33cbbee84666272a5e716: 24a2127c5f2bce93dbb33cbbee84666272a5e716</p>
-
-</body>
-</html>
-
---===============6395653342681363944==--
