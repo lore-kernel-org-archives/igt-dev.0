@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1BFBC5B572
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 15:12:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B91EAC5B572
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 15:13:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 763FD10E862;
-	Mon, 17 Aug 2026 15:12:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 46CF710E82E;
+	Mon, 17 Aug 2026 15:13:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="SLKB6MZM";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="aBcCsTYU";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 505FA10E428
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50B2F10E825
  for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 15:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=2Ce/YseCm/3mtaeVzxCJZBuxoTGq++jAuNFSAu9TQIY=; b=
- SLKB6MZMNizdzqK0OwkFF77Gp8ygbOIaIakkrXtPC3fhyJc4fyBKiRfQILctWGDr3+y5KTydFPbtq
- Kdl6m04iW3l5YQj+NHxe4/I0OI7OWKfhvNHNTVFNtWmxH8S/SSJq1IdCqToFllStwZQ3DMjqHXJFI
- 4z1sZshwmELtranHl2dfG5kt1vLclwUBjNdcyF7vnuMLp+gV2PGgsDPZa6ymQtT0VoNkehxdgykiB
- Ts9Qr09c12eWDGp1MZgVYgBBH9s4fXtjpmiqN0FQ6d5Om3Uml20Sm/nQUH3M/x5HEJ042khtK0avP
- D1Kn4SfIfIGtNELbnOorrW6Qyh3OaamZgw==;
+ Cc:To:From:From:Reply-To; bh=MIkGTYw2rPdwFghgO0IRy0xzN/SqLUXOVcyavU9bWwE=; b=
+ aBcCsTYUV/806yzyW6mBKFBe9vNHIh4CDFQFJ+4GJnPAN9vYOtksuCOEpnQs3Gu/vb0en6yroi0No
+ /KR5b7ObUvwbUTwRUxGAxy2HsqTMo0ukoVvJS9qs//YcbBxB3iUwda1HA4K8kcRI1t6JD4h5E0Z/G
+ 7H6Rvyfct6unH7pAo3wMiYn2CQrOxECogCdMkHMwaft+6i8vlw0I5bHKmq7u6cWrDczNw+zjiFWWW
+ mpwBsQHL+ue43etgB1JgM9uZ3tM3PQh3C7U1q6BBKEBNf48F0rZEbx1Xh2lFDHrZ9QES6Q/hBzbgX
+ J1dYA8/1RYK2VlaG1tGfrGf2JeKdvEnfKw==;
 Received: from 154.red-79-147-121.dynamicip.rima-tde.net ([79.147.121.154]
  helo=killbill) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wvywr-004dea-BV; Mon, 17 Aug 2026 17:08:25 +0200
+ id 1wvywp-004dea-Qk; Mon, 17 Aug 2026 17:08:23 +0200
 From: Melissa Wen <mwen@igalia.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -42,10 +42,10 @@ Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
  Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
  Uma Shankar <uma.shankar@intel.com>, Jani Nikula <jani.nikula@intel.com>,
  igt-dev@lists.freedesktop.org, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v4 7/8] tests/kms_color_pipeline: skip if not an Intel
- device
-Date: Mon, 17 Aug 2026 17:07:48 +0200
-Message-ID: <20260817150749.66509-8-mwen@igalia.com>
+Subject: [PATCH i-g-t v4 5/8] lib/igt_kms: extend igt_plane_set_color_pipeline
+ to accept Bypass
+Date: Mon, 17 Aug 2026 17:07:46 +0200
+Message-ID: <20260817150749.66509-6-mwen@igalia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260817150749.66509-1-mwen@igalia.com>
 References: <20260817150749.66509-1-mwen@igalia.com>
@@ -66,35 +66,152 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-According to its documentation, the test requires i915 or xe driver, so
-make sure it only runs with Intel devices. In addition, this is a
-CRC-based test, while kms_colorop uses writeback, which is better
-aligned with color testing and validation. Other drivers should adapt
-this test if they are looking for CRC validation.
+"Bypass" is just the COLOR_PIPELINE enum value with no colorop object
+behind it, which is what a NULL assigned_color_pipeline already means
+internally. Accept NULL and set "Bypass" instead of making callers poke
+the property directly, so a plane's assigned pipeline always matches
+what was committed.
 
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+That makes set_color_pipeline_bypass() a plain alias, so remove it from
+kms_colorop_helper and convert its callers, igt_plane_reset() included.
+
 Signed-off-by: Melissa Wen <mwen@igalia.com>
 ---
 
 v3:
-- do intel device check earlier
+- new patch, replaces the open-coded "Bypass" setting in patch 6
 ---
- tests/kms_color_pipeline.c | 2 ++
- 1 file changed, 2 insertions(+)
+ lib/igt_kms.c                                  | 13 ++++++++-----
+ tests/chamelium/kms_chamelium_color_pipeline.c |  2 +-
+ tests/kms_color_pipeline.c                     |  2 +-
+ tests/kms_colorop.c                            |  6 +++---
+ tests/kms_colorop_helper.c                     |  5 -----
+ tests/kms_colorop_helper.h                     |  1 -
+ 6 files changed, 13 insertions(+), 16 deletions(-)
 
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 00fd7ee2a..e9a14c991 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -2707,7 +2707,7 @@ static void igt_plane_reset(igt_plane_t *plane)
+ 		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
+ 
+ 	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+-		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
++		igt_plane_set_color_pipeline(plane, NULL);
+ 
+ 	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
+ 	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
+@@ -4429,17 +4429,20 @@ bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
+ /**
+  * igt_plane_set_color_pipeline:
+  * @plane: Target plane.
+- * @colorop: Colorop to set as color pipeline.
++ * @colorop: Colorop to set as color pipeline, or NULL for "Bypass".
+  *
+  * This function sets the given @colorop as color pipeline on @plane, or fails
+- * the test if it's an invalid color pipeline for the plane.
++ * the test if it's an invalid color pipeline for the plane. Passing NULL sets
++ * the plane color pipeline to "Bypass".
+  */
+ void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop)
+ {
+-	igt_assert(igt_plane_is_valid_colorop(plane, colorop));
++	igt_assert(!colorop || igt_plane_is_valid_colorop(plane, colorop));
+ 
+ 	plane->assigned_color_pipeline = colorop;
+-	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, colorop->name);
++	igt_plane_set_prop_enum(plane,
++				IGT_PLANE_COLOR_PIPELINE,
++				colorop ? colorop->name : "Bypass");
+ }
+ 
+ /**
+diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
+index db6107221..5738c6dd1 100644
+--- a/tests/chamelium/kms_chamelium_color_pipeline.c
++++ b/tests/chamelium/kms_chamelium_color_pipeline.c
+@@ -161,7 +161,7 @@ static void _test_plane_colorops(data_t *data,
+ 	chamelium_destroy_frame_dump(frame);
+ 
+ 	/* Cleanup */
+-	set_color_pipeline_bypass(plane);
++	igt_plane_set_color_pipeline(plane, NULL);
+ 	reset_colorops(colorops);
+ 
+ 	igt_plane_set_fb(plane, NULL);
 diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index f71416ce1..250a27d7f 100644
+index 78860a845..f71416ce1 100644
 --- a/tests/kms_color_pipeline.c
 +++ b/tests/kms_color_pipeline.c
-@@ -367,6 +367,8 @@ int igt_main()
- 		if (drmSetClientCap(data.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
- 			has_plane_color_pipeline = 1;
+@@ -168,7 +168,7 @@ static void _test_plane_colorops(data_t *data,
+ 	igt_assert_crc_equal(crc_ref, &crc_pipe);
  
-+		igt_require(is_intel_device(data.drm_fd));
-+
- 		kmstest_set_vt_graphics_mode();
+ 	/* Cleanup per-test state */
+-	set_color_pipeline_bypass(plane);
++	igt_plane_set_color_pipeline(plane, NULL);
+ 	reset_colorops(colorops);
+ 	igt_plane_set_fb(plane, NULL);
+ 	igt_display_commit_atomic(&data->display, 0, NULL);
+diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+index 16db0b8ad..8648bd7ce 100644
+--- a/tests/kms_colorop.c
++++ b/tests/kms_colorop.c
+@@ -224,7 +224,7 @@ static void colorop_plane_test(igt_display_t *display,
  
- 		igt_display_require(&data.display, data.drm_fd);
+ 	/* reset color pipeline*/
+ 
+-	set_color_pipeline_bypass(plane);
++	igt_plane_set_color_pipeline(plane, NULL);
+ 
+ 	/* Commit */
+ 	igt_plane_set_fb(plane, input_fb);
+@@ -255,7 +255,7 @@ static void colorop_plane_test(igt_display_t *display,
+ 
+ 	if (!colorops[0]) {
+ 		/* bypass test */
+-		set_color_pipeline_bypass(plane);
++		igt_plane_set_color_pipeline(plane, NULL);
+ 	} else {
+ 		/* get COLOR_PIPELINE enum */
+ 		color_pipeline = get_color_pipeline(display, plane, colorops);
+@@ -281,7 +281,7 @@ static void colorop_plane_test(igt_display_t *display,
+ 	igt_assert(compare_with_bracket(&sw_transform_fb, output_fb));
+ 
+ 	/* reset color pipeline*/
+-	set_color_pipeline_bypass(plane);
++	igt_plane_set_color_pipeline(plane, NULL);
+ 
+ 	/* Commit */
+ 	igt_plane_set_fb(plane, input_fb);
+diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+index 5b79fe789..707661378 100644
+--- a/tests/kms_colorop_helper.c
++++ b/tests/kms_colorop_helper.c
+@@ -398,11 +398,6 @@ void set_color_pipeline(igt_display_t *display,
+ 	}
+ }
+ 
+-void set_color_pipeline_bypass(igt_plane_t *plane)
+-{
+-	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
+-}
+-
+ static void reset_colorop(kms_colorop_t *colorop)
+ {
+ 	igt_assert(colorop->colorop);
+diff --git a/tests/kms_colorop_helper.h b/tests/kms_colorop_helper.h
+index a081fa02d..4d7d6bb3f 100644
+--- a/tests/kms_colorop_helper.h
++++ b/tests/kms_colorop_helper.h
+@@ -102,7 +102,6 @@ void set_color_pipeline(igt_display_t *display,
+ 			igt_plane_t *plane,
+ 			kms_colorop_t *colorops[],
+ 			igt_colorop_t *color_pipeline);
+-void set_color_pipeline_bypass(igt_plane_t *plane);
+ void reset_colorops(kms_colorop_t *colorops[]);
+ 
+ #endif /* __KMS_COLOROP_HELPER_H__ */
 -- 
 2.53.0
 
