@@ -4,52 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F227C5B572
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 05:32:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BB76C5CFC1
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 05:32:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C3DE110E640;
-	Mon, 17 Aug 2026 05:32:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 175A610E640;
+	Mon, 17 Aug 2026 05:32:46 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n7cph9qS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="b0/VK3Gp";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5F1810E640
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 05:31:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF79810E641
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 05:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786944694; x=1818480694;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=00lca9J2YaqZ82YyVuXyYfEXIDaNrptzy4a9L3JNcIo=;
- b=n7cph9qShnTXlVGL8Z2E0Vs3dHFkKX4j/xGEBSfzoMk/fX3wSgpJHeYY
- urGeFzqQ8dlIhezqtoP9N/qI8IWawtQjifAvulm4/y7wxaxIW0nxZIpsQ
- jefAOYg5gFpS2+gbBf4E0rYiUiaz2U8sTWGNGZkuBTImnpoiMRllD/J33
- /5BZUplqt1QPXo2dFk2c72C6+WlvUowXY0kmT6W2mDTDFanu4UhDwm5qK
- bkrLrmGUeea91HdCezHDjerD34EC6ZD98bEG0Pnr+W3b1mbiVTD88DN0e
- gwETr6ivm5PcEwziLzcoGdIniWmYIFzXwBJze6ZzwQpNUMzS+rIcSWkPE g==;
-X-CSE-ConnectionGUID: c3783I7SQ3i2MHiOksEo9w==
-X-CSE-MsgGUID: hpFRxbwCSzaPnovzXOfDEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="87538547"
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; d="scan'208";a="87538547"
+ t=1786944698; x=1818480698;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Tnma2PTe2v9/izvudOniJSn26pZXJs6yDf6ZfPy/stY=;
+ b=b0/VK3GpFf0EjSMH5E7qnNH0/cPv4ZAP41LQFqJL2qBOorrF6ZKWNAP1
+ sksO/jovhShUJ9dsSwWHWN6f2aFBJ61DHC87uYd6+CSuugdsBQ4pZICAG
+ LKdhsKS6rb52Vhtacpv+TL7LQVtkXhGiMGttVI3kYSaqz1MyH2ifzK8Wt
+ 7mG36rrXNED59G37faCMWElZEhq8MjQbGsSV9qbTmOzAVt+jVaNICnIdd
+ uv3woP4p3pGdtxTNwpmhEs9BAdRgH/62txdxiGtNU//hW1tK4PuhTt1LS
+ TZ42FUB6AZP+UAzMKEcaUXczoIBVOWcbvL9rmgCjWEHwL6R0mrPlb8Rsg A==;
+X-CSE-ConnectionGUID: LtLHiFMdReyZqRozNgtPUw==
+X-CSE-MsgGUID: SxNyTLbzRzSgjq1w5OI+HA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="87538550"
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; d="scan'208";a="87538550"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2026 22:31:34 -0700
-X-CSE-ConnectionGUID: IiPCBJ83S7SrPNE6aQV4Lg==
-X-CSE-MsgGUID: CymGqFN+Ty2CoNfUmwN2UQ==
+ 16 Aug 2026 22:31:37 -0700
+X-CSE-ConnectionGUID: /j8y9D5yT1mUJeS1A15WAg==
+X-CSE-MsgGUID: XbYGpMuHSUSan4Y1vOlOsA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; d="scan'208";a="268298868"
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; d="scan'208";a="268298889"
 Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Aug 2026 22:31:34 -0700
+ 16 Aug 2026 22:31:38 -0700
 From: Sobin Thomas <sobin.thomas@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	matthew.brost@intel.com
 Cc: nishit.sharma@intel.com,
 	Sobin Thomas <sobin.thomas@intel.com>
-Subject: [PATCH i-g-t v2 0/2] Add BO Allocation and VM Bind stress infra
-Date: Mon, 17 Aug 2026 05:31:02 +0000
-Message-ID: <20260817053107.887805-1-sobin.thomas@intel.com>
+Subject: [PATCH i-g-t v2 2/2] test/intel/xe_bo_alloc: Add oversubscribe
+ concurrent bind stress subtest
+Date: Mon, 17 Aug 2026 05:31:04 +0000
+Message-ID: <20260817053107.887805-3-sobin.thomas@intel.com>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260817053107.887805-1-sobin.thomas@intel.com>
+References: <20260817053107.887805-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,24 +70,550 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series adds the base BO allocation infra for excercising Xe VM
-Bind/Unbind with varying BO Sizes and execution workloads 
+Add test for oversubscribing VRAM in multi process environment that
+creates VM, bind large BOs and submit workloads nearly simultaneously.
 
-This infra supports individual and array VM binds, random sized BO
-allocation , threaded execution across engines, unaligned VA access and
-leak/eviction scenarios
+Previous coverage lacked a scenario combining multi-process bind
+with VRAM oversubscription. This generates memory pressure with
+multi-process VM Bind activity and concurrent submission, exercising
+the bind pipeline under eviction pressure.
 
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+---
+ tests/intel/xe_bo_alloc.c | 472 +++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 471 insertions(+), 1 deletion(-)
 
-Sobin Thomas (2):
-  tests/intel: add BO allocation stress coverage
-  test/intel/xe_bo_alloc: Add oversubscribe concurrent bind stress
-    subtest
-
- tests/intel/xe_bo_alloc.c | 1483 +++++++++++++++++++++++++++++++++++++
- tests/meson.build         |    1 +
- 2 files changed, 1484 insertions(+)
- create mode 100644 tests/intel/xe_bo_alloc.c
-
+diff --git a/tests/intel/xe_bo_alloc.c b/tests/intel/xe_bo_alloc.c
+index f3a833e61..b29db20f7 100644
+--- a/tests/intel/xe_bo_alloc.c
++++ b/tests/intel/xe_bo_alloc.c
+@@ -73,6 +73,11 @@
+  * Description: Test 50 random BO allocation sizes in test table with a thread per engine,
+  * leak the binding, unaligned bind addresses
+  * Test category: stress test
++ *
++ * SUBTEST: test_vm_oversubscribe_concurrent_bind
++ * Description: Test enough random BO allocation sizes, bound as arrays of binds, to trigger
++ * evictions with 2 processes per engine, leak the BO munmap / gem close, unaligned bind addresses
++ * Test category: stress test
+  */
+ 
+ #define SZ_4K_SHIFT	12
+@@ -87,12 +92,33 @@
+ #define N_ALLOC_SIZES	256
+ static uint64_t *alloc_sizes;
+ 
++struct gem_bo {
++	uint32_t handle;
++	uint64_t size;
++	uint32_t *ptr;
++	uint64_t addr;
++};
++
++struct xe_oversubscribe_ctx {
++	uint32_t vm_id;
++	uint32_t exec_queue_id;
++};
++
+ struct mem_bind_sync {
+ 	struct gem_bo *bufs;
+ 	int n_bufs;
+ 	uint64_t *binds_ufence;
+ };
+ 
++struct process_data {
++	pthread_mutex_t mutex;
++	pthread_cond_t cond;
++	int ready;
++	int failed;
++	pthread_barrier_t barrier;
++	bool go;
++};
++
+ /*
+  * Data-driven subtest matrix.
+  *
+@@ -113,6 +139,7 @@ enum test_type {
+ 	TYPE_SINGLE,
+ 	TYPE_ARRAY_BIND,
+ 	TYPE_THREAD,
++	TYPE_OVERSUBSCRIBE,
+ };
+ 
+ struct test_case {
+@@ -229,6 +256,443 @@ static int __xe_vm_bind_array(int fd, uint32_t vm,
+ 	return 0;
+ }
+ 
++static void init_pdata(struct process_data *pdata)
++{
++	pthread_mutexattr_t mattr;
++	pthread_condattr_t cattr;
++
++	pthread_mutexattr_init(&mattr);
++	pthread_mutexattr_setpshared(&mattr, PTHREAD_PROCESS_SHARED);
++	pthread_mutex_init(&pdata->mutex, &mattr);
++	pthread_mutexattr_destroy(&mattr);
++
++	pthread_condattr_init(&cattr);
++	pthread_condattr_setpshared(&cattr, PTHREAD_PROCESS_SHARED);
++	pthread_cond_init(&pdata->cond, &cattr);
++	pthread_condattr_destroy(&cattr);
++	pdata->ready = 0;
++	pdata->failed = 0;
++	pdata->go = false;
++}
++
++static void process_ready_and_wait(struct process_data *pdata)
++{
++	pthread_mutex_lock(&pdata->mutex);
++	pdata->ready++;
++	pthread_cond_broadcast(&pdata->cond);
++	while (!pdata->go)
++		pthread_cond_wait(&pdata->cond, &pdata->mutex);
++	pthread_mutex_unlock(&pdata->mutex);
++}
++
++static void process_setup_failed(struct process_data *pdata)
++{
++	pthread_mutex_lock(&pdata->mutex);
++	pdata->failed++;
++	pthread_cond_broadcast(&pdata->cond);
++	pthread_mutex_unlock(&pdata->mutex);
++}
++
++static void release_ready_processes(struct process_data *pdata, int n_proc)
++{
++	pthread_mutex_lock(&pdata->mutex);
++	/*
++	 * Wait until all children have either reached VM Bind rendevouz
++	 * Or, failed setup and exited the test path.
++	 */
++	while (pdata->ready + pdata->failed < n_proc)
++		pthread_cond_wait(&pdata->cond, &pdata->mutex);
++
++	igt_debug(" Process rendezvous: ready=%d failed=%d total = %d\n",
++		  pdata->ready, pdata->failed, n_proc);
++
++	/* Release every successful child into VM_Bind at same time*/
++	pdata->go = true;
++	pthread_cond_broadcast(&pdata->cond);
++	pthread_mutex_unlock(&pdata->mutex);
++}
++
++static int build_add_batch(struct gem_bo *batch_bo, struct gem_bo *integers_bo,
++			   struct gem_bo *result_bo, int ints_to_add)
++{
++	int pos = 0;
++	int i;
++	uint64_t tmp_addr;
++
++	batch_bo->ptr[pos++] = MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
++	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
++	tmp_addr = integers_bo->addr + 0 * sizeof(uint32_t);
++	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
++	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
++	for (i = 1; i < ints_to_add; i++) {
++		/* r1 = integers_bo[i] */
++		batch_bo->ptr[pos++] = MI_LOAD_REGISTER_MEM_CMD | MI_LRI_LRM_CS_MMIO | 2;
++		batch_bo->ptr[pos++] = GPR_RX_ADDR(1);
++		tmp_addr = integers_bo->addr + i * sizeof(uint32_t);
++		batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
++		batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
++		/* r0 = r0 + r1 */
++		batch_bo->ptr[pos++] = MI_MATH(4);
++		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCA, MI_MATH_REG(0));
++		batch_bo->ptr[pos++] = MI_MATH_LOAD(MI_MATH_REG_SRCB, MI_MATH_REG(1));
++		batch_bo->ptr[pos++] = MI_MATH_ADD;
++		batch_bo->ptr[pos++] = MI_MATH_STORE(MI_MATH_REG(0), MI_MATH_REG_ACCU);
++	}
++	/* result_bo[0] = r0 */
++	batch_bo->ptr[pos++] = MI_STORE_REGISTER_MEM_GEN8 | MI_LRI_LRM_CS_MMIO;
++	batch_bo->ptr[pos++] = GPR_RX_ADDR(0);
++	tmp_addr = result_bo->addr + 0 * sizeof(uint32_t);
++	batch_bo->ptr[pos++] = tmp_addr & 0xFFFFFFFF;
++	batch_bo->ptr[pos++] = (tmp_addr >> 32) & 0xFFFFFFFF;
++
++	batch_bo->ptr[pos++] = MI_BATCH_BUFFER_END;
++	while (pos % 4 != 0)
++		batch_bo->ptr[pos++] = MI_NOOP;
++	return pos;
++}
++
++static void create_exec_queue(int fd, struct xe_oversubscribe_ctx *ctx)
++{
++	ctx->exec_queue_id = xe_exec_queue_create(fd, ctx->vm_id,
++						  &xe_engine(fd, 0)->instance, 0);
++}
++
++static uint64_t *
++vm_bind_bo_batch(int fd, struct xe_oversubscribe_ctx *ctx, struct gem_bo *bos, int size,
++		 int *out_err)
++{
++	uint64_t *ufence;
++	struct drm_xe_sync bind_sync;
++	struct drm_xe_vm_bind_op *binds;
++	int i;
++
++	binds = calloc(size, sizeof(*binds));
++	igt_assert(binds);
++
++	ufence = calloc(1, sizeof(*ufence));
++	igt_assert(ufence);
++	bind_sync = (struct drm_xe_sync) {
++		.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.addr = to_user_pointer(ufence),
++		.timeline_value = 1,
++	};
++
++	for (i = 0; i < size; i++) {
++		binds[i] = (struct drm_xe_vm_bind_op) {
++			.obj = bos[i].handle,
++			.obj_offset = 0,
++			.range = bos[i].size,
++			.addr = bos[i].addr,
++			.op = DRM_XE_VM_BIND_OP_MAP,
++			.flags = 0,
++		};
++	}
++	*out_err = __xe_vm_bind_array(fd, ctx->vm_id, binds, size, &bind_sync, 1);
++	free(binds);
++	return ufence;
++}
++
++static int fill_random_integers(struct gem_bo *int_bo, int ints_to_add)
++{
++	uint32_t expected_result = 0;
++	char expr[256];
++	int len = 0;
++
++	for (int i = 0; i < ints_to_add; i++) {
++		uint32_t random_int = rand() % 8;
++
++		int_bo->ptr[i] = random_int;
++		expected_result += random_int;
++
++		len += snprintf(expr + len, sizeof(expr) - len, "%s%u",
++				i ? " + " : "", random_int);
++	}
++	igt_debug("%s = %u\n", expr, expected_result);
++	return expected_result;
++}
++
++static void cleanup_bo_resources(int fd, struct gem_bo *bo)
++{
++	if (bo->ptr) {
++		igt_assert_eq(munmap(bo->ptr, bo->size), 0);
++		bo->ptr = NULL;
++	}
++	if (bo->handle)
++		gem_close(fd, bo->handle);
++}
++
++static int create_test_bos(int fd, struct xe_oversubscribe_ctx *ctx,
++			   struct mem_bind_sync *bind, uint32_t placement,
++			   uint64_t *addr)
++{
++	const char *mem_type = (placement & vram_memory(fd, 0)) ? "VRAM" : "SRAM";
++	int ret;
++
++	for (int i = 0; i < bind->n_bufs; i++) {
++		struct gem_bo *bo = &bind->bufs[i];
++
++		bo->size = GB(1);
++		ret = __xe_bo_create_caching(fd, ctx->vm_id, bo->size, placement, 0,
++					     DRM_XE_GEM_CPU_CACHING_WC, &bo->handle);
++		if (ret) {
++			int saved_errno = errno; /* capture before anything can clobber it */
++
++			bind->n_bufs = i;
++			if (saved_errno == ENOMEM || saved_errno == ENOSPC) {
++				/* Continue on OOM, expected when oversubscribing the VM */
++				igt_debug("%s allocation failed at buffer %d (OOM)\n", mem_type, i);
++				break;
++			}
++			/* We are returning as this is a fail scenario */
++			igt_warn("%s allocation failed at buffer %d: %s\n",
++				 mem_type, i, strerror(saved_errno));
++			return -saved_errno;
++		}
++		bo->ptr = NULL;
++		bo->addr = *addr;
++		*addr += bo->size;
++		igt_debug("%s buffer %d created at 0x%016lx\n", mem_type, i, bo->addr);
++	}
++	return 0;
++}
++
++static void cleanup_sram_vram_objs(int fd, struct mem_bind_sync *vram_bind,
++				   struct mem_bind_sync *sram_bind)
++{
++	for (int i = 0; i < vram_bind->n_bufs; i++)
++		gem_close(fd, vram_bind->bufs[i].handle);
++	for (int i = 0; i < sram_bind->n_bufs; i++)
++		gem_close(fd, sram_bind->bufs[i].handle);
++	free(vram_bind->bufs);
++	free(sram_bind->bufs);
++	if (vram_bind->binds_ufence)
++		free(vram_bind->binds_ufence);
++	if (sram_bind->binds_ufence)
++		free(sram_bind->binds_ufence);
++}
++
++static void test_vm_oversubscribe_concurrent_bind(int fd)
++{
++	int n_proc = 0, n_vram_bufs = 0, n_sram_bufs = 0;
++	uint64_t max_by_mem;
++	uint64_t total_vram_demand = 0;
++	uint64_t vram_size = xe_visible_available_vram_size(fd, 0);
++	uint64_t sram_avail = (uint64_t)igt_get_avail_ram_mb() << 20;
++	uint64_t target_vram = vram_size * 2;
++	uint64_t target_sram, total_vram_bufs, total_sram_bufs;
++	struct process_data *pdata;
++
++	/*
++	 * Dynamically cap VRAM oversubscription so the overflow into system
++	 * RAM stays within 25% of available RAM. On small-VRAM platforms
++	 * (e.g. BMG) the 2x target fits within the cap and behavior is
++	 * unchanged; on large-VRAM platforms (e.g. PVC) this prevents OOM.
++	 */
++	target_vram = min(target_vram, vram_size + sram_avail / 4);
++	target_sram = min_t(uint64_t, sram_avail * 50 / 100,
++			    MAX_SRAM_TEST_SIZE);
++
++	total_vram_bufs = target_vram / GB(1);
++	total_sram_bufs = target_sram / GB(1);
++
++	/* determine concurrency from memory pressure */
++
++	max_by_mem = min(total_vram_bufs / MIN_BUFS_PER_PROC,
++			 total_sram_bufs / MIN_BUFS_PER_PROC);
++	n_proc = min_t(int, max_by_mem, MAX_PROCS);
++	igt_require_f(n_proc > 0, "Not enough VRAM/RAM for oversubscription test\n");
++
++	n_vram_bufs = max_t(int, 2, total_vram_bufs / n_proc);
++	n_sram_bufs = max_t(int, 2, total_sram_bufs / n_proc);
++	total_vram_demand = (uint64_t)n_proc * n_vram_bufs * GB(1);
++
++	igt_debug("VRAM size: %" PRIu64 "MB, System RAM available: %" PRIu64 "MB\n",
++		  vram_size >> 20, sram_avail >> 20);
++
++	igt_debug("n_proc = %d\n", n_proc);
++	igt_debug("VRAM: %" PRIu64 "GB\n", vram_size >> 30);
++	igt_debug("VRAM demand: %" PRIu64 "MB (%.2fx oversubscription)\n",
++		  total_vram_demand >> 20, (double)total_vram_demand / vram_size);
++	igt_debug("Processes=%d VRAM_bufs=%d SRAM_bufs=%d\n", n_proc,
++		  n_vram_bufs, n_sram_bufs);
++
++	pdata = mmap(NULL, sizeof(*pdata), PROT_READ | PROT_WRITE,
++		     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
++	igt_assert(pdata != MAP_FAILED);
++	init_pdata(pdata);
++
++	igt_fork(child, n_proc) {
++		struct xe_oversubscribe_ctx ctx = {0};
++		int rc, ret;
++		uint64_t addr = 0x40000000;
++		uint32_t expected_result = 0;
++		struct gem_bo integers_bo = {0}, result_bo = {0}, batch_bo = {0};
++		struct gem_bo *vram_bufs, *sram_bufs;
++		int pos = 0;
++		struct mem_bind_sync vram_bind = {0};
++		struct mem_bind_sync sram_bind = {0};
++		struct drm_xe_sync batch_syncs[1];
++		struct drm_xe_exec exec;
++		struct gem_bo ufence_bo = {0};
++		int vram_bind_err = 0, sram_bind_err = 0;
++
++		vram_bufs = calloc(n_vram_bufs, sizeof(*vram_bufs));
++		sram_bufs = calloc(n_sram_bufs, sizeof(*sram_bufs));
++		srand(child);
++
++		igt_assert(vram_bufs && sram_bufs);
++
++		ctx.vm_id = xe_vm_create(fd, DRM_XE_VM_CREATE_FLAG_SCRATCH_PAGE, 0);
++		create_exec_queue(fd, &ctx);
++		vram_bind.bufs = vram_bufs;
++		vram_bind.n_bufs = n_vram_bufs;
++		sram_bind.bufs = sram_bufs;
++		sram_bind.n_bufs = n_sram_bufs;
++
++		ret = create_test_bos(fd, &ctx, &vram_bind, vram_memory(fd, 0), &addr);
++		if (ret) {
++			process_setup_failed(pdata);
++			goto cleanup;
++		}
++
++		ret = create_test_bos(fd, &ctx, &sram_bind, system_memory(fd), &addr);
++		if (ret) {
++			process_setup_failed(pdata);
++			goto cleanup;
++		}
++
++		if (!vram_bind.n_bufs || !sram_bind.n_bufs) {
++			igt_debug("No BOs allocated; VRAM/SRAM unavailable, skipping\n");
++			process_setup_failed(pdata);
++			goto cleanup;
++		}
++
++		/*
++		 * All allocations are complete. Report Ready and wait until every
++		 * child has either reached this point or repported a setup failure.
++		 */
++
++		 process_ready_and_wait(pdata);
++
++		/*
++		 * VM_Bind starts only after the parent releases all ready
++		 * childen.
++		 */
++
++		if (vram_bind.n_bufs) {
++			vram_bind.binds_ufence =
++				vm_bind_bo_batch(fd, &ctx, vram_bufs,
++						 vram_bind.n_bufs, &vram_bind_err);
++			if (vram_bind_err) {
++				igt_assert_f(vram_bind_err == -ENOMEM || vram_bind_err == -ENOSPC,
++					     "Unexpected VRAM bind error: %d (%s)\n",
++					     vram_bind_err, strerror(-vram_bind_err));
++				igt_debug("VRAM bind failed with expected OOM (%s), skipping exec\n",
++					  strerror(-vram_bind_err));
++				goto cleanup;
++			}
++			xe_wait_ufence(fd, vram_bind.binds_ufence, 1, 0, TIMEOUT_NS);
++		}
++
++		if (sram_bind.n_bufs) {
++			sram_bind.binds_ufence =
++				vm_bind_bo_batch(fd, &ctx, sram_bufs,
++						 sram_bind.n_bufs, &sram_bind_err);
++			/* Assert if there is any bind error in SRAM */
++			if (sram_bind_err)
++				igt_assert_f(0, "Unexpected SRAM bind error: %d", sram_bind_err);
++			xe_wait_ufence(fd, sram_bind.binds_ufence, 1, 0, TIMEOUT_NS);
++	}
++
++		integers_bo.size = ALIGN(sizeof(int) * INT_ADD_CNT, 4096);
++		integers_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, integers_bo.size,
++							  system_memory(fd), 0,
++							  DRM_XE_GEM_CPU_CACHING_WC);
++		integers_bo.ptr = xe_bo_map(fd, integers_bo.handle, integers_bo.size);
++		integers_bo.addr = 0x100000;
++
++		expected_result = fill_random_integers(&integers_bo, INT_ADD_CNT);
++		igt_debug("%d\n", expected_result);
++
++		result_bo.size = ALIGN(sizeof(int), 4096);
++		result_bo.handle  = xe_bo_create_caching(fd, ctx.vm_id, result_bo.size,
++							 system_memory(fd), 0,
++							 DRM_XE_GEM_CPU_CACHING_WC);
++		result_bo.ptr = NULL;
++		result_bo.addr = 0x200000;
++
++		batch_bo.size = 4096;
++		batch_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, batch_bo.size,
++						       system_memory(fd), 0,
++						       DRM_XE_GEM_CPU_CACHING_WC);
++
++		batch_bo.ptr = xe_bo_map(fd, batch_bo.handle, batch_bo.size);
++		batch_bo.addr = 0x300000;
++
++		pos = build_add_batch(&batch_bo, &integers_bo, &result_bo, INT_ADD_CNT);
++
++		igt_assert(pos * sizeof(int) <= batch_bo.size);
++
++		xe_vm_bind_lr_sync(fd, ctx.vm_id, integers_bo.handle, 0, integers_bo.addr,
++				   integers_bo.size, 0);
++		xe_vm_bind_lr_sync(fd, ctx.vm_id, result_bo.handle, 0, result_bo.addr,
++				   result_bo.size, 0);
++		xe_vm_bind_lr_sync(fd, ctx.vm_id, batch_bo.handle, 0, batch_bo.addr,
++				   batch_bo.size, 0);
++
++		ufence_bo.size = 4096;
++		ufence_bo.handle = xe_bo_create_caching(fd, ctx.vm_id, ufence_bo.size,
++							system_memory(fd), 0,
++							DRM_XE_GEM_CPU_CACHING_WC);
++		ufence_bo.ptr = xe_bo_map(fd, ufence_bo.handle, ufence_bo.size);
++		ufence_bo.addr = 0x400000;
++		memset(ufence_bo.ptr, 0, ufence_bo.size);
++		xe_vm_bind_lr_sync(fd, ctx.vm_id, ufence_bo.handle, 0, ufence_bo.addr,
++				   ufence_bo.size, 0);
++
++		batch_syncs[0] = (struct drm_xe_sync){
++			.type = DRM_XE_SYNC_TYPE_USER_FENCE,
++			.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++			.addr = ufence_bo.addr,
++			.timeline_value = USER_FENCE_VALUE,
++		};
++
++		exec = (struct drm_xe_exec) {
++			.exec_queue_id = ctx.exec_queue_id,
++			.num_syncs = 1,
++			.syncs = (uintptr_t)batch_syncs,
++			.address = batch_bo.addr,
++			.num_batch_buffer = 1,
++		};
++
++		rc = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec);
++		igt_assert_f(rc == 0, "xe_exec failed unexpectedly: %s (%d)\n",
++			     strerror(errno), errno);
++		xe_wait_ufence(fd, (uint64_t *)ufence_bo.ptr, USER_FENCE_VALUE, ctx.exec_queue_id,
++			       TIMEOUT_NS);
++		result_bo.ptr = xe_bo_map(fd, result_bo.handle, result_bo.size);
++		igt_assert(result_bo.ptr != MAP_FAILED);
++		igt_assert_eq(result_bo.ptr[0], expected_result);
++cleanup:
++		cleanup_bo_resources(fd, &ufence_bo);
++		cleanup_bo_resources(fd, &result_bo);
++		cleanup_bo_resources(fd, &batch_bo);
++		cleanup_bo_resources(fd, &integers_bo);
++		cleanup_sram_vram_objs(fd, &vram_bind, &sram_bind);
++		xe_exec_queue_destroy(fd, ctx.exec_queue_id);
++		xe_vm_destroy(fd, ctx.vm_id);
++	}
++
++	release_ready_processes(pdata, n_proc);
++	igt_waitchildren();
++	igt_reset_timeout();
++
++	pthread_cond_destroy(&pdata->cond);
++	pthread_mutex_destroy(&pdata->mutex);
++	igt_assert_eq(munmap(pdata, sizeof(*pdata)), 0);
++}
++
+ static void alloc_sizes_init(void)
+ {
+ 	int i;
+@@ -828,7 +1292,7 @@ static void run_threaded_bo_alloc_test(int fd, int count, uint32_t flags)
+ 	pthread_mutex_t mutex;
+ 	pthread_cond_t cond;
+ 	bool begin_work = false;
+-	int n_found = 0, i;
++	int n_found = 0, i, ret;
+ 
+ 	xe_for_each_engine(fd, hwe)
+ 		n_found++;
+@@ -972,6 +1436,8 @@ static const struct test_case test_matrix[] = {
+ 	  false, false },
+ 	{ "threads-leak-binding-rand-sizes-50-unaligned", 50,
+ 	  LEAK_BINDING | UNALIGNED, TYPE_THREAD, false, false },
++	{ "test_vm_oversubscribe_concurrent_bind", 0, 0,
++	  TYPE_OVERSUBSCRIBE, false, false },
+ };
+ 
+ int igt_main()
+@@ -998,6 +1464,10 @@ int igt_main()
+ 				run_threaded_bo_alloc_test(fd, t->count, t->flags);
+ 			}
+ 			break;
++		case TYPE_OVERSUBSCRIBE:
++			igt_subtest_f("%s", t->name)
++				test_vm_oversubscribe_concurrent_bind(fd);
++			break;
+ 		case TYPE_ALL_SIZES:
+ 		case TYPE_SINGLE:
+ 		case TYPE_ARRAY_BIND:
 -- 
 2.52.0
 
