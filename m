@@ -4,68 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BEACC5DF66
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 15:58:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3684C5B572
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 16:09:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EF39310E888;
-	Mon, 17 Aug 2026 15:58:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B48310E261;
+	Mon, 17 Aug 2026 16:09:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FccCdSnP";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="sYAAHPwc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 75D6210E261
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 15:57:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786982265; x=1818518265;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=r8Udwhfe/4P0ewLmsa+cQG8uIj5XHYq2z8hz3g+k29Q=;
- b=FccCdSnP7uQ3gk5f2HsJEA37rZPETdwzscDF5C3g1/vD1p1TrIWHVhlQ
- 2o0jLTns3hdDsvipfRdKlGL5/OYq7GzHlWXOYNr3HgBMWBP56FAem3RBt
- S4yqrCpvc5ibFnc+kMdNzIWwiVDIuYiE2y/xnHWybdPqFm2TbcluCYVYV
- 4Vv10NeJSJi3qEs9uSX44PTNyuft7DjmnvheUTumDEHx+ZIOTLP4qGKMh
- 5TzchgIicAo9UKtgOvywHwgrMiBMIuod8l9NYeFpUdxyFJ/eXWTWzP/MF
- 0rAdtwLxz+vcGDHIkPvRPhrBtIPoPSASv6hDbjP6du15eN8trQ7urSBff g==;
-X-CSE-ConnectionGUID: CrXcTui1RxaUJyvGPvVwdg==
-X-CSE-MsgGUID: 291Tp/vMR42i/wDzYAdoHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="87583434"
-X-IronPort-AV: E=Sophos;i="6.25,229,1779174000"; d="scan'208";a="87583434"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Aug 2026 08:57:45 -0700
-X-CSE-ConnectionGUID: t1xEDwHYSaCq6QGmrixScw==
-X-CSE-MsgGUID: A63LcXl3QP6Qlewa93MNeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,229,1779174000"; d="scan'208";a="270150553"
-Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.110])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Aug 2026 08:57:40 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
- Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
- <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
- <bhanuprakash.modem@gmail.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>,
+Received: from CO1PR03CU002.outbound.protection.outlook.com
+ (mail-westus2azon11010056.outbound.protection.outlook.com [52.101.46.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2A4D010E261
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 16:08:30 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=J7OLhxgIlHpyzFTgjdI9cJM62QKBcV/jdERitscKni7tfEBSq11rjSHXBHzGJ47TCnK81IZqk+cdygUan2GMMzsG2wvDjPwkfl2ut2NfIcfyaWQhhJIAmZsnbw+/+L1kg1aEYdapKjMApnIvqeWIoZBURz5hr4Ye1g103tGUwkjoxyKy9EkxtliuzZEPCN2iBZcBT18FCVOpluLpGzAtSsColAY7ohkXq6ueMD6svCG1VAb9KNA4dh1M66xEprBFkEOFbETK32HQAPSMJSjG7gKBcshMqxPQrRc2qUS/ABlDxitHN9CJBns+zEK1XVbUvvvjp9HFEbI+Wp1TXfIOWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KcfKasu7XPIjCK0aUfRt725+CUf60HX7q4i7eWUZMVM=;
+ b=htTy/WtWjZuEL89oNPMrD3aGe72idGUUExG71vD07QueVv4rXRJlo6YPhVV39R6qTwdhmLynt7FczSmY5lbhgggcOnWwtvklBlT7QBpBq2PksjXvTl0TO2maW7fYva9Ad75VIe/xmtS4cxdrSZhPvmPoQVIinCOnIl00xB1QvsW1hbyYUdk5EQH6b4ebOUHcClsWWHZEjzS1RTlkR8knM/IAUmRpQ916C85E0ZOc1SoP9amQyRccTJOQ4xVyxmWnsN6y8K+/nRRDXfPBoMqcwwTpbaS8z86ubfoLoMnW3bCKgzJdnQrpY8s03AfHSl1eD0MFbvpcA9jgtg9sgeUk9g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KcfKasu7XPIjCK0aUfRt725+CUf60HX7q4i7eWUZMVM=;
+ b=sYAAHPwcvr5i63Ay0oVBVBkfIbITO4x8hPeHEhM3llrp0dzu9AI6xYlQ4pcMKGREDCSCjHylej/YZzgGaUAkCY+82glKgjwZA13tIWvjzYZySW4lXd8+7dzypMKu9Fpq7vTBYIDXH5eg/pLoibmbm9xTQRSvr7F6JnoZh0zuRBA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ0PR12MB7007.namprd12.prod.outlook.com (2603:10b6:a03:486::8)
+ by CH2PR12MB4167.namprd12.prod.outlook.com (2603:10b6:610:7a::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.17; Mon, 17 Aug
+ 2026 16:08:26 +0000
+Received: from SJ0PR12MB7007.namprd12.prod.outlook.com
+ ([fe80::6f95:c4a2:894d:9e8a]) by SJ0PR12MB7007.namprd12.prod.outlook.com
+ ([fe80::6f95:c4a2:894d:9e8a%5]) with mapi id 15.21.0315.016; Mon, 17 Aug 2026
+ 16:08:25 +0000
+Message-ID: <d3e26168-276b-48ae-a85c-11fa87e5ebb0@amd.com>
+Date: Mon, 17 Aug 2026 12:08:20 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3 6/6] tests/kms_color_pipeline: skip if not an
+ intel device
+From: Harry Wentland <harry.wentland@amd.com>
+To: Melissa Wen <mwen@igalia.com>, Alex Hung <alex.hung@amd.com>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
  Karthik B S <karthik.b.s@intel.com>
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>, Alex Hung
- <alex.hung@amd.com>, Swati Sharma <swati2.sharma@intel.com>, John Harrison
- <John.Harrison@Igalia.com>, Rodrigo Siqueira <siqueira@igalia.com>, Simon
- Ser <contact@emersion.fr>, Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland
- <harry.wentland@amd.com>, Uma Shankar <uma.shankar@intel.com>,
- igt-dev@lists.freedesktop.org, kernel-dev@igalia.com
-Subject: Re: [PATCH i-g-t v4 8/8] lib/igt_kms: add macros to iterate color
- pipelines and colorops
-In-Reply-To: <20260817150749.66509-9-mwen@igalia.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260817150749.66509-1-mwen@igalia.com>
- <20260817150749.66509-9-mwen@igalia.com>
-Date: Mon, 17 Aug 2026 18:57:37 +0300
-Message-ID: <ac3bce062c3fc16a78aa561c300b5c3af6496b11@intel.com>
+Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
+ Swati Sharma <swati2.sharma@intel.com>,
+ John Harrison <John.Harrison@Igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>, Simon Ser <contact@emersion.fr>,
+ Xaver Hugl <xaver.hugl@kde.org>, Uma Shankar <uma.shankar@intel.com>
+References: <20260811143558.141813-1-mwen@igalia.com>
+ <20260811143558.141813-7-mwen@igalia.com>
+ <62e1b4a3-ba46-4117-a3e3-05f9866aa614@amd.com>
+ <83fb4a66-cf7a-4ebb-be39-d3f51da4baa6@igalia.com>
+ <9e390216-298b-45c5-9ca7-f8b65ae957da@amd.com>
+Content-Language: en-US
+In-Reply-To: <9e390216-298b-45c5-9ca7-f8b65ae957da@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: YT4PR01CA0169.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:110::20) To SJ0PR12MB7007.namprd12.prod.outlook.com
+ (2603:10b6:a03:486::8)
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR12MB7007:EE_|CH2PR12MB4167:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1e192fbe-7a21-4e3a-5101-08defc79c468
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|23010399003|7416014|376014|1800799024|366016|11063799006|10067099003|4143699003|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: oinxVryGTuF0ksuq9zTzFi+D+LpkurVjpfYZX/r+PS4g+HauAJC6wf8HoRpbxjVwWbYmXHDTAW3NvHTSgMqSkv2jv42CGpRxRa21aTJCwDcWkEleZQxps+IOyV7+wuA9l9eBTXMvF0yzNVINStoLFajqFmpAjm1pV61y+s7qkFXREqG8NZiJngpD9IJyyWsklVlUbldZgSSaxw4PwQQGrWThkIluG+mQlkosoy8gelDl19nxkEMdNk4v3PATT+WzqdGBR8MfJ8giUsbuAKjzVeWm51qI0d4HfVtpv4abiGhfIxbVGYsNXsScFsDmrGpZJYPnGv6+DnqF+NFZK/VbTR/U2MAOfaQsZI1vGKCFcOq0t41ODi8snnE80u7ykpHGrG5LPBp1oB2T7F6NiomXKdeNeWDOIOdqlEWFC+9KSIyM3FifUrSjJiZ63gwMc5YKt3/2w7jqWFWN8+eAWbCVyiiVzdERZ21fBB45Y07KkXvCgMAUslWZ/1gJ7QeBy+BKBWDNxijBNc734cR8W87PKqiOP7nSrCquznJSQyQIByvRnssZECRx3YR7w2WYVWCZ4pncdHIPMKB5qSxNbP7ai0oam+HMxdxmXbeCtlKAvGaUY6PWXDDVhmYcLuiavsdbxqDAQ/lQrHsfgaunrUk0XUUmAfajo85uXwHvm3ZO+dA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR12MB7007.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(11063799006)(10067099003)(4143699003)(56012099006)(22082099003)(18002099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WVp1ZzBsVmRrQ3BmeDJrdG9SQ290bkI5Wjk1TFVra05DNm9SMkVGNVRzRHk1?=
+ =?utf-8?B?OUlqL09pMTBiNGIyZEwyMWVxNjBOc1Y0OXhSVXVLbnp3amYzVmw2Tkc2N2Vh?=
+ =?utf-8?B?R0ZtSHIzSTVqTjIyUHVXM0xzRzNoUnlkNFhoWmw2Tk01YXNrdmJtQXdhU0k4?=
+ =?utf-8?B?QVg1djVKeTRUcUsyQWtjaHkvNlRVWmRqQ1ltYXlmak4rRzNqOHFJS2VBUDk4?=
+ =?utf-8?B?bVVuY2ljZ0dGY2tjSER5cUVVVHJRTDRWa3ZYcnhGeFpMSkdiZzhNZmEzeUth?=
+ =?utf-8?B?VGw5cll3ZldtaVpib2VoWFlTenJaeS8valk0MXMzU3B5MldwODlRZjBrVWhE?=
+ =?utf-8?B?T3JEclNaTm5QeVJxenlTVDVyYjlOWGt3N09ZVGNFMTdDaHNJeDJabVJWOEFp?=
+ =?utf-8?B?WnBaaVpPZDlkNWZjWjhjWExMZ3BnL1JmdzB1OFB5eGM4OExzSE5VLzJ0ak9w?=
+ =?utf-8?B?MzUySTh2SW55YlNMWkpiMS9rd1V5M081cEhNTWRJS1lQSm9RS3F0WnNNZUpp?=
+ =?utf-8?B?TElHNllId0VBdFl3ZUkvY29xblNwOElxallPQjcrR2JYUkVpN3FvRXdGRWxK?=
+ =?utf-8?B?c1FrU3B3Q01iRVFJSEwxcGdBckRiMlpZZnBWUzg5MUVQZExvZXlWVFU2SGdp?=
+ =?utf-8?B?cmp5NnlYT05nS1hjQjA0aW5ZRnV6MXIwVDJ2WFJad1Fwc3EyM1lnUVF0TXIy?=
+ =?utf-8?B?ckNXdE9wcWROVUFUcGxta3BPZ0VTYTc2cUVUWHFmRVN1T0Zvc0JPS2wxZGxo?=
+ =?utf-8?B?RzlXWVBkeTJUODE4UGJaNE1oY0F0d2Uyci8vcXNzUWh0S2NyWW5FZS9oaDQz?=
+ =?utf-8?B?bXJEemJFbHFuY1JIOStKaVpESjFxODFnS2lMSWQrSi9uOHFGQ2lMVTJjaC9l?=
+ =?utf-8?B?SzdpcWxtRXZWYUtYeXVVZ3dmNmo0WmkvV2ZCL3U4SHIxZkVZMk9KWjVMbDR5?=
+ =?utf-8?B?ZnRIeVlGckVyWWZjRFFVUmltUlk0RDUxWVlUSURwKzlsdU81MzhqNU1hdGlY?=
+ =?utf-8?B?MFl2RUlubitsdW02N2dWK2tGRENSUDdTQXl4d2dzZTNkMlZDZFcvVHdkZElL?=
+ =?utf-8?B?SXd2YXh3OHhiTnI0SHcvOWVIWEpIN0lRRmJ3M3JOVk1zSlEvT0FGOHM1N0ZJ?=
+ =?utf-8?B?UnJmVEVuOHVnZ1VZZk15dm5GOFJWZC9XbkxESTdVeWRvMUxtV2x6Uk9UNnpO?=
+ =?utf-8?B?alY5VUxjdDlkdEF5L3RhSklFcjR4bHdzV3lHeGMrb2FEclljNXhuWFhiQStU?=
+ =?utf-8?B?YUNwai9xNndVaUgzQi9RdWYzd09ZVk9FRkJyYVBoNVViNzV4TDhJVFdoNVZv?=
+ =?utf-8?B?bGY1S0NQdURsbWQrcFFpTlFaRXgzYW1WelJWdWVweFVEUU80dVNMVjhhRys4?=
+ =?utf-8?B?eHpXVkVJcGlkR0NicVROaURwb0NpOE1lbUFBRVNSdC9raEhicUUyMXFTeWZw?=
+ =?utf-8?B?S3NWb2cyRWhGZVpQb3paMEpDZWlNMEh6SUZxTXJnU2NnY25iZCs5cFhuMHNp?=
+ =?utf-8?B?NGF0T3pGOGdUbnM4TjVrZ0l3ZXZNSkcwd0M3VnRvZmM5MFpjc3FuQVlwc3p5?=
+ =?utf-8?B?T3NvaHAvSDFUNmJNc1Bkb1p6T2xxWmhGbndteEIrazdXWFEvVjkyM1VzWGFI?=
+ =?utf-8?B?VHI1R1dDMERYV2UxaVpqQ0JSaW1KZU43cTkwYlV3c3pBYWpReDVvdmFVaEZF?=
+ =?utf-8?B?MDdZcmdCVE5ZSjI3ajNwaDZxTVNOWmVLUU45ZzVuMjVTa3NHdEZTNWk2TExs?=
+ =?utf-8?B?d1RkM3JlVjhmNER0a2VWM21WTlM0U21DdXJnMGVSaldNbVVxUUlJT0hoWDZJ?=
+ =?utf-8?B?QzIrdnl1VXNPa292cEJKOVJHdG11V3pJT0pvcnFHMThMZUVpRHk3VUVvQ3dn?=
+ =?utf-8?B?dFdnWU1tNnI5MFdPTUNkZlNtU3JVd0owT0RCdkRsTkZ4bHpzcVM5SWdKdnBO?=
+ =?utf-8?B?cUwyQ2dQbnBSVkVGSmp4QnJFL1RTOElFbS9UVHNRSGZ1VGtxVTNSNTlwbkV2?=
+ =?utf-8?B?NXJ3Y0hsU01aR3d5bE5JaDZSUmVSZ1RZbFlrVzVYVHZobk00L0UxMUU4bU51?=
+ =?utf-8?B?cmc2SnRwYXlXeHFRa2o4UXNqcTY5MElGREV0VzJWR2JlZFc5OHRqeUJ3b1Yv?=
+ =?utf-8?B?cWEwNWh1ZHkyNEdaOFluWnZuN0d4UGExMS9CazNPQlRSazlqamlBSkl3Ukxy?=
+ =?utf-8?B?MDhuaVNMK3hEVUpESkNTcW9zN2d1NXNlU0trOEpoS1REYmE0SVkrZy8yQVRS?=
+ =?utf-8?B?UXRBdjE3TTJUajNrOElqVVEyOThoUlpsNEFyazJHU1FJNzVVSnViZlMyMTg5?=
+ =?utf-8?B?TmEveUhEei9iNEwyTllaN3lQdTVZMUhUM1FkVmkrL3JwR0VydThzUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1e192fbe-7a21-4e3a-5101-08defc79c468
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB7007.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2026 16:08:25.1786 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PcStSdXi2qx3YBovKq3CtuIAXdPPHmCf5778RpD5ecjhjqct5svgH9ThrmQXhOUFniM7MbrXQBnVpy0jAOZEmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4167
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,352 +150,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 17 Aug 2026, Melissa Wen <mwen@igalia.com> wrote:
-> Walking a plane's color pipelines, and the colorop chain of a given
-> pipeline, is open-coded in six places across lib and the colorop tests.
-> Add for_each_color_pipeline() to iterate over all color pipelines
-> supported by a plane and for_each_colorop_in_pipeline() to iterate over
-> all colorops of a pipeline, together with the igt_colorop_next() helper
-> the latter builds on, and convert the existing walks.
->
-> The chain walk in igt_fill_plane_color_pipelines() is left as is: it
-> discovers colorops while walking, so igt_find_colorop() cannot resolve
-> them yet.
->
-> Suggested-by: Jani Nikula <jani.nikula@intel.com>
-> Signed-off-by: Melissa Wen <mwen@igalia.com>
-> ---
->
-> v4:
-> - new patch, suggested by Jani
-> ---
->  lib/igt_kms.c              | 52 ++++++++++++++++++++------------------
->  lib/igt_kms.h              |  9 +++++++
->  tests/kms_colorop.c        | 17 +++++--------
->  tests/kms_colorop_helper.c | 40 ++++++++++-------------------
->  tests/kms_properties.c     | 17 ++++---------
->  5 files changed, 62 insertions(+), 73 deletions(-)
 
-I like the diffstat, but I like the clarity more. :)
 
->
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index e9a14c991..7a21404b8 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -815,6 +815,21 @@ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id)
->  	return NULL;
->  }
->  
-> +/**
-> + * igt_colorop_next:
-> + * @display: a pointer to an #igt_display_t structure
-> + * @colorop: Current colorop.
-> + *
-> + * Returns: the colorop pointed to by @colorop's NEXT property, or NULL at the
-> + * end of the chain.
-> + */
-> +igt_colorop_t *igt_colorop_next(igt_display_t *display, igt_colorop_t *colorop)
-> +{
+On 2026-08-17 11:39, Harry Wentland wrote:
+> 
+> 
+> On 2026-08-17 11:19, Melissa Wen wrote:
+>>
+>>
+>> On 14/08/2026 05:55, Alex Hung wrote:
+>>>
+>>>
+>>> On 8/11/26 08:23, Melissa Wen wrote:
+>>>>  From documentation, the test requires i915 or xe driver, so make sure it
+>>>> only runs with intel devices. In addition, it's a CRC-based test, making
+>>> Should this test be moved to tests/intel/?
+>>
+>> I kept it as a KMS test because kms_colorop relies on writeback support, but writeback isn't present in many drivers AFAIK.
+>> So these CRC tests can be used by other drivers if they don't support writeback but support colorop.
+>>
+> 
+> In that case the test shouldn't have an igt_require(is_intel_device...). It should
+> use a generic check to determine whether it runs or not.
+> 
 
-Hmm. Can't you get at display via colorop->plane->crtc->display? Or can
-some of those be NULL?
+Not a blocker, btw. I just would like to see less "is_intel_device" in "generic"
+IGT tests.
 
-Not a big deal to keep it, might be a rabbit hole to ensure the above.
+Harry
 
-> +	uint32_t next = igt_colorop_get_prop(display, colorop, IGT_COLOROP_NEXT);
-> +
-> +	return igt_find_colorop(display, next);
-> +}
-> +
->  /*
->   * Retrieve all the properies specified in props_name and store them into
->   * colorop->props.
-> @@ -3809,13 +3824,14 @@ igt_atomic_prepare_plane_commit(igt_plane_t *plane, igt_crtc_t *crtc,
->   * Add colorop properties
->   */
->  static void
-> -igt_atomic_prepare_colorop_commit(igt_colorop_t *colorop, igt_crtc_t *crtc,
-> +igt_atomic_prepare_colorop_commit(igt_colorop_t *color_pipeline, igt_crtc_t *crtc,
->  				  drmModeAtomicReq *req)
->  {
->  	igt_display_t *display = crtc->display;
-> -	int i, next_val;
-> +	igt_colorop_t *colorop;
-> +	int i;
->  
-> -	while (colorop) {
-> +	for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
->  		LOG(display,
->  		    "populating colorop data: %s.%d\n",
->  		    igt_crtc_name(crtc),
-> @@ -3837,11 +3853,6 @@ igt_atomic_prepare_colorop_commit(igt_colorop_t *colorop, igt_crtc_t *crtc,
->  							colorop->props[i],
->  							colorop->values[i]));
->  		}
-> -
-> -		/* get next colorop */
-> -		next_val = igt_colorop_get_prop(display, colorop,
-> -						IGT_COLOROP_NEXT);
-> -		colorop = igt_find_colorop(display, next_val);
->  	}
->  }
->  
-> @@ -4414,18 +4425,16 @@ bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
->   */
->  bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
->  {
-> -	int i;
-> -	bool found = false;
-> +	igt_colorop_t *color_pipeline;
->  
-> -	for (i = 0; i < plane->num_color_pipelines; i++) {
-> -		if (plane->color_pipelines[i] == colorop) {
-> -			found = true;
-> -			break;
-> -		}
-> +	for_each_color_pipeline(plane, color_pipeline) {
-> +		if (color_pipeline == colorop)
-> +			return true;
->  	}
->  
-> -	return found;
-> +	return false;
->  }
-> +
->  /**
->   * igt_plane_set_color_pipeline:
->   * @plane: Target plane.
-> @@ -4925,15 +4934,10 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
->  				 * so already-committed property values aren't re-emitted on
->  				 * the next commit.
->  				 */
-> -				colorop = plane->assigned_color_pipeline;
-> -				while (colorop) {
-> -					uint32_t next_val;
-> -
-> +				for_each_colorop_in_pipeline(display,
-> +							     plane->assigned_color_pipeline,
-> +							     colorop)
->  					colorop->changed = 0;
-> -					next_val = igt_colorop_get_prop(display, colorop,
-> -									IGT_COLOROP_NEXT);
-> -					colorop = igt_find_colorop(display, next_val);
-> -				}
->  
->  				fd = plane->values[IGT_PLANE_IN_FENCE_FD];
->  				if (fd != -1)
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index ace8c2b1f..b4b666796 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -1022,6 +1022,15 @@ uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, en
->  		igt_colorop_set_prop_changed(colorop, prop); \
->  	} while (0)
->  
-> +igt_colorop_t *igt_colorop_next(igt_display_t *display, igt_colorop_t *colorop);
+> Harry
+> 
+>> Melissa
+>>
+>>>
+>>>> kms_colorop with writeback more aligned with color testing and
+>>>> validation. Other drivers should work on adapting this test to their
+>>>> needs if they are looking for CRC validation.
+>>>>
+>>>> Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+>>>> Signed-off-by: Melissa Wen <mwen@igalia.com>
+>>>> ---
+>>>>   tests/kms_color_pipeline.c | 1 +
+>>>>   1 file changed, 1 insertion(+)
+>>>>
+>>>> diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+>>>> index 78860a845..3978745a5 100644
+>>>> --- a/tests/kms_color_pipeline.c
+>>>> +++ b/tests/kms_color_pipeline.c
+>>>> @@ -372,6 +372,7 @@ int igt_main()
+>>>>           igt_display_require(&data.display, data.drm_fd);
+>>>>           data.display.has_plane_color_pipeline = has_plane_color_pipeline;
+>>>>           igt_require(data.display.is_atomic);
+>>>> +        igt_require(is_intel_device(data.drm_fd));
+>>>>       }
+>>>>         igt_subtest_group()
+>>>
+>>
+> 
 
-If this is only ever to be used with the iterator, maybe call it
-__igt_colorop_next(), because otherwise people will start using it
-willy-nilly.
-
-> +
-> +#define for_each_color_pipeline(plane, color_pipeline) \
-> +	for (int i__ = 0; i__ < (plane)->num_color_pipelines && \
-> +	     ((color_pipeline) = (plane)->color_pipelines[i__], true); i__++)
-
-With this, you could avoid the loop variable:
-
-	for ((color_pipeline) = &(plane)->color_pipelines[0]; \
-	     (color_pipeline) < &(plane)->color_pipelines[(plane)->num_color_pipelines]; \
-	     (color_pipeline)++)
-
-We do this in for_each_output(), for_each_crtc(),
-for_each_connector_mode(), etc. too.
-
-> +
-> +#define for_each_colorop_in_pipeline(display, pipeline, colorop) \
-> +	for ((colorop) = (pipeline); (colorop); \
-> +	     (colorop) = igt_colorop_next((display), (colorop)))
->  
->  extern bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
->  					    enum igt_atomic_colorop_properties prop,
-> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-> index 8648bd7ce..ae67d4f4c 100644
-> --- a/tests/kms_colorop.c
-> +++ b/tests/kms_colorop.c
-> @@ -296,10 +296,8 @@ static void colorop_plane_test(igt_display_t *display,
->  static void check_plane_colorop_ids(igt_display_t *display)
->  {
->  	igt_plane_t *plane;
-> -	int colorop_idx;
-> -	igt_colorop_t *next;
-> +	igt_colorop_t *colorop, *color_pipeline;
->  	igt_crtc_t *crtc;
-> -	int prop_val = 0;
->  
->  	/* Use hash tables to track drm_planes and unique IDs */
->  	GHashTable *plane_set = g_hash_table_new(g_direct_hash, g_direct_equal);
-> @@ -314,18 +312,15 @@ static void check_plane_colorop_ids(igt_display_t *display)
->  
->  			g_hash_table_add(plane_set, GINT_TO_POINTER(plane->drm_plane->plane_id));
->  
-> -			for (colorop_idx = 0; colorop_idx < plane->num_color_pipelines; colorop_idx++) {
-> -				next = plane->color_pipelines[colorop_idx];
-> -				while (next) {
-> +			for_each_color_pipeline(plane, color_pipeline) {
-> +				for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
->  					/* Check if the ID already exists in the set */
-> -					if (g_hash_table_contains(id_set, GINT_TO_POINTER(next->id))) {
-> +					if (g_hash_table_contains(id_set, GINT_TO_POINTER(colorop->id))) {
->  						igt_fail_on_f(true, "Duplicate colorop ID %u found on plane %d\n",
-> -						next->id, plane->drm_plane->plane_id);
-> +						colorop->id, plane->drm_plane->plane_id);
->  					}
->  
-> -					g_hash_table_add(id_set, GINT_TO_POINTER(next->id));
-> -					prop_val = igt_colorop_get_prop(display, next, IGT_COLOROP_NEXT);
-> -					next = igt_find_colorop(display, prop_val);
-> +					g_hash_table_add(id_set, GINT_TO_POINTER(colorop->id));
->  				}
->  			}
->  		}
-> diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
-> index 707661378..192502c18 100644
-> --- a/tests/kms_colorop_helper.c
-> +++ b/tests/kms_colorop_helper.c
-> @@ -230,29 +230,25 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
->   * colorops[] to it.
->   */
->  static bool map_to_pipeline(igt_display_t *display,
-> -			    igt_colorop_t *colorop,
-> +			    igt_colorop_t *color_pipeline,
->  			    kms_colorop_t *colorops[])
->  {
-> -	igt_colorop_t *next = colorop;
-> +	igt_colorop_t *colorop;
->  	kms_colorop_t *current_op;
->  	int i = 0;
-> -	int prop_val = 0;
->  
->  	current_op = colorops[i];
->  	i++;
->  	igt_require(current_op);
->  
-> -	while (next) {
-> -		if (can_use_colorop(display, next, current_op)) {
-> -			current_op->colorop = next;
-> +	for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
-> +		if (can_use_colorop(display, colorop, current_op)) {
-> +			current_op->colorop = colorop;
->  			current_op = colorops[i];
->  			i++;
->  			if (!current_op)
->  				break;
->  		}
-> -		prop_val = igt_colorop_get_prop(display, next,
-> -						IGT_COLOROP_NEXT);
-> -		next = igt_find_colorop(display, prop_val);
->  	}
->  
->  	if (current_op) {
-> @@ -272,18 +268,16 @@ igt_colorop_t *get_color_pipeline(igt_display_t *display,
->  			          igt_plane_t *plane,
->  				  kms_colorop_t *colorops[])
->  {
-> -	igt_colorop_t *colorop = NULL;
-> -	int i;
-> +	igt_colorop_t *color_pipeline;
->  
->  	/* go through all color pipelines */
-> -	for (i = 0; i < plane->num_color_pipelines; ++i) {
-> -		if (map_to_pipeline(display, plane->color_pipelines[i], colorops)) {
-> -			colorop = plane->color_pipelines[i];
-> -			break;
-> +	for_each_color_pipeline(plane, color_pipeline) {
-> +		if (map_to_pipeline(display, color_pipeline, colorops)) {
-> +			return color_pipeline;
->  		}
->  	}
->  
-> -	return colorop;
-> +	return NULL;
->  }
->  
->  static void fill_custom_1dlut(igt_display_t *display, kms_colorop_t *colorop)
-> @@ -374,8 +368,7 @@ void set_color_pipeline(igt_display_t *display,
->  			kms_colorop_t *colorops[],
->  			igt_colorop_t *color_pipeline)
->  {
-> -	igt_colorop_t *next;
-> -	int prop_val = 0;
-> +	igt_colorop_t *colorop;
->  	int i;
->  
->  	igt_plane_set_color_pipeline(plane, color_pipeline);
-> @@ -384,17 +377,12 @@ void set_color_pipeline(igt_display_t *display,
->  		set_colorop(display, colorops[i]);
->  
->  	/* set unused ops in pipeline to bypass */
-> -	next = color_pipeline;
->  	i = 0;
-> -	while (next) {
-> -		if (!colorops[i] || colorops[i]->colorop != next)
-> -			igt_colorop_set_prop_value(next, IGT_COLOROP_BYPASS, 1);
-> +	for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
-> +		if (!colorops[i] || colorops[i]->colorop != colorop)
-> +			igt_colorop_set_prop_value(colorop, IGT_COLOROP_BYPASS, 1);
->  		else
->  			i++;
-> -
-> -		prop_val = igt_colorop_get_prop(display, next,
-> -						IGT_COLOROP_NEXT);
-> -		next = igt_find_colorop(display, prop_val);
->  	}
->  }
->  
-> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-> index 764c77963..1395f10ae 100644
-> --- a/tests/kms_properties.c
-> +++ b/tests/kms_properties.c
-> @@ -239,9 +239,7 @@ static void run_colorop_property_tests(igt_display_t *display,
->  {
->  	struct igt_fb fb, afb;
->  	igt_plane_t *plane;
-> -	igt_colorop_t *colorop;
-> -	int i;
-> -	int colorop_id = 0;
-> +	igt_colorop_t *colorop, *color_pipeline;
->  
->  	prepare_crtc(display, crtc, output,
->  		     &fb);
-> @@ -268,23 +266,18 @@ static void run_colorop_property_tests(igt_display_t *display,
->  		}
->  
->  		/* iterate over all color pipelines on plane */
-> -		for (i = 0; i < plane->num_color_pipelines; ++i) {
-> -			/* iterate over all colorops in pipeline*/
-> -			colorop = plane->color_pipelines[i];
-> -			igt_plane_set_color_pipeline(plane, colorop);
-> +		for_each_color_pipeline(plane, color_pipeline) {
-> +			igt_plane_set_color_pipeline(plane, color_pipeline);
->  			igt_display_commit2(display, COMMIT_ATOMIC);
->  
-> -			while (colorop) {
-> +			/* iterate over all colorops in pipeline*/
-> +			for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
->  				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
->  					  igt_crtc_name(crtc), plane->index,
->  					  colorop->id,
->  					  kmstest_plane_type_name(plane->type), output->name);
->  				test_properties(display->drm_fd, DRM_MODE_OBJECT_COLOROP, colorop->id,
->  						atomic, display->has_plane_color_pipeline);
-> -
-> -				colorop_id = igt_colorop_get_prop(display, colorop,
-> -								IGT_COLOROP_NEXT);
-> -				colorop = igt_find_colorop(display, colorop_id);
->  			}
->  		}
-
--- 
-Jani Nikula, Intel
