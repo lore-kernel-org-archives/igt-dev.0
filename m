@@ -4,61 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A4D9C5DF70
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 09:50:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B77BC5DF66
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 10:54:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 350AD10E6FD;
-	Mon, 17 Aug 2026 09:50:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 20B7C10E709;
+	Mon, 17 Aug 2026 10:54:51 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="c/BWkhtX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QKR2AGc7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33F2110E6FD
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 09:50:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 802A410E3EE
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 10:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1786960211; x=1818496211;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=uCbGuf4Wmc9HYbFW2G4y2VlfcPhr/HqIDID4B6cPH1Q=;
- b=c/BWkhtXKXonr5dwksdmn3Cn2iYcABlMi87i9Fdi27tRFqoFBj35Mxrs
- HeFuw0Xy80MkHDcDUdlpy5EbgBvknIs5ShKzCBDZKm/tBhdWshe7hdacm
- PUI9tWp3VSt3qykBZYaoZZbKrUnA64pCUWj7zCnIlvDQMGALF4P3g34us
- M5cpbUCV5Xqfo+VhH4H0OJMXx+vKLCg8eE9C3uvlyDwlrW8smzTbsx0Kb
- vhTUS9TW6zquExrXsbb0RhHZwcxf6vE7+a16I+2uT+pmzuBBySNBSm2Og
- KFYnMdWx7W+0nwvJ/LaZznzwlCbfUKz3BXXiaM3FncPA3BgoLeMWuBk94 g==;
-X-CSE-ConnectionGUID: wko+GOp0S6Cmg0B8AsR2yQ==
-X-CSE-MsgGUID: VQh7I9GjQ46YxPPlx4YtdA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="87307433"
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; d="scan'208";a="87307433"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Aug 2026 02:50:11 -0700
-X-CSE-ConnectionGUID: 5p5tgkbjQt6pspmQFg0DGA==
-X-CSE-MsgGUID: sZqByqOzRGyCJel6kXLObQ==
+ t=1786964055; x=1818500055;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jYJvt6iPSdYqTYay7nOmjnBDrAx5ABZ+qIDlxLu+F8g=;
+ b=QKR2AGc7bDSivoPvi6szjiKnPQ+khpJw+LU+g9hyL7JQ8UUAfn+00mOM
+ o/xqLFZ3qOsLxQ+L+sExOJqiMBqbzcblEoggxTEMiAI9Lqn76iEsF8ezx
+ P0lQedyeCFN//LvdD9WxtaXlxiMB5Y834FLImST2N/f3KZ/OsL72xQn58
+ Rilhv0RQAxdz+YQhQzm9w01PQZ0VTL4K/jDqDqtqsBI8dCRujLXiFYYkt
+ bimwxz2hwukTvcbXpNgRTHXHsANfgA1LmZz+vtUWwO91zBU8+XjneTf/r
+ WDBsHCF9Q1RTI/qF+Qx6vXPCWdjtxCJYHoF3fRUV4dF5AT6Tj8zvMBlwm Q==;
+X-CSE-ConnectionGUID: 5odP6A8rQcyZUypKoihI/g==
+X-CSE-MsgGUID: o451/SlhSWann+KnRdziZA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11877"; a="91114832"
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; d="scan'208";a="91114832"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Aug 2026 03:54:14 -0700
+X-CSE-ConnectionGUID: Bdy7mISCRD2Y2NI0J7l2Lw==
+X-CSE-MsgGUID: r/sPzHG0R3S+K+z7KOSSzw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; d="scan'208";a="258666409"
-Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.110])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Aug 2026 02:50:09 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: "S, Sowmiya" <sowmiya.s@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-Cc: "B S, Karthik" <karthik.b.s@intel.com>, "Joshi, Kunal1"
- <kunal1.joshi@intel.com>
-Subject: RE: [PATCH i-g-t v5 0/4] kms_dp_linktrain_fallback: Add UHBR-to-HBR
- fallback subtest
-In-Reply-To: <PH7PR11MB679620384BF43A2B334BD04EE5A72@PH7PR11MB6796.namprd11.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260817082612.1101382-1-sowmiya.s@intel.com>
- <6a1c71f29004da4f88d9f6f0c22128cd735ef06d@intel.com>
- <PH7PR11MB679620384BF43A2B334BD04EE5A72@PH7PR11MB6796.namprd11.prod.outlook.com>
-Date: Mon, 17 Aug 2026 12:50:07 +0300
-Message-ID: <ed91f89c1aad62372f11e0d4c167e855547665cf@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,228,1779174000"; d="scan'208";a="265497241"
+Received: from cml-cometlake-client-platform.iind.intel.com ([10.223.55.11])
+ by orviesa009.jf.intel.com with ESMTP; 17 Aug 2026 03:54:13 -0700
+From: aditya.chauhan@intel.com
+To: igt-dev@lists.freedesktop.org
+Cc: ramadevi.gandi@intel.com,
+	himanshu.girotra@intel.com
+Subject: [PATCH i-g-t] intel-ci: Update Core Blocklists for LNL,PTL.NVL
+Date: Mon, 17 Aug 2026 16:24:11 +0530
+Message-Id: <20260817105411.1695841-1-aditya.chauhan@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,106 +65,138 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 17 Aug 2026, "S, Sowmiya" <sowmiya.s@intel.com> wrote:
-> Hi @Nikula, Jani,
->
->> -----Original Message-----
->> From: Nikula, Jani <jani.nikula@intel.com>
->> Sent: 17 August 2026 14:32
->> To: S, Sowmiya <sowmiya.s@intel.com>; igt-dev@lists.freedesktop.org
->> Cc: B S, Karthik <karthik.b.s@intel.com>; Joshi, Kunal1
->> <kunal1.joshi@intel.com>; S, Sowmiya <sowmiya.s@intel.com>
->> Subject: Re: [PATCH i-g-t v5 0/4] kms_dp_linktrain_fallback: Add UHBR-to-HBR
->> fallback subtest
->> 
->> On Mon, 17 Aug 2026, Sowmiya S <sowmiya.s@intel.com> wrote:
->> > DP 2.x links use 128b/132b channel encoding for UHBR rates
->> > (UHBR10/13.5/20) and 8b/10b for legacy HBR3 and below. The transition
->> > between the two encodings goes through a port-slice reset on the
->> > source side. The existing dp-fallback subtest only covers
->> > 8b/10b-to-8b/10b fallback; this series adds a dedicated subtest for the UHBR-
->> >HBR direction.
->> >
->> > Adds two library helpers to lib/i915/i915_dp:
->> >   - i915_dp_is_uhbr_rate(): mirrors the kernel's drm_dp_is_uhbr_rate()
->> >   - i915_dp_get_next_lower_rate(): parses the force_link_rate debugfs list
->> >     with proper strtok_r/strtol/errno handling
->> 
->> It occurs to me anything named "i915" is misleading here. This is about Intel
->> display shared between the i915 and xe drivers, not specific to
->> i915 alone.
->> 
->> BR,
->> Jani.
->> 
-> Agreed on the naming being misleading - but every other function in i915_dp.c/.h already uses the i915_dp_ prefix (i915_dp_get_current_link_rate(), i915_dp_force_link_retrain(), i915_dp_reset_link_params(), etc.), and all of those are used by the same xe-capable tests too. If I rename just these two new functions to intel_dp_* now, the file ends up with two inconsistent naming conventions side by side, which is arguably more confusing than the current single (if misleadingly-named) one.
->
-> If you can confirm, I can add these two following the existing i915_dp_ convention for now, and send a separate follow-up patch renaming the whole file's API (and called from other functions) to intel_dp*? 
+From: Aditya Chauhan <aditya.chauhan@intel.com>
 
-The long term goal should be to migrate towards driver agnostic naming
-for Intel display stuff.
+Update core blocklists for NVL,PTL,LNL by including vram dependent tests,
+d3cold tests, s3 tests, mgpu tests
 
-BR,
-Jani.
+Signed-off-by: Aditya Chauhan <aditya.chauhan@intel.com>
+---
+ tests/intel-ci/xe.lnl.core.blocklist.txt | 15 +++++++++++++++
+ tests/intel-ci/xe.nvl.core.blocklist.txt | 20 ++++++++++++++++++++
+ tests/intel-ci/xe.ptl.core.blocklist.txt | 10 ++++++++++
+ 3 files changed, 45 insertions(+)
 
-
->> >
->> > const char * signature for i915_dp_set_link_params() so string
->> > literals can be passed directly without a writable-array workaround.
->> >
->> > Fixes a pre-existing bug where the file-static
->> > traversed_mst_output_count was never reset between subtests, causing
->> > all MST outputs to be silently skipped as "already visited" in a full-binary run.
->> >
->> > Adds the uhbr-to-hbr-fallback subtest. The subtest pins the link at
->> > the highest sustainable UHBR rate (stepping down if the cable cannot
->> > sustain the sink's max), forces repeated LT_FAILURE_REDUCED_CAPS
->> > failures, and asserts the rate drops below UHBR10. MST topologies are
->> > supported since all siblings share the physical link. The existing
->> > run_lt_fallback_test() is extended with force_uhbr parameter to avoid ~45
->> lines of duplication.
->> >
->> > v2: Resets MST traversal state per test run
->> > v3:
->> >   - Drop "exercising the port slice reset path" from SUBTEST description
->> >   - Revert unrelated cosmetic hunk in setup_mst_outputs()
->> >   - Single UHBR capability gate using i915_dp_get_max_link_rate()
->> >   - remove duplicate gate using i915_dp_get_max_supported_rate()
->> >   - Fix link rate log units (10 kbit/s, not kbps)
->> >   - Add igt_reset_connectors() to pin-loop early-return path
->> >   - Replace UHBR10_LINK_RATE define with i915_dp_is_uhbr_rate() helper
->> >   - Replace open-coded strtok() parsing with i915_dp_get_next_lower_rate()
->> >   - Hard-assert "fallback not reached" instead of returning false
->> >   - Remove dead traversed_mst_output_count reset in run_dsc path
->> >   - Merge run_uhbr_to_hbr_fallback_test() into run_lt_fallback_test()
->> >   - Use "auto" string literal directly (const char * param fix)
->> >   - Move reset before UHBR capability gate read in run_lt_fallback_test()
->> >   - Document force_uhbr parameter and "clear the pin" reset behaviour
->> > v4:
->> >   - name the UHBR10 threshold and make i915_dp_is_uhbr_rate() a
->> >     static inline in the header to avoid a cross-TU call
->> >   - parse intel_dp_allowed_link_configs instead of the source-only
->> >     i915_dp_force_link_rate list in i915_dp_get_next_lower_rate()
->> >   - avoid the implicit long to int narrowing on the return value
->> > v5: commit display reset before fallback
->> >
->> > Sowmiya S (4):
->> >   lib/i915/i915_dp: Add UHBR helpers and const-correct set_link_params
->> >   tests/intel/kms_dp_linktrain_fallback: Reset traversed MST output
->> >     count
->> >   tests/intel/kms_dp_linktrain_fallback: Add UHBR-to-HBR fallback
->> >     subtest
->> >   tests/intel/kms_dp_linktrain_fallback: commit display reset before
->> >     fallback
->> >
->> >  lib/i915/i915_dp.c                      |  58 ++++++-
->> >  lib/i915/i915_dp.h                      |  24 ++-
->> >  tests/intel/kms_dp_linktrain_fallback.c | 202
->> > +++++++++++++++++++++---
->> >  3 files changed, 260 insertions(+), 24 deletions(-)
->> 
->> --
->> Jani Nikula, Intel
-
+diff --git a/tests/intel-ci/xe.lnl.core.blocklist.txt b/tests/intel-ci/xe.lnl.core.blocklist.txt
+index f921ca3a4..c1d2f425c 100644
+--- a/tests/intel-ci/xe.lnl.core.blocklist.txt
++++ b/tests/intel-ci/xe.lnl.core.blocklist.txt
+@@ -28,6 +28,15 @@ igt@xe_pm@d3hot-mmap-vram
+ igt@xe_sysfs_tile@physical_vram_size_bytes
+ igt@xe_vm@out-of-memory
+ igt@xe_compute_preempt@compute-preempt-many-vram.*
++igt@xe_vm@overcommit.*
++igt@xe_madvise@atomic.*
++igt@xe_pm_residency@aspm_link_residency
++##################################################################
++# Valid skip as VM_BIND decompression and the compressed PAT
++# index variants (wt / uc-comp) require VRAM
++##################################################################
++igt@xe_ccs@vm-bind.*
++igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-(wt|uc-comp)-(single|multi)-vma
+ ##################################################################
+ # No d3cold support for LNL
+ ##################################################################
+@@ -43,6 +52,11 @@ igt@xe_pm_residency@cpg-basic
+ ##################################################################
+ igt@intel_hwmon@.*
+ ##################################################################
++# Survivability mode is a discrete-only feature
++##################################################################
++igt@xe_configfs@survivability-mode
++igt@xe_survivability@.*
++##################################################################
+ # Expected Skip for xe2+ paltforms
+ ##################################################################
+ igt@xe_media_fill@media-fill
+@@ -57,6 +71,7 @@ igt@xe_pat@pat-index-xe3p-xpc
+ # Expected skip on integrated platforms
+ ##################################################################
+ igt@.*@.*multigpu.*
++igt@xe_multigpu_svm@.*
+ igt@xe_peer2peer@.*
+ #######################################################
+ # Expected behavior - CCS mode enabled only for platforms
+diff --git a/tests/intel-ci/xe.nvl.core.blocklist.txt b/tests/intel-ci/xe.nvl.core.blocklist.txt
+index b36921519..2f64bfd0d 100644
+--- a/tests/intel-ci/xe.nvl.core.blocklist.txt
++++ b/tests/intel-ci/xe.nvl.core.blocklist.txt
+@@ -21,6 +21,16 @@ igt@xe_eudebug_online@writes-caching-(?!sram-bb-sram-target-sram).*
+ igt@xe_compute_preempt@.*vram.*
+ igt@xe_sriov_vram@.*
+ igt@xe_vm@out-of-memory
++igt@xe_vm@overcommit.*
++igt@xe_madvise@atomic.*
++##################################################################
++# Valid skip: Flat CCS / device-memory compression is tied to
++# dedicated VRAM. NVL has no VRAM, so compressed-surface bind and
++# the compressed PAT index variants (wt / uc-comp) are not
++# applicable, and neither are device/global atomics on VRAM.
++##################################################################
++igt@xe_ccs@vm-bind.*
++igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-(wt|uc-comp)-(single|multi)-vma
+ ##################################################################
+ # Valid skip: PAT index tests targeting older/different platforms
+ # These PAT (Page Attribute Table) index subtests validate
+@@ -63,6 +73,7 @@ igt@xe_huc_copy@huc_copy
+ igt@xe_exec_balancer@.*
+ igt@xe_oa@oa-tlb-invalidate
+ igt@xe_pxp@.*
++igt@xe_fault_injection@exec-queue-create-fail-xe_pxp_exec_queue_add
+ ##################################################################
+ # Valid skip: test applicable only for i2c capable systems
+ ##################################################################
+@@ -71,6 +82,7 @@ igt@xe_pm@d3hot-i2c
+ # Valid skip: multigpu/multitile tests are not supported on NVL
+ ##################################################################
+ igt@.*@.*multigpu.*
++igt@xe_multigpu_svm@.*
+ igt@xe_peer2peer@.*
+ igt@.*@.*tiles
+ ##################################################################
+@@ -80,6 +92,14 @@ igt@intel_hwmon@.*
+ igt@xe_mmap@pci-membarrier.*
+ igt@xe_configfs@survivability-mode
+ igt@xe_survivability@.*
++igt@xe_pm@.*d3cold.*
++igt@xe_pm_residency@aspm_link_residency
++##################################################################
++# Valid skip: S3 (deep) suspend is not supported on NVL
++##################################################################
++igt@xe_gt_freq@freq_suspend
++igt@xe_pm@s3.*
++igt@xe_pm_residency@cpg-basic
+ ##################################################################
+ # Valid skip: EU debugger and SIP (System Interrupt Protocol)
+ # support is not yet available in the kernel for NVL. These tests
+diff --git a/tests/intel-ci/xe.ptl.core.blocklist.txt b/tests/intel-ci/xe.ptl.core.blocklist.txt
+index dc094e7e8..2574c0cc9 100644
+--- a/tests/intel-ci/xe.ptl.core.blocklist.txt
++++ b/tests/intel-ci/xe.ptl.core.blocklist.txt
+@@ -22,6 +22,15 @@ igt@xe_pm@d3hot-mmap-vram
+ igt@xe_compute_preempt@.*vram.*
+ igt@xe_vm@out-of-memory
+ igt@xe_evict.*
++igt@xe_vm@overcommit.*
++igt@xe_madvise@atomic.*
++igt@xe_pm_residency@aspm_link_residency
++##################################################################
++# Expected skip as VM_BIND decompression and the compressed PAT
++# index variants (wt / uc-comp) require device-local memory
++##################################################################
++igt@xe_ccs@vm-bind.*
++igt@xe_exec_system_allocator@pat-index-madvise-pat-idx-(wt|uc-comp)-(single|multi)-vma
+ ##################################################################
+ # No d3cold support for HW as of now
+ ##################################################################
+@@ -48,6 +57,7 @@ igt@xe_configfs@survivability-mode
+ ##################################################################
+ igt@intel_hwmon@.*
+ igt@.*@.*multigpu.*
++igt@xe_multigpu_svm@.*
+ igt@xe_peer2peer@.*
+ igt@xe_mmap@pci-membarrier.*
+ igt@xe_pm@d3hot-i2c
 -- 
-Jani Nikula, Intel
+2.34.1
+
