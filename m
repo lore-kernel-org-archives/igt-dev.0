@@ -4,30 +4,30 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B91EAC5B572
-	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 15:13:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4FC37C5B572
+	for <igt-dev@archiver.kernel.org>; Mon, 17 Aug 2026 15:14:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 46CF710E82E;
-	Mon, 17 Aug 2026 15:13:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D900910E838;
+	Mon, 17 Aug 2026 15:14:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="aBcCsTYU";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="GaTycJNs";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 50B2F10E825
- for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 15:08:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6579B10E838
+ for <igt-dev@lists.freedesktop.org>; Mon, 17 Aug 2026 15:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=MIkGTYw2rPdwFghgO0IRy0xzN/SqLUXOVcyavU9bWwE=; b=
- aBcCsTYUV/806yzyW6mBKFBe9vNHIh4CDFQFJ+4GJnPAN9vYOtksuCOEpnQs3Gu/vb0en6yroi0No
- /KR5b7ObUvwbUTwRUxGAxy2HsqTMo0ukoVvJS9qs//YcbBxB3iUwda1HA4K8kcRI1t6JD4h5E0Z/G
- 7H6Rvyfct6unH7pAo3wMiYn2CQrOxECogCdMkHMwaft+6i8vlw0I5bHKmq7u6cWrDczNw+zjiFWWW
- mpwBsQHL+ue43etgB1JgM9uZ3tM3PQh3C7U1q6BBKEBNf48F0rZEbx1Xh2lFDHrZ9QES6Q/hBzbgX
- J1dYA8/1RYK2VlaG1tGfrGf2JeKdvEnfKw==;
+ Cc:To:From:From:Reply-To; bh=WEHba8w+fY6Be4uotmfAEy5PALmG8J2panR6Reiz6T4=; b=
+ GaTycJNsjaC77SKwngU+7oSTAyKeCLvoYpUi1L7ZeJjVZhE2147ST8JxKeZHjcvccFbY02+riZ0g6
+ 3XOObeMrdxxizlAcltit5fDffrCPhaGxQlR9EJrfWv0/kYBPIb4IgI2mODe1YCuPVa1QvukjUwpwv
+ Di1tEMYu+Ggz6A42mssmpyYlUbPY/Vj4BWLt71n9wrO8NNHjJSzKR71YM/CGUoGStF+hQAuWXs5CH
+ cK9e2/XIzpcHUpK5O8aytBgfXyfGroWWFFrAK7ltldBv8Zbm2C+8ZRwxudK+Jsal8im3To5znfBRX
+ /cW60e1TOl9EWKzMsDtmfvGSccwy89NzUA==;
 Received: from 154.red-79-147-121.dynamicip.rima-tde.net ([79.147.121.154]
  helo=killbill) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wvywp-004dea-Qk; Mon, 17 Aug 2026 17:08:23 +0200
+ id 1wvyws-004dea-EF; Mon, 17 Aug 2026 17:08:26 +0200
 From: Melissa Wen <mwen@igalia.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -42,10 +42,10 @@ Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
  Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
  Uma Shankar <uma.shankar@intel.com>, Jani Nikula <jani.nikula@intel.com>,
  igt-dev@lists.freedesktop.org, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v4 5/8] lib/igt_kms: extend igt_plane_set_color_pipeline
- to accept Bypass
-Date: Mon, 17 Aug 2026 17:07:46 +0200
-Message-ID: <20260817150749.66509-6-mwen@igalia.com>
+Subject: [PATCH i-g-t v4 8/8] lib/igt_kms: add macros to iterate color
+ pipelines and colorops
+Date: Mon, 17 Aug 2026 17:07:49 +0200
+Message-ID: <20260817150749.66509-9-mwen@igalia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260817150749.66509-1-mwen@igalia.com>
 References: <20260817150749.66509-1-mwen@igalia.com>
@@ -66,152 +66,328 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-"Bypass" is just the COLOR_PIPELINE enum value with no colorop object
-behind it, which is what a NULL assigned_color_pipeline already means
-internally. Accept NULL and set "Bypass" instead of making callers poke
-the property directly, so a plane's assigned pipeline always matches
-what was committed.
+Walking a plane's color pipelines, and the colorop chain of a given
+pipeline, is open-coded in six places across lib and the colorop tests.
+Add for_each_color_pipeline() to iterate over all color pipelines
+supported by a plane and for_each_colorop_in_pipeline() to iterate over
+all colorops of a pipeline, together with the igt_colorop_next() helper
+the latter builds on, and convert the existing walks.
 
-That makes set_color_pipeline_bypass() a plain alias, so remove it from
-kms_colorop_helper and convert its callers, igt_plane_reset() included.
+The chain walk in igt_fill_plane_color_pipelines() is left as is: it
+discovers colorops while walking, so igt_find_colorop() cannot resolve
+them yet.
 
+Suggested-by: Jani Nikula <jani.nikula@intel.com>
 Signed-off-by: Melissa Wen <mwen@igalia.com>
 ---
 
-v3:
-- new patch, replaces the open-coded "Bypass" setting in patch 6
+v4:
+- new patch, suggested by Jani
 ---
- lib/igt_kms.c                                  | 13 ++++++++-----
- tests/chamelium/kms_chamelium_color_pipeline.c |  2 +-
- tests/kms_color_pipeline.c                     |  2 +-
- tests/kms_colorop.c                            |  6 +++---
- tests/kms_colorop_helper.c                     |  5 -----
- tests/kms_colorop_helper.h                     |  1 -
- 6 files changed, 13 insertions(+), 16 deletions(-)
+ lib/igt_kms.c              | 52 ++++++++++++++++++++------------------
+ lib/igt_kms.h              |  9 +++++++
+ tests/kms_colorop.c        | 17 +++++--------
+ tests/kms_colorop_helper.c | 40 ++++++++++-------------------
+ tests/kms_properties.c     | 17 ++++---------
+ 5 files changed, 62 insertions(+), 73 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 00fd7ee2a..e9a14c991 100644
+index e9a14c991..7a21404b8 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -2707,7 +2707,7 @@ static void igt_plane_reset(igt_plane_t *plane)
- 		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
- 
- 	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
--		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
-+		igt_plane_set_color_pipeline(plane, NULL);
- 
- 	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
- 	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
-@@ -4429,17 +4429,20 @@ bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
- /**
-  * igt_plane_set_color_pipeline:
-  * @plane: Target plane.
-- * @colorop: Colorop to set as color pipeline.
-+ * @colorop: Colorop to set as color pipeline, or NULL for "Bypass".
-  *
-  * This function sets the given @colorop as color pipeline on @plane, or fails
-- * the test if it's an invalid color pipeline for the plane.
-+ * the test if it's an invalid color pipeline for the plane. Passing NULL sets
-+ * the plane color pipeline to "Bypass".
-  */
- void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop)
- {
--	igt_assert(igt_plane_is_valid_colorop(plane, colorop));
-+	igt_assert(!colorop || igt_plane_is_valid_colorop(plane, colorop));
- 
- 	plane->assigned_color_pipeline = colorop;
--	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, colorop->name);
-+	igt_plane_set_prop_enum(plane,
-+				IGT_PLANE_COLOR_PIPELINE,
-+				colorop ? colorop->name : "Bypass");
+@@ -815,6 +815,21 @@ igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id)
+ 	return NULL;
  }
  
- /**
-diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
-index db6107221..5738c6dd1 100644
---- a/tests/chamelium/kms_chamelium_color_pipeline.c
-+++ b/tests/chamelium/kms_chamelium_color_pipeline.c
-@@ -161,7 +161,7 @@ static void _test_plane_colorops(data_t *data,
- 	chamelium_destroy_frame_dump(frame);
++/**
++ * igt_colorop_next:
++ * @display: a pointer to an #igt_display_t structure
++ * @colorop: Current colorop.
++ *
++ * Returns: the colorop pointed to by @colorop's NEXT property, or NULL at the
++ * end of the chain.
++ */
++igt_colorop_t *igt_colorop_next(igt_display_t *display, igt_colorop_t *colorop)
++{
++	uint32_t next = igt_colorop_get_prop(display, colorop, IGT_COLOROP_NEXT);
++
++	return igt_find_colorop(display, next);
++}
++
+ /*
+  * Retrieve all the properies specified in props_name and store them into
+  * colorop->props.
+@@ -3809,13 +3824,14 @@ igt_atomic_prepare_plane_commit(igt_plane_t *plane, igt_crtc_t *crtc,
+  * Add colorop properties
+  */
+ static void
+-igt_atomic_prepare_colorop_commit(igt_colorop_t *colorop, igt_crtc_t *crtc,
++igt_atomic_prepare_colorop_commit(igt_colorop_t *color_pipeline, igt_crtc_t *crtc,
+ 				  drmModeAtomicReq *req)
+ {
+ 	igt_display_t *display = crtc->display;
+-	int i, next_val;
++	igt_colorop_t *colorop;
++	int i;
  
- 	/* Cleanup */
--	set_color_pipeline_bypass(plane);
-+	igt_plane_set_color_pipeline(plane, NULL);
- 	reset_colorops(colorops);
- 
- 	igt_plane_set_fb(plane, NULL);
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index 78860a845..f71416ce1 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -168,7 +168,7 @@ static void _test_plane_colorops(data_t *data,
- 	igt_assert_crc_equal(crc_ref, &crc_pipe);
- 
- 	/* Cleanup per-test state */
--	set_color_pipeline_bypass(plane);
-+	igt_plane_set_color_pipeline(plane, NULL);
- 	reset_colorops(colorops);
- 	igt_plane_set_fb(plane, NULL);
- 	igt_display_commit_atomic(&data->display, 0, NULL);
-diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-index 16db0b8ad..8648bd7ce 100644
---- a/tests/kms_colorop.c
-+++ b/tests/kms_colorop.c
-@@ -224,7 +224,7 @@ static void colorop_plane_test(igt_display_t *display,
- 
- 	/* reset color pipeline*/
- 
--	set_color_pipeline_bypass(plane);
-+	igt_plane_set_color_pipeline(plane, NULL);
- 
- 	/* Commit */
- 	igt_plane_set_fb(plane, input_fb);
-@@ -255,7 +255,7 @@ static void colorop_plane_test(igt_display_t *display,
- 
- 	if (!colorops[0]) {
- 		/* bypass test */
--		set_color_pipeline_bypass(plane);
-+		igt_plane_set_color_pipeline(plane, NULL);
- 	} else {
- 		/* get COLOR_PIPELINE enum */
- 		color_pipeline = get_color_pipeline(display, plane, colorops);
-@@ -281,7 +281,7 @@ static void colorop_plane_test(igt_display_t *display,
- 	igt_assert(compare_with_bracket(&sw_transform_fb, output_fb));
- 
- 	/* reset color pipeline*/
--	set_color_pipeline_bypass(plane);
-+	igt_plane_set_color_pipeline(plane, NULL);
- 
- 	/* Commit */
- 	igt_plane_set_fb(plane, input_fb);
-diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
-index 5b79fe789..707661378 100644
---- a/tests/kms_colorop_helper.c
-+++ b/tests/kms_colorop_helper.c
-@@ -398,11 +398,6 @@ void set_color_pipeline(igt_display_t *display,
+-	while (colorop) {
++	for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
+ 		LOG(display,
+ 		    "populating colorop data: %s.%d\n",
+ 		    igt_crtc_name(crtc),
+@@ -3837,11 +3853,6 @@ igt_atomic_prepare_colorop_commit(igt_colorop_t *colorop, igt_crtc_t *crtc,
+ 							colorop->props[i],
+ 							colorop->values[i]));
+ 		}
+-
+-		/* get next colorop */
+-		next_val = igt_colorop_get_prop(display, colorop,
+-						IGT_COLOROP_NEXT);
+-		colorop = igt_find_colorop(display, next_val);
  	}
  }
  
--void set_color_pipeline_bypass(igt_plane_t *plane)
--{
--	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
--}
--
- static void reset_colorop(kms_colorop_t *colorop)
+@@ -4414,18 +4425,16 @@ bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
+  */
+ bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
  {
- 	igt_assert(colorop->colorop);
-diff --git a/tests/kms_colorop_helper.h b/tests/kms_colorop_helper.h
-index a081fa02d..4d7d6bb3f 100644
---- a/tests/kms_colorop_helper.h
-+++ b/tests/kms_colorop_helper.h
-@@ -102,7 +102,6 @@ void set_color_pipeline(igt_display_t *display,
- 			igt_plane_t *plane,
- 			kms_colorop_t *colorops[],
- 			igt_colorop_t *color_pipeline);
--void set_color_pipeline_bypass(igt_plane_t *plane);
- void reset_colorops(kms_colorop_t *colorops[]);
+-	int i;
+-	bool found = false;
++	igt_colorop_t *color_pipeline;
  
- #endif /* __KMS_COLOROP_HELPER_H__ */
+-	for (i = 0; i < plane->num_color_pipelines; i++) {
+-		if (plane->color_pipelines[i] == colorop) {
+-			found = true;
+-			break;
+-		}
++	for_each_color_pipeline(plane, color_pipeline) {
++		if (color_pipeline == colorop)
++			return true;
+ 	}
+ 
+-	return found;
++	return false;
+ }
++
+ /**
+  * igt_plane_set_color_pipeline:
+  * @plane: Target plane.
+@@ -4925,15 +4934,10 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
+ 				 * so already-committed property values aren't re-emitted on
+ 				 * the next commit.
+ 				 */
+-				colorop = plane->assigned_color_pipeline;
+-				while (colorop) {
+-					uint32_t next_val;
+-
++				for_each_colorop_in_pipeline(display,
++							     plane->assigned_color_pipeline,
++							     colorop)
+ 					colorop->changed = 0;
+-					next_val = igt_colorop_get_prop(display, colorop,
+-									IGT_COLOROP_NEXT);
+-					colorop = igt_find_colorop(display, next_val);
+-				}
+ 
+ 				fd = plane->values[IGT_PLANE_IN_FENCE_FD];
+ 				if (fd != -1)
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index ace8c2b1f..b4b666796 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -1022,6 +1022,15 @@ uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, en
+ 		igt_colorop_set_prop_changed(colorop, prop); \
+ 	} while (0)
+ 
++igt_colorop_t *igt_colorop_next(igt_display_t *display, igt_colorop_t *colorop);
++
++#define for_each_color_pipeline(plane, color_pipeline) \
++	for (int i__ = 0; i__ < (plane)->num_color_pipelines && \
++	     ((color_pipeline) = (plane)->color_pipelines[i__], true); i__++)
++
++#define for_each_colorop_in_pipeline(display, pipeline, colorop) \
++	for ((colorop) = (pipeline); (colorop); \
++	     (colorop) = igt_colorop_next((display), (colorop)))
+ 
+ extern bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
+ 					    enum igt_atomic_colorop_properties prop,
+diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+index 8648bd7ce..ae67d4f4c 100644
+--- a/tests/kms_colorop.c
++++ b/tests/kms_colorop.c
+@@ -296,10 +296,8 @@ static void colorop_plane_test(igt_display_t *display,
+ static void check_plane_colorop_ids(igt_display_t *display)
+ {
+ 	igt_plane_t *plane;
+-	int colorop_idx;
+-	igt_colorop_t *next;
++	igt_colorop_t *colorop, *color_pipeline;
+ 	igt_crtc_t *crtc;
+-	int prop_val = 0;
+ 
+ 	/* Use hash tables to track drm_planes and unique IDs */
+ 	GHashTable *plane_set = g_hash_table_new(g_direct_hash, g_direct_equal);
+@@ -314,18 +312,15 @@ static void check_plane_colorop_ids(igt_display_t *display)
+ 
+ 			g_hash_table_add(plane_set, GINT_TO_POINTER(plane->drm_plane->plane_id));
+ 
+-			for (colorop_idx = 0; colorop_idx < plane->num_color_pipelines; colorop_idx++) {
+-				next = plane->color_pipelines[colorop_idx];
+-				while (next) {
++			for_each_color_pipeline(plane, color_pipeline) {
++				for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
+ 					/* Check if the ID already exists in the set */
+-					if (g_hash_table_contains(id_set, GINT_TO_POINTER(next->id))) {
++					if (g_hash_table_contains(id_set, GINT_TO_POINTER(colorop->id))) {
+ 						igt_fail_on_f(true, "Duplicate colorop ID %u found on plane %d\n",
+-						next->id, plane->drm_plane->plane_id);
++						colorop->id, plane->drm_plane->plane_id);
+ 					}
+ 
+-					g_hash_table_add(id_set, GINT_TO_POINTER(next->id));
+-					prop_val = igt_colorop_get_prop(display, next, IGT_COLOROP_NEXT);
+-					next = igt_find_colorop(display, prop_val);
++					g_hash_table_add(id_set, GINT_TO_POINTER(colorop->id));
+ 				}
+ 			}
+ 		}
+diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+index 707661378..192502c18 100644
+--- a/tests/kms_colorop_helper.c
++++ b/tests/kms_colorop_helper.c
+@@ -230,29 +230,25 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+  * colorops[] to it.
+  */
+ static bool map_to_pipeline(igt_display_t *display,
+-			    igt_colorop_t *colorop,
++			    igt_colorop_t *color_pipeline,
+ 			    kms_colorop_t *colorops[])
+ {
+-	igt_colorop_t *next = colorop;
++	igt_colorop_t *colorop;
+ 	kms_colorop_t *current_op;
+ 	int i = 0;
+-	int prop_val = 0;
+ 
+ 	current_op = colorops[i];
+ 	i++;
+ 	igt_require(current_op);
+ 
+-	while (next) {
+-		if (can_use_colorop(display, next, current_op)) {
+-			current_op->colorop = next;
++	for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
++		if (can_use_colorop(display, colorop, current_op)) {
++			current_op->colorop = colorop;
+ 			current_op = colorops[i];
+ 			i++;
+ 			if (!current_op)
+ 				break;
+ 		}
+-		prop_val = igt_colorop_get_prop(display, next,
+-						IGT_COLOROP_NEXT);
+-		next = igt_find_colorop(display, prop_val);
+ 	}
+ 
+ 	if (current_op) {
+@@ -272,18 +268,16 @@ igt_colorop_t *get_color_pipeline(igt_display_t *display,
+ 			          igt_plane_t *plane,
+ 				  kms_colorop_t *colorops[])
+ {
+-	igt_colorop_t *colorop = NULL;
+-	int i;
++	igt_colorop_t *color_pipeline;
+ 
+ 	/* go through all color pipelines */
+-	for (i = 0; i < plane->num_color_pipelines; ++i) {
+-		if (map_to_pipeline(display, plane->color_pipelines[i], colorops)) {
+-			colorop = plane->color_pipelines[i];
+-			break;
++	for_each_color_pipeline(plane, color_pipeline) {
++		if (map_to_pipeline(display, color_pipeline, colorops)) {
++			return color_pipeline;
+ 		}
+ 	}
+ 
+-	return colorop;
++	return NULL;
+ }
+ 
+ static void fill_custom_1dlut(igt_display_t *display, kms_colorop_t *colorop)
+@@ -374,8 +368,7 @@ void set_color_pipeline(igt_display_t *display,
+ 			kms_colorop_t *colorops[],
+ 			igt_colorop_t *color_pipeline)
+ {
+-	igt_colorop_t *next;
+-	int prop_val = 0;
++	igt_colorop_t *colorop;
+ 	int i;
+ 
+ 	igt_plane_set_color_pipeline(plane, color_pipeline);
+@@ -384,17 +377,12 @@ void set_color_pipeline(igt_display_t *display,
+ 		set_colorop(display, colorops[i]);
+ 
+ 	/* set unused ops in pipeline to bypass */
+-	next = color_pipeline;
+ 	i = 0;
+-	while (next) {
+-		if (!colorops[i] || colorops[i]->colorop != next)
+-			igt_colorop_set_prop_value(next, IGT_COLOROP_BYPASS, 1);
++	for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
++		if (!colorops[i] || colorops[i]->colorop != colorop)
++			igt_colorop_set_prop_value(colorop, IGT_COLOROP_BYPASS, 1);
+ 		else
+ 			i++;
+-
+-		prop_val = igt_colorop_get_prop(display, next,
+-						IGT_COLOROP_NEXT);
+-		next = igt_find_colorop(display, prop_val);
+ 	}
+ }
+ 
+diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+index 764c77963..1395f10ae 100644
+--- a/tests/kms_properties.c
++++ b/tests/kms_properties.c
+@@ -239,9 +239,7 @@ static void run_colorop_property_tests(igt_display_t *display,
+ {
+ 	struct igt_fb fb, afb;
+ 	igt_plane_t *plane;
+-	igt_colorop_t *colorop;
+-	int i;
+-	int colorop_id = 0;
++	igt_colorop_t *colorop, *color_pipeline;
+ 
+ 	prepare_crtc(display, crtc, output,
+ 		     &fb);
+@@ -268,23 +266,18 @@ static void run_colorop_property_tests(igt_display_t *display,
+ 		}
+ 
+ 		/* iterate over all color pipelines on plane */
+-		for (i = 0; i < plane->num_color_pipelines; ++i) {
+-			/* iterate over all colorops in pipeline*/
+-			colorop = plane->color_pipelines[i];
+-			igt_plane_set_color_pipeline(plane, colorop);
++		for_each_color_pipeline(plane, color_pipeline) {
++			igt_plane_set_color_pipeline(plane, color_pipeline);
+ 			igt_display_commit2(display, COMMIT_ATOMIC);
+ 
+-			while (colorop) {
++			/* iterate over all colorops in pipeline*/
++			for_each_colorop_in_pipeline(display, color_pipeline, colorop) {
+ 				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
+ 					  igt_crtc_name(crtc), plane->index,
+ 					  colorop->id,
+ 					  kmstest_plane_type_name(plane->type), output->name);
+ 				test_properties(display->drm_fd, DRM_MODE_OBJECT_COLOROP, colorop->id,
+ 						atomic, display->has_plane_color_pipeline);
+-
+-				colorop_id = igt_colorop_get_prop(display, colorop,
+-								IGT_COLOROP_NEXT);
+-				colorop = igt_find_colorop(display, colorop_id);
+ 			}
+ 		}
+ 
 -- 
 2.53.0
 
