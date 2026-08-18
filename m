@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F600C5DF67
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Aug 2026 05:04:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49C5FC5DF74
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Aug 2026 05:28:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E5A310E9ED;
-	Tue, 18 Aug 2026 05:04:52 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 74B9E10E49F;
- Tue, 18 Aug 2026 05:04:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3183520207484442834=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C946210E4A3;
+	Tue, 18 Aug 2026 05:28:06 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="a9il2WUL";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CBDFA10E49F
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Aug 2026 05:27:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1787030847; x=1818566847;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=RMx1EvQbO9azm/xOCccJhZ7yXmDhbzb+2LqZFwp+KR8=;
+ b=a9il2WULLieJwHECGkBLywoc+TIeE3wi4NPOYREN8r6mx+GhMM2H1IUZ
+ e2r7WHY2sHVZJtVjfTuHH89SwY0m6uTb2F5MmKZLXA9Ect5QaEmu3Mq86
+ 1SVz5+NPWfEtvYqRNp1OoU+5ybPL7PVv05FiNTn7lEElrSbPWj6yW7qCW
+ M86llKOulj3Vp4D9ZNBhgfoTS43eYzkPKLlH4ssVxM74CV6G8x0TFSlIp
+ P4AuOAHqh2sHJS0SPaBtAy9wdnc4gaKOwMwI7L8FLg9th8WONwVv0Ozks
+ K1+FK9iMbFMJJQO4rOjJm+xFQTRVwYgSKU6AnFHh3sSIQ4qP56ES0/vIZ g==;
+X-CSE-ConnectionGUID: STuf7UuWQZKiit8bdo78ew==
+X-CSE-MsgGUID: oH/U7ZM9QsWoA8CwDMUZDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="87426806"
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; d="scan'208";a="87426806"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Aug 2026 22:27:26 -0700
+X-CSE-ConnectionGUID: QS/uWggDR3+KkRN9EaYixg==
+X-CSE-MsgGUID: 5hO68fmiRNGCUYtHdTb3ig==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; d="scan'208";a="288611349"
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Aug 2026 22:27:25 -0700
+From: Varun Gupta <varun.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: priyanka.dandamudi@intel.com
+Subject: [PATCH i-g-t 0/2] tests/intel/xe_prefetch_fault: Add L2 prefetch
+ fault tests
+Date: Tue, 18 Aug 2026 10:57:14 +0530
+Message-ID: <20260818052716.156973-1-varun.gupta@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_extend_GT_reset_stress_co?=
- =?utf-8?q?verage_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 18 Aug 2026 05:04:15 -0000
-Message-ID: <178702945546.61185.6919117505059818801@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260818040845.548727-1-nishit.sharma@intel.com>
-In-Reply-To: <20260818040845.548727-1-nishit.sharma@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,164 +63,23 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3183520207484442834==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add coverage for L2 prefetch faults in the xe_prefetch_fault test.
 
-== Series Details ==
+The existing test framework is first refactored to support different
+prefetch shader configurations. The second patch then adds coverage for
+L2 prefetch faults in both regular and SVM modes.
 
-Series: extend GT reset stress coverage (rev2)
-URL   : https://patchwork.freedesktop.org/series/167962/
-State : success
+Varun Gupta (2):
+  tests/intel/xe_prefetch_fault: refactor test to accept shader function
+    pointer
+  tests/intel/xe_prefetch_fault: add L2 prefetch fault subtests
 
-== Summary ==
+ tests/intel/xe_prefetch_fault.c | 120 +++++++++++++++++++++++++++++---
+ 1 file changed, 112 insertions(+), 8 deletions(-)
 
-CI Bug Log - changes from IGT_9059 -> IGTPW_15693
-====================================================
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/index.html
-
-Participating hosts (40 -> 38)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15693 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - fi-bsw-nick:        [PASS][1] -> [ABORT][2] ([i915#16562])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9059/fi-bsw-nick/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/fi-bsw-nick/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@hangcheck:
-    - fi-bsw-nick:        [PASS][3] -> [ABORT][4] ([i915#16633])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9059/fi-bsw-nick/igt@i915_selftest@live@hangcheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/fi-bsw-nick/igt@i915_selftest@live@hangcheck.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_pm_rpm@basic-rte:
-    - bat-rpls-4:         [DMESG-WARN][5] ([i915#13400]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9059/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html
-
-  
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
-  [i915#16562]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16562
-  [i915#16633]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16633
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9059 -> IGTPW_15693
-  * Linux: CI_DRM_19006 -> CI_DRM_19009
-
-  CI-20190529: 20190529
-  CI_DRM_19006: b801f94c49ffdb0f65e37baf31d68570356d4983 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19009: 775a898c77eec44922595e8f318cd359c98944fd @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15693: 15693
-  IGT_9059: f5a4ff79434df36db1d6b13deb37c90a6602565e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/index.html
-
---===============3183520207484442834==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>extend GT reset stress coverage (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167962/">https://patchwork.freedesktop.org/series/167962/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9059 -&gt; IGTPW_15693</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15693 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9059/fi-bsw-nick/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/fi-bsw-nick/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16562">i915#16562</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@hangcheck:</p>
-<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9059/fi-bsw-nick/igt@i915_selftest@live@hangcheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/fi-bsw-nick/igt@i915_selftest@live@hangcheck.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16633">i915#16633</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_pm_rpm@basic-rte:<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9059/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15693/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9059 -&gt; IGTPW_15693</li>
-<li>Linux: CI_DRM_19006 -&gt; CI_DRM_19009</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19006: b801f94c49ffdb0f65e37baf31d68570356d4983 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19009: 775a898c77eec44922595e8f318cd359c98944fd @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15693: 15693<br />
-  IGT_9059: f5a4ff79434df36db1d6b13deb37c90a6602565e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============3183520207484442834==--
