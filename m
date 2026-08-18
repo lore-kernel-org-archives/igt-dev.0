@@ -4,58 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ED94C5DF7D
-	for <igt-dev@archiver.kernel.org>; Tue, 18 Aug 2026 13:46:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1006AC5DF74
+	for <igt-dev@archiver.kernel.org>; Tue, 18 Aug 2026 13:55:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 10EDB10E053;
-	Tue, 18 Aug 2026 13:46:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B671A10EB88;
+	Tue, 18 Aug 2026 13:55:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oEzC3mZj";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="lLE09TT+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9F81310EB81
- for <igt-dev@lists.freedesktop.org>; Tue, 18 Aug 2026 13:45:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787060755; x=1818596755;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=Sn1YquNknzavSqNKhN3EblV2cw4jXo/zhCx+xhsLQjs=;
- b=oEzC3mZjlpxsmE0RQykupunVa00Uk1byDT9zKC2wzqynhsquq5cAR1xL
- lIMKeLMSBX+IxCi37VLnUhMjUudE/b+ZHoihzSu/ekC2C0pqGS0477h17
- gVaoLmWFbLtxJnn1syWF2y/1DNEQZzHH816GTRt3fxHAEnKXXefJqzZE5
- Z6jV18WCI9W1ms2l4vTDQ73YXCqaba4mGuUt3mkD1fkSddajSWjlU3mYD
- XOPnbF9TnPAf9aBAK+O1GSBf4tLAXEcWvtGrVlaSVCqIUZGRpsTbyAjnb
- WqtdRngibpZpENZETuVKkiBUagBiAry+akMeeKD6EBKfgGoI9aDhCgHPX w==;
-X-CSE-ConnectionGUID: sCM+0JF4TAGPg904Ym4EKA==
-X-CSE-MsgGUID: MRwH92PvTxCBZNo5wKHR+w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11878"; a="105086981"
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; d="scan'208";a="105086981"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2026 06:45:54 -0700
-X-CSE-ConnectionGUID: REkyAt/9QUWC+2gV54C0RQ==
-X-CSE-MsgGUID: TiDuVG2LRquzo+1jlLnF0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,230,1779174000"; d="scan'208";a="262602111"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.106])
- ([172.28.182.106])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2026 06:45:53 -0700
-Message-ID: <dc2dcca4-b1d3-4367-a543-d69e066b7ede@linux.intel.com>
-Date: Tue, 18 Aug 2026 15:45:51 +0200
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F72710EB88
+ for <igt-dev@lists.freedesktop.org>; Tue, 18 Aug 2026 13:54:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
+ MIME-Version:Date:Message-ID:From:Reply-To;
+ bh=nDZ5YPZOgNHUhC7d0StdomFTkkJtIRrarlWAGbeQulM=; b=lLE09TT+GAvU4u/yytirx40ZA8
+ k1m3lRm0kg3oLkdsqiIGX6M4O2k/VEWC8pzARQhI05qjof0lSFbuwMft0NxnPFSl7G6QDYf2/1tHL
+ y67KaxQwtzySPZdKrdF2lO0CaHpLLO/jm2lgcYJ3wkbAT/frM8sg8fcnY/AoNxSWA8Rx9W77SxDG8
+ XHd9Ce/oMGBATpbKiUzycCycov8CPNBeP8xGhS06hBlRfid89dk/wYaoxLvPEtD8iGSlgPwyzTkzu
+ CULZ6Gecub/14bgTdbfk/XKRRvLPjcG8dqnaBTC7xEIlGpiVSXPXH+lKAS9a1RdJPztwhfzR6S0jj
+ orKfzAuA==;
+Received: from 154.red-79-147-121.dynamicip.rima-tde.net ([79.147.121.154]
+ helo=[192.168.1.203]) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1wwKGx-005dpw-7i; Tue, 18 Aug 2026 15:54:35 +0200
+Message-ID: <4a5e0dea-1a44-4e5a-97c5-530e61a92ee3@igalia.com>
+Date: Tue, 18 Aug 2026 15:54:33 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] intel-ci: Block igt@xe_sriov_ggtt.*
-To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com, piotr.piorkowski@intel.com
-References: <20260804072407.1090889-1-lukasz.laguna@intel.com>
- <20260804072407.1090889-3-lukasz.laguna@intel.com>
+Subject: Re: [PATCH i-g-t v3 6/6] tests/kms_color_pipeline: skip if not an
+ intel device
+To: Harry Wentland <harry.wentland@amd.com>, Alex Hung <alex.hung@amd.com>,
+ Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
+ Swati Sharma <swati2.sharma@intel.com>,
+ John Harrison <John.Harrison@Igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>, Simon Ser <contact@emersion.fr>,
+ Xaver Hugl <xaver.hugl@kde.org>, Uma Shankar <uma.shankar@intel.com>
+References: <20260811143558.141813-1-mwen@igalia.com>
+ <20260811143558.141813-7-mwen@igalia.com>
+ <62e1b4a3-ba46-4117-a3e3-05f9866aa614@amd.com>
+ <83fb4a66-cf7a-4ebb-be39-d3f51da4baa6@igalia.com>
+ <9e390216-298b-45c5-9ca7-f8b65ae957da@amd.com>
 Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260804072407.1090889-3-lukasz.laguna@intel.com>
+From: Melissa Wen <mwen@igalia.com>
+In-Reply-To: <9e390216-298b-45c5-9ca7-f8b65ae957da@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,32 +74,74 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 8/4/2026 9:24 AM, Lukasz Laguna wrote:
-> This test is dedicated for HW checkout and it's not suited for recurring
-> CI runs.
->
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->   tests/intel-ci/xe.blocklist.txt | 4 ++++
->   1 file changed, 4 insertions(+)
->
-> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-> index 410f43b17..d0a2bf87d 100644
-> --- a/tests/intel-ci/xe.blocklist.txt
-> +++ b/tests/intel-ci/xe.blocklist.txt
-> @@ -114,6 +114,10 @@ igt@sriov_basic@enable-vfs-autoprobe-on$
->   igt@sriov_basic@enable-vfs-bind-unbind-each$
->   igt@sriov_basic@bind-unbind-vf$
->   ##################################################################
-> +# SR-IOV tests for HW checkout, not suited for recurring CI runs
-> +##################################################################
-> +igt@xe_sriov_ggtt.*
-> +##################################################################
->   # Chamelium V1 HDMI receiver supports a maximum resolution
->   # of 4K @ 30Hz. This test enforces an EDID with 4K @ 60Hz,
->   # which exceeds the capabilities of V1 hardware and results
 
-LGTM,
+On 17/08/2026 17:39, Harry Wentland wrote:
+>
+> On 2026-08-17 11:19, Melissa Wen wrote:
+>>
+>> On 14/08/2026 05:55, Alex Hung wrote:
+>>>
+>>> On 8/11/26 08:23, Melissa Wen wrote:
+>>>>   From documentation, the test requires i915 or xe driver, so make sure it
+>>>> only runs with intel devices. In addition, it's a CRC-based test, making
+>>> Should this test be moved to tests/intel/?
+>> I kept it as a KMS test because kms_colorop relies on writeback support, but writeback isn't present in many drivers AFAIK.
+>> So these CRC tests can be used by other drivers if they don't support writeback but support colorop.
+>>
+> In that case the test shouldn't have an igt_require(is_intel_device...). It should
+> use a generic check to determine whether it runs or not.
 
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+What would be this generic check? Something like "CRC support && 
+!writeback"?
+
+I took this `is_intel_device` path because on one hand I think the test 
+could be an
+alternative to other drivers that doesn't support writeback, on the 
+other hand I see
+that the current design is not generic enough and I can't ensure it runs 
+well in
+other drivers - for example, rn it doesn't meet AMD's requirements.
+
+My reasoning was: "the test with writeback support is preferable 
+(kms_colorop); if your
+driver doesn't support writeback, work on the kms_color_pipeline test to 
+meet the
+requirements of your driver".
+
+I can check how it goes with VKMS and what's needed to make it run on 
+AMD (probably
+the active primary plane is missing here too). I just don't think those 
+drivers need
+kms_color_pipeline since they support writeback and color tests work 
+better by
+checking writeback output instead of CRC.
+
+Melissa
+
+>
+> Harry
+>
+>> Melissa
+>>
+>>>> kms_colorop with writeback more aligned with color testing and
+>>>> validation. Other drivers should work on adapting this test to their
+>>>> needs if they are looking for CRC validation.
+>>>>
+>>>> Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+>>>> Signed-off-by: Melissa Wen <mwen@igalia.com>
+>>>> ---
+>>>>    tests/kms_color_pipeline.c | 1 +
+>>>>    1 file changed, 1 insertion(+)
+>>>>
+>>>> diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+>>>> index 78860a845..3978745a5 100644
+>>>> --- a/tests/kms_color_pipeline.c
+>>>> +++ b/tests/kms_color_pipeline.c
+>>>> @@ -372,6 +372,7 @@ int igt_main()
+>>>>            igt_display_require(&data.display, data.drm_fd);
+>>>>            data.display.has_plane_color_pipeline = has_plane_color_pipeline;
+>>>>            igt_require(data.display.is_atomic);
+>>>> +        igt_require(is_intel_device(data.drm_fd));
+>>>>        }
+>>>>          igt_subtest_group()
 
