@@ -4,146 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB065C5B572
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 20:50:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68F32C5B572
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 20:56:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B54310E183;
-	Wed, 19 Aug 2026 20:50:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E25DF89CC1;
+	Wed, 19 Aug 2026 20:56:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jecNJvxD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PhKQj4ju";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 00EA710E183
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 20:50:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 35F3D10E183
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 20:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787172613; x=1818708613;
+ t=1787172929; x=1818708929;
  h=date:from:to:cc:subject:message-id:references:
  in-reply-to:mime-version;
- bh=h1vT7/qH4j42EeGCaz3DokpG0wpqyHu4h3oCvI61sVk=;
- b=jecNJvxDleQXqxaZ/MqeoKcuhiDHIqM3JZ1Pu2m2kCW3aS2UdwqunIgH
- dUhufxXP+QKE19yHTzNcRTJO4fGJ9wm2rVtseNZ7rSnKKUzydsedxyQSB
- AvpmhegFH8s9ng2Vpkz2iJsEu+yxVzFgnlraLLeKTMWyI4I8DobCok8P8
- 7UnygzhqBa1dNXN859ozoF8UEziAbGOj4tpEmRsERMhOpZp3gXPH5NZRn
- aiUYI+jI+3Gw2z5hGmbcRzELNLmFR8Is/z8bZJKqM591SEfQGmLNcuzz6
- ByrgU4qFEztsnWlS2xt8Uar9/3FoCRQZCYV0DFlwBAaf62vHStdGXZaSX w==;
-X-CSE-ConnectionGUID: 20Bwh8XlQJ6NmCq/UbAUTA==
-X-CSE-MsgGUID: kNwfnsWoRbK2SSTxKHArqA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87619848"
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; d="scan'208";a="87619848"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2026 13:50:13 -0700
-X-CSE-ConnectionGUID: ci6weRDKRwSuRPB5HhTIiw==
-X-CSE-MsgGUID: hqcuz21ySNiT6Qo7/ERgrg==
+ bh=NiY7vbFp9fhCu06x7JK4E2woy0Ytsk03D6fFxFtqer4=;
+ b=PhKQj4juqMa1+dWk99NcZZOwsZMhyI8XrHze7GaMSVj/dgVfyxdUsbQS
+ cln5yAxwryOJRr37+nhTdTQj8Vx1fDGeogwtLD+TPI3xBrE/yQ5tBpmx9
+ r/+Tw/ON1LXQ6CayR+PpxHYTssuxgtlurMnCkJczRkA4lJrftvu38Ekib
+ xCXS45X/052FFefPWt44eha0P+CC1eBBDUBZxBL22kjYR7IhIOULQpiwb
+ XnOukWsVJbLOoTV5EESSkll6M9U7YjK1mL7TNXAGJRDGbv32x44zVHip6
+ H7EQiwRzYG2TUPrbtu07r+hbp4Seau6RrJrH13oZ9vXfzWT/ZN0lFTKbV w==;
+X-CSE-ConnectionGUID: oohPx/XmQUa58ZSlLr1uDg==
+X-CSE-MsgGUID: cdzGQBFRTdKdwvkJoIo+BA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="91382180"
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; d="scan'208";a="91382180"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2026 13:55:28 -0700
+X-CSE-ConnectionGUID: qpOe4OPlQ4+FCRMtS8veNA==
+X-CSE-MsgGUID: tXla7n4ZRgSPip35d+NIWA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; d="scan'208";a="262402220"
+X-IronPort-AV: E=Sophos;i="6.25,232,1779174000"; d="scan'208";a="270870042"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2026 13:50:09 -0700
+ by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2026 13:55:27 -0700
 Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 13:50:07 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ 15.2.2562.45; Wed, 19 Aug 2026 13:55:24 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Wed, 19 Aug 2026 13:50:07 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.19) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.45 via Frontend Transport; Wed, 19 Aug 2026 13:55:24 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.70) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Wed, 19 Aug 2026 13:50:07 -0700
+ 15.2.2562.45; Wed, 19 Aug 2026 13:55:21 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DHDH6XmoBjA15sXBZSWi8fPKqiyCQ3FM3XqIWCnvdt03bSBOEWC9MtGoKwKporKp85oTTwc+gWcd4F9P26UL3/BK7UWraf0q8H/77E9w/blNsKHzzQPZm2fsksLYB7MffZ1Az7YOCCLKj/15HMzNhaUTc3lj4fRx7svYnU7yNRHxSM2UxXh3gtgzQ5x41aqhYGwbxhj67klIQRrjbX2TgdapPbJNKxDV2eraUS1tHuhcfPdjtdOounuVaMUFIUvwilBxjvVUpDQQlA6ROAAO9mA9kTL8Oy5IG6QxoR+jZnbISIn0GWeiQyr0Gx0wiida6/XfThvPoiwPIsI52w52xQ==
+ b=NkIMmU1OyuYcjO+uMLSSFPiSyJYNFIdBtEo4olAdko3/S+5YYwMlZguxkdgNWdDXW3VBGwwdnDT6e3Q374Xsy1x1/oEEmi1tIyuzfSFunpVHQmFHdt/q4iWaB7GOvxVujXm12CW9S+t00dMeZw3htYlr/KE39QJPW5ECNuOzlxFdF25/nXZ68MZ5PELN8SnBAlMHTkKdNHg59XIEHTH39NdosPwsuCVctt5IxCQScAeIfhICDU1iDkaELSNhP68wcxhmLwaAnY+tF2VR180AaR8S+Ggp0JizPqtHS4mUZAxVCrj4UGCDwEd5CLvkBn//8EAH1fLMa5TCIlNgKW+I4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XSk3Q8OLv9fqCzllt4MO/2zdDU1c04nYDUIv/dFSiUA=;
- b=a363SArGphahXm08mvPm9CVt1yAlOzWpPndaFzZ3luztHb1UgOc3w3fhcoKKm9HvmpjS3RiajgvOMmJCIJrp6qvr9JJ9nlboPnh39taDt1nYdQRqEVcYlph6UhHgGEE9vtB9HsEGIALJWXM1RXq0x4GMJK6LNq7T/v/TlLf5b2olhRT1HIzvjZMMITOF4sx0Jq6+jOmvZKCvFslmZHWyw6Nir06LMeUh6EGNFtpcJlzfPS4r27wKIR0russ5TIF7oFQsE0nGTFgDAU/k2mznxoIagVo1UG25HRS/ktwiWUK1JKk/TM/v+xWypvDrYuX7vwhSTFRR9NkVK7e3cpzvkA==
+ bh=PsXsD5cHmrcx3htkz1YLaXx9BwK8SHsjmqV4ml+Jiso=;
+ b=a1KUWeYgjZzRCMhGu8GrFwUEaYLSPRpfKXm2lEl0FqV97kYOtnVaCms+GRN0Q+G0x0JIqftjaqELAOYejhekkCnIx7jf1404wGX+V6VeoqPnjdloXS9YMgdMTAyAxmPJtRer6r8iA9/P0A+hVzWZUPzW0ulTWvES/1lzbFx+avhM/5Y7nhzQVEHK9gAvZgZenoGBjSC2vQX/VX1Q+1nCMFz5jwWqke3pIzQt5svAJMuRtX+rGKYZuQteP9rTn9e7EG2sXhe1uc99I7s+3mt6Y9mcbLa/dZ4iohBPmy1orvGPkc/9m56ULH4kR7dHNYhRrNxm06PK2kSJ/3TNdEJRJQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS0PR11MB8182.namprd11.prod.outlook.com (2603:10b6:8:163::17)
- by PH7PR11MB6857.namprd11.prod.outlook.com (2603:10b6:510:1ed::13) with
+ by IA1PR11MB7942.namprd11.prod.outlook.com (2603:10b6:208:3fa::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.15; Wed, 19 Aug
- 2026 20:50:02 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
+ 2026 20:55:16 +0000
 Received: from DS0PR11MB8182.namprd11.prod.outlook.com
  ([fe80::7b65:81e6:c6c4:449e]) by DS0PR11MB8182.namprd11.prod.outlook.com
  ([fe80::7b65:81e6:c6c4:449e%4]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 20:50:02 +0000
-Date: Wed, 19 Aug 2026 13:50:00 -0700
+ 20:55:15 +0000
+Date: Wed, 19 Aug 2026 13:55:13 -0700
 From: Matt Roper <matthew.d.roper@intel.com>
 To: Gustavo Sousa <gustavo.sousa@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: Re: [PATCH i-g-t 05/10] lib/xe: Return boolean from xe_wa()
-Message-ID: <20260819205000.GQ8279@mdroper-desk1.amr.corp.intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 02/10] lib/xe: Use stricter line-equality check
+ when checking for workarounds
+Message-ID: <20260819205513.GR8279@mdroper-desk1.amr.corp.intel.com>
 References: <20260721-wa_14026539277-v1-0-0c147eeefefa@intel.com>
- <20260721-wa_14026539277-v1-5-0c147eeefefa@intel.com>
- <20260729221424.GE7790@mdroper-desk1.amr.corp.intel.com>
- <87tsorb8t9.fsf@intel.com>
+ <20260721-wa_14026539277-v1-2-0c147eeefefa@intel.com>
+ <20260729212333.GB7790@mdroper-desk1.amr.corp.intel.com>
+ <87ik57b7bn.fsf@intel.com> <87bjaxc3ez.fsf@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <87tsorb8t9.fsf@intel.com>
-X-ClientProxiedBy: SJ0PR13CA0205.namprd13.prod.outlook.com
- (2603:10b6:a03:2c3::30) To DS0PR11MB8182.namprd11.prod.outlook.com
+In-Reply-To: <87bjaxc3ez.fsf@intel.com>
+X-ClientProxiedBy: SJ0P220CA0012.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:41b::24) To DS0PR11MB8182.namprd11.prod.outlook.com
  (2603:10b6:8:163::17)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|PH7PR11MB6857:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e4e304c-25c8-4391-66b0-08defe3370a1
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8182:EE_|IA1PR11MB7942:EE_
+X-MS-Office365-Filtering-Correlation-Id: e125e27d-99fd-4a2a-a3ca-08defe342b1b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|376014|366016|1800799024|22082099003|56012099006|18002099003|6133799003|4143699003|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info: rSn0BE9YsM2J/v8866Vcp6uNYdF1tuwT2W/6jXZCH/EXuU/RNiMmCANn8t92R+hbSJC3zwNsSD6UZYtKMY4swROJlGXbqeeJ9aUajeZMW6DjRE+20mQKaEePFRcYothtXNJ9znh+feifu56GZi/ThLC68r6oOI6L1J8qKyeL757ajLGr+5n3tSRqMx49sB7hMzhzKSRNS1MLM6HSf22NVfDJi/Tha5mfU85DP5TTmB7O9WDayPs97t4taayWjFPFpJNYycehcgXke3KJVpg1jMD3MepjB6TyOWprhmEWe1v3SuZx+ILf9mpDqOkNEKzuE2ya8G3X6lT8cxZxNiKtCSGD6VePbiI5IUsUc6Y3nsdZBAQoYpFSGvV7l4/T7iYloPR9d6Jd3Q60j5OWMEBDNFL41+Kwbig51AzgI/p6GiJXtwQTuDYlJX4LNUKtIlSr4KNTFQcX93vhmHUHdESmyqHCXo0SXV5FtLOY7kAmn3qLmRFuLZ7hEcIzXh22+g4g4qoiv3XG2fOlja3jstvHPSA9uMtQl2Et8OcvYPbm9Nc+24G/Jisfk9KVlSMvdWYTdQttznHv6CoPCrJfcxTsNOVKvNNA+EEbW6E429Jx2CmuwhdkLdjUZevv1vve5Ios5a+PKf9s+754q9hxN+0KVIE0Px93gv2Z98bgGfxRaGw=
+ ARA:13230040|376014|366016|1800799024|23010399003|6133799003|56012099006|10067099003|4143699003|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: C+kjWghGlGmyHnna5ajPEwHVjb7PE6yUohq13S7TWLRxrmvSD0NsuHKKRhEVPavrfIr/bQRyMl20l4QEmEZisyDwJf2BwLg8Irixc6EJFhvDT9dgLukIje76mSDkO+UOjXIl63G/nHmZBnEq3Wr7eUA3tp0fX02RqkM6XfUdASKSIBO/Rkv9kG/ew5yfIpl2ij2CxiZoMaBgyfg4OZFZ0QdeY66/6tsN4hx5nldTDCyXvSUj6iScPir0iJPA8+f1Q/gCDyyq4Dbng3BOTi47B5a/rHVwt/vxAJb9QQBnhm+99o/njGPpKjV+bqvX34i8epL7YKsnz4eMcd5qhFbYJHgJmRsLVjhlawFUmFTg6VAKqSMdxd6rawmCgtcvBf3jnTHw6zWEhdCdWXOq+u8pRO/PpmYtVlI9mGhi4HgJZAU5QVx5pkCgnYpus5Kl/PrUuRc67L91ba44PIXKMt235hvyQBUiexkZs0WOJTrtD9m52yPXW4YPVSGcnssj+Dlmc9agbQncXtolRL9RIZ35f6LEoIOF1FALPkpB7qxu7cz5GgIikAjC09g9Yosg5TaUBGwjt/LDmBnlQ8yamuIBrBzltPUFWtCsNBqdoqbPujJgszoO0VX549TO66d24EfARylkT0sGcnuGlk3ee565Rp5vdkj86gclUNBvnmlyu5c=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB8182.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(22082099003)(56012099006)(18002099003)(6133799003)(4143699003)(11063799006)(10067099003);
+ SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(6133799003)(56012099006)(10067099003)(4143699003)(11063799006)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?2q83BTL/cv6BkpiYMqsds2ISNEATx99Sog2IH433ehltPdehLSMCsG7F2c6W?=
- =?us-ascii?Q?LkBhvTnovI0u/EY+OVE5DosSMzliiNsieLSqvZNAV9gPhXbrfA1vC31Plsq/?=
- =?us-ascii?Q?t2CR27a1Qtt++qbn75USZawsWNFaUmrDgmqZ9UePhiET5cmNnam59LAWA9n6?=
- =?us-ascii?Q?jI+A5/j3023RBriP0JZylg1Fna3F182D/Mu7OsZi2yBrbv+VclhhicCL9S96?=
- =?us-ascii?Q?W7KIlooREbgDfl5aVhehkd0wEbhu14ElLwJ8JkSl4Lg0GOKA7rRaYJ3GNHj+?=
- =?us-ascii?Q?kh/CX156eqV+gCxzJIx10tzrQZscqy7RHp4CbQ3SHSTJxFnTmU2tIX6q6HmD?=
- =?us-ascii?Q?PBx04St8ExWkk1mKTybKEcrPiwiY48P+dzzkx++bgaK836jMylNGYADZ4mfV?=
- =?us-ascii?Q?1C+LsWxcZQPK8GuccW6Bdq4EFN9CANyh/SrwMcPF+FYgj2tts/ElAsR7sojT?=
- =?us-ascii?Q?W22J9ptIxpp9RA+F64rDe3N2V0bpDBip/fyW6JfiTN59zcP8NSX/UtUAAweI?=
- =?us-ascii?Q?xORN6H/uAGUu2tedqzclRQmptrKBgYDsFZZeZBFoj2Nh1e+KoQsKRE2u3AMu?=
- =?us-ascii?Q?gwxmQjEwU7ma918zE6IVb6b13xDgvzHfZH+yOjCE/qfQvBCAtqRruigo9rzf?=
- =?us-ascii?Q?IGdySYYGSVngfN8SJ0vDOZ2+1rylnq9IgLYKXbMZNzM/F/++PBlqMdekACxL?=
- =?us-ascii?Q?z2n9ApuRuMw/mKPoSUQHPzImtUlfgqp09E0wBgPVOnzNPTDDrjAQP+TsULBj?=
- =?us-ascii?Q?wYXWc46hYY5BvZ65JzRNHYfRGo8hJnsi/znNbpLB77eiWNj0iENpgQblPJz1?=
- =?us-ascii?Q?dNWt/AYlhnhepFTbWMtgzvQoJ2QELMNl67acVZfM9adzb8UVfPQVhekG6xTx?=
- =?us-ascii?Q?HdH2Ce39mnf2uAYx1yoeNISG4OexRlc1SPE1pc88N0YxhWFc2dmHobvNUinf?=
- =?us-ascii?Q?n6pXAyWjuswQZS7aZxUoQgEe4ssJGGudlgm8OuEfVqkpRSR1krF00qgVJPi3?=
- =?us-ascii?Q?LLMHTXqgAVYMBPgHZSefxXUQqx0dUYAejU8HZy/DqWG37+W9zehwhO5PJA+B?=
- =?us-ascii?Q?BdISo3xrxqYzJA9wlKUoeydn96qxnkJBEk01PcDSyf64q4+vPAOYIqQTEoY4?=
- =?us-ascii?Q?rqkEf/Kah7V3NDPJTg/A5IC1JM8IdzWNlAg4uYD9xkcuC84oXgauop52Kwvg?=
- =?us-ascii?Q?tKQCuOiuSTaTMbGCnZI5ZNRJeYEhy4tRgDeXCoYM+QS9tNaysLOlxRc6dSO9?=
- =?us-ascii?Q?Pua4Rj/Ut808Dv1Jpzy4tKzCOAygHcbigb7aAsfP5+ba45rIFEr8YZcdZcW9?=
- =?us-ascii?Q?YPzmKTaRRrm+/xTH0uneP+WZJKzIf0dGbsLwbLfrF3slV6r+tHEYDGOOttQq?=
- =?us-ascii?Q?rETxe7uwg7IxAufLEjBfmZi2TL9t73LyrqZF1wiiIeXLh8Li2puPpZQRR9EU?=
- =?us-ascii?Q?CMFbn0RWcONRu1BtNoijGDXXH3xmlxw03aoWCP8y73Dxff8MUlWlb0HR9t1O?=
- =?us-ascii?Q?dEJv8QrtqAoUHbyGKhF5pCojPKgUavV+vwaijteU9C5FXl8EO1pgst7dJKcn?=
- =?us-ascii?Q?ypf6b0Z1TjlwhJcgcLr41X3OtU3jIbLx51PgtsTyq9J1yheWZS1gD+lF9E8K?=
- =?us-ascii?Q?KVmAtGm4k+4CE7QJbdsV33xSFbSzrZ3GD/RLpEKie2Le0eLsQMrMNmYSVOws?=
- =?us-ascii?Q?5QUkgfBOFWJS23M7Vq4+vFYIYlxslIhBkDPWhwiXd3/h6Al22lKb+fhUS293?=
- =?us-ascii?Q?1vV7rORxYaEXW627LPFskn4di9xECdg=3D?=
-X-Exchange-RoutingPolicyChecked: e185VGqb4BsDlkxOIYik++cfTELdC1fhRpCUxpy4kjb6zutks2JT7ejMSAPoc7Bca6YC6uGVBBct4qCOml3g+2h2Iz5kTAq6OoddxKjmsno9vmRUzOx/zk/OtjXIn050LmqM9YrZ1PZmQYZGnfETxPnW3RJ9YLN5RDPvleMWVipcSwtciS+q//3p2Q6G7d0EPPoZlRpx9EB/xrQPwEDljH4/HhsOZEntjFcEhVnv7lI7wtt3WWhVsKoWf+RXsJX88atIafRVDA1BQmtxAgblOl9+HEefhF8i6BB9CvLnxWbTR7AfkHmFWeDquZ/Jqx7aqKW3JiLghoFlhKhhhidIfw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e4e304c-25c8-4391-66b0-08defe3370a1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VoRjto4wdM24enNgrFsX/MbL/HPpl3snYjoQl0OeEAG3XJNtHxbn+1FfPW3Q?=
+ =?us-ascii?Q?j2SKeaUc/bAaFY7hkT5PHHUjkVMgRuGxAVeq0lv7sxOkhl+XjzmyquoMjvsZ?=
+ =?us-ascii?Q?hEz8aFJDVDKGhhTUAkjODyyoze5xTRmXkQgz0eOe4ZBwHiupSMcXJQHnBR+v?=
+ =?us-ascii?Q?oPPVC4k5+pH16d0sJ320s0l08YQxxmDWDUxDlJpb4LMvF5D8yaXOqfji0Kza?=
+ =?us-ascii?Q?6oNo6VwyjH+6VlxJnYM+8DPEVHxJidEBFcQV3Zyhem026Gbux+sTgtncl30c?=
+ =?us-ascii?Q?bIkbeSnN0sWmfO4on1gw9WHYosntx30GnrXeDaTCPQ2BvftgagqA7+Fc/01p?=
+ =?us-ascii?Q?qYErbge99SrkH2eCr9R4x+cojLrTGpYZmJJ8zWDPnaHjty27v3kAtjbMDi7k?=
+ =?us-ascii?Q?v3dOmevyYhB8j8JjbPlh9X/ioscIHAVkNSmxV9JMpYj07/ORpJE6wEFhuDjq?=
+ =?us-ascii?Q?Cyw0GynQBzvCeNIZdyLQQzTJpCMfkDDAoqk0McDfu8M73XUaQ/5OzYW20kmA?=
+ =?us-ascii?Q?JUMPEJuYaXeyyHeu1ATo45Cqnm1gi6WtMsev9ONMoFiol8Oreg15utnYHl+Y?=
+ =?us-ascii?Q?hEi8PE8qtsiWV0xgDoMzrKgcNoXBUTYUSMUQANjCB0whaY8hxa/T1ALp8wzI?=
+ =?us-ascii?Q?UXxixeyoiHQrt2KODx8Ak7GMtbMXEqBZTwecxQp6Y4jK1ifJiS7G0co4aWMt?=
+ =?us-ascii?Q?6kXJm5lUPHa+dtnMxMx+Q9g3VOOCAUoFv8wdW1LbbsH1eIUeQcnfpocILCcs?=
+ =?us-ascii?Q?GdFuMFsJ9U1D/ErPHysvTdz3bDQtMBLcjm/UAYrChhAjyj8MWQk+9hWe0KRv?=
+ =?us-ascii?Q?+ZAqTGKWqD10PsBh9svm5suKeHLL1pL80xnqwO0D3ZL1gjpVaQmK9usmJsbs?=
+ =?us-ascii?Q?3Ok24vL0/jA2blkIQNMkJD0CQxlip/5D42mf98lQDnEpkF4sS9BXbYkynFZG?=
+ =?us-ascii?Q?6TEe2xUskBmTeAUQ9wduLmvh3pZSoupNK4kZMulKBV5jAuH6AvJZrMEM/0Lf?=
+ =?us-ascii?Q?fXsM2euBi14OymojIEdUxz3iBlu1/CyyQweG83rGsoAXt38TcUF3Bfp8mvF/?=
+ =?us-ascii?Q?4oAddzvoG3nEJE4dF8hESuUarIAsDs4iv8VAY8ArlwujxbIleA1NFJ2hi3LO?=
+ =?us-ascii?Q?NOLTNRm/8Bdnjfq/gWMjPICd/5F2ghM4gOlpbY8drDbn3L/DAEEMvLgpslYm?=
+ =?us-ascii?Q?VIuCmGff7Ocp7PAOWIOIgfarfoEDmI+rXWbjdjEKchS9rReoTadk1+lwpLrl?=
+ =?us-ascii?Q?8caw0K0C60mqeM9m3Rhyi4CeAbcQRb4njhjtTCKeXU/uFmQNQGEv1bo63XxI?=
+ =?us-ascii?Q?9s675wJc/gT/qCbu8OuPNHI5jPQc8fIRMkcRqmaY7/0g+EOEX5e4GQyDFGFL?=
+ =?us-ascii?Q?/T4imQ2o4OGsrySG1p6Eiyd7xZqi8hidzs1jvcpyn4nCjybtAtkJNnPmBO57?=
+ =?us-ascii?Q?3oEEYMwL9eYbCcxzlt0QfAlQRFug39cl/WzhzVMqYg6CM6bK2adCc0uO4Y40?=
+ =?us-ascii?Q?DSnQlO/5GZ1q8kGtZqob5fQlEjw+eYzvEyS/tKBbW6u5aJq8lyAxtEwyPgib?=
+ =?us-ascii?Q?3fuOUtiDI2WdQKR/qGe+uXBWgkCdxcZtdZP4SUCWZPz8ont5UCSMq1S6IvSx?=
+ =?us-ascii?Q?jcrixbxpKFxbHK+hgdCJifcezgyhVl6Cv8vdIDr053SQt4W42rhz5qsfMwiz?=
+ =?us-ascii?Q?0Wa5jDhn4cMcvrNAPR/M+UTL5/5K4B0DFczmpTbJUFWMDrEMf+F55HCt1G8M?=
+ =?us-ascii?Q?UpwAPKTP3HPSuIQooQJkH4yoCmUUy/c=3D?=
+X-Exchange-RoutingPolicyChecked: BQxhw505oerqsaHzV5ZJHUfl9jpQOV9BceIcZZirClJIcbMbh9S5dkof5ZnPCEkCjTzo2SOeaO6dT2LN9WxYdqJiLk0UpjN20L9XM1ORNl9WM6Alc/ED1RM786aJq1YEQvUG1cDUJ6KVFRlEqFzOrhLj8754C+MuXmhur8GEQZZpGOg7YA3O01sDN+ew6vWJFCgGmCsEEwOBPRrPU1mHPyzB2fjnJx2i0fWIJmqDcIgJ8xxKkfhG3K27W11ogOwZ9BwntRl4c0orv+ywaVCZy+eybel1H3R547vPzt2YgkB7dhMzsYnXgDEsdgtvp9q8mVzBJrlptUbAtgc7VTO4qQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: e125e27d-99fd-4a2a-a3ca-08defe342b1b
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8182.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 20:50:02.1470 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 20:55:14.9916 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NfOkEI7d9Cgjm/fNZhTXsQkLfYfV1Tm5RHOdH+5NRH6ea8B+PdcjhTgZWR+8eSJrDlTm0NBiN1yY4X4zdLG4zVA2YL5LJS9XRby5aXQGW5s=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6857
+X-MS-Exchange-CrossTenant-UserPrincipalName: HtPnBSpmcU5YUMIhmfNeCxJHWzru3I0txcfwKY3M/q3yb/+IGhJfUY5XmxTXeYnVzHZ1oHrgrBBxWhnd7pgG/s7qBIYfq+QFuj1GRNemzy0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7942
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -160,131 +161,247 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Aug 18, 2026 at 03:08:34PM -0300, Gustavo Sousa wrote:
-> Matt Roper <matthew.d.roper@intel.com> writes:
+On Wed, Aug 19, 2026 at 04:32:04PM -0300, Gustavo Sousa wrote:
+> Gustavo Sousa <gustavo.sousa@intel.com> writes:
 > 
-> > On Tue, Jul 21, 2026 at 03:59:58PM -0300, Gustavo Sousa wrote:
-> >> The function xe_wa() will cause a warning to be printed when an error
-> >> condition is found.  Since the current users of xe_wa() do not check
-> >> for errors, let's just convert the function to return a boolean.
-> >> 
-> >> Checking for xe_wa(...) instead of xe_wa(...) > 0 feels more natural.
-> >> 
-> >> Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-> >> ---
-> >>  lib/xe/xe_wa.c      | 11 ++++++-----
-> >>  lib/xe/xe_wa.h      |  4 +++-
-> >>  tests/intel/xe_oa.c |  2 +-
-> >>  3 files changed, 10 insertions(+), 7 deletions(-)
-> >> 
-> >> diff --git a/lib/xe/xe_wa.c b/lib/xe/xe_wa.c
-> >> index 0f4d2edc0795..8c8f7156c21f 100644
-> >> --- a/lib/xe/xe_wa.c
-> >> +++ b/lib/xe/xe_wa.c
-> >> @@ -108,20 +108,21 @@ static bool debugfs_dump_has_wa(char *dump, const char *wa)
-> >>   * @fd: A drm file descriptor.
-> >>   * @wa: Name of the workaround to be checked.
-> >>   *
-> >> - * Returns 1 if enabled, 0 if disabled, -1 on error.
-> >> + * Return a boolean indicating whether the workaround is enabled.
-> >> + * On error, returns false and a warning is printed.
-> >>   */
-> >> -int xe_wa(int fd, const char *wa)
-> >> +bool xe_wa(int fd, const char *wa)
-> >>  {
-> >>  	char **dumps = xe_device_get(fd)->wa_cache;
-> >>  
-> >>  	if (igt_warn_on(!dumps))
-> >> -		return -1;
-> >> +		return false;
+> > Matt Roper <matthew.d.roper@intel.com> writes:
 > >
-> > Should we use an igt_assert() so that failures here get propagated up as
-> > test failures?
+> >> On Tue, Jul 21, 2026 at 03:59:55PM -0300, Gustavo Sousa wrote:
+> >>> Currently debugfs_file_has_wa() uses strstr() to check if a workaround
+> >>> name is present in the debugfs dump.  Using strstr() would match the
+> >>> workaround name anywhere in the dump buffer and with that we risk
+> >>> producing unexpected results if the checked workaround name happens to
+> >>> be a substring of another workaround present in the dump.
+> >>> 
+> >>> Fix that by making sure we match the workaround name with the full
+> >>> line from the dump.
+> >>
+> >> There are other parts of IGT that use regular expressions from either
+> >> POSIX (regcomp / regexec) or Glib (g_regex_new / g_regex_match).  Would
+> >> it be possible to use one of those here instead of opencoding a match
+> >> function?
+> >
+> > Yeah.  That could make this function more readable and easier to extend.
+> > I'll take a look at those options.
 > 
-> I'm not sure.  In the past I advocated for stuff under lib/ to avoid
-> causing asserts and leave that for real test code...
+> This new version of debugfs_file_has_wa() misses the fact that some
+> lines will contain multiple workarounds separated by comma.  So I
+> decided to implement a more robust version.  I have two versions, one
+> that is still not using regular expressions and another that uses POSIX
+> regcomp/regexec functions.  I have a slight preference for the former,
+> but if you prefer, we can go with the latter.  IMO, both versions are
+> more readable than the one currently proposed in this patch.
 > 
-> Cc'ing Ashutosh here, since he was involved in that discussion.
-> 
-> Do we have strong reasons to do an igt_assert() here?
-> 
-> A workaround like Wa_14026539277 will be checked in many tests and the
-> assert failure will cause disruptions on many unrelated platforms.
+> I would like your opinion before sending v2 of this series. :-)
 
-If we're not able to accurately determine the workaround list, then any
-test which is calling xe_wa() to check workarounds has effectively
-become unreliable and we can't trust that it's giving accurate results
-anymore.  That would mean we have general IGT infrastructure breakage
-that needs to be resolved before we can trust the results of those
-tests.
-
-It would be nice if there was a cleaner way to differentiate IGT's
-library-internal assertions from regular test result failures, but from
-grep'ing the current codebase, the use of igt_assert in lib/ seems to be
-the common way to handle this.
+It might be best to ping the IGT maintainers and see what they think.
+Today IGT has a mix of open-coded string matching and two different
+styles of regular expressions.  It seems like the kind of thing they may
+want to set a standard direction for with new code.  I don't have much
+of a personal opinion.
 
 
 Matt
 
 > 
+> Note: I also created a separate commit adding a simple test for this
+> function in lib/tests.
+> 
+> Version without regular expressions:
+> 
+>     | static bool is_eol(char c)
+>     | {
+>     |         return !c || c == '\n';
+>     | }
+>     | 
+>     | static bool is_wa_sep(char c)
+>     | {
+>     |         return isspace(c) || c == ',';
+>     | }
+>     | 
+>     | static bool debugfs_dump_has_wa(char *dump, const char *wa)
+>     | {
+>     |         size_t wa_len = strlen(wa);
+>     | 
+>     |         while (*dump) {
+>     |                 /*
+>     |                  * Each workaround name is indented by one tab
+>     |                  * character; unindented lines are used as "section
+>     |                  * names" identifying the type of workarounds that
+>     |                  * follow (e.g. "GT Workarounds", "Engine Workarounds"
+>     |                  * etc).
+>     |                  */
+>     |                 if (*dump != '\t')
+>     |                         goto next_line;
+>     | 
+>     |                 while (!is_eol(*dump)) {
+>     |                         char *other_wa;
+>     | 
+>     |                         while (!is_eol(*dump) && is_wa_sep(*dump))
+>     |                                 dump++;
+>     | 
+>     |                         other_wa = dump;
+>     | 
+>     |                         while (!is_eol(*dump) && !is_wa_sep(*dump))
+>     |                                 dump++;
+>     | 
+>     |                         if (wa_len == dump - other_wa &&
+>     |                             !strncmp(wa, other_wa, wa_len))
+>     |                                 return true;
+>     |                 }
+>     | 
+>     |         next_line:
+>     |                 while (!is_eol(*dump))
+>     |                         dump++;
+>     | 
+>     |                 if (*dump)
+>     |                         dump++;
+>     |         }
+>     | 
+>     |         return false;
+>     | }
+> 
+> Version with POSIX regcomp/regexec:
+> 
+>     | static int debugfs_dump_has_wa(char *dump, const char *wa)
+>     | {
+>     |         size_t wa_len;
+>     |         regex_t regex;
+>     |         regmatch_t match[2];
+>     |         int ret;
+>     | 
+>     |         if (regcomp(&regex, "[ \t,]*([^ \t,]+)", REG_EXTENDED | REG_NEWLINE)) {
+>     |                 igt_critical("Failed to compile regex, workaround %s will not be checked.\n",
+>     |                              wa);
+>     | 
+>     |                 return -1;
+>     |         }
+>     | 
+>     |         wa_len = strlen(wa);
+>     |         ret = 0;
+>     | 
+>     |         while (*dump) {
+>     |                 /*
+>     |                  * Each workaround name is indented by one tab
+>     |                  * character; unindented lines are used as "section
+>     |                  * names" identifying the type of workarounds that
+>     |                  * follow (e.g. "GT Workarounds", "Engine Workarounds"
+>     |                  * etc).
+>     |                  */
+>     |                 if (*dump != '\t')
+>     |                         goto next_line;
+>     | 
+>     |                 while (*dump && regexec(&regex, dump, 2, match, 0) == 0) {
+>     |                         char *other_wa = dump + match[1].rm_so;
+>     |                         size_t other_wa_len = match[1].rm_eo - match[1].rm_so;
+>     | 
+>     |                         dump += match[0].rm_eo;
+>     | 
+>     |                         if (wa_len == other_wa_len && !strncmp(wa, other_wa, wa_len)) {
+>     |                                 ret = 1;
+>     | 
+>     |                                 goto done;
+>     |                         }
+>     |                 }
+>     | 
+>     |         next_line:
+>     |                 while (*dump && *dump != '\n')
+>     |                         dump++;
+>     | 
+>     |                 if (*dump)
+>     |                         dump++;
+>     |         }
+>     | 
+>     | done:
+>     |         regfree(&regex);
+>     | 
+>     |         return ret;
+>     | }
+> 
 > --
 > Gustavo Sousa
 > 
 > >
+> > --
+> > Gustavo Sousa
 > >
-> > Matt
-> >
-> >>  
-> >>  	for (char **dump = dumps; *dump; dump++)
-> >>  		if (debugfs_dump_has_wa(*dump, wa))
-> >> -			return 1;
-> >> +			return true;
-> >>  
-> >> -	return 0;
-> >> +	return false;
-> >>  }
-> >>  
-> >>  /**
-> >> diff --git a/lib/xe/xe_wa.h b/lib/xe/xe_wa.h
-> >> index f0a826553df8..aa1c50c0f9c9 100644
-> >> --- a/lib/xe/xe_wa.h
-> >> +++ b/lib/xe/xe_wa.h
-> >> @@ -6,9 +6,11 @@
-> >>  #ifndef XE_WA_H
-> >>  #define XE_WA_H
-> >>  
-> >> +#include <stdbool.h>
-> >> +
-> >>  struct xe_device;
-> >>  
-> >> -int xe_wa(int fd, const char *wa);
-> >> +bool xe_wa(int fd, const char *wa);
-> >>  
-> >>  void xe_wa_build_cache(struct xe_device *xe_dev);
-> >>  void xe_wa_free_cache(struct xe_device *xe_dev);
-> >> diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-> >> index fcf1d71a167f..bdaa7141004b 100644
-> >> --- a/tests/intel/xe_oa.c
-> >> +++ b/tests/intel/xe_oa.c
-> >> @@ -2678,7 +2678,7 @@ test_non_zero_reason(const struct drm_xe_oa_unit *oau, size_t oa_buffer_size)
-> >>  	 * can result in buffer overflows.
-> >>  	 */
-> >>  	if (oau->oa_unit_type == DRM_XE_OA_UNIT_TYPE_MERT &&
-> >> -	    xe_wa(drm_fd, "14026633728") > 0) {
-> >> +	    xe_wa(drm_fd, "14026633728")) {
-> >>  		oa_exponent = max(oa_exponent, 8);
-> >>  		properties[9] = oa_exponent;
-> >>  	}
-> >> 
+> >>
+> >>
+> >> Matt
+> >>
+> >>> 
+> >>> Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+> >>> ---
+> >>>  lib/xe/xe_wa.c | 39 ++++++++++++++++++++++++++++++++++++++-
+> >>>  1 file changed, 38 insertions(+), 1 deletion(-)
+> >>> 
+> >>> diff --git a/lib/xe/xe_wa.c b/lib/xe/xe_wa.c
+> >>> index ff5daf529831..d44431e7e61f 100644
+> >>> --- a/lib/xe/xe_wa.c
+> >>> +++ b/lib/xe/xe_wa.c
+> >>> @@ -13,6 +13,43 @@
+> >>>  #include "xe/xe_wa.h"
+> >>>  #include "xe/xe_query.h"
+> >>>  
+> >>> +static bool debugfs_dump_has_wa(char *dump, const char *wa)
+> >>> +{
+> >>> +	char *a = dump;
+> >>> +
+> >>> +	while (*a) {
+> >>> +		const char *b = wa;
+> >>> +
+> >>> +		/*
+> >>> +		 * Each workaround name is indented by one tab
+> >>> +		 * character; unindented lines are used as "section
+> >>> +		 * names" identifying the type of workarounds that
+> >>> +		 * follow (e.g. "GT Workarounds", "Engine Workarounds"
+> >>> +		 * etc).
+> >>> +		 */
+> >>> +		if (*a++ != '\t')
+> >>> +			goto next_line;
+> >>> +
+> >>> +		while (*a == *b && !(*a == '\0' || *a == '\n' || *b == '\0')) {
+> >>> +			a++;
+> >>> +			b++;
+> >>> +		}
+> >>> +
+> >>> +		if ((*a == '\0' || *a == '\n') && *b == '\0')
+> >>> +			return true;
+> >>> +
+> >>> +	next_line:
+> >>> +		/* No match for this line, advance to the next one. */
+> >>> +		while (*a != '\n' && *a != '\0')
+> >>> +			a++;
+> >>> +
+> >>> +		if (*a == '\n')
+> >>> +			a++;
+> >>> +	}
+> >>> +
+> >>> +	return false;
+> >>> +}
+> >>> +
+> >>>  static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+> >>>  			       const char *debugfs_name, const char *wa)
+> >>>  {
+> >>> @@ -23,7 +60,7 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+> >>>  
+> >>>  	debugfs_dump = igt_sysfs_get(debugfs_fd, debugfs_name);
+> >>>  	if (debugfs_dump) {
+> >>> -		char *has_wa = strstr(debugfs_dump, wa);
+> >>> +		bool has_wa = debugfs_dump_has_wa(debugfs_dump, wa);
+> >>>  
+> >>>  		free(debugfs_dump);
+> >>>  
+> >>> 
+> >>> -- 
+> >>> 2.55.0
+> >>> 
+> >>
 > >> -- 
-> >> 2.55.0
-> >> 
-> >
-> > -- 
-> > Matt Roper
-> > Graphics Software Engineer
-> > Linux GPU Platform Enablement
-> > Intel Corporation
+> >> Matt Roper
+> >> Graphics Software Engineer
+> >> Linux GPU Platform Enablement
+> >> Intel Corporation
 
 -- 
 Matt Roper
