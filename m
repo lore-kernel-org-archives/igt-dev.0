@@ -4,63 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2864C5DF81
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 19:06:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D6A6C5DF85
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 19:08:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D61B10EE99;
-	Wed, 19 Aug 2026 19:06:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 086DD10EE99;
+	Wed, 19 Aug 2026 19:08:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KTHCbHSZ";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="YEH90Ufl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 29BCC10E17A
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 19:06:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787166368; x=1818702368;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=17T/Jd2wWBqkM+QfC1hx1KutchtQpJWFLJyDHPdGG4s=;
- b=KTHCbHSZEPUCI/LLjECezOsb3r4uCYOCpGiGy5pRiVejf7FLhbhkdzmP
- E5bDwxnoQ5saluPt+Nktq+08GP7JKdxCHRlntHkezUtMQRxmZ8Y5CwTX/
- SVQElxI1srHq2iJE+8x9Is9xXfhV0P2KVR+cRS87eb7SH867hOrE7NFfS
- UmKKdzxF3z57wUdTNM1pJV/Ho/0qxTvRj2wWBo3spYlCBwu1ryKAtZPd/
- C2/4+baOP/amle9aNBW4r2NbBRdvDIcN+V7ErC7KoluGMzJ9m9aHbdLEd
- hIMrQxQDZyvUQR/0dQ/VMFX2njQCodJQwC7yqvNkQWDCZuTQGckiM/300 A==;
-X-CSE-ConnectionGUID: h9Byj15ZQpamS9ukZL/ocA==
-X-CSE-MsgGUID: ux9gzuHKQiSSYm8BgfkcFQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="91374862"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="91374862"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2026 12:06:07 -0700
-X-CSE-ConnectionGUID: 2jGoSzV2TbuKuruTh33S/A==
-X-CSE-MsgGUID: JoXYdtyITkCgmT28z/G5rA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="262997586"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 12:06:05 -0700
-Date: Wed, 19 Aug 2026 21:06:02 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Cc: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- anshuman.gupta@intel.com, mallesh.koujalagi@intel.com, raag.jadav@intel.com
-Subject: Re: [PATCH 1/8] lib/igt_drm_netlink: Introduce DRM RAS Generic
- Netlink interface
-Message-ID: <20260819190602.7y7jeejsysecyntt@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
- igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- anshuman.gupta@intel.com, mallesh.koujalagi@intel.com,
- raag.jadav@intel.com
-References: <20260729121959.603890-1-ravi.kishore.koppuravuri@intel.com>
- <20260729121959.603890-2-ravi.kishore.koppuravuri@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260729121959.603890-2-ravi.kishore.koppuravuri@intel.com>
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1CB7210EE99
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 19:07:45 +0000 (UTC)
+Received: by mail-qk1-f198.google.com with SMTP id
+ af79cd13be357-93494527488so245761285a.3
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 12:07:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20251104; t=1787166464; x=1787771264;
+ darn=lists.freedesktop.org; 
+ h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+ :to:cc:subject:date:message-id:reply-to:content-type;
+ bh=RNCHnUFZmd4n3YYuRfQpjy42cEljqstsqRVsl0k9V8A=;
+ b=YEH90UflBcY2HlL54sQC2yFtH8p8ck9rouxxLp3BqMVwOPXA2FG1GUVZ0lc6E3FJG6
+ eynHl10cqtjLEuRqemoWnno7X78LBV6box82s9jv7YEdmEJ16GRR6tYG9pupGZ4pa5nt
+ NlS2J7GTbTK/wZuTI9yFyi99ycFaZdjIlYMDZUO4Bb6Z+KLHmmzH/YBoL3OA7+H8wm1W
+ xUtHhDiGmdNM3PCHv5A0RnECN2fyFJzK6iJd9XD4eWU1egK2Vv77qUmmfVw59suilzUL
+ aCDkS/TEquBBeNprVXBnQnqdFtxsztu1ACFHa54Xw0KrB02tcUQ/0Ry1nCft6DoF4N0W
+ /ijg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1787166464; x=1787771264;
+ h=content-type:cc:to:from:subject:message-id:mime-version:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+ :content-type;
+ bh=RNCHnUFZmd4n3YYuRfQpjy42cEljqstsqRVsl0k9V8A=;
+ b=r3Rf4wcba5Ar8Bm2TSF6PbbCKkcBJcxvWCxTY8F2LyAOAuhaD6rVCuEx6X0AgJVr26
+ Wa2WdLZ6ao+B71EbbhsloSaA4f0sDvCSuCg7FVSubExyMb37+Pw9ihspPt5MpLE1AyEf
+ kyXCqRJQDYHXyrNB5Up0KbspCJlb5z+4d/aHHva0F+Mk/Jlpqp9D3MiJwUcflup5EnQW
+ LQ+I733b3Kmt99hVZ/bkkbFdlSyEE9BOG4wSFeMtQOSIkB3dzRqGDyCxzjKDDsPHJddp
+ wfhJDD54l0ODccyd+NFqKjrjNOH0cUNCdDgmaPL5rxhCaoCU1aWQp9Q2ekBP5wDKn3BY
+ hvKQ==
+X-Gm-Message-State: AOJu0YxUZIsmN0qNL8oqjXHqKjeFlLVUGabrVSCbWvKqo2kulbbSgLcn
+ kXDp5V82g+YVPJXZb7Dfyj2NyOvYd43XB+L2pTpizvzayv6VShJYyoZ/8J2UhY/566O6sIEy4v5
+ IBt4jvzIlEXUjxGRiaSagGYTn8t+SkVkiGXJ19xN+3lnznc/HY4XKcsGAGclNwZHY2qlyKogACb
+ fhcGGCWIKk9MkvMgAR84vlDGJssBv9LqvK37yBhGhRBCVguDPLx2TUGc81RZUwWUzmkWs=
+X-Received: from qkbe28-n1.prod.google.com
+ ([2002:a05:620a:a41c:10b0:934:9af7:a2a9])
+ (user=markyacoub job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:370e:b0:936:583a:dd75 with SMTP id
+ af79cd13be357-9371e63f7a0mr605305885a.17.1787166463393; 
+ Wed, 19 Aug 2026 12:07:43 -0700 (PDT)
+Date: Wed, 19 Aug 2026 15:07:40 -0400
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.737.g08866a6d13-goog
+Message-ID: <20260819190740.1392859-1-markyacoub@google.com>
+Subject: [PATCH] lib/igt_kms: Do not treat writeback and virtual connectors as
+ connected
+From: Mark Yacoub <markyacoub@google.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mark Yacoub <markyacoub@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,232 +78,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Ravi,
-On 2026-07-29 at 17:49:52 +0530, Ravi Kishore Koppuravuri wrote:
-> Introduce DRM RAS Generic Netlink interface as a library
-> 
-> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-> ---
->  include/drm-uapi/drm_ras.h | 50 +++++++++++++++++++++++++++++++
->  lib/igt_drm_netlink.c      | 60 ++++++++++++++++++++++++++++++++++++++
->  lib/igt_drm_netlink.h      | 25 ++++++++++++++++
->  lib/meson.build            |  9 ++++++
->  4 files changed, 144 insertions(+)
->  create mode 100644 include/drm-uapi/drm_ras.h
->  create mode 100644 lib/igt_drm_netlink.c
->  create mode 100644 lib/igt_drm_netlink.h
-> 
-> diff --git a/include/drm-uapi/drm_ras.h b/include/drm-uapi/drm_ras.h
-> new file mode 100644
-> index 000000000..218a3ee86
-> --- /dev/null
-> +++ b/include/drm-uapi/drm_ras.h
-> @@ -0,0 +1,50 @@
-> +/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
-> +/* Do not edit directly, auto-generated from: */
-> +/*	Documentation/netlink/specs/drm_ras.yaml */
-> +/* YNL-GEN uapi header */
-> +/* To regenerate run: tools/net/ynl/ynl-regen.sh */
-> +
-> +#ifndef _UAPI_LINUX_DRM_RAS_H
-> +#define _UAPI_LINUX_DRM_RAS_H
+Writeback and virtual connectors (e.g. DRM_MODE_CONNECTOR_WRITEBACK and
+DRM_MODE_CONNECTOR_VIRTUAL) do not represent physical display sinks and
+cannot be modeset using standard CRTC / atomic commit operations without
+configuring a writeback output framebuffer (WRITEBACK_FB_ID).
 
-Did you use script from kernel, documented in igt?
+On drivers such as MSM, writeback connectors (e.g. Virtual-1, Virtual-2)
+report connected status with virtual modes. When generic KMS tests iterate
+over connected outputs via for_each_connected_output() or during initial
+display setup in igt_display_init(), attempting standard modesets on these
+connectors causes failures (-EINVAL) before test execution can begin.
 
-README.md:    $ make INSTALL_HDR_PATH=<dest-dir> headers_install
+Exclude DRM_MODE_CONNECTOR_WRITEBACK and DRM_MODE_CONNECTOR_VIRTUAL in
+igt_output_is_connected() so generic KMS tests only target standard
+physical display outputs, while dedicated writeback tests can continue to
+iterate all outputs explicitly via for_each_output().
 
-imho above define should be simpler, like one in
-include/drm-uapi/xe_drm.h
+Signed-off-by: Mark Yacoub <markyacoub@google.com>
+---
+ lib/igt_kms.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Also, imho add uapi header in a separate patch, so it will be
-easily visible with git log.
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 521a03c01..8d4d14847 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -668,6 +668,10 @@ static inline bool igt_output_is_connected(igt_output_t *output)
+ 	    !output->config.connector->count_modes)
+ 		return false;
+ 
++	if (output->config.connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK ||
++	    output->config.connector->connector_type == DRM_MODE_CONNECTOR_VIRTUAL)
++		return false;
++
+ 	if (output->config.connector->connection == DRM_MODE_CONNECTED)
+ 		return true;
+ 
+-- 
+2.55.0.737.g08866a6d13-goog
 
-> +
-> +#define DRM_RAS_FAMILY_NAME	"drm-ras"
-> +#define DRM_RAS_FAMILY_VERSION	1
-> +
-> +/*
-> + * Type of the node. Currently, only error-counter nodes are supported, which
-> + * expose reliability counters for a hardware/software component.
-> + */
-> +enum drm_ras_node_type {
-> +	DRM_RAS_NODE_TYPE_ERROR_COUNTER = 1,
-> +};
-> +
-> +enum {
-> +	DRM_RAS_A_NODE_ATTRS_NODE_ID = 1,
-> +	DRM_RAS_A_NODE_ATTRS_DEVICE_NAME,
-> +	DRM_RAS_A_NODE_ATTRS_NODE_NAME,
-> +	DRM_RAS_A_NODE_ATTRS_NODE_TYPE,
-> +
-> +	__DRM_RAS_A_NODE_ATTRS_MAX,
-> +	DRM_RAS_A_NODE_ATTRS_MAX = (__DRM_RAS_A_NODE_ATTRS_MAX - 1)
-> +};
-> +
-> +enum {
-> +	DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID = 1,
-> +	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
-> +	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME,
-> +	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE,
-> +
-> +	__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX,
-> +	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
-> +};
-> +
-> +enum {
-> +	DRM_RAS_CMD_LIST_NODES = 1,
-> +	DRM_RAS_CMD_GET_ERROR_COUNTER,
-> +	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
-> +
-> +	__DRM_RAS_CMD_MAX,
-> +	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
-> +};
-> +
-> +#endif /* _UAPI_LINUX_DRM_RAS_H */
-> diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
-> new file mode 100644
-> index 000000000..1c07bb2db
-> --- /dev/null
-> +++ b/lib/igt_drm_netlink.c
-> @@ -0,0 +1,60 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +#include <stdbool.h>
-> +#include <stdint.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +
-> +#include <netlink/errno.h>
-> +#include <netlink/genl/ctrl.h>
-> +#include <netlink/genl/genl.h>
-> +#include <netlink/netlink.h>
-> +
-> +#include "igt_core.h"
-> +#include "igt_drm_netlink.h"
-> +
-
-Please document all new public library functions, here and at
-other lib places.
-
-> +void cleanup_nl_socket(struct app_context *ctx)
-
-We usally add igt_ prefix to such lib names, to avoid
-confusion with other libs, so here for example:
-
-void igt_cleanup_nl_socket(struct app_context *ctx)
-
-Regards,
-Kamil
-
-> +{
-> +	if (!ctx || !ctx->sock)
-> +		return;
-> +
-> +	nl_close(ctx->sock);
-> +	nl_socket_free(ctx->sock);
-> +	ctx->sock = NULL;
-> +	ctx->family_id = -1;
-> +
-> +	igt_debug("Cleaned up netlink socket.\n");
-> +}
-> +
-> +int init_nl_socket(struct app_context *ctx)
-> +{
-> +	ctx->sock = nl_socket_alloc();
-> +	if (!ctx->sock)
-> +		return -1;
-> +
-> +	igt_debug("Socket allocation successful. Connecting to Generic Netlink...\n");
-> +	if (genl_connect(ctx->sock) < 0) {
-> +		cleanup_nl_socket(ctx);
-> +		return -1;
-> +	}
-> +
-> +	igt_debug("Resolving Generic Netlink family '%s'...\n", DRM_RAS_FAMILY_NAME);
-> +	ctx->family_id = genl_ctrl_resolve(ctx->sock, DRM_RAS_FAMILY_NAME);
-> +	if (ctx->family_id < 0) {
-> +		fprintf(stderr,
-> +			"Failed to resolve Generic Netlink family '%s': %s. "
-> +			"This may mean the running kernel does not expose DRM RAS support.\n",
-> +			DRM_RAS_FAMILY_NAME,
-> +			nl_geterror(ctx->family_id));
-> +		cleanup_nl_socket(ctx);
-> +		return -1;
-> +	}
-> +
-> +	igt_debug("Resolved Generic Netlink family '%s' with id %d.\n",
-> +		  DRM_RAS_FAMILY_NAME, ctx->family_id);
-> +	return 0;
-> +}
-> diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
-> new file mode 100644
-> index 000000000..c20d5452b
-> --- /dev/null
-> +++ b/lib/igt_drm_netlink.h
-> @@ -0,0 +1,25 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +#ifndef IGT_DRM_NETLINK_H
-> +#define IGT_DRM_NETLINK_H
-> +
-> +#include <stdbool.h>
-> +#include <stdint.h>
-> +
-> +#include <netlink/netlink.h>
-> +
-> +#include <drm-uapi/drm_ras.h>
-> +
-> +struct app_context {
-> +	struct nl_sock *sock;
-> +	int family_id;
-> +};
-> +
-> +void cleanup_nl_socket(struct app_context *ctx);
-> +int init_nl_socket(struct app_context *ctx);
-> +
-> +#endif /* IGT_DRM_NETLINK_H */
-> +
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 4af346b43..79674e032 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -27,6 +27,7 @@ lib_sources = [
->  	'igt_device_scan.c',
->  	'igt_drm_clients.h',
->  	'igt_drm_fdinfo.c',
-> +	'igt_drm_netlink.c',
->          'igt_fs.c',
->  	'igt_aux.c',
->  	'igt_dp.c',
-> @@ -141,6 +142,13 @@ lib_sources = [
->  	'vendor/uwildmat/uwildmat.c',
->  ]
->  
-> +libnl = declare_dependency(dependencies : [
-> +	dependency('libnl-3.0', required : true),
-> +	dependency('libnl-genl-3.0', required : true),
-> +	dependency('libnl-cli-3.0', required : true),
-> +	dependency('libnl-utils', required : false),
-> +])
-> +
->  lib_deps = [
->  	cairo,
->  	glib,
-> @@ -148,6 +156,7 @@ lib_deps = [
->  	libdrm,
->  	libdw,
->  	libkmod,
-> +	libnl,
->  	libpci,
->  	libudev,
->  	math,
-> -- 
-> 2.34.1
-> 
