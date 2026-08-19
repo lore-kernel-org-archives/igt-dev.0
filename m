@@ -4,57 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C2A1C5DF81
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 15:23:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E60D6C5B572
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 15:37:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C042310E57B;
-	Wed, 19 Aug 2026 15:23:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F26B10EA73;
+	Wed, 19 Aug 2026 15:37:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Cs8S9daN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RS7oqrUR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D65610E160
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 15:22:52 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0F23310EA73
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 15:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787152972; x=1818688972;
- h=from:to:cc:subject:date:message-id:mime-version:
+ t=1787153821; x=1818689821;
+ h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=nqDK67G1Kv91PkbyeteUR3boT0KfifVV6hejaK1OXgk=;
- b=Cs8S9daNkXsBXAuiux1LajaHE4Bc6fwZ6DuEv+WNOu+hrV7t1D8gIiWg
- R5uoVKIygWyNtPA9j1mbX1jG40wYnGruCv1grzWFRfcAPNawfbG4tFS42
- t4sPVf3sabcObj8lcfLY267DJ3Bj5n6eWTUSqpBuc2+1BbKiY4vG9jP9X
- 0gUNKY3ipWYd9mXd++r9y9hs6TQ4nrc2o4N71T0AtPw85Kgj9vJddKxYe
- hxgclf61si6e+cRur+r9C68Nk3cRCjVjYzmyj4yz8fLPTI99PMHl8uVOk
- UnEwwLOf/cwavsILoe3ZfZTntdkDjvKyW026v56RGt/CDqSDF+ncKrroz A==;
-X-CSE-ConnectionGUID: c9/Jnhr/Qm+rUMgakd+mfg==
-X-CSE-MsgGUID: oA9flcqIS8+L3CzK2RuWKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="105055806"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="105055806"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2026 08:22:52 -0700
-X-CSE-ConnectionGUID: q2hHNyyQQASQJS6ppQI5dQ==
-X-CSE-MsgGUID: +RLdm2R0Q+6UQyN0gERxMA==
+ bh=hGcdod2gPCf0UMyZn2TVIFXzIcNfZvuc9ca2/TUAnsA=;
+ b=RS7oqrUREcrCwXWilKh9Q+7jwlO+XM8yjXcQZxgLcNN0yfKHbMFfcy77
+ uy/mRef9OCaS6pxBz4Q2jpfn5MeEE01PoJtpbDEyfuNC8E0hpTnANrcQC
+ N0+NvabpJ4Xx1Xx94NBymd7m1kXgX0hsT8k8Coa4qa7w9T/7JE3+6U7n7
+ f3aDh+xzu1o0+3Tp0jvmEG0QTNqVPdP4bNvIYeDHjqdS5oEox7tozKU00
+ ugWpuFfIozIjo3aKRf2LzwHzkgA0+RnjdpX+kbt4g1K/TQFUzPs+MZM88
+ D9MKpW+2PKFzP+HnjYI60z3zig4L3Vt0b5RjiVR3H1u3tZw0Su3dVcI/q Q==;
+X-CSE-ConnectionGUID: om1ugQPeSceru7/DQkveew==
+X-CSE-MsgGUID: ZO1FmDIFRzitOg/9qus7zg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="86793153"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="86793153"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2026 08:37:01 -0700
+X-CSE-ConnectionGUID: RVMesH9sRSe5olFDgS26NQ==
+X-CSE-MsgGUID: MCgKEY0ETy2Ne6dVbqWIqQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="265128317"
-Received: from kniemiec-mobl1.ger.corp.intel.com (HELO intel.com)
- ([10.245.244.217])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2026 08:22:50 -0700
-From: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-Subject: [PATCH i-g-t v2] tests/intel/gem_exec_params: add
- invalid-offset-multiple-buffers test
-Date: Wed, 19 Aug 2026 17:21:09 +0200
-Message-ID: <20260819152108.58688-2-krzysztof.niemiec@intel.com>
-X-Mailer: git-send-email 2.55.0
+Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
+ by fmviesa003.fm.intel.com with ESMTP; 19 Aug 2026 08:36:59 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org,
+	varun.gupta@intel.com
+Subject: [PATCH] Revert "tests/intel/xe_prefetch_fault: add L2 prefetch fault
+ subtests"
+Date: Wed, 19 Aug 2026 15:36:58 +0000
+Message-ID: <20260819153658.18373-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -72,98 +64,144 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add coverage for the case where the batch start offset is invalid with
-multiple BOs submitted, which was buggy in the kernel until 4fe2bd195435
-("drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer")
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+This reverts commit aa452bd41aaa95d4090a34b1d6705c646778ee57.
+Commited wrong patch revision. Reverting this and will merge correct
+version
 ---
+ tests/intel/xe_prefetch_fault.c | 97 ---------------------------------
+ 1 file changed, 97 deletions(-)
 
-v2:
- - Reword comments to be more specific (Krzysztof K, Sebastian)
- - Get rid of the context id parameter (previously set in rsvd2, which
-   should have been rsvd1) - which turns out isn't actually required to
-   trigger the correct error path (Sebastian)
- - Capitalize sentences (Andi, off-list)
-
- tests/intel/gem_exec_params.c | 50 +++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
-
-diff --git a/tests/intel/gem_exec_params.c b/tests/intel/gem_exec_params.c
-index 3ba4c530b..c405190a0 100644
---- a/tests/intel/gem_exec_params.c
-+++ b/tests/intel/gem_exec_params.c
-@@ -85,6 +85,8 @@
-  *
-  * SUBTEST: invalid-flag
-  *
-+ * SUBTEST: invalid-offset-multiple-buffers
-+ *
-  * SUBTEST: invalid-ring
-  *
-  * SUBTEST: invalid-ring2
-@@ -404,6 +406,51 @@ static void test_invalid_batch_start(int fd)
- 	gem_close(fd, exec.handle);
+diff --git a/tests/intel/xe_prefetch_fault.c b/tests/intel/xe_prefetch_fault.c
+index 4843f56fd..e86cd68d9 100644
+--- a/tests/intel/xe_prefetch_fault.c
++++ b/tests/intel/xe_prefetch_fault.c
+@@ -81,56 +81,6 @@ L0:
+ 	)", lower_32_bits(addr), upper_32_bits(addr));
  }
  
-+/*
-+ * This test is checking for a NULL deref in eb_release_vmas()
-+ * (see 4fe2bd195435 for kernel fix), which happens when multiple buffers
-+ * are submitted to the execbuf ioctl and some of them are invalid.
-+ *
-+ * The __gem_execbuf() call is always expected to fail with an -EINVAL,
-+ * because the bug mentioned above is in the error path, which is
-+ * deliberately triggered. Affected systems, however, will not handle it
-+ * cleanly and will crash with a NULL deref.
-+ */
-+
-+static void test_invalid_offset_multiple_buffers(int fd)
-+{
-+	struct drm_i915_gem_exec_object2 exec[2];
-+	struct drm_i915_gem_execbuffer2 execbuf;
-+	uint32_t size = 0x1000;
-+
-+	memset(exec, 0, sizeof(exec));
-+	memset(&execbuf, 0, sizeof(execbuf));
-+
-+	exec[0].handle = batch_create_size(fd, size);
-+	exec[1].handle = batch_create_size(fd, size);
-+
-+	/*
-+	 * To test 4fe2bd195435, we need multiple buffers submitted and
-+	 * eb_add_vma() to fail. eb_add_vma() checks whether
-+	 * batch_start_offset + batch_len is smaller than the vma size, and
-+	 * fails with -EINVAL if it isn't. Submitting two buffers and setting
-+	 * the offset to the size of the first batch will trigger this
-+	 * error path.
-+	 */
-+
-+	execbuf.buffers_ptr = to_user_pointer(exec);
-+	execbuf.buffer_count = 2;
-+	execbuf.batch_start_offset = size;
-+
-+	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
-+
-+	gem_sync(fd, exec[0].handle);
-+	gem_sync(fd, exec[1].handle);
-+
-+	gem_close(fd, exec[0].handle);
-+	gem_close(fd, exec[1].handle);
-+}
-+
- static void test_larger_than_life_batch(int fd)
+-/**
+- * gpgpu_shader__l2_prefetch_fault:
+- * @shdr: shader to be modified
+- * @addr: ppgtt virtual address to raise L2 prefetch fault
+- *
+- * This shader can only be used when in efficient 64bit mode.
+- * For a given arbitrary ppgtt virtual address, it raises an L2 prefetch fault
+- * using load instruction with L1 uncached + L2 cached cache policy.
+- * With L1 uncached, the prefetch bypasses LSC and is sourced from L2.
+- */
+-static void gpgpu_shader__l2_prefetch_fault(struct gpgpu_shader *shdr,
+-					    uint64_t addr)
+-{
+-	igt_assert_f((addr & 0x7) == 0, "address must be aligned to QWord!\n");
+-
+-	emit_iga64_code(shdr, xe_l2_prefetch_fault_prefetch, R"(
+-#define IGA64_FLAGS ""
+-#if GFX_VER >= 4000
+-#elif GFX_VER >= 3500
+-L0:
+-// Set base address with scalar register
+-(W)	mov (1)		s0.0<1>:ud		ARG(0):ud
+-(W)	mov (1)		s0.1<1>:ud		ARG(1):ud
+-
+-// A64 offset
+-(W)	mov (8)		r30.0<1>:uq		0x0:uq
+-
+-// efficient 64bit Read with uncached L1, cached L2 and uncached L3
+-// sendg ugm load - L2 prefetch (L1 bypass)
+-// Message Descriptor
+-//      DP_LOAD_STORE_STATELESS_DESC (HAS:2209865465)
+-//      DP_CACHE_LOAD (HAS:2209865465) value 4 = L1UC_L2C_L3UC
+-//      0x49C00 =>
+-//      [45:44] Offset Scaling: 0 (disable)
+-//      [43:22] Global Offset: 0
+-//      [21] Overfetch: 0 (disable)
+-//      [19:16] Cache: 4 (L1 uncached, L2 cached and L3 uncached)
+-//      [15:14] Address Type and Size: 2 (Flat A64 Base, A64 Index)
+-//      [13:11] Data Size: 3 (D64)
+-//      [10:10] Transpose : 1 (enable)
+-//      [9:7] Vector Size: 0 (Vector length 1)
+-//      [5:0] Opcode: 0 (Load)
+-// Prefetch operations are implemented using a NULL destination register.
+-// L1 uncached forces the prefetch to bypass LSC, making L2 the fault source.
+-(W)	sendg.ugm (1|M0)	null	r30:1	null:0	s0.0	0x49C00	{A@1,$5}
+-
+-#endif
+-	)", lower_32_bits(addr), upper_32_bits(addr));
+-}
+-
+ static struct intel_buf *
+ create_buf(int fd, int width, int height, uint32_t color)
  {
- 	const struct intel_execution_engine2 *e;
-@@ -705,6 +752,9 @@ int igt_main()
- 	igt_subtest("larger-than-life-batch")
- 		test_larger_than_life_batch(fd);
+@@ -180,17 +130,6 @@ static struct gpgpu_shader *get_prefetch_shader(int fd)
+ 	return shader;
+ }
  
-+	igt_subtest("invalid-offset-multiple-buffers")
-+		test_invalid_offset_multiple_buffers(fd);
-+
- #define DIRT(name) \
- 	igt_subtest(#name "-dirt") { \
- 		execbuf.flags = 0; \
+-static struct gpgpu_shader *get_l2_prefetch_shader(int fd)
+-{
+-	struct gpgpu_shader *shader;
+-
+-	shader = gpgpu_shader_create(fd);
+-	gpgpu_shader__l2_prefetch_fault(shader, xe_canonical_va(fd, PREFETCH_ADDR));
+-	gpgpu_shader__eot(shader);
+-
+-	return shader;
+-}
+-
+ /**
+  * SUBTEST: prefetch-fault
+  * Description: Validate L1 prefetch fault and hit-under-miss behavior with
+@@ -201,16 +140,6 @@ static struct gpgpu_shader *get_l2_prefetch_shader(int fd)
+  * Description: Validate L1 prefetch fault and hit-under-miss behavior in SVM
+  *		mode with L1 cached, L2 cached cache policy (fault source: LSC)
+  * Run type: FULL
+- *
+- * SUBTEST: l2-prefetch-fault
+- * Description: Validate L2 prefetch fault and hit-under-miss behavior with
+- *		L1 uncached, L2 cached cache policy (fault source: L2)
+- * Run type: FULL
+- *
+- * SUBTEST: l2-prefetch-fault-svm
+- * Description: Validate L2 prefetch fault and hit-under-miss behavior in SVM
+- *		mode with L1 uncached, L2 cached cache policy (fault source: L2)
+- * Run type: FULL
+  */
+ static void test_prefetch_fault(int fd, struct drm_xe_engine_class_instance *hwe,
+ 				bool svm, get_shader_fn get_shader)
+@@ -367,32 +296,6 @@ int igt_main()
+ 		}
+ 	}
+ 
+-	igt_subtest_with_dynamic("l2-prefetch-fault") {
+-		xe_for_each_engine(fd, hwe) {
+-			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
+-			    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
+-				igt_dynamic_f("%s%d", xe_engine_class_string(hwe->engine_class),
+-					      hwe->engine_instance)
+-					test_prefetch_fault(fd, hwe, false,
+-							    get_l2_prefetch_shader);
+-			}
+-		}
+-	}
+-
+-	igt_subtest_with_dynamic("l2-prefetch-fault-svm") {
+-		if (!svm_supported)
+-			igt_skip("SVM not supported on this device, skipping.\n");
+-		xe_for_each_engine(fd, hwe) {
+-			if (hwe->engine_class == DRM_XE_ENGINE_CLASS_RENDER ||
+-			    hwe->engine_class == DRM_XE_ENGINE_CLASS_COMPUTE) {
+-				igt_dynamic_f("%s%d", xe_engine_class_string(hwe->engine_class),
+-					      hwe->engine_instance)
+-					test_prefetch_fault(fd, hwe, true,
+-							    get_l2_prefetch_shader);
+-			}
+-		}
+-	}
+-
+ 	igt_fixture() {
+ 		drm_close_driver(fd);
+ 	}
 -- 
-2.55.0
+2.43.0
 
