@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5332BC5B572
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 14:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AFF2DC5B572
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 14:54:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED15C10E572;
-	Wed, 19 Aug 2026 14:54:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 55A1E10E572;
+	Wed, 19 Aug 2026 14:54:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="imLYik5H";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cPDNeZXY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E11E610E142
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 14:53:04 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2421610E901
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 14:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787151185; x=1818687185;
+ t=1787151186; x=1818687186;
  h=from:to:subject:date:message-id:in-reply-to:references:
  mime-version:content-transfer-encoding;
- bh=L0ushFmI6qDmLvcFy25OLL6osxmBsjb2BVdzu7rDBl8=;
- b=imLYik5H332IgRh+R1PGsY1VGb6HldP24cOsceYR3dLt0bqNevLLh1KC
- Z6wNfGQxCRMHw8c1RKDCef6F5+UWZhmNBMDu4TYh0KeclhmBy3AGu48jv
- eUUmgITvmCDgBlBC+vH4XsS6ohaOhLRJGhTx4BxIVfW6Pj0S39am5qMMz
- yKNcl0kixpI0YtEfVbke/SBudI5errXKc8pABV0+9ouaxtMH0D136X3V8
- g1qYa6bY2eAK7vs/m9Fips1lziPOr4DZz23vaRnTwACw6Yd0b1mo8rDqI
- iwe9b3JHy+ce0WpPXnvrXLPZxVGuW1naSqbJIHodimLoRpu/FAikmkR5A A==;
-X-CSE-ConnectionGUID: GGCV7pYFRy6XVZC+zL8icQ==
-X-CSE-MsgGUID: qE6dKJl3R5+GDxvumUboeQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87588151"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="87588151"
+ bh=FUfwu8RoG90KR7ltP4lqhs/SM9PpZq5Kg6tTEYI0FEc=;
+ b=cPDNeZXYr0PAkn6IYoJMbFqEHWYWNjCiHcBtw07PCtc75BatxuvebRVc
+ N+yTV/v+9mk7H631dILP5lU/4DtABl6tNsi7xwjLHG3ejjb1iycKEPEIN
+ WW4eZ3ZyxoliMiFPlgnVWggw7mA67DNpVd99kvup6dgDi/WqLiNANL+KJ
+ rPzCT7RTUkZJnskLN3O0Nrw4M0nR+AVRSNiXSmRAmQfK09SzHk0vm40+E
+ zwg6umLXKhnLUliqqMNvDs1rp7JPBsuicxbImlbIG5dH6M6H/E9V7/xqa
+ 9w4ShLSElY08yY74m7B2/AFX/vAPMPxgn+2d0MeKqgNuiDflwUdbU29dB A==;
+X-CSE-ConnectionGUID: z3whCbNET5uaeAIL115p4Q==
+X-CSE-MsgGUID: Wk/ykdXvTqyFXQWZcr/Khw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87588153"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="87588153"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2026 07:53:05 -0700
-X-CSE-ConnectionGUID: GJZpaejSQ+mnWigD9bxKJQ==
-X-CSE-MsgGUID: 5Ds0cmHkQL2py/49JPLTzA==
+ 19 Aug 2026 07:53:06 -0700
+X-CSE-ConnectionGUID: xfWCHCKzTMOsFAfxS39Sdw==
+X-CSE-MsgGUID: BWIL6aD/TPewnPsainUVbw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="270791038"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="270791042"
 Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
- by fmviesa005.fm.intel.com with ESMTP; 19 Aug 2026 07:53:03 -0700
+ by fmviesa005.fm.intel.com with ESMTP; 19 Aug 2026 07:53:04 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org,
 	kamil.konieczny@intel.com
-Subject: [PATCH v1 1/2] tests/intel/xe_exec_system_allocator: fix
- prefetch-change-attr flow
-Date: Wed, 19 Aug 2026 14:53:00 +0000
-Message-ID: <20260819145302.18068-2-nishit.sharma@intel.com>
+Subject: [PATCH v1 2/2] tests/intel/xe_exec_system_allocator: use correct
+ DONTNEED test flag
+Date: Wed, 19 Aug 2026 14:53:01 +0000
+Message-ID: <20260819145302.18068-3-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260819145302.18068-1-nishit.sharma@intel.com>
 References: <20260819145302.18068-1-nishit.sharma@intel.com>
@@ -69,44 +69,28 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-These changes fixes the prefetch-change-attr test flow so the intended
-prefetch and atomic-attribute transition execute in the correct path.
+Test now using correct flag (USE_MADV_DONTNEED) instead of the libc
+MADV_DONTNEED constant. Both USE_MADV_DONTNEED and MADV_DONTNEED have
+value 4 and went unnoticable.
 
 Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 ---
- tests/intel/xe_exec_system_allocator.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tests/intel/xe_exec_system_allocator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 6ca53aa5f..476470be7 100644
+index 476470be7..305512dfd 100644
 --- a/tests/intel/xe_exec_system_allocator.c
 +++ b/tests/intel/xe_exec_system_allocator.c
-@@ -1395,6 +1395,9 @@ madvise_prefetch_op(int fd, uint32_t vm, uint64_t addr, size_t bo_size,
+@@ -2337,7 +2337,7 @@ test_compute(int fd, struct drm_xe_engine_class_instance *eci, size_t size,
+ 	xe_wait_ufence(fd, &bo_sync->sync, USER_FENCE_VALUE, 0, FIVE_SEC);
  
- 		xe_vm_madvise_migrate_pages(fd, vm, to_user_pointer(data), bo_size / 2);
+ 	env.loop_count = (flags & TOUCH_ONCE) ? 1 : env.array_size;
+-	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST) || (flags & MADV_DONTNEED);
++	env.skip_results_check = !(flags & ACCESS_DEVICE_HOST) || (flags & USE_MADV_DONTNEED);
+ 	env.vm = vm;
  
-+		/* free 1st allocation in mem_attrs */
-+		free(mem_attrs);
-+
- 		mem_attrs = xe_vm_get_mem_attr_values_in_range(fd, vm, addr, bo_size, &num_ranges);
- 		if (!mem_attrs) {
- 			igt_info("Failed to get memory attributes\n");
-@@ -1426,13 +1429,14 @@ madvise_prefetch_op(int fd, uint32_t vm, uint64_t addr, size_t bo_size,
- 		if (!mem_attrs) {
- 			igt_info("Failed to get memory attributes\n");
- 			return;
-+		}
- 
- 		xe_vm_prefetch_async(fd, vm, 0, 0, addr, bo_size, NULL, 0,
- 				     DRM_XE_CONSULT_MEM_ADVISE_PREF_LOC);
- 
- 		xe_vm_madvise_atomic_attr(fd, vm, to_user_pointer(data), bo_size,
- 					  DRM_XE_ATOMIC_DEVICE);
--		}
-+
- 		free(mem_attrs);
- 	}
- }
+ 	read_gt_stats_snapshot(fd, eci, &stats_before);
 -- 
 2.43.0
 
