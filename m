@@ -4,65 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D12C5DF85
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 18:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C82A9C5DF85
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 18:59:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C1DB710E4D5;
-	Wed, 19 Aug 2026 18:53:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 567D110EE7F;
+	Wed, 19 Aug 2026 18:59:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ARy+i7Wn";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UxakyM5o";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1E6610EC65
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 18:53:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AB2910EE7F
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 18:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787165581; x=1818701581;
+ t=1787165926; x=1818701926;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=emqasrl44k3/JXF0iMLBmCIq21ntue8o5tlM2IAEkKo=;
- b=ARy+i7Wn+P86Pbw9i+zw82d094aPiRxuaJjRSq7coEK6e7GdrvoNwIQU
- UT5SCyvc/RFj+FPVito9mL5XCRo8+t1P7gTHV2OnevYEQWKTwZB8Vh7FZ
- 7WXBL/xel8m/1eAU0chJC2s7oRkPedmKSMCGuiyXH3veQv73pwFk0px4B
- +wd87UyKJTJhGXZ+I0OzJzbND6b5h5eunG/LF2ZxOZnXLuK4F05Pnj2A4
- tsATksWudEBq4r/C0dO/ldhg0gyE101uiIE67PKBfMCKkFdYfEPLDcyJJ
- umh6fI3RFfTzqhBH9AfE8WS1iXxwHH/ndEKjhhMEWpj9qKcbBowYJCB29 w==;
-X-CSE-ConnectionGUID: Q0B3TWF+S3eNLuVXOaf4yg==
-X-CSE-MsgGUID: FR3Mj6qrQnuU7hkjejZT4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87899177"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="87899177"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Aug 2026 11:53:00 -0700
-X-CSE-ConnectionGUID: h5upyf0rQziI+BE48aWzZw==
-X-CSE-MsgGUID: 7HDHEeJfS3qNEiyJ/LRhkg==
+ bh=POizDkvS6T1IO3Hh7GjTBT77+8oJvf3byJbx7UMN5jU=;
+ b=UxakyM5oYCNcJBC9CG2jPAg8i8IvwRnUWoaFmkuTX9YQobZM3esUYsVt
+ R2j9dqr5+u5xPUxp9N+r3gloMrJZFzN8UyujPr5Ay9eVBUNv+Mgz30bpl
+ tSy6vWFZ27nnmDOCChWjTzc7mm6c/6ttVTNjTs6C/gvyl2JdGbv26qHDk
+ OD5Qp6eZNiYSAXr7QRT/adFYoO8ASjVsPqdXv0S7WEsvU+LBUVBiMptfO
+ sw+6LeG1LfTfhGhDVxsh27EWcv3bzH/NpBXH3Uz8zJJc23D+6vnGHIlTa
+ +R9Ud8twgciDwHFw7qDPMW7gWjlR0ZPzOuE9YK9HIg4oypZ2oh4few5Ig g==;
+X-CSE-ConnectionGUID: oMore91bRrq7jNYz2EG/ag==
+X-CSE-MsgGUID: arZEILCmRzOK5SkCQvCbiA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87455596"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="87455596"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2026 11:58:46 -0700
+X-CSE-ConnectionGUID: t64ggrvtRfyMAA5LpnEu3Q==
+X-CSE-MsgGUID: Lfc9hHKKT2GxaZN186MUAg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="259482475"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="269153683"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 11:52:58 -0700
-Date: Wed, 19 Aug 2026 20:52:42 +0200
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 11:58:44 -0700
+Date: Wed, 19 Aug 2026 20:58:41 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org, pawel.sikora@intel.com,
  jani.nikula@linux.intel.com, jesse.zhang@amd.com,
  christian.koenig@amd.com, alexander.deucher@amd.com,
- Krzysztof Karas <krzysztof.karas@intel.com>
-Subject: Re: [PATCH v5 1/4] lib: Add generic platform filtering framework
-Message-ID: <20260819185242.u4pllbpfe7cgiu2t@kamilkon-DESK.igk.intel.com>
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+Subject: Re: [PATCH v5 4/4] docs: Update platform filtering documentation per
+ review feedback
+Message-ID: <20260819185841.r2tzif7mrcctoxgt@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org,
  pawel.sikora@intel.com, jani.nikula@linux.intel.com,
  jesse.zhang@amd.com, christian.koenig@amd.com,
  alexander.deucher@amd.com,
- Krzysztof Karas <krzysztof.karas@intel.com>
+ Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
 References: <20260805202856.147163-1-vitaly.prosyak@amd.com>
- <20260805202856.147163-2-vitaly.prosyak@amd.com>
+ <20260805202856.147163-5-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260805202856.147163-2-vitaly.prosyak@amd.com>
+In-Reply-To: <20260805202856.147163-5-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,879 +80,442 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Vitaly,
-On 2026-08-05 at 16:28:45 -0400, vitaly.prosyak@amd.com wrote:
+On 2026-08-05 at 16:28:48 -0400, vitaly.prosyak@amd.com wrote:
 > From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > 
-> Implement vendor-agnostic platform filtering system that allows any
-> vendor to plug in platform-specific test skipping logic via callbacks.
-> 
-> Key design elements:
-> - struct platform_filter_ops: vendor callback interface
-> - struct platform_skip_entry: vendor-neutral skip rule representation
-> - enum skip_source: three-tier priority (built-in, config, env)
-> - API functions: init, should_skip, require, dump
-> 
-> Platform filtering is automatic - tests only need to call
-> platform_filter_init() once in igt_fixture. The IGT framework
-> automatically checks each subtest before execution via __igt_run_subtest().
-> 
-> Example usage:
->   igt_fixture {
->       vendor_platform_filter_init(platform_info);
->   }
-> 
->   igt_subtest("test") {
->       // Automatic filtering - no manual call needed!
->       test_code();
->   }
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> Cc: Jesse Zhang <jesse.zhang@amd.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+> Update the platform filtering usage guide to clarify method priority
+> ordering, replace Advantages/Disadvantages with When-to-Use/Trade-offs,
+> and add runtime methods for discovering platform names.
 
-Add here signed-off and any other tags needed for merging this.
+Add here any signed-off, cc, acks and/or r-b. After that
+place at beginning of line '---' so following do not enter
+git log history.
 
-Please add here line starting with '---' so following comments
-do not enter git log history.
-
-> 
-> v5 changes (addressing Kamil Konieczny's review):
->    -This combines both the interface (header) and implementation in a
->    -single commit as requested by Kamil Konieczny.
->    -**IMPORTANT**: This commit is generic and vendor-agnostic, containing
->    -NO AMD-specific implementation. The AMD backend is in a separate commit
->    -(patch 2/6 "lib/amdgpu: Add AMD platform filtering backend").
->    - Reorganize and improve commit content.
->    - Squash patch 3: Add platform filter initialization check to fix
->      incremental compilation.
-> 
-> v4 changes (addressing Krzysztof Karas detailed review of v3):
->  - Fixed documentation comment placement - ALL moved before functions
->  - Reorganized commit message for clarity (v4 changes first)
->  - Added prominent note that this is generic (no vendor code)
->  - Proper [PATCH v4 X/Y] format using git format-patch --subject-prefix
-> 
-> v3 changes (addressing Kamil Konieczny's review):
->  - Squashed header and implementation into single commit
->  - Removed unnecessary comment "Function prototypes..." from header
->  - Comprehensive documentation in separate commit
->    (docs/platform_filtering.md)
->  - Automatic filtering via __igt_run_subtest() hook (no manual require
->    calls)
->  - Fixed code style: include order, SPDX style, checkpatch clean
->  - Removed unnecessary newlines before single-statement returns
-> 
-> Design rationale (addresses feedback from original RFC discussion):
-> 
-> This implementation addresses feedback from multiple reviewers on the
-> original RFC patch series.
-> 
-> 1. Jani Nikula requested vendor-agnostic design:
->    "I would have expected an attempt to make an IGT shared filtering
->    system generic enough to plug into any vendor's platforms."
-> 
->    Resolution: Implemented vendor-agnostic callback-based design via
->    platform_filter_ops structure. Any vendor (Intel, AMD, Qualcomm, etc.)
->    can provide their own backend without modifying core framework.
-> 
-> 2. Kamil Konieczny requested config file support:
->    a) "Add also example with config file as env vars are not convenient
->       for large tests lists"
-> 
->       Resolution: Comprehensive documentation added in patch 5/6
->       (docs/platform_filtering.md) showing config file as RECOMMENDED
->       method with real-world examples, wildcards, and best practices.
-> 
->    b) "imho you can get test name in require, no need to repeat it"
-> 
->       Resolution: Went further - v3 removes igt_platform_require()
->       entirely. Filtering is now automatic via __igt_run_subtest() hook
->       in patch 4/6. Zero manual calls needed in subtests.
-> 
->    c) Code style (include order, alignment, igt_debug vs igt_info)
-> 
->       Resolution: Fixed in v3. Includes alphabetically ordered, SPDX
->       headers use // style, checkpatch clean.
-> 
->    d) "No need for this comment" (function prototypes comment)
-> 
->       Resolution: Removed unnecessary comment from header file.
-> 
->    e) "Please squash this into second patch"
-> 
->       Resolution: Header and implementation now in single commit.
-> 
-> 3. Multi-GPU support (integrated + discrete):
->    Current design queries platform once in igt_fixture. For multi-GPU
->    scenarios, tests can call platform_filter_init() per-device with
->    device-specific platform_info.
-> 
-> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Change-Id: I389d8a4e5bd67cdd00ac625c64b24e4d9b092e17
-
-No change-id, please.
-
-> ---
->  lib/igt_platform_filter.c | 574 ++++++++++++++++++++++++++++++++++++++
->  lib/igt_platform_filter.h | 124 ++++++++
->  lib/meson.build           |   1 +
->  3 files changed, 699 insertions(+)
->  create mode 100644 lib/igt_platform_filter.c
->  create mode 100644 lib/igt_platform_filter.h
-> 
-> diff --git a/lib/igt_platform_filter.c b/lib/igt_platform_filter.c
-> new file mode 100644
-> index 000000000..0b9452c40
-> --- /dev/null
-> +++ b/lib/igt_platform_filter.c
-> @@ -0,0 +1,574 @@
-> +// SPDX-License-Identifier: MIT
-> +// Copyright 2026 Advanced Micro Devices, Inc.
-> +/*
-> + * Generic platform-based test filtering framework
-> + *
-> + * This is a vendor-agnostic filtering system. Vendor-specific logic
-> + * is implemented via platform_filter_ops callbacks.
-> + */
-> +
-> +#include <ctype.h>
-> +#include <fnmatch.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +
-> +#include "igt.h"
-> +#include "igt_platform_filter.h"
-> +
-> +/* Maximum entries from config file and env variable */
-> +#define MAX_CONFIG_ENTRIES 256
-> +#define MAX_ENV_ENTRIES 128
-> +#define MAX_LINE_LENGTH 512
-> +
-> +/* Filter context - holds all runtime state (no globals) */
-> +struct platform_filter_context {
-> +	const struct platform_filter_ops *ops;
-> +	const void *platform_info;
-> +
-> +	struct platform_skip_entry config_entries[MAX_CONFIG_ENTRIES];
-> +	int config_entry_count;
-> +
-> +	struct platform_skip_entry env_entries[MAX_ENV_ENTRIES];
-> +	int env_entry_count;
-> +
-> +	bool initialized;
-> +	char current_platform_name[64];
-> +};
-> +
-> +/* Single static instance - initialized on first use */
-> +static struct platform_filter_context *get_filter_context(void)
-> +{
-> +	static struct platform_filter_context ctx = {0};
-> +
-> +	return &ctx;
-> +}
-> +
-> +/*
-> + * ================================================================
-> + * HELPER FUNCTIONS
-> + * ================================================================ */
-
-Please end comment lines in new line like:
- * ================================================================
- */
-
-This apply in patch 1/4 and also in 2/4.
-
-> +
-> +/* Helper: Trim whitespace from string */
-> +static char *trim(char *str)
-> +{
-> +	char *end;
-> +
-> +	while (isspace(*str))
-> +		str++;
-> +
-> +	if (*str == 0)
-> +		return str;
-> +
-> +	end = str + strlen(str) - 1;
-> +	while (end > str && isspace(*end))
-> +		end--;
-> +
-> +	*(end + 1) = 0;
-> +	return str;
-> +}
-> +
-> +/* Helper: Match wildcard or exact string */
-> +static bool match_string(const char *pattern, const char *str)
-> +{
-> +	if (!pattern || !str)
-> +		return false;
-> +
-> +	if (strcmp(pattern, "*") == 0)
-> +		return true;
-> +	return fnmatch(pattern, str, 0) == 0;
-> +}
-> +
-> +/* Helper: Check if entry matches platform/test/subtest */
-> +static bool entry_matches(const struct platform_filter_context *ctx,
-> +			  const struct platform_skip_entry *entry,
-> +			  const char *test_name,
-> +			  const char *subtest_name)
-> +{
-> +	if (entry->platform_data && ctx->ops->match_platform) {
-> +		if (!ctx->ops->match_platform(ctx->platform_info, entry->platform_data))
-> +			return false;
-> +	}
-> +
-> +	if (entry->test_name && strcmp(entry->test_name, "*") != 0) {
-> +		if (!test_name || !match_string(entry->test_name, test_name))
-> +			return false;
-> +	}
-> +
-> +	if (entry->subtest_glob && strcmp(entry->subtest_glob, "*") != 0) {
-> +		if (!subtest_name || !match_string(entry->subtest_glob, subtest_name))
-> +			return false;
-> +	}
-> +	return true;
-> +}
-> +
-> +/*
-> + * ================================================================
-> + * CONFIG FILE PARSER (/etc/igt/platform_skip.conf)
-> + * ================================================================ */
-
-Same here.
-
-> +
-> +/* Parse one line from config file */
-> +static bool parse_config_line(struct platform_filter_context *ctx,
-> +			      char *line,
-> +			       struct platform_skip_entry *entry)
-
-Alignement seems broken here. Please use checkpatch.pl with
-igt options, see .checkpatch.conf in igt repo.
-
-> +{
-> +	char *platform, *test, *subtest, *reason;
-> +
-> +	/* Skip comments and empty lines */
-> +	line = trim(line);
-> +	if (line[0] == '#' || line[0] == 0)
-> +		return false;
-> +
-> +	/* Format: platform:test:subtest:reason */
-> +	platform = strtok(line, ":");
-> +	test = strtok(NULL, ":");
-> +	subtest = strtok(NULL, ":");
-> +	reason = strtok(NULL, "\n");
-> +
-> +	if (!platform || !test || !subtest) {
-> +		igt_warn("Invalid config line format (expected platform:test:subtest:reason)\n");
-> +		return false;
-> +	}
-> +
-> +	/* Allocate and copy strings */
-> +	entry->test_name = strdup(trim(test));
-> +	entry->subtest_glob = strdup(trim(subtest));
-> +	entry->reason = reason ? strdup(trim(reason)) : strdup("No reason");
-> +
-> +	/* Parse platform using vendor callback */
-> +	platform = trim(platform);
-> +	if (ctx->ops->parse_platform_config && strcmp(platform, "*") != 0) {
-> +		/* Vendor-specific platform string */
-> +		if (!ctx->ops->parse_platform_config(platform, &entry->platform_data)) {
-> +			igt_warn("Failed to parse platform: %s\n", platform);
-> +			free((void *)entry->test_name);
-> +			free((void *)entry->subtest_glob);
-> +			free((void *)entry->reason);
-> +			return false;
-> +		}
-> +	} else {
-> +		/* Wildcard or no vendor-specific parsing available */
-> +		entry->platform_data = NULL;
-> +	}
-> +	return true;
-> +}
-> +
-> +/* Load config file */
-> +static void load_config_file(struct platform_filter_context *ctx, const char *filename)
-> +{
-> +	FILE *f;
-> +	char line[MAX_LINE_LENGTH];
-> +
-> +	f = fopen(filename, "r");
-> +	if (!f) {
-> +		igt_debug("Config file not found: %s\n", filename);
-> +
-> +		return;
-> +	}
-> +
-> +	igt_info("Loading platform skip config from: %s\n", filename);
-> +
-> +	while (fgets(line, sizeof(line), f)) {
-> +		if (ctx->config_entry_count >= MAX_CONFIG_ENTRIES) {
-> +			igt_warn("Config file has too many entries (max %d)\n",
-> +				 MAX_CONFIG_ENTRIES);
-> +			break;
-> +		}
-> +
-> +		if (parse_config_line(ctx, line, &ctx->config_entries[ctx->config_entry_count])) {
-> +			ctx->config_entry_count++;
-> +		}
-
-No need for braces '{' '}' for single-line.
-
-There are other places where checkpatch complains, you could
-ignore line too long. Also, please find someone from amd team
-for a full review.
-
-LGTM
+With this fixed
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-
-> +	}
-> +
-> +	fclose(f);
-> +	igt_info("Loaded %d skip rules from config file\n", ctx->config_entry_count);
-> +}
-> +
-> +/*
-> + * ================================================================
-> + * ENVIRONMENT VARIABLE PARSER (IGT_PLATFORM_SKIP_CONFIG)
-> + * ================================================================ */
-> +
-> +/* Parse environment variable entries (semicolon-separated) */
-> +static void load_env_variable(struct platform_filter_context *ctx)
-> +{
-> +	char *env, *env_copy, *entry_str, *saveptr;
-> +	const char *env_value;
-> +
-> +	env_value = getenv("IGT_PLATFORM_SKIP_CONFIG");
-> +	if (!env_value || env_value[0] == 0) {
-> +		igt_debug("IGT_PLATFORM_SKIP_CONFIG not set\n");
-> +
-> +		return;
-> +	}
-> +
-> +	igt_info("Loading platform skip config from IGT_PLATFORM_SKIP_CONFIG\n");
-> +
-> +	env_copy = strdup(env_value);
-> +	env = env_copy;
-> +
-> +	/* Parse semicolon-separated entries */
-> +	while ((entry_str = strtok_r(env, ";", &saveptr)) != NULL) {
-> +		env = NULL; /* For subsequent strtok_r calls */
-> +
-> +		if (ctx->env_entry_count >= MAX_ENV_ENTRIES) {
-> +			igt_warn("Too many env variable entries (max %d)\n",
-> +				 MAX_ENV_ENTRIES);
-> +			break;
-> +		}
-> +
-> +		if (parse_config_line(ctx, entry_str, &ctx->env_entries[ctx->env_entry_count])) {
-> +			ctx->env_entry_count++;
-> +		}
-> +	}
-> +
-> +	free(env_copy);
-> +	igt_info("Loaded %d skip rules from environment variable\n", ctx->env_entry_count);
-> +}
-> +
-> +/*
-> + * ================================================================
-> + * PUBLIC API IMPLEMENTATION
-> + * ================================================================ */
-> +
-> +/**
-> + * igt_platform_filter_init:
-> + * @ops: Platform-specific operation callbacks
-> + * @platform_info: Vendor-specific platform identification data
-> + *
-> + * Initialize the platform filtering system with vendor-specific backend.
-> + * This sets up the filter context and loads skip rules from three sources
-> + * in priority order:
-> + * 1. Built-in rules (highest priority, vendor-provided)
-> + * 2. Config file /etc/igt/platform_skip.conf
-> + * 3. Environment variable IGT_PLATFORM_SKIP_CONFIG (lowest priority)
-> + *
-> + * The filtering system is vendor-agnostic. Platform matching logic is
-> + * provided through the @ops callbacks, allowing each vendor to implement
-> + * their own identification scheme (e.g., AMD uses family_id/chip_rev,
-> + * Intel could use platform_id/stepping).
-> + *
-> + * Must be called once before using igt_platform_require().
-> + */
-> +void igt_platform_filter_init(const struct platform_filter_ops *ops,
-> +			      const void *platform_info)
-> +{
-> +	struct platform_filter_context *ctx = get_filter_context();
-> +
-> +	if (ctx->initialized)
-> +
-> +		return;
-> +
-> +	if (!ops) {
-> +		igt_warn("Platform filter ops is NULL, filtering disabled\n");
-> +
-> +		return;
-> +	}
-> +
-> +	ctx->ops = ops;
-> +	ctx->platform_info = platform_info;
-> +
-> +	igt_info("Initializing platform filter system (3-tier priority) for vendor: %s\n",
-> +		 ops->name ? ops->name : "unknown");
-> +
-> +	/* Get current platform name */
-> +
-> +	if (ops->get_platform_name) {
-> +		const char *pname = ops->get_platform_name(platform_info);
-> +
-> +		snprintf(ctx->current_platform_name, sizeof(ctx->current_platform_name),
-> +			 "%s", pname ? pname : "unknown");
-> +	}
-> +
-> +	/* Priority 1: Built-in array (vendor-specific) */
-> +	igt_debug("  Priority 1: Built-in array (vendor-specific)\n");
-> +
-> +	/* Priority 2: Config file */
-> +	igt_debug("  Priority 2: Config file /etc/igt/platform_skip.conf\n");
-> +	load_config_file(ctx, "/etc/igt/platform_skip.conf");
-> +
-> +	/* Priority 3: Environment variable */
-> +	igt_debug("  Priority 3: Environment variable IGT_PLATFORM_SKIP_CONFIG\n");
-> +	load_env_variable(ctx);
-> +
-> +	ctx->initialized = true;
-> +	igt_info("Platform filter initialization complete\n");
-> +}
-> +
-> +/**
-> + * igt_platform_should_skip:
-> + * @test_name: Name of the test
-> + * @subtest_name: Name of the subtest (or NULL for test-level check)
-> + *
-> + * Check if a test/subtest should be skipped based on platform filtering rules.
-> + *
-> + * Returns: true if the test should be skipped, false otherwise
-> + */
-> +bool igt_platform_should_skip(const char *test_name,
-> +			      const char *subtest_name,
-> +			       enum skip_source *source,
-> +			       const char **reason)
-> +{
-> +	struct platform_filter_context *ctx = get_filter_context();
-> +	const struct platform_skip_entry *entry;
-> +	int i, count;
-> +
-> +	if (!ctx->initialized) {
-> +		igt_warn("Platform filter not initialized\n");
-> +		if (source)
-> +			*source = SKIP_SOURCE_NONE;
-> +		if (reason)
-> +			*reason = NULL;
-> +		return false;
-> +	}
-> +
-> +	/* Priority 1: Check built-in array FIRST */
-> +	if (ctx->ops->get_builtin_rules) {
-> +		const struct platform_skip_entry *builtin = ctx->ops->get_builtin_rules(&count);
-> +
-> +		for (i = 0; i < count; i++) {
-> +			entry = &builtin[i];
-> +			if (entry_matches(ctx, entry, test_name, subtest_name)) {
-> +				if (source)
-> +					*source = SKIP_SOURCE_BUILTIN;
-> +				if (reason)
-> +					*reason = entry->reason;
-> +				igt_debug("Skip (built-in): %s:%s - %s\n",
-> +					  entry->test_name ? entry->test_name : "*",
-> +					  entry->subtest_glob ? entry->subtest_glob : "*",
-> +					  entry->reason ? entry->reason : "no reason");
-> +				return true;
-> +			}
-> +		}
-> +	}
-> +
-> +	/* Priority 2: Check config file */
-> +	for (i = 0; i < ctx->config_entry_count; i++) {
-> +		entry = &ctx->config_entries[i];
-> +		if (entry_matches(ctx, entry, test_name, subtest_name)) {
-> +			if (source)
-> +				*source = SKIP_SOURCE_CONFIG;
-> +			if (reason)
-> +				*reason = entry->reason;
-> +			igt_debug("Skip (config): %s:%s - %s\n",
-> +				  entry->test_name, entry->subtest_glob, entry->reason);
-> +			return true;
-> +		}
-> +	}
-> +
-> +	/* Priority 3: Check environment variable */
-> +	for (i = 0; i < ctx->env_entry_count; i++) {
-> +		entry = &ctx->env_entries[i];
-> +		if (entry_matches(ctx, entry, test_name, subtest_name)) {
-> +			if (source)
-> +				*source = SKIP_SOURCE_ENV;
-> +			if (reason)
-> +				*reason = entry->reason;
-> +			igt_debug("Skip (env): %s:%s - %s\n",
-> +				  entry->test_name, entry->subtest_glob, entry->reason);
-> +			return true;
-> +		}
-> +	}
-> +
-> +	if (source)
-> +		*source = SKIP_SOURCE_NONE;
-> +	if (reason)
-> +		*reason = NULL;
-> +	return false;
-> +}
-> +
-> +/**
-> + * igt_platform_require:
-> + * @subtest_name: Name of the subtest to check
-> + *
-> + * Check if current subtest should be skipped and call igt_skip() if matched.
-> + * This integrates platform filtering with IGT's standard skip mechanism.
-> + *
-> + * The function automatically determines the test name from igt_test_name().
-> + * If a skip rule matches, calls igt_skip() with the configured reason.
-> + */
-> +void igt_platform_require(const char *subtest_name)
-> +{
-> +	enum skip_source source;
-> +	const char *test_name = igt_test_name();
-> +	const char *reason;
-> +
-> +	if (igt_platform_should_skip(test_name, subtest_name, &source, &reason)) {
-> +		const char *source_str;
-> +
-> +		switch (source) {
-> +		case SKIP_SOURCE_BUILTIN:
-> +			source_str = "built-in array";
-> +			break;
-> +		case SKIP_SOURCE_CONFIG:
-> +			source_str = "config file";
-> +			break;
-> +		case SKIP_SOURCE_ENV:
-> +			source_str = "environment variable";
-> +			break;
-> +		default:
-> +			source_str = "unknown";
-> +		}
-> +
-> +		igt_skip("Skipped on this platform [%s]: %s\n",
-> +			 source_str, reason ? reason : "no reason");
-> +	}
-> +}
-> +
-> +/**
-> + * igt_platform_filter_dump:
-> + *
-> + * Dump the current platform filtering configuration to stdout.
-> + * Shows all loaded skip rules from built-in, config file, and environment
-> + * variable sources. Useful for debugging which rules are active.
-> + */
-> +void igt_platform_filter_dump(void)
-> +{
-> +	struct platform_filter_context *ctx = get_filter_context();
-> +	const struct platform_skip_entry *entry;
-> +	int i, total_count, count;
-> +
-> +	if (!ctx->initialized) {
-> +		igt_info("Platform filter not initialized\n");
-> +
-> +		return;
-> +	}
-> +
-> +	igt_info("\n");
-> +	igt_info("═══════════════════════════════════════════════════════════════════\n");
-> +	igt_info(" PLATFORM SKIP FILTER CONFIGURATION - THREE-TIER PRIORITY SYSTEM\n");
-> +	igt_info("═══════════════════════════════════════════════════════════════════\n\n");
-> +
-> +	igt_info("Vendor: %s\n", ctx->ops->name ? ctx->ops->name : "unknown");
-> +	if (ctx->current_platform_name[0]) {
-> +		igt_info("Current Platform: %s\n\n", ctx->current_platform_name);
-> +	}
-> +
-> +	/* Priority 1: Built-in array */
-> +	igt_info("───────────────────────────────────────────────────────────────────\n");
-> +	igt_info(" PRIORITY 1: BUILT-IN PRODUCTION ARRAY (VENDOR-SPECIFIC)\n");
-> +	igt_info(" Source: Vendor implementation\n");
-> +	igt_info("───────────────────────────────────────────────────────────────────\n");
-> +
-> +	total_count = 0;
-> +	if (ctx->ops->get_builtin_rules) {
-> +		const struct platform_skip_entry *builtin = ctx->ops->get_builtin_rules(&count);
-> +
-> +		for (i = 0; i < count; i++) {
-> +			entry = &builtin[i];
-> +			total_count++;
-> +			igt_info("  %2d. %s : %s\n",
-> +				 total_count,
-> +			       entry->test_name ? entry->test_name : "*",
-> +			       entry->subtest_glob ? entry->subtest_glob : "*");
-> +			igt_info("      Reason: %s\n", entry->reason ? entry->reason : "no reason");
-> +
-> +			/* Print platform data if vendor provides dump callback */
-> +			if (entry->platform_data && ctx->ops->dump_platform_data) {
-> +				igt_info("      Platform: ");
-> +				ctx->ops->dump_platform_data(entry->platform_data);
-> +				igt_info("\n");
-> +			}
-> +			igt_info("\n");
-> +		}
-> +	}
-> +	if (total_count == 0) {
-> +		igt_info("  (No built-in rules)\n\n");
-> +	}
-> +
-> +	/* Priority 2: Config file */
-> +	igt_info("───────────────────────────────────────────────────────────────────\n");
-> +	igt_info(" PRIORITY 2: DEVELOPMENT CONFIG FILE\n");
-> +	igt_info(" Source: /etc/igt/platform_skip.conf\n");
-> +	igt_info("───────────────────────────────────────────────────────────────────\n");
-> +
-> +	if (ctx->config_entry_count > 0) {
-> +		for (i = 0; i < ctx->config_entry_count; i++) {
-> +			entry = &ctx->config_entries[i];
-> +			igt_info("  %2d. %s : %s\n",
-> +				 i + 1,
-> +			       entry->test_name,
-> +			       entry->subtest_glob);
-> +			igt_info("      Reason: %s\n\n", entry->reason);
-> +		}
-> +	} else {
-> +		igt_info("  (No config file rules loaded)\n\n");
-> +	}
-> +
-> +	/* Priority 3: Environment variable */
-> +	igt_info("───────────────────────────────────────────────────────────────────\n");
-> +	igt_info(" PRIORITY 3: RUNTIME ENVIRONMENT VARIABLE\n");
-> +	igt_info(" Source: IGT_PLATFORM_SKIP_CONFIG\n");
-> +	igt_info("───────────────────────────────────────────────────────────────────\n");
-> +
-> +	if (ctx->env_entry_count > 0) {
-> +		for (i = 0; i < ctx->env_entry_count; i++) {
-> +			entry = &ctx->env_entries[i];
-> +
-> +			igt_info("  %2d. %s : %s\n",
-> +				 i + 1,
-> +			       entry->test_name,
-> +			       entry->subtest_glob);
-> +			igt_info("      Reason: %s\n\n", entry->reason);
-> +		}
-> +	} else {
-> +		igt_info("  (No environment variable rules)\n\n");
-> +	}
-> +
-> +	igt_info("───────────────────────────────────────────────────────────────────\n");
-> +	igt_info(" SUMMARY\n");
-> +	igt_info("───────────────────────────────────────────────────────────────────\n");
-> +	igt_info("  Built-in rules:     %d\n", total_count);
-> +	igt_info("  Config file rules:  %d\n", ctx->config_entry_count);
-> +	igt_info("  Environment rules:  %d\n", ctx->env_entry_count);
-> +	igt_info("  Total skip rules:   %d\n", total_count + ctx->config_entry_count + ctx->env_entry_count);
-> +	igt_info("\n");
-> +	igt_info("═══════════════════════════════════════════════════════════════════\n\n");
-> +}
-> +
-> +/**
-> + * igt_platform_filter_dump_to_file:
-> + * @filename: Path to output file
-> + *
-> + * Dump platform filtering configuration to a file.
-> + *
-> + * Returns: 0 on success, -1 on error
-> + */
-> +int igt_platform_filter_dump_to_file(const char *filename)
-> +{
-> +	FILE *old_stdout;
-> +	FILE *f;
-> +
-> +	f = fopen(filename, "w");
-> +	if (!f) {
-> +		igt_warn("Failed to open %s for writing\n", filename);
-> +		return -1;
-> +	}
-> +
-> +	/* Redirect stdout to file */
-> +	old_stdout = stdout;
-> +	stdout = f;
-> +
-> +	igt_platform_filter_dump();
-> +
-> +	/* Restore stdout */
-> +	stdout = old_stdout;
-> +	fclose(f);
-> +
-> +	igt_info("Platform filter configuration dumped to: %s\n", filename);
-> +	return 0;
-> +}
-> +
-> +/**
-> + * igt_platform_filter_is_initialized:
-> + *
-> + * Check if platform filtering has been initialized.
-> + *
-> + * Returns: true if initialized, false otherwise
-> + */
-> +bool igt_platform_filter_is_initialized(void)
-> +{
-> +	struct platform_filter_context *ctx = get_filter_context();
-> +
-> +	return ctx && ctx->initialized;
-> +}
-> diff --git a/lib/igt_platform_filter.h b/lib/igt_platform_filter.h
+> 
+> Address review comments from Krzysztof Kozlowski:
+> 
+> 1. Reordered documentation methods to match priority order:
+>    - Method 1: Built-in Rules (highest priority) - was listed last
+>    - Method 2: Config File (recommended)
+>    - Method 3: Environment Variable (lowest priority)
+> 
+> 2. Replaced Advantages/Disadvantages sections with When to Use and
+>    Trade-offs to better reflect that each method has valid use cases
+>    rather than suggesting one is universally better
+> 
+> 3. Added positive use cases for environment variable method:
+>    - Quick one-off testing without editing files
+>    - Temporary overrides during debugging
+>    - Testing filter patterns before committing to config
+>    - Was showing only disadvantages before
+> 
+> 4. Made platform names list generic with code reference:
+>    - Changed from hardcoded exhaustive list to examples
+>    - Added reference to lib/amdgpu/amd_platform.c for complete list
+>    - Added methods to discover platform name at runtime
+>    - Noted that list may change with new hardware generations
+> 
+> 5. Removed redundant checkmark from summary table
+> 
+> 6. Updated mkdocs.yml title from "How to filter platforms" to
+>    "How to filter tests per platform" to match "How to" style
+>    of other documentation entries
+> 
+> v5: Address review from Kamil Konieczny:
+>    - Replaced emoji with ASCII [+]/[-] in docs/platform_filtering.md
+>    - Removed Gerrit Change-Id from commit message
+>    - Moved detail below --- separator (not in git log)
+>    - Added Cc: Pawel Sikora per Kamil's request
+> 
+> Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Pawel Sikora <pawel.sikora@intel.com>
+> Cc: Jani Nikula <jani.nikula@linux.intel.com>
+> Cc: Jesse Zhang <jesse.zhang@amd.com>
+> Cc: Christian Koenig <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> ---
+>  docs/platform_filtering.md | 351 +++++++++++++++++++++++++++++++++++++
+>  mkdocs.yml                 |   1 +
+>  2 files changed, 352 insertions(+)
+>  create mode 100644 docs/platform_filtering.md
+> 
+> diff --git a/docs/platform_filtering.md b/docs/platform_filtering.md
 > new file mode 100644
-> index 000000000..b83440514
+> index 000000000..7d3202a94
 > --- /dev/null
-> +++ b/lib/igt_platform_filter.h
-> @@ -0,0 +1,124 @@
-> +/* SPDX-License-Identifier: MIT
-> + * Copyright 2026 Advanced Micro Devices, Inc.
-> + */
+> +++ b/docs/platform_filtering.md
+> @@ -0,0 +1,351 @@
+> +# IGT Platform Filtering - Usage Guide
 > +
-> +#ifndef IGT_PLATFORM_FILTER_H
-> +#define IGT_PLATFORM_FILTER_H
+> +## Overview
 > +
-> +#include <stdbool.h>
+> +The IGT platform filtering framework allows tests to be skipped based on
+> +platform characteristics without modifying test source code.
 > +
-> +/**
-> + * SECTION: igt_platform_filter
-> + * @short_description: Generic platform-based test filtering framework
-> + * @title: Platform Filter
-> + * @include: igt_platform_filter.h
-> + *
-> + * Generic test filtering system that allows skipping tests/subtests based
-> + * on platform characteristics. Designed to be vendor-agnostic with
-> + * vendor-specific backends.
-> + *
-> + * Three-tier priority system (checked in sequence, first match wins):
-> + *   1. PRODUCTION: Built-in compile-time rules (vendor-specific)
-> + *   2. DEVELOPMENT: Config file /etc/igt/platform_skip.conf
-> + *   3. RUNTIME: Environment variable IGT_PLATFORM_SKIP_CONFIG
-> + *
-> + * Vendor Implementation:
-> + *   Each vendor implements platform_filter_ops callbacks to provide:
-> + *   - Platform identification and matching logic
-> + *   - Platform-specific data structures
-> + *   - Built-in skip rules
-> + *
-> + * Usage in tests:
-> + *   igt_fixture() {
-> + *       igt_platform_filter_init(vendor_ops, platform_info);
-> + *   }
-> + *
-> + *   igt_subtest("my-test") {
-> + *       // Automatic filtering - no manual call needed!
-> + *       test_code();
-> + *   }
-> + *
-> + * Config file format (/etc/igt/platform_skip.conf):
-> + *   # Lines starting with # are comments
-> + *   # Format: platform:test:subtest:reason
-> + *   # Use * as wildcard
-> + *
-> + *   navi48:*:*:All tests disabled on Navi48
-> + *   alderlake:i915_pm:*:Power management tests broken
-> + *
-> + * Environment variable format (IGT_PLATFORM_SKIP_CONFIG):
-> + *   Same as config file, semicolon-separated entries:
-> + *   export IGT_PLATFORM_SKIP_CONFIG="navi48:*:*:Testing;navi10:amd_basic:*:Broken"
-> + */
+> +**Key Feature**: **Automatic Filtering** - No manual calls needed in subtests!
 > +
-> +/* Maximum platform ranges per skip entry */
-> +#define MAX_PLATFORM_RANGES 4
+> +Tests only need to initialize platform filtering once in `igt_fixture`,
+> +and the IGT framework automatically checks each subtest before execution.
 > +
-> +/**
-> + * enum skip_source - Source of skip rule
-> + */
-> +enum skip_source {
-> +	SKIP_SOURCE_BUILTIN,    /* From vendor built-in array */
-> +	SKIP_SOURCE_CONFIG,     /* From /etc/igt/platform_skip.conf */
-> +	SKIP_SOURCE_ENV,        /* From IGT_PLATFORM_SKIP_CONFIG */
-> +	SKIP_SOURCE_NONE,       /* Not skipped */
+> +## Quick Start
+> +
+> +### 1. Initialize in Test (One Time)
+> +
+> +```c
+> +#include "lib/amdgpu/amd_platform.h"
+> +
+> +int igt_main(void)
+> +{
+> +    struct amdgpu_gpu_info gpu_info;
+> +
+> +    igt_fixture {
+> +        fd = drm_open_driver(DRIVER_AMDGPU);
+> +        amdgpu_query_gpu_info(device, &gpu_info);
+> +
+> +        /* Initialize platform filtering - enables automatic filtering */
+> +        amd_platform_filter_init(&gpu_info);
+> +    }
+> +
+> +    igt_subtest("my-test") {
+> +        /* No manual filtering call needed - automatic! */
+> +        test_code();
+> +    }
+> +}
+> +```
+> +
+> +### 2. Configure Filtering Rules
+> +
+> +Use one of three methods (checked in priority order):
+> +
+> +1. **Built-in rules** (highest priority) - Compiled into test
+> +2. **Config file** (recommended) - `/etc/igt/platform_skip.conf`
+> +3. **Environment variable** (lowest priority) - `IGT_PLATFORM_SKIP_CONFIG`
+> +
+> +---
+> +
+> +## Method 1: Built-in Rules (Highest Priority)
+> +
+> +**Location**: Vendor implementation (e.g., `lib/amdgpu/amd_platform.c`)
+> +
+> +### Example
+> +
+> +```c
+> +static const struct platform_skip_entry amd_builtin_rules[] = {
+> +    {
+> +        .test_name = "amd_security",
+> +        .subtest_glob = "secure-bounce",
+> +        .reason = "Not supported on APUs",
+> +        .platform_data = &apu_platforms,
+> +    },
 > +};
+> +```
 > +
-> +/**
-> + * struct platform_skip_entry - Generic skip rule entry
-> + *
-> + * Generic structure for skip rules. Vendor-specific data is stored
-> + * in platform_data field and interpreted by vendor callbacks.
-> + */
-> +struct platform_skip_entry {
-> +	const char *test_name;          /* Test binary name or "*" for all */
-> +	const char *subtest_glob;       /* Subtest pattern (fnmatch) or "*" */
-> +	const char *reason;             /* Human-readable reason (required) */
-> +	void *platform_data;            /* Vendor-specific platform matching data */
+> +### When to Use Built-in Rules
+> +
+> +- Permanent production exclusions that should never run
+> +- Platform limitations known at development time
+> +- Tests that fundamentally cannot work on certain hardware
+> +- Vendor-specific restrictions that apply globally
+> +
+> +**Trade-offs:**
+> +- [+] Fast (no file I/O at runtime)
+> +- [+] Guaranteed to be applied
+> +- [+] Version controlled with code
+> +- [-] Requires rebuild to change
+> +- [-] Not flexible for temporary exclusions
+> +
+> +---
+> +
+> +## Method 2: Config File (RECOMMENDED)
+> +
+> +**Location**: `/etc/igt/platform_skip.conf`
+> +
+> +**Format**: `platform:test:subtest:reason`
+> +
+> +**Note**: The reason field is recommended but can be empty. If omitted, "No reason" is automatically inserted.
+> +
+> +### Example Config File
+> +
+> +```bash
+> +cat > /etc/igt/platform_skip.conf << 'EOF'
+> +# Platform filtering configuration
+> +# Format: platform:test:subtest:reason
+> +# Use * as wildcard
+> +
+> +# Skip all UMQ tests on Navi48 during platform bringup
+> +navi48:amd_basic:*-UMQ:SWDEV-88888 - UMQ stabilization in progress
+> +
+> +# Skip specific tests with ticket references
+> +navi31:amd_basic:cs-gfx-with-IP-GFX-UMQ:SWDEV-12345
+> +navi31:amd_basic:cs-compute-with-IP-COMPUTE-UMQ:SWDEV-12345
+> +navi31:amd_basic:cs-sdma-with-IP-DMA-UMQ:SWDEV-12346
+> +
+> +# Skip tests on early samples
+> +strix_halo:amd_basic:*:Platform not ready - ES samples
+> +
+> +# Skip known flaky test across all platforms
+> +*:amd_basic:eviction-test-with-IP-DMA:SWDEV-99999 - Intermittent failure
+> +
+> +# Skip entire test binary on specific platform
+> +navi10:amd_vcn:*:VCN encoding issues on Navi10 A0
+> +
+> +# Skip all tests on discontinued platform
+> +vega10:*:*:Platform no longer supported
+> +EOF
+> +```
+> +
+> +### Run Tests
+> +
+> +```bash
+> +# Config file is loaded automatically - no environment variable needed
+> +./build/tests/amdgpu/amd_basic
+> +
+> +# Output shows:
+> +# Subtest cs-gfx-with-IP-GFX-UMQ: SKIP
+> +# Platform filtering (config): SWDEV-12345
+> +```
+> +
+> +### When to Use Config File
+> +
+> +- Managing multiple test exclusions
+> +- Team-wide or CI/CD configurations
+> +- Persistent filtering rules across sessions
+> +- Easy add/remove/edit without rebuilding
+> +- No need to remember environment variables
+> +- Sharing skip rules across test infrastructure
+> +
+> +---
+> +
+> +## Method 3: Environment Variable (Lowest Priority)
+> +
+> +**Variable**: `IGT_PLATFORM_SKIP_CONFIG`
+> +
+> +**Format**: Same as config file, semicolon-separated
+> +
+> +### Example - Skip Single Test
+> +
+> +```bash
+> +export IGT_PLATFORM_SKIP_CONFIG="navi48:amd_basic:cs-compute-with-IP-COMPUTE-UMQ:Testing"
+> +./build/tests/amdgpu/amd_basic
+> +```
+> +
+> +### Example - Skip Multiple Tests
+> +
+> +```bash
+> +export IGT_PLATFORM_SKIP_CONFIG="navi48:amd_basic:*-UMQ:Testing;navi31:amd_basic:cs-gfx-*:Known issue"
+> +./build/tests/amdgpu/amd_basic
+> +```
+> +
+> +### When to Use Environment Variable
+> +
+> +- Quick one-off testing without editing files
+> +- Temporary overrides during debugging sessions
+> +- Testing filter patterns before adding to config file
+> +- Single test runs where config file would be overkill
+> +- Overriding config file rules for specific test runs
+> +- CI pipeline job-specific overrides
+> +
+> +**Trade-offs:**
+> +- [+] No file editing required
+> +- [+] Quick to set and unset
+> +- [+] Can override config file for testing
+> +- [-] Not persistent (lost when session ends)
+> +- [-] Easy to forget it's set
+> +- [-] Inconvenient for large test lists
+> +
+> +---
+> +
+> +## Wildcard Patterns
+> +
+> +All methods support wildcards (`*`) for flexible matching:
+> +
+> +```
+> +# Platform wildcards
+> +*:amd_basic:my-test:Reason           # All platforms
+> +navi*:amd_basic:my-test:Reason       # All Navi (navi10, navi31, navi48, etc.)
+> +
+> +# Test wildcards
+> +navi48:amd_*:my-test:Reason          # All amd_* tests
+> +
+> +# Subtest wildcards
+> +navi48:amd_basic:*-UMQ:Reason        # All subtests ending with -UMQ
+> +navi48:amd_basic:cs-*:Reason         # All subtests starting with cs-
+> +
+> +# Combined wildcards
+> +*:*:*-UMQ:Reason                     # All UMQ tests on all platforms
+> +```
+> +
+> +### Wildcard Examples
+> +
+> +```bash
+> +# Skip all user queue tests during bringup
+> +navi48:*:*-UMQ:Platform bringup - UMQ not ready
+> +
+> +# Skip all VCN tests on specific platform
+> +navi10:amd_vcn:*:Known VCN issues
+> +
+> +# Skip specific test pattern across all platforms
+> +*:amd_basic:eviction-*:Intermittent failures
+> +
+> +# Skip all tests on EOL platform
+> +vega10:*:*:Platform no longer supported
+> +```
+> +
+> +### Pattern Matching Rules
+> +
+> +- `*` matches zero or more characters
+> +- Patterns are case-sensitive
+> +- Empty field is NOT a wildcard (use `*` explicitly)
+> +- Priority order: Built-in > Config file > Environment variable
+> +
+> +### Example Subtest Matching
+> +
+> +Given config: `navi48:amd_basic:*-UMQ:Testing`
+> +
+> +- cs-gfx-with-IP-GFX-UMQ → **Skipped** (matches)
+> +- cs-compute-with-IP-COMPUTE-UMQ → **Skipped** (matches)
+> +- cs-sdma-with-IP-DMA → Runs normally (doesn't match)
+> +
+> +---
+> +
+> +## Skip Message Format
+> +
+> +Automatic filtering shows the source in skip messages:
+> +
+> +```
+> +Subtest cs-gfx-with-IP-GFX-UMQ: SKIP
+> +Platform filtering (config): SWDEV-12345 - UMQ unstable on Navi48
+> +```
+> +
+> +Source indicators:
+> +- `(built-in)` - From vendor's compiled rules
+> +- `(config)` - From config file
+> +- `(env)` - From environment variable
+> +
+> +---
+> +
+> +## Platform Names
+> +
+> +Platform names are vendor-specific and defined in vendor backend code.
+> +
+> +**For AMD platforms**, see `lib/amdgpu/amd_platform.c` for the complete list.
+> +
+> +**Examples:**
+> +- RDNA2/3 discrete GPUs: `navi21`, `navi31`, `navi33`
+> +- RDNA4: `navi48`, `navi44`
+> +- APUs: `strix_halo`, `phoenix`
+> +- Data center: `aldebaran` (MI250)
+> +
+> +**To find your platform name:**
+> +
+> +```bash
+> +# Method 1: Run any test with debug output
+> +./build/tests/amdgpu/amd_basic --debug
+> +# Look for: "Platform detected: <name>"
+> +
+> +# Method 2: Check dmesg for GPU info
+> +dmesg | grep -i amdgpu | grep -i asic
+> +
+> +# Method 3: Check /sys
+> +cat /sys/class/drm/card0/device/asic_name  # If available
+> +```
+> +
+> +**Note:** Platform names may change with new hardware generations. Check vendor backend code for current platform definitions. The list above is provided as examples only.
+> +
+> +---
+> +
+> +## Best Practices
+> +
+> +### For Development - Quick Testing
+> +
+> +Use environment variable:
+> +```bash
+> +# Temporarily skip broken test
+> +export IGT_PLATFORM_SKIP_CONFIG="*:amd_basic:broken-test:WIP"
+> +./build/tests/amdgpu/amd_basic
+> +unset IGT_PLATFORM_SKIP_CONFIG
+> +```
+> +
+> +### For Teams - Shared Exclusions
+> +
+> +Use config file with ticket references:
+> +```
+> +# /etc/igt/platform_skip.conf
+> +# Updated: 2026-07-09
+> +
+> +# Navi48 bringup exclusions
+> +navi48:amd_basic:*-UMQ:SWDEV-88888 - UMQ stabilization
+> +navi48:amd_vcn:vcn-encoder-*:SWDEV-88889 - VCN bringup
+> +
+> +# Cross-platform known issues
+> +*:amd_basic:eviction-test-with-IP-DMA:SWDEV-77777 - Flaky
+> +```
+> +
+> +### For CI/CD
+> +
+> +Deploy config file with test infrastructure:
+> +```bash
+> +#!/bin/bash
+> +# CI pipeline setup
+> +echo "Deploying test exclusions..."
+> +scp ci-skip-rules.conf test-machine:/etc/igt/platform_skip.conf
+> +ssh test-machine "./run-igt-suite.sh"
+> +```
+> +
+> +### For Production
+> +
+> +Use built-in rules for permanent exclusions:
+> +```c
+> +// In lib/amdgpu/amd_platform.c
+> +static const struct platform_skip_entry amd_builtin_rules[] = {
+> +    {
+> +        .test_name = "amd_basic",
+> +        .subtest_glob = "*-UMQ",
+> +        .reason = "User queues not supported in production",
+> +        .platform_data = &all_platforms,
+> +    },
 > +};
+> +```
 > +
-> +/**
-> + * struct platform_filter_ops - Vendor-specific operations
-> + *
-> + * Callback structure that vendors implement to provide platform-specific
-> + * filtering logic. This allows the core filtering framework to remain
-> + * vendor-agnostic.
-> + */
-> +struct platform_filter_ops {
-> +	/** @name: Vendor name (e.g., "amd", "intel") */
+> +---
 > +
-> +	const char *name;
+> +## Summary
 > +
-> +	/** @get_platform_name: Get current platform name */
-> +	const char *(*get_platform_name)(const void *platform_info);
+> +| Method | Use Case | Persistent | Rebuild Required |
+> +|--------|----------|------------|------------------|
+> +| **Built-in** | Production rules | Yes | Yes |
+> +| **Config file** | Team/CI exclusions | Yes | No |
+> +| **Environment** | Quick testing | No | No |
 > +
-> +	/** @match_platform: Check if skip entry matches current platform */
-> +	bool (*match_platform)(const void *platform_info, const void *platform_data);
+> +**Recommendation**: Use **config file** for managing test exclusions at scale.
 > +
-> +	/** @parse_platform_config: Parse platform string from config file */
-> +	bool (*parse_platform_config)(const char *platform_str, void **platform_data_out);
+> +---
 > +
-> +	/** @get_builtin_rules: Get vendor-specific built-in skip rules */
-> +	const struct platform_skip_entry *(*get_builtin_rules)(int *count_out);
+> +## See Also
 > +
-> +	/** @dump_platform_data: Dump platform_data for debugging (optional) */
-> +	void (*dump_platform_data)(const void *platform_data);
-> +};
-> +
-> +bool igt_platform_filter_is_initialized(void);
-> +
-> +void igt_platform_filter_init(const struct platform_filter_ops *ops,
-> +			       const void *platform_info);
-> +
-> +void igt_platform_require(const char *subtest_name);
-> +
-> +bool igt_platform_should_skip(const char *test_name,
-> +			       const char *subtest_name,
-> +			       enum skip_source *source,
-> +			       const char **reason);
-> +
-> +void igt_platform_filter_dump(void);
-> +
-> +int igt_platform_filter_dump_to_file(const char *filename);
-> +
-> +#endif /* IGT_PLATFORM_FILTER_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 3001b473e..1c04ee813 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -38,6 +38,7 @@ lib_sources = [
->  	'igt_params.c',
->  	'igt_perf.c',
->  	'igt_pipe_crc.c',
-> +	'igt_platform_filter.c',
->  	'igt_power.c',
->  	'igt_primes.c',
->  	'igt_pci.c',
+> +- `lib/igt_platform_filter.h` - API documentation
+> +- `lib/igt_platform_filter.c` - Framework implementation
+> +- `lib/amdgpu/amd_platform.c` - AMD backend reference
+> diff --git a/mkdocs.yml b/mkdocs.yml
+> index 0abb76704..1819b7b6c 100644
+> --- a/mkdocs.yml
+> +++ b/mkdocs.yml
+> @@ -29,6 +29,7 @@ nav:
+>      - How to document tests: 'test_documentation.md'
+>      - How to categorize tests: 'test_categories.md'
+>      - How to blocklist tests: 'blocklists.md'
+> +    - How to filter tests per platform: 'platform_filtering.md'
+>      - How to get code coverage: 'code_coverage.md'
+>      - How to port new IGT driver: 'new_driver.md'
+>      - How to plan a new test: 'test_plan.md'
 > -- 
 > 2.43.0
 > 
