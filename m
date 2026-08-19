@@ -4,157 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13F86C5DF6D
-	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 06:56:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B1F0C5B572
+	for <igt-dev@archiver.kernel.org>; Wed, 19 Aug 2026 07:30:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B25C710ED3E;
-	Wed, 19 Aug 2026 06:56:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E924B10E3B1;
+	Wed, 19 Aug 2026 07:30:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fhP4NhRx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HEltEXn0";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C7D0010ED3D
- for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 06:56:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 930DB10E3B1
+ for <igt-dev@lists.freedesktop.org>; Wed, 19 Aug 2026 07:29:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787122564; x=1818658564;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=f+3evoRkCjX1jMqATz8E2RewQ47bGyRZbXvwRvWkH1I=;
- b=fhP4NhRx5LX5RkHd6dzYFMUtxPcnGMFsQpRdr3JbkdSN2Nb+3p/kH1Xr
- t9VVmJ0nCMrkZ+BSHSC1jaIq5AjwqG3mPhgUqtrpa3zWwpeHkHr6J7C84
- mPiyY3GPkbS7/SIXjyJpjnrHPuy9nYQdVJ0LDX3X89S1ZDe0h40aa62cK
- j2soeqIGJ3qZuUpjYK26bviJQkVtAz5QP4xxaPS+G+DZTwbT2uo+0K9M+
- g0DBKgiDrUgwbqQiuVKNXzqIUygFCJrA/1KF1mZQElbzevP8Abab52FyL
- mApugaPLqLL5/YI6JewCf3L5bPK5KaNJ1kSYC3HOO8+z68ZqYn3tfMoJ5 w==;
-X-CSE-ConnectionGUID: d17+9252QGOtbko18lifcA==
-X-CSE-MsgGUID: 5381iOLxReKBp6wW+9sH2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="99152229"
-X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="99152229"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2026 23:56:04 -0700
-X-CSE-ConnectionGUID: Q/2aaGlASXG6EGVDEQc06g==
-X-CSE-MsgGUID: tGyHP6imTxm9o4Eqvi1g0g==
+ t=1787124591; x=1818660591;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jYOQOCHeK6rHYTxCFR0YwOCMJDePn0xfTuHWUidCWiw=;
+ b=HEltEXn0bBD1xCaKN7qzWJ2qzBV6s3TfV7p3AxIDbxpKT8rqmfbqRhvH
+ eT5dR8MmbNj0kyPIw95gwbKE2Dxoy21F0pVBf181YXNzpd8U8nnsaBIsb
+ szH5KdX4kgjh7egrkAecModvldyjWoNU5mZ+PCFPGyAy4qWYq+6aQnJZF
+ esR8iFLsHz2sdZx3FiBPM7HCkc6TWmrfieGd0T4OVrAUk53bf5XAcQdnl
+ uwBn8nBZntrBx+0kpkOT/8My3OYRAcpKKv03oGI3wis2ErNSjlOuoFL4n
+ eFALSRPnNTfMd/41OlvmI/d1i2JBDhxnGS6Tk9855NALFmMeB8jNyCktb Q==;
+X-CSE-ConnectionGUID: 3stUUBodTK2duTsQ/jCeEg==
+X-CSE-MsgGUID: JQHK3yW3TLaM8uWRQpYnQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11879"; a="90148636"
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="90148636"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Aug 2026 00:29:50 -0700
+X-CSE-ConnectionGUID: v54+oaNaR12KoTgwwG9fRQ==
+X-CSE-MsgGUID: nQucKdBHT0K6JnyxQjM0dw==
 X-ExtLoop1: 1
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Aug 2026 23:56:04 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 18 Aug 2026 23:56:03 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Tue, 18 Aug 2026 23:56:03 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.21) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 18 Aug 2026 23:56:03 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yG5cIi0rDRZ+B5d3u1TmnXBoYPoBJfTBbGSCuVuiLaJMngpkYEu3r/wy6Hd0qnXTWEjDggI6hV78ii1jJSWuH5gwuglx8ZdbExMVrPBh3YRd5Dx+byL0FqXe7mgkfFEm+BIXWUMIBa2fcdhTO2MVOgCyuffQmFhVw3EBWx+BUrn3FsNRh4Uzt9vUkJi8dZoBy+CN+H53A/wa8W/Wk+ozNB9SxLzpbM5ovFxCExnnbtNg0aa/C5X43NREIzMiLFIerLGK0twsU9SZ8T7R8usAui7m94SPvuaRgxfEInKOJgY6nZ8dT6z9170tkLssw8RTSWhh+AEitH1p1kQHYEm4MA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=E0k1HFA02hG+3qytw18BL0tBQos/trz0Rt6+TkUWfAo=;
- b=vlnAbzRoAxzGg66V2S02urwrNfj+ta4Aa4k0REWCXfbAWBAnMfVx7N7em2wFYXbUGtK2bKzbuqABfcw7bEssEZYkUjt5rgKtQBtHzGSNrYL9sLNK+RvJ/k1Os1kfoloiPHtPLGep2pkoq6t5wDeT0ZSqUJaKEXdbFG/nOAYiwp4VY++h70K/tnbXm2RgNUojTuC70RHvAL1kQwXq+jf3sI+MeN3FRs7HKF/UGiXc0p1Mwy/7d3ISEsPx8yl86+SGpfN8kUsfN8+YJgwh4m3wdDtrdrb5MoF1d7bxjIT9PNNvp5Jur98qWuh226C23ehfu5U0QASYBW+v1qSubzXq2Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::839) by IA4PR11MB9105.namprd11.prod.outlook.com
- (2603:10b6:208:564::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Wed, 19 Aug
- 2026 06:56:01 +0000
-Received: from SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- ([fe80::8e8e:1eb:d7f9:5d7b]) by SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- ([fe80::8e8e:1eb:d7f9:5d7b%3]) with mapi id 15.21.0339.007; Wed, 19 Aug 2026
- 06:56:01 +0000
-Message-ID: <ce733dba-55cd-46a7-8382-00cced14029f@intel.com>
-Date: Wed, 19 Aug 2026 08:55:57 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 0/2] tests/intel/xe_prefetch_fault: Add L2
- prefetch fault tests
-To: Varun Gupta <varun.gupta@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <priyanka.dandamudi@intel.com>
-References: <20260818171239.277897-4-varun.gupta@intel.com>
-From: "Hajda, Andrzej" <andrzej.hajda@intel.com>
-Content-Language: en-GB
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <20260818171239.277897-4-varun.gupta@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: VIZP296CA0004.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:2a1::11) To SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
- (2603:10b6:a0f:fc02::839)
+X-IronPort-AV: E=Sophos;i="6.25,231,1779174000"; d="scan'208";a="269733948"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by orviesa005-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2026 00:29:49 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/intel: Add kms_hdmi_audio_bw test
+Date: Wed, 19 Aug 2026 13:08:57 +0530
+Message-Id: <20260819073858.185542-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PPF7DCFBC32A:EE_|IA4PR11MB9105:EE_
-X-MS-Office365-Filtering-Correlation-Id: b450bc3a-c3c4-44b8-2e58-08defdbeee16
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|23010399003|1800799024|366016|6133799003|56012099006|10067099003|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: dZP0QadZvtZQQJf5Ycubej7oS5MI1OhMYOlMTVeNaA2aZOcgaGhDDQbvlEeOBglciJXAjqj7nQPRVakxuT/EhJxrTBI3Uu8g7TsFjnADO1CBdqpDRI0lDkOnW26s/1Ig3/5A9lYImZgNCXkb8FwILh7QoNQahpaP9Yr5oBwocQz5G3dzaan+k7tlNDgejbuhkmzUNu1cAw+KfhCHPnUvyICZjGXADRPyOMhYyqMTBDT5pdwJ9e/MurTI8jx3WZtPhw94zedQpJu1CD1ZuBxUQDOw4urf/ephkupcuqdpWYBRStVszvnTqzn+YojYDSx7LIN1u38GZ2NSPcL3E6yR6dwQPq74vg3s4/+YVq0tnKXPhmAuONP8Mqb7GZ5y6S76aApjAnG1SDUF414uSMSjapZkt2iG/25kErTSWF96aqlWmHqdXwrwhUCAWWEBqy3FA8DGHUOTcGlE4JKhQy7gzxd9UAvBiMQ5xI/L2J7gzmXSVRxRK74KVD0RoJibtyQandshv4sD8xizP0++5lLlVj/TN9el65ml7vGiwR4/K3JSOy5Pmf5sL7jIfBwPf6mFHtyzaSx7ZndHTmH/LugMjsTenSb/uEUXsezfuszvl7dZuSyPUCrm5UYDReTeYquCrTk8UZn44uig1tmaNUadoRoIY8QZyKlMf9L/ICn9HJ0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:SJ5PPF7DCFBC32A.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(6133799003)(56012099006)(10067099003)(11063799006)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TGIxQ3Ftcll1WHNGWHRGdWRoVTc3UmlBSVBub3A3QS8zdE9MZEZMNFY1dU8w?=
- =?utf-8?B?aWpZZTd6VmdrWE5YSnI2QkJFUGZmMEd4MVQxVk5vVENLZnExdS9CMHBvc3RI?=
- =?utf-8?B?RVBZRXdyTTZFT2VnS2RBMVNqK3dxaEtzSzk0Z1dYYXc3YkdIM1QwcG9USXdi?=
- =?utf-8?B?Y2YwaWhVZ01wcktYS1B4TEVMUmRKK05sYVBBNmVYM0tGb2dQNjhLdEpvdUhz?=
- =?utf-8?B?eURHb3Q5c1U2bUxEYjlweHplZXpkS1ptMXQ2dkN5SFM0Z3R3UlVyZzJ6U0xx?=
- =?utf-8?B?bjljWDByQlZNcnNZNFNMSGlIZW9wWEtzZzR3Wm54OWp3bkhVSmZWZ3BEa012?=
- =?utf-8?B?Q0FRTnVwSmd3NHVnY0R3dUJldEFoRnVGV00rVmFDQ3VYelFOdG04TFl1d3lQ?=
- =?utf-8?B?Q1NXcWR6UGJKTDljV1ZxR3cyZnhYeklDMjdCeTdROXB3Rmtkb1M5dUtxeFdI?=
- =?utf-8?B?b3F3bmc3S3MyNnlQS2lPdUNsUmUvVk5xSmkyM0ZtbURodTh1WFR0TVIwazl6?=
- =?utf-8?B?Vk8wK2JqVlgrS21pUkdsVHN1bk9uSmdjeFVtaU5OY0hZWWsvZ1l6RmxvWGFh?=
- =?utf-8?B?blVqVW1VKzlYZE9xc3BjbVBkd1VWWkpZNHdpS1I3TFBwaWExTzRaOWg4VGU2?=
- =?utf-8?B?TENkSG5Ja0Y5VGFKZXViR0Z1UysyR3Y5b0NFdGxnZWJ3L2xOTk13WG91aXJK?=
- =?utf-8?B?dWc5UkE1djduMDZoS2taKzVFdS9sMm82aUU1RFNmVFhpT0VHSFd2YzhJeGVG?=
- =?utf-8?B?azkrTDlCSGtQQ3B5dmE0L1J6ZUVQNi9CZ2hlclduaUR1VTVyL2RoWjl2VHJG?=
- =?utf-8?B?cWtHSCtsVzNBbDlwN3NZT2dWTHpDaUxEc2lOR3MzRlpFQnZFOUdmVElNR2dp?=
- =?utf-8?B?dzZ0SUlLVDhOSzluZGZKVGZ3TTg5RGNWc3VWOTJaZVI1d0p6WFhrZDdwYjkv?=
- =?utf-8?B?L0M1d0RCd1JmY0FxL1lLSEM2bFRVSDZGaXpKSEt3R2dVSUFUbDIvSDRkQVpu?=
- =?utf-8?B?MlFGMkMyOEwrL3NRd210RVkyQUptbXgrRVNJd1ZkRVdOb1hVd3dFQWdiWUdE?=
- =?utf-8?B?QmIrYnlhSkMybi82bDVVYm5jc1VCRk9VOVoxSzB4TEptMGx4amJOVldNbCtU?=
- =?utf-8?B?emNFaE8vczQ3UTFhZ0ZrY3lYRnFLSmRxMG1YdlFJeThCdjZLdlpmUEJmMHBL?=
- =?utf-8?B?UEZIWFpqSit2UGpNbDVzaHloMjhlVDBHWGl4MVYxM3BHQmJEeHpadTJOUU03?=
- =?utf-8?B?NTlGb3VyOTdScUhGd2NUb2Y1cThMZm5Xc2ptQm1ubU9Lb2FDamlzbnZKVUgz?=
- =?utf-8?B?OUJBbUZ4UVlqanpZL3BsYmZDTjR0VWo0dWJyQ2dUL2xFemtIbno0bFZlMjZj?=
- =?utf-8?B?ajRiTGNGZXVvRnE1SmRneDA2SFdqdm54ZkcvUEdGejhUMmsxZzR6TnNuaEpS?=
- =?utf-8?B?a2RQNGlhamZTa0tFbUZXSjQ2ak9FVkJCZTZXbEkyOGVDK0VYSmF2MlRZemRr?=
- =?utf-8?B?aHVwUkdYci91OFdqazM2OUtMdmdaZXd6SXFlVUJETlpMSGQyVFRDbjFGWmt2?=
- =?utf-8?B?K2tmRmpmZU8vUmFXblN4b2FEWGNmSE5jYmxkT3lKMGJEcWhoR0dxN0Y5eFBN?=
- =?utf-8?B?d0k2M3R3R0xkWDF2a0RHbml4bmcwK09DRDYyM2lLSzQ4Yk9CTFhlMjhrNUtH?=
- =?utf-8?B?N2cycmQ5SzhrOGIyQzNNTGRDRjdLODlyL0diZW53a1hpUzBxSlY3UWlPdTlX?=
- =?utf-8?B?ajlHNVhHNG1ZUzk2UUxNNldqUURFT0FBRXU2cU5kK0xZS05ibjlNYVFkSTVS?=
- =?utf-8?B?SFJ0bWlINUt2MldKTHNqTWk1b2wwemVyWmhOc0VWKzlETUZCb09rTUs3blBj?=
- =?utf-8?B?S2lLbExvNXFBakVTRTBJZVRINTZISVFpN2RCcDdPaG5EVHdMZlFKY3RIMk9I?=
- =?utf-8?B?OWFkZ2lNbXVhSFlOMHd4dDJ3UWd2NlkvTzR2Yll6MUlab1QrV0Rtb2FXV0Ex?=
- =?utf-8?B?TFhyV0Y0TlZwMGRyQUNjZmFVcEQzT3FwMUpidXhRYnJCL2dpcFIrZXFWQW04?=
- =?utf-8?B?U2FESCs2eGR2WjJta2tJM0Iyeng5Ry9NR29MQ3d1RmdIa0FHSEw4M3E5TkxT?=
- =?utf-8?B?dVpDTDBjd3RXbzV6Yi9xWW9NM1dIanFnRmJSQWhTd0FlaWJSbGNDQUxnTk9E?=
- =?utf-8?B?a29uNmpNUXd3bmVERDAxRmIxM3pvNlFUUDM4QXQ5dDg5T1NNT2pQR21jdUxN?=
- =?utf-8?B?NzZjOWhWcW5DQ1pLN1ZJL1FtbzFFcFFqQ1lvSHlqbzVDNWh1eFlFRjBYUjRv?=
- =?utf-8?B?dU15Smk5M1VFQm5xdFVPYWdSeGJqcGNSNXBQazlneFEzYnJVWDdTdz09?=
-X-Exchange-RoutingPolicyChecked: gq5U4cD4Boe/eUQT9LCv1K5X9yaayUAHQFSXZHvVBy1yWP5PS6xqlIGH9tnNMWVXpJmUOozVD3D6HuZBCwIf8GR4CIWJmlQTAnpscr4JPN1H+Fx4UU6Vl3dFN6Lh3fI096EZMa3SYfv17H35LXM2T7QRxAPRxLZYO4XsLx/6UFOo0u2dsCPexhKWsjmj7ga4FyUg78g/MNN/62X56A/WtM8H+A5IygeOe4usFOUKXop6irtlFKG7TDs1EgaxoDOHjyXBZeckQiWF3wlbpQPEO4zZcshZxvvTL/2wjRGjEZJmJdWh784hs0ijNOmk+3MHF5CHedjvDu/LEVtTlKdbDg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b450bc3a-c3c4-44b8-2e58-08defdbeee16
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PPF7DCFBC32A.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2026 06:56:01.4599 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zl98dANNf2/gKAb8bF+TbwKutuJ4/Lzu/8O+QXZ/RHcOfExikRnqbUUurY1sHbwQ2eSEwsd9LcdX61gtAl2w1A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB9105
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -170,35 +66,685 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-W dniu 18.08.2026 o 19:12, Varun Gupta pisze:
-> Add coverage for L2 prefetch faults in the xe_prefetch_fault test.
-> 
-> The existing test framework is first refactored to support different
-> prefetch shader configurations. The second patch then adds coverage for
-> L2 prefetch faults in both regular and SVM modes.
-> 
-> v2:
->    - Include generated iga64 codes for the new shader to fix compilation
->      failures (Kamil)
-> v3:
->    - Drop the gpgpu_shader__l2_prefetch_fault helper and inline the shader
->      generation directly into get_l2_prefetch_shader (Andrzej)
->    - Simplify the assembly by removing handcrafted dependencies and using
->      the standard load.ugm.d64t.a64.uc.ca.uc syntax (Andrzej)
->    - Drop unnecessary IGA64_FLAGS define and GFX_VER >= 4000 check (Andrzej)
->    - Remove overly verbose message descriptor comments (Andrzej)
-> 
-> Varun Gupta (2):
->    tests/intel/xe_prefetch_fault: refactor test to accept shader function
->      pointer
->    tests/intel/xe_prefetch_fault: add L2 prefetch fault subtests
-> 
->   tests/intel/xe_prefetch_fault.c               | 96 +++++++++++++++++--
->   .../xe_prefetch_fault.c.gen.iga64_codes.c     | 17 +++-
->   2 files changed, 104 insertions(+), 9 deletions(-)
-> 
+Add a new IGT test to validate HDMI TMDS audio bandwidth constraints
+under constrained horizontal blanking intervals.
 
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+The test injects EDIDs declaring all 7 CEA sample rates (32kHz-192kHz)
+and observes which rates the driver exposes via ELD (EDID-Like Data)
+under varying BPC and channel configurations.
 
-Regards
-Andrzej
+Subtests:
+- audio-bw-supported: Baseline with hblank=160 where audio bandwidth
+  is sufficient for all configurations.
+- audio-bw-pruned: Constrained hblank=80 (CVT RB2) where the driver
+  must prune unsustainable sample rates or disable audio entirely.
+- suspend-s3/s4-audio-recovery: Verify audio state and sample rates
+  are preserved across system suspend/resume.
+- runtime-suspend-audio-recovery: Verify audio state is preserved
+  across DPMS off/on cycles.
+
+The test uses the HDMI TMDS bandwidth formula from the spec:
+  pkts_avail = FLOOR((CEIL(hblank * bpc/8) - overhead) / 32)
+  pkts_reqd  = CEIL(R_AP * T_line)
+where overhead=74 (HDCP 1.4 rekey always reserved by the driver).
+
+Assertions verify:
+- Audio is active when bandwidth is available (pkts_avail > 0)
+- Audio is inactive when bandwidth is exhausted (pkts_avail == 0)
+- No sample rate requiring more packets than available appears in ELD
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+Assisted-by: GitHub Copilot:Claude Opus 4.6
+---
+ tests/intel/kms_hdmi_audio_bw.c | 626 ++++++++++++++++++++++++++++++++
+ tests/meson.build               |   1 +
+ 2 files changed, 627 insertions(+)
+ create mode 100644 tests/intel/kms_hdmi_audio_bw.c
+
+diff --git a/tests/intel/kms_hdmi_audio_bw.c b/tests/intel/kms_hdmi_audio_bw.c
+new file mode 100644
+index 000000000..4b6f0d001
+--- /dev/null
++++ b/tests/intel/kms_hdmi_audio_bw.c
+@@ -0,0 +1,626 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++/**
++ * TEST: kms hdmi audio bw
++ * Category: Display
++ * Description: Validate HDMI TMDS audio bandwidth constraints by injecting
++ *              EDIDs with all sample rates declared and observing which rates
++ *              the driver exposes (via ELD) under varying BPC / channel /
++ *              hblank configurations.
++ * Driver requirement: i915, xe
++ * Mega feature: Display Audio
++ */
++
++#include "config.h"
++
++#include <math.h>
++#include <string.h>
++
++#include "igt.h"
++#include "igt_edid.h"
++#include "igt_eld.h"
++#include "igt_aux.h"
++#include "xe/xe_query.h"
++
++/**
++ * SUBTEST: audio-bw-supported
++ * Description: Baseline test with hblank=160 where audio bandwidth is
++ *              sufficient for all BPC and channel combinations. Verifies
++ *              that no sample rates are pruned.
++ *
++ * SUBTEST: audio-bw-pruned
++ * Description: Constrained test with hblank=80 (CVT RB2) where audio
++ *              bandwidth is limited. Logs which sample rates are pruned
++ *              per BPC and channel combination.
++ *
++ * SUBTEST: suspend-%s-audio-recovery
++ * Description: Validate audio state restoration after %arg[1] with
++ *              constrained hblank=80 and 12bpc.
++ *
++ * arg[1]:
++ *
++ * @s3:  S3 (suspend to RAM)
++ * @s4:  S4 (hibernate)
++ *
++ * SUBTEST: runtime-suspend-audio-recovery
++ * Description: Validate audio state restoration after runtime suspend/resume
++ *              with constrained hblank=80 and 12bpc.
++ */
++
++IGT_TEST_DESCRIPTION("Validate HDMI TMDS audio bandwidth constraints. "
++		      "EDIDs declare all sample rates (32k-192k); the test "
++		      "observes which rates survive in the ELD under "
++		      "constrained hblank timings.");
++
++typedef struct {
++	int drm_fd;
++	igt_display_t display;
++	igt_output_t *output;
++	igt_crtc_t *crtc;
++	struct igt_fb fb;
++} data_t;
++
++/* All sample rates declared in the EDID SAD */
++#define ALL_SAMPLE_RATES (CEA_SAD_SAMPLING_RATE_32KHZ | \
++			  CEA_SAD_SAMPLING_RATE_44KHZ | \
++			  CEA_SAD_SAMPLING_RATE_48KHZ | \
++			  CEA_SAD_SAMPLING_RATE_88KHZ | \
++			  CEA_SAD_SAMPLING_RATE_96KHZ | \
++			  CEA_SAD_SAMPLING_RATE_176KHZ | \
++			  CEA_SAD_SAMPLING_RATE_192KHZ)
++
++struct rate_info {
++	unsigned int flag;
++	const char *name;
++	int freq_hz;
++};
++
++static const struct rate_info rate_table[] = {
++	{ CEA_SAD_SAMPLING_RATE_32KHZ,  "32k",   32000 },
++	{ CEA_SAD_SAMPLING_RATE_44KHZ,  "44.1k", 44100 },
++	{ CEA_SAD_SAMPLING_RATE_48KHZ,  "48k",   48000 },
++	{ CEA_SAD_SAMPLING_RATE_88KHZ,  "88k",   88200 },
++	{ CEA_SAD_SAMPLING_RATE_96KHZ,  "96k",   96000 },
++	{ CEA_SAD_SAMPLING_RATE_176KHZ, "176k",  176400 },
++	{ CEA_SAD_SAMPLING_RATE_192KHZ, "192k",  192000 },
++};
++
++#define ACR_RATE_MAX		1500
++#define TOLERANCE_AUDIOCLK_PPM	1000
++#define TOLERANCE_PIXELCLK	0.005
++#define HBLANK_OVERHEAD_STD	30
++#define HBLANK_OVERHEAD_HDCP14	74
++#define DI_PACKET_SIZE		32
++
++static void rates_to_str(unsigned int rates, char *buf, size_t len)
++{
++	int pos = 0;
++
++	buf[0] = '\0';
++	for (int i = 0; i < ARRAY_SIZE(rate_table); i++) {
++		if (!(rates & rate_table[i].flag))
++			continue;
++		if (pos > 0)
++			pos += snprintf(buf + pos, len - pos, ",");
++		pos += snprintf(buf + pos, len - pos, "%s", rate_table[i].name);
++	}
++	if (pos == 0)
++		snprintf(buf, len, "none");
++}
++
++static const int bpc_values[] = { 8, 10, 12 };
++static const int channel_values[] = { 2, 8 };
++
++/*
++ * 1920x1080@60Hz CVT RB2 — hblank=80 (constrained)
++ * Available Packets/Line = FLOOR(((BPC/8)*80 - 74) / 32)
++ *   8bpc=0, 10bpc=0, 12bpc=1
++ */
++static const drmModeModeInfo mode_1080p_hblank80 = {
++	.clock = 133320,
++	.hdisplay = 1920,
++	.hsync_start = 1928,
++	.hsync_end = 1960,
++	.htotal = 2000,		/* hblank = 80 */
++	.vdisplay = 1080,
++	.vsync_start = 1097,
++	.vsync_end = 1105,
++	.vtotal = 1111,
++	.vrefresh = 60,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.type = DRM_MODE_TYPE_DRIVER,
++	.name = "1920x1080",
++};
++
++/*
++ * 1920x1080@60Hz with hblank=160 (relaxed baseline)
++ * Enough hblank for audio at any BPC.
++ */
++static const drmModeModeInfo mode_1080p_hblank160 = {
++	.clock = 148500,
++	.hdisplay = 1920,
++	.hsync_start = 1968,
++	.hsync_end = 2000,
++	.htotal = 2080,		/* hblank = 160 */
++	.vdisplay = 1080,
++	.vsync_start = 1097,
++	.vsync_end = 1105,
++	.vtotal = 1111,
++	.vrefresh = 60,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_NVSYNC,
++	.type = DRM_MODE_TYPE_DRIVER,
++	.name = "1920x1080",
++};
++
++static igt_output_t *find_hdmi_output(igt_display_t *display)
++{
++	igt_output_t *output;
++
++	for_each_connected_output(display, output) {
++		drmModeConnector *c = output->config.connector;
++
++		if (c->connector_type == DRM_MODE_CONNECTOR_HDMIA ||
++		    c->connector_type == DRM_MODE_CONNECTOR_HDMIB)
++			return output;
++	}
++
++	return NULL;
++}
++
++static int hblank_of(const drmModeModeInfo *mode)
++{
++	return mode->htotal - mode->hdisplay;
++}
++
++/*
++ * Driver always reserves HDCP 1.4 rekey overhead (74 clocks) even when
++ * HDCP is not active: 30 (standard) + 44 (HDCP 1.4 rekey quiet period).
++ * FIXME: once driver exposes HDCP state, use 30 for no HDCP, 74 for HDCP 1.4.
++ */
++static int avail_pkts_per_line(int bpc, int hblank)
++{
++	int overhead = HBLANK_OVERHEAD_HDCP14;
++	int tb_blank = (bpc * hblank + 7) / 8; /* CEIL(hblank * bpc/8) */
++	int avail = (tb_blank - overhead) / DI_PACKET_SIZE;
++
++	return avail > 0 ? avail : 0;
++}
++
++/* Packets required per line for a given audio rate and channel layout */
++static int required_pkts_per_line(const drmModeModeInfo *mode, int freq_hz,
++				 int channels)
++{
++	double ap = (channels <= 2) ? 0.25 : 1.0;
++	double f_pixel_max = mode->clock * 1000.0 * (1 + TOLERANCE_PIXELCLK);
++	double t_line = mode->htotal / f_pixel_max;
++	double r_ap = ((freq_hz * ap) + (2 * ACR_RATE_MAX)) *
++		      (1 + TOLERANCE_AUDIOCLK_PPM / 1e6);
++
++	double avg_pkts = r_ap * t_line;
++
++	return (int)avg_pkts + (avg_pkts > (int)avg_pkts ? 1 : 0);
++}
++
++/*
++ * Build a CEA EDID declaring all 7 sample rates in the SAD.
++ * Deep-color flags in HDMI VSDB match the requested bpc.
++ */
++static const struct edid *
++build_edid(int bpc, int audio_channels)
++{
++	static unsigned char raw_edid[2 * EDID_BLOCK_SIZE];
++	struct edid *edid;
++	struct edid_ext *ext;
++	struct edid_cea *cea;
++	struct edid_cea_data_block *block;
++	struct cea_sad sad;
++	struct hdmi_vsdb hdmi;
++	struct cea_speaker_alloc speakers;
++	size_t offset = 0;
++
++	memset(raw_edid, 0, sizeof(raw_edid));
++	edid = (struct edid *)raw_edid;
++	memcpy(edid, igt_kms_get_base_edid(), sizeof(struct edid));
++	edid->extensions_len = 1;
++
++	ext = &edid->extensions[0];
++	cea = &ext->data.cea;
++
++	if (audio_channels > 0) {
++		cea_sad_init_pcm(&sad,
++				 audio_channels,
++				 ALL_SAMPLE_RATES,
++				 CEA_SAD_SAMPLE_SIZE_16 |
++				 CEA_SAD_SAMPLE_SIZE_24);
++		block = (struct edid_cea_data_block *)&cea->data[offset];
++		offset += edid_cea_data_block_set_sad(block, &sad, 1);
++	}
++
++	memset(&hdmi, 0, sizeof(hdmi));
++	hdmi.src_phy_addr[0] = 0x10;
++	hdmi.src_phy_addr[1] = 0x00;
++	hdmi.flags1 = HDMI_VSDB_SUPPORTS_AI;
++	hdmi.max_tdms_clock = 340000000 / (5 * 1000000);
++
++	switch (bpc) {
++	case 12:
++		hdmi.flags1 |= HDMI_VSDB_DC_36BIT;
++		/* fall through */
++	case 10:
++		hdmi.flags1 |= HDMI_VSDB_DC_30BIT;
++		/* fall through */
++	case 8:
++		break;
++	}
++
++	block = (struct edid_cea_data_block *)&cea->data[offset];
++	offset += edid_cea_data_block_set_hdmi_vsdb(block, &hdmi,
++						    sizeof(hdmi));
++
++	memset(&speakers, 0, sizeof(speakers));
++	speakers.speakers = CEA_SPEAKER_FRONT_LEFT_RIGHT;
++	if (audio_channels > 2)
++		speakers.speakers |= CEA_SPEAKER_FRONT_CENTER |
++				     CEA_SPEAKER_LFE |
++				     CEA_SPEAKER_REAR_LEFT_RIGHT;
++	block = (struct edid_cea_data_block *)&cea->data[offset];
++	offset += edid_cea_data_block_set_speaker_alloc(block, &speakers);
++
++	edid_ext_set_cea(ext, offset, 0,
++			 EDID_CEA_BASIC_AUDIO | EDID_CEA_UNDERSCAN |
++			 EDID_CEA_YCBCR444 | EDID_CEA_YCBCR422);
++	edid_update_checksum(edid);
++
++	return edid;
++}
++
++static void force_edid_and_connector(data_t *data, const struct edid *edid)
++{
++	kmstest_force_edid(data->drm_fd, data->output->config.connector, edid);
++	igt_skip_on_f(!kmstest_force_connector(data->drm_fd,
++					       data->output->config.connector,
++					       FORCE_CONNECTOR_ON),
++		      "Could not force HDMI connector on\n");
++}
++
++static void cleanup_connector(data_t *data)
++{
++	if (data->output->pending_crtc) {
++		igt_plane_t *primary;
++
++		primary = igt_output_get_plane_type(data->output,
++						    DRM_PLANE_TYPE_PRIMARY);
++		igt_plane_set_fb(primary, NULL);
++		igt_output_set_crtc(data->output, NULL);
++		igt_display_commit2(&data->display, COMMIT_ATOMIC);
++	}
++
++	igt_remove_fb(data->drm_fd, &data->fb);
++
++	kmstest_force_connector(data->drm_fd,
++				data->output->config.connector,
++				FORCE_CONNECTOR_UNSPECIFIED);
++	kmstest_force_edid(data->drm_fd,
++			   data->output->config.connector, NULL);
++}
++
++static int try_modeset(data_t *data, const drmModeModeInfo *mode)
++{
++	igt_plane_t *primary;
++	int ret;
++
++	igt_display_reset(&data->display);
++
++	igt_output_set_crtc(data->output, data->crtc);
++	igt_output_override_mode(data->output, mode);
++
++	primary = igt_output_get_plane_type(data->output,
++					    DRM_PLANE_TYPE_PRIMARY);
++
++	igt_create_pattern_fb(data->drm_fd,
++			      mode->hdisplay, mode->vdisplay,
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++			      &data->fb);
++	igt_plane_set_fb(primary, &data->fb);
++
++	ret = igt_display_try_commit_atomic(&data->display,
++					    DRM_MODE_ATOMIC_ALLOW_MODESET,
++					    NULL);
++	if (ret) {
++		igt_plane_set_fb(primary, NULL);
++		igt_output_set_crtc(data->output, NULL);
++		igt_remove_fb(data->drm_fd, &data->fb);
++	}
++
++	return ret;
++}
++
++static bool audio_is_active(void)
++{
++	if (!eld_is_supported())
++		return false;
++
++	return eld_has_igt();
++}
++
++static unsigned int get_eld_rates(void)
++{
++	struct eld_entry eld;
++
++	if (!eld_get_igt(&eld))
++		return 0;
++
++	if (eld.sads_len == 0)
++		return 0;
++
++	return eld.sads[0].rates;
++}
++
++static void log_eld_rates(unsigned int declared, unsigned int eld_rates)
++{
++	char decl_str[128], eld_str[128], pruned_str[128];
++	unsigned int pruned = declared & ~eld_rates;
++
++	rates_to_str(declared, decl_str, sizeof(decl_str));
++	rates_to_str(eld_rates, eld_str, sizeof(eld_str));
++	rates_to_str(pruned, pruned_str, sizeof(pruned_str));
++
++	igt_info("    SAD declared: %s\n", decl_str);
++	igt_info("    ELD reports:  %s\n", eld_str);
++	if (pruned)
++		igt_info("    Pruned:       %s\n", pruned_str);
++}
++
++static void assert_per_rate(const drmModeModeInfo *mode, int channels,
++			   int pkts_avail, unsigned int eld_rates)
++{
++	for (int i = 0; i < ARRAY_SIZE(rate_table); i++) {
++		int req = required_pkts_per_line(mode, rate_table[i].freq_hz,
++						 channels);
++		bool in_eld = eld_rates & rate_table[i].flag;
++
++		/* A rate that can't fit must not appear in ELD */
++		igt_assert_f(!(req > pkts_avail && in_eld),
++			     "%s: req=%d > avail=%d but rate present in ELD\n",
++			     rate_table[i].name, req, pkts_avail);
++	}
++}
++
++static void log_per_rate_analysis(const drmModeModeInfo *mode,
++				  int bpc, int channels,
++				  int pkts_avail, unsigned int eld_rates)
++{
++	const char *layout = (channels <= 2) ? "L0" : "L1";
++
++	igt_info("    %-6s %-3s  pkts: avail=%d\n",
++		 "Rate", layout, pkts_avail);
++
++	for (int i = 0; i < ARRAY_SIZE(rate_table); i++) {
++		int req = required_pkts_per_line(mode, rate_table[i].freq_hz,
++						 channels);
++		const char *expect = (req <= pkts_avail && pkts_avail > 0) ?
++				     "fit" : "NO";
++		const char *eld_has = (eld_rates & rate_table[i].flag) ?
++				     "yes" : "no";
++
++		igt_info("      %5s: req=%d fit=%s  (ELD: %s)\n",
++			 rate_table[i].name, req, expect, eld_has);
++	}
++}
++
++/* Run the BPC × channels matrix for a given mode/hblank. */
++static void test_audio_bw_matrix(data_t *data, const drmModeModeInfo *mode)
++{
++	int hblank = hblank_of(mode);
++
++	igt_info("=== Audio BW matrix: %s hblank=%d ===\n",
++		 mode->name, hblank);
++
++	for (int b = 0; b < ARRAY_SIZE(bpc_values); b++) {
++		int bpc = bpc_values[b];
++
++		for (int c = 0; c < ARRAY_SIZE(channel_values); c++) {
++			int channels = channel_values[c];
++			const struct edid *edid;
++			int pkts, ret;
++			bool audio;
++			unsigned int eld_rates;
++
++			edid = build_edid(bpc, channels);
++			force_edid_and_connector(data, edid);
++
++			igt_output_set_prop_value(data->output,
++						  IGT_CONNECTOR_MAX_BPC, bpc);
++
++			pkts = avail_pkts_per_line(bpc, hblank);
++
++			igt_info("\n  %dbpc %dch hblank=%d avail_pkts=%d\n",
++				 bpc, channels, hblank, pkts);
++
++			ret = try_modeset(data, mode);
++
++			if (ret) {
++				igt_info("    modeset: REJECTED\n");
++				cleanup_connector(data);
++				continue;
++			}
++
++			/* Allow ELD to propagate */
++			usleep(200 * 1000);
++
++			audio = audio_is_active();
++			eld_rates = audio ? get_eld_rates() : 0;
++
++			igt_info("    modeset: OK\n");
++			igt_info("    audio:   %s\n", audio ? "active" : "inactive");
++
++			igt_assert_f(!(pkts == 0 && audio),
++				     "Audio active with 0 available packets\n");
++			igt_assert_f(!(pkts > 0 && !audio),
++				     "Audio inactive with %d available packets\n",
++				     pkts);
++
++			if (audio) {
++				log_eld_rates(ALL_SAMPLE_RATES, eld_rates);
++				assert_per_rate(mode, channels, pkts,
++						eld_rates);
++			}
++
++			log_per_rate_analysis(mode, bpc, channels,
++					      pkts, eld_rates);
++
++			cleanup_connector(data);
++		}
++	}
++
++	igt_info("\n=== End matrix ===\n");
++}
++
++static void test_audio_bw_supported(data_t *data)
++{
++	test_audio_bw_matrix(data, &mode_1080p_hblank160);
++}
++
++static void test_audio_bw_pruned(data_t *data)
++{
++	test_audio_bw_matrix(data, &mode_1080p_hblank80);
++}
++
++static void test_suspend_audio_recovery(data_t *data,
++					enum igt_suspend_state state)
++{
++	const struct edid *edid;
++	bool audio_before, audio_after;
++	unsigned int rates_before, rates_after;
++	char before_str[128], after_str[128];
++	int ret;
++
++	edid = build_edid(12, 2);
++	force_edid_and_connector(data, edid);
++
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 12);
++
++	ret = try_modeset(data, &mode_1080p_hblank80);
++	igt_require(ret == 0);
++
++	usleep(200 * 1000);
++
++	audio_before = audio_is_active();
++	rates_before = audio_before ? get_eld_rates() : 0;
++	rates_to_str(rates_before, before_str, sizeof(before_str));
++	igt_info("Before suspend: audio=%d rates=%s\n",
++		 audio_before, before_str);
++
++	igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
++
++	usleep(200 * 1000);
++
++	audio_after = audio_is_active();
++	rates_after = audio_after ? get_eld_rates() : 0;
++	rates_to_str(rates_after, after_str, sizeof(after_str));
++	igt_info("After suspend:  audio=%d rates=%s\n",
++		 audio_after, after_str);
++
++	igt_assert_eq(audio_before, audio_after);
++	if (audio_before)
++		igt_assert_eq(rates_before, rates_after);
++
++	cleanup_connector(data);
++}
++
++static void test_runtime_suspend_audio(data_t *data)
++{
++	const struct edid *edid;
++	bool audio_before, audio_after;
++	unsigned int rates_before, rates_after;
++	char before_str[128], after_str[128];
++	int ret;
++
++	edid = build_edid(12, 2);
++	force_edid_and_connector(data, edid);
++
++	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 12);
++
++	ret = try_modeset(data, &mode_1080p_hblank80);
++	igt_require(ret == 0);
++
++	usleep(200 * 1000);
++
++	audio_before = audio_is_active();
++	rates_before = audio_before ? get_eld_rates() : 0;
++	rates_to_str(rates_before, before_str, sizeof(before_str));
++	igt_info("Before runtime suspend: audio=%d rates=%s\n",
++		 audio_before, before_str);
++
++	kmstest_set_connector_dpms(data->drm_fd,
++				   data->output->config.connector,
++				   DRM_MODE_DPMS_OFF);
++	usleep(500 * 1000);
++	kmstest_set_connector_dpms(data->drm_fd,
++				   data->output->config.connector,
++				   DRM_MODE_DPMS_ON);
++	usleep(500 * 1000);
++
++	audio_after = audio_is_active();
++	rates_after = audio_after ? get_eld_rates() : 0;
++	rates_to_str(rates_after, after_str, sizeof(after_str));
++	igt_info("After runtime suspend:  audio=%d rates=%s\n",
++		 audio_after, after_str);
++
++	igt_assert_eq(audio_before, audio_after);
++	if (audio_before)
++		igt_assert_eq(rates_before, rates_after);
++
++	cleanup_connector(data);
++}
++
++int igt_main()
++{
++	data_t data = {};
++
++	igt_fixture() {
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
++		igt_require(is_intel_device(data.drm_fd));
++		kmstest_set_vt_graphics_mode();
++		igt_display_require(&data.display, data.drm_fd);
++
++		data.output = find_hdmi_output(&data.display);
++		igt_require_f(data.output, "No HDMI connector found\n");
++
++		data.crtc = igt_first_crtc(&data.display);
++		igt_require_f(data.crtc, "No usable CRTC found\n");
++	}
++
++	igt_describe("Baseline: hblank=160, audio should be fully supported "
++		     "for all BPC and channel configurations.");
++	igt_subtest("audio-bw-supported")
++		test_audio_bw_supported(&data);
++
++	igt_describe("Constrained: hblank=80 (CVT RB2), audio may be pruned "
++		     "or disabled depending on BPC.");
++	igt_subtest("audio-bw-pruned")
++		test_audio_bw_pruned(&data);
++
++	igt_describe("Validate audio recovery after S3 suspend with "
++		     "constrained hblank.");
++	igt_subtest("suspend-s3-audio-recovery")
++		test_suspend_audio_recovery(&data, SUSPEND_STATE_MEM);
++
++	igt_describe("Validate audio recovery after S4 hibernate with "
++		     "constrained hblank.");
++	igt_subtest("suspend-s4-audio-recovery")
++		test_suspend_audio_recovery(&data, SUSPEND_STATE_DISK);
++
++	igt_describe("Validate audio recovery after runtime suspend with "
++		     "constrained hblank.");
++	igt_subtest("runtime-suspend-audio-recovery")
++		test_runtime_suspend_audio(&data);
++
++	igt_fixture() {
++		igt_display_fini(&data.display);
++		drm_close_driver(data.drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index a62f447df..facb7ab5d 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -259,6 +259,7 @@ intel_kms_progs = [
+ 	'kms_fbc_dirty_rect',
+ 	'kms_fbcon_fbt',
+ 	'kms_fence_pin_leak',
++	'kms_hdmi_audio_bw',
+ 	'kms_flip_scaled_crc',
+ 	'kms_flip_tiling',
+ 	'kms_frontbuffer_tracking',
+-- 
+2.25.1
+
