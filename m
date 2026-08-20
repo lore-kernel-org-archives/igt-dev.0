@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 668A6C5DF87
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 11:11:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B766C5DF88
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 11:11:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0696310E1B1;
-	Thu, 20 Aug 2026 11:11:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8001A10EFF3;
+	Thu, 20 Aug 2026 11:11:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HTlHnBJJ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lQJRao69";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3379010EFF3
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 11:10:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5FD6E10E1B1
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 11:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787224241; x=1818760241;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=YgkeKdFKge/P0ZuR5/fPsuqIqQZPxRH6Wm5LBd2OS5Y=;
- b=HTlHnBJJw02YmoEedl7fL9qcO35QGgPBKm3V+IyAEo3AanD5lQkrkxuK
- qoMvmI+pgd/iezB+H2GrU388snuYSu5pBRH930Cy5FiiEGHw+oYl9Hreb
- 0ZhYKAbmw4O+rxGo/0UebK8qEKERYwnbpC9YpxGdiHJ7EYOdlJazERDWp
- rhZuV4/DyjIHrQv6WWlpGD5TZCbpzo/RidEzXB8dJHsg4Whka5ukPRDAh
- 12rBCSQKhSE/w7ekQMMC8Lqe6SjxvkcWckLG0vW10d5TTsqdR+Jy+1AWp
- j7sEZKzIFv28hKTbH3FBs7eMaXrstHshM3Ek9GMP7bdA7mTET2WokDEup w==;
-X-CSE-ConnectionGUID: emetOnOVRwaVvvQ4zDcm+Q==
-X-CSE-MsgGUID: fllzkI0pSiagDTNQK3mJGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="98912837"
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="98912837"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 04:10:40 -0700
-X-CSE-ConnectionGUID: Pexq2N25S6qdnK+KK7U6wA==
-X-CSE-MsgGUID: IatRLBE0QACVBpdLtBptrQ==
+ t=1787224269; x=1818760269;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=ivUyWu2me22SeETJ5EZsaFkmw3LnTN8krzfI57xxoqI=;
+ b=lQJRao69PxHhGaJQtujnb1+SJYsxxh64d2Q02IlNBXBqTOkwH3e0N9/S
+ XibgpbOZjB1jZ2VovlMY1+XC1PBMFTDTO/AnOGdZ6hZxNVYVde0GgpKye
+ CrZMYRYmBwXUhwguOPzDm0UuJSTpqfCZm8z/AFHz3SPFNHcQ5Ayv5CetO
+ yrQg8cwcsYJLwRpK33K4lUpyqH7XJu2ZW7ekskCCZbzMI2uyIRH0bfKIv
+ iRvbsrzKKa5aKE8odABnvGX8bif/4KrOmLm1jo3rg2ZEq1QIzPAtfejUD
+ 3KZaHo6aiL8Dl0a45h5IP5/A2Bu8+IvkacCz8HWglu8MPiYQ3SSQYTb8B g==;
+X-CSE-ConnectionGUID: Z1Cy35MUR9OF6Q4YBbPv2w==
+X-CSE-MsgGUID: kzjWEtltTTyqgFFJYFF8Sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="99278358"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="99278358"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2026 04:11:09 -0700
+X-CSE-ConnectionGUID: X6WBLIyCTbKpJA02oDu8Ug==
+X-CSE-MsgGUID: o69Y2vcLS5Ow06N8QtoM5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="269459067"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 04:10:39 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="270223992"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2026 04:11:09 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 20 Aug 2026 04:10:38 -0700
+ 15.2.2562.45; Thu, 20 Aug 2026 04:11:08 -0700
 Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45 via Frontend Transport; Thu, 20 Aug 2026 04:10:38 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.3) by
+ 15.2.2562.45 via Frontend Transport; Thu, 20 Aug 2026 04:11:07 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.70) by
  edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Thu, 20 Aug 2026 04:10:38 -0700
+ 15.2.2562.45; Thu, 20 Aug 2026 04:11:07 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PMMBGvEiNG3BvPBdnKu86gifoiBcvDkChRLItfRGrXu/Z3jJwp92i7RkyHaXbCw+tI02RTnmBo/VJgLYr2Xp5KKEs0gA+W3JEAHRF3WXepScodSh0kDoCpV6RMfwIFYu+kVh6+Y4/Gai+Db5mLEukt8KYugCW2AA1PCxD5frHeJL8W3YzvC04UFXB3/TSdzveUJ94M9JG03aahgPjsMF/6XPH7Yv/8x9ErQmGnplQhACOooHGh87Md+vbIZd4VlXnnem83qDCqaxs1eHNNqLb5dU+jwkdJJ+XZjJCZSoGvARpEwaVA7QWX73gl0jl67tj8EO8H/d3VZWzC1VeTibQA==
+ b=r75hZ79gPWSRti/iYRVcAXQC3/t8Nlw/SGntzoESm6JMJFf1pHt4GdwHMB5b4OSbWrdEWf2+QmIQRo5ySGIC7P0lcc+90gXjytPQaBB+XsrvWxdFoqafkJ1QMy2vBVjHoqmb0j3LzLsA7N4daENAwr4yadhu8mAcry9IBEAZY2VzjA+F+BOJ6Mc7zujdEfzV321YadwFlq9jG9veh75MTxXi+99Wq9ClbcBrj/NdJkgwFAYQnPHeAtnUYsC5+apsJ0/j8dA4sBa6dX7+3ksHLNusNKjCmrw97hMYq7lu+8OsIWcXGvPo7NvxnHjYDaROIJC1ieVwolycgGtL5eyppA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wD/aKwtLJOVYneqWPj/xaFCwtUFTmWyx6Up/6lHYyVk=;
- b=sqe3OUjWEdVlonF8+iMIVz9fKQTr3H7qwTAWUS99+AvrMTz5ONtlBG8oJlGITtQ4Y3Xs7LfgEJbxFqXxzx6p8JsSAjYCUuy5UTRgVu3MI8bHalqPHpNSAezvLCBRX7dPtLJ6x1FIQ/6ObTn+B57OTEflVDvCwHllhJ4rA2ahJdqGWgeUVXJ+a5NHXoqTBSjvyelZp2QHgKwJ0H2EoIfJPN9AfdNZJyqF/aSK7JNo0NvCcOYdKG8bngeM88pe/vphC2aY9HEL2M+kAgg09jralK2pLQXdV2hGQT8yQSsuZ3LMGd5tb1/p9G/1f6ouq4HvVtHl6KV/43K4VApFTGOtZg==
+ bh=iRn/M8jjTSW4hF4nUQRpeDQqAWMuAnRqanzdYEKzb68=;
+ b=q9uoA8dYB9/a77NW2lalI89XgIu+TWA64yghpZoiSoTwdP7sNHttVarN6GGiZFNimFsr75pNgsGbU3HoeYbdx0z2sJtJ1Ed43Szv7PjpmwtBj1Nb5yP4dxKfDFHepMMJlAWxnvX7zK9BY9dPDE15WAebcghEmkCybnLVeN4ncMrPX4pqaL9+YPWlffF4OD5N0FoJ37wteQWiQ8e5yhGfEUUlfP2+V3RsaYsVwMKRDhOJXX/QxnMqOMX+dDYEEA3nWOpIwJT73ExriqiE9rWPOiJCsrWY3zPEs4m9kO4oXyCmvcy8mREE+eUTc8YiSApLRYeDyht5KUI8o8hgFJW7lw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,92 +69,93 @@ Received: from PH0PR11MB7636.namprd11.prod.outlook.com (2603:10b6:510:26f::13)
  by IA1PR11MB8248.namprd11.prod.outlook.com (2603:10b6:208:447::13)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Thu, 20 Aug
- 2026 11:10:32 +0000
+ 2026 11:11:05 +0000
 Received: from PH0PR11MB7636.namprd11.prod.outlook.com
  ([fe80::d611:6fa9:bc34:46b]) by PH0PR11MB7636.namprd11.prod.outlook.com
  ([fe80::d611:6fa9:bc34:46b%5]) with mapi id 15.21.0339.008; Thu, 20 Aug 2026
- 11:10:32 +0000
-Message-ID: <cbc88cef-1008-409b-aa54-3d9fd4ae5696@intel.com>
-Date: Thu, 20 Aug 2026 16:40:26 +0530
+ 11:11:05 +0000
+Message-ID: <59150a2c-3219-45bd-861e-c7a01802bc94@intel.com>
+Date: Thu, 20 Aug 2026 16:40:59 +0530
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH i-g-t v4 2/2] tests/kms_vrr: add CMRR fixed and video mode
  subtests
-To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: <mitulkumar.ajitkumar.golani@intel.com>
+To: "Golani, Mitulkumar Ajitkumar" <mitulkumar.ajitkumar.golani@intel.com>,
+ "Naladala, Ramanaidu" <ramanaidu.naladala@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
 References: <20260812130738.1242659-1-ramanaidu.naladala@intel.com>
  <20260812130738.1242659-3-ramanaidu.naladala@intel.com>
+ <IA1PR11MB63486F731CF5A3EF585F3170B2A52@IA1PR11MB6348.namprd11.prod.outlook.com>
 Content-Language: en-GB
 From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20260812130738.1242659-3-ramanaidu.naladala@intel.com>
+In-Reply-To: <IA1PR11MB63486F731CF5A3EF585F3170B2A52@IA1PR11MB6348.namprd11.prod.outlook.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0209.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ab::6) To PH0PR11MB7636.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0097.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:af::14) To PH0PR11MB7636.namprd11.prod.outlook.com
  (2603:10b6:510:26f::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR11MB7636:EE_|IA1PR11MB8248:EE_
-X-MS-Office365-Filtering-Correlation-Id: 02b88558-76fd-46de-7485-08defeaba6cf
+X-MS-Office365-Filtering-Correlation-Id: 9c2c2f38-c4b4-4abe-aaa8-08defeabba3d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
  ARA:13230040|23010399003|376014|366016|1800799024|6133799003|18002099003|22082099003|18092099006|11063799006|4143699003|56012099006|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info: nUIG9CM4ot29bqFfWi/JeMYT0xbU3quO2VIy3u7SjyICxY8AijcZAnqVGeQ4kRjCEI/dy8GP9vQMuDsywnFp4T4eH3SiNbtq5+CZBRovy859hLfsmshzt9o7l75+XA17r8ep9fyUgMLfiZhPoVoSSE+L2erWgthxCTaUaTixOVK0dzD/f7Q5lZiIVMFmdamXAZRFLUe76yl3Z6XpG3P3ypa3/429H8CTaKSLAzH8tEqOu+Oil7Oc7tUDcZelwdGlelQbvzXsLk0/45dZIi3l5BV1pBPF9i7AylPAh6tRAMdTSAFJuyKMUz24bQehPFXk9St3H3FpAH8A3J6frjYV02hPtU+DE258BJDSLy34voejiE804G/g5Be+ABh0bJa5+mSBlTvJBNHsL6gjI8J5aQfItQfsu/Q6pXkgBJbkPFCrIHvegoZzYDRJXCgvgAsagOHCOIMz73T/vpFsMGQLHSQOQwHnOM5bAjLPMBMeQdsjVWShnEbP0V+CPTKs1hcFbdUyB9CXrl4zHiMQRn0BW8FfeE3HYWMWmeGVwFCICCQLED7ZMsqJ3YoZC010QWGv8YSPnaUj2vxV9Rjfu3JIXWOUkczYr657ReiJBma08uvf9Hrh/BewvblMnqSbkf0FQt8eVuZRxHKcqKMIcvEWagx3W6SCHURHfWPHO+1Y3VA=
+X-Microsoft-Antispam-Message-Info: ZjFL1zfWEddI8HUfhEYFTD8UFM8QKOmuSOcKrcVJcb0/LCwkz/I2XKutRK8LSVpU1fXQMea7Z5Kq7POszrd7N+T5DIXovlU/QsmMucU7N9t6SDlomHDT/tTYrtMDED5kiLbg/3JpX0WUEEr9vUg4MrqQvanpp2m67/NHM/Wy1zMr4GO87Vaqvt7ST7MCt4sSoJJPDC3MZtdN3Ot7HGz6mwbWQurklfl6IpZKpTU9jRDFSodU58M6owRFoi3ntjJs3o7iz3eboLT5m1sOe8M2g2n4lz0JIiz6jlN1B6KT1XAAnp9JvXvjUI2IGhBy7f88xuEY4opsdCu0QFPjogzws1SwPdYpyU7jOvIgAN3DU7zW2BO/iumKkxgBhC6x27MY3MFJcDmaGR5CMbv0oMrkgrZBVDhibhdXpQD78lw6o2IOHE9BnrpPe8ObPWA5iQoDh1b4L+GpQuDh2SXM+lo32nPVVaFZavAVFVgTB9KYxtR1cf0VF1t2bVkODQfVzOYsjQHyunTDfmP0zyNc+x1PFYsCb6YREQcEW93c2RNFteh8nZAbJEquuwc/G4RXmv2JTOO7dzAcjJAeWmtYnlLJl2Qu7n4BnDb9CTyFqDk7/Q6LhRhCA91YE7MDdNfFl3EbAdiDM/O6ucCuwj3TcvgN+qHl4oH4SlJCC9g+AHxWyDw=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR11MB7636.namprd11.prod.outlook.com; PTR:; CAT:NONE;
  SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(6133799003)(18002099003)(22082099003)(18092099006)(11063799006)(4143699003)(56012099006)(10067099003)(3023799007);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bW5PUUtJNjBGQUY5dXJkNGx4QlUyajNKejREV3RYai9CY0J5NEhrdTh2RS9F?=
- =?utf-8?B?dXEzOXVCalkvbmdWSmpkUlNyMHBkbjRWeTRaOCtwajE1MmFrTlJBZUtqcFRE?=
- =?utf-8?B?WFk0VHMxWnNBdDJ6anZPOW5jbGU4NW14Zjg2OVRET3gyMHpQSjZlVWVNSmo4?=
- =?utf-8?B?ZjZYeThaZW82ZkVCRklTUStSaCtwYnExWjhHMkpDK1hNVzhKdkNPMWo0M0ha?=
- =?utf-8?B?cmExZnJBd1ZzWjJHMkhMZXAvb29SVTNvLzJGWWtlNzUvNVJTbVB0c0kxeFAx?=
- =?utf-8?B?aEovemRBRUVQVk9BQ1Z2VjdaUTJoWXI1VnQraW9DN2dsdzJIMGNYM3ZhbVox?=
- =?utf-8?B?OXFtN3pTbUhic1RVK2dtZjJWVU03YnU0VjROZ2FKVWJHdk1hWFlEUk1ieDcr?=
- =?utf-8?B?bXdHNk9QQTBNdGVLSnB1UU5zVTdyUHpNbnhMZ2RHdUVZTVk2WXkrVlVuWW1p?=
- =?utf-8?B?dHdGU3craXF3U0lSZUhsdnVXUFFURXpSekNadDcrWHRva1lWRW0yd1AvbUFr?=
- =?utf-8?B?Z3V5dHNNUXBnbnMvZkxWeW9VUGNDQzhCUElITnNqSFVMUUxDS2toWUFrdVNJ?=
- =?utf-8?B?MGxsZkhoSjByS0NvTmM4NUpSaVJWNmlZVGNzdnJRZHZkMnZsbU5tSEYxNG84?=
- =?utf-8?B?aStRUE9rWEl4QklXWDNNQXlpSzU0d3AzNDdhdE9pc1BkM1FNYmhQTzdubTQw?=
- =?utf-8?B?RkcwUnFMdXlhQ1V3N0F1M3duQll4OU1kTmx3NlhmTDZaVDBRcDQ2dUt6ZjdV?=
- =?utf-8?B?aEpJR05xbWtPbTNLUGdEVlVPNG5pTk5ucnRiYWFrYnBqZHNITE1CaG53R3Ru?=
- =?utf-8?B?dnJVamE1WkVGckh0ckhlMmUxeWVhYTZySkVNSEJhZWcrR3o5Zkp6ajZxYnh1?=
- =?utf-8?B?em9qSG9PUjY0TE8vWGQrVjYvYVc5ekR2VEJQRGsyckF4RThYQnR2Zk5lTkxG?=
- =?utf-8?B?RjhUaThRRDVsb0MycndCanRtVjJXdktkNTMwR2tiZHpGc0xmRXFqZFM1VE5t?=
- =?utf-8?B?emRONmY4ZGJmaVcxdGp4akROcVVDcEt4bHYzeE4xenBWODI2V2MwY1QyRkg4?=
- =?utf-8?B?ODcyaFd2b1hxcGUxcnVDVnF2TmVRLzBrMGtLTHVVbzYzTGhHbWQ5WnRoL2c1?=
- =?utf-8?B?RGtIU0FjME4yVm5MR1hpTXJGcU90MFBJWHQ2RVAzazFCOUdFM04yUDRJVVB4?=
- =?utf-8?B?YXlZTE5hUmNDUTdCOFZDN2l1ZTJNbFhFTG5Pa0Z3Zkd3eDh0eEdBLzdLNkJz?=
- =?utf-8?B?SU5ZOGR5NW5CcWFpWGwwd1FmUWpTaG10RXpWQ2EzcEhoeFU4NUpUQ01HNFdR?=
- =?utf-8?B?VWlTVTUvNnhhMURLNDRJdURSWWIyb21vMXNZWjhid3pOSTVrbEE0Q00vRnNB?=
- =?utf-8?B?Mk0ydU5NN3NBQTFTcDEybllyUSsySHM0Q1F3T25nelhHeUNaUzJlWERiQ1lI?=
- =?utf-8?B?ajNPSTMvMEloWEZtTTNwaS9lcDd2czFzeHh5V0lNUTh2L1VuaEV6c3dsQ0Ur?=
- =?utf-8?B?d2xzU2Fnc1RCMUxhT0VVQ3VzNC9QSk5CS1g5MGtkNTVEM09YQzh3aFd2QmNl?=
- =?utf-8?B?NlVQUGVwV3dlY3BOaGpiV1RhdFBQdk15TGd5eHZnQlUzdUgrRm43RWIxd3FP?=
- =?utf-8?B?ekJMYzZLVW9maWNyM1UyZjBDMGJOS3BOSU02Skl5T25wUy8rS2pjZmRqSFE1?=
- =?utf-8?B?VlZnVGlENldqbEFaSlc0cVkwMWVGVW5LdkFVbUt2UGlNVmlBOHc3eWRtTHZC?=
- =?utf-8?B?elRLZDhNOHM3L0xRdXZIbkRaTmt5ZmhtVmxHcEt6U1JCUzdTOUlEWitaTnNI?=
- =?utf-8?B?V0kyWnNFcWhXT2dRUFJoOC9TTXEvN3NFYmtpQnRLVk1RaHBnNjJZTkxqVDRh?=
- =?utf-8?B?eTBmai9TM3psUUtCdTQwUHoxNGJYSmJIWkJGNDNrcnp6MDhVTDN6SmplUjN2?=
- =?utf-8?B?NEFRamNPb0dSWmNPbExsVGJIbk4zd0NaNC9GVWs4ZVM4dC9rd3E2QWhCUEox?=
- =?utf-8?B?UlEzbWhRdFZXTC9zRmxYeU53alJlOW44cVpXcHNOZFQxbzVwRXJTSnpkMzRv?=
- =?utf-8?B?OTg1eStuaWk5N1VEY0M5YzNSMUdVUmszSkxsVmdqbnE2dFZoaFp0Wm1VTEhS?=
- =?utf-8?B?SFdrZm9zam10MjV0MmN1OVo2WEE4RGpFMlpDZSt5SUxiaVFsd3ZJZkZrYk5a?=
- =?utf-8?B?c0daYmJnNU5FbTRMdDlDeVhiOFVOVEhsVWw3d21KRy9ZbkQxdzllckgybjF5?=
- =?utf-8?B?VG81T25hQ2UzdXdsM0l6RXhKZGVHWG04SzFiOW8ycTQ1KzQrRk95em5vY2wy?=
- =?utf-8?B?L2NLNjlzeWlKQXczOTZCMWxtdktEcURUOUtFcGxkMDFnc3FZVkZ3Y2M1TWY2?=
- =?utf-8?Q?ZTcsLMR1nysMEFOU=3D?=
-X-Exchange-RoutingPolicyChecked: WwdaRt57l6dfBzkpvlPS8JreKW3ZPBCxDd0NjML0N1HnURh7/MZR8GBKba6j6kqnDFtgcuYiu7z90UvybM11tFcDW+oDfJ28GeknJU7jsM/xKAzFQdwY+2Bfdk5Gmbz5LLypwX/DeyDpe0QfO8vv2f8omm/l4JeIbFd7wGv58R/XtmErSAI/HBRitFLSZSXRM1RL+GjDOmTSgrMsXL5rpq30owz9vgKbX2I7riX0MZLGQ9roB5k45ZWt8YyEp12YBkqOXP96tBdH7sIbv/zVpV9q92xt9gRsN4V53dCK+UweYE6ecSUqPgXnZ9WDEu95cUdQ+KarATNG2qJ8s1+lZQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02b88558-76fd-46de-7485-08defeaba6cf
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RVlzUW9nd3B4aytTQ09Cc1JobjE1RElFaDQ2SmI4cVhxeVNGS2trTFduai9M?=
+ =?utf-8?B?b0xqL3hVekFXL2NJTEc5Nm0wT0RvbkM4UXJpTnloWGgwT2JSNlphUC8xMC9E?=
+ =?utf-8?B?S3dyUTE3MVZlcE1rTDBjRjhHN0JNdGxGcncrYUMwdmxtUmxCbitDY1p1a0Ry?=
+ =?utf-8?B?SGU4SkhiR2JMdVVjbmNiWHpMZjNBTTlhdXNnbzhxMEdscUZMbGtJczVuNEl4?=
+ =?utf-8?B?S29TeFlZeWYwMjVDNEtMUDJuSit3N015d0Nxa1M5VWt3U25uOEYzdUU4Y2R1?=
+ =?utf-8?B?eTNJTFczanJWNHhCYi84Q2wyWHFSenNWQjFScGk3eGhFajJhTmovSnB5cTF3?=
+ =?utf-8?B?ZTA2OWV3b2RTci9nS1RMVjdBeStWbU94MmJMSWpSMWY1L0p0QUV0REdEM1JY?=
+ =?utf-8?B?ZDEzanVNMXRTblZXb3c5NjJqU2g0S1hZaFN5c0tlMVlYUysrZkxpOVJDRE1K?=
+ =?utf-8?B?NHdSM1ZjbUlCTzhjUnMyNkpsZ29CNnBCZGtpTmFXMjJtR24rMjhITGZxVGtX?=
+ =?utf-8?B?ekVMbFl1STRLRG50WkNlVW1ieDRTMkpCYlNlRlhSKzM1OW9ZZHdqUVc0UDB4?=
+ =?utf-8?B?RzlaRTFJb3BDSDFOWlVmOUZOdkViUzFhcHZDTENubHhOZWtEQnlMbDhpLzR4?=
+ =?utf-8?B?K21mUC8wYTJoUEV4Tnl3a2lNRWFkbjhraEZFUnZ5ZEZ1MHB5c0ZscWRhZG83?=
+ =?utf-8?B?Zy9nMHdhU1RYR2duUzBka3VwQWxsdzkxQzZtMUNXN1FaWGFyTThFZ1FLVVl4?=
+ =?utf-8?B?V3ZLb3dGaGFkNDkrcmNCVEJXQ3ZadlJCM0lNMGJzYXZLeXRCMWQ1UmhSUUxE?=
+ =?utf-8?B?T2hqSkhHMkhpY0VvdXl3Kzk0dWF2QksxRWE4V2NVSjJHYXJ3Uk9RTENHUjBF?=
+ =?utf-8?B?UTE4VCttWnJVMHNPZDhNSS8zZUlDSm1ZRC9sdDRNWW4yc1NEaFpMUWtPUVZz?=
+ =?utf-8?B?Y0ZvYXIxZTVHRVNnWlorZVFhc2lIRWV6Sjl2V1ZRcmxvazNONEM4T2h0eEdx?=
+ =?utf-8?B?bnN5cFM0clI1VEpsQ2d5eld6VU5mcU5sWDdibWwzOEtselVoUTRSMFlpQUxa?=
+ =?utf-8?B?bEU1SUM1TXdPdC9qTkMvUWRjZWZuSktidUFOYU53eWozMCtGNTdGMkcyRW1z?=
+ =?utf-8?B?V0RFNmd2dzdmcVJrL3ozUW9EbisxQURpZXRHRVNPR1EzYlFBdHBST1Z6WWZ6?=
+ =?utf-8?B?ei9lSmEwRWpXRDFWWS9BK1h0c3dBbTAvcXV5V3JsVi9FTWxSc1pWK2taRkx2?=
+ =?utf-8?B?SzJWdjkwVENOUk5kc3RSSTluRVVocFZXUXd6emVVOXQvVTVpUkFJNlZwbGo2?=
+ =?utf-8?B?Tkcwb0RVY3F1RHNuRFY2WlAzY0tXUHNJWG1VMWEweS83V3VGejB3R3k5TXRR?=
+ =?utf-8?B?bUdoTnhZL3BVeFFycmNIRVJwQmpaOFRkcjlwRVBFYkYzVnQ2bHU5RkZUcVBz?=
+ =?utf-8?B?NlJmOEdITnVDYWFZdmdZaVpVV25nT3E5bk1IVWYwckltM2dMbU05RitqZzY0?=
+ =?utf-8?B?YkYwL1dIeTVKSC9XSWRiYUFmd29BM1h1OVBQRkNBbkJxZHBKVlh1MGVIWndQ?=
+ =?utf-8?B?T2Q1K08rcVgvRGFRd1gydCtsU0NrVHcxZVZQcWFBL0IvOXpWV0ZrdWU1bVVL?=
+ =?utf-8?B?R0ZoWkNFRnB3Y25hMFFQQWliMlRMZGdqSXNDYUpKU0lxaFpiMmo3YllPeTdS?=
+ =?utf-8?B?Z1dNZHBhRUxzWG1hcHptRHVIK2tZbWh6UnE2MGJrVFF5d1Y2b1ZCSlc5ZWJK?=
+ =?utf-8?B?aFYxeWQ5OEo2ejNFTWloLzRIQ241VzFYZUZBbCtpSVp1aFJXK3R6VDAwQmV2?=
+ =?utf-8?B?bFVJd0N6bTcwSkYvV0JCY0dBd3RkTnhJaFJGdk9TUnhaVkJXWDZ5N2dwOHlp?=
+ =?utf-8?B?UTZaZGhYU21DN1dqRFBwQVVCaml0ek83Z2FZVGw4MFdUMWxpQ2htSGJSbTdx?=
+ =?utf-8?B?enB5NmF0VnlJTElia1hvdzVyd1Fkblk4aUc1b3RDc0NaWDJZem1rclVWajhv?=
+ =?utf-8?B?eVdyNDlIa3NSMU1RNGZhdDN5SEFkY0xyVDdNTUZ5SzBEZVNTSVhoTnFmeW1H?=
+ =?utf-8?B?d085YjR2UXZpQnNNUTZqd2p6VGNQRHRZUHdGWTdmUCtjMHdHdzBWR092TDBh?=
+ =?utf-8?B?cE91WFdCNlh0RW1rdmV1VEhrZzIrRDd1M3NjRFgvdG0vL21DdG9uOG5VdUVh?=
+ =?utf-8?B?M0VqS0g0UXhpVG16c0xZM21GZlFpUkNJa1RVR3M2U2dOTUtiTlBLK1RlN2Zq?=
+ =?utf-8?B?VFg5dngrb2IwamNBUlYwS0srUFMwNjJPd0xpQXcxNHRTdTJ4YnRtRXRvME90?=
+ =?utf-8?B?Vkt1bGd5a05WbTh6VUo3VW53QU9xdzlmZDRMTFU2Nkd4cUhqd2o3QWdCNmNs?=
+ =?utf-8?Q?7VlKG0yAEay5P1Tc=3D?=
+X-Exchange-RoutingPolicyChecked: Li/gNm6YZBFEujP73T39t/1rJxMuJe7VruEwdXLODaRoLvzNIzioLhnHvO0oK18fHwTI8LPeSLGFNrFTwOvMwg/SPRA0x0vHg7CbNou3PiWRuE4AbDuS4tmBT9pw4WYBjfFyASUOVGWXJvA2JgUNb71OwCovozKjHbfskpzt2dwK+SrU2NXm9wyJ+5kP7nTck4spff/L7AWbB9quoQIzyBd7K8YJuZJ4vdUiAa/elc0x3Esnc/66GVxwRXN22k1Tq7hOYQCO+TDFjoWpBXaMljU14zinXOiWhtgENFnTf6WzCMYR3e0+AeCuHiYWZWjn0KpWRuhmHcW172gZ5t/jjw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c2c2f38-c4b4-4abe-aaa8-08defeabba3d
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7636.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 11:10:32.7780 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 11:11:05.3503 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Rq0j4DnLMeDFFKjHZvyE/7ujWFWKg3YbaPeVm7621+5+ROIzcpdO1Z9KcYk1YjAFbnV7Q6zrgesQd9He19SpfVU4hac5mUn5gwCCUUAH48U=
+X-MS-Exchange-CrossTenant-UserPrincipalName: ukVMfzEY/HVSxubGzCWrlVZSjSIGJ/KvQy86RNyfYVMzd94RDGDNWHfaoYnp/dKYu5nueJLwF+tqPp3GJnJ1/fKSFoEFi6gAmjcgpvHh1go=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB8248
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -174,311 +175,351 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 
-On 8/12/2026 6:37 PM, Naladala Ramanaidu wrote:
-> Add test coverage to validate Content Match Refresh Rate (CMRR)
-> behavior across both fixed and video timing display modes.
+On 8/19/2026 10:30 PM, Golani, Mitulkumar Ajitkumar wrote:
 > 
-> This introduces a shared helper library to support refresh-rate
-> mode selection and parsing,
-
-Does it?
-
-  along with two new test cases covering
-> fixed-mode and video-mode scenarios.
+> 
+>> -----Original Message-----
+>> From: Naladala, Ramanaidu <ramanaidu.naladala@intel.com>
+>> Sent: 12 August 2026 18:38
+>> To: igt-dev@lists.freedesktop.org
+>> Cc: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>; Golani,
+>> Mitulkumar Ajitkumar <mitulkumar.ajitkumar.golani@intel.com>; Naladala,
+>> Ramanaidu <ramanaidu.naladala@intel.com>
+>> Subject: [PATCH i-g-t v4 2/2] tests/kms_vrr: add CMRR fixed and video mode
+>> subtests
+>>
+>> Add test coverage to validate Content Match Refresh Rate (CMRR) behavior
+>> across both fixed and video timing display modes.
+>>
+>> This introduces a shared helper library to support refresh-rate mode selection
+>> and parsing, along with two new test cases covering fixed-mode and video-
+>> mode scenarios.
+>>
+>> The new tests measure actual display refresh timing during CMRR operation
+>> and compare it against the expected target rate to verify correctness. Video
+>> mode coverage validates behavior across standard video timing rates, while
+>> fixed mode coverage targets display modes that fall outside the standard
+>> video timing set.
+>>
+>> Each test cycles through the relevant refresh configurations, applying and
+>> resetting the appropriate settings between measurement passes to ensure
+>> consistent and isolated test results.
+>>
+>> v2: Fix test issue.
+>> v3: Address review comments. (Mitul)
+>> v4: Fix test issue.
+>>
+>> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+>> ---
+>>   tests/kms_vrr.c | 204
+>> ++++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 204 insertions(+)
+>>
+>> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c index 27f18e8d0..ab6bc66d9
+>> 100644
+>> --- a/tests/kms_vrr.c
+>> +++ b/tests/kms_vrr.c
+>> @@ -32,6 +32,7 @@
+>>   #include "igt_pm.h"
+>>   #include "igt_psr.h"
+>>   #include "i915/intel_drrs.h"
+>> +#include "igt_vrr.h"
+>>   #include "sw_sync.h"
+>>   #include <fcntl.h>
+>>   #include <signal.h>
+>> @@ -80,6 +81,14 @@
+>>    *
+>>    * SUBTEST: lobf-dc3co
+>>    * Description: Test DC3CO entry during LOBF.
+>> + *
+>> + * SUBTEST: cmrr-fixed-mode
+>> + * Description: Test to set a fixed CMRR target refresh rate and verify it
+>> + *              is correctly applied.
+>> + *
+>> + * SUBTEST: cmrr-video-mode
+>> + * Description: Test to set standard video timing refresh rates via CMRR
+>> + *              and verify each target rate is correctly applied.
+>>    */
+>>
+>>   #define NSECS_PER_SEC (1000000000ull)
+>> @@ -103,6 +112,8 @@ enum {
+>>   	TEST_LINK_OFF = 1 << 10,
+>>   	TEST_NEGATIVE = 1 << 11,
+>>   	TEST_FORCE_RR = 1 << 12,
+>> +	TEST_CMRR_FIXED_MODE = 1 << 13,
+>> +	TEST_CMRR_VIDEO_MODE = 1 << 14,
+>>   };
+>>
+>>   enum {
+>> @@ -580,6 +591,184 @@ flip_and_measure(data_t *data, igt_output_t
+>> *output,
+>>   	return 0;
+>>   }
+>>
+>> +static
+>> +uint64_t wait_next_vblank_ts_ns(data_t *data, igt_crtc_t *crtc) {
+>> +	union drm_wait_vblank vbl = {};
+>> +
+>> +	vbl.request.type = DRM_VBLANK_RELATIVE |
+>> igt_crtc_get_vbl_flag(crtc);
+>> +	vbl.request.sequence = 1;
+>> +	do_or_die(igt_ioctl(data->drm_fd, DRM_IOCTL_WAIT_VBLANK,
+>> &vbl));
+>> +
+>> +	return vbl.reply.tval_sec * NSECS_PER_SEC + vbl.reply.tval_usec *
+>> +1000ull; }
+>> +
+>> +static void
+>> +flip_and_measure_target_rr(data_t *data, igt_crtc_t *crtc,
+>> +			   double vrefresh, uint32_t cmrr_mode) {
+>> +	uint32_t i;
+>> +	bool front = false;
+>> +	uint64_t last_vblank_ns, vblank_ns;
+>> +	uint32_t err_frames = 0;
+>> +	uint64_t frame_times_ns[TARGET_RR_SAMP_COUNT];
+>> +	uint64_t exp_time_ns;
+>> +	uint64_t total_frame_time_ns = 0;
+>> +	uint64_t avg_frame_time_ns;
+>> +	double  avg_refresh_rate;
+>> +	double  expected_rr;
+>> +	uint32_t valid_frames = 0;
+>> +
+>> +	exp_time_ns = igt_kms_frame_time_from_vrefresh(vrefresh);
+>> +
+>> +	do_flip(data, &data->fb[0]);
+>> +	(void)get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
+>> +	last_vblank_ns = wait_next_vblank_ts_ns(data, crtc);
+>> +
+>> +	for (i = 0; i < TARGET_RR_SAMP_COUNT; i++) {
+>> +		front = !front;
+>> +
+>> +		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
+>> +		vblank_ns = wait_next_vblank_ts_ns(data, crtc);
+>> +		(void)get_kernel_event_ns(data,
+>> DRM_EVENT_FLIP_COMPLETE);
+>> +
+>> +		frame_times_ns[i] = vblank_ns - last_vblank_ns;
+>> +
+>> +		if (frame_times_ns[i] > (exp_time_ns + (exp_time_ns / 2))) {
+>> +			err_frames++;
+>> +			last_vblank_ns = vblank_ns;
+>> +			continue;
+>> +		}
+>> +
+>> +		last_vblank_ns = vblank_ns;
+>> +		total_frame_time_ns += frame_times_ns[i];
+>> +	}
+>> +
+>> +	valid_frames = TARGET_RR_SAMP_COUNT - err_frames;
+>> +	igt_assert_f(valid_frames > 0,
+>> +		     "No valid frame samples collected\n");
+>> +
+>> +	avg_frame_time_ns = total_frame_time_ns / valid_frames;
+>> +	avg_refresh_rate = (double)NSECS_PER_SEC /
+>> (double)avg_frame_time_ns;
+>> +
+>> +	if (cmrr_mode == CMRR_VIDEO_MODE) {
+>> +		expected_rr = (double)(vrefresh * CMRR_NUMERATOR) /
+>> +			      (double)CMRR_VIDEO_MODE_DENOMINATOR;
+>> +		igt_assert_f(fabs(avg_refresh_rate - expected_rr) <= 0.02,
+> 
+> Please confirm this bound holds on real hardware, or justify it.
+> 
+>> +			     "CMRR refresh rate mismatch: "
+>> +			     "measured avg_rr = %.3f Hz, "
+>> +			     "expected_rr = %.3f Hz\n",
+>> +			     avg_refresh_rate, expected_rr);
+>> +	}
+>> +
+>> +	if (cmrr_mode == CMRR_NON_VIDEO_MODE) {
+>> +		expected_rr = (double)(vrefresh * CMRR_NUMERATOR) /
+>> +			      (double)CMRR_DENOMINATOR;
+>> +		igt_assert_f(fabs(avg_refresh_rate - expected_rr) <= 0.02,
+>> +			     "CMRR refresh rate mismatch: "
+>> +			     "measured avg_rr = %.3f Hz, "
+>> +			     "expected_rr = %.3f Hz\n",
+>> +			     avg_refresh_rate, expected_rr);
+>> +	}
+>> +
+>> +	if (cmrr_mode == CMRR_DISABLE) {
+>> +		expected_rr = vrefresh;
+>> +		igt_assert_f(fabs(avg_refresh_rate - expected_rr) <= 0.02,
+>> +			     "CMRR refresh rate mismatch: "
+>> +			     "measured avg_rr = %.3f Hz, "
+>> +			     "expected_rr = %.3f Hz\n",
+>> +			     avg_refresh_rate, expected_rr);
+>> +	}
+>> +
+>> +	igt_info("Average RR (Hz): %.2f , Expected RR (Hz): %.2f, error frames
+>> = %d\n",
+>> +		 avg_refresh_rate, expected_rr, err_frames); }
+>> +
+>> +static
+>> +void test_cmrr(data_t *data, igt_crtc_t *crtc,
+>> +	       igt_output_t *output, uint32_t flags) {
+>> +	uint32_t found;
+>> +	double rr_from_mode;
+>> +	drmModeModeInfo mode;
+>> +	drmModeConnectorPtr connector;
+>> +	int j;
+>> +
+>> +	igt_require_f(cmrr_supported(data->drm_fd, crtc->crtc_index),
+>> +		      "CMRR not supported\n");
+>> +	prepare_test(data, output, crtc);
+>> +	set_vrr_on_crtc(data, crtc, true, false);
+>> +
+>> +	if (flags & TEST_CMRR_VIDEO_MODE) {
+>> +		for (j = 0; j < igt_vrr_standard_video_timing_fps_count; j++) {
+> 
+> compares int against size_t, Use size_t j (or unsigned).
+> 
+>> +			found =
+>> igt_vrr_get_mode_with_video_timing(output,
+>> +
+>> 	igt_vrr_standard_video_timing_fps[j],
+>> +							&mode);
+>> +			if (found) {
+>> +				rr_from_mode =
+>> igt_vrr_mode_line_refresh_hz(&mode);
+>> +				igt_output_override_mode(output, &mode);
+>> +				igt_info("Override mode:");
+>> +				kmstest_dump_mode(&mode);
+>> +				igt_display_commit2(&data->display,
+>> COMMIT_ATOMIC);
+>> +				igt_target_rr_debugfs_write(data->drm_fd,
+>> +							    crtc->crtc_index,
+>> +							    mode.vrefresh,
+>> +
+>> CMRR_NUMERATOR,
+>> +
+>> CMRR_VIDEO_MODE_DENOMINATOR);
+>> +
+>> +				flip_and_measure_target_rr(data, crtc,
+>> +							   mode.vrefresh,
+>> +
+>> CMRR_VIDEO_MODE);
+>> +
+>> +				igt_target_rr_debugfs_write(data->drm_fd,
+>> +							    crtc->crtc_index,
+>> +							    mode.vrefresh,
+>> +							    0, 0);
+>> +
+>> +				flip_and_measure_target_rr(data, crtc,
+>> +							   rr_from_mode,
+>> +							   CMRR_DISABLE);
+>> +			}
+>> +		}
+>> +	}
+> 
+> The TEST_CMRR_VIDEO_MODE loop reassigns found every iteration, so after the loop it only reflects the last fps in the array,
+> which typically has no matching mode.
+> 
+> Two issues:
+> 1. there is no post-loop guard, so on a panel with no standard-timing mode the
+> subtest passes without testing anything, it should igt_require a skip instead;
+> 2. you can't reuse found like below fixed-mode branch does, because here it's overwritten rather than latched,
+> requiring on it would falsely skip even when earlier rates were tested.
+> 
+> Please add a dedicated "bool tested" latch set inside if (found) and igt_require_f(tested, "No standard video-timing mode found.\n") after the loop.
+> 
+> "bool tested = false;
+> ...
+>      if (found) {
+>          tested = true;
+>          ...
+>      }
+> ...
+> igt_require_f(tested, "No standard video-timing mode found.\n");"
 > 
 
-Let's call it desktop mode (here and everywhere else). Refresh rates are 
-fixed here anyway.
+Or just.
 
-> The new tests measure actual display refresh timing during CMRR
-> operation and compare it against the expected target rate to
-> verify correctness. Video mode coverage validates behavior across
-> standard video timing rates, while fixed mode coverage targets
-> display modes that fall outside the standard video timing set.
+  if (igt_vrr_get_mode_with_video_timing(output,
+                         igt_vrr_standard_video_timing_fps[j], &mode)) {
+             found = true;
+
+>> +
+>> +	if (flags & TEST_CMRR_FIXED_MODE) {
+>> +		found = 0;
+>> +		connector = output->config.connector;
+>> +		for (j = 0; j < connector->count_modes; j++) {
+>> +			mode = connector->modes[j];
+>> +			rr_from_mode =
+>> igt_vrr_mode_line_refresh_hz(&mode);
+>> +
+>> +			if (rr_from_mode - mode.vrefresh > 0.04) {
+>> +				found = 1;
+>> +				igt_output_override_mode(output, &mode);
+>> +				igt_info("Override mode:");
+>> +				kmstest_dump_mode(&mode);
+>> +				igt_display_commit2(&data->display,
+>> COMMIT_ATOMIC);
+>> +				igt_target_rr_debugfs_write(data->drm_fd,
+>> +							    crtc->crtc_index,
+>> +							    mode.vrefresh,
+>> +
+>> CMRR_NUMERATOR,
+>> +
+>> CMRR_DENOMINATOR);
+>> +
+>> +				flip_and_measure_target_rr(data, crtc,
+>> +							   mode.vrefresh,
+>> +
+>> CMRR_NON_VIDEO_MODE);
+>> +
+>> +				igt_target_rr_debugfs_write(data->drm_fd,
+>> +							    crtc->crtc_index,
+>> +							    mode.vrefresh,
+>> +							    0, 0);
+>> +
+>> +				flip_and_measure_target_rr(data, crtc,
+>> +							   rr_from_mode,
+>> +							   CMRR_DISABLE);
+>> +			}
+>> +		}
+>> +		igt_require_f(found, "No non-video-timing mode found.\n");
+>> +	}
+>> +}
+>> +
+>>   /* Basic VRR flip functionality test - enable, measure, disable, measure */
+>> static void  test_basic(data_t *data, igt_crtc_t *crtc, igt_output_t *output, @@
+>> -591,6 +780,7 @@ test_basic(data_t *data, igt_crtc_t *crtc, igt_output_t
+>> *output,
+>>   	uint64_t rate[] = {0};
+>>
+>>   	prepare_test(data, output, crtc);
+>> +
 > 
-> Each test cycles through the relevant refresh configurations,
-> applying and resetting the appropriate settings between
-> measurement passes to ensure consistent and isolated test results.
+> 	Please remove extra line.
 > 
-> v2: Fix test issue.
-> v3: Address review comments. (Mitul)
-> v4: Fix test issue.
+>>   	range = data->range;
+>>   	vtest_ns = data->vtest_ns;
+>>   	rate[0] = vtest_ns.rate_ns;
+>> @@ -1147,6 +1337,20 @@ int igt_main_args("drs:", long_opts, help_str,
+>> opt_handler, &data)
+>>   		}
+>>   	}
+>>
+>> +	igt_subtest_group() {
+>> +		igt_fixture()
+>> +			igt_require_intel(data.drm_fd);
+>> +
+>> +		igt_describe("Test to validate CMRR in fixed mode.");
+>> +		igt_subtest_with_dynamic("cmrr-fixed-mode") {
+>> +			run_vrr_test(&data, test_cmrr,
+>> TEST_CMRR_FIXED_MODE);
+>> +		}
+>> +
+>> +		igt_describe("Test to validate CMRR in video mode.");
+>> +		igt_subtest_with_dynamic("cmrr-video-mode") {
+>> +			run_vrr_test(&data, test_cmrr,
+>> TEST_CMRR_VIDEO_MODE);
+>> +		}
+>> +	}
+>>   	igt_fixture() {
+>>   		close(data.debugfs_fd);
+>>   		igt_display_fini(&data.display);
+>> --
+>> 2.43.0
 > 
-> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-> ---
->   tests/kms_vrr.c | 204 ++++++++++++++++++++++++++++++++++++++++++++++++
->   1 file changed, 204 insertions(+)
-> 
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 27f18e8d0..ab6bc66d9 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -32,6 +32,7 @@
->   #include "igt_pm.h"
->   #include "igt_psr.h"
->   #include "i915/intel_drrs.h"
-> +#include "igt_vrr.h"
->   #include "sw_sync.h"
->   #include <fcntl.h>
->   #include <signal.h>
-> @@ -80,6 +81,14 @@
->    *
->    * SUBTEST: lobf-dc3co
->    * Description: Test DC3CO entry during LOBF.
-> + *
-> + * SUBTEST: cmrr-fixed-mode
-> + * Description: Test to set a fixed CMRR target refresh rate and verify it
-> + *              is correctly applied.
-> + *
-> + * SUBTEST: cmrr-video-mode
-> + * Description: Test to set standard video timing refresh rates via CMRR
-> + *              and verify each target rate is correctly applied.
->    */
->   
->   #define NSECS_PER_SEC (1000000000ull)
-> @@ -103,6 +112,8 @@ enum {
->   	TEST_LINK_OFF = 1 << 10,
->   	TEST_NEGATIVE = 1 << 11,
->   	TEST_FORCE_RR = 1 << 12,
-> +	TEST_CMRR_FIXED_MODE = 1 << 13,
-> +	TEST_CMRR_VIDEO_MODE = 1 << 14,
->   };
->   
->   enum {
-> @@ -580,6 +591,184 @@ flip_and_measure(data_t *data, igt_output_t *output,
->   	return 0;
->   }
->   
-> +static
-> +uint64_t wait_next_vblank_ts_ns(data_t *data, igt_crtc_t *crtc)
-> +{
-> +	union drm_wait_vblank vbl = {};
-> +
-> +	vbl.request.type = DRM_VBLANK_RELATIVE | igt_crtc_get_vbl_flag(crtc);
-> +	vbl.request.sequence = 1;
-> +	do_or_die(igt_ioctl(data->drm_fd, DRM_IOCTL_WAIT_VBLANK, &vbl));
-> +
-> +	return vbl.reply.tval_sec * NSECS_PER_SEC + vbl.reply.tval_usec * 1000ull;
-> +}
-> +
-
-Time to create a helper for this. See wait_for_vblank() in kms_async_flips.c
-
-> +static void
-> +flip_and_measure_target_rr(data_t *data, igt_crtc_t *crtc,
-> +			   double vrefresh, uint32_t cmrr_mode)
-> +{
-> +	uint32_t i;
-> +	bool front = false;
-> +	uint64_t last_vblank_ns, vblank_ns;
-> +	uint32_t err_frames = 0;
-> +	uint64_t frame_times_ns[TARGET_RR_SAMP_COUNT];
-> +	uint64_t exp_time_ns;
-> +	uint64_t total_frame_time_ns = 0;
-> +	uint64_t avg_frame_time_ns;
-> +	double  avg_refresh_rate;
-> +	double  expected_rr;
-> +	uint32_t valid_frames = 0;
-> +
-> +	exp_time_ns = igt_kms_frame_time_from_vrefresh(vrefresh);
-> +
-> +	do_flip(data, &data->fb[0]);
-> +	(void)get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-> +	last_vblank_ns = wait_next_vblank_ts_ns(data, crtc);
-> +
-> +	for (i = 0; i < TARGET_RR_SAMP_COUNT; i++) {
-> +		front = !front;
-> +
-> +		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
-> +		vblank_ns = wait_next_vblank_ts_ns(data, crtc);
-> +		(void)get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-> +
-> +		frame_times_ns[i] = vblank_ns - last_vblank_ns;
-> +
-> +		if (frame_times_ns[i] > (exp_time_ns + (exp_time_ns / 2))) {
-> +			err_frames++;
-> +			last_vblank_ns = vblank_ns;
-> +			continue;
-> +		}
-> +
-> +		last_vblank_ns = vblank_ns;
-> +		total_frame_time_ns += frame_times_ns[i];
-> +	}
-> +
-> +	valid_frames = TARGET_RR_SAMP_COUNT - err_frames;
-> +	igt_assert_f(valid_frames > 0,
-> +		     "No valid frame samples collected\n");
-
-We should hold valid frames to a higher standard than > 0
-
-> +
-> +	avg_frame_time_ns = total_frame_time_ns / valid_frames;
-> +	avg_refresh_rate = (double)NSECS_PER_SEC / (double)avg_frame_time_ns;
-> +
-> +	if (cmrr_mode == CMRR_VIDEO_MODE) {
-> +		expected_rr = (double)(vrefresh * CMRR_NUMERATOR) /
-> +			      (double)CMRR_VIDEO_MODE_DENOMINATOR;
-> +		igt_assert_f(fabs(avg_refresh_rate - expected_rr) <= 0.02,
-> +			     "CMRR refresh rate mismatch: "
-> +			     "measured avg_rr = %.3f Hz, "
-> +			     "expected_rr = %.3f Hz\n",
-> +			     avg_refresh_rate, expected_rr);
-> +	}
-> +
-> +	if (cmrr_mode == CMRR_NON_VIDEO_MODE) {
-> +		expected_rr = (double)(vrefresh * CMRR_NUMERATOR) /
-> +			      (double)CMRR_DENOMINATOR;
-> +		igt_assert_f(fabs(avg_refresh_rate - expected_rr) <= 0.02,
-> +			     "CMRR refresh rate mismatch: "
-> +			     "measured avg_rr = %.3f Hz, "
-> +			     "expected_rr = %.3f Hz\n",
-> +			     avg_refresh_rate, expected_rr);
-> +	}
-> +
-> +	if (cmrr_mode == CMRR_DISABLE) {
-> +		expected_rr = vrefresh;
-> +		igt_assert_f(fabs(avg_refresh_rate - expected_rr) <= 0.02,
-> +			     "CMRR refresh rate mismatch: "
-> +			     "measured avg_rr = %.3f Hz, "
-> +			     "expected_rr = %.3f Hz\n",
-> +			     avg_refresh_rate, expected_rr);
-> +	}
-> +
-> +	igt_info("Average RR (Hz): %.2f , Expected RR (Hz): %.2f, error frames = %d\n",
-> +		 avg_refresh_rate, expected_rr, err_frames);
-> +}
-> +
-> +static
-> +void test_cmrr(data_t *data, igt_crtc_t *crtc,
-> +	       igt_output_t *output, uint32_t flags)
-> +{
-> +	uint32_t found;
-> +	double rr_from_mode;
-> +	drmModeModeInfo mode;
-> +	drmModeConnectorPtr connector;
-> +	int j;
-> +
-> +	igt_require_f(cmrr_supported(data->drm_fd, crtc->crtc_index),
-> +		      "CMRR not supported\n");
-> +	prepare_test(data, output, crtc);
-> +	set_vrr_on_crtc(data, crtc, true, false);
-> +
-> +	if (flags & TEST_CMRR_VIDEO_MODE) {
-> +		for (j = 0; j < igt_vrr_standard_video_timing_fps_count; j++) {
-> +			found = igt_vrr_get_mode_with_video_timing(output,
-> +							igt_vrr_standard_video_timing_fps[j],
-> +							&mode);
-> +			if (found) {
-> +				rr_from_mode = igt_vrr_mode_line_refresh_hz(&mode);
-> +				igt_output_override_mode(output, &mode);
-> +				igt_info("Override mode:");
-> +				kmstest_dump_mode(&mode);
-> +				igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +				igt_target_rr_debugfs_write(data->drm_fd,
-> +							    crtc->crtc_index,
-> +							    mode.vrefresh,
-> +							    CMRR_NUMERATOR,
-> +							    CMRR_VIDEO_MODE_DENOMINATOR);
-> +
-> +				flip_and_measure_target_rr(data, crtc,
-> +							   mode.vrefresh,
-> +							   CMRR_VIDEO_MODE);
-> +
-> +				igt_target_rr_debugfs_write(data->drm_fd,
-> +							    crtc->crtc_index,
-> +							    mode.vrefresh,
-> +							    0, 0);
-> +
-> +				flip_and_measure_target_rr(data, crtc,
-> +							   rr_from_mode,
-> +							   CMRR_DISABLE);
-> +			}
-> +		}
-> +	}
-> +
-> +	if (flags & TEST_CMRR_FIXED_MODE) {
-> +		found = 0;
-> +		connector = output->config.connector;
-> +		for (j = 0; j < connector->count_modes; j++) {
-> +			mode = connector->modes[j];
-> +			rr_from_mode = igt_vrr_mode_line_refresh_hz(&mode);
-> +
-> +			if (rr_from_mode - mode.vrefresh > 0.04) {
-> +				found = 1;
-> +				igt_output_override_mode(output, &mode);
-> +				igt_info("Override mode:");
-> +				kmstest_dump_mode(&mode);
-> +				igt_display_commit2(&data->display, COMMIT_ATOMIC);
-> +				igt_target_rr_debugfs_write(data->drm_fd,
-> +							    crtc->crtc_index,
-> +							    mode.vrefresh,
-> +							    CMRR_NUMERATOR,
-> +							    CMRR_DENOMINATOR);
-> +
-> +				flip_and_measure_target_rr(data, crtc,
-> +							   mode.vrefresh,
-> +							   CMRR_NON_VIDEO_MODE);
-> +
-> +				igt_target_rr_debugfs_write(data->drm_fd,
-> +							    crtc->crtc_index,
-> +							    mode.vrefresh,
-> +							    0, 0);
-> +
-> +				flip_and_measure_target_rr(data, crtc,
-> +							   rr_from_mode,
-> +							   CMRR_DISABLE);
-> +			}
-> +		}
-> +		igt_require_f(found, "No non-video-timing mode found.\n");
-
-Should this be a skip?
-
-> +	}
-> +}
-> +
->   /* Basic VRR flip functionality test - enable, measure, disable, measure */
->   static void
->   test_basic(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-> @@ -591,6 +780,7 @@ test_basic(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
->   	uint64_t rate[] = {0};
->   
->   	prepare_test(data, output, crtc);
-> +
->   	range = data->range;
->   	vtest_ns = data->vtest_ns;
->   	rate[0] = vtest_ns.rate_ns;
-> @@ -1147,6 +1337,20 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
->   		}
->   	}
->   
-> +	igt_subtest_group() {
-> +		igt_fixture()
-> +			igt_require_intel(data.drm_fd);
-> +
-
-There was some recent discussion regarding intel specific tests in tests 
-folder [1].
-
-But this change is just following a pre-existing pattern so this should 
-not be a blocker but may be this warrants a broader discussion.
-
-==
-Chaitanya
-
-[1] 
-https://lore.kernel.org/igt-dev/210afacb-8486-43a5-865c-f52befda3231@intel.com/
-
-> +		igt_describe("Test to validate CMRR in fixed mode.");
-> +		igt_subtest_with_dynamic("cmrr-fixed-mode") {
-> +			run_vrr_test(&data, test_cmrr, TEST_CMRR_FIXED_MODE);
-> +		}
-> +
-> +		igt_describe("Test to validate CMRR in video mode.");
-> +		igt_subtest_with_dynamic("cmrr-video-mode") {
-> +			run_vrr_test(&data, test_cmrr, TEST_CMRR_VIDEO_MODE);
-> +		}
-> +	}
->   	igt_fixture() {
->   		close(data.debugfs_fd);
->   		igt_display_fini(&data.display);
 
