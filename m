@@ -4,71 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50AA6C5DF82
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 10:20:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34BFFC5DF87
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 10:36:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F10B410EFC6;
-	Thu, 20 Aug 2026 10:20:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A928510EFC6;
+	Thu, 20 Aug 2026 10:36:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GzCMLuq4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GlLEIuHb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62CA210EFC6
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 10:20:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C0AC10E1E9
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 10:35:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787221222; x=1818757222;
+ t=1787222140; x=1818758140;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=53sDTyhqxNlFcV8MU8NQyg2PgnN8ZRhZ0YopQitHcFw=;
- b=GzCMLuq4C1szUxIEZrcNeRjXC8KigEmKjonVfxy6MgoZPDP4yhdUK+J7
- NDw3hOBUKG0oli4Ip09leTPB2uICzlFVoIeyNaTIiwOz4ejZJSFi0OASu
- 6UmWOxtZIGFRRGI09wOh4Y7QzMKOWqIypx3zAOjceFZXR18PwH/IsSc8x
- +C/25Fbmq4nm/RbzVmCKoD2xTyNW1R7tZM2Bac9H5hjReVzy7WrYMQEKg
- BIjHVnWPwvUBUBp87unC5z6bdri7d0CXE4nRDTSGe/pCJ5C0rQWK665E0
- BaJza37+wuEi7jqdm2kbZUeiBf50GE8buipYiAmpZvyzJPqDRIlwu2lRA w==;
-X-CSE-ConnectionGUID: d2oaaCGxQuWpmLjMivGiJQ==
-X-CSE-MsgGUID: D4BE5pZVQOeobsPmSoXvJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="87515435"
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="87515435"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 03:20:21 -0700
-X-CSE-ConnectionGUID: z0iy5P/LQruIQYVe1F1jbA==
-X-CSE-MsgGUID: 7TNQxSZkSIe5CQFthGwgOA==
+ bh=xcMMB9VMpVNDSAsX2QYYSsn7K+YESncVXklSave1W+Q=;
+ b=GlLEIuHb0/0qMiwkAleItDkwIvPh1yOlVR2C/o/9qSiV98S4lnpjo6lc
+ 8F1qceu5fSIzKzdzsVJ5QDUV2HgCqi/Z7wC84Lp2efgHWI45ezwo61NgZ
+ QDb81BhFeg63c7Gwlz5fnWE3NSUkG1JVH+N2gzTzna4Zn3928MzuvZQM1
+ 5l6vs8U1H6E6CIWGKev2IbFkhy9ylRwIHmH/a0drjKfH77CEvCVSOfoSw
+ qPaNt643rWBS7NjycORPmeZmsyv60RHsPy9oebH1WTFEtibvwfRbcn0gG
+ nWy4+SCyfiv1BpHyPuESDPQBXhqtLCeQbtdMVnoMP4m5+PqH8DHS5x1/q A==;
+X-CSE-ConnectionGUID: kbgDUzoxRPWn6MTf28Wryg==
+X-CSE-MsgGUID: oixDltdrTnCvyTqwWBS3bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="91625908"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="91625908"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2026 03:35:39 -0700
+X-CSE-ConnectionGUID: +tI9DVOkRJ6lrKZVeBYoZQ==
+X-CSE-MsgGUID: SDhq7P2dS12czyz7HMrTRg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="262192052"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="304153489"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2026 03:20:19 -0700
-Date: Thu, 20 Aug 2026 12:20:16 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2026 03:35:38 -0700
+Date: Thu, 20 Aug 2026 12:35:35 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>
-Cc: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
- "krzysztof.karas@intel.com" <krzysztof.karas@intel.com>,
- "krzysztof.kozlowski@canonical.com" <krzysztof.kozlowski@canonical.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>
-Subject: Re: [PATCH v6 1/4] lib: Add generic platform filtering framework
-Message-ID: <20260820102016.zkvbbqop6iaureye@kamilkon-DESK.igk.intel.com>
+To: Gustavo Sousa <gustavo.sousa@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>, igt-dev@lists.freedesktop.org,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Subject: Re: [PATCH i-g-t 02/10] lib/xe: Use stricter line-equality check
+ when checking for workarounds
+Message-ID: <20260820103535.6o7wkg7pfm2bow3t@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>,
- "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
- "krzysztof.karas@intel.com" <krzysztof.karas@intel.com>,
- "krzysztof.kozlowski@canonical.com" <krzysztof.kozlowski@canonical.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>
-References: <20260820012820.129589-1-vitaly.prosyak@amd.com>
- <20260820012820.129589-2-vitaly.prosyak@amd.com>
- <DM4PR12MB5152AA3A4BBF83BBE3239F9BE3A42@DM4PR12MB5152.namprd12.prod.outlook.com>
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ Matt Roper <matthew.d.roper@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+References: <20260721-wa_14026539277-v1-0-0c147eeefefa@intel.com>
+ <20260721-wa_14026539277-v1-2-0c147eeefefa@intel.com>
+ <20260729212333.GB7790@mdroper-desk1.amr.corp.intel.com>
+ <87ik57b7bn.fsf@intel.com> <87bjaxc3ez.fsf@intel.com>
+ <20260819205513.GR8279@mdroper-desk1.amr.corp.intel.com>
+ <875x15bxnb.fsf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DM4PR12MB5152AA3A4BBF83BBE3239F9BE3A42@DM4PR12MB5152.namprd12.prod.outlook.com>
+In-Reply-To: <875x15bxnb.fsf@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,60 +81,272 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zhang,,
-On 2026-08-20 at 02:03:00 +0000, Zhang, Jesse(Jie) wrote:
-> AMD General
+Hi Gustavo,
+On 2026-08-19 at 18:36:40 -0300, Gustavo Sousa wrote:
+> Matt Roper <matthew.d.roper@intel.com> writes:
 > 
-> Review-by: Jesse Zhang <jesse.zhang@amd.com>
+> > On Wed, Aug 19, 2026 at 04:32:04PM -0300, Gustavo Sousa wrote:
+> >> Gustavo Sousa <gustavo.sousa@intel.com> writes:
+> >> 
+> >> > Matt Roper <matthew.d.roper@intel.com> writes:
+> >> >
+> >> >> On Tue, Jul 21, 2026 at 03:59:55PM -0300, Gustavo Sousa wrote:
+> >> >>> Currently debugfs_file_has_wa() uses strstr() to check if a workaround
+> >> >>> name is present in the debugfs dump.  Using strstr() would match the
+> >> >>> workaround name anywhere in the dump buffer and with that we risk
+> >> >>> producing unexpected results if the checked workaround name happens to
+> >> >>> be a substring of another workaround present in the dump.
+> >> >>> 
+> >> >>> Fix that by making sure we match the workaround name with the full
+> >> >>> line from the dump.
+> >> >>
+> >> >> There are other parts of IGT that use regular expressions from either
+> >> >> POSIX (regcomp / regexec) or Glib (g_regex_new / g_regex_match).  Would
+> >> >> it be possible to use one of those here instead of opencoding a match
+> >> >> function?
+> >> >
+> >> > Yeah.  That could make this function more readable and easier to extend.
+> >> > I'll take a look at those options.
+> >> 
+> >> This new version of debugfs_file_has_wa() misses the fact that some
+> >> lines will contain multiple workarounds separated by comma.  So I
+> >> decided to implement a more robust version.  I have two versions, one
+> >> that is still not using regular expressions and another that uses POSIX
+> >> regcomp/regexec functions.  I have a slight preference for the former,
+> >> but if you prefer, we can go with the latter.  IMO, both versions are
+> >> more readable than the one currently proposed in this patch.
+> >> 
+> >> I would like your opinion before sending v2 of this series. :-)
+> >
+> > It might be best to ping the IGT maintainers and see what they think.
+> > Today IGT has a mix of open-coded string matching and two different
+> > styles of regular expressions.  It seems like the kind of thing they may
+> > want to set a standard direction for with new code.  I don't have much
+> > of a personal opinion.
+> 
+> Kamil, do you have a direction here? Feel free to add other maintainers
+> as well.
 
-One nit: it should be Reviewed-by:
+imho it is better to use regex lib, even if numer of lines are
+the same or little bigger.
 
-so our tooling could work on patch.
++cc Ashutosh and Karthik
+
+
 
 Regards,
 Kamil
 
 > 
-> > -----Original Message-----
-> > From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
-> > Sent: Thursday, August 20, 2026 9:27 AM
-> > To: igt-dev@lists.freedesktop.org
-> > Cc: kamil.konieczny@linux.intel.com; jani.nikula@linux.intel.com;
-> > krzysztof.karas@intel.com; krzysztof.kozlowski@canonical.com; Zhang,
-> > Jesse(Jie) <Jesse.Zhang@amd.com>; Koenig, Christian
-> > <Christian.Koenig@amd.com>; Deucher, Alexander
-> > <Alexander.Deucher@amd.com>; Prosyak, Vitaly <Vitaly.Prosyak@amd.com>
-> > Subject: [PATCH v6 1/4] lib: Add generic platform filtering framework
+> --
+> Gustavo Sousa
+> 
 > >
-> > From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > >
-> > Implement vendor-agnostic platform filtering system that allows any vendor to plug
-> > in platform-specific test skipping logic via callbacks.
+> > Matt
 > >
-> > Key design elements:
-> > - struct platform_filter_ops: vendor callback interface
-> > - struct platform_skip_entry: vendor-neutral skip rule representation
-> > - enum skip_source: three-tier priority (built-in, config, env)
-> > - API functions: init, should_skip, require, dump
+> >> 
+> >> Note: I also created a separate commit adding a simple test for this
+> >> function in lib/tests.
+> >> 
+> >> Version without regular expressions:
+> >> 
+> >>     | static bool is_eol(char c)
+> >>     | {
+> >>     |         return !c || c == '\n';
+> >>     | }
+> >>     | 
+> >>     | static bool is_wa_sep(char c)
+> >>     | {
+> >>     |         return isspace(c) || c == ',';
+> >>     | }
+> >>     | 
+> >>     | static bool debugfs_dump_has_wa(char *dump, const char *wa)
+> >>     | {
+> >>     |         size_t wa_len = strlen(wa);
+> >>     | 
+> >>     |         while (*dump) {
+> >>     |                 /*
+> >>     |                  * Each workaround name is indented by one tab
+> >>     |                  * character; unindented lines are used as "section
+> >>     |                  * names" identifying the type of workarounds that
+> >>     |                  * follow (e.g. "GT Workarounds", "Engine Workarounds"
+> >>     |                  * etc).
+> >>     |                  */
+> >>     |                 if (*dump != '\t')
+> >>     |                         goto next_line;
+> >>     | 
+> >>     |                 while (!is_eol(*dump)) {
+> >>     |                         char *other_wa;
+> >>     | 
+> >>     |                         while (!is_eol(*dump) && is_wa_sep(*dump))
+> >>     |                                 dump++;
+> >>     | 
+> >>     |                         other_wa = dump;
+> >>     | 
+> >>     |                         while (!is_eol(*dump) && !is_wa_sep(*dump))
+> >>     |                                 dump++;
+> >>     | 
+> >>     |                         if (wa_len == dump - other_wa &&
+> >>     |                             !strncmp(wa, other_wa, wa_len))
+> >>     |                                 return true;
+> >>     |                 }
+> >>     | 
+> >>     |         next_line:
+> >>     |                 while (!is_eol(*dump))
+> >>     |                         dump++;
+> >>     | 
+> >>     |                 if (*dump)
+> >>     |                         dump++;
+> >>     |         }
+> >>     | 
+> >>     |         return false;
+> >>     | }
+> >> 
+> >> Version with POSIX regcomp/regexec:
+> >> 
+> >>     | static int debugfs_dump_has_wa(char *dump, const char *wa)
+> >>     | {
+> >>     |         size_t wa_len;
+> >>     |         regex_t regex;
+> >>     |         regmatch_t match[2];
+> >>     |         int ret;
+> >>     | 
+> >>     |         if (regcomp(&regex, "[ \t,]*([^ \t,]+)", REG_EXTENDED | REG_NEWLINE)) {
+> >>     |                 igt_critical("Failed to compile regex, workaround %s will not be checked.\n",
+> >>     |                              wa);
+> >>     | 
+> >>     |                 return -1;
+> >>     |         }
+> >>     | 
+> >>     |         wa_len = strlen(wa);
+> >>     |         ret = 0;
+> >>     | 
+> >>     |         while (*dump) {
+> >>     |                 /*
+> >>     |                  * Each workaround name is indented by one tab
+> >>     |                  * character; unindented lines are used as "section
+> >>     |                  * names" identifying the type of workarounds that
+> >>     |                  * follow (e.g. "GT Workarounds", "Engine Workarounds"
+> >>     |                  * etc).
+> >>     |                  */
+> >>     |                 if (*dump != '\t')
+> >>     |                         goto next_line;
+> >>     | 
+> >>     |                 while (*dump && regexec(&regex, dump, 2, match, 0) == 0) {
+> >>     |                         char *other_wa = dump + match[1].rm_so;
+> >>     |                         size_t other_wa_len = match[1].rm_eo - match[1].rm_so;
+> >>     | 
+> >>     |                         dump += match[0].rm_eo;
+> >>     | 
+> >>     |                         if (wa_len == other_wa_len && !strncmp(wa, other_wa, wa_len)) {
+> >>     |                                 ret = 1;
+> >>     | 
+> >>     |                                 goto done;
+> >>     |                         }
+> >>     |                 }
+> >>     | 
+> >>     |         next_line:
+> >>     |                 while (*dump && *dump != '\n')
+> >>     |                         dump++;
+> >>     | 
+> >>     |                 if (*dump)
+> >>     |                         dump++;
+> >>     |         }
+> >>     | 
+> >>     | done:
+> >>     |         regfree(&regex);
+> >>     | 
+> >>     |         return ret;
+> >>     | }
+> >> 
+> >> --
+> >> Gustavo Sousa
+> >> 
+> >> >
+> >> > --
+> >> > Gustavo Sousa
+> >> >
+> >> >>
+> >> >>
+> >> >> Matt
+> >> >>
+> >> >>> 
+> >> >>> Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+> >> >>> ---
+> >> >>>  lib/xe/xe_wa.c | 39 ++++++++++++++++++++++++++++++++++++++-
+> >> >>>  1 file changed, 38 insertions(+), 1 deletion(-)
+> >> >>> 
+> >> >>> diff --git a/lib/xe/xe_wa.c b/lib/xe/xe_wa.c
+> >> >>> index ff5daf529831..d44431e7e61f 100644
+> >> >>> --- a/lib/xe/xe_wa.c
+> >> >>> +++ b/lib/xe/xe_wa.c
+> >> >>> @@ -13,6 +13,43 @@
+> >> >>>  #include "xe/xe_wa.h"
+> >> >>>  #include "xe/xe_query.h"
+> >> >>>  
+> >> >>> +static bool debugfs_dump_has_wa(char *dump, const char *wa)
+> >> >>> +{
+> >> >>> +	char *a = dump;
+> >> >>> +
+> >> >>> +	while (*a) {
+> >> >>> +		const char *b = wa;
+> >> >>> +
+> >> >>> +		/*
+> >> >>> +		 * Each workaround name is indented by one tab
+> >> >>> +		 * character; unindented lines are used as "section
+> >> >>> +		 * names" identifying the type of workarounds that
+> >> >>> +		 * follow (e.g. "GT Workarounds", "Engine Workarounds"
+> >> >>> +		 * etc).
+> >> >>> +		 */
+> >> >>> +		if (*a++ != '\t')
+> >> >>> +			goto next_line;
+> >> >>> +
+> >> >>> +		while (*a == *b && !(*a == '\0' || *a == '\n' || *b == '\0')) {
+> >> >>> +			a++;
+> >> >>> +			b++;
+> >> >>> +		}
+> >> >>> +
+> >> >>> +		if ((*a == '\0' || *a == '\n') && *b == '\0')
+> >> >>> +			return true;
+> >> >>> +
+> >> >>> +	next_line:
+> >> >>> +		/* No match for this line, advance to the next one. */
+> >> >>> +		while (*a != '\n' && *a != '\0')
+> >> >>> +			a++;
+> >> >>> +
+> >> >>> +		if (*a == '\n')
+> >> >>> +			a++;
+> >> >>> +	}
+> >> >>> +
+> >> >>> +	return false;
+> >> >>> +}
+> >> >>> +
+> >> >>>  static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+> >> >>>  			       const char *debugfs_name, const char *wa)
+> >> >>>  {
+> >> >>> @@ -23,7 +60,7 @@ static int debugfs_file_has_wa(int drm_fd, int debugfs_fd,
+> >> >>>  
+> >> >>>  	debugfs_dump = igt_sysfs_get(debugfs_fd, debugfs_name);
+> >> >>>  	if (debugfs_dump) {
+> >> >>> -		char *has_wa = strstr(debugfs_dump, wa);
+> >> >>> +		bool has_wa = debugfs_dump_has_wa(debugfs_dump, wa);
+> >> >>>  
+> >> >>>  		free(debugfs_dump);
+> >> >>>  
+> >> >>> 
+> >> >>> -- 
+> >> >>> 2.55.0
+> >> >>> 
+> >> >>
+> >> >> -- 
+> >> >> Matt Roper
+> >> >> Graphics Software Engineer
+> >> >> Linux GPU Platform Enablement
+> >> >> Intel Corporation
 > >
-> > Platform filtering is automatic - tests only need to call
-> > platform_filter_init() once in igt_fixture. The IGT framework automatically checks
-> > each subtest before execution via __igt_run_subtest().
-> >
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Cc: Jani Nikula <jani.nikula@linux.intel.com>
-> > Cc: Krzysztof Karas <krzysztof.karas@intel.com>
-> > Cc: Jesse Zhang <jesse.zhang@amd.com>
-> > Cc: Christian Koenig <christian.koenig@amd.com>
-> > Cc: Alex Deucher <alexander.deucher@amd.com>
-> > Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> > Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > ---
-> >  lib/igt_platform_filter.c | 575 ++++++++++++++++++++++++++++++++++++++
-> >  lib/igt_platform_filter.h | 124 ++++++++
-> >  lib/meson.build           |   1 +
-> >  3 files changed, 700 insertions(+)
-> >  create mode 100644 lib/igt_platform_filter.c  create mode 100644
-> > lib/igt_platform_filter.h
-> >
-[cut]
+> > -- 
+> > Matt Roper
+> > Graphics Software Engineer
+> > Linux GPU Platform Enablement
+> > Intel Corporation
