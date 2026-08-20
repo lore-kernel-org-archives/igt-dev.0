@@ -4,133 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 434EAC5DF81
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 13:32:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D60DC5DF85
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 17:54:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E0EAD10F031;
-	Thu, 20 Aug 2026 13:32:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5105C10F165;
+	Thu, 20 Aug 2026 17:54:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="pXPku+99";
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.b="FGOB4BWi";
 	dkim-atps=neutral
-Received: from BL2PR02CU003.outbound.protection.outlook.com
- (mail-eastusazon11011014.outbound.protection.outlook.com [52.101.52.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0ECE110F031
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 13:31:55 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=V4DzUNu7O5eY15FqTaqX1zy4Qun1oVyRM0Dcq9YQa8c84g0fNTwXsxVBQQRkNCoib7LOC+3uJHufHIKisgkdURGY96wFSw+4U55GPTdiniVIRdtdP3/SJGnVsd3l0nRzXK07Ev+zp5h46XIr0HtPF3Pvrl4avR9209tLpbvALtIO0tjM45XsoSRCL4W3XEY3Dqg1r3HketC6NL6tdjykZeQN10I+AOTgNOHxIzfXul+yfA2HHJc6cvKlxbQgMrVCfzsYXnZZJAtSR7Wzu4mHl6D9+Dq0saTI47paE9/IK+VGgQTAGWc7ZWWMXcwUtPPxgAfVTZdUYz/CozC5LjOBog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UwX6isW7ln4j0SxaDTQy244d3FwF/hSAQqfGUjRvM1c=;
- b=slbT/A45l+trtIeYrbvBVaLUDKjyflFmbUuF683lJH8M9wU0PZWKZ8WF7k3vFpzJojd80v+vi3+KOgjIB3dEb7yyM3EenBv4cpbjeCm3OvGujVYZjJ00DG6eFHOavIOQxKlCdKhQpsgE8loYvW/0nvrI3bJ/Xsi8lkTHfs4xZf779ujrjIk4VdL6O7FuZ30sJ+5q/IBx/rswOzB6L/XNQtKlQ1fTuLu0ZOJp8hDLV6DstxwoeP3Cm76mN3TuA0DIrc3sjcGlrh+7S5PgjeTVYf0XY0iG8bz3DirKxdywgu00kvgt58I1J5VBfmrrgfyPVbKLBcXaw7hY4DpeQ9BefA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UwX6isW7ln4j0SxaDTQy244d3FwF/hSAQqfGUjRvM1c=;
- b=pXPku+99Ft/dCcGUoXcNRdzv00dZIsg7YAY0ChsVrfe+M/gI+uzI9VGU96cm/GLy02QBUT8OhIh6mqvzAqXkYcVQUkk7wq1Jj0Js6TdSESzP9oWk5hSu7sq5vSYhWZxfYksPRcXvVBIVZcosXI3aUoLHdEgtJjUknyNFqVmUtfA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7)
- by CYXPR12MB9385.namprd12.prod.outlook.com (2603:10b6:930:e2::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Thu, 20 Aug
- 2026 13:31:47 +0000
-Received: from IA1PR12MB8190.namprd12.prod.outlook.com
- ([fe80::c581:f5cc:c58f:c5de]) by IA1PR12MB8190.namprd12.prod.outlook.com
- ([fe80::c581:f5cc:c58f:c5de%5]) with mapi id 15.21.0339.007; Thu, 20 Aug 2026
- 13:31:47 +0000
-Content-Type: multipart/alternative;
- boundary="------------Hyt41VSndskTksCdHldweSh7"
-Message-ID: <5e198fb4-30c4-4e38-a538-6556c52dabd1@amd.com>
-Date: Thu, 20 Aug 2026 09:31:43 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/4] docs: Update platform filtering documentation per
- review feedback
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Zhang, Jesse(Jie)" <Jesse.Zhang@amd.com>,
- "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "jani.nikula@linux.intel.com" <jani.nikula@linux.intel.com>,
- "krzysztof.karas@intel.com" <krzysztof.karas@intel.com>,
- "krzysztof.kozlowski@canonical.com" <krzysztof.kozlowski@canonical.com>,
- "Koenig, Christian" <Christian.Koenig@amd.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- Pawel Sikora <pawel.sikora@intel.com>
-References: <20260820012820.129589-1-vitaly.prosyak@amd.com>
- <20260820012820.129589-5-vitaly.prosyak@amd.com>
- <DM4PR12MB51529CA20E32047A1EA397BDE3A42@DM4PR12MB5152.namprd12.prod.outlook.com>
- <20260820095026.hytro4alzqbdrz2q@kamilkon-DESK.igk.intel.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20260820095026.hytro4alzqbdrz2q@kamilkon-DESK.igk.intel.com>
-X-ClientProxiedBy: YT4P288CA0095.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d0::29) To IA1PR12MB8190.namprd12.prod.outlook.com
- (2603:10b6:208:3f2::7)
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACB2710E1EE
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 17:53:31 +0000 (UTC)
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+ by smtpout-03.galae.net (Postfix) with ESMTPS id 5F9404E41308;
+ Thu, 20 Aug 2026 17:53:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+ by smtpout-01.galae.net (Postfix) with ESMTPS id 2B8C85FF59;
+ Thu, 20 Aug 2026 17:53:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon)
+ with ESMTPSA id BBE5411C76623; 
+ Thu, 20 Aug 2026 19:53:22 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+ t=1787248404; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+ content-transfer-encoding:content-language:in-reply-to:references;
+ bh=zptu68WWuE3MmVUg3cIr5rdN+Ck0nFe3NuZlpjRS2rQ=;
+ b=FGOB4BWiSgI8XmqDbBbNl0ci5BjoDDpGL/88a5QoqAIsApNdqRTMebebTDuF+PtFetnoet
+ /qDsE2OI+o0aCQmCcRcIsxYW0AQM0IKUtR1nP30XU8YvXdX8BNJNqr3duWe6cruGmau0Kq
+ 6sjvtTVtaT5WP59mI72kG9HdXdncOA/pQzMyLBEn+XWbbW0cII81i4JB8Jp+Ipp8voQ2/h
+ /TH+4uWv5xPitL40Q729pXPI37C1otGoitHsEJV82NApC/DsixkNsfCUaNq3ZlVrEoHuZb
+ HXp6cn9wSXdS0Fc+XH9CwJ8BYhYgCsZUmJwFACXDAbNhdfmhHEtBAMS0JlBI8w==
+Message-ID: <e348acff-78da-44f5-b4c8-ffd3a70c6f56@bootlin.com>
+Date: Thu, 20 Aug 2026 19:53:21 +0200
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB8190:EE_|CYXPR12MB9385:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8ee279cd-6324-49e0-a329-08defebf61fd
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|376014|366016|1800799024|921020|6133799003|18002099003|22082099003|5023799004|11063799006|4143699003|8096899003|56012099006|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info: 5ZfkQfcByb69DFHbsI77tvsxssrYfUl2qewNASEqAiG9mVViCNuOq9+UQbrEy2jsilaKs10qf94sUqLpPp7tWfebqtAM7pBptllGDRSZVhwP8u6ajlok9r4uZhPrigizjCddRS9mewRESOdZoNprQQvXPnVf1vZzk6T1DHnWT5ldc8hsqC/KNVLK26MgtbmnF2Gi6VuGbyjP8ALSnLdGDwzlC/qejDVsCS2EuIFXRBrKMOivdWYLOplOsPs3gmYxemVQmvKj9WUQBoGXxEhNFPLQB9DfwTWbBOYdQH7mJVKVl3bXXTtGYp0bqSS6uQT5ZonpgiRVhgL/f1d1uzAx25YjmTIzf2dk7PqQtJqSFzkWA7RXM1SAIiG56+PYw5+XFaUFH789c/RLjjE/2+7/RP9UvsMhZFX1xjpEDYHVoXDq9EBfDSccUprxak/svj5dPA2eaQgoAm4w0El389esxaAQ5RskFik6OGDRNtQOhr63I4E+tBW+c90zcrQRqjrryV8d9jVYFWNLyanJvpAjyUUYeET/ZSjlkZNXrfE1SK5yqD9WuaxlbMNIL+eIP/Y7w+I/tAFUaHuKkX0sHWO/iu/BwwemtHt9kFwurv/piPsq3tMZyOdrA8vV+kWLyOYIl5jCEi9JfiCZfbA1/FSglfVyrQQYKplSUD8LAANMCjWEAT8Wjv3fNHUq98Kc/TdUqw5bddApWr5rNSxG8L7Cyw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR12MB8190.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(921020)(6133799003)(18002099003)(22082099003)(5023799004)(11063799006)(4143699003)(8096899003)(56012099006)(10067099003)(3023799007);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VlEyeGpwcVpyYTJIUFlVUTJmajZHQ01Tc3YzZkNlRDlLMEN0d3JDNkxzbEU5?=
- =?utf-8?B?MjlwQ3F6UXdMdmk0dktGOUV2V2p4UlJQOWFpekdCQWJDUHZRREozWE1LeW5a?=
- =?utf-8?B?VDl6Vmt5Y3ZoaGVVeHBZcG5WWnAwTHlNWUlaSlR2U3Z5d0dQMzFzclNHKzlp?=
- =?utf-8?B?aUR4Njc0bFhvY3RhWlQrWnpNZUJxOFpqTVFkRlJwWjVWYzM3YWtsTm1PK0Q3?=
- =?utf-8?B?Uk0rN0UrSDhxMWdOWmZuYUJaZlRpQjdWM243WTN1bDdOcEgrK2l3YnFTdVIw?=
- =?utf-8?B?ZVVlam9CV21VZUdhL2JuQXpVMUtwaitERThHaXlleDhqUmFhMS9aeC9YKzhC?=
- =?utf-8?B?OGdzdlowSGR3Q1dMZkZCNk9HMWw5b1dRRG01dnBUTndib2FoUWNZYVpnNXFz?=
- =?utf-8?B?TlMrMUQ2cjNiZ2lla0gvdVhrWHpJUy9KckdndnQ1WVRDeGpVK2UwRytLNmdJ?=
- =?utf-8?B?M3VzaEtSOUdHcWRsUVpyQjE1RHA0L0twei94cENsUUlUM1MvOWJJUUYrMTBj?=
- =?utf-8?B?aklXb0lMVmowK2MwVVo5WjR3cGJ0eDI0aTRTM29rSkkvUkxWblhmK1Y2ZW9a?=
- =?utf-8?B?bnUzQnB3T25GWm9DZjZNT05KQkFvcTNEbm5mSW5NZU0vTkswQWFDMW5vZ3VN?=
- =?utf-8?B?NitIemVqYVMwMmoyYXRZdG5sc2NGbFZ1ejZUTVpjR3RVN0RWOFpMUjBSVklt?=
- =?utf-8?B?dGdtM3B0VUtMb1Jtallhb2llZ1lPSTFIb1ZsS2RPamU5OHdJQndWVzZUSHlv?=
- =?utf-8?B?VkpDcnhPYnlOMDhjamdMRGUyYlduZGlWRlA5U3VaUDU1S20zbzVtV3pkcnRC?=
- =?utf-8?B?bFZWU0M5QWlqT3RScjZFSlBFZG1tQUJjckJiTXBnZW5hQTlubEF5UHgyNU9M?=
- =?utf-8?B?US8zamVnV0hYZStLZ2p5ZzVEMloyQklMSmR4UnVwaXdDUWZjeXhkaDNxTjQv?=
- =?utf-8?B?ckFmSkkwTDNOTklXZm9kZDJSdmxseEcwekVpYTR4K2VGM0F2ZHdvY1RxQWhH?=
- =?utf-8?B?dHh2bUJ3b296K2ZEMkIwdHE0ZkgvSE4yemQwNGlKeDdhRHZiM1FIV1dGbGpG?=
- =?utf-8?B?VjBUaXlSL0F3M0hpRXlKZEJxY1RFRThsYlVpcWxkQW1Wb2hBS3puVTVHWDlF?=
- =?utf-8?B?UW5PL29mNUh3QnBYamZ4UlU2ajV6SU4yM3pYLzZ0UFZlSGc0SVdLSEdZVlYy?=
- =?utf-8?B?UzQ3OHljS2pUcjZtbDdCTEo0VUR6VlpoUVBkUjU1c2FDc3htMm1zT0c2c3NJ?=
- =?utf-8?B?TUl2UzBLalo5UlpkUnloNkEzUW4zRUlCU3h1UUVQQklzR3E4aFRjd3RxTnVY?=
- =?utf-8?B?Y1JjaCtMNVNEMkh5OWg1N2RSZXA3b083Y2Z4NVpsTnVlNUVBaFZwK1k5NFB5?=
- =?utf-8?B?SmY1VFV2NU1DWXc2N0VpQnFmTjNqNGxSV09oZXRUTXBERTBPZlVLemJmTjIr?=
- =?utf-8?B?V1ptZi9yZGlyVUtacGtFVmJPZXRSWXZNMVlySHRPeG5zWWZtaEV1ZzZtWG1M?=
- =?utf-8?B?MzlxU0QzakRpUm9KRElZR2pRang4akg3YWRFZnpwTzNWenRGNjlNSUhDMktz?=
- =?utf-8?B?ekl6bzR2Ny9WZXZFMElwbzM5NzU4TXZVd29YK0o3Q3JHTDUvY2t0S0EvSUlT?=
- =?utf-8?B?ZDJXMzZERTdzRHVENzR1TkNOTTczVlQ4Ukk1NjBTajd3WmVRbFUwVVdIOXhK?=
- =?utf-8?B?S2g1R3c1Wkt2YVpEYVdMZFNnZE9VYTFrcDBNQ0xFUHZDbHNRZG9hdzBZWE5E?=
- =?utf-8?B?RjU3ZUk2dzRqNGpwWUlQSjdzNHBzSHovdGtxRzdHRitWZXJscjdIM1lTV1hT?=
- =?utf-8?B?dlpUcml2bzAvd1EybnlXbGExaU1zeklGa0dOQlZ2ak43R1llbDhGTW1lblZi?=
- =?utf-8?B?THJST3VuSjRmM3I2UVJpTG9ZOFF5WHVpQTJwU1l2MGZqdjQrKzRpNjRORjRx?=
- =?utf-8?B?S2NLSUdZQUxlQ1Z3MU1JZXdHR0xqeVJvWGFVS2NMYUZVblJySmZJN290ZURj?=
- =?utf-8?B?VWRsRlp5WmFUcXNUb0tNZE9RbmUzZmI4b2hvdWdaWUl4N1Q2azl5R2QvNWVY?=
- =?utf-8?B?a2ppRithYlh2ZmZta25sdUtZbFE3TTZ4eGgzQ3F5VjhSd2V6R3dmbDhpdEpZ?=
- =?utf-8?B?bURTbkFQcVM1OXhwYkdIbENTbkxqZXpGa0V0N0hiaXR5WGFWbWQ1Mitaemk3?=
- =?utf-8?B?aDhlT0dZNURzSjN1dEpmOUlaWk5LM0cvWlBKZFRjSHY4YkdLMHNrb3prTjZN?=
- =?utf-8?B?UmRmOTc2ZWI5eFhCZ3doamh0dERZNnIwUmpVa2RkbVFlQklKU2FtdUNOT1Jo?=
- =?utf-8?B?a1UwVXBDZVVEZG5PdlNDUGErSDVoejRvcFBYbjFHQnRPT2ZuY1MzUT09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8ee279cd-6324-49e0-a329-08defebf61fd
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8190.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 13:31:47.2085 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sehMzftVCBo54ilb2OfRVPKbU8OYWtymDvPIisz5Dt/jgErh8z867k4yvMC/GVITzn3oS0YSJCee1pbP5M/PgQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CYXPR12MB9385
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6] lib/igt_rc: Introduce generic config parser
+To: Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org
+Cc: kamil.konieczny@linux.intel.com, sebastian.brzezinka@intel.com
+References: <20260819142337.3232406-1-markyacoub@google.com>
+From: Louis Chauvet <louis.chauvet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260819142337.3232406-1-markyacoub@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -146,895 +62,560 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------Hyt41VSndskTksCdHldweSh7
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-Hi Kamil,
-Thank you very much for applying the patches and for making those final corrections to the subject line and formatting. I appreciate your help and guidance!
-Best regards,
-Vitaly
 
 
-On 2026-08-20 05:50, Kamil Konieczny wrote:
-> Hi Zhang,,
-> On 2026-08-20 at 02:03:18 +0000, Zhang, Jesse(Jie) wrote:
->> AMD General
->>
->> Review-by: Jesse Zhang <jesse.zhang@amd.com>
->>
-> Applied, thank you all.
-> I corrected a subject here, please do not write about review in subject,
-> so I changed it into:
->
-> [PATCH v6 4/4] docs: Add platform filtering documentation
->
-> Also applied few last corrections using checkpatch.pl help.
->
-> Regards,
-> Kamil
->
->>> -----Original Message-----
->>> From: vitaly.prosyak@amd.com <vitaly.prosyak@amd.com>
->>> Sent: Thursday, August 20, 2026 9:27 AM
->>> To: igt-dev@lists.freedesktop.org
->>> Cc: kamil.konieczny@linux.intel.com; jani.nikula@linux.intel.com;
->>> krzysztof.karas@intel.com; krzysztof.kozlowski@canonical.com; Zhang,
->>> Jesse(Jie) <Jesse.Zhang@amd.com>; Koenig, Christian
->>> <Christian.Koenig@amd.com>; Deucher, Alexander
->>> <Alexander.Deucher@amd.com>; Prosyak, Vitaly <Vitaly.Prosyak@amd.com>;
->>> Pawel Sikora <pawel.sikora@intel.com>
->>> Subject: [PATCH v6 4/4] docs: Update platform filtering documentation per review
->>> feedback
->>>
->>> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
->>>
->>> Update the platform filtering usage guide to clarify method priority ordering, replace
->>> Advantages/Disadvantages with When-to-Use/Trade-offs, and add runtime
->>> methods for discovering platform names.
->>>
->>> Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>
->>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>> Cc: Pawel Sikora <pawel.sikora@intel.com>
->>> Cc: Jani Nikula <jani.nikula@linux.intel.com>
->>> Cc: Jesse Zhang <jesse.zhang@amd.com>
->>> Cc: Christian Koenig <christian.koenig@amd.com>
->>> Cc: Alex Deucher <alexander.deucher@amd.com>
->>> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
->>> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>> ---
->>>  docs/platform_filtering.md | 351 +++++++++++++++++++++++++++++++++++++
->>>  mkdocs.yml                 |   1 +
->>>  2 files changed, 352 insertions(+)
->>>  create mode 100644 docs/platform_filtering.md
->>>
->>> diff --git a/docs/platform_filtering.md b/docs/platform_filtering.md new file mode
->>> 100644 index 000000000..7d3202a94
->>> --- /dev/null
->>> +++ b/docs/platform_filtering.md
->>> @@ -0,0 +1,351 @@
->>> +# IGT Platform Filtering - Usage Guide
->>> +
->>> +## Overview
->>> +
->>> +The IGT platform filtering framework allows tests to be skipped based
->>> +on platform characteristics without modifying test source code.
->>> +
->>> +**Key Feature**: **Automatic Filtering** - No manual calls needed in subtests!
->>> +
->>> +Tests only need to initialize platform filtering once in `igt_fixture`,
->>> +and the IGT framework automatically checks each subtest before execution.
->>> +
->>> +## Quick Start
->>> +
->>> +### 1. Initialize in Test (One Time)
->>> +
->>> +```c
->>> +#include "lib/amdgpu/amd_platform.h"
->>> +
->>> +int igt_main(void)
->>> +{
->>> +    struct amdgpu_gpu_info gpu_info;
->>> +
->>> +    igt_fixture {
->>> +        fd = drm_open_driver(DRIVER_AMDGPU);
->>> +        amdgpu_query_gpu_info(device, &gpu_info);
->>> +
->>> +        /* Initialize platform filtering - enables automatic filtering */
->>> +        amd_platform_filter_init(&gpu_info);
->>> +    }
->>> +
->>> +    igt_subtest("my-test") {
->>> +        /* No manual filtering call needed - automatic! */
->>> +        test_code();
->>> +    }
->>> +}
->>> +```
->>> +
->>> +### 2. Configure Filtering Rules
->>> +
->>> +Use one of three methods (checked in priority order):
->>> +
->>> +1. **Built-in rules** (highest priority) - Compiled into test 2.
->>> +**Config file** (recommended) - `/etc/igt/platform_skip.conf` 3.
->>> +**Environment variable** (lowest priority) - `IGT_PLATFORM_SKIP_CONFIG`
->>> +
->>> +---
->>> +
->>> +## Method 1: Built-in Rules (Highest Priority)
->>> +
->>> +**Location**: Vendor implementation (e.g., `lib/amdgpu/amd_platform.c`)
->>> +
->>> +### Example
->>> +
->>> +```c
->>> +static const struct platform_skip_entry amd_builtin_rules[] = {
->>> +    {
->>> +        .test_name = "amd_security",
->>> +        .subtest_glob = "secure-bounce",
->>> +        .reason = "Not supported on APUs",
->>> +        .platform_data = &apu_platforms,
->>> +    },
->>> +};
->>> +```
->>> +
->>> +### When to Use Built-in Rules
->>> +
->>> +- Permanent production exclusions that should never run
->>> +- Platform limitations known at development time
->>> +- Tests that fundamentally cannot work on certain hardware
->>> +- Vendor-specific restrictions that apply globally
->>> +
->>> +**Trade-offs:**
->>> +- [+] Fast (no file I/O at runtime)
->>> +- [+] Guaranteed to be applied
->>> +- [+] Version controlled with code
->>> +- [-] Requires rebuild to change
->>> +- [-] Not flexible for temporary exclusions
->>> +
->>> +---
->>> +
->>> +## Method 2: Config File (RECOMMENDED)
->>> +
->>> +**Location**: `/etc/igt/platform_skip.conf`
->>> +
->>> +**Format**: `platform:test:subtest:reason`
->>> +
->>> +**Note**: The reason field is recommended but can be empty. If omitted, "No
->>> reason" is automatically inserted.
->>> +
->>> +### Example Config File
->>> +
->>> +```bash
->>> +cat > /etc/igt/platform_skip.conf << 'EOF'
->>> +# Platform filtering configuration
->>> +# Format: platform:test:subtest:reason
->>> +# Use * as wildcard
->>> +
->>> +# Skip all UMQ tests on Navi48 during platform bringup
->>> +navi48:amd_basic:*-UMQ:SWDEV-88888 - UMQ stabilization in progress
->>> +
->>> +# Skip specific tests with ticket references
->>> +navi31:amd_basic:cs-gfx-with-IP-GFX-UMQ:SWDEV-12345
->>> +navi31:amd_basic:cs-compute-with-IP-COMPUTE-UMQ:SWDEV-12345
->>> +navi31:amd_basic:cs-sdma-with-IP-DMA-UMQ:SWDEV-12346
->>> +
->>> +# Skip tests on early samples
->>> +strix_halo:amd_basic:*:Platform not ready - ES samples
->>> +
->>> +# Skip known flaky test across all platforms
->>> +*:amd_basic:eviction-test-with-IP-DMA:SWDEV-99999 - Intermittent
->>> +failure
->>> +
->>> +# Skip entire test binary on specific platform navi10:amd_vcn:*:VCN
->>> +encoding issues on Navi10 A0
->>> +
->>> +# Skip all tests on discontinued platform vega10:*:*:Platform no longer
->>> +supported EOF ```
->>> +
->>> +### Run Tests
->>> +
->>> +```bash
->>> +# Config file is loaded automatically - no environment variable needed
->>> +./build/tests/amdgpu/amd_basic
->>> +
->>> +# Output shows:
->>> +# Subtest cs-gfx-with-IP-GFX-UMQ: SKIP
->>> +# Platform filtering (config): SWDEV-12345 ```
->>> +
->>> +### When to Use Config File
->>> +
->>> +- Managing multiple test exclusions
->>> +- Team-wide or CI/CD configurations
->>> +- Persistent filtering rules across sessions
->>> +- Easy add/remove/edit without rebuilding
->>> +- No need to remember environment variables
->>> +- Sharing skip rules across test infrastructure
->>> +
->>> +---
->>> +
->>> +## Method 3: Environment Variable (Lowest Priority)
->>> +
->>> +**Variable**: `IGT_PLATFORM_SKIP_CONFIG`
->>> +
->>> +**Format**: Same as config file, semicolon-separated
->>> +
->>> +### Example - Skip Single Test
->>> +
->>> +```bash
->>> +export IGT_PLATFORM_SKIP_CONFIG="navi48:amd_basic:cs-compute-with-
->>> IP-COMPUTE-UMQ:Testing"
->>> +./build/tests/amdgpu/amd_basic
->>> +```
->>> +
->>> +### Example - Skip Multiple Tests
->>> +
->>> +```bash
->>> +export IGT_PLATFORM_SKIP_CONFIG="navi48:amd_basic:*-
->>> UMQ:Testing;navi31:amd_basic:cs-gfx-*:Known issue"
->>> +./build/tests/amdgpu/amd_basic
->>> +```
->>> +
->>> +### When to Use Environment Variable
->>> +
->>> +- Quick one-off testing without editing files
->>> +- Temporary overrides during debugging sessions
->>> +- Testing filter patterns before adding to config file
->>> +- Single test runs where config file would be overkill
->>> +- Overriding config file rules for specific test runs
->>> +- CI pipeline job-specific overrides
->>> +
->>> +**Trade-offs:**
->>> +- [+] No file editing required
->>> +- [+] Quick to set and unset
->>> +- [+] Can override config file for testing
->>> +- [-] Not persistent (lost when session ends)
->>> +- [-] Easy to forget it's set
->>> +- [-] Inconvenient for large test lists
->>> +
->>> +---
->>> +
->>> +## Wildcard Patterns
->>> +
->>> +All methods support wildcards (`*`) for flexible matching:
->>> +
->>> +```
->>> +# Platform wildcards
->>> +*:amd_basic:my-test:Reason           # All platforms
->>> +navi*:amd_basic:my-test:Reason       # All Navi (navi10, navi31, navi48, etc.)
->>> +
->>> +# Test wildcards
->>> +navi48:amd_*:my-test:Reason          # All amd_* tests
->>> +
->>> +# Subtest wildcards
->>> +navi48:amd_basic:*-UMQ:Reason        # All subtests ending with -UMQ
->>> +navi48:amd_basic:cs-*:Reason         # All subtests starting with cs-
->>> +
->>> +# Combined wildcards
->>> +*:*:*-UMQ:Reason                     # All UMQ tests on all platforms
->>> +```
->>> +
->>> +### Wildcard Examples
->>> +
->>> +```bash
->>> +# Skip all user queue tests during bringup navi48:*:*-UMQ:Platform
->>> +bringup - UMQ not ready
->>> +
->>> +# Skip all VCN tests on specific platform navi10:amd_vcn:*:Known VCN
->>> +issues
->>> +
->>> +# Skip specific test pattern across all platforms
->>> +*:amd_basic:eviction-*:Intermittent failures
->>> +
->>> +# Skip all tests on EOL platform
->>> +vega10:*:*:Platform no longer supported ```
->>> +
->>> +### Pattern Matching Rules
->>> +
->>> +- `*` matches zero or more characters
->>> +- Patterns are case-sensitive
->>> +- Empty field is NOT a wildcard (use `*` explicitly)
->>> +- Priority order: Built-in > Config file > Environment variable
->>> +
->>> +### Example Subtest Matching
->>> +
->>> +Given config: `navi48:amd_basic:*-UMQ:Testing`
->>> +
->>> +- cs-gfx-with-IP-GFX-UMQ → **Skipped** (matches)
->>> +- cs-compute-with-IP-COMPUTE-UMQ → **Skipped** (matches)
->>> +- cs-sdma-with-IP-DMA → Runs normally (doesn't match)
->>> +
->>> +---
->>> +
->>> +## Skip Message Format
->>> +
->>> +Automatic filtering shows the source in skip messages:
->>> +
->>> +```
->>> +Subtest cs-gfx-with-IP-GFX-UMQ: SKIP
->>> +Platform filtering (config): SWDEV-12345 - UMQ unstable on Navi48 ```
->>> +
->>> +Source indicators:
->>> +- `(built-in)` - From vendor's compiled rules
->>> +- `(config)` - From config file
->>> +- `(env)` - From environment variable
->>> +
->>> +---
->>> +
->>> +## Platform Names
->>> +
->>> +Platform names are vendor-specific and defined in vendor backend code.
->>> +
->>> +**For AMD platforms**, see `lib/amdgpu/amd_platform.c` for the complete list.
->>> +
->>> +**Examples:**
->>> +- RDNA2/3 discrete GPUs: `navi21`, `navi31`, `navi33`
->>> +- RDNA4: `navi48`, `navi44`
->>> +- APUs: `strix_halo`, `phoenix`
->>> +- Data center: `aldebaran` (MI250)
->>> +
->>> +**To find your platform name:**
->>> +
->>> +```bash
->>> +# Method 1: Run any test with debug output
->>> +./build/tests/amdgpu/amd_basic --debug # Look for: "Platform detected:
->>> +<name>"
->>> +
->>> +# Method 2: Check dmesg for GPU info
->>> +dmesg | grep -i amdgpu | grep -i asic
->>> +
->>> +# Method 3: Check /sys
->>> +cat /sys/class/drm/card0/device/asic_name  # If available ```
->>> +
->>> +**Note:** Platform names may change with new hardware generations. Check
->>> vendor backend code for current platform definitions. The list above is provided as
->>> examples only.
->>> +
->>> +---
->>> +
->>> +## Best Practices
->>> +
->>> +### For Development - Quick Testing
->>> +
->>> +Use environment variable:
->>> +```bash
->>> +# Temporarily skip broken test
->>> +export IGT_PLATFORM_SKIP_CONFIG="*:amd_basic:broken-test:WIP"
->>> +./build/tests/amdgpu/amd_basic
->>> +unset IGT_PLATFORM_SKIP_CONFIG
->>> +```
->>> +
->>> +### For Teams - Shared Exclusions
->>> +
->>> +Use config file with ticket references:
->>> +```
->>> +# /etc/igt/platform_skip.conf
->>> +# Updated: 2026-07-09
->>> +
->>> +# Navi48 bringup exclusions
->>> +navi48:amd_basic:*-UMQ:SWDEV-88888 - UMQ stabilization
->>> +navi48:amd_vcn:vcn-encoder-*:SWDEV-88889 - VCN bringup
->>> +
->>> +# Cross-platform known issues
->>> +*:amd_basic:eviction-test-with-IP-DMA:SWDEV-77777 - Flaky ```
->>> +
->>> +### For CI/CD
->>> +
->>> +Deploy config file with test infrastructure:
->>> +```bash
->>> +#!/bin/bash
->>> +# CI pipeline setup
->>> +echo "Deploying test exclusions..."
->>> +scp ci-skip-rules.conf test-machine:/etc/igt/platform_skip.conf
->>> +ssh test-machine "./run-igt-suite.sh"
->>> +```
->>> +
->>> +### For Production
->>> +
->>> +Use built-in rules for permanent exclusions:
->>> +```c
->>> +// In lib/amdgpu/amd_platform.c
->>> +static const struct platform_skip_entry amd_builtin_rules[] = {
->>> +    {
->>> +        .test_name = "amd_basic",
->>> +        .subtest_glob = "*-UMQ",
->>> +        .reason = "User queues not supported in production",
->>> +        .platform_data = &all_platforms,
->>> +    },
->>> +};
->>> +```
->>> +
->>> +---
->>> +
->>> +## Summary
->>> +
->>> +| Method | Use Case | Persistent | Rebuild Required |
->>> +|--------|----------|------------|------------------|
->>> +| **Built-in** | Production rules | Yes | Yes | **Config file** |
->>> +| Team/CI exclusions | Yes | No |
->>> +| **Environment** | Quick testing | No | No |
->>> +
->>> +**Recommendation**: Use **config file** for managing test exclusions at scale.
->>> +
->>> +---
->>> +
->>> +## See Also
->>> +
->>> +- `lib/igt_platform_filter.h` - API documentation
->>> +- `lib/igt_platform_filter.c` - Framework implementation
->>> +- `lib/amdgpu/amd_platform.c` - AMD backend reference
->>> diff --git a/mkdocs.yml b/mkdocs.yml
->>> index 0abb76704..1819b7b6c 100644
->>> --- a/mkdocs.yml
->>> +++ b/mkdocs.yml
->>> @@ -29,6 +29,7 @@ nav:
->>>      - How to document tests: 'test_documentation.md'
->>>      - How to categorize tests: 'test_categories.md'
->>>      - How to blocklist tests: 'blocklists.md'
->>> +    - How to filter tests per platform: 'platform_filtering.md'
->>>      - How to get code coverage: 'code_coverage.md'
->>>      - How to port new IGT driver: 'new_driver.md'
->>>      - How to plan a new test: 'test_plan.md'
->>> --
->>> 2.54.0
---------------Hyt41VSndskTksCdHldweSh7
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+On 8/19/26 16:23, Mark Yacoub wrote:
+> Currently, libraries like unigraf and igt_core explicitly rely on
+> GKeyFile for reading configuration from .igtrc. Android builds do
+> not natively supply GLib, meaning these tools cannot be cleanly
+> compiled.
+> 
+> This patch avoids platform-specific diverging implementations by
+> dropping the native GLib dependency from generic configuration access
+> and parsing `.igtrc` natively using a stripped-down `igt_list`
+> implementation.
+> 
+> To prevent regressions for deeply-entrenched legacy Linux tools (such
+> as Chamelium), the native GLib fallback `GKeyFile` structures are
+> retained and populated parallel to the generic parser at startup.
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAIBhAB" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Hi
-      Kamil,<span></span></div>
-    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAIBhAE" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Thank
-      you very much for applying the patches and for making those final
-      corrections to the subject line and formatting. I appreciate your
-      help and guidance!<span></span></div>
-    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAIBhAH" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Best
-      regards,<br data-sfc-root="ep" data-sfc-pl="|||[]" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">
-      Vitaly<span></span></div>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 2026-08-20 05:50, Kamil Konieczny
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20260820095026.hytro4alzqbdrz2q@kamilkon-DESK.igk.intel.com">
-      <pre wrap="" class="moz-quote-pre">Hi Zhang,,
-On 2026-08-20 at 02:03:18 +0000, Zhang, Jesse(Jie) wrote:
-</pre>
-      <blockquote type="cite">
-        <pre wrap="" class="moz-quote-pre">AMD General
+That may be added in a TODO somewhere to show futur developers that we 
+want to move away from gkeyfile.
 
-Review-by: Jesse Zhang <a class="moz-txt-link-rfc2396E" href="mailto:jesse.zhang@amd.com">&lt;jesse.zhang@amd.com&gt;</a>
+Othewise:
 
-</pre>
-      </blockquote>
-      <pre wrap="" class="moz-quote-pre">
-Applied, thank you all.
-I corrected a subject here, please do not write about review in subject,
-so I changed it into:
+Reviewed-by: Louis Chauvet <louis.chauvet@bootlin.com>
 
-[PATCH v6 4/4] docs: Add platform filtering documentation
+> v6:
+>   - Drop pthread_once dependency and expose idempotent igt_rc_init()
+>     to fix armhf linking (Kamil).
+>   - Replace __attribute__((destructor)) with explicit igt_rc_free()
+>     called during igt_exit().
+>   - Add 32-bit INT bounds checking in igt_rc_get_integer().
+>   - Optimize igt_rc_get_string() using reverse list traversal for fast
+>     INI override matching.
+>   - Fix trailing whitespace and header comment formatting flagged by
+>     checkpatch.pl.
+> 
+> v5:
+>   - Rebased onto upstream 'lib/igt_core: move igt_load_igtrc to igt_rc'
+>   - Safely run GLib loader parallel to generic parser at startup for
+>     Chamelium
+> 
+> v4:
+>   - Implement igt_rc_get_double() to parse floating point configs
+>     natively.
+>   - Migrate igt_core.c over to igt_rc_get_double() to drop GKeyFile
+>     dependencies.
+>   - Add robust standard bounds checking (ERANGE and unmatched digits)
+>     to number parsers.
+> 
+> v3:
+>   - Drop Android-specific fallback paths; use IGT_CONFIG_PATH natively.
+>   - Drop glib Linux wrappers entirely; unify a single generic parser for
+>     all platforms.
+>   - Port manual linked-list tracking over to standard igt_list.h APIs.
+>   - Inherit base 0 for strtol to safely parse hex masks.
+>   - Use robust PATH_MAX for dynamic config paths.
+>   - Update pointer assignments, array indexing [0], and public
+>     docstrings.
+> 
+> v2:
+>   - Drop the GKeyFile abstraction fakes from android/glib.h.
+>   - Introduce a generic wrapper (igt_rc.h) instead of modifying glib.h.
+> 
+> Signed-off-by: Mark Yacoub <markyacoub@google.com>
+> ---
+>   lib/igt_core.c               |  39 ++----
+>   lib/igt_rc.c                 | 248 ++++++++++++++++++++++++++++++++++-
+>   lib/igt_rc.h                 |  12 +-
+>   lib/vendor/unigraf/unigraf.c |  92 ++++++-------
+>   4 files changed, 303 insertions(+), 88 deletions(-)
+> 
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index 2f737b01a..93489dffc 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -974,39 +974,25 @@ static void oom_adjust_for_doom(void)
+>   
+>   static void common_init_config(void)
+>   {
+> -	GError *error = NULL;
+>   	int ret = 0;
+>   	static double timeout = 0.0;
+>   
+> -	igt_key_file = igt_load_igtrc();
+> -
+> -	if (igt_key_file && !igt_frame_dump_path)
+> -		igt_frame_dump_path =
+> -			g_key_file_get_string(igt_key_file, "Common",
+> -					      "FrameDumpPath", &error);
+> -
+> -	g_clear_error(&error);
+> -
+> -	if (igt_key_file)
+> -		ret = g_key_file_get_integer(igt_key_file, "DUT", "SuspendResumeDelay",
+> -					     &error);
+> -	assert(!error || error->code != G_KEY_FILE_ERROR_INVALID_VALUE);
+>   
+> -	g_clear_error(&error);
+> +	igt_rc_init();
+> +	igt_key_file = igt_load_igtrc();
+> +	if (!igt_frame_dump_path)
+> +		igt_frame_dump_path = igt_rc_get_string("Common", "FrameDumpPath");
+>   
+> -	if (ret != 0)
+> -		igt_set_autoresume_delay(ret);
+> +	if (igt_rc_get_integer("DUT", "SuspendResumeDelay", &ret)) {
+> +		if (ret != 0)
+> +			igt_set_autoresume_delay(ret);
+> +	}
+>   
+> -	if (igt_key_file)
+> -		timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",
+> -						&error);
+> -	if (error) {
+> +	if (!igt_rc_get_double("DUT", "DisplayDetectTimeout", &timeout)) {
+>   		igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",
+>   			  DEFAULT_DETECT_TIMEOUT);
+> -		g_clear_error(&error);
+>   		timeout = DEFAULT_DETECT_TIMEOUT;
+>   	}
+> -	g_clear_error(&error);
+>   	igt_set_default_display_detect_timeout(timeout);
+>   
+>   	/* Adding filters, order .igtrc, IGT_DEVICE, --device filter */
+> @@ -1016,11 +1002,7 @@ static void common_init_config(void)
+>   		if (igt_rc_device) {
+>   			igt_debug("Notice: using IGT_DEVICE env:\n");
+>   		} else {
+> -			if (igt_key_file)
+> -				igt_rc_device =	g_key_file_get_string(igt_key_file,
+> -								      "Common",
+> -								      "Device", &error);
+> -			g_clear_error(&error);
+> +			igt_rc_device = igt_rc_get_string("Common", "Device");
+>   			if (igt_rc_device)
+>   				igt_debug("Notice: using .igtrc "
+>   					  "Common::Device:\n");
+> @@ -2374,6 +2356,7 @@ void igt_exit(void)
+>   
+>   	if (igt_key_file)
+>   		g_key_file_free(igt_key_file);
+> +	igt_rc_free();
+>   
+>   	if (run_single_subtest && !run_single_subtest_found) {
+>   		igt_critical("Unknown subtest: %s\n", run_single_subtest);
+> diff --git a/lib/igt_rc.c b/lib/igt_rc.c
+> index b7f1731fe..4ae0acab5 100644
+> --- a/lib/igt_rc.c
+> +++ b/lib/igt_rc.c
+> @@ -3,16 +3,252 @@
+>    * Copyright © 2026 Intel Corporation
+>    */
+>   
+> +#include "igt_rc.h"
+> +
+> +#include <ctype.h>
+> +#include <errno.h>
+> +#include <limits.h>
+> +#include <locale.h>
+>   #include <stdio.h>
+>   #include <stdlib.h>
+> +#include <string.h>
+> +#include <strings.h>
+>   
+> -#ifndef ANDROID
+> -#include <glib.h>
+> -#else
+> -#include "android/glib.h"
+> -#endif
+> +#include "igt_list.h"
+>   
+> -#include "igt_rc.h"
+> +struct igt_key_entry {
+> +	char *group;
+> +	char *key;
+> +	char *value;
+> +	struct igt_list_head link;
+> +};
+> +
+> +static IGT_LIST_HEAD(rc_entries);
+> +
+> +static char *trim_whitespace(char *str)
+> +{
+> +	char *end;
+> +
+> +	while (isspace((unsigned char)str[0]))
+> +		str++;
+> +
+> +	if (str[0] == 0)
+> +		return str;
+> +
+> +	end = str + strlen(str) - 1;
+> +	while (end > str && isspace((unsigned char)end[0]))
+> +		end--;
+> +
+> +	end[1] = '\0';
+> +	return str;
+> +}
+> +
+> +void igt_rc_init(void)
+> +{
+> +	FILE *fp;
+> +	char *line = NULL;
+> +	size_t len = 0;
+> +	ssize_t read;
+> +	char *current_group = NULL;
+> +	char path[PATH_MAX];
+> +
+> +	if (!igt_list_empty(&rc_entries))
+> +		return;
+> +
+> +	char *config_path = getenv("IGT_CONFIG_PATH");
+> +
+> +	if (config_path) {
+> +		snprintf(path, sizeof(path), "%s", config_path);
+> +	} else {
+> +		char *home = getenv("HOME");
+> +
+> +		if (!home)
+> +			home = "";
+> +		snprintf(path, sizeof(path), "%s/.igtrc", home);
+> +	}
+> +
+> +	fp = fopen(path, "r");
+> +	if (!fp)
+> +		return;
+> +
+> +	while ((read = getline(&line, &len, fp)) != -1) {
+> +		char *trimmed = trim_whitespace(line);
+> +
+> +		if (trimmed[0] == '\0' || trimmed[0] == '#' || trimmed[0] == ';')
+> +			continue;
+> +
+> +		if (trimmed[0] == '[' && trimmed[strlen(trimmed) - 1] == ']') {
+> +			free(current_group);
+> +			trimmed[strlen(trimmed) - 1] = '\0';
+> +			current_group = strdup(trimmed + 1);
+> +			continue;
+> +		}
+> +
+> +		if (current_group) {
+> +			char *eq = strchr(trimmed, '=');
+> +
+> +			if (eq) {
+> +				char *key;
+> +				char *value;
+> +				struct igt_key_entry *entry;
+> +
+> +				eq[0] = '\0';
+> +				value = eq + 1;
+> +				key = trim_whitespace(trimmed);
+> +				value = trim_whitespace(value);
+> +
+> +				entry = calloc(1, sizeof(*entry));
+> +				entry->group = strdup(current_group);
+> +				entry->key = strdup(key);
+> +				entry->value = strdup(value);
+> +				igt_list_add_tail(&entry->link, &rc_entries);
+> +			}
+> +		}
+> +	}
+> +
+> +	free(current_group);
+> +	free(line);
+> +	fclose(fp);
+> +}
+> +
+> +void igt_rc_free(void)
+> +{
+> +	struct igt_key_entry *curr, *tmp;
+> +
+> +	igt_list_for_each_entry_safe(curr, tmp, &rc_entries, link) {
+> +		free(curr->group);
+> +		free(curr->key);
+> +		free(curr->value);
+> +		free(curr);
+> +	}
+> +	IGT_INIT_LIST_HEAD(&rc_entries);
+> +}
+> +
+> +/**
+> + * igt_rc_get_string:
+> + * @group_name: The group name in the config file.
+> + * @key: The key to look up.
+> + *
+> + * Looks up a string configuration value in the `.igtrc` file.
+> + * The returned string is newly allocated and must be freed by
+> + * the caller using free().
+> + *
+> + * Returns: A newly allocated string containing the value, or NULL if not found.
+> + */
+> +char *igt_rc_get_string(const char *group_name, const char *key)
+> +{
+> +	struct igt_key_entry *curr;
+> +
+> +	igt_list_for_each_entry_reverse(curr, &rc_entries, link) {
+> +		if (strcmp(curr->group, group_name) == 0 && strcmp(curr->key, key) == 0)
+> +			return strdup(curr->value);
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +/**
+> + * igt_rc_get_boolean:
+> + * @group_name: The group name in the config file.
+> + * @key: The key to look up.
+> + * @out: Pointer to a boolean where the result will be stored.
+> + *
+> + * Looks up a boolean configuration value in the `.igtrc` file.
+> + * Parses standard boolean representations like "true", "false", "1", "0".
+> + *
+> + * Returns: true if the key exists and was successfully parsed, false otherwise.
+> + */
+> +bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out)
+> +{
+> +	char *val = igt_rc_get_string(group_name, key);
+> +
+> +	if (!val)
+> +		return false;
+> +
+> +	if (strcasecmp(val, "true") == 0 || strcmp(val, "1") == 0) {
+> +		*out = true;
+> +	} else if (strcasecmp(val, "false") == 0 || strcmp(val, "0") == 0) {
+> +		*out = false;
+> +	} else {
+> +		free(val);
+> +		return false;
+> +	}
+> +
+> +	free(val);
+> +	return true;
+> +}
+> +
+> +/**
+> + * igt_rc_get_integer:
+> + * @group_name: The group name in the config file.
+> + * @key: The key to look up.
+> + * @out: Pointer to an integer where the result will be stored.
+> + *
+> + * Looks up an integer configuration value in the `.igtrc` file.
+> + *
+> + * Returns: true if the key exists and was successfully parsed, false otherwise.
+> + */
+> +bool igt_rc_get_integer(const char *group_name, const char *key, int *out)
+> +{
+> +	char *val = igt_rc_get_string(group_name, key);
+> +	char *endptr;
+> +	long lval;
+> +
+> +	if (!val)
+> +		return false;
+> +
+> +	errno = 0;
+> +	lval = strtol(val, &endptr, 0);
+> +	if (endptr == val || endptr[0] != '\0' || errno == ERANGE ||
+> +	    lval < INT_MIN || lval > INT_MAX) {
+> +		free(val);
+> +		return false;
+> +	}
+> +
+> +	*out = (int)lval;
+> +	free(val);
+> +	return true;
+> +}
+> +
+> +/**
+> + * igt_rc_get_double:
+> + * @group_name: The group name in the config file.
+> + * @key: The key to look up.
+> + * @out: Pointer to a double where the result will be stored.
+> + *
+> + * Looks up a double configuration value in the `.igtrc` file.
+> + *
+> + * Returns: true if the key exists and was successfully parsed, false otherwise.
+> + */
+> +bool igt_rc_get_double(const char *group_name, const char *key, double *out)
+> +{
+> +	char *val = igt_rc_get_string(group_name, key);
+> +	char *endptr;
+> +	double dval;
+> +	char *dot;
+> +	struct lconv *lc;
+> +
+> +	if (!val)
+> +		return false;
+> +
+> +	/* Handle locale-specific decimal separator for strtod */
+> +	dot = strchr(val, '.');
+> +	lc = localeconv();
+> +	if (dot && lc && lc->decimal_point && lc->decimal_point[0] != '.') {
+> +		*dot = lc->decimal_point[0];
+> +	}
+> +
+> +	errno = 0;
+> +	dval = strtod(val, &endptr);
+> +	if (endptr == val || endptr[0] != '\0' || errno == ERANGE) {
+> +		free(val);
+> +		return false;
+> +	}
+> +
+> +	*out = dval;
+> +	free(val);
+> +	return true;
+> +}
+>   
+>   /**
+>    * igt_load_igtrc:
+> diff --git a/lib/igt_rc.h b/lib/igt_rc.h
+> index 3b7179808..61f883ee1 100644
+> --- a/lib/igt_rc.h
+> +++ b/lib/igt_rc.h
+> @@ -21,10 +21,11 @@
+>    * IN THE SOFTWARE.
+>    */
+>   
+> -
+>   #ifndef IGT_RC_H
+>   #define IGT_RC_H
+>   
+> +#include <stdbool.h>
+> +
+>   #ifndef ANDROID
+>   #include <glib.h>
+>   #else
+> @@ -32,7 +33,14 @@
+>   #endif
+>   
+>   extern GKeyFile *igt_key_file;
+> -
+>   struct _GKeyFile *igt_load_igtrc(void);
+>   
+> +void igt_rc_init(void);
+> +void igt_rc_free(void);
+> +
+> +char *igt_rc_get_string(const char *group_name, const char *key);
+> +bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out);
+> +bool igt_rc_get_integer(const char *group_name, const char *key, int *out);
+> +bool igt_rc_get_double(const char *group_name, const char *key, double *out);
+> +
+>   #endif /* IGT_RC_H */
+> diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
+> index 30ee3c72b..a6b3008eb 100644
+> --- a/lib/vendor/unigraf/unigraf.c
+> +++ b/lib/vendor/unigraf/unigraf.c
+> @@ -364,7 +364,6 @@ int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id)
+>   bool unigraf_open_device(int drm_fd)
+>   {
+>   	TSI_RESULT r;
+> -	GError *cfg_error = NULL;
+>   	char *cfg_device = NULL;
+>   	char *cfg_role = NULL;
+>   	char *cfg_input = NULL;
+> @@ -382,63 +381,52 @@ bool unigraf_open_device(int drm_fd)
+>   
+>   	unigraf_init();
+>   
+> -	if (igt_key_file) {
+> -		cfg_device = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
+> -						   UNIGRAF_CONFIG_DEVICE_NAME, &cfg_error);
+> -		if (cfg_error) {
+> -			unigraf_debug("No device name configured, uses first device available.\n");
+> -			cfg_device = NULL;
+> -		}
+> +	cfg_device = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
+> +				       UNIGRAF_CONFIG_DEVICE_NAME);
+> +	if (!cfg_device) {
+> +		unigraf_debug("No device name configured, uses first device available.\n");
+> +		cfg_device = NULL;
+> +	}
+>   
+> -		cfg_error = NULL;
+> -		cfg_role = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
+> -						 UNIGRAF_CONFIG_DEVICE_ROLE, &cfg_error);
+> -		if (cfg_error) {
+> -			unigraf_debug("No device role configured.\n");
+> -			cfg_role = NULL;
+> -		}
+> +	cfg_role = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
+> +				     UNIGRAF_CONFIG_DEVICE_ROLE);
+> +	if (!cfg_role) {
+> +		unigraf_debug("No device role configured.\n");
+> +		cfg_role = NULL;
+> +	}
+>   
+> -		cfg_error = NULL;
+> -		cfg_input = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
+> -						  UNIGRAF_CONFIG_INPUT_NAME, &cfg_error);
+> -		if (cfg_error) {
+> -			unigraf_debug("No input name configured.\n");
+> -			cfg_input = NULL;
+> -		}
+> +	cfg_input = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
+> +				      UNIGRAF_CONFIG_INPUT_NAME);
+> +	if (!cfg_input) {
+> +		unigraf_debug("No input name configured.\n");
+> +		cfg_input = NULL;
+> +	}
+>   
+> -		cfg_error = NULL;
+> -		unigraf_connector_name = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
+> -							       UNIGRAF_CONFIG_CONNECTOR_NAME,
+> -							       &cfg_error);
+> -		if (cfg_error) {
+> -			unigraf_debug("No connector name configured, will autodetect.\n");
+> -			unigraf_connector_name = NULL;
+> -		}
+> +	unigraf_connector_name = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
+> +						   UNIGRAF_CONFIG_CONNECTOR_NAME);
+> +	if (!unigraf_connector_name) {
+> +		unigraf_debug("No connector name configured, will autodetect.\n");
+> +		unigraf_connector_name = NULL;
+> +	}
+>   
+> -		cfg_error = NULL;
+> -		cfg_edid_name = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
+> -						      UNIGRAF_CONFIG_EDID_NAME, &cfg_error);
+> -		if (cfg_error) {
+> -			unigraf_debug("No default EDID set, use IGT default.\n");
+> -			cfg_edid_name = NULL;
+> -		}
+> +	cfg_edid_name = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
+> +					  UNIGRAF_CONFIG_EDID_NAME);
+> +	if (!cfg_edid_name) {
+> +		unigraf_debug("No default EDID set, using IGT default.\n");
+> +		cfg_edid_name = NULL;
+> +	}
+>   
+> -		cfg_error = NULL;
+> -		unigraf_crc = g_key_file_get_boolean(igt_key_file, UNIGRAF_CONFIG_GROUP,
+> -						     UNIGRAF_CONFIG_USE_CRC_NAME, &cfg_error);
+> -		if (cfg_error) {
+> -			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
+> -			unigraf_crc = true;
+> -		}
+> +	if (!igt_rc_get_boolean(UNIGRAF_CONFIG_GROUP,
+> +				UNIGRAF_CONFIG_USE_CRC_NAME, &unigraf_crc)) {
+> +		unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
+> +		unigraf_crc = true;
+> +	}
+>   
+> -		cfg_error = NULL;
+> -		unigraf_stream_count = g_key_file_get_integer(igt_key_file, UNIGRAF_CONFIG_GROUP,
+> -							      UNIGRAF_CONFIG_MST_STREAM_COUNT,
+> -							      &cfg_error);
+> -		if (cfg_error) {
+> -			unigraf_debug("MST usage not configured, using SST.\n");
+> -			unigraf_stream_count = 0;
+> -		}
+> +	if (!igt_rc_get_integer(UNIGRAF_CONFIG_GROUP,
+> +				UNIGRAF_CONFIG_MST_STREAM_COUNT,
+> +				&unigraf_stream_count)) {
+> +		unigraf_debug("MST usage not configured, using SST.\n");
+> +		unigraf_stream_count = 0;
+>   	}
+>   
+>   	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
 
-Also applied few last corrections using checkpatch.pl help.
-
-Regards,
-Kamil
-
-</pre>
-      <blockquote type="cite">
-        <blockquote type="cite">
-          <pre wrap="" class="moz-quote-pre">-----Original Message-----
-From: <a class="moz-txt-link-abbreviated" href="mailto:vitaly.prosyak@amd.com">vitaly.prosyak@amd.com</a> <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
-Sent: Thursday, August 20, 2026 9:27 AM
-To: <a class="moz-txt-link-abbreviated" href="mailto:igt-dev@lists.freedesktop.org">igt-dev@lists.freedesktop.org</a>
-Cc: <a class="moz-txt-link-abbreviated" href="mailto:kamil.konieczny@linux.intel.com">kamil.konieczny@linux.intel.com</a>; <a class="moz-txt-link-abbreviated" href="mailto:jani.nikula@linux.intel.com">jani.nikula@linux.intel.com</a>;
-<a class="moz-txt-link-abbreviated" href="mailto:krzysztof.karas@intel.com">krzysztof.karas@intel.com</a>; <a class="moz-txt-link-abbreviated" href="mailto:krzysztof.kozlowski@canonical.com">krzysztof.kozlowski@canonical.com</a>; Zhang,
-Jesse(Jie) <a class="moz-txt-link-rfc2396E" href="mailto:Jesse.Zhang@amd.com">&lt;Jesse.Zhang@amd.com&gt;</a>; Koenig, Christian
-<a class="moz-txt-link-rfc2396E" href="mailto:Christian.Koenig@amd.com">&lt;Christian.Koenig@amd.com&gt;</a>; Deucher, Alexander
-<a class="moz-txt-link-rfc2396E" href="mailto:Alexander.Deucher@amd.com">&lt;Alexander.Deucher@amd.com&gt;</a>; Prosyak, Vitaly <a class="moz-txt-link-rfc2396E" href="mailto:Vitaly.Prosyak@amd.com">&lt;Vitaly.Prosyak@amd.com&gt;</a>;
-Pawel Sikora <a class="moz-txt-link-rfc2396E" href="mailto:pawel.sikora@intel.com">&lt;pawel.sikora@intel.com&gt;</a>
-Subject: [PATCH v6 4/4] docs: Update platform filtering documentation per review
-feedback
-
-From: Vitaly Prosyak <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
-
-Update the platform filtering usage guide to clarify method priority ordering, replace
-Advantages/Disadvantages with When-to-Use/Trade-offs, and add runtime
-methods for discovering platform names.
-
-Suggested-by: Krzysztof Kozlowski <a class="moz-txt-link-rfc2396E" href="mailto:krzysztof.kozlowski@canonical.com">&lt;krzysztof.kozlowski@canonical.com&gt;</a>
-Cc: Kamil Konieczny <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@linux.intel.com">&lt;kamil.konieczny@linux.intel.com&gt;</a>
-Cc: Pawel Sikora <a class="moz-txt-link-rfc2396E" href="mailto:pawel.sikora@intel.com">&lt;pawel.sikora@intel.com&gt;</a>
-Cc: Jani Nikula <a class="moz-txt-link-rfc2396E" href="mailto:jani.nikula@linux.intel.com">&lt;jani.nikula@linux.intel.com&gt;</a>
-Cc: Jesse Zhang <a class="moz-txt-link-rfc2396E" href="mailto:jesse.zhang@amd.com">&lt;jesse.zhang@amd.com&gt;</a>
-Cc: Christian Koenig <a class="moz-txt-link-rfc2396E" href="mailto:christian.koenig@amd.com">&lt;christian.koenig@amd.com&gt;</a>
-Cc: Alex Deucher <a class="moz-txt-link-rfc2396E" href="mailto:alexander.deucher@amd.com">&lt;alexander.deucher@amd.com&gt;</a>
-Signed-off-by: Vitaly Prosyak <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
-Acked-by: Kamil Konieczny <a class="moz-txt-link-rfc2396E" href="mailto:kamil.konieczny@linux.intel.com">&lt;kamil.konieczny@linux.intel.com&gt;</a>
----
- docs/platform_filtering.md | 351 +++++++++++++++++++++++++++++++++++++
- mkdocs.yml                 |   1 +
- 2 files changed, 352 insertions(+)
- create mode 100644 docs/platform_filtering.md
-
-diff --git a/docs/platform_filtering.md b/docs/platform_filtering.md new file mode
-100644 index 000000000..7d3202a94
---- /dev/null
-+++ b/docs/platform_filtering.md
-@@ -0,0 +1,351 @@
-+# IGT Platform Filtering - Usage Guide
-+
-+## Overview
-+
-+The IGT platform filtering framework allows tests to be skipped based
-+on platform characteristics without modifying test source code.
-+
-+**Key Feature**: **Automatic Filtering** - No manual calls needed in subtests!
-+
-+Tests only need to initialize platform filtering once in `igt_fixture`,
-+and the IGT framework automatically checks each subtest before execution.
-+
-+## Quick Start
-+
-+### 1. Initialize in Test (One Time)
-+
-+```c
-+#include &quot;lib/amdgpu/amd_platform.h&quot;
-+
-+int igt_main(void)
-+{
-+    struct amdgpu_gpu_info gpu_info;
-+
-+    igt_fixture {
-+        fd = drm_open_driver(DRIVER_AMDGPU);
-+        amdgpu_query_gpu_info(device, &amp;gpu_info);
-+
-+        /* Initialize platform filtering - enables automatic filtering */
-+        amd_platform_filter_init(&amp;gpu_info);
-+    }
-+
-+    igt_subtest(&quot;my-test&quot;) {
-+        /* No manual filtering call needed - automatic! */
-+        test_code();
-+    }
-+}
-+```
-+
-+### 2. Configure Filtering Rules
-+
-+Use one of three methods (checked in priority order):
-+
-+1. **Built-in rules** (highest priority) - Compiled into test 2.
-+**Config file** (recommended) - `/etc/igt/platform_skip.conf` 3.
-+**Environment variable** (lowest priority) - `IGT_PLATFORM_SKIP_CONFIG`
-+
-+---
-+
-+## Method 1: Built-in Rules (Highest Priority)
-+
-+**Location**: Vendor implementation (e.g., `lib/amdgpu/amd_platform.c`)
-+
-+### Example
-+
-+```c
-+static const struct platform_skip_entry amd_builtin_rules[] = {
-+    {
-+        .test_name = &quot;amd_security&quot;,
-+        .subtest_glob = &quot;secure-bounce&quot;,
-+        .reason = &quot;Not supported on APUs&quot;,
-+        .platform_data = &amp;apu_platforms,
-+    },
-+};
-+```
-+
-+### When to Use Built-in Rules
-+
-+- Permanent production exclusions that should never run
-+- Platform limitations known at development time
-+- Tests that fundamentally cannot work on certain hardware
-+- Vendor-specific restrictions that apply globally
-+
-+**Trade-offs:**
-+- [+] Fast (no file I/O at runtime)
-+- [+] Guaranteed to be applied
-+- [+] Version controlled with code
-+- [-] Requires rebuild to change
-+- [-] Not flexible for temporary exclusions
-+
-+---
-+
-+## Method 2: Config File (RECOMMENDED)
-+
-+**Location**: `/etc/igt/platform_skip.conf`
-+
-+**Format**: `platform:test:subtest:reason`
-+
-+**Note**: The reason field is recommended but can be empty. If omitted, &quot;No
-reason&quot; is automatically inserted.
-+
-+### Example Config File
-+
-+```bash
-+cat &gt; /etc/igt/platform_skip.conf &lt;&lt; 'EOF'
-+# Platform filtering configuration
-+# Format: platform:test:subtest:reason
-+# Use * as wildcard
-+
-+# Skip all UMQ tests on Navi48 during platform bringup
-+navi48:amd_basic:*-UMQ:SWDEV-88888 - UMQ stabilization in progress
-+
-+# Skip specific tests with ticket references
-+navi31:amd_basic:cs-gfx-with-IP-GFX-UMQ:SWDEV-12345
-+navi31:amd_basic:cs-compute-with-IP-COMPUTE-UMQ:SWDEV-12345
-+navi31:amd_basic:cs-sdma-with-IP-DMA-UMQ:SWDEV-12346
-+
-+# Skip tests on early samples
-+strix_halo:amd_basic:*:Platform not ready - ES samples
-+
-+# Skip known flaky test across all platforms
-+*:amd_basic:eviction-test-with-IP-DMA:SWDEV-99999 - Intermittent
-+failure
-+
-+# Skip entire test binary on specific platform navi10:amd_vcn:*:VCN
-+encoding issues on Navi10 A0
-+
-+# Skip all tests on discontinued platform vega10:*:*:Platform no longer
-+supported EOF ```
-+
-+### Run Tests
-+
-+```bash
-+# Config file is loaded automatically - no environment variable needed
-+./build/tests/amdgpu/amd_basic
-+
-+# Output shows:
-+# Subtest cs-gfx-with-IP-GFX-UMQ: SKIP
-+# Platform filtering (config): SWDEV-12345 ```
-+
-+### When to Use Config File
-+
-+- Managing multiple test exclusions
-+- Team-wide or CI/CD configurations
-+- Persistent filtering rules across sessions
-+- Easy add/remove/edit without rebuilding
-+- No need to remember environment variables
-+- Sharing skip rules across test infrastructure
-+
-+---
-+
-+## Method 3: Environment Variable (Lowest Priority)
-+
-+**Variable**: `IGT_PLATFORM_SKIP_CONFIG`
-+
-+**Format**: Same as config file, semicolon-separated
-+
-+### Example - Skip Single Test
-+
-+```bash
-+export IGT_PLATFORM_SKIP_CONFIG=&quot;navi48:amd_basic:cs-compute-with-
-IP-COMPUTE-UMQ:Testing&quot;
-+./build/tests/amdgpu/amd_basic
-+```
-+
-+### Example - Skip Multiple Tests
-+
-+```bash
-+export IGT_PLATFORM_SKIP_CONFIG=&quot;navi48:amd_basic:*-
-UMQ:Testing;navi31:amd_basic:cs-gfx-*:Known issue&quot;
-+./build/tests/amdgpu/amd_basic
-+```
-+
-+### When to Use Environment Variable
-+
-+- Quick one-off testing without editing files
-+- Temporary overrides during debugging sessions
-+- Testing filter patterns before adding to config file
-+- Single test runs where config file would be overkill
-+- Overriding config file rules for specific test runs
-+- CI pipeline job-specific overrides
-+
-+**Trade-offs:**
-+- [+] No file editing required
-+- [+] Quick to set and unset
-+- [+] Can override config file for testing
-+- [-] Not persistent (lost when session ends)
-+- [-] Easy to forget it's set
-+- [-] Inconvenient for large test lists
-+
-+---
-+
-+## Wildcard Patterns
-+
-+All methods support wildcards (`*`) for flexible matching:
-+
-+```
-+# Platform wildcards
-+*:amd_basic:my-test:Reason           # All platforms
-+navi*:amd_basic:my-test:Reason       # All Navi (navi10, navi31, navi48, etc.)
-+
-+# Test wildcards
-+navi48:amd_*:my-test:Reason          # All amd_* tests
-+
-+# Subtest wildcards
-+navi48:amd_basic:*-UMQ:Reason        # All subtests ending with -UMQ
-+navi48:amd_basic:cs-*:Reason         # All subtests starting with cs-
-+
-+# Combined wildcards
-+*:*:*-UMQ:Reason                     # All UMQ tests on all platforms
-+```
-+
-+### Wildcard Examples
-+
-+```bash
-+# Skip all user queue tests during bringup navi48:*:*-UMQ:Platform
-+bringup - UMQ not ready
-+
-+# Skip all VCN tests on specific platform navi10:amd_vcn:*:Known VCN
-+issues
-+
-+# Skip specific test pattern across all platforms
-+*:amd_basic:eviction-*:Intermittent failures
-+
-+# Skip all tests on EOL platform
-+vega10:*:*:Platform no longer supported ```
-+
-+### Pattern Matching Rules
-+
-+- `*` matches zero or more characters
-+- Patterns are case-sensitive
-+- Empty field is NOT a wildcard (use `*` explicitly)
-+- Priority order: Built-in &gt; Config file &gt; Environment variable
-+
-+### Example Subtest Matching
-+
-+Given config: `navi48:amd_basic:*-UMQ:Testing`
-+
-+- cs-gfx-with-IP-GFX-UMQ → **Skipped** (matches)
-+- cs-compute-with-IP-COMPUTE-UMQ → **Skipped** (matches)
-+- cs-sdma-with-IP-DMA → Runs normally (doesn't match)
-+
-+---
-+
-+## Skip Message Format
-+
-+Automatic filtering shows the source in skip messages:
-+
-+```
-+Subtest cs-gfx-with-IP-GFX-UMQ: SKIP
-+Platform filtering (config): SWDEV-12345 - UMQ unstable on Navi48 ```
-+
-+Source indicators:
-+- `(built-in)` - From vendor's compiled rules
-+- `(config)` - From config file
-+- `(env)` - From environment variable
-+
-+---
-+
-+## Platform Names
-+
-+Platform names are vendor-specific and defined in vendor backend code.
-+
-+**For AMD platforms**, see `lib/amdgpu/amd_platform.c` for the complete list.
-+
-+**Examples:**
-+- RDNA2/3 discrete GPUs: `navi21`, `navi31`, `navi33`
-+- RDNA4: `navi48`, `navi44`
-+- APUs: `strix_halo`, `phoenix`
-+- Data center: `aldebaran` (MI250)
-+
-+**To find your platform name:**
-+
-+```bash
-+# Method 1: Run any test with debug output
-+./build/tests/amdgpu/amd_basic --debug # Look for: &quot;Platform detected:
-+&lt;name&gt;&quot;
-+
-+# Method 2: Check dmesg for GPU info
-+dmesg | grep -i amdgpu | grep -i asic
-+
-+# Method 3: Check /sys
-+cat /sys/class/drm/card0/device/asic_name  # If available ```
-+
-+**Note:** Platform names may change with new hardware generations. Check
-vendor backend code for current platform definitions. The list above is provided as
-examples only.
-+
-+---
-+
-+## Best Practices
-+
-+### For Development - Quick Testing
-+
-+Use environment variable:
-+```bash
-+# Temporarily skip broken test
-+export IGT_PLATFORM_SKIP_CONFIG=&quot;*:amd_basic:broken-test:WIP&quot;
-+./build/tests/amdgpu/amd_basic
-+unset IGT_PLATFORM_SKIP_CONFIG
-+```
-+
-+### For Teams - Shared Exclusions
-+
-+Use config file with ticket references:
-+```
-+# /etc/igt/platform_skip.conf
-+# Updated: 2026-07-09
-+
-+# Navi48 bringup exclusions
-+navi48:amd_basic:*-UMQ:SWDEV-88888 - UMQ stabilization
-+navi48:amd_vcn:vcn-encoder-*:SWDEV-88889 - VCN bringup
-+
-+# Cross-platform known issues
-+*:amd_basic:eviction-test-with-IP-DMA:SWDEV-77777 - Flaky ```
-+
-+### For CI/CD
-+
-+Deploy config file with test infrastructure:
-+```bash
-+#!/bin/bash
-+# CI pipeline setup
-+echo &quot;Deploying test exclusions...&quot;
-+scp ci-skip-rules.conf test-machine:/etc/igt/platform_skip.conf
-+ssh test-machine &quot;./run-igt-suite.sh&quot;
-+```
-+
-+### For Production
-+
-+Use built-in rules for permanent exclusions:
-+```c
-+// In lib/amdgpu/amd_platform.c
-+static const struct platform_skip_entry amd_builtin_rules[] = {
-+    {
-+        .test_name = &quot;amd_basic&quot;,
-+        .subtest_glob = &quot;*-UMQ&quot;,
-+        .reason = &quot;User queues not supported in production&quot;,
-+        .platform_data = &amp;all_platforms,
-+    },
-+};
-+```
-+
-+---
-+
-+## Summary
-+
-+| Method | Use Case | Persistent | Rebuild Required |
-+|--------|----------|------------|------------------|
-+| **Built-in** | Production rules | Yes | Yes | **Config file** |
-+| Team/CI exclusions | Yes | No |
-+| **Environment** | Quick testing | No | No |
-+
-+**Recommendation**: Use **config file** for managing test exclusions at scale.
-+
-+---
-+
-+## See Also
-+
-+- `lib/igt_platform_filter.h` - API documentation
-+- `lib/igt_platform_filter.c` - Framework implementation
-+- `lib/amdgpu/amd_platform.c` - AMD backend reference
-diff --git a/mkdocs.yml b/mkdocs.yml
-index 0abb76704..1819b7b6c 100644
---- a/mkdocs.yml
-+++ b/mkdocs.yml
-@@ -29,6 +29,7 @@ nav:
-     - How to document tests: 'test_documentation.md'
-     - How to categorize tests: 'test_categories.md'
-     - How to blocklist tests: 'blocklists.md'
-+    - How to filter tests per platform: 'platform_filtering.md'
-     - How to get code coverage: 'code_coverage.md'
-     - How to port new IGT driver: 'new_driver.md'
-     - How to plan a new test: 'test_plan.md'
---
-2.54.0
-</pre>
-        </blockquote>
-        <pre wrap="" class="moz-quote-pre">
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------Hyt41VSndskTksCdHldweSh7--
