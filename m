@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6E1CC5DF87
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 12:18:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 91894C5DF87
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 12:18:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C86210E5ED;
-	Thu, 20 Aug 2026 12:18:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 37F2210E5ED;
+	Thu, 20 Aug 2026 12:18:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GNsIAGeK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YumE3Bw/";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 34CD310E1D6
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 12:16:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 114D110E1D6
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 12:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787228194; x=1818764194;
+ t=1787228203; x=1818764203;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=e1NerFphlLg1h3RRo79oadqQEgwHwqudcOVpyKkFV8Q=;
- b=GNsIAGeKUOjHYU2cf5R1cDfQLD8zKJHwUTt4hSerumy6dNscZApcd/Ic
- 7VzUUz8VSH1dNP42zkJv4+9xsNON7KJTDsE/7ggAXM5+T0iWbvoEoGvi7
- WNJ/NxprSa/qbyjaUD19K+crVwEOSxixpZ+9Whd6SAxnCGoePQG2whIDn
- YyfGg+/XrDayesCSKfBeROmXTB2neVPnMX2fHvd2dtB6xlZk1bGk83hsV
- Me2WUvHYG24mc6UkRadKugFQmpG+HOY4B99cnzo4CH7mR/5LTKtaN8sDc
- b7mPBtHYf2781IvbTUvFHe+IVgFF8UJARLHdLJPpstvLlK2u2f/zYl4bF A==;
-X-CSE-ConnectionGUID: Ek2QShiWSx+m9AMmFo3TXw==
-X-CSE-MsgGUID: x36eFFThSWqJJxcfX6m9Sg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="98917287"
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="98917287"
+ bh=8OPxIEqwViT+FGoO+sCrVPVN5ZYBhEWku4/y8/XkhF8=;
+ b=YumE3Bw/KmdZSEFjxW90AkQKsB6CF9ibeFJFrk1tILW1iGiVslIsVpAD
+ jTQ8Jo61edR0m4rMAyh+X6/RprZwmbHFGqVo8fUnFWOkTgMEmtkqIgsrJ
+ F9SEzXKOFcIbEJJc2rnWfTUqbRq64bT3S5oqh8/vi7sJLptrrXOSkFT4E
+ zdI3UHgvvs57W4OFHjLVSwggGBr59UiXLECTWNYURHpez35h7sS9sWkJx
+ zy2hUIi8qlaUf+J5rtQ6FHV9+LeGxR+MZFO+sHnSAVcn2V7CTj0MDwc/N
+ ZOJ6JkYp9k/CsAxEqlTpuMFaSSqpWrM0KC4eqnNXithxI1Z5jNCxU1P9u Q==;
+X-CSE-ConnectionGUID: EHhBnc9dRpCvz+OfLzHn8w==
+X-CSE-MsgGUID: BOfHT+40RjGuIK34i/jtFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="98917301"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="98917301"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 05:16:34 -0700
-X-CSE-ConnectionGUID: KexkXztQQxmQ3CCeRwpCbQ==
-X-CSE-MsgGUID: +IU1o3esTqmXNcwUGJiVSQ==
+ 20 Aug 2026 05:16:43 -0700
+X-CSE-ConnectionGUID: jTpXIztsTLuAZX3wISWsIA==
+X-CSE-MsgGUID: QO+CF6wYSBW3JBdehdQygA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="264675922"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="264675978"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 05:16:32 -0700
+ 20 Aug 2026 05:16:41 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  mallesh.koujalagi@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v2 2/8] lib/igt_drm_netlink: add get_error_counter support
-Date: Thu, 20 Aug 2026 17:45:54 +0530
-Message-Id: <20260820121600.75052-3-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v2 6/8] lib/igt_drm_netlink: add event notify subscription and
+ event wait support
+Date: Thu, 20 Aug 2026 17:45:58 +0530
+Message-Id: <20260820121600.75052-7-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260820121600.75052-1-ravi.kishore.koppuravuri@intel.com>
 References: <20260820121600.75052-1-ravi.kishore.koppuravuri@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,102 +71,96 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add netlink request/response handling for DRM_RAS_CMD_GET_ERROR_COUNTER.
+Added event notification support with subscribe for an error-notify event
+and wait for the event notification functionalities.
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 ---
-v2:Handled ACK/FINISH/ERR nl responses using separate callbacks
-   Added a check whether error_value updated by valid callback or not
-   Added a check whether response required for the command or not
+v2:Handled SEQ_CHECK nl response using separate callback
+   Added monotonic-clock deadline to wait for messages without exceeding the
+   caller’s total timeout.
+   Added support to receive events until it sees an event whose node ID and
+   error ID match the requested values.
 ---
 ---
- lib/igt_drm_netlink.c | 264 +++++++++++++++++++++++++++++++++++++++++-
- lib/igt_drm_netlink.h |  16 +++
- 2 files changed, 278 insertions(+), 2 deletions(-)
+ lib/igt_drm_netlink.c | 159 +++++++++++++++++++++++++++++++++++++++++-
+ lib/igt_drm_netlink.h |   6 ++
+ 2 files changed, 162 insertions(+), 3 deletions(-)
 
 diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
-index 1c07bb2db..b72f2d5ca 100644
+index c32e10f2f..04f331b38 100644
 --- a/lib/igt_drm_netlink.c
 +++ b/lib/igt_drm_netlink.c
-@@ -5,6 +5,7 @@
- 
+@@ -6,9 +6,11 @@
  #include <stdbool.h>
  #include <stdint.h>
-+#include <errno.h>
+ #include <errno.h>
++#include <poll.h>
  #include <stdio.h>
  #include <stdlib.h>
  #include <string.h>
-@@ -17,6 +18,225 @@
- #include "igt_core.h"
- #include "igt_drm_netlink.h"
++#include <time.h>
  
-+static int ras_command_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct app_context *ctx = arg;
-+	struct nlmsghdr *nlh;
-+	struct genlmsghdr *gnlh;
-+	int ret;
-+
-+	nlh = nlmsg_hdr(msg);
-+	gnlh = nlmsg_data(nlh);
-+
-+	switch (gnlh->cmd) {
-+	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
-+		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
+ #include <netlink/errno.h>
+ #include <netlink/genl/ctrl.h>
+@@ -31,6 +33,27 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+ 	switch (gnlh->cmd) {
+ 	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
+ 		break;
++	case DRM_RAS_CMD_ERROR_EVENT: {
++		struct nlattr *attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_MAX + 1];
 +
 +		ret = genlmsg_parse(nlh, 0, attrs,
-+				    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
++				    DRM_RAS_A_ERROR_EVENT_ATTRS_MAX, NULL);
 +		if (ret < 0)
 +			return NL_SKIP;
 +
-+		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE])
++		if (!attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID] ||
++		    !attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID] ||
++		    !attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE])
 +			return NL_SKIP;
 +
-+		ctx->error_value = nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE]);
++		ctx->event_node_id = nla_get_u32(attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID]);
++		ctx->event_error_id = nla_get_u32(attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID]);
++		ctx->event_error_value =
++			nla_get_u32(attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE]);
++		ctx->event_received = ctx->event_node_id == ctx->node_id &&
++				      ctx->event_error_id == ctx->error_id;
 +		break;
 +	}
-+	default:
-+		return NL_SKIP;
+ 	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
+ 		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
+ 
+@@ -64,13 +87,20 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+ 		return NL_SKIP;
+ 	}
+ 
+-	ctx->reply_received = true;
+-	if (ctx->ack_received)
+-		ctx->cmd_done = true;
++	if (gnlh->cmd != DRM_RAS_CMD_ERROR_EVENT) {
++		ctx->reply_received = true;
++		if (ctx->ack_received)
++			ctx->cmd_done = true;
 +	}
-+
-+	ctx->reply_received = true;
-+	if (ctx->ack_received)
-+		ctx->cmd_done = true;
-+
+ 
+ 	return NL_OK;
+ }
+ 
++static int ras_multicast_seq_check_cb(struct nl_msg *msg, void *arg)
++{
 +	return NL_OK;
 +}
 +
-+static int ras_error_cb(struct sockaddr_nl *nla, struct nlmsgerr *err, void *arg)
-+{
-+	struct app_context *ctx = arg;
-+
-+	ctx->last_nl_error = err->error;
-+	ctx->cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int ras_ack_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct app_context *ctx = arg;
-+
-+	ctx->ack_received = true;
-+	if (!ctx->response_required || ctx->reply_received)
-+		ctx->cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int ras_finish_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct app_context *ctx = arg;
-+
-+	ctx->cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int register_callbacks(struct nl_cb *cb, struct app_context *ctx)
+ static int ras_error_cb(struct sockaddr_nl *nla, struct nlmsgerr *err, void *arg)
+ {
+ 	struct app_context *ctx = arg;
+@@ -124,6 +154,23 @@ static int register_callbacks(struct nl_cb *cb, struct app_context *ctx)
+ 	return 0;
+ }
+ 
++static int register_multicast_callbacks(struct nl_cb *cb,
++					struct app_context *ctx)
 +{
 +	int ret;
 +
@@ -172,250 +168,162 @@ index 1c07bb2db..b72f2d5ca 100644
 +	if (ret < 0)
 +		return ret;
 +
-+	ret = nl_cb_set(cb, NL_CB_ACK, NL_CB_CUSTOM, ras_ack_cb, ctx);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = nl_cb_set(cb, NL_CB_FINISH, NL_CB_CUSTOM, ras_finish_cb, ctx);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = nl_cb_err(cb, NL_CB_CUSTOM, ras_error_cb, ctx);
++	ret = nl_cb_set(cb, NL_CB_SEQ_CHECK, NL_CB_CUSTOM,
++			ras_multicast_seq_check_cb, ctx);
 +	if (ret < 0)
 +		return ret;
 +
 +	return 0;
 +}
 +
-+static int send_and_recv_nl_msg(struct app_context *ctx,
-+				struct nl_cb *cb,
-+				struct nl_msg *msg)
-+{
-+	int ret;
-+
-+	ret = nl_send_auto(ctx->sock, msg);
-+	nlmsg_free(msg);
-+	if (ret < 0) {
-+		nl_cb_put(cb);
-+		return ret;
-+	}
-+
-+	/* NL Reply and ACK arrive as separate responses */
-+	while (!ctx->cmd_done) {
-+		ret = nl_recvmsgs(ctx->sock, cb);
-+		if (ret < 0)
-+			break;
-+	}
-+	nl_cb_put(cb);
-+
-+	return ret < 0 ? ret : 0;
-+}
-+
-+static int send_command(struct app_context *ctx, uint8_t cmd)
-+{
-+	struct nl_cb *cb;
-+	struct nl_msg *msg;
-+	void *msg_head;
-+	int ret;
-+
-+	msg = nlmsg_alloc();
-+	if (!msg)
-+		return -ENOMEM;
-+
-+	ctx->last_nl_error = 0;
-+	ctx->cmd_done = false;
-+	ctx->reply_received = false;
-+	ctx->ack_received = false;
-+	ctx->response_required = false;
-+
-+	msg_head = genlmsg_put(msg,
-+			       NL_AUTO_PORT,
-+			       NL_AUTO_SEQ,
-+			       ctx->family_id,
-+			       0,
-+			       NLM_F_REQUEST | NLM_F_ACK,
-+			       cmd,
-+			       DRM_RAS_FAMILY_VERSION);
-+	if (!msg_head) {
-+		nlmsg_free(msg);
-+		return -ENOMEM;
-+	}
-+
-+	switch (cmd) {
-+	case DRM_RAS_CMD_GET_ERROR_COUNTER:
-+		ctx->response_required = true;
-+		ret = nla_put_u32(msg,
-+				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
-+				  ctx->node_id);
-+		if (ret < 0) {
-+			nlmsg_free(msg);
-+			return ret;
-+		}
-+
-+		ret = nla_put_u32(msg,
-+				  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
-+				  ctx->error_id);
-+		if (ret < 0) {
-+			nlmsg_free(msg);
-+			return ret;
-+		}
-+		break;
-+	default:
-+		nlmsg_free(msg);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	cb = nl_cb_alloc(NL_CB_DEFAULT);
-+	if (!cb) {
-+		nlmsg_free(msg);
-+		return -ENOMEM;
-+	}
-+
-+	ret = register_callbacks(cb, ctx);
-+	if (ret < 0) {
-+		nl_cb_put(cb);
-+		nlmsg_free(msg);
-+		return ret;
-+	}
-+
-+	return send_and_recv_nl_msg(ctx, cb, msg);
-+}
-+
-+int init_app_context(struct app_context *ctx)
-+{
-+	if (!ctx)
-+		return -EINVAL;
-+
-+	ctx->sock = NULL;
-+	ctx->node_id = UINT32_MAX;
-+	ctx->error_id = UINT32_MAX;
-+	ctx->error_value = 0;
-+	ctx->last_nl_error = 0;
-+	ctx->cmd_done = false;
-+	ctx->reply_received = false;
-+	ctx->ack_received = false;
-+	ctx->response_required = false;
-+	ctx->family_id = -1;
-+
-+	return 0;
-+}
-+
-+void cleanup_app_context(struct app_context *ctx)
-+{
-+	if (!ctx)
-+		return;
-+
-+	ctx->sock = NULL;
-+	ctx->node_id = UINT32_MAX;
-+	ctx->error_id = UINT32_MAX;
-+	ctx->error_value = 0;
-+	ctx->last_nl_error = 0;
-+	ctx->cmd_done = false;
-+	ctx->reply_received = false;
-+	ctx->ack_received = false;
-+	ctx->response_required = false;
-+	ctx->family_id = -1;
-+}
-+
- void cleanup_nl_socket(struct app_context *ctx)
- {
- 	if (!ctx || !ctx->sock)
-@@ -24,14 +244,20 @@ void cleanup_nl_socket(struct app_context *ctx)
+ static int send_and_recv_nl_msg(struct app_context *ctx,
+ 				struct nl_cb *cb,
+ 				struct nl_msg *msg)
+@@ -245,6 +292,10 @@ int init_app_context(struct app_context *ctx)
+ 	ctx->ack_received = false;
+ 	ctx->response_required = false;
+ 	ctx->error_threshold = 0;
++	ctx->event_node_id = UINT32_MAX;
++	ctx->event_error_id = UINT32_MAX;
++	ctx->event_error_value = 0;
++	ctx->event_received = false;
+ 	ctx->family_id = -1;
  
- 	nl_close(ctx->sock);
- 	nl_socket_free(ctx->sock);
--	ctx->sock = NULL;
--	ctx->family_id = -1;
-+
-+	cleanup_app_context(ctx);
- 
- 	igt_debug("Cleaned up netlink socket.\n");
+ 	return 0;
+@@ -265,6 +316,10 @@ void cleanup_app_context(struct app_context *ctx)
+ 	ctx->ack_received = false;
+ 	ctx->response_required = false;
+ 	ctx->error_threshold = 0;
++	ctx->event_node_id = UINT32_MAX;
++	ctx->event_error_id = UINT32_MAX;
++	ctx->event_error_value = 0;
++	ctx->event_received = false;
+ 	ctx->family_id = -1;
  }
  
- int init_nl_socket(struct app_context *ctx)
- {
-+	int ret;
-+
-+	ret = init_app_context(ctx);
-+	if (ret < 0)
-+		return ret;
-+
- 	ctx->sock = nl_socket_alloc();
- 	if (!ctx->sock)
- 		return -1;
-@@ -58,3 +284,37 @@ int init_nl_socket(struct app_context *ctx)
- 		  DRM_RAS_FAMILY_NAME, ctx->family_id);
+@@ -410,3 +465,101 @@ int set_error_threshold(struct app_context *ctx)
+ 
  	return 0;
  }
 +
-+int get_error_counter(struct app_context *ctx)
++int subscribe_error_notify(struct app_context *ctx, const char *notify_group_name)
 +{
++	int grp_id;
++	int ret;
++
++	if (!ctx || !ctx->sock || ctx->family_id < 0 ||
++	    !notify_group_name || notify_group_name[0] == '\0')
++		return -EINVAL;
++
++	grp_id = genl_ctrl_resolve_grp(ctx->sock,
++				       DRM_RAS_FAMILY_NAME,
++				       notify_group_name);
++	if (grp_id < 0)
++		return grp_id;
++
++	ret = nl_socket_add_membership(ctx->sock, grp_id);
++	if (ret < 0)
++		return ret;
++
++	igt_debug("Subscribed to DRM RAS multicast group '%s' (id=%d).\n",
++		  notify_group_name, grp_id);
++
++	return 0;
++}
++
++int wait_for_error_notify_event(struct app_context *ctx, int timeout_ms)
++{
++	struct nl_cb *cb;
++	struct pollfd pfd;
++	struct timespec start, now;
++	int remaining_ms;
 +	int ret;
 +
 +	if (!ctx || !ctx->sock || ctx->family_id < 0)
 +		return -EINVAL;
 +
-+	if (ctx->node_id == UINT32_MAX ||
-+	    ctx->error_id == UINT32_MAX ||
-+	    ctx->error_id == 0) {
-+		igt_warn("Invalid node_id (%u) or error_id (%u) provided. "
-+			 "node_id should be >= 0 and error_id should be >= 1.\n",
-+			 ctx->node_id, ctx->error_id);
++	if (timeout_ms < -1)
 +		return -EINVAL;
++
++	cb = nl_cb_alloc(NL_CB_DEFAULT);
++	if (!cb)
++		return -ENOMEM;
++
++	ret = register_multicast_callbacks(cb, ctx);
++	if (ret < 0) {
++		nl_cb_put(cb);
++		return ret;
 +	}
 +
-+	ctx->error_value = UINT32_MAX;
++	ctx->event_received = false;
++	clock_gettime(CLOCK_MONOTONIC, &start);
 +
-+	ret = send_command(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER);
++	pfd.fd = nl_socket_get_fd(ctx->sock);
++	pfd.events = POLLIN;
++	pfd.revents = 0;
++
++	while (!ctx->event_received) {
++		if (timeout_ms == -1) {
++			remaining_ms = -1;
++		} else {
++			clock_gettime(CLOCK_MONOTONIC, &now);
++			remaining_ms = timeout_ms -
++				       (int)((now.tv_sec - start.tv_sec) * 1000 +
++				       (now.tv_nsec - start.tv_nsec) / 1000000);
++			if (remaining_ms <= 0) {
++				ret = -ETIMEDOUT;
++				break;
++			}
++		}
++
++		ret = poll(&pfd, 1, remaining_ms);
++		if (ret == 0) {
++			ret = -ETIMEDOUT;
++				break;
++		}
++
++		if (ret < 0) {
++			ret = -errno;
++			break;
++		}
++
++		ret = nl_recvmsgs(ctx->sock, cb);
++		if (ret < 0)
++			break;
++	}
++	nl_cb_put(cb);
 +	if (ret < 0)
 +		return ret;
 +
-+	if (ctx->error_value == UINT32_MAX) {
-+		igt_warn("No valid error counter reply: node_id=%u error_id=%u kernel_error=%d\n",
-+			 ctx->node_id, ctx->error_id, ctx->last_nl_error);
-+		return ctx->last_nl_error ? ctx->last_nl_error : -ENODATA;
-+	}
++	if (!ctx->event_received)
++		return -ENOMSG;
 +
-+	igt_debug("Retrieved error counter: node_id=%u error_id=%u value=%u\n",
-+		  ctx->node_id, ctx->error_id, ctx->error_value);
++	igt_debug("Received error-notify event: node_id=%u error_id=%u value=%u\n",
++		  ctx->event_node_id, ctx->event_error_id, ctx->event_error_value);
 +
 +	return 0;
 +}
 diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
-index c20d5452b..f8b49aae8 100644
+index 045dae403..cb7a05912 100644
 --- a/lib/igt_drm_netlink.h
 +++ b/lib/igt_drm_netlink.h
-@@ -9,17 +9,33 @@
- #include <stdbool.h>
- #include <stdint.h>
- 
-+#include <linux/genetlink.h>
-+
-+#include <netlink/attr.h>
-+#include <netlink/handlers.h>
-+#include <netlink/msg.h>
- #include <netlink/netlink.h>
- 
- #include <drm-uapi/drm_ras.h>
- 
- struct app_context {
- 	struct nl_sock *sock;
-+	uint32_t node_id;
-+	uint32_t error_id;
-+	uint32_t error_value;
-+	int last_nl_error;
-+	bool cmd_done;
-+	bool reply_received;
-+	bool ack_received;
-+	bool response_required;
+@@ -29,6 +29,10 @@ struct app_context {
+ 	bool ack_received;
+ 	bool response_required;
+ 	uint32_t error_threshold;
++	uint32_t event_node_id;
++	uint32_t event_error_id;
++	uint32_t event_error_value;
++	bool event_received;
  	int family_id;
  };
  
-+int init_app_context(struct app_context *ctx);
-+void cleanup_app_context(struct app_context *ctx);
- void cleanup_nl_socket(struct app_context *ctx);
- int init_nl_socket(struct app_context *ctx);
-+int get_error_counter(struct app_context *ctx);
+@@ -39,6 +43,8 @@ int init_nl_socket(struct app_context *ctx);
+ int get_error_counter(struct app_context *ctx);
+ int get_error_threshold(struct app_context *ctx);
+ int set_error_threshold(struct app_context *ctx);
++int subscribe_error_notify(struct app_context *ctx, const char *notify_group_name);
++int wait_for_error_notify_event(struct app_context *ctx, int timeout_ms);
  
  #endif /* IGT_DRM_NETLINK_H */
  
