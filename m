@@ -4,42 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48E10C5B572
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 01:29:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D74C7C5B572
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 01:30:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F095410E10F;
-	Thu, 20 Aug 2026 01:29:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5BFA210E10F;
+	Thu, 20 Aug 2026 01:30:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Di5qP03+";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="bkQ+mS2J";
 	dkim-atps=neutral
-Received: from CY3PR05CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11013019.outbound.protection.outlook.com
- [40.93.201.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E220C10E10F
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 01:28:32 +0000 (UTC)
+Received: from BL2PR02CU003.outbound.protection.outlook.com
+ (mail-eastusazon11011018.outbound.protection.outlook.com [52.101.52.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AB00810E10F
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 01:28:36 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RKYIYcYWC9BgBpYAqOIQAUseE0Q94d+gBT9Rc764mFacHyp3oFcJybylOny7SpaD4oPNJHT8TNhiPpfxZ1QGxU/TbHDj9rFdK8pfmROeLr/MbqvKzfIfcKNTii67AB1ITy4Z6T61gE16ayBAV/braZspfxRMfdgl/MKgQHkCc/a/YuVMD7S6Tymx7xLcKzKis/o860+HURw5vIJF7Bq6SiPCZep+ojcgtmhCOlooL4FzKb1QVVDKOYRoJiN6b0qs7Gpjv59ZV9NwLSM6HkQs38C3V0vjlPdGNmnC2Ec6TtIz9hhRe3CGBhqmCU00bcCCEBZ/yEJIl070ez/hAK+KfA==
+ b=fSaLPdc9a6hW5CFl3L9o1lwG/7sU3XbMAcCGdqYaBgW/N+wuWJZGYJIAhnBCXOCDyfOuBemk4YbnIMY6oOqBI2yCLdOZmviUrM4u5blhvnO5DSVUiz5v59gfYIDe2D/rs5CcdajplzmWRFD3dmKantWgUI4YzsF4kW4y1KVT9WOvIDYsFQJkv0+JPD0J1CgO+lvhV/g82NHbzvvi5B5x9MzNMAAlIeWfvvBMQssiRLwQBthAxHBLEZIxGGELJ0U9Z5qIqDqME6tkJP5Gl73FED8i3ef6sRC7RV+IyErEUmiCguMbXskNRVHDieP3oy7ofxAbMngYnAhjw4aGe2nzWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HhtgspeZX+1wHc6plofntNbYs6rlA/JqE5xQ6rtfjC0=;
- b=uj00ydepQrVfgkP8150godxHvrW69thWZ4PQ94tXJ0Y6ynD1xFJfCqGP3blqCPtmN0aRXQQnmZokQfZLtiohUq13ipiFoCdNQZSyRGmIp7rEfVnJtvVbfapOh7icjZ7vTf/WlxB563am0OZKcvZMIc/1Djdnuurh1PiibDe+Bo75+G1mx6QzmkhzfktHKDP30+rEHYLszhSbpituCXUieZ5PLoigIoU/fkTHJ1W2VYwlyK8nTLRKDn5xAG6gQk2oAlSE1Hrx/ToPsmPCk2GW25lygUWI8v/7EE7YjO9Xll6SCLj3MYhJfFkJbOn60ws67YuxZaKdiS5yGErkaZpvpQ==
+ bh=xvXmgWPQvC0IDWNk3LMawUmTLmSSRzCGcZNVI9elnnk=;
+ b=wSAfuVAhDjy0+aRxbzvbqiC4G0sVtF0ERndBNPMPwFV/USjIyk91D53RS7a2DoAMXkFgRawjp9YnAct5FU7kpl58wM479VzTwF08EPuQEGfjiOLA1h42EVx2+/dGoWqWdJ+8BWEiRxGiOl13uAwldB/A+jJUUKqIHy45du6Atg/woyws4g15ski3xAEvXleEElYXnPshTLsjo0D3DXSg3paN/H99BK1r7nmib+90D6saolxyh30h1EeTPSZuCRuMerLBSJPdcjwfXD8hPiGtNyAb9ad8DXoTTKRAnjuk5Pas+mlhgCHhQtL85+tI2tt+4IAD6U0I1yuxHFC5rOnIpw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HhtgspeZX+1wHc6plofntNbYs6rlA/JqE5xQ6rtfjC0=;
- b=Di5qP03+s6/kjXD1D5ObYW0EvUERhuCjyQwrC4rWsZJ9lhl5Tz70rabMtwwHT8uCnnO7JgZG9XtNJ1mcLywZEyd0DOYl2ZNUKZDKWF/hfrKsKFR8PKRfIWxoAfX9EbHApmILZ0t69YXe+a51JxMOOqw5NwdBMNUYjpkkQcOcUmQ=
-Received: from BN9PR03CA0414.namprd03.prod.outlook.com (2603:10b6:408:111::29)
- by PHXPR12MB999233.namprd12.prod.outlook.com (2603:10b6:510:3cd::12)
+ bh=xvXmgWPQvC0IDWNk3LMawUmTLmSSRzCGcZNVI9elnnk=;
+ b=bkQ+mS2JMDZGjON8XbKTnW+5VlWkLZCdzFJWMX2lkAiB47zVxoiz6A4w5XRrM+BxH7zLTRxuCl+nYyK6Hd2oQ9AAXGkuSJsppqId2a4qJbxwFTXVY9idHkxD9pEnCFze+yuJ8FUzVJ/0Vk4sfyvpWul/1ppQyMKbVw3DZDt5ytc=
+Received: from BN0PR07CA0013.namprd07.prod.outlook.com (2603:10b6:408:141::19)
+ by MW6PR12MB8914.namprd12.prod.outlook.com (2603:10b6:303:244::12)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.8; Thu, 20 Aug
- 2026 01:28:29 +0000
-Received: from BN3PEPF0000B06D.namprd21.prod.outlook.com
- (2603:10b6:408:111:cafe::ac) by BN9PR03CA0414.outlook.office365.com
- (2603:10b6:408:111::29) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 01:28:28 +0000
+Received: from BN2PEPF0000A7FF.namprd02.prod.outlook.com
+ (2603:10b6:408:141:cafe::15) by BN0PR07CA0013.outlook.office365.com
+ (2603:10b6:408:141::19) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.8 via Frontend Transport; Thu, 20
  Aug 2026 01:28:28 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
@@ -47,59 +46,62 @@ X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- BN3PEPF0000B06D.mail.protection.outlook.com (10.167.243.72) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN2PEPF0000A7FF.mail.protection.outlook.com (10.167.245.166) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.0 via Frontend Transport; Thu, 20 Aug 2026 01:28:28 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.339.3 via Frontend Transport; Thu, 20 Aug 2026 01:28:28 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 19 Aug
- 2026 20:28:28 -0500
+ 2026 20:28:26 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 19 Aug
+ 2026 20:28:26 -0500
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
- Transport; Wed, 19 Aug 2026 20:28:27 -0500
+ Transport; Wed, 19 Aug 2026 20:28:25 -0500
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: <kamil.konieczny@linux.intel.com>, <jani.nikula@linux.intel.com>,
  <krzysztof.karas@intel.com>, <krzysztof.kozlowski@canonical.com>,
  <jesse.zhang@amd.com>, <christian.koenig@amd.com>,
  <alexander.deucher@amd.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: [PATCH v6 3/4] lib/igt_core: Enable automatic platform filtering in
- subtest execution
-Date: Wed, 19 Aug 2026 21:27:18 -0400
-Message-ID: <20260820012820.129589-4-vitaly.prosyak@amd.com>
+Subject: [PATCH v6 1/4] lib: Add generic platform filtering framework
+Date: Wed, 19 Aug 2026 21:27:16 -0400
+Message-ID: <20260820012820.129589-2-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20260820012820.129589-1-vitaly.prosyak@amd.com>
 References: <20260820012820.129589-1-vitaly.prosyak@amd.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B06D:EE_|PHXPR12MB999233:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2e849b51-eb0f-4b9c-2587-08defe5a5696
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A7FF:EE_|MW6PR12MB8914:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5ea85c85-3d2a-452d-3216-08defe5a5662
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|376014|36860700016|23010399003|1800799024|3023799007|56012099006|10067099003|5023799004|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: TKPh7+Ta4JLd1CxAweZWoPdFmhBOZX8LYkMgxHXDD0k7NTcLANvDBUCkRA/UH4GJlWMQzOEvMHuotO8nAJgNx/mufpZBn3ylmOC0TVlf056no2G+Ac2RItmP0MQRGKGdgR3U5JuZV3EUYaQuk1vUPafaOLQCWU1zwaH2v1vr3wyk7HaWCy/zBhJO10GeiZUb2t92O68l9344seFfkRmGPc9Wx0fKGkifmnViQRVmGQodXFVKogj3qVh9tYyeHt+3f1eThjFZkMKTHgGTjLaRoLkYa00px1CTKxmLqWlV+VnpRn1jy21bcTIoHzp2A0hOslB1Ery+CmObaoyNVu3N/ZrgTj3mRbGbni9GAAXekuHkbrmLPsK36YXjtzGg5ebj5AFjlYAtguyB74SXmxH5FBDavunNmeKAW0XWB/jThBMhpYZ7/6Q28rS4nxuaHBVURiHYjNK+pgPwvxU05dJ/gS4WkbZFXpT5x0g0+O+D7o5RTIvkwLmitD7TgCETEWOUTBsfp+dLsgUuOnkIToFY2pDzodUSoMNBeocFeHYyPZXOlz2qn8dZ8mSRTCRVKptSJsabGXA3Bf2RigsZPqvrXpqS7GL6Bv2q5QQ9gXHCJ2Vq4tT22wntgbCfP0/9l0YUikGyEqYkhXWMUIlpGIK2Htpof0dF3oOwupBLIO72/qTE8XjDHC8vIciUkqEC+ugM9WZQUIYSuE+YqW71oac1lw==
+ ARA:13230040|1800799024|82310400026|376014|23010399003|36860700016|6133799003|18002099003|22082099003|11063799006|56012099006|10067099003|3023799007;
+X-Microsoft-Antispam-Message-Info: vFvfbRGwDVGS96pES3zhkkUk+oI15MUbVMg9pWbTTwsnrn5V2DCj32uRMLLeBVlTQ1lizBNTh0OVnJjvP3cYhIqSneZz/FPvCpOOAXMHM4BhxXXhVC/h3SsQDVGK3XbHi4gxBsCRP68qx+Apym1TFzWC7pzexKqFfDfXF5capdy2WkjobdLBpOb2ZPZ+gO0+7wE68EbNoFiZGGwbrpcRRuYWwypP2f2KPw06l6iVvdm/Ehoz0GTnUhVJlFgOarR179bjuE5Oi4E7N+BT+utXrk6Bokh1i+EF7HTr15BqEpXrevvHNAntKHliZSwQtalE5e+MNxBm1IttZGD5HhiZ8GyEWWZjuGl2nLyUjASt0AAV6R2twxMrZfhXTiZUAoZR+SArRMxOyFq/SFVP5F+tHcVx1Xr6S9m8y1yaL8Ftm+O3Y/5rWNibbJtrTHxY0jWxmq/SdC9iJewC5V0Gao1awHJUO3MvdqFrTpMlTCv373oH0KxKwbC0vyTOEsTu6ITuDkV93goGrxl1kD9Kf4JP19jzuz/bBD0Gzfq/AwQNZ8zBM70aawWNrtKr04O42JFRfIVkdQ+TX6zJwY6SBPdqzZbFEkSmHXtYqEFf7OUwd+O7OfG/72Leh8Xtp47yrwO7WBonhaz0s0cX91+L3OqrNc6ZOf5p9nfCZUMzAsHKdFN9hn+BLphQyo4OknQBwCMoq8ximEixu37ZH9mt2I7Z4w==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(376014)(36860700016)(23010399003)(1800799024)(3023799007)(56012099006)(10067099003)(5023799004)(11063799006)(22082099003)(18002099003);
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(82310400026)(376014)(23010399003)(36860700016)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003)(3023799007);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: h4Ub5pDsMV/bTXJeM6CnOkx703rL7j4a3k4rIKXfJ2F6AHUvCfwGfVibqcNitzN/YwJQbBkrO+PxENyzGEDp3DSKxN0ezbSRvQQeyZWy7hf4k9CfYLOJid/Mx5C+2K8cJEE17A7eFwQRNI0EpVWtD9hj8kkCbcwJT+NIFvQBebqU7IW1yvTBRATWfQ6hoTdWgEY0u4VpNuildtPRkOcAbnnOriRQ0ik+9DAGppGdqq3fpLT8CYauSlBKapr3GtF1cuebmBxCQldWcTv6BoWBL4KEF+3HFa4Mzf0+xW3Cr3J+6qqoE9zvg9bk7gEvEIJA4dxXEin7FXPNXPSw1rQZocIugo8WpCM18iZcJop+ShxK73ueIIgK8lGf32Qc7cgkhDOSqVM+csTU4vQ3WST4eGpAdWtUkisyk4FNCDA86t+7qYneAvC0DdvxP8JCA8KD
+X-MS-Exchange-AntiSpam-MessageData-0: vz5hl9jfWUsndcgGs6XNr1m5AKx9IvjQc7N7Rw5BuF+PfE4CTQuq+m1EnAlkWUTuxepbU6LCZMs0uM9mJMc9Ao11HnbH1LyD3grm/Ol45SiauxhfPVXEPTyvnpk92YcuO5elR4RG9pVVba3jfDmhEA+6xj+m5kCm+BANMuWeyAp3bNNVxj2qon1wDLUf85usi1uiUYCl/qveRwkjf66LW7ykP0RIpMzzUv6TOQR4SOTi46bh9Os0FH+IHcE4/7IEeJLGaCLqYukdyMEhINFg2k1A0RjOZcX+oydaqfpO/7Wu0mlmmS8hDY76rJMgspM3OM4NmcIpinvCl8EPRHJP9N7VwEaV+iRscc+aqpvay1M8YMLeQYH0w3cKq9zs9uDdRAOb04cBIQF5zmKf3BU/CRlaPY9tjunjuXKWN0+igKVvr7AHcOgC3Dn6kGVtXfKC
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 01:28:28.5952 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2e849b51-eb0f-4b9c-2587-08defe5a5696
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Aug 2026 01:28:28.2548 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ea85c85-3d2a-452d-3216-08defe5a5662
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN3PEPF0000B06D.namprd21.prod.outlook.com
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF0000A7FF.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PHXPR12MB999233
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8914
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -117,61 +119,759 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Hook igt_platform_should_skip() into __igt_run_subtest() so tests
-initialized with igt_platform_filter_init() automatically skip
-filtered subtests without any manual calls in test code.
+Implement vendor-agnostic platform filtering system that allows any
+vendor to plug in platform-specific test skipping logic via callbacks.
+
+Key design elements:
+- struct platform_filter_ops: vendor callback interface
+- struct platform_skip_entry: vendor-neutral skip rule representation
+- enum skip_source: three-tier priority (built-in, config, env)
+- API functions: init, should_skip, require, dump
+
+Platform filtering is automatic - tests only need to call
+platform_filter_init() once in igt_fixture. The IGT framework
+automatically checks each subtest before execution via
+__igt_run_subtest().
 
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
 Cc: Krzysztof Karas <krzysztof.karas@intel.com>
+Cc: Jesse Zhang <jesse.zhang@amd.com>
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_core.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ lib/igt_platform_filter.c | 575 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_platform_filter.h | 124 ++++++++
+ lib/meson.build           |   1 +
+ 3 files changed, 700 insertions(+)
+ create mode 100644 lib/igt_platform_filter.c
+ create mode 100644 lib/igt_platform_filter.h
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 2f737b01a..0ec7b4861 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -80,6 +80,7 @@
- #include "igt_rc.h"
- #include "igt_list.h"
- #include "igt_map.h"
-+#include "igt_platform_filter.h"
- #include "igt_device_scan.h"
- #include "igt_thread.h"
- #include "igt_vec.h"
-@@ -1525,7 +1526,6 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
- 		return false;
- 	}
- 
--
- 	if (skip_subtests_henceforth) {
- 		_subtest_result_message(_SUBTEST_TYPE_NORMAL, subtest_name,
- 					skip_subtests_henceforth == SKIP ? "SKIP" : "FAIL",
-@@ -1533,6 +1533,22 @@ bool __igt_run_subtest(const char *subtest_name, const char *file, const int lin
- 		return false;
- 	}
- 
-+	/* Automatic platform filtering - if initialized, check if subtest should be skipped */
-+	if (igt_platform_filter_is_initialized()) {
-+		enum skip_source source;
-+		const char *reason;
+diff --git a/lib/igt_platform_filter.c b/lib/igt_platform_filter.c
+new file mode 100644
+index 000000000..15b4e9690
+--- /dev/null
++++ b/lib/igt_platform_filter.c
+@@ -0,0 +1,575 @@
++// SPDX-License-Identifier: MIT
++// Copyright 2026 Advanced Micro Devices, Inc.
++/*
++ * Generic platform-based test filtering framework
++ *
++ * This is a vendor-agnostic filtering system. Vendor-specific logic
++ * is implemented via platform_filter_ops callbacks.
++ */
 +
-+		if (igt_platform_should_skip(igt_test_name(), subtest_name,
-+					      &source, &reason)) {
-+			_subtest_result_message(_SUBTEST_TYPE_NORMAL, subtest_name,
-+						"SKIP", 0.0);
-+			igt_info("Platform filtering (%s): %s\n",
-+				 source == SKIP_SOURCE_BUILTIN ? "built-in" :
-+				 source == SKIP_SOURCE_CONFIG ? "config" : "env",
-+				 reason);
++#include <ctype.h>
++#include <fnmatch.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include "igt.h"
++#include "igt_platform_filter.h"
++
++/* Maximum entries from config file and env variable */
++#define MAX_CONFIG_ENTRIES 256
++#define MAX_ENV_ENTRIES 128
++#define MAX_LINE_LENGTH 512
++
++/* Filter context - holds all runtime state (no globals) */
++struct platform_filter_context {
++	const struct platform_filter_ops *ops;
++	const void *platform_info;
++
++	struct platform_skip_entry config_entries[MAX_CONFIG_ENTRIES];
++	int config_entry_count;
++
++	struct platform_skip_entry env_entries[MAX_ENV_ENTRIES];
++	int env_entry_count;
++
++	bool initialized;
++	char current_platform_name[64];
++};
++
++/* Single static instance - initialized on first use */
++static struct platform_filter_context *get_filter_context(void)
++{
++	static struct platform_filter_context ctx = {0};
++
++	return &ctx;
++}
++
++/*
++ * ================================================================
++ * HELPER FUNCTIONS
++ * ================================================================
++ */
++
++/* Helper: Trim whitespace from string */
++static char *trim(char *str)
++{
++	char *end;
++
++	while (isspace(*str))
++		str++;
++
++	if (*str == 0)
++		return str;
++
++	end = str + strlen(str) - 1;
++	while (end > str && isspace(*end))
++		end--;
++
++	*(end + 1) = 0;
++	return str;
++}
++
++/* Helper: Match wildcard or exact string */
++static bool match_string(const char *pattern, const char *str)
++{
++	if (!pattern || !str)
++		return false;
++
++	if (strcmp(pattern, "*") == 0)
++		return true;
++	return fnmatch(pattern, str, 0) == 0;
++}
++
++/* Helper: Check if entry matches platform/test/subtest */
++static bool entry_matches(const struct platform_filter_context *ctx,
++			  const struct platform_skip_entry *entry,
++			  const char *test_name,
++			  const char *subtest_name)
++{
++	if (entry->platform_data && ctx->ops->match_platform) {
++		if (!ctx->ops->match_platform(ctx->platform_info, entry->platform_data))
++			return false;
++	}
++
++	if (entry->test_name && strcmp(entry->test_name, "*") != 0) {
++		if (!test_name || !match_string(entry->test_name, test_name))
++			return false;
++	}
++
++	if (entry->subtest_glob && strcmp(entry->subtest_glob, "*") != 0) {
++		if (!subtest_name || !match_string(entry->subtest_glob, subtest_name))
++			return false;
++	}
++	return true;
++}
++
++/*
++ * ================================================================
++ * CONFIG FILE PARSER (/etc/igt/platform_skip.conf)
++ * ================================================================
++ */
++
++/* Parse one line from config file */
++static bool parse_config_line(struct platform_filter_context *ctx,
++			      char *line,
++			      struct platform_skip_entry *entry)
++{
++	char *platform, *test, *subtest, *reason;
++
++	/* Skip comments and empty lines */
++	line = trim(line);
++	if (line[0] == '#' || line[0] == 0)
++		return false;
++
++	/* Format: platform:test:subtest:reason */
++	platform = strtok(line, ":");
++	test = strtok(NULL, ":");
++	subtest = strtok(NULL, ":");
++	reason = strtok(NULL, "\n");
++
++	if (!platform || !test || !subtest) {
++		igt_warn("Invalid config line format (expected platform:test:subtest:reason)\n");
++		return false;
++	}
++
++	/* Allocate and copy strings */
++	entry->test_name = strdup(trim(test));
++	entry->subtest_glob = strdup(trim(subtest));
++	entry->reason = reason ? strdup(trim(reason)) : strdup("No reason");
++
++	/* Parse platform using vendor callback */
++	platform = trim(platform);
++	if (ctx->ops->parse_platform_config && strcmp(platform, "*") != 0) {
++		/* Vendor-specific platform string */
++		if (!ctx->ops->parse_platform_config(platform, &entry->platform_data)) {
++			igt_warn("Failed to parse platform: %s\n", platform);
++			free((void *)entry->test_name);
++			free((void *)entry->subtest_glob);
++			free((void *)entry->reason);
 +			return false;
 +		}
++	} else {
++		/* Wildcard or no vendor-specific parsing available */
++		entry->platform_data = NULL;
 +	}
- 	igt_kmsg(KMSG_INFO "%s: starting subtest %s\n",
- 		 command_str, subtest_name);
- 	igt_trace("%s: starting subtest %s\n", command_str, subtest_name);
++	return true;
++}
++
++/* Load config file */
++static void load_config_file(struct platform_filter_context *ctx, const char *filename)
++{
++	FILE *f;
++	char line[MAX_LINE_LENGTH];
++
++	f = fopen(filename, "r");
++	if (!f) {
++		igt_debug("Config file not found: %s\n", filename);
++
++		return;
++	}
++
++	igt_info("Loading platform skip config from: %s\n", filename);
++
++	while (fgets(line, sizeof(line), f)) {
++		if (ctx->config_entry_count >= MAX_CONFIG_ENTRIES) {
++			igt_warn("Config file has too many entries (max %d)\n",
++				 MAX_CONFIG_ENTRIES);
++			break;
++		}
++
++		if (parse_config_line(ctx, line, &ctx->config_entries[ctx->config_entry_count]))
++			ctx->config_entry_count++;
++	}
++
++	fclose(f);
++	igt_info("Loaded %d skip rules from config file\n", ctx->config_entry_count);
++}
++
++/*
++ * ================================================================
++ * ENVIRONMENT VARIABLE PARSER (IGT_PLATFORM_SKIP_CONFIG)
++ * ================================================================
++ */
++
++/* Parse environment variable entries (semicolon-separated) */
++static void load_env_variable(struct platform_filter_context *ctx)
++{
++	char *env, *env_copy, *entry_str, *saveptr;
++	const char *env_value;
++
++	env_value = getenv("IGT_PLATFORM_SKIP_CONFIG");
++	if (!env_value || env_value[0] == 0) {
++		igt_debug("IGT_PLATFORM_SKIP_CONFIG not set\n");
++
++		return;
++	}
++
++	igt_info("Loading platform skip config from IGT_PLATFORM_SKIP_CONFIG\n");
++
++	env_copy = strdup(env_value);
++	env = env_copy;
++
++	/* Parse semicolon-separated entries */
++	while ((entry_str = strtok_r(env, ";", &saveptr)) != NULL) {
++		env = NULL; /* For subsequent strtok_r calls */
++
++		if (ctx->env_entry_count >= MAX_ENV_ENTRIES) {
++			igt_warn("Too many env variable entries (max %d)\n",
++				 MAX_ENV_ENTRIES);
++			break;
++		}
++
++		if (parse_config_line(ctx, entry_str, &ctx->env_entries[ctx->env_entry_count]))
++			ctx->env_entry_count++;
++	}
++
++	free(env_copy);
++	igt_info("Loaded %d skip rules from environment variable\n", ctx->env_entry_count);
++}
++
++/*
++ * ================================================================
++ * PUBLIC API IMPLEMENTATION
++ * ================================================================
++ */
++
++/**
++ * igt_platform_filter_init:
++ * @ops: Platform-specific operation callbacks
++ * @platform_info: Vendor-specific platform identification data
++ *
++ * Initialize the platform filtering system with vendor-specific backend.
++ * This sets up the filter context and loads skip rules from three sources
++ * in priority order:
++ * 1. Built-in rules (highest priority, vendor-provided)
++ * 2. Config file /etc/igt/platform_skip.conf
++ * 3. Environment variable IGT_PLATFORM_SKIP_CONFIG (lowest priority)
++ *
++ * The filtering system is vendor-agnostic. Platform matching logic is
++ * provided through the @ops callbacks, allowing each vendor to implement
++ * their own identification scheme (e.g., AMD uses family_id/chip_rev,
++ * Intel could use platform_id/stepping).
++ *
++ * Must be called once before using igt_platform_require().
++ */
++void igt_platform_filter_init(const struct platform_filter_ops *ops,
++			      const void *platform_info)
++{
++	struct platform_filter_context *ctx = get_filter_context();
++
++	if (ctx->initialized)
++
++		return;
++
++	if (!ops) {
++		igt_warn("Platform filter ops is NULL, filtering disabled\n");
++
++		return;
++	}
++
++	ctx->ops = ops;
++	ctx->platform_info = platform_info;
++
++	igt_info("Initializing platform filter system (3-tier priority) for vendor: %s\n",
++		 ops->name ? ops->name : "unknown");
++
++	/* Get current platform name */
++
++	if (ops->get_platform_name) {
++		const char *pname = ops->get_platform_name(platform_info);
++
++		snprintf(ctx->current_platform_name, sizeof(ctx->current_platform_name),
++			 "%s", pname ? pname : "unknown");
++	}
++
++	/* Priority 1: Built-in array (vendor-specific) */
++	igt_debug("  Priority 1: Built-in array (vendor-specific)\n");
++
++	/* Priority 2: Config file */
++	igt_debug("  Priority 2: Config file /etc/igt/platform_skip.conf\n");
++	load_config_file(ctx, "/etc/igt/platform_skip.conf");
++
++	/* Priority 3: Environment variable */
++	igt_debug("  Priority 3: Environment variable IGT_PLATFORM_SKIP_CONFIG\n");
++	load_env_variable(ctx);
++
++	ctx->initialized = true;
++	igt_info("Platform filter initialization complete\n");
++}
++
++/**
++ * igt_platform_should_skip:
++ * @test_name: Name of the test
++ * @subtest_name: Name of the subtest (or NULL for test-level check)
++ *
++ * Check if a test/subtest should be skipped based on platform filtering rules.
++ *
++ * Returns: true if the test should be skipped, false otherwise
++ */
++bool igt_platform_should_skip(const char *test_name,
++			      const char *subtest_name,
++			      enum skip_source *source,
++			      const char **reason)
++{
++	struct platform_filter_context *ctx = get_filter_context();
++	const struct platform_skip_entry *entry;
++	int i, count;
++
++	if (!ctx->initialized) {
++		igt_warn("Platform filter not initialized\n");
++		if (source)
++			*source = SKIP_SOURCE_NONE;
++		if (reason)
++			*reason = NULL;
++		return false;
++	}
++
++	/* Priority 1: Check built-in array FIRST */
++	if (ctx->ops->get_builtin_rules) {
++		const struct platform_skip_entry *builtin = ctx->ops->get_builtin_rules(&count);
++
++		for (i = 0; i < count; i++) {
++			entry = &builtin[i];
++			if (entry_matches(ctx, entry, test_name, subtest_name)) {
++				if (source)
++					*source = SKIP_SOURCE_BUILTIN;
++				if (reason)
++					*reason = entry->reason;
++				igt_debug("Skip (built-in): %s:%s - %s\n",
++					  entry->test_name ? entry->test_name : "*",
++					  entry->subtest_glob ? entry->subtest_glob : "*",
++					  entry->reason ? entry->reason : "no reason");
++				return true;
++			}
++		}
++	}
++
++	/* Priority 2: Check config file */
++	for (i = 0; i < ctx->config_entry_count; i++) {
++		entry = &ctx->config_entries[i];
++		if (entry_matches(ctx, entry, test_name, subtest_name)) {
++			if (source)
++				*source = SKIP_SOURCE_CONFIG;
++			if (reason)
++				*reason = entry->reason;
++			igt_debug("Skip (config): %s:%s - %s\n",
++				  entry->test_name, entry->subtest_glob, entry->reason);
++			return true;
++		}
++	}
++
++	/* Priority 3: Check environment variable */
++	for (i = 0; i < ctx->env_entry_count; i++) {
++		entry = &ctx->env_entries[i];
++		if (entry_matches(ctx, entry, test_name, subtest_name)) {
++			if (source)
++				*source = SKIP_SOURCE_ENV;
++			if (reason)
++				*reason = entry->reason;
++			igt_debug("Skip (env): %s:%s - %s\n",
++				  entry->test_name, entry->subtest_glob, entry->reason);
++			return true;
++		}
++	}
++
++	if (source)
++		*source = SKIP_SOURCE_NONE;
++	if (reason)
++		*reason = NULL;
++	return false;
++}
++
++/**
++ * igt_platform_require:
++ * @subtest_name: Name of the subtest to check
++ *
++ * Check if current subtest should be skipped and call igt_skip() if matched.
++ * This integrates platform filtering with IGT's standard skip mechanism.
++ *
++ * The function automatically determines the test name from igt_test_name().
++ * If a skip rule matches, calls igt_skip() with the configured reason.
++ */
++void igt_platform_require(const char *subtest_name)
++{
++	enum skip_source source;
++	const char *test_name = igt_test_name();
++	const char *reason;
++
++	if (igt_platform_should_skip(test_name, subtest_name, &source, &reason)) {
++		const char *source_str;
++
++		switch (source) {
++		case SKIP_SOURCE_BUILTIN:
++			source_str = "built-in array";
++			break;
++		case SKIP_SOURCE_CONFIG:
++			source_str = "config file";
++			break;
++		case SKIP_SOURCE_ENV:
++			source_str = "environment variable";
++			break;
++		default:
++			source_str = "unknown";
++		}
++
++		igt_skip("Skipped on this platform [%s]: %s\n",
++			 source_str, reason ? reason : "no reason");
++	}
++}
++
++/**
++ * igt_platform_filter_dump:
++ *
++ * Dump the current platform filtering configuration to stdout.
++ * Shows all loaded skip rules from built-in, config file, and environment
++ * variable sources. Useful for debugging which rules are active.
++ */
++void igt_platform_filter_dump(void)
++{
++	struct platform_filter_context *ctx = get_filter_context();
++	const struct platform_skip_entry *entry;
++	int i, total_count, count;
++
++	if (!ctx->initialized) {
++		igt_info("Platform filter not initialized\n");
++
++		return;
++	}
++
++	igt_info("\n");
++	igt_info("═══════════════════════════════════════════════════════════════════\n");
++	igt_info(" PLATFORM SKIP FILTER CONFIGURATION - THREE-TIER PRIORITY SYSTEM\n");
++	igt_info("═══════════════════════════════════════════════════════════════════\n\n");
++
++	igt_info("Vendor: %s\n", ctx->ops->name ? ctx->ops->name : "unknown");
++	if (ctx->current_platform_name[0])
++		igt_info("Current Platform: %s\n\n", ctx->current_platform_name);
++
++	/* Priority 1: Built-in array */
++	igt_info("───────────────────────────────────────────────────────────────────\n");
++	igt_info(" PRIORITY 1: BUILT-IN PRODUCTION ARRAY (VENDOR-SPECIFIC)\n");
++	igt_info(" Source: Vendor implementation\n");
++	igt_info("───────────────────────────────────────────────────────────────────\n");
++
++	total_count = 0;
++	if (ctx->ops->get_builtin_rules) {
++		const struct platform_skip_entry *builtin = ctx->ops->get_builtin_rules(&count);
++
++		for (i = 0; i < count; i++) {
++			entry = &builtin[i];
++			total_count++;
++			igt_info("  %2d. %s : %s\n",
++				 total_count,
++			       entry->test_name ? entry->test_name : "*",
++			       entry->subtest_glob ? entry->subtest_glob : "*");
++			igt_info("      Reason: %s\n", entry->reason ? entry->reason : "no reason");
++
++			/* Print platform data if vendor provides dump callback */
++			if (entry->platform_data && ctx->ops->dump_platform_data) {
++				igt_info("      Platform: ");
++				ctx->ops->dump_platform_data(entry->platform_data);
++				igt_info("\n");
++			}
++			igt_info("\n");
++		}
++	}
++	if (total_count == 0)
++		igt_info("  (No built-in rules)\n\n");
++
++	/* Priority 2: Config file */
++	igt_info("───────────────────────────────────────────────────────────────────\n");
++	igt_info(" PRIORITY 2: DEVELOPMENT CONFIG FILE\n");
++	igt_info(" Source: /etc/igt/platform_skip.conf\n");
++	igt_info("───────────────────────────────────────────────────────────────────\n");
++
++	if (ctx->config_entry_count > 0) {
++		for (i = 0; i < ctx->config_entry_count; i++) {
++			entry = &ctx->config_entries[i];
++			igt_info("  %2d. %s : %s\n",
++				 i + 1,
++			       entry->test_name,
++			       entry->subtest_glob);
++			igt_info("      Reason: %s\n\n", entry->reason);
++		}
++	} else {
++		igt_info("  (No config file rules loaded)\n\n");
++	}
++
++	/* Priority 3: Environment variable */
++	igt_info("───────────────────────────────────────────────────────────────────\n");
++	igt_info(" PRIORITY 3: RUNTIME ENVIRONMENT VARIABLE\n");
++	igt_info(" Source: IGT_PLATFORM_SKIP_CONFIG\n");
++	igt_info("───────────────────────────────────────────────────────────────────\n");
++
++	if (ctx->env_entry_count > 0) {
++		for (i = 0; i < ctx->env_entry_count; i++) {
++			entry = &ctx->env_entries[i];
++
++			igt_info("  %2d. %s : %s\n",
++				 i + 1,
++			       entry->test_name,
++			       entry->subtest_glob);
++			igt_info("      Reason: %s\n\n", entry->reason);
++		}
++	} else {
++		igt_info("  (No environment variable rules)\n\n");
++	}
++
++	igt_info("───────────────────────────────────────────────────────────────────\n");
++	igt_info(" SUMMARY\n");
++	igt_info("───────────────────────────────────────────────────────────────────\n");
++	igt_info("  Built-in rules:     %d\n", total_count);
++	igt_info("  Config file rules:  %d\n", ctx->config_entry_count);
++	igt_info("  Environment rules:  %d\n", ctx->env_entry_count);
++	igt_info("  Total skip rules:   %d\n",
++		 total_count + ctx->config_entry_count + ctx->env_entry_count);
++	igt_info("\n");
++	igt_info("═══════════════════════════════════════════════════════════════════\n\n");
++}
++
++/**
++ * igt_platform_filter_dump_to_file:
++ * @filename: Path to output file
++ *
++ * Dump platform filtering configuration to a file.
++ *
++ * Returns: 0 on success, -1 on error
++ */
++int igt_platform_filter_dump_to_file(const char *filename)
++{
++	FILE *old_stdout;
++	FILE *f;
++
++	f = fopen(filename, "w");
++	if (!f) {
++		igt_warn("Failed to open %s for writing\n", filename);
++		return -1;
++	}
++
++	/* Redirect stdout to file */
++	old_stdout = stdout;
++	stdout = f;
++
++	igt_platform_filter_dump();
++
++	/* Restore stdout */
++	stdout = old_stdout;
++	fclose(f);
++
++	igt_info("Platform filter configuration dumped to: %s\n", filename);
++	return 0;
++}
++
++/**
++ * igt_platform_filter_is_initialized:
++ *
++ * Check if platform filtering has been initialized.
++ *
++ * Returns: true if initialized, false otherwise
++ */
++bool igt_platform_filter_is_initialized(void)
++{
++	struct platform_filter_context *ctx = get_filter_context();
++
++	return ctx && ctx->initialized;
++}
+diff --git a/lib/igt_platform_filter.h b/lib/igt_platform_filter.h
+new file mode 100644
+index 000000000..b83440514
+--- /dev/null
++++ b/lib/igt_platform_filter.h
+@@ -0,0 +1,124 @@
++/* SPDX-License-Identifier: MIT
++ * Copyright 2026 Advanced Micro Devices, Inc.
++ */
++
++#ifndef IGT_PLATFORM_FILTER_H
++#define IGT_PLATFORM_FILTER_H
++
++#include <stdbool.h>
++
++/**
++ * SECTION: igt_platform_filter
++ * @short_description: Generic platform-based test filtering framework
++ * @title: Platform Filter
++ * @include: igt_platform_filter.h
++ *
++ * Generic test filtering system that allows skipping tests/subtests based
++ * on platform characteristics. Designed to be vendor-agnostic with
++ * vendor-specific backends.
++ *
++ * Three-tier priority system (checked in sequence, first match wins):
++ *   1. PRODUCTION: Built-in compile-time rules (vendor-specific)
++ *   2. DEVELOPMENT: Config file /etc/igt/platform_skip.conf
++ *   3. RUNTIME: Environment variable IGT_PLATFORM_SKIP_CONFIG
++ *
++ * Vendor Implementation:
++ *   Each vendor implements platform_filter_ops callbacks to provide:
++ *   - Platform identification and matching logic
++ *   - Platform-specific data structures
++ *   - Built-in skip rules
++ *
++ * Usage in tests:
++ *   igt_fixture() {
++ *       igt_platform_filter_init(vendor_ops, platform_info);
++ *   }
++ *
++ *   igt_subtest("my-test") {
++ *       // Automatic filtering - no manual call needed!
++ *       test_code();
++ *   }
++ *
++ * Config file format (/etc/igt/platform_skip.conf):
++ *   # Lines starting with # are comments
++ *   # Format: platform:test:subtest:reason
++ *   # Use * as wildcard
++ *
++ *   navi48:*:*:All tests disabled on Navi48
++ *   alderlake:i915_pm:*:Power management tests broken
++ *
++ * Environment variable format (IGT_PLATFORM_SKIP_CONFIG):
++ *   Same as config file, semicolon-separated entries:
++ *   export IGT_PLATFORM_SKIP_CONFIG="navi48:*:*:Testing;navi10:amd_basic:*:Broken"
++ */
++
++/* Maximum platform ranges per skip entry */
++#define MAX_PLATFORM_RANGES 4
++
++/**
++ * enum skip_source - Source of skip rule
++ */
++enum skip_source {
++	SKIP_SOURCE_BUILTIN,    /* From vendor built-in array */
++	SKIP_SOURCE_CONFIG,     /* From /etc/igt/platform_skip.conf */
++	SKIP_SOURCE_ENV,        /* From IGT_PLATFORM_SKIP_CONFIG */
++	SKIP_SOURCE_NONE,       /* Not skipped */
++};
++
++/**
++ * struct platform_skip_entry - Generic skip rule entry
++ *
++ * Generic structure for skip rules. Vendor-specific data is stored
++ * in platform_data field and interpreted by vendor callbacks.
++ */
++struct platform_skip_entry {
++	const char *test_name;          /* Test binary name or "*" for all */
++	const char *subtest_glob;       /* Subtest pattern (fnmatch) or "*" */
++	const char *reason;             /* Human-readable reason (required) */
++	void *platform_data;            /* Vendor-specific platform matching data */
++};
++
++/**
++ * struct platform_filter_ops - Vendor-specific operations
++ *
++ * Callback structure that vendors implement to provide platform-specific
++ * filtering logic. This allows the core filtering framework to remain
++ * vendor-agnostic.
++ */
++struct platform_filter_ops {
++	/** @name: Vendor name (e.g., "amd", "intel") */
++
++	const char *name;
++
++	/** @get_platform_name: Get current platform name */
++	const char *(*get_platform_name)(const void *platform_info);
++
++	/** @match_platform: Check if skip entry matches current platform */
++	bool (*match_platform)(const void *platform_info, const void *platform_data);
++
++	/** @parse_platform_config: Parse platform string from config file */
++	bool (*parse_platform_config)(const char *platform_str, void **platform_data_out);
++
++	/** @get_builtin_rules: Get vendor-specific built-in skip rules */
++	const struct platform_skip_entry *(*get_builtin_rules)(int *count_out);
++
++	/** @dump_platform_data: Dump platform_data for debugging (optional) */
++	void (*dump_platform_data)(const void *platform_data);
++};
++
++bool igt_platform_filter_is_initialized(void);
++
++void igt_platform_filter_init(const struct platform_filter_ops *ops,
++			       const void *platform_info);
++
++void igt_platform_require(const char *subtest_name);
++
++bool igt_platform_should_skip(const char *test_name,
++			       const char *subtest_name,
++			       enum skip_source *source,
++			       const char **reason);
++
++void igt_platform_filter_dump(void);
++
++int igt_platform_filter_dump_to_file(const char *filename);
++
++#endif /* IGT_PLATFORM_FILTER_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index 484cd4a55..29c27b14a 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -39,6 +39,7 @@ lib_sources = [
+ 	'igt_perf.c',
+ 	'igt_rc.c',
+ 	'igt_pipe_crc.c',
++	'igt_platform_filter.c',
+ 	'igt_power.c',
+ 	'igt_primes.c',
+ 	'igt_pci.c',
 -- 
 2.54.0
 
