@@ -4,56 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB2CCC5DF87
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 12:20:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF942C5DF81
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 12:21:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8027710E5ED;
-	Thu, 20 Aug 2026 12:20:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9425410F010;
+	Thu, 20 Aug 2026 12:21:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="P+TLpqcq";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ermCm7zb";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4BADB10E1D6
- for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 12:16:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F02CE10E1D6
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 12:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787228205; x=1818764205;
+ t=1787228192; x=1818764192;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pCym+qbCW4PYtZ0vh8OVkUhOvW4+aKmRRzemlC+7/es=;
- b=P+TLpqcqElgEszRgPOo3larX3wwWZIAVS4XhBjHlPGfC5He2erP/unga
- WFSjZz3k2LhgvJgMZu713bE+vVx+m/68gOPaBaBg/3b4UDQh0sv+16Lra
- SxYKaPpLfiiiNLTdoY5A7xGfUNQd28YDLsNDXooAjYIms+vXmLwPzxKj9
- 1/Hj7FBYaASzKbEApda00oVsvzisQOYnZwrgeNKR14aj25BMRl5tuZGng
- Kkq6MIdNowwrffUA5xAWb1i0YQfeplu3GdjpKvTbTML08XCHF+WJUCuVd
- TgwdWEVyZOulU8bffLusU/yNKJmA5BS0pAG3Qx5INv5abkfAwdhMG3/BB A==;
-X-CSE-ConnectionGUID: ov4buhXiTc+X3Nxs5n1DaA==
-X-CSE-MsgGUID: yh26lh1XQq60jnch6tN+LA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="98917305"
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="98917305"
+ bh=UIBemX7RyVqJmpz+PrI+orakZbtyBNVH4rQ9VI47rEQ=;
+ b=ermCm7zbdPUT9NcLzArXG34K016RSopXrgqOmg9IBPLUw4QRBBrh/kZC
+ +jfyIc1d8seJBE745mrywL+XRFFe/+qpIJZyPeNzoA6fKNam6CkmAcHYJ
+ YuZD+zwfjeJbPQbsfeQ2jSuS+eggCje1wH9f6tekNE/QqFZjT2kkozJjG
+ 3GYvuwW45IchA+SokydeSn6mINQ9/AY1Nx2pHVgJuw8yEuoS+6H6fXjHQ
+ zGsncj5fpLnZD+TEP6xyz7esX8f8SPX8/+t4igU2J3Z/YS4iA+uY3gQZL
+ /B8ebEkq510AqemQXUxquuFi20zHetSkOaT0oPirzEb6advtfIWFCQhqD g==;
+X-CSE-ConnectionGUID: iaXooGWSROybozuf5CRy4g==
+X-CSE-MsgGUID: 6ptDp5ylRrWAlMWnfKhShw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11880"; a="98917285"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="98917285"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 05:16:45 -0700
-X-CSE-ConnectionGUID: s6NhlZqJRNy6rO7l9LCSgw==
-X-CSE-MsgGUID: hlP3Mld7S3e3cFju7ftfyA==
+ 20 Aug 2026 05:16:31 -0700
+X-CSE-ConnectionGUID: 1Hx6rWyFTPaYXRGfFpbFXw==
+X-CSE-MsgGUID: UmJMKJ5sSMWbMez2G194Og==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="264675986"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="264675915"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 05:16:43 -0700
+ 20 Aug 2026 05:16:30 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  mallesh.koujalagi@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v2 7/8] tests/intel/xe_err_injection: Add tests for L2 bank
- Corr err threshold scenarios
-Date: Thu, 20 Aug 2026 17:45:59 +0530
-Message-Id: <20260820121600.75052-8-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v2 1/8] lib/igt_drm_netlink: Introduce DRM RAS Generic Netlink
+ interface
+Date: Thu, 20 Aug 2026 17:45:53 +0530
+Message-Id: <20260820121600.75052-2-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260820121600.75052-1-ravi.kishore.koppuravuri@intel.com>
 References: <20260820121600.75052-1-ravi.kishore.koppuravuri@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,353 +71,206 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduced L2 bank correctable error threshold subtests:
-   - single correctable error
-   - Correctable error with threshold set to 1
-   - 16 Correctable error injections with threshold set to 0xF
-
-Add DRM RAS netlink error-notify event subscription to verify
-correctable error detection across all the above subtests.
+Introduce DRM RAS Generic Netlink interface as a library
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 ---
-v2:Disabled multicast before arming the injection to perform an unicast
-   injection.
-   Updated the condition to verify response from wait_for_error_notify_event
-   condition from an event error value of exactly 1 to the configured error
-   threshold.
----
----
- tests/intel/xe_err_injection.c | 282 +++++++++++++++++++++++++++++++++
- tests/intel/xe_err_injection.h |  10 ++
- 2 files changed, 292 insertions(+)
+ include/drm-uapi/drm_ras.h | 50 +++++++++++++++++++++++++++++++
+ lib/igt_drm_netlink.c      | 60 ++++++++++++++++++++++++++++++++++++++
+ lib/igt_drm_netlink.h      | 25 ++++++++++++++++
+ lib/meson.build            |  9 ++++++
+ 4 files changed, 144 insertions(+)
+ create mode 100644 include/drm-uapi/drm_ras.h
+ create mode 100644 lib/igt_drm_netlink.c
+ create mode 100644 lib/igt_drm_netlink.h
 
-diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-index 0efdc8f6b..13a316c74 100644
---- a/tests/intel/xe_err_injection.c
-+++ b/tests/intel/xe_err_injection.c
-@@ -35,6 +35,14 @@ enum {
- 	RECOVERY_TIMEOUT = 3,
- };
- 
-+time_t event_timeout = 10 * 1000; /* 10 seconds */
+diff --git a/include/drm-uapi/drm_ras.h b/include/drm-uapi/drm_ras.h
+new file mode 100644
+index 000000000..218a3ee86
+--- /dev/null
++++ b/include/drm-uapi/drm_ras.h
+@@ -0,0 +1,50 @@
++/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-3-Clause) */
++/* Do not edit directly, auto-generated from: */
++/*	Documentation/netlink/specs/drm_ras.yaml */
++/* YNL-GEN uapi header */
++/* To regenerate run: tools/net/ynl/ynl-regen.sh */
 +
-+/* Cleanup helper for injection test functions */
-+#define CLEANUP_ON_ERROR(ctx, fw_handle) do { \
-+	cleanup_nl_socket(&ctx); \
-+	release_forcewake(fw_handle); \
-+} while (0)
++#ifndef _UAPI_LINUX_DRM_RAS_H
++#define _UAPI_LINUX_DRM_RAS_H
 +
- static void run_xe_compute_on_all_engines(int fd, bool state)
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -274,6 +282,268 @@ static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
- 	gt_uc_wkr_parity_recovered = true;
- }
- 
-+/* Inject a GT correctable error */
-+static void l2_bank_corr_err_injection(struct xe_mmio *mmio, int fd)
-+{
-+	/* Disable Multicast for unicast error injection */
-+	write_reg(mmio, MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
++#define DRM_RAS_FAMILY_NAME	"drm-ras"
++#define DRM_RAS_FAMILY_VERSION	1
 +
-+	/* Arm the Injection */
-+	write_reg(mmio, L2_BANK_ERR_INJ, L2_BANK_DATA_1BIT_ERR_INJ_CONFIG);
-+	igt_info("Armed L2 Bank Correctable Error Injection\n");
-+
-+	/* Rollback to Multicast */
-+	modify_reg_bit(mmio,
-+		       MC_PKT_CTRL_MGSR_3D_ADDRESS,
-+		       MC_PKT_CTRL_MGSR_3D_VALUE,
-+		       true);
-+}
-+
-+/**
-+ * SUBTEST: l2-bank-corr-err-threshold-1
-+ * Description: Inject single bit error injection in SSA data array when this bit is written
-+ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
-+ * Functionality: error injection
++/*
++ * Type of the node. Currently, only error-counter nodes are supported, which
++ * expose reliability counters for a hardware/software component.
 + */
-+static void l2_bank_corr_err_injection_with_threshold_1(struct xe_mmio *mmio, int fd)
-+{
-+	int fw_handle;
-+	int ret;
-+	uint32_t current_threshold = UINT32_MAX;
-+	struct app_context ctx;
++enum drm_ras_node_type {
++	DRM_RAS_NODE_TYPE_ERROR_COUNTER = 1,
++};
 +
-+	fw_handle = acquire_forcewake(fd);
++enum {
++	DRM_RAS_A_NODE_ATTRS_NODE_ID = 1,
++	DRM_RAS_A_NODE_ATTRS_DEVICE_NAME,
++	DRM_RAS_A_NODE_ATTRS_NODE_NAME,
++	DRM_RAS_A_NODE_ATTRS_NODE_TYPE,
 +
-+	ret = init_nl_socket(&ctx);
-+	if (ret < 0) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
-+	}
++	__DRM_RAS_A_NODE_ATTRS_MAX,
++	DRM_RAS_A_NODE_ATTRS_MAX = (__DRM_RAS_A_NODE_ATTRS_MAX - 1)
++};
 +
-+	/* Subscribe to error-notify */
-+	ret = subscribe_error_notify(&ctx, DRM_RAS_MCGRP_ERROR_NOTIFY);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to subscribe to error-notify (ret=%d)\n", ret);
-+	}
++enum {
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID = 1,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_NAME,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE,
 +
-+	/* get current GT Correctable error threshold */
-+	/** TODO
-+	 *  Fetching node_id and error_id dynamically is pending to implement.
-+	 *  For now, using
-+	 *  node_id=0 (correctable_errors) and
-+	 *  error_id=1 (core_compute)
-+	 */
-+	ctx.node_id = 0;
-+	ctx.error_id = 1;
-+	ret = get_error_threshold(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to query GT correctable error threshold before injection\n");
-+	}
-+	current_threshold = ctx.error_threshold;
-+	igt_info("Current GT Correctable error threshold: %u\n", current_threshold);
++	__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX,
++	DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX = (__DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX - 1)
++};
 +
-+	/* Set GT Correctable error threshold to 1 */
-+	ctx.error_threshold = 1;
-+	ret = set_error_threshold(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to set GT correctable error threshold before injection\n");
-+	}
++enum {
++	DRM_RAS_CMD_LIST_NODES = 1,
++	DRM_RAS_CMD_GET_ERROR_COUNTER,
++	DRM_RAS_CMD_CLEAR_ERROR_COUNTER,
 +
-+	/* Inject a GT correctable error */
-+	l2_bank_corr_err_injection(mmio, fd);
++	__DRM_RAS_CMD_MAX,
++	DRM_RAS_CMD_MAX = (__DRM_RAS_CMD_MAX - 1)
++};
 +
-+	ret = wait_for_error_notify_event(&ctx, event_timeout); /* wait for 10 secs */
-+	if (ret == 0 && ctx.event_error_value >= ctx.error_threshold) {
-+		log_status(true, "L2 Bank Correctable Error with threshold 1");
-+		igt_info("Received Error event Notification from %s:node_id=%u error_id=%u value=%u match=%d\n",
-+			 DRM_RAS_MCGRP_ERROR_NOTIFY, ctx.event_node_id, ctx.event_error_id,
-+			 ctx.event_error_value, ctx.event_received);
-+	} else {
-+		log_status(false, "L2 Bank Correctable Error with threshold 1");
-+		/* restore threshold before failing */
-+		ctx.error_threshold = current_threshold;
-+		set_error_threshold(&ctx);
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Did not receive expected RAS event or error_value after injection\n");
-+	}
-+
-+	/* restore GT Correctable error threshold to original value */
-+	ctx.error_threshold = current_threshold;
-+	ret = set_error_threshold(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to restore GT correctable error threshold after injection\n");
-+	}
-+
-+	CLEANUP_ON_ERROR(ctx, fw_handle);
-+}
-+
-+/**
-+ * SUBTEST: l2-bank-corr-err-16-times
-+ * Description: Inject single bit error injection in SSA data array when this bit is written
-+ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
-+ * Functionality: error injection
++#endif /* _UAPI_LINUX_DRM_RAS_H */
+diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
+new file mode 100644
+index 000000000..1c07bb2db
+--- /dev/null
++++ b/lib/igt_drm_netlink.c
+@@ -0,0 +1,60 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
 + */
-+static void l2_bank_corr_err_injection_16_times(struct xe_mmio *mmio, int fd)
++
++#include <stdbool.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#include <netlink/errno.h>
++#include <netlink/genl/ctrl.h>
++#include <netlink/genl/genl.h>
++#include <netlink/netlink.h>
++
++#include "igt_core.h"
++#include "igt_drm_netlink.h"
++
++void cleanup_nl_socket(struct app_context *ctx)
 +{
-+	int fw_handle;
-+	uint32_t current_threshold = UINT32_MAX;
-+	uint32_t gt_corr_counter_before = 0, gt_corr_counter_current = 0;
-+	int ret;
-+	struct app_context ctx;
++	if (!ctx || !ctx->sock)
++		return;
 +
-+	fw_handle = acquire_forcewake(fd);
++	nl_close(ctx->sock);
++	nl_socket_free(ctx->sock);
++	ctx->sock = NULL;
++	ctx->family_id = -1;
 +
-+	ret = init_nl_socket(&ctx);
-+	if (ret < 0) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
-+	}
-+
-+	ret = subscribe_error_notify(&ctx, DRM_RAS_MCGRP_ERROR_NOTIFY);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to subscribe to error-notify (ret=%d)\n", ret);
-+	}
-+
-+	/* Query error counter before injection */
-+	/** TODO
-+	 *  Fetching node_id and error_id dynamically is pending to implement.
-+	 *  For now, using
-+	 *  node_id=0 (correctable_errors) and
-+	 *  error_id=1 (core_compute)
-+	 */
-+	ctx.node_id = 0;
-+	ctx.error_id = 1;
-+	ret = get_error_counter(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "Failed to query GT correctable error counter before injection\n");
-+	}
-+	gt_corr_counter_before = ctx.error_value;
-+
-+	/* get current GT Correctable error threshold */
-+	ret = get_error_threshold(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "Failed to query GT correctable error threshold before injection\n");
-+	}
-+	current_threshold = ctx.error_threshold;
-+	igt_info("Current GT Correctable error threshold: %u\n", current_threshold);
-+
-+	for (int i = 0; i < 16; i++) {
-+		igt_info("****** Injection iteration: %d ***********\n", i + 1);
-+		/* Inject a GT correctable error */
-+		l2_bank_corr_err_injection(mmio, fd);
-+
-+		/* Query error counter after injection */
-+		ret = get_error_counter(&ctx);
-+		if (ret < 0) {
-+			CLEANUP_ON_ERROR(ctx, fw_handle);
-+			igt_assert_f(false,
-+				     "Failed to query GT correctable error counter:iteration %d\n",
-+				     i + 1);
-+		}
-+		gt_corr_counter_current = ctx.error_value;
-+		igt_info("GT Correctable error counter incremented by : %u "
-+			 "since before initial injection\n",
-+			 gt_corr_counter_current - gt_corr_counter_before);
-+	}
-+
-+	/* Confirm whether error counter incremented by 16 after 16 injections */
-+	if ((gt_corr_counter_current - gt_corr_counter_before) == 16) {
-+		log_status(true, "L2 Bank Correctable Error Injection 16 times");
-+	} else {
-+		log_status(false, "L2 Bank Correctable Error Injection 16 times");
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "GT Correctable error counter didn't increment "
-+			     "by 16 after 16 injections\n");
-+	}
-+
-+	ret = wait_for_error_notify_event(&ctx, event_timeout);
-+	if (ret == 0 && ctx.event_error_value == 1) {
-+		log_status(true, "L2 Bank Correctable Error Injection 16 times");
-+	} else {
-+		log_status(false, "L2 Bank Correctable Error Injection 16 times");
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Did not receive expected MSI event or "
-+			     "error_value after injection\n");
-+	}
-+
-+	CLEANUP_ON_ERROR(ctx, fw_handle);
++	igt_debug("Cleaned up netlink socket.\n");
 +}
 +
-+/**
-+ * SUBTEST: l2-bank-single-corr-err
-+ * Description: Inject single bit error injection in SSA data array when this bit is written
-+ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
-+ * Functionality: error injection
++int init_nl_socket(struct app_context *ctx)
++{
++	ctx->sock = nl_socket_alloc();
++	if (!ctx->sock)
++		return -1;
++
++	igt_debug("Socket allocation successful. Connecting to Generic Netlink...\n");
++	if (genl_connect(ctx->sock) < 0) {
++		cleanup_nl_socket(ctx);
++		return -1;
++	}
++
++	igt_debug("Resolving Generic Netlink family '%s'...\n", DRM_RAS_FAMILY_NAME);
++	ctx->family_id = genl_ctrl_resolve(ctx->sock, DRM_RAS_FAMILY_NAME);
++	if (ctx->family_id < 0) {
++		fprintf(stderr,
++			"Failed to resolve Generic Netlink family '%s': %s. "
++			"This may mean the running kernel does not expose DRM RAS support.\n",
++			DRM_RAS_FAMILY_NAME,
++			nl_geterror(ctx->family_id));
++		cleanup_nl_socket(ctx);
++		return -1;
++	}
++
++	igt_debug("Resolved Generic Netlink family '%s' with id %d.\n",
++		  DRM_RAS_FAMILY_NAME, ctx->family_id);
++	return 0;
++}
+diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
+new file mode 100644
+index 000000000..c20d5452b
+--- /dev/null
++++ b/lib/igt_drm_netlink.h
+@@ -0,0 +1,25 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2026 Intel Corporation
 + */
-+static void l2_bank_single_corr_err_injection(struct xe_mmio *mmio, int fd)
-+{
-+	int fw_handle;
-+	int ret;
-+	uint32_t gt_corr_counter_before = 0, gt_corr_counter_after = 0;
-+	struct app_context ctx;
 +
-+	fw_handle = acquire_forcewake(fd);
++#ifndef IGT_DRM_NETLINK_H
++#define IGT_DRM_NETLINK_H
 +
-+	ret = init_nl_socket(&ctx);
-+	if (ret < 0) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
-+	}
++#include <stdbool.h>
++#include <stdint.h>
 +
-+	/* Query error counter before injection */
-+	/** TODO
-+	 *  Fetching node_id and error_id dynamically is pending to implement.
-+	 *  For now, using
-+	 *  node_id=0 (correctable_errors) and
-+	 *  error_id=1 (core_compute)
-+	 */
-+	ctx.node_id = 0;
-+	ctx.error_id = 1;
-+	ret = get_error_counter(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "Failed to query GT correctable error counter before injection\n");
-+	}
-+	gt_corr_counter_before = ctx.error_value;
-+	igt_info("GT Correctable error counter before injection: %u\n", gt_corr_counter_before);
++#include <netlink/netlink.h>
 +
-+	/* Inject a GT correctable error */
-+	l2_bank_corr_err_injection(mmio, fd);
++#include <drm-uapi/drm_ras.h>
 +
-+	/* Query error counter after injection */
-+	ret = get_error_counter(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "Failed to query GT correctable error counter after injection\n");
-+	}
-+	gt_corr_counter_after = ctx.error_value;
-+	igt_info("GT Correctable error counter after injection: %u\n", gt_corr_counter_after);
++struct app_context {
++	struct nl_sock *sock;
++	int family_id;
++};
 +
-+	if (gt_corr_counter_after > gt_corr_counter_before) {
-+		igt_info("GT Correctable error counter incremented by %u after injection\n",
-+			 gt_corr_counter_after - gt_corr_counter_before);
-+		log_status(true, "L2 Bank Correctable Error");
-+	} else {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "L2 Bank (GT) Correctable Error Injection count not incremented\n");
-+	}
++void cleanup_nl_socket(struct app_context *ctx);
++int init_nl_socket(struct app_context *ctx);
 +
-+	CLEANUP_ON_ERROR(ctx, fw_handle);
-+}
++#endif /* IGT_DRM_NETLINK_H */
 +
- static void inject_error(const char *injection, struct xe_mmio *mmio, int fd)
- {
- 	igt_info("Starting Error Injection test: %s\n", injection);
-@@ -312,6 +582,18 @@ int igt_main()
- 		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
- 	}
+diff --git a/lib/meson.build b/lib/meson.build
+index 4af346b43..79674e032 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -27,6 +27,7 @@ lib_sources = [
+ 	'igt_device_scan.c',
+ 	'igt_drm_clients.h',
+ 	'igt_drm_fdinfo.c',
++	'igt_drm_netlink.c',
+         'igt_fs.c',
+ 	'igt_aux.c',
+ 	'igt_dp.c',
+@@ -141,6 +142,13 @@ lib_sources = [
+ 	'vendor/uwildmat/uwildmat.c',
+ ]
  
-+	igt_describe("Inject GT correctable error and validate error-notify event with threshold set to 1.");
-+	igt_subtest("l2-bank-corr-err-threshold-1")
-+		l2_bank_corr_err_injection_with_threshold_1(&mmio, fd);
++libnl = declare_dependency(dependencies : [
++	dependency('libnl-3.0', required : true),
++	dependency('libnl-genl-3.0', required : true),
++	dependency('libnl-cli-3.0', required : true),
++	dependency('libnl-utils', required : false),
++])
 +
-+	igt_describe("Inject GT correctable error 16 times and validate counter/event behavior.");
-+	igt_subtest("l2-bank-corr-err-16-times")
-+		l2_bank_corr_err_injection_16_times(&mmio, fd);
-+
-+	igt_describe("Inject a single GT correctable error and validate counter increment.");
-+	igt_subtest("l2-bank-single-corr-err")
-+		l2_bank_single_corr_err_injection(&mmio, fd);
-+
- 	igt_fixture() {
- 		xe_mmio_access_fini(&mmio);
- 		drm_close_driver(fd);
-diff --git a/tests/intel/xe_err_injection.h b/tests/intel/xe_err_injection.h
-index d7efc2fd2..1a9ea2f2e 100644
---- a/tests/intel/xe_err_injection.h
-+++ b/tests/intel/xe_err_injection.h
-@@ -15,4 +15,14 @@
- #define POST_RECOVERY_WL 1
- #define POST_ARMING_INJECTION_WL 0
- 
-+/* L2 Bank (LBCFLOCKMSGREG) error injection */
-+#define L2_BANK_ERR_INJ 0xB1B4
-+#define DATA_1BIT_ERR_INJ_REQ (1 << 3)
-+#define FUSA_TEST_MODE_ERR_INJ_REQ (1 << 2)
-+#define MASK_BIT_FOR_DATA_1BIT_ERR_INJ_REQ (1 << 19)
-+#define MASK_BIT_FOR_FUSA_TEST_MODE_ERR_INJ_REQ (1 << 18)
-+#define L2_BANK_DATA_1BIT_ERR_INJ_CONFIG \
-+	(DATA_1BIT_ERR_INJ_REQ | FUSA_TEST_MODE_ERR_INJ_REQ | \
-+	 MASK_BIT_FOR_DATA_1BIT_ERR_INJ_REQ | MASK_BIT_FOR_FUSA_TEST_MODE_ERR_INJ_REQ)
-+
- #endif /* XE_ERR_INJECTION_H */
+ lib_deps = [
+ 	cairo,
+ 	glib,
+@@ -148,6 +156,7 @@ lib_deps = [
+ 	libdrm,
+ 	libdw,
+ 	libkmod,
++	libnl,
+ 	libpci,
+ 	libudev,
+ 	math,
 -- 
 2.34.1
 
