@@ -4,56 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D390C5DF81
-	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 18:44:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7293CC5DF86
+	for <igt-dev@archiver.kernel.org>; Thu, 20 Aug 2026 19:51:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9718710E222;
-	Thu, 20 Aug 2026 18:44:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1C04110F184;
+	Thu, 20 Aug 2026 19:51:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U+pv+52j";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J5dUABP9";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33D9B10E21C;
- Thu, 20 Aug 2026 18:43:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C68C10E5FF
+ for <igt-dev@lists.freedesktop.org>; Thu, 20 Aug 2026 19:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787251423; x=1818787423;
+ t=1787255466; x=1818791466;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=Hid7UKB54Yn5PPb9argK6p0/4em1ZHy6es7G0RgY6fU=;
- b=U+pv+52j4MNfYf6rNVjHc6NflT2im/FGuvam2Q2Ct5O5AjRNwbvMztey
- p1N844eo51aJHDh95Xtfb60vLvpn8PPw9Quk1+z/R+fS+z6X2WckhiIF6
- fo6vi+krKcH1qu3yppG3RSV1Q91F1ATRndIndFT0NMx3i2B8RRan0Bghr
- 8cjxDz5D9x5lW9mP09/DXMc3tR5DDLinVkvyw5JTajLr3tISBn47DV49W
- STBL7vS8bTrL7vqO4rPTuyg5yxY6DrY2M6q7W9FcNT+9KGLNNjb5wqrgj
- sQRugdsKiqBc7wgsTDH4nS5OIXjTvxnA9Ia6S4fBGapqgC5K72cwsDMtt Q==;
-X-CSE-ConnectionGUID: 7ULboo9gRB2wvdV094STKQ==
-X-CSE-MsgGUID: 9qJPbU99TZmw48Ee2R0Kog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="91670431"
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="91670431"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 11:43:43 -0700
-X-CSE-ConnectionGUID: MW0P51skRPKrap4UCsgs9A==
-X-CSE-MsgGUID: G6ZxDdEBSFK5zpCHr8qZ+g==
+ bh=HncejuSz2E9K9ZKZe7NQ4/8MN0JcMO6NutWiMT9gSXY=;
+ b=J5dUABP9INf71HkjCzSvou5M5n+GQOds8sfSKIpGSwF2sz1+ebi2/5rg
+ 2Rxj2jPjhdRsGavPwlw0Q3W3RnjdaBq3/TkY5gEFgXGv9WcnbJW00oYec
+ YqDs2Yxwm2Q3oAHDC2wMj9p/3mE0BoJF9ujrL4y0dJl4n3ogwScGSdV/X
+ 5saxeQ+fRPcOT4Pp/mSC9oPjqKE+rv1Ck4rLiYh1r0mDWwLuJsBZM0A8R
+ A62wy016cVyar8kjVU/AIAgrk1gBhr8F7juQmEotWqqtkVu1WOxFwqlFE
+ rM/y71+MhljPH4AsNYf3pjplxD8bP2FWBqnBVA/yRPQxYSmYUiQbtbfAP w==;
+X-CSE-ConnectionGUID: Vr//pSedQiuQSy3v/xYrug==
+X-CSE-MsgGUID: rPCl9CLHSC+uiMZrLE7m8g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87823583"
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="87823583"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2026 12:51:05 -0700
+X-CSE-ConnectionGUID: 1LHMbLuoQRKycqPx2SLPwA==
+X-CSE-MsgGUID: JPuUOcqOQLiFAoZ8wWf9Sg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="269595968"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.134])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Aug 2026 11:43:41 -0700
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,233,1779174000"; d="scan'208";a="262852763"
+Received: from kniemiec-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.85])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Aug 2026 12:51:04 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- intel-gfx@lists.freedesktop.org,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Subject: [PATCH i-g-t] tests/intel/i915_module_load: Ignore missing PCI reset
-Date: Thu, 20 Aug 2026 20:41:43 +0200
-Message-ID: <20260820184304.1968012-2-janusz.krzysztofik@linux.intel.com>
-X-Mailer: git-send-email 2.54.0
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t] tests/kms_sysfs_edid_timing: Create basic subtest
+Date: Thu, 20 Aug 2026 21:50:54 +0200
+Message-ID: <20260820195054.186450-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -71,38 +66,109 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Subtest fault-injection now performs PCI device reset before every driver
-bind attempt and fails if that reset doesn't succeed.  That was OK if all
-devices being tested supported a PCI reset method.  However, machines
-with DG1 SKU 0x4905 used in CI suffer from device breakage and system
-freezes after any PCI reset attempts, triggering CI job aborts.  That's
-going to change soon with an upcoming kernel patch that disables PCI
-reset capabilities on that card.
+Create a basic subtest for probing connectors, also adding
+an info about which connectors were probed. There is also a
+change when no GPU cards or drivers were present, in which case
+instead of failing test will skip.
 
-Attempt PCI reset and fail if not successful only if supported, otherwise
-submit a debug message and continue the exercise.  With that in place,
-the subtest should no longer abort CI jobs on DG1 as soon as the above
-mentioned kernel fix is in place.
-
-Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- tests/intel/i915_module_load.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tests/kms_sysfs_edid_timing.c | 37 +++++++++++++++++++++++++----------
+ 1 file changed, 27 insertions(+), 10 deletions(-)
 
-diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
-index 26e30a1000..68e2386465 100644
---- a/tests/intel/i915_module_load.c
-+++ b/tests/intel/i915_module_load.c
-@@ -463,7 +463,8 @@ inject_fault_probe(int fd, const char pci_slot[], const char function_name[],
- 	injection_list_add(function_name);
- 	set_retval(function_name, inject_error);
+diff --git a/tests/kms_sysfs_edid_timing.c b/tests/kms_sysfs_edid_timing.c
+index 6dbd762e4..c04d286c2 100644
+--- a/tests/kms_sysfs_edid_timing.c
++++ b/tests/kms_sysfs_edid_timing.c
+@@ -37,7 +37,7 @@
+ #include <sys/stat.h>
  
--	igt_assert(igt_sysfs_set(devicefd, "reset", "1"));
-+	if (!igt_debug_on(!igt_sysfs_has_attr(devicefd, "reset")))
-+		igt_assert(igt_sysfs_set(devicefd, "reset", "1"));
- 	igt_kmod_bind("i915", pci_slot);
+ /**
+- * SUBTEST:
++ * SUBTEST: basic
+  * Description: This test checks the time it takes to reprobe each connector and
+  *              fails if either the time it takes for one reprobe is too long or
+  *              if the mean time it takes to reprobe one connector is too long.
+@@ -57,32 +57,29 @@ IGT_TEST_DESCRIPTION("This test checks the time it takes to reprobe each "
+ 		     "make sure that the mean time for all connectors is "
+ 		     "not too long.");
  
- 	err = -errno;
+-int igt_simple_main()
++static void reprobe_connectors(DIR *dirp)
+ {
+-	DIR *dirp;
+ 	struct dirent *de;
+ 	struct igt_mean all_mean;
+ 
+-	dirp = opendir("/sys/class/drm");
+-	igt_assert(dirp != NULL);
+-
+ 	igt_mean_init(&all_mean);
+-
+ 	while ((de = readdir(dirp))) {
+ 		struct igt_mean mean = {};
+ 		struct stat st;
+ 		char path[PATH_MAX];
++		bool checked;
+ 		int i;
+ 
+ 		if (*de->d_name == '.')
+-			continue;;
++			continue;
+ 
+ 		snprintf(path, sizeof(path), "/sys/class/drm/%s/status",
+-				de->d_name);
++			de->d_name);
+ 
+ 		if (stat(path, &st))
+ 			continue;
+ 
++		checked = false;
+ 		igt_mean_init(&mean);
+ 		for (i = 0; i < CHECK_TIMES; i++) {
+ 			struct timespec ts = {};
+@@ -92,6 +89,7 @@ int igt_simple_main()
+ 			if ((fd = open(path, O_WRONLY)) < 0)
+ 				continue;
+ 
++			checked = true;
+ 			igt_kmsg(KMSG_DEBUG "%s: start detect\n", path);
+ 			igt_nsec_elapsed(&ts);
+ 			igt_ignore_warn(write(fd, "detect\n", 7));
+@@ -111,6 +109,9 @@ int igt_simple_main()
+ 				de->d_name, i, current/1e6,  mean.max/1e6, mean.min/1e6);
+ 		}
+ 
++		if (checked)
++			igt_info("Probed connector: %s\n", de->d_name);
++
+ 		igt_debug("%s: mean.max %.2fns, %.2fus, %.2fms, "
+ 			  "mean.avg %.2fns, %.2fus, %.2fms\n",
+ 			  de->d_name,
+@@ -134,6 +135,22 @@ int igt_simple_main()
+ 		     "Mean of all connector means exceeds %dms, max=%.2fms, mean=%.2fms\n",
+ 		     THRESHOLD_ALL_CONNECTORS_MEAN, all_mean.max / 1e6,
+ 		     all_mean.mean / 1e6);
++}
+ 
+-	closedir(dirp);
++int igt_main()
++{
++	DIR *dirp;
++
++	igt_fixture() {
++		dirp = opendir("/sys/class/drm");
++		igt_require_f(dirp, "No DRM devices present\n");
++	}
++
++	igt_subtest("basic")
++		reprobe_connectors(dirp);
++
++	igt_fixture() {
++		if (dirp)
++			closedir(dirp);
++	}
+ }
 -- 
-2.54.0
+2.55.0
 
