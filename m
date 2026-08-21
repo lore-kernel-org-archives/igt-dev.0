@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0204BC5DF81
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 08:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43967C5DF94
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 08:21:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A569410E53F;
-	Mon, 24 Aug 2026 08:20:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED96910E355;
+	Mon, 24 Aug 2026 08:21:07 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="J05MosfI";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="NYM9buTF";
 	dkim-atps=neutral
-Received: from SN4PR0501CU005.outbound.protection.outlook.com
- (mail-southcentralusazon11011027.outbound.protection.outlook.com
- [40.93.194.27])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0025D10E9EE
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:42:16 +0000 (UTC)
+Received: from CY3PR05CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11013040.outbound.protection.outlook.com
+ [40.93.201.40])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E1B0D10E4C4
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:42:17 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=k+WfLuLhh5SqZsGg6Q7U9WxiUBmK6cMLgS15qBnWgxXqUYAv9Ko+wxS8H2xt33koIvXv9U1bJHNrNPezEz6yA7T5xh7ZSkWtCNE2fVd4aQcqe6qTFy+w7mcX4vxALcM7uQijt3BR+nR+seohex2xI3boO9iGIExGhi5gmMgMFXoL+lMyHchXSuo11mzgfBqzLbozLirfYLrL4y+1u+r+1ltdok5+G9QBEjYNIJvPeM6a9jJl5Pzhwb97RVZ0xEBEyEJT2XHZ8z64Tsw435wSDP9NU5RaFOgw5gUtNXDbG3q9SeZfI8zGWpt0vkHkw4/uJT7ducQhRK0quTghROynCQ==
+ b=Fsxva8G+jNHTj44fT0+NAzte2OV+Fpv9W9fyjEigBPEpojk1JDLmgIXjx/zPQrSOGA0srthEYKA+OH99Zwb2tGzLwRdVqw+ErhtUFz8fNXWK/PlgZ9BZnUmE4Ww/dg6Y00XbWQ6v9gPpunC6RTP9gKlFNKZ4+VTRZ2w7042KgsLDg3t/D7cyVgoX4JF4P/gl08YTM7/GdP2dBt15Lq25m6dFaM39clt24zjkAdS4auBvzimLZeJublTXmYkPZx5hyxXyZLGXRY4n/RZoJpgfZVj+gZ0tw5q3niL1aN53BmV/FRRIoxrW192ApZfGp7JWwkZS6UBKAS+6UmGKsIIbXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=X9HVVSRSrYQq+3StfCngHojPBGEoCEuj/yoN2jTNotI=;
- b=P7Hw9jeIl274bqLJ7/fyr+WYtPUSvnCWlKZ6z0ESbopKZyg3zkkSC31p8vWa/1eo1+7AmiBg/0le01MdVIQLZtvH21XapwJEs0aamaNdwkDvetAKImONmKr+DDmtmrdP2u990h8xLX3q/uRKYrADx6Qte3EHeu5/c28f4UI/ritCgjyLuWMZQ++o7bWtzoOB+OW45oj97rUj90+sEwrJouN7Nf/QuSjajmHuSwkC+7no5MRHTxcv+qh7m+v7GIo65N+T0teERqkqYyH0kC4rHN2TvUyX6MsB1h7+phpK9DQvqj3AY5WSpvGGJ+qJkgFiCnLMV1FKCSCU0mtDkD5N2g==
+ bh=zo+mNHhGdNox9USr/nbJfgZ15zkFPKhGm9nxBgCc6Qc=;
+ b=P4FNkg6/44L5vVAkKI5X3NHlg1KQiI6yc2QnfE0r2MEpIIkPHtFS/hMGNRRaDK2/04TSVziirDxDQEbNb/7xMYGkjTVSv3Th9gjfgio/tzYtbUYFdDNqmKiSssQrwwp61nob1gIsD/wC6mspR1/JQtkzPlYUDvAXDRBW3XpPSmSc4dLJPz2h6EJ4ybCfs5S5yv2Czldrp8JQDPA/qsRMmMJYv9NS0Wt4oLjxE65YIYzi1/NXEnPrcIs4FdLJKvzKh8oaYixnKvVbsX/qVHdVvMmkOTXWej5JXdkQFrxc7Kr7KZriJBCwJ3F3a99Hbq5/65Eoy+7P8vNCb35aVvyugA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=X9HVVSRSrYQq+3StfCngHojPBGEoCEuj/yoN2jTNotI=;
- b=J05MosfIUthq4TXqsqt8luVArw9KsFMpqvbpa6TUmqxdY1100W+49VTW/mJpTHMDeyTGazoIjPvRzFkAgh5kZMaHZxCM060qlzcEuvgP0Hs5OxfZBV4LnCUetWCS6BHVsJALZW68AgL98bB3wFmGG57dSHqQgzLO/3MIZzkGlQA=
-Received: from BN9PR03CA0494.namprd03.prod.outlook.com (2603:10b6:408:130::19)
- by DS7PR12MB5911.namprd12.prod.outlook.com (2603:10b6:8:7c::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
- 2026 12:42:06 +0000
+ bh=zo+mNHhGdNox9USr/nbJfgZ15zkFPKhGm9nxBgCc6Qc=;
+ b=NYM9buTFrCKiHI90q3m37B30i5OvA92bC5tzu9xbrv12tQBEFT7yuCKU+k3AMeNeLqM0fZhXzyJuR7//56S+ggHgxB2OUifW1y7Nv3KXNnXYN7Fz3gDnH8fgyFoR8TEjwXnDHiEubg6WAZsw648J73DL4GQklpTZjxowUhLl2rw=
+Received: from BN9PR03CA0485.namprd03.prod.outlook.com (2603:10b6:408:130::10)
+ by CH2PR12MB4294.namprd12.prod.outlook.com (2603:10b6:610:a9::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
+ 2026 12:42:02 +0000
 Received: from BL6PEPF0001AB4B.namprd04.prod.outlook.com
- (2603:10b6:408:130:cafe::6b) by BN9PR03CA0494.outlook.office365.com
- (2603:10b6:408:130::19) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.11 via Frontend Transport; Fri,
- 21 Aug 2026 12:42:06 +0000
+ (2603:10b6:408:130:cafe::86) by BN9PR03CA0485.outlook.office365.com
+ (2603:10b6:408:130::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.10 via Frontend Transport; Fri,
+ 21 Aug 2026 12:42:01 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -51,24 +51,27 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  BL6PEPF0001AB4B.mail.protection.outlook.com (10.167.242.69) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 12:42:05 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 12:42:00 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
- 2026 07:42:01 -0500
+ 2026 07:42:00 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
+ 2026 07:41:59 -0500
 Received: from junhua-PC.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
- Transport; Fri, 21 Aug 2026 07:42:00 -0500
+ Transport; Fri, 21 Aug 2026 07:41:57 -0500
 From: Junhua Shen <Junhua.Shen@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Jesse Zhang
  <Jesse.Zhang@amd.com>, Sunil Khatri <sunil.khatri@amd.com>, Honglei Huang
  <honglei1.huang@amd.com>, Huang Rui <ray.huang@amd.com>, Yiru Ma
  <yiru.ma@amd.com>, Junhua Shen <Junhua.Shen@amd.com>
-Subject: [PATCH i-g-t v1 3/4] lib/amdgpu: source packet operands from params
- and size the IB from pm4_size
-Date: Fri, 21 Aug 2026 20:41:51 +0800
-Message-ID: <20260821124152.19670-4-Junhua.Shen@amd.com>
+Subject: [PATCH i-g-t v1 2/4] lib/amdgpu: drop external BO from cmd_context
+Date: Fri, 21 Aug 2026 20:41:50 +0800
+Message-ID: <20260821124152.19670-3-Junhua.Shen@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260821124152.19670-1-Junhua.Shen@amd.com>
 References: <20260821124152.19670-1-Junhua.Shen@amd.com>
@@ -77,29 +80,29 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4B:EE_|DS7PR12MB5911:EE_
-X-MS-Office365-Filtering-Correlation-Id: f55c6189-1e34-422c-896e-08deff819b90
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4B:EE_|CH2PR12MB4294:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2f9aa33e-1d6e-47a9-785c-08deff819851
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700016|1800799024|82310400026|376014|23010399003|22082099003|18002099003|56012099006|11063799006|10067099003;
-X-Microsoft-Antispam-Message-Info: Jbm4Ef2ZOyqoYxREXjQXMOjS+W31qsMnKTc+T9WOteqPb348iDYsxT4rISRhxy/ICd7hIvFCWZbdaNeJkRaTXQjqNGNFmLFFQKZqpXVy5VzV6UXIyFEGOQe72g29gwuL4i/qy7u0p8+YbSkqaD2Xul9Nj8KNHOkE5FL13JowsAmHdMS82Ezr4yDK8CdcQzW6UyVyi8LnH8hPRliAJlQ0s+iRMpWXuxJXG1g0tFT1QPQmCPL8dIE+w3Mq0PoqBRuHD2LgRjJi4Uec8VsQKCfz/UeID8UvBcCECoRhMn3Iu+XZQ+4l5tqwP80JegOVQFnWG7Ix6t3r33C4JMfSeTamuab+lCo9tOaNqn9oZJHJSgcA5u9NpA1McdkP7pbVLWOy9EcmA2Rv3zIgdoMgTz1v/JGBNPtZnWedwBCg+9waVxPKNOFiSBlhKspnEwZGg9Xu3Qwp1dNfvWjoW7qWDm4jYGDGLbC6vD9cMvnZdYFCD2eIP0MDMYpMiqUX2DD424WcyTA07EJMznCKKt5hpldlXGOPThc3v/FvJL/K13JGskVm9BXYrHkYbniqpnD2zjnCrFE8eEq8EIDyT4WC4VFUo5W8RI2y0LUpOWDvPG+rvZTDm7f3u/nShuSV1GCKqyXCLp6rLm3Xe/qLMTqpT7BvVorrgNAtjFOC+E66s2vzaM2gw+6Ef1C3NtIQlhVx56PN57RC6zkzALigKboT2EvRTQ==
+ ARA:13230040|23010399003|376014|36860700016|1800799024|82310400026|3023799007|6133799003|10067099003|56012099006|11063799006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: xEH8un2FW07ra9HZId6VgpiJgRZuMwwt6+poJf+WHm54f7YG7zC9BXJZHaVA0Zi+Z+brxPGI0YzVspZoxNZhZ2z6PaneuU48VUgmntwaRbeIqY3v92ngWclzOq9NQx8iHPiel+r2EIE41s6iH3NOpTGjWCeEwY6CEJYZdv3OFErctC6agrF3Ka8QxsvK9dxDaSq1LEGv+lMjtCQ+YpcB0f7LBWPQzpSyX+v0JbUxjptnaQTrMIfEKTzbyeIKCB5IMsPwqYQUp9aQ54ZPDIRRptxHzkmHFH18TuWS5e1o2wLRxq6ftfUmuNJeLgasuYv7KUT3gRZfPRCp2ttNcqzJLdtmZFwouUEpGgdNRh+V9X4GJDgmoOd2Qe1I+st6LjA6SK5CxKYhKnbR7rRRR98TcFzIsJWJUXQa2KYTnfufS6Ow4QKhKIp1eHPXp8DYuCPeGIwgDAApiq/zPqkpuYVi8yqFoJkua6PjMm1abnoBCX2kiQkPyBytQ0xuZmGPau6nTaLeQL1VsLW9acgGqF8W7JDn2EAcfnr7gl4eWFp+UlJeD0y7qKbYeuEIg1NfVl7BJeu87yF+7SAwnurAVE9+bsUOhLQgyIHPZk7cX/paZo54qXgtGQ75CBb13SrEmpxGh5Yh2sD8Fi2Mo9gPmtARXPtd5Vgz8FMUKaWczeB3zay/p7H0sPgWhpE9+JLOvkwzYUakQSPPK98E2wTTTlncOw==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700016)(1800799024)(82310400026)(376014)(23010399003)(22082099003)(18002099003)(56012099006)(11063799006)(10067099003);
+ SFS:(13230040)(23010399003)(376014)(36860700016)(1800799024)(82310400026)(3023799007)(6133799003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: H0Jtdqny4E4rdcy1ms5OLSBwtDTgVTjG3qY6XSDXUAbyo7rBdOagAMkW6Jrz7m+KpHzG8+IZq2vOEJ/9jiALJefzVnWqpvl9+5ml5UDAt7Czo2wSejMoOGqjYqklQ6xTMXU7A2cRkp+2gA9vjYVFjHBALaaJ0DTXQ9bvwTEyan5k40z1XURfkfCfVWpEFgwTTrj8cf4qyi1I0RJNF7s58Fw0gWzsS6deDdQpBUYRKVEFBQ2QgotkRKxVwsTneG7Tieg1JK+OC0a3+k9eDYHtZzuoKXVjc0+HmP0APn2UZQYibpbStUeQWWgxMkiW6kxLkrMuFBtYRfpZB8byxx34yqi1wqxxRh3u9BZiZuN2LmL/oQ7X5+tn5M1w8l63WQ7dq6Ljn7wyCqbZWJw7tq2z2axqGxTZ3BpwHftnPecCsuBP8lypE84iomW+dqpEhSb3
+X-MS-Exchange-AntiSpam-MessageData-0: f99vETZL1B5wTIn0nwFPKVW6KiDZpIGApjVLyipi7eEC0Y07seCKalTFmMHNkjapoDvgfcD19decE0hY/CzjoVjAi1nf7GxLozhiH8hM4T7TJuex0WxCTpZkDda64LQGjjA/KR5YyU/TCSKPW3extZntIHjKLtPRRERrWRRwUys95YPsmb3JVG2AQfUFibtZwZPVJoIpxhOcSIqLuoD3O3+d+PFJ7TfOAwJCB2tA74wNJPpN5Iz/0Se3+tdNE46MGot+SKgjfoKE6ZQHNiI8hd/rVXlPt95Ri9viHw1ONearhdsEkZr2kYvNRDCjhCnA5WsvzXGGtQhVQoXCDeFH9RMAIM2NkR6vC4hBnNeZXVlHXEXZL75PcqXH2SeiS1AmMk8gTPYpZPjJ4qpUfNVG/ckiVInbXCE1WO3V1z8S1syBI7DBqKFBQnZqqticRYhL
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 12:42:05.8561 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f55c6189-1e34-422c-896e-08deff819b90
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 12:42:00.4088 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2f9aa33e-1d6e-47a9-785c-08deff819851
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4B.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5911
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4294
 X-Mailman-Approved-At: Mon, 24 Aug 2026 08:18:13 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -116,95 +119,773 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-- Size the legacy IB from pm4_size: the IB carries the PM4 command
-  stream, so its byte size derives from pm4_size, not from write_length
-  (the data transfer size). amdgpu_test_exec_cs_helper() now computes
-  ib_size from pm4_size.
-- WRITE_LINEAR/WRITE_ATOMIC/COPY_LINEAR take their operand GPU VAs
-  (src/dst) from cmd_packet_params_t, so callers pass virtual addresses
-  directly instead of relying on context-internal BOs.
+Rework cmd_context so it no longer owns or clears a caller-visible data
+buffer. Operand residency is registered explicitly, and the leftover
+internal-BO plumbing is removed.
+
+- cmd_context_create()/destroy(): remove the external-BO plumbing; the
+  context no longer allocates or tracks a data BO.
+- Add cmd_context_add_resource(): so callers register BO-backed operand
+  addresses in the per-submit bo_list residency set explicitly.
+- Drop the write_length parameter from cmd_context_create(): the IB/PM4
+  buffer is sized solely from pm4_size.
+- Update all cmd_context_create() call sites to the new signature:
+  tests/amdgpu/amd_dmabuf_unload.c, amd_kfd_dmabuf_unload.c, and
+  amd_mem.c (three sites).
 
 Signed-off-by: Junhua Shen <Junhua.Shen@amd.com>
 ---
- lib/amdgpu/amd_command_submission.c | 31 ++++++++++++++++++++---------
- 1 file changed, 22 insertions(+), 9 deletions(-)
+ lib/amdgpu/amd_command_submission.c  | 283 ++++++++++-----------------
+ lib/amdgpu/amd_command_submission.h  |  99 +++++++++-
+ tests/amdgpu/amd_dmabuf_unload.c     |  15 +-
+ tests/amdgpu/amd_kfd_dmabuf_unload.c |  15 +-
+ tests/amdgpu/amd_mem.c               |  22 ++-
+ 5 files changed, 220 insertions(+), 214 deletions(-)
 
 diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index 26f36256a..261ae096c 100644
+index 0334c2ded..26f36256a 100644
 --- a/lib/amdgpu/amd_command_submission.c
 +++ b/lib/amdgpu/amd_command_submission.c
-@@ -46,13 +46,15 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type
- 	bool user_queue = ring_context->user_queue;
- 	const struct amdgpu_ip_block_version *ip_block = NULL;
- 	amdgpu_bo_handle *all_res;
-+	uint64_t ib_size;
+@@ -906,31 +906,22 @@ amdgpu_command_ce_write_fence(amdgpu_device_handle dev,
+ }
  
- 	ip_block = get_ip_block(device, ip_type);
- 	all_res = alloca(sizeof(ring_context->resources[0]) * (ring_context->res_cnt + 1));
-+	ib_size = (uint64_t)ring_context->pm4_size * sizeof(*ring_context->pm4);
+ /**
+- * command context creation with optional external BO
++ * command context creation
+  *
+  * @param device AMDGPU device handle
+  * @param ip_type IP block type (GFX, DMA, etc.)
+  * @param ring_id Ring index to use
+  * @param user_queue Whether to use user queue mode
+- * @param write_length Size of write operations in DWORDs
+- * @param external_bo Optional external buffer object (NULL for internal allocation)
+- * @param external_bo_mc GPU MC address of external BO (required if external_bo provided)
+- * @param external_bo_cpu CPU mapping of external BO (required if external_bo provided)
++ * @param write_length Default per-packet transfer size in bytes (overridden per
++ *                     packet by cmd_packet_params_t::size)
+  * @return New command context, or NULL on failure
+  */
+ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
+                                     enum amd_ip_block_type ip_type,
+                                     uint32_t ring_id,
+-                                    bool user_queue,
+-                                    uint32_t write_length,
+-                                    amdgpu_bo_handle external_bo,
+-                                    uint64_t external_bo_mc,
+-                                    volatile uint32_t *external_bo_cpu)
++                                    bool user_queue)
+ {
+ 	cmd_context_t *ctx;
+-	void *cpu_ptr = NULL;
+-	uint64_t bo_mc = 0;
+-	amdgpu_va_handle va_handle = NULL;
+ 	int r;
  
- 	if (expect_failure) {
- 		/* allocate IB */
--		r = amdgpu_bo_alloc_and_map_sync(device, ring_context->write_length, 4096,
-+		r = amdgpu_bo_alloc_and_map_sync(device, ib_size, 4096,
- 						 AMDGPU_GEM_DOMAIN_GTT, 0, AMDGPU_VM_MTYPE_UC,
- 						 &ib_result_handle, &ib_result_cpu,
- 						 &ib_result_mc_address, &va_handle,
-@@ -62,7 +64,7 @@ int amdgpu_test_exec_cs_helper(amdgpu_device_handle device, unsigned int ip_type
- 		/* prepare CS */
- 		igt_assert(ring_context->pm4_dw <= 1024);
- 		/* allocate IB */
--		r = amdgpu_bo_alloc_and_map_sync(device, ring_context->write_length, 4096,
-+		r = amdgpu_bo_alloc_and_map_sync(device, ib_size, 4096,
- 						 AMDGPU_GEM_DOMAIN_GTT, 0, AMDGPU_VM_MTYPE_UC,
- 						 &ib_result_handle, &ib_result_cpu,
- 						 &ib_result_mc_address, &va_handle,
-@@ -1225,8 +1227,11 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 		if (!ctx->ip_block->funcs->write_linear)
+ 	if (!device)
+@@ -949,7 +940,6 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
+ 	ctx->ip_type = ip_type;
+ 	ctx->user_queue = user_queue;
+ 	ctx->last_submit_seq = 0;
+-	ctx->uses_external_bo = (external_bo != NULL);  // Now this member exists
+ 	ctx->initialized = false;
+ 
+ 	/* Get IP block for the specified IP type */
+@@ -967,7 +957,6 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
+ 	}
+ 
+ 	/* Setup ring context parameters */
+-	ctx->ring_ctx->write_length = write_length ? write_length : 128;
+ 	ctx->ring_ctx->pm4_size = 256;
+ 	ctx->ring_ctx->pm4 = calloc(ctx->ring_ctx->pm4_size, sizeof(uint32_t));
+ 	if (!ctx->ring_ctx->pm4) {
+@@ -976,7 +965,7 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
+ 		return NULL;
+ 	}
+ 
+-	ctx->ring_ctx->res_cnt = 1;
++	ctx->ring_ctx->res_cnt = 0;
+ 	ctx->ring_ctx->ring_id = ring_id;
+ 	ctx->ring_ctx->secure = false;
+ 	ctx->ring_ctx->user_queue = user_queue;
+@@ -990,7 +979,7 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
+ 			return NULL;
+ 		}
+ 		ctx->ip_block->funcs->userq_create(device, ctx->ring_ctx, (unsigned int)ip_type);
+-	}else {
++	} else {
+ 		/* Create regular command submission context */
+ 		r = amdgpu_cs_ctx_create(device, &ctx->ring_ctx->context_handle);
+ 		if (r) {
+@@ -1001,115 +990,60 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
+ 		}
+ 	}
+ 
+-	/* BO allocation strategy: use external BO if provided, otherwise allocate internally */
+-	if (external_bo) {
+-		/* Validate external BO arguments */
+-		if (!external_bo_cpu || !external_bo_mc) {
+-			igt_debug("Invalid external BO arguments (mc=0x%llx, cpu=%p)\n",
+-					  (unsigned long long)external_bo_mc, external_bo_cpu);
+-			free(ctx->ring_ctx->pm4);
+-			free(ctx->ring_ctx);
+-			free(ctx);
+-			return NULL;
+-		}
+-
+-		/* Use caller-provided external BO */
+-		ctx->ring_ctx->bo = external_bo;
+-		ctx->ring_ctx->bo_mc = external_bo_mc;
+-		ctx->ring_ctx->bo_cpu = external_bo_cpu;
+-		ctx->ring_ctx->va_handle = NULL;  // VA management is caller's responsibility
+-
+-		igt_info("Using external BO: GPU=0x%llx, CPU=%p\n",
+-				 (unsigned long long)external_bo_mc, external_bo_cpu);
+-	} else {
+-		/* Allocate internal BO for command operations */
+-		r = amdgpu_bo_alloc_and_map(device,
+-				   ctx->ring_ctx->write_length,
+-				   4096,
+-				   AMDGPU_GEM_DOMAIN_GTT,
+-				   0,
+-				   &ctx->ring_ctx->bo,
+-				   &cpu_ptr,
+-				   &bo_mc,
+-				   &va_handle);
+-		if (r) {
+-			goto cleanup_error;
++	/* Allocate a single per-context IB sized to the PM4 buffer capacity. */
++	r = amdgpu_bo_alloc_and_map(device,
++				    ctx->ring_ctx->pm4_size * sizeof(uint32_t), 4096,
++				    AMDGPU_GEM_DOMAIN_GTT, 0,
++				    &ctx->ib_bo, &ctx->ib_cpu, &ctx->ib_mc,
++				    &ctx->ib_va);
++	if (r) {
++		if (user_queue) {
++			if (ctx->ip_block->funcs->userq_destroy)
++				ctx->ip_block->funcs->userq_destroy(device, ctx->ring_ctx,
++								    (unsigned int)ip_type);
++		} else {
++			amdgpu_cs_ctx_free(ctx->ring_ctx->context_handle);
+ 		}
+-
+-		ctx->ring_ctx->bo_mc = bo_mc;
+-		ctx->ring_ctx->bo_cpu = (volatile uint32_t *)cpu_ptr;
+-		ctx->ring_ctx->va_handle = va_handle;
+-
+-		igt_info("Allocated internal BO: GPU=0x%llx, CPU=%p\n",
+-			 (unsigned long long)bo_mc, cpu_ptr);
+-	}
+-
+-	/* Initialize resources array */
+-	ctx->ring_ctx->resources[0] = ctx->ring_ctx->bo;
+-	for (int i = 1; i < 4; i++) {
+-		ctx->ring_ctx->resources[i] = NULL;
++		free(ctx->ring_ctx->pm4);
++		free(ctx->ring_ctx);
++		free(ctx);
++		return NULL;
+ 	}
+ 
+ 	ctx->initialized = true;
+ 	return ctx;
+-
+-cleanup_error:
+-	/* Cleanup resources in case of allocation failure */
+-	if (user_queue) {
+-		ctx->ip_block->funcs->userq_destroy(device, ctx->ring_ctx, (unsigned int)ip_type);
+-	} else {
+-		if (ctx->ring_ctx->context_handle)
+-		    amdgpu_cs_ctx_free(ctx->ring_ctx->context_handle);
+-	}
+-
+-	free(ctx->ring_ctx->pm4);
+-	free(ctx->ring_ctx);
+-	free(ctx);
+-	return NULL;
+ }
+ 
+ /**
+- * context destruction function with external BO control
++ * context destruction function
+  *
+  * @param ctx Command context to destroy
+- * @param destroy_external_bo Whether to destroy external BO (if used)
+  */
+-void cmd_context_destroy(cmd_context_t *ctx, bool destroy_external_bo)
++void cmd_context_destroy(cmd_context_t *ctx)
+ {
+ 	if (!ctx || !ctx->initialized)
+ 		return;
+ 
+-	if (ctx->ring_ctx) {
+-		/* Handle BO cleanup based on allocation type */
+-		if (ctx->ring_ctx->bo) {
+-			if (!ctx->uses_external_bo || destroy_external_bo) {
+-				/* Clean up internal BO or external BO if explicitly requested */
+-				if (ctx->ring_ctx->va_handle) {
+-				    /* Internal BO with VA handle - full cleanup */
+-				    amdgpu_bo_unmap_and_free(ctx->ring_ctx->bo, ctx->ring_ctx->va_handle,
+-							   ctx->ring_ctx->bo_mc,
+-							   ctx->ring_ctx->write_length);
+-				} else if (destroy_external_bo) {
+-				    /* External BO without VA handle - just free the BO */
+-				    amdgpu_bo_free(ctx->ring_ctx->bo);
+-				}
+-			} else {
+-				/* External BO, preserve it as requested by caller */
+-				igt_info("Preserving external BO (GPU=0x%llx)\n",
+-						 (unsigned long long)ctx->ring_ctx->bo_mc);
+-			}
+-		}
++	/* Free the per-context IB. */
++	if (ctx->ib_bo) {
++		if (ctx->submit_pending)
++			cmd_wait_completion(ctx);
++		amdgpu_bo_unmap_and_free(ctx->ib_bo, ctx->ib_va, ctx->ib_mc,
++					 ctx->ring_ctx->pm4_size * sizeof(uint32_t));
++		ctx->ib_bo = NULL;
++	}
+ 
++	if (ctx->ring_ctx) {
+ 		/* Clean up command submission context */
+ 		if (ctx->user_queue) {
+ 			if (ctx->ip_block && ctx->ip_block->funcs->userq_destroy) {
+ 				ctx->ip_block->funcs->userq_destroy(ctx->device, ctx->ring_ctx,
+ 							  (unsigned int)ctx->ip_type);
+-		    }
++			}
+ 		} else {
+ 			if (ctx->ring_ctx->context_handle) {
+ 				amdgpu_cs_ctx_free(ctx->ring_ctx->context_handle);
+-		    }
++			}
+ 		}
+ 
+ 		/* Free PM4 command buffer */
+@@ -1123,6 +1057,42 @@ void cmd_context_destroy(cmd_context_t *ctx, bool destroy_external_bo)
+ 	free(ctx);
+ }
+ 
++int cmd_context_add_resource(cmd_context_t *ctx, amdgpu_bo_handle bo)
++{
++	struct amdgpu_ring_context *rc;
++	int i;
++
++	if (!ctx || !ctx->initialized || !ctx->ring_ctx || !bo)
++		return -EINVAL;
++
++	rc = ctx->ring_ctx;
++
++	/* Deduplicate: an already-registered BO needs no second slot. */
++	for (i = 0; i < rc->res_cnt; i++) {
++		if (rc->resources[i] == bo)
++			return 0;
++	}
++
++	if (rc->res_cnt >= (int)ARRAY_SIZE(rc->resources))
++		return -ENOSPC;
++
++	rc->resources[rc->res_cnt++] = bo;
++	return 0;
++}
++
++static void cmd_reset_packet_operands(cmd_context_t *ctx)
++{
++	struct amdgpu_ring_context *rc = ctx->ring_ctx;
++
++	rc->bo_mc = 0;
++	rc->bo_mc2 = 0;
++	rc->write_length = 0;
++
++	/* Drop the per-submit residency set. */
++	memset(rc->resources, 0, sizeof(rc->resources));
++	rc->res_cnt = 0;
++}
++
+ /**
+  * Submit command packet without waiting - Fixed submission logic
+  */
+@@ -1132,10 +1102,6 @@ int cmd_submit_packet(cmd_context_t *ctx)
+ 	int r;
+ 	struct amdgpu_cs_request ibs_request;
+ 	struct amdgpu_cs_ib_info ib_info;
+-	amdgpu_bo_handle ib_bo;
+-	void *ib_cpu;
+-	uint64_t ib_mc_address;
+-	amdgpu_va_handle ib_va_handle;
+ 	amdgpu_bo_handle all_res[5] = {0};
+ 	uint32_t res_count = 0;
+ 	uint32_t i;
+@@ -1145,12 +1111,27 @@ int cmd_submit_packet(cmd_context_t *ctx)
+ 		return -EINVAL;
+ 	}
+ 
+-	/* Check required parameters */
+-	if (ctx->ring_ctx->pm4_dw == 0 || ctx->ring_ctx->pm4_dw > 1024) {
+-		igt_debug("Invalid PM4 size: %u (must be 1-1024)\n", ctx->ring_ctx->pm4_dw);
++	/* Check required parameters: the PM4 stream must be non-empty and fit
++	 * in the per-context IB allocated by cmd_context_create().
++	 */
++	if (ctx->ring_ctx->pm4_dw == 0 || ctx->ring_ctx->pm4_dw > ctx->ring_ctx->pm4_size) {
++		igt_debug("Invalid PM4 size: %u (must be 1-%u)\n",
++			  ctx->ring_ctx->pm4_dw, ctx->ring_ctx->pm4_size);
+ 		return -EINVAL;
+ 	}
+ 
++	igt_assert_f(ctx->ib_bo && ctx->ring_ctx->pm4_dw <= ctx->ring_ctx->pm4_size,
++		     "PM4 stream (%u dw) exceeds IB capacity (%u dw)\n",
++		     ctx->ring_ctx->pm4_dw, ctx->ring_ctx->pm4_size);
++
++	if (ctx->submit_pending) {
++		cmd_wait_completion(ctx);
++		ctx->submit_pending = false;
++	}
++
++	memcpy(ctx->ib_cpu, ctx->ring_ctx->pm4,
++	       ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
++
+ 	/* For user queues, use userq_submit */
+ 	if (ctx->user_queue) {
+ 		if (!ctx->ip_block || !ctx->ip_block->funcs->userq_submit) {
+@@ -1158,16 +1139,14 @@ int cmd_submit_packet(cmd_context_t *ctx)
  			return -ENOTSUP;
+ 		}
  
--		/* TODO: allow user set the dst and data */
--		//ctx->ring_ctx->bo_mc = params->dst_addr;
-+		/* Destination operand comes from the caller. */
-+		if (params->dst_addr)
-+			ctx->ring_ctx->bo_mc = params->dst_addr;
-+		igt_assert_f(ctx->ring_ctx->bo_mc,
-+			     "WRITE_LINEAR requires a destination address\n");
- 		ctx->ring_ctx->write_length = params->size;
+-		if (!ctx->ring_ctx->bo_mc) {
+-		igt_debug("Invalid BO MC address for user queue\n");
+-		return -EINVAL;
+-		}
+-
+ 		ctx->ip_block->funcs->userq_submit(ctx->device, ctx->ring_ctx,
+ 		      (unsigned int)ctx->ip_type,
+-		      ctx->ring_ctx->bo_mc);
++		      ctx->ib_mc);
+ 		ctx->last_submit_seq = ctx->ring_ctx->point;
++		ctx->submit_pending = true;
+ 		igt_info("User queue submission successful, point=%lu\n", ctx->last_submit_seq);
++
++		cmd_reset_packet_operands(ctx);
+ 		return 0;
+ 	}
  
- 		/* Build PM4 packet */
-@@ -1239,8 +1244,11 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 		if (!ctx->ip_block->funcs->write_linear_atomic)
- 			return -ENOTSUP;
+@@ -1175,26 +1154,8 @@ int cmd_submit_packet(cmd_context_t *ctx)
+ 	memset(&ibs_request, 0, sizeof(ibs_request));
+ 	memset(&ib_info, 0, sizeof(ib_info));
  
--		/* TODO: allow user set the dst and data */
--		//ctx->ring_ctx->bo_mc = params->dst_addr;
-+		/* Destination operand comes from the caller. */
-+		if (params->dst_addr)
-+			ctx->ring_ctx->bo_mc = params->dst_addr;
-+		igt_assert_f(ctx->ring_ctx->bo_mc,
-+			     "WRITE_ATOMIC requires a destination address\n");
- 		ctx->ring_ctx->write_length = 1; /* Atomic operations typically work on single DWORD */
+-	/* Allocate separate IB buffer instead of reusing command buffer */
+-	r = amdgpu_bo_alloc_and_map(ctx->device,
+-			       ctx->ring_ctx->pm4_dw * sizeof(uint32_t),
+-			       4096,
+-			       AMDGPU_GEM_DOMAIN_GTT,
+-			       0,
+-			       &ib_bo,
+-			       &ib_cpu,
+-			       &ib_mc_address,
+-			       &ib_va_handle);
+-	if (r) {
+-		igt_debug("Failed to allocate IB: %d\n", r);
+-		return r;
+-	}
+-
+-	/* Copy PM4 commands to IB */
+-	memcpy(ib_cpu, ctx->ring_ctx->pm4, ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
+-
+-	/* Setup IB information */
+-	ib_info.ib_mc_address = ib_mc_address;
++	/* Point the IB info at the per-context IB */
++	ib_info.ib_mc_address = ctx->ib_mc;
+ 	ib_info.size = ctx->ring_ctx->pm4_dw;
+ 	if (ctx->ring_ctx->secure)
+ 		ib_info.flags |= AMDGPU_IB_FLAGS_SECURE;
+@@ -1215,14 +1176,12 @@ int cmd_submit_packet(cmd_context_t *ctx)
+ 	}
  
+ 	/* Add IB as the last resource */
+-	all_res[res_count++] = ib_bo;
++	all_res[res_count++] = ctx->ib_bo;
+ 
+ 	/* Create BO list */
+ 	r = amdgpu_bo_list_create(ctx->device, res_count, all_res, NULL, &bo_list);
+ 	if (r) {
+ 		igt_debug("amdgpu_bo_list_create failed: %d\n", r);
+-		amdgpu_bo_unmap_and_free(ib_bo, ib_va_handle, ib_mc_address,
+-				       ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
+ 		return r;
+ 	}
+ 
+@@ -1234,8 +1193,6 @@ int cmd_submit_packet(cmd_context_t *ctx)
+ 	if (r != 0) {
+ 		igt_debug("amdgpu_cs_submit failed: %d\n", r);
+ 		amdgpu_bo_list_destroy(bo_list);
+-		amdgpu_bo_unmap_and_free(ib_bo, ib_va_handle, ib_mc_address,
+-				       ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
+ 		return r;
+ 	}
+ 
+@@ -1243,10 +1200,11 @@ int cmd_submit_packet(cmd_context_t *ctx)
+ 	ctx->last_submit_seq = ibs_request.seq_no;
+ 	igt_debug("Command submitted successfully, seq_no=%lu\n", ctx->last_submit_seq);
+ 
+-	/* Cleanup resources */
++	/* The kernel has snapshotted the bo_list; it can be released now. */
+ 	amdgpu_bo_list_destroy(bo_list);
+-	amdgpu_bo_unmap_and_free(ib_bo, ib_va_handle, ib_mc_address,
+-			   ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
++
++	ctx->submit_pending = true;
++	cmd_reset_packet_operands(ctx);
+ 
+ 	return 0;
+ }
+@@ -1258,14 +1216,9 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
+ 	if (!ctx || !ctx->initialized || !ctx->ip_block || !params)
+ 		return -EINVAL;
+ 
+-	if (!ctx->ring_ctx || !ctx->ring_ctx->bo_cpu)
++	if (!ctx->ring_ctx)
+ 		return -EINVAL;
+ 
+-	/* Clear the buffer before operation */
+-	memset((void *)ctx->ring_ctx->bo_cpu, 0,
+-	ctx->ring_ctx->write_length);
+-
+-
+ 	/* Build the command packet based on type */
+ 	switch (params->type) {
+ 	case CMD_PACKET_WRITE_LINEAR:
+@@ -1280,13 +1233,6 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
+ 		result = ctx->ip_block->funcs->write_linear(ctx->ip_block->funcs,
+ 						       ctx->ring_ctx,
+ 						       &ctx->ring_ctx->pm4_dw);
+-
+-		/*  Copy PM4 packet to ring buffer */
+-		if (result == 0 && ctx->ring_ctx->pm4_dw > 0) {
+-			memcpy((void *)ctx->ring_ctx->bo_cpu,
+-			       ctx->ring_ctx->pm4,
+-			       ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
+-		}
+ 		return result;
+ 
+ 	case CMD_PACKET_WRITE_ATOMIC:
+@@ -1300,13 +1246,6 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
  		result = ctx->ip_block->funcs->write_linear_atomic(ctx->ip_block->funcs,
-@@ -1252,9 +1260,14 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 	    if (!ctx->ip_block->funcs->copy_linear)
- 		    return -ENOTSUP;
+ 						      ctx->ring_ctx,
+ 						      &ctx->ring_ctx->pm4_dw);
+-
+-		/*  Copy PM4 packet to ring buffer */
+-		if (result == 0 && ctx->ring_ctx->pm4_dw > 0) {
+-		memcpy((void *)ctx->ring_ctx->bo_cpu,
+-		ctx->ring_ctx->pm4,
+-		ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
+-		}
+ 		return result;
  
--	    /* For copy operations, we need both source and destination addresses */
--	    /* This would require extending the API to pass both addresses */
--	    /* For now, use the internal buffer as source */
-+	    /* Copy takes both operands from the caller: bo_mc = source VA,
-+	     * bo_mc2 = destination VA. */
-+	    if (params->src_addr)
-+		    ctx->ring_ctx->bo_mc = params->src_addr;
-+	    if (params->dst_addr)
-+		    ctx->ring_ctx->bo_mc2 = params->dst_addr;
-+	    igt_assert_f(ctx->ring_ctx->bo_mc && ctx->ring_ctx->bo_mc2,
-+			 "COPY_LINEAR requires source and destination addresses\n");
- 	    ctx->ring_ctx->write_length = params->size;
- 
+ 	case CMD_PACKET_COPY_LINEAR:
+@@ -1321,16 +1260,6 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
  	    result = ctx->ip_block->funcs->copy_linear(ctx->ip_block->funcs,
+ 						      ctx->ring_ctx,
+ 						      &ctx->ring_ctx->pm4_dw);
+-
+-	    /* Copy PM4 packet to ring buffer */
+-	    if (result == 0 && ctx->ring_ctx->pm4_dw > 0) {
+-	        memcpy((void *)ctx->ring_ctx->bo_cpu,
+-	               ctx->ring_ctx->pm4,
+-	               ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
+-
+-	        //igt_info("cmd_place_packet: Copied %u DWORDs to ring buffer (copy)\n",
+-	          //       ctx->ring_ctx->pm4_dw);
+-	    }
+ 	    return result;
+ 
+ 	case CMD_PACKET_COPY_ATOMIC:
+@@ -1429,8 +1358,8 @@ int cmd_wait_completion(cmd_context_t *ctx)
+ 			return -EINVAL;
+ 
+ 		return amdgpu_timeline_syncobj_wait(ctx->device,
+-						   ctx->ring_ctx->timeline_syncobj_handle,
+-						   ctx->ring_ctx->point);
++						    ctx->ring_ctx->timeline_syncobj_handle,
++						    ctx->ring_ctx->point);
+ 	}
+ 
+ 	/* For regular queues, wait on fence */
+@@ -1441,8 +1370,8 @@ int cmd_wait_completion(cmd_context_t *ctx)
+ 	fence_status.fence = ctx->last_submit_seq;
+ 
+ 	return amdgpu_cs_query_fence_status(&fence_status,
+-				       AMDGPU_TIMEOUT_INFINITE,
+-				       0, &expired);
++					    AMDGPU_TIMEOUT_INFINITE,
++					    0, &expired);
+ }
+ 
+ /**
+diff --git a/lib/amdgpu/amd_command_submission.h b/lib/amdgpu/amd_command_submission.h
+index 331889161..8644f25ed 100644
+--- a/lib/amdgpu/amd_command_submission.h
++++ b/lib/amdgpu/amd_command_submission.h
+@@ -50,8 +50,16 @@ typedef struct {
+     enum amd_ip_block_type ip_type;
+     bool initialized;
+     bool user_queue;
+-    bool uses_external_bo;
+     uint64_t last_submit_seq; /* Last submission sequence number */
++
++    /* IB shared by the user-queue and CS paths; created in cmd_context_create,
++     * freed in cmd_context_destroy, reusable across multiple submits.
++     */
++    amdgpu_bo_handle ib_bo;
++    void *ib_cpu;
++    uint64_t ib_mc;
++    amdgpu_va_handle ib_va;
++    bool submit_pending;   /* a submit is in flight; wait before reuse/free */
+ } cmd_context_t;
+ 
+ /**
+@@ -89,15 +97,92 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
+ void  amdgpu_command_ce_write_fence(amdgpu_device_handle dev,
+ 					  amdgpu_context_handle ctx);
+ 
++/*
++ * cmd_* command-submission API
++ * ============================
++ *
++ * A small wrapper around raw amdgpu command submission that hides the
++ * context / IB / bo_list / fence plumbing and lets a test issue DMA-style
++ * operations (write, copy, const-fill, atomic) on an IP ring (SDMA, GFX or
++ * Compute) by GPU virtual address.
++ *
++ * Lifecycle
++ * ---------
++ *   1. cmd_context_create()  - create a context bound to one IP ring. It
++ *      allocates a reusable IB/PM4 buffer for the emitted packets.
++ *   2. issue one or more operations (see the two API layers below).
++ *   3. cmd_context_destroy()  - waits for any in-flight submission, then frees
++ *      the IB and the context.
++ *
++ * Two API layers
++ * --------------
++ *   High-level convenience helpers build one packet and submit it in a single
++ *   call:
++ *       cmd_submit_write_linear(ctx, dst_va, size, data)
++ *       cmd_submit_copy_linear (ctx, src_va, dst_va, size)
++ *       cmd_submit_const_fill  (ctx, dst_va, size, data)
++ *       cmd_submit_atomic      (ctx, dst_va, data)
++ *
++ *   Low-level path, for full control over cmd_packet_params_t (custom_data,
++ *   fence/timestamp packets, etc.):
++ *       cmd_place_packet(ctx, &params)          - build the PM4 stream
++ *       cmd_submit_packet(ctx)                  - submit it
++ *       cmd_place_and_submit_packet(ctx, &p)    - both of the above
++ *
++ * Semantics
++ * ---------
++ *   - Submission is asynchronous: cmd_submit_* returns after the CS is queued.
++ *     The next submit on the same ctx, or cmd_context_destroy(), transparently
++ *     waits for the previous one. Call cmd_wait_completion(ctx) to block
++ *     explicitly (e.g. before reading back the destination).
++ *   - Operands are plain GPU virtual addresses, not BOs. For every BO-backed
++ *     address you pass (source, destination, fence/timestamp target, ...) call
++ *     cmd_context_add_resource(ctx, bo) to add the owning BO to the residency
++ *     set. The residency set is per-submit: it is cleared automatically once
++ *     the packet has been captured for submission, so you must (re-)register
++ *     every required BO immediately before each submit.
++ *   - One call emits exactly one hardware packet and does NOT chunk. A transfer
++ *     larger than the per-packet maximum (see amdgpu_dma_limits_query) will be
++ *     rejected; the caller must split it. Return values are 0 on success or a
++ *     negative errno (e.g. -ENOTSUP if the IP lacks the requested op).
++ *
++ * Example: fill then copy 4 KiB over the SDMA ring
++ * ------------------------------------------------
++ *   cmd_context_t *ctx;
++ *   int r;
++ *
++ *   ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
++ *   if (!ctx)
++ *           return -ENODEV;
++ *
++ *   // Residency is per-submit, so register before every submit.
++ *   cmd_context_add_resource(ctx, dst_bo);  // owns dst_va
++ *   r = cmd_submit_const_fill(ctx, dst_va, 4096, 0xdeadbeef);
++ *   if (!r) {
++ *           cmd_context_add_resource(ctx, dst_bo);    // owns dst_va
++ *           cmd_context_add_resource(ctx, dst2_bo);   // owns dst2_va
++ *           r = cmd_submit_copy_linear(ctx, dst_va, dst2_va, 4096);
++ *   }
++ *
++ *   cmd_wait_completion(ctx);   // ensure the copy has landed
++ *   cmd_context_destroy(ctx);   // (would also wait) release resources
++ *   return r;
++ */
+ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
+                                     enum amd_ip_block_type ip_type,
+                                     uint32_t ring_id,
+-                                    bool user_queue,
+-                                    uint32_t write_length,
+-                                    amdgpu_bo_handle external_bo,
+-                                    uint64_t external_bo_mc,
+-                                    volatile uint32_t *external_bo_cpu);
+-void cmd_context_destroy(cmd_context_t *ctx, bool destroy_external_bo);
++                                    bool user_queue);
++void cmd_context_destroy(cmd_context_t *ctx);
++
++/*
++ * Register a buffer object in the context's bo_list residency set so it is
++ * resident when the next submission executes. See the cmd_* API overview above
++ * cmd_context_create() for how this fits into the submission flow.
++ *
++ * Returns 0 on success, -EINVAL on bad arguments,
++ * or -ENOSPC when the residency set (resources[]) is full.
++ */
++int cmd_context_add_resource(cmd_context_t *ctx, amdgpu_bo_handle bo);
+ 
+ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params);
+ 
+diff --git a/tests/amdgpu/amd_dmabuf_unload.c b/tests/amdgpu/amd_dmabuf_unload.c
+index 05ca3cf2c..0e43de0e6 100644
+--- a/tests/amdgpu/amd_dmabuf_unload.c
++++ b/tests/amdgpu/amd_dmabuf_unload.c
+@@ -121,9 +121,7 @@ static void test_fence_outlives_module(int vgem, int amd_fd,
+ 	igt_assert_eq(r, 0);
+ 
+ 	/* Create SDMA command context */
+-	cmd_ctx = cmd_context_create(dev, AMD_IP_DMA, 0, false,
+-				     copy_size, src_bo, src_mc,
+-				     (volatile uint32_t *)src_cpu);
++	cmd_ctx = cmd_context_create(dev, AMD_IP_DMA, 0, false);
+ 	igt_assert(cmd_ctx != NULL);
+ 
+ 	/*
+@@ -138,17 +136,14 @@ static void test_fence_outlives_module(int vgem, int amd_fd,
+ 			     AMDGPU_VA_OP_MAP);
+ 	igt_assert_eq(r, 0);
+ 
+-	/* Set up bo_list: IB (src), dst, imported VGEM BO */
+-	cmd_ctx->ring_ctx->bo2 = dst_bo;
+-	cmd_ctx->ring_ctx->bo_mc2 = dst_mc;
+-	cmd_ctx->ring_ctx->resources[1] = dst_bo;
+-	cmd_ctx->ring_ctx->resources[2] = import.buf_handle;
+-	cmd_ctx->ring_ctx->res_cnt = 3;
+-
+ 	igt_info("Submitting %d x %llu-byte SDMA copies (no wait)...\n",
+ 		 NUM_SDMA_COPIES, (unsigned long long)copy_size);
+ 
+ 	for (i = 0; i < NUM_SDMA_COPIES; i++) {
++		igt_assert_eq(cmd_context_add_resource(cmd_ctx, src_bo), 0);
++		igt_assert_eq(cmd_context_add_resource(cmd_ctx, dst_bo), 0);
++		igt_assert_eq(cmd_context_add_resource(cmd_ctx, import.buf_handle), 0);
++
+ 		r = cmd_submit_copy_linear(cmd_ctx,
+ 					   src_mc, dst_mc,
+ 					   (uint32_t)copy_size);
+diff --git a/tests/amdgpu/amd_kfd_dmabuf_unload.c b/tests/amdgpu/amd_kfd_dmabuf_unload.c
+index 24260b560..28caf8982 100644
+--- a/tests/amdgpu/amd_kfd_dmabuf_unload.c
++++ b/tests/amdgpu/amd_kfd_dmabuf_unload.c
+@@ -309,23 +309,18 @@ static void test_kfd_fence_outlives_module(int vgem, int amd_fd,
+ 	igt_assert_eq(r, 0);
+ 
+ 	/* Create SDMA command context */
+-	cmd_ctx = cmd_context_create(dev, AMD_IP_DMA, 0, false,
+-				     copy_size, src_bo, src_mc,
+-				     (volatile uint32_t *)src_cpu);
++	cmd_ctx = cmd_context_create(dev, AMD_IP_DMA, 0, false);
+ 	igt_assert(cmd_ctx != NULL);
+ 
+-	/* Set up bo_list: IB (src), dst, imported VGEM BO */
+-	cmd_ctx->ring_ctx->bo2 = dst_bo;
+-	cmd_ctx->ring_ctx->bo_mc2 = dst_mc;
+-	cmd_ctx->ring_ctx->resources[1] = dst_bo;
+-	cmd_ctx->ring_ctx->resources[2] = import.buf_handle;
+-	cmd_ctx->ring_ctx->res_cnt = 3;
+-
+ 	igt_info("Submitting %d SDMA copies "
+ 		 "(KFD amdgpu fences on dma_resv, no wait)...",
+ 		 NUM_SDMA_COPIES);
+ 
+ 	for (i = 0; i < NUM_SDMA_COPIES; i++) {
++		igt_assert_eq(cmd_context_add_resource(cmd_ctx, src_bo), 0);
++		igt_assert_eq(cmd_context_add_resource(cmd_ctx, dst_bo), 0);
++		igt_assert_eq(cmd_context_add_resource(cmd_ctx, import.buf_handle), 0);
++
+ 		r = cmd_submit_copy_linear(cmd_ctx,
+ 					   src_mc, dst_mc,
+ 					   (uint32_t)copy_size);
+diff --git a/tests/amdgpu/amd_mem.c b/tests/amdgpu/amd_mem.c
+index 7c6855d3f..eef869b41 100644
+--- a/tests/amdgpu/amd_mem.c
++++ b/tests/amdgpu/amd_mem.c
+@@ -850,7 +850,7 @@ static void test_cache_invalidate_on_sdma_write_asm(amdgpu_device_handle device,
+ 
+ 	/* 5. Issue SDMA write to buffer[0] while shader is polling */
+ 	if (cmd_ring_available(device, AMD_IP_DMA, 0, false))
+-		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 64, NULL, 0, NULL);
++		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
+ 	igt_assert(dma_ctx);
+ 	r = cmd_submit_write_linear(dma_ctx, vram_mc, sizeof(uint32_t), kPattern);
+ 	igt_assert_eq(r, 0);
+@@ -875,7 +875,7 @@ static void test_cache_invalidate_on_sdma_write_asm(amdgpu_device_handle device,
+ 	igt_info("cache-invalidate-sdma-write: PASSED (dst[100]=0x%x)\n", buf[dwLocation]);
+ 
+ 	/* Cleanup */
+-	cmd_context_destroy(dma_ctx, false);
++	cmd_context_destroy(dma_ctx);
+ 	amdgpu_bo_list_destroy(bo_list);
+ 	amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
+ 	amdgpu_cs_ctx_free(compute_ctx);
+@@ -1919,7 +1919,7 @@ static int init_dma_context(mm_bench_context_t *ctx, amdgpu_device_handle device
+ 	}
+ 
+ 	/* Create DMA context for ring 0 */
+-	ctx->dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 128, NULL, 0, NULL);
++	ctx->dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
+ 	if (!ctx->dma_ctx) {
+ 		igt_debug("Failed to create DMA context for ring 0\n");
+ 		return -ENODEV;
+@@ -1935,7 +1935,7 @@ static int init_dma_context(mm_bench_context_t *ctx, amdgpu_device_handle device
+ static void cleanup_dma_context(mm_bench_context_t *ctx)
+ {
+ 	if (ctx->dma_ctx) {
+-		cmd_context_destroy(ctx->dma_ctx, false);
++		cmd_context_destroy(ctx->dma_ctx);
+ 		ctx->dma_ctx = NULL;
+ 	}
+ }
+@@ -3164,10 +3164,11 @@ static void test_signal_handling(amdgpu_device_handle device)
+ 		/* Parent process - perform memory operations with signal handling */
+ 		igt_info("Parent process starting memory mapping operations...\n");
+ 
+-		/* FIX: Use cmd_context_create_ex with the same BO for both internal buffer and target */
+-		/* This ensures SDMA writes to the correct memory address */
+-		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 128,
+-				     sys_bo, sys_mc_address, (volatile uint32_t *)sys_cpu_ptr);
++		/*
++		 * Create a DMA context; sys_bo is registered in its residency set
++		 * immediately before the submit below (residency is per-submit).
++		 */
++		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
+ 		igt_assert_f(dma_ctx, "Failed to create DMA command submission context");
+ 
+ 		/* Wait for child process to complete with proper signal handling */
+@@ -3215,6 +3216,7 @@ static void test_signal_handling(amdgpu_device_handle device)
+ 		igt_info("Writing 0xdeadbeaf to address 0x%" PRIx64 "\n", sys_mc_address);
+ 
+ 		/* Now SDMA should write to the correct address since we're using the same BO */
++		igt_assert_eq(cmd_context_add_resource(dma_ctx, sys_bo), 0);
+ 		r = cmd_submit_write_linear(dma_ctx, sys_mc_address, sizeof(uint32_t), 0xdeadbeaf);
+ 		igt_info("cmd_submit_write_linear returned: %d\n", r);
+ 		igt_assert_eq(r, 0);
+@@ -3244,8 +3246,8 @@ static void test_signal_handling(amdgpu_device_handle device)
+ 
+ 		igt_info("Memory successfully updated to: 0x%08x\n", sys_mem[0]);
+ 
+-		/* Cleanup command context - don't destroy the external BO */
+-		cmd_context_destroy(dma_ctx, false);
++		/* Cleanup command context; sys_bo is owned by the caller. */
++		cmd_context_destroy(dma_ctx);
+ 		dma_ctx = NULL;
+ 	}
+ 
 -- 
 2.34.1
 
