@@ -4,59 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5E6BC5DF7D
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 13:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0320C5DF89
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 14:37:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 23BE810E27F;
-	Fri, 21 Aug 2026 13:51:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14F9F10E2EF;
+	Fri, 21 Aug 2026 14:37:20 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ngNg0Rpc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iNQJ2y3i";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C492D10E2B8
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 13:50:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B950C10E2EA
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 14:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787320256; x=1818856256;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=IvOG5B46bbSbxTiNxOLHrhZn2z9oBsG+op36wyIHElg=;
- b=ngNg0RpcRlOLqzDzTu0pcCYtM0BeRENTViTITYPgPoqv019bI78vDNXm
- jwlXOMI+oS591YmDrRRKHdQ+OdAo81mgYbIJUeQavhuRBJazM5JRf5j70
- uVBNjVUbD7+xadsg15tREddpGtAucw/ICJP6S1wvE8XDMAkk9QAJDBTIl
- kaJIGjHIJmTdRzG0onhLzfdlnD+JaEIUWcpoRN5fyvrQWsEHiBHJZzcmx
- +p2wR+axQOqBFWeiJJANkvN6Ch0S57FjHK5BzE/C1ejYBvzFlrt2EgJ/K
- bhdEzjBal9SFrqlPLwB2nGmrbqMB3XFiPqweWGhvbM5qmmy4c8OOCsYli Q==;
-X-CSE-ConnectionGUID: crzF0sC8RCOKWxAemzRbsg==
-X-CSE-MsgGUID: XREO603nSP+CBUVDZbuLaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="86816903"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="86816903"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2026 06:50:55 -0700
-X-CSE-ConnectionGUID: EHjyeDrDR66UeBpIosuh1A==
-X-CSE-MsgGUID: mwkqMIQ0RDmF2g8iwUhbbQ==
+ t=1787322996; x=1818858996;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=oGuHqz0Gs5AgVk6rH+E1FT6bQ7Hiam3wLKuABU0jAp8=;
+ b=iNQJ2y3irU71Mzu/8n/7lGgXTjLxBNfzhOORsXYQukqWGVzrJAUiNP2r
+ iEAJAaY3tCjZZcMutYzmLHLgJFyl7FmDnxeDiA52PHHWbMhJYtCUlwwdU
+ Igli9YTcD+UpegVHDxqi/2afN/tiNSZNbZxCiXFxSBqySPAHSPf4nWkDe
+ hRMkahTS4iKUWEYOOA48VJTNZzL5MjyzU3pmFc5vgmaU3fgFSISQTv3nP
+ rgvBVJ53d63U+/fMcQisxTLgJOwLNiS90zukfYPaLBNRAhENbE0SJHIgr
+ GHOAEsAhyML/1Wwnt/drVGJlpvDx6VBljIAGn7FI4F584OWPh/1u9Z8Jz w==;
+X-CSE-ConnectionGUID: kv5Q7CcSTmu3giUAPPfZFA==
+X-CSE-MsgGUID: Y0kYJh4gQrOw5pehmiV9xA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="75409679"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="75409679"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2026 07:36:35 -0700
+X-CSE-ConnectionGUID: Ki5Wego3Qn27TzFTSEiWSg==
+X-CSE-MsgGUID: 8G9/A4xMQ5mVdfUJaHx58g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="269831166"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2026 06:50:54 -0700
-Date: Fri, 21 Aug 2026 15:50:37 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Mark Yacoub <markyacoub@google.com>
-Cc: igt-dev@lists.freedesktop.org, louis.chauvet@bootlin.com,
- sebastian.brzezinka@intel.com
-Subject: Re: [PATCH v6] lib/igt_rc: Introduce generic config parser
-Message-ID: <20260821135037.nlaexgbnunzwm7i5@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org,
- louis.chauvet@bootlin.com, sebastian.brzezinka@intel.com
-References: <20260819142337.3232406-1-markyacoub@google.com>
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="266423711"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2026 07:36:35 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 21 Aug 2026 07:36:34 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45 via Frontend Transport; Fri, 21 Aug 2026 07:36:34 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.2) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Fri, 21 Aug 2026 07:36:33 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=arxQ64IAhTCNa7OE03yWtGb1iPHCiEZQmjMrQLi5y+fTfTpGjpv2+799bAvOfSeUwNYwVbEEAdBq6p+u3nD8gtCUPlG+JxWMWlp2bLJ4KDMknbz8cB4JcWgfQ/vTnjgybvSowhpIiOlscWUf2pqcmBTgktkGbayWZ96FnaQSb6w3O+CpBv8yK6/i6kNa2h5Ah+l7T8g/48bAFiOERBLTDtUNpyjci5kmVfYjArpqStmXXc2aL7FnNVY9aSEfbbF9C0c2MIywmRfGTa6f5obttFJamoLKPJX6/86OJqfa0uVGkUgOqP9R0lO0cAp7ydBtYuTlF4v6Yldg5BpbkPgAYw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=oGuHqz0Gs5AgVk6rH+E1FT6bQ7Hiam3wLKuABU0jAp8=;
+ b=uT6iv2RuzDkWPMHdRforpkKuMGKUeGNTsOC2SXwGSf5MjUpwKNzynssikNdF03BOQv1ztaNXtI75SdB3qyoyqQ4Rl82joxbgqtZPmfxK6gTvKm9mWqZFeTJ5xgv5RkYUxxLjA6oJTs5zh3lxdFyMDAuk0LGMgYcLnF/xi4iX2R/cYxSaHhdgtkFGDzLtkpYLImvPF1xVc5FA29jax1YzEcY5efb1Jlo/j43Ol0YGoX5efRFTQVwKyqYNbS6qkNyk6k5o4x7TiLj12b4ER9Qzg5t2fsX/vBJTwH1W+S29qaL1uZY2kWgk++UUat8PZxHOWTMwl6FRncUnYpbQC1JT2g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SA3PR11MB8118.namprd11.prod.outlook.com (2603:10b6:806:2f1::13)
+ by SA1PR11MB8492.namprd11.prod.outlook.com (2603:10b6:806:3a3::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
+ 2026 14:36:26 +0000
+Received: from SA3PR11MB8118.namprd11.prod.outlook.com
+ ([fe80::b2e3:da3f:6ad8:e9a5]) by SA3PR11MB8118.namprd11.prod.outlook.com
+ ([fe80::b2e3:da3f:6ad8:e9a5%5]) with mapi id 15.21.0339.010; Fri, 21 Aug 2026
+ 14:36:26 +0000
+From: "Gote, Nitin R" <nitin.r.gote@intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Auld, Matthew" <matthew.auld@intel.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>
+Subject: RE: [PATCH] tests/core_hotunplug: add *-with-load subtests exercising
+ GPU workload during hotplug
+Thread-Topic: [PATCH] tests/core_hotunplug: add *-with-load subtests
+ exercising GPU workload during hotplug
+Thread-Index: AQHdMTU52l0mMs+abkaGovz4RYILrLaoQIiAgAAootA=
+Date: Fri, 21 Aug 2026 14:36:26 +0000
+Message-ID: <SA3PR11MB8118D7C49893DDAF83217042D0A32@SA3PR11MB8118.namprd11.prod.outlook.com>
+References: <20260821065838.1865108-2-nitin.r.gote@intel.com>
+ <341d0d27d10daf87a9d2f4e191082b04dd69b9c1.camel@linux.intel.com>
+In-Reply-To: <341d0d27d10daf87a9d2f4e191082b04dd69b9c1.camel@linux.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA3PR11MB8118:EE_|SA1PR11MB8492:EE_
+x-ms-office365-filtering-correlation-id: ddbf19c5-ee0e-4e2f-115b-08deff9194b4
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|23010399003|1800799024|366016|376014|56012099006|10067099003|6133799003|22082099003|18002099003|4143699003|11063799006|38070700021;
+x-microsoft-antispam-message-info: /zzQFO5wdRsRNKFXgsB5igRymv425Hr7Bl9+P+P1br9T74giTx6e7/dhHNhfbzUy7LDDeD7nyOxugSbr54otB0oqqSpJSOirnWzou2f6AivJ21HYkTHgeENV7fLcTihXqQxmMrA1NEgtni6791H/+X8jbTzUPZg6UhQa7jPyQnUkc3PNua1cHjuj1DPBfWx0PxgQJcBuv2nedswv8VJNOdGXMnAjhvg3dp2ku5c5yFSsPekw2iuNi06JZh2t4WedxFSsWpJLwILeCfjAyeVgZ0rkCh4lnnlC6cYOT4FF/Lk74M8L/Mx3G9FSv6+QQ2DTBTnmgTVRp6/+jZKjhoQWjsz2BSG6yGSe5maYt7P6+c8X7Vb4DDVFfU4/10V7pb51zmXoVIRfUal3FG+N9OPUkuiPnDb5SPYnF3rhXhCP3LLBo8Ev0hW0ku+ZlpqHvbDdIhebSlkgB1bP1qFwSP5boADkeRCHdaWJYs0ZcRsxdaCYLAgb6fG2ZWDmy5vIdgnCmg/NOmGYIrYmU9vNe1El5jwHmeQ2OoeqK5qhvm8QlroODnXw/KfTpErLIDA+V32v/hZh3avCDLzuK5uWroI+tzLlc8mMcY1AKjFw/zYuJZN/W/dW4IDZy+Xvh+dgRUMMB5FktFuFx2amvIBgDlZWuN1yfSbxwP9X2tu5w5czq14=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA3PR11MB8118.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(56012099006)(10067099003)(6133799003)(22082099003)(18002099003)(4143699003)(11063799006)(38070700021);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?cWU4dGRLT21FczIwdkdEK2hVUXpFa3hEVDdobW0xRnZiU2Zjdjd3YlREdjdk?=
+ =?utf-8?B?anpBOWRWSkQvSk1pVTFhSjdJMWIxVTVQUi82RlhCWitKQWVOWkdTcjg1UUtj?=
+ =?utf-8?B?alZNL0tsaUZkM2p1UnVCbXhnVkxMVTd2dzRRSStDVHVPcGZ3dVVlaEJUTXpu?=
+ =?utf-8?B?Z1NneG9KYUNzdVIzVGUyUXlXVzFGUnRUa2l6aVRmK1ZPaHZISXZuM2pkM0dX?=
+ =?utf-8?B?WEJKbXhJdVgvdEJzaXBvODFzRVRTeWp2d1lmWUtPU3ZHQndWRTVmNlRPaDNL?=
+ =?utf-8?B?bC94VmxuVy9UR3lWQ1I4TDFXeFNmME5Ycys4RGlMZjhJa1pSY3NidisvR2JO?=
+ =?utf-8?B?Wjc2NDBxN0NjaGZNbnRTd2kwTTBxY2c1NlpXbjUzWk9kZ2xvZFUwUGNLNXNn?=
+ =?utf-8?B?R0Z0eDIyakZwVUxiYVBuMDBQYlEyKy9ZRFI0bTJEcjhyNmtQT2FOK3dzK0Zk?=
+ =?utf-8?B?ZUdtOHN0dTE3QmhMcjVDYWRUbUc4ZmJwVG1jMkQ5NGE1MmxOTG0vQXVidUpZ?=
+ =?utf-8?B?QjJBRDJzVmdXZ1h2Mlc1K2ZyTVNjM2VmeG1mR1lvS1liKzM1NEhmemgvcU1P?=
+ =?utf-8?B?VkNXSHRSYWp0dlR3SzBnZzVqR1RDZHdMRjVJUXBmZDNCM08vT0hUdTZEWlZW?=
+ =?utf-8?B?eXdKS2FuOTkzTHBZUFdQTzA5d3Q1Rnl1NmtJTHFwR0FZZWc2QVVqRTlGRFFG?=
+ =?utf-8?B?OUY5clFqR3VubFVLMGw0dEVhNUw4M2QwMFVHZjZxbzZpelEwVXR1UngzK1J0?=
+ =?utf-8?B?WnNabDhtZUVqMlI4VXpwSHdxQzlOc1p2WWVNbWk2UncvdTNXZVpYc1grYkpI?=
+ =?utf-8?B?NTJlVkZZRFJQOHJSZ09aUkFLVHBGV1JhRFFFQ1lSYXhzeWxEaXZRdzlSN1dC?=
+ =?utf-8?B?N2IwK3IycVNGMnhsOVNYaVNSNEdHUkRNV0dBcC8ydGl5QS9aUE8yK3JIcTBt?=
+ =?utf-8?B?T1lQYmdYaU9MUlBaZytLcDBQbnU5YlBEN2U0WDZHSENwNlM0cldQR292K0tX?=
+ =?utf-8?B?MWs0ZTNQUGplQm84RldhY3gyaXVDbGJ3NkZEUVdBUDJxeXNyS1doQWU1R0Zi?=
+ =?utf-8?B?bzJLejk5WmJ4NnJhTVNxNjJsb2tmR093amJ0SG1oWHduR3REYkYyd0JEWG5k?=
+ =?utf-8?B?NnBDS2RHMXNQOGVLLzBiS2RCR29RZ0Z0cFdJRVJuSDFsekNtNEJUdnIrbEtS?=
+ =?utf-8?B?NlVodnZGZWJjMEw3VllGMUk0a2pQMUR0MjRJSndGWUxHTzhPblJSSTBBeEFL?=
+ =?utf-8?B?elNucjNSTDFuZ1o3Um9QTDJjSnJFMzB3WU1sdW5SOWNEQktuekxXNlVhc1JE?=
+ =?utf-8?B?MUdPN05VNjBBT1o4V3FmV1R4V2cxemhKRy9BYWo5V2tGWUhKRk5kRlQ1RGpC?=
+ =?utf-8?B?Q3pTL1JXYnpYZmRUZTRjVVBnQW5oM2oxblpHSlFuZTZ4TEhVaFJQWGJMdUZC?=
+ =?utf-8?B?TTJibWI4NVlyanNhdnRLRFhxNkxBOVhLV0Y4L1BUak0ydG44UDFiWGFIc1E3?=
+ =?utf-8?B?L21GRVAybFpndXNpN0VNRDJwK1A1U1RxYUFkRm50MEsvM29LNnJPNWpvTlNO?=
+ =?utf-8?B?OUFaUE5IKysrdk5aZVRaREl4SFRKY01vVHhEM3EyUTUvTU5aMUZyYzg5bDZG?=
+ =?utf-8?B?TVJyQ01lVjl5TThFcU42Zi9mQU1RWWk0dlJ6dEV4U1NOOXF4SXM0aXpNV0l5?=
+ =?utf-8?B?L2toSnVDcFphODdBdUpZc1pXb3VZb2lESWFSS0hIc1ZQSVBiM2d0K0pwcjRK?=
+ =?utf-8?B?TmVQSUxjT09xL281UC80bnlvVU9qV2JWRldSb29CeTAzMjQ3SVBCNWYvSzRj?=
+ =?utf-8?B?cUJCRUJvUUEwcUR6L2FEUDlWdXZ5QjVmN2pUM0F6V0hLNkFPR1VIVnhwVnVT?=
+ =?utf-8?B?UEpaUG9VTXMvVHVJVEVTamw0cjBtVGdkN3lhT3JEUU1oV3FNaDBzMG1qa3RC?=
+ =?utf-8?B?SkxYMDBMWkFBSmZRdkozYlROajgweFlhKzRmR1dpSmhXWHVPQUxLaEpidFJ2?=
+ =?utf-8?B?NGpDS1QzNHhSODRiSC9XeWNwVGkxY0Q3S0JOOHdpTGZKekd5YXdxS0tVUlRD?=
+ =?utf-8?B?UmFtdVY2RWFBKzVlTitlbDRpQlAwek52MkdCVjRxYjZiS1JUREVyc3lpRXFX?=
+ =?utf-8?B?YkgxTXlmRW1BQUx0Sm9tMCtzQVpQSGVrSVc3elZieVJKT0t0eVg4MnVUaFdM?=
+ =?utf-8?B?MkNNN2V3c0xpNFl4NjFtQTBTVHl4REg5S2hKWVMyTTFRRWZsd0k1N0NWVkhW?=
+ =?utf-8?B?cGpCQ3k4Ly94NFp5MFZ5NUtPN2tKUFhuMCtvWHRFOEl6aDliVEUydDVxdDNN?=
+ =?utf-8?B?L2pBUlZxcHFVWE4wcWJMUG13bnkwUHFCS2I0SHNnOXVRNWRmcDk1QT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260819142337.3232406-1-markyacoub@google.com>
+X-Exchange-RoutingPolicyChecked: GBH5Ity84aAg9hn5ppcEZGMJIPcCDtfLg4ONmX3hBQDj5p5SkjcBaNeoS77bSqpEguhsnr9K8ststQz2IazQyZ8J6ZNYppL3nmRnWuXss9Qx0YPhl3Cq1CU1hPM3ag0yooQ6WwTt9flFADqXV9N4RxcQ3n6EgKe6szuMIr4pzXoqYcr9wgG1o3U1bgJMZsz7LLHtA4TKky/8YxY10o8dLc2msm7NRaFX+574xeWGqCNImYEPU148d0VpwiV3i8OyhTX6Miur6lMi2Z69N5a+dOd61KKx6PxlZuf5E8YfQ2D6nvznGhloNbgN3qEI4QURKvxlgQbLUwy7QITVkIPV9w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA3PR11MB8118.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ddbf19c5-ee0e-4e2f-115b-08deff9194b4
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2026 14:36:26.3157 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2tMWu49EIjKbj6CHxVviYzHXeb7R15lGbFpsl3xCr57hipaM83K/UAx7kU2IRfnRDmzy2JhpnfaRXGFSJ1sg1g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8492
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,605 +174,142 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Mark,
-On 2026-08-19 at 10:23:34 -0400, Mark Yacoub wrote:
-> Currently, libraries like unigraf and igt_core explicitly rely on
-> GKeyFile for reading configuration from .igtrc. Android builds do
-> not natively supply GLib, meaning these tools cannot be cleanly
-> compiled.
-> 
-> This patch avoids platform-specific diverging implementations by
-> dropping the native GLib dependency from generic configuration access
-> and parsing `.igtrc` natively using a stripped-down `igt_list`
-> implementation.
-> 
-> To prevent regressions for deeply-entrenched legacy Linux tools (such
-> as Chamelium), the native GLib fallback `GKeyFile` structures are
-> retained and populated parallel to the generic parser at startup.
-
-Please move cc,  s-o-b, and ack and/or r-b here, and add version
-info after a line starting with '---' so it will not enter git
-log history.
-
-Few more nits below.
-
-> 
-> v6:
->  - Drop pthread_once dependency and expose idempotent igt_rc_init()
->    to fix armhf linking (Kamil).
->  - Replace __attribute__((destructor)) with explicit igt_rc_free()
->    called during igt_exit().
->  - Add 32-bit INT bounds checking in igt_rc_get_integer().
->  - Optimize igt_rc_get_string() using reverse list traversal for fast
->    INI override matching.
->  - Fix trailing whitespace and header comment formatting flagged by
->    checkpatch.pl.
-> 
-> v5:
->  - Rebased onto upstream 'lib/igt_core: move igt_load_igtrc to igt_rc'
->  - Safely run GLib loader parallel to generic parser at startup for
->    Chamelium
-> 
-> v4:
->  - Implement igt_rc_get_double() to parse floating point configs
->    natively.
->  - Migrate igt_core.c over to igt_rc_get_double() to drop GKeyFile
->    dependencies.
->  - Add robust standard bounds checking (ERANGE and unmatched digits)
->    to number parsers.
-> 
-> v3:
->  - Drop Android-specific fallback paths; use IGT_CONFIG_PATH natively.
->  - Drop glib Linux wrappers entirely; unify a single generic parser for
->    all platforms.
->  - Port manual linked-list tracking over to standard igt_list.h APIs.
->  - Inherit base 0 for strtol to safely parse hex masks.
->  - Use robust PATH_MAX for dynamic config paths.
->  - Update pointer assignments, array indexing [0], and public
->    docstrings.
-> 
-> v2:
->  - Drop the GKeyFile abstraction fakes from android/glib.h.
->  - Introduce a generic wrapper (igt_rc.h) instead of modifying glib.h.
-> 
-> Signed-off-by: Mark Yacoub <markyacoub@google.com>
-> ---
->  lib/igt_core.c               |  39 ++----
->  lib/igt_rc.c                 | 248 ++++++++++++++++++++++++++++++++++-
->  lib/igt_rc.h                 |  12 +-
->  lib/vendor/unigraf/unigraf.c |  92 ++++++-------
->  4 files changed, 303 insertions(+), 88 deletions(-)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index 2f737b01a..93489dffc 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -974,39 +974,25 @@ static void oom_adjust_for_doom(void)
->  
->  static void common_init_config(void)
->  {
-> -	GError *error = NULL;
->  	int ret = 0;
->  	static double timeout = 0.0;
->  
-> -	igt_key_file = igt_load_igtrc();
-> -
-> -	if (igt_key_file && !igt_frame_dump_path)
-> -		igt_frame_dump_path =
-> -			g_key_file_get_string(igt_key_file, "Common",
-> -					      "FrameDumpPath", &error);
-> -
-> -	g_clear_error(&error);
-> -
-> -	if (igt_key_file)
-> -		ret = g_key_file_get_integer(igt_key_file, "DUT", "SuspendResumeDelay",
-> -					     &error);
-> -	assert(!error || error->code != G_KEY_FILE_ERROR_INVALID_VALUE);
->  
-> -	g_clear_error(&error);
-> +	igt_rc_init();
-> +	igt_key_file = igt_load_igtrc();
-> +	if (!igt_frame_dump_path)
-> +		igt_frame_dump_path = igt_rc_get_string("Common", "FrameDumpPath");
->  
-> -	if (ret != 0)
-> -		igt_set_autoresume_delay(ret);
-> +	if (igt_rc_get_integer("DUT", "SuspendResumeDelay", &ret)) {
-> +		if (ret != 0)
-> +			igt_set_autoresume_delay(ret);
-> +	}
->  
-> -	if (igt_key_file)
-> -		timeout = g_key_file_get_double(igt_key_file, "DUT", "DisplayDetectTimeout",
-> -						&error);
-> -	if (error) {
-> +	if (!igt_rc_get_double("DUT", "DisplayDetectTimeout", &timeout)) {
->  		igt_debug("Failed to read DisplayDetectTimeout, defaulting to %f\n",
->  			  DEFAULT_DETECT_TIMEOUT);
-> -		g_clear_error(&error);
->  		timeout = DEFAULT_DETECT_TIMEOUT;
->  	}
-> -	g_clear_error(&error);
->  	igt_set_default_display_detect_timeout(timeout);
->  
->  	/* Adding filters, order .igtrc, IGT_DEVICE, --device filter */
-> @@ -1016,11 +1002,7 @@ static void common_init_config(void)
->  		if (igt_rc_device) {
->  			igt_debug("Notice: using IGT_DEVICE env:\n");
->  		} else {
-> -			if (igt_key_file)
-> -				igt_rc_device =	g_key_file_get_string(igt_key_file,
-> -								      "Common",
-> -								      "Device", &error);
-> -			g_clear_error(&error);
-> +			igt_rc_device = igt_rc_get_string("Common", "Device");
->  			if (igt_rc_device)
->  				igt_debug("Notice: using .igtrc "
->  					  "Common::Device:\n");
-> @@ -2374,6 +2356,7 @@ void igt_exit(void)
->  
->  	if (igt_key_file)
->  		g_key_file_free(igt_key_file);
-> +	igt_rc_free();
->  
->  	if (run_single_subtest && !run_single_subtest_found) {
->  		igt_critical("Unknown subtest: %s\n", run_single_subtest);
-> diff --git a/lib/igt_rc.c b/lib/igt_rc.c
-> index b7f1731fe..4ae0acab5 100644
-> --- a/lib/igt_rc.c
-> +++ b/lib/igt_rc.c
-> @@ -3,16 +3,252 @@
->   * Copyright © 2026 Intel Corporation
->   */
->  
-> +#include "igt_rc.h"
-
-Please move it after include igt_list.h below.
-
-> +
-> +#include <ctype.h>
-> +#include <errno.h>
-> +#include <limits.h>
-> +#include <locale.h>
->  #include <stdio.h>
->  #include <stdlib.h>
-> +#include <string.h>
-> +#include <strings.h>
->  
-> -#ifndef ANDROID
-> -#include <glib.h>
-> -#else
-> -#include "android/glib.h"
-> -#endif
-> +#include "igt_list.h"
->  
-> -#include "igt_rc.h"
-
-Add newline after include.
-
-> +struct igt_key_entry {
-> +	char *group;
-> +	char *key;
-> +	char *value;
-> +	struct igt_list_head link;
-> +};
-> +
-> +static IGT_LIST_HEAD(rc_entries);
-> +
-> +static char *trim_whitespace(char *str)
-> +{
-> +	char *end;
-> +
-> +	while (isspace((unsigned char)str[0]))
-> +		str++;
-> +
-> +	if (str[0] == 0)
-> +		return str;
-> +
-> +	end = str + strlen(str) - 1;
-> +	while (end > str && isspace((unsigned char)end[0]))
-> +		end--;
-> +
-> +	end[1] = '\0';
-> +	return str;
-> +}
-> +
-> +void igt_rc_init(void)
-> +{
-> +	FILE *fp;
-> +	char *line = NULL;
-> +	size_t len = 0;
-> +	ssize_t read;
-> +	char *current_group = NULL;
-> +	char path[PATH_MAX];
-> +
-> +	if (!igt_list_empty(&rc_entries))
-> +		return;
-> +
-> +	char *config_path = getenv("IGT_CONFIG_PATH");
-
-This should be declared above, and here only:
-	config_path = getenv("IGT_CONFIG_PATH");
-
-Now I see compiler warning:
-
-../lib/igt_rc.c:58:9: warning: ISO C90 forbids mixed declarations and code [-Wdeclaration-after-statement]
-   58 |         char *config_path = getenv("IGT_CONFIG_PATH");
-      |         ^~~~
-
-> +
-> +	if (config_path) {
-> +		snprintf(path, sizeof(path), "%s", config_path);
-> +	} else {
-> +		char *home = getenv("HOME");
-> +
-> +		if (!home)
-> +			home = "";
-
-../lib/igt_rc.c:66:30: warning: assignment discards 'const' qualifier from pointer target type [-Wdiscarded-qualifiers]
-   66 |                         home = "";
-      |                              ^
-
-You can avoid it with:
-		const char *home = getenv("HOME") ?: "";
-
-> +		snprintf(path, sizeof(path), "%s/.igtrc", home);
-
-or use it in this snprintf:
-		const char *home = getenv("HOME");
-
-		snprintf(path, sizeof(path), "%s/.igtrc", home ? home : "");
-
-
-> +	}
-> +
-> +	fp = fopen(path, "r");
-
-Can you avoid using fopen() in favor of open()?
-
-> +	if (!fp)
-> +		return;
-> +
-> +	while ((read = getline(&line, &len, fp)) != -1) {
-
-Here also, can you just read all file into allocated buffer
-with one read, and then parse it?
-
-Regards,
-Kamil
-
-> +		char *trimmed = trim_whitespace(line);
-> +
-> +		if (trimmed[0] == '\0' || trimmed[0] == '#' || trimmed[0] == ';')
-> +			continue;
-> +
-> +		if (trimmed[0] == '[' && trimmed[strlen(trimmed) - 1] == ']') {
-> +			free(current_group);
-> +			trimmed[strlen(trimmed) - 1] = '\0';
-> +			current_group = strdup(trimmed + 1);
-> +			continue;
-> +		}
-> +
-> +		if (current_group) {
-> +			char *eq = strchr(trimmed, '=');
-> +
-> +			if (eq) {
-> +				char *key;
-> +				char *value;
-> +				struct igt_key_entry *entry;
-> +
-> +				eq[0] = '\0';
-> +				value = eq + 1;
-> +				key = trim_whitespace(trimmed);
-> +				value = trim_whitespace(value);
-> +
-> +				entry = calloc(1, sizeof(*entry));
-> +				entry->group = strdup(current_group);
-> +				entry->key = strdup(key);
-> +				entry->value = strdup(value);
-> +				igt_list_add_tail(&entry->link, &rc_entries);
-> +			}
-> +		}
-> +	}
-> +
-> +	free(current_group);
-> +	free(line);
-> +	fclose(fp);
-> +}
-> +
-> +void igt_rc_free(void)
-> +{
-> +	struct igt_key_entry *curr, *tmp;
-> +
-> +	igt_list_for_each_entry_safe(curr, tmp, &rc_entries, link) {
-> +		free(curr->group);
-> +		free(curr->key);
-> +		free(curr->value);
-> +		free(curr);
-> +	}
-> +	IGT_INIT_LIST_HEAD(&rc_entries);
-> +}
-> +
-> +/**
-> + * igt_rc_get_string:
-> + * @group_name: The group name in the config file.
-> + * @key: The key to look up.
-> + *
-> + * Looks up a string configuration value in the `.igtrc` file.
-> + * The returned string is newly allocated and must be freed by
-> + * the caller using free().
-> + *
-> + * Returns: A newly allocated string containing the value, or NULL if not found.
-> + */
-> +char *igt_rc_get_string(const char *group_name, const char *key)
-> +{
-> +	struct igt_key_entry *curr;
-> +
-> +	igt_list_for_each_entry_reverse(curr, &rc_entries, link) {
-> +		if (strcmp(curr->group, group_name) == 0 && strcmp(curr->key, key) == 0)
-> +			return strdup(curr->value);
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +/**
-> + * igt_rc_get_boolean:
-> + * @group_name: The group name in the config file.
-> + * @key: The key to look up.
-> + * @out: Pointer to a boolean where the result will be stored.
-> + *
-> + * Looks up a boolean configuration value in the `.igtrc` file.
-> + * Parses standard boolean representations like "true", "false", "1", "0".
-> + *
-> + * Returns: true if the key exists and was successfully parsed, false otherwise.
-> + */
-> +bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out)
-> +{
-> +	char *val = igt_rc_get_string(group_name, key);
-> +
-> +	if (!val)
-> +		return false;
-> +
-> +	if (strcasecmp(val, "true") == 0 || strcmp(val, "1") == 0) {
-> +		*out = true;
-> +	} else if (strcasecmp(val, "false") == 0 || strcmp(val, "0") == 0) {
-> +		*out = false;
-> +	} else {
-> +		free(val);
-> +		return false;
-> +	}
-> +
-> +	free(val);
-> +	return true;
-> +}
-> +
-> +/**
-> + * igt_rc_get_integer:
-> + * @group_name: The group name in the config file.
-> + * @key: The key to look up.
-> + * @out: Pointer to an integer where the result will be stored.
-> + *
-> + * Looks up an integer configuration value in the `.igtrc` file.
-> + *
-> + * Returns: true if the key exists and was successfully parsed, false otherwise.
-> + */
-> +bool igt_rc_get_integer(const char *group_name, const char *key, int *out)
-> +{
-> +	char *val = igt_rc_get_string(group_name, key);
-> +	char *endptr;
-> +	long lval;
-> +
-> +	if (!val)
-> +		return false;
-> +
-> +	errno = 0;
-> +	lval = strtol(val, &endptr, 0);
-> +	if (endptr == val || endptr[0] != '\0' || errno == ERANGE ||
-> +	    lval < INT_MIN || lval > INT_MAX) {
-> +		free(val);
-> +		return false;
-> +	}
-> +
-> +	*out = (int)lval;
-> +	free(val);
-> +	return true;
-> +}
-> +
-> +/**
-> + * igt_rc_get_double:
-> + * @group_name: The group name in the config file.
-> + * @key: The key to look up.
-> + * @out: Pointer to a double where the result will be stored.
-> + *
-> + * Looks up a double configuration value in the `.igtrc` file.
-> + *
-> + * Returns: true if the key exists and was successfully parsed, false otherwise.
-> + */
-> +bool igt_rc_get_double(const char *group_name, const char *key, double *out)
-> +{
-> +	char *val = igt_rc_get_string(group_name, key);
-> +	char *endptr;
-> +	double dval;
-> +	char *dot;
-> +	struct lconv *lc;
-> +
-> +	if (!val)
-> +		return false;
-> +
-> +	/* Handle locale-specific decimal separator for strtod */
-> +	dot = strchr(val, '.');
-> +	lc = localeconv();
-> +	if (dot && lc && lc->decimal_point && lc->decimal_point[0] != '.') {
-> +		*dot = lc->decimal_point[0];
-> +	}
-
-You do not need braces for single-line of code.
-
-> +
-> +	errno = 0;
-> +	dval = strtod(val, &endptr);
-> +	if (endptr == val || endptr[0] != '\0' || errno == ERANGE) {
-> +		free(val);
-> +		return false;
-> +	}
-> +
-> +	*out = dval;
-> +	free(val);
-> +	return true;
-> +}
->  
->  /**
->   * igt_load_igtrc:
-> diff --git a/lib/igt_rc.h b/lib/igt_rc.h
-> index 3b7179808..61f883ee1 100644
-> --- a/lib/igt_rc.h
-> +++ b/lib/igt_rc.h
-> @@ -21,10 +21,11 @@
->   * IN THE SOFTWARE.
->   */
->  
-> -
->  #ifndef IGT_RC_H
->  #define IGT_RC_H
->  
-> +#include <stdbool.h>
-> +
->  #ifndef ANDROID
->  #include <glib.h>
->  #else
-> @@ -32,7 +33,14 @@
->  #endif
->  
->  extern GKeyFile *igt_key_file;
-> -
->  struct _GKeyFile *igt_load_igtrc(void);
->  
-> +void igt_rc_init(void);
-> +void igt_rc_free(void);
-> +
-> +char *igt_rc_get_string(const char *group_name, const char *key);
-> +bool igt_rc_get_boolean(const char *group_name, const char *key, bool *out);
-> +bool igt_rc_get_integer(const char *group_name, const char *key, int *out);
-> +bool igt_rc_get_double(const char *group_name, const char *key, double *out);
-> +
->  #endif /* IGT_RC_H */
-> diff --git a/lib/vendor/unigraf/unigraf.c b/lib/vendor/unigraf/unigraf.c
-> index 30ee3c72b..a6b3008eb 100644
-> --- a/lib/vendor/unigraf/unigraf.c
-> +++ b/lib/vendor/unigraf/unigraf.c
-> @@ -364,7 +364,6 @@ int unigraf_get_connector_id_by_stream(int drm_fd, int stream_id)
->  bool unigraf_open_device(int drm_fd)
->  {
->  	TSI_RESULT r;
-> -	GError *cfg_error = NULL;
->  	char *cfg_device = NULL;
->  	char *cfg_role = NULL;
->  	char *cfg_input = NULL;
-> @@ -382,63 +381,52 @@ bool unigraf_open_device(int drm_fd)
->  
->  	unigraf_init();
->  
-> -	if (igt_key_file) {
-> -		cfg_device = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						   UNIGRAF_CONFIG_DEVICE_NAME, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No device name configured, uses first device available.\n");
-> -			cfg_device = NULL;
-> -		}
-> +	cfg_device = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +				       UNIGRAF_CONFIG_DEVICE_NAME);
-> +	if (!cfg_device) {
-> +		unigraf_debug("No device name configured, uses first device available.\n");
-> +		cfg_device = NULL;
-> +	}
->  
-> -		cfg_error = NULL;
-> -		cfg_role = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						 UNIGRAF_CONFIG_DEVICE_ROLE, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No device role configured.\n");
-> -			cfg_role = NULL;
-> -		}
-> +	cfg_role = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +				     UNIGRAF_CONFIG_DEVICE_ROLE);
-> +	if (!cfg_role) {
-> +		unigraf_debug("No device role configured.\n");
-> +		cfg_role = NULL;
-> +	}
->  
-> -		cfg_error = NULL;
-> -		cfg_input = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						  UNIGRAF_CONFIG_INPUT_NAME, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No input name configured.\n");
-> -			cfg_input = NULL;
-> -		}
-> +	cfg_input = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +				      UNIGRAF_CONFIG_INPUT_NAME);
-> +	if (!cfg_input) {
-> +		unigraf_debug("No input name configured.\n");
-> +		cfg_input = NULL;
-> +	}
->  
-> -		cfg_error = NULL;
-> -		unigraf_connector_name = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -							       UNIGRAF_CONFIG_CONNECTOR_NAME,
-> -							       &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No connector name configured, will autodetect.\n");
-> -			unigraf_connector_name = NULL;
-> -		}
-> +	unigraf_connector_name = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +						   UNIGRAF_CONFIG_CONNECTOR_NAME);
-> +	if (!unigraf_connector_name) {
-> +		unigraf_debug("No connector name configured, will autodetect.\n");
-> +		unigraf_connector_name = NULL;
-> +	}
->  
-> -		cfg_error = NULL;
-> -		cfg_edid_name = g_key_file_get_string(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						      UNIGRAF_CONFIG_EDID_NAME, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("No default EDID set, use IGT default.\n");
-> -			cfg_edid_name = NULL;
-> -		}
-> +	cfg_edid_name = igt_rc_get_string(UNIGRAF_CONFIG_GROUP,
-> +					  UNIGRAF_CONFIG_EDID_NAME);
-> +	if (!cfg_edid_name) {
-> +		unigraf_debug("No default EDID set, using IGT default.\n");
-> +		cfg_edid_name = NULL;
-> +	}
->  
-> -		cfg_error = NULL;
-> -		unigraf_crc = g_key_file_get_boolean(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -						     UNIGRAF_CONFIG_USE_CRC_NAME, &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
-> -			unigraf_crc = true;
-> -		}
-> +	if (!igt_rc_get_boolean(UNIGRAF_CONFIG_GROUP,
-> +				UNIGRAF_CONFIG_USE_CRC_NAME, &unigraf_crc)) {
-> +		unigraf_debug("CRC usage not configured, using unigraf CRC.\n");
-> +		unigraf_crc = true;
-> +	}
->  
-> -		cfg_error = NULL;
-> -		unigraf_stream_count = g_key_file_get_integer(igt_key_file, UNIGRAF_CONFIG_GROUP,
-> -							      UNIGRAF_CONFIG_MST_STREAM_COUNT,
-> -							      &cfg_error);
-> -		if (cfg_error) {
-> -			unigraf_debug("MST usage not configured, using SST.\n");
-> -			unigraf_stream_count = 0;
-> -		}
-> +	if (!igt_rc_get_integer(UNIGRAF_CONFIG_GROUP,
-> +				UNIGRAF_CONFIG_MST_STREAM_COUNT,
-> +				&unigraf_stream_count)) {
-> +		unigraf_debug("MST usage not configured, using SST.\n");
-> +		unigraf_stream_count = 0;
->  	}
->  
->  	unigraf_assert(TSIX_DEV_RescanDevices(0, TSI_DEVCAP_VIDEO_CAPTURE, 0));
-> -- 
-> 2.55.0.737.g08866a6d13-goog
-> 
+SGkgSmFudXN6LA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IEphbnVz
+eiBLcnp5c3p0b2ZpayA8amFudXN6LmtyenlzenRvZmlrQGxpbnV4LmludGVsLmNvbT4NCj4gU2Vu
+dDogRnJpZGF5LCBBdWd1c3QgMjEsIDIwMjYgMzoxMyBQTQ0KPiBUbzogR290ZSwgTml0aW4gUiA8
+bml0aW4uci5nb3RlQGludGVsLmNvbT47IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+
+IENjOiBBdWxkLCBNYXR0aGV3IDxtYXR0aGV3LmF1bGRAaW50ZWwuY29tPjsgS2FtaWwgS29uaWVj
+em55DQo+IDxrYW1pbC5rb25pZWN6bnlAbGludXguaW50ZWwuY29tPg0KPiBTdWJqZWN0OiBSZTog
+W1BBVENIXSB0ZXN0cy9jb3JlX2hvdHVucGx1ZzogYWRkICotd2l0aC1sb2FkIHN1YnRlc3RzIGV4
+ZXJjaXNpbmcNCj4gR1BVIHdvcmtsb2FkIGR1cmluZyBob3RwbHVnDQo+IA0KPiBIaSBOaXRpbiwN
+Cj4gDQo+IEdvb2Qgam9iLCBob3dldmVyLCBJIHRoaW5rIHdlIHN0aWxsIG5lZWQgc29tZSBpbXBy
+b3ZlbWVudHMuDQo+IA0KPiBPbiBGcmksIDIwMjYtMDgtMjEgYXQgMTI6MjggKzA1MzAsIE5pdGlu
+IEdvdGUgd3JvdGU6DQo+ID4gVGhlIHNpeCBmZC1ob2xkaW5nIGhvdCogc3VidGVzdHMga2VlcCBh
+IERSTSBmZCBvcGVuIGFjcm9zcw0KPiA+IHVuYmluZC91bnBsdWcgYnV0IGxlYXZlIHRoZSBHUFUg
+aWRsZSwgc28gdGhlIGtlcm5lbCBob3RwbHVnIHBhdGggaXMNCj4gPiBuZXZlciBleGVyY2lzZWQg
+YWdhaW5zdCBhbiBhY3RpdmUgd29ya2xvYWQuDQo+ID4NCj4gPiBBZGQgc2l4IG5ldyBkZWRpY2F0
+ZWQgKi13aXRoLWxvYWQgc3VidGVzdHMgdGhhdCBydW4gYSBHUFUgc3Bpbm5lcg0KPiA+IGFjcm9z
+cyB0aGUgdW5iaW5kL3VucGx1ZyBzZXF1ZW5jZSBzbyB0aGUgZGV2aWNlIGlzIHJlbW92ZWQgd2hp
+bGUgYQ0KPiA+IHdvcmtsb2FkIGlzIGFjdGl2ZWx5IHVzaW5nIGl0Lg0KPiA+DQo+ID4gVGhlIHdv
+cmtsb2FkIGhlbHBlcnMgdXNlIGFuIGV4cGxpY2l0IGNoaXBzZXQgZGlzcGF0Y2ggYmxvY2sgaW4N
+Cj4gPiB3b3JrbG9hZF9zdGFydCgpL3N0b3AoKSBzbyB0aGF0IG90aGVyIHZlbmRvcnMgY2FuIGNv
+bnRyaWJ1dGUgc3VwcG9ydA0KPiA+IGJ5IGFkZGluZyBhbiBlbHNlLWlmIGJyYW5jaC4gTmV3IHN1
+YnRlc3RzIGFyZSBnYXRlZCBvbg0KPiA+IHdvcmtsb2FkX2F2YWlsYWJsZSgpLCB3aGljaCBjdXJy
+ZW50bHkgY292ZXJzIERSSVZFUl9YRSBhbmQNCj4gPiBEUklWRVJfSU5URUwsIGFuZCByZXR1cm5z
+IGZhbHNlIChTS0lQKSBvbiBhbnkgb3RoZXIgZHJpdmVyLg0KPiA+DQo+ID4gaWd0X3NwaW5fZnJl
+ZSgpIGlzIGF2b2lkZWQgaW4gd29ya2xvYWRfc3RvcCgpIHNpbmNlIHRoZSBkZXZpY2UgbWF5IGJl
+DQo+ID4gZ29uZSBieSB0aGVuIC0tIGlndF9zcGluX2VuZCgpIHdyaXRlcyB0aGUgc3RvcCBjb25k
+aXRpb24gdmlhIGENCj4gPiB1c2Vyc3BhY2UgbW1hcCBhbmQgbGV0cyB0aGUgRFJNIGZkIGNsb3Nl
+IHJlY2xhaW0ga2VybmVsLXNpZGUgcmVzb3VyY2VzLg0KPiA+DQo+ID4gVmFsaWRhdGVkIG9uIEJN
+RyBhbmQgREcyIHdpdGggYSBLQVNBTi1lbmFibGVkIGtlcm5lbDoNCj4gPiBhbGwgc2l4IG5ldyBz
+dWJ0ZXN0cyBwYXNzIHdpdGggbm8gS0FTQU4gcmVwb3J0cy4NCj4gPg0KPiA+IHY0OiBSZWJhc2Ug
+dG8gbGF0ZXN0IGlndC4NCj4gPiAgICAgQWxzbyB0aGUgZmFpbHVyZSBzZWVuIHdpdGggdGhlIG5l
+dyBjb3JlX2hvdHVucGx1ZyAid2l0aC1sb2FkIg0KPiA+ICAgICBJR1Qgc3VidGVzdHMgaXMgZml4
+ZWQgYnkga21kIHBhdGNoOg0KPiA+ICAgICBodHRwczovL3BhdGNod29yay5mcmVlZGVza3RvcC5v
+cmcvc2VyaWVzLzE3MTk4OS8NCj4gPg0KPiA+IHYzOiBFeHRlbmQgc3RydWN0IGdwdV93b3JrbG9h
+ZCB3aXRoIGEgdW5pb24gb2YgdmVuZG9yLW5hbWVkIG1lbWJlcnMNCj4gPiAgICAgdG8gbWF0Y2gg
+dGhlIGNoaXBzZXQgZGlzcGF0Y2ggaW4gd29ya2xvYWRfc3RhcnQoKS9zdG9wKCkuIChKYW51c3op
+DQo+ID4NCj4gPiB2MjogUGFzcyB0aGUgaG90dW5wbHVnIHByaXYgc3RydWN0IHRvIHdvcmtsb2Fk
+X3N0YXJ0KCkvc3RvcCgpDQo+ID4gICAgIGFuZCBkaXNwYXRjaCB2aWEgYW4gZXhwbGljaXQgaWYv
+ZWxzZS1pZiBjaGlwc2V0IGJsb2NrIHRvIGludml0ZQ0KPiA+ICAgICBvdGhlciB2ZW5kb3JzIHRv
+IGNvbnRyaWJ1dGUuIChKYW51c3opDQo+ID4NCj4gPiBDYzogTWF0dGhldyBBdWxkIDxtYXR0aGV3
+LmF1bGRAaW50ZWwuY29tPg0KPiA+IENjOiBKYW51c3ogS3J6eXN6dG9maWsgPGphbnVzei5rcnp5
+c3p0b2Zpa0BsaW51eC5pbnRlbC5jb20+DQo+ID4gQ2M6IEthbWlsIEtvbmllY3pueSA8a2FtaWwu
+a29uaWVjem55QGxpbnV4LmludGVsLmNvbT4NCj4gPiBSZXZpZXdlZC1ieTogSmFudXN6IEtyenlz
+enRvZmlrIDxqYW51c3oua3J6eXN6dG9maWtAbGludXguaW50ZWwuY29tPg0KPiA+IFNpZ25lZC1v
+ZmYtYnk6IE5pdGluIEdvdGUgPG5pdGluLnIuZ290ZUBpbnRlbC5jb20+DQo+ID4gLS0tDQo+ID4g
+IHRlc3RzL2NvcmVfaG90dW5wbHVnLmMgfCAyOTQNCj4gPiArKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrKysrKw0KPiA+ICAxIGZpbGUgY2hhbmdlZCwgMjk0IGluc2VydGlvbnMo
+KykNCj4gPg0KPiA+IGRpZmYgLS1naXQgYS90ZXN0cy9jb3JlX2hvdHVucGx1Zy5jIGIvdGVzdHMv
+Y29yZV9ob3R1bnBsdWcuYyBpbmRleA0KPiA+IDMzZGU2NTM2OS4uYjExYTQyMzFiIDEwMDY0NA0K
+PiA+IC0tLSBhL3Rlc3RzL2NvcmVfaG90dW5wbHVnLmMNCj4gPiArKysgYi90ZXN0cy9jb3JlX2hv
+dHVucGx1Zy5jDQo+ID4gQEAgLTgwLDYgKzgwLDM0IEBADQo+ID4gICAqIFNVQlRFU1Q6IHVucGx1
+Zy1yZXNjYW4NCj4gPiAgICogRGVzY3JpcHRpb246IENoZWNrIGlmIGEgZGV2aWNlIGJlbGlldmVk
+IHRvIGJlIGNsb3NlZCBjYW4gYmUgY2xlYW5seQ0KPiA+ICAgKgkJdW5wbHVnZ2VkLCB0aGVuIHJl
+c3RvcmVkDQo+ID4gKyAqDQo+ID4gKyAqIFNVQlRFU1Q6IGhvdHVuYmluZC1yZWJpbmQtd2l0aC1s
+b2FkDQo+ID4gKyAqIERlc2NyaXB0aW9uOiBDaGVjayBpZiB0aGUgZHJpdmVyIGNhbiBiZSBjbGVh
+bmx5IHVuYm91bmQgZnJvbSBhbiBvcGVuIGRldmljZQ0KPiA+ICsgKgkJd2l0aCBhIGJhY2tncm91
+bmQgR1BVIHdvcmtsb2FkIGluIGZsaWdodCwgdGhlbiByZWxlYXNlZCBhbmQNCj4gPiArICoJCXJl
+Ym91bmQNCj4gPiArICoNCj4gPiArICogU1VCVEVTVDogaG90dW5wbHVnLXJlc2Nhbi13aXRoLWxv
+YWQNCj4gPiArICogRGVzY3JpcHRpb246IENoZWNrIGlmIGFuIG9wZW4gZGV2aWNlIHdpdGggYSBi
+YWNrZ3JvdW5kIEdQVSB3b3JrbG9hZCBpbg0KPiA+ICsgKgkJZmxpZ2h0IGNhbiBiZSBjbGVhbmx5
+IHVucGx1Z2dlZCwgdGhlbiByZWxlYXNlZCBhbmQgcmVzdG9yZWQNCj4gPiArICoNCj4gPiArICog
+U1VCVEVTVDogaG90cmViaW5kLXdpdGgtbG9hZA0KPiA+ICsgKiBEZXNjcmlwdGlvbjogQ2hlY2sg
+aWYgdGhlIGRyaXZlciBjYW4gYmUgY2xlYW5seSByZWJvdW5kIHRvIGEgZGV2aWNlIHdpdGggYQ0K
+PiA+ICsgKgkJc3RpbGwgb3BlbiBob3QgdW5ib3VuZCBkcml2ZXIgaW5zdGFuY2Ugd2hpbGUgYSBi
+YWNrZ3JvdW5kIEdQVQ0KPiA+ICsgKgkJd29ya2xvYWQgaXMgaW4gZmxpZ2h0DQo+ID4gKyAqDQo+
+ID4gKyAqIFNVQlRFU1Q6IGhvdHJlcGx1Zy13aXRoLWxvYWQNCj4gPiArICogRGVzY3JpcHRpb246
+IENoZWNrIGlmIGEgaG90IHVucGx1Z2dlZCBhbmQgc3RpbGwgb3BlbiBkZXZpY2UgY2FuIGJlIGNs
+ZWFubHkNCj4gPiArICoJCXJlc3RvcmVkIHdoaWxlIGEgYmFja2dyb3VuZCBHUFUgd29ya2xvYWQg
+aXMgaW4gZmxpZ2h0DQo+ID4gKyAqDQo+ID4gKyAqIFNVQlRFU1Q6IGhvdHJlYmluZC1sYXRlY2xv
+c2Utd2l0aC1sb2FkDQo+ID4gKyAqIERlc2NyaXB0aW9uOiBDaGVjayBpZiBhIGhvdCB1bmJvdW5k
+IGRyaXZlciBpbnN0YW5jZSBzdGlsbCBvcGVuIGFmdGVyIGhvdA0KPiA+ICsgKgkJcmViaW5kIHdp
+dGggYSBiYWNrZ3JvdW5kIEdQVSB3b3JrbG9hZCBpbiBmbGlnaHQgY2FuIGJlIGNsZWFubHkNCj4g
+PiArICoJCXJlbGVhc2VkDQo+ID4gKyAqDQo+ID4gKyAqIFNVQlRFU1Q6IGhvdHJlcGx1Zy1sYXRl
+Y2xvc2Utd2l0aC1sb2FkDQo+ID4gKyAqIERlc2NyaXB0aW9uOiBDaGVjayBpZiBhbiBpbnN0YW5j
+ZSBvZiBhIHN0aWxsIG9wZW4gd2hpbGUgaG90IHJlcGx1Z2dlZA0KPiA+ICsgKgkJZGV2aWNlIHdp
+dGggYSBiYWNrZ3JvdW5kIEdQVSB3b3JrbG9hZCBpbiBmbGlnaHQgY2FuIGJlIGNsZWFubHkNCj4g
+PiArICoJCXJlbGVhc2VkDQo+ID4gICAqLw0KPiA+DQo+ID4gIElHVF9URVNUX0RFU0NSSVBUSU9O
+KCJFeGFtaW5lIGJlaGF2aW9yIG9mIGEgZHJpdmVyIG9uIGRldmljZSBob3QNCj4gPiB1bnBsdWci
+KTsgQEAgLTU1MCw2ICs1NzgsNTYgQEAgc3RhdGljIHZvaWQgcG9zdF9oZWFsdGhjaGVjayhzdHJ1
+Y3QNCj4gaG90dW5wbHVnICpwcml2KQ0KPiA+ICAJY2xlYW51cChwcml2KTsNCj4gPiAgfQ0KPiA+
+DQo+ID4gKy8qIEdQVSB3b3JrbG9hZCBoZWxwZXJzICovDQo+ID4gKw0KPiA+ICtzdHJ1Y3QgZ3B1
+X3dvcmtsb2FkIHsNCj4gPiArCXVuaW9uIHsNCj4gPiArCQlzdHJ1Y3Qgew0KPiA+ICsJCQlpZ3Rf
+c3Bpbl90ICpzcGluOw0KPiA+ICsJCQl1aW50NjRfdCBhaG5kOw0KPiA+ICsJCX0gaW50ZWw7IC8q
+IFhlIGFuZCBpOTE1ICovDQo+ID4gKwl9Ow0KPiA+ICt9Ow0KPiA+ICsNCj4gPiArc3RhdGljIGJv
+b2wgd29ya2xvYWRfYXZhaWxhYmxlKGludCBjaGlwc2V0KSB7DQo+ID4gKwlyZXR1cm4gY2hpcHNl
+dCA9PSBEUklWRVJfWEUgfHwgY2hpcHNldCA9PSBEUklWRVJfSU5URUw7DQo+IA0KPiBOSVQ6IEkg
+dGhpbmsgYSBzd2l0Y2ggKGNoaXBzZXQpIHsgY2FzZSBEUklWRVJfWEU6IC4uLiB9IGNvbnN0cnVj
+dCwgaGVyZQ0KPiBhbmTCoGNvbnNlcXVlbnRseSBiZWxvdyBpbiB3b3JrbG9hZF9zdGFydC9zdG9w
+LCBjb3VsZCBiZcKgbW9yZSBlZmZlY3RpdmUgYW5kDQo+IG1vcmUgZWFzaWx5IGV4dGVuZGFibGXC
+oHdpdGggcG90ZW50aWFswqBmdXR1cmUgYWRkaXRpb25zIGZyb20gb3RoZXIgdmVuZG9ycywgYnV0
+DQo+IHRoYXQgY2FuIGJlIHJlZmFjdG9yZWQgbGF0ZXIsIG9uIGEgZmlyc3Qgc3VjaCBhZGRpdGlv
+bi4NCj4gDQoNCj4gPiArfQ0KPiA+ICsNCj4gPiArc3RhdGljIHZvaWQgd29ya2xvYWRfc3RhcnQo
+c3RydWN0IGhvdHVucGx1ZyAqcHJpdiwgaW50IGZkLA0KPiA+ICsJCQkgICBzdHJ1Y3QgZ3B1X3dv
+cmtsb2FkICp3KQ0KPiA+ICt7DQo+ID4gKwlpZiAocHJpdi0+Y2hpcHNldCA9PSBEUklWRVJfWEUg
+fHwgcHJpdi0+Y2hpcHNldCA9PSBEUklWRVJfSU5URUwpIHsNCj4gPiArCQlsb2NhbF9kZWJ1Zygi
+JXNcbiIsICJzdGFydGluZyBHUFUgc3Bpbm5lciIpOw0KPiA+ICsJCXByaXYtPmZhaWx1cmUgPSAi
+R1BVIHdvcmtsb2FkIHN0YXJ0IGZhaWx1cmUhIjsNCj4gPiArCQl3LT5pbnRlbC5haG5kID0gaW50
+ZWxfYWxsb2NhdG9yX29wZW4oZmQsIDAsDQo+IElOVEVMX0FMTE9DQVRPUl9SRUxPQyk7DQo+ID4g
+KwkJdy0+aW50ZWwuc3BpbiA9IGlndF9zcGluX25ldyhmZCwgLmFobmQgPSB3LT5pbnRlbC5haG5k
+KTsNCj4gPiArCQlwcml2LT5mYWlsdXJlID0gTlVMTDsNCj4gPiArCX0NCj4gPiArfQ0KPiA+ICsN
+Cj4gPiArc3RhdGljIHZvaWQgd29ya2xvYWRfc3RvcChzdHJ1Y3QgaG90dW5wbHVnICpwcml2LCBz
+dHJ1Y3QgZ3B1X3dvcmtsb2FkDQo+ID4gKyp3KSB7DQo+ID4gKwlpZiAocHJpdi0+Y2hpcHNldCA9
+PSBEUklWRVJfWEUgfHwgcHJpdi0+Y2hpcHNldCA9PSBEUklWRVJfSU5URUwpIHsNCj4gPiArCQlp
+ZiAoIXctPmludGVsLnNwaW4pDQo+ID4gKwkJCXJldHVybjsNCj4gDQo+IFNpbmNlIGlndF9mYWls
+KCkgY2FuIGJlIGNhbGxlZCBmcm9tIGluc2lkZSBpZ3Rfc3Bpbl9uZXcoKSwgd29ya2xvYWRfc3Rh
+cnQoKSBjYW4gZmFpbA0KPiBsZWF2aW5nIGFuIG9wZW4gYWhuZCBidXQgbm8gc3Bpbi4gIFdlIG5l
+ZWQgdG8gaGFuZGxlIHRoYXQgY2FzZS4NCj4gDQo+ID4gKw0KPiA+ICsJCS8qDQo+ID4gKwkJICog
+VGhlIGRldmljZSBtYXkgYmUgZ29uZSAodW5iaW5kL3VucGx1ZyksIHNvIGF2b2lkDQo+ID4gKwkJ
+ICogaWd0X3NwaW5fZnJlZSgpOiBvbiBYZSBpdCB3b3VsZCB3YWl0IGZvcmV2ZXIgb24gYSBzeW5j
+b2JqDQo+ID4gKwkJICogdGhhdCBuZXZlciBzaWduYWxzOyBvbiBpOTE1IGl0IHdvdWxkIHRvdWNo
+IHRoZSBkZWFkIGZkIHZpYQ0KPiA+ICsJCSAqIGdlbV9tdW5tYXAoKS9nZW1fY2xvc2UoKS4gSW5z
+dGVhZCwgZW5kIHRoZSBzcGlubmVyIHZpYSBhDQo+ID4gKwkJICogdXNlcnNwYWNlIG1tYXAgd3Jp
+dGUgYW5kIGxldCB0aGUgRFJNIGZkIGNsb3NlIHJlY2xhaW0gdGhlDQo+ID4gKwkJICoga2VybmVs
+LXNpZGUgcmVzb3VyY2VzLg0KPiA+ICsJCSAqLw0KPiA+ICsJCWxvY2FsX2RlYnVnKCIlc1xuIiwg
+InN0b3BwaW5nIEdQVSBzcGlubmVyIik7DQo+ID4gKwkJaWd0X3NwaW5fZW5kKHctPmludGVsLnNw
+aW4pOw0KPiA+ICsJCXB1dF9haG5kKHctPmludGVsLmFobmQpOw0KPiA+ICsJCXctPmludGVsLnNw
+aW4gPSBOVUxMOw0KPiA+ICsJCXctPmludGVsLmFobmQgPSAwOw0KPiA+ICsJfQ0KPiA+ICt9DQo+
+ID4gKw0KPiA+ICAvKiBTdWJ0ZXN0cyAqLw0KPiA+DQo+ID4gIHN0YXRpYyB2b2lkIHVuYmluZF9y
+ZWJpbmQoc3RydWN0IGhvdHVucGx1ZyAqcHJpdikgQEAgLTY2NCw2ICs3NDIsMTUwDQo+ID4gQEAg
+c3RhdGljIHZvaWQgaG90cmVwbHVnX2xhdGVjbG9zZShzdHJ1Y3QgaG90dW5wbHVnICpwcml2KQ0K
+PiA+ICAJaWd0X2Fzc2VydF9mKGhlYWx0aGNoZWNrKHByaXYsIGZhbHNlKSwgIiVzXG4iLCBwcml2
+LT5mYWlsdXJlKTsgIH0NCj4gPg0KPiA+ICtzdGF0aWMgdm9pZCBob3R1bmJpbmRfcmViaW5kX3dp
+dGhfbG9hZChzdHJ1Y3QgaG90dW5wbHVnICpwcml2KSB7DQo+ID4gKwlzdHJ1Y3QgZ3B1X3dvcmts
+b2FkIHcgPSB7IDAgfTsNCj4gPiArDQo+ID4gKwlwcmVfY2hlY2socHJpdik7DQo+ID4gKw0KPiA+
+ICsJaWd0X3JlcXVpcmVfZih3b3JrbG9hZF9hdmFpbGFibGUocHJpdi0+Y2hpcHNldCksDQo+ID4g
+KwkJICAgICAgIk5vIEdQVSB3b3JrbG9hZCBzdXBwb3J0IGZvciB0aGlzIGRyaXZlclxuIik7DQo+
+ID4gKw0KPiA+ICsJcHJpdi0+ZmQuZHJtID0gbG9jYWxfZHJtX29wZW5fZHJpdmVyKGZhbHNlLCAi
+IiwgIiBmb3IgaG90IHVuYmluZCIpOw0KPiA+ICsNCj4gPiArCXdvcmtsb2FkX3N0YXJ0KHByaXYs
+IHByaXYtPmZkLmRybSwgJncpOw0KPiA+ICsNCj4gPiArCWRyaXZlcl91bmJpbmQocHJpdiwgImhv
+dCAiLCAwKTsNCj4gDQo+IFNpbmNlIGlndF9mYWlsKCkgY2FuIGJlIGNhbGxlZCBmcm9tIGRyaXZl
+cl91bmJpbmQoKSwgYXMgd2VsbCBhcyBmcm9tIG90aGVyIGZ1bmN0aW9ucw0KPiBjYWxsZWQgYmV0
+d2VlbiB3b3JrbG9hZF9zdGFydCgpIGFuZCB3b3JrbG9hZF9zdG9wKCkgaW4gb3RoZXIgc3VidGVz
+dHMgYmVsb3csIHdlDQo+IG5lZWTCoHRvIGFkZHJlc3MgdGhvc2UgY2FzZXMgdG8gYmUgb24gdGhl
+IHNhZmUgc2lkZS4NCj4gV2UgY291bGQgZS5nLjoNCj4gLSBlbWJlZCBzdHJ1Y3QgZ3B1X3dvcmts
+b2FkIGluc2lkZSBzdHJ1Y3QgaG90dW5wbHVnLA0KPiAtIGV4dGVuZCBjbGVhbnVwKCkgKG9yIHJl
+Y292ZXIoKSkgZnVuY3Rpb24gd2l0aCBhbm90aGVyIHdvcmtsb2FkX3N0b3AoKS4NCj4gDQoNClRo
+YW5rIHlvdSBmb3IgdGhlIGltcHJvdmVtZW50IHN1Z2dlc3Rpb25zLiBJIGhhdmUgbm90ZWQgYWxs
+IHRocmVlIGNvbW1lbnRzLg0KQXMgdGhpcyBwYXRjaCBoYXMgYmVlbiBtZXJnZWQgaW4gYmV0d2Vl
+biwgSSB3aWxsIGFkZHJlc3MgdGhlc2UgcmV2aWV3IGNvbW1lbnRzIGluIGEgc2VwYXJhdGUgcGF0
+Y2guDQoNCi0gTml0aW4NCg0KPiBUaGFua3MsDQo+IEphbnVzeg0KPiANCj4gDQo=
