@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13FA6C5DF87
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 12:49:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F12EC5DF87
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 12:50:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5D30110E39F;
-	Fri, 21 Aug 2026 12:49:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 10EB710E39F;
+	Fri, 21 Aug 2026 12:50:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VkB20srK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PV3mOX/Y";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1864710E39F
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:48:39 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 07D3510E39F
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787316519; x=1818852519;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=2KzrjKK15IW7pi0iW6QUfs3ytCSSznjC/S5lsObP8bE=;
- b=VkB20srKaKiam9/AUj8U+nT8/l2ntYWM91bmJ+yOF0kLjkk+uJO94gHe
- bxI+PjklYF70YQcH4OFM0A/YwLIB7iBIcLUy8HNBSe5rdGfBT1V/wfssl
- eGLgDs+vjYN9JmSANrz3oy2Cj2WIn6EZmW9CpH6s6wMP0ut5cuCD0iPxT
- +/PQHiB0qrxKjGeTv4CrGnpxlpxJeNo33xvtpBxv68AzZ6Rjs9NIyfSHU
- jZFsmMGpSj0oPFZ9FQPbnFQgxobp68toelmSHdD5R9l1bK+suNhfgBgzp
- 7nyPLakZIf4vOsEpLUIYJPQ/2QjM7kS3oxhEEGSD1TaDGTMIH9WgoKC6V w==;
-X-CSE-ConnectionGUID: 3oamk1+nT/WgOLYAkmIpFg==
-X-CSE-MsgGUID: PtSVY+vqT0WnnKegWZ6tog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87632903"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="87632903"
+ t=1787316527; x=1818852527;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=ZbnHCYaOjEBdxkm3xkMbXotJGxXN5ypVY42IajPl1Qk=;
+ b=PV3mOX/Yb7hE74Qh6CFcF+IgdoioBdekfAvcqe7YzHvishxjKxKmcbsX
+ aQPl4MJ4nv7mJf3tm0s83VXyaTdVRJ18ks3I6jkq1e7zotxVlpQ8MeqGw
+ QL3AEUzoC4Z2EYtISMIjX1bWYZTe+KTZiauRdoVT68V0sksHh+Z6FD8Yn
+ VVlZSmEDze+v8PIY0s3v6g1CpofxnfwtmsZBKDO4X3bAhjkgQkoqCMXBH
+ 63ducWtqAElQhTvtn9T1zKRdWQyNIfaJW/qhMj7S7GrnAfTnz3QSc/zrW
+ Tt8l/oSfkj+Uhb6dsAUYVp0u3TkuNgmmAxHikTc6Q0tYbhcPsVCzx/S8O A==;
+X-CSE-ConnectionGUID: gp7rN9OhS0OnIL+KAVnUsg==
+X-CSE-MsgGUID: 3tr8lc87QKa+K60Kv0ywmw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87632919"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="87632919"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2026 05:48:39 -0700
-X-CSE-ConnectionGUID: PViePIjlS/+FSFOte5AefQ==
-X-CSE-MsgGUID: cVZLFTr5TsCWuIMUH1cIrA==
+ 21 Aug 2026 05:48:47 -0700
+X-CSE-ConnectionGUID: CmpJwJVLRz+3V49aiW6ZJw==
+X-CSE-MsgGUID: AphtzhgSS8ug9VyT4Ltxug==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="291188331"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="291188355"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa001.fm.intel.com with ESMTP; 21 Aug 2026 05:48:37 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 21 Aug 2026 05:48:45 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: nemesa.garg@intel.com, mohammed.thasleem@intel.com, karthik.b.s@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v3 00/17] tests: limiting suspend tests
-Date: Fri, 21 Aug 2026 14:48:17 +0200
-Message-ID: <20260821124834.1974029-1-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v3 06/17] tests/kms_frontbuffer_tracking: remove
+ TEST_MODE_ITER_BEGIN() from `fliptrack`
+Date: Fri, 21 Aug 2026 14:48:23 +0200
+Message-ID: <20260821124834.1974029-7-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20260821124834.1974029-1-michal.grzelak@intel.com>
+References: <20260821124834.1974029-1-michal.grzelak@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
@@ -68,46 +71,78 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Next version of [1]. Added one patch for kms_hdr.
+igt@kms_frontbuffer_tracking uses TEST_MODE_ITER_BEGIN(t) which consists
+of nested for loops. However many loops can be omitted due to continue
+statements. This obfuscates following the execution of any given
+codepath. Replace TEST_MODE_ITER_BEGIN(t) for fliptrack tests with macro
+definition and remove loops that are skipped.
 
-BR,
-Michał
+v2->v3
+- identation cleanups (Mohammed)
+- pull conditions after first loop (Mohammed)
 
-[1] https://lore.kernel.org/igt-dev/20260807224746.3554064-1-michal.grzelak@intel.com
+v1->v2
+- indent for-loops (Mohammed)
 
-Michał Grzelak (17):
-  lib/igt_aux: remove typos
-  lib/igt_kms: s/pipe/crtc/
-  tests/kms_async_flips: split outer test loop into two
-  tests/kms_async_flips: limit S/R to first and last CRTC
-  tests/kms_frontbuffer_tracking: remove TEST_MODE_ITER_BEGIN() from
-    `suspend`
-  tests/kms_frontbuffer_tracking: remove TEST_MODE_ITER_BEGIN() from
-    `fliptrack`
-  tests/kms_pipe_crc_basic: limit #crtcs tested during suspend
-  tests/kms_psr: limit #outputs tested during suspend
-  tests/kms_vblank: split outer test loop into two
-  tests/kms_vblank: limit #outputs tested during suspend
-  tests/kms_sharpness_filter: fix typo
-  tests/kms_sharpness_filter: limit #outputs tested during suspend
-  tests/kms_sharpness_filter: limit #crtcs tested during suspend
-  tests/kms_ccs: split outer test loop into two
-  tests/kms_ccs: limit #outputs tested during suspend
-  tests/kms_ccs: limit #crtcs tested during suspend
-  tests/kms_hdr: run on 3 outputs when testing suspend
+Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+---
+ tests/intel/kms_frontbuffer_tracking.c | 40 +++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 14 deletions(-)
 
- lib/igt_aux.c                          |  2 +-
- lib/igt_kms.h                          |  2 +-
- tests/intel/kms_ccs.c                  | 88 +++++++++++++++++---------
- tests/intel/kms_frontbuffer_tracking.c | 63 +++++++++++-------
- tests/intel/kms_psr.c                  | 28 +++++++-
- tests/intel/kms_sharpness_filter.c     | 29 ++++++++-
- tests/kms_async_flips.c                | 68 +++++++++++---------
- tests/kms_hdr.c                        | 30 ++++++++-
- tests/kms_pipe_crc_basic.c             | 13 ++++
- tests/kms_vblank.c                     | 58 +++++++++++------
- 10 files changed, 275 insertions(+), 106 deletions(-)
-
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index dc8ef069b8..9faae7d3fd 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -4502,23 +4502,35 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
+ 			}
+ 	TEST_MODE_ITER_END
+ 
+-	TEST_MODE_ITER_BEGIN(t)
+-		if (t.plane != PLANE_PRI ||
+-		    t.screen != SCREEN_PRIM ||
+-		    t.method != IGT_DRAW_MMAP_GTT ||
+-		    (t.feature & FEATURE_FBC) == 0)
++	t.format = FORMAT_DEFAULT;
++	t.flip = FLIP_PAGEFLIP;
++	t.tiling = opt.tiling;
++	t.plane = PLANE_PRI;
++	t.screen = SCREEN_PRIM;
++	t.method = IGT_DRAW_MMAP_GTT;
++
++	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {
++		if (!opt.show_hidden && t.feature == FEATURE_NONE)
++			continue;
++		if ((t.feature & FEATURE_PSR) && (t.feature & FEATURE_DRRS))
++			continue;
++		if ((t.feature & FEATURE_FBC) == 0)
+ 			continue;
+ 
+-		igt_subtest_f("%s-%s-%s-fliptrack-%s",
+-			      feature_str(t.feature),
+-			      pipes_str(t.pipes),
+-			      fbs_str(t.fbs),
+-			      igt_draw_get_method_name(t.method))
+-		{
+-			igt_require(igt_draw_supports_method(drm.fd, t.method));
+-			fliptrack_subtest(&t, FLIP_PAGEFLIP);
++		for (t.pipes = 0; t.pipes < PIPE_COUNT; t.pipes++) {
++			for (t.fbs = 0; t.fbs < FBS_COUNT; t.fbs++) {
++				igt_subtest_f("%s-%s-%s-fliptrack-%s",
++					      feature_str(t.feature),
++					      pipes_str(t.pipes),
++					      fbs_str(t.fbs),
++					      igt_draw_get_method_name(t.method))
++				{
++					igt_require(igt_draw_supports_method(drm.fd, t.method));
++					fliptrack_subtest(&t, FLIP_PAGEFLIP);
++				}
++			}
+ 		}
+-	TEST_MODE_ITER_END
++	}
+ 
+ 	TEST_MODE_ITER_BEGIN(t)
+ 		if (t.screen == SCREEN_OFFSCREEN ||
 -- 
 2.45.2
 
