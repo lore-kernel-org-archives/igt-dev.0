@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00F6DC5DF87
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 12:57:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73F16C5DF87
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 12:58:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8CA9E10E097;
-	Fri, 21 Aug 2026 12:57:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0D38E10E2A0;
+	Fri, 21 Aug 2026 12:58:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hX1SL41t";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PCq+33Vj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 598B410E39F
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:49:02 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2BCEC10E39F
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787316543; x=1818852543;
+ t=1787316520; x=1818852520;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Shxsc9Dxa7ulfbXn5wT1SKdRg/7O9ZeDnwnCSXehoK8=;
- b=hX1SL41texhwhN6UHIc5fDbw9wXfQKZ6gnNN0/CWGR19tFTBne5EI4dJ
- 7VsxUHm/S/fs7mBTW5bgi8inVC4gyl8W0spmhc+9GEbXm+AaqgLnxGK4f
- YnpPCVlgSn1sZi5+K/YY7DFzfCC2mleE2DPMkATYoMFovDROM++85gW/P
- R1yjj7bD6fojcSdoZ0SwniuzD94owOMoA3cGbhdXWFeut9Sezg6F3PaG2
- leEC6QFkHHAb6jbt/LSSYS2GUYW5pD5AFbdCmhuDEhQ1X9GVZ2wsRHmiQ
- 4HuJjKzpu3BT0+CYlbLEud0rCzi3Hj49xd0upposA6BL7M3IwI+QKjrFr g==;
-X-CSE-ConnectionGUID: Msnvx88HQ5qSB1nqJi5WcA==
-X-CSE-MsgGUID: f/n7CqzRQ2CBQf0wH2tMfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87632937"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="87632937"
+ bh=A4ezVAYFcNIGNODeEoZYn34e0MWddIaDiEMfNH6brnI=;
+ b=PCq+33VjvHHdhLU9pD7fUE2Grlg/KVChQrHUPR8GHVDF9gm57jt2sk49
+ UwMVl5hOXPm7nQAEhlAcdjvTvGRM1J9L3uyP8lBMNfNrfBtAlVknikzLG
+ S2rlgyPPvIac0Olk2CaGxEKzGRuz81lu9fP91AGySiAJ2Gy5IXLZi36Ex
+ QFZaHbXhnPwkPL57pFVEmBEfx4t1AeiEkDSTCZQcxIrfq63IVp7t6xdhk
+ lmacOlK8HbY2Ji/XyRgWRXDtAQwKMIW8NccTQ9a7o8IErz5KQYf8Xj6UV
+ JOQztubriAWdJuUTJac/t+fVk2RTsDjH0SCsiwq958A9xPz2Vpe7/XCos Q==;
+X-CSE-ConnectionGUID: ku+4Tm8gSPa4VbxGxhHYkA==
+X-CSE-MsgGUID: mLeqI8unSNKP1nFNO89sYw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87632904"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="87632904"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2026 05:49:02 -0700
-X-CSE-ConnectionGUID: kPk/5ah0Sb2DrenmC52m7Q==
-X-CSE-MsgGUID: ZP+/oDOrSW6nwarG3WbiDA==
+ 21 Aug 2026 05:48:40 -0700
+X-CSE-ConnectionGUID: E9se0daXSgKtZ6fg3ML/2w==
+X-CSE-MsgGUID: coJ5u2R/RqeevNWUA3nA6w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="291188412"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="291188335"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa001.fm.intel.com with ESMTP; 21 Aug 2026 05:49:01 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 21 Aug 2026 05:48:38 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: nemesa.garg@intel.com, mohammed.thasleem@intel.com, karthik.b.s@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v3 17/17] tests/kms_hdr: run on 3 outputs when testing
- suspend
-Date: Fri, 21 Aug 2026 14:48:34 +0200
-Message-ID: <20260821124834.1974029-18-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v3 01/17] lib/igt_aux: remove typos
+Date: Fri, 21 Aug 2026 14:48:18 +0200
+Message-ID: <20260821124834.1974029-2-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260821124834.1974029-1-michal.grzelak@intel.com>
 References: <20260821124834.1974029-1-michal.grzelak@intel.com>
@@ -71,89 +70,41 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Each suspend test is executed per output. Limit number of outputs tested
-to 3 by default. Add command-line option enabling execution on every
-output.
-
-v2->v3
-- add patch
+Fix typos found in comments.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- tests/kms_hdr.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ lib/igt_aux.c                          | 2 +-
+ tests/intel/kms_frontbuffer_tracking.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index e23d5e4691..95a7344ceb 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -74,6 +74,8 @@ IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
- 
- #define BACKLIGHT_PATH "/sys/class/backlight"
- 
-+#define OUTPUT_LIMIT 2
-+
- /* HDR test formats: 10bpc + FP16 */
- static const uint32_t hdr_test_formats[] = {
- 	DRM_FORMAT_XRGB2101010,
-@@ -110,6 +112,7 @@ typedef struct data {
- 	int w;
- 	int h;
- 	igt_fb_t afb;
-+	bool all_outputs;
- } data_t;
- 
- /* Common test cleanup. */
-@@ -250,6 +253,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
-+	int output_count = 0;
- 
- 	igt_display_reset(display);
- 
-@@ -273,6 +277,11 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 			continue;
- 		}
- 
-+		if (!data->all_outputs && flags & TEST_SUSPEND && output_count > OUTPUT_LIMIT)
-+			continue;
-+
-+		output_count++;
-+
- 		for_each_crtc(display, crtc) {
- 			igt_output_set_crtc(output,
- 					    crtc);
-@@ -674,10 +683,27 @@ static void test_hdr(data_t *data, uint32_t flags)
- 	}
- }
- 
--int igt_main()
-+static int opt_handler(int opt, int opt_index, void *opt_data)
- {
--	data_t data = {};
-+	data_t *data = opt_data;
-+
-+	switch (opt) {
-+		case 'o':
-+			data->all_outputs = true;
-+			break;
-+		default:
-+			return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
- 
-+static const char help_str[] = "  -o \tRun on all outputs instead of 3 when testing suspend.\n";
-+
-+data_t data = {};
-+
-+int igt_main_args("o", NULL, help_str, opt_handler, &data)
-+{
- 	igt_fixture() {
- 		data.fd = drm_open_driver_master(DRIVER_ANY);
- 
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 0d250ae2fe..90efb8a135 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -978,7 +978,7 @@ static void igt_aux_enable_pm_suspend_dbg(int power_dir)
+  *	  cycle
+  *
+  * Execute a system suspend cycle targeting the given @state optionally
+- * completing the cycle at the given @test point and automaically wake up
++ * completing the cycle at the given @test point and automatically wake up
+  * again. Waking up is either achieved using the RTC wake-up alarm for a full
+  * suspend cycle or a kernel timer for a suspend test cycle. The kernel timer
+  * delay for a test cycle can be configured by the suspend.pm_test_delay
+diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
+index 4dd2f4e70f..dd7d3188fe 100644
+--- a/tests/intel/kms_frontbuffer_tracking.c
++++ b/tests/intel/kms_frontbuffer_tracking.c
+@@ -3844,7 +3844,7 @@ static void suspend_subtest(const struct test_mode *t)
+  *   Everything succeeds.
+  *
+  * FAILURES
+- *   If you're getting wrong CRC calulations, then the hardware tracking might
++ *   If you're getting wrong CRC calculations, then the hardware tracking might
+  *   be misconfigured and needs to be checked. If we're failing because FBC is
+  *   disabled and the reason is that there's not enough stolen memory, then the
+  *   Kernel might be calculating the amount of stolen memory needed based on the
 -- 
 2.45.2
 
