@@ -4,44 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43967C5DF94
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 08:21:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 142D1C5DF94
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 08:21:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED96910E355;
-	Mon, 24 Aug 2026 08:21:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B1C4110E355;
+	Mon, 24 Aug 2026 08:21:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="NYM9buTF";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="a32u0Erl";
 	dkim-atps=neutral
-Received: from CY3PR05CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11013040.outbound.protection.outlook.com
- [40.93.201.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E1B0D10E4C4
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:42:17 +0000 (UTC)
+Received: from CO1PR03CU002.outbound.protection.outlook.com
+ (mail-westus2azon11010013.outbound.protection.outlook.com [52.101.46.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F97510E0A5
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 14:22:55 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Fsxva8G+jNHTj44fT0+NAzte2OV+Fpv9W9fyjEigBPEpojk1JDLmgIXjx/zPQrSOGA0srthEYKA+OH99Zwb2tGzLwRdVqw+ErhtUFz8fNXWK/PlgZ9BZnUmE4Ww/dg6Y00XbWQ6v9gPpunC6RTP9gKlFNKZ4+VTRZ2w7042KgsLDg3t/D7cyVgoX4JF4P/gl08YTM7/GdP2dBt15Lq25m6dFaM39clt24zjkAdS4auBvzimLZeJublTXmYkPZx5hyxXyZLGXRY4n/RZoJpgfZVj+gZ0tw5q3niL1aN53BmV/FRRIoxrW192ApZfGp7JWwkZS6UBKAS+6UmGKsIIbXA==
+ b=mtvvfDznYjhGfRYeoJ28gKReKbrE9NyWox9Qv2sji3Kwh0mJR8ckOrscMUHj5G3TkbQD2KIQaHISZjWzfReeAR2Ha+hgxFNqdu0tFp+gGHd8eAITO0sQys8SD9U1I4dHLVm92PYiDaPNT5N3N0LUtGjxb6ZyDYm+rmGosoC+5Gcu//TLyNgKzeKd5G2W0q+iZVa5jEtjKtYXFepx3RxK+cZ2BZ1IfEaPTi+2ptZFXVLX+NT4oUFkmPdo2V0U93+aLC2K1nGC13lLmOFQ9F6u2OXIMxcbQL2VkboXRhQJ7t4EbdEq+xsuhFdCGjBlDbpowVZAYAlvwAJd75mzjD8N4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zo+mNHhGdNox9USr/nbJfgZ15zkFPKhGm9nxBgCc6Qc=;
- b=P4FNkg6/44L5vVAkKI5X3NHlg1KQiI6yc2QnfE0r2MEpIIkPHtFS/hMGNRRaDK2/04TSVziirDxDQEbNb/7xMYGkjTVSv3Th9gjfgio/tzYtbUYFdDNqmKiSssQrwwp61nob1gIsD/wC6mspR1/JQtkzPlYUDvAXDRBW3XpPSmSc4dLJPz2h6EJ4ybCfs5S5yv2Czldrp8JQDPA/qsRMmMJYv9NS0Wt4oLjxE65YIYzi1/NXEnPrcIs4FdLJKvzKh8oaYixnKvVbsX/qVHdVvMmkOTXWej5JXdkQFrxc7Kr7KZriJBCwJ3F3a99Hbq5/65Eoy+7P8vNCb35aVvyugA==
+ bh=oF4yfio76rN3PDLoswdJJAzmgv3StNm1V7LDEajQUs0=;
+ b=iIawenCbOkjM6+3SQHHv3cuaEQJtvcidln74FBDywoaIWPnaHAV5oH7PXXBYMAA+fdqY03CtWpgmfZpx5ICyB/zETWkHaEQaDX//9nG7uM0Hpk+jTxxuwqKLVMXIT3QktGv/6NgUc1sjXgskATOzBrJ50QAsipMZm4lE33ZGJxWapGDTj/FT/2/c6hMVNj3GxGrUzIHp9O9Dq3QQwVbr1CIMCKCFoWP0xBHQodaP4qpXo9jtKbhjoq+2E7XaB1vgAYEtJCsqwlcAHNN62ktTb6+PI/iJUjNIVw0TYb8I0hV9VsX2W0ehOiYQHFoYisRLnLHfAauZ7YKs+dDbxQ1J6A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zo+mNHhGdNox9USr/nbJfgZ15zkFPKhGm9nxBgCc6Qc=;
- b=NYM9buTFrCKiHI90q3m37B30i5OvA92bC5tzu9xbrv12tQBEFT7yuCKU+k3AMeNeLqM0fZhXzyJuR7//56S+ggHgxB2OUifW1y7Nv3KXNnXYN7Fz3gDnH8fgyFoR8TEjwXnDHiEubg6WAZsw648J73DL4GQklpTZjxowUhLl2rw=
-Received: from BN9PR03CA0485.namprd03.prod.outlook.com (2603:10b6:408:130::10)
- by CH2PR12MB4294.namprd12.prod.outlook.com (2603:10b6:610:a9::11)
+ bh=oF4yfio76rN3PDLoswdJJAzmgv3StNm1V7LDEajQUs0=;
+ b=a32u0ErlN3JgBgM4x3KMF2dkQdUBpMssgR+rpeelxO4+8GiZOwoGdVjM/8TS9MnzhAFrxnIFT6R/QdukDXe07+XWAL4zTk5tii7DJ52jQ/Y9JL8aACafILLhm6Ks+NS44p7Dkc/CbMCLX9kkodmgXuEH+ZfgmLR4hZRMWR4tiR4=
+Received: from BN9P221CA0027.NAMP221.PROD.OUTLOOK.COM (2603:10b6:408:10a::21)
+ by MN0PR12MB5979.namprd12.prod.outlook.com (2603:10b6:208:37e::15)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.11; Fri, 21 Aug
- 2026 12:42:02 +0000
-Received: from BL6PEPF0001AB4B.namprd04.prod.outlook.com
- (2603:10b6:408:130:cafe::86) by BN9PR03CA0485.outlook.office365.com
- (2603:10b6:408:130::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
+ 2026 14:22:48 +0000
+Received: from BL6PEPF0001AB78.namprd02.prod.outlook.com
+ (2603:10b6:408:10a:cafe::2b) by BN9P221CA0027.outlook.office365.com
+ (2603:10b6:408:10a::21) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.10 via Frontend Transport; Fri,
- 21 Aug 2026 12:42:01 +0000
+ 21 Aug 2026 14:22:48 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -49,60 +48,61 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF0001AB4B.mail.protection.outlook.com (10.167.242.69) with Microsoft
+ BL6PEPF0001AB78.mail.protection.outlook.com (10.167.242.171) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 12:42:00 +0000
+ 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 14:22:48 +0000
 Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
- 2026 07:42:00 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
+ 2026 09:22:47 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
  (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
- 2026 07:41:59 -0500
-Received: from junhua-PC.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
- Transport; Fri, 21 Aug 2026 07:41:57 -0500
+ 2026 09:22:47 -0500
+Received: from junhua-PC.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
+ Transport; Fri, 21 Aug 2026 09:22:45 -0500
 From: Junhua Shen <Junhua.Shen@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Jesse Zhang
  <Jesse.Zhang@amd.com>, Sunil Khatri <sunil.khatri@amd.com>, Honglei Huang
  <honglei1.huang@amd.com>, Huang Rui <ray.huang@amd.com>, Yiru Ma
  <yiru.ma@amd.com>, Junhua Shen <Junhua.Shen@amd.com>
-Subject: [PATCH i-g-t v1 2/4] lib/amdgpu: drop external BO from cmd_context
-Date: Fri, 21 Aug 2026 20:41:50 +0800
-Message-ID: <20260821124152.19670-3-Junhua.Shen@amd.com>
+Subject: [PATCH i-g-t v1 1/2] lib/amdgpu: add generic compute dispatch and
+ copy_dword helpers
+Date: Fri, 21 Aug 2026 22:22:41 +0800
+Message-ID: <20260821142242.34700-2-Junhua.Shen@amd.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260821124152.19670-1-Junhua.Shen@amd.com>
-References: <20260821124152.19670-1-Junhua.Shen@amd.com>
+In-Reply-To: <20260821142242.34700-1-Junhua.Shen@amd.com>
+References: <20260821142242.34700-1-Junhua.Shen@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB4B:EE_|CH2PR12MB4294:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2f9aa33e-1d6e-47a9-785c-08deff819851
+X-MS-TrafficTypeDiagnostic: BL6PEPF0001AB78:EE_|MN0PR12MB5979:EE_
+X-MS-Office365-Filtering-Correlation-Id: ad83a854-496a-466a-5098-08deff8fad21
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|376014|36860700016|1800799024|82310400026|3023799007|6133799003|10067099003|56012099006|11063799006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: xEH8un2FW07ra9HZId6VgpiJgRZuMwwt6+poJf+WHm54f7YG7zC9BXJZHaVA0Zi+Z+brxPGI0YzVspZoxNZhZ2z6PaneuU48VUgmntwaRbeIqY3v92ngWclzOq9NQx8iHPiel+r2EIE41s6iH3NOpTGjWCeEwY6CEJYZdv3OFErctC6agrF3Ka8QxsvK9dxDaSq1LEGv+lMjtCQ+YpcB0f7LBWPQzpSyX+v0JbUxjptnaQTrMIfEKTzbyeIKCB5IMsPwqYQUp9aQ54ZPDIRRptxHzkmHFH18TuWS5e1o2wLRxq6ftfUmuNJeLgasuYv7KUT3gRZfPRCp2ttNcqzJLdtmZFwouUEpGgdNRh+V9X4GJDgmoOd2Qe1I+st6LjA6SK5CxKYhKnbR7rRRR98TcFzIsJWJUXQa2KYTnfufS6Ow4QKhKIp1eHPXp8DYuCPeGIwgDAApiq/zPqkpuYVi8yqFoJkua6PjMm1abnoBCX2kiQkPyBytQ0xuZmGPau6nTaLeQL1VsLW9acgGqF8W7JDn2EAcfnr7gl4eWFp+UlJeD0y7qKbYeuEIg1NfVl7BJeu87yF+7SAwnurAVE9+bsUOhLQgyIHPZk7cX/paZo54qXgtGQ75CBb13SrEmpxGh5Yh2sD8Fi2Mo9gPmtARXPtd5Vgz8FMUKaWczeB3zay/p7H0sPgWhpE9+JLOvkwzYUakQSPPK98E2wTTTlncOw==
+ ARA:13230040|1800799024|36860700016|23010399003|82310400026|376014|18002099003|22082099003|3023799007|56012099006|10067099003|11063799006|5023799004|6133799003;
+X-Microsoft-Antispam-Message-Info: k/AQX3dVdu5a5H9TtrliinbsfXkXIQ675PHXLToaleWaL9/QSBBljXc/Xj3wFUuIdmnhOWmtNUKUfbezGSNnGkPVOGQyxLz4OLm6NOsJ8GP/DJwJwKINki9ojcs4w96loAik20UD3lt+S7IKmDx5CAv25s61KrZ9qCU7+mCnPGBhogv+baMQiCfdph3IOAZ8ykE7SGSOXxV2GZa/TeF3gxUB0zvWjdWkoBlgNfqngJr+CoBtWpua6s9foygGPBC5HKE8jGd6WgrZ8B7kFq7jsIfc9iP5r2aTK/36KQn6WcQEdCES0ZV3h0aXRh7l3pt5lJZ28pgGU/BA4XjzbPU0/Y1Z4DijZPQ4GAzqPHsfKOqFWZgj4zFbpxoCzsawq0/HLoKmEsHB3TXZDZCxdVJGRlClJ6chEu89Xe+4vU9+mbv5eLTzRikNPhgpBnN3xfafqSSE6qiloxO4uOm2ee2wx0UgGSvbRuPQJdokFpAWjnltAELLZ7kl2znFV1lDQGGIzoRqBmKFVpjCz+gIoA8QjDb2dymFcFFM+q91TdN93ER8c43Ql5v1u7KawndkhyiLpCKMGs3kxI08MnSG4pIpOol17Kz3O+fEID1VMHIgctEYa/kx/xbfRKo2e5SWfuBLrkmrTB/hG4oM13EyNVASwlOuTUHfrTzypTC1pKO9GSwk9Tny5cCvUSXZAoGtvw7F4/9i3+FC42+1bLZbTjERlg==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(36860700016)(1800799024)(82310400026)(3023799007)(6133799003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003);
+ SFS:(13230040)(1800799024)(36860700016)(23010399003)(82310400026)(376014)(18002099003)(22082099003)(3023799007)(56012099006)(10067099003)(11063799006)(5023799004)(6133799003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: f99vETZL1B5wTIn0nwFPKVW6KiDZpIGApjVLyipi7eEC0Y07seCKalTFmMHNkjapoDvgfcD19decE0hY/CzjoVjAi1nf7GxLozhiH8hM4T7TJuex0WxCTpZkDda64LQGjjA/KR5YyU/TCSKPW3extZntIHjKLtPRRERrWRRwUys95YPsmb3JVG2AQfUFibtZwZPVJoIpxhOcSIqLuoD3O3+d+PFJ7TfOAwJCB2tA74wNJPpN5Iz/0Se3+tdNE46MGot+SKgjfoKE6ZQHNiI8hd/rVXlPt95Ri9viHw1ONearhdsEkZr2kYvNRDCjhCnA5WsvzXGGtQhVQoXCDeFH9RMAIM2NkR6vC4hBnNeZXVlHXEXZL75PcqXH2SeiS1AmMk8gTPYpZPjJ4qpUfNVG/ckiVInbXCE1WO3V1z8S1syBI7DBqKFBQnZqqticRYhL
+X-MS-Exchange-AntiSpam-MessageData-0: x97BklhaDvrETHX2QmdWJEBK13i0C6OXa9fOaH9aafCRqKhyRwnNmIB3qZM5nrFuqDDNwww1jD8nrz7TFxsHPoHmevQgk6fmOcudJFrSlOUDpiH3MHo+fWSbVtj8w0eWMh2jr5XYFwy5zpuoTnCNBhNCrLLIeEI9wK/btVrEAH7nK19/oOON6BCqUuDRivnNTZJAsUyT5eZHkccytgm1LX9ykxw7ofleSUzt7Av7pylSZBzYxMNvG3aRy38/NT6clccvBxdMSQ8uZo5bxiFyg6hph8zhokU66A8O8jYFRbUFFtuRhmP6klh2isXzhfBZq62BOw7OvHl9tkhhG3QCKS6dWyoCUIL21R/OKyZ6AElMvFtHxJEBcP5WwJHhnE+40rTCJuv6M+73cu8cdDcg9JDWuu7oDI/sWDFEm0+yoP3AfiAeGSxxjxkcOeNPrqgu
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 12:42:00.4088 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f9aa33e-1d6e-47a9-785c-08deff819851
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 14:22:48.2795 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: ad83a854-496a-466a-5098-08deff8fad21
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB4B.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF0001AB78.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB4294
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB5979
 X-Mailman-Approved-At: Mon, 24 Aug 2026 08:18:13 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -119,773 +119,457 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Rework cmd_context so it no longer owns or clears a caller-visible data
-buffer. Operand residency is registered explicitly, and the leftover
-internal-BO plumbing is removed.
+Add amdgpu_dispatch_shader(), a family-agnostic compute dispatch emitter
+driven by a caller-filled amdgpu_dispatch_shader_req. The caller supplies
+all shader-binding state (RSRC*, thread dims, user data, grid and BO list),
+so any shader can be run without changing the emitter. It creates the
+context, allocates the command buffer, emits the compute state and
+DISPATCH_DIRECT packets, and submits.
 
-- cmd_context_create()/destroy(): remove the external-BO plumbing; the
-  context no longer allocates or tracks a data BO.
-- Add cmd_context_add_resource(): so callers register BO-backed operand
-  addresses in the per-submit bo_list residency set explicitly.
-- Drop the write_length parameter from cmd_context_create(): the IB/PM4
-  buffer is sized solely from pm4_size.
-- Update all cmd_context_create() call sites to the new signature:
-  tests/amdgpu/amd_dmabuf_unload.c, amd_kfd_dmabuf_unload.c, and
-  amd_mem.c (three sites).
+Also add amdgpu_compute_copy_dword(), a small wrapper that builds a
+single-DWORD copy shader for the current GPU family and dispatches it,
+for use as a lightweight submission workload in tests.
 
 Signed-off-by: Junhua Shen <Junhua.Shen@amd.com>
 ---
- lib/amdgpu/amd_command_submission.c  | 283 ++++++++++-----------------
- lib/amdgpu/amd_command_submission.h  |  99 +++++++++-
- tests/amdgpu/amd_dmabuf_unload.c     |  15 +-
- tests/amdgpu/amd_kfd_dmabuf_unload.c |  15 +-
- tests/amdgpu/amd_mem.c               |  22 ++-
- 5 files changed, 220 insertions(+), 214 deletions(-)
+ .../compute_utils/amd_dispatch_helpers.c      | 333 ++++++++++++++++++
+ .../compute_utils/amd_dispatch_helpers.h      |  77 ++++
+ 2 files changed, 410 insertions(+)
 
-diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index 0334c2ded..26f36256a 100644
---- a/lib/amdgpu/amd_command_submission.c
-+++ b/lib/amdgpu/amd_command_submission.c
-@@ -906,31 +906,22 @@ amdgpu_command_ce_write_fence(amdgpu_device_handle dev,
+diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
+index 180fbdd40..7ad1efa16 100644
+--- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
++++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
+@@ -10,6 +10,12 @@
+ #include <amdgpu_drm.h>
+ #include "amdgpu/amd_PM4.h"
+ #include "amdgpu/amd_ip_blocks.h"
++#ifdef AMDGPU_LLVM_ENABLED
++#include "amdgpu/shaders/amd_llvm_asm.h"
++#else
++#include "amdgpu/shaders/amd_llvm_asm_stub.h"
++#endif
++#include "amdgpu/shaders/amd_shader_store.h"
+ #include "igt.h"
+ 
+ int
+@@ -348,3 +354,330 @@ cleanup_context:
+ 
+ 	return ret;
  }
- 
- /**
-- * command context creation with optional external BO
-+ * command context creation
-  *
-  * @param device AMDGPU device handle
-  * @param ip_type IP block type (GFX, DMA, etc.)
-  * @param ring_id Ring index to use
-  * @param user_queue Whether to use user queue mode
-- * @param write_length Size of write operations in DWORDs
-- * @param external_bo Optional external buffer object (NULL for internal allocation)
-- * @param external_bo_mc GPU MC address of external BO (required if external_bo provided)
-- * @param external_bo_cpu CPU mapping of external BO (required if external_bo provided)
-+ * @param write_length Default per-packet transfer size in bytes (overridden per
-+ *                     packet by cmd_packet_params_t::size)
-  * @return New command context, or NULL on failure
-  */
- cmd_context_t* cmd_context_create(amdgpu_device_handle device,
-                                     enum amd_ip_block_type ip_type,
-                                     uint32_t ring_id,
--                                    bool user_queue,
--                                    uint32_t write_length,
--                                    amdgpu_bo_handle external_bo,
--                                    uint64_t external_bo_mc,
--                                    volatile uint32_t *external_bo_cpu)
-+                                    bool user_queue)
- {
- 	cmd_context_t *ctx;
--	void *cpu_ptr = NULL;
--	uint64_t bo_mc = 0;
--	amdgpu_va_handle va_handle = NULL;
- 	int r;
- 
- 	if (!device)
-@@ -949,7 +940,6 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
- 	ctx->ip_type = ip_type;
- 	ctx->user_queue = user_queue;
- 	ctx->last_submit_seq = 0;
--	ctx->uses_external_bo = (external_bo != NULL);  // Now this member exists
- 	ctx->initialized = false;
- 
- 	/* Get IP block for the specified IP type */
-@@ -967,7 +957,6 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
- 	}
- 
- 	/* Setup ring context parameters */
--	ctx->ring_ctx->write_length = write_length ? write_length : 128;
- 	ctx->ring_ctx->pm4_size = 256;
- 	ctx->ring_ctx->pm4 = calloc(ctx->ring_ctx->pm4_size, sizeof(uint32_t));
- 	if (!ctx->ring_ctx->pm4) {
-@@ -976,7 +965,7 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
- 		return NULL;
- 	}
- 
--	ctx->ring_ctx->res_cnt = 1;
-+	ctx->ring_ctx->res_cnt = 0;
- 	ctx->ring_ctx->ring_id = ring_id;
- 	ctx->ring_ctx->secure = false;
- 	ctx->ring_ctx->user_queue = user_queue;
-@@ -990,7 +979,7 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
- 			return NULL;
- 		}
- 		ctx->ip_block->funcs->userq_create(device, ctx->ring_ctx, (unsigned int)ip_type);
--	}else {
-+	} else {
- 		/* Create regular command submission context */
- 		r = amdgpu_cs_ctx_create(device, &ctx->ring_ctx->context_handle);
- 		if (r) {
-@@ -1001,115 +990,60 @@ cmd_context_t* cmd_context_create(amdgpu_device_handle device,
- 		}
- 	}
- 
--	/* BO allocation strategy: use external BO if provided, otherwise allocate internally */
--	if (external_bo) {
--		/* Validate external BO arguments */
--		if (!external_bo_cpu || !external_bo_mc) {
--			igt_debug("Invalid external BO arguments (mc=0x%llx, cpu=%p)\n",
--					  (unsigned long long)external_bo_mc, external_bo_cpu);
--			free(ctx->ring_ctx->pm4);
--			free(ctx->ring_ctx);
--			free(ctx);
--			return NULL;
--		}
--
--		/* Use caller-provided external BO */
--		ctx->ring_ctx->bo = external_bo;
--		ctx->ring_ctx->bo_mc = external_bo_mc;
--		ctx->ring_ctx->bo_cpu = external_bo_cpu;
--		ctx->ring_ctx->va_handle = NULL;  // VA management is caller's responsibility
--
--		igt_info("Using external BO: GPU=0x%llx, CPU=%p\n",
--				 (unsigned long long)external_bo_mc, external_bo_cpu);
--	} else {
--		/* Allocate internal BO for command operations */
--		r = amdgpu_bo_alloc_and_map(device,
--				   ctx->ring_ctx->write_length,
--				   4096,
--				   AMDGPU_GEM_DOMAIN_GTT,
--				   0,
--				   &ctx->ring_ctx->bo,
--				   &cpu_ptr,
--				   &bo_mc,
--				   &va_handle);
--		if (r) {
--			goto cleanup_error;
-+	/* Allocate a single per-context IB sized to the PM4 buffer capacity. */
-+	r = amdgpu_bo_alloc_and_map(device,
-+				    ctx->ring_ctx->pm4_size * sizeof(uint32_t), 4096,
-+				    AMDGPU_GEM_DOMAIN_GTT, 0,
-+				    &ctx->ib_bo, &ctx->ib_cpu, &ctx->ib_mc,
-+				    &ctx->ib_va);
-+	if (r) {
-+		if (user_queue) {
-+			if (ctx->ip_block->funcs->userq_destroy)
-+				ctx->ip_block->funcs->userq_destroy(device, ctx->ring_ctx,
-+								    (unsigned int)ip_type);
-+		} else {
-+			amdgpu_cs_ctx_free(ctx->ring_ctx->context_handle);
- 		}
--
--		ctx->ring_ctx->bo_mc = bo_mc;
--		ctx->ring_ctx->bo_cpu = (volatile uint32_t *)cpu_ptr;
--		ctx->ring_ctx->va_handle = va_handle;
--
--		igt_info("Allocated internal BO: GPU=0x%llx, CPU=%p\n",
--			 (unsigned long long)bo_mc, cpu_ptr);
--	}
--
--	/* Initialize resources array */
--	ctx->ring_ctx->resources[0] = ctx->ring_ctx->bo;
--	for (int i = 1; i < 4; i++) {
--		ctx->ring_ctx->resources[i] = NULL;
-+		free(ctx->ring_ctx->pm4);
-+		free(ctx->ring_ctx);
-+		free(ctx);
-+		return NULL;
- 	}
- 
- 	ctx->initialized = true;
- 	return ctx;
--
--cleanup_error:
--	/* Cleanup resources in case of allocation failure */
--	if (user_queue) {
--		ctx->ip_block->funcs->userq_destroy(device, ctx->ring_ctx, (unsigned int)ip_type);
--	} else {
--		if (ctx->ring_ctx->context_handle)
--		    amdgpu_cs_ctx_free(ctx->ring_ctx->context_handle);
--	}
--
--	free(ctx->ring_ctx->pm4);
--	free(ctx->ring_ctx);
--	free(ctx);
--	return NULL;
- }
- 
- /**
-- * context destruction function with external BO control
-+ * context destruction function
-  *
-  * @param ctx Command context to destroy
-- * @param destroy_external_bo Whether to destroy external BO (if used)
-  */
--void cmd_context_destroy(cmd_context_t *ctx, bool destroy_external_bo)
-+void cmd_context_destroy(cmd_context_t *ctx)
- {
- 	if (!ctx || !ctx->initialized)
- 		return;
- 
--	if (ctx->ring_ctx) {
--		/* Handle BO cleanup based on allocation type */
--		if (ctx->ring_ctx->bo) {
--			if (!ctx->uses_external_bo || destroy_external_bo) {
--				/* Clean up internal BO or external BO if explicitly requested */
--				if (ctx->ring_ctx->va_handle) {
--				    /* Internal BO with VA handle - full cleanup */
--				    amdgpu_bo_unmap_and_free(ctx->ring_ctx->bo, ctx->ring_ctx->va_handle,
--							   ctx->ring_ctx->bo_mc,
--							   ctx->ring_ctx->write_length);
--				} else if (destroy_external_bo) {
--				    /* External BO without VA handle - just free the BO */
--				    amdgpu_bo_free(ctx->ring_ctx->bo);
--				}
--			} else {
--				/* External BO, preserve it as requested by caller */
--				igt_info("Preserving external BO (GPU=0x%llx)\n",
--						 (unsigned long long)ctx->ring_ctx->bo_mc);
--			}
--		}
-+	/* Free the per-context IB. */
-+	if (ctx->ib_bo) {
-+		if (ctx->submit_pending)
-+			cmd_wait_completion(ctx);
-+		amdgpu_bo_unmap_and_free(ctx->ib_bo, ctx->ib_va, ctx->ib_mc,
-+					 ctx->ring_ctx->pm4_size * sizeof(uint32_t));
-+		ctx->ib_bo = NULL;
-+	}
- 
-+	if (ctx->ring_ctx) {
- 		/* Clean up command submission context */
- 		if (ctx->user_queue) {
- 			if (ctx->ip_block && ctx->ip_block->funcs->userq_destroy) {
- 				ctx->ip_block->funcs->userq_destroy(ctx->device, ctx->ring_ctx,
- 							  (unsigned int)ctx->ip_type);
--		    }
-+			}
- 		} else {
- 			if (ctx->ring_ctx->context_handle) {
- 				amdgpu_cs_ctx_free(ctx->ring_ctx->context_handle);
--		    }
-+			}
- 		}
- 
- 		/* Free PM4 command buffer */
-@@ -1123,6 +1057,42 @@ void cmd_context_destroy(cmd_context_t *ctx, bool destroy_external_bo)
- 	free(ctx);
- }
- 
-+int cmd_context_add_resource(cmd_context_t *ctx, amdgpu_bo_handle bo)
++
++int amdgpu_dispatch_shader(amdgpu_device_handle device,
++			   const struct amdgpu_dispatch_shader_req *req)
 +{
-+	struct amdgpu_ring_context *rc;
-+	int i;
++	amdgpu_context_handle context_handle;
++	amdgpu_bo_handle bo_cmd = NULL;
++	uint32_t *ptr_cmd = NULL;
++	uint64_t mc_cmd = 0;
++	amdgpu_va_handle va_cmd = 0;
++	struct amdgpu_cs_request ib_req = {0};
++	struct amdgpu_cs_ib_info ib_info = {0};
++	amdgpu_bo_list_handle bo_list = NULL;
++	struct amdgpu_cs_fence fence = {0};
++	uint32_t expired = 0;
++	struct amdgpu_cmd_base *base_cmd = get_cmd_base();
++	amdgpu_bo_handle *resources = NULL;
++	uint32_t num_resources = 0;
++	uint32_t i;
++	int ret = -1;
 +
-+	if (!ctx || !ctx->initialized || !ctx->ring_ctx || !bo)
-+		return -EINVAL;
-+
-+	rc = ctx->ring_ctx;
-+
-+	/* Deduplicate: an already-registered BO needs no second slot. */
-+	for (i = 0; i < rc->res_cnt; i++) {
-+		if (rc->resources[i] == bo)
-+			return 0;
++	if (!req || !req->shader_mc_addr) {
++		igt_info("Invalid dispatch request\n");
++		goto cleanup_base;
 +	}
 +
-+	if (rc->res_cnt >= (int)ARRAY_SIZE(rc->resources))
-+		return -ENOSPC;
++	/* Create fresh context for each dispatch to avoid state pollution */
++	if (amdgpu_cs_ctx_create(device, &context_handle) != 0) {
++		igt_info("Failed to create context\n");
++		goto cleanup_base;
++	}
 +
-+	rc->resources[rc->res_cnt++] = bo;
-+	return 0;
-+}
++	/* Command buffer for PM4 packets */
++	if (amdgpu_bo_alloc_and_map(device, 4096, 4096,
++	    AMDGPU_GEM_DOMAIN_GTT, 0, &bo_cmd, (void **)&ptr_cmd, &mc_cmd, &va_cmd) != 0) {
++		igt_info("Failed to allocate command buffer\n");
++		goto cleanup_context;
++	}
++	memset(ptr_cmd, 0, 4096);
++	base_cmd->attach_buf(base_cmd, ptr_cmd, 4096);
 +
-+static void cmd_reset_packet_operands(cmd_context_t *ctx)
-+{
-+	struct amdgpu_ring_context *rc = ctx->ring_ctx;
++	/* Generic compute state init (version-specific defaults) */
++	amdgpu_dispatch_init(AMDGPU_HW_IP_COMPUTE, base_cmd, req->version);
++	amdgpu_dispatch_write_cumask(base_cmd, req->version);
 +
-+	rc->bo_mc = 0;
-+	rc->bo_mc2 = 0;
-+	rc->write_length = 0;
-+
-+	/* Drop the per-submit residency set. */
-+	memset(rc->resources, 0, sizeof(rc->resources));
-+	rc->res_cnt = 0;
-+}
-+
- /**
-  * Submit command packet without waiting - Fixed submission logic
-  */
-@@ -1132,10 +1102,6 @@ int cmd_submit_packet(cmd_context_t *ctx)
- 	int r;
- 	struct amdgpu_cs_request ibs_request;
- 	struct amdgpu_cs_ib_info ib_info;
--	amdgpu_bo_handle ib_bo;
--	void *ib_cpu;
--	uint64_t ib_mc_address;
--	amdgpu_va_handle ib_va_handle;
- 	amdgpu_bo_handle all_res[5] = {0};
- 	uint32_t res_count = 0;
- 	uint32_t i;
-@@ -1145,12 +1111,27 @@ int cmd_submit_packet(cmd_context_t *ctx)
- 		return -EINVAL;
- 	}
- 
--	/* Check required parameters */
--	if (ctx->ring_ctx->pm4_dw == 0 || ctx->ring_ctx->pm4_dw > 1024) {
--		igt_debug("Invalid PM4 size: %u (must be 1-1024)\n", ctx->ring_ctx->pm4_dw);
-+	/* Check required parameters: the PM4 stream must be non-empty and fit
-+	 * in the per-context IB allocated by cmd_context_create().
++	/*
++	 * The SET_SH_REG offsets below are hardcoded (0x20c, 0x212, 0x213,
++	 * 0x207, 0x228, 0x240). These values are stable across gfx9..gfx12,
++	 * so hardcoding is correct today.
++	 *
++	 * The intended abstraction for offsets is
++	 * ip_block->funcs->get_reg_offset(): fetch the compute IP block via
++	 * get_ip_block(device, AMDGPU_HW_IP_COMPUTE) and call
++	 * ip_block->funcs->get_reg_offset(COMPUTE_PGM_LO) etc. instead of the
++	 * literals. It is deliberately NOT used here for two reasons:
++	 *   1. Coverage - enum general_reg (amd_registers.h) only defines
++	 *      COMPUTE_PGM_LO, PGM_RSRC1, TMPRING_SIZE, USER_DATA_0/1,
++	 *      RESOURCE_LIMITS and NUM_THREAD_X. RSRC2 (0x213), RSRC3 (0x228)
++	 *      and NUM_THREAD_Y/Z (0x208/0x209) have no enum, so the dispatch
++	 *      path cannot be expressed through get_reg_offset alone.
++	 *   2. No per-gen adaptation - there is a single compute IP block
++	 *      (compute_v8_x_ip_block) wired to gfx_v8_0_get_reg_offset for all
++	 *      generations, so it returns the same gfx8/VI offsets regardless
++	 *      of the running IP; adopting it would centralize but not future-
++	 *      proof the offsets.
++	 * To fully adopt get_reg_offset, first extend enum general_reg with the
++	 * missing registers and add real per-generation offset tables/IP blocks.
 +	 */
-+	if (ctx->ring_ctx->pm4_dw == 0 || ctx->ring_ctx->pm4_dw > ctx->ring_ctx->pm4_size) {
-+		igt_debug("Invalid PM4 size: %u (must be 1-%u)\n",
-+			  ctx->ring_ctx->pm4_dw, ctx->ring_ctx->pm4_size);
- 		return -EINVAL;
- 	}
- 
-+	igt_assert_f(ctx->ib_bo && ctx->ring_ctx->pm4_dw <= ctx->ring_ctx->pm4_size,
-+		     "PM4 stream (%u dw) exceeds IB capacity (%u dw)\n",
-+		     ctx->ring_ctx->pm4_dw, ctx->ring_ctx->pm4_size);
 +
-+	if (ctx->submit_pending) {
-+		cmd_wait_completion(ctx);
-+		ctx->submit_pending = false;
++	/* Shader program address (COMPUTE_PGM_LO/HI) */
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
++	base_cmd->emit(base_cmd, 0x20c);
++	base_cmd->emit(base_cmd, req->shader_mc_addr >> 8);
++	base_cmd->emit(base_cmd, req->shader_mc_addr >> 40);
++
++	/* Caller-provided shader resource state (COMPUTE_PGM_RSRC1/RSRC2) */
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++	base_cmd->emit(base_cmd, 0x212);
++	base_cmd->emit(base_cmd, req->rsrc1);
++
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++	base_cmd->emit(base_cmd, 0x213);
++	base_cmd->emit(base_cmd, req->rsrc2);
++
++	/* Workgroup dimensions (COMPUTE_NUM_THREAD_X/Y/Z, consecutive regs) */
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 3));
++	base_cmd->emit(base_cmd, 0x207);
++	base_cmd->emit(base_cmd, req->thread_x);
++	base_cmd->emit(base_cmd, req->thread_y);
++	base_cmd->emit(base_cmd, req->thread_z);
++
++	/* COMPUTE_PGM_RSRC3 exists on gfx10/gfx11 */
++	if (req->version == 10 || req->version == 11) {
++		base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++		base_cmd->emit(base_cmd, 0x228);
++		base_cmd->emit(base_cmd, req->rsrc3);
 +	}
 +
-+	memcpy(ctx->ib_cpu, ctx->ring_ctx->pm4,
-+	       ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
++	/* User data / kernel arguments (COMPUTE_USER_DATA_0..) */
++	if (req->user_data_count) {
++		base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, req->user_data_count));
++		base_cmd->emit(base_cmd, 0x240);
++		for (i = 0; i < req->user_data_count; i++)
++			base_cmd->emit(base_cmd, req->user_data[i]);
++	}
 +
- 	/* For user queues, use userq_submit */
- 	if (ctx->user_queue) {
- 		if (!ctx->ip_block || !ctx->ip_block->funcs->userq_submit) {
-@@ -1158,16 +1139,14 @@ int cmd_submit_packet(cmd_context_t *ctx)
- 			return -ENOTSUP;
- 		}
- 
--		if (!ctx->ring_ctx->bo_mc) {
--		igt_debug("Invalid BO MC address for user queue\n");
--		return -EINVAL;
--		}
--
- 		ctx->ip_block->funcs->userq_submit(ctx->device, ctx->ring_ctx,
- 		      (unsigned int)ctx->ip_type,
--		      ctx->ring_ctx->bo_mc);
-+		      ctx->ib_mc);
- 		ctx->last_submit_seq = ctx->ring_ctx->point;
-+		ctx->submit_pending = true;
- 		igt_info("User queue submission successful, point=%lu\n", ctx->last_submit_seq);
++	/* Dispatch: dim_x, dim_y, dim_z, dispatch_initiator */
++	base_cmd->emit(base_cmd, PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT, 3));
++	base_cmd->emit(base_cmd, req->grid_x);
++	base_cmd->emit(base_cmd, req->grid_y);
++	base_cmd->emit(base_cmd, req->grid_z);
++	base_cmd->emit(base_cmd, req->dispatch_initiator);
++	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
 +
-+		cmd_reset_packet_operands(ctx);
- 		return 0;
- 	}
- 
-@@ -1175,26 +1154,8 @@ int cmd_submit_packet(cmd_context_t *ctx)
- 	memset(&ibs_request, 0, sizeof(ibs_request));
- 	memset(&ib_info, 0, sizeof(ib_info));
- 
--	/* Allocate separate IB buffer instead of reusing command buffer */
--	r = amdgpu_bo_alloc_and_map(ctx->device,
--			       ctx->ring_ctx->pm4_dw * sizeof(uint32_t),
--			       4096,
--			       AMDGPU_GEM_DOMAIN_GTT,
--			       0,
--			       &ib_bo,
--			       &ib_cpu,
--			       &ib_mc_address,
--			       &ib_va_handle);
--	if (r) {
--		igt_debug("Failed to allocate IB: %d\n", r);
--		return r;
--	}
--
--	/* Copy PM4 commands to IB */
--	memcpy(ib_cpu, ctx->ring_ctx->pm4, ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
--
--	/* Setup IB information */
--	ib_info.ib_mc_address = ib_mc_address;
-+	/* Point the IB info at the per-context IB */
-+	ib_info.ib_mc_address = ctx->ib_mc;
- 	ib_info.size = ctx->ring_ctx->pm4_dw;
- 	if (ctx->ring_ctx->secure)
- 		ib_info.flags |= AMDGPU_IB_FLAGS_SECURE;
-@@ -1215,14 +1176,12 @@ int cmd_submit_packet(cmd_context_t *ctx)
- 	}
- 
- 	/* Add IB as the last resource */
--	all_res[res_count++] = ib_bo;
-+	all_res[res_count++] = ctx->ib_bo;
- 
- 	/* Create BO list */
- 	r = amdgpu_bo_list_create(ctx->device, res_count, all_res, NULL, &bo_list);
- 	if (r) {
- 		igt_debug("amdgpu_bo_list_create failed: %d\n", r);
--		amdgpu_bo_unmap_and_free(ib_bo, ib_va_handle, ib_mc_address,
--				       ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
- 		return r;
- 	}
- 
-@@ -1234,8 +1193,6 @@ int cmd_submit_packet(cmd_context_t *ctx)
- 	if (r != 0) {
- 		igt_debug("amdgpu_cs_submit failed: %d\n", r);
- 		amdgpu_bo_list_destroy(bo_list);
--		amdgpu_bo_unmap_and_free(ib_bo, ib_va_handle, ib_mc_address,
--				       ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
- 		return r;
- 	}
- 
-@@ -1243,10 +1200,11 @@ int cmd_submit_packet(cmd_context_t *ctx)
- 	ctx->last_submit_seq = ibs_request.seq_no;
- 	igt_debug("Command submitted successfully, seq_no=%lu\n", ctx->last_submit_seq);
- 
--	/* Cleanup resources */
-+	/* The kernel has snapshotted the bo_list; it can be released now. */
- 	amdgpu_bo_list_destroy(bo_list);
--	amdgpu_bo_unmap_and_free(ib_bo, ib_va_handle, ib_mc_address,
--			   ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
++	/* Resource list = internal command buffer + caller-provided BOs */
++	num_resources = req->num_bos + 1;
++	resources = malloc(num_resources * sizeof(*resources));
++	if (!resources) {
++		igt_info("Failed to allocate resource list\n");
++		goto cleanup_cmd;
++	}
++	resources[0] = bo_cmd;
++	for (i = 0; i < req->num_bos; i++)
++		resources[i + 1] = req->bos[i];
 +
-+	ctx->submit_pending = true;
-+	cmd_reset_packet_operands(ctx);
- 
- 	return 0;
- }
-@@ -1258,14 +1216,9 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 	if (!ctx || !ctx->initialized || !ctx->ip_block || !params)
- 		return -EINVAL;
- 
--	if (!ctx->ring_ctx || !ctx->ring_ctx->bo_cpu)
-+	if (!ctx->ring_ctx)
- 		return -EINVAL;
- 
--	/* Clear the buffer before operation */
--	memset((void *)ctx->ring_ctx->bo_cpu, 0,
--	ctx->ring_ctx->write_length);
--
--
- 	/* Build the command packet based on type */
- 	switch (params->type) {
- 	case CMD_PACKET_WRITE_LINEAR:
-@@ -1280,13 +1233,6 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 		result = ctx->ip_block->funcs->write_linear(ctx->ip_block->funcs,
- 						       ctx->ring_ctx,
- 						       &ctx->ring_ctx->pm4_dw);
--
--		/*  Copy PM4 packet to ring buffer */
--		if (result == 0 && ctx->ring_ctx->pm4_dw > 0) {
--			memcpy((void *)ctx->ring_ctx->bo_cpu,
--			       ctx->ring_ctx->pm4,
--			       ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
--		}
- 		return result;
- 
- 	case CMD_PACKET_WRITE_ATOMIC:
-@@ -1300,13 +1246,6 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 		result = ctx->ip_block->funcs->write_linear_atomic(ctx->ip_block->funcs,
- 						      ctx->ring_ctx,
- 						      &ctx->ring_ctx->pm4_dw);
--
--		/*  Copy PM4 packet to ring buffer */
--		if (result == 0 && ctx->ring_ctx->pm4_dw > 0) {
--		memcpy((void *)ctx->ring_ctx->bo_cpu,
--		ctx->ring_ctx->pm4,
--		ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
--		}
- 		return result;
- 
- 	case CMD_PACKET_COPY_LINEAR:
-@@ -1321,16 +1260,6 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 	    result = ctx->ip_block->funcs->copy_linear(ctx->ip_block->funcs,
- 						      ctx->ring_ctx,
- 						      &ctx->ring_ctx->pm4_dw);
--
--	    /* Copy PM4 packet to ring buffer */
--	    if (result == 0 && ctx->ring_ctx->pm4_dw > 0) {
--	        memcpy((void *)ctx->ring_ctx->bo_cpu,
--	               ctx->ring_ctx->pm4,
--	               ctx->ring_ctx->pm4_dw * sizeof(uint32_t));
--
--	        //igt_info("cmd_place_packet: Copied %u DWORDs to ring buffer (copy)\n",
--	          //       ctx->ring_ctx->pm4_dw);
--	    }
- 	    return result;
- 
- 	case CMD_PACKET_COPY_ATOMIC:
-@@ -1429,8 +1358,8 @@ int cmd_wait_completion(cmd_context_t *ctx)
- 			return -EINVAL;
- 
- 		return amdgpu_timeline_syncobj_wait(ctx->device,
--						   ctx->ring_ctx->timeline_syncobj_handle,
--						   ctx->ring_ctx->point);
-+						    ctx->ring_ctx->timeline_syncobj_handle,
-+						    ctx->ring_ctx->point);
- 	}
- 
- 	/* For regular queues, wait on fence */
-@@ -1441,8 +1370,8 @@ int cmd_wait_completion(cmd_context_t *ctx)
- 	fence_status.fence = ctx->last_submit_seq;
- 
- 	return amdgpu_cs_query_fence_status(&fence_status,
--				       AMDGPU_TIMEOUT_INFINITE,
--				       0, &expired);
-+					    AMDGPU_TIMEOUT_INFINITE,
-+					    0, &expired);
- }
- 
- /**
-diff --git a/lib/amdgpu/amd_command_submission.h b/lib/amdgpu/amd_command_submission.h
-index 331889161..8644f25ed 100644
---- a/lib/amdgpu/amd_command_submission.h
-+++ b/lib/amdgpu/amd_command_submission.h
-@@ -50,8 +50,16 @@ typedef struct {
-     enum amd_ip_block_type ip_type;
-     bool initialized;
-     bool user_queue;
--    bool uses_external_bo;
-     uint64_t last_submit_seq; /* Last submission sequence number */
++	if (amdgpu_bo_list_create(device, num_resources, resources, NULL, &bo_list) != 0) {
++		igt_info("Failed to create BO list\n");
++		goto cleanup_resources;
++	}
 +
-+    /* IB shared by the user-queue and CS paths; created in cmd_context_create,
-+     * freed in cmd_context_destroy, reusable across multiple submits.
-+     */
-+    amdgpu_bo_handle ib_bo;
-+    void *ib_cpu;
-+    uint64_t ib_mc;
-+    amdgpu_va_handle ib_va;
-+    bool submit_pending;   /* a submit is in flight; wait before reuse/free */
- } cmd_context_t;
- 
- /**
-@@ -89,15 +97,92 @@ void amdgpu_command_submission_copy_linear_helper(amdgpu_device_handle device,
- void  amdgpu_command_ce_write_fence(amdgpu_device_handle dev,
- 					  amdgpu_context_handle ctx);
- 
-+/*
-+ * cmd_* command-submission API
-+ * ============================
-+ *
-+ * A small wrapper around raw amdgpu command submission that hides the
-+ * context / IB / bo_list / fence plumbing and lets a test issue DMA-style
-+ * operations (write, copy, const-fill, atomic) on an IP ring (SDMA, GFX or
-+ * Compute) by GPU virtual address.
-+ *
-+ * Lifecycle
-+ * ---------
-+ *   1. cmd_context_create()  - create a context bound to one IP ring. It
-+ *      allocates a reusable IB/PM4 buffer for the emitted packets.
-+ *   2. issue one or more operations (see the two API layers below).
-+ *   3. cmd_context_destroy()  - waits for any in-flight submission, then frees
-+ *      the IB and the context.
-+ *
-+ * Two API layers
-+ * --------------
-+ *   High-level convenience helpers build one packet and submit it in a single
-+ *   call:
-+ *       cmd_submit_write_linear(ctx, dst_va, size, data)
-+ *       cmd_submit_copy_linear (ctx, src_va, dst_va, size)
-+ *       cmd_submit_const_fill  (ctx, dst_va, size, data)
-+ *       cmd_submit_atomic      (ctx, dst_va, data)
-+ *
-+ *   Low-level path, for full control over cmd_packet_params_t (custom_data,
-+ *   fence/timestamp packets, etc.):
-+ *       cmd_place_packet(ctx, &params)          - build the PM4 stream
-+ *       cmd_submit_packet(ctx)                  - submit it
-+ *       cmd_place_and_submit_packet(ctx, &p)    - both of the above
-+ *
-+ * Semantics
-+ * ---------
-+ *   - Submission is asynchronous: cmd_submit_* returns after the CS is queued.
-+ *     The next submit on the same ctx, or cmd_context_destroy(), transparently
-+ *     waits for the previous one. Call cmd_wait_completion(ctx) to block
-+ *     explicitly (e.g. before reading back the destination).
-+ *   - Operands are plain GPU virtual addresses, not BOs. For every BO-backed
-+ *     address you pass (source, destination, fence/timestamp target, ...) call
-+ *     cmd_context_add_resource(ctx, bo) to add the owning BO to the residency
-+ *     set. The residency set is per-submit: it is cleared automatically once
-+ *     the packet has been captured for submission, so you must (re-)register
-+ *     every required BO immediately before each submit.
-+ *   - One call emits exactly one hardware packet and does NOT chunk. A transfer
-+ *     larger than the per-packet maximum (see amdgpu_dma_limits_query) will be
-+ *     rejected; the caller must split it. Return values are 0 on success or a
-+ *     negative errno (e.g. -ENOTSUP if the IP lacks the requested op).
-+ *
-+ * Example: fill then copy 4 KiB over the SDMA ring
-+ * ------------------------------------------------
-+ *   cmd_context_t *ctx;
-+ *   int r;
-+ *
-+ *   ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
-+ *   if (!ctx)
-+ *           return -ENODEV;
-+ *
-+ *   // Residency is per-submit, so register before every submit.
-+ *   cmd_context_add_resource(ctx, dst_bo);  // owns dst_va
-+ *   r = cmd_submit_const_fill(ctx, dst_va, 4096, 0xdeadbeef);
-+ *   if (!r) {
-+ *           cmd_context_add_resource(ctx, dst_bo);    // owns dst_va
-+ *           cmd_context_add_resource(ctx, dst2_bo);   // owns dst2_va
-+ *           r = cmd_submit_copy_linear(ctx, dst_va, dst2_va, 4096);
-+ *   }
-+ *
-+ *   cmd_wait_completion(ctx);   // ensure the copy has landed
-+ *   cmd_context_destroy(ctx);   // (would also wait) release resources
-+ *   return r;
-+ */
- cmd_context_t* cmd_context_create(amdgpu_device_handle device,
-                                     enum amd_ip_block_type ip_type,
-                                     uint32_t ring_id,
--                                    bool user_queue,
--                                    uint32_t write_length,
--                                    amdgpu_bo_handle external_bo,
--                                    uint64_t external_bo_mc,
--                                    volatile uint32_t *external_bo_cpu);
--void cmd_context_destroy(cmd_context_t *ctx, bool destroy_external_bo);
-+                                    bool user_queue);
-+void cmd_context_destroy(cmd_context_t *ctx);
++	ib_info.ib_mc_address = mc_cmd;
++	ib_info.size = base_cmd->cdw;
++	ib_req.ip_type = AMDGPU_HW_IP_COMPUTE;
++	ib_req.ring = 0;
++	ib_req.resources = bo_list;
++	ib_req.number_of_ibs = 1;
++	ib_req.ibs = &ib_info;
++	ib_req.fence_info.handle = NULL;
++
++	if (amdgpu_cs_submit(context_handle, 0, &ib_req, 1) != 0) {
++		igt_info("Failed to submit CS\n");
++		goto cleanup_bo_list_run;
++	}
++
++	/* Wait for completion */
++	fence.context = context_handle;
++	fence.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fence.ip_instance = 0;
++	fence.ring = 0;
++	fence.fence = ib_req.seq_no;
++
++	if (amdgpu_cs_query_fence_status(&fence, AMDGPU_TIMEOUT_INFINITE, 0, &expired) != 0) {
++		igt_info("Fence wait failed\n");
++		goto cleanup_bo_list_run;
++	}
++
++	if (!expired) {
++		igt_info("Fence not expired\n");
++		goto cleanup_bo_list_run;
++	}
++
++	ret = 0;
++
++cleanup_bo_list_run:
++	amdgpu_bo_list_destroy(bo_list);
++cleanup_resources:
++	free(resources);
++cleanup_cmd:
++	amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
++cleanup_context:
++	amdgpu_cs_ctx_free(context_handle);
++cleanup_base:
++	free_cmd_base(base_cmd);
++
++	return ret;
++}
++
++struct copy_dword_shader {
++	amdgpu_device_handle device;
++	amdgpu_bo_handle bo_shader;
++	amdgpu_va_handle va_shader;
++	uint64_t mc_shader;
++	uint32_t version;
++	bool ready;
++};
 +
 +/*
-+ * Register a buffer object in the context's bo_list residency set so it is
-+ * resident when the next submission executes. See the cmd_* API overview above
-+ * cmd_context_create() for how this fits into the submission flow.
++ * Assemble the CopyDword compute shader for @device and populate @sh.
 + *
-+ * Returns 0 on success, -EINVAL on bad arguments,
-+ * or -ENOSPC when the residency set (resources[]) is full.
++ * Returns true on success (sh->ready set). Returns false if the shader could
++ * not be prepared -- whether unavailable (no compute IP block, unsupported gfx
++ * version, no LLVM assembler) or a hard error (query / BO alloc failed).
 + */
-+int cmd_context_add_resource(cmd_context_t *ctx, amdgpu_bo_handle bo);
- 
- int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params);
- 
-diff --git a/tests/amdgpu/amd_dmabuf_unload.c b/tests/amdgpu/amd_dmabuf_unload.c
-index 05ca3cf2c..0e43de0e6 100644
---- a/tests/amdgpu/amd_dmabuf_unload.c
-+++ b/tests/amdgpu/amd_dmabuf_unload.c
-@@ -121,9 +121,7 @@ static void test_fence_outlives_module(int vgem, int amd_fd,
- 	igt_assert_eq(r, 0);
- 
- 	/* Create SDMA command context */
--	cmd_ctx = cmd_context_create(dev, AMD_IP_DMA, 0, false,
--				     copy_size, src_bo, src_mc,
--				     (volatile uint32_t *)src_cpu);
-+	cmd_ctx = cmd_context_create(dev, AMD_IP_DMA, 0, false);
- 	igt_assert(cmd_ctx != NULL);
- 
- 	/*
-@@ -138,17 +136,14 @@ static void test_fence_outlives_module(int vgem, int amd_fd,
- 			     AMDGPU_VA_OP_MAP);
- 	igt_assert_eq(r, 0);
- 
--	/* Set up bo_list: IB (src), dst, imported VGEM BO */
--	cmd_ctx->ring_ctx->bo2 = dst_bo;
--	cmd_ctx->ring_ctx->bo_mc2 = dst_mc;
--	cmd_ctx->ring_ctx->resources[1] = dst_bo;
--	cmd_ctx->ring_ctx->resources[2] = import.buf_handle;
--	cmd_ctx->ring_ctx->res_cnt = 3;
--
- 	igt_info("Submitting %d x %llu-byte SDMA copies (no wait)...\n",
- 		 NUM_SDMA_COPIES, (unsigned long long)copy_size);
- 
- 	for (i = 0; i < NUM_SDMA_COPIES; i++) {
-+		igt_assert_eq(cmd_context_add_resource(cmd_ctx, src_bo), 0);
-+		igt_assert_eq(cmd_context_add_resource(cmd_ctx, dst_bo), 0);
-+		igt_assert_eq(cmd_context_add_resource(cmd_ctx, import.buf_handle), 0);
++static bool copy_dword_shader_assemble(amdgpu_device_handle device,
++				       struct copy_dword_shader *sh)
++{
++	struct amdgpu_gpu_info info = {0};
++	struct drm_amdgpu_info_hw_ip hw_ip = {0};
++	char mcpu[32];
++	uint8_t isa_bin[4096];
++	size_t isa_sz = 0;
++	void *ptr_shader = NULL;
++	int r;
 +
- 		r = cmd_submit_copy_linear(cmd_ctx,
- 					   src_mc, dst_mc,
- 					   (uint32_t)copy_size);
-diff --git a/tests/amdgpu/amd_kfd_dmabuf_unload.c b/tests/amdgpu/amd_kfd_dmabuf_unload.c
-index 24260b560..28caf8982 100644
---- a/tests/amdgpu/amd_kfd_dmabuf_unload.c
-+++ b/tests/amdgpu/amd_kfd_dmabuf_unload.c
-@@ -309,23 +309,18 @@ static void test_kfd_fence_outlives_module(int vgem, int amd_fd,
- 	igt_assert_eq(r, 0);
- 
- 	/* Create SDMA command context */
--	cmd_ctx = cmd_context_create(dev, AMD_IP_DMA, 0, false,
--				     copy_size, src_bo, src_mc,
--				     (volatile uint32_t *)src_cpu);
-+	cmd_ctx = cmd_context_create(dev, AMD_IP_DMA, 0, false);
- 	igt_assert(cmd_ctx != NULL);
- 
--	/* Set up bo_list: IB (src), dst, imported VGEM BO */
--	cmd_ctx->ring_ctx->bo2 = dst_bo;
--	cmd_ctx->ring_ctx->bo_mc2 = dst_mc;
--	cmd_ctx->ring_ctx->resources[1] = dst_bo;
--	cmd_ctx->ring_ctx->resources[2] = import.buf_handle;
--	cmd_ctx->ring_ctx->res_cnt = 3;
--
- 	igt_info("Submitting %d SDMA copies "
- 		 "(KFD amdgpu fences on dma_resv, no wait)...",
- 		 NUM_SDMA_COPIES);
- 
- 	for (i = 0; i < NUM_SDMA_COPIES; i++) {
-+		igt_assert_eq(cmd_context_add_resource(cmd_ctx, src_bo), 0);
-+		igt_assert_eq(cmd_context_add_resource(cmd_ctx, dst_bo), 0);
-+		igt_assert_eq(cmd_context_add_resource(cmd_ctx, import.buf_handle), 0);
++	if (get_ip_block(device, AMDGPU_HW_IP_COMPUTE) == NULL) {
++		igt_info("Compute IP block not available\n");
++		return false;
++	}
 +
- 		r = cmd_submit_copy_linear(cmd_ctx,
- 					   src_mc, dst_mc,
- 					   (uint32_t)copy_size);
-diff --git a/tests/amdgpu/amd_mem.c b/tests/amdgpu/amd_mem.c
-index 7c6855d3f..eef869b41 100644
---- a/tests/amdgpu/amd_mem.c
-+++ b/tests/amdgpu/amd_mem.c
-@@ -850,7 +850,7 @@ static void test_cache_invalidate_on_sdma_write_asm(amdgpu_device_handle device,
- 
- 	/* 5. Issue SDMA write to buffer[0] while shader is polling */
- 	if (cmd_ring_available(device, AMD_IP_DMA, 0, false))
--		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 64, NULL, 0, NULL);
-+		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
- 	igt_assert(dma_ctx);
- 	r = cmd_submit_write_linear(dma_ctx, vram_mc, sizeof(uint32_t), kPattern);
- 	igt_assert_eq(r, 0);
-@@ -875,7 +875,7 @@ static void test_cache_invalidate_on_sdma_write_asm(amdgpu_device_handle device,
- 	igt_info("cache-invalidate-sdma-write: PASSED (dst[100]=0x%x)\n", buf[dwLocation]);
- 
- 	/* Cleanup */
--	cmd_context_destroy(dma_ctx, false);
-+	cmd_context_destroy(dma_ctx);
- 	amdgpu_bo_list_destroy(bo_list);
- 	amdgpu_bo_unmap_and_free(bo_cmd, va_cmd, mc_cmd, 4096);
- 	amdgpu_cs_ctx_free(compute_ctx);
-@@ -1919,7 +1919,7 @@ static int init_dma_context(mm_bench_context_t *ctx, amdgpu_device_handle device
- 	}
- 
- 	/* Create DMA context for ring 0 */
--	ctx->dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 128, NULL, 0, NULL);
-+	ctx->dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
- 	if (!ctx->dma_ctx) {
- 		igt_debug("Failed to create DMA context for ring 0\n");
- 		return -ENODEV;
-@@ -1935,7 +1935,7 @@ static int init_dma_context(mm_bench_context_t *ctx, amdgpu_device_handle device
- static void cleanup_dma_context(mm_bench_context_t *ctx)
- {
- 	if (ctx->dma_ctx) {
--		cmd_context_destroy(ctx->dma_ctx, false);
-+		cmd_context_destroy(ctx->dma_ctx);
- 		ctx->dma_ctx = NULL;
- 	}
- }
-@@ -3164,10 +3164,11 @@ static void test_signal_handling(amdgpu_device_handle device)
- 		/* Parent process - perform memory operations with signal handling */
- 		igt_info("Parent process starting memory mapping operations...\n");
- 
--		/* FIX: Use cmd_context_create_ex with the same BO for both internal buffer and target */
--		/* This ensures SDMA writes to the correct memory address */
--		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false, 128,
--				     sys_bo, sys_mc_address, (volatile uint32_t *)sys_cpu_ptr);
-+		/*
-+		 * Create a DMA context; sys_bo is registered in its residency set
-+		 * immediately before the submit below (residency is per-submit).
-+		 */
-+		dma_ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
- 		igt_assert_f(dma_ctx, "Failed to create DMA command submission context");
- 
- 		/* Wait for child process to complete with proper signal handling */
-@@ -3215,6 +3216,7 @@ static void test_signal_handling(amdgpu_device_handle device)
- 		igt_info("Writing 0xdeadbeaf to address 0x%" PRIx64 "\n", sys_mc_address);
- 
- 		/* Now SDMA should write to the correct address since we're using the same BO */
-+		igt_assert_eq(cmd_context_add_resource(dma_ctx, sys_bo), 0);
- 		r = cmd_submit_write_linear(dma_ctx, sys_mc_address, sizeof(uint32_t), 0xdeadbeaf);
- 		igt_info("cmd_submit_write_linear returned: %d\n", r);
- 		igt_assert_eq(r, 0);
-@@ -3244,8 +3246,8 @@ static void test_signal_handling(amdgpu_device_handle device)
- 
- 		igt_info("Memory successfully updated to: 0x%08x\n", sys_mem[0]);
- 
--		/* Cleanup command context - don't destroy the external BO */
--		cmd_context_destroy(dma_ctx, false);
-+		/* Cleanup command context; sys_bo is owned by the caller. */
-+		cmd_context_destroy(dma_ctx);
- 		dma_ctx = NULL;
- 	}
- 
++	if (amdgpu_query_gpu_info(device, &info) != 0)
++		return false;
++
++	if (amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_COMPUTE, 0, &hw_ip) != 0)
++		return false;
++	sh->version = hw_ip.hw_ip_version_major;
++	/*
++	 * Only gfx9..gfx12 have verified register-programming tables here
++	 * (see amdgpu_dispatch_write2hw() and amdgpu_compute_copy_dword()).
++	 * Fail fast on anything outside that range instead of silently
++	 * reusing the gfx9 defaults, which would emit wrong RSRC1/offsets
++	 * on a future IP.
++	 */
++	if (sh->version < 9 || sh->version > 12) {
++		igt_info("Compute copy unsupported on gfx version %u (need GFX9..GFX12)\n",
++			 sh->version);
++		return false;
++	}
++
++	amdgpu_family_id_to_mcpu(info.family_id, mcpu, sizeof(mcpu));
++
++	if (amdgpu_llvm_asm_init() != 0)
++		return false;
++
++	r = amdgpu_llvm_assemble(mcpu, CopyDwordIsa, isa_bin,
++				 sizeof(isa_bin), &isa_sz);
++	if (r != 0 || isa_sz == 0) {
++		amdgpu_llvm_asm_shutdown();
++		igt_info("Failed to assemble CopyDwordIsa\n");
++		return false;
++	}
++
++	sh->device = device;
++
++	/* Upload the assembled ISA into a dedicated shader BO */
++	if (amdgpu_bo_alloc_and_map(device, 4096, 4096, AMDGPU_GEM_DOMAIN_GTT, 0,
++				    &sh->bo_shader, &ptr_shader, &sh->mc_shader,
++				    &sh->va_shader) != 0) {
++		amdgpu_llvm_asm_shutdown();
++		return false;
++	}
++	memset(ptr_shader, 0, 4096);
++	memcpy(ptr_shader, isa_bin, isa_sz);
++	amdgpu_llvm_asm_shutdown();
++
++	sh->ready = true;
++	return true;
++}
++
++/*
++ * Lazily assemble (once per process) and return the cached CopyDword shader for
++ * @device, or NULL if the shader could not be prepared. The shader BO is
++ * intentionally left mapped until process exit; the test binary is short-lived.
++ */
++static struct copy_dword_shader *copy_dword_shader_get(amdgpu_device_handle device)
++{
++	static struct copy_dword_shader cache;
++
++	if (cache.ready && cache.device == device)
++		return &cache;
++
++	/* A device change is not expected; drop any stale shader. */
++	if (cache.ready) {
++		if (cache.bo_shader)
++			amdgpu_bo_unmap_and_free(cache.bo_shader, cache.va_shader,
++						 cache.mc_shader, 4096);
++		memset(&cache, 0, sizeof(cache));
++	}
++
++	if (!copy_dword_shader_assemble(device, &cache)) {
++		memset(&cache, 0, sizeof(cache));
++		return NULL;
++	}
++
++	return &cache;
++}
++
++int amdgpu_compute_copy_dword(amdgpu_device_handle device,
++			      uint64_t src_va, uint64_t dst_va)
++{
++	struct copy_dword_shader *sh;
++	struct amdgpu_dispatch_shader_req req = {0};
++	uint32_t user_data[4];
++
++	sh = copy_dword_shader_get(device);
++	if (!sh) {
++		igt_info("Compute shader unavailable (no compute IP / LLVM)\n");
++		return -1;
++	}
++
++	/* CopyDword ABI: s[0:1] = source pointer, s[2:3] = destination pointer */
++	user_data[0] = src_va & 0xFFFFFFFF;
++	user_data[1] = src_va >> 32;
++	user_data[2] = dst_va & 0xFFFFFFFF;
++	user_data[3] = dst_va >> 32;
++
++	req.version = sh->version;
++	req.shader_mc_addr = sh->mc_shader;
++	/* Register state mirrors amdgpu_dispatch_write2hw() for CopyDword */
++	if (sh->version == 11 || sh->version == 12)
++		req.rsrc1 = 0x600C0041 & ~(1u << 29);
++	else
++		req.rsrc1 = 0x000C0041;
++	req.rsrc2 = 0x00000090;
++	req.rsrc3 = (sh->version == 11) ? 0x3f0 : 0;
++	req.thread_x = 0x40;
++	req.thread_y = 1;
++	req.thread_z = 1;
++	req.user_data = user_data;
++	req.user_data_count = 4;
++	req.grid_x = 1;
++	req.grid_y = 1;
++	req.grid_z = 1;
++	req.dispatch_initiator = 0x1;	/* COMPUTE_SHADER_EN */
++	req.bos = &sh->bo_shader;
++	req.num_bos = 1;
++
++	return amdgpu_dispatch_shader(device, &req);
++}
+diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
+index c0113519b..8890e99b4 100644
+--- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
++++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
+@@ -41,4 +41,81 @@ int execute_compute_dispatch(amdgpu_device_handle device,
+ 				   uint64_t src_mc_addr,
+ 				   uint64_t dst_mc_addr,
+ 				   uint32_t expected_value);
++
++/**
++ * struct amdgpu_dispatch_shader_req - Description of a generic compute dispatch
++ * @version: GPU version used for the compute state init (9/10/11/12)
++ * @shader_mc_addr: GPU address of the shader ISA to execute
++ * @rsrc1: value written to COMPUTE_PGM_RSRC1
++ * @rsrc2: value written to COMPUTE_PGM_RSRC2
++ * @rsrc3: value written to COMPUTE_PGM_RSRC3 (only emitted on version 10/11)
++ * @thread_x: value written to COMPUTE_NUM_THREAD_X (workgroup size X)
++ * @thread_y: value written to COMPUTE_NUM_THREAD_Y (workgroup size Y)
++ * @thread_z: value written to COMPUTE_NUM_THREAD_Z (workgroup size Z)
++ * @user_data: dwords loaded into COMPUTE_USER_DATA_0.. (kernel arguments)
++ * @user_data_count: number of dwords in @user_data (0 to skip)
++ * @grid_x: DISPATCH_DIRECT dimension X (number of workgroups)
++ * @grid_y: DISPATCH_DIRECT dimension Y
++ * @grid_z: DISPATCH_DIRECT dimension Z
++ * @dispatch_initiator: COMPUTE_DISPATCH_INITIATOR flags (bit0 = COMPUTE_SHADER_EN)
++ * @bos: BOs the shader accesses (inputs/outputs); the command buffer is added
++ *       internally, so this list only needs the shader and data BOs
++ * @num_bos: number of entries in @bos
++ *
++ * All shader-binding state (RSRC*, thread dims, user data, grid) is supplied by
++ * the caller so that any shader can be executed without changing the emitter.
++ */
++struct amdgpu_dispatch_shader_req {
++	uint32_t version;
++
++	uint64_t shader_mc_addr;
++	uint32_t rsrc1;
++	uint32_t rsrc2;
++	uint32_t rsrc3;
++
++	uint32_t thread_x;
++	uint32_t thread_y;
++	uint32_t thread_z;
++
++	const uint32_t *user_data;
++	uint32_t user_data_count;
++
++	uint32_t grid_x;
++	uint32_t grid_y;
++	uint32_t grid_z;
++	uint32_t dispatch_initiator;
++
++	amdgpu_bo_handle *bos;
++	uint32_t num_bos;
++};
++
++/**
++ * amdgpu_dispatch_shader - Execute a generic compute dispatch
++ * @device: AMDGPU device handle
++ * @req: Description of the dispatch to execute
++ *
++ * This function creates a fresh context, allocates a command buffer, emits the
++ * compute state and dispatch packets, and submits it. The caller must provide
++ * all shader-binding state (RSRC*, thread dims, user data, grid) so that any
++ * shader can be executed without changing the emitter.
++ *
++ * Returns: 0 on success, -1 on failure
++ */
++int amdgpu_dispatch_shader(amdgpu_device_handle device,
++			       const struct amdgpu_dispatch_shader_req *req);
++
++/**
++ * amdgpu_compute_copy_dword - Copy a single DWORD from src to dst via compute
++ * @device: AMDGPU device handle
++ * @src_va: GPU virtual address of the source DWORD
++ * @dst_va: GPU virtual address of the destination DWORD
++ *
++ * This function assembles a small compute shader that copies a single 32-bit
++ * value from @src_va to @dst_va, uploads it to a dedicated shader BO, and
++ * dispatches it.
++ *
++ * Returns: 0 on success, -1 on failure
++ */
++int amdgpu_compute_copy_dword(amdgpu_device_handle device,
++			      uint64_t src_va, uint64_t dst_va);
+ #endif
 -- 
 2.34.1
 
