@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 954D8C5DF89
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 12:53:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A331C5DF87
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 12:53:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 20FD810E4C4;
-	Fri, 21 Aug 2026 12:53:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 197C810EB17;
+	Fri, 21 Aug 2026 12:53:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="UReCcnNt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BRoSMeB3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47EAB10E39F
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:48:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5EFE310E39F
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787316525; x=1818852525;
+ t=1787316529; x=1818852529;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gHp/lOTzvC/fejKUhqkVpGkLTCip9EUfSClOTogKN58=;
- b=UReCcnNtHwe+HDi3QEXqIqmrTwtus6yWGeOgSOzulP6cAlekAFjFnYdk
- XtDPc6JMCutrXbdhzA3DvAtZ5B3dYpTEb9U4OyYNDg1DJR1hhBRRRC10E
- tfE89aB2xrKcFnTE8AIhnHmo9hXP9dNvCxDIv58b7SavVf48uEzFmIBbY
- 9TgQf0f2sD+DBhHtxy0cu1iLDWzJLv8GR4yAyFfcJt89IKhkYqehLlk42
- gRkEAY/Y+/2Kntiwk70ptuU0unqJHYSTA6P8+wxBvxh5YvT7hV1SuEOq3
- hE21xAyDRldhg1z6xoBsYwqodL8+lYCpxyFJY4LlX0/DfwOWMX+D9MO0T A==;
-X-CSE-ConnectionGUID: 32Q/l2ArT4y8ms21l/Z75Q==
-X-CSE-MsgGUID: a4AJti7mQAOT8yq+CAoI1w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87632912"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="87632912"
+ bh=uUTJ+G4VqBNVDHl3Av3MJ04Nx5tYihPAEBCemupXA2Q=;
+ b=BRoSMeB33PHTuyD9i2Jj2jhqBQ2FF9lBUbBVRu/dZHh/6QzIJGtzUAYY
+ 1t4qRK8PYFMB8QehyONucIctMMyIZGyY2S8IwMih/iztaX/qwxOHdErzc
+ GytiJQj6aT8N70R7i8G4sokjsDgGTegJVWfQwfKKeJD6218IgmOOdPM9F
+ VlrjT+gTPQIuhbwwuyOPKqogkB5ZQtzDEgVLIK0OsXZMmggJf+e1Z7EqL
+ 0ZTgflnJPBs1zzINMSjfwtf+OKeY3gXoMhEavHIDy26fIe1rB3yjXtILm
+ yOgPDUbbpCUBNkWHUeqnnDCmEK3rIVXS8w2HMfo6RyTxzlV9QT/p86W49 w==;
+X-CSE-ConnectionGUID: TgliOK0CSQuQKkHbpIImmA==
+X-CSE-MsgGUID: UsNtNExpQ3m9nK9zJO3QNw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87632921"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="87632921"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2026 05:48:44 -0700
-X-CSE-ConnectionGUID: 5OOJ9panQuK41OcLsn5JwQ==
-X-CSE-MsgGUID: wn4LvbyCSnmesZ4XU8RZeA==
+ 21 Aug 2026 05:48:48 -0700
+X-CSE-ConnectionGUID: IDODox72SteLoL5ch6F86Q==
+X-CSE-MsgGUID: VitJEw05Rdm5oClzGbKOFg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="291188346"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="291188360"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa001.fm.intel.com with ESMTP; 21 Aug 2026 05:48:43 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 21 Aug 2026 05:48:47 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: nemesa.garg@intel.com, mohammed.thasleem@intel.com, karthik.b.s@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v3 04/17] tests/kms_async_flips: limit S/R to first and
- last CRTC
-Date: Fri, 21 Aug 2026 14:48:21 +0200
-Message-ID: <20260821124834.1974029-5-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v3 07/17] tests/kms_pipe_crc_basic: limit #crtcs tested
+ during suspend
+Date: Fri, 21 Aug 2026 14:48:24 +0200
+Message-ID: <20260821124834.1974029-8-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260821124834.1974029-1-michal.grzelak@intel.com>
 References: <20260821124834.1974029-1-michal.grzelak@intel.com>
@@ -71,46 +71,50 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-In order to increase tests performance limit suspend-resume's execution
-to only first and last CRTC.
+Limit execution of suspend tests to first and last active CRTC unless
+using `extended` flag. This helps with reducing default execution time
+of the test which can lower number of hitting CI timeout.
 
-v2->v3
-- add missing S-O-B
+v1->v2
+- move constraint before crtc_output_combo_valid() (Mohammed)
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
+Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/kms_async_flips.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ tests/kms_pipe_crc_basic.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index 03348d958d..5c143e71df 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -873,18 +873,23 @@ static void run_test(data_t *data, void (*test)(data_t *))
- {
- 	igt_crtc_t *crtc;
- 	igt_display_t *display = &data->display;
-+	int idx;
+diff --git a/tests/kms_pipe_crc_basic.c b/tests/kms_pipe_crc_basic.c
+index 42e1415452..f1f89f11f8 100644
+--- a/tests/kms_pipe_crc_basic.c
++++ b/tests/kms_pipe_crc_basic.c
+@@ -127,6 +127,16 @@ enum {
+ 	TEST_HANG = 1 << 3,
+ };
  
- 	if (data->atomic_path)
- 		require_atomic_async_cap(data);
- 
- 	for_each_connected_output(display, data->output) {
- 		for_each_crtc(&data->display, crtc) {
--			if(!igt_crtc_connector_valid(crtc, data->output))
-+			if (!igt_crtc_connector_valid(crtc, data->output))
- 				continue;
- 
- 			data->crtc = crtc;
- 			igt_display_reset(display);
- 
-+			idx = display->crtcs->crtc_index;
-+			if (data->suspend_resume && (idx != 0 || idx != display->n_crtcs - 1))
-+				continue;
++static bool suspend_constraint(unsigned flags, igt_crtc_t *crtc)
++{
++	if (!extended && (flags & TEST_SUSPEND) &&
++	    crtc->crtc_index != active_crtcs[0] &&
++	    crtc->crtc_index != active_crtcs[last_crtc_index])
++		return true;
 +
- 			igt_output_set_crtc(data->output,
- 					    crtc);
- 			if (!intel_pipe_output_combo_valid(display))
++	return false;
++}
++
+ static void test_read_crc(data_t *data, igt_crtc_t *crtc,
+ 			  igt_output_t *output, unsigned flags)
+ {
+@@ -425,6 +435,9 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
+ 				if (simulation_constraint(crtc))
+ 					continue;
+ 
++				if (suspend_constraint(tests[i].flags, crtc))
++					continue;
++
+ 				if(!crtc_output_combo_valid(&data.display, crtc, output))
+ 					continue;
+ 
 -- 
 2.45.2
 
