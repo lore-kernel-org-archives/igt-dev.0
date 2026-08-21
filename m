@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFA4EC5DF87
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 12:58:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E0A3C5DF89
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 12:59:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6918710E097;
-	Fri, 21 Aug 2026 12:58:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E36F910E097;
+	Fri, 21 Aug 2026 12:59:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KKDaKfE3";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XegkhIRv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0A8410E39F
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:48:45 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B488010E39F
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787316526; x=1818852526;
+ t=1787316530; x=1818852530;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=qshCXrMbby8h04edfUIHohapgjEo6kef8BQ/EuFBMCA=;
- b=KKDaKfE3mdi/QCBcQNiIizH58Tkt+C1lXNPN9adJkq4JXE6z7JaYj1Q+
- BYQzQo4AjS9JGC6CaV9ipVeMcrlmN7KSVK76tB1IULtarGGzrYOwte/kB
- Fr/UO5TxYhYYrj/X9XgVA5UdJK9JD3ykBr/Z7pzFuZKM3tASO6aoyQfkX
- d8YlKeTal6uim2LinQjP3xtfMl1FcjtZoxJ6Jhz1bd+TSBR0txb/4F5nf
- dm3IC3LJSHOPJ3vnoXI33VBOLEEsF8dgZdsA7wUoz4/En4YhucTaSCyjJ
- b6VXyVc7l1kpeR7ekQogLrPy4T22ZUyA+n0/EMfdS5tRSHNrsraUiYypB g==;
-X-CSE-ConnectionGUID: 29j2mr39R7a3GtzxzPtKtQ==
-X-CSE-MsgGUID: JhIsTcxqS+2GV4HEjLwfiA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87632916"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="87632916"
+ bh=IplCtuwrwB93+M6FVgc6JsTCJOiQKk/D6lMarLH78Zw=;
+ b=XegkhIRvep0ygbz7RLGj5rJPc/7y/xQupUFCRG5yuYq5T3nGG4YyH4lR
+ k80B5OVD/GYVCArTBYKojYVYdSUsRYZPFAH/e51HLfS4lGd1GlSlIhoYM
+ KLDhuKzKNIt1IKdrB9GAbmjdCXlazpCPv2eJMzoa8XSByP0MMCZFirZAQ
+ YmX2rd97KQKf9UeUuBbk/VSZqanx/RApzwJkhKT+8t34j9GR9qbttpAzk
+ m7PP+TRz2jG29qFu/9IQK4+pByBQjI6wSC9iLvIiKkIPaNNjbgDx2MhE+
+ HQX52FkVOZhYhYXB3IvT1c5vHCpyVxObSdS9drhMz+9F7ew5d0yKEij6u w==;
+X-CSE-ConnectionGUID: N8kK59vdT4W+63XAk3YPVA==
+X-CSE-MsgGUID: qZ7j9oC4QtSwNL7xrO+27w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11881"; a="87632923"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="87632923"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2026 05:48:46 -0700
-X-CSE-ConnectionGUID: YLVfD6jSRc+Q9T7THhCEVQ==
-X-CSE-MsgGUID: 1aXrsXiXT++SEFq8pyL/tw==
+ 21 Aug 2026 05:48:50 -0700
+X-CSE-ConnectionGUID: eQNlBqfLS8ulmH/dN1yGEQ==
+X-CSE-MsgGUID: 6334yVOVS86ab2FQLy0C4Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="291188350"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="291188365"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by fmviesa001.fm.intel.com with ESMTP; 21 Aug 2026 05:48:44 -0700
+ by fmviesa001.fm.intel.com with ESMTP; 21 Aug 2026 05:48:48 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: nemesa.garg@intel.com, mohammed.thasleem@intel.com, karthik.b.s@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v3 05/17] tests/kms_frontbuffer_tracking: remove
- TEST_MODE_ITER_BEGIN() from `suspend`
-Date: Fri, 21 Aug 2026 14:48:22 +0200
-Message-ID: <20260821124834.1974029-6-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v3 08/17] tests/kms_psr: limit #outputs tested during
+ suspend
+Date: Fri, 21 Aug 2026 14:48:25 +0200
+Message-ID: <20260821124834.1974029-9-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260821124834.1974029-1-michal.grzelak@intel.com>
 References: <20260821124834.1974029-1-michal.grzelak@intel.com>
@@ -71,60 +71,93 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt@kms_frontbuffer_tracking uses TEST_MODE_ITER_BEGIN(t) which consists
-of nested for loops. However many loops can be omitted due to continue
-statements. This obfuscates following the execution of any given
-codepath. Replace TEST_MODE_ITER_BEGIN(t) for fliptrack tests with macro
-definition and remove loops that are skipped.
+We are iterating through each output while testing suspend. This results
+in extended execution time. In turn this leads to hitting CI enforced
+timeout.
+
+By default limit number of tested outputs to 2. Test each connected
+output when passing command-line parameter.
+
+v2->v3
+- remove blank line (Mohammed)
+- change output format of help string (Mohammed)
 
 v1->v2
-- remove blank line (Mohammed)
+- s/OUTPUT_LIMIT/SUSPEND_OUTPUT_LIMIT/ (Mohammed)
+- fix typos (Mohammed)
+- fix off-by-one error (Mohammed)
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
-Reviewed-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 ---
- tests/intel/kms_frontbuffer_tracking.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ tests/intel/kms_psr.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index dd7d3188fe..dc8ef069b8 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -4646,12 +4646,19 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 		}
- 	TEST_MODE_ITER_END
+diff --git a/tests/intel/kms_psr.c b/tests/intel/kms_psr.c
+index 7b02dd2072..7d1a303864 100644
+--- a/tests/intel/kms_psr.c
++++ b/tests/intel/kms_psr.c
+@@ -275,6 +275,8 @@
+  * @plane-move:         Move plane position
+  */
  
--	TEST_MODE_ITER_BEGIN(t)
--		if (t.pipes != PIPE_SINGLE ||
--		    t.screen != SCREEN_PRIM ||
--		    t.plane != PLANE_PRI ||
--		    t.fbs != FBS_INDIVIDUAL ||
--		    t.method != IGT_DRAW_BLT)
-+	t.format = FORMAT_DEFAULT;
-+	t.flip = FLIP_PAGEFLIP;
-+	t.tiling = opt.tiling;
-+	t.pipes = PIPE_SINGLE;
-+	t.screen = SCREEN_PRIM;
-+	t.plane = PLANE_PRI;
-+	t.fbs = FBS_INDIVIDUAL;
-+	t.method = IGT_DRAW_BLT;
++#define SUSPEND_OUTPUT_LIMIT 2
 +
-+	for (t.feature = 0; t.feature < FEATURE_COUNT; t.feature++) {
-+		if (!opt.show_hidden && t.feature == FEATURE_NONE)
-+			continue;
-+		if ((t.feature & FEATURE_PSR) && (t.feature & FEATURE_DRRS))
- 			continue;
+ enum operations {
+ 	PAGE_FLIP,
+ 	MMAP_GTT,
+@@ -318,6 +320,7 @@ typedef struct {
+ 	drmModeModeInfo *mode;
+ 	igt_output_t *output;
+ 	bool fbc_flag;
++	bool all_outputs;
+ } data_t;
  
- 		igt_subtest_f("%s-modesetfrombusy", feature_str(t.feature))
-@@ -4712,7 +4719,7 @@ int igt_main_args("", long_options, help_str, opt_handler, NULL)
- 			igt_require(igt_draw_supports_method(drm.fd, t.method));
- 			suspend_subtest(&t);
- 		}
--	TEST_MODE_ITER_END
+ static void create_cursor_fb(data_t *data)
+@@ -767,9 +770,27 @@ static void dpms_off_on(data_t *data)
+ 				   DRM_MODE_DPMS_ON);
+ }
+ 
++static int opt_handler(int opt, int opt_index, void *opt_data)
++{
++	data_t *data = opt_data;
++
++	switch (opt) {
++		case 'o':
++			data->all_outputs = true;
++			break;
++		default:
++			return IGT_OPT_HANDLER_ERROR;
 +	}
++
++	return IGT_OPT_HANDLER_SUCCESS;
++}
++
+ data_t data = {};
  
- 	t.pipes = PIPE_SINGLE;
- 	t.screen = SCREEN_PRIM;
+-int igt_main()
++const char *help_str =
++	"  -o \tRun on all connectors. (By default suspend subtests will run on 2 connectors)\n";
++
++int igt_main_args("o", NULL, help_str, opt_handler, &data)
+ {
+ 	int z, y;
+ 	enum operations op;
+@@ -945,10 +966,15 @@ int igt_main()
+ 				     "performed with suspend resume cycles");
+ 			igt_subtest_with_dynamic_f("%s%ssuspend", append_fbc_subtest[y],
+ 						   append_subtest_name[z]) {
++				int output_count = 0;
++
+ 				for_each_connected_output(&data.display, output) {
+ 					if (!psr_sink_support(data.drm_fd, data.debugfs_fd,
+ 							      data.op_psr_mode, output))
+ 						continue;
++					if (!data.all_outputs && output_count >= SUSPEND_OUTPUT_LIMIT)
++						continue;
++					output_count++;
+ 					igt_display_reset(&data.display);
+ 					data.output = output;
+ 					igt_dynamic_f("%s", data.output->name) {
 -- 
 2.45.2
 
