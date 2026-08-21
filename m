@@ -4,47 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99B22C5DF7D
-	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 19:45:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12A0EC5DF8C
+	for <igt-dev@archiver.kernel.org>; Fri, 21 Aug 2026 19:55:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8977310F445;
-	Fri, 21 Aug 2026 18:06:38 +0000 (UTC)
-Received: from mgamail.intel.com (unknown [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5723010F3DC
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 18:05:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6E9FB10F454;
+	Fri, 21 Aug 2026 19:25:21 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C6Aw8CI9";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (unknown [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98BCE10F408
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 19:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787335559; x=1818871559;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=EVEqVSjLmQjRGKFkEMdCGni+rkMajQP9JduMSbd8PwQ=;
- b=n8gr2lMHSwxqrWOYiK9KWCgebzeQRR/PMVAAzRU5c6uDhl3bWH8wwkj9
- Pf8aepY3kS3FerqYc6y016frPJfyFhH3SN7Zqd7RDMSjeGRIIlGK0D2Aa
- W55zthy4Sj6O3dX/qAuJjP170VhlscDQhQIS14/AMwXt7JvhtNKdqL2PF
- MZJSB6TpRdZLn+nFXjwLDcGxMpySQcJZFXhBnLVXcc/Vi8TtTngbgSXqa
- xfENr6+srV4jCClHpIyTz05MCzphYRSmO1LxDX1l6vQ2Gqwv34juvYu2b
- GJidHOKJNSM1qNCI0QNeCWZV8WmLC+9NSRVTaCjWwRUGMBkNj7SknGWo+ A==;
-X-CSE-ConnectionGUID: YTMAo39/Tvqjr3vY7tzG2Q==
-X-CSE-MsgGUID: 81Hyeuz4TkecNLQLuRPfdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="91565075"
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="91565075"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2026 10:58:42 -0700
-X-CSE-ConnectionGUID: TgPtka69R/mOaw+3B36nVw==
-X-CSE-MsgGUID: 7GnRFXdJSludVrIM+VJeIA==
+ t=1787340247; x=1818876247;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=PChRB6ltIxVvqh2V+uVWGiacQCVG8rRw1SOiifoDcN0=;
+ b=C6Aw8CI9ALszz0IERcM+3yFSxPJI8VecD4XDoWFWjrCJMJdIfC02E2ik
+ o2SnkVY/kVMfNom83cyYKpqS3spIdyMhx0zLmVg2eTwl3QiTQMgsOiFJV
+ FSuPU7A0tz0E6cuqgdxvUXUMrZmbNu78vbeqS4eolNKyda6XNgH/XhiHU
+ emh7cjVnjeb8ohgvrmBeOBNCsmjgmq4bIwTya+HBvv7KUkYp1BFL/GEdq
+ 2WrxDxnPFkrvTlSocGbDnvEjbwC7b2H5sjFlVYre3mFYsx/Wzhrg3V16t
+ 7Fy4IeDr52F4kqblAw6o0EaZc0HH8g2g9ul4gTtKhV6BVnRqUT7Feh83J g==;
+X-CSE-ConnectionGUID: OGpt/tGxTw+gluvmfiM8kQ==
+X-CSE-MsgGUID: G4tRo5V3SCGPcMxd3plZ3g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11882"; a="110682215"
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="110682215"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2026 12:23:35 -0700
+X-CSE-ConnectionGUID: XmHlYJaIRkCJD/clafH1bQ==
+X-CSE-MsgGUID: L8XFghD9QfypRSSCN4RjPw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="266999740"
-Received: from orsosgc001.jf.intel.com ([10.88.27.185])
- by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Aug 2026 10:58:42 -0700
-From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-To: igt-dev@lists.freedesktop.org,
-	Ashutosh Dixit <ashutosh.dixit@intel.com>
-Subject: [PATCH] tests/intel/xe_oa: Add test to ensure entire report has landed
-Date: Fri, 21 Aug 2026 10:58:36 -0700
-Message-ID: <20260821175835.1044076-2-umesh.nerlige.ramappa@intel.com>
-X-Mailer: git-send-email 2.51.0
+X-IronPort-AV: E=Sophos;i="6.25,235,1779174000"; d="scan'208";a="289963502"
+Received: from dut4475arls.fm.intel.com ([10.105.10.69])
+ by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Aug 2026 12:23:34 -0700
+From: Stuart Summers <stuart.summers@intel.com>
+To: 
+Cc: igt-dev@lists.freedesktop.org, rodrigo.vivi@intel.com,
+ matthew.brost@intel.com, umesh.nerlige.ramappa@intel.com,
+ Michal.Wajdeczko@intel.com, matthew.d.roper@intel.com,
+ daniele.ceraolospurio@intel.com, shuicheng.lin@intel.com,
+ Stuart Summers <stuart.summers@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/intel/xe_configfs: Use the new debug configfs
+ group
+Date: Fri, 21 Aug 2026 19:23:32 +0000
+Message-ID: <20260821192332.19060-5-stuart.summers@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260821192332.19060-4-stuart.summers@intel.com>
+References: <20260821192332.19060-4-stuart.summers@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -62,252 +72,316 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When running the load helper with a fast oa_exponent, sometimes the OA
-reports land out of order. Ensure that the kernel fix for such issues is
-working by configuring all OA counters and checking validity of the full
-report.
+The xe driver moved its debug oriented configfs attributes
+(ctx_restore_*_bb, engines_allowed, gt_types_allowed and
+survivability_mode) into a "debug" subgroup of the device group. Open
+that subgroup and use it for those attributes.
 
-Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+The subgroup only exists when the driver is built with
+CONFIG_DRM_XE_DEBUG, so skip the subtests when it is missing rather
+than failing on every attribute access.
+
+Signed-off-by: Stuart Summers <stuart.summers@intel.com>
+Assisted-by: Copilot:claude-opus-5
 ---
- tests/intel/xe_oa.c | 211 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 211 insertions(+)
+ tests/intel/xe_configfs.c | 131 +++++++++++++++++++++++++-------------
+ 1 file changed, 88 insertions(+), 43 deletions(-)
 
-diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index 9ebb18690ec7..2c3ef16e9921 100644
---- a/tests/intel/xe_oa.c
-+++ b/tests/intel/xe_oa.c
-@@ -336,6 +336,80 @@ static struct oa_format lnl_oa_formats[XE_OA_FORMAT_MAX] = {
- 		.bc_report = 0 },
- };
- 
-+static u32 test_oa_full[] = {
-+	/* PES L0 */
-+	0x13000, 0x3e00, 0x13004, 0x0000, 0x13008, 0x3e00, 0x1300c, 0x0000,
-+	0x13010, 0x3e00, 0x13014, 0x0000, 0x13018, 0x3e00, 0x1301c, 0x0000,
-+	0x13020, 0x3e00, 0x13024, 0x0000, 0x13028, 0x3e00, 0x1302c, 0x0000,
-+	0x13030, 0x3e00, 0x13034, 0x0000, 0x13038, 0x3e00, 0x1303c, 0x0000,
-+	0x13040, 0x3e00, 0x13044, 0x0000, 0x13048, 0x3e00, 0x1304c, 0x0000,
-+	0x13050, 0x3e00, 0x13054, 0x0000, 0x13058, 0x3e00, 0x1305c, 0x0000,
-+	0x13060, 0x3e00, 0x13064, 0x0000, 0x13068, 0x3e00, 0x1306c, 0x0000,
-+	0x13070, 0x3e00, 0x13074, 0x0000, 0x13078, 0x3e00, 0x1307c, 0x0000,
-+	0x13080, 0x3e00, 0x13084, 0x0000, 0x13088, 0x3e00, 0x1308c, 0x0000,
-+	0x13090, 0x3e00, 0x13094, 0x0000, 0x13098, 0x3e00, 0x1309c, 0x0000,
-+	0x130a0, 0x3e00, 0x130a4, 0x0000, 0x130a8, 0x3e00, 0x130ac, 0x0000,
-+	0x130b0, 0x3e00, 0x130b4, 0x0000, 0x130b8, 0x3e00, 0x130bc, 0x0000,
-+	0x130c0, 0x3e00, 0x130c4, 0x0000, 0x130c8, 0x3e00, 0x130cc, 0x0000,
-+	0x130d0, 0x3e00, 0x130d4, 0x0000, 0x130d8, 0x3e00, 0x130dc, 0x0000,
-+	0x130e0, 0x3e00, 0x130e4, 0x0000, 0x130e8, 0x3e00, 0x130ec, 0x0000,
-+	0x130f0, 0x3e00, 0x130f4, 0x0000, 0x130f8, 0x3e00, 0x130fc, 0x0000,
-+	/* PES L1 */
-+	0x13300, 0x7e00, 0x13304, 0x0000, 0x13308, 0x7e00, 0x1330c, 0x0000,
-+	0x13310, 0x7e00, 0x13314, 0x0000, 0x13318, 0x7e00, 0x1331c, 0x0000,
-+	0x13320, 0x7e00, 0x13324, 0x0000, 0x13328, 0x7e00, 0x1332c, 0x0000,
-+	0x13330, 0x7e00, 0x13334, 0x0000, 0x13338, 0x7e00, 0x1333c, 0x0000,
-+	0x13340, 0x7e00, 0x13344, 0x0000, 0x13348, 0x7e00, 0x1334c, 0x0000,
-+	0x13350, 0x7e00, 0x13354, 0x0000, 0x13358, 0x7e00, 0x1335c, 0x0000,
-+	0x13360, 0x7e00, 0x13364, 0x0000, 0x13368, 0x7e00, 0x1336c, 0x0000,
-+	0x13370, 0x7e00, 0x13374, 0x0000, 0x13378, 0x7e00, 0x1337c, 0x0000,
-+	0x13380, 0x7e00, 0x13384, 0x0000, 0x13388, 0x7e00, 0x1338c, 0x0000,
-+	0x13390, 0x7e00, 0x13394, 0x0000, 0x13398, 0x7e00, 0x1339c, 0x0000,
-+	0x133a0, 0x7e00, 0x133a4, 0x0000, 0x133a8, 0x7e00, 0x133ac, 0x0000,
-+	0x133b0, 0x7e00, 0x133b4, 0x0000, 0x133b8, 0x7e00, 0x133bc, 0x0000,
-+	0x133c0, 0x7e00, 0x133c4, 0x0000, 0x133c8, 0x7e00, 0x133cc, 0x0000,
-+	0x133d0, 0x7e00, 0x133d4, 0x0000, 0x133d8, 0x7e00, 0x133dc, 0x0000,
-+	0x133e0, 0x7e00, 0x133e4, 0x0000, 0x133e8, 0x7e00, 0x133ec, 0x0000,
-+	0x133f0, 0x7e00, 0x133f4, 0x0000, 0x133f8, 0x7e00, 0x133fc, 0x0000,
-+	/* PES L2 */
-+	0x13500, 0x7e00, 0x13504, 0x0000, 0x13508, 0x7e00, 0x1350c, 0x0000,
-+	0x13510, 0x7e00, 0x13514, 0x0000, 0x13518, 0x7e00, 0x1351c, 0x0000,
-+	0x13520, 0x7e00, 0x13524, 0x0000, 0x13528, 0x7e00, 0x1352c, 0x0000,
-+	0x13530, 0x7e00, 0x13534, 0x0000, 0x13538, 0x7e00, 0x1353c, 0x0000,
-+	0x13540, 0x7e00, 0x13544, 0x0000, 0x13548, 0x7e00, 0x1354c, 0x0000,
-+	0x13550, 0x7e00, 0x13554, 0x0000, 0x13558, 0x7e00, 0x1355c, 0x0000,
-+	0x13560, 0x7e00, 0x13564, 0x0000, 0x13568, 0x7e00, 0x1356c, 0x0000,
-+	0x13570, 0x7e00, 0x13574, 0x0000, 0x13578, 0x7e00, 0x1357c, 0x0000,
-+	0x13580, 0x7e00, 0x13584, 0x0000, 0x13588, 0x7e00, 0x1358c, 0x0000,
-+	0x13590, 0x7e00, 0x13594, 0x0000, 0x13598, 0x7e00, 0x1359c, 0x0000,
-+	0x135a0, 0x7e00, 0x135a4, 0x0000, 0x135a8, 0x7e00, 0x135ac, 0x0000,
-+	0x135b0, 0x7e00, 0x135b4, 0x0000, 0x135b8, 0x7e00, 0x135bc, 0x0000,
-+	0x135c0, 0x7e00, 0x135c4, 0x0000, 0x135c8, 0x7e00, 0x135cc, 0x0000,
-+	0x135d0, 0x7e00, 0x135d4, 0x0000, 0x135d8, 0x7e00, 0x135dc, 0x0000,
-+	0x135e0, 0x7e00, 0x135e4, 0x0000, 0x135e8, 0x7e00, 0x135ec, 0x0000,
-+	0x135f0, 0x7e00, 0x135f4, 0x0000, 0x135f8, 0x7e00, 0x135fc, 0x0000,
-+	/* PES L3 */
-+	0x13700, 0x7e00, 0x13704, 0x0000, 0x13708, 0x7e00, 0x1370c, 0x0000,
-+	0x13710, 0x7e00, 0x13714, 0x0000, 0x13718, 0x7e00, 0x1371c, 0x0000,
-+	0x13720, 0x7e00, 0x13724, 0x0000, 0x13728, 0x7e00, 0x1372c, 0x0000,
-+	0x13730, 0x7e00, 0x13734, 0x0000, 0x13738, 0x7e00, 0x1373c, 0x0000,
-+	0x13740, 0x7e00, 0x13744, 0x0000, 0x13748, 0x7e00, 0x1374c, 0x0000,
-+	0x13750, 0x7e00, 0x13754, 0x0000, 0x13758, 0x7e00, 0x1375c, 0x0000,
-+	0x13760, 0x7e00, 0x13764, 0x0000, 0x13768, 0x7e00, 0x1376c, 0x0000,
-+	0x13770, 0x7e00, 0x13774, 0x0000, 0x13778, 0x7e00, 0x1377c, 0x0000,
-+	0x13780, 0x7e00, 0x13784, 0x0000, 0x13788, 0x7e00, 0x1378c, 0x0000,
-+	0x13790, 0x7e00, 0x13794, 0x0000, 0x13798, 0x7e00, 0x1379c, 0x0000,
-+	0x137a0, 0x7e00, 0x137a4, 0x0000, 0x137a8, 0x7e00, 0x137ac, 0x0000,
-+	0x137b0, 0x7e00, 0x137b4, 0x0000, 0x137b8, 0x7e00, 0x137bc, 0x0000,
-+	0x137c0, 0x7e00, 0x137c4, 0x0000, 0x137c8, 0x7e00, 0x137cc, 0x0000,
-+	0x137d0, 0x7e00, 0x137d4, 0x0000, 0x137d8, 0x7e00, 0x137dc, 0x0000,
-+	0x137e0, 0x7e00, 0x137e4, 0x0000, 0x137e8, 0x7e00, 0x137ec, 0x0000,
-+	0x137f0, 0x7e00, 0x137f4, 0x0000, 0x137f8, 0x7e00, 0x137fc, 0x0000,
-+	/* FLEX */
-+	0xe458, 0x0000, 0xe45c, 0x0000, 0xe558, 0x0000, 0xe55c, 0x0000,
-+	0xe658, 0x0000, 0xe65c, 0x0000, 0xe758, 0x0000,
-+};
-+
- static bool oa_trace = false;
- static uint32_t oa_trace_buf_mb = 1;
- static int drm_fd = -1;
-@@ -3740,6 +3814,137 @@ test_whitelisted_registers_userspace_config(void)
- 	xe_oa_remove_config(drm_fd, config_id);
+diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+index 450c0a119..c537e5d69 100644
+--- a/tests/intel/xe_configfs.c
++++ b/tests/intel/xe_configfs.c
+@@ -68,11 +68,26 @@ static void restore(int sig)
+ 	igt_kmod_bind("xe", bus_addr);
  }
  
-+static bool oa_report_valid(u64 *report, u32 report_size) {
-+    u32 blocks = report_size / 64, i;
-+
-+    for (i = 0; i < blocks; i++) {
-+        u64 *block = &report[i * 8], or = 0, j;
-+
-+        for (j = 0; j < 8; j++)
-+            or |= block[j];
-+
-+        if (!or)
-+            return false;
-+    }
-+
-+    return true;
-+}
-+
-+static uint64_t oa_full_config(void)
-+{
-+	struct drm_xe_oa_config config;
-+	const char *uuid = "01234567-0123-0123-0123-0123456789ab";
-+	char path[512];
-+	u64 config_id;
-+
-+	igt_require(has_xe_oa_userspace_config(drm_fd));
-+
-+	snprintf(path, sizeof(path), "metrics/%s/id", uuid);
-+	if (try_sysfs_read_u64(path, &config_id))
-+		xe_oa_remove_config(drm_fd, config_id);
-+
-+	memset(&config, 0, sizeof(config));
-+	memcpy(config.uuid, uuid, sizeof(config.uuid));
-+
-+	config.regs_ptr = to_user_pointer(test_oa_full);
-+	config.n_regs = ARRAY_SIZE(test_oa_full) / 2;
-+
-+	return xe_oa_add_config(drm_fd, &config);
-+}
-+
-+/**
-+ * SUBTEST: non-zero-reports
-+ * Description: Test that the entire report landed.
+-static void set_survivability_mode(int configfs_device_fd, bool value)
++/*
++ * Debug oriented attributes live in the "debug" subgroup of the device
++ * group. The subgroup is only created when the driver is built with
++ * CONFIG_DRM_XE_DEBUG, so skip if it's not there.
 + */
-+static void
-+test_non_zero_reports(const struct drm_xe_oa_unit *oau)
++static int open_debug_group(int configfs_device_fd)
 +{
-+	/* ~20 micro second period */
-+	int oa_exponent = max_oa_exponent_for_period_lte(20000);
-+	u64 fmt = default_test_set->perf_oa_format;
-+	u64 config_id = oa_full_config(); 
-+	size_t report_size = get_oa_format(fmt).size;
-+	u64 properties[] = {
-+		DRM_XE_OA_PROPERTY_OA_UNIT_ID, oau->oa_unit_id,
-+		DRM_XE_OA_PROPERTY_SAMPLE_OA, true,
-+		DRM_XE_OA_PROPERTY_OA_METRIC_SET, config_id,
-+		DRM_XE_OA_PROPERTY_OA_FORMAT, __ff(fmt),
-+		DRM_XE_OA_PROPERTY_OA_PERIOD_EXPONENT, oa_exponent,
-+		DRM_XE_OA_PROPERTY_OA_DISABLED, true,
-+	};
-+	struct intel_xe_oa_open_prop param = {
-+		.num_properties = ARRAY_SIZE(properties) / 2,
-+		.properties_ptr = to_user_pointer(properties),
-+	};
-+	u32 buf_size = 2 * buffer_fill_size;
-+	u32 total_len = 0;
-+	u32 oa_status;
-+	int len;
-+	u8 *buf;
-+	char msg[32];
-+	bool report_valid = false;
++	int fd = openat(configfs_device_fd, "debug", O_RDONLY | O_DIRECTORY);
 +
-+	buf = malloc(buf_size);
-+	igt_assert(buf);
++	igt_require_f(fd >= 0,
++		      "configfs debug group not available, is CONFIG_DRM_XE_DEBUG enabled?\n");
 +
-+	igt_debug("Ready to read about %u bytes\n", buffer_fill_size);
-+
-+	stream_fd = __perf_open(drm_fd, &param, true);
-+        set_fd_flags(stream_fd, O_CLOEXEC);
-+
-+	load_helper_init();
-+	load_helper_run(HIGH);
-+
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_ENABLE, 0);
-+	while (total_len < buffer_fill_size &&
-+	       ((len = read(stream_fd, &buf[total_len], buffer_fill_size - total_len)) > 0 ||
-+		(len == -1 && (errno == EINTR || errno == EIO)))) {
-+		if (len < 0 && errno == EIO) {
-+			oa_status = get_stream_status(stream_fd);
-+			igt_assert(!(oa_status & DRM_XE_OASTATUS_BUFFER_OVERFLOW));
-+		}
-+		if (len > 0)
-+			total_len += len;
-+	}
-+	do_ioctl(stream_fd, DRM_XE_OBSERVATION_IOCTL_DISABLE, 0);
-+
-+	/*
-+	 * Since we are lagging actual hw_tail, there should always be data
-+	 * after we disable. We cannot risk reading in a loop since the code
-+	 * will block once we have drained all the data.
-+	 */
-+	len = read(stream_fd, &buf[total_len], buf_size - total_len);
-+	igt_assert(len);
-+	total_len += len;
-+
-+	__perf_close(stream_fd);
-+	xe_oa_remove_config(drm_fd, config_id);
-+
-+	load_helper_stop();
-+	load_helper_fini();
-+
-+	igt_debug("Read %u bytes\n", total_len);
-+	igt_debug("Read %u bytes after disable\n", total_len - buffer_fill_size);
-+
-+	for (uint32_t offset = 0; offset < total_len; offset += report_size) {
-+		const uint32_t *report = (void *) (buf + offset);
-+
-+		report_valid = oa_report_valid((u64 *) report, report_size);
-+		if (report_valid)
-+			continue;
-+
-+		if (offset)
-+			dump_report(report - report_size / 4, report_size / 4, "previous");
-+
-+		sprintf(msg, "failed report %08x", offset / 576); 
-+		dump_report(report, report_size / 4, msg);
-+		break;
-+	}
-+
-+	free(buf);
-+	igt_assert(report_valid);
++	return fd;
 +}
 +
- #define OAG_OAHEADPTR (0xdb00)
- #define OAG_MMIOTRIGGER (0xdb1c)
++static void set_survivability_mode(int configfs_debug_fd, bool value)
+ {
+ 	igt_audio_driver_unload(NULL);
+ 	igt_kmod_unbind("xe", bus_addr);
+-	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
++	igt_sysfs_set_boolean(configfs_debug_fd, "survivability_mode", value);
+ 	igt_kmod_bind("xe", bus_addr);
+ }
  
-@@ -5040,6 +5245,12 @@ int igt_main_args("b:td", long_options, help_str, opt_handler, NULL)
- 			test_non_zero_reason(oau, SZ_128K);
+@@ -80,13 +95,13 @@ static void set_survivability_mode(int configfs_device_fd, bool value)
+  * SUBTEST: survivability-mode
+  * Description: Validate survivability mode by setting configfs
+  */
+-static void test_survivability_mode(int configfs_device_fd)
++static void test_survivability_mode(int configfs_debug_fd)
+ {
+ 	char path[PATH_MAX];
+ 	int fd;
+ 
+ 	/* Enable survivability mode */
+-	set_survivability_mode(configfs_device_fd, true);
++	set_survivability_mode(configfs_debug_fd, true);
+ 
+ 	/* check presence of survivability mode sysfs */
+ 	snprintf(path, PATH_MAX, "/sys/bus/pci/devices/%s/survivability_mode", bus_addr);
+@@ -100,7 +115,7 @@ static void test_survivability_mode(int configfs_device_fd)
+  * SUBTEST: engines-allowed-invalid
+  * Description: Validate engines_allowed attribute for invalid values
+  */
+-static void test_engines_allowed_invalid(int configfs_device_fd)
++static void test_engines_allowed_invalid(int configfs_debug_fd)
+ {
+ 	static const char *values[] = {
+ 		"xcs0",
+@@ -122,7 +137,7 @@ static void test_engines_allowed_invalid(int configfs_device_fd)
+ 		const char *v = values[i];
+ 
+ 		igt_debug("Writing '%s' to engines_allowed\n", v);
+-		igt_assert(!igt_sysfs_set(configfs_device_fd, "engines_allowed", v));
++		igt_assert(!igt_sysfs_set(configfs_debug_fd, "engines_allowed", v));
+ 	}
+ }
+ 
+@@ -130,7 +145,7 @@ static void test_engines_allowed_invalid(int configfs_device_fd)
+  * SUBTEST: engines-allowed
+  * Description: Validate engines_allowed attribute
+  */
+-static void test_engines_allowed(int configfs_device_fd)
++static void test_engines_allowed(int configfs_debug_fd)
+ {
+ 	static const char *values[] = {
+ 		"rcs0", "rcs*", "rcs0,bcs0", "bcs0,rcs0",
+@@ -149,7 +164,7 @@ static void test_engines_allowed(int configfs_device_fd)
+ 		const char *v = values[i];
+ 
+ 		igt_debug("Writing '%s' to engines_allowed\n", v);
+-		igt_assert(igt_sysfs_set(configfs_device_fd, "engines_allowed", v));
++		igt_assert(igt_sysfs_set(configfs_debug_fd, "engines_allowed", v));
+ 	}
+ }
+ 
+@@ -157,7 +172,7 @@ static void test_engines_allowed(int configfs_device_fd)
+  * SUBTEST: gt-types-allowed
+  * Description: Validate gt_types_allowed attribute
+  */
+-static void test_gt_types_allowed(int configfs_device_fd)
++static void test_gt_types_allowed(int configfs_debug_fd)
+ {
+ 	static const char *values[] = {
+ 		"primary,media", "primary", "media", "",
+@@ -180,14 +195,14 @@ static void test_gt_types_allowed(int configfs_device_fd)
+ 		const char *v = values[i];
+ 
+ 		igt_debug("Writing '%s' to gt_types_allowed\n", v);
+-		igt_assert(igt_sysfs_set(configfs_device_fd, "gt_types_allowed", v));
++		igt_assert(igt_sysfs_set(configfs_debug_fd, "gt_types_allowed", v));
  	}
  
-+	igt_subtest_with_dynamic("non-zero-reports") {
-+		igt_require(!igt_run_in_simulation());
-+		__for_oa_unit_by_type(DRM_XE_OA_UNIT_TYPE_OAG)
-+			test_non_zero_reports(oau);
-+	}
-+
- 	igt_subtest("non-sampling-read-error")
- 		test_non_sampling_read_error();
+ 	for (size_t i = 0; i < ARRAY_SIZE(invalid_values); i++) {
+ 		const char *v = invalid_values[i];
  
+ 		igt_debug("Writing '%s' to gt_types_allowed\n", v);
+-		igt_assert(!igt_sysfs_set(configfs_device_fd, "gt_types_allowed", v));
++		igt_assert(!igt_sysfs_set(configfs_debug_fd, "gt_types_allowed", v));
+ 	}
+ }
+ 
+@@ -198,7 +213,7 @@ static void test_gt_types_allowed(int configfs_device_fd)
+  * SUBTEST: ctx-restore-mid-bb-invalid
+  * Description: Validate ctx_restore_mid_bb attribute for invalid values
+  */
+-static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
++static void test_ctx_restore_invalid(int configfs_debug_fd, const char *type)
+ {
+ 	static const struct value {
+ 		const char *test;
+@@ -234,7 +249,7 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
+ 	char file[64] = { };
+ 
+ 	snprintf(file, sizeof(file), "ctx_restore_%s_bb", type);
+-	igt_sysfs_set(configfs_device_fd, file, "");
++	igt_sysfs_set(configfs_debug_fd, file, "");
+ 
+ 	/*
+ 	 * These only test if command parsing is correct,
+@@ -248,8 +263,8 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
+ 
+ 		igt_info("Test %s\n", v->test);
+ 		igt_debug("bb '%s'\n", v->in);
+-		igt_assert(!igt_sysfs_set(configfs_device_fd, file, v->in));
+-		igt_assert(igt_sysfs_read(configfs_device_fd, file, buf,
++		igt_assert(!igt_sysfs_set(configfs_debug_fd, file, v->in));
++		igt_assert(igt_sysfs_read(configfs_debug_fd, file, buf,
+ 					  sizeof(buf) - 1));
+ 		if (strcmp(buf, "")) {
+ 			igt_debug("Expecting empty bb, but found '%s'\n", buf);
+@@ -265,7 +280,7 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
+  * SUBTEST: ctx-restore-mid-bb
+  * Description: Validate ctx_restore_mid_bb attribute
+  */
+-static void test_ctx_restore(int configfs_device_fd, const char *type,
++static void test_ctx_restore(int configfs_debug_fd, const char *type,
+ 			     const char *engine)
+ {
+ 	static const struct value {
+@@ -336,9 +351,9 @@ static void test_ctx_restore(int configfs_device_fd, const char *type,
+ 
+ 		igt_info("Test %s\n", v->test);
+ 		igt_debug("bb '%s'\n", in);
+-		igt_assert(igt_sysfs_set(configfs_device_fd, file, in));
++		igt_assert(igt_sysfs_set(configfs_debug_fd, file, in));
+ 
+-		igt_assert(igt_sysfs_read(configfs_device_fd, file, buf,
++		igt_assert(igt_sysfs_read(configfs_debug_fd, file, buf,
+ 					  sizeof(buf) - 1));
+ 		if (strcmp(out, buf)) {
+ 			igt_debug("Expecting '%s' but found '%s'\n", out, buf);
+@@ -368,15 +383,29 @@ static int create_device_configfs_group(int configfs_fd)
+ 	return configfs_device_fd;
+ }
+ 
++static void create_debug_configfs_group(int configfs_fd, int *configfs_device_fd,
++					int *configfs_debug_fd)
++{
++	*configfs_device_fd = create_device_configfs_group(configfs_fd);
++	*configfs_debug_fd = open_debug_group(*configfs_device_fd);
++}
++
+ static void close_configfs_group(int configfs_fd, int configfs_device_fd)
+ {
+ 	close(configfs_device_fd);
+ 	igt_fs_remove_dir(configfs_fd, bus_addr);
+ }
+ 
++static void close_debug_configfs_group(int configfs_fd, int configfs_device_fd,
++				       int configfs_debug_fd)
++{
++	close(configfs_debug_fd);
++	close_configfs_group(configfs_fd, configfs_device_fd);
++}
++
+ int igt_main()
+ {
+-	int fd, configfs_fd, configfs_device_fd;
++	int fd, configfs_fd, configfs_device_fd, configfs_debug_fd;
+ 	bool is_vf_device;
+ 	bool has_survivability;
+ 	const char *engine = NULL;
+@@ -412,62 +441,78 @@ int igt_main()
+ 	igt_subtest("survivability-mode") {
+ 		igt_require(has_survivability);
+ 		igt_require_f(!is_vf_device, "survivability mode not supported in VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
+-		test_survivability_mode(configfs_device_fd);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		create_debug_configfs_group(configfs_fd, &configfs_device_fd,
++					    &configfs_debug_fd);
++		test_survivability_mode(configfs_debug_fd);
++		close_debug_configfs_group(configfs_fd, configfs_device_fd,
++					   configfs_debug_fd);
+ 	}
+ 
+ 	igt_describe("Validate engines_allowed with invalid options");
+ 	igt_subtest("engines-allowed-invalid") {
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
+-		test_engines_allowed_invalid(configfs_device_fd);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		create_debug_configfs_group(configfs_fd, &configfs_device_fd,
++					    &configfs_debug_fd);
++		test_engines_allowed_invalid(configfs_debug_fd);
++		close_debug_configfs_group(configfs_fd, configfs_device_fd,
++					   configfs_debug_fd);
+ 	}
+ 
+ 	igt_describe("Validate engines_allowed");
+ 	igt_subtest("engines-allowed") {
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
+-		test_engines_allowed(configfs_device_fd);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		create_debug_configfs_group(configfs_fd, &configfs_device_fd,
++					    &configfs_debug_fd);
++		test_engines_allowed(configfs_debug_fd);
++		close_debug_configfs_group(configfs_fd, configfs_device_fd,
++					   configfs_debug_fd);
+ 	}
+ 
+ 	igt_describe("Validate gt_types_allowed");
+ 	igt_subtest("gt-types-allowed") {
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
+-		test_gt_types_allowed(configfs_device_fd);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		create_debug_configfs_group(configfs_fd, &configfs_device_fd,
++					    &configfs_debug_fd);
++		test_gt_types_allowed(configfs_debug_fd);
++		close_debug_configfs_group(configfs_fd, configfs_device_fd,
++					   configfs_debug_fd);
+ 	}
+ 
+ 	igt_describe("Validate ctx_restore_post_bb with invalid options");
+ 	igt_subtest("ctx-restore-post-bb-invalid") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
+-		test_ctx_restore_invalid(configfs_device_fd, "post");
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		create_debug_configfs_group(configfs_fd, &configfs_device_fd,
++					    &configfs_debug_fd);
++		test_ctx_restore_invalid(configfs_debug_fd, "post");
++		close_debug_configfs_group(configfs_fd, configfs_device_fd,
++					   configfs_debug_fd);
+ 	}
+ 
+ 	igt_describe("Validate ctx_restore_post_bb");
+ 	igt_subtest("ctx-restore-post-bb") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
+-		test_ctx_restore(configfs_device_fd, "post", engine);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		create_debug_configfs_group(configfs_fd, &configfs_device_fd,
++					    &configfs_debug_fd);
++		test_ctx_restore(configfs_debug_fd, "post", engine);
++		close_debug_configfs_group(configfs_fd, configfs_device_fd,
++					   configfs_debug_fd);
+ 	}
+ 
+ 	igt_describe("Validate ctx_restore_mid_bb with invalid options");
+ 	igt_subtest("ctx-restore-mid-bb-invalid") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
+-		test_ctx_restore_invalid(configfs_device_fd, "mid");
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		create_debug_configfs_group(configfs_fd, &configfs_device_fd,
++					    &configfs_debug_fd);
++		test_ctx_restore_invalid(configfs_debug_fd, "mid");
++		close_debug_configfs_group(configfs_fd, configfs_device_fd,
++					   configfs_debug_fd);
+ 	}
+ 
+ 	igt_describe("Validate ctx_restore_mid_bb");
+ 	igt_subtest("ctx-restore-mid-bb") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
+-		test_ctx_restore(configfs_device_fd, "mid", engine);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		create_debug_configfs_group(configfs_fd, &configfs_device_fd,
++					    &configfs_debug_fd);
++		test_ctx_restore(configfs_debug_fd, "mid", engine);
++		close_debug_configfs_group(configfs_fd, configfs_device_fd,
++					   configfs_debug_fd);
+ 	}
+ 
+ 	igt_fixture() {
 -- 
-2.53.0
+2.43.0
 
