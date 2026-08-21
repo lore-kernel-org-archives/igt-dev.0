@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DC1EC5DF81
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 08:22:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22666C5DF81
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 08:23:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B1E610E355;
-	Mon, 24 Aug 2026 08:22:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BF4DF10E355;
+	Mon, 24 Aug 2026 08:23:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="QhgIBj8a";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="fb5GloAw";
 	dkim-atps=neutral
-Received: from MW6PR02CU001.outbound.protection.outlook.com
- (mail-westus2azon11012046.outbound.protection.outlook.com [52.101.48.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C790A10E39F
- for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:42:21 +0000 (UTC)
+Received: from PH7PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11010037.outbound.protection.outlook.com [52.101.201.37])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D18DA10E2A9
+ for <igt-dev@lists.freedesktop.org>; Fri, 21 Aug 2026 12:58:03 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t0HRlcwVsGJEK/7V58FJfh0PT1H0Ch/osgbNIMvJ4IgHQezTvPok5SIre1Nwg4ndX6I/BrB5HmAWsL2JZ0VVDUAjwhTr1G0c3w9CgX2ywHXGTWEJFAJNSWsbylXQtc//1cfwkn99JuEdalGqjj16LOqscxmDuEm6DCn05c+bWzYoj9TC6i0eJC14Wd5Fg6d6nK6VvDC244D3tTHy0Vyx0AF1/GFT5jp1e7jezs36CO2YoVUQUFMDTZ2SzC5/vLqgV3ljtLgAqYRdvhukf1x2Wnlkh0dMKEBboUYZSH/7PLq0Nt1hpPO84BoVphFTfO0uwUVYMJEbjdXFHMxzX18c4w==
+ b=FcNYEIOmZ+sVD+LgELHQBAcw6aRsenYiGyZl0K9OLa6E+rXL9sVzGfn1jVzjMldy3dP0b8CqIKmJ16l0o0z8502fbOwFwFZN/I2Q5I+BcLNx0AQY5ghPcBFYW3RAyjoz6XMXBLkQeglCnr9rSkdsACSBRpgDY7BGsLwIHps4c/KLj0/W3vXr5rj3RMz3sFRi8SH6WiTkByyBmu7PkFPJXcExfnJccnCbtLNdQr3isT4mDiNKoSxF2HHY52CZoLAuMA8ITuqKmi7UUU88CSU/LQ7tbghWSpLhozSV5Z63zWjjNgEO+pJvnRdH/98QFmKQMXpdqDzlZHgTBO6q2mIG0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BWQ+fRricqNIP7h/2BmEzzbBLAM49yuuDU1s6e4Ks68=;
- b=u/P45dKx4UxddTwnYo/ErXYYSR4fDkw6fLpwSD5vmVmK9IktD4yJlhKQY/4W0DzPbf7CbqSu95iWRZEoz0+onQFAMmkrtsjiXYeqQ6tS+PTF69aKBJSI8BpWz2HyNzh3yaLDUWW9BrIidAxzxj4Xebe8G2k5B/MGqHvESKceVNeU/VBtjMDzSLsJhMtpOZwg9cajBISIJ7KV8a2Fq/zM95zT42zQ+QBe91hMp7ifm+aI1TXT+TwdWePWw5m+tY+cCCsL6kDbSSfu6vS+E0sLzUJQj4aG/oqxc8j6VJ9GhWP5zd9fITza2PBBgpY3NFPA9T7GnoeJBkX4v5j8A8Zk+Q==
+ bh=Hm8mgOyriKWOga00lCKaLXOJ3blk1/n55wcAlaCqg6g=;
+ b=sBsx3xGg7qUT4epclG/Ht2jnUes4c93XsdPjp6pqVDA032SbkwAxR+OjtgcbNltfy1iQjbBYWbT9apI7eBA4/4gIzde2Vjc4kbCWgq1RjAbUes3DECVueyMhN+GtvjaR4Da23kdQewESzxO3SAmu9/lJPuHCre83GlvIjCir874FPIXFW6SMTteNuA4hXsMfaRNdze0nqhpCQREt127IG4JSk8yXjTNRBLQlC26quPXSxY539YuT4+4OXLsDJCwgsXo1P09orlom+pd/S8XFBCpRjoZYxCIjoblwqP179ZC7CHwZcFffpWR1l58tEzB2ZrlkHGjwtOgDGFSkibyfjA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BWQ+fRricqNIP7h/2BmEzzbBLAM49yuuDU1s6e4Ks68=;
- b=QhgIBj8aqwOxN+NO+BAqrlIkDveUI013U2vuF0sukNIy6WHonFPTCZ1a3Xt/DlpshK/gG1n3zLDD7B6Y12nAjsBEDK3sPAnTcYx4VsxL4CjPKCF+r9NnKRkxQ2bkkkkphm3nfxqsz8pg0QubyoB+TO2qP992HDwB7DNKQl6+s74=
-Received: from SJ0PR13CA0082.namprd13.prod.outlook.com (2603:10b6:a03:2c4::27)
- by SA1PR12MB6703.namprd12.prod.outlook.com (2603:10b6:806:253::18)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=Hm8mgOyriKWOga00lCKaLXOJ3blk1/n55wcAlaCqg6g=;
+ b=fb5GloAwj17UWVP1QBnbhPXeMcOzMKm+HkMXyzk5Xyd1I/DtgXKTZp/YZ61bMZHW9Jb9+oKUu/cNHAtgVAO5cipmYglYIKVB8rv50Yos7VsjUH8S2fLAsCazznTgRrTAJC5T+m/m6OJA8UVe+rzABsFPmVTDCv4RIIQIzWRvcPw=
+Received: from BY1P220CA0048.NAMP220.PROD.OUTLOOK.COM (2603:10b6:a03:59e::6)
+ by DM6PR12MB4435.namprd12.prod.outlook.com (2603:10b6:5:2a6::23) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.10; Fri, 21 Aug
- 2026 12:42:10 +0000
-Received: from SJ1PEPF000023CC.namprd02.prod.outlook.com
- (2603:10b6:a03:2c4:cafe::c4) by SJ0PR13CA0082.outlook.office365.com
- (2603:10b6:a03:2c4::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.3 via Frontend Transport; Fri, 21
- Aug 2026 12:42:10 +0000
+ 2026 12:41:57 +0000
+Received: from SJ1PEPF000023CE.namprd02.prod.outlook.com
+ (2603:10b6:a03:59e:cafe::99) by BY1P220CA0048.outlook.office365.com
+ (2603:10b6:a03:59e::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.339.11 via Frontend Transport; Fri,
+ 21 Aug 2026 12:41:57 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,57 +48,59 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ1PEPF000023CC.mail.protection.outlook.com (10.167.244.6) with Microsoft
+ SJ1PEPF000023CE.mail.protection.outlook.com (10.167.244.10) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 12:42:09 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
+ 15.21.360.3 via Frontend Transport; Fri, 21 Aug 2026 12:41:55 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
- 2026 07:42:04 -0500
+ 2026 07:41:55 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 21 Aug
+ 2026 07:41:54 -0500
 Received: from junhua-PC.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.45 via Frontend
- Transport; Fri, 21 Aug 2026 07:42:02 -0500
+ Transport; Fri, 21 Aug 2026 07:41:52 -0500
 From: Junhua Shen <Junhua.Shen@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Jesse Zhang
  <Jesse.Zhang@amd.com>, Sunil Khatri <sunil.khatri@amd.com>, Honglei Huang
  <honglei1.huang@amd.com>, Huang Rui <ray.huang@amd.com>, Yiru Ma
  <yiru.ma@amd.com>, Junhua Shen <Junhua.Shen@amd.com>
-Subject: [PATCH i-g-t v1 4/4] lib/amdgpu: add CONST_FILL packet type and pass
- caller fill value through
-Date: Fri, 21 Aug 2026 20:41:52 +0800
-Message-ID: <20260821124152.19670-5-Junhua.Shen@amd.com>
+Subject: [PATCH i-g-t v1 0/4] lib/amdgpu: refactor cmd_context ownership and
+ packet operands
+Date: Fri, 21 Aug 2026 20:41:48 +0800
+Message-ID: <20260821124152.19670-1-Junhua.Shen@amd.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260821124152.19670-1-Junhua.Shen@amd.com>
-References: <20260821124152.19670-1-Junhua.Shen@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000023CC:EE_|SA1PR12MB6703:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5b056a80-a13c-4fe6-67f4-08deff819da8
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023CE:EE_|DM6PR12MB4435:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9eca0342-d07b-4534-6801-08deff819595
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|82310400026|376014|23010399003|36860700016|22082099003|18002099003|20052099010|10067099003|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: 9lpWwGR2SP+RzUUHI1jKgB68WF0qf/2Egda3a/MC0MQulDWgOocjOL46oUHXaSgmxL/9jlol/KGwl5pwbwWGmDMRoDh+hFrDe0Yuk1MmYznJ6z0rQWyF/vJbyMjNgGpjf5JqQiFn1093HRu/CArSWIMBomltKKekCv9F4CyryZgV7VcB2yiOyMIlidNNMuDzxzHygwo/5QfoFcwId2d/XwsbBDx/wpt3J27ZGFRq/fE/dUIlNv2SRut++dMkujAEGPiW7lNayMpM/U+Wz8qfc01EE69aTs0Y7KdPyG4UpL3elSztVCTXQZoaCutHBmZeGoUE4aD5+JQieEYs4vUAIgMNtr3ubZXprTpgPvjIWXVWadPVjxWEHOCg83JWIeIvRJCD4rR61Mfmr/5pF7ABtJMKO9WykPiRRh/bdHUkJYiXigZTVNc9l0wcLXe7KDi4klBjryesN9i3t1PxH3kfiyLXJyAcWPGkK7dx3GGmDRsgHjL7hJh6jzzf5Pw/MXiyQ8KZ2N2fezZzOUmI93CedksPWpRADyB1RZoJsoomTQMU7lJ4mnSH1ExJ3vigI8LClOkD6vPlmXqyX/6C/Mgl+BWWiw6EzhFv/gCtCtmtLQXeFQ/UYesBQAjhsgCHBGViDO4PEfB/G0LrQlwJZXFlVfcQZxHsXWz+A0mp41pWBMneV8ndJMZNTg6/AiWIYQYSB7psVMayDiCT14baSG4clA==
+ ARA:13230040|82310400026|376014|23010399003|1800799024|36860700016|18002099003|3023799007|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info: hzAjbdegikJLgv8dZpvh6yZ+9i9bEBPa6X1ZVphphr4lC6ImExlUQB/jwxpAsfnRAGcEI3Tz7HX/S7c6VEQeRgqf8gxPs4DggXQDtP2AsqzWjA5QZ8uDR6uG1tYTLivRfs9gfuV/xr0/szvk+JgMmubWWaXpmSm2eJNXaggF3afeSADHl2m0a9k233/Q5oL4hmGiABg7u2pEA8Mc2jPunT/N2TYhPjNtDDKo7Ke40jgSFdbcov2zS/Ix4zARt76w4RKm5RwlxRJYi8CJkvXrAiHB7GGLSyuY8Kri0fReAatBg7DgU/xezMExIVp+7pqI06b0cvTE6i9pyE+pgd2hF0Tz6lpK/zJsztZNH6OMOjPPN6mz+27FlOWOAdADnhA5OEM/xN7viSbzGyBfULd3HgQYdZNFZ83+2JjWiUG+Y7XBDjnhZojkCZE54cICBIBt/vUGkHaPs2CHP/8mgjalXvaGhCahqY0UMQnmVdrTiTxEboptfgiA85uBZ7HLNXhJ8tXBOIC+fDjPl9bKhocdt6ggCy7MHSDz+qXD9bu6++VqJY3hMwQLEcv6R4xvxIwAhBqFjW9UHwXwmGD2xOCjtICsfQMqRDtXU4UIsT1hus538VDtbFk9ej2rK9USKl3G+xXBtJxWm/+rfxE5DFU8tZ/fiq7w3T81IZ3zZ78uG/cgTg5w3Di8HGJMy9Q1/2KjWrRirQtUM/4b328KYpPWPw==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(82310400026)(376014)(23010399003)(36860700016)(22082099003)(18002099003)(20052099010)(10067099003)(56012099006)(11063799006);
+ SFS:(13230040)(82310400026)(376014)(23010399003)(1800799024)(36860700016)(18002099003)(3023799007)(56012099006)(11063799006)(10067099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: BddbXvgEnyCDCnKzVn4GBSR6Hjv25ijdEIVydqnLhdkMIYViw6K1gv5Ek+Po/p7u59A/ejt65gHbEkCd2T7DDOxPVDhpWS4W5ZjYBvyF2lncOv4kFu6RoEtlLFXPn3l3x+CyXM9HVYTQYWGUtov+Z1bsDcgl3qHXcw664uNxNwXYEXDdMBv8BNqQFZAk8is0O7M2Jh5YlWzBrlfD2BrMfH8cDc0tXAbQfSTb6E9nRJEG0SvakXNdRaYEzS03L3tmuVDzbRavGO3yAA13JEbw4exz0rgoqVJw5MLVtapUtJ991MAhAmEH61ClcFKH2zFx8uHfEUIeQI7glppHvSInksKAseCqnjtWI7RF7+k7yKK7PKoR6w6+fib580gQy7sIkjapyQmJcrVdh4eb5rSE/uGq4Co2bpNTncb0GOUyXITdBlZtxoRVRjdz/ygEBJ5g
+X-MS-Exchange-AntiSpam-MessageData-0: f+fEw1Vf6+4Acjb9guvMQjy3yd5aVQYk3UfB60sHFbYOjDAaxyr97n2XnzBTpDBiuXF/HJHZrWtSpfKNhqOm0sYP3LWRfhE9J1MWnHNyxM8eow22cJQnqFY5dE4N0ry7S79pg4rLDsQVIYZuKD1p7LWY1b6r8Ebm4VCeBJH+sjS0XA5I7oY3yWBG2PC99vAmh6hAd+nRt/AMXOygvyenMDioXfdd0De6PIoLgGWPULZff/t4x/H5Q3tvB7FSY1Olyf8bqNzxlT2TkNu5uFvCW4rV+f2vwbyUoBbbVpqkMzv+XGQ7XsUsGRtRkojv+g+klSoJkfCmc3Ohchkx7h1YLPTLo3DITJJwMV3A2+Ar+pbVWeS+Z0gf6HUHy4d9wcbI//A0WOzedsz5KdmyAjHpzbrey6FkPfqTedABTjsSiOSIyVqD29K3rSgbEFIKZV4m
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 12:42:09.3465 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5b056a80-a13c-4fe6-67f4-08deff819da8
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2026 12:41:55.7365 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9eca0342-d07b-4534-6801-08deff819595
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF000023CC.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF000023CE.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6703
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4435
 X-Mailman-Approved-At: Mon, 24 Aug 2026 08:18:13 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -115,261 +117,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a CMD_PACKET_CONST_FILL packet type with a per-packet size guard, and
-pass the caller-supplied fill value (write_data/write_data_valid) through
-write_linear and const_fill in the IP block builders.
+This series refactors the amdgpu command-submission helper library
+(lib/amdgpu/amd_command_submission.*) around a single principle:
+cmd_context should own only the PM4/IB command stream, while the buffers
+those commands read and write, together with their GPU virtual addresses,
+are supplied and kept resident by the caller.
 
-Signed-off-by: Junhua Shen <Junhua.Shen@amd.com>
----
- lib/amdgpu/amd_command_submission.c | 73 +++++++++++++++++++++++++++++
- lib/amdgpu/amd_command_submission.h |  3 ++
- lib/amdgpu/amd_ip_blocks.c          | 20 +++++---
- lib/amdgpu/amd_ip_blocks.h          |  2 +
- 4 files changed, 92 insertions(+), 6 deletions(-)
+Currently cmd_context both builds the PM4 stream and allocates and clears
+an internal data BO, and several IB and packet sizes are derived from the
+data transfer size (write_length) rather than from the command-stream
+capacity (pm4_size). This couples unrelated concerns, hides residency
+management from callers, and leaves the IB size ambiguous. The series
+separates these concerns incrementally while keeping every existing
+caller compiling and functional.
 
-diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-index 261ae096c..54e101882 100644
---- a/lib/amdgpu/amd_command_submission.c
-+++ b/lib/amdgpu/amd_command_submission.c
-@@ -1088,6 +1088,8 @@ static void cmd_reset_packet_operands(cmd_context_t *ctx)
- 
- 	rc->bo_mc = 0;
- 	rc->bo_mc2 = 0;
-+	rc->write_data = 0;
-+	rc->write_data_valid = false;
- 	rc->write_length = 0;
- 
- 	/* Drop the per-submit residency set. */
-@@ -1211,6 +1213,38 @@ int cmd_submit_packet(cmd_context_t *ctx)
- 	return 0;
- }
- 
-+static void cmd_assert_size_within_packet_limit(cmd_context_t *ctx, uint32_t size,
-+					 const char *op)
-+{
-+	struct amdgpu_dma_limits limits;
-+	uint64_t max_bytes;
-+
-+	amdgpu_dma_limits_query(ctx->device, &limits);
-+	max_bytes = amdgpu_dma_max_bytes(&limits, (unsigned int)ctx->ip_type);
-+
-+	igt_assert_f(size <= max_bytes,
-+		     "%s size %u exceeds single-packet max %llu bytes for this IP; split the transfer\n",
-+		     op, size, (unsigned long long)max_bytes);
-+}
-+
-+/*
-+ * WRITE_LINEAR inlines the payload directly into the PM4 stream as
-+ * write_length/4 dwords (plus a small packet header), so its real limit is the
-+ * PM4 buffer capacity, not the DMA engine's per-packet transfer maximum. Reject
-+ * transfers whose inlined form would overrun pm4[] before the builder writes it.
-+ */
-+static void cmd_assert_inline_payload_fits(cmd_context_t *ctx, uint32_t size,
-+					   const char *op)
-+{
-+	/* Upper bound on the header across the SDMA/GFX write_linear encodings. */
-+	const uint32_t header_dw = 8;
-+	uint64_t need_dw = (uint64_t)header_dw + (size / 4);
-+
-+	igt_assert_f(need_dw <= ctx->ring_ctx->pm4_size,
-+		     "%s size %u needs %llu dw, exceeds PM4 buffer (%u dw); split the transfer\n",
-+		     op, size, (unsigned long long)need_dw, ctx->ring_ctx->pm4_size);
-+}
-+
- int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- {
- 	int result = -EINVAL;
-@@ -1232,7 +1266,10 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 			ctx->ring_ctx->bo_mc = params->dst_addr;
- 		igt_assert_f(ctx->ring_ctx->bo_mc,
- 			     "WRITE_LINEAR requires a destination address\n");
-+		cmd_assert_inline_payload_fits(ctx, params->size, "WRITE_LINEAR");
- 		ctx->ring_ctx->write_length = params->size;
-+		ctx->ring_ctx->write_data = params->data;
-+		ctx->ring_ctx->write_data_valid = true;
- 
- 		/* Build PM4 packet */
- 		result = ctx->ip_block->funcs->write_linear(ctx->ip_block->funcs,
-@@ -1268,6 +1305,7 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 		    ctx->ring_ctx->bo_mc2 = params->dst_addr;
- 	    igt_assert_f(ctx->ring_ctx->bo_mc && ctx->ring_ctx->bo_mc2,
- 			 "COPY_LINEAR requires source and destination addresses\n");
-+	    cmd_assert_size_within_packet_limit(ctx, params->size, "COPY_LINEAR");
- 	    ctx->ring_ctx->write_length = params->size;
- 
- 	    result = ctx->ip_block->funcs->copy_linear(ctx->ip_block->funcs,
-@@ -1275,6 +1313,26 @@ int cmd_place_packet(cmd_context_t *ctx, const cmd_packet_params_t *params)
- 						      &ctx->ring_ctx->pm4_dw);
- 	    return result;
- 
-+	case CMD_PACKET_CONST_FILL:
-+		if (!ctx->ip_block->funcs->const_fill)
-+			return -ENOTSUP;
-+
-+		/* Destination operand comes from the caller; params->data is the
-+		 * fill pattern written to every DWORD of the range. */
-+		if (params->dst_addr)
-+			ctx->ring_ctx->bo_mc = params->dst_addr;
-+		igt_assert_f(ctx->ring_ctx->bo_mc,
-+			     "CONST_FILL requires a destination address\n");
-+		cmd_assert_size_within_packet_limit(ctx, params->size, "CONST_FILL");
-+		ctx->ring_ctx->write_length = params->size;
-+		ctx->ring_ctx->write_data = params->data;
-+		ctx->ring_ctx->write_data_valid = true;
-+
-+		result = ctx->ip_block->funcs->const_fill(ctx->ip_block->funcs,
-+							  ctx->ring_ctx,
-+							  &ctx->ring_ctx->pm4_dw);
-+		return result;
-+
- 	case CMD_PACKET_COPY_ATOMIC:
- 		/* TODO: Implement atomic copy if supported */
- 		igt_info("cmd_place_packet: ATOMIC_COPY not implemented\n");
-@@ -1340,6 +1398,21 @@ int cmd_submit_copy_linear(cmd_context_t *ctx, uint64_t src_addr, uint64_t dst_a
- 	return cmd_place_and_submit_packet(ctx, &params);
- }
- 
-+/**
-+ * Convenience function for constant fill
-+ */
-+int cmd_submit_const_fill(cmd_context_t *ctx, uint64_t dst_addr, uint32_t size, uint32_t data)
-+{
-+	cmd_packet_params_t params = {
-+		.type = CMD_PACKET_CONST_FILL,
-+		.dst_addr = dst_addr,
-+		.size = size,
-+		.data = data,
-+	};
-+
-+	return cmd_place_and_submit_packet(ctx, &params);
-+}
-+
- /**
-  * Convenience function for atomic operation
-  */
-diff --git a/lib/amdgpu/amd_command_submission.h b/lib/amdgpu/amd_command_submission.h
-index 8644f25ed..cf20ff457 100644
---- a/lib/amdgpu/amd_command_submission.h
-+++ b/lib/amdgpu/amd_command_submission.h
-@@ -36,6 +36,7 @@ typedef enum {
-     CMD_PACKET_WRITE_ATOMIC,
-     CMD_PACKET_COPY_LINEAR,
-     CMD_PACKET_COPY_ATOMIC,
-+    CMD_PACKET_CONST_FILL,
-     CMD_PACKET_FENCE,
-     CMD_PACKET_TIMESTAMP,
- } cmd_packet_type_t;
-@@ -196,6 +197,8 @@ int cmd_submit_write_linear(cmd_context_t *ctx, uint64_t dst_addr, uint32_t size
- 
- int cmd_submit_copy_linear(cmd_context_t *ctx, uint64_t src_addr, uint64_t dst_addr, uint32_t size);
- 
-+int cmd_submit_const_fill(cmd_context_t *ctx, uint64_t dst_addr, uint32_t size, uint32_t data);
-+
- int cmd_submit_atomic(cmd_context_t *ctx, uint64_t dst_addr, uint32_t data);
- 
- bool cmd_ring_available(amdgpu_device_handle device,
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index b56fb68b8..8da468988 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -32,6 +32,8 @@ sdma_ring_write_linear(const struct amdgpu_ip_funcs *func,
- 		       uint32_t *pm4_dw)
- {
- 	uint32_t i, j;
-+	uint32_t fill = ring_context->write_data_valid ?
-+			ring_context->write_data : func->deadbeaf;
- 
- 	i = 0;
- 	j = 0;
-@@ -56,7 +58,7 @@ sdma_ring_write_linear(const struct amdgpu_ip_funcs *func,
- 		ring_context->pm4[i++] = ring_context->write_length / 4;
- 
- 	while (j++ < ring_context->write_length / 4)
--		ring_context->pm4[i++] = func->deadbeaf;
-+		ring_context->pm4[i++] = fill;
- 
- 	*pm4_dw = i;
- 
-@@ -156,20 +158,22 @@ sdma_ring_const_fill(const struct amdgpu_ip_funcs *func,
- 		     uint32_t *pm4_dw)
- {
- 	uint32_t i;
-+	uint32_t fill = context->write_data_valid ?
-+			context->write_data : func->deadbeaf;
- 
- 	i = 0;
- 	if (func->family_id == AMDGPU_FAMILY_SI) {
- 		context->pm4[i++] = SDMA_PACKET_SI(SDMA_OPCODE_CONSTANT_FILL_SI,
- 						   0, 0, 0, context->write_length / 4);
- 		context->pm4[i++] = lower_32_bits(context->bo_mc);
--		context->pm4[i++] = 0xdeadbeaf;
-+		context->pm4[i++] = fill;
- 		context->pm4[i++] = upper_32_bits(context->bo_mc) >> 16;
- 	} else {
- 		context->pm4[i++] = SDMA_PACKET(SDMA_OPCODE_CONSTANT_FILL, 0,
- 						SDMA_CONSTANT_FILL_EXTRA_SIZE(2));
- 		context->pm4[i++] = lower_32_bits(context->bo_mc);
- 		context->pm4[i++] = upper_32_bits(context->bo_mc);
--		context->pm4[i++] = func->deadbeaf;
-+		context->pm4[i++] = fill;
- 
- 		if (func->family_id >= AMDGPU_FAMILY_AI)
- 			context->pm4[i++] = context->write_length - 1;
-@@ -239,6 +243,8 @@ gfx_ring_write_linear(const struct amdgpu_ip_funcs *func,
- 		      uint32_t *pm4_dw)
- {
- 	uint32_t i, j;
-+	uint32_t fill = ring_context->write_data_valid ?
-+			ring_context->write_data : func->deadbeaf;
- 
- 	i = 0;
- 	j = 0;
-@@ -258,7 +264,7 @@ gfx_ring_write_linear(const struct amdgpu_ip_funcs *func,
- 	ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
- 	ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
- 	while (j++ < ring_context->write_length / 4)
--		ring_context->pm4[i++] = func->deadbeaf;
-+		ring_context->pm4[i++] = fill;
- 
- 	*pm4_dw = i;
- 	if (ring_context->pm4_size > 0)
-@@ -357,11 +363,13 @@ gfx_ring_const_fill(const struct amdgpu_ip_funcs *func,
- 		     uint32_t *pm4_dw)
- {
- 	uint32_t i;
-+	uint32_t fill = ring_context->write_data_valid ?
-+			ring_context->write_data : func->deadbeaf;
- 
- 	i = 0;
- 	if (func->family_id == AMDGPU_FAMILY_SI) {
- 		ring_context->pm4[i++] = PACKET3(PACKET3_DMA_DATA_SI, 4);
--		ring_context->pm4[i++] = func->deadbeaf;
-+		ring_context->pm4[i++] = fill;
- 		ring_context->pm4[i++] = PACKET3_DMA_DATA_SI_ENGINE(0) |
- 					 PACKET3_DMA_DATA_SI_DST_SEL(0) |
- 					 PACKET3_DMA_DATA_SI_SRC_SEL(2) |
-@@ -375,7 +383,7 @@ gfx_ring_const_fill(const struct amdgpu_ip_funcs *func,
- 					 PACKET3_DMA_DATA_DST_SEL(0) |
- 					 PACKET3_DMA_DATA_SRC_SEL(2) |
- 					 PACKET3_DMA_DATA_CP_SYNC;
--		ring_context->pm4[i++] = func->deadbeaf;
-+		ring_context->pm4[i++] = fill;
- 		ring_context->pm4[i++] = 0;
- 		ring_context->pm4[i++] = lower_32_bits(ring_context->bo_mc);
- 		ring_context->pm4[i++] = upper_32_bits(ring_context->bo_mc);
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 37f38ed44..19d698e91 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -307,6 +307,8 @@ struct amdgpu_ring_context {
- 	 */
- 	uint64_t write_length;
- 	uint64_t write_length2; /* IN: transfer size in bytes, second packet */
-+	uint32_t write_data;    /* IN: payload for write_linear/const_fill */
-+	bool write_data_valid;  /* IN: use write_data; else IP deadbeaf pattern */
- 	uint32_t *pm4;		/* INTERNAL: packet buffer (submitter-owned, builder fills) */
- 	uint32_t pm4_size;	/* IN: capacity of pm4[] in dwords (required, non-zero) */
- 	bool secure;		/* IN: secure or not */
+Scope: cmd_context is a convenience wrapper for SDMA data operations
+(linear write/copy/const-fill/atomic). Only three tests currently use it
+(amd_mem, amd_dmabuf_unload, amd_kfd_dmabuf_unload); the rest of the
+amdgpu tests deliberately drive libdrm_amdgpu directly to validate the
+kernel submission UAPI (cs_submit, bo_list, syncobj, gang, compute
+dispatch), and are intentionally left untouched. The ring_context field
+usage in those low-level callers is already consistent with the contract
+documented here, so no changes are required on their side.
+
+Overview of the changes
+-----------------------
+1. document amdgpu_ring_context field contract
+   Add IN/OUT/INTERNAL annotations to struct amdgpu_ring_context so the
+   ownership and direction of each field is unambiguous before the
+   behavioural changes are introduced. Documentation only, no functional
+   change.
+
+2. drop external BO from cmd_context
+   cmd_context no longer allocates, tracks, or clears a caller-visible
+   data BO. Callers now register the residency of those buffers
+   explicitly via the new cmd_context_add_resource(). cmd_context_create()
+   loses the write_length parameter (the IB is sized from pm4_size alone)
+   and all call sites are updated (amd_dmabuf_unload.c,
+   amd_kfd_dmabuf_unload.c, amd_mem.c).
+
+3. source packet operands from params and size the IB from pm4_size
+   The legacy IB byte size is now derived from pm4_size (the command
+   stream capacity), not write_length (the data transfer size).
+   WRITE_LINEAR, WRITE_ATOMIC and COPY_LINEAR take their source and
+   destination GPU virtual addresses from cmd_packet_params_t, so callers
+   pass those addresses directly rather than relying on context-internal
+   BOs.
+
+4. add CONST_FILL packet type and pass caller fill value through
+   Add a CMD_PACKET_CONST_FILL packet type with a per-packet size guard,
+   and propagate the caller-supplied fill value
+   (write_data/write_data_valid) through write_linear and const_fill in
+   the IP block builders.
+
+Testing
+-------
+Ran on local hardware: AMD GFX1036 (GFX10_3). The three cmd_context
+callers (amd_mem, amd_dmabuf_unload, amd_kfd_dmabuf_unload) and the
+low-level tests that exercise the changed shared code (amd_basic SDMA and
+compute submission, amd_userptr_invalidation) all pass. There is no
+regression from this series.
+
+Known limitations / follow-up work
+----------------------------------
+The following items are intentionally excluded from this series to limit
+its scope; they are candidates for follow-up patches:
+
+- pm4_size is currently a hard-coded 256 dwords in cmd_context_create().
+  It should become a caller-provided parameter (or be derived from the
+  expected packet mix) so large PM4 streams are not silently truncated.
+
+- The residency set (amdgpu_ring_context.resources[]) is a fixed-size
+  array (4 entries). cmd_context_add_resource() returns -ENOSPC when it
+  overflows; a growable set would remove that limit for callers that
+  require more operands per submit.
+
+- Some low-level callers open-code the same linear write/copy/fill
+  sequences that cmd_context now wraps. Where a test only needs the data
+  operation itself (and is not specifically exercising the submission
+  UAPI), it could be migrated onto the high-level cmd_context API to
+  remove boilerplate. Tests that deliberately drive libdrm_amdgpu to
+  validate cs_submit/bo_list/syncobj/gang/compute paths should stay as
+  they are.
+
+Junhua Shen (4):
+  lib/amdgpu: document amdgpu_ring_context field contract
+  lib/amdgpu: drop external BO from cmd_context
+  lib/amdgpu: source packet operands from params and size the IB from
+    pm4_size
+  lib/amdgpu: add CONST_FILL packet type and pass caller fill value
+    through
+
+ lib/amdgpu/amd_command_submission.c  | 385 ++++++++++++++-------------
+ lib/amdgpu/amd_command_submission.h  | 102 ++++++-
+ lib/amdgpu/amd_ip_blocks.c           |  20 +-
+ lib/amdgpu/amd_ip_blocks.h           |  59 +++-
+ tests/amdgpu/amd_dmabuf_unload.c     |  15 +-
+ tests/amdgpu/amd_kfd_dmabuf_unload.c |  15 +-
+ tests/amdgpu/amd_mem.c               |  22 +-
+ 7 files changed, 378 insertions(+), 240 deletions(-)
+
 -- 
 2.34.1
 
