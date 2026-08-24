@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EACAC5DF81
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 19:12:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03826C5DF81
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 22:46:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B0CA10E196;
-	Mon, 24 Aug 2026 19:12:20 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IkjNXUvw";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4852A10E085
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 19:11:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787598705; x=1819134705;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=8emb7GnWjulQNoZmocleHL3B1tA+G50buT+6dA4y0s0=;
- b=IkjNXUvwuHhIGm1erpEE5jnjkMFAUvA0sv4Oagbz6Fv7NHIpZ/iJhbVz
- hqQMU0z08IvdStSAfdO6JoubUmnjPZGg7vijOyl2GvhmmlFgwgWZeeD6m
- ++7SkNa+bxpV3XPOASFLg4JaugmVbUqV3v0VumDLCnqesRvvgysztUiRL
- 1+GJy6JyYluDtmh/KFbFG6jXZSezCUAyqaQXcgqSm9D/NZ3Nuq46ob+73
- KrTvbGNk2ARIwuLs9zeDQ50gS4VIQif1HhLafSU9rgaHGQd8HHUwc3BJg
- uuJKNnp7oYkh/gc+Rg1UwgCsekZSCZ2HJNx7nnQMgicpFyVMuITDVo9Ej Q==;
-X-CSE-ConnectionGUID: I+rVX4lmTPm/9R6GoV+ndg==
-X-CSE-MsgGUID: DlskOQZoQR6ykqXrP3ZOFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="99583071"
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="99583071"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 12:11:45 -0700
-X-CSE-ConnectionGUID: cfosaej5RiOhNYyF8vhg8g==
-X-CSE-MsgGUID: 4iVK1fs+TRmCJ1bZISZWAg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="263355576"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 12:11:44 -0700
-Date: Mon, 24 Aug 2026 21:11:41 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
-Subject: Re: [PATCH v2 9/9] tests/intel/xe_exec_reset: add
- gt-stress-reset-engine-hang subtest
-Message-ID: <20260824191141.ubk7spjyd7umeldr@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com
-References: <20260818040845.548727-1-nishit.sharma@intel.com>
- <20260818040845.548727-10-nishit.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7465510E034;
+	Mon, 24 Aug 2026 22:46:27 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CCFD10E0FD;
+ Mon, 24 Aug 2026 22:45:46 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0031703565495140708=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260818040845.548727-10-nishit.sharma@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_scale_MPO_b?=
+ =?utf-8?q?andwidth-skip_tolerance_to_the_panel?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: haoming.qi@amd.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 24 Aug 2026 22:45:46 -0000
+Message-ID: <178761154657.80981.10194082701707493986@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260821193021.2156148-1-Haoming.Qi@amd.com>
+In-Reply-To: <20260821193021.2156148-1-Haoming.Qi@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,57 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi nishit.sharma,
-On 2026-08-18 at 04:08:45 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> Add a dedicated GT reset stress subtest that triggers reset while a long
-> spinner workload is active.
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+--===============0031703565495140708==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Regards,
-Kamil
+== Series Details ==
 
-> ---
->  tests/intel/xe_exec_reset.c | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
-> 
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index 42c2a7efd..6eda71c32 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -887,6 +887,10 @@ static void *gt_reset_thread(void *data)
->   * Description: Stress concurrent GT resets and job submissions during PM transition windows
->   * Test category: stress test
->   *
-> + * SUBTEST: gt-stress-reset-engine-hang
-> + * Description: Test GT reset while long spinner workload is active
-> + * Test category: stress test
-> + *
->   */
->  static void
->  gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
-> @@ -1314,6 +1318,14 @@ int igt_main()
->  			gt_reset(fd, 0, 8, 2, s->flags);
->  	}
->  
-> +	igt_subtest("gt-stress-reset-engine-hang")
-> +		xe_for_each_engine(fd, hwe) {
-> +			xe_legacy_test_mode(fd, hwe, 2, 4,
-> +					    GT_RESET | LONG_SPIN,
-> +					    LEGACY_MODE_ADDR, false);
-> +			break;
-> +		}
-> +
->  	igt_subtest("gt-mocs-reset")
->  		xe_for_each_gt(fd, gt)
->  			gt_mocs_reset(fd, gt);
-> -- 
-> 2.43.0
-> 
+Series: tests/amdgpu: scale MPO bandwidth-skip tolerance to the panel
+URL   : https://patchwork.freedesktop.org/series/172655/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9071_BAT -> XEIGTPW_15721_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15721_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-nvls-1:         [DMESG-WARN][1] ([Intel XE#8762]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9071/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15721/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9071 -> IGTPW_15721
+  * Linux: xe-5640-b830d7b865d1dcc0c199feef72cbe7bf7b208762 -> xe-5641-7b7f3626ff417d591718d5ff7a22646025e0b260
+
+  IGTPW_15721: 15721
+  IGT_9071: 9071
+  xe-5640-b830d7b865d1dcc0c199feef72cbe7bf7b208762: b830d7b865d1dcc0c199feef72cbe7bf7b208762
+  xe-5641-7b7f3626ff417d591718d5ff7a22646025e0b260: 7b7f3626ff417d591718d5ff7a22646025e0b260
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15721/index.html
+
+--===============0031703565495140708==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: scale MPO bandwidth-skip tolerance to the panel</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172655/">https://patchwork.freedesktop.org/series/172655/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15721/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15721/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9071_BAT -&gt; XEIGTPW_15721_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15721_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9071/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15721/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9071 -&gt; IGTPW_15721</li>
+<li>Linux: xe-5640-b830d7b865d1dcc0c199feef72cbe7bf7b208762 -&gt; xe-5641-7b7f3626ff417d591718d5ff7a22646025e0b260</li>
+</ul>
+<p>IGTPW_15721: 15721<br />
+  IGT_9071: 9071<br />
+  xe-5640-b830d7b865d1dcc0c199feef72cbe7bf7b208762: b830d7b865d1dcc0c199feef72cbe7bf7b208762<br />
+  xe-5641-7b7f3626ff417d591718d5ff7a22646025e0b260: 7b7f3626ff417d591718d5ff7a22646025e0b260</p>
+
+</body>
+</html>
+
+--===============0031703565495140708==--
