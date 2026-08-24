@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81DC7C5DF9C
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 16:43:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C22B4C5DF9C
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 16:44:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A57C10E15F;
-	Mon, 24 Aug 2026 16:43:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A59510E173;
+	Mon, 24 Aug 2026 16:44:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X6kIin03";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JoNNSwQ5";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E75B210E15F
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 16:42:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D3BA510E15F
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 16:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787589746; x=1819125746;
+ t=1787589741; x=1819125741;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WtfWVVjSux5n/Z8gK6cbykIeL8glw58ou+6kAJFUw/s=;
- b=X6kIin03TzuyyyYl6iUgo2FwxwsB3B+QOAoKybK4ETBkrZkDH0qM/0jB
- cCnXzf5/t14FT3uiiZOTM2E8wcNuKwia9lgZotkRGIoD4f8CzHGraCIM7
- +tAq594+PVhLnBWyoYHSiJh7c4Xib6kK9VCBDxCEyrqPa45F4ataZVuS8
- qYtO6lM7Q6oe1CGvUapaQ/d2fTxByokHVqcNiyefiNKDlp/JyIkaRhXLZ
- pUujxg5E/aLl+ATfZpZUqRDPoMaHw0E3jCEI7ide7Jd6Eaqsgb0+dtRd2
- tjAZfAH71F+yZ5XLqPQL/Eo1lc8643HLPDaXLHTGkrHMMtby1eWct68FM A==;
-X-CSE-ConnectionGUID: xhZt7m+xTAqI0NLSS4AaPA==
-X-CSE-MsgGUID: iFyBkZcPR0+ZFbKKaBdNLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="88105699"
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="88105699"
+ bh=SqJ2rgRMIFazCiYer5pEx8j6IqAv5QbY2r1FF8HSTQk=;
+ b=JoNNSwQ5j73Ja6G+Qx68ZinZ6eygxTtzcefKbMA8uDCVVi0ufMLuXZR/
+ RJ72s76tph/4LTGuzqcgEjV++KU57SwHXVJkmuUJukWQaiHrjyJE8AYJc
+ DD1yeOI2eDCesE2R0xaGzlVGv1J5CL9vCoZLSZ1H/qxvlRfGM5P/qC6WT
+ oWny3zdVllNNgwmD5Ww5pwpEyJi+D2HgZs0Zd5hLbj7nKwgQaZhdaGK+X
+ GMSn9wbBGdRlOQ0TAyyIhf+CEEBy/ZoheufoKH1BYzvvGP5UkqWz5owfk
+ KUokpUr8ElwoHagbF3Zwm85uNSI4RTNUX0htMjI9Dxo+DxKdpnDGGXKKd Q==;
+X-CSE-ConnectionGUID: /+FL2NsiT2Kvt4Saj36/pg==
+X-CSE-MsgGUID: 4z/nTk3RRbm9YicpaCX0Yw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="88105693"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="88105693"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 09:42:25 -0700
-X-CSE-ConnectionGUID: RKuNQv+hRFOOG+5J0jvPUg==
-X-CSE-MsgGUID: BlOK/7+ZTxCIqOingvuHvg==
+ 24 Aug 2026 09:42:20 -0700
+X-CSE-ConnectionGUID: DCEViSBYRgKcQrUKJIdXVg==
+X-CSE-MsgGUID: NHGgEVdXTVSyGwX0MDiMxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="268993420"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="268993406"
 Received: from unknown (HELO rkoppura-Z790I-AORUS-ULTRA.iind.intel.com)
  ([10.190.239.17])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 09:42:24 -0700
+ 24 Aug 2026 09:42:18 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  mallesh.koujalagi@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v3 09/10] tests/intel/xe_err_injection: Add tests for L2 bank
- Corr err threshold scenarios
-Date: Mon, 24 Aug 2026 22:11:32 +0530
-Message-Id: <20260824164133.129138-10-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v3 07/10] tests/intel/xe_err_injection: Add GT UC Unicast GAM
+ Walker Command Parity Error Injection
+Date: Mon, 24 Aug 2026 22:11:30 +0530
+Message-Id: <20260824164133.129138-8-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
 References: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,366 +72,382 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduced L2 bank correctable error threshold subtests:
-   - single correctable error
-   - Correctable error with threshold set to 1
-   - 16 Correctable error injections with threshold set to 0xF
-
-Add DRM RAS netlink error-notify event subscription to verify
-correctable error detection across all the above subtests.
+MMIO based GT Uncorrectable Unicast GAM Walker command parity error
+injection to verify the Xe driver error handling and recovery flows with
+the help of DRM Netlink API suite
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 ---
-v2:Disabled multicast before arming the injection to perform an unicast
-   injection.
-   Updated the condition to verify response from wait_for_error_notify_event
-   condition from an event error value of exactly 1 to the configured error
-   threshold.
----
----
- tests/intel/xe_err_injection.c | 288 +++++++++++++++++++++++++++++++++
- tests/intel/xe_err_injection.h |  10 ++
- 2 files changed, 298 insertions(+)
+ tests/intel/xe_err_injection.c | 321 +++++++++++++++++++++++++++++++++
+ tests/intel/xe_err_injection.h |  18 ++
+ tests/meson.build              |   1 +
+ 3 files changed, 340 insertions(+)
+ create mode 100644 tests/intel/xe_err_injection.c
+ create mode 100644 tests/intel/xe_err_injection.h
 
 diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-index ded5f558f..05bef3e52 100644
---- a/tests/intel/xe_err_injection.c
+new file mode 100644
+index 000000000..ded5f558f
+--- /dev/null
 +++ b/tests/intel/xe_err_injection.c
-@@ -35,6 +35,14 @@ enum {
- 	RECOVERY_TIMEOUT,
- };
- 
-+time_t event_timeout = 10 * 1000; /* 10 seconds */
+@@ -0,0 +1,321 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
 +
-+/* Cleanup helper for injection test functions */
-+#define CLEANUP_ON_ERROR(ctx, fw_handle) do { \
-+	igt_cleanup_nl_socket(&ctx); \
-+	release_forcewake(fw_handle); \
-+} while (0)
++/**
++ * TEST: MMIO based Error Injection
++ * Category: RAS
++ * Mega feature: Telemetry
++ * Sub-category: Driver
++ * Test category: Error Injection
++ */
 +
- static void run_xe_compute_on_all_engines(int fd, bool state)
- {
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -274,6 +282,268 @@ static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
- 	gt_uc_wkr_parity_recovered = true;
- }
- 
-+/* Inject a GT correctable error */
-+static void l2_bank_corr_err_injection(struct xe_mmio *mmio, int fd)
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <time.h>
++#include <fcntl.h>
++#include <unistd.h>
++
++#include "igt.h"
++#include "lib/igt_drm_netlink.h"
++#include "lib/intel_reg.h"
++#include "lib/intel_compute.h"
++
++#include "xe_drm.h"
++#include "xe/xe_ioctl.h"
++#include "xe/xe_mmio.h"
++#include "xe/xe_query.h"
++#include "xe_err_injection.h"
++
++enum {
++	RECOVERY_SUCCESS = 1,
++	RECOVERY_FAILED,
++	RECOVERY_TIMEOUT,
++};
++
++static void run_xe_compute_on_all_engines(int fd, bool state)
 +{
-+	/* Disable Multicast for unicast error injection */
++	struct drm_xe_engine_class_instance *hwe;
++
++	if (state == POST_ARMING_INJECTION_WL)
++		igt_info("Running compute-square on all engines post injection\n");
++	else if (state == POST_RECOVERY_WL)
++		igt_info("Running compute-square on all engines post recovery\n");
++
++	xe_for_each_engine(fd, hwe) {
++		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++			continue;
++
++		igt_require_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL,
++								    EXECENV_PREF_SYSTEM),
++								    "GPU does not support "
++								    "compute on engine\n");
++	}
++}
++
++static void write_reg(struct xe_mmio *mmio, uint32_t reg, uint32_t value)
++{
++	xe_mmio_write32(mmio, reg, value);
++}
++
++static void modify_reg_bit(struct xe_mmio *mmio, uint32_t reg_addr,
++			   uint32_t bit_mask, bool set)
++{
++	uint32_t regval;
++
++	regval = xe_mmio_read32(mmio, reg_addr);
++	if (set)
++		regval |= bit_mask;
++	else
++		regval &= ~bit_mask;
++
++	xe_mmio_write32(mmio, reg_addr, regval);
++}
++
++static int acquire_forcewake(int fd)
++{
++	int fw_handle;
++
++	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
++	igt_assert_lte(0, fw_handle);
++	return fw_handle;
++}
++
++static void release_forcewake(int fw_handle)
++{
++	if (fw_handle >= 0)
++		close(fw_handle);
++}
++
++static uint32_t get_counter(uint32_t node_id, uint32_t error_id)
++{
++	struct app_context ctx;
++	int ret;
++	uint32_t error_value = UINT32_MAX;
++
++	ret = igt_init_nl_socket(&ctx);
++	if (ret < 0) {
++		igt_warn("Failed to initialize netlink socket for error command (ret=%d)\n", ret);
++		return error_value;
++	}
++
++	ctx.node_id = node_id;
++	ctx.error_id = error_id;
++
++	ret = igt_get_error_counter(&ctx);
++	if (ret < 0) {
++		igt_warn("get_error_counter failed from error command path (ret=%d)\n", ret);
++	} else {
++		error_value = ctx.error_value;
++		igt_info("get_error_counter: node_id=%u error_id=%u value=%u\n",
++			 ctx.node_id, ctx.error_id, ctx.error_value);
++	}
++
++	igt_cleanup_nl_socket(&ctx);
++
++	return error_value;
++}
++
++static int check_dmesg_for_recovery(const char *marker, int elapsed_secs)
++{
++	char *buff = NULL;
++	size_t buff_size = 0;
++	ssize_t line_len;
++	FILE *fp;
++	const char *success = "AER: device recovery successful";
++	const char *failed = "AER: device recovery failed";
++	bool marker_seen = false;
++
++	fp = popen("dmesg", "r");
++	if (!fp) {
++		igt_warn("Unable to open dmesg to check recovery status\n");
++		return -1;
++	}
++
++	while ((line_len = getline(&buff, &buff_size, fp)) != -1) {
++		(void)line_len;
++		if (!marker_seen) {
++			if (strstr(buff, marker))
++				marker_seen = true;
++			continue;
++		}
++
++		if (strstr(buff, success)) {
++			igt_info("Found \"%s\" in dmesg after %d secs\n", success, elapsed_secs);
++			free(buff);
++			pclose(fp);
++			return RECOVERY_SUCCESS;
++		}
++		if (strstr(buff, failed)) {
++			igt_info("Found \"%s\" in dmesg after %d secs\n", failed, elapsed_secs);
++			free(buff);
++			pclose(fp);
++			return RECOVERY_FAILED;
++		}
++	}
++
++	free(buff);
++	pclose(fp);
++	return RECOVERY_TIMEOUT;
++}
++
++static int check_err_recovery(void)
++{
++	time_t start_time = time(NULL);
++	time_t timeout = 5 * 60;
++	int time_interval = 30;
++	time_t elapsed_time;
++	int status;
++	char marker[128];
++
++	snprintf(marker, sizeof(marker),
++		 "IGT xe_err_injection recovery marker pid=%d start=%lld",
++		 getpid(), (long long)start_time);
++	igt_kmsg(KMSG_INFO "%s\n", marker);
++
++	while (1) {
++		elapsed_time = time(NULL) - start_time;
++		status = check_dmesg_for_recovery(marker, elapsed_time);
++		if (status < 0) {
++			igt_warn("Failed to query dmesg for recovery status\n");
++			return RECOVERY_FAILED;
++		}
++		if (status == RECOVERY_SUCCESS || status == RECOVERY_FAILED)
++			return status;
++
++		if (elapsed_time >= timeout) {
++			igt_warn("Timed out while waiting for error recovery\n");
++			return RECOVERY_TIMEOUT;
++		}
++
++		sleep(time_interval);
++	}
++}
++
++static void print_aer_recovery_status(void)
++{
++	int recovery_ret;
++
++	recovery_ret = check_err_recovery();
++	igt_assert_f(recovery_ret != RECOVERY_TIMEOUT,
++		     "AER error recovery timed out\n");
++	igt_assert_f(recovery_ret != RECOVERY_FAILED,
++		     "AER device recovery failed\n");
++	if (recovery_ret == RECOVERY_SUCCESS)
++		igt_info("AER device recovery successful\n");
++}
++
++static void log_status(bool val, const char *err_name)
++{
++	if (val)
++		igt_info("Injection: %s Success\n", err_name);
++	else
++		igt_info("Injection: %s Failed\n", err_name);
++}
++
++static bool gt_uc_wkr_parity_recovered;
++
++/**
++ * SUBTEST: test_GT-UC-unicast-wkr-cmd-parity-err
++ * Description: GT Uncorrectable Unicast Walker Command parity error injection
++ * Functionality: error injection
++ */
++static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
++{
++	int fw_handle;
++	uint32_t error_counter_before_inj;
++	uint32_t error_counter_after_inj;
++	/** TODO
++	 *  Fetching node_id and error_id dynamically is pending to implement.
++	 *  For now, using
++	 *  node_id=1 (uncorrectable_errors) and
++	 *  error_id=1 (core_compute)
++	 */
++	uint32_t node_id = 1;
++	uint32_t error_id = 1;
++
++	fw_handle = acquire_forcewake(fd);
++
++	error_counter_before_inj = get_counter(node_id, error_id);
++
++	/* Arm the injection sequence. */
 +	write_reg(mmio, MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
-+
-+	/* Arm the Injection */
-+	write_reg(mmio, L2_BANK_ERR_INJ, L2_BANK_DATA_1BIT_ERR_INJ_CONFIG);
-+	igt_info("Armed L2 Bank Correctable Error Injection\n");
-+
-+	/* Rollback to Multicast */
++	modify_reg_bit(mmio,
++		       WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS,
++		       WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE,
++		       true);
 +	modify_reg_bit(mmio,
 +		       MC_PKT_CTRL_MGSR_3D_ADDRESS,
 +		       MC_PKT_CTRL_MGSR_3D_VALUE,
 +		       true);
++	igt_info("Injected GT Uncorrectable Unicast Walker Cmd parity error\n");
++
++	run_xe_compute_on_all_engines(fd, POST_ARMING_INJECTION_WL);
++
++	release_forcewake(fw_handle);
++	print_aer_recovery_status();
++	error_counter_after_inj = get_counter(node_id, error_id);
++
++	igt_assert_f(error_counter_before_inj != UINT32_MAX &&
++		     error_counter_after_inj != UINT32_MAX,
++		     "Failed to fetch valid error counters: before=%u after=%u\n",
++		     error_counter_before_inj, error_counter_after_inj);
++
++	igt_info("error counter: before injection=%u after injection=%u\n",
++		 error_counter_before_inj, error_counter_after_inj);
++
++	igt_assert_f(error_counter_after_inj > error_counter_before_inj,
++		     "GT Uncorrectable Unicast Walker Cmd parity error injection "
++		     "failed: before injection=%u after injection=%u\n",
++		     error_counter_before_inj, error_counter_after_inj);
++	igt_info("GT Uncorrectable Unicast Walker Cmd parity error injection successful\n");
++	gt_uc_wkr_parity_recovered = true;
++}
++
++static void inject_error(const char *injection, struct xe_mmio *mmio, int fd)
++{
++	igt_info("Starting Error Injection test: %s\n", injection);
++	if (strcmp(injection, "test_GT-UC-unicast-wkr-cmd-parity-err") == 0)
++		wkr_cmd_parity_err_injection(mmio, fd);
++	else if (strcmp(injection, "test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl") == 0)
++		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
++	else
++		igt_info("Invalid Error Injection specified\n");
 +}
 +
 +/**
-+ * SUBTEST: test_l2-bank-corr-err-threshold-1
-+ * Description: Inject single bit error injection in SSA data array when this bit is written
-+ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
-+ * Functionality: error injection
++ * SUBTEST: test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl
++ * Description: Run a post-recovery Xe workload after parity error injection.
++ * Functionality: workload validation
 + */
-+static void test_l2_bank_corr_err_injection_with_threshold_1(struct xe_mmio *mmio, int fd)
++
++int igt_main()
 +{
-+	int fw_handle;
-+	int ret;
-+	uint32_t current_threshold = UINT32_MAX;
-+	struct app_context ctx;
++	int fd;
++	struct xe_mmio mmio;
 +
-+	fw_handle = acquire_forcewake(fd);
-+
-+	ret = igt_init_nl_socket(&ctx);
-+	if (ret < 0) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
++	igt_fixture() {
++		fd = drm_open_driver(DRIVER_XE);
++		igt_require(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY));
++		xe_mmio_access_init(fd, &mmio);
++		igt_require(xe_mmio_is_initialized(&mmio));
 +	}
 +
-+	/* Subscribe to error-notify */
-+	ret = igt_subscribe_error_notify(&ctx, DRM_RAS_MCGRP_ERROR_NOTIFY);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to subscribe to error-notify (ret=%d)\n", ret);
++	igt_describe("Inject GT uncorrectable unicast worker command parity error.");
++	igt_subtest("test_GT-UC-unicast-wkr-cmd-parity-err")
++		inject_error("test_GT-UC-unicast-wkr-cmd-parity-err", &mmio, fd);
++
++	igt_describe("Run post-recovery workload after GT parity error injection test.");
++	igt_subtest("test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl") {
++		igt_require_f(gt_uc_wkr_parity_recovered,
++			      "Run GT-UC-unicast-wkr-cmd-parity-err first\n");
++		inject_error("test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl", &mmio, fd);
 +	}
 +
-+	/* get current GT Correctable error threshold */
-+	/** TODO
-+	 *  Fetching node_id and error_id dynamically is pending to implement.
-+	 *  For now, using
-+	 *  node_id=0 (correctable_errors) and
-+	 *  error_id=1 (core_compute)
-+	 */
-+	ctx.node_id = 0;
-+	ctx.error_id = 1;
-+	ret = igt_get_error_threshold(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to query GT correctable error threshold before injection\n");
++	igt_fixture() {
++		xe_mmio_access_fini(&mmio);
++		drm_close_driver(fd);
 +	}
-+	current_threshold = ctx.error_threshold;
-+	igt_info("Current GT Correctable error threshold: %u\n", current_threshold);
-+
-+	/* Set GT Correctable error threshold to 1 */
-+	ctx.error_threshold = 1;
-+	ret = igt_set_error_threshold(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to set GT correctable error threshold before injection\n");
-+	}
-+
-+	/* Inject a GT correctable error */
-+	l2_bank_corr_err_injection(mmio, fd);
-+
-+	ret = igt_wait_for_error_notify_event(&ctx, event_timeout); /* wait for 10 secs */
-+	if (ret == 0 && ctx.event_error_value >= ctx.error_threshold) {
-+		log_status(true, "L2 Bank Correctable Error with threshold 1");
-+		igt_info("Received Error event Notification from %s:node_id=%u error_id=%u value=%u match=%d\n",
-+			 DRM_RAS_MCGRP_ERROR_NOTIFY, ctx.event_node_id, ctx.event_error_id,
-+			 ctx.event_error_value, ctx.event_received);
-+	} else {
-+		log_status(false, "L2 Bank Correctable Error with threshold 1");
-+		/* restore threshold before failing */
-+		ctx.error_threshold = current_threshold;
-+		igt_set_error_threshold(&ctx);
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Did not receive expected RAS event or error_value after injection\n");
-+	}
-+
-+	/* restore GT Correctable error threshold to original value */
-+	ctx.error_threshold = current_threshold;
-+	ret = igt_set_error_threshold(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to restore GT correctable error threshold after injection\n");
-+	}
-+
-+	CLEANUP_ON_ERROR(ctx, fw_handle);
 +}
-+
-+/**
-+ * SUBTEST: test_l2-bank-corr-err-16-times
-+ * Description: Inject single bit error injection in SSA data array when this bit is written
-+ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
-+ * Functionality: error injection
-+ */
-+static void test_l2_bank_corr_err_injection_16_times(struct xe_mmio *mmio, int fd)
-+{
-+	int fw_handle;
-+	uint32_t current_threshold = UINT32_MAX;
-+	uint32_t gt_corr_counter_before = 0, gt_corr_counter_current = 0;
-+	int ret;
-+	struct app_context ctx;
-+
-+	fw_handle = acquire_forcewake(fd);
-+
-+	ret = igt_init_nl_socket(&ctx);
-+	if (ret < 0) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
-+	}
-+
-+	ret = igt_subscribe_error_notify(&ctx, DRM_RAS_MCGRP_ERROR_NOTIFY);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Failed to subscribe to error-notify (ret=%d)\n", ret);
-+	}
-+
-+	/* Query error counter before injection */
-+	/** TODO
-+	 *  Fetching node_id and error_id dynamically is pending to implement.
-+	 *  For now, using
-+	 *  node_id=0 (correctable_errors) and
-+	 *  error_id=1 (core_compute)
-+	 */
-+	ctx.node_id = 0;
-+	ctx.error_id = 1;
-+	ret = igt_get_error_counter(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "Failed to query GT correctable error counter before injection\n");
-+	}
-+	gt_corr_counter_before = ctx.error_value;
-+
-+	/* get current GT Correctable error threshold */
-+	ret = igt_get_error_threshold(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "Failed to query GT correctable error threshold before injection\n");
-+	}
-+	current_threshold = ctx.error_threshold;
-+	igt_info("Current GT Correctable error threshold: %u\n", current_threshold);
-+
-+	for (int i = 0; i < 16; i++) {
-+		igt_info("****** Injection iteration: %d ***********\n", i + 1);
-+		/* Inject a GT correctable error */
-+		l2_bank_corr_err_injection(mmio, fd);
-+
-+		/* Query error counter after injection */
-+		ret = igt_get_error_counter(&ctx);
-+		if (ret < 0) {
-+			CLEANUP_ON_ERROR(ctx, fw_handle);
-+			igt_assert_f(false,
-+				     "Failed to query GT correctable error counter:iteration %d\n",
-+				     i + 1);
-+		}
-+		gt_corr_counter_current = ctx.error_value;
-+		igt_info("GT Correctable error counter incremented by : %u "
-+			 "since before initial injection\n",
-+			 gt_corr_counter_current - gt_corr_counter_before);
-+	}
-+
-+	/* Confirm whether error counter incremented by 16 after 16 injections */
-+	if ((gt_corr_counter_current - gt_corr_counter_before) == 16) {
-+		log_status(true, "L2 Bank Correctable Error Injection 16 times");
-+	} else {
-+		log_status(false, "L2 Bank Correctable Error Injection 16 times");
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "GT Correctable error counter didn't increment "
-+			     "by 16 after 16 injections\n");
-+	}
-+
-+	ret = igt_wait_for_error_notify_event(&ctx, event_timeout);
-+	if (ret == 0 && ctx.event_error_value == 1) {
-+		log_status(true, "L2 Bank Correctable Error Injection 16 times");
-+	} else {
-+		log_status(false, "L2 Bank Correctable Error Injection 16 times");
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false, "Did not receive expected MSI event or "
-+			     "error_value after injection\n");
-+	}
-+
-+	CLEANUP_ON_ERROR(ctx, fw_handle);
-+}
-+
-+/**
-+ * SUBTEST: test_l2-bank-single-corr-err
-+ * Description: Inject single bit error injection in SSA data array when this bit is written
-+ * (this bit is a self clearing bit, event will be generated once written) - Correctable Error
-+ * Functionality: error injection
-+ */
-+static void test_l2_bank_single_corr_err_injection(struct xe_mmio *mmio, int fd)
-+{
-+	int fw_handle;
-+	int ret;
-+	uint32_t gt_corr_counter_before = 0, gt_corr_counter_after = 0;
-+	struct app_context ctx;
-+
-+	fw_handle = acquire_forcewake(fd);
-+
-+	ret = igt_init_nl_socket(&ctx);
-+	if (ret < 0) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
-+	}
-+
-+	/* Query error counter before injection */
-+	/** TODO
-+	 *  Fetching node_id and error_id dynamically is pending to implement.
-+	 *  For now, using
-+	 *  node_id=0 (correctable_errors) and
-+	 *  error_id=1 (core_compute)
-+	 */
-+	ctx.node_id = 0;
-+	ctx.error_id = 1;
-+	ret = igt_get_error_counter(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "Failed to query GT correctable error counter before injection\n");
-+	}
-+	gt_corr_counter_before = ctx.error_value;
-+	igt_info("GT Correctable error counter before injection: %u\n", gt_corr_counter_before);
-+
-+	/* Inject a GT correctable error */
-+	l2_bank_corr_err_injection(mmio, fd);
-+
-+	/* Query error counter after injection */
-+	ret = igt_get_error_counter(&ctx);
-+	if (ret < 0) {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "Failed to query GT correctable error counter after injection\n");
-+	}
-+	gt_corr_counter_after = ctx.error_value;
-+	igt_info("GT Correctable error counter after injection: %u\n", gt_corr_counter_after);
-+
-+	if (gt_corr_counter_after > gt_corr_counter_before) {
-+		igt_info("GT Correctable error counter incremented by %u after injection\n",
-+			 gt_corr_counter_after - gt_corr_counter_before);
-+		log_status(true, "L2 Bank Correctable Error");
-+	} else {
-+		CLEANUP_ON_ERROR(ctx, fw_handle);
-+		igt_assert_f(false,
-+			     "L2 Bank (GT) Correctable Error Injection count not incremented\n");
-+	}
-+
-+	CLEANUP_ON_ERROR(ctx, fw_handle);
-+}
-+
- static void inject_error(const char *injection, struct xe_mmio *mmio, int fd)
- {
- 	igt_info("Starting Error Injection test: %s\n", injection);
-@@ -281,6 +551,12 @@ static void inject_error(const char *injection, struct xe_mmio *mmio, int fd)
- 		wkr_cmd_parity_err_injection(mmio, fd);
- 	else if (strcmp(injection, "test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl") == 0)
- 		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
-+	else if (strcmp(injection, "test_l2-bank-corr-err-threshold-1") == 0)
-+		test_l2_bank_corr_err_injection_with_threshold_1(mmio, fd);
-+	else if (strcmp(injection, "test_l2-bank-corr-err-16-times") == 0)
-+		test_l2_bank_corr_err_injection_16_times(mmio, fd);
-+	else if (strcmp(injection, "test_l2-bank-single-corr-err") == 0)
-+		test_l2_bank_single_corr_err_injection(mmio, fd);
- 	else
- 		igt_info("Invalid Error Injection specified\n");
- }
-@@ -314,6 +590,18 @@ int igt_main()
- 		inject_error("test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl", &mmio, fd);
- 	}
- 
-+	igt_describe("Inject GT correctable error and validate error-notify event with threshold set to 1.");
-+	igt_subtest("test_l2-bank-corr-err-threshold-1")
-+		inject_error("test_l2-bank-corr-err-threshold-1", &mmio, fd);
-+
-+	igt_describe("Inject GT correctable error 16 times and validate counter/event behavior.");
-+	igt_subtest("test_l2-bank-corr-err-16-times")
-+		inject_error("test_l2-bank-corr-err-16-times", &mmio, fd);
-+
-+	igt_describe("Inject a single GT correctable error and validate counter increment.");
-+	igt_subtest("test_l2-bank-single-corr-err")
-+		inject_error("test_l2-bank-single-corr-err", &mmio, fd);
-+
- 	igt_fixture() {
- 		xe_mmio_access_fini(&mmio);
- 		drm_close_driver(fd);
 diff --git a/tests/intel/xe_err_injection.h b/tests/intel/xe_err_injection.h
-index d7efc2fd2..1a9ea2f2e 100644
---- a/tests/intel/xe_err_injection.h
+new file mode 100644
+index 000000000..d7efc2fd2
+--- /dev/null
 +++ b/tests/intel/xe_err_injection.h
-@@ -15,4 +15,14 @@
- #define POST_RECOVERY_WL 1
- #define POST_ARMING_INJECTION_WL 0
- 
-+/* L2 Bank (LBCFLOCKMSGREG) error injection */
-+#define L2_BANK_ERR_INJ 0xB1B4
-+#define DATA_1BIT_ERR_INJ_REQ (1 << 3)
-+#define FUSA_TEST_MODE_ERR_INJ_REQ (1 << 2)
-+#define MASK_BIT_FOR_DATA_1BIT_ERR_INJ_REQ (1 << 19)
-+#define MASK_BIT_FOR_FUSA_TEST_MODE_ERR_INJ_REQ (1 << 18)
-+#define L2_BANK_DATA_1BIT_ERR_INJ_CONFIG \
-+	(DATA_1BIT_ERR_INJ_REQ | FUSA_TEST_MODE_ERR_INJ_REQ | \
-+	 MASK_BIT_FOR_DATA_1BIT_ERR_INJ_REQ | MASK_BIT_FOR_FUSA_TEST_MODE_ERR_INJ_REQ)
+@@ -0,0 +1,18 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2026 Intel Corporation
++ */
 +
- #endif /* XE_ERR_INJECTION_H */
++#ifndef XE_ERR_INJECTION_H
++#define XE_ERR_INJECTION_H
++
++/* GT Uncorrectable unicast worker command parity error injection */
++#define MC_PKT_CTRL_MGSR_3D_ADDRESS 0x00FD4
++#define MC_PKT_CTRL_MGSR_3D_VALUE 0x80000000
++#define WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS 0xF310
++#define WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE 0x1
++
++#define POST_RECOVERY_WL 1
++#define POST_ARMING_INJECTION_WL 0
++
++#endif /* XE_ERR_INJECTION_H */
+diff --git a/tests/meson.build b/tests/meson.build
+index a62f447df..0f090dcee 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -292,6 +292,7 @@ intel_xe_progs = [
+ 	'xe_debugfs',
+ 	'xe_dma_buf_sync',
+ 	'xe_drm_fdinfo',
++	'xe_err_injection',
+ 	'xe_eu_stall',
+ 	'xe_evict',
+ 	'xe_evict_ccs',
 -- 
 2.34.1
 
