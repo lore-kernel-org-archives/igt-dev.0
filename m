@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43C5FC5DF81
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 19:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10324C5DF9C
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 19:07:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8E4E10E0F5;
-	Mon, 24 Aug 2026 19:01:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B1B5C10E085;
+	Mon, 24 Aug 2026 19:07:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="cQZa4Xea";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G0WT5vsO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2AAAA10E0F5
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 19:00:35 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B028110E085
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 19:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787598036; x=1819134036;
+ t=1787598387; x=1819134387;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=6Sppy0Y0+5Qpd9VojMpF1vEmrgBuwfBEsYuYH/wLwWw=;
- b=cQZa4XeaP5iZD6sJZ0TBz45z5AbZwLEuh+TLBVXJNnOJDtwNF3x2g/19
- GwUQT9VTZhKVV76XSnZXa7wVNFuCJPACJgn3jEqPfl1/t3mp4lFDy/oKf
- p8f7sJvL40OaVvnUCea11CzE+QittjP1Ed4ZtDU+CUTHlH4iUXBp/DG4Z
- ATAOepryoDBrMVbmW/UHCpYmnTb0AbGsrFCPvxLvKjqUBdBSo6gsovg61
- SeGvkbYXYkTzbaxpZG1HCsqgGloHBPBgJ+xPHTlV7u1asrdyQMXGlniNi
- MUkylTsNhqRc/5lGxmNdQuJBwcBifQPV4BROi1RMU8WjPvugIkcA36dQ1 Q==;
-X-CSE-ConnectionGUID: 3+PeDePIQ8Oi+Y0NyiJ/OA==
-X-CSE-MsgGUID: 8wHMyXzmSzqI2b5CWmuOcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="99582198"
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="99582198"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 12:00:35 -0700
-X-CSE-ConnectionGUID: DWT6B3muQcGTSRsO+/5JpQ==
-X-CSE-MsgGUID: gPSGQlbiRMiMrYOf0Ua78Q==
+ bh=uwjMkAhCdk4Z8FCzKylIcIETXuvzuA2Lra/d/GpE4Ro=;
+ b=G0WT5vsOu1YbY/xcMGuXTTeoCdxooE1qAG0LYHLbmDmrPHgdoC1PkA6L
+ wPeJQtx7rxRGnp2DcsFAHMW+Oo7+oF0jqVW7pgAAcUuWaJw566K/QN01L
+ BrLU3k14rvcYfaZUtKmL7ZijeOdOC4LKFVX6RhXYpNDbC4nt5sF/7NXcz
+ eeZ0f+5+IA26Vu/a3Q0/G9lpZ8cT0+06/mDGH89IwP5brS4yqxAwh4DHJ
+ mZySaDX8R3ini98QsjXi7mX5cOgGVcigfdFGPui1eCy1xQYQZXlkQPIwn
+ maBYpl3INafr4If9UM1+R0kkHniZ7o8rK7fhmQFpJzw69RD/cyk+EK4/9 g==;
+X-CSE-ConnectionGUID: 5SYpMI0rQ0GVl6Sy6O6mwg==
+X-CSE-MsgGUID: v5nCgLxiRM6oP6wontIh/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="110843635"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="110843635"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2026 12:06:27 -0700
+X-CSE-ConnectionGUID: AeAvf6yLQnqVMJUU1/sQDw==
+X-CSE-MsgGUID: CsZEbRtWT66VbTLmYDF1Bg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="291930100"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="270551208"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 12:00:33 -0700
-Date: Mon, 24 Aug 2026 21:00:31 +0200
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 12:06:25 -0700
+Date: Mon, 24 Aug 2026 21:06:23 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: nishit.sharma@intel.com
 Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
-Subject: Re: [PATCH v2 3/9] tests/intel/xe_exec_reset: add
- gt-stress-reset-memory-pressure subtest
-Message-ID: <20260824190031.dcfbfwxjeluvqjlc@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH v2 4/9] tests/intel/xe_exec_reset: add
+ gt-stress-reset-bo-invalidation subtest
+Message-ID: <20260824190623.z32cwcwdt3oa2tgs@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
  kamil.konieczny@intel.com
 References: <20260818040845.548727-1-nishit.sharma@intel.com>
- <20260818040845.548727-4-nishit.sharma@intel.com>
+ <20260818040845.548727-5-nishit.sharma@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260818040845.548727-4-nishit.sharma@intel.com>
+In-Reply-To: <20260818040845.548727-5-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,12 +73,12 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi nishit.sharma,
-On 2026-08-18 at 04:08:39 +0000, nishit.sharma@intel.com wrote:
+On 2026-08-18 at 04:08:40 +0000, nishit.sharma@intel.com wrote:
 > From: Nishit Sharma <nishit.sharma@intel.com>
 > 
-> Add memory-pressure coverage for the GT reset stress harness. This extends
-> concurrent reset+submission testing to include BO memory pressure while
-> preserving default behavior for existing subtests.
+> Add BO invalidation coverage to the GT reset stress path. This extends
+> reset stress coverage to BO mapping invalidation scenarios while keeping
+> the existing stress harness and default behavior intact.
 > 
 > Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 LGTM
@@ -88,117 +88,127 @@ Regards,
 Kamil
 
 > ---
->  tests/intel/xe_exec_reset.c | 48 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 48 insertions(+)
+>  tests/intel/xe_exec_reset.c | 57 +++++++++++++++++++++++++++++++++++--
+>  1 file changed, 54 insertions(+), 3 deletions(-)
 > 
 > diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index 407775cfc..825fc6aa1 100644
+> index 825fc6aa1..2a822b29b 100644
 > --- a/tests/intel/xe_exec_reset.c
 > +++ b/tests/intel/xe_exec_reset.c
-> @@ -29,6 +29,7 @@
->  
->  #define SYNC_OBJ_SIGNALED	(0x1 << 0)
->  #define LEGACY_MODE_ADDR	0x1a0000
-> +#define PRESSURE_COUNT		32
->  
->  static void ignore_gt_reset_warnings_in_dmesg(void)
->  {
-> @@ -133,6 +134,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
->  #define MULTI_QUEUE			(0x1 << 14)
+> @@ -135,6 +135,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
 >  #define SECONDARY_QUEUE			(0x1 << 15)
 >  #define RESET_SYNC_MODE			(0x1 << 16)
-> +#define MEM_PRESSURE_STRESS		(0x1 << 17)
+>  #define MEM_PRESSURE_STRESS		(0x1 << 17)
+> +#define INVALIDATE_BO_STRESS		(0x1 << 18)
 >  
 >  /**
 >   * SUBTEST: %s-cat-error
-> @@ -657,6 +659,30 @@ struct gt_thread_data {
+> @@ -655,10 +656,41 @@ struct gt_thread_data {
+>  	int *num_reset;
+>  	int *num_submit;
+>  	int *num_submit_fail;
+> +	int *num_vm_recreate;
+>  	unsigned int flags;
 >  	bool do_reset;
 >  };
 >  
-> +static void pressure_bo_create(int fd, uint32_t vm, int gt,
-> +			       uint32_t *bos, int *count)
+> +static void bo_ctx_destroy(int fd, uint32_t *vm, uint32_t *bo,
+> +			   uint32_t **data, size_t bo_size)
 > +{
-> +	int i;
+> +	if (*data) {
+> +		munmap(*data, bo_size);
+> +		*data = NULL;
+> +	}
 > +
-> +	*count = 0;
-> +	for (i = 0; i < PRESSURE_COUNT; i++) {
-> +		bos[i] = xe_bo_create(fd, vm, xe_bb_size(fd, SZ_2M),
-> +				      vram_if_possible(fd, gt),
-> +				      DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +		if (!bos[i])
-> +			break;
-> +		(*count)++;
+> +	if (*bo) {
+> +		gem_close(fd, *bo);
+> +		*bo = 0;
+> +	}
+> +
+> +	if (*vm) {
+> +		xe_vm_destroy(fd, *vm);
+> +		*vm = 0;
 > +	}
 > +}
 > +
-> +static void pressure_bo_destroy(int fd, uint32_t *bos, int count)
+> +static void bo_ctx_create(int fd, int gt, uint64_t addr, size_t bo_size,
+> +			  uint32_t *vm, uint32_t *bo, uint32_t **data)
 > +{
-> +	int i;
-> +
-> +	for (i = 0; i < count; i++)
-> +		gem_close(fd, bos[i]);
+> +	*vm = xe_vm_create(fd, 0, 0);
+> +	*bo = xe_bo_create(fd, *vm, bo_size, vram_if_possible(fd, gt),
+> +			   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> +	*data = xe_bo_map(fd, *bo, bo_size);
+> +	(*data)[0] = MI_BATCH_BUFFER_END;
+> +	xe_vm_bind_sync(fd, *vm, *bo, 0, addr, bo_size);
 > +}
 > +
->  static void do_resets(struct gt_thread_data *t)
+>  static void pressure_bo_create(int fd, uint32_t vm, int gt,
+>  			       uint32_t *bos, int *count)
 >  {
->  	while (!*(t->exit)) {
-> @@ -676,7 +702,10 @@ static void submit_jobs(struct gt_thread_data *t)
->  	uint64_t addr = 0x1a0000;
->  	size_t bo_size = xe_bb_size(fd, SZ_4K);
->  	uint32_t bo;
-> +	uint32_t pressure_bos[PRESSURE_COUNT];
->  	uint32_t *data;
-> +	int pressure_count;
-> +	int i = 0;
+> @@ -746,6 +778,19 @@ static void submit_jobs(struct gt_thread_data *t)
+>  			pressure_bo_create(fd, vm, t->gt, pressure_bos, &pressure_count);
+>  		}
 >  
->  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, t->gt),
->  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> @@ -685,6 +714,9 @@ static void submit_jobs(struct gt_thread_data *t)
->  
->  	xe_vm_bind_sync(fd, vm, bo, 0, addr, bo_size);
->  
-> +	if (t->flags & MEM_PRESSURE_STRESS)
-> +		pressure_bo_create(fd, vm, t->gt, pressure_bos, &pressure_count);
+> +		if (((t->flags & INVALIDATE_BO_STRESS) && !(i % 96))) {
+> +			if (t->flags & MEM_PRESSURE_STRESS) {
+> +				pressure_bo_destroy(fd, pressure_bos, pressure_count);
+> +				pressure_count = 0;
+> +			}
 > +
->  	while (!*(t->exit)) {
->  		struct drm_xe_engine_class_instance instance = {
->  			.engine_class = DRM_XE_ENGINE_CLASS_COPY,
-> @@ -707,8 +739,19 @@ static void submit_jobs(struct gt_thread_data *t)
->  		xe_exec(fd, &exec);
->  		xe_exec_queue_destroy(fd, exec.exec_queue_id);
->  		(*t->num_submit)++;
-> +
-> +		if ((t->flags & MEM_PRESSURE_STRESS) && !(i % 128)) {
-> +			pressure_bo_destroy(fd, pressure_bos, pressure_count);
-> +			pressure_count = 0;
-> +			pressure_bo_create(fd, vm, t->gt, pressure_bos, &pressure_count);
+> +			bo_ctx_destroy(fd, &vm, &bo, &data, bo_size);
+> +			bo_ctx_create(fd, t->gt, addr, bo_size, &vm, &bo, &data);
+> +			if (t->flags & MEM_PRESSURE_STRESS)
+> +				pressure_bo_create(fd, vm, t->gt, pressure_bos, &pressure_count);
+> +			(*t->num_vm_recreate)++;
 > +		}
 > +
-> +		i++;
+>  		i++;
 >  	}
 >  
-> +	if (t->flags & MEM_PRESSURE_STRESS)
-> +		pressure_bo_destroy(fd, pressure_bos, PRESSURE_COUNT);
-> +
->  	munmap(data, bo_size);
->  	gem_close(fd, bo);
->  	xe_vm_destroy(fd, vm);
-> @@ -744,6 +787,10 @@ static void *gt_reset_thread(void *data)
->   * Description: Stress concurrent GT resets and job submissions with sync resets
+> @@ -791,6 +836,10 @@ static void *gt_reset_thread(void *data)
+>   * Description: Stress concurrent GT resets and job submissions under memory pressure
 >   * Test category: stress test
 >   *
-> + * SUBTEST: gt-stress-reset-memory-pressure
-> + * Description: Stress concurrent GT resets and job submissions under memory pressure
+> + * SUBTEST: gt-stress-reset-bo-invalidation
+> + * Description: Stress concurrent GT resets and job submissions while invalidating BO CPU mappings
 > + * Test category: stress test
 > + *
 >   */
 >  static void
 >  gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
-> @@ -962,6 +1009,7 @@ int igt_main()
->  	const struct section ssections[] = {
+> @@ -799,7 +848,7 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+>  	pthread_mutex_t mutex;
+>  	pthread_cond_t cond;
+>  	int go = 0, exit = 0, num_reset = 0, i;
+> -	int num_submit = 0, num_submit_fail = 0;
+> +	int num_submit = 0, num_submit_fail = 0, num_vm_recreate = 0;
+>  
+>  	threads = calloc(n_threads, sizeof(struct gt_thread_data));
+>  	igt_assert(threads);
+> @@ -818,6 +867,7 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+>  		threads[i].num_reset = &num_reset;
+>  		threads[i].num_submit = &num_submit;
+>  		threads[i].num_submit_fail = &num_submit_fail;
+> +		threads[i].num_vm_recreate = &num_vm_recreate;
+>  		threads[i].do_reset = (i == 0);
+>  
+>  		pthread_create(&threads[i].thread, 0, gt_reset_thread,
+> @@ -835,8 +885,8 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+>  	for (i = 0; i < n_threads; i++)
+>  		pthread_join(threads[i].thread, NULL);
+>  
+> -	igt_info("number of resets %d, submissions %d, submit fails %d\n",
+> -		 num_reset, num_submit, num_submit_fail);
+> +	igt_info("number of resets %d, submissions %d, submit fails %d vm_recreate %d\n",
+> +		 num_reset, num_submit, num_submit_fail, num_vm_recreate);
+>  
+>  	igt_assert_neq(num_reset, 0);
+>  	igt_assert_neq(num_submit, 0);
+> @@ -1010,6 +1060,7 @@ int igt_main()
 >  		{ "reset-concurrent-submit", 0 },
 >  		{ "reset-concurrent-submit-sync", RESET_SYNC_MODE },
-> +		{ "reset-memory-pressure", MEM_PRESSURE_STRESS },
+>  		{ "reset-memory-pressure", MEM_PRESSURE_STRESS },
+> +		{ "reset-bo-invalidation", INVALIDATE_BO_STRESS },
 >  		{ NULL },
 >  	};
 >  	int gt;
