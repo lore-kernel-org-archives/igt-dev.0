@@ -4,52 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3FD0C5DF94
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 10:53:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A222C5DF94
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 13:15:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6287310E101;
-	Mon, 24 Aug 2026 10:53:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D56910E12F;
+	Mon, 24 Aug 2026 13:15:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M7K0Osg5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eU9gM+xs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DE2310E101
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 10:52:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AD6110E12F
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 13:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787568773; x=1819104773;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=M0+SUCVlcbceHEF8hlO2DGk4g4fwusFkZzMv9kcsnhM=;
- b=M7K0Osg5lyzSu1Bycya9e7HW2m/PVqeCK2tz05pIoPu2JH75AkMzbej7
- UAlQdVvUbXEsfIF//WU7ZD5txpte3+hONiEZOSvhbMjczBvzB1boWL6Y/
- DFc3rR0d4WetewZDhgqhk7OZBxkmFl3MAaBV19vU2eEMBpG69NkdwU6HR
- BXnEDl/SJp9w8HN38ehYRi4WAnKWrXaA5HGhcsA5LwSFgbXm/ZJU6xyfv
- W/rEytWm5HPVgtaWDT+c5YSAqz0cMv5hSw/YDeK8mtOWrkXhp2XMBe4Nm
- vVhMqgHKpdQWnkR3s7iniudeu1pqAdYc3anVyH5f2NsGUFk2aN7BzEdcu A==;
-X-CSE-ConnectionGUID: X9NbCmKFQMSy+1o9Ailk3A==
-X-CSE-MsgGUID: 2WeL8wPvTKyBXWORdNbewA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="98691279"
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; d="scan'208";a="98691279"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ t=1787577286; x=1819113286;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Qd/sibUy3zQLZPDk2If7JQqtjtkgHWnhEt1NImLhdV4=;
+ b=eU9gM+xs/3CR4pNpvpqbJWL7yJ1ctUV/x+UatH9leTmJOa6BXT6XIBxR
+ JfdUJT0tsWB4zVhP+1lvr/8Hs4AOEwbrklZJPiP5yjXRWFg+/jDtTAx03
+ rHT0kD1lqxpuaEDOfw19ZkumHl7nWUY69Ro12qHkfPdD+4fbo6rqMZ0je
+ hgXTI8V/YJz2vtkvIOpmyzTWKLUwGtz5DtgGvCltO4AOQUyYOEv7eHWho
+ xfvEX/FZ6rfQkrMN+aK9RGf0Kt8LGKq9fu+9/HKVLSIuPsmjuqBiyBqS7
+ ek0TEJRC8Hx9B8s6sTBkPrs3wuLTJ/kFDg41z3M/GX0VWPCEnGgZ/ohI/ A==;
+X-CSE-ConnectionGUID: ey1cXjZSQy2/oDhGtPw+9Q==
+X-CSE-MsgGUID: 8wEfqarSTnKY6zynULaDDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="98703336"
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; d="scan'208";a="98703336"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 03:52:52 -0700
-X-CSE-ConnectionGUID: T5pdU9r/Q6S3D5jsyyqttA==
-X-CSE-MsgGUID: Y9YQ2axnTcSdhxWtjeg9Kw==
+ 24 Aug 2026 06:14:46 -0700
+X-CSE-ConnectionGUID: h5m6bXqoTVWUFt97Y6J1VQ==
+X-CSE-MsgGUID: H+3be+sATN+1velS2uIK9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; d="scan'208";a="262676617"
-Received: from dut2084bmgfrd.iind.intel.com ([10.223.34.11])
- by fmviesa006.fm.intel.com with ESMTP; 24 Aug 2026 03:52:51 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org,
-	himanshu.girotra@intel.com
-Subject: [PATCH] tests/intel/xe_debug: fix NULL dereference in GT
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 06:14:44 -0700
+Date: Mon, 24 Aug 2026 15:14:18 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org, himanshu.girotra@intel.com
+Subject: Re: [PATCH] tests/intel/xe_debug: fix NULL dereference in GT
  register-save-restore debugfs check
-Date: Mon, 24 Aug 2026 10:52:49 +0000
-Message-Id: <20260824105249.503725-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.34.1
+Message-ID: <20260824131418.3opf6q4sqo4pn7vy@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
+ himanshu.girotra@intel.com
+References: <20260824105249.503725-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260824105249.503725-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,38 +70,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+Hi nishit.sharma,
+On 2026-08-24 at 10:52:49 +0000, nishit.sharma@intel.com wrote:
+> From: Nishit Sharma <nishit.sharma@intel.com>
+> 
+> This fixes a critical bug in the Xe debugfs validation test for the
+> GT register-save-restore debugfs node. The test opened the debugfs file
+> but checked the return value with igt_require(debugfs_fd) instead of
+> validating debugfs_fd >= 0. Since igt_debugfs_gt_open() returns -1
+> on failure, the require was incorrectly treated as true, and the
+> code then called fdopen(-1, "r"), leading to a NULL FILE* and a crash.
 
-This fixes a critical bug in the Xe debugfs validation test for the
-GT register-save-restore debugfs node. The test opened the debugfs file
-but checked the return value with igt_require(debugfs_fd) instead of
-validating debugfs_fd >= 0. Since igt_debugfs_gt_open() returns -1
-on failure, the require was incorrectly treated as true, and the
-code then called fdopen(-1, "r"), leading to a NULL FILE* and a crash.
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_debugfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Regards,
+Kamil
 
-diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
-index 5c045b04f..6b2cf2f37 100644
---- a/tests/intel/xe_debugfs.c
-+++ b/tests/intel/xe_debugfs.c
-@@ -581,8 +581,12 @@ static void check_gt_reg_sr(int fd, int gt)
- 
- 	debugfs_fd = igt_debugfs_gt_open(fd, gt, "register-save-restore-check",
- 					 O_RDONLY);
--	igt_require(debugfs_fd);
-+	igt_require(debugfs_fd >= 0);
- 	file = fdopen(debugfs_fd, "r");
-+	if (!file) {
-+		close(debugfs_fd);
-+		igt_skip("Failed to fdopen register-save-restore-check\n");
-+	}
- 	while (fgets(buf, sizeof(buf), file) != NULL) {
- 		unsigned long offset = strtoul(buf, NULL, 16);
- 		bool ok = false;
--- 
-2.34.1
-
+> 
+> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> ---
+>  tests/intel/xe_debugfs.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+> index 5c045b04f..6b2cf2f37 100644
+> --- a/tests/intel/xe_debugfs.c
+> +++ b/tests/intel/xe_debugfs.c
+> @@ -581,8 +581,12 @@ static void check_gt_reg_sr(int fd, int gt)
+>  
+>  	debugfs_fd = igt_debugfs_gt_open(fd, gt, "register-save-restore-check",
+>  					 O_RDONLY);
+> -	igt_require(debugfs_fd);
+> +	igt_require(debugfs_fd >= 0);
+>  	file = fdopen(debugfs_fd, "r");
+> +	if (!file) {
+> +		close(debugfs_fd);
+> +		igt_skip("Failed to fdopen register-save-restore-check\n");
+> +	}
+>  	while (fgets(buf, sizeof(buf), file) != NULL) {
+>  		unsigned long offset = strtoul(buf, NULL, 16);
+>  		bool ok = false;
+> -- 
+> 2.34.1
+> 
