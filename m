@@ -4,65 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA6AAC5DF81
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 09:29:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3FD0C5DF94
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 10:53:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5CCA310E6C0;
-	Mon, 24 Aug 2026 09:29:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6287310E101;
+	Mon, 24 Aug 2026 10:53:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eSBMuS7E";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M7K0Osg5";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E30210E6BB
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 09:28:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2DE2310E101
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 10:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787563721; x=1819099721;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=h+HaBmpHkmsBfCg8q7pGyPhBaJZa1vzgRdrR7fbdXLA=;
- b=eSBMuS7EcRXNSvTo4rbPAN8uXe3OFjeqnjGXlihKVikSEynlWyqZjka0
- CgOiDisnSwkxMysw31IGJ5dtaihVydxVOnEwLbbCHbVc4q0APEDYLGzIN
- N7Nllkkb7nC4nsC6c/5jQkXDRdX6qVWqpMCLlvXyhEWKICzp9VyAT0xYx
- ezMPTCAbtNp7abVH7XslPpxlM3N57eGqTvBsBJLK9f+tLRNjWDLovIEiS
- rY+awYJReLCSEaWjDRSpCa6lod9ptjvCokX6fIM3rD0RWgbChei3WausI
- 1hwA9ten6ApBIIm30IqaommXqlqfUDHW+yasLXZ8yqvFPEqCEKjcqSQAP w==;
-X-CSE-ConnectionGUID: wsgPTh6JQR6sfz3hTEU1mg==
-X-CSE-MsgGUID: 70XXqUp6SiaPznZ9/StFig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="88069897"
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; d="scan'208";a="88069897"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 02:28:41 -0700
-X-CSE-ConnectionGUID: D58zLfMmQru3WSPj/Y9NdQ==
-X-CSE-MsgGUID: NcwLyuUSSxSrAQiRmtIDOg==
+ t=1787568773; x=1819104773;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=M0+SUCVlcbceHEF8hlO2DGk4g4fwusFkZzMv9kcsnhM=;
+ b=M7K0Osg5lyzSu1Bycya9e7HW2m/PVqeCK2tz05pIoPu2JH75AkMzbej7
+ UAlQdVvUbXEsfIF//WU7ZD5txpte3+hONiEZOSvhbMjczBvzB1boWL6Y/
+ DFc3rR0d4WetewZDhgqhk7OZBxkmFl3MAaBV19vU2eEMBpG69NkdwU6HR
+ BXnEDl/SJp9w8HN38ehYRi4WAnKWrXaA5HGhcsA5LwSFgbXm/ZJU6xyfv
+ W/rEytWm5HPVgtaWDT+c5YSAqz0cMv5hSw/YDeK8mtOWrkXhp2XMBe4Nm
+ vVhMqgHKpdQWnkR3s7iniudeu1pqAdYc3anVyH5f2NsGUFk2aN7BzEdcu A==;
+X-CSE-ConnectionGUID: X9NbCmKFQMSy+1o9Ailk3A==
+X-CSE-MsgGUID: 2WeL8wPvTKyBXWORdNbewA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11884"; a="98691279"
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; d="scan'208";a="98691279"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Aug 2026 03:52:52 -0700
+X-CSE-ConnectionGUID: T5pdU9r/Q6S3D5jsyyqttA==
+X-CSE-MsgGUID: Y9YQ2axnTcSdhxWtjeg9Kw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; d="scan'208";a="271164518"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2026 02:28:38 -0700
-Date: Mon, 24 Aug 2026 11:28:36 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Junhua Shen <Junhua.Shen@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Jesse Zhang <Jesse.Zhang@amd.com>, Sunil Khatri <sunil.khatri@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>,
- Huang Rui <ray.huang@amd.com>, Yiru Ma <yiru.ma@amd.com>
-Subject: Re: [PATCH i-g-t v1 0/2] lib/amdgpu: generic compute dispatch helper
- and copy_dword
-Message-ID: <20260824092836.jv2rdy3n2xnzpiz3@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Junhua Shen <Junhua.Shen@amd.com>, igt-dev@lists.freedesktop.org,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Jesse Zhang <Jesse.Zhang@amd.com>,
- Sunil Khatri <sunil.khatri@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>,
- Huang Rui <ray.huang@amd.com>, Yiru Ma <yiru.ma@amd.com>
-References: <20260821142242.34700-1-Junhua.Shen@amd.com>
+X-IronPort-AV: E=Sophos;i="6.25,240,1779174000"; d="scan'208";a="262676617"
+Received: from dut2084bmgfrd.iind.intel.com ([10.223.34.11])
+ by fmviesa006.fm.intel.com with ESMTP; 24 Aug 2026 03:52:51 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org,
+	himanshu.girotra@intel.com
+Subject: [PATCH] tests/intel/xe_debug: fix NULL dereference in GT
+ register-save-restore debugfs check
+Date: Mon, 24 Aug 2026 10:52:49 +0000
+Message-Id: <20260824105249.503725-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260821142242.34700-1-Junhua.Shen@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,79 +65,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Junhua,
-On 2026-08-21 at 22:22:40 +0800, Junhua Shen wrote:
-> This series introduces a family-agnostic compute dispatch helper in
-> lib/amdgpu (lib/amdgpu/compute_utils/amd_dispatch_helpers.*). The emitter
-> owns only the PM4/compute state stream; all shader-binding state and the
-> BOs the shader accesses are provided by the caller.
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-Please subscribe to igt-dev mailing list, otherwise you could
-see some delay in delivery to ML.
+This fixes a critical bug in the Xe debugfs validation test for the
+GT register-save-restore debugfs node. The test opened the debugfs file
+but checked the return value with igt_require(debugfs_fd) instead of
+validating debugfs_fd >= 0. Since igt_debugfs_gt_open() returns -1
+on failure, the require was incorrectly treated as true, and the
+code then called fdopen(-1, "r"), leading to a NULL FILE* and a crash.
 
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+---
+ tests/intel/xe_debugfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
+diff --git a/tests/intel/xe_debugfs.c b/tests/intel/xe_debugfs.c
+index 5c045b04f..6b2cf2f37 100644
+--- a/tests/intel/xe_debugfs.c
++++ b/tests/intel/xe_debugfs.c
+@@ -581,8 +581,12 @@ static void check_gt_reg_sr(int fd, int gt)
+ 
+ 	debugfs_fd = igt_debugfs_gt_open(fd, gt, "register-save-restore-check",
+ 					 O_RDONLY);
+-	igt_require(debugfs_fd);
++	igt_require(debugfs_fd >= 0);
+ 	file = fdopen(debugfs_fd, "r");
++	if (!file) {
++		close(debugfs_fd);
++		igt_skip("Failed to fdopen register-save-restore-check\n");
++	}
+ 	while (fgets(buf, sizeof(buf), file) != NULL) {
+ 		unsigned long offset = strtoul(buf, NULL, 16);
+ 		bool ok = false;
+-- 
+2.34.1
 
-Regards,
-Kamil
-
-> 
-> The ptrace VRAM verification in amd_mem currently open-codes its own
-> dispatch through execute_compute_dispatch(), a single-purpose helper that
-> ignores its destination argument. This series replaces that helper with a
-> generic emitter and a copy_dword wrapper, and migrates the test onto them.
-> 
-> Scope: amd_mem is the only user of the compute path being changed. The
-> remaining amdgpu tests drive libdrm_amdgpu directly to validate the
-> compute-submission UAPI and are left untouched.
-> 
-> 
-> Overview of the changes
-> -----------------------
-> 1. add generic compute dispatch and copy_dword helpers
->    Add amdgpu_dispatch_shader(), an emitter driven by a caller-filled
->    amdgpu_dispatch_shader_req, allowing an arbitrary shader to be
->    dispatched without changing the emitter. Built on top of it,
->    amdgpu_compute_copy_dword() caches a single-DWORD copy shader for the
->    running GPU family and dispatches it as a reusable compute workload.
-> 
-> 2. replace execute_compute_dispatch with amdgpu_compute_copy_dword
->    Convert the amd_mem ptrace-access-invisible-vram verification to
->    amdgpu_compute_copy_dword() and remove the now-unused
->    execute_compute_dispatch().
-> 
-> 
-> Testing
-> -------
-> Tested on AMD GFX1036 (GFX10_3). amd_mem ptrace-access-invisible-vram
-> passes: both word_before and word_after readbacks match and no VM fault
-> occurs. No regression is observed from this series.
-> 
-> Known limitations / follow-up work
-> ----------------------------------
-> The following items are intentionally excluded from this series to limit
-> its scope; they are candidates for follow-up patches:
-> 
-> - The SET_SH_REG offsets in the emitter are hardcoded. A comment
->   explains why get_reg_offset() is not used yet: enum general_reg lacks
->   RSRC2/RSRC3/NUM_THREAD_Y/Z and there is a single gfx8 IP block wired
->   for all generations. Adopting it requires extending the enum and
->   adding real per-generation offset tables first.
-> 
-> - amdgpu_compute_copy_dword() is the only workload built on the generic
->   emitter so far. Other open-coded compute dispatches in the amdgpu
->   tests could be migrated onto amdgpu_dispatch_shader() where they are
->   not specifically exercising the submission UAPI.
-> 
-> Junhua Shen (2):
->   lib/amdgpu: add generic compute dispatch and copy_dword helpers
->   tests/amdgpu: replace execute_compute_dispatch with
->     amdgpu_compute_copy_dword
-> 
->  .../compute_utils/amd_dispatch_helpers.c      | 356 +++++++++++++-----
->  .../compute_utils/amd_dispatch_helpers.h      |  82 +++-
->  tests/amdgpu/amd_mem.c                        | 109 ++----
->  3 files changed, 366 insertions(+), 181 deletions(-)
-> 
-> -- 
-> 2.34.1
-> 
