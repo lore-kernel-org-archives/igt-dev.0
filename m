@@ -4,53 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1479C61CE3
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 16:47:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F182AC5DF9C
+	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 16:47:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6107410E7DC;
-	Mon, 24 Aug 2026 16:47:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9E36F10E161;
+	Mon, 24 Aug 2026 16:47:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hizHWp1q";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="W0hxLqX1";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4CD1A10E15F
- for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 16:42:18 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1D6210E15F
+ for <igt-dev@lists.freedesktop.org>; Mon, 24 Aug 2026 16:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787589738; x=1819125738;
+ t=1787589727; x=1819125727;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=HnSu1QKMH8Wnbzom8HY0nK9euyVLk3/IRr8fai3AApI=;
- b=hizHWp1qsK8b+KKCtqEKA0JGAkpaRVPxZbrkfEuU4OzJk7YZPUoDGcDc
- 56M65s12VT0BiTmbaprvhgW0SYY0em0u9YUONJaadff7Tkc7I3cVCTEmg
- ifMt9QTxYiGBny12v2h3Ms+frhIjUDghf9TpdW4bTaw6h0RPcESisJ6EP
- XL/9VuvpBR8rWp2lbmcMoBqQhjbIXpsMDP1jRfb2zBlmf3tTGzLRUojAB
- KhFzW+tYWtbiuxnc6tb6QDe81CtbkkVsqWqeCTu3O6CjeDo8//4rWLHgS
- 02YN7XJtiCTDnzfdcLVSD4X6BAPJZnfNHmL9N+0g3JpRtWYqFJVGn7CaU w==;
-X-CSE-ConnectionGUID: yM3WmTKWTFu2hqJLOrbC+A==
-X-CSE-MsgGUID: tbgO5YtUTW2n2rqtE9uoKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="88105692"
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="88105692"
+ bh=Fl8RGSIm/ZVX2EiyGQJZT9u2KPlKaDFR4yNLus+Kkj4=;
+ b=W0hxLqX1G7DE49K8EZEi5NBwaJNHxjSTp9B0pZT2RsGphDBU/mHOchQs
+ 8G2Q5rAHCsOr7pGH4lz6EnyNHT6+JV6zhmU3Gf3dD0eSc8JPA2O+XZYz0
+ RjoE41nl+VB2opQg3u9F+KooPy34kZcWoHQC8A2Zoo7XVy0UzeMsBZBfn
+ LmVvHbSUIH7jt/1fGqp6nxiYWzUlnp6ukLYY4EqdP0KyjMVOG9eZtFDd2
+ msPRe3i2NOld9ZiSm/FE279S6d6lpSIMygYrEbhpNiROXKBjf6NQtNbmL
+ IyeFIZJhuleZjaUCiSugwJqGisq6xC1/UVNmPYzj76p/Q+pP+zhHRODlr Q==;
+X-CSE-ConnectionGUID: lUFf70sDTH+1iYMJIEJ2og==
+X-CSE-MsgGUID: CLhEUeHtQ4ytURPSUfMDgA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11885"; a="88105677"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="88105677"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 09:42:18 -0700
-X-CSE-ConnectionGUID: mZ4K2q32S/WTp9yln7l0Dg==
-X-CSE-MsgGUID: VoqCLFVVQJ2tGCfHxmgrdQ==
+ 24 Aug 2026 09:42:06 -0700
+X-CSE-ConnectionGUID: 8A29k4eCSF+ufVgJEfDK/w==
+X-CSE-MsgGUID: sytH1N47SDCtCf14ZekGwg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="268993399"
+X-IronPort-AV: E=Sophos;i="6.25,241,1779174000"; d="scan'208";a="268993374"
 Received: from unknown (HELO rkoppura-Z790I-AORUS-ULTRA.iind.intel.com)
  ([10.190.239.17])
  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Aug 2026 09:42:16 -0700
+ 24 Aug 2026 09:42:05 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  mallesh.koujalagi@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v3 06/10] lib/igt_drm_netlink: add set_error_threshold command
- support
-Date: Mon, 24 Aug 2026 22:11:29 +0530
-Message-Id: <20260824164133.129138-7-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v3 02/10] lib/meson: Add libnl dependencies for DRM RAS support
+Date: Mon, 24 Aug 2026 22:11:25 +0530
+Message-Id: <20260824164133.129138-3-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
 References: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
@@ -71,105 +70,40 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support for SET_ERROR_THRESHOLD to set the custom error threshold
-value
+Add the required libnl Generic Netlink dependencies for DRM RAS Netlink
+library support.
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 ---
-v2:Marked this command as response not required
----
----
- lib/igt_drm_netlink.c | 39 +++++++++++++++++++++++++++++++++++++++
- lib/igt_drm_netlink.h |  1 +
- 2 files changed, 40 insertions(+)
+ lib/meson.build | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
-index f95ddac67..3cf155028 100644
---- a/lib/igt_drm_netlink.c
-+++ b/lib/igt_drm_netlink.c
-@@ -29,6 +29,8 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
- 	gnlh = nlmsg_data(nlh);
+diff --git a/lib/meson.build b/lib/meson.build
+index 4af346b43..7248bbc2d 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -141,6 +141,13 @@ lib_sources = [
+ 	'vendor/uwildmat/uwildmat.c',
+ ]
  
- 	switch (gnlh->cmd) {
-+	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
-+		break;
- 	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
- 		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
- 
-@@ -180,6 +182,7 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
- 	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
- 	case DRM_RAS_CMD_GET_ERROR_COUNTER:
- 		ctx->response_required = true;
-+	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
- 		ret = nla_put_u32(msg,
- 				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
- 				  ctx->node_id);
-@@ -195,6 +198,16 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
- 			nlmsg_free(msg);
- 			return ret;
- 		}
++libnl = declare_dependency(dependencies : [
++	dependency('libnl-3.0', required : true),
++	dependency('libnl-genl-3.0', required : true),
++	dependency('libnl-cli-3.0', required : true),
++	dependency('libnl-utils', required : false),
++])
 +
-+		if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD) {
-+			ret = nla_put_u32(msg,
-+					  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
-+					  ctx->error_threshold);
-+			if (ret < 0) {
-+				nlmsg_free(msg);
-+				return ret;
-+			}
-+		}
- 		break;
- 	default:
- 		nlmsg_free(msg);
-@@ -317,6 +330,14 @@ static int validate_inputs(struct app_context *ctx, uint8_t cmd)
- 		return -EINVAL;
- 	}
- 
-+	if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD &&
-+	    (ctx->error_threshold < 1 || ctx->error_threshold > 16)) {
-+		igt_warn("Invalid error_threshold (%u) provided. "
-+			 "error_threshold should be >= 1 and <= 16.\n",
-+			 ctx->error_threshold);
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
-@@ -371,3 +392,21 @@ int igt_get_error_threshold(struct app_context *ctx)
- 
- 	return 0;
- }
-+
-+int igt_set_error_threshold(struct app_context *ctx)
-+{
-+	int ret;
-+
-+	ret = validate_inputs(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = send_command(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
-+	if (ret < 0)
-+		return ret;
-+
-+	igt_debug("Set error threshold: node_id=%u error_id=%u threshold=%u\n",
-+		  ctx->node_id, ctx->error_id, ctx->error_threshold);
-+
-+	return 0;
-+}
-diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
-index d315c4059..b9eab6701 100644
---- a/lib/igt_drm_netlink.h
-+++ b/lib/igt_drm_netlink.h
-@@ -36,6 +36,7 @@ void igt_cleanup_nl_socket(struct app_context *ctx);
- int igt_init_nl_socket(struct app_context *ctx);
- int igt_get_error_counter(struct app_context *ctx);
- int igt_get_error_threshold(struct app_context *ctx);
-+int igt_set_error_threshold(struct app_context *ctx);
- 
- #endif /* IGT_DRM_NETLINK_H */
- 
+ lib_deps = [
+ 	cairo,
+ 	glib,
+@@ -148,6 +155,7 @@ lib_deps = [
+ 	libdrm,
+ 	libdw,
+ 	libkmod,
++        libnl,
+ 	libpci,
+ 	libudev,
+ 	math,
 -- 
 2.34.1
 
