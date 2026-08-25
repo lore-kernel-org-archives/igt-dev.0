@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D486C61DBE
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Aug 2026 15:33:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F08A7C61DBD
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Aug 2026 18:34:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 90DA110EA7F;
-	Tue, 25 Aug 2026 15:33:03 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EE3310EA7F;
- Tue, 25 Aug 2026 15:32:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3447425855035194635=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7D9EC10E12B;
+	Tue, 25 Aug 2026 18:34:31 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S6DWeVRv";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67E2210E12B
+ for <igt-dev@lists.freedesktop.org>; Tue, 25 Aug 2026 18:33:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1787682834; x=1819218834;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=m9gREBvwzWepXnoODMsZ9jRnrS1Dt5TfWx5HpTHOtjE=;
+ b=S6DWeVRvyp1/s9rF+lGV7r+a3Ae/XP/8dQFF9ExBoLdb3zWL4XDayzWK
+ RN3AvYwkqaUZXcLRgeCGY1I/shA1pL66JJTtlafAyULwnqCUBSop0rI5A
+ Lsv5M05NUYQ9eiduiPKP+mXPvdEa9o+LPMTqAC8UacMbjI73vhgKkYJdD
+ FPpF6LBvVEnqE0kEXEoqLC0K8jbUaZaHLT10AR+gzOZR+IQlCq2qns63c
+ 0E8TPkeFhxDmzUvkP2KPenJmLYEgXotL0wKs6Yp9rbDHI2WCJRi1QK3gX
+ GjuNwn65U1uQ6KdTQiiSn/v+E7LgwqSdiUm/dBM9kTC05O4dR5Nerna8v Q==;
+X-CSE-ConnectionGUID: 0lbYhO/ZTnCCuKPIvK+EuQ==
+X-CSE-MsgGUID: vtGbSdnUTq+w8dOJMEB7CQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="113695205"
+X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; d="scan'208";a="113695205"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Aug 2026 11:33:54 -0700
+X-CSE-ConnectionGUID: HoLkmBkST0GhFCeVnaoHRA==
+X-CSE-MsgGUID: P/BPaSMQT1uEelBLPR/i5Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; d="scan'208";a="270848934"
+Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
+ ([10.190.238.65])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Aug 2026 11:33:53 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: mitulkumar.ajitkumar.golani@intel.com, chaitanya.kumar.borah@intel.com,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v5 0/3] Add CMRR subtests
+Date: Wed, 26 Aug 2026 00:03:55 +0530
+Message-ID: <20260825183359.2791891-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Support_test_execution_wi?=
- =?utf-8?q?th_pre-enabled_VFs?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lukasz Laguna" <lukasz.laguna@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 25 Aug 2026 15:32:26 -0000
-Message-ID: <178767194657.83845.13543503726740452210@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260825141806.2278653-1-lukasz.laguna@intel.com>
-In-Reply-To: <20260825141806.2278653-1-lukasz.laguna@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,130 +64,26 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3447425855035194635==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Add a subtests to validate CMRR with video mode and desktop mode.
 
-== Series Details ==
+Naladala Ramanaidu (3):
+  lib/igt_kms: Add helper to return vblank timestamp and sequence
+  lib/igt_vrr:Add VRR helper library for display refresh rate testing
+  tests/kms_vrr: add CMRR fixed and video mode subtests
 
-Series: Support test execution with pre-enabled VFs
-URL   : https://patchwork.freedesktop.org/series/172734/
-State : success
+ lib/igt_kms.c   |  25 ++++++
+ lib/igt_kms.h   |   1 +
+ lib/igt_vrr.c   | 149 +++++++++++++++++++++++++++++++
+ lib/igt_vrr.h   |  29 ++++++
+ lib/meson.build |   1 +
+ tests/kms_vrr.c | 231 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 436 insertions(+)
+ create mode 100644 lib/igt_vrr.c
+ create mode 100644 lib/igt_vrr.h
 
-== Summary ==
+-- 
+2.43.0
 
-CI Bug Log - changes from IGT_9074 -> IGTPW_15731
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15731/index.html
-
-Participating hosts (40 -> 37)
-------------------------------
-
-  Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15731 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-adlp-6:         [DMESG-WARN][1] ([i915#15673]) -> [PASS][2] +78 other tests pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9074/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15731/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
-
-  
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9074 -> IGTPW_15731
-
-  CI-20190529: 20190529
-  CI_DRM_19041: 15e2ba2fb6d25c03d89519aec46f8d5be3e118ad @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15731: 15731
-  IGT_9074: 9074
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15731/index.html
-
---===============3447425855035194635==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Support test execution with pre-enabled VFs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172734/">https://patchwork.freedesktop.org/series/172734/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15731/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15731/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9074 -&gt; IGTPW_15731</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15731/index.html</p>
-<h2>Participating hosts (40 -&gt; 37)</h2>
-<p>Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15731 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9074/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15731/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> +78 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9074 -&gt; IGTPW_15731</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19041: 15e2ba2fb6d25c03d89519aec46f8d5be3e118ad @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15731: 15731<br />
-  IGT_9074: 9074</p>
-
-</body>
-</html>
-
---===============3447425855035194635==--
