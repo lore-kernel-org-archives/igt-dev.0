@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9297FC5DF9C
-	for <igt-dev@archiver.kernel.org>; Mon, 24 Aug 2026 23:33:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12D3DC5DF81
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Aug 2026 00:06:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 32277892D3;
-	Mon, 24 Aug 2026 23:33:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 95E8B10E049;
+	Tue, 25 Aug 2026 00:06:09 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B14F892D3;
- Mon, 24 Aug 2026 23:33:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 13D8810E031;
+ Tue, 25 Aug 2026 00:05:34 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4628627323905656164=="
+ boundary="===============6317631235347000870=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/amdgpu=3A_generic_compu?=
- =?utf-8?q?te_dispatch_helper_and_copy=5Fdword?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/amdgpu=3A_refactor_cmd?=
+ =?utf-8?q?=5Fcontext_ownership_and_packet_operands?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Junhua Shen" <junhua.shen@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 24 Aug 2026 23:33:17 -0000
-Message-ID: <178761439710.80981.13657740429147123698@61270ab9df2a>
+Date: Tue, 25 Aug 2026 00:05:34 -0000
+Message-ID: <178761633407.80981.13343737062353909604@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260821142242.34700-1-Junhua.Shen@amd.com>
-In-Reply-To: <20260821142242.34700-1-Junhua.Shen@amd.com>
+References: <20260821124152.19670-1-Junhua.Shen@amd.com>
+In-Reply-To: <20260821124152.19670-1-Junhua.Shen@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4628627323905656164==
+--===============6317631235347000870==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/amdgpu: generic compute dispatch helper and copy_dword
-URL   : https://patchwork.freedesktop.org/series/172654/
+Series: lib/amdgpu: refactor cmd_context ownership and packet operands
+URL   : https://patchwork.freedesktop.org/series/172656/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9071_BAT -> XEIGTPW_15722_BAT
+CI Bug Log - changes from XEIGT_9071_BAT -> XEIGTPW_15723_BAT
 ====================================================
 
 Summary
@@ -74,7 +74,7 @@ Participating hosts (13 -> 13)
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_15722_BAT that come from known issues:
+  Here are the changes found in XEIGTPW_15723_BAT that come from known issues:
 
 ### IGT changes ###
 
@@ -83,7 +83,7 @@ Known issues
   * igt@core_hotunplug@unbind-rebind:
     - bat-nvls-1:         [DMESG-WARN][1] ([Intel XE#8762]) -> [PASS][2]
    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9071/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15722/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15723/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
 
   
   [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
@@ -92,19 +92,19 @@ Known issues
 Build changes
 -------------
 
-  * IGT: IGT_9071 -> IGTPW_15722
+  * IGT: IGT_9071 -> IGTPW_15723
   * Linux: xe-5640-b830d7b865d1dcc0c199feef72cbe7bf7b208762 -> xe-5642-15e2ba2fb6d25c03d89519aec46f8d5be3e118ad
 
-  IGTPW_15722: 7a0c4f92297294499cdc851efa780f25e87936e2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15723: 5e22efdff822b9c4f96b2bc5f3237e0931dff9b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9071: 9071
   xe-5640-b830d7b865d1dcc0c199feef72cbe7bf7b208762: b830d7b865d1dcc0c199feef72cbe7bf7b208762
   xe-5642-15e2ba2fb6d25c03d89519aec46f8d5be3e118ad: 15e2ba2fb6d25c03d89519aec46f8d5be3e118ad
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15722/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15723/index.html
 
---===============4628627323905656164==
+--===============6317631235347000870==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -124,37 +124,37 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/amdgpu: generic compute dispatch helper and copy_dword</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172654/">https://patchwork.freedesktop.org/series/172654/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/amdgpu: refactor cmd_context ownership and packet operands</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172656/">https://patchwork.freedesktop.org/series/172656/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15722/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15722/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15723/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15723/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9071_BAT -&gt; XEIGTPW_15722_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_9071_BAT -&gt; XEIGTPW_15723_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (13 -&gt; 13)</h2>
 <p>No changes in participating hosts</p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15722_BAT that come from known issues:</p>
+<p>Here are the changes found in XEIGTPW_15723_BAT that come from known issues:</p>
 <h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
 <li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9071/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15722/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9071/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15723/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9071 -&gt; IGTPW_15722</li>
+<li>IGT: IGT_9071 -&gt; IGTPW_15723</li>
 <li>Linux: xe-5640-b830d7b865d1dcc0c199feef72cbe7bf7b208762 -&gt; xe-5642-15e2ba2fb6d25c03d89519aec46f8d5be3e118ad</li>
 </ul>
-<p>IGTPW_15722: 7a0c4f92297294499cdc851efa780f25e87936e2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+<p>IGTPW_15723: 5e22efdff822b9c4f96b2bc5f3237e0931dff9b4 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_9071: 9071<br />
   xe-5640-b830d7b865d1dcc0c199feef72cbe7bf7b208762: b830d7b865d1dcc0c199feef72cbe7bf7b208762<br />
   xe-5642-15e2ba2fb6d25c03d89519aec46f8d5be3e118ad: 15e2ba2fb6d25c03d89519aec46f8d5be3e118ad</p>
@@ -162,4 +162,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============4628627323905656164==--
+--===============6317631235347000870==--
