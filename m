@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14780C61DB9
-	for <igt-dev@archiver.kernel.org>; Tue, 25 Aug 2026 18:36:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A5E5C61DB9
+	for <igt-dev@archiver.kernel.org>; Tue, 25 Aug 2026 18:38:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AEA8289DD8;
-	Tue, 25 Aug 2026 18:36:17 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jY2yeMDu";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 21E1310E12B
- for <igt-dev@lists.freedesktop.org>; Tue, 25 Aug 2026 18:33:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787682839; x=1819218839;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=SfUeEs0G0Ad93oTdhNc48XbnRPnT6Qd2U5bORMOdeb4=;
- b=jY2yeMDu0vRuiJrHJxYYyHEWpusSDl0ijgYTost1JF/vaaqFZoOKpYSP
- Gy2Cr35rvaL4YNzdD+k5dAdEUvF30xfgDlxGoE0TmHjEfblx8H8ygh4fg
- 6fyJyjSRwsmhsH76gD19PlCAiZaKJ4yQ+/c/4mCp3+EcxuF78/j4zkoAt
- Is/Htij9mwEmXqrHvIqK/Xv7zzMxev/8iTdYqBN/nJ1JUC8b5USiO7JKE
- fvNS9ksOCXzsc+ZIjV+LTsmBlfBtw8UHJZMi+2ZwePJScC+k4AYEs6SlK
- O/kxH70ZvrfktsSim8cimD//aXnPGdW2R1d3XH3RACdIWuMI7U1lwhvpM Q==;
-X-CSE-ConnectionGUID: VT7tvzXMRoetxje59uQDQw==
-X-CSE-MsgGUID: GsZZ0eaHQcyLTTojOjP3TA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="113695212"
-X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; d="scan'208";a="113695212"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2026 11:33:58 -0700
-X-CSE-ConnectionGUID: 4sV+k8ssSHaup5XCcRYUBw==
-X-CSE-MsgGUID: UfNb7CXSSQSdvRe7AdjD/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,243,1779174000"; d="scan'208";a="270848955"
-Received: from unknown (HELO rgsanthosh-System-Product-Name.iind.intel.com)
- ([10.190.238.65])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Aug 2026 11:33:58 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: mitulkumar.ajitkumar.golani@intel.com, chaitanya.kumar.borah@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v5 3/3] tests/kms_vrr: add CMRR fixed and video mode
- subtests
-Date: Wed, 26 Aug 2026 00:03:58 +0530
-Message-ID: <20260825183359.2791891-4-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260825183359.2791891-1-ramanaidu.naladala@intel.com>
-References: <20260825183359.2791891-1-ramanaidu.naladala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 06FE889DD8;
+	Tue, 25 Aug 2026 18:38:14 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 80BB010E1B6;
+ Tue, 25 Aug 2026 18:37:37 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0856535952114247099=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_scale_MPO?=
+ =?utf-8?q?_bandwidth-skip_tolerance_to_the_panel_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: haoming.qi@amd.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 25 Aug 2026 18:37:37 -0000
+Message-ID: <178768305751.84443.4706082586520906575@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260821193021.2156148-1-Haoming.Qi@amd.com>
+In-Reply-To: <20260821193021.2156148-1-Haoming.Qi@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,329 +37,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test coverage to validate Content Match Refresh Rate (CMRR)
-behavior across both fixed and video timing display modes.
+--===============0856535952114247099==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This introduces a shared helper library to support refresh-rate
-mode selection and parsing, along with two new test cases covering
-fixed-mode and video-mode scenarios.
+== Series Details ==
 
-The new tests measure actual display refresh timing during CMRR
-operation and compare it against the expected target rate to
-verify correctness. Video mode coverage validates behavior across
-standard video timing rates, while fixed mode coverage targets
-display modes that fall outside the standard video timing set.
+Series: tests/amdgpu: scale MPO bandwidth-skip tolerance to the panel (rev2)
+URL   : https://patchwork.freedesktop.org/series/172655/
+State : success
 
-Each test cycles through the relevant refresh configurations,
-applying and resetting the appropriate settings between
-measurement passes to ensure consistent and isolated test results.
+== Summary ==
 
-v2: Fix test issue.
-v3: Address review comments. (Mitul)
-v4: Fix test issue.
-v5: Address below review comments:
-    - Rename CMRR fixed/non-video mode references to desktop mode. (Chaitanya)
-    - Factor out vblank timestamp/sequence retrieval into helper. (Chaitanya)
-    - Simplify CMRR tests by extracting common mode logic. (Chaitanya,
-      Mitul)
-    - Refactor CMRR refresh-rate verification and frame filtering.
+CI Bug Log - changes from IGT_9074 -> IGTPW_15732
+====================================================
 
-Assisted-by: GitHub Copilot:Claude Opus 4.6
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/kms_vrr.c | 231 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 231 insertions(+)
+Summary
+-------
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 27f18e8d0..1afc1e2bb 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -32,6 +32,7 @@
- #include "igt_pm.h"
- #include "igt_psr.h"
- #include "i915/intel_drrs.h"
-+#include "igt_vrr.h"
- #include "sw_sync.h"
- #include <fcntl.h>
- #include <signal.h>
-@@ -80,9 +81,22 @@
-  *
-  * SUBTEST: lobf-dc3co
-  * Description: Test DC3CO entry during LOBF.
-+ *
-+ * SUBTEST: cmrr-desktop-mode
-+ * Description: Test to set a desktop mode CMRR target refresh rate and verify
-+ *              it is correctly applied.
-+ *
-+ * SUBTEST: cmrr-video-mode
-+ * Description: Test to set standard video timing refresh rates via CMRR
-+ *              and verify each target rate is correctly applied.
-  */
- 
- #define NSECS_PER_SEC (1000000000ull)
-+#define CMRR_NUMERATOR 1000ULL
-+#define CMRR_DENOMINATOR 1000ULL
-+#define CMRR_VIDEO_MODE_DENOMINATOR 1001ULL
-+#define TARGET_RR_SAMP_COUNT 100
-+#define CMRR_RR_TOLERANCE_HZ 0.02
- 
- /*
-  * Each test measurement step runs for ~5 seconds.
-@@ -103,6 +117,14 @@ enum {
- 	TEST_LINK_OFF = 1 << 10,
- 	TEST_NEGATIVE = 1 << 11,
- 	TEST_FORCE_RR = 1 << 12,
-+	TEST_CMRR_DESKTOP_MODE = 1 << 13,
-+	TEST_CMRR_VIDEO_MODE = 1 << 14,
-+};
-+
-+enum {
-+	CMRR_VIDEO_MODE,
-+	CMRR_DESKTOP_MODE,
-+	CMRR_DISABLE,
- };
- 
- enum {
-@@ -221,6 +243,38 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
- 	return mode;
- }
- 
-+/**
-+ * get_mode_with_video_timing:
-+ * @output: Display output containing connector mode list
-+ * @fps: Requested integer refresh rate in Hz
-+ * @matched_mode: Returned mode that matches @fps
-+ *
-+ * Find and return a connector mode that matches the requested
-+ * video timing refresh rate in Hz.
-+ *
-+ * Returns: true when a mode is found, false otherwise
-+ */
-+
-+static bool
-+get_mode_with_video_timing(igt_output_t *output, uint32_t fps,
-+			   drmModeModeInfo *matched_mode)
-+{
-+	drmModeConnectorPtr connector;
-+
-+	connector = output->config.connector;
-+	if (!connector)
-+		return false;
-+
-+	for (int i = 0; i < connector->count_modes; i++) {
-+		if (connector->modes[i].vrefresh == fps) {
-+			*matched_mode = connector->modes[i];
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- static drmModeModeInfo
- low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
- {
-@@ -580,6 +634,168 @@ flip_and_measure(data_t *data, igt_output_t *output,
- 	return 0;
- }
- 
-+/* Measure and verify the effective refresh rate against the expected CMRR target rate. */
-+static void
-+flip_and_measure_target_rr(data_t *data, igt_crtc_t *crtc,
-+			   double vrefresh, uint32_t cmrr_mode)
-+{
-+	uint64_t last_vblank_ns, vblank_ns, frame_time_ns;
-+	uint64_t total_frame_time_ns = 0;
-+	uint32_t last_seq, seq, seq_delta;
-+	uint32_t err_frames = 0, valid_frames;
-+	double avg_frame_time_ns, avg_refresh_rate;
-+	double  expected_rr = 0;
-+	bool front = false;
-+	uint32_t i;
-+
-+	switch (cmrr_mode) {
-+	case CMRR_VIDEO_MODE:
-+		expected_rr = (vrefresh * CMRR_NUMERATOR) /
-+			      (double)CMRR_VIDEO_MODE_DENOMINATOR;
-+		break;
-+	case CMRR_DESKTOP_MODE:
-+		expected_rr = (vrefresh * CMRR_NUMERATOR) /
-+			      (double)CMRR_DENOMINATOR;
-+		break;
-+	case CMRR_DISABLE:
-+		expected_rr = vrefresh;
-+		break;
-+	default:
-+		igt_assert_f(0, "Invalid CMRR mode %u\n", cmrr_mode);
-+	}
-+
-+	do_flip(data, &data->fb[0]);
-+	(void)get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-+	igt_wait_for_vblank_ts_seq(crtc, &last_vblank_ns, &last_seq);
-+
-+	for (i = 0; i < TARGET_RR_SAMP_COUNT; i++) {
-+		front = !front;
-+
-+		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
-+		igt_wait_for_vblank_ts_seq(crtc, &vblank_ns, &seq);
-+		(void)get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-+
-+		frame_time_ns = vblank_ns - last_vblank_ns;
-+		seq_delta = seq - last_seq;
-+
-+		last_vblank_ns = vblank_ns;
-+		last_seq = seq;
-+
-+		if (seq_delta != 1) {
-+			igt_debug("vblank seq delta = %d\n", seq_delta);
-+			err_frames++;
-+			continue;
-+		}
-+
-+		total_frame_time_ns += frame_time_ns;
-+	}
-+
-+	valid_frames = TARGET_RR_SAMP_COUNT - err_frames;
-+
-+	igt_assert_f(valid_frames >= 90,
-+		     "Valid frames below threshold (90): valid_frames=%u, err_frames=%u\n",
-+		     valid_frames, err_frames);
-+
-+	avg_frame_time_ns = (double)total_frame_time_ns / valid_frames;
-+	avg_refresh_rate = (double)NSECS_PER_SEC / avg_frame_time_ns;
-+
-+	igt_assert_f(fabs(avg_refresh_rate - expected_rr) <= CMRR_RR_TOLERANCE_HZ,
-+		     "CMRR refresh rate mismatch: measured avg_rr = %.3f Hz, "
-+		     "expected_rr = %.3f Hz\n",
-+		      avg_refresh_rate, expected_rr);
-+
-+	igt_info("Average RR (Hz): %.2f , Expected RR (Hz): %.2f, error frames = %d\n",
-+		 avg_refresh_rate, expected_rr, err_frames);
-+}
-+
-+/**
-+ * Programs the requested CMRR target refresh rate for @mode, verifies that the measured
-+ * refresh rate matches the expected CMRR behavior,then disables CMRR and verifies that
-+ * the refresh rate returns to the mode's nominal refresh rate. The function asserts that
-+ * all target refresh rate programming operations succeed.
-+ */
-+static void
-+run_cmrr(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-+	 const drmModeModeInfo *mode, uint32_t cmrr_mode)
-+{
-+	uint32_t numerator, denominator;
-+	bool ret;
-+	double rr_from_mode = igt_vrr_mode_line_refresh_hz(mode);
-+
-+	switch (cmrr_mode) {
-+	case CMRR_VIDEO_MODE:
-+		numerator = mode->vrefresh * CMRR_NUMERATOR;
-+		denominator = CMRR_VIDEO_MODE_DENOMINATOR;
-+		break;
-+	case CMRR_DESKTOP_MODE:
-+		numerator =  mode->vrefresh * CMRR_NUMERATOR;
-+		denominator = CMRR_DENOMINATOR;
-+		break;
-+	default:
-+		igt_assert_f(0, "Unsupported CMRR mode %u\n",
-+			     cmrr_mode);
-+	}
-+
-+	igt_output_override_mode(output, mode);
-+	igt_info("Override mode:");
-+	kmstest_dump_mode((drmModeModeInfo *)mode);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	ret = igt_intel_target_rr_debugfs_write(data->drm_fd,
-+						crtc->crtc_index,
-+						numerator,
-+						denominator);
-+	igt_assert_f(ret, "Failed to program CMRR target RR (%u/%u)\n",
-+		     numerator, denominator);
-+
-+	flip_and_measure_target_rr(data, crtc, mode->vrefresh, cmrr_mode);
-+
-+	ret = igt_intel_target_rr_debugfs_write(data->drm_fd, crtc->crtc_index, 0, 0);
-+
-+	igt_assert_f(ret, "Failed to disable CMRR target RR\n");
-+
-+	flip_and_measure_target_rr(data, crtc, rr_from_mode, CMRR_DISABLE);
-+}
-+
-+/* Validate CMRR behavior for supported video and desktop display modes. */
-+static
-+void test_cmrr(data_t *data, igt_crtc_t *crtc,
-+	       igt_output_t *output, uint32_t flags)
-+{
-+	drmModeModeInfo mode;
-+	bool found = false;
-+	drmModeConnectorPtr connector = output->config.connector;
-+	int j;
-+
-+	igt_require_f(igt_vrr_intel_target_refresh_rate_supported(data->drm_fd, crtc->crtc_index),
-+		      "CMRR not supported\n");
-+	prepare_test(data, output, crtc);
-+	set_vrr_on_crtc(data, crtc, true, false);
-+
-+	if (flags & TEST_CMRR_VIDEO_MODE) {
-+		for (j = 0; j < igt_vrr_standard_video_timing_fps_count; j++) {
-+			if (!get_mode_with_video_timing(output,
-+							igt_vrr_standard_video_timing_fps[j],
-+							&mode))
-+				continue;
-+
-+			run_cmrr(data, crtc, output, &mode, CMRR_VIDEO_MODE);
-+		}
-+	}
-+
-+	if (flags & TEST_CMRR_DESKTOP_MODE) {
-+		for (j = 0; j < connector->count_modes; j++) {
-+			mode = connector->modes[j];
-+			if (igt_vrr_mode_line_refresh_hz(&mode) - mode.vrefresh <= 0.04)
-+				continue;
-+
-+			found = true;
-+			run_cmrr(data, crtc, output, &mode, CMRR_DESKTOP_MODE);
-+		}
-+		igt_require_f(found, "No desktop mode found.\n");
-+	}
-+}
-+
- /* Basic VRR flip functionality test - enable, measure, disable, measure */
- static void
- test_basic(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-@@ -591,6 +807,7 @@ test_basic(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
- 	uint64_t rate[] = {0};
- 
- 	prepare_test(data, output, crtc);
-+
- 	range = data->range;
- 	vtest_ns = data->vtest_ns;
- 	rate[0] = vtest_ns.rate_ns;
-@@ -1147,6 +1364,20 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- 		}
- 	}
- 
-+	igt_subtest_group() {
-+		igt_fixture()
-+			igt_require_intel(data.drm_fd);
-+
-+		igt_describe("Test to validate CMRR in fixed mode.");
-+		igt_subtest_with_dynamic("cmrr-desktop-mode") {
-+			run_vrr_test(&data, test_cmrr, TEST_CMRR_DESKTOP_MODE);
-+		}
-+
-+		igt_describe("Test to validate CMRR in video mode.");
-+		igt_subtest_with_dynamic("cmrr-video-mode") {
-+			run_vrr_test(&data, test_cmrr, TEST_CMRR_VIDEO_MODE);
-+		}
-+	}
- 	igt_fixture() {
- 		close(data.debugfs_fd);
- 		igt_display_fini(&data.display);
--- 
-2.43.0
+  **SUCCESS**
 
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15732/index.html
+
+Participating hosts (40 -> 37)
+------------------------------
+
+  Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15732 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adlp-6:         [DMESG-WARN][1] ([i915#15673]) -> [PASS][2] +78 other tests pass
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9074/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15732/bat-adlp-6/igt@i915_pm_rpm@module-reload.html
+
+  
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9074 -> IGTPW_15732
+
+  CI-20190529: 20190529
+  CI_DRM_19041: 15e2ba2fb6d25c03d89519aec46f8d5be3e118ad @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15732: b545cd04b7ec6255f882b1297c366af69e4dc041 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9074: 9074
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15732/index.html
+
+--===============0856535952114247099==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: scale MPO bandwidth-skip tolerance to the panel (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172655/">https://patchwork.freedesktop.org/series/172655/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15732/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15732/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9074 -&gt; IGTPW_15732</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15732/index.html</p>
+<h2>Participating hosts (40 -&gt; 37)</h2>
+<p>Missing    (3): bat-dg2-13 fi-glk-j4005 fi-snb-2520m </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15732 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9074/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15732/bat-adlp-6/igt@i915_pm_rpm@module-reload.html">PASS</a> +78 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9074 -&gt; IGTPW_15732</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19041: 15e2ba2fb6d25c03d89519aec46f8d5be3e118ad @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15732: b545cd04b7ec6255f882b1297c366af69e4dc041 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9074: 9074</p>
+
+</body>
+</html>
+
+--===============0856535952114247099==--
