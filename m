@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11E73C5DF97
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 19:53:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4AEAC61DBE
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 20:11:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9108010EDF3;
-	Wed, 26 Aug 2026 19:53:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5BBC310E62A;
+	Wed, 26 Aug 2026 20:11:58 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E3B710EDF3;
- Wed, 26 Aug 2026 19:52:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DC4710E62A;
+ Wed, 26 Aug 2026 20:11:18 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8244094743682898564=="
+ boundary="===============4804225830952892525=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_FIXED=5FMATRIX_colorop_?=
- =?utf-8?q?tests_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_FIXED=5FMATRIX_coloro?=
+ =?utf-8?q?p_tests_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Swati Sharma" <swati2.sharma@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Aug 2026 19:52:27 -0000
-Message-ID: <178777394718.88161.16861135346135900171@61270ab9df2a>
+Date: Wed, 26 Aug 2026 20:11:18 -0000
+Message-ID: <178777507837.88179.9764960144699557701@61270ab9df2a>
 X-Patchwork-Hint: ignore
 References: <20260826183932.351933-1-swati2.sharma@intel.com>
 In-Reply-To: <20260826183932.351933-1-swati2.sharma@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8244094743682898564==
+--===============4804225830952892525==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9076_BAT -> XEIGTPW_15742_BAT
+CI Bug Log - changes from IGT_9076 -> IGTPW_15742
 ====================================================
 
 Summary
@@ -64,69 +64,12 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15742/index.html
 
-Participating hosts (13 -> 13)
+Participating hosts (40 -> 38)
 ------------------------------
 
-  No changes in participating hosts
-
-New tests
----------
-
-  New tests have been introduced between XEIGT_9076_BAT and XEIGTPW_15742_BAT:
-
-### New IGT tests (12) ###
-
-  * igt@kms_flip@basic-flip-vs-dpms@a-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.89] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@b-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.77] s
-
-  * igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.75] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.81] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@b-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.74] s
-
-  * igt@kms_flip@basic-flip-vs-modeset@c-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.74] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@a-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [1.10] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@b-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [1.07] s
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [1.06] s
-
-  * igt@kms_flip@basic-plain-flip@a-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.81] s
-
-  * igt@kms_flip@basic-plain-flip@b-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.82] s
-
-  * igt@kms_flip@basic-plain-flip@c-hdmi-a3:
-    - Statuses : 1 pass(s)
-    - Exec time: [0.86] s
-
-  
+  Missing    (2): bat-dg2-13 fi-snb-2520m 
 
 
 Changes
@@ -138,17 +81,19 @@ Changes
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_9076 -> IGTPW_15742
 
+  CI-20190529: 20190529
+  CI_DRM_19046: 4a47d4b5bf957bd7e34d8d3ab7096c42161892c6 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15742: 15742
   IGT_9076: 8f42b0189d73d9912ad58c99cfaa4ff46c20fcc3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5647-4a47d4b5bf957bd7e34d8d3ab7096c42161892c6: 4a47d4b5bf957bd7e34d8d3ab7096c42161892c6
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15742/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15742/index.html
 
---===============8244094743682898564==
+--===============4804225830952892525==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -172,117 +117,31 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/165021/">https://patchwork.freedesktop.org/series/165021/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15742/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15742/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15742/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15742/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9076_BAT -&gt; XEIGTPW_15742_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9076 -&gt; IGTPW_15742</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
-<h2>New tests</h2>
-<p>New tests have been introduced between XEIGT_9076_BAT and XEIGTPW_15742_BAT:</p>
-<h3>New IGT tests (12)</h3>
-<ul>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@a-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.89] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@b-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.77] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.75] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@a-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.81] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@b-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.74] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-modeset@c-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.74] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [1.10] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [1.07] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [1.06] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@a-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.81] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@b-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.82] s</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-plain-flip@c-hdmi-a3:</p>
-<ul>
-<li>Statuses : 1 pass(s)</li>
-<li>Exec time: [0.86] s</li>
-</ul>
-</li>
-</ul>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15742/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-dg2-13 fi-snb-2520m </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9076 -&gt; IGTPW_15742</li>
 </ul>
-<p>IGTPW_15742: 15742<br />
-  IGT_9076: 8f42b0189d73d9912ad58c99cfaa4ff46c20fcc3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5647-4a47d4b5bf957bd7e34d8d3ab7096c42161892c6: 4a47d4b5bf957bd7e34d8d3ab7096c42161892c6</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19046: 4a47d4b5bf957bd7e34d8d3ab7096c42161892c6 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15742: 15742<br />
+  IGT_9076: 8f42b0189d73d9912ad58c99cfaa4ff46c20fcc3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============8244094743682898564==--
+--===============4804225830952892525==--
