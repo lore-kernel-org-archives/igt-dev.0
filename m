@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 41E46C61DC4
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 09:48:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 542E1C61DC2
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 09:53:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D1A2710E275;
-	Wed, 26 Aug 2026 09:48:56 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26A0B10EC7C;
- Wed, 26 Aug 2026 09:48:12 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8617256431597753627=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E586110E275;
+	Wed, 26 Aug 2026 09:53:37 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IeaGIaDV";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E46D210EC92
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2026 09:52:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1787737975; x=1819273975;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=yi9pkn812YrEDqMBoiEbDge3dF2FHYPtaOgIch85PqI=;
+ b=IeaGIaDVcFO+Cqw1ANa0+mQEJ7C9Ly0/DMRLtTSEL19inWZWFf5Ony94
+ HDiuZIMltoY3sI7OUYbWlr7dJVik/bE4tKZEb7lpEUWaql46SXuVAmAfB
+ 3w/NZ2VPtTEwfxPOSnQh19B0WTJnf9NijLBug8bwvy1hv9J0gS3xHzBHR
+ tgyuaSSKsvZSRUGsOBXnD9b6qibG+DTO3F/wbl/BF58Vo/rGXuWk7d2Hk
+ 7zUw681dWo+CCvPlPyXScK9t5LxQ37Cp2hYBnn2Mrulntipo0U1/Li8Wb
+ dnAcvbWB9rqNNi3PtDWwhkqbqaR/ano7pChi4yJjlY2GezJnVX5hJ4ab7 w==;
+X-CSE-ConnectionGUID: mcTGZFZPTZW66QElKLLNEA==
+X-CSE-MsgGUID: YU5aMCPrSTmQKzZqTqI9BA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88344851"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="88344851"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2026 02:52:55 -0700
+X-CSE-ConnectionGUID: E1mr/uGzTLKMNmnbuHMESA==
+X-CSE-MsgGUID: 5P+0ppIdSB+066h0JpcrEw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="292388834"
+Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2026 02:52:53 -0700
+From: Pranay Samala <pranay.samala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
+ pranay.samala@intel.com
+Subject: [RFC 0/7] Validate PM_PME signalling on display hotplug
+Date: Wed, 26 Aug 2026 15:36:31 +0530
+Message-ID: <20260826100639.273731-1-pranay.samala@intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsriov=5F?=
- =?utf-8?q?mmio=5Fregs=3A_Add_tests_to_verify_registers_on_VFs?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lukasz Laguna" <lukasz.laguna@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Aug 2026 09:48:11 -0000
-Message-ID: <178773769180.85615.17852950856728269897@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260826083730.2750-1-lukasz.laguna@intel.com>
-In-Reply-To: <20260826083730.2750-1-lukasz.laguna@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,158 +63,66 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8617256431597753627==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+A display hotplug can be signalled as a PCI PME while the graphics device
+is runtime suspended in D3hot. That lets the driver leave the
+drm_kms_helper connector poll worker disabled across runtime suspend, so
+the device stays parked instead of being resumed every ~10s just to probe
+connectors.
 
-== Series Details ==
+The property worth validating is therefore not "does a hotplug still
+work" - the polling fallback delivers that too, just slowly and at the
+cost of the power saving. It is "does the hotplug work while polling
+stays off". A test that only toggles HPD and waits for a uevent passes
+either way, and would not notice the feature regressing into the
+fallback.
 
-Series: tests/intel/xe_sriov_mmio_regs: Add tests to verify registers on VFs
-URL   : https://patchwork.freedesktop.org/series/172772/
-State : success
+So the new subtest runs two phases against the same suspended device:
 
-== Summary ==
+  Phase 1: hold the device idle in D3hot for 25s and check from PCI
+           config space that it never leaves D3hot. This is the power
+           saving.
+  Phase 2: toggle HPD from D3hot and check that a uevent arrives, that
+           the connector status updated, and that
+           power/wakeup_active_count incremented - i.e. that the resume
+           was signalled by the device and not initiated by the host.
 
-CI Bug Log - changes from IGT_9075 -> IGTPW_15737
-====================================================
+Patches 1-2 add the PCI Power Management capability register layout and
+accessors for PME_Support, PME_En, PME_Status and the PowerState field.
+PME_Status tells a device that signalled and was not acknowledged apart
+from one that never signalled at all, which makes a failure report
+actionable instead of just "no uevent".
 
-Summary
--------
+Patches 3-5 add accessors for power/wakeup and power/wakeup_active_count.
+active_count is used rather than wakeup_count because the latter never
+moves for a runtime resume.
 
-  **SUCCESS**
+Patch 6 adds igt_pm_kms_poll_save(), _set() and _restore(). Converting
+the two tests that already open code this is sent separately, since one
+of them also has a pre-existing restore-without-save bug unrelated to
+PME. That series carries an identical copy of patch 6 so it applies on
+its own; whichever of the two is applied second should drop its copy.
 
-  No regressions found.
+Patch 7 adds the subtest.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/index.html
+Pranay Samala (7):
+  lib/igt_pci: Add PCI Power Management capability register layout
+  lib/igt_pm: Add PCI PME capability and D state accessors
+  lib/igt_pm: Factor out power attribute path construction
+  lib/igt_pm: Add power/wakeup accessors
+  lib/igt_pm: Add power/wakeup_active_count accessor
+  lib/igt_pm: Add drm_kms_helper.poll save/restore helpers
+  tests/chamelium/kms_chamelium_hpd: Add HPD from runtime suspended
+    D3hot
 
-Participating hosts (39 -> 38)
-------------------------------
+ lib/igt_pci.h                       |  12 +
+ lib/igt_pm.c                        | 449 +++++++++++++++++++++++++++-
+ lib/igt_pm.h                        |  12 +
+ tests/chamelium/kms_chamelium_hpd.c | 344 +++++++++++++++++++++
+ 4 files changed, 808 insertions(+), 9 deletions(-)
 
-  Additional (1): fi-glk-j4005 
-  Missing    (2): bat-dg2-13 fi-snb-2520m 
+-- 
+2.53.0
 
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15737 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][3] +11 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
-
-  
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9075 -> IGTPW_15737
-  * Linux: CI_DRM_19043 -> CI_DRM_19044
-
-  CI-20190529: 20190529
-  CI_DRM_19043: ecdf3c21a6c60cd2393b9494b0b7e0e0c8e69764 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19044: 67a170d6284099e2f259ff0bf9b5bf5b575a3d2d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15737: 7f41ee84bba146debf0d243fe75f12b9633af1f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9075: 9075
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/index.html
-
---===============8617256431597753627==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_sriov_mmio_regs: Add tests to verify registers on VFs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172772/">https://patchwork.freedesktop.org/series/172772/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9075 -&gt; IGTPW_15737</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Additional (1): fi-glk-j4005 <br />
-  Missing    (2): bat-dg2-13 fi-snb-2520m </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15737 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15737/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +11 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9075 -&gt; IGTPW_15737</li>
-<li>Linux: CI_DRM_19043 -&gt; CI_DRM_19044</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19043: ecdf3c21a6c60cd2393b9494b0b7e0e0c8e69764 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19044: 67a170d6284099e2f259ff0bf9b5bf5b575a3d2d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15737: 7f41ee84bba146debf0d243fe75f12b9633af1f8 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9075: 9075</p>
-
-</body>
-</html>
-
---===============8617256431597753627==--
