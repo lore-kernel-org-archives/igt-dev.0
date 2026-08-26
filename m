@@ -4,56 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E85BC61DBE
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 20:22:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C67D5C61DC4
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 20:27:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C275810E2AD;
-	Wed, 26 Aug 2026 20:22:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 69E2F10E2DC;
+	Wed, 26 Aug 2026 20:27:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jpq1LO+6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XzrKWc3k";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3BD8F10E2AD
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2026 20:21:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 259B210E2DC
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2026 20:26:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787775682; x=1819311682;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=4tEh9CY+Cehw2vS1NjvosmRCh9sw9V59r9qJV0ahWQQ=;
- b=jpq1LO+6tCUiU6owUwBwHtRETfu7gKR1Nt/08y5/dBH9+bQxp1EtQrr9
- fCX0bGs8fBkWKjfNoOxq34iMbhmEKSTc18WVufCxAwcYdZeSy5VOVngnM
- 9feKjtjpwE6VWbLmSqv+ZDYq8xv2EZ2tLOUW3dPE66hX/BITUbueRazVE
- PfyQ3ta7KxOEME5mWI/uI3FizR7ySdW860ogxGQWwm8iFjwBQuZ1tETaC
- 9xGwjpeh79D6aKsarsOM/AaL6xci2TZIqyENb3Awkr5/LLqZUkY7VrFqn
- 90n7zmQfO23FxuldpOCODmpjTbmPx02/Tk1/yw1QKk7BPaw6HOjdBT1hB A==;
-X-CSE-ConnectionGUID: UwH8eHqjT0icUO6VMU1f6Q==
-X-CSE-MsgGUID: 0YaG8eriT6eppChhSTTzLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="113800886"
-X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; d="scan'208";a="113800886"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2026 13:21:22 -0700
-X-CSE-ConnectionGUID: Z2AoDKltQ5CSoGgD+o0TJw==
-X-CSE-MsgGUID: o7HqfoPFSBqj+HDGsfQRwA==
+ t=1787776009; x=1819312009;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=EtT/bNtCB/X4Hx/x5fTLEIPV7iw2h1faznwvD+U7TUc=;
+ b=XzrKWc3k6OC5ayJYyZ+cwzn1/YK32Uq2tcCasglgvOe0j55kYELcCWhJ
+ lc1Hcsx5HMKZYWNpJmLgt+dy7njZrAOe1homV5v5kNiO4LkPTkxwlhZZt
+ 4IgOZRB/+FGZAmg5IxUkk4pwyRLHwbVYIBpFTxsJ5kSK+fSMmCHOTC7FV
+ GlEpPIni5KZidAuqKO/ehIGj4yRVo/v/UIYjUsA4MggE5leHdFlhAbb86
+ 1Lj9ZyeFaTR6Cy5U86hRjDmxKToZ68zKI6eYJcrxeQbA7JLsfhu+at1oH
+ pNTGcOS6XZdB1ljZeZIk5lEIXDC/ERidBSiFzwgqzGPFT7w61dsuHh+yz A==;
+X-CSE-ConnectionGUID: 3eHTlOULQCS+PJPlCjOIXg==
+X-CSE-MsgGUID: oC9O4P1mTZaVFGebJ9a4rA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="105644594"
+X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; d="scan'208";a="105644594"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2026 13:26:49 -0700
+X-CSE-ConnectionGUID: hHyFuHvDSLqyz7SRZ0/KRA==
+X-CSE-MsgGUID: 2os4EwSzRamU8cqevV3ThA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; d="scan'208";a="263906357"
-Received: from unknown (HELO linux-Lunar-Lake-Client-Platform.iind.intel.com)
- ([10.223.32.42])
- by fmviesa010.fm.intel.com with ESMTP; 26 Aug 2026 13:21:20 -0700
-From: Mohammed Thasleem <mohammed.thasleem@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_pm_warm_boot: Add warm reboot test
-Date: Thu, 27 Aug 2026 07:21:09 +0530
-Message-ID: <20260827015110.2426-1-mohammed.thasleem@intel.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20251210114344.1535-1-mohammed.thasleem@intel.com>
-References: <20251210114344.1535-1-mohammed.thasleem@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,245,1779174000"; d="scan'208";a="305897568"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2026 13:26:49 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 26 Aug 2026 13:26:48 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 26 Aug 2026 13:26:48 -0700
+Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.53) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 26 Aug 2026 13:26:48 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dV73iEzy9Gc3VzCwFHhqVyMm3PEvFqFIIkpmecfVmC0VOypoIKLsXYAn2EbQoG85ASNc6rRYit4HZ2pZkmCC9An7W3Kt5cPB6N0t4DbWQl6DLdxCYUkyy9HnNts7kV3Lb1A0qbFYkRewxtVQR5GyHto00c93ceurxpSFmiv23+3p+lKqGHFU/KC9YDdRwaC5uadd2/mw7tuHsXRFflasXm1iGXyJRuFHAGvfXZqa+wVrSVYfu2asd02CB12suX9DEpmKA3kQWozUTL6y/lvdcL9CYpIGjuIYXZNzOfiEzwypdtrg+v6fita4B2p3v01fPLM7TpnD2QsWpyYd/HRxfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lKOIU5y2X1JzGM3iufg7CRc6W9hLv+XAr7+kz0k8lkk=;
+ b=sx74Klo/9+asefhaLPSHqgCl8buvcMdhRA+lAkjKBUC2xTKBLu1z9rZ+1Ot48L58/JblrcIHGRUiYH4/WemZ7mKqaeo6KUsjHoFB4GL3H9KJX3ggvjTChgvBGlvMcYxI/ck+lB6iBaed6J3UbtPjBaaf2z0LGzvgZWvzUELoAIaIEJTMeU69+t7+JobClHzVc7hEeMJVPMANgiVKpeEhDHK5QU2+WU5h941jH6W02Ufy2yJLGsl/sR08oD7mE5SO1uNs5PunEzj4pCNASe4Xp0ZPAY0Q44DDWtjGvw0UzVbG4MvfohNbb5vW3Q6s5FutEndXCK2P9BIp3y9hXHH+Ug==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA4PR11MB9130.namprd11.prod.outlook.com (2603:10b6:208:56c::18)
+ by PH8PR11MB8014.namprd11.prod.outlook.com (2603:10b6:510:23a::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.339.12; Wed, 26 Aug
+ 2026 20:26:40 +0000
+Received: from IA4PR11MB9130.namprd11.prod.outlook.com
+ ([fe80::5963:c494:5f1:1d5e]) by IA4PR11MB9130.namprd11.prod.outlook.com
+ ([fe80::5963:c494:5f1:1d5e%4]) with mapi id 15.21.0339.007; Wed, 26 Aug 2026
+ 20:26:40 +0000
+Date: Wed, 26 Aug 2026 13:26:33 -0700
+From: Matt Atwood <matthew.s.atwood@intel.com>
+To: Gustavo Sousa <gustavo.sousa@intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t 10/10] intel: Implement Wa_14026539277
+Message-ID: <20260826202633.GA56250@msatwood-mobl>
+References: <20260721-wa_14026539277-v1-0-0c147eeefefa@intel.com>
+ <20260721-wa_14026539277-v1-10-0c147eeefefa@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260721-wa_14026539277-v1-10-0c147eeefefa@intel.com>
+X-ClientProxiedBy: SJ0PR13CA0029.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::34) To IA4PR11MB9130.namprd11.prod.outlook.com
+ (2603:10b6:208:56c::18)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA4PR11MB9130:EE_|PH8PR11MB8014:EE_
+X-MS-Office365-Filtering-Correlation-Id: d208a35c-96c5-463f-2a85-08df03b05604
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|1800799024|10070799003|376014|23010399003|4143699003|22082099003|18002099003|11063799006|56012099006|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info: es/IkRFouSxgTyfhXVAkVNj4qnnNupX+W/RKaYDH9M9LL0CrsB7XLmfa9RjyK+HKyCkQEJAY6T/Bfzb6J1hhnQvKoPho8ZIHEfOVh9eYiPx4LGUxekpGMrs6/OpyVq5EjPy2oyLuyunrOZZ/mOY9RUq2CP6QXbnphNkHjbCDbJCc2Ik3AuawGhfa2Ag5qdeJlCGCFIULLkpzh4sZPKSiIEHvj67s5u6FNNifghdLTFwg3O2xntVgAmj776Gc6unS4U9aYatL1kE5p6LD7G+wk2THNPjRFKCvR9XIEfJjsZV22h6efpSBm2y3BHBwG0vA8BYq1OKkAtjYuFQG/b3j29DJD8Vm+5rFbdq7hJP+g3AdYFHeV1eDRxp9FvdnIYGZ3jLNBzrbZRmypAPf6G6iTJ310pbhwtnm98x7mjdpwqWyXb4EUypLEkgCX9HZwKvNCU5pxkkyj7LsVbpmRcqPtArCc4Rec+2CBszOSTVpd3gfxkBGer0kBKnMsREcXAeaiexhyfmMFGR0bMbiL28F9HmOJ0VVeWqBWWh+Nt6GIO8AtaJD4EwKFm19GUgc6vqUol5Mn2wxXM18VnuFM9OhGPN5FNvp9j0SaLyKs7Q3pNFqh3yO34XUeajK34BaWJyh9xOZw5nCp7MBtNF+9xVeqB7y6Cc17ZdDmu+u8acnnsw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA4PR11MB9130.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(23010399003)(4143699003)(22082099003)(18002099003)(11063799006)(56012099006)(6133799003)(10067099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?LAL8eabqrO3di8DkHDMZq1CnaY97CmcDeykdSK/ZtTWKjbYoO9uZMMoVdmOK?=
+ =?us-ascii?Q?Ykgn/ErXvcn+klTHGysmqr8QSVMSnr5EHbJUul5PE5CQNITN89jdaDpTKW7A?=
+ =?us-ascii?Q?kaMTcwE7B2Mivl4h6ojuIXTHwpWJiVvEJ7rLD9/qDlwhZZA6OCrDKPiRhh8X?=
+ =?us-ascii?Q?EzP8GDIytkzF389gzbIsiMWdRSSLLQBtupbDp/68H0pJzOtr4okzN0jUOfFF?=
+ =?us-ascii?Q?lcxUOzJJL9m/akCjElKYwCS1urrNP/9eB0x+p1YPGf96q7gT0ZpsM9kYljjw?=
+ =?us-ascii?Q?k8MLa7LQyabT+1qWKcgWO+/DmiO9YRg/WNI1MEef96SlfYzmhuqQzMD4iM1n?=
+ =?us-ascii?Q?TPBL4LPtLLl4WXWn+0TFmeJnlKCV9VGiMPXsUkA5kTL0EkHsFxgHRybvZYe0?=
+ =?us-ascii?Q?gCK4CkHpA2dIwg8+zODY+fBqUxNkdRICvHpkss+duOwq9DFW3bP4rRqfIb9F?=
+ =?us-ascii?Q?8rxgy/u03ofEACpDYlkzm9GhOmYrGKsMOWpZiV0sghpyeMFNBBuQOd+Rgt8x?=
+ =?us-ascii?Q?2/b+31zwAUauayAC03w1RX12ZsJhOYUnllIJRiO3+/3vmRF1cd8FXmMXlU/L?=
+ =?us-ascii?Q?pWzcp+2OH8SAOTayb8yFZigkvcbp1jN8OT6Y6sQwbGrmOVC3PkpUlivdzo0+?=
+ =?us-ascii?Q?FJmkTQmy2v2cc7BdqjoDrwbbxSamvHmJrFh713D89dbQ0LmiMzdbvtU7+b3R?=
+ =?us-ascii?Q?MmbZcPuPcya4OnD7AOfryiqWe3stgKSx0zY/X7dR8wMyV0sO5vAsQMRJw8IB?=
+ =?us-ascii?Q?VFq3qofmNyuLGPCtuBsX3xTFw4zZng0F1H5Yj5ITqz7vLrXbZWrKsDGs5PiT?=
+ =?us-ascii?Q?PX2VktEclRzU57lxsDTTTOgly/4/0gz/Lba0hlPHVKHVr/wLceO4W3wG/lA3?=
+ =?us-ascii?Q?bR81pqk+5JZ7EE900+a6li2IhkKWoLU66Z7wYzUp6zNYtJDK4LKf8tlv2mW7?=
+ =?us-ascii?Q?k57josl1vUqKq0SkQijgZVtUYy4yHzX30EvH61xqLsKpEAp3BzyeeURB61gT?=
+ =?us-ascii?Q?tCO3bBAC1lQXobDTFkcMOP56fbF9181sdd8Ct0n33B80BhTOIFVkmEyndvCO?=
+ =?us-ascii?Q?no8ogz2epx6vpPlKPF1M7R5L663/7XsC3Gq8818x5q9l4lDcJ/CAWwcG6ODi?=
+ =?us-ascii?Q?nY+/tD/nDyG5nny1fdAoL4cKY9MIyc+nYbA5bR3q8eCvCWQPuC37qS+E7m5c?=
+ =?us-ascii?Q?GtUyOwg/FH1GvAtbkVaph/wkqcgl7pOe6eYcP4joomqnQGp/4VYFTclnI3Tv?=
+ =?us-ascii?Q?N9STWVLCFhZklG0cJxUuZVGsqo2IpMGRXUN0kSsidfeC1AWc6f3tuH+Zwnbd?=
+ =?us-ascii?Q?s1ux772TnutETYF0UR7tuwLn1FbSJ33IZmfAvy4FYq8uJSyyv+KKqtCjZbWX?=
+ =?us-ascii?Q?a3k4yq2ew8fLumUQgmbypw1mnI8k6s4MBmao4ar6u6irzQwYHph/yv1iKKB4?=
+ =?us-ascii?Q?FkNavkESOGpOWKCjhlOBmbVftkpaLs8Tb1OGCsp9kHyDmkodN1JfGREdAHPj?=
+ =?us-ascii?Q?rQtC0hvGwmNbWS7lDX6m8pi+4acmasz+AVgFjG8WUTqxZ20u2vUfI0bpjS2m?=
+ =?us-ascii?Q?clZUX8TH0kA/zd8mSf6APrWHJ64IfYFDcm6fToBfhNOEx7vm0ozNRAJL6y/6?=
+ =?us-ascii?Q?yuKgKgTUeod14RAGTnBnVHFLds+XikKrVT+ymP9m1usnosIWrYpmKCbchOgR?=
+ =?us-ascii?Q?1cmCGd4gIdV7XBxbs49MambiJZNajTHmie0Z//KCtR9DMPhYDl47yctqFs5V?=
+ =?us-ascii?Q?ONjsg8E+oirZc9anjqSh0A9OtNDAoxbtkzwz/FhqZQ+i1c06MwJjKgyzJZMn?=
+X-MS-Exchange-AntiSpam-MessageData-1: zXGix4w+dDEbd03kM6VbuzdlLwLwCN57Krs=
+X-Exchange-RoutingPolicyChecked: J6Xvmo+RBh8s/Kb71GPZVfe0mLLvbQwu2eO8HjwlXQ1hwYkNuue147HjFFJka1N0XEoJ3hZ1wrzT1GbijahQvkbxV7fTc5fSnvTjYlKgvXxyWXfDZC6iXwEQKg/BJeASPUXrspWY2Kcn6PsR+wJWMmKfPkk0Tmqw9NPAEWvamJ/Ytl48pT+zKhvfSCbLuOAAlcLPHCHDr6U7A0CEqXt9lMpCCY9rk2/oArkRKUp5IAl5eagx76SwtJwGV+OCg2RY71SUnJvuxe/rmOnBsJlfcioL8kPqm0D3TQHrpOJ4q2hQPvFghMRosUVQ1293Y9AB67dSS0+A8gO0Rwn0fUl06g==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d208a35c-96c5-463f-2a85-08df03b05604
+X-MS-Exchange-CrossTenant-AuthSource: IA4PR11MB9130.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Aug 2026 20:26:40.5717 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hEHTl4/vJMBFpUPCaZ19jxMkfCQPP4ZCZUedhb/UQBIaiZsDDZYc6zPEtu6UTvYD3OCdh/hRV0G0Yim8UMLKnTUWvQA+XThd77e5mxdwRqE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB8014
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,243 +159,119 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This test validates display subsystem stability across warm reboot by
-capturing baseline display parameters (outputs, pipes, connectors, modes)
-before reboot and comparing them after reboot.
-
- 1. Run pre-reboot test to save baseline.
- 2. Perform manual system reboot.
- 3. Run post-reboot test to validate display parameters match baseline
-
-v2: Replace each_pipe_with_valid_output with for_each_valid_output_on_crtc.
-
-Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
----
- tests/intel/kms_pm_warm_boot.c | 202 +++++++++++++++++++++++++++++++++
- tests/meson.build              |   1 +
- 2 files changed, 203 insertions(+)
- create mode 100644 tests/intel/kms_pm_warm_boot.c
-
-diff --git a/tests/intel/kms_pm_warm_boot.c b/tests/intel/kms_pm_warm_boot.c
-new file mode 100644
-index 000000000..d50656b91
---- /dev/null
-+++ b/tests/intel/kms_pm_warm_boot.c
-@@ -0,0 +1,202 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: kms pm warm reboot
-+ * Category: Display
-+ * Description: This test validates warm reboot.
-+ * Driver requirement: xe
-+ * Mega feature: Display Power Management
-+ */
-+
-+#include "igt.h"
-+#include "igt_kms.h"
-+#include <unistd.h>
-+#include <string.h>
-+#include <errno.h>
-+
-+#define PARAM_FILE "/var/tmp/igt_warm_reboot_params.txt"
-+#define BUF_SIZE 1024
-+
-+/**
-+ * SUBTEST: warm-reboot-before
-+ * Description: Save baseline display parameters before warm reboot.
-+ *
-+ * SUBTEST: warm-reboot-after
-+ * Description: Validate display parameters after warm reboot.
-+ *
-+ */
-+
-+IGT_TEST_DESCRIPTION("This test validates warm reboot");
-+
-+typedef struct {
-+	int fd;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *primary;
-+	struct igt_fb fb_test;
-+	enum pipe pipe;
-+} device_t;
-+
-+static void detect_primary_output(device_t *device)
-+{
-+	igt_output_t *output;
-+	igt_crtc_t *crtc;
-+	enum pipe pipe;
-+
-+	for_each_crtc(&device->display, crtc) {
-+		pipe = crtc->pipe;
-+		for_each_valid_output_on_crtc(&device->display, crtc, output) {
-+
-+			igt_display_reset(&device->display);
-+
-+			igt_output_set_crtc(output, igt_crtc_for_pipe(&device->display, pipe));
-+			if (!intel_pipe_output_combo_valid(&device->display))
-+				continue;
-+
-+			device->output = output;
-+			device->mode = igt_output_get_mode(output);
-+			device->primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+			device->pipe = pipe;
-+
-+			break;
-+		}
-+	}
-+
-+	igt_require_f(device->output && device->mode, "No valid connected output found\n");
-+}
-+
-+static void setup_primary(device_t *device)
-+{
-+	igt_plane_set_fb(device->primary, NULL);
-+
-+	igt_create_color_fb(device->fd,
-+			    device->mode->hdisplay,
-+			    device->mode->vdisplay,
-+			    DRM_FORMAT_XRGB8888,
-+			    DRM_FORMAT_MOD_LINEAR,
-+			    0.2, 0.3, 0.4,
-+			    &device->fb_test);
-+
-+	igt_plane_set_fb(device->primary, &device->fb_test);
-+	igt_display_commit(&device->display);
-+}
-+
-+static void save_baseline(device_t *device)
-+{
-+	int conn_type = -1;
-+	const char *conn_type_name = "unknown";
-+	FILE *fp = fopen(PARAM_FILE, "w");
-+
-+	igt_require_f(fp, "Unable to open param file for writing\n");
-+
-+	if (device->output->config.connector) {
-+		conn_type = device->output->config.connector->connector_type;
-+		conn_type_name = kmstest_connector_type_str(conn_type);
-+	}
-+
-+	fprintf(fp, "n_outputs=%d\n", device->display.n_outputs);
-+	fprintf(fp, "pipe=%d conn_id=%u type=%d(%s) mode=%dx%d@%d\n",
-+		device->pipe,
-+		device->output->config.connector ?
-+			device->output->config.connector->connector_id : 0,
-+		conn_type, conn_type_name,
-+		device->mode->hdisplay, device->mode->vdisplay,
-+		device->mode->vrefresh);
-+
-+	fclose(fp);
-+}
-+
-+static void collect_current(device_t *device, char *buf, size_t sz)
-+{
-+	int conn_type = -1, ret;
-+	const char *conn_type_name = "unknown";
-+	uint32_t conn_id = 0;
-+
-+	if (device->output->config.connector) {
-+		conn_type = device->output->config.connector->connector_type;
-+		conn_id = device->output->config.connector->connector_id;
-+		conn_type_name = kmstest_connector_type_str(conn_type);
-+	}
-+
-+
-+	/* Write display basic config details */
-+	ret = snprintf(buf, sz,
-+		       "n_outputs=%d\n"
-+		       "pipe=%d conn_id=%u type=%d(%s) mode=%dx%d@%d\n",
-+		       device->display.n_outputs,
-+		       device->pipe,
-+		       conn_id,
-+		       conn_type, conn_type_name,
-+		       device->mode->hdisplay,
-+		       device->mode->vdisplay,
-+		       device->mode->vrefresh);
-+
-+	if (ret < 0 || (size_t)ret >= sz)
-+		igt_warn("%s(): buffer truncated\n", __func__);
-+}
-+
-+static void read_baseline(char *buf, size_t sz)
-+{
-+	FILE *fp = fopen(PARAM_FILE, "r");
-+
-+	igt_require_f(fp, "Baseline missing. Run first time to create.\n");
-+
-+	fread(buf, 1, sz - 1, fp);
-+	buf[sz - 1] = '\0';
-+	fclose(fp);
-+}
-+
-+static void cleanup(device_t *device)
-+{
-+	igt_plane_set_fb(device->primary, NULL);
-+	igt_display_commit(&device->display);
-+	igt_remove_fb(device->fd, &device->fb_test);
-+}
-+
-+int igt_main(void)
-+{
-+	device_t device = {0};
-+	char saved[BUF_SIZE] = {0};
-+	char current[BUF_SIZE] = {0};
-+
-+	igt_fixture() {
-+		device.fd = drm_open_driver_master(DRIVER_ANY);
-+		igt_require(device.fd >= 0);
-+
-+		igt_display_require(&device.display, device.fd);
-+	}
-+
-+	igt_subtest("warm-reboot-before") {
-+		detect_primary_output(&device);
-+		setup_primary(&device);
-+		collect_current(&device, current, sizeof(current));
-+
-+		if (access(PARAM_FILE, F_OK) == -1)
-+			save_baseline(&device);
-+
-+		cleanup(&device);
-+	}
-+
-+	igt_subtest("warm-reboot-after") {
-+		detect_primary_output(&device);
-+		setup_primary(&device);
-+		collect_current(&device, current, sizeof(current));
-+		read_baseline(saved, sizeof(saved));
-+
-+		igt_assert_f(strcmp(saved, current) == 0, "Display parameters mismatched.\n");
-+
-+		if (strcmp(saved, current) == 0)
-+			remove(PARAM_FILE);
-+
-+		cleanup(&device);
-+	}
-+
-+	igt_fixture() {
-+		igt_display_fini(&device.display);
-+		drm_close_driver(device.fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 1ac89bab7..084280081 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -271,6 +271,7 @@ intel_kms_progs = [
- 	'kms_pm_backlight',
- 	'kms_pm_dc',
- 	'kms_pm_lpsp',
-+        'kms_pm_warm_boot',
- 	'kms_pm_rpm',
- 	'kms_psr',
- 	'kms_psr2_sf',
--- 
-2.48.1
-
+On Tue, Jul 21, 2026 at 04:00:03PM -0300, Gustavo Sousa wrote:
+> Implement the adaptations in IGT required for Wa_14026539277, which is
+> basically selecting an alternative PAT index instead of 2-way-coherent
+> ones.
+> 
+> Because xe_pat_cache->wb is expected to be at least 1-way-coherent, we
+> need to select an alternative that fulfills that requirement.  Let's
+> use the XA 1-way-coherent index for that (PAT index 19), because other
+> 1-way coherent configurations do not cause GPU caches to be
+> automatically flushed at the end of a batch in certain occasions due
+> to the L2 Flush Optimization feature in Xe3p.
+> 
+> In the specific case of the xe_pat "false-sharing" subtest, it already
+> checks for XA 1-way-coherent, so it is just simpler to skip the
+> creation of the dynamic subtest for the 2-way-coherent PAT indices,
+> which are tagged as reserved by the KMD on the debugfs dump of
+> pat_sw_config when the workaround is active.
+> 
+> Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+Obviously some feedback from others on early parts of this series, however if
+this stays the same after...
+LGTM
+Reviewed-by: Matt Atwood <matthew.s.atwood@intel.com>
+> ---
+>  lib/intel_pat.c      |  4 ++++
+>  tests/intel/xe_pat.c | 28 ++++++++++++++++++++--------
+>  2 files changed, 24 insertions(+), 8 deletions(-)
+> 
+> diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+> index ebf5cd428c68..caac00ad68fc 100644
+> --- a/lib/intel_pat.c
+> +++ b/lib/intel_pat.c
+> @@ -7,6 +7,7 @@
+>  #include "igt.h"
+>  #include "intel_pat.h"
+>  #include "xe/xe_query.h"
+> +#include "xe/xe_wa.h"
+>  
+>  enum xe_pat_config {
+>  	PAT_SW_CONFIG,
+> @@ -109,6 +110,9 @@ static int32_t xe_get_pat_config(struct xe_device *xe_dev, struct intel_pat_cach
+>  	free(line);
+>  	fclose(dbgfs_file);
+>  
+> +	if (xe_wa_from_cache(xe_dev, "14026539277"))
+> +		xe_pat_cache->wb = 19; /* XA 1-way-coherent. */
+> +
+>  	return parsed;
+>  }
+>  
+> diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
+> index bb2975b545e6..e1d329637aa1 100644
+> --- a/tests/intel/xe_pat.c
+> +++ b/tests/intel/xe_pat.c
+> @@ -32,6 +32,7 @@
+>  #include "xe/xe_ioctl.h"
+>  #include "xe/xe_query.h"
+>  #include "xe/xe_util.h"
+> +#include "xe/xe_wa.h"
+>  
+>  #define XE_COH_NONE          1
+>  #define XE_COH_AT_LEAST_1WAY 2
+> @@ -1865,30 +1866,41 @@ static void false_sharing(int fd)
+>  	uint16_t dev_id = intel_get_drm_devid(fd);
+>  	uint32_t graphics_ver = intel_get_device_info(dev_id)->graphics_ver;
+>  	bool is_dgfx = xe_has_vram(fd);
+> -
+>  	const struct fs_pat_entry *fs_entries;
+> -	int num_entries;
+> +	int num_fs_entries;
+> +	struct intel_pat_cache pat_sw_config;
+> +	int num_pat_entries;
+> +
+> +	if (xe_wa(fd, "14026539277"))
+> +		num_pat_entries = xe_fetch_pat_sw_config(fd, &pat_sw_config);
+>  
+>  	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
+> -		num_entries = ARRAY_SIZE(fs_xe3p_xpc);
+> +		num_fs_entries = ARRAY_SIZE(fs_xe3p_xpc);
+>  		fs_entries = fs_xe3p_xpc;
+>  	} else if (intel_graphics_ver(dev_id) == IP_VER(35, 10)) {
+> -		num_entries = ARRAY_SIZE(fs_xe3p_lpg);
+> +		num_fs_entries = ARRAY_SIZE(fs_xe3p_lpg);
+>  		fs_entries = fs_xe3p_lpg;
+>  	} else if (graphics_ver == 20) {
+>  		if (is_dgfx) {
+> -			num_entries = ARRAY_SIZE(fs_xe2_discrete);
+> +			num_fs_entries = ARRAY_SIZE(fs_xe2_discrete);
+>  			fs_entries = fs_xe2_discrete;
+>  		} else {
+> -			num_entries = ARRAY_SIZE(fs_xe2_integrated);
+> +			num_fs_entries = ARRAY_SIZE(fs_xe2_integrated);
+>  			fs_entries = fs_xe2_integrated;
+>  		}
+>  	} else {
+> -		num_entries = ARRAY_SIZE(fs_xe3);
+> +		num_fs_entries = ARRAY_SIZE(fs_xe3);
+>  		fs_entries = fs_xe3;
+>  	}
+>  
+> -	for (int i = 0; i < num_entries; i++) {
+> +	for (int i = 0; i < num_fs_entries; i++) {
+> +		if (xe_wa(fd, "14026539277")) {
+> +			igt_assert(fs_entries[i].pat_index < num_pat_entries);
+> +
+> +			if (pat_sw_config.entries[fs_entries[i].pat_index].rsvd)
+> +				continue;
+> +		}
+> +
+>  		igt_dynamic_f("%s", fs_entries[i].name) {
+>  			__false_sharing(fd, &fs_entries[i]);
+>  		}
+> 
+> -- 
+> 2.55.0
+> 
