@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4BF4CC61DBD
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 08:36:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7FBF7C61DC2
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 08:38:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E1B0810EBF2;
-	Wed, 26 Aug 2026 08:36:58 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3DBF110EC49;
- Wed, 26 Aug 2026 08:36:15 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1367220143179825596=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1D78910EC49;
+	Wed, 26 Aug 2026 08:38:19 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fp3b8HtY";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E120610EBF2
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2026 08:37:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1787733456; x=1819269456;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=9m4KChpOCvDm2yZdwm5eg/8r/Uq8SZNNDqWtuhO/wJ8=;
+ b=fp3b8HtYk1CHcZweJ7DNQJiXam9Yw3l2y3iUKqElMVkPspLouk6Vyyp3
+ A2hy5G+h8cZh1O9GREf4L3s92ugF0TfLCTrO596jH9n+/U2Zxh54YdCna
+ pwtqfyjjei9Jt1b0juulbHHzkLLr+nTqthY1ZtaZYNiczPeQa8vo96PDj
+ 0bN0HSK9eouH0rVsTBLH+KQIduqHJJvT/bui8IHk7e4jDouhwstVG8Cef
+ tOvpsbxzWGE+cBfBYgBYTWbZ+C9XzTBgSZ8gPgZmlu4G1VncY/6TMCbQJ
+ NvaHh/HerShoH0PsW214WC1pc7tZv2c6ox6dIJzniIVsqOsmJA0ddUMIp Q==;
+X-CSE-ConnectionGUID: kYQ3PwERSiq8OMp40yPf9A==
+X-CSE-MsgGUID: uzmYUhivQtaqDCzuJ+BwlA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88088434"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="88088434"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2026 01:37:35 -0700
+X-CSE-ConnectionGUID: OrilJP6lTBOS8/ZIaqMgkA==
+X-CSE-MsgGUID: kx6Tc+erQfygXuilgsPGOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="266940006"
+Received: from dev-150.igk.intel.com (HELO localhost) ([10.91.214.40])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2026 01:37:34 -0700
+From: Lukasz Laguna <lukasz.laguna@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: marcin.bernatowicz@intel.com,
+	piotr.piorkowski@intel.com
+Subject: [PATCH v1 0/3] tests/intel/xe_sriov_mmio_regs: Add tests to verify
+ registers on VFs
+Date: Wed, 26 Aug 2026 10:37:27 +0200
+Message-ID: <20260826083730.2750-1-lukasz.laguna@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_xe=5Fdevice=5Fsysfs_cover?=
- =?utf-8?q?age_updates?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: shivtej.eknath.patil@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 26 Aug 2026 08:36:15 -0000
-Message-ID: <178773337524.85340.11974871620946983656@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260826073710.37283-1-shivtej.eknath.patil@intel.com>
-In-Reply-To: <20260826073710.37283-1-shivtej.eknath.patil@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,158 +65,28 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1367220143179825596==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+In case of SR-IOV, the VF has limited access to the registers. Let's add
+tests to verify that the VF actually has access only to the allowed list
+of registers, and verify that registers dedicated to VFs work properly.
 
-== Series Details ==
+Lukasz Laguna (2):
+  lib/igt_sriov_device: Add helper to get SR-IOV function name
+  intel-ci: Block igt@xe_sriov_mmio_regs.*
 
-Series: xe_device_sysfs coverage updates
-URL   : https://patchwork.freedesktop.org/series/172769/
-State : success
+Piotr Piórkowski (1):
+  tests/intel/xe_sriov_mmio_regs: Add tests to verify registers on VFs
 
-== Summary ==
+ lib/igt_sriov_device.c           |  23 ++
+ lib/igt_sriov_device.h           |   1 +
+ tests/intel-ci/xe.blocklist.txt  |   1 +
+ tests/intel/xe_sriov_mmio_regs.c | 406 +++++++++++++++++++++++++++++++
+ tests/meson.build                |   1 +
+ 5 files changed, 432 insertions(+)
+ create mode 100644 tests/intel/xe_sriov_mmio_regs.c
 
-CI Bug Log - changes from IGT_9075 -> IGTPW_15736
-====================================================
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Additional (1): fi-glk-j4005 
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15736 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][1] ([i915#2190])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@kms_psr@psr-primary-page-flip:
-    - fi-glk-j4005:       NOTRUN -> [SKIP][3] +11 other tests skip
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html
-
-  
-  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
-  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9075 -> IGTPW_15736
-  * Linux: CI_DRM_19043 -> CI_DRM_19044
-
-  CI-20190529: 20190529
-  CI_DRM_19043: ecdf3c21a6c60cd2393b9494b0b7e0e0c8e69764 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19044: 67a170d6284099e2f259ff0bf9b5bf5b575a3d2d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15736: 15736
-  IGT_9075: 9075
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/index.html
-
---===============1367220143179825596==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe_device_sysfs coverage updates</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172769/">https://patchwork.freedesktop.org/series/172769/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9075 -&gt; IGTPW_15736</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Additional (1): fi-glk-j4005 <br />
-  Missing    (3): bat-dg2-13 fi-snb-2520m bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15736 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/fi-glk-j4005/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/fi-glk-j4005/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-primary-page-flip:</p>
-<ul>
-<li>fi-glk-j4005:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15736/fi-glk-j4005/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> +11 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9075 -&gt; IGTPW_15736</li>
-<li>Linux: CI_DRM_19043 -&gt; CI_DRM_19044</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19043: ecdf3c21a6c60cd2393b9494b0b7e0e0c8e69764 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19044: 67a170d6284099e2f259ff0bf9b5bf5b575a3d2d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15736: 15736<br />
-  IGT_9075: 9075</p>
-
-</body>
-</html>
-
---===============1367220143179825596==--
