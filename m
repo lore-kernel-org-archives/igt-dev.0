@@ -4,69 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5831C61DBD
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 11:22:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76F51C61DBD
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 12:04:07 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4C84F10E52D;
-	Wed, 26 Aug 2026 11:22:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D972710E1D3;
+	Wed, 26 Aug 2026 12:04:06 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="neDoiYGd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tf676kHh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6EFE010EBFE
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2026 11:21:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 44F5710E1D3
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2026 12:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787743315; x=1819279315;
+ t=1787745806; x=1819281806;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=UirtdbW0oorE7lHUlRi4gGr3aw2ToR/HOj5CsQBvXAg=;
- b=neDoiYGdldGR5zkuOknLY9q+xUCu5YeCjDDLwxuZIZ6tmHWu6MCHJN4X
- oL8O1gX1ZbzHp/2CAh9WtB4DKbpUcM/CA30CU+JDeccXl7GroDrCmzYda
- 3dJOiZ146vXNpW9Bvru5lP7aC3+iGoTfkL5S4Trt544wLldSWTzFjHUdw
- xePF9FxtBiReqUHSUL3nBEsWIVymMTX29HQVGiaMjJRiT8+MQK0/BDSjr
- 2ynN5Tcs9PirQ2DankxaVAAf1Ym/ujyBz7jwI6Z9+ZHvolnArne6Pijzc
- Jwo5TW8xZl46WqYMzCKIx2/2p7x9W2pQADpFHV8lQRu94s2i99wrjA0GV A==;
-X-CSE-ConnectionGUID: Rw+8Ja/VQGWEWQMegRrOTQ==
-X-CSE-MsgGUID: vglivgSFS+yglSCt7g27SA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88276944"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="88276944"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2026 04:21:50 -0700
-X-CSE-ConnectionGUID: AorHTwbpRbetZEptmq8GSw==
-X-CSE-MsgGUID: aXs3okGqTdqSLo/l4pyIMg==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=ib5KWvYyK72sJG+2TGHVQUNp7uGbOGO5wU+5lRuGStk=;
+ b=Tf676kHhIYN3/KuZUzJIYtwonqJxtOKa9Vvi/0O5FUWgw+in+N5Turk9
+ EDs+qjU9yNeg0hvN6ve/eV5IipACI0u47qjPDFL7i9W1ZO5IgTDSgB8/f
+ 5PIm051xms18BX9ITn3h6F1Db4SISokaj3uXbp/JRdzo6SwAHR+nDlI/O
+ 76Lc0hcrOtqiJSp+cu0OPi6vorEmkHjM90XdDpaL6uo5lKxJ5QAgR3So9
+ ChgQJrhIvvRLX/nqNs0HjozIFSHPhGNtOsEaKoyrb1ohNWYIpjk47spy3
+ JvP417oWfuP8VL7KgXMp7gL5MsMdIjtNqnU667jR6SVdVXsmtiZpJ02nn w==;
+X-CSE-ConnectionGUID: DdOfgO3zTEGV4mrEINrkNg==
+X-CSE-MsgGUID: RIWJJrs7TxOurm85yhLLEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="87355667"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="87355667"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Aug 2026 05:03:26 -0700
+X-CSE-ConnectionGUID: JP907c2WQcek1w9m+fzLMw==
+X-CSE-MsgGUID: HfCmASRIROGae6i/IH1fcg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="271054220"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="268126663"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 04:21:48 -0700
-Date: Wed, 26 Aug 2026 13:21:46 +0200
+ by orviesa009-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2026 05:03:24 -0700
+Date: Wed, 26 Aug 2026 14:03:22 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Krzysztof Karas <krzysztof.karas@intel.com>
-Cc: Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
- igt-dev@lists.freedesktop.org,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/intel/gem_exec_params: add
- invalid-offset-multiple-buffers test
-Message-ID: <20260826112146.m3btkp55a2l44jfv@kamilkon-DESK.igk.intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, mitulkumar.ajitkumar.golani@intel.com,
+ chaitanya.kumar.borah@intel.com
+Subject: Re: [PATCH i-g-t v5 2/3] lib/igt_vrr:Add VRR helper library for
+ display refresh rate testing
+Message-ID: <20260826120322.hnuce26rtgjfpcxr@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Krzysztof Karas <krzysztof.karas@intel.com>,
- Krzysztof Niemiec <krzysztof.niemiec@intel.com>,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
  igt-dev@lists.freedesktop.org,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>
-References: <20260819152108.58688-2-krzysztof.niemiec@intel.com>
- <gda37yz65qif5ugay37oko4xj57emhqznqaf2imil5k3z25w7y@hbpp5mhzkqs3>
- <aob1Jdrp54F491Je@kniemiec-mobl1>
- <rgysxjgtb7rurtpf4hnk7x6aw5pce3izhm36qrzku2tq5x52aa@5j6gy6tfhxvt>
+ mitulkumar.ajitkumar.golani@intel.com,
+ chaitanya.kumar.borah@intel.com
+References: <20260825183359.2791891-1-ramanaidu.naladala@intel.com>
+ <20260825183359.2791891-3-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <rgysxjgtb7rurtpf4hnk7x6aw5pce3izhm36qrzku2tq5x52aa@5j6gy6tfhxvt>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260825183359.2791891-3-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,161 +76,264 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
-On 2026-08-26 at 07:41:42 +0000, Krzysztof Karas wrote:
-> Hi Krzysztof,
-> 
-> thanks for explaining, I have no further issues:
-> 
-> Reviewed-by: Krzysztof Karas <krzysztof.karas@intel.com>
-> 
+Hi Naladala,
+On 2026-08-26 at 00:03:57 +0530, Naladala Ramanaidu wrote:
 
-Applied, thanks!
+I have two small nits, first about subject:
 
+[PATCH i-g-t v5 2/3] lib/igt_vrr:Add VRR helper library for display refresh rate testing
+
+add space after 'igt_vrr:' so it will be:
+
+[PATCH i-g-t v5 2/3] lib/igt_vrr: Add VRR helper library for display refresh rate testing
+
+iSecond nit at end.
+
+> Introduce a new helper library for Variable Refresh Rate (VRR).
+> 
+> Add helpers to validate targeted refresh-rate testing.
+> 
+> v2: Modify debugfs with helpers.
+> v3: Add helper to check cmrr support.
+>     Address review comments. (Mitul)
+> v4: Address below review comments.
+>     - Add source and rationale for standard timing refresh
+>       rates. (Chaitanya)
+>     - Restrict target RR debugfs helper to Intel devices. (Chaitanya)
+>     - Make Intel target RR debugfs helper return bool instead of
+>       asserting in the library. (Mitul)
+>     - Avoid assertions in library functions and return status
+>       instead. (karthik)
+>     - Reorder source list as per naming convention.
+>     - Rename cmrr_supported() to igt_vrr_target_refresh_rate_supported()
+>       for consistency. (Chaitanya)
+>     - Move CMRR-specific macros and enums from the library to the test
+>       file. (Chaitanya)
+> 
+> Assisted-by: GitHub Copilot:Claude Opus 4.6
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> ---
+>  lib/igt_vrr.c   | 149 ++++++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_vrr.h   |  29 ++++++++++
+>  lib/meson.build |   1 +
+>  3 files changed, 179 insertions(+)
+>  create mode 100644 lib/igt_vrr.c
+>  create mode 100644 lib/igt_vrr.h
+> 
+> diff --git a/lib/igt_vrr.c b/lib/igt_vrr.c
+> new file mode 100644
+> index 000000000..5b710b3cf
+> --- /dev/null
+> +++ b/lib/igt_vrr.c
+> @@ -0,0 +1,149 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
+> +
+> +#include <inttypes.h>
+> +
+> +#include "igt_vrr.h"
+> +#include "igt_sysfs.h"
+> +
+> +/**
+> + * Integer refresh rates that sinks advertise as standard video timings, and
+> + * for which a fractional (rate * 1000/1001) counterpart is also defined:
+> + *
+> + *  - 24, 25, 30, 50 and 60 Hz are the film and broadcast (PAL/NTSC) cadences
+> + *    carried over into the CTA-861 video formats.
+> + *  - 48, 96, 100, 120, 200 and 240 Hz are the integer multiples of those
+> + *    cadences, also listed as CTA-861 video formats.
+> + *  - 75, 90, 144, 165 and 180 Hz are VESA DMT/CVT and adaptive-sync panel
+> + *    rates in common use.
+> + *
+> + * The fractional variant of each entry (e.g. 60 -> 59.94) is what a target
+> + * refresh rate in video mode programs.
+> + */
+> +const uint32_t igt_vrr_standard_video_timing_fps[] = {
+> +	24, 25, 30, 48, 50, 60, 75, 90, 96, 100, 120, 144, 165, 180, 200, 240,
+> +};
+> +
+> +const size_t igt_vrr_standard_video_timing_fps_count =
+> +	ARRAY_SIZE(igt_vrr_standard_video_timing_fps);
+> +
+> +/**
+> + * igt_intel_target_rr_debugfs_write:
+> + * @fd: DRM file descriptor.
+> + * @crtc_index: Index of the CRTC.
+> + * @numerator: Numerator of the target refresh rate fraction.
+> + * @denominator: Denominator of the target refresh rate fraction.
+> + *
+> + * Write the target refresh rate configuration to the per-CRTC
+> + * VRR debugfs interface. Passing 0/0 clears the target refresh
+> + * rate.
+> + *
+> + * Returns:
+> + * true if the target refresh rate was read successfully, false otherwise.
+> + */
+> +bool
+> +igt_intel_target_rr_debugfs_write(int fd, int crtc_index,
+> +				  uint32_t rr_numerator,
+> +				  uint32_t rr_denominator)
+> +{
+> +	char buf[32];
+> +	int ret, dir, len;
+> +
+> +	if (!is_intel_device(fd)) {
+> +		igt_info("Not an Intel device\n");
+> +		return false;
+> +	}
+> +
+> +	len = snprintf(buf, sizeof(buf), "%u/%u", rr_numerator, rr_denominator);
+> +	if (len <= 0 || len >= (int)sizeof(buf))
+> +		return false;
+> +
+> +	dir = igt_debugfs_crtc_dir(fd, crtc_index);
+> +	if (dir < 0)
+> +		return false;
+> +
+> +	ret = igt_sysfs_write(dir, "intel_vrr_target_refresh_rate", buf, len);
+> +	close(dir);
+> +
+> +	return ret == len;
+> +}
+> +
+> +/**
+> + * igt_intel_target_rr_debugfs_read:
+> + * @fd: DRM file descriptor.
+> + * @crtc_index: Index of the CRTC.
+> + * @buf: Buffer to store the target refresh rate string.
+> + * @size: Size of @buf in bytes.
+> + *
+> + * Read the target refresh rate from the Intel per-CRTC VRR debugfs
+> + * interface. The returned string is always NUL-terminated on success.
+> + *
+> + * Return:
+> + * true if the target refresh rate was read successfully, false otherwise.
+> + */
+> +bool
+> +igt_intel_target_rr_debugfs_read(int fd, int crtc_index, char *buf, size_t size)
+> +{
+> +	int ret, dir;
+> +
+> +	if (!buf || !size)
+> +		return false;
+> +
+> +	dir = igt_debugfs_crtc_dir(fd, crtc_index);
+> +	if (dir < 0)
+> +		return false;
+> +
+> +	ret = igt_sysfs_read(dir, "intel_vrr_target_refresh_rate",
+> +			     buf, size - 1);
+> +	close(dir);
+> +
+> +	if (ret < 0)
+> +		return false;
+> +
+> +	buf[ret] = '\0';
+> +
+> +	return true;
+> +}
+> +
+> +/**
+> + * igt_vrr_mode_line_refresh_hz:
+> + * @mode: DRM display mode used for the calculation
+> + *
+> + * Compute the refresh rate directly from the mode timing parameters.
+> + *
+> + * Returns: Refresh rate in Hz as a floating-point value.
+> + */
+> +double igt_vrr_mode_line_refresh_hz(const drmModeModeInfo *mode)
+> +{
+> +	return (double)mode->clock * 1000.0 / ((double)mode->htotal * (double)mode->vtotal);
+> +}
+> +
+> +/**
+> + * igt_vrr_intel_target_refresh_rate_supported:
+> + * @fd: DRM device file descriptor.
+> + * @crtc_index: Index of the CRTC.
+> + *
+> + * Checks whether the intel_vrr_target_refresh_rate debugfs node is present
+> + * for the specified CRTC, indicating CMRR support.
+> + *
+> + * Returns: true if CMRR is supported, false otherwise.
+> + */
+> +bool igt_vrr_intel_target_refresh_rate_supported(int fd, int crtc_index)
+> +{
+> +	int dir;
+> +
+> +	dir = igt_debugfs_crtc_dir(fd, crtc_index);
+> +
+> +	if (dir < 0)
+> +		return false;
+> +
+> +	if (faccessat(dir, "intel_vrr_target_refresh_rate", F_OK, 0) == 0) {
+> +		close(dir);
+> +		return true;
+> +	}
+> +
+> +	close(dir);
+> +	return false;
+> +}
+> diff --git a/lib/igt_vrr.h b/lib/igt_vrr.h
+> new file mode 100644
+> index 000000000..d56639727
+> --- /dev/null
+> +++ b/lib/igt_vrr.h
+> @@ -0,0 +1,29 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
+> +
+> +#ifndef IGT_VRR_H
+> +#define IGT_VRR_H
+> +
+> +#include <stdbool.h>
+> +#include <stdint.h>
+
+Add newline here.
+
+> +#include "igt.h"
+> +#include "igt_kms.h"
+> +
+> +extern const uint32_t igt_vrr_standard_video_timing_fps[];
+> +extern const size_t igt_vrr_standard_video_timing_fps_count;
+> +
+> +bool
+> +igt_intel_target_rr_debugfs_write(int fd, int crtc_index,
+> +				  uint32_t rr_numerator,
+> +				  uint32_t rr_denominator);
+> +bool
+> +igt_intel_target_rr_debugfs_read(int fd, int crtc_index,
+> +				 char *buf, size_t size);
+> +
+> +double igt_vrr_mode_line_refresh_hz(const drmModeModeInfo *mode);
+> +
+> +bool igt_vrr_intel_target_refresh_rate_supported(int fd, int crtc_index);
+> +
+> +#endif
+> diff --git a/lib/meson.build b/lib/meson.build
+> index a7cde027e..b5aece55a 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -56,6 +56,7 @@ lib_sources = [
+>  	'igt_vec.c',
+>  	'igt_vgem.c',
+>  	'igt_vkms.c',
+> +        'igt_vrr.c',
+
+Please use one tab here, not spaces. Btw you can use checkpatch.pl
+script from igt repo path, with .checkpatch.conf adjusted to igt. 
 
 
 Regards,
 Kamil
 
-> On 2026-08-20 at 15:17:37 +0200, Krzysztof Niemiec wrote:
-> > Hi Krzysztof
-> > 
-> > On 2026-08-20 at 07:15:23 +0000, Krzysztof Karas wrote:
-> > > Hi Krzysztof,
-> > > 
-> > > On 2026-08-19 at 17:21:09 +0200, Krzysztof Niemiec wrote:
-> > > > Add coverage for the case where the batch start offset is invalid with
-> > > > multiple BOs submitted, which was buggy in the kernel until 4fe2bd195435
-> > > > ("drm/i915/gem: Zero-initialize the eb.vma array in i915_gem_do_execbuffer")
-> > > > 
-> > > > Signed-off-by: Krzysztof Niemiec <krzysztof.niemiec@intel.com>
-> > > > ---
-> > > > 
-> > > > v2:
-> > > >  - Reword comments to be more specific (Krzysztof K, Sebastian)
-> > > >  - Get rid of the context id parameter (previously set in rsvd2, which
-> > > >    should have been rsvd1) - which turns out isn't actually required to
-> > > >    trigger the correct error path (Sebastian)
-> > > >  - Capitalize sentences (Andi, off-list)
-> > > > 
-> > > >  tests/intel/gem_exec_params.c | 50 +++++++++++++++++++++++++++++++++++
-> > > >  1 file changed, 50 insertions(+)
-> > > > 
-> > > > diff --git a/tests/intel/gem_exec_params.c b/tests/intel/gem_exec_params.c
-> > > > index 3ba4c530b..c405190a0 100644
-> > > > --- a/tests/intel/gem_exec_params.c
-> > > > +++ b/tests/intel/gem_exec_params.c
-> > > > @@ -85,6 +85,8 @@
-> > > >   *
-> > > >   * SUBTEST: invalid-flag
-> > > >   *
-> > > > + * SUBTEST: invalid-offset-multiple-buffers
-> > > > + *
-> > > >   * SUBTEST: invalid-ring
-> > > >   *
-> > > >   * SUBTEST: invalid-ring2
-> > > > @@ -404,6 +406,51 @@ static void test_invalid_batch_start(int fd)
-> > > >  	gem_close(fd, exec.handle);
-> > > >  }
-> > > >  
-> > > > +/*
-> > > > + * This test is checking for a NULL deref in eb_release_vmas()
-> > > > + * (see 4fe2bd195435 for kernel fix), which happens when multiple buffers
-> > > > + * are submitted to the execbuf ioctl and some of them are invalid.
-> > > > + *
-> > > > + * The __gem_execbuf() call is always expected to fail with an -EINVAL,
-> > > > + * because the bug mentioned above is in the error path, which is
-> > > > + * deliberately triggered. Affected systems, however, will not handle it
-> > > > + * cleanly and will crash with a NULL deref.
-> > > > + */
-> > > > +
-> > > > +static void test_invalid_offset_multiple_buffers(int fd)
-> > > > +{
-> > > > +	struct drm_i915_gem_exec_object2 exec[2];
-> > > > +	struct drm_i915_gem_execbuffer2 execbuf;
-> > > > +	uint32_t size = 0x1000;
-> > > Why this particular size?
-> > > 
-> > 
-> > gem_create ioctl rounds up size to "the largest of minimum page sizes in the
-> > specified memory regions" (in this case simply PAGE_SIZE), then checks
-> > the alignment to PAGE_SIZE anyway. So this can be anything as long as it is
-> > not 0, and most of the tests I see default to 4096 byte objects with no
-> > additional explanation.
-> > 
-> > If 0x1000 is less readable than 4096 then I can change it
-> > 
-> > > > +
-> > > > +	memset(exec, 0, sizeof(exec));
-> > > > +	memset(&execbuf, 0, sizeof(execbuf));
-> > > > +
-> > > > +	exec[0].handle = batch_create_size(fd, size);
-> > > > +	exec[1].handle = batch_create_size(fd, size);
-> > > > +
-> > > > +	/*
-> > > > +	 * To test 4fe2bd195435, we need multiple buffers submitted and
-> > > > +	 * eb_add_vma() to fail. eb_add_vma() checks whether
-> > > > +	 * batch_start_offset + batch_len is smaller than the vma size, and
-> > > > +	 * fails with -EINVAL if it isn't. Submitting two buffers and setting
-> > > > +	 * the offset to the size of the first batch will trigger this
-> > > > +	 * error path.
-> > > > +	 */
-> > > > +
-> > > > +	execbuf.buffers_ptr = to_user_pointer(exec);
-> > > > +	execbuf.buffer_count = 2;
-> > > > +	execbuf.batch_start_offset = size;
-> > > Would setting any large value as offset trigger the desired
-> > > error path? Is using "size" here significant?
-> > > 
-> > 
-> > batch_start_offset >= size triggers the error path. The actual check I'm
-> > targeting [1] uses range_overflows_t() to check the interval
-> > [batch_start_offset, batch_start_offset + batch_len), if it lies in [0, size)
-> > (both right-open). AKA it checks if what we say is the batch is within the
-> > batch's vma.
-> > 
-> > Any value of batch_start_offset >= size will fail the range_overflows() check,
-> > triggering the failure (see [2], "Any range starting at or beyond @max
-> > is considered an overflow", batch_len needn't be set with start_offset >=
-> > size). I think this is the most straightforward way to fail eb_add_vma()
-> > 
-> > [1] https://elixir.bootlin.com/linux/v7.2/source/drivers/gpu/drm/i915/gem/i915_gem_execbuffer.c#L608-L614
-> > [2] https://elixir.bootlin.com/linux/v7.2/source/include/linux/overflow.h#L235-L268
-> > 
-> > Thanks
-> > Krzysztof
-> > 
-> > > > +
-> > > > +	igt_assert_eq(__gem_execbuf(fd, &execbuf), -EINVAL);
-> > > > +
-> > > > +	gem_sync(fd, exec[0].handle);
-> > > > +	gem_sync(fd, exec[1].handle);
-> > > > +
-> > > > +	gem_close(fd, exec[0].handle);
-> > > > +	gem_close(fd, exec[1].handle);
-> > > > +}
-> > > > +
-> > > >  static void test_larger_than_life_batch(int fd)
-> > > >  {
-> > > >  	const struct intel_execution_engine2 *e;
-> > > > @@ -705,6 +752,9 @@ int igt_main()
-> > > >  	igt_subtest("larger-than-life-batch")
-> > > >  		test_larger_than_life_batch(fd);
-> > > >  
-> > > > +	igt_subtest("invalid-offset-multiple-buffers")
-> > > > +		test_invalid_offset_multiple_buffers(fd);
-> > > > +
-> > > >  #define DIRT(name) \
-> > > >  	igt_subtest(#name "-dirt") { \
-> > > >  		execbuf.flags = 0; \
-> > > > -- 
-> > > > 2.55.0
-> > > > 
-> > > 
-> > > -- 
-> > > Best Regards,
-> > > Krzysztof
-> 
+
+>  	'igt_x86.c',
+>  	'instdone.c',
+>  	'intel_allocator.c',
 > -- 
-> Best Regards,
-> Krzysztof
+> 2.43.0
+> 
