@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0C93C5DF97
-	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 09:55:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ABE7C5DF97
+	for <igt-dev@archiver.kernel.org>; Wed, 26 Aug 2026 09:56:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3725F10E275;
-	Wed, 26 Aug 2026 09:55:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9D8E010E275;
+	Wed, 26 Aug 2026 09:56:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fdjLnlEH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Msem4lcl";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 42FE910E275
- for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2026 09:53:01 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E984B10E275
+ for <igt-dev@lists.freedesktop.org>; Wed, 26 Aug 2026 09:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787737981; x=1819273981;
+ t=1787737983; x=1819273983;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=gRVVpf9bX75SkI3hA5tdIksTL6GCUoaqImtP2I7H5io=;
- b=fdjLnlEHsu0gqpFXcDMGJvO4A5ZK+I7EnexKvTm+LyjJTHdYvB+qnZGf
- sAWMoMzkiXVGeUaXA1GSmEvaMu/4Q6KFjLbx2P/56gollWPDqAThOfIQS
- UCwHleLZbcMYCwqO/sDmKzhh5NHlqoy4tQwcUqYFPyfBg98B1p7JXfU5m
- 0EBmK44wDs5Y9UhtdroTG9ld57frR1mJDZUcrreFCLU2WqxgMQob/ad+z
- i5Ze8kuSdWGjn7UPJ79ayQBdJcmmZJlmfxieRfzTvoSeySUlQAaWD0T43
- cKH/528Ytq29i6rNu19nI99lU0lKNcisG+6YDy+vROj2phbYdZnF9thtL w==;
-X-CSE-ConnectionGUID: gx1pX8BiRUG6+KqKkG9iOA==
-X-CSE-MsgGUID: JqWh8YLBSkif4XLVBPaAaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88344868"
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="88344868"
+ bh=roJqpnmKJuyxNd06diblf3a2NIZmAyq3spw6kzu9Zz0=;
+ b=Msem4lcl1WfYsIHCNXvKWeltRM8I9DVFjYNdG8gkjDmI673luHpatnno
+ r8/DP0kqYdtHlJDO3iUJXR7HxJJ1cJhQZvXF7MfstC2E9VonSbjEEuNLn
+ ikCn/jPqIXcUmKfoxV9/A4a426eoTpFVDLst5kChjlo429AUCyDfyu5SU
+ QcunzSBdBeFnRZ+Crw4i+6PZRB1yo/gJrWteKGe2iePK8TUyzs2acClVM
+ DKb505EF+EeeRPCN8YPCg5drnF6CnzhvSqJahEFac/3Rg2KHdFiOzcAXq
+ bVywXhOu8PY5h5gmrZRhIBa35hsCytEEoksnoEhBkiimfAEH4RZ6fX2zn w==;
+X-CSE-ConnectionGUID: p7E3mXPMTd2mXzUsT+sKPw==
+X-CSE-MsgGUID: fHjPamQQRn63RTSkkF1szw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11886"; a="88344873"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="88344873"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2026 02:53:01 -0700
-X-CSE-ConnectionGUID: eyJFgfAtT/ybZSK1N2fM9w==
-X-CSE-MsgGUID: 1VK0KaIST2eVaeGA+VZFdw==
+ 26 Aug 2026 02:53:03 -0700
+X-CSE-ConnectionGUID: XaZVTwlSTBSi2MxZlQNYOw==
+X-CSE-MsgGUID: OTNvPORYT/GbHeHkYxf1Bw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="292388876"
+X-IronPort-AV: E=Sophos;i="6.25,244,1779174000"; d="scan'208";a="292388889"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Aug 2026 02:52:59 -0700
+ 26 Aug 2026 02:53:01 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [RFC 4/7] lib/igt_pm: Add power/wakeup accessors
-Date: Wed, 26 Aug 2026 15:36:35 +0530
-Message-ID: <20260826100639.273731-5-pranay.samala@intel.com>
+Subject: [RFC 5/7] lib/igt_pm: Add power/wakeup_active_count accessor
+Date: Wed, 26 Aug 2026 15:36:36 +0530
+Message-ID: <20260826100639.273731-6-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260826100639.273731-1-pranay.samala@intel.com>
 References: <20260826100639.273731-1-pranay.samala@intel.com>
@@ -68,187 +68,106 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add igt_pm_has_wakeup_support(), igt_pm_set_wakeup_enabled() and
-igt_pm_restore_wakeup() for the power/wakeup sysfs attribute of a PCI
-device.
+Add igt_pm_get_wakeup_active_count(), which reads how many times the
+device's wakeup source has been activated.
 
-The attribute only exists for devices the PM core considers wakeup capable.
-Checking whether it is there therefore answers "can this device do wakeup
-accounting at all", which is what igt_pm_has_wakeup_support() reports. That
-is why it opens the file with the non-asserting
-__igt_pm_get_power_attr_fd(): a missing file is an answer here, not a
-failure.
+wakeup_source_activate() bumps this unconditionally, so it counts runtime
+resumes too, on both the PCIe (pci_pme_wakeup()) and ACPI GPE
+(pci_acpi_wake_dev()) delivery routes. An increment across a suspended
+window therefore means the device signalled the resume itself, i.e. a PME
+arrived, rather than the host waking it.
 
-power/wakeup is worth setting, but not for the reason it first looks like.
-It does not gate PME_En on the runtime suspend path, which only checks
-pci_dev_run_wake() and device_can_wakeup().
+Neither alternative works: power/wakeup_count only moves under
+events_check_enabled, which the PM core sets for system suspend and
+hibernate, and PME_Status is cleared by the PCI/PM core as it handles the
+wakeup, so it cannot be sampled afterwards.
 
-What it gates is the wakeup source object. With wakeup disabled the PM core
-drops dev->power.wakeup, and after that wakeup events are not accounted at
-all. So anything that wants to see whether a resume came from the device
-needs wakeup enabled, even if it does not care about waking the system.
-
-igt_pm_set_wakeup_enabled() saves the original value on the first call and
-puts it back from an exit handler.
+Parsing uses a checked sscanf() rather than an asserted one, since the
+counter reads back as a bare newline when the device has no wakeup source,
+that is when power/wakeup is disabled. That has to give 0, not a failure.
 
 Assisted-by: GitHub_Copilot:claude-opus-5
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- lib/igt_pm.c | 129 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_pm.h |   3 ++
- 2 files changed, 132 insertions(+)
+ lib/igt_pm.c | 48 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_pm.h |  1 +
+ 2 files changed, 49 insertions(+)
 
 diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 8503e2683..748b3f86d 100644
+index 748b3f86d..4296169f3 100644
 --- a/lib/igt_pm.c
 +++ b/lib/igt_pm.c
-@@ -1498,6 +1498,135 @@ int igt_pm_get_runtime_usage(struct pci_device *pci_dev)
+@@ -1498,6 +1498,34 @@ int igt_pm_get_runtime_usage(struct pci_device *pci_dev)
  	return usage;
  }
  
-+#define IGT_PM_WAKEUP_ENABLED_STR "enabled\n"
-+#define IGT_PM_WAKEUP_DISABLED_STR "disabled\n"
-+
-+static struct {
-+	struct pci_device *pci_dev;
-+	bool orig_enabled;
-+} __igt_pm_wakeup;
-+
-+static void __igt_pm_wakeup_exit_handler(int sig)
-+{
-+	igt_pm_restore_wakeup();
-+}
-+
-+/**
-+ * igt_pm_has_wakeup_support:
-+ * @pci_dev: PCI device struct
-+ *
-+ * The power/wakeup* sysfs attributes only exist for devices the PM core
-+ * considers wakeup capable, so their presence is the check for whether wakeup
-+ * source accounting is available at all for @pci_dev.
-+ *
-+ * Returns: true if the device exposes power/wakeup, false otherwise.
-+ */
-+bool igt_pm_has_wakeup_support(struct pci_device *pci_dev)
-+{
-+	int fd = __igt_pm_get_power_attr_fd(pci_dev, "wakeup", O_RDONLY);
-+
-+	if (fd < 0)
-+		return false;
-+
-+	close(fd);
-+
-+	return true;
-+}
-+
 +/*
-+ * Read power/wakeup, i.e. whether the device is permitted to wake the system.
-+ * Returns false if wakeup is disabled or the device is not wakeup capable.
++ * Read an unsigned power attribute of @pci_dev, returning 0 if the attribute
++ * does not exist or does not hold a number.
 + *
-+ * Beware that this is not what gates PME_En on the runtime suspend path, which
-+ * consults capability only, see igt_pm_pci_pme_enabled(). What it does gate is
-+ * the device's wakeup source object: writing "disabled" makes the PM core drop
-+ * dev->power.wakeup, after which wakeup events are not accounted at all and the
-+ * power/wakeup_* counters read back as a bare newline. Tests that sample those
-+ * counters therefore need wakeup enabled, whether or not they care about system
-+ * wakeup.
++ * The latter is not hypothetical: the wakeup counters exist for every wakeup
++ * capable device, but the PM core emits a bare newline for them while the
++ * device has no wakeup source, i.e. while power/wakeup is disabled.
 + */
-+static bool igt_pm_get_wakeup_enabled(struct pci_device *pci_dev)
++static uint64_t igt_pm_read_power_attr_u64(struct pci_device *pci_dev,
++					   const char *attr)
 +{
 +	char buf[64];
++	uint64_t val;
 +	int fd;
-+	bool enabled;
 +
-+	fd = __igt_pm_get_power_attr_fd(pci_dev, "wakeup", O_RDONLY);
++	fd = __igt_pm_get_power_attr_fd(pci_dev, attr, O_RDONLY);
 +	if (fd < 0)
-+		return false;
++		return 0;
 +
-+	enabled = igt_pm_read_power_attr(fd, buf, sizeof(buf), false) &&
-+		  !strcmp(buf, "enabled");
++	if (!igt_pm_read_power_attr(fd, buf, sizeof(buf), false) ||
++	    sscanf(buf, "%" SCNu64, &val) != 1)
++		val = 0;
 +
 +	close(fd);
 +
-+	return enabled;
++	return val;
 +}
 +
+ #define IGT_PM_WAKEUP_ENABLED_STR "enabled\n"
+ #define IGT_PM_WAKEUP_DISABLED_STR "disabled\n"
+ 
+@@ -1627,6 +1655,26 @@ void igt_pm_restore_wakeup(void)
+ 	__igt_pm_wakeup.pci_dev = NULL;
+ }
+ 
 +/**
-+ * igt_pm_set_wakeup_enabled:
++ * igt_pm_get_wakeup_active_count:
 + * @pci_dev: PCI device struct
-+ * @enable: whether to allow the device to wake the system
 + *
-+ * Writes power/wakeup. The original value is saved on the first call and
-+ * restored by an exit handler, or explicitly via igt_pm_restore_wakeup().
++ * Reads power/wakeup_active_count, the number of times the device's wakeup
++ * source was activated. An increment across a runtime suspended window means
++ * the resume was signalled by the device, i.e. a PME arrived, rather than
++ * initiated by something host side such as HPD polling.
 + *
-+ * Callers must gate on igt_pm_has_wakeup_support() first.
++ * Use this and not power/wakeup_count, which is only incremented under
++ * events_check_enabled and so never moves for a runtime resume.
++ *
++ * Return: the wakeup active count, or 0 if the device is not wakeup capable or
++ * has power/wakeup disabled.
 + */
-+void igt_pm_set_wakeup_enabled(struct pci_device *pci_dev, bool enable)
++uint64_t igt_pm_get_wakeup_active_count(struct pci_device *pci_dev)
 +{
-+	const char *val = enable ? IGT_PM_WAKEUP_ENABLED_STR :
-+				   IGT_PM_WAKEUP_DISABLED_STR;
-+	int len = strlen(val);
-+	int fd, size;
-+
-+	fd = __igt_pm_get_power_attr_fd(pci_dev, "wakeup", O_RDWR);
-+	igt_assert_f(fd >= 0, "Device has no power/wakeup attribute\n");
-+
-+	if (!__igt_pm_wakeup.pci_dev) {
-+		__igt_pm_wakeup.orig_enabled = igt_pm_get_wakeup_enabled(pci_dev);
-+		__igt_pm_wakeup.pci_dev = pci_dev;
-+		igt_install_exit_handler(__igt_pm_wakeup_exit_handler);
-+	}
-+
-+	size = write(fd, val, len);
-+	close(fd);
-+
-+	igt_assert_f(size == len, "Failed to %s power/wakeup\n",
-+		     enable ? "enable" : "disable");
-+
-+	igt_debug("PCI '%04x:%02x:%02x.%01x' power/wakeup = %s\n",
-+		  pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func,
-+		  enable ? "enabled" : "disabled");
-+}
-+
-+/**
-+ * igt_pm_restore_wakeup:
-+ *
-+ * Restores power/wakeup to the value it had before the first
-+ * igt_pm_set_wakeup_enabled() call. Does nothing if it was never changed.
-+ */
-+void igt_pm_restore_wakeup(void)
-+{
-+	struct pci_device *pci_dev = __igt_pm_wakeup.pci_dev;
-+	const char *val;
-+	int fd;
-+
-+	if (!pci_dev)
-+		return;
-+
-+	val = __igt_pm_wakeup.orig_enabled ? IGT_PM_WAKEUP_ENABLED_STR :
-+					     IGT_PM_WAKEUP_DISABLED_STR;
-+
-+	fd = __igt_pm_get_power_attr_fd(pci_dev, "wakeup", O_RDWR);
-+	if (fd >= 0) {
-+		igt_ignore_warn(write(fd, val, strlen(val)));
-+		close(fd);
-+	}
-+
-+	__igt_pm_wakeup.pci_dev = NULL;
++	return igt_pm_read_power_attr_u64(pci_dev, "wakeup_active_count");
 +}
 +
  /**
   * igt_pm_ignore_slpc_efficient_freq:
   * @i915: open i915 drm file descriptor
 diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index 2784e97be..12617c2ef 100644
+index 12617c2ef..eba54efa2 100644
 --- a/lib/igt_pm.h
 +++ b/lib/igt_pm.h
-@@ -103,6 +103,9 @@ bool i915_is_slpc_enabled(int drm_fd);
- uint64_t igt_pm_get_runtime_suspended_time(struct pci_device *pci_dev);
- uint64_t igt_pm_get_runtime_active_time(struct pci_device *pci_dev);
- int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
-+bool igt_pm_has_wakeup_support(struct pci_device *pci_dev);
-+void igt_pm_set_wakeup_enabled(struct pci_device *pci_dev, bool enable);
-+void igt_pm_restore_wakeup(void);
+@@ -106,6 +106,7 @@ int igt_pm_get_runtime_usage(struct pci_device *pci_dev);
+ bool igt_pm_has_wakeup_support(struct pci_device *pci_dev);
+ void igt_pm_set_wakeup_enabled(struct pci_device *pci_dev, bool enable);
+ void igt_pm_restore_wakeup(void);
++uint64_t igt_pm_get_wakeup_active_count(struct pci_device *pci_dev);
  void igt_pm_ignore_slpc_efficient_freq(int i915, int gtfd, bool val);
  bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
  bool igt_pm_pci_pme_supported(struct pci_device *pci_dev,
