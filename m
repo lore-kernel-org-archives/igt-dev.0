@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35ED2C61DB9
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Aug 2026 18:43:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0759C61DB9
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Aug 2026 18:45:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 72CDA10F142;
-	Thu, 27 Aug 2026 18:43:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 26C6910F142;
+	Thu, 27 Aug 2026 18:45:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fNcWWyar";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="F05TRQRN";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D549110F142
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2026 18:42:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9089B10F142
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2026 18:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787856176; x=1819392176;
+ t=1787856294; x=1819392294;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=VjgqNVjOaCLPM1vHgkbtnwgHrIG1X6Dx5R7pVWDw0gY=;
- b=fNcWWyarcfXTIBrao7eNalXVsF51TBaeGyTBOLdgHQx0xJINwR2+xEK+
- R384mq5CGM0z39czO3L9r2dgSivT9qa449Pz71Jfpiz8Nt2nwKhqdUKJJ
- AmIK89diDJ/btiJsHK7pDhd0E25u2rL0pd8RdR1h4jxe4o2FMCsZJ8TOz
- jpQ3ocrAJs38GiRf9/LZFoin0+4f49/moBML0x87zHvngiZb/N49Ar4pU
- 6VqX26+SrpXTdFcJb+Sd4Qbpku1gHUcLq+rcdNi+5eJtWVsoO5h/Dyv9u
- kz/NZGt99v9U/TSntfY/1LvNKNmcfedHkNMIA6wcZFJqHJM+V0Xmmce5h Q==;
-X-CSE-ConnectionGUID: YSfeODysTEeeGL3WQoNPyQ==
-X-CSE-MsgGUID: BywqkISMRM2p6prQNtZjEw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="99717174"
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; d="scan'208";a="99717174"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2026 11:42:56 -0700
-X-CSE-ConnectionGUID: iPOysvSeQnqxx2nStxh+ig==
-X-CSE-MsgGUID: zpCpRQXWQ76oEgWs+J31Fw==
+ bh=pjDrRSTEbZaOjS9WHCFEg7fkCShT/11WHhbbqhGm85s=;
+ b=F05TRQRNz7xlUwdJf64XzNkaP0z5rgf5n2bt8JEfQSLa8v/i4/ROIXX/
+ K8hRUkkxMAnDZFp5oZirwcqzJeQ7Jvv/7cgQwXxGb5csSGTGe8Gi/V9aT
+ S6ufqkaZNfEb0NDHeNgQ0tirLVUJmeZ/9Dask1nYbpSqw02URYua4S+rp
+ LCR0cBB5NluUQC8Po1E+iBOqBT160wz/ZUTipahvVmGqqosDbbKHXWSIi
+ yBPAZN7swLzUIAlYQsd8Kw34fCOMU9fRKQiRUaxkjdJ+sDUXDYYN4h+oI
+ F3IePICpSfmzhtRksTxm3KstLcL59fDV5bBJf0JgVFQYY/2V0MM9GFv+v A==;
+X-CSE-ConnectionGUID: XvCtVAC/RzSLQTUJZBrtMg==
+X-CSE-MsgGUID: Tv03bKCSTzqA3UPqQBLKoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="90880243"
+X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; d="scan'208";a="90880243"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2026 11:44:51 -0700
+X-CSE-ConnectionGUID: AKX8ljTrT9qNssT8I8/2Ng==
+X-CSE-MsgGUID: LQT6BON2TEa93HncZNYspQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; d="scan'208";a="268517565"
+X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; d="scan'208";a="265358092"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by orviesa009-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 11:42:54 -0700
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 11:44:49 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: chaitanya.kumar.borah@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] tools: add Intel/Xe HDMI compliance support
-Date: Fri, 28 Aug 2026 00:21:58 +0530
-Message-Id: <20260827185158.378225-1-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tools: rename HDMI compliance utility
+Date: Fri, 28 Aug 2026 00:23:55 +0530
+Message-Id: <20260827185355.378279-1-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -69,32 +69,26 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Rename the AMD-specific HDMI compliance utility to a generic
 igt_hdmi_compliance binary and update the build rule.
 
-Add Intel/Xe-specific handling in the pixel-format path: require RGB
-output on Intel devices, verify the connector exposes Broadcast RGB,
-and set it to full range before committing the atomic state.
+Keep the existing AMD debugfs flow for pixel-format forcing. Skip
+that operation on Intel devices until a driver-supported interface
+for selecting the pixel encoding is available.
 
-Keep the existing AMD debugfs flow for non-Intel platforms so the same
-compliance checks remain usable across supported drivers.
-
+Assisted-by: GitHub Copilot:Claude Opus 4.6
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- ...dmi_compliance.c => igt_hdmi_compliance.c} | 25 ++++++++++++++++---
- tools/meson.build                             |  2 +-
- 2 files changed, 23 insertions(+), 4 deletions(-)
- rename tools/{amd_hdmi_compliance.c => igt_hdmi_compliance.c} (97%)
+ tools/{amd_hdmi_compliance.c => igt_hdmi_compliance.c} | 9 ++++++---
+ tools/meson.build                                      | 2 +-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+ rename tools/{amd_hdmi_compliance.c => igt_hdmi_compliance.c} (99%)
 
 diff --git a/tools/amd_hdmi_compliance.c b/tools/igt_hdmi_compliance.c
-similarity index 97%
+similarity index 99%
 rename from tools/amd_hdmi_compliance.c
 rename to tools/igt_hdmi_compliance.c
-index 2af4c0bab..cf438a4dc 100644
+index 2af4c0bab..ece0abd1d 100644
 --- a/tools/amd_hdmi_compliance.c
 +++ b/tools/igt_hdmi_compliance.c
-@@ -830,15 +830,34 @@ static void force_pixel_format(data_t *data, int pixel_format, int conn_id)
- {
- 	int fd, res;
- 	const char *entry_name;
-+	igt_fb_t afb;
+@@ -833,12 +833,15 @@ static void force_pixel_format(data_t *data, int pixel_format, int conn_id)
  
  	test_init(data, conn_id);
  
@@ -104,23 +98,8 @@ index 2af4c0bab..cf438a4dc 100644
  	igt_info("Setting %d on connector id %d\n",
  			pixel_format, data->output->config.connector->connector_id);
  
-+	if (is_intel_device(data->fd)) {
-+		igt_require_f(pixel_format == PIXEL_ENCODING_RGB,
-+			      "Intel devices do not provide a generic YCbCr output property\n");
-+		igt_require_f(igt_output_has_prop(data->output,
-+						  IGT_CONNECTOR_BROADCAST_RGB),
-+				      "connector has no 'Broadcast RGB' property\n");
-+		igt_create_pattern_fb(data->fd, 1024, 1024, DRM_FORMAT_XRGB8888, 0,
-+				      &afb);
-+		igt_plane_set_fb(data->primary, &afb);
-+		igt_output_set_prop_value(data->output, IGT_CONNECTOR_BROADCAST_RGB,
-+					  BROADCAST_RGB_FULL);
-+		igt_display_commit_atomic(&data->display,
-+					  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+		igt_remove_fb(data->fd, &afb);
-+		test_fini(data);
-+		return;
-+	}
++	igt_skip_on_f(is_intel_device(data->fd),
++			      "pixel-format forcing is not supported on Intel devices\n");
 +
 +	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
 +	igt_assert(fd >= 0);
