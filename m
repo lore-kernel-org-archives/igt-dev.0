@@ -4,26 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 827E4C61DB9
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Aug 2026 19:34:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C25BC61DB9
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Aug 2026 20:01:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0BE0410E32E;
-	Thu, 27 Aug 2026 19:34:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9CC1D10E308;
+	Thu, 27 Aug 2026 20:01:34 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D77C10F19B;
- Thu, 27 Aug 2026 19:33:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCCEA10E308;
+ Thu, 27 Aug 2026 20:00:53 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3172338823401663683=="
+ boundary="===============6293556799412961449=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_Enable_amd_filtering?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tools=3A_add_Intel/Xe_HDMI_?=
+ =?utf-8?q?compliance_support?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: vitaly.prosyak@amd.com
+To: "Swati Sharma" <swati2.sharma@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 27 Aug 2026 19:33:34 -0000
-Message-ID: <178785921419.93466.1530507120022067439@61270ab9df2a>
+Date: Thu, 27 Aug 2026 20:00:53 -0000
+Message-ID: <178786085389.93492.4314883643310550145@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <cover.1787853061.git.vitaly.prosyak@amd.com>
-In-Reply-To: <cover.1787853061.git.vitaly.prosyak@amd.com>
+References: <20260827185158.378225-1-swati2.sharma@intel.com>
+In-Reply-To: <20260827185158.378225-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -40,24 +41,57 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3172338823401663683==
+--===============6293556799412961449==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Enable amd filtering
-URL   : https://patchwork.freedesktop.org/series/172905/
-State : failure
+Series: tools: add Intel/Xe HDMI compliance support
+URL   : https://patchwork.freedesktop.org/series/172906/
+State : success
 
 == Summary ==
 
-Series 172905 revision 1 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_9077_BAT -> XEIGTPW_15747_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (13 -> 12)
+------------------------------
+
+  Missing    (1): bat-nvls-1 
 
 
+Changes
+-------
 
---===============3172338823401663683==
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9077 -> IGTPW_15747
+
+  IGTPW_15747: 15747
+  IGT_9077: 9077
+  xe-5656-108b145a702212f7cb6d40611f46c7ee7959d39e: 108b145a702212f7cb6d40611f46c7ee7959d39e
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15747/index.html
+
+--===============6293556799412961449==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -77,16 +111,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Enable amd filtering</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172905/">https://patchwork.freedesktop.org/series/172905/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tools: add Intel/Xe HDMI compliance support</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172906/">https://patchwork.freedesktop.org/series/172906/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15747/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15747/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 172905 revision 1 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_9077_BAT -&gt; XEIGTPW_15747_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 12)</h2>
+<p>Missing    (1): bat-nvls-1 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9077 -&gt; IGTPW_15747</li>
+</ul>
+<p>IGTPW_15747: 15747<br />
+  IGT_9077: 9077<br />
+  xe-5656-108b145a702212f7cb6d40611f46c7ee7959d39e: 108b145a702212f7cb6d40611f46c7ee7959d39e</p>
 
 </body>
 </html>
 
---===============3172338823401663683==--
+--===============6293556799412961449==--
