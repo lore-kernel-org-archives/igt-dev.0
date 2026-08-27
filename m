@@ -4,68 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EF34C61DC4
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Aug 2026 14:34:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8593C61DC4
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Aug 2026 15:37:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A956B10F0AA;
-	Thu, 27 Aug 2026 14:34:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 47B9010E513;
+	Thu, 27 Aug 2026 15:37:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VwhNfwuB";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jEMPY/Fw";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1AD6B10F0A9
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2026 14:34:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8905E10F0E6
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2026 15:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787841243; x=1819377243;
+ t=1787844993; x=1819380993;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=IncK9eZAoI7twkpWGs1S9wtUnhQeL9h4e3jpPIZGWWc=;
- b=VwhNfwuBmjKY1nYp5B9H85ZqoCwl1uG/iU01Rqomzgrs5vW8muP6CJSt
- V4nbPZfNRp6CGq6hAlUnFFoKTuyKw3YeToyqFxkT34Y6UsFUdPJHJVofR
- 5w9hvyaTDNds5tY4P7QJawC9vh4DApfqK52bEJ+A4ad/M0xXVB/P0MKZW
- kMB/Up/rc29lYecgYU1OiuRrveCLBMwcr4UazjcFJePd1jHnKK1I3Punf
- C8I85sFiUKwP31iStN6oZtW2v54WTMc2LFx4inGV5VCoVv6wf07+84xt8
- SSZB9wAAh3Q+z9dXrSnohTBNSLy15UcUIVfqHRY0va1d4Ig/zkgoGFULR A==;
-X-CSE-ConnectionGUID: F2xgcTWHTsGkP1NKFfDrKA==
-X-CSE-MsgGUID: aLfq7SU8R5S6ZXdQdCMItg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11887"; a="88360601"
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; d="scan'208";a="88360601"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2026 07:34:02 -0700
-X-CSE-ConnectionGUID: CtCNj6b8Q8CyIw/FiO5EXg==
-X-CSE-MsgGUID: V9wi3Z8bTLOz6fpkkx5jNA==
+ bh=sTM1T+ANoX9Ek0zTDtEU6EUKiBScOifRtXUIc7yOpZk=;
+ b=jEMPY/FwRL3hI6dv6NVW4glzVLPlOVJg4El6dvyZLDnM9YZ/x8q5T3jv
+ 5hbTIHtyUOAujBpJHHLlPzm+jlTu/3HuXKKxOMyyRsmVPzFcOlT9EN75v
+ giT+VQbds1jB1VH/KVc+Um3lwfaOtTSBVBlyOJWiT7uFm/OydkyIvkSoE
+ bK4SC9e+2tfi7clYngrxr0NA+DjxHNEwpQc3f//CdCdFXA+RQH93wpkev
+ WlEBUlj4NSqUFEUR1OVWDtqrXaKhjQcyiA3ey65GzIUWMchLIo5Nd5EZT
+ KOZczPiYdasaoyTqLmoOqHt6wQkP8yu8rWKg4/GVIqtY1JscPVYt4Q8Rt w==;
+X-CSE-ConnectionGUID: Gn7CbPR4QEqHNAqZGPUVyA==
+X-CSE-MsgGUID: sUWZqR+lQTO/elk3MJHMgg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="105722603"
+X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; d="scan'208";a="105722603"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2026 08:36:32 -0700
+X-CSE-ConnectionGUID: AcOV4YEwQlO8LFdnpm5wgQ==
+X-CSE-MsgGUID: mahFMG/NRTeOiPuvB/V31w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; d="scan'208";a="272127834"
+X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; d="scan'208";a="271705903"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa005-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 07:34:00 -0700
-Date: Thu, 27 Aug 2026 16:33:44 +0200
+ by orviesa004-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 08:36:30 -0700
+Date: Thu, 27 Aug 2026 17:36:27 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sk Anirban <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com,
- soham.purkait@intel.com, mallesh.koujalagi@intel.com,
- dwarakanath.ramadeva@intel.com, nishit.sharma@intel.com,
- kamil.konieczny@intel.com, katarzyna.wroblewska@intel.com,
- sebastian.brzezinka@intel.com
-Subject: Re: [PATCH] lib/igt_core: Avoid stale errno
-Message-ID: <20260827143344.fr35uh6ff3lxqedy@kamilkon-DESK.igk.intel.com>
+To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Swati Sharma <swati2.sharma@intel.com>,
+ Harry Wentland <harry.wentland@amd.com>, Alex Hung <alex.hung@amd.com>
+Subject: Re: [i-g-t] tests/kms_colorop: Use local variable for color pipeline
+ cap
+Message-ID: <20260827153627.cn5ou4ornidks227@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, badal.nilawar@intel.com,
- riana.tauro@intel.com, karthik.poosa@intel.com,
- raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, dwarakanath.ramadeva@intel.com,
- nishit.sharma@intel.com, kamil.konieczny@intel.com,
- katarzyna.wroblewska@intel.com, sebastian.brzezinka@intel.com
-References: <20260827130002.374419-2-sk.anirban@intel.com>
+ Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Swati Sharma <swati2.sharma@intel.com>,
+ Harry Wentland <harry.wentland@amd.com>,
+ Alex Hung <alex.hung@amd.com>
+References: <20260803080340.2088027-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260827130002.374419-2-sk.anirban@intel.com>
+In-Reply-To: <20260803080340.2088027-1-chaitanya.kumar.borah@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,56 +75,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sk,
-On 2026-08-27 at 18:30:03 +0530, Sk Anirban wrote:
-> Commit <e311ed2c7> ("lib/igt_core: do not reset errno in igt_gettime")
-> removed an incidental errno reset that used to mask stale errno
-> values at subtest entry. As a result, the errorno left by
+Hi Chaitanya,
+On 2026-08-03 at 13:33:40 +0530, Chaitanya Kumar Borah wrote:
 
-s/errorno/errno/
+small nit about subject, please do not use "C code to english",
+rather describe what you try to achive, here better:
 
-> g_key_file_load_from_file() reaches future tests assertion failures
-> and is printed as a bogus "Last errno" hint.
-> 
-> Fix the root cause by clearing errno.
-
-imho this is not a root cause, any call to system can end in
-setting errno, most common place is drm_open_driver(). I also
-sumbmitted a change which tries to solve this but it was not
-merged yet (myabe not a best solution).
-
-Why not just setting errno = 0 at a test?
-
-> 
-> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-> ---
-
-Please add here a link to case you would like to solve, and just
-cite few lines from log which seems to you wrong.
-
->  lib/igt_rc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/lib/igt_rc.c b/lib/igt_rc.c
-> index b7f1731fe..f00840915 100644
-> --- a/lib/igt_rc.c
-> +++ b/lib/igt_rc.c
-> @@ -58,5 +58,7 @@ GKeyFile *igt_load_igtrc(void)
->  	if (!key_file_env && key_file_loc)
->  		free(key_file_loc);
->  
-> +	errno = 0;
-
-imho this is a wrong place, also not sure if these will help in
-your case. More proper place would be at end of init sequence
-in igt_core (at a caller to this function, not here).
+[i-g-t] tests/kms_colorop: Get cap color pipeline only once
 
 Regards,
 Kamil
 
+> Following the pattern in kms_color_pipeline, set
+> DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE once and stash the result in a
+> local variable, then propagate it to display->has_plane_color_pipeline
+> after the final igt_display_require() (which reinitializes the display
+> state). This avoids calling drmSetClientCap() twice.
+> 
+> Cc: Swati Sharma <swati2.sharma@intel.com>
+> Cc: Harry Wentland <harry.wentland@amd.com>
+> Cc: Alex Hung <alex.hung@amd.com>
+> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> ---
+>  tests/kms_colorop.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+> index 16db0b8ad..d573d2ceb 100644
+> --- a/tests/kms_colorop.c
+> +++ b/tests/kms_colorop.c
+> @@ -406,6 +406,7 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
+>  
+>  	igt_display_t display;
+>  	int i, j, ret;
+> +	int has_plane_color_pipeline = 0;
+>  
+>  	igt_fixture() {
+>  		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> @@ -417,15 +418,15 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
+>  
+>  		igt_require_f(!ret, "error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
+>  
+> -		igt_display_require(&display, display.drm_fd);
+>  		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+> -			display.has_plane_color_pipeline = 1;
+> +			has_plane_color_pipeline = 1;
 > +
->  	return file;
->  }
+> +		igt_display_require(&display, display.drm_fd);
+>  
+>  		kmstest_set_vt_graphics_mode();
+>  
+>  		igt_display_require(&display, display.drm_fd);
+> -		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+> -			display.has_plane_color_pipeline = 1;
+> +		display.has_plane_color_pipeline = has_plane_color_pipeline;
+>  
+>  		igt_require(display.is_atomic);
+>  	}
 > -- 
-> 2.43.0
+> 2.50.1
 > 
