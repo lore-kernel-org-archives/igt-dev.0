@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8593C61DC4
-	for <igt-dev@archiver.kernel.org>; Thu, 27 Aug 2026 15:37:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDCF7C61DC4
+	for <igt-dev@archiver.kernel.org>; Thu, 27 Aug 2026 16:38:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 47B9010E513;
-	Thu, 27 Aug 2026 15:37:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 61E7F10F112;
+	Thu, 27 Aug 2026 16:38:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jEMPY/Fw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QwBsFXpU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8905E10F0E6
- for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2026 15:36:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6E7410F106
+ for <igt-dev@lists.freedesktop.org>; Thu, 27 Aug 2026 16:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787844993; x=1819380993;
+ t=1787848670; x=1819384670;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=sTM1T+ANoX9Ek0zTDtEU6EUKiBScOifRtXUIc7yOpZk=;
- b=jEMPY/FwRL3hI6dv6NVW4glzVLPlOVJg4El6dvyZLDnM9YZ/x8q5T3jv
- 5hbTIHtyUOAujBpJHHLlPzm+jlTu/3HuXKKxOMyyRsmVPzFcOlT9EN75v
- giT+VQbds1jB1VH/KVc+Um3lwfaOtTSBVBlyOJWiT7uFm/OydkyIvkSoE
- bK4SC9e+2tfi7clYngrxr0NA+DjxHNEwpQc3f//CdCdFXA+RQH93wpkev
- WlEBUlj4NSqUFEUR1OVWDtqrXaKhjQcyiA3ey65GzIUWMchLIo5Nd5EZT
- KOZczPiYdasaoyTqLmoOqHt6wQkP8yu8rWKg4/GVIqtY1JscPVYt4Q8Rt w==;
-X-CSE-ConnectionGUID: Gn7CbPR4QEqHNAqZGPUVyA==
-X-CSE-MsgGUID: sUWZqR+lQTO/elk3MJHMgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="105722603"
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; d="scan'208";a="105722603"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2026 08:36:32 -0700
-X-CSE-ConnectionGUID: AcOV4YEwQlO8LFdnpm5wgQ==
-X-CSE-MsgGUID: mahFMG/NRTeOiPuvB/V31w==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=E1TAfq6hF++IJnVKuprr/zzNzPA3FGEzcOKZey7YTlU=;
+ b=QwBsFXpUp1Q+DrWHuY640BJhhH2N+JVqF1hztXEnIyF/7y/XaOMi3TLr
+ 7ih8uJAfVwP6rvErAtcKTWQ1e+B+Ah6/3kg0OAs35FZQ1OSXvZQjue4vh
+ 6R8IDLRl1KOd3A6FkeDL1rbdAtK+SC/6+wSuSG2fccfPxU3R7OUjcHBs3
+ keBrV/RqJwsyoDE6IhByRo+B831JK6qGhd/BBrhJQRyGR5Pj4ix2R5uSc
+ 35uWYUoU1WittIOvgp1gCVqGnjVhffJh6oxlGWp2hxfGreOTtlKaALwBu
+ tCmFYRPAt6fpNBvF2QY4qsRV7qQBp8O4sh8e50ECvKx4vfhQWskj9rBFY Q==;
+X-CSE-ConnectionGUID: iN/GCE4JQ+KU3i5kapsi0A==
+X-CSE-MsgGUID: o3Ak7MzuSCK6RWqsZJwU3Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="90868256"
+X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; d="scan'208";a="90868256"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2026 09:37:48 -0700
+X-CSE-ConnectionGUID: pKoHZrmzRkeDLoKcdLDf3g==
+X-CSE-MsgGUID: 58jBW4rjSqmv9NJ4WkTfrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; d="scan'208";a="271705903"
+X-IronPort-AV: E=Sophos;i="6.25,246,1779174000"; d="scan'208";a="292741086"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2026 08:36:30 -0700
-Date: Thu, 27 Aug 2026 17:36:27 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2026 09:37:47 -0700
+Date: Thu, 27 Aug 2026 18:37:30 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Swati Sharma <swati2.sharma@intel.com>,
- Harry Wentland <harry.wentland@amd.com>, Alex Hung <alex.hung@amd.com>
-Subject: Re: [i-g-t] tests/kms_colorop: Use local variable for color pipeline
- cap
-Message-ID: <20260827153627.cn5ou4ornidks227@kamilkon-DESK.igk.intel.com>
+To: Sobin Thomas <sobin.thomas@intel.com>
+Cc: igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
+ nishit.sharma@intel.com
+Subject: Re: [PATCH i-g-t v3 1/2] tests/intel: add BO allocation stress
+ coverage
+Message-ID: <20260827163730.f7nsz7xh4odhopxo@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- igt-dev@lists.freedesktop.org,
- Swati Sharma <swati2.sharma@intel.com>,
- Harry Wentland <harry.wentland@amd.com>,
- Alex Hung <alex.hung@amd.com>
-References: <20260803080340.2088027-1-chaitanya.kumar.borah@intel.com>
+ Sobin Thomas <sobin.thomas@intel.com>,
+ igt-dev@lists.freedesktop.org, matthew.brost@intel.com,
+ nishit.sharma@intel.com
+References: <20260826155132.1313570-1-sobin.thomas@intel.com>
+ <20260826155132.1313570-2-sobin.thomas@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260803080340.2088027-1-chaitanya.kumar.borah@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260826155132.1313570-2-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,63 +75,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Chaitanya,
-On 2026-08-03 at 13:33:40 +0530, Chaitanya Kumar Borah wrote:
+Hi Sobin,
+On 2026-08-26 at 15:51:29 +0000, Sobin Thomas wrote:
 
-small nit about subject, please do not use "C code to english",
-rather describe what you try to achive, here better:
+I have only few nits, see below.
 
-[i-g-t] tests/kms_colorop: Get cap color pipeline only once
+> Add a BO allocation stress test that exercises concurrent
+> buffer allocation, VM binding for randomized and threaded
+> execution.
+> 
+> The test runs multiple workloads in parallel threads, forcing memory
+> pressure, verifies execution and validate result after execution.
+> This provide coverage for different BO allocation stress
+> scenarios
+> 
+> v3: renamed the sub test functions.
+> 
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+> ---
+>  tests/intel/xe_bo_alloc.c | 1030 +++++++++++++++++++++++++++++++++++++
+>  tests/meson.build         |    1 +
+>  2 files changed, 1031 insertions(+)
+>  create mode 100644 tests/intel/xe_bo_alloc.c
+> 
+> diff --git a/tests/intel/xe_bo_alloc.c b/tests/intel/xe_bo_alloc.c
+> new file mode 100644
+> index 000000000..815c7ddf2
+> --- /dev/null
+> +++ b/tests/intel/xe_bo_alloc.c
+> @@ -0,0 +1,1030 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2021 Intel Corporation
+
+This should be 2026, unless someone sent this back in 2021?
+
+> + */
+> +
+> +/**
+> + * TEST: xe_bo_alloc
+> + * Category: Core
+> + * Mega feature: General
+> + * Sub-category: Memory
+> + * Functionality: BO allocation
+> + * Description: Tests for buffer object allocation in Xe driver
+> + */
+
+Add newline here.
+
+> +#include <fcntl.h>
+> +#include <errno.h>
+
+Move errno.h before fcntl.h
+
+
 
 Regards,
 Kamil
 
-> Following the pattern in kms_color_pipeline, set
-> DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE once and stash the result in a
-> local variable, then propagate it to display->has_plane_color_pipeline
-> after the final igt_display_require() (which reinitializes the display
-> state). This avoids calling drmSetClientCap() twice.
-> 
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Cc: Harry Wentland <harry.wentland@amd.com>
-> Cc: Alex Hung <alex.hung@amd.com>
-> Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-> ---
->  tests/kms_colorop.c | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-> index 16db0b8ad..d573d2ceb 100644
-> --- a/tests/kms_colorop.c
-> +++ b/tests/kms_colorop.c
-> @@ -406,6 +406,7 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
->  
->  	igt_display_t display;
->  	int i, j, ret;
-> +	int has_plane_color_pipeline = 0;
->  
->  	igt_fixture() {
->  		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> @@ -417,15 +418,15 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
->  
->  		igt_require_f(!ret, "error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
->  
-> -		igt_display_require(&display, display.drm_fd);
->  		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
-> -			display.has_plane_color_pipeline = 1;
-> +			has_plane_color_pipeline = 1;
+> +#include <sys/mman.h>
 > +
-> +		igt_display_require(&display, display.drm_fd);
->  
->  		kmstest_set_vt_graphics_mode();
->  
->  		igt_display_require(&display, display.drm_fd);
-> -		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
-> -			display.has_plane_color_pipeline = 1;
-> +		display.has_plane_color_pipeline = has_plane_color_pipeline;
->  
->  		igt_require(display.is_atomic);
->  	}
-> -- 
-> 2.50.1
-> 
+> +#include "igt.h"
+> +
+> +#include "lib/igt_syncobj.h"
+> +#include "lib/intel_reg.h"
+> +
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_query.h"
+> +
+> +#include "xe_drm.h"
+> +#define USER_FENCE_VALUE 0xdeadbeefdeadbeefull
+> +#define BO_BIND_BASE_ADDR	0x1a0000ull
+> +#define THREAD_VA_STRIDE GB(1)
+> +#define SZ_4K_SHIFT	12
+> +#define MAX_ALLOCATIONS 50000
+> +
+[cut]
