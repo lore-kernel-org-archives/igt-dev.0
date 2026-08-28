@@ -4,159 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 203A7C61DB9
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Aug 2026 03:30:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65967C61DB9
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Aug 2026 04:03:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8303310E2D9;
-	Fri, 28 Aug 2026 03:30:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF44A10E2D9;
+	Fri, 28 Aug 2026 04:03:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E7EUox5A";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="URy7TVYY";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D392810E2D9
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2026 03:30:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CA45110E2D9
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2026 04:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787887803; x=1819423803;
+ t=1787889793; x=1819425793;
  h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=cZ6qTV8y+wb7A56ITqKf5wOfGcmDg0uYQuC9rwcCZVo=;
- b=E7EUox5AQOrV0XmZhgYY2kMGxNi89gf3MTJ26QMzv0MHvQnSe0ny8Y3o
- Nudloq7FpJI9Dur/fGeNzBOMiO7hnTfvep1Radbxwnpw4iQ+MeUsDbLZx
- iYZwxXNZgGXe2u23ZmYp+bNkSbE2q01xd2q2ySJhuEiUoWuu2uT0YEtSc
- 4/jC8UGQBRwegeg1IH7iHb+6ALd1U50jwKlwyRZgyZbxepsIeHTcwgL6P
- wSEURnrtcf88PKT3rdZe6wsKpzAowM72t+i54tTAjEJBZ4JWXCU1Bnvxy
- C1qN4w3bH30Z8+Yy/GXgUkt8hJ3kWfYKBBuwgzFVI+HFKTZqLbQArRRDl w==;
-X-CSE-ConnectionGUID: nwrekvUdSBSAfpt3i7/xjQ==
-X-CSE-MsgGUID: EKT0H0l4TuKAVDDUizGF0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="88318028"
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; d="scan'208";a="88318028"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2026 20:30:03 -0700
-X-CSE-ConnectionGUID: tjHztW2sRcmQ4hoFUa7zrQ==
-X-CSE-MsgGUID: TnhgOdsdTH2WBAPxKcLiuQ==
+ in-reply-to:mime-version;
+ bh=JNsifqjZJFRMGfcD/oVsGE4+WVSJYv2lb9Qo0lpIGDs=;
+ b=URy7TVYY5lU2+6mAF9Qj902LSVTo8O2WQ4dZv56ehO6tLOboHUafI7/x
+ 0VXdmFsf8cGyqsOIrU6fH3EtaMTx6nbMsiAyrFJSOxn1cmBt9Fy8ezygg
+ OoEWEBz9014qfqhEiVsFL1VMGKHuUl/bXuu/+5GDZo6gIMpH+ASRmwKnB
+ Qw3wLsjHHDVXW0XLa1smsBgSOqsEpeWl5M8zQTKc1nsAXcUxES8nPLcZ4
+ ZQWhS/rDpLQm64QqUbqOxz/KF7wBf74cQn1dB6foQUcWTkqhqgdExpi4H
+ 7HEZI0CPZ/S3AMdoQ4hr2U4UcMPhyaM4oBwMsEYGJw17DwEOqWZr/1Gg3 w==;
+X-CSE-ConnectionGUID: kdG/6DH2Qies8X1iQ7ga5Q==
+X-CSE-MsgGUID: Pdope555Sqem1G5I74N9Yg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11888"; a="105918727"
+X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
+ d="scan'208,217";a="105918727"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2026 21:03:12 -0700
+X-CSE-ConnectionGUID: miuP9kaHRqq6UNP0qxgGsw==
+X-CSE-MsgGUID: Oj3rVaIwTHmUx5PqeMWusA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; d="scan'208";a="264280816"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Aug 2026 20:30:03 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.25,247,1779174000"; 
+ d="scan'208,217";a="270013826"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Aug 2026 21:03:13 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 27 Aug 2026 20:30:02 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.46; Thu, 27 Aug 2026 21:03:11 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Thu, 27 Aug 2026 20:30:02 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.32) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Thu, 27 Aug 2026 21:03:11 -0700
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.23) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 27 Aug 2026 20:30:02 -0700
+ 15.2.2562.46; Thu, 27 Aug 2026 21:03:11 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kVngVkosUcSIvjCaXvnz+fGCReLw0aQUb5s9TfsxG9xV6lleLWO4zwYOg7s34qM0kr6H9ZnH0IGj0CEXpYLIqw0ONZKMtQMXGawiHMHt/qloiLg+AIt7V0t0uH925qc1/DwFVBvZNdKD1E7l21ojFO6pbW/3noTyk3Q/ZpvvZlq+L6JCYLafSv4YwUdSxpsV3264zWY1lwa2ryafsIxRnHjA1e5NrQIetQyDHDpqfrlWHtAzQRkDQrY2nLUQNNKFfcY/LsFJ0w4gtfmTyy2N6UDBC9MR49JItnvWDY3ASoEZyvMwpmdqyn38pbcW+/YflSPFhgxpR1w6tVfNqi46ow==
+ b=PHBlGr93EvdNCeayL7kp2MOHWUxzU5Nvqi/Cp5XDFJPIe1hHJ0t53G+nKzsKzahSY7p0OdyORapvbGzraly9Oz8r8+d5hfLD0z5DnOU0Jq2tDbdyiNhN8aEOBnub0mYeU8BowBIjixBDEnVJXuoKg3gf/x30wT1NfbNjqsTjZIElkXZlIxKNmvqp/1Fj390K5P1lhXcAALy6TkWI+kfZZn9ocH8Tq9DmPsVANYmivzwgK5Q8JC/urZ0mxhGK0FwzHywIti3bo8MMqwchDse8iiIgWooy1y64fyoHahRi5ucLSfDUiF5Hhm2r4mZY/DpQBOOvhqAWb631Tr7Z/IE8qw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cZ6qTV8y+wb7A56ITqKf5wOfGcmDg0uYQuC9rwcCZVo=;
- b=HjDLaothVNWLdfd/vhjGgwHt1hnRz1rHdUAqgZOzuEQyD9FNR/2/9M/2lLEewrHcZZGTi0IlmnCJHABMzLbzznCrzPagLIYZD7QyZ2gFCjFPn8faIs15FliwOb49ebhwevRGRm7t/nOF8P2HxkDV8erhScVs2CP1UblMQ2Pp7xYlcPYU0mtWKKGVZZoy3Obsl0ahI9IwBJkySmajn81osVIS1COcllEYh6a5sdHOi0JSdsOZg8MGwjaK4dxUyu7SRAa3Ln/KEZsOqBbUra/qNVVKRyFGPlzU1yGWZd3VW+mMVEN6YSrmrHH5STBTWzjZz9NDXTJ6RCs0IX8r/s43Ng==
+ bh=RkMCFG7dxJklQAYoMSH2P3ZCmZjgcgUOxG2WB9H4krc=;
+ b=Bnk/h9blw92OPMIqP2dWfELD9ay/nJGm5lJGWJ4d7ETXZ/xoyQCzXXyax+r434gCv2RmmfIYGSZ05fM5yHWZCQd5Pif2z/ucWJhB6gHynEfHcbCd8qJd91YLT9sVZTXQyeTv07X2jPFEoq5u1WeLgazSYmBU3OMN2I2QFWNIhQvXeSIZG42+DMEu4KIFvTVFfYsKoW3f8bDAwz0htO5fmCkfPX9H8rUvKsm0W+yq/ayfPW1BZYXoI62Ug5RYFK+TYUac/xwIAaEE4+16ihjP5ZhG5w+YTN4sAp+6HxDPv080hRUG8A1+fn07EUWEllAXVsU1CqyN7iO/r02PfD5zMw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from PH7PR11MB6796.namprd11.prod.outlook.com (2603:10b6:510:1ba::6)
- by DS7PR11MB7692.namprd11.prod.outlook.com (2603:10b6:8:ef::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Fri, 28 Aug
- 2026 03:30:00 +0000
-Received: from PH7PR11MB6796.namprd11.prod.outlook.com
- ([fe80::60ca:3168:fb41:7ae7]) by PH7PR11MB6796.namprd11.prod.outlook.com
- ([fe80::60ca:3168:fb41:7ae7%3]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
- 03:29:59 +0000
-From: "S, Sowmiya" <sowmiya.s@intel.com>
-To: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Thasleem,
- Mohammed" <mohammed.thasleem@intel.com>
-CC: "Joshi, Kunal1" <kunal1.joshi@intel.com>
-Subject: RE: [PATCH i-g-t] tests/intel/kms_pm_warm_boot: Add warm reboot test
-Thread-Topic: [PATCH i-g-t] tests/intel/kms_pm_warm_boot: Add warm reboot test
-Thread-Index: AQHdNZietxpzxrCX9UWUgpsC5C27b7ayzmAw
-Date: Fri, 28 Aug 2026 03:29:59 +0000
-Message-ID: <PH7PR11MB6796BFB02353CBEA06A2B15BE5AC2@PH7PR11MB6796.namprd11.prod.outlook.com>
-References: <20251210114344.1535-1-mohammed.thasleem@intel.com>
- <20260827015110.2426-1-mohammed.thasleem@intel.com>
-In-Reply-To: <20260827015110.2426-1-mohammed.thasleem@intel.com>
+Received: from DS0PR11MB7651.namprd11.prod.outlook.com (2603:10b6:8:149::8) by
+ DM6PR11MB4692.namprd11.prod.outlook.com (2603:10b6:5:2aa::11) with
+ Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.339.11; Fri, 28 Aug 2026 04:03:09 +0000
+Received: from DS0PR11MB7651.namprd11.prod.outlook.com
+ ([fe80::901e:b308:292b:1b2f]) by DS0PR11MB7651.namprd11.prod.outlook.com
+ ([fe80::901e:b308:292b:1b2f%4]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
+ 04:03:09 +0000
+From: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>
+To: "Chegondi, Harish" <harish.chegondi@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Tauro,
+ Riana" <riana.tauro@intel.com>, "Gupta, Anshuman" <anshuman.gupta@intel.com>, 
+ "Koujalagi, Mallesh" <mallesh.koujalagi@intel.com>, "Jadav, Raag"
+ <raag.jadav@intel.com>, "Purkait, Soham" <soham.purkait@intel.com>
+Subject: Re: [PATCH v3 00/10] Xe3P GPU Error Injection Test Suite with DRM RAS
+ Netlink Support
+Thread-Topic: [PATCH v3 00/10] Xe3P GPU Error Injection Test Suite with DRM
+ RAS Netlink Support
+Thread-Index: AQHdM+d/ZRY4NGBzCESuL8D6z6J0f7ayW9UAgACABkk=
+Date: Fri, 28 Aug 2026 04:03:09 +0000
+Message-ID: <DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2@DS0PR11MB7651.namprd11.prod.outlook.com>
+References: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
+ <apCclpWH9W_qgN-6@intel.com>
+In-Reply-To: <apCclpWH9W_qgN-6@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
-X-Mentions: mohammed.thasleem@intel.com
+X-Mentions: harish.chegondi@intel.com
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
+msip_labels: 
 authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6796:EE_|DS7PR11MB7692:EE_
-x-ms-office365-filtering-correlation-id: 01f16d3c-6b58-4583-f411-08df04b4a3c8
+x-ms-traffictypediagnostic: DS0PR11MB7651:EE_|DM6PR11MB4692:EE_
+x-ms-office365-filtering-correlation-id: 53dd3a35-1aed-4725-2fe6-08df04b945d0
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|23010399003|376014|1800799024|366016|38070700021|6133799003|3023799007|10067099003|4143699003|11063799006|5023799004|56012099006|22082099003|18002099003;
-x-microsoft-antispam-message-info: oQP/3Q6pn9T29EFmBY/RN02u95wZp8oIzZ273Qia6OxAkVfNGLEqZrGcjM4kWfEWIbgsT2FJX+O5apvoUubqGpKV1aEoHxoWx6F/hJ7RE1yeFLz4zsRBkL+m630rq58suTbuf0uc8I5E8MxSKCeR9k0g9rGBvTXeaGYt3/m6yVgDhgpe7klAL8UJgwhSsqA273gJbA3pfOyAwhd/nGlSq69o76qHQB/yWXDFDMFc9W6HDCwzfptJydmjS6lmK/65rRv2IHV2EGfwHslKpGYITz5fmAWquI1So9pO66BOO297y5iGuMuNiW/BZaKZMR6a1vUeSgPNWbvxWqzTEOUzEVIITEsHJzmeI1LskDPHLnbN3woVqOvdPr2TE15xeL1/2nX/QA/pXH0VxAvUfTGyV1HNAnLkAwth3JA3CVTBOUPccDRhdAsQU3OPK4cLEqNaAtpaasDwxEbVxv92D41+7CbSotlBp7WssMsFXbyYHUL7sXRxMMabTWqFa95TiNXYDGwcPgcsCrt6AkFYO1NfrWaGBW5fFNXLrwSMIVh4so7Q/Odr2IpvxJY8rb1zQO7ZNHqqva181kpxeA5zqt4PfttvccdGs16GfNGIjKzAcqYSQukzkdvLz3P+0MWBSAp5PlFLXKQfbid2MBrdUc16YnByh9LwX8RvMlheEX0a1+L/YHiS5BL+HqifPf+1raNtHDCh5qGA1E02mhFtmLn3n8pJSgxHB3bGHMPmFydVVWI=
+ ARA:13230040|376014|1800799024|366016|23010399003|10070799003|56012099006|10067099003|6133799003|8096899003|22082099003|18002099003|11063799006|4143699003|38070700021;
+x-microsoft-antispam-message-info: poYjNkYV7AcHHC/KFPsSlokNTTEP+ImkjEx4wLhzy8bt2lHSMzqVA9Y3M0LaiVGwmK+iZYA9jiz8rSzZYY+YEs+Y5TTDhlsY2nmwL1p5OBcZh7tdFeFNr0VI1UsttXQvAxhJaos2klNpLU/FVA6Zwwb1LrleXwAkHhAwFJfxL2KzYzAKk5idSKBVrRrJYpqPTLexrwCgaLC8KSBeJXHZdoFbozGnHRaQkdbrC3PnyiCB/48HCrRE/x9Ii9Qk5dy2FQPA07cYXLVdyShVwfJIwQwJJPoOyigxdGrYn/H69aVdUBXlPudE7esUghoNSvycjUtup4QRkDKJFDaW3QATqqJ/N7QVKwFZvtkupgRjIPEqCl2XrD+oaahBQI7rdDIuq2vtNQzApXZ73aP/kMXWrfTHUbRqNZ2h54Vchu2D2Bty1vcu2ZoRXbCG8aQ7lQY8/O3Iz7CuPI1vfbegjU1LCQjU/ZmnwQ0kNPUlpnkzU6g6DFThmzfJZlXqpb+Ouc7Vd9B9DZn7OxI4HVuz4qgywJtBAvTFIJEbI3olspC7CXWVSE0GsXd3Mkgbe2HlY98xXpgclWRLlwS5hCza4qHn/JvxMEwlml8/9wa8on20fehCQLMsa9aZ/1Bew3qHTeWCiR7hdNKMFWCaivbdtyC4wro5owax2xDcb3ccQrWes2ZIA0w6qMsrnlBpeLq2SK4SjtLeRg7HNEM5C/wPSH/LsW+cHuhmY+wh9r5/Hzt87XA=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB6796.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(1800799024)(366016)(38070700021)(6133799003)(3023799007)(10067099003)(4143699003)(11063799006)(5023799004)(56012099006)(22082099003)(18002099003);
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7651.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(10070799003)(56012099006)(10067099003)(6133799003)(8096899003)(22082099003)(18002099003)(11063799006)(4143699003)(38070700021);
  DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?WWx3NEJpOWlQcURpVFh3clpzMUtEQitxNEtFcUgrNEczVm9Ya1Q2cGZZVmta?=
- =?utf-8?B?R0JmYU12ZXJzUXZjRDJGS2pXV1Y0by8wUUZZL1dYRDE4dEx2TTdHTnVRQUVy?=
- =?utf-8?B?eW9yMjhyb1BIbFJnVUJublI1aWZ1SUxETlY2WmpFQ2tUMTZWL24za1Y3enc3?=
- =?utf-8?B?RTh1Vjc4WC9YR2dvcUFZQVA0ZGZqcXREWE1PQStZWFVTZXlHUGE2aTJGZEd1?=
- =?utf-8?B?V0VpNE9XQ2Eya2pQYThxc05hY3NmdWZBWDAwSkhOYnkyUm8rdWNSdERuU3E0?=
- =?utf-8?B?NFh5TzhHd3lXaHZVVmhocUVtWHpjR0ZWZEs5S2llaHoxRExkTDRxTnVoakdK?=
- =?utf-8?B?K0ZGbnlYcFFtTU9jMkloY0p0ZkFINGxMeTFYMDJSR0pxSWl3bGhTLzJOdVd5?=
- =?utf-8?B?cFlicTdLL3ZmNVIzSEVDRytCVmdjU0w1YkNWaENnQ2Vlc3pLNVlEYldlZVVq?=
- =?utf-8?B?OXN5R1pFY2wzQW9kUjA5bS9LM2E3UTFXSkMxL2tNa2RRVG9PckJsOVFoVC9S?=
- =?utf-8?B?cTBLOWR5TjdiZCtsUEhQNHg2MEVQTGNubDdBanZwcjBhWnA1TmY0Z1FwUnZh?=
- =?utf-8?B?SmI2YnlLdjJJbXB5cFAram5RbHlyOGZBbmNPN085QW5ZMFFPc3pWKzhLQTZR?=
- =?utf-8?B?akxnRWhjYkVvNmJ4aWN4VkZZdVU4dnRkemxuUnB6dHgzMHpzMFBmbk1DUWxM?=
- =?utf-8?B?NThZdVhVVlN1N2ZmRnUzZmt6YlRQeDVzbm1IQ05yT3JSb1FuUHNYSFBHVXZt?=
- =?utf-8?B?MHJ0RjhiVHA3bzRQZFpIaWN3bWgyMVM2cXdHV3I0aW1wSXhoK2JxWFNXdmsv?=
- =?utf-8?B?S0VXN055Y0VwaDJDc2FLY282UWxrTlFlTHQ5b3JwL0pmZmtHOWxQN3NYVDh1?=
- =?utf-8?B?TC9mQUhlNHpKTHVUTU1GSzRRdDBzKzRJcWhZNElqU3ZrVFJWZS82cjBlRnQ1?=
- =?utf-8?B?Zm1FbXpiS2RWeHRWRnVPQmJjR3ZnZGZjY29yclV1YkIvRkE3RlJleVNIZEhZ?=
- =?utf-8?B?QzQyV2RxWGJLRjdhNVBtL095TlpQbm5YVzFqanJPVGdmcXRmZmxJNGlobGF3?=
- =?utf-8?B?QnV5VVEwTTNzRzZWOWc3bDNQNFBFNHlFdTJBbDZqTExkOTdJTHFuMmduTVlG?=
- =?utf-8?B?aEJSWFVTTitPSXplNVE1UlplZTZldWtxUkp6NmtabGJkM3NpMERVYnZqQmN4?=
- =?utf-8?B?VUtVYXR6ZHlIV0RFd1BENnQzbzRjSHZWMlQ0RlQ3Q3NNQWNvcC95YjVteExl?=
- =?utf-8?B?TTlPeUMrOVZpUHVaYXBITHhtc1hId3VZbHJJOXhHb2UwTlpXMW1LZWpXN1c5?=
- =?utf-8?B?aGtLdUIrdzNoSzdwZDNJYWY4TzYyWkJWNHoxQm1ZMlFjTDhIc1BrK3pMRGRt?=
- =?utf-8?B?Nkt1WGZ3amFUcFVoTEhyQ2lmOTBObkFhRDI2N3FTMFV1bFZYVXhRVFhlaGgv?=
- =?utf-8?B?REU1SGlUcFU2TXJlenJFb2l1TUJnM0pubVU5akFaS0ZxcGJXRk4zT1BiZDhW?=
- =?utf-8?B?Y0s0L2JtOXRCN0NuaDJMa3FETDdtc2R1YWM0SlJMRHRkb2xZM1ZNd3ZkQTlp?=
- =?utf-8?B?MDZlWWRpV0JzaVo5WGpOWHhwZ3NRUlpPMklpRko4dk0rQkZ0RHFTWWFJT1N3?=
- =?utf-8?B?bEczK1N4MWZFRmp5bXV6VXlmMzJVRVNnZ21vUHE3ckZOdzIrL3I5Q2I0amZh?=
- =?utf-8?B?cVJBM3JsakJiTXI1dE1kYzhoMjlIZEVuZ0ZYd1NjNzFOOXFESHJiWVdPYXlC?=
- =?utf-8?B?UjBIMGdieDFGaExzTEsyMXhweXh3cmhrRUdxaGhRTld2eUpSTSsvNFYxWHlv?=
- =?utf-8?B?VUt3WXM0QTVVbjg1YW82VVFwQUZCMFFKTE00bXJjdGFYd2hQclJNVG0wZVI5?=
- =?utf-8?B?ZXRpdXZmbFovbWJPb2NRWWFDTFgxdllLN05QTTdLdnB2Y28yRTRDOGRma1E2?=
- =?utf-8?B?VnpQSkxCNlM1b0hVeW9xd0c0U2p5cDFsT1NIbktvd3dyMDdlZW5vc0Z0eGdX?=
- =?utf-8?B?dUsvdW1hVERoU1JNUUREcWcwb0JaV3Mwd1NaT24zcHhoYjcvR09yRHN1U0F0?=
- =?utf-8?B?WTV4dWFTbHUzaG8vblovbE44ZEFKck9SaldtVy9zbUNaNit3dVdFS2x1NlBJ?=
- =?utf-8?B?QTAxaTVCUmJVblZMbjZ3QjJ2RHU3VG1JZDRiWHRJQjFoTHJSZ1o1Zi9XamZX?=
- =?utf-8?B?Q01QWkRGZmhDSzM2S201YWNuZGx4bW00d2ZzdFV6cXNCaXFVeWk3ejdxR1dF?=
- =?utf-8?B?S1RwWnRTeUNySlBpRnZoK1JIUWg3MVljbVI4TEdRT3ZoOGhzSVhuNHlvNytX?=
- =?utf-8?Q?VInxrJpIbf4OZB2yrk?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?7vEeFA984ZZaPU4FSoGfg4tQsRQQ/Dag20Ll3BifX8cgf0M9fm0qSGhqzK?=
+ =?iso-8859-1?Q?5VGIjmnM9gBs754Js7zQkj/sFny1skidRr9lpwwkJwnhpAlSHyXPpPZny1?=
+ =?iso-8859-1?Q?SI2V1/xjK/OqCVuzyIHiuRQJ88dLiTzUw/gpUIMPbCAYFZNf36azaUc3sd?=
+ =?iso-8859-1?Q?mpUA13NJRjmeBQ46FHqmU9Qy4j+Xrn9/eH6Vz8FdWD8rF4sw8TGnkrup47?=
+ =?iso-8859-1?Q?P8SZuXGXVwSMZbwi7nP3YS30WeaGDyEQ45hcj7o0u8UKx3MJkKj6iCq6fd?=
+ =?iso-8859-1?Q?rccIs1L7a+T8DAkrRouL8sW3WK4TMdD3Wg64cnRT6X1ySEQX1qwJL7szWo?=
+ =?iso-8859-1?Q?aTj9Lh/yGs1VLnRC12dbYsZpKDBcfxJg5nWiv/eK23LiIjh+SqbR/cZD0F?=
+ =?iso-8859-1?Q?TUokWXw4/IdFm6Y59DQjXOWyioKo5fQi+swT+Y7ftaLppBDS16BHraHh2C?=
+ =?iso-8859-1?Q?Q7QeMwOB6KFXrwNNbKYw+rSoArDfLVXbx9yCdPyLcnTJsatkKJmWEPTTSy?=
+ =?iso-8859-1?Q?Q7EzYRK02GJOUxWdAlsJ9SzHb7tr97MOZQBLPnzBaTzebMFMnitWa0hwkG?=
+ =?iso-8859-1?Q?trl4YJe0Uii5/BFQdZw+xnDOJoob3Phat/qKmcDFZ590XyW5ZjQuYv3bj+?=
+ =?iso-8859-1?Q?5Dddb+jmSsCr4F4p5RuHfSpt17J+Tgm4WRazeonMOJKzzAht4+43SjqDRK?=
+ =?iso-8859-1?Q?c6mrmiHpwQqhBdWPFTnWTAG2NJONNHA/742BssuRby1jncjc6gVrfvirQQ?=
+ =?iso-8859-1?Q?bWBj+nx+jXw/CL0mEaxiqyWg0JsBholFD18DVoP1fDvQuIay5KkJmmReF8?=
+ =?iso-8859-1?Q?oiTuNcSumlRgsJYGtrBg8t1pdz9eJWK+zDny6gi+5qp2Y5EF7qL0jWF03B?=
+ =?iso-8859-1?Q?pkJIg+UqRK5ZsKj1bnru2loh8oniTWNZ7pe25e8beDUQKQSb8oU16pkSGK?=
+ =?iso-8859-1?Q?I7SUCZD02bRU+uoBhXgZXu9sbhvlMvpLU+hYjSuED5TXnnIRIxpWWnE1b2?=
+ =?iso-8859-1?Q?Tvg0WwztG+TDxxR7DwImEfaweTwd6PeetHpzRPYris6zU3dGDXyFuJibHV?=
+ =?iso-8859-1?Q?R3srcPpImZN+XeQNPKTDLmq1Pfga/2EmzrQhR8tvztK7dnj6pT+gqvCpri?=
+ =?iso-8859-1?Q?PVliheguMxQHrSPqXKPld5ZmCZ2X8mdIhsJ/5HPsKeiMpoJq6+9fENrvHK?=
+ =?iso-8859-1?Q?BLr/wjwiI5cnQ51bRpo/OFSKYiUkMG6RVfAWXRwXQqxMrgmIy3eQVc7pAV?=
+ =?iso-8859-1?Q?20+yLSqgirOaXffNE6NsR9HPKCFuDHU5TSrd5+ovN7iGOmdWN6mu8wzmv6?=
+ =?iso-8859-1?Q?pn6rNbXjoDBKaP/ifJupZtoW+uTzcoycAZVXN5xOTrLtFuQcbhHSBPOVAT?=
+ =?iso-8859-1?Q?IH6ultDkDWAh3TD7ehcDJ3kTBVRbmcygUszc3SR5mFm3Y8Vlf+yWCgD8oN?=
+ =?iso-8859-1?Q?0kcI6nviLCXqi6IVY0qjQkEff5uXaxVS4GWctqFPvjf8lV4hEea8wyBOMa?=
+ =?iso-8859-1?Q?nFucTSxjEhdx6NrHTI7K8dxdO/p+n1Vu9z0KRdJOZS9kTIT6beXjLhtaoj?=
+ =?iso-8859-1?Q?xQpKtHAeBT9qOx9F8NQ9o0Kh5xIXzA+M+llWrIY/sjTHJAaqPcXC4ocluw?=
+ =?iso-8859-1?Q?UkTAEeG7oNKUNkCMXJNbLrPyhxtiCD9UnfgEBf9xGplo73yBqciGLtCFSW?=
+ =?iso-8859-1?Q?1DzDCzd712BVKDWfSoYbPg1QAjkUKgs92bfVIQ8cZtXoKk/IEX/7TRb+ty?=
+ =?iso-8859-1?Q?cC1C7fFu6T2XoI5sRux/dylikbh5GXg7mXDZvUuVmwL1Hp3L/ydehm18S7?=
+ =?iso-8859-1?Q?FieUWVJGBYIARk8VqTPy+IpYgSoBbmQI4xHtfaoyuTNDP04/ExFGrWZUjc?=
+ =?iso-8859-1?Q?M/?=
+x-ms-exchange-antispam-messagedata-1: TArbKjVyxboMNa1K+0OTFtrS9drIJ3Vs8SE=
+Content-Type: multipart/alternative;
+ boundary="_000_DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2DS0PR11MB7651namp_"
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: vkXB47WBdOWJl4n451b2090gVm0zMgY93fgwGylc3+gASDyuDFAFJRN1OvUVSbUPzekl+Np0uFTcQ167qR2xaPREAemRWvC2zdEjLjLGf+zICNhPcxRVXYBGLQkN2wFH7+ZBqajQOg7tGjxpt4d+ONAH9MJCYO6RWiY6c+YBqo6Cfu2hY7VVBifPVi1xElltUn3F4kIZ8YKqlr6AGSj80uqnsi+2jo6vJ7Fzg/GEMvg9iOdTaLvwITcG+WwaPDyCtidKiG0tQUXTPijo9cd/QChelDURyPxImkNyuh1Rkxlypt9lHUtl6bd0Yr30H4T/62O9hgCFoVtEdb62Nmo0dg==
+X-Exchange-RoutingPolicyChecked: poulyKIvbxeb4mhK4+X8OKOMUIyn8fLOF1zdyZ0oBH/HZwGAmLQwhOhytpK/MY7Lf4usnLihWzpK903PgjazJRAYKtEorONjPFq1QVJ3H1yO1geatrUtfZ9cDdR+DMdz9qSAXRcSPnQkU8LH+JR1piJ5s5KAtKZ7+0lWBTc3tGmJ3acKvlrbMtV/ngJQQqheVG6P+24jNCzV1wqKHAD+x4Rbnn2xqpSI8zDSYd2lAjUvRhybbPfZy+QTAZW/06SBU8qhTb25kLMtve++KBluqEJCV6Rm4SNL7pWpR0RkA1haXhGCNIJKoUbV36mucPU3JN9/24BvlFhm1nw5xD8YBg==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6796.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 01f16d3c-6b58-4583-f411-08df04b4a3c8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2026 03:29:59.7915 (UTC)
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7651.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 53dd3a35-1aed-4725-2fe6-08df04b945d0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Aug 2026 04:03:09.4699 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 1La6cjm5FYRwBwdzM4irW1+LwTRafE/omhogNPAP0PrEeV12Laa/v+cGP5C+KKf9O1erssAcw4jUTIpCE2wgcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB7692
+X-MS-Exchange-CrossTenant-userprincipalname: CtEyTxw19Y0T5Ss9H8J3I26hfsR3D/HVJ6KkkUNk4WxtSGqn51k4SOK/tIfRCwp0kibOw/gHnGEmyUwNLIm6B8qiNU6eYBZAWJu7pawOeA12lHXtZsHfO/PZ4Jb3/9dF
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4692
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -173,140 +173,288 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-SGkgQFRoYXNsZWVtLCBNb2hhbW1lZCwNCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
-PiBGcm9tOiBpZ3QtZGV2IDxpZ3QtZGV2LWJvdW5jZXNAbGlzdHMuZnJlZWRlc2t0b3Aub3JnPiBP
-biBCZWhhbGYgT2YNCj4gTW9oYW1tZWQgVGhhc2xlZW0NCj4gU2VudDogMjcgQXVndXN0IDIwMjYg
-MDc6MjENCj4gVG86IGlndC1kZXZAbGlzdHMuZnJlZWRlc2t0b3Aub3JnDQo+IENjOiBKb3NoaSwg
-S3VuYWwxIDxrdW5hbDEuam9zaGlAaW50ZWwuY29tPjsgVGhhc2xlZW0sIE1vaGFtbWVkDQo+IDxt
-b2hhbW1lZC50aGFzbGVlbUBpbnRlbC5jb20+DQo+IFN1YmplY3Q6IFtQQVRDSCBpLWctdF0gdGVz
-dHMvaW50ZWwva21zX3BtX3dhcm1fYm9vdDogQWRkIHdhcm0gcmVib290IHRlc3QNCj4gDQo+IFRo
-aXMgdGVzdCB2YWxpZGF0ZXMgZGlzcGxheSBzdWJzeXN0ZW0gc3RhYmlsaXR5IGFjcm9zcyB3YXJt
-IHJlYm9vdCBieSBjYXB0dXJpbmcNCj4gYmFzZWxpbmUgZGlzcGxheSBwYXJhbWV0ZXJzIChvdXRw
-dXRzLCBwaXBlcywgY29ubmVjdG9ycywgbW9kZXMpIGJlZm9yZSByZWJvb3QNCj4gYW5kIGNvbXBh
-cmluZyB0aGVtIGFmdGVyIHJlYm9vdC4NCj4gDQo+ICAxLiBSdW4gcHJlLXJlYm9vdCB0ZXN0IHRv
-IHNhdmUgYmFzZWxpbmUuDQo+ICAyLiBQZXJmb3JtIG1hbnVhbCBzeXN0ZW0gcmVib290Lg0KPiAg
-My4gUnVuIHBvc3QtcmVib290IHRlc3QgdG8gdmFsaWRhdGUgZGlzcGxheSBwYXJhbWV0ZXJzIG1h
-dGNoIGJhc2VsaW5lDQo+IA0KPiB2MjogUmVwbGFjZSBlYWNoX3BpcGVfd2l0aF92YWxpZF9vdXRw
-dXQgd2l0aA0KPiBmb3JfZWFjaF92YWxpZF9vdXRwdXRfb25fY3J0Yy4NCj4gDQo+IFNpZ25lZC1v
-ZmYtYnk6IE1vaGFtbWVkIFRoYXNsZWVtIDxtb2hhbW1lZC50aGFzbGVlbUBpbnRlbC5jb20+DQo+
-IC0tLQ0KPiAgdGVzdHMvaW50ZWwva21zX3BtX3dhcm1fYm9vdC5jIHwgMjAyDQo+ICsrKysrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgdGVzdHMvbWVzb24uYnVpbGQgICAgICAgICAg
-ICAgIHwgICAxICsNCj4gIDIgZmlsZXMgY2hhbmdlZCwgMjAzIGluc2VydGlvbnMoKykNCj4gIGNy
-ZWF0ZSBtb2RlIDEwMDY0NCB0ZXN0cy9pbnRlbC9rbXNfcG1fd2FybV9ib290LmMNCj4gDQo+IGRp
-ZmYgLS1naXQgYS90ZXN0cy9pbnRlbC9rbXNfcG1fd2FybV9ib290LmMNCj4gYi90ZXN0cy9pbnRl
-bC9rbXNfcG1fd2FybV9ib290LmMgbmV3IGZpbGUgbW9kZSAxMDA2NDQgaW5kZXgNCj4gMDAwMDAw
-MDAwLi5kNTA2NTZiOTENCj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi90ZXN0cy9pbnRlbC9rbXNf
-cG1fd2FybV9ib290LmMNCj4gQEAgLTAsMCArMSwyMDIgQEANCj4gKy8vIFNQRFgtTGljZW5zZS1J
-ZGVudGlmaWVyOiBNSVQNCj4gKy8qDQo+ICsgKiBDb3B5cmlnaHQgwqkgMjAyNiBJbnRlbCBDb3Jw
-b3JhdGlvbg0KPiArICovDQo+ICsNCj4gKy8qKg0KPiArICogVEVTVDoga21zIHBtIHdhcm0gcmVi
-b290DQo+ICsgKiBDYXRlZ29yeTogRGlzcGxheQ0KPiArICogRGVzY3JpcHRpb246IFRoaXMgdGVz
-dCB2YWxpZGF0ZXMgd2FybSByZWJvb3QuDQo+ICsgKiBEcml2ZXIgcmVxdWlyZW1lbnQ6IHhlDQo+
-ICsgKiBNZWdhIGZlYXR1cmU6IERpc3BsYXkgUG93ZXIgTWFuYWdlbWVudCAgKi8NCj4gKw0KPiAr
-I2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUgImlndF9rbXMuaCINCj4gKyNpbmNsdWRlIDx1
-bmlzdGQuaD4NCj4gKyNpbmNsdWRlIDxzdHJpbmcuaD4NCj4gKyNpbmNsdWRlIDxlcnJuby5oPg0K
-PiArDQo+ICsjZGVmaW5lIFBBUkFNX0ZJTEUgIi92YXIvdG1wL2lndF93YXJtX3JlYm9vdF9wYXJh
-bXMudHh0Ig0KPiArI2RlZmluZSBCVUZfU0laRSAxMDI0DQo+ICsNCj4gKy8qKg0KPiArICogU1VC
-VEVTVDogd2FybS1yZWJvb3QtYmVmb3JlDQo+ICsgKiBEZXNjcmlwdGlvbjogU2F2ZSBiYXNlbGlu
-ZSBkaXNwbGF5IHBhcmFtZXRlcnMgYmVmb3JlIHdhcm0gcmVib290Lg0KPiArICoNCj4gKyAqIFNV
-QlRFU1Q6IHdhcm0tcmVib290LWFmdGVyDQo+ICsgKiBEZXNjcmlwdGlvbjogVmFsaWRhdGUgZGlz
-cGxheSBwYXJhbWV0ZXJzIGFmdGVyIHdhcm0gcmVib290Lg0KPiArICoNCj4gKyAqLw0KPiArDQo+
-ICtJR1RfVEVTVF9ERVNDUklQVElPTigiVGhpcyB0ZXN0IHZhbGlkYXRlcyB3YXJtIHJlYm9vdCIp
-Ow0KPiArDQo+ICt0eXBlZGVmIHN0cnVjdCB7DQo+ICsJaW50IGZkOw0KPiArCWlndF9kaXNwbGF5
-X3QgZGlzcGxheTsNCj4gKwlpZ3Rfb3V0cHV0X3QgKm91dHB1dDsNCj4gKwlkcm1Nb2RlTW9kZUlu
-Zm8gKm1vZGU7DQo+ICsJaWd0X3BsYW5lX3QgKnByaW1hcnk7DQo+ICsJc3RydWN0IGlndF9mYiBm
-Yl90ZXN0Ow0KPiArCWVudW0gcGlwZSBwaXBlOw0KPiArfSBkZXZpY2VfdDsNCj4gKw0KPiArc3Rh
-dGljIHZvaWQgZGV0ZWN0X3ByaW1hcnlfb3V0cHV0KGRldmljZV90ICpkZXZpY2UpIHsNCj4gKwlp
-Z3Rfb3V0cHV0X3QgKm91dHB1dDsNCj4gKwlpZ3RfY3J0Y190ICpjcnRjOw0KPiArCWVudW0gcGlw
-ZSBwaXBlOw0KPiArDQo+ICsJZm9yX2VhY2hfY3J0YygmZGV2aWNlLT5kaXNwbGF5LCBjcnRjKSB7
-DQo+ICsJCXBpcGUgPSBjcnRjLT5waXBlOw0KPiArCQlmb3JfZWFjaF92YWxpZF9vdXRwdXRfb25f
-Y3J0YygmZGV2aWNlLT5kaXNwbGF5LCBjcnRjLCBvdXRwdXQpDQo+IHsNCj4gKw0KPiArCQkJaWd0
-X2Rpc3BsYXlfcmVzZXQoJmRldmljZS0+ZGlzcGxheSk7DQo+ICsNCj4gKwkJCWlndF9vdXRwdXRf
-c2V0X2NydGMob3V0cHV0LA0KPiBpZ3RfY3J0Y19mb3JfcGlwZSgmZGV2aWNlLT5kaXNwbGF5LCBw
-aXBlKSk7DQo+ICsJCQlpZiAoIWludGVsX3BpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkZXZpY2Ut
-DQo+ID5kaXNwbGF5KSkNCj4gKwkJCQljb250aW51ZTsNCj4gKw0KPiArCQkJZGV2aWNlLT5vdXRw
-dXQgPSBvdXRwdXQ7DQo+ICsJCQlkZXZpY2UtPm1vZGUgPSBpZ3Rfb3V0cHV0X2dldF9tb2RlKG91
-dHB1dCk7DQo+ICsJCQlkZXZpY2UtPnByaW1hcnkgPSBpZ3Rfb3V0cHV0X2dldF9wbGFuZV90eXBl
-KG91dHB1dCwNCj4gRFJNX1BMQU5FX1RZUEVfUFJJTUFSWSk7DQo+ICsJCQlkZXZpY2UtPnBpcGUg
-PSBwaXBlOw0KPiArDQo+ICsJCQlicmVhazsNCj4gKwkJfQ0KPiArCX0NCj4gKw0KPiArCWlndF9y
-ZXF1aXJlX2YoZGV2aWNlLT5vdXRwdXQgJiYgZGV2aWNlLT5tb2RlLCAiTm8gdmFsaWQgY29ubmVj
-dGVkDQo+ICtvdXRwdXQgZm91bmRcbiIpOyB9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIHNldHVwX3By
-aW1hcnkoZGV2aWNlX3QgKmRldmljZSkgew0KPiArCWlndF9wbGFuZV9zZXRfZmIoZGV2aWNlLT5w
-cmltYXJ5LCBOVUxMKTsNCj4gKw0KPiArCWlndF9jcmVhdGVfY29sb3JfZmIoZGV2aWNlLT5mZCwN
-Cj4gKwkJCSAgICBkZXZpY2UtPm1vZGUtPmhkaXNwbGF5LA0KPiArCQkJICAgIGRldmljZS0+bW9k
-ZS0+dmRpc3BsYXksDQo+ICsJCQkgICAgRFJNX0ZPUk1BVF9YUkdCODg4OCwNCj4gKwkJCSAgICBE
-Uk1fRk9STUFUX01PRF9MSU5FQVIsDQo+ICsJCQkgICAgMC4yLCAwLjMsIDAuNCwNCj4gKwkJCSAg
-ICAmZGV2aWNlLT5mYl90ZXN0KTsNCj4gKw0KPiArCWlndF9wbGFuZV9zZXRfZmIoZGV2aWNlLT5w
-cmltYXJ5LCAmZGV2aWNlLT5mYl90ZXN0KTsNCj4gKwlpZ3RfZGlzcGxheV9jb21taXQoJmRldmlj
-ZS0+ZGlzcGxheSk7DQo+ICt9DQo+ICsNCj4gK3N0YXRpYyB2b2lkIHNhdmVfYmFzZWxpbmUoZGV2
-aWNlX3QgKmRldmljZSkgew0KPiArCWludCBjb25uX3R5cGUgPSAtMTsNCj4gKwljb25zdCBjaGFy
-ICpjb25uX3R5cGVfbmFtZSA9ICJ1bmtub3duIjsNCj4gKwlGSUxFICpmcCA9IGZvcGVuKFBBUkFN
-X0ZJTEUsICJ3Iik7DQo+ICsNCj4gKwlpZ3RfcmVxdWlyZV9mKGZwLCAiVW5hYmxlIHRvIG9wZW4g
-cGFyYW0gZmlsZSBmb3Igd3JpdGluZ1xuIik7DQo+ICsNCj4gKwlpZiAoZGV2aWNlLT5vdXRwdXQt
-PmNvbmZpZy5jb25uZWN0b3IpIHsNCj4gKwkJY29ubl90eXBlID0gZGV2aWNlLT5vdXRwdXQtPmNv
-bmZpZy5jb25uZWN0b3ItDQo+ID5jb25uZWN0b3JfdHlwZTsNCj4gKwkJY29ubl90eXBlX25hbWUg
-PSBrbXN0ZXN0X2Nvbm5lY3Rvcl90eXBlX3N0cihjb25uX3R5cGUpOw0KPiArCX0NCj4gKw0KPiAr
-CWZwcmludGYoZnAsICJuX291dHB1dHM9JWRcbiIsIGRldmljZS0+ZGlzcGxheS5uX291dHB1dHMp
-Ow0KPiArCWZwcmludGYoZnAsICJwaXBlPSVkIGNvbm5faWQ9JXUgdHlwZT0lZCglcykgbW9kZT0l
-ZHglZEAlZFxuIiwNCj4gKwkJZGV2aWNlLT5waXBlLA0KPiArCQlkZXZpY2UtPm91dHB1dC0+Y29u
-ZmlnLmNvbm5lY3RvciA/DQo+ICsJCQlkZXZpY2UtPm91dHB1dC0+Y29uZmlnLmNvbm5lY3Rvci0+
-Y29ubmVjdG9yX2lkIDogMCwNCj4gKwkJY29ubl90eXBlLCBjb25uX3R5cGVfbmFtZSwNCj4gKwkJ
-ZGV2aWNlLT5tb2RlLT5oZGlzcGxheSwgZGV2aWNlLT5tb2RlLT52ZGlzcGxheSwNCj4gKwkJZGV2
-aWNlLT5tb2RlLT52cmVmcmVzaCk7DQo+ICsNCj4gKwlmY2xvc2UoZnApOw0KPiArfQ0KPiArDQo+
-ICtzdGF0aWMgdm9pZCBjb2xsZWN0X2N1cnJlbnQoZGV2aWNlX3QgKmRldmljZSwgY2hhciAqYnVm
-LCBzaXplX3Qgc3opIHsNCj4gKwlpbnQgY29ubl90eXBlID0gLTEsIHJldDsNCj4gKwljb25zdCBj
-aGFyICpjb25uX3R5cGVfbmFtZSA9ICJ1bmtub3duIjsNCj4gKwl1aW50MzJfdCBjb25uX2lkID0g
-MDsNCj4gKw0KPiArCWlmIChkZXZpY2UtPm91dHB1dC0+Y29uZmlnLmNvbm5lY3Rvcikgew0KPiAr
-CQljb25uX3R5cGUgPSBkZXZpY2UtPm91dHB1dC0+Y29uZmlnLmNvbm5lY3Rvci0NCj4gPmNvbm5l
-Y3Rvcl90eXBlOw0KPiArCQljb25uX2lkID0gZGV2aWNlLT5vdXRwdXQtPmNvbmZpZy5jb25uZWN0
-b3ItPmNvbm5lY3Rvcl9pZDsNCkFmdGVyIGEgcmVib290LCB0aGUgRFJNIGRyaXZlciBpcyByZWxv
-YWRlZCBhbmQgY29ubmVjdG9ycyBhcmUgcmVjcmVhdGVkLiBUaGUgSURzIGFyZSBhbGxvY2F0ZWQg
-YWdhaW4gZnJvbSBzY3JhdGNoLiBJZiB0aGUgaW5pdGlhbGl6YXRpb24gb3JkZXIgcmVtYWlucyBp
-ZGVudGljYWwsIHlvdSBtaWdodCBzZWUgdGhlIHNhbWUgY29ubmVjdG9yX2lkLCBidXQgdGhlcmUg
-aXMgbm8ga2VybmVsIGd1YXJhbnRlZSB0aGF0IGl0IHdpbGwgcmVtYWluIHRoZSBzYW1lLiBTbywg
-SSBmZWVsIHlvdSBjYW4gZHJvcCB0aGlzIGNvbm5lY3Rvcl9pZCBhbG9uZSBhcyBpdCBpcyBub3Qg
-YSBndWFyYW50ZWVkIGJlaGF2aW9yLg0KUmVnYXJkcywNClNvd21peWEuDQoNCj4gKwkJY29ubl90
-eXBlX25hbWUgPSBrbXN0ZXN0X2Nvbm5lY3Rvcl90eXBlX3N0cihjb25uX3R5cGUpOw0KPiArCX0N
-Cj4gKw0KPiArDQo+ICsJLyogV3JpdGUgZGlzcGxheSBiYXNpYyBjb25maWcgZGV0YWlscyAqLw0K
-PiArCXJldCA9IHNucHJpbnRmKGJ1Ziwgc3osDQo+ICsJCSAgICAgICAibl9vdXRwdXRzPSVkXG4i
-DQo+ICsJCSAgICAgICAicGlwZT0lZCBjb25uX2lkPSV1IHR5cGU9JWQoJXMpDQo+IG1vZGU9JWR4
-JWRAJWRcbiIsDQo+ICsJCSAgICAgICBkZXZpY2UtPmRpc3BsYXkubl9vdXRwdXRzLA0KPiArCQkg
-ICAgICAgZGV2aWNlLT5waXBlLA0KPiArCQkgICAgICAgY29ubl9pZCwNCj4gKwkJICAgICAgIGNv
-bm5fdHlwZSwgY29ubl90eXBlX25hbWUsDQo+ICsJCSAgICAgICBkZXZpY2UtPm1vZGUtPmhkaXNw
-bGF5LA0KPiArCQkgICAgICAgZGV2aWNlLT5tb2RlLT52ZGlzcGxheSwNCj4gKwkJICAgICAgIGRl
-dmljZS0+bW9kZS0+dnJlZnJlc2gpOw0KPiArDQo+ICsJaWYgKHJldCA8IDAgfHwgKHNpemVfdCly
-ZXQgPj0gc3opDQo+ICsJCWlndF93YXJuKCIlcygpOiBidWZmZXIgdHJ1bmNhdGVkXG4iLCBfX2Z1
-bmNfXyk7IH0NCj4gKw0KPiArc3RhdGljIHZvaWQgcmVhZF9iYXNlbGluZShjaGFyICpidWYsIHNp
-emVfdCBzeikgew0KPiArCUZJTEUgKmZwID0gZm9wZW4oUEFSQU1fRklMRSwgInIiKTsNCj4gKw0K
-PiArCWlndF9yZXF1aXJlX2YoZnAsICJCYXNlbGluZSBtaXNzaW5nLiBSdW4gZmlyc3QgdGltZSB0
-byBjcmVhdGUuXG4iKTsNCj4gKw0KPiArCWZyZWFkKGJ1ZiwgMSwgc3ogLSAxLCBmcCk7DQo+ICsJ
-YnVmW3N6IC0gMV0gPSAnXDAnOw0KPiArCWZjbG9zZShmcCk7DQo+ICt9DQo+ICsNCj4gK3N0YXRp
-YyB2b2lkIGNsZWFudXAoZGV2aWNlX3QgKmRldmljZSkNCj4gK3sNCj4gKwlpZ3RfcGxhbmVfc2V0
-X2ZiKGRldmljZS0+cHJpbWFyeSwgTlVMTCk7DQo+ICsJaWd0X2Rpc3BsYXlfY29tbWl0KCZkZXZp
-Y2UtPmRpc3BsYXkpOw0KPiArCWlndF9yZW1vdmVfZmIoZGV2aWNlLT5mZCwgJmRldmljZS0+ZmJf
-dGVzdCk7IH0NCj4gKw0KPiAraW50IGlndF9tYWluKHZvaWQpDQo+ICt7DQo+ICsJZGV2aWNlX3Qg
-ZGV2aWNlID0gezB9Ow0KPiArCWNoYXIgc2F2ZWRbQlVGX1NJWkVdID0gezB9Ow0KPiArCWNoYXIg
-Y3VycmVudFtCVUZfU0laRV0gPSB7MH07DQo+ICsNCj4gKwlpZ3RfZml4dHVyZSgpIHsNCj4gKwkJ
-ZGV2aWNlLmZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfQU5ZKTsNCj4gKwkJaWd0
-X3JlcXVpcmUoZGV2aWNlLmZkID49IDApOw0KPiArDQo+ICsJCWlndF9kaXNwbGF5X3JlcXVpcmUo
-JmRldmljZS5kaXNwbGF5LCBkZXZpY2UuZmQpOw0KPiArCX0NCj4gKw0KPiArCWlndF9zdWJ0ZXN0
-KCJ3YXJtLXJlYm9vdC1iZWZvcmUiKSB7DQo+ICsJCWRldGVjdF9wcmltYXJ5X291dHB1dCgmZGV2
-aWNlKTsNCj4gKwkJc2V0dXBfcHJpbWFyeSgmZGV2aWNlKTsNCj4gKwkJY29sbGVjdF9jdXJyZW50
-KCZkZXZpY2UsIGN1cnJlbnQsIHNpemVvZihjdXJyZW50KSk7DQo+ICsNCj4gKwkJaWYgKGFjY2Vz
-cyhQQVJBTV9GSUxFLCBGX09LKSA9PSAtMSkNCj4gKwkJCXNhdmVfYmFzZWxpbmUoJmRldmljZSk7
-DQo+ICsNCj4gKwkJY2xlYW51cCgmZGV2aWNlKTsNCj4gKwl9DQo+ICsNCj4gKwlpZ3Rfc3VidGVz
-dCgid2FybS1yZWJvb3QtYWZ0ZXIiKSB7DQo+ICsJCWRldGVjdF9wcmltYXJ5X291dHB1dCgmZGV2
-aWNlKTsNCj4gKwkJc2V0dXBfcHJpbWFyeSgmZGV2aWNlKTsNCj4gKwkJY29sbGVjdF9jdXJyZW50
-KCZkZXZpY2UsIGN1cnJlbnQsIHNpemVvZihjdXJyZW50KSk7DQo+ICsJCXJlYWRfYmFzZWxpbmUo
-c2F2ZWQsIHNpemVvZihzYXZlZCkpOw0KPiArDQo+ICsJCWlndF9hc3NlcnRfZihzdHJjbXAoc2F2
-ZWQsIGN1cnJlbnQpID09IDAsICJEaXNwbGF5IHBhcmFtZXRlcnMNCj4gK21pc21hdGNoZWQuXG4i
-KTsNCj4gKw0KPiArCQlpZiAoc3RyY21wKHNhdmVkLCBjdXJyZW50KSA9PSAwKQ0KPiArCQkJcmVt
-b3ZlKFBBUkFNX0ZJTEUpOw0KPiArDQo+ICsJCWNsZWFudXAoJmRldmljZSk7DQo+ICsJfQ0KPiAr
-DQo+ICsJaWd0X2ZpeHR1cmUoKSB7DQo+ICsJCWlndF9kaXNwbGF5X2ZpbmkoJmRldmljZS5kaXNw
-bGF5KTsNCj4gKwkJZHJtX2Nsb3NlX2RyaXZlcihkZXZpY2UuZmQpOw0KPiArCX0NCj4gK30NCj4g
-ZGlmZiAtLWdpdCBhL3Rlc3RzL21lc29uLmJ1aWxkIGIvdGVzdHMvbWVzb24uYnVpbGQgaW5kZXgN
-Cj4gMWFjODliYWI3Li4wODQyODAwODEgMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL21lc29uLmJ1aWxk
-DQo+ICsrKyBiL3Rlc3RzL21lc29uLmJ1aWxkDQo+IEBAIC0yNzEsNiArMjcxLDcgQEAgaW50ZWxf
-a21zX3Byb2dzID0gWw0KPiAgCSdrbXNfcG1fYmFja2xpZ2h0JywNCj4gIAkna21zX3BtX2RjJywN
-Cj4gIAkna21zX3BtX2xwc3AnLA0KPiArICAgICAgICAna21zX3BtX3dhcm1fYm9vdCcsDQo+ICAJ
-J2ttc19wbV9ycG0nLA0KPiAgCSdrbXNfcHNyJywNCj4gIAkna21zX3BzcjJfc2YnLA0KPiAtLQ0K
-PiAyLjQ4LjENCg0K
+--_000_DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2DS0PR11MB7651namp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Hi @Chegondi, Harish<mailto:harish.chegondi@intel.com>,
+
+With respect to the comments from Kamil, I have updated the test names, lib=
+rary function names and also separated out the DRM UAPI header file as a co=
+mmit.
+
+No functional changes are there in V3 other than these things.
+
+Thanks,
+Ravi Kishore K.
+
+________________________________
+From: Chegondi, Harish <harish.chegondi@intel.com>
+Sent: Friday, August 28, 2026 1:52 AM
+To: Koppuravuri, Ravi Kishore <ravi.kishore.koppuravuri@intel.com>
+Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; Tauro, R=
+iana <riana.tauro@intel.com>; Gupta, Anshuman <anshuman.gupta@intel.com>; K=
+oujalagi, Mallesh <mallesh.koujalagi@intel.com>; Jadav, Raag <raag.jadav@in=
+tel.com>; Purkait, Soham <soham.purkait@intel.com>
+Subject: Re: [PATCH v3 00/10] Xe3P GPU Error Injection Test Suite with DRM =
+RAS Netlink Support
+
+On Mon, Aug 24, 2026 at 10:11:23PM +0530, Ravi Kishore Koppuravuri wrote:
+Hi Ravi,
+
+Are there any new changes in V3 or just a rebase?
+
+Thanks
+Harish.
+
+> This series introduces comprehensive error injection testing capabilities
+> for Intel Xe3P GPUs, leveraging the DRM RAS (Reliability, Availability,
+> Serviceability) Generic Netlink interface for error reporting and event
+> notification.
+>
+> The patch series focuses on the below key areas:
+>
+> 1. DRM RAS Netlink Library
+> Establishes the foundation by introducing a reusable DRM RAS netlink libr=
+ary that
+> provides kernel interface abstraction for error management:
+>
+> - DRM RAS Generic Netlink interface initialization and socket management
+> - Error counter querying for per-node error tracking
+> - Error threshold configuration (get/set operations)
+> - Event notification subscription via multicast groups
+>
+> 2. Uncorrectable Error Verification
+> Implements GT Uncorrectable Unicast Walker Command Parity Error Injection=
+:
+>
+> - MMIO-based error injection mechanism
+> - AER (Advanced Error Reporting) recovery verification
+> - Validates Xe driver error handling and recovery flows
+> - Includes workload execution post-recovery for robustness testing
+>
+> 3. Correctable Error Verification
+> Adds support for L2 Bank Correctable Error Injection with threshold monit=
+oring:
+>
+> - Event notification framework for real-time error event monitoring
+> - Single and multi-iteration correctable error injection tests
+> - Error threshold validation (critical for detecting error saturation)
+>
+> IGT Test Coverage includes:
+>
+> - GT Uncorrectable Unicast Walker Command Parity Error
+> - L2 Bank Correctable Error (single injection)
+> - L2 Bank Correctable Error with threshold=3D1
+> - L2 Bank Correctable Error (16x injections)
+>
+> Ravi Kishore Koppuravuri (10):
+>   drm-uapi/drm_ras: Add DRM RAS UAPI header
+>   lib/meson: Add libnl dependencies for DRM RAS support
+>   lib/igt_drm_netlink: Introduce DRM RAS Netlink interface library
+>   lib/igt_drm_netlink: add get_error_counter support
+>   lib/igt_drm_netlink: add get_error_threshold command support
+>   lib/igt_drm_netlink: add set_error_threshold command support
+>   tests/intel/xe_err_injection: Add GT UC Unicast GAM Walker Command
+>     Parity Error Injection
+>   lib/igt_drm_netlink: add event notify subscription and event wait
+>     support
+>   tests/intel/xe_err_injection: Add tests for L2 bank Corr err threshold
+>     scenarios
+>   tests/intel/xe_err_injection: add CRI GPU requirement check
+>
+>  include/drm-uapi/drm_ras.h     |  67 ++++
+>  lib/igt_drm_netlink.c          | 565 ++++++++++++++++++++++++++++++
+>  lib/igt_drm_netlink.h          |  48 +++
+>  lib/meson.build                |   9 +
+>  tests/intel/xe_err_injection.c | 623 +++++++++++++++++++++++++++++++++
+>  tests/intel/xe_err_injection.h |  28 ++
+>  tests/meson.build              |   1 +
+>  7 files changed, 1341 insertions(+)
+>  create mode 100644 include/drm-uapi/drm_ras.h
+>  create mode 100644 lib/igt_drm_netlink.c
+>  create mode 100644 lib/igt_drm_netlink.h
+>  create mode 100644 tests/intel/xe_err_injection.c
+>  create mode 100644 tests/intel/xe_err_injection.h
+>
+> --
+> 2.34.1
+>
+
+--_000_DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2DS0PR11MB7651namp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+Hi <a href=3D"mailto:harish.chegondi@intel.com" id=3D"OWAAM390601" class=3D=
+"tWKOu mention ms-bgc-nlr ms-fcl-b">
+@Chegondi, Harish</a>,&nbsp;</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+With respect to the comments from Kamil, I have updated the test names, lib=
+rary function names and also separated out the DRM UAPI header file as a co=
+mmit.</div>
+<div><br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+No functional changes are there in V3 other than these things.</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+Thanks,</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+Ravi Kishore K.</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<hr style=3D"display: inline-block; width: 98%;">
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<b>From:</b> Chegondi, Harish &lt;harish.chegondi@intel.com&gt;<br>
+<b>Sent:</b> Friday, August 28, 2026 1:52 AM<br>
+<b>To:</b> Koppuravuri, Ravi Kishore &lt;ravi.kishore.koppuravuri@intel.com=
+&gt;<br>
+<b>Cc:</b> igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&=
+gt;; Tauro, Riana &lt;riana.tauro@intel.com&gt;; Gupta, Anshuman &lt;anshum=
+an.gupta@intel.com&gt;; Koujalagi, Mallesh &lt;mallesh.koujalagi@intel.com&=
+gt;; Jadav, Raag &lt;raag.jadav@intel.com&gt;; Purkait, Soham
+ &lt;soham.purkait@intel.com&gt;<br>
+<b>Subject:</b> Re: [PATCH v3 00/10] Xe3P GPU Error Injection Test Suite wi=
+th DRM RAS Netlink Support
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-size: 11pt;">On Mon, Aug 24, 2026 at 10:11:23PM +0530, R=
+avi Kishore Koppuravuri wrote:<br>
+Hi Ravi,<br>
+<br>
+Are there any new changes in V3 or just a rebase?<br>
+<br>
+Thanks<br>
+Harish.<br>
+<br>
+&gt; This series introduces comprehensive error injection testing capabilit=
+ies<br>
+&gt; for Intel Xe3P GPUs, leveraging the DRM RAS (Reliability, Availability=
+,<br>
+&gt; Serviceability) Generic Netlink interface for error reporting and even=
+t<br>
+&gt; notification.<br>
+&gt;<br>
+&gt; The patch series focuses on the below key areas:<br>
+&gt;<br>
+&gt; 1. DRM RAS Netlink Library<br>
+&gt; Establishes the foundation by introducing a reusable DRM RAS netlink l=
+ibrary that<br>
+&gt; provides kernel interface abstraction for error management:<br>
+&gt;<br>
+&gt; - DRM RAS Generic Netlink interface initialization and socket manageme=
+nt<br>
+&gt; - Error counter querying for per-node error tracking<br>
+&gt; - Error threshold configuration (get/set operations)<br>
+&gt; - Event notification subscription via multicast groups<br>
+&gt;<br>
+&gt; 2. Uncorrectable Error Verification<br>
+&gt; Implements GT Uncorrectable Unicast Walker Command Parity Error Inject=
+ion:<br>
+&gt;<br>
+&gt; - MMIO-based error injection mechanism<br>
+&gt; - AER (Advanced Error Reporting) recovery verification<br>
+&gt; - Validates Xe driver error handling and recovery flows<br>
+&gt; - Includes workload execution post-recovery for robustness testing<br>
+&gt;<br>
+&gt; 3. Correctable Error Verification<br>
+&gt; Adds support for L2 Bank Correctable Error Injection with threshold mo=
+nitoring:<br>
+&gt;<br>
+&gt; - Event notification framework for real-time error event monitoring<br=
+>
+&gt; - Single and multi-iteration correctable error injection tests<br>
+&gt; - Error threshold validation (critical for detecting error saturation)=
+<br>
+&gt;<br>
+&gt; IGT Test Coverage includes:<br>
+&gt;<br>
+&gt; - GT Uncorrectable Unicast Walker Command Parity Error<br>
+&gt; - L2 Bank Correctable Error (single injection)<br>
+&gt; - L2 Bank Correctable Error with threshold=3D1<br>
+&gt; - L2 Bank Correctable Error (16x injections)<br>
+&gt;<br>
+&gt; Ravi Kishore Koppuravuri (10):<br>
+&gt;&nbsp;&nbsp; drm-uapi/drm_ras: Add DRM RAS UAPI header<br>
+&gt;&nbsp;&nbsp; lib/meson: Add libnl dependencies for DRM RAS support<br>
+&gt;&nbsp;&nbsp; lib/igt_drm_netlink: Introduce DRM RAS Netlink interface l=
+ibrary<br>
+&gt;&nbsp;&nbsp; lib/igt_drm_netlink: add get_error_counter support<br>
+&gt;&nbsp;&nbsp; lib/igt_drm_netlink: add get_error_threshold command suppo=
+rt<br>
+&gt;&nbsp;&nbsp; lib/igt_drm_netlink: add set_error_threshold command suppo=
+rt<br>
+&gt;&nbsp;&nbsp; tests/intel/xe_err_injection: Add GT UC Unicast GAM Walker=
+ Command<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp; Parity Error Injection<br>
+&gt;&nbsp;&nbsp; lib/igt_drm_netlink: add event notify subscription and eve=
+nt wait<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp; support<br>
+&gt;&nbsp;&nbsp; tests/intel/xe_err_injection: Add tests for L2 bank Corr e=
+rr threshold<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp; scenarios<br>
+&gt;&nbsp;&nbsp; tests/intel/xe_err_injection: add CRI GPU requirement chec=
+k<br>
+&gt;<br>
+&gt;&nbsp; include/drm-uapi/drm_ras.h&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp; 67 ++=
+++<br>
+&gt;&nbsp; lib/igt_drm_netlink.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp; | 565 ++++++++++++++++++++++++++++++<br>
+&gt;&nbsp; lib/igt_drm_netlink.h&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp; |&nbsp; 48 +++<br>
+&gt;&nbsp; lib/meson.build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&=
+nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; 9 +<br>
+&gt;&nbsp; tests/intel/xe_err_injection.c | 623 +++++++++++++++++++++++++++=
+++++++<br>
+&gt;&nbsp; tests/intel/xe_err_injection.h |&nbsp; 28 ++<br>
+&gt;&nbsp; tests/meson.build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; 1 +<br>
+&gt;&nbsp; 7 files changed, 1341 insertions(+)<br>
+&gt;&nbsp; create mode 100644 include/drm-uapi/drm_ras.h<br>
+&gt;&nbsp; create mode 100644 lib/igt_drm_netlink.c<br>
+&gt;&nbsp; create mode 100644 lib/igt_drm_netlink.h<br>
+&gt;&nbsp; create mode 100644 tests/intel/xe_err_injection.c<br>
+&gt;&nbsp; create mode 100644 tests/intel/xe_err_injection.h<br>
+&gt;<br>
+&gt; --<br>
+&gt; 2.34.1<br>
+&gt;<br>
+</div>
+</body>
+</html>
+
+--_000_DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2DS0PR11MB7651namp_--
