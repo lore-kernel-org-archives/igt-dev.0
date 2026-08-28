@@ -4,57 +4,126 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27C77C61DB9
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Aug 2026 10:49:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F333C61DCB
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Aug 2026 11:04:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B39E110E237;
-	Fri, 28 Aug 2026 10:49:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0BF9610E002;
+	Fri, 28 Aug 2026 11:04:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="JWldRtxR";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="pKySre2Q";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0423010E237;
- Fri, 28 Aug 2026 10:48:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Subject:Cc:To:From:Date:From:Reply-To;
- bh=EPUkeekr+NdH9Da1Q0+Tpm7Tj1ijd4zYuumEIrswkTg=; b=JWldRtxRG/+1o9zuT5IHIQCWC/
- 26iezNR4ue04QKooYxvWP1VNZSefPn1owLWoWH0dpcgSi+gHzIJWz5Jm+rOj5RhxQ5/PCMsYWjdqK
- 4B9xt+GRS4KWyaj5x6GkiwyKV3pIu+jY+wqw1kjfcxKA+OAiILfjF/Vjeop+DOsvYwZ02nJ+ei2xQ
- I8cJqmVYba7FbY+hqkmw2jSknThKSyJEcUnYlXyFdSH0ccfd/bvnFQ0cT5Jnjq9UzCKV99R1wYQlL
- e/H68Uk6wPe9xThlbXXlet8Mqq67enO+UxNx78dranHULv6hCa5lScIApmt+aR6Rck6q+V9bnNrA1
- laNW+OTg==;
-Received: from 179-125-75-211-dinamico.pombonet.net.br ([179.125.75.211]
- helo=quatroqueijos.cascardo.eti.br)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1wzu8N-00Aoa7-3e; Fri, 28 Aug 2026 12:48:31 +0200
-Date: Fri, 28 Aug 2026 07:48:24 -0300
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: igt-dev@lists.freedesktop.org, siqueira@igalia.com,
- dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
- intel-xe@lists.freedesktop.org,
- Christian Koenig <christian.koenig@amd.com>,
- maarten.lankhorst@linux.intel.com,
- Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Natalie Vock <natalie.vock@gmx.de>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
-Subject: Re: [PATCH i-g-t v5 4/7] lib/xe: Introduce dmem driver and implement
- Xe support
-Message-ID: <apFneOggwhqZWsIJ@quatroqueijos.cascardo.eti.br>
-References: <20260723194313.2748143-1-cascardo@igalia.com>
- <20260723194313.2748143-5-cascardo@igalia.com>
- <92009e34-6467-4a78-a3fc-32a39b381f55@ursulin.net>
+Received: from BN8PR05CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11011026.outbound.protection.outlook.com [52.101.57.26])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AA97910E002
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2026 11:04:12 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HabPw56rEQSaHT4ubY2D3UIxEaHD+04A7Tn75PdyOiGMM/NqcDLftjHL7okoJDsmqX9kWXU588Yvz+iiFVBB8v5AR7n+G9rKRPemaZijWDCmZyySEjHvmZKi+pdIEGjmkh1Q/qDlZZWAL/YcSIGTtRkMd+bxHAd/PVyDR+jUqn8LRaTWgBE5fisLlVXsfl7q9V5IMqfei69DYjvqnl/dB6cgApOdon5IBYPJkDfGRrjAuAEgkEcs1WGR9eDKzfLnnH1NDNAtqUeZQ5SUJzlkqkZo0yf5m8nmOT9vDVN7HidOQ6LvT9MdGysUgc+2erq3t8xtK6Y0P5aUug/p23ZtQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=l+lpwQB/BxbtdSfMLRqd6tZgHUhKb1z60ujyTe0jHtU=;
+ b=B1j2sf/KhuzxiigFRLaA59Qs6X1AZSGWhbne4l29mG2Hs1XYen6g8u+h6ImFNi626XPVDpXj+KEId33/L0Daz5iNOEWqO4Wr5IGrWqkxoW7oiL6+Snfrr/F82aiGKNE9VT48bkH/KRc+JeLNkNGFy4CDKevOs8Rl/7my/iqorW3MpNNJ0XJsBK5Pvm4UE3Kdayo7Fmcktz6V6iTvbG/RYj5LE3n+CGw2h4MSTIMuP9ds55LsKb+JjGo36dBLd+5qu2CSVuRrslzezCgyRLDv+52cKCOr9x2VySav0ZwcWKTJ80X5DpwlJ+wa+63e1lu9Ftp8iCJ/J3KsfSSejQWwdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=l+lpwQB/BxbtdSfMLRqd6tZgHUhKb1z60ujyTe0jHtU=;
+ b=pKySre2QqEe1m2Yk5HZRpmd0aeoaAW8hIY2kThfOz+KiDGNTH5DvUKRuYJldn8d8m8DzaIwkp/IKEVLm25CUzmi985+m+4p0W5Sds60zzVYsGeTYw2CgD77cyhWUt3Px1TA0eyARLYw5CaPl8uBMGRunXTBbDJSvXFD/42raDSo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7)
+ by DS0PR12MB7876.namprd12.prod.outlook.com (2603:10b6:8:148::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.10; Fri, 28 Aug
+ 2026 11:04:07 +0000
+Received: from IA1PR12MB8190.namprd12.prod.outlook.com
+ ([fe80::c581:f5cc:c58f:c5de]) by IA1PR12MB8190.namprd12.prod.outlook.com
+ ([fe80::c581:f5cc:c58f:c5de%5]) with mapi id 15.21.0360.008; Fri, 28 Aug 2026
+ 11:04:06 +0000
+Content-Type: multipart/alternative;
+ boundary="------------QQnlFEbqVwnn0Piqd4r5K4ce"
+Message-ID: <7f78ff21-e4bf-417c-bf9d-c605b13a4beb@amd.com>
+Date: Fri, 28 Aug 2026 07:04:03 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tools: rename HDMI compliance utility
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org,
+ chaitanya.kumar.borah@intel.com, Fangzhi Zuo <Jerry.Zuo@amd.com>,
+ Harry Wentland <harry.wentland@amd.com>,
+ Mark Broadworth <Mark.Broadworth@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Hung <alex.hung@amd.com>
+References: <20260827185355.378279-1-swati2.sharma@intel.com>
+ <20260828095854.7apqo5c7hy3n7oet@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20260828095854.7apqo5c7hy3n7oet@kamilkon-DESK.igk.intel.com>
+X-ClientProxiedBy: YQBP288CA0022.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6a::6) To IA1PR12MB8190.namprd12.prod.outlook.com
+ (2603:10b6:208:3f2::7)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <92009e34-6467-4a78-a3fc-32a39b381f55@ursulin.net>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA1PR12MB8190:EE_|DS0PR12MB7876:EE_
+X-MS-Office365-Filtering-Correlation-Id: 80e92d60-f365-4460-bd81-08df04f413f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|366016|23010399003|1800799024|13003099007|6133799003|3023799007|56012099006|10067099003|4143699003|11063799006|18002099003|22082099003|8096899003;
+X-Microsoft-Antispam-Message-Info: i/I3I+mVERY11mICQ3sljo04sIXzrf9lYxK068nLwSC4mbiOvmM7uFZlLUgRAC5geoWvFE7IFAM9xHwA78FV6ffRjBaw56QGpwHObyGQ4QRsh42GCJz73m7MMfaN5jlYE4oUCTzcgj2/cYkXfKc1rk7FuTbHzuIqPaQ6u9+o5iYrBckPSV/attmXvnZSx8BoxcUwzatIR3s5kBCmQlPpgNTAr63S73qPeqsc0ZmM9D9P3Ik7YihM8KfGSXjMppW1r8z8epEq5iZC4gi7a9xAkfBkFHm8tcNYUYY+tfMZhxor26Z0yHoh6rskws/ywh4AqzMbaaUNhIcNpemxJ8mhxq0i0eC92NTeJ4cq1NdmrUcRjQqm4P5XQn0fHs3lZP/iD1jaXM37RbM1WJwGI3Q8+iz8C/I+WBzWbx15oQwzwZeV8gXQm1HaoVBYoZ5SYuD1514gxYhXRojmcqfavgGNK99M8UiS57SzKKb+MNx1Y77GKpDRAvOlQslv7pOxfqpFg2vxMTAjxt6ne+NOpsHyTP0dZqoXeLBKjOFosure7BPzPjaIIcMb5O0/3DF9yeP12KIOKR7GhJNerPzAxepEAX+dEamg5yuUzthUC8j/2JtJxhA7zEb5uzDfEsb2PkxVcsKWiOHzLHCA/ZVXHTnqjVvmrMEfovLBCAIOZ+EBiCw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA1PR12MB8190.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(13003099007)(6133799003)(3023799007)(56012099006)(10067099003)(4143699003)(11063799006)(18002099003)(22082099003)(8096899003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?a2lKUGd4ZjVsTmc5bUxqbmJtLzFxZjVISzhlSjRET3JZbVhNOTNvdEc5TFpP?=
+ =?utf-8?B?dVVSU3FOcm1FeUhiVHJJM1JFcFFRQWdxMGFIblJJRFBmY09GSjk4bFRmT2ts?=
+ =?utf-8?B?Ykcwa1RzUDJzNFRUV1NzcDhyOHpjejhsUXdQQm8wem90Q0FnMzd0dm5BRHVY?=
+ =?utf-8?B?NzZ0NzBMWEswcGp3Y2NKTTUvUEMyaDB6VWhuYUpWUkthNnNYOXFPSEIvV1Vr?=
+ =?utf-8?B?Qk9haFVDRkYxZitRUFZFd2ltUldnbG9BZ0pUMktOMVR3U2cxNWdlNThScWcv?=
+ =?utf-8?B?KzAxcTlBNUN4TzI2QWdiSXovN1VuT2tRUk4yUWpBWlVqQ25odlpzT3Nzb2Rs?=
+ =?utf-8?B?TXliK3dCWnhkb25Nb3FtZ1BOa3dqaE1PZHNVaTdqSEFRZW9rR3JGWTJJSDlB?=
+ =?utf-8?B?UFVlTldnN2h4b2ZTKzQ0NUp5b0IyTWVBTTNuNGdzQUx1eHQ4dzhuVytzVUdx?=
+ =?utf-8?B?Rlkva2ZPSFpkdmY4ano5UXBRZ0UyLzVRdEV1Mk1IZzRjaG1lUXJrbXJCZGd6?=
+ =?utf-8?B?M2ptNU9FakNyUlRDc3ZqZ25xSU4rcVVwU1VkZy9oQmRGVi9kT3d3K1hIWnJL?=
+ =?utf-8?B?dkJhMXRoNWN4OUpHNXpZNWN6OEpjc1o4aC9HZ3N5OEUvL2V6VSt1K0U4enk1?=
+ =?utf-8?B?V3RaU0puZHhPMmtCTnlyTVVXcXFsV1pIQlBwYXpCZHFpL0RNd3E2bnM0K0hi?=
+ =?utf-8?B?SVI1MXZzc1BEREJkeUVwb3RoU0NSSUlncHUySUE2UWI2elZBSXFybmJRRXZr?=
+ =?utf-8?B?TWpabkwwNWwveDNQYWpoL2NIS3Z2bmNreVBHL2xlNTdrVUdPVnkwNFUvNWZ1?=
+ =?utf-8?B?dGdVMzYzZXUxOXprMlFTc2g1V0xXbG1EYVJVb3YzVjJHcTVuWWdILzU1emV1?=
+ =?utf-8?B?bGk3WkxzVmpDenQxM0JTSldLeWp4V0YxL3FkRVpVVnZjbGdjaTdkMHE3Ukth?=
+ =?utf-8?B?U3A2ckovVmlnM3Z0ekRBVDYvWHNVQjVub2xSWXZKUmk1b2p0d0N0SmJDS29Z?=
+ =?utf-8?B?TlhXOExqVVVWSlpycjBPeUlvZW9hWXdST3VnUjhld0tLajcrWEI4Rit6TjNh?=
+ =?utf-8?B?VXdoTm9rVFB0TE1vcXpOWW90dDJCdmtER1FKVFV4ZkVwcmNSc3J0MC9YRGs4?=
+ =?utf-8?B?TFdBUGJ4VlR0TnV0ZmM3RzBhKzhnVVhRQjYvUkVTcXU1c3VwZ1pDRkYrb3pq?=
+ =?utf-8?B?T2FJSmpQLzcyYjBsajhuMVJRZ3EvL1J1QVVpeUUrWHVORldxWnJPQmdiWDRP?=
+ =?utf-8?B?VWtKRzlFU3FKOEtmRkhRaEtXK2t6NWZoTU15WEw1UHcxMy8zamVRUWlkZmNo?=
+ =?utf-8?B?MmxjZ3pldkRFY3VkdS9TN3RUTTcwU0tGUUxrY2dnQUZ3Nm9oanlsc3hvcUlC?=
+ =?utf-8?B?c3psZis1RnIvcjlFcm8rYk9DYVBsby9iSkhCbURlNFoxVW00RVJseG5UOUth?=
+ =?utf-8?B?NDdJcE9pVFJGaXVHNDBnVFBGRmhBalU3SkhKejNtTUZSbUp5SDRMNTRjcGZO?=
+ =?utf-8?B?ZHhkajhzZUMrdC9aQW1yajl0akxqT3FKaDdHQWdFRG1ndExtZGdNeTRNRjVv?=
+ =?utf-8?B?NlVzNy9sNVpHR3M5Um13SDBOb3NtUEtXanFhdHFUOFRJdno4WG9qSVk5Y0Jz?=
+ =?utf-8?B?QW4wS3hrQnV1VTd4V0RNekhQY1Nybjk3OU0zZHFIdk4wYUFMRm96MVErOU45?=
+ =?utf-8?B?Z0I1Zm5ROXViU1BuS3djZDZ3ZUJLOTBTdFZERzBDZjF0YUJRMUxKc0sxOUJU?=
+ =?utf-8?B?YzhmMDA3MHpXcXhWTDZVZFBOWFFhczc5SE9NaXUxN0FDdldudDc1ZVI1c2JR?=
+ =?utf-8?B?VjZmZ0dSOENiaUZmN0hQU3NmZWtFREoyNnBrTHFnYzZlVnJlYisyZTQvK3RP?=
+ =?utf-8?B?cVZDVXFnSzkzOTRVcFpDclp4ZFFSNzExYkxpVnRtaWhIWG4rRm4zS2JOOEdM?=
+ =?utf-8?B?U3VtODluN2JTV0pYVExXbFZXV2M0dzFBdG9tOEJDM3RHNDdYNHBXOEhaWU16?=
+ =?utf-8?B?UGR4c255Vm4wZlBLRU4rK0Vyb3lpbHNMQlJGQUoxZ3k4RTlGd2R4ZS9CYmtF?=
+ =?utf-8?B?aVFQTEZYZlN5K2hXaG8yWEZaL0hrZ2hHMWtvdlQzVmM3RGRLdElhVUIyM1VW?=
+ =?utf-8?B?U3J1UURRMlQzcW44dmVwUGFMN2xIMFpKQzVtSUZOM0htVDNnV2h5TlBodTdl?=
+ =?utf-8?B?K3lZRy93MzhWTEtLU0lzWHRqZHptK2hJbHB4QlhzS0NDbWwyS3daUzNLcDd2?=
+ =?utf-8?B?QzB2eXVGTjg4em9IcWtvc1NnOGxmY09QdUR5UlltaWsvbmRCU05penpmbXAr?=
+ =?utf-8?B?L0N0UHJuUHAxRzYvOGJaOC9oZHNWdnRDVmQ4YXBRVzhiVzRzblp1dz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 80e92d60-f365-4460-bd81-08df04f413f2
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8190.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Aug 2026 11:04:06.4669 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Ir2+ksN3NWjr5f2BDxrue4xRAhdyNBRAdWDo3ZKP5LF00rNmEuKZNdr+roA/JmaBxNlTc4dhFeMuFn/A6cT0Vw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7876
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,290 +139,210 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Aug 13, 2026 at 02:13:53PM +0100, Tvrtko Ursulin wrote:
-> 
-> On 23/07/2026 20:43, Thadeu Lima de Souza Cascardo wrote:
-> > In order to be reuse the same dmem tests with multiple drivers, we need to
-> > abstract a few operations. That includes getting the region name, and
-> > allocating and releasing VRAM. As there is some initialization also when
-> > multiple allocations are done, also provide init and deinit functions.
-> > 
-> > The Xe implementation was based on the original operations from
-> > xe_cgroups.c written by Thomas Hellström. However, instead of doing a
-> > deferred backing, followed by a bind, it does a simple non-deferred GEM
-> > object creation on the VRAM region.
-> > 
-> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> > ---
-> >   lib/igt_dmem_driver.h |  24 ++++++++
-> >   lib/meson.build       |   1 +
-> >   lib/xe/xe_dmem.c      | 139 ++++++++++++++++++++++++++++++++++++++++++
-> >   3 files changed, 164 insertions(+)
-> >   create mode 100644 lib/igt_dmem_driver.h
-> >   create mode 100644 lib/xe/xe_dmem.c
-> > 
-> > diff --git a/lib/igt_dmem_driver.h b/lib/igt_dmem_driver.h
-> > new file mode 100644
-> > index 000000000000..2f4a4673ab16
-> > --- /dev/null
-> > +++ b/lib/igt_dmem_driver.h
-> > @@ -0,0 +1,24 @@
-> > +// SPDX-License-Identifier: MIT
-> > +/*
-> > + * Copyright 2026 Valve Corporation
-> > + * Authors:
-> > + *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> > + */
-> > +
-> > +#ifndef __IGT_DMEM_DRIVER_H__
-> > +#define __IGT_DMEM_DRIVER_H__
-> > +
-> > +#include <stdlib.h>
-> > +
-> > +struct igt_dmem_driver {
-> > +	const char *name;
-> > +	char * (*get_region_name)(int fd);
-> > +	int (*init)(void **ctx, int fd, int max_bo);
-> > +	void (*deinit)(void *ctx);
-> > +	int (*allocate_vram)(void *ctx, int n_bo, size_t len);
-> > +	void (*free_vram)(void *ctx, int n_bo);
-> 
-> I expect IGT maintainers might ask for kerneldoc for these.
-> 
+--------------QQnlFEbqVwnn0Piqd4r5K4ce
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Will do that in the next version, thanks for pointing that out.
+Added Alex
 
-> > +};
-> > +
-> > +extern const struct igt_dmem_driver xe_dmem_driver;
-> > +
-> > +#endif
-> > diff --git a/lib/meson.build b/lib/meson.build
-> > index 868220408f8c..012802475de0 100644
-> > --- a/lib/meson.build
-> > +++ b/lib/meson.build
-> > @@ -126,6 +126,7 @@ lib_sources = [
-> >   	'igt_msm.c',
-> >   	'igt_dsc.c',
-> >   	'igt_hook.c',
-> > +	'xe/xe_dmem.c',
-> >   	'xe/xe_gt.c',
-> >   	'xe/xe_ioctl.c',
-> >   	'xe/xe_legacy.c',
-> > diff --git a/lib/xe/xe_dmem.c b/lib/xe/xe_dmem.c
-> > new file mode 100644
-> > index 000000000000..1dec8cf8b0a1
-> > --- /dev/null
-> > +++ b/lib/xe/xe_dmem.c
-> > @@ -0,0 +1,139 @@
-> > +// SPDX-License-Identifier: MIT
-> > +/*
-> > + * Copyright 2026 Valve Corporation
-> > + * Authors:
-> > + *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> > + */
-> > +
-> > +#include <errno.h>
-> > +
-> > +#include "igt.h"
-> > +#include "igt_cgroup.h"
-> > +#include "igt_dmem_driver.h"
-> > +#include "xe_drm.h"
-> > +#include "xe/xe_ioctl.h"
-> > +#include "xe/xe_query.h"
-> > +
-> > +static char * xe_dmem_get_region_name(int fd)
-> > +{
-> > +	uint64_t vram_region = 0;
-> > +	uint64_t region;
-> > +	char *cg_region;
-> > +
-> > +	/* Find first VRAM region */
-> > +	xe_for_each_mem_region(fd, all_memory_regions(fd), region) {
-> > +		if (xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_VRAM) {
-> > +			vram_region = region;
-> > +			break;
-> > +		}
-> > +	}
-> 
-> FWIW it looks like that from here..
-> 
-> > +	if (!vram_region)
-> > +		return NULL;
-> > +
-> > +	cg_region = xe_cgroup_region_name(fd, vram_region);
-> > +
-> > +	return cg_region;
-> 
-> .. to here could be simplified as return xe_cgroup_region_name(...), given
-> the helper returns NULL for non-VRAM regions. Or even return straight from
-> the above loop instead of the break. Up to you which of the three options
-> you prefer, just thinking out loud.
-> 
+Hi Kamil
 
-Thanks, I will consider which one of those to use.
+On 2026-08-28 05:58, Kamil Konieczny wrote:
+> Hi Swati,
+> On 2026-08-28 at 00:23:55 +0530, Swati Sharma wrote:
+>> Rename the AMD-specific HDMI compliance utility to a generic
+>> igt_hdmi_compliance binary and update the build rule.
+>>
+>> Keep the existing AMD debugfs flow for pixel-format forcing. Skip
+>> that operation on Intel devices until a driver-supported interface
+>> for selecting the pixel encoding is available.
+>>
+>> Assisted-by: GitHub Copilot:Claude Opus 4.6
+>> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> I will forward this to few AMD GPU dev to make sure it will
+> work for them, +cc
+> Fangzhi Zuo <Jerry.Zuo@amd.com>
+> Harry Wentland <harry.wentland@amd.com>
+> Mark Broadworth <Mark.Broadworth@amd.com>
+> Vitaly Prosyak <vitaly.prosyak@amd.com>
+>
+> Vitaly, can you forward this to your devs and/or CI team and help
+> us here, please.
+>
+Added push for testing to our internal CI :
 
-> > +}
-> > +
-> > +struct xe_bo {
-> > +	uint32_t handle;
-> > +	size_t len;
-> > +};
-> > +
-> > +struct xe_dmem_ctx {
-> > +	int fd;
-> > +	struct xe_bo *bos;
-> > +	uint64_t vram_region;
-> > +	int max_bo;
-> > +};
-> > +
-> > +static int xe_dmem_init(void **ctx, int fd, int max_bo)
-> > +{
-> > +	struct xe_dmem_ctx *xe_ctx;
-> > +	uint64_t region;
-> > +
-> > +	xe_ctx = malloc(sizeof(*xe_ctx));
-> > +	if (!xe_ctx)
-> > +		return -ENOMEM;
-> > +
-> > +	xe_ctx->bos = calloc(max_bo, sizeof(xe_ctx->bos[0]));
-> > +	if (!xe_ctx->bos)
-> > +		goto out;
-> > +	memset(xe_ctx->bos, 0, max_bo * sizeof(xe_ctx->bos[0]));
-> 
-> calloc already zeroes the memory.
-> 
+https://gerrit.core.linux.amd.com/c/upstream/gitlab.freedesktop.org/drm/igt-gpu-tools/+/1951
 
-Ack.
-
-> > +	xe_ctx->max_bo = max_bo;
-> 
-> Could the need for max_bo input parameter be avoided if the arrays were
-> allocated in chunks and grown? More complex implementation but a simpler
-> API.
-> 
-
-I will see how that looks like and how it affects the callers. Hopefully,
-it makes it more simple and fix one or two of the clunkiness in the
-callers. Let me check.
-
-> > +
-> > +	xe_ctx->vram_region = 0;
-> > +	/* Find first VRAM region */
-> > +	xe_for_each_mem_region(fd, all_memory_regions(fd), region) {
-> > +		if (xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_VRAM) {
-> > +			xe_ctx->vram_region = region;
-> > +			break;
-> > +		}
-> > +	}
-> > +	if (!xe_ctx->vram_region)
-> > +		goto out;
-> > +
-> > +	xe_ctx->fd = fd;
-> > +
-> > +	*ctx = xe_ctx;
-> > +
-> > +	return 0;
-> > +
-> > +out:
-> > +	if (xe_ctx->bos)
-> > +		free(xe_ctx->bos);
-> > +	free(xe_ctx);
-> > +
-> > +	return -ENOMEM;
-> > +}
-> > +
-> > +static void xe_dmem_deinit(void *ctx)
-> > +{
-> > +	struct xe_dmem_ctx *xe_ctx = ctx;
-> > +
-> > +	free(xe_ctx->bos);
-> > +	free(xe_ctx);
-> 
-> Handle cleanup is not desirable?
-> 
-
-That is done by free_vram. I will try and do it here too, in case there is
-anyone left.
-
-> > +}
-> > +
-> > +static int xe_dmem_allocate_vram(void *ctx, int n_bo, size_t len)
-> 
-> Is the last patch in the series the only user of this API? I am thinking
-> whether the n_bo input parameter is required and it wouldn't be simpler to
-> just return a handle (or null) and grow the internal count. Ie. is there a
-> use case for callers to precisely need to control "allocate/free at this
-> index"?
-> 
-
-There is also the dmem_max branch, which was the original user of the API.
-Specifically, the case where we want to trigger eviction by allocating one
-extra BO required a revision of the API or the initialization site, at
-least. Perhaps just doing the dynamic allocation will fix all. IIRC, there
-is no sparse allocation, so we could skip n_bo entirely.
-
-> > +{
-> > +	struct xe_dmem_ctx *xe_ctx = ctx;
-> > +	uint32_t handle;
-> > +	int err;
-> > +
-> > +	if (n_bo >= xe_ctx->max_bo)
-> > +		return -ENOMEM;
-> 
-> If the max_bo approach remains, I'd be tempted to igt_assert here since it
-> is a test writer error to hit it.
-> 
-> Also, return error if a valid handle is already at the requested index?
-> 
-> > +
-> > +	err = __xe_bo_create(xe_ctx->fd, 0, len, xe_ctx->vram_region, 0,
-> > +			     NULL, &handle);
-> > +	if (err)
-> > +		goto out;
-> > +
-> > +	xe_ctx->bos[n_bo].handle = handle;
-> > +	xe_ctx->bos[n_bo].len = len;
-> > +
-> > +out:
-> > +	return err;
-> > +}
-> > +
-> > +static void xe_dmem_free_vram(void *ctx, int n_bo)
-> > +{
-> > +	struct xe_dmem_ctx *xe_ctx = ctx;
-> > +	size_t len;
-> > +	if (n_bo >= xe_ctx->max_bo)
-> > +		return;
-> 
-> Same assert or not comment as above.
-> 
-> > +	len = xe_ctx->bos[n_bo].len;
-> > +	if (len) {
-> > +		gem_close(xe_ctx->fd, xe_ctx->bos[n_bo].handle);
-> > +		xe_ctx->bos[n_bo].len = 0;
-> > +	}
-> 
-> It looks like the len local is superflous and handle also needs clearing.
-
-Right. I think when we used the VM API, it was needed, and not anymore.
-
-> 
-> > +}
-> > +
-> > +const struct igt_dmem_driver xe_dmem_driver = {
-> > +	.name = "xe",
-> > +	.get_region_name = xe_dmem_get_region_name,
-> > +	.init = xe_dmem_init,
-> > +	.deinit = xe_dmem_deinit,
-> > +	.allocate_vram = xe_dmem_allocate_vram,
-> > +	.free_vram = xe_dmem_free_vram,
-> > +};
-> 
+Hi Harry and Alex,
+I hope you are both having a good week.
+I am not entirely sure if the DAL CI is executing the new remote gerrit correctly. When you have a moment, could you please help me look into this?
+Thank you so much for your time
+Vitaly
 > Regards,
-> 
-> Tvrtko
-> 
+> Kamil
+>
+>> ---
+>>  tools/{amd_hdmi_compliance.c => igt_hdmi_compliance.c} | 9 ++++++---
+>>  tools/meson.build                                      | 2 +-
+>>  2 files changed, 7 insertions(+), 4 deletions(-)
+>>  rename tools/{amd_hdmi_compliance.c => igt_hdmi_compliance.c} (99%)
+>>
+>> diff --git a/tools/amd_hdmi_compliance.c b/tools/igt_hdmi_compliance.c
+>> similarity index 99%
+>> rename from tools/amd_hdmi_compliance.c
+>> rename to tools/igt_hdmi_compliance.c
+>> index 2af4c0bab..ece0abd1d 100644
+>> --- a/tools/amd_hdmi_compliance.c
+>> +++ b/tools/igt_hdmi_compliance.c
+>> @@ -833,12 +833,15 @@ static void force_pixel_format(data_t *data, int pixel_format, int conn_id)
+>>  
+>>  	test_init(data, conn_id);
+>>  
+>> -	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
+>> -	igt_assert(fd >= 0);
+>> -
+>>  	igt_info("Setting %d on connector id %d\n",
+>>  			pixel_format, data->output->config.connector->connector_id);
+>>  
+>> +	igt_skip_on_f(is_intel_device(data->fd),
+>> +			      "pixel-format forcing is not supported on Intel devices\n");
+>> +
+>> +	fd = igt_debugfs_connector_dir(data->fd, data->output->name, O_RDONLY);
+>> +	igt_assert(fd >= 0);
+>> +
+>>  	switch (pixel_format) {
+>>  	case 1:
+>>  		entry_name = "force_rgb_output";
+>> diff --git a/tools/meson.build b/tools/meson.build
+>> index fbc6c0a00..68c31da92 100644
+>> --- a/tools/meson.build
+>> +++ b/tools/meson.build
+>> @@ -183,7 +183,7 @@ executable('intel_gpu_top', 'intel_gpu_top.c',
+>>  	   dependencies : [lib_igt_perf,lib_igt_device_scan,lib_igt_drm_clients,lib_igt_drm_fdinfo,
+>>  	                   lib_igt_drm_stub, lib_igt_tools_stub, math])
+>>  
+>> -executable('amd_hdmi_compliance', 'amd_hdmi_compliance.c',
+>> +executable('igt_hdmi_compliance', 'igt_hdmi_compliance.c',
+>>  	   dependencies : [tool_deps],
+>>  	   install_rpath : bindir_rpathdir,
+>>  	   install : true)
+>> -- 
+>> 2.25.1
+>>
+--------------QQnlFEbqVwnn0Piqd4r5K4ce
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thanks.
-Cascardo.
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p>Added Alex</p>
+    <p>Hi Kamil</p>
+    <div class="moz-cite-prefix">On 2026-08-28 05:58, Kamil Konieczny
+      wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20260828095854.7apqo5c7hy3n7oet@kamilkon-DESK.igk.intel.com">
+      <pre wrap="" class="moz-quote-pre">Hi Swati,
+On 2026-08-28 at 00:23:55 +0530, Swati Sharma wrote:
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">Rename the AMD-specific HDMI compliance utility to a generic
+igt_hdmi_compliance binary and update the build rule.
+
+Keep the existing AMD debugfs flow for pixel-format forcing. Skip
+that operation on Intel devices until a driver-supported interface
+for selecting the pixel encoding is available.
+
+Assisted-by: GitHub Copilot:Claude Opus 4.6
+Signed-off-by: Swati Sharma <a class="moz-txt-link-rfc2396E" href="mailto:swati2.sharma@intel.com">&lt;swati2.sharma@intel.com&gt;</a>
+</pre>
+      </blockquote>
+      <pre wrap="" class="moz-quote-pre">
+I will forward this to few AMD GPU dev to make sure it will
+work for them, +cc
+Fangzhi Zuo <a class="moz-txt-link-rfc2396E" href="mailto:Jerry.Zuo@amd.com">&lt;Jerry.Zuo@amd.com&gt;</a>
+Harry Wentland <a class="moz-txt-link-rfc2396E" href="mailto:harry.wentland@amd.com">&lt;harry.wentland@amd.com&gt;</a>
+Mark Broadworth <a class="moz-txt-link-rfc2396E" href="mailto:Mark.Broadworth@amd.com">&lt;Mark.Broadworth@amd.com&gt;</a>
+Vitaly Prosyak <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
+
+Vitaly, can you forward this to your devs and/or CI team and help
+us here, please.
+
+</pre>
+    </blockquote>
+    <p>Added push for testing to our internal CI :</p>
+    <p><a class="moz-txt-link-freetext" href="https://gerrit.core.linux.amd.com/c/upstream/gitlab.freedesktop.org/drm/igt-gpu-tools/+/1951">https://gerrit.core.linux.amd.com/c/upstream/gitlab.freedesktop.org/drm/igt-gpu-tools/+/1951</a></p>
+    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAIBhAB" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Hi
+      Harry and Alex,<span></span></div>
+    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAIBhAE" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">I
+      hope you are both having a good week.<span></span></div>
+    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAIBhAH" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 16px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">I
+      am not entirely sure if the DAL CI is executing the new remote
+      gerrit correctly. When you have a moment, could you please help me
+      look into this?<span></span></div>
+    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAIBhAK" data-complete="true" aria-owns="action-menu-parent-container" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Thank
+      you so much for your time</div>
+    <div class="n6owBd awi2gc" data-sfc-cp="" data-sfc-root="ep" data-hveid="CAAIBhAK" data-complete="true" aria-owns="action-menu-parent-container" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 12px 0px 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Vitaly</div>
+    <blockquote type="cite" cite="mid:20260828095854.7apqo5c7hy3n7oet@kamilkon-DESK.igk.intel.com">
+      <pre wrap="" class="moz-quote-pre">
+Regards,
+Kamil
+
+</pre>
+      <blockquote type="cite">
+        <pre wrap="" class="moz-quote-pre">---
+ tools/{amd_hdmi_compliance.c =&gt; igt_hdmi_compliance.c} | 9 ++++++---
+ tools/meson.build                                      | 2 +-
+ 2 files changed, 7 insertions(+), 4 deletions(-)
+ rename tools/{amd_hdmi_compliance.c =&gt; igt_hdmi_compliance.c} (99%)
+
+diff --git a/tools/amd_hdmi_compliance.c b/tools/igt_hdmi_compliance.c
+similarity index 99%
+rename from tools/amd_hdmi_compliance.c
+rename to tools/igt_hdmi_compliance.c
+index 2af4c0bab..ece0abd1d 100644
+--- a/tools/amd_hdmi_compliance.c
++++ b/tools/igt_hdmi_compliance.c
+@@ -833,12 +833,15 @@ static void force_pixel_format(data_t *data, int pixel_format, int conn_id)
+ 
+ 	test_init(data, conn_id);
+ 
+-	fd = igt_debugfs_connector_dir(data-&gt;fd, data-&gt;output-&gt;name, O_RDONLY);
+-	igt_assert(fd &gt;= 0);
+-
+ 	igt_info(&quot;Setting %d on connector id %d\n&quot;,
+ 			pixel_format, data-&gt;output-&gt;config.connector-&gt;connector_id);
+ 
++	igt_skip_on_f(is_intel_device(data-&gt;fd),
++			      &quot;pixel-format forcing is not supported on Intel devices\n&quot;);
++
++	fd = igt_debugfs_connector_dir(data-&gt;fd, data-&gt;output-&gt;name, O_RDONLY);
++	igt_assert(fd &gt;= 0);
++
+ 	switch (pixel_format) {
+ 	case 1:
+ 		entry_name = &quot;force_rgb_output&quot;;
+diff --git a/tools/meson.build b/tools/meson.build
+index fbc6c0a00..68c31da92 100644
+--- a/tools/meson.build
++++ b/tools/meson.build
+@@ -183,7 +183,7 @@ executable('intel_gpu_top', 'intel_gpu_top.c',
+ 	   dependencies : [lib_igt_perf,lib_igt_device_scan,lib_igt_drm_clients,lib_igt_drm_fdinfo,
+ 	                   lib_igt_drm_stub, lib_igt_tools_stub, math])
+ 
+-executable('amd_hdmi_compliance', 'amd_hdmi_compliance.c',
++executable('igt_hdmi_compliance', 'igt_hdmi_compliance.c',
+ 	   dependencies : [tool_deps],
+ 	   install_rpath : bindir_rpathdir,
+ 	   install : true)
+-- 
+2.25.1
+
+</pre>
+      </blockquote>
+    </blockquote>
+  </body>
+</html>
+
+--------------QQnlFEbqVwnn0Piqd4r5K4ce--
