@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 421C1C61DCB
-	for <igt-dev@archiver.kernel.org>; Fri, 28 Aug 2026 17:06:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C2EC61DCB
+	for <igt-dev@archiver.kernel.org>; Fri, 28 Aug 2026 17:06:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B1FAF10E4BF;
-	Fri, 28 Aug 2026 17:06:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EFDAC10F428;
+	Fri, 28 Aug 2026 17:06:53 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JweUb5od";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SL5axV3P";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A37110E4BF
- for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2026 17:04:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D520F10E4BF
+ for <igt-dev@lists.freedesktop.org>; Fri, 28 Aug 2026 17:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1787936696; x=1819472696;
+ t=1787936698; x=1819472698;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ugyvRzSEFP2kcBjcxdZK0kGF2BQrgD7AXC+4kuzi7hs=;
- b=JweUb5odPLbX9eSTXADDx/xV2IdMcsWlaZxp7dtuYbVHpbQZUYceeQy1
- GasKdtq16uGqxpqtxgHKVI06hWO4UkmIA9tIICrODdfrS52PHTAvhLgnF
- tLJqhu2jE7BlVxN/fEPeZjSSNsNp0kXvzRRZ9lpwdZI+ZeWLOx4ouUxRW
- crSmYbFU0hBx4lQhyzV52jMSo3bR5jrLZmbZFDlxiV9fXDxXP/PpSpkVh
- 6iEdj2TloA6jNoX11XXhfhHXhI4DGEqXY0akSCKVhxj4D3+8NsZc39Mbf
- R9uygY1O/tp7tpj9KIv/58Ee4OF5czagiP82MnnD6vOVJQ8AOW2bxmin5 A==;
-X-CSE-ConnectionGUID: +9A+Wn2YRr+B5SlEXVlJPg==
-X-CSE-MsgGUID: rAkUKBSwQ9WiFVqXhZR0GA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11889"; a="98787249"
-X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; d="scan'208";a="98787249"
+ bh=gYAbUqW4T2hgccDLlDdzAmnQPFdJWya773zcICgrjg0=;
+ b=SL5axV3Pa287a8i+QfQCXfUdGG0SMDh1wr3hhcg30lYO5VCv4D56TACJ
+ b8WymBL9VDzH83FF+GzhJh9YkBm3F7GA+LRM9IRUzolac+0HH2zGFVy74
+ CXzZN4wHIYxgD0K8w5Lr/5xmvSna5+XHTx/Vjcg87C2k7GHD4O9pYCg0S
+ RUFcIGlb7oJ+qYvismgsssWFpyKXQtILtPSWQ7B4jVOkBjHaGmrXqYiWM
+ y6lHa6VgPkidmHzv09kKNpJuppV4YxLs0QWD7jGXBYf6sXakCDUe7e7/z
+ xRaF+QdR6Py4vpfuNROkSHiiK1wnAkWq6S2+wEmRwwShQYM1PV1yS65vT A==;
+X-CSE-ConnectionGUID: LUWuGXLlSVqpmIjtRV2SVg==
+X-CSE-MsgGUID: u3BNzjnTRxquRBUjIKYvBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11889"; a="98787254"
+X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; d="scan'208";a="98787254"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2026 10:04:56 -0700
-X-CSE-ConnectionGUID: zlM59Q+VTe+GwuEChN1hhw==
-X-CSE-MsgGUID: Gm2Yj/dFRcOMO3Hx7NZiyQ==
+ 28 Aug 2026 10:04:58 -0700
+X-CSE-ConnectionGUID: 6HMuBs0IStW+EgtM85E11g==
+X-CSE-MsgGUID: swiIkSucTZG+Qo+3T/Vs8Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; d="scan'208";a="264457881"
+X-IronPort-AV: E=Sophos;i="6.25,249,1779174000"; d="scan'208";a="264457887"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Aug 2026 10:04:52 -0700
+ 28 Aug 2026 10:04:55 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: badal.nilawar@intel.com, riana.tauro@intel.com, anshuman.gupta@intel.com,
  mallesh.koujalagi@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v2 1/4] tests/xe_err_injection: validate CPER tracefs event
- format
-Date: Fri, 28 Aug 2026 22:34:36 +0530
-Message-Id: <20260828170439.204268-2-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v2 2/4] tests/xe_err_injection: add CPER trace event helpers
+Date: Fri, 28 Aug 2026 22:34:37 +0530
+Message-Id: <20260828170439.204268-3-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260828170439.204268-1-ravi.kishore.koppuravuri@intel.com>
 References: <20260828170439.204268-1-ravi.kishore.koppuravuri@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,195 +69,178 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add CPER tracefs paths and verify that the xe_error_cper event
-exists, exposes the expected format fields, and supports enable/disable
-through tracefs.
+Add tracefs helpers to read and inspect xe_error_cper events, including
+CPER event polling, field extraction, and little-endian hex value
+parsing.
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 ---
- tests/intel/xe_cper.h          |  21 ++++++
- tests/intel/xe_err_injection.c | 119 +++++++++++++++++++++++++++++++++
- 2 files changed, 140 insertions(+)
- create mode 100644 tests/intel/xe_cper.h
+ tests/intel/xe_err_injection.c | 152 +++++++++++++++++++++++++++++++++
+ 1 file changed, 152 insertions(+)
 
-diff --git a/tests/intel/xe_cper.h b/tests/intel/xe_cper.h
-new file mode 100644
-index 000000000..706c63715
---- /dev/null
-+++ b/tests/intel/xe_cper.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#ifndef XE_CPER_H
-+#define XE_CPER_H
-+
-+/* tracefs paths */
-+#define TRACEFS_ROOT		"/sys/kernel/tracing"
-+#define XE_CPER_EVENT_DIR	TRACEFS_ROOT "/events/xe/xe_error_cper"
-+#define XE_CPER_ENABLE		XE_CPER_EVENT_DIR "/enable"
-+#define XE_CPER_FORMAT		XE_CPER_EVENT_DIR "/format"
-+#define TRACEFS_TRACE_PIPE	TRACEFS_ROOT "/trace_pipe"
-+#define TRACEFS_TRACE		TRACEFS_ROOT "/trace"
-+#define TRACEFS_TRACE_CLEAR	TRACEFS_ROOT "/trace"
-+
-+/* Timeout waiting for a trace event to appear (seconds) */
-+#define CPER_EVENT_TIMEOUT_SEC		10
-+
-+#endif /* XE_CPER_H */
 diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-index d17d049f4..37f4c2edd 100644
+index 37f4c2edd..c52fee2de 100644
 --- a/tests/intel/xe_err_injection.c
 +++ b/tests/intel/xe_err_injection.c
-@@ -17,6 +17,9 @@
- #include <time.h>
- #include <fcntl.h>
- #include <unistd.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
-+
- 
- #include "igt.h"
- #include "lib/igt_drm_netlink.h"
-@@ -24,6 +27,7 @@
- #include "lib/intel_reg.h"
- #include "lib/intel_compute.h"
- 
-+#include "xe_cper.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_mmio.h"
-@@ -545,6 +549,117 @@ static void test_l2_bank_single_corr_err_injection(struct xe_mmio *mmio, int fd)
- 	CLEANUP_ON_ERROR(ctx, fw_handle);
+@@ -589,6 +589,158 @@ static void tracefs_clear_trace(void)
+ 	igt_info("Cleared trace buffer: %s\n", TRACEFS_TRACE_CLEAR);
  }
  
-+/* ====================== CPER helper functions ====================== */
 +/**
-+ * tracefs_event_exists - check xe_error_cper event directory is present
++ * tracefs_read_trace - read the current trace buffer into a dynamically allocated buffer.
++ * Caller must free() the dynamic memory.
 + */
-+static bool tracefs_event_exists(void)
-+{
-+	struct stat st;
-+
-+	return stat(XE_CPER_EVENT_DIR, &st) == 0 && S_ISDIR(st.st_mode);
-+}
-+
-+/**
-+ * tracefs_enable_xe_cper - enable / disable the xe_error_cper trace event
-+ */
-+static void tracefs_enable_xe_cper(bool enable)
++static char *tracefs_read_trace(void)
 +{
 +	int fd;
-+	const char val = enable ? '1' : '0';
-+
-+	fd = open(XE_CPER_ENABLE, O_WRONLY);
-+	igt_assert_f(fd >= 0, "Cannot open %s: %s\n", XE_CPER_ENABLE,
-+		     strerror(errno));
-+	igt_assert_eq(write(fd, &val, 1), 1);
-+	igt_info("Trace event %sabled: %s\n", enable ? "en" : "dis", XE_CPER_ENABLE);
-+	close(fd);
-+}
-+
-+/**
-+ * tracefs_clear_trace - wipe the trace ring buffer
-+ */
-+static void tracefs_clear_trace(void)
-+{
-+	int fd = open(TRACEFS_TRACE_CLEAR, O_WRONLY | O_TRUNC);
-+
-+	if (fd >= 0)
-+		close(fd);
-+
-+	igt_info("Cleared trace buffer: %s\n", TRACEFS_TRACE_CLEAR);
-+}
-+
-+/**
-+ * SUBTEST: cper-tracefs-event-format
-+ * Description: Verify that the xe_error_cper tracefs event exists under
-+ * /sys/kernel/debug/tracing/events/xe/xe_error_cper/, that its 'format'
-+ * file contains the expected fields (dev, severity, platform_id, fru_id,
-+ * intel_err_hdr_raw, cper_len, cper_raw), and that 'enable' can be toggled.
-+ */
-+
-+/**
-+ * test_tracefs_event_format - verify the tracefs event directory and format
-+ * file contain the expected field names emitted by the xe_error_cper
-+ * TRACE_EVENT definition (TP_STRUCT__entry fields).
-+ */
-+static void test_tracefs_event_format(void)
-+{
-+	int fd;
-+	char buf[4096] = { 0 };
++	char *buf;
 +	ssize_t n;
++	size_t cap = 65536, used = 0;
 +
-+	igt_require_f(tracefs_event_exists(),
-+		      "xe_error_cper trace event not present at %s\n"
-+		      "(kernel xe driver may not have CONFIG_TRACING enabled)\n",
-+		      XE_CPER_EVENT_DIR);
++	fd = open(TRACEFS_TRACE, O_RDONLY);
++	igt_assert_f(fd >= 0, "Cannot open trace file: %s\n", strerror(errno));
 +
-+	fd = open(XE_CPER_FORMAT, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Cannot open %s: %s\n", XE_CPER_FORMAT,
-+		     strerror(errno));
-+	n = read(fd, buf, sizeof(buf) - 1);
++	igt_info("Reading trace buffer: %s\n", TRACEFS_TRACE);
++
++	/* trace file size is not known ahead of time; read in chunks */
++	buf = malloc(cap);
++	igt_assert(buf);
++
++	while (1) {
++		n = read(fd, buf + used, cap - used - 1);
++		if (n <= 0)
++			break;
++		used += n;
++		if (used >= cap - 1) {
++			cap *= 2;
++			buf = realloc(buf, cap);
++			igt_assert(buf);
++		}
++	}
++	buf[used] = '\0';
 +	close(fd);
-+	igt_assert_f(n > 0, "Empty format file at %s\n", XE_CPER_FORMAT);
-+	buf[n] = '\0';
-+
-+	/* Verify that all TP_STRUCT__entry fields are present in the format */
-+	igt_assert_f(strstr(buf, "dev"),
-+		     "Missing 'dev' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "platform_id"),
-+		     "Missing 'platform_id' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "fru_id"),
-+		     "Missing 'fru_id' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "sev"),
-+		     "Missing 'sev' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "ihdr_raw"),
-+		     "Missing 'ihdr_raw' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "cper_len"),
-+		     "Missing 'cper_len' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "cper"),
-+		     "Missing 'cper' dynamic array field in xe_error_cper format\n");
-+
-+	igt_info("xe_error_cper tracefs format verified:\n"
-+		     "Below is the content of %s:\n"
-+		     "=========================================\n"
-+		     "%s"
-+		     "=========================================\n"
-+		     "\n", XE_CPER_FORMAT, buf);
-+
-+	/* Verify enable/disable toggle */
-+	tracefs_enable_xe_cper(true);
-+	fd = open(XE_CPER_ENABLE, O_RDONLY);
-+	igt_assert(fd >= 0);
-+	n = read(fd, buf, 2);
-+	close(fd);
-+	igt_assert_eq(buf[0], '1');
-+
-+	tracefs_enable_xe_cper(false);
-+	fd = open(XE_CPER_ENABLE, O_RDONLY);
-+	igt_assert(fd >= 0);
-+	n = read(fd, buf, 2);
-+	close(fd);
-+	igt_assert_eq(buf[0], '0');
++	igt_info("Read %zu bytes from trace buffer\n", used);
++	return buf;
 +}
 +
- static void igt_require_cri(int fd)
- {
- 	uint16_t dev_id = xe_dev_id(fd);
-@@ -616,6 +731,10 @@ int igt_main()
- 	igt_subtest("test_l2-bank-single-corr-err")
- 		inject_error("test_l2-bank-single-corr-err", &mmio, fd);
- 
-+	igt_describe("Verify the xe_error_cper tracefs event exists and has the expected format.");
-+	igt_subtest("cper-tracefs-event-format")
-+		test_tracefs_event_format();
++/**
++ * wait_for_cper_event - enable tracing, get_error_counter, wait up to
++ * CPER_EVENT_TIMEOUT_SEC for an xe_error_cper line to appear.
++ * Returns a malloc'd copy of the matching trace line, or NULL.
++ * Caller must free().
++ */
++static char *wait_for_cper_event(int drm_fd)
++{
++	char *trace, *line, *match = NULL;
++	int elapsed = 0, ret;
++	struct app_context ctx;
 +
- 	igt_fixture() {
- 		xe_mmio_access_fini(&mmio);
- 		drm_close_driver(fd);
++	tracefs_enable_xe_cper(true);
++	tracefs_clear_trace();
++
++	/* Call igt_get_error_counter to dump the cper in tracefs */
++	ret = igt_init_nl_socket(&ctx);
++	if (ret < 0)
++		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
++
++	ctx.node_id = 0;
++	ctx.error_id = 1;
++	ret = igt_get_error_counter(&ctx);
++	if (ret < 0) {
++		igt_cleanup_nl_socket(&ctx);
++		igt_assert_f(false, "Failed to query GT correctable error counter\n");
++	}
++
++	/* Poll the trace buffer until xe_error_cper appears or timeout */
++	do {
++		sleep(1);
++		elapsed++;
++		trace = tracefs_read_trace();
++
++		/* Walk lines looking for "xe_error_cper:" */
++		for (line = strtok(trace, "\n"); line; line = strtok(NULL, "\n")) {
++			if (strstr(line, "xe_error_cper:")) {
++				match = strdup(line);
++				break;
++			}
++		}
++		free(trace);
++	} while (!match && elapsed < CPER_EVENT_TIMEOUT_SEC);
++
++	igt_cleanup_nl_socket(&ctx);
++	tracefs_enable_xe_cper(false);
++	tracefs_clear_trace();
++
++	return match;
++}
++
++/**
++ * parse_cper_event_field - extract a "key=value" token from a trace line.
++ * Returns a pointer into a static buffer; valid until the next call.
++ */
++static const char *parse_cper_event_field(const char *line, const char *key)
++{
++	static char val[512];
++	const char *p;
++	int klen;
++	size_t vlen;
++
++	klen = strlen(key);
++	p = strstr(line, key);
++	if (!p)
++		return NULL;
++	p += klen;
++	if (*p != '=')
++		return NULL;
++	p++;
++
++	if (!strcmp(key, "cper_raw"))
++		return p;
++
++	vlen = strcspn(p, " \t\n");
++
++	if (vlen >= sizeof(val))
++		vlen = sizeof(val) - 1;
++	memcpy(val, p, vlen);
++	val[vlen] = '\0';
++	return val;
++}
++
++/**
++ * hexbuf_get_byte - read byte at 'offset' from a "xx xx xx ..." hex string.
++ */
++static uint8_t hexbuf_get_byte(const char *hexstr, size_t offset)
++{
++	unsigned int b;
++	const char *p = hexstr;
++	size_t i;
++
++	for (i = 0; i <= offset; i++) {
++		while (*p == ' ')
++			p++;
++		igt_assert_f(sscanf(p, "%02x", &b) == 1,
++			     "Failed to parse hex byte %zu in '%s'\n", i, hexstr);
++		p += 2;
++	}
++	return (uint8_t)b;
++}
++
++/**
++ * hexbuf_get_u32le - read a 4-byte little-endian u32 starting at byte offset.
++ */
++static uint32_t hexbuf_get_u32le(const char *hexstr, size_t offset)
++{
++	uint32_t v = 0;
++	int i;
++
++	for (i = 0; i < 4; i++)
++		v |= (uint32_t)hexbuf_get_byte(hexstr, offset + i) << (8 * i);
++	return v;
++}
++
+ /**
+  * SUBTEST: cper-tracefs-event-format
+  * Description: Verify that the xe_error_cper tracefs event exists under
 -- 
 2.34.1
 
