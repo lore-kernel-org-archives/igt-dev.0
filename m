@@ -4,164 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56D8AC61DE1
-	for <igt-dev@archiver.kernel.org>; Sun, 30 Aug 2026 19:55:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09E9DC61DE8
+	for <igt-dev@archiver.kernel.org>; Sun, 30 Aug 2026 20:58:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4170D10E16F;
-	Sun, 30 Aug 2026 19:55:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6727910E1F4;
+	Sun, 30 Aug 2026 20:58:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fqYTHZRM";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="i6W4ycnc";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E095310E16F
- for <igt-dev@lists.freedesktop.org>; Sun, 30 Aug 2026 19:54:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788119689; x=1819655689;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=DoFT9ZeRgfmCEyD2T/7pqrmIu2ZIIYUvfjs6IwbVdlc=;
- b=fqYTHZRM6B06DkyUD/bOdDVPwGM6w/3wAjg9L9ZQay1yoi9RXQlzTwiW
- sx/zejhojFG4kPzaznMKxExsGqt7WLgJ4fWxEFFJqDh4DCHIFScLXPOwf
- jgJkywQoPYAwt1N1FBSZS+4K3xhEUJURyTYMA78qfIpokeCpzUiLK2RP8
- I6Fo2J05pTOQ9UhJ5bt2lSjEhJ5jIXrzZw8AAhrmMdcffqUTumM1Xq7r6
- Qw451V63Ji85H3iJLFBvHq+sbH7pTb7NfXGDwlVvNLtzZEnv+MRfyvf+L
- XptpDgf1BUUcXVKmFB07SDteb1bjF2koOgxQ0MHeqrVTaOVPfGxrM1QlN A==;
-X-CSE-ConnectionGUID: odCZblk3Sr2km7kwh8sCWw==
-X-CSE-MsgGUID: D2o8vG7TQN+IyLPzY1p91A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88557265"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; d="scan'208";a="88557265"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Aug 2026 12:54:49 -0700
-X-CSE-ConnectionGUID: 14MVcmhoTQWY2WC2wwjFfg==
-X-CSE-MsgGUID: eTBRxRVZT+SN/bQcJ83MiQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; d="scan'208";a="272426266"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Aug 2026 12:54:48 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Sun, 30 Aug 2026 12:54:48 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Sun, 30 Aug 2026 12:54:48 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.16)
- by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Sun, 30 Aug 2026 12:54:47 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com
+ (mail-westus2azon11010043.outbound.protection.outlook.com [52.101.46.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DB95810E0F8
+ for <igt-dev@lists.freedesktop.org>; Sun, 30 Aug 2026 20:58:12 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I97+6pdPUcFlk/Nfnu/ugW0zdi/NTeVRdet8l2Ct571yXMushRutABWQs+bllSo0CN+yRpyOG1squdv6vQbjCcwjy8g+aNDt3Fh+AZoz73YoDrhfefYY53pZoy1hfW6JNnh2XN3LjYFPs0DmsVgjEPLOTO5Y7LfDVA3bj/o1LL29pzg/tL55lqxS8RMdWo1ZWq9FoRg+A+Zao+a0HKBfAosjkWYZ2iHdlQRRl7VX48MR4jsmh7+UC+KOYZ7mnCYGcUdIg38CU1XNoD41G+IjZwr6708bxjxt5iYF2w87h1iVWWAkhx50ZuYH36+Y/HZAf9oC0dJcQ9BaiGyHuLhv/A==
+ b=GRlPDbrAMfP4AHENRQksje9pLHCIWPeAbFrjM+9NIkwC0AHmwxiY5g1iZzUQJpOGmZJDGBrXx3GnDfBXeUtFdUerAweWa7EeK4yGAhD/tJyRkPgTycL1hPSFOCPd03VbJ6j/VZkbDPWcl+JNK5QXhLzLKoVBXAnprAAWjc5HcRlA6vO3VsicCjPj3eVkL+MlIwUgWDYNOOsysoSNpVXDFxdbSBciBje2ilQzliSBXvoaFGQKJXUSjQWvtkJefP0BX063FEESadmeQMNUIBTVDwMPJ3rjpuBV+XGtfAylvH0XEjGkqDwCAKIL3k0xyGNBJPj0SZiLXq9DsySES0edQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DoFT9ZeRgfmCEyD2T/7pqrmIu2ZIIYUvfjs6IwbVdlc=;
- b=hRrXeS47U0pi5WnBGuT0INLG2zmjWq0xF4jPJetUN1479NUAWUUANgWKREYrKWZRggmkmlwt1iXvWlNWHeOooVJQkTKe4jxUJRO7GEOV1A7SVNENWT+W71+M0Fg9U6mNy5Lf3AXjcLkEBlAsj559xy1MIOwW9EKkO+94BAQuhouH6s4uey6vkbgD97eAzPJDGRgN+YQ7HjrF0vRo8Kg4pDrN+MR1DN99vg0NYQCFVA93ovr/hivO9vOa5V+he9NZhPWDM57JTmEz1x5Vn/iFU//Uq2F2NVPAQAmrj6aqoQVQneELSsXkiNyOfJaXTeIz+W1TWnFhakHJeUREjXKEkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CO1PR11MB4913.namprd11.prod.outlook.com (2603:10b6:303:9f::20)
- by CY5PR11MB6319.namprd11.prod.outlook.com (2603:10b6:930:3d::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Sun, 30 Aug
- 2026 19:54:40 +0000
-Received: from CO1PR11MB4913.namprd11.prod.outlook.com
- ([fe80::938d:6d4c:e26f:ed03]) by CO1PR11MB4913.namprd11.prod.outlook.com
- ([fe80::938d:6d4c:e26f:ed03%5]) with mapi id 15.21.0360.008; Sun, 30 Aug 2026
- 19:54:40 +0000
-From: "Thasleem, Mohammed" <mohammed.thasleem@intel.com>
-To: "Grzelak, Michal" <michal.grzelak@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Garg, Nemesa" <nemesa.garg@intel.com>, "B S, Karthik"
- <karthik.b.s@intel.com>
-Subject: RE: [PATCH i-g-t v3 16/17] tests/kms_ccs: limit #crtcs tested during
- suspend
-Thread-Topic: [PATCH i-g-t v3 16/17] tests/kms_ccs: limit #crtcs tested during
- suspend
-Thread-Index: AQHdMWt1eLiVCq3c/EO+1ktSLpm3y7a3DrwAgAABA0A=
-Date: Sun, 30 Aug 2026 19:54:40 +0000
-Message-ID: <CO1PR11MB491333FE20F2F31ACE81CB62E4AA2@CO1PR11MB4913.namprd11.prod.outlook.com>
-References: <20260821124834.1974029-1-michal.grzelak@intel.com>
- <20260821124834.1974029-17-michal.grzelak@intel.com>
- <863a7231-efb1-4944-a601-268bfdbceb61@intel.com>
-In-Reply-To: <863a7231-efb1-4944-a601-268bfdbceb61@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO1PR11MB4913:EE_|CY5PR11MB6319:EE_
-x-ms-office365-filtering-correlation-id: d1625e9b-120f-4b6c-f6d3-08df06d0878e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|10070799003|366016|23010399003|1800799024|376014|38070700021|56012099006|10067099003|4143699003|5023799004|11063799006|3023799007|18002099003|22082099003;
-x-microsoft-antispam-message-info: ebe8BUd1OXDi4UfX32IS8ry2rCoH/5yl4X70YtEr0y0jyl8Ch3DEhd1Zxmrd3TFoBog92LalTj2NKi8evnsnOKD93KuGdY1aNE5wOOWqxAxk3PAq3NmSnyuPv4EB/O4ovSkpm0BGcLymxZcAdwEGCiHCHxEanoaPkryThGvZqGQ+lpEEKqzqVph0RD+H3CHc+uRMgKkJs70ZydFWYR7d2/B5uE2jnGwqpUyQUoAlRByqjgEdciE41Ps72/b3WcVx1SasUV/R0pdfhbcQF9R6oyRpNSYubU3w2W5gjjERnYRDzcmog/ZgnaluAYxSVgAbX1bE4AlVtyeCqCyvSywXiNyHGFi+WuQKPlkM4oDNSSbNS8xzneAYP0TCrhQ550aL+b9HPSl/BwPkMIg8i16WBSdSxI74iWXXFQeK4qjiVZIaw5KiDKfTI42O83PrAOJcZzemSNziniRaRlUjqIgacbW4+C1ke4EEjzup309MKmKEKDTmNlzCvYVfkji8f4OK52mQEcbaFDx/V963REEvdqni29t0fzw+xFUM98LMUmelw6lxKolfURllGbDKi0682K/TjH7Xh5s2JIMo39KuNZHm6YmtATZEdWPsDYiJeS0N7Sub8hbksEZxPlrWGPEssNNVl3Yk/prbJyKk1NftOx726TrSYp6sl1O2GSLWhKedvFJmJ3TA4jHzr06ZvC49Gf0996XpQpD+6QXLbJc3R1jowUeN6SAPa/X/+54SkaY=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CO1PR11MB4913.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(10070799003)(366016)(23010399003)(1800799024)(376014)(38070700021)(56012099006)(10067099003)(4143699003)(5023799004)(11063799006)(3023799007)(18002099003)(22082099003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?SnlzS29yTzloRktEd1pDejJWd3RiY21mWDJNbW90bkxwYjNaMnY1ejFTK1BK?=
- =?utf-8?B?NzFUNUNnZEZURkVjeGU0U0Z1TXM4UHpkNjFjLzFHaG00dmRpWXNFNUlFN2dI?=
- =?utf-8?B?bVA5SDJtaXhScTVGTmlQTEkwNUNqMFpXZkNHYWQreVBLK0pUTjQ4KzhNSDJJ?=
- =?utf-8?B?VzR6L1pwZDVIWmROdEVPUy9LcWJCUFpRWFByYzZLZ3h1L0k3RU15WDY5bmNj?=
- =?utf-8?B?WHk2RWJ0SEtjWThNSDdsSFN4cklVNkluRStHNTJZZy90VkxwQ0hqbU92Umpm?=
- =?utf-8?B?b3FZZDFOdUI1MXRoOWJLSWFWYnlqZ3A2Y3BCeHFsSTdyRHBTOHBLR29yNUk0?=
- =?utf-8?B?WTFMR01sdGwxQU5oOWJLUCtlRHo3S1lxR1htRmxkTVcyOVA3dVlFZFl4MTZl?=
- =?utf-8?B?MVB6Y1BPVzBtRUtMMHdzbWlxVzBYanYvSHYvY3VuUGEwWEJ1NTBqK3JtR2pn?=
- =?utf-8?B?SWh5MlQ3Zm56SjRoMGFTbDB3dm56WGFYMEQ2TXpWSXduZkpZTnd0N3F5Mi9L?=
- =?utf-8?B?OHJFbGhYOU40NXNucXByc1JzTUd2Q2lyUkNJTHVUNW84NVkwWnVJWkFMeWNP?=
- =?utf-8?B?WDhCeXNJam5nRk95MEkrZlNUbVV3VTltZ2FWUGJTekxFdFpZWEZsVWtFSmht?=
- =?utf-8?B?NUprVXRSaFJlR0p0dU1UblRwMW4xc2lVTGJDNVdHM0FrSVN0QlRKNEV4THpR?=
- =?utf-8?B?bjQ4SktGdEM2QnJWcEViYWJqQVdOa2o3VjdxdWhtNGJaT3FUY2R1anBQTDlI?=
- =?utf-8?B?WHFGZTFvT3JSS2Q0cDluMUF0QmtQZGVTWVpsem1ScWg1dzNHT0ZZS29GR1g4?=
- =?utf-8?B?Yi9ST0EwNEk0NVJKWUx4dGg4K01semNjdjNxYUV2QjV5emN2SDRuUW9BOHRj?=
- =?utf-8?B?UlJjSllHeW9ZVml5UStXcnNWbXZTZjdNTnFDM1lvVDJwZ3NvYWloVkJLRzFr?=
- =?utf-8?B?RGlNcndTa1BOdDk4NTJHUWkrQjFJcnd2T3VwbkJXck1uZ0RLdmlvcndvRnND?=
- =?utf-8?B?ckpkRnZWdDZIU0lIWFM0YmNRYlhMOEVZeUlPb0Jjc29na2oyL2lqUjNUbVpp?=
- =?utf-8?B?Zm9NeWtGZWQ3WFJKTURWU0VqenRXWFhWQ0lVTkl1UDhZZFJkUmFERzlveXJL?=
- =?utf-8?B?cEo4cndIK2tzbTN1T1hCSGxpbjRRNUZqYngwVXFxWVhaNUxtY0FITmtsN3hD?=
- =?utf-8?B?UzVINVZhakJMRDZzRUcvdmw3dUZFcXZXMHRxNy9mQS9rbSthbnNuQ0gwQ2lD?=
- =?utf-8?B?Vm1rQ2FXcGdpZ2ZlNzNZVi9HTXRnMDJES1YvUmxUSXdLR1Bpd3FVN2E1cHZt?=
- =?utf-8?B?cDFHOVlIRzdrMXZHRkc3cHdDbktHUThjOEk2M09iYXZ0S1hTSktvNW9JSURu?=
- =?utf-8?B?TUdhTW5NM1Q2MlZCckplUW1RTHRISm9xTHo1TUZpQkdKTWVWUWtSa3NKTnNS?=
- =?utf-8?B?VUpnbXYveUF6bjNZdmlJTkk0Z3ppSW9TYmMwT1RvODRtc2dhSTIvRGgxUHJU?=
- =?utf-8?B?WXpteE5jcURMMWxSRlpHNFBEL3lIbEg0SHdkNUt1aFlzU3VzcFFub3EvN0lh?=
- =?utf-8?B?elZVMmVrd3ZsTXF0WmJuMDRzTTBtYUdvWm9oS3dRaTR2Mlp6dmxYVE5BVVVB?=
- =?utf-8?B?MWZ6Mng1ekxnZ0h3cnZOTjhBVWl6VUJ1SWFVaHdtTDUvN1o4MGZyZzRlS0xv?=
- =?utf-8?B?K3d1N20wVFhWU1hKTWdJYm0yenFKQ3orZWc3NkVXckNUM2pib0lKdEhDWHVh?=
- =?utf-8?B?QW9DL3ZXMFpMU3VqTmhPaXFMMnhKR2l3ai83R2dPMWJQN3MwR1hkc0swTmQv?=
- =?utf-8?B?aGlnU0dxeWNDY0lhM1AyZGJkbUFYVi9FM3B1QkcyWWR5Mm1yMW1SZGxPQ0ww?=
- =?utf-8?B?Qk9EaWdueVRsRjVUMFlLeU9waFZHMVZHU0RCcUkrUloxa2JZYWlWSnhYQVJR?=
- =?utf-8?B?MCtuWWFNUG91NSsrbUd4aHJMZlZwY2R2RXVrSThIZENpY2d5UFVoYXJSdjVJ?=
- =?utf-8?B?R1JFaXJhVVRtK1J0NFNmYXg3alJJNnR5cGtLS2ovazNhSlV3WkpFcG4rTm1Y?=
- =?utf-8?B?SGs4UWVlSnAzT0VJK0YvYmpHZUpLWVN5RVRIUXYzMGtWcTB5TjkydW1uZEJH?=
- =?utf-8?B?OW5UWU1lKzlGVjFJalE4TnNPWTJPa3N3U08rQ1Q2dWQ1cnhnd09yWE8yN1NT?=
- =?utf-8?B?Tzd3SEJiREdBcGljRHdpaTY2S1lva21aK2x5a0tIM0RWWThEemR1RFlnOHF2?=
- =?utf-8?B?ZmFjcFZDVkpCb2s1LzBtc2l3MzBtV20xUGNPQnZjV0prcEpuMnN4K2ZGT202?=
- =?utf-8?B?V25VOGdEeDNhSFV4aTFuYXJaV3VjZ09Ldmltclg2OWZHSlhwRFI3YlhJTWNq?=
- =?utf-8?Q?65xPFsoD2wFCRjxwfnmeLvumrvgH/cogfmGe25TV1T7Bz?=
-x-ms-exchange-antispam-messagedata-1: Okl0DjnIHvrfnw==
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ bh=jZVjeKnH8wTcVx7Cmwz+dMga96Jq+0l5UVj6p2hdLyQ=;
+ b=dneL+fNggvduDRYbtW5XQZnCP9IIMHbF0wBRvTqhhoWOEx4IqkRSseIh4t3up4ge7JkJLR04+1rZv9PfvycaC7prOSSv4b2mEIaEh5PLupRACutKOzZ/6G/XEbHG1podK1mUJ73kDinEHYMQhgoMK41dvVvdW0cHArjzm38FOgnBzHynnpXAQnHYE7snEbUzCsshWOr4qJfb2+9fMBFWFwCpwlrZbbAVhqgbLqd6iHVllgYUVMQVm5mfhUrec+cwR/f8a1qbSIEGJ1u78s0I3d61hW+om4/3aH8M5WWhxMFGkjOLsS/cBHtdSB1L3w4UqLvwzDRXygHPZzOwNiUhwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jZVjeKnH8wTcVx7Cmwz+dMga96Jq+0l5UVj6p2hdLyQ=;
+ b=i6W4ycncDWG5fUu4/9G2gLTuLV8vv3TehBcyPD6C2M5vj2xo80sSJOC7MnHJEnbjPmXEoDRn3Wx7ypxEK5m9WmDC9YbOyxdfJJaLw1Z2ir3i6vrTG/bAoX4FVULK/vkx8vLRQyfq05JoFpe0KUtR83XC+/8dmoyuc6FULpOxGp8=
+Received: from BN0PR03CA0017.namprd03.prod.outlook.com (2603:10b6:408:e6::22)
+ by LV3PR12MB9258.namprd12.prod.outlook.com (2603:10b6:408:1bb::12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.12; Sun, 30 Aug
+ 2026 20:58:08 +0000
+Received: from BL6PEPF00022573.namprd02.prod.outlook.com
+ (2603:10b6:408:e6:cafe::13) by BN0PR03CA0017.outlook.office365.com
+ (2603:10b6:408:e6::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.360.13 via Frontend Transport; Sun,
+ 30 Aug 2026 20:58:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF00022573.mail.protection.outlook.com (10.167.249.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.8 via Frontend Transport; Sun, 30 Aug 2026 20:58:07 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sun, 30 Aug
+ 2026 15:58:06 -0500
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sun, 30 Aug
+ 2026 15:58:07 -0500
+Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
+ Transport; Sun, 30 Aug 2026 15:58:06 -0500
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
+Subject: [PATCH] tests/amdgpu: always enable UQ test coverage
+Date: Sun, 30 Aug 2026 16:57:33 -0400
+Message-ID: <20260830205759.49482-1-vitaly.prosyak@amd.com>
+X-Mailer: git-send-email 2.54.0
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: aNce6Jcr8lExGhW6q0bvVxQ2nFTluv+TbpaO7SJtcwCkKwVqOy68ZLtLJUOuwgAI7oLqSuoZYKSWRgWpGwMq0NvAc1T6heLFagLavXfjm2kuIXYZYVI2HpKpZY9K8hEhqE48qRIJ6wvgTlL4tpLRS1gCVmaS4Tw/lBJ0tYwvypPe3UCwo8J2Cq0yG1qUAf31hxWzFLJx2sIAvCuuxsezIOG0o7dhkoblBJjebUj/21zFVL1eKjBp9kC+gubzY32DDW8WN/Ntt7rD1LxzLLbxX3N8sie11uWFgPR3ssW61cNTvX+TCibCyMCWQv63axVbThOJl2ZIguyyUrld1SHGeA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4913.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1625e9b-120f-4b6c-f6d3-08df06d0878e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Aug 2026 19:54:40.6954 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZPOfSdqWxVfnLwsvgAbAqRQBveommZ+zXM0HAgAAKtsdtfu5fAtR5rJkhQfPDOE+6nRoiag/A8LEywjTb1ZwTSilXTI3SHpoeL+p886lkeU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR11MB6319
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022573:EE_|LV3PR12MB9258:EE_
+X-MS-Office365-Filtering-Correlation-Id: cd27516c-8c22-4198-8aa8-08df06d964d6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|36860700016|1800799024|23010399003|376014|18002099003|56012099006|10067099003|11063799006;
+X-Microsoft-Antispam-Message-Info: camJWRlWT97yi0b8xlvr+PMbNyV7OHC8mgNGkChWkBH+9Iy/QVVEtpx+Ueev3eYBRxmi28I0TAZNwoSRlMcZ4Wri3Y0bCkNql/CfybGaxAIvecz9hi7L0AW8H3+9b9KtTtnSsQ26Ci2bqcbd44zWhRtUJgPdimcVrVK5rxNFacvqWFpY/yCRjtRBGpk22lnj0anl9P45XwVX63meMOAWRC9XFEatDAXwMesR7XRaWADvWgR3eGm9cHnhgi+jRk7LxiKNahwsHIxGTVaTVXU/32JhZvLtDvZc0i1j9W9vBExFx+Y2CpffJB9LmRlZvryBWKJWtl9pF0kEdPvtND44lNCjYlZ1KIpW0EJP3RVqemBCGsrUzm883f2hlKiDy1ZsUw1hLqbpvQpI5NNNph4hxWneIHkXp7kXmS+WWotWU+T+qGdM9KZSh2fhJWAONRTsBKDXQraIwYYrUykByG0bF0x6oi/YOsVNO9oXUiXnamI7SICoW8qWMJW9nindq15TgJFa6YHgMUHhPj9MROLu+7bJP068poc8nmoI5/lY5HN03ughTPt5CdtsnwL78+ga/XHQosFqEfImnLumhJPmrQyOJDN3KlTsmhRmpfeaSDSQ4NUq9mv86klWd0uFbhM0iIGbza30pudlyBsBApF2l95ZltAqTB8f/9W2UpDLLLbwFCm/T/aUQZ5FPlzKmhgYklhcEXOK9xorDXPJrjlqeA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(36860700016)(1800799024)(23010399003)(376014)(18002099003)(56012099006)(10067099003)(11063799006);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: S5j4yabJ/a/zRIdGt9jNbDYE8YTjEnK3Hpy1imQQcM3ErRvibkOiqn75jfnSbS+7X5b/v3rztH+oMqB8U9R4XvaAYHZFRvsXc1caBT8AHVnnJAFo/jHa8u4gmRYvAVh/umfo9EWjBefl3QdqvIAf7ogKFVffdZmFXNiXOUGXBVd9qCEQV4XKaQoa/7vbL2qE4KujijBWYujbMY4YhPnwj6xY3mwinBZwpbl0j6vAE+qBQm+58woC3EQ+xWo/LKOAMyBpAGZs+NrNDzTymhOpBeTjth3xnQRxKTnVGV93KMFuZZai3Llp4d0qLrEYpastnK78aMlSVFTWlzYiv+X2OPp9YBJqIj8DrZkmwGeuMnJ2Rc1GeRdgmw222vX60oCH4bAHBWpE+PsbyVmBHpoJG17akjH4bjq9fY9DA0xNB0ldP2otR9458tmG4dlGnqmR
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2026 20:58:07.9006 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd27516c-8c22-4198-8aa8-08df06d964d6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00022573.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9258
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -177,58 +112,209 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-VXBkYXRlIHRlc3QgcGF0aCBhdCBzdWJqZWN0KGluIGFsbCBrbXNfY2NzIHBhdGNoZXMpIC0tPiB0
-ZXN0cy9pbnRlbC9rbXNfY2NzOiBsaW1pdCAjY3J0Y3MgdGVzdGVkIGR1cmluZyBzdXNwZW5kDQoN
-Ci0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBUaGFzbGVlbSwgTW9oYW1tZWQgDQpT
-ZW50OiAzMSBBdWd1c3QgMjAyNiAwMToyMSBBTQ0KVG86IEdyemVsYWssIE1pY2hhbCA8bWljaGFs
-LmdyemVsYWtAaW50ZWwuY29tPjsgaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCkNjOiBH
-YXJnLCBOZW1lc2EgPG5lbWVzYS5nYXJnQGludGVsLmNvbT47IEIgUywgS2FydGhpayA8a2FydGhp
-ay5iLnNAaW50ZWwuY29tPg0KU3ViamVjdDogUmU6IFtQQVRDSCBpLWctdCB2MyAxNi8xN10gdGVz
-dHMva21zX2NjczogbGltaXQgI2NydGNzIHRlc3RlZCBkdXJpbmcgc3VzcGVuZA0KDQoNCk9uIDIx
-LTA4LTIwMjYgMDY6MTggcG0sIE1pY2hhxYIgR3J6ZWxhayB3cm90ZToNCj4gTGltaXQgZXhlY3V0
-aW9uIG9mIHN1c3BlbmQgdGVzdHMgdG8gZmlyc3QgYW5kIGxhc3QgYWN0aXZlIENSVEMgdW5sZXNz
-IA0KPiB1c2luZyBgZXh0ZW5kZWRgIGZsYWcuIFRoaXMgcmVkdWNlcyBkZWZhdWx0IGV4ZWN1dGlv
-biB0aW1lIG9mIHRoZSB0ZXN0Lg0KPiBJbiB0dXJuIHRoaXMgY2FuIGxvd2VyIGNoYW5jZXMgb2Yg
-aGl0dGluZyBDSSB0aW1lb3V0Lg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBNaWNoYcWCIEdyemVsYWsg
-PG1pY2hhbC5ncnplbGFrQGludGVsLmNvbT4NCj4gLS0tDQo+ICAgdGVzdHMvaW50ZWwva21zX2Nj
-cy5jIHwgMTQgKysrKysrKysrKysrKy0NCj4gICAxIGZpbGUgY2hhbmdlZCwgMTMgaW5zZXJ0aW9u
-cygrKSwgMSBkZWxldGlvbigtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvdGVzdHMvaW50ZWwva21zX2Nj
-cy5jIGIvdGVzdHMvaW50ZWwva21zX2Njcy5jIGluZGV4IA0KPiAxMWJjMzA3NjljLi4zYWViMWE1
-N2RmIDEwMDY0NA0KPiAtLS0gYS90ZXN0cy9pbnRlbC9rbXNfY2NzLmMNCj4gKysrIGIvdGVzdHMv
-aW50ZWwva21zX2Njcy5jDQo+IEBAIC0xOTEsNiArMTkxLDcgQEAgdHlwZWRlZiBzdHJ1Y3Qgew0K
-PiAgIAlpbnQgZmJfbGlzdF9sZW5ndGg7DQo+ICAgCWJvb2wgZG9faGliZXJuYXRlOw0KPiAgIAli
-b29sIGFsbF9vdXRwdXRzOw0KPiArCWJvb2wgYWxsX2NydGNzOw0KPiAgIAlzdHJ1Y3Qgew0KPiAg
-IAkJc3RydWN0IGlndF9mYiBmYjsNCj4gICAJCWludCB3aWR0aCwgaGVpZ2h0Ow0KPiBAQCAtMTE1
-Nyw2ICsxMTU4LDkgQEAgc3RhdGljIHZvaWQgdGVzdF9vdXRwdXQoZGF0YV90ICpkYXRhLCBjb25z
-dCBpbnQgdGVzdG51bSkNCj4gICAJCQl9DQo+ICAgDQo+ICAgCQkJZm9yX2VhY2hfY29ubmVjdGVk
-X291dHB1dCgmZGF0YS0+ZGlzcGxheSwgZGF0YS0+b3V0cHV0KSB7DQo+ICsJCQkJaW50IGZpcnN0
-ID0gZGF0YS0+ZGlzcGxheS5jcnRjc1swXS5jcnRjX2luZGV4Ow0KPiArCQkJCWludCBsYXN0ID0g
-DQo+ICtkYXRhLT5kaXNwbGF5LmNydGNzW2RhdGEtPmRpc3BsYXkubl9jcnRjcy0xXS5jcnRjX2lu
-ZGV4Ow0KLS0+SU1POiB0aGV5IGRvbuKAmXQgZGVwZW5kIG9uIG91dHB1dCBzbyBjaGVja2luZyB0
-aGVtIGluc2lkZSBtYWtlIHNhbWUNCnZhbHVlcyBvbiBlYWNoIGl0ZXJhdGlvbi4uLg0KPiArDQo+
-ICAgCQkJCWlmICghZGF0YS0+YWxsX291dHB1dHMgJiYgKGRhdGEtPmZsYWdzICYgVEVTVF9TVVNQ
-RU5EKSAmJg0KPiAgIAkJCQkgICAgb3V0cHV0X2NvdW50ID49IE9VVFBVVF9MSU1JVCkNCj4gICAJ
-CQkJCWNvbnRpbnVlOw0KPiBAQCAtMTE3NSw2ICsxMTc5LDEwIEBAIHN0YXRpYyB2b2lkIHRlc3Rf
-b3V0cHV0KGRhdGFfdCAqZGF0YSwgY29uc3QgaW50IHRlc3RudW0pDQo+ICAgCQkJCQlpZiAoIWlu
-dGVsX3BpcGVfb3V0cHV0X2NvbWJvX3ZhbGlkKCZkYXRhLT5kaXNwbGF5KSkNCj4gICAJCQkJCQlj
-b250aW51ZTsNCj4gICANCj4gKwkJCQkJaWYgKCFkYXRhLT5hbGxfY3J0Y3MgJiYgKGRhdGEtPmZs
-YWdzICYgVEVTVF9TVVNQRU5EKSAmJg0KPiArCQkJCQkgICAgY3J0Yy0+Y3J0Y19pbmRleCAhPSBm
-aXJzdCAmJiBjcnRjLT5jcnRjX2luZGV4ICE9IGxhc3QpDQo+ICsJCQkJCQljb250aW51ZTsNCj4g
-Kw0KPiAgIAkJCQkJaWd0X2R5bmFtaWNfZigicGlwZS0lcy0lcyIsDQo+ICAgCQkJCQkJCQkgICAg
-aWd0X2NydGNfbmFtZShjcnRjKSwNCj4gICAJCQkJCQkJCSAgICBkYXRhLT5vdXRwdXQtPm5hbWUp
-IHsNCj4gQEAgLTEyMzQsNiArMTI0Miw5IEBAIHN0YXRpYyBpbnQgb3B0X2hhbmRsZXIoaW50IG9w
-dCwgaW50IG9wdF9pbmRleCwgdm9pZCAqb3B0X2RhdGEpDQo+ICAgCWNhc2UgJ24nOg0KPiAgIAkJ
-ZGF0YS0+YWxsX291dHB1dHMgPSB0cnVlOw0KPiAgIAkJYnJlYWs7DQo+ICsJY2FzZSAnZSc6DQo+
-ICsJCWRhdGEtPmFsbF9jcnRjcyA9IHRydWU7DQo+ICsJCWJyZWFrOw0KPiAgIAlkZWZhdWx0Og0K
-PiAgIAkJcmV0dXJuIElHVF9PUFRfSEFORExFUl9FUlJPUjsNCj4gICAJfQ0KPiBAQCAtMTI0OCw5
-ICsxMjU5LDEwIEBAIHN0YXRpYyBjb25zdCBjaGFyICpoZWxwX3N0ciA9DQo+ICAgIiAgLXMgPHNl
-ZWQ+XHRTZWVkIGZvciByYW5kb20gbnVtYmVyIGdlbmVyYXRvclxuIg0KPiAgICIgIC1yXHRcdE9u
-IHN1c3BlbmQgdGVzdCBkbyBmdWxsIGhpYmVybmF0ZSB3aXRoIHJlYm9vdFxuIg0KPiAgICIgIC1u
-XHRcdFJ1biBvbiBhbGwgY29ubmVjdG9ycy4gKEJ5IGRlZmF1bHQgc3VzcGVuZCBzdWJ0ZXN0cyB3
-aWxsIHJ1biBvbiAyIGNvbm5lY3RvcnMpXG4iDQo+ICsiICAtZVx0XHRSdW4gb24gYWxsIENSVENz
-LiAoQnkgZGVmYXVsdCBzdWJ0ZXN0cyB3aWxsIHJ1biBvbiB0d28gQ1JUQ3MpXG4iDQo+IC0tPkNo
-ZWNrIHRoaXMgcnVucyBvbiAyIGNydHMgb3IgMyBjcnRjcz8NCj4gICA7DQo+ICAgDQo+IC1pbnQg
-aWd0X21haW5fYXJncygiY3NybjoiLCBOVUxMLCBoZWxwX3N0ciwgb3B0X2hhbmRsZXIsICZkYXRh
-KQ0KPiAraW50IGlndF9tYWluX2FyZ3MoImNzcm5lOiIsIE5VTEwsIGhlbHBfc3RyLCBvcHRfaGFu
-ZGxlciwgJmRhdGEpDQo+ICAgew0KPiAgIAlpZ3RfZml4dHVyZSgpIHsNCj4gICAJCWRhdGEuZHJt
-X2ZkID0gZHJtX29wZW5fZHJpdmVyX21hc3RlcihEUklWRVJfSU5URUwgfCBEUklWRVJfWEUpOw0K
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+
+Enable user-queue test coverage by default for
+deadlock, dispatch, security, mult-gpu tests.
+This change removes the env-variable toggle path and
+keeps execution behavior consistent across the AMDGPU
+UQ-focused tests in this patch set.
+No functional test intent is changed; this keeps the suite
+behavior predictable for regular validation runs.
+
+Cc: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+---
+ tests/amdgpu/amd_basic.c           | 2 +-
+ tests/amdgpu/amd_basic_multi_gpu.c | 9 ++++++---
+ tests/amdgpu/amd_cs_nop.c          | 9 ++++++---
+ tests/amdgpu/amd_deadlock.c        | 6 +++---
+ tests/amdgpu/amd_dispatch.c        | 6 +++---
+ tests/amdgpu/amd_security.c        | 6 +++---
+ 6 files changed, 22 insertions(+), 16 deletions(-)
+
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 59ec3880f..418db286f 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -19,7 +19,7 @@
+ #include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ #include "lib/amdgpu/amdgpu_asic_addr.h"
+ #include "lib/amdgpu/amd_utils.h"
+-#include "lib//amdgpu/amd_platform.h"
++#include "lib/amdgpu/amd_platform.h"
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
+diff --git a/tests/amdgpu/amd_basic_multi_gpu.c b/tests/amdgpu/amd_basic_multi_gpu.c
+index 187be43fe..30b0da617 100644
+--- a/tests/amdgpu/amd_basic_multi_gpu.c
++++ b/tests/amdgpu/amd_basic_multi_gpu.c
+@@ -13,6 +13,7 @@
+ #include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ #include "igt.h"
+ #include "igt_multigpu.h"
++#include "lib/amdgpu/amd_platform.h"
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
+@@ -162,10 +163,9 @@ int igt_main()
+ 	amdgpu_device_handle device;
+ 	int fd = -1;
+ 	bool enable_test = false;
++	struct amdgpu_gpu_info gpu_info = {0};
+ #ifdef AMDGPU_USERQ_ENABLED
+-	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
+-
+-	enable_test = env && atoi(env);
++	enable_test = true;
+ #endif
+ 
+ 	igt_fixture() {
+@@ -179,6 +179,9 @@ int igt_main()
+ 
+ 		igt_info("Initialized amdgpu, driver version %d.%d\n",
+ 			 major, minor);
++		err = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(err, 0);
++		amd_platform_filter_init(&gpu_info);
+ 	}
+ 
+ 	igt_subtest("multi-gpu-memeory-alloc") {
+diff --git a/tests/amdgpu/amd_cs_nop.c b/tests/amdgpu/amd_cs_nop.c
+index beab62a54..65f88cf2b 100644
+--- a/tests/amdgpu/amd_cs_nop.c
++++ b/tests/amdgpu/amd_cs_nop.c
+@@ -12,6 +12,7 @@
+ #include "lib/amdgpu/amd_PM4.h"
+ #include "lib/amdgpu/amd_ip_blocks.h"
+ #include "lib/amdgpu/amd_memory.h"
++#include "lib/amdgpu/amd_platform.h"
+ 
+ static void amdgpu_cs_sync(amdgpu_context_handle context,
+ 			   unsigned int ip_type,
+@@ -150,6 +151,7 @@ int igt_main()
+ {
+ 	amdgpu_device_handle device;
+ 	amdgpu_context_handle context;
++	struct amdgpu_gpu_info gpu_info = {0};
+ 	const struct phase {
+ 		const char *name;
+ 		unsigned int flags;
+@@ -174,9 +176,7 @@ int igt_main()
+ 	bool userq_arr_cap[AMD_IP_MAX] = {0};
+ #ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test;
+-	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
+-
+-	enable_test = env && atoi(env);
++	enable_test = true;
+ #endif
+ 
+ 	igt_fixture() {
+@@ -192,6 +192,9 @@ int igt_main()
+ 		igt_assert_eq(err, 0);
+ 		asic_rings_readness(device, 1, arr_cap);
+ 		asic_userq_readiness(device, userq_arr_cap);
++		err = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(err, 0);
++		amd_platform_filter_init(&gpu_info);
+ 	}
+ 
+ 	for (p = phase; p->name; p++) {
+diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
+index d66a58859..b8356af74 100644
+--- a/tests/amdgpu/amd_deadlock.c
++++ b/tests/amdgpu/amd_deadlock.c
+@@ -10,6 +10,7 @@
+ #include "lib/amdgpu/amd_deadlock_helpers.h"
+ #include "lib/amdgpu/amdgpu_asic_addr.h"
+ #include "lib/amdgpu/amd_utils.h"
++#include "lib/amdgpu/amd_platform.h"
+ 
+ #define AMDGPU_FAMILY_SI                        110 /* Hainan, Oland, Verde, Pitcairn, Tahiti */
+ #define AMDGPU_FAMILY_CI                        120 /* Bonaire, Hawaii */
+@@ -46,9 +47,7 @@ int igt_main()
+ 
+ #ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test;
+-	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
+-
+-	enable_test = env && atoi(env);
++	enable_test = true;
+ #endif
+ 
+ 	igt_fixture() {
+@@ -75,6 +74,7 @@ int igt_main()
+ 		igt_skip_on(get_pci_addr_from_fd(fd, &pci));
+ 		igt_info("PCI Address: domain %04x, bus %02x, device %02x, function %02x\n",
+ 				pci.domain, pci.bus, pci.device, pci.function);
++		amd_platform_filter_init(&gpu_info);
+ 	}
+ 	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
+ 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma") {
+diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
+index 44aa2d128..5267a742a 100644
+--- a/tests/amdgpu/amd_dispatch.c
++++ b/tests/amdgpu/amd_dispatch.c
+@@ -13,6 +13,7 @@
+ #include "lib/amdgpu/compute_utils/amd_dispatch_helpers.h"
+ #include "lib/amdgpu/compute_utils/amd_dispatch.h"
+ #include "lib/amdgpu/amd_utils.h"
++#include "lib/amdgpu/amd_platform.h"
+ 
+ static void
+ amdgpu_dispatch_hang_slow_gfx(amdgpu_device_handle device_handle,
+@@ -88,9 +89,7 @@ int igt_main()
+ 	bool userq_arr_cap[AMD_IP_MAX] = {0};
+ 	bool enable_test = false;
+ #ifdef AMDGPU_USERQ_ENABLED
+-	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
+-
+-	enable_test = env && atoi(env);
++	enable_test = true;
+ #endif
+ 
+ 	igt_fixture() {
+@@ -113,6 +112,7 @@ int igt_main()
+ 		igt_assert_eq(r, 0);
+ 		asic_rings_readness(device, 1, arr_cap);
+ 		asic_userq_readiness(device, userq_arr_cap);
++		amd_platform_filter_init(&gpu_info);
+ 
+ 	}
+ 	igt_describe("Test GPU reset using a binary shader to slow hang the job on compute ring");
+diff --git a/tests/amdgpu/amd_security.c b/tests/amdgpu/amd_security.c
+index fd976e286..48d49973e 100644
+--- a/tests/amdgpu/amd_security.c
++++ b/tests/amdgpu/amd_security.c
+@@ -10,6 +10,7 @@
+ 
+ #include "lib/amdgpu/amd_memory.h"
+ #include "lib/amdgpu/amd_command_submission.h"
++#include "lib/amdgpu/amd_platform.h"
+ 
+ /* --------------------- Secure bounce test ------------------------ *
+  *
+@@ -319,9 +320,7 @@ int igt_main()
+ 
+ #ifdef AMDGPU_USERQ_ENABLED
+ 	bool enable_test;
+-	const char *env = getenv("AMDGPU_ENABLE_USERQTEST");
+-
+-	enable_test = env && atoi(env);
++	enable_test = true;
+ #endif
+ 
+ 	igt_fixture() {
+@@ -341,6 +340,7 @@ int igt_main()
+ 		igt_assert_eq(r, 0);
+ 		asic_userq_readiness(device, userq_arr_cap);
+ 		igt_skip_on(!is_security_tests_enable(device, &gpu_info, major, minor));
++		amd_platform_filter_init(&gpu_info);
+ 	}
+ 
+ 	igt_describe("amdgpu security alloc buf test");
+-- 
+2.54.0
+
