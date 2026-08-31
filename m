@@ -4,75 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A40C6C61DFD
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 20:25:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E96AC61DD3
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 20:45:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4547810EAE4;
-	Mon, 31 Aug 2026 20:25:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8DFD510EAF7;
+	Mon, 31 Aug 2026 20:45:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G0bZJtZ7";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C5Hw7evu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22DE010EAEA
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 20:24:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A332510EAF7
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 20:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788207878; x=1819743878;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:to:cc;
- bh=ILeI00XqIivnSxFjvvRXvU8PyfcYSGKmQBGXm7CGkWI=;
- b=G0bZJtZ7zwGuCVMaBvnj93PT5jItUDEmpPr32n5i4hzKVvavLKm63C7l
- SnNPugDE0IxeBqIvTH4YUls7Hhqysgk+y3w2JGmcZCO/Jqin3XThyx23X
- QEkPMs8ZMX0IMZBvayeRN4ZpomOEeDGlaJsKcduMLMJOOhEwvs4OvjpXy
- Z0Ls4/f3dBfdLxSIm5MXWH3arhzWwDkzgPd5UeN/DWKMM7eJyPmyCgwxz
- Kffa5iVdQR9t9Re+FA1ZsIPolpb87ZvDqhoWAU14mH1XSgrApH56aU/Ms
- ZBp+jCG0O3s7DKRWU6WHl4RFGkuzGszyjMJQJZFISdXngA0LEMjh+vUBT A==;
-X-CSE-ConnectionGUID: tLleoLJDRlKrPwGxKF25Gw==
-X-CSE-MsgGUID: HOLZDoDAQdCwcZ4diChwqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88647535"
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="88647535"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 13:24:38 -0700
-X-CSE-ConnectionGUID: oqEHeqdNR9C/Z7BfFt0H1A==
-X-CSE-MsgGUID: kS5swb5xQGqgIZWuY2dPyA==
+ t=1788209103; x=1819745103;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=j+vj/QIJLMmVarxSJe5tgBKp0deOAU8GRZlbMMDPfsg=;
+ b=C5Hw7evuVjUTaHP7Ask063RqabXwgmPQW87n8rlTBohl/rx76YKccW4j
+ Ti+KuEuprMn8Ny1Rc7H2cXqDfjNULxXGwe7sI5aJpJwYFCnStecN3zVBr
+ KtTBYk4p5kEWQTWCkuco75gBhtLebtfeSZ1ULcJBdXC0OhE8zIrQh4vk2
+ rPLSRVCsIrNmupeSL4286YCBrjmdD8QGiAFDKemNDPH1bx5YCTQUnQS7/
+ up5X+IMKrDwVu0rP/QatzHrcPIfCD+sbCqRZKoo82jUqG+G9dLkgqTj+1
+ 7KeJQ1WRgVGrdzwzZXH1X5WN22CPZTi7l/3qV1kuPbPyjnfvW0zSAFb57 Q==;
+X-CSE-ConnectionGUID: RZFtCNb8TtGPF4l8EmA91Q==
+X-CSE-MsgGUID: /MVu9t6DTuiovPgOPNRsFg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="106147112"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="106147112"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 13:45:03 -0700
+X-CSE-ConnectionGUID: udR8lGTOS8ao0bSkqTeRZA==
+X-CSE-MsgGUID: db7xFG1PTaWieleV8QRy+g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="307110558"
-Received: from mdroper-desk1.fm.intel.com (HELO
- mdroper-desk1.amr.corp.intel.com) ([10.121.64.167])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 13:24:38 -0700
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="268345625"
+Received: from mdroper-desk1.fm.intel.com ([10.121.64.167])
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 13:45:03 -0700
 From: Matt Roper <matthew.d.roper@intel.com>
-Date: Mon, 31 Aug 2026 13:23:45 -0700
-Subject: [PATCH i-g-t] lib/xe: Use proper GT lookup in xe_gt_get_tile_id()
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-gtlookup_noncontig-v1-1-37f22a0cbb6b@intel.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSQqAMAxA0atI1hasE+pVRMQhrUFJpFURxLtbX
- L7F/w94dIQemugBhxd5Eg7QcQTTMrBFRXMwpElaJlWmlT02kfXcexaehA+ySmdo6nLIizE3EML
- doaH7n7bd+376/LI+ZAAAAA==
-X-Change-ID: 20260831-gtlookup_noncontig-13ef96a45b4f
 To: igt-dev@lists.freedesktop.org
-Cc: Matt Roper <matthew.d.roper@intel.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1210;
- i=matthew.d.roper@intel.com; h=from:subject:message-id;
- bh=ILeI00XqIivnSxFjvvRXvU8PyfcYSGKmQBGXm7CGkWI=;
- b=owEBbQKS/ZANAwAKAU15JAXIcpAEAcsmYgBqleMFYpYw8EjJ1uvc9HXsKiiokV3bn/mDFb6G1
- q9lrMSbw1SJAjMEAAEKAB0WIQTCZ8MJRH/rTz8hbaxNeSQFyHKQBAUCapXjBQAKCRBNeSQFyHKQ
- BNYkEACmCllf6yE4gb6uBJ31CehQrmOfNygsZ/T2AmNNDNpciP0Bvc3Bptp1T3T7qdRu/4Qo/3Z
- vz+D0xgHA5irAaQQU8Bg/0DMyGCTpA2KBA7m15Rng7DzJMKoRwzT5I75w+eRXH4Bq9dRWjIMKdK
- CqM01YXEualL4yfgTnskhxh13q9fEgQMXHkKK2Bu7dGP9EUy2TuxHNV7ryvyLMP1cVZCw6pL1PJ
- ukjugI/Xd1n+VRBVkdUdRHDMAMkLOw2vFb5ijobu2Iqly5aLiCsjbVhcPh8eW1oPFJqun4EZTLk
- klCvRKx1STL1iA50PSq4BzE4Fca272xaT0BkK3R0HsjhfAR/T572l+vHzZBNrfnHPQUxy69zScZ
- LA8WPWrdBuVRnvATLKuyZHkkwTQIDmRplIts+lmxAsFnxvR0ZRO0FFhxo+h9myjL99F90c/mbaF
- FnU2zhSl7dEeZm/slLa+CmkyGckFW9qK7Pjt0s5lUrbccssNbXfjlUxjTm5nN0LMatW1rwgwQUl
- HcaZWRxRQmUp+X9AQD2tXH5EN0injlxt5aXrjUGX7uKy3qL32CNFlxEi6ieceukoJ2lnSZ1NjcE
- d66/U8trr5cTxjZEssD7Rv/8nWrQwbRnGCDRip1H40ruXnTDcDFFDvWJxccQLe0WOODqkA19XOR
- NxyvtO6y+2F0DUw==
-X-Developer-Key: i=matthew.d.roper@intel.com; a=openpgp;
- fpr=C267C309447FEB4F3F216DAC4D792405C8729004
+Cc: matthew.d.roper@intel.com
+Subject: [PATCH i-g-t] tests/intel/xe_pmu: Ensure stash_gt_freq allocates
+ sufficient storage
+Date: Mon, 31 Aug 2026 13:44:56 -0700
+Message-ID: <20260831204455.1242947-2-matthew.d.roper@intel.com>
+X-Mailer: git-send-email 2.55.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -88,49 +66,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xe_gt_get_tile_id() should lookup the GT record associated with a GT ID
-via drm_xe_get_gt() rather than directly indexing into gt_list[].  The
-ID may not always match the array index on future platforms if we ever
-have cases where GT IDs are non-contiguous.
+stash_gt_freq() malloc's arrays based on the number of GTs returned by
+the kernel's query ioctl and then indexes into the arrays by uapi GT ID.
+This works fine if all GT IDs are consecutive (which is always the case
+on platforms today), but will be insufficient if future platforms allow
+the list to contain non-consecutive IDs (e.g., 0, 2, ...).  Allocate
+storage based on the maximum GT ID returned, not the number of GTs
+returned.  Some of the array indices will remain unused, but the
+xe_for_each_gt() loops will already skip over those unused entries
+properly.
 
 Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- lib/xe/xe_query.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ tests/intel/xe_pmu.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
-index 68e60ddc7..0b309be03 100644
---- a/lib/xe/xe_query.c
-+++ b/lib/xe/xe_query.c
-@@ -1070,14 +1070,16 @@ bool xe_is_main_gt(int fd, int gt)
-  */
- uint16_t xe_gt_get_tile_id(int fd, int gt)
+diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+index a8ceac46c..ea8950ee5 100644
+--- a/tests/intel/xe_pmu.c
++++ b/tests/intel/xe_pmu.c
+@@ -1039,12 +1039,12 @@ static void unprovision_and_disable_vfs(int fd)
+ 
+ static void stash_gt_freq(int fd, uint32_t **stash_min, uint32_t **stash_max)
  {
-+	const struct drm_xe_gt *gt_data;
- 	struct xe_device *xe_dev;
+-	int num_gts, gt;
++	int max_gt, gt;
  
- 	xe_dev = find_in_cache(fd);
--
- 	igt_assert(xe_dev);
--	igt_assert(gt < xe_number_gt(fd));
+-	num_gts = xe_number_gt(fd);
++	max_gt = xe_dev_max_gt(fd);
  
--	return xe_dev->gt_list->gt_list[gt].tile_id;
-+	gt_data = drm_xe_get_gt(xe_dev, gt);
-+	igt_assert(gt_data);
-+
-+	return gt_data->tile_id;
- }
+-	*stash_min = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
+-	*stash_max = (uint32_t *) malloc(sizeof(uint32_t) * num_gts);
++	*stash_min = (uint32_t *)calloc(max_gt + 1, sizeof(uint32_t));
++	*stash_max = (uint32_t *)calloc(max_gt + 1, sizeof(uint32_t));
  
- /**
-
----
-base-commit: d822caac6e3589c05fffb63fbfc89134b0f7ccb3
-change-id: 20260831-gtlookup_noncontig-13ef96a45b4f
-
-Best regards,
+ 	igt_skip_on(*stash_min == NULL || *stash_max == NULL);
+ 
 -- 
-Matt Roper
-Graphics Software Engineer
-Linux GPU Platform Enablement
-Intel Corporation
+2.55.0
 
