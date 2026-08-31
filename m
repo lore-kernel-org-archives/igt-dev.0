@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29DA6C624D0
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 17:13:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27544C624C6
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 17:21:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A63F810EA0C;
-	Mon, 31 Aug 2026 17:12:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA38610E292;
+	Mon, 31 Aug 2026 17:21:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="T58DoGfl";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A9no2KrO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C7BA10E31E
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 17:12:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6A9D10E318
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 17:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788196341; x=1819732341;
+ t=1788196842; x=1819732842;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=qWR08hpdc8wGdE7Jb3wrrDSLd44LHIAXF+SA1qGd7g0=;
- b=T58DoGflWp+GwAK8kJOL/aVHd+J7C3T+KboHVknmsWSwl7peuIyoD88w
- Zi6tPkCfvxZlublM4P5MU3SARSGN/4l/p7TgmgjQ0no3+XP7s8WwE3MWp
- OajCe1OCZPII3rwcogwW3OYTsdbLE9fh7jd/VDt0D8IdjfhkmMaSdD+4E
- hEOaa4y2ExBAVs7LWQEC5uFAECB08MjlBzK6G/ecDRPp0T2nNGfRyD4bC
- PbvcoNWZvwVAJXELCK6lh2VbnpuRoq9N6ldbwgFiaG+vPwpZR60esiFg2
- gn4znFXB88HTHi9qwxO0gV+isDqWBqmV9fPw+UPa9LKBWEjIdSHH8K7al w==;
-X-CSE-ConnectionGUID: zYc5/cP0SPeqebDwZT4cJQ==
-X-CSE-MsgGUID: cXOroK7wRZaWdHenZTYQtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92296622"
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="92296622"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 10:12:20 -0700
-X-CSE-ConnectionGUID: H4DxybnFSo+ZByBGNHeQ0Q==
-X-CSE-MsgGUID: vrQX8jyiTdSixu33f8Ywbg==
+ bh=T0G0aIu7Qz877qnhI92CZUez2mxUiracILtDpYl0N4U=;
+ b=A9no2KrOMH55m18gGO9Kdad/xX/ol5ZN8s+J0f27+PfqH1mCb3tc9O95
+ 2Sz3n1IlnXMMxVdhJuc6CMbtunygAieyq7NsC80xAVr+AXmSNI+rgegd1
+ Gz5M3OY2HBRQ2lMlWO1hGKM6aHSBQ2PrBq+g6X8sw/zphk7aDMMBlEbCS
+ iXqcQqX9v4IVT3yL7G14mN75W1lp1sD+kS0gP7NNHf/FYIzbefjMb4eJM
+ jdQs6SPKM/BAFkqHTC+KBc3a1C4wEmTByJi15YKXqDCF5Bm96g0MD+s9A
+ DJ8AQKTlImz1LM4yFCNosEqY32CBKtQpFzBCY8+9cgr9mxrsmnqGdEUG/ Q==;
+X-CSE-ConnectionGUID: jWSAmEDOTZiD2J+ilp1H8w==
+X-CSE-MsgGUID: SintnN5uRauTO/thidHwyQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="105984576"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="105984576"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 10:20:41 -0700
+X-CSE-ConnectionGUID: n6rC8ivSQhWIHiibi2325A==
+X-CSE-MsgGUID: rAjptFY2RySbVosNupLf/g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="264567621"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="272364371"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 10:12:19 -0700
-Date: Mon, 31 Aug 2026 19:12:00 +0200
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 10:20:40 -0700
+Date: Mon, 31 Aug 2026 19:20:38 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: nishit.sharma@intel.com
 Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
-Subject: Re: [PATCH] tests/intel/xe_vm: fix double munmap of first mapping
-Message-ID: <20260831171200.ijd3jkbsh3jawnoh@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH] tests/intel/xe_exec_reset: add GT reset fault injection
+ stress coverage
+Message-ID: <20260831172038.fuz4o5orvtpkqg6e@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
  kamil.konieczny@intel.com
-References: <20260831162928.201586-1-nishit.sharma@intel.com>
+References: <20260825032520.507695-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260831162928.201586-1-nishit.sharma@intel.com>
+In-Reply-To: <20260825032520.507695-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,40 +71,233 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi nishit.sharma,
-On 2026-08-31 at 16:29:28 +0000, nishit.sharma@intel.com wrote:
+Hi Nishit,
+On 2026-08-25 at 03:25:20 +0000, nishit.sharma@intel.com wrote:
 > From: Nishit Sharma <nishit.sharma@intel.com>
 > 
-> In the cleanup path of the bind-array conflict test, when a second buffer
-> object mapping (map2) exists, the code called munmap() on the first
-> mapping (map) a second time instead of unmapping map2:
-> 
-> This double-unmaps the map region while leaking the map2 mapping entirely.
+> Inject a GT reset failure via the KMD fail_gt_reset debugfs hook, verify
+> the device wedges as expected, tolerate the resulting -ECANCELED errors in
+> the submitting threads, then recover by rebind and confirm the driver is
+> usable again.
 > 
 > Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  tests/intel/xe_exec_reset.c | 107 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 101 insertions(+), 6 deletions(-)
+> 
+> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+> index 6eda71c32..1796e4ec1 100644
+> --- a/tests/intel/xe_exec_reset.c
+> +++ b/tests/intel/xe_exec_reset.c
+> @@ -16,6 +16,8 @@
+>  
+>  #include "igt.h"
+>  #include "igt_sysfs.h"
+> +#include "igt_device.h"
+> +#include "igt_kmod.h"
+>  #include "lib/igt_syncobj.h"
+>  #include "lib/intel_reg.h"
+>  #include "xe_drm.h"
+> @@ -140,6 +142,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
+>  #define DESTROY_VM_CTX_STRESS		(0x1 << 20)
+>  #define MIXED_ENGINE_STRESS		(0x1 << 21)
+>  #define PM_TRANSITION_STRESS		(0x1 << 22)
+> +#define FAULT_INJECT_STRESS		(0x1 << 23)
+>  
+>  /**
+>   * SUBTEST: %s-cat-error
+> @@ -760,7 +763,7 @@ static void submit_jobs(struct gt_thread_data *t)
+>  	uint32_t pressure_bos[PRESSURE_COUNT];
+>  	uint32_t *data;
+>  	int pressure_count;
+> -	int i = 0;
+> +	int i = 0, exec_ret;
+>  
+>  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, t->gt),
+>  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> @@ -794,8 +797,25 @@ static void submit_jobs(struct gt_thread_data *t)
+>  			continue;
+>  		}
+>  
+> -		xe_exec(fd, &exec);
+> -		xe_exec_queue_destroy(fd, exec.exec_queue_id);
+> +		/*
+> +		 * Once an injected GT reset failure wedges the device, exec and
+> +		 * queue teardown return -ECANCELED. That is the expected outcome
+> +		 * for the fault-injection stress
+> +		 */
+> +		if (t->flags & FAULT_INJECT_STRESS) {
+> +			struct drm_xe_exec_queue_destroy destroy = {
+> +				.exec_queue_id = exec.exec_queue_id,
+> +		};
+> +
+> +		exec_ret = __xe_exec(fd, &exec);
+> +		igt_assert_f(exec_ret == 0 || exec_ret == -ECANCELED,
+> +			     "exec returned unexpected error %d (expected 0 or -ECANCELED)\n",
+> +			     exec_ret);
+> +		igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy);
+> +		} else {
+> +			xe_exec(fd, &exec);
+> +			xe_exec_queue_destroy(fd, exec.exec_queue_id);
+> +		}
+>  		(*t->num_submit)++;
+>  
+>  		if ((t->flags & MEM_PRESSURE_STRESS) && !(i % 128)) {
+> @@ -829,8 +849,20 @@ static void submit_jobs(struct gt_thread_data *t)
+>  		pressure_bo_destroy(fd, pressure_bos, PRESSURE_COUNT);
+>  
+>  	munmap(data, bo_size);
+> -	gem_close(fd, bo);
+> -	xe_vm_destroy(fd, vm);
+> +	/*
+> +	 * On a device wedged by injected GT reset failures, BO close and VM
+> +	 * destroy also return -ECANCELED.
+> +	 */
+> +	if (t->flags & FAULT_INJECT_STRESS) {
+> +		struct drm_gem_close close_bo = { .handle = bo };
+> +		struct drm_xe_vm_destroy vm_destroy = { .vm_id = vm };
+> +
+> +		igt_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
+> +		igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &vm_destroy);
+> +	} else {
+> +		gem_close(fd, bo);
+> +		xe_vm_destroy(fd, vm);
+> +	}
+>  }
+>  
+>  static void *gt_reset_thread(void *data)
+> @@ -850,6 +882,33 @@ static void *gt_reset_thread(void *data)
+>  	return NULL;
+>  }
+>  
+> +static void gt_reset_fault_injection(int fd, bool enable)
+> +{
+> +	igt_debugfs_write(fd, "fail_gt_reset/probability", enable ? "100" : "0");
+> +	igt_debugfs_write(fd, "fail_gt_reset/times", enable ? "2" : "1");
+> +}
+
+imho this function should be two functions, one for enabling
+and second for disabling. Second one should be non-fd and
+registered as at_exit() function, in case any of signals
+happens (not catched by final igt_fixture).
+
+So here:
+
+static void gt_reset_enable_fault_injection(int fd)
+
+static void gt_reset_disable_fault_injection(void)
+
+> +
+> +static int try_vm_create(int fd)
+> +{
+> +	struct drm_xe_vm_create create = { 0 };
+> +	int err = 0;
+> +
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create))
+> +		err = -errno;
+> +	else
+> +		xe_vm_destroy(fd, create.vm_id);
+> +
+> +	return err;
+> +}
+> +
+> +static void ignore_gt_reset_fault_dmesg(void)
+> +{
+> +	igt_emit_ignore_dmesg_regex("reset failed \\(-ECANCELED\\)"
+> +				    "|declared device .* as wedged"
+> +				    "|GPU HANG"
+> +				    "|Failed to reset");
+> +}
+> +
+>  /**
+>   * SUBTEST: gt-reset-stress
+>   * Description: Stress GT reset
+> @@ -891,6 +950,9 @@ static void *gt_reset_thread(void *data)
+>   * Description: Test GT reset while long spinner workload is active
+>   * Test category: stress test
+>   *
+> + * SUBTEST: gt-reset-fault-injection
+> + * Description: Stress concurrent GT resets and job submissions with GT reset failures injected via debugfs
+> + * Test category: fault injection
+>   */
+>  static void
+>  gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+> @@ -907,6 +969,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+>  	pthread_mutex_init(&mutex, 0);
+>  	pthread_cond_init(&cond, 0);
+>  
+> +	if (flags & FAULT_INJECT_STRESS)
+> +		gt_reset_fault_injection(fd, true);
+> +
+>  	for (i = 0; i < n_threads; ++i) {
+>  		threads[i].mutex = &mutex;
+>  		threads[i].cond = &cond;
+> @@ -940,6 +1005,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+>  	igt_info("number of resets %d, submissions %d, submit fails %d vm_recreate %d\n",
+>  		 num_reset, num_submit, num_submit_fail, num_vm_recreate);
+>  
+> +	if (flags & FAULT_INJECT_STRESS)
+> +		gt_reset_fault_injection(fd, true);
+> +
+>  	igt_assert_neq(num_reset, 0);
+>  	igt_assert_neq(num_submit, 0);
+>  	free(threads);
+> @@ -1122,6 +1190,7 @@ int igt_main()
+>  	int gt;
+>  	int class;
+>  	int fd;
+> +	char pci_slot[NAME_MAX];
+>  
+>  	igt_fixture()
+>  		fd = drm_open_driver(DRIVER_XE);
+> @@ -1326,6 +1395,29 @@ int igt_main()
+>  			break;
+>  		}
+>  
+> +	igt_subtest("gt-reset-fault-injection") {
+> +		igt_require_f(igt_debugfs_exists(fd, "fail_gt_reset/probability",
+> +						 O_RDWR),
+> +			      "GT reset fault injection not available; "
+> +			      "CONFIG_DRM_XE_KUNIT_TEST/fault-injection must be "
+> +			      "enabled in the KMD\n");
+> +
+> +		igt_device_get_pci_slot_name(fd, pci_slot);
+> +		ignore_gt_reset_fault_dmesg();
+> +
+> +		gt_reset(fd, 0, 8, 2, FAULT_INJECT_STRESS);
+> +
+> +		igt_assert_f(try_vm_create(fd) != 0,
+> +			     "Device did not wedge after injected GT reset failure\n");
+> +
+> +		drm_close_driver(fd);
+> +		igt_kmod_rebind("xe", pci_slot);
+> +		fd = drm_open_driver(DRIVER_XE);
+> +
+> +		igt_assert_f(try_vm_create(fd) == 0,
+> +			     "Device not functional after rebind recovery\n");
+> +	}
+> +
+>  	igt_subtest("gt-mocs-reset")
+>  		xe_for_each_gt(fd, gt)
+>  			gt_mocs_reset(fd, gt);
+> @@ -1455,6 +1547,9 @@ int igt_main()
+>  		}
+>  	}
+>  
+> -	igt_fixture()
+> +	igt_fixture() {
+> +		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR))
+> +			gt_reset_fault_injection(fd, false);
+
+See note above, some errors like SIGSEGV would make it
+unreachable.
 
 Regards,
 Kamil
 
-> ---
->  tests/intel/xe_vm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
-> index 1d109e783..a0a6616c3 100644
-> --- a/tests/intel/xe_vm.c
-> +++ b/tests/intel/xe_vm.c
-> @@ -1278,7 +1278,7 @@ test_bind_array_conflict(int fd, struct drm_xe_engine_class_instance *eci,
->  
->  	munmap(map, bo_size);
->  	if (map2)
-> -		munmap(map, bo_size);
-> +		munmap(map2, bo_size);
->  	gem_close(fd, bo);
->  	if (bo2)
->  		gem_close(fd, bo2);
+>  		drm_close_driver(fd);
+> +	}
+>  }
 > -- 
-> 2.43.0
+> 2.34.1
 > 
