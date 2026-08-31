@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A79FC624A4
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 12:33:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95175C61DD3
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 12:39:36 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 02D9610E7E1;
-	Mon, 31 Aug 2026 12:33:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 209E810E81C;
+	Mon, 31 Aug 2026 12:39:36 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WzaeqK+e";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N7c0aOBO";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9999810E4CC
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 12:33:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 92F9910E76C
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 12:38:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788179589; x=1819715589;
+ t=1788179931; x=1819715931;
  h=from:to:cc:subject:in-reply-to:references:date:
  message-id:mime-version;
- bh=eCs+zzu+UtxizanapqgSt/ou6D49AIJiVavWK4hTIds=;
- b=WzaeqK+eXQNIv87osOXe9ZHqlWot7f3CxsOJWPVC87gh/s48NfAxb3DI
- oUnGyt1TT0vQWOTqJWojsBx/Ap/nvptcU3u7mgKzu4cPrgBxlgrtkv/Dd
- +49CSct0r22rYyPyflb7fcP0uqZ6Gr26dJJDZuA/hjXJAjsLiIW+qSwxF
- 5eTtfK8HMbEp10lMTjyyVMbUhr1pJ/5ZIGGCILL7lDl6d0vdhDan6s6Bn
- KV3vXP6ZJ2GNDYTtM1Ro0DF72dMDOoeqEzHJMIMAmT++0TTtaGpA3z0UF
- vDkZgZq7SUT4Bqpcrhweno6gj3+BCwQV727n2OAEgaVYYuKqswolXb9e8 w==;
-X-CSE-ConnectionGUID: XbETMHe8RiCxmZhZf6oIOA==
-X-CSE-MsgGUID: Pm7jOC75S0qgWJJ4HrWGZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="99746019"
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="99746019"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 05:33:08 -0700
-X-CSE-ConnectionGUID: sMDLZbjwTNuhDLLgGlhwJw==
-X-CSE-MsgGUID: 68MSAnk3Rci83DVeriyLgA==
+ bh=EqE1f8WhuNSTAMUL3HJUWjHIlBaequB0A0cAAXZektw=;
+ b=N7c0aOBOg4hUklzmGaxXIjLSRy4hYWGlz80OY8rDeqam1r6VAPUnuAoD
+ EOu/0FXGpYcn4X3fIYUmTmSlMrWceueTKe6ybbAhmRzR/bXZG7lbxeUhY
+ Hs4eagBubtowhZr72Cg5zwcHAtm6wL8wXj96uf5pJ9R9aBkpOQ4mn4atV
+ 9sdsBXnXaP6GDItTPbFUkLRJ7UUfWNMoXUTDNaixsxOdjZpdTPNxM72Ho
+ bN0rDIxj1Srw33x1mED04lYUlXSENcBBjf0o7YvrKxZPJtyx9iedx7oYC
+ 9kDYolCgL+PMHZVXPCln+C/HJNbZAV2XdLmC+dfLo6HZ2/p5DbK7t3z+8 A==;
+X-CSE-ConnectionGUID: QFvcmO5hS/amC58eaXfpOA==
+X-CSE-MsgGUID: QOYICvlHTzShUXRwnfzWjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="92395876"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="92395876"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 05:38:51 -0700
+X-CSE-ConnectionGUID: jw550/bTTFKujwShzwz0LQ==
+X-CSE-MsgGUID: enBr7V/1QBaqaPG3Y+AkSQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="265544508"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="266202459"
 Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
  ([10.245.244.22])
- by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 05:33:06 -0700
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 05:38:49 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>,
  igt-dev@lists.freedesktop.org
 Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
  mallesh.koujalagi@intel.com, raag.jadav@intel.com, soham.purkait@intel.com
-Subject: Re: [PATCH v3 03/10] lib/igt_drm_netlink: Introduce DRM RAS Netlink
- interface library
-In-Reply-To: <19d17250-946f-46dc-a640-44ed08aa6dde@intel.com>
+Subject: Re: [PATCH v3 04/10] lib/igt_drm_netlink: add get_error_counter
+ support
+In-Reply-To: <cb23ad61-d462-48cc-953c-5b053c0152c8@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
- <20260824164133.129138-4-ravi.kishore.koppuravuri@intel.com>
- <c9b431c59949a9499d79e166886413591de113e4@intel.com>
- <19d17250-946f-46dc-a640-44ed08aa6dde@intel.com>
-Date: Mon, 31 Aug 2026 15:33:03 +0300
-Message-ID: <a5e6c6f48cca679ef182b533cfd33079e20f5522@intel.com>
+ <20260824164133.129138-5-ravi.kishore.koppuravuri@intel.com>
+ <84ff04863f33194b966399d4593d1363339866d7@intel.com>
+ <cb23ad61-d462-48cc-953c-5b053c0152c8@intel.com>
+Date: Mon, 31 Aug 2026 15:38:46 +0300
+Message-ID: <7ff9e8160d25444ad506b51806665924d57c1cbf@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -76,35 +76,87 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 On Mon, 31 Aug 2026, "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com> wrote:
-> On 31-08-2026 14:16, Jani Nikula wrote:
+> On 31-08-2026 14:18, Jani Nikula wrote:
 >> On Mon, 24 Aug 2026, Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com> wrote:
->>> +struct app_context {
->> Why doesn't the name indicate netlink in any way?z
-> I am using this structure to maintain the context of request received 
-> for the library functions and responses received from netlink functions. 
-> So I have not included netlink or nl for this structure name.
-
-"struct app_context" in code seems too generic. If you see that alone,
-you have no idea what it's related to.
-
-I don't know, I guess I would've named it struct
-igt_drm_netlink_<something>.
-
->>
->>> +	struct nl_sock *sock;
->>> +	int family_id;
->>> +};
+>>> +static int init_app_context(struct app_context *ctx)
+>>> +{
+>>> +	if (!ctx)
+>>> +		return -EINVAL;
 >>> +
->>> +void igt_cleanup_nl_socket(struct app_context *ctx);
->>> +int igt_init_nl_socket(struct app_context *ctx);
->> IMO "nl" is the wrong place to abbreviate.
-> libnl is the user space library used to communicate with DRM netlink 
-> socket in the kernel. All libnl API references have the word "nl" for 
-> netlink. So, I have followed the same in my library functions as well. 
-> Could you pls elaborate your suggestion, if am missing anything here.
+>>> +	ctx->sock = NULL;
+>>> +	ctx->node_id = UINT32_MAX;
+>>> +	ctx->error_id = UINT32_MAX;
+>>> +	ctx->error_value = 0;
+>>> +	ctx->last_nl_error = 0;
+>>> +	ctx->cmd_done = false;
+>>> +	ctx->reply_received = false;
+>>> +	ctx->ack_received = false;
+>>> +	ctx->response_required = false;
+>>> +	ctx->family_id = -1;
+>>> +
+>>> +	return 0;
+>>> +}
+>>> +
+>>> +static void cleanup_app_context(struct app_context *ctx)
+>>> +{
+>>> +	if (!ctx)
+>>> +		return;
+>>> +
+>>> +	ctx->sock = NULL;
+>>> +	ctx->node_id = UINT32_MAX;
+>>> +	ctx->error_id = UINT32_MAX;
+>>> +	ctx->error_value = 0;
+>>> +	ctx->last_nl_error = 0;
+>>> +	ctx->cmd_done = false;
+>>> +	ctx->reply_received = false;
+>>> +	ctx->ack_received = false;
+>>> +	ctx->response_required = false;
+>>> +	ctx->family_id = -1;
+>>> +}
 
-I guess I would've named them igt_drm_netlink_{init,cleanup}().
+Btw, the two functions above do the exact same thing. Why doesn't one
+call the other?
 
+Also, why not memset(ctx, 0, sizeof(*ctx)) and then set the non-zero
+ones separately?
+
+>>>   struct app_context {
+>>>   	struct nl_sock *sock;
+>>> +	uint32_t node_id;
+>>> +	uint32_t error_id;
+>>> +	uint32_t error_value;
+>>> +	int last_nl_error;
+>>> +	bool cmd_done;
+>>> +	bool reply_received;
+>>> +	bool ack_received;
+>>> +	bool response_required;
+>>>   	int family_id;
+>>>   };
+>>>   
+>>>   void igt_cleanup_nl_socket(struct app_context *ctx);
+>>>   int igt_init_nl_socket(struct app_context *ctx);
+>>> +int igt_get_error_counter(struct app_context *ctx);
+>> This is really inconsistent naming, though.
+>
+> igt_init_nl_socket() and igt_cleanup_nl_socket() are the library 
+> functions to initialize and cleanup the netlink socket.
+>
+> igt_get_error_counter() is the library function to get the error counter.
+>
+> "igt_" is the prefix used for all the library functions, as suggested by 
+> Kamil.
+>
+> I am not clear why this naming is inconsistent. Could you please 
+> elaborate your suggestion here.
+
+Point is, there are a gazillion functions starting with "igt_", and the
+above don't make it any more specific. The "igt get error counter" could
+refer to any error counter.
+
+I guess I'd have named all the functions and types to have the
+igt_drm_netlink_ prefix. Or similar. And then you immediately know what
+this is about, without having to look up the function definitions or
+documentation.
 
 BR,
 Jani.
