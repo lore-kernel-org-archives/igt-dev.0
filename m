@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27544C624C6
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 17:21:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D8C2C624C6
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 17:22:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BA38610E292;
-	Mon, 31 Aug 2026 17:21:23 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A9no2KrO";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D6A9D10E318
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 17:20:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788196842; x=1819732842;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=T0G0aIu7Qz877qnhI92CZUez2mxUiracILtDpYl0N4U=;
- b=A9no2KrOMH55m18gGO9Kdad/xX/ol5ZN8s+J0f27+PfqH1mCb3tc9O95
- 2Sz3n1IlnXMMxVdhJuc6CMbtunygAieyq7NsC80xAVr+AXmSNI+rgegd1
- Gz5M3OY2HBRQ2lMlWO1hGKM6aHSBQ2PrBq+g6X8sw/zphk7aDMMBlEbCS
- iXqcQqX9v4IVT3yL7G14mN75W1lp1sD+kS0gP7NNHf/FYIzbefjMb4eJM
- jdQs6SPKM/BAFkqHTC+KBc3a1C4wEmTByJi15YKXqDCF5Bm96g0MD+s9A
- DJ8AQKTlImz1LM4yFCNosEqY32CBKtQpFzBCY8+9cgr9mxrsmnqGdEUG/ Q==;
-X-CSE-ConnectionGUID: jWSAmEDOTZiD2J+ilp1H8w==
-X-CSE-MsgGUID: SintnN5uRauTO/thidHwyQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="105984576"
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="105984576"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 10:20:41 -0700
-X-CSE-ConnectionGUID: n6rC8ivSQhWIHiibi2325A==
-X-CSE-MsgGUID: rAjptFY2RySbVosNupLf/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="272364371"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 10:20:40 -0700
-Date: Mon, 31 Aug 2026 19:20:38 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
-Subject: Re: [PATCH] tests/intel/xe_exec_reset: add GT reset fault injection
- stress coverage
-Message-ID: <20260831172038.fuz4o5orvtpkqg6e@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com
-References: <20260825032520.507695-1-nishit.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B3EC410E292;
+	Mon, 31 Aug 2026 17:22:29 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 12EF510E323;
+ Mon, 31 Aug 2026 17:21:50 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4727139698884505709=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260825032520.507695-1-nishit.sharma@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel-ci=3A_blocklist?=
+ =?utf-8?q?_xe=5Fexec=5Fthreads_multi-queue_tests_on_NVL_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: shivtej.eknath.patil@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 31 Aug 2026 17:21:50 -0000
+Message-ID: <178819691007.101634.134247086762662100@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260831143028.22534-1-shivtej.eknath.patil@intel.com>
+In-Reply-To: <20260831143028.22534-1-shivtej.eknath.patil@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,236 +37,130 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Nishit,
-On 2026-08-25 at 03:25:20 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> Inject a GT reset failure via the KMD fail_gt_reset debugfs hook, verify
-> the device wedges as expected, tolerate the resulting -ECANCELED errors in
-> the submitting threads, then recover by rebind and confirm the driver is
-> usable again.
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-> ---
->  tests/intel/xe_exec_reset.c | 107 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 101 insertions(+), 6 deletions(-)
-> 
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index 6eda71c32..1796e4ec1 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -16,6 +16,8 @@
->  
->  #include "igt.h"
->  #include "igt_sysfs.h"
-> +#include "igt_device.h"
-> +#include "igt_kmod.h"
->  #include "lib/igt_syncobj.h"
->  #include "lib/intel_reg.h"
->  #include "xe_drm.h"
-> @@ -140,6 +142,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
->  #define DESTROY_VM_CTX_STRESS		(0x1 << 20)
->  #define MIXED_ENGINE_STRESS		(0x1 << 21)
->  #define PM_TRANSITION_STRESS		(0x1 << 22)
-> +#define FAULT_INJECT_STRESS		(0x1 << 23)
->  
->  /**
->   * SUBTEST: %s-cat-error
-> @@ -760,7 +763,7 @@ static void submit_jobs(struct gt_thread_data *t)
->  	uint32_t pressure_bos[PRESSURE_COUNT];
->  	uint32_t *data;
->  	int pressure_count;
-> -	int i = 0;
-> +	int i = 0, exec_ret;
->  
->  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, t->gt),
->  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> @@ -794,8 +797,25 @@ static void submit_jobs(struct gt_thread_data *t)
->  			continue;
->  		}
->  
-> -		xe_exec(fd, &exec);
-> -		xe_exec_queue_destroy(fd, exec.exec_queue_id);
-> +		/*
-> +		 * Once an injected GT reset failure wedges the device, exec and
-> +		 * queue teardown return -ECANCELED. That is the expected outcome
-> +		 * for the fault-injection stress
-> +		 */
-> +		if (t->flags & FAULT_INJECT_STRESS) {
-> +			struct drm_xe_exec_queue_destroy destroy = {
-> +				.exec_queue_id = exec.exec_queue_id,
-> +		};
-> +
-> +		exec_ret = __xe_exec(fd, &exec);
-> +		igt_assert_f(exec_ret == 0 || exec_ret == -ECANCELED,
-> +			     "exec returned unexpected error %d (expected 0 or -ECANCELED)\n",
-> +			     exec_ret);
-> +		igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy);
-> +		} else {
-> +			xe_exec(fd, &exec);
-> +			xe_exec_queue_destroy(fd, exec.exec_queue_id);
-> +		}
->  		(*t->num_submit)++;
->  
->  		if ((t->flags & MEM_PRESSURE_STRESS) && !(i % 128)) {
-> @@ -829,8 +849,20 @@ static void submit_jobs(struct gt_thread_data *t)
->  		pressure_bo_destroy(fd, pressure_bos, PRESSURE_COUNT);
->  
->  	munmap(data, bo_size);
-> -	gem_close(fd, bo);
-> -	xe_vm_destroy(fd, vm);
-> +	/*
-> +	 * On a device wedged by injected GT reset failures, BO close and VM
-> +	 * destroy also return -ECANCELED.
-> +	 */
-> +	if (t->flags & FAULT_INJECT_STRESS) {
-> +		struct drm_gem_close close_bo = { .handle = bo };
-> +		struct drm_xe_vm_destroy vm_destroy = { .vm_id = vm };
-> +
-> +		igt_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
-> +		igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &vm_destroy);
-> +	} else {
-> +		gem_close(fd, bo);
-> +		xe_vm_destroy(fd, vm);
-> +	}
->  }
->  
->  static void *gt_reset_thread(void *data)
-> @@ -850,6 +882,33 @@ static void *gt_reset_thread(void *data)
->  	return NULL;
->  }
->  
-> +static void gt_reset_fault_injection(int fd, bool enable)
-> +{
-> +	igt_debugfs_write(fd, "fail_gt_reset/probability", enable ? "100" : "0");
-> +	igt_debugfs_write(fd, "fail_gt_reset/times", enable ? "2" : "1");
-> +}
+--===============4727139698884505709==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-imho this function should be two functions, one for enabling
-and second for disabling. Second one should be non-fd and
-registered as at_exit() function, in case any of signals
-happens (not catched by final igt_fixture).
+== Series Details ==
 
-So here:
+Series: tests/intel-ci: blocklist xe_exec_threads multi-queue tests on NVL (rev2)
+URL   : https://patchwork.freedesktop.org/series/173069/
+State : success
 
-static void gt_reset_enable_fault_injection(int fd)
+== Summary ==
 
-static void gt_reset_disable_fault_injection(void)
+CI Bug Log - changes from XEIGT_9078_BAT -> XEIGTPW_15757_BAT
+====================================================
 
-> +
-> +static int try_vm_create(int fd)
-> +{
-> +	struct drm_xe_vm_create create = { 0 };
-> +	int err = 0;
-> +
-> +	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create))
-> +		err = -errno;
-> +	else
-> +		xe_vm_destroy(fd, create.vm_id);
-> +
-> +	return err;
-> +}
-> +
-> +static void ignore_gt_reset_fault_dmesg(void)
-> +{
-> +	igt_emit_ignore_dmesg_regex("reset failed \\(-ECANCELED\\)"
-> +				    "|declared device .* as wedged"
-> +				    "|GPU HANG"
-> +				    "|Failed to reset");
-> +}
-> +
->  /**
->   * SUBTEST: gt-reset-stress
->   * Description: Stress GT reset
-> @@ -891,6 +950,9 @@ static void *gt_reset_thread(void *data)
->   * Description: Test GT reset while long spinner workload is active
->   * Test category: stress test
->   *
-> + * SUBTEST: gt-reset-fault-injection
-> + * Description: Stress concurrent GT resets and job submissions with GT reset failures injected via debugfs
-> + * Test category: fault injection
->   */
->  static void
->  gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
-> @@ -907,6 +969,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
->  	pthread_mutex_init(&mutex, 0);
->  	pthread_cond_init(&cond, 0);
->  
-> +	if (flags & FAULT_INJECT_STRESS)
-> +		gt_reset_fault_injection(fd, true);
-> +
->  	for (i = 0; i < n_threads; ++i) {
->  		threads[i].mutex = &mutex;
->  		threads[i].cond = &cond;
-> @@ -940,6 +1005,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
->  	igt_info("number of resets %d, submissions %d, submit fails %d vm_recreate %d\n",
->  		 num_reset, num_submit, num_submit_fail, num_vm_recreate);
->  
-> +	if (flags & FAULT_INJECT_STRESS)
-> +		gt_reset_fault_injection(fd, true);
-> +
->  	igt_assert_neq(num_reset, 0);
->  	igt_assert_neq(num_submit, 0);
->  	free(threads);
-> @@ -1122,6 +1190,7 @@ int igt_main()
->  	int gt;
->  	int class;
->  	int fd;
-> +	char pci_slot[NAME_MAX];
->  
->  	igt_fixture()
->  		fd = drm_open_driver(DRIVER_XE);
-> @@ -1326,6 +1395,29 @@ int igt_main()
->  			break;
->  		}
->  
-> +	igt_subtest("gt-reset-fault-injection") {
-> +		igt_require_f(igt_debugfs_exists(fd, "fail_gt_reset/probability",
-> +						 O_RDWR),
-> +			      "GT reset fault injection not available; "
-> +			      "CONFIG_DRM_XE_KUNIT_TEST/fault-injection must be "
-> +			      "enabled in the KMD\n");
-> +
-> +		igt_device_get_pci_slot_name(fd, pci_slot);
-> +		ignore_gt_reset_fault_dmesg();
-> +
-> +		gt_reset(fd, 0, 8, 2, FAULT_INJECT_STRESS);
-> +
-> +		igt_assert_f(try_vm_create(fd) != 0,
-> +			     "Device did not wedge after injected GT reset failure\n");
-> +
-> +		drm_close_driver(fd);
-> +		igt_kmod_rebind("xe", pci_slot);
-> +		fd = drm_open_driver(DRIVER_XE);
-> +
-> +		igt_assert_f(try_vm_create(fd) == 0,
-> +			     "Device not functional after rebind recovery\n");
-> +	}
-> +
->  	igt_subtest("gt-mocs-reset")
->  		xe_for_each_gt(fd, gt)
->  			gt_mocs_reset(fd, gt);
-> @@ -1455,6 +1547,9 @@ int igt_main()
->  		}
->  	}
->  
-> -	igt_fixture()
-> +	igt_fixture() {
-> +		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR))
-> +			gt_reset_fault_injection(fd, false);
+Summary
+-------
 
-See note above, some errors like SIGSEGV would make it
-unreachable.
+  **SUCCESS**
 
-Regards,
-Kamil
+  No regressions found.
 
->  		drm_close_driver(fd);
-> +	}
->  }
-> -- 
-> 2.34.1
-> 
+  
+
+Participating hosts (13 -> 13)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15757_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-nvls-1:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#8762] / [Intel XE#9069])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9078/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15757/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
+  [Intel XE#9069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9078 -> IGTPW_15757
+  * Linux: xe-5656-108b145a702212f7cb6d40611f46c7ee7959d39e -> xe-5664-37b6bb1186b8170c2031b312e82205caa05e19d6
+
+  IGTPW_15757: dfa1fbeb19f4fdd9a403ef979188df8a90af8675 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9078: 9078
+  xe-5656-108b145a702212f7cb6d40611f46c7ee7959d39e: 108b145a702212f7cb6d40611f46c7ee7959d39e
+  xe-5664-37b6bb1186b8170c2031b312e82205caa05e19d6: 37b6bb1186b8170c2031b312e82205caa05e19d6
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15757/index.html
+
+--===============4727139698884505709==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel-ci: blocklist xe_exec_threads multi-queue tests on NVL (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173069/">https://patchwork.freedesktop.org/series/173069/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15757/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15757/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9078_BAT -&gt; XEIGTPW_15757_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (13 -&gt; 13)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15757_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9078/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15757/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069">Intel XE#9069</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9078 -&gt; IGTPW_15757</li>
+<li>Linux: xe-5656-108b145a702212f7cb6d40611f46c7ee7959d39e -&gt; xe-5664-37b6bb1186b8170c2031b312e82205caa05e19d6</li>
+</ul>
+<p>IGTPW_15757: dfa1fbeb19f4fdd9a403ef979188df8a90af8675 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9078: 9078<br />
+  xe-5656-108b145a702212f7cb6d40611f46c7ee7959d39e: 108b145a702212f7cb6d40611f46c7ee7959d39e<br />
+  xe-5664-37b6bb1186b8170c2031b312e82205caa05e19d6: 37b6bb1186b8170c2031b312e82205caa05e19d6</p>
+
+</body>
+</html>
+
+--===============4727139698884505709==--
