@@ -4,62 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 95175C61DD3
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 12:39:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D03A4C624C6
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 14:02:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 209E810E81C;
-	Mon, 31 Aug 2026 12:39:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6D44F10E28F;
+	Mon, 31 Aug 2026 14:02:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N7c0aOBO";
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.b="wEas0RIm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 92F9910E76C
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 12:38:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788179931; x=1819715931;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=EqE1f8WhuNSTAMUL3HJUWjHIlBaequB0A0cAAXZektw=;
- b=N7c0aOBOg4hUklzmGaxXIjLSRy4hYWGlz80OY8rDeqam1r6VAPUnuAoD
- EOu/0FXGpYcn4X3fIYUmTmSlMrWceueTKe6ybbAhmRzR/bXZG7lbxeUhY
- Hs4eagBubtowhZr72Cg5zwcHAtm6wL8wXj96uf5pJ9R9aBkpOQ4mn4atV
- 9sdsBXnXaP6GDItTPbFUkLRJ7UUfWNMoXUTDNaixsxOdjZpdTPNxM72Ho
- bN0rDIxj1Srw33x1mED04lYUlXSENcBBjf0o7YvrKxZPJtyx9iedx7oYC
- 9kDYolCgL+PMHZVXPCln+C/HJNbZAV2XdLmC+dfLo6HZ2/p5DbK7t3z+8 A==;
-X-CSE-ConnectionGUID: QFvcmO5hS/amC58eaXfpOA==
-X-CSE-MsgGUID: QOYICvlHTzShUXRwnfzWjg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="92395876"
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="92395876"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 05:38:51 -0700
-X-CSE-ConnectionGUID: jw550/bTTFKujwShzwz0LQ==
-X-CSE-MsgGUID: enBr7V/1QBaqaPG3Y+AkSQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="266202459"
-Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.22])
- by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 05:38:49 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com, anshuman.gupta@intel.com,
- mallesh.koujalagi@intel.com, raag.jadav@intel.com, soham.purkait@intel.com
-Subject: Re: [PATCH v3 04/10] lib/igt_drm_netlink: add get_error_counter
- support
-In-Reply-To: <cb23ad61-d462-48cc-953c-5b053c0152c8@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
- <20260824164133.129138-5-ravi.kishore.koppuravuri@intel.com>
- <84ff04863f33194b966399d4593d1363339866d7@intel.com>
- <cb23ad61-d462-48cc-953c-5b053c0152c8@intel.com>
-Date: Mon, 31 Aug 2026 15:38:46 +0300
-Message-ID: <7ff9e8160d25444ad506b51806665924d57c1cbf@intel.com>
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com
+ [209.85.160.179])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C4C9910E28F
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 14:01:20 +0000 (UTC)
+Received: by mail-qt1-f179.google.com with SMTP id
+ d75a77b69052e-52e2d1bdbc0so24229451cf.0
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 07:01:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788184879; cv=none;
+ d=google.com; s=arc-20260327;
+ b=dKDZrz2H2Htit6kcZ8X9zwco1ywB/tqkSTKk35d/yfdujAAwAKShKtfmk0sZ+mNvml
+ 2oJx442xy6r8uF85oL2C+2ZWk/NLqONWKe6Nap/hEJXRlPOdky4HnKVsnnrMA0+/aDHr
+ keNKX3opvByQA2Q52k/tRwKXD42yNnP2oX4vDb9dA9Sk7fKd7p7AZDGOANKdSU3XCjHF
+ rJbfyzpAxP3ZV9Uh3hVjo3wcOJFNoEahwpGykfDShKLMqIrUMnetQTkC+RHrEDg5hh3q
+ DTBRKSMZmxldJc+UFqaJW5m61nofXonLNYX4v+EF2rGjSMNRtYSst+ZJUx31rwfN2SJA
+ uzFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com;
+ s=arc-20260327; 
+ h=content-transfer-encoding:cc:to:subject:message-id:date:from
+ :in-reply-to:references:mime-version:dkim-signature;
+ bh=H3BurnIf1acdo2QjyF+5k+gl4wMqU1+wSINPn6qNRGc=;
+ fh=iGByM33eZi15SEVflS8sZvsighh4/rt15Q4HSXGPf5k=;
+ b=lDQ68wfupJy9x222Gw7/T5eJ9yKWWK/I0kpbeJtvUXanHCtp3myjfQBF6KuymODO+W
+ oio5E7L0I1/IremSDkdfn8MiygS/P4HCcYj0ik3PxvSRbYxZWUASAnSVB90VfcfKBW1E
+ OfXwJL8HytPpzYRwbMIDUfKYtoYaV1fme4LC97VE7bFIeRK9bryvP54LyUvTIJIeY5vw
+ KBGmAJX7Nzvu9JdW4eSVzVi5EXKQjPNOPESFRoQ9NSlBdTTjuYuGxdro2/4eMhRslyso
+ XbA5rHWC1/Ywk2TDNeZ7NjnDVZMpH2qjBxePW63bm2H04RZJu7EB2u/m7LlqITunPGq3
+ SKhQ==; darn=lists.freedesktop.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20251104; t=1788184879; x=1788789679;
+ darn=lists.freedesktop.org; 
+ h=content-transfer-encoding:content-type:cc:to:subject:message-id
+ :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+ :date:message-id:reply-to:content-type;
+ bh=H3BurnIf1acdo2QjyF+5k+gl4wMqU1+wSINPn6qNRGc=;
+ b=wEas0RImegpNN1Tc1XFc8GQs/+9Muo6tSVH/WIaidxRIEqT8YH4mB1hPudtXwS9vXz
+ tAKx/WqvZRFCo/mOfHOzert4UC450KiLx+iKkedSL5aJ5ED56sluj9Elz+RoDgkxTKE4
+ h9RQM4lAn6RZkLw0z3jQqxXfhY8eHh9LYa7DAFBhvFP2adK8YHpLT+rSUaoOJrDezt5p
+ H/I/0B+mqkmxpUQk0GUIlvOYPmt/t8S6lzE1nWIm7WuO7BoQFaYuJIrJ9yFC0yRZZJsf
+ tgQaQK9YfGruOt1XvYi35J8sebXmtWuP9D7zLNab21uJMb/GplmZ5sVY24vVqr0JhSdc
+ QDOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1788184879; x=1788789679;
+ h=content-transfer-encoding:content-type:cc:to:subject:message-id
+ :date:from:in-reply-to:references:mime-version:x-gm-gg
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+ :content-type;
+ bh=H3BurnIf1acdo2QjyF+5k+gl4wMqU1+wSINPn6qNRGc=;
+ b=IBP1YpQ4cqvIklscF/duWGr86mjvKxqPbWayteuMhmKFwdLg/RqYqvYfhGgeFGa8LJ
+ I+klvZWjYOLuAAsOqtlcu7OuavkX05xTk6oiw5rfOBl/gdV2RpFugxWg63xTzTqkaCyZ
+ CaLyJv3MwBKv/9KNMN4eeI2TgJLP8IkuHldjY5ipwb1cO/iAjFyllTg7I/MdPkaDPns2
+ WHuG0ndOU7dy/vcPXUi2KLoaPY6FP6pXTmrR8sPIiET5+GYFHI4f3kNMU5gC/OuLYTMz
+ +w1UvTlFA33UFmiVGKf8dj006cIjHU9D41xpvz27+wACH4DpgtEdBmRz6ZRT+2weVFyf
+ PRdA==
+X-Forwarded-Encrypted: i=1;
+ AHgh+RqgHqcRxlQIAAanEUzq88AawqI8j5u2RP3BvfjvRrc8VakP4S4IFiW5rVfR0WIKKgVdbtG1r8Ak@lists.freedesktop.org
+X-Gm-Message-State: AFuF++mlZT/huZsLFSU8sEj9oLgOLhA7zfbFhOhL5TJSzn2NIVjtjluP
+ tzLLSdnBp/EbTiyn8bWvQdFOuKzBL1AXyrjuXv1JmxhsNg7SKhJr089ByyO0ys+l481QL71QI16
+ d6lPGNyZUjFqkskYrCD57e8FHwzN1rnE7nLIQRrjk
+X-Gm-Gg: AR+sD1333krLcpwqA2rvbZrJNLYDvTmWI0pYLXQDEngVFuylAb7TFEcrERcg4YS3WV2
+ YzajPYZiJtYHyEwP+fvCzvhooqpBT90Y1T3kZWpCwWRtk82NEHft3NAYXt3kICdBwVTsvQc+FK4
+ 5MVbfsw4RQW/+5W7iIUhmv/aTz+8q0+iWwqQ80ZVvjaoZ1ghyP2n+/6G0Gzi/rHNDQ5eCOJsCkW
+ kmIRgBXEJdHmlPzLt6wExbYF5BaOxoP7qR89IxstN4E3T3epeI2hCnBPLBLxxwWaO3bGzcoCTAi
+ 1vHxvjJOUVMk7WDqecyrsKVMKOTQgZmnUHTtweD9yc3zUDWevEddwGoSk5NBxFlITrFbP30nXIs
+ =
+X-Received: by 2002:a05:622a:258e:b0:51c:849e:e222 with SMTP id
+ d75a77b69052e-52fb96da379mr358321001cf.36.1788184878614; Mon, 31 Aug 2026
+ 07:01:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20260828-vkms_virtual_output_fix-v1-1-789718f4cb00@igalia.com>
+ <5443fa9f99309b0ec0afdd98319619a63d5467a3@intel.com>
+In-Reply-To: <5443fa9f99309b0ec0afdd98319619a63d5467a3@intel.com>
+From: Mark Yacoub <markyacoub@google.com>
+Date: Mon, 31 Aug 2026 10:01:07 -0400
+X-Gm-Features: AcwNN1Vm6DxVVD1vouZsBNUj-qN4Y7_859ULhcLF_n0YRIHtkn2r1qeGBi_noIU
+Message-ID: <CAC0gqY650NvYr5_NwKXM3sFNYQ=G7T9kx_=8GZWE7faveSZwRg@mail.gmail.com>
+Subject: Re: [PATCH i-g-t] Revert "lib/igt_kms: Do not treat writeback and
+ virtual connectors as connected"
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ igt-dev@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, louis.chauvet@bootlin.com, 
+ hamohammed.sa@gmail.comm, simona@ffwll.ch, melissa.srw@gmail.com, 
+ robin.clark@oss.qualcomm.com, abhinav.kumar@linux.dev, jesszhan0024@gmail.com, 
+ sean@poorly.run, marijn.suijten@somainline.org, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, "S,
+ Sowmiya" <sowmiya.s@intel.com>, kernel-dev@igalia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,92 +116,61 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, 31 Aug 2026, "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com> wrote:
-> On 31-08-2026 14:18, Jani Nikula wrote:
->> On Mon, 24 Aug 2026, Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com> wrote:
->>> +static int init_app_context(struct app_context *ctx)
->>> +{
->>> +	if (!ctx)
->>> +		return -EINVAL;
->>> +
->>> +	ctx->sock = NULL;
->>> +	ctx->node_id = UINT32_MAX;
->>> +	ctx->error_id = UINT32_MAX;
->>> +	ctx->error_value = 0;
->>> +	ctx->last_nl_error = 0;
->>> +	ctx->cmd_done = false;
->>> +	ctx->reply_received = false;
->>> +	ctx->ack_received = false;
->>> +	ctx->response_required = false;
->>> +	ctx->family_id = -1;
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static void cleanup_app_context(struct app_context *ctx)
->>> +{
->>> +	if (!ctx)
->>> +		return;
->>> +
->>> +	ctx->sock = NULL;
->>> +	ctx->node_id = UINT32_MAX;
->>> +	ctx->error_id = UINT32_MAX;
->>> +	ctx->error_value = 0;
->>> +	ctx->last_nl_error = 0;
->>> +	ctx->cmd_done = false;
->>> +	ctx->reply_received = false;
->>> +	ctx->ack_received = false;
->>> +	ctx->response_required = false;
->>> +	ctx->family_id = -1;
->>> +}
-
-Btw, the two functions above do the exact same thing. Why doesn't one
-call the other?
-
-Also, why not memset(ctx, 0, sizeof(*ctx)) and then set the non-zero
-ones separately?
-
->>>   struct app_context {
->>>   	struct nl_sock *sock;
->>> +	uint32_t node_id;
->>> +	uint32_t error_id;
->>> +	uint32_t error_value;
->>> +	int last_nl_error;
->>> +	bool cmd_done;
->>> +	bool reply_received;
->>> +	bool ack_received;
->>> +	bool response_required;
->>>   	int family_id;
->>>   };
->>>   
->>>   void igt_cleanup_nl_socket(struct app_context *ctx);
->>>   int igt_init_nl_socket(struct app_context *ctx);
->>> +int igt_get_error_counter(struct app_context *ctx);
->> This is really inconsistent naming, though.
+On Mon, Aug 31, 2026 at 4:51=E2=80=AFAM Jani Nikula <jani.nikula@intel.com>=
+ wrote:
 >
-> igt_init_nl_socket() and igt_cleanup_nl_socket() are the library 
-> functions to initialize and cleanup the netlink socket.
+> On Fri, 28 Aug 2026, Thadeu Lima de Souza Cascardo <cascardo@igalia.com> =
+wrote:
+> > This reverts commit 321448df7fc9af29b4c6697dc74e6c5e2100af6c.
+> >
+> > It has broken vkms testing, which has only Virtual connectors.
+> >
+> > Cc: Mark Yacoub <markyacoub@google.com>
+> > Cc: Jani Nikula <jani.nikula@intel.com>
+> > Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 >
-> igt_get_error_counter() is the library function to get the error counter.
+> FWIW,
 >
-> "igt_" is the prefix used for all the library functions, as suggested by 
-> Kamil.
+> Acked-by: Jani Nikula <jani.nikula@intel.com>
+Reviewed-by: Mark Yacoub <markyacoub@google.com>
 >
-> I am not clear why this naming is inconsistent. Could you please 
-> elaborate your suggestion here.
-
-Point is, there are a gazillion functions starting with "igt_", and the
-above don't make it any more specific. The "igt get error counter" could
-refer to any error counter.
-
-I guess I'd have named all the functions and types to have the
-igt_drm_netlink_ prefix. Or similar. And then you immediately know what
-this is about, without having to look up the function definitions or
-documentation.
-
-BR,
-Jani.
-
-
--- 
-Jani Nikula, Intel
+> But you should solicit feedback from the author, reviewer, and committer
+> of 321448df7fc9 ("lib/igt_kms: Do not treat writeback and virtual
+> connectors as connected").
+>
+>
+> > ---
+> >  lib/igt_kms.h | 4 ----
+> >  1 file changed, 4 deletions(-)
+> >
+> > diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> > index 695f666bacb9..27f8877a9f6a 100644
+> > --- a/lib/igt_kms.h
+> > +++ b/lib/igt_kms.h
+> > @@ -669,10 +669,6 @@ static inline bool igt_output_is_connected(igt_out=
+put_t *output)
+> >           !output->config.connector->count_modes)
+> >               return false;
+> >
+> > -     if (output->config.connector->connector_type =3D=3D DRM_MODE_CONN=
+ECTOR_WRITEBACK ||
+> > -         output->config.connector->connector_type =3D=3D DRM_MODE_CONN=
+ECTOR_VIRTUAL)
+> > -             return false;
+> > -
+> >       if (output->config.connector->connection =3D=3D DRM_MODE_CONNECTE=
+D)
+> >               return true;
+> >
+> >
+> > ---
+> > base-commit: c0c86b23b316bec7d22bbb95e433a8dc25884a1c
+> > change-id: 20260828-vkms_virtual_output_fix-c82298792438
+> >
+> > Best regards,
+> > --
+> > Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> >
+>
+> --
+> Jani Nikula, Intel
