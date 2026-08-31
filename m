@@ -4,158 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A86A9C61DE8
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 05:38:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A869C624A5
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 07:13:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E450410E5E7;
-	Mon, 31 Aug 2026 05:38:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 221FF10E5E4;
+	Mon, 31 Aug 2026 07:13:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ijt3wHko";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NbrE/YYg";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9B1C10E5E7
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 05:37:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3873210E61A
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 07:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788154643; x=1819690643;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=OaQT/Zip4HPzVArsk+hXmIT397M+uYk48kj7qh3WkOQ=;
- b=ijt3wHkohKVDhdwbaNBIT8kzW/4267J2xFge23ZwM/gIsusSzddTjdTt
- oVkMFDddZ1xulX/o1vC5C+2gqWdtXPAwB3DXNaF3zxllnIZTVVJqwMKUL
- FETibN3MuFpJvYxIjJVk9jXbRlR5iKphbMA/Dob6QGskuuI1t6X+pDjgJ
- /bcO30m5YH9xT/ATzSIAtur2pkIL2GBdmw/ZKUAIYPeHbR14koVurQ/8b
- U/0fB09Fim9+QyTIuFdjG8D0Cvhqw/aRMojr6erC5nV6WS9xdomuFsGZy
- /qLHm3Zf0J6aMTaXW8T7nxaCONcfeRB5kHFFDzS91sIjjk0NNMI99CZVc g==;
-X-CSE-ConnectionGUID: qrXSHMKKQz2fEux7PtT1eg==
-X-CSE-MsgGUID: mye2kNCeQK+97hULusvxZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="88756224"
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; d="scan'208";a="88756224"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Aug 2026 22:37:22 -0700
-X-CSE-ConnectionGUID: +/n0qttcSguSrRP1AoBTpg==
-X-CSE-MsgGUID: OVkiZ3BiTlSH3pcno0tHkw==
+ t=1788160363; x=1819696363;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=4asLm7OLZpX6Mdq73/iqEfgJM4/3vVoAN1KziCT7SV4=;
+ b=NbrE/YYgLzVg7H3IWYZtI52pM4EYHR/3T9+rdiFISegzAwRS7U3BgJpu
+ Mww1suOIA+xPg/e4e7D+P7QjAXPNp/RjwbHQscm8dhwLFyXdczEvs+yqP
+ H/iuaHadiuDr/TQpjDA4WxAbW2K1wpigXirUR2vZF4ES6bBZ8twb4wZrJ
+ Y5Wh7qd6d1RmZ4oAcgQoN0jC/8D5vRVBugv9USCsnam8wvA1rU7qdlR16
+ LHg3EE9QWhU6pHOFnkRHSpiMiroSdK6di98FOIPhNYEaU0gBdoM3Aiqm6
+ x46fyXi8U0dXSjn5u6eJCu5Og7WkFHPQm+Lvr3MgpLqMqIARSS9h1cn0U w==;
+X-CSE-ConnectionGUID: snLjljJFQ7y7ju7xyyzV4Q==
+X-CSE-MsgGUID: IkVzTgEwT+CuxsigUJYmUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11891"; a="92425164"
+X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; d="scan'208";a="92425164"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 00:12:42 -0700
+X-CSE-ConnectionGUID: uT/Y82OdSfaIQZQ0p2XfZA==
+X-CSE-MsgGUID: wkbPjmk1SQeYwxxxjLLDPQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; d="scan'208";a="272886022"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Aug 2026 22:37:22 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Sun, 30 Aug 2026 22:37:21 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Sun, 30 Aug 2026 22:37:21 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.59) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Sun, 30 Aug 2026 22:37:21 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uV1rw3GvBVIr+3rQSIejqXNz/wJItWsSqR/yCezE4rAwHt7gPusR7aIXLqnWCR4zJ7NLVYK85LhK2eeJF9TSmJWWMw3UOQYftX6Gq9nTvopQglthVOfmWZdUYTbK2inKga/TVViLE/5s6p48sMITtduLZVPt1vLWD+q5Jc6Qe1BLq3fTVsM7BabzIXaRq/NzfXiX17brYkkMNuvFlkTK40SX1Xi94XYCg2jAODpRbbvfucqUZKJf/Yv2H6kXpfhfztbFnEkbnDE8HdfIrkA19UrnKFXsVtLdIOZ97o0qF1EW+B/pd0KPMxCltyjVwc4pF38/ZfQMaqHQBvbArWXu2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4kFffHmcfe4j5wklu1w8t1rVaR3FG4wVfs8gSGLvgRc=;
- b=s4vYC4iGksi4YDJVpAVMwbA1uEoUrgGqj8k4PHKFZOnbDhKc040i1galQHzeJH6aYL2dzC09ca/649jsj5JXV3yHuADr74qp/scIELl97Mu+kGNZ1mZt2jnVJGTf87FKGc2ZMS6k7n4AgNgGrbJtK5BLz5qNKzcbkvCI5LmhM2nhIuXv05vIIH1p/ktNwAzYgLyv+8Xl83oYtuwbFxMVkmxg+nQfL0Fp9mS/Z41HoyBvXq7rSPSQf5e7hK3ZUHA43I5tuKzCkdRV1WJxyjRJfFGp0g5iUivXwzgVnqhG15+yl8k4eoiJ5RjL9IkaTsseHy7bHsW54Uh+WFUNqH9TGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB8252.namprd11.prod.outlook.com (2603:10b6:510:1aa::14)
- by LV4PPFA6EB48437.namprd11.prod.outlook.com
- (2603:10b6:40f:fc02::22c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Mon, 31 Aug
- 2026 05:37:19 +0000
-Received: from PH7PR11MB8252.namprd11.prod.outlook.com
- ([fe80::9f66:9d6f:3199:78b2]) by PH7PR11MB8252.namprd11.prod.outlook.com
- ([fe80::9f66:9d6f:3199:78b2%4]) with mapi id 15.21.0360.008; Mon, 31 Aug 2026
- 05:37:19 +0000
-Message-ID: <872b35dc-96c3-40a5-ae7f-3aa5ee333b0f@intel.com>
-Date: Mon, 31 Aug 2026 11:07:11 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] tests/intel/xe_ras: Add test for GPU health
- indicator
-To: Soham Purkait <soham.purkait@intel.com>, <igt-dev@lists.freedesktop.org>, 
- <riana.tauro@intel.com>, <badal.nilawar@intel.com>,
- <kamil.konieczny@intel.com>, <raag.jadav@intel.com>
-CC: <anshuman.gupta@intel.com>
-References: <20260825041252.1440299-2-soham.purkait@intel.com>
-Content-Language: en-US
-From: "Anirban, Sk" <sk.anirban@intel.com>
-In-Reply-To: <20260825041252.1440299-2-soham.purkait@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0360.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:219::11) To PH7PR11MB8252.namprd11.prod.outlook.com
- (2603:10b6:510:1aa::14)
+X-IronPort-AV: E=Sophos;i="6.25,252,1779174000"; d="scan'208";a="264983227"
+Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.22])
+ by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 00:12:41 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Mohammed Thasleem <mohammed.thasleem@intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: kunal1.joshi@intel.com, Mohammed Thasleem <mohammed.thasleem@intel.com>
+Subject: Re: [PATCH i-g-t] tests/intel/kms_pm_warm_boot: Add warm reboot test
+In-Reply-To: <20260827015110.2426-1-mohammed.thasleem@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20251210114344.1535-1-mohammed.thasleem@intel.com>
+ <20260827015110.2426-1-mohammed.thasleem@intel.com>
+Date: Mon, 31 Aug 2026 10:12:38 +0300
+Message-ID: <16f1dfc2c69c5100d7c54c90b5012f5a96f9d85c@intel.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB8252:EE_|LV4PPFA6EB48437:EE_
-X-MS-Office365-Filtering-Correlation-Id: ae3b6f28-a842-4560-33c3-08df0721ec38
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|23010399003|366016|6133799003|10067099003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: N92TiCH0r91f+5SrDmyutUzMy4TtfQqCY/S9cXbav1qQU83r1+dxgMLO4RJUXaG/tAxxcu4OAdJaG7lT8w8R3ne1Rxdp++SbwMNDokS9IL3DGzB7xZvOAraYkIuA66IS0qhrYLfvqSqEc51flqZLsMU6rj0bdOnj4t+UiPP77o37YucN3el1uKw5FB0juj2CxKGLvjyGyTx7lVgkH7pmtP8kyZiLtixS6souJsA1QRWswM2A0brtY0ES4aBmgPIjObYzCukM5wXAfD6zXeFleWjFKCISXcHRCWoVRRWU3dED2E/jbfOap/VrN/7VXJqnNbJ05FB5HhXKlBzCl4Nn/KcdxkLgPtlRzCLhgboNmAbNVkmCIv06KtyFbdKZkyka+pqACHYegTrNyXtmY6TOLUdeWgkzs6loxkTiw0/7B9dqwwLgCGuRBAVem1mMEdv0PFa+nYNKqd/ESW4HJKAO0Zi8IQnEleDWtoPm+y2WeBhtcjt6BaRv0QRHqNs0xohFH49oT/Tk7G1BrKAMolPFT9uyV1pYYVVQi9yImmpkgWrTTdg1RxOqlucF3DQmF4oUXwuv90U9hj5etR86byt/r8DDFUh9KAzHFnFEB/ZsP2FfDEhyL5fVCOrmXfB4R3XdePpiGmqCC55Hiqn3q9I0l9+8tIyht3mxoebI5p60Yy4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB8252.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(6133799003)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bGMxMTNDTHc0Slo3SVhBdkd1aE5xYzB4clUrZ2RtK1Y5bk5jU0p2SHF1SjY5?=
- =?utf-8?B?UXlIQVVWWkk1dFVXTm1vYWVJU3NoZElCcDRsRmdhZ2xiWEg1WlZSNEtFSjZy?=
- =?utf-8?B?R0RmK3FvcmxCUlVuRm1WV1RmS29tZWtpQmZQOExpNUNRR0ZiMHFSU0d5YnI2?=
- =?utf-8?B?Nmw4NmlObFpMck53TFpnVk9hL1QrVXZld2ZxY01Wd3B4aWRIZVd5QUJtZU5l?=
- =?utf-8?B?cnpmVmUrc1gvWHB1Q3NFYXVjR0ZUM0FBS3JiQ1cvWGdGNnYrZE9rc1U0Tzls?=
- =?utf-8?B?VU40RnIxdEdpMy8wZ3ZxdTJBWDdmWHdZTkV3bG1BditYT09DVXV0bFNmc3B0?=
- =?utf-8?B?WGpZSkd1cXdzMHpZT1pjdTY2MFdPVGRpTXF2c2tBbzA0ZGtiUENTWDFMSXV2?=
- =?utf-8?B?Y0ZuZk96ekNnZlJJWm5ZbGpubS9JNG9VUE4yTnNqdG1qV2VKZkxvckZHZ0s2?=
- =?utf-8?B?dGJuVERvM0pJd0xmdEdNYUNtOExBZEFUOWtuNVNkYUdJZCtYNk8wbFdlNTNP?=
- =?utf-8?B?MGFTdEF0aCt6T0p5TkVpd0RlSnE2eWVOcDJjN2xRVGcwaDBQSElIMzRCN1cy?=
- =?utf-8?B?c3dVUmxsd2RyaW90c0lsS1FManhFN3p6Q2ZnSyttbGlYOTBBbENwY0JYencv?=
- =?utf-8?B?eC9lelNUdnpmMW5zR2hhb2REdm14TXkxSVAvU1kzcWhBa3ExUzZPbEM2SlIz?=
- =?utf-8?B?amlFRVpjZ3JVQ3hRVEFWU0RTblR0Z05tNGZQMjNNZWh1MVJOK2dXT3RmMXhi?=
- =?utf-8?B?QXozbEtuNW9USjdCTEdIWlNSZElrbS91Vk5URTg3Y0I1TzBVNDdKL0JQakxh?=
- =?utf-8?B?TE9PWWFvOWNyWkx4OC95NDVLRllYNjlvMHBTdnA1MGp5L1lYeit2b2xVaTJC?=
- =?utf-8?B?SGMwNGg3YWh6MXo5azRDbzRDRUw5dXdKQk56dWVkQ0FRYk1pZFFGQ0FPU3RJ?=
- =?utf-8?B?dU1Ea3BRZ1YrSWJaMmtYZi9Cd25HQVFsV1RNdjdqeVBpUWV5SkpWMmFnS2dR?=
- =?utf-8?B?T1ZQaHJERDE3TERQTWJmTWFBdGM2dzQ0WGFQb2RJKzM1MmFhYmszdUVQTkNM?=
- =?utf-8?B?UEs0Qm55dXgwcDlXZFJFbHBvTHJCWTNUQ1A3ZkhzdnBmaW5oRWh0MzBuMXc1?=
- =?utf-8?B?TzUzUmJ2bkg5U2M4Kzdzc0MrMVF2T0VwQSsxZFFoRHU2K0s3c0N5VzRHaU93?=
- =?utf-8?B?bllqcFNmdCtldzVublZ5MUovdnNGNW5yWW40WldOVGdSdWV4ZGVDUUl6Nnpv?=
- =?utf-8?B?dDNOOUJLY1AvS1l2TmpuMURTMmFRRjVCWUZFdG1rODZGTEhvdW92dExhOW5K?=
- =?utf-8?B?YTArbHZlWUZESVU5RjBCejBmbEcvTnVQL1pJNUc1WldyeXgxaXM1cVIzcHUr?=
- =?utf-8?B?d2d0cDQ3MkgzU2YwRHcvMmR0bGZWVVQ3NlFhWnF1TFhXMmZrL0QzaGEzVCtl?=
- =?utf-8?B?WE1ZV2dXSS9ia0JQZ0VyeTRabVdPUWlsQW9heEFqaDJCeVRGcEw5U28zMytM?=
- =?utf-8?B?Qjh2NmQ3ZmNEZHZFZXZuQ0dYYUFUbHE4Z2l5RE1BcFNsZk11UXFpc0hsaDV1?=
- =?utf-8?B?S0hOTWwyVkpjRXNJcStFQ3hMWTl3eDQrcnhZNUptanpiQXVmVTNBTG9hSFFX?=
- =?utf-8?B?bFIvV1Bta0dHbWE4Qm9rUGg2ajk0aTlSbkI2ajdudnlqa29BdXpHM1VnS2RK?=
- =?utf-8?B?eko3d0ZpNTFsRUhpOHgwQVVxS0pzZFNEd3ZuTk9NRHhlcFZWa2tQcGNnQUpF?=
- =?utf-8?B?Q2xTODJCYVoxTWtVZHdmWURndENBYXFwOWNFSHpOSE8zVkdDNVYzMUJmbzhG?=
- =?utf-8?B?RnM4TUtRbjA1Y3F3NWtYTm5kMjZUQWxuQnNsQ3lHYnNoZThiaFFJWW9KeHZl?=
- =?utf-8?B?bmRpR3NKZmZrelBOcmhreTFKN3VTUkgvL2xpbjQ5ZlNsMXAvM1ZwcjFiSFF1?=
- =?utf-8?B?VGxub3JTNkg4OFBQT2l2aEZqbkdtcnVQQnlSK3Bwbm16emtzOHlNZS9zS0dK?=
- =?utf-8?B?eWl2R3lyK25GZTgxOG1QY3RvZ1p4Mm44dE9BbUcvbjVmT0lvRXNjRFMwN0hh?=
- =?utf-8?B?K05PdkRnRnYzenZjU3ErMTNkL1lUTXJ3anZLcko2dnpCajVWbDJVNXQ2dzU4?=
- =?utf-8?B?RThXcTFKMzNSY2kxUzErYWZrRjVHS2R1QXpDdDNwOUpjV3Y1N0Jzbm1jSkRM?=
- =?utf-8?B?cHlEMXlaVFIzZjBKZU45alEzdXljZk56TW14bWJKRUl0bWZIZ0dHTDVlRXRj?=
- =?utf-8?B?bWwwM3l3ZlNvOVk5SHNaSEVlOFc4Vk1ub0doWk5DRHJMQ05TcXllbytLS1BF?=
- =?utf-8?B?MlRBUUZMR1BsMnlwQ2NCNytqbFJ6YUFpZlA5SnVCNmR6dG84WEx6Zz09?=
-X-Exchange-RoutingPolicyChecked: 5aaZ1JzWxXwVahQ8ah23WfRN5KLddC49hu4swDde4ydhlbHs2HfORNtyh2EK7ZFBLKiWVEeaDv/Z42yjG11wUKcVv6b/Y0NLy64jzDQtHjW+SyF6jVtCR8OX8JEXZCzr6f26igI3lF/Afp1Pa+swdod64ptYHMQNdm5nFqoDbfUXhlnKxcwTHKxnz5QZGcmInGOiK/9cKDZq3rFCGM9LW2ETluUbrz/F6RVuXvVjbFVy7eVcft7LJ2HOMaMzYzfDATBMjcxxhW+LnVJW8KOnYPI5k0ssfa+dPD6abk3zr+evuTVQmYNRpsNYmpD+SndX3KKpmSRtUFJOAksvQjfFAQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ae3b6f28-a842-4560-33c3-08df0721ec38
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8252.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2026 05:37:19.1699 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IVuFyhzfX0M9cr+b1fzlBPvVVDIDvKqeLq4r+RmGvjtFIhWFp1j7EZLJFWjutMzAVzzId672PIPpb2daC6UVYg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV4PPFA6EB48437
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -171,186 +72,294 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Soham,
+On Thu, 27 Aug 2026, Mohammed Thasleem <mohammed.thasleem@intel.com> wrote:
+> This test validates display subsystem stability across warm reboot by
+> capturing baseline display parameters (outputs, pipes, connectors, modes)
+> before reboot and comparing them after reboot.
 
-On 25-08-2026 09:42 am, Soham Purkait wrote:
-> Add a new Xe RAS test exercising the gpu_health sysfs attribute
-> exposed by the Xe driver on platforms that provide the system
-> controller. The attribute reports and allows updating the GPU
-> health state.
+I think you need to be more elaborate than that. What does "stability
+across warm reboot" mean? What is the goal here, and how does the
+capture/compare achieve that goal?
+
 >
-> The gpu-health subtest validates each valid state by writing it
-> and reading the value back, and checks that invalid writes are
-> rejected with -EINVAL, guarding against regressions in the
-> implementation.
+>  1. Run pre-reboot test to save baseline.
+>  2. Perform manual system reboot.
+
+So there's no point in making this a test that gets run in CI?
+
+>  3. Run post-reboot test to validate display parameters match baseline
 >
-> v1:
->   - Platform-conditional skip w/o fd leak. (Anirban)
->   - Restore via exit handler. (Anirban)
+> v2: Replace each_pipe_with_valid_output with for_each_valid_output_on_crt=
+c.
 >
-> v2:
->   - Remove dead-code and extra comments. (Anirban)
->   - Initialize exit handler under igt_subtest. (Anirban)
->
-> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+> Signed-off-by: Mohammed Thasleem <mohammed.thasleem@intel.com>
 > ---
->   tests/intel/xe_ras.c | 131 +++++++++++++++++++++++++++++++++++++++++++
->   tests/meson.build    |   1 +
->   2 files changed, 132 insertions(+)
->   create mode 100644 tests/intel/xe_ras.c
+>  tests/intel/kms_pm_warm_boot.c | 202 +++++++++++++++++++++++++++++++++
+
+Why intel specific?
+
+>  tests/meson.build              |   1 +
+>  2 files changed, 203 insertions(+)
+>  create mode 100644 tests/intel/kms_pm_warm_boot.c
 >
-> diff --git a/tests/intel/xe_ras.c b/tests/intel/xe_ras.c
+> diff --git a/tests/intel/kms_pm_warm_boot.c b/tests/intel/kms_pm_warm_boo=
+t.c
 > new file mode 100644
-> index 000000000..2452f6ff1
+> index 000000000..d50656b91
 > --- /dev/null
-> +++ b/tests/intel/xe_ras.c
-> @@ -0,0 +1,131 @@
+> +++ b/tests/intel/kms_pm_warm_boot.c
+> @@ -0,0 +1,202 @@
 > +// SPDX-License-Identifier: MIT
 > +/*
-> + * Copyright © 2026 Intel Corporation
+> + * Copyright =C2=A9 2026 Intel Corporation
 > + */
-> +
-> +#include <errno.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +
-> +#include "igt.h"
-> +#include "igt_sysfs.h"
 > +
 > +/**
-> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) functionality
-> + * Category: Core
-> + * Mega feature: RAS
-> + * Sub-category: RAS tests
-> + * Functionality: ras
-> + * Test category: Functional tests
-> + *
-> + * SUBTEST: gpu-health
-> + * Description: Verify the gpu_health sysfs attribute accepts each valid
-> + *		state (ok/warning/critical) and rejects invalid writes
-> + *		with EINVAL.
+> + * TEST: kms pm warm reboot
+> + * Category: Display
+> + * Description: This test validates warm reboot.
+> + * Driver requirement: xe
+> + * Mega feature: Display Power Management
 > + */
 > +
-> +IGT_TEST_DESCRIPTION("Tests for Xe RAS");
+> +#include "igt.h"
+> +#include "igt_kms.h"
+> +#include <unistd.h>
+> +#include <string.h>
+> +#include <errno.h>
 > +
-> +#define GPU_HEALTH_ATTR	"device/gpu_health"
+> +#define PARAM_FILE "/var/tmp/igt_warm_reboot_params.txt"
+
+This is not a great way to manage temp files.
+
+> +#define BUF_SIZE 1024
 > +
-> +static const char * const gpu_health_states[] = {
-> +	"ok",
-> +	"warning",
-> +	"critical",
-> +};
+> +/**
+> + * SUBTEST: warm-reboot-before
+> + * Description: Save baseline display parameters before warm reboot.
+> + *
+> + * SUBTEST: warm-reboot-after
+> + * Description: Validate display parameters after warm reboot.
+> + *
+> + */
 > +
-> +static struct {
-> +	int sys_fd;
-> +	char *orig_health;
-> +} gpu_health_ctx = { .sys_fd = -1 };
+> +IGT_TEST_DESCRIPTION("This test validates warm reboot");
+
+It really is an anti-pattern to have "This test validates" in test
+descriptions. I see it elsewhere too, and it gets copy-pasted. Obviously
+each test validates something.
+
 > +
-> +static void restore_gpu_health(int sig)
+> +typedef struct {
+> +	int fd;
+> +	igt_display_t display;
+> +	igt_output_t *output;
+> +	drmModeModeInfo *mode;
+> +	igt_plane_t *primary;
+> +	struct igt_fb fb_test;
+> +	enum pipe pipe;
+> +} device_t;
+> +
+> +static void detect_primary_output(device_t *device)
 > +{
-> +	if (gpu_health_ctx.sys_fd < 0 || !gpu_health_ctx.orig_health)
-> +		return;
+> +	igt_output_t *output;
+> +	igt_crtc_t *crtc;
+> +	enum pipe pipe;
 > +
-> +	igt_sysfs_set(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, gpu_health_ctx.orig_health);
-> +	igt_info("Restored initial gpu_health to '%s'\n", gpu_health_ctx.orig_health);
-> +	close(gpu_health_ctx.sys_fd);
-> +	gpu_health_ctx.sys_fd = -1;
-> +	if (sig)
-> +		return;
-Keep the igt_info() after this.
-> +	free(gpu_health_ctx.orig_health);
-> +	gpu_health_ctx.orig_health = NULL;
-> +}
+> +	for_each_crtc(&device->display, crtc) {
+> +		pipe =3D crtc->pipe;
+> +		for_each_valid_output_on_crtc(&device->display, crtc, output) {
 > +
-> +static bool valid_gpu_health(const char *s)
-> +{
-> +	int i;
+> +			igt_display_reset(&device->display);
 > +
-> +	for (i = 0; i < ARRAY_SIZE(gpu_health_states); i++)
-> +		if (!strcmp(s, gpu_health_states[i]))
-> +			return true;
+> +			igt_output_set_crtc(output, igt_crtc_for_pipe(&device->display, pipe)=
+);
+
+You already have the crtc, there's no point in this crtc->pipe->crtc
+dance.
+
+> +			if (!intel_pipe_output_combo_valid(&device->display))
+> +				continue;
 > +
-> +	return false;
-> +}
+> +			device->output =3D output;
+> +			device->mode =3D igt_output_get_mode(output);
+> +			device->primary =3D igt_output_get_plane_type(output, DRM_PLANE_TYPE_=
+PRIMARY);
+> +			device->pipe =3D pipe;
+
+If you need to store something, store the crtc pointer, not the pipe.
+
 > +
-> +static void test_gpu_health(int xe)
-> +{
-> +	char *health = NULL;
-> +	int ret;
-> +	int i;
-> +
-> +	gpu_health_ctx.sys_fd = igt_sysfs_open(xe);
-> +	igt_assert(gpu_health_ctx.sys_fd >= 0);
-> +
-> +	if (!igt_sysfs_has_attr(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR)) {
-> +		close(gpu_health_ctx.sys_fd);
-> +		gpu_health_ctx.sys_fd = -1;
-> +		igt_skip("gpu_health sysfs attribute not exposed by driver\n");
+> +			break;
+> +		}
 > +	}
 > +
-> +	gpu_health_ctx.orig_health = igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
-> +	igt_assert_f(gpu_health_ctx.orig_health, "Failed to read %s\n", GPU_HEALTH_ATTR);
-> +	igt_info("Initial gpu_health: %s\n", gpu_health_ctx.orig_health);
-> +	igt_assert_f(valid_gpu_health(gpu_health_ctx.orig_health),
-> +		     "Unexpected initial gpu_health value: '%s'\n",
-> +		     gpu_health_ctx.orig_health);
-> +
-> +	ret = igt_sysfs_write(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, "bogus", strlen("bogus"));
-> +	igt_assert_f(ret == -EINVAL,
-> +		     "Write of invalid value to %s returned %d, expected -EINVAL\n",
-> +		     GPU_HEALTH_ATTR, ret);
-> +
-> +	for (i = 0; i < ARRAY_SIZE(gpu_health_states); i++) {
-> +		const char *state = gpu_health_states[i];
-> +
-> +		igt_info("Setting gpu_health to '%s'\n", state);
-> +
-> +		igt_assert_f(igt_sysfs_set(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, state),
-> +			     "Failed to write '%s' to %s\n",
-> +			     state, GPU_HEALTH_ATTR);
-> +
-> +		health = igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
-> +		igt_assert(health);
-> +		igt_assert_f(!strcmp(health, state),
-> +			     "gpu_health readback mismatch: wrote '%s', read '%s'\n",
-> +			     state, health);
-> +		igt_info("Verified gpu_health state readback for '%s' successfully\n",
-> +			 state);
-> +		free(health);
-> +	}
-> +
-> +	restore_gpu_health(0);
+> +	igt_require_f(device->output && device->mode, "No valid connected outpu=
+t found\n");
 > +}
 > +
-> +int igt_main()
+> +static void setup_primary(device_t *device)
 > +{
-> +	int xe;
+> +	igt_plane_set_fb(device->primary, NULL);
 > +
-> +	igt_fixture()
-> +		xe = drm_open_driver(DRIVER_XE);
+> +	igt_create_color_fb(device->fd,
+> +			    device->mode->hdisplay,
+> +			    device->mode->vdisplay,
+> +			    DRM_FORMAT_XRGB8888,
+> +			    DRM_FORMAT_MOD_LINEAR,
+> +			    0.2, 0.3, 0.4,
+> +			    &device->fb_test);
 > +
-> +	igt_subtest("gpu-health") {
-> +		igt_install_exit_handler(restore_gpu_health);
-> +		test_gpu_health(xe);
+> +	igt_plane_set_fb(device->primary, &device->fb_test);
+> +	igt_display_commit(&device->display);
+> +}
+> +
+> +static void save_baseline(device_t *device)
+> +{
+> +	int conn_type =3D -1;
+> +	const char *conn_type_name =3D "unknown";
+> +	FILE *fp =3D fopen(PARAM_FILE, "w");
+> +
+> +	igt_require_f(fp, "Unable to open param file for writing\n");
+> +
+> +	if (device->output->config.connector) {
+> +		conn_type =3D device->output->config.connector->connector_type;
+> +		conn_type_name =3D kmstest_connector_type_str(conn_type);
 > +	}
 > +
-> +	igt_fixture()
-> +		drm_close_driver(xe);
+> +	fprintf(fp, "n_outputs=3D%d\n", device->display.n_outputs);
+> +	fprintf(fp, "pipe=3D%d conn_id=3D%u type=3D%d(%s) mode=3D%dx%d@%d\n",
+> +		device->pipe,
+
+Pipe is an Intel thing, this should really use the CRTC index.
+
+> +		device->output->config.connector ?
+> +			device->output->config.connector->connector_id : 0,
+> +		conn_type, conn_type_name,
+> +		device->mode->hdisplay, device->mode->vdisplay,
+> +		device->mode->vrefresh);
+> +
+> +	fclose(fp);
+> +}
+> +
+> +static void collect_current(device_t *device, char *buf, size_t sz)
+> +{
+> +	int conn_type =3D -1, ret;
+> +	const char *conn_type_name =3D "unknown";
+> +	uint32_t conn_id =3D 0;
+> +
+> +	if (device->output->config.connector) {
+> +		conn_type =3D device->output->config.connector->connector_type;
+> +		conn_id =3D device->output->config.connector->connector_id;
+> +		conn_type_name =3D kmstest_connector_type_str(conn_type);
+> +	}
+> +
+> +
+> +	/* Write display basic config details */
+> +	ret =3D snprintf(buf, sz,
+> +		       "n_outputs=3D%d\n"
+> +		       "pipe=3D%d conn_id=3D%u type=3D%d(%s) mode=3D%dx%d@%d\n",
+> +		       device->display.n_outputs,
+> +		       device->pipe,
+> +		       conn_id,
+> +		       conn_type, conn_type_name,
+> +		       device->mode->hdisplay,
+> +		       device->mode->vdisplay,
+> +		       device->mode->vrefresh);
+> +
+> +	if (ret < 0 || (size_t)ret >=3D sz)
+> +		igt_warn("%s(): buffer truncated\n", __func__);
+> +}
+> +
+> +static void read_baseline(char *buf, size_t sz)
+> +{
+> +	FILE *fp =3D fopen(PARAM_FILE, "r");
+> +
+> +	igt_require_f(fp, "Baseline missing. Run first time to create.\n");
+> +
+> +	fread(buf, 1, sz - 1, fp);
+> +	buf[sz - 1] =3D '\0';
+> +	fclose(fp);
+> +}
+> +
+> +static void cleanup(device_t *device)
+> +{
+> +	igt_plane_set_fb(device->primary, NULL);
+> +	igt_display_commit(&device->display);
+> +	igt_remove_fb(device->fd, &device->fb_test);
+> +}
+> +
+> +int igt_main(void)
+> +{
+> +	device_t device =3D {0};
+> +	char saved[BUF_SIZE] =3D {0};
+> +	char current[BUF_SIZE] =3D {0};
+> +
+> +	igt_fixture() {
+> +		device.fd =3D drm_open_driver_master(DRIVER_ANY);
+> +		igt_require(device.fd >=3D 0);
+> +
+> +		igt_display_require(&device.display, device.fd);
+> +	}
+> +
+> +	igt_subtest("warm-reboot-before") {
+> +		detect_primary_output(&device);
+> +		setup_primary(&device);
+> +		collect_current(&device, current, sizeof(current));
+> +
+> +		if (access(PARAM_FILE, F_OK) =3D=3D -1)
+> +			save_baseline(&device);
+
+So only save it when the file doesn't already exist?
+
+> +
+> +		cleanup(&device);
+> +	}
+> +
+> +	igt_subtest("warm-reboot-after") {
+> +		detect_primary_output(&device);
+> +		setup_primary(&device);
+> +		collect_current(&device, current, sizeof(current));
+> +		read_baseline(saved, sizeof(saved));
+> +
+> +		igt_assert_f(strcmp(saved, current) =3D=3D 0, "Display parameters mism=
+atched.\n");
+
+I don't yet understand the idea of the test, really, but if there's a
+mismatch, this is going to be incredibly unhelpful output for debugging
+anything.
+
+> +
+> +		if (strcmp(saved, current) =3D=3D 0)
+> +			remove(PARAM_FILE);
+
+Only remove it when the comparison succeeded.
+
+IOW, if there's a mismatch, for whatever reason, this test will never
+recover on its own due to the non-overwrite and non-remove policies, and
+will need a manual intervention?
+
+> +
+> +		cleanup(&device);
+> +	}
+> +
+> +	igt_fixture() {
+> +		igt_display_fini(&device.display);
+> +		drm_close_driver(device.fd);
+> +	}
 > +}
 > diff --git a/tests/meson.build b/tests/meson.build
-> index 1ac89bab7..3c2d4fdda 100644
+> index 1ac89bab7..084280081 100644
 > --- a/tests/meson.build
 > +++ b/tests/meson.build
-> @@ -333,6 +333,7 @@ intel_xe_progs = [
->   	'xe_prime_self_import',
->   	'xe_pxp',
->   	'xe_query',
-> +	'xe_ras',
->   	'xe_render_copy',
->   	'xe_vm',
->   	'xe_userptr_pressure',
+> @@ -271,6 +271,7 @@ intel_kms_progs =3D [
+>  	'kms_pm_backlight',
+>  	'kms_pm_dc',
+>  	'kms_pm_lpsp',
+> +        'kms_pm_warm_boot',
+>  	'kms_pm_rpm',
+>  	'kms_psr',
+>  	'kms_psr2_sf',
 
-With the above change looks good to me.
-
-Reviewed-by: Sk Anirban <sk.anirban@intel.com>
-
+--=20
+Jani Nikula, Intel
