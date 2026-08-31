@@ -4,57 +4,75 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71A60C61DFD
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 19:25:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A40C6C61DFD
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 20:25:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBBE810E33F;
-	Mon, 31 Aug 2026 19:25:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4547810EAE4;
+	Mon, 31 Aug 2026 20:25:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uxp6s1mM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="G0bZJtZ7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C529810E33F
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 19:20:39 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 22DE010EAEA
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 20:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788204040; x=1819740040;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=XCVGVRlX0a+FqS2HqkAQtDme8DzoChPTLIY2nn29yNs=;
- b=Uxp6s1mM3zhylVZMpeblDaa02UjThTnzyG/RKgEuj0m5Ih34jcHTxjKb
- w7nEDMvGjz58H3zcBRnu8vAxd0kDM8eaqcXVL+A2mzNY+pA/sCrIa27n+
- RxZA/Fcd/mwZhhaf7fLOm+/CV+2j7nRhkJNlbcU0pOSKQ0I1lAU4iFdTp
- eyim05od6I4KXR/Vm+Fz/7eUuLRPbn2s5DjEF5Y5V4Nkg4wBssYc0sVa6
- /JJcjzTLqb9l9MKY3NWALIUt+/qSBZooEEvcI1yexNpAfqu+xJJ38yGnZ
- Nbul7KPatTZEqQn+QirQT6fefh3zZLLD0Xg3Dn33e03HIAT+A6yMjMIWu w==;
-X-CSE-ConnectionGUID: BMhnHKY8SOGx616s24LPVg==
-X-CSE-MsgGUID: IqPSNsInQQmZVf/+w1/tvQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88549114"
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="88549114"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 12:20:40 -0700
-X-CSE-ConnectionGUID: 6o+XNxQpQWe5zug0EaUE7A==
-X-CSE-MsgGUID: ywjY3qpNSFOalJJhHA6pig==
+ t=1788207878; x=1819743878;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:to:cc;
+ bh=ILeI00XqIivnSxFjvvRXvU8PyfcYSGKmQBGXm7CGkWI=;
+ b=G0bZJtZ7zwGuCVMaBvnj93PT5jItUDEmpPr32n5i4hzKVvavLKm63C7l
+ SnNPugDE0IxeBqIvTH4YUls7Hhqysgk+y3w2JGmcZCO/Jqin3XThyx23X
+ QEkPMs8ZMX0IMZBvayeRN4ZpomOEeDGlaJsKcduMLMJOOhEwvs4OvjpXy
+ Z0Ls4/f3dBfdLxSIm5MXWH3arhzWwDkzgPd5UeN/DWKMM7eJyPmyCgwxz
+ Kffa5iVdQR9t9Re+FA1ZsIPolpb87ZvDqhoWAU14mH1XSgrApH56aU/Ms
+ ZBp+jCG0O3s7DKRWU6WHl4RFGkuzGszyjMJQJZFISdXngA0LEMjh+vUBT A==;
+X-CSE-ConnectionGUID: tLleoLJDRlKrPwGxKF25Gw==
+X-CSE-MsgGUID: HOLZDoDAQdCwcZ4diChwqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88647535"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="88647535"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 13:24:38 -0700
+X-CSE-ConnectionGUID: oqEHeqdNR9C/Z7BfFt0H1A==
+X-CSE-MsgGUID: kS5swb5xQGqgIZWuY2dPyA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="272392357"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 12:20:39 -0700
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: chaitanya.kumar.borah@intel.com,
-	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,
- v5 5/7] tests/kms_color_pipeline: Remove unused color_depth and
- drm_format
-Date: Tue,  1 Sep 2026 00:59:33 +0530
-Message-Id: <20260831192935.463134-6-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260831192935.463134-1-swati2.sharma@intel.com>
-References: <20260831192935.463134-1-swati2.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="307110558"
+Received: from mdroper-desk1.fm.intel.com (HELO
+ mdroper-desk1.amr.corp.intel.com) ([10.121.64.167])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 31 Aug 2026 13:24:38 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+Date: Mon, 31 Aug 2026 13:23:45 -0700
+Subject: [PATCH i-g-t] lib/xe: Use proper GT lookup in xe_gt_get_tile_id()
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260831-gtlookup_noncontig-v1-1-37f22a0cbb6b@intel.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSQqAMAxA0atI1hasE+pVRMQhrUFJpFURxLtbX
+ L7F/w94dIQemugBhxd5Eg7QcQTTMrBFRXMwpElaJlWmlT02kfXcexaehA+ySmdo6nLIizE3EML
+ doaH7n7bd+376/LI+ZAAAAA==
+X-Change-ID: 20260831-gtlookup_noncontig-13ef96a45b4f
+To: igt-dev@lists.freedesktop.org
+Cc: Matt Roper <matthew.d.roper@intel.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1210;
+ i=matthew.d.roper@intel.com; h=from:subject:message-id;
+ bh=ILeI00XqIivnSxFjvvRXvU8PyfcYSGKmQBGXm7CGkWI=;
+ b=owEBbQKS/ZANAwAKAU15JAXIcpAEAcsmYgBqleMFYpYw8EjJ1uvc9HXsKiiokV3bn/mDFb6G1
+ q9lrMSbw1SJAjMEAAEKAB0WIQTCZ8MJRH/rTz8hbaxNeSQFyHKQBAUCapXjBQAKCRBNeSQFyHKQ
+ BNYkEACmCllf6yE4gb6uBJ31CehQrmOfNygsZ/T2AmNNDNpciP0Bvc3Bptp1T3T7qdRu/4Qo/3Z
+ vz+D0xgHA5irAaQQU8Bg/0DMyGCTpA2KBA7m15Rng7DzJMKoRwzT5I75w+eRXH4Bq9dRWjIMKdK
+ CqM01YXEualL4yfgTnskhxh13q9fEgQMXHkKK2Bu7dGP9EUy2TuxHNV7ryvyLMP1cVZCw6pL1PJ
+ ukjugI/Xd1n+VRBVkdUdRHDMAMkLOw2vFb5ijobu2Iqly5aLiCsjbVhcPh8eW1oPFJqun4EZTLk
+ klCvRKx1STL1iA50PSq4BzE4Fca272xaT0BkK3R0HsjhfAR/T572l+vHzZBNrfnHPQUxy69zScZ
+ LA8WPWrdBuVRnvATLKuyZHkkwTQIDmRplIts+lmxAsFnxvR0ZRO0FFhxo+h9myjL99F90c/mbaF
+ FnU2zhSl7dEeZm/slLa+CmkyGckFW9qK7Pjt0s5lUrbccssNbXfjlUxjTm5nN0LMatW1rwgwQUl
+ HcaZWRxRQmUp+X9AQD2tXH5EN0injlxt5aXrjUGX7uKy3qL32CNFlxEi6ieceukoJ2lnSZ1NjcE
+ d66/U8trr5cTxjZEssD7Rv/8nWrQwbRnGCDRip1H40ruXnTDcDFFDvWJxccQLe0WOODqkA19XOR
+ NxyvtO6y+2F0DUw==
+X-Developer-Key: i=matthew.d.roper@intel.com; a=openpgp;
+ fpr=C267C309447FEB4F3F216DAC4D792405C8729004
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,31 +88,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Remove the data->color_depth and data->drm_format assignments from
-run_tests_for_plane() as they are not used anywhere in the color
-pipeline test path.
+xe_gt_get_tile_id() should lookup the GT record associated with a GT ID
+via drm_xe_get_gt() rather than directly indexing into gt_list[].  The
+ID may not always match the array index on future platforms if we ever
+have cases where GT IDs are non-contiguous.
 
-Assisted-by: Claude Opus 4.6
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
 ---
- tests/kms_color_pipeline.c | 3 ---
- 1 file changed, 3 deletions(-)
+ lib/xe/xe_query.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-index c8ee68992..f983bb0be 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/kms_color_pipeline.c
-@@ -343,9 +343,6 @@ run_tests_for_plane(data_t *data)
- 				test_setup(data,
- 					   crtc);
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 68e60ddc7..0b309be03 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -1070,14 +1070,16 @@ bool xe_is_main_gt(int fd, int gt)
+  */
+ uint16_t xe_gt_get_tile_id(int fd, int gt)
+ {
++	const struct drm_xe_gt *gt_data;
+ 	struct xe_device *xe_dev;
  
--				data->color_depth = 8;
--				data->drm_format = DRM_FORMAT_XRGB8888;
+ 	xe_dev = find_in_cache(fd);
 -
- 				test_plane_colorops(data, crtc,
- 						    plane_colorops_tests[i].fb_colors,
- 						    plane_colorops_tests[i].exp_colors,
+ 	igt_assert(xe_dev);
+-	igt_assert(gt < xe_number_gt(fd));
+ 
+-	return xe_dev->gt_list->gt_list[gt].tile_id;
++	gt_data = drm_xe_get_gt(xe_dev, gt);
++	igt_assert(gt_data);
++
++	return gt_data->tile_id;
+ }
+ 
+ /**
+
+---
+base-commit: d822caac6e3589c05fffb63fbfc89134b0f7ccb3
+change-id: 20260831-gtlookup_noncontig-13ef96a45b4f
+
+Best regards,
 -- 
-2.25.1
+Matt Roper
+Graphics Software Engineer
+Linux GPU Platform Enablement
+Intel Corporation
 
