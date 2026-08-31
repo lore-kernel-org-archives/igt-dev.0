@@ -4,52 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E39DCC61DD3
-	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 19:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B87FC61DFD
+	for <igt-dev@archiver.kernel.org>; Mon, 31 Aug 2026 19:22:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 83E9810E33F;
-	Mon, 31 Aug 2026 19:21:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E0FA810E33F;
+	Mon, 31 Aug 2026 19:22:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jlpIAIEd";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h7gkyEmG";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6276910E33F
- for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 19:20:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E605810E33F
+ for <igt-dev@lists.freedesktop.org>; Mon, 31 Aug 2026 19:20:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788204036; x=1819740036;
+ t=1788204034; x=1819740034;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=JrfXI2HtN6tf7EDQ+bk5rauPCgzPaFQkc8owUQKdY+s=;
- b=jlpIAIEd8LceUrCB9hqjm/A5AB6FkEBRf8i1Y4My8SyQOXWHBwd/pV6i
- PAxpxgl8W9np3evFH/SFg880FiNhUKllhdAq5BC2M7Zq8CX0ISackZxB2
- Dq91d6vpH6M17lKNZtXXvj6x0Xv5CsFK/Y7toQEmhTSIN86HAtqZ87KK/
- i+CF/mCydxXj4YlmxyEWLLEKgt5PgvHxET2g7+GlRZEAuGsoxVAVSy2x8
- K99FXMTMsJUSdkGWOsz6QHjAgSHbCyfPx8KhGN2PcAuuVOXRJPxPrnwTU
- m8fCeskasbN2gs8sRvzZIwxIch4gzYEnYGcIB3Vg+Oohq9K60daCsCHDA Q==;
-X-CSE-ConnectionGUID: 44xDtZZCQE+jIqo+W8w2YA==
-X-CSE-MsgGUID: fBZtwUb+QP+ufajsM7pCQQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88549103"
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="88549103"
+ bh=pEijAbnmLLipm9g8/fQbZVyQbb7x0BA8dLGE0l2b2p8=;
+ b=h7gkyEmGeeeKfgAsvoRVaMFi8pQTmqIJuSE+Q7cJC5XOF5jY+MvITKNa
+ a3pAGffmEVNVObYEqpk4l6gljuzaHZyavYYOXKm7eAGvgXTPujlAgLZLN
+ 6H/IKk80QUlzZCscaZfWWvN5un+1PyawienQpueNj2txykYHvwoVxp4E8
+ CXITY9oKOx/slpaoLmCol76rUYa1ilaT0GF9BypQOi9S6qu+FlINDa4KX
+ aCIxgxEXE2DzEyIgo4x0grDIbrF+eoAIBHwYVhCgyWraLnkcG4plo+vB1
+ Zm1NZ5yvWoCJOVjo3jE7negomgeDB6EmTOqWQglMydYr6hg9mhYnKWCYK A==;
+X-CSE-ConnectionGUID: +u3x4M+HSDe+OopTPITgCQ==
+X-CSE-MsgGUID: EOBryWTtRkOwqya3DPzRQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88549100"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="88549100"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 31 Aug 2026 12:20:36 -0700
-X-CSE-ConnectionGUID: EmTVqWFeS9mV2RCN10sqLw==
-X-CSE-MsgGUID: AHQUlvZLR+K35ItmLBoJ6w==
+ 31 Aug 2026 12:20:34 -0700
+X-CSE-ConnectionGUID: gR0vdgF6R5KFcmsMXJFweA==
+X-CSE-MsgGUID: ts5PtW7TSBi5opz4f8Rkzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="272392315"
+X-IronPort-AV: E=Sophos;i="6.25,254,1779174000"; d="scan'208";a="272392297"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 12:20:34 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2026 12:20:33 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: chaitanya.kumar.borah@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,
- v5 2/7] lib/igt_kms: Order IGT_COLOROP_FIXED_MATRIX_TYPE before
- IGT_COLOROP_NEXT
-Date: Tue,  1 Sep 2026 00:59:30 +0530
-Message-Id: <20260831192935.463134-3-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t, v5 1/7] lib/igt_kms: Rename IGT_COLOROP_FIXED_MATRIX to
+ IGT_COLOROP_FIXED_MATRIX_TYPE
+Date: Tue,  1 Sep 2026 00:59:29 +0530
+Message-Id: <20260831192935.463134-2-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260831192935.463134-1-swati2.sharma@intel.com>
 References: <20260831192935.463134-1-swati2.sharma@intel.com>
@@ -70,45 +69,65 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Keep NEXT as the last property defined just to represent its
-unique role as chain-terminator/pointer.
+Rename the enum/prop name to match the actual DRM colorop property
+name "FIXED_MATRIX_TYPE" and update its users accordingly.
 
-Suggested-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 Assisted-by: GitHub Copilot
 ---
- lib/igt_kms.c | 2 +-
- lib/igt_kms.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_kms.c              | 2 +-
+ lib/igt_kms.h              | 2 +-
+ tests/kms_colorop_helper.c | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 1e27a25f6..7f3b464b2 100644
+index 2d78e3bee..1e27a25f6 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -724,8 +724,8 @@ const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
- 	[IGT_COLOROP_DATA] = "DATA",
+@@ -725,7 +725,7 @@ const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
  	[IGT_COLOROP_MULTIPLIER] = "MULTIPLIER",
  	[IGT_COLOROP_LUT3D_INTERPOLATION] = "LUT3D_INTERPOLATION",
--	[IGT_COLOROP_NEXT] = "NEXT",
- 	[IGT_COLOROP_FIXED_MATRIX_TYPE] = "FIXED_MATRIX_TYPE",
-+	[IGT_COLOROP_NEXT] = "NEXT",
+ 	[IGT_COLOROP_NEXT] = "NEXT",
+-	[IGT_COLOROP_FIXED_MATRIX] = "FIXED_MATRIX_TYPE",
++	[IGT_COLOROP_FIXED_MATRIX_TYPE] = "FIXED_MATRIX_TYPE",
  };
  
  const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
 diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index c8fa11b47..8ba8e3891 100644
+index 695f666ba..c8fa11b47 100644
 --- a/lib/igt_kms.h
 +++ b/lib/igt_kms.h
-@@ -362,8 +362,8 @@ enum igt_atomic_colorop_properties {
- 	IGT_COLOROP_DATA,
+@@ -363,7 +363,7 @@ enum igt_atomic_colorop_properties {
  	IGT_COLOROP_MULTIPLIER,
  	IGT_COLOROP_LUT3D_INTERPOLATION,
--	IGT_COLOROP_NEXT,
- 	IGT_COLOROP_FIXED_MATRIX_TYPE,
-+	IGT_COLOROP_NEXT,
+ 	IGT_COLOROP_NEXT,
+-	IGT_COLOROP_FIXED_MATRIX,
++	IGT_COLOROP_FIXED_MATRIX_TYPE,
  	IGT_NUM_COLOROP_PROPS
  };
  
+diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+index 3243d01d3..f58f629f5 100644
+--- a/tests/kms_colorop_helper.c
++++ b/tests/kms_colorop_helper.c
+@@ -263,7 +263,7 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+ 		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_3D_LUT);
+ 	case KMS_COLOROP_FIXED_MATRIX:
+ 		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_FIXED_MATRIX &&
+-		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_FIXED_MATRIX, desired->fixed_matrix_info.fixed_matrix_type_name))
++		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_FIXED_MATRIX_TYPE, desired->fixed_matrix_info.fixed_matrix_type_name))
+ 			return true;
+ 		return false;
+ 	default:
+@@ -411,7 +411,7 @@ static void set_colorop(igt_display_t *display, kms_colorop_t *colorop)
+ 		configure_3dlut(display, colorop, lut_size);
+ 		break;
+ 	case KMS_COLOROP_FIXED_MATRIX:
+-		igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_FIXED_MATRIX,
++		igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_FIXED_MATRIX_TYPE,
+ 					  colorop->fixed_matrix_info.fixed_matrix_type_name);
+ 		break;
+ 	default:
 -- 
 2.25.1
 
