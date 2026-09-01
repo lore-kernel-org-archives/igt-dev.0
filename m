@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76782C61DD3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 09:44:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BAA0EC61DD3
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 09:45:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F06B810E3C6;
-	Tue,  1 Sep 2026 09:44:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5E84510EC48;
+	Tue,  1 Sep 2026 09:45:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mJladh9L";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lura/KNf";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7110610E3C6
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 09:43:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D63D310E3C6
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 09:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788255822; x=1819791822;
+ t=1788255876; x=1819791876;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=/7iinGZDS11NGLfPUlOIW50cq5sADCdojsvOMtbnAX0=;
- b=mJladh9Lu+aU5k1StaN4uM0KNYsT6hzCkbwYaW9MNW0FFw+n62bHCpY8
- eQVllt75XXXkh5pZHmqi1R1tGyKVuqmxazKNGiXQVArUvuCchUUzgJiL5
- OZUZ4P5nQJAVlNA2biCk3sVb2qvSeDteEWtl71oiCVEtAiH8K+g5g4sF4
- Rp+EBo9cN+rq0kFk5vAJ4PFbFI9ya6oKN3RtCAoLOrlzphSuhR9Nr97FR
- stBGJua95i8Yp549v4UgTZJt6h8J04Xj9fkvmOyi8+nz0cjiA6+IeWmZr
- 1NPo2HRL5fV/o55fr/ocJKkeAX1w/5pg0Lqy8KpHmwgkZW4QsEFknmf9B Q==;
-X-CSE-ConnectionGUID: bcJydM/3SI6161fJ08X0cQ==
-X-CSE-MsgGUID: C9x70VQPRFqW0nrlHU7mAw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="106051624"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="106051624"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 02:43:41 -0700
-X-CSE-ConnectionGUID: K6LXM7nbQPW/9YDD7GNwqQ==
-X-CSE-MsgGUID: pfdUAut4TumGXJS5fky9Jg==
+ bh=Gm02sB2visJDVcsoiGiECpir5N+6ZVirU2dhntImACM=;
+ b=lura/KNfzKJviMMzLJlrqMiXQacWIzcrYUfrNQmOGnz9sxJJp41R+aSx
+ 1tcd3W2gzTWMXMWvxAei9dWhPCgdouaIdK0YxkrLHsSiXbPrk6H+uPmap
+ pocIAvl4EkNbSUQRS3HpTvz1kgqGeKopgLTLwovwBlMSm3LRu1mCen861
+ rDURUIoc2Ao416TWGa5senQX4Jtdhx5lTdA7Mfpe32OjfBhaD6pw5QUS6
+ TdN1LLea0jCNMS/o48RIM32wPzRzoCfsc1/pUy8lmeOPAFsvnw+O3u5v4
+ IoWTnPVATV4gKJqigwv3JHWfaRVIJ6YlrHxJXyuR09Gs1JfVsW2XyNN2n Q==;
+X-CSE-ConnectionGUID: lkuyLkrtTNy2V0Ytyoirnw==
+X-CSE-MsgGUID: G82SbPf1TceV0XamTeHXnA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="99840014"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="99840014"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 02:44:36 -0700
+X-CSE-ConnectionGUID: DPDRO19aS/OruLTPabIQDA==
+X-CSE-MsgGUID: taVSnfH5SuOJDIn4Ic8LAg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="293880676"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 02:43:41 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="270992372"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 02:44:35 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 1 Sep 2026 02:43:40 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ 15.2.2562.46; Tue, 1 Sep 2026 02:44:34 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Tue, 1 Sep 2026 02:43:40 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.64)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Tue, 1 Sep 2026 02:44:34 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.37) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 1 Sep 2026 02:43:40 -0700
+ 15.2.2562.46; Tue, 1 Sep 2026 02:44:34 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aCHIMA5qFiNdVNFIY/uo6inwBliMt4Hk9DpVZOJebQdleC41BEA0mEgPSVJD61WteoC7+aRdUMuLfrnV6O77YvTEdTXGzU8MKxYMeLjy5ma/uqmxml/y8bqIHrGiKJvrMwxiOf2I7jfFT2oEYgvr7CzByImsn3dAl8ihIXlSV0JY/YUWGsTuXe4uCv6hj5bOzUYv0ao1+yh7vrWYzywLpiTm9IHmbehcCVIaPnG9mu9Rf+AbCgX5GxmdkKYwTqUnFJGFfGM+lgWgY+BsC6mjdKwHSPCctoy9KLOwayNZtRRrGBg3+p/xRLnpybQFgD4QL3LWvwpRMNP/c1u4EDJa+w==
+ b=mtSNoUxGDA29gVKCjxPyqpt2uLaYKOHn8QLUVx+TB3p60JtGyjEFXAlqwSYpVHbDze/GVWatwkCmXmGQNpKkRqIchyLK/rpFCPH0vYewmJiaPQyY3vhgB76WhZ2vf8FODIk+Z3MEywBgkBzvtMlqsZUuMmOVPiH/4A1Q3CueJ22QDrUmvq92Au15fZ9LU3QfWZg4YutCvgP30heSOuxVGJ+4vOyypZfaWE8PkfnnhAmRBVySi0HbVOJ9dwG8E9ro985SR3+8BVLX0uxu0cBSMXj7octNknnjPnQQev+lXyuSWGIhI0txP3boVOqMoXPxnaoAcM+0MOPlRXKe94WDFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UIpt1NI87hjZITAn7oHLP5MrY6u73KSSQNimQboOwgg=;
- b=E80nc9MJtLjd71kzf48dtXNk9S1xBYAxl8Vs1qiWNQeSBueT0MMbLlHjV2Pu+ZXOY2x1rbHjeGG4pxwbLgVuY9VIRyr2JCH2JebtnduegFEvdNMR5ZQJy+yR4sUdOi15i1At00VuWJ2P05ASVq06G8l7CuL6kcatKbXQZoVlqrmb9h7KtR3pcMdaa4QWA0cVVSPmvYqxfhZqMbEJ/txKdyWHEyEY8ce/+2bWQpbQi8efi1nfMVc5DrT/buacvCZVdFcHeAmRhz8ZRyyCybXzvA0dFUcwcvbZv9VdiBGko+WXjN5gJkfQDHgtmj4xJIEY3DaIifa+LloYc37r0AFhOA==
+ bh=VytnSaoQMgYDT4nP0PeZt0q1dKb859OyQ4CdUXAhY9w=;
+ b=jWRXUBOEmIvUohzRetwdvan8sEIldjbWAIDXWGMDPeWlHxJeezEcMhIRwGQhBoIUMNpW9QSrV3fshYon1PFZlv4CZTxRh4mIIjxJ4WHfUQDYeD5VoOGEPRq8lZuD6up/NGM8T+r4iHEGENVdmUSMC7ix4WiQqc0KTWbL9SxwDPWGJZekNxrEUZLn4WKApQeHAYoq7hzfWz1tpgMNnTD115aj7grqpt+2y+z1hSXLf/DpS8z4+/8py2zT9A4ej0R8OWfJrAoQdoEMzDAscr6hSsEUH1fbho9yu+CO+ZPeWOhSezcz0drNEPP6GGW+45iXS7v/3CrrKmeWsTOdAQvXBg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,93 +69,93 @@ Received: from DS0PR11MB7651.namprd11.prod.outlook.com (2603:10b6:8:149::8) by
  PH0PR11MB9703.namprd11.prod.outlook.com (2603:10b6:510:399::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
- 2026 09:43:38 +0000
+ 2026 09:44:32 +0000
 Received: from DS0PR11MB7651.namprd11.prod.outlook.com
  ([fe80::901e:b308:292b:1b2f]) by DS0PR11MB7651.namprd11.prod.outlook.com
  ([fe80::901e:b308:292b:1b2f%4]) with mapi id 15.21.0382.007; Tue, 1 Sep 2026
- 09:43:38 +0000
-Message-ID: <c7fd5d87-266b-42e5-9410-3ea05811f884@intel.com>
-Date: Tue, 1 Sep 2026 15:13:31 +0530
+ 09:44:32 +0000
+Message-ID: <538ef2f5-117a-40fa-973d-7309950f3a7f@intel.com>
+Date: Tue, 1 Sep 2026 15:14:24 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 04/10] lib/igt_drm_netlink: add get_error_counter
- support
+Subject: Re: [PATCH v3 07/10] tests/intel/xe_err_injection: Add GT UC Unicast
+ GAM Walker Command Parity Error Injection
 To: "Purkait, Soham" <soham.purkait@intel.com>, <igt-dev@lists.freedesktop.org>
 CC: <riana.tauro@intel.com>, <anshuman.gupta@intel.com>,
  <mallesh.koujalagi@intel.com>, <raag.jadav@intel.com>
 References: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
- <20260824164133.129138-5-ravi.kishore.koppuravuri@intel.com>
- <1ff57ea1-8351-460f-919a-88c817a3c2d0@intel.com>
+ <20260824164133.129138-8-ravi.kishore.koppuravuri@intel.com>
+ <8ac9fdd8-4bdf-446a-8ca4-f66bec6a6f7c@intel.com>
 Content-Language: en-US
 From: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>
-In-Reply-To: <1ff57ea1-8351-460f-919a-88c817a3c2d0@intel.com>
+In-Reply-To: <8ac9fdd8-4bdf-446a-8ca4-f66bec6a6f7c@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0184.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1ac::10) To DS0PR11MB7651.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0114.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:11d::12) To DS0PR11MB7651.namprd11.prod.outlook.com
  (2603:10b6:8:149::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB7651:EE_|PH0PR11MB9703:EE_
-X-MS-Office365-Filtering-Correlation-Id: f90cb885-4f0a-41b2-a973-08df080d7ffa
+X-MS-Office365-Filtering-Correlation-Id: d6f97e90-6af7-4d5d-f728-08df080da036
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|366016|23010399003|376014|22082099003|18002099003|56012099006|4143699003|10067099003|11063799006;
-X-Microsoft-Antispam-Message-Info: QOIi+wKgP9LWusH+YNlToknK/CcIYOu1pxKvBB9Fey5qa12AQCr6q138Cxiy4GBPQ0JDatfwh8XEEjgRLgBLdrCjJY1JnBxHcc8qWeZQkd9HIwKzbbMauTGzCWOh5P9W3vFFgqs3yF/VfbyF8xL6ery9zHj7yyofOauadqvvKAgcu1AwO5RCS+yEZZbcQ+nM2gungvM0+M2vbkaS6IBFx9TNKZvOkIlTxINxc7rZ3/nyEq1z8TwUhavLo+JpYqG1A6RKDW07F23vfXB0Xln0N5nvvBvitKEQLbs+kjpWLvsMJUrD0u5M7FLQ0XNVNaG5H0h4WqvCrGVLFWfTZ0JX/p27e1yXCL4q7WNMDluxyxEDvYtGGS6JP90TU+TshBt/FjfVUrf8KiurollxaaarAevNP9rCRJ1e9WWEYt/DbsCxnYZD/mHh8pLsxcHocx597S4B8bXEmszjGNHceiNTgogsuLmfJB6s2H2pL20CWi5j4oMQpMCkNGVxOQgPN5QtbHUkfaKFgRoqPFBkVVXod8swmrm1UHV8wAevXl5WOKuXgZNJHdDEgKvzkg4lLDU8hLCqp4qNBeGN48pMYVwMJXsEb0AOdKvmGEXoSyepYy/WMQyV5/rkv2iBSFZMGWlpsv0dlL2D+PYnb8fdsqIJRHyGQRWtzbhRUgBV4KpQ4JY=
+ ARA:13230040|1800799024|366016|23010399003|376014|22082099003|18002099003|56012099006|4143699003|6133799003|10067099003|11063799006;
+X-Microsoft-Antispam-Message-Info: Ei5wzrI2dozNO4K1xVFy6YmNZkckknP7uR/38WKY+ju9YuMd58by4OFdg4qhkwaQSOAyjHKrnsHTXdpF9AxorVpGlGhpweFl48pbZkfG4EGLa+x/TKLJ2vVIUcqV+bDIyANZYNPKxftt81Qyg7ofhpyqXCt4WOO/mHQn7HcA9L5WO0f2MD1m0SgxmMRuYlL9Gm1zaF9hSPua7Yjiu+BvNa0rmjVqoG6yUiUdqpdQ9PlMsUTPhyRDzHi8Ari30Y3ewys0sWMFfHXlqQS3Hxgv30C5m0AW4trYvK7HywQr5CXHU9LgL/CIuC4oMIL+hYdG48zQAIqWs5qgKZI4/uW6tenWnkz8ob/x4eFDYJ2nOu88SGCIqtHa0MNMAZVnl/jDPQbIJMIxGI/ndHEFNnMAiuz5bFzekLGyuC79JDH3r7MECH0dh4iXusfJiTl9gTrYnPWlAfqlSVTwVBlhL5WkiHLRM5OfggNINbogAHrKVVAgKPRyQzUdJ8ETp15rVtTX00Oa3yG55bPPDeVo+N5eMF+a0vv6ivvS1fia57twIu3zdvvKYbxsvhyRBQr+sic0b7fbU/Xj52zdCkNVAdSQAyDSpBUYJE/YWcjgrL/f9qCRb6MiTSpu4RlIaLLw8S7P3M1fnZRhhAcJzRKf0d4l1aZWZSzmCon7WcG5qI/BiVs=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7651.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(22082099003)(18002099003)(56012099006)(4143699003)(10067099003)(11063799006);
+ SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(22082099003)(18002099003)(56012099006)(4143699003)(6133799003)(10067099003)(11063799006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WWtPMXU3bTdDaVNPUEZ0QWtuVEQwYzNrbXptT0U4anMzWVViZmdpeHV6a1R6?=
- =?utf-8?B?M0hTR003eVgrOEVWWG1DVUNHa2VEcnBoRjRoQnBqMndrc1JndW5HYnppbUdM?=
- =?utf-8?B?MFpMTy8xem5NTmY2N2lmUDhOS3Nkc2wxQ2NVN28vYU1oaEJCTjM5L1V2Z1Fy?=
- =?utf-8?B?eXExbUdueUlicHpxOThSak4wSnhzMjArV1pURjUza2xMTnFhcEppWlp0RVJM?=
- =?utf-8?B?OTBERW4wL2FiYWpNWlY4YjlKMDRUV1BFeHI4ZXlSRjV6WGkzS3M0MnBzaUt6?=
- =?utf-8?B?OC9tRGZCRGs0QmpaU2Y1d0dvbkhIZlZLaHpraTZOaG5BQUxuK2Uvcmg2ZzNm?=
- =?utf-8?B?VmMvWTlENHV5TkhHeTJKa1NqZ21RanJMcU9sU1NXaG1vNlJ4dE1QL2IyT0Zz?=
- =?utf-8?B?VHJuZkMzN3J3a1ArZWtzLzc1bVhhUDhsZWRpS2RyQUJEUk4yZ0RQd1BLRE55?=
- =?utf-8?B?TUxHQjZpTW5tUWNTMkU5TVBuUkhlZmRIMk54eVBBK3E4VU9kaUJkVUhZMC9L?=
- =?utf-8?B?MWxwUFBEa0pza2Z5SjFCaVM1VUs1TTRjTU1FOUxISXgrQUF5VkxIMC84aDd3?=
- =?utf-8?B?U2czdk5Dekc5Q2VReGV3Qm1pV2RMMngyYnZtZlhHSXdMNDNtRDZOMWwwM2ND?=
- =?utf-8?B?NEh1WExFMlJETXhRQWkxRVVYaC9vaXR0Z3R1YWNaSUZvTWxLWXdkWHFHV1Vx?=
- =?utf-8?B?dW9sNEg2YXFvbFVBYWtiY0ZyV3VBa3QxRU5idlJhUTNBSm9hVFArRTQ2QTl5?=
- =?utf-8?B?Q2lqdGxMNzgvMEVQb0VVbXIwcU9QRkpnK3k5NEZEVFB1VlhTN3paa1BiOGtp?=
- =?utf-8?B?OVhPTUIrNTlycjA0dDhOT2lRK2ZOei9LbjhLanZRTG1ZT3Q5a1orRkNSb084?=
- =?utf-8?B?c1gvZDdhclIvZ0JBZE5xWkd3QTF1a2FZTWNZQkJXdC8vMlA1emswSjl5UHBs?=
- =?utf-8?B?aUJGS1VnQ2t4bkY0NXlxZ05GdXpETXdwbGU2UVdhVjhKLzF3TEhja0lzMUNk?=
- =?utf-8?B?R0kxbkVRcXRYelVIV29udHJxbkx3UU5QaVNucG41d0ZHalRiSFBVTjY1TmVp?=
- =?utf-8?B?bkM1a2RXN0tDbVVzRHlJUUZzOG12LzNxREN4RXNmbmV0SmdBY2doMFRtY1Qr?=
- =?utf-8?B?TlVmK3NQWjRNcXJVQkNpMzRmYVNNcFczckxGT3A5MWdkMVBHR1VXRTJOQnpK?=
- =?utf-8?B?US85c0lrRk1IOE9xd29jZkRYcHB4UmJlbldVdk9WOTZ6N0RvYzFVMHRRYlBq?=
- =?utf-8?B?ZUJJYlhIZEhXK2N3T1U2azdWMUd1UXc2TWFQVjVDQi85OFlUa0FCV2dmSnpw?=
- =?utf-8?B?bjlpRXpGeHo3Z1FUZWpXOEJYenBQMVR5SGI5S0p4WVNhNUZwOUhRWW1GTmg2?=
- =?utf-8?B?YXAvTWdNdWxDZGFWZmxrNnE0UDE2KzV4T05jZ0hpZnBTdXNwc1VkUHpWV0ow?=
- =?utf-8?B?eG9JVHJpR1hhQXZkaG9zeWZ0MnowL0dFY1paTzBUUHhEMGcrOUdyYnV0aVFw?=
- =?utf-8?B?WjJueUVMR0dkWFI0SUh2NHdhUGFiNWgwWXA5UVBSRzhzdjFJRkxVRWFoQjFR?=
- =?utf-8?B?c0Jld08yc0w4b3d3UGkwR0NTTzMwMWFoWkNOVC9GN2JHSlNyVUk4NzI1U2k0?=
- =?utf-8?B?M053L1N4aG41OFN3c2w1U253bFBCT3BvWjhMbm1XaWNzOHN4UHV1N0h2N0NN?=
- =?utf-8?B?cFN0K3hWMWdRMG5lcWRhQkZBWDczVExLMzE2UkNwN21OdWx1bFNxank5cjBI?=
- =?utf-8?B?Vm9mU1MwV0E1Wmh2NS9iUXA3eDZJZERUTlBsVEFQSXg0SWZwSmJtWkJ2VEdI?=
- =?utf-8?B?S2c1dTJLQWdUQkZoQzZkb0s1Ujk1Z2VkVjVKVmQwc0lxLzZQVUlxMXYxekRF?=
- =?utf-8?B?NkpCdlF0TUYzQ0RMYnVBVFI5UHFRbWZZZ2hvc00velF1M244WXJrRU4xV0oz?=
- =?utf-8?B?ZFdLOHFjS1JoZGVVMVBWZmdjVG11eXRIVkJKK0VNK01mTWVReTNONm81eHBL?=
- =?utf-8?B?VU9rSEQ1d0ZNb010d1Y5RnNabzUyWUpISmVTQ3hPTWdYQS81Y09Jc0RReXM3?=
- =?utf-8?B?d0QxSThDTmtvWXl3aVJoY2tTZ1dVMjI3b2I2N01mM0dRYjg3dkRXS0wxMHp0?=
- =?utf-8?B?Zm5YQy93Z3c1VVU0NGcrbmVJYjR5R0tLeFBmNHVQdmRYTjhnRlNJRGJwa0w3?=
- =?utf-8?B?Uit3L0x6NnRlTS9Fb2JwQTI3aXc3M3dINWJxdEo4NlNFM25zcG9zU05yMGZU?=
- =?utf-8?B?MEN2S3cyME9CaGpBOGE3ME5OY1dvbGZzNklRdXQyZkZxYU5CeDB6VWhYcTll?=
- =?utf-8?B?eXJST1BrTlRGMlpMVStMaFZybjlLMXUrNFVQOFRFK2F4M0FuNkpXMDJOSUZS?=
- =?utf-8?Q?116+mRDUd2lVbhxxOSbV+RfcgrGU0v/KfxQKD?=
-X-Exchange-RoutingPolicyChecked: 1sdxnVrtZQ5HMumBpM0pe2czxqP38XZffj0cyiZkBbxEXo3uJHLxEeikPa7DWJfjBhzxwIGx/z3KQoBs6yp5gSOq21EV2ho8AYim70qBMApP+3DrzQbzZMwMYoYoEBP5c6HFD7OwKtvZdHd3zaWZilvyQEJwqXKwv8I0Q/oLTDjLnkCdwqOmUlEdqi37aLAjkEnw7329leeoLAJNzK735p4BsXvcHd2DcMH4QHS0owchp1cIUO6V4wsQCs2pPuFIVCe329M0kfJqX+Nb6g+ou5LtrQP9NyOeur+C3QZV8D1JTKEQNRPiFDtD/OJf5XOR95Fm3584Y9C3ky9n9yYlyw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f90cb885-4f0a-41b2-a973-08df080d7ffa
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N2pLNlJZRVl1Vjh2cmg4Yk9xK2JETHhEL0VYc1FqMUZ4RDZhQVhIdjhjR3dz?=
+ =?utf-8?B?TWxOV2FLN2xWSXJ0d3VxU3BzZ3dHeVZ3SXNXMEQvZGg1R1N6QkZGak1zNFVh?=
+ =?utf-8?B?VTZ2NG5GQlNKVXJBRTdQTVE1MVhCMmVIT29FendFWXdES1NCU2FMdGdsSXlQ?=
+ =?utf-8?B?bmpidi9LRGN2d25IUTFjSkVlN3VIK2dhMDM2QkViZk42amdvV3U5QTl6amhV?=
+ =?utf-8?B?ZWwrQWg3bUQyQUFzOUFHTTNOREdFRG0rSUZwT0dySWNsY3JOQ0dSY2dFZVhP?=
+ =?utf-8?B?M3V3b2FNVVBCM3NsazVtbWVPSUEzZnpCM25LWG1YTnhGQmludDZiQXJvOXFh?=
+ =?utf-8?B?MXNMS2E1alJ3aGRQR3VwTDluQkdhaC80aGNLeHNvWkFjM2NQZmxwN2lGcFUx?=
+ =?utf-8?B?dW9DZGp2dm0yR2E1YWYwei9ibkVTMXl5c0lwZGExZzhmQTVBMGZxOVhoaE03?=
+ =?utf-8?B?ellFZTNnVWpJMUViaTFHUmhtdkVmc080OGpvZjBGOFV6c1ZsOVV6QnJYd21U?=
+ =?utf-8?B?RGlmWGpJR0pRUjVmRXF5M1M4WVYwYkgreDlPbVRVOHc0YlN4OFZxZWZFcXBr?=
+ =?utf-8?B?TEIzWFdqekFlN2xJRVhaR01xY3hEQTJhRjR2TU5BcXF5bkxKcWdDS1RxQXpD?=
+ =?utf-8?B?ZnEwSURaTzN2cTcycEhnYjFhWWcvU1plMXAwYkd3N1UxT2tKclRQMlNDYUN1?=
+ =?utf-8?B?SlN3SlhlWlB6cllZMHQ2alJzM0FJT090ODFvb2FNYnFBZTc3b2huVFU3czhp?=
+ =?utf-8?B?MzBTMk55OE41WGJXNHpxSG1neVV6RjYwNXFveFBEVEdUMXhSQUFZTTBobVVl?=
+ =?utf-8?B?L1ZqRmgyM2w2UEZybnZpdFpuYVdjYUhYdzlIU2wyZEhhRWRrQ3FNS0xYVG9V?=
+ =?utf-8?B?ZVZiUzdqRmcyNS9ueDhwQU03SjhudUhyNVczQklwUHJHcTBQZEZGcDRMNzFi?=
+ =?utf-8?B?d2RIYmhPb0V3cXkzQnpsQVZZaTB1Z21jaDY1cEs5UU9QMjVWTTNBUDA0K3BW?=
+ =?utf-8?B?cEhHUjgxeU1mV2piVVY1aWZTa2lGb25FRDdCdHJGVUlKOWlHVnU4ZWQ2dTc1?=
+ =?utf-8?B?bjIrZFhObzh5TVlNem82ZEt6NmZVRjhKTXJ2bTdtalg1b05xelB0ZVZtanhm?=
+ =?utf-8?B?TXVkS29HZEhiR1lURUMwVDQ4dlM4eXRmRjlQaXhjejBoSFpaeUN4dGJJaDJX?=
+ =?utf-8?B?YlluenE1VmV0SDRGOWhLV3JxUy9QeEFPUnAxb0txWG9lbFdvU1RtcDQyVGRG?=
+ =?utf-8?B?K2U1bjhhUVdNME10amZZdWxsZVNKMWMxWGhPZHpnMUxjQTNTWWF5dFhZbWM2?=
+ =?utf-8?B?dlBSZ3VVMWkxODFsRmN2KzNMWnlPMWowaElxbkJyUjdEcGtiZTdsdlBiUHdz?=
+ =?utf-8?B?ZVh6aEZCeHJSaDZ5TTFyNzR6enkyUW1Ibk5PMzRSaDA1cFltVnFIcVB4bC82?=
+ =?utf-8?B?MTgraEZoVUFFc1VxSEpNWE45YnhFN2lUUHlDUkppeDBZY1ZZK3BKZS8vM2s1?=
+ =?utf-8?B?RWR3MHM0U3p1MFlpODlhVVNxcVhyRnE5WGt4ZHFXZkFZcFhGVVVKaUxkbzBo?=
+ =?utf-8?B?TkVnZjJOUmRDN24zcWl4THZFRGMraEZnczFjRUxVVmxjQUJESCtyaGdxTU9p?=
+ =?utf-8?B?SU4zVnZiYVV2eThvNUFJZ1lCZzBDTHZhYmZvdDE0cGJPSHBUREZ0Tk8yMWt6?=
+ =?utf-8?B?b2JiUTQ1SXNDL1RGNi8xQjA0SitQMW1lWStJOEw5ZHFzNlRLaGVaQVl5UlY5?=
+ =?utf-8?B?V0cxNUVlSGhmaXE1STJGNHhMR2dhNUxLekhwVkFPRVBhK0RKdzQ1ZmZWREh6?=
+ =?utf-8?B?N1lQS3JMSnV6S3ZkaG12eitTZzBFLzlYOFpValp1a29VL0oyblhTWjJDTFNx?=
+ =?utf-8?B?U2J0Qm1hdklmeTB2UUJuVGthRjY4RCtqQ2o4R3BoY0FIdHhSUUFlelVzVnNk?=
+ =?utf-8?B?dXlUeUVPUkNhNUFFbVNUaTVua21uQ2c5WkNYdXhwVW1XVllVeVZOUjcxZzN1?=
+ =?utf-8?B?RTlpV3VsTWo0MDBiRDM1V0V4SU92QWsvZDdKSUtNczk0aEpWYnZwMjBmTDJ4?=
+ =?utf-8?B?RGZZekNGWUJLQzhTcC9aRWQ3L0ZtakYxcVBLdlpiMVMrR25pQzVoTFJaMHQz?=
+ =?utf-8?B?d2pKWktqOXYrK2thRXMzUldBejBvYjlxYVdnM3hXdWpHcmdJU1hIOHNMbjFo?=
+ =?utf-8?B?RTN0eUxaZUVUbkFlQVhaNjA2ZWFZczFoRjcwK0JOc1cvMlJQY25Ld0Vjbi96?=
+ =?utf-8?B?UW1WSU5uT2I2cUYyaEpxbG12MGdTa1Fzb1VCTVIyWTVWT0srTEx2ekdNVE1t?=
+ =?utf-8?B?RWVqNlY3YnFHMDdpQ1RlVWFwVlpwbUJUTVZtc29Ma25SR0I3dVJKK21pM202?=
+ =?utf-8?Q?WanDVVJwQVrLWijKXBOv6Q7AKrFwqTR49g5VL?=
+X-Exchange-RoutingPolicyChecked: h3FD69htmUQZXQ2YdDLYN/PPlGegYKbSy32pQwhosgdAWmFhtTn5SS45xLrxSZJq/+Q3zhL2kE8l9kyWYVwneM56huz2T+uJ5QhVBE51yXmwKbhHAz6hkW1Qw4WJ+2nuW3rIpO52a3zj3S4QXy6znDkWp38Vh8xRG10K7Xju2PVu3XRcjeUSStXrA06DffkwBTmHa6m17OtpiWT0e7aR5WcjjhhBNP7JMWLoTCwIxuyE9d7y593IY1tXcKfm6+mdtbDwbOxN324vhFvERkm6vsrTDvEUipJpYVJGMBZG44WugspL+22F/JnMhnYJgkju+3jLa2IjJAf2hTmNYnhiOw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6f97e90-6af7-4d5d-f728-08df080da036
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7651.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 09:43:38.5845 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2026 09:44:32.6740 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MygiYjw7e4ClZoDIlLIvbvS/crBWPEV7vMv08k43KQbacCMgMZUbkecZCoKOx6NaN5sJy2Fn0MMiBg1tJscl0eTAW3ffiiniabBJxlTCVAkGduh2lpqaye99wjJOkuHy
+X-MS-Exchange-CrossTenant-UserPrincipalName: JHl5NA1UQuJQZwULzjXiZcjokzyhAqyBvInsQPBNHRzT7xt9H9Ab6GLVkMy3373tGRKkqx0zEvR3WY6JGKW4R1YV+nhwyPwc9/ztH9t1vcsSMVc33y/jpuUN8v1YXhdS
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB9703
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -174,366 +174,418 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 31-08-2026 21:28, Purkait, Soham wrote:
-> Hi Ravi,
+On 26-08-2026 14:48, Purkait, Soham wrote:
 >
 > On 24-08-2026 22:11, Ravi Kishore Koppuravuri wrote:
->> Add netlink request/response handling for DRM_RAS_CMD_GET_ERROR_COUNTER.
+>> MMIO based GT Uncorrectable Unicast GAM Walker command parity error
+>> injection to verify the Xe driver error handling and recovery flows with
+>> the help of DRM Netlink API suite
 >>
 >> Signed-off-by: Ravi Kishore Koppuravuri 
 >> <ravi.kishore.koppuravuri@intel.com>
 >> ---
->> v2:Handled ACK/FINISH/ERR nl responses using separate callbacks
->>     Added a check whether error_value updated by valid callback or not
->>     Added a check whether response required for the command or not
->> ---
->> ---
->>   lib/igt_drm_netlink.c | 264 +++++++++++++++++++++++++++++++++++++++++-
->>   lib/igt_drm_netlink.h |  14 +++
->>   2 files changed, 276 insertions(+), 2 deletions(-)
+>>   tests/intel/xe_err_injection.c | 321 +++++++++++++++++++++++++++++++++
+>>   tests/intel/xe_err_injection.h |  18 ++
+>>   tests/meson.build              |   1 +
+>>   3 files changed, 340 insertions(+)
+>>   create mode 100644 tests/intel/xe_err_injection.c
+>>   create mode 100644 tests/intel/xe_err_injection.h
 >>
->> diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
->> index fec1639b4..76223f3de 100644
->> --- a/lib/igt_drm_netlink.c
->> +++ b/lib/igt_drm_netlink.c
->> @@ -5,6 +5,7 @@
->>     #include <stdbool.h>
->>   #include <stdint.h>
->> +#include <errno.h>
->>   #include <stdio.h>
->>   #include <stdlib.h>
->>   #include <string.h>
->> @@ -17,6 +18,225 @@
->>   #include "igt_core.h"
->>   #include "igt_drm_netlink.h"
->>   +static int ras_command_cb(struct nl_msg *msg, void *arg)
+>> diff --git a/tests/intel/xe_err_injection.c 
+>> b/tests/intel/xe_err_injection.c
+>> new file mode 100644
+>> index 000000000..ded5f558f
+>> --- /dev/null
+>> +++ b/tests/intel/xe_err_injection.c
+>> @@ -0,0 +1,321 @@
+>> +// SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyright © 2026 Intel Corporation
+>> + */
+>> +
+>> +/**
+>> + * TEST: MMIO based Error Injection
+>> + * Category: RAS
+>> + * Mega feature: Telemetry
+>> + * Sub-category: Driver
+>> + * Test category: Error Injection
+>> + */
+>> +
+>> +#include <stdio.h>
+>> +#include <stdlib.h>
+>> +#include <string.h>
+>> +#include <time.h>
+>> +#include <fcntl.h>
+>> +#include <unistd.h>
+>> +
+>> +#include "igt.h"
+>> +#include "lib/igt_drm_netlink.h"
+>> +#include "lib/intel_reg.h"
+>> +#include "lib/intel_compute.h"
+>> +
+>> +#include "xe_drm.h"
+>> +#include "xe/xe_ioctl.h"
+>> +#include "xe/xe_mmio.h"
+>> +#include "xe/xe_query.h"
+>> +#include "xe_err_injection.h"
+>> +
+>> +enum {
+>> +    RECOVERY_SUCCESS = 1,
+>> +    RECOVERY_FAILED,
+>> +    RECOVERY_TIMEOUT,
+>> +};
+>> +
+>> +static void run_xe_compute_on_all_engines(int fd, bool state)
 >> +{
->> +    struct app_context *ctx = arg;
->> +    struct nlmsghdr *nlh;
->> +    struct genlmsghdr *gnlh;
->> +    int ret;
+>> +    struct drm_xe_engine_class_instance *hwe;
 >> +
->> +    nlh = nlmsg_hdr(msg);
->> +    gnlh = nlmsg_data(nlh);
+>> +    if (state == POST_ARMING_INJECTION_WL)
+>> +        igt_info("Running compute-square on all engines post 
+>> injection\n");
+>> +    else if (state == POST_RECOVERY_WL)
+>> +        igt_info("Running compute-square on all engines post 
+>> recovery\n");
 >> +
->> +    switch (gnlh->cmd) {
->> +    case DRM_RAS_CMD_GET_ERROR_COUNTER: {
->> +        struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
+>> +    xe_for_each_engine(fd, hwe) {
+>> +        if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+>> +            continue;
 >> +
->> +        ret = genlmsg_parse(nlh, 0, attrs,
->> +                    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
->> +        if (ret < 0)
->> +            return NL_SKIP;
->> +
->> +        if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE])
->> +            return NL_SKIP;
->> +
->> +        ctx->error_value = 
->> nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE]);
->> +        break;
+>> +        igt_require_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, 
+>> NULL,
+>> +                                    EXECENV_PREF_SYSTEM),
+>> +                                    "GPU does not support "
+>> +                                    "compute on engine\n");
 >> +    }
->> +    default:
->> +        return NL_SKIP;
->> +    }
->> +
->> +    ctx->reply_received = true;
->> +    if (ctx->ack_received)
->> +        ctx->cmd_done = true;
->> +
->> +    return NL_OK;
 >> +}
 >> +
->> +static int ras_error_cb(struct sockaddr_nl *nla, struct nlmsgerr 
->> *err, void *arg)
+>> +static void write_reg(struct xe_mmio *mmio, uint32_t reg, uint32_t 
+>> value)
 >> +{
->> +    struct app_context *ctx = arg;
->> +
->> +    ctx->last_nl_error = err->error;
->> +    ctx->cmd_done = true;
->> +
->> +    return NL_STOP;
+>> +    xe_mmio_write32(mmio, reg, value);
 >> +}
 >> +
->> +static int ras_ack_cb(struct nl_msg *msg, void *arg)
+>> +static void modify_reg_bit(struct xe_mmio *mmio, uint32_t reg_addr,
+>> +               uint32_t bit_mask, bool set)
 >> +{
->> +    struct app_context *ctx = arg;
+>> +    uint32_t regval;
 >> +
->> +    ctx->ack_received = true;
->> +    if (!ctx->response_required || ctx->reply_received)
->> +        ctx->cmd_done = true;
+>> +    regval = xe_mmio_read32(mmio, reg_addr);
+>> +    if (set)
+>> +        regval |= bit_mask;
+>> +    else
+>> +        regval &= ~bit_mask;
 >> +
->> +    return NL_STOP;
+>> +    xe_mmio_write32(mmio, reg_addr, regval);
 >> +}
 >> +
->> +static int ras_finish_cb(struct nl_msg *msg, void *arg)
+>> +static int acquire_forcewake(int fd)
 >> +{
->> +    struct app_context *ctx = arg;
+>> +    int fw_handle;
 >> +
->> +    ctx->cmd_done = true;
->> +
->> +    return NL_STOP;
+>> +    fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+>> +    igt_assert_lte(0, fw_handle);
+>> +    return fw_handle;
 >> +}
 >> +
->> +static int register_callbacks(struct nl_cb *cb, struct app_context 
->> *ctx)
+>> +static void release_forcewake(int fw_handle)
 >> +{
+>> +    if (fw_handle >= 0)
+>> +        close(fw_handle);
+>> +}
+>> +
+>> +static uint32_t get_counter(uint32_t node_id, uint32_t error_id)
+>> +{
+>> +    struct app_context ctx;
 >> +    int ret;
+>> +    uint32_t error_value = UINT32_MAX;
 >> +
->> +    ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, 
->> ctx);
->> +    if (ret < 0)
->> +        return ret;
->> +
->> +    ret = nl_cb_set(cb, NL_CB_ACK, NL_CB_CUSTOM, ras_ack_cb, ctx);
->> +    if (ret < 0)
->> +        return ret;
->> +
->> +    ret = nl_cb_set(cb, NL_CB_FINISH, NL_CB_CUSTOM, ras_finish_cb, 
->> ctx);
->> +    if (ret < 0)
->> +        return ret;
->> +
->> +    ret = nl_cb_err(cb, NL_CB_CUSTOM, ras_error_cb, ctx);
->> +    if (ret < 0)
->> +        return ret;
->> +
->> +    return 0;
->> +}
->> +
->> +static int send_and_recv_nl_msg(struct app_context *ctx,
->> +                struct nl_cb *cb,
->> +                struct nl_msg *msg)
->> +{
->> +    int ret;
->> +
->> +    ret = nl_send_auto(ctx->sock, msg);
->> +    nlmsg_free(msg);
+>> +    ret = igt_init_nl_socket(&ctx);
 >> +    if (ret < 0) {
->> +        nl_cb_put(cb);
->> +        return ret;
+>> +        igt_warn("Failed to initialize netlink socket for error 
+>> command (ret=%d)\n", ret);
+>> +        return error_value;
 >> +    }
 >> +
->> +    /* NL Reply and ACK arrive as separate responses */
->> +    while (!ctx->cmd_done) {
->> +        ret = nl_recvmsgs(ctx->sock, cb);
-> If it is blocking, as this is being used by send_command, it will 
-> block the process for
-> ever if no netlink message is received.
-> In that case isn't it possible to set this nl_socket in non blocking 
-> mode and poll the messages?
-I will add timeout here in the next revision. Thanks
->> +        if (ret < 0)
->> +            break;
->> +    }
->> +    nl_cb_put(cb);
+>> +    ctx.node_id = node_id;
+>> +    ctx.error_id = error_id;
 >> +
->> +    return ret < 0 ? ret : 0;
+>> +    ret = igt_get_error_counter(&ctx);
+>> +    if (ret < 0) {
+>> +        igt_warn("get_error_counter failed from error command path 
+>> (ret=%d)\n", ret);
+>> +    } else {
+>> +        error_value = ctx.error_value;
+>> +        igt_info("get_error_counter: node_id=%u error_id=%u 
+>> value=%u\n",
+>> +             ctx.node_id, ctx.error_id, ctx.error_value);
+>> +    }
+>> +
+>> +    igt_cleanup_nl_socket(&ctx);
+>> +
+>> +    return error_value;
 >> +}
 >> +
->> +static int send_command(struct app_context *ctx, uint8_t cmd)
+>> +static int check_dmesg_for_recovery(const char *marker, int 
+>> elapsed_secs)
 >> +{
->> +    struct nl_cb *cb;
->> +    struct nl_msg *msg;
->> +    void *msg_head;
->> +    int ret;
+>> +    char *buff = NULL;
+>> +    size_t buff_size = 0;
+>> +    ssize_t line_len;
+>> +    FILE *fp;
+>> +    const char *success = "AER: device recovery successful";
+>> +    const char *failed = "AER: device recovery failed";
+>> +    bool marker_seen = false;
 >> +
->> +    msg = nlmsg_alloc();
->> +    if (!msg)
->> +        return -ENOMEM;
->> +
->> +    ctx->last_nl_error = 0;
->> +    ctx->cmd_done = false;
->> +    ctx->reply_received = false;
->> +    ctx->ack_received = false;
->> +    ctx->response_required = false;
->> +
->> +    msg_head = genlmsg_put(msg,
->> +                   NL_AUTO_PORT,
->> +                   NL_AUTO_SEQ,
->> +                   ctx->family_id,
->> +                   0,
->> +                   NLM_F_REQUEST | NLM_F_ACK,
->> +                   cmd,
->> +                   DRM_RAS_FAMILY_VERSION);
->> +    if (!msg_head) {
->> +        nlmsg_free(msg);
->> +        return -ENOMEM;
+>> +    fp = popen("dmesg", "r");
+>> +    if (!fp) {
+>> +        igt_warn("Unable to open dmesg to check recovery status\n");
+>> +        return -1;
 >> +    }
 >> +
->> +    switch (cmd) {
->> +    case DRM_RAS_CMD_GET_ERROR_COUNTER:
->> +        ctx->response_required = true;
->> +        ret = nla_put_u32(msg,
->> +                  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
->> +                  ctx->node_id);
->> +        if (ret < 0) {
->> +            nlmsg_free(msg);
->> +            return ret;
+>> +    while ((line_len = getline(&buff, &buff_size, fp)) != -1) {
+>> +        (void)line_len;
+>> +        if (!marker_seen) {
+>> +            if (strstr(buff, marker))
+>> +                marker_seen = true;
+>> +            continue;
 >> +        }
 >> +
->> +        ret = nla_put_u32(msg,
->> +                  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
->> +                  ctx->error_id);
->> +        if (ret < 0) {
->> +            nlmsg_free(msg);
->> +            return ret;
+>> +        if (strstr(buff, success)) {
+>> +            igt_info("Found \"%s\" in dmesg after %d secs\n", 
+>> success, elapsed_secs);
+>> +            free(buff);
+>> +            pclose(fp);
+>> +            return RECOVERY_SUCCESS;
 >> +        }
->> +        break;
->> +    default:
->> +        nlmsg_free(msg);
->> +        return -EOPNOTSUPP;
+>> +        if (strstr(buff, failed)) {
+>> +            igt_info("Found \"%s\" in dmesg after %d secs\n", 
+>> failed, elapsed_secs);
+>> +            free(buff);
+>> +            pclose(fp);
+>> +            return RECOVERY_FAILED;
+>> +        }
 >> +    }
 >> +
->> +    cb = nl_cb_alloc(NL_CB_DEFAULT);
->> +    if (!cb) {
->> +        nlmsg_free(msg);
->> +        return -ENOMEM;
->> +    }
+>> +    free(buff);
+>> +    pclose(fp);
+>> +    return RECOVERY_TIMEOUT;
+>> +}
 >> +
->> +    ret = register_callbacks(cb, ctx);
-> Imho setting the callbacks only once makes it more cleaner.
-These callbacks are specific to the operation. Hence I am calling the 
-specific callbacks for the requested operation and not registering them 
-at the init.
+>> +static int check_err_recovery(void)
+>> +{
+>> +    time_t start_time = time(NULL);
+>> +    time_t timeout = 5 * 60;
+>> +    int time_interval = 30;
+>> +    time_t elapsed_time;
+>> +    int status;
+>> +    char marker[128];
+>> +
+>> +    snprintf(marker, sizeof(marker),
+>> +         "IGT xe_err_injection recovery marker pid=%d start=%lld",
+>> +         getpid(), (long long)start_time);
+>> +    igt_kmsg(KMSG_INFO "%s\n", marker);
+>> +
+>> +    while (1) {
+>> +        elapsed_time = time(NULL) - start_time;
+>> +        status = check_dmesg_for_recovery(marker, elapsed_time);
+>> +        if (status < 0) {
+>> +            igt_warn("Failed to query dmesg for recovery status\n");
+>> +            return RECOVERY_FAILED;
+>> +        }
+>> +        if (status == RECOVERY_SUCCESS || status == RECOVERY_FAILED)
+>> +            return status;
+>> +
+>> +        if (elapsed_time >= timeout) {
+>> +            igt_warn("Timed out while waiting for error recovery\n");
+>> +            return RECOVERY_TIMEOUT;
+>> +        }
+>> +
+>> +        sleep(time_interval);
+>> +    }
+>> +}
+>> +
+>> +static void print_aer_recovery_status(void)
+>> +{
+>> +    int recovery_ret;
+>> +
+>> +    recovery_ret = check_err_recovery();
+>> +    igt_assert_f(recovery_ret != RECOVERY_TIMEOUT,
+>> +             "AER error recovery timed out\n");
+>> +    igt_assert_f(recovery_ret != RECOVERY_FAILED,
+>> +             "AER device recovery failed\n");
+>> +    if (recovery_ret == RECOVERY_SUCCESS)
+>> +        igt_info("AER device recovery successful\n");
+>> +}
+>> +
+>> +static void log_status(bool val, const char *err_name)
+>> +{
+>> +    if (val)
+>> +        igt_info("Injection: %s Success\n", err_name);
+>> +    else
+>> +        igt_info("Injection: %s Failed\n", err_name);
+>> +}
+>> +
+>> +static bool gt_uc_wkr_parity_recovered;
+>> +
+>> +/**
+>> + * SUBTEST: test_GT-UC-unicast-wkr-cmd-parity-err
+>> + * Description: GT Uncorrectable Unicast Walker Command parity error 
+>> injection
+>> + * Functionality: error injection
+>> + */
+>> +static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
+>> +{
+>> +    int fw_handle;
+>> +    uint32_t error_counter_before_inj;
+>> +    uint32_t error_counter_after_inj;
+>> +    /** TODO
+>> +     *  Fetching node_id and error_id dynamically is pending to 
+>> implement.
+>> +     *  For now, using
+>> +     *  node_id=1 (uncorrectable_errors) and
+>> +     *  error_id=1 (core_compute)
+>> +     */
+>> +    uint32_t node_id = 1;
+>> +    uint32_t error_id = 1;
+>> +
+>> +    fw_handle = acquire_forcewake(fd);
+>> +
+>> +    error_counter_before_inj = get_counter(node_id, error_id);
+>> +
+>> +    /* Arm the injection sequence. */
+>> +    write_reg(mmio, MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
+>> +    modify_reg_bit(mmio,
+>> +               WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS,
+>> +               WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE,
+>> +               true);
+>> +    modify_reg_bit(mmio,
+>> +               MC_PKT_CTRL_MGSR_3D_ADDRESS,
+>> +               MC_PKT_CTRL_MGSR_3D_VALUE,
+>> +               true);
 >
-> thanks,
+> Is steering semaphore needed to be acquired before these operations?
+I will add it in the next revision. Thanks
+>
+> Thanks,
 > Soham
 >
->> +    if (ret < 0) {
->> +        nl_cb_put(cb);
->> +        nlmsg_free(msg);
->> +        return ret;
+>> +    igt_info("Injected GT Uncorrectable Unicast Walker Cmd parity 
+>> error\n");
+>> +
+>> +    run_xe_compute_on_all_engines(fd, POST_ARMING_INJECTION_WL);
+>> +
+>> +    release_forcewake(fw_handle);
+>> +    print_aer_recovery_status();
+>> +    error_counter_after_inj = get_counter(node_id, error_id);
+>> +
+>> +    igt_assert_f(error_counter_before_inj != UINT32_MAX &&
+>> +             error_counter_after_inj != UINT32_MAX,
+>> +             "Failed to fetch valid error counters: before=%u 
+>> after=%u\n",
+>> +             error_counter_before_inj, error_counter_after_inj);
+>> +
+>> +    igt_info("error counter: before injection=%u after injection=%u\n",
+>> +         error_counter_before_inj, error_counter_after_inj);
+>> +
+>> +    igt_assert_f(error_counter_after_inj > error_counter_before_inj,
+>> +             "GT Uncorrectable Unicast Walker Cmd parity error 
+>> injection "
+>> +             "failed: before injection=%u after injection=%u\n",
+>> +             error_counter_before_inj, error_counter_after_inj);
+>> +    igt_info("GT Uncorrectable Unicast Walker Cmd parity error 
+>> injection successful\n");
+>> +    gt_uc_wkr_parity_recovered = true;
+>> +}
+>> +
+>> +static void inject_error(const char *injection, struct xe_mmio 
+>> *mmio, int fd)
+>> +{
+>> +    igt_info("Starting Error Injection test: %s\n", injection);
+>> +    if (strcmp(injection, "test_GT-UC-unicast-wkr-cmd-parity-err") 
+>> == 0)
+>> +        wkr_cmd_parity_err_injection(mmio, fd);
+>> +    else if (strcmp(injection, 
+>> "test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl") == 0)
+>> +        run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
+>> +    else
+>> +        igt_info("Invalid Error Injection specified\n");
+>> +}
+>> +
+>> +/**
+>> + * SUBTEST: test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl
+>> + * Description: Run a post-recovery Xe workload after parity error 
+>> injection.
+>> + * Functionality: workload validation
+>> + */
+>> +
+>> +int igt_main()
+>> +{
+>> +    int fd;
+>> +    struct xe_mmio mmio;
+>> +
+>> +    igt_fixture() {
+>> +        fd = drm_open_driver(DRIVER_XE);
+>> +        igt_require(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY));
+>> +        xe_mmio_access_init(fd, &mmio);
+>> +        igt_require(xe_mmio_is_initialized(&mmio));
 >> +    }
 >> +
->> +    return send_and_recv_nl_msg(ctx, cb, msg);
->> +}
+>> +    igt_describe("Inject GT uncorrectable unicast worker command 
+>> parity error.");
+>> +    igt_subtest("test_GT-UC-unicast-wkr-cmd-parity-err")
+>> +        inject_error("test_GT-UC-unicast-wkr-cmd-parity-err", &mmio, 
+>> fd);
 >> +
->> +static int init_app_context(struct app_context *ctx)
->> +{
->> +    if (!ctx)
->> +        return -EINVAL;
->> +
->> +    ctx->sock = NULL;
->> +    ctx->node_id = UINT32_MAX;
->> +    ctx->error_id = UINT32_MAX;
->> +    ctx->error_value = 0;
->> +    ctx->last_nl_error = 0;
->> +    ctx->cmd_done = false;
->> +    ctx->reply_received = false;
->> +    ctx->ack_received = false;
->> +    ctx->response_required = false;
->> +    ctx->family_id = -1;
->> +
->> +    return 0;
->> +}
->> +
->> +static void cleanup_app_context(struct app_context *ctx)
->> +{
->> +    if (!ctx)
->> +        return;
->> +
->> +    ctx->sock = NULL;
->> +    ctx->node_id = UINT32_MAX;
->> +    ctx->error_id = UINT32_MAX;
->> +    ctx->error_value = 0;
->> +    ctx->last_nl_error = 0;
->> +    ctx->cmd_done = false;
->> +    ctx->reply_received = false;
->> +    ctx->ack_received = false;
->> +    ctx->response_required = false;
->> +    ctx->family_id = -1;
->> +}
->> +
->>   void igt_cleanup_nl_socket(struct app_context *ctx)
->>   {
->>       if (!ctx || !ctx->sock)
->> @@ -24,14 +244,20 @@ void igt_cleanup_nl_socket(struct app_context *ctx)
->>         nl_close(ctx->sock);
->>       nl_socket_free(ctx->sock);
->> -    ctx->sock = NULL;
->> -    ctx->family_id = -1;
->> +
->> +    cleanup_app_context(ctx);
->>         igt_debug("Cleaned up netlink socket.\n");
->>   }
->>     int igt_init_nl_socket(struct app_context *ctx)
->>   {
->> +    int ret;
->> +
->> +    ret = init_app_context(ctx);
->> +    if (ret < 0)
->> +        return ret;
->> +
->>       ctx->sock = nl_socket_alloc();
->>       if (!ctx->sock)
->>           return -1;
->> @@ -58,3 +284,37 @@ int igt_init_nl_socket(struct app_context *ctx)
->>             DRM_RAS_FAMILY_NAME, ctx->family_id);
->>       return 0;
->>   }
->> +
->> +int igt_get_error_counter(struct app_context *ctx)
->> +{
->> +    int ret;
->> +
->> +    if (!ctx || !ctx->sock || ctx->family_id < 0)
->> +        return -EINVAL;
->> +
->> +    if (ctx->node_id == UINT32_MAX ||
->> +        ctx->error_id == UINT32_MAX ||
->> +        ctx->error_id == 0) {
->> +        igt_warn("Invalid node_id (%u) or error_id (%u) provided. "
->> +             "node_id should be >= 0 and error_id should be >= 1.\n",
->> +             ctx->node_id, ctx->error_id);
->> +        return -EINVAL;
+>> +    igt_describe("Run post-recovery workload after GT parity error 
+>> injection test.");
+>> + 
+>> igt_subtest("test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl") {
+>> +        igt_require_f(gt_uc_wkr_parity_recovered,
+>> +                  "Run GT-UC-unicast-wkr-cmd-parity-err first\n");
+>> + 
+>> inject_error("test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl", 
+>> &mmio, fd);
 >> +    }
 >> +
->> +    ctx->error_value = UINT32_MAX;
->> +
->> +    ret = send_command(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER);
->> +    if (ret < 0)
->> +        return ret;
->> +
->> +    if (ctx->error_value == UINT32_MAX) {
->> +        igt_warn("No valid error counter reply: node_id=%u 
->> error_id=%u kernel_error=%d\n",
->> +             ctx->node_id, ctx->error_id, ctx->last_nl_error);
->> +        return ctx->last_nl_error ? ctx->last_nl_error : -ENODATA;
+>> +    igt_fixture() {
+>> +        xe_mmio_access_fini(&mmio);
+>> +        drm_close_driver(fd);
 >> +    }
->> +
->> +    igt_debug("Retrieved error counter: node_id=%u error_id=%u 
->> value=%u\n",
->> +          ctx->node_id, ctx->error_id, ctx->error_value);
->> +
->> +    return 0;
 >> +}
->> diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
->> index f681a3a81..92ac665e2 100644
->> --- a/lib/igt_drm_netlink.h
->> +++ b/lib/igt_drm_netlink.h
->> @@ -9,17 +9,31 @@
->>   #include <stdbool.h>
->>   #include <stdint.h>
->>   +#include <linux/genetlink.h>
+>> diff --git a/tests/intel/xe_err_injection.h 
+>> b/tests/intel/xe_err_injection.h
+>> new file mode 100644
+>> index 000000000..d7efc2fd2
+>> --- /dev/null
+>> +++ b/tests/intel/xe_err_injection.h
+>> @@ -0,0 +1,18 @@
+>> +/* SPDX-License-Identifier: MIT */
+>> +/*
+>> + * Copyright © 2026 Intel Corporation
+>> + */
 >> +
->> +#include <netlink/attr.h>
->> +#include <netlink/handlers.h>
->> +#include <netlink/msg.h>
->>   #include <netlink/netlink.h>
->>     #include <drm-uapi/drm_ras.h>
->>     struct app_context {
->>       struct nl_sock *sock;
->> +    uint32_t node_id;
->> +    uint32_t error_id;
->> +    uint32_t error_value;
->> +    int last_nl_error;
->> +    bool cmd_done;
->> +    bool reply_received;
->> +    bool ack_received;
->> +    bool response_required;
->>       int family_id;
->>   };
->>     void igt_cleanup_nl_socket(struct app_context *ctx);
->>   int igt_init_nl_socket(struct app_context *ctx);
->> +int igt_get_error_counter(struct app_context *ctx);
->>     #endif /* IGT_DRM_NETLINK_H */
+>> +#ifndef XE_ERR_INJECTION_H
+>> +#define XE_ERR_INJECTION_H
+>> +
+>> +/* GT Uncorrectable unicast worker command parity error injection */
+>> +#define MC_PKT_CTRL_MGSR_3D_ADDRESS 0x00FD4
+>> +#define MC_PKT_CTRL_MGSR_3D_VALUE 0x80000000
+>> +#define WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS 0xF310
+>> +#define WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE 0x1
+>> +
+>> +#define POST_RECOVERY_WL 1
+>> +#define POST_ARMING_INJECTION_WL 0
+>> +
+>> +#endif /* XE_ERR_INJECTION_H */
+>> diff --git a/tests/meson.build b/tests/meson.build
+>> index a62f447df..0f090dcee 100644
+>> --- a/tests/meson.build
+>> +++ b/tests/meson.build
+>> @@ -292,6 +292,7 @@ intel_xe_progs = [
+>>       'xe_debugfs',
+>>       'xe_dma_buf_sync',
+>>       'xe_drm_fdinfo',
+>> +    'xe_err_injection',
+>>       'xe_eu_stall',
+>>       'xe_evict',
+>>       'xe_evict_ccs',
