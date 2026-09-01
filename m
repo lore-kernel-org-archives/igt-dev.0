@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8FFFC61DD3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 08:48:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D275C61DD6
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 08:49:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 869C810EA29;
-	Tue,  1 Sep 2026 08:48:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AC89010EBFA;
+	Tue,  1 Sep 2026 08:49:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CHtasjv5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YmZXTk3K";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 80AEB10E3D4
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 08:47:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EF41C10E3D4
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 08:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788252426; x=1819788426;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=3KEGFnUNsyALd5Fi17B+e4kOxB7FPAvqRj5fi7xK0CY=;
- b=CHtasjv5WDE2v2wrQdPXxvqT0CSpuSk3JtT7tnSA+hrgXau8vfyGuJZ7
- AryvHHyLauLrgSsyAs1MF3FHZ+jI+Sq95C2TPQqp50AZQBFAUbFfFneBK
- gL1fuFqUFzd1vIT8HzWgqM+Nol2uE9dlFDa63JXcnrRP7Jk6lgmiXL/so
- 0gTmFuaSGKm2Zzd9iVJaoKO65bKRGDqVJwqoSgdoP9QabNfcTmIz5CN9m
- 7LDi9iapQgWuRoDtSc67b6w31OuYOC2G+nhXNZdAWn1wLJp/Xh38/XGiB
- j+M+t+hE5JLeU5aLBQt37Wb3Ktf07qApIIfO8QK90UYB0zTkW4DmiH78d w==;
-X-CSE-ConnectionGUID: WoyJ4KZsRaKUhvzF5Sniug==
-X-CSE-MsgGUID: 4zbmtJprTVm8m8XkaxUANQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92541640"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="92541640"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 01:47:06 -0700
-X-CSE-ConnectionGUID: pQbpLUSrRJ6p8YMnTHLFXA==
-X-CSE-MsgGUID: ahdURYHzR5iW2taYJPe/Pw==
+ t=1788252433; x=1819788433;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=oAJoqO7DBjYgwiYO8A1cvDbZLKIlEvObSQeFVdekkq8=;
+ b=YmZXTk3Kg26rtMlIfrEtIn14t/sf7REWX9NEF8fUvI0KcajccUns/C1f
+ eD7plHLcqxpRz9rybWgXYQDdsfJlfurH2lFI8fhB+SLSCmAZASuRKERJ9
+ Lumxn2SGv1CXGjRpacJiVu5Ma2r4f214T7orngqlp5ElaqgLZQPR0Un++
+ iIoykpoZi/pzfc18FbkR4clNKBzn/62OqKvAYtEPGJ1bU5naEMgOsvfo+
+ PgWdB2YaBWxSo1Wpw74gTxRuKgU1LfCFk57SLPJTx89u3boFKcwyeo7Ez
+ A/oxl+BBWtvOoz3Z2sTeyZ6DFGhrvjRRVQoUKQUsLML3UDOvpYggXLQ7K g==;
+X-CSE-ConnectionGUID: OzgqFnZ0RWuRovpzXF5j3A==
+X-CSE-MsgGUID: FWDNuYzlQaWMix3XNSjGDw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="88723266"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="88723266"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 01:46:50 -0700
+X-CSE-ConnectionGUID: kluDwVPjRV2cNzLBzydJYA==
+X-CSE-MsgGUID: +hTUXv/GSs+WHwNDmME+Sg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="264749523"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="268507329"
 Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost)
  ([10.245.244.213])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 01:47:04 -0700
+ by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 01:46:48 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, ville.syrjala@linux.intel.com,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 4/4] lib/kms: use enum hardware_pipe for
- __intel_get_pipe_from_crtc_index() return type
-Date: Tue,  1 Sep 2026 11:46:40 +0300
-Message-ID: <ef16ae698d5d21f31b7d15f3c9cddb476726834a.1788252273.git.jani.nikula@intel.com>
+Subject: [PATCH i-g-t 0/4] igt: rename pipe to hardware_pipe
+Date: Tue,  1 Sep 2026 11:46:36 +0300
+Message-ID: <cover.1788252273.git.jani.nikula@intel.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1788252273.git.jani.nikula@intel.com>
-References: <cover.1788252273.git.jani.nikula@intel.com>
 MIME-Version: 1.0
 Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
@@ -72,62 +69,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The __intel_get_pipe_from_crtc_index() returns a hardware pipe, so make
-it obvious in the function signature.
+To emphasize the enum pipe and crtc->pipe are vendor-specific hardware
+concepts, rename them to hardware_pipe. Further explanations in patch 3.
 
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- lib/igt_kms.c | 12 +++++++-----
- lib/igt_kms.h |  2 +-
- 2 files changed, 8 insertions(+), 6 deletions(-)
+Jani Nikula (4):
+  tests/kms_chamelium_color_pipeline: prefer igt_crtc_name() over
+    kmstest_pipe_name()
+  tests/intel/kms_joiner_helper: iterate CRTCs instead of pipes
+  lib/kms: rename enum pipe to hardware_pipe, crtc->pipe to
+    crtc->hardware_pipe
+  lib/kms: use enum hardware_pipe for __intel_get_pipe_from_crtc_index()
+    return type
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index f32f655d5fae..e622d7bcd2c3 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1313,10 +1313,11 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
-  * The hardware pipe may be different from the CRTC index. Figure out the CRTC
-  * index to pipe mapping from the debugfs.
-  */
--int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
-+enum hardware_pipe __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
- {
-+	enum hardware_pipe hardware_pipe;
- 	char buf[2];
--	int debugfs_fd, pipe, res = 0;
-+	int debugfs_fd, res = 0;
- 	char pipe_char;
- 
- 	debugfs_fd = igt_debugfs_crtc_dir(fd, crtc_index);
-@@ -1330,11 +1331,12 @@ int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
- 
- 	igt_assert_eq(sscanf(buf, "%c", &pipe_char), 1);
- 
--	pipe = pipe_char - 'A';
-+	hardware_pipe = pipe_char - 'A';
- 
--	igt_assert_f(pipe >= 0 && pipe < IGT_MAX_PIPES, "i915_pipe %c out of range\n", pipe_char);
-+	igt_assert_f(hardware_pipe >= 0 && hardware_pipe < IGT_MAX_PIPES,
-+		     "i915_pipe %c out of range\n", pipe_char);
- 
--	return pipe;
-+	return hardware_pipe;
- }
- 
- /**
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index b7653b8ad49a..86bef14af240 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -155,7 +155,7 @@ void kmstest_dump_mode(drmModeModeInfo *mode);
- #define HDISPLAY_6K_PER_PIPE 6144
- #define HDISPLAY_5K_PER_PIPE 5120
- 
--int __intel_get_pipe_from_crtc_index(int fd, int crtc_index);
-+enum hardware_pipe __intel_get_pipe_from_crtc_index(int fd, int crtc_index);
- int kmstest_get_crtc_index_from_id(int fd, int crtc_id);
- void kmstest_set_vt_graphics_mode(void);
- void kmstest_restore_vt_mode(void);
+ lib/igt_kms.c                                 | 40 ++++++++++---------
+ lib/igt_kms.h                                 | 22 ++++++----
+ .../chamelium/kms_chamelium_color_pipeline.c  |  2 +-
+ tests/intel/kms_busy.c                        | 16 ++++----
+ tests/intel/kms_dp_link_training.c            |  2 +-
+ tests/intel/kms_dsc.c                         |  2 +-
+ tests/intel/kms_dsc_helper.c                  |  4 +-
+ tests/intel/kms_dsc_helper.h                  |  2 +-
+ tests/intel/kms_frontbuffer_tracking.c        |  2 +-
+ tests/intel/kms_joiner.c                      | 32 +++++++--------
+ tests/intel/kms_joiner_helper.c               | 15 +++----
+ tests/intel/kms_mst.c                         |  2 +-
+ tests/intel/kms_pipe_b_c_ivb.c                |  4 +-
+ tests/intel/kms_pipe_stress.c                 | 24 +++++------
+ tests/intel/kms_pm_dc.c                       |  8 ++--
+ tests/intel/kms_pm_lpsp.c                     |  2 +-
+ tests/intel/kms_psr2_sf.c                     |  4 +-
+ tests/intel/perf_pmu.c                        |  2 +-
+ tests/kms_cursor_crc.c                        |  2 +-
+ tests/kms_cursor_edge_walk.c                  |  2 +-
+ tests/kms_display_modes.c                     |  2 +-
+ tests/kms_panel_fitting.c                     |  2 +-
+ tests/kms_plane_scaling.c                     |  2 +-
+ 23 files changed, 102 insertions(+), 93 deletions(-)
+
 -- 
 2.47.3
 
