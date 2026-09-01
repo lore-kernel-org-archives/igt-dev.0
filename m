@@ -4,64 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 239D6C624D3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 16:56:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 179A5C61DD3
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 17:08:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AE7D889131;
-	Tue,  1 Sep 2026 16:56:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A5A8A10EDED;
+	Tue,  1 Sep 2026 17:08:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jps/gmdQ";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="X2rLTEpk";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D1B410E417
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 16:55:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788281737; x=1819817737;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=490YPI9ywO5tVjVWqcBstPC9PdgouOd7Tgo6Ei4o2qE=;
- b=jps/gmdQVVkdeMYWrD1fG5mFM5LDT56iUTXfhSSpjNNCET/1ZlAAtAro
- ly30YEpoi2+zeDXzNCx3UWSowFtk59QqIa4p/iSWvAl85g3esCHgoFx2a
- 9AUOs2ZRrrMa8LaUJKB3pbmNSasTYqfZ+sI2FemGJdrPjfWd04aIvhJS7
- DD0DcT26gKxLDqXeaeYYNnDMxOquplOnj/PrcyfXX0XjW9bxw/fQNNQD0
- +xrRuf3QsOCHaVltlIMEJNhBsGFH8kD+YR/xgiJV0H8CdaqXFmIGjG0SX
- nDvNIELDyTdJqlC8NP563nd1haT9bXXGVfjhofISqD8i73EBayy6CX5I4 g==;
-X-CSE-ConnectionGUID: 9XZM+tVfTmqqgGBQO1fDvg==
-X-CSE-MsgGUID: GYDaS+kIQoim1r6yvcz++Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="99883189"
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="99883189"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 09:55:36 -0700
-X-CSE-ConnectionGUID: KmLXyQMgQlmOboIVVi3wlA==
-X-CSE-MsgGUID: akYtZwBAS6G1ulZB0JBgUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="299037750"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa002-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 09:55:34 -0700
-Date: Tue, 1 Sep 2026 18:55:32 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Swati Sharma <swati2.sharma@intel.com>,
- Harry Wentland <harry.wentland@amd.com>, Alex Hung <alex.hung@amd.com>
-Subject: Re: [i-g-t] tests/kms_colorop: Use local variable for color pipeline
- cap
-Message-ID: <20260901165532.jsp45zjicwvdeh7d@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
- igt-dev@lists.freedesktop.org,
- Swati Sharma <swati2.sharma@intel.com>,
- Harry Wentland <harry.wentland@amd.com>,
- Alex Hung <alex.hung@amd.com>
-References: <20260803080340.2088027-1-chaitanya.kumar.borah@intel.com>
- <20260827153627.cn5ou4ornidks227@kamilkon-DESK.igk.intel.com>
- <a3be5162-3fd0-41ad-bd2b-dbc14a4e2860@intel.com>
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com
+ [209.85.215.172])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F32AE10EDED
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 17:07:49 +0000 (UTC)
+Received: by mail-pg1-f172.google.com with SMTP id
+ 41be03b00d2f7-cc1e1ff659bso142848a12.0
+ for <igt-dev@lists.freedesktop.org>; Tue, 01 Sep 2026 10:07:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20251104; t=1788282469; x=1788887269; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+ bh=IvMmXSqTmrASafe1jW5j6EUZL4Wlz8EttZ87Qm5c8hU=;
+ b=X2rLTEpkitsW8p1cSSQ6L16/HmyYvTpKydxaptEa1y/2pSwLoekVJ2Qj0ntuXfC0bn
+ dXUqwyx/WQQUJ36fO8bNhAyLdo2RgZVDAKgiODDBhAaIHYXtPBEqko27th08r3Og2Xkz
+ l8SjBqN5Dy8uGTnI6TKdV47eNZpqvH4n7ColriH7ODGYYD+mOA3DJkeKTpMd5A4SxYme
+ UjRq/s7VhA9xIB5PmufeZda5n0FdzvuCCFG4JXCx8JjJ2LixkyiB00IDROJdhZlKfdAT
+ U0f3aIf4v5haJimDg0vdaVC/nLMKQh52EKhMEnqgoj36MoDYphM7IV9amd9sGl9blnd1
+ hJwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20251104; t=1788282469; x=1788887269;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to:content-type;
+ bh=IvMmXSqTmrASafe1jW5j6EUZL4Wlz8EttZ87Qm5c8hU=;
+ b=IQRH0ylWY3CL4dyIm6b2V98UDgUaW3aK5yymRJu24WOd8Gm56X5MdIyGE9ptAUdyrk
+ uQZ910moCEpaw+U9pO5DaGZniWmZqDmjjcs4naYq4XXSBMFlqJwJuwFy9d7DfKtzfqkk
+ PTXIQHT16Re5j6loWXsHYKNPAXZO8SH/BVD9oKoJZpWILKK7/beP02uJMsT/rhbs7q9O
+ RYcVvDjHhEBJT5rhubY/3DACSsTrc4OGApzh0ocxGg/1UkflltIJBHPRI623KGe7na9c
+ GQjQW9a1vdS/XHeDnHP84xkVFZFTXCkmFcqwrBT9CZoPMazd0qjP+/oDnvmDt2/Rjx6F
+ 8Udw==
+X-Gm-Message-State: AFuF++lhS8qjAeuvaoqBGorWZe8lhRWbEPemHWaUZbrcy8+zn7ubSr6P
+ DGJVOjQUyx5klB/J2mPbQXts5imQBhctv/a/yD+GmzRZlTxZuOJTbON+PCOU5T60ia0CpQ==
+X-Gm-Gg: AYBFou3O/8HAXxiVaJokiUAACQQHli7XNUNlL3iMheh6zuHSFtL1PxSP+o1OomyuWOz
+ JtWVU/rUca210k/PgJD5UVldBz0IWZQgHJgd+wSbqcBTCEazM2nyWYn7jFQxk7RdY/+Qi9wxMHI
+ UzxxJJuz/rfVTHLKNkalp/PdhMiMkpv0ZeUQIudBkLU58zWQvE8uobitUPll6Ey3FlDcG73fsRo
+ jSgTkO5fqHVeNWFKzpYTqsCsBRSvYpaV85m/FepNce8a1Q9o4/pBO0RPM8VIHNbNnBVQ5OL7ytu
+ JpEzzBtGOWuPL5ZyU9YRDCWC+MQViDSI4gdtQVZmWhGe7Av5Qo3qeiZkAD+gnQoZE2f8yPKHo1n
+ aPerlwqKarSyNErNYvzayA4hGeClN6YZ3tddxOkMB4YzdtshQnLEQEkPU02ZyBbV5Pq0aUa5WzK
+ X91StHEBrN7w+NcqtE5Ksaf2Nb1tTdC5R87JrPn490Ax8mlmvhKyRMoFO68ESfBIXVF11mPYvPN
+ bvEzqD0Cb8f/n7o9JacBRxafEg=
+X-Received: by 2002:a17:90b:1dce:b0:38e:5b59:c2ff with SMTP id
+ 98e67ed59e1d1-396d0ea8b47mr54790316a91.3.1788282468662; 
+ Tue, 01 Sep 2026 10:07:48 -0700 (PDT)
+Received: from localhost ([134.134.139.73]) by smtp.gmail.com with ESMTPSA id
+ 98e67ed59e1d1-396d7853da8sm7984104a91.4.2026.09.01.10.07.47
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Tue, 01 Sep 2026 10:07:47 -0700 (PDT)
+From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 1/5] lib/igt_fb: add igt_format_get_subsampling()
+ function
+Date: Tue,  1 Sep 2026 20:07:36 +0300
+Message-ID: <20260901170740.1079715-1-juhapekka.heikkila@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <a3be5162-3fd0-41ad-bd2b-dbc14a4e2860@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,78 +84,60 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Borah,,
-On 2026-08-28 at 15:35:29 +0530, Borah, Chaitanya Kumar wrote:
-> Hi Kamil,
-> 
-> On 8/27/2026 9:06 PM, Kamil Konieczny wrote:
-> > Hi Chaitanya,
-> > On 2026-08-03 at 13:33:40 +0530, Chaitanya Kumar Borah wrote:
-> > 
-> > small nit about subject, please do not use "C code to english",
-> > rather describe what you try to achive, here better:
-> > 
-> > [i-g-t] tests/kms_colorop: Get cap color pipeline only once
-> > 
-> 
-> Noted.
-> 
-> Swati, we can perhaps change this while merging if there are no further
-> changes needed.
+add function to query given pixel format hsub and vsub
+parameters.
 
-There is one change needed so please change subject, fix source,
-add any r-b you got and resend.
+Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+---
+ lib/igt_fb.c | 22 ++++++++++++++++++++++
+ lib/igt_fb.h |  1 +
+ 2 files changed, 23 insertions(+)
 
-Regards,
-Kamil
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 6c3b9b0b9..3d15f0595 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -5300,6 +5300,28 @@ int igt_format_plane_bpp(uint32_t drm_format, int plane)
+ 	return format->plane_bpp[plane];
+ }
+ 
++/**
++ * igt_format_get_subsampling:
++ * @drm_format: drm fourcc
++ * @hsub: chroma subsampling factor in the horizontal direction (out)
++ * @vsub: chroma subsampling factor in the vertical direction (out)
++ *
++ * This function returns the chroma subsampling factors of the @drm_format.
++ * For non-subsampled (e.g. RGB or 4:4:4 YUV) formats both factors are 1.
++ */
++void igt_format_get_subsampling(uint32_t drm_format, int *hsub, int *vsub)
++{
++	const struct format_desc_struct *format =
++		lookup_drm_format(drm_format);
++
++	igt_assert(format);
++
++	if (hsub)
++		*hsub = format->hsub;
++	if (vsub)
++		*vsub = format->vsub;
++}
++
+ /**
+  * igt_format_array_fill:
+  * @formats_array: a pointer to the formats array pointer to be allocated
+diff --git a/lib/igt_fb.h b/lib/igt_fb.h
+index 213e2d777..4562164df 100644
+--- a/lib/igt_fb.h
++++ b/lib/igt_fb.h
+@@ -237,6 +237,7 @@ uint32_t igt_drm_format_str_to_format(const char *drm_format);
+ 
+ bool igt_format_is_fp16(uint32_t drm_format);
+ int igt_format_plane_bpp(uint32_t drm_format, int plane);
++void igt_format_get_subsampling(uint32_t drm_format, int *hsub, int *vsub);
+ void igt_format_array_fill(uint32_t **formats_array, unsigned int *count,
+ 			   bool allow_yuv);
+ int igt_fill_cts_color_ramp_framebuffer(uint32_t *pixmap, uint32_t video_width,
+-- 
+2.43.0
 
-> 
-> ==
-> Chaitanya
-> 
-> > Regards,
-> > Kamil
-> > 
-> > > Following the pattern in kms_color_pipeline, set
-> > > DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE once and stash the result in a
-> > > local variable, then propagate it to display->has_plane_color_pipeline
-> > > after the final igt_display_require() (which reinitializes the display
-> > > state). This avoids calling drmSetClientCap() twice.
-> > > 
-> > > Cc: Swati Sharma <swati2.sharma@intel.com>
-> > > Cc: Harry Wentland <harry.wentland@amd.com>
-> > > Cc: Alex Hung <alex.hung@amd.com>
-> > > Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-> > > ---
-> > >   tests/kms_colorop.c | 9 +++++----
-> > >   1 file changed, 5 insertions(+), 4 deletions(-)
-> > > 
-> > > diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-> > > index 16db0b8ad..d573d2ceb 100644
-> > > --- a/tests/kms_colorop.c
-> > > +++ b/tests/kms_colorop.c
-> > > @@ -406,6 +406,7 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
-> > >   	igt_display_t display;
-> > >   	int i, j, ret;
-> > > +	int has_plane_color_pipeline = 0;
-> > >   	igt_fixture() {
-> > >   		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
-> > > @@ -417,15 +418,15 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
-> > >   		igt_require_f(!ret, "error setting DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
-> > > -		igt_display_require(&display, display.drm_fd);
-> > >   		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
-> > > -			display.has_plane_color_pipeline = 1;
-> > > +			has_plane_color_pipeline = 1;
-> > > +
-> > > +		igt_display_require(&display, display.drm_fd);
-> > >   		kmstest_set_vt_graphics_mode();
-> > >   		igt_display_require(&display, display.drm_fd);
-> > > -		if (drmSetClientCap(display.drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
-> > > -			display.has_plane_color_pipeline = 1;
-> > > +		display.has_plane_color_pipeline = has_plane_color_pipeline;
-> > >   		igt_require(display.is_atomic);
-> > >   	}
-> > > -- 
-> > > 2.50.1
-> > > 
-> 
