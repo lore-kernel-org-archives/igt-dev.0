@@ -4,59 +4,161 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FEEAC61DD3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 08:50:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBF94C624C6
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 09:15:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B520310EBFA;
-	Tue,  1 Sep 2026 08:50:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6DDB110E3C8;
+	Tue,  1 Sep 2026 09:15:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ddDiL3LX";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lofsWYiU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 598AB10E3D4
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 08:47:02 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5108D10E3D3
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 09:15:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788252424; x=1819788424;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=cS8/4sNeVfanyVIFw/GLTKr8DKzh3edrpIJZ2Y/CAaQ=;
- b=ddDiL3LX+i1BuCNYkGzdzMY64K+kMX8abs0Edp6EkZhUq/OmARKxS6W1
- JPlqIkhWJcEm9EJhed/LgoxGSd6i0YhC/svf7mrGyCXP9paYbvCbNUD7/
- UMv31ovfYzEIOQ/VRnAtQk1Lj+7TDpGpmnS7vWqF/FQHpsOoNa1dv+jCs
- PA2cmDEUOIu6ufb4pt+EI5ZJPmL8p5BGXjMVvALqtUAjPPA7MYNWQAM95
- UmlIaA9JkevRLNohibjK33h8YW9Gsq5G9DDEfflT9FuXAMEAF7nFwF7CU
- P1dOPoK+j1i1OxfYgy0WvSxkv2UCO7T6EemPJXKIyNZ28kICYqwA3IisE g==;
-X-CSE-ConnectionGUID: g9GynHIRSLmMerAVOjBK+Q==
-X-CSE-MsgGUID: RFpW7DJHS9CeEY4YtRsCBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92541626"
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="92541626"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 01:47:02 -0700
-X-CSE-ConnectionGUID: cqL2lZ/CSJqKKOFr1h7PDw==
-X-CSE-MsgGUID: rdQ76ppZQOm4IJdRVKZKhw==
+ t=1788254112; x=1819790112;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=d9ZEIDmW9f5dtRNSX9AvNcIglLr5R91N5Plvl3qnd+Q=;
+ b=lofsWYiUPIoyvT+erBngyYf93Ga4fUOp475FbyRDW71cN7XZptD7gHUu
+ jKDRKn3gfCOxaB0+H48Pu/EpDX1V0dX9Sl4VDleDb0pwhrs/SKLy7rcTn
+ 5Ccpts/PgT0pb0Tca/eHtLyLU2fDb/kt/AFc7tG1o2HYa98UM+sPifPfk
+ SluahcwrnJEA9y4aDJPz96ZWxDqyfY0z/waooEyBbfmgi5VMmTpxKxU5C
+ /JAcPHBZX0PYan8QuYDsAxmYAM7YHNmu00PhrDLgb6q4++n5SIaUFNSlc
+ Psc6W3PUkvuqFQxQtRN4+8aM169psxO0TTmpBbR6kiY3ngSliK8afXH4C A==;
+X-CSE-ConnectionGUID: AByIyQdbQDevn8ZcDkRKBA==
+X-CSE-MsgGUID: 6zi5pgeeS2CPIAbuJZ1vog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11892"; a="92492480"
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="92492480"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 02:15:11 -0700
+X-CSE-ConnectionGUID: sWi55qKBRnqGOtLLsp7oKg==
+X-CSE-MsgGUID: 7sVyJwRHRP2FwDvEJNHLTw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="264749504"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.213])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 01:47:00 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: jani.nikula@intel.com, ville.syrjala@linux.intel.com,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 3/4] lib/kms: rename enum pipe to hardware_pipe,
- crtc->pipe to crtc->hardware_pipe
-Date: Tue,  1 Sep 2026 11:46:39 +0300
-Message-ID: <1e7eaabafa8103312bc10565ac9d77d7dcaffa98.1788252273.git.jani.nikula@intel.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1788252273.git.jani.nikula@intel.com>
-References: <cover.1788252273.git.jani.nikula@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,255,1779174000"; d="scan'208";a="298934824"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 02:15:11 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 1 Sep 2026 02:15:11 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 1 Sep 2026 02:15:11 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.66) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 1 Sep 2026 02:15:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uDo4QEABnA32lCJsCqazHv7r2S5xme/rMwhsSmnfwHVcwLg3tfYlrk+xSy6tNgCd/L90mZ5nIHKBtXQlasm6bvmlIGG8R12eNuTRd99hNNrXY3t4Howeb8/2kuPcitWEtjOY+/v/CfMQXhKy49uoIzwdf+MNOgTRqkH+YVPD/XvFbCmvBKp7LZAqaUwmb2U3YLVZYQLVQKMHxREjeWIc+0LNXnLQFuJwIvjp+WQ5xI7yOcl26jiPFR3fSvAlAlAAVq7xyLsndFHhJIR7EtUOppz9OlH01S8Zs+9YmTSLwAgaC14ZP5jBBGJ7H3U7KLwqKirr4qsJsOkUkuIp6FPykg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=d9ZEIDmW9f5dtRNSX9AvNcIglLr5R91N5Plvl3qnd+Q=;
+ b=Ields01woeN+CPtXMh+2Z4WuiYYUTVhDm+HRliQZSQZx7om/flFdTTzALoU7SnEhwu5pd+Q45YONAWNRMsnM00P/hYrLlaKWSarh0xhenV3kpjnOCkiJDDuPTYOpHWSAmats4+FSHyq/NqWQAplVSYp1oN65dlj7arvlYUPN3tZrOPTvu+m1KXS0NeelJ4H1PC1y3k3hjAjLbppPij7fx9QRFuxwmRzGl3RaEaJ/xI1wnfUSZtd+baPUFAxzdrLBQsyHQ0+6GuRQQXFd8byL1egMNr/C1C3wOMjS4Dc4f6QK8DgTahSfMHb5ZX1KuYJLyNVRsX8GzFKJlJZnSEGZPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6053.namprd11.prod.outlook.com (2603:10b6:510:1d1::8)
+ by SA3PR11MB8024.namprd11.prod.outlook.com (2603:10b6:806:300::20)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Tue, 1 Sep
+ 2026 09:15:05 +0000
+Received: from PH7PR11MB6053.namprd11.prod.outlook.com
+ ([fe80::3e15:8d62:5e58:a513]) by PH7PR11MB6053.namprd11.prod.outlook.com
+ ([fe80::3e15:8d62:5e58:a513%6]) with mapi id 15.21.0360.008; Tue, 1 Sep 2026
+ 09:15:05 +0000
+From: "Samala, Pranay" <pranay.samala@intel.com>
+To: "Grzelak, Michal" <michal.grzelak@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Nikula, Jani" <jani.nikula@intel.com>, "Kandpal, Suraj"
+ <suraj.kandpal@intel.com>, "Grzelak, Michal" <michal.grzelak@intel.com>
+Subject: RE: [PATCH i-g-t v5 4/7] tools/vbt_decode: parse & dump VS/PE-O
+ tables for LT
+Thread-Topic: [PATCH i-g-t v5 4/7] tools/vbt_decode: parse & dump VS/PE-O
+ tables for LT
+Thread-Index: AQHdClCEVKTQYlIvs0up9O8QCrzDcra5zzQQ
+Date: Tue, 1 Sep 2026 09:15:05 +0000
+Message-ID: <PH7PR11MB6053D10692F01DA128CBA26BE7A82@PH7PR11MB6053.namprd11.prod.outlook.com>
+References: <20260702182619.3973788-1-michal.grzelak@intel.com>
+ <20260702182619.3973788-5-michal.grzelak@intel.com>
+In-Reply-To: <20260702182619.3973788-5-michal.grzelak@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6053:EE_|SA3PR11MB8024:EE_
+x-ms-office365-filtering-correlation-id: 17ec39f8-2abf-4419-a090-08df0809832c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|1800799024|366016|23010399003|376014|6133799003|18002099003|22082099003|56012099006|3023799007|38070700021|10067099003|11063799006|4143699003;
+x-microsoft-antispam-message-info: Tv3zWDLIXLqtdzf9X49eAnR5MGFt4Hzre9KXFEv7l1JHvW/EeeJ8ZB+WlvLMZU0Dhjq+WkUYylDuGCxqjeLw5kTB68qT4EofV5yZPbBgKbb5kp4+GvjpbB2h0nWeSKBHnFfCVUQW9CeEQbMqZIjZ6J918XuVXQM6b6fkm9QvWIQZsf6yVYgPKeC+PqUGz05EJFpZ9GoqpNk3f8Vx424x15aKSK1FbYt+OTygppq26XUbiEzKtIQ8VqntqoIXH1CTFGBP7xiMnmjRvQDkL7iIS4Zt+A+amAE7M24l8oFghSfmSasXe5JOdMD5wsz8KjH1rtG2iPY2mZ5cpVM6Hxyt2wPcpUvT/UmJ5UQvzaox6jXWQqnYpaCV4slmA7S0M2A7Cwhl3LsnzzT/EnsXTZdUMgc7IUxjY5YLm11jjb5xPHl/QnL8YK3rW6E0mMjNJ8yioExl/eH/elawY18G2aK9IztQ6Od7WgRCSciQvthEkIBVO1FVdo6MvWL4Kus4aXv6u6dtxrolfu65Dev7Kgjr4uktRbG/pXUlP3i1zaKIqWGLObBfi4ymOqNOzWTpb81T9urEvfoLxsc7a0k98FZNdy2w/0V1XsXJ6bEvnSa4juVUAzt3oiJ8cWybFswCQpW3Ma3z5F1X8e7N9RT9udZDVKo83I3nyE2ouiEKjqKIfw8gYnBj1hOz6rmWvgr+dAfb3wR7NNCe50bxlGKk3ipaKb7bO8srfHYLF6nofPUp+uc=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6053.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(23010399003)(376014)(6133799003)(18002099003)(22082099003)(56012099006)(3023799007)(38070700021)(10067099003)(11063799006)(4143699003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NnJNZ0VQUXVKQjRJbWQxbEFLMyt3dEVoUS9NdXZMWnlXbE5rVGIxcDlGSStR?=
+ =?utf-8?B?ajcyTmxYYnh3L0JvcjRqZkJxc09Td0xzTndPaC9jMUlNSzNFVlpSMlRFakJX?=
+ =?utf-8?B?MkxhR0VvS2pMY2JMeHdQV2R6bHdxTkFlaG9mN0FBRzdublhOUnR6YXIyay9v?=
+ =?utf-8?B?Wm13WUlTV0JUSjFFaWJQWjM5UVMzZUhUdFd0bHdseEQrdWZ6eVZLVHowWG5P?=
+ =?utf-8?B?SlpCWlJtaWJ2WGcramxCWWZnUms4YlRodFpzNUdHcVRBN21rSHYzaDkwUEg0?=
+ =?utf-8?B?a3RVQkZaODgrV2p3VFZaWDNHMVFMWFJib0FsZ2ErdnlnaG1RcHh6NXFXcGdv?=
+ =?utf-8?B?M2pxRDM3RkIrcko4UmZhZ29qR2RtSVZNeFNVQmp5c0UxSkxOT05FWDhtV3Z3?=
+ =?utf-8?B?cW9hYWVrYkF4VmYvdlNKbHdpU3NiZG9VUnh3eHNuVTh0Wk5XRmRVR2Zpb1ph?=
+ =?utf-8?B?WmxOSmxOeHhWRU0zbnIvNEJMVHZvdXQvT09TQnBmK3JlYmJwVDJHcVk3WDZP?=
+ =?utf-8?B?ZldqR25VMjJxdmVYYlVDVFd0R0IrWWFrdCtDa0Fyc0liVHBlZ1VhSjRGLzY4?=
+ =?utf-8?B?dWxiZjNwZnA5WGpDaTYwdGR2a0Fzc3JJZHJaWGJGbFFOSjVHZjE0bVRhWXZS?=
+ =?utf-8?B?OHlZOUM0WEc3TWFtbE5vYS9nSE16VnFHWFRITmVUL1JPdUw3aXpSOHVmakpy?=
+ =?utf-8?B?VmwvUXhtNUd6MVh6UDZWbTNmU1JYUGJ6TG0vWDZtV3JMRnBmWXpUYWdZckVh?=
+ =?utf-8?B?MUIxWlpTYnlUOVJlRWNEd0w4alVsci9rYUxUQ0RiWHJNU0x4M25ycFRpZjkx?=
+ =?utf-8?B?M2d4bmZUMXNQZ1hLc2FTejV4M2k4STVEditzSzFOK253SmxKQkIzRStiWU5u?=
+ =?utf-8?B?clF2dG9wRjlRYzNHVkM1OVZ0VnJ5T1pHZGNrWDVNaDZwMVBkSmY1dURYQzF1?=
+ =?utf-8?B?S3hHY0RXeHJjYjNKRUFIb2crS2tmT1JzNDZsYWlZNWJQY0Nza2tPUHhHK0ox?=
+ =?utf-8?B?TXRzTzdMc2xiT3FVbkROZm41WGZ4OC9xWDVpTkFQTmtxUEFmS1lqV2hPVWV5?=
+ =?utf-8?B?c2hFbDRSZVkxeXJhUHlENmVLR1FqY21rVVgvSmU0SDF1dkxnV0RadmFVK0Jw?=
+ =?utf-8?B?NkUrZisxcXJnZEJyeWt3V2dlODh3Mzdpb0lXT3hLTVpzaEo5ME93SVI5dnln?=
+ =?utf-8?B?ejltYUdZSU1sUGlnWnpoVFpxT1dPcUkvWGFDYk45ZEhaSitQU2V6Wjg4WnVl?=
+ =?utf-8?B?cjVKU1hYa2ZyWnFQRVNyQ1ZUMStsNWZCMnJSYmdJRjVNT2JVSzhLZDk0ajRQ?=
+ =?utf-8?B?cVNyaFpzeEQvV0hnaUtOcmp6R3p4VGZKWDhjYmRza0duOWh0NERZVEJOeDY0?=
+ =?utf-8?B?c3NoR0F5STF1RytYbmRlR21aNUMyVnVqVGEwMHBocHRvTGlIdXorWk52YVV2?=
+ =?utf-8?B?b1JEWi9sT3JwN1cvRmFRTXFsTnpvQkN2SW05M1htMUxlYTUvc3hQTWFiRjNG?=
+ =?utf-8?B?S0ZjYmdmTjJEekRId01MQ1J0RzE0djZTOUsvdndEUk9ZK2NiS2R4U1c4QzJZ?=
+ =?utf-8?B?VVZNVGlwN29CWm1tZ3MxNHNndktkd0FUd0habHFGYkdKUHdtSDFIa04zcFFq?=
+ =?utf-8?B?K3VYS0VVNjFHb3grbC9pVHdGb0J0RUh6c3NlcTY3QmFSUzJpQTJaV09vN0dM?=
+ =?utf-8?B?WTNyR0FNeERPSnBObjlFSlZRWVRRbUc5eTR6OXRJQTNXNC9CenArL2RFMGZX?=
+ =?utf-8?B?cW4zSC82ZGFnMzMycUdoMmxqb2kzZ1c4VlBVaDdwZnFOMFNGSUxEa0szeDFK?=
+ =?utf-8?B?ZGlrS1RBb3VKQ2x3ZCt3SVhXNENPa1dWQ0x1R0tHUDRDaDB4M2hNbW1INEFB?=
+ =?utf-8?B?OGZnTXpaYjRHSjFkMEd1ajlFSHBRSmxQRklvQTBRNjZTUXE2b2xNSEc4WERz?=
+ =?utf-8?B?YnZ2dHhWWXRzd210ditoMXEyNTFBZG0wZ295RVMrRWd1SC8rOFBpWmdtVEVa?=
+ =?utf-8?B?Znk3YzVyRkJZRFZDeUVWS2tzSGFpaklkT2ZMYTJncDVJVlZhWHB2Vk1DSlRx?=
+ =?utf-8?B?cVJNZUE2a0p0R3VlTEhIbTdkaGVuVmJ3anYvTCtYcEprOU9JUDM4L1lNbk5J?=
+ =?utf-8?B?YTA3MEM1L0hRMmtpMkFHZEc4OWJ5MldWekRXeHBGRXpUc0VCSE1SdjB3UmdD?=
+ =?utf-8?B?eXlhalV4VFdnTlFNVkZGYWpFenBmbHRmeWJlbDlrQ1NOLzlsdTBOVE1Wd2h3?=
+ =?utf-8?B?YTZzOTVGMTllVXE0L0txRGlzS0JLSlVEUnNvRUxUeHhMYUMrNnV4UUMwL1Uw?=
+ =?utf-8?B?eUM1WGxFWi94ZDdKS1A4ZU1PTFA5WDRDc3dxcTdVL0VWMElEL0pVQT09?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: gPSDapgfMEYdS81KP4AqXtSz4lnLGoQ+Si6ppN4EBEKBhV3DSkIyCWWWMoU8DfTFfmu/H2maGe4AOrQfEYb5zezmD0wwcD1quksVSjRMC3dAERNLdgsZrizDbPcx8JWEh9RSrlqPBa+oA7NDcE1BtoDhwiPrdkR91cpNzjN4QjyLYcuhDiAycmQBfsU3OgDnZgAQT/l8vkNWeYl+JSEyfa1Zbk1ieJo3yIobvho0yuJDwwyeK5ixL8syvSDG8zB/EOgKusqxqu4d8XBPHqQIy9Z+B7s1ymKEfgB3BoLlRyr9P5MoOjn1RH70Trqw2X8LHCo+oD5ca+ceoXr0e3En8w==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6053.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17ec39f8-2abf-4419-a090-08df0809832c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Sep 2026 09:15:05.8259 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ovjtaKJLMC9bwTblRL/ZyqqyEs0f1jn8cbTvbTEcAP+IvzXLH3UDszGnlLejfiivQCZH/LM9GRFSQX5+98mjBw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB8024
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,796 +174,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Historically, CRTCs and CRTC indexes have been called "pipes" in IGT,
-due to IGT's Intel origins. This has been increasingly confusing, and
-downright wrong with the idea of not having 1:1 mapping between pipes
-and CRTC indexes. While CRTC indexes are always consecutive in the order
-the CRTCs were created in the kernel, you could be missing pipes in
-between, or create them in different order.
-
-This conflation has been largely fixed in IGT recently (which is
-evidenced by the relatively small footprint of this change). But the
-idea of "pipe" is still there.
-
-Rename enum pipe to hardware_pipe, and crtc->pipe member to
-crtc->hardware_pipe to further emphasize that they're not generic but
-rather GPU hardware vendor specific concepts, and should be avoided in
-generic code.
-
-The hardware pipe usage remains in some generic lib/kms code for legacy
-reasons, but works due to it matching CRTC index by default for
-non-Intel.
-
-v2: s/vendor_pipe/hardware_pipe/g
-
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
----
- lib/igt_kms.c                          | 28 +++++++++++-----------
- lib/igt_kms.h                          | 20 ++++++++++------
- tests/intel/kms_busy.c                 | 16 ++++++-------
- tests/intel/kms_dp_link_training.c     |  2 +-
- tests/intel/kms_dsc.c                  |  2 +-
- tests/intel/kms_dsc_helper.c           |  4 ++--
- tests/intel/kms_dsc_helper.h           |  2 +-
- tests/intel/kms_frontbuffer_tracking.c |  2 +-
- tests/intel/kms_joiner.c               | 32 +++++++++++++-------------
- tests/intel/kms_joiner_helper.c        |  8 +++----
- tests/intel/kms_mst.c                  |  2 +-
- tests/intel/kms_pipe_b_c_ivb.c         |  4 ++--
- tests/intel/kms_pipe_stress.c          | 24 +++++++++----------
- tests/intel/kms_pm_dc.c                |  8 +++----
- tests/intel/kms_pm_lpsp.c              |  2 +-
- tests/intel/kms_psr2_sf.c              |  4 ++--
- tests/intel/perf_pmu.c                 |  2 +-
- tests/kms_cursor_crc.c                 |  2 +-
- tests/kms_cursor_edge_walk.c           |  2 +-
- tests/kms_display_modes.c              |  2 +-
- tests/kms_panel_fitting.c              |  2 +-
- tests/kms_plane_scaling.c              |  2 +-
- 22 files changed, 89 insertions(+), 83 deletions(-)
-
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 2d78e3bee31d..f32f655d5fae 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -1059,7 +1059,7 @@ static igt_plane_t *igt_get_assigned_primary(igt_output_t *output,
-  *
-  * Returns: A string representing @pipe, e.g. "A".
-  */
--const char *kmstest_pipe_name(enum pipe pipe)
-+const char *kmstest_pipe_name(enum hardware_pipe pipe)
- {
- 	static const char str[] = "A\0B\0C\0D\0E\0F\0G\0H\0I\0J\0K\0L\0M\0N\0O\0P";
- 
-@@ -3115,7 +3115,7 @@ static int crtc_pipe_compare(const void *_a, const void *_b)
- {
- 	const igt_crtc_t *a = _a, *b = _b;
- 
--	return a->pipe - b->pipe;
-+	return a->hardware_pipe - b->hardware_pipe;
- }
- 
- /**
-@@ -3190,7 +3190,7 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 
- 		crtc->crtc_id = resources->crtcs[crtc_index];
- 		crtc->crtc_index = crtc_index;
--		crtc->pipe = is_intel_dev ? __intel_get_pipe_from_crtc_index(drm_fd, crtc_index) : crtc_index;
-+		crtc->hardware_pipe = is_intel_dev ? __intel_get_pipe_from_crtc_index(drm_fd, crtc_index) : crtc_index;
- 	}
- 
- 	/* For Intel, sort the CRTCs in pipe order */
-@@ -3619,7 +3619,7 @@ static int output_crtc_pipe_compare(const void *_a, const void *_b)
- 
- 	/* pipe order for valid output/crtc combos */
- 	if (a->crtc && b->crtc)
--		return a->crtc->pipe - b->crtc->pipe;
-+		return a->crtc->hardware_pipe - b->crtc->hardware_pipe;
- 
- 	/* valid combos before empty elements */
- 	return !b->crtc - !a->crtc;
-@@ -5312,7 +5312,7 @@ const char *igt_crtc_name(igt_crtc_t *crtc)
- 	if (crtc == NULL)
- 		return "None";
- 
--	return kmstest_pipe_name(crtc->pipe);
-+	return kmstest_pipe_name(crtc->hardware_pipe);
- }
- 
- /**
-@@ -7212,7 +7212,7 @@ bool intel_boundary_non_joiner_mode_found(int drm_fd, drmModeConnector *connecto
-  *
-  * Returns: True if joiner is enabled, false otherwise.
-  */
--bool igt_is_joiner_enabled_for_pipe(int drmfd, enum pipe pipe)
-+bool igt_is_joiner_enabled_for_pipe(int drmfd, enum hardware_pipe pipe)
- {
- 	char buf[16384], master_str[64], slave_str[64];
- 	int dir, res;
-@@ -7431,9 +7431,9 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 	uint8_t i, pipes_in_use = 0;
- 	igt_crtc_t *crtc;
- 	igt_output_t *output;
--	enum pipe last_pipe = PIPE_NONE;
-+	enum hardware_pipe last_pipe = PIPE_NONE;
- 	struct {
--		enum pipe idx;
-+		enum hardware_pipe idx;
- 		drmModeModeInfo *mode;
- 		igt_output_t *output;
- 		bool force_joiner;
-@@ -7442,8 +7442,8 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 
- 	/* Get last pipe */
- 	for_each_crtc(display, crtc) {
--		if (crtc->pipe > last_pipe)
--			last_pipe = crtc->pipe;
-+		if (crtc->hardware_pipe > last_pipe)
-+			last_pipe = crtc->hardware_pipe;
- 	}
- 
- 	/*
-@@ -7454,7 +7454,7 @@ bool igt_check_bigjoiner_support(igt_display_t *display)
- 		if (!output->pending_crtc)
- 			continue;
- 
--		pipes[pipes_in_use].idx = output->pending_crtc->pipe;
-+		pipes[pipes_in_use].idx = output->pending_crtc->hardware_pipe;
- 		pipes[pipes_in_use].mode = igt_output_get_mode(output);
- 		pipes[pipes_in_use].output = output;
- 		pipes[pipes_in_use].force_joiner = igt_check_force_joiner_status(display->drm_fd, output->name);
-@@ -7924,12 +7924,12 @@ igt_crtc_t *igt_crtc_for_crtc_index(igt_display_t *display, int crtc_index)
- 	return NULL;
- }
- 
--igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe)
-+igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum hardware_pipe pipe)
- {
- 	igt_crtc_t *crtc;
- 
- 	for_each_crtc(display, crtc) {
--		if (crtc->pipe == pipe)
-+		if (crtc->hardware_pipe == pipe)
- 			return crtc;
- 	}
- 
-@@ -7991,7 +7991,7 @@ igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc)
- 	igt_crtc_t *next;
- 
- 	for_each_crtc(display, next) {
--		if (!crtc || next->pipe > crtc->pipe)
-+		if (!crtc || next->hardware_pipe > crtc->hardware_pipe)
- 			return next;
- 	}
- 
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 695f666bacb9..b7653b8ad49a 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -51,7 +51,13 @@
- #define LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT	6
- 
- /**
-- * pipe:
-+ * hardware_pipe:
-+ *
-+ * GPU vendor-specific hardware pipe, which may be different from the CRTC
-+ * index. Only code and tests that specifically need to know the pipe should use
-+ * this, and conditional to the device in question. Defaults to matching the
-+ * CRTC index, but do not rely on it.
-+ *
-  * @PIPE_NONE: Invalid pipe, used for disconnecting a output from a pipe.
-  * @PIPE_A: First crtc.
-  * @PIPE_B: Second crtc.
-@@ -71,7 +77,7 @@
-  * @PIPE_P: Sixteenth crtc.
-  * @IGT_MAX_PIPES: Max number of pipes allowed.
-  */
--enum pipe {
-+enum hardware_pipe {
-         PIPE_NONE = -1,
-         PIPE_A = 0,
-         PIPE_B,
-@@ -91,7 +97,7 @@ enum pipe {
-         PIPE_P,
-         IGT_MAX_PIPES
- };
--const char *kmstest_pipe_name(enum pipe pipe);
-+const char *kmstest_pipe_name(enum hardware_pipe pipe);
- const char *kmstest_plane_type_name(int plane_type);
- 
- enum port {
-@@ -478,8 +484,8 @@ typedef struct _igt_plane {
-  */
- struct _igt_crtc {
- 	igt_display_t *display;
--	/* ID of a hardware pipe */
--	enum pipe pipe;
-+	/* ID of a hardware pipe. This may be vendor specific. Use crtc_index instead. */
-+	enum hardware_pipe hardware_pipe;
- 
- 	int n_planes;
- 	int num_primary_planes;
-@@ -581,7 +587,7 @@ const char *igt_crtc_name(igt_crtc_t *crtc);
- 
- igt_crtc_t *igt_crtc_for_crtc_id(igt_display_t *display, uint32_t crtc_id);
- igt_crtc_t *igt_crtc_for_crtc_index(igt_display_t *display, int crtc_index);
--igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum pipe pipe);
-+igt_crtc_t *igt_crtc_for_pipe(igt_display_t *display, enum hardware_pipe pipe);
- igt_crtc_t *igt_first_crtc(igt_display_t *display);
- igt_crtc_t *igt_first_crtc_with_single_output(igt_display_t *display, igt_output_t **ret_output);
- igt_crtc_t *igt_next_crtc(igt_display_t *display, igt_crtc_t *crtc);
-@@ -1352,7 +1358,7 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
- 			  int max_dotclock, drmModeModeInfo *mode);
- bool intel_boundary_non_joiner_mode_found(int drm_fd, drmModeConnector *connector,
- 					   int max_dotclock, drmModeModeInfo *mode);
--bool igt_is_joiner_enabled_for_pipe(int drmfd, enum pipe pipe);
-+bool igt_is_joiner_enabled_for_pipe(int drmfd, enum hardware_pipe pipe);
- bool igt_ultrajoiner_possible(int drmfd, drmModeModeInfo *mode, int max_dotclock);
- bool ultrajoiner_mode_found(int drm_fd, drmModeConnector *connector,
- 			  int max_dotclock, drmModeModeInfo *mode);
-diff --git a/tests/intel/kms_busy.c b/tests/intel/kms_busy.c
-index 039cc6ae8dab..60e12e72859e 100644
---- a/tests/intel/kms_busy.c
-+++ b/tests/intel/kms_busy.c
-@@ -432,7 +432,7 @@ const char *help_str =
- int igt_main_args("e", NULL, help_str, opt_handler, NULL)
- {
- 	igt_display_t display = { .drm_fd = -1, .n_crtcs = IGT_MAX_PIPES };
--	enum pipe active_pipes[IGT_MAX_PIPES];
-+	enum hardware_pipe active_pipes[IGT_MAX_PIPES];
- 	igt_output_t *output;
- 	uint32_t last_pipe = 0;
- 	igt_crtc_t *crtc;
-@@ -465,7 +465,7 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 
- 		/* Get active pipes. */
- 		for_each_crtc(&display, crtc)
--			active_pipes[last_pipe++] = crtc->pipe;
-+			active_pipes[last_pipe++] = crtc->hardware_pipe;
- 		last_pipe--;
- 	}
- 
-@@ -497,8 +497,8 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 			if (!crtc_output_combo_valid(&display, output, crtc))
- 				continue;
- 
--			if (!all_pipes && crtc->pipe != active_pipes[0] &&
--					  crtc->pipe != active_pipes[last_pipe])
-+			if (!all_pipes && crtc->hardware_pipe != active_pipes[0] &&
-+					  crtc->hardware_pipe != active_pipes[last_pipe])
- 				continue;
- 
- 			igt_dynamic_f("flip-pipe-%s", igt_crtc_name(crtc))
-@@ -522,8 +522,8 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 			if (!crtc_output_combo_valid(&display, output, crtc))
- 				continue;
- 
--			if (!all_pipes && crtc->pipe != active_pipes[0] &&
--					  crtc->pipe != active_pipes[last_pipe])
-+			if (!all_pipes && crtc->hardware_pipe != active_pipes[0] &&
-+					  crtc->hardware_pipe != active_pipes[last_pipe])
- 				continue;
- 
- 			igt_dynamic_f("pipe-%s", igt_crtc_name(crtc))
-@@ -557,8 +557,8 @@ int igt_main_args("e", NULL, help_str, opt_handler, NULL)
- 				if (!crtc_output_combo_valid(&display, output, crtc))
- 					continue;
- 
--				if (!all_pipes && crtc->pipe != active_pipes[0] &&
--						  crtc->pipe != active_pipes[last_pipe])
-+				if (!all_pipes && crtc->hardware_pipe != active_pipes[0] &&
-+						  crtc->hardware_pipe != active_pipes[last_pipe])
- 					continue;
- 
- 				igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
-diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
-index e165ee81d7ed..f67fdf59dd70 100644
---- a/tests/intel/kms_dp_link_training.c
-+++ b/tests/intel/kms_dp_link_training.c
-@@ -155,7 +155,7 @@ static void do_modeset(data_t *data, bool mst)
- 	igt_crtc_t *crtc;
- 
- 	for_each_crtc(&data->display, crtc) {
--		valid_pipes_mask |= BIT(crtc->pipe);
-+		valid_pipes_mask |= BIT(crtc->hardware_pipe);
- 		n_pipes++;
- 	}
- 
-diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-index 1e30f6feef22..a9e4d976b91f 100644
---- a/tests/intel/kms_dsc.c
-+++ b/tests/intel/kms_dsc.c
-@@ -369,7 +369,7 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
- 			/* Check joiner constraints for this pipe */
- 			if (joined_pipes != JOINED_PIPES_DEFAULT &&
- 			    !check_dsc_joiner_constraints(data->drm_fd, data->output,
--							  display, crtc->pipe,
-+							  display, crtc->hardware_pipe,
- 							  n_pipes, joined_pipes))
- 				continue;
- 
-diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
-index 9f581758f9a3..2e57c2df2e6a 100644
---- a/tests/intel/kms_dsc_helper.c
-+++ b/tests/intel/kms_dsc_helper.c
-@@ -91,7 +91,7 @@ bool check_gen11_dp_constraint(int drmfd, igt_output_t *output,
- 	drmModeConnector *connector = output->config.connector;
- 
- 	if ((connector->connector_type == DRM_MODE_CONNECTOR_DisplayPort) &&
--	    (crtc->pipe == PIPE_A) && IS_GEN11(devid)) {
-+	    (crtc->hardware_pipe == PIPE_A) && IS_GEN11(devid)) {
- 		igt_info("DSC not supported on pipe %s on %s in gen11 platforms\n",
- 			 igt_crtc_name(crtc), output->name);
- 		return false;
-@@ -215,7 +215,7 @@ bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *outp
- bool check_dsc_joiner_constraints(int drm_fd,
- 				  igt_output_t *output,
- 				  igt_display_t *display,
--				  enum pipe pipe,
-+				  enum hardware_pipe pipe,
- 				  int num_pipes,
- 				  enum joined_pipes type)
- {
-diff --git a/tests/intel/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
-index 542fe46dec77..0209cb1ee774 100644
---- a/tests/intel/kms_dsc_helper.h
-+++ b/tests/intel/kms_dsc_helper.h
-@@ -41,7 +41,7 @@ void save_force_dsc_fractional_bpp_en(int drmfd, igt_output_t *output);
- void restore_force_dsc_fractional_bpp_en(void);
- bool is_dsc_fractional_bpp_supported(int disp_ver, int drmfd, igt_output_t *output);
- bool check_dsc_joiner_constraints(int drm_fd, igt_output_t *output,
--				  igt_display_t *display, enum pipe pipe,
-+				  igt_display_t *display, enum hardware_pipe pipe,
- 				  int num_pipes,
- 				  enum joined_pipes type);
- 
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 4dd2f4e70f36..63131e135d30 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -1234,7 +1234,7 @@ static bool find_connector(bool edp_only, bool pipe_a,
- 		if (edp_only && c->connector_type != DRM_MODE_CONNECTOR_eDP)
- 			continue;
- 
--		if (pipe_a && crtc->pipe != PIPE_A)
-+		if (pipe_a && crtc->hardware_pipe != PIPE_A)
- 			continue;
- 
- 		if (output == forbidden_output || crtc == forbidden_crtc) {
-diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
-index dfcb24004775..fce24f2bd087 100644
---- a/tests/intel/kms_joiner.c
-+++ b/tests/intel/kms_joiner.c
-@@ -98,7 +98,7 @@ typedef struct {
- 	igt_output_t *non_ultra_joiner_output[IGT_MAX_PIPES];
- 	igt_output_t *mixed_output[IGT_MAX_PIPES];
- 	igt_output_t *non_joiner_output[IGT_MAX_PIPES];
--	enum pipe pipe_seq[IGT_MAX_PIPES];
-+	enum hardware_pipe pipe_seq[IGT_MAX_PIPES];
- 	igt_display_t display;
- 	bool ultra_joiner_supported;
- } data_t;
-@@ -131,7 +131,7 @@ static void enable_force_joiner_on_all_non_ultra_joiner_outputs(data_t *data)
- 	}
- }
- 
--static enum pipe get_next_master_pipe(data_t *data, uint32_t available_pipe_mask)
-+static enum hardware_pipe get_next_master_pipe(data_t *data, uint32_t available_pipe_mask)
- {
- 	if ((data->master_pipes & available_pipe_mask) == 0)
- 		return PIPE_NONE;
-@@ -139,17 +139,17 @@ static enum pipe get_next_master_pipe(data_t *data, uint32_t available_pipe_mask
- 	return ffs(data->master_pipes & available_pipe_mask) - 1;
- }
- 
--static enum pipe setup_pipe(data_t *data, igt_output_t *output, enum pipe pipe, uint32_t available_pipe_mask)
-+static enum hardware_pipe setup_pipe(data_t *data, igt_output_t *output, enum hardware_pipe pipe, uint32_t available_pipe_mask)
- {
- 	igt_display_t *display = &data->display;
- 	igt_crtc_t *crtc;
--	enum pipe master_pipe;
-+	enum hardware_pipe master_pipe;
- 	uint32_t attempt_mask;
- 
- 	crtc = igt_crtc_for_pipe(display, pipe);
- 	igt_assert_f(crtc, "There is no pipe %s\n", kmstest_pipe_name(pipe));
- 
--	attempt_mask = BIT(crtc->pipe);
-+	attempt_mask = BIT(crtc->hardware_pipe);
- 	master_pipe = get_next_master_pipe(data, available_pipe_mask & attempt_mask);
- 
- 	if (master_pipe == PIPE_NONE)
-@@ -157,7 +157,7 @@ static enum pipe setup_pipe(data_t *data, igt_output_t *output, enum pipe pipe,
- 
- 	igt_info("Using pipe %s as master and %s slave for %s\n",
- 		 igt_crtc_name(crtc),
--		 kmstest_pipe_name(crtc->pipe + 1), output->name);
-+		 kmstest_pipe_name(crtc->hardware_pipe + 1), output->name);
- 	igt_output_set_crtc(output, crtc);
- 
- 	return master_pipe;
-@@ -167,7 +167,7 @@ static void set_joiner_mode(data_t *data, igt_output_t *output, drmModeModeInfo
- {
- 	igt_display_t *display = &data->display;
- 	igt_crtc_t *crtc;
--	enum pipe pipe = PIPE_A;
-+	enum hardware_pipe pipe = PIPE_A;
- 	igt_plane_t *primary;
- 	igt_fb_t fb;
- 
-@@ -223,7 +223,7 @@ static void switch_modeset_ultra_joiner_big_joiner(data_t *data, igt_output_t *o
- 	drmModeModeInfo uj_mode;
- 	int status;
- 	bool ultrajoiner_found;
--	enum pipe pipe;
-+	enum hardware_pipe pipe;
- 	bool force_joiner_supported;
- 
- 	drmModeConnector *connector = output->config.connector;
-@@ -278,7 +278,7 @@ static void switch_modeset_ultra_joiner_big_joiner(data_t *data, igt_output_t *o
- static void test_single_joiner(data_t *data, int output_count, bool force_joiner)
- {
- 	int i;
--	enum pipe pipe, master_pipe;
-+	enum hardware_pipe pipe, master_pipe;
- 	uint32_t available_pipe_mask = BIT(data->n_pipes) - 1;
- 	igt_output_t *output;
- 	igt_plane_t *primary;
-@@ -313,7 +313,7 @@ static void test_multi_joiner(data_t *data, int output_count, bool force_joiner)
- {
- 	int i, cleanup;
- 	uint32_t available_pipe_mask;
--	enum pipe pipe, master_pipe;
-+	enum hardware_pipe pipe, master_pipe;
- 	igt_output_t **outputs;
- 	igt_output_t *output;
- 	igt_plane_t *primary[output_count];
-@@ -359,7 +359,7 @@ static void test_invalid_modeset_two_joiner(data_t *data,
- 	int i, j, ret;
- 	uint32_t available_pipe_mask;
- 	uint32_t attempt_mask;
--	enum pipe master_pipe;
-+	enum hardware_pipe master_pipe;
- 	igt_output_t **outputs;
- 	igt_output_t *output;
- 	igt_plane_t *primary[INVALID_TEST_OUTPUT];
-@@ -381,7 +381,7 @@ static void test_invalid_modeset_two_joiner(data_t *data,
- 
- 		for (j = 0; j < INVALID_TEST_OUTPUT; j++) {
- 			igt_crtc_t *crtc;
--			enum pipe pipe = data->pipe_seq[i + j];
-+			enum hardware_pipe pipe = data->pipe_seq[i + j];
- 			/*
- 			 * In the mixed case only the first output (j == 0) is a
- 			 * big joiner output; the second is a non-big-joiner output.
-@@ -441,7 +441,7 @@ static void test_joiner_on_last_pipe(data_t *data, bool force_joiner)
- 
- 	for (i = 0; i < len; i++) {
- 		igt_crtc_t *crtc;
--		enum pipe pipe = data->pipe_seq[data->n_pipes - 1];
-+		enum hardware_pipe pipe = data->pipe_seq[data->n_pipes - 1];
- 
- 		igt_display_reset(&data->display);
- 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
-@@ -508,7 +508,7 @@ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display,
- 
- 		for (j = 0; j < data->n_pipes; j++) {
- 			igt_crtc_t *crtc;
--			enum pipe pipe;
-+			enum hardware_pipe pipe;
- 
- 			/* Ultra joiner is only valid on PIPE_A */
- 			if (invalid_pipe && j == PIPE_A)
-@@ -579,7 +579,7 @@ static void test_basic_max_non_joiner(data_t *data)
- {
- 	igt_display_t *display = &data->display;
- 	int count;
--	enum pipe pipe;
-+	enum hardware_pipe pipe;
- 	igt_output_t **outputs, *output;
- 	igt_fb_t fb;
- 	igt_plane_t *primary;
-@@ -698,7 +698,7 @@ int igt_main()
- 		data.n_pipes = 0;
- 		for_each_crtc(&data.display, crtc) {
- 			data.n_pipes++;
--			data.pipe_seq[j] = crtc->pipe;
-+			data.pipe_seq[j] = crtc->hardware_pipe;
- 			j++;
- 		}
- 	}
-diff --git a/tests/intel/kms_joiner_helper.c b/tests/intel/kms_joiner_helper.c
-index 5bacf6cb9e27..36168030475c 100644
---- a/tests/intel/kms_joiner_helper.c
-+++ b/tests/intel/kms_joiner_helper.c
-@@ -75,7 +75,7 @@ static int find_consecutive_pipes(int n_pipes,
- 	return -1;
- }
- 
--static enum pipe get_next_master_pipe(uint32_t pipe_mask)
-+static enum hardware_pipe get_next_master_pipe(uint32_t pipe_mask)
- {
- 	int i;
- 
-@@ -106,8 +106,8 @@ void igt_set_all_master_pipes_for_platform(igt_display_t *display, uint32_t *mas
- 	*master_pipes = 0;
- 
- 	for_each_crtc(display, crtc) {
--		if (igt_crtc_for_pipe(display, crtc->pipe + 1)) {
--			*master_pipes |= BIT(crtc->pipe);
-+		if (igt_crtc_for_pipe(display, crtc->hardware_pipe + 1)) {
-+			*master_pipes |= BIT(crtc->hardware_pipe);
- 			igt_info("Found master pipe %s\n", igt_crtc_name(crtc));
- 		}
- 	}
-@@ -138,7 +138,7 @@ bool igt_assign_pipes_for_outputs(int drm_fd,
- {
- 	int i = 0, idx  = 0, needed = 0, start = 0;
- 	uint32_t available_pipes_mask = 0;
--	enum pipe mp = PIPE_NONE;
-+	enum hardware_pipe mp = PIPE_NONE;
- 	igt_output_t *out;
- 
- 	for (idx = 0; idx < num_outputs; idx++) {
-diff --git a/tests/intel/kms_mst.c b/tests/intel/kms_mst.c
-index e5b7f162aba0..8b04cd3cfffc 100644
---- a/tests/intel/kms_mst.c
-+++ b/tests/intel/kms_mst.c
-@@ -280,7 +280,7 @@ static void mst_suspend_read_crc(igt_display_t *display)
- 	igt_crtc_t *crtc;
- 
- 	for_each_crtc(display, crtc)
--		valid_pipes_mask |= BIT(crtc->pipe);
-+		valid_pipes_mask |= BIT(crtc->hardware_pipe);
- 
- 	igt_set_all_master_pipes_for_platform(display, &master_pipes_mask);
- 
-diff --git a/tests/intel/kms_pipe_b_c_ivb.c b/tests/intel/kms_pipe_b_c_ivb.c
-index a39b46ca23e0..8bf075106689 100644
---- a/tests/intel/kms_pipe_b_c_ivb.c
-+++ b/tests/intel/kms_pipe_b_c_ivb.c
-@@ -160,10 +160,10 @@ find_outputs(data_t *data, igt_output_t **output1, igt_output_t **output2)
- 	*output2 = NULL;
- 
- 	for_each_crtc_with_valid_output(&data->display, crtc, output) {
--		if (crtc->pipe == PIPE_B && !*output1 && output != *output2)
-+		if (crtc->hardware_pipe == PIPE_B && !*output1 && output != *output2)
- 			*output1 = output;
- 
--		if (crtc->pipe == PIPE_C && output != *output1 && !*output2)
-+		if (crtc->hardware_pipe == PIPE_C && output != *output1 && !*output2)
- 			*output2 = output;
- 
- 		igt_output_set_crtc(output, NULL);
-diff --git a/tests/intel/kms_pipe_stress.c b/tests/intel/kms_pipe_stress.c
-index 5362fe9f3581..cc222dbc1d12 100644
---- a/tests/intel/kms_pipe_stress.c
-+++ b/tests/intel/kms_pipe_stress.c
-@@ -386,8 +386,8 @@ static void cleanup_plane_fbs(struct data *data, igt_crtc_t *crtc, int start,
- 
- 	while (i < end) {
- 		igt_remove_fb(data->display.drm_fd,
--			      &data->fb[crtc->pipe * MAX_PLANES + i]);
--		data->fb[crtc->pipe * MAX_PLANES + i].fb_id = 0;
-+			      &data->fb[crtc->hardware_pipe * MAX_PLANES + i]);
-+		data->fb[crtc->hardware_pipe * MAX_PLANES + i].fb_id = 0;
- 		i++;
- 	}
- }
-@@ -407,14 +407,14 @@ static int crtc_stress(struct data *data, igt_output_t *output,
- 	if (!mode)
- 		mode = igt_output_get_mode(output);
- 
--	if (data->last_mode[crtc->pipe] != mode) {
-+	if (data->last_mode[crtc->hardware_pipe] != mode) {
- 		ret = commit_mode(data, output,
- 				  crtc, mode);
- 
- 		if (ret)
- 			return ret;
- 
--		data->last_mode[crtc->pipe] = mode;
-+		data->last_mode[crtc->hardware_pipe] = mode;
- 		new_mode = true;
- 	}
- 
-@@ -422,7 +422,7 @@ static int crtc_stress(struct data *data, igt_output_t *output,
- 	 * Looks like we can't have planes on that pipe at all
- 	 * or mode hasn't changed
- 	 */
--	if (!data->num_planes[crtc->pipe] || !new_mode)
-+	if (!data->num_planes[crtc->hardware_pipe] || !new_mode)
- 		return 0;
- 
- 	/* Set up overlay/primary planes up to the configured limit. */
-@@ -443,7 +443,7 @@ static int crtc_stress(struct data *data, igt_output_t *output,
- 		 * in the reduction loop below.
- 		 */
- 		universal_plane_set_fb(plane,
--				       &data->fb[crtc->pipe * MAX_PLANES + i],
-+				       &data->fb[crtc->hardware_pipe * MAX_PLANES + i],
- 				       plane_width, plane_height);
- 
- 		ret = try_plane_scaling(data, plane, plane_width, plane_height);
-@@ -456,7 +456,7 @@ static int crtc_stress(struct data *data, igt_output_t *output,
- 			plane_height /= 2;
- 
- 			/* Keep source crop in sync with the reduced destination. */
--			igt_fb_set_size(&data->fb[crtc->pipe * MAX_PLANES + i],
-+			igt_fb_set_size(&data->fb[crtc->hardware_pipe * MAX_PLANES + i],
- 					plane, plane_width, plane_height);
- 
- 			ret = try_plane_scaling(data, plane, plane_width, plane_height);
-@@ -466,10 +466,10 @@ static int crtc_stress(struct data *data, igt_output_t *output,
- 		}
- 		if (ret) {
- 			igt_info("Plane %d pipe %d try commit failed, exiting\n", i,
--				 crtc->pipe);
--			data->num_planes[crtc->pipe] = i;
-+				 crtc->hardware_pipe);
-+			data->num_planes[crtc->hardware_pipe] = i;
- 			igt_info("Max num planes for pipe %d set to %d\n",
--				 crtc->pipe, i);
-+				 crtc->hardware_pipe, i);
- 			/*
- 			 * We have now determined max amount of full sized planes, we will just
- 			 * keep it in mind and be smarter next time. Also lets remove unneeded fbs.
-@@ -479,7 +479,7 @@ static int crtc_stress(struct data *data, igt_output_t *output,
- 			cleanup_plane_fbs(data, crtc, i, MAX_PLANES);
- 		}
- 
--		if (++i >= data->num_planes[crtc->pipe])
-+		if (++i >= data->num_planes[crtc->hardware_pipe])
- 			break;
- 	}
- 
-@@ -493,7 +493,7 @@ static int crtc_stress(struct data *data, igt_output_t *output,
- 	for_each_plane_on_crtc(crtc, plane) {
- 		if (plane->type == DRM_PLANE_TYPE_CURSOR) {
- 			cursor_plane_set_fb(plane,
--					    &data->cursor_fb[crtc->pipe],
-+					    &data->cursor_fb[crtc->hardware_pipe],
- 					    cursor_width, cursor_height);
- 			if (igt_display_try_commit_atomic(&data->display,
- 							  DRM_MODE_ATOMIC_TEST_ONLY |
-diff --git a/tests/intel/kms_pm_dc.c b/tests/intel/kms_pm_dc.c
-index 981232decb6d..318a5439e6b4 100644
---- a/tests/intel/kms_pm_dc.c
-+++ b/tests/intel/kms_pm_dc.c
-@@ -163,7 +163,7 @@ static void set_output_on_pipe_b(data_t *data)
- 		drmModeConnectorPtr c = output->config.connector;
- 
- 		/* DC5 with PIPE_B transaction */
--		if (crtc->pipe != PIPE_B)
-+		if (crtc->hardware_pipe != PIPE_B)
- 			continue;
- 
- 		if (c->connector_type != DRM_MODE_CONNECTOR_eDP)
-@@ -191,11 +191,11 @@ static void setup_output(data_t *data)
- 
- 		if (disp_ver >= 13) {
- 			if (disp_ver == 20 || IS_BATTLEMAGE(data->devid) || IS_DG2(data->devid))
--				is_low_power = (crtc->pipe == PIPE_A);
-+				is_low_power = (crtc->hardware_pipe == PIPE_A);
- 			else
--				is_low_power = (crtc->pipe == PIPE_A || crtc->pipe == PIPE_B);
-+				is_low_power = (crtc->hardware_pipe == PIPE_A || crtc->hardware_pipe == PIPE_B);
- 		} else {
--			is_low_power = (crtc->pipe == PIPE_A);
-+			is_low_power = (crtc->hardware_pipe == PIPE_A);
- 		}
- 
- 		igt_skip_on_f(!is_low_power, "Low power pipe was not selected for the DC5 transaction.\n");
-diff --git a/tests/intel/kms_pm_lpsp.c b/tests/intel/kms_pm_lpsp.c
-index 6d4e64da01fe..dcaf0b631557 100644
---- a/tests/intel/kms_pm_lpsp.c
-+++ b/tests/intel/kms_pm_lpsp.c
-@@ -234,7 +234,7 @@ int igt_main()
- 					continue;
- 
- 				/* LPSP is low power single pipe usages i.e. PIPE_A */
--				if (crtc->pipe != PIPE_A)
-+				if (crtc->hardware_pipe != PIPE_A)
- 					continue;
- 
- 				if (connector->connector_type != DRM_MODE_CONNECTOR_eDP)
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index eec916c25305..fa7090ce82ad 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -1046,11 +1046,11 @@ static void cleanup(data_t *data)
- 
- static bool sel_fetch_pipe_combo_valid(data_t *data)
- {
--	if (data->devid < 14 && !IS_ALDERLAKE_P(data->devid) && data->crtc->pipe != PIPE_A)
-+	if (data->devid < 14 && !IS_ALDERLAKE_P(data->devid) && data->crtc->hardware_pipe != PIPE_A)
- 		return false;
- 
- 	if (data->output->config.connector->connector_type == DRM_MODE_CONNECTOR_eDP &&
--	    data->crtc->pipe != PIPE_A && data->crtc->pipe != PIPE_B)
-+	    data->crtc->hardware_pipe != PIPE_A && data->crtc->hardware_pipe != PIPE_B)
- 		return false;
- 
- 	return true;
-diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
-index 1e389958fc35..8249faaad823 100644
---- a/tests/intel/perf_pmu.c
-+++ b/tests/intel/perf_pmu.c
-@@ -1173,7 +1173,7 @@ event_wait(int gem_fd, const intel_ctx_t *ctx,
- 		uint64_t val[2];
- 
- 		batch[6] = MI_WAIT_FOR_EVENT;
--		switch (crtc->pipe) {
-+		switch (crtc->hardware_pipe) {
- 		case PIPE_A:
- 			batch[6] |= MI_WAIT_FOR_PIPE_A_VBLANK;
- 			batch[5] = ~(1 << 3);
-diff --git a/tests/kms_cursor_crc.c b/tests/kms_cursor_crc.c
-index 5a6cc7717425..6334f8f775c8 100644
---- a/tests/kms_cursor_crc.c
-+++ b/tests/kms_cursor_crc.c
-@@ -240,7 +240,7 @@ static bool chv_cursor_broken(data_t *data, int x)
- 	if (x >= 0)
- 		return false;
- 
--	return IS_CHERRYVIEW(devid) && data->crtc->pipe == PIPE_C;
-+	return IS_CHERRYVIEW(devid) && data->crtc->hardware_pipe == PIPE_C;
- }
- 
- static bool cursor_visible(data_t *data, int x, int y)
-diff --git a/tests/kms_cursor_edge_walk.c b/tests/kms_cursor_edge_walk.c
-index 8036d43d5eef..7b6bee67e684 100644
---- a/tests/kms_cursor_edge_walk.c
-+++ b/tests/kms_cursor_edge_walk.c
-@@ -123,7 +123,7 @@ static void cursor_move(data_t *data, int x, int y, int i)
- 	 * fails). So let's accept a failure from the ioctl in that case.
- 	 */
- 	igt_assert(drmModeMoveCursor(data->drm_fd, crtc_id, x, y) == 0 ||
--		   (IS_CHERRYVIEW(data->devid) && data->crtc->pipe == PIPE_C &&
-+		   (IS_CHERRYVIEW(data->devid) && data->crtc->hardware_pipe == PIPE_C &&
- 		    x < 0 && x > -data->curw));
- 	igt_wait_for_vblank(data->crtc);
- }
-diff --git a/tests/kms_display_modes.c b/tests/kms_display_modes.c
-index c1876aa0514f..3030f29cfd45 100644
---- a/tests/kms_display_modes.c
-+++ b/tests/kms_display_modes.c
-@@ -193,7 +193,7 @@ static void run_extendedmode_test(data_t *data) {
- 			if (output1 == output2)
- 				continue;
- 
--			if (crtc1->pipe > crtc2->pipe &&
-+			if (crtc1->hardware_pipe > crtc2->hardware_pipe &&
- 			    igt_check_output_is_dp_mst(output1) ==
- 			    igt_check_output_is_dp_mst(output2))
- 				continue;
-diff --git a/tests/kms_panel_fitting.c b/tests/kms_panel_fitting.c
-index bc78d9a6f41d..478e8b5d7bf2 100644
---- a/tests/kms_panel_fitting.c
-+++ b/tests/kms_panel_fitting.c
-@@ -170,7 +170,7 @@ test_panel_fitting_legacy(data_t *d, igt_display_t *display, igt_crtc_t *crtc,
- 		 */
- 		if (IS_GEN8(devid) ||
- 			(IS_GEN7(devid) && !IS_IVYBRIDGE(devid)) ||
--			(IS_GEN9(devid) && crtc->pipe == PIPE_C)) {
-+			(IS_GEN9(devid) && crtc->hardware_pipe == PIPE_C)) {
- 			is_plane_scaling_active = false;
- 		}
- 	}
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 90dc5593579f..091b8114e6fd 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -695,7 +695,7 @@ static bool test_crtc_iteration(data_t *data, igt_crtc_t *crtc, int iteration)
- 	    data->extended)
- 		return true;
- 
--	if ((crtc->pipe > PIPE_B) && (iteration >= 2))
-+	if ((crtc->hardware_pipe > PIPE_B) && (iteration >= 2))
- 		return false;
- 
- 	return true;
--- 
-2.47.3
-
+SGkgTWljaGFsLA0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IGlndC1k
+ZXYgPGlndC1kZXYtYm91bmNlc0BsaXN0cy5mcmVlZGVza3RvcC5vcmc+IE9uIEJlaGFsZiBPZiBN
+aWNoYcWCDQo+IEdyemVsYWsNCj4gU2VudDogVGh1cnNkYXksIEp1bHkgMiwgMjAyNiAxMTo1NiBQ
+TQ0KPiBUbzogaWd0LWRldkBsaXN0cy5mcmVlZGVza3RvcC5vcmcNCj4gQ2M6IE5pa3VsYSwgSmFu
+aSA8amFuaS5uaWt1bGFAaW50ZWwuY29tPjsgS2FuZHBhbCwgU3VyYWoNCj4gPHN1cmFqLmthbmRw
+YWxAaW50ZWwuY29tPjsgR3J6ZWxhaywgTWljaGFsIDxtaWNoYWwuZ3J6ZWxha0BpbnRlbC5jb20+
+DQo+IFN1YmplY3Q6IFtQQVRDSCBpLWctdCB2NSA0LzddIHRvb2xzL3ZidF9kZWNvZGU6IHBhcnNl
+ICYgZHVtcCBWUy9QRS1PIHRhYmxlcw0KPiBmb3IgTFQNCj4gDQo+IER1bXAgVkJUICM1NyB0YWJs
+ZXMgZm9yIExULiBBZGQgYSB0YWJsZSBvZiBzdHJpbmdzIHRvIHN0b3JlIGVhY2ggdGFibGUNCj4g
+cHVycG9zZS4gU2hvdyB0aGUgYWZmZWN0ZWQgbW9kZXMgb24gZHVtcGluZy4NCj4gDQo+IEN1cnJl
+bnRseSBWc3dpbmcgLyBQcmUtZW1waGFzaXMgT3ZlcnJpZGUgaXMgbm90IHN1cHBvcnRlZCBieSBr
+ZXJuZWwgb24gTFQsDQo+IGJ1dCBpdCBkb2Vzbid0IGhhcm0gdG8gYWRkIGRlY29kaW5nIGludG8g
+SUdULg0KPiANCj4gdjItPnYzDQo+IC0gcmV0dXJuIDE2IHJvd3Mgb24gTVRMIGluc3RlYWQgb2Yg
+MTANCj4gDQo+IHYxLT52Mg0KPiAtIGNoZWNrIHBsYXRmb3JtIGJhc2luZyBvbiBkZXZpZCBub3Qg
+VkJUIHNpZ25hdHVyZSAoSmFuaSkNCj4gDQo+IFNpZ25lZC1vZmYtYnk6IE1pY2hhxYIgR3J6ZWxh
+ayA8bWljaGFsLmdyemVsYWtAaW50ZWwuY29tPg0KPiAtLS0NCj4gIHRvb2xzL2ludGVsX3ZidF9k
+ZWNvZGUuYyB8IDY0ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0NCj4g
+IDEgZmlsZSBjaGFuZ2VkLCA1NCBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkNCj4gDQo+
+IGRpZmYgLS1naXQgYS90b29scy9pbnRlbF92YnRfZGVjb2RlLmMgYi90b29scy9pbnRlbF92YnRf
+ZGVjb2RlLmMgaW5kZXgNCj4gMzNmODU5OGU1Zi4uMmYzZjcyMDU3MyAxMDA2NDQNCj4gLS0tIGEv
+dG9vbHMvaW50ZWxfdmJ0X2RlY29kZS5jDQo+ICsrKyBiL3Rvb2xzL2ludGVsX3ZidF9kZWNvZGUu
+Yw0KPiBAQCAtMzQ2NSwyNCArMzQ2NSw2OCBAQCBzdGF0aWMgY29uc3QgY2hhciAqIGNvbnN0IHZz
+cGVvX2RwMTRfbGV2ZWxzWzEwXQ0KPiA9IHsNCj4gIAkiVjMtUDAiLA0KPiAgfTsNCj4gDQo+IC1z
+dGF0aWMgdm9pZCBkdW1wX3Zzd2luZ19wcmVlbXBoYXNpcyhzdHJ1Y3QgY29udGV4dCAqY29udGV4
+dCwNCj4gLQkJCQkgICAgY29uc3Qgc3RydWN0IGJkYl9ibG9jayAqYmxvY2spDQo+ICtzdGF0aWMg
+Y29uc3QgY2hhciAqIGNvbnN0IHZzcGVvX2x0X3RhYmxlc1s2XSA9IHsNCj4gKwkiVU5VU0VEIiwN
+Cj4gKwkiVU5VU0VEIiwNCj4gKwkiVU5VU0VEIiwNCj4gKwkiVU5VU0VEIiwNCj4gKwkiRFAgMS40
+IiwNCj4gKwkiRFAgMi4xIiwNCj4gK307DQo+ICsNCj4gK3N0YXRpYyB2b2lkIGR1bXBfbHRfdnNw
+ZW8oY29uc3Qgc3RydWN0IGJkYl92c3dpbmdfcHJlZW1waCAqdnNwZW8sDQo+ICsJCQkgIGludCBu
+dW1fcm93cykNCj4gIHsNCj4gLQljb25zdCBzdHJ1Y3QgYmRiX3Zzd2luZ19wcmVlbXBoICp2c3Bl
+byA9IGJsb2NrX2RhdGEoYmxvY2spOw0KPiArCWNvbnN0IHVuc2lnbmVkIGludCAqdGFibGVzID0g
+dnNwZW8tPnRhYmxlczsNCj4gKwlzaXplX3Qgb2Zmc2V0ID0gMDsNCj4gDQo+ICAJcHJpbnRmKCJc
+dE51bWJlciBvZiB2c3dpbmcgdGFibGVzOiAlZFxuIiwgdnNwZW8tPm51bV90YWJsZXMpOw0KPiAg
+CXByaW50ZigiXHROdW1iZXIgb2YgY29sdW1uczogJWRcbiIsIHZzcGVvLT5udW1fY29sdW1ucyk7
+DQo+ICsJcHJpbnRmKCJcdE51bWJlciBvZiByb3dzOiAlZFxuIiwgbnVtX3Jvd3MpOw0KPiArDQo+
+ICsJcHJpbnRmKCJcdFBIWSB0eXBlOiBMVFxuIik7DQo+IA0KPiAgCWZvciAoaW50IGlkeCA9IDA7
+IGlkeCA8IHZzcGVvLT5udW1fdGFibGVzOyBpZHgrKykgew0KPiAtCQlwcmludGYoIlx0VnN3aW5n
+IFRhYmxlICMlZDpcbiIsIGlkeCsxKTsNCj4gKwkJcHJpbnRmKCJcdFZzd2luZyBUYWJsZSAjJWQg
+KCVzKTpcbiIsIGlkeCsxLA0KPiB2c3Blb19sdF90YWJsZXNbaWR4XSk7DQo+ICsJCWZvciAoaW50
+IHJvdyA9IDA7IHJvdyA8IG51bV9yb3dzOyByb3crKykgew0KPiArCQkJaW50IG1haW5fY3Vyc29y
+ID0gdGFibGVzW29mZnNldF07DQo+ICsJCQlpbnQgcHJlX2N1cnNvciA9IHRhYmxlc1tvZmZzZXQg
+KyAxXTsNCj4gKwkJCWludCBwb3N0X2N1cnNvciA9IHRhYmxlc1tvZmZzZXQgKyAyXTsNCj4gKw0K
+PiArCQkJcHJpbnRmKCJcdFx0UHJlc2V0ICMlMDJkOiAiLCByb3crMSk7DQo+ICsJCQlwcmludGYo
+Im1haW4tY3Vyc29yOiAweCUwOHgsICIsIG1haW5fY3Vyc29yKTsNCj4gKwkJCXByaW50ZigicHJl
+LWN1cnNvcjogMHglMDh4LCAiLCBwcmVfY3Vyc29yKTsNCj4gKwkJCXByaW50ZigicG9zdC1jdXJz
+b3I6IDB4JTA4eFxuIiwgcG9zdF9jdXJzb3IpOw0KPiArDQo+ICsJCQlvZmZzZXQgKz0gdnNwZW8t
+Pm51bV9jb2x1bW5zOw0KPiArCQl9DQo+ICsJfQ0KPiArfQ0KPiANCj4gLQkJZm9yIChpbnQgcm93
+ID0gMDsgcm93IDwgMTA7IHJvdysrKSB7DQo+IC0JCQlwcmludGYoIlx0XHQlczogIiwgdnNwZW9f
+bGV2ZWxzW3Jvd10pOw0KPiArc3RhdGljIGludA0KPiArdnN3aW5nX3ByZWVtcGhfbnVtX3Jvd3Mo
+aW50IGRldmlkKQ0KPiArew0KPiArCXJldHVybiBpbnRlbF9kaXNwbGF5X3ZlcihkZXZpZCkgPj0g
+MTQgPyAxNiA6IDEwOyB9DQoNClRoZSBMVCBQSFkgZGVjb2RlIGxvb2tzIHBsYXVzaWJsZSwgYnV0
+IGl0IHN0aWxsIGFzc3VtZXMgYSBmaXhlZCByb3cgbGF5b3V0IGFuZCBmaWVsZCBjb3VudC4NClBs
+ZWFzZSBjb25maXJtIHRoZSByb3cgY291bnQgYW5kIGZpZWxkIG1hcHBpbmcgYWdhaW5zdCB0aGUg
+cmVhbCBMVCBWQlQgZGF0YS4NCg0KUmVnYXJkcywNClByYW5heQ0KDQo+IA0KPiAtCQkJZm9yIChp
+bnQgY29sID0gMDsgY29sIDwgdnNwZW8tPm51bV9jb2x1bW5zOyBjb2wrKykNCj4gLQkJCQlwcmlu
+dGYoIiAweCUwOHgiLCB2c3Blby0+dGFibGVzW2lkeCAqIDEwICoNCj4gdnNwZW8tPm51bV9jb2x1
+bW5zICsgcm93ICogY29sXSk7DQo+IC0JCQlwcmludGYoIlxuIik7DQo+IC0JCX0NCj4gK3N0YXRp
+YyB2b2lkIGR1bXBfdnN3aW5nX3ByZWVtcGhhc2lzKHN0cnVjdCBjb250ZXh0ICpjb250ZXh0LA0K
+PiArCQkJCSAgICBjb25zdCBzdHJ1Y3QgYmRiX2Jsb2NrICpibG9jaykNCj4gK3sNCj4gKwljb25z
+dCBzdHJ1Y3QgYmRiX3Zzd2luZ19wcmVlbXBoICp2c3BlbyA9IGJsb2NrX2RhdGEoYmxvY2spOw0K
+PiArCWludCBkZXZpZCA9IGNvbnRleHQtPmRldmlkOw0KPiArCWludCBudW1fcm93czsNCj4gKw0K
+PiArCWlmICghZGV2aWQpIHsNCj4gKwkJZnByaW50ZihzdGRlcnIsICJFcnJvcjogY2Fubm90IHBh
+cnNlIFZTL1BFLU8gd2l0aG91dA0KPiBkZXZpZFxuIik7DQo+ICsJCXJldHVybjsNCj4gKwl9DQo+
+ICsNCj4gKwludW1fcm93cyA9IHZzd2luZ19wcmVlbXBoX251bV9yb3dzKGRldmlkKTsNCj4gKw0K
+PiArCWlmIChJU19OT1ZBTEFLRV9QKGRldmlkKSB8fCBJU19OT1ZBTEFLRV9TKGRldmlkKSkgew0K
+PiArCQlkdW1wX2x0X3ZzcGVvKHZzcGVvLCBudW1fcm93cyk7DQo+ICsJfSBlbHNlIHsNCj4gKwkJ
+cHJpbnRmKCJXYXJuaW5nOiBkZXBhcnNpbmcgVlMvUEUtTyBmcm9tIGRldmlkICV4IG5vdA0KPiBz
+dXBwb3J0ZWRcbiIsDQo+ICtkZXZpZCk7DQo+ICAJfQ0KPiAgfQ0KPiANCj4gLS0NCj4gMi40NS4y
+DQoNCg==
