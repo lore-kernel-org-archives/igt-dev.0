@@ -4,72 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85BC6C61DD3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 16:49:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC310C624D3
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 16:54:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 266BF10E405;
-	Tue,  1 Sep 2026 16:49:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B32A10E417;
+	Tue,  1 Sep 2026 16:54:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xlt0rAY1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A/tuRFTu";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA24A10E405
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 16:48:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5103110E417
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 16:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788281338; x=1819817338;
+ t=1788281655; x=1819817655;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=YUZ8ZWWe0vvnlCaMnhrI1MvP/xnJ7wAuNXdbeIbH44M=;
- b=Xlt0rAY1vw711j90bCDYR7rOaM2SPZpWW38Uaz8B3OtkruUFJp10kNHE
- 50nAQItqxaeEa6JF23VHPuD7KrdEKoACJ0KLl30mlWE7CRKldTTgR0nlo
- 16jbrErms/ObUMgW9vlg9RQ9HZX4MBL64RXjzuvf1gkaxWXGLbLfnCa7X
- HPwnXA1lfdKnOSCUafVc3t4bgQnoqPGmzjezt+CspLvTnZZg5EtPZgJ8c
- ALU7QX07XP6r2VVppCXsYbkV4JjW9CNCm0W1hT08XN2EfG0N/1VBrFlsW
- tZ4ODz8ou3MVlJZMyJL+2aLPXo8dLgAqoumZDJBSAF9PD7gbplRsQm1i7 w==;
-X-CSE-ConnectionGUID: 8f2A2nEOQ3C1f5ILUD/OKg==
-X-CSE-MsgGUID: GkpOezmLSUaCHIgY1gzXQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="88767433"
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="88767433"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 09:48:57 -0700
-X-CSE-ConnectionGUID: d9+CE7JLTYGfo+GRty2VJw==
-X-CSE-MsgGUID: I9xx32DfRACzzFL9OlEJvg==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=/d7nLTfDRxHq7xMtPRv9yyFKVGRylt0uWpqq+7ldbj8=;
+ b=A/tuRFTuicr+vuOMAriWfDOzaeTHwPLINoAH8JEWPdplS2QYfCf3PPHz
+ qPot96N7CtM/JEG+FehSLo5sQdH/UlVa4psAabcdwGMx7oj8m4S0nMgZw
+ gzvA81KUHZA41PQelhQbonsHO+jK0775hv89MOVl0td+WYaE3jRy8un7P
+ mQ495aKuklaC88se2OQUhrvAKXtTjuKR0h2b9xJ9ErA/ZRvj7FZF+Vkfu
+ 7dxHfG0tS8XwcKzI2ORmZb7loGjuYkIlgcc2inBUSJ2xc6nWH1/dr1bOv
+ sIrM8PsZK1J4GzpZskw14kUHddS5TXpQ1ilqJR5Q9JH5UM3xqr23lYUcP w==;
+X-CSE-ConnectionGUID: 62fPUCVOSGWER1VdEb286A==
+X-CSE-MsgGUID: OMisoWOyTPeqOh5u1HWplg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="92535509"
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="92535509"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 09:54:15 -0700
+X-CSE-ConnectionGUID: 7xTZgHbzSom7DnlDjlDHGg==
+X-CSE-MsgGUID: 8PDtFxQyRW63h3RWsMWTqg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="264870396"
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="269192976"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 09:48:55 -0700
-Date: Tue, 1 Sep 2026 18:48:53 +0200
+ by orviesa007-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 09:54:13 -0700
+Date: Tue, 1 Sep 2026 18:54:11 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>
-Cc: "Chegondi, Harish" <harish.chegondi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Tauro, Riana" <riana.tauro@intel.com>,
- "Gupta, Anshuman" <anshuman.gupta@intel.com>,
- "Koujalagi, Mallesh" <mallesh.koujalagi@intel.com>,
- "Jadav, Raag" <raag.jadav@intel.com>,
- "Purkait, Soham" <soham.purkait@intel.com>
-Subject: Re: [PATCH v3 00/10] Xe3P GPU Error Injection Test Suite with DRM
- RAS Netlink Support
-Message-ID: <20260901164853.vujuqb52x7zs6zym@kamilkon-DESK.igk.intel.com>
+To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
+Cc: Alex Hung <alex.hung@amd.com>, "Sharma, Swati2" <swati2.sharma@intel.com>,
+ igt-dev@lists.freedesktop.org, Harry Wentland <harry.wentland@amd.com>
+Subject: Re: [i-g-t] tests/kms_colorop: Use local variable for color pipeline
+ cap
+Message-ID: <20260901165411.oh7i4gqow36ltvib@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>,
- "Chegondi, Harish" <harish.chegondi@intel.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "Tauro, Riana" <riana.tauro@intel.com>,
- "Gupta, Anshuman" <anshuman.gupta@intel.com>,
- "Koujalagi, Mallesh" <mallesh.koujalagi@intel.com>,
- "Jadav, Raag" <raag.jadav@intel.com>,
- "Purkait, Soham" <soham.purkait@intel.com>
-References: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
- <apCclpWH9W_qgN-6@intel.com>
- <DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2@DS0PR11MB7651.namprd11.prod.outlook.com>
+ "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>,
+ Alex Hung <alex.hung@amd.com>,
+ "Sharma, Swati2" <swati2.sharma@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Harry Wentland <harry.wentland@amd.com>
+References: <20260803080340.2088027-1-chaitanya.kumar.borah@intel.com>
+ <31a2d660-7968-47e5-ad3c-e32dac8c1a36@intel.com>
+ <bd02d25f-fb9b-4f38-b189-0449af5ff897@amd.com>
+ <a45a1a06-36e0-4d66-99ce-3d558ecd14e9@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2@DS0PR11MB7651.namprd11.prod.outlook.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a45a1a06-36e0-4d66-99ce-3d558ecd14e9@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -85,105 +79,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Koppuravuri,,
-On 2026-08-28 at 04:03:09 +0000, Koppuravuri, Ravi Kishore wrote:
-> Hi @Chegondi, Harish<mailto:harish.chegondi@intel.com>,
+Hi Borah,,
+On 2026-08-28 at 15:34:27 +0530, Borah, Chaitanya Kumar wrote:
 > 
-> With respect to the comments from Kamil, I have updated the test names, library function names and also separated out the DRM UAPI header file as a commit.
 > 
-> No functional changes are there in V3 other than these things.
+> On 8/28/2026 5:45 AM, Alex Hung wrote:
+> > 
+> > 
+> > On 8/26/26 23:31, Sharma, Swati2 wrote:
+> > > Hi Chaitanya
+> > > 
+> > > Patch LGTM
+> > > 
+> > > Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+> > > 
+> > > Also, it seems we have duplicate igt_display_require(&display,
+> > > display.drm_fd);
+> > > 
+> > > It is required once. Anyways, its a separate patch.
+> > > 
+> > > Alex,
+> > > 
+> > > Can you please test on AMD driver with above change?
+> > 
+> > yes it ran fine. Some inline comments below.
+> > 
+> > > 
+> > > On 03-08-2026 01:33 pm, Chaitanya Kumar Borah wrote:
+> > > > Following the pattern in kms_color_pipeline, set
+> > > > DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE once and stash the result in a
+> > > > local variable, then propagate it to display->has_plane_color_pipeline
+> > > > after the final igt_display_require() (which reinitializes the display
+> > > > state). This avoids calling drmSetClientCap() twice.
+> > > > 
+> > > > Cc: Swati Sharma <swati2.sharma@intel.com>
+> > > > Cc: Harry Wentland <harry.wentland@amd.com>
+> > > > Cc: Alex Hung <alex.hung@amd.com>
+> > > > Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+> > > > ---
+> > > >   tests/kms_colorop.c | 9 +++++----
+> > > >   1 file changed, 5 insertions(+), 4 deletions(-)
+> > > > 
+> > > > diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+> > > > index 16db0b8ad..d573d2ceb 100644
+> > > > --- a/tests/kms_colorop.c
+> > > > +++ b/tests/kms_colorop.c
+> > > > @@ -406,6 +406,7 @@ int igt_main_args("d", long_options,
+> > > > help_str, opt_handler, NULL)
+> > > >       igt_display_t display;
+> > > >       int i, j, ret;
+> > > > +    int has_plane_color_pipeline = 0;
+> > can this be bool?
+> > 
+> > > >       igt_fixture() {
+> > > >           display.drm_fd = drm_open_driver_master(DRIVER_ANY);
+> > > > @@ -417,15 +418,15 @@ int igt_main_args("d", long_options,
+> > > > help_str, opt_handler, NULL)
+> > > >           igt_require_f(!ret, "error setting
+> > > > DRM_CLIENT_CAP_WRITEBACK_CONNECTORS\n");
+> > > > -        igt_display_require(&display, display.drm_fd);
+> > > >           if (drmSetClientCap(display.drm_fd,
+> > > > DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+> > > > -            display.has_plane_color_pipeline = 1;
+> > > > +            has_plane_color_pipeline = 1;
+> > > > +
+> > > > +        igt_display_require(&display, display.drm_fd);
+> > is this igt_display_require() necessary?
+> > 
+> 
+> Swati flagged this too and this is probably unnecessary. However, I thought
+> of handling it in a separate patch. What do you think?
 
-If possible, write a brief summary of changes in cover letter.
+Why waiting for next change when it is already spotted? Lets keep
+number of commits low, so git history will be shorter. imho you
+could fix it and add r-b you already got.
 
 Regards,
 Kamil
 
 > 
-> Thanks,
-> Ravi Kishore K.
+> > > >           kmstest_set_vt_graphics_mode();
+> > > >           igt_display_require(&display, display.drm_fd);
+> > > > -        if (drmSetClientCap(display.drm_fd,
+> > > > DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1) == 0)
+> > > > -            display.has_plane_color_pipeline = 1;
+> > > > +        display.has_plane_color_pipeline = has_plane_color_pipeline;
+> > > >           igt_require(display.is_atomic);
+> > > >       }
+> > 
 > 
-> ________________________________
-> From: Chegondi, Harish <harish.chegondi@intel.com>
-> Sent: Friday, August 28, 2026 1:52 AM
-> To: Koppuravuri, Ravi Kishore <ravi.kishore.koppuravuri@intel.com>
-> Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman <anshuman.gupta@intel.com>; Koujalagi, Mallesh <mallesh.koujalagi@intel.com>; Jadav, Raag <raag.jadav@intel.com>; Purkait, Soham <soham.purkait@intel.com>
-> Subject: Re: [PATCH v3 00/10] Xe3P GPU Error Injection Test Suite with DRM RAS Netlink Support
-> 
-> On Mon, Aug 24, 2026 at 10:11:23PM +0530, Ravi Kishore Koppuravuri wrote:
-> Hi Ravi,
-> 
-> Are there any new changes in V3 or just a rebase?
-> 
-> Thanks
-> Harish.
-> 
-> > This series introduces comprehensive error injection testing capabilities
-> > for Intel Xe3P GPUs, leveraging the DRM RAS (Reliability, Availability,
-> > Serviceability) Generic Netlink interface for error reporting and event
-> > notification.
-> >
-> > The patch series focuses on the below key areas:
-> >
-> > 1. DRM RAS Netlink Library
-> > Establishes the foundation by introducing a reusable DRM RAS netlink library that
-> > provides kernel interface abstraction for error management:
-> >
-> > - DRM RAS Generic Netlink interface initialization and socket management
-> > - Error counter querying for per-node error tracking
-> > - Error threshold configuration (get/set operations)
-> > - Event notification subscription via multicast groups
-> >
-> > 2. Uncorrectable Error Verification
-> > Implements GT Uncorrectable Unicast Walker Command Parity Error Injection:
-> >
-> > - MMIO-based error injection mechanism
-> > - AER (Advanced Error Reporting) recovery verification
-> > - Validates Xe driver error handling and recovery flows
-> > - Includes workload execution post-recovery for robustness testing
-> >
-> > 3. Correctable Error Verification
-> > Adds support for L2 Bank Correctable Error Injection with threshold monitoring:
-> >
-> > - Event notification framework for real-time error event monitoring
-> > - Single and multi-iteration correctable error injection tests
-> > - Error threshold validation (critical for detecting error saturation)
-> >
-> > IGT Test Coverage includes:
-> >
-> > - GT Uncorrectable Unicast Walker Command Parity Error
-> > - L2 Bank Correctable Error (single injection)
-> > - L2 Bank Correctable Error with threshold=1
-> > - L2 Bank Correctable Error (16x injections)
-> >
-> > Ravi Kishore Koppuravuri (10):
-> >   drm-uapi/drm_ras: Add DRM RAS UAPI header
-> >   lib/meson: Add libnl dependencies for DRM RAS support
-> >   lib/igt_drm_netlink: Introduce DRM RAS Netlink interface library
-> >   lib/igt_drm_netlink: add get_error_counter support
-> >   lib/igt_drm_netlink: add get_error_threshold command support
-> >   lib/igt_drm_netlink: add set_error_threshold command support
-> >   tests/intel/xe_err_injection: Add GT UC Unicast GAM Walker Command
-> >     Parity Error Injection
-> >   lib/igt_drm_netlink: add event notify subscription and event wait
-> >     support
-> >   tests/intel/xe_err_injection: Add tests for L2 bank Corr err threshold
-> >     scenarios
-> >   tests/intel/xe_err_injection: add CRI GPU requirement check
-> >
-> >  include/drm-uapi/drm_ras.h     |  67 ++++
-> >  lib/igt_drm_netlink.c          | 565 ++++++++++++++++++++++++++++++
-> >  lib/igt_drm_netlink.h          |  48 +++
-> >  lib/meson.build                |   9 +
-> >  tests/intel/xe_err_injection.c | 623 +++++++++++++++++++++++++++++++++
-> >  tests/intel/xe_err_injection.h |  28 ++
-> >  tests/meson.build              |   1 +
-> >  7 files changed, 1341 insertions(+)
-> >  create mode 100644 include/drm-uapi/drm_ras.h
-> >  create mode 100644 lib/igt_drm_netlink.c
-> >  create mode 100644 lib/igt_drm_netlink.h
-> >  create mode 100644 tests/intel/xe_err_injection.c
-> >  create mode 100644 tests/intel/xe_err_injection.h
-> >
-> > --
-> > 2.34.1
-> >
