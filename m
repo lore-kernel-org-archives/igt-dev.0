@@ -4,74 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17B70C624D3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 17:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 895ABC61DD3
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 18:14:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A4B7710E40C;
-	Tue,  1 Sep 2026 17:10:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2A1D410EE16;
+	Tue,  1 Sep 2026 18:14:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="KZL3qQh1";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gayjkvuC";
 	dkim-atps=neutral
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
- [209.85.214.169])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A6B510EDED
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 17:07:59 +0000 (UTC)
-Received: by mail-pl1-f169.google.com with SMTP id
- d9443c01a7336-2ceab75934dso15415ad.2
- for <igt-dev@lists.freedesktop.org>; Tue, 01 Sep 2026 10:07:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20251104; t=1788282479; x=1788887279; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:from:to:cc:subject:date
- :message-id:reply-to:content-type;
- bh=5M1ZkL1K57o8fy0y7BH71wmqdDpOhOWrfX7+5QNOpMY=;
- b=KZL3qQh1QHxKi/3iwIz3iMvhbbuhlG5uLuBayiJEeaVjcRZFxC42ua4DPt6sNG2qKT
- zrCIoxk5WKPiZSnTDx4wpdf3LV5D9AohBnYFrlebtdFKvG/UuYp0N07kT2ge77PlDkvw
- /Mim4Kgo9VgB+NgZJshFQHQBAkAhD3A9y6UAt1cVK5D6oWoOB2d7G7Jm+wIyptV2ncQA
- MuUQE8z5qT0p9ubB70Nq7B65vjsuTThbsGAPjTQlhfAhd9OfbX30ePg4IQxP+0HYBL83
- mt6zT22FZEb0wZRFQR9vrfLBF8LFAkL2atzg4FQG3LQr2Hs0fI0pBDKswGvkqiY6XzUT
- ZeNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20251104; t=1788282479; x=1788887279;
- h=content-transfer-encoding:mime-version:references:in-reply-to
- :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
- :to:cc:subject:date:message-id:reply-to:content-type;
- bh=5M1ZkL1K57o8fy0y7BH71wmqdDpOhOWrfX7+5QNOpMY=;
- b=syfvjExneO1xOXVl0plA7bYUeqa0Qg/H3RS4DI3cVghlO88gCM26cutnMDogSaHL2o
- CwI8u9f8cCqYHIR3gDTi5WOfPQdBUvnJK581tVoiWO6MSsVbmTZguf9Su8QF4SyA2SBv
- QJ1GF18zfyuAEkvABHRHJyMLnreHGuChN4T11C7srv5f4Y+xkE5G9kvnKR8FFlC7uEBl
- nlq4uJLr0vIBfbMVbhV4NQiFL6YrS3KX5gM/o0zCHrH3F2qaNKJHUUznCzUzIZQCP7/a
- 4vpL2ekMkL/QoXZ8n5FTQm6gseSClbs0B2SLD+WfQ5j6f8Adp3R4TCRJTqFiqHzm5qSc
- ++Eg==
-X-Gm-Message-State: AFuF++mSCbC7qtUUMe+ElXtHugl/rc7qEqtHL9lOSXvjh+f8Jj4b4txN
- +dOJ00T+zbgm6a3dSwgmfj9B7qyMkBZ1B3LM4Uch/tRasUnyEDbm01v/W4xzecOO3+LSJA==
-X-Gm-Gg: AYBFou0Q38D0BZP2VZv9q9KRiHFx6nj/7NRcvNe6b/BS88/KnEbm+LZ6flZj3S9Dpb5
- nmBR2pWHFa+cEDhKJvN3BmQiH1etWyNJJsKtBKmLZOIQBBFB182bwLYDqxgtu98gIDyrmIzNxEq
- o31hRnNZsz0gPQTljbQje3Z1KCAGqQSLoNom7wpspJqeGzzeE5EJwQhMKr1AJdbLP8geJ/0fHq8
- yYX2cC1T6ZJsCevsZu/OnoIfrrOVqFldhCZ+WwsZgMSYSCT3lfnkhfYtrugN6Axna4bX+Xzrxi5
- W3GvNiUJeX7T+6QFWP+A9D3+4UjICDNmIzU0A4XW6hgh6j2+unF4Noz7nUIV6a9RZZF+GPvO9Lq
- SBv2FrYyB3122x4bq36b4lKqqfUYxIirFHa+HX2h3c2J6OYj0j4t3pYY/glhlM+TmS3C9LiZTGF
- j8pNBqhA6kqST9VkomjffsBx3UpthFaK2USEdJ8Ez6QHYreUcoFfDnPBmMnXb6JGNKkOuJ4oFgL
- axcpFTpl86RVGpTRxb5wmRz+Ko=
-X-Received: by 2002:a17:902:c946:b0:2d8:d4d0:792f with SMTP id
- d9443c01a7336-2d8d4d079bdmr303954325ad.19.1788282478233; 
- Tue, 01 Sep 2026 10:07:58 -0700 (PDT)
-Received: from localhost ([134.134.139.73]) by smtp.gmail.com with ESMTPSA id
- d9443c01a7336-2dadd4885c7sm1710155ad.50.2026.09.01.10.07.56
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Tue, 01 Sep 2026 10:07:57 -0700 (PDT)
-From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 3/5] tests/kms_plane_scaling: add
- plane-downscale-max-crc subtest
-Date: Tue,  1 Sep 2026 20:07:38 +0300
-Message-ID: <20260901170740.1079715-3-juhapekka.heikkila@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260901170740.1079715-1-juhapekka.heikkila@gmail.com>
-References: <20260901170740.1079715-1-juhapekka.heikkila@gmail.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFA2110E110
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 18:13:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1788286419; x=1819822419;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=paY5ZKXGhSgIZReocbhwGrjsvLvlbLJYUuoOE1YdCeI=;
+ b=gayjkvuCLVEDYC6hI5nw5ijZjODE2oBTuMJGtUVfwXzhay87M63XoC/Q
+ Q2aDS+c1OrHeMdMMBKM7YRYD2TIRRCHpolZPzxPc8lidFZaL8RUZb3Nj3
+ PlhkCZEmu9R++k2BVCI0LV3lON2UIYploBG3EXFLd3gglNpO0W5oc4JP+
+ ELaXSLa+uo1221L2oHDmlvL/P2uCotnNkwxUJI9HXfmW/Yj9euuIZpYZt
+ eHuAuEtKjvDiJLYsbmsm+E/WS0FAPuMB6T7raXa0kSZc4h8bNGbNic4SM
+ DmU4ydg3u7BD5Q/ptAfsEmbuatzZMaj8AjPnGdlqjLAFkHRpw+VYUsoji Q==;
+X-CSE-ConnectionGUID: HFKR/nJJQ6e0xjyixJbNAg==
+X-CSE-MsgGUID: +gCh4DYtR3ChX9V/qjinSg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="106248664"
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="106248664"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 11:13:29 -0700
+X-CSE-ConnectionGUID: ur6Zqct3RCKSVXz9RqwKgw==
+X-CSE-MsgGUID: hbeNADd8S8Wb80QNqNphag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="274448118"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 11:13:28 -0700
+Date: Tue, 1 Sep 2026 20:13:25 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
+Subject: Re: [PATCH] tests/intel/xe_exec_reset: add GT reset fault injection
+ stress coverage
+Message-ID: <20260901181325.xz2jx5pqj3xxbyo2@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
+ kamil.konieczny@intel.com
+References: <20260901140131.234746-1-nishit.sharma@intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260901140131.234746-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -87,192 +71,254 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Probe the maximum horizontal and vertical plane downscaling
-factor and verify the downscaled framebuffer render correctly
-by verifying via crc.
+Hi nishit.sharma,
+On 2026-09-01 at 14:01:31 +0000, nishit.sharma@intel.com wrote:
+> From: Nishit Sharma <nishit.sharma@intel.com>
+> 
+> Inject a GT reset failure via the KMD fail_gt_reset debugfs hook, verify
+> the device wedges as expected, tolerate the resulting -ECANCELED errors in
+> the submitting threads, then recover by rebind and confirm the driver is
+> usable again.
+> 
+> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+> ---
+>  tests/intel/xe_exec_reset.c | 136 ++++++++++++++++++++++++++++++++++--
+>  1 file changed, 131 insertions(+), 5 deletions(-)
+> 
+> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+> index 6eda71c32..5c5857b25 100644
+> --- a/tests/intel/xe_exec_reset.c
+> +++ b/tests/intel/xe_exec_reset.c
+> @@ -15,6 +15,8 @@
+>  #include <fcntl.h>
+>  
+>  #include "igt.h"
+> +#include "igt_device.h"
+> +#include "igt_kmod.h"
+>  #include "igt_sysfs.h"
+>  #include "lib/igt_syncobj.h"
+>  #include "lib/intel_reg.h"
+> @@ -140,6 +142,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
+>  #define DESTROY_VM_CTX_STRESS		(0x1 << 20)
+>  #define MIXED_ENGINE_STRESS		(0x1 << 21)
+>  #define PM_TRANSITION_STRESS		(0x1 << 22)
+> +#define FAULT_INJECT_STRESS		(0x1 << 23)
+>  
+>  /**
+>   * SUBTEST: %s-cat-error
+> @@ -760,7 +763,7 @@ static void submit_jobs(struct gt_thread_data *t)
+>  	uint32_t pressure_bos[PRESSURE_COUNT];
+>  	uint32_t *data;
+>  	int pressure_count;
+> -	int i = 0;
+> +	int i = 0, exec_ret;
+>  
+>  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, t->gt),
+>  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> @@ -794,8 +797,25 @@ static void submit_jobs(struct gt_thread_data *t)
+>  			continue;
+>  		}
+>  
+> -		xe_exec(fd, &exec);
+> -		xe_exec_queue_destroy(fd, exec.exec_queue_id);
+> +		/*
+> +		 * Once an injected GT reset failure wedges the device, exec and
+> +		 * queue teardown return -ECANCELED. That is the expected outcome
+> +		 * for the fault-injection stress
+> +		 */
+> +		if (t->flags & FAULT_INJECT_STRESS) {
+> +			struct drm_xe_exec_queue_destroy destroy = {
+> +				.exec_queue_id = exec.exec_queue_id,
+> +		};
+> +
+> +		exec_ret = __xe_exec(fd, &exec);
+> +		igt_assert_f(exec_ret == 0 || exec_ret == -ECANCELED,
+> +			     "exec returned unexpected error %d (expected 0 or -ECANCELED)\n",
+> +			     exec_ret);
+> +		igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy);
+> +		} else {
+> +			xe_exec(fd, &exec);
+> +			xe_exec_queue_destroy(fd, exec.exec_queue_id);
+> +		}
+>  		(*t->num_submit)++;
+>  
+>  		if ((t->flags & MEM_PRESSURE_STRESS) && !(i % 128)) {
+> @@ -829,8 +849,20 @@ static void submit_jobs(struct gt_thread_data *t)
+>  		pressure_bo_destroy(fd, pressure_bos, PRESSURE_COUNT);
+>  
+>  	munmap(data, bo_size);
+> -	gem_close(fd, bo);
+> -	xe_vm_destroy(fd, vm);
+> +	/*
+> +	 * On a device wedged by injected GT reset failures, BO close and VM
+> +	 * destroy also return -ECANCELED.
+> +	 */
+> +	if (t->flags & FAULT_INJECT_STRESS) {
+> +		struct drm_gem_close close_bo = { .handle = bo };
+> +		struct drm_xe_vm_destroy vm_destroy = { .vm_id = vm };
+> +
+> +		igt_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
+> +		igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &vm_destroy);
+> +	} else {
+> +		gem_close(fd, bo);
+> +		xe_vm_destroy(fd, vm);
+> +	}
+>  }
+>  
+>  static void *gt_reset_thread(void *data)
+> @@ -850,6 +882,60 @@ static void *gt_reset_thread(void *data)
+>  	return NULL;
+>  }
+>  
+> +static int fault_inject_fd = -1;
+> +
+> +static void gt_reset_disable_fault_injection(int sig)
+> +{
+> +	if (fault_inject_fd < 0)
+> +		return;
+> +
+> +	igt_debugfs_write(fault_inject_fd, "fail_gt_reset/probability", "0");
+> +	igt_debugfs_write(fault_inject_fd, "fail_gt_reset/times", "1");
+> +	fault_inject_fd = -1;
+> +}
+> +
+> +static void gt_reset_enable_fault_injection(int fd)
+> +{
+> +	static bool exit_handler_installed;
+> +
+> +	fault_inject_fd = fd;
+> +
+> +	if (!exit_handler_installed) {
+> +		igt_install_exit_handler(gt_reset_disable_fault_injection);
+> +		exit_handler_installed = true;
+> +	}
+> +
+> +	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
+> +	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
+> +}
+> +
+> +static void gt_reset_fault_injection_forget_fd(int fd)
+> +{
+> +	if (fault_inject_fd == fd)
+> +		fault_inject_fd = -1;
+> +}
 
-Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tests/kms_plane_scaling.c | 145 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 145 insertions(+)
+Why new function? imho call disable just before closing fd,
+see below.
 
-diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index b7980d6f8..59ec309ba 100644
---- a/tests/kms_plane_scaling.c
-+++ b/tests/kms_plane_scaling.c
-@@ -189,6 +189,13 @@
-  * Description: Test for validating max source size.
-  */
- 
-+/**
-+ * SUBTEST: plane-downscale-max-crc
-+ * Description: Probe the maximum horizontal and vertical plane downscaling
-+ *              factor and verify the downscaled framebuffer render correctly
-+ *              by verifying via crc.
-+ */
-+
- IGT_TEST_DESCRIPTION("Test display plane scaling");
- 
- enum scaler_combo_test_type {
-@@ -709,6 +716,35 @@ static const uint64_t modifiers[] = {
- 	I915_FORMAT_MOD_4_TILED
- };
- 
-+static void yuv_src_alignment(data_t *d, uint32_t format, igt_rotation_t rot,
-+			      int *halign, int *valign)
-+{
-+	bool intel = is_intel_device(d->drm_fd);
-+	int disp_ver = intel ? intel_display_ver(d->devid) : 0;
-+	int hsub, vsub;
-+
-+	*halign = 1;
-+	*valign = 1;
-+
-+	if (!igt_format_is_yuv(format))
-+		return;
-+
-+	igt_format_get_subsampling(format, &hsub, &vsub);
-+
-+	/*
-+	 * these must match to intel_plane_check_src_coordinates() in
-+	 * i915/Xe driver
-+	 */
-+	if (intel && disp_ver >= 20 && igt_format_is_yuv_semiplanar(format)) {
-+		*halign = 1;
-+		*valign = (disp_ver == 35) ? 2 : 1;
-+		return;
-+	}
-+
-+	*halign = hsub;
-+	*valign = vsub;
-+}
-+
- static int
- find_max_downscale_src_size(data_t *d, igt_plane_t *plane,
- 			    uint32_t format, uint64_t modifier,
-@@ -790,6 +826,95 @@ find_max_downscale_src_size(data_t *d, igt_plane_t *plane,
- 	return best;
- }
- 
-+static void
-+test_downscale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
-+		       bool scale_width)
-+{
-+	igt_display_t *display = &d->display;
-+	const uint32_t format = DRM_FORMAT_XRGB8888;
-+	const uint64_t modifier = DRM_FORMAT_MOD_LINEAR;
-+	const int band = 64;
-+	igt_pipe_crc_t *pipe_crc;
-+	igt_crc_t ref_crc, scaled_crc;
-+	drmModeModeInfo *mode;
-+	struct igt_fb ref_fb = {}, src_fb = {};
-+	igt_plane_t *plane;
-+	int dst_w, dst_h, dst_scaled, max_src;
-+	int halign, valign, align;
-+
-+	cleanup_crtc(d);
-+
-+	igt_require_pipe_crc(d->drm_fd);
-+
-+	igt_output_set_crtc(output, crtc);
-+
-+	mode = igt_output_get_highres_mode(output);
-+	igt_require(mode);
-+	igt_output_override_mode(output, mode);
-+
-+	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_require(plane);
-+
-+	yuv_src_alignment(d, format, IGT_ROTATION_0, &halign, &valign);
-+	align = scale_width ? halign : valign;
-+
-+	/* dst is a thin band spanning the full extent of the scaled axis */
-+	dst_w = ALIGN(scale_width ? mode->hdisplay : band, halign);
-+	dst_h = ALIGN(scale_width ? band : mode->vdisplay, valign);
-+	dst_scaled = scale_width ? dst_w : dst_h;
-+
-+	max_src = find_max_downscale_src_size(d, plane, format, modifier,
-+					      scale_width, dst_w, dst_h, align);
-+	skip_if_erange_or_einval(max_src);
-+	igt_require_f(max_src > dst_scaled,
-+		      "No %s downscaling headroom (max src %d, dst %d)\n",
-+		      scale_width ? "horizontal" : "vertical",
-+		      max_src, dst_scaled);
-+
-+	igt_info("Max %s downscale: src %d -> dst %d (band %d)\n",
-+		 scale_width ? "horizontal" : "vertical",
-+		 max_src, dst_scaled, band);
-+
-+	pipe_crc = igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
-+
-+	/* Reference: unscaled solid-green framebuffer of the destination size. */
-+	igt_create_color_fb(display->drm_fd, dst_w, dst_h, format, modifier,
-+			    0.0, 1.0, 0.0, &ref_fb);
-+	igt_plane_set_fb(plane, &ref_fb);
-+	igt_fb_set_position(&ref_fb, plane, 0, 0);
-+	igt_fb_set_size(&ref_fb, plane, dst_w, dst_h);
-+	igt_plane_set_position(plane, 0, 0);
-+	igt_plane_set_size(plane, dst_w, dst_h);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+	igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
-+
-+	/* Test: larger solid-green source downscaled into dst rectangle. */
-+	igt_create_color_fb(display->drm_fd,
-+			    scale_width ? max_src : dst_w,
-+			    scale_width ? dst_h : max_src,
-+			    format, modifier, 0.0, 1.0, 0.0, &src_fb);
-+	igt_plane_set_fb(plane, &src_fb);
-+	igt_fb_set_position(&src_fb, plane, 0, 0);
-+	igt_fb_set_size(&src_fb, plane,
-+			scale_width ? max_src : dst_w,
-+			scale_width ? dst_h : max_src);
-+	igt_plane_set_position(plane, 0, 0);
-+	igt_plane_set_size(plane, dst_w, dst_h);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+	igt_pipe_crc_collect_crc(pipe_crc, &scaled_crc);
-+
-+	igt_plane_set_fb(plane, NULL);
-+	igt_display_commit2(display, COMMIT_ATOMIC);
-+
-+	igt_reset_fifo_underrun_reporting(display->drm_fd);
-+
-+	igt_pipe_crc_free(pipe_crc);
-+	igt_remove_fb(display->drm_fd, &ref_fb);
-+	igt_remove_fb(display->drm_fd, &src_fb);
-+
-+	igt_assert_crc_equal(&ref_crc, &scaled_crc);
-+}
-+
- static uint32_t
- test_scaler_with_modifier_crtc(data_t *d,
- 			       double sf_plane,
-@@ -1702,6 +1827,26 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
- 								 output);
- 			}
- 		}
-+
-+		igt_describe("Probe the maximum horizontal and vertical plane "
-+			     "downscaling factor and verify the downscaled output "
-+			     "matches an unscaled reference using CRCs.");
-+		igt_subtest_with_dynamic("plane-downscale-max-crc") {
-+			for_each_crtc_with_valid_output(&data.display, crtc, output) {
-+				if (!crtc_output_combo_valid(&data.display, crtc, output))
-+					continue;
-+				if (igt_crtc_num_scalers(crtc) < 1)
-+					continue;
-+
-+				igt_dynamic_f("pipe-%s-%s-horizontal",
-+					      igt_crtc_name(crtc), igt_output_name(output))
-+					test_downscale_max_crc(&data, crtc, output, true);
-+
-+				igt_dynamic_f("pipe-%s-%s-vertical",
-+					      igt_crtc_name(crtc), igt_output_name(output))
-+					test_downscale_max_crc(&data, crtc, output, false);
-+			}
-+		}
- 	}
- 
- 	igt_subtest_group()
--- 
-2.43.0
+> +
+> +static int try_vm_create(int fd)
+> +{
+> +	struct drm_xe_vm_create create = { 0 };
+> +	int err = 0;
+> +
+> +	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create))
+> +		err = -errno;
+> +	else
+> +		xe_vm_destroy(fd, create.vm_id);
+> +
+> +	return err;
+> +}
+> +
+> +static void ignore_gt_reset_fault_dmesg(void)
+> +{
+> +	igt_emit_ignore_dmesg_regex("reset failed \\(-ECANCELED\\)"
+> +				    "|declared device .* as wedged"
+> +				    "|GPU HANG"
+> +				    "|Failed to reset");
+> +}
+> +
+>  /**
+>   * SUBTEST: gt-reset-stress
+>   * Description: Stress GT reset
+> @@ -891,6 +977,9 @@ static void *gt_reset_thread(void *data)
+>   * Description: Test GT reset while long spinner workload is active
+>   * Test category: stress test
+>   *
+> + * SUBTEST: gt-reset-fault-injection
+> + * Description: Stress concurrent GT resets and job submissions with GT reset failures injected via debugfs
+> + * Test category: fault injection
+>   */
+>  static void
+>  gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+> @@ -907,6 +996,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+>  	pthread_mutex_init(&mutex, 0);
+>  	pthread_cond_init(&cond, 0);
+>  
+> +	if (flags & FAULT_INJECT_STRESS)
+> +		gt_reset_enable_fault_injection(fd);
+> +
+>  	for (i = 0; i < n_threads; ++i) {
+>  		threads[i].mutex = &mutex;
+>  		threads[i].cond = &cond;
+> @@ -940,6 +1032,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
+>  	igt_info("number of resets %d, submissions %d, submit fails %d vm_recreate %d\n",
+>  		 num_reset, num_submit, num_submit_fail, num_vm_recreate);
+>  
+> +	if (flags & FAULT_INJECT_STRESS)
+> +		gt_reset_disable_fault_injection(0);
+> +
+>  	igt_assert_neq(num_reset, 0);
+>  	igt_assert_neq(num_submit, 0);
+>  	free(threads);
+> @@ -1122,6 +1217,7 @@ int igt_main()
+>  	int gt;
+>  	int class;
+>  	int fd;
+> +	char pci_slot[NAME_MAX];
+>  
+>  	igt_fixture()
+>  		fd = drm_open_driver(DRIVER_XE);
+> @@ -1326,6 +1422,36 @@ int igt_main()
+>  			break;
+>  		}
+>  
+> +	igt_subtest("gt-reset-fault-injection") {
+> +		igt_require_f(igt_debugfs_exists(fd, "fail_gt_reset/probability",
+> +						 O_RDWR),
+> +			      "GT reset fault injection not available; "
+> +			      "CONFIG_DRM_XE_KUNIT_TEST/fault-injection must be "
+> +			      "enabled in the KMD\n");
+> +
+> +		igt_device_get_pci_slot_name(fd, pci_slot);
+> +		ignore_gt_reset_fault_dmesg();
+> +
+> +		gt_reset(fd, 0, 8, 2, FAULT_INJECT_STRESS);
+> +
+> +		igt_assert_f(try_vm_create(fd) != 0,
+> +			     "Device did not wedge after injected GT reset failure\n");
+> +
+> +		/*
+> +		 * The device is about to be rebind, which recreates the debugfs
+> +		 * fault-injection state from scratch - there is nothing to restore
+> +		 * across the rebind. Dropping now-stale fd so the exit handler
+> +		 * won't touch a closed descriptor.
 
+You could write that disabling is done here, in case if
+any unexpected signal happen.
+
+> +		 */
+> +		gt_reset_fault_injection_forget_fd(fd);
+
+imho just call
+		gt_reset_disable_fault_injection(0);
+
+Rest looks good.
+
+Regards,
+Kamil
+
+> +		drm_close_driver(fd);
+> +		igt_kmod_rebind("xe", pci_slot);
+> +		fd = drm_open_driver(DRIVER_XE);
+> +
+> +		igt_assert_f(try_vm_create(fd) == 0,
+> +			     "Device not functional after rebind recovery\n");
+> +	}
+> +
+>  	igt_subtest("gt-mocs-reset")
+>  		xe_for_each_gt(fd, gt)
+>  			gt_mocs_reset(fd, gt);
+> -- 
+> 2.43.0
+> 
