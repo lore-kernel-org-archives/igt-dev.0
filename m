@@ -4,58 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 895ABC61DD3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 18:14:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0507C61DD3
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 18:29:43 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A1D410EE16;
-	Tue,  1 Sep 2026 18:14:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 56D7110E157;
+	Tue,  1 Sep 2026 18:29:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gayjkvuC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xt5w4g3X";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EFA2110E110
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 18:13:38 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BDBA110E157
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 18:29:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788286419; x=1819822419;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=paY5ZKXGhSgIZReocbhwGrjsvLvlbLJYUuoOE1YdCeI=;
- b=gayjkvuCLVEDYC6hI5nw5ijZjODE2oBTuMJGtUVfwXzhay87M63XoC/Q
- Q2aDS+c1OrHeMdMMBKM7YRYD2TIRRCHpolZPzxPc8lidFZaL8RUZb3Nj3
- PlhkCZEmu9R++k2BVCI0LV3lON2UIYploBG3EXFLd3gglNpO0W5oc4JP+
- ELaXSLa+uo1221L2oHDmlvL/P2uCotnNkwxUJI9HXfmW/Yj9euuIZpYZt
- eHuAuEtKjvDiJLYsbmsm+E/WS0FAPuMB6T7raXa0kSZc4h8bNGbNic4SM
- DmU4ydg3u7BD5Q/ptAfsEmbuatzZMaj8AjPnGdlqjLAFkHRpw+VYUsoji Q==;
-X-CSE-ConnectionGUID: HFKR/nJJQ6e0xjyixJbNAg==
-X-CSE-MsgGUID: +gCh4DYtR3ChX9V/qjinSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="106248664"
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="106248664"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 11:13:29 -0700
-X-CSE-ConnectionGUID: ur6Zqct3RCKSVXz9RqwKgw==
-X-CSE-MsgGUID: hbeNADd8S8Wb80QNqNphag==
+ t=1788287342; x=1819823342;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=wl5xmBh8poi5TdAzbVwa2vQbR3T86337rqQB/sAsrIg=;
+ b=Xt5w4g3XxTtS3Hqq1aAMCufEDUQArnh0X9NHIh2REdcxR+fO9Y4A+Lhp
+ 4jT3aAhSUb5pVkwSc4wjBPIZOlS8nDrVT4gaf87wnAktE6yUSBsstmeTX
+ nMaYjth+1P3NXkfOP3dGWJRQUKnh2BvqvQQXec18FxYToCDhWJqDcFgWy
+ WYAMgvdecKdTZuEfb9LYZSlkZDYsO2BvM4Qs1JP9n3r8WAyfFkyekCuFz
+ rhFPnxFBXILfETZlVOxmnEqtRJeWypHWWCeXCuH5d/L4470jAHE9P2pCG
+ /bE+hCm12mJO9ZrqzQX1jnl124hCtmUoMkv+Jz6sL87eqiKXjFPWJM4aX g==;
+X-CSE-ConnectionGUID: pezma54bRbu40CRPsf3o3A==
+X-CSE-MsgGUID: syiyT4/AQvSauIr9M1QFMQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="99327921"
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="99327921"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 11:29:02 -0700
+X-CSE-ConnectionGUID: +r1uDPQ+SMGcEr3Apm4f/A==
+X-CSE-MsgGUID: 78Nj8Ms9SvmbCjsIUHuO3g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="274448118"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 11:13:28 -0700
-Date: Tue, 1 Sep 2026 20:13:25 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
-Subject: Re: [PATCH] tests/intel/xe_exec_reset: add GT reset fault injection
- stress coverage
-Message-ID: <20260901181325.xz2jx5pqj3xxbyo2@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com
-References: <20260901140131.234746-1-nishit.sharma@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="265937560"
+Received: from dut2148ptlh.iind.intel.com (HELO DUT2031NVLP.iind.intel.com)
+ ([10.190.232.150])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 11:28:55 -0700
+From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: niranjana.vishwanathapura@intel.com,
+ Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Subject: [i-g-t] tests/intel/xe_exec_threads: Add multi-queue CGP_SYNC replay
+ subtests
+Date: Tue,  1 Sep 2026 18:28:24 +0000
+Message-ID: <20260901182824.16038-1-jagmeet.randhawa@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260901140131.234746-1-nishit.sharma@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,254 +68,175 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi nishit.sharma,
-On 2026-09-01 at 14:01:31 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> Inject a GT reset failure via the KMD fail_gt_reset debugfs hook, verify
-> the device wedges as expected, tolerate the resulting -ECANCELED errors in
-> the submitting threads, then recover by rebind and confirm the driver is
-> usable again.
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-> ---
->  tests/intel/xe_exec_reset.c | 136 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 131 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index 6eda71c32..5c5857b25 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -15,6 +15,8 @@
->  #include <fcntl.h>
->  
->  #include "igt.h"
-> +#include "igt_device.h"
-> +#include "igt_kmod.h"
->  #include "igt_sysfs.h"
->  #include "lib/igt_syncobj.h"
->  #include "lib/intel_reg.h"
-> @@ -140,6 +142,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
->  #define DESTROY_VM_CTX_STRESS		(0x1 << 20)
->  #define MIXED_ENGINE_STRESS		(0x1 << 21)
->  #define PM_TRANSITION_STRESS		(0x1 << 22)
-> +#define FAULT_INJECT_STRESS		(0x1 << 23)
->  
->  /**
->   * SUBTEST: %s-cat-error
-> @@ -760,7 +763,7 @@ static void submit_jobs(struct gt_thread_data *t)
->  	uint32_t pressure_bos[PRESSURE_COUNT];
->  	uint32_t *data;
->  	int pressure_count;
-> -	int i = 0;
-> +	int i = 0, exec_ret;
->  
->  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, t->gt),
->  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> @@ -794,8 +797,25 @@ static void submit_jobs(struct gt_thread_data *t)
->  			continue;
->  		}
->  
-> -		xe_exec(fd, &exec);
-> -		xe_exec_queue_destroy(fd, exec.exec_queue_id);
-> +		/*
-> +		 * Once an injected GT reset failure wedges the device, exec and
-> +		 * queue teardown return -ECANCELED. That is the expected outcome
-> +		 * for the fault-injection stress
-> +		 */
-> +		if (t->flags & FAULT_INJECT_STRESS) {
-> +			struct drm_xe_exec_queue_destroy destroy = {
-> +				.exec_queue_id = exec.exec_queue_id,
-> +		};
-> +
-> +		exec_ret = __xe_exec(fd, &exec);
-> +		igt_assert_f(exec_ret == 0 || exec_ret == -ECANCELED,
-> +			     "exec returned unexpected error %d (expected 0 or -ECANCELED)\n",
-> +			     exec_ret);
-> +		igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy);
-> +		} else {
-> +			xe_exec(fd, &exec);
-> +			xe_exec_queue_destroy(fd, exec.exec_queue_id);
-> +		}
->  		(*t->num_submit)++;
->  
->  		if ((t->flags & MEM_PRESSURE_STRESS) && !(i % 128)) {
-> @@ -829,8 +849,20 @@ static void submit_jobs(struct gt_thread_data *t)
->  		pressure_bo_destroy(fd, pressure_bos, PRESSURE_COUNT);
->  
->  	munmap(data, bo_size);
-> -	gem_close(fd, bo);
-> -	xe_vm_destroy(fd, vm);
-> +	/*
-> +	 * On a device wedged by injected GT reset failures, BO close and VM
-> +	 * destroy also return -ECANCELED.
-> +	 */
-> +	if (t->flags & FAULT_INJECT_STRESS) {
-> +		struct drm_gem_close close_bo = { .handle = bo };
-> +		struct drm_xe_vm_destroy vm_destroy = { .vm_id = vm };
-> +
-> +		igt_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
-> +		igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &vm_destroy);
-> +	} else {
-> +		gem_close(fd, bo);
-> +		xe_vm_destroy(fd, vm);
-> +	}
->  }
->  
->  static void *gt_reset_thread(void *data)
-> @@ -850,6 +882,60 @@ static void *gt_reset_thread(void *data)
->  	return NULL;
->  }
->  
-> +static int fault_inject_fd = -1;
-> +
-> +static void gt_reset_disable_fault_injection(int sig)
-> +{
-> +	if (fault_inject_fd < 0)
-> +		return;
-> +
-> +	igt_debugfs_write(fault_inject_fd, "fail_gt_reset/probability", "0");
-> +	igt_debugfs_write(fault_inject_fd, "fail_gt_reset/times", "1");
-> +	fault_inject_fd = -1;
-> +}
-> +
-> +static void gt_reset_enable_fault_injection(int fd)
-> +{
-> +	static bool exit_handler_installed;
-> +
-> +	fault_inject_fd = fd;
-> +
-> +	if (!exit_handler_installed) {
-> +		igt_install_exit_handler(gt_reset_disable_fault_injection);
-> +		exit_handler_installed = true;
-> +	}
-> +
-> +	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
-> +	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
-> +}
-> +
-> +static void gt_reset_fault_injection_forget_fd(int fd)
-> +{
-> +	if (fault_inject_fd == fd)
-> +		fault_inject_fd = -1;
-> +}
+Add coverage for the replay paths introduced by "drm/xe/multi_queue: Handle
+lost message during VF migration":
+https://patchwork.freedesktop.org/series/165324/
 
-Why new function? imho call disable just before closing fd,
-see below.
+A CGP_SYNC message can be lost during VF migration and is replayed by the
+KMD on recovery. Exercising that needs a CGP_SYNC queued or outstanding on
+a live multi-queue group when the migration lands.
 
-> +
-> +static int try_vm_create(int fd)
-> +{
-> +	struct drm_xe_vm_create create = { 0 };
-> +	int err = 0;
-> +
-> +	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create))
-> +		err = -errno;
-> +	else
-> +		xe_vm_destroy(fd, create.vm_id);
-> +
-> +	return err;
-> +}
-> +
-> +static void ignore_gt_reset_fault_dmesg(void)
-> +{
-> +	igt_emit_ignore_dmesg_regex("reset failed \\(-ECANCELED\\)"
-> +				    "|declared device .* as wedged"
-> +				    "|GPU HANG"
-> +				    "|Failed to reset");
-> +}
-> +
->  /**
->   * SUBTEST: gt-reset-stress
->   * Description: Stress GT reset
-> @@ -891,6 +977,9 @@ static void *gt_reset_thread(void *data)
->   * Description: Test GT reset while long spinner workload is active
->   * Test category: stress test
->   *
-> + * SUBTEST: gt-reset-fault-injection
-> + * Description: Stress concurrent GT resets and job submissions with GT reset failures injected via debugfs
-> + * Test category: fault injection
->   */
->  static void
->  gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
-> @@ -907,6 +996,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
->  	pthread_mutex_init(&mutex, 0);
->  	pthread_cond_init(&cond, 0);
->  
-> +	if (flags & FAULT_INJECT_STRESS)
-> +		gt_reset_enable_fault_injection(fd);
-> +
->  	for (i = 0; i < n_threads; ++i) {
->  		threads[i].mutex = &mutex;
->  		threads[i].cond = &cond;
-> @@ -940,6 +1032,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
->  	igt_info("number of resets %d, submissions %d, submit fails %d vm_recreate %d\n",
->  		 num_reset, num_submit, num_submit_fail, num_vm_recreate);
->  
-> +	if (flags & FAULT_INJECT_STRESS)
-> +		gt_reset_disable_fault_injection(0);
-> +
->  	igt_assert_neq(num_reset, 0);
->  	igt_assert_neq(num_submit, 0);
->  	free(threads);
-> @@ -1122,6 +1217,7 @@ int igt_main()
->  	int gt;
->  	int class;
->  	int fd;
-> +	char pci_slot[NAME_MAX];
->  
->  	igt_fixture()
->  		fd = drm_open_driver(DRIVER_XE);
-> @@ -1326,6 +1422,36 @@ int igt_main()
->  			break;
->  		}
->  
-> +	igt_subtest("gt-reset-fault-injection") {
-> +		igt_require_f(igt_debugfs_exists(fd, "fail_gt_reset/probability",
-> +						 O_RDWR),
-> +			      "GT reset fault injection not available; "
-> +			      "CONFIG_DRM_XE_KUNIT_TEST/fault-injection must be "
-> +			      "enabled in the KMD\n");
-> +
-> +		igt_device_get_pci_slot_name(fd, pci_slot);
-> +		ignore_gt_reset_fault_dmesg();
-> +
-> +		gt_reset(fd, 0, 8, 2, FAULT_INJECT_STRESS);
-> +
-> +		igt_assert_f(try_vm_create(fd) != 0,
-> +			     "Device did not wedge after injected GT reset failure\n");
-> +
-> +		/*
-> +		 * The device is about to be rebind, which recreates the debugfs
-> +		 * fault-injection state from scratch - there is nothing to restore
-> +		 * across the rebind. Dropping now-stale fd so the exit handler
-> +		 * won't touch a closed descriptor.
+A group serialises on one outstanding sync, so both CGP sources are needed:
+queue creation for registration updates, MULTI_QUEUE_PRIORITY for dynamic
+ones.
 
-You could write that disabling is done here, in case if
-any unexpected signal happen.
+Add MQ_PRIORITY to issue a short burst of priority updates after each exec,
+alternating the values since the KMD ignores a set to the current value.
 
-> +		 */
-> +		gt_reset_fault_injection_forget_fd(fd);
+Let MANY_QUEUES combine with MULTI_QUEUE by recreating the destroyed queue
+as a secondary of the surviving primary, keeping churn inside a live group.
+Space the recreates out, as a destroyed queue only releases its group slot
+after teardown completes.
 
-imho just call
-		gt_reset_disable_fault_injection(0);
+Add three subtests from these sources and an optional repeat_secs to repeat
+them under igt_until_timeout() with a bounded wall clock.
 
-Rest looks good.
+Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+---
+ tests/intel/xe_exec_threads.c | 80 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 75 insertions(+), 5 deletions(-)
 
-Regards,
-Kamil
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 2974fc312..137316a98 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -49,6 +49,24 @@
+ #define MANY_QUEUES	(0x1 << 14)
+ #define MULTI_QUEUE		(0x1 << 15)
+ #define WQ_STRESS		(0x1 << 16)
++#define MQ_PRIORITY		(0x1 << 17)
++
++/*
++ * Multi-queue priority updates issued per exec. The values must alternate:
++ * the KMD ignores a priority set to its current value, so a constant value
++ * would generate no CGP_SYNC traffic at all.
++ */
++#define MQ_PRIORITY_BURST	8
++
++/* Wall clock budget for the CGP_SYNC replay subtests. */
++#define CGP_REPEAT_SEC		5
++
++/*
++ * Execs between queue recreates in a multi-queue group. A destroyed queue
++ * only releases its group slot once teardown completes, so recreating on
++ * every exec exhausts the group and creation fails with EINVAL.
++ */
++#define MQ_CHURN_INTERVAL	32
+ 
+ /*
+  * Maximum fence wait time when WQ_STRESS is active. If any bind/unbind
+@@ -722,18 +740,43 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		uint64_t sdi_addr = addr + sdi_offset;
+ 		uint64_t exec_addr;
+ 		int e = i % n_exec_queues;
++		bool churn;
+ 
+ 		/* Bail early if another thread already detected a hang */
+ 		if ((flags & WQ_STRESS) && atomic_load(&wq_stress_hang_detected))
+ 			goto wq_stress_cleanup;
+ 
+-		if (flags & MANY_QUEUES) {
++		churn = flags & MANY_QUEUES;
++		if (churn && (flags & MULTI_QUEUE))
++			/* Keep the primary, and let group slots drain. */
++			churn = e && !(i & (MQ_CHURN_INTERVAL - 1));
++
++		if (churn) {
+ 			if (exec_queues[e]) {
+-				igt_assert(syncobj_wait(fd, &syncobjs[e], 1,
+-							INT64_MAX, 0, NULL));
++				/*
++				 * Multi-queue creates every queue up front, so a
++				 * slot can still be unused on its first visit and
++				 * its syncobj would never signal.
++				 */
++				if (i >= n_exec_queues)
++					igt_assert(syncobj_wait(fd, &syncobjs[e], 1,
++								INT64_MAX, 0, NULL));
+ 				xe_exec_queue_destroy(fd, exec_queues[e]);
+ 			}
+-			exec_queues[e] = xe_exec_queue_create(fd, vm, eci, 0);
++			if (flags & MULTI_QUEUE) {
++				struct drm_xe_ext_set_property multi_queue = {
++					.base.next_extension = 0,
++					.base.name = DRM_XE_EXEC_QUEUE_EXTENSION_SET_PROPERTY,
++					.property = DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_GROUP,
++					.value = exec_queues[0],
++				};
++
++				exec_queues[e] =
++					xe_exec_queue_create(fd, vm, eci,
++							     to_user_pointer(&multi_queue));
++			} else {
++				exec_queues[e] = xe_exec_queue_create(fd, vm, eci, 0);
++			}
+ 		}
+ 
+ 		if (flags & HANG && e == hang_exec_queue && i == e) {
+@@ -770,6 +813,16 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 			xe_exec(fd, &exec);
+ 		}
+ 
++		if (flags & MQ_PRIORITY) {
++			uint32_t prop =
++				DRM_XE_EXEC_QUEUE_SET_PROPERTY_MULTI_QUEUE_PRIORITY;
++			int z;
++
++			for (z = 0; z < MQ_PRIORITY_BURST; z++)
++				xe_exec_queue_set_property(fd, exec_queues[e],
++							   prop, z & 1);
++		}
++
+ 		if (flags & REBIND && i && !(i & 0x1f)) {
+ 			xe_vm_unbind_async(fd, vm, bind_exec_queues[e],
+ 					   0, addr, bo_size,
+@@ -1213,6 +1266,12 @@ static void *thread(void *data)
+  * arg[1]:
+  * @multi-queue-basic:
+  *	multi-queue basic
++ * @multi-queue-many-queues:
++ *	multi-queue many queues
++ * @multi-queue-priority:
++ *	multi-queue priority
++ * @multi-queue-many-queues-priority:
++ *	multi-queue many queues priority
+  * @multi-queue-userptr:
+  *	multi-queue userptr
+  * @multi-queue-rebind:
+@@ -1483,6 +1542,7 @@ int igt_main()
+ 	const struct section {
+ 		const char *name;
+ 		unsigned int flags;
++		unsigned int repeat_secs;
+ 	} sections[] = {
+ 		{ "basic", 0 },
+ 		{ "many-queues", MANY_QUEUES },
+@@ -1729,6 +1789,12 @@ int igt_main()
+ 			USERPTR | INVALIDATE },
+ 		{ "multi-queue-cm-fd-userptr-invalidate-race", MULTI_QUEUE | COMPUTE_MODE | FD |
+ 			USERPTR | INVALIDATE | RACE },
++		{ "multi-queue-many-queues", MULTI_QUEUE | MANY_QUEUES,
++			CGP_REPEAT_SEC },
++		{ "multi-queue-priority", MULTI_QUEUE | MQ_PRIORITY,
++			CGP_REPEAT_SEC },
++		{ "multi-queue-many-queues-priority", MULTI_QUEUE | MANY_QUEUES |
++			MQ_PRIORITY, CGP_REPEAT_SEC },
+ 		{ NULL },
+ 	};
+ 	int fd;
+@@ -1748,7 +1814,11 @@ int igt_main()
+ 			if ((s->flags & MULTI_QUEUE) && (s->flags & HANG))
+ 				ignore_multi_queue_hang_warnings_in_dmesg();
+ 
+-			threads(fd, s->flags);
++			if (s->repeat_secs)
++				igt_until_timeout(s->repeat_secs)
++					threads(fd, s->flags);
++			else
++				threads(fd, s->flags);
+ 		}
+ 	}
+ 
+-- 
+2.43.0
 
-> +		drm_close_driver(fd);
-> +		igt_kmod_rebind("xe", pci_slot);
-> +		fd = drm_open_driver(DRIVER_XE);
-> +
-> +		igt_assert_f(try_vm_create(fd) == 0,
-> +			     "Device not functional after rebind recovery\n");
-> +	}
-> +
->  	igt_subtest("gt-mocs-reset")
->  		xe_for_each_gt(fd, gt)
->  			gt_mocs_reset(fd, gt);
-> -- 
-> 2.43.0
-> 
