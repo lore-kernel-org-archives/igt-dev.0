@@ -4,79 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92E53C624D3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 16:42:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 85BC6C61DD3
+	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 16:49:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 23CC510E406;
-	Tue,  1 Sep 2026 16:42:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 266BF10E405;
+	Tue,  1 Sep 2026 16:49:38 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ai1TJnh+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xlt0rAY1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E7E2210E406
- for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 16:41:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA24A10E405
+ for <igt-dev@lists.freedesktop.org>; Tue,  1 Sep 2026 16:48:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788280914; x=1819816914;
+ t=1788281338; x=1819817338;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=LzieaCxs4nVL6Q2E3sL/tB+h+4E7wfD/0n9M3BX1BIU=;
- b=Ai1TJnh+fsWdK0hBzaaK1KM5SMXpExAeSg9nl8jmIJ91Vrd3JNAtgFQ3
- 6cXL0rP0dnlhQuPlND6IqRGubBSHo4+a80t+qm5M/CAlcBS14mSSzXSnl
- G/UNRiM7qKQn8CfYb2iVYoq6SSkTTo8LhGURx8XhtPqS6qdtHz15xTynr
- Lwom40V1d7F4dTcb4nQv764dIRfnMVaCq2lPFwErIYkCwOW8PG4O3wrx4
- eOpW/fawh68oYC4KH46WpE5vk/19RpOv06ZJRIu1X77jeOR+rt8oNI3vG
- hsGO+xygqpmQekL2c7CMulUTqN5nWNVuJz00wjoo7awVGZqYt0b4XN/Po Q==;
-X-CSE-ConnectionGUID: kzE+UnFpTQ+VRWvFvFU1Wg==
-X-CSE-MsgGUID: lI9mMJAYSfaUVlIr1vzvZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="99881254"
-X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="99881254"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Sep 2026 09:41:54 -0700
-X-CSE-ConnectionGUID: PyJfvTPTQtCBg6AK15RR1g==
-X-CSE-MsgGUID: bb8LZdtWSJiweMlCfrZrMw==
+ bh=YUZ8ZWWe0vvnlCaMnhrI1MvP/xnJ7wAuNXdbeIbH44M=;
+ b=Xlt0rAY1vw711j90bCDYR7rOaM2SPZpWW38Uaz8B3OtkruUFJp10kNHE
+ 50nAQItqxaeEa6JF23VHPuD7KrdEKoACJ0KLl30mlWE7CRKldTTgR0nlo
+ 16jbrErms/ObUMgW9vlg9RQ9HZX4MBL64RXjzuvf1gkaxWXGLbLfnCa7X
+ HPwnXA1lfdKnOSCUafVc3t4bgQnoqPGmzjezt+CspLvTnZZg5EtPZgJ8c
+ ALU7QX07XP6r2VVppCXsYbkV4JjW9CNCm0W1hT08XN2EfG0N/1VBrFlsW
+ tZ4ODz8ou3MVlJZMyJL+2aLPXo8dLgAqoumZDJBSAF9PD7gbplRsQm1i7 w==;
+X-CSE-ConnectionGUID: 8f2A2nEOQ3C1f5ILUD/OKg==
+X-CSE-MsgGUID: GkpOezmLSUaCHIgY1gzXQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="88767433"
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="88767433"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Sep 2026 09:48:57 -0700
+X-CSE-ConnectionGUID: d9+CE7JLTYGfo+GRty2VJw==
+X-CSE-MsgGUID: I9xx32DfRACzzFL9OlEJvg==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,256,1779174000"; d="scan'208";a="264870396"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 09:41:51 -0700
-Date: Tue, 1 Sep 2026 18:41:29 +0200
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2026 09:48:55 -0700
+Date: Tue, 1 Sep 2026 18:48:53 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: vitaly prosyak <vprosyak@amd.com>
-Cc: "Sharma, Swati2" <swati2.sharma@intel.com>,
- "Zuo, Jerry" <Jerry.Zuo@amd.com>,
- "Wentland, Harry" <Harry.Wentland@amd.com>,
- "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+To: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>
+Cc: "Chegondi, Harish" <harish.chegondi@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "chaitanya.kumar.borah@intel.com" <chaitanya.kumar.borah@intel.com>,
- "Broadworth, Mark" <Mark.Broadworth@amd.com>,
- "Hung, Alex" <Alex.Hung@amd.com>,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Subject: Re: [PATCH i-g-t] tools: rename HDMI compliance utility
-Message-ID: <20260901164129.c2p7nrh3jiiiy55q@kamilkon-DESK.igk.intel.com>
+ "Tauro, Riana" <riana.tauro@intel.com>,
+ "Gupta, Anshuman" <anshuman.gupta@intel.com>,
+ "Koujalagi, Mallesh" <mallesh.koujalagi@intel.com>,
+ "Jadav, Raag" <raag.jadav@intel.com>,
+ "Purkait, Soham" <soham.purkait@intel.com>
+Subject: Re: [PATCH v3 00/10] Xe3P GPU Error Injection Test Suite with DRM
+ RAS Netlink Support
+Message-ID: <20260901164853.vujuqb52x7zs6zym@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- vitaly prosyak <vprosyak@amd.com>,
- "Sharma, Swati2" <swati2.sharma@intel.com>,
- "Zuo, Jerry" <Jerry.Zuo@amd.com>,
- "Wentland, Harry" <Harry.Wentland@amd.com>,
- "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>,
+ "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>,
+ "Chegondi, Harish" <harish.chegondi@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
- "chaitanya.kumar.borah@intel.com" <chaitanya.kumar.borah@intel.com>,
- "Broadworth, Mark" <Mark.Broadworth@amd.com>,
- "Hung, Alex" <Alex.Hung@amd.com>,
- Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-References: <20260827185355.378279-1-swati2.sharma@intel.com>
- <20260828095854.7apqo5c7hy3n7oet@kamilkon-DESK.igk.intel.com>
- <7f78ff21-e4bf-417c-bf9d-c605b13a4beb@amd.com>
- <7fa2630a-424d-4156-b18d-0b4b3e50df23@amd.com>
- <CHXPR12MB9992204E4BC30CC3411A15975FE5AC2@CHXPR12MB999220.namprd12.prod.outlook.com>
- <33ec7288-0774-4449-8bd5-4215ca982ebb@amd.com>
- <96bd463b-6a25-4b3d-9eb3-80cdeccdf349@intel.com>
- <e022b211-4cb7-4f2f-9ab3-1872243de898@amd.com>
+ "Tauro, Riana" <riana.tauro@intel.com>,
+ "Gupta, Anshuman" <anshuman.gupta@intel.com>,
+ "Koujalagi, Mallesh" <mallesh.koujalagi@intel.com>,
+ "Jadav, Raag" <raag.jadav@intel.com>,
+ "Purkait, Soham" <soham.purkait@intel.com>
+References: <20260824164133.129138-1-ravi.kishore.koppuravuri@intel.com>
+ <apCclpWH9W_qgN-6@intel.com>
+ <DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2@DS0PR11MB7651.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e022b211-4cb7-4f2f-9ab3-1872243de898@amd.com>
+In-Reply-To: <DS0PR11MB7651CCB3774D83F7AE02AF47D8AC2@DS0PR11MB7651.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,24 +85,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Vitaly,
-On 2026-09-01 at 11:13:37 -0400, vitaly prosyak wrote:
-> Yes,
+Hi Koppuravuri,,
+On 2026-08-28 at 04:03:09 +0000, Koppuravuri, Ravi Kishore wrote:
+> Hi @Chegondi, Harish<mailto:harish.chegondi@intel.com>,
 > 
-> Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> With respect to the comments from Kamil, I have updated the test names, library function names and also separated out the DRM UAPI header file as a commit.
 > 
-> 
-> Thanks , Vitaly
-> 
-> On 2026-09-01 04:43, Sharma, Swati2 wrote:
-> > Hi Vital
-> >
-> > Can you please rb if everything looks good at your end?
-> >
+> No functional changes are there in V3 other than these things.
 
-Applied, thanks!
+If possible, write a brief summary of changes in cover letter.
 
 Regards,
 Kamil
 
-[cut]
+> 
+> Thanks,
+> Ravi Kishore K.
+> 
+> ________________________________
+> From: Chegondi, Harish <harish.chegondi@intel.com>
+> Sent: Friday, August 28, 2026 1:52 AM
+> To: Koppuravuri, Ravi Kishore <ravi.kishore.koppuravuri@intel.com>
+> Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; Tauro, Riana <riana.tauro@intel.com>; Gupta, Anshuman <anshuman.gupta@intel.com>; Koujalagi, Mallesh <mallesh.koujalagi@intel.com>; Jadav, Raag <raag.jadav@intel.com>; Purkait, Soham <soham.purkait@intel.com>
+> Subject: Re: [PATCH v3 00/10] Xe3P GPU Error Injection Test Suite with DRM RAS Netlink Support
+> 
+> On Mon, Aug 24, 2026 at 10:11:23PM +0530, Ravi Kishore Koppuravuri wrote:
+> Hi Ravi,
+> 
+> Are there any new changes in V3 or just a rebase?
+> 
+> Thanks
+> Harish.
+> 
+> > This series introduces comprehensive error injection testing capabilities
+> > for Intel Xe3P GPUs, leveraging the DRM RAS (Reliability, Availability,
+> > Serviceability) Generic Netlink interface for error reporting and event
+> > notification.
+> >
+> > The patch series focuses on the below key areas:
+> >
+> > 1. DRM RAS Netlink Library
+> > Establishes the foundation by introducing a reusable DRM RAS netlink library that
+> > provides kernel interface abstraction for error management:
+> >
+> > - DRM RAS Generic Netlink interface initialization and socket management
+> > - Error counter querying for per-node error tracking
+> > - Error threshold configuration (get/set operations)
+> > - Event notification subscription via multicast groups
+> >
+> > 2. Uncorrectable Error Verification
+> > Implements GT Uncorrectable Unicast Walker Command Parity Error Injection:
+> >
+> > - MMIO-based error injection mechanism
+> > - AER (Advanced Error Reporting) recovery verification
+> > - Validates Xe driver error handling and recovery flows
+> > - Includes workload execution post-recovery for robustness testing
+> >
+> > 3. Correctable Error Verification
+> > Adds support for L2 Bank Correctable Error Injection with threshold monitoring:
+> >
+> > - Event notification framework for real-time error event monitoring
+> > - Single and multi-iteration correctable error injection tests
+> > - Error threshold validation (critical for detecting error saturation)
+> >
+> > IGT Test Coverage includes:
+> >
+> > - GT Uncorrectable Unicast Walker Command Parity Error
+> > - L2 Bank Correctable Error (single injection)
+> > - L2 Bank Correctable Error with threshold=1
+> > - L2 Bank Correctable Error (16x injections)
+> >
+> > Ravi Kishore Koppuravuri (10):
+> >   drm-uapi/drm_ras: Add DRM RAS UAPI header
+> >   lib/meson: Add libnl dependencies for DRM RAS support
+> >   lib/igt_drm_netlink: Introduce DRM RAS Netlink interface library
+> >   lib/igt_drm_netlink: add get_error_counter support
+> >   lib/igt_drm_netlink: add get_error_threshold command support
+> >   lib/igt_drm_netlink: add set_error_threshold command support
+> >   tests/intel/xe_err_injection: Add GT UC Unicast GAM Walker Command
+> >     Parity Error Injection
+> >   lib/igt_drm_netlink: add event notify subscription and event wait
+> >     support
+> >   tests/intel/xe_err_injection: Add tests for L2 bank Corr err threshold
+> >     scenarios
+> >   tests/intel/xe_err_injection: add CRI GPU requirement check
+> >
+> >  include/drm-uapi/drm_ras.h     |  67 ++++
+> >  lib/igt_drm_netlink.c          | 565 ++++++++++++++++++++++++++++++
+> >  lib/igt_drm_netlink.h          |  48 +++
+> >  lib/meson.build                |   9 +
+> >  tests/intel/xe_err_injection.c | 623 +++++++++++++++++++++++++++++++++
+> >  tests/intel/xe_err_injection.h |  28 ++
+> >  tests/meson.build              |   1 +
+> >  7 files changed, 1341 insertions(+)
+> >  create mode 100644 include/drm-uapi/drm_ras.h
+> >  create mode 100644 lib/igt_drm_netlink.c
+> >  create mode 100644 lib/igt_drm_netlink.h
+> >  create mode 100644 tests/intel/xe_err_injection.c
+> >  create mode 100644 tests/intel/xe_err_injection.h
+> >
+> > --
+> > 2.34.1
+> >
