@@ -4,58 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEF01C624D0
-	for <igt-dev@archiver.kernel.org>; Wed,  2 Sep 2026 10:13:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CBA0C61DD6
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Sep 2026 10:23:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4DDB610E29C;
-	Wed,  2 Sep 2026 10:13:26 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dyK4n8bd";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CFA1510E20C
- for <igt-dev@lists.freedesktop.org>; Wed,  2 Sep 2026 10:12:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788343966; x=1819879966;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=e7fUPwCD5NmAFK+jad//bLmWvN6Y5vqNPAsTFuLJSFc=;
- b=dyK4n8bd5lRPD6nR29+dpuxDNkKyiB9qqWDc6ivZwpSU/AjrteshlDLy
- oKn4GMRseA0vzdubA4GwjxxgE91g2UF8SnX0rEiZGxPEsOJoOEY+DvcxM
- yKsUP2lW+sIoNj6bVZNFWkkIq7M2hJLvbdwk0bYzkgfsd1HnQMasYI2qt
- oYiHeks7VENixKFnHq/7Cfgg30MHov1NyrjkAmqPMUz8FAJaCdzVgjDY6
- xpfh3TBgkTKuARfRFaIpYtK5/TYMNvEZkUn6rp08Y482SpgdcPJCTGVg+
- 4TueCV4gUFMKO2QRqwqIyM9ZOwB459LR59kluDPKvGqhoCvhIkrpcsmIT Q==;
-X-CSE-ConnectionGUID: sMufgEtoTPGATzlcMWi/xg==
-X-CSE-MsgGUID: BSwESXcSQ9O3jyjYT7IZQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11893"; a="88817669"
-X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; d="scan'208";a="88817669"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Sep 2026 03:12:46 -0700
-X-CSE-ConnectionGUID: nQwb0WaLSl+fLQrbuRA0lw==
-X-CSE-MsgGUID: X1hTeIPuQWmc3YusR9Nz7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,257,1779174000"; d="scan'208";a="265066378"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Sep 2026 03:12:44 -0700
-Date: Wed, 2 Sep 2026 12:12:27 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com
-Subject: Re: [PATCH] tests/intel/xe_exec_reset: add GT reset fault injection
- stress coverage
-Message-ID: <20260902101227.nns3aak4pieo5pg5@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com
-References: <20260902033315.248095-1-nishit.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id DFEF610E1D7;
+	Wed,  2 Sep 2026 10:23:49 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9D78610E3F8;
+ Wed,  2 Sep 2026 10:23:08 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8230110802963925034=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260902033315.248095-1-nishit.sharma@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fcolorop=3A_Get_?=
+ =?utf-8?q?color_pipeline_cap_only_once?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Chaitanya Kumar Borah" <chaitanya.kumar.borah@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 02 Sep 2026 10:23:08 -0000
+Message-ID: <178834458863.112573.8113803472584406818@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260902073629.655688-1-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20260902073629.655688-1-chaitanya.kumar.borah@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,241 +37,245 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi nishit.sharma,
-On 2026-09-02 at 03:33:15 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
-> 
-> Inject a GT reset failure via the KMD fail_gt_reset debugfs hook, verify
-> the device wedges as expected, tolerate the resulting -ECANCELED errors in
-> the submitting threads, then recover by rebind and confirm the driver is
-> usable again.
-> 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-> ---
->  tests/intel/xe_exec_reset.c | 124 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 119 insertions(+), 5 deletions(-)
-> 
-> diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
-> index 6eda71c32..f0071cc67 100644
-> --- a/tests/intel/xe_exec_reset.c
-> +++ b/tests/intel/xe_exec_reset.c
-> @@ -15,6 +15,8 @@
->  #include <fcntl.h>
->  
->  #include "igt.h"
-> +#include "igt_device.h"
-> +#include "igt_kmod.h"
->  #include "igt_sysfs.h"
->  #include "lib/igt_syncobj.h"
->  #include "lib/intel_reg.h"
-> @@ -140,6 +142,7 @@ static void test_spin(int fd, struct drm_xe_engine_class_instance *eci,
->  #define DESTROY_VM_CTX_STRESS		(0x1 << 20)
->  #define MIXED_ENGINE_STRESS		(0x1 << 21)
->  #define PM_TRANSITION_STRESS		(0x1 << 22)
-> +#define FAULT_INJECT_STRESS		(0x1 << 23)
->  
->  /**
->   * SUBTEST: %s-cat-error
-> @@ -760,7 +763,7 @@ static void submit_jobs(struct gt_thread_data *t)
->  	uint32_t pressure_bos[PRESSURE_COUNT];
->  	uint32_t *data;
->  	int pressure_count;
-> -	int i = 0;
-> +	int i = 0, exec_ret;
->  
->  	bo = xe_bo_create(fd, vm, bo_size, vram_if_possible(fd, t->gt),
->  			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> @@ -794,8 +797,25 @@ static void submit_jobs(struct gt_thread_data *t)
->  			continue;
->  		}
->  
-> -		xe_exec(fd, &exec);
-> -		xe_exec_queue_destroy(fd, exec.exec_queue_id);
-> +		/*
-> +		 * Once an injected GT reset failure wedges the device, exec and
-> +		 * queue teardown return -ECANCELED. That is the expected outcome
-> +		 * for the fault-injection stress
-> +		 */
-> +		if (t->flags & FAULT_INJECT_STRESS) {
-> +			struct drm_xe_exec_queue_destroy destroy = {
-> +				.exec_queue_id = exec.exec_queue_id,
-> +		};
+--===============8230110802963925034==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This seems a break in formatting, interesting it wasn't catched
-by checkpatch.pl
+== Series Details ==
 
-> +
-> +		exec_ret = __xe_exec(fd, &exec);
-> +		igt_assert_f(exec_ret == 0 || exec_ret == -ECANCELED,
-> +			     "exec returned unexpected error %d (expected 0 or -ECANCELED)\n",
-> +			     exec_ret);
-> +		igt_ioctl(fd, DRM_IOCTL_XE_EXEC_QUEUE_DESTROY, &destroy);
+Series: tests/kms_colorop: Get color pipeline cap only once
+URL   : https://patchwork.freedesktop.org/series/173192/
+State : success
 
-Above should be shifted to right by one tab, to align
-with below 'else'. It could be corrected at merge time so
+== Summary ==
 
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+CI Bug Log - changes from XEIGT_9079_BAT -> XEIGTPW_15773_BAT
+====================================================
 
-Regards,
-Kamil
+Summary
+-------
 
-> +		} else {
-> +			xe_exec(fd, &exec);
-> +			xe_exec_queue_destroy(fd, exec.exec_queue_id);
-> +		}
->  		(*t->num_submit)++;
->  
->  		if ((t->flags & MEM_PRESSURE_STRESS) && !(i % 128)) {
-> @@ -829,8 +849,20 @@ static void submit_jobs(struct gt_thread_data *t)
->  		pressure_bo_destroy(fd, pressure_bos, PRESSURE_COUNT);
->  
->  	munmap(data, bo_size);
-> -	gem_close(fd, bo);
-> -	xe_vm_destroy(fd, vm);
-> +	/*
-> +	 * On a device wedged by injected GT reset failures, BO close and VM
-> +	 * destroy also return -ECANCELED.
-> +	 */
-> +	if (t->flags & FAULT_INJECT_STRESS) {
-> +		struct drm_gem_close close_bo = { .handle = bo };
-> +		struct drm_xe_vm_destroy vm_destroy = { .vm_id = vm };
-> +
-> +		igt_ioctl(fd, DRM_IOCTL_GEM_CLOSE, &close_bo);
-> +		igt_ioctl(fd, DRM_IOCTL_XE_VM_DESTROY, &vm_destroy);
-> +	} else {
-> +		gem_close(fd, bo);
-> +		xe_vm_destroy(fd, vm);
-> +	}
->  }
->  
->  static void *gt_reset_thread(void *data)
-> @@ -850,6 +882,54 @@ static void *gt_reset_thread(void *data)
->  	return NULL;
->  }
->  
-> +static int fault_inject_fd = -1;
-> +
-> +static void gt_reset_disable_fault_injection(int sig)
-> +{
-> +	if (fault_inject_fd < 0)
-> +		return;
-> +
-> +	igt_debugfs_write(fault_inject_fd, "fail_gt_reset/probability", "0");
-> +	igt_debugfs_write(fault_inject_fd, "fail_gt_reset/times", "1");
-> +	fault_inject_fd = -1;
-> +}
-> +
-> +static void gt_reset_enable_fault_injection(int fd)
-> +{
-> +	static bool exit_handler_installed;
-> +
-> +	fault_inject_fd = fd;
-> +
-> +	if (!exit_handler_installed) {
-> +		igt_install_exit_handler(gt_reset_disable_fault_injection);
-> +		exit_handler_installed = true;
-> +	}
-> +
-> +	igt_debugfs_write(fd, "fail_gt_reset/probability", "100");
-> +	igt_debugfs_write(fd, "fail_gt_reset/times", "2");
-> +}
-> +
-> +static int try_vm_create(int fd)
-> +{
-> +	struct drm_xe_vm_create create = { 0 };
-> +	int err = 0;
-> +
-> +	if (igt_ioctl(fd, DRM_IOCTL_XE_VM_CREATE, &create))
-> +		err = -errno;
-> +	else
-> +		xe_vm_destroy(fd, create.vm_id);
-> +
-> +	return err;
-> +}
-> +
-> +static void ignore_gt_reset_fault_dmesg(void)
-> +{
-> +	igt_emit_ignore_dmesg_regex("reset failed \\(-ECANCELED\\)"
-> +				    "|declared device .* as wedged"
-> +				    "|GPU HANG"
-> +				    "|Failed to reset");
-> +}
-> +
->  /**
->   * SUBTEST: gt-reset-stress
->   * Description: Stress GT reset
-> @@ -891,6 +971,9 @@ static void *gt_reset_thread(void *data)
->   * Description: Test GT reset while long spinner workload is active
->   * Test category: stress test
->   *
-> + * SUBTEST: gt-reset-fault-injection
-> + * Description: Stress concurrent GT resets and job submissions with GT reset failures injected via debugfs
-> + * Test category: fault injection
->   */
->  static void
->  gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
-> @@ -907,6 +990,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
->  	pthread_mutex_init(&mutex, 0);
->  	pthread_cond_init(&cond, 0);
->  
-> +	if (flags & FAULT_INJECT_STRESS)
-> +		gt_reset_enable_fault_injection(fd);
-> +
->  	for (i = 0; i < n_threads; ++i) {
->  		threads[i].mutex = &mutex;
->  		threads[i].cond = &cond;
-> @@ -940,6 +1026,9 @@ gt_reset(int fd, int gt, int n_threads, int n_sec, unsigned int flags)
->  	igt_info("number of resets %d, submissions %d, submit fails %d vm_recreate %d\n",
->  		 num_reset, num_submit, num_submit_fail, num_vm_recreate);
->  
-> +	if (flags & FAULT_INJECT_STRESS)
-> +		gt_reset_disable_fault_injection(0);
-> +
->  	igt_assert_neq(num_reset, 0);
->  	igt_assert_neq(num_submit, 0);
->  	free(threads);
-> @@ -1122,6 +1211,7 @@ int igt_main()
->  	int gt;
->  	int class;
->  	int fd;
-> +	char pci_slot[NAME_MAX];
->  
->  	igt_fixture()
->  		fd = drm_open_driver(DRIVER_XE);
-> @@ -1326,6 +1416,30 @@ int igt_main()
->  			break;
->  		}
->  
-> +	igt_subtest("gt-reset-fault-injection") {
-> +		igt_require_f(igt_debugfs_exists(fd, "fail_gt_reset/probability",
-> +						 O_RDWR),
-> +			      "GT reset fault injection not available; "
-> +			      "CONFIG_DRM_XE_KUNIT_TEST/fault-injection must be "
-> +			      "enabled in the KMD\n");
-> +
-> +		igt_device_get_pci_slot_name(fd, pci_slot);
-> +		ignore_gt_reset_fault_dmesg();
-> +
-> +		gt_reset(fd, 0, 8, 2, FAULT_INJECT_STRESS);
-> +
-> +		igt_assert_f(try_vm_create(fd) != 0,
-> +			     "Device did not wedge after injected GT reset failure\n");
-> +
-> +		gt_reset_disable_fault_injection(0);
-> +		drm_close_driver(fd);
-> +		igt_kmod_rebind("xe", pci_slot);
-> +		fd = drm_open_driver(DRIVER_XE);
-> +
-> +		igt_assert_f(try_vm_create(fd) == 0,
-> +			     "Device not functional after rebind recovery\n");
-> +	}
-> +
->  	igt_subtest("gt-mocs-reset")
->  		xe_for_each_gt(fd, gt)
->  			gt_mocs_reset(fd, gt);
-> -- 
-> 2.43.0
-> 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 12)
+------------------------------
+
+  Additional (1): bat-bmg-2 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15773_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@write:
+    - bat-bmg-2:          NOTRUN -> [SKIP][1] ([Intel XE#2134]) +4 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@fbdev@write.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-bmg-2:          NOTRUN -> [SKIP][2] ([Intel XE#2233])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:
+    - bat-bmg-2:          NOTRUN -> [SKIP][3] ([Intel XE#2489] / [Intel XE#3419]) +13 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-modeset:
+    - bat-bmg-2:          NOTRUN -> [SKIP][4] ([Intel XE#2482]) +3 other tests skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-bmg-2:          NOTRUN -> [SKIP][5] ([Intel XE#2434] / [Intel XE#2548] / [Intel XE#6314])
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-bmg-2:          NOTRUN -> [SKIP][6] ([Intel XE#2234] / [Intel XE#2850]) +2 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@xe_exec_multi_queue@priority:
+    - bat-bmg-2:          NOTRUN -> [SKIP][7] ([Intel XE#8364]) +13 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_exec_multi_queue@priority.html
+
+  * igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:
+    - bat-bmg-2:          NOTRUN -> [SKIP][8] ([Intel XE#2229])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-bmg-2:          NOTRUN -> [SKIP][9] ([Intel XE#1420] / [Intel XE#7590])
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-bmg-2:          NOTRUN -> [SKIP][10] ([Intel XE#2245] / [Intel XE#7590])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-bmg-2:          NOTRUN -> [SKIP][11] ([Intel XE#2236] / [Intel XE#7590])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html
+
+  
+  [Intel XE#1420]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420
+  [Intel XE#2134]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134
+  [Intel XE#2229]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229
+  [Intel XE#2233]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233
+  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+  [Intel XE#2236]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236
+  [Intel XE#2245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245
+  [Intel XE#2434]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434
+  [Intel XE#2482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482
+  [Intel XE#2489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489
+  [Intel XE#2548]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
+  [Intel XE#6314]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6314
+  [Intel XE#7590]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590
+  [Intel XE#8364]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9079 -> IGTPW_15773
+  * Linux: xe-5668-b8f17b16c0f8638b9df4f090511e3ae97210eb77 -> xe-5671-c53467440a5196138d2d6610e269a43b6b47bf6b
+
+  IGTPW_15773: 15773
+  IGT_9079: 9079
+  xe-5668-b8f17b16c0f8638b9df4f090511e3ae97210eb77: b8f17b16c0f8638b9df4f090511e3ae97210eb77
+  xe-5671-c53467440a5196138d2d6610e269a43b6b47bf6b: c53467440a5196138d2d6610e269a43b6b47bf6b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/index.html
+
+--===============8230110802963925034==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_colorop: Get color pipeline cap only once</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173192/">https://patchwork.freedesktop.org/series/173192/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9079_BAT -&gt; XEIGTPW_15773_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 12)</h2>
+<p>Additional (1): bat-bmg-2 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15773_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@write:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@fbdev@write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2134">Intel XE#2134</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2233">Intel XE#2233</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-flip-after-cursor-legacy:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_cursor_legacy@basic-flip-after-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2489">Intel XE#2489</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_flip@basic-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2482">Intel XE#2482</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2434">Intel XE#2434</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2548">Intel XE#2548</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6314">Intel XE#6314</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@priority:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_exec_multi_queue@priority.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364">Intel XE#8364</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_live_ktest@xe_bo@xe_ccs_migrate_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2229">Intel XE#2229</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1420">Intel XE#1420</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2245">Intel XE#2245</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15773/bat-bmg-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2236">Intel XE#2236</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9079 -&gt; IGTPW_15773</li>
+<li>Linux: xe-5668-b8f17b16c0f8638b9df4f090511e3ae97210eb77 -&gt; xe-5671-c53467440a5196138d2d6610e269a43b6b47bf6b</li>
+</ul>
+<p>IGTPW_15773: 15773<br />
+  IGT_9079: 9079<br />
+  xe-5668-b8f17b16c0f8638b9df4f090511e3ae97210eb77: b8f17b16c0f8638b9df4f090511e3ae97210eb77<br />
+  xe-5671-c53467440a5196138d2d6610e269a43b6b47bf6b: c53467440a5196138d2d6610e269a43b6b47bf6b</p>
+
+</body>
+</html>
+
+--===============8230110802963925034==--
