@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCCD7C61DD3
-	for <igt-dev@archiver.kernel.org>; Tue,  1 Sep 2026 23:36:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A87C61DD6
+	for <igt-dev@archiver.kernel.org>; Wed,  2 Sep 2026 00:05:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6145D10E117;
-	Tue,  1 Sep 2026 23:36:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 607B710E24A;
+	Wed,  2 Sep 2026 00:05:39 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7C31D10E117;
- Tue,  1 Sep 2026 23:35:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D2DCD10E24A;
+ Wed,  2 Sep 2026 00:04:53 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3929031919824956916=="
+ boundary="===============1823944937521555487=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/igt=5Feld=3A_Fix_88?=
- =?utf-8?q?=2E2kHz/176=2E4kHz_sample_rate_parsing?=
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fexec=5Fr?=
+ =?utf-8?q?eset=3A_add_GT_reset_fault_injection_stress_coverage_=28rev4=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Chaitanya Kumar Borah" <chaitanya.kumar.borah@intel.com>
+To: nishit.sharma@intel.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 01 Sep 2026 23:35:32 -0000
-Message-ID: <178830573250.109472.10083132203054112869@61270ab9df2a>
+Date: Wed, 02 Sep 2026 00:04:53 -0000
+Message-ID: <178830749385.109424.16832984453138717082@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260901113313.627816-1-chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20260901113313.627816-1-chaitanya.kumar.borah@intel.com>
+References: <20260901140131.234746-1-nishit.sharma@intel.com>
+In-Reply-To: <20260901140131.234746-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,86 +41,92 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3929031919824956916==
+--===============1823944937521555487==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: lib/igt_eld: Fix 88.2kHz/176.4kHz sample rate parsing
-URL   : https://patchwork.freedesktop.org/series/173146/
-State : success
+Series: tests/intel/xe_exec_reset: add GT reset fault injection stress coverage (rev4)
+URL   : https://patchwork.freedesktop.org/series/172441/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9079 -> IGTPW_15766
+CI Bug Log - changes from IGT_9079 -> IGTPW_15767
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with IGTPW_15767 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_15767, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/index.html
 
 Participating hosts (37 -> 36)
 ------------------------------
 
   Missing    (1): bat-dg2-13 
 
-Known issues
-------------
+Possible new issues
+-------------------
 
-  Here are the changes found in IGTPW_15766 that come from known issues:
+  Here are the unknown changes that may have been introduced in IGTPW_15767:
 
 ### IGT changes ###
 
-#### Issues hit ####
+#### Possible regressions ####
 
-  * igt@i915_module_load@load:
-    - fi-kbl-7567u:       [PASS][1] -> [DMESG-WARN][2] ([i915#15673])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/fi-kbl-7567u/igt@i915_module_load@load.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/fi-kbl-7567u/igt@i915_module_load@load.html
+  * igt@i915_selftest@live:
+    - bat-arlh-2:         [PASS][1] -> [ABORT][2] +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/bat-arlh-2/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/bat-arlh-2/igt@i915_selftest@live.html
 
   
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15767 that come from known issues:
+
+### IGT changes ###
+
 #### Possible fixes ####
 
-  * igt@core_auth@basic-auth:
-    - fi-kbl-7567u:       [DMESG-WARN][3] ([i915#15673]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/fi-kbl-7567u/igt@core_auth@basic-auth.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/fi-kbl-7567u/igt@core_auth@basic-auth.html
-
   * igt@core_hotunplug@unbind-rebind:
-    - bat-rpls-4:         [DMESG-WARN][5] ([i915#13400]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+    - bat-rpls-4:         [DMESG-WARN][3] ([i915#13400]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html
 
   
   [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_9079 -> IGTPW_15766
+  * IGT: IGT_9079 -> IGTPW_15767
   * Linux: CI_DRM_19066 -> CI_DRM_19069
 
   CI-20190529: 20190529
   CI_DRM_19066: b8f17b16c0f8638b9df4f090511e3ae97210eb77 @ git://anongit.freedesktop.org/gfx-ci/linux
   CI_DRM_19069: c53467440a5196138d2d6610e269a43b6b47bf6b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15766: 10ddbcedafdd4db5cbf48203b2d4087a6c417ef1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15767: cb4a33192808eed13ff7df657d50457b44fe9489 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9079: 9079
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/index.html
 
---===============3929031919824956916==
+--===============1823944937521555487==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -140,60 +146,59 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>lib/igt_eld: Fix 88.2kHz/176.4kHz sample rate parsing</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173146/">https://patchwork.freedesktop.org/series/173146/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_reset: add GT reset fault injection stress coverage (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172441/">https://patchwork.freedesktop.org/series/172441/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9079 -&gt; IGTPW_15766</h1>
+    <h1>CI Bug Log - changes from IGT_9079 -&gt; IGTPW_15767</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/index.html</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_15767 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_15767, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/index.html</p>
 <h2>Participating hosts (37 -&gt; 36)</h2>
 <p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15766 that come from known issues:</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_15767:</p>
 <h3>IGT changes</h3>
-<h4>Issues hit</h4>
+<h4>Possible regressions</h4>
 <ul>
-<li>igt@i915_module_load@load:<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/fi-kbl-7567u/igt@i915_module_load@load.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/fi-kbl-7567u/igt@i915_module_load@load.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>)</li>
+<li>igt@i915_selftest@live:<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/bat-arlh-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/bat-arlh-2/igt@i915_selftest@live.html">ABORT</a> +1 other test abort</li>
 </ul>
 </li>
 </ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15767 that come from known issues:</p>
+<h3>IGT changes</h3>
 <h4>Possible fixes</h4>
 <ul>
-<li>
-<p>igt@core_auth@basic-auth:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/fi-kbl-7567u/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/fi-kbl-7567u/igt@core_auth@basic-auth.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@core_hotunplug@unbind-rebind:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15766/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9079/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15767/bat-rpls-4/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9079 -&gt; IGTPW_15766</li>
+<li>IGT: IGT_9079 -&gt; IGTPW_15767</li>
 <li>Linux: CI_DRM_19066 -&gt; CI_DRM_19069</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_19066: b8f17b16c0f8638b9df4f090511e3ae97210eb77 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
   CI_DRM_19069: c53467440a5196138d2d6610e269a43b6b47bf6b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15766: 10ddbcedafdd4db5cbf48203b2d4087a6c417ef1 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGTPW_15767: cb4a33192808eed13ff7df657d50457b44fe9489 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_9079: 9079</p>
 
 </body>
 </html>
 
---===============3929031919824956916==--
+--===============1823944937521555487==--
