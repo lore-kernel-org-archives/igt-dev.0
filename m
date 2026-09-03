@@ -4,60 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71CB3C61DD3
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 07:43:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EA31AC624D7
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 10:45:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0576E10F441;
-	Thu,  3 Sep 2026 07:43:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3189F10F503;
+	Thu,  3 Sep 2026 10:45:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="irBdVnP0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XgEdHuU8";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFD8E10F42D
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2026 07:34:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B7D8610F503
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2026 10:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788420859; x=1819956859;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=PnZRLuk/Yufvnw1wO2eKGCX9WmTGHS4uGsxjV5QWCjc=;
- b=irBdVnP0XNlf9PDeeJqDPAk+REElAwWFJBQx3ZqDa2bif41cIV1B6WUf
- fEeZd5B2Zvqt0Rjuoo2MkwWBo68kuuz5y06qrM99w4NzFuef3SPROtygh
- OjxpIqBsNCGeMKgO4QzymTA+/2bpeI2ekvdwD/aK9uzUc57N3ys/oOBu0
- tXYhaoOZu8RxaXD23tLmg/ue3xn4Upe/U4Omjk4OyEI1skrMjFBznIXc0
- SQEKoQ4sDTpxN9tvE9CB3fTaiOiAw11SvhwpX4IT0mshXKSZHBDMgB3IV
- wW9Kq3lbE1kUp2TK30/zdVyK6XNzgBlbxnqfFspsIQAKXhN3WCLrXT3cH A==;
-X-CSE-ConnectionGUID: lSG5xjG7TY2bBPh6V1kEnw==
-X-CSE-MsgGUID: 2cBS7K0nRj2mlfStIRnF5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="88655714"
-X-IronPort-AV: E=Sophos;i="6.25,258,1779174000"; d="scan'208";a="88655714"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2026 00:34:19 -0700
-X-CSE-ConnectionGUID: 3hQZetZcSuyT1vpzQEEVcQ==
-X-CSE-MsgGUID: MAVQcFKARw2RiRjoRm+vOw==
+ t=1788432257; x=1819968257;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=P8QGJctvVDAIXnasFcJCoO18aRoZLCwc8xf7/con+ZY=;
+ b=XgEdHuU8FBuY6l40a3q9UUgbZwBTvsqoLsvapdciJUfEusU98p/AproG
+ MXi890Z/+V7sj0fyc+iXwy7sh1bmc64OxcHgJEPL889o4jav14Npdsbxq
+ Rs5U98XJJq3SXUn25wywaoCiDYPzyaJ+S4SQMI1uE3WlA9bm1oE/2Eu8K
+ 71+2tVIDSlTLGbYaaH1sa0LGqK/kWuPr1QGLUD8kJgIIYuDKNJ4X4FSAl
+ csZiAzwemK4y9OKabIFRZNBwQPDWMsTuPoKMl8oeHupannDlFNajpFNwh
+ 33N03Tckxm7GhuhCpwn3kOejOHCgfy4Uu38eEMYlzmD2c2mTuQizqfYGZ Q==;
+X-CSE-ConnectionGUID: pxrl16HiTF2/+0ASaXSzcQ==
+X-CSE-MsgGUID: brVR17MnThmrymamN4+Q6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="88963472"
+X-IronPort-AV: E=Sophos;i="6.25,259,1779174000"; d="scan'208";a="88963472"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2026 03:44:17 -0700
+X-CSE-ConnectionGUID: lz2/FeorQpqOdvPqPg3zEw==
+X-CSE-MsgGUID: wT7hKKkOTwSWMLUhdJKXHA==
 X-ExtLoop1: 1
-Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2026 00:34:16 -0700
-From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
- Purkait Soham <soham.purkait@intel.com>,
- Riana Tauro <riana.tauro@intel.com>,
- Gupta Anshuman <anshuman.gupta@intel.com>,
- Jadav Raag <raag.jadav@intel.com>, Nilawar Badal <badal.nilawar@intel.com>,
- Koujalagi Mallesh <mallesh.koujalagi@intel.com>,
- Harish Chegondi <harish.chegondi@intel.com>
-Subject: [PATCH v4 04/10] lib/igt_drm_netlink: add get_error_counter support
-Date: Thu,  3 Sep 2026 13:03:29 +0530
-Message-Id: <20260903073335.339540-5-ravi.kishore.koppuravuri@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260903073335.339540-1-ravi.kishore.koppuravuri@intel.com>
-References: <20260903073335.339540-1-ravi.kishore.koppuravuri@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,259,1779174000"; d="scan'208";a="270225357"
+Received: from ncintean-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.122])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2026 03:44:12 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
+ <juhapekka.heikkila@gmail.com>, Bhanuprakash Modem
+ <bhanuprakash.modem@gmail.com>, Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com, Chaitanya Kumar
+ Borah <chaitanya.kumar.borah@intel.com>, Alex Hung <alex.hung@amd.com>,
+ Swati Sharma <swati2.sharma@intel.com>, John Harrison
+ <John.Harrison@Igalia.com>, Rodrigo Siqueira <siqueira@igalia.com>, Simon
+ Ser <contact@emersion.fr>, Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland
+ <harry.wentland@amd.com>, Uma Shankar <uma.shankar@intel.com>
+Subject: Re: [PATCH i-g-t v5 8/8] lib/igt_kms: add macros to iterate color
+ pipelines and colorops
+In-Reply-To: <20260902180016.303482-9-mwen@igalia.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20260902180016.303482-1-mwen@igalia.com>
+ <20260902180016.303482-9-mwen@igalia.com>
+Date: Thu, 03 Sep 2026 13:44:08 +0300
+Message-ID: <956430d0a9eb201f13c963575556568bc89fc1b3@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,356 +81,448 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add netlink request/response handling for DRM_RAS_CMD_GET_ERROR_COUNTER.
+On Wed, 02 Sep 2026, Melissa Wen <mwen@igalia.com> wrote:
+> Walking a plane's color pipelines, and the colorop chain of a given
+> pipeline, is open-coded in eight places across lib and the colorop tests.
+> Add for_each_color_pipeline() to iterate over all color pipelines
+> supported by a plane and for_each_colorop_in_pipeline() to iterate over
+> all colorops of a pipeline.
+>
+> The chain walk in igt_fill_plane_color_pipelines() now stores the next
+> colorop reached by the NEXT property (which is immutable and doesn't
+> change after being discovered) and, as a consequence, igt_find_colorop()
+> becomes unused and is removed.
+>
+> Suggested-by: Jani Nikula <jani.nikula@intel.com>
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
+> ---
+>
+> v4:
+> - new patch, suggested by Jani
+> v5:
+> - store next colorop, now igt_colorop_next and igt_find_colorop are
+>   unnecessary
+> - use igt_unique for macro iterator
+> ---
+>  lib/igt_kms.c              | 76 ++++++++++++--------------------------
+>  lib/igt_kms.h              | 32 ++++++++++++++--
+>  tests/kms_colorop.c        | 17 +++------
+>  tests/kms_colorop_helper.c | 40 +++++++-------------
+>  tests/kms_properties.c     | 17 +++------
+>  5 files changed, 77 insertions(+), 105 deletions(-)
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index cabe60a31..6329e42eb 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -794,28 +794,6 @@ igt_plane_rotations(igt_display_t *display, igt_plane_t *plane,
+>  	return rotations;
+>  }
+>  
+> -/**
+> - * igt_find_colorop:
+> - * @display: display on which to look for colorop.
+> - * @id: DRM object id of the colorop.
+> - *
+> - * Returns: An igt_colorop_t if found, or NULL otherwise.
+> - */
+> -igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id)
+> -{
+> -	int i;
+> -
+> -	/* find corresponding igt_colorop */
+> -	for (i = 0; i < display->n_colorops; ++i) {
+> -		igt_colorop_t *colorop = &display->colorops[i];
+> -
+> -		if (colorop->id == id)
+> -			return colorop;
+> -	}
+> -
+> -	return NULL;
+> -}
+> -
+>  /*
+>   * Retrieve all the properies specified in props_name and store them into
+>   * colorop->props.
+> @@ -873,28 +851,34 @@ igt_fill_plane_color_pipelines(igt_display_t *display, igt_plane_t *plane,
+>  
+>  	for (i = 0; i < prop->count_enums; i++) {
+>  		if (prop->enums[i].value) {
+> -			igt_colorop_t *colorop = &display->colorops[display->n_colorops++];
+> +			igt_colorop_t *colorop;
+>  
+>  			igt_assert(display->n_colorops < MAX_NUM_COLOROPS);
+> +			colorop = &display->colorops[display->n_colorops++];
+>  
+>  			igt_fill_colorop(display, plane, colorop, prop->enums[i].value, prop->enums[i].name);
+>  			plane->color_pipelines[plane->num_color_pipelines++] = colorop;
+>  
+>  			/* get all NEXT colorops */
+>  			colorop_id = igt_colorop_get_prop(display, colorop,
+> -							IGT_COLOROP_NEXT);
+> +							  IGT_COLOROP_NEXT);
+>  			while (colorop_id) {
+> -				colorop = &display->colorops[display->n_colorops++];
+> +				igt_colorop_t *next;
+> +
+>  				igt_assert(display->n_colorops < MAX_NUM_COLOROPS);
+> -				igt_fill_colorop(display, plane, colorop, colorop_id, NULL);
+> +				next = &display->colorops[display->n_colorops++];
+> +				igt_fill_colorop(display, plane, next, colorop_id, NULL);
+> +
+> +				colorop->next = next;
+> +				colorop = next;
+> +
+>  				colorop_id = igt_colorop_get_prop(display, colorop,
+> -								IGT_COLOROP_NEXT);
+> +								  IGT_COLOROP_NEXT);
+>  			}
+>  		}
+>  	}
+>  
+>  	igt_assert(plane->num_color_pipelines < IGT_NUM_PLANE_COLOR_PIPELINES);
+> -
+>  }
+>  
+>  /*
+> @@ -3810,13 +3794,14 @@ igt_atomic_prepare_plane_commit(igt_plane_t *plane, igt_crtc_t *crtc,
+>   * Add colorop properties
+>   */
+>  static void
+> -igt_atomic_prepare_colorop_commit(igt_colorop_t *colorop, igt_crtc_t *crtc,
+> +igt_atomic_prepare_colorop_commit(igt_colorop_t *color_pipeline, igt_crtc_t *crtc,
+>  				  drmModeAtomicReq *req)
+>  {
+>  	igt_display_t *display = crtc->display;
+> -	int i, next_val;
+> +	igt_colorop_t *colorop;
+> +	int i;
+>  
+> -	while (colorop) {
+> +	for_each_colorop_in_pipeline(color_pipeline, colorop) {
+>  		LOG(display,
+>  		    "populating colorop data: %s.%d\n",
+>  		    igt_crtc_name(crtc),
+> @@ -3838,11 +3823,6 @@ igt_atomic_prepare_colorop_commit(igt_colorop_t *colorop, igt_crtc_t *crtc,
+>  							colorop->props[i],
+>  							colorop->values[i]));
+>  		}
+> -
+> -		/* get next colorop */
+> -		next_val = igt_colorop_get_prop(display, colorop,
+> -						IGT_COLOROP_NEXT);
+> -		colorop = igt_find_colorop(display, next_val);
+>  	}
+>  }
+>  
+> @@ -4415,18 +4395,16 @@ bool igt_plane_check_prop_is_mutable(igt_plane_t *plane,
+>   */
+>  bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
+>  {
+> -	int i;
+> -	bool found = false;
+> +	igt_colorop_t *color_pipeline;
+>  
+> -	for (i = 0; i < plane->num_color_pipelines; i++) {
+> -		if (plane->color_pipelines[i] == colorop) {
+> -			found = true;
+> -			break;
+> -		}
+> +	for_each_color_pipeline(plane, color_pipeline) {
+> +		if (color_pipeline == colorop)
+> +			return true;
+>  	}
+>  
+> -	return found;
+> +	return false;
+>  }
+> +
+>  /**
+>   * igt_plane_set_color_pipeline:
+>   * @plane: Target plane.
+> @@ -4932,15 +4910,9 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
+>  				 * so already-committed property values aren't re-emitted on
+>  				 * the next commit.
+>  				 */
+> -				colorop = plane->assigned_color_pipeline;
+> -				while (colorop) {
+> -					uint32_t next_val;
+> -
+> +				for_each_colorop_in_pipeline(plane->assigned_color_pipeline,
+> +							     colorop)
+>  					colorop->changed = 0;
+> -					next_val = igt_colorop_get_prop(display, colorop,
+> -									IGT_COLOROP_NEXT);
+> -					colorop = igt_find_colorop(display, next_val);
+> -				}
+>  
+>  				fd = plane->values[IGT_PLANE_IN_FENCE_FD];
+>  				if (fd != -1)
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index 23615dd91..0187ad9a1 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -415,17 +415,18 @@ static inline bool igt_rotation_90_or_270(igt_rotation_t rotation)
+>  }
+>  
+>  typedef struct _igt_plane igt_plane_t;
+> +typedef struct _igt_colorop igt_colorop_t;
+>  
+> -typedef struct {
+> +typedef struct _igt_colorop {
+>  	uint32_t id;
+>  	igt_plane_t *plane;
+> +	igt_colorop_t *next;
+>  
+>  	char name[DRM_PROP_NAME_LEN];
+>  
+>  	uint64_t changed;
+>  	uint32_t props[IGT_NUM_COLOROP_PROPS];
+>  	uint64_t values[IGT_NUM_COLOROP_PROPS];
+> -
+>  } igt_colorop_t;
+>  
+>  struct igt_format_mods {
+> @@ -1027,6 +1028,31 @@ uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, en
+>  		igt_colorop_set_prop_changed(colorop, prop); \
+>  	} while (0)
+>  
+> +/**
+> + * for_each_color_pipeline:
+> + * @plane: plane to which the color pipelines belong
+> + * @color_pipeline: the color pipeline to iterate
+> + *
+> + * Iterates through all color pipelines supported by @plane. If no color
+> + * pipeline is supported, nothing happens.
+> + */
+> +#define for_each_color_pipeline(plane, color_pipeline) \
+> +	for (int igt_unique(__i) = 0; \
+> +	     igt_unique(__i) < (plane)->num_color_pipelines && \
+> +	     ((color_pipeline) = (plane)->color_pipelines[igt_unique(__i)], true); \
+> +	     igt_unique(__i)++)
 
-Cc: Purkait Soham <soham.purkait@intel.com>
-Cc: Riana Tauro <riana.tauro@intel.com>
-Cc: Gupta Anshuman <anshuman.gupta@intel.com>
-Cc: Jadav Raag <raag.jadav@intel.com>
-Cc: Nilawar Badal <badal.nilawar@intel.com>
-Cc: Koujalagi Mallesh <mallesh.koujalagi@intel.com>
-Cc: Harish Chegondi <harish.chegondi@intel.com>
-Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
----
-v2:Handled ACK/FINISH/ERR nl responses using separate callbacks
-   Added a check whether error_value updated by valid callback or not
-   Added a check whether response required for the command or not
-v4:Added support to poll for incoming netlink messages with 10 seconds timeout
-   Renamed the library functions with prefix "igt_drm_netlink_*" and
-   other cosmetic changes (Nikula Jani & Kamil)
----
- lib/igt_drm_netlink.c | 268 +++++++++++++++++++++++++++++++++++++++++-
- lib/igt_drm_netlink.h |   9 ++
- 2 files changed, 275 insertions(+), 2 deletions(-)
+Hmm, I wonder if this is robust. igt_unique() is currently based on
+__LINE__, and that might work through being expanded based on the macro
+instantiation line instead of the macro definition lines here. If
+igt_unique() ever becomes truly unique, it certainly breaks, because the
+above will contain four different unique identifiers instead of one. But
+it's not silent, it'll break the build.
 
-diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
-index 709c01987..b18e3eeb6 100644
---- a/lib/igt_drm_netlink.c
-+++ b/lib/igt_drm_netlink.c
-@@ -3,6 +3,8 @@
-  * Copyright © 2026 Intel Corporation
-  */
- 
-+#include <errno.h>
-+#include <poll.h>
- #include <stdint.h>
- 
- #include <netlink/genl/ctrl.h>
-@@ -11,6 +13,229 @@
- #include "igt_core.h"
- #include "igt_drm_netlink.h"
- 
-+#define DRM_RAS_NETLINK_REPLY_TIMEOUT_MS 10000
-+
-+static int ras_command_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct app_context *ctx = arg;
-+	struct nlmsghdr *nlh;
-+	struct genlmsghdr *gnlh;
-+	int ret;
-+
-+	nlh = nlmsg_hdr(msg);
-+	gnlh = nlmsg_data(nlh);
-+
-+	switch (gnlh->cmd) {
-+	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
-+		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
-+
-+		ret = genlmsg_parse(nlh, 0, attrs,
-+				    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
-+		if (ret < 0)
-+			return NL_SKIP;
-+
-+		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE])
-+			return NL_SKIP;
-+
-+		ctx->error_value = nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE]);
-+		break;
-+	}
-+	default:
-+		return NL_SKIP;
-+	}
-+
-+	ctx->reply_received = true;
-+	if (ctx->ack_received)
-+		ctx->cmd_done = true;
-+
-+	return NL_OK;
-+}
-+
-+static int ras_error_cb(struct sockaddr_nl *nla, struct nlmsgerr *err, void *arg)
-+{
-+	struct app_context *ctx = arg;
-+
-+	ctx->last_nl_error = err->error;
-+	ctx->cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int ras_ack_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct app_context *ctx = arg;
-+
-+	ctx->ack_received = true;
-+	if (!ctx->response_required || ctx->reply_received)
-+		ctx->cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int ras_finish_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct app_context *ctx = arg;
-+
-+	ctx->cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int register_callbacks(struct nl_cb *cb, struct app_context *ctx)
-+{
-+	int ret;
-+
-+	ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, ctx);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = nl_cb_set(cb, NL_CB_ACK, NL_CB_CUSTOM, ras_ack_cb, ctx);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = nl_cb_set(cb, NL_CB_FINISH, NL_CB_CUSTOM, ras_finish_cb, ctx);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = nl_cb_err(cb, NL_CB_CUSTOM, ras_error_cb, ctx);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static int send_and_recv_nl_msg(struct app_context *ctx,
-+				struct nl_cb *cb,
-+				struct nl_msg *msg)
-+{
-+	struct pollfd pfd = {
-+		.fd = nl_socket_get_fd(ctx->sock),
-+		.events = POLLIN,
-+	};
-+	int ret;
-+
-+	ret = nl_send_auto(ctx->sock, msg);
-+	nlmsg_free(msg);
-+	if (ret < 0) {
-+		nl_cb_put(cb);
-+		return ret;
-+	}
-+
-+	/* NL Reply and ACK arrive as separate responses */
-+	while (!ctx->cmd_done) {
-+		do {
-+			/* poll for incoming netlink messages with 10 seconds timeout */
-+			ret = poll(&pfd, 1, DRM_RAS_NETLINK_REPLY_TIMEOUT_MS);
-+		} while (ret < 0 && errno == EINTR);
-+
-+		if (ret == 0) {
-+			ret = -ETIMEDOUT;
-+			break;
-+		}
-+
-+		if (ret < 0) {
-+			ret = -errno;
-+			break;
-+		}
-+
-+		if (!(pfd.revents & POLLIN)) {
-+			ret = -EIO;
-+			break;
-+		}
-+
-+		ret = nl_recvmsgs(ctx->sock, cb);
-+		if (ret < 0)
-+			break;
-+	}
-+	nl_cb_put(cb);
-+
-+	return ret < 0 ? ret : 0;
-+}
-+
-+static int send_command(struct app_context *ctx, uint8_t cmd)
-+{
-+	struct nl_cb *cb;
-+	struct nl_msg *msg;
-+	void *msg_head;
-+	int ret;
-+
-+	msg = nlmsg_alloc();
-+	if (!msg)
-+		return -ENOMEM;
-+
-+	ctx->last_nl_error = 0;
-+	ctx->cmd_done = false;
-+	ctx->reply_received = false;
-+	ctx->ack_received = false;
-+	ctx->response_required = false;
-+
-+	msg_head = genlmsg_put(msg,
-+			       NL_AUTO_PORT,
-+			       NL_AUTO_SEQ,
-+			       ctx->family_id,
-+			       0,
-+			       NLM_F_REQUEST | NLM_F_ACK,
-+			       cmd,
-+			       DRM_RAS_FAMILY_VERSION);
-+	if (!msg_head) {
-+		nlmsg_free(msg);
-+		return -ENOMEM;
-+	}
-+
-+	switch (cmd) {
-+	case DRM_RAS_CMD_GET_ERROR_COUNTER:
-+		ctx->response_required = true;
-+		ret = nla_put_u32(msg,
-+				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
-+				  ctx->node_id);
-+		if (ret < 0) {
-+			nlmsg_free(msg);
-+			return ret;
-+		}
-+
-+		ret = nla_put_u32(msg,
-+				  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
-+				  ctx->error_id);
-+		if (ret < 0) {
-+			nlmsg_free(msg);
-+			return ret;
-+		}
-+		break;
-+	default:
-+		nlmsg_free(msg);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	cb = nl_cb_alloc(NL_CB_DEFAULT);
-+	if (!cb) {
-+		nlmsg_free(msg);
-+		return -ENOMEM;
-+	}
-+
-+	ret = register_callbacks(cb, ctx);
-+	if (ret < 0) {
-+		nl_cb_put(cb);
-+		nlmsg_free(msg);
-+		return ret;
-+	}
-+
-+	return send_and_recv_nl_msg(ctx, cb, msg);
-+}
-+
-+static void reset_drm_ras_netlink_context(struct app_context *ctx)
-+{
-+	ctx->sock = NULL;
-+	ctx->node_id = UINT32_MAX;
-+	ctx->error_id = UINT32_MAX;
-+	ctx->error_value = 0;
-+	ctx->last_nl_error = 0;
-+	ctx->cmd_done = false;
-+	ctx->reply_received = false;
-+	ctx->ack_received = false;
-+	ctx->response_required = false;
-+	ctx->family_id = -1;
-+}
-+
- void igt_drm_netlink_cleanup(struct app_context *ctx)
- {
- 	if (!ctx || !ctx->sock)
-@@ -18,14 +243,19 @@ void igt_drm_netlink_cleanup(struct app_context *ctx)
- 
- 	nl_close(ctx->sock);
- 	nl_socket_free(ctx->sock);
--	ctx->sock = NULL;
--	ctx->family_id = -1;
-+
-+	reset_drm_ras_netlink_context(ctx);
- 
- 	igt_debug("Cleaned up netlink socket.\n");
- }
- 
- int igt_drm_netlink_init(struct app_context *ctx)
- {
-+	if (!ctx)
-+		return -EINVAL;
-+
-+	reset_drm_ras_netlink_context(ctx);
-+
- 	ctx->sock = nl_socket_alloc();
- 	if (!ctx->sock)
- 		return -1;
-@@ -52,3 +282,37 @@ int igt_drm_netlink_init(struct app_context *ctx)
- 		  DRM_RAS_FAMILY_NAME, ctx->family_id);
- 	return 0;
- }
-+
-+int igt_drm_netlink_get_error_counter(struct app_context *ctx)
-+{
-+	int ret;
-+
-+	if (!ctx || !ctx->sock || ctx->family_id < 0)
-+		return -EINVAL;
-+
-+	if (ctx->node_id == UINT32_MAX ||
-+	    ctx->error_id == UINT32_MAX ||
-+	    ctx->error_id == 0) {
-+		igt_warn("Invalid node_id (%u) or error_id (%u) provided. "
-+			 "node_id should be >= 0 and error_id should be >= 1.\n",
-+			 ctx->node_id, ctx->error_id);
-+		return -EINVAL;
-+	}
-+
-+	ctx->error_value = UINT32_MAX;
-+
-+	ret = send_command(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (ctx->error_value == UINT32_MAX) {
-+		igt_warn("No valid error counter reply: node_id=%u error_id=%u kernel_error=%d\n",
-+			 ctx->node_id, ctx->error_id, ctx->last_nl_error);
-+		return ctx->last_nl_error ? ctx->last_nl_error : -ENODATA;
-+	}
-+
-+	igt_debug("Retrieved error counter: node_id=%u error_id=%u value=%u\n",
-+		  ctx->node_id, ctx->error_id, ctx->error_value);
-+
-+	return 0;
-+}
-diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
-index 0e563e55f..5db7f4ab5 100644
---- a/lib/igt_drm_netlink.h
-+++ b/lib/igt_drm_netlink.h
-@@ -10,11 +10,20 @@
- 
- struct app_context {
- 	struct nl_sock *sock;
-+	uint32_t node_id;
-+	uint32_t error_id;
-+	uint32_t error_value;
-+	int last_nl_error;
-+	bool cmd_done;
-+	bool reply_received;
-+	bool ack_received;
-+	bool response_required;
- 	int family_id;
- };
- 
- void igt_drm_netlink_cleanup(struct app_context *ctx);
- int igt_drm_netlink_init(struct app_context *ctx);
-+int igt_drm_netlink_get_error_counter(struct app_context *ctx);
- 
- #endif /* IGT_DRM_NETLINK_H */
- 
+The solution, as always, would be to add another level of abstraction,
+something like:
+
+#define __for_each_color_pipeline(plane, color_pipeline, __i) \
+	// as above, but with just plain __i
+
+#define for_each_color_pipeline(plane, color_pipeline) \
+	__for_each_color_pipeline(plane, color_pipeline, igt_unique(__i))
+
+Other than that, I did not do detailed review, but the overall approach
+is nice, and the loops become nicer to look at.
+
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+
+
+> +
+> +/**
+> + * for_each_colorop_in_pipeline:
+> + * @pipeline: the first colorop in a color pipeline
+> + * @colorop: the colorop to iterate
+> + *
+> + * Iterates through a color pipeline, starting from an initial colorop pointer
+> + * and extending to all subsequent colorops pointed to by next.
+> + */
+> +#define for_each_colorop_in_pipeline(pipeline, colorop) \
+> +	for ((colorop) = (pipeline); (colorop); \
+> +	     (colorop) = (colorop)->next)
+>  
+>  extern bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
+>  					    enum igt_atomic_colorop_properties prop,
+> @@ -1380,8 +1406,6 @@ uint64_t igt_get_writeback_fb_id(igt_output_t *output);
+>  void igt_detach_crtc(igt_display_t *display, igt_output_t *output);
+>  void igt_get_and_wait_out_fence(igt_output_t *output);
+>  
+> -igt_colorop_t *igt_find_colorop(igt_display_t *display, uint32_t id);
+> -
+>  bool igt_wait_for_connector_status(int drm_fd, unsigned int connector_id, double timeout,
+>  				   int drm_mode);
+>  int igt_get_connected_connectors(int drm_fd, uint32_t **connector_ids);
+> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+> index 2bee1eecd..1585c0ae2 100644
+> --- a/tests/kms_colorop.c
+> +++ b/tests/kms_colorop.c
+> @@ -365,10 +365,8 @@ static void colorop_plane_test(igt_display_t *display,
+>  static void check_plane_colorop_ids(igt_display_t *display)
+>  {
+>  	igt_plane_t *plane;
+> -	int colorop_idx;
+> -	igt_colorop_t *next;
+> +	igt_colorop_t *colorop, *color_pipeline;
+>  	igt_crtc_t *crtc;
+> -	int prop_val = 0;
+>  
+>  	/* Use hash tables to track drm_planes and unique IDs */
+>  	GHashTable *plane_set = g_hash_table_new(g_direct_hash, g_direct_equal);
+> @@ -383,18 +381,15 @@ static void check_plane_colorop_ids(igt_display_t *display)
+>  
+>  			g_hash_table_add(plane_set, GINT_TO_POINTER(plane->drm_plane->plane_id));
+>  
+> -			for (colorop_idx = 0; colorop_idx < plane->num_color_pipelines; colorop_idx++) {
+> -				next = plane->color_pipelines[colorop_idx];
+> -				while (next) {
+> +			for_each_color_pipeline(plane, color_pipeline) {
+> +				for_each_colorop_in_pipeline(color_pipeline, colorop) {
+>  					/* Check if the ID already exists in the set */
+> -					if (g_hash_table_contains(id_set, GINT_TO_POINTER(next->id))) {
+> +					if (g_hash_table_contains(id_set, GINT_TO_POINTER(colorop->id))) {
+>  						igt_fail_on_f(true, "Duplicate colorop ID %u found on plane %d\n",
+> -						next->id, plane->drm_plane->plane_id);
+> +						colorop->id, plane->drm_plane->plane_id);
+>  					}
+>  
+> -					g_hash_table_add(id_set, GINT_TO_POINTER(next->id));
+> -					prop_val = igt_colorop_get_prop(display, next, IGT_COLOROP_NEXT);
+> -					next = igt_find_colorop(display, prop_val);
+> +					g_hash_table_add(id_set, GINT_TO_POINTER(colorop->id));
+>  				}
+>  			}
+>  		}
+> diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+> index a109c1b06..34b0f4901 100644
+> --- a/tests/kms_colorop_helper.c
+> +++ b/tests/kms_colorop_helper.c
+> @@ -278,29 +278,25 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+>   * colorops[] to it.
+>   */
+>  static bool map_to_pipeline(igt_display_t *display,
+> -			    igt_colorop_t *colorop,
+> +			    igt_colorop_t *color_pipeline,
+>  			    kms_colorop_t *colorops[])
+>  {
+> -	igt_colorop_t *next = colorop;
+> +	igt_colorop_t *colorop;
+>  	kms_colorop_t *current_op;
+>  	int i = 0;
+> -	int prop_val = 0;
+>  
+>  	current_op = colorops[i];
+>  	i++;
+>  	igt_require(current_op);
+>  
+> -	while (next) {
+> -		if (can_use_colorop(display, next, current_op)) {
+> -			current_op->colorop = next;
+> +	for_each_colorop_in_pipeline(color_pipeline, colorop) {
+> +		if (can_use_colorop(display, colorop, current_op)) {
+> +			current_op->colorop = colorop;
+>  			current_op = colorops[i];
+>  			i++;
+>  			if (!current_op)
+>  				break;
+>  		}
+> -		prop_val = igt_colorop_get_prop(display, next,
+> -						IGT_COLOROP_NEXT);
+> -		next = igt_find_colorop(display, prop_val);
+>  	}
+>  
+>  	if (current_op) {
+> @@ -320,18 +316,16 @@ igt_colorop_t *get_color_pipeline(igt_display_t *display,
+>  			          igt_plane_t *plane,
+>  				  kms_colorop_t *colorops[])
+>  {
+> -	igt_colorop_t *colorop = NULL;
+> -	int i;
+> +	igt_colorop_t *color_pipeline;
+>  
+>  	/* go through all color pipelines */
+> -	for (i = 0; i < plane->num_color_pipelines; ++i) {
+> -		if (map_to_pipeline(display, plane->color_pipelines[i], colorops)) {
+> -			colorop = plane->color_pipelines[i];
+> -			break;
+> +	for_each_color_pipeline(plane, color_pipeline) {
+> +		if (map_to_pipeline(display, color_pipeline, colorops)) {
+> +			return color_pipeline;
+>  		}
+>  	}
+>  
+> -	return colorop;
+> +	return NULL;
+>  }
+>  
+>  static void fill_custom_1dlut(igt_display_t *display, kms_colorop_t *colorop)
+> @@ -426,8 +420,7 @@ void set_color_pipeline(igt_display_t *display,
+>  			kms_colorop_t *colorops[],
+>  			igt_colorop_t *color_pipeline)
+>  {
+> -	igt_colorop_t *next;
+> -	int prop_val = 0;
+> +	igt_colorop_t *colorop;
+>  	int i;
+>  
+>  	igt_plane_set_color_pipeline(plane, color_pipeline);
+> @@ -436,17 +429,12 @@ void set_color_pipeline(igt_display_t *display,
+>  		set_colorop(display, colorops[i]);
+>  
+>  	/* set unused ops in pipeline to bypass */
+> -	next = color_pipeline;
+>  	i = 0;
+> -	while (next) {
+> -		if (!colorops[i] || colorops[i]->colorop != next)
+> -			igt_colorop_set_prop_value(next, IGT_COLOROP_BYPASS, 1);
+> +	for_each_colorop_in_pipeline(color_pipeline, colorop) {
+> +		if (!colorops[i] || colorops[i]->colorop != colorop)
+> +			igt_colorop_set_prop_value(colorop, IGT_COLOROP_BYPASS, 1);
+>  		else
+>  			i++;
+> -
+> -		prop_val = igt_colorop_get_prop(display, next,
+> -						IGT_COLOROP_NEXT);
+> -		next = igt_find_colorop(display, prop_val);
+>  	}
+>  }
+>  
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> index 76aadd162..ba07d68d6 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -239,9 +239,7 @@ static void run_colorop_property_tests(igt_display_t *display,
+>  {
+>  	struct igt_fb fb, afb;
+>  	igt_plane_t *plane;
+> -	igt_colorop_t *colorop;
+> -	int i;
+> -	int colorop_id = 0;
+> +	igt_colorop_t *colorop, *color_pipeline;
+>  
+>  	prepare_crtc(display, crtc, output,
+>  		     &fb);
+> @@ -268,23 +266,18 @@ static void run_colorop_property_tests(igt_display_t *display,
+>  		}
+>  
+>  		/* iterate over all color pipelines on plane */
+> -		for (i = 0; i < plane->num_color_pipelines; ++i) {
+> -			/* iterate over all colorops in pipeline*/
+> -			colorop = plane->color_pipelines[i];
+> -			igt_plane_set_color_pipeline(plane, colorop);
+> +		for_each_color_pipeline(plane, color_pipeline) {
+> +			igt_plane_set_color_pipeline(plane, color_pipeline);
+>  			igt_display_commit2(display, COMMIT_ATOMIC);
+>  
+> -			while (colorop) {
+> +			/* iterate over all colorops in pipeline*/
+> +			for_each_colorop_in_pipeline(color_pipeline, colorop) {
+>  				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
+>  					  igt_crtc_name(crtc), plane->index,
+>  					  colorop->id,
+>  					  kmstest_plane_type_name(plane->type), output->name);
+>  				test_properties(display->drm_fd, DRM_MODE_OBJECT_COLOROP, colorop->id,
+>  						atomic, display->has_plane_color_pipeline);
+> -
+> -				colorop_id = igt_colorop_get_prop(display, colorop,
+> -								IGT_COLOROP_NEXT);
+> -				colorop = igt_find_colorop(display, colorop_id);
+>  			}
+>  		}
+
 -- 
-2.34.1
-
+Jani Nikula, Intel
