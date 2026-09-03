@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94773C61DD3
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 21:52:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC6EC61DD3
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 22:01:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C1D810E535;
-	Thu,  3 Sep 2026 21:52:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B6A110F7BA;
+	Thu,  3 Sep 2026 22:01:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bmZGcSjL";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="d5Bcf2uV";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40B7810E094
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2026 21:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788472163; x=1820008163;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Vi5VSDei1EWJVZ4WzZd4dTroCXR6ZFWaK8ko05CmT9Y=;
- b=bmZGcSjLewi8IyqhK6WfbpmPWCntucG3gbkHekVAKax8TJEDyLtb+e7b
- ZR2765HYyUS1+BJsosE0ns/+xToJF8w3DwIH0gtlDtUDyaDzUFpc0nxMG
- QBpb4Fm2Go1u8yT0X/ArSak4HvFnBI+xQiFnaN4Z+rwt2Hlv1X95Cr84R
- V8s3Cqzb/c6tIvW3gUEWP//kikTPLE74TH1il6dCgdK7nW5xapD3NQ8TX
- Mkvd4qCwhoUOTZUSuE6sNkMpY48cX6vmrOUAyw0N6WG/u7R+FHZVyVMEO
- BGNogtZU5S95YJpJ/xp/0CooSYEjv67zej0L4U12GW8//5Yz+rQbRO5ki w==;
-X-CSE-ConnectionGUID: X0j21MeUTg2himdh9iqYMg==
-X-CSE-MsgGUID: Y6lj2ybmRYqkkpRxcd26Pg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="89003168"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; d="scan'208";a="89003168"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2026 14:49:23 -0700
-X-CSE-ConnectionGUID: Qw5W7WYNTFiDhWa+yV5KXg==
-X-CSE-MsgGUID: K6sV7i1aRXihsSo9/2Ny2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; d="scan'208";a="299707533"
-Received: from aalteres-desk1.fm.intel.com ([10.121.64.173])
- by orviesa002.jf.intel.com with ESMTP; 03 Sep 2026 14:49:23 -0700
-From: Alan Previn <alan.previn.teres.alexis@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Julia Filipchuk <julia.filipchuk@intel.com>
-Subject: [PATCH i-g-t 3/3] tests/intel-ci: Allow PXP negative testing on CRI.
-Date: Thu,  3 Sep 2026 14:49:20 -0700
-Message-ID: <20260903214919.1005742-8-alan.previn.teres.alexis@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260903214919.1005742-5-alan.previn.teres.alexis@intel.com>
-References: <20260903214919.1005742-5-alan.previn.teres.alexis@intel.com>
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49FEF10E53B;
+ Thu,  3 Sep 2026 22:00:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ Message-Id:Date:Subject:From:From:Reply-To;
+ bh=KnRvlscC8VhrBBQCcAxHVFSOwaN6oXQnXlt8B0u7sQY=; b=d5Bcf2uV5JzczU19DKYFEP6r2u
+ udLLh8fojee1UOVas6mGn80MfewwlgsDVAUF1uaCPhsqDoyRCD2IJ+TdsPlJYsTxxkiG8J+97LjSu
+ 9PmjJGsf6ez+A2ndklwcsv1nrfIhc4OhOdnbBW6yufZoRniPkri/ZkRNgPonVUCyr1w3Hu2RaWz8q
+ Swc1OI9dpNFSrS2ct2yO7CUv0VZu5nttL0ucfqUCOpLo/aPL+MQko3+gSLa+Td+jRLcV2liTSW9J/
+ CqHRwpxbveGl3CEZNGU1pCz0BITjYdcJMcZduzZM3MB0wousSn3x9EstAjBl8HPJYHJPyRAKGv8PK
+ 4aN1XU3w==;
+Received: from [187.43.152.48] (helo=[127.0.0.1])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1x2FU7-00EbUz-1c; Fri, 04 Sep 2026 00:00:39 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH i-g-t v6 0/9] add cgroup_dmem test
+Date: Thu, 03 Sep 2026 19:00:22 -0300
+Message-Id: <20260903-dmem_max-v6-0-61dc62970fae@igalia.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAPbtmWoC/0WMyw6CMBAAf4Xs2RL6kAIn/8MYs5YF1lhqWjQkh
+ H8X9OBxkplZIFFkStBkC0R6c+IwblAeMnADjj0JbjcGVaiyqAslWk/+6nEWEo9UaauNxQo2/Rm
+ p4/m7Ol9+nF63O7lp73eji8GLaYiE/6VVWtZGS50raypptJDCYXIY23DiHh+MuQse1vUD3Yi0o
+ asAAAA=
+X-Change-ID: 20260902-dmem_max-1a5e837347a8
+To: igt-dev@lists.freedesktop.org
+Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
+ dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org, 
+ intel-xe@lists.freedesktop.org, Christian Koenig <christian.koenig@amd.com>, 
+ maarten.lankhorst@linux.intel.com, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, 
+ Vitaly Prosyak <vitaly.prosyak@amd.com>, Natalie Vock <natalie.vock@gmx.de>, 
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
+X-Mailer: b4 0.16-dev-62088
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -68,33 +67,142 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt:xe_pxp:pxp-bo-alloc/pxp-queue-alloc subtests should be run
-on platforms that don't support PXP since they would perform
-negative testing.
+v6 TLDR:
+Change igt_dmem_driver API by moving handle array allocation out of it and
+into the test itself and including dmem.max new behavior test.
 
-Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
+This patchset is based on the work of Thomas Hellström at [1] and a
+followup I have submitted at [2].
+
+With this version, I reverted the order in which to apply the patchsets, as
+this one adds the infrastructure and the drivers mechanisms, and a test for
+dmem.current and its behavior around dmem.max that is currently supported
+in the kernel.
+
+As for the new dmem.max eviction behavior, introduced by [3], it has been
+now included since it has been merged to Linux v7.3-rc1.
+
+I have run the tests, including the ones that test dmem.max eviction
+behavior on a system with a 1GiB VRAM amdgpu card. Rodrigo Siqueira helped
+me run it on a Xe system. We have had applied the patchset at [3] on top of
+then current linux origin/master [5], with a fixup for the amdgpu driver.
+
+This latest version has not been tested on Xe, except for the dmem.current
+behavior, which was tested with a 7.0 kernel.
+
+Latest tests for amdgpu used v7.3-rc1.
+
+Now, for the changes since v1 [2]:
+- Changed the test name from drv_dmem_cgroups to dmem_cgroups.
+- Have system includes before igt ones.
+- Documented the current SUBTEST.
+- Changed free_vram driver hook to only release a given BO. This allows for
+  the eviction trigger by a new allocation added by write_eviction_nonblock
+  subtest.
+- Changed allocate_vram to keep more state necessary for releasing a single BO.
+- Added a global free_vram helper to free all allocated VRAM.
+
+Compared to v3 of [1]:
+- I have kept wait_for_usage_drop as release can be lazy and we test for it
+  on test_current SUBTEST, but had USAGE_DROP_TIMEOUT_MS be a little
+  longer.
+- Changed BO_SIZE and EVICT_STEP to allow for more than two eviction steps
+  on a 1GiB VRAM system.
+- Reduced USAGE_SLACK to avoid false positives, but still allow for some
+  page table accounting.
+
+Compared to v2 of this one [6]:
+
+- Ignore -ENOMEM and -ENOSPC when trying to fill VRAM.
+- When limiting max memory, allow for some slack, as there might be some
+  overhead.
+- On Xe, allocate GEM object with no deferred backing, and skip binding.
+
+Compared to v3 of this one [7]:
+
+- Merge dmem_cgroups tests into cgroup_dmem and making cgroup_dmem original
+  test a subtest.
+- Remove assertion when trying to verify allocations have failed as amdgpu
+  will fallback to GTT.
+
+Compared to v4 of this one [8]:
+- Removed the creation of vm in Xe, that was leading to extra bytes being
+  used and was no longer necessary.
+- Removed the USAGE_SLACK that was necessary due to the extra bytes
+  allocated due to the use of vm in Xe.
+
+Compared to v5 of this one [10]:
+- Documented igt_dmem_driver structure.
+- Simplified igt_dmem_driver API, such that handle array allocation is not
+  done, and handles are returned as part of allocation.
+- Make get_region_name callback use the context, instead of fd, which
+  avoids repeating the vram region lookup for Xe.
+- Moved handle array allocation into the test.
+- init/deinit the igt_dmem_driver per driver, not per subtest.
+
+[1] https://patchwork.freedesktop.org/series/163935/#rev3
+[2] https://patchwork.freedesktop.org/series/166496/
+[3] https://lore.kernel.org/dri-devel/20260611173301.17473-1-thomas.hellstrom@linux.intel.com/
+[4] https://gitlab.freedesktop.org/cascardo/igt-gpu-tools/-/commits/dmem_max?ref_type=heads
+[5] 502d801f0ab0 ("Merge tag 'erofs-for-7.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs")
+[6] https://lore.kernel.org/dri-devel/20260623174319.4138648-1-cascardo@igalia.com/
+[7] https://lore.kernel.org/dri-devel/20260702130108.1397444-1-cascardo@igalia.com/
+[8] https://lore.kernel.org/dri-devel/20260717120447.1837818-1-cascardo@igalia.com/
+[9] https://lore.kernel.org/dri-devel/20260703130541.2686-1-thomas.hellstrom@linux.intel.com/
+[10] https://lore.kernel.org/dri-devel/20260723194313.2748143-1-cascardo@igalia.com/
+
+To: igt-dev@lists.freedesktop.org
+Cc: siqueira@igalia.com
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: maarten.lankhorst@linux.intel.com
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Natalie Vock <natalie.vock@gmx.de>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: kernel-dev@igalia.com
+
+--
+2.47.3
+
 ---
- tests/intel-ci/xe.cri.core.blocklist.txt | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thadeu Lima de Souza Cascardo (4):
+      lib/xe: Introduce dmem driver and implement Xe support
+      lib/amdgpu: add amdgpu_cgroup_region_name
+      lib/amdgpu: add amdgpu support to igt_dmem_driver
+      tests/cgroup_dmem: add test for dmem.current
 
-diff --git a/tests/intel-ci/xe.cri.core.blocklist.txt b/tests/intel-ci/xe.cri.core.blocklist.txt
-index 12085c4df..4172f055b 100644
---- a/tests/intel-ci/xe.cri.core.blocklist.txt
-+++ b/tests/intel-ci/xe.cri.core.blocklist.txt
-@@ -9,11 +9,11 @@ igt@fbdev@.*
- # Valid skip: Features / hardware blocks not present on CRI
- #   - xe_huc_copy@: No HuC support on CRI.
- #   - xe_oa@oa-tlb-invalidate: valid only for older gen12 platforms.
--#   - xe_pxp@.*: No PXP (Protected Xe Path) support on CRI.
-+#   - xe_pxp@.*: No PXP on CRI so skip except negative-pxp tests
- ##################################################################
- igt@xe_huc_copy@.*
- igt@xe_oa@oa-tlb-invalidate
--igt@xe_pxp@.*
-+igt@xe_pxp@(?!pxp-bo-alloc$|pxp-queue-alloc$).*
- ##################################################################
- # Valid skip: multigpu runs in separate config
- ##################################################################
--- 
-2.43.0
+Thomas Hellström (5):
+      lib/igt_cgroup: add cgroup v2 and dmem controller helpers
+      tests/cgroup_dmem: add dmem cgroup controller test
+      lib/xe: add xe_cgroup_region_name() helper
+      tests/cgroup_dmem: add dmem cgroup eviction test
+      tests/cgroup_dmem: add write_eviction_nonblock subtest
+
+ lib/amdgpu/amd_dmem.c   |  90 +++++++
+ lib/amdgpu/amd_memory.c |  25 ++
+ lib/amdgpu/amd_memory.h |   2 +
+ lib/igt.h               |   1 +
+ lib/igt_cgroup.c        | 638 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_cgroup.h        |  56 +++++
+ lib/igt_dmem_driver.h   |  35 +++
+ lib/meson.build         |   3 +
+ lib/xe/xe_dmem.c        |  97 ++++++++
+ lib/xe/xe_query.c       |  32 +++
+ lib/xe/xe_query.h       |   2 +
+ tests/cgroup_dmem.c     | 524 +++++++++++++++++++++++++++++++++++++++
+ tests/meson.build       |   1 +
+ 13 files changed, 1506 insertions(+)
+---
+base-commit: aafc4bcf336167ad12356050b2e1da7e8c314555
+change-id: 20260902-dmem_max-1a5e837347a8
+
+Best regards,
+--  
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
