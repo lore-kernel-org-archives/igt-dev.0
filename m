@@ -4,43 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6947C61DD3
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 19:25:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52B5DC61DD3
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 19:26:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 544A310E172;
-	Thu,  3 Sep 2026 19:25:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DF99110E172;
+	Thu,  3 Sep 2026 19:26:26 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Fmp+wYFh";
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="SPgLbs1r";
 	dkim-atps=neutral
-Received: from BN8PR05CU002.outbound.protection.outlook.com
- (mail-eastus2azon11011002.outbound.protection.outlook.com [52.101.57.2])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49C7210E172
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2026 19:24:51 +0000 (UTC)
+Received: from PH8PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11012070.outbound.protection.outlook.com [40.107.209.70])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C7AA10E172
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2026 19:24:58 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H/7nSSzM68f2rhZgBmqXWwFHdWtIEG4D7u/iDVpG9rubBuy7fa1LbvSP/SsgegDngHqNOvVY+xLhh1ntoCa8E8OXCWsAWsQlMrcpyl+MsT2LrENLIT6j06WZd1cpG3+sEaCrpCCapJ0vedW3GAW2pVr34wyufaHeYJ2NcVpJuIWazqeHzzkLUOwaG7QGk/l41HhrndlWALzs09WRpBTf63pmmF5WyQgEdxXzJtk+mhrgAL77k4QRQRFP/BpAmzsZudbejC3ev5iC41xLmXj8kokJmSBT0SCabc2FfbGREwHhCjvz+hsQFyD4uRteBEWwXDVFtuy/gbcd4y+trGlAXg==
+ b=a/W4KwGm56OfyCZhV7cYZQlRQu4RJzAvrpy+qHq3vfEIbjy92jwLiQToWEKj+J5VPu7RLgsux7FdvpSCQHuEbu2b1i+Rt1ZJUUXwWSIFdk+C0Cic1ryJt9xs/yb+MKPbE2IT40iSJo7NvJFOPCtPFRZeRxMJxjaeiL98paAEa+Kc/gPQ9OciL+jFnblBMLD73nGIqiJIb6PcvhArrgSvpKo/3OOeyvtDyWgixbwqkFA44Q4EE5CQBmbkVVkOgx0dZTNz8Akd7+GQ6s+f5rMQvEh9vg4WIQYxTd58nT2IYSeQVFRi/4uMqTOciTqvXA+PVo3wlAJwULzofab9Hs07wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hQsne6M36B+R0Z8caRsveD+EDRdFj3Otm+79tLBltsc=;
- b=R++mAwkQ6fqE8osAhyh1kzqt5bQKYLK6R437Jp6MCmuJD74sRrwiOvevgNV2brCYyiGCljDHxBfsbLI+943Ac/O7SXMF1ecJ3HrBd94Jo2jVJPOiu1/wN+9vUPwab0b5jIzTtpk1zhmsFRv4PXBMpTgHz0AslmJNm7H5cH8fhiRbN32wsMmVQO42HCwWFb104qXYK5qLMF5Sp7n+IzBqdC51P3ZAI8MmwwQ9L4bVFALr3IpZKsZcRpqohUM4dbzOP+r2w66QNu4M2pl6388xPNp1LhOeHHzNOec8/xmAAxbCxbYFNyvHBCcEvfvyQ1invREc4MmuwPdFMWVr+B9YJg==
+ bh=HHWNKhwlqUKnsy5YpvEaZnk7tTxuozveJMSyunK+FhQ=;
+ b=nxS2smEiqRwb0vVJng1y9+AnJea+t77wG+8ZSpXfgJ3DQ6/djcCTzIzlDeU51jgtrLAXfAnTTKMtUnBcFoeqRa4oiKcYVUvzZkmNbKLsxODMf6FdJ2zhrKHyDjENscfC9QnXMIOt11OCJYzwLREFJRbnyOsX6xANmQ7lxBIjq/m67p3Suk9I6ob9lVavV138TDBjsutwhRcL8CY6MrWJGJpLk345hQ9iCzd9FL+2s+DcUdeOM2kr9H0uJ49GMHpLMNpgm9nf2LK8fUio95eT17j77oweFWJB+7J4mvpmioudGRPyzAbe04Fv5vWSW/YkiIUGe8v0GeP13YY/8TEarQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hQsne6M36B+R0Z8caRsveD+EDRdFj3Otm+79tLBltsc=;
- b=Fmp+wYFhqTIfOlJUfk6q5UfNlriRKJI17j9Dqt2G6QgSao9IfFVwY3WdpJSX6kDVLE4zp+wsksqRX9OUlP97pxcBWvTas9kA2HF8e7T+nMEy/wVcF6S7jp96+40lBCRL1Ul7fMNQeRJ44h7geZl9LEh5cS0jqHNpVt0YRLyr/PI=
-Received: from SJ0PR03CA0040.namprd03.prod.outlook.com (2603:10b6:a03:33e::15)
- by MN2PR12MB4224.namprd12.prod.outlook.com (2603:10b6:208:1dd::8)
+ bh=HHWNKhwlqUKnsy5YpvEaZnk7tTxuozveJMSyunK+FhQ=;
+ b=SPgLbs1rygMvU4p5bM0N93dgXJu+aPfZfd1z61xEtVTGhRDFLXX9tytbs8ymtEvlcWkJUMcPPWLg5llLYGC5Oqdn4/5I4i/jF1aNYhQ3XNKK8MQmgobhXesFatAcKftYJhMjbCPtVgtULUeJzK4koS+AfEU71r6NjaB/2ypLU98=
+Received: from SJ0PR05CA0094.namprd05.prod.outlook.com (2603:10b6:a03:334::9)
+ by SJ0PR12MB7033.namprd12.prod.outlook.com (2603:10b6:a03:448::15)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Thu, 3 Sep
- 2026 19:24:47 +0000
-Received: from SJ1PEPF000037A0.namprd04.prod.outlook.com
- (2603:10b6:a03:33e:cafe::89) by SJ0PR03CA0040.outlook.office365.com
- (2603:10b6:a03:33e::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.11 via Frontend Transport; Thu, 3
- Sep 2026 19:24:46 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.315.12; Thu, 3 Sep
+ 2026 19:24:48 +0000
+Received: from SJ1PEPF000037A6.namprd04.prod.outlook.com
+ (2603:10b6:a03:334:cafe::9) by SJ0PR05CA0094.outlook.office365.com
+ (2603:10b6:a03:334::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.4 via Frontend Transport; Thu, 3
+ Sep 2026 19:24:48 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -48,23 +48,25 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ1PEPF000037A0.mail.protection.outlook.com (10.167.244.132) with Microsoft
+ SJ1PEPF000037A6.mail.protection.outlook.com (10.167.244.138) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.382.8 via Frontend Transport; Thu, 3 Sep 2026 19:24:46 +0000
+ 15.21.382.8 via Frontend Transport; Thu, 3 Sep 2026 19:24:48 +0000
 Received: from georzhanmkm.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 3 Sep
- 2026 14:24:45 -0500
+ 2026 14:24:47 -0500
 From: George Zhang <george.zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Fangzhi Zuo <jerry.zuo@amd.com>, Ivan Lipski <ivan.lipski@amd.com>, "Alex
  Hung" <alex.hung@amd.com>, Harry Wentland <harry.wentland@amd.com>, "George
  Zhang" <george.zhang@amd.com>
 Subject: [i-g-t,
- v2 1/2] tests/amdgpu/amd_dp_dsc: Do not disable DSC for high bw panels
-Date: Thu, 3 Sep 2026 15:24:51 -0400
-Message-ID: <20260903192458.1149302-1-george.zhang@amd.com>
+ v2 2/2] tests/amdgpu/amd_dp_dsc: Reset link settings after subtest
+Date: Thu, 3 Sep 2026 15:24:52 -0400
+Message-ID: <20260903192458.1149302-2-george.zhang@amd.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260903192458.1149302-1-george.zhang@amd.com>
+References: <20260903192458.1149302-1-george.zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
@@ -73,29 +75,29 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF000037A0:EE_|MN2PR12MB4224:EE_
-X-MS-Office365-Filtering-Correlation-Id: c93021b5-2d3c-4f15-a360-08df09f103f9
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000037A6:EE_|SJ0PR12MB7033:EE_
+X-MS-Office365-Filtering-Correlation-Id: f862903c-5e18-467d-1573-08df09f104d4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|36860700016|82310400026|376014|1800799024|56012099006|10067099003|5023799004|11063799006|3023799007|18002099003;
-X-Microsoft-Antispam-Message-Info: SDAlVfNUFp6nTZhqkxlNwa/Lh2yPp0oOBwveC+cRolFXfpgbrua+miTnOq7WO4dns9LHngv3gJ2e2yebW6V3rwGzEytDJ8wQQTEbxw0dMAyInzpeI79GWUcNCGK9CeNq2kUrC/qdkPujXSRK5vB/99zz7/Mk+61dwnP4bHOLQrkEArKSeQuSxPJu5ECiBCSzk5WREa9TzQt/6flK0r5tioDuHgjs7vfiOsEe54H1uwRK5I0hiABfUBpuaqb7lZYjj5/t38IrPEvkO2zDURudjP8yaTDElwCRBT+uQzahGA3vJhZvxMZWRwnYE7ndC88P+P6xiTcd6vlxxAtbRjQjIKWxmTXqZs1y1WbjivsP6l5I2AQCjhAzp8drCriN6DU73T7VcgJFzeryfP94NMZF1PQylNqjBQz0KjtxR+p9VIgc+5vWC78qkVYOFgEM55TL1G8PFqSFEO5GrKoYy37E5Aa8ut+f69wtoV1cx0kx4ugkYIb6wSoX0L3ibdJzXTCHjiZpMAuGyYd9eYftB76PW7JSmBPTXj9RoTLxs61y+2NOYfR7B81clyRreeB1Qu5hHm+irIcKXHl3zTTqhKCehAAPyFmXe+gnPyzQDm7ehDRAo0tbdfmnxA9QIADfvvZTFsBt732l6eYVMEgK3S71e6rvm463VvEwUDQZnHvj6JMAgvRgQNbFgKki39OZjIv9+YIYpOzLJjRJq0bkDaSCJA==
+ ARA:13230040|1800799024|36860700016|82310400026|376014|23010399003|10067099003|56012099006|5023799004|18002099003|11063799006|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info: XnvbdLkwaGQov9uCJTz98cbucWYtc6l0x6XJoMeIVdMcudDFaajDAmUWv/6cTyUqZjuDPcXKW6XtLsQh453Ctgcj+RHTyHelSKotQtotqc0EtbRS+8Ru7SboA93cYfkcer0Azg7RJBfRxUZcGB8dtoozQT+vJabvzggVS2fC7oSVexoiQfm5eC2tQHhzE0InkDMINpft+bvXGe+iD5roybfG1fIcwuxrsvFiYiI979e048ZKglEuf9RnyP2ms40RCWdN+Cxf4un+CzcQ/Ljt5Oe0FHuXQLRhMjGzoM3PUCSK0IjPyQ/15FsVnORFUuQ8apXZWxYzlRJA2j3NAR+tlXcAsNVEJDWmf6jcHJu4LEajii3OdmBRQNf9K6A/1RbiwD93xcVSYSYpo15EU6aQuRQF2tndvdxCY6XpF0VKlVb2O/Gq/wmDqJnP/9siusVgBMbw6+yV02IWVBBl7yalFRPYSWP2r79Xcbp14mKyomuN4DEu/BhlZBD8I4qC9iOX7Q/wYj+5g1K32f7BQxkceAkpGnGL72slviGH1btP5fKxJUJrUFFZL0cGBLeT9w9hWN2jWg23BbCZQ6kL74NzK5dZOHXok9YpMxhctMgTefAohKiTZqHiF8XwxjpUwc3eJijynMLtmeUKS2WsGskHcDzIOutxX+K8/Hnf4lICc8k/4UcqnY4YZ2rcXYen6ZtxXGeO6dtXrHWHe7EFLLDQGA==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(23010399003)(36860700016)(82310400026)(376014)(1800799024)(56012099006)(10067099003)(5023799004)(11063799006)(3023799007)(18002099003);
+ SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(23010399003)(10067099003)(56012099006)(5023799004)(18002099003)(11063799006)(22082099003)(3023799007);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: Ddcyby3SYAhqiewMl1UOWAKF/jZLA46DWMWDbOsdr1xe10V92DQQWEwOm9B80RqbtTx3jSfh72KI2Vxrd+GiGByTOTbJAFnthuRDfNQsU3ijhDTz4aGsXTzZqcGq5qznJ9FvfIFDZolhe5xQXuSKVKJs1y/4Avfjo43ItiBv1CjMZ+g2gU7LODU4hYkzE38eOL3BdwigKk7S0MSLMa5lSkGyjV0sd19w9l/vncTe5eb2IhtTdOYlZAADXdjEYZhk3QdjuVr0e9OmxI3Rpg014jXNfcgUOorzkzNQMHGB/ALJxsB2gMD3art9EuRc+26535xZFQ2Ii7AAiHyp7HBBs4QRABxN+Vjywq6eZySkpa/G2ZV4VWXJIeue+zRjsYxkXycmrmURCVd88LsetU0g42DY9yNyz7//rtANyCR1ggN+FYgW2l7QuybGppRaH7UI
+X-MS-Exchange-AntiSpam-MessageData-0: BKwG30FhSCmv8FDDGxDvc0LEO+CIFmg5iy1soRyuctgQWQAM9kYQGDKRGXt77tkCJCf0RYkYcTf9aWe0OruInyTQp4cE1VacZBAEVE0kklSfbgXGrzorJiPS8Rg4ZVt0VFHt/bdiVxXWVvVL27uW5BeJGPvsjzbC18RVG7Qw3ayHtuBwknct8BeD2gxYsufZyA3AjC+nC0f4LJJ57lwvDtsiestrc/FapA+m99Qng42qS1fLzK3aWZL01cGkvUD8cBk2Csk0PpUCSNbb+CY6ZMADlMur8blvvnf6ub5MQyhA8kpR4/LH6RV2IuAG8aLsXiSu6tKDGL+DwKhmHwsf0VyNGeKYOYQig80mSKdYSph9tF99r0gofhRh61bwcWAA7taxlUllNwpynyd5UZ0/Yu3NR2dRFxBfmguNxm1pr4fiY0sVYU8BOMF2BS1AvEch
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 19:24:46.7115 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c93021b5-2d3c-4f15-a360-08df09f103f9
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Sep 2026 19:24:48.1442 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f862903c-5e18-467d-1573-08df09f104d4
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF000037A0.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF000037A6.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4224
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7033
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -111,70 +113,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The test previously attempted to disable DSC even on high bandwidth
-panels. This would erroneously fail the dsc_enable test even though DSC
-is on.
+Currently, the link settings persist after the link settings subtest,
+and can retain a lowered link rate/lane count going into subsequent subtests.
 
-Fix this by checking what mode the panel defaults to when set to
-automatic. If DSC is on, then do not attempt to force it off later.
+Fix it by resetting the link settings on an igt_fixture after running
+the dsc_link_settings subtest. We can do so by setting it to lane count
+and link rate unknown and letting the driver set it to the default values.
 
 Signed-off-by: George Zhang <george.zhang@amd.com>
 ---
- tests/amdgpu/amd_dp_dsc.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ tests/amdgpu/amd_dp_dsc.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
 diff --git a/tests/amdgpu/amd_dp_dsc.c b/tests/amdgpu/amd_dp_dsc.c
-index dc71e903e..690a6c39d 100644
+index 690a6c39d..6c8e76e00 100644
 --- a/tests/amdgpu/amd_dp_dsc.c
 +++ b/tests/amdgpu/amd_dp_dsc.c
-@@ -137,6 +137,9 @@ static void test_dsc_enable(data_t *data)
- 		igt_output_set_crtc(output,
- 				    crtc);
- 		igt_plane_set_fb(data->primary[crtc->crtc_index], &ref_fb);
+@@ -356,6 +356,23 @@ static void test_dsc_slice_dimensions_change(data_t *data)
+ 	igt_skip_on(test_conn_cnt == 0);
+ }
+ 
++static void reset_link_settings(data_t *data)
++{
++	igt_output_t *output;
++	igt_crtc_t *crtc;
 +
-+		/* Make sure we are in automatic mode before we start */
-+		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_AUTOMATIC);
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
++	for_each_crtc(&data->display, crtc) {
++		output = data->output[crtc->crtc_index];
++		if (!output || !igt_output_is_connected(output) ||
++			!is_dsc_capable(&data->mode[crtc->crtc_index]))
++			continue;
++
++		igt_amd_write_link_settings(data->fd, output->name,
++					    LANE_COUNT_UNKNOWN, LINK_RATE_UNKNOWN,
++					    LINK_TRAINING_DEFAULT);
++	}
++}
++
+ static void test_dsc_link_settings(data_t *data)
+ {
+ 	igt_output_t *output;
+@@ -609,6 +626,9 @@ int igt_main() {
+ 	igt_subtest("dsc-link-settings")
+ 	    test_dsc_link_settings(&data);
  
- 		test_conn_cnt++;
-@@ -153,8 +156,12 @@ static void test_dsc_enable(data_t *data)
- 		/* Check if DSC is enabled */
- 		dsc_on = igt_amd_read_dsc_clock_status(data->fd, output->name) == 1;
- 
--		/* Revert DSC to automatic state */
--		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_OFF);
-+		/**
-+		 * We can only force off if the panel is capable of running with DSC disabled.
-+		 * If DSC was ON in automatic mode, we cannot (and should not) force it OFF.
-+		 */
-+		if (!dsc_before)
-+			igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_OFF);
- 
- 		igt_plane_set_fb(data->primary[crtc->crtc_index], &ref_fb);
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-@@ -286,6 +293,7 @@ static void test_dsc_slice_dimensions_change(data_t *data)
- 		igt_output_set_crtc(output,
- 				    crtc);
- 		igt_plane_set_fb(data->primary[crtc->crtc_index], &ref_fb);
-+		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_AUTOMATIC);
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
- 
- 		test_conn_cnt++;
-@@ -316,8 +324,12 @@ static void test_dsc_slice_dimensions_change(data_t *data)
- 							     ref_fb);
- 		}
- 
--		/* Force disable DSC */
--		igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_OFF);
-+		/**
-+		 * We can only force off if the panel is capable of running with DSC disabled.
-+		 * If DSC was ON in automatic mode, we cannot (and should not) force it OFF.
-+		 */
-+		if (!dsc_before)
-+			igt_amd_write_dsc_clock_en(data->fd, output->name, DSC_FORCE_OFF);
- 
- 		igt_plane_set_fb(data->primary[crtc->crtc_index], &ref_fb);
- 		igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++	igt_fixture()
++		reset_link_settings(&data);
++
+ 	igt_describe("Tests different bpc settings and logs if DSC is enabled/disabled");
+ 	igt_subtest("dsc-bpc")
+ 	    test_dsc_bpc(&data);
 -- 
 2.55.0
 
