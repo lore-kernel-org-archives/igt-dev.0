@@ -4,43 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DC6EC61DD3
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 22:01:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B72F4C624D6
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 22:02:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1B6A110F7BA;
-	Thu,  3 Sep 2026 22:01:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 515DD10F7BD;
+	Thu,  3 Sep 2026 22:02:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="d5Bcf2uV";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="aSxDm6g7";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 49FEF10E53B;
- Thu,  3 Sep 2026 22:00:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E664F10F7BA;
+ Thu,  3 Sep 2026 22:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
- h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
- Message-Id:Date:Subject:From:From:Reply-To;
- bh=KnRvlscC8VhrBBQCcAxHVFSOwaN6oXQnXlt8B0u7sQY=; b=d5Bcf2uV5JzczU19DKYFEP6r2u
- udLLh8fojee1UOVas6mGn80MfewwlgsDVAUF1uaCPhsqDoyRCD2IJ+TdsPlJYsTxxkiG8J+97LjSu
- 9PmjJGsf6ez+A2ndklwcsv1nrfIhc4OhOdnbBW6yufZoRniPkri/ZkRNgPonVUCyr1w3Hu2RaWz8q
- Swc1OI9dpNFSrS2ct2yO7CUv0VZu5nttL0ucfqUCOpLo/aPL+MQko3+gSLa+Td+jRLcV2liTSW9J/
- CqHRwpxbveGl3CEZNGU1pCz0BITjYdcJMcZduzZM3MB0wousSn3x9EstAjBl8HPJYHJPyRAKGv8PK
- 4aN1XU3w==;
+ h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+ MIME-Version:Subject:Date:From:From:Reply-To;
+ bh=4EQ8gvxRbCPbIFotssW6TchhXQMqXAy0oofRn+lPc6s=; b=aSxDm6g7IbEZwkA9r0Kn86KXU6
+ SCi9LSNvVtHvvT9+dnjHsN833vAVi+YTZig2iwmXHVDFVIMzA/1gQ/sIL0D55dLU9q+ShWtnsBx1G
+ 7neuqOvkG/v3rALMwn4f6JErPfVewv6Yddnloo515ehIZv3/1M2xWk3faOUPOHsMQ1iY7sbjHjXTd
+ BqZ201wCehsb968DCfKggUf+w56DPUagiX+T4ZRh/Q5/BoHH6kADnIDTHfC2Vj7OC0F2Sl3sIaj0W
+ roxCIcpJqVYYvTp25CWkVDnBIYAREgrgfr7MN+RgdWcQiD8cdQe9f3Xv6X0BAJ78c8Y6R7KKUVCZj
+ 7QkTsIMA==;
 Received: from [187.43.152.48] (helo=[127.0.0.1])
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1x2FU7-00EbUz-1c; Fri, 04 Sep 2026 00:00:39 +0200
+ id 1x2FUR-00EbUz-QR; Fri, 04 Sep 2026 00:01:00 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH i-g-t v6 0/9] add cgroup_dmem test
-Date: Thu, 03 Sep 2026 19:00:22 -0300
-Message-Id: <20260903-dmem_max-v6-0-61dc62970fae@igalia.com>
+Date: Thu, 03 Sep 2026 19:00:25 -0300
+Subject: [PATCH i-g-t v6 3/9] lib/xe: add xe_cgroup_region_name() helper
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAPbtmWoC/0WMyw6CMBAAf4Xs2RL6kAIn/8MYs5YF1lhqWjQkh
- H8X9OBxkplZIFFkStBkC0R6c+IwblAeMnADjj0JbjcGVaiyqAslWk/+6nEWEo9UaauNxQo2/Rm
- p4/m7Ol9+nF63O7lp73eji8GLaYiE/6VVWtZGS50raypptJDCYXIY23DiHh+MuQse1vUD3Yi0o
- asAAAA=
-X-Change-ID: 20260902-dmem_max-1a5e837347a8
+Message-Id: <20260903-dmem_max-v6-3-61dc62970fae@igalia.com>
+References: <20260903-dmem_max-v6-0-61dc62970fae@igalia.com>
+In-Reply-To: <20260903-dmem_max-v6-0-61dc62970fae@igalia.com>
 To: igt-dev@lists.freedesktop.org
 Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
  dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org, 
@@ -67,142 +64,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-v6 TLDR:
-Change igt_dmem_driver API by moving handle array allocation out of it and
-into the test itself and including dmem.max new behavior test.
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-This patchset is based on the work of Thomas Hellström at [1] and a
-followup I have submitted at [2].
+Add xe_cgroup_region_name(fd, region) which constructs the dmem cgroup
+region path for a given xe memory region.  The returned string has the
+form "drm/<pci-slot>/<region>" (e.g. "drm/0000:03:00.0/vram0"),
+matching the name registered by the kernel via drmm_cgroup_register_region().
 
-With this version, I reverted the order in which to apply the patchsets, as
-this one adds the infrastructure and the drivers mechanisms, and a test for
-dmem.current and its behavior around dmem.max that is currently supported
-in the kernel.
+Only VRAM regions are tracked by the dmem controller; system and stolen
+memory regions return NULL.
 
-As for the new dmem.max eviction behavior, introduced by [3], it has been
-now included since it has been merged to Linux v7.3-rc1.
+Assisted-by: GitHub Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ lib/xe/xe_query.c | 32 ++++++++++++++++++++++++++++++++
+ lib/xe/xe_query.h |  2 ++
+ 2 files changed, 34 insertions(+)
 
-I have run the tests, including the ones that test dmem.max eviction
-behavior on a system with a 1GiB VRAM amdgpu card. Rodrigo Siqueira helped
-me run it on a Xe system. We have had applied the patchset at [3] on top of
-then current linux origin/master [5], with a fixup for the amdgpu driver.
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 68e60ddc75a2..e2b25be21140 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -7,6 +7,7 @@
+  */
+ 
+ #include <fcntl.h>
++#include <limits.h>
+ #include <stdlib.h>
+ #include <pthread.h>
+ 
+@@ -21,6 +22,7 @@
+ 
+ #include "drmtest.h"
+ #include "igt_debugfs.h"
++#include "igt_device.h"
+ #include "ioctl_wrappers.h"
+ #include "igt_map.h"
+ #include "intel_common.h"
+@@ -1304,6 +1306,36 @@ int xe_query_eu_thread_count(int fd, int gt)
+ 		xe_hwconfig_lookup_value_u32(fd, INTEL_HWCONFIG_NUM_THREADS_PER_EU);
+ }
+ 
++/**
++ * xe_cgroup_region_name() - Build the dmem cgroup region name for an xe memory region.
++ * @fd: xe device fd.
++ * @region: Region mask (as used by xe_mem_region(), xe_region_name(), etc.).
++ *
++ * Constructs the full dmem cgroup region path for @region on the device
++ * identified by @fd.  The returned string has the form
++ * ``drm/<pci-slot>/<region>`` (e.g. ``drm/0000:03:00.0/vram0``), matching
++ * the name registered by the kernel driver via drmm_cgroup_register_region().
++ *
++ * Only VRAM regions are registered with the dmem controller; passing a
++ * system-memory region returns %NULL.
++ *
++ * Return: A newly allocated string that the caller must free(), or %NULL if
++ * @region is not tracked by the dmem cgroup controller.
++ */
++char *xe_cgroup_region_name(int fd, uint64_t region)
++{
++	char pci_slot[NAME_MAX];
++	char *name;
++
++	if (xe_region_class(fd, region) != DRM_XE_MEM_REGION_CLASS_VRAM)
++		return NULL;
++
++	igt_device_get_pci_slot_name(fd, pci_slot);
++
++	igt_assert(asprintf(&name, "drm/%s/%s", pci_slot, xe_region_name(region)) > 0);
++	return name;
++}
++
+ igt_constructor
+ {
+ 	xe_device_cache_init();
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 59330d80fd1b..a6ef9cab9aa1 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -206,4 +206,6 @@ void xe_device_put(int fd);
+ int xe_query_eu_count(int fd, int gt);
+ int xe_query_eu_thread_count(int fd, int gt);
+ 
++char *xe_cgroup_region_name(int fd, uint64_t region);
++
+ #endif	/* XE_QUERY_H */
 
-This latest version has not been tested on Xe, except for the dmem.current
-behavior, which was tested with a 7.0 kernel.
-
-Latest tests for amdgpu used v7.3-rc1.
-
-Now, for the changes since v1 [2]:
-- Changed the test name from drv_dmem_cgroups to dmem_cgroups.
-- Have system includes before igt ones.
-- Documented the current SUBTEST.
-- Changed free_vram driver hook to only release a given BO. This allows for
-  the eviction trigger by a new allocation added by write_eviction_nonblock
-  subtest.
-- Changed allocate_vram to keep more state necessary for releasing a single BO.
-- Added a global free_vram helper to free all allocated VRAM.
-
-Compared to v3 of [1]:
-- I have kept wait_for_usage_drop as release can be lazy and we test for it
-  on test_current SUBTEST, but had USAGE_DROP_TIMEOUT_MS be a little
-  longer.
-- Changed BO_SIZE and EVICT_STEP to allow for more than two eviction steps
-  on a 1GiB VRAM system.
-- Reduced USAGE_SLACK to avoid false positives, but still allow for some
-  page table accounting.
-
-Compared to v2 of this one [6]:
-
-- Ignore -ENOMEM and -ENOSPC when trying to fill VRAM.
-- When limiting max memory, allow for some slack, as there might be some
-  overhead.
-- On Xe, allocate GEM object with no deferred backing, and skip binding.
-
-Compared to v3 of this one [7]:
-
-- Merge dmem_cgroups tests into cgroup_dmem and making cgroup_dmem original
-  test a subtest.
-- Remove assertion when trying to verify allocations have failed as amdgpu
-  will fallback to GTT.
-
-Compared to v4 of this one [8]:
-- Removed the creation of vm in Xe, that was leading to extra bytes being
-  used and was no longer necessary.
-- Removed the USAGE_SLACK that was necessary due to the extra bytes
-  allocated due to the use of vm in Xe.
-
-Compared to v5 of this one [10]:
-- Documented igt_dmem_driver structure.
-- Simplified igt_dmem_driver API, such that handle array allocation is not
-  done, and handles are returned as part of allocation.
-- Make get_region_name callback use the context, instead of fd, which
-  avoids repeating the vram region lookup for Xe.
-- Moved handle array allocation into the test.
-- init/deinit the igt_dmem_driver per driver, not per subtest.
-
-[1] https://patchwork.freedesktop.org/series/163935/#rev3
-[2] https://patchwork.freedesktop.org/series/166496/
-[3] https://lore.kernel.org/dri-devel/20260611173301.17473-1-thomas.hellstrom@linux.intel.com/
-[4] https://gitlab.freedesktop.org/cascardo/igt-gpu-tools/-/commits/dmem_max?ref_type=heads
-[5] 502d801f0ab0 ("Merge tag 'erofs-for-7.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs")
-[6] https://lore.kernel.org/dri-devel/20260623174319.4138648-1-cascardo@igalia.com/
-[7] https://lore.kernel.org/dri-devel/20260702130108.1397444-1-cascardo@igalia.com/
-[8] https://lore.kernel.org/dri-devel/20260717120447.1837818-1-cascardo@igalia.com/
-[9] https://lore.kernel.org/dri-devel/20260703130541.2686-1-thomas.hellstrom@linux.intel.com/
-[10] https://lore.kernel.org/dri-devel/20260723194313.2748143-1-cascardo@igalia.com/
-
-To: igt-dev@lists.freedesktop.org
-Cc: siqueira@igalia.com
-Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: amd-gfx@lists.freedesktop.org
-Cc: intel-xe@lists.freedesktop.org
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: maarten.lankhorst@linux.intel.com
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Natalie Vock <natalie.vock@gmx.de>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: kernel-dev@igalia.com
-
---
+-- 
 2.47.3
-
----
-Thadeu Lima de Souza Cascardo (4):
-      lib/xe: Introduce dmem driver and implement Xe support
-      lib/amdgpu: add amdgpu_cgroup_region_name
-      lib/amdgpu: add amdgpu support to igt_dmem_driver
-      tests/cgroup_dmem: add test for dmem.current
-
-Thomas Hellström (5):
-      lib/igt_cgroup: add cgroup v2 and dmem controller helpers
-      tests/cgroup_dmem: add dmem cgroup controller test
-      lib/xe: add xe_cgroup_region_name() helper
-      tests/cgroup_dmem: add dmem cgroup eviction test
-      tests/cgroup_dmem: add write_eviction_nonblock subtest
-
- lib/amdgpu/amd_dmem.c   |  90 +++++++
- lib/amdgpu/amd_memory.c |  25 ++
- lib/amdgpu/amd_memory.h |   2 +
- lib/igt.h               |   1 +
- lib/igt_cgroup.c        | 638 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_cgroup.h        |  56 +++++
- lib/igt_dmem_driver.h   |  35 +++
- lib/meson.build         |   3 +
- lib/xe/xe_dmem.c        |  97 ++++++++
- lib/xe/xe_query.c       |  32 +++
- lib/xe/xe_query.h       |   2 +
- tests/cgroup_dmem.c     | 524 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build       |   1 +
- 13 files changed, 1506 insertions(+)
----
-base-commit: aafc4bcf336167ad12356050b2e1da7e8c314555
-change-id: 20260902-dmem_max-1a5e837347a8
-
-Best regards,
---  
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
