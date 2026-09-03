@@ -4,59 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D77EAC624A4
-	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 11:40:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79A37C61DD3
+	for <igt-dev@archiver.kernel.org>; Thu,  3 Sep 2026 11:48:13 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B99C10F531;
-	Thu,  3 Sep 2026 11:40:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 29FAA10E0E8;
+	Thu,  3 Sep 2026 11:48:13 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RanPFd69";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="H4Xv6XYb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83BB010F537
- for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2026 11:39:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C31B10F540
+ for <igt-dev@lists.freedesktop.org>; Thu,  3 Sep 2026 11:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788435583; x=1819971583;
+ t=1788436054; x=1819972054;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=DwzE4HlL8M7ozWqrfLBAHDp1p5jQhpjmvGzK+RAWKqQ=;
- b=RanPFd69Z61NdrTb+aZSm5fxF07EkAKHi32BaO3biflHEHauQtU7p2L0
- s9GX43Iy4FH+fAD052yiS1toPGs/FWBVsn3bTeWECP2l8YX6M18RA1/c6
- Pfkssc0xhjOpmzRG3uwRWdfegRBA8sisQ/tmzkpZEoNo34bw3wC2FHUEa
- PxtlAj5AwcEuibzC1FxPbJ4BfT+QCDR1NwpY9C62mBLJE6gsqnQElKV98
- OfmI3gj8HOxQ/u/fJ0UgZEkvaZWbaHrUWqH9+7NVsrfZECjqu97poT9Kp
- UsQw61+JmTXA1jyMIUHyYCgzDygG/VPDoy6RLbIrxTX70PVVgWZAOzjEq Q==;
-X-CSE-ConnectionGUID: gBURNdiaQe2mEN2bqwhipQ==
-X-CSE-MsgGUID: /2+rFEdoQuS/treSP4GR3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="92615953"
-X-IronPort-AV: E=Sophos;i="6.25,259,1779174000"; d="scan'208";a="92615953"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Sep 2026 04:39:42 -0700
-X-CSE-ConnectionGUID: 91k3EcRWQ8idWiCHCXbmrw==
-X-CSE-MsgGUID: 2UMjM6AYTlqa/9IbKbcewg==
+ bh=/rxVDMwuvq7hckNo8ZtccaKj2/HQi3Ta2rycI2Z7ts4=;
+ b=H4Xv6XYbmVYAZMIPW5kPUy17asrKsRCK7owqzIJ0JmmLAqkVyIegau5f
+ Zlxa8n/dHoVoid3bPnLVbmMMaGrhphXKlg5aBlyETWxQW92ZbhVr+MmIm
+ 1sNYiKWOeNFQ6e6LSeTLkh3XnsujQUSjzCFof0sPO0fPxBdIB2bMBCKOe
+ gZi3KWOUJkjUPUfGKwfORtbWeomxeqReWf6WbjxnwcCes0Fs/xNBSANa7
+ fhQBa2Gn5ABYBhBxrfu66L0lyzp0mEq7rKio8XWIXQDHQhfLmKs6JhTXu
+ XIQws33yrm8Rc8C4rxZE4bQ3gYcW8ITuNcUXnv4tx1ytvZiivgQGP9jsv Q==;
+X-CSE-ConnectionGUID: hl3OqDhFS5i3Q6a/ETzt1Q==
+X-CSE-MsgGUID: EWhpvuA2RKm2E9T65edqgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11894"; a="88763228"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; d="scan'208";a="88763228"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Sep 2026 04:47:34 -0700
+X-CSE-ConnectionGUID: WXzupWZRT+mQYj4eIDK8xw==
+X-CSE-MsgGUID: /0Zy1OIHRJuxupnFCTeRIA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,259,1779174000"; d="scan'208";a="267935406"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; d="scan'208";a="266000210"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa006-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 04:39:41 -0700
-Date: Thu, 3 Sep 2026 13:39:39 +0200
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 04:47:32 -0700
+Date: Thu, 3 Sep 2026 13:47:29 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
-Subject: Re: [PATCH i-g-t 4/4] lib/kms: use enum hardware_pipe for
- __intel_get_pipe_from_crtc_index() return type
-Message-ID: <20260903113939.lsf2m7gz2hlemfym@kamilkon-DESK.igk.intel.com>
+To: Xiandong Wang <xiandong.wang@mediatek.com>
+Cc: igt-dev@lists.freedesktop.org, Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com,
+ Xiandong Wang <xiandong.wang@mediatek.corp-partner.google.com>
+Subject: Re: [PATCH i-g-t v1] tests/kms_atomic_transition: Skip blocking
+ transitions on MTK
+Message-ID: <20260903114729.l2y6ud5b6qrc5zuh@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jani Nikula <jani.nikula@intel.com>, igt-dev@lists.freedesktop.org,
- ville.syrjala@linux.intel.com
-References: <cover.1788252273.git.jani.nikula@intel.com>
- <ef16ae698d5d21f31b7d15f3c9cddb476726834a.1788252273.git.jani.nikula@intel.com>
+ Xiandong Wang <xiandong.wang@mediatek.com>,
+ igt-dev@lists.freedesktop.org,
+ Jason-JH Lin <jason-jh.lin@mediatek.com>,
+ Gil Dekel <gildekel@google.com>, Yacoub <markyacoub@chromium.org>,
+ Project_Global_Chrome_Upstream_Group@mediatek.com,
+ Xiandong Wang <xiandong.wang@mediatek.corp-partner.google.com>
+References: <20260903073900.7877-1-xiandong.wang@mediatek.com>
+ <20260903073900.7877-2-xiandong.wang@mediatek.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <ef16ae698d5d21f31b7d15f3c9cddb476726834a.1788252273.git.jani.nikula@intel.com>
+In-Reply-To: <20260903073900.7877-2-xiandong.wang@mediatek.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,70 +79,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jani,
-On 2026-09-01 at 11:46:40 +0300, Jani Nikula wrote:
-> The __intel_get_pipe_from_crtc_index() returns a hardware pipe, so make
-> it obvious in the function signature.
+Hi Xiandong,
+On 2026-09-03 at 15:38:30 +0800, Xiandong Wang wrote:
+> From: Xiandong Wang <xiandong.wang@mediatek.corp-partner.google.com>
+
+This should use your mediatek e-mail: Xiandong Wang <xiandong.wang@mediatek.com>
+please configure your git to use it.
+
 > 
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> MTK blocking atomic transition commits do not satisfy the immediate page-flip event or out-fence completion check used by this test.
+
+Please fold this line at 65 column.
+
+> 
+> Keep the nonblocking transition variants enabled and skip only the blocking transition variants on MTK. The separate modeset transition tests remain enabled.
+
+Same here, fold.
+
+> 
+> This is a temporary test limitation until blocking atomic transition completion is supported by the MTK DRM driver.
+
+Same here, fold.
+
+> 
+
+Your Signed-off-by: is missing:
+
+Signed-off-by: Xiandong Wang <xiandong.wang@mediatek.com>
+
 
 Regards,
 Kamil
 
 > ---
->  lib/igt_kms.c | 12 +++++++-----
->  lib/igt_kms.h |  2 +-
->  2 files changed, 8 insertions(+), 6 deletions(-)
+>  tests/kms_atomic_transition.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index f32f655d5fae..e622d7bcd2c3 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -1313,10 +1313,11 @@ void kmstest_dump_mode(drmModeModeInfo *mode)
->   * The hardware pipe may be different from the CRTC index. Figure out the CRTC
->   * index to pipe mapping from the debugfs.
->   */
-> -int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
-> +enum hardware_pipe __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
->  {
-> +	enum hardware_pipe hardware_pipe;
->  	char buf[2];
-> -	int debugfs_fd, pipe, res = 0;
-> +	int debugfs_fd, res = 0;
->  	char pipe_char;
+> diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
+> index 37dc77c28..a05a98575 100644
+> --- a/tests/kms_atomic_transition.c
+> +++ b/tests/kms_atomic_transition.c
+> @@ -1288,6 +1288,10 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
 >  
->  	debugfs_fd = igt_debugfs_crtc_dir(fd, crtc_index);
-> @@ -1330,11 +1331,12 @@ int __intel_get_pipe_from_crtc_index(int fd, int crtc_index)
+>  		igt_describe(transition_tests[i].desc);
+>  		igt_subtest_with_dynamic_f("%s", transition_tests[i].name) {
+> +			igt_skip_on_f(is_mtk_device(data.drm_fd) &&
+> +				      !transition_tests[i].nonblocking,
+> +				      "MTK blocking atomic transition is currently unsupported\n");
+> +
+>  			pipe_count = 0;
 >  
->  	igt_assert_eq(sscanf(buf, "%c", &pipe_char), 1);
->  
-> -	pipe = pipe_char - 'A';
-> +	hardware_pipe = pipe_char - 'A';
->  
-> -	igt_assert_f(pipe >= 0 && pipe < IGT_MAX_PIPES, "i915_pipe %c out of range\n", pipe_char);
-> +	igt_assert_f(hardware_pipe >= 0 && hardware_pipe < IGT_MAX_PIPES,
-> +		     "i915_pipe %c out of range\n", pipe_char);
->  
-> -	return pipe;
-> +	return hardware_pipe;
->  }
->  
->  /**
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index b7653b8ad49a..86bef14af240 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -155,7 +155,7 @@ void kmstest_dump_mode(drmModeModeInfo *mode);
->  #define HDISPLAY_6K_PER_PIPE 6144
->  #define HDISPLAY_5K_PER_PIPE 5120
->  
-> -int __intel_get_pipe_from_crtc_index(int fd, int crtc_index);
-> +enum hardware_pipe __intel_get_pipe_from_crtc_index(int fd, int crtc_index);
->  int kmstest_get_crtc_index_from_id(int fd, int crtc_id);
->  void kmstest_set_vt_graphics_mode(void);
->  void kmstest_restore_vt_mode(void);
+>  			for_each_crtc_with_valid_output(&data.display, crtc,
 > -- 
-> 2.47.3
+> 2.45.2
 > 
