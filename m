@@ -4,54 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 602A1C624D3
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Sep 2026 10:03:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B362BC624DE
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Sep 2026 10:12:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 09B4C10FA26;
-	Fri,  4 Sep 2026 10:03:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54F2710E553;
+	Fri,  4 Sep 2026 10:12:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="muKof4HF";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VoidkYDE";
 	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 23E7810FA21;
- Fri,  4 Sep 2026 10:02:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
- MIME-Version:Date:Message-ID:From:Reply-To;
- bh=M4gR6n655Akk0eh744erKi4INBzhKNt1ZcIsBSNBN/o=; b=muKof4HFomTg2v8DEK+I9rgMJ6
- H8viJh6mpiWTOaMy2LHCtCrhFTgkB03KoSgmchErFUpv/5wh37iJY5Vs2Zaau48beA2Nl7g8tIxlC
- RU6npqjij22rA1xgJk3J6ythMaYLyRt7Q+sMhW+fg5tU8oBAuVksieimpLkAH6FRT5bivShFxvSQ9
- gmCr00blj59kyYqzwrZtbRx09xtFySHi/ICUyJQ3bAM3anV82lnrw0z5X+ya7Ynm2odPDJvgljQQj
- KE0wLQqsrAwt121/NTz/G7/4YUUlnx7pr6x+wm2jPeSq5ru9SABB0wUe57zdax3EwBLnZw9GR1Lvv
- 1DvPNCXg==;
-Received: from [81.79.79.1] (helo=[192.168.0.116])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1x2Qkk-00Ep3M-Tx; Fri, 04 Sep 2026 12:02:34 +0200
-Message-ID: <c0d3d82c-3b67-45b1-a146-fbacee8934d0@igalia.com>
-Date: Fri, 4 Sep 2026 11:02:33 +0100
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EC61610E169
+ for <igt-dev@lists.freedesktop.org>; Fri,  4 Sep 2026 10:11:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1788516677; x=1820052677;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=S1sPD1DCSjEfbENN/UchMwQ6Z789g7xzh2CMZrQaeXs=;
+ b=VoidkYDEdriOqHGTQoBd2NYFbZLfG4WR1TSy7YzWW09dUozpWDVykZDG
+ alBFM/w91ZC1QOFK2ohSdsIiuFi/7PcA/H23lccAGqiwnyrJdkyR1i/gi
+ TEjHy4K6LbjzByp53IG0Th9JInFncUF8Z45jsfsyoG+/+FGj+t4s9vAhr
+ 6pHtmLeZ8/ZKHqE8ODqTnGK7nCh5CCKp4HWR2mGhXt2/pilMXQwdbqkxh
+ 41TH0MjJjNhHek9Tf+fpoLXAgMBvQnFX05Qi7xcMgamHgeQgfhfPtiJ9r
+ M59CrAIgY9I+D4/TOljwPkbEsRAqamK0OJrUuzEcR0hM2joVqQ6HV3qnd A==;
+X-CSE-ConnectionGUID: t6RqROoDRqapqCMb2GRLAg==
+X-CSE-MsgGUID: qE7VeWI5SWioBU2lZIZq8A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="76570536"
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; d="scan'208";a="76570536"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2026 03:11:16 -0700
+X-CSE-ConnectionGUID: rn/1N5FcTsmOsjJf4l8Zhw==
+X-CSE-MsgGUID: beY0L7htRK2OVNMTNpypJg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; d="scan'208";a="273522651"
+Received: from unknown (HELO anirban-Z690I-A-ULTRA-PLUS.iind.intel.com)
+ ([10.190.216.83])
+ by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Sep 2026 03:11:14 -0700
+From: Sk Anirban <sk.anirban@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, kamil.konieczny@intel.com,
+ Sk Anirban <sk.anirban@intel.com>
+Subject: [PATCH v2] tests/intel: Avoid stale errno
+Date: Fri,  4 Sep 2026 15:30:43 +0530
+Message-ID: <20260904100042.583658-2-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v6 4/9] lib/xe: Introduce dmem driver and implement
- Xe support
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- igt-dev@lists.freedesktop.org
-Cc: siqueira@igalia.com, dri-devel@lists.freedesktop.org,
- amd-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- Christian Koenig <christian.koenig@amd.com>,
- maarten.lankhorst@linux.intel.com,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>, Natalie Vock <natalie.vock@gmx.de>,
- kernel-dev@igalia.com
-References: <20260903-dmem_max-v6-0-61dc62970fae@igalia.com>
- <20260903-dmem_max-v6-4-61dc62970fae@igalia.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <20260903-dmem_max-v6-4-61dc62970fae@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,190 +69,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Commit <e311ed2c7> ("lib/igt_core: do not reset errno in igt_gettime")
+removed an incidental errno reset that used to mask stale errno at
+subtest entry. Now a stale errno from an earlier, unrelated probe can
+survive into a later assertion failure and gets printed as a
+misleading "Last errno" hint, e.g. in xe_gt_freq's throttle_basic_api:
 
-On 03/09/2026 23:00, Thadeu Lima de Souza Cascardo wrote:
-> In order to be reuse the same dmem tests with multiple drivers, we need to
-> abstract a few operations. That includes getting the region name, and
-> allocating and releasing VRAM. As there is some initialization also when
-> multiple allocations are done, also provide init and deinit functions.
-> 
-> The Xe implementation was based on the original operations from
-> xe_cgroups.c written by Thomas Hellström. However, instead of doing a
-> deferred backing, followed by a bind, it does a simple non-deferred GEM
-> object creation on the VRAM region.
-> 
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> ---
->   lib/igt_dmem_driver.h | 34 ++++++++++++++++++
->   lib/meson.build       |  1 +
->   lib/xe/xe_dmem.c      | 97 +++++++++++++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 132 insertions(+)
-> 
-> diff --git a/lib/igt_dmem_driver.h b/lib/igt_dmem_driver.h
-> new file mode 100644
-> index 000000000000..e6998387eff9
-> --- /dev/null
-> +++ b/lib/igt_dmem_driver.h
-> @@ -0,0 +1,34 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright 2026 Valve Corporation
-> + * Authors:
-> + *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> + */
-> +
-> +#ifndef __IGT_DMEM_DRIVER_H__
-> +#define __IGT_DMEM_DRIVER_H__
-> +
-> +#include <stdlib.h>
-> +
-> +/**
-> + * struct igt_dmem_driver - vendor driver to allocate and free device memory
-> + *
-> + */
-> +struct igt_dmem_driver {
-> +	/** @name: Driver name */
-> +	const char *name;
-> +	/** @init: Initialize an opaque context given a DRM device fd */
-> +	int (*init)(void **ctx, int fd);
-> +	/** @deinit: Release resources associated with context */
-> +	void (*deinit)(void *ctx);
-> +	/** @get_region_name: Return expected region name at dmem cgroup files */
-> +	char * (*get_region_name)(void *ctx);
+  CRITICAL: Failed assertion: !strcmp(throttle_reasons, "none")
+  CRITICAL: Last errno: 2, No such file or directory
+  CRITICAL: GT 0 is throttled due to: pl4
 
-Nit - mention it returns newly allocated memory caller must free?
+The real cause is the GT being throttled; "Last errno: 2" is stale
+and unrelated, making triage confusing.
 
-But LGTM on the whole:
+Fix this by clearing errno right where it is known to go stale.
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+v2: Update fix path (Kamil)
 
-Regards,
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ lib/xe/xe_gt.c                | 1 +
+ tests/intel/xe_gt_freq.c      | 1 +
+ tests/intel/xe_pm.c           | 1 +
+ tests/intel/xe_pm_residency.c | 1 +
+ tests/intel/xe_pmu.c          | 1 +
+ 5 files changed, 5 insertions(+)
 
-Tvrtko
-
-> +	/** @allocate_vram: Allocate @len sized vram and return an opaque @handle */
-> +	int (*allocate_vram)(void *ctx, size_t len, void **handle);
-> +	/** @free_vram: Free vram associated with @handle */
-> +	void (*free_vram)(void *ctx, void *handle);
-> +};
-> +
-> +extern const struct igt_dmem_driver xe_dmem_driver;
-> +
-> +#endif
-> diff --git a/lib/meson.build b/lib/meson.build
-> index b7e1be61d844..022408ce6864 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -130,6 +130,7 @@ lib_sources = [
->   	'igt_dsc.c',
->   	'igt_hook.c',
->   	'xe/xe_device.c',
-> +	'xe/xe_dmem.c',
->   	'xe/xe_ggtt.c',
->   	'xe/xe_gt.c',
->   	'xe/xe_ioctl.c',
-> diff --git a/lib/xe/xe_dmem.c b/lib/xe/xe_dmem.c
-> new file mode 100644
-> index 000000000000..628c905997d4
-> --- /dev/null
-> +++ b/lib/xe/xe_dmem.c
-> @@ -0,0 +1,97 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright 2026 Valve Corporation
-> + * Authors:
-> + *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> + */
-> +
-> +#include <errno.h>
-> +
-> +#include "igt.h"
-> +#include "igt_cgroup.h"
-> +#include "igt_dmem_driver.h"
-> +#include "xe_drm.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +
-> +struct xe_dmem_ctx {
-> +	int fd;
-> +	uint64_t vram_region;
-> +};
-> +
-> +static int xe_dmem_init(void **ctx, int fd)
-> +{
-> +	struct xe_dmem_ctx *xe_ctx;
-> +	uint64_t region;
-> +
-> +	xe_ctx = malloc(sizeof(*xe_ctx));
-> +	if (!xe_ctx)
-> +		return -ENOMEM;
-> +
-> +	xe_ctx->vram_region = 0;
-> +	/* Find first VRAM region */
-> +	xe_for_each_mem_region(fd, all_memory_regions(fd), region) {
-> +		if (xe_region_class(fd, region) == DRM_XE_MEM_REGION_CLASS_VRAM) {
-> +			xe_ctx->vram_region = region;
-> +			break;
-> +		}
-> +	}
-> +	if (!xe_ctx->vram_region)
-> +		goto out;
-> +
-> +	xe_ctx->fd = fd;
-> +
-> +	*ctx = xe_ctx;
-> +
-> +	return 0;
-> +
-> +out:
-> +	free(xe_ctx);
-> +
-> +	return -ENOMEM;
-> +}
-> +
-> +static void xe_dmem_deinit(void *ctx)
-> +{
-> +	struct xe_dmem_ctx *xe_ctx = ctx;
-> +
-> +	free(xe_ctx);
-> +}
-> +
-> +static char * xe_dmem_get_region_name(void *ctx)
-> +{
-> +	struct xe_dmem_ctx *xe_ctx = ctx;
-> +
-> +	return xe_cgroup_region_name(xe_ctx->fd, xe_ctx->vram_region);
-> +}
-> +
-> +static int xe_dmem_allocate_vram(void *ctx, size_t len, void **ret_handle)
-> +{
-> +	struct xe_dmem_ctx *xe_ctx = ctx;
-> +	uint32_t handle;
-> +	int err;
-> +
-> +	err = __xe_bo_create(xe_ctx->fd, 0, len, xe_ctx->vram_region, 0,
-> +			     NULL, &handle);
-> +	if (err)
-> +		return err;
-> +
-> +	*ret_handle = (void *)(uintptr_t) handle;
-> +	return 0;
-> +}
-> +
-> +static void xe_dmem_free_vram(void *ctx, void *handle)
-> +{
-> +	struct xe_dmem_ctx *xe_ctx = ctx;
-> +
-> +	gem_close(xe_ctx->fd, (uint32_t)(uintptr_t) handle);
-> +}
-> +
-> +const struct igt_dmem_driver xe_dmem_driver = {
-> +	.name = "xe",
-> +	.get_region_name = xe_dmem_get_region_name,
-> +	.init = xe_dmem_init,
-> +	.deinit = xe_dmem_deinit,
-> +	.allocate_vram = xe_dmem_allocate_vram,
-> +	.free_vram = xe_dmem_free_vram,
-> +};
-> 
+diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+index 8f54b6e25..3d8b4f68a 100644
+--- a/lib/xe/xe_gt.c
++++ b/lib/xe/xe_gt.c
+@@ -224,6 +224,7 @@ bool xe_gt_is_in_c6(int fd, int gt)
+ 		return true;
+ 
+ 	igt_debug("GT%d C-state is %s\n", gt, gt_c_state);
++	errno = 0;
+ 
+ 	return false;
+ }
+diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+index 19306dc41..886537862 100644
+--- a/tests/intel/xe_gt_freq.c
++++ b/tests/intel/xe_gt_freq.c
+@@ -397,6 +397,7 @@ int igt_main()
+ 			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
+ 			stash_max[gt] = xe_gt_get_freq(fd, gt, "max");
+ 		}
++		errno = 0;
+ 	}
+ 
+ 	igt_subtest("throttle_basic_api") {
+diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+index 7faba7c2b..543f46f5b 100644
+--- a/tests/intel/xe_pm.c
++++ b/tests/intel/xe_pm.c
+@@ -990,6 +990,7 @@ int igt_main()
+ 
+ 		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
+ 		update_debug_mask_if_ci(DRM_UT_KMS);
++		errno = 0;
+ 	}
+ 
+ 	for (const struct s_state *s = s_states; s->name; s++) {
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index bfae1f844..e976048a9 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -574,6 +574,7 @@ int igt_main()
+ 
+ 		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+ 		igt_require(xe_sysfs_gt_has_node(fd, 0, "gtidle"));
++		errno = 0;
+ 	}
+ 
+ 	igt_describe("Validate GT C6 on idle");
+diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+index a8ceac46c..5b098c45c 100644
+--- a/tests/intel/xe_pmu.c
++++ b/tests/intel/xe_pmu.c
+@@ -1076,6 +1076,7 @@ int igt_main()
+ 		xe_perf_device(fd, xe_device, sizeof(xe_device));
+ 		num_engines = xe_number_engines(fd);
+ 		has_engine_active_ticks = has_event(xe_device, "engine-active-ticks");
++		errno = 0;
+ 	}
+ 
+ 	igt_describe("Validate PMU gt-c6 residency counters when idle");
+-- 
+2.43.0
 
