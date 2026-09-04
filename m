@@ -4,56 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B362BC624DE
-	for <igt-dev@archiver.kernel.org>; Fri,  4 Sep 2026 10:12:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56CEBC624D3
+	for <igt-dev@archiver.kernel.org>; Fri,  4 Sep 2026 10:12:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 54F2710E553;
-	Fri,  4 Sep 2026 10:12:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EB7C210FA2A;
+	Fri,  4 Sep 2026 10:12:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VoidkYDE";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="SYJWhHJx";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EC61610E169
- for <igt-dev@lists.freedesktop.org>; Fri,  4 Sep 2026 10:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788516677; x=1820052677;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=S1sPD1DCSjEfbENN/UchMwQ6Z789g7xzh2CMZrQaeXs=;
- b=VoidkYDEdriOqHGTQoBd2NYFbZLfG4WR1TSy7YzWW09dUozpWDVykZDG
- alBFM/w91ZC1QOFK2ohSdsIiuFi/7PcA/H23lccAGqiwnyrJdkyR1i/gi
- TEjHy4K6LbjzByp53IG0Th9JInFncUF8Z45jsfsyoG+/+FGj+t4s9vAhr
- 6pHtmLeZ8/ZKHqE8ODqTnGK7nCh5CCKp4HWR2mGhXt2/pilMXQwdbqkxh
- 41TH0MjJjNhHek9Tf+fpoLXAgMBvQnFX05Qi7xcMgamHgeQgfhfPtiJ9r
- M59CrAIgY9I+D4/TOljwPkbEsRAqamK0OJrUuzEcR0hM2joVqQ6HV3qnd A==;
-X-CSE-ConnectionGUID: t6RqROoDRqapqCMb2GRLAg==
-X-CSE-MsgGUID: qE7VeWI5SWioBU2lZIZq8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="76570536"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; d="scan'208";a="76570536"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2026 03:11:16 -0700
-X-CSE-ConnectionGUID: rn/1N5FcTsmOsjJf4l8Zhw==
-X-CSE-MsgGUID: beY0L7htRK2OVNMTNpypJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; d="scan'208";a="273522651"
-Received: from unknown (HELO anirban-Z690I-A-ULTRA-PLUS.iind.intel.com)
- ([10.190.216.83])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Sep 2026 03:11:14 -0700
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, kamil.konieczny@intel.com,
- Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v2] tests/intel: Avoid stale errno
-Date: Fri,  4 Sep 2026 15:30:43 +0530
-Message-ID: <20260904100042.583658-2-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DACBA10E169;
+ Fri,  4 Sep 2026 10:11:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
+ MIME-Version:Date:Message-ID:From:Reply-To;
+ bh=hEI++qg2XaVSpdPRcw3c9ZofFCQ9pwoV4Af+mNZye+g=; b=SYJWhHJxaqvz3o2nQZQv8TL2qv
+ eQvdONrf1t1S9SWbwG1H9ElkXSRMDAZTK1nNgNVaqtJ/WwbRlj311rJLHZPN9yCR8nlHjL+NegFc4
+ BxcyN8WEZdyzunuv1ROUAjAmsaWMLmr1JB6QdsJ/EfoMYS3UUE90ryOZG6hN3lIGOp9DSp+vqzNQ3
+ qC1CHIA188Qco7kv06uvocqtFwgDXsTvjf4Lmz7iTw17F3J014giUIaOlmMNQOh1d8KhMhnG2hcC9
+ ygM2+FkQIqvfjOh80IlWi6g3cAN406aZjbq+pLrbLfLK6F3mwqlBuF81OMaVder6a2X6Wn9IYF1Wl
+ tSElaZQQ==;
+Received: from [81.79.79.1] (helo=[192.168.0.116])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1x2QtG-00EpJO-LF; Fri, 04 Sep 2026 12:11:22 +0200
+Message-ID: <33fabbd4-d87b-440d-b5f8-3b9be9618d7b@igalia.com>
+Date: Fri, 4 Sep 2026 11:11:21 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v6 6/9] lib/amdgpu: add amdgpu support to
+ igt_dmem_driver
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ igt-dev@lists.freedesktop.org
+Cc: siqueira@igalia.com, dri-devel@lists.freedesktop.org,
+ amd-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Christian Koenig <christian.koenig@amd.com>,
+ maarten.lankhorst@linux.intel.com,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>, Natalie Vock <natalie.vock@gmx.de>,
+ kernel-dev@igalia.com
+References: <20260903-dmem_max-v6-0-61dc62970fae@igalia.com>
+ <20260903-dmem_max-v6-6-61dc62970fae@igalia.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <20260903-dmem_max-v6-6-61dc62970fae@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,92 +68,149 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Commit <e311ed2c7> ("lib/igt_core: do not reset errno in igt_gettime")
-removed an incidental errno reset that used to mask stale errno at
-subtest entry. Now a stale errno from an earlier, unrelated probe can
-survive into a later assertion failure and gets printed as a
-misleading "Last errno" hint, e.g. in xe_gt_freq's throttle_basic_api:
 
-  CRITICAL: Failed assertion: !strcmp(throttle_reasons, "none")
-  CRITICAL: Last errno: 2, No such file or directory
-  CRITICAL: GT 0 is throttled due to: pl4
+On 03/09/2026 23:00, Thadeu Lima de Souza Cascardo wrote:
+> This allows dmem cgroups tests to run on top of amdgpu driver, adding
+> support to allocate and release VRAM memory.
+> 
+> This does this by allocating a BO from VRAM domain, which will try to
+> place BOs on VRAM, but may fallback to GTT.
+> 
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> ---
+>   lib/amdgpu/amd_dmem.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>   lib/igt_dmem_driver.h |  1 +
+>   lib/meson.build       |  1 +
+>   3 files changed, 92 insertions(+)
+> 
+> diff --git a/lib/amdgpu/amd_dmem.c b/lib/amdgpu/amd_dmem.c
+> new file mode 100644
+> index 000000000000..cb0fed4b870a
+> --- /dev/null
+> +++ b/lib/amdgpu/amd_dmem.c
+> @@ -0,0 +1,90 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2026 Valve Corporation
+> + * Authors:
+> + *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> + */
+> +
+> +#include <errno.h>
+> +
+> +#include "igt.h"
+> +#include "igt_cgroup.h"
+> +#include "igt_dmem_driver.h"
+> +#include "lib/amdgpu/amd_memory.h"
+> +
+> +struct amdgpu_dmem_ctx {
+> +	int fd;
+> +	amdgpu_device_handle device;
+> +};
+> +
+> +static int amdgpu_dmem_init(void **ctx, int fd)
+> +{
+> +	struct amdgpu_dmem_ctx *actx;
+> +	uint32_t major, minor;
+> +	int err;
+> +
+> +	actx = malloc(sizeof(*actx));
+> +	if (!actx)
+> +		return -ENOMEM;
+> +
+> +	err = amdgpu_device_initialize(fd, &major, &minor, &actx->device);
+> +	if (err)
+> +		goto out;
+> +
+> +	actx->fd = fd;
+> +
+> +	*ctx = actx;
+> +
+> +	return 0;
+> +
+> +out:
+> +	free(actx);
+> +
+> +	return err;
+> +}
+> +
+> +static void amdgpu_dmem_deinit(void *ctx)
+> +{
+> +	struct amdgpu_dmem_ctx *actx = ctx;
+> +
+> +	amdgpu_device_deinitialize(actx->device);
+> +	free(actx);
+> +}
+> +
+> +static char * amdgpu_dmem_get_region_name(void *ctx)
+> +{
+> +	struct amdgpu_dmem_ctx *actx = ctx;
+> +
+> +	return amdgpu_cgroup_region_name(actx->fd);
+> +}
+> +
+> +static int amdgpu_dmem_allocate_vram(void *ctx, size_t len, void **ret_handle)
+> +{
+> +	struct amdgpu_dmem_ctx *actx = ctx;
+> +	amdgpu_bo_handle handle;
+> +	int err;
+> +
+> +	err = amdgpu_bo_alloc_wrap(actx->device, len, 4096,
+> +				   AMDGPU_GEM_DOMAIN_VRAM, 0, &handle);
+> +	if (err)
+> +		return err;
+> +
+> +	if (ret_handle)
+> +		*ret_handle = (void *) handle;
 
-The real cause is the GT being throttled; "Last errno: 2" is stale
-and unrelated, making triage confusing.
+Is there an use case for ret_handle == NULL? Xe backend does not bother 
+with the check. This aside, the rest looks good to me:
 
-Fix this by clearing errno right where it is known to go stale.
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-v2: Update fix path (Kamil)
+Regards,
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- lib/xe/xe_gt.c                | 1 +
- tests/intel/xe_gt_freq.c      | 1 +
- tests/intel/xe_pm.c           | 1 +
- tests/intel/xe_pm_residency.c | 1 +
- tests/intel/xe_pmu.c          | 1 +
- 5 files changed, 5 insertions(+)
+Tvrtko
 
-diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-index 8f54b6e25..3d8b4f68a 100644
---- a/lib/xe/xe_gt.c
-+++ b/lib/xe/xe_gt.c
-@@ -224,6 +224,7 @@ bool xe_gt_is_in_c6(int fd, int gt)
- 		return true;
- 
- 	igt_debug("GT%d C-state is %s\n", gt, gt_c_state);
-+	errno = 0;
- 
- 	return false;
- }
-diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-index 19306dc41..886537862 100644
---- a/tests/intel/xe_gt_freq.c
-+++ b/tests/intel/xe_gt_freq.c
-@@ -397,6 +397,7 @@ int igt_main()
- 			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
- 			stash_max[gt] = xe_gt_get_freq(fd, gt, "max");
- 		}
-+		errno = 0;
- 	}
- 
- 	igt_subtest("throttle_basic_api") {
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 7faba7c2b..543f46f5b 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -990,6 +990,7 @@ int igt_main()
- 
- 		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
- 		update_debug_mask_if_ci(DRM_UT_KMS);
-+		errno = 0;
- 	}
- 
- 	for (const struct s_state *s = s_states; s->name; s++) {
-diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-index bfae1f844..e976048a9 100644
---- a/tests/intel/xe_pm_residency.c
-+++ b/tests/intel/xe_pm_residency.c
-@@ -574,6 +574,7 @@ int igt_main()
- 
- 		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
- 		igt_require(xe_sysfs_gt_has_node(fd, 0, "gtidle"));
-+		errno = 0;
- 	}
- 
- 	igt_describe("Validate GT C6 on idle");
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index a8ceac46c..5b098c45c 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -1076,6 +1076,7 @@ int igt_main()
- 		xe_perf_device(fd, xe_device, sizeof(xe_device));
- 		num_engines = xe_number_engines(fd);
- 		has_engine_active_ticks = has_event(xe_device, "engine-active-ticks");
-+		errno = 0;
- 	}
- 
- 	igt_describe("Validate PMU gt-c6 residency counters when idle");
--- 
-2.43.0
+> +
+> +	return 0;
+> +}
+> +
+> +static void amdgpu_dmem_free_vram(void *ctx, void *handle)
+> +{
+> +	amdgpu_bo_free(handle);
+> +}
+> +
+> +const struct igt_dmem_driver amdgpu_dmem_driver = {
+> +	.name = "amdgpu",
+> +	.get_region_name = amdgpu_dmem_get_region_name,
+> +	.init = amdgpu_dmem_init,
+> +	.deinit = amdgpu_dmem_deinit,
+> +	.allocate_vram = amdgpu_dmem_allocate_vram,
+> +	.free_vram = amdgpu_dmem_free_vram,
+> +};
+> diff --git a/lib/igt_dmem_driver.h b/lib/igt_dmem_driver.h
+> index e6998387eff9..f2d9d74196db 100644
+> --- a/lib/igt_dmem_driver.h
+> +++ b/lib/igt_dmem_driver.h
+> @@ -30,5 +30,6 @@ struct igt_dmem_driver {
+>   };
+>   
+>   extern const struct igt_dmem_driver xe_dmem_driver;
+> +extern const struct igt_dmem_driver amdgpu_dmem_driver;
+>   
+>   #endif
+> diff --git a/lib/meson.build b/lib/meson.build
+> index 022408ce6864..e191793f0097 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -205,6 +205,7 @@ if libdrm_amdgpu.found()
+>   		'amdgpu/amd_mmd_shared.c',
+>   		'amdgpu/amd_jpeg_shared.c',
+>   		'amdgpu/amd_utils.c',
+> +		'amdgpu/amd_dmem.c',
+>   		'amdgpu/amd_vcn_shared.c'
+>   	]
+>   	if libdrm_amdgpu.version().version_compare('> 2.4.99')
+> 
 
