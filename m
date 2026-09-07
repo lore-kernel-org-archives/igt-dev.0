@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5DC7C79F99
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 19:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55922C79F99
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 19:50:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4F69D10E4B8;
-	Mon,  7 Sep 2026 19:44:41 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fktfHcc2";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 376DA10E4B8
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 19:42:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788810150; x=1820346150;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=QNRo1eK5sb256e1V51Jjr1FjCcaMMFvZVhhVcvhy6Z0=;
- b=fktfHcc2oQ66Pu0OGlfkpwJcmCkJb/qt7NDZOCPnJnYGfJfRB9L4z+1C
- U8dkyngLSxmgXruLD3qpWQnaGXdIWts0ICxnQse7jmPxV0xIhhiGzYaMB
- 9Zof8zdiiD0z8ege64jbkOxgmvHjYloOUgV0mgCHzM6nciupbNdJDJRCH
- R9TjNquNrD5VqlhvEnt2ya92nZIGWEJoVX66Q/jDQJAUON5l5KFAM3UEm
- XdlPP9xEpgUvT8q6BGIi0BeCB0vEmJvEvqj2LaJhiXN+DmsINP1FhB11k
- 5KZKOrMVYPYy10sgTnoCU3yGtVBg1jGL/sqalv6xk2phx69QjLtiulW5o A==;
-X-CSE-ConnectionGUID: HjYeHaP+TVK7q+PPx4S+Qg==
-X-CSE-MsgGUID: eL8XBOTzTeS+3QeBWvhTsQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="92912776"
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="92912776"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Sep 2026 12:42:30 -0700
-X-CSE-ConnectionGUID: 64JV+CQnRJiuQdM7zojNOw==
-X-CSE-MsgGUID: s+ozwjclTsqvlhtrhqIE4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="294260140"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 12:42:28 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, swati2.sharma@intel.com,
- mitulkumar.ajitkumar.golani@intel.com,
- Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1 2/2] tests/kms_vrr: Retry LOBF detection on low
- refresh mode
-Date: Tue,  8 Sep 2026 01:12:28 +0530
-Message-ID: <20260907194229.3170868-3-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260907194229.3170868-1-ramanaidu.naladala@intel.com>
-References: <20260907194229.3170868-1-ramanaidu.naladala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id DCA7810E4D8;
+	Mon,  7 Sep 2026 19:50:30 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 409C410E4D8;
+ Mon,  7 Sep 2026 19:49:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3819823288546469972=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Validate_PM=5FPME_signallin?=
+ =?utf-8?q?g_on_display_hotplug_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Pranay Samala" <pranay.samala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 07 Sep 2026 19:49:44 -0000
+Message-ID: <178881058425.130175.15284586349198442766@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260907142259.750528-1-pranay.samala@intel.com>
+In-Reply-To: <20260907142259.750528-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,135 +37,276 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Replace the synthetic refresh-rate sweep with standard video timing
-rates to better reflect real content playback patterns.
+--===============3819823288546469972==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Commit the selected mode before running measurements and retry the
-validation in the low refresh rate mode when LOBF does not engage
-in the high refresh rate mode.
+== Series Details ==
 
-Assisted-by: Copilot:Claude-Opus-5
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/kms_vrr.c | 74 +++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 57 insertions(+), 17 deletions(-)
+Series: Validate PM_PME signalling on display hotplug (rev2)
+URL   : https://patchwork.freedesktop.org/series/172774/
+State : success
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 27f18e8d0..6250ae43f 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -31,6 +31,7 @@
- #include "igt.h"
- #include "igt_pm.h"
- #include "igt_psr.h"
-+#include "igt_vrr.h"
- #include "i915/intel_drrs.h"
- #include "sw_sync.h"
- #include <fcntl.h>
-@@ -815,6 +816,46 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
- 	}
- }
- 
-+/**
-+ * lobf_flip_video_timing_fps:
-+ * @data: test data
-+ * @output: output under test
-+ * @mode: mode currently committed on @output
-+ *
-+ * Flips at every standard video timing rate, from the highest to the lowest,
-+ * on the currently committed @mode. Rates above the panel refresh rate can't
-+ * be driven, so they are skipped.
-+ *
-+ * Returns: true as soon as LOBF gets enabled, false if no rate enables it.
-+ */
-+static bool
-+lobf_flip_video_timing_fps(data_t *data, igt_output_t *output,
-+			   const drmModeModeInfo *mode)
-+{
-+	uint64_t rate[] = {0};
-+
-+	for (int i = igt_vrr_standard_video_timing_fps_count - 1; i >= 0; i--) {
-+		uint32_t fps = igt_vrr_standard_video_timing_fps[i];
-+
-+		if (fps > mode->vrefresh)
-+			continue;
-+
-+		igt_info("Testing LOBF with a %u hz flip rate on %u hz panel refresh rate:",
-+			 fps, mode->vrefresh);
-+
-+		rate[0] = igt_kms_frame_time_from_vrefresh(fps);
-+		flip_and_measure(data, output, rate, 1, NSECS_PER_SEC);
-+
-+		if (igt_get_i915_edp_lobf_status(data->drm_fd, output->name)) {
-+			igt_info("LOBF enabled\n");
-+			return true;
-+		}
-+		igt_info("LOBF not enabled\n");
-+	}
-+
-+	return false;
-+}
-+
- /* FIXME: test_lobf : Lobf can be enabled when
-  * (Set Context Latency + Guardband) > (First SDP Position + Wake Time)
-  * one the depends patches are merged please fix this function.
-@@ -825,10 +866,8 @@ test_lobf(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
- 	  uint32_t flags)
- {
- 	uint64_t rate[] = {0};
--	uint32_t step_size, vrefresh;
--	bool lobf_enabled = false;
-+	bool lobf_enabled;
- 
--	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
- 	prepare_test(data, output, crtc);
- 	data->flag |= flags;
- 
-@@ -851,26 +890,27 @@ test_lobf(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
- 		 output->name, igt_crtc_name(crtc), data->range.min,
- 		 data->range.max);
- 
-+	/* Settle on the high refresh rate mode and sweep the content rates. */
- 	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
--	flip_and_measure(data, output, rate, 1, TEST_DURATION_NS);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--	step_size = (data->range.max - data->range.min) / 5;
-+	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
-+	flip_and_measure(data, output, rate, 1, TEST_DURATION_NS);
- 
--	for (vrefresh = data->range.max - step_size;
--	     vrefresh >= data->range.min; vrefresh -= step_size) {
--		igt_info("Testing LOBF with a %u hz flip rate on %u hz panel refresh rate\n",
--			 vrefresh, data->switch_modes[HIGH_RR_MODE].vrefresh);
-+	lobf_enabled = lobf_flip_video_timing_fps(data, output,
-+						  &data->switch_modes[HIGH_RR_MODE]);
- 
--		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
--		flip_and_measure(data, output, rate, 1, NSECS_PER_SEC);
-+	/* No content rate enabled LOBF, retry the sweep on the low RR mode. */
-+	if (!lobf_enabled) {
-+		igt_info("LOBF test execution with lower refresh rate\n");
-+		igt_output_override_mode(output, &data->switch_modes[LOW_RR_MODE]);
-+		igt_display_commit2(&data->display, COMMIT_ATOMIC);
- 
--		if (igt_get_i915_edp_lobf_status(data->drm_fd, output->name)) {
--			lobf_enabled = true;
--			break;
--		}
-+		rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[LOW_RR_MODE].vrefresh);
-+		flip_and_measure(data, output, rate, 1, TEST_DURATION_NS);
- 
--		if (vrefresh == data->range.min)
--			break;
-+		lobf_enabled = lobf_flip_video_timing_fps(data, output,
-+							  &data->switch_modes[LOW_RR_MODE]);
- 	}
- 
- 	igt_assert_f(lobf_enabled, "LOBF not enabled\n");
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_9085_BAT -> XEIGTPW_15799_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (11 -> 11)
+------------------------------
+
+  Additional (1): bat-wcl-2 
+  Missing    (1): bat-wcl-1 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15799_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@fbdev@eof:
+    - bat-wcl-2:          NOTRUN -> [SKIP][1] ([Intel XE#7241]) +4 other tests skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@fbdev@eof.html
+
+  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+    - bat-wcl-2:          NOTRUN -> [SKIP][2] ([Intel XE#7245])
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank:
+    - bat-wcl-2:          NOTRUN -> [SKIP][3] ([Intel XE#7240]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_flip@basic-flip-vs-wf_vblank.html
+
+  * igt@kms_frontbuffer_tracking@basic:
+    - bat-wcl-2:          NOTRUN -> [SKIP][4] ([Intel XE#7246])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_frontbuffer_tracking@basic.html
+
+  * igt@kms_pipe_crc_basic@hang-read-crc:
+    - bat-wcl-2:          NOTRUN -> [SKIP][5] ([Intel XE#7237]) +13 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_pipe_crc_basic@hang-read-crc.html
+
+  * igt@kms_psr@psr-sprite-plane-onoff:
+    - bat-wcl-2:          NOTRUN -> [SKIP][6] ([Intel XE#2850]) +2 other tests skip
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_psr@psr-sprite-plane-onoff.html
+
+  * igt@xe_evict@evict-small-multi-vm:
+    - bat-wcl-2:          NOTRUN -> [SKIP][7] ([Intel XE#7238]) +11 other tests skip
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_evict@evict-small-multi-vm.html
+
+  * igt@xe_exec_balancer@twice-virtual-userptr-rebind:
+    - bat-wcl-2:          NOTRUN -> [SKIP][8] ([Intel XE#7482]) +17 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html
+
+  * igt@xe_exec_multi_queue@many-queues-userptr-invalidate:
+    - bat-wcl-2:          NOTRUN -> [SKIP][9] ([Intel XE#8364]) +13 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html
+
+  * igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:
+    - bat-wcl-2:          NOTRUN -> [SKIP][10] ([Intel XE#7239]) +2 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html
+
+  * igt@xe_mmap@vram:
+    - bat-wcl-2:          NOTRUN -> [SKIP][11] ([Intel XE#7243])
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_mmap@vram.html
+
+  * igt@xe_pat@pat-index-xehpc:
+    - bat-wcl-2:          NOTRUN -> [SKIP][12] ([Intel XE#7247] / [Intel XE#7590])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_pat@pat-index-xehpc.html
+
+  * igt@xe_pat@pat-index-xelp:
+    - bat-wcl-2:          NOTRUN -> [SKIP][13] ([Intel XE#7242] / [Intel XE#7590])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_pat@pat-index-xelp.html
+
+  * igt@xe_pat@pat-index-xelpg:
+    - bat-wcl-2:          NOTRUN -> [SKIP][14] ([Intel XE#7248] / [Intel XE#7590])
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_pat@pat-index-xelpg.html
+
+  
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#7237]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7237
+  [Intel XE#7238]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7238
+  [Intel XE#7239]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7239
+  [Intel XE#7240]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7240
+  [Intel XE#7241]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7241
+  [Intel XE#7242]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7242
+  [Intel XE#7243]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7243
+  [Intel XE#7245]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7245
+  [Intel XE#7246]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7246
+  [Intel XE#7247]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7247
+  [Intel XE#7248]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7248
+  [Intel XE#7482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482
+  [Intel XE#7590]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590
+  [Intel XE#8364]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9085 -> IGTPW_15799
+  * Linux: xe-5698-547f981c369d4b8adf60c5d282b37854f11dab17 -> xe-5699-16562a45b1291d85f8402628a1f7d3778e2bebce
+
+  IGTPW_15799: 15799
+  IGT_9085: 9085
+  xe-5698-547f981c369d4b8adf60c5d282b37854f11dab17: 547f981c369d4b8adf60c5d282b37854f11dab17
+  xe-5699-16562a45b1291d85f8402628a1f7d3778e2bebce: 16562a45b1291d85f8402628a1f7d3778e2bebce
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/index.html
+
+--===============3819823288546469972==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Validate PM_PME signalling on display hotplug (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172774/">https://patchwork.freedesktop.org/series/172774/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9085_BAT -&gt; XEIGTPW_15799_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (11 -&gt; 11)</h2>
+<p>Additional (1): bat-wcl-2 <br />
+  Missing    (1): bat-wcl-1 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15799_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@fbdev@eof:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@fbdev@eof.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7241">Intel XE#7241</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7245">Intel XE#7245</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7240">Intel XE#7240</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@basic:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7246">Intel XE#7246</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_pipe_crc_basic@hang-read-crc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7237">Intel XE#7237</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-multi-vm:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_evict@evict-small-multi-vm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7238">Intel XE#7238</a>) +11 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_balancer@twice-virtual-userptr-rebind:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_exec_balancer@twice-virtual-userptr-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482">Intel XE#7482</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@many-queues-userptr-invalidate:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_exec_multi_queue@many-queues-userptr-invalidate.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364">Intel XE#8364</a>) +13 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_live_ktest@xe_bo@xe_bo_evict_kunit.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7239">Intel XE#7239</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mmap@vram:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_mmap@vram.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7243">Intel XE#7243</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xehpc:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_pat@pat-index-xehpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7247">Intel XE#7247</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelp:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_pat@pat-index-xelp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7242">Intel XE#7242</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pat@pat-index-xelpg:</p>
+<ul>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15799/bat-wcl-2/igt@xe_pat@pat-index-xelpg.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7248">Intel XE#7248</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7590">Intel XE#7590</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9085 -&gt; IGTPW_15799</li>
+<li>Linux: xe-5698-547f981c369d4b8adf60c5d282b37854f11dab17 -&gt; xe-5699-16562a45b1291d85f8402628a1f7d3778e2bebce</li>
+</ul>
+<p>IGTPW_15799: 15799<br />
+  IGT_9085: 9085<br />
+  xe-5698-547f981c369d4b8adf60c5d282b37854f11dab17: 547f981c369d4b8adf60c5d282b37854f11dab17<br />
+  xe-5699-16562a45b1291d85f8402628a1f7d3778e2bebce: 16562a45b1291d85f8402628a1f7d3778e2bebce</p>
+
+</body>
+</html>
+
+--===============3819823288546469972==--
