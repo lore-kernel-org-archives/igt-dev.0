@@ -4,51 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30460C79F89
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 14:09:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA5BC79F9E
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 14:10:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C42BF10E851;
-	Mon,  7 Sep 2026 14:09:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6E73E10E851;
+	Mon,  7 Sep 2026 14:10:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R6vcy1nL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="nhoPlYWd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5097510E853
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 14:09:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9E0F710E851
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 14:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788790150; x=1820326150;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=voIG0fd6cEl7CHOl97ta0cLYtBg/WSjym0MBX9v50HQ=;
- b=R6vcy1nLWCvXde8Pm93LyHRZwJ3HBqC/wotcMFendHKcmawT9d26SVVU
- 0f5/YWjtJN8zuLvRHG4wFSbgnqtClrKDWi0vrOcuJAtSw/m2EqMb6iuLF
- O1fRR6B7bYgigjhaYznhMqiFLCmfX1b8wblDgPFI4ahNQ+synqs9U4XOU
- cwwAOOuOormKYObd3WCiHSS89dsn2J/PXanU1qg1fWihvAP94IExCs1fl
- sfYr41seNmz+fRnnhQ+lQSOIHNr3P9FfJvA3uYNrYStUdT6YySx7ZXPVz
- u4H3eZIo3fTgGRh5vCr35rMCsllv71kekuOTtMsl8gff+VgWDC/RpPpN9 A==;
-X-CSE-ConnectionGUID: OSBIhSFxS+avan3eH7F4Fw==
-X-CSE-MsgGUID: 7jWUQN0ZR3y/q8HMjfm1Xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="100355086"
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="100355086"
+ t=1788790151; x=1820326151;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=GgU3pIDzZ9Mr/YNdJm2T9BlPhb7qL4WYT45Ue59axZQ=;
+ b=nhoPlYWd1TNE0bUurMdNd6U45XbyEVV3RN+owNk+JltLEm7EvOBFLBa3
+ kWtusxhpCWnDO+VkNVMvvnjtD5+a/iyfv9Dpkhkidrxejd37zYbmam/S6
+ UnsmTm9v2Hqe+/1gFx4h68n4lJi16FidrWsWEClWisx9M4yrtslBol4gD
+ agEL2uyaBSqx1SAjIA67T8crauXlppAnFzv6SCprNvcCBrxRgXPzbMNHN
+ iBrKjW/Pwu2g8jS3n/0AnOe0WxTb7ezLGyWuXOWq9wGVeUhRP5svdfd4s
+ soFs3PQHwu1HkxRdjExH0ihnfk9yf1T54IjTecoOgiLixDU3+BJv+F/Pp Q==;
+X-CSE-ConnectionGUID: CZ+rXclNToS4zuPhOzqrcg==
+X-CSE-MsgGUID: FDN9/FjPSxywYsPrUMIJIg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="100355089"
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="100355089"
 Received: from orviesa004.jf.intel.com ([10.64.159.144])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Sep 2026 07:09:10 -0700
-X-CSE-ConnectionGUID: MEzX7CtPS+2C/4nEo89MbA==
-X-CSE-MsgGUID: PfxdRzjoS2Gkl1xIGt8iCA==
+ 07 Sep 2026 07:09:11 -0700
+X-CSE-ConnectionGUID: rIO77vKhQdGDl8fedwcdDg==
+X-CSE-MsgGUID: hxos1I/eS/CW0Pt2+OrM1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="274522296"
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="274522305"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
  by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 07:09:07 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 07:09:09 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t 0/7] Validate PM_PME signalling on display hotplug
-Date: Mon,  7 Sep 2026 19:52:52 +0530
-Message-ID: <20260907142259.750528-1-pranay.samala@intel.com>
+Subject: [PATCH i-g-t 1/7] lib/igt_pci: Add PCI Power Management capability
+ register layout
+Date: Mon,  7 Sep 2026 19:52:53 +0530
+Message-ID: <20260907142259.750528-2-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260907142259.750528-1-pranay.samala@intel.com>
+References: <20260907142259.750528-1-pranay.samala@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,63 +69,48 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-A display hotplug can be signalled as a PCI PME while the graphics device
-is runtime suspended in D3hot. That lets the driver leave the
-drm_kms_helper connector poll worker disabled across runtime suspend, so
-the device stays parked instead of being resumed every ~10s just to probe
-connectors.
+Add the register offsets and field masks of the PCI Power Management
+capability. Two registers are needed.
 
-The property worth validating is therefore not "does a hotplug still
-work" - the polling fallback delivers that too, just slowly and at the
-cost of the power saving. It is "does the hotplug work while polling
-stays off". A test that only toggles HPD and waits for a uevent passes
-either way, and would not notice the feature regressing into the
-fallback.
+PMC (PM Capabilities) holds the PME_Support field, which says what D states
+the device can send a PME from.
 
-So the new subtest runs two phases against the same suspended device:
+PMCS (PM Control/Status) holds the PowerState field, the PME_En bit and the
+PME_Status bit, which say what D state the device is in, whether it is
+armed to send a PME, and whether it has one pending. PME_Status is
+write-1-to-clear and stays set until someone acknowledges the PME, so it
+distinguishes a device that never signalled from one whose signal was never
+delivered.
 
-  Phase 1: hold the device idle in D3hot for 25s and check from PCI
-           config space that it never leaves D3hot. This is the power
-           saving.
-  Phase 2: toggle HPD from D3hot and check that a uevent arrives, that
-           the connector status updated, and that
-           power/wakeup_active_count incremented - i.e. that the resume
-           was signalled by the device and not initiated by the host.
+Assisted-by: GitHub_Copilot:claude-opus-5
+Signed-off-by: Pranay Samala <pranay.samala@intel.com>
+---
+ lib/igt_pci.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-Patches 1-2 add the PCI Power Management capability register layout and
-accessors for PME_Support, PME_En, PME_Status and the PowerState field.
-PME_Status distinguishes a device that signalled but was never
-acknowledged from one that never signalled at all, which makes a failure
-report actionable instead of just "no uevent".
-
-Patches 3-5 add the power/wakeup and power/wakeup_active_count
-accessors, with patch 3 factoring out the path construction they share.
-active_count is used rather than wakeup_count because the latter never
-moves for a runtime resume.
-
-Patch 6 adds igt_pm_kms_poll_save(), _set() and _restore(). The two
-tests that already open code this are converted in a separate series
-that depends on this one, since one of them also has a pre-existing
-restore-without-save bug unrelated to PME.
-
-Patch 7 adds the subtest.
-
-Pranay Samala (7):
-  lib/igt_pci: Add PCI Power Management capability register layout
-  lib/igt_pm: Add PCI PME capability and D state accessors
-  lib/igt_pm: Factor out power attribute path construction
-  lib/igt_pm: Add power/wakeup accessors
-  lib/igt_pm: Add power/wakeup_active_count accessor
-  lib/igt_pm: Add drm_kms_helper.poll save/restore helpers
-  tests/chamelium/kms_chamelium_hpd: Add HPD from runtime suspended
-    D3hot
-
- lib/igt_pci.h                       |  12 +
- lib/igt_pm.c                        | 457 +++++++++++++++++++++++++++-
- lib/igt_pm.h                        |  12 +
- tests/chamelium/kms_chamelium_hpd.c | 344 +++++++++++++++++++++
- 4 files changed, 816 insertions(+), 9 deletions(-)
-
+diff --git a/lib/igt_pci.h b/lib/igt_pci.h
+index 509345b2d..ae612d611 100644
+--- a/lib/igt_pci.h
++++ b/lib/igt_pci.h
+@@ -26,6 +26,18 @@ enum pci_cap_id {
+ #define PCI_SLOT_CAP_OFFSET 0x14
+ #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
+ 
++/*
++ * PCI Power Management capability registers, at the given offsets from the
++ * start of the PM capability as returned by find_pci_cap_offset().
++ */
++#define PCI_PM_PMC_OFFSET 0x2			/* PM Capabilities */
++#define  PCI_PM_PMC_PME_SUPPORT_SHIFT 11	/* PME_Support, bits [15:11] */
++#define  PCI_PM_PMC_PME_SUPPORT_MASK (0x1f << PCI_PM_PMC_PME_SUPPORT_SHIFT)
++#define PCI_PM_PMCS_OFFSET 0x4			/* PM Control/Status */
++#define  PCI_PM_PMCS_PSTATE_MASK 0x3		/* PowerState, bits [1:0] */
++#define  PCI_PM_PMCS_PME_EN (1 << 8)		/* PME_En */
++#define  PCI_PM_PMCS_PME_STATUS (1 << 15)	/* PME_Status, write 1 to clear */
++
+ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
+ int igt_pci_device_unbind(const char *pci_slot);
+ int igt_pci_driver_bind(const char *driver, const char *pci_slot);
 -- 
 2.53.0
 
