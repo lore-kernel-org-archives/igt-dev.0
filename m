@@ -4,56 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D3E0C79F9E
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 09:39:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13579C79F9E
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 09:43:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A488D10E73C;
-	Mon,  7 Sep 2026 09:39:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 86D4310E754;
+	Mon,  7 Sep 2026 09:43:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S+CgkVWL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SGXu235a";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A396510E0E1
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 09:38:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 402FB10E737
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 09:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788773930; x=1820309930;
+ t=1788774135; x=1820310135;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=E/doKeuK1cdZYCj6DlnaPymAflGUhLCESIOGHVoMUos=;
- b=S+CgkVWLcfZvyG1F9h0IDqfi2DTzx1evmaMNMDs+/Dmf0j/PQaAFZbJb
- UcRi2f0+p+LvZQEUj+ri3j9g0Y87qcINvXGSNX+XwxaSepJjPw7vQ07G5
- fzwthEH0l9wKC75icw0/jCVlW1wG94pjO0YwCwUvPJUI7dJpoFK5lY59W
- 9plnsvmAvk1/4xjY6EJX5qPAPMiZ7RIRUkam/4EuaDfVJS4pQAb2HFvr8
- kiw+i9gkVHxRKUomp8S4tJHXEQWkFOLRoJZ6BF+Fp691yqFKpeFeYV+fW
- pcQCP9fzHFkov3mI3uw+JgSrm6x+HY2skWqMPs7cGnlV1yCkc8TPz2zoO Q==;
-X-CSE-ConnectionGUID: eWhGmBP/Tb2aPSGeyq8Dfw==
-X-CSE-MsgGUID: 0/4g+K4fR9WawU3kzVDsLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="92876386"
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="92876386"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Sep 2026 02:38:49 -0700
-X-CSE-ConnectionGUID: 04M5OrqPTHSyyMB6wQALew==
-X-CSE-MsgGUID: H4gMEcJESAaaVVfnovtw9w==
+ bh=Kh21N/hgaiLMHZZgNRaDKZbqXmGi6bkDuqQaXaU0u/k=;
+ b=SGXu235aHNPaHV8Loi+VqZwOBd3v8Mk9/VPVrpZA/heQjDH5yn6DfYFM
+ VH71iYRHbOUrw6X0EK4zNulGaJ2O2ACC+tUCU/ObAqholNN03FJKG4p//
+ yhSN5N4KsnrxGzQdqJPxJJ1T4YNohSCHJ9vRn5Dx63axiyuJU5cCnGXEe
+ UBT0O/+DuGBG2ERJw5Sxo0fuJE3zG4ejl77hJSZzJAGMwsEZ45GDYANbr
+ MlbdiGoPGfxz69699W/lg7GqesoSdpMoEMy6biCh/dy47XV2nzKSAz0b3
+ tyC+pXgckeoWv0bYq91YIshVTUmjSm/XUBr7o5b8tJHa6ouWiq6sb86uy A==;
+X-CSE-ConnectionGUID: 8z7M4FPpS8qjP3n7AkcS0g==
+X-CSE-MsgGUID: j7Oohn8wQeqq81S+NbVMpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="100531596"
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="100531596"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Sep 2026 02:42:15 -0700
+X-CSE-ConnectionGUID: XH1WaH8eROGNLi0+hqI+IQ==
+X-CSE-MsgGUID: 6AblSQD1T5ivLsVgIG1/dg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="274173443"
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="275951476"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 02:38:49 -0700
-Date: Mon, 7 Sep 2026 11:38:46 +0200
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 02:42:13 -0700
+Date: Mon, 7 Sep 2026 11:42:10 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jeevan B <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t] lib/igt_core: buffer signal-safe log output per line
-Message-ID: <20260907093846.jv7jaivcozclk4ng@kamilkon-DESK.igk.intel.com>
+To: Sk Anirban <sk.anirban@intel.com>
+Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
+ badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com,
+ soham.purkait@intel.com, mallesh.koujalagi@intel.com,
+ kamil.konieczny@intel.com
+Subject: Re: [PATCH v2] tests/intel: Avoid stale errno
+Message-ID: <20260907094210.cagn5wrow57p3q4w@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
-References: <20260907052012.3948192-1-jeevan.b@intel.com>
+ Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
+ anshuman.gupta@intel.com, badal.nilawar@intel.com,
+ riana.tauro@intel.com, karthik.poosa@intel.com,
+ raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, kamil.konieczny@intel.com
+References: <20260904100042.583658-2-sk.anirban@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260907052012.3948192-1-jeevan.b@intel.com>
+In-Reply-To: <20260904100042.583658-2-sk.anirban@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,88 +77,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jeevan,
-On 2026-09-07 at 10:50:12 +0530, Jeevan B wrote:
-> xputch() wrote one byte at a time via write(STDERR_FILENO, &c, 1) from
-> the async-signal-safe backtrace printer. When a fatal signal hits
-> multiple processes/threads at once (e.g. forked test children all
-> dumping a backtrace after the same signal), their single-byte writes
-> interleave on the shared stderr/runner fd, producing garbled or
-> truncated output. This showed up as tests (e.g.
-> igt@kms_cursor_legacy@*) being reported as incomplete with no useful
-> logs.
+Hi Sk,
+On 2026-09-04 at 15:30:43 +0530, Sk Anirban wrote:
+> Commit <e311ed2c7> ("lib/igt_core: do not reset errno in igt_gettime")
+> removed an incidental errno reset that used to mask stale errno at
+> subtest entry. Now a stale errno from an earlier, unrelated probe can
+> survive into a later assertion failure and gets printed as a
+> misleading "Last errno" hint, e.g. in xe_gt_freq's throttle_basic_api:
 > 
-> Buffer output in xputch() and flush it with a single write() (or
-> log_to_runner_sig_safe() call) per line via a new xflush(), instead of
-> one syscall per character. xprintfmt() now also flushes on reaching
-> the end of the format string, so a trailing partial line without a
-> newline is still emitted.
+>   CRITICAL: Failed assertion: !strcmp(throttle_reasons, "none")
+>   CRITICAL: Last errno: 2, No such file or directory
+>   CRITICAL: GT 0 is throttled due to: pl4
 > 
-> Assisted-by: Claude:claude-sonnet-4-5
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  lib/igt_core.c | 31 ++++++++++++++++++++++++++++---
->  1 file changed, 28 insertions(+), 3 deletions(-)
+> The real cause is the GT being throttled; "Last errno: 2" is stale
+> and unrelated, making triage confusing.
 > 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index af9d93762..e376a972c 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -2105,13 +2105,37 @@ static void write_stderr(const char *str)
->  #ifdef HAVE_LIBUNWIND
->  static const char hex[] = "0123456789abcdef";
->  
-> +/*
-> + * Buffer output and flush it in one write() per line, instead of one
-> + * write() per character. Concurrent single-byte writes from multiple
-> + * processes (e.g. forked children all dumping a backtrace after
-> + * receiving the same fatal signal) interleave on the shared stderr/
-> + * runner fd and produce unreadable, garbled logs.
-> + */
-> +static char xputch_buf[256];
-> +static size_t xputch_buf_len;
-
-You should make both thread safe.
+> Fix this by clearing errno right where it is known to go stale.
+> 
+> v2: Update fix path (Kamil)
+> 
+> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> +
->  static void
-> -xputch(int c)
-> +xflush(void)
->  {
-> +	if (!xputch_buf_len)
-> +		return;
-> +
->  	if (runner_connected())
-> -		log_to_runner_sig_safe((const void *) &c, 1);
-> +		log_to_runner_sig_safe(xputch_buf, xputch_buf_len);
->  	else
-> -		igt_ignore_warn(write(STDERR_FILENO, (const void *) &c, 1));
-> +		igt_ignore_warn(write(STDERR_FILENO, xputch_buf, xputch_buf_len));
-> +
-> +	xputch_buf_len = 0;
-> +}
-> +
-> +static void
-> +xputch(int c)
-> +{
-> +	xputch_buf[xputch_buf_len++] = c;
-> +
-> +	if (c == '\n' || xputch_buf_len == sizeof(xputch_buf))
-> +		xflush();
->  }
+> ---
+>  lib/xe/xe_gt.c                | 1 +
+>  tests/intel/xe_gt_freq.c      | 1 +
+>  tests/intel/xe_pm.c           | 1 +
+>  tests/intel/xe_pm_residency.c | 1 +
+>  tests/intel/xe_pmu.c          | 1 +
+>  5 files changed, 5 insertions(+)
+> 
+> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+> index 8f54b6e25..3d8b4f68a 100644
+> --- a/lib/xe/xe_gt.c
+> +++ b/lib/xe/xe_gt.c
+> @@ -224,6 +224,7 @@ bool xe_gt_is_in_c6(int fd, int gt)
+>  		return true;
 >  
->  static int
-> @@ -2166,6 +2190,7 @@ xprintfmt(const char *fmt, va_list ap)
->  	while (1) {
->  		while ((ch = *(const unsigned char *) fmt++) != '%') {
->  			if (ch == '\0') {
-> +				xflush();
->  				return;
->  			}
->  			xputch(ch);
+>  	igt_debug("GT%d C-state is %s\n", gt, gt_c_state);
+> +	errno = 0;
+>  
+>  	return false;
+>  }
+> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+> index 19306dc41..886537862 100644
+> --- a/tests/intel/xe_gt_freq.c
+> +++ b/tests/intel/xe_gt_freq.c
+> @@ -397,6 +397,7 @@ int igt_main()
+>  			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
+>  			stash_max[gt] = xe_gt_get_freq(fd, gt, "max");
+>  		}
+> +		errno = 0;
+>  	}
+>  
+>  	igt_subtest("throttle_basic_api") {
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index 7faba7c2b..543f46f5b 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -990,6 +990,7 @@ int igt_main()
+>  
+>  		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
+>  		update_debug_mask_if_ci(DRM_UT_KMS);
+> +		errno = 0;
+>  	}
+>  
+>  	for (const struct s_state *s = s_states; s->name; s++) {
+> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+> index bfae1f844..e976048a9 100644
+> --- a/tests/intel/xe_pm_residency.c
+> +++ b/tests/intel/xe_pm_residency.c
+> @@ -574,6 +574,7 @@ int igt_main()
+>  
+>  		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
+>  		igt_require(xe_sysfs_gt_has_node(fd, 0, "gtidle"));
+> +		errno = 0;
+>  	}
+>  
+>  	igt_describe("Validate GT C6 on idle");
+> diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+> index a8ceac46c..5b098c45c 100644
+> --- a/tests/intel/xe_pmu.c
+> +++ b/tests/intel/xe_pmu.c
+> @@ -1076,6 +1076,7 @@ int igt_main()
+>  		xe_perf_device(fd, xe_device, sizeof(xe_device));
+>  		num_engines = xe_number_engines(fd);
+>  		has_engine_active_ticks = has_event(xe_device, "engine-active-ticks");
+> +		errno = 0;
+>  	}
+>  
+>  	igt_describe("Validate PMU gt-c6 residency counters when idle");
 > -- 
 > 2.43.0
 > 
