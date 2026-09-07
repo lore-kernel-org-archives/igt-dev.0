@@ -4,49 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34E51C79F89
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 05:21:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B4D8C79F89
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 06:02:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CEBDB10E437;
-	Mon,  7 Sep 2026 05:21:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3341310E32A;
+	Mon,  7 Sep 2026 06:02:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GgcBtuFk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TkbfttvX";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B913910E0C1
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 05:20:21 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BC7DF10E32A
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 06:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788758421; x=1820294421;
- h=from:to:cc:subject:date:message-id:mime-version:
+ t=1788760905; x=1820296905;
+ h=from:to:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=6FlECL9V91GJa6Xp2j7JQMh8iHypHWch/XoCp47mhvU=;
- b=GgcBtuFk8gE3zq0w5judXuz/eUknDNAGiYwYcnh5vSVl0z4XzYkKI20e
- AMtaidKELX6WpfOqBG1wrPIH1NDQnrRUYWU5AetGBoWcfwoNOq28y+G76
- sZpdvNBtjd0BrPF1V5qiR46ZuXhSU5QMRAUKk0vsV1FAs9zQ8L4/bVCGT
- /y6TDhCYAxQWJWOkrEkp6mpD8gDan7RZsaNUmBdAW30qf2Q3kIEzE3MiY
- YBQexyDDGcfshb8sIQMCvbJvcdjfiauiJ7okNt4sbUycwnKlSa9Rh+r1n
- dhPMD9gFux7LCyLbn5RehHpiUTW/tTOioFdTPWaBobSabH2wOS5Hykq3V Q==;
-X-CSE-ConnectionGUID: sZ8n/5q8QD2yvquZFg5f0A==
-X-CSE-MsgGUID: kw7J9GQeSGes376SPTO5YA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="89083156"
-X-IronPort-AV: E=Sophos;i="6.25,266,1779174000"; d="scan'208";a="89083156"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Sep 2026 22:20:21 -0700
-X-CSE-ConnectionGUID: o/2EXmc4Q2Goyf3CPc3d4Q==
-X-CSE-MsgGUID: v3CwJPybRfud1H+/JY6MtQ==
+ bh=1TbNNuhvOK20qA1ank1ijeuxyS6zzcaqAZ3m898xO1U=;
+ b=TkbfttvXi6mMLkwDkeJFwN3RKfvMxvHHO8eAA9+6/SL+fa2VxzTR2O+i
+ t1VN6bKcqyhsAzBqCQc3ZzcOt90LPWLtXS3t4JJi11g9z+swvdcGbOFKI
+ 04Vy4OCKma1HHFSwQXqrmQBIfbBG3bu88QESriD4hAig/oQHT8ID/1FMb
+ 7Sl0noQK2fRtuuhH37xp0NWaBHEbm0GgBXfkqdcVeO0fw5Wd2TFO5cc/o
+ RYDQR7pqNFx1HQgTeuFnxp8n1H2QXbN6pKZ28dlCxfSGSLoE5C78bgbw2
+ f/WZ4AFtswJvnqHNEdsUJiFcm3GfnSCW82yijRdmVFragN8GIapPiel6k w==;
+X-CSE-ConnectionGUID: O1Ib031FStyjDGFGgLap9g==
+X-CSE-MsgGUID: X+k/0USjQ0+RLEwwSQtG3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="88302861"
+X-IronPort-AV: E=Sophos;i="6.25,266,1779174000"; d="scan'208";a="88302861"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Sep 2026 23:01:45 -0700
+X-CSE-ConnectionGUID: OJ0qbUpfSg+aMQc+MwjH8w==
+X-CSE-MsgGUID: vOtIZexoT+eSm+oiL6HO9A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,266,1779174000"; d="scan'208";a="295478773"
-Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Sep 2026 22:20:20 -0700
-From: Jeevan B <jeevan.b@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t] lib/igt_core: buffer signal-safe log output per line
-Date: Mon,  7 Sep 2026 10:50:12 +0530
-Message-ID: <20260907052012.3948192-1-jeevan.b@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,266,1779174000"; d="scan'208";a="294092164"
+Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
+ by fmviesa002.fm.intel.com with ESMTP; 06 Sep 2026 23:01:43 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@intel.com
+Subject: [PATCH] tests/intel/xe_exec_reset: fix mixed-engine reset stress to
+ use actual GT engines
+Date: Mon,  7 Sep 2026 06:01:42 +0000
+Message-ID: <20260907060142.311888-1-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -65,80 +65,53 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-xputch() wrote one byte at a time via write(STDERR_FILENO, &c, 1) from
-the async-signal-safe backtrace printer. When a fatal signal hits
-multiple processes/threads at once (e.g. forked test children all
-dumping a backtrace after the same signal), their single-byte writes
-interleave on the shared stderr/runner fd, producing garbled or
-truncated output. This showed up as tests (e.g.
-igt@kms_cursor_legacy@*) being reported as incomplete with no useful
-logs.
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-Buffer output in xputch() and flush it with a single write() (or
-log_to_runner_sig_safe() call) per line via a new xflush(), instead of
-one syscall per character. xprintfmt() now also flushes on reaching
-the end of the format string, so a trailing partial line without a
-newline is still emitted.
+This patch fixes the mixed-engine reset stress subtest by selecting only
+engine class/instance pairs that are actually exposed by the target GT
+instead of using a hardcoded class list with engine instance 0.
 
-Assisted-by: Claude:claude-sonnet-4-5
-Signed-off-by: Jeevan B <jeevan.b@intel.com>
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+Signed-off-by: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
 ---
- lib/igt_core.c | 31 ++++++++++++++++++++++++++++---
- 1 file changed, 28 insertions(+), 3 deletions(-)
+ tests/intel/xe_exec_reset.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index af9d93762..e376a972c 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -2105,13 +2105,37 @@ static void write_stderr(const char *str)
- #ifdef HAVE_LIBUNWIND
- static const char hex[] = "0123456789abcdef";
- 
-+/*
-+ * Buffer output and flush it in one write() per line, instead of one
-+ * write() per character. Concurrent single-byte writes from multiple
-+ * processes (e.g. forked children all dumping a backtrace after
-+ * receiving the same fatal signal) interleave on the shared stderr/
-+ * runner fd and produce unreadable, garbled logs.
-+ */
-+static char xputch_buf[256];
-+static size_t xputch_buf_len;
-+
- static void
--xputch(int c)
-+xflush(void)
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 34232f433..e12279d23 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -702,17 +702,20 @@ static void bo_ctx_create(int fd, int gt, uint64_t addr, size_t bo_size,
+ static void fill_mixed_engine(struct gt_thread_data *t, int iter,
+ 			      struct drm_xe_engine_class_instance *instance)
  {
-+	if (!xputch_buf_len)
-+		return;
+-	const uint16_t classes[] = {
+-		DRM_XE_ENGINE_CLASS_COPY,
+-		DRM_XE_ENGINE_CLASS_RENDER,
+-		DRM_XE_ENGINE_CLASS_COMPUTE,
+-		DRM_XE_ENGINE_CLASS_VIDEO_DECODE,
+-		DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE,
+-	};
++	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_engine_class_instance engines[64];
++	int n = 0;
 +
- 	if (runner_connected())
--		log_to_runner_sig_safe((const void *) &c, 1);
-+		log_to_runner_sig_safe(xputch_buf, xputch_buf_len);
- 	else
--		igt_ignore_warn(write(STDERR_FILENO, (const void *) &c, 1));
-+		igt_ignore_warn(write(STDERR_FILENO, xputch_buf, xputch_buf_len));
-+
-+	xputch_buf_len = 0;
-+}
-+
-+static void
-+xputch(int c)
-+{
-+	xputch_buf[xputch_buf_len++] = c;
-+
-+	if (c == '\n' || xputch_buf_len == sizeof(xputch_buf))
-+		xflush();
++	xe_for_each_engine(t->fd, hwe) {
++		if (hwe->gt_id != t->gt)
++			continue;
++		engines[n++] = *hwe;
++		if (n == ARRAY_SIZE(engines))
++			break;
++	}
+ 
+-	instance->gt_id = t->gt;
+-	instance->engine_instance = 0;
+-	instance->engine_class = classes[(iter + t->id) % ARRAY_SIZE(classes)];
++	igt_assert_f(n > 0, "GT %d exposes no engines\n", t->gt);
++	*instance = engines[(iter + t->id) % n];
  }
  
- static int
-@@ -2166,6 +2190,7 @@ xprintfmt(const char *fmt, va_list ap)
- 	while (1) {
- 		while ((ch = *(const unsigned char *) fmt++) != '%') {
- 			if (ch == '\0') {
-+				xflush();
- 				return;
- 			}
- 			xputch(ch);
+ static void pressure_bo_create(int fd, uint32_t vm, int gt,
 -- 
 2.43.0
 
