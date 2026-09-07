@@ -4,64 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13579C79F9E
-	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 09:43:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F390FC79F9E
+	for <igt-dev@archiver.kernel.org>; Mon,  7 Sep 2026 09:51:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 86D4310E754;
-	Mon,  7 Sep 2026 09:43:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9B33310E745;
+	Mon,  7 Sep 2026 09:51:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SGXu235a";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f/sWkPFq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 402FB10E737
- for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 09:42:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EA43110E740
+ for <igt-dev@lists.freedesktop.org>; Mon,  7 Sep 2026 09:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788774135; x=1820310135;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=Kh21N/hgaiLMHZZgNRaDKZbqXmGi6bkDuqQaXaU0u/k=;
- b=SGXu235aHNPaHV8Loi+VqZwOBd3v8Mk9/VPVrpZA/heQjDH5yn6DfYFM
- VH71iYRHbOUrw6X0EK4zNulGaJ2O2ACC+tUCU/ObAqholNN03FJKG4p//
- yhSN5N4KsnrxGzQdqJPxJJ1T4YNohSCHJ9vRn5Dx63axiyuJU5cCnGXEe
- UBT0O/+DuGBG2ERJw5Sxo0fuJE3zG4ejl77hJSZzJAGMwsEZ45GDYANbr
- MlbdiGoPGfxz69699W/lg7GqesoSdpMoEMy6biCh/dy47XV2nzKSAz0b3
- tyC+pXgckeoWv0bYq91YIshVTUmjSm/XUBr7o5b8tJHa6ouWiq6sb86uy A==;
-X-CSE-ConnectionGUID: 8z7M4FPpS8qjP3n7AkcS0g==
-X-CSE-MsgGUID: j7Oohn8wQeqq81S+NbVMpg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="100531596"
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="100531596"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Sep 2026 02:42:15 -0700
-X-CSE-ConnectionGUID: XH1WaH8eROGNLi0+hqI+IQ==
-X-CSE-MsgGUID: 6AblSQD1T5ivLsVgIG1/dg==
+ t=1788774668; x=1820310668;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=H6YwwOy6IYwmzuXiFJgeyVpHxbddHHXwH+LcgaVuCCQ=;
+ b=f/sWkPFq0hqk9vozxD1RVfGSRJe/Xk6LGSfSFsCKuaaYqMA/ghcYp4v8
+ jTUq4LjTc1zPW4jWHwF6yVLcIuWFFDA0Fcl9rSD+Ch5McIqtrM640GyTG
+ yysz+xvIZBqNq6fMc0VjwKRJRHFeJekmK7EpCetXopu93SmY7CjYrfgsU
+ 53vznSuj0IWoC7B4whpQoQbp6qPmsV7oBe4UTpJVNP0y/HBn5dUdOUC13
+ D906p2m47oyNXrsYExWt/DBhx1Nhs0Nll7/t3DxX8Cqej97dEPG5pCV1E
+ xZOLSnzeugbXYNOe8lRGBsyuPkHW9cpteAeni0ODnmsemb+uIXOL0LZC6 g==;
+X-CSE-ConnectionGUID: NLKm9nRlS2S6jfeOynYFKg==
+X-CSE-MsgGUID: bg4xFZrQRBqaIH/pwwkEZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="106544314"
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="106544314"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Sep 2026 02:51:08 -0700
+X-CSE-ConnectionGUID: HZ13ohFpQ1W9WppFn9kXRw==
+X-CSE-MsgGUID: QUaWaVakTBK3LP21odLYjw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="275951476"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 02:42:13 -0700
-Date: Mon, 7 Sep 2026 11:42:10 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sk Anirban <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com,
- soham.purkait@intel.com, mallesh.koujalagi@intel.com,
- kamil.konieczny@intel.com
-Subject: Re: [PATCH v2] tests/intel: Avoid stale errno
-Message-ID: <20260907094210.cagn5wrow57p3q4w@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, badal.nilawar@intel.com,
- riana.tauro@intel.com, karthik.poosa@intel.com,
- raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, kamil.konieczny@intel.com
-References: <20260904100042.583658-2-sk.anirban@intel.com>
+X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; d="scan'208";a="268933184"
+Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
+ by orviesa006.jf.intel.com with ESMTP; 07 Sep 2026 02:51:07 -0700
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org,
+	kamil.konieczny@intel.com
+Subject: [PATCH] tests/intel/xe_exec_reset: fix mixed-engine reset stress to
+ use actual GT engines
+Date: Mon,  7 Sep 2026 09:51:05 +0000
+Message-ID: <20260907095105.312933-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260904100042.583658-2-sk.anirban@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,100 +65,57 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Sk,
-On 2026-09-04 at 15:30:43 +0530, Sk Anirban wrote:
-> Commit <e311ed2c7> ("lib/igt_core: do not reset errno in igt_gettime")
-> removed an incidental errno reset that used to mask stale errno at
-> subtest entry. Now a stale errno from an earlier, unrelated probe can
-> survive into a later assertion failure and gets printed as a
-> misleading "Last errno" hint, e.g. in xe_gt_freq's throttle_basic_api:
-> 
->   CRITICAL: Failed assertion: !strcmp(throttle_reasons, "none")
->   CRITICAL: Last errno: 2, No such file or directory
->   CRITICAL: GT 0 is throttled due to: pl4
-> 
-> The real cause is the GT being throttled; "Last errno: 2" is stale
-> and unrelated, making triage confusing.
-> 
-> Fix this by clearing errno right where it is known to go stale.
-> 
-> v2: Update fix path (Kamil)
-> 
-> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-Regards,
-Kamil
+This patch fixes the mixed-engine reset stress subtest by selecting only
+engine class/instance pairs that are actually exposed by the target GT
+instead of using a hardcoded class list with engine instance 0.
 
-> ---
->  lib/xe/xe_gt.c                | 1 +
->  tests/intel/xe_gt_freq.c      | 1 +
->  tests/intel/xe_pm.c           | 1 +
->  tests/intel/xe_pm_residency.c | 1 +
->  tests/intel/xe_pmu.c          | 1 +
->  5 files changed, 5 insertions(+)
-> 
-> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
-> index 8f54b6e25..3d8b4f68a 100644
-> --- a/lib/xe/xe_gt.c
-> +++ b/lib/xe/xe_gt.c
-> @@ -224,6 +224,7 @@ bool xe_gt_is_in_c6(int fd, int gt)
->  		return true;
->  
->  	igt_debug("GT%d C-state is %s\n", gt, gt_c_state);
-> +	errno = 0;
->  
->  	return false;
->  }
-> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
-> index 19306dc41..886537862 100644
-> --- a/tests/intel/xe_gt_freq.c
-> +++ b/tests/intel/xe_gt_freq.c
-> @@ -397,6 +397,7 @@ int igt_main()
->  			stash_min[gt] = xe_gt_get_freq(fd, gt, "min");
->  			stash_max[gt] = xe_gt_get_freq(fd, gt, "max");
->  		}
-> +		errno = 0;
->  	}
->  
->  	igt_subtest("throttle_basic_api") {
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 7faba7c2b..543f46f5b 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -990,6 +990,7 @@ int igt_main()
->  
->  		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
->  		update_debug_mask_if_ci(DRM_UT_KMS);
-> +		errno = 0;
->  	}
->  
->  	for (const struct s_state *s = s_states; s->name; s++) {
-> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
-> index bfae1f844..e976048a9 100644
-> --- a/tests/intel/xe_pm_residency.c
-> +++ b/tests/intel/xe_pm_residency.c
-> @@ -574,6 +574,7 @@ int igt_main()
->  
->  		igt_require(!IS_PONTEVECCHIO(xe_dev_id(fd)));
->  		igt_require(xe_sysfs_gt_has_node(fd, 0, "gtidle"));
-> +		errno = 0;
->  	}
->  
->  	igt_describe("Validate GT C6 on idle");
-> diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-> index a8ceac46c..5b098c45c 100644
-> --- a/tests/intel/xe_pmu.c
-> +++ b/tests/intel/xe_pmu.c
-> @@ -1076,6 +1076,7 @@ int igt_main()
->  		xe_perf_device(fd, xe_device, sizeof(xe_device));
->  		num_engines = xe_number_engines(fd);
->  		has_engine_active_ticks = has_event(xe_device, "engine-active-ticks");
-> +		errno = 0;
->  	}
->  
->  	igt_describe("Validate PMU gt-c6 residency counters when idle");
-> -- 
-> 2.43.0
-> 
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+Suggested-by: Gajendra Uttamchand <gajendra.uttamchand@intel.com>
+
+I talked with Gajendra and he suggested this change to me, but I made
+a mistake and added his s-o-b instead of suggested-by, so resending
+this with correct tags
+---
+ tests/intel/xe_exec_reset.c | 23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
+
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 34232f433..e12279d23 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -702,17 +702,20 @@ static void bo_ctx_create(int fd, int gt, uint64_t addr, size_t bo_size,
+ static void fill_mixed_engine(struct gt_thread_data *t, int iter,
+ 			      struct drm_xe_engine_class_instance *instance)
+ {
+-	const uint16_t classes[] = {
+-		DRM_XE_ENGINE_CLASS_COPY,
+-		DRM_XE_ENGINE_CLASS_RENDER,
+-		DRM_XE_ENGINE_CLASS_COMPUTE,
+-		DRM_XE_ENGINE_CLASS_VIDEO_DECODE,
+-		DRM_XE_ENGINE_CLASS_VIDEO_ENHANCE,
+-	};
++	struct drm_xe_engine_class_instance *hwe;
++	struct drm_xe_engine_class_instance engines[64];
++	int n = 0;
++
++	xe_for_each_engine(t->fd, hwe) {
++		if (hwe->gt_id != t->gt)
++			continue;
++		engines[n++] = *hwe;
++		if (n == ARRAY_SIZE(engines))
++			break;
++	}
+ 
+-	instance->gt_id = t->gt;
+-	instance->engine_instance = 0;
+-	instance->engine_class = classes[(iter + t->id) % ARRAY_SIZE(classes)];
++	igt_assert_f(n > 0, "GT %d exposes no engines\n", t->gt);
++	*instance = engines[(iter + t->id) % n];
+ }
+ 
+ static void pressure_bo_create(int fd, uint32_t vm, int gt,
+-- 
+2.43.0
+
