@@ -4,65 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A04F9C79F82
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Sep 2026 07:50:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 60BE4C79F82
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Sep 2026 08:07:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 49FB610EA9A;
-	Tue,  8 Sep 2026 07:50:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0F1EC10E0B0;
+	Tue,  8 Sep 2026 08:07:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=mediatek.com header.i=@mediatek.com header.b="L/rcucDc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Syiv8iqS";
 	dkim-atps=neutral
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E3EE010EA90
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Sep 2026 07:49:09 +0000 (UTC)
-X-UUID: c3f62758ab5911f1b1788b6acf885367-20260908
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com;
- s=dk; 
- h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From;
- bh=wQ1+KzAJAQZnyntXHc+OsMKH8r7keswU2T9kBa6gp60=; 
- b=L/rcucDcyiSEmrF3FefQQt20XzaJB2gMM9hwOg/AAxyEgdeWkEyY2PpEc4yUtzgOKKlzwrujD1riqCTJXIIaJ7lF4a+2T48hog+Vp6+Vo/MeIOCuexi86YSTxpdwemyC0nx2cjv/wCDy0HBDLsYBvse2vNMg2eFN8y0TP0J2RD0=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19, REQID:2998cdd6-9196-4696-953f-02dab4361f2f, IP:0,
- U
- RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
- release,TS:0
-X-CID-META: VersionHash:7db8b62, CLOUDID:9291cc8f-b3f4-4140-b6fe-32fdff297f16,
- B
- ulkID:nil,BulkQuantity:0,SF:81|82|102|836|865|888|898,TC:-5,Content:0|15|5
- 0|99,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI:0,
- OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: c3f62758ab5911f1b1788b6acf885367-20260908
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by
- mailgw01.mediatek.com (envelope-from <xiandong.wang@mediatek.com>)
- (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
- with ESMTP id 349699748; Tue, 08 Sep 2026 15:49:05 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Tue, 8 Sep 2026 15:49:03 +0800
-Received: from mhfsdcap04.gcn.mediatek.inc (10.17.3.154) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Tue, 8 Sep 2026 15:49:03 +0800
-From: Xiandong Wang <xiandong.wang@mediatek.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Jason-JH Lin <jason-jh.lin@mediatek.com>, Xiandong Wang
- <xiandong.wang@mediatek.com>, Gil Dekel <gildekel@google.com>, Yacoub
- <markyacoub@chromium.org>,
- <Project_Global_Chrome_Upstream_Group@mediatek.com>
-Subject: [PATCH i-g-t v3] tests/kms_atomic_transition: Skip blocking
- transitions on MTK
-Date: Tue, 8 Sep 2026 15:48:39 +0800
-Message-ID: <20260908074849.29238-2-xiandong.wang@mediatek.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20260908074849.29238-1-xiandong.wang@mediatek.com>
-References: <20260908074849.29238-1-xiandong.wang@mediatek.com>
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8E5DA10E0B0
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Sep 2026 08:06:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1788854798; x=1820390798;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=trMqxf3c164gfjNTWKMovzmDrWsLcE/Fv5YdSplHrec=;
+ b=Syiv8iqS5jOSdnCgv6jCY+Rup0FG76KKXngcJKPL5QAWKK312AYAxhU8
+ 7RNgdpGeYpHNhJ9jrREhKS/AGUDUojVHTibIb9M2Ynh0RGvMLpICInM5e
+ xF3pn/lvAD0dh7Q9tacWI3wRQCBRNSeLBZwCUoA4heYCs1aBMpONMuX0O
+ OQcCfb79GuwPlkbM+fc310ppsdiOQdwVvquzqXOvG/RLov8+Pwlq8Oz3r
+ slVQawNJmQbuqlwpr2Aso4v1hBRmhADq8jNbSUbv4ruUu9TaIanNCKXst
+ smeJ41W6svUhZbA9GQAhxBy66b8t9/JewdZWbqMk6POVqi5EqcyIjbhYb Q==;
+X-CSE-ConnectionGUID: PlVtHFRUTP6Evfc5b8of4A==
+X-CSE-MsgGUID: 7k6NBqP4TqywM6WCVW5WFw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="89292533"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; d="scan'208";a="89292533"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Sep 2026 01:06:37 -0700
+X-CSE-ConnectionGUID: pC+DJxz9Q0Wf5ts4Ijh6uw==
+X-CSE-MsgGUID: zZQ9i/HbRDGFB2LdRbg0CQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; d="scan'208";a="276185901"
+Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.3])
+ ([172.28.182.3])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Sep 2026 01:06:36 -0700
+Message-ID: <1157dbba-66a9-4a29-a283-1f1b7898fb5c@linux.intel.com>
+Date: Tue, 8 Sep 2026 10:06:34 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] tests/intel/xe_sriov_ggtt: Install SR-IOV exit handler
+To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
+Cc: marcin.bernatowicz@intel.com
+References: <20260907125537.617132-1-lukasz.laguna@intel.com>
+Content-Language: en-US
+From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <20260907125537.617132-1-lukasz.laguna@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,37 +70,38 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-MTK blocking atomic transition commits do not satisfy the
-immediate page-flip event or out-fence completion check used by
-this test.
 
-Keep nonblocking transition variants enabled and skip only the
-blocking transition variants on MTK. The separate modeset
-transition tests remain enabled.
+On 9/7/2026 2:55 PM, Lukasz Laguna wrote:
+> Install SR-IOV exit handler in the test to disable VFs and restore
+> driver autoprobe on exit.
+>
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+> ---
+>   tests/intel/xe_sriov_ggtt.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/tests/intel/xe_sriov_ggtt.c b/tests/intel/xe_sriov_ggtt.c
+> index 2c2184930..bcd763eb0 100644
+> --- a/tests/intel/xe_sriov_ggtt.c
+> +++ b/tests/intel/xe_sriov_ggtt.c
+> @@ -701,6 +701,7 @@ int igt_main_args("", long_opts, help_str, opts_handler, NULL)
+>   		igt_require(igt_sriov_is_pf(pf_fd));
+>   		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
+>   		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
+> +		igt_sriov_install_exit_handler(pf_fd, NULL, NULL);
+>   	}
+>   
+>   	igt_describe("Verify that the VF ID in the GGTT PTE has been correctly assigned");
+> @@ -752,6 +753,7 @@ int igt_main_args("", long_opts, help_str, opts_handler, NULL)
+>   			    igt_sriov_disable_driver_autoprobe(pf_fd);
+>   		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
+>   			       "Failed to restore sriov_drivers_autoprobe value\n");
+> +		igt_sriov_clear_exit_handler();
+>   		drm_close_driver(pf_fd);
+>   	}
+>   }
 
-This is a temporary test limitation until blocking atomic
-transition completion is supported by the MTK DRM driver.
+LGTM,
 
-Signed-off-by: Xiandong Wang <xiandong.wang@mediatek.com>
----
- tests/kms_atomic_transition.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/tests/kms_atomic_transition.c b/tests/kms_atomic_transition.c
-index 37dc77c28..a05a98575 100644
---- a/tests/kms_atomic_transition.c
-+++ b/tests/kms_atomic_transition.c
-@@ -1288,6 +1288,10 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
- 
- 		igt_describe(transition_tests[i].desc);
- 		igt_subtest_with_dynamic_f("%s", transition_tests[i].name) {
-+			igt_skip_on_f(is_mtk_device(data.drm_fd) &&
-+				      !transition_tests[i].nonblocking,
-+				      "MTK blocking atomic transition is currently unsupported\n");
-+
- 			pipe_count = 0;
- 
- 			for_each_crtc_with_valid_output(&data.display, crtc,
--- 
-2.45.2
+Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
