@@ -4,159 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FA84C79F99
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Sep 2026 05:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B018C79F9E
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Sep 2026 05:55:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CEE1110E03C;
-	Tue,  8 Sep 2026 05:22:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2838910E06E;
+	Tue,  8 Sep 2026 05:55:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CZ3WOMbo";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="V3AHJ2wh";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53DBE10E03C
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Sep 2026 05:21:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C725B10E06E
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Sep 2026 05:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788844890; x=1820380890;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=trNRAJnGEt9cyVmDPPmS1fCJeHWJ4UcdbuogKvrmjKU=;
- b=CZ3WOMboWtxHfFNI26lD3KXJP2QfWkQH5vgQBChUIp1yATmy7tZzGTY7
- ZCsPYoVxRKGEsUAnNg7jX5dwVMS1G0ouo/yZx0/M979esa6HE8wlZf2gR
- C7EXQrKRJbcXHpCG8JAoQBWq14HfWowhPImfmcBU5YrXT1XbIrvCJnn3C
- pe3SKYea214wMh5mJyNwrBHe5aI8yjwr2MrcPB+FY4w36mlfwoTiXT/bQ
- +pqJH6oYNUHTVF3FJB9z6dgfYuyEEhHK/uuL4zW1wjO4/uyVg8TyvF2wN
- vNxIvwlyzy9+Ky56UJTglpSyynDlDxNODuRdrdUxVH1plvKlmjT8XChxy A==;
-X-CSE-ConnectionGUID: taVlVwHWRl+APUnkyB58nw==
-X-CSE-MsgGUID: qAuKe89mTOu7OUIg9h8+UQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="93056183"
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; d="scan'208";a="93056183"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Sep 2026 22:21:30 -0700
-X-CSE-ConnectionGUID: la3XeMOxSy2dD2plpRnuEw==
-X-CSE-MsgGUID: Ma4s2FUkRauHJqP7QKoLJw==
+ t=1788846899; x=1820382899;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=WWUvKfMvd26GeI16b5g2bvsngzKoneNMIrux8Ctk5g8=;
+ b=V3AHJ2whfd8qZ5Ekef1JdBOray/FFLWxhLv6kmwnRpL/VPkQb4cFZO2O
+ 6tyPv/SWkwait3VTXNko9ebSs8qToQCRUSpoAh9WZKT6GvGwsp+hg2S+g
+ 7VKqDpDohzVgJQeVe1iBadxTGLbYIXSt/awEuKeaN0PAbVsVjwVie6bGj
+ gIjnqhO8CcYb/zOTVecR4XI5YahbczM3jWFIJ+v3Xtx9FnHtgKBBgi7HU
+ hEo1X46gR8+OIBVH/mWUE8OrRjEIOA5m26iYwkNyv+Sk3f25lwpzPunRM
+ 5DVN30gvKwBbDMqbIvgI4DprcQKugMMGsLPg5hJPYoc0P5huby9tLwYOO A==;
+X-CSE-ConnectionGUID: nIsSZucmSEu4LZ/2YMoiHQ==
+X-CSE-MsgGUID: pmDcJRJ5T/yCo+zrLD2m9g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="106609908"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; d="scan'208";a="106609908"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Sep 2026 22:54:59 -0700
+X-CSE-ConnectionGUID: 7EJTkc+NQXSTKWqrh5Pldw==
+X-CSE-MsgGUID: QuO7KzvfT867zsLW0Lq6yQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; d="scan'208";a="309109608"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Sep 2026 22:21:30 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 7 Sep 2026 22:21:29 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; d="scan'208";a="274672128"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Sep 2026 22:54:59 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Mon, 7 Sep 2026 22:21:29 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.37) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.46; Mon, 7 Sep 2026 22:54:59 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 7 Sep 2026 22:21:29 -0700
+ 15.2.2562.46 via Frontend Transport; Mon, 7 Sep 2026 22:54:59 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.30)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Mon, 7 Sep 2026 22:54:58 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sO7adxH7sgZCkIRpCyas6OqKb3MShC1dCaf9N+3SueqfGBKb+KF+7fxtmCZTV7hf3UfyFh/9d59HOwQfv2zE2VRec1C3zjky/UklXge5deNdMiTX/Gi1qFlQmneaegedMcZdwq2YsSlHtbEohPH7TtUz2i6soUYMCrZ3Nde+FBy6O9eiexx6IKOhnslphNJTGIvrr04A5rBMYvR+1AbHS38wI3OND6i++q7jJengpHpT5MmEhirb2XHyDY3Vca1wM3k4D0JickahHgDoNtFlW4K8Q1ZuEjAvg0k9K3obh2L1sNCAw1LO2mvi46V8FFGwJGpr9h+4uUL5kzZrhG0Zog==
+ b=kf8E9BbA2ybs66B8GlhPMGnBqmItCMM3wCOlzS3c9rGCoJvCOHyedImuvgwvZk0lFMPZZQY4bJnbeDX4hiTXIvnr4DbFCxGFkez9IlIJRR2DkRyg9J/eZ5xhJoj/VPhFQr7XgaD5a11BMt+u4h0jnSpGEyj+UQQ0K7NxeOD6WACgz2mqov7dWM53H4iUcSlrdROq7MvqkiB+lAeKGH2yvguD0HqX6GUzqdMO59/JPP3Cf+klyE5afo7vZTJFZ43ZS9CWO46mNY6GN+J2CshZlGJPPTSVtETXl1n0ufVNAtungtyJlXJol8AOz4uVXVInjlVbYksBK0nBWRgv/G1hOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YmS5aXM7fnvPM95bxsWSRjjknWG5i9choUf2UwOoSC8=;
- b=uHnEyNKaMOGmwqbtOn02mvea5+0SFZSvnIY+7VQjoLx36ypwelizTI1zUHmEwTneqYu+SAQVgEPd/cg2gM0EcPCzhO8eDSb2ziLiK0oqc3uwzzJsAxee+oRjEAj4cpxwl5yCl1SY5IG1uKIh6O/hMj4kHVAVLRSoozVXsYY1wYJq1rRqCA6sPpEILK0Ik/BJl+reL6dRqkrlcbvxCks5SMf4TOMQOnLvBbvM5JPuBHiHeLZGa5F4AlUJkMbokTzNqy3Op+5sYACvMV1+v74UDTmxN+ZkltMbLTbppjdWiCxpWpqC2ak9yJ/H5MqgXDiUf2E90ixbrD8ao/5RqaYkmQ==
+ bh=m89GKQYKvG7FOieqNi2x8lNprJ9zyTO6ij7g11YI0XY=;
+ b=mxIHEnPPrKjtllE9WhV7bmbMgVaYRg2Wk9QfP5heWNPnSuAY86secsfwDRhNrNaUqZR/yFg49DkBG3mHzWa8qgkzJmPRtn16YuhoENjff3oUSIEOW8Tkoh3E+Muv0iauK1nb2CVg1wg/wPZEO97KYr2DKFywVVonRTS47IV093PX0JDOnDvsTGQgrQd/8AyInxuyKnmebu2mWjTuHthqlPANe+tIihHcsoykP7u+PorXYQxZ6z6LHcy2PJH0QIut62I6ufFQ1aLe9CZ+g3OEiwr1S1BDJMvW9fA2SuhxRsO/+Jowtje/GRSjmwnIx+8zXFXfJydYVhsDtQflLArffQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com (2603:10b6:610:1d1::22)
- by SA1PR11MB8254.namprd11.prod.outlook.com (2603:10b6:806:251::9)
- with Microsoft SMTP Server (version=TLS1_2,
+Received: from DS4PPF691668CDD.namprd11.prod.outlook.com
+ (2603:10b6:f:fc02::2a) by CH3PR11MB8187.namprd11.prod.outlook.com
+ (2603:10b6:610:160::18) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 8 Sep
- 2026 05:21:26 +0000
-Received: from CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::e419:ae5c:91ec:1e9d]) by CH3PR11MB8706.namprd11.prod.outlook.com
- ([fe80::e419:ae5c:91ec:1e9d%7]) with mapi id 15.21.0406.005; Tue, 8 Sep 2026
- 05:21:26 +0000
-Message-ID: <6cd89b8f-08e2-4fb9-bb70-e8cbd968d756@intel.com>
-Date: Tue, 8 Sep 2026 10:51:18 +0530
+ 2026 05:54:51 +0000
+Received: from DS4PPF691668CDD.namprd11.prod.outlook.com
+ ([fe80::5a5c:9c7a:cd1d:d687]) by DS4PPF691668CDD.namprd11.prod.outlook.com
+ ([fe80::5a5c:9c7a:cd1d:d687%6]) with mapi id 15.21.0382.014; Tue, 8 Sep 2026
+ 05:54:51 +0000
+Message-ID: <c75228a2-bc25-4ed0-8e39-588193e71f9c@intel.com>
+Date: Tue, 8 Sep 2026 11:24:38 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3] tests/intel/xe_ras: Add test for GPU health
- indicator
-To: "Tauro, Riana" <riana.tauro@intel.com>, <igt-dev@lists.freedesktop.org>,
- <badal.nilawar@intel.com>, <kamil.konieczny@intel.com>,
- <sk.anirban@intel.com>, <raag.jadav@intel.com>
-CC: <anshuman.gupta@intel.com>
-References: <20260902025813.1795134-2-soham.purkait@intel.com>
- <1b4d63c3-bef7-4576-9947-49931878353c@intel.com>
+Subject: Re: [i-g-t V4] tests/intel/xe_mempage_offline: Add fault-inject based
+ page offline tests
+To: Tejas Upadhyay <tejas.upadhyay@intel.com>, <igt-dev@lists.freedesktop.org>
+References: <20260904125932.822044-2-tejas.upadhyay@intel.com>
 Content-Language: en-US
-From: "Purkait, Soham" <soham.purkait@intel.com>
-In-Reply-To: <1b4d63c3-bef7-4576-9947-49931878353c@intel.com>
+From: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>
+In-Reply-To: <20260904125932.822044-2-tejas.upadhyay@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0040.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:175::13) To CH3PR11MB8706.namprd11.prod.outlook.com
- (2603:10b6:610:1d1::22)
+X-ClientProxiedBy: MA5PR01CA0198.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b2::8) To DS4PPF691668CDD.namprd11.prod.outlook.com
+ (2603:10b6:f:fc02::2a)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8706:EE_|SA1PR11MB8254:EE_
-X-MS-Office365-Filtering-Correlation-Id: b88d0cc1-04f0-4eb0-1175-08df0d690795
+X-MS-TrafficTypeDiagnostic: DS4PPF691668CDD:EE_|CH3PR11MB8187:EE_
+X-MS-Office365-Filtering-Correlation-Id: ceffed9f-d2ba-4be9-cdc7-08df0d6db2b1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|366016|1800799024|376014|10067099003|6133799003|18002099003|22082099003|11063799006|56012099006|4143699003;
-X-Microsoft-Antispam-Message-Info: Qlxp0UAx0wCwbY4xkdDI9OmjRYWtpsMIJUtn7ROaB0A/t9aVag8hCwDZwAa9t4y6zDpYI9ZQcd/iSjjn+e23DLWArm+P7r7HySdHr5TVu7dqdWOEHVwGq81GWPduvBNMGchyFq0CSJ0iuRSyf6aMcqpTViANbpXAxPQ4NMquNgY15aws0jrbiC88flZz0HkRSsQ9GvEthG1a4lBG3Ye+reS8MrLBtFKLJ3JFrewiEj3MvdAOWCy69AhochjQ8uHQU0xr9kFu6vlA9hrT/26e7tlaf/JIVC79pK3PSwB5ilusuTNJigyxi0bBo0OKwNCFvrIwLcgbw4AwXEKyYxB7qbiMqmr1wZLvKeuXmvcIEL4nf+t82oNMJLuMIwEkQqTWJxL7/oQp5Q1gpLAXOTJm9ohn6+e5zdTMUd7gflPPo4UZ/sn7BfVASG24PyQ8M6W8H4PjHBq6o/dyh83M6dBxyHHVC7SSZiIZTNG2QOh9W5A4KE4qebr+5hf+76YG1D/q8EexFA9KQub/g370nF6uigNrPVhzniENX8CV/ndF2oZeItov2HAyy6nrUYwhYS3sdrieJPd01O2faeoSDYnTlEhDUj4MyjxIuJHZ9w4nLs8ifaQb+mpoO/cngqH8mNPL0pusJTUZdjheeHliCYOr7kFPNrlbJ5ugIJJIJUP/0vw=
+ ARA:13230040|1800799024|366016|376014|23010399003|6133799003|3023799007|10067099003|11063799006|56012099006|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: ol7BVxqjV9cw0NDBtellsweMQigynZVE+8XpDbiCIT5P1u6DEtGbAwXLgJAuEu9sxFhIFq0rDXZzUKNDqT7Kkygz/4yxeAVnRP5+mzA1do9TMVMddQJzuc6H/AwcXSK667DYPQKOd+f4hoJ7+MC5K7ZVmgXIlFO3pwBvyARQ5FtMMv04/asN8TC6OGywOW/U2sCd4NqK/gkXZWVBzW6orSmSzF3MsPnx3R4BoUwzFlFhqEV9iITLVwyqxACS3bz2wU/8rJCPXWonoRlhNqIhCFS/Klp0XR+4fm1RH++f2rWpYyiwlPjRR7kuw04eGBqzxllpOSEIOVZzLNXbU3PBm2za6uJjHOgDBxgolatYrQ4LiKmvjNwu4zpWkFDgpWgc8uCpoAzo10heaELKBcs6KPwuKZTgl5tsJkPde1/3zvNCqWiT7q1zXX7Qy3n4iMsjfLqnstwv91XgWhVMp/vLhcqdI2g150/3tfkq5jNd7Y0xkpn2MWK3GnTokzoSGFNNiJpYzU+Gid/8oq4Coz4IPlzrtCmDU+AwLVABBVBxTf3P0MpZKFeaAG0L3jNpxciOgeqZi/Htkx0qV/7eVAUarGpNcR9jzGfw3BtYsCOI4IiAT8MYN+2AqqW5dOUQZFu3HgQlmbZuNDIdte0I+iTVuwMHgnwKYJtO4Zz73Dm4pos=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8706.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(10067099003)(6133799003)(18002099003)(22082099003)(11063799006)(56012099006)(4143699003);
+ IPV:NLI; SFV:NSPM; H:DS4PPF691668CDD.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(6133799003)(3023799007)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R2ZzdTRzKzlpbVlJR1R6eHA4bStteS82bWF3dEJ3dTU3M1BacU9FcVJucXZq?=
- =?utf-8?B?WGMzSWwvd1RNSEVDWUFjOXFvK2tteXZRSGNRZ1NGSllrVmhWcDVZM2dUV3M3?=
- =?utf-8?B?R2JweXd1ZXZoRjlRVDFlemUvek5IZ1ZPRFRoZnU3eml0TVRBZGJwUHFPMkMr?=
- =?utf-8?B?QmZNQzEydFV3a3JrL2dTS1BsY1k2SXJKL1pRS1hyUEM1NUl3WGlBRWVad1RN?=
- =?utf-8?B?M0NkQnNiZlBQbkV6RTZVLzhPajBxbGdHVmNKTXExUlFKdGV5NU1RNnBSSWlR?=
- =?utf-8?B?bVFMVTA0cngrbmVvYSszZE1QWjN0ZDZtaituN3laK2hLWlZDWVVkd1lZV1lE?=
- =?utf-8?B?T0JhelRJcm5PaTIvTlFTU0hCOHFUVnhrK0FlV2dIVFNES0ZBWEJyQm1ucHZl?=
- =?utf-8?B?NWZmSFlKYWl5MWJVTkt1aElsQkxzb2p5RjBtUno3dmlIY3NHQm82dUtlMmpZ?=
- =?utf-8?B?OU1JWkRJendRTW4wZStkUHhxL3hQVlJBSjZJMFFXSVc2VWoyb29rZzVkZCtw?=
- =?utf-8?B?RkVoWWlwdmUwckZWT1g3MHNYWUwrQmxNZFV6bXdEOElUZVlBY1Q2OGtSQzAv?=
- =?utf-8?B?VFd3QWtmOFFDQjVLWHNYSE4vZk5xeTVua0RaOW9UMzY2TmpaT0JISDA0NzhP?=
- =?utf-8?B?UGJydFFYWlNWNDZScTUyWko3dnZSa2R6TzdvRC9wdnJnUSs4elJBS3Zpamg5?=
- =?utf-8?B?SDdSRkNUaHRhVkhxZ3M2V0lteExveU15aGlTUVppanV5VTI2Yjl4Y0twVmhu?=
- =?utf-8?B?eHBXQVpHbHBqQ1RRVTBtY3JDYnZaMzc3azU1NzJSTCtJMjVYT0t3a2QvQTBK?=
- =?utf-8?B?OExSV0VOUlZ1OTRqWXFvZlR4WWhMMmNvWGFOb2F1Q3F3dlZ0NC9FbEdheXJk?=
- =?utf-8?B?N2VoU0lIeHBoYkVGUUlSNzkxNjlrV09UVVUwYVVFWGZJNllicHVuMXowNWRh?=
- =?utf-8?B?QTNUWHpvTnh2azV4ckNIL3BYYzRVb2N3Z3VscEt1TnN1dmFWWlgxZFpLdndo?=
- =?utf-8?B?SUs4b29EcEFlcXhIZmJDOHdrV3h1U0pBaTBCN1RiYUl3NmhXM3NLVGNWdzR5?=
- =?utf-8?B?Q2JsbFdFdEYwT0lObExFUnVpZUIrckNCblZLWEdseGY4a21TcWt1NTVveGw4?=
- =?utf-8?B?Uyt3d2ptRzJ4VVJ2UkE2S29GbFQ1MC9qMnJhSGJlZGF3T1dyMjRzVVNuYUxw?=
- =?utf-8?B?NGIwTkFyelJxeFhNYXNha0UreEo5Q0U0cHRsckVxYTJRWDdSdWtxTmMwN0E0?=
- =?utf-8?B?WXdiU3hGdnFWbFNITzFtaFRPczVxQ0hUMGV6WmlKTHJlK3VGVFh0VFJhZU9s?=
- =?utf-8?B?L3BpU1lhZzNnVjE2dUpSclUwV0IyV1dQMEw1YnBucmg4aER0STdDd3ZlUUdV?=
- =?utf-8?B?WHVMYy83SzhLZStLdEVibFpCNWllcmNaVHVQRklCU3F3RlNhV2pHOEowTGht?=
- =?utf-8?B?VEQ0U2dRdklDdkVLazVxcjhLMGZocUNUL0dsUldOSTJHUkF1VEUyUUk5bnZv?=
- =?utf-8?B?Q1BGNkNBT0RzSXhoaWRaZmkvK1l4eFlreVE1OUwvMVYrMld1RmxUWk1ub0NY?=
- =?utf-8?B?Y0N6a3M4Y29IVUk0RzhpcVNiY0JNZzZlTEo5NWZFSHpNSHN6RVpja2NmbFoz?=
- =?utf-8?B?a1NPMHZpdThDZEhlSW1RZHp1Qnc4YVFjSTFoY0Z4ekNYTm5Ha1hzSEhvZ3Jl?=
- =?utf-8?B?N2daSDFZWHJIQmNxaS83WGVzYXlQcXoxY1pBRFU2emdNVmRDYnF0WldQSlJJ?=
- =?utf-8?B?RFpic2hPSENhcjVRUWxPam9McmtVWnQvMUJiL05tbXNaMklYbzE5cC9KNzNk?=
- =?utf-8?B?NXJiaktjVTA0enpTZmhDUmJQcE9aUUdibVNyRHI1UmJkaDhXL0VzNlJJVEhP?=
- =?utf-8?B?RVVLRnZqSHh0UjJsaWRCQ3NzN0lUT3BucVNXY0NleTNJbGZCclB0M1V0YnhH?=
- =?utf-8?B?dVBwK2JlRDFqRXkySWVWblFWeURNVWRwZ2tTd2c5VG16TDRydTNYTGlsTHB2?=
- =?utf-8?B?bGkyS250aDlnYjJUbjljc0VBNUI4c2VidnQydWNKMmF4YmJ5cWRpbmdjK0Jo?=
- =?utf-8?B?M0FERGJ2N25zMUtpYUEzNTA1WU1PckRFVXVKTDhXemU0TVN0WEs4dTh4OXF3?=
- =?utf-8?B?Q1ZGV3o5b3pPNHM0RXJ6aFVSQ2lhVUlER0N2a0JKR292MkpGZmxpNmN3TnB4?=
- =?utf-8?B?c1JCeUVMb21abXAyWklocU52b3FiS01zTVBvSnQxTjN6UTdhQ1dOU2V3V1FS?=
- =?utf-8?B?QXVtcmF4WVQyOVlKTzdMTFV3UldZMnd2bXdubFE1MVZQSEZTcWtBMnQ2ZEcw?=
- =?utf-8?B?Qk5Dbm1YR1N4Wm8zTTN2R0pRcUtPQXlWTG9Qb0hpbTFSWFRHaytXRFA1Njdt?=
- =?utf-8?Q?nCK/tW6Zyb+Ojkbs=3D?=
-X-Exchange-RoutingPolicyChecked: Xj9GyR8cgZH9IPLMtznZz65NnYgMOSrZT3m8MneZlck14wcMrQvMEzESgUVq1vYB3PNUvMgfPmBCkW4jyLvfcYvkNtdA97VkG6zNobcpTfAF2YOuK2Qds9z7/Lmbb1qSSozZRj+PTwoerO8kDS+aqeGSIInzUNT8HGWS5x92t8W6M1wTQUcjIhdPBR6YbOLUhKYK8hIKDySPRYshIkI/xjjkTrL0BREEOsY+fUBrWqVStdn7rFw2t8IGhrny6DVyDf5HJ37HXvy36W41dGTkiBH2l7ezpodGd7E/5YdYmGUfJMZefF+OwbV+r9OkQiOgJ8oJXOAlTu2brys7sFbRCw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b88d0cc1-04f0-4eb0-1175-08df0d690795
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8706.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?emxLTzFKM1cwc01WVzU4Wit3cDlqeHcwcmlHQkl1SE5hTjRxRFRYZlFFeXhV?=
+ =?utf-8?B?d2JTRFpwU0s0cFE4Unp2ZEFpR2JqUkVhWTNVVHpyNjdRSnQyN1RkWElxNXNw?=
+ =?utf-8?B?TE9rZmo4TjV1enRzNktEd1BBNnpVVTN2NkF5WGozSVV4bVVvYWVzUHVaK1M2?=
+ =?utf-8?B?TVd3Rno5S2pId21UR1NueW1CUkVuZmNBNDFRek9pdi9CZnIrRndXUk10YWdS?=
+ =?utf-8?B?aE80YmpyZW9FelN1OC9SbWRxQzlNNVJDZytqSmlBbGNWL2p4em9WRS9oNzJl?=
+ =?utf-8?B?aWNac2p4QUpKMVZxVGEvd3ozUEdSUm9PbTh3WEcxbUF2cmwwRVZ5NVhoQ0xr?=
+ =?utf-8?B?ckFqcW9TOHRoY0Rkam50YTcwRGc0L2pzbkpQRTZZYmR5elFyd1FsTEdCdlli?=
+ =?utf-8?B?Mzk0R1RKMHBGaWgxUFZKeVZWdnpkdXRNc0NnekFpbnh6ZlBFczVuUmVWb2xt?=
+ =?utf-8?B?QmxlRmh1Vk04YW9ES2crQlJ1TXFhS0NrRDVtSXpkZ1NCR0RiWEJ5TEhSRjdX?=
+ =?utf-8?B?a2M0aTRVNTM0WkI1VnkzbXpqbXY4QTR0M0FsREc5eWVjL1lLSVRSRHFIRmtM?=
+ =?utf-8?B?V3h4SmUrcE1uWFQ4MlBqR0R0MHo5VVdUdmt4S29XaDlFM2l5bC9XMnFGSFZy?=
+ =?utf-8?B?clM5SUtoOTVTMDErdU9SRW9YZ1RWUG4rTFp2dndlUkFMYWRubXNjVU4rdThr?=
+ =?utf-8?B?bUR2eGNQaVpIR3pmNTVEUVdvejA1ZTFRR1g5OGNkSkR5MTJXKzFrKzEzSlNP?=
+ =?utf-8?B?eExJNTlkeG0wL0dRVUoyUGFlMENXNU12VEpTYTdVb3pjS2Zuc3Jzb2JIaTJp?=
+ =?utf-8?B?Sk1qNmRJbTY1OFBpQ0tQeU81N0VGckczeXB0K28vdEE1KzUvOG91RDE3VHlT?=
+ =?utf-8?B?L1NyUC9KVjdvL2JHRHZacWdVUlhhcmRkKzNQL0RaOUk3RzR3OEN1eW45STJz?=
+ =?utf-8?B?OHA5VXo0R2VLZDZzeTlqNElWc0x6RldrNVFUWnBFaWtwempGRjN0Y3A1UHZ0?=
+ =?utf-8?B?NWpDdTdzOWxXUkEwMUJHaXNvY3pBZ3V6QTloQkU1UFNCZFp2a3BwL3RINXpH?=
+ =?utf-8?B?aVppNnc2MFMzTk9UM2xFYmhRcjhyMjJtSDk5ZzdpaFJzWldGS0x4eThXcE5u?=
+ =?utf-8?B?MHVHWTNBb0p0aXgvQVhqT1VGbWQ1K2pyd0VITXpDZ2ZKWUI4bnhsakZQMC9y?=
+ =?utf-8?B?NlhMa29sb1dmMVhRMDd5eTMyWHloU3FBSGtPWDFmQ3F1bUNNb0JqQ3E2WDdC?=
+ =?utf-8?B?RWFIRVZyRU5XdENCTkZZbWlXRHdJdUh2eFBJWE1LNWRaSFhHaU4vUS9xMVov?=
+ =?utf-8?B?QTBqYkJlVTJxUGd3aWphdHp6N0U3SWVwMHpUZUEySXdTdkF2NmlndUE5WUxt?=
+ =?utf-8?B?UDhydUNDUlhtMmx1NENUdVhWNzhiOHN6aXJiSzFmY2V6RHhIZ09ZeEc4NS9x?=
+ =?utf-8?B?U2pYaVh3b1kzQ0JFdnNDR1hCd2VWajNmYnZ5THFmY21qb0tDd1QwRWovU2tS?=
+ =?utf-8?B?SWt0dXRCWmFlRDBmWmZrekc3M1lXcTVjeWs2bHBXcFc2SEkxb0p5QmNreFVm?=
+ =?utf-8?B?WlAzQmVYU3FtaUU5bkhUM2s5SmtTVUZjTHpYbXR0elBUK1didEl6Y1l6V082?=
+ =?utf-8?B?NFMzTit0a1hPVGV4c1l0alhqMTRPU3dLS0ZxMFN1RzNFTFFDa3RWc3JjcVFC?=
+ =?utf-8?B?MFpMSVMvZGoxeEhUNW8vYnZjMlYxb2R1YjFwc05EaEdOZE1uY3o3YmJrVExj?=
+ =?utf-8?B?ZWxTVWZ4aTVSRnFwU1RVNGVNOEM0YmVXUkFRYnZHVW51NldoWVhGYUtJL1ZY?=
+ =?utf-8?B?S1JwQVVXbWx4cXNaZ2FNQTQ5WkF6REZQY2RKTHowTytLanVhWWI3eXFHVWNr?=
+ =?utf-8?B?dWZZOU5XMDZOSDdCcng4REkvVi9HKzBwcDljK0duSFZSVFdEUVlIZVhNd3Fy?=
+ =?utf-8?B?b2FuVDRSRW10cDZJYmVGdmg5SkhvZ3JiTFczb3pLYlREN21YS1lLUWM1clBN?=
+ =?utf-8?B?RGpTZTZTd2FUanpWYjZvM3JEMGJwSGNDQXV4enNGdDhuZ0FicnU0Z3hzVkxi?=
+ =?utf-8?B?WUFlNDd1ZlR2OUZEN0JzdnhucGFQdlpXcU5RN01MbTJVRFlEZ0pFYnV6eGoy?=
+ =?utf-8?B?YU1BeHkra1NXUVA5QmlqUWNUUFprdENsUjZvNEZQZ2s1RVpIU3hJZVEydG1x?=
+ =?utf-8?B?RkhpakY2UFNnRTZXUENZSjZPREthU2FoYk1lZlRJL29nb3FTekhJeUcrLytL?=
+ =?utf-8?B?c3RkR0dEaXlrOGo3RmlwUVZhbGRRM0ZYZ1NIREtPZmdxZFlINkdFRS9aL2Fk?=
+ =?utf-8?B?RTN2NmFKN256VW10ZFE1WW4yczNhQ1Z1UHBSQXVuSXhxbklWcTJXWkxDMzQ2?=
+ =?utf-8?Q?gQBYDFDjD0Me2K+/No9ER0gN/Vp8o55S9i1fU?=
+X-Exchange-RoutingPolicyChecked: ni6k9mmD8YHHP4FNN5QS1hbTUuMXUeWa3f8cS55UJSYdReIQ+waeo+NGPfXHKGriouXnCB7OFCkOBjxXPYLFE7NuhQgSa49sFQVwnTHNAeU/OwZzAQl2b3g8S+pvXai723G8iJXjCdxIANc2P6qnAwqvvA4sTdmHATADR0DdhvfYjKGtA/bECGpZEDudotKpBSqw6CbRfNrixqNMWVlRpNMZ77HlZB68efeAdNpjQjcC2oMv3sP0SJ2pg+ci83YfmzcimYjoGTcrH9PNBcnZuwvbBPsjWAtAGglL9ZF7rYW5N130NBWlJa/sNacGp/LPXuuyfUz6I+9TTwqskBqvtw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: ceffed9f-d2ba-4be9-cdc7-08df0d6db2b1
+X-MS-Exchange-CrossTenant-AuthSource: DS4PPF691668CDD.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 05:21:26.1081 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 05:54:51.4506 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: N6oYwudmo7cYMqB3begkZCD4yxV0A2OVyny+Gsp8CSKPAopXqDPogjzXOttd2S/wNnSV5oCY5RCQ1PNm8bSCqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8254
+X-MS-Exchange-CrossTenant-UserPrincipalName: oxEszsdQOfGtXUhbCJ0eHFQFt6gEHtWKr2WA0sUiPCcZqDsvHGUhwUn3VzOqBDuRCg60mBDdrqGHITpXjl3MxNKhdGv7pRA1sPuWLDD/PTM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8187
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -174,220 +170,253 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 04-09-2026 11:54, Tauro, Riana wrote:
->
-> On 02-09-2026 08:28, Soham Purkait wrote:
->> Add a new Xe RAS test exercising the gpu_health sysfs attribute
->> exposed by the Xe driver on platforms that provide the system
->> controller. The attribute reports and allows updating the GPU
->> health state.
->>
->> The gpu-health subtest validates each valid state by writing it
->> and reading the value back, and checks that invalid writes are
->> rejected with -EINVAL, guarding against regressions in the
->> implementation.
->>
->> v1:
->>   - Platform-conditional skip w/o fd leak. (Anirban)
->>   - Restore via exit handler. (Anirban)
->>
->> v2:
->>   - Remove dead-code and extra comments. (Anirban)
->>   - Initialize exit handler under igt_subtest. (Anirban)
->>
->> v3:
->>   - Move igt_info to the normal cleanup path when
->>     restoring gpu_health. (Anirban)
->>
->> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
->> Reviewed-by: Sk Anirban <sk.anirban@intel.com>
->> ---
->>   tests/intel/xe_ras.c | 131 +++++++++++++++++++++++++++++++++++++++++++
->>   tests/meson.build    |   1 +
->>   2 files changed, 132 insertions(+)
->>   create mode 100644 tests/intel/xe_ras.c
->>
->> diff --git a/tests/intel/xe_ras.c b/tests/intel/xe_ras.c
->> new file mode 100644
->> index 000000000..f3b507ce0
->> --- /dev/null
->> +++ b/tests/intel/xe_ras.c
->> @@ -0,0 +1,131 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright © 2026 Intel Corporation
->> + */
->> +
->> +#include <errno.h>
->> +#include <string.h>
->> +#include <unistd.h>
->> +
->> +#include "igt.h"
->> +#include "igt_sysfs.h"
->> +
->> +/**
->> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) 
->> functionality
->> + * Category: Core
->> + * Mega feature: RAS
->> + * Sub-category: RAS tests
->> + * Functionality: ras
->> + * Test category: Functional tests
->> + *
->> + * SUBTEST: gpu-health
->> + * Description: Verify the gpu_health sysfs attribute accepts each 
->> valid
->> + *        state (ok/warning/critical) and rejects invalid writes
->> + *        with EINVAL.
->> + */
->> +
->> +IGT_TEST_DESCRIPTION("Tests for Xe RAS");
->> +
->> +#define GPU_HEALTH_ATTR    "device/gpu_health"
->> +
->> +static const char * const gpu_health_states[] = {
->> +    "ok",
->> +    "warning",
->> +    "critical",
->> +};
->> +
->> +static struct {
->> +    int sys_fd;
->> +    char *orig_health;
->> +} gpu_health_ctx = { .sys_fd = -1 };
->> +
->> +static void restore_gpu_health(int sig)
->> +{
->> +    if (gpu_health_ctx.sys_fd < 0 || !gpu_health_ctx.orig_health)
->> +        return;
->> +
->> +    igt_sysfs_set(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, 
->> gpu_health_ctx.orig_health);
->> +    close(gpu_health_ctx.sys_fd);
->> +    gpu_health_ctx.sys_fd = -1;
->> +    if (sig)
->> +        return;
->> +    igt_info("Restored initial gpu_health to '%s'\n", 
->> gpu_health_ctx.orig_health);
->> +    free(gpu_health_ctx.orig_health);
->> +    gpu_health_ctx.orig_health = NULL;
->> +}
->> +
->> +static bool valid_gpu_health(const char *s)
->> +{
->> +    int i;
->> +
->> +    for (i = 0; i < ARRAY_SIZE(gpu_health_states); i++)
->> +        if (!strcmp(s, gpu_health_states[i]))
->> +            return true;
->> +
->> +    return false;
->> +}
->> +
->> +static void test_gpu_health(int xe)
->> +{
->> +    char *health = NULL;
->> +    int ret;
->> +    int i;
->> +
->> +    gpu_health_ctx.sys_fd = igt_sysfs_open(xe);
->> +    igt_assert(gpu_health_ctx.sys_fd >= 0);
->> +
->> +    if (!igt_sysfs_has_attr(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR)) {
->> +        close(gpu_health_ctx.sys_fd);
->> +        gpu_health_ctx.sys_fd = -1;
->> +        igt_skip("gpu_health sysfs attribute not exposed by driver\n");
->
-> Won't exit handler be called here?
-No its the device sysfs for which  gpu-health exit handler does not run.
-> Wouldn't it be better to skip on gpu health sysfs open.
 
-Apart from this test technically no one is supposed to open gpu health 
-sysfs. If so, should this fail ? skip may not be a right option.
+On 04-09-2026 18:29, Tejas Upadhyay wrote:
+> Add IGT tests for VRAM page offlining using the kernel's fault-inject
+> infrastructure (inject_mempage_offline). Tests exercise:
+> 
+> - inject-single-page: Inject one fault via auto-pick ("0"), verify
+>    page appears in vram_bad_pages sysfs with 'R' (reserved) flag
+> - inject-duplicate-page: Re-inject the same PFN, verify soft→hard
+>    promotion returns -EEXIST and page count stays unchanged
+> 
+> The trigger file (inject_mempage_offline_trigger) accepts:
+> - "0"      : auto-pick last unallocated VRAM page
+> - "0xPFN"  : inject fault at a specific PFN address
+> 
+> Requires CRI platform with CONFIG_FAULT_INJECTION enabled.
+> 
+> v4(Himal):
+> - Run test only if CONFIG_FAULT_INJECTION_DEBUG_FS is y
+> v3(Himal):
+> - Unload/reload driver post test suite run
+> v2:
+> - KMD moved from sysfs to debugfs, align with it
 
->
->> +    }
->> +
->> +    gpu_health_ctx.orig_health = 
->> igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
->> +    igt_assert_f(gpu_health_ctx.orig_health, "Failed to read %s\n", 
->> GPU_HEALTH_ATTR);
->> +    igt_info("Initial gpu_health: %s\n", gpu_health_ctx.orig_health);
->> +    igt_assert_f(valid_gpu_health(gpu_health_ctx.orig_health),
->> +             "Unexpected initial gpu_health value: '%s'\n",
->> +             gpu_health_ctx.orig_health);
->> +
->> +    ret = igt_sysfs_write(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, 
->> "bogus", strlen("bogus"));
->> +    igt_assert_f(ret == -EINVAL,
->> +             "Write of invalid value to %s returned %d, expected 
->> -EINVAL\n",
->> +             GPU_HEALTH_ATTR, ret);
->> +
->> +    for (i = 0; i < ARRAY_SIZE(gpu_health_states); i++) {
->> +        const char *state = gpu_health_states[i];
->> +
->> +        igt_info("Setting gpu_health to '%s'\n", state);
->> +
->> +        igt_assert_f(igt_sysfs_set(gpu_health_ctx.sys_fd, 
->> GPU_HEALTH_ATTR, state),
->> +                 "Failed to write '%s' to %s\n",
->> +                 state, GPU_HEALTH_ATTR);
->> +
->> +        health = igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
->> +        igt_assert(health);
->> +        igt_assert_f(!strcmp(health, state),
->> +                 "gpu_health readback mismatch: wrote '%s', read 
->> '%s'\n",
->> +                 state, health);
->> +        igt_info("Verified gpu_health state readback for '%s' 
->> successfully\n",
->> +             state);
->> +        free(health);
->> +    }
->> +
->> +    restore_gpu_health(0);
->> +}
->> +
->> +int igt_main()
->> +{
->> +    int xe;
->> +
->> +    igt_fixture()
->> +        xe = drm_open_driver(DRIVER_XE);
->> +
->> +    igt_subtest("gpu-health") {
->> +        igt_install_exit_handler(restore_gpu_health);
->> +        test_gpu_health(xe);
->
-> Wouldn't it be better to have dedicated subtests for each value 
-> instead of
-> adding all testcases in a single function.
+LGTM
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-What about dynamic subtest for all these 4 cases under gpu-health subtest?
+> 
+> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> ---
+>   tests/intel/xe_mempage_offline.c | 197 +++++++++++++++++++++++++++++++
+>   tests/meson.build                |   1 +
+>   2 files changed, 198 insertions(+)
+>   create mode 100644 tests/intel/xe_mempage_offline.c
+> 
+> diff --git a/tests/intel/xe_mempage_offline.c b/tests/intel/xe_mempage_offline.c
+> new file mode 100644
+> index 000000000..f1f7765b1
+> --- /dev/null
+> +++ b/tests/intel/xe_mempage_offline.c
+> @@ -0,0 +1,197 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
+> +
+> +/**
+> + * TEST: VRAM page offline injection and verification
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category: RAS
+> + * Functionality: memory page offline
+> + * Test category: functionality test
+> + */
+> +
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <limits.h>
+> +#include <string.h>
+> +#include <unistd.h>
+> +
+> +#include "igt.h"
+> +#include "igt_debugfs.h"
+> +#include "igt_device.h"
+> +#include "igt_kmod.h"
+> +#include "igt_sysfs.h"
+> +
+> +#include "xe/xe_query.h"
+> +
+> +#define FAULT_INJECT_DIR	"inject_mempage_offline"
+> +#define TRIGGER_FILE		"inject_mempage_offline_trigger"
+> +#define VRAM_BAD_PAGES		"vram_bad_pages"
+> +
+> +static int count_bad_pages(int fd)
+> +{
+> +	char buf[4096];
+> +	int count = 0;
+> +	char *line;
+> +
+> +	/* Read file into buf. It automatically null-terminates inside. */
+> +	__igt_debugfs_read(fd, VRAM_BAD_PAGES, buf, sizeof(buf));
+> +
+> +	/* Check if the buffer is empty or could not be read */
+> +	if (buf[0] == '\0')
+> +		return 0;
+> +
+> +	/* Each entry line has format: "0x%08x : 0x%08x : %c\n" */
+> +	line = buf;
+> +	while ((line = strchr(line, '\n')) != NULL) {
+> +		count++;
+> +		line++;
+> +	}
+> +
+> +	/* Subtract the header line (max_pages : XXXX) */
+> +	if (count > 0)
+> +		count--;
+> +
+> +	return count;
+> +}
+> +
+> +static bool bad_page_has_flag(int fd, char flag)
+> +{
+> +	char buf[4096];
+> +	char *p;
+> +
+> +	__igt_debugfs_read(fd, VRAM_BAD_PAGES, buf, sizeof(buf));
+> +
+> +	if (buf[0] == '\0')
+> +		return false;
+> +
+> +	/* Look for the flag character after last ':' on entry lines */
+> +	p = buf;
+> +	while ((p = strstr(p, " : ")) != NULL) {
+> +		p += 3;
+> +		if (*p == flag)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +static uint64_t get_last_bad_page_pfn(int fd)
+> +{
+> +	char buf[4096];
+> +	char *line, *last_entry = NULL;
+> +	uint64_t pfn = 0;
+> +
+> +	__igt_debugfs_read(fd, VRAM_BAD_PAGES, buf, sizeof(buf));
+> +
+> +	if (buf[0] == '\0')
+> +		return 0;
+> +
+> +	/* Find last entry line (format: "0x%08llx : 0x%08llx : %c\n") */
+> +	line = buf;
+> +	while (*line) {
+> +		if (line[0] == '0' && line[1] == 'x')
+> +			last_entry = line;
+> +		line = strchr(line, '\n');
+> +		if (!line)
+> +			break;
+> +		line++;
+> +	}
+> +
+> +	if (last_entry)
+> +		sscanf(last_entry, "0x%lx", &pfn);
+> +
+> +	return pfn;
+> +}
+> +
+> +static void inject_fault(int fd)
+> +{
+> +	igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "100");
+> +	igt_debugfs_write(fd, FAULT_INJECT_DIR "/times", "1");
+> +	igt_debugfs_write(fd, FAULT_INJECT_DIR "/verbose", "1");
+> +	__igt_debugfs_write(fd, TRIGGER_FILE, "0", 1);
+> +}
+> +
+> +/**
+> + * SUBTEST: inject-single-page
+> + * Description: Inject a single VRAM page fault and verify it appears in vram_bad_pages
+> + */
+> +
+> +/**
+> + * SUBTEST: inject-duplicate-page
+> + * Description: Inject two pages and verify both appear in vram_bad_pages
+> + */
+> +
+> +int igt_main()
+> +{
+> +	int fd;
+> +	uint16_t devid;
+> +
+> +	igt_fixture() {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_assert(fd >= 0);
+> +		devid = intel_get_drm_devid(fd);
+> +		igt_require(intel_get_device_info(devid)->is_crescentisland);
+> +		igt_require(igt_debugfs_exists(fd,
+> +					       FAULT_INJECT_DIR "/probability",
+> +					       O_WRONLY));
+> +		igt_require(igt_debugfs_exists(fd, VRAM_BAD_PAGES, O_RDONLY));
+> +		igt_require(igt_debugfs_exists(fd, TRIGGER_FILE, O_WRONLY));
+> +	}
+> +
+> +	igt_subtest("inject-single-page") {
+> +		int initial_count, after_count;
+> +
+> +		initial_count = count_bad_pages(fd);
+> +		inject_fault(fd);
+> +		after_count = count_bad_pages(fd);
+> +		igt_assert_eq(after_count, initial_count + 1);
+> +		igt_assert(bad_page_has_flag(fd, 'R'));
+> +	}
+> +
+> +	igt_subtest("inject-duplicate-page") {
+> +		int initial_count, after_count;
+> +		uint64_t pfn;
+> +		char pfn_str[32];
+> +		int debugfs_fd, ret;
+> +
+> +		initial_count = count_bad_pages(fd);
+> +
+> +		/* First injection — auto-pick unallocated page */
+> +		inject_fault(fd);
+> +		after_count = count_bad_pages(fd);
+> +		igt_assert_eq(after_count, initial_count + 1);
+> +
+> +		/* Get PFN of the page just injected */
+> +		pfn = get_last_bad_page_pfn(fd);
+> +		igt_assert(pfn != 0);
+> +
+> +		/* Reset / override the allowed fault count to 2 (or more) */
+> +		if (igt_debugfs_exists(fd, FAULT_INJECT_DIR "/times", O_WRONLY)) {
+> +			igt_debugfs_write(fd, FAULT_INJECT_DIR "/times", "2");
+> +		}
+> +		/*
+> +		 * Re-inject same PFN — should return -EEXIST (soft→hard
+> +		 * promotion). Write to trigger with the PFN value.
+> +		 */
+> +		snprintf(pfn_str, sizeof(pfn_str), "0x%lx", pfn);
+> +		debugfs_fd = igt_debugfs_open(fd, TRIGGER_FILE, O_WRONLY);
+> +		igt_assert(debugfs_fd >= 0);
+> +		ret = write(debugfs_fd, pfn_str, strlen(pfn_str));
+> +		igt_assert(ret < 0 && errno == EEXIST);
+> +		close(debugfs_fd);
+> +
+> +		/* Count should not change — same page, not a new one */
+> +		after_count = count_bad_pages(fd);
+> +		igt_assert_eq(after_count, initial_count + 1);
+> +	}
+> +
+> +	igt_fixture() {
+> +		igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "0");
+> +		drm_close_driver(fd);
+> +		igt_xe_driver_unload();
+> +		igt_assert_eq(igt_xe_driver_load(NULL), 0);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 1ac89bab7..c7c614e7c 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -318,6 +318,7 @@ intel_xe_progs = [
+>   	'xe_live_ktest',
+>   	'xe_madvise',
+>   	'xe_media_fill',
+> +        'xe_mempage_offline',
+>   	'xe_mmap',
+>           'xe_module_load',
+>           'xe_multigpu_svm',
 
-Thanks,
-Soham
->
-> Would be easier to find during analysis as well
->
-> Thanks
-> Riana
->
->> +    }
->> +
->> +    igt_fixture()
->> +        drm_close_driver(xe);
->> +}
->> diff --git a/tests/meson.build b/tests/meson.build
->> index 1ac89bab7..3c2d4fdda 100644
->> --- a/tests/meson.build
->> +++ b/tests/meson.build
->> @@ -333,6 +333,7 @@ intel_xe_progs = [
->>       'xe_prime_self_import',
->>       'xe_pxp',
->>       'xe_query',
->> +    'xe_ras',
->>       'xe_render_copy',
->>       'xe_vm',
->>       'xe_userptr_pressure',
