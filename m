@@ -4,55 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59AEFC79F99
-	for <igt-dev@archiver.kernel.org>; Tue,  8 Sep 2026 19:05:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87E29C79F82
+	for <igt-dev@archiver.kernel.org>; Tue,  8 Sep 2026 19:06:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C2B3710ED35;
-	Tue,  8 Sep 2026 19:05:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 26A4110E161;
+	Tue,  8 Sep 2026 19:06:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aDgzHGET";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Ikymbnua";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2EF4C10ED35
- for <igt-dev@lists.freedesktop.org>; Tue,  8 Sep 2026 19:04:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F076E10ED35
+ for <igt-dev@lists.freedesktop.org>; Tue,  8 Sep 2026 19:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788894296; x=1820430296;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=wv6Dwnr52A0cOH9X1ZGwGamtCw+v4u2OcU/5skwlznA=;
- b=aDgzHGET77sWQqG+elcdcDCZEstH6/iRjIN7FY+Hq521qDCxpSPBfE7v
- VM9X4T2YejfS+6udbVPmQzGLXlmGnypg9ETA0YMA3EMk/cylVbOJrkTUh
- d0b7mxO43XDjcRjrF7rDCA8nD1Ybp9zVXX/zHV/TWS4NrCyccNF6k+tbp
- HR7aGWLtsrFpxGYBLTwGxQgZdh5zVIfHRMKi/c/9HL5VtgOCrtSCGJ4wk
- 0YBr1a+f31bPGovA/aHYGwdGcIpmrzSvIG3TveGbfAwDmxHNG8xAjiwOY
- td7TUM2iowGHLtAo+yUdyI43mVftC09xpPg4zDnsrlGbErH+MSwI5/Qvo Q==;
-X-CSE-ConnectionGUID: N6e4DSxCTTmZ/xFTvLixYw==
-X-CSE-MsgGUID: qcjqSFh8RAK/TXqjMBd6wQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="106824602"
-X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; d="scan'208";a="106824602"
+ t=1788894299; x=1820430299;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=7q0WRQO5qeKfstTH8B06l69JjKpPBx2T/bwqE8cT25M=;
+ b=IkymbnuaNCp1cwMexb3KdjZobVvmfP/ZE57RccyIkTSCqPSPCRShIPPc
+ p+NE3/yqz2yys1yVWdhzIIu80pfPsYyN8PP5PCQBTskLFjSrvn6ZQkmrM
+ cxMJSzyDmv4zpXK0hV0vdW4pDHhOaNGFQLpRmIpz7SlS3p9j+iAuNCxOY
+ 5Hxpkd+NU0/un/JxClge24gdIu5mE0CaYS13W9zU5dJHO4rRZeBNijfsK
+ +xyFmyo51+uGpSKV0D+yd8jM4zicIblk+XD4XYqpGq2rNZX5Y+nFqvVa/
+ zj+h0rDnNukNSyAgjXSCTWNe9+UGjDZeWwGoFfyaiZ8MPvQUTrEQYxTj1 w==;
+X-CSE-ConnectionGUID: uIo9m977RzuX4WD7P7L7Cw==
+X-CSE-MsgGUID: Vj5W5TeySpm+k31uRobSjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="106824608"
+X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; d="scan'208";a="106824608"
 Received: from fmviesa005.fm.intel.com ([10.60.135.145])
  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2026 12:04:56 -0700
-X-CSE-ConnectionGUID: K9Fj+eCFTa2rJ9zik9JihA==
-X-CSE-MsgGUID: U7TLiY4eRIG3l+mp3RCs9w==
+ 08 Sep 2026 12:04:59 -0700
+X-CSE-ConnectionGUID: QCVkFJt/RzSF8o9l9gSd0A==
+X-CSE-MsgGUID: dUrY4MdxQEqLGlAQ+qUCXQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; d="scan'208";a="276324661"
+X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; d="scan'208";a="276324664"
 Received: from unknown (HELO anirban-Z690I-A-ULTRA-PLUS.iind.intel.com)
  ([10.190.216.83])
  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Sep 2026 12:04:53 -0700
+ 08 Sep 2026 12:04:56 -0700
 From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
  karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
  mallesh.koujalagi@intel.com, kamil.konieczny@intel.com,
  Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v3 0/2] tests/intel/xe_survivability: update ignored dmesg
+Subject: [PATCH v3 1/2] tests/intel/xe_survivability: update ignored dmesg
  regex
-Date: Wed,  9 Sep 2026 00:24:07 +0530
-Message-ID: <20260908185406.1023993-4-sk.anirban@intel.com>
+Date: Wed,  9 Sep 2026 00:24:08 +0530
+Message-ID: <20260908185406.1023993-5-sk.anirban@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260908185406.1023993-4-sk.anirban@intel.com>
+References: <20260908185406.1023993-4-sk.anirban@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -84,15 +86,38 @@ kernel implementation:
 https://patchwork.freedesktop.org/series/168780/
 
 Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+---
+ tests/intel/xe_survivability.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-Sk Anirban (2):
-  tests/intel/xe_survivability: update ignored dmesg regex
-  HAX intel-ci: Add xe_survivability to xe-fast-feedback
-
- tests/intel-ci/xe.fast-feedback.testlist |  1 +
- tests/intel/xe_survivability.c           | 14 +++++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
-
+diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
+index 74488bbea..7471d4986 100644
+--- a/tests/intel/xe_survivability.c
++++ b/tests/intel/xe_survivability.c
+@@ -43,12 +43,20 @@ static char bus_addr[NAME_MAX];
+ static void ignore_wedged_in_dmesg(void)
+ {
+ 	/* this is needed for igt_runner so it will ignore it */
+-	igt_emit_ignore_dmesg_regex("GT[0-9A-Fa-f]*: failed to enable GuC scheduling policies: -ECANCELED"
++	igt_emit_ignore_dmesg_regex("GT[0-9A-Fa-f]*: failed to enable GuC scheduling policies: "
++				    "(-ECANCELED|-ENOTRECOVERABLE)"
++				    "|GT[0-9A-Fa-f]*: reset failed .(-ECANCELED|-ENOTRECOVERABLE)"
+ 				    "|CRITICAL: Xe has declared device [0-9A-Fa-f:.]* as wedged"
+-				    "|GT[0-9A-Fa-f]*: reset failed .-ECANCELED"
++				    "|xe [0-9A-Fa-f:.]*:.*-ENOTRECOVERABLE"
+ 				    "|GT[0-9A-Fa-f]*: Failed to submit"
+ 				    "|Modules linked in:"
+-				    "|__pfx___drm_");
++				    "|__pfx___drm_"
++				    /* SIGID-based logging (newer kernels) */
++				    "|SIGID=[0-9]+ .*WEDGED: Device declared wedged"
++				    "|SIGID=[0-9]+ .*SURVIVABILITY: Runtime Mode enabled"
++				    "|SIGID=[0-9]+ .*SURVIVABILITY: Firmware flash required"
++				    "|SIGID=[0-9]+ .*GT: reset failed"
++				    "|IOCTLs and executions are now blocked");
+ }
+ 
+ static bool check_survivability_mode_sysfs(void)
 -- 
 2.43.0
 
