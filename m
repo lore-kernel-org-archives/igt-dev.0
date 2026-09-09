@@ -4,101 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36690C79F8C
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Sep 2026 10:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F30D5C79F8C
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Sep 2026 10:47:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BAC3810E147;
-	Wed,  9 Sep 2026 10:47:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9152010E147;
+	Wed,  9 Sep 2026 10:47:49 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="ddT3r6R1";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="WEbfCNZq";
 	dkim-atps=neutral
 Received: from CO1PR03CU002.outbound.protection.outlook.com
- (mail-westus2azon11010015.outbound.protection.outlook.com [52.101.46.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C045810E147
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2026 10:46:17 +0000 (UTC)
+ (mail-westus2azon11010071.outbound.protection.outlook.com [52.101.46.71])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E023E10E147
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2026 10:46:19 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KeM9gGI3xtDSFF7LmY2WWlN4Qu+a1/Gov46kyiABuUSaxFlVPDvrsDeua1H8WlH8ziIP0EVQeu3Gvyf48n+mLcgIfdvtGD4xc39fNgkzWlf05/6NEzKp1Dt9SlojtSUdHiWKuQLakBWkqQXiAuqi8noqFDILScFm7qEONCLrwRaGeqBw41HYmOoY+742LOFA/+wqk7gx1w3Va9A5537wq9f6zjwxw95eLwEZ/tawkKubQ7bMxT4+uQ8B//1mSQc9k3l+/yVfeKCLXWeBxWXU78+s6FX7AT6CeGlmmPQCGV9GOtXaGQRhyXtwiMW/1+AthWnV4J9ozh0hTfX7pKQxuA==
+ b=EGjVLumVxO++Wsp963Yxtc4q+UKVra/AdTBEIrWfx0OKXe9+t7n6exWJMeyoaOjmcVT22ex2X4vVeTn+vBnzbPfWWKhx1k7Vs0z0F3kc4AbUj0vSmmHtNhk58CZiBKmOWnIKe7hLes0qVdk/Q53x101VRRfjuHZ2BluCl18ThGh9jQP4de2z7a13SKmSr93+xXy9x4QaE53MOFahydJcKjXLfODPYnq2BkgSywbcK2GjqT5CtL9JDFQCCXpeIm1we4JOiRr6Ilfr9AC7GzAgebWHuTXAq7ikQM08WSJ/tq7ZhsMBP96UK5tWZaNg6yZRHqroIzZ7wJi9g2dTW9PQaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ERvrXbCwTtZUx/+fs3t+yPKbQuQi426Zes/Jc3XVjfI=;
- b=XmSu3seb39c7XqVJ7TDZTkakA0u0iBQrFV62qh3sInzcqq7Ku26kdburfoE4+K1wR3uXertiUwa+olPPYYEGE31iiRJeyu7mFDlfdVSSV5ANOsyHgIbPg01VUR2visQ4Due/dtNJ8OKP4O9Xfr7cRssDpqt/72ofXruGsGeHidmfQM44VOtFrtZHV9tYuZarquJt3+FTJJq2PZJyYgQ+mCbWhM4XkYsT2eECBZmX8k2Dxnbmv8TCu/9Mpdnsp3e1lo5DpbuUN8B3MDi1Zs0y/xjK6FAbf4c8JjxbH/kQoXCjCBHHqjD96y8I+jgRkfvvNvAjhv6miR4rUGnuCd09dQ==
+ bh=S2BCKoueRP8T0eqycwq64UGJqF8A3Lc3uCJNBOa4E4k=;
+ b=ArRIBuOztfhPD94NexD+upbjQF3T6NGZufa4VcDxt0acRoTUfGPFs/QufZrVcZjWECxPT+xFWDPRo4mauaDkdSTZnL4NpyGmbr62f4l2hDKQyfHHjBvGye09GNPIs1PgMZQ5Fb/frWPA6c++HHLLBqw4AVWIDesKyxGEfpA2PRkUC4WY6NuUQvkoVJ6g9yLL2omCEmrGgRm+qneHnXT2Gzgww/pgJuCcU3kd02ympwUXi9XyT/XraBo4dgXkQNaFGnIc4hGEeVuMVRpafciDe1zdG5ysvHwhQ4ncZnliLCTWK8caQhK/JHTcasa/Jn3Qnd/afifpvYvTLwl4CNa/5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ERvrXbCwTtZUx/+fs3t+yPKbQuQi426Zes/Jc3XVjfI=;
- b=ddT3r6R17D2AwCNRikLa3bbDC0o8pSb52CKj+Ul47UPcJDfukFaZCBxRytPmYSYiP8NnbjhfZ/K3CFI0xEhRev+tjCVuzjQSjvQmGNkQoED6afHBec47dw9Vjsuh8v5HS/H3zBBoMHzq6IzjK+qyYYR+bCdVbsmZNB6oaDQ/mA8=
-Received: from MW4PR04CA0079.namprd04.prod.outlook.com (2603:10b6:303:6b::24)
- by MN2PR12MB4287.namprd12.prod.outlook.com (2603:10b6:208:1dd::11)
+ bh=S2BCKoueRP8T0eqycwq64UGJqF8A3Lc3uCJNBOa4E4k=;
+ b=WEbfCNZq6q9/y70f5UhDzThcIap1fpKWbyI7Jqmpinkn2dnTY/zuoHcUBXSFgolra+gpb+Wdbp4K8hBG2HxL6TgCwfJMa+j26gxCEwkz/IKKLQW80oA86dC/QHyUlsWd8dxRHbakcBrRErdMyUqtaoqgWkOuqv1rLzAloz57eL8=
+Received: from SA0PR11CA0167.namprd11.prod.outlook.com (2603:10b6:806:1bb::22)
+ by PH7PR12MB5620.namprd12.prod.outlook.com (2603:10b6:510:137::5)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Wed, 9 Sep 2026
- 10:46:14 +0000
-Received: from SJ5PEPF000001EB.namprd05.prod.outlook.com
- (2603:10b6:303:6b:cafe::2f) by MW4PR04CA0079.outlook.office365.com
- (2603:10b6:303:6b::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.7 via Frontend Transport; Wed, 9
- Sep 2026 10:46:12 +0000
+ 10:46:10 +0000
+Received: from SN1PEPF000252A0.namprd05.prod.outlook.com
+ (2603:10b6:806:1bb:cafe::13) by SA0PR11CA0167.outlook.office365.com
+ (2603:10b6:806:1bb::22) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.8 via Frontend Transport; Wed, 9
+ Sep 2026 10:46:10 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- SJ5PEPF000001EB.mail.protection.outlook.com (10.167.242.199) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SN1PEPF000252A0.mail.protection.outlook.com (10.167.242.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.5 via Frontend Transport; Wed, 9 Sep 2026 10:46:12 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.406.5 via Frontend Transport; Wed, 9 Sep 2026 10:46:10 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 9 Sep
- 2026 05:46:12 -0500
+ 2026 05:46:10 -0500
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 9 Sep
+ 2026 05:46:09 -0500
 Received: from junhua-PC.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
- Transport; Wed, 9 Sep 2026 05:46:10 -0500
+ Transport; Wed, 9 Sep 2026 05:46:07 -0500
 From: Junhua Shen <Junhua.Shen@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Jesse Zhang
  <Jesse.Zhang@amd.com>, Sunil Khatri <sunil.khatri@amd.com>, Honglei Huang
  <honglei1.huang@amd.com>, Huang Rui <ray.huang@amd.com>, Yiru Ma
  <yiru.ma@amd.com>, Junhua Shen <Junhua.Shen@amd.com>
-Subject: [PATCH i-g-t v2 1/6] lib/amdgpu: document amdgpu_ring_context field
- contract
-Date: Wed, 9 Sep 2026 18:45:57 +0800
-Message-ID: <20260909104602.13807-2-Junhua.Shen@amd.com>
+Subject: [PATCH i-g-t v2 0/6] lib/amdgpu: refactor cmd_context ownership and
+ packet operands
+Date: Wed, 9 Sep 2026 18:45:56 +0800
+Message-ID: <20260909104602.13807-1-Junhua.Shen@amd.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260909104602.13807-1-Junhua.Shen@amd.com>
-References: <20260909104602.13807-1-Junhua.Shen@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001EB:EE_|MN2PR12MB4287:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4404112e-1c6e-456a-1481-08df0e5f90ee
+X-MS-TrafficTypeDiagnostic: SN1PEPF000252A0:EE_|PH7PR12MB5620:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96dd4ae5-1f0c-45a5-4f70-08df0e5f8fac
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|36860700016|23010399003|82310400026|3023799007|10067099003|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: bQlKM60hV6QIKt2kfRc8uUzXsYPRi1Dm1Dt5QYJrVicDZOQJgq6Drc3fDL71xzKjYoLiS4bWPe96/FSrkuQpDghtwMuE0FM1IOoY2JCqNzLcs/cFaQ/c6lilhbiz/a46SfjH1n7CTYdPXHQx/ZFVkC9YbwZDs83kW05tVqkYw4ja7kAfOvkpT5WLOKeqpbQRpW6x1kkadtn733kEt1vKw4+XQv528aFkValwSeWpUxAZCHsJMToQXk9DXcQg9g9AlDlYjxoFojQN1JmD2oBH0hTprlqcmXyGFAiVm75x3yhE2sN3oTpgfhdKC0ILYd4NK++7HmIm2zXy19DEuz44zRuyESa0SblXqs0yt/XX9hp21QRFvZuKLLXUnBZlKx9u17HHn2yl4jYgI0gugzc+FH67b2wkDG2xdiVn59ZC+RsuJuSuqDuwivoN/N01OY0pR6m9C4kJFi4Lla4SH6w/SMLoEgzQ8DxmAq68d6r1cP8zq/9f9xXOe8z4dRHqKFMPXOBoXhaCuALR1+/tfrreFGlEFIeCvWwN3st5KZX956fYKRY1hKBI/XFVOgwS74clvmyF4U5U5bcNhfPaLOxJjsWqkq4aSvZhDoxsUEvp3y5HCxh4Yxi4g/nbPVO44pXdJKGvHs5HjXeXGbS9Fs9hs/OQ9CX7WzcDdfBBUex31IfKUA71suRSxvU8chH+BPxhQvGuI+WN69wfWFURaTYEFw==
+ ARA:13230040|82310400026|1800799024|36860700016|376014|23010399003|6133799003|18002099003|56012099006|13003099007|3023799007|10067099003|11063799006;
+X-Microsoft-Antispam-Message-Info: egnk2aEzrXkuGUDreIoRZZ2pA+eEQP0COepSjqEfPkiRMVNn2Piz6caJ1Kiy6UewlIU6EH+XoShT5uYgC1oY0I9rFSzSCI7l7LTGn9gayKokipnwalchZKO1hxYRQDTl8cbjbSdiNxTNO6Y+UyLQFpugnDW9dAT1RbZzSP5hHqdGVIYDtTK/VBAOAAcoZE+NiF1tETu91UdGauBCWz4AXCMW/KAuFgQXXglcMmqtSQyftrFcb9NddOVLRktNhSGpQ5mUUTnJvplJv9ZIDGOLfzjkt5GukH0WLQ1x7XkZdi3r3jw2l5O2mVtehD9QNmG6mk7WbQtGtCVcV/MVFYw76xHxjmhyep9pZMPqB/YCyvMnyI/3e6ClFDkZhchmlP2qoa8uNbaZ64Ode+b6tOIvwAZyfxtU/V9RD9MgN25EWrRd0XUKCeBJOvg+C77WfZCo3Box2U7b7u7piA4nyazzw6wC6t57tmLtDSjHWvzvmM3M9BZO4Em+eO2ky3vmzEJJ/GVU+Tik1mZdmbIUp6Ih7ni97GBfxia9WUBKvnxE6egZP4IGRt6cLhwoCfgqAi677rQarKMPK70f/0NvpTQey9jwyzMRo/DPE02mMeIZAGWW9ep+4RSnAo0O90GCR2kCXFbR+vftBw8dSvmRvWT4hg==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(36860700016)(23010399003)(82310400026)(3023799007)(10067099003)(11063799006)(56012099006)(18002099003)(22082099003);
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(23010399003)(6133799003)(18002099003)(56012099006)(13003099007)(3023799007)(10067099003)(11063799006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: rD5DU7c7s1OYYClPm6KuEP9mTGaZ58uI01wVCoXHUAmQswh7Ct7CybIRJovbj1w9MFRUvVDWuej9OPC4thZsBLqtXajFN736hxMQu+AiLaeo9uPEqU/P4x76nH5/Srhl/4zykYFiYMdcAE+T/PzLOFE8VgBjwUcgyq/wrJEPp+4q1ZtdrWv3nodLESVPUsxP6sRsggYkl69ZXqxepgDhm1SMatRPHWdhyn6O/6bGM/kBqrWkKrSK+pWiTQXr4R3K5VrSuIzrxd0TnIfXBuF1j4XYvEYUD6IXyYOACSXkE6BwRd4DvXHUAVHrOPwA1SNliLxyBOpF8Oqzh7/6BuggLCXThoX4lh4lQ4cNs5Zx116t1YLA3MYYMh1nrZwoi7zF+o1CtGeatqNzL/8iyKIFfcXNRLOULga4WgBr2QeCPHvWgBS38I5mNJH2WvzwTQj6
+X-MS-Exchange-AntiSpam-MessageData-0: CXXvin9XZ3FhkO5xKrOujbpNXTy8/hl+q2LzX0FU2leU074hVzPfypLgs0TYusRLeXUVGozyMkcZ+WP3l7aca0usY5tYx0izeHC8nAaufS/6utY+FJgdmjkcS08tQtT0BGv+mejkvRG7pCfS9+CWBv9o6TRcLVnXlYjNPCgwh/zRGDFzcKy+7eWNDrOihykng7dMjLQw1wLg2+e13lVEiWucvzanJ2jhH2DPo796Z/ibfLIoQ/kUioy9nDv6pPaNqW6dQ1DoWBrRIMbdWpiOrQdnji/aQ+T8C0lhZHLJS33jqk/lF/9+kDy0Qbetrmza+GZTT6/E0K6jmD2qzjK1suO+nkenPYG1xepRsJu9DVqNMSXp8RhWDmowSgrvZEd6n+Isvt07Ks5G5AriAoGCdTpJqfXm0gJpvd73BOtt1zd2dgjVL4a9yZmKUJCWPq9Z
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 10:46:12.5084 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4404112e-1c6e-456a-1481-08df0e5f90ee
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 10:46:10.4347 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96dd4ae5-1f0c-45a5-4f70-08df0e5f8fac
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: SJ5PEPF000001EB.namprd05.prod.outlook.com
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SN1PEPF000252A0.namprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4287
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5620
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,106 +116,173 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-amdgpu_ring_context is the hand-off between the PM4 packet builders
-(ip_block->funcs callbacks) and the submitter that drives them.
+This series refactors the amdgpu command-submission helper library
+(lib/amdgpu/amd_command_submission.*) around a single principle:
+cmd_context should own only the PM4/IB command stream, while the buffers
+those commands read and write, together with their GPU virtual addresses,
+are supplied and kept resident by the caller.
 
-Make the contract explicit: document the builder/submitter roles and
-annotate each field with its direction: IN (submitter sets, builder
-reads), OUT (builder produces, e.g. pm4_dw) and INTERNAL (submitter-owned
-pm4[] the builder fills). Also clarify the per-packet-type meaning of
-write_length and bo_mc/bo_mc2.
+Currently cmd_context both builds the PM4 stream and allocates and clears
+an internal data BO, and the IB is sized from the data transfer size
+(write_length) rather than from the command-stream capacity (pm4_size).
+This couples unrelated concerns, hides residency management from callers,
+and leaves the IB size ambiguous. The series separates these concerns
+incrementally while keeping every existing caller compiling and
+functional.
 
-Documentation only; no functional change.
+v2 also folds in two independent test-correctness fixes:
+patch 5 derives the compute-dispatch version from
+hw_ip_version_major (in amd_mem and amd_remote_mem), which surfaced while
+reworking amd_mem's compute path; patch 6 fixes the KFD aperture
+node-count query in amd_kfd_dmabuf_unload that the kernel rejects with
+-EINVAL.
 
-Signed-off-by: Junhua Shen <Junhua.Shen@amd.com>
----
- lib/amdgpu/amd_ip_blocks.h | 57 ++++++++++++++++++++++++++++++--------
- 1 file changed, 45 insertions(+), 12 deletions(-)
+Scope: cmd_context is a convenience wrapper for SDMA data operations
+(linear write/copy/const-fill/atomic). Only three tests currently use it
+(amd_mem, amd_dmabuf_unload, amd_kfd_dmabuf_unload); the rest of the
+amdgpu tests deliberately drive libdrm_amdgpu directly to validate the
+kernel submission UAPI (cs_submit, bo_list, syncobj, gang, compute
+dispatch), and are left untouched by the cmd_context refactor. The one
+exception is the standalone compute-dispatch-version fix in patch 5, which
+also updates amd_remote_mem; it is unrelated to the cmd_context contract.
+The ring_context field usage in those low-level callers is already
+consistent with the contract documented here, so no changes are required
+on their side.
 
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 40a9735be..37f38ed44 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -272,26 +272,59 @@ amdgpu_dma_default_bytes(const struct amdgpu_dma_limits *lim,
- 	}
- }
- 
--/* aux struct to hold misc parameters for convenience to maintain */
-+/*
-+ * struct amdgpu_ring_context - hand-off structure shared by the packet builder
-+ * and submitter roles.
-+ *
-+ * Builder role: the ip_block->funcs PM4 callbacks declared in struct
-+ *   amdgpu_ip_funcs (write_linear, copy_linear, const_fill, ...). A builder
-+ *   reads only the IN fields, populates pm4[], and reports the produced length
-+ *   in pm4_dw. It does not access the device, allocate buffer objects, or
-+ *   submit.
-+ *
-+ * Submitter role: the caller that drives a builder. It populates the IN fields
-+ *   required by the target packet type prior to invocation, then consumes the
-+ *   OUT fields (pm4[]/pm4_dw) to perform the command submission.
-+ *
-+ * This structure is the sole interface between the two roles; each field is
-+ * annotated with a direction:
-+ *   IN       set by the submitter before invocation; read by the builder.
-+ *   OUT      set by the builder; read by the submitter.
-+ *   INTERNAL owned by the submitter; the builder populates its contents only.
-+ */
- struct amdgpu_ring_context {
- 
- 	int ring_id; /* ring_id from amdgpu_query_hw_ip_info */
--	int res_cnt; /* num of bo in amdgpu_bo_handle resources[2] */
-+	int res_cnt; /* IN: number of valid entries in resources[] */
- 
--	uint64_t write_length;  /* transfer size in bytes */
--	uint64_t write_length2; /* transfer size in bytes, second packet */
--	uint32_t *pm4;		/* data of the packet */
--	uint32_t pm4_size;	/* max allocated packet size */
--	bool secure;		/* secure or not */
-+	/*
-+	 * IN: per-packet transfer size in bytes. The builder interprets it
-+	 * per packet type:
-+	 *   write_linear/atomic    - inlined as write_length/4 dwords into pm4[]
-+	 *                            (grows pm4_dw; pm4_size must accommodate it);
-+	 *   copy_linear/const_fill - HW DMA transfer data count;
-+	 *   compare/compare_pattern - verification span (num_compare = write_length/div).
-+	 */
-+	uint64_t write_length;
-+	uint64_t write_length2; /* IN: transfer size in bytes, second packet */
-+	uint32_t *pm4;		/* INTERNAL: packet buffer (submitter-owned, builder fills) */
-+	uint32_t pm4_size;	/* IN: capacity of pm4[] in dwords (required, non-zero) */
-+	bool secure;		/* IN: secure or not */
- 	uint32_t priority;	/* user queue priority */
- 
--	uint64_t bo_mc;		/* GPU address of first buffer */
--	uint64_t bo_mc2;	/* GPU address for p4 packet */
-+	/*
-+	 * Operand GPU virtual addresses, assigned per packet type by the
-+	 * submitter prior to builder invocation:
-+	 *   WRITE/ATOMIC/FILL: bo_mc = destination VA
-+	 *   COPY:              bo_mc = source VA, bo_mc2 = destination VA
-+	 */
-+	uint64_t bo_mc;		/* IN: GPU VA, primary operand (destination, or source for copy) */
-+	uint64_t bo_mc2;	/* IN: GPU VA, secondary operand (destination for copy) */
- 	uint64_t bo_mc3;	/* GPU address of second buffer */
- 	uint64_t bo_mc4;	/* GPU address of second p4 packet */
- 
--	uint32_t pm4_dw;	/* actual size of pm4 */
--	uint32_t pm4_dw2;	/* actual size of second pm4 */
-+	uint32_t pm4_dw;	/* OUT: actual packet size in dwords */
-+	uint32_t pm4_dw2;	/* OUT: actual size of second pm4 in dwords */
- 
- 	volatile uint32_t *bo_cpu;	/* cpu adddress of mapped GPU buf */
- 	volatile uint32_t *bo2_cpu;	/* cpu adddress of mapped pm4 */
-@@ -311,7 +344,7 @@ struct amdgpu_ring_context {
- 	amdgpu_context_handle context_handle;
- 	struct drm_amdgpu_info_hw_ip hw_ip_info;  /* result of amdgpu_query_hw_ip_info */
- 
--	amdgpu_bo_handle resources[4]; /* amdgpu_bo_alloc_and_map */
-+	amdgpu_bo_handle resources[4]; /* IN: bo_list residency set, maintained by the submitter */
- 	amdgpu_va_handle va_handle;    /* amdgpu_bo_alloc_and_map */
- 	amdgpu_va_handle va_handle2;   /* amdgpu_bo_alloc_and_map */
- 	amdgpu_va_handle va_handle3;   /* amdgpu_bo_alloc_and_map */
+Overview of the changes
+-----------------------
+1. document amdgpu_ring_context field contract
+   Add IN/OUT/INTERNAL annotations to struct amdgpu_ring_context so the
+   ownership and direction of each field is unambiguous before the
+   behavioural changes are introduced. Documentation only, no functional
+   change.
+
+2. drop external BO from cmd_context
+   cmd_context no longer allocates, tracks, or clears a caller-visible
+   data BO. Callers now register the residency of those buffers
+   explicitly via the new cmd_context_add_resource(). cmd_context_create()
+   loses the write_length parameter (the IB is sized from pm4_size alone)
+   and all call sites are updated (amd_dmabuf_unload.c,
+   amd_kfd_dmabuf_unload.c, amd_mem.c).
+
+3. source packet operands from params and size the IB from pm4_size
+   The legacy IB byte size is now derived from pm4_size (the command
+   stream capacity), not write_length (the data transfer size).
+   WRITE_LINEAR, WRITE_ATOMIC and COPY_LINEAR take their source and
+   destination GPU virtual addresses from cmd_packet_params_t, so callers
+   pass those addresses directly rather than relying on context-internal
+   BOs.
+
+4. add CONST_FILL packet type and pass caller fill value through
+   Add a CMD_PACKET_CONST_FILL packet type with a per-packet size guard,
+   and propagate the caller-supplied fill value
+   (write_data/write_data_valid) through write_linear and const_fill in
+   the IP block builders.
+
+5. derive compute dispatch version from hw_ip_version_major
+   amd_mem's ptrace VRAM verification derived the GFX generation from
+   family_id; query amdgpu_query_hw_ip_info() and use
+   hw_ip_version_major instead, mirroring amd_dispatch.c, so no
+   wrong-generation PM4 is emitted. amd_remote_mem's build_poll_shader()
+   carried the same family_id-based version table and is converted to the
+   query in the same patch. The cache-invalidate tests are also gated to
+   Arcturus, where the RW MTYPE cache behaviour they exercise is
+   specific.
+
+6. query KFD aperture node count before filling array
+   kfd_get_gpuvm_base() passed num_of_nodes = NUM_OF_SUPPORTED_GPUS
+   unconditionally, which the kernel rejects with -EINVAL. Follow the
+   documented two-step protocol: an initial call with num_of_nodes == 0
+   returns the actual node count, then fill up to that count.
+
+Changes since v1
+----------------
+v1: https://lists.freedesktop.org/archives/igt-dev/ (cover: "[PATCH i-g-t
+v1 0/4] lib/amdgpu: refactor cmd_context ownership and packet operands").
+
+- Patch 1 (document ring_context): add the commit message body that was
+  missing in v1 (builder/submitter roles and the IN/OUT/INTERNAL
+  rationale). The annotations themselves are unchanged.
+
+- Patch 2 (drop external BO): address Jesse Zhang's review of v1 2/4.
+  cmd_submit_packet() now propagates cmd_wait_completion() errors instead
+  of unconditionally clearing submit_pending and reusing the IB;
+  submit_pending is cleared inside cmd_wait_completion() on success to
+  avoid redundant waits; cmd_context_destroy() drains any pending
+  submission before freeing the IB. The two amd_mem submit paths the
+  reviewer flagged now register residency explicitly:
+  test_cache_invalidate_on_sdma_write_asm() calls
+  cmd_context_add_resource(dma_ctx, bo_vram) before the write, and
+  submit_dma_write_operation() registers ctx->dma_scratch_bo and writes
+  to its VA rather than the removed internal data BO. The internal helper
+  cmd_reset_packet_operands() is renamed cmd_clear_packet_inputs().
+
+- Patch 3 (source packet operands / size IB from pm4_size): unchanged
+  from v1 3/4.
+
+- Patch 4 (CONST_FILL): rebased onto the renamed helper; no functional
+  change from v1 4/4.
+
+- New patch 5 (tests/amdgpu: derive compute dispatch version from
+  hw_ip_version_major): test-correctness fix uncovered while reworking
+  amd_mem's compute path. The same family_id-based version derivation in
+  amd_remote_mem's build_poll_shader() is switched to
+  amdgpu_query_hw_ip_info() in this patch as well.
+
+- New patch 6 (tests/amdgpu: query KFD aperture node count before filling
+  array): test-correctness fix for the -EINVAL rejection from
+  kfd_ioctl_get_process_apertures_new().
+
+Testing
+-------
+Ran on local hardware: AMD GFX1036 (GFX10_3). The three cmd_context
+callers (amd_mem, amd_dmabuf_unload, amd_kfd_dmabuf_unload) and the
+low-level tests that exercise the changed shared code (amd_basic SDMA and
+compute submission, amd_userptr_invalidation) all pass. There is no
+regression from this series.
+
+Known limitations / follow-up work
+----------------------------------
+The following items are intentionally excluded from this series to limit
+its scope; they are candidates for follow-up patches:
+
+- pm4_size is currently a hard-coded 256 dwords in cmd_context_create().
+  It should become a caller-provided parameter (or be derived from the
+  expected packet mix) so large PM4 streams are not silently truncated.
+
+- The residency set (amdgpu_ring_context.resources[]) is a fixed-size
+  array (4 entries). cmd_context_add_resource() returns -ENOSPC when it
+  overflows; a growable set would remove that limit for callers that
+  require more operands per submit.
+
+- Some low-level callers open-code the same linear write/copy/fill
+  sequences that cmd_context now wraps. Where a test only needs the data
+  operation itself (and is not specifically exercising the submission
+  UAPI), it could be migrated onto the high-level cmd_context API to
+  remove boilerplate. Tests that deliberately drive libdrm_amdgpu to
+  validate cs_submit/bo_list/syncobj/gang/compute paths should stay as
+  they are.
+
+Junhua Shen (6):
+  lib/amdgpu: document amdgpu_ring_context field contract
+  lib/amdgpu: drop external BO from cmd_context
+  lib/amdgpu: source packet operands from params and size the IB from
+    pm4_size
+  lib/amdgpu: add CONST_FILL packet type and pass caller fill value
+    through
+  tests/amdgpu: derive compute dispatch version from hw_ip_version_major
+  tests/amdgpu: query KFD aperture node count before filling array
+
+ lib/amdgpu/amd_command_submission.c  | 424 +++++++++++++++++++----------------
+ lib/amdgpu/amd_command_submission.h  | 102 ++++++++-
+ lib/amdgpu/amd_ip_blocks.c           |  20 +-
+ lib/amdgpu/amd_ip_blocks.h           |  59 ++++-
+ tests/amdgpu/amd_dmabuf_unload.c     |  15 +-
+ tests/amdgpu/amd_kfd_dmabuf_unload.c |  23 +-
+ tests/amdgpu/amd_mem.c               | 171 +++++++-------
+ tests/amdgpu/amd_remote_mem.c        |  20 +-
+ 8 files changed, 492 insertions(+), 342 deletions(-)
+
 -- 
 2.34.1
 
