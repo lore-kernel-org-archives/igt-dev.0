@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FCABC79F8C
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Sep 2026 10:28:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6919DC79F8C
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Sep 2026 10:29:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A9AF110F09D;
-	Wed,  9 Sep 2026 10:28:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 14BB810F0A1;
+	Wed,  9 Sep 2026 10:29:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HblNWViy";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mUNLitpH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C241A10F0A1
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2026 10:28:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54C1C10F09D
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2026 10:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788949680; x=1820485680;
+ t=1788949717; x=1820485717;
  h=message-id:date:subject:to:references:from:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=l7EWSAxJEFl1TebYJI9vjpZEyY01WHaxfkT833dQiyQ=;
- b=HblNWViyiHrPIYxbT7DqqsBOw2/V66HDsdqFbEX/4I7k02i0bmljDjf4
- 6X9y19XJ4vW/fGwbgu950B5lzxXf9jq7VMHa+lQhhSqIouizut+DELO2N
- T7YhTjiaaQSwrH6Cp5nhVCsy0c4TS25IK+rjF2b8BghS++mAh5xQ+j5rG
- IKRLUOeNkj7ThN42QV2XVZSpAgw/p+PZFn8kevbLvqhcHBBVQJiGzOMzw
- YtABpubjDCb43bJGJ4lOVQxJBncp6ZcXHBUkfu0/Us8vhVpSK9Tzz3ZZ8
- 5Xhm0wqqbg2a4rS62+0rZRTu9U4IaO/uto14jH8SWP/CvIBz0IIzEebIc w==;
-X-CSE-ConnectionGUID: 1xWC6hCkQxS7lVrx7BvSqw==
-X-CSE-MsgGUID: zQ06MbV8SZ6kifIvGeShAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89388630"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="89388630"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2026 03:28:00 -0700
-X-CSE-ConnectionGUID: tUUoLWBaSkOyjkf9tn97Cw==
-X-CSE-MsgGUID: LjxlxRCwRmuKcw72xCRTeQ==
+ bh=P2nKCk83kwNWvM+pFHaVc0zLyBdQuNFdiWZ1xrp1fcs=;
+ b=mUNLitpHknO2RK32CEae0Wd03MabcHvy6IsYAgKpjzcRLVs4DXzQl5T0
+ Ka2zcOZTLRVfgzgxC+/UjRBO0ODWws4/umAa1lRjSUkJjdqsuN2nRF44t
+ qLkS5bewquQnJORkQzhVKsN/sbbFkvvfw/7B5ZaVl4ahGtgJzAz8A3esF
+ 0ez9Ne8v1GdG9IpJ/ClTBgdMlh4Itpul4Z/QP7wMDjTBNsuDr7fpJUs6p
+ k+XsUNEGLCJ7Ew6X38PNBXUEp9u+lRjVRHRJJc3glJ27zLcuxgkQTFTUe
+ 4GGj5exISc2u4jbnKZo+CgyGijXpznuM0Wpj4+wbTWQLDZeIo8q/53zvT A==;
+X-CSE-ConnectionGUID: igymJxVRTx2Iam3x1uHLHQ==
+X-CSE-MsgGUID: N7odt+4jR8WnnJRyeF8Dtw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89401507"
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="89401507"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2026 03:28:37 -0700
+X-CSE-ConnectionGUID: zyIBoDDVS3+gjdKoR0tSrw==
+X-CSE-MsgGUID: syeK3zVJSEqEWw3Vwmykxw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="269940270"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2026 03:28:01 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="301161532"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2026 03:28:37 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 9 Sep 2026 03:27:59 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.46; Wed, 9 Sep 2026 03:28:36 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 9 Sep 2026 03:27:59 -0700
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.41)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Wed, 9 Sep 2026 03:28:36 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.43) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 9 Sep 2026 03:27:59 -0700
+ 15.2.2562.46; Wed, 9 Sep 2026 03:28:36 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ub8QDHIbAlFx5hBOKzcnkL5qByfGQ6hVWO6TYCIwEjDVAEcTH1dEOj4Eh791i1NzczZD9/tqDkOMoPyfxA7hsJgr+BguVxLW3SoMaNbu39mLbYvrnekfoLcRsZX6axfFYAAzItVRDGfp9LuGH/feRo8dEjB+QQkmFG6QZC8ysRh0YkEndPmTRR+IKv/6ybDG8HKmEy44qCVb0mrvDR2IthYSZljPYqFKEt21BfUd0sEQjS0rVAUYj6HV83ncRC7rIVNjXoZFWev7+FBMVM5aYhYNuJaR2ARPcclTk5sbTmzBhJ/DfzShj3BmR1uFZX4025KOQUuuYdwLSrkngsulcQ==
+ b=W+0uiNxBYv/F26Mo9i0QMFOPomW2JqOZV+hlmdA/nL2w3LbPCaQ4hkv/+Ur54AS22uMEnffXoriOLOFFORycYU7alC0KZVG+G1Bckk2A4EXgk6pRY3dr0HkxtUxo3H9O6l++Wz7N4tQ6LdIShBn8AFlK/V4L5KeTYUy8JwmEz7jfIid5ZvfgHEhiAal/YketBgCVMSzk4a8pqnu5ku7A2vXXtpXE4x2NfTdgHidJE/Bj+WW0hAv/55ZEILEDVajSozcU0v8+oqJ1BF7kVDtfAmrWqu1vZR3p0+5UacfYcfJ48REGmagY29E605E7L52v9/FShRxHZTK3GXhjbKj2cA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zaRE/Y0NSP/WUqAShYyGBBICa6/u5j+e5LKfRCRGIXw=;
- b=RaQ5cm5Nd6Z/afPHQan5QqT64YQs+9ldU8JisPsvy5QtVlkFjw3k2qOkrxedV2xqm7WvbpiiwU8vISGKTbxvY9V3BN0BAwkRVYq1yknFiOC/D9PrHy9sa44A9nCmym7NhJlrLY/Dc871GSee4QahitrzxelCvsGJbPtUGd/kklf/efl4NHBRF24RblztKfngDZ8TGyHAYzPsSiULYAQC/+Nvph2wpv3YWmuUx7not0vaNNFjaFTwi996k4ip2UaooWtMLbmDwdBJdjuLevmZYUbTsBL+imiZalKA7QQBLbZF3Mn4PhavOrJ8f0jSiYZrKXfo6vR9IklLP5sErBik6w==
+ bh=ZdrmZORCAOOi1AMxr+vmzELDKkdB++d2oMK9hkn+Iuw=;
+ b=UvWZrFotn6yTbslIsF3Yl3fF1GgPgPUSz4CZpOBGRXwiUtURM8gIKCo2xtHf5pH7GjlMD59+OykFBPqF2vlscr2fN9ti/2zUswT8pvVHxiQ69AyNBBTNhSFRDQaVHOE8Einjug9aPDa/slz5J7yb3DZ++Oy5/THF1g5oSCTl/RACJIJp80SrorUHOnu8G5YDeWaa50KpSMvnLHZ1bkngil6Okat00WA7DqItQoG69cyaqzn4tKngQ10ZyZAfgJ/xmz9wfgx69Lj3VDojJJ8joJBCHILjGI+J57oNIHegG+dK5zzRnxNw0DdqxEUy2lQaS+aeC9oju21a6AOuXIM4Jw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,90 +69,90 @@ Received: from PH0PR11MB7636.namprd11.prod.outlook.com (2603:10b6:510:26f::13)
  by SA1PR11MB9828.namprd11.prod.outlook.com (2603:10b6:806:4d9::16)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Wed, 9 Sep 2026
- 10:27:57 +0000
+ 10:28:30 +0000
 Received: from PH0PR11MB7636.namprd11.prod.outlook.com
  ([fe80::d611:6fa9:bc34:46b]) by PH0PR11MB7636.namprd11.prod.outlook.com
  ([fe80::d611:6fa9:bc34:46b%5]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
- 10:27:57 +0000
-Message-ID: <fc7592b1-e18b-4995-bd71-03031681aa0f@intel.com>
-Date: Wed, 9 Sep 2026 15:57:51 +0530
+ 10:28:29 +0000
+Message-ID: <4ab5d9c5-421c-4cc6-8fcb-15977c078922@intel.com>
+Date: Wed, 9 Sep 2026 15:58:22 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t,v5 2/7] lib/igt_kms: Order
- IGT_COLOROP_FIXED_MATRIX_TYPE before IGT_COLOROP_NEXT
+Subject: Re: [PATCH i-g-t,v5 3/7] tests/kms_colorop_helper: Add Fixed Matrix
+ enum names table
 To: Swati Sharma <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
 References: <20260831192935.463134-1-swati2.sharma@intel.com>
- <20260831192935.463134-3-swati2.sharma@intel.com>
+ <20260831192935.463134-4-swati2.sharma@intel.com>
 Content-Language: en-GB
 From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20260831192935.463134-3-swati2.sharma@intel.com>
+In-Reply-To: <20260831192935.463134-4-swati2.sharma@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0047.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:175::9) To PH0PR11MB7636.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA5P287CA0002.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:176::11) To PH0PR11MB7636.namprd11.prod.outlook.com
  (2603:10b6:510:26f::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR11MB7636:EE_|SA1PR11MB9828:EE_
-X-MS-Office365-Filtering-Correlation-Id: b2ee38e1-20ce-4f01-84bf-08df0e5d03fc
+X-MS-Office365-Filtering-Correlation-Id: fada76b6-cb9b-4f39-69ce-08df0e5d1746
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|376014|23010399003|18002099003|22082099003|11063799006|56012099006|10067099003|4143699003;
-X-Microsoft-Antispam-Message-Info: o+1zL51NouoFrBAXiU4goUq7/sVCOfSqZ9C3Ca3Rj8Q/MvsXzDCl02d47J8Xo1pDBfWC3TVrT1KneagjVnLpW/3yh34+2DzwNVrKTQm7xNWB1tnc6sbZXV3492TDiTSv6iHpy6kufU1CmvLiqGvyXE+lNVaCdTyuXBrP6T6jociD+gEsNzUbW4EJkafBAabNkB+VRQt+5KD7g474CXhND20GPTb6MEFCSSPxb5cQ0H+n2ijPlodez8TPAu2e9kcm1x0jDOPyXZjUO9/oHZWD2iX70DkMaylYC8p340zHKb0jUDgsxbrXn0/86wjP5ZYT+Wz7v3oBGTkv6FAUK3CuTPZEF6HnNcX33ESxQh1zyH9P7jtGOcP46tI0VbBcjqVxdapF1KDn+EEWDA7SeugkLoCc++QcQXTrVyvdMTrY6+349Yk04JdnjYuNRCocVUIptqzZCtKB3wVFZA0n+wKNG4bqBudJQrIU4UkqiOb/5e9fWx5zk4Myj8xv419NzohTjLo5GcUbsxuUaHs0kcKWNHWg3c5NZWmpvGEh4CBOwgNSXPEhOgDBopHDddHti5CX5MAsab1O1IN7zK12eC7L7DpOuCmekvP+5gFa2wYTN0Zc+yFTjz7xy8+IQ7McCe8YcXlGqj4AwCKKrEZxYK/YymONX+K/Fjgf5xP/DUCO2KY=
+ ARA:13230040|366016|1800799024|376014|23010399003|18002099003|22082099003|6133799003|11063799006|56012099006|3023799007|10067099003|4143699003;
+X-Microsoft-Antispam-Message-Info: Pwei3ipKkj53Dv4ttXlO5ZkqpCq5TH3uFHvZT4jGTcUDIfJw1XbcJE3oEyYWA4I/nNgeBhYnovtZIEOD+o/SFijDjRp2Z5p97ODj6gCgHWbYg+4deJF8Stdwefv3NK687vZUYSyowMW0WpkzQ+O7iybqg2FBpCqD87AYaiyK+8hCgp0+TfAYy4As3AfxNqVyBJZKdWZ9IvR+f6CAhLmiJdpvKs5TLfvHsPvBeF0iT3A1y4qwahim/paUD3XT833R3YqI6K3gImW3MVzcqaeoeJG9HCBS5mOlwZCeCdQBGMSda7qIatMpYzWnk3frZuSGr7DSJL6VO8R0qYWGMlSndIpl/Y8lrJcMDgPy2XDk92R1/yXlXgUW/Wl2BpQmbaCTRD4CRARqKVgwdd6HZnMBcD/lDFGbGHMwe0NAlmqFO8IvWwkEHlIgEyyvWbsWqplaj/NZIce3i548Cx/TUrgu0fKTHHKRDiEOZDQBnfkKrOzBXrEIo4Ic19qJQQIrUbvkOLX1+mhq+Gh4LYnCJsC0ZHE1E1qGQhzQPmwAaW/R9yi7wHDCjfREdw4TOZry1bnUwoyg6UsTmr+eU1HCv5bKDS3gWgxe1FFE3FuGs21wRkiB/FEh7BmhMISLqANaaKOgWHRjT/MoRkJnbIhO89PC/8bDU2UFMsiPMvyd3EyICiU=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR11MB7636.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(18002099003)(22082099003)(11063799006)(56012099006)(10067099003)(4143699003);
+ SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(18002099003)(22082099003)(6133799003)(11063799006)(56012099006)(3023799007)(10067099003)(4143699003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eXJPdWU5ZWp5QmVsc2xUcjNJVTB5TlZ5ckNXbjNiRFI1UDNoTVY0YUwwT1pP?=
- =?utf-8?B?Y0dHUFRSZFZuU1FrektJTjJER284emFwQTRXQU4yZEw0dmUza0NTUnFnRkpV?=
- =?utf-8?B?blZoMlBpbUIxbFY0KytPYTFnWU91blFIR0dOOHhuSnV6bFM5T2Z1N3lHS2Yr?=
- =?utf-8?B?ak5pWUhNVFhLL1pwSG9LV3VtNDRFaGFER3FiRzZMVEdZRjVOdzh2ZVR4dVY5?=
- =?utf-8?B?eUVCTUFubGRmcDBrZm0wN2UzWTVnTlRGVVNkbGkxdmw2OUVFTXUxcnp5dlJS?=
- =?utf-8?B?Uno5V2tFcVFDRTdXQXBVLzQwZWNDaTZJakNYQmR6bGNYMnNYZ3ZGajVPRTVh?=
- =?utf-8?B?SnVLMlpVREV6dnhlTGZDYjRISUVxbWRMU3p1dTIrQVF2OStkdTk3ZTJHKzJD?=
- =?utf-8?B?MkFBdHppSGJzUGEyMWlHby9OOWtwTDJ4dWRTNGdGcGZRTU5pTXl6a0ZKOGRU?=
- =?utf-8?B?UzdXYmZibnV3MXRVKys0Mm1GR3VJS2tUWm8yNTR6RjZLUnhZSHBDbEhxS1k5?=
- =?utf-8?B?WkY2dmFjdDI3MDEwVmZLUjhOZWVUZjVEdVF0amZBekFnMDJsa2ZYVmRnT01W?=
- =?utf-8?B?SklyZU1reVFqWk53dHNDdE9NeWorSTJuRXRRTGhjbkhYTlJiUEZCdHlqaGNJ?=
- =?utf-8?B?UEM2bHZjcEJONnhleVFOWGRRdjdDQlJFc2xXVG1HSnBDcDhLZVdzK20wVllm?=
- =?utf-8?B?VXJLZzhVR3h4WjRWV2I1a2NhTGFOeVVNejgzNVpQeEZJSmI1ZG5ETENNajJI?=
- =?utf-8?B?SU1yeWp6cGUybURYVDZvcDRadHlnVllXb2JxU0M3amhsTzdva2RsVUZ2QzNS?=
- =?utf-8?B?NzVZZTlaN0QxUTQxNWhBNllJSXUxYUlicVVEblJ0QXA1TkVrK2M0VnU2Szlv?=
- =?utf-8?B?N3JnMzNVeGlFbUNIOERWNWV1UUJZREwrLzNKUkpxMjFuK0dRT1dLSEpwRFV0?=
- =?utf-8?B?VjRxVGUzdTdOblB5U3J3NzJpeUlKT2U5REF2ekJLSFpiLzNtK0xHbDNkRjhl?=
- =?utf-8?B?VTZkRGNSRU5CQ1pHOExuaFdwNERXVGtxRnplV2hnOVU0SFdZQzRTR3Jrd3BW?=
- =?utf-8?B?NWFsY250UitSb1Y0RG1NT1lMTlZOUXZUQTNGN1FuZVplT3FhUkg1NG5PZ0NB?=
- =?utf-8?B?cUh3ckFLaUQwais5MWdicjFMTmlxanJzT2RQd2VrcVB3VnIvOWRBTWdLOHZk?=
- =?utf-8?B?N28vUzVuNnhQcURQRDJrUWdLUVVHVDVuL2ZFbWw2TnBhTmxseWFhbGpQRHlq?=
- =?utf-8?B?K0FOK1Y1d3BLYVdiUzdPVE5NYmJKMkdqZmV6ZDIvQkQ4bXdNeVNaek5pcGZl?=
- =?utf-8?B?c09zSmJJamUrUHR4N0c1eUhWcC9EbXpidEVqMHlNNVJ0dmJYS2JCL1E2dG9Z?=
- =?utf-8?B?REdOMUZCcmVneXBja1pad3diNGlxcUdTQ2pMZEZBREdxd0RSTmxPQTNZTnly?=
- =?utf-8?B?T0RZWG5pMkdpSmhNRWNZMTBqTk1DTEZUUit1d3RvbWVOSmFJbTRQZ3oxZTdo?=
- =?utf-8?B?ckVidXMweU5McUxFYjRqZkVveDRyZ2JTVUpGR3Z3KzdhYUVyOHpldUNmc1RJ?=
- =?utf-8?B?TTJTSE1lSDNTQVVNdmZDWVMvaVh2SGRCZ2dsamFncjVMd3JSK3QzZE1udERx?=
- =?utf-8?B?SFBkRWt5Vmx0djgvaUxBUUc4Sldna3lxLy9rcktoZGtqY05FUW9CS3NqVmJl?=
- =?utf-8?B?TExKQlZuV2plSFVSRzVEY0pZR1Q5cTZ6UC9LQTNiaW5Cemwycy9QUUQ0VnlM?=
- =?utf-8?B?R3J5R1Z2elh5UzBkZEhISWp4ZkZsbTFXcVZmZm55Tk9kRCtmMXA4bGRPdlJv?=
- =?utf-8?B?OG45NERMYUUzMHdVU2RjWlRVblRVMUQ2V24vQ1MveXgrNVg3cmpTTy9jcXpm?=
- =?utf-8?B?SlVQc3Z1RmlYNkU0bHZNRzNXUlJ0OC9tenhhTXdiOXhUT2xnOEcwLzVVZEo1?=
- =?utf-8?B?d0F3VGdRMFhCc0NqU2xZajZienV3MVRUWktWN2dCZmJGVXJFVG9PQTdUUjc0?=
- =?utf-8?B?WVc1THBoYmpWMk5nN1dYYnlNT2Q3TFh1TGc2Wmh2YXBkRytrbElPRDVBclIy?=
- =?utf-8?B?OVh5eC9xdXBYZGkwZ2FEZ0dvVS9XMG9Gb0xwTFpKczU3MUhsNXMzU2Y0NFdh?=
- =?utf-8?B?TFZVTENobG5DTmkwK2phVW11TFlzcFNLZEE5cTJQV0JMUUQvalVsekgrOGQw?=
- =?utf-8?B?c1ZqTTN4NXRLNGp5SlY0em9TZFE0RXJ3RU10Z0VMZ3JPK2pxcFlib0FWU0xS?=
- =?utf-8?B?V0prVXNEN2NOVzArNVJVYnNFaUVrSG1FaENLbFpSTUVHS2RoeUNyOTgrMWkr?=
- =?utf-8?B?bTM3aEJEcFYyTFZZb1ZCak15d0wzUFZSQU5JQW9QYUJtWkZXYUZSWGx5SE9s?=
- =?utf-8?Q?vAblPwZMsFSQOvUY=3D?=
-X-Exchange-RoutingPolicyChecked: 1o6aX9mj+TszjcWmMGqrBI/1Kcy+P1a8yn1f56e/lqAxS4T4+S/fwNiRSHxjAflHQkkzZPnAQ+CtwbtsMZZraupvC676B9vbW3bpm3sPT8Zk9BITiiaiMS1rqRsfLxmL5OgqcR/1NeKQPEKYGqPyufg7kr40ZGuypRfj6HlZ2NX9IB2J63Dgaiy6OkuvIqBZSGEmSmlffkwn1sAlTSOxmp3NkvV3wtnClEWC0GfagGKiWACBn0E4K6QLygk0RDCUfaq8HRIs2foSjlbdqsn1hDI1OkTzjmozWgTF3VBnAGJ7fJk2XJfq/JJnphx1OJuLrkOLbEQPp4pmPoDabc0PPg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b2ee38e1-20ce-4f01-84bf-08df0e5d03fc
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WkMxdlZ4K3VZOFl3elo0N2k2azg2WFRqNkNpcUY4cHpsai8wL2IyNjhZcDRz?=
+ =?utf-8?B?L1Zhd3N2clMrUEYrSDgyMHdQQ1pvUnRDM2JWbVh4emRnK1QzWlJodjNGNTN1?=
+ =?utf-8?B?K1I3K3BKZkxGeWF6YzVvTWhJNzR6Z0ZwZjhLMHpNWjBoOC9MRW5tWTd3a1o0?=
+ =?utf-8?B?Q3FmdlFyNzNuaENIU2tRTktnNFVYQkxuQnQ1TVpWMG1EdGZpQnNTSkJzL2N0?=
+ =?utf-8?B?SG1Pa0VKb2w2SXowUzg3WFB5d3dCcDB0N2hFSGdoYVEydUtxMW1mNGFxd1E4?=
+ =?utf-8?B?S2ZFeVpLbDlDbUUxQUtqb0NkRUcwL2NGanZmQkJpWWVJK3NGOTFlNjFOVlk3?=
+ =?utf-8?B?Tlh0Y3NMelV0Q0VXb1h3Qjg4M09JQmQ5cGs3bkFSbDRzRHdydHN1SXpUTnV4?=
+ =?utf-8?B?ZE5TYTJSSG90NnNiS2RvVDFkcHpTMktCcVNOVWxQc3RpL2s0M2VQaWVOSHF1?=
+ =?utf-8?B?VnBlY00vb09mVXZNQldTbS9zdW5lS1prMTBwMW1vSnhnQlpia2pad3d3VE5m?=
+ =?utf-8?B?QXlHQjBzOENJRjY5N2JYcGcydk1yQWVrZGExMVNMd3pOZmF2SkVoMDFDc2RU?=
+ =?utf-8?B?ZGcwSEdvbDhKM3c0WTB6TU42dm1yZmlwaEcxWU9FdDRKWkZ4K1ZXSXc5NmpR?=
+ =?utf-8?B?UWl0L1ZCbXQ5RS9lTXR2cWJldTJjUGFqRXh5TWpCeDVTS2FKdkVVbG44c3B4?=
+ =?utf-8?B?L1RnSGVXRW0wSFhJYko0cXBXQXJndU1ybHFFeE5kZjNsZGxXbHdWNVJyZUpK?=
+ =?utf-8?B?V1ZtM1R5R08xWEJ1cFljZlM2Y1F5VFFCYWpESWJSK0Fremc0S1Q5aXBwTUkw?=
+ =?utf-8?B?Wk5MRFV1UjhZdnZ0QWZ0eE1YOHBUY28yMnc0bHFzOGpneHMraFl6TUNIcTNj?=
+ =?utf-8?B?dCtBUXY3WFdhM1JzUEQ4ZXg2TXMvN1hSc3p0aEFSMENBaXN1SmFYcVo3SGdG?=
+ =?utf-8?B?RFhRaDdxbmNsMFVRSytaNTVnQTRKSkw0UWxvaGdLdndkNC9tKzEvUGt3VFh5?=
+ =?utf-8?B?di9IUVBKTnFtWnNIaTRrcFE0dTM4QWp1VmczWFFWVk9FUW9YaytQZG9Hb2VI?=
+ =?utf-8?B?UnVYZWl6S2t2cjdTWDV0VTRRS0c2aUtHVkwwTnc2UHowRkpRdWk5S011eHE5?=
+ =?utf-8?B?WW9WbDgyWWFIMXB0THphOVBTejJkQzR2a0FDYWxSa1RFcVZWS2thc0hxNllu?=
+ =?utf-8?B?SVErS0I5OGk5Mjl2N1l0d2pLT0t4ZE1JVGFBY251UGtuZTZJUWt0WEY2Rlh6?=
+ =?utf-8?B?UjdCMzBLRTExMjkrVkFVVjNQclRYa25uZk43eEM5dStGejBOS3piekxvWDF1?=
+ =?utf-8?B?cDRuMmVJSS9hcTlURExCTHJyRjU4Ni9SS3pNTXpha0g4VzVNaTJydnM3OGFp?=
+ =?utf-8?B?K2k2M0s0YitabmZzZzdNUGlHaGNkUUJLR0gvbVRwSzR3MnB5QkFYQTZMeEZM?=
+ =?utf-8?B?SW1DTm9YU0oxWnBHYWE3b0w4Qzl0QXZxYkxKbzBNWWpCeHVtbHZ3N29DL0Qx?=
+ =?utf-8?B?cFVFZFZWejZYdXNTbGpsVEN5dTQ3dnhtQ0VncFJCbEZrajA1UDBXWWdyeE1l?=
+ =?utf-8?B?cDJDWnF6UHpSSEZ6ckcwMzJ3U3AvWitBTCtyUG5OdDZqY3pJK2RKM3dxb29v?=
+ =?utf-8?B?Vm9KZnRTWmdPL25iaUVaQ3R4aDJROTBFNmY1WDhOdVlZNEtLRTd4U1Q0ZGRJ?=
+ =?utf-8?B?ZlhaN3BmV081dWFudmNEM1RVVys5akQ2Ti9KaURuWWVrODZEQXlNSFgxNG5J?=
+ =?utf-8?B?V2NraEhHbFNkVHRWekNsa3QwQjg0U0p5RktqK3JMRVk1SU91YkFEUWNyNy91?=
+ =?utf-8?B?eTcybU5aZjRIMUlUdUd5NFdONXJNMStGQndaOW9SY05ONlYvWTQ4TmV5UkFH?=
+ =?utf-8?B?dEtjVEtENmVNUFpmbmU3SEhjQ0dsL2ppUUJKRGordWc4OWYyS3lyYkNYcnd2?=
+ =?utf-8?B?U1I4R2dSZmthdy9rdkFHa2hHUW8wMVBsQ1FjaVhYV1F6Q1BiaGRneWxyODRv?=
+ =?utf-8?B?V3J3VDF4aFhCanZ4d05Qc2oxNVRDb0EwZHM5T1N1NGFSZWFpbG1aeDBXeWp5?=
+ =?utf-8?B?eEgxWmplNzMzQVUwaDJkS2hibmZEUWNJUHIwVUk0ckpUMmZGT24wcTMvcUNH?=
+ =?utf-8?B?VkxiNkREbmF0WXhFTHZCRUxrTGNxZzdYdlNsOGJXdEtDNWVpL29PaFZ0YkhU?=
+ =?utf-8?B?ckVCS2pDWUhhY2pTbkY2WEd4N2sxMjNWMlFTSW43U0ZNWW41TDd1bFpFdnh2?=
+ =?utf-8?B?ekp5OGdoa3ZsUlBKRzdmQk5PS1p2eWpRWGh3L0VybHlnbkxnU2oxTFQ0NUhF?=
+ =?utf-8?B?cjlhWkRMMVRsWE12V0E1YlZyTFc5bmZkRG02MUI2MHduelFrSSt4RjVpS2Va?=
+ =?utf-8?Q?s7X2vDRmxE2dVu7U=3D?=
+X-Exchange-RoutingPolicyChecked: znfdEnbWwpBu/ZuREH6jZtnAnKkiqFinnvioH7lvSX8uHeZ31ZuI8rifuZ525rgB9Qx4DRqVBglFNwuEh68KaTF8j/QhztF5K1nLJ1DsMXusUL5pXK0nPiQGgUk15sl7y/3Uv9Phb7HCO632a6OUOu495/neCjG+h0vDwjTw9CWZ4c7C+vZ2nPyAnWAlstFkjwb+Qotci58wyZwdoZMxuVc8uCxQhXMWsxvynd/uEe0GaFywysYFjEkIAn0KKUI2VfCge2gY9S9yum3yrwKWPE91XwIiq3sP4ecGXjpTPH0gNCjYy48jKo8bOGjawXPJYEjVKkQ2yDdVO9S1Z7Mm1A==
+X-MS-Exchange-CrossTenant-Network-Message-Id: fada76b6-cb9b-4f39-69ce-08df0e5d1746
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7636.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 10:27:57.4915 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 10:28:29.8045 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8NyxAepGPc8U7fVPC+tCI/9/zXqNGsTLeRc3ue1OlZ6pNRbeHBmNxF45Q0M5xOhZKDg3oZh+Ka+BvwkVfhho+kF4kJS9nCqEQW7Kug0WBdA=
+X-MS-Exchange-CrossTenant-UserPrincipalName: Rr5cJGhwGeH4VBJlVwF0dkWlOYreFPOMJ6RAKQ80gloJwGvz7eVZdIDHd+YgS0yBxu/ThaCyicSFF2Tt5UarRvhhLDzzciYgCyoR4FN8nKI=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB9828
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -173,50 +173,134 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 9/1/2026 12:59 AM, Swati Sharma wrote:
-> Keep NEXT as the last property defined just to represent its
-> unique role as chain-terminator/pointer.
+> Add kms_colorop_fixed_matrix_t enum and kms_colorop_fixed_matrix_names[]
+> lookup table for FIXED_MATRIX type strings, replacing raw string
+> literals in colorop instances.
+> 
+> This follows the same pattern used by kms_colorop_lut1d_tf_names[] for
+> 1D LUT transfer functions.
+> 
+> Also, adds missing encoding/range to bt2020_limited instance.
+
+Also fixes the enum string.
+
 > 
 > Suggested-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+> Assisted-by: GitHub Copilot
+> ---
+>   tests/kms_colorop_helper.c | 24 ++++++++++++++++++------
+>   tests/kms_colorop_helper.h | 14 +++++++++++++-
+>   2 files changed, 31 insertions(+), 7 deletions(-)
+> 
+> diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+> index f58f629f5..2e97d6abf 100644
+> --- a/tests/kms_colorop_helper.c
+> +++ b/tests/kms_colorop_helper.c
+> @@ -19,6 +19,15 @@ const char * const kms_colorop_lut1d_tf_names[KMS_COLOROP_LUT1D_NUM_ENUMS] = {
+>   	[KMS_COLOROP_LUT1D_GAMMA_2_2_INV_OETF] = "Gamma 2.2 Inverse",
+>   };
+>   
+> +const char * const kms_colorop_fixed_matrix_names[KMS_COLOROP_FIXED_MATRIX_NUM_ENUMS] = {
+> +	[KMS_COLOROP_FIXED_MATRIX_YCBCR601_FULL_RGB] = "YCbCr 601 Full to RGB",
+> +	[KMS_COLOROP_FIXED_MATRIX_YCBCR601_LIMITED_RGB] = "YCbCr 601 Limited to RGB",
+> +	[KMS_COLOROP_FIXED_MATRIX_YCBCR709_FULL_RGB] = "YCbCr 709 Full to RGB",
+> +	[KMS_COLOROP_FIXED_MATRIX_YCBCR709_LIMITED_RGB] = "YCbCr 709 Limited to RGB",
+> +	[KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_FULL_RGB] = "YCbCr 2020 NC Full to RGB",
+> +	[KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_LIMITED_RGB] = "YCbCr 2020 NC Limited to RGB",
+> +};
+> +
+>   kms_colorop_t kms_colorop_srgb_eotf = {
+>   	.type = KMS_COLOROP_ENUMERATED_LUT1D,
+>   	.enumerated_lut1d_info = {
+> @@ -204,7 +213,7 @@ kms_colorop_t kms_colorop_3dlut_17_12_rgb = {
+>   kms_colorop_t kms_colorop_bt709_limited_ycbcr_to_rgb = {
+>   	.type = KMS_COLOROP_FIXED_MATRIX,
+>   	.fixed_matrix_info = {
+> -		.fixed_matrix_type_name = "YCbCr 709 Limited to RGB",
+> +		.fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR709_LIMITED_RGB,
+>   		.encoding = IGT_COLOR_YCBCR_BT709,
+>   		.range = IGT_COLOR_YCBCR_LIMITED_RANGE,
+>   	},
+> @@ -215,7 +224,7 @@ kms_colorop_t kms_colorop_bt709_limited_ycbcr_to_rgb = {
+>   kms_colorop_t kms_colorop_bt709_full_ycbcr_to_rgb = {
+>   	.type = KMS_COLOROP_FIXED_MATRIX,
+>   	.fixed_matrix_info = {
+> -		.fixed_matrix_type_name = "YCbCr 709 Full to RGB",
+> +		.fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR709_FULL_RGB,
+>   		.encoding = IGT_COLOR_YCBCR_BT709,
+>   		.range = IGT_COLOR_YCBCR_FULL_RANGE,
+>   	},
+> @@ -226,7 +235,7 @@ kms_colorop_t kms_colorop_bt709_full_ycbcr_to_rgb = {
+>   kms_colorop_t kms_colorop_bt601_limited_ycbcr_to_rgb = {
+>   	.type = KMS_COLOROP_FIXED_MATRIX,
+>   	.fixed_matrix_info = {
+> -		.fixed_matrix_type_name = "YCbCr 601 Limited to RGB",
+> +		.fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR601_LIMITED_RGB,
+>   		.encoding = IGT_COLOR_YCBCR_BT601,
+>   		.range = IGT_COLOR_YCBCR_LIMITED_RANGE,
+>   	},
+> @@ -237,7 +246,9 @@ kms_colorop_t kms_colorop_bt601_limited_ycbcr_to_rgb = {
+>   kms_colorop_t kms_colorop_bt2020_limited_ycbcr_to_rgb = {
+>   	.type = KMS_COLOROP_FIXED_MATRIX,
+>   	.fixed_matrix_info = {
+> -		.fixed_matrix_type_name = "YCbCr 2020 Limited to RGB NC",
+> +		.fixed_matrix = KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_LIMITED_RGB,
+> +		.encoding = IGT_COLOR_YCBCR_BT2020,
+> +		.range = IGT_COLOR_YCBCR_LIMITED_RANGE,
+>   	},
+>   	.name = "YCbCr BT.2020 Limited Range to RGB",
+>   	.transform = NULL,
+> @@ -263,7 +274,8 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
+>   		return (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_3D_LUT);
+>   	case KMS_COLOROP_FIXED_MATRIX:
+>   		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_FIXED_MATRIX &&
+> -		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_FIXED_MATRIX_TYPE, desired->fixed_matrix_info.fixed_matrix_type_name))
+> +		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_FIXED_MATRIX_TYPE,
+> +					      kms_colorop_fixed_matrix_names[desired->fixed_matrix_info.fixed_matrix]))
+>   			return true;
+>   		return false;
+>   	default:
+> @@ -412,7 +424,7 @@ static void set_colorop(igt_display_t *display, kms_colorop_t *colorop)
+>   		break;
+>   	case KMS_COLOROP_FIXED_MATRIX:
+>   		igt_colorop_set_prop_enum(colorop->colorop, IGT_COLOROP_FIXED_MATRIX_TYPE,
+> -					  colorop->fixed_matrix_info.fixed_matrix_type_name);
+> +					  kms_colorop_fixed_matrix_names[colorop->fixed_matrix_info.fixed_matrix]);
+>   		break;
+>   	default:
+>   		igt_fail(IGT_EXIT_FAILURE);
+> diff --git a/tests/kms_colorop_helper.h b/tests/kms_colorop_helper.h
+> index 9a1477666..dd76e1991 100644
+> --- a/tests/kms_colorop_helper.h
+> +++ b/tests/kms_colorop_helper.h
+> @@ -51,8 +51,20 @@ typedef struct kms_colorop_lut3d_info {
+>   	enum drm_colorop_lut3d_interpolation_type interpolation;
+>   } kms_colorop_lut3d_info_t;
+>   
+> +typedef enum kms_colorop_fixed_matrix {
+> +	KMS_COLOROP_FIXED_MATRIX_YCBCR601_FULL_RGB,
+> +	KMS_COLOROP_FIXED_MATRIX_YCBCR601_LIMITED_RGB,
+> +	KMS_COLOROP_FIXED_MATRIX_YCBCR709_FULL_RGB,
+> +	KMS_COLOROP_FIXED_MATRIX_YCBCR709_LIMITED_RGB,
+> +	KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_FULL_RGB,
+> +	KMS_COLOROP_FIXED_MATRIX_YCBCR2020_NC_LIMITED_RGB,
+> +	KMS_COLOROP_FIXED_MATRIX_NUM_ENUMS
+> +} kms_colorop_fixed_matrix_t;
+> +
+> +extern const char * const kms_colorop_fixed_matrix_names[KMS_COLOROP_FIXED_MATRIX_NUM_ENUMS];
+> +
+>   typedef struct kms_colorop_fixed_matrix_info {
+> -	const char *fixed_matrix_type_name;
+> +	kms_colorop_fixed_matrix_t fixed_matrix;
 
-LGTM
+nit: s/fixed_matrix/fixed_matrix_type/
+
+LGTM.
+
 Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 
-> Assisted-by: GitHub Copilot
-
-Should Assisted by come before Signed off?
-
-> ---
->   lib/igt_kms.c | 2 +-
->   lib/igt_kms.h | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 1e27a25f6..7f3b464b2 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -724,8 +724,8 @@ const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
->   	[IGT_COLOROP_DATA] = "DATA",
->   	[IGT_COLOROP_MULTIPLIER] = "MULTIPLIER",
->   	[IGT_COLOROP_LUT3D_INTERPOLATION] = "LUT3D_INTERPOLATION",
-> -	[IGT_COLOROP_NEXT] = "NEXT",
->   	[IGT_COLOROP_FIXED_MATRIX_TYPE] = "FIXED_MATRIX_TYPE",
-> +	[IGT_COLOROP_NEXT] = "NEXT",
->   };
->   
->   const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
-> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-> index c8fa11b47..8ba8e3891 100644
-> --- a/lib/igt_kms.h
-> +++ b/lib/igt_kms.h
-> @@ -362,8 +362,8 @@ enum igt_atomic_colorop_properties {
->   	IGT_COLOROP_DATA,
->   	IGT_COLOROP_MULTIPLIER,
->   	IGT_COLOROP_LUT3D_INTERPOLATION,
-> -	IGT_COLOROP_NEXT,
->   	IGT_COLOROP_FIXED_MATRIX_TYPE,
-> +	IGT_COLOROP_NEXT,
->   	IGT_NUM_COLOROP_PROPS
->   };
->   
+>   	enum igt_color_encoding encoding;
+>   	enum igt_color_range range;
+>   } kms_colorop_fixed_matrix_info_t;
 
