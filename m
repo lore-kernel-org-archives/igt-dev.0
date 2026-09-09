@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D962C79FAA
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Sep 2026 07:55:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C303C79F8C
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Sep 2026 07:57:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 39B4510EF9E;
-	Wed,  9 Sep 2026 07:55:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3519F10EF91;
+	Wed,  9 Sep 2026 07:57:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TkZd99bf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CfMqDL85";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4F3AA10EF9A
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2026 07:54:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EC0E10EF91
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2026 07:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788940495; x=1820476495;
+ t=1788940573; x=1820476573;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=vrsliW33wOic3n3BjZZRn9JDxkCDAmICs1durRaX7mI=;
- b=TkZd99bf2BUjHWU419IjZeIoS8befm/Dam64Wkwxt71yEkzywMowq+1d
- CFJlf3RfY7KvmaS/nEtDBjC7FQZeNROCdMgUag5FiVzqgFonNTPMkuIFV
- fzLs1BNRCzOjx6YVz3OmGHtXnlpJhP09Yo4VXrYPD9G1Wb0K7tgC0RD+l
- OkI/nTMUUxFwMA2H/rPg54zq/9diArOWFHb8U6AazN1FdbfolrZlioZ/O
- ZQCKuqPyKEMbyXSArU6vNsY1LqWoa8ekNIubFkGT6MEaB+CyYSShS41t4
- 263VUVv5vnv0jB6IJ88FYuWk2zb2HNyhLf6xkQy6cUATBEbYigU/jbduJ Q==;
-X-CSE-ConnectionGUID: 79YantwESKW+OxXLMCwAXA==
-X-CSE-MsgGUID: ISfige/bT4++YjKLZtQOrQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="93175909"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="93175909"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2026 00:54:55 -0700
-X-CSE-ConnectionGUID: Fr5hasY7QnWsH/HxSQZoZA==
-X-CSE-MsgGUID: cspcnm5wRouCVwAnCmMg5Q==
+ bh=qyRzkWkqOAO8y25Yk9rjKdDFgOXfrz+XjHFy95cPyrw=;
+ b=CfMqDL85c7/VeMSISb4TyVnqGeyfFJlef3jhd6cP5wH8gzqlDvaq2wns
+ lhedQeNqfvUV31jYwVZSqV74THrPy8zjVCeeLGZR8MNoFdxBFkfC199Qd
+ DZCF1LudN4UGoH7Px2mdHsQJuI+jie3SArLF6yyJCHlOozmIfr7U3GQoS
+ taqRQvp5vgEzyLlOyfx7kbXOhXN4FuVDnYfBvAdsRloIA7P0QApN/qAad
+ Ll2Awse4rNIZJfOW4SB4BgacBGhJTCuHrHWhDHIRmub+XCHEhQqahZjCq
+ MiCDei88XOz3LZwHsx2Ip4sKoQjPrHkov9SsWXMyNrDLEwLeNP/3ivsUd Q==;
+X-CSE-ConnectionGUID: x5AEAHk1TCmAqYIXNJLNSw==
+X-CSE-MsgGUID: eWpdMmtuQ8a+q7KNDvEVbA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="88505618"
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="88505618"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2026 00:56:13 -0700
+X-CSE-ConnectionGUID: SwqVpRAtQ9+C+1VnXiP6Rw==
+X-CSE-MsgGUID: Wks5G8h5Sh2ne+UvRAZRXw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="275383795"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2026 00:54:54 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="269901516"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Sep 2026 00:56:12 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 9 Sep 2026 00:54:54 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.46; Wed, 9 Sep 2026 00:56:12 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 9 Sep 2026 00:54:54 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.41) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Wed, 9 Sep 2026 00:56:12 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.58) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 9 Sep 2026 00:54:53 -0700
+ 15.2.2562.46; Wed, 9 Sep 2026 00:56:12 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WO6aCVqHcwNvgI9iEz9RPgXNl9RsfDYzSkp1qEDnPOdYxFausyGL+Xp3t/rcbSlQ/FkJM+v3+PJA92FzwOgU1nycTj7995v53cSbvCFrBOF0kxWJuwu5Rw2zaQ761VeEj0YfFViH0KtkIZKMolYipm/FOoy2X26eGQe0mpeUjyQz1qw/MMfDe7lxPC4nROVQnaSaD934HbRPRVAIHW8QTY3Us2do2S4ub9AiXPa2rLTvZnL4/5yy3DqEWb7UA4RZtdRwlZsDHrgSSIGITsY0Mj2Z6FI9fT+yZSkcPGK9ebXX0Yb7V3VfNRLyF9caBI1cvknLHJ2Rug1C3ZptKQZQig==
+ b=FbONmtohpa6WZdb0jo2oIX+2rDtJrmdrdprVNErC5qXtUDGjSJWCIV6TovXeD/Oa+Fega32i5XbZ6z/Jj4JjVmwFG5EZzlTkpzJNHSgc4zBIe/fpmsW7n6NW3xT4zDJzRRVhgKXAKBxqMqKvWL/IVo7NSUgZUFz9NxkUgGgwkwp/KjBzEx7oLgXZqg1FKpMoOmstX9vek5yS/+QpZuM4PCwsjC2NIPu9vuFBwBS9FpF+EFGIqv26zg75CiyXjMI4znXoezIk2j3klRSsL2eFrTA5RRJUkoZqceTOWWLVmRI9FO+2Tik3YbJBh1iLx3Mewa5/9OQA0izz4zRHs91nJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=501xfF0GVyg90DNh0bnt0QOl2lTTCmkhfMgcNpvMPxY=;
- b=RUkpD4uQ39cZ1Q0vX3y2Rm9B6bFUxpaVkynkGB12V9VzI3L+RI2yVKjKT3TXOSmOeavqMR4O88ugxR0VlkrW1AR6+5euSOP5n+L2VrvgZlzqfBfMx6Z2VWVcRLf4uwLoRA43cRgLIA9ah/UNNvFHElv1ZsLcYnkKaqSPMFyLAULCylcAFfanR/aAEXE9xKK30DONWMp7vW7JZLaBj+fjTZwSGvmnKvc2+8RXamLmexmRGFBUAkG0hWGFVmuJoIoNv3CEGz6oSA8RqXKk6fhNtdgMmvIeDayTgbltWZ+YwDOFrUPNplYPHA0GBgK8rRw62lsTkc7h29QLlNCgbTUWDw==
+ bh=w5Wsd00Obgqzt6aTSG/rxjknQm3r0UrPHOtCcYaJHxk=;
+ b=VFA7vpXY1VF+XFen+HxksGwvUFb0P4V2NwfpOKN1JPjRB5n1DllAJcuapY8Lnv8C6kbkQ/nx7wcKzEBldrIQIs0OHZBYd15vz54/xK4X73QfMI96LghcEB8aEvHfv67ihOhESu2nbCtQ7jXPePDYUELkdF/nmlg5HVvVVifiZhVy3BpAKlP6yN4+Lf7Bn72jz+Pahr01BIcpUZiD2fuV+zs8sAbMcCb9hZR9UDDQ4Ydr5X5WKd09QXvFsy4bSrKv9Oh8bLd66OMcXDzDlCFZLdbatchDMdxvMBa4+SGjUDTje2MQCf9Kh4//quRjvGNqy5klcWtrnxs1xhsIzwcIow==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,16 +69,16 @@ Received: from PH0PR11MB7636.namprd11.prod.outlook.com (2603:10b6:510:26f::13)
  by MW4PR11MB6763.namprd11.prod.outlook.com (2603:10b6:303:20b::7)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Wed, 9 Sep 2026
- 07:54:45 +0000
+ 07:56:08 +0000
 Received: from PH0PR11MB7636.namprd11.prod.outlook.com
  ([fe80::d611:6fa9:bc34:46b]) by PH0PR11MB7636.namprd11.prod.outlook.com
  ([fe80::d611:6fa9:bc34:46b%5]) with mapi id 15.21.0406.005; Wed, 9 Sep 2026
- 07:54:44 +0000
-Message-ID: <6986b797-f223-4ea4-ba73-c94a96f70d79@intel.com>
-Date: Wed, 9 Sep 2026 13:24:32 +0530
+ 07:56:08 +0000
+Message-ID: <43b24b77-0be6-45e7-921a-488c8ba6c674@intel.com>
+Date: Wed, 9 Sep 2026 13:25:58 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v5 5/8] lib/igt_kms: extend
- igt_plane_set_color_pipeline to accept Bypass
+Subject: Re: [PATCH i-g-t v5 6/8] tests/kms_properties: check colorop
+ properties on active color pipelines
 To: Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
  Arkadiusz Hiler <arek@hiler.eu>, Kamil Konieczny
  <kamil.konieczny@linux.intel.com>, Juha-Pekka Heikkila
@@ -91,78 +91,78 @@ CC: <igt-dev@lists.freedesktop.org>, <kernel-dev@igalia.com>, Alex Hung
  <contact@emersion.fr>, Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland
  <harry.wentland@amd.com>, Uma Shankar <uma.shankar@intel.com>
 References: <20260902180016.303482-1-mwen@igalia.com>
- <20260902180016.303482-6-mwen@igalia.com>
+ <20260902180016.303482-7-mwen@igalia.com>
 Content-Language: en-GB
 From: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20260902180016.303482-6-mwen@igalia.com>
+In-Reply-To: <20260902180016.303482-7-mwen@igalia.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0241.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1ae::6) To PH0PR11MB7636.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA5P287CA0242.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ae::16) To PH0PR11MB7636.namprd11.prod.outlook.com
  (2603:10b6:510:26f::13)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR11MB7636:EE_|MW4PR11MB6763:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10c7bb49-31a2-45dc-dfc5-08df0e479cba
+X-MS-Office365-Filtering-Correlation-Id: 5cb1dbe4-1c72-48f2-b6cc-08df0e47cebe
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|7416014|376014|1800799024|366016|4143699003|11063799006|56012099006|10067099003|6133799003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: A3OORiJBhc6348Qb6nlh/ZzW77+MzFFbkVNH6mg01lfzlcSrJtg62R4nJ5+5S5WXTsSrfjKUCS6qvbHaGjGj9kKCfAKq6TDoxTvobMNkrOW+x22arSUHEiVQ8hNC0HXhSYa5+eCGIePBMBf07tjohofhdTZUUKXZNaz6XN+Pdy/XL4pcRhJwYYAkHN2/j1szY/r3WglVuPkXAAQeGHiXw5a3QDEV3Y8wPvl+sQ6LP9GZk9BkxTvaFDgiYSeLk3oiJ5kUBRINlNi0NsBrPNMk7iHvkZuAdQzbb4UMY1p6KF09wfVOc7BYwwmXXiT9S5F/kZ0xL3EtziYgR7Q0pTL/AsBsHO2tgVDKvoy0rWT5av5jyHcNSa9F2ADb0u4wLaV3muMetzRyliXMTr12uu3An2448mIzyVrOWZ0dB1hFlhYSGiE+45+LwCeSN/w+rH9C1WAIxptVvfaUPvIH8ErEkn5e0HEsBpOrsTRfd7nzZtMSRakXqx2LhO/fNVRGmsNEr08hbSt9nKwzIKBu8MzFkRNRm0Z2xHXb8bfRMLqhS5+6HdDERtvynvhxW0jInCze3I+ZmKZitB1hDUxEdTkBWdwDIEJyyjy7hSAemX/ymMl0Zmk+9XgqCrYOFHW+NiNJIn0Z6pL3bNYx2aGS//DsIzJBzLPLG3YXXrq1vcGfVOY=
+ ARA:13230040|23010399003|7416014|376014|1800799024|366016|4143699003|11063799006|56012099006|3023799007|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 5REPr2vTacyiwompyRoe7jJvI8x2cD6yDmz6tBsDPY/N2W2FpPQfdHpHi3GGabHOmrjs61FAfNUMbkAMBB7LGl5rVdtaFuYSsHZjjGLPZVBAjweUTLA5jJte+gIQOPm+bEldywk8q1NxepABKNknLxGK3HfddF3MBh5n7OslzynEUUOEX70IDu2oeW6xEesmjIO+64G9d7+95NAFLke2fmxK+uZ9YF0dQKFK206b900wVso38R+LC7nsKltx7yUc5EtGH5PVZ5dhy9XgNndrKbJ04FCeRRVZErAreWgPemkxd0m6mWiFQwlW5Cg8w1/s6tx556YeqTfUekQKf4d+2tto7X2Ms+GpPW7+/6vv/QkU5cWCQgh6xaOAlItqjEvu7Dl68csifDWDV+bg8KTeKWMHKPbW6uupXJPOpQ1Bj7O7SnQ9t2DEp3ri61hMzN+Ny8OUist17YiMeGOPrKWwndAOqI86b1iZL3pTh1d0VTYaywmkdBKiEk/ETnA4jp/m1HwOcYhL6XGB6wujb2/StC+jmdGhQdVmtOf+tg4G+hH1xbqWjPTdmDSFSTEjj/ItJSqb6cM3CUyvLicWCnVEk5WUZ92ShEcwte/EjBCrJLnAXhGBbHFvn2AWBHQcj1sogceFVM9MxBiVrmyCr+5n2BHKMdADgM1AKjXbS/r3Plw=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR11MB7636.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(4143699003)(11063799006)(56012099006)(10067099003)(6133799003)(22082099003)(18002099003);
+ SFS:(13230040)(23010399003)(7416014)(376014)(1800799024)(366016)(4143699003)(11063799006)(56012099006)(3023799007)(10067099003)(22082099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ajA0Y0ZqaldkR21WVXloS1F2MFFrZzFTYTlqNzR1K1lBa0R6Q1EzN1dHWlps?=
- =?utf-8?B?YWttcjVkejlLTTZmbVM3aG9IUlBHaUZQcHpUSi8zQUNXSFUwYmpsbjdzdlVr?=
- =?utf-8?B?am00dG9BQXppVGUyTC9qNmx0QXdIR3FqdkwwZ0JjUVpaWmhlak1STjN0dGxu?=
- =?utf-8?B?WmUzV0hCWnRJaEtVMERodnNSTmY4dElTTWdnaFBsM1FtWUZDUWRkcUg2QUFH?=
- =?utf-8?B?ejdqaUNTUHpENTF1NXVmUGIxQWR0SGJ2ZUs1WXpta1lpM25GNUttcW94eW9E?=
- =?utf-8?B?WTM3V2ZmdFoySExERkZrUEcwaUg2S2JTOGlEcm4raWZhTS9DMnNMRnJaVDd5?=
- =?utf-8?B?azc1RVYzV0FWRFQxZlRUb1FjS2orK1IrckpPZkhlMGJDUGxzMVdpaXd0Kzgz?=
- =?utf-8?B?OHVMTWFBcjNmYkZyaUl2RkNLZitoVDlYMTdXQnNvRmYrN3k4WjlwaUMzRmpj?=
- =?utf-8?B?ZzM4UHAzWk1qOGtuM2pUb1hnS3lQZzQwUVlqbklEY0NlUWJKcnBVcStnM1M0?=
- =?utf-8?B?L2JJb1lsaWQwZlFuN3BxSC9QbjdObXdXV0s2cTZxeEx3TzdGQmZaTGNpNXQz?=
- =?utf-8?B?eEZRZktDc1pueS9xV0wwa3NFemNRMWVTOEtkTUFLb3Fka050Y3ZWTEk4a3Jl?=
- =?utf-8?B?NkFaemxVREtSSitpZE5zcmFUK2VTYXBFTkJZa1cwKytoeVJsYUkvTk0yejFR?=
- =?utf-8?B?LzN1VTI0S3ZkcitBK2twMlRmQjA2ZlRxandhZmlhNjMzMHZHOW42RE0zZlZN?=
- =?utf-8?B?Q0wySndCUmJUempxVEhZdkl0T3hDS2plL1ZpQjFSek5Bdkw2L2FJOHFOM3FG?=
- =?utf-8?B?d3dhcUtXTk9NOU5nZEozWnBsZDNEZUlZK0hNY1lRcVRCd3R6cWtZZGRGZUh6?=
- =?utf-8?B?UmN0dktaV3JtTGhYYlJ2Q3FJS01iRmZzdzNsaVpCeU5Xek5zVG1NWkFoU1dx?=
- =?utf-8?B?cEdSTXk2YW9hWDdLYUtUcGNVQ2pOamlRTVJEbE8zSEt4aUVnVXU1VUZpYmJR?=
- =?utf-8?B?KzdtWmRkMGU1M3pheG5xZ01yTDFDNnJScFV3MHhBNmFTOWJKTlg1Q2l2Njdn?=
- =?utf-8?B?R3pVbmxSbVB1TXhTRzBUT0VlTFpZVE4zdUJuL3duMHZJRTdYbUp4WjRaWk8v?=
- =?utf-8?B?bG16YmRXa016dktSV2RhN2Y0L29sNFVidmYrdFQyRWpQQnUveVdvME55Nk5p?=
- =?utf-8?B?QkFEb2dtUWlxeEplRGoxaWdjVlZ5WVJQdzZldUFNaGNVWU03ay84S2tIRXVI?=
- =?utf-8?B?TGtNL1FYWDFxL1F3RFN3VUhjSlFxbWZLbWNkNkpuc2pWZXVZRnpaRk5TWVRT?=
- =?utf-8?B?ZjVZamhpekdzdXpEOFZ1dlY3Y3JWL2NhYmt2ZkltMHUwZmVyVUo5TWFyV0t4?=
- =?utf-8?B?UldMRy8wZU44cWZCQ0VscldxdVUyT0hWS2dNYzc3dkRGK2FCbWpvTmlGb3hW?=
- =?utf-8?B?N1hpblNtRGtSYkxoYkd1aEU1VkRMcUJSS0JuSmV5cWJ0UDNBcEtCUnNqQUk2?=
- =?utf-8?B?N29hWmRNbmVsY1d0d3hQWnN1K1NzSlBYeVVqOXJkRUp2LzRsYmlXWk81d2p6?=
- =?utf-8?B?N1p6ODRNUnJhOXdZRitUcHJabkZjWTlkUElIeEpzTnI0TTkrbXVOZGY5QWtT?=
- =?utf-8?B?YVBnVElQSThlVFM2NVlDcTZ6WmZsY0srUmFxajJvdHFQUy9zR0RiSFE4UW0y?=
- =?utf-8?B?dXMrNlUrNnZIS2NiSHJHVWFBYks0MGYwY0g3cUdZUmVJUXEwaUZET0xuYXg5?=
- =?utf-8?B?eXVobDVVRStkT1hJSXNlL1JOWXRUMEhwUHV1M3g3Mko5SGRxSXpLTy9hZkwx?=
- =?utf-8?B?OFFTUFhWMmZrVU5MR2VmRHNuRmk3NG9WTnl0SVEyWVE4bTNZVXVFK29zeVhH?=
- =?utf-8?B?cit3d0lEOHBrWWdMMGJKeFpqdThCTkRtZlVlQUZvcXNQZXBCRG54UVNIeEF0?=
- =?utf-8?B?NXMvbU0rTmJBRk9Bd1l2UUw5eHdZdkFudkwxTHdoVStoMjdSOGxsOE12d2tQ?=
- =?utf-8?B?K2NXcU54aTdraCticnJiNmxBQStMdDNPS2g0WDVOeHNRd1VyOTlLRXRKQjJE?=
- =?utf-8?B?L1VVdys2SlVZNVl1WHk2OHpZaHJLc1FLY202N3dwVVVKUEJRM0ZKMCs4WFpX?=
- =?utf-8?B?R3JhY0VSSU5MYUNtWllhRHhRQngvYXpQTlFWbi81dTRSVEVJaE1rZGdJdWt6?=
- =?utf-8?B?U1hTN2FMNFVnYmdSOFhCckNEUHExdnJBOEpWV1R4S0ZGdEM0NzhMYkVkNGRK?=
- =?utf-8?B?RTM0QUtxWkM1aDZpTHBvZGgrcWdLRXA1NzFaM1UySVEzdDR3NEJqeHI4NGM0?=
- =?utf-8?B?TEJJUHdkS0lMcFp5c09Ka0lTVC9YTnlGUGdSTzQwR0dHYUdHS0FrbEt5UVB5?=
- =?utf-8?Q?la8yDrxP2zfPwdN4=3D?=
-X-Exchange-RoutingPolicyChecked: LOTPPdwZTtyEmexeuJZNwgm38KplEueqYhTF3HB4pRVUlp7aBcTvqfW06hTnQcl3E55wg/aT9/3Ba+mb9BFBhy9m7mQLwme9sT0ov5CjIDqcuzgJmAoCJCqfZB1y5OT3kZY+GWcyt8C9EZIiciC6wKUhLje4DAowV5hysSbSb2pRRBHWpkJ7Jnsl+ZP939J2UTag2Z0lExxzgZn8PBqZOJItqctkwIl/QkvBtTDG7f7i7MJdTshdj4dpf/Zz1XRN7Mc4eKfHf1wAQ8nlbeu1Iv2XzqwscUsE3jx70ysShVeaxfsTLuTsLyNxffgaOEuF9N+dbhqlNu/XJGfQIRxpZg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10c7bb49-31a2-45dc-dfc5-08df0e479cba
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VkFzOVpKdnZlTVl1eHBrRWZZak5hMHVVcGJwRHBGeUZLYitBQW5ScnNPTmpk?=
+ =?utf-8?B?OEtGa2ovK3B3UVMvb2VVZFdHSGdDU29ESXhmcHRXSDQzSU9QYWtkQ2pkK2VD?=
+ =?utf-8?B?em9NNUdjYkJwTjN2cHRoa3VrOVFmUGJNZWdQQmg2ZTBxclE4NnNIa3VqZGdF?=
+ =?utf-8?B?cmkvVHduNVFtWHZJZTVaQVBMVXBCb1ZBWGFkckhLbENWaGFnM2hQRXd5dC95?=
+ =?utf-8?B?Z2lWK2NDdm0zVWE1dk9KTDMzUCtQZFh4MjBEUDNWTDRNckpjWlVEZ3FscDBD?=
+ =?utf-8?B?SzNEcXJlcVJqSU1QcmRqeFlhN3Z4bVk1N29iblNteHRFcTdHTWpkYTIvb21Y?=
+ =?utf-8?B?ZmdmMm53dUpaRmhUbHFxKzR5UlE5TWg5bjZYY2NGZ21kZVFVU0dVOHVmQklL?=
+ =?utf-8?B?bW81YWp6dGxPUTZnRDVwUy9BcGJRZWVKcXB1dll0SDg4VG1nSWIrSkRGL05E?=
+ =?utf-8?B?N1dwNGlJMFk3eEZYYTBuQjdTSWtyTERXQ2RvWUVNZzZzMSt5dHA2YXEvMHZq?=
+ =?utf-8?B?ckxDdjRUcG13RExKTGVjaUlUM2R1bDRoNHZPSHdaMkhxYU5DRWRRbXIzUW9O?=
+ =?utf-8?B?alM1Y0dHWnJRVi9ncGNEbVQ4T1lrYnF1ckh0TFY3bWNFUE5mMGVUUklaU1kw?=
+ =?utf-8?B?WjEzdnl0T3FXeDZuTUxOOHAxSVJaTS8vWVUrcEZLVDM5eCttUUh0WmRwak91?=
+ =?utf-8?B?eUVheDAyQzZrb2dPZFoxK2Rhd3FHUVdtV1I3dzdYQnpBY3loYW9wSzhEWDNS?=
+ =?utf-8?B?NmcrM2xNSUZxRUZ3QXVXdUVLTW1hbkZIV1JVVU5oeFcwU3d4Q0p3bDdaeGM4?=
+ =?utf-8?B?Z01KTll3cUtXK1JNRUJzdkh4ZVhxVmxsM3RQdXhzTytqT1Nubmh2eVdtNXlM?=
+ =?utf-8?B?TUF1QWE4OXRpcURyQUJmd05zcUFnSmd3M3dzMHRwSmJDMzkvYUdIejk1ZE9O?=
+ =?utf-8?B?S0tCM2gyc3ZGL0pEUjlMT252d1hRYlJIQVYzMjRTZTFMaStyeThCTFAxRE9r?=
+ =?utf-8?B?bXlBM2pNQ00zSitHblBIaHJTQUp0bkxvMUh5SjR3QzRQT1I3NHNwaXQzeTAr?=
+ =?utf-8?B?Rmc2Vkl5WDdpU3M1Um1CNHhOY1JVTDBML2g4bnNhbmo2cURJMnlRalZ0TW94?=
+ =?utf-8?B?bUdiajhwT3diZVZJVStMNkFHd3ltRUpnbys0Y1RjNW0vWW5OelZnT1hwU1RS?=
+ =?utf-8?B?b2U0NFhjR3dXSDFMcGwvd3ZpWHl2RDNSUnR0dk83RjFGM0ZYNGc0M0pvLytp?=
+ =?utf-8?B?TjF0TzBCTzJkLzZUeWFwUWNqNjZtTkFKWER2eGQyckZqdTZuT3ZXU2F5MXRu?=
+ =?utf-8?B?R05qQ3hwaVl1REtZQTVqS042T0xIUUpiMzRvamxsWERVbVU4WkplK00zc0ty?=
+ =?utf-8?B?VEdiRXBxMkRoaE9kNldIemE2bmV5djg2dlREaldBNjhNL2k1dThVZHFqckEz?=
+ =?utf-8?B?RVM0UE54RmM1Rk1RM2JwVFdoSVo1L05zUVgvRVdhOWF3OEh4TGdiZVhvczdx?=
+ =?utf-8?B?eW9ZYkdRRk5BYVFPWXNpYjYvcmhjUVpCMmZxb2VZbUxWWlFHWUtlZ3g3SmxS?=
+ =?utf-8?B?UlZNazZuYkVTeVB0QWhYeXFtVklPT0JIbWpBbThQNCtoelRLMnhTMllLdjNm?=
+ =?utf-8?B?Lys1dmVvdDZTZVhnMkZwK0E3aDBWV2tHWkRpejFuQkZlQUdqRjAzQ1FFdjRG?=
+ =?utf-8?B?Y2pYeFN5MmpQVWJVYU0wdXY5UUUrUGN5aUpVbWRVV08ydDNEZVF1SWZtUEhk?=
+ =?utf-8?B?NEdBc0FBQW0xTFhtS3kyUVo0MmpSRWdxb2hwQTc1VHlRSG5kTDB0Uk5BR3RW?=
+ =?utf-8?B?MDRabjdza0EvTC96cVdLRFlaektiOWlLSkhsbkxMN2gwYThWT0grYkxJTHRt?=
+ =?utf-8?B?Uks1c0tzKzdVTVA4Q2Y0Q2VoVjYyRXFGRjlaV3ZlWXZxcWpDVFJaRktBM1Ey?=
+ =?utf-8?B?bVBsQXd3Z200aUJSczE0aEcrbDdXbDBIZVlUUHpHc1lxN0tRcXV2VnY2cGRR?=
+ =?utf-8?B?UHAvaG9mc29qZjhSS01BSzhnY0RMRDFBdWQvTzU2alVZbWZhOVp2L0oyNlVu?=
+ =?utf-8?B?ZTZjOUpkNlRzc3VUZDNBeGNqQTA0RGdWUWd0OFRYVEs1UkM1NnBXK0xPTlhh?=
+ =?utf-8?B?UmlWVEt4NFFJSG03dWNxUFdoL2VUN09EemJiWEc1NlMwRFQxaGRkeEdSVCtu?=
+ =?utf-8?B?YkIyQkp0LzBkYWh6ODN5b2dQMmF1bHA2WndvVFljMnRBZUdmNDJVM2ZmOENG?=
+ =?utf-8?B?QUNRZ1ZXSDJYRlNwZG1wZXJjNnFwZ3VFU3FKcXFWKzM5VitIRVpMU2ZrN2xw?=
+ =?utf-8?B?dnZaeE9nYzQ4ZGc4eGRKMGVVWVhMc0x4cFI2NXVQVGpMNVZJTUIvelZVZWZH?=
+ =?utf-8?Q?UEMIVbcW5BjAE6WI=3D?=
+X-Exchange-RoutingPolicyChecked: lXVHgE7tD1SnloNPa7CuP9oPbnMtHi/TOW+uEcBd2PmRZDKvX8EObtD6CR/QRQWpzW8jhGrqoqfq0vpbQu9669ii2Ux11TIw/KEN4fHw4Z/e/hBKSZbjU0Ee7rPsET+ZHLM66xtnIZVMN318nS/4ir2hGq7fX4G/luBNBQI7e7YcL2lGgdQyhwP9yn1Pl2SagvAQciprvOM6AqzlWe4yYxdxcQ5jRj4U0s9pDD+R5mJASySlvkskaC6R+5bu1GdL1bfblwMJTOPYlQ9vJAs8T0stByzDT77Bq/zYqdLHOJuwLBWGnqM3xDLCEhBs0cuGBbB9Z0XgbZoneLrtGJDgkw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5cb1dbe4-1c72-48f2-b6cc-08df0e47cebe
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB7636.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 07:54:44.7954 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 07:56:08.4864 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: znrDFhEgaeg9l5gxG7pZumx9wmSejfbmlIw6dJOlSFwwCAg6WgjSO/+zbWimu3mO2Sy3JLYYhetYDzSg7oKoBlx0JA02yFQcGUyR+f0QiVM=
+X-MS-Exchange-CrossTenant-UserPrincipalName: IX5SCgu75vijGuI3r30epZYrOS33C0S2VBC+LkDSyEbqNbehhcqfqwvDEZEFyGr8aTLQrR+u12q5dKTw36Q5t+eHCf8WgkWELTbYZJ2pQgw=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6763
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -183,169 +183,67 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
 On 9/2/2026 11:28 PM, Melissa Wen wrote:
-> "Bypass" is just the COLOR_PIPELINE enum value with no colorop object
-> behind it, so make igt_plane_set_color_pipeline accept NULL and set
-> "Bypass" instead of making callers poke the property directly. Convert
-> its callers, igt_plane_reset() included, and drop the now unused
-> set_color_pipeline_bypass() from kms_colorop_helper.
+> A colorop property can only be changed if its color pipeline is active,
+> i.e. the colorop is in the chain of the color pipeline set in the plane
+> COLOR_PIPELINE property. Set each color pipeline active before checking
+> the properties of its colorops, and restore Bypass afterwards.
 > 
-> Keep assigned_color_pipeline pointing at the outgoing pipeline when NULL
-> is passed: the kernel accepts a colorop update whose pipeline is in the
-> plane's old state, so reset_colorops() must still be able to finalize
-> colorop settings in the same commit that deactivates them. No functional
-> change.
-> 
-
-We still have a problem of assigned_color_pipeline never being resetted 
-to NULL. But not a problem with this patch.
-
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-
-==
-Chaitanya
-
-
 > Signed-off-by: Melissa Wen <mwen@igalia.com>
 > ---
 > 
+> v2:
+> - detach different changes from a single commit (Chaitanya)
 > v3:
-> - new patch, replaces the open-coded "Bypass" setting in patch 6
+> - move hunk to the previous commit (Chaitanya)
+> v5:
+> - add missing commit of bypass color pipeline
 > ---
->   lib/igt_kms.c                                 | 20 +++++++++++++------
->   .../chamelium/kms_chamelium_color_pipeline.c  |  2 +-
->   tests/kms_color_pipeline.c                    |  2 +-
->   tests/kms_colorop.c                           |  6 +++---
->   tests/kms_colorop_helper.c                    |  5 -----
->   tests/kms_colorop_helper.h                    |  1 -
->   6 files changed, 19 insertions(+), 17 deletions(-)
+>   tests/kms_properties.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
 > 
-> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-> index 6039ad18a..cabe60a31 100644
-> --- a/lib/igt_kms.c
-> +++ b/lib/igt_kms.c
-> @@ -2708,7 +2708,7 @@ static void igt_plane_reset(igt_plane_t *plane)
->   		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
->   
->   	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
-> -		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
-> +		igt_plane_set_color_pipeline(plane, NULL);
->   
->   	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
->   	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
-> @@ -4430,17 +4430,25 @@ bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
->   /**
->    * igt_plane_set_color_pipeline:
->    * @plane: Target plane.
-> - * @colorop: Colorop to set as color pipeline.
-> + * @colorop: Colorop to set as color pipeline, or NULL for "Bypass".
->    *
->    * This function sets the given @colorop as color pipeline on @plane, or fails
-> - * the test if it's an invalid color pipeline for the plane.
-> + * the test if it's an invalid color pipeline for the plane. Passing NULL sets
-> + * the plane color pipeline to "Bypass" but keeps the previously assigned
-> + * pipeline, so that pending colorop changes are still submitted with the
-> + * commit that deactivates it, which the kernel accepts because the colorop is
-> + * in the plane's old state.
->    */
->   void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop)
->   {
-> -	igt_assert(igt_plane_is_valid_colorop(plane, colorop));
-> +	igt_assert(!colorop || igt_plane_is_valid_colorop(plane, colorop));
->   
-> -	plane->assigned_color_pipeline = colorop;
-> -	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, colorop->name);
-> +	if (colorop)
-> +		plane->assigned_color_pipeline = colorop;
+> diff --git a/tests/kms_properties.c b/tests/kms_properties.c
+> index c55a271da..76aadd162 100644
+> --- a/tests/kms_properties.c
+> +++ b/tests/kms_properties.c
+> @@ -271,6 +271,9 @@ static void run_colorop_property_tests(igt_display_t *display,
+>   		for (i = 0; i < plane->num_color_pipelines; ++i) {
+>   			/* iterate over all colorops in pipeline*/
+>   			colorop = plane->color_pipelines[i];
+> +			igt_plane_set_color_pipeline(plane, colorop);
+> +			igt_display_commit2(display, COMMIT_ATOMIC);
 > +
-> +	igt_plane_set_prop_enum(plane,
-> +				IGT_PLANE_COLOR_PIPELINE,
-> +				colorop ? colorop->name : "Bypass");
->   }
+>   			while (colorop) {
+>   				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
+>   					  igt_crtc_name(crtc), plane->index,
+> @@ -285,6 +288,9 @@ static void run_colorop_property_tests(igt_display_t *display,
+>   			}
+>   		}
 >   
->   /**
-> diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
-> index db6107221..5738c6dd1 100644
-> --- a/tests/chamelium/kms_chamelium_color_pipeline.c
-> +++ b/tests/chamelium/kms_chamelium_color_pipeline.c
-> @@ -161,7 +161,7 @@ static void _test_plane_colorops(data_t *data,
->   	chamelium_destroy_frame_dump(frame);
->   
->   	/* Cleanup */
-> -	set_color_pipeline_bypass(plane);
-> +	igt_plane_set_color_pipeline(plane, NULL);
->   	reset_colorops(colorops);
->   
->   	igt_plane_set_fb(plane, NULL);
-> diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
-> index 78860a845..f71416ce1 100644
-> --- a/tests/kms_color_pipeline.c
-> +++ b/tests/kms_color_pipeline.c
-> @@ -168,7 +168,7 @@ static void _test_plane_colorops(data_t *data,
->   	igt_assert_crc_equal(crc_ref, &crc_pipe);
->   
->   	/* Cleanup per-test state */
-> -	set_color_pipeline_bypass(plane);
-> +	igt_plane_set_color_pipeline(plane, NULL);
->   	reset_colorops(colorops);
->   	igt_plane_set_fb(plane, NULL);
->   	igt_display_commit_atomic(&data->display, 0, NULL);
-> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
-> index 732b9d57f..2bee1eecd 100644
-> --- a/tests/kms_colorop.c
-> +++ b/tests/kms_colorop.c
-> @@ -287,7 +287,7 @@ static void colorop_plane_test(igt_display_t *display,
->   
->   	/* reset color pipeline*/
->   
-> -	set_color_pipeline_bypass(plane);
-> +	igt_plane_set_color_pipeline(plane, NULL);
->   
->   	/* Commit */
->   	igt_plane_set_fb(plane, input_fb);
-> @@ -315,7 +315,7 @@ static void colorop_plane_test(igt_display_t *display,
->   
->   	if (!colorops[0]) {
->   		/* bypass test */
-> -		set_color_pipeline_bypass(plane);
 > +		igt_plane_set_color_pipeline(plane, NULL);
->   	} else {
->   		/* get COLOR_PIPELINE enum */
->   		color_pipeline = get_color_pipeline(display, plane, colorops);
-> @@ -343,7 +343,7 @@ static void colorop_plane_test(igt_display_t *display,
->   	/* Test bypass transition if requested */
->   	if (verify_bypass) {
->   		/* reset color pipeline*/
-> -		set_color_pipeline_bypass(plane);
-> +		igt_plane_set_color_pipeline(plane, NULL);
->   
->   		/* Commit */
->   		igt_plane_set_fb(plane, input_fb);
-> diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
-> index da234410e..a109c1b06 100644
-> --- a/tests/kms_colorop_helper.c
-> +++ b/tests/kms_colorop_helper.c
-> @@ -450,11 +450,6 @@ void set_color_pipeline(igt_display_t *display,
->   	}
->   }
->   
-> -void set_color_pipeline_bypass(igt_plane_t *plane)
-> -{
-> -	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
-> -}
-> -
->   static void reset_colorop(kms_colorop_t *colorop)
->   {
->   	igt_assert(colorop->colorop);
-> diff --git a/tests/kms_colorop_helper.h b/tests/kms_colorop_helper.h
-> index 9a1477666..2a0e3799f 100644
-> --- a/tests/kms_colorop_helper.h
-> +++ b/tests/kms_colorop_helper.h
-> @@ -114,7 +114,6 @@ void set_color_pipeline(igt_display_t *display,
->   			igt_plane_t *plane,
->   			kms_colorop_t *colorops[],
->   			igt_colorop_t *color_pipeline);
-> -void set_color_pipeline_bypass(igt_plane_t *plane);
->   void reset_colorops(kms_colorop_t *colorops[]);
->   
->   #endif /* __KMS_COLOROP_HELPER_H__ */
+> +		igt_display_commit2(display, COMMIT_ATOMIC);
+> +
+>   		/* only the fb created above needs to go away here */
+>   		if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
+>   			igt_plane_set_fb(plane, NULL);
+
+Come to think of it, this will also need a commit (To be added with 
+patch 4?). Because we need one for igt_plane_set_fb(plane, NULL) to take 
+effect.
+
+We will end up with
+
+igt_plane_set_color_pipeline(plane, NULL);
+
+if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+     igt_plane_set_fb(plane, NULL);
+
+igt_display_commit2(display, COMMIT_ATOMIC);
+
+if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+     igt_remove_fb(display->drm_fd, &afb);
+
+which is a bit ugly but may there is a better way.
+
+==
+Chaitanya
 
