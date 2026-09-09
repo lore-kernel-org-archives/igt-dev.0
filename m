@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3699AC79FB7
-	for <igt-dev@archiver.kernel.org>; Wed,  9 Sep 2026 18:39:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40939C79FB6
+	for <igt-dev@archiver.kernel.org>; Wed,  9 Sep 2026 18:39:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AB3E010E1F0;
-	Wed,  9 Sep 2026 18:39:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C21CB10E1F0;
+	Wed,  9 Sep 2026 18:39:57 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aTgiLIPT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hZjwbKJo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BBB1210E1F0
- for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2026 18:35:35 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6CE6510E1F0
+ for <igt-dev@lists.freedesktop.org>; Wed,  9 Sep 2026 18:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1788978936; x=1820514936;
+ t=1788978928; x=1820514928;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2bArxJXhdQiOoQk1Spf6c/cdRykAgPQk0sTLAOe9mL0=;
- b=aTgiLIPT6AKBNHfuB+p63OirYMXuSQeFy1d8H3XWEBzDihByrC6YB575
- y5kU3vblb3kPLWVwRfGmvqrGStwcEFKeh3Usos05kt4xCTCm/pgaeM+Tl
- w2r8CqXFSUy2/MoCeNEqY16z70gDzoL4Mn7jQjxrEBYURNe7I/RS56guz
- +IEOmRIV65stJ+oY3Y0MQEnjXo3NgrdF19tk5FMW5QxBXDHATKyqLgAUj
- +Zz3OdExIpgJ/QWdmylHfeeJVClJxtbgAqANbjiR7o3hVScQ+I4GMwp0A
- DlewB8v3k40Jv8AIeHe+zhGs88wWTRth8Kgl2VgXE2KZv5Lc+mUJNWfat A==;
-X-CSE-ConnectionGUID: RQhUBgwvT0GgaR0tqPZaRA==
-X-CSE-MsgGUID: Z7NhhhFRQcGREpGQ22sbZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="114960115"
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="114960115"
+ bh=u8YdBubPjDSZyDS4IiKw6MfAYwdVxvbCutyMjY4iMQo=;
+ b=hZjwbKJonE3zu6B/UTLlTuvVpsmoHAD5UuDzscgeFYf1R0g+39XU+ezA
+ TdhPQ+KZW9ULlCnG5IhMzWmiOfMgS6nq6JB3IRinaiEngs3yv07UmU9U1
+ vG5mwiozfCGdf9YBWaR4IGoU3l8UAZ58xkUnp129zjfPc0OXEZ56hRCgv
+ mtrrBdmBIh/9nT138JiZ59WmUZ71hK5x/+CHHCWPvh3GfK+1Cjsze2Rok
+ gw5+pPCbzKHILMh/2fceEuIwJyJtHpx5UDpFDOljkf+odkzIpS5GNGn+v
+ tZv85mGGH3cSIxp5CVbOL2VlaqPCqPaM495SODk5C7Esh3OXCeVzCgayz Q==;
+X-CSE-ConnectionGUID: UYTimgvaS5ubLCy4GdxgGw==
+X-CSE-MsgGUID: hoHwfvjzQVaqs8m1qYhYOA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="114960099"
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="114960099"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Sep 2026 11:35:35 -0700
-X-CSE-ConnectionGUID: 9IaMMGCpTWCZN4LJLmOEXA==
-X-CSE-MsgGUID: Ah9e/btvQUW2Wl/dsnj9Kw==
+ 09 Sep 2026 11:35:28 -0700
+X-CSE-ConnectionGUID: zmna0tz8SaWYFXrso1+t2w==
+X-CSE-MsgGUID: acqQ+PF6QdWAc6/KrHclzA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="270901305"
+X-IronPort-AV: E=Sophos;i="6.25,270,1779174000"; d="scan'208";a="270901260"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa008.jf.intel.com with ESMTP; 09 Sep 2026 11:35:34 -0700
+ by orviesa008.jf.intel.com with ESMTP; 09 Sep 2026 11:35:26 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Pranay Samala <pranay.samala@intel.com>,
  Jani Nikula <jani.nikula@intel.com>,
  Suraj Kandpal <suraj.kandpal@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v6 6/6] tools/vbt_decode: change VBT#57 Combo's layout
-Date: Wed,  9 Sep 2026 20:34:51 +0200
-Message-ID: <20260909183451.2630263-7-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v6 1/6] tools/vbt_decode: fix tables' offset reading
+Date: Wed,  9 Sep 2026 20:34:46 +0200
+Message-ID: <20260909183451.2630263-2-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260909183451.2630263-1-michal.grzelak@intel.com>
 References: <20260909183451.2630263-1-michal.grzelak@intel.com>
@@ -72,56 +72,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Each table from Combo's VBT#57 has 11 columns. Showing them in one line
-can cause severe eyestrain. Show max 3 columns per line.
+During dumping of VBT #57, all rows are same because parser does not
+change offset read. Adjust the offset to change basing on the row used.
 
-Align shown values using tab. Replace some of previous tab signs with
-space signs to preserve indentation without taking too much space.
+v5->v6
+- read entry's offset properly (Pranay)
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 ---
- tools/intel_vbt_decode.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ tools/intel_vbt_decode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/intel_vbt_decode.c b/tools/intel_vbt_decode.c
-index da80297e4f..f7d2eccc7a 100644
+index 9451a77318..0ea7582745 100644
 --- a/tools/intel_vbt_decode.c
 +++ b/tools/intel_vbt_decode.c
-@@ -3535,18 +3535,22 @@ static void dump_combo_vspeo(const struct bdb_vswing_preemph *vspeo,
- 			int cursor_program = tables[offset + 9];
- 			int coeff_polarity = tables[offset + 10];
+@@ -3480,7 +3480,7 @@ static void dump_vswing_preemphasis(struct context *context,
+ 			printf("\t\t%s: ", vswing_preemph[i]);
  
--			printf("\t\t%s: ", vspeo_dp14_levels[row]);
--			printf("dw2_swing_sel: 0x%08x, ", dw2_swing_sel);
--			printf("dw7_n_scalar: 0x%08x, ", dw7_n_scalar);
--			printf("dw4_cursor_coeff: 0x%08x, ", dw4_cursor_coeff);
--			printf("dw4_post_cursor_2: 0x%08x, ", dw4_post_cursor_2);
--			printf("dw4_post_cursor_1: 0x%08x, ", dw4_post_cursor_1);
--			printf("rcomp_scalar: 0x%08x, ", rcomp_scalar);
--			printf("rterm_select: 0x%08x, ", rterm_select);
--			printf("tap3_disable: 0x%08x, ", tap3_disable);
--			printf("tap2_disable: 0x%08x, ", tap2_disable);
--			printf("cursor_program: 0x%08x, ", cursor_program);
--			printf("coeff_polarity: 0x%08x\n", coeff_polarity);
-+			printf("\t  %s:\n", vspeo_dp14_levels[row]);
-+			printf("\t    ");
-+			printf("dw2_swing_sel:\t0x%08x, ", dw2_swing_sel);
-+			printf("dw7_n_scalar:\t0x%08x, ", dw7_n_scalar);
-+			printf("dw4_cursor_coeff:\t0x%08x, \n", dw4_cursor_coeff);
-+			printf("\t    ");
-+			printf("dw4_post_cursor_2:\t0x%08x, ", dw4_post_cursor_2);
-+			printf("dw4_post_cursor_1:\t0x%08x, ", dw4_post_cursor_1);
-+			printf("rcomp_scalar:\t0x%08x, \n", rcomp_scalar);
-+			printf("\t    ");
-+			printf("rterm_select:\t0x%08x, ", rterm_select);
-+			printf("tap3_disable:\t0x%08x, ", tap3_disable);
-+			printf("tap2_disable:\t0x%08x, \n", tap2_disable);
-+			printf("\t    ");
-+			printf("cursor_program:\t0x%08x, ", cursor_program);
-+			printf("coeff_polarity:\t0x%08x\n", coeff_polarity);
- 
- 			offset += vspeo->num_columns;
+ 			for (int j = 0; j < vs->num_columns; j++)
+-				printf(" 0x%08x", vs->tables[n * 10 * vs->num_columns + j]);
++				printf(" 0x%08x", vs->tables[n * 10 * vs->num_columns + i * vs->num_columns + j]);
+ 			printf("\n");
  		}
+ 	}
 -- 
 2.45.2
 
