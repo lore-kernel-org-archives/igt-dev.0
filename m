@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 800C1C79F9F
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 17:03:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16D52C79FBF
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 17:07:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 08B6210E28E;
-	Thu, 10 Sep 2026 17:03:08 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XBihBLID";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3F4B08994A
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 17:02:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789059742; x=1820595742;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=IOoGCiKLO2ZW2AE/r1PhfSjtRHc3UxDx1GISu/t1FFY=;
- b=XBihBLIDmLS/x8zuSqS55qkEPwPO51DFvuxPXC3MGR2GG004lrczlsK6
- eoatcaJT2rhAIisjZigwq0zkDEbcGThv4/Bnu2Ugt4vbN3mk0voDtkL9y
- YC4VG5JuolLWHV2CAy0vXEU+ZB1eb4NbHlww10kgKTtz+MWbBbB3Lu70Q
- so5THSTCln/kRKBtOi8QTr/8GwDhQbErWaI1+2JyU14CM/72kzpXHCffM
- /41O759oH3x/Lxc46HaOm/hmKMrPW3hIt5pVdPiJvZEg6zfcLzRGsQZGn
- qlv5hqYIglHKye8dHYciyTWvFaxNNBiiht9vqH+A8XMPN/pJfvP/Cg1WB Q==;
-X-CSE-ConnectionGUID: rNoeiFGtRJab8qn9Z8yYQw==
-X-CSE-MsgGUID: 34jfe3SkSYacsGHod7uVnA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="112290359"
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="112290359"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 10:02:21 -0700
-X-CSE-ConnectionGUID: SFsz3RiNQXq3mlJf6oOz9Q==
-X-CSE-MsgGUID: zgfpCxl6THKTW2tRBvb5lw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="267414417"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.244.17])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 10:02:19 -0700
-Date: Thu, 10 Sep 2026 19:02:17 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Jan Maslak <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org, andrzej.hajda@intel.com
-Subject: Re: [PATCH v2 1/1] lib/rendercopy: Use the Xe2+ depth buffer packet
-Message-ID: <hjt2qv63b7hvhy4wmkv7xiwd7uy5mk5vlj5eor2hmwanj7k237@gyioi73vnsae>
-References: <20260910162718.4189583-1-jan.maslak@intel.com>
- <20260910162718.4189583-2-jan.maslak@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9C8E310E28E;
+	Thu, 10 Sep 2026 17:07:07 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EFD0610E28E;
+ Thu, 10 Sep 2026 17:06:19 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3237142614930110758=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260910162718.4189583-2-jan.maslak@intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/rendercopy=3A_Use_the?=
+ =?utf-8?q?_Xe2+_depth_buffer_packet?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jan Maslak" <jan.maslak@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 10 Sep 2026 17:06:19 -0000
+Message-ID: <178905997997.147775.15432108336472418479@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260910123935.4183522-1-jan.maslak@intel.com>
+In-Reply-To: <20260910123935.4183522-1-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,48 +37,132 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, Sep 10, 2026 at 06:27:18PM +0200, Jan Maslak wrote:
-> Genxml provides a dedicated 3DSTATE_DEPTH_BUFFER definition for Xe2 and
-> newer platforms. Use GFX20_3DSTATE_DEPTH_BUFFER on those platforms,
-> keeping the existing GFX125 and GFX9 selections for older hardware.
-> 
-> Xe2+ platforms also support Tile4, but require the eight-dword GFX20
-> packet rather than the ten-dword GFX125 packet. Retain the HAS_4TILE
-> capability check only for pre-Xe2 platforms.
-> 
-> Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+--===============3237142614930110758==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-LGTM. But wait for CI to make sure it doesn't regress anything.
+== Series Details ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Series: lib/rendercopy: Use the Xe2+ depth buffer packet
+URL   : https://patchwork.freedesktop.org/series/173791/
+State : success
 
---
-Zbigniew
+== Summary ==
 
-> ---
->  lib/rendercopy_gen9.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-> index 31913badba..d3f793fcc3 100644
-> --- a/lib/rendercopy_gen9.c
-> +++ b/lib/rendercopy_gen9.c
-> @@ -1043,7 +1043,11 @@ gen9_emit_depth(struct intel_bb *ibb)
->  
->  	igt_genxml_emit(ibb, GFX9_3DSTATE_WM_DEPTH_STENCIL, wds) { }
->  
-> -	if (HAS_4TILE(ibb->devid)) {
-> +	if (intel_gen(ibb->devid) >= 20) {
-> +		igt_genxml_emit(ibb, GFX20_3DSTATE_DEPTH_BUFFER, db) {
-> +			db.MOCS = mocs;
-> +		}
-> +	} else if (HAS_4TILE(ibb->devid)) {
->  		igt_genxml_emit(ibb, GFX125_3DSTATE_DEPTH_BUFFER, db) {
->  			db.MOCS = mocs;
->  		}
-> -- 
-> 2.43.0
-> 
+CI Bug Log - changes from IGT_9090 -> IGTPW_15825
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15825/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15825 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a1:
+    - fi-tgl-1115g4:      [PASS][1] -> [ABORT][2] ([i915#16837] / [i915#16866] / [i915#16876]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9090/fi-tgl-1115g4/igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a1.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15825/fi-tgl-1115g4/igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a1.html
+
+  
+  [i915#16837]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16837
+  [i915#16866]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16866
+  [i915#16876]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16876
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9090 -> IGTPW_15825
+
+  CI-20190529: 20190529
+  CI_DRM_19120: b8885acadfe9e40109912dd45986112b007b0d98 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15825: 15825
+  IGT_9090: 9090
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15825/index.html
+
+--===============3237142614930110758==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/rendercopy: Use the Xe2+ depth buffer packet</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173791/">https://patchwork.freedesktop.org/series/173791/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15825/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15825/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9090 -&gt; IGTPW_15825</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15825/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15825 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a1:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9090/fi-tgl-1115g4/igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15825/fi-tgl-1115g4/igt@kms_flip@basic-flip-vs-dpms@c-hdmi-a1.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16837">i915#16837</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16866">i915#16866</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16876">i915#16876</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9090 -&gt; IGTPW_15825</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19120: b8885acadfe9e40109912dd45986112b007b0d98 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15825: 15825<br />
+  IGT_9090: 9090</p>
+
+</body>
+</html>
+
+--===============3237142614930110758==--
