@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B51F8C79FBB
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 19:21:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75F01C79FBB
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 19:23:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5572010E2CA;
-	Thu, 10 Sep 2026 19:21:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1351D10E2C2;
+	Thu, 10 Sep 2026 19:23:09 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EB75010E248;
- Thu, 10 Sep 2026 19:21:03 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3C1510E248;
+ Thu, 10 Sep 2026 19:22:19 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8328571836831473467=="
+ boundary="===============8142210771409876701=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_drm-uapi=3A_Sync_drm=5Fmo?=
- =?utf-8?q?de=2Eh_with_drm-next_up_to_1258f9c9ff1d?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_drm-uapi=3A_Sync_drm=5Fmode?=
+ =?utf-8?q?=2Eh_with_drm-next_up_to_1258f9c9ff1d?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 10 Sep 2026 19:21:03 -0000
-Message-ID: <178906806395.147924.2191297605405078959@61270ab9df2a>
+Date: Thu, 10 Sep 2026 19:22:19 -0000
+Message-ID: <178906813992.147924.2466569581108760449@61270ab9df2a>
 X-Patchwork-Hint: ignore
 References: <20260910151342.266876-1-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20260910151342.266876-1-kamil.konieczny@linux.intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============8328571836831473467==
+--===============8142210771409876701==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -54,7 +54,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9090 -> IGTPW_15827
+CI Bug Log - changes from XEIGT_9090_BAT -> XEIGTPW_15827_BAT
 ====================================================
 
 Summary
@@ -64,49 +64,36 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15827/index.html
+  
 
-Participating hosts (39 -> 37)
+Participating hosts (15 -> 15)
 ------------------------------
 
-  Missing    (2): bat-dg2-13 bat-adls-6 
+  No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_15827 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@migrate:
-    - fi-bsw-nick:        [PASS][1] -> [DMESG-FAIL][2] ([i915#16997]) +1 other test dmesg-fail
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9090/fi-bsw-nick/igt@i915_selftest@live@migrate.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15827/fi-bsw-nick/igt@i915_selftest@live@migrate.html
-
-  
-  [i915#16997]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16997
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_9090 -> IGTPW_15827
-  * Linux: CI_DRM_19120 -> CI_DRM_19122
+  * Linux: xe-5721-2aafa4e382d7609b0db012bc568d65d36217587a -> xe-5724-aeaac9b539af202c51c1d8419fa36261d864b390
 
-  CI-20190529: 20190529
-  CI_DRM_19120: b8885acadfe9e40109912dd45986112b007b0d98 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19122: aeaac9b539af202c51c1d8419fa36261d864b390 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15827: 38ec757c32bfa3c60bdeb56ff46e92b535e08cfa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9090: 9090
+  xe-5721-2aafa4e382d7609b0db012bc568d65d36217587a: 2aafa4e382d7609b0db012bc568d65d36217587a
+  xe-5724-aeaac9b539af202c51c1d8419fa36261d864b390: aeaac9b539af202c51c1d8419fa36261d864b390
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15827/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15827/index.html
 
---===============8328571836831473467==
+--===============8142210771409876701==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,41 +117,30 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173800/">https://patchwork.freedesktop.org/series/173800/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15827/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15827/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15827/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15827/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9090 -&gt; IGTPW_15827</h1>
+    <h1>CI Bug Log - changes from XEIGT_9090_BAT -&gt; XEIGTPW_15827_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15827/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15827 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live@migrate:<ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9090/fi-bsw-nick/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15827/fi-bsw-nick/igt@i915_selftest@live@migrate.html">DMESG-FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16997">i915#16997</a>) +1 other test dmesg-fail</li>
-</ul>
-</li>
-</ul>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9090 -&gt; IGTPW_15827</li>
-<li>Linux: CI_DRM_19120 -&gt; CI_DRM_19122</li>
+<li>Linux: xe-5721-2aafa4e382d7609b0db012bc568d65d36217587a -&gt; xe-5724-aeaac9b539af202c51c1d8419fa36261d864b390</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19120: b8885acadfe9e40109912dd45986112b007b0d98 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19122: aeaac9b539af202c51c1d8419fa36261d864b390 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15827: 38ec757c32bfa3c60bdeb56ff46e92b535e08cfa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9090: 9090</p>
+<p>IGTPW_15827: 38ec757c32bfa3c60bdeb56ff46e92b535e08cfa @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9090: 9090<br />
+  xe-5721-2aafa4e382d7609b0db012bc568d65d36217587a: 2aafa4e382d7609b0db012bc568d65d36217587a<br />
+  xe-5724-aeaac9b539af202c51c1d8419fa36261d864b390: aeaac9b539af202c51c1d8419fa36261d864b390</p>
 
 </body>
 </html>
 
---===============8328571836831473467==--
+--===============8142210771409876701==--
