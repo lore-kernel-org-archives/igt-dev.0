@@ -4,54 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D85FCC79FB9
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 12:48:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79B41C79FB9
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 13:24:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3684010E2B3;
-	Thu, 10 Sep 2026 12:48:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B31410E842;
+	Thu, 10 Sep 2026 13:24:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="krKMfJbz";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="bcP9YZOI";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8BD5410E287
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 12:46:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 397C210E182
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 13:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789044410; x=1820580410;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=wvAIqYhyN9wNctz/YaQBr5xNrbQQbacHVvvJLmqx04c=;
- b=krKMfJbz7bL5ayVzpBLxIABQjSaiOCjdtgQ9Wr0IJ3VeqsfYcNHUvbSr
- 7ukE7SiYthayP7ikfD6vk8EWGBhH2WpHE2GzmbxtfHd2dkPnBkKfp50NI
- NwC197tp++qrAuqilub7rnpZ/8HHkx3hc2fiCMAUAHghZpBNjJLVABgy6
- 0t9CB5p5yQ+0bfYv9zkUsG/ILudqTXDjzYpnVEZId1igglWtZaijHrlGU
- 3Yq5zkgVJwt45BhlJXkXYPJTkclSRjZ3WmdM4D7RdG3yVg3lw4Z6kDp3h
- ZngToXDulCiX9JwmyC6cDi7IijWyjZVqrIbT4Lv6w60J+woJliNpNegop Q==;
-X-CSE-ConnectionGUID: 9MPoEZQBQjyewH6SiJF+Ug==
-X-CSE-MsgGUID: wgwYQAAVTfiKtglTmXWvZw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="13793"
+ t=1789046646; x=1820582646;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=6uRlDBaEcBYa3F4dmF6M97JrDnjMigZ8ydbyLDX4y9w=;
+ b=bcP9YZOIN+DBWkJ4INBUu/A/+vGz4jg8jI8T1s48WQcxTTTU6fwsXY13
+ 1t+dm+cBbYEoX0v3v2OSXJxNPmYhxullylUiPYRJJNj0KuZeN5Z03ceTx
+ dzE/lZJnpkPoGqsnmW6nhLVlheE/ZmdQYR9vXlEcOW8fTmsAO0+IDZIgI
+ bvc8Ob//wMMPswX62PtcT+qfgPnio+ShlOXGqncHXR+JeWPCZwtjZCub6
+ Oe0plvr/Q+kIe7v/hatUCSSuRiifvj0Wt8v4aO/9k0A42eWS9D5xerwOz
+ D1tyS7zs28iivOMaG5XY+1tghCCcilxVJuJEq96Q+0ajzke2rErkXwDrU Q==;
+X-CSE-ConnectionGUID: x7OCIWPiS4aK1WUP07mXwg==
+X-CSE-MsgGUID: dS7CPSuqTuuNGO4MRnX6UQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="77053994"
 X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="13793"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 05:39:46 -0700
-X-CSE-ConnectionGUID: VPamxWCqTMK9vKkFQ2Gybg==
-X-CSE-MsgGUID: CCadeyA2Q2eMNx+hDXjyRw==
+   d="scan'208";a="77053994"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2026 06:24:06 -0700
+X-CSE-ConnectionGUID: yVPoOJ3mTsiNDtC2MzbYyg==
+X-CSE-MsgGUID: U7XSHQp5Q+qJB4gO9bC8Jw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="265413974"
-Received: from art-dev-395.igk.intel.com ([10.211.135.233])
- by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 05:39:44 -0700
-From: Jan Maslak <jan.maslak@intel.com>
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="269068980"
+Received: from gfx-coremm-kmd15.iind.intel.com ([10.223.55.8])
+ by fmviesa008.fm.intel.com with ESMTP; 10 Sep 2026 06:24:05 -0700
+From: Nareshkumar Gollakoti <naresh.kumar.g@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: zbigniew.kempczynski@intel.com,
-	Jan Maslak <jan.maslak@intel.com>
-Subject: [PATCH 1/1] lib/rendercopy: Use the Xe2+ depth buffer packet
-Date: Thu, 10 Sep 2026 14:39:34 +0200
-Message-ID: <20260910123935.4183522-2-jan.maslak@intel.com>
+Cc: nishit.sharma@intel.com, Nareshkumar Gollakoti <naresh.kumar.g@intel.com>
+Subject: [PATCH] igt: xe_exec_reset: Remove RAPID_RESET_STRESS from
+ mixed-engine test
+Date: Thu, 10 Sep 2026 18:52:51 +0530
+Message-ID: <20260910132251.1669256-1-naresh.kumar.g@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260910123935.4183522-1-jan.maslak@intel.com>
-References: <20260910123935.4183522-1-jan.maslak@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -69,32 +66,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Genxml provides a dedicated 3DSTATE_DEPTH_BUFFER definition for Xe2 and
-newer platforms. Use GFX20_3DSTATE_DEPTH_BUFFER on those platforms,
-keeping the existing GFX125 and GFX9 selections for older hardware.
+The RAPID_RESET_STRESS flag (1 ms reset interval) is incompatible with
+MIXED_ENGINE_STRESS. During resets, the KMD rejects EXEC_QUEUE_CREATE
+with -EINVAL because engines are momentarily unavailable, causing near-
+total submission failure (~9 successful vs ~180k failed in 2 seconds).
 
-Signed-off-by: Jan Maslak <jan.maslak@intel.com>
+Remove RAPID_RESET_STRESS to allow submissions between resets, restoring
+realistic mixed-engine workload coverage while keeping default 250ms GT
+reset intervals.
+
+'Fixes: fb556e8d9acc ("tests/intel/xe_exec_reset: add gt-stress-reset-mixed-engine-usage subtest")'
+Signed-off-by: Nareshkumar Gollakoti <naresh.kumar.g@intel.com>
 ---
- lib/rendercopy_gen9.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ tests/intel/xe_exec_reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/rendercopy_gen9.c b/lib/rendercopy_gen9.c
-index 31913badba..d3f793fcc3 100644
---- a/lib/rendercopy_gen9.c
-+++ b/lib/rendercopy_gen9.c
-@@ -1043,7 +1043,11 @@ gen9_emit_depth(struct intel_bb *ibb)
- 
- 	igt_genxml_emit(ibb, GFX9_3DSTATE_WM_DEPTH_STENCIL, wds) { }
- 
--	if (HAS_4TILE(ibb->devid)) {
-+	if (intel_gen(ibb->devid) >= 20) {
-+		igt_genxml_emit(ibb, GFX20_3DSTATE_DEPTH_BUFFER, db) {
-+			db.MOCS = mocs;
-+		}
-+	} else if (HAS_4TILE(ibb->devid)) {
- 		igt_genxml_emit(ibb, GFX125_3DSTATE_DEPTH_BUFFER, db) {
- 			db.MOCS = mocs;
- 		}
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index e12279d23..9b1687c35 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -1208,7 +1208,7 @@ int igt_main()
+ 		{ "reset-bo-invalidation", INVALIDATE_BO_STRESS },
+ 		{ "reset-rapid-cycle", RAPID_RESET_STRESS },
+ 		{ "reset-destroy-vm-context", DESTROY_VM_CTX_STRESS },
+-		{ "reset-mixed-engine-usage", MIXED_ENGINE_STRESS | RAPID_RESET_STRESS },
++		{ "reset-mixed-engine-usage", MIXED_ENGINE_STRESS },
+ 		{ "reset-pm-transition", PM_TRANSITION_STRESS | DESTROY_VM_CTX_STRESS },
+ 		{ NULL },
+ 	};
 -- 
 2.43.0
 
