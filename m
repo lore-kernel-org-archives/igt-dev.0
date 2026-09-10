@@ -4,59 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21E7DC79F9F
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 14:41:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C10FBC79F9F
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 14:44:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CCFDE10E2D2;
-	Thu, 10 Sep 2026 14:41:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 57BC210E5F7;
+	Thu, 10 Sep 2026 14:44:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZE90VH4E";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M41mtiUM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4ED1810E210
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 14:41:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7453710F492
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 14:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789051267; x=1820587267;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=jsPJ4qj9TU7miohfl2z56D4daLeJAQU6fZl3TUDxaEE=;
- b=ZE90VH4ETbxeOQyDwM8aXZDa0MR9DS6T0Obbd142H2L6jvvjDFUs60JB
- QHlp1A7hehBy08CZ2w2lKVs8JZQhKetyapDJm9fQpWJNPl4L/3rqtF2qA
- +Z5TBETXQoSodWGfu71ytH7k4jftJAJgR3VMY7hIVts8KOvjtHZEOUjqh
- RBox5b44eqgPOd+lGfw4jl2Me7hdER07G9UqYAmV0K7CUJ6B44YlPjCl+
- 5VAaC+dVLZZY3ATEtBdSNLjr2+s7BNtOwDZEsZ71hX7RyuVk0P0RgKpxC
- +K2Ywj20CipM+UibLvy45MzpuGSxiN9BQSFIup9+VL6Bm0E7tkJWQIwYU g==;
-X-CSE-ConnectionGUID: 4sxh57AnTSumNLJpOM+Hfg==
-X-CSE-MsgGUID: HPovcUJQQaOHTRsOSV1NyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="93368019"
+ t=1789051407; x=1820587407;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=979Mt7PdhF3jH/2cZ6P19U/RjXmojRlybKKgpjoiY8M=;
+ b=M41mtiUMEuBf8qfThn0SeTPvISn9lkPga3JqFNscO4ObRyHGrTVnNoI5
+ oked3U+ukC8WF63b8QpyV7aoAaVbEtM8iOfPXpRlOo+sCIW/Wz4u22RbN
+ BCOAWWc4PkK3DfCve+iG7AXx1ewM3TRR1ucPJdw1bRaWipnVeEeX+befn
+ Ea/0zg95Ad6FAskIqEJxFRsSm926xId/IXmBjsepk/i3wJIUdbqABlfpx
+ iDbBcg/ZrIVHOEQDE3panZ8FhHpI72qtwMuYKRagiVQpI6hLsAw3wNapM
+ mP8mdyXzKwGqeH6vCJ6hV3GaMJN93qHijzubGjFPUNR2sRXv5kle4MyY9 A==;
+X-CSE-ConnectionGUID: B43E/UmCQUWxFJgeBWz7CA==
+X-CSE-MsgGUID: cPZN/jmUSB24zuN22R/zTw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="92017715"
 X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="93368019"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 07:41:07 -0700
-X-CSE-ConnectionGUID: 0nIeVOxRT7CBJ7grF8VGkg==
-X-CSE-MsgGUID: MsZxxmXhRPS9Pam+gruKPA==
+   d="scan'208";a="92017715"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2026 07:43:27 -0700
+X-CSE-ConnectionGUID: dK0qS+/WRwCfcQRl/LzWRg==
+X-CSE-MsgGUID: NBFVQXcvTviJbZOIFlHAlg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="275805408"
-Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.245.252])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 07:41:05 -0700
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 07:43:26 -0700
+Date: Thu, 10 Sep 2026 16:43:09 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Maarten Lankhorst <dev@lankhorst.se>,
- =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
- Swati Sharma <swati2.sharma@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t 1/3] drm-uapi: Sync drm_mode.h with drm-next up to
- 1258f9c9ff1d
-Date: Thu, 10 Sep 2026 16:40:57 +0200
-Message-ID: <20260910144058.264789-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.55.0
+To: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Julia Filipchuk <julia.filipchuk@intel.com>
+Subject: Re: [PATCH i-g-t v2 3/3] tests/intel-ci: Allow PXP negative testing
+ on CRI.
+Message-ID: <20260910144309.67bggi2b2ow6rtum@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Alan Previn <alan.previn.teres.alexis@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Julia Filipchuk <julia.filipchuk@intel.com>
+References: <20260909002705.431136-5-alan.previn.teres.alexis@intel.com>
+ <20260909002705.431136-8-alan.previn.teres.alexis@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260909002705.431136-8-alan.previn.teres.alexis@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,360 +73,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Maarten Lankhorst <dev@lankhorst.se>
+Hi Alan,
+On 2026-09-08 at 17:27:06 -0700, Alan Previn wrote:
+> igt:xe_pxp:pxp-bo-alloc/pxp-queue-alloc subtests should be run
+> on platforms that don't support PXP since they would perform
+> negative testing.
+> 
+> Signed-off-by: Alan Previn <alan.previn.teres.alexis@intel.com>
 
-Sync the drm_mode.h up to commit 1258f9c9ff1d to get all the
-background property macros. With this following changes comes:
+Applied with fixes in commit subjects and descriptions.
 
-1258f9c9ff1d ("drm/edid: parse panel type from DisplayID 2.x Display Parameters")
-a1b6cf8e5e7e ("drm: uapi: Use SPDX in DRM core uAPI headers")
-42dab3138176 ("drm/connector: Add a new 'panel_type' property")
-db971856bbe0 ("drm/colorop: Add 3D LUT support to color pipeline")
-7fa3ee8c0a79 ("drm/colorop: Define LUT_1D interpolation")
 
-Update linux_scaffold.h to take the new changes into account.
 
-This differs from drm-next with added DRM_COLOROP_FIXED_MATRIX
-colorop property and removed two linux kernel includes.
+Regards,
+Kamil
 
-v3: sync with most recent drm-next change (Kamil)
-
-Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
----
- include/drm-uapi/drm_mode.h | 213 +++++++++++++++++++++++++++++++-----
- include/linux_scaffold.h    |   2 +
- 2 files changed, 190 insertions(+), 25 deletions(-)
-
-diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-index 0924e38af..2aa005fcd 100644
---- a/include/drm-uapi/drm_mode.h
-+++ b/include/drm-uapi/drm_mode.h
-@@ -1,27 +1,10 @@
-+/* SPDX-License-Identifier: MIT */
- /*
-  * Copyright (c) 2007 Dave Airlie <airlied@linux.ie>
-  * Copyright (c) 2007 Jakob Bornecrantz <wallbraker@gmail.com>
-  * Copyright (c) 2008 Red Hat Inc.
-  * Copyright (c) 2007-2008 Tungsten Graphics, Inc., Cedar Park, TX., USA
-  * Copyright (c) 2007-2008 Intel Corporation
-- *
-- * Permission is hereby granted, free of charge, to any person obtaining a
-- * copy of this software and associated documentation files (the "Software"),
-- * to deal in the Software without restriction, including without limitation
-- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-- * and/or sell copies of the Software, and to permit persons to whom the
-- * Software is furnished to do so, subject to the following conditions:
-- *
-- * The above copyright notice and this permission notice shall be included in
-- * all copies or substantial portions of the Software.
-- *
-- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-- * IN THE SOFTWARE.
-  */
- 
- #ifndef _DRM_MODE_H
-@@ -166,6 +149,11 @@ extern "C" {
- #define DRM_MODE_LINK_STATUS_GOOD	0
- #define DRM_MODE_LINK_STATUS_BAD	1
- 
-+/* Panel type property */
-+#define DRM_MODE_PANEL_TYPE_UNKNOWN	0
-+#define DRM_MODE_PANEL_TYPE_OLED	1
-+#define DRM_MODE_PANEL_TYPE_LCD		2
-+
- /*
-  * DRM_MODE_ROTATE_<degrees>
-  *
-@@ -895,31 +883,48 @@ enum drm_colorop_type {
- 	/**
- 	 * @DRM_COLOROP_1D_CURVE:
- 	 *
-+	 * enum string "1D Curve"
-+	 *
- 	 * A 1D curve that is being applied to all color channels. The
--	 * curve is specified via tha CURVE_1D_TYPE colorop property.
-+	 * curve is specified via the CURVE_1D_TYPE colorop property.
- 	 */
- 	DRM_COLOROP_1D_CURVE,
- 
- 	/**
- 	 * @DRM_COLOROP_1D_LUT:
- 	 *
-+	 * enum string "1D LUT"
-+	 *
- 	 * A simple 1D LUT of uniformly spaced &drm_color_lut32 entries,
--	 * packed into a blob via the DATA property. The driver's expected
--	 * LUT size is advertised via the SIZE property.
-+	 * packed into a blob via the DATA property. The driver's
-+	 * expected LUT size is advertised via the SIZE property.
-+	 *
-+	 * The DATA blob is an array of struct drm_color_lut32 with size
-+	 * of "size".
- 	 */
- 	DRM_COLOROP_1D_LUT,
- 
- 	/**
- 	 * @DRM_COLOROP_CTM_3X4:
- 	 *
-+	 * enum string "3x4 Matrix"
-+	 *
- 	 * A 3x4 matrix. Its values are specified via the
- 	 * &drm_color_ctm_3x4 struct provided via the DATA property.
-+	 *
-+	 * The DATA blob is a float[12]:
-+	 * out   matrix          in
-+	 * | R |   | 0  1  2  3  |   | R |
-+	 * | G | = | 4  5  6  7  | x | G |
-+	 * | B |   | 8  9  10 12 |   | B |
- 	 */
- 	DRM_COLOROP_CTM_3X4,
- 
- 	/**
- 	 * @DRM_COLOROP_MULTIPLIER:
- 	 *
-+	 * enum string "Multiplier"
-+	 *
- 	 * A simple multiplier, applied to all color values. The
- 	 * multiplier is specified as a S31.32 via the MULTIPLIER
- 	 * property.
-@@ -929,9 +934,22 @@ enum drm_colorop_type {
- 	/**
- 	 * @DRM_COLOROP_3D_LUT:
- 	 *
--	 * A 3D LUT of &drm_color_lut entries,
-+	 * enum string "3D LUT"
-+	 *
-+	 * A 3D LUT of &drm_color_lut32 entries,
- 	 * packed into a blob via the DATA property. The driver's expected
--	 * LUT size is advertised via the SIZE property.
-+	 * LUT size is advertised via the SIZE property, i.e., a 3D LUT with
-+	 * 17x17x17 entries will have SIZE set to 17.
-+	 *
-+	 * The DATA blob is a 3D array of struct drm_color_lut32 with dimension
-+	 * length of "size".
-+	 * The LUT elements are traversed like so:
-+	 *
-+	 *   for B in range 0..n
-+	 *     for G in range 0..n
-+	 *       for R in range 0..n
-+	 *        index = R + n * (G + n * B)
-+	 *         color = lut3d[index]
- 	 */
- 	DRM_COLOROP_3D_LUT,
- 
-@@ -949,7 +967,6 @@ enum drm_colorop_type {
- 
- /**
-  * enum drm_colorop_lut3d_interpolation_type - type of 3DLUT interpolation
-- *
-  */
- enum drm_colorop_lut3d_interpolation_type {
- 	/**
-@@ -960,6 +977,19 @@ enum drm_colorop_lut3d_interpolation_type {
- 	DRM_COLOROP_LUT3D_INTERPOLATION_TETRAHEDRAL,
- };
- 
-+/**
-+ * enum drm_colorop_lut1d_interpolation_type - type of interpolation for 1D LUTs
-+ */
-+enum drm_colorop_lut1d_interpolation_type {
-+	/**
-+	 * @DRM_COLOROP_LUT1D_INTERPOLATION_LINEAR:
-+	 *
-+	 * Linear interpolation. Values between points of the LUT will be
-+	 * linearly interpolated.
-+	 */
-+	DRM_COLOROP_LUT1D_INTERPOLATION_LINEAR,
-+};
-+
- /**
-  * struct drm_plane_size_hint - Plane size hints
-  * @width: The width of the plane in pixel
-@@ -1065,6 +1095,14 @@ struct hdr_output_metadata {
-  * Request that the kernel sends back a vblank event (see
-  * struct drm_event_vblank) with the &DRM_EVENT_FLIP_COMPLETE type when the
-  * page-flip is done.
-+ *
-+ * When used with atomic uAPI, one event will be delivered per CRTC included in
-+ * the atomic commit. A CRTC is included in an atomic commit if one of its
-+ * properties is set, or if a property is set on a connector or plane linked
-+ * via the CRTC_ID property to the CRTC. At least one CRTC must be included,
-+ * and all pulled in CRTCs must be either previously or newly powered on (in
-+ * other words, a powered off CRTC which stays off cannot be included in the
-+ * atomic commit).
-  */
- #define DRM_MODE_PAGE_FLIP_EVENT 0x01
- /**
-@@ -1161,7 +1199,7 @@ struct drm_mode_crtc_page_flip_target {
-  * struct drm_mode_create_dumb - Create a KMS dumb buffer for scanout.
-  * @height: buffer height in pixels
-  * @width: buffer width in pixels
-- * @bpp: bits per pixel
-+ * @bpp: color mode
-  * @flags: must be zero
-  * @handle: buffer object handle
-  * @pitch: number of bytes between two consecutive lines
-@@ -1169,6 +1207,54 @@ struct drm_mode_crtc_page_flip_target {
-  *
-  * User-space fills @height, @width, @bpp and @flags. If the IOCTL succeeds,
-  * the kernel fills @handle, @pitch and @size.
-+ *
-+ * The value of @bpp is a color-mode number describing a specific format
-+ * or a variant thereof. The value often corresponds to the number of bits
-+ * per pixel for most modes, although there are exceptions. Each color mode
-+ * maps to a DRM format plus a number of modes with similar pixel layout.
-+ * Framebuffer layout is always linear.
-+ *
-+ * Support for all modes and formats is optional. Even if dumb-buffer
-+ * creation with a certain color mode succeeds, it is not guaranteed that
-+ * the DRM driver supports any of the related formats. Most drivers support
-+ * a color mode of 32 with a format of DRM_FORMAT_XRGB8888 on their primary
-+ * plane.
-+ *
-+ * +------------+------------------------+------------------------+
-+ * | Color mode | Framebuffer format     | Compatible formats     |
-+ * +============+========================+========================+
-+ * |     32     |  * DRM_FORMAT_XRGB8888 |  * DRM_FORMAT_BGRX8888 |
-+ * |            |                        |  * DRM_FORMAT_RGBX8888 |
-+ * |            |                        |  * DRM_FORMAT_XBGR8888 |
-+ * +------------+------------------------+------------------------+
-+ * |     24     |  * DRM_FORMAT_RGB888   |  * DRM_FORMAT_BGR888   |
-+ * +------------+------------------------+------------------------+
-+ * |     16     |  * DRM_FORMAT_RGB565   |  * DRM_FORMAT_BGR565   |
-+ * +------------+------------------------+------------------------+
-+ * |     15     |  * DRM_FORMAT_XRGB1555 |  * DRM_FORMAT_BGRX1555 |
-+ * |            |                        |  * DRM_FORMAT_RGBX1555 |
-+ * |            |                        |  * DRM_FORMAT_XBGR1555 |
-+ * +------------+------------------------+------------------------+
-+ * |      8     |  * DRM_FORMAT_C8       |  * DRM_FORMAT_D8       |
-+ * |            |                        |  * DRM_FORMAT_R8       |
-+ * +------------+------------------------+------------------------+
-+ * |      4     |  * DRM_FORMAT_C4       |  * DRM_FORMAT_D4       |
-+ * |            |                        |  * DRM_FORMAT_R4       |
-+ * +------------+------------------------+------------------------+
-+ * |      2     |  * DRM_FORMAT_C2       |  * DRM_FORMAT_D2       |
-+ * |            |                        |  * DRM_FORMAT_R2       |
-+ * +------------+------------------------+------------------------+
-+ * |      1     |  * DRM_FORMAT_C1       |  * DRM_FORMAT_D1       |
-+ * |            |                        |  * DRM_FORMAT_R1       |
-+ * +------------+------------------------+------------------------+
-+ *
-+ * Color modes of 10, 12, 15, 30 and 64 are only supported for use by
-+ * legacy user space. Please don't use them in new code. Other modes
-+ * are not support.
-+ *
-+ * Do not attempt to allocate anything but linear framebuffer memory
-+ * with single-plane RGB data. Allocation of other framebuffer
-+ * layouts requires dedicated ioctls in the respective DRM driver.
-  */
- struct drm_mode_create_dumb {
- 	__u32 height;
-@@ -1458,6 +1544,83 @@ struct drm_mode_closefb {
- 	__u32 pad;
- };
- 
-+/*
-+ * Put 16-bit ARGB values into a standard 64-bit representation that can be
-+ * used for ioctl parameters, inter-driver communication, etc.
-+ *
-+ * If the component values being provided contain less than 16 bits of
-+ * precision, use a conversion ratio to get a better color approximation.
-+ * The ratio is computed as (2^16 - 1) / (2^bpc - 1), where bpc and 16 are
-+ * the input and output precision, respectively.
-+ * Also note bpc must be greater than 0.
-+ */
-+#define __DRM_ARGB64_PREP(c, shift)					\
-+	(((__u64)(c) & __GENMASK(15, 0)) << (shift))
-+
-+#define __DRM_ARGB64_PREP_BPC(c, shift, bpc)				\
-+({									\
-+	__u16 mask = __GENMASK((bpc) - 1, 0);				\
-+	__u16 conv = __KERNEL_DIV_ROUND_CLOSEST((mask & (c)) *		\
-+						__GENMASK(15, 0), mask);\
-+	__DRM_ARGB64_PREP(conv, shift);					\
-+})
-+
-+#define DRM_ARGB64_PREP(alpha, red, green, blue)			\
-+(									\
-+	__DRM_ARGB64_PREP(alpha, 48) |					\
-+	__DRM_ARGB64_PREP(red,   32) |					\
-+	__DRM_ARGB64_PREP(green, 16) |					\
-+	__DRM_ARGB64_PREP(blue,   0)					\
-+)
-+
-+#define DRM_ARGB64_PREP_BPC(alpha, red, green, blue, bpc)		\
-+({									\
-+	__typeof__(bpc) __bpc = bpc;					\
-+	__DRM_ARGB64_PREP_BPC(alpha, 48, __bpc) |			\
-+	__DRM_ARGB64_PREP_BPC(red,   32, __bpc) |			\
-+	__DRM_ARGB64_PREP_BPC(green, 16, __bpc) |			\
-+	__DRM_ARGB64_PREP_BPC(blue,   0, __bpc);			\
-+})
-+
-+/*
-+ * Extract the specified color component from a standard 64-bit ARGB value.
-+ *
-+ * If the requested precision is less than 16 bits, make use of a conversion
-+ * ratio calculated as (2^bpc - 1) / (2^16 - 1), where bpc and 16 are the
-+ * output and input precision, respectively.
-+ *
-+ * If speed is more important than accuracy, use DRM_ARGB64_GET*_BPCS()
-+ * instead of DRM_ARGB64_GET*_BPC() in order to replace the expensive
-+ * division with a simple bit right-shift operation.
-+ */
-+#define __DRM_ARGB64_GET(c, shift)					\
-+	((__u16)(((__u64)(c) >> (shift)) & __GENMASK(15, 0)))
-+
-+#define __DRM_ARGB64_GET_BPC(c, shift, bpc)				\
-+({									\
-+	__u16 comp = __DRM_ARGB64_GET(c, shift);			\
-+	__KERNEL_DIV_ROUND_CLOSEST(comp * __GENMASK((bpc) - 1, 0),	\
-+				   __GENMASK(15, 0));			\
-+})
-+
-+#define __DRM_ARGB64_GET_BPCS(c, shift, bpc)				\
-+	(__DRM_ARGB64_GET(c, shift) >> (16 - (bpc)))
-+
-+#define DRM_ARGB64_GETA(c)		__DRM_ARGB64_GET(c, 48)
-+#define DRM_ARGB64_GETR(c)		__DRM_ARGB64_GET(c, 32)
-+#define DRM_ARGB64_GETG(c)		__DRM_ARGB64_GET(c, 16)
-+#define DRM_ARGB64_GETB(c)		__DRM_ARGB64_GET(c, 0)
-+
-+#define DRM_ARGB64_GETA_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 48, bpc)
-+#define DRM_ARGB64_GETR_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 32, bpc)
-+#define DRM_ARGB64_GETG_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 16, bpc)
-+#define DRM_ARGB64_GETB_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 0, bpc)
-+
-+#define DRM_ARGB64_GETA_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 48, bpc)
-+#define DRM_ARGB64_GETR_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 32, bpc)
-+#define DRM_ARGB64_GETG_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 16, bpc)
-+#define DRM_ARGB64_GETB_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 0, bpc)
-+
- #if defined(__cplusplus)
- }
- #endif
-diff --git a/include/linux_scaffold.h b/include/linux_scaffold.h
-index 39f68b8d2..f6e8983b9 100644
---- a/include/linux_scaffold.h
-+++ b/include/linux_scaffold.h
-@@ -31,6 +31,8 @@ static inline s64 sign_extend64(u64 value, int index)
- 	((~0ULL - (1ULL << (l)) + 1) & \
- 	(~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
- 
-+#define __GENMASK GENMASK
-+
- #define BITS_PER_BYTE 8
- #define BITS_PER_TYPE(t) (sizeof(t) * BITS_PER_BYTE)
- #define BITS_PER_LONG BITS_PER_TYPE(long)
--- 
-2.55.0
-
+> ---
+>  tests/intel-ci/xe.cri.core.blocklist.txt | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/intel-ci/xe.cri.core.blocklist.txt b/tests/intel-ci/xe.cri.core.blocklist.txt
+> index 12085c4df..4172f055b 100644
+> --- a/tests/intel-ci/xe.cri.core.blocklist.txt
+> +++ b/tests/intel-ci/xe.cri.core.blocklist.txt
+> @@ -9,11 +9,11 @@ igt@fbdev@.*
+>  # Valid skip: Features / hardware blocks not present on CRI
+>  #   - xe_huc_copy@: No HuC support on CRI.
+>  #   - xe_oa@oa-tlb-invalidate: valid only for older gen12 platforms.
+> -#   - xe_pxp@.*: No PXP (Protected Xe Path) support on CRI.
+> +#   - xe_pxp@.*: No PXP on CRI so skip except negative-pxp tests
+>  ##################################################################
+>  igt@xe_huc_copy@.*
+>  igt@xe_oa@oa-tlb-invalidate
+> -igt@xe_pxp@.*
+> +igt@xe_pxp@(?!pxp-bo-alloc$|pxp-queue-alloc$).*
+>  ##################################################################
+>  # Valid skip: multigpu runs in separate config
+>  ##################################################################
+> -- 
+> 2.43.0
+> 
