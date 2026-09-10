@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60ADC79FBB
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 20:16:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7461EC79FBB
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 20:16:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7170810E2F9;
-	Thu, 10 Sep 2026 20:16:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0DF9D10E2F9;
+	Thu, 10 Sep 2026 20:16:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RLEyqVoQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gfQCweiY";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12C6B10E2F9
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 20:14:26 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 188E410E2F9
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 20:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789071266; x=1820607266;
+ t=1789071268; x=1820607268;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=A4ezVAYFcNIGNODeEoZYn34e0MWddIaDiEMfNH6brnI=;
- b=RLEyqVoQ5bw62NxC4BWUCt4lHU8R21XVmSIt0i37NgPoqMAQTzzSqKlc
- sr8UO9Gymd0Qkw+K7u94Owln9ubW3YEXrF6i/jL25Y9isRk0mufHk4+t9
- DHythZgBz79pOH8xenQxnCgmk9iRRU2So4aZLBW3btENM0Z99/4Frhvq3
- LcQRnB4JqJfEvkcjoUrlfnTACAtz+jiBjI/CaL8ZCKRU2ZxsmG5BGh3F3
- tAWNyy7iR4a5xX61mZ0LT0tjb/Mt8kXDDILSsz2o9K5RLbjtcpvTan8tM
- MyW3sGgx38v8pMeolr1/8meKMWngRSuikkh2NC9EiLxULP43nfocN9UTa w==;
-X-CSE-ConnectionGUID: L8Ch1we8TV2+LGhq9ShT1A==
-X-CSE-MsgGUID: BI8CD2W5Sxeikpqi09xq1A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89657243"
+ bh=2uputFe4Kq46uFrrzU/yZE7NavfBfNUWmoYs8vyfb+c=;
+ b=gfQCweiYzjPka174SZqojuMy4/0x4e+z5vuwUWmjX8k4lW3boNb8gaBQ
+ oHe/YDpSf2f+cvQrPB3WRwJhknjL2uX9Fau/UfGV9ZxMxPrKFPcmovtiE
+ YEgxYclsie7F0ZJJOrnFoT/p9jHp3Q/623uwnMGJdLe0kZW5U0O4MyWuH
+ 6yxAhsVH6AhGWvnQoYQNBc7+azfCXCRB9x2DeSBqC1u9RfOB52tfWtIF7
+ Ij1DJAh4lOFtonz7utyzkVub0toCFHYnH/pldk09zEgkZxpa19HjC9amr
+ zGs5lgUy+nWyIhwd5YRsToeXGAokyA8GWeuuXuojEQvB08Q7J/scHoY/L A==;
+X-CSE-ConnectionGUID: gvRMS7vMS3+VNLIvBpQBFg==
+X-CSE-MsgGUID: HdlGviaoQZSOQwgoPOsa6g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89657249"
 X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="89657243"
+   d="scan'208";a="89657249"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 13:14:26 -0700
-X-CSE-ConnectionGUID: jRMrhpr6Qfqk8G0GSXUqgw==
-X-CSE-MsgGUID: 3vRpZfOSQvO63Z4mY85ayg==
+ 10 Sep 2026 13:14:28 -0700
+X-CSE-ConnectionGUID: T/AH8+DSSzijkCUlo1RlSw==
+X-CSE-MsgGUID: gNXbHRIOTrC7j5mXGQNmsw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="309978165"
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="309978176"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
- by orviesa001.jf.intel.com with ESMTP; 10 Sep 2026 13:14:25 -0700
+ by orviesa001.jf.intel.com with ESMTP; 10 Sep 2026 13:14:27 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Nemesa Garg <nemesa.garg@intel.com>, Karthik B S <karthik.b.s@intel.com>,
  Mohammed Thasleem <mohammed.thasleem@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>
-Subject: [PATCH i-g-t v5 01/17] lib/igt_aux: remove typos
-Date: Thu, 10 Sep 2026 22:13:57 +0200
-Message-ID: <20260910201413.2730574-2-michal.grzelak@intel.com>
+Subject: [PATCH i-g-t v5 02/17] lib/igt_kms: s/pipe/crtc/
+Date: Thu, 10 Sep 2026 22:13:58 +0200
+Message-ID: <20260910201413.2730574-3-michal.grzelak@intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260910201413.2730574-1-michal.grzelak@intel.com>
 References: <20260910201413.2730574-1-michal.grzelak@intel.com>
@@ -72,41 +72,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix typos found in comments.
+Refer to crtc instead of pipe.
 
 Signed-off-by: Michał Grzelak <michal.grzelak@intel.com>
 Reviewed-by: Karthik B S <karthik.b.s@intel.com>
 ---
- lib/igt_aux.c                          | 2 +-
- tests/intel/kms_frontbuffer_tracking.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ lib/igt_kms.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index 0d250ae2fe..90efb8a135 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -978,7 +978,7 @@ static void igt_aux_enable_pm_suspend_dbg(int power_dir)
-  *	  cycle
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index 27f8877a9f..b51196eaba 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -774,7 +774,7 @@ static inline bool igt_crtc_connector_valid(igt_crtc_t *crtc, igt_output_t *outp
   *
-  * Execute a system suspend cycle targeting the given @state optionally
-- * completing the cycle at the given @test point and automaically wake up
-+ * completing the cycle at the given @test point and automatically wake up
-  * again. Waking up is either achieved using the RTC wake-up alarm for a full
-  * suspend cycle or a kernel timer for a suspend test cycle. The kernel timer
-  * delay for a test cycle can be configured by the suspend.pm_test_delay
-diff --git a/tests/intel/kms_frontbuffer_tracking.c b/tests/intel/kms_frontbuffer_tracking.c
-index 4dd2f4e70f..dd7d3188fe 100644
---- a/tests/intel/kms_frontbuffer_tracking.c
-+++ b/tests/intel/kms_frontbuffer_tracking.c
-@@ -3844,7 +3844,7 @@ static void suspend_subtest(const struct test_mode *t)
-  *   Everything succeeds.
-  *
-  * FAILURES
-- *   If you're getting wrong CRC calulations, then the hardware tracking might
-+ *   If you're getting wrong CRC calculations, then the hardware tracking might
-  *   be misconfigured and needs to be checked. If we're failing because FBC is
-  *   disabled and the reason is that there's not enough stolen memory, then the
-  *   Kernel might be calculating the amount of stolen memory needed based on the
+  * If you only need to test a single output for each pipe, use
+  * for_each_crtc_with_single_output(), if you only need an
+- * output for a single CRTC, use igt_get_single_output_for_pipe().
++ * output for a single CRTC, use igt_get_single_output_for_crtc().
+  */
+ #define for_each_crtc_with_valid_output(display, crtc, output) \
+ 	for ((output) = &(display)->outputs[0], (crtc) = &(display)->crtcs[0]; \
 -- 
 2.45.2
 
