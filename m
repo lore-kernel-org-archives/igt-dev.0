@@ -4,161 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07A63C79F9F
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 12:03:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA1C6C79FB9
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 12:07:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 65B9A10E5FD;
-	Thu, 10 Sep 2026 12:03:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DF9F10E05E;
+	Thu, 10 Sep 2026 12:07:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n885gEE8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NmAvm5bQ";
 	dkim-atps=neutral
-X-Greylist: delayed 426 seconds by postgrey-1.36 at gabe;
- Thu, 10 Sep 2026 12:02:46 UTC
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A30C710E5FD
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 12:02:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B5A010E05E
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 12:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789041767; x=1820577767;
+ t=1789041968; x=1820577968;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=VWhQrfU7Mw6I5e3QZxm90cJ/ATu+bWUEwK6df6iGcr0=;
- b=n885gEE8Z2dGwet9IwAlcviRXV88NDgGQb0PlOb3AjZ2vz9O0PpaJJqW
- RxeTOxC1ZA2D+FJ3/12VHyY0zj91lYg2uDW9oFRl+NvJekEHvJMuo4F/F
- Vni/GImYYAo9w7KysKyRdE37B/dF/1cmr1R1iHtWW08+zmiOpX3nvIp8F
- TJ28OVvZJjv9QfarPsVEBjDv4nwc/JVBYplFJtsydQp7rEbch2+KcCwVn
- Kj7VUwT6E2Bri94wLS7NT40+HTKwGvZRzu5n6EQELHV4DTFfad0O0/bO6
- f//g+IgdRjet7mpDHnRmIAHegH8ULrt0LdbGYnhrKzzLE2ddDitQEjGNh w==;
-X-CSE-ConnectionGUID: UKM2IgGwSKG68CShhguL4w==
-X-CSE-MsgGUID: bkOAlNw3TNyflGAGHaSBZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="10358"
+ bh=MhwY6DRAaSmRJz7mkr1CGRQQfrIAxoZeo2XywUZgSGs=;
+ b=NmAvm5bQaTtzV5Eto8aQJQnGn4tTl3VfpXqyESzMl8OBn+UIGDr0Bb/T
+ Ha+yQmEt7BYLdnp79TSU6MhMH68R5MZwmYx50ONxd36DzSkfYbyZllw5J
+ RHCvhTEq10zHAj4x7Cw8VUDmsMPkN9eSc1j63ylQpUTlYCLMa+DQROlN7
+ xw9Tz8lBnrSzYs+slx7Cl4F0qcTrQtTs+vRph84RK4qMv/9eiqR+3lYvT
+ LKEDAh59sMDQSU1lwmc1/YWj6+oDvOnamRzRh3jQAxv7SDDGdO0GIaLYz
+ r/jUmDrl3B1FIxqUaSgVnfuhTIo8c8qJJ7BQZbeyxZeorqnTudDHGERpV A==;
+X-CSE-ConnectionGUID: nJm7itzSS1+eQ3HmftRpnQ==
+X-CSE-MsgGUID: Anf1vTn0R9alTbQBoskWCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89421734"
 X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="10358"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 04:55:36 -0700
-X-CSE-ConnectionGUID: 5cPluNenS3W39ac4Ze/m0g==
-X-CSE-MsgGUID: v7SDIXkORKmsxMx5knjzuw==
+   d="scan'208";a="89421734"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2026 05:06:08 -0700
+X-CSE-ConnectionGUID: USTVnZmTSkGrXSTUrZpLew==
+X-CSE-MsgGUID: 7pd0qiEKTMCOhePoZAJ9gg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="269039376"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 04:55:35 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="271585764"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2026 05:06:08 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 10 Sep 2026 04:55:35 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ 15.2.2562.46; Thu, 10 Sep 2026 05:06:06 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Thu, 10 Sep 2026 04:55:35 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.9) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Thu, 10 Sep 2026 05:06:06 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.54)
+ by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 10 Sep 2026 04:55:34 -0700
+ 15.2.2562.46; Thu, 10 Sep 2026 05:06:05 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RmzfjKER/6uG4oe7krsbPGWN9SNLFtVfCYbLin4cU0j5EPw1cc65S1W4vcGyfgqRmjGGbIhhb0ZgPCpk7Q/olnDKMaUhjAiyEOQBnXWB5Or+Ewdy86Bs4IrVr8SZv69mWLybpLOVNC+2KhLXUT+m+DFL08+3CxH+Tr2PcGkNZyMVf1oYavE+ir5eDQEsAQUW+OmeCaMxER7Hg/0lui6sK8DFD3aWI99Po8/MuE9HGkq/v1B16L+/dJramtXPFMNGQ26tWnRGkhmUG9wjDIIMaY4zhvAUhhGOesM0I38TyNUOc0fU11501YILSBn6uRD1Vly8MYQYzGSN/KQMOTNW4g==
+ b=s+r9ydt4uzedwEEvdh2aQLfQzqy2pS1QDMlqjEI7raPQa3Y5RLK8MSaQpI4fn/Y7p0w4ZuyiQ4tDRVs3EltCLBQSZYGmFcXIIV6BqRynFav9hXTWOGWZCNm90DnPjjugRSjLLYJ5zujddzTMzW07foT0xmW6CusgNE/N8cFxq9nQ7jk3U0LdGwD5VmzvN/9ILQGW6QuCmwbYNXLqKl9tWOw3x6DxSKfo+sTEAWQAT9CcqF8Pqv87BNAYQwWQX2dzuTz/9VPtn2QqHuUW+kdkBbCbnuG2ImF8DVQkYEFJmrAgR9GG3Vv39De7gdwcZuUhBEVAUx/jByfLsXurnesstQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Yri1LP8we57lbXoiIFejLsuph0OOf3JpS20WvSenvPs=;
- b=UoyFU9vFuIJBT4e5uL1UqbbF1RnjBV/PRiZQ/yKR6Y8DLRkuCRYtJsqKZFqtHOwDSMPWMfs8LpsdIZTYeKzWNHcgjSkBC+azyLX82v2CAqP4zW05+JPeRdK4iV/wZeTt3mxvf/80qTmMRZ4JdV96KG/bcqtetxBQlnodDZPQogbBr/KQmDq3hZ5+nZDMjqdz4I8kNZs1vVFd7yZRABbcK91jncb01ZhOkoWIMxV9pdGka4EbQEk4kY8RTTPNzMiuWJQ1UV1ebT1vk80QOzivmij0YpdC22hFq6CvTLmeqVDC/a0ztj/IhmerkfFouFOAAeiSaX1h1SV40FcB/rGxQQ==
+ bh=s6QNwGadBUl4mj79beHcQISVB1MrXhfa60XGmgetLuM=;
+ b=AKUbaR3NYJvhs6Ni2/UrkdFa9GHFFksQ7kn9i3+a8c9UlB4DUQIg97+AFk1h1DTNngzEoc3MzKxUL97y9aYfvj+CCHcvx8JWEV4MHw9npY2wWeVtycWF5FyvkmJFYRPeuHEhepn3YwyI0EocthHUSSqBpUuG8vFew5KFzr5r/Ob9KiHu6j2HAhRnh/iB4QO5c15/y+LW79G9s7iglidHcaRxqkffj1vyhPstRoiSTTCLErCC75mU3i87xeUrY5hZfsJsDhRcV4/ZKnimwo2rVK2VGK4RIEkpdVKG+5twU/mBgxRH6LUCRQEH+ImxnWnHmATT4hE/aY/OjrNdR+VKyg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH0PR11MB5880.namprd11.prod.outlook.com (2603:10b6:510:143::14)
- by LV0PR11MB340236.namprd11.prod.outlook.com (2603:10b6:408:3ee::13)
+Received: from CH3PR11MB8706.namprd11.prod.outlook.com (2603:10b6:610:1d1::22)
+ by MN6PR11MB8194.namprd11.prod.outlook.com (2603:10b6:208:477::21)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 11:55:32 +0000
-Received: from PH0PR11MB5880.namprd11.prod.outlook.com
- ([fe80::b706:268e:9753:cdfd]) by PH0PR11MB5880.namprd11.prod.outlook.com
- ([fe80::b706:268e:9753:cdfd%6]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
- 11:55:32 +0000
-Message-ID: <a8f7e5f1-144d-481a-97df-fec2d8f35481@intel.com>
-Date: Thu, 10 Sep 2026 17:25:23 +0530
+ 2026 12:05:57 +0000
+Received: from CH3PR11MB8706.namprd11.prod.outlook.com
+ ([fe80::e419:ae5c:91ec:1e9d]) by CH3PR11MB8706.namprd11.prod.outlook.com
+ ([fe80::e419:ae5c:91ec:1e9d%7]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
+ 12:05:57 +0000
+Message-ID: <1ed559f2-2dbd-4048-aa5b-d4b6e2493e91@intel.com>
+Date: Thu, 10 Sep 2026 17:35:47 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v3 1/3] drm-uapi: Sync drm_mode.h with drm-next up
- to 1258f9c9ff1d
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+Subject: Re: [PATCH v4 04/10] lib/igt_drm_netlink: add get_error_counter
+ support
+To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
  <igt-dev@lists.freedesktop.org>
-CC: Maarten Lankhorst <dev@lankhorst.se>, =?UTF-8?Q?Adri=C3=A1n_Larumbe?=
- <adrian.larumbe@collabora.com>
-References: <20260907180204.336052-1-kamil.konieczny@linux.intel.com>
- <20260907180204.336052-2-kamil.konieczny@linux.intel.com>
+CC: Riana Tauro <riana.tauro@intel.com>, Gupta Anshuman
+ <anshuman.gupta@intel.com>, Jadav Raag <raag.jadav@intel.com>, Nilawar Badal
+ <badal.nilawar@intel.com>, Koujalagi Mallesh <mallesh.koujalagi@intel.com>,
+ Harish Chegondi <harish.chegondi@intel.com>
+References: <20260903073335.339540-1-ravi.kishore.koppuravuri@intel.com>
+ <20260903073335.339540-5-ravi.kishore.koppuravuri@intel.com>
 Content-Language: en-US
-From: "Sharma, Swati2" <swati2.sharma@intel.com>
-In-Reply-To: <20260907180204.336052-2-kamil.konieczny@linux.intel.com>
+From: "Purkait, Soham" <soham.purkait@intel.com>
+In-Reply-To: <20260903073335.339540-5-ravi.kishore.koppuravuri@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0063.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b7::8) To PH0PR11MB5880.namprd11.prod.outlook.com
- (2603:10b6:510:143::14)
+X-ClientProxiedBy: MA5PR01CA0119.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1a7::7) To CH3PR11MB8706.namprd11.prod.outlook.com
+ (2603:10b6:610:1d1::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5880:EE_|LV0PR11MB340236:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9671e3d7-11c2-40fc-43d0-08df0f326a7c
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8706:EE_|MN6PR11MB8194:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7ef7ea8-4a4f-472e-401f-08df0f33decd
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|366016|376014|1800799024|22082099003|18002099003|11063799006|56012099006|4143699003|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info: vkZKTP6EDSXuRcjd4ZRYMA17hNF4uxfIQpLW7TvyrSBL5vTjvf9jmM3dmS5WrcySaRB2ZUSnXJRi04SiA6segFPfFhE1gyqmjygkYvw9reJw+Supc0Kk7W3GvTwLCKbryDaxGx8qSLm9BqPrjwYsdb/O+cqBHa2GtEDIJhgHvuvZu96xFtPc0PNtw713FIOULD3zBi2FeGac1y8ixi9TKnUM1tLvg1rOn9i0vKQAkm538OOuLhelpzl8ZSfSveIE/SQCM9kYUM9amGty55BTFAlk7d/3MMCWPGv4aHpSUR79Yg2dYncMDvrvtPYz0imFWOcB1ydQuC20dBkD2pNueeSo8UGeAzS82i7PW6BHYLuNJgoBJDLWBM9B6SLULtZBm32YmTH3SdFiKnRj5wx0bx439mwrDM0d0LaW97uLqTqqTaWlLb956za0BhwMQTUOXWjiqqB5TRqRp7nMzBOt6HB3EUUUEGCB3wBJjGmytM/NK6vuOVKQV4chbNDea+y9+LsvuXocnu6XxgVeP0Wq7LjT3c04pzM8x6GAAp57pnxOtN7svT5yX5kFkH480hNDP3dGJx1gGqc7JR9kaIp5TI+DtTIIc+2bnV8ztSa6wGfQDuK3Ylg3Yc9LUBSUVDdaeFyITzeV4mgbrhRndUAnDvqBFNqMdVs0okQEnephftA=
+ ARA:13230040|1800799024|23010399003|366016|376014|10067099003|6133799003|22082099003|18002099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info: yupf9atG14LmPoPznTvO2d+fCrktq3cmbXPYsgphXG2/c6NmQ7ocs8ASipzkk8zrpRoWf86kvWe3D3TAokjNh62xOWkWs0AqVOcLr2TVstertpeNf6Fzon84INIkpqmpa2BAMe/FWUndGgy7LXjScs2N2g8t/bmXinc8SiJs90VSh6fewCFLG+K+RLXPRDcf5ACgOvvtcf5/f1KIdvlS2Y6/Xw45LLQ8lQNoXsF0alu1uPyy8vF3RKkonJX/YSpNK7t8qK5hFbMB+ONPLLvLTJvrBdaGbufJ9ZCZTxXYM6jLRgyAzlIfYz2xsbZGtUissoIDTuPRGjMp1S3foozV2PAgKBT9UnANrDQnajXRY2lmuRLD/DFFC3o+FduBFt5P8QTN4RhgNgs1mH4dXvN7/xQ5m4K3oNdWXZGg1o9mj58GvHNIuztAxQaFW+OkKhfIoGV4kPUiKZeFzgrdKPD9zw99BxPprW0zpGKrj0y/3eaRU/km3JNsG5LL4glO5HkKa3GxGRkHm/VyJ4jhxM/Oth8RjtyNah3DJVibg2qHzTVMp857Kxl4CDIuJPRYwLxNkixjfQr9ocXoTwqGGZ13UgSWMEMWzCLRSi+8afeQl/P+oZ1GMwv7r/MPIymA+de5/JQU+FabffpvxssUcau9t6E6h8yXk4E9MpwdFo2rHhk=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH0PR11MB5880.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003)(10067099003)(3023799007);
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8706.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(10067099003)(6133799003)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UUxvL0dvbXVFTWw0TVZzUVlFWVJaTGwvNVVOaEpmUlNmVXJ6eFZ1VnZoOUZl?=
- =?utf-8?B?RTJ4QXRiRXZ1QkJ6SEhEalozbDZwYU9QVU03N2QwUWY2VG9lNm9HK0JlVjkr?=
- =?utf-8?B?bTE3U2VobWZ2MGVjY0dGb09QcFhscFRpaEp2MHNvY1hxSFdwYVczbVB0TEVt?=
- =?utf-8?B?c3EzT3Z2MlZhTmlYcGNSdkpOY1hDSENTMm9qa1lLOG1IaC9QQkgwejlsVjlU?=
- =?utf-8?B?Nm1pNWphWFNsR1d1bzAxS0tyYU9YOXlqYWxmTnpTL1JJVS9rTUJhRW4vVXpY?=
- =?utf-8?B?MzhMYWgwOGJ2M0F5aGFqazdJNUZHaXRoZno2L2t0eC9WZTBOUjgyKzI0QUJv?=
- =?utf-8?B?a0g3aWs3cmF5cjZMQkIwdlhtTzhUODloMUF3MGZWOTFKU2Y0L2ZXRGM3aVZS?=
- =?utf-8?B?dStBWUhudUZSdUdSd3psazVLeTJUbW9uT0hTRzgxNCtjQnpVTGhyM0pxK0dG?=
- =?utf-8?B?cC9vZGQzTThOWUtSWkkwd0Zrb1dueEV1VlF6OE1IQTN2TkpHZEpYVTFyM0pL?=
- =?utf-8?B?aW1HNUdDZjI3ZXlMU1FjYVRUdTJKWjhqblJFZzd6bUpyc1FJRGtQQUh4ZUx5?=
- =?utf-8?B?T3AzbzBmUENFVHIvS3AyNTBsZVRrUGFVaTM2bWtlY0wwWFM2WllKd3JTZkc3?=
- =?utf-8?B?MHdVb0xHYjY3NjhWZFJLNythNVRxNFRrZ0dIeVViUjh2ZVlTUk5oYkY4MnJx?=
- =?utf-8?B?Slh1UUZtdXVrSnlmNlczTThNRGNHUG9QZHhBMmtMYnlGK2RlSVNxc3pDYzZL?=
- =?utf-8?B?REN5dCt6ZVkrcG9PbzBJNTJaYk9jQVBydTA3VWoxMVpFS1luYk54WWZPWGl1?=
- =?utf-8?B?TC9TZmkxSTNhWVVQVG11YldUdjNQVWt0NXlaY002NmIzTG1senNOVndObE96?=
- =?utf-8?B?SkVNZmlSNVFTYzNpdjlBQ3VVYzM1MkZhaXliY0lUdVQrWS9BS2FRVEsxbDdy?=
- =?utf-8?B?SUwvV0E1L2ZLMUtkdDFqYWhZVFM1VWh3Wk92dW05aXdvQ3RZMTNvekFnaW1Q?=
- =?utf-8?B?clp3NjZuZjdkUEJXNW5SZnE4cEVDTGtJOU04MTAvSURjWGw0U3h4YXd0YWlL?=
- =?utf-8?B?UEZMazBjZ2lBMmo5UklITFM5aUVWbFNmSmVRT09aYXRBYlh0Y0txZGNOcjNs?=
- =?utf-8?B?MjJ5VW9pNWIvU2pRZmdobC85T3JJMW1ja25EbEp3ajJPUjhVRWtFcXlNVU1r?=
- =?utf-8?B?dXhzWCt0OW9QV0xYTVpURUJqRVoybmZ6RE5Zd0VMR0JhczBoRVZTd003dzBj?=
- =?utf-8?B?NTkvcWNyb3NmekZnajVPK3lyUkNhWUkxOGtIdExTNEdkaWx6ZUxPQlFGRVVj?=
- =?utf-8?B?OHZWLytUYk1EV01IWkRFcjZkRlFtVWhBNjJzMTdjMlV6RmlpSXY4RzkvdXg0?=
- =?utf-8?B?a1RGbEpiTGx2K2dGMmMzdVRlUkpPVndVSUFQR2N4bTJWWUtoK3hvTFFYSk9m?=
- =?utf-8?B?UW9mK2l4cTZxTEZnblllNmpHMENxeWhCZ3lybnE0T1BicHBuR3hqZTNrZ015?=
- =?utf-8?B?emx0NkJpd0JuckFJYmNMN3l3OHVwRnNXbndwcXp0S2hTcFVzc1cxM0NnYXNF?=
- =?utf-8?B?dWxBUXJuV0VQNG9PcHVPZHBEOTdNQkkyL1AvZHgwdDJTSWRpNjY0T0xUU1Z3?=
- =?utf-8?B?cXlnWm91QndZRXpKUmc4STh3WlJ5TFFzSW05YzBKbFpvZWQvQVR2WFF5UmxX?=
- =?utf-8?B?YnBaOVFiR1AyeEtFOXNBMHVZand3TDNUVi9QOXVPRnJuT3owQlIzMzQ0bTI4?=
- =?utf-8?B?RWFkUStMVlluNlJOcGM4QnhsdmhNUURBUitwV0tHa21yaXZXNzl1aXU4SFls?=
- =?utf-8?B?VHhoWmhDdUlsa0ZrVW00a1lJQk13NWk3WXJnWUJ5Z1F4c0xGMnZnVkpZQjl5?=
- =?utf-8?B?VkZ0aklKczY5NEpNWER2WVNkMXZhNWJ4Z0dYbVdJMk5zYmFyZUwxQVJOWlRM?=
- =?utf-8?B?bDNQQVlyaTZaYlB5b0lUVTl5T3puaTc3d1g0elZucDgyR0U1TWJURTNraER5?=
- =?utf-8?B?aU9XYm01Z3FteVgwT1FWTlVjMmlnRklMYWVyazc4S2o5aGhQd05paXJYSlJs?=
- =?utf-8?B?SEFSY0w5VndaQWQreEFTRFRUNzRqZHNXdzlVTXgwSWl4bXJ0S1FrNjM2ZVFE?=
- =?utf-8?B?YXpqb3lDK0pDMzhOL3NoVS81aklLUFk2UDY5aEhXZkQzTTRoTnlsLzV6eTlC?=
- =?utf-8?B?NFJGWDFzTlU5ZnhSU09RVmdpL25ERE5zRElhTnp6SllqcWp3b0dRRDdNRXRB?=
- =?utf-8?B?YlR1ZlZ0dE9Kc2s4c1RaVnFUVVR3UmttZkhYZW1ieUpGbkt3LzVXdTlUZHJH?=
- =?utf-8?B?QVhlQ0RXZmRxaE1hMzRFbUNsQkUwMk1idWYzOW9RcjlrYzZRT3ovdz09?=
-X-Exchange-RoutingPolicyChecked: RRrHgYxlkDH+GPR3E1v3j8ed9Ay9bfAUsZEcKRoKvNfS/fEq/HRAJgN0wLefzCUsR0z7rNhZZgE61S6W9Z7QVPaN0oShBn/k5Kg6NurTYCoiTmZjK8aais61XnVhYNmZhKVnoCkbsXd7bHJoKgG8+vsOa8Zh+oS8caKFL/81kofrkYcMJ1zDfTzBrvm9XzpUJFPpVRQVq1RHCKAF0Fegq4z1xvIAsoRys0aNNIhKlCz9plBTqRwKfIDzFVOlndkLug5GKiGH64VfGxSDBxyk1Cm282dUEMwAxkRH1WtsFQUeYVbYI1vcOOF6KtY52yZg71C59VlyILh92qh/zAEZsQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9671e3d7-11c2-40fc-43d0-08df0f326a7c
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5880.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SHdqSHh0WStyalRLSkN1YXZsV3RIMjgvenpadFFQcEIzQXBzMk1zYkhrT2ZF?=
+ =?utf-8?B?SSt4d09LeXZIWEVpbmFoQ2hlSnQwNlZFaTZxUEptWUgraVAwenBsaS9GWHlN?=
+ =?utf-8?B?Szk2akFCcTNEYVBsRHlsOHVla2Q2SlI4MUh1NVRTTGNOYkEwTzg0bnhWVEhK?=
+ =?utf-8?B?VmphYjhvYllVY2Z6SHhOV1ZrVmNKdG9vdjNaZ0w2ZW5IYmZtdTA1NVVjMW1N?=
+ =?utf-8?B?c2Y0Um1LTmpKbnZLaTdlcC9XZEtEMS8zWHpEcjZ6U0RHZ29walIyK09jQ3Y5?=
+ =?utf-8?B?SzA0MzJYQlhjOU9mRks0NlR5OGVkMVRVU3o4azFhTkV6Tmk1Y1FvSmlaTjhn?=
+ =?utf-8?B?WDcvdEJlZ1B6OXhtUktUSHl5ZWpVQW9rWFBoc1hIVkhoL3ZwaVhKeGpLZGxu?=
+ =?utf-8?B?bHVxNC9iSTd3T0I4VW1PL0szVnY4Sk0zVlo1c3NKMHI4NTNaMCtQVUVlNXVD?=
+ =?utf-8?B?U3dPRnVRSWNMRlJqN25NeU5GTDUyMkxRTklSRWJWTFdjUjBiMHNQS2FBaHhP?=
+ =?utf-8?B?dWpBZTkzZitkYjBpQXZOaVI0YnVuTXppcmliNUJ0ZXFhKytpekl5VXZXVzkw?=
+ =?utf-8?B?Z3JUSitpS09mK0pRdnFJdzVyOXZxTXVWUitPNjU3TjVDRjdhMGwxYTJwN3Za?=
+ =?utf-8?B?RTVEY1Y3VlRSVmh4UGF4RmR5dVpnWE80cEowL05XQlJ0ZEJleUpQbHc1KytN?=
+ =?utf-8?B?Mzg5WTBVZFdITGtqVFZHRWNmTll3aVJCU05sUklqU3FRci9DZjFIQ1pMaU9P?=
+ =?utf-8?B?bGhHcld1QUlaSHBZV1NDeEJKTXJEZGwxdEVLbWxMSUIrR2tLWXJReHRQVWhW?=
+ =?utf-8?B?bjJYYVJDT0ZGdDN5TDZ6ZjJERHJUa1VMV2FaUDB3c0YxWVRWMXZQV3hhVUVp?=
+ =?utf-8?B?MGd1KzFBRGsxNWp6eGlGZ0JYZFpTVFRDMGRTRUU5WVJEVjJMQUtxZkE0WHpm?=
+ =?utf-8?B?U1Y3RW8yUWUrZUNiRVV3WHFBTDJlVUpzNGh0ZW5XUXNhZ2swaVVoelUzL0FJ?=
+ =?utf-8?B?dVBpdXArYUZwUXlYYnNLZjBJOHRhY2NGdDhvMEcwd2Y3Wkk3dTBkMTcraThv?=
+ =?utf-8?B?U3hIQ2plTGRqdFluT2tmZUptZnFFektzREpPNGVpOVNxQno2WnZtbDRxTXRZ?=
+ =?utf-8?B?dzBYMDJmQzV5ZEgvQ3dwb1g5L1lPcEdTNnlreUVvUlMwUnBpQVhodDdJZndN?=
+ =?utf-8?B?UC92TTRuK041OW53TlJsUlh1VlRxdXBqQ3NQcnBXenRNeW1SWHVuQkNWNUU1?=
+ =?utf-8?B?akFuL1pEUHRQQ1FmZXpOeG9rS2lMRk96OEEvNUZCc01WcUZaTUEwRkhvRE1q?=
+ =?utf-8?B?VHZZcU5GbzNEZU50ekYyd3VobTF6czI3MVVTVE8yUi9VN0JIMSt6Qktid2Jx?=
+ =?utf-8?B?clArVkl3OUFSdE5saFZGMjY4QklBM0FCaG9USW9jbDhSZzhreVpUc2crVll6?=
+ =?utf-8?B?M0prYzg2N05QLy9mdUVoUUNEalhLTmVoSVpBNTQyaXIxWXJhL0xraEhZVUJE?=
+ =?utf-8?B?WFB3Z28vUzFreUhjTmNHckJ0dVhFRXJOSjlWTGFtMzgrSTMyai9xUEY2ZUIr?=
+ =?utf-8?B?T2JpandVQmVKbENIa3B0TU5wZGdFMWRvR1hqTVdUVlpxRDh3N1dpVkdxSDNk?=
+ =?utf-8?B?cjhBbFI5M2IveVpkb0J1RUFGRXJndGkzNkQybGIrQ3U2dXdmQVBwa2RHVGVa?=
+ =?utf-8?B?YmJ5NzdRSEU3bVU1M2UrR3grbE1FRUd6bHZEY2d4Z1hCQnNSQ3hZcnJoR3N2?=
+ =?utf-8?B?b2FkNHZsUlBOTDBUYzZqK2ViQzZab1R2d1dMd1gvMnN4OTVQdmlheVZsZjk2?=
+ =?utf-8?B?bnBVRkJZdkZYOVZPNW50cU5SQ3MzTVRaK3YrcWZWbnA4dmgyNDJ6NVlSTGpu?=
+ =?utf-8?B?OGdNZjZYYjg2RWVyenRWRTdBM0gyaVVjSllCVGJ1bFZ4bTh6UG5pNGcrT0RE?=
+ =?utf-8?B?d3d4c1NodlNDdS9Md1FEQXl4azd4YUhSNGlOb1V6aFVNNzI0K0RuWmZBVUJh?=
+ =?utf-8?B?Q1VQUEZoektDT2F6K2w2UFY1ZFRJdUNrSVFjMUtheTcrRzhJVC9XMFltVVd2?=
+ =?utf-8?B?U3liQ2NVUGpjVjFua1lMQ291WFVKdElSNmg4b3VhOXlUMGZaQVhJNGh5VmFt?=
+ =?utf-8?B?QUtweThTeE8xbWZYVnAzVkRid1B0N09FS3ZpbS9BNmYyNzZoUk1EWGhweDJS?=
+ =?utf-8?B?NGZJVlM2SkRkbHdyS09OTnlua2pVc3FmL1N4c0I3RDR4TnRBVVk2Ym5OcXNQ?=
+ =?utf-8?B?ampkdjFOT1Fqc21wbmdLRDNGVTlTWHFGdkkyelg1THlBMkNNSEZCYytCa3Mw?=
+ =?utf-8?B?SWduZzd2WjdoU0RlUkt5WElYNmFYL3hPaW95VWdSUTVmdmFmWEZHN1ZlbVpO?=
+ =?utf-8?Q?LAerPDL5tCCO9Gt8=3D?=
+X-Exchange-RoutingPolicyChecked: KjKDj9RWzQgQRFaF+dYKqZYMw1V6ihnbXZ6HCas/GM1eJxTJ7R0DzvkdunVdqad47gy5hPVGtkTjzGPoXRvsgfZTCZZYS0dQViAY6ySccwg6WX+uck8ufYeVUKerht+ToaAqpOhTVtTwvzzoLD/lNRT+iV6TgVGeBg7CQXzyduswlb4SmFhmE9TTtjaQzcfeLc8Y6M8Q/ypjm40J8Ea5vca/CEXefus32/T43RUyXqMf+K5FXilK2hB0Xu9ET7V46Rokl3VHViPX6Kq45CwCQUAE6QciKiNT9Fcems6z7XVsgycr+OfZDTTMtacHlkbK5l8sAhimn3kPK598Fdhleg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7ef7ea8-4a4f-472e-401f-08df0f33decd
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8706.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 11:55:32.4903 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 12:05:56.9537 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WVsOhRXrAzDLXu0dvPgwHY6VDun/VDQ5o3t5OEwXuwlO0bPl5CnEE6DOVyLtKgvMFsUIEY8L8z5UtbUWLw3eFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR11MB340236
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2o+mIGwbI77kVeI+rtMqx4kYsXxl+YOc33wphPd9mt+qmZ1lqNk0RCErT9NCBOaA8SFPLHOXcM5zFjJjOwCPLA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8194
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -175,365 +176,362 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Kamil
+Hi Ravi,
 
-Thanks for the patch. LGTM
-
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-
-On 07-09-2026 11:32 pm, Kamil Konieczny wrote:
-> From: Maarten Lankhorst <dev@lankhorst.se>
+On 03-09-2026 13:03, Ravi Kishore Koppuravuri wrote:
+> Add netlink request/response handling for DRM_RAS_CMD_GET_ERROR_COUNTER.
 >
-> Sync the drm_mode.h up to commit 1258f9c9ff1d to get all the
-> background property macros. With this following changes comes:
->
-> 1258f9c9ff1d ("drm/edid: parse panel type from DisplayID 2.x Display Parameters")
-> a1b6cf8e5e7e ("drm: uapi: Use SPDX in DRM core uAPI headers")
-> 42dab3138176 ("drm/connector: Add a new 'panel_type' property")
-> db971856bbe0 ("drm/colorop: Add 3D LUT support to color pipeline")
-> 7fa3ee8c0a79 ("drm/colorop: Define LUT_1D interpolation")
->
-> Update linux_scaffold.h to take the new changes into account.
->
-> This differs from drm-next with added DRM_COLOROP_FIXED_MATRIX
-> colorop property and removed to linux kernel includes.
->
-> v3: sync with most recent drm-next change (Kamil)
->
-> Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->
-> fix drm-uapi
+> Cc: Purkait Soham <soham.purkait@intel.com>
+> Cc: Riana Tauro <riana.tauro@intel.com>
+> Cc: Gupta Anshuman <anshuman.gupta@intel.com>
+> Cc: Jadav Raag <raag.jadav@intel.com>
+> Cc: Nilawar Badal <badal.nilawar@intel.com>
+> Cc: Koujalagi Mallesh <mallesh.koujalagi@intel.com>
+> Cc: Harish Chegondi <harish.chegondi@intel.com>
+> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 > ---
->   include/drm-uapi/drm_mode.h | 213 +++++++++++++++++++++++++++++++-----
->   include/linux_scaffold.h    |   2 +
->   2 files changed, 190 insertions(+), 25 deletions(-)
+> v2:Handled ACK/FINISH/ERR nl responses using separate callbacks
+>     Added a check whether error_value updated by valid callback or not
+>     Added a check whether response required for the command or not
+> v4:Added support to poll for incoming netlink messages with 10 seconds timeout
+>     Renamed the library functions with prefix "igt_drm_netlink_*" and
+>     other cosmetic changes (Nikula Jani & Kamil)
+> ---
+>   lib/igt_drm_netlink.c | 268 +++++++++++++++++++++++++++++++++++++++++-
+>   lib/igt_drm_netlink.h |   9 ++
+>   2 files changed, 275 insertions(+), 2 deletions(-)
 >
-> diff --git a/include/drm-uapi/drm_mode.h b/include/drm-uapi/drm_mode.h
-> index 0924e38af..2aa005fcd 100644
-> --- a/include/drm-uapi/drm_mode.h
-> +++ b/include/drm-uapi/drm_mode.h
-> @@ -1,27 +1,10 @@
-> +/* SPDX-License-Identifier: MIT */
->   /*
->    * Copyright (c) 2007 Dave Airlie <airlied@linux.ie>
->    * Copyright (c) 2007 Jakob Bornecrantz <wallbraker@gmail.com>
->    * Copyright (c) 2008 Red Hat Inc.
->    * Copyright (c) 2007-2008 Tungsten Graphics, Inc., Cedar Park, TX., USA
->    * Copyright (c) 2007-2008 Intel Corporation
-> - *
-> - * Permission is hereby granted, free of charge, to any person obtaining a
-> - * copy of this software and associated documentation files (the "Software"),
-> - * to deal in the Software without restriction, including without limitation
-> - * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> - * and/or sell copies of the Software, and to permit persons to whom the
-> - * Software is furnished to do so, subject to the following conditions:
-> - *
-> - * The above copyright notice and this permission notice shall be included in
-> - * all copies or substantial portions of the Software.
-> - *
-> - * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> - * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> - * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-> - * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-> - * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-> - * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-> - * IN THE SOFTWARE.
+> diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
+> index 709c01987..b18e3eeb6 100644
+> --- a/lib/igt_drm_netlink.c
+> +++ b/lib/igt_drm_netlink.c
+> @@ -3,6 +3,8 @@
+>    * Copyright © 2026 Intel Corporation
 >    */
 >   
->   #ifndef _DRM_MODE_H
-> @@ -166,6 +149,11 @@ extern "C" {
->   #define DRM_MODE_LINK_STATUS_GOOD	0
->   #define DRM_MODE_LINK_STATUS_BAD	1
+> +#include <errno.h>
+> +#include <poll.h>
+>   #include <stdint.h>
 >   
-> +/* Panel type property */
-> +#define DRM_MODE_PANEL_TYPE_UNKNOWN	0
-> +#define DRM_MODE_PANEL_TYPE_OLED	1
-> +#define DRM_MODE_PANEL_TYPE_LCD		2
-> +
->   /*
->    * DRM_MODE_ROTATE_<degrees>
->    *
-> @@ -895,31 +883,48 @@ enum drm_colorop_type {
->   	/**
->   	 * @DRM_COLOROP_1D_CURVE:
->   	 *
-> +	 * enum string "1D Curve"
-> +	 *
->   	 * A 1D curve that is being applied to all color channels. The
-> -	 * curve is specified via tha CURVE_1D_TYPE colorop property.
-> +	 * curve is specified via the CURVE_1D_TYPE colorop property.
->   	 */
->   	DRM_COLOROP_1D_CURVE,
+>   #include <netlink/genl/ctrl.h>
+> @@ -11,6 +13,229 @@
+>   #include "igt_core.h"
+>   #include "igt_drm_netlink.h"
 >   
->   	/**
->   	 * @DRM_COLOROP_1D_LUT:
->   	 *
-> +	 * enum string "1D LUT"
-> +	 *
->   	 * A simple 1D LUT of uniformly spaced &drm_color_lut32 entries,
-> -	 * packed into a blob via the DATA property. The driver's expected
-> -	 * LUT size is advertised via the SIZE property.
-> +	 * packed into a blob via the DATA property. The driver's
-> +	 * expected LUT size is advertised via the SIZE property.
-> +	 *
-> +	 * The DATA blob is an array of struct drm_color_lut32 with size
-> +	 * of "size".
->   	 */
->   	DRM_COLOROP_1D_LUT,
+> +#define DRM_RAS_NETLINK_REPLY_TIMEOUT_MS 10000
+> +
+> +static int ras_command_cb(struct nl_msg *msg, void *arg)
+> +{
+> +	struct app_context *ctx = arg;
+> +	struct nlmsghdr *nlh;
+> +	struct genlmsghdr *gnlh;
+> +	int ret;
+> +
+> +	nlh = nlmsg_hdr(msg);
+> +	gnlh = nlmsg_data(nlh);
+> +
+> +	switch (gnlh->cmd) {
+> +	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
+> +		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
+> +
+> +		ret = genlmsg_parse(nlh, 0, attrs,
+> +				    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
+> +		if (ret < 0)
+> +			return NL_SKIP;
+> +
+> +		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE])
+> +			return NL_SKIP;
+> +
+> +		ctx->error_value = nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE]);
+> +		break;
+> +	}
+> +	default:
+> +		return NL_SKIP;
+> +	}
+> +
+> +	ctx->reply_received = true;
+> +	if (ctx->ack_received)
+> +		ctx->cmd_done = true;
+> +
+> +	return NL_OK;
+> +}
+> +
+> +static int ras_error_cb(struct sockaddr_nl *nla, struct nlmsgerr *err, void *arg)
+> +{
+> +	struct app_context *ctx = arg;
+> +
+> +	ctx->last_nl_error = err->error;
+> +	ctx->cmd_done = true;
+> +
+> +	return NL_STOP;
+> +}
+> +
+> +static int ras_ack_cb(struct nl_msg *msg, void *arg)
+> +{
+> +	struct app_context *ctx = arg;
+> +
+> +	ctx->ack_received = true;
+> +	if (!ctx->response_required || ctx->reply_received)
+> +		ctx->cmd_done = true;
+> +
+> +	return NL_STOP;
+> +}
+> +
+> +static int ras_finish_cb(struct nl_msg *msg, void *arg)
+> +{
+> +	struct app_context *ctx = arg;
+> +
+> +	ctx->cmd_done = true;
+> +
+> +	return NL_STOP;
+> +}
+> +
+> +static int register_callbacks(struct nl_cb *cb, struct app_context *ctx)
+> +{
+> +	int ret;
+> +
+> +	ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, ctx);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = nl_cb_set(cb, NL_CB_ACK, NL_CB_CUSTOM, ras_ack_cb, ctx);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = nl_cb_set(cb, NL_CB_FINISH, NL_CB_CUSTOM, ras_finish_cb, ctx);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = nl_cb_err(cb, NL_CB_CUSTOM, ras_error_cb, ctx);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static int send_and_recv_nl_msg(struct app_context *ctx,
+> +				struct nl_cb *cb,
+> +				struct nl_msg *msg)
+> +{
+> +	struct pollfd pfd = {
+> +		.fd = nl_socket_get_fd(ctx->sock),
+> +		.events = POLLIN,
+> +	};
+> +	int ret;
+> +
+> +	ret = nl_send_auto(ctx->sock, msg);
+> +	nlmsg_free(msg);
+> +	if (ret < 0) {
+> +		nl_cb_put(cb);
+> +		return ret;
+> +	}
+> +
+> +	/* NL Reply and ACK arrive as separate responses */
+> +	while (!ctx->cmd_done) {
+> +		do {
+> +			/* poll for incoming netlink messages with 10 seconds timeout */
+> +			ret = poll(&pfd, 1, DRM_RAS_NETLINK_REPLY_TIMEOUT_MS);
+> +		} while (ret < 0 && errno == EINTR);
+> +
+> +		if (ret == 0) {
+> +			ret = -ETIMEDOUT;
+> +			break;
+> +		}
+> +
+> +		if (ret < 0) {
+> +			ret = -errno;
+> +			break;
+> +		}
+> +
+> +		if (!(pfd.revents & POLLIN)) {
+> +			ret = -EIO;
+> +			break;
+> +		}
+> +
+> +		ret = nl_recvmsgs(ctx->sock, cb);
+> +		if (ret < 0)
+> +			break;
+> +	}
+> +	nl_cb_put(cb);
+> +
+> +	return ret < 0 ? ret : 0;
+> +}
+> +
+> +static int send_command(struct app_context *ctx, uint8_t cmd)
+> +{
+> +	struct nl_cb *cb;
+> +	struct nl_msg *msg;
+> +	void *msg_head;
+> +	int ret;
+> +
+> +	msg = nlmsg_alloc();
+> +	if (!msg)
+> +		return -ENOMEM;
+> +
+> +	ctx->last_nl_error = 0;
+> +	ctx->cmd_done = false;
+> +	ctx->reply_received = false;
+> +	ctx->ack_received = false;
+> +	ctx->response_required = false;
+> +
+> +	msg_head = genlmsg_put(msg,
+> +			       NL_AUTO_PORT,
+> +			       NL_AUTO_SEQ,
+> +			       ctx->family_id,
+> +			       0,
+> +			       NLM_F_REQUEST | NLM_F_ACK,
+> +			       cmd,
+> +			       DRM_RAS_FAMILY_VERSION);
+> +	if (!msg_head) {
+> +		nlmsg_free(msg);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	switch (cmd) {
+> +	case DRM_RAS_CMD_GET_ERROR_COUNTER:
+> +		ctx->response_required = true;
+> +		ret = nla_put_u32(msg,
+> +				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
+> +				  ctx->node_id);
+> +		if (ret < 0) {
+> +			nlmsg_free(msg);
+> +			return ret;
+> +		}
+> +
+> +		ret = nla_put_u32(msg,
+> +				  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
+> +				  ctx->error_id);
+> +		if (ret < 0) {
+> +			nlmsg_free(msg);
+> +			return ret;
+> +		}
+> +		break;
+> +	default:
+> +		nlmsg_free(msg);
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	cb = nl_cb_alloc(NL_CB_DEFAULT);
+> +	if (!cb) {
+> +		nlmsg_free(msg);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	ret = register_callbacks(cb, ctx);
+> +	if (ret < 0) {
+> +		nl_cb_put(cb);
+> +		nlmsg_free(msg);
+> +		return ret;
+> +	}
+> +
+> +	return send_and_recv_nl_msg(ctx, cb, msg);
+> +}
+> +
+> +static void reset_drm_ras_netlink_context(struct app_context *ctx)
+> +{
+> +	ctx->sock = NULL;
+> +	ctx->node_id = UINT32_MAX;
+> +	ctx->error_id = UINT32_MAX;
+> +	ctx->error_value = 0;
+> +	ctx->last_nl_error = 0;
+> +	ctx->cmd_done = false;
+> +	ctx->reply_received = false;
+> +	ctx->ack_received = false;
+> +	ctx->response_required = false;
+> +	ctx->family_id = -1;
+> +}
+> +
+>   void igt_drm_netlink_cleanup(struct app_context *ctx)
+>   {
+>   	if (!ctx || !ctx->sock)
+> @@ -18,14 +243,19 @@ void igt_drm_netlink_cleanup(struct app_context *ctx)
 >   
->   	/**
->   	 * @DRM_COLOROP_CTM_3X4:
->   	 *
-> +	 * enum string "3x4 Matrix"
-> +	 *
->   	 * A 3x4 matrix. Its values are specified via the
->   	 * &drm_color_ctm_3x4 struct provided via the DATA property.
-> +	 *
-> +	 * The DATA blob is a float[12]:
-> +	 * out   matrix          in
-> +	 * | R |   | 0  1  2  3  |   | R |
-> +	 * | G | = | 4  5  6  7  | x | G |
-> +	 * | B |   | 8  9  10 12 |   | B |
->   	 */
->   	DRM_COLOROP_CTM_3X4,
+>   	nl_close(ctx->sock);
+>   	nl_socket_free(ctx->sock);
+> -	ctx->sock = NULL;
+> -	ctx->family_id = -1;
+> +
+> +	reset_drm_ras_netlink_context(ctx);
 >   
->   	/**
->   	 * @DRM_COLOROP_MULTIPLIER:
->   	 *
-> +	 * enum string "Multiplier"
-> +	 *
->   	 * A simple multiplier, applied to all color values. The
->   	 * multiplier is specified as a S31.32 via the MULTIPLIER
->   	 * property.
-> @@ -929,9 +934,22 @@ enum drm_colorop_type {
->   	/**
->   	 * @DRM_COLOROP_3D_LUT:
->   	 *
-> -	 * A 3D LUT of &drm_color_lut entries,
-> +	 * enum string "3D LUT"
-> +	 *
-> +	 * A 3D LUT of &drm_color_lut32 entries,
->   	 * packed into a blob via the DATA property. The driver's expected
-> -	 * LUT size is advertised via the SIZE property.
-> +	 * LUT size is advertised via the SIZE property, i.e., a 3D LUT with
-> +	 * 17x17x17 entries will have SIZE set to 17.
-> +	 *
-> +	 * The DATA blob is a 3D array of struct drm_color_lut32 with dimension
-> +	 * length of "size".
-> +	 * The LUT elements are traversed like so:
-> +	 *
-> +	 *   for B in range 0..n
-> +	 *     for G in range 0..n
-> +	 *       for R in range 0..n
-> +	 *        index = R + n * (G + n * B)
-> +	 *         color = lut3d[index]
->   	 */
->   	DRM_COLOROP_3D_LUT,
->   
-> @@ -949,7 +967,6 @@ enum drm_colorop_type {
->   
->   /**
->    * enum drm_colorop_lut3d_interpolation_type - type of 3DLUT interpolation
-> - *
->    */
->   enum drm_colorop_lut3d_interpolation_type {
->   	/**
-> @@ -960,6 +977,19 @@ enum drm_colorop_lut3d_interpolation_type {
->   	DRM_COLOROP_LUT3D_INTERPOLATION_TETRAHEDRAL,
->   };
->   
-> +/**
-> + * enum drm_colorop_lut1d_interpolation_type - type of interpolation for 1D LUTs
-> + */
-> +enum drm_colorop_lut1d_interpolation_type {
-> +	/**
-> +	 * @DRM_COLOROP_LUT1D_INTERPOLATION_LINEAR:
-> +	 *
-> +	 * Linear interpolation. Values between points of the LUT will be
-> +	 * linearly interpolated.
-> +	 */
-> +	DRM_COLOROP_LUT1D_INTERPOLATION_LINEAR,
-> +};
-> +
->   /**
->    * struct drm_plane_size_hint - Plane size hints
->    * @width: The width of the plane in pixel
-> @@ -1065,6 +1095,14 @@ struct hdr_output_metadata {
->    * Request that the kernel sends back a vblank event (see
->    * struct drm_event_vblank) with the &DRM_EVENT_FLIP_COMPLETE type when the
->    * page-flip is done.
-> + *
-> + * When used with atomic uAPI, one event will be delivered per CRTC included in
-> + * the atomic commit. A CRTC is included in an atomic commit if one of its
-> + * properties is set, or if a property is set on a connector or plane linked
-> + * via the CRTC_ID property to the CRTC. At least one CRTC must be included,
-> + * and all pulled in CRTCs must be either previously or newly powered on (in
-> + * other words, a powered off CRTC which stays off cannot be included in the
-> + * atomic commit).
->    */
->   #define DRM_MODE_PAGE_FLIP_EVENT 0x01
->   /**
-> @@ -1161,7 +1199,7 @@ struct drm_mode_crtc_page_flip_target {
->    * struct drm_mode_create_dumb - Create a KMS dumb buffer for scanout.
->    * @height: buffer height in pixels
->    * @width: buffer width in pixels
-> - * @bpp: bits per pixel
-> + * @bpp: color mode
->    * @flags: must be zero
->    * @handle: buffer object handle
->    * @pitch: number of bytes between two consecutive lines
-> @@ -1169,6 +1207,54 @@ struct drm_mode_crtc_page_flip_target {
->    *
->    * User-space fills @height, @width, @bpp and @flags. If the IOCTL succeeds,
->    * the kernel fills @handle, @pitch and @size.
-> + *
-> + * The value of @bpp is a color-mode number describing a specific format
-> + * or a variant thereof. The value often corresponds to the number of bits
-> + * per pixel for most modes, although there are exceptions. Each color mode
-> + * maps to a DRM format plus a number of modes with similar pixel layout.
-> + * Framebuffer layout is always linear.
-> + *
-> + * Support for all modes and formats is optional. Even if dumb-buffer
-> + * creation with a certain color mode succeeds, it is not guaranteed that
-> + * the DRM driver supports any of the related formats. Most drivers support
-> + * a color mode of 32 with a format of DRM_FORMAT_XRGB8888 on their primary
-> + * plane.
-> + *
-> + * +------------+------------------------+------------------------+
-> + * | Color mode | Framebuffer format     | Compatible formats     |
-> + * +============+========================+========================+
-> + * |     32     |  * DRM_FORMAT_XRGB8888 |  * DRM_FORMAT_BGRX8888 |
-> + * |            |                        |  * DRM_FORMAT_RGBX8888 |
-> + * |            |                        |  * DRM_FORMAT_XBGR8888 |
-> + * +------------+------------------------+------------------------+
-> + * |     24     |  * DRM_FORMAT_RGB888   |  * DRM_FORMAT_BGR888   |
-> + * +------------+------------------------+------------------------+
-> + * |     16     |  * DRM_FORMAT_RGB565   |  * DRM_FORMAT_BGR565   |
-> + * +------------+------------------------+------------------------+
-> + * |     15     |  * DRM_FORMAT_XRGB1555 |  * DRM_FORMAT_BGRX1555 |
-> + * |            |                        |  * DRM_FORMAT_RGBX1555 |
-> + * |            |                        |  * DRM_FORMAT_XBGR1555 |
-> + * +------------+------------------------+------------------------+
-> + * |      8     |  * DRM_FORMAT_C8       |  * DRM_FORMAT_D8       |
-> + * |            |                        |  * DRM_FORMAT_R8       |
-> + * +------------+------------------------+------------------------+
-> + * |      4     |  * DRM_FORMAT_C4       |  * DRM_FORMAT_D4       |
-> + * |            |                        |  * DRM_FORMAT_R4       |
-> + * +------------+------------------------+------------------------+
-> + * |      2     |  * DRM_FORMAT_C2       |  * DRM_FORMAT_D2       |
-> + * |            |                        |  * DRM_FORMAT_R2       |
-> + * +------------+------------------------+------------------------+
-> + * |      1     |  * DRM_FORMAT_C1       |  * DRM_FORMAT_D1       |
-> + * |            |                        |  * DRM_FORMAT_R1       |
-> + * +------------+------------------------+------------------------+
-> + *
-> + * Color modes of 10, 12, 15, 30 and 64 are only supported for use by
-> + * legacy user space. Please don't use them in new code. Other modes
-> + * are not support.
-> + *
-> + * Do not attempt to allocate anything but linear framebuffer memory
-> + * with single-plane RGB data. Allocation of other framebuffer
-> + * layouts requires dedicated ioctls in the respective DRM driver.
->    */
->   struct drm_mode_create_dumb {
->   	__u32 height;
-> @@ -1458,6 +1544,83 @@ struct drm_mode_closefb {
->   	__u32 pad;
->   };
->   
-> +/*
-> + * Put 16-bit ARGB values into a standard 64-bit representation that can be
-> + * used for ioctl parameters, inter-driver communication, etc.
-> + *
-> + * If the component values being provided contain less than 16 bits of
-> + * precision, use a conversion ratio to get a better color approximation.
-> + * The ratio is computed as (2^16 - 1) / (2^bpc - 1), where bpc and 16 are
-> + * the input and output precision, respectively.
-> + * Also note bpc must be greater than 0.
-> + */
-> +#define __DRM_ARGB64_PREP(c, shift)					\
-> +	(((__u64)(c) & __GENMASK(15, 0)) << (shift))
-> +
-> +#define __DRM_ARGB64_PREP_BPC(c, shift, bpc)				\
-> +({									\
-> +	__u16 mask = __GENMASK((bpc) - 1, 0);				\
-> +	__u16 conv = __KERNEL_DIV_ROUND_CLOSEST((mask & (c)) *		\
-> +						__GENMASK(15, 0), mask);\
-> +	__DRM_ARGB64_PREP(conv, shift);					\
-> +})
-> +
-> +#define DRM_ARGB64_PREP(alpha, red, green, blue)			\
-> +(									\
-> +	__DRM_ARGB64_PREP(alpha, 48) |					\
-> +	__DRM_ARGB64_PREP(red,   32) |					\
-> +	__DRM_ARGB64_PREP(green, 16) |					\
-> +	__DRM_ARGB64_PREP(blue,   0)					\
-> +)
-> +
-> +#define DRM_ARGB64_PREP_BPC(alpha, red, green, blue, bpc)		\
-> +({									\
-> +	__typeof__(bpc) __bpc = bpc;					\
-> +	__DRM_ARGB64_PREP_BPC(alpha, 48, __bpc) |			\
-> +	__DRM_ARGB64_PREP_BPC(red,   32, __bpc) |			\
-> +	__DRM_ARGB64_PREP_BPC(green, 16, __bpc) |			\
-> +	__DRM_ARGB64_PREP_BPC(blue,   0, __bpc);			\
-> +})
-> +
-> +/*
-> + * Extract the specified color component from a standard 64-bit ARGB value.
-> + *
-> + * If the requested precision is less than 16 bits, make use of a conversion
-> + * ratio calculated as (2^bpc - 1) / (2^16 - 1), where bpc and 16 are the
-> + * output and input precision, respectively.
-> + *
-> + * If speed is more important than accuracy, use DRM_ARGB64_GET*_BPCS()
-> + * instead of DRM_ARGB64_GET*_BPC() in order to replace the expensive
-> + * division with a simple bit right-shift operation.
-> + */
-> +#define __DRM_ARGB64_GET(c, shift)					\
-> +	((__u16)(((__u64)(c) >> (shift)) & __GENMASK(15, 0)))
-> +
-> +#define __DRM_ARGB64_GET_BPC(c, shift, bpc)				\
-> +({									\
-> +	__u16 comp = __DRM_ARGB64_GET(c, shift);			\
-> +	__KERNEL_DIV_ROUND_CLOSEST(comp * __GENMASK((bpc) - 1, 0),	\
-> +				   __GENMASK(15, 0));			\
-> +})
-> +
-> +#define __DRM_ARGB64_GET_BPCS(c, shift, bpc)				\
-> +	(__DRM_ARGB64_GET(c, shift) >> (16 - (bpc)))
-> +
-> +#define DRM_ARGB64_GETA(c)		__DRM_ARGB64_GET(c, 48)
-> +#define DRM_ARGB64_GETR(c)		__DRM_ARGB64_GET(c, 32)
-> +#define DRM_ARGB64_GETG(c)		__DRM_ARGB64_GET(c, 16)
-> +#define DRM_ARGB64_GETB(c)		__DRM_ARGB64_GET(c, 0)
-> +
-> +#define DRM_ARGB64_GETA_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 48, bpc)
-> +#define DRM_ARGB64_GETR_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 32, bpc)
-> +#define DRM_ARGB64_GETG_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 16, bpc)
-> +#define DRM_ARGB64_GETB_BPC(c, bpc)	__DRM_ARGB64_GET_BPC(c, 0, bpc)
-> +
-> +#define DRM_ARGB64_GETA_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 48, bpc)
-> +#define DRM_ARGB64_GETR_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 32, bpc)
-> +#define DRM_ARGB64_GETG_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 16, bpc)
-> +#define DRM_ARGB64_GETB_BPCS(c, bpc)	__DRM_ARGB64_GET_BPCS(c, 0, bpc)
-> +
->   #if defined(__cplusplus)
+>   	igt_debug("Cleaned up netlink socket.\n");
 >   }
->   #endif
-> diff --git a/include/linux_scaffold.h b/include/linux_scaffold.h
-> index 39f68b8d2..f6e8983b9 100644
-> --- a/include/linux_scaffold.h
-> +++ b/include/linux_scaffold.h
-> @@ -31,6 +31,8 @@ static inline s64 sign_extend64(u64 value, int index)
->   	((~0ULL - (1ULL << (l)) + 1) & \
->   	(~0ULL >> (BITS_PER_LONG_LONG - 1 - (h))))
 >   
-> +#define __GENMASK GENMASK
+>   int igt_drm_netlink_init(struct app_context *ctx)
+>   {
+> +	if (!ctx)
+> +		return -EINVAL;
 > +
->   #define BITS_PER_BYTE 8
->   #define BITS_PER_TYPE(t) (sizeof(t) * BITS_PER_BYTE)
->   #define BITS_PER_LONG BITS_PER_TYPE(long)
+> +	reset_drm_ras_netlink_context(ctx);
+> +
+>   	ctx->sock = nl_socket_alloc();
+>   	if (!ctx->sock)
+>   		return -1;
+> @@ -52,3 +282,37 @@ int igt_drm_netlink_init(struct app_context *ctx)
+>   		  DRM_RAS_FAMILY_NAME, ctx->family_id);
+>   	return 0;
+>   }
+> +
+> +int igt_drm_netlink_get_error_counter(struct app_context *ctx)
+
+Aren't the return codes here mixing -errno and libnl -NLE_* values, 
+which overlap numerically and mean different things?
+
+Thanks,
+Soham
+> +{
+> +	int ret;
+> +
+> +	if (!ctx || !ctx->sock || ctx->family_id < 0)
+> +		return -EINVAL;
+> +
+> +	if (ctx->node_id == UINT32_MAX ||
+> +	    ctx->error_id == UINT32_MAX ||
+> +	    ctx->error_id == 0) {
+> +		igt_warn("Invalid node_id (%u) or error_id (%u) provided. "
+> +			 "node_id should be >= 0 and error_id should be >= 1.\n",
+> +			 ctx->node_id, ctx->error_id);
+> +		return -EINVAL;
+> +	}
+> +
+> +	ctx->error_value = UINT32_MAX;
+> +
+> +	ret = send_command(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	if (ctx->error_value == UINT32_MAX) {
+> +		igt_warn("No valid error counter reply: node_id=%u error_id=%u kernel_error=%d\n",
+> +			 ctx->node_id, ctx->error_id, ctx->last_nl_error);
+> +		return ctx->last_nl_error ? ctx->last_nl_error : -ENODATA;
+> +	}
+> +
+> +	igt_debug("Retrieved error counter: node_id=%u error_id=%u value=%u\n",
+> +		  ctx->node_id, ctx->error_id, ctx->error_value);
+> +
+> +	return 0;
+> +}
+> diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
+> index 0e563e55f..5db7f4ab5 100644
+> --- a/lib/igt_drm_netlink.h
+> +++ b/lib/igt_drm_netlink.h
+> @@ -10,11 +10,20 @@
+>   
+>   struct app_context {
+>   	struct nl_sock *sock;
+> +	uint32_t node_id;
+> +	uint32_t error_id;
+> +	uint32_t error_value;
+> +	int last_nl_error;
+> +	bool cmd_done;
+> +	bool reply_received;
+> +	bool ack_received;
+> +	bool response_required;
+>   	int family_id;
+>   };
+>   
+>   void igt_drm_netlink_cleanup(struct app_context *ctx);
+>   int igt_drm_netlink_init(struct app_context *ctx);
+> +int igt_drm_netlink_get_error_counter(struct app_context *ctx);
+>   
+>   #endif /* IGT_DRM_NETLINK_H */
+>   
