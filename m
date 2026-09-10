@@ -4,62 +4,146 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77FE6C79F9F
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 16:04:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 187FFC79FBF
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 16:05:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED25789BAE;
-	Thu, 10 Sep 2026 16:04:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8FAE510E29F;
+	Thu, 10 Sep 2026 16:05:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aP5aZEHa";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HdSv/btr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A769F89BAE
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 16:03:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 425C189BAE
+ for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 16:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789056227; x=1820592227;
+ t=1789056230; x=1820592230;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=TccmM2bs2Z5UCs2P/Ta6eCh5i182VHtyTAFksbIIkIo=;
- b=aP5aZEHaLAiye04rqVpc0dQjFOYEhdfjvKFnuEqprCfWa3KJsOYGPylD
- ChQYMcyMuKbTfoHZpnMLaa3UDdTxStiRSRGaZ81qgEdH6rAM5xRQrdOT6
- xxAxPATn3no5zA+M/PFsYtiU0yzl8wJZliT+1YlAfouABO0kGBujDfjaC
- 46xW62CXY4lwnn/zNg7go8ZCJ7v5MaaFnu1vTjIBj/vzfPatvosHAMt4u
- 0r0UIKgV+GvZEtvxHWpvZlcXFOMdhCgtsrlfygRw+fx1vrzNM9Xytggwe
- B/SLBiBGH9ZOqaXRfvANOWD14LwXkH+4R5FFziIpZWnYhNTE7Ekfk2yKF w==;
-X-CSE-ConnectionGUID: lSEpk7kmTfW4v3fB3kNHyA==
-X-CSE-MsgGUID: OFG3dJv4T1+M6o4xsYFbag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89354048"
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="89354048"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 09:03:46 -0700
-X-CSE-ConnectionGUID: b719zFlTSJyH4tuFR3Cipw==
-X-CSE-MsgGUID: BDtBwwnAQ9K8cKby21Adjg==
+ in-reply-to:mime-version;
+ bh=OS7Ekyz0E6e34NqTvA0oDfEebiWfgcIb0RHOVp9g/DI=;
+ b=HdSv/btrq4wImVQRdXKwKr/2aRgIHJ0SdK/efSq9DO6sTljh7WXErrpO
+ 1aF9VG1J++aIuEH2ajXT6Qif44x+XEJ3ixnjgWOr6PtHu8eJmZJD9/bw0
+ /A8W7QxWYI3Rqle1VXoCFxNwWAhuTgki5K6oXC4SX4j1KcicCDA+3o0XP
+ 54PhpLS5bHJFxMEa7roZFWV+c0OC9i5/BxVLmzv0qAO6dPAgfWxtvnSam
+ /bmqX0M6+92Tx28Lcv0GuIrZjm8nTtRRvWpD8EjRNFIl3GVIgUhUHux0b
+ bN+/fGkHB9mjA3+tblbdloY/FtaG1Y4RnyoECRaKwdUsWqZvbwSHC1ACg w==;
+X-CSE-ConnectionGUID: pKhzIfPrSfG1qBZfGAmFmA==
+X-CSE-MsgGUID: Tmfxl5BiTFuh8apVIL5qgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="101030294"
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="101030294"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2026 09:03:49 -0700
+X-CSE-ConnectionGUID: fEwGpvRvQXqq1/5ax8JQGA==
+X-CSE-MsgGUID: sMTHe67nRk+hBbttXiE91g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="275453589"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 09:03:44 -0700
-Date: Thu, 10 Sep 2026 18:03:42 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: shivtej.eknath.patil@intel.com
-Cc: igt-dev@lists.freedesktop.org, nishit.sharma@intel.com,
- kamil.konieczny@intel.com, sobin.thomas@intel.com,
- smitha.balasubramanyam@intel.com
-Subject: Re: [PATCH v5 2/2] tests/intel/xe_pm: add coverage for xe_device_sysfs
-Message-ID: <20260910160342.loyn3upt4oto5sxn@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- shivtej.eknath.patil@intel.com, igt-dev@lists.freedesktop.org,
- nishit.sharma@intel.com, kamil.konieczny@intel.com,
- sobin.thomas@intel.com, smitha.balasubramanyam@intel.com
-References: <20260826073710.37283-1-shivtej.eknath.patil@intel.com>
- <20260826073710.37283-3-shivtej.eknath.patil@intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="270322887"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2026 09:03:49 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Thu, 10 Sep 2026 09:03:48 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Thu, 10 Sep 2026 09:03:48 -0700
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.13) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Thu, 10 Sep 2026 09:03:46 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MBnbDV+NWhDWLOf2CIFuuXf2it4ZkoSWCLBmt4V/bmDjnPEi6kWnzDv+fp5KUO6GiTSEBOvWyEGBFoodmxHt5li29XrcItsuIw86XrzE4shL2dEAVQLpUK8dKQXeoZHaRNZCVeaHHu+QWnLjYaU2+sOo0GA9av2zoA8JsCUgWmFzpHC1klnzaDaofNB/NoZsnyf6gHRb8jDR0pwuzVP9/0xoPJ2rbdWMTx1qbbjXEwUIbuOembAxLSWI95SwQCLxkW1bwHQIK9J5Q4wryNbHtCzqjV6IhN7ocO8BOPSgXm49BZ09uxkj7KF/DCxpCg6ywrl3z6S8uzCGNPV0ISAmJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ScjdZ2jygRknxyQkdPobtguoZu4tg+HNphOGp/JjFiE=;
+ b=Jupcwpqfu7FRMtwm5RAN+fT7VzqIUhvyaFg4jeXQOltOoWq9iKEPFQa9EDhkwXyi5HRCGr42Di2W4Ny2/WC9HrWevA6aL0nCuDx4jyTTFO8k8yKE/j7oOaQWeczu3Xkh9TurUCOmyVehUV5ZwXo/k3U7ieujudwDsdFhgrO+g0KBchYb55fGQzIvv7vSOHSYKzUd5BwVJWKD5GpYH/dDSPUb9Zl/Z64i+Zl2LeJ1FXgR2JhKo9JQrxw+Cw4jYWtU/1+NTXhLk3xjHUeS38Zr8fYo4yrI+MEqrXwKeYke7EHGI3q6kr9gly8ErdJLkDo0b58QF1SYtqCYwqmLRf2cxQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM4PR11MB7207.namprd11.prod.outlook.com (2603:10b6:8:111::18)
+ by SJ0PR11MB4798.namprd11.prod.outlook.com (2603:10b6:a03:2d5::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
+ 2026 16:03:45 +0000
+Received: from DM4PR11MB7207.namprd11.prod.outlook.com
+ ([fe80::7806:5aac:a263:2653]) by DM4PR11MB7207.namprd11.prod.outlook.com
+ ([fe80::7806:5aac:a263:2653%6]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
+ 16:03:44 +0000
+Date: Thu, 10 Sep 2026 18:03:39 +0200
+From: Jan Maslak <jan.maslak@intel.com>
+To: "Hajda, Andrzej" <andrzej.hajda@intel.com>
+CC: <igt-dev@lists.freedesktop.org>, <zbigniew.kempczynski@intel.com>
+Subject: Re: [PATCH 1/1] lib/rendercopy: Use the Xe2+ depth buffer packet
+Message-ID: <aqLU2yLfbzFD6p5U@ART-DEV-395>
+References: <20260910123935.4183522-1-jan.maslak@intel.com>
+ <20260910123935.4183522-2-jan.maslak@intel.com>
+ <2999bd00-ef43-4f51-881b-81545e827a2d@intel.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260826073710.37283-3-shivtej.eknath.patil@intel.com>
+In-Reply-To: <2999bd00-ef43-4f51-881b-81545e827a2d@intel.com>
+X-ClientProxiedBy: VIVP296CA0120.AUTP296.PROD.OUTLOOK.COM
+ (2603:10a6:800:358::8) To DM4PR11MB7207.namprd11.prod.outlook.com
+ (2603:10b6:8:111::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR11MB7207:EE_|SJ0PR11MB4798:EE_
+X-MS-Office365-Filtering-Correlation-Id: 95642bd2-b58a-4a04-45bf-08df0f551725
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|23010399003|366016|376014|1800799024|10067099003|11063799006|56012099006|4143699003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: eFky87rBN9/tprx5wvlNMyKlCmSxi4DA4bkeVJC6sr5KzEJ6Rp1pt6ZqKtSlrB6xrJGEuZKo5IaVjh9VkTn44Xy4vmbN9gNDaFWmVHIx9oQ4h70cBMF+kDVV6xmsShGuwq6JBLOkVkT6HK7cHcrXLEB8H4EKoDXtsc6ALKyuceESL7EJ+EkDgzMxPBQ6alQ74jHub2e5x5uRswp9H5Dn4CQ9e8qPKMD2WAjEryAZkW+xHl9CRnKQH1aMTBeDkCq6Qm+aSRoN6Dkl+fvYWQastdc9M1TJDP0AKNhFi7hGVcZXES75VJpKFiC39SBZwtiLGuB1oPNK/YNE8v7bJhSp7+01jMoxhsni8V63SzNqoSiAB6mhXSTipEmygQs1S5N2RYNpk+ntd/SO1q6x808HK2T0p0U+rK4rOYWUghoeo6yQbUu/nePP4V0LQbgFgu8fmrrgSSDI6VScbKTWe4vb5KFfEhT00EJUWH3lWYN3vbhM5FFJLbJOT/1K5CTIb6qnXQZkGmu4Kut8CuMeJLbqAObWzofKrb+9grSAiKxSC4KKWAMeiJ/XV91iyDbVWd7qnPfq+SgWQansoUS0xSKM7PL1v4fSE8adn7apIaqGfMoknqnIO4p2FSwVJEvhmjsGI9ywHV9lssCiHucgDunbRupepOnyEfaAnjKGL7+i7YA=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB7207.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(366016)(376014)(1800799024)(10067099003)(11063799006)(56012099006)(4143699003)(18002099003)(22082099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?lCYOUYyd0fN0eRQ+YVD639txhEPWa5MnW4H9eYK1dnRiQRM59mVm3o70Dd2M?=
+ =?us-ascii?Q?z6ykMFiZ/q0QzrdHbD4dw70b9oHmKko6IszP7redCn2zvYXjws6HjKLfifDm?=
+ =?us-ascii?Q?izJ3wztQ/N7xn8iF0VRwilT8r6/4IY86KCbQVJ6TT3P2KQiQdeyRl00mgIJX?=
+ =?us-ascii?Q?1BEHv95jQbArwmlQaw9QuQ3QN+duTeuOrBllb4GWlzsRSyKKGSwlORVQrkTT?=
+ =?us-ascii?Q?bMTHzLWw4kWwCxyEwct0z/MTqQKFdr5URIa7BHPsvq/FYLKxJGfAsYJXcvNQ?=
+ =?us-ascii?Q?A+rLvHsyTR/kFFYf+Gaivaxo0gkUTuBj88Fx1xFcpXjW4tUQKerWBP9cqN1t?=
+ =?us-ascii?Q?nd3TC5Qw90NjTxeW5OvaO9krPrLRrIcmlN4T6tnWjGM4jQnjK3+w7FCjdIGL?=
+ =?us-ascii?Q?1SBX8RleWLnRxK+9Pw+A1j+PX9jfJUYFPyZ3bX1ysWtoxo56Tww2h+YP2Kon?=
+ =?us-ascii?Q?x20Jx8hGkx9UI4aPLGhXHPRz7d+7t43+rpbtRTaq75N66EDSKmCgtKYnuHDb?=
+ =?us-ascii?Q?m/qojlYCFaCkwvhPl6WYflcb2QZCwMeFNyZKDbIAX6KxdQ3U0W0mmE/6hZys?=
+ =?us-ascii?Q?+iWmmKk85hbzTRIHAeWCpvqk/wNL6KgCkw+jS30O7OnEqBGWBCaov3B5Ngfo?=
+ =?us-ascii?Q?LzPggoU/GsVoFLOC4qlZLkPJTnpmaSgDvAKklw2j9UxBkIHBg47yb3CfS9VH?=
+ =?us-ascii?Q?aJdUh3mfahzAHjhDMRfAY1J01KBI0ApZZufcqjgzU+dl/t0L16OH6SmNW6Fs?=
+ =?us-ascii?Q?9cbiXkA1HMI8MFxozajveS/xdCV6CbPZhAJ7qk8o7HfzoGbDx8OS9eri5s9S?=
+ =?us-ascii?Q?kzSbQtCFjGHho2d58QSqAam63XOw4mkzmq/bNmrDF2+opXq1YslH32iW6sq5?=
+ =?us-ascii?Q?HG0L8Oox+ODyHZCChc1EQMwa0B3GabCbGX62a735Dgu1mLyPtLJfRRYNjSpI?=
+ =?us-ascii?Q?j15nkbZBk3vxHe9xZeOpXs95361D9picnl9SvTytpsA0plCl2FvXteNWc/GP?=
+ =?us-ascii?Q?cLMmUPQiMY1jQ3KH8xzyfkcAZP7kS9yjDT6C+vVdZzXDojPT5IrW00DqyOSJ?=
+ =?us-ascii?Q?C9VOd5xhvdk27qUOmjlFQ+vvosnWKjlvUEDJbvF80utZ/hBSIyZt/zVhARFS?=
+ =?us-ascii?Q?EJRkegGgPMfoTs3Thimfob22YIpH1NDfp6qe7dCYlZQpGL5IsrYHWw1KKetz?=
+ =?us-ascii?Q?kgcd8l7eAQnz/+F8JU6+quvlyOrV5RJkmHyLQ/pHSl0Q81BPQe0De6JaQ4sf?=
+ =?us-ascii?Q?7KKO0QEFOjHqCKCPoYGZIwvRj/Jvf0XD+k1II+vrJLPsMwrGUI95pLwNUjas?=
+ =?us-ascii?Q?OoDQhvpeNNhYW6LUr8OzjgUKhIzunq66/VQrZYfA9NCSomRvZ8G9kAnoQXcD?=
+ =?us-ascii?Q?uAxUhvj/QvmgMB1+kSnZSl2gb8zdWMskiY+q7tshO401JlnM1U8OTvuoGN6R?=
+ =?us-ascii?Q?gEJNTbY/t/MCtDKFK4hyqnigBEAJnhFKDLdPSGp6kW7jkj3a6HWXo4oYSyUo?=
+ =?us-ascii?Q?VPFvsr5y0atog+jQX9cyil/pELW+uHpFjaMaVOvd9o1MOg5rSvpy/HH/UwNc?=
+ =?us-ascii?Q?jJVhQvtTCGMocCc/zL+gMot9PIVrdloKS2/OVBipaHUNkCJKeOCTFjUOBVII?=
+ =?us-ascii?Q?hELVPrSwFUjf3MP6tfaKvNEFRwaryGvWN7f/PSREQT0YQUhXOUljVYy03urG?=
+ =?us-ascii?Q?grX1qMVKGP4KMRulHoJQdSKQV/XpBbDtwfoGdH79CJRt3Fj14Z49aeIUeLGO?=
+ =?us-ascii?Q?hzrMaFihVQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: wEv1NdNRPIhJJrrN7+j3Xkz7DDcNj1AF6ULANbMbtS8/IJ3DvfjcrkBatUP15k0KpolphLzwBGpY8bQoYQsAHOutc7hn/UYSdm7zQg0habGWOPf4osJqlz4uHHoyuvOlPL2vU30lR1HR/Mk8stgKL8KX9hk/XMQ8iKWYCLORDTpwlJ77Ui7bcO/f206wf2jtnAzgxC0EYCW5pEd8Q+RpgkH3pQMmwgvaW7MVZ4Yd9T7WU096BKChGcQ8xGVWrMLl0oGqIlNT2pxodMGk79rbOAwKx028rxhQki62yj3JIvCQ3imjvKStiGIJ+Z2tlgSNR+05gIvrMqAi03NAB2KTyA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 95642bd2-b58a-4a04-45bf-08df0f551725
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB7207.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 16:03:44.7331 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: taX9LTE9sA9T5AGPtbwa3OmKwYHU3MUx6e8gt+8NOcS+xQFxTXPC40uTY4Go0w+owbJWg+zaKoNEOXsDkvAKqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4798
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,288 +159,17 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi shivtej.eknath.patil,
-On 2026-08-26 at 07:37:10 +0000, shivtej.eknath.patil@intel.com wrote:
-> From: Shivtej Patil <shivtej.eknath.patil@intel.com>
-> 
-> Modify xe_pm subtests to exercise the following
-> xe_device_sysfs.c functions:
-> 
-> - vram_d3cold_threshold_show()
-> - vram_d3cold_threshold_store()
-> - lb_fan_control_version_show()
-> - lb_voltage_regulator_version_show()
-> - auto_link_downgrade_capable_show()
-> - auto_link_downgrade_status_show()
-> 
-> The subtests validate the corresponding sysfs
-> attributes and improve code coverage for
-> xe_device_sysfs.c.
-> 
-> Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
-> ---
->  tests/intel-ci/xe.pm.d3cold.testlist |   6 +
+On Thu, Sep 10, 2026 at 03:33:07PM +0200, Hajda, Andrzej wrote:
+ 
+> Hmm, you have dropper 4tile check for xe2+, is it intentional?
+> If yes, please document it somewhere (commit message).
+ 
+Yes, this is intentional. Xe2+ platforms also have HAS_4TILE set, but they
+require the eight-dword GFX20 depth-buffer packet rather than the ten-dword
+GFX125 packet. Therefore, the generation check needs to take precedence.
+The HAS_4TILE check remains unchanged for older platforms, where it
+distinguishes the relevant Gen12 variants. I'll clarify this in the commit
+message.
 
-Please move this into a separate last patch, use 'intel-ci:' prefix.
-
->  tests/intel/xe_pm.c                  | 184 ++++++++++++++++++++++-----
->  2 files changed, 158 insertions(+), 32 deletions(-)
-> 
-> diff --git a/tests/intel-ci/xe.pm.d3cold.testlist b/tests/intel-ci/xe.pm.d3cold.testlist
-> index 783859fc7..e240fe7fb 100644
-> --- a/tests/intel-ci/xe.pm.d3cold.testlist
-> +++ b/tests/intel-ci/xe.pm.d3cold.testlist
-> @@ -9,3 +9,9 @@ igt@xe_pm@d3cold-mmap-system
->  igt@xe_pm@d3cold-mmap-vram
->  igt@xe_pm@d3cold-mocs
->  igt@xe_pm@vram-d3cold-threshold
-> +igt@xe_pm@vram-d3cold-threshold-show
-> +igt@xe_pm@vram-d3cold-threshold-store
-> +igt@xe_pm@lb-fan-control-version-show
-> +igt@xe_pm@lb-voltage-regulator-version-show
-> +igt@xe_pm@auto-link-downgrade-capable-show
-> +igt@xe_pm@auto-link-downgrade-status-show
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 7faba7c2b..a7a7d84a7 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -111,34 +111,9 @@ static bool runtime_usage_available(struct pci_device *pci)
->  	return access(name, F_OK) == 0;
->  }
->  
-> -static uint64_t get_vram_d3cold_threshold(int sysfs)
-> +static bool sysfs_exists(int sysfs_fd, const char *path)
->  {
-> -	uint64_t threshold;
-> -	char path[64];
-> -	int ret;
-> -
-> -	sprintf(path, "device/vram_d3cold_threshold");
-> -	igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_threshold is not present\n");
-> -
-> -	ret = igt_sysfs_scanf(sysfs, path, "%"PRIu64"", &threshold);
-> -	igt_assert_lt(0, ret);
-> -
-> -	return threshold;
-> -}
-> -
-> -static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
-> -{
-> -	char path[64];
-> -	int ret;
-> -
-> -	sprintf(path, "device/vram_d3cold_threshold");
-> -
-> -	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
-> -		ret = igt_sysfs_printf(sysfs, path, "%"PRIu64"", threshold);
-> -	else
-> -		igt_warn("vram_d3cold_threshold is not present\n");
-> -
-> -	igt_assert_lt(0, ret);
-> +	return !faccessat(sysfs_fd, path, R_OK, 0);
->  }
->  
->  static void vram_d3cold_threshold_restore(int sig)
-> @@ -148,7 +123,7 @@ static void vram_d3cold_threshold_restore(int sig)
->  	fd = drm_open_driver_master(DRIVER_XE);
->  	sysfs_fd = igt_sysfs_open(fd);
->  
-> -	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
-> +	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
->  
->  	close(sysfs_fd);
->  	close(fd);
-> @@ -620,6 +595,48 @@ test_exec(device_t device, int n_exec_queues, int n_execs,
->  	active_threads = 0;
->  }
->  
-> +/**
-> + * SUBTEST: vram-d3cold-threshold-show
-> + * Description:
-> + *      Validate reading of vram_d3cold_threshold sysfs entry.
-> + * Functionality: pm-d3cold
-> + */
-> +
-> +/**
-> + * SUBTEST: vram-d3cold-threshold-store
-> + * Description:
-> + *      Validate writing and reading back vram_d3cold_threshold sysfs entry.
-> + * Functionality: pm-d3cold
-> + */
-> +
-> +/**
-> + * SUBTEST: lb-fan-control-version-show
-> + * Description:
-> + *      Validate reading lb_fan_control_version sysfs entry.
-> + * Functionality: pm-sysfs
-> + */
-> +
-> +/**
-> + * SUBTEST: lb-voltage-regulator-version-show
-> + * Description:
-> + *      Validate reading lb_voltage_regulator_version sysfs entry.
-> + * Functionality: pm-sysfs
-> + */
-> +
-> +/**
-> + * SUBTEST: auto-link-downgrade-capable-show
-> + * Description:
-> + *      Validate reading auto_link_downgrade_capable sysfs entry.
-> + * Functionality: pm-sysfs
-> + */
-> +
-> +/**
-> + * SUBTEST: auto-link-downgrade-status-show
-> + * Description:
-> + *      Validate reading auto_link_downgrade_status sysfs entry.
-> + * Functionality: pm-sysfs
-> + */
-> +
->  /**
->   * SUBTEST: vram-d3cold-threshold
->   * Functionality: pm - d3cold
-> @@ -670,7 +687,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->  	map = xe_bo_map(device.fd_xe, bo, SIZE);
->  	memset(map, 0, SIZE);
->  	munmap(map, SIZE);
-> -	set_vram_d3cold_threshold(sysfs_fd, threshold);
-> +	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, threshold);
->  
->  	/* Setup D3Cold but card should be in D3hot */
->  	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
-> @@ -1113,14 +1130,117 @@ int igt_main()
->  
->  	igt_describe("Validate whether card is limited to d3hot,"
->  		     "if vram used > vram threshold");
-> -	igt_subtest("vram-d3cold-threshold") {
-> +igt_subtest("vram-d3cold-threshold") {
->  		igt_require_f(has_runtime_pm, "Runtime PM not available\n");
-> -		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
-> +		orig_threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
->  		igt_install_exit_handler(vram_d3cold_threshold_restore);
->  		test_vram_d3cold_threshold(device, sysfs_fd);
->  	}
->  
-> -	igt_fixture() {
-> +igt_subtest("vram-d3cold-threshold-show")
-> +{
-> +	uint64_t threshold;
-> +
-> +	igt_require(sysfs_exists(sysfs_fd,
-> +				 "device/vram_d3cold_threshold"));
-> +
-> +	threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-> +
-> +	igt_info("threshold=%" PRIu64 "\n", threshold);
-> +}
-
-Please indent this one tab to right, all of these new subtests.
-
-Overall looks good.
-
-> +
-> +igt_subtest("vram-d3cold-threshold-store")
-> +{
-> +	uint64_t old_val;
-> +	uint64_t new_val;
-> +
-> +	igt_require(sysfs_exists(sysfs_fd,
-> +				 "device/vram_d3cold_threshold"));
-> +	old_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-> +	/*
-> +	 * Ensure the original threshold is restored even if
-> +	 * an assertion fails later in the test.
-> +	 */
-> +	igt_install_exit_handler(vram_d3cold_threshold_restore);
-> +	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val + 1);
-> +	new_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-> +	igt_assert_eq(new_val, old_val + 1);
-> +	/* restore */
-> +	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val);
-> +	igt_info("old=%" PRIu64 " new=%" PRIu64 "\n",
-> +		 old_val, new_val);
-> +}
-> +
-> +igt_subtest("lb-fan-control-version-show")
-> +{
-> +	char version[64];
-> +	int ret;
-> +
-> +	igt_require(sysfs_exists(sysfs_fd,
-> +				 "device/lb_fan_control_version"));
-> +
-> +	ret = igt_sysfs_scanf(sysfs_fd,
-> +			      "device/lb_fan_control_version",
-> +			      "%63s", version);
-> +
-> +	igt_assert(ret > 0);
-> +
-> +	igt_info("lb-fan-control-version=%s\n", version);
-> +}
-> +
-> +igt_subtest("lb-voltage-regulator-version-show")
-> +{
-> +	char version[64] = {};
-> +	int ret;
-> +
-> +	igt_require(sysfs_exists(sysfs_fd,
-> +				 "device/lb_voltage_regulator_version"));
-> +
-> +	ret = igt_sysfs_scanf(sysfs_fd,
-> +			      "device/lb_voltage_regulator_version",
-> +			      "%63s", version);
-> +	igt_info("ret=%d errno=%d version='%s'\n",
-> +		 ret, errno, version);
-> +
-> +	igt_assert(ret > 0);
-> +	igt_info("lb-voltage-regulator-version=%s\n", version);
-> +}
-> +
-> +igt_subtest("auto-link-downgrade-capable-show")
-> +{
-> +	int val;
-> +	int ret;
-> +
-> +	igt_require(sysfs_exists(sysfs_fd,
-> +				 "device/auto_link_downgrade_capable"));
-> +
-> +	ret = igt_sysfs_scanf(sysfs_fd,
-> +			      "device/auto_link_downgrade_capable",
-> +			      "%d", &val);
-> +
-> +	igt_assert(ret > 0);
-> +	igt_assert(val == 0 || val == 1);
-> +	igt_info("auto-link-downgrade-capable=%d\n", val);
-> +}
-> +
-> +igt_subtest("auto-link-downgrade-status-show")
-> +{
-> +	int val;
-> +	int ret;
-> +
-> +	igt_require(sysfs_exists(sysfs_fd,
-> +				 "device/auto_link_downgrade_status"));
-> +
-> +	ret = igt_sysfs_scanf(sysfs_fd,
-> +			      "device/auto_link_downgrade_status",
-> +			      "%d", &val);
-> +
-> +	igt_assert(ret > 0);
-> +	igt_assert(val == 0 || val == 1);
-> +	igt_info("auto-link-downgrade-status=%d\n", val);
-> +}
-> +
-> +igt_fixture() {
-
-This 'igt_fixture() {' also should be moved to right, this code
-is inside igt_main(), not a separate function.
-
-Regards,
-Kamil
-
->  		close(sysfs_fd);
->  		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
->  		if (has_runtime_pm)
-> -- 
-> 2.43.0
-> 
+Regards
+Jan
