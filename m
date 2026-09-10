@@ -4,59 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDADDC79FB9
-	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 10:28:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FF0EC79FB9
+	for <igt-dev@archiver.kernel.org>; Thu, 10 Sep 2026 10:29:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4956210E262;
-	Thu, 10 Sep 2026 10:28:43 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="XBka4Yve";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 39ED210E262
- for <igt-dev@lists.freedesktop.org>; Thu, 10 Sep 2026 10:27:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789036067; x=1820572067;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=q2kWMHT4TN2wq5g5TKH5nB/m+wK525+5rpV6g2BcMD0=;
- b=XBka4Yvef82vCMBvqNMfwA7CVlseAdCQJ7MUJ3VZWGe3yidFmL7oIYF/
- KB2j6tJMc3wVNUgV45065JJwAomkjyTT+wIU7thaX/4bkrwC8gFzw2QMV
- aTULLfyPCTFmK40ulnulKp0fTM4rZckd/BbQA22P/ozOHeHNZ6Z9GS0EG
- Y/FvoVC8U5up0RJuKJo8LRtdAJurq3I7hHMSzPJQaHLGxRyYplMysxjw8
- An5y2EAvzpAuha/frSWfbifQ+wh9kTH8bEjZ2LSTSVzA5/GkDUxtLCcxJ
- 3WOJR1PPSopEGDhBnB2vBbCTq3sTMc1N2VDUJd4VnHMwZKPxNn5B+s40+ g==;
-X-CSE-ConnectionGUID: UVTSMaPvQq6m/W6BQA4z+A==
-X-CSE-MsgGUID: He1gvz/9SEinsM349cpAig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="93173317"
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="93173317"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 03:27:47 -0700
-X-CSE-ConnectionGUID: HJAdSOE/RPiOu95dWFzCcw==
-X-CSE-MsgGUID: vVLawlg5RDqcv/JJd9H4zA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; d="scan'208";a="275113674"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.3])
- ([172.28.182.3])
- by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 03:27:45 -0700
-Message-ID: <acb9c818-b147-48b8-aab2-19a277acf835@linux.intel.com>
-Date: Thu, 10 Sep 2026 12:27:43 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id D30E910E262;
+	Thu, 10 Sep 2026 10:29:30 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6630B10E262;
+ Thu, 10 Sep 2026 10:28:06 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7992794150298974934=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] intel-ci: Block igt@xe_sriov_mmio_regs.*
-To: Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com, piotr.piorkowski@intel.com
-References: <20260907124658.613244-1-lukasz.laguna@intel.com>
- <20260907124658.613244-4-lukasz.laguna@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260907124658.613244-4-lukasz.laguna@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/amdgpu=3A_generic_com?=
+ =?utf-8?q?pute_dispatch_helper_and_copy=5Fdword_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Junhua Shen" <junhua.shen@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 10 Sep 2026 10:28:06 -0000
+Message-ID: <178903608641.146758.11777124243346837505@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260910081951.68221-1-Junhua.Shen@amd.com>
+In-Reply-To: <20260910081951.68221-1-Junhua.Shen@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,31 +37,182 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM,
+--===============7992794150298974934==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+== Series Details ==
 
-On 9/7/2026 2:46 PM, Lukasz Laguna wrote:
-> This test is dedicated for HW checkout and it's not suited for recurring
-> CI runs.
->
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->   tests/intel-ci/xe.blocklist.txt | 1 +
->   1 file changed, 1 insertion(+)
->
-> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-> index d0a2bf87d..116b0b93a 100644
-> --- a/tests/intel-ci/xe.blocklist.txt
-> +++ b/tests/intel-ci/xe.blocklist.txt
-> @@ -117,6 +117,7 @@ igt@sriov_basic@bind-unbind-vf$
->   # SR-IOV tests for HW checkout, not suited for recurring CI runs
->   ##################################################################
->   igt@xe_sriov_ggtt.*
-> +igt@xe_sriov_mmio_regs.*
->   ##################################################################
->   # Chamelium V1 HDMI receiver supports a maximum resolution
->   # of 4K @ 30Hz. This test enforces an EDID with 4K @ 60Hz,
+Series: lib/amdgpu: generic compute dispatch helper and copy_dword (rev2)
+URL   : https://patchwork.freedesktop.org/series/172654/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from IGT_9088 -> IGTPW_15823
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_15823 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_15823, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_15823:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_selftest@live@perf:
+    - bat-arlh-3:         [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9088/bat-arlh-3/igt@i915_selftest@live@perf.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/bat-arlh-3/igt@i915_selftest@live@perf.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15823 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@late_gt_pm:
+    - fi-cfl-8109u:       [DMESG-WARN][3] ([i915#13735]) -> [PASS][4] +80 other tests pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9088/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html
+
+  * igt@kms_pipe_crc_basic@read-crc:
+    - fi-cfl-8109u:       [DMESG-WARN][5] ([i915#13735] / [i915#15673]) -> [PASS][6] +49 other tests pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9088/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html
+
+  
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9088 -> IGTPW_15823
+  * Linux: CI_DRM_19108 -> CI_DRM_19116
+
+  CI-20190529: 20190529
+  CI_DRM_19108: dd822035c9dcd89e47cbfa75da6f3119617fbada @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19116: 03ba909762f8b1e4c1a82fb67232987fc40e6163 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15823: 15823
+  IGT_9088: 55a88d20e327d5c440cd3f3d661684fb83f29027 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/index.html
+
+--===============7992794150298974934==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/amdgpu: generic compute dispatch helper and copy_dword (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172654/">https://patchwork.freedesktop.org/series/172654/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9088 -&gt; IGTPW_15823</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_15823 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_15823, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_15823:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_selftest@live@perf:<ul>
+<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9088/bat-arlh-3/igt@i915_selftest@live@perf.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/bat-arlh-3/igt@i915_selftest@live@perf.html">INCOMPLETE</a> +1 other test incomplete</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15823 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live@late_gt_pm:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9088/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/fi-cfl-8109u/igt@i915_selftest@live@late_gt_pm.html">PASS</a> +80 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc:</p>
+<ul>
+<li>fi-cfl-8109u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9088/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15823/fi-cfl-8109u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> +49 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9088 -&gt; IGTPW_15823</li>
+<li>Linux: CI_DRM_19108 -&gt; CI_DRM_19116</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19108: dd822035c9dcd89e47cbfa75da6f3119617fbada @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19116: 03ba909762f8b1e4c1a82fb67232987fc40e6163 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15823: 15823<br />
+  IGT_9088: 55a88d20e327d5c440cd3f3d661684fb83f29027 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============7992794150298974934==--
