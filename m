@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BABD9C88E4D
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 21:03:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D02FC88E4D
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 21:03:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 57F2010E1F5;
-	Fri, 11 Sep 2026 21:03:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B5F2710E1F5;
+	Fri, 11 Sep 2026 21:03:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dHTjQOiF";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RbZ99ZDS";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 62CF310E1F5
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 20:58:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C144E10E1F5
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 20:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789160299; x=1820696299;
+ t=1789160300; x=1820696300;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=/EYo7g9+HIP03bkacWYPiQyusUdvvoXBzJbgP+t6C8g=;
- b=dHTjQOiFrxf8QXoex9RB4c1JZOBis1Uu62YQHUTJh9qoQLNyWxwGMFBi
- uA7bFf5fxFwpa+57XvuFZ1k7NwNrguAhjRm+wmwqtWcZW0cha/JqAZOJw
- y7y/HpJ5B1+KNNlo5uAlFcNH6qxRNT3V3gdXhPHDCLAFIMpuvztL/zQF+
- Kx9aBWD7g2BttFIJC9WOPfKcbe7VONR0KXmvqRQYPGOjmOma07XMjdbQe
- 87Sro3P1Hsy36Xf0pSjpX3v2bK6mLyxxMeSfguBsIcuCgzq3q+136gIAg
- 7sUiV9wS0dw+coX7/xokSaKB7HUjmbP3SkPpTD/o0yvcUMQaDY7vXn7jl Q==;
-X-CSE-ConnectionGUID: FEdwZQUBToaEMWlw0pK7tw==
-X-CSE-MsgGUID: qt4rWIJ7QamPJAKS1HY+3Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="138975"
+ bh=oWJ+YeQuWg5kqRjSq8YkY9sVAccrg8ps3BxFRF+INpc=;
+ b=RbZ99ZDSgLHp8poA0ivEXWeuIRcGyXYxOIcQyhDtM/1B5nRgvQiuOL3/
+ WmC14HfxUGnfWf6lPfZHLA2BCodDXsQokc3pG+UuqPi10MeeoH+WnJUpY
+ mugo5zz1U9TP5OekAY8pMr1kyUNNTzwPfu5Ovp2jFPcvNPRxnf5yjVyS/
+ J5pT3BVPox1dKCKi5rL9vvJUf4bi439L8zUKL2/y6UgI/wrX6FW9yZyW7
+ xSshvTDXV3AM0ydiUAEzfhnHUUuXVJ7BxFkGOySTgFowCaPXPPokWGBYj
+ 1qCCQunGL74RDVyXrX41eG2AgDDPxPI4zigah+0Xk4c2ScaaDT7aiBgoj A==;
+X-CSE-ConnectionGUID: QaESHLYxQkumivmBMXexpw==
+X-CSE-MsgGUID: MljywrWbSQGvl0tjz/VJtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="138979"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="138975"
+   d="scan'208";a="138979"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2026 13:58:19 -0700
-X-CSE-ConnectionGUID: WLmvEIIdTCaiaR43JGSEMQ==
-X-CSE-MsgGUID: hvWu+TkzQOSvG59mXuHWuQ==
+ 11 Sep 2026 13:58:20 -0700
+X-CSE-ConnectionGUID: BB74EpdGT7uwFFy2gAg20w==
+X-CSE-MsgGUID: HIvRVl3SS/e+9jYCfVFK0g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; d="scan'208";a="310293737"
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; d="scan'208";a="310293744"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2026 13:58:18 -0700
+ 11 Sep 2026 13:58:20 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v3 8/9] lib/dsc: Handle missing max slice count capability
-Date: Sat, 12 Sep 2026 02:37:08 +0530
-Message-Id: <20260911210709.943683-9-swati2.sharma@intel.com>
+ v3 9/9] lib/kms: Add NVL joiner exceptions for 4K high-refresh modes
+Date: Sat, 12 Sep 2026 02:37:09 +0530
+Message-Id: <20260911210709.943683-10-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260911210709.943683-1-swati2.sharma@intel.com>
 References: <20260911210709.943683-1-swati2.sharma@intel.com>
@@ -70,42 +70,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Treat a missing DSC sink max slice count debugfs field as zero.
-This makes joiner tests reject the output when the connector
-entry is unavailable instead of aborting while parsing an empty
-buffer.
+Add the 4K high-refresh modes used by Dell AW2725QF, ASUS
+PG32UQXR, and Gigabyte AORUS FO32U2P to the NVL joiner
+exception list.
 
-Assisted-by: GitHub Copilot
+The driver enables bigjoiner for these DSC modes due to DSC
+bubble overhead that IGT cannot compute. Without the exception,
+the test can select pipe D as a joiner primary, which fails
+because no following pipe is available for the joiner secondary.
+
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_dsc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ lib/igt_kms.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-index 781b9415d..ffea285c8 100644
---- a/lib/igt_dsc.c
-+++ b/lib/igt_dsc.c
-@@ -370,15 +370,15 @@ int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name)
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 2d78e3bee..6e5c242cb 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -7094,6 +7094,9 @@ static bool match_joiner_exception(drmModeModeInfo *mode,
   */
- int igt_get_dsc_sink_max_slice_count(int drmfd, char *connector_name)
- {
--	char file_name[128] = {0};
- 	char buf[512];
- 	char *start_loc;
--	int max_slice_count;
-+	int max_slice_count = 0;
+ static const struct joiner_mode_exception nvl_joiner_exception_modes[] = {
+ 	{ 6144, 3456, 1413390 }, /* 6144x3456@60Hz */
++	{ 3840, 2160, 1543000 }, /* 3840x2160@165Hz */
++	{ 3840, 2160, 1398400 }, /* 3840x2160@160Hz */
++	{ 3840, 2160, 2291120 }, /* 3840x2160@240 */
+ };
  
--	sprintf(file_name, "%s/i915_dsc_fec_support", connector_name);
--	igt_debugfs_read(drmfd, file_name, buf);
-+	if (!check_dsc_debugfs(drmfd, connector_name,
-+			       "DSC_Sink_Max_Slice_Count: ", buf, sizeof(buf)))
-+		return max_slice_count;
- 
--	igt_assert(start_loc = strstr(buf, "DSC_Sink_Max_Slice_Count: "));
-+	start_loc = strstr(buf, "DSC_Sink_Max_Slice_Count: ");
- 	igt_assert_eq(sscanf(start_loc, "DSC_Sink_Max_Slice_Count: %d", &max_slice_count), 1);
- 	igt_assert(max_slice_count > 0);
- 
+ /*
 -- 
 2.25.1
 
