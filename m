@@ -4,69 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C63DBC88E50
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 14:52:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4E9DC88E50
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 14:57:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D17610F658;
-	Fri, 11 Sep 2026 14:52:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3994C10E3C6;
+	Fri, 11 Sep 2026 14:57:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Uno8K8eo";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="FTg/wdji";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BEAF310F663
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 14:51:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789138320; x=1820674320;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=D5roB5kB6Kh42xylRYdYhh+b0PnVNxG9lSAOZu8WB5g=;
- b=Uno8K8eo/S/W8MKMl0Uc3qhhIwRG8pjGedB3kZir9NW6nItAj67DJlbl
- CIF5OtjBWRTeF6yHBmcMP4wm1JsUPC8n0+4ZR2fOYbx00fQhXL8xly9oz
- 8TyDz6j4VN5546mQRVzjHtty1A+58fxJeIlXxa/XiwQasZnLSLosP8ONG
- 5Fkr/aLnvhZqfaUsOWEU4cRQi8p4sguBylBzAqJehZccu5g1QI7sz85jR
- 13kWnDjQF2Vqzgc0ToKA7IVR/nOqMIg4clvYO5lhezo5BRbowujXlnV3Z
- iPOee3kVl7Z/dZNSpz79VYBfclXqbgfMQpXAG5lmZ3OpBhUQcVl2U6Qn2 A==;
-X-CSE-ConnectionGUID: DaKC0EY+TeqMSXBBkW049A==
-X-CSE-MsgGUID: QULTpZHOS3eisg+MzBRx/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="93470299"
-X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; 
-   d="scan'208";a="93470299"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2026 07:51:59 -0700
-X-CSE-ConnectionGUID: x9lcryuISe6sq6jURiTb6Q==
-X-CSE-MsgGUID: YUXVJEl7SQyLc89sOtcmvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,97,1787036400"; d="scan'208";a="295426974"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2026 07:51:57 -0700
-Date: Fri, 11 Sep 2026 16:51:40 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Granthali Vinodkumar Dhandar <Granthali.VinodkumarDhandar@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Jesse Zhang <jesse.zhang@amd.com>,
- Michael Strawbridge <michael.strawbridge@amd.com>
-Subject: Re: [PATCH i-g-t v2] lib/amdgpu: use shared amdgpu_ce_cs_enabled()
- for all CE CS tests
-Message-ID: <20260911145140.gl4fck6pvtpfmd5k@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Granthali Vinodkumar Dhandar <Granthali.VinodkumarDhandar@amd.com>,
- igt-dev@lists.freedesktop.org,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Jesse Zhang <jesse.zhang@amd.com>,
- Michael Strawbridge <michael.strawbridge@amd.com>
-References: <20260911031038.1243176-1-Granthali.VinodkumarDhandar@amd.com>
+Received: from CY7PR03CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11010034.outbound.protection.outlook.com
+ [40.93.198.34])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE86510E3C6
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 14:57:13 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ryfL4wq6bHOm3cCmVIqYIDa2Twjah+0rgcFpqweyYOmxpUIDTf1aMmDEUcyMzrVa9yKwTUZeo0ucv6vFgjl6pd7s42yOh19nWW5zaEfYp5zexuBCbotu/0e80cTZ660yL9zdcBJSR/oNt3IDdNGT62YAZ8I2EoUbvyz6Z8r8+aN+48qJbijXFvGehPQU/VjJLsap03XcO//69w+N1eCUu1yUdJnwl8NZeaVJNsU+jpv+mKIKxb7gfO3ZaMF/qLRJP28MWrb7xaI1x/vBeb+TNVizbAAuuw3OAbTousw9mWYnCuJksX3TMwPLLRK7woB/u79WOeG/RSwrAIsA7JyVzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=q9QaClo1fyRqaDlaoXTEJWwPa3RC/FPvRDPSVlrmVOg=;
+ b=eJVk4U7qdJiLC+5v1IC27ThMxmQmeRLn5HyHVGjS0HnfWb1Zadu3pDqhNyTy5Tx1fNzBqiyfEK9C7syNisVs/hLe7BKhOqB2fNQxYmNrPyAMRvnpyvqoDvI81I3g0TRacNWGI9lrxcCGFeaeFZcH8cCO7fpAka/uMYWR3B2SlGFGAkbK6wHumadOrKwvB6wmmvW91/p8qHV4N4b40d7T1VW748FuWKME34WLQbcxK83yFAVPj8vDFkf2gbdcgsPRzSWgmTUbJPxYgJPFoaY8qdG6O46Sb0y21l0hxsq8vhGbNxP2vj95eQfhfLy1HZkSavAKBlBRw9pIvdo00AGG6g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=q9QaClo1fyRqaDlaoXTEJWwPa3RC/FPvRDPSVlrmVOg=;
+ b=FTg/wdjiA4RJLfBneUUaE51z5IDRI56/LdIuGZlcyM2fkQ+KQR2ZP2789ShJfkwWuQaUHavnihQutFVwBcMygDwD3xl7ugbkegoGoKvFbFHjVUw84Hdb/SJjrxsTwXzsYjCone1XkVaX6gIiq009cY7Mog8OOKGFtahNLHPmlYk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS5PPF18A985A10.namprd12.prod.outlook.com
+ (2603:10b6:f:fc00::645) by CY8PR12MB7218.namprd12.prod.outlook.com
+ (2603:10b6:930:5a::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Fri, 11 Sep
+ 2026 14:57:10 +0000
+Received: from DS5PPF18A985A10.namprd12.prod.outlook.com
+ ([fe80::2359:d8c:c779:471a]) by DS5PPF18A985A10.namprd12.prod.outlook.com
+ ([fe80::2359:d8c:c779:471a%4]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
+ 14:57:09 +0000
+Message-ID: <957de353-33b2-4111-b8c7-53b27fab5243@amd.com>
+Date: Fri, 11 Sep 2026 10:57:07 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tests/amdgpu/amd_cursor_overlay: skip scaling subtests
+ unsupported by hardware
+To: Haoming.Qi@amd.com, igt-dev@lists.freedesktop.org
+Cc: Alex.Hung@amd.com, sunpeng.li@amd.com
+References: <20260911143406.14452-1-Haoming.Qi@amd.com>
+Content-Language: en-US
+From: Ivan Lipski <ivan.lipski@amd.com>
+Organization: AMD Inc.
+In-Reply-To: <20260911143406.14452-1-Haoming.Qi@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQ1P288CA0024.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c01:9e::7) To DS5PPF18A985A10.namprd12.prod.outlook.com
+ (2603:10b6:f:fc00::645)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260911031038.1243176-1-Granthali.VinodkumarDhandar@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS5PPF18A985A10:EE_|CY8PR12MB7218:EE_
+X-MS-Office365-Filtering-Correlation-Id: fe4e1eb7-b1cf-4e13-2e70-08df1014f454
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|1800799024|366016|23010399003|6133799003|18002099003|22082099003|56012099006|11063799006|10067099003|3023799007;
+X-Microsoft-Antispam-Message-Info: ibBMmhKCJEpArtnjqYsXv1dj1uMKSmGloP+ta9qXsoUG7lJ8k/PkxRH8vmcJAJy3rqQ4s2TWR+AvIwSn5Irv6H39LjMu2WYSxP2Wvirk9HDgMZ5TJBN4FyYl4glhR48q2FnTa7sAY/xfemUXMR+iy3I2U9VQ992auhifg7pjqz6mxEv0cekQClH0XWezXC/5zM80ixVXNiCZWopmXn1nBiPr5gkA0obihd41Ct345XnsHDAlCpzaIGfchKlkCE8eLHRHOVbnaSelVY8FoQa7FSqNwsZhzR+KWIJ7NhDAlbFaGlFsJenK5DuvfiY1sw97hgmA3R2BeJMmIBgrOUpzQrqhswiN29tOCS3NK4XwWW6ZbWtTGOgBv/KBdNkpsNwHJZDDwaxguWcpNvtW1Zc1bPFiLFfxYdLKwffSQayD238yLUn94Zp8q1mOjoecnxWnppH+1TlWqlEWYFClks0TdYgGEHrssqKilpkJ1awjYotoK9ozzpcLrBfOg+MUMjV5PBOxtri1LFEKfWO5WaEbD2BlFlpoXwxN1RHBR25xg0da45C90ECfb5HfS2gTwCw+73xiFUNx8VfgpE9+ar/KEUWcfYBCf1rwbY1i8PN7U/Q/ecmPfOou1GGs3TcVl2KigGrvHWxVJDsQsxXg8ujwVMIMsWL8/s0f+/Pik2og+08=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS5PPF18A985A10.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(6133799003)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003)(3023799007);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bUVpNG4rOFphRGx0dHc4OFpad3ZZQmJYdnoyc096MEtWM3hyQ3Jzdm40V2Rw?=
+ =?utf-8?B?TDlhT0oybm0rL2x2MzRnL2ZlTGpIU3Y1WlpFTVZOWWpvV2NqcW5zNUE1YVNL?=
+ =?utf-8?B?S0djVzAvK0xDcTNTaytMbFZpRHRjOWJCWk1rdHl6Rk5OVDBCK3haVlo1NnFX?=
+ =?utf-8?B?VnNHcFlzaTAwbnNETEUyc0RINmxUajlTRkF5QVZVM0N6ZzFJVTBaU0pmSGFq?=
+ =?utf-8?B?MVNRcjRRSTkyRG5wZFpBRW81cW1XOWVLTnhuK2daWEtaWlc1U05ud2hzMlN2?=
+ =?utf-8?B?SUhDcVU3enh5UHhDS3Z1bG1RdWUwb0dPS3RpdE43SkQ2WVo5Mys2eHd0Yll0?=
+ =?utf-8?B?MVdSWkJpdFZhcy9qQWpzcFNEdFEvQjRlMkZ0QU9PUjZ1bnJpdm1QczBNZ3A0?=
+ =?utf-8?B?cHVObmRsOGxhL0V6a0Y5d1VXd1Z4bW5lcnk5Z0J1NUN1R2JkdjhDVEZoR1F5?=
+ =?utf-8?B?SGVIeElGUTg0Y0N6OCs3TUZoM1YyRkxxNWtZOEVsRW5uanhJeWtUeWk2eG9K?=
+ =?utf-8?B?TVdSR2hKbisxVGNqRGR1UHNLYjRLNng2QnBnbEExMXJlMldxT09kc1ZEaW93?=
+ =?utf-8?B?ekQyTHZZcXVOWEdnbUJMNjJtYnBlbng4cFRmOGRBM1d0SSsxeWhuTkpJb1g5?=
+ =?utf-8?B?WHdIaHlvSGdBUXdTUExjdGpEdTU2d2pPelZPSkszRGtqdmtPUlMzYm04dFFQ?=
+ =?utf-8?B?TzdoNXZ0MFRJNVZyaXMvTHkvSlYvWEE2TmNtNlp6bGVrc2hPZWdIOWZqRHB1?=
+ =?utf-8?B?RjA0WVRRbFRtM3RZVGRhY29ySkEwRU9MRkUyVUMybHhyRzg3eHdPR1RLc2lH?=
+ =?utf-8?B?bnN0RFJ5bytZVEhkVjNHKzRzSitieVQvVUxoQndDUUZqODd6UC9JYjUvZktG?=
+ =?utf-8?B?SnBGeENDMnJLRUUzUHJJZ3Q5WEh3SWUvZ1c5MURKME0zY3I5Vnk0cHkrbS9F?=
+ =?utf-8?B?dmNXd0lDdE1VaXNpMWhSTWdPNzRLRHdzOWFaSnp3d3NWZlk4Qm10SjNtdHJa?=
+ =?utf-8?B?bGZzVFZOK1BsWFdRSUNpdnlVZU9XMXRYNk15amkybDNnSGMxbkJibkoxUEJZ?=
+ =?utf-8?B?Vy95cFRCMHRLNXBtd0s0WmZOSHEvOTdHelBxUDZ5d0JGN2FlVHBReHhVbXlw?=
+ =?utf-8?B?TVp1SUR5dHhUdDJmYkdoaXQ2RnRpQWN3b0lsWDNEdXl4RFJMaHpuODVOSHF2?=
+ =?utf-8?B?dEUxVnMzNTRJKzBjREdnUDJCSGxQeGlBZGt1U21UYWRhellrVkd6SlpIbEZp?=
+ =?utf-8?B?aUdjeVVFRWR3ZEFxM3lKREVNa0ErcnNabXR2eGJMbSt0QytpWXNyS3JQdzhu?=
+ =?utf-8?B?ZE52dFU4NkI3ZnhiMWxQbk5xTTBkNW9abXExcUdCY0ZhUnd4Z2VwUXZjM2Iz?=
+ =?utf-8?B?QlFtaXFKMlprT09vcFFlNDdaVnhEbGthRTBpNXU4ZnYyNUx0RFJWanJiVk1I?=
+ =?utf-8?B?aFhGZkdFb3pldTJQLzBiOWsyQ1p3dUxncHFTZTVMejVBcjNsL0V2Z1RveXg1?=
+ =?utf-8?B?M2JCMUVVU3lUbEJaR2NnSGNpeXU4SXEwZ2dEVFVJNjBtNTdYWnA0aFczdDVo?=
+ =?utf-8?B?YWlpQm9URVErdXVxcGZSL29NNzMyZW5BalU2SjVFWS9hNCtBaWV3dUoxb1pt?=
+ =?utf-8?B?eGNxQlB5VkNaYzVkMGhncW83RENuYUh1MU02RFpUWHBrZWMwaDRxU3pWRkRC?=
+ =?utf-8?B?cUlsMW5WaFkrcHJVaUlJQVlEcjhEcHFxenZCNWdxbEVIY0M3MS9tWmdBVnpR?=
+ =?utf-8?B?WVFrbW9UTHpVb3RXaVdqODBEV3E5U1JaK01VTDdtK0VSY2IvKzRNQ0ZZZEdI?=
+ =?utf-8?B?VWx1b1ZmZ3BBdHlaV20ydThheDd2d1VYYms1TlNCSkpkTDhUaUhmb0ZwaldS?=
+ =?utf-8?B?NUpYVm95dWowTFF3aEhCK1NrWXVPT3dKMHkwS0xFR0pGaHVJYlgzbWN2TE9R?=
+ =?utf-8?B?RG5tSTl4NVhTa2ZZOUtTejVjdENZWmcwdXZDWGFhRlhLYlMyVWNJWU5ha2U2?=
+ =?utf-8?B?dC82RDlYR2R4emNuTEpKVXI4R0lIUlB3REh0Q3ArUVhpZTFrZi9Jd25SSzJ5?=
+ =?utf-8?B?eW1tZ3V3dHZ6MFJuWHhENlJTejF6Q0xCUmlsais2b3IwOU8vTlRXd1F3bEMx?=
+ =?utf-8?B?dnM2TUxtWjZBenE1VTBLbGVvdFJad3VDR0FMVHpSUHJub3IrWDZ6QWtyMVN0?=
+ =?utf-8?B?QU9rSkRPRjJHQWM2Ymo5bWgvViswVlltdHlHSCtRT0tYSXpZY29mRTBFSXdT?=
+ =?utf-8?B?bTRQSkpvN1psOEZONzFlS0c3eFF0bEZOTDNuQ0JJYm1ZdWNrQkFna2REVEZv?=
+ =?utf-8?B?OVp2VHMrSVpEdXJ5MjdVZlA5NjZNdFFPSkJCUWQwcTQ2N2craFlYQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: fe4e1eb7-b1cf-4e13-2e70-08df1014f454
+X-MS-Exchange-CrossTenant-AuthSource: DS5PPF18A985A10.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 14:57:09.6292 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z23xmGBC5HVRPjCUQlJHafuS/oSoVr3qkX2Sm36jqA8mu5N5kyMDCr0aqboJRz0x7UUTvH1D6pTiLTVAV9b4qw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7218
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,88 +137,102 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Granthali,
-On 2026-09-11 at 08:40:38 +0530, Granthali Vinodkumar Dhandar wrote:
-> From: Granthali Vinodkumar Dhandar <granthali.vinodkumardhandar@amd.com>
+Reviewed-by: Ivan Lipski <ivan.lipski@amd.com>
 
-please subscribe to igt-dev mailing list or expect some
-delay with reaching it.
-
-
-Regards,
-Kamil
-
+On 9/11/26 10:34, Haoming.Qi@amd.com wrote:
+> From: Tony Qi <Haoming.Qi@amd.com>
 > 
-> Commit b99a1e610f24 ("lib/amdgpu/amd_gfx: skip CE IB tests when kernel
-> blocks CE CS") introduced amdgpu_ce_cs_enabled() to gate the constant
-> engine submission paths in lib/amdgpu/amd_gfx.c.
+> [Why]
+> test_cursor() creates a downscaled source FB for the TEST_SCALING
+> subtests (scaling-175, scaling-200, ...) and unconditionally proceeds to
+> exercise it. Some ASICs impose a source viewport width limit on
+> downscaling, and whether a given panel trips that limit depends on its
+> native resolution. When the scaled source width exceeds that limit the
+> atomic commit is rejected and the subtest FAILs, even though it is
+> exercising a genuine hardware restriction rather than a defect. The
+> correct result in that case is SKIP.
 > 
-> Extend the same gate to amdgpu_command_ce_write_fence() in
-> lib/amdgpu/amd_command_submission.c. Make amdgpu_ce_cs_enabled()
-> non-static and declare it in lib/amdgpu/amd_gfx.h so it can be reused
-> instead of duplicating the check, leaving all three CE CS paths sharing
-> a single definition.
+> [How]
+> Read the ASIC's downscale source-width limit from the connector's
+> max_downscale_src_width debugfs file and skip the subtest when the
+> scaled source width exceeds it. The skip is precise: it triggers only
+> when the source genuinely exceeds the reported limit, so a real scaling
+> regression (which fails within the limit) still fails rather than being
+> masked. When the debugfs file is absent (older kernel) or reports 0, the
+> limit is treated as unknown/unlimited and the test runs as before.
 > 
-> Fixes: b99a1e610f24 ("lib/amdgpu/amd_gfx: skip CE IB tests when kernel blocks CE CS")
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Cc: Jesse Zhang <jesse.zhang@amd.com>
-> Cc: Michael Strawbridge <michael.strawbridge@amd.com>
-> Signed-off-by: Granthali Vinodkumar Dhandar <granthali.vinodkumardhandar@amd.com>
+> Assisted-by: Copilot:claude-opus-4.8
+> Signed-off-by: Tony Qi <Haoming.Qi@amd.com>
 > ---
->  lib/amdgpu/amd_command_submission.c | 4 ++++
->  lib/amdgpu/amd_gfx.c                | 2 +-
->  lib/amdgpu/amd_gfx.h                | 3 +++
->  3 files changed, 8 insertions(+), 1 deletion(-)
+>   tests/amdgpu/amd_cursor_overlay.c | 46 +++++++++++++++++++++++++++++--
+>   1 file changed, 43 insertions(+), 3 deletions(-)
 > 
-> diff --git a/lib/amdgpu/amd_command_submission.c b/lib/amdgpu/amd_command_submission.c
-> index 7210cffb9..c7b36970e 100644
-> --- a/lib/amdgpu/amd_command_submission.c
-> +++ b/lib/amdgpu/amd_command_submission.c
-> @@ -10,6 +10,7 @@
->  #include "lib/amdgpu/amd_sdma.h"
->  #include "lib/amdgpu/amd_PM4.h"
->  #include "lib/amdgpu/amd_command_submission.h"
-> +#include "lib/amdgpu/amd_gfx.h"
->  #include "lib/amdgpu/amdgpu_asic_addr.h"
->  
->  #include "ioctl_wrappers.h"
-> @@ -805,6 +806,9 @@ amdgpu_command_ce_write_fence(amdgpu_device_handle dev,
->  	const struct amdgpu_ip_block_version *ip_block =
->  		get_ip_block(dev, AMD_IP_GFX);
->  
-> +	igt_require_f(amdgpu_ce_cs_enabled(),
-> +		      "CE CS blocked; reload amdgpu with debug_mask=0x400 to enable\n");
+> diff --git a/tests/amdgpu/amd_cursor_overlay.c b/tests/amdgpu/amd_cursor_overlay.c
+> index b130da4ff..166f9b928 100644
+> --- a/tests/amdgpu/amd_cursor_overlay.c
+> +++ b/tests/amdgpu/amd_cursor_overlay.c
+> @@ -340,6 +340,30 @@ static void test_cursor_spots(data_t *data, int size, unsigned int flags)
+>   		test_cursor_pos(data, pos[i].x, pos[i].y, flags);
+>   }
+>   
+> +/*
+> + * Returns this ASIC's maximum downscale source width (in pixels), as reported
+> + * by the connector's max_downscale_src_width debugfs file. Returns 0 when the
+> + * limit is unknown (older kernel without the file) or unlimited, in which case
+> + * the caller should not skip on it.
+> + */
+> +static int get_max_downscale_src_width(data_t *data)
+> +{
+> +	char buf[64];
+> +	int fd, res, width = 0;
 > +
->  	/* destination buffer */
->  	r = amdgpu_bo_alloc_and_map(dev, 4096, 4096,
->  				    AMDGPU_GEM_DOMAIN_GTT, 0,
-> diff --git a/lib/amdgpu/amd_gfx.c b/lib/amdgpu/amd_gfx.c
-> index 10bc74b5c..ff9f869a8 100644
-> --- a/lib/amdgpu/amd_gfx.c
-> +++ b/lib/amdgpu/amd_gfx.c
-> @@ -29,7 +29,7 @@
->  #define AMDGPU_DEBUG_ENABLE_CE_CS 0x400
->  
->  /* Returns true if kernel allows CE CS (amdgpu debug_mask has bit 0x400 set). */
-> -static bool amdgpu_ce_cs_enabled(void)
-> +bool amdgpu_ce_cs_enabled(void)
->  {
->  	FILE *f;
->  	unsigned int mask = 0;
-> diff --git a/lib/amdgpu/amd_gfx.h b/lib/amdgpu/amd_gfx.h
-> index 90addf5bc..8bf108365 100644
-> --- a/lib/amdgpu/amd_gfx.h
-> +++ b/lib/amdgpu/amd_gfx.h
-> @@ -32,4 +32,7 @@ void amdgpu_command_submission_gfx_separate_ibs(amdgpu_device_handle device);
->  
->  void amdgpu_command_submission_gfx_shared_ib(amdgpu_device_handle device);
->  
-> +/* Returns true if kernel allows CE CS (amdgpu debug_mask has bit 0x400 set). */
-> +bool amdgpu_ce_cs_enabled(void);
+> +	fd = igt_debugfs_connector_dir(data->drm_fd, data->output->name, O_RDONLY);
+> +	if (fd < 0)
+> +		return 0;
 > +
->  #endif
-> -- 
-> 2.43.0
-> 
+> +	res = igt_debugfs_simple_read(fd, "max_downscale_src_width", buf, sizeof(buf));
+> +	close(fd);
+> +
+> +	if (res <= 0 || sscanf(buf, "%d", &width) != 1 || width < 0)
+> +		return 0;
+> +
+> +	return width;
+> +}
+> +
+>   static void test_cursor(data_t *data, int size, unsigned int flags, unsigned int scaling_factor)
+>   {
+>   	int sw, sh;
+> @@ -372,9 +396,25 @@ static void test_cursor(data_t *data, int size, unsigned int flags, unsigned int
+>   					DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.0, &data->quarter_fb);
+>   
+>   	/* Create a FB for scaling. */
+> -	if (flags & TEST_SCALING)
+> -		igt_create_color_fb(data->drm_fd, (sw * scaling_factor) / 100, (sh * scaling_factor) / 100, DRM_FORMAT_XRGB8888,
+> -					DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.0, &data->scale_fb);
+> +	if (flags & TEST_SCALING) {
+> +		int src_w = (sw * scaling_factor) / 100;
+> +		int src_h = (sh * scaling_factor) / 100;
+> +		int max_src_w = get_max_downscale_src_width(data);
+> +
+> +		/*
+> +		 * Skip (don't fail) when this ASIC can't downscale from this
+> +		 * source width. Only downscaling (source wider than the
+> +		 * display) is subject to the limit, so the upscaling subtests
+> +		 * still run and can still catch a real regression.
+> +		 */
+> +		igt_skip_on_f(max_src_w && src_w > sw && src_w > max_src_w,
+> +			      "Source width %d exceeds ASIC downscale limit %d\n",
+> +			      src_w, max_src_w);
+> +
+> +		igt_create_color_fb(data->drm_fd, src_w, src_h, DRM_FORMAT_XRGB8888,
+> +				    DRM_FORMAT_MOD_LINEAR, 0.0, 0.0, 0.0,
+> +				    &data->scale_fb);
+> +	}
+>   
+>   	/*
+>   	 * Create RGB FB for overlay planes for MAX_PLANES and
+
+-- 
+Thanks,
+Ivan Lipski
+
