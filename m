@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9AD51C88E5E
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 22:15:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 786DFC88E50
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 22:34:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BD0410E38F;
-	Fri, 11 Sep 2026 22:15:33 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE59A10E1F1;
+	Fri, 11 Sep 2026 22:34:00 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0F89910E38F;
- Fri, 11 Sep 2026 22:14:47 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A228E10E1F1;
+ Fri, 11 Sep 2026 22:33:16 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============1999102429083695406=="
+ boundary="===============0726976370779188451=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fsurvivab?=
- =?utf-8?q?ility=3A_update_ignored_dmesg_regex_=28rev7=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Fcursor?=
+ =?utf-8?q?=5Foverlay=3A_skip_scaling_subtests_unsupported_by_hardware?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sk Anirban" <sk.anirban@intel.com>
+To: haoming.qi@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Sep 2026 22:14:47 -0000
-Message-ID: <178916488705.154179.3897259736079787732@61270ab9df2a>
+Date: Fri, 11 Sep 2026 22:33:16 -0000
+Message-ID: <178916599665.154179.15440300702701192941@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260911113448.1300864-4-sk.anirban@intel.com>
-In-Reply-To: <20260911113448.1300864-4-sk.anirban@intel.com>
+References: <20260911143406.14452-1-Haoming.Qi@amd.com>
+In-Reply-To: <20260911143406.14452-1-Haoming.Qi@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,74 +41,59 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1999102429083695406==
+--===============0726976370779188451==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_survivability: update ignored dmesg regex (rev7)
-URL   : https://patchwork.freedesktop.org/series/170062/
-State : failure
+Series: tests/amdgpu/amd_cursor_overlay: skip scaling subtests unsupported by hardware
+URL   : https://patchwork.freedesktop.org/series/173872/
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9093 -> IGTPW_15834
+CI Bug Log - changes from XEIGT_9093_BAT -> XEIGTPW_15835_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_15834 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_15834, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15834/index.html
-
-Participating hosts (38 -> 37)
+Participating hosts (15 -> 15)
 ------------------------------
 
-  Missing    (1): bat-dg2-13 
+  No changes in participating hosts
 
-Possible new issues
--------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_15834:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@gem_exec_gttfill@basic:
-    - bat-apl-1:          [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9093/bat-apl-1/igt@gem_exec_gttfill@basic.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15834/bat-apl-1/igt@gem_exec_gttfill@basic.html
-
-  
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9093 -> IGTPW_15834
+  * IGT: IGT_9093 -> IGTPW_15835
+  * Linux: xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778 -> xe-5737-f9dbf10ba445ce9399f8a782ba43326cba66d869
 
-  CI-20190529: 20190529
-  CI_DRM_19135: f9dbf10ba445ce9399f8a782ba43326cba66d869 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15834: 15834
+  IGTPW_15835: 15835
   IGT_9093: 932327f15c92ecb52266ced8c0fbe72931a75880 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778: d9e9da243a3d5fa370e267ee800471a5d1946778
+  xe-5737-f9dbf10ba445ce9399f8a782ba43326cba66d869: f9dbf10ba445ce9399f8a782ba43326cba66d869
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15834/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15835/index.html
 
---===============1999102429083695406==
+--===============0726976370779188451==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -128,47 +113,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_survivability: update ignored dmesg regex (rev7)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/170062/">https://patchwork.freedesktop.org/series/170062/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_cursor_overlay: skip scaling subtests unsupported by hardware</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173872/">https://patchwork.freedesktop.org/series/173872/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15834/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15834/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15835/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15835/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9093 -&gt; IGTPW_15834</h1>
+    <h1>CI Bug Log - changes from XEIGT_9093_BAT -&gt; XEIGTPW_15835_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_15834 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_15834, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15834/index.html</p>
-<h2>Participating hosts (38 -&gt; 37)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_15834:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@gem_exec_gttfill@basic:<ul>
-<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9093/bat-apl-1/igt@gem_exec_gttfill@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15834/bat-apl-1/igt@gem_exec_gttfill@basic.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9093 -&gt; IGTPW_15834</li>
+<li>IGT: IGT_9093 -&gt; IGTPW_15835</li>
+<li>Linux: xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778 -&gt; xe-5737-f9dbf10ba445ce9399f8a782ba43326cba66d869</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19135: f9dbf10ba445ce9399f8a782ba43326cba66d869 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15834: 15834<br />
-  IGT_9093: 932327f15c92ecb52266ced8c0fbe72931a75880 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_15835: 15835<br />
+  IGT_9093: 932327f15c92ecb52266ced8c0fbe72931a75880 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778: d9e9da243a3d5fa370e267ee800471a5d1946778<br />
+  xe-5737-f9dbf10ba445ce9399f8a782ba43326cba66d869: f9dbf10ba445ce9399f8a782ba43326cba66d869</p>
 
 </body>
 </html>
 
---===============1999102429083695406==--
+--===============0726976370779188451==--
