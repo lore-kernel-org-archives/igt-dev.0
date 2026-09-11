@@ -4,158 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C88E4C88E41
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 04:19:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E567C88E41
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 05:41:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5E79F10E2EE;
-	Fri, 11 Sep 2026 04:19:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9F3DD10F394;
+	Fri, 11 Sep 2026 05:41:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="f2vi+l76";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BeFtM+xl";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 97FD110E2EE
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 04:19:05 +0000 (UTC)
+X-Greylist: delayed 427 seconds by postgrey-1.36 at gabe;
+ Fri, 11 Sep 2026 05:40:56 UTC
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.6])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 10CA810E361
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 05:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789100345; x=1820636345;
- h=from:to:cc:subject:date:message-id:references:
- in-reply-to:mime-version;
- bh=LW3U3SMn21i1mUsln6WvZC4J7mrhzcAJmJB6RR1HcQw=;
- b=f2vi+l76GD92MU316hPibcMPMQZ99Pch8ITfRfjo/ecXwRS6t0atZgdf
- yz2aXi6CyUTgSoP85T2jcREK9eLMYtHWqcOMyLvlCgRHZcb00njNiaMWW
- PKvxPn/gSbDQ/sibfxX8qv3zhma1xz1G7uwGxn8Vgl2A8QH0CphMTq/qF
- Img/UPp2bbUOjeS7ybCN9lFVlacy4euE1RlwLZ+rVotS++Hw8V9cdf+j0
- 8FjyWC1AZynrsHF/IP0FY2Lue2YLnkiUjaenakaAEMA2bru8Myew/NC7c
- 748TLu8muctBraEgem3nxOcGopUutAbBrNuk95e3bIHKtQvypeTt4bXnc Q==;
-X-CSE-ConnectionGUID: +OnlBtr/Q4WuhglvHY0Gtw==
-X-CSE-MsgGUID: l56PDcEQRsu4cNhoLjCsUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89689197"
-X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; d="scan'208,217";a="89689197"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 21:19:05 -0700
-X-CSE-ConnectionGUID: AzEvEs3GRlmuXjuPCllB5w==
-X-CSE-MsgGUID: FqsjcroTR16+dXfNLZeLbw==
+ t=1789105257; x=1820641257;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=qPu20Wb+WvYjCJPgHQX7U/cAgsmRAUZRDmXApgzhNY4=;
+ b=BeFtM+xlQ4TgIoA1SazACZci7J0VA9Dxfgzwdq7ykUXO4J4fDzDmBl7+
+ +zY/oHFtjt+1fsPs85tVRbV/YFTIZCyTTa3885bfgx+y8Ta/zjmrqvS1y
+ 0JtKbWHr3XSawa+IMgil4bFzYp3+ZwsynoUuC2jpuNE4ZZsAi9mpSSgoW
+ AX5S4w3I/QDtt9D+1Vv/eniy2e0dY2tWskgrGPp3LZhEdDRFCbVg8sTBM
+ 6Qx6/SrD2A9VPCCA3qFWPawkNpNZ6y9FVr51X5g8SCbxrSFRalx3YxZsZ
+ CUCs1edAHizBWkQeGx6UAu4Z2B6plJEPDVGiqA1gWlL7/gSjDJlG6Iuya g==;
+X-CSE-ConnectionGUID: PXnEbrUyRRq2Nb9J9kurNA==
+X-CSE-MsgGUID: xP+qz0s3Rm2WuozSP3n9Hg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="75239"
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
+   d="scan'208";a="75239"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa116.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2026 22:33:50 -0700
+X-CSE-ConnectionGUID: kPHtx4TRSF2pm0TX9hVRSg==
+X-CSE-MsgGUID: jfwu7PuATo6E0lCMgL00Bg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; d="scan'208,217";a="130189"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa011.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Sep 2026 21:19:06 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; d="scan'208";a="275972320"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Sep 2026 22:33:49 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 10 Sep 2026 21:19:04 -0700
+ 15.2.2562.46; Thu, 10 Sep 2026 22:33:48 -0700
 Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Thu, 10 Sep 2026 21:19:04 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.60) by
+ 15.2.2562.46 via Frontend Transport; Thu, 10 Sep 2026 22:33:48 -0700
+Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.19) by
  edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 10 Sep 2026 21:19:04 -0700
+ 15.2.2562.46; Thu, 10 Sep 2026 22:33:48 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h24++Z5wXnBCC100YSkr1Na5PqEiTB5pK5aPF/iK2lF3rZ0eBV4kYguM0bg4grV5VRnMQ7C3IIUF0e7wcxktD0UI9B0XqwMymGBVFa8gvppV9ZsL2r0Add8BW61dBGPX/b0xXTWNzUzLZyVO61Of5m2LNcsaRsYpxfeM0lQAOCBG0VGV4lJoY/HKiKo+NGvpCl+FIzdmzW4HEMr56ZHDZtE+NdZEilrFh6A3pdje6Bnmh7MfYABb/VljFP/FEdGJjajJeu/Ss1VJzBo+4DtDuNlv5AaaziM7iIOIu2DdeMaCeOLcI1oibAy7RsXctkP65IukaZgNNj7EHqYfKHm68w==
+ b=S1gM3Zygdo/pzchxnyYqqGiny1Nip9D+ungEoOBEQgc2digJ6H/QqzSb+A8JfO4JeRjxH6rAeNTsWel6puAEtq97Jv6Pcddz58Gz3fz/daTJYa9W+OIt7tVOs4JAYSlhB0GQxw9B0l098HAnqaqvwcsG3TzgDuwqoWm1B4wPNi3/doRo+UwrkCHlTo4fD7GBIEtj6nfSvcxzjegCOFB0RYO2t8GWCTkXxc7g5q9OoCrF5lrwfgcmhOQoRoEECxaT/C7hggCtGfaBLfyx/xHuet2lj/94o68A47qHw4rxNwUQpuYdNu8Wa0cdTdurBEgg2iajYbH0LxtYp8cwU+PRZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LW3U3SMn21i1mUsln6WvZC4J7mrhzcAJmJB6RR1HcQw=;
- b=xbGCrpZEOTVkV5yVQzXRkoCrxWTt/4F54O4u7OBrI20d6+aK8HwTGG8ZnrDzrZFUSW8sEQB21Oy1oNO6U8JgHYjkXNICY6YmQBC69zDsuIO3J18ktM/achIJAva6Gj7wa1bowwDZp7fpTFR+KbMLvIt6PGnrH0jejG4A1DRFtXPnocS1BcDIKuYZdKkYpF1lgmjK6tUDypAOV+ajAbtwfk4UQIVVAilP8QeyMxZhm+VF24ax7KDYwOqZw3iPf0r3jKmfcyuQRD87rCS/76MDM8lhzw0c5mIwG5f9eDwaVdtZhQAjSzSPrwG2WkUmlf0tJZEfb8BP3Xe7SYapzSTKQg==
+ bh=RiZYC5nwAmmDKQXNNJufh5f5cfd7JbUM8yQ2j7pumC8=;
+ b=Q5Q1C4P1ymwuuUDWDpzIR2LVQt3nQQ7BJBHd+9w/juhj/pKsUOGQHkWuJTd4UCYq9E6tu6I4LQL4Qfwk5AxG2Soon9EjqlJ8ymUAvdYZ0m2mvB1kPkOg5XcA3CTtEOr5LiGWRr4HcnTiNX5qNQkLlznp6YB1IY88cFBYyQIqt3M7YLS6ZCUVZa2/ycQ9vLXrDedJP1opgBE3dwgrPrbwdvZwssGVNp3i1NlNQsZN6u8AYrEy1OHG+KGb90n/WVPjRSExCLnBE61jPxrkllxV35jRmT2es+8U5oONGiboPKdjo3bs5w20YKvyAbtSVNhbWy41V2kSnoDVZkgWhG5ZYQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from DS0PR11MB7651.namprd11.prod.outlook.com (2603:10b6:8:149::8) by
- PH7PR11MB6499.namprd11.prod.outlook.com (2603:10b6:510:1f0::13) with
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
+ SN7PR11MB7419.namprd11.prod.outlook.com (2603:10b6:806:34d::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
- 2026 04:19:01 +0000
-Received: from DS0PR11MB7651.namprd11.prod.outlook.com
- ([fe80::901e:b308:292b:1b2f]) by DS0PR11MB7651.namprd11.prod.outlook.com
- ([fe80::901e:b308:292b:1b2f%4]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
- 04:19:01 +0000
-From: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>
-To: "Jadav, Raag" <raag.jadav@intel.com>
-CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Purkait, 
- Soham" <soham.purkait@intel.com>, "Tauro, Riana" <riana.tauro@intel.com>, 
- "Gupta, Anshuman" <anshuman.gupta@intel.com>, "Nilawar, Badal"
- <badal.nilawar@intel.com>, "Koujalagi, Mallesh"
- <mallesh.koujalagi@intel.com>, "Chegondi, Harish"
- <harish.chegondi@intel.com>, Kamil Konieczny
- <kamil.konieczny@linux.intel.com>, "Nikula, Jani" <jani.nikula@intel.com>
-Subject: Re: [PATCH v4 01/10] drm-uapi/drm_ras: Sync with kernel b2207d4c4e84
-Thread-Topic: [PATCH v4 01/10] drm-uapi/drm_ras: Sync with kernel b2207d4c4e84
-Thread-Index: AQHdO3aihsABR0PQdEedG3YwyMkOkLbHs6QAgAEdVSg=
-Date: Fri, 11 Sep 2026 04:19:00 +0000
-Message-ID: <DS0PR11MB7651D4B1EDAA57133116668CD8BE2@DS0PR11MB7651.namprd11.prod.outlook.com>
-References: <20260903073335.339540-1-ravi.kishore.koppuravuri@intel.com>
- <20260903073335.339540-2-ravi.kishore.koppuravuri@intel.com>
- <aqKQpKaSaDnoULTr@black.igk.intel.com>
-In-Reply-To: <aqKQpKaSaDnoULTr@black.igk.intel.com>
-Accept-Language: en-US
+ 2026 05:33:45 +0000
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::8cb2:cffc:b684:9a99%4]) with mapi id 15.21.0382.014; Fri, 11 Sep 2026
+ 05:33:45 +0000
+Message-ID: <7b7c2cad-9dd0-4dec-a0de-2515999cbe73@intel.com>
+Date: Fri, 11 Sep 2026 11:03:36 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v3] tests/intel/xe_ras: Add test for GPU health
+ indicator
+To: "Purkait, Soham" <soham.purkait@intel.com>,
+ <igt-dev@lists.freedesktop.org>, <badal.nilawar@intel.com>,
+ <kamil.konieczny@intel.com>, <sk.anirban@intel.com>, <raag.jadav@intel.com>
+CC: <anshuman.gupta@intel.com>
+References: <20260902025813.1795134-2-soham.purkait@intel.com>
+ <1b4d63c3-bef7-4576-9947-49931878353c@intel.com>
+ <6cd89b8f-08e2-4fb9-bb70-e8cbd968d756@intel.com>
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS0PR11MB7651:EE_|PH7PR11MB6499:EE_
-x-ms-office365-filtering-correlation-id: e6ef0bea-c677-445a-1c5a-08df0fbbce99
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|366016|1800799024|10070799003|376014|23010399003|38070700021|4143699003|11063799006|56012099006|10067099003|8096899003|22082099003|18002099003;
-x-microsoft-antispam-message-info: 0p4B7HnH+vP+QQ+2YR4tmP/kc31Y/dFWjVW2QJIR4IzKYJOuNLk0n6SipHQGBvZ0cFAe2hWdk69+MEx1sOrX8klAOzvQVw1ipUA4YcTQrlE5oLi/uHOqqb38/b9NvIA0FMVsJ9T0N8vwYAdqgMa5OSVbqfBothpKyeCpF2eawbYoQQHiEVCZ+84gixP/uzjlUhamXCPdSSG1u3pWK4o+teQHyjTGBFiIiRrLCEQL+HwPmiTHpEfEn0RUpR4MAxEAVDVcuLXZRSld/r7ViL/y+s3djtNoWL7o6VVoK5InQOybbdUCPi6moszlgGqBKb8ifzpNeTmIfzruBq+iRZ2EaKddEbEMPFxwv4UenRDRPsxAUYPfT8itZIdTwzbm5G3ot43r5FLMr8pFWplX9UiTbFMOJMzpKfteUlEg0LY3saFutnERgQ40VoX5aYrSUF+VU0YCZjiFZSR6SOCdlKVB4zkTo2uK/YzYbVPRnCYJD5LSnDu4zfln4VQ7ChaQ6YbQIifPdCxPcUxGVO5y5SDZcomUxZxB5l+/ZuyjIwqreIQ7ZUU56m07YZBF1f8WC3NmwltHlMNcAORBS3r50UksYNSMqSsDXSo1G3OtH/fn5NoHUupPTrWAuNEhRAHjBEaL5jBQmWf2yNzYGQmL2p0TOBqDfHtexpfWJ3dm7C+1qq1ZGLw4/Tsl6p6H7xvcCb096kcfUAM5xj+QkoBMqjARWKlpuP21o8zA0HIhNMZMYqY=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB7651.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(23010399003)(38070700021)(4143699003)(11063799006)(56012099006)(10067099003)(8096899003)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?xmlboU1sjUwa3GlHnkySWqFirN2Fuj4VSrzLctnQZpbDmZ15UwZD+1v7Tq?=
- =?iso-8859-1?Q?da0r/PNkuQYWzw0dyTzx2MijInLiiBohXykhGQsP56BjuX7HwQG/Mv6xd5?=
- =?iso-8859-1?Q?y5ZySImlivd9sgSqVxS4ZuV78QyJVitOlJxVi6rSPMKdn+/W4+HciQq9cs?=
- =?iso-8859-1?Q?PHUbVEK0MXj37PpHHxKY1+XitUeHjj63GH9sl+aFlt/bHHnefRB3yAf4hi?=
- =?iso-8859-1?Q?HKt2XoiRT+UZ57vn9SWhxBldUAImtWNyvxYgZmBBsXtAiy/NHbFwAzTXTc?=
- =?iso-8859-1?Q?2dIzvgqoBsQIpxwNyODiQXzORETw6t3bQdAmnNSjzjkHXOWdDqkm/IV+zM?=
- =?iso-8859-1?Q?9+6hdz04uLEbAHPecM5e/ovZW3WzH74/OuAsfwK7X0gHgSMXfuGGpcBuaC?=
- =?iso-8859-1?Q?SBotO/qlqPxIEubyEd9h4jCAVjERjL7f811rD4mJy7ppIB0TSyN9URh5bB?=
- =?iso-8859-1?Q?OrjKITrZmfl3m992rhrYlySBn4lkm55qyn0RSETEeKvZFWYp771/4Wv8fP?=
- =?iso-8859-1?Q?9wbu116SAsoqdOX7o+dVK/BY2pRNqoiRVtox+gNDJmchpgdmjTASHIxTpX?=
- =?iso-8859-1?Q?tAc4KGQrUO8Oa9TjnDHFSOKDFCSVpoYNzsuZVHKp+FUOgXhNMF+ELygsTF?=
- =?iso-8859-1?Q?/ALpNpZ1/OtrlljJGhMN5XrYbY75ZiEUETuIf4kl1gHcXukNidCrAu5Kwd?=
- =?iso-8859-1?Q?Wg8rnfvJQ7zcughVhfX6Rph6XwBkzEpLrjpoCRL+zaD9ydwS2AtU6zwmUN?=
- =?iso-8859-1?Q?O00jwikiM8WJ84IuMSFvBOKeqQFqG2s9/XNUGB6wE4Zu3AYmk12q1REyUE?=
- =?iso-8859-1?Q?XeFrFtxefKmgeLOeLlUtavQFA1eWm9wk3F9/oqPQfiWkiBgR7QCGnIPHHR?=
- =?iso-8859-1?Q?vSUOpBx15qPPb5TzP9WZDd+2l/85KQ5qnnMaMzfhK2zOEPjMg64UnGys7c?=
- =?iso-8859-1?Q?AfwRqKXYbRF8rrJvFo4sGwnSKsN+7SOpHP8VfMoe6+v44WPjIjQi+PROaP?=
- =?iso-8859-1?Q?5YSXt42ixCKJk5y7sUbchZOq/c9k4IT51I2pkdZYrcjdzZwRNiG1hKNam+?=
- =?iso-8859-1?Q?1/e9zwZUxn7UE6C4srPbgI7bNAvbGs1XytNGvLP/txUSRlX0ixQrW06D8O?=
- =?iso-8859-1?Q?kvP68TWrLDF4qLj0i0xDY6C62FOj5oPbT/cG2xcN7EbEGu4mvXP6T5lNdN?=
- =?iso-8859-1?Q?lvD/kQ2oP1UvevQziTzUlLgBbTH0RmYNvu8rrvJ/8U41UDp3uKyzwb0xDl?=
- =?iso-8859-1?Q?rJBGF9xwDvnSbeyUHBw3nZC4wMok5WFF3539EB52QqMf8zXfZOdzEiZJw/?=
- =?iso-8859-1?Q?iaebc+P1RU/4o28RrAeIG8VA/3vBSowhq/atp2izqdX6uwrcmABdwP0DDW?=
- =?iso-8859-1?Q?rKQ77zXJLTRt/H8AQpAPcIHVTSRzTJWKkpJrERpR8axG+YhItLJNYm9pRq?=
- =?iso-8859-1?Q?/WMwNC54whEgR9GaeQ8Y/J04D66eySX8cNoz4oDdzEVMeJXs6+9jLCfKwm?=
- =?iso-8859-1?Q?SMOE7lqjV53IL8IRfONKpxMz7TCYcRcCAyJ3W6oGg23XcsnGbKuHQ4U9sa?=
- =?iso-8859-1?Q?TBacDf+s3jLmOIjpkjUSo+lc5Z1z3N11d8On/DFtbT8kXTXDrgSiUxUkn5?=
- =?iso-8859-1?Q?zWfwlyD8LuYgwKVF0Zc4faQdAq1LtFjND4mdcFSKbdtzcEGWBQV8Pq3vGC?=
- =?iso-8859-1?Q?MueDXEMlR//JnX0P3SA5CE2YTlvpKFfVcq1uebS8hds9+ughnOwihip3Ps?=
- =?iso-8859-1?Q?I55zdb40D5REaFT+OyotrvP0pn2bC/tVedanN0qVwLU1H7TZ4x04yRBMmt?=
- =?iso-8859-1?Q?SIrfHHQ8Y/yaV3menxNq/I4w/cELkzR3D1HMZrEI5O+4AJ4TZdMl1HdqsA?=
- =?iso-8859-1?Q?Q4?=
-x-ms-exchange-antispam-messagedata-1: 8gx8tgFJp4+j4+N1eCBgzGnKzxndYPZeyf8=
-Content-Type: multipart/alternative;
- boundary="_000_DS0PR11MB7651D4B1EDAA57133116668CD8BE2DS0PR11MB7651namp_"
+From: "Tauro, Riana" <riana.tauro@intel.com>
+In-Reply-To: <6cd89b8f-08e2-4fb9-bb70-e8cbd968d756@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5PR01CA0176.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:1a9::16) To DS0PR11MB7958.namprd11.prod.outlook.com
+ (2603:10b6:8:f9::19)
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 0FtoKtGoR8OHb1fCoWkegGEJalZOFOr8HYRr1o5XxdVzTEMZw+Mpyg5n7yoYsK5k5UUZuLzQcYqqIQnKCMZAFNa3akxnOGjlTTzeFVuPw9e8BUigyDQjjTohcVca8x7WABGdKG93JfnbpH0KVqtmyrncEQl6Qrw6nem73ScawzSoFrVQ4uXxqAgPp44eNhv8TOSVapyfUHbxMRYh0mgMgkBy/Sj4OWvDs78yMJfCn/gJSkIXIQ5CDxWHqDwryuZBc5HpDVBGTs1UR/jtae8TSVejUokn3hVdnxHPzVpoapMpjb7tNptkLqsqpXc+dX2mtR6k0G65ZezWjluWsLZNEg==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|SN7PR11MB7419:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1727b93-f6bd-44e9-8914-08df0fc63f55
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|23010399003|1800799024|376014|10067099003|6133799003|22082099003|4143699003|56012099006|18002099003|11063799006;
+X-Microsoft-Antispam-Message-Info: BCJpUWxYPiLMdeoktXK7XwSEYbONsgL9A190AZAo79DHaKZYXHIasWHbllC9edTcnHbnhLR/K1fV8am6GRexujMpemALwL9XK33bOUUm6JAHBeFloReekDfSn/R1V4dMM23q4Y1NUN20tBSD4fkJKq3HxnZJAwMHWM0GmHYWLjkwp57OurrC6PF75jyiCU31nBXS+lf9dqYhMSudi04/Syi/G9TrN4TMJeRG5K+SgrA6LLa+spr6kR1ynIwADzxBMAq78FC9Cgl60/tFviBnbLNwlntiWSQLZJUovd6zDMhCsIylAwzvrtn7IT6fbItWvtHYPU5NivCZzf+e+UoPqje7DO8ar5i+2q+eixNkZ5lgvWWIP7adl+8JobxJeY07I/boQAA1HB3CzpS65dUAP9x/Ud/2oVylgo870UyZaa/VU0sNRPj5zgUrqUX7FeRq3n+19BlKASPa5R5u0673PW974QwhFiD3nc2IwHVt1E+/eIqlvigu7yR0u67hRaYeDZGnczd+CPvU03BmwRaEhbPF0h48M4MKJAROQJCL6xpLYZplajfJq7j7js6+tExjPEjhSsBrt+5vKja6nIlT0YCyGgm/KBNIWVVzh6NnfgsFdgSay9bu4M6eqaxcq/2N0z83IsZbrnSD/9E5ZY6xkPE6QT5ODcL1yRvAnlTiWYU=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(10067099003)(6133799003)(22082099003)(4143699003)(56012099006)(18002099003)(11063799006);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?R0wwMDlyRG5rSjFpcmxTdkZZK2JwZXVaMHFYVFQ3ZjV2VkJlcDRaWmE5NG9n?=
+ =?utf-8?B?RCtOREVndkd4Vm9uSUhXUHdla1VWL3hXUlFkMHRBZUhSeGZJTjhhK3NiTXNS?=
+ =?utf-8?B?YjVZUnhIdG5IbzhmWGZkbVA0aWlrdkJRQm5VandPMURoUXh5WW1JaEdVWjdF?=
+ =?utf-8?B?NXNlN29uazhOTFpQTmpWa2xNeCs1WE1XS2o0NEQ0MDdra1VhRjB5VGVyZnYw?=
+ =?utf-8?B?SUJLWnN1WS9Oakw5eTBOYk5DaSsyOFBmbVEvcXVUUnpVSVR5NEppTjZ5WFNt?=
+ =?utf-8?B?ZmpSR1IzaEV2ZnJXOWRsd0J5djdzUm1ZSUhSMkVQWWN6cG1FNmNsN1Jhbk5Z?=
+ =?utf-8?B?Y3M2eHpmUXNhc0VhdlFXZmpxeUR3azNnSFRYUkdkc1F6UGVaWi9JNTNCTEJi?=
+ =?utf-8?B?akd5TEF4dkU0N1IwNzA4VnFZQm9tZnZ2WFc0Vnp0akVzcEd5S1JDUWNOSzlQ?=
+ =?utf-8?B?VjN0N0VMREZYWk8zK0k2NGVmQnlBcGNoNi80SGFveDd3OW9HOFR2VGg1dzZF?=
+ =?utf-8?B?WUFyNWE1OHhBQlcrcmw5dTVzdnV6YlNJYXNBSGRSMFZZVXFzeG9VSFRmN3VW?=
+ =?utf-8?B?aldkZHVTMVVLSG9hL3dxSEkvQ1MwTzF2TlhqQmFyUGhBSmZ1QVpxaFRmSlN2?=
+ =?utf-8?B?QXE0L2lzTXU5M2Rwd2ZGbi81SklocTFJN2dRQUNNckZDMlBVekUwVVptM1BG?=
+ =?utf-8?B?dVNucjh2TUcyR2VRMWtpY3dIcCtxL3NnQVVScWpVN05wMHhWdlYyVW1SekZ2?=
+ =?utf-8?B?L3k5S1hONXhBWGVwakZHdElXRHFTenJTdjlQQXk4aHNBcGN3NVRzRlUrYmd4?=
+ =?utf-8?B?RVp4cDJLNTNKNis1dlEwTmN4RGMyT1dWTGROdWcwZnArUHYvOXk3U0NNcE1D?=
+ =?utf-8?B?cFpxYkV6WTRRdXE1V0g1dEZkMHQ2VDQyUlBYWGVxUXdTTWMxV2ZOV3lCaWFO?=
+ =?utf-8?B?eUxrbnNHZ1h1NVF1RlZTNXM0N3RNRTM0V3Z1TTNDaXVHcDJpSlZ0ZzRZeHJJ?=
+ =?utf-8?B?U1VNelJVeVNtVmlvUlhFdjAvYnNCa2RQQ2pwN2QyaTRub1VsZUtoQ0JlTnVz?=
+ =?utf-8?B?WE1IVlFndGF4elpPWEFRNlkxOW5DZG9sQ1dXRlpGeWlhdWpQTXVyeFJWbUhX?=
+ =?utf-8?B?TFluUndCWkRJRnpjYnNFMk9ScXd6Q2NVa0YzZWJvM3Q1SWpPV1MxZ25KRmdW?=
+ =?utf-8?B?MHp1bkVKWWtsSVNybklnczNKRlFsWjN5NURFSzlrcHByYlM5U0h1dURvZWpL?=
+ =?utf-8?B?NFZYc3pNQ28vUmRrZjBGQy9qR2JkT28xTUVoMk44U1dsdnFWMWNPM3RSTmtV?=
+ =?utf-8?B?Qi8zS0JGVHFGS0JKL2pDeDdKTitmb2VHc28rencxeDBmdElPSzFkaE9icU1Z?=
+ =?utf-8?B?blI3NllFTGtpUytQd1l4Vk9TVE9PcURweWNGTjBHUTY0ZDVBNUVpRUVWbnNi?=
+ =?utf-8?B?OHdzSWlBYlhRWXg3eDcrRUVUd3cyZm1yVmVobEt4VEQyY0RJZnJFNndUS2RI?=
+ =?utf-8?B?N2h5SVJpS1FYbU5UU09LMTZJWEd0QURiTUFXSWZ4K3dKbWN5NC9RcGh4Nng1?=
+ =?utf-8?B?VEVoRERmd0tNUXgwTENGY3ZNeTJIaFArSjNrL3pLQzR0QlZCaWxId1pQWFBU?=
+ =?utf-8?B?bG5IalM0bFcrSG94T2tLNDI1cU53eDFibk5idzNVbm1HemJJTi9HWDJObnUx?=
+ =?utf-8?B?TGErWmVGUTNRTzBXZG4zQngyRWZTVVV2YWNzdktXS3kxOEQ4Y3hhSWUxM1BT?=
+ =?utf-8?B?eS9QUk1yNkR6RjNWc0RnS3MvTUJ5cHFtYkhSQ1JxcW1uTGpUVm50U1pOOEpJ?=
+ =?utf-8?B?S1ZXV0ttREJIMUNNOG5FcDE3Wk9aSDQzQjNKMFpVZ2RDeURFckMydFhJeU1P?=
+ =?utf-8?B?UmtzWkYwby8rRVFyTVFRQThZTWdyaXdpN1FCYjJBK1ZuUDNKcFBlWjNXR2tN?=
+ =?utf-8?B?Zm5HVmJ0VFN3b2R1MjhqRytFUGV4MUdsSVNhNjJOU2d1K3BXeUt1eUVQak5D?=
+ =?utf-8?B?TzlEa0U3L1QzQittSkZKVndYQjQxcWdhUldNY2RTa2hBTCtFUVRSOUsrSlRV?=
+ =?utf-8?B?bmZBTnMrbERYMk5VNjNJUXVFeW1tK0JmaHM4Z1VOcENVYXc3cDA5T1NtYjE0?=
+ =?utf-8?B?b2NzWFgrL2pyTVRWZHNJeTBPM0ZCK0c1MVpHZ25CR0xpWmZ2aUQzVlJQUkht?=
+ =?utf-8?B?UkFuR2hXSm1mMVV4djNLUkI0Y0g5QVFheldydFZGZWpvV29RejRHbFJSYkVP?=
+ =?utf-8?B?bFZrSFkwQ3N6V2ViQzJpTUhOQ1c3YVZPWldwYUtVMXg1aW9QSlZwRW9rNXlR?=
+ =?utf-8?B?dzRscXd0Q3B2NlJDdGM2eDk3T0NKck5leTJNUm5oMVN3dExnZTY4UT09?=
+X-Exchange-RoutingPolicyChecked: V014VG2lPbsp1hFFB53ybIaeusYoKo9bMWhwVAJTRQfYkv4UZfxbUJok/k9xlBFhdwbs6s2Hkm9PqbGywjLvA6KQZR82FeSCnZHRvJicp9TQzwVyuFLcYoD0CJ0AwCTrkO4gQ0wpVVUxsoA+XPVTWaMJdNwKealoNG4X/lAlN65jU0bqiQMYCLSMyZJ/plCTrjJsf/5NkgdFqlKPhOQs2aUyZK9I5QFDnY6ITfFIZAYOdoCB82Pi1xx1fMZw7ne+X8IeEfr9nGTwvavi3UZSUbZ9HQ8nUXuL5QFvpLYM/DWwWCzDIPfFwaXQAts4CXfeuCUWg9gFnyMiFOYysVcdrA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1727b93-f6bd-44e9-8914-08df0fc63f55
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7651.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e6ef0bea-c677-445a-1c5a-08df0fbbce99
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2026 04:19:00.9260 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: AlcC2oavz4+lPlOlQwcv+MPgIVdL71OcnSPY1LJjVmd+IqzvFDYwRU+5nO12ig3dCAvieVUXer3XQIEOlSlc37ise+FSSBmIq7jM0xmelP1+2kbWzVVihKPkXeKtfluM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6499
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 05:33:45.2608 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KfgVWW81YRDCPKBCOn4w4TjroLCuxkop8zz5ppo4UglfksYwufTOR0qyhftGr9Zc3SDdQb2fcaQyz5MpkmGJ7w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7419
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -172,168 +176,240 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---_000_DS0PR11MB7651D4B1EDAA57133116668CD8BE2DS0PR11MB7651namp_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Raag,
+On 08-09-2026 10:51, Purkait, Soham wrote:
+>
+> On 04-09-2026 11:54, Tauro, Riana wrote:
+>>
+>> On 02-09-2026 08:28, Soham Purkait wrote:
+>>> Add a new Xe RAS test exercising the gpu_health sysfs attribute
+>>> exposed by the Xe driver on platforms that provide the system
+>>> controller. The attribute reports and allows updating the GPU
+>>> health state.
+>>>
+>>> The gpu-health subtest validates each valid state by writing it
+>>> and reading the value back, and checks that invalid writes are
+>>> rejected with -EINVAL, guarding against regressions in the
+>>> implementation.
+>>>
+>>> v1:
+>>>   - Platform-conditional skip w/o fd leak. (Anirban)
+>>>   - Restore via exit handler. (Anirban)
+>>>
+>>> v2:
+>>>   - Remove dead-code and extra comments. (Anirban)
+>>>   - Initialize exit handler under igt_subtest. (Anirban)
+>>>
+>>> v3:
+>>>   - Move igt_info to the normal cleanup path when
+>>>     restoring gpu_health. (Anirban)
+>>>
+>>> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+>>> Reviewed-by: Sk Anirban <sk.anirban@intel.com>
+>>> ---
+>>>   tests/intel/xe_ras.c | 131 
+>>> +++++++++++++++++++++++++++++++++++++++++++
+>>>   tests/meson.build    |   1 +
+>>>   2 files changed, 132 insertions(+)
+>>>   create mode 100644 tests/intel/xe_ras.c
+>>>
+>>> diff --git a/tests/intel/xe_ras.c b/tests/intel/xe_ras.c
+>>> new file mode 100644
+>>> index 000000000..f3b507ce0
+>>> --- /dev/null
+>>> +++ b/tests/intel/xe_ras.c
+>>> @@ -0,0 +1,131 @@
+>>> +// SPDX-License-Identifier: MIT
+>>> +/*
+>>> + * Copyright © 2026 Intel Corporation
+>>> + */
+>>> +
+>>> +#include <errno.h>
+>>> +#include <string.h>
+>>> +#include <unistd.h>
+>>> +
+>>> +#include "igt.h"
+>>> +#include "igt_sysfs.h"
+>>> +
+>>> +/**
+>>> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) 
+>>> functionality
+>>> + * Category: Core
+>>> + * Mega feature: RAS
+>>> + * Sub-category: RAS tests
+>>> + * Functionality: ras
+>>> + * Test category: Functional tests
+>>> + *
+>>> + * SUBTEST: gpu-health
+>>> + * Description: Verify the gpu_health sysfs attribute accepts each 
+>>> valid
+>>> + *        state (ok/warning/critical) and rejects invalid writes
+>>> + *        with EINVAL.
+>>> + */
+>>> +
+>>> +IGT_TEST_DESCRIPTION("Tests for Xe RAS");
+>>> +
+>>> +#define GPU_HEALTH_ATTR    "device/gpu_health"
+>>> +
+>>> +static const char * const gpu_health_states[] = {
+>>> +    "ok",
+>>> +    "warning",
+>>> +    "critical",
+>>> +};
+>>> +
+>>> +static struct {
+>>> +    int sys_fd;
+>>> +    char *orig_health;
+>>> +} gpu_health_ctx = { .sys_fd = -1 };
+>>> +
+>>> +static void restore_gpu_health(int sig)
+>>> +{
+>>> +    if (gpu_health_ctx.sys_fd < 0 || !gpu_health_ctx.orig_health)
+>>> +        return;
+>>> +
+>>> +    igt_sysfs_set(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, 
+>>> gpu_health_ctx.orig_health);
+>>> +    close(gpu_health_ctx.sys_fd);
+>>> +    gpu_health_ctx.sys_fd = -1;
+>>> +    if (sig)
+>>> +        return;
+>>> +    igt_info("Restored initial gpu_health to '%s'\n", 
+>>> gpu_health_ctx.orig_health);
+>>> +    free(gpu_health_ctx.orig_health);
+>>> +    gpu_health_ctx.orig_health = NULL;
+>>> +}
+>>> +
+>>> +static bool valid_gpu_health(const char *s)
+>>> +{
+>>> +    int i;
+>>> +
+>>> +    for (i = 0; i < ARRAY_SIZE(gpu_health_states); i++)
+>>> +        if (!strcmp(s, gpu_health_states[i]))
+>>> +            return true;
+>>> +
+>>> +    return false;
+>>> +}
+>>> +
+>>> +static void test_gpu_health(int xe)
+>>> +{
+>>> +    char *health = NULL;
+>>> +    int ret;
+>>> +    int i;
+>>> +
+>>> +    gpu_health_ctx.sys_fd = igt_sysfs_open(xe);
+>>> +    igt_assert(gpu_health_ctx.sys_fd >= 0);
+>>> +    if (!igt_sysfs_has_attr(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR)) {
+>>> +        close(gpu_health_ctx.sys_fd);
+>>> +        gpu_health_ctx.sys_fd = -1;
+>>> +        igt_skip("gpu_health sysfs attribute not exposed by 
+>>> driver\n");
+>>
+>> Won't exit handler be called here?
+> No its the device sysfs for which  gpu-health exit handler does not run.
 
-I have added all the commits which have touched the uapi file using git log=
- and cited all those commits as shown below
+I meant assert here.
 
+>> Wouldn't it be better to skip on gpu health sysfs open.
+>
+> Apart from this test technically no one is supposed to open gpu health 
+> sysfs. If so, should this fail ? skip may not be a right option.
 
-Sync Xe drm uapi up to commit b2207d4c4e84, this will bring following
-changes:
+How is skip related to other tests using it? use igt_skip_on if gpu 
+health is not available. This will prevent failures on non-supported 
+platforms.
 
-b2207d4c4e84 ("drm/ras: Introduce error threshold")
-6fdbfc75eaa1 ("drm/drm_ras: Add drm_ras netlink error event")
-ee18d39a0877 ("drm/drm_ras: Add clear-error-counter netlink command to
-drm_ras")
-c36218dc49f5 ("drm/ras: Introduce the DRM RAS infrastructure over
-generic netlink")
+>
+>>
+>>> +    }
+>>> +
+>>> +    gpu_health_ctx.orig_health = 
+>>> igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
+>>> +    igt_assert_f(gpu_health_ctx.orig_health, "Failed to read %s\n", 
+>>> GPU_HEALTH_ATTR);
+>>> +    igt_info("Initial gpu_health: %s\n", gpu_health_ctx.orig_health);
+>>> + igt_assert_f(valid_gpu_health(gpu_health_ctx.orig_health),
+>>> +             "Unexpected initial gpu_health value: '%s'\n",
+>>> +             gpu_health_ctx.orig_health);
+>>> +
+>>> +    ret = igt_sysfs_write(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, 
+>>> "bogus", strlen("bogus"));
+>>> +    igt_assert_f(ret == -EINVAL,
+>>> +             "Write of invalid value to %s returned %d, expected 
+>>> -EINVAL\n",
+>>> +             GPU_HEALTH_ATTR, ret);
+>>> +
+>>> +    for (i = 0; i < ARRAY_SIZE(gpu_health_states); i++) {
+>>> +        const char *state = gpu_health_states[i];
+>>> +
+>>> +        igt_info("Setting gpu_health to '%s'\n", state);
+>>> +
+>>> +        igt_assert_f(igt_sysfs_set(gpu_health_ctx.sys_fd, 
+>>> GPU_HEALTH_ATTR, state),
+>>> +                 "Failed to write '%s' to %s\n",
+>>> +                 state, GPU_HEALTH_ATTR);
+>>> +
+>>> +        health = igt_sysfs_get(gpu_health_ctx.sys_fd, 
+>>> GPU_HEALTH_ATTR);
+>>> +        igt_assert(health);
+>>> +        igt_assert_f(!strcmp(health, state),
+>>> +                 "gpu_health readback mismatch: wrote '%s', read 
+>>> '%s'\n",
+>>> +                 state, health);
+>>> +        igt_info("Verified gpu_health state readback for '%s' 
+>>> successfully\n",
+>>> +             state);
+>>> +        free(health);
+>>> +    }
+>>> +
+>>> +    restore_gpu_health(0);
+>>> +}
+>>> +
+>>> +int igt_main()
+>>> +{
+>>> +    int xe;
+>>> +
+>>> +    igt_fixture()
+>>> +        xe = drm_open_driver(DRIVER_XE);
+>>> +
+>>> +    igt_subtest("gpu-health") {
+>>> +        igt_install_exit_handler(restore_gpu_health);
+>>> +        test_gpu_health(xe);
+>>
+>> Wouldn't it be better to have dedicated subtests for each value 
+>> instead of
+>> adding all testcases in a single function.
+>
+> What about dynamic subtest for all these 4 cases under gpu-health 
+> subtest?
 
-This is as per the comments shared by the other reviewers.
+Sure. It should be per value.
 
-Thanks,
-Ravi Kishore K
+Thanks
+Riana
 
-________________________________
-From: Jadav, Raag <raag.jadav@intel.com>
-Sent: Thursday, September 10, 2026 4:42 PM
-To: Koppuravuri, Ravi Kishore <ravi.kishore.koppuravuri@intel.com>
-Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; Purkait,=
- Soham <soham.purkait@intel.com>; Tauro, Riana <riana.tauro@intel.com>; Gup=
-ta, Anshuman <anshuman.gupta@intel.com>; Nilawar, Badal <badal.nilawar@inte=
-l.com>; Koujalagi, Mallesh <mallesh.koujalagi@intel.com>; Chegondi, Harish =
-<harish.chegondi@intel.com>; Kamil Konieczny <kamil.konieczny@linux.intel.c=
-om>; Nikula, Jani <jani.nikula@intel.com>
-Subject: Re: [PATCH v4 01/10] drm-uapi/drm_ras: Sync with kernel b2207d4c4e=
-84
-
-On Thu, Sep 03, 2026 at 01:03:26PM +0530, Ravi Kishore Koppuravuri wrote:
-> Sync Xe drm uapi up to commit b2207d4c4e84, this will bring following
-> changes:
-
-...
-
-> Cc: Jadav Raag <raag.jadav@intel.com>
-
-Is this me?
-Shouldn't it be the other way around? ;)
-(including all patches where it's used)
-
-Raag
-
---_000_DS0PR11MB7651D4B1EDAA57133116668CD8BE2DS0PR11MB7651namp_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-Hi Raag,</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-I have added all the commits which have touched the uapi file using git log=
- and cited all those commits as shown below</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-<br>
-</div>
-<pre class=3D"elementToProof" style=3D"margin: 0px 0px 10px; padding: 9.5px=
-; border-radius: 0px; display: block;"><div class=3D"elementToProof" style=
-=3D"text-align: left; text-indent: 0px; line-height: 14.3px; font-family: A=
-ptos, Aptos_EmbeddedFont, Aptos_MSFontService, Calibri, Helvetica, sans-ser=
-if; font-size: 11pt; color: rgb(0, 0, 0);">Sync Xe drm uapi up to commit b2=
-207d4c4e84, this will bring following=0A=
-changes:=0A=
-=0A=
-b2207d4c4e84 (&quot;drm/ras: Introduce error threshold&quot;)=0A=
-6fdbfc75eaa1 (&quot;drm/drm_ras: Add drm_ras netlink error event&quot;)=0A=
-ee18d39a0877 (&quot;drm/drm_ras: Add clear-error-counter netlink command to=
-=0A=
-drm_ras&quot;)=0A=
-c36218dc49f5 (&quot;drm/ras: Introduce the DRM RAS infrastructure over=0A=
-generic netlink&quot;)</div></pre>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-This is as per the comments shared by the other reviewers.</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-<br>
-</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-Thanks,</div>
-<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
-nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
-olor: rgb(0, 0, 0);">
-Ravi Kishore K</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<hr style=3D"display: inline-block; width: 98%;">
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-<b>From:</b> Jadav, Raag &lt;raag.jadav@intel.com&gt;<br>
-<b>Sent:</b> Thursday, September 10, 2026 4:42 PM<br>
-<b>To:</b> Koppuravuri, Ravi Kishore &lt;ravi.kishore.koppuravuri@intel.com=
-&gt;<br>
-<b>Cc:</b> igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&=
-gt;; Purkait, Soham &lt;soham.purkait@intel.com&gt;; Tauro, Riana &lt;riana=
-.tauro@intel.com&gt;; Gupta, Anshuman &lt;anshuman.gupta@intel.com&gt;; Nil=
-awar, Badal &lt;badal.nilawar@intel.com&gt;; Koujalagi, Mallesh
- &lt;mallesh.koujalagi@intel.com&gt;; Chegondi, Harish &lt;harish.chegondi@=
-intel.com&gt;; Kamil Konieczny &lt;kamil.konieczny@linux.intel.com&gt;; Nik=
-ula, Jani &lt;jani.nikula@intel.com&gt;<br>
-<b>Subject:</b> Re: [PATCH v4 01/10] drm-uapi/drm_ras: Sync with kernel b22=
-07d4c4e84
-</div>
-<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
-: 12pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div style=3D"font-size: 11pt;">On Thu, Sep 03, 2026 at 01:03:26PM +0530, R=
-avi Kishore Koppuravuri wrote:<br>
-&gt; Sync Xe drm uapi up to commit b2207d4c4e84, this will bring following<=
-br>
-&gt; changes:<br>
-<br>
-...<br>
-<br>
-&gt; Cc: Jadav Raag &lt;raag.jadav@intel.com&gt;<br>
-<br>
-Is this me?<br>
-Shouldn't it be the other way around? ;)<br>
-(including all patches where it's used)<br>
-<br>
-Raag<br>
-</div>
-</body>
-</html>
-
---_000_DS0PR11MB7651D4B1EDAA57133116668CD8BE2DS0PR11MB7651namp_--
+>
+> Thanks,
+> Soham
+>>
+>> Would be easier to find during analysis as well
+>>
+>> Thanks
+>> Riana
+>>
+>>> +    }
+>>> +
+>>> +    igt_fixture()
+>>> +        drm_close_driver(xe);
+>>> +}
+>>> diff --git a/tests/meson.build b/tests/meson.build
+>>> index 1ac89bab7..3c2d4fdda 100644
+>>> --- a/tests/meson.build
+>>> +++ b/tests/meson.build
+>>> @@ -333,6 +333,7 @@ intel_xe_progs = [
+>>>       'xe_prime_self_import',
+>>>       'xe_pxp',
+>>>       'xe_query',
+>>> +    'xe_ras',
+>>>       'xe_render_copy',
+>>>       'xe_vm',
+>>>       'xe_userptr_pressure',
