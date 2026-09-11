@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4143C88E4D
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 20:59:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58D65C88E53
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 21:00:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 81FBF10E1F5;
-	Fri, 11 Sep 2026 20:59:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A98E210E1F5;
+	Fri, 11 Sep 2026 21:00:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EkWpumw3";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R5h4ktzt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B888F10E1F5
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 20:58:09 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19B0410E1F5
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 20:58:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789160289; x=1820696289;
+ t=1789160291; x=1820696291;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=3YLIwS04DZyqNc8eWg+A/HNuK571nSV2gdFpMsRAtfo=;
- b=EkWpumw3fiDEfzZMVIo0HIt9JrrqZkK8GqK9jG5U67yUHiGa9L080hTP
- Zt/YOjFWEekqknMRsWHSpKNBlW1rtW4GkFsFRlS3pXKwnm2oTB/duDcX3
- yAxl6/7ntIePS9Ntns8HukSaxXE5fE9zIcthJ9+yblkn8ad8bC/cGiBDe
- nwAMvYNv2loFA0pNetRWWDKYjp5DLwZ2yzT6AtpZbMd+Hc2eyDTTmA/XK
- +uAac87e2nx8eX3FgDsY9bRqoRwYouK2T91dpB37nUVv7tcJ5JHRA8YkE
- 5b5ibjDe1n1ELH1rUpeg1YhT8qRDzw5pNHBXsWiPE2yIr10ShEROxvDtf g==;
-X-CSE-ConnectionGUID: iXqkoyS1Sbq16jJIuIY/+g==
-X-CSE-MsgGUID: G2bDsr82TqSSwlQxSsV9Ag==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="138958"
+ bh=ZJQ5atJg8SIFzeCzMGc75UVRZm9Wavr6vsoTHEW68EI=;
+ b=R5h4ktztudw+Pabr3sOV68SAXdOsIlpsN2+6FA4BWrLktnh/emTD97Yy
+ en8yoEK15vHTz6ji6GeE7UOAPdrArXeY8OKb1GVjZz50bqfF/hJnCuFew
+ 8wmJ5fIct1Dm/T54OnOYm+T/wqd4NLNfQkruhh1fWxTg5eTYRCbvx/DNH
+ DVTuWS6Ph+SCt2a+9Z5Bqi47+knfln/7RyyUmCzDtfB7Bxn5g62tm8DA2
+ Qlc/ZPlERYPm1nfM3J7Iip8y8AGY6iZfv4bDzb/q2/g7x2NuT0ELsMi3c
+ nFPQsGPP+iTmk7POQwhpy44MDClLDhJD4vasVmzmSZ1e+4hz47tAg2pvF Q==;
+X-CSE-ConnectionGUID: lu00txO4RYGd/LiIjlZRzQ==
+X-CSE-MsgGUID: J7vnczGAT7GSBKMTJ9x2OQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="138959"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="138958"
+   d="scan'208";a="138959"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2026 13:58:09 -0700
-X-CSE-ConnectionGUID: B2DZx8/LTwit/2otpL3xTA==
-X-CSE-MsgGUID: kHnw+HTwTCynaB7m0htlQQ==
+ 11 Sep 2026 13:58:10 -0700
+X-CSE-ConnectionGUID: 6FXNnp4pT4O1rPkXo43xVw==
+X-CSE-MsgGUID: 7ay6q7RRSeu0pdhVBdw7Nw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; d="scan'208";a="310293670"
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; d="scan'208";a="310293678"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2026 13:58:09 -0700
+ 11 Sep 2026 13:58:10 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
 Subject: [PATCH i-g-t,
- v3 1/9] lib/dsc: Add igt_force_dsc_enable_compressed_bpp()
-Date: Sat, 12 Sep 2026 02:37:01 +0530
-Message-Id: <20260911210709.943683-2-swati2.sharma@intel.com>
+ v3 2/9] tests/intel/kms_dsc_helper: Add helper to force compressed BPP
+Date: Sat, 12 Sep 2026 02:37:02 +0530
+Message-Id: <20260911210709.943683-3-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260911210709.943683-1-swati2.sharma@intel.com>
 References: <20260911210709.943683-1-swati2.sharma@intel.com>
@@ -70,69 +70,49 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Function is added to force compressed bpp via debugfs
-intel_force_link_bpp.
+Helper function is added to force compressed BPP.
 
-v2: Fix compressed bpp precision for 1/16 steps
-    by writing four fractional digits to debugfs (Sowmiya)
+v2: Rebase
 
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_dsc.c | 21 +++++++++++++++++++++
- lib/igt_dsc.h |  1 +
- 2 files changed, 22 insertions(+)
+ tests/intel/kms_dsc_helper.c | 10 ++++++++++
+ tests/intel/kms_dsc_helper.h |  1 +
+ 2 files changed, 11 insertions(+)
 
-diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-index 3754eef07..a1d98500a 100644
---- a/lib/igt_dsc.c
-+++ b/lib/igt_dsc.c
-@@ -6,6 +6,7 @@
- #include <unistd.h>
- #include <fcntl.h>
- #include <string.h>
-+#include "drmtest.h"
- #include "igt_core.h"
- #include "igt_dsc.h"
- #include "igt_sysfs.h"
-@@ -166,6 +167,26 @@ int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc)
- 	return write_dsc_debugfs(drmfd, connector_name, "i915_dsc_bpc", buf);
+diff --git a/tests/intel/kms_dsc_helper.c b/tests/intel/kms_dsc_helper.c
+index 9f581758f..50de12fe1 100644
+--- a/tests/intel/kms_dsc_helper.c
++++ b/tests/intel/kms_dsc_helper.c
+@@ -29,6 +29,16 @@ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc)
+ 	igt_assert_f(ret == 0, "forcing input dsc bpc debugfs_write failed\n");
  }
  
-+/**
-+ * igt_force_dsc_enable_compressed_bpp:
-+ * @drmfd: A drm file descriptor
-+ * @connector_name: Name of the libdrm connector we're going to use
-+ * @bpp: Compressed BPP
-+ *
-+ * Returns: 0 on success or negative error code, in case of failure.
-+ */
-+int igt_force_dsc_enable_compressed_bpp(int drmfd, char *connector_name, float bpp)
++void force_dsc_enable_compressed_bpp(int drmfd, igt_output_t *output, float compressed_bpp)
 +{
-+	char buf[20] = {0};
++	int ret;
 +
-+	/* DSC compressed BPP steps are in 1/16 increments, so preserve the
-+	 * exact value with four fractional digits.
-+	 */
-+	snprintf(buf, sizeof(buf), "%.4f", bpp);
-+
-+	return write_dsc_debugfs(drmfd, connector_name, "intel_force_link_bpp", buf);
++	igt_debug("Forcing compressed DSC BPP to %.2f on %s\n",
++		  compressed_bpp, output->name);
++	ret = igt_force_dsc_enable_compressed_bpp(drmfd, output->name, compressed_bpp);
++	igt_assert_f(ret == 0, "forcing compressed dsc bpp debugfs_write failed\n");
 +}
 +
- /**
-  * igt_get_dsc_debugfs_fd:
-  * @drmfd: A drm file descriptor
-diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
-index f63345848..0ba06d8c5 100644
---- a/lib/igt_dsc.h
-+++ b/lib/igt_dsc.h
-@@ -17,6 +17,7 @@ bool igt_is_dsc_enabled(int drmfd, char *connector_name);
- bool igt_is_force_dsc_enabled(int drmfd, char *connector_name);
- int igt_force_dsc_enable(int drmfd, char *connector_name);
- int igt_force_dsc_enable_bpc(int drmfd, char *connector_name, int bpc);
-+int igt_force_dsc_enable_compressed_bpp(int drmfd, char *connector_name, float bpp);
- int igt_force_dsc_disable(int drmfd, char *connector_name);
- bool igt_is_force_dsc_disabled(int drmfd, char *connector_name);
- int igt_get_dsc_debugfs_fd(int drmfd, char *connector_name);
+ void save_force_dsc_en(int drmfd, igt_output_t *output)
+ {
+ 	force_dsc_en_orig =
+diff --git a/tests/intel/kms_dsc_helper.h b/tests/intel/kms_dsc_helper.h
+index 542fe46de..ba616468e 100644
+--- a/tests/intel/kms_dsc_helper.h
++++ b/tests/intel/kms_dsc_helper.h
+@@ -24,6 +24,7 @@
+ 
+ void force_dsc_enable(int drmfd, igt_output_t *output);
+ void force_dsc_enable_bpc(int drmfd, igt_output_t *output, int input_bpc);
++void force_dsc_enable_compressed_bpp(int drmfd, igt_output_t *output, float compressed_bpp);
+ void save_force_dsc_en(int drmfd, igt_output_t *output);
+ void restore_force_dsc_en(void);
+ void kms_dsc_exit_handler(int sig);
 -- 
 2.25.1
 
