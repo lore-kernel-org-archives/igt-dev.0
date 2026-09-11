@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 786DFC88E50
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 22:34:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06958C88E50
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 22:39:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EE59A10E1F1;
-	Fri, 11 Sep 2026 22:34:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 979B210E6FA;
+	Fri, 11 Sep 2026 22:39:39 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A228E10E1F1;
- Fri, 11 Sep 2026 22:33:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2F6F710E593;
+ Fri, 11 Sep 2026 22:38:55 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0726976370779188451=="
+ boundary="===============0580569555662114862=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu/amd=5Fcursor?=
- =?utf-8?q?=5Foverlay=3A_skip_scaling_subtests_unsupported_by_hardware?=
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_lib/amdgpu=3A_skip_command?=
+ =?utf-8?q?=5Fce=5Fwrite=5Ffence_when_CE_CS_is_blocked?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: haoming.qi@amd.com
+To: "Granthali Vinodkumar Dhandar" <granthali.vinodkumardhandar@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 11 Sep 2026 22:33:16 -0000
-Message-ID: <178916599665.154179.15440300702701192941@61270ab9df2a>
+Date: Fri, 11 Sep 2026 22:38:55 -0000
+Message-ID: <178916633518.154179.16570481600051304719@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260911143406.14452-1-Haoming.Qi@amd.com>
-In-Reply-To: <20260911143406.14452-1-Haoming.Qi@amd.com>
+References: <20260911202023.1872466-1-Granthali.VinodkumarDhandar@amd.com>
+In-Reply-To: <20260911202023.1872466-1-Granthali.VinodkumarDhandar@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,59 +41,24 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0726976370779188451==
+--===============0580569555662114862==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/amdgpu/amd_cursor_overlay: skip scaling subtests unsupported by hardware
-URL   : https://patchwork.freedesktop.org/series/173872/
-State : success
+Series: lib/amdgpu: skip command_ce_write_fence when CE CS is blocked
+URL   : https://patchwork.freedesktop.org/series/173891/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9093_BAT -> XEIGTPW_15835_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
+Series 173891 revision 1 was fully merged or fully failed: no git log
 
 
-Changes
--------
 
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9093 -> IGTPW_15835
-  * Linux: xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778 -> xe-5737-f9dbf10ba445ce9399f8a782ba43326cba66d869
-
-  IGTPW_15835: 15835
-  IGT_9093: 932327f15c92ecb52266ced8c0fbe72931a75880 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778: d9e9da243a3d5fa370e267ee800471a5d1946778
-  xe-5737-f9dbf10ba445ce9399f8a782ba43326cba66d869: f9dbf10ba445ce9399f8a782ba43326cba66d869
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15835/index.html
-
---===============0726976370779188451==
+--===============0580569555662114862==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,34 +78,16 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/amdgpu/amd_cursor_overlay: skip scaling subtests unsupported by hardware</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173872/">https://patchwork.freedesktop.org/series/173872/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15835/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15835/index.html</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/amdgpu: skip command_ce_write_fence when CE CS is blocked</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173891/">https://patchwork.freedesktop.org/series/173891/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9093_BAT -&gt; XEIGTPW_15835_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9093 -&gt; IGTPW_15835</li>
-<li>Linux: xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778 -&gt; xe-5737-f9dbf10ba445ce9399f8a782ba43326cba66d869</li>
-</ul>
-<p>IGTPW_15835: 15835<br />
-  IGT_9093: 932327f15c92ecb52266ced8c0fbe72931a75880 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778: d9e9da243a3d5fa370e267ee800471a5d1946778<br />
-  xe-5737-f9dbf10ba445ce9399f8a782ba43326cba66d869: f9dbf10ba445ce9399f8a782ba43326cba66d869</p>
+    <p>Series 173891 revision 1 was fully merged or fully failed: no git log</p>
 
 </body>
 </html>
 
---===============0726976370779188451==--
+--===============0580569555662114862==--
