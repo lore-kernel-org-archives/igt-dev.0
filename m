@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65A7FC88E53
-	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 21:01:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2AB6C88E53
+	for <igt-dev@archiver.kernel.org>; Fri, 11 Sep 2026 21:01:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED2D110E1F5;
-	Fri, 11 Sep 2026 21:01:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8834F10E28A;
+	Fri, 11 Sep 2026 21:01:45 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FlTm1S11";
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OynLiwHs";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E4CE10E1F5
- for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 20:58:12 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D6F3310E1F5
+ for <igt-dev@lists.freedesktop.org>; Fri, 11 Sep 2026 20:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789160292; x=1820696292;
+ t=1789160293; x=1820696293;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=2r3JnzytZxHaxBKGl+4b+Q6jMZyQhiRshsAXUP18W6o=;
- b=FlTm1S11W2TnwreSGDWkRO/XgLNLlukitPOPnT11Bjm80DfCEiJ0cz+3
- lSsImbu8UIa2KqH3vrdXa+hbfMOya9Nd2an7KEB+PUS7GQNjdedYJHiWa
- ySbT8pNB/Ug6US2tcN2Ny+TVOqk0yTKC+3TjZXlD3Cu29uczVCYt2LvGZ
- NarYR6ARmJFN+tVw/nf4JDif1n1XJ4WDeWBvFajrp3AlvnNfCnk8FycD0
- n8F26vkkLmz3ufEzUo3eE1wsU9Pyj1i4x4uIjmUuY8d4jUvbQ7fkvAfrT
- FddtlAi3nO4HqkWq5VjMYRjkattjg1xgmqg4P0Nm/zI0P/+08056OiJqz g==;
-X-CSE-ConnectionGUID: lLedKN2BQ16ueZ4FA3J4XA==
-X-CSE-MsgGUID: W8ncgwPSQA6O0bVRiqesyA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="138961"
+ bh=H2HZJFPtcux7K9GzIDyTybRw7cyvDSfzVIJ6Vg83DsU=;
+ b=OynLiwHsJfOLjHQky9M8IwH0djFl7EmlOEde37+A5BBo2hfyOS3fcTXO
+ QbZ/I5O3xWSt/FSKOomNp0Snv3Nyxp4TVmUQ/KlpFSx5KnxC2+BHGgR3M
+ w8jHdQ42lnMwW8CRMaq2nqB7r/XQ4dz7HZpWboqSN52Hw14qEMQc8b3Uh
+ D+JIctLCaFD2TkU7NHUMSr8HwFYL7mT2YB5YTCHkU2a8uQaJnLYXexLls
+ AtQFRQ9It0+/fnd+1OddJDQ1Ox5rsnMy621SLfFar0YAftE1N73lITc2T
+ fOOj/B+Oeloft8UMlgnzORXKwL9kNQufTtBYbGXvACqs2fuLFw5eYiTOo Q==;
+X-CSE-ConnectionGUID: 0uv4EAMVSrq+YO7VKrFHsw==
+X-CSE-MsgGUID: 9gCLDux4QuyLZndDS+SIvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11902"; a="138966"
 X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; 
-   d="scan'208";a="138961"
+   d="scan'208";a="138966"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2026 13:58:12 -0700
-X-CSE-ConnectionGUID: 00LV0lcBQ6qX9KB3q1Acpw==
-X-CSE-MsgGUID: nnwUKI6CRqGRaF1oD4pFtQ==
+ 11 Sep 2026 13:58:13 -0700
+X-CSE-ConnectionGUID: Va0wtSaGQKe6quQhyr/Qfw==
+X-CSE-MsgGUID: Pf5lhG1bSWiO+oVY083JTw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; d="scan'208";a="310293691"
+X-IronPort-AV: E=Sophos;i="6.27,98,1787036400"; d="scan'208";a="310293699"
 Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Sep 2026 13:58:11 -0700
+ 11 Sep 2026 13:58:13 -0700
 From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: ankit.k.nautiyal@intel.com,
 	Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t,v3 3/9] lib/dsc: Add igt_get_dsc_sink_compressed_bpp()
-Date: Sat, 12 Sep 2026 02:37:03 +0530
-Message-Id: <20260911210709.943683-4-swati2.sharma@intel.com>
+Subject: [PATCH i-g-t,
+ v3 4/9] lib/dsc: Add igt_get_dsc_sink_max_compressed_bpp()
+Date: Sat, 12 Sep 2026 02:37:04 +0530
+Message-Id: <20260911210709.943683-5-swati2.sharma@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260911210709.943683-1-swati2.sharma@intel.com>
 References: <20260911210709.943683-1-swati2.sharma@intel.com>
@@ -69,73 +70,155 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a helper to read the active pipe's compressed BPP from
-`i915_display_info` debugfs.
-
-v2: Rebase
+Add a helper to read the per-output-format maximum compressed
+BPP from DSC_Sink_Max_Compressed_BPP in the connector debugfs
+file.
 
 Assisted-by: GitHub Copilot
 Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- lib/igt_dsc.c | 38 ++++++++++++++++++++++++++++++++++++++
- lib/igt_dsc.h |  1 +
- 2 files changed, 39 insertions(+)
+ lib/igt_dsc.c | 62 +++++++++++++++++++++++++++++++++++++++++++--------
+ lib/igt_dsc.h |  2 ++
+ 2 files changed, 55 insertions(+), 9 deletions(-)
 
 diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-index a1d98500a..0f938284e 100644
+index 0f938284e..30a12ce13 100644
 --- a/lib/igt_dsc.c
 +++ b/lib/igt_dsc.c
-@@ -378,3 +378,41 @@ int igt_get_dsc_sink_max_slice_count(int drmfd, char *connector_name)
+@@ -11,14 +11,20 @@
+ #include "igt_dsc.h"
+ #include "igt_sysfs.h"
  
+-static bool check_dsc_debugfs(int drmfd, char *connector_name, const char *check_str)
++static bool check_dsc_debugfs(int drmfd, char *connector_name, const char *check_str,
++			      char *buf, int buf_size)
+ {
+ 	char file_name[128] = {0};
+-	char buf[512];
++	char local_buf[512];
++
++	if (!buf) {
++		buf = local_buf;
++		buf_size = sizeof(local_buf);
++	}
+ 
+ 	sprintf(file_name, "%s/i915_dsc_fec_support", connector_name);
+ 
+-	igt_debugfs_read(drmfd, file_name, buf);
++	__igt_debugfs_read(drmfd, file_name, buf, buf_size);
+ 
+ 	return strstr(buf, check_str);
+ }
+@@ -73,7 +79,7 @@ bool igt_is_dsc_supported_by_source(int drmfd)
+  */
+ bool igt_is_dsc_supported_by_sink(int drmfd, char *connector_name)
+ {
+-	return check_dsc_debugfs(drmfd, connector_name, "DSC_Sink_Support: yes");
++	return check_dsc_debugfs(drmfd, connector_name, "DSC_Sink_Support: yes", NULL, 0);
+ }
+ 
+ /**
+@@ -85,7 +91,7 @@ bool igt_is_dsc_supported_by_sink(int drmfd, char *connector_name)
+  */
+ bool igt_is_fec_supported(int drmfd, char *connector_name)
+ {
+-	return check_dsc_debugfs(drmfd, connector_name, "FEC_Sink_Support: yes");
++	return check_dsc_debugfs(drmfd, connector_name, "FEC_Sink_Support: yes", NULL, 0);
+ }
+ 
+ /**
+@@ -97,7 +103,7 @@ bool igt_is_fec_supported(int drmfd, char *connector_name)
+  */
+ bool igt_is_dsc_enabled(int drmfd, char *connector_name)
+ {
+-	return check_dsc_debugfs(drmfd, connector_name, "DSC_Enabled: yes");
++	return check_dsc_debugfs(drmfd, connector_name, "DSC_Enabled: yes", NULL, 0);
+ }
+ 
+ /**
+@@ -110,7 +116,7 @@ bool igt_is_dsc_enabled(int drmfd, char *connector_name)
+  */
+ bool igt_is_force_dsc_enabled(int drmfd, char *connector_name)
+ {
+-	return check_dsc_debugfs(drmfd, connector_name, "Force_DSC_Enable: yes");
++	return check_dsc_debugfs(drmfd, connector_name, "Force_DSC_Enable: yes", NULL, 0);
+ }
+ 
+ /**
+@@ -135,7 +141,7 @@ int igt_force_dsc_enable(int drmfd, char *connector_name)
+  */
+ bool igt_is_force_dsc_disabled(int drmfd, char *connector_name)
+ {
+-	return check_dsc_debugfs(drmfd, connector_name, "Force_DSC_Enable: no");
++	return check_dsc_debugfs(drmfd, connector_name, "Force_DSC_Enable: no", NULL, 0);
+ }
+ 
+ /**
+@@ -231,7 +237,7 @@ bool igt_is_dsc_output_format_supported_by_sink(int drmfd, char *connector_name,
+ 		break;
+ 	}
+ 
+-	return check_dsc_debugfs(drmfd, connector_name, check_str);
++	return check_dsc_debugfs(drmfd, connector_name, check_str, NULL, 0);
+ }
+ 
+ /**
+@@ -379,6 +385,44 @@ int igt_get_dsc_sink_max_slice_count(int drmfd, char *connector_name)
  	return max_slice_count;
  }
-+
+ 
 +/**
-+ * igt_get_dsc_sink_compressed_bpp:
++ * igt_get_dsc_sink_max_compressed_bpp:
 + * @drmfd: A drm file descriptor
-+ * @pipe: display pipe
++ * @connector_name: Name of the libdrm connector we're going to use
++ * @output_format: DSC output format the max compressed bpp is requested for
 + *
-+ * Returns: The dsc sink compressed bpp.
++ * Returns: The maximum dsc sink compressed bpp for @output_format from the
++ * connector debugfs.
 + */
-+float igt_get_dsc_sink_compressed_bpp(int drmfd, enum pipe pipe)
++float igt_get_dsc_sink_max_compressed_bpp(int drmfd, char *connector_name,
++					  enum dsc_output_format output_format)
 +{
-+	char buf[8192];
-+	char dest[20];
-+	char *start_loc1, *start_loc2;
-+	int dir, res;
-+	float comp_bpp = 0;
++	char buf[512];
++	char search_key[32];
++	char *start_loc;
++	float max_compressed_bpp;
 +
-+	snprintf(dest, sizeof(dest), ":pipe %s", kmstest_pipe_name(pipe));
++	igt_require_f(check_dsc_debugfs(drmfd, connector_name,
++				  "DSC_Sink_Max_Compressed_BPP:", buf, sizeof(buf)),
++		      "Sink max compressed bpp is unavailable on connector %s\n",
++		      connector_name);
++	start_loc = strstr(buf, "DSC_Sink_Max_Compressed_BPP:");
 +
-+	igt_require_intel(drmfd);
++	snprintf(search_key, sizeof(search_key), "%s: ",
++		 kmstest_dsc_output_format_str(output_format));
++	igt_require_f(start_loc = strstr(start_loc, search_key),
++		      "Sink max compressed bpp not found for output format %s\n",
++		      kmstest_dsc_output_format_str(output_format));
 +
-+	dir = igt_debugfs_dir(drmfd);
-+	igt_assert_lte(0, dir);
++	start_loc += strlen(search_key);
++	igt_require_f(sscanf(start_loc, "%f", &max_compressed_bpp) == 1,
++		      "Sink max compressed bpp is invalid for output format %s\n",
++		      kmstest_dsc_output_format_str(output_format));
++	igt_require(max_compressed_bpp > 0);
 +
-+	res = igt_debugfs_simple_read(dir, "i915_display_info", buf, sizeof(buf));
-+	close(dir);
-+	igt_require(res > 0);
-+
-+	start_loc1 = strstr(buf, dest);
-+	igt_require_f(start_loc1, "Pipe %s not found in i915_display_info\n",
-+		      kmstest_pipe_name(pipe));
-+
-+	start_loc2 = strstr(start_loc1, "dsc-dss: compressed-bpp:");
-+	igt_assert(start_loc2);
-+	igt_assert_eq(sscanf(start_loc2, "dsc-dss: compressed-bpp:%f", &comp_bpp), 1);
-+	igt_assert(comp_bpp > 0);
-+
-+	return comp_bpp;
++	return max_compressed_bpp;
 +}
++
+ /**
+  * igt_get_dsc_sink_compressed_bpp:
+  * @drmfd: A drm file descriptor
 diff --git a/lib/igt_dsc.h b/lib/igt_dsc.h
-index 0ba06d8c5..f895af7f3 100644
+index f895af7f3..3da05b9df 100644
 --- a/lib/igt_dsc.h
 +++ b/lib/igt_dsc.h
-@@ -31,5 +31,6 @@ bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name);
+@@ -31,6 +31,8 @@ bool igt_is_force_dsc_fractional_bpp_enabled(int drmfd, char *connector_name);
  int igt_force_dsc_fractional_bpp_enable(int drmfd, char *connector_name);
  int igt_get_dsc_fractional_bpp_debugfs_fd(int drmfd, char *connector_name);
  int igt_get_dsc_sink_max_slice_count(int drmfd, char *connector_name);
-+float igt_get_dsc_sink_compressed_bpp(int drmfd, enum pipe pipe);
++float igt_get_dsc_sink_max_compressed_bpp(int drmfd, char *connector_name,
++					  enum dsc_output_format output_format);
+ float igt_get_dsc_sink_compressed_bpp(int drmfd, enum pipe pipe);
  
  #endif
 -- 
