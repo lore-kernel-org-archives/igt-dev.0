@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38E1DC88E56
-	for <igt-dev@archiver.kernel.org>; Sat, 12 Sep 2026 20:11:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A852C88E56
+	for <igt-dev@archiver.kernel.org>; Sat, 12 Sep 2026 20:11:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C14CD10E00B;
-	Sat, 12 Sep 2026 20:11:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D8BF10E00B;
+	Sat, 12 Sep 2026 20:11:42 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="g1qORvZT";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OjRSZMuo";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4611510E00B
- for <igt-dev@lists.freedesktop.org>; Sat, 12 Sep 2026 20:09:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3C65610E00B
+ for <igt-dev@lists.freedesktop.org>; Sat, 12 Sep 2026 20:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789243784; x=1820779784;
+ t=1789243790; x=1820779790;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=ONej3DqCOdr4e2C8wfFwKFwcwFyHC7hRMEgiCl6hkv4=;
- b=g1qORvZTYsjOxcKC/w1WV51XbwWCrN1b0UfKQAjgk7GNSp8ngu9bij36
- RXiw+o4N0GgeEavzsNFB7N6E9k/A6DdrQf0Zqvyz/MqB0sTG1y5eOjJeS
- Da5e/0AZMYmDwOn8Q9TQcnP5MEO8/u2u/CTBBR8nYnvJrM5RuLgwD3uQG
- S181UK5zabJW6B42jf2Pa2JdlD/8Fh3NgHeQXFYBkUFGuJl4aNFhVKnoJ
- D6KYnvL+8/kZ/lWMdyk2IUcnUWKGaJF33rICAOmouldCo90nFgYoJ+p25
- jZ1GS5XUPrGoucyopwl/gwnY4G92DzhssF0hS5rPw+DbBQ24wlr8kdmAr w==;
-X-CSE-ConnectionGUID: pZPg3gXMRpGRB5I7nnGe8g==
-X-CSE-MsgGUID: B8JBcIe6Tiux+1VJgNTKGA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11903"; a="89682402"
+ bh=rWngnMW1Hp3B7ntUl3fZj3di85qkEsfkcGlQ/2MtTvw=;
+ b=OjRSZMuo8Plnl9VlU3F6ofVX73RewuIVou1ztI83toLcQRofei9a6R2e
+ 8pN6Ok2p/nbUyD0bPtX+7odUokEeYaFamLC3FXzr9IFuSRJzens0Xy0Eg
+ xmROKsHEfJkfr3qwRsyNvMk3xhjPvpj7jQusMcHtWreDKPT0ejG+Zmuri
+ DOaZ6+AmjjhrsjhIarkf4dfQOTKBHc2Q4tHsX8461pP/VeG680JoVJ4fP
+ W9i9YjidMI9asZ8cfL0Zi6iXlkHT8utlMcd4k5yJdxkB/T0KNVXVl0fPt
+ JGD1yBmnhnVJ68pv5sT3d6bW4UNbSuI5N82vxzeV68g2kjSGGy1E4rKJt A==;
+X-CSE-ConnectionGUID: Tk0VBVICS3GLbvtcgT34JA==
+X-CSE-MsgGUID: idwHsv/aSaSOOtKxhYim0A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11903"; a="89682407"
 X-IronPort-AV: E=Sophos;i="6.27,99,1787036400"; 
-   d="scan'208";a="89682402"
+   d="scan'208";a="89682407"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2026 13:09:44 -0700
-X-CSE-ConnectionGUID: Z5Na13maSiG+lkdkTizlAA==
-X-CSE-MsgGUID: vdB/4gsFQwOgQ+R8aL6VLg==
+ 12 Sep 2026 13:09:50 -0700
+X-CSE-ConnectionGUID: 2lC9CvzmQcu6LKS5uuY6VA==
+X-CSE-MsgGUID: qAeGY9M+S8SbyMkJsxDCVQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,99,1787036400"; d="scan'208";a="274162348"
+X-IronPort-AV: E=Sophos;i="6.27,99,1787036400"; d="scan'208";a="274162367"
 Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
  by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2026 13:09:42 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2026 13:09:48 -0700
 From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: mitulkumar.ajitkumar.golani@intel.com, chaitanya.kumar.borah@intel.com,
  karthik.b.s@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v7 1/4] lib/igt_vrr: Add VRR helper library for display
- refresh rate testing
-Date: Sun, 13 Sep 2026 01:39:40 +0530
-Message-ID: <20260912200945.3263106-2-ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v7 4/4] HAX patch do not merge
+Date: Sun, 13 Sep 2026 01:39:43 +0530
+Message-ID: <20260912200945.3263106-5-ramanaidu.naladala@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260912200945.3263106-1-ramanaidu.naladala@intel.com>
 References: <20260912200945.3263106-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,266 +69,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Introduce a new helper library for Variable Refresh Rate (VRR).
+HAX patch do not merge.
 
-Add helpers to validate targeted refresh-rate testing.
-
-v2: Modify debugfs with helpers.
-v3: Add helper to check cmrr support.
-    Address review comments. (Mitul)
-v4: Address below review comments.
-    - Add source and rationale for standard timing refresh
-      rates. (Chaitanya)
-    - Restrict target RR debugfs helper to Intel devices. (Chaitanya)
-    - Make Intel target RR debugfs helper return bool instead of
-      asserting in the library. (Mitul)
-    - Avoid assertions in library functions and return status
-      instead. (karthik)
-    - Reorder source list as per naming convention.
-    - Rename cmrr_supported() to igt_vrr_target_refresh_rate_supported()
-      for consistency. (Chaitanya)
-    - Move CMRR-specific macros and enums from the library to the test
-      file. (Chaitanya)
-v5: Address below review comments:
-    - Add space after subject prefix. (Kamil)
-    - Add blank line between system and local include headers. (Kamil)
-    - meson: fix indentation for igt_vrr entry. (Kamil)
-    - Rename target refresh rate helpers. (Chaitanya)
-    - Change FPS count type to uint32_t. (Mitul)
-v6: Update comment for 96Hz refresh rate. (Chaitanya)
-
-Assisted-by: GitHub Copilot:Claude Opus 4.6
 Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Reviewed-by: Mitul Golani<mitulkumar.ajitkumar.golani@intel.com>
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- lib/igt_vrr.c   | 166 ++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_vrr.h   |  30 +++++++++
- lib/meson.build |   1 +
- 3 files changed, 197 insertions(+)
- create mode 100644 lib/igt_vrr.c
- create mode 100644 lib/igt_vrr.h
+ tests/intel-ci/xe.fast-feedback.testlist | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/lib/igt_vrr.c b/lib/igt_vrr.c
-new file mode 100644
-index 000000000..16c229db5
---- /dev/null
-+++ b/lib/igt_vrr.c
-@@ -0,0 +1,166 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#include <inttypes.h>
-+
-+#include "igt_vrr.h"
-+#include "igt_sysfs.h"
-+
-+/**
-+ * Integer refresh rates that sinks advertise as standard video timings, and
-+ * for which a fractional (rate * 1000/1001) counterpart is also defined:
-+ *
-+ *  - 24, 25, 30, 50 and 60 Hz are the film and broadcast (PAL/NTSC) cadences
-+ *    carried over into the CTA-861 video formats.
-+ *  - 48, 100, 120, 200 and 240 Hz are the integer multiples of those
-+ *    cadences, also listed as CTA-861 video formats.
-+ *  - 75, 90, 96, 144, 165 and 180 Hz are VESA DMT/CVT and adaptive-sync panel
-+ *    rates in common use.
-+ *
-+ * The fractional variant of each entry (e.g. 60 -> 59.94) is what a target
-+ * refresh rate in video mode programs.
-+ */
-+const uint32_t igt_vrr_standard_video_timing_fps[] = {
-+	24, 25, 30, 48, 50, 60, 75, 90, 96, 100, 120, 144, 165, 180, 200, 240,
-+};
-+
-+const uint32_t igt_vrr_standard_video_timing_fps_count =
-+	ARRAY_SIZE(igt_vrr_standard_video_timing_fps);
-+
-+/**
-+ * igt_vrr_target_rr_debugfs_write:
-+ * @fd: DRM file descriptor.
-+ * @crtc_index: Index of the CRTC.
-+ * @rr_numerator: Numerator of the target refresh rate fraction.
-+ * @rr_denominator: Denominator of the target refresh rate fraction.
-+ *
-+ * Write the target refresh rate configuration to the per-CRTC
-+ * VRR debugfs interface. Passing 0/0 clears the target refresh
-+ * rate.
-+ *
-+ * The debugfs interface is Intel specific, so this returns false on
-+ * other drivers. Other drivers can add their own debugfs node here.
-+ *
-+ * Returns:
-+ * true if the target refresh rate was written successfully, false otherwise.
-+ */
-+bool
-+igt_vrr_target_rr_debugfs_write(int fd, int crtc_index,
-+				uint32_t rr_numerator,
-+				uint32_t rr_denominator)
-+{
-+	char buf[32];
-+	int ret, dir, len;
-+
-+	if (!is_intel_device(fd)) {
-+		igt_info("Not an Intel device\n");
-+		return false;
-+	}
-+
-+	len = snprintf(buf, sizeof(buf), "%u/%u", rr_numerator, rr_denominator);
-+	if (len <= 0 || len >= (int)sizeof(buf))
-+		return false;
-+
-+	dir = igt_debugfs_crtc_dir(fd, crtc_index);
-+	if (dir < 0)
-+		return false;
-+
-+	ret = igt_sysfs_write(dir, "intel_vrr_target_refresh_rate", buf, len);
-+	close(dir);
-+
-+	return ret == len;
-+}
-+
-+/**
-+ * igt_vrr_target_rr_debugfs_read:
-+ * @fd: DRM file descriptor.
-+ * @crtc_index: Index of the CRTC.
-+ * @buf: Buffer to store the target refresh rate string.
-+ * @size: Size of @buf in bytes.
-+ *
-+ * Read the target refresh rate from the per-CRTC VRR debugfs interface.
-+ * The returned string is always NUL-terminated on success.
-+ *
-+ * The debugfs interface is Intel specific, so this returns false on
-+ * other drivers. Other drivers can add their own debugfs node here.
-+ *
-+ * Return:
-+ * true if the target refresh rate was read successfully, false otherwise.
-+ */
-+bool
-+igt_vrr_target_rr_debugfs_read(int fd, int crtc_index, char *buf, size_t size)
-+{
-+	int ret, dir;
-+
-+	if (!buf || !size)
-+		return false;
-+
-+	if (!is_intel_device(fd)) {
-+		igt_info("Not an Intel device\n");
-+		return false;
-+	}
-+
-+	dir = igt_debugfs_crtc_dir(fd, crtc_index);
-+	if (dir < 0)
-+		return false;
-+
-+	ret = igt_sysfs_read(dir, "intel_vrr_target_refresh_rate",
-+			     buf, size - 1);
-+	close(dir);
-+
-+	if (ret < 0)
-+		return false;
-+
-+	buf[ret] = '\0';
-+
-+	return true;
-+}
-+
-+/**
-+ * igt_vrr_mode_line_refresh_hz:
-+ * @mode: DRM display mode used for the calculation
-+ *
-+ * Compute the refresh rate directly from the mode timing parameters.
-+ *
-+ * Returns: Refresh rate in Hz as a floating-point value.
-+ */
-+double igt_vrr_mode_line_refresh_hz(const drmModeModeInfo *mode)
-+{
-+	return (double)mode->clock * 1000.0 / ((double)mode->htotal * (double)mode->vtotal);
-+}
-+
-+/**
-+ * igt_vrr_target_refresh_rate_supported:
-+ * @fd: DRM device file descriptor.
-+ * @crtc_index: Index of the CRTC.
-+ *
-+ * Checks whether the target refresh rate debugfs node is present for the
-+ * specified CRTC, indicating CMRR support.
-+ *
-+ * The debugfs interface is Intel specific, so this returns false on
-+ * other drivers. Other drivers can add their own debugfs node here.
-+ *
-+ * Returns: true if CMRR is supported, false otherwise.
-+ */
-+bool igt_vrr_target_refresh_rate_supported(int fd, int crtc_index)
-+{
-+	int dir;
-+
-+	if (!is_intel_device(fd))
-+		return false;
-+
-+	dir = igt_debugfs_crtc_dir(fd, crtc_index);
-+
-+	if (dir < 0)
-+		return false;
-+
-+	if (faccessat(dir, "intel_vrr_target_refresh_rate", F_OK, 0) == 0) {
-+		close(dir);
-+		return true;
-+	}
-+
-+	close(dir);
-+	return false;
-+}
-diff --git a/lib/igt_vrr.h b/lib/igt_vrr.h
-new file mode 100644
-index 000000000..84d26cd1d
---- /dev/null
-+++ b/lib/igt_vrr.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#ifndef IGT_VRR_H
-+#define IGT_VRR_H
-+
-+#include <stdbool.h>
-+#include <stdint.h>
-+
-+#include "igt.h"
-+#include "igt_kms.h"
-+
-+extern const uint32_t igt_vrr_standard_video_timing_fps[];
-+extern const uint32_t igt_vrr_standard_video_timing_fps_count;
-+
-+bool
-+igt_vrr_target_rr_debugfs_write(int fd, int crtc_index,
-+				uint32_t rr_numerator,
-+				uint32_t rr_denominator);
-+bool
-+igt_vrr_target_rr_debugfs_read(int fd, int crtc_index,
-+			       char *buf, size_t size);
-+
-+double igt_vrr_mode_line_refresh_hz(const drmModeModeInfo *mode);
-+
-+bool igt_vrr_target_refresh_rate_supported(int fd, int crtc_index);
-+
-+#endif
-diff --git a/lib/meson.build b/lib/meson.build
-index a7cde027e..d1a770b6d 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -56,6 +56,7 @@ lib_sources = [
- 	'igt_vec.c',
- 	'igt_vgem.c',
- 	'igt_vkms.c',
-+	'igt_vrr.c',
- 	'igt_x86.c',
- 	'instdone.c',
- 	'intel_allocator.c',
+diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
+index 59d1cff2e..1dd725816 100644
+--- a/tests/intel-ci/xe.fast-feedback.testlist
++++ b/tests/intel-ci/xe.fast-feedback.testlist
+@@ -67,6 +67,8 @@ igt@kms_prop_blob@basic
+ igt@kms_psr@psr-primary-page-flip
+ igt@kms_psr@psr-cursor-plane-move
+ igt@kms_psr@psr-sprite-plane-onoff
++igt@kms_vrr@cmrr-desktop-mode
++igt@kms_vrr@cmrr-video-mode
+ igt@sriov_basic@enable-vfs-autoprobe-off@numvfs-all
+ igt@sriov_basic@enable-vfs-autoprobe-on@numvfs-1
+ igt@xe_ccs@block-copy-compressed
 -- 
 2.43.0
 
