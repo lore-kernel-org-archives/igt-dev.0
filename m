@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88DD5C88E56
-	for <igt-dev@archiver.kernel.org>; Sat, 12 Sep 2026 20:13:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3838C88E56
+	for <igt-dev@archiver.kernel.org>; Sat, 12 Sep 2026 20:45:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2244010E00B;
-	Sat, 12 Sep 2026 20:13:01 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Els9LO5x";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53A8F10E00B
- for <igt-dev@lists.freedesktop.org>; Sat, 12 Sep 2026 20:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789243788; x=1820779788;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=KBrgsP4ABfS+Edw/xQdPRuWNx07LRlDgIbQq49zXx5s=;
- b=Els9LO5xPMOID6JeCwxNEpkxkQ+HRT6JYrbK6u4atHFIAS9dpl93aRWQ
- wsrEJ3r8ysBEp6KukWAPhNfTTfJdPzfMteC4u4b8UiqsBg0Q+WjeolOdr
- kULkeaRiKoBnsfR/jPi+XPk+DYL3S1M2nwbKCCsIgaz5QQHEfX3JgTBSd
- wSspsTKEA/J7y9cfVzgn0rcW07l8jvZMfUPKRF/Bqd6t/KpNEoqKA2gms
- ONmaVMhERFiGx1w65FDNtoQhdvfmVjFzsTg4jzNQwM+hBVjz0+DFzUT+1
- h9u6wtgu+bc87HGaLp8RvA9czk045tdC63sJM4Y/EF7jPGZV/suOU7EMe g==;
-X-CSE-ConnectionGUID: l8HLoBQXRSuAU8O+pHveIw==
-X-CSE-MsgGUID: 8iMJrITmQIWpxHwwbQ500g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11903"; a="89682405"
-X-IronPort-AV: E=Sophos;i="6.27,99,1787036400"; 
-   d="scan'208";a="89682405"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Sep 2026 13:09:48 -0700
-X-CSE-ConnectionGUID: pwoGuxklQEiYwGDQPfxY3g==
-X-CSE-MsgGUID: FeWgZ2afR0uZ6E9FKdxucw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,99,1787036400"; d="scan'208";a="274162359"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
- by fmviesa004-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Sep 2026 13:09:46 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: mitulkumar.ajitkumar.golani@intel.com, chaitanya.kumar.borah@intel.com,
- karthik.b.s@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v7 3/4] tests/kms_vrr: Add CMRR fixed and video mode
- subtests
-Date: Sun, 13 Sep 2026 01:39:42 +0530
-Message-ID: <20260912200945.3263106-4-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260912200945.3263106-1-ramanaidu.naladala@intel.com>
-References: <20260912200945.3263106-1-ramanaidu.naladala@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6566E10E00B;
+	Sat, 12 Sep 2026 20:45:11 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F309510E00B;
+ Sat, 12 Sep 2026 20:44:29 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7020453965428859251=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Add_CMRR_subtests_=28rev7?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Sat, 12 Sep 2026 20:44:29 -0000
+Message-ID: <178924586998.155742.6133115858439846736@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260912200945.3263106-1-ramanaidu.naladala@intel.com>
+In-Reply-To: <20260912200945.3263106-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,349 +37,309 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add test coverage to validate Content Match Refresh Rate (CMRR)
-behavior across both fixed and video timing display modes.
+--===============7020453965428859251==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-This introduces a shared helper library to support refresh-rate
-mode selection and parsing, along with two new test cases covering
-fixed-mode and video-mode scenarios.
+== Series Details ==
 
-The new tests measure actual display refresh timing during CMRR
-operation and compare it against the expected target rate to
-verify correctness. Video mode coverage validates behavior across
-standard video timing rates, while fixed mode coverage targets
-display modes that fall outside the standard video timing set.
+Series: Add CMRR subtests (rev7)
+URL   : https://patchwork.freedesktop.org/series/171615/
+State : failure
 
-Each test cycles through the relevant refresh configurations,
-applying and resetting the appropriate settings between
-measurement passes to ensure consistent and isolated test results.
+== Summary ==
 
-v2: Fix test issue.
-v3: Address review comments. (Mitul)
-v4: Fix test issue.
-v5: Address below review comments:
-    - Rename CMRR fixed/non-video mode references to desktop
-      mode. (Chaitanya)
-    - Factor out vblank timestamp/sequence retrieval into
-      helper. (Chaitanya)
-    - Simplify CMRR tests by extracting common mode logic. (Chaitanya,
-      Mitul)
-    - Refactor CMRR refresh-rate verification and frame filtering.
-v6: Address below review comments:
-    - Document skipped vblank intervals and fix seq_delta
-      format. (Chaitanya)
-    - Fix minor style issues in CMRR tests. (Chaitanya, Mitul)
-    - Add mode existence checks for CMRR test paths. (Chaitanya)
-v7: Address below review comments:
-    - Add rationale for CMRR refresh-rate tolerances. (Mitul)
-    - Fix review nits in CMRR test code. (Chaitanya)
+CI Bug Log - changes from XEIGT_9093_BAT -> XEIGTPW_15838_BAT
+====================================================
 
-Assisted-by: GitHub Copilot:Claude Opus 4.6
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Reviewed-by: Mitul Golani<mitulkumar.ajitkumar.golani@intel.com>
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
----
- tests/kms_vrr.c | 246 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 246 insertions(+)
+Summary
+-------
 
-diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-index 27f18e8d0..3eaf29bb7 100644
---- a/tests/kms_vrr.c
-+++ b/tests/kms_vrr.c
-@@ -32,6 +32,7 @@
- #include "igt_pm.h"
- #include "igt_psr.h"
- #include "i915/intel_drrs.h"
-+#include "igt_vrr.h"
- #include "sw_sync.h"
- #include <fcntl.h>
- #include <signal.h>
-@@ -80,9 +81,24 @@
-  *
-  * SUBTEST: lobf-dc3co
-  * Description: Test DC3CO entry during LOBF.
-+ *
-+ * SUBTEST: cmrr-desktop-mode
-+ * Description: Test to set a desktop mode CMRR target refresh rate and verify
-+ *              it is correctly applied.
-+ *
-+ * SUBTEST: cmrr-video-mode
-+ * Description: Test to set standard video timing refresh rates via CMRR
-+ *              and verify each target rate is correctly applied.
-  */
- 
- #define NSECS_PER_SEC (1000000000ull)
-+#define CMRR_NUMERATOR 1000ULL
-+#define CMRR_DENOMINATOR 1000ULL
-+#define CMRR_VIDEO_MODE_DENOMINATOR 1001ULL
-+#define TARGET_RR_SAMP_COUNT 100
-+
-+/* Acceptable deviation from the expected refresh rate. */
-+#define CMRR_RR_TOLERANCE_HZ 0.02
- 
- /*
-  * Each test measurement step runs for ~5 seconds.
-@@ -103,6 +119,14 @@ enum {
- 	TEST_LINK_OFF = 1 << 10,
- 	TEST_NEGATIVE = 1 << 11,
- 	TEST_FORCE_RR = 1 << 12,
-+	TEST_CMRR_DESKTOP_MODE = 1 << 13,
-+	TEST_CMRR_VIDEO_MODE = 1 << 14,
-+};
-+
-+enum {
-+	CMRR_VIDEO_MODE,
-+	CMRR_DESKTOP_MODE,
-+	CMRR_DISABLE,
- };
- 
- enum {
-@@ -221,6 +245,38 @@ output_mode_with_maxrate(igt_output_t *output, unsigned int vrr_max)
- 	return mode;
- }
- 
-+/**
-+ * get_mode_with_video_timing:
-+ * @output: Display output containing connector mode list
-+ * @fps: Requested integer refresh rate in Hz
-+ * @matched_mode: Returned mode that matches @fps
-+ *
-+ * Find and return a connector mode that matches the requested
-+ * video timing refresh rate in Hz.
-+ *
-+ * Returns: true when a mode is found, false otherwise
-+ */
-+
-+static bool
-+get_mode_with_video_timing(igt_output_t *output, uint32_t fps,
-+			   drmModeModeInfo *matched_mode)
-+{
-+	drmModeConnectorPtr connector;
-+
-+	connector = output->config.connector;
-+	if (!connector)
-+		return false;
-+
-+	for (int i = 0; i < connector->count_modes; i++) {
-+		if (connector->modes[i].vrefresh == fps) {
-+			*matched_mode = connector->modes[i];
-+			return true;
-+		}
-+	}
-+
-+	return false;
-+}
-+
- static drmModeModeInfo
- low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
- {
-@@ -580,6 +636,182 @@ flip_and_measure(data_t *data, igt_output_t *output,
- 	return 0;
- }
- 
-+/* Measure and verify the effective refresh rate against the expected CMRR target rate. */
-+static void
-+flip_and_measure_target_rr(data_t *data, igt_crtc_t *crtc,
-+			   double vrefresh, uint32_t cmrr_mode)
-+{
-+	uint64_t last_vblank_ns, vblank_ns, frame_time_ns;
-+	uint64_t total_frame_time_ns = 0;
-+	uint32_t last_seq, seq, seq_delta;
-+	uint32_t err_frames = 0, valid_frames;
-+	double avg_frame_time_ns, avg_refresh_rate;
-+	double expected_rr = 0;
-+	bool front = false;
-+	uint32_t i;
-+
-+	switch (cmrr_mode) {
-+	case CMRR_VIDEO_MODE:
-+		expected_rr = (vrefresh * CMRR_NUMERATOR) /
-+			      (double)CMRR_VIDEO_MODE_DENOMINATOR;
-+		break;
-+	case CMRR_DESKTOP_MODE:
-+		expected_rr = (vrefresh * CMRR_NUMERATOR) /
-+			      (double)CMRR_DENOMINATOR;
-+		break;
-+	case CMRR_DISABLE:
-+		expected_rr = vrefresh;
-+		break;
-+	default:
-+		igt_assert_f(0, "Invalid CMRR mode %u\n", cmrr_mode);
-+	}
-+
-+	do_flip(data, &data->fb[0]);
-+	(void)get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-+	igt_wait_for_vblank_ts_seq(crtc, &last_vblank_ns, &last_seq);
-+
-+	for (i = 0; i < TARGET_RR_SAMP_COUNT; i++) {
-+		front = !front;
-+
-+		do_flip(data, front ? &data->fb[1] : &data->fb[0]);
-+		igt_wait_for_vblank_ts_seq(crtc, &vblank_ns, &seq);
-+		(void)get_kernel_event_ns(data, DRM_EVENT_FLIP_COMPLETE);
-+
-+		frame_time_ns = vblank_ns - last_vblank_ns;
-+		seq_delta = seq - last_seq;
-+
-+		last_vblank_ns = vblank_ns;
-+		last_seq = seq;
-+
-+		/*
-+		 * Use only single-frame intervals. If delta > 1, one or
-+		 * more vblanks were missed, so the interval is not valid
-+		 * for calculating the average frame time.
-+		 */
-+		if (seq_delta != 1) {
-+			igt_debug("vblank seq delta = %u\n", seq_delta);
-+			err_frames++;
-+			continue;
-+		}
-+
-+		total_frame_time_ns += frame_time_ns;
-+	}
-+
-+	valid_frames = TARGET_RR_SAMP_COUNT - err_frames;
-+
-+	igt_assert_f(valid_frames >= 90,
-+		     "Valid frames below threshold (90): valid_frames=%u, err_frames=%u\n",
-+		     valid_frames, err_frames);
-+
-+	avg_frame_time_ns = (double)total_frame_time_ns / valid_frames;
-+	avg_refresh_rate = (double)NSECS_PER_SEC / avg_frame_time_ns;
-+
-+	igt_assert_f(fabs(avg_refresh_rate - expected_rr) <= CMRR_RR_TOLERANCE_HZ,
-+		     "CMRR refresh rate mismatch: measured avg_rr = %.3f Hz, "
-+		     "expected_rr = %.3f Hz\n",
-+		      avg_refresh_rate, expected_rr);
-+
-+	igt_info("Average RR (Hz): %.2f, Expected RR (Hz): %.2f, error frames = %u\n",
-+		 avg_refresh_rate, expected_rr, err_frames);
-+}
-+
-+/**
-+ * Programs the requested CMRR target refresh rate for @mode, verifies that the measured
-+ * refresh rate matches the expected CMRR behaviour,then disables CMRR and verifies that
-+ * the refresh rate returns to the mode's nominal refresh rate. The function asserts that
-+ * all target refresh rate programming operations succeed.
-+ */
-+static void
-+run_cmrr(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-+	 const drmModeModeInfo *mode, uint32_t cmrr_mode)
-+{
-+	uint32_t numerator, denominator;
-+	bool ret;
-+	double rr_from_mode = igt_vrr_mode_line_refresh_hz(mode);
-+
-+	switch (cmrr_mode) {
-+	case CMRR_VIDEO_MODE:
-+		numerator = mode->vrefresh * CMRR_NUMERATOR;
-+		denominator = CMRR_VIDEO_MODE_DENOMINATOR;
-+		break;
-+	case CMRR_DESKTOP_MODE:
-+		numerator = mode->vrefresh * CMRR_NUMERATOR;
-+		denominator = CMRR_DENOMINATOR;
-+		break;
-+	default:
-+		igt_assert_f(0, "Unsupported CMRR mode %u\n",
-+			     cmrr_mode);
-+	}
-+
-+	igt_output_override_mode(output, mode);
-+	igt_info("Override mode:");
-+	kmstest_dump_mode((drmModeModeInfo *)mode);
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+
-+	ret = igt_vrr_target_rr_debugfs_write(data->drm_fd,
-+					      crtc->crtc_index,
-+					      numerator,
-+					      denominator);
-+	igt_assert_f(ret, "Failed to program CMRR target RR (%u/%u)\n",
-+		     numerator, denominator);
-+
-+	flip_and_measure_target_rr(data, crtc, mode->vrefresh, cmrr_mode);
-+
-+	ret = igt_vrr_target_rr_debugfs_write(data->drm_fd, crtc->crtc_index, 0, 0);
-+
-+	igt_assert_f(ret, "Failed to disable CMRR target RR\n");
-+
-+	flip_and_measure_target_rr(data, crtc, rr_from_mode, CMRR_DISABLE);
-+}
-+
-+/* Validate CMRR behavior for supported video and desktop display modes. */
-+static
-+void test_cmrr(data_t *data, igt_crtc_t *crtc,
-+	       igt_output_t *output, uint32_t flags)
-+{
-+	drmModeModeInfo mode;
-+	bool found = false;
-+	drmModeConnectorPtr connector = output->config.connector;
-+	uint32_t j;
-+
-+	igt_require_f(igt_vrr_target_refresh_rate_supported(data->drm_fd, crtc->crtc_index),
-+		      "CMRR not supported\n");
-+	prepare_test(data, output, crtc);
-+	set_vrr_on_crtc(data, crtc, true, false);
-+
-+	if (flags & TEST_CMRR_VIDEO_MODE) {
-+		found = false;
-+		for (j = 0; j < igt_vrr_standard_video_timing_fps_count; j++) {
-+			if (!get_mode_with_video_timing(output,
-+							igt_vrr_standard_video_timing_fps[j],
-+							&mode))
-+				continue;
-+
-+			found = true;
-+			run_cmrr(data, crtc, output, &mode, CMRR_VIDEO_MODE);
-+		}
-+		igt_require_f(found, "No video mode found.\n");
-+	}
-+
-+	if (flags & TEST_CMRR_DESKTOP_MODE) {
-+		found = false;
-+		for (j = 0; j < connector->count_modes; j++) {
-+			mode = connector->modes[j];
-+			/*
-+			 * Mode-line based refresh-rate calculations may differ slightly from
-+			 * the theoretical value due to rounding. Use a small margin to avoid
-+			 * rejecting valid CMRR-capable modes.
-+			 */
-+			if (igt_vrr_mode_line_refresh_hz(&mode) - mode.vrefresh <= 0.04)
-+				continue;
-+
-+			found = true;
-+			run_cmrr(data, crtc, output, &mode, CMRR_DESKTOP_MODE);
-+		}
-+		igt_require_f(found, "No desktop mode found.\n");
-+	}
-+}
-+
- /* Basic VRR flip functionality test - enable, measure, disable, measure */
- static void
- test_basic(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-@@ -1147,6 +1379,20 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
- 		}
- 	}
- 
-+	igt_subtest_group() {
-+		igt_fixture()
-+			igt_require_intel(data.drm_fd);
-+
-+		igt_describe("Test to validate CMRR in desktop mode.");
-+		igt_subtest_with_dynamic("cmrr-desktop-mode") {
-+			run_vrr_test(&data, test_cmrr, TEST_CMRR_DESKTOP_MODE);
-+		}
-+
-+		igt_describe("Test to validate CMRR in video mode.");
-+		igt_subtest_with_dynamic("cmrr-video-mode") {
-+			run_vrr_test(&data, test_cmrr, TEST_CMRR_VIDEO_MODE);
-+		}
-+	}
- 	igt_fixture() {
- 		close(data.debugfs_fd);
- 		igt_display_fini(&data.display);
--- 
-2.43.0
+  **FAILURE**
 
+  Serious unknown changes coming with XEIGTPW_15838_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15838_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_15838_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_vrr@cmrr-desktop-mode (NEW):
+    - bat-wcl-1:          NOTRUN -> [SKIP][1] +1 other test skip
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-wcl-1/igt@kms_vrr@cmrr-desktop-mode.html
+    - bat-ptl-2:          NOTRUN -> [SKIP][2] +1 other test skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-ptl-2/igt@kms_vrr@cmrr-desktop-mode.html
+
+  * igt@kms_vrr@cmrr-video-mode (NEW):
+    - bat-bmg-1:          NOTRUN -> [SKIP][3] +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-bmg-1/igt@kms_vrr@cmrr-video-mode.html
+    - bat-wcl-2:          NOTRUN -> [SKIP][4] +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-wcl-2/igt@kms_vrr@cmrr-video-mode.html
+
+  * igt@kms_vrr@cmrr-video-mode@pipe-a-edp-1 (NEW):
+    - bat-lnl-1:          NOTRUN -> [SKIP][5] +3 other tests skip
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-lnl-1/igt@kms_vrr@cmrr-video-mode@pipe-a-edp-1.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_9093_BAT and XEIGTPW_15838_BAT:
+
+### New IGT tests (4) ###
+
+  * igt@kms_vrr@cmrr-desktop-mode:
+    - Statuses : 12 skip(s)
+    - Exec time: [0.0, 0.68] s
+
+  * igt@kms_vrr@cmrr-desktop-mode@pipe-a-edp-1:
+    - Statuses : 3 skip(s)
+    - Exec time: [0.02, 0.30] s
+
+  * igt@kms_vrr@cmrr-video-mode:
+    - Statuses : 2 pass(s) 10 skip(s)
+    - Exec time: [0.0, 12.33] s
+
+  * igt@kms_vrr@cmrr-video-mode@pipe-a-edp-1:
+    - Statuses : 2 pass(s) 1 skip(s)
+    - Exec time: [0.01, 11.94] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15838_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [PASS][6] -> [ABORT][7] ([Intel XE#8007])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9093/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+
+  * igt@kms_vrr@cmrr-desktop-mode (NEW):
+    - bat-bmg-2:          NOTRUN -> [SKIP][8] ([Intel XE#3419]) +1 other test skip
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-bmg-2/igt@kms_vrr@cmrr-desktop-mode.html
+    - bat-nvls-1:         NOTRUN -> [SKIP][9] ([Intel XE#9076]) +1 other test skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-nvls-1/igt@kms_vrr@cmrr-desktop-mode.html
+    - bat-ptl-1:          NOTRUN -> [SKIP][10] ([Intel XE#5766]) +1 other test skip
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-ptl-1/igt@kms_vrr@cmrr-desktop-mode.html
+    - bat-adlp-7:         NOTRUN -> [SKIP][11] ([Intel XE#455]) +1 other test skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-adlp-7/igt@kms_vrr@cmrr-desktop-mode.html
+
+  * igt@kms_vrr@cmrr-video-mode (NEW):
+    - bat-lnl-2:          NOTRUN -> [SKIP][12] ([Intel XE#2235]) +1 other test skip
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-lnl-2/igt@kms_vrr@cmrr-video-mode.html
+    - bat-nvls-2:         NOTRUN -> [SKIP][13] ([Intel XE#8755]) +1 other test skip
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-nvls-2/igt@kms_vrr@cmrr-video-mode.html
+    - bat-atsm-2:         NOTRUN -> [SKIP][14] ([Intel XE#1024] / [Intel XE#947]) +1 other test skip
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-atsm-2/igt@kms_vrr@cmrr-video-mode.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-wcl-2:          [PASS][15] -> [FAIL][16] ([Intel XE#9115])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9093/bat-wcl-2/igt@xe_waitfence@reltime.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-wcl-2/igt@xe_waitfence@reltime.html
+    - bat-wcl-1:          [PASS][17] -> [FAIL][18] ([Intel XE#9115])
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9093/bat-wcl-1/igt@xe_waitfence@reltime.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-wcl-1/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#1024]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024
+  [Intel XE#2235]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235
+  [Intel XE#3419]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419
+  [Intel XE#455]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/455
+  [Intel XE#5766]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5766
+  [Intel XE#8007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007
+  [Intel XE#8755]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8755
+  [Intel XE#9076]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9076
+  [Intel XE#9115]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9115
+  [Intel XE#947]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/947
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9093 -> IGTPW_15838
+  * Linux: xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778 -> xe-5738-d0f49187686a810b5b83216805c07814ad7542dc
+
+  IGTPW_15838: 15838
+  IGT_9093: 932327f15c92ecb52266ced8c0fbe72931a75880 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778: d9e9da243a3d5fa370e267ee800471a5d1946778
+  xe-5738-d0f49187686a810b5b83216805c07814ad7542dc: d0f49187686a810b5b83216805c07814ad7542dc
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/index.html
+
+--===============7020453965428859251==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Add CMRR subtests (rev7)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/171615/">https://patchwork.freedesktop.org/series/171615/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9093_BAT -&gt; XEIGTPW_15838_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_15838_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15838_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15838_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_vrr@cmrr-desktop-mode (NEW):</p>
+<ul>
+<li>bat-wcl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-wcl-1/igt@kms_vrr@cmrr-desktop-mode.html">SKIP</a> +1 other test skip</li>
+<li>bat-ptl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-ptl-2/igt@kms_vrr@cmrr-desktop-mode.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr-video-mode (NEW):</p>
+<ul>
+<li>bat-bmg-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-bmg-1/igt@kms_vrr@cmrr-video-mode.html">SKIP</a> +1 other test skip</li>
+<li>bat-wcl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-wcl-2/igt@kms_vrr@cmrr-video-mode.html">SKIP</a> +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr-video-mode@pipe-a-edp-1 (NEW):</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-lnl-1/igt@kms_vrr@cmrr-video-mode@pipe-a-edp-1.html">SKIP</a> +3 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_9093_BAT and XEIGTPW_15838_BAT:</p>
+<h3>New IGT tests (4)</h3>
+<ul>
+<li>
+<p>igt@kms_vrr@cmrr-desktop-mode:</p>
+<ul>
+<li>Statuses : 12 skip(s)</li>
+<li>Exec time: [0.0, 0.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr-desktop-mode@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 3 skip(s)</li>
+<li>Exec time: [0.02, 0.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr-video-mode:</p>
+<ul>
+<li>Statuses : 2 pass(s) 10 skip(s)</li>
+<li>Exec time: [0.0, 12.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr-video-mode@pipe-a-edp-1:</p>
+<ul>
+<li>Statuses : 2 pass(s) 1 skip(s)</li>
+<li>Exec time: [0.01, 11.94] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15838_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@core_hotunplug@unbind-rebind:</p>
+<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9093/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007">Intel XE#8007</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr-desktop-mode (NEW):</p>
+<ul>
+<li>bat-bmg-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-bmg-2/igt@kms_vrr@cmrr-desktop-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3419">Intel XE#3419</a>) +1 other test skip</li>
+<li>bat-nvls-1:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-nvls-1/igt@kms_vrr@cmrr-desktop-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9076">Intel XE#9076</a>) +1 other test skip</li>
+<li>bat-ptl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-ptl-1/igt@kms_vrr@cmrr-desktop-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5766">Intel XE#5766</a>) +1 other test skip</li>
+<li>bat-adlp-7:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-adlp-7/igt@kms_vrr@cmrr-desktop-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/455">Intel XE#455</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr-video-mode (NEW):</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-lnl-2/igt@kms_vrr@cmrr-video-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2235">Intel XE#2235</a>) +1 other test skip</li>
+<li>bat-nvls-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-nvls-2/igt@kms_vrr@cmrr-video-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8755">Intel XE#8755</a>) +1 other test skip</li>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-atsm-2/igt@kms_vrr@cmrr-video-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1024">Intel XE#1024</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/947">Intel XE#947</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9093/bat-wcl-2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-wcl-2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9115">Intel XE#9115</a>)</li>
+<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9093/bat-wcl-1/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15838/bat-wcl-1/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9115">Intel XE#9115</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9093 -&gt; IGTPW_15838</li>
+<li>Linux: xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778 -&gt; xe-5738-d0f49187686a810b5b83216805c07814ad7542dc</li>
+</ul>
+<p>IGTPW_15838: 15838<br />
+  IGT_9093: 932327f15c92ecb52266ced8c0fbe72931a75880 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5736-d9e9da243a3d5fa370e267ee800471a5d1946778: d9e9da243a3d5fa370e267ee800471a5d1946778<br />
+  xe-5738-d0f49187686a810b5b83216805c07814ad7542dc: d0f49187686a810b5b83216805c07814ad7542dc</p>
+
+</body>
+</html>
+
+--===============7020453965428859251==--
