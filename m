@@ -4,57 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BE3DC88E50
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Sep 2026 07:22:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5F81C88E64
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Sep 2026 07:33:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ACC3010EBA7;
-	Mon, 14 Sep 2026 07:22:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7390310EB9F;
+	Mon, 14 Sep 2026 07:33:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IfAP1WYs";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Be1k3C7V";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C9EFA10EBA7
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Sep 2026 07:21:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789370489; x=1820906489;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=Ac9Cpzy62HiKqdm1uNFDtjhSYZu3MTGJOnBa0gHv4q8=;
- b=IfAP1WYscZhzn8aAgGwIf8h4k/mM0wUMvyHTVWa8B4A5NPI3yF9wiaV+
- D7H6ScvQWjYgHnXQBXJDrM2knY2r5zDRlfSJOc38J2lgYqZDavBuDxUmF
- 2/397XCL8QrIIJFWmOVze6qAQrMFr77foObUpqrmBNiQJT78G9ARUaDAF
- Zk7iI6Wi8m+G6Oe62fGyH3G9Og2i7gCs5rhASd7dfnTsw4P4iNukvUOj+
- +JV3h2RntMOXF87IVU7dB7bjmWHht0Fw2HV/9dtdlUI7WnLN+mkCn6OfW
- sON6G0VBk/9ZVx3Ud3ewAsHKTUCcHz9jJXj9DNq/jnEMAOGi6bLAr2f+9 Q==;
-X-CSE-ConnectionGUID: 241GLJy0QwqbRVNu5t4jeg==
-X-CSE-MsgGUID: 6umd1HObSqinruA03Fp4DA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="100382203"
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; d="scan'208";a="100382203"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Sep 2026 00:21:29 -0700
-X-CSE-ConnectionGUID: iFqPUAMTRzumKk8eiYYrmw==
-X-CSE-MsgGUID: HKzMvLT4SPK56cOtzod2nQ==
-X-ExtLoop1: 1
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.245.64])
- by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Sep 2026 00:21:28 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: [PATCH i-g-t, v3 5/9] tests/intel/kms_dsc: Add
- dsc-compressed-bpp subtest
-In-Reply-To: <20260911210709.943683-6-swati2.sharma@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260911210709.943683-1-swati2.sharma@intel.com>
- <20260911210709.943683-6-swati2.sharma@intel.com>
-Date: Mon, 14 Sep 2026 10:21:25 +0300
-Message-ID: <0a6f9e404e9b9ceddd65e68d44f47a4d982867d6@intel.com>
+Received: from DM5PR21CU001.outbound.protection.outlook.com
+ (mail-centralusazon11011022.outbound.protection.outlook.com [52.101.62.22])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B576A10EB9F
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Sep 2026 07:32:19 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cYP1x2pJb7pnhJUsf8S9MrKfgifNRdNATHZgAG8rflQxrgh3VNFxlLZgNELPSBhWRiyT6NE4boRgoAqL9hO5EJP0UQFS0/yg7uVCr+vmNUW0tjw/2T+WImOk5y2QAa+7smY0M9Dp4tHd409h2yuxucGWF0znPEMSK8C3Z12F2lU15LRM9+KtWE0RKWAhblLlveZwKKnCMjGH0ir7doGEz18SXOT75dPUkgKtY6aa8O0oA1g0bRfpy1ecpuMgqp1lH3kwr6eFjq8mjnGFyojAwWUMVMdOzMdemVDzxiBfQ9lAJNyOcCEbBIdMZaRAHHbiHN0SNGdN9Zbh6/WwAWz4kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=XVhRO5eLrEFCUnUtHv+HrEpMk8MXl0UIaaTlwp51wBg=;
+ b=OtfRWZZGGme5zp4FpOO+GPjw+04yVcJ352pL4IzIn4j3OK3ol+eIvhwArFjsz39ZGw6OU4Z6sX+8XoeTGM1fNfIBaaXCyEWELf4992XTx0qW61aKbKWRenLQyoWrMxaEtEcDQ6+Zdc70JkNq9mEWT3ZDDqMFtL7lPATbv6jHz6gXFZfLmhBe2Vn9uGFj5AEMM8Fi2eR3jgU2D+Vw3kNYLAmnYI5cUji7yO1W3ecyJGNCBRZmtpShyuUKTVhDG4h2fT7Gs4b8DgeKO8PEmsxb9Plewna9dhSi3JmKTuVMPFWbfMrJE71DYb3LpHdk5gGVnL3ERMu98QpZT2dxlSPDIg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=XVhRO5eLrEFCUnUtHv+HrEpMk8MXl0UIaaTlwp51wBg=;
+ b=Be1k3C7VtH+tOhE3+I1czEfidg+qVnpSb2ReFz7IK9y4DIgeOq01efpKyBDnqTM/RSeCpoYEYPWJUxlWKkU+tFZ2dNV8wl1NrH701rLYvaH98+KW9DYrj1VrAz6VubMs5GMdLqaiVdGTExxn5CN8sMQDikudklgOQgXpbMvbcIk=
+Received: from BN0PR03CA0031.namprd03.prod.outlook.com (2603:10b6:408:e7::6)
+ by DM4PR12MB5796.namprd12.prod.outlook.com (2603:10b6:8:63::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 14 Sep
+ 2026 07:32:14 +0000
+Received: from BN1PEPF00004685.namprd03.prod.outlook.com
+ (2603:10b6:408:e7:cafe::8a) by BN0PR03CA0031.outlook.office365.com
+ (2603:10b6:408:e7::6) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.12 via Frontend Transport; Mon,
+ 14 Sep 2026 07:32:14 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BN1PEPF00004685.mail.protection.outlook.com (10.167.243.86) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.428.7 via Frontend Transport; Mon, 14 Sep 2026 07:32:14 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Mon, 14 Sep
+ 2026 02:32:13 -0500
+Received: from james-Birman-PHX.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via
+ Frontend Transport; Mon, 14 Sep 2026 02:32:06 -0500
+From: James Lin <PingLei.Lin@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <alex.hung@amd.com>, <sunpeng.li@amd.com>, <chiahsuan.chung@amd.com>,
+ <Pinglei.lin@amd.com>, James Lin <PingLei.Lin@amd.com>
+Subject: [PATCH i-g-t] Revert "tests/kms_plane_alpha_blend: Skip 7efc
+ alpha-swap CRC check on AMD at >8bpc/DSC"
+Date: Sun, 13 Sep 2026 21:13:45 +0800
+Message-ID: <20260913131359.2314079-1-PingLei.Lin@amd.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN1PEPF00004685:EE_|DM4PR12MB5796:EE_
+X-MS-Office365-Filtering-Correlation-Id: c6c5b247-7c8e-46f5-8890-08df12324bf2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|82310400026|36860700016|23010399003|10067099003|3023799007|11063799006|6133799003|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info: QPWd24JLczG0E4WalNWqob0kaMkda7lyHH2DiDoEAVQsQNRi1vhkdAxI31oG+Bnb3zCq89dEHbMGbdGr0YF4r3nR5eNA3BWqzCsNOxlO7s0/i37DD4zs9wFKKvxpmTmMl17sEIjTHvavXqYH55UMcWTf1OhK+HObsHOThQgZeBTw4ut2mTFY4JjSMHoJeEliikK861o4vdbfgrpfNKbkSvpwhEpW1Go6B7NFebPanS2s5awh2U9cvKNkApX0lI6ZZj32xzM2bnBFPCywmwp1SEk7YXazhWhHO7TacB06mlLdXepPOJs987jpkCWHKHuigU0dPXpk1fwsGdtC66Qo5r8wG4cX6cfxenlx8LVP64h40t3P5nqNBu8YMsWTxiq54xdmwE5lpd89RayJdpVDEBkR5VeCCVI3RQWbgnB76wSgrhBCSN/WrsK24ZteA4d7Pe4QotGeNR9X9xtP9ofhTthA8ReY+J1hWT2VSq4tTbO8Pypztb7DiiMoVZ2CWwBtCe8gAXCF2S1GnjwiqtH5RuMhjgJqlQhNNauMGTkozn0DQV4SebQxEHUMNYk1W9DsqR2QJcYMueX/LErXJN1I4y9fgipVw+sIzyfq3UodtyCWcw3htBy6/mEkc2Ngl7EBGcZdFgQ7/YdkdDsHDbLP8XFSq4XNflU+j+ZwXFZKYV4D/LUMd9YVka2g1X3re0llgluMhroud29pcjzSlg6vfA==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(82310400026)(36860700016)(23010399003)(10067099003)(3023799007)(11063799006)(6133799003)(56012099006)(18002099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: jk8m/8dD2usU4KmGPfrzUTlYdfCza/6RvXP5OcrH+Pw7+YdoEwZbDVFLzR6FonDf+cvvhivpiqcZhrf9nWdB4TtAlD8Vr7RvQJY64uU9Z7cwBHjYTzq3Fy8BwR7zFm1alV4kAoD4B97g4kJPCRFlBp9gsN/ohl4e+OBFY6Ob0qoyCDMuQVCy/NKcwHTICycmkJ4oYzZfXachDofDHmqX+FDNiMojGRmY79n6iDgXMcxhN0tme+v8pkGNEJ99mXhhiryXBYvqZrb/yeUdSa/I1qJyI6IQvEcaV87xlirrae00EYteaJQP67uBTGq5IyXucdT5OXuuIfq3ZcUMaySye4xpijnCZlcBqJ8QBKl0GNPLOioSU3txf8efP941DQNSxLuMTL1nfNkANn0WE8poQZ0gvUk5kaEIaE51B5ZPIn+SKFdyPS4vD5ALHSCNjSlA
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2026 07:32:14.1328 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6c5b247-7c8e-46f5-8890-08df12324bf2
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00004685.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB5796
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,200 +110,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Sat, 12 Sep 2026, Swati Sharma <swati2.sharma@intel.com> wrote:
-> Add a subtest that forces DSC at each compressed BPP supported
-> by DSC-capable connectors. On display version >= 13, use the
-> sink's DPCD-derived maximum compressed BPP and test valid values
-> in descending quarter-BPP steps. Use fixed BPP values on older
-> displays.
->
-> After each successful modeset, read back the active compressed
-> BPP and verify it matches the requested value.
->
-> v2: Rebase
->
-> v3:
-> - Test compressed BPP values in descending quarter steps (Ankit)
-> - Use new DSC_Sink_Max_Compressed_BPP debugfs field to get the
->   sink's max compressed bpp from DPCD (Ankit)
-> - Pass output_format through to igt_get_dsc_sink_max_compressed_bpp()
-> - Print the compressed BPP range and each forced value in the
->   normal test log.
-> - Verify the requested compressed BPP was programmed after each
->   successful modeset. (Sowmiya)
->
-> Assisted-by: GitHub Copilot
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
->  tests/intel/kms_dsc.c | 80 +++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 78 insertions(+), 2 deletions(-)
->
-> diff --git a/tests/intel/kms_dsc.c b/tests/intel/kms_dsc.c
-> index 1e30f6fee..90dbcb444 100644
-> --- a/tests/intel/kms_dsc.c
-> +++ b/tests/intel/kms_dsc.c
-> @@ -38,6 +38,8 @@
->   * Mega feature: VDSC
->   */
->  
-> +#include <math.h>
-> +
->  #include "kms_dsc_helper.h"
->  
->  /**
-> @@ -59,6 +61,9 @@
->   * @with-output-formats-with-bpc: DSC with output formats with certain input BPC for the connector
->   * @fractional-bpp:               DSC with fractional bpp with default parameters
->   * @fractional-bpp-with-bpc:      DSC with fractional bpp with certain input BPC for the connector
-> + * @compressed-bpp:               DSC with compressed bpp
-> + * @compressed-bpp-bigjoiner:               DSC with big joiner and compressed bpp
-> + * @compressed-bpp-ultrajoiner:             DSC with ultra joiner and compressed bpp
->   * @basic-bigjoiner:                        DSC with big joiner and default parameters
->   * @with-formats-bigjoiner:                 DSC with big joiner and diff formats
->   * @with-bpc-bigjoiner:                     DSC with big joiner and certain input BPC
-> @@ -88,6 +93,7 @@ IGT_TEST_DESCRIPTION("Test to validate display stream compression");
->  #define TEST_DSC_FORMAT		(1<<1)
->  #define TEST_DSC_OUTPUT_FORMAT	(1<<2)
->  #define TEST_DSC_FRACTIONAL_BPP (1<<3)
-> +#define TEST_DSC_COMPRESSED_BPP (1<<4)
->  
->  typedef struct {
->  	int drm_fd;
-> @@ -100,6 +106,7 @@ typedef struct {
->  	igt_output_t *output;
->  	igt_output_t *valid_output[IGT_MAX_PIPES];
->  	int input_bpc;
-> +	float compressed_bpp;
->  	int disp_ver;
->  	igt_crtc_t *crtc;
->  	enum joined_pipes force_joined_pipes;
-> @@ -151,6 +158,9 @@ static void test_reset(data_t *data)
->  	igt_debug("Reset DSC output format\n");
->  	data->output_format = DSC_FORMAT_RGB;
->  	force_dsc_output_format(data->drm_fd, data->output, data->output_format);
-> +
-> +	igt_debug("Reset compressed BPP\n");
-> +	force_dsc_enable_compressed_bpp(data->drm_fd, data->output, 0);
->  }
->  
->  static void test_cleanup(data_t *data)
-> @@ -169,6 +179,38 @@ static void test_cleanup(data_t *data)
->  				       JOINED_PIPES_DEFAULT);
->  }
->  
-> +static int
-> +get_compressed_bpp_list(int drm_fd, int disp_ver, igt_output_t *output,
-> +			enum dsc_output_format output_format,
-> +			float *bpp_list, int max_entries)
-> +{
-> +	int count = 0;
-> +	int min_bpp_q;
-> +	int max_bpp_q;
-> +
-> +	if (disp_ver < 13) {
-> +		const int fixed_bpp[] = {6, 8, 10, 12, 15};
-> +
-> +		min_bpp_q = fixed_bpp[0] * 4;
-> +		max_bpp_q = fixed_bpp[ARRAY_SIZE(fixed_bpp) - 1] * 4;
-> +	} else {
-> +		max_bpp_q = (int)(igt_get_dsc_sink_max_compressed_bpp(drm_fd, output->name,
-> +								      output_format) * 4);
-> +
-> +		/* Min compressed BPP is 6 for YCBCR420 and 8 for RGB/YCBCR444. */
-> +		min_bpp_q = (output_format == DSC_FORMAT_YCBCR420 ? 6 : 8) * 4;
-> +	}
-> +
-> +	igt_info("Compressed BPP range for %s: max %.2f, min %.2f\n",
-> +		 kmstest_dsc_output_format_str(output_format),
-> +		 max_bpp_q / 4.0f, min_bpp_q / 4.0f);
-> +
-> +	for (int bpp_q = max_bpp_q; bpp_q >= min_bpp_q && count < max_entries; bpp_q--)
-> +		bpp_list[count++] = bpp_q / 4.0f;
-> +
-> +	return count;
-> +}
-> +
->  /* re-probe connectors and do a modeset with DSC */
->  static void update_display(data_t *data, uint32_t test_type)
->  {
-> @@ -260,6 +302,11 @@ static void update_display(data_t *data, uint32_t test_type)
->  
->  		igt_output_override_mode(output, mode);
->  
-> +		if (test_type & TEST_DSC_COMPRESSED_BPP) {
-> +			igt_info("Forcing compressed BPP to %.2f\n", data->compressed_bpp);
-> +			force_dsc_enable_compressed_bpp(data->drm_fd, data->output, data->compressed_bpp);
-> +		}
-> +
->  		if (!intel_pipe_output_combo_valid(display)) {
->  			if (data->output_format == DSC_FORMAT_RGB) {
->  				igt_info("No valid pipe/output/mode found.\n");
-> @@ -300,6 +347,14 @@ static void update_display(data_t *data, uint32_t test_type)
->  				mode->vdisplay,
->  				mode->vrefresh,
->  				enabled ? "ON" : "OFF");
-> +	if (test_type & TEST_DSC_COMPRESSED_BPP) {
-> +		float actual_bpp =
-> +			igt_get_dsc_sink_compressed_bpp(data->drm_fd, data->crtc->pipe);
+[Why & how]
+Causes some gfx subtests that previously passed to become SKIP.
+Root cause needs further investigation.
 
-Right, so you have crtc available here to pass to
-igt_get_dsc_sink_compressed_bpp().
+This reverts commit 4a6a59f314f61e1e4156bb13a65efabee31a76fc.
 
-> +
-> +		igt_assert_f(fabsf(actual_bpp - data->compressed_bpp) < 0.01f,
-> +			     "Requested compressed BPP %.2f, got %.2f\n",
-> +			     data->compressed_bpp, actual_bpp);
-> +	}
->  
->  	restore_force_dsc_en();
->  	restore_force_dsc_fractional_bpp_en();
-> @@ -331,6 +386,8 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->  	igt_display_t *display = &data->display;
->  	igt_crtc_t *crtc;
->  	int n_pipes = igt_display_n_crtcs(display);
-> +	int bpp_count = 1;
-> +	float bpp_list[64] = {0};
->  	char name[3][LEN] = {
->  				{0},
->  				{0},
-> @@ -380,9 +437,18 @@ static void test_dsc(data_t *data, uint32_t test_type, int bpc,
->  			if (test_type & TEST_DSC_BPC)
->  				snprintf(&name[2][0], LEN, "-%dbpc", data->input_bpc);
->  
-> +			if (test_type & TEST_DSC_COMPRESSED_BPP)
-> +				bpp_count = get_compressed_bpp_list(data->drm_fd, data->disp_ver,
-> +								     data->output, data->output_format,
-> +								     bpp_list, ARRAY_SIZE(bpp_list));
-> +
->  			igt_dynamic_f("pipe-%s-%s%s%s%s", igt_crtc_name(data->crtc), data->output->name,
-> -				      &name[0][0], &name[1][0], &name[2][0])
-> -				update_display(data, test_type);
-> +				      &name[0][0], &name[1][0], &name[2][0]) {
-> +				for (int j = 0; j < bpp_count; j++) {
-> +					data->compressed_bpp = bpp_list[j];
-> +					update_display(data, test_type);
-> +				}
-> +			}
->  
->  			if (data->limited)
->  				break;
-> @@ -546,6 +612,16 @@ int igt_main_args("l", NULL, help_str, opt_handler, &data)
->  					 bpc_list[j], DRM_FORMAT_XRGB8888,
->  					 DSC_FORMAT_RGB, joiner_tests[i]);
->  		}
-> +
-> +		igt_describe_f("Tests basic display stream compression functionality "
-> +			       "if supported by a connector by forcing DSC%s and "
-> +			       "compressed bpp on all connectors that support it.",
-> +			       joiner_tests[i] ? " and joiner" : "");
-> +		igt_subtest_with_dynamic_f("dsc-compressed-bpp%s",
-> +					   joiner_subtest_suffix(joiner_tests[i]))
-> +			test_dsc(&data, TEST_DSC_COMPRESSED_BPP,
-> +				 DEFAULT_BPC, DRM_FORMAT_XRGB8888,
-> +				 DSC_FORMAT_RGB, joiner_tests[i]);
->  	}
->  
->  	igt_fixture() {
+Signed-off-by: James Lin <PingLei.Lin@amd.com>
+---
+ tests/kms_plane_alpha_blend.c | 44 -----------------------------------
+ 1 file changed, 44 deletions(-)
 
+diff --git a/tests/kms_plane_alpha_blend.c b/tests/kms_plane_alpha_blend.c
+index e040d5bec..3a2649833 100644
+--- a/tests/kms_plane_alpha_blend.c
++++ b/tests/kms_plane_alpha_blend.c
+@@ -33,7 +33,6 @@
+  */
+ 
+ #include "igt.h"
+-#include "igt_amd.h"
+ 
+ /**
+  * SUBTEST: alpha-%s
+@@ -78,7 +77,6 @@ typedef struct {
+ 	struct igt_fb xrgb_fb, argb_fb_0, argb_fb_cov_0, argb_fb_7e, argb_fb_cov_7e, argb_fb_fc, argb_fb_cov_fc, argb_fb_100, black_fb, gray_fb;
+ 	igt_crc_t ref_crc;
+ 	igt_pipe_crc_t *pipe_crc;
+-	igt_output_t *output;
+ } data_t;
+ 
+ static bool in_simulation;
+@@ -444,49 +442,11 @@ static void constant_alpha_max(data_t *data, igt_crtc_t *crtc,
+ 	igt_plane_set_fb(plane, NULL);
+ }
+ 
+-/*
+- * The 7e/fc subtests (alpha-7efc, coverage-7efc) assert that swapping the
+- * plane global alpha with the per-pixel fb alpha (0x7e <-> 0xfc) yields a
+- * bit-identical pipe CRC. That identity only holds when the whole blend
+- * datapath collapses to exact 8-bit arithmetic.
+- *
+- * On AMD DCN the alpha/gain values are 8-bit, but the blend itself is carried
+- * at higher internal precision and only quantized down to the output bpc at
+- * the very end, so the swap can leave a sub-LSB residue. At 8 bpc the output
+- * quantization discards it and the two CRCs match; at >8 bpc, or when the
+- * stream is DSC-compressed (carried at its native >8 bpc), the residue is
+- * retained and the CRCs differ. This matches observation: the same test
+- * PASSes on an 8 bpc eDP link without DSC and FAILs on an eDP link brought
+- * up with DSC.
+- *
+- * So keep the strict bit-exact check everywhere except AMD at >8 bpc or with
+- * DSC active, where the swap is legitimately not bit-exact.
+- */
+-static void skip_if_alpha_swap_not_exact(data_t *data, igt_crtc_t *crtc)
+-{
+-	unsigned int bpc;
+-	bool dsc;
+-
+-	if (!is_amdgpu_device(data->gfx_fd))
+-		return;
+-
+-	bpc = igt_get_crtc_current_bpc(crtc);
+-	dsc = data->output &&
+-	      is_dp_dsc_supported(data->gfx_fd, data->output->name) &&
+-	      igt_amd_read_dsc_clock_status(data->gfx_fd, data->output->name) > 0;
+-
+-	igt_skip_on_f(bpc > 8 || dsc,
+-		      "plane-alpha/fb-alpha swap is not bit-exact on AMD DCN "
+-		      "at >8bpc/DSC (bpc=%u, dsc=%d)\n", bpc, dsc);
+-}
+-
+ static void alpha_7efc(data_t *data, igt_crtc_t *crtc, igt_plane_t *plane)
+ {
+ 	igt_display_t *display = &data->display;
+ 	igt_crc_t ref_crc = {}, crc = {};
+ 
+-	skip_if_alpha_swap_not_exact(data, crtc);
+-
+ 	if (plane->type != DRM_PLANE_TYPE_PRIMARY)
+ 		igt_plane_set_fb(igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_PRIMARY),
+ 				 &data->gray_fb);
+@@ -515,8 +475,6 @@ static void coverage_7efc(data_t *data, igt_crtc_t *crtc, igt_plane_t *plane)
+ 	igt_display_t *display = &data->display;
+ 	igt_crc_t ref_crc = {}, crc = {};
+ 
+-	skip_if_alpha_swap_not_exact(data, crtc);
+-
+ 	igt_require(igt_plane_try_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, "Coverage"));
+ 	igt_display_commit2(display, COMMIT_ATOMIC);
+ 	igt_pipe_crc_start(data->pipe_crc);
+@@ -581,8 +539,6 @@ static void run_test_on_crtc_planes(data_t *data, igt_crtc_t *crtc,
+ 	int first_plane = -1;
+ 	int last_plane = -1;
+ 
+-	data->output = output;
+-
+ 	for_each_plane_on_crtc(crtc, plane) {
+ 		if (!igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
+ 			continue;
 -- 
-Jani Nikula, Intel
+2.43.0
+
