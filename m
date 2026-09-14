@@ -4,27 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1732BC88E6F
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Sep 2026 19:13:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32FEC88E72
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Sep 2026 19:22:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9929510E15B;
-	Mon, 14 Sep 2026 19:13:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3982A10F18D;
+	Mon, 14 Sep 2026 19:22:56 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9FE810E15B;
- Mon, 14 Sep 2026 19:13:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6EB8A10F18A;
+ Mon, 14 Sep 2026 19:22:08 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0792693805793522182=="
+ boundary="===============6941832619822029136=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fcolor=3A_Add_su?=
- =?utf-8?q?pport_for_background_color_testing=2E_=28rev4=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Revert_=22tests/kms=5Fpla?=
+ =?utf-8?q?ne=5Falpha=5Fblend=3A_Skip_7efc_alpha-swap_CRC_check_on_AMD_at_?=
+ =?utf-8?q?=3E8bpc/DSC=22?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Maarten Lankhorst" <dev@lankhorst.se>
+To: "James Lin" <pinglei.lin@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 14 Sep 2026 19:13:07 -0000
-Message-ID: <178941318768.159192.11608040939482477038@61270ab9df2a>
+Date: Mon, 14 Sep 2026 19:22:08 -0000
+Message-ID: <178941372844.159168.2656886235973611737@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260914094415.10899-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20260914094415.10899-1-kamil.konieczny@linux.intel.com>
+References: <20260913131359.2314079-1-PingLei.Lin@amd.com>
+In-Reply-To: <20260913131359.2314079-1-PingLei.Lin@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +42,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0792693805793522182==
+--===============6941832619822029136==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_color: Add support for background color testing. (rev4)
-URL   : https://patchwork.freedesktop.org/series/167119/
+Series: Revert "tests/kms_plane_alpha_blend: Skip 7efc alpha-swap CRC check on AMD at >8bpc/DSC"
+URL   : https://patchwork.freedesktop.org/series/174015/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9094_BAT -> XEIGTPW_15840_BAT
+CI Bug Log - changes from IGT_9094 -> IGTPW_15839
 ====================================================
 
 Summary
@@ -64,47 +65,36 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15839/index.html
 
-Participating hosts (15 -> 15)
+Participating hosts (38 -> 37)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): bat-dg2-13 
 
-Known issues
-------------
 
-  Here are the changes found in XEIGTPW_15840_BAT that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@xe_waitfence@engine:
-    - bat-ptl-2:          [FAIL][1] ([Intel XE#9109]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9094/bat-ptl-2/igt@xe_waitfence@engine.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15840/bat-ptl-2/igt@xe_waitfence@engine.html
-
-  
-  [Intel XE#9109]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9109
+  No changes found
 
 
 Build changes
 -------------
 
-  * IGT: IGT_9094 -> IGTPW_15840
-  * Linux: xe-5745-7d3acf4579249aa2d991192f3452017a3d72b797 -> xe-5746-19d79b860b8d526661d2697b4abc21e262f614d0
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9094 -> IGTPW_15839
 
-  IGTPW_15840: 15840
+  CI-20190529: 20190529
+  CI_DRM_19144: 19d79b860b8d526661d2697b4abc21e262f614d0 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15839: 15839
   IGT_9094: b72ca59712e9021e1a1a0a5a89ff5eb74982ad99 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5745-7d3acf4579249aa2d991192f3452017a3d72b797: 7d3acf4579249aa2d991192f3452017a3d72b797
-  xe-5746-19d79b860b8d526661d2697b4abc21e262f614d0: 19d79b860b8d526661d2697b4abc21e262f614d0
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15840/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15839/index.html
 
---===============0792693805793522182==
+--===============6941832619822029136==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -124,42 +114,35 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_color: Add support for background color testing. (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167119/">https://patchwork.freedesktop.org/series/167119/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Revert &quot;tests/kms_plane_alpha_blend: Skip 7efc alpha-swap CRC check on AMD at &gt;8bpc/DSC&quot;</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174015/">https://patchwork.freedesktop.org/series/174015/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15840/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15840/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15839/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15839/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9094_BAT -&gt; XEIGTPW_15840_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9094 -&gt; IGTPW_15839</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15840_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@xe_waitfence@engine:<ul>
-<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9094/bat-ptl-2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9109">Intel XE#9109</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15840/bat-ptl-2/igt@xe_waitfence@engine.html">PASS</a></li>
-</ul>
-</li>
-</ul>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15839/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9094 -&gt; IGTPW_15840</li>
-<li>Linux: xe-5745-7d3acf4579249aa2d991192f3452017a3d72b797 -&gt; xe-5746-19d79b860b8d526661d2697b4abc21e262f614d0</li>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9094 -&gt; IGTPW_15839</li>
 </ul>
-<p>IGTPW_15840: 15840<br />
-  IGT_9094: b72ca59712e9021e1a1a0a5a89ff5eb74982ad99 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5745-7d3acf4579249aa2d991192f3452017a3d72b797: 7d3acf4579249aa2d991192f3452017a3d72b797<br />
-  xe-5746-19d79b860b8d526661d2697b4abc21e262f614d0: 19d79b860b8d526661d2697b4abc21e262f614d0</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19144: 19d79b860b8d526661d2697b4abc21e262f614d0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15839: 15839<br />
+  IGT_9094: b72ca59712e9021e1a1a0a5a89ff5eb74982ad99 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============0792693805793522182==--
+--===============6941832619822029136==--
