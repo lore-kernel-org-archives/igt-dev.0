@@ -4,60 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDB4AC88E50
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Sep 2026 08:14:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67940C88E50
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Sep 2026 09:45:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7907510EBFA;
-	Mon, 14 Sep 2026 08:14:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E0A8A10E0B4;
+	Mon, 14 Sep 2026 09:45:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PtIRcVj5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kPt7fXvv";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A4D5F10EBF7
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Sep 2026 08:13:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DCEAD10E0B4
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Sep 2026 09:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789373617; x=1820909617;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=m8JA4YmowQ5tzDMIQTHepkVFkRW+L1gybqsjDrBaZCw=;
- b=PtIRcVj5RsSDp1neEODypAsIqlCqAvXYZ/xSDDH2yyz1E4SY2ZffvMFw
- WTxM3zroNvlAdLWbh1pxeV28D/uUK0nZQ6QeLzs5aQgq73shm7kg5tJF3
- Pd3jlI/CAShXVaiFvrgrErTGbLg+aUU9MJ+UUd1Xj5XSuB4UINAHVBywP
- DH9C85OJdNcrZmgVl7My0kFdOKkCQjuYOYQ4m/7wZRQQmVkU9mV6rHxdN
- 9olWt1ocshZMiAk4biqUT95jQf+H+0DfTAOf7ZS5AH2gEG19d/GrfBb0Q
- T27ar1CxWpc5bSzigP8YSVvETXOvSQNZmfCRT270P7e0TUyrp16zUUmBO Q==;
-X-CSE-ConnectionGUID: rVfnq42uQESPXAHg7OCXpA==
-X-CSE-MsgGUID: HY5OOGRuTMylIR1DxE6sVQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="232828"
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
-   d="scan'208";a="232828"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Sep 2026 01:06:30 -0700
-X-CSE-ConnectionGUID: arpIJlSuRHuSyadEBKeeVw==
-X-CSE-MsgGUID: vO/WvcDqTXmguoEgB9s4Sw==
+ t=1789379063; x=1820915063;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=KKwXRuVSbGvUZVxFCzQzDQofJJnqvQHp2PPA+KUYtN8=;
+ b=kPt7fXvvTzkp0M5r28fgS2PFxYrzVjvIeX2QzIFuYSc7NL0aCfwUeNsW
+ nLxdlv4TRo69xTf/2cILjnFB0ZVOjdfeMkYCLM+Gjj00ye0sU5ieBoMzl
+ jJ4LXYSQrBmbsap7j6eS0MZx2trsK/FSuFrrYMp92U8sCsClA8Xsm02Q6
+ krMBQot2Y/MeK4VCn7P+hc9TPXfUP3okICPPWITAs9LDV9MzmWV/mEoRa
+ 7j4t0NksjXVBwULeNGeW+Z7bgVKttbagH6b0NUEavbXs91BNGsmdboZ/m
+ f0wH5gTnRK8meJJK5ZEHo21dhcxQlQKXSTjSRIIFgxkOnLg7Hg0l+FVB0 w==;
+X-CSE-ConnectionGUID: RHrHXwiaSraa3IRdmnQ8UA==
+X-CSE-MsgGUID: GhIwBra6QoqdJ7msgo7xlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="100390055"
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; d="scan'208";a="100390055"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Sep 2026 02:44:22 -0700
+X-CSE-ConnectionGUID: NqLRf02NSBedjC7UORIysQ==
+X-CSE-MsgGUID: 2cZV+5fWRYOCDpPq+vTLcQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; d="scan'208";a="277837275"
-Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.245.64])
- by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Sep 2026 01:06:29 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
-Subject: Re: [PATCH i-g-t 1/4] tests/kms_chamelium_color_pipeline: prefer
- igt_crtc_name() over kmstest_pipe_name()
-In-Reply-To: <20260902143415.zgtnwjl5fg37co7u@kamilkon-DESK.igk.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <cover.1788252273.git.jani.nikula@intel.com>
- <939f7c55bbae51a09e8f0e5001682abf4e7c5450.1788252273.git.jani.nikula@intel.com>
- <20260902143415.zgtnwjl5fg37co7u@kamilkon-DESK.igk.intel.com>
-Date: Mon, 14 Sep 2026 11:06:26 +0300
-Message-ID: <d7db1c124f95fc39d68b0b192b1e23104ef278f1@intel.com>
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; d="scan'208";a="271184131"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.104])
+ by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Sep 2026 02:44:20 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Maarten Lankhorst <dev@lankhorst.se>,
+ =?UTF-8?q?Adri=C3=A1n=20Larumbe?= <adrian.larumbe@collabora.com>,
+ Pranay Samala <pranay.samala@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t v4 0/2] tests/kms_color: Add support for background
+ color testing.
+Date: Mon, 14 Sep 2026 11:44:12 +0200
+Message-ID: <20260914094415.10899-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,44 +72,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Wed, 02 Sep 2026, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-> Hi Jani,
-> On 2026-09-01 at 11:46:37 +0300, Jani Nikula wrote:
->> Reduce the direct pipe usage.
->> 
->> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> LGTM
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+      This is resend of patchset from https://patchwork.freedesktop.org/series/167119/
+with dropped first patch for drm-uapi, as it was merged, for testing on new
+kernel 7.3.0-rc3.
 
-Thanks for the reviews, pushed the lot to master.
 
-BR,
-Jani.
+v4: resend of kms_color changes (Kamil)
 
->
-> Regards,
-> Kamil
->
->> ---
->>  tests/chamelium/kms_chamelium_color_pipeline.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
->> index db6107221d51..ee096f711a88 100644
->> --- a/tests/chamelium/kms_chamelium_color_pipeline.c
->> +++ b/tests/chamelium/kms_chamelium_color_pipeline.c
->> @@ -188,7 +188,7 @@ test_plane_colorops(data_t *data, igt_crtc_t *crtc,
->>  		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
->>  			continue;
->>  
->> -		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(crtc->pipe), plane_id)
->> +		igt_dynamic_f("pipe-%s-plane-%u", igt_crtc_name(crtc), plane_id)
->>  			_test_plane_colorops(data, plane, fb_colors,
->>  					     exp_colors, colorops,
->>  					     data->ports[port_idx]);
->> -- 
->> 2.47.3
->> 
+v3: sync with most recent drm-next uapi change, fixed subject
+  in second patch (removed dot from end), removed one non-needed
+  empty line from last patch (Kamil)
+
+Cc: Maarten Lankhorst <dev@lankhorst.se>
+Cc: Adrián Larumbe <adrian.larumbe@collabora.com>
+Cc: Pranay Samala <pranay.samala@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+
+Maarten Lankhorst (2):
+  lib/igt_kms: Add support for the BACKGROUND_COLOR property
+  tests/kms_color: Add background-color subtest to test the
+    BACKGROUND_COLOR property
+
+ lib/igt_kms.c     |  6 ++++
+ lib/igt_kms.h     |  1 +
+ tests/kms_color.c | 71 +++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 78 insertions(+)
 
 -- 
-Jani Nikula, Intel
+2.55.0
+
