@@ -4,51 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF6DC88E50
-	for <igt-dev@archiver.kernel.org>; Mon, 14 Sep 2026 07:50:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDB4AC88E50
+	for <igt-dev@archiver.kernel.org>; Mon, 14 Sep 2026 08:14:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E76E810E131;
-	Mon, 14 Sep 2026 07:50:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7907510EBFA;
+	Mon, 14 Sep 2026 08:14:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.b="wiLIr9Bi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PtIRcVj5";
 	dkim-atps=neutral
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E804910E131
- for <igt-dev@lists.freedesktop.org>; Mon, 14 Sep 2026 07:50:00 +0000 (UTC)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org
- [IPv6:2001:67c:2050:b231:465::102])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
- (No client certificate requested)
- by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4hjy3n2mcxz8spJ;
- Mon, 14 Sep 2026 09:49:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org;
- s=mail20150812; t=1789372197;
- h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
- to:to:cc:cc:mime-version:mime-version:content-type:content-type:
- content-transfer-encoding:content-transfer-encoding:
- in-reply-to:in-reply-to:references:references;
- bh=RVff+eiG3qLeW8bv7W8onGf7CsHjpCvLaMGKOhN8DVM=;
- b=wiLIr9BibX5Re3Nhc+zjMhGSfG5ooErlXc76cTksbLuvO3OnkDuVz8pYdjCJloq0fvnOWk
- aB646cOYonQSEckcI1cb68zeW5oduHenJAECBp0+6Uxhf/CQ8qLr7a/pHpldbVHopQdq57
- UYJyE8cqYf1Jan7VcjKe7fzhYoC8seflJDyMaYAIv5MZgumtBbLUCDbG8zPav9qE//rMet
- sHxv1iR6OEWRTwUz3dNc7p4JElbx8/N+jXYymMZ+XaXeoqiYtF7haSDWUDg63jbGtpIKAW
- WYaXMD1l3Z/YXichHmyz6wOowtmWjoNcWQigDfrax1JKTXoh1xPz2O7mzSHF1g==
-Message-ID: <6ce6284e51aa556b326c4d26d1e82cbe79603b6c.camel@mailbox.org>
-Subject: Re: [PATCH i-g-t,v3 3/9] lib/dsc: Add
- igt_get_dsc_sink_compressed_bpp()
-From: Manuel Ebner <manuelebner@mailbox.org>
-To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com
-Date: Mon, 14 Sep 2026 09:49:53 +0200
-In-Reply-To: <20260911210709.943683-4-swati2.sharma@intel.com>
-References: <20260911210709.943683-1-swati2.sharma@intel.com>
- <20260911210709.943683-4-swati2.sharma@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4D5F10EBF7
+ for <igt-dev@lists.freedesktop.org>; Mon, 14 Sep 2026 08:13:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1789373617; x=1820909617;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=m8JA4YmowQ5tzDMIQTHepkVFkRW+L1gybqsjDrBaZCw=;
+ b=PtIRcVj5RsSDp1neEODypAsIqlCqAvXYZ/xSDDH2yyz1E4SY2ZffvMFw
+ WTxM3zroNvlAdLWbh1pxeV28D/uUK0nZQ6QeLzs5aQgq73shm7kg5tJF3
+ Pd3jlI/CAShXVaiFvrgrErTGbLg+aUU9MJ+UUd1Xj5XSuB4UINAHVBywP
+ DH9C85OJdNcrZmgVl7My0kFdOKkCQjuYOYQ4m/7wZRQQmVkU9mV6rHxdN
+ 9olWt1ocshZMiAk4biqUT95jQf+H+0DfTAOf7ZS5AH2gEG19d/GrfBb0Q
+ T27ar1CxWpc5bSzigP8YSVvETXOvSQNZmfCRT270P7e0TUyrp16zUUmBO Q==;
+X-CSE-ConnectionGUID: rVfnq42uQESPXAHg7OCXpA==
+X-CSE-MsgGUID: HY5OOGRuTMylIR1DxE6sVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11904"; a="232828"
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; 
+   d="scan'208";a="232828"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Sep 2026 01:06:30 -0700
+X-CSE-ConnectionGUID: arpIJlSuRHuSyadEBKeeVw==
+X-CSE-MsgGUID: vO/WvcDqTXmguoEgB9s4Sw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,102,1787036400"; d="scan'208";a="277837275"
+Received: from conormcd-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.64])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Sep 2026 01:06:29 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org, ville.syrjala@linux.intel.com
+Subject: Re: [PATCH i-g-t 1/4] tests/kms_chamelium_color_pipeline: prefer
+ igt_crtc_name() over kmstest_pipe_name()
+In-Reply-To: <20260902143415.zgtnwjl5fg37co7u@kamilkon-DESK.igk.intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <cover.1788252273.git.jani.nikula@intel.com>
+ <939f7c55bbae51a09e8f0e5001682abf4e7c5450.1788252273.git.jani.nikula@intel.com>
+ <20260902143415.zgtnwjl5fg37co7u@kamilkon-DESK.igk.intel.com>
+Date: Mon, 14 Sep 2026 11:06:26 +0300
+Message-ID: <d7db1c124f95fc39d68b0b192b1e23104ef278f1@intel.com>
 MIME-Version: 1.0
-X-MBO-RS-META: bdx6k3prk7iupj77h5g58mxexpf7uxzj
-X-MBO-RS-ID: dd53f620f1bbc666399
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,51 +73,44 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi
+On Wed, 02 Sep 2026, Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
+> Hi Jani,
+> On 2026-09-01 at 11:46:37 +0300, Jani Nikula wrote:
+>> Reduce the direct pipe usage.
+>> 
+>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> LGTM
+> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-On Sat, 2026-09-12 at 02:37 +0530, Swati Sharma wrote:
-> Add a helper to read the active pipe's compressed BPP from
-> `i915_display_info` debugfs.
->=20
-> v2: Rebase
->=20
-> Assisted-by: GitHub Copilot
-> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
-> ---
-> =C2=A0lib/igt_dsc.c | 38 ++++++++++++++++++++++++++++++++++++++
-> =C2=A0lib/igt_dsc.h |=C2=A0 1 +
-> =C2=A02 files changed, 39 insertions(+)
->=20
-> diff --git a/lib/igt_dsc.c b/lib/igt_dsc.c
-> index a1d98500a..0f938284e 100644
-> --- a/lib/igt_dsc.c
-> +++ b/lib/igt_dsc.c
-> @@ -378,3 +378,41 @@ int igt_get_dsc_sink_max_slice_count(int drmfd, char=
- *connector_name)
-> =C2=A0
-> =C2=A0	return max_slice_count;
-> =C2=A0}
-> +
-> +/**
-> + * igt_get_dsc_sink_compressed_bpp:
-> + * @drmfd: A drm file descriptor
-> + * @pipe: display pipe
-> + *
-> + * Returns: The dsc sink compressed bpp.
+Thanks for the reviews, pushed the lot to master.
 
-Most kerneldocs have 'Returns '
- * Returns the dsc sink compressed bpp.
-but that's a nitpick.
+BR,
+Jani.
 
-> + */
-> +float igt_get_dsc_sink_compressed_bpp(int drmfd, enum pipe pipe)
-> +{
-> +	char buf[8192];
-> +	char dest[20];
+>
+> Regards,
+> Kamil
+>
+>> ---
+>>  tests/chamelium/kms_chamelium_color_pipeline.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
+>> index db6107221d51..ee096f711a88 100644
+>> --- a/tests/chamelium/kms_chamelium_color_pipeline.c
+>> +++ b/tests/chamelium/kms_chamelium_color_pipeline.c
+>> @@ -188,7 +188,7 @@ test_plane_colorops(data_t *data, igt_crtc_t *crtc,
+>>  		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+>>  			continue;
+>>  
+>> -		igt_dynamic_f("pipe-%s-plane-%u", kmstest_pipe_name(crtc->pipe), plane_id)
+>> +		igt_dynamic_f("pipe-%s-plane-%u", igt_crtc_name(crtc), plane_id)
+>>  			_test_plane_colorops(data, plane, fb_colors,
+>>  					     exp_colors, colorops,
+>>  					     data->ports[port_idx]);
+>> -- 
+>> 2.47.3
+>> 
 
-Could you replace 8192 and 20 with sizeof() or a #define value?
-
-> [...]
-
-Thanks
- Manuel
+-- 
+Jani Nikula, Intel
