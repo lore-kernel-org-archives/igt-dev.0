@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08EDAC88E53
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Sep 2026 12:49:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46A59C88E53
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Sep 2026 12:52:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C80310FBF7;
-	Tue, 15 Sep 2026 12:49:33 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AA3E10E262;
- Tue, 15 Sep 2026 12:48:49 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4511762313763813340=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id D933710E4F4;
+	Tue, 15 Sep 2026 12:52:16 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NauTSMXG";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4753510E4CD
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Sep 2026 12:51:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1789476691; x=1821012691;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=SbpK4Ze+8/L6QQ36iqN/YXD5kjO2/Hi/5OzkyT8G+W4=;
+ b=NauTSMXGbSjhZh0bmWKdQxsxrM9BIfQb4p3UUXY/vZwbxru3Dbm/C9uC
+ uSzJ6GfPmUYwANFTzNM35DFwvZRIVYJE0YRvTNfNfGGPux49In7CelBwy
+ 8ivwg5Anu18YnfqKYlTBp18i7gsjE8k8xZAvwXt6mE0rqBAhISt1Y8OpK
+ 3UYRR/wR939ECl4DrbnBgfprxg023G2yw5zIh89+UHyC9JGKAvQ3t278L
+ XIgQ1r2xwFMAj/Lur4Eyi7sumrDCMkhrcjFPGonjP1s7WLiWr6Pt+SefG
+ +5XDEQcmWfqbAL3Np9L6rNrerMGxUzObS/n+4hTf4HsALXOBecKWKLYzH A==;
+X-CSE-ConnectionGUID: K8VkNkpmRcO9CXBrZO2clw==
+X-CSE-MsgGUID: EV0N3D12SeuIwUsCY+L2dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="107350077"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="107350077"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2026 05:51:31 -0700
+X-CSE-ConnectionGUID: Ar4HrvXzQaCdCFeu+P6TIQ==
+X-CSE-MsgGUID: gpIguoezTPeKhNGPFHOaGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="302884596"
+Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.22])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2026 05:51:29 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>
+Subject: [PATCH i-g-t] gitlab-ci: Fix computing sum for debian image
+Date: Tue, 15 Sep 2026 14:51:23 +0200
+Message-ID: <20260915125123.228545-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fcursor=5Flegacy?=
- =?utf-8?q?=3A_Skip_timing_checks_in_simulation_to_avoid_false_negatives?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 15 Sep 2026 12:48:49 -0000
-Message-ID: <178947652942.164377.18434807061219364138@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260915081959.257160-1-jeevan.b@intel.com>
-In-Reply-To: <20260915081959.257160-1-jeevan.b@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +65,40 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4511762313763813340==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Debian container has a dependency on minimal image, so it should
+also contribute to sum calculations.  It could make building fail
+when minimal image contain new building requirement, so fix it
+and calculate sum from both dockerfiles, base and minimal.
 
-== Series Details ==
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/201
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ .gitlab-ci/pull-or-rebuild.sh | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-Series: tests/kms_cursor_legacy: Skip timing checks in simulation to avoid false negatives
-URL   : https://patchwork.freedesktop.org/series/174115/
-State : success
+diff --git a/.gitlab-ci/pull-or-rebuild.sh b/.gitlab-ci/pull-or-rebuild.sh
+index aa1bddcde..fd68ef1a9 100755
+--- a/.gitlab-ci/pull-or-rebuild.sh
++++ b/.gitlab-ci/pull-or-rebuild.sh
+@@ -28,7 +28,12 @@ REF=${4:-${CI_COMMIT_REF_NAME:-latest}}
+ 
+ REF=$(echo $REF | tr / - )
+ IMAGENAME=$CI_REGISTRY/$CI_PROJECT_PATH/$NAME
+-DOCKERFILE_CHECKSUM=$(sha1sum $DOCKERFILE | cut -d ' ' -f1)
++if [ -f ${DOCKERFILE}-minimal ]; then
++	DOCKERFILE_MINIMAL=${DOCKERFILE}-minimal
++else
++	DOCKERFILE_MINIMAL=
++fi
++DOCKERFILE_CHECKSUM=$(cat ${DOCKERFILE} ${DOCKERFILE_MINIMAL} | sha1sum - | cut -d ' ' -f1)
+ 
+ REFNAME=$IMAGENAME:$REF
+ DOCKERNAME=$IMAGENAME:dockerfile-$DOCKERFILE_CHECKSUM
+-- 
+2.55.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_9096_BAT -> XEIGTPW_15845_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9096 -> IGTPW_15845
-  * Linux: xe-5751-885e7996176ebe07c2cc143c1ee067591e49fa66 -> xe-5752-2bd2887dd30703cc280a0ca64919784240f66e2d
-
-  IGTPW_15845: 5de1615eb21f7c3d837a1938886645bae5729017 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9096: 9096
-  xe-5751-885e7996176ebe07c2cc143c1ee067591e49fa66: 885e7996176ebe07c2cc143c1ee067591e49fa66
-  xe-5752-2bd2887dd30703cc280a0ca64919784240f66e2d: 2bd2887dd30703cc280a0ca64919784240f66e2d
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15845/index.html
-
---===============4511762313763813340==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_cursor_legacy: Skip timing checks in simulation to avoid false negatives</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174115/">https://patchwork.freedesktop.org/series/174115/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15845/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15845/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9096_BAT -&gt; XEIGTPW_15845_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9096 -&gt; IGTPW_15845</li>
-<li>Linux: xe-5751-885e7996176ebe07c2cc143c1ee067591e49fa66 -&gt; xe-5752-2bd2887dd30703cc280a0ca64919784240f66e2d</li>
-</ul>
-<p>IGTPW_15845: 5de1615eb21f7c3d837a1938886645bae5729017 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9096: 9096<br />
-  xe-5751-885e7996176ebe07c2cc143c1ee067591e49fa66: 885e7996176ebe07c2cc143c1ee067591e49fa66<br />
-  xe-5752-2bd2887dd30703cc280a0ca64919784240f66e2d: 2bd2887dd30703cc280a0ca64919784240f66e2d</p>
-
-</body>
-</html>
-
---===============4511762313763813340==--
