@@ -4,62 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A1DEC88E53
-	for <igt-dev@archiver.kernel.org>; Tue, 15 Sep 2026 08:16:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05A77C88E73
+	for <igt-dev@archiver.kernel.org>; Tue, 15 Sep 2026 08:20:51 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E8E5A10FAEC;
-	Tue, 15 Sep 2026 08:16:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A993910E241;
+	Tue, 15 Sep 2026 08:20:50 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QGFET5P8";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FF7L3EfD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 73E0F10F32B;
- Tue, 15 Sep 2026 08:15:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8CDDC10FAF3
+ for <igt-dev@lists.freedesktop.org>; Tue, 15 Sep 2026 08:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789460125; x=1820996125;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=PGNYwhFrRhtBGd5yjOLJXVxksLfDXHZxC9qc1gj2/MY=;
- b=QGFET5P8TOPwR+5TEmJXePNXoRk08suuTwBYjk4iPlEB0Rfbv/TS55HX
- dLEWKCU2IejI898K2ESGXUeZPPNDfatK6jRNYhf7cbymdRmYtABRDAQ1A
- bhj37KyWZA+aG4T2ooS3Ias1xKzlvWVPeO3VjzLCVLsXDD2Hnto/It/92
- z2EWr/ZzWE1Z0vyOltxhnp6esmT94mvRtkGOQff3wRH8JaiLrjrUif2Cp
- uFhRlPXwdWQm5rz/GrHpQb+kK64pwD/7nanrKHdJ38I7l3wl0cNSn7NqF
- k3L/3zPdxqadvhMywQRtrXRjCRal/dApXPuN9Qjk6gOms/HVxQjmVqAjF A==;
-X-CSE-ConnectionGUID: maJ/PXmnTnekkFQv7qFsIw==
-X-CSE-MsgGUID: cF/43wTHQaCdk/e6ETFpUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89948734"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="89948734"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2026 01:15:24 -0700
-X-CSE-ConnectionGUID: rC86RRIHTiajVRyanKOd/g==
-X-CSE-MsgGUID: SUt3QE1SR36oTl3/sIkHTw==
+ t=1789460408; x=1820996408;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=RqH5nbT9h6napwI7F9bGUjE+tKMW00+Q5Pn6XCWFVyg=;
+ b=FF7L3EfDMP2HubueITBuvlIw1aZRDlpI5uQx5FXjHowpgZwvh9IqjLzT
+ mZ/ATEEWaFpXGHewVcTQ5ehjogBZhHkBRU3AcoQEgtg7X9/7Le3fbxcp3
+ tq3H+8TDboWLdrEHG0R7gzuPDR8XalgTBqAKjW3v2QJCxqnhzpKdhiNjw
+ UUIk3M4f8ciIKhmO7vt6ZgXmCeeniuy+tTwZKBooFBbDZ7aNzDRceEJZE
+ UT6VcbhhwabwlZYJH4H6z/W/hB8yosd43ab4yQ5rojxPW10IJsp7DQt5/
+ IwoyYJpXLU9hYxadJtIOFXE/Hn5T8EIp3TKYH6W2KBmpXlW864jnM9V4j A==;
+X-CSE-ConnectionGUID: RU2xXh6yQJCeZrt/ZKXXcA==
+X-CSE-MsgGUID: DJEcmM0KSyq7fUy1vF/u2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89831362"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="89831362"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Sep 2026 01:20:08 -0700
+X-CSE-ConnectionGUID: Y3Y/bk1KRB2e3FSVG9tO+Q==
+X-CSE-MsgGUID: 8S4fDXZpTPu+iyMfzbUy5Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271465161"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 01:15:23 -0700
-Date: Tue, 15 Sep 2026 10:15:06 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="268609630"
+Received: from jeevan-x299-aorus-gaming-3-pro.iind.intel.com ([10.227.90.91])
+ by fmviesa006-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 01:20:06 -0700
+From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_i915=2ECI=2EFull=3A_failure_for_tests=2Fi?=
- =?utf-8?Q?ntel=2Fxe=5Fexec=5Freset?= =?utf-8?Q?=3A?= Update gt reset dmesg
- ignore regex (rev2)
-Message-ID: <20260915081506.uknp2safv6cvadg5@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Jonathan Cavitt <jonathan.cavitt@intel.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20260914221220.437212-1-jonathan.cavitt@intel.com>
- <178944528724.162217.8964514356697140702@61270ab9df2a>
+Cc: karthik.b.s@intel.com,
+	Jeevan B <jeevan.b@intel.com>
+Subject: [PATCH i-g-t] tests/kms_cursor_legacy: Skip timing checks in
+ simulation to avoid false negatives
+Date: Tue, 15 Sep 2026 13:49:59 +0530
+Message-ID: <20260915081959.257160-1-jeevan.b@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <178944528724.162217.8964514356697140702@61270ab9df2a>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,74 +67,47 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-09-15 at 04:08:07 -0000, Patchwork wrote:
-> == Series Details ==
-> 
-> Series: tests/intel/xe_exec_reset: Update gt reset dmesg ignore regex (rev2)
-> URL   : https://patchwork.freedesktop.org/series/174055/
-> State : failure
-> 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_9094_full -> IGTPW_15842_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_15842_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_15842_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15842/index.html
-> 
-> Participating hosts (10 -> 10)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_15842_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_flip@dpms-vs-vblank-race-interruptible@d-hdmi-a1:
->     - shard-tglu:         [PASS][1] -> [DMESG-WARN][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9094/shard-tglu-7/igt@kms_flip@dpms-vs-vblank-race-interruptible@d-hdmi-a1.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15842/shard-tglu-10/igt@kms_flip@dpms-vs-vblank-race-interruptible@d-hdmi-a1.html
-> 
+Simulation environments often do not reflect real hardware timing
+accurately, which can result in false negatives during the
+flip-vs-cursor-busy-crc vblank and CRC checks. To prevent such issues,
+this patch conditionally skips these timing validations when the test
+runs in simulation.
 
-Unrelated to Xe test change.
+Signed-off-by: Jeevan B <jeevan.b@intel.com>
+---
+ tests/kms_cursor_legacy.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
+diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
+index 62339855e..810c593f5 100644
+--- a/tests/kms_cursor_legacy.c
++++ b/tests/kms_cursor_legacy.c
+@@ -1775,8 +1775,10 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 		flip_nonblocking(display, crtc, atomic, &fb_info[1], NULL);
+ 		do_ioctl(display->drm_fd, DRM_IOCTL_MODE_CURSOR, &arg[i]);
+ 
+-		igt_assert_eq(igt_crtc_get_vblank(crtc, 0),
+-			      vblank_start);
++		/* Simulation ioctl latency can exceed a vblank period even without a real miss. */
++		if (!igt_run_in_simulation())
++			igt_assert_eq(igt_crtc_get_vblank(crtc, 0),
++				      vblank_start);
+ 
+ 		igt_pipe_crc_get_current(display->drm_fd, pipe_crc, &test_crc);
+ 
+@@ -1792,7 +1794,11 @@ static void flip_vs_cursor_busy_crc(igt_display_t *display, bool atomic)
+ 		igt_plane_set_fb(plane_primary, &fb_info[0]);
+ 		igt_display_commit2(display, COMMIT_UNIVERSAL);
+ 
+-		igt_assert_crc_equal(&crcs[i], &test_crc);
++		/* Simulation timing can shift when the busy CRC is sampled, causing a false mismatch. */
++		if (!igt_run_in_simulation())
++			igt_assert_crc_equal(&crcs[i], &test_crc);
++		else if (!igt_check_crc_equal(&crcs[i], &test_crc))
++			igt_info("CRC mismatch ignored on simulation for i=%d\n", i);
+ 	}
+ 
+ 	igt_pipe_crc_stop(pipe_crc);
+-- 
+2.43.0
 
-
-Regards,
-Kamil
-
->   
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_15842_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@blit-reloc-purge-cache:
->     - shard-dg2:          NOTRUN -> [SKIP][3] ([i915#8411])
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15842/shard-dg2-8/igt@api_intel_bb@blit-reloc-purge-cache.html
->     - shard-mtlp:         NOTRUN -> [SKIP][4] ([i915#8411])
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15842/shard-mtlp-8/igt@api_intel_bb@blit-reloc-purge-cache.html
-> 
-...cut...
