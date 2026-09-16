@@ -4,70 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37B23C982C9
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 23:00:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B13CC982C9
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 23:01:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C94E910E325;
-	Wed, 16 Sep 2026 23:00:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8AFA510E2DD;
+	Wed, 16 Sep 2026 23:01:32 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="ha12l0en";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="MVt3RCSm";
 	dkim-atps=neutral
-Received: from CH4PR04CU002.outbound.protection.outlook.com
- (mail-northcentralusazon11013038.outbound.protection.outlook.com
- [40.107.201.38])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3FBE10E2DD
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 22:59:17 +0000 (UTC)
+Received: from DM1PR04CU001.outbound.protection.outlook.com
+ (mail-centralusazon11010005.outbound.protection.outlook.com [52.101.61.5])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EBDBB10E2DD
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 22:59:21 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JwPiR5Kz+pNpYHtxtyvlxRNH2JqHGsrUB1SP0Lvp7dZQqIEpnK7kDbwR8vGvGeo4fFhpX1dsWHCaJ5HcBWUvq8G0oU6ikFi/lfUsl74BrJz57dWz/Drw4Fpn4AgTo0jyCN0zR1hftxWMiOfa23rxgQAufa24av8CAAmvrJXX2MECfyzBLzydeY7e+glGa+1hd43745BLmfUsF3PWGnpipeQihDKHwqCR6QVJewCLtPfrCZawdcl1HrK9tHLCSDCqTasLnaOjwPkc7oCnTLdQZDpQUOAh6jMraYfuKn+JwK0bnhQxmqDzqyUcy+wkiK0D4vbjimSsJuBVvOtzS8JFxw==
+ b=wJzLMmO/q8W0ctEPBpEoq/fcTpKn7cZNnji61gK95fSGfRq1ob7y7+QDBHC9NQASq70YP99AxI+Sv/cCRcG9d6TpPbBdea4uIHNBi3pdfPqcbr06HHNcBfsadjjn/RoHduz3uaiiVJKY7d/TsX0we1JZakMb4SezaZk1itYecpbRe3At2UF2H1H/4ic7/HVbnxskqh7y/n32DZKoZ4XKyYi0MgbSpxNy7NxazepTw6sZY6XF+QPTxagdSkDGfqVV4TTeZ2RfqujwHXgUccDOXLwZeS4ac8nefLbH3LIx/JUTrekcv2cmbFOo6Q9o8siHPwgfhMUiMVlxrHVbyj7rvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sda5x5rDSDSGNEuAXmjQwTTlkmJk7dRnyMIUKTSfS9U=;
- b=kKXMrmfeFn4K0vmroMuH6UBhgr8/n5T4pRDWRZLWJwqsLwtbtXhhTcx8rXq/KCfMrWytbml6Uh9vekuKPeHDLPU5CBcnRYzOx8hVYEBY0fJYkJKnEI1m1L40pugtDGASmD6+swltshNfuQtoIVv9cPG41+rHBKQdH/vGiaAXcEAgV618VkvdzcGNkuo2w/mKJvlaVDAFUg2Zn/uR+aV7oYy9mbaOYVVuZk3Ov1MNLFuv6kD7LwVoM6bju+Zn454RvxC1r9WLTGQS7MZLFDzqbSToyRElbKGiTQOe35Ua40JcPx0kobLreuaYDg9i1Mw5aZXXKikQkoHYLsxWGZYRzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
+ bh=C8Mkir0Nqf5gr+1mzK/NQBVaLfyyGq0e4nz0TfkGWwo=;
+ b=vjtVOSY1naNF/fuGK6xH/KFVJhM7mVtB9ZnZXN7zypFjM+8n9Skbrn7gUxQuJXN6draTfa/79BNBNa3QjBhjbChc2+XbVwQ3aYsE96FjonTMkh8tB0b4yUwAfyL3vO9gSvB/FwPkEgJsEVzsBeCtOsXN6eV2ungJgSzfbU5wXoH8ePF+46DgvbKuLJ6WUUaYlN/4hQO86B0jku9ergIeYUGF1KrjazDOeRLUpak94GPZ2BXHGgBHl6dBguskWcqWPpGuXiqSf2M9q5z28C/g6KHGi7vC5K3erbnFVS5mCrE/QmJ2RM2ZoVGVuoYEYqQNgiHnJrxkuAUwPoPFeONYUA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 165.204.84.17)
+ smtp.rcpttodomain=lists.freedesktop.org
+ smtp.mailfrom=amd.com; dmarc=temperror action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sda5x5rDSDSGNEuAXmjQwTTlkmJk7dRnyMIUKTSfS9U=;
- b=ha12l0ennviJ5TTys7in3AyRM/BHcypXe49Y9xJdfvOvVQt4qdlv7SLLkomdEFRRyY3CB3T5uHa6F+abY57yF0s+Jb6NQUWsGutAatcRmV2HPk/gHOqXQkNe/nid6JpjVHTKeHUYqvOef4/aOGSgrD5VXSj9WNOM+nDV0/6HwoI=
-Received: from BLAPR03CA0140.namprd03.prod.outlook.com (2603:10b6:208:32e::25)
- by SJ2PR12MB7989.namprd12.prod.outlook.com (2603:10b6:a03:4c3::13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.10; Wed, 16 Sep
- 2026 22:59:11 +0000
+ bh=C8Mkir0Nqf5gr+1mzK/NQBVaLfyyGq0e4nz0TfkGWwo=;
+ b=MVt3RCSmRIoEAihJ2p5luMZgyYr1SatLLkPGd6IVM9tMvUyXXd/mOFo/Sk9cci41PEabO8qjnG1Pju8886EFjUK5pvp/yRq9XJNUH3ZRAD39PG0mZs+fInpVbwgeffEVnkm0xUMx29UzECh0/iwQ10BCNObBVj2hPTu4eFY0tek=
+Received: from BLAPR03CA0148.namprd03.prod.outlook.com (2603:10b6:208:32e::33)
+ by DS7PR12MB5957.namprd12.prod.outlook.com (2603:10b6:8:7c::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.12; Wed, 16 Sep
+ 2026 22:59:10 +0000
 Received: from BN2PEPF000055DD.namprd21.prod.outlook.com
- (2603:10b6:208:32e:cafe::9f) by BLAPR03CA0140.outlook.office365.com
- (2603:10b6:208:32e::25) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:208:32e:cafe::ae) by BLAPR03CA0148.outlook.office365.com
+ (2603:10b6:208:32e::33) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.428.11 via Frontend Transport; Wed,
- 16 Sep 2026 22:59:11 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+ 16 Sep 2026 22:59:10 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=temperror
+ (sender IP is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not
+ signed) header.d=none;dmarc=temperror action=none header.from=amd.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of amd.com: DNS Timeout)
 Received: from satlexmb08.amd.com (165.204.84.17) by
  BN2PEPF000055DD.mail.protection.outlook.com (10.167.245.7) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.0 via Frontend Transport; Wed, 16 Sep 2026 22:59:11 +0000
+ 15.21.451.0 via Frontend Transport; Wed, 16 Sep 2026 22:59:08 +0000
 Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Wed, 16 Sep
- 2026 17:59:09 -0500
+ 2026 17:59:08 -0500
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Wed, 16 Sep 2026 17:59:08 -0500
+ Transport; Wed, 16 Sep 2026 17:59:07 -0500
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>,
  =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Jesse Zhang <jesse.zhang@amd.com>
-Subject: [PATCH v1 2/2] tests/amdgpu: Check lockdep violations in reset tests
-Date: Wed, 16 Sep 2026 18:58:47 -0400
-Message-ID: <ef424c4b22f73c03d154bb2d90719415d4c76ff0.1789597588.git.vitaly.prosyak@amd.com>
+Subject: [PATCH v1 1/2] lib/amdgpu: Add shared lockdep violation helpers
+Date: Wed, 16 Sep 2026 18:58:46 -0400
+Message-ID: <0f9b4a5fc9241fa2d7386aa935393b7e50d7c73e.1789597588.git.vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <cover.1789597588.git.vitaly.prosyak@amd.com>
 References: <cover.1789597588.git.vitaly.prosyak@amd.com>
@@ -76,29 +74,29 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055DD:EE_|SJ2PR12MB7989:EE_
-X-MS-Office365-Filtering-Correlation-Id: 905303a8-4db1-4163-aefb-08df14461f0f
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DD:EE_|DS7PR12MB5957:EE_
+X-MS-Office365-Filtering-Correlation-Id: d8a46299-4d79-458f-f54c-08df14461dbc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|23010399003|36860700016|82310400026|376014|56012099006|10067099003|11063799006|3023799007|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: jo0oHJEJR4L6ETh6qHc6CrAHx8A/CuTFSwylZ9HDCRYLeRBlnJKpPZNWrAmpXSkQ0KhtLDCVgWFoDHcXqP37N7FFiB/WxwPAFUvpFKDpubo77vk3zPDg1QYcuhGpCVvjPTmm+omljkx/BMNSkgVqyjep3NQklUmWNuv6jixkx54jGqpz6BShfxCSpjjPT+ftF6C6zWXukpzZ9c2OUdvXuXlGlSZnPj+DJawab1gsUWZMH488FylACVp4T+u2Ia4jbcbFt3MRJdLuRwdEq0i+SYjz36wq0phpcWQOz6HUkWFVnnILUw1X6EPQQQB/1fSslRNLWPgauD+SWBk/TyN/nSzb0dc/MJqMHoVoQnpElFiE1Zx0z7R52i3kkcKtMbJTcutUU8d3ddToianvXdXxa1jnY+dCh3Fm6DEyheu9NZphH8SvEs7uFa7K7yRzrbHA8NoZV6lh+YXakiVCrLu6OYPYttFsOh6Nm4/QOcdqXLPB5Lrfs42B+2JcvAWydXrPqpRFZ6LWllvbpJFHEJtwB9hvtOJXq7OL48x2GUbqj/dE5EElT65SUt5eeJ2pTy0l/SgHgoJ8k8Gpcprr+7RMBGPoZn4pLhg5OF2E1xEtpDPXjbByA4HMg902FunsvYpn4zzZpVABz2UocjyEDuebWRdJ6v7Q8UlguCge5rkns8c9O6EBeVU+x8looxKeQWHCdp4sd+5IOOuQtuTBIAVQRg==
+ ARA:13230040|82310400026|1800799024|376014|36860700016|23010399003|56012099006|11063799006|18002099003|22082099003|10067099003;
+X-Microsoft-Antispam-Message-Info: eTo2W7xl7weGdlyNDVEBPAiv8IZqPRUmGGDaQJEMOGZ91ZPQ5IvWxeQtIYL8G1HhZhYgZxvivHkJIzIW/ygQvRU42y41Pyen1/M/eP1B1nZQp0CZ1wCUwyTT0V6Id7UJppIrfXq/iFmy0dJqa2IHTPQYXz/jVU13k9lf/vA9DgPtbHL06mTGvka6QfH7IOPTN0gkk+ckwqBPR5o8AHOdn73DKuvll223ClDvwpRhcZfnuQJRnVKeRA4VjooxTRczB/2EyE75fm84lE64b4dxCQtW3YIDCRyi7UkPrLnebpCuQwUMojfeA02D9pDIaMAk8C7cDbmnvf0ClvyoMoTgNkQ2xTI7kjougv+QibkH8xCh/r1zpf66b/6PnNXGSK6xspH5SMTiM9qQZvCqfVtzBm00njljGdIOq1Ow3VN3gpzfJiKkgmUgLmqCtypa+c3bSYR73M7Yg4gkDqEmNEWl54vVGpz8reZYGcF/mFUWULqO/I1bFr0U4myWKzh1ofEQBCG3BDdrKKpookuIpPSqWGnFPofshFKU+whLSo78JRxByNC7n3xpkp3H+xicx0XwBNYKium5eQPWXlA8ZUBgf73ogEL1KVMuDAGXJqnzUUi9tNgusAnscEagLKnlHzLpxJ1hSvAI170TE3+JLcN7keMm80IAG+TkvioRCsWuWJl8zKBI/RBAe1cH3NmNbp4ZA+7MPbe0LvAnxjy3ba1ldA==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(23010399003)(36860700016)(82310400026)(376014)(56012099006)(10067099003)(11063799006)(3023799007)(18002099003)(22082099003);
+ SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(23010399003)(56012099006)(11063799006)(18002099003)(22082099003)(10067099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: ptFn54whXeerTWd6fKAWknrj9lYE/qt2UT5vmjE3DWNW0lRIUucbIqCtb/8XmTgmyuoNhnrA9cuRZg1hHX/qSBOvJ/7LZYBEzPDS3nGCeaPU79DPN+SVGEVac1bF2XiS2OQieMEurdQ7efFtpH/PRxZ8c0KVJv9cYPT66MPReCaSF3yykO3/COhGckb+BNqoZVlrDeF91/W09wZEA1DY1Zp0gD4SsOwnO49Gv5dCj7IiHpJUaovnZ9Bv8eGQiUvyD3nvjbtw2clS/bM43GN96uYCsP8kLYA1r7VBr/EEX4xHU0SbZCq7wP6MosB0lozflMLYkzWw8rYNMJBaWQrJKcWCMrhBimO+KTzKKiBti72hKDJKZptIRwsu6vfKSWDruMUJcuohWPhA/sPdgXXJWyI/7tgx8ksPHAe9n8AENYJcRV735QPp84LUmPIWh4Z8
+X-MS-Exchange-AntiSpam-MessageData-0: MfSkoW3RSR9dTu3POkAdVsALGt5E0cjexN32NmtaLyGEsriZWDmjDJKkHp+UVZNuAIB/e788RHzkq8p81lnQzEEL+wnHGPDcW3hPKfkFn/yqQwPbO+rYXRH9/OjlGfWLV38SqPhecD6TZhdXj8JEPNqjtX9IuPISfC/kjjyZnXr6S9RchI+dq7QdlD6kOQlPLcedl2jvZum327QeJ7WZrocDt/wGM9WzWfzRnrf03H+X1FglugNQ7Ns+nG4CAPN7A9nI7JoqTu/2KHGVz5hLToi1VHJILJB0svBrflD4aDoMLk9hhtJKMG8aoe0UFPZaB+zs7NQMnU6RuS7WPrUJ1E0F6gQAfkZr5x8zq1kqveOJVnE+3wGw7pDga9LXKh4v0JHLON6mxrLsWr2MmN3p4J8CJIof9SpCSC0llppd11O7pE2M17wl0SSSc12vl8hR
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 22:59:11.0900 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 905303a8-4db1-4163-aefb-08df14461f0f
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2026 22:59:08.8587 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d8a46299-4d79-458f-f54c-08df14461dbc
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF000055DD.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7989
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5957
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,467 +114,393 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Use the shared amdgpu lockdep helpers in amd_dispatch,
-amd_deadlock, and amd_queue_reset.
+Move the lockdep checking logic that was private to amd_lockdep
+into the common amdgpu utility library.
 
-These tests exercise queue reset and GPU reset paths,
-including user queue coverage, so they are useful places
-to validate that the kernel lock ordering annotations do
-not produce lockdep splats while reset and recovery paths
-are stressed.
+This is a refactor only and makes no functional change to amd_lockdep.
+The test still requires CONFIG_LOCKDEP through /proc/lockdep_stats,
+opens /dev/kmsg at the start of each lockdep-sensitive subtest,
+records the starting kernel taint state, and fails if a lockdep
+splat or new TAINT_WARN appears.
 
-Unlike amd_lockdep, these tests are not dedicated lockdep
-tests and must continue to run on kernels built without
-CONFIG_LOCKDEP. The new begin/end helper checks
-/proc/lockdep_stats first; when lockdep is unavailable
-the helper is a no-op, and when lockdep is available
-each subtest fails if new lockdep traces or TAINT_WARN
-are observed.
+The shared helpers keep the existing implementation details in one
+place: lockdep availability detection, /dev/kmsg positioning,
+lockdep-pattern scanning, and taint comparison. They also provide
+begin/end helpers so other amdgpu tests can opt into the same
+check without duplicating the /dev/kmsg and taint plumbing.
 
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Change-Id: I02a487cf266df108deb794a93bb2c35c42d839ef
 ---
- tests/amdgpu/amd_deadlock.c    | 45 ++++++++++++++++++++++++++++++++++
- tests/amdgpu/amd_dispatch.c    | 25 +++++++++++++++++++
- tests/amdgpu/amd_queue_reset.c |  3 +++
- 3 files changed, 73 insertions(+)
+ lib/amdgpu/amd_utils.c     | 100 +++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_utils.h     |  14 +++++
+ tests/amdgpu/amd_lockdep.c | 110 ++++---------------------------------
+ 3 files changed, 126 insertions(+), 98 deletions(-)
 
-diff --git a/tests/amdgpu/amd_deadlock.c b/tests/amdgpu/amd_deadlock.c
-index b8356af74..1b8986cc0 100644
---- a/tests/amdgpu/amd_deadlock.c
-+++ b/tests/amdgpu/amd_deadlock.c
-@@ -43,6 +43,7 @@ int igt_main()
- 	int r;
- 	bool arr_cap[AMD_IP_MAX] = {0};
- 	bool userq_arr_cap[AMD_IP_MAX] = {0};
-+	struct amd_lockdep_state lockdep;
- 	struct pci_addr pci;
+diff --git a/lib/amdgpu/amd_utils.c b/lib/amdgpu/amd_utils.c
+index 644cd62a6..62af7f366 100644
+--- a/lib/amdgpu/amd_utils.c
++++ b/lib/amdgpu/amd_utils.c
+@@ -2,10 +2,24 @@
+  * Copyright 2026 Advanced Micro Devices, Inc.
+  */
  
- #ifdef AMDGPU_USERQ_ENABLED
-@@ -78,209 +79,253 @@ int igt_main()
- 	}
- 	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma")
- 			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
++#include <fcntl.h>
+ #include <inttypes.h>
++#include <string.h>
++#include <unistd.h>
++
+ #include "igt.h"
++#include "igt_taints.h"
+ #include "amd_utils.h"
  
- 	igt_describe("Test-GPU-reset-by-access-gfx-illegal-reg");
- 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-reg-access") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_GFX] &&
- 			is_reset_enable(AMD_IP_GFX, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-illegal-reg-access")
- 			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 					AMDGPU_HW_IP_GFX, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
++static const char * const lockdep_violation_patterns[] = {
++	"circular locking dependency",
++	"possible recursive locking detected",
++	"inconsistent lock state",
++	"possible circular locking dependency",
++	"WARNING: lock held when returning to user space",
++	NULL
++};
++
+ /**
+  * log_total_time - record start time and print total runtime
+  * @enter: true to start timing, false to print and stop
+@@ -45,3 +59,89 @@ void log_total_time(bool enter, const char *binary)
+ 	igt_kmsg("=== TOTAL (all subtests in %s binary): %" PRIu64 " min %" PRIu64 " sec ===\n",
+ 			binary, mins, secs);
+ }
++
++bool amd_is_lockdep_enabled(void)
++{
++	return access("/proc/lockdep_stats", F_OK) == 0;
++}
++
++int amd_lockdep_kmsg_open(void)
++{
++	int fd;
++
++	fd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
++	if (fd < 0)
++		return -1;
++
++	lseek(fd, 0, SEEK_END);
++	return fd;
++}
++
++bool amd_lockdep_kmsg_has_violation(int kmsg_fd)
++{
++	char buf[4096];
++	ssize_t len;
++	int i;
++
++	if (kmsg_fd < 0)
++		return false;
++
++	while ((len = read(kmsg_fd, buf, sizeof(buf) - 1)) > 0) {
++		buf[len] = '\0';
++		for (i = 0; lockdep_violation_patterns[i]; i++) {
++			if (strstr(buf, lockdep_violation_patterns[i])) {
++				igt_warn("LOCKDEP VIOLATION: %s\n",
++					 lockdep_violation_patterns[i]);
++				igt_warn("  kmsg: %.200s\n", buf);
++				return true;
++			}
++		}
++	}
++
++	return false;
++}
++
++void amd_assert_no_lockdep_violations(int kmsg_fd,
++				      unsigned long taint_before)
++{
++	unsigned long taints = 0;
++	bool violation;
++
++	violation = amd_lockdep_kmsg_has_violation(kmsg_fd);
++
++	igt_kernel_tainted(&taints);
++
++	if ((taints & ~taint_before) & (1ul << TAINT_WARN)) {
++		igt_warn("TAINT_WARN set during test - possible lockdep splat\n");
++		violation = true;
++	}
++
++	igt_assert_f(!violation,
++		     "Lockdep violation detected! Check dmesg for details.\n");
++}
++
++void amd_lockdep_begin(struct amd_lockdep_state *lockdep)
++{
++	lockdep->enabled = amd_is_lockdep_enabled();
++	lockdep->taint_before = 0;
++	lockdep->kmsg_fd = -1;
++
++	if (!lockdep->enabled)
++		return;
++
++	igt_kernel_tainted(&lockdep->taint_before);
++	lockdep->kmsg_fd = amd_lockdep_kmsg_open();
++	igt_assert_f(lockdep->kmsg_fd >= 0,
++		     "Failed to open /dev/kmsg for lockdep checking\n");
++}
++
++void amd_lockdep_end(struct amd_lockdep_state *lockdep)
++{
++	if (!lockdep->enabled)
++		return;
++
++	amd_assert_no_lockdep_violations(lockdep->kmsg_fd,
++					 lockdep->taint_before);
++	close(lockdep->kmsg_fd);
++	lockdep->kmsg_fd = -1;
++}
+diff --git a/lib/amdgpu/amd_utils.h b/lib/amdgpu/amd_utils.h
+index cbac5a642..1e33b1003 100644
+--- a/lib/amdgpu/amd_utils.h
++++ b/lib/amdgpu/amd_utils.h
+@@ -6,6 +6,12 @@
  
- 	igt_describe("Test-GPU-reset-by-access-gfx-illegal-mem-addr");
- 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-mem-access") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_GFX] &&
- 			is_reset_enable(AMD_IP_GFX, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-illegal-mem-access")
- 			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 					AMDGPU_HW_IP_GFX, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+ #include <stdbool.h>
  
++struct amd_lockdep_state {
++	bool enabled;
++	unsigned long taint_before;
++	int kmsg_fd;
++};
++
+ /**
+ * log_total_time - record start time and print total runtime
+ * @enter: true to start timing, false to print and stop
+@@ -20,4 +26,12 @@
+ */
+ void log_total_time(bool enter, const char *binary);
  
- 	igt_describe("Test-GPU-reset-by-flooding-gfx-ring-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-gfx") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("amdgpu-deadlock-gfx")
- 			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_GFX, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-access-compute-illegal-mem-addr");
- 	igt_subtest("amdgpu-compute-illegal-mem-access") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_COMPUTE] &&
- 			 is_reset_enable(AMD_IP_COMPUTE, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 		bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 				AMDGPU_HW_IP_COMPUTE, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-flooding-compute-ring-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-compute") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-deadlock-compute")
- 			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_COMPUTE, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-corrupted-header-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-corrupted-header-test") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-corrupted-header-test")
- 			amdgpu_hang_sdma_ring_helper(device, DMA_CORRUPTED_HEADER_HANG, &pci);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-slow-linear-copy-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-slow-linear-copy") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-slow-linear-copy")
- 			amdgpu_hang_sdma_ring_helper(device, DMA_SLOW_LINEARCOPY_HANG, &pci);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-badop-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-badop-test") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-badop-test")
- 			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_OPCODE,
- 					AMDGPU_HW_IP_DMA, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-bad-mem-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-mem-test") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-mem-test")
- 			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 					AMDGPU_HW_IP_DMA, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-bad-reg-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-reg-test") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-reg-test")
- 			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 					AMDGPU_HW_IP_DMA, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-bad-length-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-length-test") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-length-test")
- 			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
- 					AMDGPU_HW_IP_DMA, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- #ifdef AMDGPU_USERQ_ENABLED
- 	igt_describe("Test-GPU-reset-by-access-gfx-illegal-reg-umq");
- 	igt_subtest_with_dynamic("amdgpu-gfx-illegal-reg-access-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
- 		    is_reset_enable(AMD_IP_GFX, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-illegal-reg-access-umq")
- 			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 					       AMDGPU_HW_IP_GFX, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-badop-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-badop-test-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-badop-test-umq")
- 			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_OPCODE,
- 					AMDGPU_HW_IP_DMA, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-bad-mem-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-mem-test-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-mem-test-umq")
- 			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_MEM_ADDRESS,
- 					AMDGPU_HW_IP_DMA, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-bad-reg-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-reg-test-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-reg-test-umq")
- 			bad_access_ring_helper(device, CMD_STREAM_TRANS_BAD_REG_ADDRESS,
- 					AMDGPU_HW_IP_DMA, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-sdma-bad-length-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-bad-length-test-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_DMA] &&
- 			is_reset_enable(AMD_IP_DMA, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-bad-length-test-umq")
- 			bad_access_ring_helper(device, CMD_STREAM_EXEC_INVALID_PACKET_LENGTH,
- 					AMDGPU_HW_IP_DMA, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-GPU-reset-by-flooding-sdma-ring-with-jobs");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-sdma-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_DMA]) {
- 			igt_dynamic_f("amdgpu-deadlock-sdma-umq")
- 			amdgpu_wait_memory_helper(device, AMDGPU_HW_IP_DMA, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-per-queue-reset-of-a-cleanly-hung-gfx-user-queue");
- 	igt_subtest_with_dynamic("amdgpu-deadlock-gfx-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
- 			is_reset_enable(AMD_IP_GFX, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-deadlock-gfx-umq")
- 			amdgpu_hang_ring_helper(device, AMDGPU_HW_IP_GFX, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-per-queue-reset-recovery-of-a-gfx-user-queue-priv-fault");
- 	igt_subtest_with_dynamic("amdgpu-gfx-priv-fault-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
- 			is_reset_enable(AMD_IP_GFX, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-gfx-priv-fault-umq")
- 			amdgpu_priv_fault_ring_helper(device, AMDGPU_HW_IP_GFX, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-gfx-user-queue-bad-opcode-with-nonzero-count-recovers-via-gfx-pipe-reset");
- 	igt_subtest_with_dynamic("amdgpu-gfx-priv-fault-badcount-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
- 			is_reset_enable(AMD_IP_GFX, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-gfx-priv-fault-badcount-umq")
- 			amdgpu_priv_fault_badcount_ring_helper(device, AMDGPU_HW_IP_GFX, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
- 
- 	igt_describe("Test-per-queue-reset-recovery-of-a-gfx-user-queue-privileged-instruction-fault");
- 	igt_subtest_with_dynamic("amdgpu-gfx-priv-inst-umq") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
- 			is_reset_enable(AMD_IP_GFX, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-gfx-priv-inst-umq")
- 			amdgpu_priv_inst_ring_helper(device, AMDGPU_HW_IP_GFX, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
++bool amd_is_lockdep_enabled(void);
++int amd_lockdep_kmsg_open(void);
++bool amd_lockdep_kmsg_has_violation(int kmsg_fd);
++void amd_assert_no_lockdep_violations(int kmsg_fd,
++				      unsigned long taint_before);
++void amd_lockdep_begin(struct amd_lockdep_state *lockdep);
++void amd_lockdep_end(struct amd_lockdep_state *lockdep);
++
  #endif
+diff --git a/tests/amdgpu/amd_lockdep.c b/tests/amdgpu/amd_lockdep.c
+index 5885c9df5..c48c73238 100644
+--- a/tests/amdgpu/amd_lockdep.c
++++ b/tests/amdgpu/amd_lockdep.c
+@@ -37,6 +37,7 @@
+ #include "igt_taints.h"
+ #include "lib/amdgpu/amd_command_submission.h"
+ #include "lib/amdgpu/amd_memory.h"
++#include "lib/amdgpu/amd_utils.h"
  
-diff --git a/tests/amdgpu/amd_dispatch.c b/tests/amdgpu/amd_dispatch.c
-index 5267a742a..0590a960b 100644
---- a/tests/amdgpu/amd_dispatch.c
-+++ b/tests/amdgpu/amd_dispatch.c
-@@ -88,6 +88,7 @@ int igt_main()
- 	struct pci_addr pci;
- 	bool userq_arr_cap[AMD_IP_MAX] = {0};
- 	bool enable_test = false;
-+	struct amd_lockdep_state lockdep;
- #ifdef AMDGPU_USERQ_ENABLED
- 	enable_test = true;
- #endif
-@@ -117,103 +118,127 @@ int igt_main()
- 	}
- 	igt_describe("Test GPU reset using a binary shader to slow hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-test-compute-with-IP-COMPUTE") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-dispatch-test-compute")
- 			amdgpu_dispatch_hang_slow_compute(device, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+ #define BO_SIZE (4 * 1024 * 1024)  /* 4MB */
+ #define NUM_BOS 16
+@@ -47,16 +48,6 @@
+ #define USERPTR_BUF_SIZE (64ull * 1024 * 1024) /* 64 MiB */
+ #define PAGEOUT_ITERATIONS 8
  
- 	igt_describe("Test GPU reset using a binary shader to slow hang the job on gfx ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-test-gfx-with-IP-GFX") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_GFX]) {
- 			igt_dynamic_f("amdgpu-dispatch-test-gfx")
- 			 amdgpu_dispatch_hang_slow_gfx(device, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+-/* kmsg patterns that indicate lockdep violations */
+-static const char * const lockdep_violation_patterns[] = {
+-	"circular locking dependency",
+-	"possible recursive locking detected",
+-	"inconsistent lock state",
+-	"possible circular locking dependency",
+-	"WARNING: lock held when returning to user space",
+-	NULL
+-};
+-
+ struct thread_data {
+ 	amdgpu_device_handle device;
+ 	int fd;
+@@ -64,83 +55,6 @@ struct thread_data {
+ 	int iterations;
+ };
  
- 	igt_describe("Test GPU reset using a binary shader to hang the job on gfx ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-gfx-with-IP-GFX") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_GFX] &&
- 			is_reset_enable(AMD_IP_COMPUTE, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-dispatch-hang-test-gfx")
- 			amdgpu_dispatch_hang_gfx(device, BACKEND_SE_GC_SHADER_INVALID_SHADER, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+-/*
+- * Check if CONFIG_LOCKDEP is enabled on the running kernel by testing
+- * for the existence of /proc/lockdep_stats (only present with lockdep).
+- */
+-static bool is_lockdep_enabled(void)
+-{
+-	return access("/proc/lockdep_stats", F_OK) == 0;
+-}
+-
+-/*
+- * Open /dev/kmsg and seek to end so we only read new messages.
+- * Returns fd or -1 on failure.
+- */
+-static int kmsg_open(void)
+-{
+-	int fd;
+-
+-	fd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
+-	if (fd < 0)
+-		return -1;
+-
+-	/* Seek to end - only read messages generated after this point */
+-	lseek(fd, 0, SEEK_END);
+-	return fd;
+-}
+-
+-/*
+- * Scan /dev/kmsg for lockdep violation patterns since the fd was opened.
+- * Returns true if a violation was found.
+- */
+-static bool kmsg_has_lockdep_violation(int kmsg_fd)
+-{
+-	char buf[4096];
+-	ssize_t len;
+-	int i;
+-
+-	if (kmsg_fd < 0)
+-		return false;
+-
+-	while ((len = read(kmsg_fd, buf, sizeof(buf) - 1)) > 0) {
+-		buf[len] = '\0';
+-		for (i = 0; lockdep_violation_patterns[i]; i++) {
+-			if (strstr(buf, lockdep_violation_patterns[i])) {
+-				igt_warn("LOCKDEP VIOLATION: %s\n",
+-					 lockdep_violation_patterns[i]);
+-				igt_warn("  kmsg: %.200s\n", buf);
+-				return true;
+-			}
+-		}
+-	}
+-
+-	return false;
+-}
+-
+-/*
+- * Assert no lockdep violations occurred.
+- * Checks both kmsg patterns and kernel taint flags.
+- */
+-static void assert_no_lockdep_violations(int kmsg_fd, unsigned long taint_before)
+-{
+-	unsigned long taints = 0;
+-	bool violation;
+-
+-	violation = kmsg_has_lockdep_violation(kmsg_fd);
+-
+-	igt_kernel_tainted(&taints);
+-
+-	/* Check for new taint bits that appeared during the test */
+-	if ((taints & ~taint_before) & (1ul << TAINT_WARN)) {
+-		igt_warn("TAINT_WARN set during test - possible lockdep splat\n");
+-		violation = true;
+-	}
+-
+-	igt_assert_f(!violation,
+-		     "Lockdep violation detected! Check dmesg for details.\n");
+-}
+-
+ /*
+  * Helper: allocate and map a BO to exercise VRAM management locks
+  */
+@@ -338,7 +252,7 @@ static void test_concurrent_reset_and_submit(int fd, amdgpu_device_handle device
+ 	int kmsg_fd;
  
- 	igt_describe("Test GPU reset using a binary shader to hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-compute-with-IP-COMPUTE") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_COMPUTE] &&
- 			is_reset_enable(AMD_IP_COMPUTE, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-dispatch-hang-test-compute")
- 			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_SHADER, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+ 	igt_kernel_tainted(&taint_before);
+-	kmsg_fd = kmsg_open();
++	kmsg_fd = amd_lockdep_kmsg_open();
  
- 	igt_describe("Test GPU reset using a invalid shader program address to hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-program-addr-test-compute-with-IP-COMPUTE") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_COMPUTE] &&
- 			is_reset_enable(AMD_IP_COMPUTE, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-dispatch-invalid-program-addr-test-compute")
- 			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+ 	igt_info("Running concurrent reset + VRAM allocation for %d seconds\n",
+ 		 THREAD_RUNTIME_SEC);
+@@ -357,7 +271,7 @@ static void test_concurrent_reset_and_submit(int fd, amdgpu_device_handle device
+ 	igt_info("  VRAM allocs: %d, Resets: %d\n",
+ 		 vram_data.iterations, reset_data.iterations);
  
- 	igt_describe("Test GPU reset using a invalid shader program setting to hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-setting-test-compute-with-IP-COMPUTE") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_COMPUTE] &&
- 			is_reset_enable(AMD_IP_COMPUTE, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-dispatch-invalid-setting-test-compute")
- 			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+-	assert_no_lockdep_violations(kmsg_fd, taint_before);
++	amd_assert_no_lockdep_violations(kmsg_fd, taint_before);
+ 	close(kmsg_fd);
+ }
  
- 	igt_describe("Test GPU reset using a invalid shader user data to hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-user-data-test-compute-with-IP-COMPUTE") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_COMPUTE] &&
- 			is_reset_enable(AMD_IP_COMPUTE, AMDGPU_RESET_TYPE_PER_QUEUE, &pci)) {
- 			igt_dynamic_f("amdgpu-dispatch-invalid-user-data-test-compute")
- 			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_USER_DATA, &pci, false);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+@@ -376,7 +290,7 @@ static void test_concurrent_mmap_and_evict(int fd, amdgpu_device_handle device)
+ 	int kmsg_fd;
  
- 	igt_describe("Test GPU reset using amdgpu debugfs to hang the job on gfx ring");
- 	igt_subtest_with_dynamic("amdgpu-reset-test-gfx-with-IP-GFX-and-COMPUTE") {
-+		amd_lockdep_begin(&lockdep);
- 		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-reset-gfx-compute")
- 			amdgpu_gpu_reset_test(device, fd, &pci);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+ 	igt_kernel_tainted(&taint_before);
+-	kmsg_fd = kmsg_open();
++	kmsg_fd = amd_lockdep_kmsg_open();
  
- 	igt_describe("Test GPU reset using a binary shader to hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-hang-test-compute-with-IP-COMPUTE-UQM") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-dispatch-hang-test-compute-umq")
- 			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_SHADER, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+ 	igt_info("Running concurrent mmap + VRAM pressure for %d seconds\n",
+ 		 THREAD_RUNTIME_SEC);
+@@ -395,7 +309,7 @@ static void test_concurrent_mmap_and_evict(int fd, amdgpu_device_handle device)
+ 	igt_info("  mmap ops: %d, VRAM allocs: %d\n",
+ 		 mmap_data.iterations, vram_data.iterations);
  
- 	igt_describe("Test GPU reset using a invalid shader program address to hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-program-addr-test-compute-with-IP-COMPUTE-UQM") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-dispatch-invalid-program-addr-test-compute-uqm")
- 			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_ADDR, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+-	assert_no_lockdep_violations(kmsg_fd, taint_before);
++	amd_assert_no_lockdep_violations(kmsg_fd, taint_before);
+ 	close(kmsg_fd);
+ }
  
- 	igt_describe("Test GPU reset using a invalid shader program setting to hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-setting-test-compute-with-IP-COMPUTE-UQM") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-dispatch-invalid-setting-test-compute-uqm")
- 			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_PROGRAM_SETTING, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+@@ -415,7 +329,7 @@ static void test_concurrent_userptr_and_reset(int fd,
+ 	int kmsg_fd;
  
- 	igt_describe("Test GPU reset using a invalid shader user data to hang the job on compute ring");
- 	igt_subtest_with_dynamic("amdgpu-dispatch-invalid-user-data-test-compute-with-IP-COMPUTE-UQM") {
-+		amd_lockdep_begin(&lockdep);
- 		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
- 			igt_dynamic_f("amdgpu-dispatch-invalid-user-data-test-compute-uqm")
- 			amdgpu_dispatch_hang_compute(device, BACKEND_SE_GC_SHADER_INVALID_USER_DATA, &pci, true);
- 		}
-+		amd_lockdep_end(&lockdep);
- 	}
+ 	igt_kernel_tainted(&taint_before);
+-	kmsg_fd = kmsg_open();
++	kmsg_fd = amd_lockdep_kmsg_open();
  
- 	igt_fixture() {
-diff --git a/tests/amdgpu/amd_queue_reset.c b/tests/amdgpu/amd_queue_reset.c
-index ebd7c8682..7f445eb8d 100644
---- a/tests/amdgpu/amd_queue_reset.c
-+++ b/tests/amdgpu/amd_queue_reset.c
-@@ -1170,6 +1170,7 @@ int igt_main()
- 	int r;
- 	char shm_name[256] = {0};
- 	bool arr_cap[AMD_IP_MAX] = {0};
-+	struct amd_lockdep_state lockdep;
- 	uint32_t reset;
- 	unsigned int ring_id_good;
- 	unsigned int ring_id_bad;
-@@ -1293,6 +1294,7 @@ int igt_main()
- 			igt_describe("Stressful-and-multiple-cs-of-bad-and-good-length-operations-using-multiple-processes");
- 			igt_subtest_with_dynamic_f("amdgpu-%s-%s", ip_tests[i] == AMD_IP_COMPUTE ? "COMPUTE":
- 					ip_tests[i] == AMD_IP_GFX ? "GFX" : "SDMA", it->name) {
-+				amd_lockdep_begin(&lockdep);
- 				reset = AMDGPU_RESET_TYPE_PER_QUEUE;
- 				if (arr_cap[ip_tests[i]] && is_sub_test_queue_reset_enable(&gpu_info, it) &&
- 				    is_reset_enable(ip_tests[i], reset, &pci) &&
-@@ -1305,6 +1307,7 @@ int igt_main()
- 				} else {
- 					set_next_test_to_skip(sh_mem);
- 				}
-+				amd_lockdep_end(&lockdep);
- 			}
- 		}
- 	}
+ 	igt_info("Running concurrent USERPTR + reset for %d seconds\n",
+ 		 THREAD_RUNTIME_SEC);
+@@ -434,7 +348,7 @@ static void test_concurrent_userptr_and_reset(int fd,
+ 	igt_info("  USERPTR ops: %d, Resets: %d\n",
+ 		 userptr_data.iterations, reset_data.iterations);
+ 
+-	assert_no_lockdep_violations(kmsg_fd, taint_before);
++	amd_assert_no_lockdep_violations(kmsg_fd, taint_before);
+ 	close(kmsg_fd);
+ }
+ 
+@@ -454,7 +368,7 @@ static void test_stress_all_paths(int fd, amdgpu_device_handle device)
+ 	int kmsg_fd;
+ 
+ 	igt_kernel_tainted(&taint_before);
+-	kmsg_fd = kmsg_open();
++	kmsg_fd = amd_lockdep_kmsg_open();
+ 
+ 	igt_info("Running all paths concurrently for %d seconds\n",
+ 		 THREAD_RUNTIME_SEC);
+@@ -480,7 +394,7 @@ static void test_stress_all_paths(int fd, amdgpu_device_handle device)
+ 		 vram_data.iterations, mmap_data.iterations,
+ 		 userptr_data.iterations, reset_data.iterations);
+ 
+-	assert_no_lockdep_violations(kmsg_fd, taint_before);
++	amd_assert_no_lockdep_violations(kmsg_fd, taint_before);
+ 	close(kmsg_fd);
+ }
+ 
+@@ -520,7 +434,7 @@ static void test_notifier_reclaim_splat(int fd)
+ 	memset(buf, 0xa5, USERPTR_BUF_SIZE);
+ 
+ 	/* Open kmsg to monitor for lockdep violations */
+-	kmsg_fd = kmsg_open();
++	kmsg_fd = amd_lockdep_kmsg_open();
+ 	igt_assert(kmsg_fd >= 0);
+ 
+ 	/* Register as userptr - this installs MMU notifier callback */
+@@ -546,7 +460,7 @@ static void test_notifier_reclaim_splat(int fd)
+ 		usleep(50000);  /* 50ms - give kernel time to process */
+ 
+ 		/* Check for lockdep violations */
+-		if (kmsg_has_lockdep_violation(kmsg_fd)) {
++		if (amd_lockdep_kmsg_has_violation(kmsg_fd)) {
+ 			violation_found = true;
+ 			igt_warn("LOCKDEP VIOLATION DETECTED during iteration %d\n", i + 1);
+ 			break;
+@@ -616,7 +530,7 @@ int igt_main()
+ 		igt_require(r == 0);
+ 
+ 		/* Skip if lockdep is not enabled on the running kernel */
+-		igt_require_f(is_lockdep_enabled(),
++		igt_require_f(amd_is_lockdep_enabled(),
+ 			      "CONFIG_LOCKDEP not enabled - "
+ 			      "rebuild kernel with CONFIG_PROVE_LOCKING=y\n");
+ 
 -- 
 2.55.0
 
