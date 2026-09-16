@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A6A1C982C9
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 15:50:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2365AC982C9
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 16:46:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2D68110E3DA;
-	Wed, 16 Sep 2026 15:50:16 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DHxv2V1A";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9543810E3DA
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 15:47:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789573678; x=1821109678;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=nVcHQkwvvLhw2R8cBiNiEQh+/urR6TAJDMXuz4NWD9A=;
- b=DHxv2V1A9PsGtVSrcw+fmYtQkf+/v6xAMyDIlauOno1KOQtFEQUMsjV0
- ky49ELyC1AhBvf/enJrdoEqH84UMtkj6CmOweGX18SnvuyLSPsS+vIhAr
- WgWiDg07IZYGVSQ0eGv/i6PwNs11RGRvoV/Ganu7m0E9SRWtb97laElCO
- r10HA/ha0azAv1OkX4GGm8Rt612wfs26v+TWJvBpCoQ2WO8AWhix9xjFk
- ti+Vdj0N2rTWsPMry2YUe49Bv/7WN6xB6BvkOJYz3zCLG/GxMWw/pdp/e
- L33Ol9oh4ThCB4E6dLgV2HcyhTVWNStKI4ZeNvY6UMSxcWZXGcNkMANUu Q==;
-X-CSE-ConnectionGUID: bersLxzKQh6VqVc36jBPPg==
-X-CSE-MsgGUID: xIeH12wASZmZneJeoMrudw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100549546"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100549546"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 08:47:53 -0700
-X-CSE-ConnectionGUID: +pAfC+EjSOqtVAyLXu9Bpg==
-X-CSE-MsgGUID: EMdROgR5ROiflc3OqaRuSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="277505375"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.244.146])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 08:47:52 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ewelina Musial <ewelina.musial@intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: [PATCH i-g-t v2 0/2] runner: create results incrementally
-Date: Wed, 16 Sep 2026 17:47:38 +0200
-Message-ID: <20260916154740.130190-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.55.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id B2E0E10E070;
+	Wed, 16 Sep 2026 16:46:16 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7357D10E070;
+ Wed, 16 Sep 2026 16:45:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3329515250622629566=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fatomic=5Freset?=
+ =?utf-8?q?=3A_Add_tests_for_DRM=5FMODE=5FATOMIC=5FRESET?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Maxime Ripard" <mripard@kernel.org>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 16 Sep 2026 16:45:35 -0000
+Message-ID: <178957713546.173806.680220703160413313@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260916095159.2896630-1-mripard@kernel.org>
+In-Reply-To: <20260916095159.2896630-1-mripard@kernel.org>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,40 +37,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-      Create results incementally during run, e.g. after each test end
-its execution create results.json up to last one executed.
+--===============3329515250622629566==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-One caveat is that it will still not hold last one at which
-sudden reboot happens, for example after a kernel panic.
+== Series Details ==
 
-In such cases there is still a need for calling igt_results to
-collect all data.
+Series: tests/kms_atomic_reset: Add tests for DRM_MODE_ATOMIC_RESET
+URL   : https://patchwork.freedesktop.org/series/174250/
+State : success
 
-v2: rename option to --save-results-after-each-test (Ryszard)
-  renamed function to better describe it saves only partial
-  results (Ryszard)
-  using results.old, not .bak (Kamil)
-  bailing out from saving when endtime cannot be saved (Kamil)
-  reorder patches, first should be introducing new option, then
-  using it (Kamil)
+== Summary ==
 
-Cc: Ewelina Musial <ewelina.musial@intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+CI Bug Log - changes from XEIGT_9099_BAT -> XEIGTPW_15850_BAT
+====================================================
 
-Kamil Konieczny (2):
-  runner: Add new option --save-results-after-each-test
-  runner: Create results after each tests end
+Summary
+-------
 
- runner/executor.c  | 68 +++++++++++++++++++++++++++++++++++++++++++---
- runner/resultgen.c |  6 +++-
- runner/settings.c  |  9 ++++++
- runner/settings.h  |  1 +
- 4 files changed, 79 insertions(+), 5 deletions(-)
+  **SUCCESS**
 
--- 
-2.55.0
+  No regressions found.
 
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15850_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [PASS][1] -> [ABORT][2] ([Intel XE#8007])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9099/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15850/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#8007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9099 -> IGTPW_15850
+  * Linux: xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8 -> xe-5759-bb38af66c2f21340a7c081afbb7ace249357fbb5
+
+  IGTPW_15850: 15850
+  IGT_9099: 9099
+  xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8: 0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8
+  xe-5759-bb38af66c2f21340a7c081afbb7ace249357fbb5: bb38af66c2f21340a7c081afbb7ace249357fbb5
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15850/index.html
+
+--===============3329515250622629566==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_atomic_reset: Add tests for DRM_MODE_ATOMIC_RESET</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174250/">https://patchwork.freedesktop.org/series/174250/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15850/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15850/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9099_BAT -&gt; XEIGTPW_15850_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15850_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9099/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15850/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007">Intel XE#8007</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9099 -&gt; IGTPW_15850</li>
+<li>Linux: xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8 -&gt; xe-5759-bb38af66c2f21340a7c081afbb7ace249357fbb5</li>
+</ul>
+<p>IGTPW_15850: 15850<br />
+  IGT_9099: 9099<br />
+  xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8: 0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8<br />
+  xe-5759-bb38af66c2f21340a7c081afbb7ace249357fbb5: bb38af66c2f21340a7c081afbb7ace249357fbb5</p>
+
+</body>
+</html>
+
+--===============3329515250622629566==--
