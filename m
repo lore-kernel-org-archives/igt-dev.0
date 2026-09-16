@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 294A5C88E77
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 04:33:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09AABC88E77
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 04:34:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 88A2A10E0B0;
-	Wed, 16 Sep 2026 04:33:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9A33A10E0B0;
+	Wed, 16 Sep 2026 04:34:39 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C1H97ScC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iVgHVkgg";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4120E10E03E
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 04:26:40 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 67AEA10E03E
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 04:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789532800; x=1821068800;
+ t=1789532801; x=1821068801;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=1V8yFFmWpGGgSpowlpvFQp5Y8twqVRVFLKFpjmiEw5E=;
- b=C1H97ScCHUmvubaMonvC0WPBbSLTZC5/o0PQELjUkzrdVc2V9zihf5e9
- lzZr4+9ObFBuJlSQPrto7aZ9c5dHnKNO080QBmTZsslbiuM3MkmyOCYjf
- SgKdMLWSbgpn38uIJ4Bz3m9tH2gSYiAcQz3QJOi6z7gZycRm9VWTv3+IP
- NHvB9uRvZZnrpjnvBAvsf+pP5yGNs1uat3KUk+EODJt7/Cxwp+LG4UVaZ
- HijX/OcMnZeoQvGAKMmf2McdiDDLY4qSW02rcypGbf+Dsy7DnitDjozJ7
- 3+YkCDdZWiQ4KQoAsKsFH9VGlDuuaF/h1BARuXPO0xUsQmWlBHthiTuzQ Q==;
-X-CSE-ConnectionGUID: zJTeO+XGT1CI8IXzuUSyaA==
-X-CSE-MsgGUID: V3CdQ+0eQ3mpDOt5im4C5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100503244"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100503244"
+ bh=6B3x8AxVjnRICMcjPegc0ZwPRrrTP13q1WN8groLaHg=;
+ b=iVgHVkggOI2FIKMaPIiRbzElbb+alSBMzUkR2ckZTpvqWDYf6PooZtxf
+ lBHd3ZLXFRGZ0eT08zibCHJzhzYaTfacAo0CrHoVLoNZbI5gWuHpMdhel
+ 9iEXKEMdkb9nTv0/T7ZftHaXqmv7oCfpd+efn+hf4Y4nmxfzkYn0paDaM
+ UuRuv9r7tkSOJN7iA55+MrMCRKDOm+C7B+bRmhLd6cOGo6TK9Gbm36+q8
+ yC5gPvMPKhl8ralaxCrGB9hC3JV4XKZgJSyWtl+G50r7Knzil5eykDQZY
+ k6yjv0pB515zudT3O+gjLvRvm2u14tiwMd4M1oOk8o+v++kzKn5vYykvi A==;
+X-CSE-ConnectionGUID: q+TE73W5QWCnaDQeO+jqiQ==
+X-CSE-MsgGUID: RrL+izWzTraD44XP2vSzNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100503245"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100503245"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2026 21:26:40 -0700
-X-CSE-ConnectionGUID: wVWR3xT1S+6MJb0HBzQtLg==
-X-CSE-MsgGUID: 6xWgiND1R56PgHC9R8ANIg==
+ 15 Sep 2026 21:26:41 -0700
+X-CSE-ConnectionGUID: DT2BpPz7RN2NDcOfAHy/pg==
+X-CSE-MsgGUID: zryQlaPpSBiuny/bEl5V7g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271765045"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271765051"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:39 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:41 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 06/13] tests/intel/kms_dp_link_training: Train every
- allowed link config
-Date: Wed, 16 Sep 2026 10:17:54 +0530
-Message-Id: <20260916044801.1279102-7-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 07/13] lib/i915/i915_dp: Add a Type-C port mode query
+Date: Wed, 16 Sep 2026 10:17:55 +0530
+Message-Id: <20260916044801.1279102-8-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260916044801.1279102-1-kunal1.joshi@intel.com>
 References: <20260916044801.1279102-1-kunal1.joshi@intel.com>
@@ -68,340 +67,225 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Currently test trains one configuration per output, the maximum. Everything
-below it which is what a bandwidth constrained modeset and every
-fallback actually use and currently is never trained.
+Whether a DP link is tunneled over USB4/Thunderbolt decides where its
+link clock comes from: a tbt-alt link is clocked by the Thunderbolt
+PLL, every other mode by the PHY PLL. A test that wants to cover the
+tunneled path has to be able to tell them apart, and nothing in IGT
+can today.
 
-Train every configuration in intel_dp_allowed_link_configs that belongs
-to the subtest's encoding class, as one dynamic subtest each, named
-<connector>-<lanes>x<rate>. Enumerate with the forced parameters reset,
-or the set being read is the forced one rather than the one the driver
-would pick from.
+The driver already reports it. For every connected Type-C connector
+intel_connector_info() prints
 
-Bring the link up inside the dynamic subtest rather than once per
-output. The reset, the modeset, the retrain poll and the link-status
-check can all fail, and igt_subtest_with_dynamic() does not allow
-explicit failure in the container: igt_fail() asserts on it and aborts
-the whole test instead of yielding a dynamic subtest result.
+	TC Port TC1: mode: tbt-alt, pin assignment: D, max lanes: 4
 
-A configuration too narrow to carry the modes is skipped, not failed. A
-forced retrain goes through a modeset commit, so such a configuration
-makes the retrain fail and the driver queue a modeset retry, which
-shows up as a BAD link-status, a correct driver rejection that must
-not be reported as a link training failure. Derive the floor from the
-modes' own bandwidth requirement rather than from the configuration the
-driver picks when nothing is forced: for MST, and for eDP after a
-fallback, the driver configures the maximum link bandwidth regardless
-of the mode i.e "For MST we always configure max link bw" in
-intel_dp_compute_config_link_bpp_limits(), so using its unforced
-choice as the floor would mark every other configuration unreachable
-and quietly reduce MST back to training one configuration.
+in the i915_display_info debugfs file, with the mode being one of
+disconnected, tbt-alt, dp-alt or legacy. A connector with no TC Port
+line is on a combo or native PHY.
 
-Sum the floor over every stream driven over the link. The modeset
-drives all of an MST topology's streams, so the link carries all of
-them; a single stream's requirement would let a configuration that
-cannot carry the aggregate payload through and turn a correct driver
-rejection into a link training failure.
+Add i915_dp_get_tc_mode() returning that mode as an enum, optionally
+along with the pin assignment and the Type-C max lane count, which are
+worth having in a log line, and i915_dp_tc_mode_name() to get the
+driver's spelling back for the same purpose.
 
-The floor assumes uncompressed 8 bpc and so overestimates what the modes
-need, which biases a borderline configuration towards skipping rather
-than failing. Note also that 8b/10b MST runs at 78.75% efficiency
-rather than 80%, because of the 1-in-64 MTPH overhead that
-drm_dp_bw_channel_coding_efficiency() deliberately does not account
-for; using 80% there overestimates the available bandwidth and turns a
-correct rejection into a failure.
+i915_display_info is a per-device file listing the CRTCs first and the
+connectors after them, so find the [CONNECTOR:<id>: block belonging to
+the output and terminate it at the next [CONNECTOR: marker. Without
+that second step a connector on a combo PHY picks up the TC Port line
+of whichever connector comes after it.
 
-Clear link-status before every attempt. It latches BAD when the driver
-falls back and only userspace can clear it, so without this a single
-fallback anywhere in the run poisons every later assertion. Assert the
-forced lane count took effect too, which only becomes meaningful now
-that the configurations differ in lane count. Reset the forced
-parameters after every configuration, since they otherwise survive a
-sink disconnect.
+Start the search at the "Connector info" heading. The CRTC section
+names the connectors of every active output, so for an active output
+the first [CONNECTOR:<id>: match is intel_encoder_info()'s reference to
+it, not its own block. Parsing would then stop before ever reaching the
+TC Port line and report a tbt-alt connector as having no Type-C port at
+all.
 
-Require the allowed link configs debugfs, so that a kernel too old to
-have it skips rather than training nothing.
+Read the file with igt_sysfs_get(), which sizes the buffer from the
+file, rather than the fixed 16 KiB and 8 KiB stack buffers the existing
+readers in lib/igt_kms.c use without checking for truncation.
 
-The subtest names and their scope are unchanged.
+Note that MST stream connectors do report the TC line, since both
+branches of intel_connector_info() resolve the digital port with
+intel_attached_dp(), so an MST topology can be classified from any of
+its streams without finding the root. Disconnected connectors return
+early and print no TC line at all, which is why the root connector of
+an active MST topology has none.
 
 Assisted-by: GitHub_Copilot:claude-opus-5
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel/kms_dp_link_training.c | 193 +++++++++++++++++++++++++----
- 1 file changed, 167 insertions(+), 26 deletions(-)
+ lib/i915/i915_dp.c | 111 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/i915/i915_dp.h |  24 ++++++++++
+ 2 files changed, 135 insertions(+)
 
-diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
-index 6a174da88..71531e8dc 100644
---- a/tests/intel/kms_dp_link_training.c
-+++ b/tests/intel/kms_dp_link_training.c
-@@ -29,6 +29,9 @@
+diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+index aba6aa8d5..89d1dbd4d 100644
+--- a/lib/i915/i915_dp.c
++++ b/lib/i915/i915_dp.c
+@@ -35,7 +35,9 @@
  
- #define RETRAIN_COUNT	1
+ #include "i915_dp.h"
+ #include "igt_core.h"
++#include "igt_debugfs.h"
+ #include "igt_kms.h"
++#include "igt_sysfs.h"
  
-+/* The driver allows at most 10 link rates over 3 lane counts. */
-+#define MAX_LINK_CONFIGS	32
-+
  /*
-  * How long the driver's link recovery is given to reach a verdict, in seconds.
-  * The automatic retrain is queued without a delay, so this only has to cover
-@@ -106,6 +109,103 @@ static void assert_link_status_good(data_t *data, bool mst)
- 	}
+  * The driver allows at most 10 link rates over 3 lane counts, i.e. 30 entries
+@@ -527,3 +529,112 @@ int i915_dp_get_next_lower_rate(int drm_fd, igt_output_t *output, int rate)
+ 
+ 	return next;
  }
- 
-+/*
-+ * set_link_status_good - Clear a latched BAD link-status.
-+ *
-+ * The property latches BAD when the driver falls back and only userspace can
-+ * clear it, so without clearing it before every attempt a single fallback
-+ * anywhere in the run poisons every later assertion.
-+ */
-+static void set_link_status_good(data_t *data, bool mst)
-+{
-+	igt_output_t *outputs[IGT_MAX_PIPES];
-+	int count = 0;
-+	int i;
 +
-+	if (mst) {
-+		igt_assert_f(igt_find_all_mst_output_in_topology(data->drm_fd,
-+								 &data->display, data->output,
-+								 outputs, &count) == 0,
-+								 "Unable to find MST outputs\n");
-+	} else {
-+		outputs[0] = data->output;
-+		count = 1;
++/**
++ * i915_dp_tc_mode_name:
++ * @mode: Connector mode
++ *
++ * Returns: The driver's name for @mode, for use in a log line
++ */
++const char *i915_dp_tc_mode_name(enum i915_dp_tc_mode mode)
++{
++	switch (mode) {
++	case I915_DP_TC_DISCONNECTED:
++		return "disconnected";
++	case I915_DP_TC_LEGACY:
++		return "legacy";
++	case I915_DP_TC_DP_ALT:
++		return "dp-alt";
++	case I915_DP_TC_TBT_ALT:
++		return "tbt-alt";
++	default:
++		return "native";
 +	}
-+
-+	for (i = 0; i < count; i++)
-+		igt_output_set_prop_value(outputs[i], IGT_CONNECTOR_LINK_STATUS,
-+					  DRM_MODE_LINK_STATUS_GOOD);
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
 +}
 +
-+/*
-+ * link_config_data_rate - Data rate a link configuration carries, in
-+ * 10 kbit/s units.
++/**
++ * i915_dp_get_tc_mode:
++ * @drm_fd: A drm file descriptor
++ * @output: Target output
++ * @pin_assignment: Where to store the Type-C pin assignment, or NULL
++ * @max_lanes: Where to store the Type-C max lane count, or NULL
 + *
-+ * Channel coding efficiency is in 1ppm units, matching the kernel's
-+ * drm_dp_bw_channel_coding_efficiency(): 96.71% for 128b/132b and 80% for
-+ * 8b/10b. 8b/10b MST is 78.75% instead, because of the 1-in-64 MTPH overhead
-+ * that helper deliberately does not account for. Using 80% there overestimates
-+ * the available bandwidth and turns a correct driver rejection into a failure.
-+ */
-+static int link_config_data_rate(const struct i915_dp_link_config *config,
-+				 bool mst)
-+{
-+	uint64_t symbol_rate = (uint64_t)config->link_rate * config->lane_count;
-+	int efficiency;
-+
-+	if (i915_dp_is_uhbr_rate(config->link_rate))
-+		efficiency = 967100;
-+	else
-+		efficiency = mst ? 787500 : 800000;
-+
-+	return symbol_rate * efficiency / 1000000;
-+}
-+
-+/*
-+ * mode_data_rate - Data rate a mode needs, in 10 kbit/s units.
++ * Read the connector mode of @output out of the TC Port line the driver
++ * prints for every connected Type-C connector in the i915_display_info
++ * debugfs file:
 + *
-+ * Uncompressed 8 bpc, which is what the smallest mode of a DP sink is driven
-+ * at. Deliberately pessimistic: overestimating what the mode needs makes a
-+ * borderline configuration skip rather than fail.
-+ */
-+static int mode_data_rate(const drmModeModeInfo *mode)
-+{
-+	return DIV_ROUND_UP(mode->clock * 24, 10);
-+}
-+
-+/*
-+ * link_min_data_rate - Data rate the link has to carry, in 10 kbit/s units.
++ *	TC Port TC1: mode: tbt-alt, pin assignment: D, max lanes: 4
 + *
-+ * do_modeset() drives every stream of an MST topology, so the link carries all
-+ * of them at once. Summing them is what tells a configuration that cannot
-+ * carry the whole payload apart from one that can, which a single stream's
-+ * requirement would let through and turn into a false link training failure.
-+ */
-+static int link_min_data_rate(data_t *data, bool mst)
-+{
-+	igt_output_t *outputs[IGT_MAX_PIPES];
-+	int count = 0;
-+	int rate = 0;
-+	int i;
-+
-+	if (mst) {
-+		igt_assert_f(igt_find_all_mst_output_in_topology(data->drm_fd,
-+								 &data->display, data->output,
-+								 outputs, &count) == 0,
-+								 "Unable to find MST outputs\n");
-+	} else {
-+		outputs[0] = data->output;
-+		count = 1;
-+	}
-+
-+	for (i = 0; i < count; i++)
-+		rate += mode_data_rate(igt_output_get_mode(outputs[i]));
-+
-+	return rate;
-+}
-+
- /*
-  * assert_link_recovery_idle - Let the driver's link recovery reach a verdict
-  * and check it had nothing to recover.
-@@ -160,6 +260,8 @@ static void train_link_config(data_t *data, bool mst,
- 		 igt_output_name(data->output), config->lane_count,
- 		 config->link_rate);
- 
-+	set_link_status_good(data, mst);
-+
- 	i915_dp_set_link_params(data->drm_fd, data->output, rate_str, lane_str);
- 	i915_dp_force_link_retrain(data->drm_fd, data->output, RETRAIN_COUNT);
- 	igt_assert_eq(check_condition_with_timeout(data->drm_fd, data->output,
-@@ -171,6 +273,9 @@ static void train_link_config(data_t *data, bool mst,
- 	igt_info("Current link rate is %d\n", current_link_rate);
- 	igt_assert_f(current_link_rate == config->link_rate,
- 		     "Link training did not succeed at the forced link rate.\n");
-+	igt_assert_f(i915_dp_get_current_lane_count(data->drm_fd, data->output) ==
-+		     config->lane_count,
-+		     "Link training did not succeed at the forced lane count.\n");
- 
- 	/*
- 	 * The link parameters read back above are the ones the driver asked
-@@ -280,14 +385,14 @@ static void do_modeset(data_t *data, bool mst)
- }
- 
- /*
-- * run_link_rate_test - Main link training routine. Expects the MST vs. SST check
-- * to be done beforehand. Returns true if tested at the correct rate.
-+ * setup_link - Bring the link up at the parameters the driver picks itself.
++ * @pin_assignment and @max_lanes are only written when the line is present.
 + *
-+ * Runs per dynamic subtest rather than once per link: everything it does can
-+ * fail, and a failure in a igt_subtest_with_dynamic() container aborts the
-+ * whole test instead of yielding a dynamic subtest result.
-  */
--static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
-+static void setup_link(data_t *data, bool mst)
- {
--	struct i915_dp_link_config config;
--	bool is_uhbr_output;
--
- 	igt_display_reset(&data->display);
- 	i915_dp_reset_link_params(data->drm_fd, data->output);
- 	do_modeset(data, mst);
-@@ -298,27 +403,63 @@ static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
- 						   i915_dp_get_pending_retrain,
- 						   1.0, 20.0), 0);
- 	assert_link_status_good(data, mst);
-+}
-+
-+/*
-+ * run_link_rate_test - Main link training routine. Expects the MST vs. SST check
-+ * to be done beforehand. Returns true if tested at the correct rate.
++ * Returns: The connector mode, or I915_DP_TC_NONE when @output has no TC Port
++ * line, i.e. it is on a combo or native PHY
 + */
-+static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
++enum i915_dp_tc_mode i915_dp_get_tc_mode(int drm_fd, igt_output_t *output,
++					 char *pin_assignment, int *max_lanes)
 +{
-+	struct i915_dp_link_config configs[MAX_LINK_CONFIGS];
-+	int num_configs, num_dynamics = 0;
-+	int i;
++	enum i915_dp_tc_mode mode = I915_DP_TC_NONE;
++	char marker[32];
++	char mode_str[32];
++	char *info, *block, *next_block, *line;
++	char pin;
++	int lanes;
++	int dir;
 +
-+	igt_require_f(i915_dp_has_allowed_link_configs_debugfs(data->drm_fd,
-+							       data->output),
-+		      "Kernel has no intel_dp_allowed_link_configs debugfs\n");
++	dir = igt_debugfs_dir(drm_fd);
++	igt_assert_fd(dir);
++	info = igt_sysfs_get(dir, "i915_display_info");
++	close(dir);
++	igt_assert_f(info, "Unable to read i915_display_info\n");
 +
 +	/*
-+	 * Enumerate with the forced parameters reset, or the set being read is
-+	 * the forced one rather than the one the driver would pick from.
++	 * i915_display_info is a per-device file that lists the CRTCs first
++	 * and the connectors after them. The CRTC section names the connectors
++	 * of every active output, so the search has to start at the connector
++	 * section, or an active output's first match is that reference rather
++	 * than the connector's own block and the TC Port line is never
++	 * reached. The block ends where the next connector's begins.
 +	 */
-+	i915_dp_reset_link_params(data->drm_fd, data->output);
-+	num_configs = i915_dp_get_allowed_link_configs(data->drm_fd, data->output,
-+						       configs, ARRAY_SIZE(configs));
++	snprintf(marker, sizeof(marker), "[CONNECTOR:%d:",
++		 output->config.connector->connector_id);
 +
-+	for (i = 0; i < num_configs; i++) {
-+		char name[64];
++	block = strstr(info, "Connector info");
++	if (!block)
++		goto out;
 +
-+		if (i915_dp_is_uhbr_rate(configs[i].link_rate) != uhbr)
-+			continue;
++	block = strstr(block, marker);
++	if (!block)
++		goto out;
 +
-+		snprintf(name, sizeof(name), "%s-%dx%d",
-+			 igt_output_name(data->output),
-+			 configs[i].lane_count, configs[i].link_rate);
++	next_block = strstr(block + strlen(marker), "[CONNECTOR:");
++	if (next_block)
++		*next_block = '\0';
 +
-+		num_dynamics++;
++	line = strstr(block, "TC Port ");
++	if (!line)
++		goto out;
 +
-+		igt_dynamic(name) {
-+			setup_link(data, mst);
++	if (sscanf(line,
++		   "TC Port %*[^:]: mode: %31[^,], pin assignment: %c, max lanes: %d",
++		   mode_str, &pin, &lanes) != 3)
++		goto out;
 +
-+			igt_require_f(link_config_data_rate(&configs[i], mst) >=
-+				      link_min_data_rate(data, mst),
-+				      "%d lanes, rate %d is too narrow for the mode\n",
-+				      configs[i].lane_count,
-+				      configs[i].link_rate);
++	if (!strcmp(mode_str, "tbt-alt"))
++		mode = I915_DP_TC_TBT_ALT;
++	else if (!strcmp(mode_str, "dp-alt"))
++		mode = I915_DP_TC_DP_ALT;
++	else if (!strcmp(mode_str, "legacy"))
++		mode = I915_DP_TC_LEGACY;
++	else
++		mode = I915_DP_TC_DISCONNECTED;
 +
-+			train_link_config(data, mst, &configs[i]);
-+		}
++	if (pin_assignment)
++		*pin_assignment = pin;
++	if (max_lanes)
++		*max_lanes = lanes;
++
++out:
++	free(info);
++
++	return mode;
++}
+diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
+index c818b3937..883ac346d 100644
+--- a/lib/i915/i915_dp.h
++++ b/lib/i915/i915_dp.h
+@@ -23,6 +23,27 @@ struct i915_dp_link_config {
+ 	int link_rate;
+ };
  
--	/* Read max_link_rate and max_lane_count */
--	config.link_rate = i915_dp_get_max_link_rate(data->drm_fd, data->output);
--	config.lane_count = i915_dp_get_max_lane_count(data->drm_fd, data->output);
--
--	/* Check sink supports uhbr or not */
--	is_uhbr_output = i915_dp_is_uhbr_rate(config.link_rate);
--	if (uhbr != is_uhbr_output) {
--		igt_info("Test expects %s, but output %s is %s.\n",
--			 uhbr ? "UHBR" : "NON-UHBR",
--			 data->output->name,
--			 is_uhbr_output ? "UHBR" : "NON-UHBR");
--		igt_info("----------------------------------------------------\n");
--		return false;
-+		i915_dp_reset_link_params(data->drm_fd, data->output);
- 	}
++/**
++ * enum i915_dp_tc_mode:
++ * @I915_DP_TC_NONE: not a Type-C port, i.e. a combo or native PHY
++ * @I915_DP_TC_DISCONNECTED: Type-C port with nothing connected
++ * @I915_DP_TC_LEGACY: fixed DP connection on a Type-C port
++ * @I915_DP_TC_DP_ALT: USB-C DP alt mode, driven by the PHY PLL
++ * @I915_DP_TC_TBT_ALT: DP tunneled over USB4/Thunderbolt, driven by the
++ *			Thunderbolt PLL
++ *
++ * The connector mode of a DP output, as reported by the i915_display_info
++ * debugfs file. Only I915_DP_TC_TBT_ALT takes its link clock from the
++ * Thunderbolt PLL; every other value uses the PHY PLL.
++ */
++enum i915_dp_tc_mode {
++	I915_DP_TC_NONE,
++	I915_DP_TC_DISCONNECTED,
++	I915_DP_TC_LEGACY,
++	I915_DP_TC_DP_ALT,
++	I915_DP_TC_TBT_ALT,
++};
++
+ /**
+  * i915_dp_is_uhbr_rate:
+  * @link_rate: DP link rate in 10 kbit/s units, as reported by the
+@@ -58,5 +79,8 @@ int i915_dp_get_allowed_link_configs(int drm_fd, igt_output_t *output,
+ 				     struct i915_dp_link_config *configs,
+ 				     int max_configs);
+ int i915_dp_get_next_lower_rate(int drm_fd, igt_output_t *output, int rate);
++enum i915_dp_tc_mode i915_dp_get_tc_mode(int drm_fd, igt_output_t *output,
++					 char *pin_assignment, int *max_lanes);
++const char *i915_dp_tc_mode_name(enum i915_dp_tc_mode mode);
  
--	/* Force retrain at max link params */
--	train_link_config(data, mst, &config);
-+	if (!num_dynamics)
-+		igt_info("Output %s allows no %sUHBR link config\n",
-+			 igt_output_name(data->output), uhbr ? "" : "non-");
- 
- 	igt_info("----------------------------------------------------\n");
--	return true;
-+	return num_dynamics > 0;
- }
- 
- /*
-@@ -386,7 +527,7 @@ int igt_main()
- 	}
- 
- 	igt_describe("Test we can drive UHBR rates over SST");
--	igt_subtest("uhbr-sst") {
-+	igt_subtest_with_dynamic("uhbr-sst") {
- 		igt_require_f(intel_display_ver(data.devid) > 13,
- 			      "UHBR not supported on platform\n");
- 		igt_require_f(test_link_rate(&data, false, true),
-@@ -394,7 +535,7 @@ int igt_main()
- 	}
- 
- 	igt_describe("Test we can drive UHBR rates over MST");
--	igt_subtest("uhbr-mst") {
-+	igt_subtest_with_dynamic("uhbr-mst") {
-                 igt_require_f(intel_display_ver(data.devid) > 13,
-                               "UHBR not supported on platform\n");
- 		igt_require_f(test_link_rate(&data, true, true),
-@@ -402,13 +543,13 @@ int igt_main()
- 	}
- 
- 	igt_describe("Test we can drive NON-UHBR rates over SST");
--	igt_subtest("non-uhbr-sst") {
-+	igt_subtest_with_dynamic("non-uhbr-sst") {
- 		igt_require_f(test_link_rate(&data, false, false),
- 			      "Didn't find any SST output with NON-UHBR rates.\n");
- 	}
- 
- 	igt_describe("Test we can drive NON-UHBR rates over MST");
--	igt_subtest("non-uhbr-mst") {
-+	igt_subtest_with_dynamic("non-uhbr-mst") {
- 		igt_require_f(test_link_rate(&data, true, false),
- 			      "Didn't find any MST output with NON-UHBR rates.\n");
- 	}
+ #endif
 -- 
 2.25.1
 
