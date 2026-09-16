@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1A2EC88E5C
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 04:31:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09945C88E5C
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 04:32:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 567FE10E03E;
-	Wed, 16 Sep 2026 04:31:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ABBAB10E03E;
+	Wed, 16 Sep 2026 04:32:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lbGcLp6t";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LVdsXZe3";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8C6910E03E
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 04:26:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 785B710E03E
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 04:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789532805; x=1821068805;
+ t=1789532808; x=1821068808;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=4yCazHjpVkZy4eCRalbpbu7qP18Pu8P+wxy4b/VB2uA=;
- b=lbGcLp6tlMq6g4n9GOHG7pFHaDy/xIfYMe4QPzxdR5JyeJNonMUzZ25c
- iAYrEv/CdN8IsNyPqX4PGexhdd+N79IYTFcQs1XX2yxirynGxV/CN6cjQ
- /GQDn7kpqxNR2BCi2WExCq0SppQlHCzQhBSMiJBjlr6ztSRZqUGA+aoob
- kaG7YpYDz6QhHJeUpIwF9Swqv6k43i82ffQFmQFE9KQBQw3sgrhqkQQNT
- yaEt8SqFBxKk7lGy6JHMTOlTaRwHoCgxERC+E7blmrgN2LsRJ88ucOoJG
- 39PKZbY1VdqvFszRKLVPa0NCrieOiwfCCpOjMvoqq4vPssSCCPvYwXnL6 w==;
-X-CSE-ConnectionGUID: sS7MyL+kQu2hoHJkvKG/bg==
-X-CSE-MsgGUID: udM9hLDBR4GrlxNEsSHEQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100503254"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100503254"
+ bh=2TAKBkLuAb1ua1bne61kAOd9nVGrCkOsqsoSg9UWBsA=;
+ b=LVdsXZe3xC+FvfpYTGPSlMBE+zyElMLHR/xQoATklTC6bGBIfvAWUdqY
+ pzzV+nmLAdjXSHwnizV6UfaBrHHyQPS78SZTSK079DkIyBZMseMLAksbD
+ 6ad4vFhCcPhhrXMvaC1RLUw+25ihqZikhvY0MkJAk+lNHhkJI3EIcV7M6
+ UKBwrgFfsjW40Gqv0yg0MhymsLBmIZJmTYmrpSQ8ww1/QPZpkHPFuXiw5
+ s9atn73yCZIiBKeJO/eOZdDU3ylZECeVQrIjKGp0X6+XyaDB70c/I1/Ce
+ hEzjhSj87J++vOE4L66HeAkR5ELyjcEpvsw3phJQ+9FEYUYBJtlCzxpvr A==;
+X-CSE-ConnectionGUID: J0AbzabfR0esS7uK5Dk89A==
+X-CSE-MsgGUID: ogPaATYOTR2JzKfMRGzaUA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100503263"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100503263"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2026 21:26:44 -0700
-X-CSE-ConnectionGUID: gbsBikGJTwC1VcvbbG1SPA==
-X-CSE-MsgGUID: udPVYD2pTsGi3od/qa4k5g==
+ 15 Sep 2026 21:26:48 -0700
+X-CSE-ConnectionGUID: aGWFelfcQvO8KMGA94sj5g==
+X-CSE-MsgGUID: 2BfUhVhCQfqYEBCsOggGlQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271765063"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271765075"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:44 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:48 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 10/13] tests/intel/kms_dp_link_training: Add per
- connector mode subtests
-Date: Wed, 16 Sep 2026 10:17:58 +0530
-Message-Id: <20260916044801.1279102-11-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 13/13] tests/intel/kms_dp_link_training: Verify the
+ trained link from the sink side
+Date: Wed, 16 Sep 2026 10:18:01 +0530
+Message-Id: <20260916044801.1279102-14-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260916044801.1279102-1-kunal1.joshi@intel.com>
 References: <20260916044801.1279102-1-kunal1.joshi@intel.com>
@@ -68,248 +68,182 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The four existing subtests cover whichever connector mode the machine
-presents. On a machine with a Thunderbolt dock they train a tunneled
-link, on one without they train a direct link, and the result is
-identical either way, so a lab that never had a dock looks the same as
-one where the tunnel works.
+The test reads everything back from the driver. A driver that believes
+a link is up when the sink does not would pass, and the UHBR subtests
+infer 128b/132b from the rate rather than checking it.
 
-Add eight subtests selecting links by connector mode:
+After training, ask the sink. MAIN_LINK_CHANNEL_CODING_SET must select
+128b/132b for a UHBR configuration and 8b/10b otherwise, and the link
+status must show every lane in use locked. That is the only direct
+evidence that the coding the rate implies is the coding that reached
+the wire.
 
-	uhbr-sst-tbtalt-train        non-uhbr-sst-tbtalt-train
-	uhbr-mst-tbtalt-train        non-uhbr-mst-tbtalt-train
-	uhbr-sst-direct-train        non-uhbr-sst-direct-train
-	uhbr-mst-direct-train        non-uhbr-mst-direct-train
+Skip when the DPCD can be opened but not read, rather than reporting the
+configuration as trained on evidence the test failed to collect. A
+missing AUX character device is treated differently and only logged:
+CONFIG_DRM_DISPLAY_DP_AUX_CHARDEV is not enabled by default, so there is
+often none at all, and that says nothing about the link, whereas AUX is
+out of band and answers whether or not the link trained, so a read that
+fails once the device is open is a result in itself.
 
-with the same per configuration dynamic subtests as the existing ones.
-"direct" is native, DP alt mode and legacy together: they all take the
-link clock from the PHY PLL, and only tbt-alt takes it from the
-Thunderbolt PLL, so that is the only split that changes which driver
-code runs. The raw mode stays in the inventory line, so dp-alt against
-legacy is still diagnosable from a failing run.
-
-The connector mode has to be in the static subtest name rather than a
-dynamic one, because a dynamic subtest that skips is not counted as
-executed: a container with one pass and twenty skips reports PASS, so a
-lab with no dock would look green.
-
-Keep the four existing names and their PHY agnostic scope. They are not
-redundant: they are what to run on a machine nobody provisioned for
-this matrix.
-
-Expect most of the eight to skip on any one machine, since dp-alt and
-tbt-alt are mutually exclusive on a port at a given moment. The skip
-reasons name the connector mode so the two causes - no such link, and a
-link that allows no configuration in the encoding class - stay
-greppable apart.
+An MST stream connector's AUX reaches the far sink over sideband rather
+than the link partner, which is the end of the link being trained, so
+use the topology's root connector for MST. The root reads disconnected
+while MST is active, so find it by id instead of walking the connected
+outputs.
 
 Assisted-by: GitHub_Copilot:claude-opus-5
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel/kms_dp_link_training.c | 142 ++++++++++++++++++++++++++++-
- 1 file changed, 137 insertions(+), 5 deletions(-)
+ tests/intel/kms_dp_link_training.c | 91 +++++++++++++++++++++++++++++-
+ 1 file changed, 90 insertions(+), 1 deletion(-)
 
 diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
-index e6160cee5..229eb3d69 100644
+index 229eb3d69..a228b5493 100644
 --- a/tests/intel/kms_dp_link_training.c
 +++ b/tests/intel/kms_dp_link_training.c
-@@ -21,6 +21,40 @@
-  * Description: Test we can drive non-UHBR rates over MST.
+@@ -55,8 +55,11 @@
+  *              link.
   */
  
-+/**
-+ * SUBTEST: uhbr-sst-tbtalt-train
-+ * Description: Test we can drive UHBR rates over an SST link tunneled over
-+ *              USB4/Thunderbolt.
-+ *
-+ * SUBTEST: uhbr-mst-tbtalt-train
-+ * Description: Test we can drive UHBR rates over an MST link tunneled over
-+ *              USB4/Thunderbolt.
-+ *
-+ * SUBTEST: uhbr-sst-direct-train
-+ * Description: Test we can drive UHBR rates over a directly connected SST
-+ *              link.
-+ *
-+ * SUBTEST: uhbr-mst-direct-train
-+ * Description: Test we can drive UHBR rates over a directly connected MST
-+ *              link.
-+ *
-+ * SUBTEST: non-uhbr-sst-tbtalt-train
-+ * Description: Test we can drive non-UHBR rates over an SST link tunneled over
-+ *              USB4/Thunderbolt.
-+ *
-+ * SUBTEST: non-uhbr-mst-tbtalt-train
-+ * Description: Test we can drive non-UHBR rates over an MST link tunneled over
-+ *              USB4/Thunderbolt.
-+ *
-+ * SUBTEST: non-uhbr-sst-direct-train
-+ * Description: Test we can drive non-UHBR rates over a directly connected SST
-+ *              link.
-+ *
-+ * SUBTEST: non-uhbr-mst-direct-train
-+ * Description: Test we can drive non-UHBR rates over a directly connected MST
-+ *              link.
-+ */
++#include <string.h>
 +
  #include "i915/i915_dp.h"
  #include "igt.h"
++#include "igt_dp.h"
  #include "igt_kms.h"
-@@ -60,6 +94,38 @@ struct dp_link {
- 	enum i915_dp_tc_mode tc_mode;
- };
+ #include "intel/kms_joiner_helper.h"
+ #include "intel/kms_mst_helper.h"
+@@ -80,6 +83,7 @@ typedef struct {
+ 	uint32_t devid;
+ 	igt_display_t display;
+ 	igt_output_t *output;
++	int aux_fd;
+ } data_t;
+ 
+ /*
+@@ -323,6 +327,79 @@ static void assert_link_recovery_idle(data_t *data,
+ 	} while (elapsed < LINK_RECOVERY_TIMEOUT);
+ }
  
 +/*
-+ * enum phy_filter - Which links a subtest selects.
++ * open_link_aux - Open the AUX device at the near end of the link.
 + *
-+ * PHY_ANY is the PHY agnostic scope of the original subtests. The split
-+ * between PHY_TBTALT and PHY_DIRECT is where the link clock comes from: only a
-+ * tbt-alt link is clocked by the Thunderbolt PLL, native, DP alt mode and
-+ * legacy all use the PHY PLL, so folding the latter three together does not
-+ * change which driver code runs.
++ * An MST stream connector's AUX reaches the far sink over sideband rather than
++ * the link partner, which is the end of the link being trained, so for MST it
++ * is the topology's root connector that has to be asked. The root reads
++ * disconnected while MST is active, so it is found by id rather than by
++ * walking the connected outputs.
 + */
-+enum phy_filter {
-+	PHY_ANY,
-+	PHY_TBTALT,
-+	PHY_DIRECT,
-+};
-+
-+static const char *phy_filter_name(enum phy_filter phy)
++static int open_link_aux(data_t *data, bool mst)
 +{
-+	return phy == PHY_TBTALT ? "tbt-alt" : "direct";
++	igt_output_t *output = data->output;
++
++	if (mst) {
++		int root_id = igt_get_dp_mst_connector_id(data->output);
++		int i;
++
++		output = NULL;
++
++		for (i = 0; i < data->display.n_outputs; i++) {
++			igt_output_t *root = &data->display.outputs[i];
++
++			if (root->config.connector &&
++			    root->config.connector->connector_id == root_id) {
++				output = root;
++				break;
++			}
++		}
++
++		if (!output)
++			return -ENOENT;
++	}
++
++	return igt_dp_aux_open(data->drm_fd, output);
 +}
 +
-+static bool link_matches_phy(const struct dp_link *link, enum phy_filter phy)
++/*
++ * assert_sink_agrees - Ask the sink whether the link is really up.
++ *
++ * Everything else the test checks is read back from the driver. This is the
++ * only check that the sink agrees, and the only direct evidence of which
++ * channel coding reached the wire.
++ *
++ * A DPCD the test could open but cannot read leaves the case unverified, so
++ * skip rather than report it as trained. A missing AUX device does not: AUX is
++ * out of band and answers whether or not the link trained, so a read that
++ * fails once the device is open is a result in itself, while
++ * CONFIG_DRM_DISPLAY_DP_AUX_CHARDEV not being enabled - it is not by default -
++ * says nothing about the link and would take every driver side check down with
++ * it.
++ */
++static void assert_sink_agrees(data_t *data,
++			       const struct i915_dp_link_config *config)
 +{
-+	switch (phy) {
-+	case PHY_TBTALT:
-+		return link->tc_mode == I915_DP_TC_TBT_ALT;
-+	case PHY_DIRECT:
-+		return link->tc_mode != I915_DP_TC_TBT_ALT;
-+	default:
-+		return true;
-+	}
++	bool uhbr = i915_dp_is_uhbr_rate(config->link_rate);
++	int ret;
++
++	if (data->aux_fd < 0)
++		return;
++
++	ret = igt_dp_channel_coding_ok(data->aux_fd, uhbr);
++	igt_skip_on_f(ret < 0, "Unable to read the sink's channel coding: %s\n",
++		      strerror(-ret));
++	igt_assert_f(ret, "Sink is not set to %s at rate %d\n",
++		     uhbr ? "128b/132b" : "8b/10b", config->link_rate);
++
++	ret = igt_dp_link_status_ok(data->aux_fd, config->lane_count, uhbr);
++	igt_skip_on_f(ret < 0, "Unable to read the sink's link status: %s\n",
++		      strerror(-ret));
++	igt_assert_f(ret, "Sink does not report %d lanes locked at rate %d\n",
++		     config->lane_count, config->link_rate);
 +}
 +
  /*
-  * check_condition_with_timeout - Polls check_fn until it returns 0
-  * or until 'timeout' seconds elapse.
-@@ -606,7 +672,8 @@ static int discover_links(data_t *data, struct dp_link *links, int max_links)
- 	return num_links;
+  * train_link_config - Force one link configuration, re-establish the link and
+  * check that the configuration took effect and survived training.
+@@ -366,6 +443,8 @@ static void train_link_config(data_t *data, bool mst,
+ 	 * count resets the recovery state, which would mask the failure.
+ 	 */
+ 	assert_link_recovery_idle(data, config);
++
++	assert_sink_agrees(data, config);
  }
  
--static bool test_link_rate(data_t *data, bool mst, bool uhbr)
-+static bool test_link_rate(data_t *data, bool mst, bool uhbr,
-+			   enum phy_filter phy)
+ /*
+@@ -564,6 +643,11 @@ static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
+ 							       data->output),
+ 		      "Kernel has no intel_dp_allowed_link_configs debugfs\n");
+ 
++	data->aux_fd = open_link_aux(data, mst);
++	if (data->aux_fd < 0)
++		igt_info("%s: no AUX device (%s), sink side checks are skipped\n",
++			 igt_output_name(data->output), strerror(-data->aux_fd));
++
+ 	/*
+ 	 * Enumerate with the forced parameters reset, or the set being read is
+ 	 * the forced one rather than the one the driver would pick from.
+@@ -603,6 +687,11 @@ static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
+ 		igt_info("Output %s allows no %sUHBR link config\n",
+ 			 igt_output_name(data->output), uhbr ? "" : "non-");
+ 
++	if (data->aux_fd >= 0) {
++		close(data->aux_fd);
++		data->aux_fd = -1;
++	}
++
+ 	igt_info("----------------------------------------------------\n");
+ 	return num_dynamics > 0;
+ }
+@@ -718,7 +807,7 @@ IGT_TEST_DESCRIPTION("Test to validate link training on SST/MST with "
+ 
+ int igt_main()
  {
- 	struct dp_link links[MAX_LINKS];
- 	bool ran_any_link = false;
-@@ -628,6 +695,15 @@ static bool test_link_rate(data_t *data, bool mst, bool uhbr)
- 			continue;
- 		}
+-	data_t data = {};
++	data_t data = { .aux_fd = -1 };
  
-+		if (!link_matches_phy(&links[i], phy)) {
-+			igt_info("Skipping %s: %s requested but it's %s.\n",
-+				 igt_output_name(links[i].output),
-+				 phy_filter_name(phy),
-+				 i915_dp_tc_mode_name(links[i].tc_mode));
-+			igt_info("----------------------------------------------------\n");
-+			continue;
-+		}
-+
- 		data->output = links[i].output;
- 		igt_info("Running link training test for %s\n",
- 			 igt_output_name(data->output));
-@@ -665,7 +741,7 @@ int igt_main()
- 	igt_subtest_with_dynamic("uhbr-sst") {
- 		igt_require_f(intel_display_ver(data.devid) > 13,
- 			      "UHBR not supported on platform\n");
--		igt_require_f(test_link_rate(&data, false, true),
-+		igt_require_f(test_link_rate(&data, false, true, PHY_ANY),
- 			      "Didn't find any SST output with UHBR rates.\n");
- 	}
- 
-@@ -673,22 +749,78 @@ int igt_main()
- 	igt_subtest_with_dynamic("uhbr-mst") {
-                 igt_require_f(intel_display_ver(data.devid) > 13,
-                               "UHBR not supported on platform\n");
--		igt_require_f(test_link_rate(&data, true, true),
-+		igt_require_f(test_link_rate(&data, true, true, PHY_ANY),
- 			      "Didn't find any MST output with UHBR rates.\n");
- 	}
- 
- 	igt_describe("Test we can drive NON-UHBR rates over SST");
- 	igt_subtest_with_dynamic("non-uhbr-sst") {
--		igt_require_f(test_link_rate(&data, false, false),
-+		igt_require_f(test_link_rate(&data, false, false, PHY_ANY),
- 			      "Didn't find any SST output with NON-UHBR rates.\n");
- 	}
- 
- 	igt_describe("Test we can drive NON-UHBR rates over MST");
- 	igt_subtest_with_dynamic("non-uhbr-mst") {
--		igt_require_f(test_link_rate(&data, true, false),
-+		igt_require_f(test_link_rate(&data, true, false, PHY_ANY),
- 			      "Didn't find any MST output with NON-UHBR rates.\n");
- 	}
- 
-+	igt_describe("Test we can drive UHBR rates over a tunneled SST link");
-+	igt_subtest_with_dynamic("uhbr-sst-tbtalt-train") {
-+		igt_require_f(intel_display_ver(data.devid) > 13,
-+			      "UHBR not supported on platform\n");
-+		igt_require_f(test_link_rate(&data, false, true, PHY_TBTALT),
-+			      "No tbt-alt DP SST link allows a UHBR config\n");
-+	}
-+
-+	igt_describe("Test we can drive UHBR rates over a tunneled MST link");
-+	igt_subtest_with_dynamic("uhbr-mst-tbtalt-train") {
-+		igt_require_f(intel_display_ver(data.devid) > 13,
-+			      "UHBR not supported on platform\n");
-+		igt_require_f(test_link_rate(&data, true, true, PHY_TBTALT),
-+			      "No tbt-alt DP MST link allows a UHBR config\n");
-+	}
-+
-+	igt_describe("Test we can drive UHBR rates over a direct SST link");
-+	igt_subtest_with_dynamic("uhbr-sst-direct-train") {
-+		igt_require_f(intel_display_ver(data.devid) > 13,
-+			      "UHBR not supported on platform\n");
-+		igt_require_f(test_link_rate(&data, false, true, PHY_DIRECT),
-+			      "No direct DP SST link allows a UHBR config\n");
-+	}
-+
-+	igt_describe("Test we can drive UHBR rates over a direct MST link");
-+	igt_subtest_with_dynamic("uhbr-mst-direct-train") {
-+		igt_require_f(intel_display_ver(data.devid) > 13,
-+			      "UHBR not supported on platform\n");
-+		igt_require_f(test_link_rate(&data, true, true, PHY_DIRECT),
-+			      "No direct DP MST link allows a UHBR config\n");
-+	}
-+
-+	igt_describe("Test we can drive non-UHBR rates over a tunneled SST link");
-+	igt_subtest_with_dynamic("non-uhbr-sst-tbtalt-train") {
-+		igt_require_f(test_link_rate(&data, false, false, PHY_TBTALT),
-+			      "No tbt-alt DP SST link allows a non-UHBR config\n");
-+	}
-+
-+	igt_describe("Test we can drive non-UHBR rates over a tunneled MST link");
-+	igt_subtest_with_dynamic("non-uhbr-mst-tbtalt-train") {
-+		igt_require_f(test_link_rate(&data, true, false, PHY_TBTALT),
-+			      "No tbt-alt DP MST link allows a non-UHBR config\n");
-+	}
-+
-+	igt_describe("Test we can drive non-UHBR rates over a direct SST link");
-+	igt_subtest_with_dynamic("non-uhbr-sst-direct-train") {
-+		igt_require_f(test_link_rate(&data, false, false, PHY_DIRECT),
-+			      "No direct DP SST link allows a non-UHBR config\n");
-+	}
-+
-+	igt_describe("Test we can drive non-UHBR rates over a direct MST link");
-+	igt_subtest_with_dynamic("non-uhbr-mst-direct-train") {
-+		igt_require_f(test_link_rate(&data, true, false, PHY_DIRECT),
-+			      "No direct DP MST link allows a non-UHBR config\n");
-+	}
-+
  	igt_fixture() {
- 		igt_reset_connectors();
- 		igt_display_fini(&data.display);
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
 -- 
 2.25.1
 
