@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 701EEC88E77
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 10:40:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8766C88E7F
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 10:40:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id ED9D710E5AF;
-	Wed, 16 Sep 2026 10:40:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48E7B10E7CD;
+	Wed, 16 Sep 2026 10:40:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VGAOoZTN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qfv8j2QM";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0B19010E301
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 10:38:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1C56110E706
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 10:38:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789555112; x=1821091112;
+ t=1789555116; x=1821091116;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=NpBrX/Un0fLvEBmXixc5w7FVRjN0EL88JZuPM/B7tUU=;
- b=VGAOoZTNoeQhx6as/BeqXKAQzO+MvrHwQPXSbow7xBj4lnVP2TgSP9LK
- kkxHBvWG1LQ5v0C8Roennu+ZzHwAy4I8QBFvtht9olDhweMcCZCJws4zS
- cOQPKFNHjNaAwK9Oxd1bcYTSMRCFDslouzfA6ROt0jzry12NM8RJe9Mol
- U4H4xD0u8aFnxtF2sq6uB5+KycRif0AYyeLgariQ81yr3ts1KEWo8oQ9q
- IfiCdCaSJ5VhY3tOO5nIX8hOBN6V/HGBSQ1LXCdXpeyPfZ1Er0opCKkle
- WycwWg1j0hJ48l1TfGbDWuJP+4BTo9f2vXuZB7HNpO+/foL1WzxGDVL9S w==;
-X-CSE-ConnectionGUID: S7oCUJHsRJus++P+dIwygQ==
-X-CSE-MsgGUID: rH6wUOEERZauKo1kLQktOw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100525727"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100525727"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 03:38:32 -0700
-X-CSE-ConnectionGUID: 4PEvJoCjQG+M40Hjn2hJ7A==
-X-CSE-MsgGUID: 9QQ37cBsR++U8T6YIuik1g==
+ bh=b80jILvFFFdFpjJr3kaEb7c62h5I8ReTVaz6YDmGu7o=;
+ b=Qfv8j2QMVPPideWfaAgoQKXKFgvUIe1y1O+1ChSLIA6/X0Zh80VHqINv
+ yzL936fEN51LZTlHs3TnxN8vtqalla66R8krz4Kp7icCT6NayPSbAHzS8
+ abCx/n68RwKXAkOWEq+U2riu07EBi3SzivNFx2idzfefJR89nUm1jqmk6
+ qcKspXlJdA0ok2DrC1W+q76N5rNN1JlVH/EHgvmBqU+LcxkYvhP0WO65y
+ nW6HS/cW3YwkkHMRmmny0eUO8lhJRlyYzN7FKWtYzo4hCNTE68T3vaTq1
+ HVRP73nlkqIKtjKAOUcGjdqlFGYEZlyenkiaPSaW9JeIlX848b2yifTJM w==;
+X-CSE-ConnectionGUID: lalG2tReRBq83cQ3VHTm/w==
+X-CSE-MsgGUID: ryqdodEQTLyAgvQnMpY4SA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="112696459"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="112696459"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2026 03:38:36 -0700
+X-CSE-ConnectionGUID: kP5hw28ERgui9PphCQ18NA==
+X-CSE-MsgGUID: nG5VGeScQhuB6lCwyitMZw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="277052514"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="273270209"
 Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost)
  ([10.245.244.146])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 03:38:30 -0700
+ by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2026 03:38:34 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Andrzej Hajda <andrzej.hajda@intel.com>,
- Petri Latvala <adrinael@adrinael.net>
-Subject: [PATCH i-g-t v1 1/2] Dockerfile: bump debian version
-Date: Wed, 16 Sep 2026 12:38:19 +0200
-Message-ID: <20260916103820.68008-2-kamil.konieczny@linux.intel.com>
+ Ryszard Knop <ryszard.knop@intel.com>
+Subject: [PATCH i-g-t v1 2/2] gitlab-ci: Fix computing sum for debian image
+Date: Wed, 16 Sep 2026 12:38:20 +0200
+Message-ID: <20260916103820.68008-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260916103820.68008-1-kamil.konieczny@linux.intel.com>
 References: <20260916103820.68008-1-kamil.konieczny@linux.intel.com>
@@ -70,47 +70,43 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Bullseye is EOL so bump up debian to bookworm.
+Debian container has a dependency on minimal image, so minimal
+should also contribute to sum calculations.
+Problem occurred when new lib needed for compilation was added
+to debian-minimal. As sum of debian dockerfile didn't change, it
+was not recreated and all compilations on debian container
+failed.
+
+Fix it and calculate sum from both dockerfiles, base and minimal.
+When there is no minimal, keep old behaviour.
 
 Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Petri Latvala <adrinael@adrinael.net>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/201
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
 ---
- Dockerfile.build-debian-arm64   | 2 +-
- Dockerfile.build-debian-armhf   | 2 +-
- Dockerfile.build-debian-minimal | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ .gitlab-ci/pull-or-rebuild.sh | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/Dockerfile.build-debian-arm64 b/Dockerfile.build-debian-arm64
-index e51ddca20..438c08e1b 100644
---- a/Dockerfile.build-debian-arm64
-+++ b/Dockerfile.build-debian-arm64
-@@ -1,4 +1,4 @@
--FROM debian:bullseye
-+FROM debian:bookworm
+diff --git a/.gitlab-ci/pull-or-rebuild.sh b/.gitlab-ci/pull-or-rebuild.sh
+index aa1bddcde..fd68ef1a9 100755
+--- a/.gitlab-ci/pull-or-rebuild.sh
++++ b/.gitlab-ci/pull-or-rebuild.sh
+@@ -28,7 +28,12 @@ REF=${4:-${CI_COMMIT_REF_NAME:-latest}}
  
- RUN apt-get update
- RUN apt-get install -y \
-diff --git a/Dockerfile.build-debian-armhf b/Dockerfile.build-debian-armhf
-index a7ad7aaa5..ac64058b5 100644
---- a/Dockerfile.build-debian-armhf
-+++ b/Dockerfile.build-debian-armhf
-@@ -1,4 +1,4 @@
--FROM debian:bullseye
-+FROM debian:bookworm
+ REF=$(echo $REF | tr / - )
+ IMAGENAME=$CI_REGISTRY/$CI_PROJECT_PATH/$NAME
+-DOCKERFILE_CHECKSUM=$(sha1sum $DOCKERFILE | cut -d ' ' -f1)
++if [ -f ${DOCKERFILE}-minimal ]; then
++	DOCKERFILE_MINIMAL=${DOCKERFILE}-minimal
++else
++	DOCKERFILE_MINIMAL=
++fi
++DOCKERFILE_CHECKSUM=$(cat ${DOCKERFILE} ${DOCKERFILE_MINIMAL} | sha1sum - | cut -d ' ' -f1)
  
- RUN apt-get update
- RUN apt-get install -y \
-diff --git a/Dockerfile.build-debian-minimal b/Dockerfile.build-debian-minimal
-index 808d2e32e..ebaec168c 100644
---- a/Dockerfile.build-debian-minimal
-+++ b/Dockerfile.build-debian-minimal
-@@ -1,4 +1,4 @@
--FROM debian:bullseye
-+FROM debian:bookworm
- 
- RUN apt-get update
- RUN apt-get install -y \
+ REFNAME=$IMAGENAME:$REF
+ DOCKERNAME=$IMAGENAME:dockerfile-$DOCKERFILE_CHECKSUM
 -- 
 2.55.0
 
