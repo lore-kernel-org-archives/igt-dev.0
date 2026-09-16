@@ -4,50 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CE0DC88E77
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 04:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DE1FBC88E5C
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 04:28:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DAB6710E03E;
-	Wed, 16 Sep 2026 04:27:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C4F310E03E;
+	Wed, 16 Sep 2026 04:28:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lALyPmNK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iCsv/cQO";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5193D10E03E
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 04:26:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 54FC010E03E
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 04:26:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789532793; x=1821068793;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=l9Gi1tTA0Y+wI3FyVfjUGbqo4mP15+c2rMck3jRI888=;
- b=lALyPmNKvwd79VHJ+HZ49QJeH+527ibMJdswN0Ih+VtK1FAljzkfKYWm
- A+0Pe2BpHQG0ejE9CE6QQBkwqyHh4kynxVmHDjigqexTkoC95F69vI8L4
- LTCl52sfUaWJ75rF1d1VhvX1S0wLTTKrL9iyAiAN1iV1DDLYwsmEbWiDX
- W2uUn7JQXpj/oTmyurcbLFk3QPhRRIBrqg8C/NFFQPlfCENzaZvnzD2S/
- ueLqCmALgQqI/VPw1sJsF8QmVxDjPPos27V/wD2nKEereD/Kfh5qikVwI
- /CBKMsGJdegjdknggRvyuWKOtCdL5Nly6HZtBOBh/UavwZRz7rzIjV3bV A==;
-X-CSE-ConnectionGUID: 474McGj+ThmCwaETu/reDA==
-X-CSE-MsgGUID: Q0HHg0EmRXGIVJAPorOReA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100503238"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100503238"
+ t=1789532795; x=1821068795;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=JwU/N+3kvn0QDk8UyrJBaUlueFXDardab/8ij30E1T0=;
+ b=iCsv/cQO6AErnLNOnen8odEf7lOUPgHCvH9kagOMfmYidnWIRJC90z1H
+ GZjwkYOWmZp3KiGwEGCCaWbK+kCSSzBcPVndL1k+BFSYhjH76eKOVSp58
+ 1Bf4e1RJm4zzH0bixEvvQEd189kDWSR/uJ6YkUo7cGFuxnR1DWdc2vMu1
+ ky5iN/WBCkj657rm1mioZvWiXWn9mTzE2YTBhbG7Csn2W2yUZjnPP6nTK
+ ccS8RIQMjhkrjAdyBs4lqhfzNI7lPrsWpcOaXUmyxWxVDSyg4ZzBEPRAl
+ ZF0eRKzCbqDGlqIhRTUOh36b1+UVUf/5uLHeiqSw0rbQr+hgnBaN3eze9 g==;
+X-CSE-ConnectionGUID: s1voZk1iQNW8WTlrsTaFaQ==
+X-CSE-MsgGUID: nj7rPcvVT36HjDmd0WJxkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100503240"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100503240"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2026 21:26:33 -0700
-X-CSE-ConnectionGUID: vTnfLKrDS+WSrugKP98GJA==
-X-CSE-MsgGUID: Wtp62FYwSWqXfuisORiJcA==
+ 15 Sep 2026 21:26:35 -0700
+X-CSE-ConnectionGUID: hk0bG9S4SLixE3aMxv5m1g==
+X-CSE-MsgGUID: dpE27pEzSMKTmqOK9pqJoQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271765017"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271765028"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:32 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:35 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 00/13] Expand kms_dp_link_training coverage
-Date: Wed, 16 Sep 2026 10:17:48 +0530
-Message-Id: <20260916044801.1279102-1-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 02/13] tests/intel/kms_dp_link_training: Use the UHBR
+ helpers from lib
+Date: Wed, 16 Sep 2026 10:17:50 +0530
+Message-Id: <20260916044801.1279102-3-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260916044801.1279102-1-kunal1.joshi@intel.com>
+References: <20260916044801.1279102-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,72 +68,56 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-kms_dp_link_training forces the maximum link config, reads the link rate
-back from debugfs, and asserts the two match. Both values are
-intel_dp->link_rate, i.e. what the driver asked the sink for, not what
-the link ended up running at, so a link that failed training and fell
-back still passes. The FIXME in the test has been saying this for a
-while. Nothing below the maximum is trained at all, which is precisely
-the range every fallback and every bandwidth constrained modeset uses.
+The test defines its own UHBR_LINK_RATE and open codes the UHBR
+comparison, while lib/i915/i915_dp.h already has
+I915_DP_UHBR10_LINK_RATE and i915_dp_is_uhbr_rate() for exactly that.
 
-The series turns this into a sweep over the link configuration space:
+Drop the local define and use the lib helpers.
 
- - lib helpers for the debugfs the test needs (allowed link configs,
-   forced rate/lane, retrain state, Type-C port mode), plus generic DPCD
-   read and link status helpers in lib/igt_dp covering both 8b/10b and
-   128b/132b.
+There should be no functional changes here.
 
- - Enumerate the configs in intel_dp_allowed_link_configs, i.e. the
-   intersection the driver really picks from, force each in turn as a
-   dynamic subtest, and verify from both ends: no link recovery in
-   progress, retraining not disabled, and the sink reporting CR, EQ and
-   symbol lock on every active lane.
+Assisted-by: GitHub_Copilot:claude-opus-5
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+---
+ tests/intel/kms_dp_link_training.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
- - Configs that cannot carry the modes are skipped rather than failed,
-   using the aggregate data rate of all streams the commit enables.
-   Deriving the floor from the driver's unforced choice does not work
-   for MST, where it always configures max link bw.
-
- - Outputs are grouped into links, so an MST topology is trained once as
-   a unit, and every output is covered instead of the first one. Per
-   connector mode subtests drive the smallest mode the sink offers,
-   which keeps the most configs reachable.
-
- - Separate subtests for tbt-alt and direct links. That is where the
-   link clock comes from, and today a lab with no dock and a lab with a
-   broken tunnel look identical. The connector mode has to be in the
-   static subtest name, since a dynamic subtest that skips is not
-   counted as executed and the no-dock lab would report green.
-
-The old four subtests keep their names and their PHY agnostic scope.
-Everything new is guarded by igt_require() on the debugfs it needs, and
-the sink side checks skip when the DP AUX chardev is not built in.
-
-Kunal Joshi (13):
-  lib/i915/i915_dp: Add helpers for the allowed link configs debugfs
-  tests/intel/kms_dp_link_training: Use the UHBR helpers from lib
-  tests/intel/kms_dp_link_training: Extract train_link_config()
-  tests/intel/kms_dp_link_training: Check the config survived training
-  tests/intel/kms_dp_link_training: Drive the smallest mode the sink
-    offers
-  tests/intel/kms_dp_link_training: Train every allowed link config
-  lib/i915/i915_dp: Add a Type-C port mode query
-  tests/intel/kms_dp_link_training: Log the DP link inventory in the
-    fixture
-  tests/intel/kms_dp_link_training: Group the outputs into links
-  tests/intel/kms_dp_link_training: Add per connector mode subtests
-  lib/igt_dp: Add DPCD read helpers
-  lib/igt_dp: Add link status predicates for both channel codings
-  tests/intel/kms_dp_link_training: Verify the trained link from the
-    sink side
-
- lib/i915/i915_dp.c                 | 192 ++++++++
- lib/i915/i915_dp.h                 |  41 ++
- lib/igt_dp.c                       | 211 ++++++++
- lib/igt_dp.h                       |  13 +
- tests/intel/kms_dp_link_training.c | 767 +++++++++++++++++++++++++----
- 5 files changed, 1123 insertions(+), 101 deletions(-)
-
+diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
+index f67fdf59d..2d5241246 100644
+--- a/tests/intel/kms_dp_link_training.c
++++ b/tests/intel/kms_dp_link_training.c
+@@ -27,11 +27,6 @@
+ #include "intel/kms_joiner_helper.h"
+ #include "intel/kms_mst_helper.h"
+ 
+-/*
+- * DP Spec defines 10, 13.5, and 20 Gbps as UHBR.
+- * Anything below that is considered NON-UHBR.
+- */
+-#define UHBR_LINK_RATE	1000000
+ #define RETRAIN_COUNT	1
+ 
+ typedef struct {
+@@ -217,7 +212,7 @@ static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
+ 	max_lane_count = i915_dp_get_max_lane_count(data->drm_fd, data->output);
+ 
+ 	/* Check sink supports uhbr or not */
+-	is_uhbr_output = (max_link_rate >= UHBR_LINK_RATE);
++	is_uhbr_output = i915_dp_is_uhbr_rate(max_link_rate);
+ 	if ((uhbr && !is_uhbr_output) || (!uhbr && is_uhbr_output)) {
+ 		igt_info("Test expects %s, but output %s is %s.\n",
+ 			 uhbr ? "UHBR" : "NON-UHBR",
+@@ -244,9 +239,7 @@ static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
+ 	igt_info("Current link rate is %d\n", current_link_rate);
+ 	igt_assert_f(current_link_rate == max_link_rate,
+ 		     "Link training did not succeed at max link rate.\n");
+-	igt_assert_f(is_uhbr_output ?
+-		     current_link_rate >= UHBR_LINK_RATE :
+-		     current_link_rate < UHBR_LINK_RATE,
++	igt_assert_f(i915_dp_is_uhbr_rate(current_link_rate) == is_uhbr_output,
+ 		     is_uhbr_output ? "Link training didn't happen at uhbr rates" :
+ 		     "Link training didn't happen at non-uhbr rates");
+ 	igt_info("----------------------------------------------------\n");
 -- 
 2.25.1
 
