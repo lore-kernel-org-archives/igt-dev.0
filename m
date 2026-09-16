@@ -4,65 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5E3CC88E5C
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 10:17:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A459BC88E77
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 10:39:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E7F6310E431;
-	Wed, 16 Sep 2026 10:17:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 23A6A10E7B6;
+	Wed, 16 Sep 2026 10:39:21 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZJmhRjYE";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bfx/p4gn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 83CB910E142;
- Wed, 16 Sep 2026 10:16:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F46910E301
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 10:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789553813; x=1821089813;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=sHZq/+hwwyNlQNbAViJguD8cSDqTRYGs0NnMZi4IZDg=;
- b=ZJmhRjYEVOqU6lb8zuj2TDGT5oDqM6+pMJlLnxmsMnWS0FQIs1PXeD3x
- nQwsrac85t9EWtx7jrNop22CMpVPSrK1F9EB05KqFW9mO8SNHquDmVvUF
- vWtTKc42wDl+AAHa85GID6rG5kBx0yJrr8kYuhyFm4EmEyeYg0uw4mcDN
- RHRoo9NvwUTW8g6NGihh7TU33dq7KdH4RW2j4khvXR/tDNcqjZQ+HH2d7
- Fc/fFhEHhb+fDy6dB4ZvuN9oexOJzt6ddpSHJlM53N4oZZkOh2vPEB7XE
- 9mSiOhyFmuTIbeorceRV9xNzAUCvC5G6Yma8stiiH0EjTBBZuJaxhYJBp g==;
-X-CSE-ConnectionGUID: 4oqn7Gk+RW2DOHYTX1/e6Q==
-X-CSE-MsgGUID: P05EtQPSQzq13+MFN7K+6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="115465294"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="115465294"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 03:16:53 -0700
-X-CSE-ConnectionGUID: BIzbzQCESKWB3QE+lWwhjA==
-X-CSE-MsgGUID: kiS3hSZbTteNTkDkdzYvrw==
+ t=1789555108; x=1821091108;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1QUZO6EmPVOlI3PXrqWeb1JOSG1pD1nsJsFBj4HE15Q=;
+ b=Bfx/p4gnVvtGtK+cnSuFpUB7wpx968uvaw7YqLmFIuSN1bZWoFxMx34n
+ 11VuGDRWPsO0K8Ry9o9KbA5foErJ+ao7c3mdTrSnDz5jfyFmOWzDh7vSN
+ IXGpxQSF5UocUxzdIT8jR0Jup3nhPORS5zYunnNUdieg36FlcdJaSwCkM
+ 2QsN9zYbSzyNZBEALL6TD94jFZsgpEQnYXfpmAdWOXUALIW3YUxDzFUlx
+ +zCm3G5nVI+VmTl8cJXI4lZKaRUQ1UloDq/OAUqRgKe6JMlpk9x8kroTS
+ rf6KvJdDN8CuIEJSVPcCpxLifNM24aS5J/MkmSXM3BaGtEZq1INSMaLxM g==;
+X-CSE-ConnectionGUID: foJXhxZqRsWJmakGuMPDLA==
+X-CSE-MsgGUID: JuC2qHkSSFWHEQamanZjgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100525714"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100525714"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2026 03:38:28 -0700
+X-CSE-ConnectionGUID: lO35URuaQyOQjJb7RNQyJA==
+X-CSE-MsgGUID: rLe5dRlQQ9SdXqqGPh4BuQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="272821872"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa008-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 03:16:51 -0700
-Date: Wed, 16 Sep 2026 12:16:34 +0200
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="277052413"
+Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.146])
+ by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2026 03:38:27 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Boris Brezillon <boris.brezillon@collabora.com>
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- steven.price@arm.com, liviu.dudau@arm.com,
- adrian.larumbe@collabora.com, samitolvanen@google.com
-Subject: Re: [PATCH i-g-t] tests/panthor: skip sparse VM_BIND tests before v1.9
-Message-ID: <20260916101634.y76mihla7uhetbc4@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Boris Brezillon <boris.brezillon@collabora.com>,
- Deborah Brouwer <deborah.brouwer@collabora.com>,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- steven.price@arm.com, liviu.dudau@arm.com,
- adrian.larumbe@collabora.com, samitolvanen@google.com
-References: <20260915-b4-panthor_version_sparse-v1-1-7ac10b75e631@collabora.com>
- <20260916075741.zeu3k3bd7ynwdrju@kamilkon-DESK.igk.intel.com>
- <20260916103922.1180951b@fedora-21.home>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Petri Latvala <adrinael@adrinael.net>
+Subject: [PATCH i-g-t v1 0/2] Bump debian version to bookworm
+Date: Wed, 16 Sep 2026 12:38:18 +0200
+Message-ID: <20260916103820.68008-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260916103922.1180951b@fedora-21.home>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,38 +68,23 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Boris,
-On 2026-09-16 at 10:39:22 +0200, Boris Brezillon wrote:
-> Hi Kamil,
-> 
-> On Wed, 16 Sep 2026 09:57:41 +0200
-> Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
-> 
-> > Hi Deborah,
-> > On 2026-09-15 at 17:13:26 -0700, Deborah Brouwer wrote:
-> > > Sparse VM_BIND support was introduced with Panthor DRM driver version
-> > > 1.9. If a driver isn't advertising support for v1.9, then tests that
-> > > call DRM_PANTHOR_VM_BIND_OP_MAP_SPARSE should not be run.  
-> > 
-> > Can you just call that ioctl and if EINVALID skip?
-> > Checking version of a driver seems strange.
-> 
-> That's how we check feature-support in mesa, so I'd be tempted to do
-> the same in IGT, unless there's a strong reason not to. If we were to
-> check against EINVAL to detect when a feature is not supported, it gets
-> hard to know when it's an actual uAPI regression vs when it's tested
-> against a driver version that's too old and doesn't support the extra
-> arguments/flags.
-> 
-> Regards,
-> 
-> Boris
+Bullseye is EOL so bump up debian to bookworm. This is needed
+when a rebuild of debian containers is done, which is the case
+for a fix in second change.
 
-ok, thx for explanation. So just calls with checks for feature
-at each subtest which needs this should be enough.
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Petri Latvala <adrinael@adrinael.net>
 
-Regards,
-Kamil
+Kamil Konieczny (2):
+  Dockerfile: bump debian version
+  gitlab-ci: Fix computing sum for debian image
 
-PS. Deborah please subscribe to igt-dev mailing list or expect
-delays with your e-mails reaching it.
+ .gitlab-ci/pull-or-rebuild.sh   | 7 ++++++-
+ Dockerfile.build-debian-arm64   | 2 +-
+ Dockerfile.build-debian-armhf   | 2 +-
+ Dockerfile.build-debian-minimal | 2 +-
+ 4 files changed, 9 insertions(+), 4 deletions(-)
+
+-- 
+2.55.0
+
