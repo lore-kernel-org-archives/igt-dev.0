@@ -4,54 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8C9FC88E5C
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 11:14:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4901C88E5C
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 11:15:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A7EE10E043;
-	Wed, 16 Sep 2026 11:14:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5288C10E043;
+	Wed, 16 Sep 2026 11:15:30 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HRdXLEXK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="So93P+Nd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 91CB510E043
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 11:11:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0313010E043
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 11:12:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789557116; x=1821093116;
+ t=1789557126; x=1821093126;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=iT7oxPjPhBBclnWld/MDUeeCwDoWlDNkMqmPmHNUkwY=;
- b=HRdXLEXK7k9BDvhqwmsC0OQLZTeiPSJ+z59qvvukF2DsOZyla8o01E0K
- 7OtTq56C0ym18jA31CF4K/kgveL2MofiZ8DHe93K7Sf49R77ueN8PBAlb
- otB6jVOuVuSA1XxM5ajUkC7oQoNmdnt0GS/CdAWtDWC20yVk8b75ewhtn
- VCZLcnjQrRQ052EWbfRY7HGuPkEvoSoYvB+aX8vC127b+7OJQkXwVpbxL
- VCIetPcIUkPyZfIDYkxBIUNjhr6m0b4FRgJC1z3JF5UBMQDMC4avXbL8V
- TDIYBCQ6q3r7J8kJnBgvlSjwwur8e4B1/yZbuoQz9s9cYAdy3K+7gLF1V A==;
-X-CSE-ConnectionGUID: Gw9M0M2KQwC8YvyFSU7eJA==
-X-CSE-MsgGUID: Ao1wU5SsRBuHbD3LnrVeoQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="440561"
+ bh=TZgA8AB0wiuTyu517SfAKaF89mWqG62W4ZBFup5eD7Q=;
+ b=So93P+NdC5puU2gF/YenaY0xKd1dzSj30rwbDB/lGJbZtHVvwA9owDeS
+ gPxodI2Sf6UEnRn3Osxc18wCWyJann4sgZiADTzbWpGYfIk51Hi3RSGC/
+ 2VZcBiwu4tkjVfXVMOOY3SDcj6GirBDNppme74NFz1jOwa5Qt9HfLbPc4
+ KpF33MBghgmefjRmtJHAxVOx0zSMtOjEEW4eQLt87OoPd8UoZNeFN1/J6
+ 3XrbRMWJP6SQi5HMbI/E5SVSyi3YAfmtgjxOOZS8HhN30uAi6Q6Yz2MAA
+ FGzgawTrecAuTKid8yRoZurSf1eYEjBmEU3K39fHScRm3NC+mM5AlohR4 w==;
+X-CSE-ConnectionGUID: mk7QBRGUTBu5hqODin/wCw==
+X-CSE-MsgGUID: DPQpyJYqRHOCqDHLr1rR5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="440579"
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="440561"
+   d="scan'208";a="440579"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
  by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 04:11:56 -0700
-X-CSE-ConnectionGUID: liwemMNvSfCdcODxa88XBQ==
-X-CSE-MsgGUID: 6P95wbX4QN+W3UdD2Fnlog==
+ 16 Sep 2026 04:12:05 -0700
+X-CSE-ConnectionGUID: CDbBQzZYTdKwRC4DxhO8kA==
+X-CSE-MsgGUID: FtjJG34LQuicPCQjSozn1A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="296801024"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="296801063"
 Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
  by fmviesa002-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 04:11:53 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 04:12:02 -0700
 From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: suraj.kandpal@intel.com, swati2.sharma@intel.com,
  santhoshguddati@gmail.com, ankit.k.nautiyal@intel.com,
  karthik.b.s@intel.com,
  Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
-Subject: [PATCH i-g-t v1 11/16] tools/intel_hdcp: Run the overlay for the full
- session
-Date: Wed, 16 Sep 2026 16:37:04 +0530
-Message-ID: <20260916110718.596603-12-santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v1 15/16] tools/intel_hdcp: Colour the overlay by HDCP
+ state
+Date: Wed, 16 Sep 2026 16:37:08 +0530
+Message-ID: <20260916110718.596603-16-santhosh.reddy.guddati@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260916110718.596603-1-santhosh.reddy.guddati@intel.com>
 References: <20260916110718.596603-1-santhosh.reddy.guddati@intel.com>
@@ -72,91 +72,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The overlay only started once HDCP had been requested, so until then the
-panel showed a static menu, and stop_video_player() left the last frame
-of the overlay on screen at exit.
-
-Start the player in main() and run it for the whole session:
-enable_hdcp_type() now only sets the property, and stop_video_player()
-restores data->fb before the final commit.
-
-The connector id and the sink capability are read in test_init() so the
-overlay has them from the first frame.
+Use distinct colours for protected HDCP1.4, HDCP2.2 Type 0, and HDCP2.2
+Type 1 states. Leave unprotected and pending states unchanged.
 
 Assisted-by: GitHub Copilot:Claude Opus 4.6
 Signed-off-by: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 ---
- tools/intel_hdcp.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ tools/intel_hdcp.c | 31 ++++++++++++++++++++++++-------
+ 1 file changed, 24 insertions(+), 7 deletions(-)
 
 diff --git a/tools/intel_hdcp.c b/tools/intel_hdcp.c
-index 7109508d53..38ca8b2484 100644
+index 076a878049..64a0523895 100644
 --- a/tools/intel_hdcp.c
 +++ b/tools/intel_hdcp.c
-@@ -1072,22 +1072,26 @@ static void start_video_player(data_t *data)
+@@ -920,15 +920,32 @@ static const char *hdcp_type_name(enum hdcp_type type)
  
- static void stop_video_player(data_t *data)
+ /*
+  * Colour follows the state the kernel reports, not the one that was asked
+- * for: amber while authentication is in flight, green only once the kernel
+- * has moved the property to ENABLED. Keying the colour off the request, as
+- * this used to, turned the screen green whether or not the link came up.
++ * for: amber while authentication is in flight, and a protected colour only
++ * once the kernel has moved the property to ENABLED.
++ *
++ * Once protected, the hue says which flavour of protection is in force.
++ * "Green means good" hides the difference between a 1.4 link and a 2.2 Type 1
++ * one, which is the difference the tool exists to show, so a re-authentication
++ * that silently landed on a weaker link is visible from across the room.
++ * UNDESIRED and DESIRED are questions about the state alone and ignore the
++ * type.
+  */
+-static void cp_state_color(int state, double *r, double *g, double *b)
++static void cp_state_color(int state, enum hdcp_type type,
++			   double *r, double *g, double *b)
  {
-+	igt_plane_t *primary;
-+
- 	if (!data->video_running)
- 		return;
+ 	switch (state) {
+ 	case CP_ENABLED:
+-		*r = 0.04; *g = 0.38; *b = 0.16;
++		switch (type) {
++		case HDCP_TYPE_1_4:		/* teal */
++			*r = 0.03; *g = 0.33; *b = 0.35;
++			break;
++		case HDCP_TYPE_2_2_TYPE_1:	/* violet */
++			*r = 0.30; *g = 0.13; *b = 0.46;
++			break;
++		default:			/* 2.2 Type 0: green */
++			*r = 0.04; *g = 0.38; *b = 0.16;
++			break;
++		}
+ 		break;
+ 	case CP_DESIRED:
+ 		*r = 0.55; *g = 0.34; *b = 0.04;
+@@ -975,7 +992,7 @@ static double draw_state_badge(cairo_t *cr, data_t *data, int state, double cy)
+ 	bx = (w - bw) / 2;
+ 	by = cy - bh / 2;
  
- 	data->video_running = false;
- 	pthread_join(data->video_tid, NULL);
-+
-+	primary = igt_output_get_plane_type(data->output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, &data->fb);
- 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
- }
+-	cp_state_color(state, &r, &g, &b);
++	cp_state_color(state, data->hdcp_type, &r, &g, &b);
  
- static void enable_hdcp_type(data_t *data, enum hdcp_type type)
- {
--		pthread_mutex_lock(&data->lock);
--		set_hdcp_prop(data, CP_DESIRED, type, data->selected_connector);
--		data->hdcp_type = type;
--		data->video_start_time = time(NULL);
--		pthread_mutex_unlock(&data->lock);
--		start_video_player(data);
-+	pthread_mutex_lock(&data->lock);
-+	set_hdcp_prop(data, CP_DESIRED, type, data->selected_connector);
-+	data->hdcp_type = type;
-+	data->video_start_time = time(NULL);
-+	pthread_mutex_unlock(&data->lock);
- }
+ 	rounded_rect(cr, bx, by, bw, bh, h * 0.02);
+ 	cairo_set_source_rgba(cr, r, g, b, 0.92);
+@@ -1102,7 +1119,7 @@ static void draw_video_frame(data_t *data, struct igt_fb *fb, int state,
  
- static void test_init(data_t *data)
-@@ -1134,6 +1138,12 @@ static void test_init(data_t *data)
- 	       igt_output_name(data->output), data->output->id,
- 	       data->width, data->height);
+ 	cr = igt_get_cairo_ctx(data->fd, fb);
  
-+	data->selected_connector = data->output->id;
-+
-+	data->sink_caps = get_hdcp_version(data->fd, igt_output_name(data->output));
-+	if (!data->sink_caps)
-+		data->sink_caps = "unknown";
-+
- 	pthread_mutex_init(&data->lock, NULL);
- 	data->user_cmd = 0;
- 	data->hdcp_type = 0;
-@@ -1165,7 +1175,6 @@ int main(int argc, char **argv)
- {
- 	data_t data;
- 	pthread_t tid;
--	igt_plane_t *primary;
- 
- 	init_version_str();
- 
-@@ -1187,9 +1196,7 @@ int main(int argc, char **argv)
- 	data.selected_connector = -1;
- 	test_init(&data);
- 
--	primary = igt_output_get_plane_type(data.output, DRM_PLANE_TYPE_PRIMARY);
--	igt_plane_set_fb(primary, &data.fb);
--	igt_display_commit2(&data.display, COMMIT_ATOMIC);
-+	start_video_player(&data);
- 
- 	pthread_create(&tid, NULL, keypress_thread, &data);
+-	cp_state_color(state, &r, &g, &b);
++	cp_state_color(state, data->hdcp_type, &r, &g, &b);
+ 	cairo_set_source_rgb(cr, r * 0.5, g * 0.5, b * 0.5);
+ 	cairo_paint(cr);
  
 -- 
 2.43.0
