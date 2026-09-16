@@ -4,60 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E66DC88E5C
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 08:06:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55AC7C88E77
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 08:40:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F88F10E17E;
-	Wed, 16 Sep 2026 08:06:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E08BC10E3A9;
+	Wed, 16 Sep 2026 08:40:15 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L46G07RH";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="E/1lLIDz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6A9810E4FB
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 08:05:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789545926; x=1821081926;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=PLfsUn8SvwU9GWNB5lS/xFYw0hXooM7L1Eq/VLHm+8U=;
- b=L46G07RHxcvUc4HfPMoFfpzHImN4ARyGlEOxZcduxSwAeLaiNOQtz3Dj
- KeuGFYWsA52J4Yye6NHkyVwoCG05m45MmrumKESQHtNcQmtwsSaPe9Fwy
- pJOgCdA7hXGF2mdTneexQLT6/ldgErvaTLOjhx9GzRqeDLauBxH2M5H0J
- ZrNT1/crrl6fFHNQM/VOdE2jg0EZDjDQJPhZEErdMmSmGDjb7GWsMc4He
- /9uryfy1wvX5Uxeeh1qnclL44w+UBzpAlCuK8AC9qNTGyN8tcBMpNsX2P
- CwAERnXnxxKOXCobKKTnBhsqHYjljbNx4b5BvhnXv3YrPPcsu45j35TQL g==;
-X-CSE-ConnectionGUID: e1l/ZaKtS3qqIefyAiBS/Q==
-X-CSE-MsgGUID: nfGEdToaSSuRaw52bTKXog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="101071184"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="101071184"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 01:05:26 -0700
-X-CSE-ConnectionGUID: 3C0q40r9Sgax/lDeJ9Fj4w==
-X-CSE-MsgGUID: UKSIzQxJQDWkGUAiR1TH1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="277011402"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by orviesa004-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 01:05:25 -0700
-Date: Wed, 16 Sep 2026 10:05:21 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: shivtej.eknath.patil@intel.com
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
-Subject: Re: [PATCH v4] tests/intel-ci: blocklist multi-queue tests on NVL
-Message-ID: <20260916080521.uv7xahuo6tuf6kkr@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- shivtej.eknath.patil@intel.com, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com, nishit.sharma@intel.com,
- smitha.balasubramanyam@intel.com
-References: <20260915101414.66216-1-shivtej.eknath.patil@intel.com>
+Received: from bali.collaboradmins.com (bali.collaboradmins.com
+ [148.251.105.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EB5510E30F;
+ Wed, 16 Sep 2026 08:39:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1789547967;
+ bh=YIBXtxjlvihuJge9Li/Y0AAox/N2DGq9Jq7aBDPnFRI=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=E/1lLIDz9DlwpZnr5oiCzS7QwGu9aZFBKzgQjmgkvqbzB1+FVzZNN3ZjPOSRy00+8
+ 5q028oxdtb1/7o+/xN3T5TqGAQhZONRYoEUUH/eikzaTyWMU1KULBix0tIQxqtpz9/
+ IfaCBHRAzF0fBM6Yz2rUuXBwVuhXQt6y9xxNffjyYGa55SY7BAWphEuCbsc/mLMRVQ
+ YjGagPpS4U8TT9d8cppAKlF5Jh2R4HgmgrkE1QaV4mUqTggFgVxVssGNqWt4h4Cy5L
+ pVjk8mkIBmFQmSSuTvna6giRIeySIE5pdwiIYD6McovZha8Jcb/LinePYdlam4oZ9Q
+ ielEbSwWkGk1g==
+Received: from fedora-21.home (unknown [100.64.0.11])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ (Authenticated sender: bbrezillon)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id C36D817E07A9;
+ Wed, 16 Sep 2026 10:39:26 +0200 (CEST)
+Date: Wed, 16 Sep 2026 10:39:22 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Deborah Brouwer <deborah.brouwer@collabora.com>,
+ igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ steven.price@arm.com, liviu.dudau@arm.com, adrian.larumbe@collabora.com,
+ samitolvanen@google.com
+Subject: Re: [PATCH i-g-t] tests/panthor: skip sparse VM_BIND tests before v1.9
+Message-ID: <20260916103922.1180951b@fedora-21.home>
+In-Reply-To: <20260916075741.zeu3k3bd7ynwdrju@kamilkon-DESK.igk.intel.com>
+References: <20260915-b4-panthor_version_sparse-v1-1-7ac10b75e631@collabora.com>
+ <20260916075741.zeu3k3bd7ynwdrju@kamilkon-DESK.igk.intel.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260915101414.66216-1-shivtej.eknath.patil@intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,48 +65,27 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi,
-On 2026-09-15 at 10:14:14 +0000, shivtej.eknath.patil@intel.com wrote:
-> From: Shivtej Patil <shivtej.eknath.patil@intel.com>
+Hi Kamil,
 
-one more nit for future CI changes, you can use short prefix,
-'intel-ci:' is enough:
+On Wed, 16 Sep 2026 09:57:41 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-[PATCH v4] intel-ci: blocklist multi-queue tests on NVL
+> Hi Deborah,
+> On 2026-09-15 at 17:13:26 -0700, Deborah Brouwer wrote:
+> > Sparse VM_BIND support was introduced with Panthor DRM driver version
+> > 1.9. If a driver isn't advertising support for v1.9, then tests that
+> > call DRM_PANTHOR_VM_BIND_OP_MAP_SPARSE should not be run.  
+> 
+> Can you just call that ioctl and if EINVALID skip?
+> Checking version of a driver seems strange.
 
-It can be fixed at merge, no need for resend.
-
-
+That's how we check feature-support in mesa, so I'd be tempted to do
+the same in IGT, unless there's a strong reason not to. If we were to
+check against EINVAL to detect when a feature is not supported, it gets
+hard to know when it's an actual uAPI regression vs when it's tested
+against a driver version that's too old and doesn't support the extra
+arguments/flags.
 
 Regards,
-Kamil
 
-> 
-> The multi-queue subtests require xe_has_multi_queue_engine(fd).
->  
-> On NVL platforms these tests are expected to skip because
-> multi-queue engine support is not available.
->  
-> Add blocklist entries to suppress expected CI failures.
-> 
-> Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
-> ---
->  tests/intel-ci/xe.nvl.core.blocklist.txt | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe.nvl.core.blocklist.txt b/tests/intel-ci/xe.nvl.core.blocklist.txt
-> index 7de332352..71715235b 100644
-> --- a/tests/intel-ci/xe.nvl.core.blocklist.txt
-> +++ b/tests/intel-ci/xe.nvl.core.blocklist.txt
-> @@ -107,3 +107,8 @@ igt@xe_exec_sip@.*
->  igt@xe_exec_sip_eudebug@.*
->  igt@xe_live_ktest@xe_eudebug
->  ##################################################################
-> +# Expected skip on NVL due to unsupported multi-queue capability
-> +# Multi-queue is not supported on platforms older than xe3p
-> +##################################################################
-> +igt@.*multi.queue.*
-> +##################################################################
-> -- 
-> 2.43.0
-> 
+Boris
