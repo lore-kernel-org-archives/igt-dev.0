@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19778C88E5C
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 04:35:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88AA2C88E5C
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 04:36:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AC68710E0B0;
-	Wed, 16 Sep 2026 04:35:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2F0EF10E0D8;
+	Wed, 16 Sep 2026 04:36:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I9CW4ynt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EAE20Vwm";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BA4C710E03E
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 04:26:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1A04110E03E
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 04:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789532803; x=1821068803;
+ t=1789532806; x=1821068806;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=8Uj/WRAKQQLMWbSuJ3Kz9fiKcpfF+CwPrwdjNb0EGMQ=;
- b=I9CW4yntlSleeevSk0Ag4EldWBx3/udshWDGEt+n3zTea14Ct5N+RMlf
- ww0Db6x/gLpygiScS4NplQO7DoopF7rphbpvlRRtUVa/+PANjFYMwiLvy
- ipQCOZYjpzTv2mFvXrJzVXrxyNgoqypAuEdNeC4+ZIKVYLBWe/bbiIS0c
- ZySPpS8YDu0CiBKnK9+ohNU9nG5Uk4W8r+U88Xuum81yAifgAH+i+Gqfp
- aHO0rf299b5jUMBoXW44lgF0p/Sp4oDnHLDhAcbkEk6t95qNqW7kA1k3R
- 2emknc62gUp9l7E/z4mbR9TTe4udwVXNbum5F+Op9bqSK+sVw3DAornTI A==;
-X-CSE-ConnectionGUID: goRWghJ8RVyXdymPn4xPeg==
-X-CSE-MsgGUID: iNQZs0nLQV2b5AD6FkwsXA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100503249"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100503249"
+ bh=OjxqRsAR96xE4S+z3/0ZZFx1V+K7t30p0p3zxRZg5Z8=;
+ b=EAE20VwmyUgnIw+SH8/PoIOloTrlS2EIKoAko3OJgIbZncdSZ2OyWY0W
+ bmR1VRYlWqhiBW5pdvkPeClvfJoAg773/axhSmgy1akiolYUBzZcspdfF
+ Bsx0oB55rje/Z087rxDIjY8sbkoXZRcnFyVgEFAxpEpjUwDpHA/GFcvN1
+ GkfladrdM9yybFEDKAKk3TciD229UH58L5s9O3FSQxb/aG06gBwGWuXog
+ dpH9C99BEC0NnL0z59mksI/Tf2e1GSQOLPKMS9Fk+TRlBAjY1Rvd/yZ7D
+ eaPqMiujt0KQWO4UuiRKDFnHnpwxJNwM/DLgv6ZHgF0z2VHq30vxycPDK A==;
+X-CSE-ConnectionGUID: g/X/ytaPQ9qn6SexjMFbxw==
+X-CSE-MsgGUID: VOoDOA1wQtGXoKMdjTLQKw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100503258"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100503258"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Sep 2026 21:26:43 -0700
-X-CSE-ConnectionGUID: ZlcfuWMpRmibNLnYS+7cuw==
-X-CSE-MsgGUID: J+NoZtbwTS2x2SeHwk1RUA==
+ 15 Sep 2026 21:26:46 -0700
+X-CSE-ConnectionGUID: AeE50ANcT++zfVB0FwA9og==
+X-CSE-MsgGUID: 6WhjKCDmRGS7UXQKkYU7MA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271765059"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="271765068"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by orviesa010-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:43 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Sep 2026 21:26:45 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>
-Subject: [PATCH i-g-t 09/13] tests/intel/kms_dp_link_training: Group the
- outputs into links
-Date: Wed, 16 Sep 2026 10:17:57 +0530
-Message-Id: <20260916044801.1279102-10-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 11/13] lib/igt_dp: Add DPCD read helpers
+Date: Wed, 16 Sep 2026 10:17:59 +0530
+Message-Id: <20260916044801.1279102-12-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260916044801.1279102-1-kunal1.joshi@intel.com>
 References: <20260916044801.1279102-1-kunal1.joshi@intel.com>
@@ -68,182 +67,176 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The output loop walks connectors and decides SST or MST for each one,
-so an MST topology is visited once per stream: the classification is
-redone every time and the same link is trained once per stream, since
-forcing link parameters on one stream affects the whole topology.
+Reading the DPCD of a connector means finding the drm_dp_aux child of
+its sysfs directory and reading from the matching character device.
+Four tests already carry their own copy of that: kms_dp_aux_dev,
+amd_assr, amd_replay and amd_multidisplay_modeset.
 
-Collect the connected DP outputs into a list of links, where one link
-is one trainable DP link and a whole MST topology is a single entry
-represented by the first of its streams, and record the protocol and
-the connector mode once per link.
+Add the AUX channel lookup and the DPCD read to the library so that new
+tests do not have to add a fifth. The helpers are read only, since
+writing DPCD from userspace races with the driver doing the same.
 
-Stop collecting rather than fail when more links are connected than the
-list holds. Discovery runs in a igt_subtest_with_dynamic() container,
-where explicit failure is not allowed.
-
-An MST topology is now trained once instead of once per stream, so the
-dynamic subtests named after the other streams go away. They were
-training the same link at the same configurations.
-
-Prep for subtests that select links by connector mode.
+Use pread() rather than lseek() plus read(), which is both shorter and
+free of the failure the amd_assr copy has, where the lseek() return
+value is asserted to be non-zero and a read at DPCD offset 0 would
+therefore fail.
 
 Assisted-by: GitHub_Copilot:claude-opus-5
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 ---
- tests/intel/kms_dp_link_training.c | 111 +++++++++++++++++++++++------
- 1 file changed, 89 insertions(+), 22 deletions(-)
+ lib/igt_dp.c | 108 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_dp.h |   9 +++++
+ 2 files changed, 117 insertions(+)
 
-diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
-index 812c4b6bc..e6160cee5 100644
---- a/tests/intel/kms_dp_link_training.c
-+++ b/tests/intel/kms_dp_link_training.c
-@@ -39,6 +39,8 @@
+diff --git a/lib/igt_dp.c b/lib/igt_dp.c
+index 9f71c9e72..0b1fe73de 100644
+--- a/lib/igt_dp.c
++++ b/lib/igt_dp.c
+@@ -6,7 +6,13 @@
+  *   Louis Chauvet <louis.chauvet@bootlin.com>
   */
- #define LINK_RECOVERY_TIMEOUT	5.0
  
-+#define MAX_LINKS		16
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <limits.h>
+ #include <stdint.h>
++#include <string.h>
++#include <unistd.h>
+ 
+ #include "drmtest.h"
+ #include "i915/i915_dp.h"
+@@ -173,3 +179,105 @@ void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output)
+ 	}
+ 	igt_assert_f(false, "Timeout waiting for pending retrain to complete\n");
+ }
 +
- typedef struct {
- 	int drm_fd;
- 	uint32_t devid;
-@@ -46,6 +48,18 @@ typedef struct {
- 	igt_output_t *output;
- } data_t;
- 
-+/*
-+ * struct dp_link - One trainable DP link.
++/**
++ * igt_dp_aux_open: Open the AUX channel device of a display port
++ * @drm_fd: DRM file descriptor
++ * @output: igt_output_t object representing the display port
 + *
-+ * @output is the output the link is driven through, which for MST is the first
-+ * of the topology's streams. The classification is discovered, never chosen.
-+ */
-+struct dp_link {
-+	igt_output_t *output;
-+	bool mst;
-+	enum i915_dp_tc_mode tc_mode;
-+};
-+
- /*
-  * check_condition_with_timeout - Polls check_fn until it returns 0
-  * or until 'timeout' seconds elapse.
-@@ -532,42 +546,95 @@ static bool run_link_rate_test(data_t *data, bool mst, bool uhbr)
-  * early, then calls run_link_rate_test(). Returns true if it ran on at
-  * least one matching output.
-  */
--static bool test_link_rate(data_t *data, bool mst, bool uhbr)
-+/*
-+ * discover_links - Collapse the connected DP outputs into links.
++ * The AUX channel of a connector is exposed as a character device when the
++ * kernel is built with CONFIG_DRM_DISPLAY_DP_AUX_CHARDEV. The device is
++ * parented to the connector, so it is the connector's own sysfs directory
++ * which is scanned here and not /dev, and there is at most one entry in it to
++ * match. /dev is only where the matched entry is then opened from.
 + *
-+ * One link is one trainable DP link, so a whole MST topology becomes a single
-+ * entry, represented by the first of its streams. Forcing link parameters on
-+ * one stream affects every stream in the topology, so training a topology once
-+ * per stream would train the same link repeatedly.
++ * Returns:
++ * A file descriptor for the AUX channel device, or a negative error code on
++ * failure.
 + */
-+static int discover_links(data_t *data, struct dp_link *links, int max_links)
- {
--	bool ran_any_output = false, is_mst = false;
--	igt_output_t *tmp_output;
-+	igt_output_t *output;
-+	int num_links = 0;
-+	int i;
- 
--	igt_skip_on_f(!is_intel_device(data->drm_fd),
--		      "Test supported only on Intel platforms.\n");
-+	for_each_connected_output(&data->display, output) {
-+		bool mst, seen = false;
- 
--	for_each_connected_output(&data->display, tmp_output) {
--		if (tmp_output->config.connector->connector_type !=
-+		if (output->config.connector->connector_type !=
- 		    DRM_MODE_CONNECTOR_DisplayPort) {
- 			igt_info("Skipping non-DisplayPort output %s\n",
--					tmp_output->name);
--			igt_info("----------------------------------------------------\n");
-+				 igt_output_name(output));
- 			continue;
- 		}
- 
--		/* Early skip if MST vs. SST does not match. */
--		is_mst = igt_check_output_is_dp_mst(tmp_output);
--		if (mst && !is_mst) {
--			igt_info("Skipping %s: MST requested but it's SST.\n",
--					tmp_output->name);
--			igt_info("----------------------------------------------------\n");
-+		mst = igt_check_output_is_dp_mst(output);
++int igt_dp_aux_open(int drm_fd, igt_output_t *output)
++{
++	struct dirent *entry;
++	int aux_fd = -ENOENT;
++	int dir_fd;
++	DIR *dir;
 +
-+		if (mst) {
-+			int root = igt_get_dp_mst_connector_id(output);
++	dir_fd = igt_connector_sysfs_open(drm_fd, output->config.connector);
++	if (dir_fd < 0)
++		return -ENOENT;
 +
-+			for (i = 0; i < num_links; i++)
-+				if (links[i].mst &&
-+				    igt_get_dp_mst_connector_id(links[i].output) == root) {
-+					seen = true;
-+					break;
-+				}
-+		}
++	dir = fdopendir(dir_fd);
++	if (!dir) {
++		/* Save the error before close() gets a chance to overwrite it. */
++		int err = -errno;
 +
-+		if (seen) {
-+			igt_info("Skipping %s: same MST topology as %s\n",
-+				 igt_output_name(output),
-+				 igt_output_name(links[i].output));
-+			continue;
-+		}
-+
-+		if (num_links == max_links) {
-+			igt_info("Skipping %s: more than %d DP links connected\n",
-+				 igt_output_name(output), max_links);
- 			continue;
--		} else if (!mst && is_mst) {
--			igt_info("Skipping %s: SST requested but it's MST.\n",
--					tmp_output->name);
-+		}
-+
-+		links[num_links].output = output;
-+		links[num_links].mst = mst;
-+		links[num_links].tc_mode = i915_dp_get_tc_mode(data->drm_fd,
-+							       output, NULL, NULL);
-+		num_links++;
++		close(dir_fd);
++		return err;
 +	}
 +
-+	return num_links;
++	errno = 0;
++
++	while ((entry = readdir(dir))) {
++		char path[NAME_MAX + sizeof("/dev/")];
++
++		if (strncmp(entry->d_name, "drm_dp_aux", strlen("drm_dp_aux")))
++			continue;
++
++		snprintf(path, sizeof(path), "/dev/%s", entry->d_name);
++
++		aux_fd = open(path, O_RDONLY);
++		if (aux_fd < 0)
++			aux_fd = -errno;
++
++		break;
++	}
++
++	/* readdir() reports both the end of the directory and an error as NULL. */
++	if (!entry && errno)
++		aux_fd = -errno;
++
++	closedir(dir);
++
++	return aux_fd;
 +}
 +
-+static bool test_link_rate(data_t *data, bool mst, bool uhbr)
++/**
++ * igt_dp_dpcd_read: Read from the DPCD of a display port
++ * @aux_fd:	AUX channel device file descriptor from igt_dp_aux_open()
++ * @offset:	DPCD offset to read from
++ * @buf:	Buffer to read into
++ * @size:	Number of bytes to read
++ *
++ * Returns:
++ * The number of bytes read, or a negative error code on failure.
++ */
++int igt_dp_dpcd_read(int aux_fd, unsigned int offset, void *buf, size_t size)
 +{
-+	struct dp_link links[MAX_LINKS];
-+	bool ran_any_link = false;
-+	int num_links;
-+	int i;
++	ssize_t ret;
 +
-+	igt_skip_on_f(!is_intel_device(data->drm_fd),
-+		      "Test supported only on Intel platforms.\n");
++	ret = pread(aux_fd, buf, size, offset);
++	if (ret < 0)
++		return -errno;
 +
-+	num_links = discover_links(data, links, ARRAY_SIZE(links));
++	return ret;
++}
 +
-+	for (i = 0; i < num_links; i++) {
-+		if (links[i].mst != mst) {
-+			igt_info("Skipping %s: %s requested but it's %s.\n",
-+				 igt_output_name(links[i].output),
-+				 mst ? "MST" : "SST",
-+				 links[i].mst ? "MST" : "SST");
- 			igt_info("----------------------------------------------------\n");
- 			continue;
- 		}
--		data->output = tmp_output;
++/**
++ * igt_dp_dpcd_read_byte: Read a single byte from the DPCD of a display port
++ * @aux_fd:	AUX channel device file descriptor from igt_dp_aux_open()
++ * @offset:	DPCD offset to read from
++ * @val:	Location to store the value read
++ *
++ * Returns:
++ * 0 on success, or a negative error code on failure.
++ */
++int igt_dp_dpcd_read_byte(int aux_fd, unsigned int offset, uint8_t *val)
++{
++	int ret;
 +
-+		data->output = links[i].output;
- 		igt_info("Running link training test for %s\n",
--			 data->output->name);
--		ran_any_output = ran_any_output | run_link_rate_test(data, mst, uhbr);
-+			 igt_output_name(data->output));
-+		ran_any_link |= run_link_rate_test(data, mst, uhbr);
- 	}
--	return ran_any_output;
++	ret = igt_dp_dpcd_read(aux_fd, offset, val, sizeof(*val));
++	if (ret < 0)
++		return ret;
 +
-+	return ran_any_link;
- }
++	return ret == 1 ? 0 : -EIO;
++}
+diff --git a/lib/igt_dp.h b/lib/igt_dp.h
+index 0c56ad2ec..44f3b11a1 100644
+--- a/lib/igt_dp.h
++++ b/lib/igt_dp.h
+@@ -9,6 +9,9 @@
+ #ifndef _IGT_DP_H_
+ #define _IGT_DP_H_
  
- IGT_TEST_DESCRIPTION("Test to validate link training on SST/MST with "
++#include <stddef.h>
++#include <stdint.h>
++
+ #include "igt_kms.h"
+ 
+ int igt_dp_get_current_link_rate(int drm_fd, igt_output_t *output);
+@@ -27,4 +30,10 @@ int igt_dp_get_pending_retrain(int drm_fd, igt_output_t *output);
+ 
+ void igt_dp_wait_pending_retrain(int drm_fd, igt_output_t *output);
+ 
++int igt_dp_aux_open(int drm_fd, igt_output_t *output);
++
++int igt_dp_dpcd_read(int aux_fd, unsigned int offset, void *buf, size_t size);
++
++int igt_dp_dpcd_read_byte(int aux_fd, unsigned int offset, uint8_t *val);
++
+ #endif
 -- 
 2.25.1
 
