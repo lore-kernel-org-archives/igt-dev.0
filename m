@@ -4,55 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C8766C88E7F
-	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 10:40:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14E73C88E77
+	for <igt-dev@archiver.kernel.org>; Wed, 16 Sep 2026 11:12:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 48E7B10E7CD;
-	Wed, 16 Sep 2026 10:40:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B597F10E043;
+	Wed, 16 Sep 2026 11:12:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Qfv8j2QM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="QybaIITp";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1C56110E706
- for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 10:38:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36A8810E69C
+ for <igt-dev@lists.freedesktop.org>; Wed, 16 Sep 2026 11:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789555116; x=1821091116;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=b80jILvFFFdFpjJr3kaEb7c62h5I8ReTVaz6YDmGu7o=;
- b=Qfv8j2QMVPPideWfaAgoQKXKFgvUIe1y1O+1ChSLIA6/X0Zh80VHqINv
- yzL936fEN51LZTlHs3TnxN8vtqalla66R8krz4Kp7icCT6NayPSbAHzS8
- abCx/n68RwKXAkOWEq+U2riu07EBi3SzivNFx2idzfefJR89nUm1jqmk6
- qcKspXlJdA0ok2DrC1W+q76N5rNN1JlVH/EHgvmBqU+LcxkYvhP0WO65y
- nW6HS/cW3YwkkHMRmmny0eUO8lhJRlyYzN7FKWtYzo4hCNTE68T3vaTq1
- HVRP73nlkqIKtjKAOUcGjdqlFGYEZlyenkiaPSaW9JeIlX848b2yifTJM w==;
-X-CSE-ConnectionGUID: lalG2tReRBq83cQ3VHTm/w==
-X-CSE-MsgGUID: ryqdodEQTLyAgvQnMpY4SA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="112696459"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="112696459"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 03:38:36 -0700
-X-CSE-ConnectionGUID: kP5hw28ERgui9PphCQ18NA==
-X-CSE-MsgGUID: nG5VGeScQhuB6lCwyitMZw==
+ t=1789557091; x=1821093091;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=vi4L8EXl0IZ9wMsJm74JKicmUzX6UjxF7YfYQdpag84=;
+ b=QybaIITpvZQNv/BeKa+cerlqVNMhlhVA7yVJg/rGDq8BI94vrOU6FYfB
+ RNJFALkoKzGL0Agc+C7p+d6GGJdq61cnReGxblU86NGsszjBX8gsxo6sW
+ IvMmlnhj7q/6mNavF7qiHUrINFzSzhefRP7KR/3XN/rg1xavaBwno1Vsq
+ OA7hszYlZf0xDFEJ6L/bDCV2f/BVpjPbh7wLZEjVfa4JdkdeO/Hwgh+qo
+ ZW1mAHzm7Ut/Xm2HSYhpbXy2OxhzSkejKu8lXbRx7H2wsi2GUPz4FGa0Y
+ Cz2o+wbdwF3BSYw1F1ORwciFyjw/XXMpGltc6HUoYUC7nwHQDkTm5s0wZ A==;
+X-CSE-ConnectionGUID: jbOyjT0MTl6lKzCxUEpTuw==
+X-CSE-MsgGUID: lwpueyjeS7iWMDANvw11/A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="440506"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="440506"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Sep 2026 04:11:30 -0700
+X-CSE-ConnectionGUID: dAtHZTnPRtGAQ2S3TRS3/Q==
+X-CSE-MsgGUID: 591EWeVfTaOs7Z4iCxunzg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="273270209"
-Received: from rvuia-mobl.ger.corp.intel.com (HELO localhost)
- ([10.245.244.146])
- by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Sep 2026 03:38:34 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="296800602"
+Received: from rgsanthosh-z690i-a-ultra-plus.iind.intel.com ([10.190.216.152])
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2026 04:11:27 -0700
+From: Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Andrzej Hajda <andrzej.hajda@intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>
-Subject: [PATCH i-g-t v1 2/2] gitlab-ci: Fix computing sum for debian image
-Date: Wed, 16 Sep 2026 12:38:20 +0200
-Message-ID: <20260916103820.68008-3-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260916103820.68008-1-kamil.konieczny@linux.intel.com>
-References: <20260916103820.68008-1-kamil.konieczny@linux.intel.com>
+Cc: suraj.kandpal@intel.com, swati2.sharma@intel.com,
+ santhoshguddati@gmail.com, ankit.k.nautiyal@intel.com,
+ karthik.b.s@intel.com,
+ Santhosh Reddy Guddati <santhosh.reddy.guddati@intel.com>
+Subject: [PATCH i-g-t v1 00/16] tools/intel_hdcp: HDCP tool updates
+Date: Wed, 16 Sep 2026 16:36:53 +0530
+Message-ID: <20260916110718.596603-1-santhosh.reddy.guddati@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -70,43 +69,63 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Debian container has a dependency on minimal image, so minimal
-should also contribute to sum calculations.
-Problem occurred when new lib needed for compilation was added
-to debian-minimal. As sum of debian dockerfile didn't change, it
-was not recreated and all compilations on debian container
-failed.
+intel_hdcp is the manual bring-up tool for HDCP: it puts a picture on a
+protected output and lets an operator drive Content Protection from the
+keyboard.
 
-Fix it and calculate sum from both dockerfiles, base and minimal.
-When there is no minimal, keep old behaviour.
+This series handles below fixes.
 
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/201
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
----
- .gitlab-ci/pull-or-rebuild.sh | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+Fixes first. The tool only touches HDCP Content Type on connectors that
+actually have it, and only reads Content Protection where it exists. The
+display no longer freezes while the tool waits for you to type, because
+it does not hold the display lock while reading stdin. Shutdown is now
+cooperative rather than killing the input thread mid-operation, which
+could leave a lock held and hang the exit. 'q', Ctrl-C and EOF all take
+the same path out and set Content Protection back to UNDESIRED, so the
+tool no longer exits leaving the link protected. If no connected output
+supports Content Protection, it says so and stops instead of crashing
+later, and it checks that HDCP is applied to the same connector that the
+picture is on.
 
-diff --git a/.gitlab-ci/pull-or-rebuild.sh b/.gitlab-ci/pull-or-rebuild.sh
-index aa1bddcde..fd68ef1a9 100755
---- a/.gitlab-ci/pull-or-rebuild.sh
-+++ b/.gitlab-ci/pull-or-rebuild.sh
-@@ -28,7 +28,12 @@ REF=${4:-${CI_COMMIT_REF_NAME:-latest}}
- 
- REF=$(echo $REF | tr / - )
- IMAGENAME=$CI_REGISTRY/$CI_PROJECT_PATH/$NAME
--DOCKERFILE_CHECKSUM=$(sha1sum $DOCKERFILE | cut -d ' ' -f1)
-+if [ -f ${DOCKERFILE}-minimal ]; then
-+	DOCKERFILE_MINIMAL=${DOCKERFILE}-minimal
-+else
-+	DOCKERFILE_MINIMAL=
-+fi
-+DOCKERFILE_CHECKSUM=$(cat ${DOCKERFILE} ${DOCKERFILE_MINIMAL} | sha1sum - | cut -d ' ' -f1)
- 
- REFNAME=$IMAGENAME:$REF
- DOCKERNAME=$IMAGENAME:dockerfile-$DOCKERFILE_CHECKSUM
+Then reporting. A version line at startup and --version tell you which
+build a log or a photo of the screen came from. Every Content Protection
+change is logged with how long the previous state lasted and, when the
+link comes up, how long the kernel took to authenticate. On exit you get
+a summary: how many times it authenticated, how many times the link
+dropped, the min/avg/max authentication time and the total protected
+time, ready to paste into a bug report.
+
+The rest is the on-screen overlay, which is what you watch during a demo.
+The state badge now shows what the kernel reports instead of what was
+asked for, so it no longer goes green on a link that never came up. The
+top bar names the output, connector id and sink capability; the bottom
+bar shows elapsed time and the key legend. A band sweeps across the
+picture so you can tell a live frame from a frozen one, and the last few
+transitions appear under the badge. Drawing alternates between two
+framebuffers so the tool is not painting into the one on screen. The
+overlay runs from startup rather than only after HDCP is requested.
+
+Santhosh Reddy Guddati (16):
+  tools/intel_hdcp: Don't set HDCP Content Type unconditionally
+  tools/intel_hdcp: Read stdin outside the display lock
+  tools/intel_hdcp: Exit cleanly on quit and on Ctrl-C
+  tools/intel_hdcp: Keep the picture and the protected link together
+  tools/intel_hdcp: Report the tool and IGT version
+  tools/intel_hdcp: Don't read Content Protection from every connector
+  tools/intel_hdcp: Report content protection changes as they happen
+  tools/intel_hdcp: Print a session summary on exit
+  tools/intel_hdcp: Add Content Protection state helpers
+  tools/intel_hdcp: Rework the on-screen overlay
+  tools/intel_hdcp: Run the overlay for the full session
+  tools/intel_hdcp: Show the transition log on the display
+  tools/intel_hdcp: Report authentication time
+  tools/intel_hdcp: Actually select HDCP1.4 when it is asked for
+  tools/intel_hdcp: Colour the overlay by HDCP state
+  tools/intel_hdcp: Say what the numbers in a transition line mean
+
+ tools/intel_hdcp.c | 1092 +++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 922 insertions(+), 170 deletions(-)
+
 -- 
-2.55.0
+2.43.0
 
