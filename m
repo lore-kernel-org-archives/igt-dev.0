@@ -4,71 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E89BC88E72
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 09:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AFA7C88E72
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 10:03:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2016510E6AC;
-	Thu, 17 Sep 2026 09:49:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 020FA10E6B1;
+	Thu, 17 Sep 2026 10:03:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="COgzmN9e";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Bds6e7Xq";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8E0EC10E692;
- Thu, 17 Sep 2026 09:48:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 698E410E6B1;
+ Thu, 17 Sep 2026 10:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789638513; x=1821174513;
+ t=1789639359; x=1821175359;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=4PIzlSQUq/ePNmT+59riWCRCu5IW7Wj/6OWzQ6JH60w=;
- b=COgzmN9efrzlgT7HH1q9LRuOAUq80h5kqr/QGf3kKuraTU9wPMv44x37
- XBmhnL0oWI6qsmIvWMHCmHIoL0urHe2BuQ+cL0U8Z2wUynbu/7hycqTEa
- pixEbHZLBdf4SCoprsPJLaXT18aEcMc2tB4hwlXozLPVo47PpN/7a4fvO
- 5YAGOQ6nMzAukL8QZGjswCFxAIWv7YefVDgwpILFmAvA2U1mP0tW0z46s
- dnfthLrzFHmCrLLK4t51y2q3eeSUoo3EhyCLON23w9NFpDJWnTUjHrzzU
- ZXv8NUwkYTooygt3527gwH5We+SEcOmC1Gq7C8OUqeO2h+0+hnBnQPXmI Q==;
-X-CSE-ConnectionGUID: Gk8zq2hsTTWELXsmJTM2Xg==
-X-CSE-MsgGUID: BQHV+rwDT02PWkx4fqL+cw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100707239"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100707239"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2026 02:48:32 -0700
-X-CSE-ConnectionGUID: I8HoQAEnRsSES+d4hVqBLA==
-X-CSE-MsgGUID: pT7PwE21SOWeVUfATqMiyA==
+ bh=ckVNtsFgXhWc73VuAfKp11JBtwVgm7rZ1hf2PnBaXFw=;
+ b=Bds6e7XqR63HjXLfROZJsx5i3U04rHRccG1oSf7mAJjK0y1v70A1F7YY
+ Lp2o7lMOrwthlqOj2gr9+H3sHkqwN1q2RE5poBy4qh3BkVAXrQutwOtfd
+ SpulSPFtOqBgwnao0+j/ZwxNsQnfFb287H7PJ8+H9z7mkGaL7yuRUoTkh
+ 6xD0BER+v2rujJhOVCqkMi6hiM0f1x8gznEKZR7sSTjCrxhN5aC11WJqx
+ 5ywSmaFzEvmYDwEeB9IZ2ZHDAWMRVLwjIg3q1oWSt2vhabt50PlXonUd1
+ 6VdLTiGClPjcIWVyGRl+mfVYpYAT+h8srfi+I2Eo3Kuoy158gvQ0XuzJ9 w==;
+X-CSE-ConnectionGUID: nPWYCWvORMqK3w42Pp8ZGA==
+X-CSE-MsgGUID: rVAPBTBoTyCY4o8SFHt5wQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89911508"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="89911508"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2026 03:02:39 -0700
+X-CSE-ConnectionGUID: Nnb7nkTdQWyERZIoxRHTXg==
+X-CSE-MsgGUID: q2AduYsRTCOHwNVHyO73xw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="270393794"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="1897348"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 02:48:30 -0700
-Date: Thu, 17 Sep 2026 11:48:28 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2026 03:02:36 -0700
+Date: Thu, 17 Sep 2026 12:02:33 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: igt-dev@lists.freedesktop.org, siqueira@igalia.com,
+ dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ Christian Koenig <christian.koenig@amd.com>,
+ maarten.lankhorst@linux.intel.com,
  Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- phasta@kernel.org
-Subject: Re: [PATCH i-g-t] tests/intel/xe_sync_file: Exercise sync file
- access post queue destruction
-Message-ID: <20260917094828.fttmqyv26b3bxxqy@kamilkon-DESK.igk.intel.com>
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Natalie Vock <natalie.vock@gmx.de>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
+Subject: Re: [PATCH i-g-t v6 7/9] tests/cgroup_dmem: add test for dmem.current
+Message-ID: <20260917100233.h2gmwkbd3jzeeytd@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ igt-dev@lists.freedesktop.org, siqueira@igalia.com,
+ dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org,
+ Christian Koenig <christian.koenig@amd.com>,
+ maarten.lankhorst@linux.intel.com,
  Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- phasta@kernel.org
-References: <20260907123308.52055-1-tvrtko.ursulin@igalia.com>
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Natalie Vock <natalie.vock@gmx.de>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
+References: <20260903-dmem_max-v6-0-61dc62970fae@igalia.com>
+ <20260903-dmem_max-v6-7-61dc62970fae@igalia.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260907123308.52055-1-tvrtko.ursulin@igalia.com>
+In-Reply-To: <20260903-dmem_max-v6-7-61dc62970fae@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,248 +91,347 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Tvrtko,
-On 2026-09-07 at 13:33:08 +0100, Tvrtko Ursulin wrote:
-> A new test to roughly simulate the VK CTS suite where
-> dEQP-VK.wsi.android.swapchain.render.* is hitting an use after free when a
-> sync file is accessed after the xe submission queue has been destroyed.
+Hi Thadeu,
+On 2026-09-03 at 19:00:29 -0300, Thadeu Lima de Souza Cascardo wrote:
+> Based on the work of Thomas Hellström to test dmem.max eviction, add a
+> test for dmem.current usage after allocations and setting dmem.max.
 > 
-> Abbreviated KASAN report:
+> Create a dmem cgroup, allocate close to capacity (or at most 4GiB),
+> check current usage is within a small slack of the expected allocation.
+> Then, set max to a small value and check allocations and current usage
+> are limited to the max set.  Set max to less than a single BO size, then
+> check no allocations are allowed and current usage is also within the
+> slack. After each allocation, release memory and check current usage
+> has gone down.
 > 
->  [IGT] xe_sync_file: starting subtest sync_file_race
->  ==================================================================
->  BUG: KASAN: slab-use-after-free in drm_sched_fence_get_timeline_name+0xa1/0xb0 [gpu_sched]
->  Read of size 8 at addr ffff888126726020 by task xe_sync_file/2931
->  ...
->  Call Trace:
->   <TASK>
->   kasan_report+0xeb/0x130
->   drm_sched_fence_get_timeline_name+0xa1/0xb0 [gpu_sched]
->   sync_file_ioctl+0x3cb/0xb00
->  ...
->  Allocated by task 2931:
->   __kmalloc_cache_noprof+0x1c2/0x410
->   guc_exec_queue_init+0x1a8/0x1240 [xe]
->   xe_exec_queue_create+0xe72/0x13b0 [xe]
->   xe_exec_queue_create_ioctl+0x10d9/0x1770 [xe]
->   drm_ioctl_kernel+0x179/0x300
->   drm_ioctl+0x58f/0xcf0
->   xe_drm_ioctl+0xe8/0x140 [xe]
->  ...
->  Freed by task 1689:
->   kfree+0x106/0x3e0
->   __guc_exec_queue_fini_async+0x144/0x2d0 [xe]
->   process_one_work+0x610/0xdf0
->   worker_thread+0x7c8/0x14b0
-> 
-> Without KASAN this of course turns into a plain null pointer dereference.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: phasta@kernel.org
-> Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com> # v2
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 > ---
-> v2:
->  - igt_main and igt_fixture tweaks. (Rodrigo)
+>  tests/cgroup_dmem.c | 262 +++++++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 257 insertions(+), 5 deletions(-)
 > 
-> v3:
->  - Add driver name checks.
-> ---
-> I dropped the ball upstreaming this old IGT proposal. Now that things
-> got broken with
-> 035219a760ed ("dma-buf: dma-fence: Fix potential NULL pointer dereference")
-> it shows it would have been useful to have this merged and ran in CI.
-> ---
->  tests/intel/xe_sync_file.c | 154 +++++++++++++++++++++++++++++++++++++
->  tests/meson.build          |   1 +
->  2 files changed, 155 insertions(+)
->  create mode 100644 tests/intel/xe_sync_file.c
-> 
-> diff --git a/tests/intel/xe_sync_file.c b/tests/intel/xe_sync_file.c
-> new file mode 100644
-> index 000000000000..842c3856a525
-> --- /dev/null
-> +++ b/tests/intel/xe_sync_file.c
-> @@ -0,0 +1,154 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2025 Google, Inc.
+> diff --git a/tests/cgroup_dmem.c b/tests/cgroup_dmem.c
+> index 442c965f9bbf..ba5e6a2e3deb 100644
+> --- a/tests/cgroup_dmem.c
+> +++ b/tests/cgroup_dmem.c
+> @@ -1,6 +1,8 @@
+>  // SPDX-License-Identifier: MIT
+>  /*
+>   * Copyright © 2025 Intel Corporation
+> + * Copyright © 2026 Intel Corporation
+
+Can you make it shorter? Just add 2026 to it:
+   * Copyright © 2025,2026 Intel Corporation
+
+> + * Copyright 2026 Valve Corporation
+
+Missing (c) or its UTF char:
+
+   * Copyright © 2026 Valve Corporation
+
+>   */
+>  
+>  /**
+> @@ -17,10 +19,217 @@
+>   * Test category: uapi
+>   */
+>  
+> +#include <errno.h>
+>  #include <inttypes.h>
+> +#include <signal.h>
+> +#include <stdatomic.h>
+> +#include <stdint.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <unistd.h>
+>  
+> +#include "drmtest.h"
+>  #include "igt.h"
+> +#include "igt_aux.h"
+>  #include "igt_cgroup.h"
+> +#include "igt_dmem_driver.h"
+> +
+> +#define BO_SIZE			SZ_64M
+> +#define MAX_LIMIT		((uint64_t)4 * SZ_1G)
+> +#define USAGE_POLL_MS		10
+> +#define USAGE_DROP_TIMEOUT_MS	1000
+> +
+> +/**
+> + * SUBTEST: simple
+> + * DESCRIPTION:
+> + *  Creates a cgroup, moves the process into it, enumerates all dmem regions,
+> + *  prints their capacity, system-wide current usage, per-cgroup current usage
+> + *  and configured limits, then destroys the cgroup.
 > + */
 > +
 > +/**
-> + * TEST: Tests for sync file functionality
-> + * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category: CMD submission
-> + * Functionality: fences
-> + */
-> +
-> +#include "igt.h"
-> +#include "sync_file.h"
-> +
-> +#include "lib/igt_syncobj.h"
-> +#include "lib/intel_reg.h"
-> +
-> +#include "xe_drm.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +
-> +static int sync_file_get_status(int sync_file, char **driver_name)
-> +{
-> +	struct sync_fence_info fence = { };
-> +	struct sync_file_info info = {
-> +		.num_fences = 1,
-> +		.sync_fence_info = to_user_pointer(&fence),
-> +	};
-> +
-> +	do_ioctl(sync_file, SYNC_IOC_FILE_INFO, &info);
-> +	igt_assert_eq(info.num_fences, 1);
-> +
-> +	igt_debug("'%s'/'%s' = %d\n",
-> +		  fence.driver_name, fence.obj_name, fence.status);
-> +
-> +	*driver_name = strdup(fence.driver_name);
-> +
-> +	return fence.status;
-> +}
-> +
-> +/**
-> + * SUBTEST: sync_file_race
-> + * Description: Check that we can safely query an exported sync file fd
-> + * Test category: functionality test
-> + */
-> +static void test_race(int xe, struct drm_xe_engine_class_instance *eci)
-> +{
-> +	uint32_t vm, bo, syncobj, bind_syncobj, *batch;
-> +	struct drm_xe_sync sync[2] = {
-> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +		},
-> +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +		},
-> +	};
-> +	const uint32_t bbend = MI_BATCH_BUFFER_END;
-> +	struct drm_xe_exec exec = {
-> +		.address = 0x100000,
-> +		.num_batch_buffer = 1,
-> +		.num_syncs = 2,
-> +		.syncs = to_user_pointer(sync),
-> +	};
-> +	char *driver_name;
-> +	int sync_fence;
-> +	size_t size;
-> +
-> +	vm = xe_vm_create(xe, 0, 0);
-> +
-> +	size = xe_bb_size(xe, sizeof(bbend));
-> +	bo = xe_bo_create(xe, vm, size, vram_if_possible(xe, eci->gt_id),
-> +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> +
-> +	batch = xe_bo_map(xe, bo, size);
-> +	*batch = bbend;
-> +
-> +	exec.exec_queue_id  = xe_exec_queue_create(xe, vm, eci, 0);
-> +
-> +	syncobj = syncobj_create(xe, 0);
-> +	bind_syncobj = syncobj_create(xe, 0);
-> +
-> +	sync[0].handle = bind_syncobj;
-> +	xe_vm_bind_async(xe, vm, 0, bo, 0, exec.address, size, sync, 1);
-> +
-> +	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> +	sync[0].handle = bind_syncobj;
-> +	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> +	sync[1].handle = syncobj;
-> +	xe_exec(xe, &exec);
-> +
-> +	/* Export a sync file fence. */
-> +	sync_fence = syncobj_handle_to_fd(xe, sync[1].handle,
-> +					  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-> +
-> +	igt_assert(syncobj_wait(xe, &syncobj, 1, INT64_MAX, 0, NULL));
-> +	igt_assert(syncobj_wait(xe, &bind_syncobj, 1, INT64_MAX, 0, NULL));
-> +
-> +	driver_name = NULL;
-> +	igt_assert_eq(sync_file_get_status(sync_fence, &driver_name), 1);
-> +	igt_assert(driver_name);
-> +	igt_assert(!strcmp(driver_name, "drm_sched"));
-> +	free(driver_name);
-> +
-> +	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> +	syncobj_reset(xe, &sync[0].handle, 1);
-> +	xe_vm_unbind_async(xe, vm, 0, 0, exec.address, size, sync, 1);
-> +	igt_assert(syncobj_wait(xe, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> +
-> +	syncobj_destroy(xe, syncobj);
-> +	xe_exec_queue_destroy(xe, exec.exec_queue_id);
-> +
-> +	munmap(batch, size);
-> +	gem_close(xe, bo);
-> +
-> +	syncobj_destroy(xe, bind_syncobj);
-> +	xe_vm_destroy(xe, vm);
-> +
-> +	/* Give any delayed freeing time to run. */
-> +	sleep(1);
-> +
-> +	/* This should still work and not crash the kernel. */
-> +	driver_name = NULL;
-> +	igt_assert_eq(sync_file_get_status(sync_fence, &driver_name), 1);
-> +
-> +	/* And must not read the original timeline/driver name either! */
-> +	igt_assert(driver_name);
-> +	igt_assert(!strcmp(driver_name, "detached-driver"));
-> +	free(driver_name);
-> +
-> +	close(sync_fence);
-> +}
-> +
-> +int igt_main()
-> +{
-> +	struct drm_xe_engine_class_instance *eci;
-> +	int xe;
-> +
-> +	igt_fixture() {
-> +		xe = drm_open_driver(DRIVER_XE);
-> +	}
-> +
-> +	igt_subtest("sync_file_race") {
-> +		xe_for_each_engine(xe, eci) {
-> +			test_race(xe, eci);
-> +			break;
-> +		}
-> +	}
-> +
-> +	igt_fixture() {
-> +		drm_close_driver(xe);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 1ac89bab7e15..f83368695a0e 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -351,6 +351,7 @@ intel_xe_progs = [
->  	'xe_sysfs_preempt_timeout',
->  	'xe_sysfs_scheduler',
->          'xe_sysfs_timeslice_duration',
-> +	'xe_sync_file',
+> + * SUBTEST: current
+> + * DESCRIPTION:
+> + *  Create a dmem cgroup, allocate close to capacity (or at most 4GiB),
+> + *  check current usage is within a small slack of the expected allocation.
+> + *  Then, set max to a small value and check allocations and current usage
+> + *  are limited to the max set.
+> + *  Set max to less than a single BO size, then check no allocations are allowed
+> + *  and current usage is also within the slack.
+> + *  After each allocation, release memory and check current usage has gone
+> + *  down.
+> + * REQUIREMENTS: xe or amdgpu device with at least one VRAM region
 
-Why it moved down? In v2 it was in proper place, just before
-xe_sysfs tests. Please move it back to keep alphabetical order.
+Make this part of description, also imho drop xe/amdgpu, so:
 
+ *  down. This subtest requires GPU device with at least one VRAM region.
+
+For VRAM, add specific checks for this in beginning of test and
+bail out if it is iGPU.
 
 Regards,
 Kamil
 
-
->          'xe_tlb',
->  ]
+> + */
+> +
+> +static uint64_t wait_for_usage_drop(struct igt_cgroup *cg, const char *region,
+> +				    uint64_t limit)
+> +{
+> +	uint64_t current;
+> +	unsigned int elapsed = 0;
+> +
+> +	do {
+> +		igt_cgroup_dmem_get_current(cg, region, &current);
+> +		if (current <= limit)
+> +			return current;
+> +		usleep(USAGE_POLL_MS * 1000);
+> +		elapsed += USAGE_POLL_MS;
+> +	} while (elapsed < USAGE_DROP_TIMEOUT_MS);
+> +
+> +	return current;
+> +}
+> +
+> +static int allocate_vram(void **handles, const struct igt_dmem_driver *drv,
+> +			 void *ctx, int max_bo, size_t len)
+> +{
+> +	int i, err = 0;
+> +	for (i = 0; i < max_bo; i++) {
+> +		err = drv->allocate_vram(ctx, len, &handles[i]);
+> +		if (err)
+> +			break;
+> +	}
+> +	/* These are expected failures we can ignore. */
+> +	if (err == -ENOMEM || err == -ENOSPC)
+> +		err = 0;
+> +	if (!err)
+> +		return i;
+> +	for (i--; i >= 0; i--)
+> +		drv->free_vram(ctx, handles[i]);
+> +	return err;
+> +}
+> +
+> +static void free_vram(void **handles, const struct igt_dmem_driver *drv,
+> +		      void *ctx, int max_bo)
+> +{
+> +	int i;
+> +	for (i = 0; i < max_bo; i++)
+> +		drv->free_vram(ctx, handles[i]);
+> +}
+> +
+> +static void test_current(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv, void *ctx)
+> +{
+> +	struct igt_cgroup *cg;
+> +	void **handles;
+> +	uint64_t current, capacity, cg_max;
+> +	int n_bo = 0, max_bo;
+> +
+> +	igt_cgroup_dmem_get_capacity(cg_region, &capacity);
+> +	igt_require_f(capacity >= 4 * BO_SIZE,
+> +		      "VRAM capacity (%"PRIu64" MiB) too small to test\n",
+> +		      capacity / SZ_1M);
+> +
+> +	/*
+> +	 * Use up to 4 GiB, or the full capacity if the device has less.
+> +	 * Leave one BO_SIZE worth of headroom so the device isn't completely
+> +	 * exhausted before the cgroup limit is hit.
+> +	 */
+> +	cg_max = min(MAX_LIMIT, capacity - BO_SIZE);
+> +	cg_max = ALIGN_DOWN(cg_max, BO_SIZE);
+> +
+> +	/* Create cgroup and move into it */
+> +	cg = igt_cgroup_new("igt_cgroups_test");
+> +	igt_cgroup_move_current(cg);
+> +
+> +	max_bo = cg_max / BO_SIZE;
+> +
+> +	handles = calloc(max_bo, sizeof(handles[0]));
+> +	igt_assert_f(handles, "failed to allocate handles array");
+> +
+> +	n_bo = allocate_vram(handles, drv, ctx, max_bo, BO_SIZE);
+> +	igt_assert_f(n_bo > 0, "failed to allocate VRAM\n");
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After fill: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == cg_max,
+> +		     "current usage (%"PRIu64" MiB) is not requested allocation (%"PRIu64" MiB)\n",
+> +		     current / SZ_1M, cg_max / SZ_1M);
+> +
+> +	free_vram(handles, drv, ctx, n_bo);
+> +	wait_for_usage_drop(cg, cg_region, 0);
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After free: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 0,
+> +		     "current usage (%"PRIu64" MiB) is not zero\n",
+> +		     current / SZ_1M);
+> +
+> +	/* Allow for a slack as there might be some extra pages allocated. */
+> +	igt_cgroup_dmem_set_max(cg, cg_region, 2 * BO_SIZE, false);
+> +
+> +	n_bo = allocate_vram(handles, drv, ctx, max_bo, BO_SIZE);
+> +	igt_assert_f(n_bo > 0, "failed to allocate VRAM\n");
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After fill: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 2 * BO_SIZE,
+> +		     "current usage (%"PRIu64" MiB) is not requested max allocation (%"PRIu64" MiB)\n",
+> +		     current / SZ_1M, cg_max / SZ_1M);
+> +
+> +	free_vram(handles, drv, ctx, n_bo);
+> +	wait_for_usage_drop(cg, cg_region, 0);
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After free: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 0,
+> +		     "current usage (%"PRIu64" MiB) is not zero\n",
+> +		     current / SZ_1M);
+> +
+> +	igt_cgroup_dmem_set_max(cg, cg_region, 0, false);
+> +
+> +	n_bo = allocate_vram(handles, drv, ctx, max_bo, BO_SIZE);
+> +
+> +	/*
+> +	 * amdgpu may succeed the allocation, by falling back to GTT, so no assertion here.
+> +	 * Verify by reading current usage.
+> +	 */
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After fill: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 0,
+> +		     "current usage (%"PRIu64" MiB) is not zero\n",
+> +		     current / SZ_1M);
+> +
+> +	if (n_bo > 0)
+> +		free_vram(handles, drv, ctx, n_bo);
+> +	wait_for_usage_drop(cg, cg_region, 0);
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After free: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 0,
+> +		     "current usage (%"PRIu64" MiB) is not zero\n",
+> +		     current / SZ_1M);
+> +
+> +	igt_cgroup_free(cg);
+> +}
+> +
+> +static const struct {
+> +	const char *name;
+> +	void (*test_fn)(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv, void *ctx);
+> +	unsigned int flags;
+> +} subtests[] = {
+> +	{ "current", test_current, 0 },
+> +	{ }
+> +};
+> +
+> +static const struct {
+> +	int driver_flag;
+> +	const struct igt_dmem_driver *driver;
+> +} drivers[] = {
+> +	{ DRIVER_XE, &xe_dmem_driver },
+> +	{ DRIVER_AMDGPU, &amdgpu_dmem_driver },
+> +	{ },
+> +};
 >  
+>  IGT_TEST_DESCRIPTION("Exercises the cgroup v2 dmem controller interface.");
+>  
+> @@ -32,7 +241,7 @@ static void fmt_bytes(uint64_t v, char *buf, size_t len)
+>  		snprintf(buf, len, "%" PRIu64, v);
+>  }
+>  
+> -int igt_simple_main()
+> +static void simple_cgroup(void)
+>  {
+>  	struct igt_cgroup *cg;
+>  	const char *region;
+> @@ -42,10 +251,6 @@ int igt_simple_main()
+>  	char min_s[32], low_s[32], max_s[32];
+>  	int i;
+>  
+> -	igt_require_f(igt_cgroup_dmem_available(),
+> -		      "No dmem regions found; is cgroup v2 with the "
+> -		      "dmem controller available?\n");
+> -
+>  	cg = igt_cgroup_new("igt-cgroup-dmem-test");
+>  	igt_assert_f(cg, "Failed to create cgroup\n");
+>  
+> @@ -90,3 +295,50 @@ int igt_simple_main()
+>  	igt_cgroup_dmem_regions_free(regions);
+>  	igt_cgroup_free(cg);
+>  }
+> +
+> +int igt_main()
+> +{
+> +	igt_fixture() {
+> +		igt_require_f(getuid() == 0, "Test requires root\n");
+> +		/* Check dmem cgroup controller is available before doing anything else */
+> +		igt_require_f(igt_cgroup_dmem_available(),
+> +			      "dmem cgroup controller not available (no cgroup v2 or no registered regions)\n");
+> +
+> +	}
+> +
+> +	igt_subtest("simple")
+> +		simple_cgroup();
+> +
+> +	for (int d = 0; drivers[d].driver; d++) {
+> +		igt_subtest_group() {
+> +			int fd = -1;
+> +			int ret = -1;
+> +			char *cg_region = NULL;
+> +			void *ctx = NULL;
+> +			igt_fixture() {
+> +				fd = drm_open_driver(drivers[d].driver_flag);
+> +				igt_require_f(fd >= 0,
+> +					"No %s device found, skipping\n",
+> +					drivers[d].driver->name);
+> +				ret = drivers[d].driver->init(&ctx, fd);
+> +				igt_require_f(ret == 0,
+> +					"Failed to initialize %s device, skipping\n",
+> +					drivers[d].driver->name);
+> +				cg_region = drivers[d].driver->get_region_name(ctx);
+> +				igt_require_f(cg_region, "Region not tracked by dmem cgroup controller\n");
+> +			}
+> +
+> +			for (int i = 0; subtests[i].name; i++)
+> +				igt_subtest_f("%s-%s", drivers[d].driver->name, subtests[i].name)
+> +					subtests[i].test_fn(fd, cg_region, subtests[i].flags, drivers[d].driver, ctx);
+> +
+> +			igt_fixture() {
+> +				if (!ret)
+> +					drivers[d].driver->deinit(ctx);
+> +				if (fd >= 0)
+> +					drm_close_driver(fd);
+> +				free(cg_region);
+> +			}
+> +		}
+> +	}
+> +}
+> 
 > -- 
-> 2.55.0
+> 2.47.3
 > 
