@@ -4,49 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F07A3C88E72
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 10:12:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53BBFC982D1
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 13:18:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9A69D10ED35;
-	Thu, 17 Sep 2026 10:12:53 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="qdZ6XXsW";
-	dkim-atps=neutral
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8EA8410E475;
- Thu, 17 Sep 2026 10:12:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:MIME-Version:Message-ID:
- Date:Subject:Cc:To:From:From:Reply-To;
- bh=Y9RwO/geZvaKKnUCrnXwVatFWJOcHD1VXvBxsWtaPu0=; b=qdZ6XXsWcFercV0DgPvaXQAiOe
- 9+V7qs1Adto4BpGmEOs0dyHWS+jLv/sNvO4UODBincKE/rS8xWGs9czJtTYbWfzn7Ovyx7XdoLdWa
- S9u1and2GzzaH8NW6dNF8uUs5ZIqSiGyUv7spUBOQJ5m8ditzLuDluI1HlUgQYxPIB0h9hHIofKZD
- 17Dxq31TTP9hAWpsYj2RYo7eC8I2myciAb2UjNlX5Z4DRBIb8+ABiMY4+LSLg+eVQroqeTaP/yqUY
- UItldP8sFWtFhea3lNESPM1Nne6gueBdK1ccbC3mHDP0+W6OFZ8qWSqVwNAmUb4jHgutYRac6M0UI
- QYO0QWNg==;
-Received: from [81.79.79.1] (helo=localhost)
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1x7966-003LIf-BE; Thu, 17 Sep 2026 12:12:06 +0200
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-To: igt-dev@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Lucas De Marchi <lucas.demarchi@intel.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>,
- =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
- phasta@kernel.org
-Subject: [PATCH i-g-t v3] tests/intel/xe_sync_file: Exercise sync file access
- post queue destruction
-Date: Thu, 17 Sep 2026 11:12:03 +0100
-Message-ID: <20260917101203.85009-1-tvrtko.ursulin@igalia.com>
-X-Mailer: git-send-email 2.55.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id E213310E437;
+	Thu, 17 Sep 2026 13:18:04 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EC0F10E437;
+ Thu, 17 Sep 2026 13:17:20 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2180267607476109288=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsync=5Ff?=
+ =?utf-8?q?ile=3A_Exercise_sync_file_access_post_queue_destruction_=28rev4?=
+ =?utf-8?q?=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tvrtko Ursulin" <tvrtko.ursulin@igalia.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 17 Sep 2026 13:17:20 -0000
+Message-ID: <178965104057.177594.5433782782794411470@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260917101203.85009-1-tvrtko.ursulin@igalia.com>
+In-Reply-To: <20260917101203.85009-1-tvrtko.ursulin@igalia.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,238 +38,225 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-A new test to roughly simulate the VK CTS suite where
-dEQP-VK.wsi.android.swapchain.render.* is hitting an use after free when a
-sync file is accessed after the xe submission queue has been destroyed.
+--===============2180267607476109288==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Abbreviated KASAN report:
+== Series Details ==
 
- [IGT] xe_sync_file: starting subtest sync_file_race
- ==================================================================
- BUG: KASAN: slab-use-after-free in drm_sched_fence_get_timeline_name+0xa1/0xb0 [gpu_sched]
- Read of size 8 at addr ffff888126726020 by task xe_sync_file/2931
- ...
- Call Trace:
-  <TASK>
-  kasan_report+0xeb/0x130
-  drm_sched_fence_get_timeline_name+0xa1/0xb0 [gpu_sched]
-  sync_file_ioctl+0x3cb/0xb00
- ...
- Allocated by task 2931:
-  __kmalloc_cache_noprof+0x1c2/0x410
-  guc_exec_queue_init+0x1a8/0x1240 [xe]
-  xe_exec_queue_create+0xe72/0x13b0 [xe]
-  xe_exec_queue_create_ioctl+0x10d9/0x1770 [xe]
-  drm_ioctl_kernel+0x179/0x300
-  drm_ioctl+0x58f/0xcf0
-  xe_drm_ioctl+0xe8/0x140 [xe]
- ...
- Freed by task 1689:
-  kfree+0x106/0x3e0
-  __guc_exec_queue_fini_async+0x144/0x2d0 [xe]
-  process_one_work+0x610/0xdf0
-  worker_thread+0x7c8/0x14b0
+Series: tests/intel/xe_sync_file: Exercise sync file access post queue destruction (rev4)
+URL   : https://patchwork.freedesktop.org/series/146211/
+State : success
 
-Without KASAN this of course turns into a plain null pointer dereference.
+== Summary ==
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: phasta@kernel.org
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com> # v2
----
-v2:
- - igt_main and igt_fixture tweaks. (Rodrigo)
+CI Bug Log - changes from IGT_9099 -> IGTPW_15857
+====================================================
 
-v3:
- - Add driver name checks.
+Summary
+-------
 
-v4:
- - Restore alphabetical ordering in the makefile. (Kamil)
----
- tests/intel/xe_sync_file.c | 154 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   1 +
- 2 files changed, 155 insertions(+)
- create mode 100644 tests/intel/xe_sync_file.c
+  **SUCCESS**
 
-diff --git a/tests/intel/xe_sync_file.c b/tests/intel/xe_sync_file.c
-new file mode 100644
-index 000000000000..842c3856a525
---- /dev/null
-+++ b/tests/intel/xe_sync_file.c
-@@ -0,0 +1,154 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2025 Google, Inc.
-+ */
-+
-+/**
-+ * TEST: Tests for sync file functionality
-+ * Category: Core
-+ * Mega feature: General Core features
-+ * Sub-category: CMD submission
-+ * Functionality: fences
-+ */
-+
-+#include "igt.h"
-+#include "sync_file.h"
-+
-+#include "lib/igt_syncobj.h"
-+#include "lib/intel_reg.h"
-+
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_query.h"
-+
-+static int sync_file_get_status(int sync_file, char **driver_name)
-+{
-+	struct sync_fence_info fence = { };
-+	struct sync_file_info info = {
-+		.num_fences = 1,
-+		.sync_fence_info = to_user_pointer(&fence),
-+	};
-+
-+	do_ioctl(sync_file, SYNC_IOC_FILE_INFO, &info);
-+	igt_assert_eq(info.num_fences, 1);
-+
-+	igt_debug("'%s'/'%s' = %d\n",
-+		  fence.driver_name, fence.obj_name, fence.status);
-+
-+	*driver_name = strdup(fence.driver_name);
-+
-+	return fence.status;
-+}
-+
-+/**
-+ * SUBTEST: sync_file_race
-+ * Description: Check that we can safely query an exported sync file fd
-+ * Test category: functionality test
-+ */
-+static void test_race(int xe, struct drm_xe_engine_class_instance *eci)
-+{
-+	uint32_t vm, bo, syncobj, bind_syncobj, *batch;
-+	struct drm_xe_sync sync[2] = {
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		},
-+		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-+		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-+		},
-+	};
-+	const uint32_t bbend = MI_BATCH_BUFFER_END;
-+	struct drm_xe_exec exec = {
-+		.address = 0x100000,
-+		.num_batch_buffer = 1,
-+		.num_syncs = 2,
-+		.syncs = to_user_pointer(sync),
-+	};
-+	char *driver_name;
-+	int sync_fence;
-+	size_t size;
-+
-+	vm = xe_vm_create(xe, 0, 0);
-+
-+	size = xe_bb_size(xe, sizeof(bbend));
-+	bo = xe_bo_create(xe, vm, size, vram_if_possible(xe, eci->gt_id),
-+			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-+
-+	batch = xe_bo_map(xe, bo, size);
-+	*batch = bbend;
-+
-+	exec.exec_queue_id  = xe_exec_queue_create(xe, vm, eci, 0);
-+
-+	syncobj = syncobj_create(xe, 0);
-+	bind_syncobj = syncobj_create(xe, 0);
-+
-+	sync[0].handle = bind_syncobj;
-+	xe_vm_bind_async(xe, vm, 0, bo, 0, exec.address, size, sync, 1);
-+
-+	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[0].handle = bind_syncobj;
-+	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	sync[1].handle = syncobj;
-+	xe_exec(xe, &exec);
-+
-+	/* Export a sync file fence. */
-+	sync_fence = syncobj_handle_to_fd(xe, sync[1].handle,
-+					  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-+
-+	igt_assert(syncobj_wait(xe, &syncobj, 1, INT64_MAX, 0, NULL));
-+	igt_assert(syncobj_wait(xe, &bind_syncobj, 1, INT64_MAX, 0, NULL));
-+
-+	driver_name = NULL;
-+	igt_assert_eq(sync_file_get_status(sync_fence, &driver_name), 1);
-+	igt_assert(driver_name);
-+	igt_assert(!strcmp(driver_name, "drm_sched"));
-+	free(driver_name);
-+
-+	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-+	syncobj_reset(xe, &sync[0].handle, 1);
-+	xe_vm_unbind_async(xe, vm, 0, 0, exec.address, size, sync, 1);
-+	igt_assert(syncobj_wait(xe, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-+
-+	syncobj_destroy(xe, syncobj);
-+	xe_exec_queue_destroy(xe, exec.exec_queue_id);
-+
-+	munmap(batch, size);
-+	gem_close(xe, bo);
-+
-+	syncobj_destroy(xe, bind_syncobj);
-+	xe_vm_destroy(xe, vm);
-+
-+	/* Give any delayed freeing time to run. */
-+	sleep(1);
-+
-+	/* This should still work and not crash the kernel. */
-+	driver_name = NULL;
-+	igt_assert_eq(sync_file_get_status(sync_fence, &driver_name), 1);
-+
-+	/* And must not read the original timeline/driver name either! */
-+	igt_assert(driver_name);
-+	igt_assert(!strcmp(driver_name, "detached-driver"));
-+	free(driver_name);
-+
-+	close(sync_fence);
-+}
-+
-+int igt_main()
-+{
-+	struct drm_xe_engine_class_instance *eci;
-+	int xe;
-+
-+	igt_fixture() {
-+		xe = drm_open_driver(DRIVER_XE);
-+	}
-+
-+	igt_subtest("sync_file_race") {
-+		xe_for_each_engine(xe, eci) {
-+			test_race(xe, eci);
-+			break;
-+		}
-+	}
-+
-+	igt_fixture() {
-+		drm_close_driver(xe);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 1ac89bab7e15..43236b19b3a9 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -347,6 +347,7 @@ intel_xe_progs = [
-         'xe_survivability',
- 	'xe_sriov_vram',
-         'xe_svm_usrptr_madvise',
-+	'xe_sync_file',
- 	'xe_sysfs_defaults',
- 	'xe_sysfs_preempt_timeout',
- 	'xe_sysfs_scheduler',
--- 
-2.55.0
+  No regressions found.
 
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/index.html
+
+Participating hosts (38 -> 38)
+------------------------------
+
+  Additional (1): fi-tgl-1115g4 
+  Missing    (1): bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15857 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_huc_copy@huc-copy:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][1] ([i915#2190])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html
+
+  * igt@gem_lmem_swapping@parallel-random-engines:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][2] ([i915#4613]) +3 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@gem_lmem_swapping@parallel-random-engines.html
+
+  * igt@intel_hwmon@hwmon-read:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][3] ([i915#7707]) +1 other test skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@intel_hwmon@hwmon-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][4] ([i915#4103]) +1 other test skip
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html
+
+  * igt@kms_dsc@dsc-basic:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][5] ([i915#16361])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][6]
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][7] ([i915#12343] / [i915#9812])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-primary-page-flip:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][8] ([i915#9732]) +3 other tests skip
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_psr@psr-primary-page-flip.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - fi-tgl-1115g4:      NOTRUN -> [SKIP][9] ([i915#3555])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html
+
+  
+  [i915#12343]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12343
+  [i915#16361]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16361
+  [i915#2190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+  [i915#9812]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9099 -> IGTPW_15857
+  * Linux: CI_DRM_19152 -> CI_DRM_19160
+
+  CI-20190529: 20190529
+  CI_DRM_19152: 0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19160: d709485448984efaa7ca726c5340ef088f930cac @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15857: 46b9d85f87140ce672cdad5a3e5876286601e666 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9099: 9099
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/index.html
+
+--===============2180267607476109288==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_sync_file: Exercise sync file access post queue destruction (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/146211/">https://patchwork.freedesktop.org/series/146211/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9099 -&gt; IGTPW_15857</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/index.html</p>
+<h2>Participating hosts (38 -&gt; 38)</h2>
+<p>Additional (1): fi-tgl-1115g4 <br />
+  Missing    (1): bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15857 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_huc_copy@huc-copy:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/2190">i915#2190</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@intel_hwmon@hwmon-read:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-atomic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16361">i915#16361</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12343">i915#12343</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9812">i915#9812</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-page-flip:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_psr@psr-primary-page-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>fi-tgl-1115g4:      NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15857/fi-tgl-1115g4/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9099 -&gt; IGTPW_15857</li>
+<li>Linux: CI_DRM_19152 -&gt; CI_DRM_19160</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19152: 0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19160: d709485448984efaa7ca726c5340ef088f930cac @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15857: 46b9d85f87140ce672cdad5a3e5876286601e666 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9099: 9099</p>
+
+</body>
+</html>
+
+--===============2180267607476109288==--
