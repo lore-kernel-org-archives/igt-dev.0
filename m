@@ -4,27 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEFFFC982D0
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 18:53:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 296BCC982D2
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 19:10:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 547FC10F06A;
-	Thu, 17 Sep 2026 18:53:22 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DDB5B10F069;
- Thu, 17 Sep 2026 18:52:36 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4481298988582127998=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C9B5610F0A1;
+	Thu, 17 Sep 2026 19:10:14 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="VSUPR4T+";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.4])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 57E0A10F08B
+ for <igt-dev@lists.freedesktop.org>; Thu, 17 Sep 2026 19:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1789672171; x=1821208171;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7ho0Dydbo523YF0An9r0OYknn4MbBk9ybOH0VPdy86Y=;
+ b=VSUPR4T+v+R4isKQtXPqqehSHWSJoF/g8A1ttQuZuGOwhTkBMQA3go6Z
+ MZgBU0TnP7YeFnN8Mvww8D/tABiDyBYHCdJYgzj9RNXk7mcdGQ2VvZaRy
+ LHFGUD4EJ74mktc8Juy2dZYZAfG+gV3Q0aE8iFu/0Xu6+fzlpN5so2deT
+ 8oZ7RSRfGK47OjMwN0x0JmxsI80/sobilOGctHghFTbfG+SwclYfPZxuG
+ Qcqey5g0pq51dyG+px9iXryoZ+ssmP0910NaS3moUlF+/bo5VSZKiSkl8
+ a33yA0y+dOPVZviCGRZu8WFeCYCKErX8hUr6svSNrDByvrmOWDBxJ25L1 Q==;
+X-CSE-ConnectionGUID: mbLIOAkxR+iKHAJ5e2trkQ==
+X-CSE-MsgGUID: sMBpuT9ATv2skOmrUXdHWw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="639282"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
+   d="scan'208";a="639282"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa114.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2026 12:09:31 -0700
+X-CSE-ConnectionGUID: 5lpLEBqOTCKqvdqDi8aFsQ==
+X-CSE-MsgGUID: tO/C45WEQVyMPmF/qE1gMg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="270271225"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by fmviesa010-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 12:09:28 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: maarten.lankhorst@linux.intel.com, Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t,
+ v5 0/3] tests/kms_color: Add support for background color testing.
+Date: Fri, 18 Sep 2026 00:48:32 +0530
+Message-Id: <20260917191835.977425-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fcore=3A_Make_buil?=
- =?utf-8?q?d_reproducible_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 17 Sep 2026 18:52:36 -0000
-Message-ID: <178967115690.178464.1037960416559513747@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260917170532.107916-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20260917170532.107916-1-kamil.konieczny@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,143 +64,34 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4481298988582127998==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+This is resend of patchset from
+https://patchwork.freedesktop.org/series/167119/
+with dropped first patch for drm-uapi, as it was merged, for testing on
+new kernel 7.3.0-rc3.
 
-== Series Details ==
+v5: fix memcpy assertion failure in kms_atomic (Swati)
+v4: resend of kms_color changes (Kamil)
+v3: sync with most recent drm-next uapi change, fixed subject
+    in second patch (removed dot from end), removed one non-needed
+    empty line from last patch (Kamil)
 
-Series: lib/igt_core: Make build reproducible (rev4)
-URL   : https://patchwork.freedesktop.org/series/173723/
-State : success
+Maarten Lankhorst (2):
+  lib/igt_kms: Add support for the BACKGROUND_COLOR property
+  tests/kms_color: Add background-color subtest to test the
+    BACKGROUND_COLOR property
 
-== Summary ==
+Swati Sharma (1):
+  tests/kms_atomic: skip BACKGROUND_COLOR in CRTC state checks
 
-CI Bug Log - changes from XEIGT_9099_BAT -> XEIGTPW_15859_BAT
-====================================================
+ lib/igt_kms.c      |  6 ++++
+ lib/igt_kms.h      |  1 +
+ tests/kms_atomic.c |  3 +-
+ tests/kms_color.c  | 71 ++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 80 insertions(+), 1 deletion(-)
 
-Summary
--------
+-- 
+2.25.1
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15859_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@xe_waitfence@engine:
-    - bat-wcl-2:          [PASS][1] -> [FAIL][2] ([Intel XE#9103])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9099/bat-wcl-2/igt@xe_waitfence@engine.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15859/bat-wcl-2/igt@xe_waitfence@engine.html
-
-  * igt@xe_waitfence@reltime:
-    - bat-bmg-1:          [PASS][3] -> [FAIL][4] ([Intel XE#9115])
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9099/bat-bmg-1/igt@xe_waitfence@reltime.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15859/bat-bmg-1/igt@xe_waitfence@reltime.html
-
-  
-  [Intel XE#9103]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9103
-  [Intel XE#9115]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9115
-
-
-Build changes
--------------
-
-  * IGT: IGT_9099 -> IGTPW_15859
-  * Linux: xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8 -> xe-5766-e970e6f15e212a8ff77f1b821e077ff97e95eb6f
-
-  IGTPW_15859: 4de372ef55efb83c13f471d58f0c1efaa02d4e4f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9099: 9099
-  xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8: 0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8
-  xe-5766-e970e6f15e212a8ff77f1b821e077ff97e95eb6f: e970e6f15e212a8ff77f1b821e077ff97e95eb6f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15859/index.html
-
---===============4481298988582127998==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_core: Make build reproducible (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173723/">https://patchwork.freedesktop.org/series/173723/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15859/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15859/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9099_BAT -&gt; XEIGTPW_15859_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15859_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@xe_waitfence@engine:</p>
-<ul>
-<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9099/bat-wcl-2/igt@xe_waitfence@engine.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15859/bat-wcl-2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9103">Intel XE#9103</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@xe_waitfence@reltime:</p>
-<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9099/bat-bmg-1/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15859/bat-bmg-1/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9115">Intel XE#9115</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9099 -&gt; IGTPW_15859</li>
-<li>Linux: xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8 -&gt; xe-5766-e970e6f15e212a8ff77f1b821e077ff97e95eb6f</li>
-</ul>
-<p>IGTPW_15859: 4de372ef55efb83c13f471d58f0c1efaa02d4e4f @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9099: 9099<br />
-  xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8: 0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8<br />
-  xe-5766-e970e6f15e212a8ff77f1b821e077ff97e95eb6f: e970e6f15e212a8ff77f1b821e077ff97e95eb6f</p>
-
-</body>
-</html>
-
---===============4481298988582127998==--
