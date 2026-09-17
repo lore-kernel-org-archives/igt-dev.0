@@ -4,59 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B425CC982D0
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 09:16:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3BA5C88E72
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 09:18:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55F5810E67F;
-	Thu, 17 Sep 2026 09:16:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A56F10E46A;
+	Thu, 17 Sep 2026 09:18:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BXxZR9qM";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GSXSJQNA";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8942710E67F;
- Thu, 17 Sep 2026 09:15:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 02F0F10E46A;
+ Thu, 17 Sep 2026 09:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789636532; x=1821172532;
+ t=1789636633; x=1821172633;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=9Q07UJ+uyCfXUHj4qFSLIKXbDzsrcy6kKCEOo/MIymU=;
- b=BXxZR9qMP8ui7pFog1LlV/czgOkVsgCdTB8Fp1XR/kK9GVvSIi8qcPcs
- YOq4iHgfeupAvCgAEa2XPxg/E8RyUSO6VZYnh/yrppQDTFb3FUAfljXbD
- O3wQVjRWZ7CTUDmkMQ5opKKD7D4n18xVgxelCI0CMS4DFYzZWWRgk4ecI
- pE8hfU1syWNqfINsyFmuuzhA+11U+WMNkPFg8y0AfMIlaBWi272hyH4jC
- Ep+oXm6Y91DfmojzP5W7YWot+fgRiImFOaNXVCqfmz8YFrZ6Suv5k/5/A
- m6H0kDmasWVIVnSgz8NS23OFySdU5uYbV57M2a2Xx5eeYs+YsaYeVQVj0 g==;
-X-CSE-ConnectionGUID: 8DOsGz+PSJyBGGtdj+nJYQ==
-X-CSE-MsgGUID: 5GiTqaaYQU6L1F66PSyPUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="100636750"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="100636750"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2026 02:15:32 -0700
-X-CSE-ConnectionGUID: 11EAIygiTGmb4SmCU2/W7w==
-X-CSE-MsgGUID: UeMESp4OQnWVAoYZJoZcJw==
+ bh=5VDjUQxNMezmT0Wu39gxFpfaipUysbbuELRlIY/MROg=;
+ b=GSXSJQNAQtFf1ybIC66EDgccQsLdSAfza66v2oh+u4WMs8xNmt+7XyRV
+ GMzC7IPtMvq8CvQ1MDXEdHpsYZ+sTCSTQwiQusxzvYme6/KFS/iKZmwwf
+ 4tSDwJRaBbJEcD1nwGp0OtrozV+acQzngTbj7Hf9TV6qTiAu2ibBHdvX0
+ KMwlY/0d4b8td2Cgdncdv5JqDlcW5Ed2WQSBDzBr3r7c0ybPR69yG4Tz4
+ khZw70eXDajxhyB32QDQOL3+4ldLN30XTAUxpivITknR65M3e2hhWlAOm
+ VesDM9REWhxYYfu9EyxOMtGG2dExWBLeeLqbDsJFmW8n/AVcFp1h+A+aU A==;
+X-CSE-ConnectionGUID: kH0RdqSWQiO1BjE1YCFXww==
+X-CSE-MsgGUID: fHxE09N0TDSjqM8bTZ6RmQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89175711"
+X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="89175711"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Sep 2026 02:17:13 -0700
+X-CSE-ConnectionGUID: ODil/qwVSOm+dZrIM1cc4g==
+X-CSE-MsgGUID: vKRzW+USRoqwmST1W7DwxQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; 
-   d="scan'208";a="1890633"
+   d="scan'208";a="2081373"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2026 02:15:32 -0700
-Date: Thu, 17 Sep 2026 11:15:13 +0200
+ 17 Sep 2026 02:17:12 -0700
+Date: Thu, 17 Sep 2026 11:17:09 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: I915-ci-infra@lists.freedesktop.org
 Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
- Bump debian version to bookworm (rev2)
-Message-ID: <20260917091513.nnjm7dsrv37lh5oh@kamilkon-DESK.igk.intel.com>
+ runner: create results incrementally
+Message-ID: <20260917091709.edub7s7wbjuxdz3c@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20260916111902.73626-1-kamil.konieczny@linux.intel.com>
- <178961131930.175570.1793448749142483661@61270ab9df2a>
+References: <20260916154740.130190-1-kamil.konieczny@linux.intel.com>
+ <178962895878.175968.15135350259202369493@61270ab9df2a>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <178961131930.175570.1793448749142483661@61270ab9df2a>
+In-Reply-To: <178962895878.175968.15135350259202369493@61270ab9df2a>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,16 +73,16 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2026-09-17 at 02:15:19 -0000, Patchwork wrote:
+On 2026-09-17 at 07:09:18 -0000, Patchwork wrote:
 > == Series Details ==
 > 
-> Series: Bump debian version to bookworm (rev2)
-> URL   : https://patchwork.freedesktop.org/series/174271/
+> Series: runner: create results incrementally
+> URL   : https://patchwork.freedesktop.org/series/174309/
 > State : failure
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from CI_DRM_19156_full -> IGTPW_15852_full
+> CI Bug Log - changes from CI_DRM_19156_full -> IGTPW_15855_full
 > ====================================================
 > 
 > Summary
@@ -90,14 +90,14 @@ On 2026-09-17 at 02:15:19 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with IGTPW_15852_full absolutely need to be
+>   Serious unknown changes coming with IGTPW_15855_full absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_15852_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_15855_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15852/index.html
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15855/index.html
 > 
 > Participating hosts (11 -> 10)
 > ------------------------------
@@ -107,15 +107,21 @@ On 2026-09-17 at 02:15:19 -0000, Patchwork wrote:
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in IGTPW_15852_full:
+>   Here are the unknown changes that may have been introduced in IGTPW_15855_full:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@gem_exec_balancer@bonded-false-hang:
->     - shard-glk:          NOTRUN -> [INCOMPLETE][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15852/shard-glk6/igt@gem_exec_balancer@bonded-false-hang.html
+>   * igt@i915_pm_rps@reset:
+>     - shard-dg2:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_19156/shard-dg2-1/igt@i915_pm_rps@reset.html
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15855/shard-dg2-8/igt@i915_pm_rps@reset.html
+> 
+>   * igt@kms_busy@extended-modeset-hang-newfb-with-reset@pipe-a:
+>     - shard-tglu:         [PASS][3] -> [DMESG-WARN][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_19156/shard-tglu-8/igt@kms_busy@extended-modeset-hang-newfb-with-reset@pipe-a.html
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15855/shard-tglu-3/igt@kms_busy@extended-modeset-hang-newfb-with-reset@pipe-a.html
 > 
 
 Unrelated.
@@ -126,17 +132,47 @@ Regards,
 Kamil
 
 >   
+> New tests
+> ---------
+> 
+>   New tests have been introduced between CI_DRM_19156_full and IGTPW_15855_full:
+> 
+> ### New IGT tests (1) ###
+> 
+>   * igt@kms_properties@connector-properties-legacy@pipe-a-vga-1:
+>     - Statuses : 1 pass(s)
+>     - Exec time: [0.23] s
+> 
+>   
+> 
 > Known issues
 > ------------
 > 
->   Here are the changes found in IGTPW_15852_full that come from known issues:
+>   Here are the changes found in IGTPW_15855_full that come from known issues:
 > 
 > ### IGT changes ###
 > 
 > #### Issues hit ####
 > 
->   * igt@api_intel_bb@crc32:
->     - shard-rkl:          NOTRUN -> [SKIP][2] ([i915#6230])
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15852/shard-rkl-7/igt@api_intel_bb@crc32.html
+>   * igt@api_intel_bb@blit-reloc-keep-cache:
+>     - shard-rkl:          NOTRUN -> [SKIP][5] ([i915#8411])
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15855/shard-rkl-8/igt@api_intel_bb@blit-reloc-keep-cache.html
 > 
 ...cut...
+> 
+> Build changes
+> -------------
+> 
+>   * CI: CI-20190529 -> None
+>   * IGT: IGT_9099 -> IGTPW_15855
+>   * Piglit: piglit_4509 -> None
+> 
+>   CI-20190529: 20190529
+>   CI_DRM_19156: bb38af66c2f21340a7c081afbb7ace249357fbb5 @ git://anongit.freedesktop.org/gfx-ci/linux
+>   IGTPW_15855: 0c2fe5825d97239cdfac6c26fccc097d457872cd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   IGT_9099: 9099
+>   piglit_4509: fdc5a4ca11124ab8413c7988896eec4c97336694 @ git://anongit.freedesktop.org/piglit
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15855/index.html
