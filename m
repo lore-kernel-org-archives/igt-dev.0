@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A217C88E72
-	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 14:55:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2707C982D6
+	for <igt-dev@archiver.kernel.org>; Thu, 17 Sep 2026 15:30:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E1EE10E02B;
-	Thu, 17 Sep 2026 14:55:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Yputp0jo";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1F24C10E02B
- for <igt-dev@lists.freedesktop.org>; Thu, 17 Sep 2026 14:53:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789656824; x=1821192824;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=mtODiJapAyfTpdPfm3erhWj3h8IcqxESgDMGooevfWY=;
- b=Yputp0joWnKQaNl7pjH5P6VW9Ti5wXOWdAszauMsWp8CscItnN1+mCmy
- 0WXWchHalz1p6CFd+8sPwi/BVHjoHDqXlbAgQXeDBsp/hYK0cV3Z197Ke
- lEs5k+md+IOtt/cO18Z8a9TAi3uWsxTQxkDVVwSb8n258eJGpXYho++/D
- tRSjboxSxq5812waFjmT71w4GTvo0++IaMWkurbOHcuCfXVXd4lz2gk+Z
- 1UzZ9pRfajw0+rX4Nmu5zmonojB21zLelPGUgZ/6lcezgkeEaEHJKoDAf
- p/dAx4uQMAuy/sxArFX1MeBpFZ8QZoF92faJ/s/KhdtuWy5EztAkD45Yk A==;
-X-CSE-ConnectionGUID: Tvd4DgTVRduVHvjBYAoYlQ==
-X-CSE-MsgGUID: 0aMYto52RymO2+7C4Vt7Iw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11905"; a="89221047"
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="89221047"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Sep 2026 07:53:44 -0700
-X-CSE-ConnectionGUID: zjqJxylRQH+quOUjSEWofg==
-X-CSE-MsgGUID: 6JZTDA6oQXmL7ixhQ5e7Vw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,103,1787036400"; d="scan'208";a="270161076"
-Received: from amilburn-desk.amilburn-desk (HELO localhost) ([10.245.245.74])
- by fmviesa010-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2026 07:53:43 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v3 2/2] HAX DO_NOT_MERGE: print path for opened data file
-Date: Thu, 17 Sep 2026 16:53:31 +0200
-Message-ID: <20260917145331.78274-3-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260917145331.78274-1-kamil.konieczny@linux.intel.com>
-References: <20260917145331.78274-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8E28710E6F8;
+	Thu, 17 Sep 2026 15:30:19 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B17A210E6F8;
+ Thu, 17 Sep 2026 15:29:37 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7868999350672336654=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_lib/igt=5Fcore=3A_Make_buil?=
+ =?utf-8?q?d_reproducible_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 17 Sep 2026 15:29:37 -0000
+Message-ID: <178965897771.177999.1175361365832700958@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260917145331.78274-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260917145331.78274-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,57 +37,187 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When open of a data file succeeds, print its path.
-Also add kms_3d@basic to fast-feedback testlist to make sure
-this test runs on all configurations.
+--===============7868999350672336654==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- lib/igt_core.c                             | 2 ++
- tests/intel-ci/i915.fast-feedback.testlist | 1 +
- tests/intel-ci/xe.fast-feedback.testlist   | 1 +
- 3 files changed, 4 insertions(+)
+== Series Details ==
 
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index 9937cb559..ded56a0b6 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -3417,6 +3417,8 @@ static FILE *__igt_fopen_data_file(const char *dir, const char *rel, const char
- 
- 	snprintf(path, ARRAY_SIZE(path), "%s/%s/%s", dir, rel, filename);
- 	fp = fopen(path, "r");
-+	if (fp)
-+		igt_info("Opened data file: %s\n", path);
- 
- 	return fp;
- }
-diff --git a/tests/intel-ci/i915.fast-feedback.testlist b/tests/intel-ci/i915.fast-feedback.testlist
-index 5b33f29e4..961f3a834 100644
---- a/tests/intel-ci/i915.fast-feedback.testlist
-+++ b/tests/intel-ci/i915.fast-feedback.testlist
-@@ -55,6 +55,7 @@ igt@i915_getparams_basic@basic-subslice-total
- igt@i915_hangman@error-state-basic
- igt@i915_pciid
- igt@intel_hwmon
-+igt@kms_3d@basic
- igt@kms_addfb_basic@addfb25-4-tiled
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-framebuffer-vs-set-tiling
-diff --git a/tests/intel-ci/xe.fast-feedback.testlist b/tests/intel-ci/xe.fast-feedback.testlist
-index 59d1cff2e..64ca68594 100644
---- a/tests/intel-ci/xe.fast-feedback.testlist
-+++ b/tests/intel-ci/xe.fast-feedback.testlist
-@@ -9,6 +9,7 @@ igt@fbdev@write
- 
- igt@core_debugfs@read-all-entries
- igt@core_sysfs@read-all-entries
-+igt@kms_3d@basic
- igt@kms_addfb_basic@addfb25-4-tiled
- igt@kms_addfb_basic@addfb25-bad-modifier
- igt@kms_addfb_basic@addfb25-modifier-no-flag
--- 
-2.55.0
+Series: lib/igt_core: Make build reproducible (rev3)
+URL   : https://patchwork.freedesktop.org/series/173723/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9099_BAT -> XEIGTPW_15858_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_15858_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15858_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_15858_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_3d@basic:
+    - bat-atsm-2:         NOTRUN -> [SKIP][1]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/bat-atsm-2/igt@kms_3d@basic.html
+
+  * igt@runner@aborted:
+    - bat-lnl-2:          NOTRUN -> [FAIL][2]
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/bat-lnl-2/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15858_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_3d@basic:
+    - bat-lnl-1:          NOTRUN -> [SKIP][3] ([Intel XE#6011])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/bat-lnl-1/igt@kms_3d@basic.html
+
+  * igt@xe_waitfence@reltime:
+    - bat-bmg-2:          [PASS][4] -> [FAIL][5] ([Intel XE#9115])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9099/bat-bmg-2/igt@xe_waitfence@reltime.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/bat-bmg-2/igt@xe_waitfence@reltime.html
+
+  
+  [Intel XE#6011]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6011
+  [Intel XE#9115]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9115
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9099 -> IGTPW_15858
+  * Linux: xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8 -> xe-5765-d4289677143a2d09ce25eb883b0bf16fd7135840
+
+  IGTPW_15858: 15858
+  IGT_9099: 9099
+  xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8: 0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8
+  xe-5765-d4289677143a2d09ce25eb883b0bf16fd7135840: d4289677143a2d09ce25eb883b0bf16fd7135840
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/index.html
+
+--===============7868999350672336654==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_core: Make build reproducible (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173723/">https://patchwork.freedesktop.org/series/173723/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9099_BAT -&gt; XEIGTPW_15858_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_15858_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15858_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15858_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_3d@basic:</p>
+<ul>
+<li>bat-atsm-2:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/bat-atsm-2/igt@kms_3d@basic.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@runner@aborted:</p>
+<ul>
+<li>bat-lnl-2:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/bat-lnl-2/igt@runner@aborted.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15858_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_3d@basic:</p>
+<ul>
+<li>bat-lnl-1:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/bat-lnl-1/igt@kms_3d@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6011">Intel XE#6011</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@reltime:</p>
+<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9099/bat-bmg-2/igt@xe_waitfence@reltime.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15858/bat-bmg-2/igt@xe_waitfence@reltime.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9115">Intel XE#9115</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9099 -&gt; IGTPW_15858</li>
+<li>Linux: xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8 -&gt; xe-5765-d4289677143a2d09ce25eb883b0bf16fd7135840</li>
+</ul>
+<p>IGTPW_15858: 15858<br />
+  IGT_9099: 9099<br />
+  xe-5755-0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8: 0fb8d1900f1a6b9d21aadbfa5f784979b950bcf8<br />
+  xe-5765-d4289677143a2d09ce25eb883b0bf16fd7135840: d4289677143a2d09ce25eb883b0bf16fd7135840</p>
+
+</body>
+</html>
+
+--===============7868999350672336654==--
