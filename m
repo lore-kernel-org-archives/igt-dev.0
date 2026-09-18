@@ -4,28 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAFEEC982D8
-	for <igt-dev@archiver.kernel.org>; Fri, 18 Sep 2026 16:42:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A163C982D7
+	for <igt-dev@archiver.kernel.org>; Fri, 18 Sep 2026 17:56:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55A6110E954;
-	Fri, 18 Sep 2026 16:42:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 59ECA10E15E;
+	Fri, 18 Sep 2026 17:56:05 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3B78910E954;
- Fri, 18 Sep 2026 16:41:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5E65B10E15E;
+ Fri, 18 Sep 2026 17:55:19 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0520269119430375736=="
+ boundary="===============0335390139010229579=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2Cv2=2C1/2=5D_tests/intel=3A_Add_kms=5Fhdmi=5Faudio=5Fbw_test_?=
- =?utf-8?q?=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_ib/igt=5Fcore=3A_Make_bui?=
+ =?utf-8?q?ld_reproducible?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 18 Sep 2026 16:41:25 -0000
-Message-ID: <178974968523.181279.9650489450079260224@61270ab9df2a>
+Date: Fri, 18 Sep 2026 17:55:19 -0000
+Message-ID: <178975411938.182123.3926015151323110671@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260908062541.490631-1-swati2.sharma@intel.com>
-In-Reply-To: <20260908062541.490631-1-swati2.sharma@intel.com>
+References: <20260918112659.45415-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260918112659.45415-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,24 +41,59 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0520269119430375736==
+--===============0335390139010229579==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,v2,1/2] tests/intel: Add kms_hdmi_audio_bw test (rev2)
-URL   : https://patchwork.freedesktop.org/series/173556/
-State : failure
+Series: ib/igt_core: Make build reproducible
+URL   : https://patchwork.freedesktop.org/series/174509/
+State : success
 
 == Summary ==
 
-Series 173556 revision 2 was fully merged or fully failed: no git log
+CI Bug Log - changes from IGT_9102 -> IGTPW_15865
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15865/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
 
 
+Changes
+-------
 
---===============0520269119430375736==
+  No changes found
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9102 -> IGTPW_15865
+
+  CI-20190529: 20190529
+  CI_DRM_19178: 2c43c8e6bbbe54f755b8e5c86d582f78159e7a2c @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15865: c0d8dc9d9e1413050a88bfe04fe2360243d13ac0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9102: d7e81cbe807db27613dd3bc96f4e46262e75569d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15865/index.html
+
+--===============0335390139010229579==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -79,16 +113,35 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v2,1/2] tests/intel: Add kms_hdmi_audio_bw test (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173556/">https://patchwork.freedesktop.org/series/173556/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>ib/igt_core: Make build reproducible</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174509/">https://patchwork.freedesktop.org/series/174509/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15865/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15865/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 173556 revision 2 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from IGT_9102 -&gt; IGTPW_15865</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15865/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9102 -&gt; IGTPW_15865</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19178: 2c43c8e6bbbe54f755b8e5c86d582f78159e7a2c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15865: c0d8dc9d9e1413050a88bfe04fe2360243d13ac0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9102: d7e81cbe807db27613dd3bc96f4e46262e75569d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============0520269119430375736==--
+--===============0335390139010229579==--
