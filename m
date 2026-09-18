@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BD01C982D7
-	for <igt-dev@archiver.kernel.org>; Fri, 18 Sep 2026 18:09:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A270BC982D7
+	for <igt-dev@archiver.kernel.org>; Fri, 18 Sep 2026 18:10:08 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C04C10F4A9;
-	Fri, 18 Sep 2026 18:09:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2CFA310F4A9;
+	Fri, 18 Sep 2026 18:10:08 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 571B910F48C;
- Fri, 18 Sep 2026 18:08:34 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 819BC10F4A9;
+ Fri, 18 Sep 2026 18:09:13 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3326126380054896202=="
+ boundary="===============5280888209083163960=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Improve_LOBF_reliability_?=
- =?utf-8?q?with_low_RR_retry_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_ib/igt=5Fcore=3A_Make_build?=
+ =?utf-8?q?_reproducible?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 18 Sep 2026 18:08:34 -0000
-Message-ID: <178975491434.182123.17623777113555366174@61270ab9df2a>
+Date: Fri, 18 Sep 2026 18:09:13 -0000
+Message-ID: <178975495352.181279.8354936722856327268@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260918142022.4096908-1-ramanaidu.naladala@intel.com>
-In-Reply-To: <20260918142022.4096908-1-ramanaidu.naladala@intel.com>
+References: <20260918112659.45415-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260918112659.45415-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,59 +41,103 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3326126380054896202==
+--===============5280888209083163960==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Improve LOBF reliability with low RR retry (rev2)
-URL   : https://patchwork.freedesktop.org/series/173534/
-State : success
+Series: ib/igt_core: Make build reproducible
+URL   : https://patchwork.freedesktop.org/series/174509/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9102 -> IGTPW_15866
+CI Bug Log - changes from XEIGT_9102_BAT -> XEIGTPW_15865_BAT
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
+  Serious unknown changes coming with XEIGTPW_15865_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15865_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15866/index.html
+  
 
-Participating hosts (39 -> 37)
+Participating hosts (15 -> 15)
 ------------------------------
 
-  Missing    (2): bat-dg2-13 bat-adls-6 
+  No changes in participating hosts
 
+Possible new issues
+-------------------
 
-Changes
--------
+  Here are the unknown changes that may have been introduced in XEIGTPW_15865_BAT:
 
-  No changes found
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@xe_exec_system_allocator@many-execqueues-free:
+    - bat-bmg-vm:         [PASS][1] -> [DMESG-WARN][2] +1 other test dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-free.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-free.html
+
+  * igt@xe_multigpu_svm@mgpu-latency-copy-prefetch:
+    - bat-bmg-3:          [PASS][3] -> [DMESG-WARN][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-bmg-3/igt@xe_multigpu_svm@mgpu-latency-copy-prefetch.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-bmg-3/igt@xe_multigpu_svm@mgpu-latency-copy-prefetch.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15865_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@xe_exec_system_allocator@many-execqueues-malloc:
+    - bat-bmg-vm:         [DMESG-WARN][5] -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-malloc.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-malloc.html
+
+  * igt@xe_multigpu_svm@mgpu-pagefault-basic:
+    - bat-bmg-3:          [DMESG-WARN][7] -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-basic.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-basic.html
+
+  * igt@xe_waitfence@engine:
+    - bat-wcl-2:          [FAIL][9] ([Intel XE#9103]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-wcl-2/igt@xe_waitfence@engine.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-wcl-2/igt@xe_waitfence@engine.html
+
+  
+  [Intel XE#9103]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9103
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9102 -> IGTPW_15866
+  * IGT: IGT_9102 -> IGTPW_15865
 
-  CI-20190529: 20190529
-  CI_DRM_19178: 2c43c8e6bbbe54f755b8e5c86d582f78159e7a2c @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15866: b5680df75e7c22fab16cd43b71e48fef6daebfcf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15865: c0d8dc9d9e1413050a88bfe04fe2360243d13ac0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9102: d7e81cbe807db27613dd3bc96f4e46262e75569d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5780-6ef00cbe08bb0ce4a59e9ace88b107d424431392: 6ef00cbe08bb0ce4a59e9ace88b107d424431392
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15866/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/index.html
 
---===============3326126380054896202==
+--===============5280888209083163960==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,35 +157,76 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Improve LOBF reliability with low RR retry (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173534/">https://patchwork.freedesktop.org/series/173534/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>ib/igt_core: Make build reproducible</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174509/">https://patchwork.freedesktop.org/series/174509/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15866/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15866/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9102 -&gt; IGTPW_15866</h1>
+    <h1>CI Bug Log - changes from XEIGT_9102_BAT -&gt; XEIGTPW_15865_BAT</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15866/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_15865_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15865_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15865_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@xe_exec_system_allocator@many-execqueues-free:</p>
+<ul>
+<li>bat-bmg-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-free.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-free.html">DMESG-WARN</a> +1 other test dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_multigpu_svm@mgpu-latency-copy-prefetch:</p>
+<ul>
+<li>bat-bmg-3:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-bmg-3/igt@xe_multigpu_svm@mgpu-latency-copy-prefetch.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-bmg-3/igt@xe_multigpu_svm@mgpu-latency-copy-prefetch.html">DMESG-WARN</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15865_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@xe_exec_system_allocator@many-execqueues-malloc:</p>
+<ul>
+<li>bat-bmg-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-malloc.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-malloc.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_multigpu_svm@mgpu-pagefault-basic:</p>
+<ul>
+<li>bat-bmg-3:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-basic.html">DMESG-WARN</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-basic.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_waitfence@engine:</p>
+<ul>
+<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9102/bat-wcl-2/igt@xe_waitfence@engine.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9103">Intel XE#9103</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15865/bat-wcl-2/igt@xe_waitfence@engine.html">PASS</a></li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9102 -&gt; IGTPW_15866</li>
+<li>IGT: IGT_9102 -&gt; IGTPW_15865</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19178: 2c43c8e6bbbe54f755b8e5c86d582f78159e7a2c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15866: b5680df75e7c22fab16cd43b71e48fef6daebfcf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9102: d7e81cbe807db27613dd3bc96f4e46262e75569d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_15865: c0d8dc9d9e1413050a88bfe04fe2360243d13ac0 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9102: d7e81cbe807db27613dd3bc96f4e46262e75569d @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5780-6ef00cbe08bb0ce4a59e9ace88b107d424431392: 6ef00cbe08bb0ce4a59e9ace88b107d424431392</p>
 
 </body>
 </html>
 
---===============3326126380054896202==--
+--===============5280888209083163960==--
