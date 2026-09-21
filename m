@@ -4,51 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E077C982E1
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 06:55:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9C90AC982DE
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 07:33:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F200410E2F3;
-	Mon, 21 Sep 2026 06:55:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 18FA810E35C;
+	Mon, 21 Sep 2026 07:33:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="d5Oq2jhz";
+	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="UMaFEULx";
 	dkim-atps=neutral
-Received: from bali.collaboradmins.com (bali.collaboradmins.com
- [148.251.105.195])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 673DC10E296;
- Mon, 21 Sep 2026 06:54:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
- s=mail; t=1789973663;
- bh=QEh0q3uEMIX1mo/52T36jIlKSddmIRSljaq9S029FCc=;
- h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
- b=d5Oq2jhzqSavoIa2/RuhNufR2OhSU0XML8V1G9HuyLNosd5/kiNPnlm/As6IpS0sw
- 09jkeV3N3i1Xoa09zgttty2D0LpR/t3IOVGFqJvNckEAfTQxnJYJxwGp8VD5SeMZWA
- ZRdhmhuJaPK/hStrCodYFl66GUCrTsfSkwlOEFbMz35KLPI7z5/6niQI+Ha4E7YBAg
- 5q9A/1dM3ApASyK3KWJfZJIMBAQJhifrllSJxCFeGRs28Phi/nvltPRIoiPZ+1geDa
- QeYy8DYjgJ5sDT8S2qpC6eP8owag8DDYRkkT06mUPT3Z+8bDWcdKb5bad/4gex1Bcv
- G535tqaamzuHg==
-Received: from fedora-21.home (unknown [100.64.0.11])
- (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
- key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest
- SHA256) (No client certificate requested)
- (Authenticated sender: bbrezillon)
- by bali.collaboradmins.com (Postfix) with ESMTPSA id A48B017E087F;
- Mon, 21 Sep 2026 08:54:22 +0200 (CEST)
-Date: Mon, 21 Sep 2026 08:54:19 +0200
-From: Boris Brezillon <boris.brezillon@collabora.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- steven.price@arm.com, liviu.dudau@arm.com, adrian.larumbe@collabora.com,
- kamil.konieczny@linux.intel.com, samitolvanen@google.com
-Subject: Re: [PATCH i-g-t v2] tests/panthor: skip sparse VM_BIND tests
- before v1.9
-Message-ID: <20260921085419.01a5699c@fedora-21.home>
-In-Reply-To: <20260920-b4-panthor_version_sparse-v2-1-fa395c125eb1@collabora.com>
-References: <20260920-b4-panthor_version_sparse-v2-1-fa395c125eb1@collabora.com>
-Organization: Collabora
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+Received: from mx08-00376f01.pphosted.com (mx08-00376f01.pphosted.com
+ [91.207.212.86])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BA8F810E4CF
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 07:32:37 +0000 (UTC)
+Received: from pps.filterd (m0168888.ppops.net [127.0.0.1])
+ by mx08-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 68L7AT591892387
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 08:32:35 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+ :content-transfer-encoding:content-type:date:from:message-id
+ :mime-version:subject:to; s=dk201812; bh=81hEza2hql1+4r8XTqLKMD+
+ Iq163g+NNiar5uFufRK8=; b=UMaFEULxxZijAWAoQEdb62xg6FtSSapE/+AMAjk
+ J+VYK8Tq1pid3GkOHr+SBtZId8PSwO5SuUr7121DPi+vNfO8TMu2iO3QHYr1b3J7
+ /QyCV/elnirgZQovPm0KSEKsHoYsICqDE89AlsRiMbwA0x179EpFqPG+O8dtstxh
+ u5lYSTrTupQD6RNwb0K4v8j+jnC6DMNqFmcELZeS5fdthfPo/sppBJZSptenxhxd
+ TEQNcUCUhVXB5UT7SWekVpGY2HrfTDGHhN5RYB3GVxIM5XJAStq5prbIY8wWC7mr
+ D3o2A/Zma8KQCChU0LaVaBp30xmQwY1VH0XXclsWzYbc1kg==
+Received: from hhmail01.hh.imgtec.org
+ (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+ by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4gsgnq1a14-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 08:32:35 +0100 (BST)
+Received: from [127.0.1.1] (172.25.9.35) by HHMAIL01.hh.imgtec.org
+ (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Mon, 21 Sep
+ 2026 08:32:34 +0100
+From: Robert Mazur <robert.mazur@imgtec.com>
+Subject: [PATCH i-g-t 0/3] test/imagination: Add infrastructure and
+ SUBMIT_JOBS tests
+Date: Mon, 21 Sep 2026 09:32:04 +0200
+Message-ID: <20260921-b4-imagination-submit-test-v1-0-d626d1264641@imgtec.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHTdsGoC/x3MwQpAQBCA4VfRnE2tCeFV5LDLYA6WdpaUvLvN8
+ au//wHlIKzQZQ8EvkRl9wlFnsG4Wr8wypQMZKg2LRXoSpTNLuJtTCnq6TaJGFkjNtVIramodsy
+ QBkfgWe5/3g/v+wHaW760bAAAAA==
+X-Change-ID: 20260921-b4-imagination-submit-test-85c290526bee
+To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
+CC: Alessio Belle <alessio.belle@imgtec.com>, Brajesh Gupta
+ <brajesh.gupta@imgtec.com>, Luigi Santivetti <luigi.santivetti@imgtec.com>,
+ Robert Mazur <robert.mazur@imgtec.com>, Donald Robson
+ <donald.robson@imgtec.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1789975954; l=2175;
+ i=robert.mazur@imgtec.com; s=20260324; h=from:subject:message-id;
+ bh=Mu6WaGxfb4jEyUHh1q6Q36DjJi1xt/75zRlWlnIf3G4=;
+ b=2E3XNsziPJgWNdSFtNsEYBTnycDi6I7RocT2/fPbfhTSBrnIRxPH1S8IrmdOkV7oQet+51qmU
+ 2g+gX537+ncCokwJT4KB9c06mDEwf6aIn9MyjqOD96v8bwy2VKgFoaX
+X-Developer-Key: i=robert.mazur@imgtec.com; a=ed25519;
+ pk=X5uhazsNnVDpw/srawR3m7WOmgzFZXdecapAeML2ZgM=
+X-Originating-IP: [172.25.9.35]
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIxMDEwNiBTYWx0ZWRfXzHqoJIn10n5G
+ 2+aSKDFcyxQelzfPBUsLjtmn9ft8KJihT8pTi9zgSo1ICPkgsHRCSnwRv20GXeVZazRBZqxoqQB
+ kt+L2QJ2ncAWhAqRN+RTdmZk7yY68ZXBXgiTKFgbTVIgmma9nBqcok1PF0kEyczzDlSHzuePVKh
+ yk+EwbOG+hXBq2pfvtuiJYlEah4GsS5VDMvc7vnRI2YyfwFpMMrdJjWg6tWU+3mxlACWaQvbHFC
+ D5kbD8APR5lti20XdT4mIffl75OgDGpCiDKyvTvM2cydOyqj6rAFGC2NXqwQ7m72JlZ1anyM3+T
+ AG4xpSU3dd/US2TW0VmmV7T4Vb3w9FKc086Tx9/+38MK/nFOIL33Obxcbe2K4m1BlBaMAn0G6QD
+ YpxcJMJgMoz7je6lqrHmXStOmc2g0NMaTV7s+h38xjG4jgC434zxStZDwXerCZj1PmAouCDwvei
+ FNtNF2rAhr6eoyO7e0g==
+X-Proofpoint-ORIG-GUID: ssKt3f_d_I_b1PC8lwAgJSZhmNVhuZX-
+X-Authority-Analysis: v=2.4 cv=fYs4WEQF c=1 sm=1 tr=0 ts=6ab0dd93 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=CNmLAE0vrksA:10 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=qZQ2PDNLMSdLoqI-hfl9:22
+ a=r_1tXGB3AAAA:8 a=4auMfB65fE6Ri0ZlzdgA:9 a=QEXdDO2ut3YA:10
+ a=t8nPyN_e6usw4ciXM-Pk:22
+X-Proofpoint-GUID: ssKt3f_d_I_b1PC8lwAgJSZhmNVhuZX-
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIxMDEwNiBTYWx0ZWRfX954gP1LSiWdf
+ Bk7CqxwX/1lC0QdhSpbnjQgx4ICNTnMMp/4vcm4VALpgy/VPffbj2lFp8UaIEmQ1Lf82n7kR8lh
+ ng6HdHEvh/g7HNZFByuvVtHixCRFyPo=
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,266 +98,54 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Sun, 20 Sep 2026 17:59:09 -0700
-Deborah Brouwer <deborah.brouwer@collabora.com> wrote:
+This series adds the basic infrastructure needed for more advanced
+PowerVR driver testing and introduces initial coverage for the
+SUBMIT_JOBS UAPI.
 
-> Sparse VM_BIND support was introduced with Panthor DRM driver version
-> 1.9. If a driver isn't advertising support for v1.9, skip the sparse
-> VM_BIND subtests.
-> 
-> Use the advertised driver version rather than probing for EINVAL, since
-> EINVAL may also indicate a uAPI regression rather than lack of support for
-> sparse VM_BIND.
-> 
-> Add a shared macro igt_require_panthor_version() to check the version in
-> case other Panthor tests would like to use it in the future.
-> 
-> The Panthor version macro wraps the igt_require_f() macro so that we can
-> clear the last errno. The last errno is irrelevant to the version check
-> but __igt_skip_check() will still print it like this:
-> 
->   Starting subtest: vm_bind_sparse
->   Test requirement not met in function __igt_unique____real_main10, file ../tests/panthor/panthor_vm.c:296:
->   Test requirement: __igt_panthor_driver_version_at_least(fd, 1, 9)
->   Requires Panthor version 1.9 or newer
->   Last errno: 2, No such file or directory
->   Subtest vm_bind_sparse: SKIP (0.000s)
-> 
-> This makes the log noisier than it already is. So set the errno to 0 to
-> suppress that line. Skipping the test will now print:
-> 
->   Starting subtest: vm_bind_sparse
->   Test requirement not met in function __igt_unique____real_main10, file ../tests/panthor/panthor_vm.c:296:
->   Test requirement: __igt_panthor_driver_version_at_least(fd, 1, 9)
->   Requires Panthor version 1.9 or newer
->   Subtest vm_bind_sparse: SKIP (0.000s)
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
-> Changes in v2:
-> - check for version at each subtest
-> - make version check available to all panthor tests
-> - use macro to suppress printing the last error
-> - Link to v1: https://lore.kernel.org/r/20260915-b4-panthor_version_sparse-v1-1-7ac10b75e631@collabora.com
-> ---
->  lib/igt_panthor.c          | 14 ++++++++++++++
->  lib/igt_panthor.h          | 18 ++++++++++++++++++
->  tests/panthor/panthor_vm.c | 18 ++++++++++++++++++
->  3 files changed, 50 insertions(+)
-> 
-> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-> index 11d8ec342..0f8c408d5 100644
-> --- a/lib/igt_panthor.c
-> +++ b/lib/igt_panthor.c
-> @@ -385,3 +385,17 @@ void igt_panthor_free_bo(int fd, struct panthor_bo *bo)
->  
->  	gem_close(fd, bo->handle);
->  }
-> +
-> +bool __igt_panthor_driver_version_at_least(int fd, int major, int minor)
+The first patch adds device configuration support for supported
+PowerVR cores. Configuration data is largely derived from the Mesa
+implementation.
 
-Any reason for this __ prefix? Looks like a legitimate helper to call
-if we ever end up with tests that need to do things differently based
-on the driver version, and __ prefixes are generally used when you want
-to reflect the fact some helpers are not meant to be called directly.
+The second patch introduces GPU memory allocation helpers. These
+helpers simplify test development by providing common functionality
+for GPU memory allocation, virtual address management, object mapping,
+and automatic resource cleanup.
 
-With the __ prefix removed, this is
+The third patch adds a set of tests covering the SUBMIT_JOBS UAPI. 
+It tests common submission paths and verify ioctl parameter validation.
 
-`Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>`
+Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
+---
+Donald Robson (1):
+      tests/imagination: Add SUBMIT_JOBS tests
 
-> +{
-> +	drmVersionPtr version = drmGetVersion(fd);
-> +	bool supported;
-> +
-> +	igt_assert(version);
-> +	supported = version->version_major > major ||
-> +		    (version->version_major == major &&
-> +		     version->version_minor >= minor);
-> +	drmFreeVersion(version);
-> +
-> +	return supported;
-> +}
-> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-> index ba4a9bf1e..626e5d525 100644
-> --- a/lib/igt_panthor.h
-> +++ b/lib/igt_panthor.h
-> @@ -37,6 +37,24 @@ void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
->  				     uint32_t stream_size, uint32_t syncobj_handle,
->  				     int err);
->  uint64_t igt_panthor_get_first_core(uint64_t cores_present);
-> +bool __igt_panthor_driver_version_at_least(int fd, int major, int minor);
-> +
-> +/**
-> + * igt_require_panthor_version:
-> + * @fd: device file descriptor
-> + * @major: required Panthor major version
-> + * @minor: required Panthor minor version
-> + *
-> + * Require the Panthor version to be at least the requested version.
-> + */
-> +#define igt_require_panthor_version(fd, major, minor) do { \
-> +	/* igt_require_f() reports errno through __igt_skip_check(); */ \
-> +	/* clear it since errno is unrelated to the version check. */ \
-> +	errno = 0; \
-> +	igt_require_f(__igt_panthor_driver_version_at_least(fd, major, minor), \
-> +		      "Requires Panthor version %d.%d or newer\n", \
-> +		      major, minor); \
-> +} while (0)
->  
->  static inline void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle,
->  				       uint64_t va, uint64_t size, uint32_t flags, int err)
-> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-> index 9011df25e..bd8f14ecb 100644
-> --- a/tests/panthor/panthor_vm.c
-> +++ b/tests/panthor/panthor_vm.c
-> @@ -293,6 +293,7 @@ int igt_main() {
->  		uint32_t vm_id;
->  		uint64_t map_size = SZ_4K * 4;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -306,6 +307,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -321,6 +323,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -336,6 +339,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -351,6 +355,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -366,6 +371,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -382,6 +388,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -402,6 +409,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -422,6 +430,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -442,6 +451,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -463,6 +473,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -483,6 +494,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -503,6 +515,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -524,6 +537,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -545,6 +559,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -566,6 +581,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -585,6 +601,7 @@ int igt_main() {
->  		uint64_t map_size = ALIGN_DOWN(UINT64_MAX, SZ_2M) - (SZ_2M * 3);
->  		const int INITIAL_VA = SZ_512M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -599,6 +616,7 @@ int igt_main() {
->  		uint64_t unmap_size = ALIGN_DOWN(UINT64_MAX, SZ_2M) - map_size;
->  		const int INITIAL_VA = SZ_512M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> 
-> ---
-> base-commit: 970700a95acd74bb987287d10147b5f23380519b
-> change-id: 20260915-b4-panthor_version_sparse-5fbd31cc0d5d
-> 
-> Best regards,
+Robert Mazur (2):
+      lib/imagination: add device configuration support
+      lib/imagination: add GPU memory allocation helpers
+
+ lib/igt_pvr.c                           | 559 +++++++++++++++++++++++++++
+ lib/igt_pvr.h                           |  42 +++
+ lib/imagination/device_info/axe-1-16m.h | 106 ++++++
+ lib/imagination/device_info/bxe-2-32.h  | 122 ++++++
+ lib/imagination/device_info/bxe-4-32.h  | 122 ++++++
+ lib/imagination/device_info/bxm-4-64.h  | 237 ++++++++++++
+ lib/imagination/device_info/bxs-4-64.h  | 124 ++++++
+ lib/imagination/device_info/g6110.h     | 103 +++++
+ lib/imagination/device_info/ge7800.h    | 102 +++++
+ lib/imagination/device_info/ge8300.h    | 230 +++++++++++
+ lib/imagination/device_info/gx6250.h    | 231 ++++++++++++
+ lib/imagination/device_info/gx6650.h    | 120 ++++++
+ lib/imagination/pvr_device_info.c       | 104 +++++
+ lib/imagination/pvr_device_info.h       | 378 +++++++++++++++++++
+ lib/meson.build                         |   1 +
+ tests/imagination/meson.build           |   1 +
+ tests/imagination/pvr_submit_jobs.c     | 651 ++++++++++++++++++++++++++++++++
+ 17 files changed, 3233 insertions(+)
+---
+base-commit: f307fd753abbe6c03d0a6e1c769fc6020ebd5d86
+change-id: 20260921-b4-imagination-submit-test-85c290526bee
+
+Best regards,
+-- 
+Robert Mazur <robert.mazur@imgtec.com>
 
