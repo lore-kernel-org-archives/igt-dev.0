@@ -4,62 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7299DC982ED
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 15:28:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C022CC982ED
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 15:32:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0C0EA10E17A;
-	Mon, 21 Sep 2026 15:28:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4DE8910E903;
+	Mon, 21 Sep 2026 15:32:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jTvHa62w";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PWLOGxHd";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 40EAA10E8A0;
- Mon, 21 Sep 2026 15:27:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F0AB10E8A0
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 15:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790004479; x=1821540479;
+ t=1790004701; x=1821540701;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=WqwBkOvl7Nvjw3Qx/7mvOpNWzhT1SmBWTf+g8qaRVrk=;
- b=jTvHa62wc3xwWsR5jcqN67fPRcpzP0fTjtnU8kxtR7i0QRct6enVhWTE
- FMANplb6+2LBiGBR8SR878RssO6PgpN2P2oTDfawuYtp+sQCOgqee7x0X
- Wly9VKnwzbeLzj+o8fSbplhZdHh+8AFvtcOcRr5dSOO8TaKImgcQvoR+r
- AZYDfub97iOSkPL4lwicGo82H19FrYvNsm8QtJmZ8D0LqWb8S9p7F19lR
- o+LzwybgHJMFYhvmqs3I69XZftZth2fQseAxh8FAEsA7edCtePp7ZAZU4
- x4hSugWH6YO1GrpWqO+c+EyebYzdyIJcNfPFkhc9Rd69CCBPt+WbtlPjg A==;
-X-CSE-ConnectionGUID: 2MnAQQ92Qy+kO8dryC2HAA==
-X-CSE-MsgGUID: YRwM6gVCQIOBkygfR+ELgA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="116056953"
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="116056953"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2026 08:22:45 -0700
-X-CSE-ConnectionGUID: t85yXTjoTWussV39ZOw2Rg==
-X-CSE-MsgGUID: dw7GL3XBQ9+F6Xzjr81pTg==
+ bh=n4ZVpQorTnUyLsT0JwVULqkMeJOQ1uluGcKTy3GZflA=;
+ b=PWLOGxHd7TAjV7p+Q4IHrHQZG8rvGW4x1uwkOT+UPxkfnN/s5TmZwzfE
+ 8PkA8742L0dGeL0oWiKpB5JkMYDT6q2qFjUCAo/qZEaThdX91HpHLCuXD
+ fGjY46Dia1qSHg8inOVZBgShvpK1ll1TFl3CNp00M3Ev+FqbY3e2HQL8A
+ ZtzH7CYxvvmwlH6bcs8vOKhwuRUYkB6qcl1wPjt+c0pwkNjYGsR6fVIWH
+ ekVjaig7YHi9fLyjWCyIeb6PV/lFW9FTOak+OA/CVeRhYXwpEEbu4Rc4T
+ i4dBjbrUyjMeDxK4lR18/c3AJNPJwDfdtOwWdIAoB4mHyRDhvv8DjD1q8 Q==;
+X-CSE-ConnectionGUID: yj1c7GoBQO6COUDhQ0VMLQ==
+X-CSE-MsgGUID: ewBQhF7lTkW0vaAAemP/Sg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="93028718"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="93028718"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2026 08:31:41 -0700
+X-CSE-ConnectionGUID: RO0WqGBBRtyG36G23J6mDg==
+X-CSE-MsgGUID: gbn8MWzETviZ8Z6Df1oFgA==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
+   d="scan'208";a="3995915"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 08:22:43 -0700
-Date: Mon, 21 Sep 2026 17:22:40 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2026 08:31:39 -0700
+Date: Mon, 21 Sep 2026 17:31:36 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- boris.brezillon@collabora.com, steven.price@arm.com,
- liviu.dudau@arm.com, adrian.larumbe@collabora.com, samitolvanen@google.com
-Subject: Re: [PATCH i-g-t v2] tests/panthor: skip sparse VM_BIND tests before
- v1.9
-Message-ID: <20260921152240.4j6paghgr3vktbuv@kamilkon-DESK.igk.intel.com>
+To: Karthik Poosa <karthik.poosa@intel.com>
+Cc: igt-dev@lists.freedesktop.org, rodrigo.vivi@intel.com,
+ anshuman.gupta@intel.com, badal.nilawar@intel.com,
+ raag.jadav@intel.com, riana.tauro@intel.com, sk.anirban@intel.com,
+ mallesh.koujalagi@intel.com, soham.purkait@intel.com
+Subject: Re: [PATCH i-g-t] lib/igt_aux: enable serial printk logs during
+ suspend
+Message-ID: <20260921153136.vr4i6jmby5fq4pk7@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Deborah Brouwer <deborah.brouwer@collabora.com>,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- boris.brezillon@collabora.com, steven.price@arm.com,
- liviu.dudau@arm.com, adrian.larumbe@collabora.com,
- samitolvanen@google.com
-References: <20260920-b4-panthor_version_sparse-v2-1-fa395c125eb1@collabora.com>
+ Karthik Poosa <karthik.poosa@intel.com>,
+ igt-dev@lists.freedesktop.org, rodrigo.vivi@intel.com,
+ anshuman.gupta@intel.com, badal.nilawar@intel.com,
+ raag.jadav@intel.com, riana.tauro@intel.com, sk.anirban@intel.com,
+ mallesh.koujalagi@intel.com, soham.purkait@intel.com
+References: <20260916141709.1216470-1-karthik.poosa@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260920-b4-panthor_version_sparse-v2-1-fa395c125eb1@collabora.com>
+In-Reply-To: <20260916141709.1216470-1-karthik.poosa@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,121 +78,157 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Deborah,
-On 2026-09-20 at 17:59:09 -0700, Deborah Brouwer wrote:
-
-I have one more nit, see below, and an ask for you or other
-panthor developers to look into igt work item on gitlab:
-
-gputop does not work with the panthor kernel driver
-https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/209
-
-> Sparse VM_BIND support was introduced with Panthor DRM driver version
-> 1.9. If a driver isn't advertising support for v1.9, skip the sparse
-> VM_BIND subtests.
+Hi Karthik,
+On 2026-09-16 at 19:47:09 +0530, Karthik Poosa wrote:
+> Save /proc/sys/kernel/printk, set the console loglevel to 8 before system
+> suspend so suspend-stage logs reach the serial console, and restore the
+> original value after resume or exit-handler cleanup.
 > 
-> Use the advertised driver version rather than probing for EINVAL, since
-> EINVAL may also indicate a uAPI regression rather than lack of support for
-> sparse VM_BIND.
+> During system suspend, userspace log collection is no longer reliable and
+> the useful failure point is often before resume completes. Raise the printk
+> loglevel to 8 for the suspend window so PM and driver messages reach the
+> serial console, then restore the original setting after resume.
 > 
-> Add a shared macro igt_require_panthor_version() to check the version in
-> case other Panthor tests would like to use it in the future.
-> 
-> The Panthor version macro wraps the igt_require_f() macro so that we can
-> clear the last errno. The last errno is irrelevant to the version check
-> but __igt_skip_check() will still print it like this:
-> 
->   Starting subtest: vm_bind_sparse
->   Test requirement not met in function __igt_unique____real_main10, file ../tests/panthor/panthor_vm.c:296:
->   Test requirement: __igt_panthor_driver_version_at_least(fd, 1, 9)
->   Requires Panthor version 1.9 or newer
->   Last errno: 2, No such file or directory
->   Subtest vm_bind_sparse: SKIP (0.000s)
-> 
-> This makes the log noisier than it already is. So set the errno to 0 to
-> suppress that line. Skipping the test will now print:
-> 
->   Starting subtest: vm_bind_sparse
->   Test requirement not met in function __igt_unique____real_main10, file ../tests/panthor/panthor_vm.c:296:
->   Test requirement: __igt_panthor_driver_version_at_least(fd, 1, 9)
->   Requires Panthor version 1.9 or newer
->   Subtest vm_bind_sparse: SKIP (0.000s)
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
-> ---
-> Changes in v2:
-> - check for version at each subtest
-> - make version check available to all panthor tests
-> - use macro to suppress printing the last error
-> - Link to v1: https://lore.kernel.org/r/20260915-b4-panthor_version_sparse-v1-1-7ac10b75e631@collabora.com
-> ---
->  lib/igt_panthor.c          | 14 ++++++++++++++
->  lib/igt_panthor.h          | 18 ++++++++++++++++++
->  tests/panthor/panthor_vm.c | 18 ++++++++++++++++++
->  3 files changed, 50 insertions(+)
-> 
-> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-> index 11d8ec342..0f8c408d5 100644
-> --- a/lib/igt_panthor.c
-> +++ b/lib/igt_panthor.c
-> @@ -385,3 +385,17 @@ void igt_panthor_free_bo(int fd, struct panthor_bo *bo)
->  
->  	gem_close(fd, bo->handle);
->  }
-> +
-> +bool __igt_panthor_driver_version_at_least(int fd, int major, int minor)
-> +{
-> +	drmVersionPtr version = drmGetVersion(fd);
-> +	bool supported;
-> +
-> +	igt_assert(version);
-> +	supported = version->version_major > major ||
-> +		    (version->version_major == major &&
-> +		     version->version_minor >= minor);
-> +	drmFreeVersion(version);
-> +
-> +	return supported;
-> +}
-> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-> index ba4a9bf1e..626e5d525 100644
-> --- a/lib/igt_panthor.h
-> +++ b/lib/igt_panthor.h
-> @@ -37,6 +37,24 @@ void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
->  				     uint32_t stream_size, uint32_t syncobj_handle,
->  				     int err);
->  uint64_t igt_panthor_get_first_core(uint64_t cores_present);
-> +bool __igt_panthor_driver_version_at_least(int fd, int major, int minor);
-> +
-> +/**
-> + * igt_require_panthor_version:
-> + * @fd: device file descriptor
-> + * @major: required Panthor major version
-> + * @minor: required Panthor minor version
-> + *
-> + * Require the Panthor version to be at least the requested version.
-> + */
-> +#define igt_require_panthor_version(fd, major, minor) do { \
-
-Can you make it a function in test? Macro seems an overkill.
-Also, it could be moved to library when there will be more
-users in other tests.
+> Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
+> Assisted-by: GitHub-Copilot:GPT-5.4
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> +	/* igt_require_f() reports errno through __igt_skip_check(); */ \
-> +	/* clear it since errno is unrelated to the version check. */ \
-> +	errno = 0; \
-> +	igt_require_f(__igt_panthor_driver_version_at_least(fd, major, minor), \
-> +		      "Requires Panthor version %d.%d or newer\n", \
-> +		      major, minor); \
-> +} while (0)
+> ---
+>  lib/igt_aux.c | 86 +++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 86 insertions(+)
+> 
+> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+> index 0d250ae2f..510266319 100644
+> --- a/lib/igt_aux.c
+> +++ b/lib/igt_aux.c
+> @@ -699,9 +699,13 @@ void igt_print_activity(void)
+>  static int autoresume_delay;
+>  bool __console_suspend_saved_state;
+>  bool __pm_debug_messages_state;
+> +static char __printk_saved_state[64];
+> +static ssize_t __printk_saved_state_len = -1;
 >  
->  static inline void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle,
->  				       uint64_t va, uint64_t size, uint32_t flags, int err)
-> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-> index 9011df25e..bd8f14ecb 100644
-> --- a/tests/panthor/panthor_vm.c
-> +++ b/tests/panthor/panthor_vm.c
-> @@ -293,6 +293,7 @@ int igt_main() {
-[cut]
+>  #define SYSFS_MODULE_PRINTK "/sys/module/printk/parameters/"
+> +#define PROC_SYS_KERNEL_PRINTK "/proc/sys/kernel/printk"
+>  #define CONSOLE_SUSPEND_DISABLE false
+> +#define SERIAL_CONSOLE_LOGLEVEL "8\n"
+>  
+>  static const char *suspend_state_name[] = {
+>  	[SUSPEND_STATE_FREEZE] = "freeze",
+> @@ -915,6 +919,23 @@ static bool is_mem_sleep_state_supported(int power_dir, enum igt_mem_sleep state
+>  static void igt_aux_pm_suspend_dbg_restore_exit_handler(int sig)
+>  {
+>  	int sysfs_fd, power_dir;
+> +	int fd;
+> +	ssize_t written;
+> +
+> +	if (__printk_saved_state_len > 0) {
+> +		fd = open(PROC_SYS_KERNEL_PRINTK, O_WRONLY);
+> +		if (fd >= 0) {
+> +			written = write(fd, __printk_saved_state, __printk_saved_state_len);
+> +			if (written != __printk_saved_state_len)
+> +				igt_warn("Unable to restore %s Err:%d\n",
+> +					 PROC_SYS_KERNEL_PRINTK, errno);
+> +			close(fd);
+> +		} else {
+> +			igt_warn("Unable to open %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
+> +		}
+> +
+> +		__printk_saved_state_len = -1;
+> +	}
+>  
+>  	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
+>  	if (sysfs_fd < 0)
+> @@ -933,6 +954,67 @@ static void igt_aux_pm_suspend_dbg_restore_exit_handler(int sig)
+>  	close(power_dir);
+>  }
+>  
+> +static void igt_aux_enable_suspend_serial_logs(void)
+> +{
+> +	int fd;
+> +	ssize_t len;
+> +	ssize_t written;
+> +
+> +	fd = open(PROC_SYS_KERNEL_PRINTK, O_RDWR);
+> +	if (fd < 0) {
+> +		igt_warn("Unable to open %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
+> +		return;
+> +	}
+> +
+> +	len = read(fd, __printk_saved_state, sizeof(__printk_saved_state) - 1);
+> +	if (len < 0) {
+> +		igt_warn("Unable to read %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
+> +		close(fd);
+> +		return;
+> +	}
+> +
+> +	__printk_saved_state[len] = '\0';
+> +	__printk_saved_state_len = len;
+> +
+> +	if (lseek(fd, 0, SEEK_SET) < 0) {
+> +		igt_warn("Unable to seek %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
+> +		close(fd);
+> +		return;
+> +	}
+> +
+> +	written = write(fd, SERIAL_CONSOLE_LOGLEVEL, strlen(SERIAL_CONSOLE_LOGLEVEL));
+> +	if (written != strlen(SERIAL_CONSOLE_LOGLEVEL)) {
+> +		igt_warn("Unable to set %s to %s Err:%d\n",
+> +			 PROC_SYS_KERNEL_PRINTK, SERIAL_CONSOLE_LOGLEVEL, errno);
+> +		__printk_saved_state_len = -1;
+> +	}
+> +
+> +	close(fd);
+> +}
+> +
+> +static void igt_aux_restore_suspend_serial_logs(void)
+> +{
+> +	int fd;
+> +	ssize_t written;
+> +
+> +	if (__printk_saved_state_len <= 0)
+> +		return;
+> +
+> +	fd = open(PROC_SYS_KERNEL_PRINTK, O_WRONLY);
+> +	if (fd < 0) {
+> +		igt_warn("Unable to open %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
+> +		return;
+> +	}
+> +
+> +	written = write(fd, __printk_saved_state, __printk_saved_state_len);
+> +	if (written != __printk_saved_state_len)
+> +		igt_warn("Unable to restore %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
+> +	else
+> +		__printk_saved_state_len = -1;
+> +
+> +	close(fd);
+> +}
+> +
+>  /**
+>   * igt_aux_enable_pm_suspend_dbg:
+>   * @power_dir: /sys/power/ dir fd
+> @@ -949,6 +1031,8 @@ static void igt_aux_enable_pm_suspend_dbg(int power_dir)
+>  {
+>  	int sysfs_fd;
+>  
+> +	igt_aux_enable_suspend_serial_logs();
+> +
+>  	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
+>  	if (sysfs_fd > 0) {
+>  		__console_suspend_saved_state = igt_sysfs_get_boolean(sysfs_fd, "console_suspend");
+> @@ -1027,6 +1111,8 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+>  	else
+>  		suspend_via_sysfs(power_dir, state);
+>  
+> +	igt_aux_restore_suspend_serial_logs();
+> +
+>  	if (orig_mem_sleep)
+>  		set_mem_sleep(power_dir, orig_mem_sleep);
+>  
+> -- 
+> 2.25.1
+> 
