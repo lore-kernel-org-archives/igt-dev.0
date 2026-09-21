@@ -4,155 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AB2EDC982E6
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 14:39:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31835C982E6
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 14:40:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 37CA610E32D;
-	Mon, 21 Sep 2026 14:39:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D1D8210E32D;
+	Mon, 21 Sep 2026 14:39:59 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oAZRYU+f";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kx0x0ses";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8089210E7F5
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 14:37:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09FCD10E8A2
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 14:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790001458; x=1821537458;
+ t=1790001450; x=1821537450;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:content-transfer-encoding:mime-version;
- bh=FU60o6ii5+mQpVWw1yauaKvjz40KVDBTDeqkXDI90vA=;
- b=oAZRYU+frCAfYN5RyKVN6YRNNBRMN4JGgAh0iCWMXxw7l/9IQ6pKxJI/
- diD390TSgPMP3WWQR53+APvyVzeFkODqKrxmPR4MdwTWLDMbjY2R6Jdd0
- ScuFNtFMHFHpGtA74vyKeLPgygdfXtSPrFdNzchr1Zjp6rSmqyClVa/jy
- AklQCsbDZB07a8Sob5DKtnp6f+qxveuz1Bg5lAwZyvke7Mu2MROO0DLNu
- yTUgGSrEP8084g0O/KizyVmdND+0o6rtF60jfdw9assUzMefoVemiWAHg
- aCc329pRgxL25j0EssfkNBzTelNYSR/TKX0gejXbhWw9a0IsKkhGfbo8t Q==;
-X-CSE-ConnectionGUID: iDgj8pJgTr6kugijqw781A==
-X-CSE-MsgGUID: q2Z001crT2WtmpGoAS8Luw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="101868202"
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="101868202"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+ bh=AFd2xW/Ty+rHIe3NDx24LbUGEDFNbQA1JIv3esduQTE=;
+ b=kx0x0sesotQVAoHkz4SajDuBdB2HhYKVZDYt63yJwVDgSBZaANa0sIkv
+ oQNTmywWlgQe8i14fmbFlq0vGc6ha+vWqwMg+MxtImkHFzUrPlHgA/7ra
+ vnWx2XdLugdWRbE1evdcfIOsOID0LBhwIBOHeQ/mImX9/zHFeqqaxC+OB
+ S+WdL8V63gaJBhk/VZyVEfFCOyYvVla7QaHbuWEYpJmxhbD0auXYWQpVm
+ sHcpza3AIKY9+e01bfcIZgumLZXG2m+QIC8iSU7YFxNtzlK7SAUuwXA4s
+ SKKo+VDK07HsZ3FXPPZiHQm+JNgvG8BLNpAfZ8qq9Fp73k+oPNy+3F39s g==;
+X-CSE-ConnectionGUID: bzrIdg1vT/2abrFcUpW0OA==
+X-CSE-MsgGUID: s/9OaztJQ0agtKQ6cRZvjg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="101868178"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="101868178"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2026 07:37:38 -0700
-X-CSE-ConnectionGUID: xc/fYzbwS5SSkoVnKIaHMQ==
-X-CSE-MsgGUID: dEoTFNWaQOey9fLPBWxWOw==
+ 21 Sep 2026 07:37:30 -0700
+X-CSE-ConnectionGUID: 31oRUfT8Q7O4htD6ZEGYTA==
+X-CSE-MsgGUID: bhPGQcQmQBCzO8XT4iUHHw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
-   d="scan'208";a="3659133"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2026 07:37:38 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="272159615"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2026 07:37:29 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 21 Sep 2026 07:37:37 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.46; Mon, 21 Sep 2026 07:37:29 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Mon, 21 Sep 2026 07:37:37 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.13)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Mon, 21 Sep 2026 07:37:29 -0700
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.42) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 21 Sep 2026 07:37:37 -0700
+ 15.2.2562.46; Mon, 21 Sep 2026 07:37:28 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fmR3DZXnlx0mHCK06kAxNHFfo7JaPLygbMnEiJ9K1d2PlklyCn5qKHMfq7fqyU70hmjlx1xOAbLNPnrquoCAJ46PrYnCebFGKgh9rfWLIzYj2WLbRiK3K5gDuO6ZlPZLz4nPBEU6LNCOrzLqhWv4Nr1VpWaJ/S1V/xY9B6s+0uwlD7/N226plPeEvuD91AEBzGebDNdYsWFXwhgVOJOjpaVpq8p90w7j5xNG29s6nURo7Uv988i7JGxCXCkLZPwC3320tNBfNxBAGIz0LUqJLvGCzKXL8LEiKRqLWkVqLK5WrDaXFT4k3bwsB8sCbuTuVYDbZiB+8CSO3tLLHKw2wQ==
+ b=lDV3LHIguULiRpn2SuiEka8TWVF1jEr+K5Rd9LYyrhUkvXhN0RANViqLE3dmz1fXfZ8I8+x3aG6TLoVY9D2sQoHLgq1a5S/TLg9/j5y3aPdF3iwkLF2AlEGg3Wf7dc3Qh21ExIFwOu3eQQSCIjq5qNHeqeWfzydWk5fsiXTwmnidoLtYDWbkAJeIpukajLQzMmNcAGbiF93xj1MEUsPa4gWHpWXwn4d0O8WWbG3fJ/dGHyxyps2WmaOJPrtGHQkYbgcoap2vDo2Qbm3Gi0534KD1C2CGYhEkN2/eOgWlNAQ6Hm4Uynnrm2iq3iLaR8rW/HKFkpHIjXkmhTE38FvDgg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rMao4igzfuKiqieATwylV1fd/Pgf15asyMRRikWWoOU=;
- b=A4VEBU07DZWvcc1qsjqJ9naKLEK41FqQWpVPtrYYwC02FfkjbmlX/PDdLe9h6zfn3O5IgzEGiWZRz1cpYqbUqAZNRAsXs74zGRL25jZd4ztqihrdA89TO4elFAhUoDVfuoc5Xs0PInkjlE633DJr/N6pwmeip8l6Jd2Hy+h2wZHaBBxpEIpTSSqKv7g1ASGdAqXSmU4z21ONp/3QBI3DF/7BS1ymC+P/farlCGeSdsso/h0NMgr2eKUa0vSOLXXvaRZDNcaZoyZRys/FGVkn7VAd9B8hpCPTpIrGWUdeSfsDiCCjb6y00Muvox/wOtTqt8mE3PuUHJLXsbcS5WPwtQ==
+ bh=6hOEue56D/Agm6UYl0YfLY4/Z4f7i5TAZJoepErzFGk=;
+ b=EAcNx8K1FMij/EXbD/ahLRdJ/hWkhQAcEhNmWnwMD8KdrnWJ0Dn+hvLS2wxw/EAkSqPYA0OH/lWbhMlP+VQejmb7wNJwch/MnLTC9ZKFuuldyQ95zpE9pB6A7rGOxGWDT8wAipSSKmD12GJ2Q51UteKL2HCYXPgd8rXK1uxStFFEiFGWglW1PfPN6pdaMKjNwMP17RnKEcfyid3fhqBhapVJaoUzip3VN8VcCO8oBLPkj+Q4lEniq49XM1cT7sGgPRwthvJMoRQTvpqukznUMkCnbJFBh+jDwrIKuAaje25XijxrwBmzFVjVj/hy/gkwTn61fm+ibRXrh1EfqhwooQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH8PR11MB8039.namprd11.prod.outlook.com (2603:10b6:510:25f::18)
- by PH0PR11MB4790.namprd11.prod.outlook.com (2603:10b6:510:40::17)
+ by IA3PR11MB8919.namprd11.prod.outlook.com (2603:10b6:208:576::18)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Mon, 21 Sep
- 2026 14:37:36 +0000
+ 2026 14:37:27 +0000
 Received: from PH8PR11MB8039.namprd11.prod.outlook.com
  ([fe80::42df:f465:90a8:df92]) by PH8PR11MB8039.namprd11.prod.outlook.com
  ([fe80::42df:f465:90a8:df92%2]) with mapi id 15.21.0428.015; Mon, 21 Sep 2026
- 14:37:35 +0000
+ 14:37:26 +0000
 From: =?UTF-8?q?Pi=C3=B3rkowski=2C=20Piotr?= <piotr.piorkowski@intel.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>
-Subject: [PATCH v2 3/4] tests/sriov_pci_config: Add optional capability checks
-Date: Mon, 21 Sep 2026 16:37:06 +0200
-Message-ID: <20260921143707.2117970-4-piotr.piorkowski@intel.com>
+Subject: [PATCH v2 1/4] lib/igt_pci: Add raw configuration space helpers
+Date: Mon, 21 Sep 2026 16:37:04 +0200
+Message-ID: <20260921143707.2117970-2-piotr.piorkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260921143707.2117970-1-piotr.piorkowski@intel.com>
 References: <20260921143707.2117970-1-piotr.piorkowski@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: WA2P291CA0024.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::15) To PH8PR11MB8039.namprd11.prod.outlook.com
+X-ClientProxiedBy: VI1PR06CA0226.eurprd06.prod.outlook.com
+ (2603:10a6:802:2c::47) To PH8PR11MB8039.namprd11.prod.outlook.com
  (2603:10b6:510:25f::18)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8039:EE_|PH0PR11MB4790:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2fc7af5-fb92-4844-bb9b-08df17ede0d4
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8039:EE_|IA3PR11MB8919:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e167a78-02b1-4ad5-47e4-08df17eddb6e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|23010399003|376014|1800799024|10067099003|56012099006|6133799003|18002099003|22082099003|11063799006;
-X-Microsoft-Antispam-Message-Info: cobVWCjTUbQxZSakjAjgWNXhO7v8Z4Jdew/7htQ/LbojoBCb1wur8PvpKOAhrBR6nJxZRPsrkA4+TW3mZRocBu3MehTjo1ZJRoTS7IcNbzYNyz1puuK5Y/cmhfIYL6XlZ+Ay9hTtme2H3LNsX1UjbCLPvTWFCaslQyXsLmvBgFLtp6TDRsI+O4MLhWm2Ur/K7TwCZA+e9JQVH+EzHQ5yIWbZq5G99tqTaSEo6aqZKFH2steLXNJorJK/DSxoHBA/c4izi1l5Eli4P30EyEjjy/3BD4Nh+bGF59hr+3QNjS4Q/E7tXImg+RxTxG7dmtDLzYGAgy9erBwT0rDBVYn0t5Xs1RmN1IN13vMylOs46lF7Bbsxohf9L/G1HsHi2v3UOOZY9YljjSkSPdoBMyU9Dicr5GFFqqPuhRMp1KM0OZrg1k8qW+yTJy9oq7W/mWjyrRl4nWuoMIbLz3XtJoAKzzvKqbA2E88MsoBImLsbiK0tRXGMjaJhxJbMfbsg8lgkXnG2TrvO0GScO68J8QTQSwa20GmyoLARjCKMLgWOtkQwf7QXbri23O0JN848daaUO6C6x6CXxpeWeSWuA0u6tOJ5JmYIU/ZQ6iohzob7K1+FJQOxaqYsHnc7S30O01A8aXx3SuQdZzWhxWz+SAMu3Z3E4Scjp+oE4JFGBV2OvLY=
+ ARA:13230040|366016|1800799024|376014|23010399003|11063799006|56012099006|10067099003|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 3udut+Q99TL5mlnbk9V4t2X1cC1r6Z5iETgriaFmI0NF11EX7jPvSdejcgcb+ZxJsIMZORTlesGHg+MUKT+PjvGVHmuO96Q4GYoYgUAKZvgix8SdEGtPU1A++wSCWACH24jD3LGM912LOxRdKwNoO060l3bUy33Q7QOjwmVHz0FnGEN7/kwCI7KA2t92NAMyrJbZOeGaf6mq5E7q/4ryIxMq9t7gLcjxK6dIh2sZ/NED55AXIMrD89aznnqMWpnB3BzcqI2g/ly+VE7NVo/M+IDUq9GK7Ma6bHjBR+ttC1mzSlNeEZV0K0ahw6kYqjyGvEincqBfrSQU6VM1mvp+pxQZ4ErKIUbVKxBS64ugh2gz4f31dYWX7ij0HrzaGDavKfa2raDdD9O42E8csB24tJZqUFoBSZhvViA0qdqn+7uUrY+pW2Yz2RFt4XUQJNDndgmlr85HdbshgUg/MkOTHOF7hkfJTcREOuqRpiC+6EXWhgl/gDIxtz48WOtMzm+PVAk6sHs9Mdss0rVzoXQz1md6AVMPLAxajwQ7OjBTdlPmnxRNuEfs5TzBla0aMEk7yGnSyCfCQLTi/q0c+jobawasnnB+ocZN+wzd4FPSH4tmu4Q9F4/JVLKdgSorY6ut9qdSc3wv1HkAshD7ZlKQ+G7YujQTuLjHnAuIwtyina0=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH8PR11MB8039.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(23010399003)(376014)(1800799024)(10067099003)(56012099006)(6133799003)(18002099003)(22082099003)(11063799006);
+ SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(11063799006)(56012099006)(10067099003)(6133799003)(22082099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q09hclZiRHNoVU1kUS9PMnVLTEVVQUVBQkVLZjhFSTIyNHRScElzRzN0WkdY?=
- =?utf-8?B?TStLMjhKaHhrUlM3bjFVYmV0S0MwMldycktSVVdWSzVYRHBQcklmNXUwRjlI?=
- =?utf-8?B?Ykh0ZGRNeHlGTlpHdGN3d3dsOXBsQzE0MXpCa2d3b3ZHbUVtaFJ6MGZhSXo3?=
- =?utf-8?B?MTBSMWxLckZuOXVFN1ZIbVdYb2g0c0JTR2JRRGJiTG1ZRXh2MmpVaTFaWVk4?=
- =?utf-8?B?Ny9LZ0FDV3d1NkNNaC9JNGtsbUU5QmdjUE1KdFNSVEtkbXBESjFWVTlWWFlk?=
- =?utf-8?B?V1Q0U0xqTk81VTVTR01acUxrTTRwdm9GV1ZkcFNRcUFJeDlwaFVKdnBQUnp6?=
- =?utf-8?B?NXRhRm5RbFh5YXA4ZjJjU1ltSmNvelVJakFscm82SDRhL0duYTdwc1N1c243?=
- =?utf-8?B?cE5mbXg1ZEFxT1FUSXhSbk5FMzVvby9TV25xdnQ5ZmJEWlcvd0tZVkRGajg1?=
- =?utf-8?B?WVhQK01xZWlUS0dhNCtrY1diRHhkazRxL2FXelprUHM4ZnBsS2IyNjhINzJw?=
- =?utf-8?B?YXBGL2hlazZzR21GUlBjd24yQldJZEZreXBURTBmMXVvWjRWZG1DTUlsV0Ri?=
- =?utf-8?B?dnVHQ1puNW1TU2QxVkp6WHV4R0JuNlB1UytIUm5oNVhuaE02NnVwYytqVGZI?=
- =?utf-8?B?d2RsZkVwVDlmc09CMzJqbWJNUlBoNmk0Z2laUklMK21JdkRaTlZHbWh3YTJN?=
- =?utf-8?B?WWMrYjhxTDdnenJab3YvdHNVeG54SXpJMWtsemxXSnI5UlNLVGZoV0pKNnBz?=
- =?utf-8?B?SmloYU9TNC8zSnFXUlJVTWcvZEVMeHJJbytCcUQrL2ZwL2hScjdUMmR2RGNw?=
- =?utf-8?B?b213RGxUSSsyL3hBTkE5YjdYdlpMaXZJajIyeWVycFdrLzRiOS9LcVdTR2xF?=
- =?utf-8?B?RXNBTit3dUNDOXhJMktTOUxNMUM0TFlrOExwV3luWXE4Y3pJMjRTU2JzRXZs?=
- =?utf-8?B?MTZ3OVdpV2tsZzliejdsU0xrMnRDQTI4OE13M2NON0J3NmxFUWV1SEE0M1F0?=
- =?utf-8?B?Ui9hNVRrT2srYjlnWkxvM2tyM3JHZ2xLNFBpd1RzTkVaSDZXV0FwT1NjV29G?=
- =?utf-8?B?TjExaitTZ0hGcVdPSHFuOTM0VXdIdUlzdlNkZWJVWlFMRnU1SndYVkFPWUU2?=
- =?utf-8?B?YTFIN1puUXZGUWJnSCt6WE1zcEFmenduYnlhWEtOcEZBaDlyMy94bEtVclpi?=
- =?utf-8?B?cXVRbEcvcEZ1d084SzJBNjFyeXNhTGsrRjg4V21obStIb05VVk5WaGVFdXY1?=
- =?utf-8?B?SkZIaWpVOW8zTVhlUlZSUk8yOVN1VDgzNEdUMFBtek1oclFqZnVuMHFBeTV3?=
- =?utf-8?B?TWYyeTRBRlFWZHgvMGxEMldFSHNYalBMcEs1clpta3hEZHB5MGtwdDd6bkxP?=
- =?utf-8?B?OGJjVXNNY3YxQmFtY3ZrL1pHamVGUldsaEhWTmRHK1huL1o1T1E4WU9xUXhB?=
- =?utf-8?B?Rm50NXV1YVo1R2lCalV4WGRFM3cxWGpOdm9xeEphR2hwNGdsaUdURkl2bWJt?=
- =?utf-8?B?UGRwanBXdVdqYWYzeWVoOXZHcjlJU2V6NXNrNUUrajdzZDRRTEhSL29zWkwy?=
- =?utf-8?B?RFNtVy8yNTNsM21TRnU1K1ZpSmJTaHk3a3dxMnB1SFNBTGFBRTJtcytnTUgx?=
- =?utf-8?B?T3Z3RENNQVIralBKUWxHSERhM291V1Qydm1OQ0RES2t1OU9LdzA3N1JpVHlM?=
- =?utf-8?B?TDg2NmphTHpGcnNhQjBPS1VnaXU4S1dmWWViOXlwTy9Qam9sQ29Kbk9GWmph?=
- =?utf-8?B?VGpJTlpZSzgyMUNXQ0lXRzFpcFBIb3UvZmRiZldpZnIvTE9RMkVuaHhsbjJS?=
- =?utf-8?B?UEZBWVE2MktxdVlVTXVUMkJFZ2ZVRVZ5VGdHb3NqWkRuWTVoMERBbzBKbENB?=
- =?utf-8?B?NlVhNDVhWVRCaDdycmU4MFZidWx2UWVXMGQxYzdiMUVGYUpodVdIelIzdlAy?=
- =?utf-8?B?eGhWVjlTaERiZmp1NnNyVVRxaXRuRzd5eENiM0tqZFF0Q2xJTk9EWVFrVWVz?=
- =?utf-8?B?Tk1DM2F0NXQ3MW9EM0NUV0VIY014bDlaT1NkcDc5VFJibG9JMStvVDI1eU9x?=
- =?utf-8?B?czNzL29sQXhSUG1yRS91YitaTmQrVGkxanhoS29XUzJqN2pkWDRHc05iS3dG?=
- =?utf-8?B?bFllbldFdDE2Nm9ZZ1NvdS9XK2d4MzNRSmJNckFlZ1I3MVFKcEZvVy9Ga3BP?=
- =?utf-8?B?RjFiM0xJZHFqTTBWRWUwbnV2cDlWanFGa1ExbWFIZ1dIeExYYmlUZFRqS2po?=
- =?utf-8?B?Snl4T2RiN0dQdGs5REIvT29NOHl1VWVkRHd3VDl2NTBHZVg2cUJtbTdURDA2?=
- =?utf-8?B?amZwa3JXUERFdkdqaVg2QkZHaXlHL1lXcDBrTm11bExoU0ZHaytwK043OGxY?=
- =?utf-8?Q?QEZ7OqDwCyZJwkcA=3D?=
-X-Exchange-RoutingPolicyChecked: wvBlKE4YBVmETZc3VnzFRLRsRi0HJ7u7sCiYa6cquaPh6LjZVvqlnMinr4ZDD4Y/QMaO2j8OXzCcl8C4Md9zUgTIKCCGI75vaGjH+WzCB5sQf0CQIhdxdSVpcqizNXgY7+ygcoJGX2m9jdSpSX0sXePqN6VEfsNImhqDcOgUOj0xNoqpklENvk9JEKBTP+hFmHafHPU47d+QhmYxxqCJ7X6i8IY9pbht/oXAwGYnY9XxTomSDcMHMxWx8Jo9AnilHu8a/SlRK37g1FfyQV+m9tqt5h57zId325E2kRZYziLshbGSOWjbh9OOmfu9RAUE0sSAWhtH1TzhZ6hYdhwqpA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2fc7af5-fb92-4844-bb9b-08df17ede0d4
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TEdQazFZcWx5SDB0KzNvVjZRZjhRT0NSZzBhbHRTa2llMFZOVENWS1lxbXVW?=
+ =?utf-8?B?UDRsQk55NkFycW1Ca0Mrd2V4V3ZTSkIySWZKRkUwNnpKUHFWTTlSemMySGZX?=
+ =?utf-8?B?Zk4yQjZlU2x1WjViQVE3QTgzaGUwOU82MG9sYk9BZklKZ2h2dVJIbXlrR3dK?=
+ =?utf-8?B?UVdQTFBqMDZCdFRIalBjR3g5OWZTWUkzcVkvWUZyTkc4Y0hzdCtjWGlIWU5k?=
+ =?utf-8?B?QnZCc0xTbURWS3JUb0ZvYkwwTU1jdnRSNkJHaVFpSGRuc0I3eG5remxoeVNF?=
+ =?utf-8?B?dURGTU5TNFNibU13eGJqSVd3QzdNdUVyZzFGOU9xTldib0VmUHhVMWlPbnVv?=
+ =?utf-8?B?NUdwL2hmY3JQeWFQRldUR1pIZjVzR1lHTzgvSG5YVlFtOFlmekxwd3RqL0tP?=
+ =?utf-8?B?aGFoT0NBazNnMTczVzQxRkFGVWN6V28reWVOMlRnVFpMQkxNQUhKeC9rZmlB?=
+ =?utf-8?B?NDdHMzBUUkYvNUkwVlRHd1l2bGVXVFhnNGhua01MVVNrd0ZkV1NCc25XZWpm?=
+ =?utf-8?B?SW9TY2xMZm52WW83cWRXRENCQ2pjVEwxalEzWldzblZCb3FtY0NZaEdRMEVa?=
+ =?utf-8?B?K0J5aTlEZXVBdE9WU2l3NUJpTEZJbDgrQi9DeEtsUTBKdlo2Zk9zcEZQQXRo?=
+ =?utf-8?B?SFovblFvTWtndVRoNjVTQ0V3cHg0d2Q4MlVHQ0hXSzF1YUZWWXVBWUFDMlBp?=
+ =?utf-8?B?cSt4KzVUMm1zZzVqSStVa28vSVVLRDc2eFJXeVRITHowVEg1K0pvaHN0WEtT?=
+ =?utf-8?B?MS8yYmcvbFBUWE9QUVYzamhHYVRhME5wblhaOHRHOWl4eFlYY3pXbUp0cEpI?=
+ =?utf-8?B?TTBzZzJLQm5PRW5SdGNUM3k3WnByU2k4UHZvYWxhWnRKOE5rZHgzMlVJTFo2?=
+ =?utf-8?B?THlOaldneFd3UERUbDUwTmQyUjVYTzYwaTZpNVEvZUlDeHo1V25aaUVkUUVN?=
+ =?utf-8?B?Mkk1aXpta09oV2R1YXp4bDNQejNMZFdVRmhuK0x2RkZoQ3ZOeWUyd05jTElS?=
+ =?utf-8?B?WjA5M1lhVFRNR2hHT1dIRCtVL2pjNE1hRGtsSHA5SkZoQjJPcUxGck5iUGdY?=
+ =?utf-8?B?eW01WkZ5R0hnSzZmcG1ZU3dIdWJkRnloUW5zR1RVUnU2WXcvTTIwaTBkUW5Q?=
+ =?utf-8?B?K2hjUFlWRzZYbS9icVlkd0NHV0ZJcmtlVVdyMm0yeHBTNTdNK1dQTUovZSt2?=
+ =?utf-8?B?TXYwN2F6V0doRUM2SjdzeGFLUTRxMGVUS050M0JZTzNudUhMNW5UZzVDalI0?=
+ =?utf-8?B?YUN2Y2NMOVlWS1N3WEd2aC9vK1BYZmlqUUdid2Q4VTM0Y25CNEFpd3J3UXFu?=
+ =?utf-8?B?T3lRaHVnb200UEJGZWtXU01yai8zOVB6QnhYMFBCRzFmaGNJU3NXbFFYMmEx?=
+ =?utf-8?B?RnBlTk82RXgzNWNoci9YcTVUSGF6cXAzWGJ3S0tVRUUyZ0IySURjZEpkMTB0?=
+ =?utf-8?B?TXh4VWYrOEtlNEU2cm9hdzhveWliWk80VHh6U1RnTDFvOGNaUTc1YWY2NXFX?=
+ =?utf-8?B?ZHkvUXB1MzVkd3ZRM2x0SDJMNzZlL2NPVFZucEoxdUpWSy84Tk5pNWppYnQ3?=
+ =?utf-8?B?bE54MktQem5rT1U2Y3FiTEdyd1prMS9mS1J4dGRmQ05TMk5lVWZJVTBuTDdZ?=
+ =?utf-8?B?ekhBdUJTUUR0WUZqaXhYZ2JWbFN1c0VzWlNsQXJEbDRSK0VBekFnVFYzem1W?=
+ =?utf-8?B?ZGozRVR0enU1eEs5RktmVm94NkR1bldleFBDdVZLOGpHTS8xTlpJZ1kwV3o5?=
+ =?utf-8?B?Y1lTYkdCVUpIZjVWR29kdDdoUzRvODFWNTY0QjliblVzZE5MNGwyb3Y2byt0?=
+ =?utf-8?B?Wkk4RnJJbU1ERzdReXZtdUZzMkdDWlBLMnp5REtjaTd2WTZScFdDWk9oNTRN?=
+ =?utf-8?B?NkFNK1VWalRRenNNVkZMczRkbzJudkhudDQ1cWtYM0N0K3JpdGQzeDBwSXk3?=
+ =?utf-8?B?SE5VK2srdmZWTVNmcjAvMWM3ZGFZQ2YvRndYVVRJWHNpMjMyZkV6OEJBaG82?=
+ =?utf-8?B?eFhJajgzTFFwWHk2MHBZeG90K0k0NE02dmZFZHNIRFpvRUM3cDhnTnhlK2RH?=
+ =?utf-8?B?N094aFlrN01ZRnBFNlE5clQ3aVFQNVduMDNRUmJRS1NvWUJPcGFKeTVlUXhv?=
+ =?utf-8?B?Z0NKSDZWOXhLOUJZeVVteG9Sa0dZYSs5TXd4RnV3Q21nN3pscEYwV0lxcGsy?=
+ =?utf-8?B?U2c1VnFZVG9hWVFGS3pSaUJ2MW8rZDlBc2FubWpxMVlwVnVoczduQ09jUEdq?=
+ =?utf-8?B?UERpVkx0V0dublVuU1F0eWlkRFRuNU9xeFZNMHIrM29ZOFRKWTE3TDV0b0Iv?=
+ =?utf-8?B?VnJmM1JrZ0NvZkJETThJWmJSUm1yNjJGQlY4eDZ6QUpEK095aU5kR1ZiYUVP?=
+ =?utf-8?Q?YaxZs7Fk8Mof9nKo=3D?=
+X-Exchange-RoutingPolicyChecked: EJdRbm/AgBcBKyM3RwCkxIXqcLyaHJDjCIr3RB+P7zNiyjA6TSF9FVP0ZdsPtKewX1q1SyNU6o5/NEzqfHkljh0wzeD0TEt+i+f8njY8jiEOYEqabUkcoeuevl+xo/82ZP0SUx5Iv0/ScSo19YYU00Aw9JzdbCvi+ndhHaquW1gkXK4M7O3I1xQn/HZrv5/RxAggHGf54OKefKxPIA89BHr/YgVI4LurTj3YVuVRuzUS6na+r+eykspv7YxKYz4heGiwtWdudEvXgsWQ1+hT6pWo8MvQpWoicoSImmiuhEOKo0TYUK+/2tVzeOi9ATgiJLT/cca/xUO4mg0PEJzMDg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e167a78-02b1-4ad5-47e4-08df17eddb6e
 X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8039.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 14:37:35.8109 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2026 14:37:26.7815 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2u0oXwwXBkhtzyfE1pxQwVcOpRZ7ZhYUDS3gnirz4WeTUIwag1vn0FQJovEgdUfDqlCGq1M9w2P36o0aOXhAvhqs2gl3C1PfvbRAx7AXV1U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4790
+X-MS-Exchange-CrossTenant-UserPrincipalName: 859f7v2fYOUQc1vGuPvqc1eaD1uOZ39hqB6Gb/l/yR4WvSNqah1S2wQLurgC/2HZW/RkV4g1qb/m8lShXkBKFx9WKP4BgH0D9VKW1odOZuM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB8919
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -171,161 +170,244 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Piotr Piórkowski <piotr.piorkowski@intel.com>
 
-Add subtests for the optional Power Management, Advanced Error
-Reporting, and Address Translation Service capabilities.
-Skip an optional-capability subtest when the capability is not exposed
-by the VF.
-Validate the VF ROZ fields required by the SR-IOV specification,
-including Power Management Data Select/Data, AER status/mask/severity
-fields, and ATS Queue Depth/STU.
+Add helpers to read raw PCI configuration space from sysfs and access
+its contents.
+Provide little-endian u16/u32 readers and standard and extended
+capability lookup helpers for configuration-space buffers.
 
 v2:
-- Reuse the VF configuration captured by the common fixture.
-- Use PCI register definitions available from linux/pci_regs.h.
-- Simplify optional-capability skips and runtime descriptions.
-- Remove redundant informational messages.
+- Validate malformed and cyclic capability chains.
+- Add unit tests for capability lookup and malformed chains.
 
 Signed-off-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Assisted-by: GPT-5.6 Luna
 ---
- tests/sriov_pci_config.c | 110 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 110 insertions(+)
+ lib/igt_pci.c         | 90 +++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_pci.h         |  8 +++-
+ lib/tests/igt_pci.c   | 66 +++++++++++++++++++++++++++++++
+ lib/tests/meson.build |  1 +
+ 4 files changed, 164 insertions(+), 1 deletion(-)
+ create mode 100644 lib/tests/igt_pci.c
 
-diff --git a/tests/sriov_pci_config.c b/tests/sriov_pci_config.c
-index 9f410ef23a..a3d7e86b58 100644
---- a/tests/sriov_pci_config.c
-+++ b/tests/sriov_pci_config.c
-@@ -43,6 +43,21 @@
-  * Description: Validate that the Current De-emphasis Level field in Link
-  * Status 2 is RsvdZ and therefore reads as zero for PCIe Capability Version 2
-  * and later.
-+ *
-+ * SUBTEST: vf-power-management-capability
-+ * Description: Validate that Data Select in Power Management Control and
-+ * Power Management Data are ROZ and therefore read as zero when the optional
-+ * Power Management capability is present.
-+ *
-+ * SUBTEST: vf-advanced-error-reporting
-+ * Description: Validate that the specified ROZ bits in AER Uncorrectable
-+ * Error Status, Mask, and Severity, and Correctable Error Status read as zero
-+ * when the optional AER capability is present.
-+ *
-+ * SUBTEST: vf-ats-capability
-+ * Description: Validate that ATS Queue Depth and the Smallest Translation Unit
-+ * (STU) are ROZ and therefore read as zero when the optional ATS capability
-+ * is present.
-  */
- 
- IGT_TEST_DESCRIPTION("Validate PCI configuration fields required for SR-IOV, "
-@@ -161,6 +176,85 @@ static void check_vf_pcie_capabilities_2(const uint8_t *config)
- 		     lnksta2);
+diff --git a/lib/igt_pci.c b/lib/igt_pci.c
+index b63550b390..7cc9f2dfd6 100644
+--- a/lib/igt_pci.c
++++ b/lib/igt_pci.c
+@@ -8,6 +8,7 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <limits.h>
++#include <linux/pci_regs.h>
+ #include <string.h>
+ #include <unistd.h>
+ #include <pciaccess.h>
+@@ -61,6 +62,95 @@ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
+ 	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
  }
  
-+static int get_optional_cap(const uint8_t *config, uint8_t cap_id, const char *name)
++/**
++ * igt_pci_config_raw_read:
++ * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
++ * @buffer: destination buffer
++ * @length: number of configuration-space bytes to read
++ *
++ * Read raw PCI configuration space through the device sysfs config attribute.
++ *
++ * Returns 0 on success, otherwise a negative errno-like value.
++ */
++int igt_pci_config_raw_read(const char *pci_slot, void *buffer, size_t length)
 +{
-+	int cap = igt_pci_config_raw_find_cap_offset(config, cap_id);
++	char path[PATH_MAX];
++	ssize_t ret;
++	int err;
++	int fd;
 +
-+	igt_assert_f(cap >= 0, "Invalid VF PCI capability list (%d)\n", cap);
-+	if (!cap)
-+		igt_skip("%s\n", name);
++	if (!pci_slot || !buffer || !length)
++		return -EINVAL;
 +
-+	return cap;
++	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/config", pci_slot);
++	fd = open(path, O_RDONLY | O_CLOEXEC);
++	if (fd < 0)
++		return -errno;
++
++	ret = pread(fd, buffer, length, 0);
++	err = errno;
++	close(fd);
++	if (ret < 0)
++		return -err;
++
++	return (size_t)ret == length ? 0 : -EIO;
 +}
 +
-+static int get_optional_ext_cap(const uint8_t *config, uint16_t cap_id, const char *name)
++uint16_t igt_pci_config_raw_read_u16(const uint8_t *config, unsigned int offset)
 +{
-+	int cap = igt_pci_config_raw_find_ext_cap_offset(config, cap_id);
-+
-+	igt_assert_f(cap >= 0, "Invalid VF extended capability list (%d)\n", cap);
-+	if (!cap)
-+		igt_skip("%s\n", name);
-+
-+	return cap;
++	return config[offset] | (config[offset + 1] << 8);
 +}
 +
-+static void check_vf_power_management_capability(const uint8_t *config)
++uint32_t igt_pci_config_raw_read_u32(const uint8_t *config, unsigned int offset)
 +{
-+	int pm_cap = get_optional_cap(config, PCI_CAP_ID_PM,
-+				     "Power Management capability is not present");
-+	uint16_t pm_ctrl = igt_pci_config_raw_read_u16(config, pm_cap + PCI_PM_CTRL);
-+	uint8_t pm_data = config[pm_cap + PCI_PM_DATA_REGISTER];
-+
-+	igt_assert_f(!(pm_ctrl & PCI_PM_CTRL_DATA_SEL_MASK),
-+		     "Power Management Control: Data Select must be zero (0x%04x)\n", pm_ctrl);
-+	igt_assert_f(!pm_data, "Power Management Data: expected 0x00, got 0x%02x\n", pm_data);
++	return igt_pci_config_raw_read_u16(config, offset) |
++	       ((uint32_t)igt_pci_config_raw_read_u16(config, offset + 2) << 16);
 +}
 +
-+static void check_vf_advanced_error_reporting(const uint8_t *config)
++int igt_pci_config_raw_find_cap_offset(const uint8_t *config, uint8_t cap_id)
 +{
-+	const uint32_t uncor_roz = PCI_ERR_UNC_DLP | PCI_ERR_UNC_SURPDN |
-+				   PCI_ERR_UNC_FCP | PCI_ERR_UNC_RX_OVER |
-+				   PCI_ERR_UNC_MALF_TLP | PCI_ERR_UNC_ECRC;
-+	const uint32_t cor_roz = PCI_ERR_COR_RCVR | PCI_ERR_COR_BAD_TLP |
-+					 PCI_ERR_COR_REP_ROLL | PCI_ERR_COR_REP_TIMER;
-+	int aer_cap = get_optional_ext_cap(config, PCI_EXT_CAP_ID_ERR,
-+					   "Advanced Error Reporting capability is not present");
-+	uint32_t uncor_status = igt_pci_config_raw_read_u32(config,
-+							     aer_cap + PCI_ERR_UNCOR_STATUS);
-+	uint32_t uncor_mask = igt_pci_config_raw_read_u32(config,
-+							   aer_cap + PCI_ERR_UNCOR_MASK);
-+	uint32_t uncor_severity = igt_pci_config_raw_read_u32(config,
-+							       aer_cap + PCI_ERR_UNCOR_SEVER);
-+	uint32_t cor_status = igt_pci_config_raw_read_u32(config,
-+							   aer_cap + PCI_ERR_COR_STATUS);
++	unsigned int offset = config[PCI_CAPS_START];
++	unsigned int loop = (PCI_CFG_SPACE_SIZE - PCI_TYPE0_1_HEADER_SIZE) / 2;
 +
-+	igt_assert_f(!(uncor_status & uncor_roz),
-+		     "AER Uncorrectable Error Status: VF ROZ bits are set (0x%08x)\n",
-+		     uncor_status);
-+	igt_assert_f(!(uncor_mask & uncor_roz),
-+		     "AER Uncorrectable Error Mask: VF ROZ bits are set (0x%08x)\n",
-+		     uncor_mask);
-+	igt_assert_f(!(uncor_severity & uncor_roz),
-+		     "AER Uncorrectable Error Severity: VF ROZ bits are set (0x%08x)\n",
-+		     uncor_severity);
-+	igt_assert_f(!(cor_status & cor_roz),
-+		     "AER Correctable Error Status: VF ROZ bits are set (0x%08x)\n",
-+		     cor_status);
++	while (offset && loop--) {
++		if (offset < PCI_TYPE0_1_HEADER_SIZE ||
++		    offset > PCI_CFG_SPACE_SIZE - 2 || offset & 3)
++			return -EINVAL;
++
++		if (config[offset] == cap_id)
++			return offset;
++
++		offset = config[offset + 1];
++	}
++
++	return offset ? -ELOOP : 0;
 +}
 +
-+static void check_vf_ats_capability(const uint8_t *config)
++int igt_pci_config_raw_find_ext_cap_offset(const uint8_t *config, uint16_t cap_id)
 +{
-+	int ats_cap = get_optional_ext_cap(config, PCI_EXT_CAP_ID_ATS,
-+					   "ATS capability is not present");
-+	uint16_t ats_capability = igt_pci_config_raw_read_u16(config, ats_cap + PCI_ATS_CAP);
-+	uint16_t ats_control = igt_pci_config_raw_read_u16(config, ats_cap + PCI_ATS_CTRL);
++	unsigned int offset = PCI_EXT_CAPS_START;
++	unsigned int loop = (PCI_EXT_CFG_SPACE_SIZE - offset) / 4;
 +
-+	igt_assert_f(!PCI_ATS_CAP_QDEP(ats_capability),
-+		     "ATS Capability: Queue Depth must be zero (0x%04x)\n", ats_capability);
-+	igt_assert_f(!PCI_ATS_CTRL_STU(ats_control),
-+		     "ATS Control: STU must be zero (0x%04x)\n", ats_control);
++	while (loop) {
++		uint32_t header = igt_pci_config_raw_read_u32(config, offset);
++
++		loop--;
++
++		if (!header)
++			return 0;
++		if ((header & 0xffff) == cap_id)
++			return offset;
++
++		offset = (header >> 20) & 0xffc;
++		if (!offset)
++			return 0;
++		if (offset < PCI_EXT_CAPS_START || offset >= PCI_EXT_CFG_SPACE_SIZE)
++			return -EINVAL;
++	}
++
++	return -ELOOP;
 +}
 +
- int igt_main()
+ static int open_pci_driver_dir(const char *driver)
  {
- 	igt_fixture() {
-@@ -195,6 +289,22 @@ int igt_main()
- 	igt_subtest("vf-pcie-capabilities-2") {
- 		check_vf_pcie_capabilities_2(vf_config);
- 	}
+ 	char path[PATH_MAX];
+diff --git a/lib/igt_pci.h b/lib/igt_pci.h
+index 509345b2d8..628cc24766 100644
+--- a/lib/igt_pci.h
++++ b/lib/igt_pci.h
+@@ -15,7 +15,8 @@ struct pci_device;
+ 
+ #define PCI_TYPE0_1_HEADER_SIZE 0x40
+ #define PCI_CAPS_START 0x34
+-#define PCI_CFG_SPACE_SIZE 0x100
++#define PCI_EXT_CAPS_START 0x100
++#define PCI_EXT_CFG_SPACE_SIZE 0x1000
+ 
+ enum pci_cap_id {
+ 	PCI_EXPRESS_CAP_ID = 0x10
+@@ -27,6 +28,11 @@ enum pci_cap_id {
+ #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
+ 
+ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
++int igt_pci_config_raw_read(const char *pci_slot, void *buffer, size_t length);
++uint16_t igt_pci_config_raw_read_u16(const uint8_t *config, unsigned int offset);
++uint32_t igt_pci_config_raw_read_u32(const uint8_t *config, unsigned int offset);
++int igt_pci_config_raw_find_cap_offset(const uint8_t *config, uint8_t cap_id);
++int igt_pci_config_raw_find_ext_cap_offset(const uint8_t *config, uint16_t cap_id);
+ int igt_pci_device_unbind(const char *pci_slot);
+ int igt_pci_driver_bind(const char *driver, const char *pci_slot);
+ int igt_pci_driver_unbind(const char *driver, const char *pci_slot);
+diff --git a/lib/tests/igt_pci.c b/lib/tests/igt_pci.c
+new file mode 100644
+index 0000000000..191edb95c5
+--- /dev/null
++++ b/lib/tests/igt_pci.c
+@@ -0,0 +1,66 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
 +
-+	igt_describe("Validate the optional VF Power Management capability");
-+	igt_subtest("vf-power-management-capability") {
-+		check_vf_power_management_capability(vf_config);
-+	}
++#include <errno.h>
++#include <linux/pci_regs.h>
++#include <stdint.h>
++#include <string.h>
 +
-+	igt_describe("Validate the optional VF AER capability");
-+	igt_subtest("vf-advanced-error-reporting") {
-+		check_vf_advanced_error_reporting(vf_config);
-+	}
++#include "igt_core.h"
++#include "igt_pci.h"
 +
-+	igt_describe("Validate the optional VF ATS capability");
-+	igt_subtest("vf-ats-capability") {
-+		check_vf_ats_capability(vf_config);
-+	}
++static void write_u32(uint8_t *config, unsigned int offset, uint32_t value)
++{
++	config[offset] = value;
++	config[offset + 1] = value >> 8;
++	config[offset + 2] = value >> 16;
++	config[offset + 3] = value >> 24;
++}
 +
- 	igt_fixture() {
- 		igt_abort_on_f(pf_fd < 0, "Device is not accessible\n");
- 		igt_sriov_disable_vfs(pf_fd);
++static void test_cap(void)
++{
++	uint8_t config[PCI_CFG_SPACE_SIZE] = {};
++
++	config[PCI_CAPS_START] = PCI_TYPE0_1_HEADER_SIZE;
++	config[PCI_TYPE0_1_HEADER_SIZE] = 0xaa;
++	igt_assert_eq(igt_pci_config_raw_find_cap_offset(config, 0xaa),
++		      PCI_TYPE0_1_HEADER_SIZE);
++
++	config[PCI_CAPS_START] = 0xff;
++	igt_assert_eq(igt_pci_config_raw_find_cap_offset(config, 0xaa), -EINVAL);
++
++	config[PCI_CAPS_START] = PCI_TYPE0_1_HEADER_SIZE;
++	config[PCI_TYPE0_1_HEADER_SIZE] = 0xbb;
++	config[PCI_TYPE0_1_HEADER_SIZE + 1] = PCI_TYPE0_1_HEADER_SIZE;
++	igt_assert_eq(igt_pci_config_raw_find_cap_offset(config, 0xaa), -ELOOP);
++}
++
++static void test_ext_cap(void)
++{
++	uint8_t config[PCI_EXT_CFG_SPACE_SIZE] = {};
++	unsigned int offset;
++
++	write_u32(config, PCI_EXT_CAPS_START, 0xaa);
++	igt_assert_eq(igt_pci_config_raw_find_ext_cap_offset(config, 0xaa),
++		      PCI_EXT_CAPS_START);
++
++	write_u32(config, PCI_EXT_CAPS_START,
++		  0xbb | (PCI_EXT_CAPS_START << 20));
++	igt_assert_eq(igt_pci_config_raw_find_ext_cap_offset(config, 0xaa), -ELOOP);
++
++	memset(config, 0, sizeof(config));
++	for (offset = PCI_EXT_CAPS_START;
++	     offset < PCI_EXT_CFG_SPACE_SIZE - sizeof(uint32_t);
++	     offset += sizeof(uint32_t))
++		write_u32(config, offset, 0xbb | ((offset + sizeof(uint32_t)) << 20));
++
++	igt_assert_eq(igt_pci_config_raw_find_ext_cap_offset(config, 0xaa), 0);
++}
++
++int igt_simple_main()
++{
++	test_cap();
++	test_ext_cap();
++}
+\ No newline at end of file
+diff --git a/lib/tests/meson.build b/lib/tests/meson.build
+index f1db66d07c..0a7c903f16 100644
+--- a/lib/tests/meson.build
++++ b/lib/tests/meson.build
+@@ -19,6 +19,7 @@ lib_tests = [
+ 	'igt_invalid_subtest_name',
+ 	'igt_nesting',
+ 	'igt_no_exit',
++	'igt_pci',
+ 	'igt_runnercomms_packets',
+ 	'igt_segfault',
+ 	'igt_simulation',
 -- 
 2.34.1
 
