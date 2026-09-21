@@ -4,63 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19199C982E6
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 14:00:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89416C982EE
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 14:30:34 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B0DE210E7E5;
-	Mon, 21 Sep 2026 14:00:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 09C5310E7FD;
+	Mon, 21 Sep 2026 14:30:34 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WnH7X4BC";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aah6WVHo";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3038310E7E0;
- Mon, 21 Sep 2026 13:59:30 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 36CD410E3A2
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 14:29:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789999170; x=1821535170;
+ t=1790000988; x=1821536988;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=/C9uds37tI1+de+jzpcngkwb2KcJVT5Buiorvu3Bqa4=;
- b=WnH7X4BCs0YJj/EqVQitrBIPZpEG0l1CF4eUjW4zuzsKqL1WU3fvEL0Z
- AP5uePKcNtysk8nNxqqKpnpVB093GqgCLIo6sW2AYNBOZWUOoJDRmkPlJ
- UFC73sssTSbHADELQtzalQVmM+wIOO/7+hZplEpBIw56uWsY1JSMEr3F6
- 2bHYuF26OIZnr/W9ebMnkY2dEbyB890YS3/SnsWeWjwPqK9Ij8ITWRQKv
- P4PUPyY/Kfm/kq0sDpFgSAbyixxhuOOBsSBnS9NB63q3FSd6CY7rJSf6s
- EQfJ//1l7P18kopPqE2odRRPlIAdqk1dBZGqNlPyl5iMZvVkN6Cqg2e+k Q==;
-X-CSE-ConnectionGUID: pGK2eypERX2ZtsBkTo7riw==
-X-CSE-MsgGUID: 1Ll9vLtxTzKGlpCdFmfmaQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90531596"
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="90531596"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2026 06:59:30 -0700
-X-CSE-ConnectionGUID: bQ4oApwxTLKfXQMWylGmrg==
-X-CSE-MsgGUID: aen2JYAUS5+yNLuPJ0+Z+g==
+ bh=3FchqlAi8hq6guFPdFuxXceMHW1ld3DtWUGACVj7DJ4=;
+ b=aah6WVHoerI345lfNpVkmTarknrkUh1mUVY36+oaZPWfrv/TK+bQzInF
+ oRim8EXoEl/+tUeEDI6Yg1Sukjgey4HSjbtLHhFWSslcmU1Uxua2MUIg6
+ SMcJ8uAKX7YJb64NAJsTEeMZYSyQNshMkc7yff5LVAe6up4XJXUXTj6xQ
+ RUVLY1v1cyBIsIcoscXOnu2fsvB9qzjHkb7RB950M8beM6yjPibgkLvFX
+ EruPWzfIQnR9HcAqGyoQN/Xbc89DZg/EyfP6FaB2EEc+eIz+DNdyi0Trf
+ NrfC2FhzV3qMVVxQ4jgToSCFP2okY4C/hUXzjKCu6EDMzxo3NiTiI7C9Z Q==;
+X-CSE-ConnectionGUID: ed+4DebjQCW3fT+II7ss9g==
+X-CSE-MsgGUID: FkmXnD9BSRWzdHVmA4fE0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="116042513"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="116042513"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2026 07:29:48 -0700
+X-CSE-ConnectionGUID: jldeQXDVQmWRNKyoTuGSPg==
+X-CSE-MsgGUID: Mr/3xhpkQ5+C47i36Ph5UA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="280720265"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="298922989"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 06:59:28 -0700
-Date: Mon, 21 Sep 2026 15:59:26 +0200
+ by fmviesa002-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 07:29:46 -0700
+Date: Mon, 21 Sep 2026 16:29:25 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- boris.brezillon@collabora.com, steven.price@arm.com,
- liviu.dudau@arm.com, adrian.larumbe@collabora.com, samitolvanen@google.com
-Subject: Re: [PATCH i-g-t v2] tests/panthor: skip sparse VM_BIND tests before
- v1.9
-Message-ID: <20260921135926.awaib5674uqcen4n@kamilkon-DESK.igk.intel.com>
+To: Robert Mazur <robert.mazur@imgtec.com>
+Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
+ Alessio Belle <alessio.belle@imgtec.com>,
+ Brajesh Gupta <brajesh.gupta@imgtec.com>,
+ Luigi Santivetti <luigi.santivetti@imgtec.com>
+Subject: Re: [PATCH i-g-t 1/3] lib/imagination: add device configuration
+ support
+Message-ID: <20260921142925.zskmc4ul3s5vfyry@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Deborah Brouwer <deborah.brouwer@collabora.com>,
- igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- boris.brezillon@collabora.com, steven.price@arm.com,
- liviu.dudau@arm.com, adrian.larumbe@collabora.com,
- samitolvanen@google.com
-References: <20260920-b4-panthor_version_sparse-v2-1-fa395c125eb1@collabora.com>
+ Robert Mazur <robert.mazur@imgtec.com>,
+ Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
+ Alessio Belle <alessio.belle@imgtec.com>,
+ Brajesh Gupta <brajesh.gupta@imgtec.com>,
+ Luigi Santivetti <luigi.santivetti@imgtec.com>
+References: <20260921-b4-imagination-submit-test-v1-0-d626d1264641@imgtec.com>
+ <20260921-b4-imagination-submit-test-v1-1-d626d1264641@imgtec.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260920-b4-panthor_version_sparse-v2-1-fa395c125eb1@collabora.com>
+In-Reply-To: <20260921-b4-imagination-submit-test-v1-1-d626d1264641@imgtec.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,266 +78,2163 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Deborah,
-On 2026-09-20 at 17:59:09 -0700, Deborah Brouwer wrote:
-> Sparse VM_BIND support was introduced with Panthor DRM driver version
-> 1.9. If a driver isn't advertising support for v1.9, skip the sparse
-> VM_BIND subtests.
+Hi Robert,
+On 2026-09-21 at 09:32:05 +0200, Robert Mazur wrote:
+> Add a device information library containing configuration data for
+> supported PowerVR cores.
 > 
-> Use the advertised driver version rather than probing for EINVAL, since
-> EINVAL may also indicate a uAPI regression rather than lack of support for
-> sparse VM_BIND.
+> The device configuration definitions are largely imported from Mesa,
+> with only minor adjustments to fit IGT coding style and infrastructure.
 > 
-> Add a shared macro igt_require_panthor_version() to check the version in
-> case other Panthor tests would like to use it in the future.
+> This infrastructure will be used to parameterize tests according to
+> the target GPU configuration and capabilities.
 > 
-> The Panthor version macro wraps the igt_require_f() macro so that we can
-> clear the last errno. The last errno is irrelevant to the version check
-> but __igt_skip_check() will still print it like this:
-> 
->   Starting subtest: vm_bind_sparse
->   Test requirement not met in function __igt_unique____real_main10, file ../tests/panthor/panthor_vm.c:296:
->   Test requirement: __igt_panthor_driver_version_at_least(fd, 1, 9)
->   Requires Panthor version 1.9 or newer
->   Last errno: 2, No such file or directory
->   Subtest vm_bind_sparse: SKIP (0.000s)
-> 
-> This makes the log noisier than it already is. So set the errno to 0 to
-> suppress that line. Skipping the test will now print:
-> 
->   Starting subtest: vm_bind_sparse
->   Test requirement not met in function __igt_unique____real_main10, file ../tests/panthor/panthor_vm.c:296:
->   Test requirement: __igt_panthor_driver_version_at_least(fd, 1, 9)
->   Requires Panthor version 1.9 or newer
->   Subtest vm_bind_sparse: SKIP (0.000s)
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+
+Overall lokks good, I have few nits, see below.
+
+> Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
 > ---
-> Changes in v2:
-> - check for version at each subtest
-> - make version check available to all panthor tests
-> - use macro to suppress printing the last error
-> - Link to v1: https://lore.kernel.org/r/20260915-b4-panthor_version_sparse-v1-1-7ac10b75e631@collabora.com
-> ---
->  lib/igt_panthor.c          | 14 ++++++++++++++
->  lib/igt_panthor.h          | 18 ++++++++++++++++++
->  tests/panthor/panthor_vm.c | 18 ++++++++++++++++++
->  3 files changed, 50 insertions(+)
+>  lib/igt_pvr.c                           |  20 ++
+>  lib/igt_pvr.h                           |   3 +
+>  lib/imagination/device_info/axe-1-16m.h | 106 +++++++++
+>  lib/imagination/device_info/bxe-2-32.h  | 122 +++++++++++
+>  lib/imagination/device_info/bxe-4-32.h  | 122 +++++++++++
+>  lib/imagination/device_info/bxm-4-64.h  | 237 ++++++++++++++++++++
+>  lib/imagination/device_info/bxs-4-64.h  | 124 +++++++++++
+>  lib/imagination/device_info/g6110.h     | 103 +++++++++
+>  lib/imagination/device_info/ge7800.h    | 102 +++++++++
+>  lib/imagination/device_info/ge8300.h    | 230 +++++++++++++++++++
+>  lib/imagination/device_info/gx6250.h    | 231 +++++++++++++++++++
+>  lib/imagination/device_info/gx6650.h    | 120 ++++++++++
+>  lib/imagination/pvr_device_info.c       | 104 +++++++++
+>  lib/imagination/pvr_device_info.h       | 378 ++++++++++++++++++++++++++++++++
+>  lib/meson.build                         |   1 +
+>  15 files changed, 2003 insertions(+)
 > 
-> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
-> index 11d8ec342..0f8c408d5 100644
-> --- a/lib/igt_panthor.c
-> +++ b/lib/igt_panthor.c
-> @@ -385,3 +385,17 @@ void igt_panthor_free_bo(int fd, struct panthor_bo *bo)
+> diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
+> index f739d61b7..f05f23057 100644
+> --- a/lib/igt_pvr.c
+> +++ b/lib/igt_pvr.c
+> @@ -333,3 +333,23 @@ void igt_pvr_ioctl_destroy_free_list(int fd, uint32_t free_list_handle)
 >  
->  	gem_close(fd, bo->handle);
+>  	do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST, &destroy_free_list_args);
 >  }
 > +
+> +/**
+> + * igt_pvr_get_device_info:
+> + * @fd: The file descriptor of the DRM device.
+> + *
+> + * Function to get the device information from kernel.
+> + */
+> +struct pvr_device_info *igt_pvr_get_device_info(int fd)
+> +{
+> +	struct drm_pvr_dev_query_gpu_info dev_info_get = {0};
+> +	static struct pvr_device_info info;
+> +
+> +	igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_GPU_INFO_GET,
+> +				sizeof(dev_info_get), &dev_info_get, 0);
+> +
+> +	igt_assert(pvr_device_info_init(&info, dev_info_get.gpu_id) == 0);
+> +
+> +	return &info;
+> +}
+> +
+> diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
+> index 744d7c12f..214a429ab 100644
+> --- a/lib/igt_pvr.h
+> +++ b/lib/igt_pvr.h
+> @@ -8,6 +8,7 @@
+>  #include <stdint.h>
+>  #include <sys/types.h>
+>  
+> +#include "imagination/pvr_device_info.h"
+>  #include "pvr_drm.h"
+>  
+>  uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size);
+> @@ -37,4 +38,6 @@ uint32_t igt_pvr_ioctl_create_free_list(int fd, uint32_t vm_ctx_handle,
+>  					uint64_t gpu_addr);
+>  void igt_pvr_ioctl_destroy_free_list(int fd, uint32_t free_list_handle);
+>  
+> +struct pvr_device_info *igt_pvr_get_device_info(int fd);
+> +
+>  #endif /* IGT_PVR_H */
+> diff --git a/lib/imagination/device_info/axe-1-16m.h b/lib/imagination/device_info/axe-1-16m.h
+> new file mode 100644
+> index 000000000..c5a497d37
+> --- /dev/null
+> +++ b/lib/imagination/device_info/axe-1-16m.h
+> @@ -0,0 +1,106 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef AXE_1_16M_H
+> +#define AXE_1_16M_H
 
-Please add a description to every new public lib function.
+May you make it more local? For example:
 
-> +bool __igt_panthor_driver_version_at_least(int fd, int major, int minor)
+#ifndef IGT_IMAGINATION_AXE_1_16M_H
+#define IGT_IMAGINATION_AXE_1_16M_H
+
+This apply here and in all other imagination/device_info headers.
 
 
 
 Regards,
 Kamil
 
-> +{
-> +	drmVersionPtr version = drmGetVersion(fd);
-> +	bool supported;
 > +
-> +	igt_assert(version);
-> +	supported = version->version_major > major ||
-> +		    (version->version_major == major &&
-> +		     version->version_minor >= minor);
-> +	drmFreeVersion(version);
+> +#include <stdbool.h>
 > +
-> +	return supported;
-> +}
-> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-> index ba4a9bf1e..626e5d525 100644
-> --- a/lib/igt_panthor.h
-> +++ b/lib/igt_panthor.h
-> @@ -37,6 +37,24 @@ void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
->  				     uint32_t stream_size, uint32_t syncobj_handle,
->  				     int err);
->  uint64_t igt_panthor_get_first_core(uint64_t cores_present);
-> +bool __igt_panthor_driver_version_at_least(int fd, int major, int minor);
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_33_V_11_3                     \
+> +	.device_id = 0x33011003, .series_name = "A-Series", \
+> +	.public_name = "AXE-1-16M", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_33_V_11_3 = {
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_ipf_creq_pf = true,
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_pbe2_in_xe = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_roguexe = true,
+> +	.has_screen_size8K = true,
+> +	.has_simple_internal_parameter_format = true,
+> +	.has_simple_internal_parameter_format_v2 = true,
+> +	.has_simple_parameter_format_version = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_16x16 = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_border_colour_enhanced = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_pixel_partition_mask = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_vdm_degenerate_culling = true,
+> +
+> +	.common_store_size_in_dwords = 512U * 4U * 4U,
+> +	.isp_max_tiles_in_flight = 1U,
+> +	.isp_samples_per_pixel = 1U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 4U,
+> +	.max_usc_tasks = 24U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.simple_parameter_format_version = 2U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 16U,
+> +	.tile_size_y = 16U,
+> +	.tpu_parallel_instances = 1U,
+> +	.unified_store_depth = 64U,
+> +	.usc_itr_parallel_instances = 4U,
+> +	.usc_min_output_registers_per_pix = 1U,
+> +	.usc_slots = 14U,
+> +	.uvs_banks = 2U,
+> +	.uvs_pba_entries = 320U,
+> +	.uvs_vtx_entries = 288U,
+> +	.vdm_cam_size = 32U,
+> +
+> +	.has_s8xe = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements pvr_device_enhancements_33_15_11_3 = {
+> +	.has_ern35421 = true,
+> +	.has_ern38748 = true,
+> +	.has_ern42307 = true,
+> +	.has_ern45493 = true,
+> +};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_33_15_11_3 = {
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_33_15_11_3 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_33_V_11_3,
+> +	   .b = 33,
+> +	   .v = 15,
+> +	   .n = 11,
+> +	   .c = 3,
+> +	},
+> +	.features = pvr_device_features_33_V_11_3,
+> +	.enhancements = pvr_device_enhancements_33_15_11_3,
+> +	.quirks = pvr_device_quirks_33_15_11_3,
+> +};
+> +
+> +#endif /* AXE_1_16M_H */
+> diff --git a/lib/imagination/device_info/bxe-2-32.h b/lib/imagination/device_info/bxe-2-32.h
+> new file mode 100644
+> index 000000000..8ecb2b26d
+> --- /dev/null
+> +++ b/lib/imagination/device_info/bxe-2-32.h
+> @@ -0,0 +1,122 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef BXE_2_32_H
+> +#define BXE_2_32_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_36_V_52_182 \
+> +	.device_id = 0x36052182, .series_name = "B-Series", \
+> +	.public_name = "BXE-2-32", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_36_V_52_182 = {
+> +	.has_astc = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_overlap = true,
+> +	.has_fbcdc_algorithm = true,
+> +	.has_gpu_multicore_support = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_ipf_creq_pf = true,
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_paired_tiles = true,
+> +	.has_pbe2_in_xe = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_pds_ddmadt = true,
+> +	.has_roguexe = true,
+> +	.has_screen_size8K = true,
+> +	.has_simple_internal_parameter_format = true,
+> +	.has_simple_internal_parameter_format_v2 = true,
+> +	.has_simple_parameter_format_version = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_16x16 = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_border_colour_enhanced = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_alu_roundingmode_rne = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itrsmp_enhanced = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_pixel_partition_mask = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_xpu_max_slaves = true,
+> +
+> +	.common_store_size_in_dwords = 832U * 4U * 4U,
+> +	.fbcdc_algorithm = 50U,
+> +	.isp_max_tiles_in_flight = 2U,
+> +	.isp_samples_per_pixel = 1U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 8U,
+> +	.max_usc_tasks = 72U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.simple_parameter_format_version = 2U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 16U,
+> +	.tile_size_y = 16U,
+> +	.tpu_parallel_instances = 2U,
+> +	.unified_store_depth = 128U,
+> +	.usc_itr_parallel_instances = 8U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 32U,
+> +	.uvs_banks = 4U,
+> +	.uvs_pba_entries = 320U,
+> +	.uvs_vtx_entries = 288U,
+> +	.vdm_cam_size = 64U,
+> +	.xpu_max_slaves = 3U,
+> +
+> +	.has_s8xe = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_36_29_52_182 = {
+> +	   .has_ern35421 = true,
+> +	   .has_ern38748 = true,
+> +	   .has_ern42307 = true,
+> +	   .has_ern45493 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_36_29_52_182 = {
+> +	.has_brn70165 = true,
+> +	.has_brn72168 = true,
+> +	.has_brn72463 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_36_29_52_182 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_36_V_52_182,
+> +	   .b = 36,
+> +	   .v = 29,
+> +	   .n = 52,
+> +	   .c = 182,
+> +	},
+> +	.features = pvr_device_features_36_V_52_182,
+> +	.enhancements = pvr_device_enhancements_36_29_52_182,
+> +	.quirks = pvr_device_quirks_36_29_52_182,
+> +};
+> +
+> +#endif /* BXE_2_32_H */
+> diff --git a/lib/imagination/device_info/bxe-4-32.h b/lib/imagination/device_info/bxe-4-32.h
+> new file mode 100644
+> index 000000000..4e5790b9a
+> --- /dev/null
+> +++ b/lib/imagination/device_info/bxe-4-32.h
+> @@ -0,0 +1,122 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef BXE_4_32_H
+> +#define BXE_4_32_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_36_V_54_182 \
+> +	.device_id = 0x36054182, .series_name = "B-Series", \
+> +	.public_name = "BXE-4-32", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_36_V_54_182 = {
+> +	.has_astc = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_overlap = true,
+> +	.has_fbcdc_algorithm = true,
+> +	.has_gpu_multicore_support = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_ipf_creq_pf = true,
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_paired_tiles = true,
+> +	.has_pbe2_in_xe = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_pds_ddmadt = true,
+> +	.has_roguexe = true,
+> +	.has_screen_size8K = true,
+> +	.has_simple_internal_parameter_format = true,
+> +	.has_simple_internal_parameter_format_v2 = true,
+> +	.has_simple_parameter_format_version = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_16x16 = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_border_colour_enhanced = true,
+> +	.has_tpu_dm_global_registers = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_alu_roundingmode_rne = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itrsmp_enhanced = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_pixel_partition_mask = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_xpu_max_slaves = true,
+> +
+> +	.common_store_size_in_dwords = 1024U * 4U * 4U,
+> +	.fbcdc_algorithm = 50U,
+> +	.isp_max_tiles_in_flight = 4U,
+> +	.isp_samples_per_pixel = 1U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 10U,
+> +	.max_usc_tasks = 104U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.simple_parameter_format_version = 2U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 16U,
+> +	.tile_size_y = 16U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 208U,
+> +	.usc_itr_parallel_instances = 16U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 64U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 160U,
+> +	.uvs_vtx_entries = 144U,
+> +	.vdm_cam_size = 64U,
+> +	.xpu_max_slaves = 3U,
+> +
+> +	.has_s8xe = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_36_50_54_182 = {
+> +	   .has_ern35421 = true,
+> +	   .has_ern38748 = true,
+> +	   .has_ern42307 = true,
+> +	   .has_ern45493 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_36_50_54_182 = {
+> +	.has_brn70165 = true,
+> +	.has_brn72168 = true,
+> +	.has_brn72463 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_36_50_54_182 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_36_V_54_182,
+> +	   .b = 36,
+> +	   .v = 50,
+> +	   .n = 54,
+> +	   .c = 182,
+> +	},
+> +	.features = pvr_device_features_36_V_54_182,
+> +	.enhancements = pvr_device_enhancements_36_50_54_182,
+> +	.quirks = pvr_device_quirks_36_50_54_182,
+> +};
+> +
+> +#endif /* BXE_4_32_H */
+> diff --git a/lib/imagination/device_info/bxm-4-64.h b/lib/imagination/device_info/bxm-4-64.h
+> new file mode 100644
+> index 000000000..f469f575e
+> --- /dev/null
+> +++ b/lib/imagination/device_info/bxm-4-64.h
+> @@ -0,0 +1,237 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef BXM_4_64_H
+> +#define BXM_4_64_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_36_V_104_182 \
+> +	.device_id = 0x36104182, .series_name = "B-Series", \
+> +	.public_name = "BXM-4-64", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_36_V_104_182 = {
+> +	.has_astc = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_overlap = true,
+> +	.has_fbcdc_algorithm = true,
+> +	.has_gpu_multicore_support = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_ipf_creq_pf = true,
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_paired_tiles = true,
+> +	.has_pbe2_in_xe = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_pds_ddmadt = true,
+> +	.has_roguexe = true,
+> +	.has_screen_size8K = true,
+> +	.has_simple_internal_parameter_format = true,
+> +	.has_simple_internal_parameter_format_v2 = true,
+> +	.has_simple_parameter_format_version = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_16x16 = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_border_colour_enhanced = true,
+> +	.has_tpu_dm_global_registers = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_alu_roundingmode_rne = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itrsmp_enhanced = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_pixel_partition_mask = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_xpu_max_slaves = true,
+> +
+> +	.common_store_size_in_dwords = 1216U * 4U * 4U,
+> +	.fbcdc_algorithm = 50U,
+> +	.isp_max_tiles_in_flight = 6U,
+> +	.isp_samples_per_pixel = 1U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 12U,
+> +	.max_usc_tasks = 156U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.simple_parameter_format_version = 2U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 16U,
+> +	.tile_size_y = 16U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 256U,
+> +	.usc_itr_parallel_instances = 16U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 64U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 160U,
+> +	.uvs_vtx_entries = 144U,
+> +	.vdm_cam_size = 64U,
+> +	.xpu_max_slaves = 3U,
+> +
+> +	/* Derived features. */
+> +	.has_s8xe = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_36_52_104_182 = {
+> +	   .has_ern35421 = true,
+> +	   .has_ern38748 = true,
+> +	   .has_ern42307 = true,
+> +	   .has_ern45493 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_36_52_104_182 = {
+> +	.has_brn44079 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn72168 = true,
+> +	.has_brn72463 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_36_52_104_182 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_36_V_104_182,
+> +	   .b = 36,
+> +	   .v = 52,
+> +	   .n = 104,
+> +	   .c = 182,
+> +	},
+> +	.features = pvr_device_features_36_V_104_182,
+> +	.enhancements = pvr_device_enhancements_36_52_104_182,
+> +	.quirks = pvr_device_quirks_36_52_104_182,
+> +};
+> +
+> +#define PVR_DEVICE_IDENT_36_V_104_183 \
+> +	.device_id = 0x36104183, .series_name = "B-Series", .public_name = "BXM-4-64"
+> +
+> +static const struct pvr_device_features pvr_device_features_36_V_104_183 = {
+> +	.has_astc = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_overlap = true,
+> +	.has_fbcdc_algorithm = true,
+> +	.has_gpu_multicore_support = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_ipf_creq_pf = true,
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_paired_tiles = true,
+> +	.has_pbe2_in_xe = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_pds_ddmadt = true,
+> +	.has_roguexe = true,
+> +	.has_screen_size8K = true,
+> +	.has_simple_internal_parameter_format = true,
+> +	.has_simple_internal_parameter_format_v2 = true,
+> +	.has_simple_parameter_format_version = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_16x16 = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_border_colour_enhanced = true,
+> +	.has_tpu_dm_global_registers = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_alu_roundingmode_rne = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itrsmp_enhanced = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_pixel_partition_mask = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_xpu_max_slaves = true,
+> +
+> +	.common_store_size_in_dwords = 1216U * 4U * 4U,
+> +	.fbcdc_algorithm = 50U,
+> +	.isp_max_tiles_in_flight = 6U,
+> +	.isp_samples_per_pixel = 1U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 12U,
+> +	.max_usc_tasks = 156U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.simple_parameter_format_version = 2U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 16U,
+> +	.tile_size_y = 16U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 256U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 64U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 160U,
+> +	.uvs_vtx_entries = 144U,
+> +	.vdm_cam_size = 64U,
+> +	.xpu_max_slaves = 3U,
+> +
+> +	/* Derived features. */
+> +	.has_s8xe = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +
+> +	.usc_itr_parallel_instances = 16U,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_36_56_104_183 = {
+> +	   .has_ern35421 = true,
+> +	   .has_ern38748 = true,
+> +	   .has_ern42307 = true,
+> +	   .has_ern45493 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_36_56_104_183 = {
+> +	.has_brn44079 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn72168 = true,
+> +	.has_brn72463 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_36_56_104_183 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_36_V_104_183,
+> +	   .b = 36,
+> +	   .v = 56,
+> +	   .n = 104,
+> +	   .c = 183,
+> +	},
+> +	.features = pvr_device_features_36_V_104_183,
+> +	.enhancements = pvr_device_enhancements_36_56_104_183,
+> +	.quirks = pvr_device_quirks_36_56_104_183,
+> +};
+> +
+> +#endif /* BXM_4_64_H */
+> diff --git a/lib/imagination/device_info/bxs-4-64.h b/lib/imagination/device_info/bxs-4-64.h
+> new file mode 100644
+> index 000000000..e8e1fcef7
+> --- /dev/null
+> +++ b/lib/imagination/device_info/bxs-4-64.h
+> @@ -0,0 +1,124 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef BXS_4_64_H
+> +#define BXS_4_64_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_36_V_104_796 \
+> +	.device_id = 0x36104796, .series_name = "B-Series", \
+> +	.public_name = "BXS-4-64", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_36_V_104_796 = {
+> +	.has_astc = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_overlap = true,
+> +	.has_fbcdc_algorithm = true,
+> +	.has_gpu_multicore_support = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_ipf_creq_pf = true,
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_paired_tiles = true,
+> +	.has_pbe2_in_xe = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_pds_ddmadt = true,
+> +	.has_roguexe = true,
+> +	.has_screen_size8K = true,
+> +	.has_simple_internal_parameter_format = true,
+> +	.has_simple_internal_parameter_format_v2 = true,
+> +	.has_simple_parameter_format_version = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_16x16 = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_border_colour_enhanced = true,
+> +	.has_tpu_dm_global_registers = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_alu_roundingmode_rne = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itrsmp_enhanced = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_pixel_partition_mask = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_vdm_degenerate_culling = true,
+> +	.has_xpu_max_slaves = true,
+> +
+> +	.common_store_size_in_dwords = 1344U * 4U * 4U,
+> +	.fbcdc_algorithm = 50U,
+> +	.isp_max_tiles_in_flight = 6U,
+> +	.isp_samples_per_pixel = 4U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 16U,
+> +	.max_usc_tasks = 156U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.simple_parameter_format_version = 2U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 16U,
+> +	.tile_size_y = 16U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 256U,
+> +	.usc_itr_parallel_instances = 16U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 64U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 160U,
+> +	.uvs_vtx_entries = 144U,
+> +	.vdm_cam_size = 64U,
+> +	.xpu_max_slaves = 3U,
+> +
+> +	.has_s8xe = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_36_53_104_796 = {
+> +	   .has_ern35421 = true,
+> +	   .has_ern38748 = true,
+> +	   .has_ern42307 = true,
+> +	   .has_ern45493 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_36_53_104_796 = {
+> +	.has_brn44079 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn72168 = true,
+> +	.has_brn72463 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_36_53_104_796 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_36_V_104_796,
+> +	   .b = 36,
+> +	   .v = 53,
+> +	   .n = 104,
+> +	   .c = 796,
+> +	},
+> +	.features = pvr_device_features_36_V_104_796,
+> +	.enhancements = pvr_device_enhancements_36_53_104_796,
+> +	.quirks = pvr_device_quirks_36_53_104_796,
+> +};
+> +
+> +#endif /* BXS_4_64_H */
+> diff --git a/lib/imagination/device_info/g6110.h b/lib/imagination/device_info/g6110.h
+> new file mode 100644
+> index 000000000..6c82c8ade
+> --- /dev/null
+> +++ b/lib/imagination/device_info/g6110.h
+> @@ -0,0 +1,103 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef G6110_H
+> +#define G6110_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_5_V_1_46 \
+> +	.device_id = 0x6110, .series_name = "Rogue", \
+> +	.public_name = "GX6110", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_5_V_1_46 = {
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_fbcdc_algorithm = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_roguexe = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +
+> +	.common_store_size_in_dwords = 1344U * 4U * 4U,
+> +	.fbcdc_algorithm = 2U,
+> +	.isp_max_tiles_in_flight = 1U,
+> +	.isp_samples_per_pixel = 2U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 12U,
+> +	.max_usc_tasks = 96U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 32U,
+> +	.tile_size_y = 32U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 208U,
+> +	.usc_itr_parallel_instances = 16U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 56U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 160U,
+> +	.uvs_vtx_entries = 144U,
+> +	.vdm_cam_size = 64U,
+> +
+> +	.has_requires_fb_cdc_zls_setup = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements pvr_device_enhancements_5_9_1_46 = {
+> +	.has_ern35421 = true,
+> +};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_5_9_1_46 = {
+> +	.has_brn44079 = true,
+> +	.has_brn47727 = true,
+> +	.has_brn48492 = true,
+> +	.has_brn48545 = true,
+> +	.has_brn49032 = true,
+> +	.has_brn49927 = true,
+> +	.has_brn51025 = true,
+> +	.has_brn51210 = true,
+> +	.has_brn52942 = true,
+> +	.has_brn58839 = true,
+> +	.has_brn62269 = true,
+> +	.has_brn66011 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_5_9_1_46 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_5_V_1_46,
+> +	   .b = 5,
+> +	   .v = 9,
+> +	   .n = 1,
+> +	   .c = 46,
+> +	},
+> +	.features = pvr_device_features_5_V_1_46,
+> +	.enhancements = pvr_device_enhancements_5_9_1_46,
+> +	.quirks = pvr_device_quirks_5_9_1_46,
+> +};
+> +
+> +#endif /* G6110_H */
+> diff --git a/lib/imagination/device_info/ge7800.h b/lib/imagination/device_info/ge7800.h
+> new file mode 100644
+> index 000000000..6a29ee6cf
+> --- /dev/null
+> +++ b/lib/imagination/device_info/ge7800.h
+> @@ -0,0 +1,102 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef GE7800_H
+> +#define GE7800_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_15_V_1_64 \
+> +	.device_id = 0x15001064, .series_name = "Rogue", \
+> +	.public_name = "GE7800", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_15_V_1_64 = {
+> +	.has_astc = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_fbcdc_algorithm = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_roguexe = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +
+> +	.common_store_size_in_dwords = 1344U * 4U * 4U,
+> +	.fbcdc_algorithm = 2U,
+> +	.isp_max_tiles_in_flight = 2U,
+> +	.isp_samples_per_pixel = 2U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 12U,
+> +	.max_usc_tasks = 96U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 32U,
+> +	.tile_size_y = 32U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 208U,
+> +	.usc_itr_parallel_instances = 16U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 56U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 320U,
+> +	.uvs_vtx_entries = 288U,
+> +	.vdm_cam_size = 128U,
+> +
+> +	.has_requires_fb_cdc_zls_setup = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_15_5_1_64 = {
+> +	.has_ern35421 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_15_5_1_64 = {
+> +	.has_brn44079 = true,
+> +	.has_brn48492 = true,
+> +	.has_brn49032 = true,
+> +	.has_brn49927 = true,
+> +	.has_brn52942 = true,
+> +	.has_brn58839 = true,
+> +	.has_brn62269 = true,
+> +	.has_brn66011 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_15_5_1_64 = {
+> +	.ident = {
+> +	PVR_DEVICE_IDENT_15_V_1_64,
+> +	.b = 15,
+> +	.v = 5,
+> +	.n = 1,
+> +	.c = 64,
+> +	},
+> +	.features = pvr_device_features_15_V_1_64,
+> +	.enhancements = pvr_device_enhancements_15_5_1_64,
+> +	.quirks = pvr_device_quirks_15_5_1_64,
+> +};
+> +
+> +#endif /* GE7800_H */
+> diff --git a/lib/imagination/device_info/ge8300.h b/lib/imagination/device_info/ge8300.h
+> new file mode 100644
+> index 000000000..6e4bd33a8
+> --- /dev/null
+> +++ b/lib/imagination/device_info/ge8300.h
+> @@ -0,0 +1,230 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef GE8300_H
+> +#define GE8300_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_22_V_54_30 \
+> +	.device_id = 0x22054030, .series_name = "Rogue", \
+> +	.public_name = "GE8300", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_22_V_54_30 = {
+> +	.has_astc = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_overlap = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_ipf_creq_pf = true,
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_pbe2_in_xe = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_roguexe = true,
+> +	.has_simple_internal_parameter_format = true,
+> +	.has_simple_internal_parameter_format_v1 = true,
+> +	.has_simple_parameter_format_version = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_16x16 = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itrsmp_enhanced = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +
+> +	.common_store_size_in_dwords = 1024U * 4U * 4U,
+> +	.isp_max_tiles_in_flight = 4U,
+> +	.isp_samples_per_pixel = 1U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 10U,
+> +	.max_usc_tasks = 104U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.simple_parameter_format_version = 1U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 16U,
+> +	.tile_size_y = 16U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 208U,
+> +	.usc_itr_parallel_instances = 16U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 64U,
+> +	.uvs_banks = 4U,
+> +	.uvs_pba_entries = 320U,
+> +	.uvs_vtx_entries = 288U,
+> +	.vdm_cam_size = 64U,
+> +
+> +	.has_s8xe = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_22_67_54_30 = {
+> +	   .has_ern35421 = true,
+> +	   .has_ern38748 = true,
+> +	   .has_ern42307 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_22_67_54_30 = {
+> +	.has_brn49927 = true,
+> +	.has_brn66011 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_22_67_54_30 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_22_V_54_30,
+> +	   .b = 22,
+> +	   .v = 67,
+> +	   .n = 54,
+> +	   .c = 30,
+> +	},
+> +	.features = pvr_device_features_22_V_54_30,
+> +	.enhancements = pvr_device_enhancements_22_67_54_30,
+> +	.quirks = pvr_device_quirks_22_67_54_30,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_22_68_54_30 = {
+> +	   .has_ern35421 = true,
+> +	   .has_ern38748 = true,
+> +	   .has_ern42307 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_22_68_54_30 = {
+> +	.has_brn49927 = true,
+> +	.has_brn66011 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_22_68_54_30 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_22_V_54_30,
+> +	   .b = 22,
+> +	   .v = 68,
+> +	   .n = 54,
+> +	   .c = 30,
+> +	},
+> +	.features = pvr_device_features_22_V_54_30,
+> +	.enhancements = pvr_device_enhancements_22_68_54_30,
+> +	.quirks = pvr_device_quirks_22_68_54_30,
+> +};
+> +
+> +#define PVR_DEVICE_IDENT_22_V_54_38 \
+> +	.device_id = 0x22054038, .series_name = "Rogue", .public_name = "GE8300"
+> +
+> +static const struct pvr_device_features pvr_device_features_22_V_54_38 = {
+> +	.has_astc = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_overlap = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_ipf_creq_pf = true,
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_pbe2_in_xe = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_roguexe = true,
+> +	.has_simple_internal_parameter_format = true,
+> +	.has_simple_internal_parameter_format_v1 = true,
+> +	.has_simple_parameter_format_version = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_tile_size_16x16 = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itrsmp_enhanced = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +
+> +	.common_store_size_in_dwords = 1024U * 4U * 4U,
+> +	.isp_max_tiles_in_flight = 4U,
+> +	.isp_samples_per_pixel = 1U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 4U,
+> +	.max_partitions = 10U,
+> +	.max_usc_tasks = 104U,
+> +	.num_clusters = 1U,
+> +	.num_raster_pipes = 1U,
+> +	.simple_parameter_format_version = 1U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 16U,
+> +	.tile_size_y = 16U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 208U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 64U,
+> +	.uvs_banks = 4U,
+> +	.uvs_pba_entries = 320U,
+> +	.uvs_vtx_entries = 288U,
+> +	.vdm_cam_size = 64U,
+> +
+> +	.has_s8xe = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +
+> +	.usc_itr_parallel_instances = 16U,
+> +};
+> +
+> +static const struct pvr_device_enhancements
+> +	pvr_device_enhancements_22_102_54_38 = {
+> +	   .has_ern35421 = true,
+> +	   .has_ern38748 = true,
+> +	   .has_ern42307 = true,
+> +	};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_22_102_54_38 = {
+> +	.has_brn49927 = true,
+> +	.has_brn66011 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_22_102_54_38 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_22_V_54_38,
+> +	   .b = 22,
+> +	   .v = 102,
+> +	   .n = 54,
+> +	   .c = 38,
+> +	},
+> +	.features = pvr_device_features_22_V_54_38,
+> +	.enhancements = pvr_device_enhancements_22_102_54_38,
+> +	.quirks = pvr_device_quirks_22_102_54_38,
+> +};
+> +
+> +#endif /* GE8300_H */
+> diff --git a/lib/imagination/device_info/gx6250.h b/lib/imagination/device_info/gx6250.h
+> new file mode 100644
+> index 000000000..5cdb93cd6
+> --- /dev/null
+> +++ b/lib/imagination/device_info/gx6250.h
+> @@ -0,0 +1,231 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef GX6250_H
+> +#define GX6250_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_4_V_2_51 \
+> +	.device_id = 0x6250, .series_name = "Rogue", \
+> +	.public_name = "GX6250", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_4_V_2_51 = {
+> +	.has_astc = true,
+> +	.has_cluster_grouping = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_morton_capable = true,
+> +	.has_compute_overlap = true,
+> +	.has_eight_output_registers = true,
+> +	.has_fbcdc_algorithm = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_slc_mcu_cache_controls = true,
+> +	.has_tf_bicubic_filter = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_array_textures = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_xt_top_infrastructure = true,
+> +	.has_zls_subtile = true,
+> +
+> +	.common_store_size_in_dwords = 1280U * 4U * 4U,
+> +	.fbcdc_algorithm = 2,
+> +	.isp_max_tiles_in_flight = 4U,
+> +	.isp_samples_per_pixel = 2U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 8U,
+> +	.max_partitions = 8U,
+> +	.max_usc_tasks = 56U,
+> +	.num_clusters = 2U,
+> +	.num_raster_pipes = 1U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 32U,
+> +	.tile_size_y = 32U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 256U,
+> +	.usc_itr_parallel_instances = 8U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 32U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 320U,
+> +	.uvs_vtx_entries = 288U,
+> +	.vdm_cam_size = 256U,
+> +
+> +	.has_requires_fb_cdc_zls_setup = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements pvr_device_enhancements_4_40_2_51 = {
+> +	.has_ern35421 = true,
+> +	.has_ern38020 = true,
+> +	.has_ern38748 = true,
+> +	.has_ern42064 = true,
+> +	.has_ern42307 = true,
+> +};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_4_40_2_51 = {
+> +	.has_brn44079 = true,
+> +	.has_brn47727 = true,
+> +	.has_brn48492 = true,
+> +	.has_brn48545 = true,
+> +	.has_brn49032 = true,
+> +	.has_brn49927 = true,
+> +	.has_brn51025 = true,
+> +	.has_brn51210 = true,
+> +	.has_brn51764 = true,
+> +	.has_brn52354 = true,
+> +	.has_brn52942 = true,
+> +	.has_brn58839 = true,
+> +	.has_brn62269 = true,
+> +	.has_brn66011 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_4_40_2_51 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_4_V_2_51,
+> +	   .b = 4,
+> +	   .v = 40,
+> +	   .n = 2,
+> +	   .c = 51,
+> +	},
+> +	.features = pvr_device_features_4_V_2_51,
+> +	.enhancements = pvr_device_enhancements_4_40_2_51,
+> +	.quirks = pvr_device_quirks_4_40_2_51,
+> +};
+> +
+> +#define PVR_DEVICE_IDENT_4_V_2_58 \
+> +	.device_id = 0x6250, .series_name = "Rogue", .public_name = "GX6250"
+> +
+> +static const struct pvr_device_features pvr_device_features_4_V_2_58 = {
+> +	.has_astc = true,
+> +	.has_cluster_grouping = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_morton_capable = true,
+> +	.has_compute_overlap = true,
+> +	.has_eight_output_registers = true,
+> +	.has_fbcdc_algorithm = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_slc_mcu_cache_controls = true,
+> +	.has_tf_bicubic_filter = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_array_textures = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_xt_top_infrastructure = true,
+> +	.has_zls_subtile = true,
+> +
+> +	.common_store_size_in_dwords = 1536U * 4U * 4U,
+> +	.fbcdc_algorithm = 2,
+> +	.isp_max_tiles_in_flight = 4U,
+> +	.isp_samples_per_pixel = 2U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 8U,
+> +	.max_partitions = 8U,
+> +	.max_usc_tasks = 56U,
+> +	.num_clusters = 2U,
+> +	.num_raster_pipes = 1U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 32U,
+> +	.tile_size_y = 32U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 256U,
+> +	.usc_itr_parallel_instances = 8U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 32U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 320U,
+> +	.uvs_vtx_entries = 288U,
+> +	.vdm_cam_size = 256U,
+> +
+> +	.has_requires_fb_cdc_zls_setup = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements pvr_device_enhancements_4_45_2_58 = {
+> +	.has_ern35421 = true,
+> +	.has_ern38020 = true,
+> +	.has_ern38748 = true,
+> +	.has_ern42064 = true,
+> +	.has_ern42307 = true,
+> +	.has_ern45493 = true,
+> +};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_4_45_2_58 = {
+> +	.has_brn44079 = true,
+> +	.has_brn49927 = true,
+> +	.has_brn51025 = true,
+> +	.has_brn51210 = true,
+> +	.has_brn51764 = true,
+> +	.has_brn52354 = true,
+> +	.has_brn52942 = true,
+> +	.has_brn58839 = true,
+> +	.has_brn62269 = true,
+> +	.has_brn66011 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_4_45_2_58 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_4_V_2_58,
+> +	   .b = 4,
+> +	   .v = 45,
+> +	   .n = 2,
+> +	   .c = 58,
+> +	},
+> +	.features = pvr_device_features_4_V_2_58,
+> +	.enhancements = pvr_device_enhancements_4_45_2_58,
+> +	.quirks = pvr_device_quirks_4_45_2_58,
+> +};
+> +
+> +#endif /* GX6250_H */
+> diff --git a/lib/imagination/device_info/gx6650.h b/lib/imagination/device_info/gx6650.h
+> new file mode 100644
+> index 000000000..2affa8bbc
+> --- /dev/null
+> +++ b/lib/imagination/device_info/gx6650.h
+> @@ -0,0 +1,120 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef GX6650_H
+> +#define GX6650_H
+> +
+> +#include <stdbool.h>
+> +
+> +#include "../pvr_device_info.h"
+> +
+> +#define PVR_DEVICE_IDENT_4_V_6_62 \
+> +	.device_id = 0x6650, .series_name = "Rogue", \
+> +	.public_name = "GX6650", .arch = PVR_DEVICE_ARCH_ROGUE
+> +
+> +static const struct pvr_device_features pvr_device_features_4_V_6_62 = {
+> +	.has_astc = true,
+> +	.has_cluster_grouping = true,
+> +	.has_common_store_size_in_dwords = true,
+> +	.has_compute = true,
+> +	.has_compute_morton_capable = true,
+> +	.has_compute_overlap = true,
+> +	.has_eight_output_registers = true,
+> +	.has_fbcdc_algorithm = true,
+> +	/* .has_gs_rta_support = true, */
+> +	.has_isp_max_tiles_in_flight = true,
+> +	.has_isp_samples_per_pixel = true,
+> +	.has_max_instances_per_pds_task = true,
+> +	.has_max_multisample = true,
+> +	.has_max_partitions = true,
+> +	.has_max_usc_tasks = true,
+> +	.has_num_clusters = true,
+> +	.has_num_raster_pipes = true,
+> +	.has_pbe_filterable_f16 = true,
+> +	.has_pbe_yuv = true,
+> +	.has_slc_cache_line_size_bits = true,
+> +	.has_slc_mcu_cache_controls = true,
+> +	.has_tf_bicubic_filter = true,
+> +	.has_tile_size_x = true,
+> +	.has_tile_size_y = true,
+> +	.has_tpu_array_textures = true,
+> +	.has_tpu_extended_integer_lookup = true,
+> +	.has_tpu_image_state_v2 = true,
+> +	.has_tpu_parallel_instances = true,
+> +	.has_unified_store_depth = true,
+> +	.has_usc_f16sop_u8 = true,
+> +	.has_usc_itrsmp = true,
+> +	.has_usc_itr_parallel_instances = true,
+> +	.has_usc_min_output_registers_per_pix = true,
+> +	.has_usc_slots = true,
+> +	.has_uvs_banks = true,
+> +	.has_uvs_pba_entries = true,
+> +	.has_uvs_vtx_entries = true,
+> +	.has_vdm_cam_size = true,
+> +	.has_xt_top_infrastructure = true,
+> +	.has_zls_subtile = true,
+> +
+> +	.common_store_size_in_dwords = 1280U * 4U * 4U,
+> +	.fbcdc_algorithm = 2U,
+> +	.isp_max_tiles_in_flight = 8U,
+> +	.isp_samples_per_pixel = 2U,
+> +	.max_instances_per_pds_task = 32U,
+> +	.max_multisample = 8U,
+> +	.max_partitions = 8U,
+> +	.max_usc_tasks = 56U,
+> +	.num_clusters = 6U,
+> +	.num_raster_pipes = 2U,
+> +	.slc_cache_line_size_bits = 512U,
+> +	.tile_size_x = 32U,
+> +	.tile_size_y = 32U,
+> +	.tpu_parallel_instances = 4U,
+> +	.unified_store_depth = 256U,
+> +	.usc_itr_parallel_instances = 8U,
+> +	.usc_min_output_registers_per_pix = 2U,
+> +	.usc_slots = 32U,
+> +	.uvs_banks = 8U,
+> +	.uvs_pba_entries = 320U,
+> +	.uvs_vtx_entries = 288U,
+> +	.vdm_cam_size = 256U,
+> +
+> +	.has_requires_fb_cdc_zls_setup = true,
+> +};
+> +
+> +static const struct pvr_device_enhancements pvr_device_enhancements_4_46_6_62 = {
+> +	.has_ern35421 = true,
+> +	.has_ern38020 = true,
+> +	.has_ern38748 = true,
+> +	.has_ern42064 = true,
+> +	.has_ern42307 = true,
+> +	.has_ern45493 = true,
+> +};
+> +
+> +static const struct pvr_device_quirks pvr_device_quirks_4_46_6_62 = {
+> +	.has_brn44079 = true,
+> +	.has_brn49927 = true,
+> +	.has_brn51025 = true,
+> +	.has_brn51210 = true,
+> +	.has_brn51764 = true,
+> +	.has_brn52354 = true,
+> +	.has_brn52942 = true,
+> +	.has_brn58839 = true,
+> +	.has_brn62269 = true,
+> +	.has_brn66011 = true,
+> +	.has_brn70165 = true,
+> +	.has_brn74056 = true,
+> +};
+> +
+> +static const struct pvr_device_info pvr_device_info_4_46_6_62 = {
+> +	.ident = {
+> +	   PVR_DEVICE_IDENT_4_V_6_62,
+> +	   .b = 4,
+> +	   .v = 46,
+> +	   .n = 6,
+> +	   .c = 62,
+> +	},
+> +	.features = pvr_device_features_4_V_6_62,
+> +	.enhancements = pvr_device_enhancements_4_46_6_62,
+> +	.quirks = pvr_device_quirks_4_46_6_62,
+> +};
+> +
+> +#endif /* GX6650_H */
+> diff --git a/lib/imagination/pvr_device_info.c b/lib/imagination/pvr_device_info.c
+> new file mode 100644
+> index 000000000..3575d2527
+> --- /dev/null
+> +++ b/lib/imagination/pvr_device_info.c
+> @@ -0,0 +1,104 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +/* TODO: This file is currently hand-maintained. However, the intention is to
+> + * auto-generate it in the future based on the hwdefs.
+> + */
+> +
+> +#include <assert.h>
+> +#include <errno.h>
+> +#include <string.h>
+> +
+> +#include "drmtest.h"
+> +#include "pvr_device_info.h"
+> +
+> +#include "device_info/g6110.h"
+> +#include "device_info/gx6250.h"
+> +#include "device_info/gx6650.h"
+> +#include "device_info/ge7800.h"
+> +#include "device_info/ge8300.h"
+> +#include "device_info/axe-1-16m.h"
+> +#include "device_info/bxe-2-32.h"
+> +#include "device_info/bxe-4-32.h"
+> +#include "device_info/bxm-4-64.h"
+> +#include "device_info/bxs-4-64.h"
+> +
+> +static const struct pvr_device_info *device_infos[] = {
+> +	/* clang-format off */
+> +	&pvr_device_info_4_40_2_51,
+> +	&pvr_device_info_4_45_2_58,
+> +	&pvr_device_info_4_46_6_62,
+> +	&pvr_device_info_5_9_1_46,
+> +	&pvr_device_info_15_5_1_64,
+> +	&pvr_device_info_22_67_54_30,
+> +	&pvr_device_info_22_68_54_30,
+> +	&pvr_device_info_22_102_54_38,
+> +	&pvr_device_info_33_15_11_3,
+> +	&pvr_device_info_36_29_52_182,
+> +	&pvr_device_info_36_50_54_182,
+> +	&pvr_device_info_36_52_104_182,
+> +	&pvr_device_info_36_53_104_796,
+> +	&pvr_device_info_36_56_104_183,
+> +	/* clang-format on */
+> +};
 > +
 > +/**
-> + * igt_require_panthor_version:
-> + * @fd: device file descriptor
-> + * @major: required Panthor major version
-> + * @minor: required Panthor minor version
+> + * Initialize PowerVR device information.
 > + *
-> + * Require the Panthor version to be at least the requested version.
+> + * \param info Device info structure to initialize.
+> + * \param bvnc Packed BVNC.
+> + * \return
+> + *  * 0 on success, or
+> + *  * -%ENODEV if the device is not supported.
 > + */
-> +#define igt_require_panthor_version(fd, major, minor) do { \
-> +	/* igt_require_f() reports errno through __igt_skip_check(); */ \
-> +	/* clear it since errno is unrelated to the version check. */ \
-> +	errno = 0; \
-> +	igt_require_f(__igt_panthor_driver_version_at_least(fd, major, minor), \
-> +		      "Requires Panthor version %d.%d or newer\n", \
-> +		      major, minor); \
-> +} while (0)
->  
->  static inline void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle,
->  				       uint64_t va, uint64_t size, uint32_t flags, int err)
-> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-> index 9011df25e..bd8f14ecb 100644
-> --- a/tests/panthor/panthor_vm.c
-> +++ b/tests/panthor/panthor_vm.c
-> @@ -293,6 +293,7 @@ int igt_main() {
->  		uint32_t vm_id;
->  		uint64_t map_size = SZ_4K * 4;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -306,6 +307,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -321,6 +323,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -336,6 +339,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -351,6 +355,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -366,6 +371,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -382,6 +388,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -402,6 +409,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -422,6 +430,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -442,6 +451,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -463,6 +473,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -483,6 +494,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -503,6 +515,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -524,6 +537,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -545,6 +559,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -566,6 +581,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -585,6 +601,7 @@ int igt_main() {
->  		uint64_t map_size = ALIGN_DOWN(UINT64_MAX, SZ_2M) - (SZ_2M * 3);
->  		const int INITIAL_VA = SZ_512M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -599,6 +616,7 @@ int igt_main() {
->  		uint64_t unmap_size = ALIGN_DOWN(UINT64_MAX, SZ_2M) - map_size;
->  		const int INITIAL_VA = SZ_512M;
->  
-> +		igt_require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
+> +int pvr_device_info_init(struct pvr_device_info *info, uint64_t bvnc)
+> +{
+> +#define CASE_PACKED_BVNC_DEVICE_INFO(_b, _v, _n, _c)			\
+> +	case PVR_BVNC_PACK(_b, _v, _n, _c):				\
+> +		*info = pvr_device_info_##_b##_##_v##_##_n##_##_c;	\
+> +		return 0
+> +
+> +	switch (bvnc) {
+> +		CASE_PACKED_BVNC_DEVICE_INFO(4, 40, 2, 51);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(4, 45, 2, 58);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(4, 46, 6, 62);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(5, 9, 1, 46);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(15, 5, 1, 64);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(22, 67, 54, 30);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(22, 68, 54, 30);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(22, 102, 54, 38);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(33, 15, 11, 3);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(36, 29, 52, 182);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(36, 50, 54, 182);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(36, 52, 104, 182);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(36, 53, 104, 796);
+> +		CASE_PACKED_BVNC_DEVICE_INFO(36, 56, 104, 183);
+> +	}
+> +
+> +#undef CASE_PACKED_BVNC_DEVICE_INFO
+> +
+> +	assert(!"Unsupported Device");
+> +
+> +	return -ENODEV;
+> +}
+> +
+> +/**
+> + * Initialize PowerVR device information from a public name.
+> + *
+> + * \param info Device info structure to initialize.
+> + * \param public_name Device public name.
+> + * \return True if successful.
+> + */
+> +bool pvr_device_info_init_public_name(struct pvr_device_info *info,
+> +				      const char *public_name)
+> +{
+> +	for (unsigned int d = 0; d < ARRAY_SIZE(device_infos); ++d) {
+> +		if (strcasecmp(public_name, device_infos[d]->ident.public_name))
+> +			continue;
+> +
+> +		memcpy(info, device_infos[d], sizeof(*info));
+> +		return true;
+> +	}
+> +
+> +	return false;
+> +}
+> diff --git a/lib/imagination/pvr_device_info.h b/lib/imagination/pvr_device_info.h
+> new file mode 100644
+> index 000000000..e3c2e0170
+> --- /dev/null
+> +++ b/lib/imagination/pvr_device_info.h
+> @@ -0,0 +1,378 @@
+> +/* SPDX-License-Identifier: GPL-2.0 or MIT */
+> +/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
+> +
+> +#ifndef PVR_DEVICE_INFO_H
+> +#define PVR_DEVICE_INFO_H
+> +
+> +/* TODO: This file is currently hand-maintained. However, the intention is to
+> + * auto-generate it in the future based on the hwdefs.
+> + */
+> +
+> +#include <assert.h>
+> +#include <errno.h>
+> +#include <stdbool.h>
+> +#include <stdint.h>
+> +
+> +#define PVR_BVNC_PACK_SHIFT_B 48
+> +#define PVR_BVNC_PACK_SHIFT_V 32
+> +#define PVR_BVNC_PACK_SHIFT_N 16
+> +#define PVR_BVNC_PACK_SHIFT_C 0
+> +
+> +#define PVR_BVNC_PACK_MASK_B UINT64_C(0xFFFF000000000000)
+> +#define PVR_BVNC_PACK_MASK_V UINT64_C(0x0000FFFF00000000)
+> +#define PVR_BVNC_PACK_MASK_N UINT64_C(0x00000000FFFF0000)
+> +#define PVR_BVNC_PACK_MASK_C UINT64_C(0x000000000000FFFF)
+> +
+> +enum pvr_device_arch {
+> +	PVR_DEVICE_ARCH_ROGUE,
+> +};
+> +
+> +/**
+> + * Packs B, V, N and C values into a 64-bit unsigned integer.
+> + *
+> + * The packed layout is as follows:
+> + *
+> + * \verbatim
+> + *	 +--------+--------+--------+-------+
+> + *	 | 63..48 | 47..32 | 31..16 | 15..0 |
+> + *	 +========+========+========+=======+
+> + *	 |   B    |   V    |   N    |   C   |
+> + *	 +--------+--------+--------+-------+
+> + * \endverbatim
+> + *
+> + * #pvr_get_packed_bvnc() should be used instead of this macro when a
+> + * #pvr_device_information is available in order to ensure proper type checking.
+> + *
+> + * \param b Branch ID.
+> + * \param v Version ID.
+> + * \param n Number of scalable units.
+> + * \param c Config ID.
+> + * \return Packed BVNC.
+> + *
+> + * \sa #pvr_get_packed_bvnc(), #PVR_BVNC_UNPACK_B(), #PVR_BVNC_UNPACK_V(),
+> + * #PVR_BVNC_UNPACK_N() and #PVR_BVNC_UNPACK_C()
+> + */
+> +#define PVR_BVNC_PACK(b, v, n, c)						\
+> +	((((uint64_t)(b) << PVR_BVNC_PACK_SHIFT_B) & PVR_BVNC_PACK_MASK_B) |	\
+> +	 (((uint64_t)(v) << PVR_BVNC_PACK_SHIFT_V) & PVR_BVNC_PACK_MASK_V) |	\
+> +	 (((uint64_t)(n) << PVR_BVNC_PACK_SHIFT_N) & PVR_BVNC_PACK_MASK_N) |	\
+> +	 (((uint64_t)(c) << PVR_BVNC_PACK_SHIFT_C) & PVR_BVNC_PACK_MASK_C))
+> +
+> +/**
+> + * Unpacks B value (branch ID) from packed BVNC.
+> + *
+> + * \param bvnc Packed BVNC.
+> + * \return Branch ID.
+> + *
+> + * \sa #PVR_BVNC_UNPACK_V(), #PVR_BVNC_UNPACK_N(), #PVR_BVNC_UNPACK_C(),
+> + * #pvr_get_packed_bvnc() and #PVR_BVNC_PACK()
+> + */
+> +#define PVR_BVNC_UNPACK_B(bvnc) \
+> +	((uint16_t)(((bvnc) & PVR_BVNC_PACK_MASK_B) >> PVR_BVNC_PACK_SHIFT_B))
+> +
+> +/**
+> + * Unpacks V value (version ID) from packed BVNC.
+> + *
+> + * \param bvnc Packed BVNC.
+> + * \return Version ID.
+> + *
+> + * \sa #PVR_BVNC_UNPACK_B(), #PVR_BVNC_UNPACK_N(), #PVR_BVNC_UNPACK_C(),
+> + * #pvr_get_packed_bvnc() and #PVR_BVNC_PACK()
+> + */
+> +#define PVR_BVNC_UNPACK_V(bvnc) \
+> +	((uint16_t)(((bvnc) & PVR_BVNC_PACK_MASK_V) >> PVR_BVNC_PACK_SHIFT_V))
+> +
+> +/**
+> + * Unpacks N value (number of scalable units) from packed BVNC.
+> + *
+> + * \param bvnc Packed BVNC.
+> + * \return Number of scalable units.
+> + *
+> + * \sa #PVR_BVNC_UNPACK_B(), #PVR_BVNC_UNPACK_V(), #PVR_BVNC_UNPACK_C(),
+> + * #pvr_get_packed_bvnc() and #PVR_BVNC_PACK()
+> + */
+> +#define PVR_BVNC_UNPACK_N(bvnc) \
+> +	((uint16_t)(((bvnc) & PVR_BVNC_PACK_MASK_N) >> PVR_BVNC_PACK_SHIFT_N))
+> +
+> +/**
+> + * Unpacks C value (config ID) from packed BVNC.
+> + *
+> + * \param bvnc Packed BVNC.
+> + * \return Config ID.
+> + *
+> + * \sa #PVR_BVNC_UNPACK_B(), #PVR_BVNC_UNPACK_V(), #PVR_BVNC_UNPACK_N(),
+> + * #pvr_get_packed_bvnc() and #PVR_BVNC_PACK()
+> + */
+> +#define PVR_BVNC_UNPACK_C(bvnc) \
+> +	((uint16_t)(((bvnc) & PVR_BVNC_PACK_MASK_C) >> PVR_BVNC_PACK_SHIFT_C))
+> +
+> +/**
+> + * Tests whether a physical device has a given feature.
+> + *
+> + * Feature names are derived from those found in #pvr_device_features by
+> + * dropping the 'has_' prefix, which is applied by this macro.
+> + *
+> + * \param dev_info #pvr_device_info object associated with the target physical device.
+> + *
+> + * \param feature  Device feature name.
+> + *
+> + * \return
+> + *  * true if the named feature is present in the hardware.
+> + *  * false if the named feature is not present in the hardware.
+> + *
+> + * \sa #PVR_FEATURE_VALUE() and #PVR_GET_FEATURE_VALUE()
+> + */
+> +#define PVR_HAS_FEATURE(dev_info, feature) ((dev_info)->features.has_##feature)
+> +
+> +/**
+> + * Gets a physical device feature value if feature is supported.
+> + *
+> + * Feature names are derived from those found in #pvr_device_features by
+> + * dropping the 'has_' prefix.
+> + *
+> + * This macro should be used in preference to #PVR_GET_FEATURE_VALUE() as it has
+> + * proper error handling.
+> + *
+> + * \param dev_info  #pvr_device_info object associated with the target physical device.
+> + *
+> + * \param feature   Feature name.
+> + * \param value_out Feature value.
+> + *
+> + * \return
+> + *  * 0 on success, or
+> + *  * -%EINVAL if the named feature is not present in the hardware.
+> + *
+> + * \sa #PVR_HAS_FEATURE() and #PVR_GET_FEATURE_VALUE()
+> + */
+> +#define PVR_FEATURE_VALUE(dev_info, feature, value_out)			\
+> +	({								\
+> +		const struct pvr_device_info *__dev_info = dev_info;	\
+> +		int __ret = -EINVAL;					\
+> +		if (__dev_info->features.has_##feature) {		\
+> +			*(value_out) = __dev_info->features.feature;	\
+> +			__ret = 0;					\
+> +		}							\
+> +		__ret;							\
+> +	})
+> +
+> +/**
+> + * Gets a physical device feature value if supported, but otherwise returns a
+> + * default value.
+> + *
+> + * Feature names are derived from those found in #pvr_device_features by
+> + * dropping the 'has_' prefix.
+> + *
+> + * #PVR_FEATURE_VALUE() should be used in preference to this macro when errors
+> + * can be returned by the caller. This macro is intended for cases where errors
+> + * can't be returned.
+> + *
+> + * \param dev_info #pvr_device_info object associated with the target
+> + *                 physical device.
+> + * \param feature Feature name.
+> + * \param default_value Default feature value.
+> + *
+> + * \return Feature value.
+> + *
+> + * \sa #PVR_HAS_FEATURE() and #PVR_FEATURE_VALUE()
+> + */
+> +#define PVR_GET_FEATURE_VALUE(dev_info, feature, default_value)				\
+> +	({										\
+> +		const struct pvr_device_info *__dev_info = dev_info;			\
+> +		__typeof__(default_value) __ret = default_value;			\
+> +		if (__dev_info->features.has_##feature) {				\
+> +			__ret = __dev_info->features.feature;				\
+> +		} else {								\
+> +			assert(0);							\
+> +		}									\
+> +		__ret;									\
+> +	})
+> +
+> +/**
+> + * Tests whether a physical device has a given enhancement.
+> + *
+> + * Enhancement numbers are derived from those found in #pvr_device_enhancements
+> + * by dropping the 'has_ern' prefix, which is applied by this macro.
+> + *
+> + * \param dev_info #pvr_device_info object associated with the target physical
+> + *                 device.
+> + * \param number   Enhancement number.
+> + *
+> + * \return
+> + *  * true if the enhancement is present in the hardware.
+> + *  * false if the enhancement is not present in the hardware.
+> + */
+> +#define PVR_HAS_ENHANCEMENT(dev_info, number) \
+> +	((dev_info)->enhancements.has_ern##number)
+> +
+> +/**
+> + * Tests whether a physical device has a given quirk.
+> + *
+> + * Quirk numbers are derived from those found in #pvr_device_quirks by
+> + * dropping the 'has_brn' prefix, which is applied by this macro.
+> + *
+> + * \param dev_info #pvr_device_info object associated with the target physical device.
+> + *
+> + * \param number   Quirk number.
+> + *
+> + * \return
+> + *  * true if the quirk is present in the hardware.
+> + *  * false if the quirk is not present in the hardware.
+> + */
+> +#define PVR_HAS_QUIRK(dev_info, number) ((dev_info)->quirks.has_brn##number)
+> +
+> +struct pvr_device_ident {
+> +	enum pvr_device_arch arch;
+> +	uint16_t b, v, n, c;
+> +	uint32_t device_id;
+> +	const char *series_name;
+> +	const char *public_name;
+> +};
+> +
+> +struct pvr_device_features {
+> +	bool has_astc : 1;
+> +	bool has_cluster_grouping : 1;
+> +	bool has_common_store_size_in_dwords : 1;
+> +	bool has_compute : 1;
+> +	bool has_compute_morton_capable : 1;
+> +	bool has_compute_overlap : 1;
+> +	bool has_eight_output_registers : 1;
+> +	bool has_fb_cdc_v4 : 1;
+> +	bool has_fbcdc_algorithm : 1;
+> +	bool has_gpu_multicore_support : 1;
+> +	bool has_gs_rta_support : 1;
+> +	bool has_ipf_creq_pf : 1;
+> +	bool has_isp_max_tiles_in_flight : 1;
+> +	bool has_isp_samples_per_pixel : 1;
+> +	bool has_max_instances_per_pds_task : 1;
+> +	bool has_max_multisample : 1;
+> +	bool has_max_partitions : 1;
+> +	bool has_max_usc_tasks : 1;
+> +	bool has_num_clusters : 1;
+> +	bool has_num_raster_pipes : 1;
+> +	bool has_paired_tiles : 1;
+> +	bool has_pbe2_in_xe : 1;
+> +	bool has_pbe_filterable_f16 : 1;
+> +	bool has_pbe_stride_align_1pixel : 1;
+> +	bool has_pbe_yuv : 1;
+> +	bool has_pds_ddmadt : 1;
+> +	bool has_roguexe : 1;
+> +	bool has_screen_size8K : 1;
+> +	bool has_simple_internal_parameter_format : 1;
+> +	bool has_simple_internal_parameter_format_v1 : 1;
+> +	bool has_simple_internal_parameter_format_v2 : 1;
+> +	bool has_simple_parameter_format_version : 1;
+> +	bool has_slc_cache_line_size_bits : 1;
+> +	bool has_slc_mcu_cache_controls : 1;
+> +	bool has_tf_bicubic_filter : 1;
+> +	bool has_tile_per_usc : 1;
+> +	bool has_tile_size_16x16 : 1;
+> +	bool has_tile_size_x : 1;
+> +	bool has_tile_size_y : 1;
+> +	bool has_tpu_array_textures : 1;
+> +	bool has_tpu_border_colour_enhanced : 1;
+> +	bool has_tpu_dm_global_registers : 1;
+> +	bool has_tpu_extended_integer_lookup : 1;
+> +	bool has_tpu_image_state_v2 : 1;
+> +	bool has_tpu_parallel_instances : 1;
+> +	bool has_unified_store_depth : 1;
+> +	bool has_usc_alu_roundingmode_rne : 1;
+> +	bool has_usc_f16sop_u8 : 1;
+> +	bool has_usc_itrsmp : 1;
+> +	bool has_usc_itrsmp_enhanced : 1;
+> +	bool has_usc_itr_parallel_instances : 1;
+> +	bool has_usc_min_output_registers_per_pix : 1;
+> +	bool has_usc_pixel_partition_mask : 1;
+> +	bool has_usc_slots : 1;
+> +	bool has_uvs_banks : 1;
+> +	bool has_uvs_pba_entries : 1;
+> +	bool has_uvs_vtx_entries : 1;
+> +	bool has_vdm_cam_size : 1;
+> +	bool has_vdm_degenerate_culling : 1;
+> +	bool has_xpu_max_slaves : 1;
+> +	bool has_xt_top_infrastructure : 1;
+> +	bool has_zls_subtile : 1;
+> +
+> +	uint32_t common_store_size_in_dwords;
+> +	uint32_t fbcdc_algorithm;
+> +	uint32_t isp_max_tiles_in_flight;
+> +	uint32_t isp_samples_per_pixel;
+> +	uint32_t max_instances_per_pds_task;
+> +	uint32_t max_multisample;
+> +	uint32_t max_partitions;
+> +	uint32_t max_usc_tasks;
+> +	uint32_t num_clusters;
+> +	uint32_t num_raster_pipes;
+> +	uint32_t simple_parameter_format_version;
+> +	uint32_t slc_cache_line_size_bits;
+> +	uint32_t tile_size_x;
+> +	uint32_t tile_size_y;
+> +	uint32_t tpu_parallel_instances;
+> +	uint32_t unified_store_depth;
+> +	uint32_t usc_itr_parallel_instances;
+> +	uint32_t usc_min_output_registers_per_pix;
+> +	uint32_t usc_slots;
+> +	uint32_t uvs_banks;
+> +	uint32_t uvs_pba_entries;
+> +	uint32_t uvs_vtx_entries;
+> +	uint32_t vdm_cam_size;
+> +	uint32_t xpu_max_slaves;
+> +
+> +	/* Derived features. */
+> +	bool has_requires_fb_cdc_zls_setup : 1;
+> +	bool has_s8xe : 1;
+> +};
+> +
+> +struct pvr_device_enhancements {
+> +	bool has_ern35421 : 1;
+> +	bool has_ern38020 : 1;
+> +	bool has_ern38748 : 1;
+> +	bool has_ern42064 : 1;
+> +	bool has_ern42307 : 1;
+> +	bool has_ern45493 : 1;
+> +};
+> +
+> +struct pvr_device_quirks {
+> +	bool has_brn44079 : 1;
+> +	bool has_brn47727 : 1;
+> +	bool has_brn48492 : 1;
+> +	bool has_brn48545 : 1;
+> +	bool has_brn49032 : 1;
+> +	bool has_brn49927 : 1;
+> +	bool has_brn51025 : 1;
+> +	bool has_brn51210 : 1;
+> +	bool has_brn51764 : 1;
+> +	bool has_brn52354 : 1;
+> +	bool has_brn52942 : 1;
+> +	bool has_brn58839 : 1;
+> +	bool has_brn62269 : 1;
+> +	bool has_brn66011 : 1;
+> +	bool has_brn70165 : 1;
+> +	bool has_brn72168 : 1;
+> +	bool has_brn72463 : 1;
+> +	bool has_brn74056 : 1;
+> +};
+> +
+> +struct pvr_device_info {
+> +	struct pvr_device_ident ident;
+> +	struct pvr_device_features features;
+> +	struct pvr_device_enhancements enhancements;
+> +	struct pvr_device_quirks quirks;
+> +};
+> +
+> +struct pvr_device_runtime_info {
+> +	uint64_t min_free_list_size;
+> +	uint64_t max_free_list_size;
+> +	uint64_t reserved_shared_size;
+> +	uint64_t total_reserved_partition_size;
+> +	uint64_t num_phantoms;
+> +	uint64_t max_coeffs;
+> +	uint64_t cdm_max_local_mem_size_regs;
+> +	uint32_t core_count;
+> +};
+> +
+> +int pvr_device_info_init(struct pvr_device_info *info, uint64_t bvnc);
+> +
+> +bool pvr_device_info_init_public_name(struct pvr_device_info *info,
+> +				      const char *public_name);
+> +
+> +#endif /* PVR_DEVICE_INFO_H */
+> diff --git a/lib/meson.build b/lib/meson.build
+> index d1a770b6d..2609033cb 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -129,6 +129,7 @@ lib_sources = [
+>  	'igt_msm.c',
+>  	'igt_dsc.c',
+>  	'igt_hook.c',
+> +	'imagination/pvr_device_info.c',
+>  	'xe/xe_device.c',
+>  	'xe/xe_ggtt.c',
+>  	'xe/xe_gt.c',
 > 
-> ---
-> base-commit: 970700a95acd74bb987287d10147b5f23380519b
-> change-id: 20260915-b4-panthor_version_sparse-5fbd31cc0d5d
-> 
-> Best regards,
 > -- 
-> Deborah Brouwer <deborah.brouwer@collabora.com>
+> 2.43.0
 > 
