@@ -4,52 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 640E6C982EE
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 12:25:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A988CC982EE
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 12:27:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E42E410E170;
-	Mon, 21 Sep 2026 12:25:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5FCC410E658;
+	Mon, 21 Sep 2026 12:27:29 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O692nRJf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AOInGTqy";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3707410E170
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 12:24:31 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 319CD10E62F
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 12:26:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789993471; x=1821529471;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=zc1kMoLBwmP5blrFeDgaaJOt58Chba7B8E4t3S1CK0w=;
- b=O692nRJf0MLJOsKwJ38JakA7YeR8cctFemMqvcEOC0TRXDgaPy+ihRDr
- TD5Vp0ez6KOV6TfZ9Ec7Z8Dr5lQcjCJ+c0D9/55DUal48DDQgKDKQJm6h
- 2kiR5l7iF6A54+gzmRaf6D2KrDzSGKdP9O1ZbaqNAwi2NdH1S+GstiANX
- CCnpXUPMAGQTGLHTDxU2MLe/amYJWtvS7lTSKSmCQUMrIzsAc/Q59Ms6j
- x6wo53W/c6C/q8ipG+yLjGoTJZJcpd8cHD6F/9RwvSZVfpKkeak8iPsko
- vtOmCNcZDz23Z4K2RsQyNVgJkIJdpIpc5sHvvTPrW6VtnSWOg0nBMRC77 w==;
-X-CSE-ConnectionGUID: 58O82CqEQbyeip+dyFPRoA==
-X-CSE-MsgGUID: HZoAAwOwSTmej+MxoRsS3A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="89637170"
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="89637170"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2026 05:24:31 -0700
-X-CSE-ConnectionGUID: sc04at4KSdeJM2CSwHJ6TA==
-X-CSE-MsgGUID: QzSsFUeHS26x4yWA2EfUrg==
+ t=1789993607; x=1821529607;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=UTVBpNd44CTYoulETEEF1/2OWfE+S6MdfeSTeJp8gRk=;
+ b=AOInGTqyY7ktRjWTk+rb9L3CsdGD3ahatKrv6VENqnREXz01FjokNBrF
+ aE3gz7cr9zHoC8GHpACSKDG7W4MuhFtuiJEZipeXw6zpBx2cPoNRgqQzt
+ 03QvIBXgrafghiggo9MFyA6Cb7+9zaRlD1sk9roTdKzss6z7OvFBBQbYE
+ 9ztT2D2pU+7Vhv3v77aBHyYA5hH30GmqpFNslh2aiVglX7/cvO1SLCo4v
+ BDyvrzYBoloYhQEYWp+c8+f5LMaYMgCgoDet8LGoUmxuozBSDBAtvPFv8
+ M+jAgfxsF9dx3kh3emXP5pErT6lIx3FFdk2KSSybiYy+Tyy2r8TSnepFC w==;
+X-CSE-ConnectionGUID: y10rZrEORiGvk95VwpIxbw==
+X-CSE-MsgGUID: NorQkgMyQnuS4RLYBnrv2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="94327370"
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="94327370"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2026 05:26:47 -0700
+X-CSE-ConnectionGUID: /JMoYxfmQCGrD1s1Ob+Pgw==
+X-CSE-MsgGUID: HAZHqJ9nS3SthBSNZClkNg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="272791471"
-Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
- by fmviesa008-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 05:24:30 -0700
-From: Swati Sharma <swati2.sharma@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Subject: [PATCH i-g-t] intel-ci: Add fixed-matrix chamelium tests
-Date: Mon, 21 Sep 2026 18:03:42 +0530
-Message-Id: <20260921123342.1068658-1-swati2.sharma@intel.com>
-X-Mailer: git-send-email 2.25.1
+X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="300568313"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2026 05:26:46 -0700
+Date: Mon, 21 Sep 2026 14:26:26 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: Re: [PATCH i-g-t v5 1/1] lib/igt_core: Create new way for finding
+ PNG data files
+Message-ID: <20260921122626.p37jrnvmfo4fy2kk@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+References: <20260918112659.45415-1-kamil.konieczny@linux.intel.com>
+ <20260918112659.45415-2-kamil.konieczny@linux.intel.com>
+ <jx7q3mdsxhx3t44khtvnlrnxi24mxngk3hjckorucqxyc2rtva@zxjo4cbb6jro>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <jx7q3mdsxhx3t44khtvnlrnxi24mxngk3hjckorucqxyc2rtva@zxjo4cbb6jro>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,37 +76,186 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Extend chamelium-only testlist with fixed-matrix yuv-rgb
-conversion tests for BT2020/BT601/BT709.
+Hi Zbigniew,
+On 2026-09-21 at 08:17:27 +0200, Zbigniew Kempczyński wrote:
+> On Fri, Sep 18, 2026 at 01:26:59PM +0200, Kamil Konieczny wrote:
+> > Reference to build path break reproducibility, as a build could
+> > be done on different directories. Data paths are used only when
+> > loading a data file containing screen image. Remove build path
+> > from the function which use it.
+> > 
+> >   Create a new way for finding PNG data files, so a developer
+> > can run a test from a build dir and a test could find and load
+> > it.
+> > 
+> > v2: addressed review comments (Zbigniew)
+> >   corrected description of function (Kamil)
+> > 
+> > Cc: Karthik B S <karthik.b.s@intel.com>
+> > Cc: Swati Sharma <swati2.sharma@intel.com>
+> > Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+> > Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/190
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  lib/igt_core.c  | 62 ++++++++++++++++++++++++++++++++++---------------
+> >  lib/igt_core.h  |  3 +--
+> >  lib/meson.build |  1 -
+> >  3 files changed, 44 insertions(+), 22 deletions(-)
+> > 
+> > diff --git a/lib/igt_core.c b/lib/igt_core.c
+> > index 4efddb908..f5dcac2f0 100644
+> > --- a/lib/igt_core.c
+> > +++ b/lib/igt_core.c
+> > @@ -366,6 +366,8 @@ enum {
+> >  
+> >  static int igt_exitcode = IGT_EXIT_SUCCESS;
+> >  static const char *command_str;
+> > +static const char *command_full_path;
+> > +static char command_base_path[PATH_MAX];
+> >  
+> >  static char* igt_log_domain_filter;
+> >  static struct {
+> > @@ -1112,7 +1114,7 @@ static int common_init(int *argc, char **argv,
+> >  		{"help",              no_argument,       NULL, OPT_HELP},
+> >  		{0, 0, 0, 0}
+> >  	};
+> > -	char *short_opts;
+> > +	char *short_opts, *s;
+> >  	const char *std_short_opts = "h";
+> >  	size_t std_short_opts_len = strlen(std_short_opts);
+> >  	struct option *combined_opts;
+> > @@ -1125,6 +1127,14 @@ static int common_init(int *argc, char **argv,
+> >  	IGT_INIT_LIST_HEAD(&subgroup_descriptions);
+> >  	igt_vec_init(&hook_strs, sizeof(char *));
+> >  
+> > +	command_full_path = argv[0];
+> > +	snprintf(command_base_path, ARRAY_SIZE(command_base_path), "%s", argv[0]);
+> > +	if ((s = strrchr(command_base_path, '/')))
+> > +		*s = 0;
+> > +
+> > +	if (!strlen(command_base_path))
+> > +		strcpy(command_base_path, ".");
+> > +
+> >  	command_str = argv[0];
+> >  	if (strrchr(command_str, '/'))
+> >  		command_str = strrchr(command_str, '/') + 1;
+> > @@ -3389,31 +3399,45 @@ void igt_reset_timeout(void)
+> >  }
+> >  
+> >  /**
+> > - * __igt_fopen_data:
+> > - * @igt_srcdir:  Directory path for source files.
+> > - * @igt_datadir: Directory path for data files
+> > - * @igt_imgdir: Directory path for image files.
+> > + * __igt_fopen_data_file:
+> > + * @dir:  Directory path for source files.
+> > + * @rel:  Relative path.
+> >   * @filename: Name of the file to be opened.
+> >   *
+> > - * This function attempts to open a data file from a list of specified
+> > - * directories. A file pointer to the opened file. If the file cannot
+> > - * be opened, it returns NULL and logs a critical error message.
+> > - *
+> > + * This function attempts to open a data file from a specified directory dir/rel/.
+> > + * Returns a file pointer to the opened file or NULL.
+> >   */
+> > -FILE *__igt_fopen_data(const char *igt_srcdir, const char *igt_datadir,
+> > -		       const char *igt_imgdir, const char *filename)
+> > +static FILE *__igt_fopen_data_file(const char *dir, const char *rel, const char *filename)
+> >  {
+> >  	char path[PATH_MAX];
+> > -	FILE *fp;
+> > -	const char *dirs[] = {igt_datadir, igt_srcdir, igt_imgdir,
+> > -			      getenv("IGT_DATA_PATH"), "./data"};
+> >  
+> > -	for (int i = 0; i < ARRAY_SIZE(dirs); i++) {
+> > +	snprintf(path, ARRAY_SIZE(path), "%s/%s/%s", dir, rel, filename);
+> > +
+> > +	return fopen(path, "r");
+> > +}
+> > +
+> > +/**
+> > + * igt_fopen_data:
+> > + * @filename: Name of the file to be opened.
+> > + *
+> > + * This function attempts to open a data file from a list of known directories.
+> > + *
+> > + * Returns a file pointer to the opened file. If the file cannot be opened, it
+> > + * returns NULL and logs a critical error message.
+> > + */
+> > +FILE *igt_fopen_data(const char *filename)
+> > +{
+> > +	static const char *igt_datadir = IGT_DATADIR;
+> > +	static const char *igt_srcdir = IGT_SRCDIR;
+> > +	static const char *reldirs[] = {".", "..", "./data", "../data", "../../data" };
+> > +	const char *dirs[] = { getenv("IGT_DATA_PATH"), igt_datadir, igt_srcdir,
+> > +			       command_base_path, "."};
+> 
+> IMO "." and './data' in reldirs are unnecessary. Assuming igt_datadir = "abc" you
+> would get path:
+> 
+> abc/./filename
+> abc/./data/filename
+> 
+> But this is a nit and check if I'm not wrong. For patch:
 
-Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
----
- tests/intel-ci/chamelium-only.testlist | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Those are valid paths and they make code simple. It could be
+somewhat optimesed out, like empty string instead of dot,
+but then function should check for it and code complicates.
 
-diff --git a/tests/intel-ci/chamelium-only.testlist b/tests/intel-ci/chamelium-only.testlist
-index 898c53134..6b395e8da 100644
---- a/tests/intel-ci/chamelium-only.testlist
-+++ b/tests/intel-ci/chamelium-only.testlist
-@@ -16,6 +16,18 @@ igt@kms_chamelium_color@degamma
- igt@kms_chamelium_color@gamma
- igt@kms_chamelium_color_pipeline@plane-ctm3x4
- igt@kms_chamelium_color_pipeline@plane-ctm3x4-lut1d
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt2020
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt2020-lim
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt2020-lim-lut1d
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt2020-lut1d
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt601
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt601-lim
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt601-lim-lut1d
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt601-lut1d
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt709
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt709-lim
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt709-lim-lut1d
-+igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt709-lut1d
- igt@kms_chamelium_color_pipeline@plane-lut1d
- igt@kms_chamelium_color_pipeline@plane-lut1d-ctm3x4
- igt@kms_chamelium_color_pipeline@plane-lut1d-ctm3x4-lut1d
--- 
-2.25.1
+> 
+> Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
+Thank you, I will merge it as is.
+
+
+
+Regards,
+Kamil
+
+> 
+> --
+> Zbigniew
+> 
+> > +	FILE *fp = NULL;
+> > +
+> > +	for (int i = 0; i < ARRAY_SIZE(dirs) && !fp; i++) {
+> >  		if (dirs[i]) {
+> > -			snprintf(path, sizeof(path), "%s/%s", dirs[i], filename);
+> > -			fp = fopen(path, "r");
+> > -			if (fp)
+> > -				break;
+> > +			for (int j = 0; j < ARRAY_SIZE(reldirs) && !fp; j++)
+> > +				fp = __igt_fopen_data_file(dirs[i], reldirs[j], filename);
+> >  		}
+> >  	}
+> >  
+> > diff --git a/lib/igt_core.h b/lib/igt_core.h
+> > index afaf35aa8..c0908a8ed 100644
+> > --- a/lib/igt_core.h
+> > +++ b/lib/igt_core.h
+> > @@ -1532,8 +1532,7 @@ FILE *__igt_fopen_data(const char *igt_srcdir, const char *igt_datadir,
+> >   * Open a datafile for test, first try from installation directory,
+> >   * then from build directory, and finally from current directory.
+> >   */
+> > -#define igt_fopen_data(filename) \
+> > -	__igt_fopen_data(IGT_SRCDIR, IGT_DATADIR, IGT_IMGDIR, filename)
+> > +FILE *igt_fopen_data(const char *filename);
+> >  
+> >  int igt_system(const char *command);
+> >  int igt_system_quiet(const char *command);
+> > diff --git a/lib/meson.build b/lib/meson.build
+> > index d1a770b6d..2ac632758 100644
+> > --- a/lib/meson.build
+> > +++ b/lib/meson.build
+> > @@ -371,7 +371,6 @@ foreach f: lib_sources
+> >  	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
+> >  	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
+> >  	    '-DIGT_LOG_DOMAIN="@0@"'.format(f.split('.')[0]),
+> > -            '-DIGT_IMGDIR="@0@"'.format(imgdir),
+> >  	])
+> >  
+> >      lib_intermediates += lib
+> > -- 
+> > 2.55.0
+> > 
