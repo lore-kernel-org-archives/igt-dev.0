@@ -4,65 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C022CC982ED
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 15:32:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7337DC982ED
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 15:39:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4DE8910E903;
-	Mon, 21 Sep 2026 15:32:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 077A610E8A0;
+	Mon, 21 Sep 2026 15:39:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PWLOGxHd";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J+3xXXhQ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F0AB10E8A0
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 15:31:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7481410E8A0
+ for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 15:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790004701; x=1821540701;
+ t=1790005118; x=1821541118;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=n4ZVpQorTnUyLsT0JwVULqkMeJOQ1uluGcKTy3GZflA=;
- b=PWLOGxHd7TAjV7p+Q4IHrHQZG8rvGW4x1uwkOT+UPxkfnN/s5TmZwzfE
- 8PkA8742L0dGeL0oWiKpB5JkMYDT6q2qFjUCAo/qZEaThdX91HpHLCuXD
- fGjY46Dia1qSHg8inOVZBgShvpK1ll1TFl3CNp00M3Ev+FqbY3e2HQL8A
- ZtzH7CYxvvmwlH6bcs8vOKhwuRUYkB6qcl1wPjt+c0pwkNjYGsR6fVIWH
- ekVjaig7YHi9fLyjWCyIeb6PV/lFW9FTOak+OA/CVeRhYXwpEEbu4Rc4T
- i4dBjbrUyjMeDxK4lR18/c3AJNPJwDfdtOwWdIAoB4mHyRDhvv8DjD1q8 Q==;
-X-CSE-ConnectionGUID: yj1c7GoBQO6COUDhQ0VMLQ==
-X-CSE-MsgGUID: ewBQhF7lTkW0vaAAemP/Sg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="93028718"
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="93028718"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2026 08:31:41 -0700
-X-CSE-ConnectionGUID: RO0WqGBBRtyG36G23J6mDg==
-X-CSE-MsgGUID: gbn8MWzETviZ8Z6Df1oFgA==
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=qspLpyVY+2FbGx+mxPeQoSPt8IHojjJ0RfdYQ8KrOWk=;
+ b=J+3xXXhQrAD1CQVlO7NWbpyq4ZuuFnLULvwhIE7/CNXVs8CnKNzLyng0
+ maQ8WWDgJ1jFBW5hK12BWa0xDXTmiSis8d6yCF9aoSg3UYexANKZiemI9
+ cHc9Qdvz4zmel/jYG4n0CNGGqRu5eqrdqrdBHtt+ZZjYuOAJKg153obt2
+ 0jIxNwhJoK8M90Eatf3qgrhyH3j7YUJvr/Tj4aZ4BAG+WHdTVrO13Hj1N
+ KKSQomNNnt0ZayL6Ud9gBijp6NOpf47MVzF7fqKCDKT+0ZGqENuwM45mb
+ wFdzVTJg9w2FVhc/+tufYPdYZRNALPVMbvhpjgcEtGNBywKNGUSYpEPag A==;
+X-CSE-ConnectionGUID: KWik7n2CR2GGApcxdMv1wg==
+X-CSE-MsgGUID: aOK2fhOBRLS6GsxJ/DGEBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="101884853"
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; d="scan'208";a="101884853"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Sep 2026 08:38:38 -0700
+X-CSE-ConnectionGUID: 3c9BOnkHRhqDL5brOXEaew==
+X-CSE-MsgGUID: UbeqsW8VRrup7kMeXwA5ig==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; 
-   d="scan'208";a="3995915"
+X-IronPort-AV: E=Sophos;i="6.27,115,1787036400"; d="scan'208";a="269222653"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 21 Sep 2026 08:31:39 -0700
-Date: Mon, 21 Sep 2026 17:31:36 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2026 08:38:37 -0700
+Date: Mon, 21 Sep 2026 17:38:34 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Karthik Poosa <karthik.poosa@intel.com>
-Cc: igt-dev@lists.freedesktop.org, rodrigo.vivi@intel.com,
- anshuman.gupta@intel.com, badal.nilawar@intel.com,
- raag.jadav@intel.com, riana.tauro@intel.com, sk.anirban@intel.com,
- mallesh.koujalagi@intel.com, soham.purkait@intel.com
-Subject: Re: [PATCH i-g-t] lib/igt_aux: enable serial printk logs during
- suspend
-Message-ID: <20260921153136.vr4i6jmby5fq4pk7@kamilkon-DESK.igk.intel.com>
+To: Jia Yao <jia.yao@intel.com>
+Cc: igt-dev@lists.freedesktop.org, nishit.sharma@intel.com
+Subject: Re: [PATCH] tests/xe_exec_system_allocator: skip huge-page
+ multi-process tests when memory is low
+Message-ID: <20260921153834.aqh546y7gr5xqyxt@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Karthik Poosa <karthik.poosa@intel.com>,
- igt-dev@lists.freedesktop.org, rodrigo.vivi@intel.com,
- anshuman.gupta@intel.com, badal.nilawar@intel.com,
- raag.jadav@intel.com, riana.tauro@intel.com, sk.anirban@intel.com,
- mallesh.koujalagi@intel.com, soham.purkait@intel.com
-References: <20260916141709.1216470-1-karthik.poosa@intel.com>
+ Jia Yao <jia.yao@intel.com>, igt-dev@lists.freedesktop.org,
+ nishit.sharma@intel.com
+References: <20260917230748.1825181-1-jia.yao@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260916141709.1216470-1-karthik.poosa@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260917230748.1825181-1-jia.yao@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,157 +72,107 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Karthik,
-On 2026-09-16 at 19:47:09 +0530, Karthik Poosa wrote:
-> Save /proc/sys/kernel/printk, set the console loglevel to 8 before system
-> suspend so suspend-stage logs reach the serial console, and restore the
-> original value after resume or exit-handler cleanup.
+Hi Jia,
+On 2026-09-17 at 23:07:48 +0000, Jia Yao wrote:
+
+I didn't looked into you patch, only few nits,
+first about subject, please add 'intel/' prefix, so it will be
+
+[PATCH] tests/intel/xe_exec_system_allocator: skip huge-page multi-process tests when memory is low
+
+> The process-many-stride-mmap-new-huge subtest forks one child per GPU
+> engine and, with the MMAP|NEW|HUGE_PAGE flag combination (without FREE),
+> each child accumulates up to n_execs×SZ_2M of anonymous hugepage mmap
+--------------------------------------^
+please use ascii, better
+
+each child accumulates up to n_execs * SZ_2M of anonymous hugepage mmap
+
+> buffers before freeing them at cleanup.  On constrained systems the
+> total peak memory (n_engines × n_execs × 2 MiB) can exhaust system
+
+Same here, use ascii '*' for multiplication.
+
+> RAM, trigger the OOM killer, and cause the surviving processes to time
+> out waiting on fences (ETIME / errno=62) rather than failing cleanly.
 > 
-> During system suspend, userspace log collection is no longer reliable and
-> the useful failure point is often before resume completes. Raise the printk
-> loglevel to 8 for the suspend window so PM and driver messages reach the
-> serial console, then restore the original setting after resume.
-> 
-> Signed-off-by: Karthik Poosa <karthik.poosa@intel.com>
-> Assisted-by: GitHub-Copilot:GPT-5.4
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Add igt_require_mem_kb() that skips when MemAvailable is below the
+> estimated worst-case peak and call it in processes() for the
+> MMAP|NEW|!FREE path before any children are forked.
+
+Did you looked into Xe full results? It seems there are still an
+error:
+
+https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15862/shard-lnl-1/igt@xe_exec_system_allocator@threads-shared-vm-many-stride-mmap-huge-nomemset.html
+
+but I do not know if your change should repaire it.
 
 Regards,
 Kamil
 
-> ---
->  lib/igt_aux.c | 86 +++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 86 insertions(+)
 > 
-> diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-> index 0d250ae2f..510266319 100644
-> --- a/lib/igt_aux.c
-> +++ b/lib/igt_aux.c
-> @@ -699,9 +699,13 @@ void igt_print_activity(void)
->  static int autoresume_delay;
->  bool __console_suspend_saved_state;
->  bool __pm_debug_messages_state;
-> +static char __printk_saved_state[64];
-> +static ssize_t __printk_saved_state_len = -1;
->  
->  #define SYSFS_MODULE_PRINTK "/sys/module/printk/parameters/"
-> +#define PROC_SYS_KERNEL_PRINTK "/proc/sys/kernel/printk"
->  #define CONSOLE_SUSPEND_DISABLE false
-> +#define SERIAL_CONSOLE_LOGLEVEL "8\n"
->  
->  static const char *suspend_state_name[] = {
->  	[SUSPEND_STATE_FREEZE] = "freeze",
-> @@ -915,6 +919,23 @@ static bool is_mem_sleep_state_supported(int power_dir, enum igt_mem_sleep state
->  static void igt_aux_pm_suspend_dbg_restore_exit_handler(int sig)
->  {
->  	int sysfs_fd, power_dir;
-> +	int fd;
-> +	ssize_t written;
-> +
-> +	if (__printk_saved_state_len > 0) {
-> +		fd = open(PROC_SYS_KERNEL_PRINTK, O_WRONLY);
-> +		if (fd >= 0) {
-> +			written = write(fd, __printk_saved_state, __printk_saved_state_len);
-> +			if (written != __printk_saved_state_len)
-> +				igt_warn("Unable to restore %s Err:%d\n",
-> +					 PROC_SYS_KERNEL_PRINTK, errno);
-> +			close(fd);
-> +		} else {
-> +			igt_warn("Unable to open %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
-> +		}
-> +
-> +		__printk_saved_state_len = -1;
-> +	}
->  
->  	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
->  	if (sysfs_fd < 0)
-> @@ -933,6 +954,67 @@ static void igt_aux_pm_suspend_dbg_restore_exit_handler(int sig)
->  	close(power_dir);
+> Signed-off-by: Jia Yao <jia.yao@intel.com>
+> ---
+>  tests/intel/xe_exec_system_allocator.c | 39 ++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+> 
+> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+> index 305512dfd..1f57ab0a3 100644
+> --- a/tests/intel/xe_exec_system_allocator.c
+> +++ b/tests/intel/xe_exec_system_allocator.c
+> @@ -1173,6 +1173,28 @@ static void igt_require_hugepages(void)
+>  		      "No huge pages available!\n");
 >  }
 >  
-> +static void igt_aux_enable_suspend_serial_logs(void)
+> +/**
+> + * igt_require_mem_kb:
+> + * @needed_kb: minimum required free memory in kB
+> + *
+> + * Report whether MemAvailable is sufficient.  Used to avoid OOM kills in
+> + * memory-hungry multi-process subtests (MMAP|NEW without FREE).
+> + */
+> +static bool igt_require_mem_kb(uint64_t needed_kb)
 > +{
-> +	int fd;
-> +	ssize_t len;
-> +	ssize_t written;
+> +	/* igt_get_meminfo() returns bytes; convert to kB for comparison */
+> +	uint64_t avail_kb = igt_get_meminfo("MemAvailable") >> 10;
 > +
-> +	fd = open(PROC_SYS_KERNEL_PRINTK, O_RDWR);
-> +	if (fd < 0) {
-> +		igt_warn("Unable to open %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
-> +		return;
+> +	if (avail_kb < needed_kb) {
+> +		igt_info("Not enough memory: need %" PRIu64
+> +			 " kB, have %" PRIu64 " kB; test not run\n",
+> +			 needed_kb, avail_kb);
+> +		return false;
 > +	}
 > +
-> +	len = read(fd, __printk_saved_state, sizeof(__printk_saved_state) - 1);
-> +	if (len < 0) {
-> +		igt_warn("Unable to read %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
-> +		close(fd);
-> +		return;
-> +	}
-> +
-> +	__printk_saved_state[len] = '\0';
-> +	__printk_saved_state_len = len;
-> +
-> +	if (lseek(fd, 0, SEEK_SET) < 0) {
-> +		igt_warn("Unable to seek %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
-> +		close(fd);
-> +		return;
-> +	}
-> +
-> +	written = write(fd, SERIAL_CONSOLE_LOGLEVEL, strlen(SERIAL_CONSOLE_LOGLEVEL));
-> +	if (written != strlen(SERIAL_CONSOLE_LOGLEVEL)) {
-> +		igt_warn("Unable to set %s to %s Err:%d\n",
-> +			 PROC_SYS_KERNEL_PRINTK, SERIAL_CONSOLE_LOGLEVEL, errno);
-> +		__printk_saved_state_len = -1;
-> +	}
-> +
-> +	close(fd);
+> +	return true;
 > +}
 > +
-> +static void igt_aux_restore_suspend_serial_logs(void)
-> +{
-> +	int fd;
-> +	ssize_t written;
+>  static void
+>  madvise_swizzle_op_exec(int fd, uint32_t vm, struct test_exec_data *data,
+>  			size_t bo_size, uint64_t addr, int index)
+> @@ -2228,6 +2250,23 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
+>  	if (flags & HUGE_PAGE) {
+>  		enable_hugepage();
+>  		igt_require_hugepages();
 > +
-> +	if (__printk_saved_state_len <= 0)
-> +		return;
+> +		/*
+> +		 * MMAP|NEW without FREE accumulates up to n_execs hugepage
+> +		 * buffers per child process (one per engine).  Each buffer is
+> +		 * at least SZ_2M after the HUGE_PAGE alignment, so the worst
+> +		 * case peak RSS is n_engines * n_execs * SZ_2M.  Skip early
+> +		 * if free memory is insufficient to avoid OOM kills that turn
+> +		 * the test into a timeout rather than a clean failure.
+> +		 */
+> +		if ((flags & MMAP) && (flags & NEW) && !(flags & FREE)) {
+> +			uint64_t n_engines = xe_number_engines(fd);
+> +			uint64_t need_kb = n_engines * (uint64_t)n_execs *
+> +					   (SZ_2M / 1024);
 > +
-> +	fd = open(PROC_SYS_KERNEL_PRINTK, O_WRONLY);
-> +	if (fd < 0) {
-> +		igt_warn("Unable to open %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
-> +		return;
-> +	}
-> +
-> +	written = write(fd, __printk_saved_state, __printk_saved_state_len);
-> +	if (written != __printk_saved_state_len)
-> +		igt_warn("Unable to restore %s Err:%d\n", PROC_SYS_KERNEL_PRINTK, errno);
-> +	else
-> +		__printk_saved_state_len = -1;
-> +
-> +	close(fd);
-> +}
-> +
->  /**
->   * igt_aux_enable_pm_suspend_dbg:
->   * @power_dir: /sys/power/ dir fd
-> @@ -949,6 +1031,8 @@ static void igt_aux_enable_pm_suspend_dbg(int power_dir)
->  {
->  	int sysfs_fd;
+> +			if (!igt_require_mem_kb(need_kb))
+> +				return;
+> +		}
+>  	}
 >  
-> +	igt_aux_enable_suspend_serial_logs();
-> +
->  	sysfs_fd = open(SYSFS_MODULE_PRINTK, O_RDONLY);
->  	if (sysfs_fd > 0) {
->  		__console_suspend_saved_state = igt_sysfs_get_boolean(sysfs_fd, "console_suspend");
-> @@ -1027,6 +1111,8 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
->  	else
->  		suspend_via_sysfs(power_dir, state);
->  
-> +	igt_aux_restore_suspend_serial_logs();
-> +
->  	if (orig_mem_sleep)
->  		set_mem_sleep(power_dir, orig_mem_sleep);
->  
+>  	map_fd = open(sync_file, O_RDWR | O_CREAT, 0x666);
 > -- 
-> 2.25.1
+> 2.43.0
 > 
