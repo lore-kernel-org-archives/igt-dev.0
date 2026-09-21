@@ -4,60 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D403C982E1
-	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 06:18:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14D2EC982DE
+	for <igt-dev@archiver.kernel.org>; Mon, 21 Sep 2026 06:32:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E967D10E036;
-	Mon, 21 Sep 2026 06:18:13 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fE1EKGEQ";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.5])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1352910E036
- for <igt-dev@lists.freedesktop.org>; Mon, 21 Sep 2026 06:17:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1789971451; x=1821507451;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=+dZMBQzkLYv83hEGvb4h38Kd1vxki72rzwnxPcXBeZY=;
- b=fE1EKGEQGCKwZU4kiOMFth2+nvWPbzdS1YoaXF1HzWaLPqhZvXaRprEW
- +zeyAigyKfUG60uW99MUylQh3YMkUrQNEK7mpyJdp839CZwhwy1QD/Gey
- ShmGkFkafs+uMQ+tH20tfFd/5Q7OwMwRKsDi7yhZAHnIqYrClKQKpZ0vN
- UemHX3Y6cdJ/Yj4rfAjgau2NqooFF2C92pDs1ZfBbc4KuQSnfDm7hPWCq
- tjMAmUvFDzUV8dUvJiDt2r5gsYHIm6ai3HKHhxnC/khSIZYLUwUIhpcer
- kffKJoc7dYxpMrCHnF8NU0Cim492M9OwpxakoH7n70VXhaZPyvyTYIwlK A==;
-X-CSE-ConnectionGUID: YLyaxig3T3ulyAbJo3YuwQ==
-X-CSE-MsgGUID: KesNEzHzThC+ESOXJB9aUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11911"; a="969879"
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; 
-   d="scan'208";a="969879"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa115.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Sep 2026 23:17:30 -0700
-X-CSE-ConnectionGUID: finGUaTsQ76aElW+ItfqPw==
-X-CSE-MsgGUID: ps+KbwRIQBCr/GtHo9arHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,114,1787036400"; d="scan'208";a="300456828"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.244.130])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Sep 2026 23:17:29 -0700
-Date: Mon, 21 Sep 2026 08:17:27 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, Karthik B S <karthik.b.s@intel.com>, 
- Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: [PATCH i-g-t v5 1/1] lib/igt_core: Create new way for finding
- PNG data files
-Message-ID: <jx7q3mdsxhx3t44khtvnlrnxi24mxngk3hjckorucqxyc2rtva@zxjo4cbb6jro>
-References: <20260918112659.45415-1-kamil.konieczny@linux.intel.com>
- <20260918112659.45415-2-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA2DE10E14B;
+	Mon, 21 Sep 2026 06:32:30 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0CF410E253;
+ Mon, 21 Sep 2026 06:31:47 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4307889076976629381=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260918112659.45415-2-kamil.konieczny@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/kms=5Fcolor=3A_Add_?=
+ =?utf-8?q?support_for_background_color_testing=2E_=28rev6=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Maarten Lankhorst" <dev@lankhorst.se>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 21 Sep 2026 06:31:47 -0000
+Message-ID: <178997230791.185576.9204356982764940844@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260917191835.977425-1-swati2.sharma@intel.com>
+In-Reply-To: <20260917191835.977425-1-swati2.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,174 +37,270 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Fri, Sep 18, 2026 at 01:26:59PM +0200, Kamil Konieczny wrote:
-> Reference to build path break reproducibility, as a build could
-> be done on different directories. Data paths are used only when
-> loading a data file containing screen image. Remove build path
-> from the function which use it.
-> 
->   Create a new way for finding PNG data files, so a developer
-> can run a test from a build dir and a test could find and load
-> it.
-> 
-> v2: addressed review comments (Zbigniew)
->   corrected description of function (Kamil)
-> 
-> Cc: Karthik B S <karthik.b.s@intel.com>
-> Cc: Swati Sharma <swati2.sharma@intel.com>
-> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/190
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  lib/igt_core.c  | 62 ++++++++++++++++++++++++++++++++++---------------
->  lib/igt_core.h  |  3 +--
->  lib/meson.build |  1 -
->  3 files changed, 44 insertions(+), 22 deletions(-)
-> 
-> diff --git a/lib/igt_core.c b/lib/igt_core.c
-> index 4efddb908..f5dcac2f0 100644
-> --- a/lib/igt_core.c
-> +++ b/lib/igt_core.c
-> @@ -366,6 +366,8 @@ enum {
->  
->  static int igt_exitcode = IGT_EXIT_SUCCESS;
->  static const char *command_str;
-> +static const char *command_full_path;
-> +static char command_base_path[PATH_MAX];
->  
->  static char* igt_log_domain_filter;
->  static struct {
-> @@ -1112,7 +1114,7 @@ static int common_init(int *argc, char **argv,
->  		{"help",              no_argument,       NULL, OPT_HELP},
->  		{0, 0, 0, 0}
->  	};
-> -	char *short_opts;
-> +	char *short_opts, *s;
->  	const char *std_short_opts = "h";
->  	size_t std_short_opts_len = strlen(std_short_opts);
->  	struct option *combined_opts;
-> @@ -1125,6 +1127,14 @@ static int common_init(int *argc, char **argv,
->  	IGT_INIT_LIST_HEAD(&subgroup_descriptions);
->  	igt_vec_init(&hook_strs, sizeof(char *));
->  
-> +	command_full_path = argv[0];
-> +	snprintf(command_base_path, ARRAY_SIZE(command_base_path), "%s", argv[0]);
-> +	if ((s = strrchr(command_base_path, '/')))
-> +		*s = 0;
-> +
-> +	if (!strlen(command_base_path))
-> +		strcpy(command_base_path, ".");
-> +
->  	command_str = argv[0];
->  	if (strrchr(command_str, '/'))
->  		command_str = strrchr(command_str, '/') + 1;
-> @@ -3389,31 +3399,45 @@ void igt_reset_timeout(void)
->  }
->  
->  /**
-> - * __igt_fopen_data:
-> - * @igt_srcdir:  Directory path for source files.
-> - * @igt_datadir: Directory path for data files
-> - * @igt_imgdir: Directory path for image files.
-> + * __igt_fopen_data_file:
-> + * @dir:  Directory path for source files.
-> + * @rel:  Relative path.
->   * @filename: Name of the file to be opened.
->   *
-> - * This function attempts to open a data file from a list of specified
-> - * directories. A file pointer to the opened file. If the file cannot
-> - * be opened, it returns NULL and logs a critical error message.
-> - *
-> + * This function attempts to open a data file from a specified directory dir/rel/.
-> + * Returns a file pointer to the opened file or NULL.
->   */
-> -FILE *__igt_fopen_data(const char *igt_srcdir, const char *igt_datadir,
-> -		       const char *igt_imgdir, const char *filename)
-> +static FILE *__igt_fopen_data_file(const char *dir, const char *rel, const char *filename)
->  {
->  	char path[PATH_MAX];
-> -	FILE *fp;
-> -	const char *dirs[] = {igt_datadir, igt_srcdir, igt_imgdir,
-> -			      getenv("IGT_DATA_PATH"), "./data"};
->  
-> -	for (int i = 0; i < ARRAY_SIZE(dirs); i++) {
-> +	snprintf(path, ARRAY_SIZE(path), "%s/%s/%s", dir, rel, filename);
-> +
-> +	return fopen(path, "r");
-> +}
-> +
-> +/**
-> + * igt_fopen_data:
-> + * @filename: Name of the file to be opened.
-> + *
-> + * This function attempts to open a data file from a list of known directories.
-> + *
-> + * Returns a file pointer to the opened file. If the file cannot be opened, it
-> + * returns NULL and logs a critical error message.
-> + */
-> +FILE *igt_fopen_data(const char *filename)
-> +{
-> +	static const char *igt_datadir = IGT_DATADIR;
-> +	static const char *igt_srcdir = IGT_SRCDIR;
-> +	static const char *reldirs[] = {".", "..", "./data", "../data", "../../data" };
-> +	const char *dirs[] = { getenv("IGT_DATA_PATH"), igt_datadir, igt_srcdir,
-> +			       command_base_path, "."};
+--===============4307889076976629381==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-IMO "." and './data' in reldirs are unnecessary. Assuming igt_datadir = "abc" you
-would get path:
+== Series Details ==
 
-abc/./filename
-abc/./data/filename
+Series: tests/kms_color: Add support for background color testing. (rev6)
+URL   : https://patchwork.freedesktop.org/series/167119/
+State : failure
 
-But this is a nit and check if I'm not wrong. For patch:
+== Summary ==
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+CI Bug Log - changes from IGT_9103 -> IGTPW_15868
+====================================================
 
---
-Zbigniew
+Summary
+-------
 
-> +	FILE *fp = NULL;
-> +
-> +	for (int i = 0; i < ARRAY_SIZE(dirs) && !fp; i++) {
->  		if (dirs[i]) {
-> -			snprintf(path, sizeof(path), "%s/%s", dirs[i], filename);
-> -			fp = fopen(path, "r");
-> -			if (fp)
-> -				break;
-> +			for (int j = 0; j < ARRAY_SIZE(reldirs) && !fp; j++)
-> +				fp = __igt_fopen_data_file(dirs[i], reldirs[j], filename);
->  		}
->  	}
->  
-> diff --git a/lib/igt_core.h b/lib/igt_core.h
-> index afaf35aa8..c0908a8ed 100644
-> --- a/lib/igt_core.h
-> +++ b/lib/igt_core.h
-> @@ -1532,8 +1532,7 @@ FILE *__igt_fopen_data(const char *igt_srcdir, const char *igt_datadir,
->   * Open a datafile for test, first try from installation directory,
->   * then from build directory, and finally from current directory.
->   */
-> -#define igt_fopen_data(filename) \
-> -	__igt_fopen_data(IGT_SRCDIR, IGT_DATADIR, IGT_IMGDIR, filename)
-> +FILE *igt_fopen_data(const char *filename);
->  
->  int igt_system(const char *command);
->  int igt_system_quiet(const char *command);
-> diff --git a/lib/meson.build b/lib/meson.build
-> index d1a770b6d..2ac632758 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -371,7 +371,6 @@ foreach f: lib_sources
->  	    '-DIGT_DATADIR="@0@"'.format(join_paths(prefix, datadir)),
->  	    '-DIGT_SRCDIR="@0@"'.format(srcdir),
->  	    '-DIGT_LOG_DOMAIN="@0@"'.format(f.split('.')[0]),
-> -            '-DIGT_IMGDIR="@0@"'.format(imgdir),
->  	])
->  
->      lib_intermediates += lib
-> -- 
-> 2.55.0
-> 
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_15868 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_15868, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Additional (1): bat-adls-6 
+  Missing    (2): bat-dg2-13 bat-adlp-9 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_15868:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-mtlp-9:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9103/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15868 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@gem_lmem_swapping@verify-random:
+    - bat-adls-6:         NOTRUN -> [SKIP][3] ([i915#4613]) +3 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@gem_lmem_swapping@verify-random.html
+
+  * igt@gem_tiled_pread_basic@basic:
+    - bat-adls-6:         NOTRUN -> [SKIP][4] ([i915#15656])
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@gem_tiled_pread_basic@basic.html
+
+  * igt@intel_hwmon@hwmon-read:
+    - bat-adls-6:         NOTRUN -> [SKIP][5] ([i915#7707]) +1 other test skip
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@intel_hwmon@hwmon-read.html
+
+  * igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:
+    - bat-adls-6:         NOTRUN -> [SKIP][6] ([i915#4103]) +1 other test skip
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html
+
+  * igt@kms_dsc@dsc-basic:
+    - bat-adls-6:         NOTRUN -> [SKIP][7] ([i915#16361])
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_dsc@dsc-basic.html
+
+  * igt@kms_force_connector_basic@force-load-detect:
+    - bat-adls-6:         NOTRUN -> [SKIP][8]
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html
+
+  * igt@kms_pm_backlight@basic-brightness:
+    - bat-adls-6:         NOTRUN -> [SKIP][9] ([i915#5354])
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html
+
+  * igt@kms_psr@psr-primary-mmap-gtt:
+    - bat-adls-6:         NOTRUN -> [SKIP][10] ([i915#1072] / [i915#9732]) +3 other tests skip
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html
+
+  * igt@kms_setmode@basic-clone-single-crtc:
+    - bat-adls-6:         NOTRUN -> [SKIP][11] ([i915#3555])
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html
+
+  * igt@prime_vgem@basic-fence-read:
+    - bat-adls-6:         NOTRUN -> [SKIP][12] ([i915#3291]) +2 other tests skip
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@prime_vgem@basic-fence-read.html
+
+  
+  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
+  [i915#15656]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656
+  [i915#16361]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16361
+  [i915#3291]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291
+  [i915#3555]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555
+  [i915#4103]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103
+  [i915#4613]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613
+  [i915#5354]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354
+  [i915#7707]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707
+  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9103 -> IGTPW_15868
+  * Linux: CI_DRM_19178 -> CI_DRM_19187
+
+  CI-20190529: 20190529
+  CI_DRM_19178: 2c43c8e6bbbe54f755b8e5c86d582f78159e7a2c @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19187: 7b7c73e7898b9ae6d5d2d849fe66c44db9b74caf @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15868: 9f7ec1b16076bea142f4b3bba6e5ba8222769023 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9103: f307fd753abbe6c03d0a6e1c769fc6020ebd5d86 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/index.html
+
+--===============4307889076976629381==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/kms_color: Add support for background color testing. (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167119/">https://patchwork.freedesktop.org/series/167119/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9103 -&gt; IGTPW_15868</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_15868 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_15868, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Additional (1): bat-adls-6 <br />
+  Missing    (2): bat-dg2-13 bat-adlp-9 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_15868:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9103/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-mtlp-9/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15868 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@gem_lmem_swapping@verify-random:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@gem_lmem_swapping@verify-random.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4613">i915#4613</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@gem_tiled_pread_basic@basic:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@gem_tiled_pread_basic@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15656">i915#15656</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@intel_hwmon@hwmon-read:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@intel_hwmon@hwmon-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/7707">i915#7707</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_cursor_legacy@basic-busy-flip-before-cursor-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/4103">i915#4103</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-basic:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_dsc@dsc-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16361">i915#16361</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_force_connector_basic@force-load-detect:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@basic-brightness:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/5354">i915#5354</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr-primary-mmap-gtt:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_psr@psr-primary-mmap-gtt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic-clone-single-crtc:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3555">i915#3555</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@prime_vgem@basic-fence-read:</p>
+<ul>
+<li>bat-adls-6:         NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15868/bat-adls-6/igt@prime_vgem@basic-fence-read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3291">i915#3291</a>) +2 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9103 -&gt; IGTPW_15868</li>
+<li>Linux: CI_DRM_19178 -&gt; CI_DRM_19187</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19178: 2c43c8e6bbbe54f755b8e5c86d582f78159e7a2c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19187: 7b7c73e7898b9ae6d5d2d849fe66c44db9b74caf @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15868: 9f7ec1b16076bea142f4b3bba6e5ba8222769023 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9103: f307fd753abbe6c03d0a6e1c769fc6020ebd5d86 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============4307889076976629381==--
