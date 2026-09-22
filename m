@@ -4,56 +4,46 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BB4BC982F1
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 07:12:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E55BDC982F1
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 08:30:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E47410E599;
-	Tue, 22 Sep 2026 07:12:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 63BBF10E482;
+	Tue, 22 Sep 2026 08:30:17 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e0cDCaxY";
+	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=arm.com header.i=@arm.com header.b="Ya25+O7s";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 041BB10E7CF
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 07:09:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790060992; x=1821596992;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=3XXvj/UaAWDalHejrUjiljlIkqP0p3WuwoeXnD5AjoQ=;
- b=e0cDCaxYYq4c+ZdIFzU3HKL3Tu0pi2P40HqSQaYBgxv1rbHX18NBI+o+
- cQ3tt6jecLdmwzrmoGSTlL0yajC4PCpGGVm8KoIvnnNChbjYPFWWPZMHc
- Lq0VfJ5r6rnwTE0BI6MxH9PhXENmlj/jvoSH9MI38jWhyRf4Fpx8A7kn+
- Yf5oQpHTfM+bsqcYRZKj/91LkSkU0pGlpPfeDFw49vxXtd7wdc2Tsde5A
- TE3/Awf2kG+4LzNVAagl7+qhFBzQN9FoJgLeenaauDeELI9ObUvfTDxls
- QFWhQ8BwfhUYaiIEfgfeU35LuTzfq26fOuP4DtEAvw3foAaWQF7AEmWbd A==;
-X-CSE-ConnectionGUID: aYbRORb3ROKhCdgtgZtEZA==
-X-CSE-MsgGUID: gc0buHo8Tp26rxJ8hM40cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="101987110"
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="101987110"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2026 00:09:52 -0700
-X-CSE-ConnectionGUID: 7GfmeOsqQAubzK91sMTQjQ==
-X-CSE-MsgGUID: wxVxMobfQG6eHbP9X0zM5A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
-   d="scan'208";a="4113989"
-Received: from dev-150.igk.intel.com (HELO localhost) ([10.91.214.40])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2026 00:09:52 -0700
-From: Lukasz Laguna <lukasz.laguna@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: marcin.bernatowicz@intel.com
-Subject: [PATCH v2 2/2] tests/intel/xe_sriov_vram: Support execution with
- pre-enabled VFs
-Date: Tue, 22 Sep 2026 09:09:40 +0200
-Message-ID: <20260922070940.3006983-3-lukasz.laguna@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260922070940.3006983-1-lukasz.laguna@intel.com>
-References: <20260922070940.3006983-1-lukasz.laguna@intel.com>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by gabe.freedesktop.org (Postfix) with ESMTP id ED35710E469
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 08:29:28 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 875D91576
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 01:29:24 -0700 (PDT)
+Received: from [10.2.11.34] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id
+ D49FA3F632
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 01:29:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+ t=1790065768; bh=pTVSfmAHkgkC++b7Zn9jFzccEX8Y3zHT9/8yNncMd7Y=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=Ya25+O7slfPrxjLNNrevZk7nRoACOay+cuN5+vLAda6z1zspAsXhkCqDaa80Uy4ER
+ K2+oZQ90PXlALK6EUp83ftUACkq5nIxZQecTPByRKGKU0Qv2U36Wglw2Xe9fXmOJA6
+ ERU5h5swZou36Jh8qoLzv+csHMPLooIDJULyLKOw=
+Date: Tue, 22 Sep 2026 09:29:26 +0100
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ boris.brezillon@collabora.com, steven.price@arm.com,
+ adrian.larumbe@collabora.com, kamil.konieczny@linux.intel.com,
+ samitolvanen@google.com
+Subject: Re: [PATCH i-g-t v3] tests/panthor: skip sparse VM_BIND tests before
+ v1.9
+Message-ID: <arI8ZszbxqnMetN8@e142607>
+References: <20260921-b4-panthor_version_sparse-v3-1-c0af288ca073@collabora.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260921-b4-panthor_version_sparse-v3-1-c0af288ca073@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,181 +59,250 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Allow the vf-access-provisioned and vf-access-beyond subtests to run in
-environment where VFs are already enabled. To do that, the VFS_ENABLED=1
-environment variable needs to be set.
+On Mon, Sep 21, 2026 at 08:05:37PM -0700, Deborah Brouwer wrote:
+> Sparse VM_BIND support was introduced with Panthor DRM driver version
+> 1.9. If a driver isn't advertising support for v1.9, skip the sparse
+> VM_BIND subtests.
+> 
+> Use the advertised driver version rather than probing for EINVAL, since
+> EINVAL may also indicate a uAPI regression rather than lack of support for
+> sparse VM_BIND.
+> 
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-When VFs are pre-enabled, the test reuses the existing VFs and skips the
-subtests that require test managed VF enabling.
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 
-Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
----
-v2:
- - s/skip_when_using_existing_vfs/require_test_managed_vfs (Marcin)
----
- tests/intel/xe_sriov_vram.c | 59 +++++++++++++++++++++++++++----------
- 1 file changed, 44 insertions(+), 15 deletions(-)
+Best regards,
+Liviu
 
-diff --git a/tests/intel/xe_sriov_vram.c b/tests/intel/xe_sriov_vram.c
-index 4d80ab700..418c265b1 100644
---- a/tests/intel/xe_sriov_vram.c
-+++ b/tests/intel/xe_sriov_vram.c
-@@ -33,7 +33,7 @@
- 
- IGT_TEST_DESCRIPTION("Xe tests for VRAM in SR-IOV context");
- 
--static bool extended_scope, verbose;
-+static bool extended_scope, verbose, use_existing_vfs;
- const size_t STEP = SZ_1M;
- 
- static uint64_t get_provisioned_vram(unsigned int pf_fd, unsigned int vf_id)
-@@ -144,8 +144,10 @@ static void access_provisioned(unsigned int pf_fd, unsigned int num_vfs)
- 	uint64_t vram_bar_size;
- 	bool passed = true;
- 
--	igt_sriov_disable_driver_autoprobe(pf_fd);
--	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	if (!use_existing_vfs) {
-+		igt_sriov_disable_driver_autoprobe(pf_fd);
-+		igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	}
- 
- 	for_each_sriov_enabled_vf(pf_fd, vf_id) {
- 		provisioned_vram = get_provisioned_vram(pf_fd, vf_id);
-@@ -156,7 +158,8 @@ static void access_provisioned(unsigned int pf_fd, unsigned int num_vfs)
- 		igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
- 
- 		if (vram_bar_size < provisioned_vram) {
--			igt_sriov_disable_vfs(pf_fd);
-+			if (!use_existing_vfs)
-+				igt_sriov_disable_vfs(pf_fd);
- 			igt_skip("VRAM BAR size is smaller than provisioned VRAM\n");
- 		}
- 
-@@ -168,7 +171,8 @@ static void access_provisioned(unsigned int pf_fd, unsigned int num_vfs)
- 		intel_vram_munmap(&vram);
- 	}
- 
--	igt_sriov_disable_vfs(pf_fd);
-+	if (!use_existing_vfs)
-+		igt_sriov_disable_vfs(pf_fd);
- 
- 	igt_assert(passed);
- }
-@@ -231,8 +235,10 @@ static void access_beyond(unsigned int pf_fd, unsigned int num_vfs)
- 	uint64_t vram_bar_size;
- 	bool passed = true;
- 
--	igt_sriov_disable_driver_autoprobe(pf_fd);
--	igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	if (!use_existing_vfs) {
-+		igt_sriov_disable_driver_autoprobe(pf_fd);
-+		igt_sriov_enable_vfs(pf_fd, num_vfs);
-+	}
- 
- 	for_each_sriov_enabled_vf(pf_fd, vf_id) {
- 		provisioned_vram = get_provisioned_vram(pf_fd, vf_id);
-@@ -243,7 +249,8 @@ static void access_beyond(unsigned int pf_fd, unsigned int num_vfs)
- 		igt_debug("VF%u VRAM BAR size: %" PRIu64 "\n", vf_id, vram_bar_size);
- 
- 		if (vram_bar_size <= provisioned_vram) {
--			igt_sriov_disable_vfs(pf_fd);
-+			if (!use_existing_vfs)
-+				igt_sriov_disable_vfs(pf_fd);
- 			igt_skip("VRAM BAR size is smaller or equal to provisioned VRAM\n");
- 		}
- 
-@@ -255,7 +262,8 @@ static void access_beyond(unsigned int pf_fd, unsigned int num_vfs)
- 		intel_vram_munmap(&vram);
- 	}
- 
--	igt_sriov_disable_vfs(pf_fd);
-+	if (!use_existing_vfs)
-+		igt_sriov_disable_vfs(pf_fd);
- 
- 	igt_assert(passed);
- }
-@@ -309,6 +317,12 @@ static void resize_and_access(unsigned int pf_fd, bool resize_up)
- 	igt_assert(passed);
- }
- 
-+static void require_test_managed_vfs(void)
-+{
-+	igt_skip_on_f(use_existing_vfs,
-+		      "This subtest cannot be run with existing VFs\n");
-+}
-+
- static int opts_handler(int opt, int opt_index, void *data)
- {
- 	switch (opt) {
-@@ -337,6 +351,7 @@ static const char help_str[] =
- 
- int igt_main_args("", long_opts, help_str, opts_handler, NULL)
- {
-+	unsigned int enabled_vfs;
- 	bool autoprobe;
- 	int pf_fd;
- 	static struct subtest_resize_variants {
-@@ -352,14 +367,19 @@ int igt_main_args("", long_opts, help_str, opts_handler, NULL)
- 		pf_fd = drm_open_driver(DRIVER_XE);
- 		igt_require(xe_has_vram(pf_fd));
- 		igt_require(igt_sriov_is_pf(pf_fd));
--		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-+		use_existing_vfs = igt_check_boolean_env_var("VFS_ENABLED", false);
-+		enabled_vfs = igt_sriov_get_enabled_vfs(pf_fd);
-+		igt_require(use_existing_vfs ? enabled_vfs > 0 : enabled_vfs == 0);
- 		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
- 		igt_sriov_install_exit_handler(pf_fd, NULL, NULL);
- 	}
- 
- 	igt_describe("Verify that VF can access all the provisioned memory via VRAM BAR");
- 	igt_subtest_with_dynamic_f("vf-access-provisioned") {
--		if (extended_scope) {
-+		if (use_existing_vfs) {
-+			igt_dynamic_f("numvfs-%d", enabled_vfs)
-+				access_provisioned(pf_fd, enabled_vfs);
-+		} else if (extended_scope) {
- 			for_each_sriov_num_vfs(pf_fd, num_vfs)
- 				igt_dynamic_f("numvfs-%d", num_vfs)
- 					access_provisioned(pf_fd, num_vfs);
-@@ -375,7 +395,10 @@ int igt_main_args("", long_opts, help_str, opts_handler, NULL)
- 
- 	igt_describe("Verify that VF cannot access memory beyond what's provisioned via VRAM BAR");
- 	igt_subtest_with_dynamic_f("vf-access-beyond") {
--		if (extended_scope) {
-+		if (use_existing_vfs) {
-+			igt_dynamic_f("numvfs-%d", enabled_vfs)
-+				access_beyond(pf_fd, enabled_vfs);
-+		} else if (extended_scope) {
- 			for_each_sriov_num_vfs(pf_fd, num_vfs)
- 				igt_dynamic_f("numvfs-%d", num_vfs)
- 					access_beyond(pf_fd, num_vfs);
-@@ -394,6 +417,7 @@ int igt_main_args("", long_opts, help_str, opts_handler, NULL)
- 		igt_subtest_f("vf-access-after-resize-%s", s->name) {
- 			unsigned int total_vfs = igt_sriov_get_total_vfs(pf_fd);
- 
-+			require_test_managed_vfs();
- 			igt_require(total_vfs > 1);
- 
- 			resize_and_access(pf_fd, s->resize_up);
-@@ -401,9 +425,14 @@ int igt_main_args("", long_opts, help_str, opts_handler, NULL)
- 	}
- 
- 	igt_fixture() {
--		igt_sriov_disable_vfs(pf_fd);
--		/* abort to avoid execution of next tests with enabled VFs */
--		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
-+		if (use_existing_vfs) {
-+			if (igt_sriov_get_enabled_vfs(pf_fd) != enabled_vfs)
-+				igt_warn("Test modified number of enabled VFs\n");
-+		} else {
-+			igt_sriov_disable_vfs(pf_fd);
-+			/* abort to avoid execution of next tests with enabled VFs */
-+			igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0, "Failed to disable VF(s)");
-+		}
- 		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
- 			    igt_sriov_disable_driver_autoprobe(pf_fd);
- 		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
+> ---
+> Changes in v3:
+> - change macro to function
+> - move the helper functions to tests/panthor
+> - add documentation for functions
+> - Link to v2: https://lore.kernel.org/r/20260920-b4-panthor_version_sparse-v2-1-fa395c125eb1@collabora.com
+> 
+> Changes in v2:
+> - check for version at each subtest
+> - make version check available to all panthor tests
+> - use macro to suppress printing the last error
+> - Link to v1: https://lore.kernel.org/r/20260915-b4-panthor_version_sparse-v1-1-7ac10b75e631@collabora.com
+> ---
+>  tests/panthor/panthor_vm.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+> 
+> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
+> index 9011df25e..08a4b7f05 100644
+> --- a/tests/panthor/panthor_vm.c
+> +++ b/tests/panthor/panthor_vm.c
+> @@ -7,6 +7,47 @@
+>  #include "igt_sizes.h"
+>  #include "panthor_drm.h"
+>  
+> +/**
+> + * panthor_driver_version_at_least:
+> + * @fd: panthor device file descriptor
+> + * @major: required Panthor major version
+> + * @minor: required Panthor minor version
+> + *
+> + * Returns true if the Panthor version is at least the requested version.
+> + */
+> +static bool
+> +panthor_driver_version_at_least(int fd, int major, int minor)
+> +{
+> +	drmVersionPtr version = drmGetVersion(fd);
+> +	bool supported;
+> +
+> +	igt_assert(version);
+> +	supported = version->version_major > major ||
+> +		    (version->version_major == major &&
+> +		     version->version_minor >= minor);
+> +	drmFreeVersion(version);
+> +
+> +	return supported;
+> +}
+> +
+> +/**
+> + * require_panthor_version:
+> + * @fd: device file descriptor
+> + * @major: required Panthor major version
+> + * @minor: required Panthor minor version
+> + *
+> + * Require the Panthor version to be at least the requested version.
+> + */
+> +static void
+> +require_panthor_version(int fd, int major, int minor)
+> +{
+> +	if (!panthor_driver_version_at_least(fd, major, minor)) {
+> +		/* Clear irrelevant errno to avoid printing it in the skip log. */
+> +		errno = 0;
+> +		igt_skip("Panthor version %d.%d or newer required\n", major, minor);
+> +	}
+> +}
+> +
+>  int igt_main() {
+>  	int fd = -1;
+>  
+> @@ -293,6 +334,7 @@ int igt_main() {
+>  		uint32_t vm_id;
+>  		uint64_t map_size = SZ_4K * 4;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -306,6 +348,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -321,6 +364,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -336,6 +380,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -351,6 +396,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -366,6 +412,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -382,6 +429,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -402,6 +450,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -422,6 +471,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -442,6 +492,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -463,6 +514,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -483,6 +535,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -503,6 +556,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -524,6 +578,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -545,6 +600,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -566,6 +622,7 @@ int igt_main() {
+>  		uint64_t map_size = SZ_2M * 3;
+>  		const int INITIAL_VA = SZ_4M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -585,6 +642,7 @@ int igt_main() {
+>  		uint64_t map_size = ALIGN_DOWN(UINT64_MAX, SZ_2M) - (SZ_2M * 3);
+>  		const int INITIAL_VA = SZ_512M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> @@ -599,6 +657,7 @@ int igt_main() {
+>  		uint64_t unmap_size = ALIGN_DOWN(UINT64_MAX, SZ_2M) - map_size;
+>  		const int INITIAL_VA = SZ_512M;
+>  
+> +		require_panthor_version(fd, 1, 9);
+>  		igt_panthor_vm_create(fd, &vm_id, 0);
+>  		igt_assert(vm_id != 0);
+>  
+> 
+> ---
+> base-commit: 520aba273f391e31e18b6fe98d71201eb505a683
+> change-id: 20260915-b4-panthor_version_sparse-5fbd31cc0d5d
+> 
+> Best regards,
+> -- 
+> Deborah Brouwer <deborah.brouwer@collabora.com>
+> 
+
 -- 
-2.43.0
-
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
