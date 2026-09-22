@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4CEEAC982FA
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 10:52:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C204FC982F1
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 10:54:22 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B7F7610E0E1;
-	Tue, 22 Sep 2026 10:52:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 35ABF10E475;
+	Tue, 22 Sep 2026 10:54:22 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4909310E475;
- Tue, 22 Sep 2026 10:51:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3485B10E475;
+ Tue, 22 Sep 2026 10:53:36 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0517869328659359079=="
+ boundary="===============7489439020197268428=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tests/intel=3A_Add_helper_?=
- =?utf-8?q?to_dump_GT_debug_state_on_C6_wait_failures?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_lib/igt=5Fcore=3A_Make_bu?=
+ =?utf-8?q?ild_reproducible_=28rev5=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sk Anirban" <sk.anirban@intel.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 22 Sep 2026 10:51:38 -0000
-Message-ID: <179007429829.192588.11654864001732841708@61270ab9df2a>
+Date: Tue, 22 Sep 2026 10:53:36 -0000
+Message-ID: <179007441620.192588.12113412526108536074@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20260921175206.1707165-2-sk.anirban@intel.com>
-In-Reply-To: <20260921175206.1707165-2-sk.anirban@intel.com>
+References: <20260921135515.137949-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20260921135515.137949-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,26 +41,90 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0517869328659359079==
+--===============7489439020197268428==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel: Add helper to dump GT debug state on C6 wait failures
-URL   : https://patchwork.freedesktop.org/series/174646/
-State : failure
+Series: lib/igt_core: Make build reproducible (rev5)
+URL   : https://patchwork.freedesktop.org/series/173723/
+State : success
 
 == Summary ==
 
-ERROR: The runconfig 'XEIGT_9105_FULL' does not exist in the database
+CI Bug Log - changes from IGT_9104 -> IGTPW_15874
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15874 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@i915_selftest@live:
+    - bat-twl-2:          [PASS][1] -> [ABORT][2] ([i915#17143])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/bat-twl-2/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/bat-twl-2/igt@i915_selftest@live.html
+
+  * igt@i915_selftest@live@reset:
+    - bat-twl-2:          [PASS][3] -> [ABORT][4] ([i915#17142])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/bat-twl-2/igt@i915_selftest@live@reset.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/bat-twl-2/igt@i915_selftest@live@reset.html
+
+  * igt@kms_addfb_basic@too-high:
+    - bat-apl-1:          [PASS][5] -> [DMESG-WARN][6] ([i915#13735]) +37 other tests dmesg-warn
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/bat-apl-1/igt@kms_addfb_basic@too-high.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/bat-apl-1/igt@kms_addfb_basic@too-high.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@c-dp1:
+    - bat-apl-1:          [PASS][7] -> [DMESG-WARN][8] ([i915#13735] / [i915#180]) +21 other tests dmesg-warn
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html
+
+  
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#17142]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17142
+  [i915#17143]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17143
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9104 -> IGTPW_15874
+  * Linux: CI_DRM_19193 -> CI_DRM_19195
+
+  CI-20190529: 20190529
+  CI_DRM_19193: ab82471ddff094939d9981e0647332562c7e1c9b @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19195: 42735b6937d60963dd302128231fb74a18164a60 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15874: 6652228e6112eff7ccbb18f5985b9a1413dd29e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9104: a89d58dad0dd62228269a6049b39fc39ae6cf698 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15876/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/index.html
 
---===============0517869328659359079==
+--===============7489439020197268428==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -80,18 +144,65 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel: Add helper to dump GT debug state on C6 wait failures</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174646/">https://patchwork.freedesktop.org/series/174646/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>lib/igt_core: Make build reproducible (rev5)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/173723/">https://patchwork.freedesktop.org/series/173723/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15876/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15876/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/index.html</a></td></tr>
 
 </table>
 
 
-    <p>ERROR: The runconfig 'XEIGT_9105_FULL' does not exist in the database</p>
+    <h1>CI Bug Log - changes from IGT_9104 -&gt; IGTPW_15874</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15874 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/bat-twl-2/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/bat-twl-2/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17143">i915#17143</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@reset:</p>
+<ul>
+<li>bat-twl-2:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/bat-twl-2/igt@i915_selftest@live@reset.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/bat-twl-2/igt@i915_selftest@live@reset.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17142">i915#17142</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_addfb_basic@too-high:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/bat-apl-1/igt@kms_addfb_basic@too-high.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/bat-apl-1/igt@kms_addfb_basic@too-high.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +37 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@c-dp1:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@c-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +21 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9104 -&gt; IGTPW_15874</li>
+<li>Linux: CI_DRM_19193 -&gt; CI_DRM_19195</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19193: ab82471ddff094939d9981e0647332562c7e1c9b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19195: 42735b6937d60963dd302128231fb74a18164a60 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15874: 6652228e6112eff7ccbb18f5985b9a1413dd29e3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9104: a89d58dad0dd62228269a6049b39fc39ae6cf698 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============0517869328659359079==--
+--===============7489439020197268428==--
