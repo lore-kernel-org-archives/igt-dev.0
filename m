@@ -4,46 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E55BDC982F1
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 08:30:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69609C982FF
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 08:42:14 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 63BBF10E482;
-	Tue, 22 Sep 2026 08:30:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 052F710EB1D;
+	Tue, 22 Sep 2026 08:42:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=arm.com header.i=@arm.com header.b="Ya25+O7s";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="C8bnUBUi";
 	dkim-atps=neutral
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by gabe.freedesktop.org (Postfix) with ESMTP id ED35710E469
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 08:29:28 +0000 (UTC)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
- by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 875D91576
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 01:29:24 -0700 (PDT)
-Received: from [10.2.11.34] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
- by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id
- D49FA3F632
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 01:29:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
- t=1790065768; bh=pTVSfmAHkgkC++b7Zn9jFzccEX8Y3zHT9/8yNncMd7Y=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
- b=Ya25+O7slfPrxjLNNrevZk7nRoACOay+cuN5+vLAda6z1zspAsXhkCqDaa80Uy4ER
- K2+oZQ90PXlALK6EUp83ftUACkq5nIxZQecTPByRKGKU0Qv2U36Wglw2Xe9fXmOJA6
- ERU5h5swZou36Jh8qoLzv+csHMPLooIDJULyLKOw=
-Date: Tue, 22 Sep 2026 09:29:26 +0100
-From: Liviu Dudau <liviu.dudau@arm.com>
-To: Deborah Brouwer <deborah.brouwer@collabora.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- boris.brezillon@collabora.com, steven.price@arm.com,
- adrian.larumbe@collabora.com, kamil.konieczny@linux.intel.com,
- samitolvanen@google.com
-Subject: Re: [PATCH i-g-t v3] tests/panthor: skip sparse VM_BIND tests before
- v1.9
-Message-ID: <arI8ZszbxqnMetN8@e142607>
-References: <20260921-b4-panthor_version_sparse-v3-1-c0af288ca073@collabora.com>
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 263B810EB3C
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 08:41:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790066468; x=1821602468;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=bBSOyef1LjXnmhxP0TEMw/xo9yvRDOXu2MWCdJXW4No=;
+ b=C8bnUBUiSndabng+4vpr+8eAuW5xWy+cRmPOyahKPBbmFyk0Fs5TGDR6
+ Y04BdwXNq3NB3BakHRrIjkeGb9U3hknbczV4OMnsD0xqcGLa2+bpqy3D5
+ 24KwR+OSRfkfUQMRyCjTaE78S/y0FQnE5xgT2PhxdSt99HN5WB4VjdPvF
+ GJkWxaWv6MkeXuJP5UtpPG36Z+uBNxnCII1lbS9XWo91V0iZZOA12Cekj
+ I0kGkzJWwOqVJqiAAhWDS3ij6UfbQqm+q6cTtTcQH1q2Icr9FHWFrAqJC
+ Px+/A6zQ/PbPggTIboIWnVz+N9v5e+aSlPvxpEJ2yhycw6cmhR6MBFnTu Q==;
+X-CSE-ConnectionGUID: oMqClExcTVi8unbMwVyT+w==
+X-CSE-MsgGUID: CW97JynlR/SUzfJLWxytZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="90516791"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="90516791"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2026 01:41:08 -0700
+X-CSE-ConnectionGUID: nutYk356TzGlZqc34Si4zQ==
+X-CSE-MsgGUID: vBb80DIoSuyQ2+TFSzoU2A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="277821237"
+Received: from display-adls.igk.intel.com ([10.211.131.198])
+ by fmviesa004.fm.intel.com with ESMTP; 22 Sep 2026 01:41:07 -0700
+From: Mika Kahola <mika.kahola@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Mika Kahola <mika.kahola@intel.com>
+Subject: [PATCH i-g-t 2/3] tests/intel/kms_joiner: Add PSR2 selective fetch
+ test with joiner
+Date: Tue, 22 Sep 2026 08:41:04 +0000
+Message-ID: <20260922084104.403880-1-mika.kahola@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260921124408.358774-3-mika.kahola@intel.com>
+References: <20260921124408.358774-3-mika.kahola@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260921-b4-panthor_version_sparse-v3-1-c0af288ca073@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,250 +67,169 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Mon, Sep 21, 2026 at 08:05:37PM -0700, Deborah Brouwer wrote:
-> Sparse VM_BIND support was introduced with Panthor DRM driver version
-> 1.9. If a driver isn't advertising support for v1.9, skip the sparse
-> VM_BIND subtests.
-> 
-> Use the advertised driver version rather than probing for EINVAL, since
-> EINVAL may also indicate a uAPI regression rather than lack of support for
-> sparse VM_BIND.
-> 
-> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+Add basic-force-big-joiner-psr2-sel-fetch to check that PSR2
+selective fetch enters while forced into big joiner mode.
 
-Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
+PSR2 selective fetch only supports the PIPE_A|PIPE_B joiner pair, so
+restrict setup_pipe() to PIPE_A. Force enable_psr=2, since it can
+otherwise cap PSR at PSR1 regardless of the debugfs override. Retry
+psr_wait_entry(), since bigjoiner commits settle slower than
+single-pipe ones.
 
-Best regards,
-Liviu
+Assisted-by: Copilot:claude-opus-5
+Signed-off-by: Mika Kahola <mika.kahola@intel.com>
+---
+ tests/intel/kms_joiner.c | 88 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 88 insertions(+)
 
-> ---
-> Changes in v3:
-> - change macro to function
-> - move the helper functions to tests/panthor
-> - add documentation for functions
-> - Link to v2: https://lore.kernel.org/r/20260920-b4-panthor_version_sparse-v2-1-fa395c125eb1@collabora.com
-> 
-> Changes in v2:
-> - check for version at each subtest
-> - make version check available to all panthor tests
-> - use macro to suppress printing the last error
-> - Link to v1: https://lore.kernel.org/r/20260915-b4-panthor_version_sparse-v1-1-7ac10b75e631@collabora.com
-> ---
->  tests/panthor/panthor_vm.c | 59 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 59 insertions(+)
-> 
-> diff --git a/tests/panthor/panthor_vm.c b/tests/panthor/panthor_vm.c
-> index 9011df25e..08a4b7f05 100644
-> --- a/tests/panthor/panthor_vm.c
-> +++ b/tests/panthor/panthor_vm.c
-> @@ -7,6 +7,47 @@
->  #include "igt_sizes.h"
->  #include "panthor_drm.h"
->  
-> +/**
-> + * panthor_driver_version_at_least:
-> + * @fd: panthor device file descriptor
-> + * @major: required Panthor major version
-> + * @minor: required Panthor minor version
-> + *
-> + * Returns true if the Panthor version is at least the requested version.
-> + */
-> +static bool
-> +panthor_driver_version_at_least(int fd, int major, int minor)
-> +{
-> +	drmVersionPtr version = drmGetVersion(fd);
-> +	bool supported;
-> +
-> +	igt_assert(version);
-> +	supported = version->version_major > major ||
-> +		    (version->version_major == major &&
-> +		     version->version_minor >= minor);
-> +	drmFreeVersion(version);
-> +
-> +	return supported;
-> +}
-> +
-> +/**
-> + * require_panthor_version:
-> + * @fd: device file descriptor
-> + * @major: required Panthor major version
-> + * @minor: required Panthor minor version
-> + *
-> + * Require the Panthor version to be at least the requested version.
-> + */
-> +static void
-> +require_panthor_version(int fd, int major, int minor)
-> +{
-> +	if (!panthor_driver_version_at_least(fd, major, minor)) {
-> +		/* Clear irrelevant errno to avoid printing it in the skip log. */
-> +		errno = 0;
-> +		igt_skip("Panthor version %d.%d or newer required\n", major, minor);
-> +	}
-> +}
-> +
->  int igt_main() {
->  	int fd = -1;
->  
-> @@ -293,6 +334,7 @@ int igt_main() {
->  		uint32_t vm_id;
->  		uint64_t map_size = SZ_4K * 4;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -306,6 +348,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -321,6 +364,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -336,6 +380,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -351,6 +396,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -366,6 +412,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -382,6 +429,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -402,6 +450,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -422,6 +471,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -442,6 +492,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -463,6 +514,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -483,6 +535,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -503,6 +556,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -524,6 +578,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -545,6 +600,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -566,6 +622,7 @@ int igt_main() {
->  		uint64_t map_size = SZ_2M * 3;
->  		const int INITIAL_VA = SZ_4M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -585,6 +642,7 @@ int igt_main() {
->  		uint64_t map_size = ALIGN_DOWN(UINT64_MAX, SZ_2M) - (SZ_2M * 3);
->  		const int INITIAL_VA = SZ_512M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> @@ -599,6 +657,7 @@ int igt_main() {
->  		uint64_t unmap_size = ALIGN_DOWN(UINT64_MAX, SZ_2M) - map_size;
->  		const int INITIAL_VA = SZ_512M;
->  
-> +		require_panthor_version(fd, 1, 9);
->  		igt_panthor_vm_create(fd, &vm_id, 0);
->  		igt_assert(vm_id != 0);
->  
-> 
-> ---
-> base-commit: 520aba273f391e31e18b6fe98d71201eb505a683
-> change-id: 20260915-b4-panthor_version_sparse-5fbd31cc0d5d
-> 
-> Best regards,
-> -- 
-> Deborah Brouwer <deborah.brouwer@collabora.com>
-> 
-
+diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
+index 0a04f7ca8..93f6d03b8 100644
+--- a/tests/intel/kms_joiner.c
++++ b/tests/intel/kms_joiner.c
+@@ -33,6 +33,7 @@
+  */
+ 
+ #include "igt.h"
++#include "igt_psr.h"
+ #include "kms_dsc_helper.c"
+ #include "kms_joiner_helper.h"
+ 
+@@ -61,6 +62,10 @@
+  *		Force joiner applies bigjoiner functionality to non-bigjoiner outputs thus,
+  *		the test exclusively targets non-bigjoiner outputs.
+  *
++ * SUBTEST: basic-force-big-joiner-psr2-sel-fetch
++ * Description: Verify PSR2 selective fetch can be entered while the output is
++ *		driven in force big joiner mode.
++ *
+  * SUBTEST: basic-force-ultra-joiner
+  * Description: Verify basic ultra joiner modeset in force joiner mode across all pipes.
+  *		Force joiner applies bigjoiner functionality to non-bigjoiner outputs thus,
+@@ -83,6 +88,7 @@ IGT_TEST_DESCRIPTION("Test joiner / force joiner");
+ 
+ typedef struct {
+ 	int drm_fd;
++	int debugfs_fd;
+ 	int big_joiner_output_count;
+ 	int ultra_joiner_output_count;
+ 	int non_big_joiner_output_count;
+@@ -217,6 +223,22 @@ static void require_big_joiner(data_t *data, enum force_joiner_mode mode)
+ 			      "No big joiner output found\n");
+ }
+ 
++/* Returns a force joiner capable output supporting PSR2 selective fetch, or NULL. */
++static igt_output_t *get_psr2_sel_fetch_output(data_t *data)
++{
++	igt_output_t *output;
++	int i;
++
++	for (i = 0; i < data->non_big_joiner_output_count; i++) {
++		output = data->non_big_joiner_output[i];
++		if (psr_sink_support(data->drm_fd, data->debugfs_fd,
++				     PSR_MODE_2_SEL_FETCH, output))
++			return output;
++	}
++
++	return NULL;
++}
++
+ static void switch_modeset_ultra_joiner_big_joiner(data_t *data, igt_output_t *output)
+ {
+ 	drmModeModeInfo bj_mode;
+@@ -307,6 +329,51 @@ static void test_single_joiner(data_t *data, igt_output_t **outputs, int output_
+ 	}
+ }
+ 
++static void test_joiner_psr2_sel_fetch(data_t *data, igt_output_t *output)
++{
++	uint32_t available_pipe_mask = BIT(data->n_pipes) - 1;
++	enum hardware_pipe master_pipe;
++	igt_plane_t *primary;
++	igt_fb_t fb;
++	drmModeModeInfo *mode;
++	bool entered;
++	int retry;
++
++	/* enable_psr=1 (force PSR1) silently fails intel_psr2_config_valid(), overriding debugfs. */
++	igt_set_module_param_int(data->drm_fd, "enable_psr", 2);
++
++	igt_display_reset(&data->display);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	/* Arm PSR2 selective fetch before the joiner modeset so it applies to the next commit. */
++	igt_require_f(psr_enable(data->drm_fd, data->debugfs_fd, PSR_MODE_2_SEL_FETCH, output),
++		      "Failed to enable PSR2 selective fetch on %s\n", output->name);
++
++	/* psr_joiner_config_valid() only allows the joiner pipe mask to be PIPE_A|PIPE_B. */
++	master_pipe = setup_pipe(data, output, PIPE_A, available_pipe_mask);
++	igt_require_f(master_pipe == PIPE_A,
++		      "No PIPE_A/B joiner pairing available for %s\n", output->name);
++
++	mode = igt_output_get_mode(output);
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_create_pattern_fb(data->drm_fd, mode->hdisplay, mode->vdisplay, DRM_FORMAT_XRGB8888,
++			      DRM_FORMAT_MOD_LINEAR, &fb);
++	igt_plane_set_fb(primary, &fb);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	/* Bigjoiner commits settle slower than single-pipe ones, so retry past the 500ms default. */
++	entered = false;
++	for (retry = 0; retry < 4 && !entered; retry++)
++		entered = psr_wait_entry(data->debugfs_fd, PSR_MODE_2_SEL_FETCH, output);
++	igt_assert_f(entered,
++		     "PSR2 selective fetch did not enter with joiner active on %s\n", output->name);
++
++	psr_disable(data->drm_fd, data->debugfs_fd, output);
++	igt_display_reset(&data->display);
++	igt_plane_set_fb(primary, NULL);
++	igt_remove_fb(data->drm_fd, &fb);
++}
++
+ static void test_multi_joiner(data_t *data, int output_count, bool force_joiner)
+ {
+ 	int i, cleanup;
+@@ -641,6 +708,7 @@ int igt_main()
+ 		j = 0;
+ 
+ 		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
++		data.debugfs_fd = igt_debugfs_dir(data.drm_fd);
+ 		kmstest_set_vt_graphics_mode();
+ 		igt_display_require(&data.display, data.drm_fd);
+ 		igt_set_all_master_pipes_for_platform(&data.display, &data.master_pipes);
+@@ -764,6 +832,25 @@ int igt_main()
+ 		}
+ 	}
+ 
++	igt_describe("Verify PSR2 selective fetch can be entered while the output "
++		     "is driven in force big joiner mode");
++	igt_subtest_with_dynamic("basic-force-big-joiner-psr2-sel-fetch") {
++		igt_output_t *psr_output;
++
++		require_big_joiner(&data, FORCE_JOINER_ENABLE);
++
++		psr_output = get_psr2_sel_fetch_output(&data);
++		igt_require_f(psr_output, "No output supporting PSR2 selective fetch found\n");
++
++		igt_dynamic_f("pipe-%s", psr_output->name) {
++			bool status = kmstest_force_connector_joiner(data.drm_fd, psr_output->config.connector,
++							     JOINED_PIPES_BIG_JOINER);
++			igt_assert_f(status, "Failed to toggle force joiner on %s\n", psr_output->name);
++			test_joiner_psr2_sel_fetch(&data, psr_output);
++			igt_reset_connectors();
++		}
++	}
++
+ 	igt_subtest_with_dynamic("invalid-modeset-force-big-joiner") {
+ 		require_big_joiner(&data, FORCE_JOINER_ENABLE);
+ 		if (data.non_big_joiner_output_count >= 1) {
+@@ -836,6 +923,7 @@ int igt_main()
+ 
+ 	igt_fixture() {
+ 		igt_display_fini(&data.display);
++		close(data.debugfs_fd);
+ 		drm_close_driver(data.drm_fd);
+ 		igt_reset_connectors();
+ 	}
 -- 
-====================
-| I would like to |
-| fix the world,  |
-| but they're not |
-| giving me the   |
- \ source code!  /
-  ---------------
-    ¯\_(ツ)_/¯
+2.43.0
+
