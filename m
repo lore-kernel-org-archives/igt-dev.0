@@ -4,57 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B908C982FF
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 11:01:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73688C982F1
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 11:05:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CAAAC10E6C1;
-	Tue, 22 Sep 2026 11:01:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EF2BC10E6B9;
+	Tue, 22 Sep 2026 11:05:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DgFqJQ2/";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="n1PePWNR";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1292010E6A6
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 11:00:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C64A910E6B9
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 11:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790074832; x=1821610832;
- h=message-id:date:mime-version:subject:to:references:from:
- in-reply-to:content-transfer-encoding;
- bh=L/k9XsCKhBOehJ3QPn/oTTCDJ3rj5AAFfSbQcLWq2f0=;
- b=DgFqJQ2/A9uPZ2Eu0eoWx+b2plUbZwoed8yM2dFj7t+9aUVoB5V0gyv6
- QUsjvVqOGDCO7BCi85Vz8KKYhjeO/veaJt7cA0ITZxr+rAr3Ko7hvKOjA
- w/lCBeIvOF/iHvi7CBKK86mG1s2jp3eY4E6Bbg83cgO01RXtoaSsn4orH
- zcmL6AjgkDek7KFwSD6JVw9Zc3ZdXpxwTNYSxzQalhx2uHKSiyhAK7d/X
- 0hjOMD+j7YoamTCq2Jqi5j/PALkvpvnwPhENn82X9ETAF1WD/Vbpl+wFy
- vfpgEnZ/Ky7QfAvHWF8Fui4Ch5VPJGtq59+xhryFrfHLl9CDDMZPB7Jz3 w==;
-X-CSE-ConnectionGUID: 6ZE+3nDiQlKWjYZ5gFMT7Q==
-X-CSE-MsgGUID: vG79W7R2TxS4bP6wCZVt9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="94497405"
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="94497405"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2026 04:00:32 -0700
-X-CSE-ConnectionGUID: nBeDuoEdRiCckg1DET9CvA==
-X-CSE-MsgGUID: t0e2NAzgQROKuD2iOvtxuA==
+ t=1790075081; x=1821611081;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=GBohMHx1Nn4nqpMkrBb1UqpwnB0Bpg8jjFTGCbEOsSw=;
+ b=n1PePWNRegrbltNmQh9Bqwsr17tlV0RNjhCIlsfUA4PtjfvcAkKVBXxj
+ 1YfrrSqzrF86ABk0bUbBnI6D83IPpNsvRsKNSbrm+zTjop/JHQOuv/Qfm
+ WTUvOne3B6QokFcdMHUQtgJ6jGOdGbXZv/y3zKyddMHgRJsOqO5Dq2Huu
+ QnPHz2gHYz6Rbpg2H7tA8LQQcX/QciMeFikS9ycjp/7Go0d5VtwmX3Z80
+ BZvcAHoS3eqbColz8XJNgADThqXzOemrLzhI/cGATJUJ2wCsXErD5klC6
+ 5SucFQCJnyakCFaWKwZ7DTNqG5FLk2a+yKoiSwoD9VG38cd4i3/Gtsawz Q==;
+X-CSE-ConnectionGUID: 8ChQWZohTEyN4SrkZPxIWg==
+X-CSE-MsgGUID: rdrhpyy7SVqFpqpMqkzEJQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11912"; a="78220518"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="78220518"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2026 04:04:40 -0700
+X-CSE-ConnectionGUID: w0ebrTkaR2G+Xr/2Hx14yQ==
+X-CSE-MsgGUID: 6gSsZIp3TyaBexCYn3bRxQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="299321273"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.3])
- ([172.28.182.3])
- by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2026 04:00:31 -0700
-Message-ID: <f5fab9e2-33e4-4555-bd45-85bacf5ef069@linux.intel.com>
-Date: Tue, 22 Sep 2026 13:00:29 +0200
+Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
+ by fmviesa003.fm.intel.com with ESMTP; 22 Sep 2026 04:04:39 -0700
+From: Sobin Thomas <sobin.thomas@intel.com>
+To: igt-dev@lists.freedesktop.org,
+	matthew.brost@intel.com
+Cc: nishit.sharma@intel.com,
+	priyanka.dandamudi@intel.com
+Subject: [PATCH i-g-t v5 1/5] tests/intel: add BO allocation stress coverage
+Date: Tue, 22 Sep 2026 11:04:34 +0000
+Message-ID: <20260922110438.2402109-2-sobin.thomas@intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260922110438.2402109-1-sobin.thomas@intel.com>
+References: <20260922110438.2402109-1-sobin.thomas@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] lib/igt_pci: Add raw configuration space helpers
-To: =?UTF-8?Q?Pi=C3=B3rkowski=2C_Piotr?= <piotr.piorkowski@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20260921143707.2117970-1-piotr.piorkowski@intel.com>
- <20260921143707.2117970-2-piotr.piorkowski@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260921143707.2117970-2-piotr.piorkowski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,253 +68,641 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Add a new xe_bo_alloc test excercising BO allocation, VM bind, mapping and execution
+across a range of BO sizes.
+The test runs once per GT rather than once per engine, making sure that on multi-tile platforms
+every GT/VRAM region is excercised. This stress test exercises concurrent buffer allocation
+all the sizes at once.
 
-On 9/21/2026 4:37 PM, Piórkowski, Piotr wrote:
-> From: Piotr Piórkowski <piotr.piorkowski@intel.com>
->
-> Add helpers to read raw PCI configuration space from sysfs and access
-> its contents.
-> Provide little-endian u16/u32 readers and standard and extended
-> capability lookup helpers for configuration-space buffers.
->
-> v2:
-> - Validate malformed and cyclic capability chains.
-> - Add unit tests for capability lookup and malformed chains.
->
-> Signed-off-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
-> Assisted-by: GPT-5.6 Luna
-> ---
->   lib/igt_pci.c         | 90 +++++++++++++++++++++++++++++++++++++++++++
->   lib/igt_pci.h         |  8 +++-
->   lib/tests/igt_pci.c   | 66 +++++++++++++++++++++++++++++++
->   lib/tests/meson.build |  1 +
->   4 files changed, 164 insertions(+), 1 deletion(-)
->   create mode 100644 lib/tests/igt_pci.c
->
-> diff --git a/lib/igt_pci.c b/lib/igt_pci.c
-> index b63550b390..7cc9f2dfd6 100644
-> --- a/lib/igt_pci.c
-> +++ b/lib/igt_pci.c
-> @@ -8,6 +8,7 @@
->   #include <errno.h>
->   #include <fcntl.h>
->   #include <limits.h>
-> +#include <linux/pci_regs.h>
->   #include <string.h>
->   #include <unistd.h>
->   #include <pciaccess.h>
-> @@ -61,6 +62,95 @@ int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id)
->   	return find_pci_cap_offset_at(dev, cap_id, PCI_CAPS_START);
->   }
->   
-> +/**
-> + * igt_pci_config_raw_read:
-> + * @pci_slot: PCI device BDF (e.g. "0000:01:00.0")
-> + * @buffer: destination buffer
-> + * @length: number of configuration-space bytes to read
-> + *
-> + * Read raw PCI configuration space through the device sysfs config attribute.
-> + *
-> + * Returns 0 on success, otherwise a negative errno-like value.
-> + */
-> +int igt_pci_config_raw_read(const char *pci_slot, void *buffer, size_t length)
-> +{
-> +	char path[PATH_MAX];
-> +	ssize_t ret;
-> +	int err;
-> +	int fd;
-> +
-> +	if (!pci_slot || !buffer || !length)
-> +		return -EINVAL;
-> +
-> +	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/config", pci_slot);
-> +	fd = open(path, O_RDONLY | O_CLOEXEC);
-> +	if (fd < 0)
-> +		return -errno;
-> +
-> +	ret = pread(fd, buffer, length, 0);
-> +	err = errno;
-> +	close(fd);
-> +	if (ret < 0)
-> +		return -err;
-> +
-> +	return (size_t)ret == length ? 0 : -EIO;
-> +}
-> +
-> +uint16_t igt_pci_config_raw_read_u16(const uint8_t *config, unsigned int offset)
-> +{
-> +	return config[offset] | (config[offset + 1] << 8);
-> +}
-> +
-> +uint32_t igt_pci_config_raw_read_u32(const uint8_t *config, unsigned int offset)
-> +{
-> +	return igt_pci_config_raw_read_u16(config, offset) |
-> +	       ((uint32_t)igt_pci_config_raw_read_u16(config, offset + 2) << 16);
-> +}
-> +
-> +int igt_pci_config_raw_find_cap_offset(const uint8_t *config, uint8_t cap_id)
-> +{
-> +	unsigned int offset = config[PCI_CAPS_START];
-> +	unsigned int loop = (PCI_CFG_SPACE_SIZE - PCI_TYPE0_1_HEADER_SIZE) / 2;
-> +
-> +	while (offset && loop--) {
-> +		if (offset < PCI_TYPE0_1_HEADER_SIZE ||
-> +		    offset > PCI_CFG_SPACE_SIZE - 2 || offset & 3)
-> +			return -EINVAL;
-> +
-> +		if (config[offset] == cap_id)
-> +			return offset;
-> +
-> +		offset = config[offset + 1];
-> +	}
-> +
-> +	return offset ? -ELOOP : 0;
-> +}
-Can we consolidate/reuse the loop logic into a common helper shared by 
-igt_pci_config_raw_find_cap_offset
-and find_pci_cap_offset_at ?
-There's also a discrepancy in low-2-bit handling - those bits should be 
-masked off, not validated/rejected.
-> +
-> +int igt_pci_config_raw_find_ext_cap_offset(const uint8_t *config, uint16_t cap_id)
-> +{
-> +	unsigned int offset = PCI_EXT_CAPS_START;
-> +	unsigned int loop = (PCI_EXT_CFG_SPACE_SIZE - offset) / 4;
-> +
-> +	while (loop) {
-> +		uint32_t header = igt_pci_config_raw_read_u32(config, offset);
-> +
-> +		loop--;
-> +
-> +		if (!header)
-> +			return 0;
-> +		if ((header & 0xffff) == cap_id)
-> +			return offset;
-> +
-> +		offset = (header >> 20) & 0xffc;
-> +		if (!offset)
-> +			return 0;
-> +		if (offset < PCI_EXT_CAPS_START || offset >= PCI_EXT_CFG_SPACE_SIZE)
-> +			return -EINVAL;
-> +	}
-> +
-> +	return -ELOOP;
-> +}
-> +
-Maybe it's worth to check a special-case an all-0xffffffff header (what 
-you get back when extended config space isn't implemented/accessible) 
-instead of walking it as real data?
->   static int open_pci_driver_dir(const char *driver)
->   {
->   	char path[PATH_MAX];
-> diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-> index 509345b2d8..628cc24766 100644
-> --- a/lib/igt_pci.h
-> +++ b/lib/igt_pci.h
-> @@ -15,7 +15,8 @@ struct pci_device;
->   
->   #define PCI_TYPE0_1_HEADER_SIZE 0x40
->   #define PCI_CAPS_START 0x34
-> -#define PCI_CFG_SPACE_SIZE 0x100
-> +#define PCI_EXT_CAPS_START 0x100
-> +#define PCI_EXT_CFG_SPACE_SIZE 0x1000
->   
->   enum pci_cap_id {
->   	PCI_EXPRESS_CAP_ID = 0x10
-> @@ -27,6 +28,11 @@ enum pci_cap_id {
->   #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
->   
->   int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
-> +int igt_pci_config_raw_read(const char *pci_slot, void *buffer, size_t length);
-> +uint16_t igt_pci_config_raw_read_u16(const uint8_t *config, unsigned int offset);
-> +uint32_t igt_pci_config_raw_read_u32(const uint8_t *config, unsigned int offset);
-> +int igt_pci_config_raw_find_cap_offset(const uint8_t *config, uint8_t cap_id);
-> +int igt_pci_config_raw_find_ext_cap_offset(const uint8_t *config, uint16_t cap_id);
->   int igt_pci_device_unbind(const char *pci_slot);
->   int igt_pci_driver_bind(const char *driver, const char *pci_slot);
->   int igt_pci_driver_unbind(const char *driver, const char *pci_slot);
-> diff --git a/lib/tests/igt_pci.c b/lib/tests/igt_pci.c
-> new file mode 100644
-> index 0000000000..191edb95c5
-> --- /dev/null
-> +++ b/lib/tests/igt_pci.c
-> @@ -0,0 +1,66 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +#include <errno.h>
-> +#include <linux/pci_regs.h>
-> +#include <stdint.h>
-> +#include <string.h>
-> +
-> +#include "igt_core.h"
-> +#include "igt_pci.h"
-> +
-> +static void write_u32(uint8_t *config, unsigned int offset, uint32_t value)
-> +{
-> +	config[offset] = value;
-> +	config[offset + 1] = value >> 8;
-> +	config[offset + 2] = value >> 16;
-> +	config[offset + 3] = value >> 24;
-> +}
-> +
-> +static void test_cap(void)
-> +{
-> +	uint8_t config[PCI_CFG_SPACE_SIZE] = {};
-> +
-> +	config[PCI_CAPS_START] = PCI_TYPE0_1_HEADER_SIZE;
-> +	config[PCI_TYPE0_1_HEADER_SIZE] = 0xaa;
-> +	igt_assert_eq(igt_pci_config_raw_find_cap_offset(config, 0xaa),
-> +		      PCI_TYPE0_1_HEADER_SIZE);
-> +
-> +	config[PCI_CAPS_START] = 0xff;
-> +	igt_assert_eq(igt_pci_config_raw_find_cap_offset(config, 0xaa), -EINVAL);
-> +
-> +	config[PCI_CAPS_START] = PCI_TYPE0_1_HEADER_SIZE;
-> +	config[PCI_TYPE0_1_HEADER_SIZE] = 0xbb;
-> +	config[PCI_TYPE0_1_HEADER_SIZE + 1] = PCI_TYPE0_1_HEADER_SIZE;
-> +	igt_assert_eq(igt_pci_config_raw_find_cap_offset(config, 0xaa), -ELOOP);
-> +}
-> +
-> +static void test_ext_cap(void)
-> +{
-> +	uint8_t config[PCI_EXT_CFG_SPACE_SIZE] = {};
-> +	unsigned int offset;
-> +
-> +	write_u32(config, PCI_EXT_CAPS_START, 0xaa);
-> +	igt_assert_eq(igt_pci_config_raw_find_ext_cap_offset(config, 0xaa),
-> +		      PCI_EXT_CAPS_START);
-> +
-> +	write_u32(config, PCI_EXT_CAPS_START,
-> +		  0xbb | (PCI_EXT_CAPS_START << 20));
-> +	igt_assert_eq(igt_pci_config_raw_find_ext_cap_offset(config, 0xaa), -ELOOP);
-> +
-> +	memset(config, 0, sizeof(config));
-> +	for (offset = PCI_EXT_CAPS_START;
-> +	     offset < PCI_EXT_CFG_SPACE_SIZE - sizeof(uint32_t);
-> +	     offset += sizeof(uint32_t))
-> +		write_u32(config, offset, 0xbb | ((offset + sizeof(uint32_t)) << 20));
-> +
-> +	igt_assert_eq(igt_pci_config_raw_find_ext_cap_offset(config, 0xaa), 0);
-> +}
-> +
-> +int igt_simple_main()
-> +{
-> +	test_cap();
-> +	test_ext_cap();
-> +}
-> \ No newline at end of file
-> diff --git a/lib/tests/meson.build b/lib/tests/meson.build
-> index f1db66d07c..0a7c903f16 100644
-> --- a/lib/tests/meson.build
-> +++ b/lib/tests/meson.build
-> @@ -19,6 +19,7 @@ lib_tests = [
->   	'igt_invalid_subtest_name',
->   	'igt_nesting',
->   	'igt_no_exit',
-> +	'igt_pci',
->   	'igt_runnercomms_packets',
->   	'igt_segfault',
->   	'igt_simulation',
+This provide coverage for different BO allocation stress scenarios
+
+v3: renamed the sub test functions.
+v4: Addressed nits (kamil)
+
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+---
+ tests/intel/xe_bo_alloc.c | 598 ++++++++++++++++++++++++++++++++++++++
+ tests/meson.build         |   1 +
+ 2 files changed, 599 insertions(+)
+ create mode 100644 tests/intel/xe_bo_alloc.c
+
+diff --git a/tests/intel/xe_bo_alloc.c b/tests/intel/xe_bo_alloc.c
+new file mode 100644
+index 000000000..8680fe518
+--- /dev/null
++++ b/tests/intel/xe_bo_alloc.c
+@@ -0,0 +1,598 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++/**
++ * TEST: xe_bo_alloc
++ * Category: Core
++ * Mega feature: General
++ * Sub-category: Memory
++ * Functionality: BO allocation
++ * Description: Tests for buffer object allocation in Xe driver
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <sys/mman.h>
++
++#include "igt.h"
++
++#include "lib/igt_syncobj.h"
++#include "lib/intel_reg.h"
++
++#include "xe/xe_ioctl.h"
++#include "xe/xe_query.h"
++
++#include "xe_drm.h"
++#define BO_BIND_BASE_ADDR	0x1a0000ull
++#define THREAD_VA_STRIDE GB(1)
++#define SZ_4K_SHIFT	12
++#define MAX_ALLOCATIONS 50000
++
++/**
++ * SUBTEST: all-sizes-once
++ * Description: Test all BO allocations sizes in test table
++ * Test category: functionality test
++ */
++
++#define GB(x) (1024ULL * 1024ULL * 1024ULL * (x))
++#define MIN_BUFS_PER_PROC 2
++
++#define N_ALLOC_SIZES	256
++static uint64_t *alloc_sizes;
++
++/*
++ * Data-driven subtest matrix.
++ *
++ * TYPE_ALL_SIZES / TYPE_SINGLE / TYPE_ARRAY_BIND all exercise exactly one
++ * engine per invocation, so they're wired up as a dynamic child subtest
++ * per engine below (igt_subtest_with_dynamic_f() + igt_dynamic_f()).
++ *
++ * TYPE_THREAD are deliberately NOT split per engine here:
++ * threads() already do their own xe_for_each_engine() to spawn one
++ * thread per engine internally. Wrapping those in a second, outer
++ * per-engine loop would run the full all-engine fan-out
++ * once for every engine on the machine, multiplying the runtime by the
++ * engine count and re-exercising every engine N times over. So these
++ * stay flat, single subtests.
++ */
++enum test_type {
++	TYPE_ALL_SIZES,
++};
++
++struct test_case {
++	const char *name;
++	int count; /* -1 means "until vram_per_process is hit" */
++	uint32_t flags;
++	enum test_type type;
++	bool requires_evict_ram;
++};
++
++#define LEAK_BINDING		(0x1 << 0)
++#define LEAK_BO			(0x1 << 1)
++#define EVICT			(0x1 << 2)
++#define UNALIGNED		(0x1 << 3)
++#define ARRAY_BIND    (0x1 << 4)
++
++/*
++ * Represents a single BO under test: its reserved VA range, the BO handle,
++ * the CPU mapping obtained after binding, and its size. The prepare / bind
++ * / execute steps below all operate on arrays of this struct so that the
++ * same code path drives both a single BO (the original subtests) and an
++ * "array of binds" of several BOs at once (the new array-binds subtests).
++ */
++struct bo_alloc {
++	void *va_reserve;	/* raw mmap() reservation, kept only so it can
++				 * be released again; never touched directly.
++				 */
++	size_t va_reserve_size;
++	void *va;		/* fixed CPU mapping address used by mmap */
++	uint64_t gpu_va;	/* GPU virtual address used by VM_BIND */
++	void *map;		/* CPU mapping of the BO, valid after bind */
++	uint64_t bo_size;
++	uint32_t bo;
++};
++
++struct bo_group {
++	struct bo_alloc *bos;
++	int n_bos;
++};
++
++struct batch_data {
++	uint32_t batch[16];
++	uint64_t pad;
++	uint32_t data;
++};
++
++/*
++ * Reserve a chunk of process address space to use as the VM bind address
++ * for a BO, and hand back a pointer inside it aligned either to bo_size
++ * ("aligned" case) or to 64K ("unaligned" case, i.e. deliberately not
++ * aligned to bo_size).
++ *
++ * This replaces the previous use of aligned_alloc(bo_size, bo_size):
++ * aligned_alloc() requires size to be a multiple of alignment, which
++ * doesn't hold for most entries in alloc_sizes[] (multiples of 64K, not
++ * generally powers of two), so the old "aligned" path was silently
++ * returning a mis-aligned pointer for the majority of sizes tested.
++ * Reserving with PROT_NONE also avoids committing real memory that just
++ * gets thrown away once xe_bo_map_fixed() replaces it with the BO mapping.
++ */
++static void bo_alloc_reserve_va(struct bo_alloc *b, uint32_t flags, uint64_t va_base)
++{
++	uint64_t align = (flags & UNALIGNED) ? SZ_64K : b->bo_size;
++	size_t reserve_size = b->bo_size + align;
++	uintptr_t addr;
++	uintptr_t aligned_addr;
++	void *reserve;
++
++	/*
++	 * Keep each BO reservation in the caller-selected VA window so threads
++	 * and per-process tests do not clash on random mmap addresses. The
++	 * unaligned case still uses a 64 KiB alignment while the fixed address is
++	 * only a hint to keep the ranges stable and non-overlapping.
++	 */
++	addr = ALIGN(va_base, align);
++	reserve = mmap((void *)addr, reserve_size, PROT_NONE,
++		       MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED_NOREPLACE, -1, 0);
++	if (reserve == MAP_FAILED) {
++		reserve = mmap(NULL, reserve_size, PROT_NONE,
++			       MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++		igt_assert(reserve != MAP_FAILED);
++		addr = (uintptr_t)reserve;
++	}
++
++	b->va_reserve = reserve;
++	b->va_reserve_size = reserve_size;
++
++	addr = (uintptr_t)reserve;
++
++	/*
++	 * Round up to the next multiple of 'align'.
++	 * Works for arbitrary alignments, not just powers of two.
++	 */
++	aligned_addr = ((addr + align - 1) / align) * align;
++
++	b->va = (void *)aligned_addr;
++	b->gpu_va = to_user_pointer(b->va);
++
++	igt_debug("reserve=0x%llx align=0x%llx bo_size=0x%llx\n", (unsigned long long)addr,
++		  (unsigned long long)align, (unsigned long long)b->bo_size);
++
++	igt_assert_eq_u64(b->gpu_va % align, 0);
++}
++
++static void alloc_sizes_init(void)
++{
++	int i;
++
++	alloc_sizes = malloc(sizeof(*alloc_sizes) * N_ALLOC_SIZES);
++
++	/* For now just do increments of 64k */
++	for (i = 0; i < N_ALLOC_SIZES; ++i)
++		alloc_sizes[i] = 0x10000ull * (i + 1);
++}
++
++static void alloc_sizes_fini(void)
++{
++	free(alloc_sizes);
++}
++
++
++static uint32_t wkey = 0xc0ffeeull;
++#define WRITE_VALUE(page)	(((wkey) << 8) | (page))
++
++static void check_exec_data(void *ptr, int n_pages)
++{
++	int i;
++
++	for (i = 0; i < n_pages; ++i) {
++		struct batch_data *data = ptr + i * SZ_4K;
++
++		igt_assert_eq(data->data, WRITE_VALUE(i));
++	}
++}
++
++static void bo_alloc_release_va(struct bo_alloc *b)
++{
++	if (!b->va_reserve || !b->va_reserve_size)
++		return;
++	munmap(b->va_reserve, b->va_reserve_size);
++	b->va_reserve = NULL;
++	b->va_reserve_size = 0;
++}
++
++/*
++ * PREPARE step: allocate the VA range and create the BO. Doesn't touch the
++ * GPU. vm is passed through unbound to xe_bo_create() exactly as before:
++ * non-evict BOs are created VM-private, evict BOs are created external so
++ * they can be freely rebound after being evicted.
++ */
++static void create_bo_arr(int fd, uint32_t vm, struct bo_alloc *bos,  int n_bos, uint16_t gt_id,
++			  uint32_t flags, uint64_t start_va)
++{
++	uint64_t alignment = xe_get_default_alignment(fd);
++	uint32_t create_flags;
++	int i;
++
++	igt_assert(n_bos > 0);
++	create_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM;
++
++	for (i = 0; i < n_bos; i++) {
++		igt_assert_f(bos[i].bo_size,
++			     "BO[%d] has zero size\n", i);
++
++		bos[i].bo_size = ALIGN(bos[i].bo_size, alignment);
++		bo_alloc_reserve_va(&bos[i], flags, start_va + (i * alignment));
++		bos[i].map = NULL;
++
++		bos[i].bo = xe_bo_create(fd, vm,
++					 bos[i].bo_size,
++					 vram_if_possible(fd, gt_id),
++					 create_flags);
++
++		igt_assert_f(bos[i].bo,
++			     "Failed to create BO[%d]: gt=%u size=%#llx gpu_va=%#llx\n",
++			     i, gt_id, (unsigned long long)bos[i].bo_size,
++			     (unsigned long long)bos[i].gpu_va);
++	}
++}
++
++/*
++ * BIND step: bind one or more BOs as a single array-of-binds ioctl call
++ * (see __xe_vm_bind_array() above), replacing the previous open-coded
++ * xe_vm_bind_sync() called once per BO.
++ */
++static int test_bind_individual(int fd, uint32_t vm, struct bo_alloc *bos, int n_bos)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = syncobj_create(fd, 0),
++	};
++	int i, ret, j;
++
++	for (i = 0; i < n_bos; i++) {
++		struct drm_xe_sync *bind_sync = NULL;
++		uint32_t num_syncs = 0;
++
++		igt_debug("bind[%d/%d] size=%llu MiB va=0x%llx bo=%u\n", i, n_bos,
++			  (unsigned long long)(bos[i].bo_size >> 20),
++			  (unsigned long long)bos[i].gpu_va,
++			  bos[i].bo);
++
++		/*
++		 * Signal only after the last async bind.
++		 * VM bind operations on the same VM are ordered.
++		 */
++		if (i == n_bos - 1) {
++			bind_sync = &sync;
++			num_syncs = 1;
++		}
++
++		ret = __xe_vm_bind(fd, vm, 0, bos[i].bo, 0, bos[i].gpu_va, bos[i].bo_size,
++				   DRM_XE_VM_BIND_OP_MAP, 0, bind_sync, num_syncs, 0,
++				   (uint8_t)-1, 0);
++		if (ret == -ENOMEM || ret == -ENOSPC) {
++			igt_debug("VM Bind failed at BO[%d]: ret=%d errno=%d (%s)\n",
++				  i, ret, errno, strerror(-ret));
++			for (j = 0; j < i; j++)
++				xe_vm_unbind_sync(fd, vm, 0, bos[j].gpu_va, bos[j].bo_size);
++			syncobj_destroy(fd, sync.handle);
++			return ret;
++		}
++		igt_assert_eq(ret, 0);
++	}
++
++	igt_assert_f(syncobj_wait(fd, &sync.handle, 1, INT64_MAX, 0, NULL),
++		     "Timed out waiting for async VM binds\n");
++
++	syncobj_destroy(fd, sync.handle);
++
++	return 0;
++}
++
++static int test_bind(int fd, uint32_t vm, struct bo_alloc *bos, int n_bos, uint32_t flags)
++{
++		return test_bind_individual(fd, vm, bos, n_bos);
++}
++
++/*
++ * UNBIND step: unbind each BO synchronously.
++ * This path intentionally avoids array-unbind ioctls for stability.
++ * BO in the batch.
++ */
++static void test_unbind(int fd, uint32_t vm, struct bo_alloc *bos, int n_bos)
++{
++	int i;
++
++	igt_assert(n_bos > 0);
++
++	for (i = 0; i < n_bos; ++i)
++		xe_vm_unbind_sync(fd, vm, 0, bos[i].gpu_va, bos[i].bo_size);
++}
++
++/*
++ * Map every BO after binding.
++ *
++ * gpu_va is also used as the fixed CPU virtual address, following the
++ * original test design.
++ */
++static void test_map_bos(int fd, struct bo_alloc *bos, int n_bos)
++{
++	int i;
++
++	for (i = 0; i < n_bos; i++) {
++		bos[i].map = xe_bo_map_fixed(fd,
++					     bos[i].bo,
++					     bos[i].bo_size,
++					     bos[i].gpu_va);
++
++		igt_assert_f(bos[i].map != MAP_FAILED,
++			     "Failed to map BO[%d]: bo=%u size=%#llx address=%#llx\n",
++			     i, bos[i].bo,
++			     (unsigned long long)bos[i].bo_size,
++			     (unsigned long long)bos[i].gpu_va);
++	}
++}
++
++/*
++ * Build and submit one batch for every 4 KiB page of one BO.
++ */
++static void execute_bo(int fd, uint32_t exec_queue,
++		       struct bo_alloc *bo)
++{
++	struct drm_xe_sync sync = {
++		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
++		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++		.handle = syncobj_create(fd, 0),
++	};
++	struct drm_xe_exec exec = {
++		.num_batch_buffer = 1,
++		.exec_queue_id = exec_queue,
++		.num_syncs = 0,
++		.syncs = to_user_pointer(&sync),
++	};
++	const uint64_t batch_offset =
++		offsetof(struct batch_data, batch);
++	const uint64_t data_offset =
++		offsetof(struct batch_data, data);
++	int n_pages = bo->bo_size >> SZ_4K_SHIFT;
++	int i;
++
++	for (i = 0; i < n_pages; i++) {
++		struct batch_data *data;
++		uint64_t page_addr;
++		uint64_t batch_addr;
++		uint64_t data_addr;
++		int b = 0;
++
++		data = (void *)((char *)bo->map + i * SZ_4K);
++
++		page_addr = bo->gpu_va + (i * SZ_4K);
++		batch_addr = page_addr + batch_offset;
++		data_addr = page_addr + data_offset;
++
++		memset(data, 0, sizeof(*data));
++
++		data->batch[b++] = MI_STORE_DWORD_IMM_GEN4;
++		data->batch[b++] = lower_32_bits(data_addr);
++		data->batch[b++] = upper_32_bits(data_addr);
++		data->batch[b++] = WRITE_VALUE(i);
++		data->batch[b++] = MI_BATCH_BUFFER_END;
++
++		igt_assert(b <= ARRAY_SIZE(data->batch));
++
++		exec.address = batch_addr;
++
++		/*
++		 * Signal only after the final page submission.
++		 */
++		exec.num_syncs = i == n_pages - 1 ? 1 : 0;
++
++		xe_exec(fd, &exec);
++	}
++
++	igt_assert_f(syncobj_wait(fd, &sync.handle, 1,
++				  INT64_MAX, 0, NULL),
++		     "Timed out waiting for BO execution\n");
++
++	check_exec_data(bo->map, n_pages);
++
++	syncobj_destroy(fd, sync.handle);
++}
++
++static void execute_multi_bos(int fd, uint32_t exec_queue,
++			      struct bo_alloc *bos, int n_bos)
++{
++	int i;
++
++	test_map_bos(fd, bos, n_bos);
++
++	for (i = 0; i < n_bos; i++)
++		execute_bo(fd, exec_queue, &bos[i]);
++}
++
++static void bo_release(int fd, struct bo_alloc *b)
++{
++	if (b->map)
++		munmap(b->map, b->bo_size);
++	if (b->bo)
++		gem_close(fd, b->bo);
++	bo_alloc_release_va(b);
++}
++
++/*
++ * Runs prepare + bind + execute for n_bos BOs at once (n_bos == 1
++ * reproduces the original single-BO behaviour). If LEAK_BINDING is not
++ * set, unbinds afterwards. If LEAK_BO is set, the BOs are left mapped and
++ * bound and returned to the caller (as an array the caller owns and must
++ * eventually pass to check_leak_multi_group()/free()); otherwise they're torn down
++ * immediately and NULL is returned.
++ */
++static struct bo_alloc *test_alloc_sizes(int fd, uint32_t vm, uint32_t exec_q,
++					 uint16_t gt_id, uint64_t *sizes,
++					 int n_bos, uint32_t flags,  uint64_t va_base)
++{
++	struct bo_alloc *bos;
++	int i, ret;
++
++	bos = calloc(n_bos, sizeof(*bos));
++	igt_assert(bos);
++
++	for (i = 0; i < n_bos; ++i)
++		bos[i].bo_size = sizes[i];
++
++	create_bo_arr(fd, vm, bos, n_bos, gt_id, flags, va_base);
++	ret = test_bind(fd, vm, bos, n_bos, flags);
++	if (ret == -ENOMEM || ret == -ENOSPC)
++		goto cleanup;
++
++	igt_assert_eq(ret, 0);
++	execute_multi_bos(fd, exec_q, bos, n_bos);
++
++	if (!(flags & LEAK_BINDING))
++		test_unbind(fd, vm, bos, n_bos);
++
++cleanup:
++
++	if (ret || !(flags & LEAK_BO)) {
++		for (i = 0; i < n_bos; ++i)
++			bo_release(fd, &bos[i]);
++		free(bos);
++		return NULL;
++	}
++
++	return bos;
++}
++
++/* Thin single-BO wrapper: keeps the existing call sites unchanged. */
++static struct bo_alloc *test_alloc_size(int fd, uint32_t vm, uint32_t q,
++					uint16_t gt_id, uint64_t bo_size,
++					uint32_t flags, uint64_t va_base)
++{
++	struct bo_alloc *bos = test_alloc_sizes(fd, vm, q, gt_id, &bo_size,
++						1, flags, va_base);
++
++	/* Caller only ever gets/frees a single struct, so unwrap it. */
++	if (bos) {
++		struct bo_alloc *b = malloc(sizeof(*b));
++
++		igt_assert(b);
++		*b = bos[0];
++		free(bos);
++		return b;
++	}
++
++	return NULL;
++}
++
++static void all_sizes_once(int fd, struct drm_xe_engine_class_instance *hwe)
++{
++	uint32_t vm, q;
++	int i;
++
++	vm = xe_vm_create(fd, 0, 0);
++	q =  xe_exec_queue_create(fd, vm, hwe, 0);
++
++	for (i = 0; i < N_ALLOC_SIZES; ++i)
++		test_alloc_size(fd, vm, q, hwe->gt_id, alloc_sizes[i], 0, BO_BIND_BASE_ADDR);
++
++	xe_exec_queue_destroy(fd, q);
++	xe_vm_destroy(fd, vm);
++}
++
++static void run_gt_dynamic_subtests(int fd, const struct test_case *t)
++{
++	struct drm_xe_engine_class_instance *hwe;
++	uint16_t seen_gt[64];
++	int n_seen = 0, j;
++	bool dup;
++
++	if (t->requires_evict_ram) {
++		igt_require(xe_has_vram(fd));
++		igt_require(igt_get_avail_ram_mb() >=
++			    (xe_visible_vram_size(fd, 0) >> 20) / 2);
++	}
++
++	/*
++	 * These tests only care about which GT (and  therefore which VRAM region,
++	 * via gt_id -> vram_if_possible()) the BO ends up on, not which specific
++	 * engine issues the exec. So run once per distinct gt_id instead of once
++	 * per engine: on single-GT parts that's one dynamic child same as before,
++	 * and on multi-tile parts it exercises every tile's VRAM instead of silently
++	 * only ever hitting whichever GT the first engine happened to belong to
++	 */
++	xe_for_each_engine(fd, hwe) {
++		dup = false;
++
++		for (j = 0; j < n_seen; ++j) {
++			if (seen_gt[j] == hwe->gt_id) {
++				dup = true;
++				break;
++			}
++		}
++		if (dup)
++			continue;
++
++		igt_assert(n_seen < ARRAY_SIZE(seen_gt));
++		seen_gt[n_seen++] = hwe->gt_id;
++
++		igt_dynamic_f("gt%u", hwe->gt_id) {
++			switch (t->type) {
++			case TYPE_ALL_SIZES:
++				all_sizes_once(fd, hwe);
++				break;
++			default:
++				break;
++
++			}
++		}
++	}
++}
++
++/*
++ * Data-driven subtest matrix.
++ *
++ * TYPE_ALL_SIZES / TYPE_SINGLE / TYPE_ARRAY_BIND all exercise exactly one
++ * engine per invocation, so they're wired up as a dynamic child subtest
++ * per engine below (igt_subtest_with_dynamic_f() + igt_dynamic_f()).
++ *
++ * TYPE_THREAD / TYPE_PROCESS are deliberately NOT split per engine here:
++ * threads() and processes() already do their own xe_for_each_engine() to
++ * spawn one thread/process per engine internally. Wrapping those in a
++ * second, outer per-engine loop would run the full all-engine fan-out
++ * once for every engine on the machine, multiplying the runtime by the
++ * engine count and re-exercising every engine N times over. So these
++ * stay flat, single subtests.
++ */
++
++static const struct test_case test_matrix[] = {
++	{ "all-sizes-once", 0, 0, TYPE_ALL_SIZES, false },
++};
++
++int igt_main()
++{
++	int fd, i;
++
++	igt_fixture() {
++		fd = drm_open_driver(DRIVER_XE);
++		alloc_sizes_init();
++	}
++
++	for (i = 0; i < ARRAY_SIZE(test_matrix); ++i) {
++		const struct test_case *t = &test_matrix[i];
++
++		switch (t->type) {
++		case TYPE_ALL_SIZES:
++			igt_subtest_with_dynamic_f("%s", t->name)
++				run_gt_dynamic_subtests(fd, t);
++		}
++	}
++
++	igt_fixture() {
++		alloc_sizes_fini();
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 4f5c9be7b..f3e1802fd 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -283,6 +283,7 @@ intel_kms_progs = [
+ 
+ intel_xe_progs = [
+ 	'xe_wedged',
++        'xe_bo_alloc',
+ 	'xe_ccs',
+ 	'xe_create',
+ 	'xe_compute',
+-- 
+2.52.0
+
