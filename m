@@ -4,53 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9523DC982FA
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 17:17:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E35BC982FA
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 18:16:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3723E10E4F6;
-	Tue, 22 Sep 2026 17:17:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A079D10E5FB;
+	Tue, 22 Sep 2026 18:16:14 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YgN5hfmU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aMHvzzP+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2F84D10E4F8
- for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 17:16:55 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2926E10E5FB
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 18:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790097415; x=1821633415;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=wxkMTlVnEINtK8Ef8XO9okQM9UzpSe+D7XXV2CrjqrQ=;
- b=YgN5hfmUK5cUVhuK2J0j3S9ReWLqzCEUay12+X94T+12bmWlSn5Kkrh2
- x5dunCCukdZCbZMQad6zuoXF2YfFGnLofomZVwBEnlLYjTLgasuL7Yo9S
- sOWQvlYPiyju7oYLw2y0N22DcVRtz+fXQ0LhOqAfSEpQd2sW5t/WPwonC
- Np06eYs3ZoOd2HLUgrS5U6qxz8kPXa7VTSdF5sses/LSMioM5eMuiDcHx
- qxxruGPfCIgELnD64NwSAbZ+DOErL7eQU0I4HPrUduY+BFHMmfKC+Czlj
- UwP9qSQTueixML146XtLyuRtfHh10na7sOKMYL/FqB7b0eSAk7N4zoXfO w==;
-X-CSE-ConnectionGUID: FFrkQ+fVTyKN+2i5vp3kBg==
-X-CSE-MsgGUID: QDsfvO8oTpKvV6h/iToGcw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="93223910"
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="93223910"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2026 10:16:54 -0700
-X-CSE-ConnectionGUID: Gx2a9j1mTi+A/KZrGTiN1g==
-X-CSE-MsgGUID: Ud5tHh9CRWC5epKBQKxHkw==
+ t=1790100930; x=1821636930;
+ h=date:message-id:from:to:cc:subject:in-reply-to:
+ references:mime-version;
+ bh=GpnEHRwnQ2MIz9JNstJj4Hao4mG5JdE1xXhwH6comQQ=;
+ b=aMHvzzP+jm2vyMRrNrMVuGq0L4mIzMysWJAU59fLfdd4IDZid7ART8PP
+ avO1AMsEBvjdWL8uTRTgLnzJl+Y3DUsw7ryJvPp2AZ6mHM0rOmzvohQRL
+ iI8LeNNHCeLE8QBeRvLokgXI/P85B3pzwDKFghL58LmxaWdWebRkqp1hl
+ oK9u+vNZninKbXsHr75vYCFq1AL7VjxGyPu2nYU9cyeKD6P0ugmjuPxKi
+ yGsBMTodO2iLTMIvnBI/P9/Vc9K78GqLxP/ce4qy3Rv9HEUrdxCg8H4/5
+ 26TRQnyxSXoVl06B+QpWKIHwAqTtrnQ+Gi6aEaJE5YfeoZwuBVZGPRxmY g==;
+X-CSE-ConnectionGUID: EKmRlqvHRfC5yrBFoZ2RXg==
+X-CSE-MsgGUID: +0h7OinZS4WlNEOoaKDCUw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="89649556"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="89649556"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2026 11:15:30 -0700
+X-CSE-ConnectionGUID: mYNLZEJ2RtSqE8eH1lxBqA==
+X-CSE-MsgGUID: PX7oibMERpempSSGHah5EQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="281298521"
-Received: from dut6094bmgfrd.fm.intel.com ([10.80.54.85])
- by fmviesa005.fm.intel.com with ESMTP; 22 Sep 2026 10:16:54 -0700
-From: Jia Yao <jia.yao@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: nishit.sharma@intel.com,
-	Jia Yao <jia.yao@intel.com>
-Subject: [PATCH v2] tests/intel/xe_exec_system_allocator: skip huge-page
- multi-process tests when memory is low
-Date: Tue, 22 Sep 2026 17:16:49 +0000
-Message-ID: <20260922171649.2215034-1-jia.yao@intel.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="278005692"
+Received: from dmheuer-mobl.amr.corp.intel.com (HELO adixit-MOBL3.intel.com)
+ ([10.125.69.229])
+ by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2026 11:15:29 -0700
+Date: Tue, 22 Sep 2026 11:15:28 -0700
+Message-ID: <87mrt9m9tr.wl-ashutosh.dixit@intel.com>
+From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: <igt-dev@lists.freedesktop.org>,
+	Karthik B S <karthik.b.s@intel.com>
+Subject: Re: [PATCH i-g-t] Update MAINTAINERS
+In-Reply-To: <20260922155151.90467-1-kamil.konieczny@linux.intel.com>
+References: <20260922155151.90467-1-kamil.konieczny@linux.intel.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
+ Emacs/30.2 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,93 +71,30 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-The process-many-stride-mmap-new-huge subtest forks one child per GPU
-engine and, with the MMAP|NEW|HUGE_PAGE flag combination (without FREE),
-each child accumulates up to n_execs * SZ_2M of anonymous hugepage mmap
-buffers before freeing them at cleanup.  On constrained systems the
-total peak memory (n_engines * n_execs * 2 MiB) can exhaust system
-RAM, trigger the OOM killer, and cause the surviving processes to time
-out waiting on fences (ETIME / errno=62) rather than failing cleanly.
+On Tue, 22 Sep 2026 08:51:51 -0700, Kamil Konieczny wrote:
+>
+> Remove Ashtutosh Dixit.
 
-Add igt_require_mem_kb() that skips when MemAvailable is below the
-estimated worst-case peak and call it in processes() for the
-MMAP|NEW|!FREE path before any children are forked.
+Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-v2:
- - use igt_skip() instead of silently returning (Nishit)
- - also check available memory in test_exec() for the non-forked
-   (many-/threads-) HUGE_PAGE|MMAP|NEW paths (Nishit)
- - fix subject prefix and use ASCII '*' in commit message (Kamil)
-
-Signed-off-by: Jia Yao <jia.yao@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 39 ++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
-
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 305512dfd..45ec62813 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -1173,6 +1173,24 @@ static void igt_require_hugepages(void)
- 		      "No huge pages available!\n");
- }
- 
-+/**
-+ * igt_require_mem_kb:
-+ * @needed_kb: minimum required free memory in kB
-+ *
-+ * Skip the test if MemAvailable is below @needed_kb.  Used to avoid OOM
-+ * kills in memory-hungry multi-process subtests (MMAP|NEW without FREE).
-+ */
-+static void igt_require_mem_kb(uint64_t needed_kb)
-+{
-+	/* igt_get_meminfo() returns bytes; convert to kB for comparison */
-+	uint64_t avail_kb = igt_get_meminfo("MemAvailable") >> 10;
-+
-+	igt_skip_on_f(avail_kb < needed_kb,
-+		      "Not enough memory: need %" PRIu64
-+		      " kB, have %" PRIu64 " kB\n",
-+		      needed_kb, avail_kb);
-+}
-+
- static void
- madvise_swizzle_op_exec(int fd, uint32_t vm, struct test_exec_data *data,
- 			size_t bo_size, uint64_t addr, int index)
-@@ -1508,6 +1526,16 @@ test_exec(int fd, struct drm_xe_engine_class_instance *eci,
- 	if (flags & HUGE_PAGE) {
- 		enable_hugepage();
- 		igt_require_hugepages();
-+
-+		/*
-+		 * MMAP | NEW without FREE accumulates n_execs hugepage buffers
-+		 * before cleanup; skip if that would exhaust memory.  The
-+		 * PROCESSES path is checked before forking in processes(),
-+		 * since igt_skip() is not allowed from a forked child.
-+		 */
-+		if ((flags & MMAP) && (flags & NEW) && !(flags & FREE) &&
-+		    !(flags & PROCESSES))
-+			igt_require_mem_kb((uint64_t)n_execs * (SZ_2M / 1024));
- 	}
- 
- 	if (flags & EVERY_OTHER_CHECK)
-@@ -2228,6 +2256,17 @@ processes(int fd, int n_exec_queues, int n_execs, size_t bo_size,
- 	if (flags & HUGE_PAGE) {
- 		enable_hugepage();
- 		igt_require_hugepages();
-+
-+		/*
-+		 * MMAP | NEW without FREE accumulates up to n_execs hugepage
-+		 * buffers per child process (one per engine), so the worst
-+		 * case peak RSS is n_engines * n_execs * SZ_2M.  Check before
-+		 * forking and skip if that would exhaust memory, since
-+		 * igt_skip() cannot be used from the forked children.
-+		 */
-+		if ((flags & MMAP) && (flags & NEW) && !(flags & FREE))
-+			igt_require_mem_kb(xe_number_engines(fd) *
-+					   (uint64_t)n_execs * (SZ_2M / 1024));
- 	}
- 
- 	map_fd = open(sync_file, O_RDWR | O_CREAT, 0x666);
--- 
-2.43.0
-
+>
+> Cc: Ashutosh Dixit <ashutosh.dixit@intel.com>
+> Cc: Karthik B S <karthik.b.s@intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  MAINTAINERS | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index afc5dbb36..e0ea8f2f3 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -3,5 +3,4 @@ Arkadiusz Hiler <arek@hiler.eu>
+>  Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>  Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+>  Bhanuprakash Modem <bhanuprakash.modem@gmail.com>
+> -Ashutosh Dixit <ashutosh.dixit@intel.com>
+>  Karthik B S <karthik.b.s@intel.com>
+> --
+> 2.55.0
+>
