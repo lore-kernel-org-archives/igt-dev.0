@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3A8AC982FA
-	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 15:58:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9FA20C98302
+	for <igt-dev@archiver.kernel.org>; Tue, 22 Sep 2026 16:01:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8D45310EDAE;
-	Tue, 22 Sep 2026 15:58:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3675910EDE9;
+	Tue, 22 Sep 2026 16:01:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="YyP731mR";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gbEtUGO7";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5993B10E727;
- Tue, 22 Sep 2026 15:58:04 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 013F510EDCA
+ for <igt-dev@lists.freedesktop.org>; Tue, 22 Sep 2026 16:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790092684; x=1821628684;
+ t=1790092816; x=1821628816;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=CsbKIBiXcSdnHU0seYAl8WZxhzIFBF139F4LRgbLnnE=;
- b=YyP731mRr3Vw7hglv3t5dvu0FDwGKv4t6iDX6vqR5FgftsKSUD+XH/ob
- /1cyAeQr3Ge5mgQOv4M8E/Bsok5PtnuiaZ5Akkjkb9R48pwRWYLRyoikN
- Sj1mozP7JhA16gCwVOEZDt1ZkuOxeeyTX1b4fgzFS6f+cVZ6GWJndhnkV
- UUCS5dHHqtLeQahokUFfb8ICp8te8I0rcgW5S/fXrOcosl6V30XhbhHo6
- 5qpUr5/qyEm8nup/VK1cyi/F8rHQu1X93SbC2BDJhXZuWD2+f6h3PbkAS
- P/Yzw5VBwotXW1LhVkkyB7Z/fb2u/HexslA7icRIGCFo1At6W49vrBZnc Q==;
-X-CSE-ConnectionGUID: rHWiysOdS+ahsGUn894+WQ==
-X-CSE-MsgGUID: jliO+ODmRN+QuFEkw+9nLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="94538140"
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="94538140"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2026 08:58:04 -0700
-X-CSE-ConnectionGUID: uBnCFRrXTYCdmzVRzZ6NYw==
-X-CSE-MsgGUID: EGaEimr5T0aN7ZjX+iHzLw==
+ bh=uS80UNJh/eCMKdFa+jCNbJ52rFJJQL0Pug//fzNnx5M=;
+ b=gbEtUGO7lr1q5LvEWhmQ2CzO5nCbQ5Czrv+Zqn+oCWOpe/po/8wMgzHJ
+ uwRw6aYbUYvLn4WcObn+ok5r+tofv2bAd1jpoFB7jkrcRNtwxvo/z/05X
+ 8uHOV4FTnrvbmdB5EG4tMFOJLK8h8m7P1mlosiWLIbaPwxouWCg96uek0
+ BdW5qhiKRIXQlsHcJkjAtGXR/IchhbIOIFe+80e3At6vsMS5uHIuUHgKG
+ 6V+T+qSBr8wqyYXsNvSraVjFHiissPvIWQaR7odGgrfYsTUY4s2PoXJAt
+ HW6OCmmbJU3ikPqg3gMQ29+JPFGk9pMGY+vzdS3rhHkBoSWKafMe3hcom Q==;
+X-CSE-ConnectionGUID: meiNw6/9Rme3mXBHhoWgRA==
+X-CSE-MsgGUID: XKl8ZUDoReOPOBWj5TJp/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90733708"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="90733708"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2026 09:00:16 -0700
+X-CSE-ConnectionGUID: lxlR99rbQTio/WmFD0OkNw==
+X-CSE-MsgGUID: 8ztROExmRtiundeFcYvfCQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; d="scan'208";a="271766896"
+X-IronPort-AV: E=Sophos;i="6.27,116,1787036400"; 
+   d="scan'208";a="4272134"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa006-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Sep 2026 08:58:03 -0700
-Date: Tue, 22 Sep 2026 17:58:00 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2026 09:00:15 -0700
+Date: Tue, 22 Sep 2026 18:00:12 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>,
- I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?Q?=E2=9C=97_i915=2ECI=2EFull=3A_failure_fo?=
- =?utf-8?Q?r?= tests/panthor: skip sparse VM_BIND tests before v1.9 (rev2)
-Message-ID: <20260922155800.vvacucf5ydxrbubz@kamilkon-DESK.igk.intel.com>
+To: shivtej.eknath.patil@intel.com
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
+Subject: Re: [PATCH v2] intel-ci: blocklist multi-queue tests on BMG, LNL,
+ PTL and WCL
+Message-ID: <20260922160012.iui3uyofw65vzbjt@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Deborah Brouwer <deborah.brouwer@collabora.com>,
- I915-ci-infra@lists.freedesktop.org
-References: <20260921-b4-panthor_version_sparse-v3-1-c0af288ca073@collabora.com>
- <179008042431.193041.16111083203654643693@61270ab9df2a>
+ shivtej.eknath.patil@intel.com, igt-dev@lists.freedesktop.org,
+ kamil.konieczny@intel.com, nishit.sharma@intel.com,
+ smitha.balasubramanyam@intel.com
+References: <20260922051921.24701-1-shivtej.eknath.patil@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <179008042431.193041.16111083203654643693@61270ab9df2a>
+In-Reply-To: <20260922051921.24701-1-shivtej.eknath.patil@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,73 +74,110 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-09-22 at 12:33:44 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Shivtej,
+On 2026-09-22 at 05:19:21 +0000, shivtej.eknath.patil@intel.com wrote:
+> From: Shivtej Patil <shivtej.eknath.patil@intel.com>
 > 
-> Series: tests/panthor: skip sparse VM_BIND tests before v1.9 (rev2)
-> URL   : https://patchwork.freedesktop.org/series/174552/
-> State : failure
+> The multi-queue subtests require xe_has_multi_queue_engine(fd).
+> On BMG, LNL, PTL and WCL platforms these tests are expected to skip because
+> multi-queue engine support is not available.
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_19197_full -> IGTPW_15878_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_15878_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_15878_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15878/index.html
-> 
-> Participating hosts (11 -> 10)
-> ------------------------------
-> 
->   Missing    (1): pig-kbl-iris 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_15878_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery:
->     - shard-dg1:          NOTRUN -> [ABORT][1]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15878/shard-dg1-16/igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery.html
-> 
->   * igt@kms_plane@pixel-format-y-tiled-ccs-modifier-source-clamping@pipe-a-plane-1:
->     - shard-glk10:        NOTRUN -> [FAIL][2] +6 other tests fail
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15878/shard-glk10/igt@kms_plane@pixel-format-y-tiled-ccs-modifier-source-clamping@pipe-a-plane-1.html
-> 
+> Add blocklist entries to suppress expected CI failures.
 
-Unrelated, this is non-Intel test change. 
+Sorry for 2nd mail, one more nit.
+
+> 
+> Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
+> ---
+>  tests/intel-ci/xe.bmg.core.blocklist.txt |  8 +++++---
+>  tests/intel-ci/xe.lnl.core.blocklist.txt |  8 +++++---
+>  tests/intel-ci/xe.ptl.core.blocklist.txt | 10 +++++-----
+>  3 files changed, 15 insertions(+), 11 deletions(-)
+> 
+> diff --git a/tests/intel-ci/xe.bmg.core.blocklist.txt b/tests/intel-ci/xe.bmg.core.blocklist.txt
+> index cd38d16f8..84f401570 100644
+> --- a/tests/intel-ci/xe.bmg.core.blocklist.txt
+> +++ b/tests/intel-ci/xe.bmg.core.blocklist.txt
+> @@ -41,10 +41,7 @@ igt@xe_vm@.*export.*
+>  ##################################################################
+>  # Tests not applicable for the platform
+>  ##################################################################
+> -igt@xe_exec_multi_queue@.*
+>  igt@xe_evict@.*multi(-)?queue.*
+
+Why this one was left here?
+
+> -igt@.*@.*-multi_queue
+> -igt@.*@.*multi-queue.*
+>  ##################################################################
+>  # Expected skips, Kernel support not available
+>  ##################################################################
+> @@ -80,3 +77,8 @@ igt@xe_fault_injection@exec-queue-create-fail-xe_pxp_exec_queue_add
+>  ##################################################################
+>  igt@xe_pm@d3hot-i2c
+>  ##################################################################
+> +# Expected skip on BMG due to unsupported multi-queue capability
+> +# Multi-queue is not supported on platforms older than xe3p
+> +##################################################################
+> +igt@.*multi.queue.*
+
+Please make this change only in one place, do not write it in two
+different places.
+
+Same apply for other GPUs blocklists.
 
 Regards,
 Kamil
 
->   
-> Known issues
-> ------------
+> +##################################################################
+> diff --git a/tests/intel-ci/xe.lnl.core.blocklist.txt b/tests/intel-ci/xe.lnl.core.blocklist.txt
+> index c830ac3c8..67f8ad8df 100644
+> --- a/tests/intel-ci/xe.lnl.core.blocklist.txt
+> +++ b/tests/intel-ci/xe.lnl.core.blocklist.txt
+> @@ -84,9 +84,6 @@ igt@xe_vm@.*export.*
+>  # Tests not applicable for the platform
+>  ##################################################################
+>  igt@xe_evict@.*multiqueue.*
+> -igt@xe_exec_multi_queue@.*
+> -igt@.*@.*-multi_queue
+> -igt@.*@.*multi-queue.*
+>  ##################################################################
+>  # Kernel support not available
+>  ##################################################################
+> @@ -108,3 +105,8 @@ igt@xe_module_load@force-load
+>  #################################################################
+>  igt@xe_pm@d3hot-i2c
+>  ##################################################################
+> +# Expected skip on LNL due to unsupported multi-queue capability
+> +# Multi-queue is not supported on platforms older than xe3p
+> +##################################################################
+> +igt@.*multi.queue.*
+> +##################################################################
+> diff --git a/tests/intel-ci/xe.ptl.core.blocklist.txt b/tests/intel-ci/xe.ptl.core.blocklist.txt
+> index 362711406..35def6ffe 100644
+> --- a/tests/intel-ci/xe.ptl.core.blocklist.txt
+> +++ b/tests/intel-ci/xe.ptl.core.blocklist.txt
+> @@ -65,11 +65,6 @@ igt@xe_pm@d3hot-i2c
+>  igt@xe_compute@ccs-mode-basic
+>  igt@xe_compute@ccs-mode-compute-kernel
+>  #################################################################
+> -# Tests not applicable for the platform
+> -##################################################################
+> -igt@xe_exec_multi_queue@.*
+> -igt@.*@.*multi-queue.*
+> -##################################################################
+>  # Expected skips as the tests are not supported on PTL
+>  ##################################################################
+>  igt@xe_access_counter@.*
+> @@ -91,3 +86,8 @@ igt@xe_fault_injection@exec-queue-create-fail-xe_pxp_exec_queue_add
+>  ##################################################################
+>  igt@.*survivability.*
+>  #################################################################
+> +# Expected skip on PTL/WCL due to unsupported multi-queue capability
+> +# Multi-queue is not supported on platforms older than xe3p
+> +##################################################################
+> +igt@.*multi.queue.*
+> +##################################################################
+> -- 
+> 2.43.0
 > 
->   Here are the changes found in IGTPW_15878_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@blit-reloc-purge-cache:
->     - shard-rkl:          NOTRUN -> [SKIP][3] ([i915#14544] / [i915#8411])
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15878/shard-rkl-6/igt@api_intel_bb@blit-reloc-purge-cache.html
-> 
-...cut...
