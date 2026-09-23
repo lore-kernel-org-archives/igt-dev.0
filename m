@@ -4,125 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F5C2C9830B
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 20:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88021C9830B
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 20:45:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CB58F10F1A0;
-	Wed, 23 Sep 2026 20:31:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 373AB10F1B6;
+	Wed, 23 Sep 2026 20:45:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="YTyreCHJ";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="Lk4YdGJ0";
 	dkim-atps=neutral
-Received: from SA9PR02CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11013042.outbound.protection.outlook.com
- [40.93.196.42])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4A3CB10F195
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 20:30:53 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vGaMmOAJIe4FLc1o5HnDkWIAhXJU3x0UzUnLwLQTl0Mye4nDGaMaJi9Sf9G/MmUVy8yXRXyg5h073CYPuZuGPaIJpx9L0j9Um8pZtxwDcP62jhBcqWbICzBGuCFu5KaRT/OWMMhPuYMLtCc0V6kJPY6EOEI91hDm0WkqAnreHrFxE/WP9KoTjZYamU8MO5mWaKJeLKD3lIVEXQJvSicVDi3KeRb7Z8CtZFgmHKFGL+/leWc3iqbda9qtIJ+UROhrI5YfKQxIGnoMWCjhbg6w152jInXyQQnadYAKamrEdm0H+GVJP2HszVTiJ2P3oly/tlfDllx3eM+aXDc6mWCS6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SFWPsKcVor+El2xE1TiIkUrAX5LZD+Bjx7mlyYBvJeY=;
- b=FruM68ByOSAcWPvUPCoT4pamGuWzXQowJYZd4AoHM70MbsHGbMUmjaDwKxrJxA8urYkowf3cx+B6qCI3TE5qaCKTv3MtwqQucEmxravnIHeglP6DcCc4rEGrzRZI0vBb68jpjFSwsI9DgioXXk2DVzcTvfGVZzlRBWhtoBHgh2Zw7LLBw/K4VQPg8DcmMtKUHQXXSHA/PlRp1na0SarmK69jepSksLqfziH/0UOEwpNUAOZx0Xk73W/1thgS7sMYsIzkeOnz85Ml0gihMcrxqD2QEGO61OLZOJLYrHdpuL1HdzMJ+VdHZT8QGDuO0s/Z3JHzAgvWsgyNZSItbVOLuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SFWPsKcVor+El2xE1TiIkUrAX5LZD+Bjx7mlyYBvJeY=;
- b=YTyreCHJa5/Bk82QxS9YBDizt/EuBH/DzxzkwVqxZGeQzrJYNxLIUbmvHcbYAP8qB0+bqRtbPVUccNzBKE2GMBxTILRsBZlPQ6NaD7Ifc9yZ8s76zcN18aA+BZr77jDprS5MBApp43BsHaaJI74ItE9xn2I3b5kMjgw3eOw59wY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7)
- by SA5PPF8DEAB7A29.namprd12.prod.outlook.com
- (2603:10b6:80f:fc04::8d4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Wed, 23 Sep
- 2026 20:30:47 +0000
-Received: from IA1PR12MB8190.namprd12.prod.outlook.com
- ([fe80::c581:f5cc:c58f:c5de]) by IA1PR12MB8190.namprd12.prod.outlook.com
- ([fe80::c581:f5cc:c58f:c5de%5]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
- 20:30:47 +0000
-Content-Type: multipart/alternative;
- boundary="------------JLtlurolGfFoVnSFLwTzfftq"
-Message-ID: <4f874f26-9405-49d0-900b-2f6e75846123@amd.com>
-Date: Wed, 23 Sep 2026 16:30:44 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 0/2] runner: create results incrementally
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Ewelina Musial <ewelina.musial@intel.com>,
- Ryszard Knop <ryszard.knop@intel.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <20260916154740.130190-1-kamil.konieczny@linux.intel.com>
-Content-Language: en-US
-From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20260916154740.130190-1-kamil.konieczny@linux.intel.com>
-X-ClientProxiedBy: YQZPR01CA0047.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:86::28) To IA1PR12MB8190.namprd12.prod.outlook.com
- (2603:10b6:208:3f2::7)
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E0DC410F1A2;
+ Wed, 23 Sep 2026 20:44:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Cc:To:Content-Transfer-Encoding:Content-Type:MIME-Version:
+ Message-Id:Date:Subject:From:From:Reply-To;
+ bh=HdUz0zne8odeFw2HiyHUB4/tMjq35wYkxHxy0r1qMXk=; b=Lk4YdGJ0KOgSPLSJoBHzLWxw4F
+ tpaW8ImF0gYg/yjuYmLIfJAHk7+4HEnKYzAgNShcR55V6BwoYkj07OdmKVed3eErUhN5vXc/KKe24
+ NX/xUMX6DlurM1x3AOW8CAmnzFcnp5nAAoDdxuN0uxkanmZ1oRfTOsORurBSx6dvMtlkmJmruLrXI
+ urTCevHaTOo7BzqwTDinmws35ysRvSG2xv6eBN7V+oekf2Gwbi+Xa9mENcVhscEqgLA3F6gRP+iIN
+ kFmU6MpSQ/5/DF+0ucA9JWevboI+MeqHdQWxXYhwNHy3/BMJqzRKbQkaKRuXqTmN0/UAZ2qvn/Z9Y
+ yaH3kMqg==;
+Received: from 179-125-72-1-dinamico.pombonet.net.br ([179.125.72.1]
+ helo=[127.0.0.1]) by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+ id 1x9Tpg-006KVk-UI; Wed, 23 Sep 2026 22:44:48 +0200
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH i-g-t v7 0/9] add cgroup_dmem test
+Date: Wed, 23 Sep 2026 17:44:35 -0300
+Message-Id: <20260923-dmem_max-v7-0-194ea47bbb4d@igalia.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB8190:EE_|SA5PPF8DEAB7A29:EE_
-X-MS-Office365-Filtering-Correlation-Id: f8e6b63c-93a0-4e4b-6e31-08df19b18cc4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|23010399003|1800799024|6133799003|18002099003|22082099003|11063799006|8096899003|56012099006|10067099003;
-X-Microsoft-Antispam-Message-Info: Abg9y1UFR4UIM83zaaemVNan7H0Gm1wy3p7CBb54yadrkaEO1tfOICYzISN8TkBwNbLrhylqnJUTZYgNjdEY8ubcnSA0DVFMH1TNbYpHhIu/d6CS+gLfX+EL+wPMRwmuyXZakvLZPdMDcCTVdNLmxL0xdxJDGFsX39rVgALzrMcPCodK/JVqoTV4Qombm4sweasi2aEvaYe6FW8H5XOkvGdMDmreWg2Ow+PClkIIMFOXEA50gJ4rt0IHROW+1ry8aPP63zaZzDUMxFd3FPdVrvf8su6opI7Y2vNW15e6M/pzEntJ9Z+eiR5XY5ZATUYdRPfesG4mpTqfJEJ/78ht2prFVMq+QxWaQlabGRf0uRBA4EiN+KTP+lZB4OLgEm2a/B2B1efST40HY6z0Jz6gqF6ssYOvTR+60DxfBlBdjXgg3f4YM2fqJPJh195PjEsWTS9U44L4A3PAozOYTsawpaAPONo7jubhKv++stXVjRSFstkf+ZsuVMEEbAzAGts2LoPJgcyeuKRDMMh/7yF9SCiCtZrPAj7vYyXZVn44jNe/H4hmOD065Wv2b4C3Iwe1OlCE6UMVsoYiGssRw4/say/DXN4oV6yAi7dQY0C04zoZ1I6qjVPkRtbVk7HhAQgw2ynYaR9nJUAN8xjMwt6LL4FO/s4z0x1CAfJzFb+KrU4=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA1PR12MB8190.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(6133799003)(18002099003)(22082099003)(11063799006)(8096899003)(56012099006)(10067099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MUVxUTZTS1YyTWZKZ1lwUVJyTjIzVzNlNDR2L2wxb2tRZ2svV21XZHBDcXBx?=
- =?utf-8?B?Z3JScEZXeVk5Q0JzUDdFZ3V0NWhpWElKNFE0c2tRbE1pUDU1RGNsaUZ1Slhl?=
- =?utf-8?B?cWxLTlladGExUXd3TGNUUVVTUklvRzBVVytqOEM5d1ZrYXBjeFNnYXJTei8v?=
- =?utf-8?B?S2VUOUhSbFUxQlZtWmRkOTQ5TitIUlVpZjVidTUrS2x6NTBKcWszK0dVTTNT?=
- =?utf-8?B?bkk3WjlReG1Xb3dLSWJxdUcyQk92L2Y4bU1nem05SFJtbzFoOVh2YjQ1NVZD?=
- =?utf-8?B?c2VlQ1pmaUhGMHRZdkxScFhBZUI2OGNheVdlTGQrWFMrd3dQdlkrWHE1Mk9v?=
- =?utf-8?B?alFrenlBdXN2eDA1WDlkRS9hYjBvMFB5R3UrOVZYc3VrdTV5Q3NNbEgweWV1?=
- =?utf-8?B?NURRdmRkR25QeDBTQzFtYWJPQXE1YUN0QTZNOSt6YXBPajBsazJDVUxLcEJR?=
- =?utf-8?B?Rm5uSEJKaksvY01hM0d5MFdkcVFGZ25LRGQzMjNkWEpDUE1jZ3JHODRrL3Jn?=
- =?utf-8?B?V1d0OUJpMEpGRWx0NFFJV0JMVWJBZHVtMmk1YjVPN25tTXhJME4wQTY1d1Rj?=
- =?utf-8?B?NWpEZ29VTjZkNVJzb3ZVYTFNRS91WWx5V1lRMGk2OGpzSnVsZVdlQkNzZFVp?=
- =?utf-8?B?N3VSS28xRmtVcnIvdDhBQUZCL3pRbytScldTNjVpWi9Zd3B3TTlOclVPVEdQ?=
- =?utf-8?B?V25yL1dKWU5hMm5RMFM5UUI1Y0dBV2FiMkRlWXdCczJTYjdOaG03Y1h2TXRh?=
- =?utf-8?B?VWZLTUUzK3hnQStkakhINk9nTmV2THY0TUlXaW1Hb3MvTlllL3pBMjNEN1lo?=
- =?utf-8?B?WWNFQmpkQko1ZnFFY0dJaERBeWdTU3BFcndFOHl4aUVOaG1QM29uVjRGOVRZ?=
- =?utf-8?B?RTFyRFNsR1dlZjh6cVFFNkpUaUNFNnJYOEFrY2RCU1VWWjNLOFBySCtwbmhC?=
- =?utf-8?B?dy9lcE1zMGY4YUlsRzJwbHU3akJjSGo5c1QwQWhpT3drR2pnNDNoelltNEJF?=
- =?utf-8?B?anNUZm0rTVJ1Y3JSamo5eU9YMkIxdzVGQ0dHR3BLM2VjMnU0aXFUTmJMZDFy?=
- =?utf-8?B?TmNMWmZjRGJiK0s2K2JnaHhrZFZIU1J1K3BZQkYrQWthbE1kV1BHNDlxcHVL?=
- =?utf-8?B?N0JTZUZ1WS9TdEZyN29BQi9kVnAzQmNrSjJVaU80OTNmNnZYcC9rRlVSVW14?=
- =?utf-8?B?UHJKNm5Yb1dDUW1pUWkydFlFNmpQem1tc2hSR2ZlUUR2U01HMjE0dCtqZU0x?=
- =?utf-8?B?VkxLcEhSTlM5S1pxc0J5YTlSTEJKN0RGL3ZFR3VZRFpQN1Q1MFROVHpBMDlu?=
- =?utf-8?B?M3o4VlJ4c25pYlZrYW91NzBUcTUrdW9CemVUeUwyQTBFWkUvM2lvNlBoT1BJ?=
- =?utf-8?B?M0t6ZXpqRnhOSWFJanNkZm4xTHl5RkxOcjlWYTIzd0NLUFE3eDdCaFQ4QXQ0?=
- =?utf-8?B?VEt1eHRvUFZ2VTg3Z2xzRDBVRktpckwyQ1VIeXVUUzRZSzk5ZXJIelhXOUVK?=
- =?utf-8?B?OC9RR0ZVa1AxMGZNcDVST0szRFlGaU9YMWhnRWdIRk85aXMvUm1Ua0RMV3A0?=
- =?utf-8?B?UnlRL3RPTmc2d21QRnZJY2Q0TnBGemRKeEpMa21DcXlDNk94aGlYdTcvU2hh?=
- =?utf-8?B?R3BRanRFMktjUkRGcnhlT2hWUk51N3MzLzU3dWFpUENPNituQ3Q3VGIvVm9D?=
- =?utf-8?B?ZTJiUlhCT0pDbkJhRVZPbHFFWVNnMFlIMkp5YXh4NVl3K08vZXpYVUNYK1Q0?=
- =?utf-8?B?bGJKOFpJQVlRSXV4UUV1am54cFphZmtFN0tEcnJEMkZSc3ZtRUhxQzBtQ1RT?=
- =?utf-8?B?U2J1WGxYQlhlQWdxWEorR3MrZTRzL1NjaFE4VnE0YVMvNGVnUFJCd3FzOWZo?=
- =?utf-8?B?U28wNUJaTzBtT0lmWlUzdE9VMFE0RU5id3FPa1VVb1NHOERWcHJnbjF0SmJl?=
- =?utf-8?B?dkNVK3hJTkNBa2xlTncvSUtNWGVZdDFZejZJNXpiYjBEQmpoRStBZHpMQ0x2?=
- =?utf-8?B?bzhjZTYvWTNSTnZuY0tBeXdmc21RNVpycmswalZWSFpXWktraFF6VzJBTzhu?=
- =?utf-8?B?RjhRdEpzY0lBQk42SUZlWjYzZ1VBNDlxcWJhYkpYUHJGWkM4dU8wN3kzbmNG?=
- =?utf-8?B?RkV5TjNMb2RmdmlGRTJLNjlOL3phM1Q2eVhkSldXajBqSGFuVFJKbjVxV243?=
- =?utf-8?B?Mm8zNitxSXhDOUFWSXlvMkplNXRnUjk3Q3Q2SnRWMHJEaEhOWFkreWpHNE5X?=
- =?utf-8?B?cDFjb1VDQ0MyTHdQRjBFODdqa2VpcDRMVFJZNlhhNVhQU1V4ZnQ2S0trcTF2?=
- =?utf-8?B?UGVNL1Z4U2hHN1dPK3hYenNwWUNaYVZYV0c0cDJvMFc0OUZEaWZtdz09?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f8e6b63c-93a0-4e4b-6e31-08df19b18cc4
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8190.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 20:30:47.3053 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: MDqh+3G+DlYVyOEPEdCEpQpfVC+oI0niBjanT9HCcB+gy69TtSDdQEd7QRQtAOcGbqcnQbY4HiZzuC5Hz+OB6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF8DEAB7A29
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIADM6tGoC/02Oyw6CMBREf4V0bUkf2IIr/8MQcy0XqLHUtEgwh
+ H8XMAaXJ5k5MxOJGCxGckomEnCw0fpuAX1IiGmha5DaamEimFCsYIJWDt3VwUg5HDGXWmYacrL
+ EnwFrO26qS/nl+Lrd0fRrf03UwTvatwFhV2oheZFJLlOhs5xnknJqIBoIlT/bBh4WUuPdWm9t7
+ H14b1cHtc78Xsn91aAoo4pXRolCsxrwX1LO8/wBYW96VvIAAAA=
+X-Change-ID: 20260902-dmem_max-1a5e837347a8
+To: igt-dev@lists.freedesktop.org
+Cc: siqueira@igalia.com, Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
+ dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org, 
+ intel-xe@lists.freedesktop.org, Christian Koenig <christian.koenig@amd.com>, 
+ maarten.lankhorst@linux.intel.com, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>, 
+ Vitaly Prosyak <vitaly.prosyak@amd.com>, Natalie Vock <natalie.vock@gmx.de>, 
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, kernel-dev@igalia.com
+X-Mailer: b4 0.16-dev-62088
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,97 +67,158 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------JLtlurolGfFoVnSFLwTzfftq
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+v6 TLDR:
+Change igt_dmem_driver API by moving handle array allocation out of it and
+into the test itself and including dmem.max new behavior test.
 
-Reviewed-by: Vitaly Prosyak  <vitaly.prosyak@amd.com>
+This patchset is based on the work of Thomas Hellström at [1] and a
+followup I have submitted at [2].
 
-On 2026-09-16 11:47, Kamil Konieczny wrote:
->       Create results incementally during run, e.g. after each test end
-Just a tiny nitpick: typo in the text -> *'incrementally'*.
-> its execution create results.json up to last one executed.
->
-> One caveat is that it will still not hold last one at which
-> sudden reboot happens, for example after a kernel panic.
->
-> In such cases there is still a need for calling igt_results to
-> collect all data.
->
-> v2: rename option to --save-results-after-each-test (Ryszard)
->   renamed function to better describe it saves only partial
->   results (Ryszard)
->   using results.old, not .bak (Kamil)
->   bailing out from saving when endtime cannot be saved (Kamil)
->   reorder patches, first should be introducing new option, then
->   using it (Kamil)
->
-> Cc: Ewelina Musial <ewelina.musial@intel.com>
-> Cc: Ryszard Knop <ryszard.knop@intel.com>
-> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
->
-> Kamil Konieczny (2):
->   runner: Add new option --save-results-after-each-test
->   runner: Create results after each tests end
->
->  runner/executor.c  | 68 +++++++++++++++++++++++++++++++++++++++++++---
->  runner/resultgen.c |  6 +++-
->  runner/settings.c  |  9 ++++++
->  runner/settings.h  |  1 +
->  4 files changed, 79 insertions(+), 5 deletions(-)
->
---------------JLtlurolGfFoVnSFLwTzfftq
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+With this version, I reverted the order in which to apply the patchsets, as
+this one adds the infrastructure and the drivers mechanisms, and a test for
+dmem.current and its behavior around dmem.max that is currently supported
+in the kernel.
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Reviewed-by: Vitaly Prosyak&nbsp; <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a></p>
-    <div class="moz-cite-prefix">On 2026-09-16 11:47, Kamil Konieczny
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20260916154740.130190-1-kamil.konieczny@linux.intel.com">
-      <pre wrap="" class="moz-quote-pre">      Create results incementally during run, e.g. after each test end</pre>
-    </blockquote>
-    <span class="iNqyIf" data-sfc-cp="" data-sfc-root="ep" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">Just
-      a tiny nitpick: typo in the text -&gt; <strong class="rQesXe MPyX" data-sfc-cp="" data-sfc-root="ep" data-complete="true" data-copy-service-computed-style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 700; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 700; margin: 0px; text-decoration: none; border-bottom: 0px rgb(10, 10, 10);">'incrementally'</strong>.</span><span></span>
-    <blockquote type="cite" cite="mid:20260916154740.130190-1-kamil.konieczny@linux.intel.com">
-      <pre wrap="" class="moz-quote-pre">
-its execution create results.json up to last one executed.
+As for the new dmem.max eviction behavior, introduced by [3], it has been
+now included since it has been merged to Linux v7.3-rc1.
 
-One caveat is that it will still not hold last one at which
-sudden reboot happens, for example after a kernel panic.
+I have run the tests, including the ones that test dmem.max eviction
+behavior on a system with a 1GiB VRAM amdgpu card. Rodrigo Siqueira helped
+me run it on a Xe system. We have had applied the patchset at [3] on top of
+then current linux origin/master [5], with a fixup for the amdgpu driver.
 
-In such cases there is still a need for calling igt_results to
-collect all data.
+This latest version has not been tested on Xe, except for the dmem.current
+behavior, which was tested with a 7.0 kernel.
 
-v2: rename option to --save-results-after-each-test (Ryszard)
-  renamed function to better describe it saves only partial
-  results (Ryszard)
-  using results.old, not .bak (Kamil)
-  bailing out from saving when endtime cannot be saved (Kamil)
-  reorder patches, first should be introducing new option, then
-  using it (Kamil)
+Latest tests for amdgpu used v7.3-rc1.
 
-Cc: Ewelina Musial <a class="moz-txt-link-rfc2396E" href="mailto:ewelina.musial@intel.com">&lt;ewelina.musial@intel.com&gt;</a>
-Cc: Ryszard Knop <a class="moz-txt-link-rfc2396E" href="mailto:ryszard.knop@intel.com">&lt;ryszard.knop@intel.com&gt;</a>
-Cc: Vitaly Prosyak <a class="moz-txt-link-rfc2396E" href="mailto:vitaly.prosyak@amd.com">&lt;vitaly.prosyak@amd.com&gt;</a>
+Now, for the changes since v1 [2]:
+- Changed the test name from drv_dmem_cgroups to dmem_cgroups.
+- Have system includes before igt ones.
+- Documented the current SUBTEST.
+- Changed free_vram driver hook to only release a given BO. This allows for
+  the eviction trigger by a new allocation added by write_eviction_nonblock
+  subtest.
+- Changed allocate_vram to keep more state necessary for releasing a single BO.
+- Added a global free_vram helper to free all allocated VRAM.
 
-Kamil Konieczny (2):
-  runner: Add new option --save-results-after-each-test
-  runner: Create results after each tests end
+Compared to v3 of [1]:
+- I have kept wait_for_usage_drop as release can be lazy and we test for it
+  on test_current SUBTEST, but had USAGE_DROP_TIMEOUT_MS be a little
+  longer.
+- Changed BO_SIZE and EVICT_STEP to allow for more than two eviction steps
+  on a 1GiB VRAM system.
+- Reduced USAGE_SLACK to avoid false positives, but still allow for some
+  page table accounting.
 
- runner/executor.c  | 68 +++++++++++++++++++++++++++++++++++++++++++---
- runner/resultgen.c |  6 +++-
- runner/settings.c  |  9 ++++++
- runner/settings.h  |  1 +
- 4 files changed, 79 insertions(+), 5 deletions(-)
+Compared to v2 of this one [6]:
 
-</pre>
-    </blockquote>
-  </body>
-</html>
+- Ignore -ENOMEM and -ENOSPC when trying to fill VRAM.
+- When limiting max memory, allow for some slack, as there might be some
+  overhead.
+- On Xe, allocate GEM object with no deferred backing, and skip binding.
 
---------------JLtlurolGfFoVnSFLwTzfftq--
+Compared to v3 of this one [7]:
+
+- Merge dmem_cgroups tests into cgroup_dmem and making cgroup_dmem original
+  test a subtest.
+- Remove assertion when trying to verify allocations have failed as amdgpu
+  will fallback to GTT.
+
+Compared to v4 of this one [8]:
+- Removed the creation of vm in Xe, that was leading to extra bytes being
+  used and was no longer necessary.
+- Removed the USAGE_SLACK that was necessary due to the extra bytes
+  allocated due to the use of vm in Xe.
+
+Compared to v5 of this one [10]:
+- Documented igt_dmem_driver structure.
+- Simplified igt_dmem_driver API, such that handle array allocation is not
+  done, and handles are returned as part of allocation.
+- Make get_region_name callback use the context, instead of fd, which
+  avoids repeating the vram region lookup for Xe.
+- Moved handle array allocation into the test.
+- init/deinit the igt_dmem_driver per driver, not per subtest.
+
+[1] https://patchwork.freedesktop.org/series/163935/#rev3
+[2] https://patchwork.freedesktop.org/series/166496/
+[3] https://lore.kernel.org/dri-devel/20260611173301.17473-1-thomas.hellstrom@linux.intel.com/
+[4] https://gitlab.freedesktop.org/cascardo/igt-gpu-tools/-/commits/dmem_max?ref_type=heads
+[5] 502d801f0ab0 ("Merge tag 'erofs-for-7.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/xiang/erofs")
+[6] https://lore.kernel.org/dri-devel/20260623174319.4138648-1-cascardo@igalia.com/
+[7] https://lore.kernel.org/dri-devel/20260702130108.1397444-1-cascardo@igalia.com/
+[8] https://lore.kernel.org/dri-devel/20260717120447.1837818-1-cascardo@igalia.com/
+[9] https://lore.kernel.org/dri-devel/20260703130541.2686-1-thomas.hellstrom@linux.intel.com/
+[10] https://lore.kernel.org/dri-devel/20260723194313.2748143-1-cascardo@igalia.com/
+
+To: igt-dev@lists.freedesktop.org
+Cc: siqueira@igalia.com
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: amd-gfx@lists.freedesktop.org
+Cc: intel-xe@lists.freedesktop.org
+Cc: Christian Koenig <christian.koenig@amd.com>
+Cc: maarten.lankhorst@linux.intel.com
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Natalie Vock <natalie.vock@gmx.de>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: kernel-dev@igalia.com
+
+--
+2.47.3
+
+---
+Changes in v7:
+- igt_cgroup_free is now called by an exit handler and cannot be called
+  directly.
+- cgroup names are namespaced by subtest name so they do not conflict,
+  both changes allow cgroups to be removed in case of test failures.
+- igt_cgroup_exit_current is introduced to allow process to exit cgroup
+  and go back to root cgroup.
+- Driver is closed and reopened between tests, dropping any leftover
+  usage in case of failures.
+- Call igt_stop_signal_helper at test fixture to prevet child leak in
+  case of failures.
+- Update/fix copyright, comments and documentation as requested in
+  reviews.
+- Link to v6: https://patch.msgid.link/20260903-dmem_max-v6-0-61dc62970fae@igalia.com
+
+---
+Thadeu Lima de Souza Cascardo (4):
+      lib/xe: Introduce dmem driver and implement Xe support
+      lib/amdgpu: add amdgpu_cgroup_region_name
+      lib/amdgpu: add amdgpu support to igt_dmem_driver
+      tests/cgroup_dmem: add test for dmem.current
+
+Thomas Hellström (5):
+      lib/igt_cgroup: add cgroup v2 and dmem controller helpers
+      tests/cgroup_dmem: add dmem cgroup controller test
+      lib/xe: add xe_cgroup_region_name() helper
+      tests/cgroup_dmem: add dmem cgroup eviction test
+      tests/cgroup_dmem: add write_eviction_nonblock subtest
+
+ lib/amdgpu/amd_dmem.c   |  90 +++++++
+ lib/amdgpu/amd_memory.c |  25 ++
+ lib/amdgpu/amd_memory.h |   2 +
+ lib/igt.h               |   1 +
+ lib/igt_cgroup.c        | 685 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_cgroup.h        |  56 ++++
+ lib/igt_dmem_driver.h   |  36 +++
+ lib/meson.build         |   3 +
+ lib/xe/xe_dmem.c        |  98 +++++++
+ lib/xe/xe_query.c       |  32 +++
+ lib/xe/xe_query.h       |   2 +
+ tests/cgroup_dmem.c     | 542 ++++++++++++++++++++++++++++++++++++++
+ tests/meson.build       |   1 +
+ 13 files changed, 1573 insertions(+)
+---
+base-commit: 4aeabf104b136437d0ccc57caf32a752587d595c
+change-id: 20260902-dmem_max-1a5e837347a8
+
+Best regards,
+--  
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+
