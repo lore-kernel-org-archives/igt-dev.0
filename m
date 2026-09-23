@@ -4,64 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0357FC98304
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 16:00:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0A80C9830B
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 16:16:16 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 83EDB10F0EC;
-	Wed, 23 Sep 2026 16:00:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A6ABA10ED47;
+	Wed, 23 Sep 2026 16:16:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="R6D8y/55";
+	dkim=pass (2048-bit key; unprotected) header.d=collabora.com header.i=@collabora.com header.b="H32qTODm";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 12EB010ED3C
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 15:59:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790179178; x=1821715178;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=4kMAkL4d01udIXpkZEttYK0YjnjRrIwmwFZTq4nPrZk=;
- b=R6D8y/55QJe5o48EYOKLXoH5EW2HKs5O84vDHUa6zNUSSiGCYX4xx3Y/
- Wp/wGPBxDdPWNqwiWhccMfyEZIvJoL+SCj743/nVZdS7G7KFuX6f/cdyh
- Yo6S5NGrvRQaJY6LZSvbSp82a0HVcVOiN5XvLGYVC+OyLt/uyqZuOm0Ax
- ml8ybeZvgMHA5OL8IjSVSV2PWCVgKqD9k1IhUAQ+sIImI6sKMl1P8ButA
- 9YASRgm8mUiZBZscl8zAG+j6B7ficNJQK6eTOPR5cQbwLh19Q2ie4BY7L
- BkxDI/lVlwCeQeeCdpF/QE+pWABV9AiNbeMiR1Qr+66/48MhmcK5wbMUm Q==;
-X-CSE-ConnectionGUID: srwstFTNRjSWwquuGjcX7A==
-X-CSE-MsgGUID: U6RsQCHeS5KG+k9zKo/wrA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93392293"
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="93392293"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 08:59:22 -0700
-X-CSE-ConnectionGUID: FX0Fyh3DTnqsP6fSdlsRnA==
-X-CSE-MsgGUID: sEFBouF2T9GDHUxEPU9/TA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="301604395"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 08:59:20 -0700
-Date: Wed, 23 Sep 2026 17:59:18 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Robert Mazur <robert.mazur@imgtec.com>
-Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
- Alessio Belle <alessio.belle@imgtec.com>,
- Brajesh Gupta <brajesh.gupta@imgtec.com>,
- Luigi Santivetti <luigi.santivetti@imgtec.com>
-Subject: Re: [PATCH i-g-t v3 0/3] test/imagination: Add infrastructure and
- SUBMIT_JOBS tests
-Message-ID: <20260923155918.mjymon2rr5up6e3c@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Robert Mazur <robert.mazur@imgtec.com>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
- Alessio Belle <alessio.belle@imgtec.com>,
- Brajesh Gupta <brajesh.gupta@imgtec.com>,
- Luigi Santivetti <luigi.santivetti@imgtec.com>
-References: <20260923-b4-imagination-submit-test-v3-0-d70b50b54cdb@imgtec.com>
+Received: from bali.collaboradmins.com (bali.collaboradmins.com
+ [148.251.105.195])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3FE6A10EB0B;
+ Wed, 23 Sep 2026 16:15:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+ s=mail; t=1790180131;
+ bh=+YZYMYfkfHKc8u0yR4874R+05o+nqj6l1VuI8859FJ0=;
+ h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+ b=H32qTODmipVClIL53Wo7381WHg9WChwvA5F839Tx8g7mbGRLg2iYYP4eRB/5EBS0p
+ UDUuWSIpdiATPqZ2Q4/HxjXw2nCojbRVty6vHpmYiPE1QVFoeHbgrx/4CO1vHk1lDg
+ Iv1hoUp1psBdRBipsET9OxmFetz48AUbI7wUV1aokyaEd++z7SVEt9bG8vIzL5+GvU
+ UJ4SNCf9QUkH49IwTh2GZzBaySU5rXXlngkbLGA34Iufwl6KLTn4BTEPio5rvQs2Gx
+ foINV2n7WMyPsyIErneJzLDBTNMNBB0q5/QcIw+MALj7eMrBPdFBZtN11SpA9zFZG4
+ QvDwv+DONGfrg==
+Received: from fedora-32.home (unknown [100.64.0.11])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ (Authenticated sender: bbrezillon)
+ by bali.collaboradmins.com (Postfix) with ESMTPSA id 717DB17E0056;
+ Wed, 23 Sep 2026 18:15:31 +0200 (CEST)
+Date: Wed, 23 Sep 2026 18:15:27 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Deborah Brouwer <deborah.brouwer@collabora.com>,
+ igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] lib/igt_profiling: configure Panthor enable state
+Message-ID: <20260923181527.052f3612@fedora-32.home>
+In-Reply-To: <20260923102921.hrn45pkboeo3risn@kamilkon-DESK.igk.intel.com>
+References: <20260922-b4-gputop_panthor-v1-1-e908705bd062@collabora.com>
+ <20260923102921.hrn45pkboeo3risn@kamilkon-DESK.igk.intel.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260923-b4-imagination-submit-test-v3-0-d70b50b54cdb@imgtec.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,75 +63,105 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Robert,
-On 2026-09-23 at 15:01:48 +0200, Robert Mazur wrote:
-> This series adds the basic infrastructure needed for more advanced
-> PowerVR driver testing and introduces initial coverage for the
-> SUBMIT_JOBS UAPI.
-> 
-> The first patch adds device configuration support for supported
-> PowerVR cores. Configuration data is largely derived from the Mesa
-> implementation.
-> 
-> The second patch introduces GPU memory allocation helpers. These
-> helpers simplify test development by providing common functionality
-> for GPU memory allocation, virtual address management, object mapping,
-> and automatic resource cleanup.
-> 
-> The third patch adds a set of tests covering the SUBMIT_JOBS UAPI. 
-> It tests common submission paths and verify ioctl parameter validation.
-> 
-> Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
+On Wed, 23 Sep 2026 12:29:21 +0200
+Kamil Konieczny <kamil.konieczny@linux.intel.com> wrote:
 
-Applied, thanks!
+> Hi Deborah,
+> On 2026-09-22 at 20:01:20 -0700, Deborah Brouwer wrote:
+> > Currently profiling is enabled for every device by writing '1' into the
+> > appropriate sysfs node. But Panthor uses a bit mask where cycle and
+> > timestamp sampling are enabled by the first and second bits respectively.
+> > 
+> > By default assume that writing '1' will enable profiling, but then adjust
+> > the value to '3' for the Panthor driver.
+> > 
+> > Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/209
+> > Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>  
+> 
+> Thank you for solving this, LGTM
+> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> 
+> Can you ask some Panthor developer for review and/or Tested-by?
 
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
 
+> 
+> Regards,
+> Kamil
+> 
+> > ---
+> >  lib/igt_profiling.c | 23 +++++++++++++++++++++--
+> >  lib/igt_profiling.h |  1 +
+> >  2 files changed, 22 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
+> > index e1526ad98..5c62a3fb1 100644
+> > --- a/lib/igt_profiling.c
+> > +++ b/lib/igt_profiling.c
+> > @@ -50,7 +50,10 @@ struct igt_profiled_device *igt_devices_profiled(void)
+> >  
+> >  	while ((entry = readdir(dev_dir)) != NULL) {
+> >  		char path[PATH_MAX];
+> > +		char driver_path[PATH_MAX];
+> > +		char driver_link[PATH_MAX];
+> >  		char orig_state;
+> > +		ssize_t len;
+> >  		int sysfs_fd;
+> >  
+> >  		/* All DRM device entries are symlinks to other paths within sysfs */
+> > @@ -87,7 +90,23 @@ struct igt_profiled_device *igt_devices_profiled(void)
+> >  		}
+> >  
+> >  		profiled_devices[i].syspath = strdup(path);
+> > -		profiled_devices[i++].original_state = orig_state;
+> > +		profiled_devices[i].original_state = orig_state;
+> > +		profiled_devices[i].enable_state = '1';
+> > +
+> > +		snprintf(driver_path, sizeof(driver_path), "%s/%s/device/driver",
+> > +			 SYSFS_DRM, entry->d_name);
+> > +
+> > +		len = readlink(driver_path, driver_link, sizeof(driver_link) - 1);
+> > +		if (len >= 0) {
+> > +			driver_link[len] = '\0';
+> > +
+> > +			if (strstr(driver_link, "/panthor")) {
+> > +				/* Enable both cycle and timestamp sampling. */
+> > +				profiled_devices[i].enable_state = '3';
+> > +			}
+> > +		}
+> > +
+> > +		i++;
+> >  
+> >  		close(sysfs_fd);
+> >  	}
+> > @@ -124,7 +143,7 @@ void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool e
+> >  		if (sysfs_fd < 0)
+> >  			continue;
+> >  
+> > -		write(sysfs_fd, enable ? "1" : &devices[i].original_state, 1);
+> > +		write(sysfs_fd, enable ? &devices[i].enable_state : &devices[i].original_state, 1);
+> >  		close(sysfs_fd);
+> >  	}
+> >  }
+> > diff --git a/lib/igt_profiling.h b/lib/igt_profiling.h
+> > index b063d54e1..d38cc2bb6 100644
+> > --- a/lib/igt_profiling.h
+> > +++ b/lib/igt_profiling.h
+> > @@ -12,6 +12,7 @@
+> >  struct igt_profiled_device {
+> >  	char *syspath;
+> >  	char original_state;
+> > +	char enable_state;
+> >  };
+> >  
+> >  void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool enable);
+> > 
+> > ---
+> > base-commit: 65f84b280be2caf8ce376295d97987a808affdee
+> > change-id: 20260922-b4-gputop_panthor-cbb78c0ffbf8
+> > 
+> > Best regards,
+> > -- 
+> > Deborah Brouwer <deborah.brouwer@collabora.com>
+> >   
 
-Regards,
-Kamil
-
-> ---
-> Changes in v3:
-> - Build fixes for armhf.
-> - Link to v2: https://lore.kernel.org/r/20260922-b4-imagination-submit-test-v2-0-974e93be5de7@imgtec.com
-> 
-> Changes in v2:
-> - Fixed build issue in the second change, rename PAGE_SIZE into POWERVR_GPU_PAGE_SIZE.
-> - Fixed most of checkpatch warnings.
-> - Added IGT_IMAGINATION_ prefix to the header guards.
-> - Link to v1: https://lore.kernel.org/r/20260921-b4-imagination-submit-test-v1-0-d626d1264641@imgtec.com
-> 
-> ---
-> Donald Robson (1):
->       tests/imagination: Add SUBMIT_JOBS tests
-> 
-> Robert Mazur (2):
->       lib/imagination: add device configuration support
->       lib/imagination: add GPU memory allocation helpers
-> 
->  lib/igt_pvr.c                           | 562 +++++++++++++++++++++++++++
->  lib/igt_pvr.h                           |  42 ++
->  lib/imagination/device_info/axe-1-16m.h | 106 ++++++
->  lib/imagination/device_info/bxe-2-32.h  | 122 ++++++
->  lib/imagination/device_info/bxe-4-32.h  | 122 ++++++
->  lib/imagination/device_info/bxm-4-64.h  | 237 ++++++++++++
->  lib/imagination/device_info/bxs-4-64.h  | 124 ++++++
->  lib/imagination/device_info/g6110.h     | 103 +++++
->  lib/imagination/device_info/ge7800.h    | 102 +++++
->  lib/imagination/device_info/ge8300.h    | 230 +++++++++++
->  lib/imagination/device_info/gx6250.h    | 231 +++++++++++
->  lib/imagination/device_info/gx6650.h    | 120 ++++++
->  lib/imagination/pvr_device_info.c       | 104 +++++
->  lib/imagination/pvr_device_info.h       | 378 ++++++++++++++++++
->  lib/meson.build                         |   1 +
->  tests/imagination/meson.build           |   1 +
->  tests/imagination/pvr_submit_jobs.c     | 655 ++++++++++++++++++++++++++++++++
->  17 files changed, 3240 insertions(+)
-> ---
-> base-commit: f307fd753abbe6c03d0a6e1c769fc6020ebd5d86
-> change-id: 20260921-b4-imagination-submit-test-85c290526bee
-> 
-> Best regards,
-> -- 
-> Robert Mazur <robert.mazur@imgtec.com>
-> 
