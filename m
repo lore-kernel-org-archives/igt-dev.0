@@ -4,58 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14E39C982EA
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 08:08:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAB87C982EA
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 10:30:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A1A5189D8E;
-	Wed, 23 Sep 2026 08:08:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 83F5C10EFBE;
+	Wed, 23 Sep 2026 10:30:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DXUy1fbV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HbDeETvQ";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3D7D289D5C;
- Wed, 23 Sep 2026 08:07:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7340A10EFB3;
+ Wed, 23 Sep 2026 10:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790150862; x=1821686862;
+ t=1790159381; x=1821695381;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=r7ITaGoZwB+HQwLwpJut3ifOYbgGh5YJAdN//yg7rQw=;
- b=DXUy1fbVFQQ9nV2iJX1I6AX33mjKkI3p8clbd+iyrbzTQ/iqv+LfVQlM
- 95eafsnmG6EBuuZI8ocUH2fZ/6Dt8ujAn57IztJuvVHv8Wc/FhEMIpdbp
- KoaQFC9mdsEXRL5BG9ZgDW2KlXwx+/5asdMpdCOodKn49Iu7YJAkXN52w
- yu7tkBEvG78Le8UBtEWKxlE3oI3dRIHLNuaqI2lMz2dFBtpv+fxElHFRD
- dPsbWWCfXCA7mVjMMT3fVHtdjLHWICrF/3eyLaFj98bcIroaKYqtMPKgP
- cZXzooKXKdMb6D3m4Ti8WdTP4gFDX9URrEk+PIXf+g+viP9Tt1aG3izHv Q==;
-X-CSE-ConnectionGUID: 7KJ7KHB4QouiWu4T0P40TQ==
-X-CSE-MsgGUID: t2gziFASREW3YB6wnRV3eQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90933437"
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="90933437"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ bh=jQQPVVYT59xKcv8aBpDOQ7PqlE3upfL5ySw41K5CN/o=;
+ b=HbDeETvQinL9/oEUxsGUiI0exvZV2fi/OKrqmFDt8sIfOi6dcvuEIozn
+ GBYaXlIvpXDa1RIXHA+GexQDr+rAwa66SNRKjXcn8Aw3/Q3uGZDv6vurR
+ +DNLKsMmHd8scdwfmfRnejKIP/BinDa05a/c45qy/O0WMNUGIUkWD1ajd
+ FlU/xUJnsSbO6wEKTKu3dpSSLKoe7jAp9bHLEpKfBwwUybTl/37o6NmCq
+ 62RxAnU0fDXYcprVKjHyW6HOexpEE6heP2Dnv60rRwgYiDup59HyPIb9L
+ a5c1CPJ3ojpFAQQInHPmjIMP2iTS7xeN6oVg/Vmok08or+PY+8sut432L g==;
+X-CSE-ConnectionGUID: Ps/4AHenThG4EtRNF2sasA==
+X-CSE-MsgGUID: n/AdW4WCSU2zV0KZI3FPEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90952301"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="90952301"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 01:07:41 -0700
-X-CSE-ConnectionGUID: 8TFq3ngjQiue3tdNlWf0KA==
-X-CSE-MsgGUID: 4dPC22HJT7Cu1dmhnuPe6w==
+ 23 Sep 2026 03:29:40 -0700
+X-CSE-ConnectionGUID: 5HfouIXbR6qvdOZWp/Qr5A==
+X-CSE-MsgGUID: /vU+ntXsSxSQCUJJil5B3A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="272987111"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa007-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 01:07:40 -0700
-Date: Wed, 23 Sep 2026 10:07:19 +0200
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 03:29:39 -0700
+Date: Wed, 23 Sep 2026 12:29:21 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
- lib/igt_core: Make build reproducible (rev5)
-Message-ID: <20260923080719.t3evlzmjc3vspasq@kamilkon-DESK.igk.intel.com>
+To: Deborah Brouwer <deborah.brouwer@collabora.com>
+Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t] lib/igt_profiling: configure Panthor enable state
+Message-ID: <20260923102921.hrn45pkboeo3risn@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20260921135515.137949-1-kamil.konieczny@linux.intel.com>
- <179010977112.194524.6153308166306758017@61270ab9df2a>
+ Deborah Brouwer <deborah.brouwer@collabora.com>,
+ igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+References: <20260922-b4-gputop_panthor-v1-1-e908705bd062@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <179010977112.194524.6153308166306758017@61270ab9df2a>
+In-Reply-To: <20260922-b4-gputop_panthor-v1-1-e908705bd062@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,155 +69,98 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-09-22 at 20:42:51 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Deborah,
+On 2026-09-22 at 20:01:20 -0700, Deborah Brouwer wrote:
+> Currently profiling is enabled for every device by writing '1' into the
+> appropriate sysfs node. But Panthor uses a bit mask where cycle and
+> timestamp sampling are enabled by the first and second bits respectively.
 > 
-> Series: lib/igt_core: Make build reproducible (rev5)
-> URL   : https://patchwork.freedesktop.org/series/173723/
-> State : failure
+> By default assume that writing '1' will enable profiling, but then adjust
+> the value to '3' for the Panthor driver.
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from CI_DRM_19195_full -> IGTPW_15874_full
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_15874_full absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_15874_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/index.html
-> 
-> Participating hosts (11 -> 10)
-> ------------------------------
-> 
->   Missing    (1): pig-kbl-iris 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_15874_full:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@i915_selftest@live:
->     - shard-tglu:         [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_19195/shard-tglu-4/igt@i915_selftest@live.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/shard-tglu-3/igt@i915_selftest@live.html
-> 
->   * igt@kms_force_connector_basic@force-edid:
->     - shard-glk10:        NOTRUN -> [FAIL][3]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/shard-glk10/igt@kms_force_connector_basic@force-edid.html
->     - shard-rkl:          [PASS][4] -> [FAIL][5]
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_19195/shard-rkl-7/igt@kms_force_connector_basic@force-edid.html
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/shard-rkl-2/igt@kms_force_connector_basic@force-edid.html
-> 
->   * igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery:
->     - shard-dg1:          NOTRUN -> [ABORT][6]
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/shard-dg1-19/igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery.html
-> 
->   * igt@perf_pmu@gt-awake:
->     - shard-snb:          [PASS][7] -> [FAIL][8]
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_19195/shard-snb7/igt@perf_pmu@gt-awake.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/shard-snb4/igt@perf_pmu@gt-awake.html
-> 
+> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/209
+> Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
 
-Unrelated,
+Thank you for solving this, LGTM
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-
+Can you ask some Panthor developer for review and/or Tested-by?
 
 Regards,
 Kamil
 
->   
-> New tests
-> ---------
+> ---
+>  lib/igt_profiling.c | 23 +++++++++++++++++++++--
+>  lib/igt_profiling.h |  1 +
+>  2 files changed, 22 insertions(+), 2 deletions(-)
 > 
->   New tests have been introduced between CI_DRM_19195_full and IGTPW_15874_full:
+> diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
+> index e1526ad98..5c62a3fb1 100644
+> --- a/lib/igt_profiling.c
+> +++ b/lib/igt_profiling.c
+> @@ -50,7 +50,10 @@ struct igt_profiled_device *igt_devices_profiled(void)
+>  
+>  	while ((entry = readdir(dev_dir)) != NULL) {
+>  		char path[PATH_MAX];
+> +		char driver_path[PATH_MAX];
+> +		char driver_link[PATH_MAX];
+>  		char orig_state;
+> +		ssize_t len;
+>  		int sysfs_fd;
+>  
+>  		/* All DRM device entries are symlinks to other paths within sysfs */
+> @@ -87,7 +90,23 @@ struct igt_profiled_device *igt_devices_profiled(void)
+>  		}
+>  
+>  		profiled_devices[i].syspath = strdup(path);
+> -		profiled_devices[i++].original_state = orig_state;
+> +		profiled_devices[i].original_state = orig_state;
+> +		profiled_devices[i].enable_state = '1';
+> +
+> +		snprintf(driver_path, sizeof(driver_path), "%s/%s/device/driver",
+> +			 SYSFS_DRM, entry->d_name);
+> +
+> +		len = readlink(driver_path, driver_link, sizeof(driver_link) - 1);
+> +		if (len >= 0) {
+> +			driver_link[len] = '\0';
+> +
+> +			if (strstr(driver_link, "/panthor")) {
+> +				/* Enable both cycle and timestamp sampling. */
+> +				profiled_devices[i].enable_state = '3';
+> +			}
+> +		}
+> +
+> +		i++;
+>  
+>  		close(sysfs_fd);
+>  	}
+> @@ -124,7 +143,7 @@ void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool e
+>  		if (sysfs_fd < 0)
+>  			continue;
+>  
+> -		write(sysfs_fd, enable ? "1" : &devices[i].original_state, 1);
+> +		write(sysfs_fd, enable ? &devices[i].enable_state : &devices[i].original_state, 1);
+>  		close(sysfs_fd);
+>  	}
+>  }
+> diff --git a/lib/igt_profiling.h b/lib/igt_profiling.h
+> index b063d54e1..d38cc2bb6 100644
+> --- a/lib/igt_profiling.h
+> +++ b/lib/igt_profiling.h
+> @@ -12,6 +12,7 @@
+>  struct igt_profiled_device {
+>  	char *syspath;
+>  	char original_state;
+> +	char enable_state;
+>  };
+>  
+>  void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool enable);
 > 
-> ### New IGT tests (14) ###
+> ---
+> base-commit: 65f84b280be2caf8ce376295d97987a808affdee
+> change-id: 20260922-b4-gputop_panthor-cbb78c0ffbf8
 > 
->   * igt@gem_render_copy@dc6-dpms:
->     - Statuses :
->     - Exec time: [None] s
+> Best regards,
+> -- 
+> Deborah Brouwer <deborah.brouwer@collabora.com>
 > 
->   * igt@gem_render_copy@dsc-fractional-bpp-with-bpc:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@fbchdr-2p-primscrn-pri-indfb-draw-pwrite:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@fbcpsr-1p-primscrn-pri-indfb-draw-mmap-gtt:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@fbcpsrhdr-2p-scndscrn-pri-shrfb-draw-blt:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@gem-execbuf-stress:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@hdr-rgb101010-draw-mmap-cpu:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@heartbeat-close:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@load:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@map-fixed-invalidate-overlap:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@pixel-format-yf-tiled-modifier:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@psrhdr-rgb565-draw-render:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@rc6-suspend:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   * igt@gem_render_copy@set-priority-range:
->     - Statuses :
->     - Exec time: [None] s
-> 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in IGTPW_15874_full that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@api_intel_bb@blit-reloc-purge-cache:
->     - shard-dg2:          NOTRUN -> [SKIP][9] ([i915#8411])
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/shard-dg2-3/igt@api_intel_bb@blit-reloc-purge-cache.html
->     - shard-rkl:          NOTRUN -> [SKIP][10] ([i915#8411]) +2 other tests skip
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15874/shard-rkl-7/igt@api_intel_bb@blit-reloc-purge-cache.html
-> 
-...cut...
