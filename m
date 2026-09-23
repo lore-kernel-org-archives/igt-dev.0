@@ -4,67 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 942CEC982EA
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 11:27:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B336C982FA
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 12:12:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 234DB10E71D;
-	Wed, 23 Sep 2026 11:27:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D16EF10E7F4;
+	Wed, 23 Sep 2026 12:12:16 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="mTPP/o0+";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lj+YjsYr";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B8ED10E71D
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 11:26:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 47BD189819;
+ Wed, 23 Sep 2026 12:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790162792; x=1821698792;
+ t=1790165490; x=1821701490;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=SirOIQ8jT+hDHi7WJPfNQFkNetHDBF/35gDCmfJV3N4=;
- b=mTPP/o0+Y+DZ52FI8j56Ic8Wd+0udk8WvgwjdDiT43iK0IHQWUVqusUO
- P0bLjWRjWxzE8ZP3JNCCq1CN0aSqrrigvpdVDzvhXhzqKaLnUu0Ld8Eit
- +ObnGoUX5If/rLsnYQ8CcPC65fv04za/fMPSSsnHQIU4XQKZTw6ZNWrCY
- 1ED8eFriNT7v8AqP4aGBipsx3hQ3m1Ltoezaq86uzkvMwuTg5Xs17k0TI
- jSOdyGoFCC9dZ+yyiibc1fXB/IBBpq/SooDlf54lDPpa97bDvj+9Ei1Y/
- rbpfpg3eUBNjHdpFWWsV20YG+Hx0vAaHMhWPI2+7qWkk3ibVZTMZMM5i9 g==;
-X-CSE-ConnectionGUID: fU4O895NTqCGdMIcFRoFbQ==
-X-CSE-MsgGUID: kNPqqb6lQxCPYPi+8OT3Hg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90960152"
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="90960152"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 04:26:32 -0700
-X-CSE-ConnectionGUID: oBMXgfMJRS6KnqpIsySPcw==
-X-CSE-MsgGUID: E/ezQBhZQXefDIy04AjXSA==
+ bh=wTBSYnEtCvd2tSjNc4atBfSfzpPRLbYiXyFZ7mTULRM=;
+ b=lj+YjsYrj268wJiWtclA0BTtqLOpXHyUC8fFLNhlHSDDqyfXH6oqkZOE
+ ZXCxRLB+ciQF1tmJNIFXPB0wEt00hZJJ3AO0/kwtDRhFfrbysomuArues
+ 6Q6TqwHDzCfHu+p1QhLFKiQtW3UbYPblMV5kLRpnaQGXOndjRvK4MoFfe
+ 79thv5snIzAvbCO3pMaxrqt2NcRPusy7920i9GFqtPDLDlLjh45ez7djm
+ Jf6a+9TkJ+rkC+69DJvcHe//1B8SNl787C4AXdGcc5bIHMkWmNxBNWWi1
+ p6eHY00Im2a59IrrW//lY0z+6Bb6SxqoEJI+di64Z7k+Jn5ifyXBRW0UD g==;
+X-CSE-ConnectionGUID: EjUKCOmFSAmZfQFQctATtg==
+X-CSE-MsgGUID: yzFMXaLCTPOWeXZ4cMeeHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="102209388"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="102209388"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2026 05:11:30 -0700
+X-CSE-ConnectionGUID: XVpbMlYISdid3x7oRK0vpw==
+X-CSE-MsgGUID: DaRk4MjlQ9OT6Tqm6+ZPig==
 X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="281656858"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa003-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 04:26:29 -0700
-Date: Wed, 23 Sep 2026 13:26:27 +0200
+ by fmviesa005-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 05:11:29 -0700
+Date: Wed, 23 Sep 2026 14:11:06 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Louis Chauvet <louis.chauvet@bootlin.com>
-Cc: igt-dev@lists.freedesktop.org, markyacoub@google.com,
- thomas.petazzoni@bootlin.com, Jani Nikula <jani.nikula@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Karthik B S <karthik.b.s@intel.com>, Swati Sharma <swati2.sharma@intel.com>
-Subject: Re: [PATCH i-g-t 4/4] tests/kms_content_protection: Add test to
- ensure HDCP is properly detected by the DUT
-Message-ID: <20260923112627.esouffhwrgphag6r@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkJBVDogZmFpbHVy?= =?utf-8?Q?e?= for
+ intel-ci: Add multigpu svm to CRI Core blocklist
+Message-ID: <20260923121106.3fjvztkndctqwvot@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Louis Chauvet <louis.chauvet@bootlin.com>,
- igt-dev@lists.freedesktop.org, markyacoub@google.com,
- thomas.petazzoni@bootlin.com, Jani Nikula <jani.nikula@intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>,
- Karthik B S <karthik.b.s@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>
-References: <20260731-b4-unigraf-hdcp-v1-0-495df88ebbbd@google.com>
- <20260731-b4-unigraf-hdcp-v1-4-495df88ebbbd@google.com>
+ igt-dev@lists.freedesktop.org,
+ Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>,
+ I915-ci-infra@lists.freedesktop.org
+References: <20260921115610.933754-1-venkateswara.rao.muppidi@intel.com>
+ <179000895240.188435.6584871939786844367@61270ab9df2a>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260731-b4-unigraf-hdcp-v1-4-495df88ebbbd@google.com>
+In-Reply-To: <179000895240.188435.6584871939786844367@61270ab9df2a>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,108 +74,129 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Louis,
-On 2026-07-31 at 20:21:57 +0200, Louis Chauvet wrote:
-> Add a tests that ensure that the DUT properly detect an HDCP 2.2 sink.
-
-Please add here that this needs an external HW for really work.
-
+Hi igt-dev,
+On 2026-09-21 at 16:42:32 -0000, Patchwork wrote:
+> == Series Details ==
 > 
-> Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
-> ---
->  tests/kms_content_protection.c | 22 +++++++++++++++++++++-
->  1 file changed, 21 insertions(+), 1 deletion(-)
+> Series: intel-ci: Add multigpu svm to CRI Core blocklist
+> URL   : https://patchwork.freedesktop.org/series/174617/
+> State : failure
 > 
-> diff --git a/tests/kms_content_protection.c b/tests/kms_content_protection.c
-> index 680204981f58..30311f93a959 100644
-> --- a/tests/kms_content_protection.c
-> +++ b/tests/kms_content_protection.c
-> @@ -35,6 +35,7 @@
->  #include <sys/epoll.h>
->  #include <sys/stat.h>
->  #include <libudev.h>
-> +#include <xf86drmMode.h>
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_9104_BAT -> XEIGTPW_15870_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_15870_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_15870_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (15 -> 15)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_15870_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_exec_fault_mode@twice-invalid-fault:
+>     - bat-bmg-2:          [PASS][1] -> [DMESG-WARN][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-2/igt@xe_exec_fault_mode@twice-invalid-fault.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-2/igt@xe_exec_fault_mode@twice-invalid-fault.html
+> 
+>   * igt@xe_exec_fault_mode@twice-rebind-prefetch:
+>     - bat-bmg-1:          [PASS][3] -> [DMESG-WARN][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-1/igt@xe_exec_fault_mode@twice-rebind-prefetch.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-1/igt@xe_exec_fault_mode@twice-rebind-prefetch.html
+> 
+>   * igt@xe_exec_system_allocator@many-execqueues-malloc:
+>     - bat-bmg-vm:         [PASS][5] -> [DMESG-WARN][6] +1 other test dmesg-warn
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-malloc.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-malloc.html
+> 
+>   * igt@xe_multigpu_svm@mgpu-pagefault-basic:
+>     - bat-bmg-3:          [PASS][7] -> [DMESG-WARN][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-basic.html
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-basic.html
+> 
 
-Add a newline here before igt.h
-
->  #include "igt.h"
->  #include "igt_edid.h"
->  #include "igt_sysfs.h"
-> @@ -89,7 +90,7 @@
->   * @legacy-hdcp14:  Test HDCP1.4 content protection with legacy style commit.
->   * @atomic-hdcp14:  Test HDCP1.4 content protection with atomic modesetting.
->   * @atomic-dpms-hdcp14: Test HDCP1.4 content protection with atomic modesetting and DPMS.
-> - *
-> + * @detection:      content type 1 that can be handled only through HDCP2.2.
-
-This change do not compile, see build log on patchwork.
-For a solution see below.
-
->   */
->  
->  /**
-> @@ -1271,6 +1272,25 @@ int igt_main()
->  		}
->  	}
->  
-> +#if HAVE_UNIGRAF
-> +	igt_describe("Check if the HDCP connection is properly detected by the driver");
-
-Please add also to description a need for external HW for this to work.
- 
-> +	igt_subtest("detection") {
-
-Should this be more specific? hdcp-detection or ext-hdcp-detection
-seems better name ('ext' marks a need for external HW for this to
-really work).
-
-> +		drmModeConnectorPtr connector;
-> +		igt_output_t *output;
-> +
-> +		unigraf_require_device(data.drm_fd);
-> +		connector = unigraf_get_connector(data.drm_fd);
-> +		output = igt_output_from_connector(&data.display, connector);
-> +		igt_assert(output);
-> +
-> +		unigraf_disable_hdcp();
-> +		igt_assert(!sink_hdcp2_capable(output));
-> +		unigraf_enable_hdcp();
-> +		sleep(igt_default_display_detect_timeout());
-> +		igt_assert(sink_hdcp2_capable(output));
-> +	}
-> +#endif
-
-This should be other way around:
-
-	igt_describe("Check if the HDCP connection is properly detected by the driver");
-	igt_subtest("detection") {
-#if !HAVE_UNIGRAF
-	igt_skip("Needs external HW for testing ...\n");
-#else
-	/* your code here */
-		drmModeConnectorPtr connector;
-#endif
-
-Btw this needs an external hardware for testing so maybe it should be
-a new tool, not a test?
-
-+cc few other developers
-
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Juha-Pekka Heikkila <juha-pekka.heikkila@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
+Unrelated, this only modifies CRI blocklist.
 
 
 
 Regards,
 Kamil
 
->  	igt_fixture() {
->  		test_content_protection_cleanup();
->  		igt_display_fini(&data.display);
+>   
+> Known issues
+> ------------
 > 
-> -- 
-> 2.54.0
+>   Here are the changes found in XEIGTPW_15870_BAT that come from known issues:
 > 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@xe_waitfence@engine:
+>     - bat-ptl-2:          [PASS][9] -> [FAIL][10] ([Intel XE#9109])
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-ptl-2/igt@xe_waitfence@engine.html
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-ptl-2/igt@xe_waitfence@engine.html
+> 
+>   
+> #### Possible fixes ####
+> 
+>   * igt@core_hotunplug@unbind-rebind:
+>     - bat-bmg-2:          [ABORT][11] ([Intel XE#8007]) -> [PASS][12]
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+> 
+>   * igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch:
+>     - bat-bmg-1:          [DMESG-WARN][13] -> [PASS][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-1/igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch.html
+>    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-1/igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch.html
+> 
+>   * igt@xe_exec_system_allocator@many-execqueues-free:
+>     - bat-bmg-vm:         [DMESG-WARN][15] -> [PASS][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-free.html
+>    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-free.html
+> 
+>   * igt@xe_multigpu_svm@mgpu-latency-copy-prefetch:
+>     - bat-bmg-3:          [DMESG-WARN][17] -> [PASS][18]
+>    [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-3/igt@xe_multigpu_svm@mgpu-latency-copy-prefetch.html
+>    [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-3/igt@xe_multigpu_svm@mgpu-latency-copy-prefetch.html
+> 
+>   
+>   [Intel XE#8007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007
+>   [Intel XE#9109]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9109
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_9104 -> IGTPW_15870
+>   * Linux: xe-5796-211407639045faaf2eeb884e801d1762b43c837c -> xe-5797-ab82471ddff094939d9981e0647332562c7e1c9b
+> 
+>   IGTPW_15870: 15870
+>   IGT_9104: a89d58dad0dd62228269a6049b39fc39ae6cf698 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+>   xe-5796-211407639045faaf2eeb884e801d1762b43c837c: 211407639045faaf2eeb884e801d1762b43c837c
+>   xe-5797-ab82471ddff094939d9981e0647332562c7e1c9b: ab82471ddff094939d9981e0647332562c7e1c9b
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/index.html
