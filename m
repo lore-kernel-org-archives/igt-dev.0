@@ -4,82 +4,150 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20085C9830B
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 13:05:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E172EC9830B
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 13:11:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B3C8310F002;
-	Wed, 23 Sep 2026 13:05:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A2EE10F035;
+	Wed, 23 Sep 2026 13:11:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="lA70rlZL";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fyAFT1kp";
 	dkim-atps=neutral
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
- [185.132.180.163])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DD3710F002
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 13:02:15 +0000 (UTC)
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
- by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 68N8JDwS1777704
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 14:02:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=dk201812; bh=g
- NCqQysh+1neOZR4SmtVfhXTGO3yFLXgsWL9PZK4dwo=; b=lA70rlZLJulKm0n47
- L0INRQvGuDCbGKnowZtLCQ8ArmC6hqHvOoo8q++WiSK2NHpuPrHjFejzB4FU5+jy
- uM2Luc0MTjdv6G50nJJ9IVZdTBdKcnj5mT9BihkSXbceexb22P4CA0DC3ijfQseI
- 7VRvay3DBmg4fWl5YqEVAovUBYVVu6K+r7x7ecv1BJxzhX0dPKsZQ951I6pe8AvI
- Xtl0mIww17DqpgyMSmfxSSzrp7L6Jm0OG3bVUOOTB79hiM2N7zR71LxNmpCeH6nO
- wotEQi+8QX1vOaRiefKwIiaNaMgXW2yQx2eiuTo2MJ9kO/IfrtimNYwOY+j6nr9y
- mlP6A==
-Received: from hhmail01.hh.imgtec.org
- (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
- by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4gsjftkmgp-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 14:02:13 +0100 (BST)
-Received: from [127.0.1.1] (172.25.9.35) by HHMAIL01.hh.imgtec.org
- (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Wed, 23 Sep
- 2026 14:02:12 +0100
-From: Robert Mazur <robert.mazur@imgtec.com>
-Date: Wed, 23 Sep 2026 15:01:49 +0200
-Subject: [PATCH i-g-t v3 1/3] lib/imagination: add device configuration support
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98EF510F028
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 13:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790169027; x=1821705027;
+ h=from:to:subject:date:message-id:references:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=evzK6Nx4Co7qR1TqF/SM4p5CZO2RDRBsejQ63mLY3LI=;
+ b=fyAFT1kpDkZatZwZMkJG5i1z5j9AZGxq+EPpOLG8QYLwBaty5sADAYkm
+ lvLCEMUaW8PNzMEtK8f7ludOvGubklkPk3sy/Q4dAgeNzfd3+qRknMqIH
+ tedRXQ99TX9GT7dr7ypYhKhyFhGsuoWUn1gH0Z6nNlFxEz1gfsJeQ1ogB
+ qxVm0tFXPMegOmcWI3F+T6bKNYnE9V1qMwkm7oJYZ4Q2C2LvVtFXvmycb
+ C5H+/+UT9rHRQVsx5MrRNHMBoNah8jNqrzqyrWvibyAa4U5JkhPXQjBbL
+ OSS1COOoZfb0kZ9gtAy19pC4e+Yt8iIvyjnHkrjD5ztirfAui3ALi5+pP w==;
+X-CSE-ConnectionGUID: YC44wTdaRO+1ACLLQk3lPQ==
+X-CSE-MsgGUID: HlALM25IQNSFBJmztw+ASQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="89996061"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="89996061"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2026 06:10:27 -0700
+X-CSE-ConnectionGUID: ZxxvKArfQ7iNo/4m1pgbHw==
+X-CSE-MsgGUID: +nOFmWxrQA6GHBznzDVwVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="273801254"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2026 06:10:27 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 06:10:26 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 23 Sep 2026 06:10:26 -0700
+Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.58) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 23 Sep 2026 06:10:26 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LnzgAoWKo9q/z/C/YPzQWlICxwFhDbmBusBptYgc8DbwMAW73Pg4DOyleJVtg9gEZfD4L7yt/AhoiyVhenFZXTr4CzIJ6AQuO7mFjqg/d1IdZfD2ZrMuQJpXFXe9YOHWc9r13i6xONYlrepNYuW+BtLXUEzEnrWYmP4wrmxIRxqtRiCK1Z6X63vBZU2lb8R+jRENwJPPfwODIDiXkq28q7ccjVa/SiZ3dB8pFm9JgZEOtdJcp73Xcabm0JQtdJI8TCFkXP3gBHmeMtttiwYzJWeMFYUdXW88LeH6lZ9E21c7lA/ny3JxPE4xISDPpE18C5w5jE5VFO2Vi1qJmR5dog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uNn9rt80y3Y43vA6k/WtqVJJQKwUOMjFsaxH9JwZR20=;
+ b=LkhVdhNE01/HV4O0tusN6vibKJH/9dLJQQASOY23LBlP/Cm8zvEYP62aiDMmzyZbXHrq5vnQES7uHW89PUiojfqMSPEBmGuTMOM9Y73oSme9FtOWKqq4mVKsvueIYdNBEEOBkDaEsD/RJ5CmimBaEWgd2qjFTUpL4OnQkwZVv/4YTPme5Av4K7Iah5RmKskqvnnVlIuqKznOXbg84qtPCQ+J+B6U9nq5cCuvpF3HIc+T3gYC/De2UwY46r1xB12ct/7mieQlGiQQax+LaPIiZxqjC2VxR/j5UnNu8j4R7Yz7GE2la6aYxuW49zl7QVkzBO44z/45bBA9w4XVQDbTlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from PH7PR11MB6796.namprd11.prod.outlook.com (2603:10b6:510:1ba::6)
+ by IA3PR11MB468931.namprd11.prod.outlook.com (2603:10b6:208:548::6)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Wed, 23 Sep
+ 2026 13:10:22 +0000
+Received: from PH7PR11MB6796.namprd11.prod.outlook.com
+ ([fe80::60ca:3168:fb41:7ae7]) by PH7PR11MB6796.namprd11.prod.outlook.com
+ ([fe80::60ca:3168:fb41:7ae7%3]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
+ 13:10:22 +0000
+From: "S, Sowmiya" <sowmiya.s@intel.com>
+To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>, "Joshi, Kunal1" <kunal1.joshi@intel.com>
+Subject: RE: [PATCH i-g-t 09/13] tests/intel/kms_dp_link_training: Group the
+ outputs into links
+Thread-Topic: [PATCH i-g-t 09/13] tests/intel/kms_dp_link_training: Group the
+ outputs into links
+Thread-Index: AQHdRZTSOYwoTm0Rtki16DTHywQqe7bcLnHQ
+Date: Wed, 23 Sep 2026 13:10:22 +0000
+Message-ID: <PH7PR11MB679694577C39EB0FB9A678DDE5822@PH7PR11MB6796.namprd11.prod.outlook.com>
+References: <20260916044801.1279102-1-kunal1.joshi@intel.com>
+ <20260916044801.1279102-10-kunal1.joshi@intel.com>
+In-Reply-To: <20260916044801.1279102-10-kunal1.joshi@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-Mentions: kunal1.joshi@intel.com
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH7PR11MB6796:EE_|IA3PR11MB468931:EE_
+x-ms-office365-filtering-correlation-id: 856a3733-ae7d-4d05-7c58-08df1974066d
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|23010399003|376014|366016|1800799024|3023799007|10067099003|6133799003|18002099003|5023799004|56012099006|11063799006|4143699003|22082099003|38070700021;
+x-microsoft-antispam-message-info: GmVNd13ZM5cOBY/iq8z0WjzKrirqLHBrUNoFnRTc0kJkO/6TPyj0pqHIAb9+Pl6QGW8menBYYVFuh7PEMhjwAfT0NxnUQmKpSjmF5e+s21h1rdXHGp+tU/faGxX7qrMduIjiqheV3/GKXDcP/QovMt4uqBcAuYIkrYoPNtN5CyLN2O9C5AMqrBosB9bO4fbT89faQDdhKwGtqYoiJWttWEK/U7K+tQHQBUqi+RrUpjaqJKNLi4fggfqzG8akGlIeLyGddpsOfMX/urmoQKC6GEZd/q9WCN6HxWyiYX5NN+Lk/pvNETMn31ncYXBtoLvnvYoVg4gHEK/Wz8yeMhY5NtVe8GgTJ3Em661s+8Zvfbav3OKVD/kbEJoamp6yh6sUM+AIwKrBYZCd4217rpEnIG6nNXOBvQocD3cKbMLgu2cFYDnlkMxyx82GP2SFmGR8GwxDarab3VvNYzBi+M404IiSdVF/J16ZTFmH7opAWfcTcFsCeDb9g60RS37ubHwWpB0fEMQG0v8hF2eYpdDecUq5rno+KVo2KL7WY5u57L6K/uh1Wh0INsAR4oVzTebMiCz1V71kboAc+3W2aTGLbGHVp3wNDmMH6LYPDICyalXWfjXoEqMBEk4vtSiiREew3mPTGhYl/+0rL3cUCSwAGDZd4WwE/otuoKIlCeLd+lYmD2dPLF/0hlc2nGitwiwAJWQhay+47LiuNEeKJMM2ZaDZBuqh5ag1e+1xAX2iEmc=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH7PR11MB6796.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(3023799007)(10067099003)(6133799003)(18002099003)(5023799004)(56012099006)(11063799006)(4143699003)(22082099003)(38070700021);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?SfurdmNp1JN45CdWJPaAIPnEMJAuv9Le6ZEw1iOwCzTSPkbJKsP8jH1EDxOF?=
+ =?us-ascii?Q?6ASirPTGYZD+Xbk/1LLED1ylIqMidvL8SFr3LaxOD4d30olqam/gNwqfF9Ku?=
+ =?us-ascii?Q?DUfWZTTm02/o04P5WFGHGtxhT0GXFrWPA+B//sstT8+UW1uuN3qe1UUOj917?=
+ =?us-ascii?Q?G7B0bA6c4dBsSOv/BRbvD+F9tTR+g4zsOQJJYmMTzzezFI6u6qOksSkUZ+wy?=
+ =?us-ascii?Q?hRwGHd6/OKlbXJB4N+fLE6Q+ieHo9Hi7dZe3bcsivPY7sFC1uVaBp3AjLbRg?=
+ =?us-ascii?Q?857TnIwwzTrWGxYAtBCSBYHhZ//hqC7oXp3JqNnQDxmbwTFxADwwoNng6ibZ?=
+ =?us-ascii?Q?NwZKxxu5ahfw9huxMcnB3kh5Wj5GFeXA+3K89wi7UgmsddtVBchNAgWjnuRX?=
+ =?us-ascii?Q?p9vJT4t30lE/wXvSSQlnVnE2FxJ9YgZe8QV0nXeRqpNimHNtxqWkBmaGa7PV?=
+ =?us-ascii?Q?dXVbpFgbSO/+1P/G6nitFIjoNV48eYnlFLG1FLiVGJQq8SR7T6ZGgbC4fz83?=
+ =?us-ascii?Q?qI7I9NT2xi1AQF/Cxk044ZRohKEn3wQC1WLQaNsjOUXG90rhcGI973jlOOmQ?=
+ =?us-ascii?Q?kZQBkuSRXrHLf3Df+us6XZWxRzboRGLnX2RPsL2u0POJPSbdaWC1omDStnQj?=
+ =?us-ascii?Q?JOKsdGkBUL2bhAepF+0MexyQdEw2SHy1uy5mSJsRIWilU8dzQip0OCI4U/78?=
+ =?us-ascii?Q?IzA6b5Djx0KtuQIXGvnnZQLa7oCt51EcLmtCKgq+FfdddkchyrOXx49K801s?=
+ =?us-ascii?Q?VIuGdR+Ete0QmC/jg/wn4pBGu2EuW8uufoYtRCKe7358Gcf0RsOmWacelwWk?=
+ =?us-ascii?Q?ugdhgz4HIXywEG5oHae2gMkEVgsyoV1meXBlnuF4fTf4sg8NOuJo/0MvqQa7?=
+ =?us-ascii?Q?MNYcZl/SAq8bOuZYHBlOSSqrnAovYxhB8HLe5hAd3CV/zMsKcjVsbxVBLE9b?=
+ =?us-ascii?Q?vF+HvW/HJL0YXpkSQeAkjeEpDjILWfyQGnyzuAPRQuN1KVN2QauOJ5e/vFrf?=
+ =?us-ascii?Q?Ij0l42xmTxuV4qtrVtCGAJhq2pEyNdV9HqVP/mF1pWyDy8e7FDnDp7zNrfmG?=
+ =?us-ascii?Q?aBOvEyF0NaH9r1CgubSMJNTAdLvN/GJiNIiTXJWVYUW0RnaOoGnw2AFV/el6?=
+ =?us-ascii?Q?FeRcklm0RrbOBGsFxIimd4QoOIk4wG7bASy56R+AyJx5Umhl8zBYlUTLLHBN?=
+ =?us-ascii?Q?f+HvsYQK5g/Lo70uin5dHk5n6ie+JQO4cIPT435rwdsYLDSElONTKyENjICw?=
+ =?us-ascii?Q?6/GTxt0Ljjstf6IhDTAP8333Mqwt6Kk4kEtumXEs/hzl7+Sa/gTlDdkbYKde?=
+ =?us-ascii?Q?5S2bIGJEY1Olz7ppqtXbSDOxI5yozZZXlGaNsOfn0hWy2Z+4otYMYLVlj2X5?=
+ =?us-ascii?Q?OZOQ7/PLibDr+aJWcb0H+79MuYT5h2+TVoUjWo1I4SjMOI7oBfvrP1ZzNsXA?=
+ =?us-ascii?Q?QCXWjnWgmKfeHjpeJxVkWhAllR8MB8dHApdlzW94dVrWz3+pBIcMLHkAHw1p?=
+ =?us-ascii?Q?ryUhBKXHESlOW104dNPDO3GIq454ukwMXtMSXZ9hitB1iW/4Cd16TF6fNu2E?=
+ =?us-ascii?Q?FoP/u3b20EkHpSS54VCReNNOhDb4GEWebLV1Hug8I+8bTaQLaTf+ypvvGC6E?=
+ =?us-ascii?Q?ET+7147djF1r5wv+R0jZmkfEBBbOKyOMoJ0WIaweBpi8qdmfBOcl/apxhNdL?=
+ =?us-ascii?Q?frxpmct3MVpPthwfg/c5/x5aruIcuSc+CKl2DLnvKXcnud6e?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260923-b4-imagination-submit-test-v3-1-d70b50b54cdb@imgtec.com>
-References: <20260923-b4-imagination-submit-test-v3-0-d70b50b54cdb@imgtec.com>
-In-Reply-To: <20260923-b4-imagination-submit-test-v3-0-d70b50b54cdb@imgtec.com>
-To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-CC: Alessio Belle <alessio.belle@imgtec.com>, Brajesh Gupta
- <brajesh.gupta@imgtec.com>, Luigi Santivetti <luigi.santivetti@imgtec.com>,
- Robert Mazur <robert.mazur@imgtec.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1790168531; l=65788;
- i=robert.mazur@imgtec.com; s=20260324; h=from:subject:message-id;
- bh=T4sn0SlqxjrWJuRY38AXUwWpT2IxYtK3TQxfR2AS308=;
- b=Qlewq+SQhLFe4VuHfsAPsAAgtWKFUpRiXUSYuwkUlub4Uto2rDlNNU0YP3MZfF4YWpFYGAC6A
- AR9wBJtZJ5gBBAr4B1bbTxIg6rQQk+wDPYgOM5bKhcECnoa/GeyRKrR
-X-Developer-Key: i=robert.mazur@imgtec.com; a=ed25519;
- pk=X5uhazsNnVDpw/srawR3m7WOmgzFZXdecapAeML2ZgM=
-X-Originating-IP: [172.25.9.35]
-X-Authority-Analysis: v=2.4 cv=GPKdgeNK c=1 sm=1 tr=0 ts=6ab3cdd5 cx=c_pps
- a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
- a=CNmLAE0vrksA:10 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
- a=r_1tXGB3AAAA:8 a=hzr2ZROMm553Arf_JlAA:9 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTIzMDA1MSBTYWx0ZWRfXzhwCf6cWwY5T
- UF/SyuVHErXy52YZzRXUuy98T5wYx4wtb33BUVxh9efk4SE48Yk5vLB01HP3IkXosZWb3p6Ym7E
- m5EDXfDU5eMVkAsjXYFlAGSmE6ERnm21+OYsBFWQxSrs7U6wDhp984t25ewdaJ8LyI+fjMgEJbC
- T8ez2We2O/N9SJPUnCerRE8yoq9NCrkiOBivoicJJxgiZM5yieS1oBfrWGFnnkXc/0do1nc3yIl
- xGR7vMVNT1+Cr7lXBXDzV68V+XxLS4EFp75egcDdctaTc49d9tQnQmds+QSoexGif4yJjgkZqwJ
- UAcAxwFXV7iGEO+BqaSXuG8G9i2UjAhxnq7hlBgwhu5f8ZBB3AQafBLAwuyKdHwXfKliBQ/3y0P
- ApbZcW7BDU10WdhTWi+AzHpICC7+ihuld3r5JNPlzMrb+uYdikL5yzc0QeDT/9Wm8YNyiKo+m7q
- 8wKqKdAvxmbc5tK7v0g==
-X-Proofpoint-ORIG-GUID: h0UvxBAMJcCRXsrpKauzLHkvJCRNu_FK
-X-Proofpoint-GUID: h0UvxBAMJcCRXsrpKauzLHkvJCRNu_FK
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTIzMDA1MSBTYWx0ZWRfX9PwfpGvV1MKy
- 3RTTWl8bZcrddaWcs8US1RVVCcBV9BYUFDgT6lkNKhjZUjUvedNAzD0XPg9Jt8uxeWIbW3Fu2H7
- m5yvvjAGZXnZOZ838H5kRI5zcjhmM2A=
+X-Exchange-RoutingPolicyChecked: IAqudidx1p2Dr9YiQBWP4TYoz+1JX3hX6VdRRjLu8rGuYVnBJ9SMJOq6M5QPGjfbT1x9P+4ENBifI/X6Mr9S2ly0f6XtJO8PUjeMq1Wze4zYFSfsdLforsq1pq0aPdVOlWwvB00zRpzneUMxzRWDVAyFQAnaCrUb/S/E93Zc4Q5GwAR+mCuY7ehKpei+ZuYMa32mA0yYzMeApWWyoM3S/IX2xzFghCEnx32OIvJzaxO6Ahsb5mSGhPqKVoIMHsDJ7l0e1TJbRYw/ZWwvwX57itCAodFEABVeTQG42lvzxd80LBbURAKiuFI3y7Y1bzK2jp31aF5bb8Hczf1khTtPgA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6796.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 856a3733-ae7d-4d05-7c58-08df1974066d
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 13:10:22.4565 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: w26FlYg/LBKSzqJLX9UvDqB0Hddc/QPgDsy1DzXEz/Qm5Tbzwolse+vY6CmP1ex+J3+gwWXRVv4HuIy4QMZKmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB468931
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,2145 +163,216 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a device information library containing configuration data for
-supported PowerVR cores.
+Hi @Joshi, Kunal1,
 
-The device configuration definitions are largely imported from Mesa,
-with only minor adjustments to fit IGT coding style and infrastructure.
-
-This infrastructure will be used to parameterize tests according to
-the target GPU configuration and capabilities.
-
-Signed-off-by: Robert Mazur <robert.mazur@imgtec.com>
----
- lib/igt_pvr.c                           |  20 ++
- lib/igt_pvr.h                           |   3 +
- lib/imagination/device_info/axe-1-16m.h | 106 +++++++++
- lib/imagination/device_info/bxe-2-32.h  | 122 +++++++++++
- lib/imagination/device_info/bxe-4-32.h  | 122 +++++++++++
- lib/imagination/device_info/bxm-4-64.h  | 237 ++++++++++++++++++++
- lib/imagination/device_info/bxs-4-64.h  | 124 +++++++++++
- lib/imagination/device_info/g6110.h     | 103 +++++++++
- lib/imagination/device_info/ge7800.h    | 102 +++++++++
- lib/imagination/device_info/ge8300.h    | 230 +++++++++++++++++++
- lib/imagination/device_info/gx6250.h    | 231 +++++++++++++++++++
- lib/imagination/device_info/gx6650.h    | 120 ++++++++++
- lib/imagination/pvr_device_info.c       | 104 +++++++++
- lib/imagination/pvr_device_info.h       | 378 ++++++++++++++++++++++++++++++++
- lib/meson.build                         |   1 +
- 15 files changed, 2003 insertions(+)
-
-diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
-index f739d61b7..f05f23057 100644
---- a/lib/igt_pvr.c
-+++ b/lib/igt_pvr.c
-@@ -333,3 +333,23 @@ void igt_pvr_ioctl_destroy_free_list(int fd, uint32_t free_list_handle)
- 
- 	do_ioctl(fd, DRM_IOCTL_PVR_DESTROY_FREE_LIST, &destroy_free_list_args);
- }
-+
-+/**
-+ * igt_pvr_get_device_info:
-+ * @fd: The file descriptor of the DRM device.
-+ *
-+ * Function to get the device information from kernel.
-+ */
-+struct pvr_device_info *igt_pvr_get_device_info(int fd)
-+{
-+	struct drm_pvr_dev_query_gpu_info dev_info_get = {0};
-+	static struct pvr_device_info info;
-+
-+	igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_GPU_INFO_GET,
-+				sizeof(dev_info_get), &dev_info_get, 0);
-+
-+	igt_assert(pvr_device_info_init(&info, dev_info_get.gpu_id) == 0);
-+
-+	return &info;
-+}
-+
-diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
-index 744d7c12f..214a429ab 100644
---- a/lib/igt_pvr.h
-+++ b/lib/igt_pvr.h
-@@ -8,6 +8,7 @@
- #include <stdint.h>
- #include <sys/types.h>
- 
-+#include "imagination/pvr_device_info.h"
- #include "pvr_drm.h"
- 
- uint32_t igt_pvr_ioctl_create_bo(int fd, size_t *size);
-@@ -37,4 +38,6 @@ uint32_t igt_pvr_ioctl_create_free_list(int fd, uint32_t vm_ctx_handle,
- 					uint64_t gpu_addr);
- void igt_pvr_ioctl_destroy_free_list(int fd, uint32_t free_list_handle);
- 
-+struct pvr_device_info *igt_pvr_get_device_info(int fd);
-+
- #endif /* IGT_PVR_H */
-diff --git a/lib/imagination/device_info/axe-1-16m.h b/lib/imagination/device_info/axe-1-16m.h
-new file mode 100644
-index 000000000..ef2294d40
---- /dev/null
-+++ b/lib/imagination/device_info/axe-1-16m.h
-@@ -0,0 +1,106 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_AXE_1_16M_H
-+#define IGT_IMAGINATION_AXE_1_16M_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_33_V_11_3                     \
-+	.device_id = 0x33011003, .series_name = "A-Series", \
-+	.public_name = "AXE-1-16M", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_33_V_11_3 = {
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_ipf_creq_pf = true,
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_pbe2_in_xe = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_roguexe = true,
-+	.has_screen_size8K = true,
-+	.has_simple_internal_parameter_format = true,
-+	.has_simple_internal_parameter_format_v2 = true,
-+	.has_simple_parameter_format_version = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_16x16 = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_border_colour_enhanced = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_pixel_partition_mask = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_vdm_degenerate_culling = true,
-+
-+	.common_store_size_in_dwords = 512U * 4U * 4U,
-+	.isp_max_tiles_in_flight = 1U,
-+	.isp_samples_per_pixel = 1U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 4U,
-+	.max_usc_tasks = 24U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.simple_parameter_format_version = 2U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 16U,
-+	.tile_size_y = 16U,
-+	.tpu_parallel_instances = 1U,
-+	.unified_store_depth = 64U,
-+	.usc_itr_parallel_instances = 4U,
-+	.usc_min_output_registers_per_pix = 1U,
-+	.usc_slots = 14U,
-+	.uvs_banks = 2U,
-+	.uvs_pba_entries = 320U,
-+	.uvs_vtx_entries = 288U,
-+	.vdm_cam_size = 32U,
-+
-+	.has_s8xe = true,
-+};
-+
-+static const struct pvr_device_enhancements pvr_device_enhancements_33_15_11_3 = {
-+	.has_ern35421 = true,
-+	.has_ern38748 = true,
-+	.has_ern42307 = true,
-+	.has_ern45493 = true,
-+};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_33_15_11_3 = {
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_33_15_11_3 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_33_V_11_3,
-+	   .b = 33,
-+	   .v = 15,
-+	   .n = 11,
-+	   .c = 3,
-+	},
-+	.features = pvr_device_features_33_V_11_3,
-+	.enhancements = pvr_device_enhancements_33_15_11_3,
-+	.quirks = pvr_device_quirks_33_15_11_3,
-+};
-+
-+#endif /* AXE_1_16M_H */
-diff --git a/lib/imagination/device_info/bxe-2-32.h b/lib/imagination/device_info/bxe-2-32.h
-new file mode 100644
-index 000000000..3e88dc6dc
---- /dev/null
-+++ b/lib/imagination/device_info/bxe-2-32.h
-@@ -0,0 +1,122 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_BXE_2_32_H
-+#define IGT_IMAGINATION_BXE_2_32_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_36_V_52_182 \
-+	.device_id = 0x36052182, .series_name = "B-Series", \
-+	.public_name = "BXE-2-32", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_36_V_52_182 = {
-+	.has_astc = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_overlap = true,
-+	.has_fbcdc_algorithm = true,
-+	.has_gpu_multicore_support = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_ipf_creq_pf = true,
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_paired_tiles = true,
-+	.has_pbe2_in_xe = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_pds_ddmadt = true,
-+	.has_roguexe = true,
-+	.has_screen_size8K = true,
-+	.has_simple_internal_parameter_format = true,
-+	.has_simple_internal_parameter_format_v2 = true,
-+	.has_simple_parameter_format_version = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_16x16 = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_border_colour_enhanced = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_alu_roundingmode_rne = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itrsmp_enhanced = true,
-+	.has_usc_itr_parallel_instances = true,
-+
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_pixel_partition_mask = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_xpu_max_slaves = true,
-+
-+	.common_store_size_in_dwords = 832U * 4U * 4U,
-+	.fbcdc_algorithm = 50U,
-+	.isp_max_tiles_in_flight = 2U,
-+	.isp_samples_per_pixel = 1U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 8U,
-+	.max_usc_tasks = 72U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.simple_parameter_format_version = 2U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 16U,
-+	.tile_size_y = 16U,
-+	.tpu_parallel_instances = 2U,
-+	.unified_store_depth = 128U,
-+	.usc_itr_parallel_instances = 8U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 32U,
-+	.uvs_banks = 4U,
-+	.uvs_pba_entries = 320U,
-+	.uvs_vtx_entries = 288U,
-+	.vdm_cam_size = 64U,
-+	.xpu_max_slaves = 3U,
-+
-+	.has_s8xe = true,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_36_29_52_182 = {
-+	   .has_ern35421 = true,
-+	   .has_ern38748 = true,
-+	   .has_ern42307 = true,
-+	   .has_ern45493 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_36_29_52_182 = {
-+	.has_brn70165 = true,
-+	.has_brn72168 = true,
-+	.has_brn72463 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_36_29_52_182 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_36_V_52_182,
-+	   .b = 36,
-+	   .v = 29,
-+	   .n = 52,
-+	   .c = 182,
-+	},
-+	.features = pvr_device_features_36_V_52_182,
-+	.enhancements = pvr_device_enhancements_36_29_52_182,
-+	.quirks = pvr_device_quirks_36_29_52_182,
-+};
-+
-+#endif /* BXE_2_32_H */
-diff --git a/lib/imagination/device_info/bxe-4-32.h b/lib/imagination/device_info/bxe-4-32.h
-new file mode 100644
-index 000000000..2ebfbab20
---- /dev/null
-+++ b/lib/imagination/device_info/bxe-4-32.h
-@@ -0,0 +1,122 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_BXE_4_32_H
-+#define IGT_IMAGINATION_BXE_4_32_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_36_V_54_182 \
-+	.device_id = 0x36054182, .series_name = "B-Series", \
-+	.public_name = "BXE-4-32", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_36_V_54_182 = {
-+	.has_astc = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_overlap = true,
-+	.has_fbcdc_algorithm = true,
-+	.has_gpu_multicore_support = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_ipf_creq_pf = true,
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_paired_tiles = true,
-+	.has_pbe2_in_xe = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_pds_ddmadt = true,
-+	.has_roguexe = true,
-+	.has_screen_size8K = true,
-+	.has_simple_internal_parameter_format = true,
-+	.has_simple_internal_parameter_format_v2 = true,
-+	.has_simple_parameter_format_version = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_16x16 = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_border_colour_enhanced = true,
-+	.has_tpu_dm_global_registers = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_alu_roundingmode_rne = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itrsmp_enhanced = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_pixel_partition_mask = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_xpu_max_slaves = true,
-+
-+	.common_store_size_in_dwords = 1024U * 4U * 4U,
-+	.fbcdc_algorithm = 50U,
-+	.isp_max_tiles_in_flight = 4U,
-+	.isp_samples_per_pixel = 1U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 10U,
-+	.max_usc_tasks = 104U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.simple_parameter_format_version = 2U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 16U,
-+	.tile_size_y = 16U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 208U,
-+	.usc_itr_parallel_instances = 16U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 64U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 160U,
-+	.uvs_vtx_entries = 144U,
-+	.vdm_cam_size = 64U,
-+	.xpu_max_slaves = 3U,
-+
-+	.has_s8xe = true,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_36_50_54_182 = {
-+	   .has_ern35421 = true,
-+	   .has_ern38748 = true,
-+	   .has_ern42307 = true,
-+	   .has_ern45493 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_36_50_54_182 = {
-+	.has_brn70165 = true,
-+	.has_brn72168 = true,
-+	.has_brn72463 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_36_50_54_182 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_36_V_54_182,
-+	   .b = 36,
-+	   .v = 50,
-+	   .n = 54,
-+	   .c = 182,
-+	},
-+	.features = pvr_device_features_36_V_54_182,
-+	.enhancements = pvr_device_enhancements_36_50_54_182,
-+	.quirks = pvr_device_quirks_36_50_54_182,
-+};
-+
-+#endif /* BXE_4_32_H */
-diff --git a/lib/imagination/device_info/bxm-4-64.h b/lib/imagination/device_info/bxm-4-64.h
-new file mode 100644
-index 000000000..9546d65bc
---- /dev/null
-+++ b/lib/imagination/device_info/bxm-4-64.h
-@@ -0,0 +1,237 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_BXM_4_64_H
-+#define IGT_IMAGINATION_BXM_4_64_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_36_V_104_182 \
-+	.device_id = 0x36104182, .series_name = "B-Series", \
-+	.public_name = "BXM-4-64", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_36_V_104_182 = {
-+	.has_astc = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_overlap = true,
-+	.has_fbcdc_algorithm = true,
-+	.has_gpu_multicore_support = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_ipf_creq_pf = true,
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_paired_tiles = true,
-+	.has_pbe2_in_xe = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_pds_ddmadt = true,
-+	.has_roguexe = true,
-+	.has_screen_size8K = true,
-+	.has_simple_internal_parameter_format = true,
-+	.has_simple_internal_parameter_format_v2 = true,
-+	.has_simple_parameter_format_version = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_16x16 = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_border_colour_enhanced = true,
-+	.has_tpu_dm_global_registers = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_alu_roundingmode_rne = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itrsmp_enhanced = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_pixel_partition_mask = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_xpu_max_slaves = true,
-+
-+	.common_store_size_in_dwords = 1216U * 4U * 4U,
-+	.fbcdc_algorithm = 50U,
-+	.isp_max_tiles_in_flight = 6U,
-+	.isp_samples_per_pixel = 1U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 12U,
-+	.max_usc_tasks = 156U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.simple_parameter_format_version = 2U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 16U,
-+	.tile_size_y = 16U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 256U,
-+	.usc_itr_parallel_instances = 16U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 64U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 160U,
-+	.uvs_vtx_entries = 144U,
-+	.vdm_cam_size = 64U,
-+	.xpu_max_slaves = 3U,
-+
-+	/* Derived features. */
-+	.has_s8xe = true,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_36_52_104_182 = {
-+	   .has_ern35421 = true,
-+	   .has_ern38748 = true,
-+	   .has_ern42307 = true,
-+	   .has_ern45493 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_36_52_104_182 = {
-+	.has_brn44079 = true,
-+	.has_brn70165 = true,
-+	.has_brn72168 = true,
-+	.has_brn72463 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_36_52_104_182 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_36_V_104_182,
-+	   .b = 36,
-+	   .v = 52,
-+	   .n = 104,
-+	   .c = 182,
-+	},
-+	.features = pvr_device_features_36_V_104_182,
-+	.enhancements = pvr_device_enhancements_36_52_104_182,
-+	.quirks = pvr_device_quirks_36_52_104_182,
-+};
-+
-+#define PVR_DEVICE_IDENT_36_V_104_183 \
-+	.device_id = 0x36104183, .series_name = "B-Series", .public_name = "BXM-4-64"
-+
-+static const struct pvr_device_features pvr_device_features_36_V_104_183 = {
-+	.has_astc = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_overlap = true,
-+	.has_fbcdc_algorithm = true,
-+	.has_gpu_multicore_support = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_ipf_creq_pf = true,
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_paired_tiles = true,
-+	.has_pbe2_in_xe = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_pds_ddmadt = true,
-+	.has_roguexe = true,
-+	.has_screen_size8K = true,
-+	.has_simple_internal_parameter_format = true,
-+	.has_simple_internal_parameter_format_v2 = true,
-+	.has_simple_parameter_format_version = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_16x16 = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_border_colour_enhanced = true,
-+	.has_tpu_dm_global_registers = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_alu_roundingmode_rne = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itrsmp_enhanced = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_pixel_partition_mask = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_xpu_max_slaves = true,
-+
-+	.common_store_size_in_dwords = 1216U * 4U * 4U,
-+	.fbcdc_algorithm = 50U,
-+	.isp_max_tiles_in_flight = 6U,
-+	.isp_samples_per_pixel = 1U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 12U,
-+	.max_usc_tasks = 156U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.simple_parameter_format_version = 2U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 16U,
-+	.tile_size_y = 16U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 256U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 64U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 160U,
-+	.uvs_vtx_entries = 144U,
-+	.vdm_cam_size = 64U,
-+	.xpu_max_slaves = 3U,
-+
-+	/* Derived features. */
-+	.has_s8xe = true,
-+	.has_usc_itr_parallel_instances = true,
-+
-+	.usc_itr_parallel_instances = 16U,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_36_56_104_183 = {
-+	   .has_ern35421 = true,
-+	   .has_ern38748 = true,
-+	   .has_ern42307 = true,
-+	   .has_ern45493 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_36_56_104_183 = {
-+	.has_brn44079 = true,
-+	.has_brn70165 = true,
-+	.has_brn72168 = true,
-+	.has_brn72463 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_36_56_104_183 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_36_V_104_183,
-+	   .b = 36,
-+	   .v = 56,
-+	   .n = 104,
-+	   .c = 183,
-+	},
-+	.features = pvr_device_features_36_V_104_183,
-+	.enhancements = pvr_device_enhancements_36_56_104_183,
-+	.quirks = pvr_device_quirks_36_56_104_183,
-+};
-+
-+#endif /* BXM_4_64_H */
-diff --git a/lib/imagination/device_info/bxs-4-64.h b/lib/imagination/device_info/bxs-4-64.h
-new file mode 100644
-index 000000000..1c579985b
---- /dev/null
-+++ b/lib/imagination/device_info/bxs-4-64.h
-@@ -0,0 +1,124 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_BXS_4_64_H
-+#define IGT_IMAGINATION_BXS_4_64_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_36_V_104_796 \
-+	.device_id = 0x36104796, .series_name = "B-Series", \
-+	.public_name = "BXS-4-64", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_36_V_104_796 = {
-+	.has_astc = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_overlap = true,
-+	.has_fbcdc_algorithm = true,
-+	.has_gpu_multicore_support = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_ipf_creq_pf = true,
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_paired_tiles = true,
-+	.has_pbe2_in_xe = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_pds_ddmadt = true,
-+	.has_roguexe = true,
-+	.has_screen_size8K = true,
-+	.has_simple_internal_parameter_format = true,
-+	.has_simple_internal_parameter_format_v2 = true,
-+	.has_simple_parameter_format_version = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_16x16 = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_border_colour_enhanced = true,
-+	.has_tpu_dm_global_registers = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_alu_roundingmode_rne = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itrsmp_enhanced = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_pixel_partition_mask = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_vdm_degenerate_culling = true,
-+	.has_xpu_max_slaves = true,
-+
-+	.common_store_size_in_dwords = 1344U * 4U * 4U,
-+	.fbcdc_algorithm = 50U,
-+	.isp_max_tiles_in_flight = 6U,
-+	.isp_samples_per_pixel = 4U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 16U,
-+	.max_usc_tasks = 156U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.simple_parameter_format_version = 2U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 16U,
-+	.tile_size_y = 16U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 256U,
-+	.usc_itr_parallel_instances = 16U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 64U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 160U,
-+	.uvs_vtx_entries = 144U,
-+	.vdm_cam_size = 64U,
-+	.xpu_max_slaves = 3U,
-+
-+	.has_s8xe = true,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_36_53_104_796 = {
-+	   .has_ern35421 = true,
-+	   .has_ern38748 = true,
-+	   .has_ern42307 = true,
-+	   .has_ern45493 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_36_53_104_796 = {
-+	.has_brn44079 = true,
-+	.has_brn70165 = true,
-+	.has_brn72168 = true,
-+	.has_brn72463 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_36_53_104_796 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_36_V_104_796,
-+	   .b = 36,
-+	   .v = 53,
-+	   .n = 104,
-+	   .c = 796,
-+	},
-+	.features = pvr_device_features_36_V_104_796,
-+	.enhancements = pvr_device_enhancements_36_53_104_796,
-+	.quirks = pvr_device_quirks_36_53_104_796,
-+};
-+
-+#endif /* BXS_4_64_H */
-diff --git a/lib/imagination/device_info/g6110.h b/lib/imagination/device_info/g6110.h
-new file mode 100644
-index 000000000..ad4c5f0d3
---- /dev/null
-+++ b/lib/imagination/device_info/g6110.h
-@@ -0,0 +1,103 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_G6110_H
-+#define IGT_IMAGINATION_G6110_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_5_V_1_46 \
-+	.device_id = 0x6110, .series_name = "Rogue", \
-+	.public_name = "GX6110", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_5_V_1_46 = {
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_fbcdc_algorithm = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_roguexe = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+
-+	.common_store_size_in_dwords = 1344U * 4U * 4U,
-+	.fbcdc_algorithm = 2U,
-+	.isp_max_tiles_in_flight = 1U,
-+	.isp_samples_per_pixel = 2U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 12U,
-+	.max_usc_tasks = 96U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 32U,
-+	.tile_size_y = 32U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 208U,
-+	.usc_itr_parallel_instances = 16U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 56U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 160U,
-+	.uvs_vtx_entries = 144U,
-+	.vdm_cam_size = 64U,
-+
-+	.has_requires_fb_cdc_zls_setup = true,
-+};
-+
-+static const struct pvr_device_enhancements pvr_device_enhancements_5_9_1_46 = {
-+	.has_ern35421 = true,
-+};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_5_9_1_46 = {
-+	.has_brn44079 = true,
-+	.has_brn47727 = true,
-+	.has_brn48492 = true,
-+	.has_brn48545 = true,
-+	.has_brn49032 = true,
-+	.has_brn49927 = true,
-+	.has_brn51025 = true,
-+	.has_brn51210 = true,
-+	.has_brn52942 = true,
-+	.has_brn58839 = true,
-+	.has_brn62269 = true,
-+	.has_brn66011 = true,
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_5_9_1_46 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_5_V_1_46,
-+	   .b = 5,
-+	   .v = 9,
-+	   .n = 1,
-+	   .c = 46,
-+	},
-+	.features = pvr_device_features_5_V_1_46,
-+	.enhancements = pvr_device_enhancements_5_9_1_46,
-+	.quirks = pvr_device_quirks_5_9_1_46,
-+};
-+
-+#endif /* G6110_H */
-diff --git a/lib/imagination/device_info/ge7800.h b/lib/imagination/device_info/ge7800.h
-new file mode 100644
-index 000000000..ee1326ce0
---- /dev/null
-+++ b/lib/imagination/device_info/ge7800.h
-@@ -0,0 +1,102 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_GE7800_H
-+#define IGT_IMAGINATION_GE7800_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_15_V_1_64 \
-+	.device_id = 0x15001064, .series_name = "Rogue", \
-+	.public_name = "GE7800", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_15_V_1_64 = {
-+	.has_astc = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_fbcdc_algorithm = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_roguexe = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+
-+	.common_store_size_in_dwords = 1344U * 4U * 4U,
-+	.fbcdc_algorithm = 2U,
-+	.isp_max_tiles_in_flight = 2U,
-+	.isp_samples_per_pixel = 2U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 12U,
-+	.max_usc_tasks = 96U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 32U,
-+	.tile_size_y = 32U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 208U,
-+	.usc_itr_parallel_instances = 16U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 56U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 320U,
-+	.uvs_vtx_entries = 288U,
-+	.vdm_cam_size = 128U,
-+
-+	.has_requires_fb_cdc_zls_setup = true,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_15_5_1_64 = {
-+	.has_ern35421 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_15_5_1_64 = {
-+	.has_brn44079 = true,
-+	.has_brn48492 = true,
-+	.has_brn49032 = true,
-+	.has_brn49927 = true,
-+	.has_brn52942 = true,
-+	.has_brn58839 = true,
-+	.has_brn62269 = true,
-+	.has_brn66011 = true,
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_15_5_1_64 = {
-+	.ident = {
-+	PVR_DEVICE_IDENT_15_V_1_64,
-+	.b = 15,
-+	.v = 5,
-+	.n = 1,
-+	.c = 64,
-+	},
-+	.features = pvr_device_features_15_V_1_64,
-+	.enhancements = pvr_device_enhancements_15_5_1_64,
-+	.quirks = pvr_device_quirks_15_5_1_64,
-+};
-+
-+#endif /* GE7800_H */
-diff --git a/lib/imagination/device_info/ge8300.h b/lib/imagination/device_info/ge8300.h
-new file mode 100644
-index 000000000..844810668
---- /dev/null
-+++ b/lib/imagination/device_info/ge8300.h
-@@ -0,0 +1,230 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_GE8300_H
-+#define IGT_IMAGINATION_GE8300_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_22_V_54_30 \
-+	.device_id = 0x22054030, .series_name = "Rogue", \
-+	.public_name = "GE8300", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_22_V_54_30 = {
-+	.has_astc = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_overlap = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_ipf_creq_pf = true,
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_pbe2_in_xe = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_roguexe = true,
-+	.has_simple_internal_parameter_format = true,
-+	.has_simple_internal_parameter_format_v1 = true,
-+	.has_simple_parameter_format_version = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_16x16 = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itrsmp_enhanced = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+
-+	.common_store_size_in_dwords = 1024U * 4U * 4U,
-+	.isp_max_tiles_in_flight = 4U,
-+	.isp_samples_per_pixel = 1U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 10U,
-+	.max_usc_tasks = 104U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.simple_parameter_format_version = 1U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 16U,
-+	.tile_size_y = 16U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 208U,
-+	.usc_itr_parallel_instances = 16U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 64U,
-+	.uvs_banks = 4U,
-+	.uvs_pba_entries = 320U,
-+	.uvs_vtx_entries = 288U,
-+	.vdm_cam_size = 64U,
-+
-+	.has_s8xe = true,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_22_67_54_30 = {
-+	   .has_ern35421 = true,
-+	   .has_ern38748 = true,
-+	   .has_ern42307 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_22_67_54_30 = {
-+	.has_brn49927 = true,
-+	.has_brn66011 = true,
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_22_67_54_30 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_22_V_54_30,
-+	   .b = 22,
-+	   .v = 67,
-+	   .n = 54,
-+	   .c = 30,
-+	},
-+	.features = pvr_device_features_22_V_54_30,
-+	.enhancements = pvr_device_enhancements_22_67_54_30,
-+	.quirks = pvr_device_quirks_22_67_54_30,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_22_68_54_30 = {
-+	   .has_ern35421 = true,
-+	   .has_ern38748 = true,
-+	   .has_ern42307 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_22_68_54_30 = {
-+	.has_brn49927 = true,
-+	.has_brn66011 = true,
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_22_68_54_30 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_22_V_54_30,
-+	   .b = 22,
-+	   .v = 68,
-+	   .n = 54,
-+	   .c = 30,
-+	},
-+	.features = pvr_device_features_22_V_54_30,
-+	.enhancements = pvr_device_enhancements_22_68_54_30,
-+	.quirks = pvr_device_quirks_22_68_54_30,
-+};
-+
-+#define PVR_DEVICE_IDENT_22_V_54_38 \
-+	.device_id = 0x22054038, .series_name = "Rogue", .public_name = "GE8300"
-+
-+static const struct pvr_device_features pvr_device_features_22_V_54_38 = {
-+	.has_astc = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_overlap = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_ipf_creq_pf = true,
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_pbe2_in_xe = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_roguexe = true,
-+	.has_simple_internal_parameter_format = true,
-+	.has_simple_internal_parameter_format_v1 = true,
-+	.has_simple_parameter_format_version = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_tile_size_16x16 = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itrsmp_enhanced = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+
-+	.common_store_size_in_dwords = 1024U * 4U * 4U,
-+	.isp_max_tiles_in_flight = 4U,
-+	.isp_samples_per_pixel = 1U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 4U,
-+	.max_partitions = 10U,
-+	.max_usc_tasks = 104U,
-+	.num_clusters = 1U,
-+	.num_raster_pipes = 1U,
-+	.simple_parameter_format_version = 1U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 16U,
-+	.tile_size_y = 16U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 208U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 64U,
-+	.uvs_banks = 4U,
-+	.uvs_pba_entries = 320U,
-+	.uvs_vtx_entries = 288U,
-+	.vdm_cam_size = 64U,
-+
-+	.has_s8xe = true,
-+	.has_usc_itr_parallel_instances = true,
-+
-+	.usc_itr_parallel_instances = 16U,
-+};
-+
-+static const struct pvr_device_enhancements
-+	pvr_device_enhancements_22_102_54_38 = {
-+	   .has_ern35421 = true,
-+	   .has_ern38748 = true,
-+	   .has_ern42307 = true,
-+	};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_22_102_54_38 = {
-+	.has_brn49927 = true,
-+	.has_brn66011 = true,
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_22_102_54_38 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_22_V_54_38,
-+	   .b = 22,
-+	   .v = 102,
-+	   .n = 54,
-+	   .c = 38,
-+	},
-+	.features = pvr_device_features_22_V_54_38,
-+	.enhancements = pvr_device_enhancements_22_102_54_38,
-+	.quirks = pvr_device_quirks_22_102_54_38,
-+};
-+
-+#endif /* GE8300_H */
-diff --git a/lib/imagination/device_info/gx6250.h b/lib/imagination/device_info/gx6250.h
-new file mode 100644
-index 000000000..955fd4d7f
---- /dev/null
-+++ b/lib/imagination/device_info/gx6250.h
-@@ -0,0 +1,231 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_GX6250_H
-+#define IGT_IMAGINATION_GX6250_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_4_V_2_51 \
-+	.device_id = 0x6250, .series_name = "Rogue", \
-+	.public_name = "GX6250", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_4_V_2_51 = {
-+	.has_astc = true,
-+	.has_cluster_grouping = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_morton_capable = true,
-+	.has_compute_overlap = true,
-+	.has_eight_output_registers = true,
-+	.has_fbcdc_algorithm = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_slc_mcu_cache_controls = true,
-+	.has_tf_bicubic_filter = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_array_textures = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_xt_top_infrastructure = true,
-+	.has_zls_subtile = true,
-+
-+	.common_store_size_in_dwords = 1280U * 4U * 4U,
-+	.fbcdc_algorithm = 2,
-+	.isp_max_tiles_in_flight = 4U,
-+	.isp_samples_per_pixel = 2U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 8U,
-+	.max_partitions = 8U,
-+	.max_usc_tasks = 56U,
-+	.num_clusters = 2U,
-+	.num_raster_pipes = 1U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 32U,
-+	.tile_size_y = 32U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 256U,
-+	.usc_itr_parallel_instances = 8U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 32U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 320U,
-+	.uvs_vtx_entries = 288U,
-+	.vdm_cam_size = 256U,
-+
-+	.has_requires_fb_cdc_zls_setup = true,
-+};
-+
-+static const struct pvr_device_enhancements pvr_device_enhancements_4_40_2_51 = {
-+	.has_ern35421 = true,
-+	.has_ern38020 = true,
-+	.has_ern38748 = true,
-+	.has_ern42064 = true,
-+	.has_ern42307 = true,
-+};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_4_40_2_51 = {
-+	.has_brn44079 = true,
-+	.has_brn47727 = true,
-+	.has_brn48492 = true,
-+	.has_brn48545 = true,
-+	.has_brn49032 = true,
-+	.has_brn49927 = true,
-+	.has_brn51025 = true,
-+	.has_brn51210 = true,
-+	.has_brn51764 = true,
-+	.has_brn52354 = true,
-+	.has_brn52942 = true,
-+	.has_brn58839 = true,
-+	.has_brn62269 = true,
-+	.has_brn66011 = true,
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_4_40_2_51 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_4_V_2_51,
-+	   .b = 4,
-+	   .v = 40,
-+	   .n = 2,
-+	   .c = 51,
-+	},
-+	.features = pvr_device_features_4_V_2_51,
-+	.enhancements = pvr_device_enhancements_4_40_2_51,
-+	.quirks = pvr_device_quirks_4_40_2_51,
-+};
-+
-+#define PVR_DEVICE_IDENT_4_V_2_58 \
-+	.device_id = 0x6250, .series_name = "Rogue", .public_name = "GX6250"
-+
-+static const struct pvr_device_features pvr_device_features_4_V_2_58 = {
-+	.has_astc = true,
-+	.has_cluster_grouping = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_morton_capable = true,
-+	.has_compute_overlap = true,
-+	.has_eight_output_registers = true,
-+	.has_fbcdc_algorithm = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_slc_mcu_cache_controls = true,
-+	.has_tf_bicubic_filter = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_array_textures = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_xt_top_infrastructure = true,
-+	.has_zls_subtile = true,
-+
-+	.common_store_size_in_dwords = 1536U * 4U * 4U,
-+	.fbcdc_algorithm = 2,
-+	.isp_max_tiles_in_flight = 4U,
-+	.isp_samples_per_pixel = 2U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 8U,
-+	.max_partitions = 8U,
-+	.max_usc_tasks = 56U,
-+	.num_clusters = 2U,
-+	.num_raster_pipes = 1U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 32U,
-+	.tile_size_y = 32U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 256U,
-+	.usc_itr_parallel_instances = 8U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 32U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 320U,
-+	.uvs_vtx_entries = 288U,
-+	.vdm_cam_size = 256U,
-+
-+	.has_requires_fb_cdc_zls_setup = true,
-+};
-+
-+static const struct pvr_device_enhancements pvr_device_enhancements_4_45_2_58 = {
-+	.has_ern35421 = true,
-+	.has_ern38020 = true,
-+	.has_ern38748 = true,
-+	.has_ern42064 = true,
-+	.has_ern42307 = true,
-+	.has_ern45493 = true,
-+};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_4_45_2_58 = {
-+	.has_brn44079 = true,
-+	.has_brn49927 = true,
-+	.has_brn51025 = true,
-+	.has_brn51210 = true,
-+	.has_brn51764 = true,
-+	.has_brn52354 = true,
-+	.has_brn52942 = true,
-+	.has_brn58839 = true,
-+	.has_brn62269 = true,
-+	.has_brn66011 = true,
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_4_45_2_58 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_4_V_2_58,
-+	   .b = 4,
-+	   .v = 45,
-+	   .n = 2,
-+	   .c = 58,
-+	},
-+	.features = pvr_device_features_4_V_2_58,
-+	.enhancements = pvr_device_enhancements_4_45_2_58,
-+	.quirks = pvr_device_quirks_4_45_2_58,
-+};
-+
-+#endif /* GX6250_H */
-diff --git a/lib/imagination/device_info/gx6650.h b/lib/imagination/device_info/gx6650.h
-new file mode 100644
-index 000000000..f1c897ac5
---- /dev/null
-+++ b/lib/imagination/device_info/gx6650.h
-@@ -0,0 +1,120 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef IGT_IMAGINATION_GX6650_H
-+#define IGT_IMAGINATION_GX6650_H
-+
-+#include <stdbool.h>
-+
-+#include "../pvr_device_info.h"
-+
-+#define PVR_DEVICE_IDENT_4_V_6_62 \
-+	.device_id = 0x6650, .series_name = "Rogue", \
-+	.public_name = "GX6650", .arch = PVR_DEVICE_ARCH_ROGUE
-+
-+static const struct pvr_device_features pvr_device_features_4_V_6_62 = {
-+	.has_astc = true,
-+	.has_cluster_grouping = true,
-+	.has_common_store_size_in_dwords = true,
-+	.has_compute = true,
-+	.has_compute_morton_capable = true,
-+	.has_compute_overlap = true,
-+	.has_eight_output_registers = true,
-+	.has_fbcdc_algorithm = true,
-+	/* .has_gs_rta_support = true, */
-+	.has_isp_max_tiles_in_flight = true,
-+	.has_isp_samples_per_pixel = true,
-+	.has_max_instances_per_pds_task = true,
-+	.has_max_multisample = true,
-+	.has_max_partitions = true,
-+	.has_max_usc_tasks = true,
-+	.has_num_clusters = true,
-+	.has_num_raster_pipes = true,
-+	.has_pbe_filterable_f16 = true,
-+	.has_pbe_yuv = true,
-+	.has_slc_cache_line_size_bits = true,
-+	.has_slc_mcu_cache_controls = true,
-+	.has_tf_bicubic_filter = true,
-+	.has_tile_size_x = true,
-+	.has_tile_size_y = true,
-+	.has_tpu_array_textures = true,
-+	.has_tpu_extended_integer_lookup = true,
-+	.has_tpu_image_state_v2 = true,
-+	.has_tpu_parallel_instances = true,
-+	.has_unified_store_depth = true,
-+	.has_usc_f16sop_u8 = true,
-+	.has_usc_itrsmp = true,
-+	.has_usc_itr_parallel_instances = true,
-+	.has_usc_min_output_registers_per_pix = true,
-+	.has_usc_slots = true,
-+	.has_uvs_banks = true,
-+	.has_uvs_pba_entries = true,
-+	.has_uvs_vtx_entries = true,
-+	.has_vdm_cam_size = true,
-+	.has_xt_top_infrastructure = true,
-+	.has_zls_subtile = true,
-+
-+	.common_store_size_in_dwords = 1280U * 4U * 4U,
-+	.fbcdc_algorithm = 2U,
-+	.isp_max_tiles_in_flight = 8U,
-+	.isp_samples_per_pixel = 2U,
-+	.max_instances_per_pds_task = 32U,
-+	.max_multisample = 8U,
-+	.max_partitions = 8U,
-+	.max_usc_tasks = 56U,
-+	.num_clusters = 6U,
-+	.num_raster_pipes = 2U,
-+	.slc_cache_line_size_bits = 512U,
-+	.tile_size_x = 32U,
-+	.tile_size_y = 32U,
-+	.tpu_parallel_instances = 4U,
-+	.unified_store_depth = 256U,
-+	.usc_itr_parallel_instances = 8U,
-+	.usc_min_output_registers_per_pix = 2U,
-+	.usc_slots = 32U,
-+	.uvs_banks = 8U,
-+	.uvs_pba_entries = 320U,
-+	.uvs_vtx_entries = 288U,
-+	.vdm_cam_size = 256U,
-+
-+	.has_requires_fb_cdc_zls_setup = true,
-+};
-+
-+static const struct pvr_device_enhancements pvr_device_enhancements_4_46_6_62 = {
-+	.has_ern35421 = true,
-+	.has_ern38020 = true,
-+	.has_ern38748 = true,
-+	.has_ern42064 = true,
-+	.has_ern42307 = true,
-+	.has_ern45493 = true,
-+};
-+
-+static const struct pvr_device_quirks pvr_device_quirks_4_46_6_62 = {
-+	.has_brn44079 = true,
-+	.has_brn49927 = true,
-+	.has_brn51025 = true,
-+	.has_brn51210 = true,
-+	.has_brn51764 = true,
-+	.has_brn52354 = true,
-+	.has_brn52942 = true,
-+	.has_brn58839 = true,
-+	.has_brn62269 = true,
-+	.has_brn66011 = true,
-+	.has_brn70165 = true,
-+	.has_brn74056 = true,
-+};
-+
-+static const struct pvr_device_info pvr_device_info_4_46_6_62 = {
-+	.ident = {
-+	   PVR_DEVICE_IDENT_4_V_6_62,
-+	   .b = 4,
-+	   .v = 46,
-+	   .n = 6,
-+	   .c = 62,
-+	},
-+	.features = pvr_device_features_4_V_6_62,
-+	.enhancements = pvr_device_enhancements_4_46_6_62,
-+	.quirks = pvr_device_quirks_4_46_6_62,
-+};
-+
-+#endif /* GX6650_H */
-diff --git a/lib/imagination/pvr_device_info.c b/lib/imagination/pvr_device_info.c
-new file mode 100644
-index 000000000..3575d2527
---- /dev/null
-+++ b/lib/imagination/pvr_device_info.c
-@@ -0,0 +1,104 @@
-+// SPDX-License-Identifier: GPL-2.0 or MIT
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+/* TODO: This file is currently hand-maintained. However, the intention is to
-+ * auto-generate it in the future based on the hwdefs.
-+ */
-+
-+#include <assert.h>
-+#include <errno.h>
-+#include <string.h>
-+
-+#include "drmtest.h"
-+#include "pvr_device_info.h"
-+
-+#include "device_info/g6110.h"
-+#include "device_info/gx6250.h"
-+#include "device_info/gx6650.h"
-+#include "device_info/ge7800.h"
-+#include "device_info/ge8300.h"
-+#include "device_info/axe-1-16m.h"
-+#include "device_info/bxe-2-32.h"
-+#include "device_info/bxe-4-32.h"
-+#include "device_info/bxm-4-64.h"
-+#include "device_info/bxs-4-64.h"
-+
-+static const struct pvr_device_info *device_infos[] = {
-+	/* clang-format off */
-+	&pvr_device_info_4_40_2_51,
-+	&pvr_device_info_4_45_2_58,
-+	&pvr_device_info_4_46_6_62,
-+	&pvr_device_info_5_9_1_46,
-+	&pvr_device_info_15_5_1_64,
-+	&pvr_device_info_22_67_54_30,
-+	&pvr_device_info_22_68_54_30,
-+	&pvr_device_info_22_102_54_38,
-+	&pvr_device_info_33_15_11_3,
-+	&pvr_device_info_36_29_52_182,
-+	&pvr_device_info_36_50_54_182,
-+	&pvr_device_info_36_52_104_182,
-+	&pvr_device_info_36_53_104_796,
-+	&pvr_device_info_36_56_104_183,
-+	/* clang-format on */
-+};
-+
-+/**
-+ * Initialize PowerVR device information.
-+ *
-+ * \param info Device info structure to initialize.
-+ * \param bvnc Packed BVNC.
-+ * \return
-+ *  * 0 on success, or
-+ *  * -%ENODEV if the device is not supported.
-+ */
-+int pvr_device_info_init(struct pvr_device_info *info, uint64_t bvnc)
-+{
-+#define CASE_PACKED_BVNC_DEVICE_INFO(_b, _v, _n, _c)			\
-+	case PVR_BVNC_PACK(_b, _v, _n, _c):				\
-+		*info = pvr_device_info_##_b##_##_v##_##_n##_##_c;	\
-+		return 0
-+
-+	switch (bvnc) {
-+		CASE_PACKED_BVNC_DEVICE_INFO(4, 40, 2, 51);
-+		CASE_PACKED_BVNC_DEVICE_INFO(4, 45, 2, 58);
-+		CASE_PACKED_BVNC_DEVICE_INFO(4, 46, 6, 62);
-+		CASE_PACKED_BVNC_DEVICE_INFO(5, 9, 1, 46);
-+		CASE_PACKED_BVNC_DEVICE_INFO(15, 5, 1, 64);
-+		CASE_PACKED_BVNC_DEVICE_INFO(22, 67, 54, 30);
-+		CASE_PACKED_BVNC_DEVICE_INFO(22, 68, 54, 30);
-+		CASE_PACKED_BVNC_DEVICE_INFO(22, 102, 54, 38);
-+		CASE_PACKED_BVNC_DEVICE_INFO(33, 15, 11, 3);
-+		CASE_PACKED_BVNC_DEVICE_INFO(36, 29, 52, 182);
-+		CASE_PACKED_BVNC_DEVICE_INFO(36, 50, 54, 182);
-+		CASE_PACKED_BVNC_DEVICE_INFO(36, 52, 104, 182);
-+		CASE_PACKED_BVNC_DEVICE_INFO(36, 53, 104, 796);
-+		CASE_PACKED_BVNC_DEVICE_INFO(36, 56, 104, 183);
-+	}
-+
-+#undef CASE_PACKED_BVNC_DEVICE_INFO
-+
-+	assert(!"Unsupported Device");
-+
-+	return -ENODEV;
-+}
-+
-+/**
-+ * Initialize PowerVR device information from a public name.
-+ *
-+ * \param info Device info structure to initialize.
-+ * \param public_name Device public name.
-+ * \return True if successful.
-+ */
-+bool pvr_device_info_init_public_name(struct pvr_device_info *info,
-+				      const char *public_name)
-+{
-+	for (unsigned int d = 0; d < ARRAY_SIZE(device_infos); ++d) {
-+		if (strcasecmp(public_name, device_infos[d]->ident.public_name))
-+			continue;
-+
-+		memcpy(info, device_infos[d], sizeof(*info));
-+		return true;
-+	}
-+
-+	return false;
-+}
-diff --git a/lib/imagination/pvr_device_info.h b/lib/imagination/pvr_device_info.h
-new file mode 100644
-index 000000000..e3c2e0170
---- /dev/null
-+++ b/lib/imagination/pvr_device_info.h
-@@ -0,0 +1,378 @@
-+/* SPDX-License-Identifier: GPL-2.0 or MIT */
-+/* Copyright (c) 2026 Imagination Technologies Ltd. All Rights Reserved */
-+
-+#ifndef PVR_DEVICE_INFO_H
-+#define PVR_DEVICE_INFO_H
-+
-+/* TODO: This file is currently hand-maintained. However, the intention is to
-+ * auto-generate it in the future based on the hwdefs.
-+ */
-+
-+#include <assert.h>
-+#include <errno.h>
-+#include <stdbool.h>
-+#include <stdint.h>
-+
-+#define PVR_BVNC_PACK_SHIFT_B 48
-+#define PVR_BVNC_PACK_SHIFT_V 32
-+#define PVR_BVNC_PACK_SHIFT_N 16
-+#define PVR_BVNC_PACK_SHIFT_C 0
-+
-+#define PVR_BVNC_PACK_MASK_B UINT64_C(0xFFFF000000000000)
-+#define PVR_BVNC_PACK_MASK_V UINT64_C(0x0000FFFF00000000)
-+#define PVR_BVNC_PACK_MASK_N UINT64_C(0x00000000FFFF0000)
-+#define PVR_BVNC_PACK_MASK_C UINT64_C(0x000000000000FFFF)
-+
-+enum pvr_device_arch {
-+	PVR_DEVICE_ARCH_ROGUE,
-+};
-+
-+/**
-+ * Packs B, V, N and C values into a 64-bit unsigned integer.
-+ *
-+ * The packed layout is as follows:
-+ *
-+ * \verbatim
-+ *	 +--------+--------+--------+-------+
-+ *	 | 63..48 | 47..32 | 31..16 | 15..0 |
-+ *	 +========+========+========+=======+
-+ *	 |   B    |   V    |   N    |   C   |
-+ *	 +--------+--------+--------+-------+
-+ * \endverbatim
-+ *
-+ * #pvr_get_packed_bvnc() should be used instead of this macro when a
-+ * #pvr_device_information is available in order to ensure proper type checking.
-+ *
-+ * \param b Branch ID.
-+ * \param v Version ID.
-+ * \param n Number of scalable units.
-+ * \param c Config ID.
-+ * \return Packed BVNC.
-+ *
-+ * \sa #pvr_get_packed_bvnc(), #PVR_BVNC_UNPACK_B(), #PVR_BVNC_UNPACK_V(),
-+ * #PVR_BVNC_UNPACK_N() and #PVR_BVNC_UNPACK_C()
-+ */
-+#define PVR_BVNC_PACK(b, v, n, c)						\
-+	((((uint64_t)(b) << PVR_BVNC_PACK_SHIFT_B) & PVR_BVNC_PACK_MASK_B) |	\
-+	 (((uint64_t)(v) << PVR_BVNC_PACK_SHIFT_V) & PVR_BVNC_PACK_MASK_V) |	\
-+	 (((uint64_t)(n) << PVR_BVNC_PACK_SHIFT_N) & PVR_BVNC_PACK_MASK_N) |	\
-+	 (((uint64_t)(c) << PVR_BVNC_PACK_SHIFT_C) & PVR_BVNC_PACK_MASK_C))
-+
-+/**
-+ * Unpacks B value (branch ID) from packed BVNC.
-+ *
-+ * \param bvnc Packed BVNC.
-+ * \return Branch ID.
-+ *
-+ * \sa #PVR_BVNC_UNPACK_V(), #PVR_BVNC_UNPACK_N(), #PVR_BVNC_UNPACK_C(),
-+ * #pvr_get_packed_bvnc() and #PVR_BVNC_PACK()
-+ */
-+#define PVR_BVNC_UNPACK_B(bvnc) \
-+	((uint16_t)(((bvnc) & PVR_BVNC_PACK_MASK_B) >> PVR_BVNC_PACK_SHIFT_B))
-+
-+/**
-+ * Unpacks V value (version ID) from packed BVNC.
-+ *
-+ * \param bvnc Packed BVNC.
-+ * \return Version ID.
-+ *
-+ * \sa #PVR_BVNC_UNPACK_B(), #PVR_BVNC_UNPACK_N(), #PVR_BVNC_UNPACK_C(),
-+ * #pvr_get_packed_bvnc() and #PVR_BVNC_PACK()
-+ */
-+#define PVR_BVNC_UNPACK_V(bvnc) \
-+	((uint16_t)(((bvnc) & PVR_BVNC_PACK_MASK_V) >> PVR_BVNC_PACK_SHIFT_V))
-+
-+/**
-+ * Unpacks N value (number of scalable units) from packed BVNC.
-+ *
-+ * \param bvnc Packed BVNC.
-+ * \return Number of scalable units.
-+ *
-+ * \sa #PVR_BVNC_UNPACK_B(), #PVR_BVNC_UNPACK_V(), #PVR_BVNC_UNPACK_C(),
-+ * #pvr_get_packed_bvnc() and #PVR_BVNC_PACK()
-+ */
-+#define PVR_BVNC_UNPACK_N(bvnc) \
-+	((uint16_t)(((bvnc) & PVR_BVNC_PACK_MASK_N) >> PVR_BVNC_PACK_SHIFT_N))
-+
-+/**
-+ * Unpacks C value (config ID) from packed BVNC.
-+ *
-+ * \param bvnc Packed BVNC.
-+ * \return Config ID.
-+ *
-+ * \sa #PVR_BVNC_UNPACK_B(), #PVR_BVNC_UNPACK_V(), #PVR_BVNC_UNPACK_N(),
-+ * #pvr_get_packed_bvnc() and #PVR_BVNC_PACK()
-+ */
-+#define PVR_BVNC_UNPACK_C(bvnc) \
-+	((uint16_t)(((bvnc) & PVR_BVNC_PACK_MASK_C) >> PVR_BVNC_PACK_SHIFT_C))
-+
-+/**
-+ * Tests whether a physical device has a given feature.
-+ *
-+ * Feature names are derived from those found in #pvr_device_features by
-+ * dropping the 'has_' prefix, which is applied by this macro.
-+ *
-+ * \param dev_info #pvr_device_info object associated with the target physical device.
-+ *
-+ * \param feature  Device feature name.
-+ *
-+ * \return
-+ *  * true if the named feature is present in the hardware.
-+ *  * false if the named feature is not present in the hardware.
-+ *
-+ * \sa #PVR_FEATURE_VALUE() and #PVR_GET_FEATURE_VALUE()
-+ */
-+#define PVR_HAS_FEATURE(dev_info, feature) ((dev_info)->features.has_##feature)
-+
-+/**
-+ * Gets a physical device feature value if feature is supported.
-+ *
-+ * Feature names are derived from those found in #pvr_device_features by
-+ * dropping the 'has_' prefix.
-+ *
-+ * This macro should be used in preference to #PVR_GET_FEATURE_VALUE() as it has
-+ * proper error handling.
-+ *
-+ * \param dev_info  #pvr_device_info object associated with the target physical device.
-+ *
-+ * \param feature   Feature name.
-+ * \param value_out Feature value.
-+ *
-+ * \return
-+ *  * 0 on success, or
-+ *  * -%EINVAL if the named feature is not present in the hardware.
-+ *
-+ * \sa #PVR_HAS_FEATURE() and #PVR_GET_FEATURE_VALUE()
-+ */
-+#define PVR_FEATURE_VALUE(dev_info, feature, value_out)			\
-+	({								\
-+		const struct pvr_device_info *__dev_info = dev_info;	\
-+		int __ret = -EINVAL;					\
-+		if (__dev_info->features.has_##feature) {		\
-+			*(value_out) = __dev_info->features.feature;	\
-+			__ret = 0;					\
-+		}							\
-+		__ret;							\
-+	})
-+
-+/**
-+ * Gets a physical device feature value if supported, but otherwise returns a
-+ * default value.
-+ *
-+ * Feature names are derived from those found in #pvr_device_features by
-+ * dropping the 'has_' prefix.
-+ *
-+ * #PVR_FEATURE_VALUE() should be used in preference to this macro when errors
-+ * can be returned by the caller. This macro is intended for cases where errors
-+ * can't be returned.
-+ *
-+ * \param dev_info #pvr_device_info object associated with the target
-+ *                 physical device.
-+ * \param feature Feature name.
-+ * \param default_value Default feature value.
-+ *
-+ * \return Feature value.
-+ *
-+ * \sa #PVR_HAS_FEATURE() and #PVR_FEATURE_VALUE()
-+ */
-+#define PVR_GET_FEATURE_VALUE(dev_info, feature, default_value)				\
-+	({										\
-+		const struct pvr_device_info *__dev_info = dev_info;			\
-+		__typeof__(default_value) __ret = default_value;			\
-+		if (__dev_info->features.has_##feature) {				\
-+			__ret = __dev_info->features.feature;				\
-+		} else {								\
-+			assert(0);							\
-+		}									\
-+		__ret;									\
-+	})
-+
-+/**
-+ * Tests whether a physical device has a given enhancement.
-+ *
-+ * Enhancement numbers are derived from those found in #pvr_device_enhancements
-+ * by dropping the 'has_ern' prefix, which is applied by this macro.
-+ *
-+ * \param dev_info #pvr_device_info object associated with the target physical
-+ *                 device.
-+ * \param number   Enhancement number.
-+ *
-+ * \return
-+ *  * true if the enhancement is present in the hardware.
-+ *  * false if the enhancement is not present in the hardware.
-+ */
-+#define PVR_HAS_ENHANCEMENT(dev_info, number) \
-+	((dev_info)->enhancements.has_ern##number)
-+
-+/**
-+ * Tests whether a physical device has a given quirk.
-+ *
-+ * Quirk numbers are derived from those found in #pvr_device_quirks by
-+ * dropping the 'has_brn' prefix, which is applied by this macro.
-+ *
-+ * \param dev_info #pvr_device_info object associated with the target physical device.
-+ *
-+ * \param number   Quirk number.
-+ *
-+ * \return
-+ *  * true if the quirk is present in the hardware.
-+ *  * false if the quirk is not present in the hardware.
-+ */
-+#define PVR_HAS_QUIRK(dev_info, number) ((dev_info)->quirks.has_brn##number)
-+
-+struct pvr_device_ident {
-+	enum pvr_device_arch arch;
-+	uint16_t b, v, n, c;
-+	uint32_t device_id;
-+	const char *series_name;
-+	const char *public_name;
-+};
-+
-+struct pvr_device_features {
-+	bool has_astc : 1;
-+	bool has_cluster_grouping : 1;
-+	bool has_common_store_size_in_dwords : 1;
-+	bool has_compute : 1;
-+	bool has_compute_morton_capable : 1;
-+	bool has_compute_overlap : 1;
-+	bool has_eight_output_registers : 1;
-+	bool has_fb_cdc_v4 : 1;
-+	bool has_fbcdc_algorithm : 1;
-+	bool has_gpu_multicore_support : 1;
-+	bool has_gs_rta_support : 1;
-+	bool has_ipf_creq_pf : 1;
-+	bool has_isp_max_tiles_in_flight : 1;
-+	bool has_isp_samples_per_pixel : 1;
-+	bool has_max_instances_per_pds_task : 1;
-+	bool has_max_multisample : 1;
-+	bool has_max_partitions : 1;
-+	bool has_max_usc_tasks : 1;
-+	bool has_num_clusters : 1;
-+	bool has_num_raster_pipes : 1;
-+	bool has_paired_tiles : 1;
-+	bool has_pbe2_in_xe : 1;
-+	bool has_pbe_filterable_f16 : 1;
-+	bool has_pbe_stride_align_1pixel : 1;
-+	bool has_pbe_yuv : 1;
-+	bool has_pds_ddmadt : 1;
-+	bool has_roguexe : 1;
-+	bool has_screen_size8K : 1;
-+	bool has_simple_internal_parameter_format : 1;
-+	bool has_simple_internal_parameter_format_v1 : 1;
-+	bool has_simple_internal_parameter_format_v2 : 1;
-+	bool has_simple_parameter_format_version : 1;
-+	bool has_slc_cache_line_size_bits : 1;
-+	bool has_slc_mcu_cache_controls : 1;
-+	bool has_tf_bicubic_filter : 1;
-+	bool has_tile_per_usc : 1;
-+	bool has_tile_size_16x16 : 1;
-+	bool has_tile_size_x : 1;
-+	bool has_tile_size_y : 1;
-+	bool has_tpu_array_textures : 1;
-+	bool has_tpu_border_colour_enhanced : 1;
-+	bool has_tpu_dm_global_registers : 1;
-+	bool has_tpu_extended_integer_lookup : 1;
-+	bool has_tpu_image_state_v2 : 1;
-+	bool has_tpu_parallel_instances : 1;
-+	bool has_unified_store_depth : 1;
-+	bool has_usc_alu_roundingmode_rne : 1;
-+	bool has_usc_f16sop_u8 : 1;
-+	bool has_usc_itrsmp : 1;
-+	bool has_usc_itrsmp_enhanced : 1;
-+	bool has_usc_itr_parallel_instances : 1;
-+	bool has_usc_min_output_registers_per_pix : 1;
-+	bool has_usc_pixel_partition_mask : 1;
-+	bool has_usc_slots : 1;
-+	bool has_uvs_banks : 1;
-+	bool has_uvs_pba_entries : 1;
-+	bool has_uvs_vtx_entries : 1;
-+	bool has_vdm_cam_size : 1;
-+	bool has_vdm_degenerate_culling : 1;
-+	bool has_xpu_max_slaves : 1;
-+	bool has_xt_top_infrastructure : 1;
-+	bool has_zls_subtile : 1;
-+
-+	uint32_t common_store_size_in_dwords;
-+	uint32_t fbcdc_algorithm;
-+	uint32_t isp_max_tiles_in_flight;
-+	uint32_t isp_samples_per_pixel;
-+	uint32_t max_instances_per_pds_task;
-+	uint32_t max_multisample;
-+	uint32_t max_partitions;
-+	uint32_t max_usc_tasks;
-+	uint32_t num_clusters;
-+	uint32_t num_raster_pipes;
-+	uint32_t simple_parameter_format_version;
-+	uint32_t slc_cache_line_size_bits;
-+	uint32_t tile_size_x;
-+	uint32_t tile_size_y;
-+	uint32_t tpu_parallel_instances;
-+	uint32_t unified_store_depth;
-+	uint32_t usc_itr_parallel_instances;
-+	uint32_t usc_min_output_registers_per_pix;
-+	uint32_t usc_slots;
-+	uint32_t uvs_banks;
-+	uint32_t uvs_pba_entries;
-+	uint32_t uvs_vtx_entries;
-+	uint32_t vdm_cam_size;
-+	uint32_t xpu_max_slaves;
-+
-+	/* Derived features. */
-+	bool has_requires_fb_cdc_zls_setup : 1;
-+	bool has_s8xe : 1;
-+};
-+
-+struct pvr_device_enhancements {
-+	bool has_ern35421 : 1;
-+	bool has_ern38020 : 1;
-+	bool has_ern38748 : 1;
-+	bool has_ern42064 : 1;
-+	bool has_ern42307 : 1;
-+	bool has_ern45493 : 1;
-+};
-+
-+struct pvr_device_quirks {
-+	bool has_brn44079 : 1;
-+	bool has_brn47727 : 1;
-+	bool has_brn48492 : 1;
-+	bool has_brn48545 : 1;
-+	bool has_brn49032 : 1;
-+	bool has_brn49927 : 1;
-+	bool has_brn51025 : 1;
-+	bool has_brn51210 : 1;
-+	bool has_brn51764 : 1;
-+	bool has_brn52354 : 1;
-+	bool has_brn52942 : 1;
-+	bool has_brn58839 : 1;
-+	bool has_brn62269 : 1;
-+	bool has_brn66011 : 1;
-+	bool has_brn70165 : 1;
-+	bool has_brn72168 : 1;
-+	bool has_brn72463 : 1;
-+	bool has_brn74056 : 1;
-+};
-+
-+struct pvr_device_info {
-+	struct pvr_device_ident ident;
-+	struct pvr_device_features features;
-+	struct pvr_device_enhancements enhancements;
-+	struct pvr_device_quirks quirks;
-+};
-+
-+struct pvr_device_runtime_info {
-+	uint64_t min_free_list_size;
-+	uint64_t max_free_list_size;
-+	uint64_t reserved_shared_size;
-+	uint64_t total_reserved_partition_size;
-+	uint64_t num_phantoms;
-+	uint64_t max_coeffs;
-+	uint64_t cdm_max_local_mem_size_regs;
-+	uint32_t core_count;
-+};
-+
-+int pvr_device_info_init(struct pvr_device_info *info, uint64_t bvnc);
-+
-+bool pvr_device_info_init_public_name(struct pvr_device_info *info,
-+				      const char *public_name);
-+
-+#endif /* PVR_DEVICE_INFO_H */
-diff --git a/lib/meson.build b/lib/meson.build
-index d1a770b6d..2609033cb 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -129,6 +129,7 @@ lib_sources = [
- 	'igt_msm.c',
- 	'igt_dsc.c',
- 	'igt_hook.c',
-+	'imagination/pvr_device_info.c',
- 	'xe/xe_device.c',
- 	'xe/xe_ggtt.c',
- 	'xe/xe_gt.c',
-
--- 
-2.43.0
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Kunal
+> Joshi
+> Sent: 16 September 2026 10:18
+> To: igt-dev@lists.freedesktop.org
+> Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>
+> Subject: [PATCH i-g-t 09/13] tests/intel/kms_dp_link_training: Group the
+> outputs into links
+>=20
+> The output loop walks connectors and decides SST or MST for each one, so =
+an
+> MST topology is visited once per stream: the classification is redone eve=
+ry time
+> and the same link is trained once per stream, since forcing link paramete=
+rs on
+> one stream affects the whole topology.
+>=20
+> Collect the connected DP outputs into a list of links, where one link is =
+one
+> trainable DP link and a whole MST topology is a single entry represented =
+by the
+> first of its streams, and record the protocol and the connector mode once=
+ per
+> link.
+>=20
+> Stop collecting rather than fail when more links are connected than the l=
+ist
+> holds. Discovery runs in a igt_subtest_with_dynamic() container, where ex=
+plicit
+> failure is not allowed.
+>=20
+> An MST topology is now trained once instead of once per stream, so the
+> dynamic subtests named after the other streams go away. They were trainin=
+g
+> the same link at the same configurations.
+>=20
+> Prep for subtests that select links by connector mode.
+>=20
+> Assisted-by: GitHub_Copilot:claude-opus-5
+> Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+LGTM,
+Reviewed-by: Sowmiya S <sowmiya.s@intel.com>
+> ---
+>  tests/intel/kms_dp_link_training.c | 111 +++++++++++++++++++++++------
+>  1 file changed, 89 insertions(+), 22 deletions(-)
+>=20
+> diff --git a/tests/intel/kms_dp_link_training.c
+> b/tests/intel/kms_dp_link_training.c
+> index 812c4b6bc..e6160cee5 100644
+> --- a/tests/intel/kms_dp_link_training.c
+> +++ b/tests/intel/kms_dp_link_training.c
+> @@ -39,6 +39,8 @@
+>   */
+>  #define LINK_RECOVERY_TIMEOUT	5.0
+>=20
+> +#define MAX_LINKS		16
+> +
+>  typedef struct {
+>  	int drm_fd;
+>  	uint32_t devid;
+> @@ -46,6 +48,18 @@ typedef struct {
+>  	igt_output_t *output;
+>  } data_t;
+>=20
+> +/*
+> + * struct dp_link - One trainable DP link.
+> + *
+> + * @output is the output the link is driven through, which for MST is
+> +the first
+> + * of the topology's streams. The classification is discovered, never ch=
+osen.
+> + */
+> +struct dp_link {
+> +	igt_output_t *output;
+> +	bool mst;
+> +	enum i915_dp_tc_mode tc_mode;
+> +};
+> +
+>  /*
+>   * check_condition_with_timeout - Polls check_fn until it returns 0
+>   * or until 'timeout' seconds elapse.
+> @@ -532,42 +546,95 @@ static bool run_link_rate_test(data_t *data, bool
+> mst, bool uhbr)
+>   * early, then calls run_link_rate_test(). Returns true if it ran on at
+>   * least one matching output.
+>   */
+> -static bool test_link_rate(data_t *data, bool mst, bool uhbr)
+> +/*
+> + * discover_links - Collapse the connected DP outputs into links.
+> + *
+> + * One link is one trainable DP link, so a whole MST topology becomes a
+> +single
+> + * entry, represented by the first of its streams. Forcing link
+> +parameters on
+> + * one stream affects every stream in the topology, so training a
+> +topology once
+> + * per stream would train the same link repeatedly.
+> + */
+> +static int discover_links(data_t *data, struct dp_link *links, int
+> +max_links)
+>  {
+> -	bool ran_any_output =3D false, is_mst =3D false;
+> -	igt_output_t *tmp_output;
+> +	igt_output_t *output;
+> +	int num_links =3D 0;
+> +	int i;
+>=20
+> -	igt_skip_on_f(!is_intel_device(data->drm_fd),
+> -		      "Test supported only on Intel platforms.\n");
+> +	for_each_connected_output(&data->display, output) {
+> +		bool mst, seen =3D false;
+>=20
+> -	for_each_connected_output(&data->display, tmp_output) {
+> -		if (tmp_output->config.connector->connector_type !=3D
+> +		if (output->config.connector->connector_type !=3D
+>  		    DRM_MODE_CONNECTOR_DisplayPort) {
+>  			igt_info("Skipping non-DisplayPort output %s\n",
+> -					tmp_output->name);
+> -			igt_info("----------------------------------------------------\n");
+> +				 igt_output_name(output));
+>  			continue;
+>  		}
+>=20
+> -		/* Early skip if MST vs. SST does not match. */
+> -		is_mst =3D igt_check_output_is_dp_mst(tmp_output);
+> -		if (mst && !is_mst) {
+> -			igt_info("Skipping %s: MST requested but it's SST.\n",
+> -					tmp_output->name);
+> -			igt_info("----------------------------------------------------\n");
+> +		mst =3D igt_check_output_is_dp_mst(output);
+> +
+> +		if (mst) {
+> +			int root =3D igt_get_dp_mst_connector_id(output);
+> +
+> +			for (i =3D 0; i < num_links; i++)
+> +				if (links[i].mst &&
+> +
+> igt_get_dp_mst_connector_id(links[i].output) =3D=3D root) {
+> +					seen =3D true;
+> +					break;
+> +				}
+> +		}
+> +
+> +		if (seen) {
+> +			igt_info("Skipping %s: same MST topology as %s\n",
+> +				 igt_output_name(output),
+> +				 igt_output_name(links[i].output));
+> +			continue;
+> +		}
+> +
+> +		if (num_links =3D=3D max_links) {
+> +			igt_info("Skipping %s: more than %d DP links
+> connected\n",
+> +				 igt_output_name(output), max_links);
+>  			continue;
+> -		} else if (!mst && is_mst) {
+> -			igt_info("Skipping %s: SST requested but it's MST.\n",
+> -					tmp_output->name);
+> +		}
+> +
+> +		links[num_links].output =3D output;
+> +		links[num_links].mst =3D mst;
+> +		links[num_links].tc_mode =3D i915_dp_get_tc_mode(data-
+> >drm_fd,
+> +							       output, NULL,
+> NULL);
+> +		num_links++;
+> +	}
+> +
+> +	return num_links;
+> +}
+> +
+> +static bool test_link_rate(data_t *data, bool mst, bool uhbr) {
+> +	struct dp_link links[MAX_LINKS];
+> +	bool ran_any_link =3D false;
+> +	int num_links;
+> +	int i;
+> +
+> +	igt_skip_on_f(!is_intel_device(data->drm_fd),
+> +		      "Test supported only on Intel platforms.\n");
+> +
+> +	num_links =3D discover_links(data, links, ARRAY_SIZE(links));
+> +
+> +	for (i =3D 0; i < num_links; i++) {
+> +		if (links[i].mst !=3D mst) {
+> +			igt_info("Skipping %s: %s requested but it's %s.\n",
+> +				 igt_output_name(links[i].output),
+> +				 mst ? "MST" : "SST",
+> +				 links[i].mst ? "MST" : "SST");
+>  			igt_info("----------------------------------------------------\n");
+>  			continue;
+>  		}
+> -		data->output =3D tmp_output;
+> +
+> +		data->output =3D links[i].output;
+>  		igt_info("Running link training test for %s\n",
+> -			 data->output->name);
+> -		ran_any_output =3D ran_any_output | run_link_rate_test(data,
+> mst, uhbr);
+> +			 igt_output_name(data->output));
+> +		ran_any_link |=3D run_link_rate_test(data, mst, uhbr);
+>  	}
+> -	return ran_any_output;
+> +
+> +	return ran_any_link;
+>  }
+>=20
+>  IGT_TEST_DESCRIPTION("Test to validate link training on SST/MST with "
+> --
+> 2.25.1
 
