@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFC37C9830D
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 21:47:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 283BBC98304
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 21:48:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7E84110F20A;
-	Wed, 23 Sep 2026 21:47:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B207910E11F;
+	Wed, 23 Sep 2026 21:48:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="aoxAEdWQ";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fGiXLP8w";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 652DD10F1E3
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 21:41:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2354510F1DF
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 21:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790199714; x=1821735714;
+ t=1790199715; x=1821735715;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=TdycROJLVBglduyUn34h6fITFS8Wd/z7M1dVgfjxrRE=;
- b=aoxAEdWQTLnCJePTPthPJgQybx3adAMReloo3fC/4c9+V7K65H00vmGb
- p+ICxh9vO3SoRr5PLvpxU/zQk/lRoZVDM8uBppDvJD1+zNcRNRCb8nA3H
- opVV+Fq9gNApFaaw2YiRQnq6QOGvDH3SBoG9u4hHMbrGF+LD4pnUzznyb
- eEBwyckWihzy6zoDmHvzOWzY/bnEUtY5Hpdh81pk6QyWycitv2pq6jt0m
- eD8/l4Iho8elIhMQQZWMvtk6T2doGvvwx6Y4sqvslQJij9n29jC7AATcQ
- AewQ6zwvDKl6FF3dOL8cppduhyZ1m6wtal7dbR2gZmScgpbVGFWsjGZ8J Q==;
-X-CSE-ConnectionGUID: i7htL0akTIyPlHso/aRpuQ==
-X-CSE-MsgGUID: mHTr9ZVyQNqw6PFqA/BqJQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93445406"
-X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; d="scan'208";a="93445406"
+ bh=wWkw5u52wx+A5HHsOL9A7tK4Gb0RV9hKZSWEldVqbg0=;
+ b=fGiXLP8ww5hU1h2R9y9TRgLWmWP7xKnQUXa/vZlAytkWgxo0wwnTa3/P
+ DFkqyvtzoIVz1wSgzmFzGE1vorOYQsgdxIitUntYe3qL/wi4XKfs4/M+z
+ bBR4wLExfXOwq2Twqsu/caQvcLIKOQfT5xLiIR2W74dy/FzXsZwlm5VcY
+ CKryKRTyKbkiPzlhwXxrswpWYhSwVLExyLRUokbxHtKN7Bgwi1dRDlvV4
+ eBIsjYHdNF6GYF5utdpYLmZV9chekxbUihKJ1BkQfQ1YQAzCBJBZahS2p
+ v++KWCruvi/JGEZqSfhjGQID2hlymhkpSiZk218xNNuPuQYKbN0zUZSCb g==;
+X-CSE-ConnectionGUID: fC9ZE+wIQy6gEIJ7l/Qnxw==
+X-CSE-MsgGUID: fzG8Rdt1RS2V9f2dD3Zbpg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93445419"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; d="scan'208";a="93445419"
 Received: from fmviesa012.fm.intel.com ([10.60.135.152])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 14:41:54 -0700
-X-CSE-ConnectionGUID: BNT2+hydQ5SQl2tBvTUyiw==
-X-CSE-MsgGUID: KsQP67CjSkWyYnWAAoep/g==
+ 23 Sep 2026 14:41:55 -0700
+X-CSE-ConnectionGUID: c5/VRHJmRNWhS4Mo3bQDiw==
+X-CSE-MsgGUID: bPiZnGiEQDGz0knZI4PA7w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
-   d="scan'208";a="4907708"
+   d="scan'208";a="4907726"
 Received: from inaky-mobl1.amr.corp.intel.com (HELO [192.168.1.16])
  ([10.124.221.113])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 14:41:47 -0700
+ 23 Sep 2026 14:41:51 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
-Date: Wed, 23 Sep 2026 18:41:13 -0300
-Subject: [PATCH i-g-t v2 06/11] lib/xe: Assert that cache is available for
- xe_wa()
+Date: Wed, 23 Sep 2026 18:41:16 -0300
+Subject: [PATCH i-g-t v2 09/11] lib/intel_pat: Encapsulate management of
+ xe_device's pat_cache
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-wa_14026539277-v2-6-528b575299d2@intel.com>
+Message-Id: <20260923-wa_14026539277-v2-9-528b575299d2@intel.com>
 References: <20260923-wa_14026539277-v2-0-528b575299d2@intel.com>
 In-Reply-To: <20260923-wa_14026539277-v2-0-528b575299d2@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -72,39 +72,125 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-While we do print a warning if xe_wa() is called without the necessary
-data cached in xe_device, it would make any test that relies on it to
-be unreliable in that scenario.
+Currently xe_device_get() manages the PAT cached information
+information by itself, by doing the necessary memory
+allocation/deallocation and calling xe_get_pat_sw_config() to
+initialize the cached information.
 
-Make sure that we cause the test to fail instead by adding an
-igt_assert() to check that the wa_cache is not NULL.
+Such management is arguably better suited to be implemented as part of
+the intel_pat module and encapsulated such that xe_query doesn't need
+to know the details.
 
-Suggested-by: Matt Roper <matthew.d.roper@intel.com>
+We will introduce changes that will require an extra logic for
+initializing the cache and having such encapsulation makes it much
+easier to implement.  Since we will touch this area, take this
+opportunity to move the existing management to intel_pat.
+
+v2:
+  - Don't use void pointer as type of pat_cache. (Matt)
+
+Cc: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- lib/xe/xe_wa.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ lib/intel_pat.c   | 27 ++++++++++++++++++++++++++-
+ lib/intel_pat.h   |  5 +++++
+ lib/xe/xe_query.c |  9 ++-------
+ 3 files changed, 33 insertions(+), 8 deletions(-)
 
-diff --git a/lib/xe/xe_wa.c b/lib/xe/xe_wa.c
-index 05af64151e7c..5f09efd2373a 100644
---- a/lib/xe/xe_wa.c
-+++ b/lib/xe/xe_wa.c
-@@ -178,14 +178,12 @@ int xe_wa_test_debugfs_dump_has_wa(char *dump, const char *wa)
-  * @wa: Name of the workaround to be checked.
-  *
-  * Return a boolean indicating whether the workaround is enabled.
-- * On error, returns false and a warning is printed.
-  */
- bool xe_wa(int fd, const char *wa)
- {
- 	struct xe_wa_cache *wa_cache = xe_device_get(fd)->wa_cache;
+diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+index da7ba1e51b16..db0f057cbd1e 100644
+--- a/lib/intel_pat.c
++++ b/lib/intel_pat.c
+@@ -144,6 +144,31 @@ int32_t xe_get_pat_hw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, i
+ 	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_HW_CONFIG);
+ }
  
--	if (igt_warn_on(!wa_cache))
--		return false;
-+	igt_assert(wa_cache);
++void intel_pat_build_xe_cache(struct xe_device *xe_dev)
++{
++	struct intel_pat_cache *pat_cache;
++
++	pat_cache = calloc(1, sizeof(*pat_cache));
++	igt_assert(pat_cache);
++
++	if (igt_debug_on(xe_get_pat_sw_config(xe_dev->fd, pat_cache, 0) <= 0)) {
++		free(pat_cache);
++		return;
++	}
++
++	xe_dev->pat_cache = pat_cache;
++}
++
++void intel_pat_free_xe_cache(struct xe_device *xe_dev)
++{
++	if (!xe_dev->pat_cache)
++		return;
++
++	free(xe_dev->pat_cache);
++
++	xe_dev->pat_cache = NULL;
++}
++
+ /*
+  * Hardcoded PAT indices for Xe platforms, used as a fallback when the
+  * kernel doesn't expose gt0/pat_sw_config in debugfs.
+@@ -217,7 +242,7 @@ static void intel_get_pat_idx(int fd, struct intel_pat_cache *pat)
+ 		struct xe_device *xe_dev = xe_device_get(fd);
  
- 	for (int i = 0; i < wa_cache->num_dumps; i++)
- 		if (debugfs_dump_has_wa(wa_cache->dumps[i], wa))
+ 		if (xe_dev->pat_cache) {
+-			*pat = *xe_dev->pat_cache;
++			*pat = *((struct intel_pat_cache *)xe_dev->pat_cache);
+ 		} else if (xe_pat_fallback(fd, pat)) {
+ 			igt_info("PAT sw_config debugfs not available, "
+ 				 "using hardcoded fallback\n");
+diff --git a/lib/intel_pat.h b/lib/intel_pat.h
+index 52a61e8d25fb..fc8fa3fa9f45 100644
+--- a/lib/intel_pat.h
++++ b/lib/intel_pat.h
+@@ -13,6 +13,8 @@
+ #define XE_PAT_IDX_INVALID ((uint8_t)-2) /* no such PAT index on this platform */
+ #define XE_PAT_MAX_ENTRIES 32
+ 
++struct xe_device;
++
+ struct xe_pat_entry {
+ 	uint32_t pat;
+ 	bool rsvd;
+@@ -42,4 +44,7 @@ bool intel_has_pat_wt(int fd);
+ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt);
+ int32_t xe_get_pat_hw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt);
+ 
++void intel_pat_build_xe_cache(struct xe_device *xe_dev);
++void intel_pat_free_xe_cache(struct xe_device *xe_dev);
++
+ #endif /* INTEL_PAT_H */
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index d2c4329aa317..e7945c8923db 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -377,8 +377,8 @@ static void xe_device_free(struct xe_device *xe_dev)
+ 	free(xe_dev->mem_regions);
+ 	free(xe_dev->vram_size);
+ 	free(xe_dev->eu_stall);
+-	free(xe_dev->pat_cache);
+ 
++	intel_pat_free_xe_cache(xe_dev);
+ 	xe_wa_free_cache(xe_dev);
+ 
+ 	free(xe_dev);
+@@ -458,12 +458,7 @@ struct xe_device *xe_device_get(int fd)
+ 	 * should be extended to cache PAT entries by platform version/
+ 	 * revision instead.
+ 	 */
+-	xe_dev->pat_cache = calloc(1, sizeof(*xe_dev->pat_cache));
+-	igt_assert(xe_dev->pat_cache);
+-	if (xe_get_pat_sw_config(xe_dev->fd, xe_dev->pat_cache, 0) <= 0) {
+-		free(xe_dev->pat_cache);
+-		xe_dev->pat_cache = NULL;
+-	}
++	intel_pat_build_xe_cache(xe_dev);
+ 
+ 	/* We may get here from multiple threads, use first cached xe_dev */
+ 	pthread_mutex_lock(&cache.cache_mutex);
 
 -- 
 2.55.0
