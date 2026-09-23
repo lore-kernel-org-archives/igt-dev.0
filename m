@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9AAFC9830D
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 21:44:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19150C9830D
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 21:45:32 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F59710F1E3;
-	Wed, 23 Sep 2026 21:44:48 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9AA310F1E7;
+	Wed, 23 Sep 2026 21:45:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X5NqS9u4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jkKU++f2";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F65910F1DE
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 21:41:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 019F810F1DE
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 21:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790199714; x=1821735714;
+ t=1790199716; x=1821735716;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=I8zohUadfVJOTrQDj3h2AY941yIUDl7ZXMM2PXWP2Fo=;
- b=X5NqS9u4AqcEZX5IFIE1XHSIP8pnMFpnEdYMGVTLKsaEPcm6eA7+FlQZ
- oKfsm4dxxjQRj6IlYlp86Yc+597Zn+wYxU/A1EdHfMIl9z2Gy4LTzpo0L
- EJzT02xHdqIi8XgRcY99ED/wx+i1S/slsQues8XBWntjRVDDXNNdsqkqb
- N8UWTs86QJ3ndsBA3rIlfVJv2V5re/Th+/oDucOwCB9ejiYaFWpmFBap5
- rqSe5MpO+kFBq2FzCg5Ck5Ite2B1kVweAzanEOfxrKytRlhORLTh7zl2m
- OrSsXI1sC8BbyXGYlaWlZIbhYnRV1x9XZLKvHMFG2sA46XnSnHUPXlM7Z w==;
-X-CSE-ConnectionGUID: o9TZ+PcmQp+HjOBaVQWJOA==
-X-CSE-MsgGUID: n85D0oZyRCWsZcXqFKOjTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93445409"
-X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; d="scan'208";a="93445409"
+ bh=W3bRo4AzOuihMHj+5xc7/6H0rgMx2jDz7DAgU29jAGE=;
+ b=jkKU++f2dD8o8zWJHzTsru9PENNAhMckEUwU3mHy2kEtfqZUepc6efzC
+ Ku6f+vARGqThpR/HP+ka33UE9jINxXxI5kZ1FoSPHnkVieV/KS/0c1VMo
+ +BluHQ7aj7xo+kdTMXNqKBKuUOudRj4Nfj3eztSJsIMY88BpMy3/O6h24
+ 86LnOoN5uXuo72s3zrWirEl+k6QRbf1N5gHQJIq/JGk/7K5BtS1qJ+77z
+ StzITYlGVzvN1C+URkvAkEwyB6xgs/6AANxPvP9jNYd2LGRgLYl5lx+GU
+ tSO0QTGgyfWNqMuengeEQiXeVzuZriBaAjYmZ0xv1KtdAjWgDaMUVL/JQ Q==;
+X-CSE-ConnectionGUID: 3QeqIIaYSBaHrGeA7QlX0w==
+X-CSE-MsgGUID: rXhl8FuwSCO/7j9b4ImVlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93445421"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; d="scan'208";a="93445421"
 Received: from fmviesa012.fm.intel.com ([10.60.135.152])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 14:41:54 -0700
-X-CSE-ConnectionGUID: WicyrsLOR3aARQ8zrS2etQ==
-X-CSE-MsgGUID: i8b9ZjsPRX6bai6kaB8zUQ==
+ 23 Sep 2026 14:41:56 -0700
+X-CSE-ConnectionGUID: fW25dPwJS5SRn29a4Ih86A==
+X-CSE-MsgGUID: VwWYa6r8QLOU/CK7E2z5bg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
-   d="scan'208";a="4907710"
+   d="scan'208";a="4907737"
 Received: from inaky-mobl1.amr.corp.intel.com (HELO [192.168.1.16])
  ([10.124.221.113])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 14:41:48 -0700
+ 23 Sep 2026 14:41:52 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
-Date: Wed, 23 Sep 2026 18:41:14 -0300
-Subject: [PATCH i-g-t v2 07/11] tests/intel/xe_pat: Adapt pat_entry_is_wb()
- to Xe3p
+Date: Wed, 23 Sep 2026 18:41:17 -0300
+Subject: [PATCH i-g-t v2 10/11] lib/intel_pat: Pass xe_device to
+ xe_get_pat_config()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-wa_14026539277-v2-7-528b575299d2@intel.com>
+Message-Id: <20260923-wa_14026539277-v2-10-528b575299d2@intel.com>
 References: <20260923-wa_14026539277-v2-0-528b575299d2@intel.com>
 In-Reply-To: <20260923-wa_14026539277-v2-0-528b575299d2@intel.com>
 To: igt-dev@lists.freedesktop.org
@@ -72,40 +72,72 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Xe3p introduces a new device-cache policy called XA, which has the
-longer name "WB Transient App".
+In an upcoming change, we will need to check for a workaround as part
+of xe_get_pat_config().  Since xe_get_pat_config() also gets called
+during xe_device_get(), we will need to use xe_wa_from_cache() instead
+of the regular xe_wa() function.  In preparation for that, make sure
+that xe_get_pat_config() gets called with the xe_device struct instead
+of the drm file descriptor.
 
-Even though commit 4e59b8e7779b ("lib/intel_pat: use kernel debugfs as
-authoritative PAT source for Xe") already gives a clue that XA is a
-"write-back" cache policy type, pat_entry_is_wb() doesn't really
-incorporate that information.  Add the necessary logic to
-pat_entry_is_wb() so that it also considers XA starting with Xe3p.
-
-Bspec: 71582
 Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- tests/intel/xe_pat.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ lib/intel_pat.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 9706b2dd5de0..17c3f2106f9f 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -143,6 +143,13 @@ static bool pat_entry_is_uc(unsigned int gfx_ver, uint32_t pat)
- 
- static bool pat_entry_is_wb(unsigned int gfx_ver, uint32_t pat)
+diff --git a/lib/intel_pat.c b/lib/intel_pat.c
+index db0f057cbd1e..6808eaa9b77e 100644
+--- a/lib/intel_pat.c
++++ b/lib/intel_pat.c
+@@ -24,7 +24,7 @@ enum xe_pat_config {
+  * Returns: The number of PAT entries successfully read on success, or a negative error
+  *          code on failure
+  */
+-static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cache,
++static int32_t xe_get_pat_config(struct xe_device *xe_dev, struct intel_pat_cache *xe_pat_cache,
+ 				 int gt, enum xe_pat_config pat_config)
  {
-+	if (gfx_ver >= IP_VER(35, 0)) {
-+		uint32_t l3 = REG_FIELD_GET(XE2_L3_POLICY, pat);
-+
-+		return l3 == L3_CACHE_POLICY_WB || l3 == L3_CACHE_POLICY_XD ||
-+		       l3 == L3_CACHE_POLICY_XA;
-+	}
-+
- 	if (gfx_ver >= IP_VER(20, 0)) {
- 		uint32_t l3 = REG_FIELD_GET(XE2_L3_POLICY, pat);
+ 	char *line = NULL;
+@@ -40,7 +40,7 @@ static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cach
+ 	else
+ 		snprintf(config, sizeof(config), "gt%d/pat", gt);
  
+-	dbgfs_fd = igt_debugfs_open(drm_fd, config, O_RDONLY);
++	dbgfs_fd = igt_debugfs_open(xe_dev->fd, config, O_RDONLY);
+ 	if (dbgfs_fd < 0)
+ 		return dbgfs_fd;
+ 	dbgfs_file = fdopen(dbgfs_fd, "r");
+@@ -125,7 +125,9 @@ static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cach
+  */
+ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
+ {
+-	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_SW_CONFIG);
++	struct xe_device *xe_dev = xe_device_get(drm_fd);
++
++	return xe_get_pat_config(xe_dev, xe_pat_cache, gt, PAT_SW_CONFIG);
+ }
+ 
+ /**
+@@ -141,7 +143,9 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, i
+  */
+ int32_t xe_get_pat_hw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
+ {
+-	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_HW_CONFIG);
++	struct xe_device *xe_dev = xe_device_get(drm_fd);
++
++	return xe_get_pat_config(xe_dev, xe_pat_cache, gt, PAT_HW_CONFIG);
+ }
+ 
+ void intel_pat_build_xe_cache(struct xe_device *xe_dev)
+@@ -151,7 +155,7 @@ void intel_pat_build_xe_cache(struct xe_device *xe_dev)
+ 	pat_cache = calloc(1, sizeof(*pat_cache));
+ 	igt_assert(pat_cache);
+ 
+-	if (igt_debug_on(xe_get_pat_sw_config(xe_dev->fd, pat_cache, 0) <= 0)) {
++	if (igt_debug_on(xe_get_pat_config(xe_dev, pat_cache, 0, PAT_SW_CONFIG) <= 0)) {
+ 		free(pat_cache);
+ 		return;
+ 	}
 
 -- 
 2.55.0
