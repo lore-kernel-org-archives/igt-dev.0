@@ -4,87 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E172EC9830B
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 13:11:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00733C9830C
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 13:30:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A2EE10F035;
-	Wed, 23 Sep 2026 13:11:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7F06E10E0E4;
+	Wed, 23 Sep 2026 13:30:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fyAFT1kp";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lhZ44VLU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98EF510F028
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 13:10:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7881E10E0DF
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 13:29:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790169027; x=1821705027;
+ t=1790170186; x=1821706186;
  h=from:to:subject:date:message-id:references:in-reply-to:
  content-transfer-encoding:mime-version;
- bh=evzK6Nx4Co7qR1TqF/SM4p5CZO2RDRBsejQ63mLY3LI=;
- b=fyAFT1kpDkZatZwZMkJG5i1z5j9AZGxq+EPpOLG8QYLwBaty5sADAYkm
- lvLCEMUaW8PNzMEtK8f7ludOvGubklkPk3sy/Q4dAgeNzfd3+qRknMqIH
- tedRXQ99TX9GT7dr7ypYhKhyFhGsuoWUn1gH0Z6nNlFxEz1gfsJeQ1ogB
- qxVm0tFXPMegOmcWI3F+T6bKNYnE9V1qMwkm7oJYZ4Q2C2LvVtFXvmycb
- C5H+/+UT9rHRQVsx5MrRNHMBoNah8jNqrzqyrWvibyAa4U5JkhPXQjBbL
- OSS1COOoZfb0kZ9gtAy19pC4e+Yt8iIvyjnHkrjD5ztirfAui3ALi5+pP w==;
-X-CSE-ConnectionGUID: YC44wTdaRO+1ACLLQk3lPQ==
-X-CSE-MsgGUID: HlALM25IQNSFBJmztw+ASQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="89996061"
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="89996061"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 06:10:27 -0700
-X-CSE-ConnectionGUID: ZxxvKArfQ7iNo/4m1pgbHw==
-X-CSE-MsgGUID: +nOFmWxrQA6GHBznzDVwVw==
+ bh=nE1wFvH4D7nLxJQ+A9YOnputzfJJTaB3U1tgvpZocMc=;
+ b=lhZ44VLUdAWpXYqa2TJJZy7cGdlpcLVskqFNr1i1a/1qfhLN+JLpL/lN
+ GY1u9Oil2Ed6OOF8CSdDbDF4Cj81aaKep65x2AUmZU5UZmt5naRgY7WPU
+ pjpWjOEhj2y7P+wgxkqSt41v0nlXtWmPh/its67YJWMJ+RXkAU4Ylc05D
+ kbIaj2QvsaKE/b4hWlakRSKcmQvZldeus5xzZ5H8ExDxLBnWmLW7l2yw7
+ Tt+rqHkV5UXHRKtiW3IjI0b4r3k6/5aU75RYA0yVweDDmFksrJrKuB2bC
+ N3LuZErk7u5givoU+voVmtubpL8j9Z1yeJtHoMwA6s0oilf6VzLqeaU9w w==;
+X-CSE-ConnectionGUID: I9R/xFq5QombZxVJpy9sYQ==
+X-CSE-MsgGUID: 0ATAtpQAR6OYq3/h/M/BDQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="90888547"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="90888547"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2026 06:29:45 -0700
+X-CSE-ConnectionGUID: vvIVDF6UQ5+AZM+Z9Yot1g==
+X-CSE-MsgGUID: Ii+ZWTJFSOimSNkZOW/d2Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="273801254"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 06:10:27 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="273085068"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Sep 2026 06:29:43 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 23 Sep 2026 06:10:26 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.46; Wed, 23 Sep 2026 06:29:42 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 23 Sep 2026 06:10:26 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.58) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Wed, 23 Sep 2026 06:29:42 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.39)
+ by edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 23 Sep 2026 06:10:26 -0700
+ 15.2.2562.46; Wed, 23 Sep 2026 06:29:42 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LnzgAoWKo9q/z/C/YPzQWlICxwFhDbmBusBptYgc8DbwMAW73Pg4DOyleJVtg9gEZfD4L7yt/AhoiyVhenFZXTr4CzIJ6AQuO7mFjqg/d1IdZfD2ZrMuQJpXFXe9YOHWc9r13i6xONYlrepNYuW+BtLXUEzEnrWYmP4wrmxIRxqtRiCK1Z6X63vBZU2lb8R+jRENwJPPfwODIDiXkq28q7ccjVa/SiZ3dB8pFm9JgZEOtdJcp73Xcabm0JQtdJI8TCFkXP3gBHmeMtttiwYzJWeMFYUdXW88LeH6lZ9E21c7lA/ny3JxPE4xISDPpE18C5w5jE5VFO2Vi1qJmR5dog==
+ b=fVglIzC95SyVOSq2f/wyQjIT0D6Zg5vzedSqAeQHg+gyzAHfV57zfmY62+TOPl3eJnNGxPoTkHp1Wg3PjL1pU/cG8OTBthprK6Dr/Yc0mcJsbPKhmjjoc0ZSS5ESTQh7r9q5YuR38UODa5d3tRXCpTSxTOCBjAYepw9VjW24MgbHN9ZBw+uJllg6cIp8GhDaNi9A/quM8k0j6bMwsODH1UlKSMwr3f4CeisxgelqgaxM04rU+KjNHD4505fTHVpUy5SRrz+MFOkYwyNWDm+oqeA6NWSTyqL3AA6Tp/pS1dJvDgxB9zeZyURbrUcnjfdv4tOX6u3REDTZfhtuaXqDQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uNn9rt80y3Y43vA6k/WtqVJJQKwUOMjFsaxH9JwZR20=;
- b=LkhVdhNE01/HV4O0tusN6vibKJH/9dLJQQASOY23LBlP/Cm8zvEYP62aiDMmzyZbXHrq5vnQES7uHW89PUiojfqMSPEBmGuTMOM9Y73oSme9FtOWKqq4mVKsvueIYdNBEEOBkDaEsD/RJ5CmimBaEWgd2qjFTUpL4OnQkwZVv/4YTPme5Av4K7Iah5RmKskqvnnVlIuqKznOXbg84qtPCQ+J+B6U9nq5cCuvpF3HIc+T3gYC/De2UwY46r1xB12ct/7mieQlGiQQax+LaPIiZxqjC2VxR/j5UnNu8j4R7Yz7GE2la6aYxuW49zl7QVkzBO44z/45bBA9w4XVQDbTlg==
+ bh=9creRDqVZykPCkq9lN1CqZW7J1Yd9HuoWgxISj2596I=;
+ b=LPkjGJsSIuH55qhi1A+ftWfbqsQfRfsjuuQ3w5wv8oNn279IQhqJnvzCOh9OrejS/DpnC6G2TmfAHp7octMjxe1qQ6x//PEdd1l9zwCH6RNF+/TEtFWWEpScyo6mZy94iC2TAynAvbzO64WCGMg54DTslCXmxPHB319WvwkcmoYaU2rgukX5/9KSD8EbI9Pre44RKvqjzWFV0fjyVjH2baJLgKXM0jhpWH96qGBt1FijXsd8HI0Ropv1pDZIlAQMm5xhGLvIw4TuthG8SNns+BeI/QynW6qJHdPRHpU3T5nTSvXeS7O0gnqQxScAU85za2+VGRZxFS7fN+0aU0ibJg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Received: from PH7PR11MB6796.namprd11.prod.outlook.com (2603:10b6:510:1ba::6)
- by IA3PR11MB468931.namprd11.prod.outlook.com (2603:10b6:208:548::6)
+ by SA3PR11MB8117.namprd11.prod.outlook.com (2603:10b6:806:2f0::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.13; Wed, 23 Sep
- 2026 13:10:22 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Wed, 23 Sep
+ 2026 13:29:37 +0000
 Received: from PH7PR11MB6796.namprd11.prod.outlook.com
  ([fe80::60ca:3168:fb41:7ae7]) by PH7PR11MB6796.namprd11.prod.outlook.com
  ([fe80::60ca:3168:fb41:7ae7%3]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
- 13:10:22 +0000
+ 13:29:37 +0000
 From: "S, Sowmiya" <sowmiya.s@intel.com>
 To: "Joshi, Kunal1" <kunal1.joshi@intel.com>, "igt-dev@lists.freedesktop.org"
  <igt-dev@lists.freedesktop.org>, "Joshi, Kunal1" <kunal1.joshi@intel.com>
-Subject: RE: [PATCH i-g-t 09/13] tests/intel/kms_dp_link_training: Group the
- outputs into links
-Thread-Topic: [PATCH i-g-t 09/13] tests/intel/kms_dp_link_training: Group the
- outputs into links
-Thread-Index: AQHdRZTSOYwoTm0Rtki16DTHywQqe7bcLnHQ
-Date: Wed, 23 Sep 2026 13:10:22 +0000
-Message-ID: <PH7PR11MB679694577C39EB0FB9A678DDE5822@PH7PR11MB6796.namprd11.prod.outlook.com>
+Subject: RE: [PATCH i-g-t 10/13] tests/intel/kms_dp_link_training: Add per
+ connector mode subtests
+Thread-Topic: [PATCH i-g-t 10/13] tests/intel/kms_dp_link_training: Add per
+ connector mode subtests
+Thread-Index: AQHdRZRNBSfqlnRvaEmCvGseetZQQbbcM9wA
+Date: Wed, 23 Sep 2026 13:29:36 +0000
+Message-ID: <PH7PR11MB6796345D3348B5DFEED012BCE5822@PH7PR11MB6796.namprd11.prod.outlook.com>
 References: <20260916044801.1279102-1-kunal1.joshi@intel.com>
- <20260916044801.1279102-10-kunal1.joshi@intel.com>
-In-Reply-To: <20260916044801.1279102-10-kunal1.joshi@intel.com>
+ <20260916044801.1279102-11-kunal1.joshi@intel.com>
+In-Reply-To: <20260916044801.1279102-11-kunal1.joshi@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-Mentions: kunal1.joshi@intel.com
@@ -93,60 +93,60 @@ X-MS-TNEF-Correlator:
 authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH7PR11MB6796:EE_|IA3PR11MB468931:EE_
-x-ms-office365-filtering-correlation-id: 856a3733-ae7d-4d05-7c58-08df1974066d
+x-ms-traffictypediagnostic: PH7PR11MB6796:EE_|SA3PR11MB8117:EE_
+x-ms-office365-filtering-correlation-id: de3d99cc-f7d8-4d4e-03bf-08df1976b68c
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|23010399003|376014|366016|1800799024|3023799007|10067099003|6133799003|18002099003|5023799004|56012099006|11063799006|4143699003|22082099003|38070700021;
-x-microsoft-antispam-message-info: GmVNd13ZM5cOBY/iq8z0WjzKrirqLHBrUNoFnRTc0kJkO/6TPyj0pqHIAb9+Pl6QGW8menBYYVFuh7PEMhjwAfT0NxnUQmKpSjmF5e+s21h1rdXHGp+tU/faGxX7qrMduIjiqheV3/GKXDcP/QovMt4uqBcAuYIkrYoPNtN5CyLN2O9C5AMqrBosB9bO4fbT89faQDdhKwGtqYoiJWttWEK/U7K+tQHQBUqi+RrUpjaqJKNLi4fggfqzG8akGlIeLyGddpsOfMX/urmoQKC6GEZd/q9WCN6HxWyiYX5NN+Lk/pvNETMn31ncYXBtoLvnvYoVg4gHEK/Wz8yeMhY5NtVe8GgTJ3Em661s+8Zvfbav3OKVD/kbEJoamp6yh6sUM+AIwKrBYZCd4217rpEnIG6nNXOBvQocD3cKbMLgu2cFYDnlkMxyx82GP2SFmGR8GwxDarab3VvNYzBi+M404IiSdVF/J16ZTFmH7opAWfcTcFsCeDb9g60RS37ubHwWpB0fEMQG0v8hF2eYpdDecUq5rno+KVo2KL7WY5u57L6K/uh1Wh0INsAR4oVzTebMiCz1V71kboAc+3W2aTGLbGHVp3wNDmMH6LYPDICyalXWfjXoEqMBEk4vtSiiREew3mPTGhYl/+0rL3cUCSwAGDZd4WwE/otuoKIlCeLd+lYmD2dPLF/0hlc2nGitwiwAJWQhay+47LiuNEeKJMM2ZaDZBuqh5ag1e+1xAX2iEmc=
+ ARA:13230040|1800799024|366016|376014|23010399003|10067099003|3023799007|11063799006|6133799003|18002099003|22082099003|4143699003|56012099006|38070700021;
+x-microsoft-antispam-message-info: tCRek1s2DtmGb0vvTy1ygV14f8Ha9f1+fg88znKRcfXeo1gDOwTo9aHQxgXfAoROYKs0SSHCMaqNMYv4YuvbY9lj/KE9tXeXttAqFX21LspBiDG8A+PeTt4RIodmYD9wL4pQnwnKAlV9ptp/O9dwBst13qsqzIdq+i07kt8e0lx8Kvr2QyepSQh2JQ26iMkCjm9/Qvo2QPXf0AjxKCSPYWm37SqXYVAA10bq/zIbcl+LzklALAyCWdY5BgmLPi+BYg+55kHDnux8EJJgvcQDVOnlbFMWE0J6+M1BGyz4H2u5EQiLMsgteo6yqhCx8tsmiRCbxuWC7z6hjm+1FEhZRE7RBv/01l5ed6+hC+08B9wZopSYk3UNPhMnse+NWbtgnrOtLJhlvWIOALAgXl+t1PbMxfUU2Pi+E7vrxWNVGYGNLK3C4P/29HZ7xeARqGjNy3K5/KzYpNCfdS/h89YFu4C6gjBAyW42KUOffsptN0jgMvwgbv1Ew29AYfYdwbwworSBnX2wr5gAM1cuhmXZnnW/mLDlCO8PQcHv3jMHp4qhMziYn9j929Xd+VzcpN58W8Yre1/GJu74k3ozekmrteaBu49PSCyZ4Aq29yQAj7+LAaW5z466yMUb/tpHeAcQ/F7Zp96PmPu92cpgGeJ3S0Wr56dt7/WSYdO5KyQrKF6WhZD/szZP+nHoTM47ud56KSuuT0CwPnycjVuhgYQ5t12BJu/TOK9qbxV8gTpNxqQ=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH7PR11MB6796.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(3023799007)(10067099003)(6133799003)(18002099003)(5023799004)(56012099006)(11063799006)(4143699003)(22082099003)(38070700021);
+ SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(10067099003)(3023799007)(11063799006)(6133799003)(18002099003)(22082099003)(4143699003)(56012099006)(38070700021);
  DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?SfurdmNp1JN45CdWJPaAIPnEMJAuv9Le6ZEw1iOwCzTSPkbJKsP8jH1EDxOF?=
- =?us-ascii?Q?6ASirPTGYZD+Xbk/1LLED1ylIqMidvL8SFr3LaxOD4d30olqam/gNwqfF9Ku?=
- =?us-ascii?Q?DUfWZTTm02/o04P5WFGHGtxhT0GXFrWPA+B//sstT8+UW1uuN3qe1UUOj917?=
- =?us-ascii?Q?G7B0bA6c4dBsSOv/BRbvD+F9tTR+g4zsOQJJYmMTzzezFI6u6qOksSkUZ+wy?=
- =?us-ascii?Q?hRwGHd6/OKlbXJB4N+fLE6Q+ieHo9Hi7dZe3bcsivPY7sFC1uVaBp3AjLbRg?=
- =?us-ascii?Q?857TnIwwzTrWGxYAtBCSBYHhZ//hqC7oXp3JqNnQDxmbwTFxADwwoNng6ibZ?=
- =?us-ascii?Q?NwZKxxu5ahfw9huxMcnB3kh5Wj5GFeXA+3K89wi7UgmsddtVBchNAgWjnuRX?=
- =?us-ascii?Q?p9vJT4t30lE/wXvSSQlnVnE2FxJ9YgZe8QV0nXeRqpNimHNtxqWkBmaGa7PV?=
- =?us-ascii?Q?dXVbpFgbSO/+1P/G6nitFIjoNV48eYnlFLG1FLiVGJQq8SR7T6ZGgbC4fz83?=
- =?us-ascii?Q?qI7I9NT2xi1AQF/Cxk044ZRohKEn3wQC1WLQaNsjOUXG90rhcGI973jlOOmQ?=
- =?us-ascii?Q?kZQBkuSRXrHLf3Df+us6XZWxRzboRGLnX2RPsL2u0POJPSbdaWC1omDStnQj?=
- =?us-ascii?Q?JOKsdGkBUL2bhAepF+0MexyQdEw2SHy1uy5mSJsRIWilU8dzQip0OCI4U/78?=
- =?us-ascii?Q?IzA6b5Djx0KtuQIXGvnnZQLa7oCt51EcLmtCKgq+FfdddkchyrOXx49K801s?=
- =?us-ascii?Q?VIuGdR+Ete0QmC/jg/wn4pBGu2EuW8uufoYtRCKe7358Gcf0RsOmWacelwWk?=
- =?us-ascii?Q?ugdhgz4HIXywEG5oHae2gMkEVgsyoV1meXBlnuF4fTf4sg8NOuJo/0MvqQa7?=
- =?us-ascii?Q?MNYcZl/SAq8bOuZYHBlOSSqrnAovYxhB8HLe5hAd3CV/zMsKcjVsbxVBLE9b?=
- =?us-ascii?Q?vF+HvW/HJL0YXpkSQeAkjeEpDjILWfyQGnyzuAPRQuN1KVN2QauOJ5e/vFrf?=
- =?us-ascii?Q?Ij0l42xmTxuV4qtrVtCGAJhq2pEyNdV9HqVP/mF1pWyDy8e7FDnDp7zNrfmG?=
- =?us-ascii?Q?aBOvEyF0NaH9r1CgubSMJNTAdLvN/GJiNIiTXJWVYUW0RnaOoGnw2AFV/el6?=
- =?us-ascii?Q?FeRcklm0RrbOBGsFxIimd4QoOIk4wG7bASy56R+AyJx5Umhl8zBYlUTLLHBN?=
- =?us-ascii?Q?f+HvsYQK5g/Lo70uin5dHk5n6ie+JQO4cIPT435rwdsYLDSElONTKyENjICw?=
- =?us-ascii?Q?6/GTxt0Ljjstf6IhDTAP8333Mqwt6Kk4kEtumXEs/hzl7+Sa/gTlDdkbYKde?=
- =?us-ascii?Q?5S2bIGJEY1Olz7ppqtXbSDOxI5yozZZXlGaNsOfn0hWy2Z+4otYMYLVlj2X5?=
- =?us-ascii?Q?OZOQ7/PLibDr+aJWcb0H+79MuYT5h2+TVoUjWo1I4SjMOI7oBfvrP1ZzNsXA?=
- =?us-ascii?Q?QCXWjnWgmKfeHjpeJxVkWhAllR8MB8dHApdlzW94dVrWz3+pBIcMLHkAHw1p?=
- =?us-ascii?Q?ryUhBKXHESlOW104dNPDO3GIq454ukwMXtMSXZ9hitB1iW/4Cd16TF6fNu2E?=
- =?us-ascii?Q?FoP/u3b20EkHpSS54VCReNNOhDb4GEWebLV1Hug8I+8bTaQLaTf+ypvvGC6E?=
- =?us-ascii?Q?ET+7147djF1r5wv+R0jZmkfEBBbOKyOMoJ0WIaweBpi8qdmfBOcl/apxhNdL?=
- =?us-ascii?Q?frxpmct3MVpPthwfg/c5/x5aruIcuSc+CKl2DLnvKXcnud6e?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?mbv9XHLGeUN1b/k0Xr/V97Pp9nLVvqO/JPnsGbOrRTHV3Atp7euVsaJurfUL?=
+ =?us-ascii?Q?FXqjeeyF92a6A54wY5kfpq5zDW0rvtpyI60RmRPAlrtugq5VguJm7x8SU2sD?=
+ =?us-ascii?Q?xQnBdnaI7RUH2K7MseqsW+mxqJsAJ3oGGYG8hg6WzUvBdAGmGq0H/ksns4CQ?=
+ =?us-ascii?Q?UInTx4TGk4di7sEXXy5n375qEq3O0f4YFizdLpvcFnX4HDQ7bu/pc9URpfMI?=
+ =?us-ascii?Q?1ZlALVTrS84YpABv2e8k8oOCSsuo/2+Q2La3lcQoEvoaTbvwm0bw1e3q8toy?=
+ =?us-ascii?Q?nHw0Kzwzqt9/uVGseu/r0K2z//U04HPqp+034YX4yf/07Fba7bQo+wa0k7YE?=
+ =?us-ascii?Q?oke/n5tJrMahcHfIvS/bYaTcKaPC6Mf5Fm0LE05cJLuxqwBYeM+2tsJSIrNF?=
+ =?us-ascii?Q?MXuwsv/tjn0/F9lnPpdW7P1KOK8U1CtWSZIfYyuFMPpzXIKEd6CDBtrO4pdP?=
+ =?us-ascii?Q?O3oOWS1uXJ3zND7Spq4E6VX1ojs+aZ4RANUvHcxE5iDavrvFayv0IlWGvkoq?=
+ =?us-ascii?Q?N0n/3J/ZzR3ySfK+7MEzkxxcg6C10draRMFJWgIwL9XdeQ+dYmA4EHuuqgCv?=
+ =?us-ascii?Q?U6Rpx5m/CFcmfIYHofMs5Vs8d2ehgemJ4ayY7mO+UX9rc81Rd91itTo81kw0?=
+ =?us-ascii?Q?YtqPDE3zrAWbScnhdEkT6wXRseASwdFoRsLSwo09F+Ski3d7hEIUqlJeJ57i?=
+ =?us-ascii?Q?7cCKZpK/KQCimc6hojNWud4sl3fCfMEugh/1cBpiYQkdwzLJ3EgzOfhmLm7J?=
+ =?us-ascii?Q?KFU743/0czvdr6RVdG7NVUdeiFv+DDdw3gx8duCqopr+mQ0p3C6u3uKGoin0?=
+ =?us-ascii?Q?Z9MkUsiruCB+sbaLhAiPlNYR1iioOKoAglp817qik7x1JIyneUd5wzBKkZeK?=
+ =?us-ascii?Q?U4OY2ymyxKiSSDu6JSlnhVYnoeIyMrg9mB9jK2zt17sgPqo5d/3m3uuABtp6?=
+ =?us-ascii?Q?FSdvgFTQ7Bjik2MtlYKgDXYYscmjkyL7EndR9oS/ZA2gE3GOdcZD7Ua3Rihe?=
+ =?us-ascii?Q?E7+Jijzl8vC26yMwgyFwamvQzQfYc2Vpee1+AdsKoyWgdZDV0wOh6sqeT29j?=
+ =?us-ascii?Q?ibLnomYGrwuILHU1OP6/L/jQHqRvvPS5/+xwpEqBKIBLcnRSmsMv0MSYFVHG?=
+ =?us-ascii?Q?11DEO5TCoYVT2+FH4SNTYU3Wq+9392Tsh3IkJnVrW4NoGPV1c+O6ytexMkLs?=
+ =?us-ascii?Q?MOYM8g5dY/7rlmjFx++jkHi2OwNHvTo1hDKEPfgTGe8C5xcO3Y3ZWYz6yNX4?=
+ =?us-ascii?Q?IjLrUtg4NC+Xt6Y5CLJgKJasIGxztE5zNpbUEKlSe4dpC8BxqO6gA2FcbyU6?=
+ =?us-ascii?Q?iE+lWwscWp/Oi4g6pxwwN/mGpV5XF9hobS8AVmpncB/xRZ9QOjuNpQWzHyde?=
+ =?us-ascii?Q?1HuUAy8loTYIYy8BSZOnr/OxbAXK+ziU8jMryJVilxAyw+so7rbeBeZd3G+x?=
+ =?us-ascii?Q?shFkgVRNrsT//CBOzKe2RNn+8yHyZbbyb7l9RHqoORwlvEG8N2XOjOFLzzf6?=
+ =?us-ascii?Q?udXdrw5FUvMnIvst/jiiP7GCBARiseRbgjJPFp0Jgcm/YLtQrFEIj3Bf5ueG?=
+ =?us-ascii?Q?oTSODOP1qgQ0NBtWtxH5LoSxeK+BqnfFA+fPSvxJH4baDNDEvKKK1PrTMsiy?=
+ =?us-ascii?Q?fKL0n9dDnvkMe/zdkLOTi0V9QP/RaxBHQgB++uArxJP5QzRTguS+xyuj4NVi?=
+ =?us-ascii?Q?Z59EU9BqMSIwyDII5Wr9uRTGCjePMypJCpmbf+FGrv/pZN/U?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: IAqudidx1p2Dr9YiQBWP4TYoz+1JX3hX6VdRRjLu8rGuYVnBJ9SMJOq6M5QPGjfbT1x9P+4ENBifI/X6Mr9S2ly0f6XtJO8PUjeMq1Wze4zYFSfsdLforsq1pq0aPdVOlWwvB00zRpzneUMxzRWDVAyFQAnaCrUb/S/E93Zc4Q5GwAR+mCuY7ehKpei+ZuYMa32mA0yYzMeApWWyoM3S/IX2xzFghCEnx32OIvJzaxO6Ahsb5mSGhPqKVoIMHsDJ7l0e1TJbRYw/ZWwvwX57itCAodFEABVeTQG42lvzxd80LBbURAKiuFI3y7Y1bzK2jp31aF5bb8Hczf1khTtPgA==
+X-Exchange-RoutingPolicyChecked: DEzYfAJEKnRbJndJ3XjI8qLM3vMLOJAC47OwMcYl66Sfi073L7UAuq6KKHgM9xahFnC5o9GeP+ffvbNM1oy4uTUmD8CbPbul6tkof4OVFbNw58Vpor+SQsQkNx9D8B8eqlExZiD1fc9YY+1Vfw6Sp3wT2ce0qUADrH2EEhuIsoRY07XfT1a4eo+CwA2Lx2yeyLxvj9ZgxamtFV4oa6+T5uZt2sBBvaxwTfUTKcl7l9mLw6fJtWoAB1MlFykraxeAnXVk4hCFu7SrD3ZfGVMUSaljtcCe8ORSC6e1dzkj0dVk4cGvkr68+sdikCdgOWayR8IdCpjnjWFkX9aWr34wXQ==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6796.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 856a3733-ae7d-4d05-7c58-08df1974066d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 13:10:22.4565 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: de3d99cc-f7d8-4d4e-03bf-08df1976b68c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Sep 2026 13:29:36.9192 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: w26FlYg/LBKSzqJLX9UvDqB0Hddc/QPgDsy1DzXEz/Qm5Tbzwolse+vY6CmP1ex+J3+gwWXRVv4HuIy4QMZKmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB468931
+X-MS-Exchange-CrossTenant-userprincipalname: haJXxvt5pqIGl+HFTxHrQVhg+j9bZpWlecUGS9+IVOJweUFWbYzaFV3nJ9/MS0yf4fBaki06hnLyq9pBjq2Qgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB8117
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -171,208 +171,290 @@ Hi @Joshi, Kunal1,
 > Sent: 16 September 2026 10:18
 > To: igt-dev@lists.freedesktop.org
 > Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>
-> Subject: [PATCH i-g-t 09/13] tests/intel/kms_dp_link_training: Group the
-> outputs into links
+> Subject: [PATCH i-g-t 10/13] tests/intel/kms_dp_link_training: Add per
+> connector mode subtests
 >=20
-> The output loop walks connectors and decides SST or MST for each one, so =
-an
-> MST topology is visited once per stream: the classification is redone eve=
-ry time
-> and the same link is trained once per stream, since forcing link paramete=
-rs on
-> one stream affects the whole topology.
+> The four existing subtests cover whichever connector mode the machine
+> presents. On a machine with a Thunderbolt dock they train a tunneled link=
+, on
+> one without they train a direct link, and the result is identical either =
+way, so a
+> lab that never had a dock looks the same as one where the tunnel works.
 >=20
-> Collect the connected DP outputs into a list of links, where one link is =
-one
-> trainable DP link and a whole MST topology is a single entry represented =
-by the
-> first of its streams, and record the protocol and the connector mode once=
- per
-> link.
+> Add eight subtests selecting links by connector mode:
 >=20
-> Stop collecting rather than fail when more links are connected than the l=
-ist
-> holds. Discovery runs in a igt_subtest_with_dynamic() container, where ex=
-plicit
-> failure is not allowed.
+> 	uhbr-sst-tbtalt-train        non-uhbr-sst-tbtalt-train
+> 	uhbr-mst-tbtalt-train        non-uhbr-mst-tbtalt-train
+> 	uhbr-sst-direct-train        non-uhbr-sst-direct-train
+> 	uhbr-mst-direct-train        non-uhbr-mst-direct-train
 >=20
-> An MST topology is now trained once instead of once per stream, so the
-> dynamic subtests named after the other streams go away. They were trainin=
-g
-> the same link at the same configurations.
+> with the same per configuration dynamic subtests as the existing ones.
+> "direct" is native, DP alt mode and legacy together: they all take the li=
+nk clock
+> from the PHY PLL, and only tbt-alt takes it from the Thunderbolt PLL, so =
+that is
+> the only split that changes which driver code runs. The raw mode stays in=
+ the
+> inventory line, so dp-alt against legacy is still diagnosable from a fail=
+ing run.
 >=20
-> Prep for subtests that select links by connector mode.
+> The connector mode has to be in the static subtest name rather than a dyn=
+amic
+> one, because a dynamic subtest that skips is not counted as
+> executed: a container with one pass and twenty skips reports PASS, so a l=
+ab
+> with no dock would look green.
+>=20
+> Keep the four existing names and their PHY agnostic scope. They are not
+> redundant: they are what to run on a machine nobody provisioned for this
+> matrix.
+>=20
+> Expect most of the eight to skip on any one machine, since dp-alt and tbt=
+-alt
+> are mutually exclusive on a port at a given moment. The skip reasons name=
+ the
+> connector mode so the two causes - no such link, and a link that allows n=
+o
+> configuration in the encoding class - stay greppable apart.
 >=20
 > Assisted-by: GitHub_Copilot:claude-opus-5
 > Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 LGTM,
 Reviewed-by: Sowmiya S <sowmiya.s@intel.com>
 > ---
->  tests/intel/kms_dp_link_training.c | 111 +++++++++++++++++++++++------
->  1 file changed, 89 insertions(+), 22 deletions(-)
+>  tests/intel/kms_dp_link_training.c | 142 ++++++++++++++++++++++++++++-
+>  1 file changed, 137 insertions(+), 5 deletions(-)
 >=20
 > diff --git a/tests/intel/kms_dp_link_training.c
 > b/tests/intel/kms_dp_link_training.c
-> index 812c4b6bc..e6160cee5 100644
+> index e6160cee5..229eb3d69 100644
 > --- a/tests/intel/kms_dp_link_training.c
 > +++ b/tests/intel/kms_dp_link_training.c
-> @@ -39,6 +39,8 @@
+> @@ -21,6 +21,40 @@
+>   * Description: Test we can drive non-UHBR rates over MST.
 >   */
->  #define LINK_RECOVERY_TIMEOUT	5.0
 >=20
-> +#define MAX_LINKS		16
+> +/**
+> + * SUBTEST: uhbr-sst-tbtalt-train
+> + * Description: Test we can drive UHBR rates over an SST link tunneled o=
+ver
+> + *              USB4/Thunderbolt.
+> + *
+> + * SUBTEST: uhbr-mst-tbtalt-train
+> + * Description: Test we can drive UHBR rates over an MST link tunneled o=
+ver
+> + *              USB4/Thunderbolt.
+> + *
+> + * SUBTEST: uhbr-sst-direct-train
+> + * Description: Test we can drive UHBR rates over a directly connected S=
+ST
+> + *              link.
+> + *
+> + * SUBTEST: uhbr-mst-direct-train
+> + * Description: Test we can drive UHBR rates over a directly connected M=
+ST
+> + *              link.
+> + *
+> + * SUBTEST: non-uhbr-sst-tbtalt-train
+> + * Description: Test we can drive non-UHBR rates over an SST link tunnel=
+ed
+> over
+> + *              USB4/Thunderbolt.
+> + *
+> + * SUBTEST: non-uhbr-mst-tbtalt-train
+> + * Description: Test we can drive non-UHBR rates over an MST link tunnel=
+ed
+> over
+> + *              USB4/Thunderbolt.
+> + *
+> + * SUBTEST: non-uhbr-sst-direct-train
+> + * Description: Test we can drive non-UHBR rates over a directly connect=
+ed
+> SST
+> + *              link.
+> + *
+> + * SUBTEST: non-uhbr-mst-direct-train
+> + * Description: Test we can drive non-UHBR rates over a directly connect=
+ed
+> MST
+> + *              link.
+> + */
 > +
->  typedef struct {
->  	int drm_fd;
->  	uint32_t devid;
-> @@ -46,6 +48,18 @@ typedef struct {
->  	igt_output_t *output;
->  } data_t;
+>  #include "i915/i915_dp.h"
+>  #include "igt.h"
+>  #include "igt_kms.h"
+> @@ -60,6 +94,38 @@ struct dp_link {
+>  	enum i915_dp_tc_mode tc_mode;
+>  };
 >=20
 > +/*
-> + * struct dp_link - One trainable DP link.
+> + * enum phy_filter - Which links a subtest selects.
 > + *
-> + * @output is the output the link is driven through, which for MST is
-> +the first
-> + * of the topology's streams. The classification is discovered, never ch=
-osen.
+> + * PHY_ANY is the PHY agnostic scope of the original subtests. The
+> +split
+> + * between PHY_TBTALT and PHY_DIRECT is where the link clock comes
+> +from: only a
+> + * tbt-alt link is clocked by the Thunderbolt PLL, native, DP alt mode
+> +and
+> + * legacy all use the PHY PLL, so folding the latter three together
+> +does not
+> + * change which driver code runs.
 > + */
-> +struct dp_link {
-> +	igt_output_t *output;
-> +	bool mst;
-> +	enum i915_dp_tc_mode tc_mode;
+> +enum phy_filter {
+> +	PHY_ANY,
+> +	PHY_TBTALT,
+> +	PHY_DIRECT,
 > +};
+> +
+> +static const char *phy_filter_name(enum phy_filter phy) {
+> +	return phy =3D=3D PHY_TBTALT ? "tbt-alt" : "direct"; }
+> +
+> +static bool link_matches_phy(const struct dp_link *link, enum
+> +phy_filter phy) {
+> +	switch (phy) {
+> +	case PHY_TBTALT:
+> +		return link->tc_mode =3D=3D I915_DP_TC_TBT_ALT;
+> +	case PHY_DIRECT:
+> +		return link->tc_mode !=3D I915_DP_TC_TBT_ALT;
+> +	default:
+> +		return true;
+> +	}
+> +}
 > +
 >  /*
 >   * check_condition_with_timeout - Polls check_fn until it returns 0
 >   * or until 'timeout' seconds elapse.
-> @@ -532,42 +546,95 @@ static bool run_link_rate_test(data_t *data, bool
-> mst, bool uhbr)
->   * early, then calls run_link_rate_test(). Returns true if it ran on at
->   * least one matching output.
->   */
+> @@ -606,7 +672,8 @@ static int discover_links(data_t *data, struct dp_lin=
+k
+> *links, int max_links)
+>  	return num_links;
+>  }
+>=20
 > -static bool test_link_rate(data_t *data, bool mst, bool uhbr)
-> +/*
-> + * discover_links - Collapse the connected DP outputs into links.
-> + *
-> + * One link is one trainable DP link, so a whole MST topology becomes a
-> +single
-> + * entry, represented by the first of its streams. Forcing link
-> +parameters on
-> + * one stream affects every stream in the topology, so training a
-> +topology once
-> + * per stream would train the same link repeatedly.
-> + */
-> +static int discover_links(data_t *data, struct dp_link *links, int
-> +max_links)
+> +static bool test_link_rate(data_t *data, bool mst, bool uhbr,
+> +			   enum phy_filter phy)
 >  {
-> -	bool ran_any_output =3D false, is_mst =3D false;
-> -	igt_output_t *tmp_output;
-> +	igt_output_t *output;
-> +	int num_links =3D 0;
-> +	int i;
->=20
-> -	igt_skip_on_f(!is_intel_device(data->drm_fd),
-> -		      "Test supported only on Intel platforms.\n");
-> +	for_each_connected_output(&data->display, output) {
-> +		bool mst, seen =3D false;
->=20
-> -	for_each_connected_output(&data->display, tmp_output) {
-> -		if (tmp_output->config.connector->connector_type !=3D
-> +		if (output->config.connector->connector_type !=3D
->  		    DRM_MODE_CONNECTOR_DisplayPort) {
->  			igt_info("Skipping non-DisplayPort output %s\n",
-> -					tmp_output->name);
-> -			igt_info("----------------------------------------------------\n");
-> +				 igt_output_name(output));
+>  	struct dp_link links[MAX_LINKS];
+>  	bool ran_any_link =3D false;
+> @@ -628,6 +695,15 @@ static bool test_link_rate(data_t *data, bool mst, b=
+ool
+> uhbr)
 >  			continue;
 >  		}
 >=20
-> -		/* Early skip if MST vs. SST does not match. */
-> -		is_mst =3D igt_check_output_is_dp_mst(tmp_output);
-> -		if (mst && !is_mst) {
-> -			igt_info("Skipping %s: MST requested but it's SST.\n",
-> -					tmp_output->name);
-> -			igt_info("----------------------------------------------------\n");
-> +		mst =3D igt_check_output_is_dp_mst(output);
-> +
-> +		if (mst) {
-> +			int root =3D igt_get_dp_mst_connector_id(output);
-> +
-> +			for (i =3D 0; i < num_links; i++)
-> +				if (links[i].mst &&
-> +
-> igt_get_dp_mst_connector_id(links[i].output) =3D=3D root) {
-> +					seen =3D true;
-> +					break;
-> +				}
-> +		}
-> +
-> +		if (seen) {
-> +			igt_info("Skipping %s: same MST topology as %s\n",
-> +				 igt_output_name(output),
-> +				 igt_output_name(links[i].output));
+> +		if (!link_matches_phy(&links[i], phy)) {
+> +			igt_info("Skipping %s: %s requested but it's %s.\n",
+> +				 igt_output_name(links[i].output),
+> +				 phy_filter_name(phy),
+> +				 i915_dp_tc_mode_name(links[i].tc_mode));
+> +			igt_info("----------------------------------------------------\n");
 > +			continue;
 > +		}
 > +
-> +		if (num_links =3D=3D max_links) {
-> +			igt_info("Skipping %s: more than %d DP links
-> connected\n",
-> +				 igt_output_name(output), max_links);
->  			continue;
-> -		} else if (!mst && is_mst) {
-> -			igt_info("Skipping %s: SST requested but it's MST.\n",
-> -					tmp_output->name);
-> +		}
-> +
-> +		links[num_links].output =3D output;
-> +		links[num_links].mst =3D mst;
-> +		links[num_links].tc_mode =3D i915_dp_get_tc_mode(data-
-> >drm_fd,
-> +							       output, NULL,
-> NULL);
-> +		num_links++;
+>  		data->output =3D links[i].output;
+>  		igt_info("Running link training test for %s\n",
+>  			 igt_output_name(data->output));
+> @@ -665,7 +741,7 @@ int igt_main()
+>  	igt_subtest_with_dynamic("uhbr-sst") {
+>  		igt_require_f(intel_display_ver(data.devid) > 13,
+>  			      "UHBR not supported on platform\n");
+> -		igt_require_f(test_link_rate(&data, false, true),
+> +		igt_require_f(test_link_rate(&data, false, true, PHY_ANY),
+>  			      "Didn't find any SST output with UHBR rates.\n");
+>  	}
+>=20
+> @@ -673,22 +749,78 @@ int igt_main()
+>  	igt_subtest_with_dynamic("uhbr-mst") {
+>                  igt_require_f(intel_display_ver(data.devid) > 13,
+>                                "UHBR not supported on platform\n");
+> -		igt_require_f(test_link_rate(&data, true, true),
+> +		igt_require_f(test_link_rate(&data, true, true, PHY_ANY),
+>  			      "Didn't find any MST output with UHBR rates.\n");
+>  	}
+>=20
+>  	igt_describe("Test we can drive NON-UHBR rates over SST");
+>  	igt_subtest_with_dynamic("non-uhbr-sst") {
+> -		igt_require_f(test_link_rate(&data, false, false),
+> +		igt_require_f(test_link_rate(&data, false, false, PHY_ANY),
+>  			      "Didn't find any SST output with NON-UHBR
+> rates.\n");
+>  	}
+>=20
+>  	igt_describe("Test we can drive NON-UHBR rates over MST");
+>  	igt_subtest_with_dynamic("non-uhbr-mst") {
+> -		igt_require_f(test_link_rate(&data, true, false),
+> +		igt_require_f(test_link_rate(&data, true, false, PHY_ANY),
+>  			      "Didn't find any MST output with NON-UHBR
+> rates.\n");
+>  	}
+>=20
+> +	igt_describe("Test we can drive UHBR rates over a tunneled SST link");
+> +	igt_subtest_with_dynamic("uhbr-sst-tbtalt-train") {
+> +		igt_require_f(intel_display_ver(data.devid) > 13,
+> +			      "UHBR not supported on platform\n");
+> +		igt_require_f(test_link_rate(&data, false, true, PHY_TBTALT),
+> +			      "No tbt-alt DP SST link allows a UHBR config\n");
 > +	}
 > +
-> +	return num_links;
-> +}
+> +	igt_describe("Test we can drive UHBR rates over a tunneled MST link");
+> +	igt_subtest_with_dynamic("uhbr-mst-tbtalt-train") {
+> +		igt_require_f(intel_display_ver(data.devid) > 13,
+> +			      "UHBR not supported on platform\n");
+> +		igt_require_f(test_link_rate(&data, true, true, PHY_TBTALT),
+> +			      "No tbt-alt DP MST link allows a UHBR config\n");
+> +	}
 > +
-> +static bool test_link_rate(data_t *data, bool mst, bool uhbr) {
-> +	struct dp_link links[MAX_LINKS];
-> +	bool ran_any_link =3D false;
-> +	int num_links;
-> +	int i;
+> +	igt_describe("Test we can drive UHBR rates over a direct SST link");
+> +	igt_subtest_with_dynamic("uhbr-sst-direct-train") {
+> +		igt_require_f(intel_display_ver(data.devid) > 13,
+> +			      "UHBR not supported on platform\n");
+> +		igt_require_f(test_link_rate(&data, false, true, PHY_DIRECT),
+> +			      "No direct DP SST link allows a UHBR config\n");
+> +	}
 > +
-> +	igt_skip_on_f(!is_intel_device(data->drm_fd),
-> +		      "Test supported only on Intel platforms.\n");
+> +	igt_describe("Test we can drive UHBR rates over a direct MST link");
+> +	igt_subtest_with_dynamic("uhbr-mst-direct-train") {
+> +		igt_require_f(intel_display_ver(data.devid) > 13,
+> +			      "UHBR not supported on platform\n");
+> +		igt_require_f(test_link_rate(&data, true, true, PHY_DIRECT),
+> +			      "No direct DP MST link allows a UHBR config\n");
+> +	}
 > +
-> +	num_links =3D discover_links(data, links, ARRAY_SIZE(links));
+> +	igt_describe("Test we can drive non-UHBR rates over a tunneled SST
+> link");
+> +	igt_subtest_with_dynamic("non-uhbr-sst-tbtalt-train") {
+> +		igt_require_f(test_link_rate(&data, false, false, PHY_TBTALT),
+> +			      "No tbt-alt DP SST link allows a non-UHBR
+> config\n");
+> +	}
 > +
-> +	for (i =3D 0; i < num_links; i++) {
-> +		if (links[i].mst !=3D mst) {
-> +			igt_info("Skipping %s: %s requested but it's %s.\n",
-> +				 igt_output_name(links[i].output),
-> +				 mst ? "MST" : "SST",
-> +				 links[i].mst ? "MST" : "SST");
->  			igt_info("----------------------------------------------------\n");
->  			continue;
->  		}
-> -		data->output =3D tmp_output;
+> +	igt_describe("Test we can drive non-UHBR rates over a tunneled MST
+> link");
+> +	igt_subtest_with_dynamic("non-uhbr-mst-tbtalt-train") {
+> +		igt_require_f(test_link_rate(&data, true, false, PHY_TBTALT),
+> +			      "No tbt-alt DP MST link allows a non-UHBR
+> config\n");
+> +	}
 > +
-> +		data->output =3D links[i].output;
->  		igt_info("Running link training test for %s\n",
-> -			 data->output->name);
-> -		ran_any_output =3D ran_any_output | run_link_rate_test(data,
-> mst, uhbr);
-> +			 igt_output_name(data->output));
-> +		ran_any_link |=3D run_link_rate_test(data, mst, uhbr);
->  	}
-> -	return ran_any_output;
+> +	igt_describe("Test we can drive non-UHBR rates over a direct SST link")=
+;
+> +	igt_subtest_with_dynamic("non-uhbr-sst-direct-train") {
+> +		igt_require_f(test_link_rate(&data, false, false, PHY_DIRECT),
+> +			      "No direct DP SST link allows a non-UHBR
+> config\n");
+> +	}
 > +
-> +	return ran_any_link;
->  }
->=20
->  IGT_TEST_DESCRIPTION("Test to validate link training on SST/MST with "
+> +	igt_describe("Test we can drive non-UHBR rates over a direct MST
+> link");
+> +	igt_subtest_with_dynamic("non-uhbr-mst-direct-train") {
+> +		igt_require_f(test_link_rate(&data, true, false, PHY_DIRECT),
+> +			      "No direct DP MST link allows a non-UHBR
+> config\n");
+> +	}
+> +
+>  	igt_fixture() {
+>  		igt_reset_connectors();
+>  		igt_display_fini(&data.display);
 > --
 > 2.25.1
 
