@@ -4,57 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD87FC9830D
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 21:49:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B3E1C98304
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 21:49:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 664BC10E4C9;
-	Wed, 23 Sep 2026 21:49:12 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CD29610E11F;
+	Wed, 23 Sep 2026 21:49:56 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="X4gIAERN";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="LTBzR5In";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1E5AC10F1DF
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 21:41:56 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E24710F1E2
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 21:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790199716; x=1821735716;
+ t=1790199714; x=1821735714;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=nACEqDO+PPuB8fQhuqXmhuJV+USc8s3KMMmjbLBNT4M=;
- b=X4gIAERNF8D9zLMVFMsHla4QowkyMr+YJuorPFuiZ0Hv8sbFXWDjUPAG
- 0TT+RHJmkm27F1WpDKASzbZqBWiuv36VMIeK2wGe82mfUEmBhl5PgDqCj
- HATNL6aB3EoDubqhVboSRYd2n/UFcAYZ82fFWWdAHEWTrOrKezbPyjPcU
- UvkvvZZ8/o6FfVNti/uPNkplsD1S0BtxF+9b16kIylDFimpb1Sa+8pmUJ
- yQ1ZzC2jYKetIaXz/GZSWpea8/6nYggCtxlm5m0mu4R+JBpllmPyBdpeh
- ni14paZxbVlFwAnVFK/lkrpNB0maSBVGG1Ilek2KYO3NMOcV/q1ZGc23r A==;
-X-CSE-ConnectionGUID: +oYsbCV8TVW9opzxyZk8Gw==
-X-CSE-MsgGUID: ZLj7PRdPRsaCiObQjDJEkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93445425"
-X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; d="scan'208";a="93445425"
+ bh=CY2T7A37SVO0jGMch/zEJGD71pyhM0QQuOUDMV7fTGg=;
+ b=LTBzR5InaOLpFQ3ciVgLyplPraFpCbfgLKlsRxHpTEiWSkf0cL7jIsxt
+ 0gsM8oY3hIKx/9x31wAidZw5PxZD9KMjrHC0DUw9DhR+j5TNL3uwmySFG
+ lZAblfWtmnDuYrI7LPMpi13KAUVVZbIEGGvMlM0tmMCmy5VrlsnlpfJoM
+ sYmNGKgvuooT9l3Mmtglzqg7W0xnTuPwuZ8Vnjh2arP2slIxuM9ZhtmFd
+ 2FQ9gt65Uy+Qqiz9EDj+l+0kUTyatplprr1+c4goT+xXGSD/BLMTK4SSb
+ rIf9lFru6lkobZkMPbZT+a+O6GO3wUNyZr/HGF2qLEMgBLsZRN82ayR/g A==;
+X-CSE-ConnectionGUID: 4hxVYdiZRX6aup+SYTcWqA==
+X-CSE-MsgGUID: m+J4Qs7xQ82nqw0ie69NjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="93445403"
+X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; d="scan'208";a="93445403"
 Received: from fmviesa012.fm.intel.com ([10.60.135.152])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 14:41:56 -0700
-X-CSE-ConnectionGUID: Pz2TeSf1S9qCs7tyfjR+7g==
-X-CSE-MsgGUID: akJHXMmdTQuSIvZsZRUhRQ==
+ 23 Sep 2026 14:41:53 -0700
+X-CSE-ConnectionGUID: CaGAU+V7Qzu/AyUViDJHWA==
+X-CSE-MsgGUID: +afCQFStSh297xI3bl+C8Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,119,1787036400"; 
-   d="scan'208";a="4907745"
+   d="scan'208";a="4907699"
 Received: from inaky-mobl1.amr.corp.intel.com (HELO [192.168.1.16])
  ([10.124.221.113])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 14:41:54 -0700
+ 23 Sep 2026 14:41:44 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
-Date: Wed, 23 Sep 2026 18:41:18 -0300
-Subject: [PATCH i-g-t v2 11/11] intel: Implement Wa_14026539277
+Date: Wed, 23 Sep 2026 18:41:11 -0300
+Subject: [PATCH i-g-t v2 04/11] lib/xe: Cache workaround information in
+ xe_device
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260923-wa_14026539277-v2-11-528b575299d2@intel.com>
+Message-Id: <20260923-wa_14026539277-v2-4-528b575299d2@intel.com>
 References: <20260923-wa_14026539277-v2-0-528b575299d2@intel.com>
 In-Reply-To: <20260923-wa_14026539277-v2-0-528b575299d2@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Gustavo Sousa <gustavo.sousa@intel.com>, 
- Matt Atwood <matthew.s.atwood@intel.com>
+ Matt Roper <matthew.d.roper@intel.com>
 X-Mailer: b4 0.15-dev
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -71,114 +72,229 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Implement the adaptations in IGT required for Wa_14026539277, which is
-basically selecting an alternative PAT index instead of 2-way-coherent
-ones.
+One existing inconvenience with xe_wa() is that it needs to dump from
+debugfs every time it is called.  A more concerning issue is that the
+dump will fail if xe_wa() is called from a context without the
+required privileges.
 
-Because xe_pat_cache->wb is expected to be at least 1-way-coherent, we
-need to select an alternative that fulfills that requirement.  Let's
-use the XA 1-way-coherent index for that (PAT index 19), because other
-1-way coherent configurations do not cause GPU caches to be
-automatically flushed at the end of a batch in certain occasions due
-to the L2 Flush Optimization feature in Xe3p.
+We currently have only one user of xe_wa(), but shortly we will have
+another user that will need to check for a certain workaround in a
+non-root user context (in test cases that use igt_drop_root()).
 
-In the specific case of the xe_pat "false-sharing" subtest, it already
-checks for XA 1-way-coherent, so it is just simpler to skip the
-creation of the dynamic subtest for the 2-way-coherent PAT indices,
-which are tagged as reserved by the KMD on the debugfs dump of
-pat_sw_config when the workaround is active.
+Let's resolve those issues by ensuring that xe_device_get() caches the
+workaround information.  Tests that need to check for workarounds in
+underprivileged context will need to make sure to call xe_device_get()
+before dropping privileges.
 
-Reviewed-by: Matt Atwood <matthew.s.atwood@intel.com>
+Note that this change also requires us to introduce and use thew new
+macro xe_for_each_gt_from_mask() to avoid infinite recursion that
+would happen if we were to use xe_for_each_gt(), as the latter would
+call xe_device_get() again.
+
+v2:
+  - Add note clarifying the need of the new macro
+    xe_for_each_gt_from_mask().
+  - Use a struct xe_wa_cache type instead of having struct xe_device
+    declaring wa_cache as a void pointer.
+
+Cc: Matt Roper <matthew.d.roper@intel.com>
 Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- lib/intel_pat.c      |  4 ++++
- tests/intel/xe_pat.c | 28 ++++++++++++++++++++--------
- 2 files changed, 24 insertions(+), 8 deletions(-)
+ lib/xe/xe_query.c |  6 ++++++
+ lib/xe/xe_query.h | 10 ++++++++--
+ lib/xe/xe_wa.c    | 48 ++++++++++++++++++++++++++++++------------------
+ lib/xe/xe_wa.h    |  5 +++++
+ 4 files changed, 49 insertions(+), 20 deletions(-)
 
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index 6808eaa9b77e..9d5ba6a46a05 100644
---- a/lib/intel_pat.c
-+++ b/lib/intel_pat.c
-@@ -7,6 +7,7 @@
- #include "igt.h"
- #include "intel_pat.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_wa.h"
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 91ffc36e6425..d2c4329aa317 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -28,6 +28,7 @@
  
- enum xe_pat_config {
- 	PAT_SW_CONFIG,
-@@ -109,6 +110,9 @@ static int32_t xe_get_pat_config(struct xe_device *xe_dev, struct intel_pat_cach
- 	free(line);
- 	fclose(dbgfs_file);
+ #include "xe_query.h"
+ #include "xe_ioctl.h"
++#include "xe_wa.h"
  
-+	if (xe_wa_from_cache(xe_dev, "14026539277"))
-+		xe_pat_cache->wb = 19; /* XA 1-way-coherent. */
+ /**
+  * xe_query_device_may_fail:
+@@ -377,6 +378,9 @@ static void xe_device_free(struct xe_device *xe_dev)
+ 	free(xe_dev->vram_size);
+ 	free(xe_dev->eu_stall);
+ 	free(xe_dev->pat_cache);
 +
- 	return parsed;
++	xe_wa_free_cache(xe_dev);
++
+ 	free(xe_dev);
  }
  
-diff --git a/tests/intel/xe_pat.c b/tests/intel/xe_pat.c
-index 17c3f2106f9f..6c3432f90179 100644
---- a/tests/intel/xe_pat.c
-+++ b/tests/intel/xe_pat.c
-@@ -32,6 +32,7 @@
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
- #include "xe/xe_util.h"
-+#include "xe/xe_wa.h"
+@@ -441,6 +445,8 @@ struct xe_device *xe_device_get(int fd)
+ 	xe_dev->default_alignment = __mem_default_alignment(xe_dev->mem_regions);
+ 	xe_dev->has_vram = __mem_has_vram(xe_dev->mem_regions);
  
- #define XE_COH_NONE          1
- #define XE_COH_AT_LEAST_1WAY 2
-@@ -1871,30 +1872,41 @@ static void false_sharing(int fd)
- 	uint16_t dev_id = intel_get_drm_devid(fd);
- 	uint32_t graphics_ver = intel_get_device_info(dev_id)->graphics_ver;
- 	bool is_dgfx = xe_has_vram(fd);
--
- 	const struct fs_pat_entry *fs_entries;
--	int num_entries;
-+	int num_fs_entries;
-+	struct intel_pat_cache pat_sw_config;
-+	int num_pat_entries;
++	xe_wa_build_cache(xe_dev);
 +
-+	if (xe_wa(fd, "14026539277"))
-+		num_pat_entries = xe_fetch_pat_sw_config(fd, &pat_sw_config);
+ 	/*
+ 	 * Populate the PAT cache while we still have sufficient privileges
+ 	 * to read debugfs.  Forked children that inherit this xe_device
+diff --git a/lib/xe/xe_query.h b/lib/xe/xe_query.h
+index 59330d80fd1b..c50df0e34320 100644
+--- a/lib/xe/xe_query.h
++++ b/lib/xe/xe_query.h
+@@ -21,6 +21,7 @@
+ #define XE_DEFAULT_ALIGNMENT_64K       SZ_64K
  
- 	if (intel_graphics_ver(dev_id) == IP_VER(35, 11)) {
--		num_entries = ARRAY_SIZE(fs_xe3p_xpc);
-+		num_fs_entries = ARRAY_SIZE(fs_xe3p_xpc);
- 		fs_entries = fs_xe3p_xpc;
- 	} else if (intel_graphics_ver(dev_id) == IP_VER(35, 10)) {
--		num_entries = ARRAY_SIZE(fs_xe3p_lpg);
-+		num_fs_entries = ARRAY_SIZE(fs_xe3p_lpg);
- 		fs_entries = fs_xe3p_lpg;
- 	} else if (graphics_ver == 20) {
- 		if (is_dgfx) {
--			num_entries = ARRAY_SIZE(fs_xe2_discrete);
-+			num_fs_entries = ARRAY_SIZE(fs_xe2_discrete);
- 			fs_entries = fs_xe2_discrete;
- 		} else {
--			num_entries = ARRAY_SIZE(fs_xe2_integrated);
-+			num_fs_entries = ARRAY_SIZE(fs_xe2_integrated);
- 			fs_entries = fs_xe2_integrated;
- 		}
- 	} else {
--		num_entries = ARRAY_SIZE(fs_xe3);
-+		num_fs_entries = ARRAY_SIZE(fs_xe3);
- 		fs_entries = fs_xe3;
+ struct intel_pat_cache;
++struct xe_wa_cache;
+ 
+ struct xe_device {
+ 	/** @fd: xe fd */
+@@ -80,6 +81,9 @@ struct xe_device {
+ 	/** @pat_cache: cached PAT index configuration, NULL if not yet populated */
+ 	struct intel_pat_cache *pat_cache;
+ 
++	/** @wa_cache: cached data for xe_wa() and related functions. */
++	struct xe_wa_cache *wa_cache;
++
+ 	/**
+ 	 * @multi_lrc_mask: bitmask of engine classes supporting multi-LRC.
+ 	 * UINT16_MAX if not available (older kernel).
+@@ -99,10 +103,12 @@ struct xe_device {
+ #define xe_for_each_engine_class(__class) \
+ 	for (__class = 0; __class < DRM_XE_ENGINE_CLASS_COMPUTE + 1; \
+ 	     ++__class)
+-#define xe_for_each_gt(__fd, __gt) \
+-	for (uint64_t igt_unique(__mask) = xe_device_get(__fd)->gt_mask; \
++#define xe_for_each_gt_from_mask(__gt_mask, __gt) \
++	for (uint64_t igt_unique(__mask) = __gt_mask; \
+ 	     __gt = ffsll(igt_unique(__mask)) - 1, igt_unique(__mask) != 0; \
+ 	     igt_unique(__mask) &= ~(1ull << __gt))
++#define xe_for_each_gt(__fd, __gt) \
++	xe_for_each_gt_from_mask(xe_device_get(__fd)->gt_mask, __gt)
+ #define xe_for_each_tile(__fd, __tile) \
+ 	for (uint64_t igt_unique(__mask) = xe_device_get(__fd)->tile_mask; \
+ 	     __tile = ffsll(igt_unique(__mask)) - 1, igt_unique(__mask) != 0; \
+diff --git a/lib/xe/xe_wa.c b/lib/xe/xe_wa.c
+index 93b97c7c1476..59064219cd96 100644
+--- a/lib/xe/xe_wa.c
++++ b/lib/xe/xe_wa.c
+@@ -30,18 +30,18 @@ static void free_wa_debugfs_dumps(struct xe_wa_cache *wa_cache)
  	}
+ }
  
--	for (int i = 0; i < num_entries; i++) {
-+	for (int i = 0; i < num_fs_entries; i++) {
-+		if (xe_wa(fd, "14026539277")) {
-+			igt_assert(fs_entries[i].pat_index < num_pat_entries);
+-static int get_wa_debugfs_count(int fd)
++static int get_wa_debugfs_count(int fd, uint64_t gt_mask)
+ {
+ 	int gt;
+ 	int count = 1; /* Device workarounds */
+ 
+-	xe_for_each_gt(fd, gt)
++	xe_for_each_gt_from_mask(gt_mask, gt)
+ 		count++;
+ 
+ 	return count;
+ }
+ 
+-static int get_wa_debugfs_dumps(int fd, struct xe_wa_cache *wa_cache)
++static int get_wa_debugfs_dumps(int fd, uint64_t gt_mask, struct xe_wa_cache *wa_cache)
+ {
+ 	int gt;
+ 	int debugfs_fd;
+@@ -57,7 +57,7 @@ static int get_wa_debugfs_dumps(int fd, struct xe_wa_cache *wa_cache)
+ 	if (!(wa_cache->dumps[count++] = igt_sysfs_get(debugfs_fd, "workarounds")))
+ 		goto err;
+ 
+-	xe_for_each_gt(fd, gt) {
++	xe_for_each_gt_from_mask(gt_mask, gt) {
+ 		char name[32];
+ 
+ 		snprintf(name, sizeof(name), "gt%d/workarounds", gt);
+@@ -90,12 +90,12 @@ static void free_cache(struct xe_wa_cache *wa_cache)
+ 	free(wa_cache);
+ }
+ 
+-static struct xe_wa_cache *build_cache(int fd)
++static struct xe_wa_cache *build_cache(int fd, uint64_t gt_mask)
+ {
+ 	struct xe_wa_cache *wa_cache;
+ 	int num_dumps;
+ 
+-	num_dumps = get_wa_debugfs_count(fd);
++	num_dumps = get_wa_debugfs_count(fd, gt_mask);
+ 	wa_cache = calloc(1, sizeof(*wa_cache) + num_dumps * sizeof(wa_cache->dumps[0]));
+ 
+ 	if (igt_warn_on(!wa_cache))
+@@ -103,7 +103,7 @@ static struct xe_wa_cache *build_cache(int fd)
+ 
+ 	wa_cache->num_dumps = num_dumps;
+ 
+-	if (igt_warn_on(get_wa_debugfs_dumps(fd, wa_cache))) {
++	if (igt_warn_on(get_wa_debugfs_dumps(fd, gt_mask, wa_cache))) {
+ 		free_cache(wa_cache);
+ 
+ 		return NULL;
+@@ -181,22 +181,34 @@ int xe_wa_test_debugfs_dump_has_wa(char *dump, const char *wa)
+  */
+ int xe_wa(int fd, const char *wa)
+ {
+-	struct xe_wa_cache *wa_cache = build_cache(fd);
+-	int ret;
++	struct xe_wa_cache *wa_cache = xe_device_get(fd)->wa_cache;
+ 
+ 	if (igt_warn_on(!wa_cache))
+ 		return -1;
+ 
+-	ret = 0;
++	for (int i = 0; i < wa_cache->num_dumps; i++)
++		if (debugfs_dump_has_wa(wa_cache->dumps[i], wa))
++			return 1;
+ 
+-	for (int i = 0; i < wa_cache->num_dumps; i++) {
+-		if (debugfs_dump_has_wa(wa_cache->dumps[i], wa)) {
+-			ret = 1;
+-			break;
+-		}
+-	}
++	return 0;
++}
+ 
+-	free_cache(wa_cache);
++/**
++ * xe_wa_build_cache: Build cached data for xe_wa().
++ * @xe_dev: Xe device where the cache will be stashed.
++ */
++void xe_wa_build_cache(struct xe_device *xe_dev)
++{
++	xe_dev->wa_cache = build_cache(xe_dev->fd, xe_dev->gt_mask);
++	igt_warn_on(!xe_dev->wa_cache);
++}
+ 
+-	return ret;
++/**
++ * xe_wa_free_cache: Free cached data that was built with xe_wa_build_cache().
++ * @xe_dev: Xe device where the cached data is stashed.
++ */
++void xe_wa_free_cache(struct xe_device *xe_dev)
++{
++	free_cache(xe_dev->wa_cache);
++	xe_dev->wa_cache = NULL;
+ }
+diff --git a/lib/xe/xe_wa.h b/lib/xe/xe_wa.h
+index 4ff897196545..f0a826553df8 100644
+--- a/lib/xe/xe_wa.h
++++ b/lib/xe/xe_wa.h
+@@ -6,6 +6,11 @@
+ #ifndef XE_WA_H
+ #define XE_WA_H
+ 
++struct xe_device;
 +
-+			if (pat_sw_config.entries[fs_entries[i].pat_index].rsvd)
-+				continue;
-+		}
+ int xe_wa(int fd, const char *wa);
+ 
++void xe_wa_build_cache(struct xe_device *xe_dev);
++void xe_wa_free_cache(struct xe_device *xe_dev);
 +
- 		igt_dynamic_f("%s", fs_entries[i].name) {
- 			__false_sharing(fd, &fs_entries[i]);
- 		}
+ #endif /* XE_WA_H */
 
 -- 
 2.55.0
