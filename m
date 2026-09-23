@@ -4,156 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB7A9C98302
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 05:26:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A782C98302
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 06:07:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 889E710E7F2;
-	Wed, 23 Sep 2026 05:26:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 86D7210E403;
+	Wed, 23 Sep 2026 06:07:12 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZNZjgnrS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="DkGseCJZ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DB39410E7F2
- for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 05:25:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C754510E403
+ for <igt-dev@lists.freedesktop.org>; Wed, 23 Sep 2026 06:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790141155; x=1821677155;
- h=message-id:date:subject:from:to:references:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=bm8avNIF136975hkuuCaZ2ECdjGPXd91dA1UQKaljPU=;
- b=ZNZjgnrS3AqpFQxxqnRfjlZH4xzzqPtPSV7R2UP/Fe4b3cmstDqiWxD8
- 8UdOVOeI32HxB3fMqPZ/oLlSOIeTENCkwSBuwu3+5fNsWU0yW+irdbqlf
- ub8FNwIQSfldzep6wlLR6BURtpyhMM/IqSAjkTQ9WtU6LHLwq8WNHxS/6
- jjR8Em3RRIPbsvzpOcE/wXtHrDLj2r9j1pQnXZnmTIBnrTntyOVsX7wSr
- 1VeUqAvfb6o8qa1zv0Bx8U2RGkQRRpcYldJ8RTNgYP1Xnu6eBYLygKh+4
- lKYlB2QfgUEjwRRY2ntgnWlFRlepiXDcXK4txRvHHSQ7KKcSFeVM66gri w==;
-X-CSE-ConnectionGUID: /pXUWWVTSWit/B4AwVukTg==
-X-CSE-MsgGUID: 96mRLP+7RkiWM2wVdfQmcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="108299592"
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; d="scan'208";a="108299592"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2026 22:25:52 -0700
-X-CSE-ConnectionGUID: c/LtEl2RSs2XS1okZHALjw==
-X-CSE-MsgGUID: U9mA8yOoRLe0xMGSLJYT/A==
+ t=1790143589; x=1821679589;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=yWVFwPb5FkS1tOMg0CHypTkNDoUyN1sP2UUl+e2REHw=;
+ b=DkGseCJZXW27/eCwW2klr6wSgtukqIT1A4nhQ4O0Cnid3Ig2/s8IFNE5
+ J+t5DRZWL0YB8L/dd5sH2tWF2HwBpRCm3UKnp62sdyoeER0eOiYDXAgHi
+ 6pL1s4Nmcu2FypMJS/fu49sXUXXkEvkRvDkpSAeK10b7VNnri4NbYjYUA
+ ZkmqGiJ5AcB8FdB1HLqNV8WoUm5n3XZBonNuozjALEft+RsIXyc/XEuN8
+ 4ZvBsd8Llp5M3E+JsFRFylxAiqlJt0JThgl81gog72I1L5AOKrZ4p9PWn
+ TWium2+7XHb3Qw0p1PMTc5R++yG81PPnl1H8iZMu05JOzSOPbUecl8McM g==;
+X-CSE-ConnectionGUID: 8Jl07eMuS8eN0loFPWJLZg==
+X-CSE-MsgGUID: Y9G79Q0VTX+XOVeq4vtUCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="101394697"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="101394697"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2026 23:06:29 -0700
+X-CSE-ConnectionGUID: iFJUv8RzQjOGBAl6w7BpFQ==
+X-CSE-MsgGUID: xVsdp83QQB2wwOEwjSYUdw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,117,1787036400"; d="scan'208";a="301368934"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; 
+   d="scan'208";a="4533836"
 Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Sep 2026 22:25:52 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ by fmviesa011.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Sep 2026 23:06:29 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
  ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 22 Sep 2026 22:25:51 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.46; Tue, 22 Sep 2026 23:06:27 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Tue, 22 Sep 2026 22:25:51 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.48) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ 15.2.2562.46 via Frontend Transport; Tue, 22 Sep 2026 23:06:27 -0700
+Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.2) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 22 Sep 2026 22:25:51 -0700
+ 15.2.2562.46; Tue, 22 Sep 2026 23:06:27 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kN3KBDVHV4+E2OAe+N6jyQmKofQU7k1mTJG+qB9WdyoHjldG/uOj1AjUs9rictM8Jgh+XE2ZaBdDzk1oWdyBFGV3zSroBOcoFBoLlUEuVEQc5XVOS8ZGuGQjxVj3CYYTC6hAhvFANgugBOSxvuOG00QKhix5JifntL45v+TTPXCvP9PT3r2gH+N66kOaFutsyJkih4c1GYnpxzNq0qUKC9uHQrMFAPi8ty7sghYfBLDFGiGCpVMITebaBilzkrIokMUOfTnhvp2U4YiCkgTJzk1QWvYBijMweq5PP1Tsp/NSI+7iYC7hyOEUyKg2fS3ieGOkF/iGgfUgFix15ffcmg==
+ b=WeSevJe+rE1+GNBnBv8jH5Fur7LZAk4oa++unTaiVbxXFvox9dVHnwX3aZXaobm79/yccE1MzDaipBgdQNocHwDhcnCErFdHYx5Q46YbWhfhLISzeSZ4FCzUSxMCbnrMJeV71ZwLA5TluhGdOX8Rba3I/k27D6kgitACHejF/jhRHF8cjIEKK2vudoihRch37gXRMsnGtH7rgP36Z/zHIe6ftLIz7Jusi+92tT1V2gtGMjO0CTku4hZth07lcNSnLIqglRQgWrSox3pa00C/8htTLhdDSGLlGkxWg/bnIg9aQGSH1jQehSoF1ZLHuBpyA2tyyH8E7Sui3CQrsVkcdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2Mzj1Y15u/d7LHcD0rEGA0m3SUBCKcKp2Z1i1zwDMFk=;
- b=ag+O/8VwzRk4SGAIvGeT7RquVVJyNk6n8HuSGp0aiZB6W2SiruAtJt/cUBmHiVdbn/j7+ZJPJqMP83pSLY6ZnDvYkzezBkzKI4zpGRW/evVAwMK965f1B0gCwqM7wPJrcbkG9wgyGnkDOH0tjmO8PPpRuDsm/MpSS4YONUwXqyIhoq6l17P9JWZahUZpgnAbYmCzHkbmI7lMH89LIUJqvzsbS+XMpmKO1qkLoXHwwYgu/sxM//yAJdX76rpVw9ONGMw5REOs3ke/Vqm8F730t670PsVHRVRh1tJUhqQgwUbgtadgAkS54fN39O53e/2Qt6VAHCDQW4FF6on6ddifdg==
+ bh=2g8HnZJHnTwd4+5K18j/8EzopX9BjwfTQ6KAnSdIrh0=;
+ b=zMXCpZGM0JJTmRuiHJdpz+9249IUsTrxIDyDIpzD9OhXXjiTexnSjyuseiLnDKY313Dw2rj73YHFQ3IRU0nPSCbCURRUFlpl1HYSHJpdbF0/lMuqEhdcAb3dwtnmuix0osxk1ok/UOjqOL/Ppv700tX5/DuTZMA09sUN0/pyMt3rmw8IV/M+H34IP+E3o/mbG/tvEORzyecVzsdZU6SURcer9m8+0437ToRUxRags+yNiU63TdKDbfUy2CH09CGDu1wJo8YgD8pjMl8p9T4ezznUOewHEhymXWm9dZ+UkSpRaJSDXivXNB/pTwRAhhDK/iBzuAWJr75h34qb9CtaPA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB8600.namprd11.prod.outlook.com (2603:10b6:510:30a::18)
- by MN0PR11MB6009.namprd11.prod.outlook.com (2603:10b6:208:370::19)
+Received: from CH3PR11MB8706.namprd11.prod.outlook.com (2603:10b6:610:1d1::22)
+ by CH3PR11MB8545.namprd11.prod.outlook.com (2603:10b6:610:1bc::11)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.16; Wed, 23 Sep
- 2026 05:25:49 +0000
-Received: from PH7PR11MB8600.namprd11.prod.outlook.com
- ([fe80::b93:cb17:6e06:2580]) by PH7PR11MB8600.namprd11.prod.outlook.com
- ([fe80::b93:cb17:6e06:2580%6]) with mapi id 15.21.0428.015; Wed, 23 Sep 2026
- 05:25:49 +0000
-Message-ID: <5a5c41f9-ddfc-46c0-9006-b6ee5ce8638e@intel.com>
-Date: Wed, 23 Sep 2026 10:55:43 +0530
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.14; Wed, 23 Sep
+ 2026 06:06:21 +0000
+Received: from CH3PR11MB8706.namprd11.prod.outlook.com
+ ([fe80::e419:ae5c:91ec:1e9d]) by CH3PR11MB8706.namprd11.prod.outlook.com
+ ([fe80::e419:ae5c:91ec:1e9d%7]) with mapi id 15.21.0451.014; Wed, 23 Sep 2026
+ 06:06:20 +0000
+Message-ID: <59c1e7fc-0f17-44b1-a177-8fe71eaa1448@intel.com>
+Date: Wed, 23 Sep 2026 11:36:12 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] tools/xe-perf-recorder: Wait for
- mmio-trigger-report
-From: Shekhar Chauhan <shekhar.chauhan@intel.com>
-To: Ashutosh Dixit <ashutosh.dixit@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20260905012055.494831-1-ashutosh.dixit@intel.com>
- <0f298bf3-1a08-4210-a7c7-fd8e0db89947@intel.com>
+Subject: Re: [PATCH v2 1/4] tests/xe_err_injection: validate CPER tracefs
+ event format
+To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <badal.nilawar@intel.com>, <riana.tauro@intel.com>,
+ <anshuman.gupta@intel.com>, <mallesh.koujalagi@intel.com>,
+ <raag.jadav@intel.com>
+References: <20260828170439.204268-1-ravi.kishore.koppuravuri@intel.com>
+ <20260828170439.204268-2-ravi.kishore.koppuravuri@intel.com>
 Content-Language: en-US
-In-Reply-To: <0f298bf3-1a08-4210-a7c7-fd8e0db89947@intel.com>
+From: "Purkait, Soham" <soham.purkait@intel.com>
+In-Reply-To: <20260828170439.204268-2-ravi.kishore.koppuravuri@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5PR01CA0282.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:21d::7) To PH7PR11MB8600.namprd11.prod.outlook.com
- (2603:10b6:510:30a::18)
+X-ClientProxiedBy: MA5PR01CA0296.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:21b::7) To CH3PR11MB8706.namprd11.prod.outlook.com
+ (2603:10b6:610:1d1::22)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB8600:EE_|MN0PR11MB6009:EE_
-X-MS-Office365-Filtering-Correlation-Id: ec7a6c1c-ff07-46dd-9859-08df193320b2
+X-MS-TrafficTypeDiagnostic: CH3PR11MB8706:EE_|CH3PR11MB8545:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11625ff6-c251-4d5c-f5d5-08df1938c998
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|23010399003|366016|1800799024|6133799003|18002099003|22082099003|11063799006|4143699003|56012099006|10067099003|3023799007;
-X-Microsoft-Antispam-Message-Info: eRdKQPuTHYj8FrIy+3EHPV+PYel8G0odKMZ8PnAlRhkCLKGaD6RWl3nJVINuSNQMUycHGcUJ+I8t3cHXSYqm05MUrqNrIDGO3yz74gmlEcYRlf8VGUxTIU8x/6sERd5QLQrZzbyFxSuxeo/fKZNmIfMhKPokbzQsqzmDFbiA5Bb2YMxlErqip8vZfDGM6KXiEXw4k/h/+69F9I0MNx+l3+HO7K7V8Oxsm+iuSLMNfSItUTQh2q6e0uzUBIC/hUPN1yww04TNFS4clHWEfyYk0wjV320D+i5Y+t05Rp+gxbKmBud78qQiH6BTWI47aSY+Ra9gSok6oEKN8SlqFui9MIkOM77fVOHt2ZFNZHKQfb/5yiZudqQSppEOgdYZhsM7LBY4eZzUQID2ou4JRROl+/6TZVa0PKMlZ1BPWGrmVYKVgNM8okBztEVI6pkhwaSjg/rPI81nTwPhL/Kgun//tkNLgRhYtbmKBAIxQ1aSJUf9ng2g3IFY/t51R03Vq8GLKJ8vm6h6+YT64HYAJMIaGrBb/M33w/Jf1UN4R34g7T/hxQ4pxrU203r6p2zbWHyq83ZYUrhcP6OJzI69tYN1sFIVDo3FjsjlV6K+8XZ0EDErkFqLaRenUNDIUTJJ1ylhoOLE824M0ku2VHooDeGI85G0QRNo1BlfKaGycLNgTzA=
+ ARA:13230040|376014|23010399003|366016|1800799024|4143699003|56012099006|11063799006|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: kMtOVDYiv/vV6J56/GvLHxyKAaG4wU/RO6HZYJLeSliHNvo7RkIz1CIWxuAtA4znSePRKs5ypPlO/Xz3QPpA/VC7CFXrGp7SW+cYFAsltiv60uXiFELoagbSiXmAfnPQ20pdgMjeKRdCqfoXX3NgjFouktyvkrNU3i5Tx3WflgPjy3xfYd1C0rHYgsIhphMoTP/C/Iip3fOm/YUSIgh/YBni6Ny7DnmfTHlJUdToIOVTnPhSw/OuesaxlPJQZ7quuGeN1tk6sJUlBo7pD9Ervz2oG3g4zPtqHtL0bdJF2pd0y3TKd8lO06hFEEZ4A0zgHKyabJ2T7ZC2XWJgiE2oUcZS8O3P2/udqbCh5GAOy7zAL/IUl6ai4r4zc7qCD9paI0hIBnyFWdi8SEhM1OEgPcVTgdgbRHMWFE9wRnFeJiorQh5WYHkGZnbQARfg689GTXE+SgTQzjUYMWv5K3+7037zn4qH6+NNTWWFdCBOxj3hnETxc0Vr0vZMcWF5a2IpO8GsY6rjizo+3hmM8KeqGvUFvUp9Ua1cZL9GLDk2BqZveuGM9ZKXZaqYOxA6FPq2DlbaHxP4zPOsJCeeLo3DpX71A65nH1Jcf4j/O+P7pN0qD//9H9MoFC6c+3lLwSu8xmXqvfgPR/cSkylO6aIzzB8n3wqbaET6uEeJSttbRr8=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:PH7PR11MB8600.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(6133799003)(18002099003)(22082099003)(11063799006)(4143699003)(56012099006)(10067099003)(3023799007);
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8706.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(4143699003)(56012099006)(11063799006)(10067099003)(22082099003)(18002099003)(6133799003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?c3JFQUM3VWVOQkh4UENWWE9kRUV3dWc5cnFxWVZJNmRFNnFqMWZrT3kvSzc5?=
- =?utf-8?B?NWZOVitPcUNYR3dsOXpnSWZyK202R0V2UHljeFByOHR2cWttWG5zNmJXREdz?=
- =?utf-8?B?Y1diRzZSbUUzbFZkWGJmbUFUem16bUoza1R6Z09GK1dza2NsckpXTWtXeUJu?=
- =?utf-8?B?ditkRXFPYmpUWk9KTk44Z3JYaHFLVEQyamFTU2MwYWFRaDJpK21TdDJnQ0dh?=
- =?utf-8?B?T2QvblRDbkhYb0lvV0ZQdWVkbjdDMkczM3FZaDV2WXN6K0d3dDE2SmZpbnY2?=
- =?utf-8?B?NjVBUjhEMElnMHdPcGc2aVQwQkY1d21aaTNNZEdqY21jbTdBUGVyZ21NYjhs?=
- =?utf-8?B?WVRKYk02QzNNaDgvY0JTc0xMVXNpU3BWS2huQlJvMjBQT0ZaN1VRakRzSVVh?=
- =?utf-8?B?Y3RRVTFkZWdQUStxaTZmTUwzQW1KRktHYkZCQ3JtSXNFUVp4L0ZWOFdvbVo2?=
- =?utf-8?B?T0FycHVuT1dwdmY0djZWai9VUlZ2ZVhmUjMwSHhxdUFBV3ZWc0JFQzlUb3F4?=
- =?utf-8?B?bWt5YzZxb09NdTVhZHdRSmdZbE9zS3JqK3BLWVdhN3dBMko3Y3J3NTFsNTEz?=
- =?utf-8?B?Wmwxa2RMeXMvWXpQU3g5ODJaUW9SWERWaXZCNnVPN05TSnBuNTc2RUY5bHF3?=
- =?utf-8?B?b2daQWMvK3o5WDVyY0t6MHpqTEtualZQcEdna0FLM1VzbXpzN2E3RHNVNnlo?=
- =?utf-8?B?VFRIekhKcDJvRUs1Ty9kZjZyU3EwSEg2TGZna3ZqeVdXb1YwckVYc3VHQkY5?=
- =?utf-8?B?TWhjYVJKb0Y2bHpQK0lyWFJYUkpOcTRpTkU4WDV5U0xnQXZ6RlJwVFo5dllL?=
- =?utf-8?B?WXc5YlVrd0JOV1lIckEvTExlSitLMXp6SndXekd4Nzd3NU5HcmVBTmtvZjU2?=
- =?utf-8?B?WXlUcTF3VmFSMmJ3NGlIdG82SndSNzNjU0x5VWV1VHIzRVlSQjU1aE4yRUR2?=
- =?utf-8?B?VGdHNldxR2Q1UldoVE9SVVJYYzhRcG4rektvZTdVY0xGaERONURYSXBMU1A2?=
- =?utf-8?B?YUFkQXZxKzVia0ZKYXpBMjFMaUpCMzhhT0xwZ2F4SjR2RlVpZXRFTjljbXZu?=
- =?utf-8?B?c2tpd3pNVC9WOEpubHE4Ui8zUkNqZWJZejJhT0lHZHZqNDIySW5DLzN2YWVQ?=
- =?utf-8?B?RDgyNFQvU1F6VFkreWR1TVJpMkdSNkJzNHlzVTIwc3FsdGNSNFhPRUJ1cnQ2?=
- =?utf-8?B?NWRnZUtzZGN1c1M5czNGWW8yVU5vQUl3VkFIVUhLZ3hhSit1dk1iQzBaRlZT?=
- =?utf-8?B?bVBqVWpTUDU0NGMrRElXZFRYREc2TThtNndnR0ZRS0JCalhuNENDRVhhU2l2?=
- =?utf-8?B?a0hINm4zcjJsZ2FKdDI2MVUzRXRKcHdocWhIc0ZMS0xvQmdpaGUxOFlkckV6?=
- =?utf-8?B?YnFJSXZGZnhFVWlIRU9mMUhkV1UzT3dCOTM2SVpZU1J0VEdiTEtzUDQ0Y2dG?=
- =?utf-8?B?TTRXaVQrZm5maGk2MCtGRnhQeVhSYTYwSytGUEVJZUZhNmtyRjZlNC8xWWtS?=
- =?utf-8?B?QzNmREZaTU9nWFM5V0U4RVZXcWVGRnZzTndRb2VjTHR1MEhndkgxeFdTbnZh?=
- =?utf-8?B?YVR2Q0VRaWRJZVJRVWZYMnI2VFdzd3FNNDFDZnI1ZWNNZ1JyZnRZOFpuN3JS?=
- =?utf-8?B?VWxxRkpkeVk2VWNGbjEvUFJpcXdWZWJlUk8reW5jbTNtY3g4dUZBSzdDYkc4?=
- =?utf-8?B?clJzRFBieG9rcnZTanJ6bitDcWJNWW5xSFJSK2xiR1RBS094K2hXMG5ta2M4?=
- =?utf-8?B?bWdiU1l2dDc4bGN3Y1dSRzhjb0RmSklpaThsMlo0NmdrazQraDEzcGVkdVVn?=
- =?utf-8?B?eHBseTdqRHROd3RKRTlneWh0clU1M3FMNnlld1Z3b3pOWS9rdFhaYnRyZURG?=
- =?utf-8?B?UVNjVVBYd1ZkSjFibllXM1J0aHlCcjZIZUwxYjN4aFJVVzcyTGZQbUd2VUdM?=
- =?utf-8?B?ZE41M0ozYmhqNUJuZzh3azhHaHp4OXpJQWJiOWxmK2VydDBCdEtnODBrbzBI?=
- =?utf-8?B?VmVpLzV3eUg5aVJpclQwekVnbjVqMTZIbUdIdlc4dHdBOTYra25IMkV6VFM0?=
- =?utf-8?B?WURkc0c1d01LZmhwWjdqcUpSRnJUNDI1YnkwV2ZwWEtLZmxDQVhVOXhMWlNk?=
- =?utf-8?B?ZkhMZ0NkS2ttTlR0NXAzRXhSNzBlSFhNVE5IZDdPZmF2TjRVWkxDdWdLSXNG?=
- =?utf-8?B?VEplb29uVE1LNG1lOHdKTVBIcFFOQlVJOEgwRHZad1k1Y2p0aDEwcGp6bUl1?=
- =?utf-8?B?cmNNVVZHUEkwMnVXbkVLaDFLa2orSkJOdmkrTTRMRjQ0OGpJcWVxTkY4UTRn?=
- =?utf-8?B?Rk00Qk55TXJYUGppUThxUGZ6dTZURWZLTjBBTHFsTXB3cGpCSkg5cDUyendi?=
- =?utf-8?Q?BibXiPDX2VKE4GYw=3D?=
-X-Exchange-RoutingPolicyChecked: OPqwkZZxZvgUbsOpe1cbLQTeEdepRHdoOdIZoklQPmxgL1Uby9d8j7ktpq2g8KaJ8ELlUejb1kNSzZQl+AYAjTRp7vkjh/3wjp33hTVOI16rf6lvpWO06iUEddBvmKM4VjZ8EPC+Ik35yYn+9Y8o1uCTprTPZAv+e525noZWGcH6aYggHpa/dt5ov0whvw9MMbCn+XUk9/mEDGdfcCB8ve1eiWxQOlnlUTQpe6mKtwvMXwoePMSRM0/TD05IzZrpb1ctCvt9CC0lmKlMZVTFQrbAO4+/jzzEhY1oyU/1AIGkQ8VKZQYt2zKB74OX56wMaHSxKsBr1uXtie6LhtY4yQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: ec7a6c1c-ff07-46dd-9859-08df193320b2
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB8600.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VU00d3c4dHZXa0ZUUDVWMXIrRWxKbWJqOGtvRGsyOEZGcmZoUm9qQU84VmxZ?=
+ =?utf-8?B?bjk3Z0U4Y0cyZkc3NFJHS3NZUS9MT1NYZ3ZSTG1BYU55NDcxMHhXb0QxMzRx?=
+ =?utf-8?B?V2hrQUxXYzFWNDhBUWZHZ2kvcHNybzFNT3dXajJlVHVvRTZYN29UWUt5TXcr?=
+ =?utf-8?B?ZXpDRTdvVlVUUHZMaC9YVk1odGtuaGZ2WjFFeUZuUVRZRm1Xc2YzcEtpMUdP?=
+ =?utf-8?B?TEFaOHRJa0g0S0NDWHlCU1FPYnlTZXA2bmFDU3FqVVdtTGpLSjRWVWVsOVN1?=
+ =?utf-8?B?dWpnNGhvWnpCb2ZSajg1RVFWcUd3NSs3L3RJSlhIemxhanNRZm11OHp4MVhy?=
+ =?utf-8?B?SytmbVU0bVp1Q1hJYjM0UXV6UW42eHdVcU9obTNZSS9sak5xT0xMQjgrbnFH?=
+ =?utf-8?B?YVJNWGsrV3NKeGpISjdZRnFoTVMxWmlmeURIVllPY25xakMwM1ozUXp0QlRU?=
+ =?utf-8?B?WXJrTnZnZ2lOZUh6bzJyOGpwcjZwaXlBb0NKemxYcmxtN0M2Tk9sRi9oa0RL?=
+ =?utf-8?B?ZXUzb1NNZU1acm5GMk5NbmlEc0w5bHRwd25aUUNZazhSa0RIQ3lmZUFpbEda?=
+ =?utf-8?B?d243blpnOVJvdWZQc3p6L2JHd2x4WTVQM3NUUUkrb3gyUG5LT29RanBWNC8y?=
+ =?utf-8?B?emhYRkdsaFgrUVY1KzhCZ1I4OG0rNzRLSUZYb3Y2eGhQSHhkVEFleVc3cFFW?=
+ =?utf-8?B?OUs5TlpxN05yNHcxUERBNU5XTWNya0VFRmpnbkIyN3VaUWZnbmZEbjJDcUM2?=
+ =?utf-8?B?bnRnc0NxSktYbTJmcVRBZG11TWEyekxRWE5kR1BLZStzTnc0Y1BwU2RUZERO?=
+ =?utf-8?B?NjlsWG56R2QxWXJMTDNrazFPNitKQ0VWQVJVd1BiRmJsRll5TUJlbGJOVlV0?=
+ =?utf-8?B?TytLRExLYzE4akMralNISjBxaURJYmdITXI3Z1cwTlpvaTZMamFYZkhWWElW?=
+ =?utf-8?B?NENGa0VMWVQ2NldBdlI3LzdOZDhmU1RYb0hQTXRTOC9XQzZ1ek0rd3NLWDhr?=
+ =?utf-8?B?MFVaUWVFcjJhRE5CSkt5VFJyZEZOQVRhNlRkdHBybHNxNktrSGNSaFBsTCsy?=
+ =?utf-8?B?WEZuZVh3RlYxOVZyeVBGR0RFUU1WWDYyZ0xJSENHRFRQbjYrR3VZNDJKcXJT?=
+ =?utf-8?B?UU90bjBlQVFBODVKMWw4bk9mVGN2MGpOa2FyUEFnNTFrVXhZcWtBb01LYk9G?=
+ =?utf-8?B?MmJ2RUp0cyt2Z3E5bE9tMzJDdy9la254ZUUrYTIzMk8xa01iYURTeUZmYjlp?=
+ =?utf-8?B?R24ydzEydGNSNmFMVGJGMUkzeVp5bVljb01mM28wdHVnLzcvS2lkdkhqd0xu?=
+ =?utf-8?B?cWZpcXM4UXZVZHpRM2l6NG1LVnEvM3RZcXNReGJFUnMvNnV0WVpWcVdnOEgw?=
+ =?utf-8?B?dHV1MnZyenV2Ry9IampSM1BQcDZCa25XOUNQV1RqQzB3Q1N6WWR3Y015L3hp?=
+ =?utf-8?B?dTY2TVFmRkVuLzVOdFhRR3pQSE51Ym1IcFlMTzFIRDhiMGRHaUR4QnpzOXNW?=
+ =?utf-8?B?aG9odXZBTUVTcWRBMkMrMTFqVHkzMzczOUpaNGo3cStvRGMxTHBLQjBSSFpS?=
+ =?utf-8?B?eEg0bG1iRUhLRW5DU2o1U3d3a3ZSVVJtTmwxL3AycDM2M1hBa2dJU3lLV3pl?=
+ =?utf-8?B?N2Z1UlM3OUlyaDI5bVRYV3RRSThrbk5EVE5lcU9KRkd5clh0NzBPRFkrTkNP?=
+ =?utf-8?B?YkdjUG42cU9FOHhEYkNHYUdQSzRoRWdWcWxBTUdBS1dtYTBBN0xwbzRMcGVw?=
+ =?utf-8?B?aDJOTnp3VWFVNzBwZzZnNE5hS0RMT0JXNklWVENzbkIxZ0hQNmNUZHFYOG9q?=
+ =?utf-8?B?WkNMNVZRbUNMSnpuQXdQYVFQUEUyRUdSQmIreVI1ZzZ3MU52a0d1aUhWY3NR?=
+ =?utf-8?B?dDVVY2NhdnFLQ21QOG56Ujlld1cvclBIeGlSN09ycjI4WFBuNnRldDdaVVNO?=
+ =?utf-8?B?QmlzOFhxcGhkYkI2NU5JMGkvLzVCR2xJck84czNjSUhWSnRVUFV4djUrMGpx?=
+ =?utf-8?B?ZmNiZ1Ewa1h3VTVlT0w4RE4waWNzSlA2MGtNR1BGN0tIdmZEelA4STIvaGNH?=
+ =?utf-8?B?T0ViNThhZXVrdFJHTEVOdkJtZlJTNVZLK21sS2JhVDUyODJ1ZkMrbUtjOExU?=
+ =?utf-8?B?S01ycFVkQ29GYnFCeXY5N21sb3pJMnJSeXpuYmhjTERQNS9OVk14M0tubFVp?=
+ =?utf-8?B?QURNRytMYnZsdURUZEF1ZXozTG5WbEo3d2hNdTVOYWZJOTYwWFkzbGdZc2U4?=
+ =?utf-8?B?WmU2dWpkeVpqNmxGNHhiVXpNeG9RKzkrQkxNK2dBMEJlY0lzd3V2TFgyc0I2?=
+ =?utf-8?B?cmZiMmhPT095d0duSjkxZG9nZldwQnluTjJDcFpqWitCWVJnTStxZz09?=
+X-Exchange-RoutingPolicyChecked: rqO6nDHoH7wpem/dPQNZY9Znn4C6+ACVdkEvLwtuqzNWcJwoqWLdlk6GVYBqPwFlfLxlzF7Mu+voBqf3gclyqwqllOnRVqrKy3i2CpQLihM8krFPQm/IJcVf73s79oZlwwSi3BJnjEF7p0Ci/gtH6QlAl+E3t//H06K74UsrKP7OuhlD3NxZBaMQFcWo8s29aIR7kvo2wkFno88psJJWqQfgfj3fSSe1kLy7HYYwO+rd84t9MBZe6KUq9s3n5GzCrInggyOGngctuIwgGtavfiOLocOcVclRM3+7ZhNtRJPbB3Bwofv2m1gUk5PWto9AgGEk5/0CY36nzPa6MBv1rA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11625ff6-c251-4d5c-f5d5-08df1938c998
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8706.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 05:25:49.4221 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2026 06:06:20.6945 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: mksPIQztvjXMiZI79hsf25IGm5DGS7RmQh2Y/P6zZEyzawqHkLQFU8cZqKU7q5MuGsWnfeBWfSYFh1BLXEq5kwCwYa0QmV/HbVW/SIK41Lw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR11MB6009
+X-MS-Exchange-CrossTenant-UserPrincipalName: o0YFD6J3Fita5oqai+VX5SA2VLTCfYtWITtIVIhF7IJpz4Dq5LCUw/ljpn9C5o6BKKdSYovhNzZbbyTmZgqO0w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8545
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -170,116 +174,201 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Hi Ravi,
 
-On 9/21/2026 12:10, Shekhar Chauhan wrote:
+On 28-08-2026 22:34, Ravi Kishore Koppuravuri wrote:
+> Add CPER tracefs paths and verify that the xe_error_cper event
+> exists, exposes the expected format fields, and supports enable/disable
+> through tracefs.
 >
-> On 9/5/2026 6:50, Ashutosh Dixit wrote:
->> After mmio trigger is issued, we should wait till we receive a report 
->> with
->> the context id issued in the mmio trigger.
->>
->> Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
->> ---
->>   tools/xe-perf/xe_perf_recorder.c | 23 ++++++++++++++++++++---
->>   1 file changed, 20 insertions(+), 3 deletions(-)
-
-Plus (other than my last comment, read below), I tested this patch and 
-it works fine:
-
-$ sudo ./build/tools/xe-perf/xe-perf-recorder -m "RenderBasic" -o 
-/tmp/v2.record.renderbasic
-Device name=pantherlake gen=30 id=0xb081 oa_unit=0 gt=0
-Writing recoding to /tmp/v2.record.renderbasic
-Using correlation clock: monotonic
-Opening perf stream with metric_id=1 oa_exponent=14 oa_format=11
-Received trigger report with value 0xc0ffee01
-^CReceived trigger report with value 0xc0ffee02
-Exiting...
-
-So, we're not breaking anything with this change.
-
--shekhar
-
->>
->> diff --git a/tools/xe-perf/xe_perf_recorder.c 
->> b/tools/xe-perf/xe_perf_recorder.c
->> index e13eef5190..cb7ca67bdb 100644
->> --- a/tools/xe-perf/xe_perf_recorder.c
->> +++ b/tools/xe-perf/xe_perf_recorder.c
->> @@ -370,6 +370,7 @@ struct recording_context {
->>       uint32_t vm;
->>       uint32_t exec_queue;
->>       struct intel_bb *ibb;
->> +    uint32_t mmio_trg_val;
->>   };
->>     static uint32_t oa_unit_mmio_trigger_reg(struct recording_context 
->> *ctx)
->> @@ -642,13 +643,15 @@ check_mmio_trigger_report(struct 
->> recording_context *ctx, const void *report)
->>       const uint32_t *report_32 = report;
->>       uint64_t value;
->>   -    if (report_reason(report_32))
->> +    if (!ctx->mmio_trg_val || report_reason(report_32))
->>           return;
->>         value = (fmt->header == HDR_64_BIT) ? ((const uint64_t 
->> *)report)[2] : report_32[2];
->>   -    if (value == 0xc0ffee01 || value == 0xc0ffee02)
->> +    if (value == ctx->mmio_trg_val) {
->>           fprintf(stdout, "Received trigger report with value 0x%" 
->> PRIx64 "\n", value);
->> +        ctx->mmio_trg_val = 0;
->> +    }
->>   }
->>     static bool write_stream_data(struct recording_context *ctx,
->> @@ -712,6 +715,18 @@ static bool write_perf_data(FILE *output, struct 
->> recording_context *ctx)
->>       return false;
->>   }
->>   +static void write_mmio_trigger_data(struct recording_context *ctx)
->> +{
->> +    struct pollfd pollfd = { .fd = ctx->perf_fd, .events = POLLIN };
->> +
->> +    while (ctx->mmio_trg_val) {
->> +        poll(&pollfd, 1, -1);
->> +        assert(pollfd.revents & POLLIN);
->> +
->> +        write_perf_data(ctx->output_stream, ctx);
->> +    }
->> +}
+> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+> ---
+>   tests/intel/xe_cper.h          |  21 ++++++
+>   tests/intel/xe_err_injection.c | 119 +++++++++++++++++++++++++++++++++
+>   2 files changed, 140 insertions(+)
+>   create mode 100644 tests/intel/xe_cper.h
 >
-> On a write failure, write_stream_data() bails out in the middle, and 
-> some reports are dropped without being checked for the trigger value.  
-> If the trigger is one of them, this while loop spins forever.  I think 
-> we should use a return value (maybe a bool value) and bail out when 
-> write_perf_data() fails so the error reaches main() instead of looping 
-> forever.  Something like v1.
->
-> Rest looks fine to me.
->
-> -shekhar
->
->> +
->>   static clock_t correlation_clock_id = CLOCK_MONOTONIC;
->>     static const char *
->> @@ -797,6 +812,9 @@ static void emit_oa_trigger(struct 
->> recording_context *ctx, uint32_t value)
->>       intel_bb_flush_render(ctx->ibb);
->>       intel_bb_sync(ctx->ibb);
->>       intel_bb_reset(ctx->ibb, false);
->> +
->> +    ctx->mmio_trg_val = value;
->> +    write_mmio_trigger_data(ctx);
->>   }
->>     static void
->> @@ -815,7 +833,6 @@ read_command_file(struct recording_context *ctx)
->>           FILE *file;
->>             emit_oa_trigger(ctx, 0xc0ffee02);
->> -        write_perf_data(ctx->output_stream, ctx);
->>             while (offset < len &&
->>                  ((ret = read(ctx->command_fifo_fd,
->
--- 
-Shekhar Chauhan
-Linux Graphics Software Engineer
-Intel Corporation
+> diff --git a/tests/intel/xe_cper.h b/tests/intel/xe_cper.h
+> new file mode 100644
+> index 000000000..706c63715
+> --- /dev/null
+> +++ b/tests/intel/xe_cper.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: MIT */
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
+> +
+> +#ifndef XE_CPER_H
+> +#define XE_CPER_H
+> +
+> +/* tracefs paths */
+> +#define TRACEFS_ROOT		"/sys/kernel/tracing"
+> +#define XE_CPER_EVENT_DIR	TRACEFS_ROOT "/events/xe/xe_error_cper"
+> +#define XE_CPER_ENABLE		XE_CPER_EVENT_DIR "/enable"
+> +#define XE_CPER_FORMAT		XE_CPER_EVENT_DIR "/format"
+> +#define TRACEFS_TRACE_PIPE	TRACEFS_ROOT "/trace_pipe"
+> +#define TRACEFS_TRACE		TRACEFS_ROOT "/trace"
+> +#define TRACEFS_TRACE_CLEAR	TRACEFS_ROOT "/trace"
+> +
+> +/* Timeout waiting for a trace event to appear (seconds) */
+> +#define CPER_EVENT_TIMEOUT_SEC		10
+> +
+> +#endif /* XE_CPER_H */
+> diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
+> index d17d049f4..37f4c2edd 100644
+> --- a/tests/intel/xe_err_injection.c
+> +++ b/tests/intel/xe_err_injection.c
+> @@ -17,6 +17,9 @@
+>   #include <time.h>
+>   #include <fcntl.h>
+>   #include <unistd.h>
+> +#include <sys/types.h>
+> +#include <sys/stat.h>
+> +
+>   
+>   #include "igt.h"
+>   #include "lib/igt_drm_netlink.h"
+> @@ -24,6 +27,7 @@
+>   #include "lib/intel_reg.h"
+>   #include "lib/intel_compute.h"
+>   
+> +#include "xe_cper.h"
+>   #include "xe_drm.h"
+>   #include "xe/xe_ioctl.h"
+>   #include "xe/xe_mmio.h"
+> @@ -545,6 +549,117 @@ static void test_l2_bank_single_corr_err_injection(struct xe_mmio *mmio, int fd)
+>   	CLEANUP_ON_ERROR(ctx, fw_handle);
+>   }
+>   
+> +/* ====================== CPER helper functions ====================== */
+> +/**
+> + * tracefs_event_exists - check xe_error_cper event directory is present
+> + */
+> +static bool tracefs_event_exists(void)
+Make this function generic with path as parameter.
+> +{
+> +	struct stat st;
+> +
+> +	return stat(XE_CPER_EVENT_DIR, &st) == 0 && S_ISDIR(st.st_mode);
+> +}
+> +
+> +/**
+> + * tracefs_enable_xe_cper - enable / disable the xe_error_cper trace event
+> + */
+> +static void tracefs_enable_xe_cper(bool enable)
 
+Make this function generic.
+
+Thanks,
+Soham
+> +{
+> +	int fd;
+> +	const char val = enable ? '1' : '0';
+> +
+> +	fd = open(XE_CPER_ENABLE, O_WRONLY);
+> +	igt_assert_f(fd >= 0, "Cannot open %s: %s\n", XE_CPER_ENABLE,
+> +		     strerror(errno));
+> +	igt_assert_eq(write(fd, &val, 1), 1);
+> +	igt_info("Trace event %sabled: %s\n", enable ? "en" : "dis", XE_CPER_ENABLE);
+> +	close(fd);
+> +}
+> +
+> +/**
+> + * tracefs_clear_trace - wipe the trace ring buffer
+> + */
+> +static void tracefs_clear_trace(void)
+> +{
+> +	int fd = open(TRACEFS_TRACE_CLEAR, O_WRONLY | O_TRUNC);
+> +
+> +	if (fd >= 0)
+> +		close(fd);
+> +
+> +	igt_info("Cleared trace buffer: %s\n", TRACEFS_TRACE_CLEAR);
+> +}
+> +
+> +/**
+> + * SUBTEST: cper-tracefs-event-format
+> + * Description: Verify that the xe_error_cper tracefs event exists under
+> + * /sys/kernel/debug/tracing/events/xe/xe_error_cper/, that its 'format'
+> + * file contains the expected fields (dev, severity, platform_id, fru_id,
+> + * intel_err_hdr_raw, cper_len, cper_raw), and that 'enable' can be toggled.
+> + */
+> +
+> +/**
+> + * test_tracefs_event_format - verify the tracefs event directory and format
+> + * file contain the expected field names emitted by the xe_error_cper
+> + * TRACE_EVENT definition (TP_STRUCT__entry fields).
+> + */
+> +static void test_tracefs_event_format(void)
+> +{
+> +	int fd;
+> +	char buf[4096] = { 0 };
+> +	ssize_t n;
+> +
+> +	igt_require_f(tracefs_event_exists(),
+> +		      "xe_error_cper trace event not present at %s\n"
+> +		      "(kernel xe driver may not have CONFIG_TRACING enabled)\n",
+> +		      XE_CPER_EVENT_DIR);
+> +
+> +	fd = open(XE_CPER_FORMAT, O_RDONLY);
+> +	igt_assert_f(fd >= 0, "Cannot open %s: %s\n", XE_CPER_FORMAT,
+> +		     strerror(errno));
+> +	n = read(fd, buf, sizeof(buf) - 1);
+> +	close(fd);
+> +	igt_assert_f(n > 0, "Empty format file at %s\n", XE_CPER_FORMAT);
+> +	buf[n] = '\0';
+> +
+> +	/* Verify that all TP_STRUCT__entry fields are present in the format */
+> +	igt_assert_f(strstr(buf, "dev"),
+> +		     "Missing 'dev' field in xe_error_cper format\n");
+> +	igt_assert_f(strstr(buf, "platform_id"),
+> +		     "Missing 'platform_id' field in xe_error_cper format\n");
+> +	igt_assert_f(strstr(buf, "fru_id"),
+> +		     "Missing 'fru_id' field in xe_error_cper format\n");
+> +	igt_assert_f(strstr(buf, "sev"),
+> +		     "Missing 'sev' field in xe_error_cper format\n");
+> +	igt_assert_f(strstr(buf, "ihdr_raw"),
+> +		     "Missing 'ihdr_raw' field in xe_error_cper format\n");
+> +	igt_assert_f(strstr(buf, "cper_len"),
+> +		     "Missing 'cper_len' field in xe_error_cper format\n");
+> +	igt_assert_f(strstr(buf, "cper"),
+> +		     "Missing 'cper' dynamic array field in xe_error_cper format\n");
+> +
+> +	igt_info("xe_error_cper tracefs format verified:\n"
+> +		     "Below is the content of %s:\n"
+> +		     "=========================================\n"
+> +		     "%s"
+> +		     "=========================================\n"
+> +		     "\n", XE_CPER_FORMAT, buf);
+> +
+> +	/* Verify enable/disable toggle */
+> +	tracefs_enable_xe_cper(true);
+> +	fd = open(XE_CPER_ENABLE, O_RDONLY);
+> +	igt_assert(fd >= 0);
+> +	n = read(fd, buf, 2);
+> +	close(fd);
+> +	igt_assert_eq(buf[0], '1');
+> +
+> +	tracefs_enable_xe_cper(false);
+> +	fd = open(XE_CPER_ENABLE, O_RDONLY);
+> +	igt_assert(fd >= 0);
+> +	n = read(fd, buf, 2);
+> +	close(fd);
+> +	igt_assert_eq(buf[0], '0');
+> +}
+> +
+>   static void igt_require_cri(int fd)
+>   {
+>   	uint16_t dev_id = xe_dev_id(fd);
+> @@ -616,6 +731,10 @@ int igt_main()
+>   	igt_subtest("test_l2-bank-single-corr-err")
+>   		inject_error("test_l2-bank-single-corr-err", &mmio, fd);
+>   
+> +	igt_describe("Verify the xe_error_cper tracefs event exists and has the expected format.");
+> +	igt_subtest("cper-tracefs-event-format")
+> +		test_tracefs_event_format();
+> +
+>   	igt_fixture() {
+>   		xe_mmio_access_fini(&mmio);
+>   		drm_close_driver(fd);
