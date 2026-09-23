@@ -4,28 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87F80C982FA
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 02:33:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 856ABC982FA
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 03:02:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1278810E052;
-	Wed, 23 Sep 2026 02:33:14 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE71B10E052;
- Wed, 23 Sep 2026 02:32:31 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4105210902364260853=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 227E710E7A7;
+	Wed, 23 Sep 2026 03:02:11 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=deborah.brouwer@collabora.com header.b="NoTxzZST";
+	dkim-atps=neutral
+Received: from sender6-op-o11.zoho.com (sender6-op-o11.zoho.com
+ [165.173.180.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4B28C10E052;
+ Wed, 23 Sep 2026 03:01:27 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; t=1790132485; cv=none; 
+ d=zohomail.com; s=zohoarc; 
+ b=VCPrjut2M5FlXYGV0GoEvCnHOUJpE1AcB1y6ysMlGCX7bfx56Kc2eBCTjoUD0e0vqx6bPotDdwP7O3K9HKni/JMV3L++lts+dsZRzGG2IvhQQq5x8PsBg/Vx9mOUaDWPqWOFxoZZ7OUGz389M3pvV9s5zoC9U7SSEL5NTgDxSy0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com;
+ s=zohoarc; t=1790132485;
+ h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To;
+ bh=QaGl5DuQshI+5WjNU+vPAMnWlIU/LxzRoncQZI3V7ak=; 
+ b=Cxuxo6KR1FzfRE3sitLbMeuSMm9DLJ11ywC6vveUCmpH4X7e7tmnnn3mVHFfwCPbbyw9duyUUf4w5SIicyu7Ggf8ckD20ffbR6iCbLmzEvdd4OxmGtHlaqeH/XLYZUomtKJv3gBBJQ8dm75/k5dCBF58TS1LmCi5umrHj5HM9LU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+ dkim=pass  header.i=collabora.com;
+ spf=pass  smtp.mailfrom=deborah.brouwer@collabora.com;
+ dmarc=pass header.from=<deborah.brouwer@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1790132485; 
+ s=zohomail; d=collabora.com; i=deborah.brouwer@collabora.com; 
+ h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:To:To:Cc:Cc:Reply-To;
+ bh=QaGl5DuQshI+5WjNU+vPAMnWlIU/LxzRoncQZI3V7ak=;
+ b=NoTxzZST6flf559uY3LYViPTvC82Dv9ckOYtHS92rXPbotKctXN25RlN5PGxXVlv
+ /j7MjP80eMRKHDdIfRPL28Al1Nxu1TYUbSqomBqvShyNwchMdIZGAu6JCsal2JuDAem
+ sKrCPIyO5s8iVELeXCYnSQn87pQ70ekXbPGLzfvE=
+Received: by smtp.zohomail.com with SMTPS id 179013248462329.209373235470593; 
+ Tue, 22 Sep 2026 20:01:24 -0700 (PDT)
+From: Deborah Brouwer <deborah.brouwer@collabora.com>
+Date: Tue, 22 Sep 2026 20:01:20 -0700
+Subject: [PATCH i-g-t] lib/igt_profiling: configure Panthor enable state
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fs?=
- =?utf-8?q?ystem=5Fallocator=3A_skip_huge-page_multi-process_tests_when_memo?=
- =?utf-8?q?ry_is_low?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jia Yao" <jia.yao@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 23 Sep 2026 02:32:31 -0000
-Message-ID: <179013075190.195586.317791178475309901@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260922171649.2215034-1-jia.yao@intel.com>
-In-Reply-To: <20260922171649.2215034-1-jia.yao@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260922-b4-gputop_panthor-v1-1-e908705bd062@collabora.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MTQqAIBBA4avErBswif6uEhFpo81GRS2C6O5Jy
+ 2/x3gOJIlOCqXog0sWJvSto6gr0sTlLyHsxSCE7MUqJqkUbzuzDGjaXDx9RK9UPWhijzAClC5E
+ M3/9zBkaLGZb3/QCEmIBnagAAAA==
+X-Change-ID: 20260922-b4-gputop_panthor-cbb78c0ffbf8
+To: igt-dev@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, kamil.konieczny@linux.intel.com, 
+ Deborah Brouwer <deborah.brouwer@collabora.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2693;
+ i=deborah.brouwer@collabora.com; h=from:subject:message-id;
+ bh=L0A2zxBQEHaJl588V0MNmnRlNbkkEc48VKD/FwwfXso=;
+ b=owGbwMvMwCVWuULzOU9c7WvG02pJDFmbHZl1Hm/876acsLVaJHPxhJ+nzNL+9IvYqnyx+9Gwo
+ lBNyEyno5SFQYyLQVZMkeWsvVGPeNV7I935/5th5rAygQxh4OIUgIm8MWVkeOTgeK36Q72nm+63
+ EJZ1ht77Xc82PF7ZJ2Q87/zyJ4wWJxn+CvJWdnyLqjummn/0HuNl1dOnDApO993Pus76eUf2nrV
+ T2QA=
+X-Developer-Key: i=deborah.brouwer@collabora.com; a=openpgp;
+ fpr=CD3F328C177AEF322D9FFF8379A829E70C5E7DEB
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,172 +73,90 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4105210902364260853==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Currently profiling is enabled for every device by writing '1' into the
+appropriate sysfs node. But Panthor uses a bit mask where cycle and
+timestamp sampling are enabled by the first and second bits respectively.
 
-== Series Details ==
+By default assume that writing '1' will enable profiling, but then adjust
+the value to '3' for the Panthor driver.
 
-Series: tests/intel/xe_exec_system_allocator: skip huge-page multi-process tests when memory is low
-URL   : https://patchwork.freedesktop.org/series/174735/
-State : success
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/209
+Signed-off-by: Deborah Brouwer <deborah.brouwer@collabora.com>
+---
+ lib/igt_profiling.c | 23 +++++++++++++++++++++--
+ lib/igt_profiling.h |  1 +
+ 2 files changed, 22 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/lib/igt_profiling.c b/lib/igt_profiling.c
+index e1526ad98..5c62a3fb1 100644
+--- a/lib/igt_profiling.c
++++ b/lib/igt_profiling.c
+@@ -50,7 +50,10 @@ struct igt_profiled_device *igt_devices_profiled(void)
+ 
+ 	while ((entry = readdir(dev_dir)) != NULL) {
+ 		char path[PATH_MAX];
++		char driver_path[PATH_MAX];
++		char driver_link[PATH_MAX];
+ 		char orig_state;
++		ssize_t len;
+ 		int sysfs_fd;
+ 
+ 		/* All DRM device entries are symlinks to other paths within sysfs */
+@@ -87,7 +90,23 @@ struct igt_profiled_device *igt_devices_profiled(void)
+ 		}
+ 
+ 		profiled_devices[i].syspath = strdup(path);
+-		profiled_devices[i++].original_state = orig_state;
++		profiled_devices[i].original_state = orig_state;
++		profiled_devices[i].enable_state = '1';
++
++		snprintf(driver_path, sizeof(driver_path), "%s/%s/device/driver",
++			 SYSFS_DRM, entry->d_name);
++
++		len = readlink(driver_path, driver_link, sizeof(driver_link) - 1);
++		if (len >= 0) {
++			driver_link[len] = '\0';
++
++			if (strstr(driver_link, "/panthor")) {
++				/* Enable both cycle and timestamp sampling. */
++				profiled_devices[i].enable_state = '3';
++			}
++		}
++
++		i++;
+ 
+ 		close(sysfs_fd);
+ 	}
+@@ -124,7 +143,7 @@ void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool e
+ 		if (sysfs_fd < 0)
+ 			continue;
+ 
+-		write(sysfs_fd, enable ? "1" : &devices[i].original_state, 1);
++		write(sysfs_fd, enable ? &devices[i].enable_state : &devices[i].original_state, 1);
+ 		close(sysfs_fd);
+ 	}
+ }
+diff --git a/lib/igt_profiling.h b/lib/igt_profiling.h
+index b063d54e1..d38cc2bb6 100644
+--- a/lib/igt_profiling.h
++++ b/lib/igt_profiling.h
+@@ -12,6 +12,7 @@
+ struct igt_profiled_device {
+ 	char *syspath;
+ 	char original_state;
++	char enable_state;
+ };
+ 
+ void igt_devices_configure_profiling(struct igt_profiled_device *devices, bool enable);
 
-CI Bug Log - changes from IGT_9109 -> IGTPW_15887
-====================================================
+---
+base-commit: 65f84b280be2caf8ce376295d97987a808affdee
+change-id: 20260922-b4-gputop_panthor-cbb78c0ffbf8
 
-Summary
--------
+Best regards,
+-- 
+Deborah Brouwer <deborah.brouwer@collabora.com>
 
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-dg2-13 bat-adls-6 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15887 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live:
-    - fi-hsw-4770:        [INCOMPLETE][1] ([i915#17144]) -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9109/fi-hsw-4770/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/fi-hsw-4770/igt@i915_selftest@live.html
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [DMESG-WARN][3] ([i915#13735]) -> [PASS][4] +79 other tests pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9109/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [DMESG-WARN][5] ([i915#13735] / [i915#180]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9109/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [DMESG-WARN][7] ([i915#13735] / [i915#15673] / [i915#180]) -> [PASS][8] +52 other tests pass
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9109/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#17144]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17144
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9109 -> IGTPW_15887
-  * Linux: CI_DRM_19203 -> CI_DRM_19205
-
-  CI-20190529: 20190529
-  CI_DRM_19203: 3413ca5893855693d3cc12697713842547261439 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19205: 7cdd31de20cd320f9a1539bb5c3949275326f017 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15887: 38262f8006c15f79134c4fe2c3940c1e02afbe58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9109: 65f84b280be2caf8ce376295d97987a808affdee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/index.html
-
---===============4105210902364260853==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_system_allocator: skip huge-page multi-process tests when memory is low</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174735/">https://patchwork.freedesktop.org/series/174735/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9109 -&gt; IGTPW_15887</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15887 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>fi-hsw-4770:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9109/fi-hsw-4770/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17144">i915#17144</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/fi-hsw-4770/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9109/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +79 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9109/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9109/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15887/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +52 other tests pass</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9109 -&gt; IGTPW_15887</li>
-<li>Linux: CI_DRM_19203 -&gt; CI_DRM_19205</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19203: 3413ca5893855693d3cc12697713842547261439 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19205: 7cdd31de20cd320f9a1539bb5c3949275326f017 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15887: 38262f8006c15f79134c4fe2c3940c1e02afbe58 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9109: 65f84b280be2caf8ce376295d97987a808affdee @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4105210902364260853==--
