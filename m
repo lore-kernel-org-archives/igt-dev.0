@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B336C982FA
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 12:12:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B206C982FA
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 12:13:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D16EF10E7F4;
-	Wed, 23 Sep 2026 12:12:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 061A810EDBE;
+	Wed, 23 Sep 2026 12:13:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lj+YjsYr";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SVrqyyvd";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 47BD189819;
- Wed, 23 Sep 2026 12:11:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8C76310EB46;
+ Wed, 23 Sep 2026 12:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790165490; x=1821701490;
+ t=1790165544; x=1821701544;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=wTBSYnEtCvd2tSjNc4atBfSfzpPRLbYiXyFZ7mTULRM=;
- b=lj+YjsYrj268wJiWtclA0BTtqLOpXHyUC8fFLNhlHSDDqyfXH6oqkZOE
- ZXCxRLB+ciQF1tmJNIFXPB0wEt00hZJJ3AO0/kwtDRhFfrbysomuArues
- 6Q6TqwHDzCfHu+p1QhLFKiQtW3UbYPblMV5kLRpnaQGXOndjRvK4MoFfe
- 79thv5snIzAvbCO3pMaxrqt2NcRPusy7920i9GFqtPDLDlLjh45ez7djm
- Jf6a+9TkJ+rkC+69DJvcHe//1B8SNl787C4AXdGcc5bIHMkWmNxBNWWi1
- p6eHY00Im2a59IrrW//lY0z+6Bb6SxqoEJI+di64Z7k+Jn5ifyXBRW0UD g==;
-X-CSE-ConnectionGUID: EjUKCOmFSAmZfQFQctATtg==
-X-CSE-MsgGUID: yzFMXaLCTPOWeXZ4cMeeHQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="102209388"
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="102209388"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ bh=HcQDcrapN/xmnmYu2y2cP8w3KLT3VIwYJI6xNKnERuk=;
+ b=SVrqyyvdajRkGaoj75frIzQi9hvh6QJ0apFED3ydLz/hfWC4SGNjfYZl
+ tnYcIjpk19a6y7nQ+3iAQ9cPBDI95AlTN7GzOHRsrzocnGUI7kml+50C7
+ FisOEYYve5DzBAdQKgfbIA8BUZdbOV6vDBApKHNNwktZo+aLJ+AGYSiuS
+ VRv1kRd7eIBdNudm6KYgXc1LJbFm66NOuvwHtLZ/14mvupJiCBJANEQZs
+ 7Xjs/Uq9wL7aC6V6sEhXmQXuvVJYfSZ6hxqfbe/5zPiKgZKXYhTlitXeA
+ CEpR+SXNRmlTgFLkD1eMFH29kOAs6mBT7UQUYmEqWNFMlvBXklMXf7H1D w==;
+X-CSE-ConnectionGUID: tfUR0MAZSB6MT1o7JOsb1Q==
+X-CSE-MsgGUID: CfEmgYniR2m3D+FL7Vwh+w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11913"; a="102209500"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="102209500"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Sep 2026 05:11:30 -0700
-X-CSE-ConnectionGUID: XVpbMlYISdid3x7oRK0vpw==
-X-CSE-MsgGUID: DaRk4MjlQ9OT6Tqm6+ZPig==
+ 23 Sep 2026 05:12:24 -0700
+X-CSE-ConnectionGUID: 01fRIKl9SliXmW7S2SsRHw==
+X-CSE-MsgGUID: RoiWEQXiSi2ri6So0ODe5w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="281656858"
+X-IronPort-AV: E=Sophos;i="6.27,118,1787036400"; d="scan'208";a="273765445"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa005-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 05:11:29 -0700
-Date: Wed, 23 Sep 2026 14:11:06 +0200
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2026 05:12:23 -0700
+Date: Wed, 23 Sep 2026 14:12:21 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>,
  I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkJBVDogZmFpbHVy?= =?utf-8?Q?e?= for
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbDogZmFpbHVy?= =?utf-8?Q?e?= for
  intel-ci: Add multigpu svm to CRI Core blocklist
-Message-ID: <20260923121106.3fjvztkndctqwvot@kamilkon-DESK.igk.intel.com>
+Message-ID: <20260923121221.64kuelb4hdv7fhlr@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org,
  Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>,
  I915-ci-infra@lists.freedesktop.org
 References: <20260921115610.933754-1-venkateswara.rao.muppidi@intel.com>
- <179000895240.188435.6584871939786844367@61270ab9df2a>
+ <179003303749.188435.16779061515619002898@61270ab9df2a>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <179000895240.188435.6584871939786844367@61270ab9df2a>
+In-Reply-To: <179003303749.188435.16779061515619002898@61270ab9df2a>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,7 +75,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2026-09-21 at 16:42:32 -0000, Patchwork wrote:
+On 2026-09-21 at 23:23:57 -0000, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: intel-ci: Add multigpu svm to CRI Core blocklist
@@ -84,7 +84,7 @@ On 2026-09-21 at 16:42:32 -0000, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from XEIGT_9104_BAT -> XEIGTPW_15870_BAT
+> CI Bug Log - changes from IGT_9104_full -> IGTPW_15870_full
 > ====================================================
 > 
 > Summary
@@ -92,16 +92,16 @@ On 2026-09-21 at 16:42:32 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with XEIGTPW_15870_BAT absolutely need to be
+>   Serious unknown changes coming with IGTPW_15870_full absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_15870_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_15870_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15870/index.html
 > 
-> Participating hosts (15 -> 15)
+> Participating hosts (10 -> 10)
 > ------------------------------
 > 
 >   No changes in participating hosts
@@ -109,34 +109,29 @@ On 2026-09-21 at 16:42:32 -0000, Patchwork wrote:
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in XEIGTPW_15870_BAT:
+>   Here are the unknown changes that may have been introduced in IGTPW_15870_full:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@xe_exec_fault_mode@twice-invalid-fault:
->     - bat-bmg-2:          [PASS][1] -> [DMESG-WARN][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-2/igt@xe_exec_fault_mode@twice-invalid-fault.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-2/igt@xe_exec_fault_mode@twice-invalid-fault.html
+>   * igt@kms_atomic@plane-primary-legacy:
+>     - shard-snb:          NOTRUN -> [FAIL][1] +5 other tests fail
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15870/shard-snb6/igt@kms_atomic@plane-primary-legacy.html
 > 
->   * igt@xe_exec_fault_mode@twice-rebind-prefetch:
->     - bat-bmg-1:          [PASS][3] -> [DMESG-WARN][4]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-1/igt@xe_exec_fault_mode@twice-rebind-prefetch.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-1/igt@xe_exec_fault_mode@twice-rebind-prefetch.html
+>   * igt@perf_pmu@module-unload:
+>     - shard-glk:          NOTRUN -> [FAIL][2]
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15870/shard-glk4/igt@perf_pmu@module-unload.html
+>     - shard-tglu:         NOTRUN -> [FAIL][3]
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15870/shard-tglu-7/igt@perf_pmu@module-unload.html
 > 
->   * igt@xe_exec_system_allocator@many-execqueues-malloc:
->     - bat-bmg-vm:         [PASS][5] -> [DMESG-WARN][6] +1 other test dmesg-warn
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-malloc.html
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-malloc.html
-> 
->   * igt@xe_multigpu_svm@mgpu-pagefault-basic:
->     - bat-bmg-3:          [PASS][7] -> [DMESG-WARN][8]
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-basic.html
->    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-3/igt@xe_multigpu_svm@mgpu-pagefault-basic.html
+>   * igt@perf_pmu@semaphore-busy@vcs1:
+>     - shard-tglu:         [PASS][4] -> [FAIL][5] +4 other tests fail
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9104/shard-tglu-10/igt@perf_pmu@semaphore-busy@vcs1.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15870/shard-tglu-8/igt@perf_pmu@semaphore-busy@vcs1.html
 > 
 
-Unrelated, this only modifies CRI blocklist.
+Unrelated to Xe blocklist.
 
 
 
@@ -147,56 +142,18 @@ Kamil
 > Known issues
 > ------------
 > 
->   Here are the changes found in XEIGTPW_15870_BAT that come from known issues:
+>   Here are the changes found in IGTPW_15870_full that come from known issues:
 > 
 > ### IGT changes ###
 > 
 > #### Issues hit ####
 > 
->   * igt@xe_waitfence@engine:
->     - bat-ptl-2:          [PASS][9] -> [FAIL][10] ([Intel XE#9109])
->    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-ptl-2/igt@xe_waitfence@engine.html
->    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-ptl-2/igt@xe_waitfence@engine.html
+>   * igt@api_intel_bb@blit-reloc-purge-cache:
+>     - shard-dg2:          NOTRUN -> [SKIP][6] ([i915#8411])
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15870/shard-dg2-3/igt@api_intel_bb@blit-reloc-purge-cache.html
+>     - shard-rkl:          NOTRUN -> [SKIP][7] ([i915#8411])
+>    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15870/shard-rkl-2/igt@api_intel_bb@blit-reloc-purge-cache.html
+>     - shard-dg1:          NOTRUN -> [SKIP][8] ([i915#8411]) +1 other test skip
+>    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15870/shard-dg1-17/igt@api_intel_bb@blit-reloc-purge-cache.html
 > 
->   
-> #### Possible fixes ####
-> 
->   * igt@core_hotunplug@unbind-rebind:
->     - bat-bmg-2:          [ABORT][11] ([Intel XE#8007]) -> [PASS][12]
->    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
->    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-> 
->   * igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch:
->     - bat-bmg-1:          [DMESG-WARN][13] -> [PASS][14]
->    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-1/igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch.html
->    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-1/igt@xe_exec_fault_mode@twice-userptr-rebind-prefetch.html
-> 
->   * igt@xe_exec_system_allocator@many-execqueues-free:
->     - bat-bmg-vm:         [DMESG-WARN][15] -> [PASS][16]
->    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-free.html
->    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-vm/igt@xe_exec_system_allocator@many-execqueues-free.html
-> 
->   * igt@xe_multigpu_svm@mgpu-latency-copy-prefetch:
->     - bat-bmg-3:          [DMESG-WARN][17] -> [PASS][18]
->    [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9104/bat-bmg-3/igt@xe_multigpu_svm@mgpu-latency-copy-prefetch.html
->    [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/bat-bmg-3/igt@xe_multigpu_svm@mgpu-latency-copy-prefetch.html
-> 
->   
->   [Intel XE#8007]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8007
->   [Intel XE#9109]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9109
-> 
-> 
-> Build changes
-> -------------
-> 
->   * IGT: IGT_9104 -> IGTPW_15870
->   * Linux: xe-5796-211407639045faaf2eeb884e801d1762b43c837c -> xe-5797-ab82471ddff094939d9981e0647332562c7e1c9b
-> 
->   IGTPW_15870: 15870
->   IGT_9104: a89d58dad0dd62228269a6049b39fc39ae6cf698 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
->   xe-5796-211407639045faaf2eeb884e801d1762b43c837c: 211407639045faaf2eeb884e801d1762b43c837c
->   xe-5797-ab82471ddff094939d9981e0647332562c7e1c9b: ab82471ddff094939d9981e0647332562c7e1c9b
-> 
-> == Logs ==
-> 
-> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15870/index.html
+...cut...
