@@ -4,38 +4,38 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9ACF5C9830B
-	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 20:50:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C075C9830B
+	for <igt-dev@archiver.kernel.org>; Wed, 23 Sep 2026 20:50:44 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 46BE910F1D2;
-	Wed, 23 Sep 2026 20:50:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B38B510F1B6;
+	Wed, 23 Sep 2026 20:50:43 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="N4opUzxW";
+	dkim=pass (2048-bit key; unprotected) header.d=igalia.com header.i=@igalia.com header.b="SaoeNuzv";
 	dkim-atps=neutral
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6F8FD10F1A2;
- Wed, 23 Sep 2026 20:45:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AE64610F1BB;
+ Wed, 23 Sep 2026 20:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
  MIME-Version:Subject:Date:From:From:Reply-To;
- bh=mdQz3tU0YJszlOH9sQguzcG7R9kqcS7kozwbMzdT0PY=; b=N4opUzxWse5TqwQMcKOnaqsYeb
- OYSIZrof9051X6irGsaMZcurD617Wa7Cp2w28QX4q8EV/rt2rgHzul5MMYpN2kjnRa9n64lLTzl/0
- Jpnrf5IliLi+R+yiNk/AiA0Rkq6mTJg8XVLXmkC2q+wI1n2jCfCbymbziYKF2nvhN7n/oX1sK5fCe
- xq1BPwAGlso6keqhmf+NrBAtMIwCkxdjWO/917N9TvadsLYkw5uRlIadPKjU/O4pHEa+NK4fSi7hd
- SwRlzCqmBGEyLwQXI8HUPNDAwAz7JoVO/QonstUwh8As4sseTM8LNOLYjkkGVIoibLHz9zfgjsEbQ
- GOwQKY2w==;
+ bh=z9VdreqYE5bJwUhcE8prIX1EXWlBY3wb8jZtqxubn7I=; b=SaoeNuzvAovQrVi8vq2O3+A+7p
+ NgZZ0nmIo3v+aRqNC2CdfFBjwnCK3tnxS4dedIRiRgrFGsISMwdpo1sBEGk4+Hre4pQnmCBR4wZbS
+ sN54+y2a7Q6mFg3pig53WB7Niycf018mGcvyNVnyAux0IVb3sIyYluxblKhZT+AKv5kZpFDuQ5T+2
+ XkdTCbOShYYSjI6KkwLqrR2h4vHsPRXoOD/Mhohd8HUl/3lvkFvUhfOH+L+IAJ3lvHAF5h1qVb3pb
+ pu7BaCKYdWjzCjAuXhxH5O3ynMh9cWi1QAOeItiI01QexSM3MKNHVbdub03IzF4jEFNbfxzbnUcUD
+ DjpUJkSg==;
 Received: from 179-125-72-1-dinamico.pombonet.net.br ([179.125.72.1]
  helo=[127.0.0.1]) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1x9TqA-006KVk-Vn; Wed, 23 Sep 2026 22:45:18 +0200
+ id 1x9TqF-006KVk-RI; Wed, 23 Sep 2026 22:45:23 +0200
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Date: Wed, 23 Sep 2026 17:44:41 -0300
-Subject: [PATCH i-g-t v7 6/9] lib/amdgpu: add amdgpu support to igt_dmem_driver
+Date: Wed, 23 Sep 2026 17:44:42 -0300
+Subject: [PATCH i-g-t v7 7/9] tests/cgroup_dmem: add dmem cgroup eviction test
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260923-dmem_max-v7-6-194ea47bbb4d@igalia.com>
+Message-Id: <20260923-dmem_max-v7-7-194ea47bbb4d@igalia.com>
 References: <20260923-dmem_max-v7-0-194ea47bbb4d@igalia.com>
 In-Reply-To: <20260923-dmem_max-v7-0-194ea47bbb4d@igalia.com>
 To: igt-dev@lists.freedesktop.org
@@ -64,139 +64,355 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This allows dmem cgroups tests to run on top of amdgpu driver, adding
-support to allocate and release VRAM memory.
+From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 
-This does this by allocating a BO from VRAM domain, which will try to
-place BOs on VRAM, but may fallback to GTT.
+The write_eviction subtest:
+ - Creates a sub-cgroup and moves the test process into it.
+ - Sets a dmem.max limit on the first VRAM region (up to 4 GiB, or
+   the full capacity if smaller).
+- Fills VRAM by repeatedly creating BOs placed in VRAM, depending on card
+  support.
+ - Verifies that cgroup current usage is within the expected range when
+   the limit is hit.
+ - Lowers dmem.max in 128 MiB steps, waiting for usage to follow each
+   reduction.
 
+The write_eviction_interruptible subtest runs the same test with
+SIGCONT signals injected via igt_fork_signal_helper() and reports the
+number of signals received.  When a signal interrupts kernel-side
+eviction, a small BO allocation is used to re-trigger it.
+
+Assisted-by: GitHub Copilot:claude-sonnet-4.6
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 ---
- lib/amdgpu/amd_dmem.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dmem_driver.h |  1 +
- lib/meson.build       |  1 +
- 3 files changed, 92 insertions(+)
+ tests/cgroup_dmem.c | 285 ++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 279 insertions(+), 6 deletions(-)
 
-diff --git a/lib/amdgpu/amd_dmem.c b/lib/amdgpu/amd_dmem.c
-new file mode 100644
-index 000000000000..dd1e9083170b
---- /dev/null
-+++ b/lib/amdgpu/amd_dmem.c
-@@ -0,0 +1,90 @@
-+// SPDX-License-Identifier: MIT
-+/*
+diff --git a/tests/cgroup_dmem.c b/tests/cgroup_dmem.c
+index 2ccd8bdb00ae..5cdb2f8830c8 100644
+--- a/tests/cgroup_dmem.c
++++ b/tests/cgroup_dmem.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: MIT
+ /*
+- * Copyright © 2025 Intel Corporation
++ * Copyright © 2025,2026 Intel Corporation
 + * Copyright © 2026 Valve Corporation
-+ * Authors:
-+ *  Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+  */
+ 
+ /**
+@@ -17,10 +18,217 @@
+  * Test category: uapi
+  */
+ 
++#include <errno.h>
+ #include <inttypes.h>
++#include <signal.h>
++#include <stdatomic.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <unistd.h>
+ 
++#include "drmtest.h"
+ #include "igt.h"
++#include "igt_aux.h"
+ #include "igt_cgroup.h"
++#include "igt_dmem_driver.h"
++
++#define BO_SIZE			SZ_64M
++#define MAX_LIMIT		((uint64_t)4 * SZ_1G)
++#define EVICT_STEP		SZ_128M
++
++#define TEST_INTERRUPTIBLE	(1 << 0)
++
++/**
++ * SUBTEST: simple
++ * DESCRIPTION:
++ *  Creates a cgroup, moves the process into it, enumerates all dmem regions,
++ *  prints their capacity, system-wide current usage, per-cgroup current usage
++ *  and configured limits, then destroys the cgroup.
 + */
 +
-+#include <errno.h>
++/**
++ * SUBTEST: write_eviction
++ * DESCRIPTION:
++ *   Create a dmem cgroup, move the current process into it and set the max
++ *   device memory limit for the first VRAM region to 4 GiB.  Then fill VRAM
++ *   by creating BOs with %DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING (so that the
++ *   physical allocation is deferred until VM_BIND) and binding them into an
++ *   LR VM until the cgroup limit is hit.  Verify that the reported cgroup
++ *   current usage is within the expected range when the error occurs.
++ *   Finally lower the max limit in 256 MiB steps and verify that the cgroup
++ *   usage follows.
++ *   This subtest requires GPU device with at least one VRAM region.
++ */
 +
-+#include "igt.h"
-+#include "igt_cgroup.h"
-+#include "igt_dmem_driver.h"
-+#include "lib/amdgpu/amd_memory.h"
++/**
++ * SUBTEST: write_eviction_interruptible
++ * DESCRIPTION:
++ *   Same as write_eviction but with SIGCONT signals injected throughout via
++ *   igt_fork_signal_helper() to verify that the dmem.max write path handles
++ *   signal interruption correctly.  A signal handler counts received signals
++ *   and the count is reported as debug output at the end of the test.
++ *   A signal interrupts the set-time eviction, and further eviction can be
++ *   triggered by an explicit allocation.
++ *   This subtest requires GPU device with at least one VRAM region.
++ */
 +
-+struct amdgpu_dmem_ctx {
-+	int fd;
-+	amdgpu_device_handle device;
-+};
++static atomic_int signal_count;
++static struct sigaction sigcont_oldact;
 +
-+static int amdgpu_dmem_init(void **ctx, int fd)
++static void sigcont_handler(int sig)
 +{
-+	struct amdgpu_dmem_ctx *actx;
-+	uint32_t major, minor;
-+	int err;
++	atomic_fetch_add(&signal_count, 1);
 +
-+	actx = malloc(sizeof(*actx));
-+	if (!actx)
-+		return -ENOMEM;
++	/* Chain to the previous handler (IGT's dummy sig_handler) */
++	if (sigcont_oldact.sa_handler &&
++	    sigcont_oldact.sa_handler != SIG_IGN &&
++	    sigcont_oldact.sa_handler != SIG_DFL)
++		sigcont_oldact.sa_handler(sig);
++}
 +
-+	err = amdgpu_device_initialize(fd, &major, &minor, &actx->device);
-+	if (err)
-+		goto out;
++static void install_sigcont_counter(void)
++{
++	struct sigaction sa;
 +
-+	actx->fd = fd;
++	atomic_store(&signal_count, 0);
++	igt_fork_signal_helper();
++	/*
++	 * Install the counter after igt_fork_signal_helper() so our handler
++	 * is not overwritten.  Save the old handler so we can chain to it.
++	 */
++	memset(&sa, 0, sizeof(sa));
++	sa.sa_handler = sigcont_handler;
++	sigemptyset(&sa.sa_mask);
++	sigaction(SIGCONT, &sa, &sigcont_oldact);
++}
 +
-+	*ctx = actx;
++static int allocate_vram(void **handles, const struct igt_dmem_driver *drv,
++			 void *ctx, int max_bo, size_t len)
++{
++	int i, err = 0;
 +
-+	return 0;
-+
-+out:
-+	free(actx);
++	for (i = 0; i < max_bo; i++) {
++		err = drv->allocate_vram(ctx, len, &handles[i]);
++		if (err)
++			break;
++	}
++	/* These are expected failures we can ignore. */
++	if (err == -ENOMEM || err == -ENOSPC)
++		err = 0;
++	if (!err)
++		return i;
++	for (i--; i >= 0; i--)
++		drv->free_vram(ctx, handles[i]);
 +
 +	return err;
 +}
 +
-+static void amdgpu_dmem_deinit(void *ctx)
++static void test_write_eviction(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv, void *ctx)
 +{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+
-+	amdgpu_device_deinitialize(actx->device);
-+	free(actx);
-+}
-+
-+static char * amdgpu_dmem_get_region_name(void *ctx)
-+{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+
-+	return amdgpu_cgroup_region_name(actx->fd);
-+}
-+
-+static int amdgpu_dmem_allocate_vram(void *ctx, size_t len, void **ret_handle)
-+{
-+	struct amdgpu_dmem_ctx *actx = ctx;
-+	amdgpu_bo_handle handle;
++	struct igt_cgroup *cg;
++	void **handles;
++	int max_bo;
++	uint64_t current, capacity, cg_max, limit, after;
 +	int err;
 +
-+	err = amdgpu_bo_alloc_wrap(actx->device, len, 4096,
-+				   AMDGPU_GEM_DOMAIN_VRAM, 0, &handle);
-+	if (err)
-+		return err;
++	igt_cgroup_dmem_get_capacity(cg_region, &capacity);
++	igt_require_f(capacity >= 4 * BO_SIZE,
++		      "VRAM capacity (%"PRIu64" MiB) too small to test\n",
++		      capacity / SZ_1M);
 +
-+	if (ret_handle)
-+		*ret_handle = (void *) handle;
++	/*
++	 * Use up to 4 GiB, or the full capacity if the device has less.
++	 * Leave one BO_SIZE worth of headroom so the device isn't completely
++	 * exhausted before the cgroup limit is hit.
++	 */
++	cg_max = min(MAX_LIMIT, capacity - BO_SIZE);
++	cg_max = ALIGN_DOWN(cg_max, EVICT_STEP);
 +
-+	return 0;
++	if (flags & TEST_INTERRUPTIBLE)
++		install_sigcont_counter();
++
++	/* Create cgroup and move into it */
++	cg = igt_cgroup_new("igt_cgroups_test");
++	igt_cgroup_move_current(cg);
++	igt_cgroup_dmem_set_max(cg, cg_region, cg_max, false);
++
++	max_bo = (cg_max / BO_SIZE) + 8; /* headroom for overcommit */
++
++	handles = calloc(max_bo, sizeof(handles[0]));
++	igt_assert_f(handles, "failed to allocate handles array");
++
++	allocate_vram(handles, drv, ctx, max_bo, BO_SIZE);
++
++	igt_cgroup_dmem_get_current(cg, cg_region, &current);
++	igt_debug("After fill: cgroup current = %"PRIu64" MiB, "
++		  "max = %"PRIu64" MiB\n",
++		  current / SZ_1M, cg_max / SZ_1M);
++
++	igt_assert_f(current <= cg_max,
++		     "Usage %"PRIu64" MiB exceeds max %"PRIu64" MiB\n",
++		     current / SZ_1M, cg_max / SZ_1M);
++
++	/* Phase 2: lower max in 128 MiB steps, verify usage follows */
++	limit = cg_max;
++	while (limit >= EVICT_STEP) {
++
++		limit -= EVICT_STEP;
++		igt_cgroup_dmem_set_max(cg, cg_region, limit, false);
++
++		igt_cgroup_dmem_get_current(cg, cg_region, &after);
++		igt_debug("Lowered max to %"PRIu64" MiB: usage = %"PRIu64" MiB\n",
++			  limit / SZ_1M, after / SZ_1M);
++
++		if (limit > EVICT_STEP) {
++			if ((flags & TEST_INTERRUPTIBLE) && after > limit) {
++				/* Let a new bo creation trigger eviction. */
++				void *handle;
++				err = drv->allocate_vram(ctx, BO_SIZE / 8, &handle);
++				igt_assert_f(err == 0,
++					"Error trying to allocate more VRAM to trigger eviction.");
++				drv->free_vram(ctx, handle);
++
++				igt_cgroup_dmem_get_current(cg, cg_region, &after);
++				igt_debug("Forced eviction max is %"PRIu64
++					  " MiB: usage = %"PRIu64" MiB\n",
++					  limit / SZ_1M, after / SZ_1M);
++			}
++
++			igt_assert_f(after <= limit,
++				     "Usage %"PRIu64" MiB did not follow max %"PRIu64" MiB\n",
++				     after / SZ_1M, limit / SZ_1M);
++		}
++	}
++
++	if (flags & TEST_INTERRUPTIBLE) {
++		igt_stop_signal_helper();
++		igt_info("Signals received during test: %d\n",
++			 atomic_load(&signal_count));
++	}
++
++	/* Cleanup */
++	igt_cgroup_dmem_set_max(cg, cg_region, IGT_CGROUP_DMEM_MAX, false);
 +}
 +
-+static void amdgpu_dmem_free_vram(void *ctx, void *handle)
-+{
-+	amdgpu_bo_free(handle);
-+}
-+
-+const struct igt_dmem_driver amdgpu_dmem_driver = {
-+	.name = "amdgpu",
-+	.get_region_name = amdgpu_dmem_get_region_name,
-+	.init = amdgpu_dmem_init,
-+	.deinit = amdgpu_dmem_deinit,
-+	.allocate_vram = amdgpu_dmem_allocate_vram,
-+	.free_vram = amdgpu_dmem_free_vram,
++static const struct {
++	const char *name;
++	void (*test_fn)(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv, void *ctx);
++	unsigned int flags;
++} subtests[] = {
++	{ "write_eviction", test_write_eviction, 0 },
++	{ "write_eviction_interruptible", test_write_eviction, TEST_INTERRUPTIBLE },
++	{ }
 +};
-diff --git a/lib/igt_dmem_driver.h b/lib/igt_dmem_driver.h
-index 821ccb7a29a9..ad739c536435 100644
---- a/lib/igt_dmem_driver.h
-+++ b/lib/igt_dmem_driver.h
-@@ -31,5 +31,6 @@ struct igt_dmem_driver {
- };
++
++static const struct {
++	int driver_flag;
++	const struct igt_dmem_driver *driver;
++} drivers[] = {
++	{ DRIVER_XE, &xe_dmem_driver },
++	{ DRIVER_AMDGPU, &amdgpu_dmem_driver },
++	{ },
++};
  
- extern const struct igt_dmem_driver xe_dmem_driver;
-+extern const struct igt_dmem_driver amdgpu_dmem_driver;
+ IGT_TEST_DESCRIPTION("Exercises the cgroup v2 dmem controller interface.");
  
- #endif
-diff --git a/lib/meson.build b/lib/meson.build
-index c5d35bc8e88e..b9075ff37631 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -207,6 +207,7 @@ if libdrm_amdgpu.found()
- 		'amdgpu/amd_mmd_shared.c',
- 		'amdgpu/amd_jpeg_shared.c',
- 		'amdgpu/amd_utils.c',
-+		'amdgpu/amd_dmem.c',
- 		'amdgpu/amd_vcn_shared.c'
- 	]
- 	if libdrm_amdgpu.version().version_compare('> 2.4.99')
+@@ -32,7 +240,7 @@ static void fmt_bytes(uint64_t v, char *buf, size_t len)
+ 		snprintf(buf, len, "%" PRIu64, v);
+ }
+ 
+-int igt_simple_main()
++static void simple_cgroup(void)
+ {
+ 	struct igt_cgroup *cg;
+ 	const char *region;
+@@ -42,10 +250,6 @@ int igt_simple_main()
+ 	char min_s[32], low_s[32], max_s[32];
+ 	int i;
+ 
+-	igt_require_f(igt_cgroup_dmem_available(),
+-		      "No dmem regions found; is cgroup v2 with the "
+-		      "dmem controller available?\n");
+-
+ 	cg = igt_cgroup_new("igt-cgroup-dmem-test");
+ 	igt_assert_f(cg, "Failed to create cgroup\n");
+ 
+@@ -89,3 +293,72 @@ int igt_simple_main()
+ 
+ 	igt_cgroup_dmem_regions_free(regions);
+ }
++
++int igt_main()
++{
++	igt_fixture() {
++		igt_require_f(getuid() == 0, "Test requires root\n");
++		/* Check dmem cgroup controller is available before doing anything else */
++		igt_require_f(igt_cgroup_dmem_available(),
++			      "dmem cgroup controller not available (no cgroup v2 or no registered regions)\n");
++
++	}
++
++	igt_subtest("simple")
++		simple_cgroup();
++
++	for (int d = 0; drivers[d].driver; d++) {
++
++		int fd = -1;
++
++		for (int i = 0; subtests[i].name; i++) {
++			igt_subtest_group() {
++
++				int ret = -1;
++				char *cg_region = NULL;
++				void *ctx = NULL;
++
++				igt_fixture() {
++					igt_cgroup_exit_current();
++					if (fd >= 0) {
++						int new_fd;
++						new_fd = drm_reopen_driver(fd);
++						drm_close_driver(fd);
++						fd = new_fd;
++					} else {
++						fd = drm_open_driver(drivers[d].driver_flag);
++					}
++					igt_require_f(fd >= 0,
++						"No %s device found, skipping\n",
++						drivers[d].driver->name);
++					ret = drivers[d].driver->init(&ctx, fd);
++					igt_require_f(ret == 0,
++						"Failed to initialize %s device, skipping\n",
++						drivers[d].driver->name);
++					cg_region = drivers[d].driver->get_region_name(ctx);
++					igt_require_f(cg_region, "Region not tracked by dmem cgroup controller\n");
++				}
++
++				igt_subtest_f("%s-%s", drivers[d].driver->name, subtests[i].name)
++					subtests[i].test_fn(fd, cg_region, subtests[i].flags, drivers[d].driver, ctx);
++
++				igt_fixture() {
++
++					if (subtests[i].flags & TEST_INTERRUPTIBLE)
++						igt_stop_signal_helper();
++
++					if (!ret)
++						drivers[d].driver->deinit(ctx);
++					free(cg_region);
++				}
++
++			}
++		}
++
++		igt_fixture() {
++			if (fd >= 0)
++				drm_close_driver(fd);
++		}
++
++	}
++}
 
 -- 
 2.47.3
