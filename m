@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD077C98311
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Sep 2026 10:05:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67800C98314
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Sep 2026 10:24:59 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 639F710F413;
-	Thu, 24 Sep 2026 10:05:49 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1591E10F416;
- Thu, 24 Sep 2026 10:05:01 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5825517342199331755=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0CFDB10F455;
+	Thu, 24 Sep 2026 10:24:59 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RztutVzb";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 83A9710F452
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2026 10:24:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790245450; x=1821781450;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=jymlKJEGhzFrh+J8FsBdIbD2Tw9v8d2KGeuyJA18Nd0=;
+ b=RztutVzbutFEdpvYPC7/0nz+9JtSq5ZPSc4oM+2N6dlLKYSs4dTmYhcl
+ u2Uy7RmHvCKda/UqpyEUCrcMD5LvXOq/JnIZun4HiZBJ6SF1F3AoL2ftR
+ NGRrncBBxiqVVfvSlbeVHjUsb2+RLuQLkTXWkifnM1Ryv/5kHiC+mWbFy
+ /sd/wJYyJFuiWoanb8DaKXXcnkF5htUTRGdo2krzYYseQCeyNFWrG/Wtx
+ pMjVFOySOXBOqEiA6gmTh8Ak7bVhEvqNdkN76ztuoHOsmZN7zNPIbFj9S
+ VKOEfkqkNXDD708Lsc+/sBjeHwmMOwB7WbuTioCmsdyh8IAXya10j2bxu Q==;
+X-CSE-ConnectionGUID: IzMqeO6ZR8afVKITEixf5A==
+X-CSE-MsgGUID: 5/T4K+WlTMy2rPbF7AWSng==
+X-IronPort-AV: E=McAfee;i="6800,10657,11914"; a="90133929"
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; d="scan'208";a="90133929"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2026 03:24:10 -0700
+X-CSE-ConnectionGUID: dDKW7O/PTl+6bmHg/d6hkA==
+X-CSE-MsgGUID: OI8jXShSSLK9cXLv4oCQdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,120,1787036400"; d="scan'208";a="301918976"
+Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.149])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Sep 2026 03:24:08 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Mark Yacoub <markyacoub@google.com>, Ryszard Knop <ryszard.knop@intel.com>,
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: [PATCH i-g-t v2] meson: Bump meson version to 1.3.0
+Date: Thu, 24 Sep 2026 12:24:04 +0200
+Message-ID: <20260924102404.86580-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fatomic=3A_ski?=
- =?utf-8?q?p_missing_CRTC_props_in_state_snapshot?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Aurabindo Pillai" <aurabindo.pillai@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 24 Sep 2026 10:05:01 -0000
-Message-ID: <179024430108.202183.6035419626594914618@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260923152113.1513938-1-aurabindo.pillai@amd.com>
-In-Reply-To: <20260923152113.1513938-1-aurabindo.pillai@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,177 +68,119 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5825517342199331755==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Bump meson version to 1.3.0 and update minimal version used in
+fedora Dokerfile. Also, update some old deprecated functions with
+a new ones.
 
-== Series Details ==
+v2: update fedora dockerfile (Kamil)
 
-Series: tests/kms_atomic: skip missing CRTC props in state snapshot
-URL   : https://patchwork.freedesktop.org/series/174822/
-State : success
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Mark Yacoub <markyacoub@google.com>
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/206
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ Dockerfile.build-fedora     | 2 +-
+ data/meson.build            | 4 +++-
+ lib/meson.build             | 4 ++--
+ meson.build                 | 2 +-
+ runner/testdata/meson.build | 7 +++----
+ 5 files changed, 10 insertions(+), 9 deletions(-)
 
-== Summary ==
+diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
+index a65f1030d..26d069d55 100644
+--- a/Dockerfile.build-fedora
++++ b/Dockerfile.build-fedora
+@@ -46,6 +46,6 @@ RUN dnf install -y findutils
+ 
+ # Meson version switching shenanigans
+ RUN dnf install -y python3-pip
+-RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/43/9a/e0bcec70d290986c6265d32e0a2d16ace7ef38f58aa5a65308967129d094/{meson-0.52.1.tar.gz}"
++RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/aa/2c/75bcc2722460ef94a9eb3231f6b3466d04a1766ddcd7d660a11ee1cee53a/{meson-1.3.0.tar.gz}"
+ 
+ RUN dnf clean all
+diff --git a/data/meson.build b/data/meson.build
+index 9490d20ac..8898c27e3 100644
+--- a/data/meson.build
++++ b/data/meson.build
+@@ -1,3 +1,5 @@
++fs = import('fs')
++
+ image_files = [
+   '1080p-left.png',
+   '1080p-right.png',
+@@ -5,7 +7,7 @@ image_files = [
+ ]
+ 
+ foreach img : image_files
+-      configure_file(output:img, input:img, copy:true)
++	fs.copyfile(img)
+ endforeach
+ 
+ install_data(sources : image_files, install_dir : datadir)
+diff --git a/lib/meson.build b/lib/meson.build
+index f3e6d9669..66558d5d3 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -218,7 +218,7 @@ if libdrm_amdgpu.found()
+ 	if llvm_mc_prog.found()
+ 		add_project_arguments('-DAMDGPU_LLVM_ENABLED', language : ['c'])
+ 		lib_sources += ['amdgpu/shaders/amd_llvm_asm.c']
+-		message('Found ' + llvm_mc_prog.path() + ' enabling runtime AMDGPU ISA assembly')
++		message('Found ' + llvm_mc_prog.full_path() + ' enabling runtime AMDGPU ISA assembly')
+ 	else
+ 		lib_sources += ['amdgpu/shaders/amd_llvm_asm_stub.c']
+ 		message('llvm-mc not found: using stub implementation (tests will skip)')
+@@ -295,7 +295,7 @@ foreach f: iga64_assembly_sources
+ 	iga64_codes_targets += custom_target(name,
+ 		input: [ f + '.gen.iga64_codes.c', libiga64_asms.extract_objects(f) ],
+ 		output: name,
+-		depend_files: [ 'iga64_macros.h', generate_iga64_codes.path() ],
++		depend_files: [ 'iga64_macros.h', generate_iga64_codes.full_path() ],
+ 		command: [ 'env', 'IGT_SRCDIR=@SOURCE_ROOT@', generate_iga64_codes, '-o', '@OUTPUT@', '-i', '@INPUT0@', '@INPUT1@' ],
+ 		console: true,
+ 	)
+diff --git a/meson.build b/meson.build
+index 980fb6421..b05385795 100644
+--- a/meson.build
++++ b/meson.build
+@@ -7,7 +7,7 @@ project('igt-gpu-tools', 'c',
+           'buildtype=debugoptimized',
+         ],
+ 	license : 'MIT',
+-	meson_version : '>=0.52.1')
++	meson_version : '>=1.3.0')
+ 
+ if get_option('b_ndebug') != 'false'
+ 	error('Building without -Db_ndebug=false is not supported')
+diff --git a/runner/testdata/meson.build b/runner/testdata/meson.build
+index 1f8225918..574067cdb 100644
+--- a/runner/testdata/meson.build
++++ b/runner/testdata/meson.build
+@@ -1,3 +1,4 @@
++fs = import('fs')
+ 
+ testdata_progs = [ 'successtest',
+ 		   'no-subtests',
+@@ -17,10 +18,8 @@ foreach prog : testdata_progs
+ 					   install : false)
+ endforeach
+ 
+-configure_file(input : 'test-blacklist.txt',
+-	       output : 'test-blacklist.txt', copy : true)
+-configure_file(input : 'test-blacklist2.txt',
+-	       output : 'test-blacklist2.txt', copy : true)
++fs.copyfile('test-blacklist.txt')
++fs.copyfile('test-blacklist2.txt')
+ 
+ testdata_list = custom_target('testdata_testlist',
+ 			      output : 'test-list.txt',
+-- 
+2.55.0
 
-CI Bug Log - changes from IGT_9111 -> IGTPW_15890
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/index.html
-
-Participating hosts (39 -> 38)
-------------------------------
-
-  Missing    (1): bat-dg2-13 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15890 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_auth@basic-auth:
-    - bat-adlp-6:         [PASS][1] -> [DMESG-WARN][2] ([i915#15673])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-adlp-6/igt@core_auth@basic-auth.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/bat-adlp-6/igt@core_auth@basic-auth.html
-
-  * igt@kms_pm_rpm@basic-rte:
-    - bat-dg2-8:          [PASS][3] -> [DMESG-WARN][4] ([i915#17206])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-dg2-8/igt@kms_pm_rpm@basic-rte.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/bat-dg2-8/igt@kms_pm_rpm@basic-rte.html
-
-  
-#### Possible fixes ####
-
-  * igt@core_debugfs@read-all-entries:
-    - bat-adlp-6:         [DMESG-WARN][5] ([i915#15673]) -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-adlp-6/igt@core_debugfs@read-all-entries.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/bat-adlp-6/igt@core_debugfs@read-all-entries.html
-
-  
-#### Warnings ####
-
-  * igt@kms_psr@psr-sprite-plane-onoff:
-    - bat-dg2-8:          [SKIP][7] ([i915#1072] / [i915#9732]) -> [SKIP][8] ([i915#9688]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-dg2-8/igt@kms_psr@psr-sprite-plane-onoff.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/bat-dg2-8/igt@kms_psr@psr-sprite-plane-onoff.html
-
-  
-  [i915#1072]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#17206]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17206
-  [i915#9688]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9688
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9111 -> IGTPW_15890
-
-  CI-20190529: 20190529
-  CI_DRM_19210: 703cd271db3a35088460ab3fec0a96bd48e7fe04 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15890: f0219c1f66edea612b4009d3f86b585e14f818cd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9111: 4aeabf104b136437d0ccc57caf32a752587d595c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/index.html
-
---===============5825517342199331755==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_atomic: skip missing CRTC props in state snapshot</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174822/">https://patchwork.freedesktop.org/series/174822/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9111 -&gt; IGTPW_15890</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15890 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@core_auth@basic-auth:</p>
-<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-adlp-6/igt@core_auth@basic-auth.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/bat-adlp-6/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-rte:</p>
-<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-dg2-8/igt@kms_pm_rpm@basic-rte.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/bat-dg2-8/igt@kms_pm_rpm@basic-rte.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17206">i915#17206</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@core_debugfs@read-all-entries:<ul>
-<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-adlp-6/igt@core_debugfs@read-all-entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/bat-adlp-6/igt@core_debugfs@read-all-entries.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h4>Warnings</h4>
-<ul>
-<li>igt@kms_psr@psr-sprite-plane-onoff:<ul>
-<li>bat-dg2-8:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-dg2-8/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1072">i915#1072</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15890/bat-dg2-8/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9688">i915#9688</a>) +3 other tests skip</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9111 -&gt; IGTPW_15890</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19210: 703cd271db3a35088460ab3fec0a96bd48e7fe04 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15890: f0219c1f66edea612b4009d3f86b585e14f818cd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9111: 4aeabf104b136437d0ccc57caf32a752587d595c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5825517342199331755==--
