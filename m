@@ -4,102 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A77CFC98310
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Sep 2026 08:01:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E9D8C98311
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Sep 2026 08:42:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5116510F38C;
-	Thu, 24 Sep 2026 08:01:14 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Fn+ReAAm";
-	dkim-atps=neutral
-Received: from BL0PR03CU003.outbound.protection.outlook.com
- (mail-eastusazon11012061.outbound.protection.outlook.com [52.101.53.61])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 55A9110F38D
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2026 07:53:28 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ie4Mp9hqH99wjo0cwBHn5zX30lIJIkKEa2nokE19ZWq+sL3uoDmXF5UIBPuHyLKvwFPWgrE4dsJG4IYw4QoZQ1vXQOL+lV2OIzGdzwf2NBbZ0IVacad8BecqMgGTL3pXTeuQ/DVKPvp+G9uwdMsNO4AtG0UY+E/gdIQ+1539ThQOrja6vy8qG6ownigOD+pdi7IH/PZ9ih7UyApVQt2OaXhr/GY+gaEtgmCYFg7o1rmRWTkGnfkZ176mu2q3YEPXds14PYjLwA+dwte1ax0UgDRBSDX3Q43UsAkwBL72mKfUYlJdK0v7k/uUAl03TwA75dhQgaZzh8U3EyZsBqloNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7NHYuO6sDGiNG4edOwgZ/sZlWq8nk3OASGTvh5OJ3XM=;
- b=CD0Lqjrzb8++tTWGFbtmv1EdUt206e0yIPHpsC8AfTO70OGKgBErX08PVzEujxqp+ZsgLzbxzgfRqEuMILan8pi5cimfIgWp9Xm/B3EaHmjJRBJXJACoGvXcG+e8gxUri70g6s14KjXQfmKfZwr3FrbYcD3ykj5vRYVRwbkT+X5LUMA/vwej4lPfjPvFQ3VB7k1tiGyhIUXuaSta7LtG9quQVz7WsaZDIw/ToDgQoX68cAtAUdfCZiMD1JlYstG17oruKsA/ANM9gemxcVkND1MKDNvqo6is7Ly2n1/zYIOBQlcELwexJ/l3u6Sf7d5AfOBWrPBSjrBg6FksarQo9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7NHYuO6sDGiNG4edOwgZ/sZlWq8nk3OASGTvh5OJ3XM=;
- b=Fn+ReAAmgKrAaFIFxK/3HWCJN2x92tRtQDfMjXB0ZD0jCCaFPrBck84syZhyt3dhM/7ZUs96XwOUslC6ify1csUn6UhBnIovMmg8u9vzsdJ/rkv6Vd5f8ytTHsEX26lAm8AH+hYOPRIbMR6OYv7yXgmfVB+zpiuBFqyoymlm0Rg=
-Received: from BN0PR04CA0046.namprd04.prod.outlook.com (2603:10b6:408:e8::21)
- by CH1PR12MB9672.namprd12.prod.outlook.com (2603:10b6:610:2b0::20)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
- 2026 07:53:23 +0000
-Received: from BL6PEPF00020E61.namprd04.prod.outlook.com
- (2603:10b6:408:e8:cafe::20) by BN0PR04CA0046.outlook.office365.com
- (2603:10b6:408:e8::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.17 via Frontend Transport; Thu,
- 24 Sep 2026 07:53:23 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL6PEPF00020E61.mail.protection.outlook.com (10.167.249.22) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Thu, 24 Sep 2026 07:53:23 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 24 Sep
- 2026 02:53:22 -0500
-Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 24 Sep 2026 02:53:15 -0500
-From: Jesse Zhang <Jesse.Zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Jesse Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>, Claude
- <noreply@anthropic.com>
-Subject: [PATCH i-g-t v2 3/3] tests/amdgpu: add userq wptr-offset checks to
- amd_fuzzing
-Date: Thu, 24 Sep 2026 15:51:58 +0800
-Message-ID: <20260924075300.172142-3-Jesse.Zhang@amd.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20260924075300.172142-1-Jesse.Zhang@amd.com>
-References: <20260924075300.172142-1-Jesse.Zhang@amd.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1C14310E965;
+	Thu, 24 Sep 2026 08:42:01 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9479810F3BA;
+ Thu, 24 Sep 2026 08:41:18 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8117256883601069933=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00020E61:EE_|CH1PR12MB9672:EE_
-X-MS-Office365-Filtering-Correlation-Id: d25803af-3f95-4a8b-10ec-08df1a10e869
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|36860700016|1800799024|82310400026|376014|11063799006|56012099006|6123799006|22082099003|18002099003|10067099003|6133799003;
-X-Microsoft-Antispam-Message-Info: tnSCMW/G8iBzPU1spv/yStkFMLHyp80ZSono/nh69lp5SUBoeUKg5w1IAytJMuo3e9q6DT530f2ZeRd7bR0gF38ECuvpIWFQwZb6W61RFbLXfdruJZptXKaaEl45zyRgt+O+u/uURAGHtZpGCvjG3z0ADuIl/RDZGwnQ+kYATHzNvPYXNTKl0xP3xZhL/jwYoGOX3GTN868RMNKbnq4+51g31uz0lfAAENTmwRrs2iqMXwoEwbykz8EyX7yBMbvzJOS47FIx511qrnU/5UE23fzqO1ge/5sbgc0tJELijDo1GmPVufOdsWtESc35VD6/2cAdqeoNAu2aMXXhbLoXHDUEsm0b/qKuUk8an7Slmm86yKijvcSwFeT5cjQpP/MefC0mn6+QUPthv0WsgpGAxl30UFeVsaKVOBGXdEIzpPw/bvXWQA9aOafF9HicQgVc5DOqCdoiGDKGqIujCURqR9Fu3J3AqhM1EPfK2+bQ00Xf1rZfyVUwuR8k+g3p6ocXW+tvk1WL4DWI+qX5SOPQvgjF1QlpGWGMRGRElnERiPG4H0PkOxoeDi6S5Q5EfCYwHd+YaUKZtULbCZ1FYhoq7/50RSwWaU7QywIFaIuLX4hblv2xEsH07QIfcxqhe8wyS2VTsAiAWh8GM80K4itIrzA7UbtBG4iLWyt9494cnajdE8ZKiuIl8xkyOOXqFE8EztSZie4NFtcfT8YeXahbWQ==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(23010399003)(36860700016)(1800799024)(82310400026)(376014)(11063799006)(56012099006)(6123799006)(22082099003)(18002099003)(10067099003)(6133799003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 9h7sg9huJSN9YFoVMycJTqkrughDtd2dFDJ7Z6y5+dXaIuoTylmkdQFkT6fsF/G4IdX+welxNBF5EihLB8Ikz0HanTP51MGNn4+cUf0PTWRK50hcDDVgVOhckvPQLNIJSmQWUByphOTHpT+xM4nChBx7mWDXWjvp7LHEZF8bShfPb1hbF5GaRIqnf6BwTupMHi9hw85kQZui8uAHYiHFTkkdTJZ45dWNOVDVVJf//ftSjsop7UooXhZhgIs6cn1+eZp/iJbKogcW2dwz5bQHoNn/VeTzbXpFdTzV9XvZ7k8tMXYI8So6MyPSrtlLN0fQnb4bEEsGCTPSl6DefRgjOSC2Hj5rNlEahDpNSXJH+LKbylbIDbm5nbHd8pwqGjQ4/iYeZ9G4WLjCIu0fSHkNDKabGVgdnqc1GfnMB8kZGz3X1JUZoAmKpG4at+tTdru7
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 07:53:23.0460 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d25803af-3f95-4a8b-10ec-08df1a10e869
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL6PEPF00020E61.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9672
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_series_starting_with_=5Bi?=
+ =?utf-8?q?-g-t=2C1/3=5D_include/drm-uapi/amdgpu=3A_add_queue_id_to_user_que?=
+ =?utf-8?q?ue_wait_IOCTL?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 24 Sep 2026 08:41:18 -0000
+Message-ID: <179023927860.202121.12726726989519245441@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260924074500.169386-1-Jesse.Zhang@amd.com>
+In-Reply-To: <20260924074500.169386-1-Jesse.Zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,268 +38,220 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add three subtests exercising the userq wptr read path with the wptr
-placed at a non-zero offset inside its BO:
+--===============8117256883601069933==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-- userq-wptr-offset-fence-sdma: discriminating check. Places the wptr at
-  a non-zero BO offset, writes a known value there and poisons offset 0,
-  then issues USERQ_SIGNAL + USERQ_WAIT and asserts the returned fence
-  value equals the value at the wptr offset. A kernel that reads BO
-  offset 0 returns the poison value and fails. Does not depend on the
-  queue executing an IB.
-- userq-wptr-offset-{gfx,sdma}: end-to-end submit with the wptr at a
-  non-zero offset; requires firmware that can schedule the queue.
+== Series Details ==
 
-Uses the ip_block userq_create/submit/destroy indirection and the
-wptr_offset knob on struct amdgpu_ring_context.
+Series: series starting with [i-g-t,1/3] include/drm-uapi/amdgpu: add queue id to user queue wait IOCTL
+URL   : https://patchwork.freedesktop.org/series/174879/
+State : failure
 
-v2: delete change-id
+== Summary ==
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Co-Authored-By: Claude <noreply@anthropic.com>
----
- tests/amdgpu/amd_fuzzing.c | 204 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 204 insertions(+)
+CI Bug Log - changes from IGT_9111 -> IGTPW_15894
+====================================================
 
-diff --git a/tests/amdgpu/amd_fuzzing.c b/tests/amdgpu/amd_fuzzing.c
-index 9d7468ea4..36dd5d388 100644
---- a/tests/amdgpu/amd_fuzzing.c
-+++ b/tests/amdgpu/amd_fuzzing.c
-@@ -8,6 +8,7 @@
- #include "lib/amdgpu/amd_ip_blocks.h"
- #include "lib/amdgpu/amd_PM4.h"
- #include "lib/amdgpu/amd_sdma.h"
-+#include "lib/amdgpu/amd_command_submission.h"
- #include "lib/ioctl_wrappers.h"
- 
- #include <errno.h>
-@@ -23,6 +24,17 @@
- #define AMD_CONC_THREADS 4
- #define AMD_CONC_ITERS   128
- 
-+/* Bounded wait so a buggy kernel fails instead of hanging into a GPU reset. */
-+#define WPTR_SUBMIT_TIMEOUT_NS (5ULL * 1000 * 1000 * 1000)
-+/* 8-byte aligned, < PAGE_SIZE: wptr lands in the middle of its BO. */
-+#define WPTR_TEST_OFFSET       2048
-+/* Known wptr value placed at WPTR_TEST_OFFSET; distinct from the offset-0
-+ * poison so a kernel that ignores the offset returns the wrong value. */
-+#define WPTR_TEST_VALUE        32
-+/* Poison at BO offset 0, distinct from WPTR_TEST_VALUE: a kernel that ignores
-+ * the wptr offset reads this instead of WPTR_TEST_VALUE. */
-+#define WPTR_POISON_VALUE      8
-+
- #ifdef AMDGPU_USERQ_ENABLED
- struct amd_test_userq_ctx;
- 
-@@ -2712,6 +2724,180 @@ amd_userq_concurrent_fuzzing(int fd, amdgpu_device_handle dev,
- 			 amd_userq_ip_name(ip_type));
- 	}
- }
-+
-+/*
-+ * Directly exercise the wptr read path: the userq wptr may sit at a non-zero
-+ * offset inside its BO. USERQ_SIGNAL reads that wptr and uses it as the seqno
-+ * of the exported userq fence, which USERQ_WAIT returns as the fence value.
-+ * With the wptr at a non-zero BO offset, a kernel that reads BO offset 0 gets
-+ * the poison value instead of WPTR_TEST_VALUE, so the returned fence value is
-+ * wrong and this test fails.
-+ *
-+ * The queue is only signalled, never activated (its doorbell is never rung),
-+ * so no IB executes. On teardown the kernel finds the queue was never mapped
-+ * to a HW slot and force-completes its fence, so destroy does not block. This
-+ * checks the wptr read path directly and does not depend on the firmware being
-+ * able to schedule the queue.
-+ */
-+static void
-+amd_userq_wptr_offset_fence(amdgpu_device_handle device, unsigned int ip_type)
-+{
-+	struct amdgpu_ring_context *ring_context;
-+	const struct amdgpu_ip_block_version *ip_block;
-+	struct drm_amdgpu_userq_fence_info fence_info = { 0 };
-+	struct drm_amdgpu_userq_signal signal_data = { 0 };
-+	struct drm_amdgpu_userq_wait wait_data = { 0 };
-+	uint32_t syncobj;
-+	int r;
-+
-+	ip_block = get_ip_block(device, ip_type);
-+	igt_require(ip_block);
-+	igt_require(ip_block->funcs->userq_create);
-+
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	igt_assert(ring_context);
-+
-+	ring_context->user_queue = true;
-+	/* Place the wptr away from BO offset 0; the lib poisons offset 0. */
-+	ring_context->wptr_offset = WPTR_TEST_OFFSET;
-+
-+	ip_block->funcs->userq_create(device, ring_context, ip_type);
-+
-+	r = amdgpu_cs_create_syncobj(device, &syncobj);
-+	igt_assert_eq(r, 0);
-+
-+	/*
-+	 * Seed offset 0 with a poison value distinct from WPTR_TEST_VALUE and
-+	 * place the real wptr at WPTR_TEST_OFFSET. A kernel that ignores the
-+	 * offset reads the poison instead of WPTR_TEST_VALUE.
-+	 */
-+	*(volatile uint64_t *)((uint8_t *)ring_context->wptr_cpu -
-+			       WPTR_TEST_OFFSET) = WPTR_POISON_VALUE;
-+	*ring_context->wptr_cpu = WPTR_TEST_VALUE;
-+	__sync_synchronize();
-+
-+	/* USERQ_SIGNAL reads the wptr and uses it as the fence seqno. */
-+	signal_data.queue_id = ring_context->queue_id;
-+	signal_data.syncobj_handles = (uintptr_t)&syncobj;
-+	signal_data.num_syncobj_handles = 1;
-+	r = amdgpu_userq_signal(device, &signal_data);
-+	igt_assert_eq(r, 0);
-+
-+	/* USERQ_WAIT returns the fence va/value pair for the syncobj. */
-+	wait_data.waitq_id = ring_context->queue_id;
-+	wait_data.syncobj_handles = (uintptr_t)&syncobj;
-+	wait_data.num_syncobj_handles = 1;
-+	wait_data.num_fences = 1;
-+	wait_data.out_fences = (uintptr_t)&fence_info;
-+	r = amdgpu_userq_wait(device, &wait_data);
-+	igt_assert_eq(r, 0);
-+
-+	igt_assert_eq_u32(wait_data.num_fences, 1);
-+
-+	amdgpu_cs_destroy_syncobj(device, syncobj);
-+
-+	/*
-+	 * Do not call the explicit USERQ_DESTROY ioctl here: it cancels the
-+	 * queue's hang-detect worker and then waits for the last fence, which
-+	 * never completes because the queue was never executed. The queue (and
-+	 * its fence) are reclaimed when the device fd is closed at the end of
-+	 * the test, where the teardown path force-completes the fence. Leak the
-+	 * small ring_context allocation to keep the wptr BO mapping alive until
-+	 * then.
-+	 */
-+
-+	/*
-+	 * The core assertion: the fence value must equal the wptr written at
-+	 * WPTR_TEST_OFFSET. A kernel that ignores the offset reads BO offset 0
-+	 * and returns the poison value instead.
-+	 */
-+	igt_assert_eq_u64(fence_info.value, WPTR_TEST_VALUE);
-+}
-+
-+/*
-+ * End-to-end variant: submit a real IB with the wptr at a non-zero offset and
-+ * wait for completion. Requires firmware that can schedule the user queue. On
-+ * a kernel that mishandles the wptr offset the completion fence never signals;
-+ * the bounded wait inside submit then fails its igt_assert, failing this test.
-+ */
-+static void
-+amd_userq_wptr_offset_submit(amdgpu_device_handle device, unsigned int ip_type)
-+{
-+	const int write_length = 128;
-+	const int pm4_dw = 256;
-+	struct amdgpu_ring_context *ring_context;
-+	const struct amdgpu_ip_block_version *ip_block;
-+	struct timespec ts = {};
-+	int r;
-+
-+	ip_block = get_ip_block(device, ip_type);
-+	igt_require(ip_block);
-+	igt_require(ip_block->funcs->userq_create);
-+
-+	ring_context = calloc(1, sizeof(*ring_context));
-+	igt_assert(ring_context);
-+
-+	ring_context->write_length = write_length;
-+	ring_context->pm4 = calloc(pm4_dw, sizeof(*ring_context->pm4));
-+	igt_assert(ring_context->pm4);
-+	ring_context->pm4_size = pm4_dw;
-+	ring_context->res_cnt = 1;
-+	ring_context->user_queue = true;
-+	/* The knob under test: place the wptr away from BO offset 0. */
-+	ring_context->wptr_offset = WPTR_TEST_OFFSET;
-+	/*
-+	 * Bound the submit wait so a broken kernel fails deterministically.
-+	 * amdgpu_cs_syncobj_wait() takes an absolute CLOCK_MONOTONIC deadline,
-+	 * so add the bound to the current time rather than passing a relative
-+	 * value (which would be a past timestamp and time out immediately).
-+	 */
-+	clock_gettime(CLOCK_MONOTONIC, &ts);
-+	ring_context->time_out = ts.tv_sec * NSEC_PER_SEC + ts.tv_nsec +
-+				 WPTR_SUBMIT_TIMEOUT_NS;
-+
-+	ip_block->funcs->userq_create(device, ring_context, ip_type);
-+
-+	r = amdgpu_bo_alloc_and_map_sync(device,
-+					 write_length * sizeof(uint32_t), 4096,
-+					 AMDGPU_GEM_DOMAIN_GTT, 0,
-+					 AMDGPU_VM_MTYPE_UC,
-+					 &ring_context->bo,
-+					 (void **)&ring_context->bo_cpu,
-+					 &ring_context->bo_mc,
-+					 &ring_context->va_handle,
-+					 ring_context->timeline_syncobj_handle,
-+					 ++ring_context->point, true);
-+	igt_assert_eq(r, 0);
-+
-+	r = amdgpu_timeline_syncobj_wait(device,
-+					 ring_context->timeline_syncobj_handle,
-+					 ring_context->point);
-+	igt_assert_eq(r, 0);
-+
-+	memset((void *)ring_context->bo_cpu, 0,
-+	       write_length * sizeof(uint32_t));
-+	ring_context->resources[0] = ring_context->bo;
-+
-+	ip_block->funcs->write_linear(ip_block->funcs, ring_context,
-+				      &ring_context->pm4_dw);
-+
-+	amdgpu_test_exec_cs_helper(device, ip_type, ring_context, 0);
-+
-+	/*
-+	 * write_length is in bytes; write_linear emits write_length/4 deadbeef
-+	 * DWORDs, so compare with div=4 to check exactly the DWORDs written.
-+	 */
-+	r = ip_block->funcs->compare(ip_block->funcs, ring_context, 4);
-+	igt_assert_eq(r, 0);
-+
-+	amdgpu_bo_unmap_and_free(ring_context->bo, ring_context->va_handle,
-+				 ring_context->bo_mc,
-+				 write_length * sizeof(uint32_t));
-+
-+	free(ring_context->pm4);
-+	ip_block->funcs->userq_destroy(device, ring_context, ip_type);
-+	free(ring_context);
-+}
- #endif /* AMDGPU_USERQ_ENABLED */
- 
- int igt_main()
-@@ -2772,6 +2958,24 @@ int igt_main()
- 	igt_describe("USERQ concurrency fuzzing: concurrent CREATE/DESTROY, SIGNAL/WAIT racing DESTROY, double-DESTROY");
- 	igt_subtest("concurrent-userq-fuzzing")
- 		amd_userq_concurrent_fuzzing(fd, amdgpu_dev, userq_arr_cap);
-+
-+	igt_describe("USERQ SDMA fence value with the wptr at a non-zero BO offset");
-+	igt_subtest("userq-wptr-offset-fence-sdma") {
-+		igt_require(userq_arr_cap[AMD_IP_DMA]);
-+		amd_userq_wptr_offset_fence(amdgpu_dev, AMD_IP_DMA);
-+	}
-+
-+	igt_describe("USERQ GFX submit with the wptr at a non-zero BO offset");
-+	igt_subtest("userq-wptr-offset-gfx") {
-+		igt_require(userq_arr_cap[AMD_IP_GFX]);
-+		amd_userq_wptr_offset_submit(amdgpu_dev, AMD_IP_GFX);
-+	}
-+
-+	igt_describe("USERQ SDMA submit with the wptr at a non-zero BO offset");
-+	igt_subtest("userq-wptr-offset-sdma") {
-+		igt_require(userq_arr_cap[AMD_IP_DMA]);
-+		amd_userq_wptr_offset_submit(amdgpu_dev, AMD_IP_DMA);
-+	}
- #endif
- 
- 	igt_fixture() {
--- 
-2.49.0
+Summary
+-------
 
+  **FAILURE**
+
+  Serious unknown changes coming with IGTPW_15894 absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_15894, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/index.html
+
+Participating hosts (39 -> 37)
+------------------------------
+
+  Missing    (2): bat-dg2-13 bat-adls-6 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in IGTPW_15894:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-arlh-2:         [PASS][1] -> [INCOMPLETE][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-arlh-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/bat-arlh-2/igt@core_hotunplug@unbind-rebind.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15894 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_auth@basic-auth:
+    - bat-adlp-6:         [PASS][3] -> [DMESG-WARN][4] ([i915#15673])
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-adlp-6/igt@core_auth@basic-auth.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/bat-adlp-6/igt@core_auth@basic-auth.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_debugfs@read-all-entries:
+    - bat-adlp-6:         [DMESG-WARN][5] ([i915#15673]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-adlp-6/igt@core_debugfs@read-all-entries.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/bat-adlp-6/igt@core_debugfs@read-all-entries.html
+
+  * igt@i915_selftest@live@sanitycheck:
+    - fi-kbl-7567u:       [DMESG-WARN][7] ([i915#13735]) -> [PASS][8] +79 other tests pass
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@kms_busy@basic@flip:
+    - fi-kbl-7567u:       [DMESG-WARN][9] ([i915#13735] / [i915#180]) -> [PASS][10]
+   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/fi-kbl-7567u/igt@kms_busy@basic@flip.html
+   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/fi-kbl-7567u/igt@kms_busy@basic@flip.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - fi-kbl-7567u:       [DMESG-WARN][11] ([i915#13735] / [i915#15673] / [i915#180]) -> [PASS][12] +52 other tests pass
+   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9111 -> IGTPW_15894
+  * Linux: CI_DRM_19210 -> CI_DRM_19213
+
+  CI-20190529: 20190529
+  CI_DRM_19210: 703cd271db3a35088460ab3fec0a96bd48e7fe04 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19213: 1a702d79afe36153e37dd9784fde95f9f86ea03f @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15894: c4192bc8234d2e5296626abca432c748b3b59e47 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9111: 4aeabf104b136437d0ccc57caf32a752587d595c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/index.html
+
+--===============8117256883601069933==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/3] include/drm-uapi/amdgpu: add queue id to user queue wait IOCTL</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174879/">https://patchwork.freedesktop.org/series/174879/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9111 -&gt; IGTPW_15894</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_15894 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_15894, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/index.html</p>
+<h2>Participating hosts (39 -&gt; 37)</h2>
+<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_15894:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-arlh-2:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-arlh-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/bat-arlh-2/igt@core_hotunplug@unbind-rebind.html">INCOMPLETE</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15894 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@core_auth@basic-auth:<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-adlp-6/igt@core_auth@basic-auth.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/bat-adlp-6/igt@core_auth@basic-auth.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@core_debugfs@read-all-entries:</p>
+<ul>
+<li>bat-adlp-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/bat-adlp-6/igt@core_debugfs@read-all-entries.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/bat-adlp-6/igt@core_debugfs@read-all-entries.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> +79 other tests pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_busy@basic@flip:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9111/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15894/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> +52 other tests pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9111 -&gt; IGTPW_15894</li>
+<li>Linux: CI_DRM_19210 -&gt; CI_DRM_19213</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19210: 703cd271db3a35088460ab3fec0a96bd48e7fe04 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19213: 1a702d79afe36153e37dd9784fde95f9f86ea03f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15894: c4192bc8234d2e5296626abca432c748b3b59e47 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9111: 4aeabf104b136437d0ccc57caf32a752587d595c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8117256883601069933==--
