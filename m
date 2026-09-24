@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EFF04C98314
-	for <igt-dev@archiver.kernel.org>; Thu, 24 Sep 2026 07:59:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC0FBC98310
+	for <igt-dev@archiver.kernel.org>; Thu, 24 Sep 2026 07:59:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 99A7E10F38E;
-	Thu, 24 Sep 2026 07:59:05 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 894DD10F38C;
+	Thu, 24 Sep 2026 07:59:48 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="EU7XgqE6";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="Vz0mV3PS";
 	dkim-atps=neutral
-Received: from PH0PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11011011.outbound.protection.outlook.com [40.107.208.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7030F10F38C
- for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2026 07:53:12 +0000 (UTC)
+Received: from SN4PR0501CU005.outbound.protection.outlook.com
+ (mail-southcentralusazon11011067.outbound.protection.outlook.com
+ [40.93.194.67])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8FD8C10F38D
+ for <igt-dev@lists.freedesktop.org>; Thu, 24 Sep 2026 07:53:21 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Uwxa+UcW5aTcDobH3yiRPuODor8rvL0T30QkHM6vaw8yqV8Xpf7CnksYfzgWTON/abbWxjhOngfCIhV0IQht8f4fNbd5maq1l9mTp6yY4KJ6OsuOyzzBw1JEwcCJxHQBJ4HgTsM4m4aUWlYHn1YIlz5tgWM7RMkHpgG4YOK3unpzj3sVCv8btjybMtH4Q5emQDPBfY6xes12bYuF3VbMzllSd4nGGf5QLExM/Ng0973KbO2l0e0sDv8wZlRwvScY1dcZLWu6EXmqaiLYW+vLKVjM9XkG+Prmzr/8juHN022rJajR/rKdhLE2mQzA85cW6QedsQiV/ozxzQLKrkooMw==
+ b=RbnwV1s3izeRpJZqhLILCm2GuOGvLCiDjPc8WFRPSd28mimxbXB/5Qfr9+lkNZnbTD797Y4n316iON7OBwtVbVq/6HCUcbgt/xKtmvGPeC2SOHV+BEhxc9f53mchBZByWTNBQGbzzFBNumnmmJiMLJXc7V3iiX2uLHPNuelAJFONhqAmxwVfyrPyeRhDKvuE1e2b/pZ+xtGXH7pbbZPSiteDPYbliD0LOjvPkXWyh7ipugAzhHxSVfmz9lyBC+xEYlPONBuB/tMQB5xM2yrgHMI89xPlKwm2jhn4iUs/2DEOB28/EzLOz3gcJScJJ4REdPFnBiDkejA4lpLcc8vvOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+DKITJhYuxqnwMbZrSITWfQLscgKNJNTxA+YgiV1rog=;
- b=RErWi6uq0AdQUEwyeOy9arnTvB+Z1Kbf0dRp+ArsIHLvtmmO3j77Ur4G7nifrZ7S6Z2zNy/N79oea3nkvYnKtqeAlGA5PKZXZGSzbWRrfd+vFTEyeJq7jQry5EG3rsSdQ+PtZ58kIPz8PquyeqhwxkjHqHT2+Lp5BeYeG3Zocz49KrzaJGEQea9dHKaVF2iAcVO6BjH7fc4L//VER3LxWy+yycgekjZreKSoGTQrIIu9dWBwvHuSI7MLln5odhhWiPY0MPsNElMncyk/+nHZfWx7zROVZkksJG10Wfscxw+gobtMyjKw3T7lCt5+H3tfZQSfYZsJ7mXSpihXMdVE3w==
+ bh=L6Zvy6j5Rl8ASIPA0zaOu6DPucSItLZR58ZTc/aCxV4=;
+ b=tVJYTm2Jxz1tRDkMZrs/LF4GEs/H6jRpGT6qD12IN9j/tR371uqV0AsIGG5NREfSzpc5Hciq2B7aMNzdXgwhHAN+jw3WSy1j5sDMN/5qibZmoni7ehWlrlCn7ZEPnjo0RSp4NEh6D1xr+9B4ePwE5Z+mgjQIe9Tqyvr1/LZRcUl7dHYtqMvzdX2G+CDST2rAgNFSMH3PK88RDffpKjZt0beCVxu+NLelc77WiJZ3IYnNX+dRhZvLx9ijU5XVCBVDXtXliuE0lL4PBjANxq35IX2jPWftTOrctSvGGD+aTFYODIDIx6fR5Qs7wRAH53ellZixNOpebQSnDiNBgcn4XQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+DKITJhYuxqnwMbZrSITWfQLscgKNJNTxA+YgiV1rog=;
- b=EU7XgqE6kzouY71xLxoKslRr58erxICW5JTCNDVypNcFgI393vE/rRam0DEGlm6Ty6garV5oezLLumylTAlrgOWfsMmQHPQ1HUytYv9xXK6a6aYYCyDap5qGYyrYFnhSSBJCqCZxz4Koa3qsoztXzOWL4tSTShnfogabLmToBcM=
-Received: from CH0P220CA0003.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:ef::31)
- by PH6PR12MB805463.namprd12.prod.outlook.com (2603:10b6:510:3fe::10) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=L6Zvy6j5Rl8ASIPA0zaOu6DPucSItLZR58ZTc/aCxV4=;
+ b=Vz0mV3PS/HZyC/iWJfalAEq0nydMa1TTQ33O0SQhNr69Kryjl49qv1ALqBdrqWMPpjcRY7jln+PJtaLZnDmNvQjT6hVXdZVGyQ3aQc8CGb+jlxm0YHXYSXty/1f8QjCt5lLh08MtIfIJcRpXYBZJC8QfAJhbCACSU47ix78gwLA=
+Received: from CH2PR16CA0018.namprd16.prod.outlook.com (2603:10b6:610:50::28)
+ by MN2PR12MB4206.namprd12.prod.outlook.com (2603:10b6:208:1d5::18)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Thu, 24 Sep
- 2026 07:53:09 +0000
-Received: from CH2PEPF0000013C.namprd02.prod.outlook.com
- (2603:10b6:610:ef:cafe::58) by CH0P220CA0003.outlook.office365.com
- (2603:10b6:610:ef::31) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 07:53:16 +0000
+Received: from CH2PEPF00000140.namprd02.prod.outlook.com
+ (2603:10b6:610:50:cafe::33) by CH2PR16CA0018.outlook.office365.com
+ (2603:10b6:610:50::28) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.18 via Frontend Transport; Thu,
- 24 Sep 2026 07:53:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
+ 24 Sep 2026 07:53:16 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com;
+ dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
 Received: from satlexmb08.amd.com (165.204.84.17) by
- CH2PEPF0000013C.mail.protection.outlook.com (10.167.244.73) with Microsoft
+ CH2PEPF00000140.mail.protection.outlook.com (10.167.244.72) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.451.8 via Frontend Transport; Thu, 24 Sep 2026 07:53:08 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ 15.21.451.8 via Frontend Transport; Thu, 24 Sep 2026 07:53:15 +0000
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 24 Sep
- 2026 02:53:08 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Thu, 24 Sep
- 2026 02:53:08 -0500
+ 2026 02:53:15 -0500
 Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Thu, 24 Sep 2026 02:53:01 -0500
+ Transport; Thu, 24 Sep 2026 02:53:08 -0500
 From: Jesse Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Jesse Zhang <Jesse.Zhang@amd.com>, Jesse Zhang <jesse.zhang@amd.com>, Claude
  <noreply@anthropic.com>
-Subject: [PATCH i-g-t v2 1/3] include/drm-uapi/amdgpu: add queue id to user
- queue wait IOCTL
-Date: Thu, 24 Sep 2026 15:51:56 +0800
-Message-ID: <20260924075300.172142-1-Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t v2 2/3] lib/amdgpu: support a non-zero wptr offset in
+ user_queue_create
+Date: Thu, 24 Sep 2026 15:51:57 +0800
+Message-ID: <20260924075300.172142-2-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20260924075300.172142-1-Jesse.Zhang@amd.com>
+References: <20260924075300.172142-1-Jesse.Zhang@amd.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000013C:EE_|PH6PR12MB805463:EE_
-X-MS-Office365-Filtering-Correlation-Id: be081f45-ae7c-406c-d35e-08df1a10dfea
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000140:EE_|MN2PR12MB4206:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4b773004-ff06-4c29-c3bc-08df1a10e42d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|376014|36860700016|82310400026|1800799024|10067099003|56012099006|18002099003|6123799006|11063799006|13003099007;
-X-Microsoft-Antispam-Message-Info: WIf6rxejXW1iRjSdGoP0JnVvpR7zIJxz2An72XzvNBKvJWoD2+2I1ZoqP/Yr7onF8A8+SS0+tuBLjzIrwn8A1dQhGSLfbktK9BEagnz/0gkCQ0yXxsrQSCR3n2eD2aJb50tjNakTl8kKKJxSJVOqCkXHTKIuNV/zXnWwaPdw1dW6JzrHlcY7YLQaSRKNBJPS6Rbv4zRX5LtPhK/yVaz7pgvo3KzGlbQi1MG2WidhDQUnrHTJmrS4TelmHiuDgBLPjYw0OlHudisttf7fP9PEI9y+yxezlH+jLQxWM/ApDT6eW5+dfcIQ5NFbw+THiKUXa7R6twxYSEjHY+nrWct9ySoGcoyf4UxHA0EWUrdb8WvuwauW5BiGmN7aoZrfW9GNL1F5tG54s+al0usGltOpNyzNFfkpF5MGKGqnMXLmIHD41tEsMlVaK1LlUS9YXUtxSsqkgI6bbLHrO3os1/HIuFd73h0og6idC2N1Q7plbHCT1ZlYmiSfM6VAVC//CVXPF1JSaa8FFJUp9/EHB3GPok9k2PX8/5a9hgjYgYHwckl0Z2zDl136SzeIhQLEOJ9yfzCssSEwqvs5J8RbcH2XE9gO0a1C+T69njAduzYg+OGuG8+ipggQdFdJbhNbAl/C6s1yY7SdUFqjnFJsm4ArUxJWW8p7m+kGrUhSDWHN/0U=
+ ARA:13230040|82310400026|376014|1800799024|36860700016|23010399003|10067099003|18002099003|22082099003|56012099006|11063799006|6123799006;
+X-Microsoft-Antispam-Message-Info: 8vPUZeUNnxo8v3XRFDXuGfz/GqQg/AWf8F+cpVYptOJllfeeuSWL9acmZI4eepYN2iSkZv6G5BCi9r/GQOHRqxrH02jyIn/3oKMbJchgmDFaPu3wmH1lNUu8KMzvLDLeUyBFLaMHQf/eBW0V0BJFUgtiP38bjOd8fARMg+l0XqtoeFAV1ytpkAMFMX05Z3iRKfAeiq1fby5kBPaFcERIMPk3JaZpMC8EzEFgw1rhLdmw960FGEpsmPjweBFaXb0VKAi+GTjYM2Gi6tuBa0j/cJlIwF6Pw9DVusNtdxJDMYSKt7lKA3DKmbkWbtdgSZLF+GdzdwWuhFSnTnmE90EVb913Qi6pabyPhcDSSkDjsOTQICKALbUWz081QzhmkeuanB5k9bQq//J4oWnH4gGIMV5o9CNxKuhUBuiVHv2uZTKfaf09cuE4jfDYDtGi9mGeIOAhZvOpySeewBebcqBAQ75rp/ia3As9DB3fgOXoHix9op92cugDdpyuCDMImDnkkipwzqL2l2DIu4NcYII0yzeZHzvDXLT86Tzh/g6bqjbrhKdcVNKa/AYPeB0DknuU7cOHINIZHVW4UtCzUESSyvzhL4bUzZFyjAs9wReyaGilj2Gnwtga04vJH1yYwNgwE03kIEOpZavWiVMFohSJoPqVcXnKFqbcNVkeu0PUP8Y+ekXnSdmnhkY8f6VIS5b2ZBjQ8+lJoxVH0TnCn1a01w==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(36860700016)(82310400026)(1800799024)(10067099003)(56012099006)(18002099003)(6123799006)(11063799006)(13003099007);
+ SFS:(13230040)(82310400026)(376014)(1800799024)(36860700016)(23010399003)(10067099003)(18002099003)(22082099003)(56012099006)(11063799006)(6123799006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: MxLGbFSMfZFD8jDooYc0DU1yXqEn8X3B3HyX2oNbtLbLZZvpwQYn+2qzfEjMMtFk+Gv/b9u81PdNdDUxQOB9SkfCDyYpj1FbO1/fce/jdH05gP4B92LzkkVZHVRUaRRTCAO82OqNaXJl05CQg8FN7KhPrPg4pXZ6WVXSoiEb2CYgIoi1iGtbWj0V6W0e7pRwAXkxPqxIks/t1cd3VA8v3PkE3t7AKWqyncRE1K9Uq9yj0lPXFMZrGkONMRo51jBEnoOSj1yUtYYgIiScVCqeUhV7UVMGgyxSqJkhCtEsOveW8lwRODIfg3l9+6t23K9921LhmthkInewQI5rEr8znDywZeCBaws7Gl4GE3lfy+VFQTGqDI6S7PiLv5ZkryCsECpiYJT9A3Rj9CrMiYPt7u1eDsrhfuMWP/z4xjiXQ9/glHT+3pPnxpX2G/hbVBT9
+X-MS-Exchange-AntiSpam-MessageData-0: BhEXwHwBx5XwlEX0bOr6P8Ux8LSLeltwiz1cN6e5gGD/1h+kp1VHFgfMt//eMGzZviBzJelUg0riuSrHRpyJhZ3bXoWLrnbDdTAqUgoGLbJPOdtqhOLFxrO/fw60DKu5QpN08nDm/n8S14rV6QFWP/LET6j3jxoskRRK4YvmBUCSo2VQI5R8PnRuoJeJmb1h/DIub8PuPnnR0We0PtrRF9rJSJ0oTb4etSbek4P3PGcGQv89oQxJ1dNuPqyGBS3TOBuoNu78smoIPy9vxxT2W8DNTMn2mFV262CLrsnb0A20blopTvUUHuMw8c0uPsdsXendTN0wR5pFVA0az6jKRU0ZLsxU9QZX2hAp1f3029GV+tekb0I85n41WdCxhclbWHNqFuzXyM7X3AwJbVotpxklf7CTDakHFsMG7WiefYOT6SVJHvxWeHhYv9qD942N
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 07:53:08.8069 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: be081f45-ae7c-406c-d35e-08df1a10dfea
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2026 07:53:15.9341 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b773004-ff06-4c29-c3bc-08df1a10e42d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF0000013C.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CH2PEPF00000140.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH6PR12MB805463
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4206
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,41 +116,129 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add waitq_id (plus padding) to the front of struct drm_amdgpu_userq_wait
-to match the kernel/libdrm uAPI. The wait IOCTL uses the queue id to
-retrieve the wait user queue and maintain the fence driver references in
-it, so that queues in the same context release their fence-driver
-references before queue destruction.
+Add a wptr_offset knob to struct amdgpu_ring_context and honor it in
+user_queue_create(): when set, allocate the wptr BO as a full page,
+place the wptr at that (8-byte aligned, < PAGE_SIZE) offset, poison BO
+offset 0, and pass the offset wptr address to amdgpu_create_userqueue()
+for GFX/COMPUTE/DMA. This lets a test exercise the kernel's handling of
+a wptr that is not at the start of its BO.
 
-Mirrors the libdrm change "amdgpu: Add queue id support to the user
-queue wait IOCTL" by Arunpravin Paneer Selvam:
-  https://gitlab.freedesktop.org/mesa/libdrm/-/commit/15e174c1ed2426be3228eb595f942481cfcf5a90
+wptr_offset defaults to 0, which reproduces the previous behavior
+exactly (8-byte wptr BO at offset 0, no poison), so existing user-queue
+tests are unaffected.
 
 v2: delete change-id
 
 Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
 Co-Authored-By: Claude <noreply@anthropic.com>
 ---
- include/drm-uapi/amdgpu_drm.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ lib/amdgpu/amd_ip_blocks.c | 38 +++++++++++++++++++++++++++++++++-----
+ lib/amdgpu/amd_ip_blocks.h |  8 ++++++++
+ 2 files changed, 41 insertions(+), 5 deletions(-)
 
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-index ca24519c7..321f374d4 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -511,6 +511,12 @@ struct drm_amdgpu_userq_fence_info {
- };
+diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
+index 7d31a582a..d171a2fe3 100644
+--- a/lib/amdgpu/amd_ip_blocks.c
++++ b/lib/amdgpu/amd_ip_blocks.c
+@@ -898,7 +898,20 @@ user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context
+ 				       ctxt->timeline_syncobj_handle, ++ctxt->point);
+ 	igt_assert_eq(r, 0);
  
- struct drm_amdgpu_userq_wait {
-+	/**
-+	 * @waitq_id: Queue handle used by the userq wait IOCTL to retrieve the
-+	 * wait queue and maintain the fence driver references in it.
+-	r = amdgpu_bo_alloc_and_map_uq(device_handle, 8,
++	/*
++	 * The wptr normally sits at offset 0 of its own 8-byte BO. When
++	 * wptr_offset is set, allocate a full page and place the wptr at that
++	 * (8-byte aligned, < PAGE_SIZE) offset instead, so the kernel's wptr
++	 * read path has to account for a wptr that is not at the start of the
++	 * BO. Offset 0 is later poisoned so a kernel that wrongly reads BO
++	 * offset 0 gets a bogus wptr.
 +	 */
-+	__u32	waitq_id;
-+	__u32	pad;
- 	/**
- 	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
- 	 * job to get the va/value pairs.
++	igt_assert_f(ctxt->wptr_offset % sizeof(uint64_t) == 0 &&
++		     ctxt->wptr_offset + sizeof(uint64_t) <= PAGE_SIZE,
++		     "wptr_offset %lu must be 8-byte aligned and fit in a page\n",
++		     (unsigned long)ctxt->wptr_offset);
++	r = amdgpu_bo_alloc_and_map_uq(device_handle,
++				       ctxt->wptr_offset ? PAGE_SIZE : 8,
+ 				       ALIGNMENT,
+ 				       AMDGPU_GEM_DOMAIN_GTT,
+ 				       gtt_flags,
+@@ -907,6 +920,16 @@ user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context
+ 				       &ctxt->wptr.mc_addr, &ctxt->wptr.va_handle,
+ 				       ctxt->timeline_syncobj_handle, ++ctxt->point);
+ 	igt_assert_eq(r, 0);
++	if (ctxt->wptr_offset) {
++		/*
++		 * The wptr BO is not zero-initialized. Clear the real wptr slot
++		 * so the queue starts from a well-defined wptr of 0, then poison
++		 * BO offset 0 so a buggy (offset-ignoring) read is fatal.
++		 */
++		*(volatile uint64_t *)((uint8_t *)ctxt->wptr.ptr +
++				       ctxt->wptr_offset) = 0;
++		*(volatile uint64_t *)ctxt->wptr.ptr = 0xdead0000dead0000ULL;
++	}
+ 
+ 	r = amdgpu_bo_alloc_and_map_uq(device_handle, 8,
+ 				       ALIGNMENT,
+@@ -987,7 +1010,12 @@ user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context
+ 			      AMDGPU_GEM_DOMAIN_DOORBELL);
+ 
+ 	ctxt->doorbell_cpu = (uint64_t *)ctxt->doorbell.ptr;
+-	ctxt->wptr_cpu = (uint64_t *)ctxt->wptr.ptr;
++	/*
++	 * wptr_offset shifts the wptr within its BO. The BO struct fields stay
++	 * pristine (destroy unmaps by base addr); only the queue-facing wptr
++	 * address and cpu pointer are offset.
++	 */
++	ctxt->wptr_cpu = (uint64_t *)((uint8_t *)ctxt->wptr.ptr + ctxt->wptr_offset);
+ 	ctxt->rptr_cpu = (uint64_t *)ctxt->rptr.ptr;
+ 
+ 	ctxt->queue_cpu = (uint32_t *)ctxt->queue.ptr;
+@@ -1002,7 +1030,7 @@ user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context
+ 		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_GFX,
+ 					    ctxt->db_handle, GFX_DOORBELL_INDEX,
+ 					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
+-					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
++					    ctxt->wptr.mc_addr + ctxt->wptr_offset, ctxt->rptr.mc_addr,
+ 					    mqd, queue_flags, &ctxt->queue_id);
+ 		igt_assert_eq(r, 0);
+ 		break;
+@@ -1011,7 +1039,7 @@ user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context
+ 		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_COMPUTE,
+ 					    ctxt->db_handle, DOORBELL_INDEX,
+ 					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
+-					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
++					    ctxt->wptr.mc_addr + ctxt->wptr_offset, ctxt->rptr.mc_addr,
+ 					    mqd, queue_flags, &ctxt->queue_id);
+ 		igt_assert_eq(r, 0);
+ 		break;
+@@ -1022,7 +1050,7 @@ user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context
+ 		r = amdgpu_create_userqueue(device_handle, AMDGPU_HW_IP_DMA,
+ 					    ctxt->db_handle, SDMA_DOORBELL_INDEX,
+ 					    ctxt->queue.mc_addr, USERMODE_QUEUE_SIZE,
+-					    ctxt->wptr.mc_addr, ctxt->rptr.mc_addr,
++					    ctxt->wptr.mc_addr + ctxt->wptr_offset, ctxt->rptr.mc_addr,
+ 					    mqd, queue_flags, &ctxt->queue_id);
+ 		igt_assert_eq(r, 0);
+ 		break;
+diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
+index 40a9735be..813809b96 100644
+--- a/lib/amdgpu/amd_ip_blocks.h
++++ b/lib/amdgpu/amd_ip_blocks.h
+@@ -338,6 +338,14 @@ struct amdgpu_ring_context {
+ 	uint32_t db_handle;
+ 	uint32_t queue_id;
+ 
++	/*
++	 * Byte offset of the wptr within its BO. 0 (default) keeps the wptr at
++	 * BO offset 0. A non-zero value places the wptr at that offset inside a
++	 * one-page wptr BO, exercising the kernel's handling of a wptr that is
++	 * not at the start of the BO.
++	 */
++	uint64_t wptr_offset;
++
+ 	uint32_t timeline_syncobj_handle;
+ 	uint64_t point;
+ 	bool user_queue;
 -- 
 2.49.0
 
