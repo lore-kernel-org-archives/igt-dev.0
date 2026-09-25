@@ -4,64 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5AFBC9830D
-	for <igt-dev@archiver.kernel.org>; Fri, 25 Sep 2026 09:48:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A9CAC9830E
+	for <igt-dev@archiver.kernel.org>; Fri, 25 Sep 2026 09:50:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8693710E249;
-	Fri, 25 Sep 2026 09:48:36 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0FDBB10F9CC;
+	Fri, 25 Sep 2026 09:50:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MkNJoUo6";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="gWCSh/WD";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 559A810E18F;
- Fri, 25 Sep 2026 09:47:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7FA0110E249
+ for <igt-dev@lists.freedesktop.org>; Fri, 25 Sep 2026 09:49:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790329671; x=1821865671;
- h=message-id:subject:from:to:cc:date:in-reply-to:
- references:content-transfer-encoding:mime-version;
- bh=7jCyDsrImsgxQCCxRXav0zNRPkXp5ZKmOJfPy8JyXis=;
- b=MkNJoUo6YqQEhnlR+1tcZDBq/dAJsLAMmmgaYMM1coDSwqkncNAPBt6q
- UNESjWwr4WJHzl71lKcJg2AIT+Asl7QwKH3cSlBKD/abr7ebSmS/l0WNB
- S43o3ZpjgU0sZpjZSm7NHglBvmYxkZy1iFz9qDcVIJY7xeTVi9HgEELHE
- NG34JXEp1tU8QF87BOZqFLRScdTAyAiTglaLUbb/j7x2W81dFUyxUDOqi
- nTM7ZINqvehdEEiZpxGza3auC+63OJQeyEopgpB18uOYiuucv8xUBfado
- dNcNmc8M9gRdqoXNoRjogWmN8j2pLPMr20I1mOsAT/ZG4sVmLO5/G3Y5A w==;
-X-CSE-ConnectionGUID: sczIzrBKQnWC6gihnwLRzA==
-X-CSE-MsgGUID: oMBDORvqSaqNodgjz/9uQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="112898719"
-X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; d="scan'208";a="112898719"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2026 02:47:48 -0700
-X-CSE-ConnectionGUID: c5zxOml7TgyI35+NdD8hHw==
-X-CSE-MsgGUID: VRQtCCQrSFCc43z1aFvcYQ==
+ t=1790329778; x=1821865778;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=P6sVlOxfpv25RskAWBJMeC/GSnV1D65iiDlpW2w7i/0=;
+ b=gWCSh/WD7BpIlQTFOlT4hwIOak/q75wWWyLwrrBBS+DEd9GsVyfD8X5U
+ jRgueGYROfAPdfb3WDLRJqs0KnhrK/rfmQ1zkacQht/zgYu2jIoPTlII6
+ W8ARrMYMF1CeQtTbkUPbvX3CMxjpdh15R94ymWMSD4PlasM3fif+ZIPCN
+ eDvl2UFjEpEuVf2BfIEWy3OkvjqzBZYyU9/taEaaRjS8fgLllCcnH93o5
+ s2s5fVRulEWHA2nm5/WJtmafZMAVg0pxiN2UVW3r+6LUy/fP3hYyDvQ43
+ dRBFA8VhlurmIwHSGO4sFmPJTl/bAd/448Rsdnm1SMneNzP0gb1Xnm2ZL w==;
+X-CSE-ConnectionGUID: dA7aYo18SzuWfhRuHg/Kdw==
+X-CSE-MsgGUID: 2g4uKe+DSau+O3dJbGQ1Tg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11915"; a="101286427"
+X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; d="scan'208";a="101286427"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Sep 2026 02:49:38 -0700
+X-CSE-ConnectionGUID: a2JlhQvfSBKQH3L9QkDJ6w==
+X-CSE-MsgGUID: IhpsnpZRRCenQwR5TFLvEg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; d="scan'208";a="303800610"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.245.246.67])
- by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Sep 2026 02:47:44 -0700
-Message-ID: <5fc31c9b0fd3e9fc469102b726174e165bec8161.camel@linux.intel.com>
-Subject: Re: [PATCH i-g-t 2/2] tests/intel/gem_close_race: Skip offset
- probing without full-ppgtt
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: Zbigniew =?UTF-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, Kamil
- Konieczny <kamil.konieczny@linux.intel.com>, Andi Shyti
- <andi.shyti@linux.intel.com>, Krzysztof Karas	 <krzysztof.karas@intel.com>,
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>,  Krzysztof Niemiec
- <krzysztof.niemiec@intel.com>
-Date: Fri, 25 Sep 2026 11:47:41 +0200
-In-Reply-To: <7tycj7qmuxox256zwdz57uictfkg4fdufzvkfnwg3z4wrujnmd@oi6lpt7yhtz5>
-References: <20260924152443.829382-4-janusz.krzysztofik@linux.intel.com>
- <20260924152443.829382-6-janusz.krzysztofik@linux.intel.com>
- <7tycj7qmuxox256zwdz57uictfkg4fdufzvkfnwg3z4wrujnmd@oi6lpt7yhtz5>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 
+X-IronPort-AV: E=Sophos;i="6.27,122,1787036400"; d="scan'208";a="274386259"
+Received: from dut6245dg2frd.fm.intel.com ([10.36.24.131])
+ by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 25 Sep 2026 02:49:38 -0700
+From: Sobin Thomas <sobin.thomas@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: nishit.sharma@intel.com,
+	Sobin Thomas <sobin.thomas@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_vm: Validate host memory for overcommit
+ tests
+Date: Fri, 25 Sep 2026 09:49:30 +0000
+Message-ID: <20260925094930.2647997-1-sobin.thomas@intel.com>
+X-Mailer: git-send-email 2.52.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,84 +67,84 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Zbyszek,
+The amount of VRAM available for the overcommit tests varies
+across platforms. As a result the host RAM and swap required to
+support the overcommit workload also varies.
 
-Thanks for looking at this.
+Query the platform RAM and swap space and visible VRAM before
+running overcommit tests.
+Require a minimum swap capacity relative to the platform memory
+config and limit the overcommit working set to 50% of the currently
+available RAM and swap size.
 
-On Fri, 2026-09-25 at 10:40 +0200, Zbigniew Kempczy=C5=84ski wrote:
-> On Thu, Sep 24, 2026 at 05:24:18PM +0200, Janusz Krzysztofik wrote:
-> > gem_close_race computed exec_addr/data_addr via
-> > gem_detect_safe_start_offset() and gem_detect_safe_alignment()
-> > whenever the kernel disallowed relocations, without checking ppgtt
-> > mode. Those helpers exist solely to bootstrap intel_allocator and are
-> > meaningless without full-ppgtt, since the kernel can't see the ranges
-> > intel_allocator considers reserved and may hand them out to other
-> > users, as already acknowledged by __intel_bb_create() which enforces
-> > relocations and skips the allocator entirely in that case.
-> >=20
-> > Require gem_uses_full_ppgtt() as well before enabling the softpin
-> > path, mirroring __intel_bb_create()'s logic, and skip the probing
-> > calls otherwise so the existing relocation fallback is used.
-> >=20
-> > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> > Assisted-by: GitHub Copilot (Claude Sonnet 5)
-> > ---
-> >  tests/intel/gem_close_race.c | 19 ++++++++++++++-----
-> >  1 file changed, 14 insertions(+), 5 deletions(-)
-> >=20
-> > diff --git a/tests/intel/gem_close_race.c b/tests/intel/gem_close_race.=
-c
-> > index b2688774d7..ff2877f67e 100644
-> > --- a/tests/intel/gem_close_race.c
-> > +++ b/tests/intel/gem_close_race.c
-> > @@ -348,11 +348,20 @@ int igt_main()
-> > =20
-> >  		devid =3D intel_get_drm_devid(fd);
-> >  		has_64bit_relocations =3D intel_gen(devid) >=3D 8;
-> > -		has_softpin =3D !gem_has_relocations(fd);
-> > -		exec_addr =3D gem_detect_safe_start_offset(fd);
-> > -		data_addr =3D gem_detect_safe_alignment(fd);
-> > -		exec_addr =3D max_t(exec_addr, exec_addr, data_addr);
-> > -		data_addr +=3D exec_addr;
-> > +		/*
-> > +		 * Without full-ppgtt the kernel can't see the ranges the
-> > +		 * detected offsets are meant to reserve and may hand them
-> > +		 * out to other users, so pinning at a detected offset isn't
-> > +		 * meaningful; fall back to relocations in that case, same
-> > +		 * as __intel_bb_create() does.
-> > +		 */
-> > +		has_softpin =3D !gem_has_relocations(fd) && gem_uses_full_ppgtt(fd);
->=20
-> Which platforms don't have relocations and are not using full ppgtt?
+Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
+---
+ tests/intel/xe_vm.c | 37 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
-Correct, today all configurations without relocations also expose full
-PPGTT, so the added check does not currently change runtime behavior.
-However, the purpose of the check is not to distinguish existing platforms.
-The probing helpers are conceptually valid only with full PPGTT, as they
-rely on allocator-managed address space reservations being respected by the
-kernel. Therefore I would prefer to keep the explicit gem_uses_full_ppgtt()
-requirement to document that dependency and to keep the code aligned with
-the logic already described in __intel_bb_create().  The condition is
-intentionally expressing the semantic requirement of the helpers, not
-distinguishing currently known hardware configurations.
+diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
+index a0a6616c3..4ee2ebbc0 100644
+--- a/tests/intel/xe_vm.c
++++ b/tests/intel/xe_vm.c
+@@ -2611,6 +2611,13 @@ test_vm_overcommit(int fd, struct drm_xe_engine_class_instance *eci,
+ 	overcommit_size = ALIGN((uint64_t)(base_size * c->overcommit_mult), 4096);
+ 
+ 	num_bos = (overcommit_size / nf_bo_size) + 1;
++	igt_debug("Overcommit sizing: case=%s use_vram=%d multiplier=%d "
++		  "system_size=%" PRIu64 " MiB vram_size=%" PRIu64 " MiB "
++		  "base_size=%" PRIu64 " MiB overcommit_size=%" PRIu64 " MiB "
++		  "bo_size=%" PRIu64 " MiB num_bos=%d\n",
++		  c->name, c->use_vram, c->overcommit_mult,
++		  system_size >> 20, vram_size >> 20, base_size >> 20,
++		  overcommit_size >> 20, nf_bo_size >> 20, num_bos);
+ 	bos = calloc(num_bos, sizeof(*bos));
+ 	igt_assert(bos);
+ 
+@@ -2634,6 +2641,8 @@ test_vm_overcommit(int fd, struct drm_xe_engine_class_instance *eci,
+ 	/* Create and bind data BOs */
+ 	actual_stage = create_data_bos(fd, vm, bos, num_bos, nf_bo_size, c->use_vram, data_addr,
+ 				       c->bo_flags, eci->gt_id, &num_bound);
++	igt_debug("Overcommit BO creation: case=%s actual_stage=%d num_bound=%d/%d\n",
++		  c->name, actual_stage, num_bound, num_bos);
+ 	/*
+ 	 * On EXPECT_CREATE nothing was bound so bail out entirely.
+ 	 * On EXPECT_BIND with no BOs bound there is nothing to execute either.
+@@ -3499,9 +3508,33 @@ int igt_main()
+ 		const char *mode = (c->vm_flags & DRM_XE_VM_CREATE_FLAG_FAULT_MODE) ?
+ 					"fault" : "nonfault";
+ 		igt_subtest_f("overcommit-%s-%s", mode, c->name) {
++			uint64_t ram_mb = igt_get_total_ram_mb();
++			uint64_t swap_mb = igt_get_total_swap_mb();
++			uint64_t vram_mb = xe_visible_vram_size(fd, 0) >> 20;
++			uint64_t avail_ram_mb = igt_get_avail_ram_mb();
++			uint64_t required_mb;
++			uint64_t budget_mb;
++
+ 			igt_require(xe_has_vram(fd));
+-			igt_require(xe_visible_vram_size(fd, 0));
+-			test_vm_overcommit(fd, hwe_non_copy, c, (igt_get_avail_ram_mb() << 20),
++			igt_require(vram_mb);
++			igt_debug("Overcommit host memory: case=%s mode=%s total_ram=%" PRIu64
++				  " MiB available_ram=%" PRIu64 " MiB vram=%" PRIu64
++				  " MiB swap=%" PRIu64 " MiB swap_ratio=%" PRIu64 "%%\n",
++				  c->name, mode, ram_mb, avail_ram_mb, vram_mb, swap_mb,
++				  (vram_mb + ram_mb) ? swap_mb * 100 / (vram_mb + ram_mb) : 0);
++			igt_require_f(swap_mb * 100 >= (vram_mb + ram_mb) * 35,
++				      "Swap (%" PRIu64 " MiB) must be at least 35%% of "
++				      "VRAM + system RAM (%" PRIu64 " MiB)\n",
++				      swap_mb, vram_mb + ram_mb);
++			required_mb = ((c->use_vram ? vram_mb : avail_ram_mb) *
++				       c->overcommit_mult);
++			required_mb = ALIGN(required_mb, 64) + 64;
++			budget_mb = avail_ram_mb + swap_mb;
++			igt_require_f(required_mb <= budget_mb * 50 / 100,
++				      "Overcommit working set (%" PRIu64 " MiB) exceeds "
++				      "50%% of available RAM + swap (%" PRIu64 " MiB)\n",
++				       required_mb, budget_mb);
++			test_vm_overcommit(fd, hwe_non_copy, c, (avail_ram_mb << 20),
+ 					   xe_visible_vram_size(fd, 0));
+ 		}
+ 	}
+-- 
+2.52.0
 
-Thanks,
-Janusz
-
->=20
-> --
-> Zbigniew
->=20
-> > +		if (has_softpin) {
-> > +			exec_addr =3D gem_detect_safe_start_offset(fd);
-> > +			data_addr =3D gem_detect_safe_alignment(fd);
-> > +			exec_addr =3D max_t(exec_addr, exec_addr, data_addr);
-> > +			data_addr +=3D exec_addr;
-> > +		}
-> > =20
-> >  		gpu_count =3D igt_device_filter_count();
-> > =20
-> > --=20
-> > 2.55.0
-> >=20
