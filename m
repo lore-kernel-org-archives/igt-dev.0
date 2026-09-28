@@ -4,40 +4,40 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B324CA5FA2
-	for <igt-dev@archiver.kernel.org>; Mon, 28 Sep 2026 17:28:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3889ACA5FA2
+	for <igt-dev@archiver.kernel.org>; Mon, 28 Sep 2026 17:28:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 47BD110E93E;
-	Mon, 28 Sep 2026 17:28:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA68210E949;
+	Mon, 28 Sep 2026 17:28:44 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EOmtKQSt";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KIqMzIaj";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C5F2210E93E
- for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2026 17:27:15 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E18C10E949
+ for <igt-dev@lists.freedesktop.org>; Mon, 28 Sep 2026 17:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790616436; x=1822152436;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=cgx54Be64a9qOMx9a+BhpDTBjxuWGRPlL9uKuWj6RKk=;
- b=EOmtKQStKkC6w7W170zNvndfPd2AL4MHciHQQhqGpOY6WTHIJ4UmDSVY
- /D5QlPVfSHWdD1YNKceV7+PKxdYVFLt7Z2zC6byf19n5VIxBD3URCCsHe
- MyHLmGZaF76/nbkXg9ysbjRYqjEgGpF32Fhd2nIe+4iB22/XrOXphLxkY
- WUSwymzOnDza/rppN7JST/b8weYfLzMcfqJ0+cXNQEHjZA4fnlI54duj7
- txHOjy4GRrYnLqLsECNE1TtOOyE/U6SLn6ObHY4MuGvqKlLrjntzO3CTI
- YLkY/IWpaBOuPlwdoVuHVajAxEOnhPI+yNWXMuT6Rv8xIk8Mr3JY3ylAf Q==;
-X-CSE-ConnectionGUID: F9FgJDb+SZisD8P1ieHM+g==
-X-CSE-MsgGUID: dbNSjfwMSsaO0t6G5B+vAg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="78889472"
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; d="scan'208";a="78889472"
+ t=1790616437; x=1822152437;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=bq0fwKTXPZ3kmSh/ywGBI6CWTEku8bZ0N5pALL+3eS0=;
+ b=KIqMzIajaLpPcOEuRtXf5x/zYZCc4EAzxMNqlLlC3LbrOgS6Rjr7eaaZ
+ CLWqsAtRhzxbIlzpW7ukc4PIJP9uozc4U5tGXfvuGQhyokx8fjhskMj3y
+ L381KtcHhFrAeb5I6hHiF0LzXJOCS72vU0kFQHIDoT0tSTvYWwGeWQ5xJ
+ Os8KE3qPM/HOTHbz7BB6gcUOAqQxW6mgwqZ+IJ0LQlXe3qoikZPFcJhpg
+ lBUj2wcm+Sca8fkHcGygG07JB6wo4fHQzXh0KoQ2hPQOZoA5CloVIUloT
+ EjpYquDRr+nHpzs+1IwZo/2os7pQKlbHfqKy4SeZBS/vm6BrRtSWZR3Do w==;
+X-CSE-ConnectionGUID: YYzXo6cMQA24kJceIseCiQ==
+X-CSE-MsgGUID: /HOZLB5aQvKs2H6h5ZFC2A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="78889476"
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; d="scan'208";a="78889476"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  28 Sep 2026 10:27:16 -0700
-X-CSE-ConnectionGUID: 2fc+b2wfREuVIAJh+NVf1g==
-X-CSE-MsgGUID: n9iZCspURRSoieG8Fd2wUQ==
+X-CSE-ConnectionGUID: IyL+jLanS7q6qi/Atz9rAg==
+X-CSE-MsgGUID: Z6pzJhcOTIWSXG/1a0Ik2w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; d="scan'208";a="274616947"
+X-IronPort-AV: E=Sophos;i="6.27,128,1787036400"; d="scan'208";a="274616957"
 Received: from xwang-desk.fm.intel.com ([10.121.64.134])
  by fmviesa007.fm.intel.com with ESMTP; 28 Sep 2026 10:27:15 -0700
 From: Xin Wang <x.wang@intel.com>
@@ -45,11 +45,13 @@ To: igt-dev@lists.freedesktop.org
 Cc: Xin Wang <x.wang@intel.com>, matthew.d.roper@intel.com,
  zbigniew.kempczynski@intel.com, kamil.konieczny@linux.intel.com,
  stuart.summers@intel.com
-Subject: [PATCH i-g-t v14 0/4] lib/intel_device_info: get the xe .graphics_rel
- from GMD_ID
-Date: Mon, 28 Sep 2026 10:27:03 -0700
-Message-ID: <20260928172713.1341060-1-x.wang@intel.com>
+Subject: [PATCH i-g-t v14 3/4] lib/intel_device_info: allow xe_query to
+ override graphics version
+Date: Mon, 28 Sep 2026 10:27:06 -0700
+Message-ID: <20260928172713.1341060-4-x.wang@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260928172713.1341060-1-x.wang@intel.com>
+References: <20260928172713.1341060-1-x.wang@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -67,90 +69,136 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-This series enables IGT to retrieve the accurate IP minor version
-(graphics_rel) at runtime for xe platforms with GMD_ID support,
-instead of relying on hardcoded values in the PCI device table.
+Platforms with GMD_ID report the graphics IP major/minor version in
+hardware, and xe exposes it via ip_ver_{major,minor} of the MAIN GT in
+the GT list query. The static PCI-ID table cannot describe this
+reliably, since devices sharing a PCI device ID may report different
+IP versions.
 
-Background:
------------
-Current IGT uses static PCI device tables with hardcoded graphics_rel
-values. For Xe2+ platforms, devices sharing the same PCI ID may have
-different graphics_rel (minor version) values.
+Teach xe_device_get() to pick up the IP version from the MAIN GT and
+update the cached intel_device_info via a new
+xe_dev_update_graphics_ver() helper.
 
-The kernel's GMD_ID query provides accurate runtime IP version
-information (ip_ver_major.ip_ver_minor) which should be used for
-platform-specific workarounds and feature detection.
-
-Limitation:
------------
-The device info cache is keyed by PCI device ID. A system with multiple
-GPUs sharing a device ID but reporting different IP versions is not
+The cache is keyed by PCI device ID, so a system with multiple GPUs
+sharing a device ID but reporting different IP versions is not
 supported; the last probed device wins. This is considered unlikely in
-practice, while the hardcoded devid -> IP version mapping fixed here
-affects every such device.
+practice.
 
-Benefits:
----------
-- Accurate IP version for platform-specific workarounds
-- Proper feature detection for hardware variants
-- Unified device info API between i915 and xe drivers
-- No changes needed to existing test code
+v2:
+ - make xe_dev_update_graphics_ver() return error and guard NULL cache.
+ - assert in xe query path to avoid silently ignoring update failures.
+v3:
+ - return -ENOENT instead of -1 and fix coding style.
+ - document the devid keying and the lockless readers.
 
-V2:
-- set the graphics version info in xe_device_get() don't copy
-  the whole struct of the intel_device_info
-- update the graphics_rel when the info is already in the cache
-V3:
-- Optimize the coding style
-V4:
-- add braces around the else statement body
-V5:
-- add new struct xe_device_ipver to hold the ipver info
-- separate cache map to eliminate collision (Roper, Matthew D)
-- changed function name to xe_ipver_cache_lookup() to avoid
-  confusion (Roper, Matthew D)
-V6:
-- optimize the coding style. (Summers, Stuart)
-V7:
-- rebased to latest mainline
-V8:
-- Reworked caching in intel_get_device_info(): replace the per-thread single-entry cache
-  with a process-wide cache keyed by devid (igt_map + pthread mutex), with automatic
-  init/fini via igt_constructor/igt_destructor.
-- Dropped the xe_ipver_cache_lookup() weak-symbol plumbing and the separate xe_query-side
-  ipver cache. Instead, xe_query updates the cached intel_device_info directly via
-  xe_dev_update_graphics_ver() when MAIN GT exposes ip_ver_{major,minor} via GMD_ID.
-V9:
-- make xe_dev_update_graphics_ver() return error and guard NULL cache.
-- assert in xe query path to avoid silently ignoring update failures.
-V10:
-- rebased to latest master.
-- statically initialize the cache mutex and create the map lazily
-  instead of relying on igt_constructor ordering.
-- fall back to the static table entry instead of intel_generic_info
-  when a cache entry cannot be allocated.
-- return -ENOENT from xe_dev_update_graphics_ver() and fix coding style.
-- document the devid keying and the lockless readers.
-- also drop graphics_rel from WCL and NVL-P.
-- reword commit messages.
-V11:
-- rebase to latest master.
-- report allocation, map creation, and map insertion failures with fprintf()
-  and exit(EXIT_FAILURE), rather than returning an unmodifiable static entry.
-- release the cache mutex before reporting an insertion failure.
+Signed-off-by: Xin Wang <x.wang@intel.com>
+---
+ lib/intel_chipset.h     |  1 +
+ lib/intel_device_info.c | 43 +++++++++++++++++++++++++++++++++++++++++
+ lib/xe/xe_query.c       | 17 ++++++++++++++++
+ 3 files changed, 61 insertions(+)
 
-Xin Wang (4):
-  lib/igt_core: add igt_destructor helper macro
-  lib/intel_device_info: make device info cache process-wide
-  lib/intel_device_info: allow xe_query to override graphics version
-  lib/intel_device_info: remove the graphics_rel from xe2+ devices
-
- lib/igt_core.h          |  12 +++
- lib/intel_chipset.h     |   1 +
- lib/intel_device_info.c | 164 +++++++++++++++++++++++++++++++++++-----
- lib/meson.build         |   1 +
- lib/xe/xe_query.c       |  17 +++++
- 5 files changed, 174 insertions(+), 21 deletions(-)
-
+diff --git a/lib/intel_chipset.h b/lib/intel_chipset.h
+index 1f02932e4a..d71eeb4370 100644
+--- a/lib/intel_chipset.h
++++ b/lib/intel_chipset.h
+@@ -110,6 +110,7 @@ const struct intel_cmds_info *intel_get_cmds_info(uint16_t devid) __attribute__(
+ unsigned intel_gen(uint16_t devid) __attribute__((pure));
+ unsigned intel_graphics_ver(uint16_t devid) __attribute__((pure));
+ unsigned intel_display_ver(uint16_t devid) __attribute__((pure));
++int xe_dev_update_graphics_ver(uint16_t devid, unsigned int major, unsigned int minor);
+ 
+ extern enum pch_type intel_pch;
+ 
+diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+index 3f9dd42db1..9201ca806c 100644
+--- a/lib/intel_device_info.c
++++ b/lib/intel_device_info.c
+@@ -5,6 +5,7 @@
+ #include "igt_map.h"
+ 
+ #include <ctype.h>
++#include <errno.h>
+ #include <pthread.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+@@ -774,6 +775,48 @@ static const struct intel_device_info *devinfo_table_lookup(uint16_t devid)
+ 	return (const struct intel_device_info *)intel_device_match[i].match_data;
+ }
+ 
++/**
++ * xe_dev_update_graphics_ver:
++ * @devid: pci device id
++ * @major: new major graphics version
++ * @minor: new minor graphics version
++ *
++ * Updates the cached graphics version of the device with the specified @devid.
++ * On Xe platforms with GMD_ID, the graphics major and minor versions are read
++ * from the hardware and override the values from the static PCI-ID table.
++ *
++ * The cache is keyed by @devid, so all devices sharing a PCI device ID share
++ * one entry; with several such devices reporting different IP versions, the
++ * last update wins.
++ *
++ * Readers of intel_get_device_info() do not take the cache lock. This is fine
++ * because the entry is only written when a device is first probed by
++ * xe_device_get(), and only if the version actually changes.
++ *
++ * Returns:
++ * 0 on success, -ENOENT if there is no cache entry for @devid.
++ */
++int xe_dev_update_graphics_ver(uint16_t devid, unsigned int major, unsigned int minor)
++{
++	struct intel_device_info *info;
++	int ret = 0;
++
++	if (intel_graphics_ver(devid) == IP_VER(major, minor))
++		return 0;
++
++	pthread_mutex_lock(&devinfo_cache.mutex);
++	info = devinfo_cache_search(devid);
++	if (info) {
++		info->graphics_ver = major;
++		info->graphics_rel = minor;
++	} else {
++		ret = -ENOENT;
++	}
++	pthread_mutex_unlock(&devinfo_cache.mutex);
++
++	return ret;
++}
++
+ /**
+  * intel_get_device_info:
+  * @devid: pci device id
+diff --git a/lib/xe/xe_query.c b/lib/xe/xe_query.c
+index 91ffc36e64..a15099cb3b 100644
+--- a/lib/xe/xe_query.c
++++ b/lib/xe/xe_query.c
+@@ -412,6 +412,23 @@ struct xe_device *xe_device_get(int fd)
+ 	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
+ 		xe_dev->gt_mask |= (1ull << xe_dev->gt_list->gt_list[gt].gt_id);
+ 
++	/* On GMD_ID platforms, the MAIN GT reports the graphics IP version */
++	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++) {
++		const struct drm_xe_gt *gt_info = &xe_dev->gt_list->gt_list[gt];
++
++		if (gt_info->type != DRM_XE_QUERY_GT_TYPE_MAIN || !gt_info->ip_ver_major)
++			continue;
++
++		igt_debug("GMD_ID graphics IP version %u.%02u for dev_id 0x%x\n",
++			  gt_info->ip_ver_major, gt_info->ip_ver_minor, xe_dev->dev_id);
++		igt_assert_f(!xe_dev_update_graphics_ver(xe_dev->dev_id,
++							 gt_info->ip_ver_major,
++							 gt_info->ip_ver_minor),
++			     "Failed to update graphics version for dev_id 0x%x\n",
++			     xe_dev->dev_id);
++		break;
++	}
++
+ 	/* Tile IDs may be non-consecutive; keep a mask of valid IDs */
+ 	for (int gt = 0; gt < xe_dev->gt_list->num_gt; gt++)
+ 		xe_dev->tile_mask |= (1ull << xe_dev->gt_list->gt_list[gt].tile_id);
 -- 
 2.43.0
+
