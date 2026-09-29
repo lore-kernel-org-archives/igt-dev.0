@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E30CCA5FA1
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 10:37:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF350CA5FA5
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 10:41:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DA91010EE2D;
-	Tue, 29 Sep 2026 10:37:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 884A110EE2D;
+	Tue, 29 Sep 2026 10:41:23 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PLgphMA5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="KL4hZcP1";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A40810EE26;
- Tue, 29 Sep 2026 10:37:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EDC510EE2B;
+ Tue, 29 Sep 2026 10:40:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790678226; x=1822214226;
+ t=1790678440; x=1822214440;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=FuIneCGSkmo5LrBuJhFAXcAnm8Bit29yXX7dXJOTbR4=;
- b=PLgphMA58a1I08DcVB+a4yOzbqTv5XN3q8ofl3xVhRHkCLR8nA1QF8aK
- 3eHa24oUv22PLuRxo0edWHTK+MGdgwkaX9mHJNe7IR6Eol7IAs6LiB+NB
- AB1G8RCN4nYaqMmmFVxqnSKn4mIKTRenZNzz7aYZnrZepYGH3yDVVRsoQ
- R1eF5PXbM+N+6gbvQbesMMMOO7xlK/ck9Mt7o3fpGZBgYHprdzvfB+9Bf
- FX/SOxoD+gwMDHqxK15aLsb+JQaardkD+ZcvsZWwBhIovpZY5DgA1ZzjV
- 4WTpKYFeN8I8F60ChM7zAx3bYNjR/fRizxEbWKJI9IhzVXjWFnv2Feas2 Q==;
-X-CSE-ConnectionGUID: ch0S8LROT+SPt+t6H4iBQg==
-X-CSE-MsgGUID: zqUrBfPzT4mcfGEXxGxDmA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90612834"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="90612834"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 03:37:06 -0700
-X-CSE-ConnectionGUID: Yh9Ed9ZyR8yADTRHM2WleA==
-X-CSE-MsgGUID: qCQ5pd7mTO64/w4mY6ltXw==
+ bh=FZ1cqMom+nM/ufpLvEALWDnV9xMF5TF3edELoBjiLaA=;
+ b=KL4hZcP1tN5S9A8KYOuCxP5fSrse3l3OUQK6f19/c4KiVI3ZW+em7Ovo
+ 3vcgwhWZduPykqVefTvcbZO/nDnth0kuTenQdCvjfuICuQX5s4mQpU0nI
+ Xz00DO9zN/aQz4SYE4jGv9jeVSEe+zK5NOi1X7YawCsU9mIGz2xkCBoS4
+ 1RgmBTeg51OuTVQWwwClTCDmRnT9DLWPxaZCBBo9OY6ERS3XLP15H5Crq
+ szAw6II/nopq8WMwM2n3M7gyzIBWAImOzoHZUcZEp6y3fP+NgYDjfgONq
+ lmBOQiW8Y0MJkut4HuoggF1Le+P8gYZkikfXRBWo7lXMJBjpApJoVIeqb Q==;
+X-CSE-ConnectionGUID: tR4dbp/OQduF2eYsN/e3Jg==
+X-CSE-MsgGUID: +i+aYwr5TOqaq2MJUjv3ug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="102063194"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="102063194"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 03:40:39 -0700
+X-CSE-ConnectionGUID: kcA/SDlOQj+CjZTRxXRg0g==
+X-CSE-MsgGUID: 4F4dm+IvTe+Tl7d4yvBUmw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="303298264"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="278550158"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 03:37:04 -0700
-Date: Tue, 29 Sep 2026 12:37:01 +0200
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 03:40:37 -0700
+Date: Tue, 29 Sep 2026 12:40:34 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
@@ -53,7 +53,7 @@ Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
  phasta@kernel.org
 Subject: Re: [PATCH i-g-t v3] tests/intel/xe_sync_file: Exercise sync file
  access post queue destruction
-Message-ID: <20260929103701.sgz5x5cpiyjxclw5@kamilkon-DESK.igk.intel.com>
+Message-ID: <20260929104034.2suju2wafp3ggxap@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
  igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
@@ -138,16 +138,16 @@ On 2026-09-25 at 09:01:10 +0100, Tvrtko Ursulin wrote:
 > > Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > 
 > Thank you - okay if I push or Intel will do it?
-
-Let me find someone for review first.
-
-Regards,
-Kamil
-
 > 
 > Regards,
 > 
 > Tvrtko
+
+I was blind, sorry, you already got r-b, I will merge it.
+
+Regards,
+Kamil
+
 > 
 > > 
 > > Regards,
@@ -168,179 +168,4 @@ Kamil
 > > >   2 files changed, 155 insertions(+)
 > > >   create mode 100644 tests/intel/xe_sync_file.c
 > > > 
-> > > diff --git a/tests/intel/xe_sync_file.c b/tests/intel/xe_sync_file.c
-> > > new file mode 100644
-> > > index 000000000000..842c3856a525
-> > > --- /dev/null
-> > > +++ b/tests/intel/xe_sync_file.c
-> > > @@ -0,0 +1,154 @@
-> > > +// SPDX-License-Identifier: MIT
-> > > +/*
-> > > + * Copyright © 2025 Google, Inc.
-> > > + */
-> > > +
-> > > +/**
-> > > + * TEST: Tests for sync file functionality
-> > > + * Category: Core
-> > > + * Mega feature: General Core features
-> > > + * Sub-category: CMD submission
-> > > + * Functionality: fences
-> > > + */
-> > > +
-> > > +#include "igt.h"
-> > > +#include "sync_file.h"
-> > > +
-> > > +#include "lib/igt_syncobj.h"
-> > > +#include "lib/intel_reg.h"
-> > > +
-> > > +#include "xe_drm.h"
-> > > +#include "xe/xe_ioctl.h"
-> > > +#include "xe/xe_query.h"
-> > > +
-> > > +static int sync_file_get_status(int sync_file, char **driver_name)
-> > > +{
-> > > +	struct sync_fence_info fence = { };
-> > > +	struct sync_file_info info = {
-> > > +		.num_fences = 1,
-> > > +		.sync_fence_info = to_user_pointer(&fence),
-> > > +	};
-> > > +
-> > > +	do_ioctl(sync_file, SYNC_IOC_FILE_INFO, &info);
-> > > +	igt_assert_eq(info.num_fences, 1);
-> > > +
-> > > +	igt_debug("'%s'/'%s' = %d\n",
-> > > +		  fence.driver_name, fence.obj_name, fence.status);
-> > > +
-> > > +	*driver_name = strdup(fence.driver_name);
-> > > +
-> > > +	return fence.status;
-> > > +}
-> > > +
-> > > +/**
-> > > + * SUBTEST: sync_file_race
-> > > + * Description: Check that we can safely query an exported sync file fd
-> > > + * Test category: functionality test
-> > > + */
-> > > +static void test_race(int xe, struct drm_xe_engine_class_instance *eci)
-> > > +{
-> > > +	uint32_t vm, bo, syncobj, bind_syncobj, *batch;
-> > > +	struct drm_xe_sync sync[2] = {
-> > > +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> > > +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> > > +		},
-> > > +		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> > > +		  .flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> > > +		},
-> > > +	};
-> > > +	const uint32_t bbend = MI_BATCH_BUFFER_END;
-> > > +	struct drm_xe_exec exec = {
-> > > +		.address = 0x100000,
-> > > +		.num_batch_buffer = 1,
-> > > +		.num_syncs = 2,
-> > > +		.syncs = to_user_pointer(sync),
-> > > +	};
-> > > +	char *driver_name;
-> > > +	int sync_fence;
-> > > +	size_t size;
-> > > +
-> > > +	vm = xe_vm_create(xe, 0, 0);
-> > > +
-> > > +	size = xe_bb_size(xe, sizeof(bbend));
-> > > +	bo = xe_bo_create(xe, vm, size, vram_if_possible(xe, eci->gt_id),
-> > > +			  DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
-> > > +
-> > > +	batch = xe_bo_map(xe, bo, size);
-> > > +	*batch = bbend;
-> > > +
-> > > +	exec.exec_queue_id  = xe_exec_queue_create(xe, vm, eci, 0);
-> > > +
-> > > +	syncobj = syncobj_create(xe, 0);
-> > > +	bind_syncobj = syncobj_create(xe, 0);
-> > > +
-> > > +	sync[0].handle = bind_syncobj;
-> > > +	xe_vm_bind_async(xe, vm, 0, bo, 0, exec.address, size, sync, 1);
-> > > +
-> > > +	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
-> > > +	sync[0].handle = bind_syncobj;
-> > > +	sync[1].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> > > +	sync[1].handle = syncobj;
-> > > +	xe_exec(xe, &exec);
-> > > +
-> > > +	/* Export a sync file fence. */
-> > > +	sync_fence = syncobj_handle_to_fd(xe, sync[1].handle,
-> > > +					  DRM_SYNCOBJ_HANDLE_TO_FD_FLAGS_EXPORT_SYNC_FILE);
-> > > +
-> > > +	igt_assert(syncobj_wait(xe, &syncobj, 1, INT64_MAX, 0, NULL));
-> > > +	igt_assert(syncobj_wait(xe, &bind_syncobj, 1, INT64_MAX, 0, NULL));
-> > > +
-> > > +	driver_name = NULL;
-> > > +	igt_assert_eq(sync_file_get_status(sync_fence, &driver_name), 1);
-> > > +	igt_assert(driver_name);
-> > > +	igt_assert(!strcmp(driver_name, "drm_sched"));
-> > > +	free(driver_name);
-> > > +
-> > > +	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
-> > > +	syncobj_reset(xe, &sync[0].handle, 1);
-> > > +	xe_vm_unbind_async(xe, vm, 0, 0, exec.address, size, sync, 1);
-> > > +	igt_assert(syncobj_wait(xe, &sync[0].handle, 1, INT64_MAX, 0, NULL));
-> > > +
-> > > +	syncobj_destroy(xe, syncobj);
-> > > +	xe_exec_queue_destroy(xe, exec.exec_queue_id);
-> > > +
-> > > +	munmap(batch, size);
-> > > +	gem_close(xe, bo);
-> > > +
-> > > +	syncobj_destroy(xe, bind_syncobj);
-> > > +	xe_vm_destroy(xe, vm);
-> > > +
-> > > +	/* Give any delayed freeing time to run. */
-> > > +	sleep(1);
-> > > +
-> > > +	/* This should still work and not crash the kernel. */
-> > > +	driver_name = NULL;
-> > > +	igt_assert_eq(sync_file_get_status(sync_fence, &driver_name), 1);
-> > > +
-> > > +	/* And must not read the original timeline/driver name either! */
-> > > +	igt_assert(driver_name);
-> > > +	igt_assert(!strcmp(driver_name, "detached-driver"));
-> > > +	free(driver_name);
-> > > +
-> > > +	close(sync_fence);
-> > > +}
-> > > +
-> > > +int igt_main()
-> > > +{
-> > > +	struct drm_xe_engine_class_instance *eci;
-> > > +	int xe;
-> > > +
-> > > +	igt_fixture() {
-> > > +		xe = drm_open_driver(DRIVER_XE);
-> > > +	}
-> > > +
-> > > +	igt_subtest("sync_file_race") {
-> > > +		xe_for_each_engine(xe, eci) {
-> > > +			test_race(xe, eci);
-> > > +			break;
-> > > +		}
-> > > +	}
-> > > +
-> > > +	igt_fixture() {
-> > > +		drm_close_driver(xe);
-> > > +	}
-> > > +}
-> > > diff --git a/tests/meson.build b/tests/meson.build
-> > > index 1ac89bab7e15..43236b19b3a9 100644
-> > > --- a/tests/meson.build
-> > > +++ b/tests/meson.build
-> > > @@ -347,6 +347,7 @@ intel_xe_progs = [
-> > >           'xe_survivability',
-> > >   	'xe_sriov_vram',
-> > >           'xe_svm_usrptr_madvise',
-> > > +	'xe_sync_file',
-> > >   	'xe_sysfs_defaults',
-> > >   	'xe_sysfs_preempt_timeout',
-> > >   	'xe_sysfs_scheduler',
-> > > -- 
-> > > 2.55.0
-> > > 
-> 
+[cut]
