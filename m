@@ -4,44 +4,43 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87809C9832A
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 15:51:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C651BC9832A
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 15:52:31 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2361A10EF7C;
-	Tue, 29 Sep 2026 15:51:45 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6ECEE10E1AD;
+	Tue, 29 Sep 2026 15:52:31 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="TQtjILQf";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="NcgDCzVz";
 	dkim-atps=neutral
-Received: from SN4PR0501CU005.outbound.protection.outlook.com
- (mail-southcentralusazon11011007.outbound.protection.outlook.com
- [40.93.194.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF31110E1AD
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 15:50:47 +0000 (UTC)
+Received: from DM1PR04CU001.outbound.protection.outlook.com
+ (mail-centralusazon11010069.outbound.protection.outlook.com [52.101.61.69])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B35D10EF7C
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 15:51:18 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YSsMqffscF1P+a75tQ+raw3djdRx854gdY6NziRxLGjFa0ITRvNHR9yFwhf9NOEP/KGYmTGA8N2m9fKqr0IgBabv54o4Llx2CzeEbaAY4/GQdoqe4g78BPMQ4/ncingpLjWWqBfLdh+BCCkz2IiUyxEMY9ovzgoZrjU5L3suamSGciCQZuRjFziPVUxFpgt5ZTp7S6v85h0534a0WjR5THvMbvLh1Dh3jt3CG2i+U0uJmz7KfliisLEOF/zn8IvgUaUR+T3pTAu7CrCGDnuFCp5+JX++aKJ8zclijE0AWkOG3NsVMTevykFfvNM6BUwGxSHySY3T1qOKNqRYn797hQ==
+ b=BqcBD01Zah2j+r9gbOIcEUSXXtkeVMfxmouTBjLKkyeD4qLo633zELtAR40pNl+o3Kffc/4xA6MGOXu+k9HgDyqnRCp8x9Ywag9CzZkSX7FMzej3Glt0Rk1j1uO3vhS4Tu0Qw14itP41WHq4D59RiCQK+EWJeP8Sbl/6sd5FBtSCzosNLNYnhKrQPkZs5k35XzxWlOmrcGFj4g4jBy7VYygu4tz65+a/S5RVVX0vTUkD4XT6l576hDhAdamKWleIh8k9nbFfk8Zx0OEpGHWkfuKb+F9OSfYSNrZh9UUMZkQN88pmBGrlINz6xDkPbSh4V2P1cpp8ccPj4qY1NPrrfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=XEfYB6jL2cGuifrYfZdGvy9tKDOUgoZetveWnDNrCbE=;
- b=lHg6hbT7Opro9xRgLJUNKdBqSCPBm4Y1DA57bqn2zdXhu7YEAeJVPG3UcHlK/zShktvzuwbTPJh4OYpBSKHR38H57HO/MaD9mEjWkms/gIGiDS5CdMF6hDh4DerM1zSfXmnQQqh6omLs6EmPjhpDDNzVY81oCd+ME1OOHm3xqlSlh1WJRpBLJnKXmhQ/ZW/m/HptRUNUXK1QT65iU3S0Vtbuw5ZhX4S2YHdZBGRDr7bnvYCrnW9zT+CckqJ9nahLYHrC6VN6QqNezY7Nk1J/Aj9itQ4ZkqpOwlch/e4jkVl5LEN9xx50pVm67fxkqQsw7kBmPMJnth543jQZy7fvcg==
+ bh=Sz0XKdvWoyVOhm0bvfDuGdHonVim4bmWOg4L8ZOzSuA=;
+ b=OoXIPzVkJtQbVGINACxQMBggjgIOeoYO9AQ9eXKMIqc0K/cDBvS4NodLFZo6BkABOrEcKzgK1eTlX47oIEE62LKIOxndAhuG2csjbAQrzalTSmLXzaGmBOMM5eqSs7vC6OtyUGP+yyJjfjtGVqscbkRpSfpG3XbN4CpDGNnq4/Y1o+GecqMXPRKY9KpNnk2QAUj7r0yZw9V27SXIz5T+++NapV0eaP5Y248EzCBS38iTwpPKaWGd62AejfnSYRuiZHCglo8JqCVTgeuUs4P6JhK3XJiNdS/bWuSXz3O7N6Ci/MBoMyO2ciYs0n9yb0OcrZ6Ek7Yv3incJZG3fD6M9Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=XEfYB6jL2cGuifrYfZdGvy9tKDOUgoZetveWnDNrCbE=;
- b=TQtjILQfeX85l2djxSdh6x8xUopa+NgWTRaNFmJ7R/1IaRsY1pj4LnsVPWM4E8TL6PP5YaqiAvkc4CQ708MJi/7r1sti193oV2Sh/vrJ0F/5tzKda56Q3fN5TAP+wJNF4xwMBBtlS0MCaRiYqX3M5UwmYwwUDBB6EOktd+mKwDE=
-Received: from CH2PR10CA0006.namprd10.prod.outlook.com (2603:10b6:610:4c::16)
- by CHBPR12MB463627.namprd12.prod.outlook.com (2603:10b6:610:36c::9)
+ bh=Sz0XKdvWoyVOhm0bvfDuGdHonVim4bmWOg4L8ZOzSuA=;
+ b=NcgDCzVzoXFKvSX2hS2ks9TVIrv2k8f9SMLQmmc24ynDZr9xdh5d3zZF4GcEAWaRWX0aIZ/Fnt+lKBP/P+1pYkuM+T0Ri55TKhO6xcZbGB/Ti6FOVTWXJj7If6YLF8u+LabjqvxLZHCVWRLt3Ua9gNaJij69cAcOOEL49HTdpUQ=
+Received: from CH2PR18CA0011.namprd18.prod.outlook.com (2603:10b6:610:4f::21)
+ by MW4PR12MB6753.namprd12.prod.outlook.com (2603:10b6:303:1ec::15)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Tue, 29 Sep
- 2026 15:50:44 +0000
-Received: from BN2PEPF0000A805.namprd02.prod.outlook.com
- (2603:10b6:610:4c:cafe::31) by CH2PR10CA0006.outlook.office365.com
- (2603:10b6:610:4c::16) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.14 via Frontend Transport; Tue,
- 29 Sep 2026 15:50:44 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.25; Tue, 29 Sep
+ 2026 15:50:31 +0000
+Received: from BN2PEPF0000A802.namprd02.prod.outlook.com
+ (2603:10b6:610:4f:cafe::6d) by CH2PR18CA0011.outlook.office365.com
+ (2603:10b6:610:4f::21) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.24 via Frontend Transport; Tue,
+ 29 Sep 2026 15:50:31 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
@@ -50,19 +49,19 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF0000A805.mail.protection.outlook.com (10.167.245.169) with Microsoft
+ BN2PEPF0000A802.mail.protection.outlook.com (10.167.245.171) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 15:50:43 +0000
+ 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 15:50:31 +0000
 Received: from rocky (10.180.168.240) by satlexmb07.amd.com (10.181.42.216)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
- 2026 10:50:42 -0500
+ 2026 10:50:29 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Alex Hung <alex.hung@amd.com>
-Subject: [PATCH i-g-t v2 3/5] lib: Preserve string const qualifiers
-Date: Tue, 29 Sep 2026 11:49:48 -0400
-Message-ID: <20260929154950.838280-4-alex.hung@amd.com>
+Subject: [PATCH i-g-t v2 2/5] tools/intel_reg_spec: Preserve const qualifiers
+Date: Tue, 29 Sep 2026 11:49:47 -0400
+Message-ID: <20260929154950.838280-3-alex.hung@amd.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260929154950.838280-1-alex.hung@amd.com>
 References: <20260929154950.838280-1-alex.hung@amd.com>
@@ -74,29 +73,29 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000A805:EE_|CHBPR12MB463627:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3d992d34-bfc9-4b25-5c16-08df1e416bc2
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A802:EE_|MW4PR12MB6753:EE_
+X-MS-Office365-Filtering-Correlation-Id: 370b81aa-8c5f-4a3e-32c5-08df1e416411
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700016|376014|82310400026|1800799024|23010399003|10067099003|56012099006|11063799006|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info: pEgdsTlUIqySileV2Gz5+alIJ+mR/wv4LRsWCsD1MCsDqKrLT50h20rheXItVRRqOf/ic+ubza8evT6ayr9z7b3oGgcMUfy+SrqzemL1ynQXHUMhwb8nVdB86POVS5qx1cp76px9rJxRNGeuMa76Ww2jnU/WqosPHBJfYU/u4UHY5fqBfhnonwgJpDNz3XcH64XzGAOVCNjDFslxUM8GkKj2dTTwyR/xQH3JwOWOOjoxih5kepiTXgPF7n4RkAvF1WhNriU/N3tk7DrKWPzahNj86ch23wCacLLqH/ms7MKmrMpwozq1ren3j8cOEuY7iBqqWjA1L/Z+pUepw4j4YXJos23pBvBuly2MewS4VnXaL72l7oFoI5HFtZz4/MFlrnkCRAztrXpnL/t+r5lTa95xfYyx+yoS6ku15fMDFLbRUOE/Fq2xbsDTu1XkUpIr/HjWYwWJPhEgdpLAop6PbHMEQhv3Zsye8c2ZO/NiysQpfPPMBlCBvvbYCBcG3dwavDbzvEo4mVJhK6ADasH1IyUKjIpnJ9tOMFRU20FJe3Dn78JIFevdPl57RyLTTk8W7vWnwJIsnJsmiK0hIGVNH8yAdVsMfMM6VJQQJoSbrKA2KUJiNxjW1vnYFEsiF1lMdIQPXelOpBkk+lPjRtypq3YAVBSHW5cZbM0tOMJU2dR8aUQ63PJ0GCccZrR7KnLDim8Gdi0FUL/uckHAW5fRVg==
+ ARA:13230040|23010399003|1800799024|376014|36860700016|82310400026|18002099003|22082099003|6133799003|3023799007|10067099003|56012099006|11063799006;
+X-Microsoft-Antispam-Message-Info: ac24Lt9nDR/igTtcREWKfj864jEyXHQJ4giD2Tm26C+l5HWbH2afBsGkY/w+cSUIGYdRvZfx9palirqNnqc2eboviAH557M8hGLaWQasLPM51QsoNzgiNjpw9stxKjiXc6EWISsHFQbC7W2ed1pfSr1lmJ1Hdj3rSzGKE1WiIi9Zwc6h54QrkjXAMBivtlk/LYqH7Ik1PWHhpxVKiS11+auVpOfM/hgnZ9Z8PhIlWoOrcmnLFQjlgbPZj7N45hpc7jANlt8leZ7P3fMZvrWdALeh48IOVxyevnlblCvcgf4taMU/axi1CwxxX+MSikRNRSrMFMRoVEXRvpL5m2/hd7nkJz0cn8IkGjiMhd9Y1OVAWUtLk+IYo+TJ1yZrRDMRHn2uW11qLKFnqen/aVaMGvJHBdG15OUVFifwP/aezNfMFzJ5rCjhLorR5X43L4bdmJV4AwYGbBjUuBy8nvU+kjXszVOWUzn/iSHigOHhzzz6Diz3BChenX9tlW+/3DHszlgeqJvsk0kC3Hrzh1HJbfY//QKEY9GthdJ/wP2TYA8Al3jqJoBUHy/fgq0DQCkJPB/iCMUN0/iwhEzONGPTfrQhySDAsH9PfjwZZyZGoIdT9a5GlzuLbhdR5h0vQkwt8kLjj6jG55vpSUlpbKd2Q4m4lX/2Mjsa5e08JP3y/iy7ErkQIXEkqh3IiN6/sPILxzf/yHH0m0rJL/n+ZF3zXg==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700016)(376014)(82310400026)(1800799024)(23010399003)(10067099003)(56012099006)(11063799006)(18002099003)(22082099003)(3023799007);
+ SFS:(13230040)(23010399003)(1800799024)(376014)(36860700016)(82310400026)(18002099003)(22082099003)(6133799003)(3023799007)(10067099003)(56012099006)(11063799006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 3opXHibY0i3CEIvB7AD53mhVtk9Mv9rHQFnPLu4sEKftpMQ3dKNPi49f6RCPiEK/0XzX5odRqBRPVGTnzGObkA4ppjzKqdhB1quv8YfD+3+tYL5Twf0kKqiQwehWqQTa4JT3J1GQgqOZAAptJgMJfsyuzoczqJ/feUCN47yEZEx1R5b6h0uYS5Wlkd04E1yUyxIt6BmWWeylf+RJ8J5fHbnexJH+GZKiuv09Pi4xQ/0QS5qYdnmzekh2xPfhLYlqhtd0ULJxmZU6sIwxb8ASE+a6/+XHAHWCLoMHaoR7AnsUvYWwCT1Yr1rb+g8YmZIDsYMZvpvWOLe/q2sbR5Dj8Io5iHK8JcYQ7mV7wCy/QSbdqias6wuM8cOfrhMFYkqm2xEMwSDTqwGLIbC7nhunkHki8MsIFz3AEFAg5MIB47GWvnDyoCghviQLO6rbShtF
+X-MS-Exchange-AntiSpam-MessageData-0: NuSOuSN6pqntHccgWlM1tifTXjuN/xOvxgha3V16qyTcgoA5FUEnLcuNTW1VNlcfsMtziX1Udg51AUi8fQVzha8q4/9kS47hSNqSeLgTudikpmNKpkA0Q6mImEQn9R9HmHbNXG1tuLRm7sjw+JwRZXpBTn6NjdQ23E/lM2E9SjnW3Lz6iqvUr1Zu7upkXYWQQOkGpbjIvn4Kf5YG4F5AZfH60qznjXbQzL2CtLaLFxaX9RyAUWl/PtrHAVdTt9lLhboaokEqC45tROvUNIjiM0xAQjb6ak1RH7eQHc88cIpQOMxhTHTuQ6a//SH7h0qGBmUtRxuh86cCTL8JmObqw5xKTtLfHnK/QZMMh1TGNx88qLTHM4S/3elBWOPxH1Y4YdskaqGQMlPE7DgL8kspP4DIvwuUlprjHneF9vH8uyAC/0phkk7eJxBfQrnVRROb
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 15:50:43.9071 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d992d34-bfc9-4b25-5c16-08df1e416bc2
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 15:50:31.0022 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 370b81aa-8c5f-4a3e-32c5-08df1e416411
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF0000A805.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF0000A802.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CHBPR12MB463627
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6753
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,138 +111,52 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With glibc 2.43, string searches on const input return const pointers.
-Storing these results in char * variables causes compiler warnings.
+With glibc 2.43, strrchr() on const input returns a const pointer.
+Assigning that result to char * in include_file() discards const
+and causes a compiler warning.
 
 The following warning is observed on Ubuntu 26.04 (wrapped):
 
-  ../lib/igt_drm_fdinfo.c: In function 'parse_region':
-  ../lib/igt_drm_fdinfo.c:122:4: warning:
+  ../tools/intel_reg_spec.c: In function 'include_file':
+  ../tools/intel_reg_spec.c:242:4: warning:
     assignment discards 'const' qualifier from pointer target type
     [-Wdiscarded-qualifiers]
 
-Use const char * for read-only search results and preserve const in
-igt_get_dc6_counter() and its callers. Give strtoull() a separate
-end pointer in the fdinfo parser so its input pointer can remain
-const without a cast.
+Use a separate const char * for the source directory separator.
+Keep the writable pointer for removing the newline from the
+allocated filename.
 
 Assisted-by: Copilot:GPT-6-Astra
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
- lib/i915/i915_dp.c   |  2 +-
- lib/igt_core.c       |  2 +-
- lib/igt_drm_fdinfo.c |  7 ++++---
- lib/igt_pm.c         | 10 +++++-----
- lib/igt_pm.h         |  2 +-
- 5 files changed, 12 insertions(+), 11 deletions(-)
+ tools/intel_reg_spec.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
-index 3d570f7cc..595010140 100644
---- a/lib/i915/i915_dp.c
-+++ b/lib/i915/i915_dp.c
-@@ -49,7 +49,7 @@
-  */
- static int i915_dp_parse_marked_value(const char *buf, char marked_char, int *result)
+diff --git a/tools/intel_reg_spec.c b/tools/intel_reg_spec.c
+index 632db6b9f..e51c90ec9 100644
+--- a/tools/intel_reg_spec.c
++++ b/tools/intel_reg_spec.c
+@@ -228,6 +228,7 @@ static bool ignore_line(const char *line)
+ 
+ static char *include_file(const char *line, const char *source)
  {
--	char *marked_ptr, *val_ptr;
-+	const char *marked_ptr, *val_ptr;
++	const char *source_dir;
+ 	char *filename, *p;
  
- 	/*
- 	 * Look for the marked character
-diff --git a/lib/igt_core.c b/lib/igt_core.c
-index d5dc5324d..b1d045161 100644
---- a/lib/igt_core.c
-+++ b/lib/igt_core.c
-@@ -1141,7 +1141,7 @@ static int common_init(int *argc, char **argv,
+ 	line = skip_space(line);
+@@ -239,9 +240,9 @@ static char *include_file(const char *line, const char *source)
+ 	if (!filename)
+ 		return NULL;
  
- 	/* Check for conflicts and calculate space for passed-in extra long options */
- 	for  (extra_opt_count = 0; extra_long_opts && extra_long_opts[extra_opt_count].name; extra_opt_count++) {
--		char *conflicting_char;
-+		const char *conflicting_char;
+-	p = strrchr(source, '/');
+-	if (p && *line != '/') {
+-		int len = p - source + 1;
++	source_dir = strrchr(source, '/');
++	if (source_dir && *line != '/') {
++		int len = source_dir - source + 1;
  
- 		/* check for conflicts with standard long option values */
- 		for (i = 0; long_options[i].name; i++) {
-diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
-index 74a90c437..056eb2ca8 100644
---- a/lib/igt_drm_fdinfo.c
-+++ b/lib/igt_drm_fdinfo.c
-@@ -114,7 +114,8 @@ static int parse_region(const char *name, struct drm_client_fdinfo *info,
- 			const char **region_map, unsigned int region_entries,
- 			uint64_t *val)
- {
--	char *p;
-+	const char *p;
-+	char *end;
- 	ssize_t name_len;
- 	int found = -1;
- 	unsigned int i;
-@@ -160,8 +161,8 @@ static int parse_region(const char *name, struct drm_client_fdinfo *info,
- 		goto out;
- 
- 	p++;
--	*val = strtoull(p, &p, 10);
--	p = (char *)ignore_space(p);
-+	*val = strtoull(p, &end, 10);
-+	p = ignore_space(end);
- 	if (!*p)
- 		goto out;
- 
-diff --git a/lib/igt_pm.c b/lib/igt_pm.c
-index 7905deb8d..1e3cc7757 100644
---- a/lib/igt_pm.c
-+++ b/lib/igt_pm.c
-@@ -1555,7 +1555,7 @@ uint32_t igt_get_dc_counter(const char *dc_data)
- {
- 	char *e;
- 	long ret;
--	char *s = strchr(dc_data, ':');
-+	const char *s = strchr(dc_data, ':');
- 
- 	igt_assert(s);
- 	s++;
-@@ -1586,9 +1586,9 @@ bool igt_support_dc6(int debugfs_fd)
-  *
-  * Searches for DC6 counter information in the DMC info buffer.
-  */
--char *igt_get_dc6_counter(const char *buf)
-+const char *igt_get_dc6_counter(const char *buf)
- {
--	char *str;
-+	const char *str;
- 
- 	str = strstr(buf, "DC5 -> DC6 count");
- 	if (!str)
-@@ -1607,7 +1607,7 @@ char *igt_get_dc6_counter(const char *buf)
- uint32_t igt_read_dc_counter(int debugfs_fd, int dc_flag)
- {
- 	char buf[4096];
--	char *str;
-+	const char *str;
- 
- 	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info", buf, sizeof(buf));
- 
-@@ -1669,7 +1669,7 @@ const char *igt_dc_state_name(int dc_flag)
-  */
- void igt_require_dc_counter(int debugfs_fd, int dc_flag)
- {
--	char *str;
-+	const char *str;
- 	char buf[4096];
- 
- 	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
-diff --git a/lib/igt_pm.h b/lib/igt_pm.h
-index cd9dceb1e..328875f9c 100644
---- a/lib/igt_pm.h
-+++ b/lib/igt_pm.h
-@@ -108,7 +108,7 @@ bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
- void igt_pm_dpms_toggle(igt_output_t *output);
- uint32_t igt_get_dc_counter(const char *dc_data);
- bool igt_support_dc6(int debugfs_fd);
--char *igt_get_dc6_counter(const char *buf);
-+const char *igt_get_dc6_counter(const char *buf);
- uint32_t igt_read_dc_counter(int debugfs_fd, int dc_flag);
- bool igt_dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count);
- const char *igt_dc_state_name(int dc_flag);
+ 		memcpy(filename, source, len);
+ 		strcpy(filename + len, line);
 -- 
 2.53.0
 
