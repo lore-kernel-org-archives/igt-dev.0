@@ -4,62 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0397ACA5FA1
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 10:19:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D82ECA5FA1
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 10:23:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 51E3410E9C5;
-	Tue, 29 Sep 2026 10:19:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C0D0B10E9C5;
+	Tue, 29 Sep 2026 10:23:22 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MqjKRFaH";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="BU/w+zR4";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3C04110E9C5
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 10:18:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0C68410E9C5
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 10:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790677125; x=1822213125;
+ t=1790677360; x=1822213360;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=2EMNR2cNhJvPhZ/AnbCgZkAhAFwIeh801L1ha11x3KM=;
- b=MqjKRFaHH1MMYBhVClRSTCOZpd7V2HNLoLrmunLY7Me1YFr0kWmPO1EY
- e7Z4bmjgYLJLF1kMR+9ssvxnMxIoTsZxUWxYeWnRm0fM6QlSiBp7uDj66
- IYRmWul1gKLXzZutrRUZKduTpGxhfW7/IGJjFaTlTyCPQ15ZqhXGG/pL9
- uTFWse9guA4WYA3o9q84qKXkk2+ZPW2kWehrZ/xKw9Zxwve+x5cs6CNmS
- WvKBYHFmd2ystzxcDwYodEy0EiYBCEmjZq0z5St1uXwPhpDhhk8zckn9f
- yx0IZd/gpSHXcXyYN5XVAGhb12NwtYm2uSfWJCdWc7Y+7jL1Syhi/fo+v A==;
-X-CSE-ConnectionGUID: HlQqS5neS3CIIofpKa43xA==
-X-CSE-MsgGUID: i0OgOuZlRVyIw7lWFVtNbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="116922711"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="116922711"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 03:18:45 -0700
-X-CSE-ConnectionGUID: gsj5X1wPS5WgmgJtkv5FAg==
-X-CSE-MsgGUID: UoFCSxKnSdmk6o9sgzE1+w==
+ bh=b/Qhfcd92g75WmtXYOgowL4Hllpk5nDuxyX69GCqKBM=;
+ b=BU/w+zR4twG+jfJ41YqOvOvglgCHt3wJzIQsoh16PDenEqh7bp3Bi5Tz
+ hqxRZUDu0WDNQdwDMC5LaeBnn0gnt/lyN4Fa4plpshNGufFhnAxZTJzPg
+ o0M+wqKvzkKQvGBCuYLAS31vNibMc7HqxQ6VZ+aYFsxKLddN/fHg5+krE
+ rdGpemLnhbfVNFE2+89dxPlB6DhWCb4R4CJNKSKXRbUrOlKm8l9S/E6G6
+ ak1AzIi92zYtkOOY1QGHpXgk9VfZ0VnmWsjQF38Po8x41U8vtaU/4SbDq
+ Zwo4A5o7o8OTzPA1Kho0K9023OtweyD+CA8W9bcXlimZr79+23qPrvEsq Q==;
+X-CSE-ConnectionGUID: 2+Gzdt+3QpK5zWS1Rr1QyQ==
+X-CSE-MsgGUID: n1dmBcvgQuKGy0jGk99hRQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90611635"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="90611635"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 03:22:39 -0700
+X-CSE-ConnectionGUID: qNfbg3mqTwCIaavVCpPv8g==
+X-CSE-MsgGUID: nEX3pSc9R4ez5qXCAe4StQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="278546293"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="303291972"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 03:18:44 -0700
-Date: Tue, 29 Sep 2026 12:18:41 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 03:22:37 -0700
+Date: Tue, 29 Sep 2026 12:22:35 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jesse Zhang <Jesse.Zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
-Subject: Re: [PATCH i-g-t 1/2] tests/amdgpu: fix checkpatch errors in
- amd_fuzzing
-Message-ID: <20260929101841.siuqpxiubj7tcts4@kamilkon-DESK.igk.intel.com>
+To: Alex Hung <alex.hung@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH 1/2] lib/tests: Preserve string const qualifiers
+Message-ID: <20260929102235.vnxxxa72lmhgngz3@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jesse Zhang <Jesse.Zhang@amd.com>, igt-dev@lists.freedesktop.org,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>
-References: <20260929030131.3415475-1-Jesse.Zhang@amd.com>
+ Alex Hung <alex.hung@amd.com>, igt-dev@lists.freedesktop.org
+References: <20260925193642.2627600-1-alex.hung@amd.com>
+ <20260925193642.2627600-2-alex.hung@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260929030131.3415475-1-Jesse.Zhang@amd.com>
+In-Reply-To: <20260925193642.2627600-2-alex.hung@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,310 +70,223 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Jesse,
-On 2026-09-29 at 11:00:46 +0800, Jesse Zhang wrote:
+Hi Alex,
+On 2026-09-25 at 13:36:41 -0600, Alex Hung wrote:
 
-please do not mension a tool in subject, rather write what you did,
-for example:
+please split this into separate lib and tests changes, see below.
 
-[PATCH i-g-t 1/2] tests/amdgpu/amd_fuzzing: fix codestyle
+> With glibc 2.43, string searches on const input return const pointers.
+> Storing these results in char * variables causes compiler warnings.
+> For example, parse_region() reports:
+> 
+>   warning: assignment discards 'const' qualifier
+>     from pointer target type [-Wdiscarded-qualifiers]
+> 
+> Use const char * for results that are only read. Keep char * in the MSM
+> test where the buffer is modified. In the fdinfo parser, use a separate
+> end pointer for strtoull() so the input pointer can remain const.
+> 
+> Assisted-by: Copilot:GPT-6-Astra
+> Signed-off-by: Alex Hung <alex.hung@amd.com>
+> ---
+>  lib/i915/i915_dp.c         |  2 +-
+>  lib/igt_core.c             |  2 +-
+>  lib/igt_drm_fdinfo.c       |  7 ++++---
+>  lib/igt_pm.c               | 10 +++++-----
+>  lib/igt_pm.h               |  2 +-
+
+Please make lib changes in one patch.
+
+>  tests/intel/i915_pm_sseu.c |  8 ++++----
+
+Make this in separate patch.
+
+>  tests/msm/msm_mapping.c    |  6 +++---
+
+And this should be last patch. Smaller changes will make backporting
+a little easier.
 
 Regards,
 Kamil
 
-> Fix all checkpatch ERROR-level issues in amd_fuzzing.c:
-> - CODE_INDENT: use tabs for igt_assert_f() continuation-line indentation
-> - OPEN_BRACE: put the if-statement opening brace on the same line
+>  7 files changed, 19 insertions(+), 18 deletions(-)
 > 
-> No functional change.
-> 
-> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-> ---
->  tests/amdgpu/amd_fuzzing.c | 103 ++++++++++++++++++-------------------
->  1 file changed, 51 insertions(+), 52 deletions(-)
-> 
-> diff --git a/tests/amdgpu/amd_fuzzing.c b/tests/amdgpu/amd_fuzzing.c
-> index 36dd5d388..bcd3d66e0 100644
-> --- a/tests/amdgpu/amd_fuzzing.c
-> +++ b/tests/amdgpu/amd_fuzzing.c
-> @@ -291,8 +291,8 @@ run_drm_ioctl_field_cases(int fd, const char *ioctl_name, unsigned long request,
->  		errno = 0;
->  		ret = drmIoctl(fd, request, buf);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     ioctl_name, cases[i].case_name, buf);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     ioctl_name, cases[i].case_name, buf);
->  	}
->  
->  	free(buf);
-> @@ -452,8 +452,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		{
->  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_BO_LIST, &base);
->  			igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_BO_LIST", "bo_list.bo_number.huge", &base);
-> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +				     "DRM_IOCTL_AMDGPU_BO_LIST", "bo_list.bo_number.huge", &base);
->  		}
->  
->  		/* bo_info_size cannot be zero. */
-> @@ -466,8 +466,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		{
->  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_BO_LIST, &base);
->  			igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_BO_LIST", "bo_list.bo_info_size.zero", &base);
-> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +				     "DRM_IOCTL_AMDGPU_BO_LIST", "bo_list.bo_info_size.zero", &base);
->  		}
->  
->  		/* DESTROY should not require bo_info payload fields for a valid handle. */
-> @@ -747,8 +747,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		{
->  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_WAIT_FENCES, &base);
->  			igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fence_count.zero", &base);
-> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +				     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fence_count.zero", &base);
->  		}
->  
->  		/* fence_count=0 must be rejected regardless of wait_all selector. */
-> @@ -758,8 +758,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		{
->  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_WAIT_FENCES, &base);
->  			igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fence_count.zero_wait_all", &base);
-> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +				     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fence_count.zero_wait_all", &base);
->  		}
->  
->  		/* Non-zero fence_count with NULL fences pointer must fault copy-from-user. */
-> @@ -770,8 +770,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		{
->  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_WAIT_FENCES, &base);
->  			igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fences.nonzero_count_null", &base);
-> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +				     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fences.nonzero_count_null", &base);
->  		}
->  	}
->  
-> @@ -924,24 +924,24 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.syncobj_handles.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.syncobj_handles.zero_count_nonnull", &arg);
->  
->  		memset(&arg, 0, sizeof(arg));
->  		arg.bo_read_handles = 0x1;
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_read_handles.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_read_handles.zero_count_nonnull", &arg);
->  
->  		memset(&arg, 0, sizeof(arg));
->  		arg.bo_write_handles = 0x1;
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_write_handles.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_write_handles.zero_count_nonnull", &arg);
->  
->  		/* non-zero count + NULL user pointer must fail in copy-from-user path */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -949,24 +949,24 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.syncobj_handles.nonzero_count_null", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.syncobj_handles.nonzero_count_null", &arg);
->  
->  		memset(&arg, 0, sizeof(arg));
->  		arg.num_bo_read_handles = 1;
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_read_handles.nonzero_count_null", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_read_handles.nonzero_count_null", &arg);
->  
->  		memset(&arg, 0, sizeof(arg));
->  		arg.num_bo_write_handles = 1;
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_write_handles.nonzero_count_null", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_write_handles.nonzero_count_null", &arg);
->  
->  		/* queue lookup path: invalid queue_id with no dependency arrays */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -974,8 +974,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.queue_id.invalid_empty", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.queue_id.invalid_empty", &arg);
->  	}
+> diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+> index 3d570f7cc..595010140 100644
+> --- a/lib/i915/i915_dp.c
+> +++ b/lib/i915/i915_dp.c
+> @@ -49,7 +49,7 @@
+>   */
+>  static int i915_dp_parse_marked_value(const char *buf, char marked_char, int *result)
+>  {
+> -	char *marked_ptr, *val_ptr;
+> +	const char *marked_ptr, *val_ptr;
 >  
 >  	/*
-> @@ -997,8 +997,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.syncobj_handles.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.syncobj_handles.zero_count_nonnull", &arg);
+>  	 * Look for the marked character
+> diff --git a/lib/igt_core.c b/lib/igt_core.c
+> index d5dc5324d..b1d045161 100644
+> --- a/lib/igt_core.c
+> +++ b/lib/igt_core.c
+> @@ -1141,7 +1141,7 @@ static int common_init(int *argc, char **argv,
 >  
->  		/* syncobj_timeline_handles: non-NULL + zero timeline count */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -1006,8 +1006,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_handles.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_handles.zero_count_nonnull", &arg);
+>  	/* Check for conflicts and calculate space for passed-in extra long options */
+>  	for  (extra_opt_count = 0; extra_long_opts && extra_long_opts[extra_opt_count].name; extra_opt_count++) {
+> -		char *conflicting_char;
+> +		const char *conflicting_char;
 >  
->  		/* syncobj_timeline_points: non-NULL + zero timeline count */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -1015,8 +1015,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_points.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_points.zero_count_nonnull", &arg);
+>  		/* check for conflicts with standard long option values */
+>  		for (i = 0; long_options[i].name; i++) {
+> diff --git a/lib/igt_drm_fdinfo.c b/lib/igt_drm_fdinfo.c
+> index 74a90c437..056eb2ca8 100644
+> --- a/lib/igt_drm_fdinfo.c
+> +++ b/lib/igt_drm_fdinfo.c
+> @@ -114,7 +114,8 @@ static int parse_region(const char *name, struct drm_client_fdinfo *info,
+>  			const char **region_map, unsigned int region_entries,
+>  			uint64_t *val)
+>  {
+> -	char *p;
+> +	const char *p;
+> +	char *end;
+>  	ssize_t name_len;
+>  	int found = -1;
+>  	unsigned int i;
+> @@ -160,8 +161,8 @@ static int parse_region(const char *name, struct drm_client_fdinfo *info,
+>  		goto out;
 >  
->  		/* bo_read_handles: non-NULL + zero count */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -1024,8 +1024,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_read_handles.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_read_handles.zero_count_nonnull", &arg);
+>  	p++;
+> -	*val = strtoull(p, &p, 10);
+> -	p = (char *)ignore_space(p);
+> +	*val = strtoull(p, &end, 10);
+> +	p = ignore_space(end);
+>  	if (!*p)
+>  		goto out;
 >  
->  		/* bo_write_handles: non-NULL + zero count */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -1033,8 +1033,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_write_handles.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_write_handles.zero_count_nonnull", &arg);
+> diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+> index 7905deb8d..1e3cc7757 100644
+> --- a/lib/igt_pm.c
+> +++ b/lib/igt_pm.c
+> @@ -1555,7 +1555,7 @@ uint32_t igt_get_dc_counter(const char *dc_data)
+>  {
+>  	char *e;
+>  	long ret;
+> -	char *s = strchr(dc_data, ':');
+> +	const char *s = strchr(dc_data, ':');
 >  
->  		/* out_fences: non-NULL + zero fence count */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -1042,8 +1042,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.out_fences.zero_count_nonnull", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.out_fences.zero_count_nonnull", &arg);
+>  	igt_assert(s);
+>  	s++;
+> @@ -1586,9 +1586,9 @@ bool igt_support_dc6(int debugfs_fd)
+>   *
+>   * Searches for DC6 counter information in the DMC info buffer.
+>   */
+> -char *igt_get_dc6_counter(const char *buf)
+> +const char *igt_get_dc6_counter(const char *buf)
+>  {
+> -	char *str;
+> +	const char *str;
 >  
->  		/* non-zero count + NULL user pointer must fail in copy-from-user path */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -1051,16 +1051,16 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.syncobj_handles.nonzero_count_null", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.syncobj_handles.nonzero_count_null", &arg);
+>  	str = strstr(buf, "DC5 -> DC6 count");
+>  	if (!str)
+> @@ -1607,7 +1607,7 @@ char *igt_get_dc6_counter(const char *buf)
+>  uint32_t igt_read_dc_counter(int debugfs_fd, int dc_flag)
+>  {
+>  	char buf[4096];
+> -	char *str;
+> +	const char *str;
 >  
->  		memset(&arg, 0, sizeof(arg));
->  		arg.num_syncobj_timeline_handles = 1;
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_handles.nonzero_count_null", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_handles.nonzero_count_null", &arg);
+>  	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info", buf, sizeof(buf));
 >  
->  		memset(&arg, 0, sizeof(arg));
->  		arg.num_syncobj_timeline_handles = 1;
-> @@ -1068,24 +1068,24 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_points.nonzero_count_null", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_points.nonzero_count_null", &arg);
+> @@ -1669,7 +1669,7 @@ const char *igt_dc_state_name(int dc_flag)
+>   */
+>  void igt_require_dc_counter(int debugfs_fd, int dc_flag)
+>  {
+> -	char *str;
+> +	const char *str;
+>  	char buf[4096];
 >  
->  		memset(&arg, 0, sizeof(arg));
->  		arg.num_bo_read_handles = 1;
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_read_handles.nonzero_count_null", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_read_handles.nonzero_count_null", &arg);
+>  	igt_debugfs_simple_read(debugfs_fd, "i915_dmc_info",
+> diff --git a/lib/igt_pm.h b/lib/igt_pm.h
+> index cd9dceb1e..328875f9c 100644
+> --- a/lib/igt_pm.h
+> +++ b/lib/igt_pm.h
+> @@ -108,7 +108,7 @@ bool igt_has_pci_pm_capability(struct pci_device *pci_dev);
+>  void igt_pm_dpms_toggle(igt_output_t *output);
+>  uint32_t igt_get_dc_counter(const char *dc_data);
+>  bool igt_support_dc6(int debugfs_fd);
+> -char *igt_get_dc6_counter(const char *buf);
+> +const char *igt_get_dc6_counter(const char *buf);
+>  uint32_t igt_read_dc_counter(int debugfs_fd, int dc_flag);
+>  bool igt_dc_state_wait_entry(int debugfs_fd, int dc_flag, int prev_dc_count);
+>  const char *igt_dc_state_name(int dc_flag);
+> diff --git a/tests/intel/i915_pm_sseu.c b/tests/intel/i915_pm_sseu.c
+> index 5dd571a45..a4b92791c 100644
+> --- a/tests/intel/i915_pm_sseu.c
+> +++ b/tests/intel/i915_pm_sseu.c
+> @@ -120,7 +120,7 @@ dbg_get_status_section(const char *title, char **first, char **last)
+>  static bool
+>  dbg_has_line(const char *first, const char *last, const char *name)
+>  {
+> -	char *pos = strstr(first, name);
+> +	const char *pos = strstr(first, name);
 >  
->  		memset(&arg, 0, sizeof(arg));
->  		arg.num_bo_write_handles = 1;
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_write_handles.nonzero_count_null", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_write_handles.nonzero_count_null", &arg);
+>  	return pos != NULL && pos < last;
+>  }
+> @@ -128,7 +128,7 @@ dbg_has_line(const char *first, const char *last, const char *name)
+>  static int
+>  dbg_get_int(const char *first, const char *last, const char *name)
+>  {
+> -	char *pos;
+> +	const char *pos;
 >  
->  		/* wait queue lookup path: invalid waitq_id when out_fences requested */
->  		memset(&arg, 0, sizeof(arg));
-> @@ -1095,8 +1095,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
->  		errno = 0;
->  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
->  		igt_assert_f(ret != 0,
-> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.waitq_id.invalid_out_fences", &arg);
-> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
-> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.waitq_id.invalid_out_fences", &arg);
->  	}
->  	/*
->  	 * USERQ_WAIT timeline points are 64-bit in UAPI.  Verify that the
-> @@ -2209,8 +2209,7 @@ amd_test_try_create_userq(int fd, amdgpu_device_handle amdgpu_dev, uint32_t ip_t
+>  	pos = strstr(first, name);
+>  	igt_assert(pos != NULL);
+> @@ -137,13 +137,13 @@ dbg_get_int(const char *first, const char *last, const char *name)
+>  	pos += 2;
+>  	igt_assert(pos != last);
 >  
->  	(void)fd;
+> -	return strtol(pos, &pos, 10);
+> +	return strtol(pos, NULL, 10);
+>  }
 >  
-> -	if (!amdgpu_dev || !userq)
-> -	{
-> +	if (!amdgpu_dev || !userq) {
->  		igt_info("userq create failed: invalid args dev=%p userq=%p ip=%u\n",
->  			 amdgpu_dev, userq, ip_type);
->  		return false;
+>  static bool
+>  dbg_get_bool(const char *first, const char *last, const char *name)
+>  {
+> -	char *pos;
+> +	const char *pos;
+>  
+>  	pos = strstr(first, name);
+>  	igt_assert(pos != NULL);
+> diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
+> index 05960627c..52b494abf 100644
+> --- a/tests/msm/msm_mapping.c
+> +++ b/tests/msm/msm_mapping.c
+> @@ -102,7 +102,7 @@ wait_for_stall_on_fault(int drm_fd)
+>   * Helper to find named buffer address
+>   */
+>  
+> -static const char *
+> +static char *
+>  get_line(char **buf)
+>  {
+>  	char *ret, *eol;
+> @@ -123,7 +123,7 @@ get_line(char **buf)
+>  }
+>  
+>  static bool
+> -endswith(const char *str, const char *end)
+> +endswith(char *str, const char *end)
+>  {
+>  	char *p = strstr(str, end);
+>  
+> @@ -166,7 +166,7 @@ get_bo_addr(int drm_fd, const char *name)
+>  	 */
+>  
+>  	while (*p) {
+> -		const char *line = get_line(&p);
+> +		char *line = get_line(&p);
+>  
+>  		if (endswith(line, name)) {
+>  			uint64_t addr, dummy;
 > -- 
-> 2.50.1
+> 2.43.0
 > 
