@@ -4,27 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0B5CCA5FA5
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 23:42:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED117CA5FAD
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 23:47:57 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5294910E1B6;
-	Tue, 29 Sep 2026 23:42:45 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3658F10E1B6;
- Tue, 29 Sep 2026 23:42:01 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4582425187154159681=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F3A110E3E2;
+	Tue, 29 Sep 2026 23:47:57 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="B5byopE5";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3620610E2FA
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 23:47:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790725633; x=1822261633;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=aLIGaldhi9FX9UsS0ijlT9wPfafVEqbz+3lcRYIUpV8=;
+ b=B5byopE5ZkGvl69nohOqAPpeMnjL/DSw4ABmdwvtasWFwa1yxTGTxAiH
+ H9CEm1DTH5vdjMtgweN00WRRXihvY4n2r6T5oCsHLEgbBny1gOC4cmpeG
+ 54hr6kD/hLJLimLT0sOcrvkPHqkMD5ieWdcJFe00hSlcyf+euKd9iyG6N
+ cKEij7VdLO5El8hCDIU7xMCFCVP1AD+IuT4mjtNpuWHzWE3AfnGHm4SoG
+ rCdTk4zHfm3G25ovXdQSBxlmTV5zFJOY55D/GmCrKhrsgGCRyYCGlFqu5
+ OGiwX6oKXFX9FwAFgMv8+YzoXlNelOVs2QyZeM2iTfSr4J27ifHuR3rlP Q==;
+X-CSE-ConnectionGUID: o52P+BVLRYavBLgAkF5cUA==
+X-CSE-MsgGUID: 7dOrhQKaSgGACottsrg8rQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="79021453"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="79021453"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 16:47:13 -0700
+X-CSE-ConnectionGUID: sqlVBoW2RKWZhT5yTvu0eA==
+X-CSE-MsgGUID: kywoLFeZTPa7BDfvxeo0og==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="305021739"
+Received: from mdroper-desk1.fm.intel.com ([10.121.64.167])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 16:47:13 -0700
+From: Matt Roper <matthew.d.roper@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: matthew.d.roper@intel.com
+Subject: [PATCH i-g-t] lib/igt_core: Don't rely on debugfs for tracefs access
+Date: Tue, 29 Sep 2026 16:47:01 -0700
+Message-ID: <20260929234700.1244647-2-matthew.d.roper@intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/intel/xe=5Fevict=3A_D?=
- =?utf-8?q?rop_blanket_skip_when_system_memory_=3C_VRAM?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Varun Gupta" <varun.gupta@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Sep 2026 23:42:01 -0000
-Message-ID: <179072532121.221645.14399833651122850483@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260929173928.3098760-2-varun.gupta@intel.com>
-In-Reply-To: <20260929173928.3098760-2-varun.gupta@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,137 +62,105 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4582425187154159681==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Tracefs became a dedicated filesystem, independent of debugfs, in early
+2015 and is expected to be mounted independently now (usually at
+/sys/kernel/tracing).  For transitional compatibility, trying to access
+the old debugfs location ($debugfs/tracing) will automatically mount
+another copy of tracefs at that location.  However as of kernel commit
+9ba817fb7c6a ("tracing: Deprecate auto-mounting tracefs in debugfs"),
+this transitional automounting is deprecated; it currently prints a
+message in dmesg at WARN log level (which IGT will treat as a test
+failure) and will likely be removed entirely at some point in the
+future.
 
-== Series Details ==
+Stop relying on debugfs for access to tracing.  Instead scan
+/proc/mounts to find the real location where tracefs is mounted (this
+will usually be /sys/kernel/tracing, but that isn't guaranteed).  If
+tracefs isn't already mounted, attempt to manually mount it.
 
-Series: tests/intel/xe_evict: Drop blanket skip when system memory < VRAM
-URL   : https://patchwork.freedesktop.org/series/175235/
-State : failure
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+---
+ lib/igt_core.c | 51 ++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 49 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index d5dc5324d..cfb33863e 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -34,6 +34,7 @@
+ #include <fcntl.h>
+ #include <sys/stat.h>
+ #include <sys/ioctl.h>
++#include <sys/mount.h>
+ #include <string.h>
+ #include <sys/mman.h>
+ #include <signal.h>
+@@ -704,14 +705,60 @@ void igt_kmsg(const char *format, ...)
+ 	fclose(file);
+ }
+ 
++static void cleanup_fclose(FILE **f)
++{
++	if (*f)
++		fclose(*f);
++}
++
++static const char *__igt_tracefs_mount(void)
++{
++	FILE *f __attribute__((__cleanup__(cleanup_fclose))) = NULL;
++	char line[1024];
++
++	f = fopen("/proc/mounts", "r");
++	if (!f)
++		return NULL;
++
++	while (fgets(line, sizeof(line), f)) {
++		char *dev, *dir, *save;
++
++		dev = strtok_r(line, " ", &save);
++		dir = strtok_r(NULL, " ", &save);
++
++		if (strcmp(dev, "tracefs") == 0)
++			return strdup(dir);
++	}
++
++	/* Doesn't appear to be mounted yet; try to mount it manually */
++	if (mount("tracefs", "/sys/kernel/tracing", "tracefs", 0, 0) == 0)
++		return "/sys/kernel/tracing";
++
++	return NULL;
++}
++
++static const char *igt_tracefs_mount(void)
++{
++	static const char *path;
++
++	if (!path)
++		path = __igt_tracefs_mount();
++
++	return path;
++}
++
+ void igt_trace(const char *format, ...)
+ {
+ 	char path[128];
++	const char *tracefs;
+ 	va_list ap;
+ 	FILE *file;
+ 
+-	snprintf(path, sizeof(path), "%s/tracing/trace_marker",
+-		 igt_debugfs_mount());
++	tracefs = igt_tracefs_mount();
++	if (!tracefs)
++		return;
++
++	snprintf(path, sizeof(path), "%s/trace_marker", tracefs);
+ 
+ 	file = fopen(path, "w");
+ 	if (file == NULL)
+-- 
+2.55.0
 
-CI Bug Log - changes from XEIGT_9116_BAT -> XEIGTPW_15920_BAT
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with XEIGTPW_15920_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_15920_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in XEIGTPW_15920_BAT:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-bmg-2:          [PASS][1] -> [ABORT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9116/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15920/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-
-  
-
-
-Build changes
--------------
-
-  * IGT: IGT_9116 -> IGTPW_15920
-  * Linux: xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2 -> xe-5844-268539e75898afc1b1f6d39fae4f34f3faf24313
-
-  IGTPW_15920: c651929f43b8cdec2988e3754b81d87872a317fd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9116: 9d4b6ef512b4e2e4d05129c6519313fd13a306d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2: ecc5a84be849c400af610cdc613a0274e3b101b2
-  xe-5844-268539e75898afc1b1f6d39fae4f34f3faf24313: 268539e75898afc1b1f6d39fae4f34f3faf24313
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15920/index.html
-
---===============4582425187154159681==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_evict: Drop blanket skip when system memory &lt; VRAM</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175235/">https://patchwork.freedesktop.org/series/175235/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15920/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15920/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9116_BAT -&gt; XEIGTPW_15920_BAT</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_15920_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_15920_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_15920_BAT:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9116/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15920/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9116 -&gt; IGTPW_15920</li>
-<li>Linux: xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2 -&gt; xe-5844-268539e75898afc1b1f6d39fae4f34f3faf24313</li>
-</ul>
-<p>IGTPW_15920: c651929f43b8cdec2988e3754b81d87872a317fd @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9116: 9d4b6ef512b4e2e4d05129c6519313fd13a306d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2: ecc5a84be849c400af610cdc613a0274e3b101b2<br />
-  xe-5844-268539e75898afc1b1f6d39fae4f34f3faf24313: 268539e75898afc1b1f6d39fae4f34f3faf24313</p>
-
-</body>
-</html>
-
---===============4582425187154159681==--
