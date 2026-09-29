@@ -4,62 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 14EAACA5FA5
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 11:46:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A70FDCA5FA1
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 11:47:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A597A10E915;
-	Tue, 29 Sep 2026 11:46:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4E2E610E9A1;
+	Tue, 29 Sep 2026 11:47:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="O0ToiA9x";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ZBNWq1Lb";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BFEBE10E6CD
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 11:44:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 25EA810E6CD
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 11:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790682300; x=1822218300;
+ t=1790682304; x=1822218304;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:content-transfer-encoding:mime-version;
- bh=bJ+Mvq/pU5WTSkzcC6Pd81aLD8K+OrILAE/Tgk09H0w=;
- b=O0ToiA9xGWwiK9IgNigUZ/NvBm0eIFg5lSWK1qdzoYGpMO3JLsr7Yht0
- YQMrMhNcb6Tk8F5q0AIHt1duMPl7VFEyzepuchCoMMVGkMYPzNqj70PNF
- b8VRU9hyxQTXGyE800SWnoNHvupf7AsBMFuqKVQNiAnRJzpNmDzNgwLM3
- zAlbIDdKvF0ApYRv8GH09VMb/mW2UDppGMKT2GCWr3OJyp+/oWyfdT/ml
- 04HTTPaRSaGInEMxBi++2xqrobPZTvqZfSobPfnupEdjRJldn79qMpzzE
- b9K+RUueABnVk5gCdqCm8xyneD+wVhsZBVZI5jP7plcR9okQqQ15JaMgm Q==;
-X-CSE-ConnectionGUID: OPi+7oDrTKe+Z979vP6uPg==
-X-CSE-MsgGUID: xbOqeOkhTcy98A+Ofzx4dg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90350232"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="90350232"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 04:44:59 -0700
-X-CSE-ConnectionGUID: MLSrnwV1SEamrhh7T/QLlQ==
-X-CSE-MsgGUID: COAM44hhTJS9Q+3hw79hDA==
+ bh=UzP9owwdq1E57fgD9xRPhRZBJw3uJLiZbq1z6V+8jks=;
+ b=ZBNWq1LbICysIY3fTcE2TOr0rQRbpEe6bSY1HjeNhmicnZY0TXb3f4Do
+ 5mp1w0DFlF9f95AzfOHYq2V37y9aOf1KFsdar5zR2zTjIk3l+oX3PsIIH
+ EU78IHT320BTPzu7HzuD18HjSvGCREP/W4j4AtvNcQy3Nb6VtUxlG03FA
+ Cm1dnifvcfR/U2FCA+1tZizMQPFCp4+TFgXapBi4WQy/AO41Y7NsQWmnn
+ jggGqPxnUn6jjp6sAdsWa/8zsy6sKS+rY+PommLeLuHt8oqFp+DzlLGVG
+ Ag2urU4XEKdT6KCuYNNMkgMtS/JYjMTZA8BtxzyIvk8dDxywSUOPibAvq g==;
+X-CSE-ConnectionGUID: m9v+p3MRQcqph7/bmGkQHQ==
+X-CSE-MsgGUID: BHMQG6lIQ1OIFbDXBoBUVQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="94109548"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="94109548"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 04:45:03 -0700
+X-CSE-ConnectionGUID: YWHkJSy2Q1qQAlXTXHtnbQ==
+X-CSE-MsgGUID: gSId/hTFSySd3cQMvlgaZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="275499955"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 04:44:59 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="304843684"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 04:45:03 -0700
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 29 Sep 2026 04:44:58 -0700
+ 15.2.2562.46; Tue, 29 Sep 2026 04:45:03 -0700
 Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Tue, 29 Sep 2026 04:44:58 -0700
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.46)
+ 15.2.2562.46 via Frontend Transport; Tue, 29 Sep 2026 04:45:02 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.67)
  by edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Tue, 29 Sep 2026 04:44:58 -0700
+ 15.2.2562.46; Tue, 29 Sep 2026 04:45:02 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OgyQ/dhuvI7GzhKFlk4yNsqrOjkvHcCj9mZGtkQ8+40S49tuIAMZtfaVr4jal+WKc8MVtctuRmvjDKKsKmf0ZHkXE1Y5yzB4aywbwEQf/MfjylaCkyIMY0ejE9nTHlcOvDNTXciUZDqqVrsc02wDBBK67AkqW1p1KNE3QeUL4QGpTmi0aSBXDWYqsp+Len46+1mwKr/8paCdUHJ6jbVVl4sWJq/1Rb5JAYPiJ+O9RL1Z5SDutBBRDMyTodLygDWuIegkVXtGCEPyNSAcK83pDDl6LWo5XKVQlXlEXd1WMsWiS8kfaOAc/dgxNwxw52Umbz0RpbW2R9e2HGFWJU07kw==
+ b=KgGYTuALDbuCBhw9J17KCl7a/R8XM5VFQyLzbs8149B2u0WEjxiIoCx+wIAwKhACa6u+zyQFPTW4Ge1mJwLAXEOa2QNXIO7Zd5A/uKIctRncKamUR3yPCXCCK6yhfZf/A+IVsV/IGcq4yafpSWehgZNKmhFTOhN+MZ9He4bzKXfrfyXXaGci04JpqYsSpDZ5WaSqd/Mo4QKpz2QV9g1ngtzbRLWyNd1HwAr64PCpzvsCDqam3WTi9mm6W1Klf6hr/yXhxLMIjtTKOcH7V1dQDWGYQUMdpH1EhpT1L54GFl3wYpKlrxwUPGPPkfPMZk8tOyIHHYVhURHREIfIGUJNuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Hm8KnXh28gA32Ztm+aq7omZKUTrmOEPU4u/Pb+tO4Js=;
- b=xeND7yo6ooZm9iwceOkBz+K51aZ/xCHldaa7UGzN/o8c/8ZlzKN7gwkacZJmZNTFkF2FUbC6kl1uRcC7Hl3m9svBvsqJ2TJiWIAsGe33pPzRZ7NzflUe+cSj9H9Rm60Ut+8vPJDHjLQh5htmmSpCQkEZKiGRtGqA83mxWKLjlHBmWvetnZNk/9mtBd5btfP6uRMsNfqj8Yl2MkfoiSd4oNhfkcnqYShJ62GjqA5bCQ6GHlOiKZlM9WHPzPBqQvzsWCPcpCfPzhes3jSZ35fdWDqTSG/+YuL076jWEzEWgM2owoP7lfJQVHWFJS7iboC1Aie81GrOHGpIKd5BikaM/g==
+ bh=g084+gzAR5rhp+z0N4woT/pb2qLrEzDf2K8fj3wUgTM=;
+ b=lC63V+tLsYdfpvnyseF/gcKdvOp7+IlFJuyDcG7aNJymFSr9pmhJkJg7vhWfrSw0QNGr+fA1h2oRDcQDsPVcCfa7Sh0aio+/bYUZpCI1SUnBDh4AsEvXfx0BgW+2SsYS9JsjerahA7F2dTLlBBxR8HNArqJdmDhiM/PuE4hRuxeQ1wsdCn0eCoz7/sKzLuUYf6CxHhAUaS59TsdB1ViKOCLXH7HMBoVs+MflAD8ZNTLIq+zWnfrxUuFR0M8YBWmyO1KZ4A5s+xfYBp2KidAhRy7fwwGpsWDhzH0Aj7NbF2sErrD/bmpUhvbz12vdhNecwC19DHN5liYcUxKsMHrknQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -69,88 +69,89 @@ Received: from PH8PR11MB8039.namprd11.prod.outlook.com (2603:10b6:510:25f::18)
  by CO1PR11MB4785.namprd11.prod.outlook.com (2603:10b6:303:6f::21)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Tue, 29 Sep
- 2026 11:44:56 +0000
+ 2026 11:45:00 +0000
 Received: from PH8PR11MB8039.namprd11.prod.outlook.com
  ([fe80::42df:f465:90a8:df92]) by PH8PR11MB8039.namprd11.prod.outlook.com
  ([fe80::42df:f465:90a8:df92%2]) with mapi id 15.21.0451.022; Tue, 29 Sep 2026
- 11:44:56 +0000
+ 11:45:00 +0000
 From: =?UTF-8?q?Pi=C3=B3rkowski=2C=20Piotr?= <piotr.piorkowski@intel.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>
-Subject: [PATCH v3 2/4] tests/sriov_pci_config: Add VF core config checks
-Date: Tue, 29 Sep 2026 13:44:33 +0200
-Message-ID: <20260929114435.2961154-3-piotr.piorkowski@intel.com>
+CC: =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>, "Lukasz
+ Laguna" <lukasz.laguna@intel.com>
+Subject: [PATCH v3 3/4] tests/sriov_pci_config: Add optional capability checks
+Date: Tue, 29 Sep 2026 13:44:34 +0200
+Message-ID: <20260929114435.2961154-4-piotr.piorkowski@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260929114435.2961154-1-piotr.piorkowski@intel.com>
 References: <20260929114435.2961154-1-piotr.piorkowski@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: WA3PEPF00000511.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d8::665) To PH8PR11MB8039.namprd11.prod.outlook.com
- (2603:10b6:510:25f::18)
+X-ClientProxiedBy: WA2PEPF000008A9.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d8::649) To BY1PR11MB8054.namprd11.prod.outlook.com
+ (2603:10b6:a03:52f::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH8PR11MB8039:EE_|CO1PR11MB4785:EE_
-X-MS-Office365-Filtering-Correlation-Id: 59c1c367-634e-446f-f49b-08df1e1f1586
+X-MS-Office365-Filtering-Correlation-Id: 8664f464-23cd-4605-25cf-08df1e1f17c6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|23010399003|260925022911599003|260925021911599003|260925021311599003|10067099003|56012099006|11063799006|6133799003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: JAquozpikH+lSgugduK5LtOWtjBKLPOgxEn1rtHv+DD3kahOQmDMyuEWD2SyuGkwi1FYZpNFny63MeyP9B6euc5I1+h9cbEB48cqxG75SDQBkmZQW5pQWpmulPffpIQGctVc9inr2x1b9/csNpoMxXKyIRKnegRM/dwphaLJ4OEdlWPDlvTzXHLSlKrO/JzSSiAgz7+l98w7p40tUCFFnFL1UAtVVrGCsBsS3hmHEkiORWwR+EcySNPo29i6Q7sgZSshFtttlV/NcTMKddAxRFExzDs/4K6F/aS8+rwy1NyNdsh807Qr065LKFFYCKHtsM5BI1s6KL3S+YKH+6kiH7nwJ/z+/mQEdNQhL1oxw/Jt8zZ+X9WtFP+mNVAHkOYRWMZ33RRMR+paso/Y8vSC2un/A7L/6p1nJkOAkaMPldOsGkG6sjfgwkhEAnGKFUmsNzlLtdGqGV+GjE60P7a3XcOCjskrQJQc9aO6gNK+nWjWNFZkDprYe+XdL1kmGnzSrYQ6HcaXn3qNLrflZbFlvM44Uiw/U7Pc93X4CpmyI3eIK/zHVYDpFOtZjZRJlEXbhTo72JAZZLAeamZeI32VzvB3786VIS7u/TztOw8emhYQXuj7LRO4jDRVUjQZEb7gP3Fswrttvz4FTD/tbbvLQfjUPAYtz+RSbnP2kCrTZ0A=
+ ARA:13230040|366016|376014|1800799024|23010399003|10067099003|56012099006|11063799006|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: e5uEC64+0WZa9JcNtiYAFdQCwUdT1KXsss/jTrArNYdMpjVBcGplrtg8PMwLmy4AmAllAdjAMxj3v4S0KJZqgRHoPLQC0gCOxeteUCTHbJ2SL821sHRiSuTJoqAcdBXgPNn2tpQs+piU4R0oWayOuZ8Z5viFAyMWn0sCqAs617HPHnjP1+FJQiwTE6GUySkPUG4L2VESvotz7Lr+Ia+SpCCQgDLWWi7drl3K9ZBOK3N2fvgS31PsYsTw9OWn5afajJ3lYfxqyEj8zn+a3xqifx3R3TyEbu/5xWVPMWAGaqwWnV75xV4Nt4x0ZRH0VftZFpjkCkbdis5ia0CpeOMDNC2A5r9gItObKRjRKrja7DPhwYMwcRpauKfEGk0ZqeRBKdJ3q3hTZZ2Qri8H9chLFZgT8rEQ6CvGB3WsmB/nmh2y5d9C4nZKfjQhmzMvYgrHZ2yTum59CFfsYxFX2V9BFAnG5r/zBHk4lIovCknObrlpmsVbtbFT2yW605bSkOpD3lmwEsrtj+Go6xN5iCLV9/rUDTLua1o8XjKwUYNJ/x4KECot9vcFYea9ajkqjcq9XXLEoVAfwcd7IrtnlSuHrgqd9wkzDnTmO2AzkfmpzrWRPuR58rqh+HWF3UcZvgLwxZffvu2c8fein0qJ91INp3Mk4ny5i1LvHVoWdMvBVfw=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH8PR11MB8039.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(260925022911599003)(260925021911599003)(260925021311599003)(10067099003)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);
+ SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(10067099003)(56012099006)(11063799006)(6133799003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NE1QUUpBbC9OSnNvRExwWnpkTzJFVUdUVlp5NGExL3ZEUVgvQjROK0dUUWdx?=
- =?utf-8?B?b3NyVjJYT3Vsd1JmTUZHZXpVaHpCZTZUQjBWb3A0eS9DZUF5OURYNnY0Vmt3?=
- =?utf-8?B?djhOSTNvdnEwbUgyUzVvZUp5NHByYjU3OHNwN1RMS1Z6S0gvSTNTcG5hSENJ?=
- =?utf-8?B?c2JyZ3NEcEh1eVlvTml4aS8xSi9oRW9raGdNUi9ueEx1bkFwaUhhV3ZXVWFC?=
- =?utf-8?B?RG1MZU4rOHJsUkZiazA5SVFQL20vaGFDbUVlekpqcTZsdVpzR2hJL0xob094?=
- =?utf-8?B?OGQzVDNMRm8yUTFhWDZuczJPZDNpRll3RTU1LzRVQUNqQUd5ekJwWmpFQ2pa?=
- =?utf-8?B?OWRKb0VyRFRhVVlmZVZueHlEUEtSYVFhN0tHaHQyTnZkV1RDYmpBOFJZV0gr?=
- =?utf-8?B?QWJnTkRiNGVWZy9pUUpjbUl6a0F5bEJhOHFsU0FLdkxqUndoTzltMUF1d0ZC?=
- =?utf-8?B?T2d3OEdJOGc0M3NTeExRaXB4bldBSlRXR3dXOUNUMVFrUWZ4YTdvcS9nMldS?=
- =?utf-8?B?ZndCMm9DR1dsKy9UTTZqY2I0ZDJqOC9ZVkQzSXRNVlp6eW9YSjFCTUxnckc5?=
- =?utf-8?B?bzIwWDNuaklnZUYzNHk1dzdFY1g3WWtBZkwrZHE1NTM5VVZLakUwYk1pM3ha?=
- =?utf-8?B?VENuWjZ0NUZ4NUl6b0RJOGlzZ0IrVEVjN2N1Q1JOczF2RnBJNkRhMlFGYkFu?=
- =?utf-8?B?dlAvcG1mNVdyUU11TkxCcm9qY3VXaml0YlVkcDdicEVidTBMMXA1azZ5R003?=
- =?utf-8?B?bXFPV1J2V0tSbTRaNEdRU3N1RUVVMlhjd0tGRzdIMkVIdnErS3pkZ2pqWG5l?=
- =?utf-8?B?cDRLQW9PbGJ4WkpQUU42dEpJMWxkWE1SYVl2NHg5bWFCejh5OThKdlRGNW9E?=
- =?utf-8?B?TDFJR3FhZVRSOWNVeUkyRElqb1QvYy95QTloQngyZFU3c1loZ3FLMzF3MTBx?=
- =?utf-8?B?VHlRbC9ZNm8ra3RvWHBTNS95aWpUWmVjaXlud1JHMnl0ZmpxTjJDdGdEM0hz?=
- =?utf-8?B?eHAvb0M1bFAyeFl3c3dVWS9xb2I4d3o1bUh2Z2M2M0ZwR2NJcThlaDBYdXl3?=
- =?utf-8?B?NXpxdEhnM2gwd1hqRE5QRHRXTytTd2dYcUJjTXQ4UFpBZld4RnFPamtmV1pE?=
- =?utf-8?B?ZVNPTXM4TnBhaXhYblpmMnNwU1hUSFA5QXNMWDVTalRaQmsvQ1NVUVc4Q0pR?=
- =?utf-8?B?b1lRZGtwQjUrdXJibEhTb3NKQUtzZFF0czBYNFNnN2lENGI0VnJMQlNsRHo3?=
- =?utf-8?B?UzZwV0JCUlRjVlNpdGNuNmFxNGZnZUQ3cjExVHk5eTFMS1FENDllc2dpWnZ1?=
- =?utf-8?B?MGV6YytMMGpGaERESWZjNmtwZTJpNnhqUERydml2VEM3QzRZUk13MW5iTVc0?=
- =?utf-8?B?YVlnaEQ3U1VsRXovMGhIMG02dmlGZTA2NDVQQUEvd2tUVERTay9LUU4rNXVN?=
- =?utf-8?B?bVEyb2ovVitUMjhNR3J6OXprVllLbEVmcWp1Zzlvdm0vQU9PRjA0WHQ3NS8y?=
- =?utf-8?B?QWRvZWZjUnVJS3BpeDNWQzRwN2VwSFVIQlpJUE82THZZSlpSajFqc2tWbGcv?=
- =?utf-8?B?NU5rTHBGWGl3ZzBGdXhyblJQWmZ3RU9Ja1E3T1RSM1FieU5NQUo4NTN5NnFt?=
- =?utf-8?B?c2tmWWRrbGR6bHpuMFhTUC9ic2xlajV2ZVlyVnBVQ2hEamJPeXNrbUNZSzM3?=
- =?utf-8?B?bE1KbGtpV0tNYU0ra2loUE5QMUd1UGVwUmpvNERSS0tWRGhtUk13MlVEd3NO?=
- =?utf-8?B?OXhRSXlLalUxSXQ2Y1Y0ejIyemNPamNmMFB0enNYMWR2S1Mvc0NkQXZOTWYz?=
- =?utf-8?B?cjk3MUMwaDh5ZzFmRDlzVytTcVJ2b3hsYy9PY2dvQnI0TmFVc2RUK2JJbXho?=
- =?utf-8?B?aWd0b0Y0WFJhQk90VGJmcm45Z2RQcUo0c1A4T3hOdXZhM21BdFVxZ2ZuMEZl?=
- =?utf-8?B?b2VNT2tybUZtMC9QRUVxRUtSc1ZMeU95UkZkM2ZNcFZMRkNObytoeTBHT1RM?=
- =?utf-8?B?Nmxqbm53QjhUMDhpUTdDRTNSbXJuaVlZYW50cTNncGgwd1FsLzdwR0YrQlJh?=
- =?utf-8?B?SlFablQ1TTJ3MGNLWHRIOC9Cc2N4Uzc2aUxyc3A0bVlKWXhGSVlhbFVtcnRC?=
- =?utf-8?B?b2RmNzFKODhkbVd3ZTc1bXVLWnEvR2NyeENhNG03U3lOdS9sQkQrWURUQi84?=
- =?utf-8?B?clR1QW5Lb3VzSTRWa0FVQUZ1RDJ1bmFQOG1TYU1oUDVwV0IveDUyaGU4OU40?=
- =?utf-8?B?VjVJb243SlhVN2ltaXRKMmVLaVllTXRMaW5UalAvMnBKT0hZRVVJcndkaEYw?=
- =?utf-8?B?czliM0h4RE9lUlBvdWJUamVXdldQdjZia0xDZjI0Rk1DazBwWVdDNVdXdFRK?=
- =?utf-8?Q?8JWzFWfMfGwnd5l4=3D?=
-X-Exchange-RoutingPolicyChecked: TAxrEYEc2R3pcsiUnPjElp6jeUSE7J8U6V/X80+Yi2DkqyGGxTq4lY1L2XQ7727179TCsyJXFjdgPIN6iL2yLReHszHgBBZZUN4pI3HsD28Q5geQpCvCt9yIpFd0xJCOGWgr1Dgsp4aBo2ruCLgIKMyF0x4v4P7GanD1B5zZazv6+MPrafcQ9yrcjOZmwue6l1zfdK41sxgNGV0CaR5hbX61QIsE/WzPBI7Ogk7+aEsYe3fakPngZksef+LPA69RnK5Do7MelH6z3hXmLmcasTHu5YE2Nv0wX2JA3yBa5l7GxGFDWQctCU8yrPntL12Whln9E78InN/IcODs4+QQJA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 59c1c367-634e-446f-f49b-08df1e1f1586
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8039.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d0lnV3NMd1ZuYTYveDk3d2hVdHNWUnBxNyt5bVNHQWFYWC9Ga3diWFJRS3Yx?=
+ =?utf-8?B?T01YUHVtWlN5bXlUbUJpWU5HUFVQaXVDV2ppYmVOZklBaFlwMG0vcGlSYyta?=
+ =?utf-8?B?NTBZbkVaa1Y4ZkpDcEZhWVJyb3VOMENYcFd3RTBCSzZueHhFUUwzVmltZXdk?=
+ =?utf-8?B?aGdsUnZ0a04wVk5GalY4SU1vREZkUWVPTktDSi92cjU2dFJoMmc0TC9OY3Jp?=
+ =?utf-8?B?Z1MrazhwTVYxYVdsYktYUW9lNlI0L2pzUlJJaHFjWXF6d1R0Yk1xMS9HZ01J?=
+ =?utf-8?B?ZzVkYitDQjJJYUZpL1NhR055cEorT2hXaFUrSzZ4RjcwaFhUcXBBQld3ZlF3?=
+ =?utf-8?B?UnE5YTFxWktvL3I1VSsvdFN4TGZEYkxRNDNEL05nNkNUL3VHc3NRWnlqRm9J?=
+ =?utf-8?B?NjdkLytOM0RlMnpjWi91ejBGVkdORzdYb3VsdVI1ekc3UVhYZC9ibnRxTFBk?=
+ =?utf-8?B?empoTXFCdGl0RzNaS2FjaWo1aG45L2hpa2QxM3labzdFemZtemdRYVJxNXd6?=
+ =?utf-8?B?bVlKNXBzdlpMS0tpOE50RHh1UmlqcklFL0ZtdnN2U2o1ajNjOHhhd0hvN3h5?=
+ =?utf-8?B?SEJPMm56UlQ0U2ZhUktPUE5iVC9Sb0t5N05kc0ZNelFXK2p1bGIySmlRQVFy?=
+ =?utf-8?B?amtOY0hodWcxTEU2YlZHOVdaY1k5YjdSaEFWSjV4Y0lKbmt0VkNmM2V0MnJL?=
+ =?utf-8?B?cnJqYTlpODdFRUVGRm9XTUsrK1ZtaWNzSTgyZlZEQUhvN2ZFcmN4SERPbGFh?=
+ =?utf-8?B?TUQ5UGpYaXBIRVk4Vlk5TVNBY3ZpbjFpVnBtOG01UzAyZkpDcGpYdmtueEdm?=
+ =?utf-8?B?VmJSTDBtZDIyaXN0ZWNXeUV1Zkl5YVRScWFYSEYzaHNXd1h6VEhnb0VmVWtp?=
+ =?utf-8?B?OHA2RW9meG9SSVRsUUFvdmd5dndCakt5QU1MbjZuaDNDOFd3VzB5bUpFcEFW?=
+ =?utf-8?B?WGdydUorTVUyOVpGc3pvSDNmemlBQ2RJNkVJbE1YeGFiSUZPeTJOOHBtaXhv?=
+ =?utf-8?B?ZG5jQUJGb0o4N1NDOGo4VjQzckJ1S2NMajNxSjkvUlMyTW5xU0dySWNPVkta?=
+ =?utf-8?B?WjhwK3BqVlhBMGtxbUgwV2RXQWo5YWtDSW9QRTRDYWp6aUQ5YjJCdEI1VDVp?=
+ =?utf-8?B?dFBaRzJxU0JLZGxpTEwzYzFOUjRhSTFXS2s5QUdxSDZzdFV3Zm5hRWR4c0Q3?=
+ =?utf-8?B?dUVvQ0QvT2JHaDJ6b2MvQ3J6NWJVdXg3bHRTdXBkSDFZK3lnSXB6SWk2dXRH?=
+ =?utf-8?B?aFV3aU16QjRBbXBaZUJlWldjMjV4Y2N2QVhDSjRabWVIbWxuV2s2WG5zSGtC?=
+ =?utf-8?B?K2tmcVNORDZ4UmpIakc5VmdVZEFDTlNzbUJNb2grYy9lOURwZFdHMUxPek13?=
+ =?utf-8?B?MjUvSEtEU2ZTdXBtM3RaTURDUVJUSlZ1MUpJY0wxRDNTNG1OUUMvZXBEV2JU?=
+ =?utf-8?B?Z1I1RzhrV21jV1hWNEJxVUdVZVhWWXZweHZoeWVwRC9ZelJHSFU3VWJWUHM2?=
+ =?utf-8?B?TG9RaFk4R0V1L2Qzc3lUT1I3WlJBR3BiSVFGVHlGWkJoR2wrNThWVEFKd3cv?=
+ =?utf-8?B?amJnOSs1MzUvNWRJMGplcEZZNXBMNzcxQzU1S3djTmxVOFlLOUV6SGNWdDZC?=
+ =?utf-8?B?ZjFUbGE5Mnl2RXg3NSsvVWJvT3JGcFdZUm1zR2ZkcXBMdmZVeDFSYlNPbS96?=
+ =?utf-8?B?TzdQZmxHUklaRlJQNndsUjhYc01vVWF2MTZtM2x4L3RVbTVmWndmaDZkVlhD?=
+ =?utf-8?B?azEreWlCSVpjeStvOHRHRWUrbS9GSURadmgrd2VTd09udTdXcXdGa25sZHJJ?=
+ =?utf-8?B?S0dIVHljTUtHMjJpRStXQThWTkp2ZVZMSHVXeDZmTmlKME5EQU85QUx1ckY2?=
+ =?utf-8?B?cFdFQm9ad3ZaaTc3Smk1OXM1RHExeU90NTBua0NSck9QZ3RyZDMvVmNCVTk4?=
+ =?utf-8?B?Smh5eDJ1QU1jR3M3aVZ6ejhibFMyYVFCNjljamtZNkgrcjliZGxvdWdiR01j?=
+ =?utf-8?B?NzZsNTlyM0txTmdDYS9tdVlvaUMrOUk3dStkaEw1dnpYdnBlaFlwak1pcHBm?=
+ =?utf-8?B?RytaV1ltQVEvWFpXWkc1aHF3bE40ZnAyRFZhTC9yMzRBajdGUGVXS1BDdDY5?=
+ =?utf-8?B?dmpMK3hnTy81SWJEWHRMRzFJR3FnT1dIVFUxN3UvN3FydVh2VnFpdE45U1oy?=
+ =?utf-8?B?NlNzT1pEZWxNelRoOHdiSFgwalJQWUJZRVZBOXNHcXY4elNscDl2clhwMzRC?=
+ =?utf-8?B?M0pCdGx6cVVrRzlEQ3VGdGV0Wm5aa2MzUnBwcE5FSCs3OG82bXlKczQvZ0J4?=
+ =?utf-8?B?TmVjMzQ1ZmZjZGMrd3YrS0l6Rmtsbm8yQjUvb3JFREUvNERTMHhWKzdQUGVo?=
+ =?utf-8?Q?sDpt6uROQk4sUHqw=3D?=
+X-Exchange-RoutingPolicyChecked: whBKKuzUtbr1Dtbras6VZpJRKCA3egKPJ9lLoQCoiDTVLC2aHfTpnZ1RApjkS4Kize7Ytp5U1oQfpcTtNj2LBj7bnL2NXPJJ+qaXo3dIHfQy97BVL4L4oVJDKveno/buwhfDITtEzHCCJvGi/tAAHG6bL8GUxQpMneFU4Iacg8mlLHCR2EJ49IUCGOz3RPdFORXmulES5QvuNNXwcogPBr8Y75vTKNNXq0Xkz0kWoKAjsEeL3k8mMGjJr4exNtq/VwKDB9zpmpV/ih99rmsWvD6kMb1r255HCQ9g7ZSJNZTdPkcHjRmYmhYoXynCjCgjoQmmMNl/eGgxHjTm1eJAGg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8664f464-23cd-4605-25cf-08df1e1f17c6
+X-MS-Exchange-CrossTenant-AuthSource: BY1PR11MB8054.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 11:44:56.4990 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 11:45:00.5945 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: s7XAxOJY4CoF0VVv+MDx+alT5cRTbQH+kWEsdra0+DoAHR8gSIimN/YrtamDeScOsf7+XXaMQP6o5C+OhfImuIc2UfgFi5kL7MzxdwMkgNY=
+X-MS-Exchange-CrossTenant-UserPrincipalName: OohJHurPhd2BWA0Fv8Okkk3LKMYU5WcDR//tn9obEek1JyhiGd+S69lGFjnPzLmMo75cIaZqBi9Ms51MswXiIfdofBQmX+S4dcVIzcp4xSs=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB4785
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -170,260 +171,161 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Piotr Piórkowski <piotr.piorkowski@intel.com>
 
-Add checks for PCI configuration fields required by SR-IOV VFs.
-Cover the common header, BARs, and PCI Express capability fields.
+Add subtests for the optional Power Management, Advanced Error
+Reporting, and Address Translation Service capabilities.
+Skip an optional-capability subtest when the capability is not exposed
+by the VF.
+Validate the VF ROZ fields required by the SR-IOV specification,
+including Power Management Data Select/Data, AER status/mask/severity
+fields, and ATS Queue Depth/STU.
 
 v2:
-- Enable the VF and read its configuration once in the fixture.
-- Restore driver autoprobe state and disable the VF during cleanup.
-- Clarify test documentation and shorten runtime descriptions.
+- Reuse the VF configuration captured by the common fixture.
+- Use PCI register definitions available from linux/pci_regs.h.
+- Simplify optional-capability skips and runtime descriptions.
 - Remove redundant informational messages.
-
-v3:
-- Move test state from globals to igt_main().
-- Add missing blank lines in the test.
-- Reject a 64-bit memory BAR type in BAR5.
 
 Signed-off-by: Piotr Piórkowski <piotr.piorkowski@intel.com>
 Assisted-by: GitHub Copilot:GPT-5.6 Luna
+Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
 ---
- tests/meson.build        |   1 +
- tests/sriov_pci_config.c | 214 +++++++++++++++++++++++++++++++++++++++
- 2 files changed, 215 insertions(+)
- create mode 100644 tests/sriov_pci_config.c
+ tests/sriov_pci_config.c | 109 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 109 insertions(+)
 
-diff --git a/tests/meson.build b/tests/meson.build
-index 4f5c9be7b4..0e1a3faf32 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -74,6 +74,7 @@ test_progs = [
- 	'meta_test',
- 	'prime_vgem',
- 	'sriov_basic',
-+	'sriov_pci_config',
- 	'syncobj_basic',
- 	'syncobj_eventfd',
- 	'syncobj_wait',
 diff --git a/tests/sriov_pci_config.c b/tests/sriov_pci_config.c
-new file mode 100644
-index 0000000000..9a7145a5f2
---- /dev/null
+index 9a7145a5f2..a887e2ea56 100644
+--- a/tests/sriov_pci_config.c
 +++ b/tests/sriov_pci_config.c
-@@ -0,0 +1,214 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright(c) 2026 Intel Corporation. All rights reserved.
-+ */
-+
-+#include <linux/pci_regs.h>
-+
-+#include "drmtest.h"
-+#include "igt.h"
-+#include "igt_pci.h"
-+#include "igt_sriov_device.h"
-+
-+#define VF_PCI_EXP_DEVSTA_EPRD		(1 << 6)
-+#define VF_PCI_EXP_LNKSTA2_DEEMPHASIS	(1 << 0)
-+
-+/**
-+ * TEST: SR-IOV PCI configuration
-+ * Category: Core
-+ * Mega feature: SR-IOV
-+ * Sub-category: PCI configuration
-+ * Functionality: SR-IOV-related PCI configuration space
-+ * Description: Validate PCI configuration fields required for SR-IOV,
-+ * including Virtual Functions.
+@@ -43,6 +43,21 @@
+  * Description: Validate that the Current De-emphasis Level field in Link
+  * Status 2 is RsvdZ and therefore reads as zero for PCIe Capability Version 2
+  * and later.
 + *
-+ * SUBTEST: vf-common-header
-+ * Description: Validate that the VF Vendor ID and Device ID read as 0xffff,
-+ * and that the I/O, Memory, and INTx Disable bits in Command, the Immediate
-+ * Readiness and Interrupt Status bits in Status, the Header Layout bits in
-+ * Header Type, and the BIST Completion Code are all zero.
++ * SUBTEST: vf-power-management-capability
++ * Description: Validate that Data Select in Power Management Control and
++ * Power Management Data are ROZ and therefore read as zero when the optional
++ * Power Management capability is present.
 + *
-+ * SUBTEST: vf-bars
-+ * Description: Validate that VF BAR address bits read as zero. The BAR type
-+ * and attribute bits are static and may remain set; the upper dword of a
-+ * 64-bit BAR must read as zero.
++ * SUBTEST: vf-advanced-error-reporting
++ * Description: Validate that the specified ROZ bits in AER Uncorrectable
++ * Error Status, Mask, and Severity, and Correctable Error Status read as zero
++ * when the optional AER capability is present.
 + *
-+ * SUBTEST: vf-pcie-capabilities
-+ * Description: Validate that FLR is supported, and Phantom Functions Supported,
-+ * Auxiliary Power Detected, Emergency Power Reduction Detected, Current Link
-+ * Speed, Negotiated Link Width, and Link Autonomous Bandwidth Status are all
-+ * zero.
-+ *
-+ * SUBTEST: vf-pcie-capabilities-2
-+ * Description: Validate that the Current De-emphasis Level field in Link
-+ * Status 2 is RsvdZ and therefore reads as zero for PCIe Capability Version 2
-+ * and later.
-+ */
-+
-+IGT_TEST_DESCRIPTION("Validate PCI configuration fields required for SR-IOV, "
-+		     "including Virtual Functions");
-+
-+static void read_vf_config(int pf_fd, uint8_t *config)
++ * SUBTEST: vf-ats-capability
++ * Description: Validate that ATS Queue Depth and the Smallest Translation Unit
++ * (STU) are ROZ and therefore read as zero when the optional ATS capability
++ * is present.
+  */
+ 
+ IGT_TEST_DESCRIPTION("Validate PCI configuration fields required for SR-IOV, "
+@@ -159,6 +174,85 @@ static void check_vf_pcie_capabilities_2(const uint8_t *config)
+ 		     lnksta2);
+ }
+ 
++static int get_optional_cap(const uint8_t *config, uint8_t cap_id, const char *name)
 +{
-+	char *vf_slot;
-+	int ret;
++	int cap = igt_pci_config_raw_find_cap_offset(config, cap_id);
 +
-+	vf_slot = igt_sriov_get_vf_pci_slot_alloc(pf_fd, 1);
-+	igt_assert(vf_slot);
-+	ret = igt_pci_config_raw_read(vf_slot, config, PCI_CFG_SPACE_EXP_SIZE);
-+	free(vf_slot);
-+	igt_assert_f(!ret, "Failed to read VF config space (%d)\n", ret);
++	igt_assert_f(cap >= 0, "Invalid VF PCI capability list (%d)\n", cap);
++	if (!cap)
++		igt_skip("%s\n", name);
++
++	return cap;
 +}
 +
-+static void check_vf_common_header(const uint8_t *config)
++static int get_optional_ext_cap(const uint8_t *config, uint16_t cap_id, const char *name)
 +{
-+	uint16_t command = igt_pci_config_raw_read_u16(config, PCI_COMMAND);
-+	uint16_t status = igt_pci_config_raw_read_u16(config, PCI_STATUS);
-+	uint16_t vendor_id = igt_pci_config_raw_read_u16(config, PCI_VENDOR_ID);
-+	uint16_t device_id = igt_pci_config_raw_read_u16(config, PCI_DEVICE_ID);
++	int cap = igt_pci_config_raw_find_ext_cap_offset(config, cap_id);
 +
-+	igt_assert_f(vendor_id == 0xffff, "Vendor ID: expected 0xffff, got 0x%04x\n", vendor_id);
-+	igt_assert_f(device_id == 0xffff, "Device ID: expected 0xffff, got 0x%04x\n", device_id);
-+	igt_assert_f(!(command & (PCI_COMMAND_IO | PCI_COMMAND_MEMORY |
-+				  PCI_COMMAND_INTX_DISABLE)),
-+		     "Command: expected I/O, Memory, and INTx Disable bits clear, got 0x%04x\n",
-+		     command);
-+	igt_assert_f(!(status & (PCI_STATUS_IMM_READY | PCI_STATUS_INTERRUPT)),
-+		     "Status: expected Immediate Readiness and Interrupt Status bits clear, got 0x%04x\n",
-+		     status);
-+	igt_assert_f(!(config[PCI_HEADER_TYPE] & PCI_HEADER_TYPE_MASK),
-+		     "Header Type: expected Header Layout 0, got 0x%02x\n",
-+		     config[PCI_HEADER_TYPE]);
-+	igt_assert_f(!(config[PCI_BIST] & PCI_BIST_CODE_MASK),
-+		     "BIST: expected Completion Code 0, got 0x%02x\n", config[PCI_BIST]);
++	igt_assert_f(cap >= 0, "Invalid VF extended capability list (%d)\n", cap);
++	if (!cap)
++		igt_skip("%s\n", name);
++
++	return cap;
 +}
 +
-+static void check_vf_bars(const uint8_t *config)
++static void check_vf_power_management_capability(const uint8_t *config)
 +{
-+	for (int bar = 0; bar < 6; bar++) {
-+		uint32_t value =
-+			igt_pci_config_raw_read_u32(config,
-+						    PCI_BASE_ADDRESS_0 + bar * sizeof(uint32_t));
-+		bool is_mem64 = !(value & PCI_BASE_ADDRESS_SPACE) &&
-+				(value & PCI_BASE_ADDRESS_MEM_TYPE_MASK) ==
-+				PCI_BASE_ADDRESS_MEM_TYPE_64;
++	int pm_cap = get_optional_cap(config, PCI_CAP_ID_PM,
++				     "Power Management capability is not present");
++	uint16_t pm_ctrl = igt_pci_config_raw_read_u16(config, pm_cap + PCI_PM_CTRL);
++	uint8_t pm_data = config[pm_cap + PCI_PM_DATA_REGISTER];
 +
-+		/* Only the address bits are hardwired to zero; type/attribute bits are static. */
-+		igt_assert_f(!(value & ~0xfu), "BAR%d: expected address 0x00000000, got 0x%08x\n",
-+			     bar, value);
-+
-+		/* The upper dword of a 64-bit BAR holds pure address bits, no type bits. */
-+		if (is_mem64) {
-+			unsigned int upper_offset = PCI_BASE_ADDRESS_0 +
-+						    (bar + 1) * sizeof(uint32_t);
-+			uint32_t upper =
-+				igt_pci_config_raw_read_u32(config, upper_offset);
-+
-+			igt_assert_f(bar < 5, "BAR%d: 64-bit memory type in the last BAR (0x%08x)\n",
-+				     bar, value);
-+			igt_assert_f(!upper, "BAR%d (upper): expected 0x00000000, got 0x%08x\n",
-+				     bar + 1, upper);
-+			bar++;
-+		}
-+	}
++	igt_assert_f(!(pm_ctrl & PCI_PM_CTRL_DATA_SEL_MASK),
++		     "Power Management Control: Data Select must be zero (0x%04x)\n", pm_ctrl);
++	igt_assert_f(!pm_data, "Power Management Data: expected 0x00, got 0x%02x\n", pm_data);
 +}
 +
-+static int get_pcie_cap(const uint8_t *config)
++static void check_vf_advanced_error_reporting(const uint8_t *config)
 +{
-+	int pcie_cap = igt_pci_config_raw_find_cap_offset(config, PCI_CAP_ID_EXP);
++	const uint32_t uncor_roz = PCI_ERR_UNC_DLP | PCI_ERR_UNC_SURPDN |
++				   PCI_ERR_UNC_FCP | PCI_ERR_UNC_RX_OVER |
++				   PCI_ERR_UNC_MALF_TLP | PCI_ERR_UNC_ECRC;
++	const uint32_t cor_roz = PCI_ERR_COR_RCVR | PCI_ERR_COR_BAD_TLP |
++					 PCI_ERR_COR_REP_ROLL | PCI_ERR_COR_REP_TIMER;
++	int aer_cap = get_optional_ext_cap(config, PCI_EXT_CAP_ID_ERR,
++					   "Advanced Error Reporting capability is not present");
++	uint32_t uncor_status = igt_pci_config_raw_read_u32(config,
++							     aer_cap + PCI_ERR_UNCOR_STATUS);
++	uint32_t uncor_mask = igt_pci_config_raw_read_u32(config,
++							   aer_cap + PCI_ERR_UNCOR_MASK);
++	uint32_t uncor_severity = igt_pci_config_raw_read_u32(config,
++							       aer_cap + PCI_ERR_UNCOR_SEVER);
++	uint32_t cor_status = igt_pci_config_raw_read_u32(config,
++							   aer_cap + PCI_ERR_COR_STATUS);
 +
-+	igt_assert_f(pcie_cap > 0, "VF has no PCI Express capability (%d)\n", pcie_cap);
-+
-+	return pcie_cap;
++	igt_assert_f(!(uncor_status & uncor_roz),
++		     "AER Uncorrectable Error Status: VF ROZ bits are set (0x%08x)\n",
++		     uncor_status);
++	igt_assert_f(!(uncor_mask & uncor_roz),
++		     "AER Uncorrectable Error Mask: VF ROZ bits are set (0x%08x)\n",
++		     uncor_mask);
++	igt_assert_f(!(uncor_severity & uncor_roz),
++		     "AER Uncorrectable Error Severity: VF ROZ bits are set (0x%08x)\n",
++		     uncor_severity);
++	igt_assert_f(!(cor_status & cor_roz),
++		     "AER Correctable Error Status: VF ROZ bits are set (0x%08x)\n",
++		     cor_status);
 +}
 +
-+static void check_vf_pcie_capabilities(const uint8_t *config)
++static void check_vf_ats_capability(const uint8_t *config)
 +{
-+	int pcie_cap = get_pcie_cap(config);
-+	uint32_t pcie_devcap = igt_pci_config_raw_read_u32(config, pcie_cap + PCI_EXP_DEVCAP);
-+	uint16_t pcie_devsta = igt_pci_config_raw_read_u16(config, pcie_cap + PCI_EXP_DEVSTA);
-+	uint16_t pcie_lnksta = igt_pci_config_raw_read_u16(config, pcie_cap + PCI_EXP_LNKSTA);
++	int ats_cap = get_optional_ext_cap(config, PCI_EXT_CAP_ID_ATS,
++					   "ATS capability is not present");
++	uint16_t ats_capability = igt_pci_config_raw_read_u16(config, ats_cap + PCI_ATS_CAP);
++	uint16_t ats_control = igt_pci_config_raw_read_u16(config, ats_cap + PCI_ATS_CTRL);
 +
-+	igt_assert_f(pcie_devcap & PCI_EXP_DEVCAP_FLR,
-+		     "Device Capabilities: FLR bit is clear (0x%08x)\n", pcie_devcap);
-+	igt_assert_f(!(pcie_devcap & PCI_EXP_DEVCAP_PHANTOM),
-+		     "Device Capabilities: Phantom Functions Supported must be zero (0x%08x)\n",
-+		     pcie_devcap);
-+	igt_assert_f(!(pcie_devsta & (PCI_EXP_DEVSTA_AUXPD |
-+					  VF_PCI_EXP_DEVSTA_EPRD)),
-+		     "Device Status: Aux Power Detected or Emergency Power Reduction Detected is set (0x%04x)\n",
-+		     pcie_devsta);
-+	igt_assert_f(!(pcie_lnksta & (PCI_EXP_LNKSTA_CLS | PCI_EXP_LNKSTA_NLW |
-+					 PCI_EXP_LNKSTA_LABS)),
-+		     "Link Status: Current Link Speed, Negotiated Link Width, or Link Autonomous Bandwidth Status is set (0x%04x)\n",
-+		     pcie_lnksta);
++	igt_assert_f(!PCI_ATS_CAP_QDEP(ats_capability),
++		     "ATS Capability: Queue Depth must be zero (0x%04x)\n", ats_capability);
++	igt_assert_f(!PCI_ATS_CTRL_STU(ats_control),
++		     "ATS Control: STU must be zero (0x%04x)\n", ats_control);
 +}
 +
-+static void check_vf_pcie_capabilities_2(const uint8_t *config)
-+{
-+	int pcie_cap = get_pcie_cap(config);
-+	uint16_t flags = igt_pci_config_raw_read_u16(config, pcie_cap + PCI_EXP_FLAGS);
-+	uint16_t lnksta2;
-+
-+	if ((flags & PCI_EXP_FLAGS_VERS) < 2)
-+		igt_skip("PCI Express Capability Version 2 is not present\n");
-+
-+	lnksta2 = igt_pci_config_raw_read_u16(config, pcie_cap + PCI_EXP_LNKSTA2);
-+	igt_assert_f(!(lnksta2 & VF_PCI_EXP_LNKSTA2_DEEMPHASIS),
-+		     "Link Status 2: Current De-emphasis Level must be zero (0x%04x)\n",
-+		     lnksta2);
-+}
-+
-+int igt_main()
-+{
-+	uint8_t vf_config[PCI_CFG_SPACE_EXP_SIZE];
-+	int pf_fd = -1;
-+	bool autoprobe = false;
-+
-+	igt_fixture() {
-+		pf_fd = drm_open_driver(DRIVER_ANY);
-+		igt_require(igt_sriov_is_pf(pf_fd));
-+		igt_require(igt_sriov_vfs_supported(pf_fd));
-+		igt_require(igt_sriov_get_enabled_vfs(pf_fd) == 0);
-+		autoprobe = igt_sriov_is_driver_autoprobe_enabled(pf_fd);
-+		igt_sriov_install_exit_handler(pf_fd, NULL, NULL);
-+
-+		igt_sriov_disable_driver_autoprobe(pf_fd);
-+		igt_sriov_enable_vfs(pf_fd, 1);
-+		igt_require_f(!igt_pci_system_reinit(), "Failed to refresh PCI state\n");
-+		read_vf_config(pf_fd, vf_config);
+ int igt_main()
+ {
+ 	uint8_t vf_config[PCI_CFG_SPACE_EXP_SIZE];
+@@ -199,6 +293,21 @@ int igt_main()
+ 		check_vf_pcie_capabilities_2(vf_config);
+ 	}
+ 
++	igt_describe("Validate the optional VF Power Management capability");
++	igt_subtest("vf-power-management-capability") {
++		check_vf_power_management_capability(vf_config);
 +	}
 +
-+	igt_describe("Validate the VF PCI common header");
-+	igt_subtest("vf-common-header") {
-+		check_vf_common_header(vf_config);
++	igt_describe("Validate the optional VF AER capability");
++	igt_subtest("vf-advanced-error-reporting") {
++		check_vf_advanced_error_reporting(vf_config);
 +	}
 +
-+	igt_describe("Validate the VF BARs");
-+	igt_subtest("vf-bars") {
-+		check_vf_bars(vf_config);
++	igt_describe("Validate the optional VF ATS capability");
++	igt_subtest("vf-ats-capability") {
++		check_vf_ats_capability(vf_config);
 +	}
 +
-+	igt_describe("Validate the VF PCI Express capability");
-+	igt_subtest("vf-pcie-capabilities") {
-+		check_vf_pcie_capabilities(vf_config);
-+	}
-+
-+	igt_describe("Validate the VF PCI Express Capability Version 2 fields");
-+	igt_subtest("vf-pcie-capabilities-2") {
-+		check_vf_pcie_capabilities_2(vf_config);
-+	}
-+
-+	igt_fixture() {
-+		igt_abort_on_f(pf_fd < 0, "Device is not accessible\n");
-+		igt_sriov_disable_vfs(pf_fd);
-+		igt_abort_on_f(igt_sriov_get_enabled_vfs(pf_fd) > 0,
-+			       "Failed to disable VF(s)\n");
-+		autoprobe ? igt_sriov_enable_driver_autoprobe(pf_fd) :
-+			    igt_sriov_disable_driver_autoprobe(pf_fd);
-+		igt_abort_on_f(autoprobe != igt_sriov_is_driver_autoprobe_enabled(pf_fd),
-+			       "Failed to restore sriov_drivers_autoprobe value\n");
-+		igt_sriov_clear_exit_handler();
-+		close(pf_fd);
-+	}
-+}
+ 	igt_fixture() {
+ 		igt_abort_on_f(pf_fd < 0, "Device is not accessible\n");
+ 		igt_sriov_disable_vfs(pf_fd);
 -- 
 2.34.1
 
