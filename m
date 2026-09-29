@@ -4,108 +4,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1DED6CA5FAC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 15:59:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CEAECA5FA7
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 16:29:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9F07410E1A8;
-	Tue, 29 Sep 2026 15:59:23 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="ycakWQCg";
-	dkim-atps=neutral
-Received: from SN4PR2101CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11012046.outbound.protection.outlook.com
- [40.93.195.46])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7240E10E1A8
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 15:58:38 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NLKRh/5sp09dFxNL6Yke/07HeIMLLKmfpFMaWOjphqDXPHTaJ0xUjcgj8xMwk8XuK5VMCApGDN5P4Y+Frn2SsZcdh6A7XLBPNCbnVK6hXAyGvQq8yb4pmP02arnzKmbl69FMvYmxkfqKGTOlW/tWFdVZJPoHUooBSQZ+zTjOfYHZKGslCj0JSL4f5DjrwJcF5/WsVNHVQu2RzpSYuc8YDVF2BdClU7x0nD92qje7fzpB07g+bfvvYDGVjzZs3ksC970UYXyK0HY2OCSmtXSVgKlv+vS6P/TiSdyfBG5mHGZIzbePFNAnXy9UlT9xlmcjFXlaJkuRF6MoMfJgeik+LA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9CCN5Lk2795dnkHzobUO8nNWdgQaVwJae7FGe+2DscI=;
- b=VDQdCuhsh3l4wiMWJaddV8ElyvCaYPamfhp/G41JDMqesMKIGM18+MIW2wXneUKIZn2Adidvssg1HjktZqHpNzVPoVJWo72fa/mbiOAsaVF+vF2T/vgYDIckKMb7wlvFeNeIKh2loDYQaqfTHHtFL3V/cQTYTYniQrQJZTzkou46Yt5JFbXoYM8kknZCegfV9UIPhtSxvg2Gh9SceqKr8w9SQT89fpNChxb3cdwXU2sKwB9lJWX7x4pQXUfoYyGEpth+y3BVD1KROLwY+sa8s043GR68pSXY8w8i3fNkk21g1NVexHsKNF5asdACcm5iOhz4gsLMu9sAx8qK2BRXFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9CCN5Lk2795dnkHzobUO8nNWdgQaVwJae7FGe+2DscI=;
- b=ycakWQCg5RNBIcHUKClFsavrFv5keXZKDGBM93ebnbZ1iPNXJh6CpMxh3OkzA7niDWi5QzDKcfBvRdUcvJ+WW7b6LMEy6KHgZouLQZvJY3LlFdZT2/Rv6ScWW1cgF6xld0ws+wurh/BdtOTrlSsCuf+Sr0brv9j0RP6NsD4g9j0=
-Received: from BN9PR03CA0382.namprd03.prod.outlook.com (2603:10b6:408:f7::27)
- by DS0PR12MB8785.namprd12.prod.outlook.com (2603:10b6:8:14c::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 15:58:31 +0000
-Received: from BN7PEPF000000A9.namprd05.prod.outlook.com
- (2603:10b6:408:f7:cafe::24) by BN9PR03CA0382.outlook.office365.com
- (2603:10b6:408:f7::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.22 via Frontend Transport; Tue,
- 29 Sep 2026 15:58:30 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN7PEPF000000A9.mail.protection.outlook.com (10.167.245.233) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 15:58:30 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
- 2026 10:58:29 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
- 2026 10:58:29 -0500
-Received: from [10.254.92.152] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.49 via Frontend
- Transport; Tue, 29 Sep 2026 10:58:27 -0500
-Message-ID: <70223cf3-0412-4625-90e4-cffab9e54c6a@amd.com>
-Date: Tue, 29 Sep 2026 11:58:27 -0400
+	by gabe.freedesktop.org (Postfix) with ESMTP id CCA9510EFA6;
+	Tue, 29 Sep 2026 16:29:34 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F4F710EFA1;
+ Tue, 29 Sep 2026 16:28:49 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4475402962506753949=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/kms_atomic: skip missing CRTC props in state
- snapshot
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Sharma, Swati2"
- <swati2.sharma@intel.com>, <igt-dev@lists.freedesktop.org>,
- <Harry.Wentland@amd.com>, <Alex.Hung@amd.com>
-References: <20260923152113.1513938-1-aurabindo.pillai@amd.com>
- <21199785-0140-4433-add2-5df33d7eca55@intel.com>
- <20260929102542.y23ihtimz2xhjdfh@kamilkon-DESK.igk.intel.com>
-Content-Language: en-US
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
-In-Reply-To: <20260929102542.y23ihtimz2xhjdfh@kamilkon-DESK.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PEPF000000A9:EE_|DS0PR12MB8785:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd44a82a-6f06-4df4-cf65-08df1e4281bf
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|376014|36860700016|1800799024|82310400026|10067099003|11063799006|56012099006|4143699003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: dx01CmlYlywe6nas6lleGNO+c9HDLDiCCPolyE/9WqRBL0EZU7KSvcg0fdGM6cpQpltHhCrRmA9KvSwQlC5kzt/YAUo9iCWT4gz0nPiDXPkuXitiM2BBxPxVtlkl0Fq6obHissK2ISv1St3psSfS/KhwI6dp6p+DSeyADwiXYHH/Fy3sZo6Tmz5Sj5ArWVK/gL1R+Z8mToLpxk3f/aGC11aCv43SZYuRRXHOf7SiB0+flFO2AkHy1Y0lOhqcumEmtMPLoYksZ8ANExEFUC8noUMBulA8ilwJPvxPuoAoFXW9jXtt/5WKZolO5CNRADRS9Fpsu1eA7HDggVONdDl/HZcsDLAq0ZjaAkPH9L+dvpkOPv27CdZN6p8SvhMwbH6YmrGeXN+JiIdROIa5IJuICs5abFxWJq/bj5PYKrj6wXXm2jyLq5QSD6VNcUqVHP00ewvsV231dB3kLZz8d7GbbtSj0uc9jF7xBoWqW0BrEwaP/2tAXVxR6QJeJafJ6mnf3aerLtsm1D/syz2RO71Lyqj5A+QPmBhja627Fwjb/Dns+oZulGJhefAvM/DUpyWfasE0ypX2otbcQnVV1oxBC/12/Ia5kuO9xpGdqdQZEXOQkeNOwKDYauxUy1hUc4J8CrPHG7sRigjnXFxGRuXzLgSi3uxbhxwnD7zIf+d1eAbxku/zD1FqC1Cs5piE9byGaIebXv6Pmm+qQazuKL24Fw==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(36860700016)(1800799024)(82310400026)(10067099003)(11063799006)(56012099006)(4143699003)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 85vc0doq7V9BP0b9MxByT/gSxmEN1LjF0qoTCl/g78j1Iv/uN17+lZjAn216q5GFQcH+DxcpvloLyFxgHhqf9QSie8ErAHSr84tnMGlFzq5WLTJFU+EemPgZ7o5bD94DZSBAWrcJ7hrnYh3sW/PR7DdV1Xj7ZHZjW8qdpugbpFW2ACqYg2MB2YQC/EVhFN2vH56guptCuubY7jDGa5LyIpeyhC/4x8jU8CPM4HnmdlanqcU3/CWrJ6hdiuIFQiy3t9voIno61PrdrlcOhWJRAdYJVZwQkFsUxXegvABaBdQiIBtKWxYExf+nFTaNeYBtCYVJLjJ5zGOIQvKbNqsMXO9DA7Le7IFaoDOqbJdbVeuZ6lCBIaq2giyQCxGbE2Rp7UOyfgNq6+PKV6uZDn6iUqycOuER0uv4GLmzxIE1VRKjqqS90eur2vp8T+ffKLfY
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 15:58:30.2977 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd44a82a-6f06-4df4-cf65-08df1e4281bf
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN7PEPF000000A9.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8785
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ferr=5Fin?=
+ =?utf-8?q?jection=3A_Add_Local_Uncorrectable_Error_Injection_Through_LSC_St?=
+ =?utf-8?q?orage_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Soham Purkait" <soham.purkait@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 29 Sep 2026 16:28:49 -0000
+Message-ID: <179069932912.220377.12752813229455646381@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260929105543.2400108-5-soham.purkait@intel.com>
+In-Reply-To: <20260929105543.2400108-5-soham.purkait@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,16 +38,144 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============4475402962506753949==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+== Series Details ==
+
+Series: tests/intel/xe_err_injection: Add Local Uncorrectable Error Injection Through LSC Storage (rev2)
+URL   : https://patchwork.freedesktop.org/series/172987/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_9115 -> IGTPW_15917
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/index.html
+
+Participating hosts (38 -> 37)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_15917 that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_addfb_basic@invalid-set-prop:
+    - bat-apl-1:          [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +38 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9115/bat-apl-1/igt@kms_addfb_basic@invalid-set-prop.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/bat-apl-1/igt@kms_addfb_basic@invalid-set-prop.html
+
+  * igt@kms_flip@basic-flip-vs-modeset@b-dp1:
+    - bat-apl-1:          [PASS][3] -> [DMESG-WARN][4] ([i915#13735] / [i915#180]) +32 other tests dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9115/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@b-dp1.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@b-dp1.html
+
+  
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
 
 
+Build changes
+-------------
 
-> 
-> Applied, thanks!
-> 
-> Regards,
-> Kamil
-> 
-Thank you very much!
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9115 -> IGTPW_15917
+
+  CI-20190529: 20190529
+  CI_DRM_19233: ecc5a84be849c400af610cdc613a0274e3b101b2 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15917: cdd599f88f6d25b583486b8009ed294f0b8b6a14 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9115: 9115
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/index.html
+
+--===============4475402962506753949==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_err_injection: Add Local Uncorrectable Error Injection Through LSC Storage (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172987/">https://patchwork.freedesktop.org/series/172987/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9115 -&gt; IGTPW_15917</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/index.html</p>
+<h2>Participating hosts (38 -&gt; 37)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_15917 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_addfb_basic@invalid-set-prop:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9115/bat-apl-1/igt@kms_addfb_basic@invalid-set-prop.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/bat-apl-1/igt@kms_addfb_basic@invalid-set-prop.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +38 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-dp1:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9115/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@b-dp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15917/bat-apl-1/igt@kms_flip@basic-flip-vs-modeset@b-dp1.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +32 other tests dmesg-warn</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9115 -&gt; IGTPW_15917</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19233: ecc5a84be849c400af610cdc613a0274e3b101b2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15917: cdd599f88f6d25b583486b8009ed294f0b8b6a14 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9115: 9115</p>
+
+</body>
+</html>
+
+--===============4475402962506753949==--
