@@ -4,58 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 89EBECA5FA1
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 10:57:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B7C4CA5FA5
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 10:58:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 21D9410E96B;
-	Tue, 29 Sep 2026 10:57:47 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id AA66710E6CE;
+	Tue, 29 Sep 2026 10:58:28 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="OXY1jJhK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Tz/IPScD";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 193A710EE40
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 10:56:24 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7A06F10EE40
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 10:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790679384; x=1822215384;
+ t=1790679387; x=1822215387;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=eNWL+WdXZd5yEwbaBKiO1yIYPGPxFWUn4a1QDyNbkKo=;
- b=OXY1jJhKLadKavsZtjH8HjjGMv1azCBuTq7hK9Ppz2CqVMIwPWelr5WH
- cBC1k5VLw7LRkL/9UVpt/ZM7ZYKwSEXQRsYxV00d8cXtoynDPDS1Z/gD6
- Mhb++Oh91N42diowY2NuXby75WtqML25IKHEoANgXYEm/OAFD817W8tRQ
- djRT+EBHBwLvKhYC2IHsNv/LQLofqaWSxd2iJKFTiP2ZU1i0qF6Yn56A3
- BNAEbAnzIwaVcEz5Lu5PxPSgy05woDkAQehiby8NZh1g5MeLNkTRtqe5M
- 4oe5zmL6l16ETzSQ+w0dJV1ckmfk7gL0SgDbLZQ8FFTlJq4HrF1YoAFfN Q==;
-X-CSE-ConnectionGUID: WmLoy12FTSS++KiecTwHcQ==
-X-CSE-MsgGUID: cctT0CU9SC6PV0QZSKHP6Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="101561850"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="101561850"
+ bh=/y4hp2CkU52aHjzBVrMl+7HVzy55MYAmlnTqpxvNDbI=;
+ b=Tz/IPScDEj05b1MVxT7QbHtmkSMgG5jZ2QB1j6i4THQWFdOD4j8cTPnf
+ pESN5icMLGQe8HDlQmEx+E3d2tqLtQWI2mTjkgWDr5g+k61xECfVzwTsU
+ txwTx0GxHvzO7I5O7jjtb+XovaiGNTMOE3s2WnoMms7fk1FXeNLYqCIp1
+ 268QHaDKmWA3vYDJDHe0S/ogDefRUsm+vE6iCSeHERfHGhw3X1Qo6EsBY
+ QY/7XQz/NOkX9vUJnijqwXzsHLKJGFtX/DXK+Vzy/C85bcrol53HHjCei
+ CvTAvt3rDHX6oM7amaNnh7Yihuft3lPiWnQ6KH5B8qt3Q8xBbYvBYX7EI Q==;
+X-CSE-ConnectionGUID: CtT/g7GXRt6sHHMIbDexkw==
+X-CSE-MsgGUID: rg4eVreZSsy9Q+tISNU+lQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="101561851"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="101561851"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 03:56:24 -0700
-X-CSE-ConnectionGUID: XCVwzlemSkapy9mMOGYQVw==
-X-CSE-MsgGUID: Qe9+04xgSle3F0cn3oD7oQ==
+ 29 Sep 2026 03:56:26 -0700
+X-CSE-ConnectionGUID: pTzL0GSyRqqG0Xjkr0nAlg==
+X-CSE-MsgGUID: tWzRI1NKRhmAO664Gvgp2A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="274870365"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="274870368"
 Received: from psoham-ms-7e03.iind.intel.com ([10.223.55.64])
  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 03:56:21 -0700
+ 29 Sep 2026 03:56:24 -0700
 From: Soham Purkait <soham.purkait@intel.com>
 To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
  badal.nilawar@intel.com, kamil.konieczny@intel.com,
  ravi.kishore.koppuravuri@intel.com, raag.jadav@intel.com
 Cc: anshuman.gupta@intel.com,
 	soham.purkait@intel.com
-Subject: [PATCH i-g-t v1 2/3] From: Ravi Kishore Koppuravuri
- ravi.kishore.koppuravuri@intel.com DO NOT REVIEW. COMPILATION ONLY.
-Date: Tue, 29 Sep 2026 16:25:45 +0530
-Message-ID: <20260929105543.2400108-7-soham.purkait@intel.com>
+Subject: [PATCH i-g-t v1 3/3] tests/intel/xe_err_injection: Add test for local
+ Uncorrectable Error Injection through LSC Storage
+Date: Tue, 29 Sep 2026 16:25:46 +0530
+Message-ID: <20260929105543.2400108-8-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260929105543.2400108-5-soham.purkait@intel.com>
 References: <20260929105543.2400108-5-soham.purkait@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -72,586 +71,528 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+Local Uncorrectable Unicast LSC storage error injection driven by a heavy
+LSC workload on all compute engines to trigger recovery post error
+injection. Also validate error counter increment and post-recovery error
+counter stability.
 
-This patch is from https://patchwork.freedesktop.org/series/172806/
-Added only for Compilation.
-
-Signed-off-by: Soham Purkait soham.purkait@intel.com
+Signed-off-by: Soham Purkait <soham.purkait@intel.com>
 ---
- tests/intel/xe_cper.h          |  42 +++
- tests/intel/xe_err_injection.c | 488 +++++++++++++++++++++++++++++++++
- 2 files changed, 530 insertions(+)
- create mode 100644 tests/intel/xe_cper.h
+ tests/intel/xe_cper.h          |  30 +++
+ tests/intel/xe_err_injection.c | 349 ++++++++++++++++++++++++++++++++-
+ tests/intel/xe_err_injection.h |  11 ++
+ 3 files changed, 386 insertions(+), 4 deletions(-)
 
 diff --git a/tests/intel/xe_cper.h b/tests/intel/xe_cper.h
-new file mode 100644
-index 000000000..ff061d35b
---- /dev/null
+index ff061d35b..dfc245016 100644
+--- a/tests/intel/xe_cper.h
 +++ b/tests/intel/xe_cper.h
-@@ -0,0 +1,42 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
+@@ -11,12 +11,15 @@
+ #define XE_CPER_EVENT_DIR	TRACEFS_ROOT "/events/xe/xe_error_cper"
+ #define XE_CPER_ENABLE		XE_CPER_EVENT_DIR "/enable"
+ #define XE_CPER_FORMAT		XE_CPER_EVENT_DIR "/format"
++#define XE_RESET_EVENT_DIR	TRACEFS_ROOT "/events/xe/xe_exec_queue_reset"
++#define XE_RESET_ENABLE		XE_RESET_EVENT_DIR "/enable"
+ #define TRACEFS_TRACE_PIPE	TRACEFS_ROOT "/trace_pipe"
+ #define TRACEFS_TRACE		TRACEFS_ROOT "/trace"
+ #define TRACEFS_TRACE_CLEAR	TRACEFS_ROOT "/trace"
+ 
+ /* Timeout waiting for a trace event to appear (seconds) */
+ #define CPER_EVENT_TIMEOUT_SEC		10
++#define RESET_EVENT_TIMEOUT_SEC		10
+ 
+ /* Standard UEFI CPER record header signature: "CPER" in little-endian */
+ #define CPER_SIG_RECORD			0x52455043U  /* "CPER" */
+@@ -39,4 +42,31 @@
+ #define CPER_INTEL_PUB_HDR_SIZE		328U
+ #define UUID_SIZE			16U
+ 
++#define CPER_REC_ERROR_SEVERITY_OFF	12U
++#define CPER_REC_RECORD_LENGTH_OFF	20U
 +
-+#ifndef XE_CPER_H
-+#define XE_CPER_H
++#define CPER_SEC_SEVERITY_OFF		176U
 +
-+/* tracefs paths */
-+#define TRACEFS_ROOT		"/sys/kernel/tracing"
-+#define XE_CPER_EVENT_DIR	TRACEFS_ROOT "/events/xe/xe_error_cper"
-+#define XE_CPER_ENABLE		XE_CPER_EVENT_DIR "/enable"
-+#define XE_CPER_FORMAT		XE_CPER_EVENT_DIR "/format"
-+#define TRACEFS_TRACE_PIPE	TRACEFS_ROOT "/trace_pipe"
-+#define TRACEFS_TRACE		TRACEFS_ROOT "/trace"
-+#define TRACEFS_TRACE_CLEAR	TRACEFS_ROOT "/trace"
++#define CPER_INTEL_HDR_OFFSET		(CPER_RECORD_HEADER_SIZE + \
++					 CPER_SECTION_DESC_SIZE)
++#define CPER_INTEL_ERR_TYPE_OFF		0U
++#define CPER_INTEL_ERR_COMPONENT_OFF	1U
 +
-+/* Timeout waiting for a trace event to appear (seconds) */
-+#define CPER_EVENT_TIMEOUT_SEC		10
++#define CPER_EINFO_OFFSET		(CPER_INTEL_HDR_OFFSET + \
++					 CPER_INTEL_PUB_HDR_SIZE)
++#define CPER_EINFO_EVT_COUNT_OFF	20U
++#define CPER_EINFO_HDR_SIZE		24U
++#define CPER_PRIV_ENTRY_METADATA_OFF	12U
 +
-+/* Standard UEFI CPER record header signature: "CPER" in little-endian */
-+#define CPER_SIG_RECORD			0x52455043U  /* "CPER" */
-+#define CPER_SIG_END			0xFFFFFFFFU
-+#define CPER_REVISION			0x0100U
++#define XE_RAS_SEV_CORRECTABLE		1U
++#define XE_RAS_SEV_UNCORRECTABLE	2U
++#define XE_RAS_SEV_INFORMATIONAL	3U
 +
-+/* CPER error_severity values (UEFI spec Table N-3) */
-+#define CPER_SEV_RECOVERABLE		0U
-+#define CPER_SEV_FATAL			1U
-+#define CPER_SEV_CORRECTED		2U
-+#define CPER_SEV_INFORMATIONAL		3U
++#define XE_RAS_COMP_DEVICE_MEMORY	1U
++#define XE_RAS_COMP_CORE_COMPUTE	2U
 +
-+/* Intel Accelerator section type GUID string representation */
-+#define INTEL_CPER_SECTION_ACCEL_GENERIC_STR \
-+	"ea9d8f84-4258-5227-8028-b9b13e6d58b0"
++#define CORE_COMPUTE_UNCORR_TYPE_SHIFT	25U
++#define CORE_COMPUTE_UNCORR_TYPE_MASK	0x3U
++#define GLOBAL_UNCORR_ERROR		2U
 +
-+/* Sizes from the spec */
-+#define CPER_RECORD_HEADER_SIZE		128U
-+#define CPER_SECTION_DESC_SIZE		72U
-+#define CPER_INTEL_PUB_HDR_SIZE		328U
-+#define UUID_SIZE			16U
-+
-+#endif /* XE_CPER_H */
+ #endif /* XE_CPER_H */
 diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-index 5492c0b9a..6dcc2b1c4 100644
+index 6dcc2b1c4..5ed5fe1d4 100644
 --- a/tests/intel/xe_err_injection.c
 +++ b/tests/intel/xe_err_injection.c
-@@ -17,6 +17,9 @@
+@@ -16,6 +16,8 @@
+ #include <string.h>
  #include <time.h>
  #include <fcntl.h>
++#include <sys/mman.h>
++#include <sys/wait.h>
  #include <unistd.h>
-+#include <sys/types.h>
-+#include <sys/stat.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+@@ -42,6 +44,18 @@ enum {
+ 
+ time_t event_timeout = 10 * 1000; /* 10 seconds */
+ 
++#define LSC_HEAVY_WL_ITERS	64
++#define LSC_HEAVY_WL_ELEMS	(256 * 1024)
 +
- 
- #include "igt.h"
- #include "lib/igt_drm_netlink.h"
-@@ -24,6 +27,7 @@
- #include "lib/intel_reg.h"
- #include "lib/intel_compute.h"
- 
-+#include "xe_cper.h"
- #include "xe_drm.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_mmio.h"
-@@ -570,6 +574,476 @@ static void test_l2_bank_single_corr_err_injection(struct xe_mmio *mmio, int fd)
- 	CLEANUP_ON_ERROR(ctx, fw_handle);
++static bool tracefs_event_exists(void);
++static bool tracefs_reset_event_exists(void);
++static void tracefs_enable_xe_cper(bool enable);
++static void tracefs_enable_xe_reset(bool enable);
++static void tracefs_clear_trace(void);
++static void poll_for_cper_and_reset(int timeout_sec,
++				    char **out_cper, char **out_reset);
++static void validate_local_uc_nonfatal_cper(const char *event_line);
++
+ /* Cleanup helper for injection test functions */
+ #define CLEANUP_ON_ERROR(ctx, fw_handle) do { \
+ 	igt_drm_netlink_cleanup(&ctx); \
+@@ -68,6 +82,44 @@ static void run_xe_compute_on_all_engines(int fd, bool state)
+ 	}
  }
  
-+/* ====================== CPER helper functions ====================== */
++static void run_heavy_lsc_workload(int fd, bool forward_failure)
++{
++	int err;
++
++	igt_info("Running heavy LSC workload %s (%d iters, %u elems) on all compute engines\n",
++		 forward_failure ? "validate" : "stimulus",
++		 LSC_HEAVY_WL_ITERS, LSC_HEAVY_WL_ELEMS);
++
++	igt_fork(child, 1) {
++		struct drm_xe_engine_class_instance *hwe;
++		struct user_execenv env = { .array_size = LSC_HEAVY_WL_ELEMS };
++
++		if (!forward_failure) {
++			int devnull = open("/dev/null", O_WRONLY);
++
++			if (devnull >= 0) {
++				dup2(devnull, STDOUT_FILENO);
++				dup2(devnull, STDERR_FILENO);
++				close(devnull);
++			}
++		}
++
++		xe_for_each_engine(fd, hwe) {
++			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
++				continue;
++			for (int i = 0; i < LSC_HEAVY_WL_ITERS; i++)
++				xe_run_intel_compute_kernel_on_engine(fd, hwe, &env,
++								      EXECENV_PREF_SYSTEM);
++		}
++	}
++	err = __igt_waitchildren();
++
++	if (forward_failure)
++		igt_assert_f(err == 0,
++			     "Post-recovery heavy LSC workload failed (err=%d)\n",
++			     err);
++}
++
+ static void write_reg(struct xe_mmio *mmio, uint32_t reg, uint32_t value)
+ {
+ 	xe_mmio_write32(mmio, reg, value);
+@@ -106,6 +158,63 @@ static void release_steering_semaphore(struct xe_mmio *mmio)
+ 			STEER_SEMAPHORE_MGSR_3D_VALUE);
+ }
+ 
++static void acquire_steer_sem(struct xe_mmio *mmio, unsigned long timeout_ms)
++{
++	if (timeout_ms == 0) {
++		igt_info("Waiting indefinitely for steering semaphore (0x%X)\n",
++			 STEER_SEMAPHORE_MGSR_3D);
++		while (xe_mmio_read32(mmio, STEER_SEMAPHORE_MGSR_3D) !=
++		       STEER_SEMAPHORE_MGSR_3D_VALUE)
++			usleep(STEER_SEM_POLL_INTERVAL_MS * 1000);
++	} else {
++		bool acquired;
++
++		acquired = igt_wait(xe_mmio_read32(mmio, STEER_SEMAPHORE_MGSR_3D) ==
++				    STEER_SEMAPHORE_MGSR_3D_VALUE,
++				    timeout_ms,
++				    STEER_SEM_POLL_INTERVAL_MS);
++		igt_assert_f(acquired,
++			     "Timed out (%lums) waiting for steering semaphore (0x%X) to be acquired; last read=0x%08x\n",
++			     timeout_ms, STEER_SEMAPHORE_MGSR_3D,
++			     xe_mmio_read32(mmio, STEER_SEMAPHORE_MGSR_3D));
++	}
++	igt_info("Steering semaphore acquired (0x%X = 0x%08x)\n",
++		 STEER_SEMAPHORE_MGSR_3D,
++		 xe_mmio_read32(mmio, STEER_SEMAPHORE_MGSR_3D));
++}
++
++static void release_steer_sem(struct xe_mmio *mmio)
++{
++	xe_mmio_write32(mmio, STEER_SEMAPHORE_MGSR_3D,
++			STEER_SEMAPHORE_MGSR_3D_VALUE);
++	igt_info("Steering semaphore released (0x%X = 0x%08x)\n",
++		 STEER_SEMAPHORE_MGSR_3D,
++		 xe_mmio_read32(mmio, STEER_SEMAPHORE_MGSR_3D));
++}
++
++static uint32_t disable_powergate(struct xe_mmio *mmio)
++{
++	uint32_t prev = xe_mmio_read32(mmio, POWERGATE_ENABLE_ADDRESS);
++
++	xe_mmio_write32(mmio, POWERGATE_ENABLE_ADDRESS,
++			POWERGATE_ENABLE_DISABLE_ALL_VALUE);
++	igt_info("POWERGATE_ENABLE (0x%X): 0x%08x -> 0x%08x (all PG disabled)\n",
++		 POWERGATE_ENABLE_ADDRESS, prev,
++		 xe_mmio_read32(mmio, POWERGATE_ENABLE_ADDRESS));
++
++	return prev;
++}
++
++static void restore_powergate(struct xe_mmio *mmio, uint32_t saved_val)
++{
++	uint32_t cur = xe_mmio_read32(mmio, POWERGATE_ENABLE_ADDRESS);
++
++	xe_mmio_write32(mmio, POWERGATE_ENABLE_ADDRESS, saved_val);
++	igt_info("POWERGATE_ENABLE (0x%X): 0x%08x -> 0x%08x (PG restored)\n",
++		 POWERGATE_ENABLE_ADDRESS, cur,
++		 xe_mmio_read32(mmio, POWERGATE_ENABLE_ADDRESS));
++}
++
+ static int acquire_forcewake(int fd)
+ {
+ 	int fw_handle;
+@@ -308,6 +417,116 @@ static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
+ 	gt_uc_wkr_parity_recovered = true;
+ }
+ 
 +/**
-+ * tracefs_event_exists - check xe_error_cper event directory is present
++ * SUBTEST: test_GT-local-Uncorrectable-lsc-storage-err
++ * Description: Inject GT Local Uncorrectable Unicast LSC storage error and
++ * verify recovery via CPER and engine reset trace events.
++ * Functionality: error injection
 + */
-+static bool tracefs_event_exists(void)
++static void lsc_storage_uc_err_injection(struct xe_mmio *mmio, int fd)
++{
++	int fw_handle;
++	uint32_t error_counter_before;
++	uint32_t error_counter_after;
++	uint32_t saved_powergate;
++	uint32_t node_id = NODE_ID_UNCORRECTABLE_ERROR;
++	uint32_t error_id = ERROR_ID_CORE_COMPUTE;
++	char *cper_event_line = NULL;
++	char *reset_event_line = NULL;
++	int poll_timeout;
++
++	igt_require_f(tracefs_event_exists(),
++		      "xe_error_cper trace event not available; CPER-based "
++		      "verification requires it\n");
++	igt_require_f(tracefs_reset_event_exists(),
++		      "xe_exec_queue_reset trace event not available; engine-reset "
++		      "verification requires it\n");
++
++	fw_handle = acquire_forcewake(fd);
++	saved_powergate = disable_powergate(mmio);
++
++	error_counter_before = get_counter(node_id, error_id);
++
++	tracefs_enable_xe_cper(true);
++	tracefs_enable_xe_reset(true);
++	tracefs_clear_trace();
++
++	acquire_steer_sem(mmio, STEER_SEM_POLL_TIMEOUT_MS);
++	write_reg(mmio, MC_PKT_CTRL_MGSR_3D_ADDRESS,
++		  MC_PKT_CTRL_MGSR_3D_ARM_VALUE);
++	write_reg(mmio, LSC_STORAGE_ERR_INJ_TDL_GFX_ADDRESS,
++		  LSC_STORAGE_ERR_INJ_TDL_GFX_VALUE);
++	write_reg(mmio, MC_PKT_CTRL_MGSR_3D_ADDRESS,
++		  MC_PKT_CTRL_MGSR_3D_VALUE);
++	release_steer_sem(mmio);
++
++	igt_info("Injected GT Local Uncorrectable Unicast LSC Storage error\n");
++
++	run_heavy_lsc_workload(fd, false);
++
++	restore_powergate(mmio, saved_powergate);
++	release_forcewake(fw_handle);
++
++	poll_timeout = max(CPER_EVENT_TIMEOUT_SEC, RESET_EVENT_TIMEOUT_SEC);
++	poll_for_cper_and_reset(poll_timeout, &cper_event_line, &reset_event_line);
++
++	tracefs_enable_xe_cper(false);
++	tracefs_enable_xe_reset(false);
++	tracefs_clear_trace();
++
++	igt_assert_f(cper_event_line,
++		     "No xe_error_cper trace event received within %d seconds "
++		     "after LSC uncorrectable injection\n", poll_timeout);
++	igt_info("Captured CPER trace event: %s\n", cper_event_line);
++	validate_local_uc_nonfatal_cper(cper_event_line);
++	free(cper_event_line);
++
++	igt_assert_f(reset_event_line,
++		     "No xe_exec_queue_reset trace event received within %d seconds "
++		     "after LSC uncorrectable injection; engine reset did not occur\n",
++		     poll_timeout);
++	igt_info("Captured engine reset trace event: %s\n", reset_event_line);
++	free(reset_event_line);
++
++	error_counter_after = get_counter(node_id, error_id);
++
++	igt_assert_f(error_counter_before != UINT32_MAX &&
++		     error_counter_after != UINT32_MAX,
++		     "Failed to fetch valid error counters: before=%u after=%u\n",
++		     error_counter_before, error_counter_after);
++
++	igt_info("error counter: before injection=%u after injection=%u\n",
++		 error_counter_before, error_counter_after);
++
++	igt_assert_f(error_counter_after > error_counter_before,
++		     "GT Local Uncorrectable Unicast LSC storage error injection "
++		     "failed: before injection=%u after injection=%u\n",
++		     error_counter_before, error_counter_after);
++
++	igt_info("Post recovery: re-running heavy LSC workload with no injection\n");
++	error_counter_before = get_counter(node_id, error_id);
++	run_heavy_lsc_workload(fd, true);
++	error_counter_after = get_counter(node_id, error_id);
++
++	igt_assert_f(error_counter_before != UINT32_MAX &&
++		     error_counter_after != UINT32_MAX,
++		     "Failed to fetch valid Post recovery error counters: before=%u after=%u\n",
++		     error_counter_before, error_counter_after);
++
++	igt_info("Post recovery error counter: before wl=%u after wl=%u\n",
++		 error_counter_before, error_counter_after);
++
++	igt_assert_f(error_counter_before == error_counter_after,
++		     "Post recovery LSC workload unexpectedly bumped error counter: "
++		     "before=%u after=%u\n",
++		     error_counter_before, error_counter_after);
++
++	igt_info("Post recovery LSC workload clean: counters match (%u)\n",
++		 error_counter_after);
++
++	igt_info("GT Local Uncorrectable Unicast LSC storage error injection successful\n");
++}
++
+ /* Inject a GT correctable error */
+ static void l2_bank_corr_err_injection(struct xe_mmio *mmio, int fd)
+ {
+@@ -585,6 +804,16 @@ static bool tracefs_event_exists(void)
+ 	return stat(XE_CPER_EVENT_DIR, &st) == 0 && S_ISDIR(st.st_mode);
+ }
+ 
++/**
++ * tracefs_reset_event_exists - check xe_exec_queue_reset event directory is present
++ */
++static bool tracefs_reset_event_exists(void)
 +{
 +	struct stat st;
 +
-+	return stat(XE_CPER_EVENT_DIR, &st) == 0 && S_ISDIR(st.st_mode);
++	return stat(XE_RESET_EVENT_DIR, &st) == 0 && S_ISDIR(st.st_mode);
 +}
 +
+ /**
+  * tracefs_enable_xe_cper - enable / disable the xe_error_cper trace event
+  */
+@@ -601,6 +830,22 @@ static void tracefs_enable_xe_cper(bool enable)
+ 	close(fd);
+ }
+ 
 +/**
-+ * tracefs_enable_xe_cper - enable / disable the xe_error_cper trace event
++ * tracefs_enable_xe_reset - enable / disable the xe_exec_queue_reset trace event
 + */
-+static void tracefs_enable_xe_cper(bool enable)
++static void tracefs_enable_xe_reset(bool enable)
 +{
 +	int fd;
 +	const char val = enable ? '1' : '0';
 +
-+	fd = open(XE_CPER_ENABLE, O_WRONLY);
-+	igt_assert_f(fd >= 0, "Cannot open %s: %s\n", XE_CPER_ENABLE,
++	fd = open(XE_RESET_ENABLE, O_WRONLY);
++	igt_assert_f(fd >= 0, "Cannot open %s: %s\n", XE_RESET_ENABLE,
 +		     strerror(errno));
 +	igt_assert_eq(write(fd, &val, 1), 1);
-+	igt_info("Trace event %sabled: %s\n", enable ? "en" : "dis", XE_CPER_ENABLE);
++	igt_info("Trace event %sabled: %s\n", enable ? "en" : "dis", XE_RESET_ENABLE);
 +	close(fd);
 +}
 +
+ /**
+  * tracefs_clear_trace - wipe the trace ring buffer
+  */
+@@ -667,15 +912,15 @@ static char *wait_for_cper_event(int drm_fd)
+ 	tracefs_clear_trace();
+ 
+ 	/* Call igt_get_error_counter to dump the cper in tracefs */
+-	ret = igt_init_nl_socket(&ctx);
++	ret = igt_drm_netlink_init(&ctx);
+ 	if (ret < 0)
+ 		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
+ 
+ 	ctx.node_id = 0;
+ 	ctx.error_id = 1;
+-	ret = igt_get_error_counter(&ctx);
++	ret = igt_drm_netlink_get_error_counter(&ctx);
+ 	if (ret < 0) {
+-		igt_cleanup_nl_socket(&ctx);
++		igt_drm_netlink_cleanup(&ctx);
+ 		igt_assert_f(false, "Failed to query GT correctable error counter\n");
+ 	}
+ 
+@@ -695,7 +940,7 @@ static char *wait_for_cper_event(int drm_fd)
+ 		free(trace);
+ 	} while (!match && elapsed < CPER_EVENT_TIMEOUT_SEC);
+ 
+-	igt_cleanup_nl_socket(&ctx);
++	igt_drm_netlink_cleanup(&ctx);
+ 	tracefs_enable_xe_cper(false);
+ 	tracefs_clear_trace();
+ 
+@@ -777,6 +1022,98 @@ static void format_guid(const uint8_t guid[UUID_SIZE], char string[37])
+ 		 guid[14], guid[15]);
+ }
+ 
 +/**
-+ * tracefs_clear_trace - wipe the trace ring buffer
++ * poll_for_cper_and_reset - scan the trace buffer for both an xe_error_cper
++ * and an xe_exec_queue_reset event, up to @timeout_sec seconds. On return,
++ * *out_cper / *out_reset hold a malloc'd copy of the first matching line
++ * for each, or NULL if not seen. Caller must free each non-NULL pointer.
 + */
-+static void tracefs_clear_trace(void)
++static void poll_for_cper_and_reset(int timeout_sec,
++				    char **out_cper, char **out_reset)
 +{
-+	int fd = open(TRACEFS_TRACE_CLEAR, O_WRONLY | O_TRUNC);
++	char *trace, *line, *saveptr;
++	int elapsed = 0;
 +
-+	if (fd >= 0)
-+		close(fd);
++	*out_cper = NULL;
++	*out_reset = NULL;
 +
-+	igt_info("Cleared trace buffer: %s\n", TRACEFS_TRACE_CLEAR);
-+}
-+
-+/**
-+ * tracefs_read_trace - read the current trace buffer into a dynamically allocated buffer.
-+ * Caller must free() the dynamic memory.
-+ */
-+static char *tracefs_read_trace(void)
-+{
-+	int fd;
-+	char *buf;
-+	ssize_t n;
-+	size_t cap = 65536, used = 0;
-+
-+	fd = open(TRACEFS_TRACE, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Cannot open trace file: %s\n", strerror(errno));
-+
-+	igt_info("Reading trace buffer: %s\n", TRACEFS_TRACE);
-+
-+	/* trace file size is not known ahead of time; read in chunks */
-+	buf = malloc(cap);
-+	igt_assert(buf);
-+
-+	while (1) {
-+		n = read(fd, buf + used, cap - used - 1);
-+		if (n <= 0)
-+			break;
-+		used += n;
-+		if (used >= cap - 1) {
-+			cap *= 2;
-+			buf = realloc(buf, cap);
-+			igt_assert(buf);
-+		}
-+	}
-+	buf[used] = '\0';
-+	close(fd);
-+	igt_info("Read %zu bytes from trace buffer\n", used);
-+	return buf;
-+}
-+
-+/**
-+ * wait_for_cper_event - enable tracing, get_error_counter, wait up to
-+ * CPER_EVENT_TIMEOUT_SEC for an xe_error_cper line to appear.
-+ * Returns a malloc'd copy of the matching trace line, or NULL.
-+ * Caller must free().
-+ */
-+static char *wait_for_cper_event(int drm_fd)
-+{
-+	char *trace, *line, *match = NULL;
-+	int elapsed = 0, ret;
-+	struct app_context ctx;
-+
-+	tracefs_enable_xe_cper(true);
-+	tracefs_clear_trace();
-+
-+	/* Call igt_get_error_counter to dump the cper in tracefs */
-+	ret = igt_init_nl_socket(&ctx);
-+	if (ret < 0)
-+		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
-+
-+	ctx.node_id = 0;
-+	ctx.error_id = 1;
-+	ret = igt_get_error_counter(&ctx);
-+	if (ret < 0) {
-+		igt_cleanup_nl_socket(&ctx);
-+		igt_assert_f(false, "Failed to query GT correctable error counter\n");
-+	}
-+
-+	/* Poll the trace buffer until xe_error_cper appears or timeout */
 +	do {
 +		sleep(1);
 +		elapsed++;
 +		trace = tracefs_read_trace();
 +
-+		/* Walk lines looking for "xe_error_cper:" */
-+		for (line = strtok(trace, "\n"); line; line = strtok(NULL, "\n")) {
-+			if (strstr(line, "xe_error_cper:")) {
-+				match = strdup(line);
++		for (line = strtok_r(trace, "\n", &saveptr); line;
++		     line = strtok_r(NULL, "\n", &saveptr)) {
++			if (!*out_cper && strstr(line, "xe_error_cper:"))
++				*out_cper = strdup(line);
++			if (!*out_reset && strstr(line, "xe_exec_queue_reset:"))
++				*out_reset = strdup(line);
++			if (*out_cper && *out_reset)
 +				break;
-+			}
 +		}
 +		free(trace);
-+	} while (!match && elapsed < CPER_EVENT_TIMEOUT_SEC);
-+
-+	igt_cleanup_nl_socket(&ctx);
-+	tracefs_enable_xe_cper(false);
-+	tracefs_clear_trace();
-+
-+	return match;
++	} while ((!*out_cper || !*out_reset) && elapsed < timeout_sec);
 +}
 +
-+/**
-+ * parse_cper_event_field - extract a "key=value" token from a trace line.
-+ * Returns a pointer into a static buffer; valid until the next call.
-+ */
-+static const char *parse_cper_event_field(const char *line, const char *key)
++static void validate_local_uc_nonfatal_cper(const char *event_line)
 +{
-+	static char val[512];
-+	const char *p;
-+	int klen;
-+	size_t vlen;
-+
-+	klen = strlen(key);
-+	p = strstr(line, key);
-+	if (!p)
-+		return NULL;
-+	p += klen;
-+	if (*p != '=')
-+		return NULL;
-+	p++;
-+
-+	if (!strcmp(key, "cper_raw"))
-+		return p;
-+
-+	vlen = strcspn(p, " \t\n");
-+
-+	if (vlen >= sizeof(val))
-+		vlen = sizeof(val) - 1;
-+	memcpy(val, p, vlen);
-+	val[vlen] = '\0';
-+	return val;
-+}
-+
-+/**
-+ * hexbuf_get_byte - read byte at 'offset' from a "xx xx xx ..." hex string.
-+ */
-+static uint8_t hexbuf_get_byte(const char *hexstr, size_t offset)
-+{
-+	unsigned int b;
-+	const char *p = hexstr;
-+	size_t i;
-+
-+	for (i = 0; i <= offset; i++) {
-+		while (*p == ' ')
-+			p++;
-+		igt_assert_f(sscanf(p, "%02x", &b) == 1,
-+			     "Failed to parse hex byte %zu in '%s'\n", i, hexstr);
-+		p += 2;
-+	}
-+	return (uint8_t)b;
-+}
-+
-+/**
-+ * hexbuf_get_u32le - read a 4-byte little-endian u32 starting at byte offset.
-+ */
-+static uint32_t hexbuf_get_u32le(const char *hexstr, size_t offset)
-+{
-+	uint32_t v = 0;
-+	int i;
-+
-+	for (i = 0; i < 4; i++)
-+		v |= (uint32_t)hexbuf_get_byte(hexstr, offset + i) << (8 * i);
-+	return v;
-+}
-+
-+static void format_guid(const uint8_t guid[UUID_SIZE], char string[37])
-+{
-+	snprintf(string, 37,
-+		 "%02x%02x%02x%02x-%02x%02x-%02x%02x-%02x%02x-"
-+		 "%02x%02x%02x%02x%02x%02x",
-+		 guid[3], guid[2], guid[1], guid[0],
-+		 guid[5], guid[4], guid[7], guid[6],
-+		 guid[8], guid[9], guid[10], guid[11], guid[12], guid[13],
-+		 guid[14], guid[15]);
-+}
-+
-+/**
-+ * SUBTEST: cper-tracefs-event-format
-+ * Description: Verify that the xe_error_cper tracefs event exists under
-+ * /sys/kernel/debug/tracing/events/xe/xe_error_cper/, that its 'format'
-+ * file contains the expected fields (dev, severity, platform_id, fru_id,
-+ * intel_err_hdr_raw, cper_len, cper_raw), and that 'enable' can be toggled.
-+ */
-+
-+/**
-+ * test_tracefs_event_format - verify the tracefs event directory and format
-+ * file contain the expected field names emitted by the xe_error_cper
-+ * TRACE_EVENT definition (TP_STRUCT__entry fields).
-+ */
-+static void test_tracefs_event_format(void)
-+{
-+	int fd;
-+	char buf[4096] = { 0 };
-+	ssize_t n;
-+
-+	igt_require_f(tracefs_event_exists(),
-+		      "xe_error_cper trace event not present at %s\n"
-+		      "(kernel xe driver may not have CONFIG_TRACING enabled)\n",
-+		      XE_CPER_EVENT_DIR);
-+
-+	fd = open(XE_CPER_FORMAT, O_RDONLY);
-+	igt_assert_f(fd >= 0, "Cannot open %s: %s\n", XE_CPER_FORMAT,
-+		     strerror(errno));
-+	n = read(fd, buf, sizeof(buf) - 1);
-+	close(fd);
-+	igt_assert_f(n > 0, "Empty format file at %s\n", XE_CPER_FORMAT);
-+	buf[n] = '\0';
-+
-+	/* Verify that all TP_STRUCT__entry fields are present in the format */
-+	igt_assert_f(strstr(buf, "dev"),
-+		     "Missing 'dev' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "platform_id"),
-+		     "Missing 'platform_id' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "fru_id"),
-+		     "Missing 'fru_id' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "sev"),
-+		     "Missing 'sev' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "ihdr_raw"),
-+		     "Missing 'ihdr_raw' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "cper_len"),
-+		     "Missing 'cper_len' field in xe_error_cper format\n");
-+	igt_assert_f(strstr(buf, "cper"),
-+		     "Missing 'cper' dynamic array field in xe_error_cper format\n");
-+
-+	igt_info("xe_error_cper tracefs format verified:\n"
-+		     "Below is the content of %s:\n"
-+		     "=========================================\n"
-+		     "%s"
-+		     "=========================================\n"
-+		     "\n", XE_CPER_FORMAT, buf);
-+
-+	/* Verify enable/disable toggle */
-+	tracefs_enable_xe_cper(true);
-+	fd = open(XE_CPER_ENABLE, O_RDONLY);
-+	igt_assert(fd >= 0);
-+	n = read(fd, buf, 2);
-+	close(fd);
-+	igt_assert_eq(buf[0], '1');
-+
-+	tracefs_enable_xe_cper(false);
-+	fd = open(XE_CPER_ENABLE, O_RDONLY);
-+	igt_assert(fd >= 0);
-+	n = read(fd, buf, 2);
-+	close(fd);
-+	igt_assert_eq(buf[0], '0');
-+}
-+
-+/**
-+ * SUBTEST: cper-record-header
-+ * Description: Inject a correctable hardware error and verify the CPER
-+ * record header fields (signature "CPER", revision 0x0100, record_length,
-+ * section_count >= 1, error_severity) by reading the xe_error_cper
-+ * tracefs event output.
-+ */
-+
-+/**
-+ * test_cper_record_header - inject a correctable error, capture the
-+ * xe_error_cper trace event and validate CPER record header fields from
-+ * the cper_raw hex dump:
-+ *   bytes  0-3:   signature == "CPER" (0x52455043)
-+ *   bytes  4-5:   revision  == 0x0100
-+ *   bytes  6-9:   signature_end == 0xFFFFFFFF
-+ *   bytes 10-11:  section_count >= 1
-+ *   bytes 12-15:  error_severity in [0..3]
-+ *   bytes 20-23:  record_length >= CPER_RECORD_HEADER_SIZE
-+ */
-+static void test_cper_record_header(int drm_fd)
-+{
-+	char *event_line;
 +	const char *cper_raw;
-+	uint32_t sig, sig_end, rec_len, sev;
-+	uint16_t rev, sec_cnt;
-+
-+	igt_require_f(tracefs_event_exists(),
-+		      "xe_error_cper trace event not available\n");
-+
-+	event_line = wait_for_cper_event(drm_fd);
-+	igt_assert_f(event_line,
-+		     "No xe_error_cper trace event received within %d seconds "
-+		     "after injecting CSC hardware error\n",
-+		     CPER_EVENT_TIMEOUT_SEC);
-+
-+	igt_info("Captured trace event: %s\n", event_line);
++	uint32_t rec_sev, sec_sev, rec_len, evt_count, err_hdr;
++	uint32_t einfo_off, entry_off;
++	uint8_t err_type, err_comp, uncorr_type;
 +
 +	cper_raw = parse_cper_event_field(event_line, "cper_raw");
 +	igt_assert_f(cper_raw, "cper_raw field not found in trace event\n");
 +
-+	/* signature: bytes 0-3 LE == "CPER" */
-+	sig = hexbuf_get_u32le(cper_raw, 0);
-+	igt_assert_f(sig == CPER_SIG_RECORD,
-+		     "CPER signature mismatch: got 0x%08x, expected 0x%08x\n",
-+		     sig, CPER_SIG_RECORD);
++	rec_len = hexbuf_get_u32le(cper_raw, CPER_REC_RECORD_LENGTH_OFF);
 +
-+	/* revision: bytes 4-5 */
-+	rev = (uint16_t)hexbuf_get_byte(cper_raw, 4) |
-+	      ((uint16_t)hexbuf_get_byte(cper_raw, 5) << 8);
-+	igt_assert_f(rev == CPER_REVISION,
-+		     "CPER revision mismatch: got 0x%04x, expected 0x%04x\n",
-+		     rev, CPER_REVISION);
-+
-+	/* signature_end: bytes 6-9 */
-+	sig_end = hexbuf_get_u32le(cper_raw, 6);
-+	igt_assert_f(sig_end == CPER_SIG_END,
-+		     "CPER signature_end mismatch: got 0x%08x, expected 0x%08x\n",
-+		     sig_end, CPER_SIG_END);
-+
-+	/* section_count: bytes 10-11 */
-+	sec_cnt = (uint16_t)hexbuf_get_byte(cper_raw, 10) |
-+		  ((uint16_t)hexbuf_get_byte(cper_raw, 11) << 8);
-+	igt_assert_f(sec_cnt >= 1,
-+		     "CPER section_count must be >= 1, got %u\n", sec_cnt);
-+
-+	/* error_severity: bytes 12-15 */
-+	sev = hexbuf_get_u32le(cper_raw, 12);
-+	igt_assert_f(sev <= CPER_SEV_INFORMATIONAL,
-+		     "CPER error_severity out of range: got %u\n", sev);
-+
-+	/* record_length: bytes 20-23 */
-+	rec_len = hexbuf_get_u32le(cper_raw, 20);
-+	igt_assert_f(rec_len >= CPER_RECORD_HEADER_SIZE,
-+		     "CPER record_length too small: got %u, min %u\n",
-+		     rec_len, CPER_RECORD_HEADER_SIZE);
-+
-+	igt_info("\nCPER record header status: OK\nsignature=0x%08x\nrevision=0x%04x"
-+		 "\nsection_count=%u\nerror_severity=%u\nrecord_length=%u\n\n",
-+		 sig, rev, sec_cnt, sev, rec_len);
-+
-+	free(event_line);
-+}
-+
-+/**
-+ * SUBTEST: cper-section-descriptor
-+ * Description: Verify the CPER section descriptor fields: section_type
-+ * GUID matches INTEL_CPER_SECTION_ACCEL_GENERIC, section_offset and
-+ * section_length are consistent with record_length, and section_severity
-+ * matches the injected error severity.
-+ */
-+
-+/**
-+ * test_cper_section_descriptor - validate the CPER section descriptor which
-+ * immediately follows the 128-byte record header.
-+ *
-+ * From the Intel Accelerator Common CPER spec:
-+ *   header[0..127]  = CPER record header
-+ *   header[128..131] = section_offset (u32 LE) — offset of section body
-+ *                      from start of record header
-+ *   header[132..135] = section_length (u32 LE)
-+ *   header[136..137] = revision (u16 LE) == 0x0100
-+ *   header[140..143] = flags (u32 LE)
-+ *   header[144..159] = section_type GUID (16 bytes)
-+ *   header[176..179] = section_severity (u32 LE)
-+ */
-+static void test_cper_section_descriptor(int drm_fd)
-+{
-+	char *event_line;
-+	const char *cper_raw;
-+	uint32_t sec_off, sec_len, sec_sev, rec_len;
-+	uint16_t sec_rev;
-+	/* GUID bytes from INTEL_CPER_SECTION_ACCEL_GENERIC:
-+	 * {ea9d8f84-4258-5227-8028-b9b13e6d58b0}
-+	 * In GUID wire format (mixed endian): ea9d8f84 4258 5227 8028 b9b13e6d58b0
-+	 * Byte layout in CPER: 84 8f 9d ea  58 42  27 52  80 28  b9 b1 3e 6d 58 b0
-+	 */
-+	static const uint8_t expected_guid[UUID_SIZE] = {
-+		0x84, 0x8f, 0x9d, 0xea,  /* Data1 LE */
-+		0x58, 0x42,              /* Data2 LE */
-+		0x27, 0x52,              /* Data3 LE */
-+		0x80, 0x28,              /* Data4[0..1] */
-+		0xb9, 0xb1, 0x3e, 0x6d, 0x58, 0xb0  /* Data4[2..7] */
-+	};
-+	uint8_t actual_guid[UUID_SIZE];
-+	char actual_guid_string[37];
-+	int i;
-+	uint32_t rec_sev;
-+
-+	igt_require_f(tracefs_event_exists(),
-+		      "xe_error_cper trace event not available\n");
-+
-+	event_line = wait_for_cper_event(drm_fd);
-+	igt_assert_f(event_line,
-+		     "No xe_error_cper trace event received\n");
-+
-+	cper_raw = parse_cper_event_field(event_line, "cper_raw");
-+	igt_assert_f(cper_raw, "cper_raw field not found\n");
-+
-+	/* record_length for bounds check */
-+	rec_len = hexbuf_get_u32le(cper_raw, 20);
-+	igt_assert_f(rec_len >= CPER_RECORD_HEADER_SIZE + CPER_SECTION_DESC_SIZE,
-+		     "record_length %u too small to contain section descriptor\n",
-+		     rec_len);
-+
-+	/* section descriptor starts at byte 128 */
-+	sec_off = hexbuf_get_u32le(cper_raw, 128);
-+	igt_assert_f(sec_off >= CPER_RECORD_HEADER_SIZE + CPER_SECTION_DESC_SIZE,
-+		     "section_offset %u must be beyond header+descriptor\n",
-+		     sec_off);
-+	igt_assert_f(sec_off < rec_len,
-+		     "section_offset %u >= record_length %u\n",
-+		     sec_off, rec_len);
-+
-+	sec_len = hexbuf_get_u32le(cper_raw, 132);
-+	igt_assert_f(sec_len > 0,
-+		     "section_length must be > 0\n");
-+	igt_assert_f(sec_off + sec_len <= rec_len,
-+		     "section_offset(%u) + section_length(%u) > record_length(%u)\n",
-+		     sec_off, sec_len, rec_len);
-+
-+	/* section revision @ byte 136 */
-+	sec_rev = (uint16_t)hexbuf_get_byte(cper_raw, 136) |
-+		  ((uint16_t)hexbuf_get_byte(cper_raw, 137) << 8);
-+	igt_assert_f(sec_rev == CPER_REVISION,
-+		     "section_descriptor revision mismatch: 0x%04x\n", sec_rev);
-+
-+	/* section_type GUID @ bytes 144..159 */
-+	for (i = 0; i < (int)UUID_SIZE; i++)
-+		actual_guid[i] = hexbuf_get_byte(cper_raw, 144 + i);
-+
-+	format_guid(actual_guid, actual_guid_string);
-+
-+	igt_assert_f(memcmp(actual_guid, expected_guid, UUID_SIZE) == 0,
-+		     "section_type GUID mismatch — expected GUID is: %s\n"
-+		     "actual GUID is: %s\n",
-+		     INTEL_CPER_SECTION_ACCEL_GENERIC_STR, actual_guid_string);
-+
-+	/* section_severity @ bytes 176..179 */
-+	sec_sev = hexbuf_get_u32le(cper_raw, 176);
-+	igt_assert_f(sec_sev <= CPER_SEV_INFORMATIONAL,
-+		     "section_severity out of range: %u\n", sec_sev);
-+
-+	/* section_severity must match record error_severity */
-+	rec_sev = hexbuf_get_u32le(cper_raw, 12);
-+	igt_assert_f(sec_sev == rec_sev,
++	rec_sev = hexbuf_get_u32le(cper_raw, CPER_REC_ERROR_SEVERITY_OFF);
++	sec_sev = hexbuf_get_u32le(cper_raw, CPER_SEC_SEVERITY_OFF);
++	igt_assert_f(rec_sev != CPER_SEV_FATAL,
++		     "CPER record error_severity is FATAL (%u); expected non-fatal\n",
++		     rec_sev);
++	igt_assert_f(rec_sev == sec_sev,
 +		     "section_severity(%u) != record error_severity(%u)\n",
 +		     sec_sev, rec_sev);
++	igt_assert_f(rec_sev == CPER_SEV_RECOVERABLE,
++		     "Expected UEFI severity CPER_SEV_RECOVERABLE(%u) for uncorrectable "
++		     "non-fatal, got %u\n", CPER_SEV_RECOVERABLE, rec_sev);
 +
-+	igt_info("\nCPER section descriptor status OK::\nsection_offset=%u\n"
-+		 "section_length=%u\nrevision=0x%04x\nsection_severity=%u\nGUID=%s\n",
-+		 sec_off, sec_len, sec_rev, sec_sev,
-+		 INTEL_CPER_SECTION_ACCEL_GENERIC_STR);
++	err_type = hexbuf_get_byte(cper_raw,
++				   CPER_INTEL_HDR_OFFSET + CPER_INTEL_ERR_TYPE_OFF);
++	err_comp = hexbuf_get_byte(cper_raw,
++				   CPER_INTEL_HDR_OFFSET + CPER_INTEL_ERR_COMPONENT_OFF);
++	igt_assert_f(err_type == XE_RAS_SEV_UNCORRECTABLE,
++		     "Intel error_class.error_type=%u; expected XE_RAS_SEV_UNCORRECTABLE(%u)\n",
++		     err_type, XE_RAS_SEV_UNCORRECTABLE);
++	igt_assert_f(err_comp == XE_RAS_COMP_CORE_COMPUTE,
++		     "Intel error_class.error_component=%u; expected XE_RAS_COMP_CORE_COMPUTE(%u)\n",
++		     err_comp, XE_RAS_COMP_CORE_COMPUTE);
 +
-+	free(event_line);
++	einfo_off = CPER_EINFO_OFFSET;
++	entry_off = einfo_off + CPER_EINFO_HDR_SIZE;
++	igt_assert_f(rec_len >= entry_off + CPER_PRIV_ENTRY_METADATA_OFF + sizeof(uint32_t),
++		     "record_length %u too small to contain event entry error_log_header\n",
++		     rec_len);
++
++	evt_count = hexbuf_get_u32le(cper_raw, einfo_off + CPER_EINFO_EVT_COUNT_OFF);
++	igt_assert_f(evt_count > 0,
++		     "event_queue_count is 0; cannot determine local/global scope\n");
++
++	err_hdr = hexbuf_get_u32le(cper_raw, entry_off + CPER_PRIV_ENTRY_METADATA_OFF);
++	uncorr_type = (err_hdr >> CORE_COMPUTE_UNCORR_TYPE_SHIFT) &
++		      CORE_COMPUTE_UNCORR_TYPE_MASK;
++	igt_assert_f(uncorr_type != GLOBAL_UNCORR_ERROR,
++		     "Expected local uncorrectable error (uncorr_type != %u), got %u "
++		     "(error_log_header=0x%08x)\n",
++		     GLOBAL_UNCORR_ERROR, uncorr_type, err_hdr);
++
++	igt_info("CPER classified as local uncorrectable non-fatal: "
++		 "cper_sev=%u ras_sev=%u component=%u uncorr_type=%u "
++		 "(error_log_header=0x%08x, evt_count=%u)\n",
++		 rec_sev, err_type, err_comp, uncorr_type, err_hdr, evt_count);
 +}
 +
- static void igt_require_cri(int fd)
- {
- 	uint16_t dev_id = xe_dev_id(fd);
-@@ -641,6 +1115,20 @@ int igt_main()
- 	igt_subtest("test_l2-bank-single-corr-err")
- 		inject_error("test_l2-bank-single-corr-err", &mmio, fd);
+ /**
+  * SUBTEST: cper-tracefs-event-format
+  * Description: Verify that the xe_error_cper tracefs event exists under
+@@ -1103,6 +1440,10 @@ int igt_main()
+ 		inject_error("test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl", &mmio, fd);
+ 	}
  
-+	igt_describe("Verify the xe_error_cper tracefs event exists and has the expected format.");
-+	igt_subtest("cper-tracefs-event-format")
-+		test_tracefs_event_format();
++	igt_describe("Inject GT Local Uncorrectable Unicast LSC storage error and verify recovery via CPER.");
++	igt_subtest("test_GT-local-Uncorrectable-lsc-storage-err")
++		lsc_storage_uc_err_injection(&mmio, fd);
 +
-+	igt_describe("Inject a correctable error and verify the CPER record header fields in the "
-+		     "xe_error_cper trace event.");
-+	igt_subtest("cper-record-header")
-+		test_cper_record_header(fd);
+ 	igt_describe("Inject GT correctable error and validate error-report event with threshold set to 1.");
+ 	igt_subtest("test_l2-bank-corr-err-threshold-1")
+ 		inject_error("test_l2-bank-corr-err-threshold-1", &mmio, fd);
+diff --git a/tests/intel/xe_err_injection.h b/tests/intel/xe_err_injection.h
+index a4b99711e..9b6f67cec 100644
+--- a/tests/intel/xe_err_injection.h
++++ b/tests/intel/xe_err_injection.h
+@@ -21,6 +21,17 @@
+ #define STEER_SEMAPHORE_MGSR_3D 0x00FD0
+ #define STEER_SEMAPHORE_MGSR_3D_VALUE 0x1
+ 
++#define STEER_SEM_POLL_TIMEOUT_MS 1000
++#define STEER_SEM_POLL_INTERVAL_MS 1
 +
-+	igt_describe("Inject a correctable error and verify the CPER section descriptor in the "
-+		     "xe_error_cper trace event.");
-+	igt_subtest("cper-section-descriptor")
-+		test_cper_section_descriptor(fd);
++#define MC_PKT_CTRL_MGSR_3D_ARM_VALUE 0x1
 +
- 	igt_fixture() {
- 		xe_mmio_access_fini(&mmio);
- 		drm_close_driver(fd);
++#define LSC_STORAGE_ERR_INJ_TDL_GFX_ADDRESS 0xE760
++#define LSC_STORAGE_ERR_INJ_TDL_GFX_VALUE 0x8
++
++#define POWERGATE_ENABLE_ADDRESS 0xA210
++#define POWERGATE_ENABLE_DISABLE_ALL_VALUE 0x0
++
+ /* Node types for error counters*/
+ #define NODE_ID_CORRECTABLE_ERROR 0
+ #define NODE_ID_UNCORRECTABLE_ERROR 1
 -- 
 2.43.0
 
