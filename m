@@ -4,51 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5840DCA5FA5
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 10:50:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9C30CA5FA5
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 10:57:03 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 031F210EE38;
-	Tue, 29 Sep 2026 10:50:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8908310E6CE;
+	Tue, 29 Sep 2026 10:57:03 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e7z4lNlf";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RtQq5sII";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E2A4910EE32
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 10:49:28 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1F95810EE40
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 10:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790678968; x=1822214968;
+ t=1790679379; x=1822215379;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=/uryn7tmAGkgpntDD2e0dzRWNm3Du31y8udD01uRwCg=;
- b=e7z4lNlfeJg/eVDYTa/0KI6oms0pRTJw6Pfjy5uDmLOf3xM8E6RTd0zY
- BhGe7//hAUaxvmwjYbHi9AkNbRVaBlGAfknWJt+A5hocLm2eGdQ5Ztw/E
- 91rMYWVDpCzHSi2p8QQDV+H+7zQZ1q6z+zacTCI0/Nn07+prwdM1Oizt9
- 5hqkEjdryA4m1hsil7B53n3o8ij8ELFeGTisvm4bwxWpIdIUFUe/ZA9ad
- dSO/StBsFZQ5kLSzu2IkPyVbYQ/UHUcMeHilSpBC4gIMn8K/rGvD0Sq4m
- cGGkoUUN/Rt81+BnIvtMXsAAjyv2mWL4Bx05cQUmVDNcQ/Xw9UbnCkl8Z Q==;
-X-CSE-ConnectionGUID: aOZhXaojTCGNE+KXaXjilA==
-X-CSE-MsgGUID: CP9EZZt8R9CfZQ5Wgf+s6g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="90524024"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="90524024"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 03:49:28 -0700
-X-CSE-ConnectionGUID: nIpBr6MpRtuYG1XrBCwPAA==
-X-CSE-MsgGUID: J2gYySunQG2n+xNarzGvTw==
+ bh=7YXGWXKJs3PVrKz1b8Pj+kr+HJMgJQhZ0BaciLMin30=;
+ b=RtQq5sIIrlvdqHDhNmKpvwwg3sqtVaumTbWQ1AllLSowvx+Lw0u8Gld6
+ 5AnsZu9vh7Vk7jVCm2uzd+24Obk45XOE7+7llgci1vDgJaOkLK+/7Msmj
+ wNNzL1B9WHTWHhruWn3wDj3TfA5Squ+1+CBDJSXeh3Ge1eeY9WI/zU+2O
+ QSwPjc7vSrFq7sgzdpSRJXeOhTuGUnJz00vxsfioe6TEJHgg4+a2pns+G
+ Vpxt1Pzbl1q4+F6tKp5r3tJcnQWP2SVisnFe7TQAPJtPU2L2b07GtwsWf
+ kVgJ6VMwKDfWWzr9l5Kg3qyun+Vai6s0IYELe6z2its+0AzeW7HSmxBfr w==;
+X-CSE-ConnectionGUID: fAsZqQMSRTSzsvho7iC+5A==
+X-CSE-MsgGUID: HVcnU+UHTB2P0Cyv+ZHnxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11919"; a="101561845"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="101561845"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 03:56:19 -0700
+X-CSE-ConnectionGUID: w1kz5Ht2RGyKAYBmqEPmDw==
+X-CSE-MsgGUID: WO6AjUvGRCKcFrKvfnGRKA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="313286219"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 03:49:26 -0700
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH] tests/intel/xe_configfs: reuse pre-existing configfs group
-Date: Tue, 29 Sep 2026 16:07:02 +0530
-Message-ID: <20260929103701.2050914-2-sk.anirban@intel.com>
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="274870357"
+Received: from psoham-ms-7e03.iind.intel.com ([10.223.55.64])
+ by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 03:56:16 -0700
+From: Soham Purkait <soham.purkait@intel.com>
+To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
+ badal.nilawar@intel.com, kamil.konieczny@intel.com,
+ ravi.kishore.koppuravuri@intel.com, raag.jadav@intel.com
+Cc: anshuman.gupta@intel.com,
+	soham.purkait@intel.com
+Subject: [PATCH i-g-t v1 0/3] tests/intel/xe_err_injection: Add Local
+ Uncorrectable Error Injection Through LSC Storage
+Date: Tue, 29 Sep 2026 16:25:43 +0530
+Message-ID: <20260929105543.2400108-5-soham.purkait@intel.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -67,347 +69,42 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Handle a pre-existing configfs group by opening and reusing it, retain
-it across cleanup, and validate the fd so the test fails early with a
-clear message on any error.
+     Adds coverage for local uncorrectable unicast LSC (Load/Store Cache)
+storage errors.
 
-v2: Add a common function (Soham)
+The test injects into the LSC storage array, drives a heavy LSC
+workload on all compute engines to trigger the error, and verifies
+recovery by capturing the xe_error_cper and xe_exec_queue_reset trace
+events. It confirms the CPER record reports a local, uncorrectable,
+non-fatal error and that the error counter increments. A post-recovery
+workload run confirms the error counter stays stable.
 
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- lib/igt_configfs.c             | 56 ++++++++++++++++++++++
- lib/igt_configfs.h             |  6 +++
- tests/intel/xe_configfs.c      | 85 ++++++++++++++++++++--------------
- tests/intel/xe_survivability.c | 23 +++------
- 4 files changed, 118 insertions(+), 52 deletions(-)
+Ravi Kishore Koppuravuri (2):
+  From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com> DO
+    NOT REVIEW. COMPILATION ONLY.
+  From: Ravi Kishore Koppuravuri ravi.kishore.koppuravuri@intel.com DO
+    NOT REVIEW. COMPILATION ONLY.
 
-diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
-index e0cba92a1..a394cebe5 100644
---- a/lib/igt_configfs.c
-+++ b/lib/igt_configfs.c
-@@ -10,9 +10,12 @@
- #include <fcntl.h>
- #include <limits.h>
- #include <sys/mount.h>
-+#include <sys/stat.h>
-+#include <unistd.h>
- 
- #include "igt_aux.h"
- #include "igt_configfs.h"
-+#include "igt_fs.h"
- 
- /**
-  * SECTION:igt_configfs
-@@ -84,3 +87,56 @@ int igt_configfs_open(const char *name)
- 
- 	return open(path, O_DIRECTORY | O_RDONLY);
- }
-+
-+/**
-+ * igt_configfs_create_device_group: create or reuse a device's configfs group
-+ * @configfs_fd: configfs directory fd
-+ * @name: name of the device group
-+ * @preexisting: set to true when @name already existed
-+ *
-+ * Creates the configfs group @name under @configfs_fd. If the group already
-+ * exists, it is opened and reused instead.
-+ *
-+ * Returns:
-+ * The group directory fd.
-+ */
-+int igt_configfs_create_device_group(int configfs_fd, const char *name,
-+				     bool *preexisting)
-+{
-+	mode_t mode = 0755;
-+	int device_fd;
-+
-+	device_fd = igt_fs_create_dir(configfs_fd, name, mode);
-+	if (device_fd == -EEXIST) {
-+		if (preexisting)
-+			*preexisting = true;
-+
-+		device_fd = openat(configfs_fd, name, O_DIRECTORY);
-+		if (device_fd < 0)
-+			device_fd = -errno;
-+	}
-+	igt_assert_f(device_fd >= 0,
-+		     "Failed to create/open configfs group for %s: %s\n",
-+		     name, strerror(-device_fd));
-+
-+	return device_fd;
-+}
-+
-+/**
-+ * igt_configfs_close_device_group: close a device's configfs group
-+ * @configfs_fd: configfs directory fd, as returned by igt_configfs_open()
-+ * @name: name of the device group
-+ * @device_fd: group directory fd
-+ * @preexisting: whether the group already existed before it was created by
-+ * igt_configfs_create_device_group()
-+ *
-+ * Closes @device_fd and removes the @name group, unless it was pre-existing
-+ */
-+void igt_configfs_close_device_group(int configfs_fd, const char *name,
-+				     int device_fd, bool preexisting)
-+{
-+	close(device_fd);
-+
-+	if (!preexisting)
-+		igt_fs_remove_dir(configfs_fd, name);
-+}
-diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
-index 91f95659b..0f4cfe5d3 100644
---- a/lib/igt_configfs.h
-+++ b/lib/igt_configfs.h
-@@ -9,7 +9,13 @@
- #ifndef __IGT_CONFIGFS_H__
- #define __IGT_CONFIGFS_H__
- 
-+#include <stdbool.h>
-+
- const char *igt_configfs_mount(void);
- int igt_configfs_open(const char *name);
- 
-+int igt_configfs_create_device_group(int configfs_fd, const char *name, bool *preexisting);
-+void igt_configfs_close_device_group(int configfs_fd, const char *name, int device_fd,
-+				     bool preexisting);
-+
- #endif /* __IGT_CONFIGFS_H__ */
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index 450c0a119..68daed690 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -26,6 +26,8 @@
- static char bus_addr[NAME_MAX];
- static struct pci_device *pci_dev;
- 
-+static bool configfs_group_preexisting;
-+
- static bool check_registers(const uint32_t reg[], const uint32_t val[],
- 			    size_t max)
- {
-@@ -60,7 +62,7 @@ static void restore(int sig)
- 
- 	/* Drop all custom configfs settings from subtests */
- 	configfs_fd = igt_configfs_open("xe");
--	if (configfs_fd >= 0)
-+	if (configfs_fd >= 0 && !configfs_group_preexisting)
- 		igt_fs_remove_dir(configfs_fd, bus_addr);
- 	close(configfs_fd);
- 
-@@ -70,10 +72,19 @@ static void restore(int sig)
- 
- static void set_survivability_mode(int configfs_device_fd, bool value)
- {
-+	int ret;
-+
- 	igt_audio_driver_unload(NULL);
--	igt_kmod_unbind("xe", bus_addr);
-+
-+	ret = igt_kmod_unbind("xe", bus_addr);
-+	igt_assert_f(!ret, "Failed to unbind xe from %s: %s\n",
-+		     bus_addr, strerror(-ret));
-+
- 	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
--	igt_kmod_bind("xe", bus_addr);
-+
-+	ret = igt_kmod_bind("xe", bus_addr);
-+	igt_assert_f(!ret, "Failed to bind xe to %s: %s\n",
-+		     bus_addr, strerror(-ret));
- }
- 
- /**
-@@ -93,6 +104,9 @@ static void test_survivability_mode(int configfs_device_fd)
- 
- 	fd = open(path, O_RDONLY);
- 	igt_assert_f(fd >= 0, "Survivability mode not set\n");
-+
-+	set_survivability_mode(configfs_device_fd, false);
-+
- 	close(fd);
- }
- 
-@@ -357,23 +371,6 @@ static void set_bus_addr(int fd)
- 		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
- }
- 
--static int create_device_configfs_group(int configfs_fd)
--{
--	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
--	int configfs_device_fd;
--
--	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
--	igt_assert(configfs_device_fd);
--
--	return configfs_device_fd;
--}
--
--static void close_configfs_group(int configfs_fd, int configfs_device_fd)
--{
--	close(configfs_device_fd);
--	igt_fs_remove_dir(configfs_fd, bus_addr);
--}
--
- int igt_main()
- {
- 	int fd, configfs_fd, configfs_device_fd;
-@@ -412,62 +409,78 @@ int igt_main()
- 	igt_subtest("survivability-mode") {
- 		igt_require(has_survivability);
- 		igt_require_f(!is_vf_device, "survivability mode not supported in VF\n");
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		test_survivability_mode(configfs_device_fd);
--		close_configfs_group(configfs_fd, configfs_device_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 	}
- 
- 	igt_describe("Validate engines_allowed with invalid options");
- 	igt_subtest("engines-allowed-invalid") {
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		test_engines_allowed_invalid(configfs_device_fd);
--		close_configfs_group(configfs_fd, configfs_device_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 	}
- 
- 	igt_describe("Validate engines_allowed");
- 	igt_subtest("engines-allowed") {
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		test_engines_allowed(configfs_device_fd);
--		close_configfs_group(configfs_fd, configfs_device_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 	}
- 
- 	igt_describe("Validate gt_types_allowed");
- 	igt_subtest("gt-types-allowed") {
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		test_gt_types_allowed(configfs_device_fd);
--		close_configfs_group(configfs_fd, configfs_device_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 	}
- 
- 	igt_describe("Validate ctx_restore_post_bb with invalid options");
- 	igt_subtest("ctx-restore-post-bb-invalid") {
- 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		test_ctx_restore_invalid(configfs_device_fd, "post");
--		close_configfs_group(configfs_fd, configfs_device_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 	}
- 
- 	igt_describe("Validate ctx_restore_post_bb");
- 	igt_subtest("ctx-restore-post-bb") {
- 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		test_ctx_restore(configfs_device_fd, "post", engine);
--		close_configfs_group(configfs_fd, configfs_device_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 	}
- 
- 	igt_describe("Validate ctx_restore_mid_bb with invalid options");
- 	igt_subtest("ctx-restore-mid-bb-invalid") {
- 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		test_ctx_restore_invalid(configfs_device_fd, "mid");
--		close_configfs_group(configfs_fd, configfs_device_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 	}
- 
- 	igt_describe("Validate ctx_restore_mid_bb");
- 	igt_subtest("ctx-restore-mid-bb") {
- 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		test_ctx_restore(configfs_device_fd, "mid", engine);
--		close_configfs_group(configfs_fd, configfs_device_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 	}
- 
- 	igt_fixture() {
-diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-index b4f1dfb38..c89db43f7 100644
---- a/tests/intel/xe_survivability.c
-+++ b/tests/intel/xe_survivability.c
-@@ -40,6 +40,8 @@
- 
- static char bus_addr[NAME_MAX];
- 
-+static bool configfs_group_preexisting;
-+
- static void ignore_wedged_in_dmesg(void)
- {
- 	/* this is needed for igt_runner so it will ignore it */
-@@ -155,7 +157,7 @@ static void restore(int sig)
- 	igt_kmod_unbind("xe", bus_addr);
- 
- 	configfs_fd = igt_configfs_open("xe");
--	if (configfs_fd >= 0)
-+	if (configfs_fd >= 0 && !configfs_group_preexisting)
- 		igt_fs_remove_dir(configfs_fd, bus_addr);
- 	close(configfs_fd);
- 
-@@ -187,17 +189,6 @@ static void test_i2c_functionality(int configfs_device_fd, struct pci_device *pc
- 	}
- }
- 
--static int create_device_configfs_group(int configfs_fd)
--{
--	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
--	int configfs_device_fd;
--
--	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
--	igt_assert(configfs_device_fd);
--
--	return configfs_device_fd;
--}
--
- static void test_spinner_after_recovery(int fd)
- {
- 	uint64_t ahnd;
-@@ -225,7 +216,8 @@ int igt_main()
- 		igt_device_get_pci_slot_name(fd, bus_addr);
- 		configfs_fd = igt_configfs_open("xe");
- 		igt_require(configfs_fd != -1);
--		configfs_device_fd = create_device_configfs_group(configfs_fd);
-+		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
-+								      &configfs_group_preexisting);
- 		igt_install_exit_handler(restore);
- 	}
- 
-@@ -262,9 +254,8 @@ int igt_main()
- 	}
- 
- 	igt_fixture() {
--		igt_fs_remove_dir(configfs_fd, bus_addr);
--		close(configfs_device_fd);
--		close(configfs_fd);
-+		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
-+						configfs_group_preexisting);
- 		drm_close_driver(fd);
- 	}
- }
+Soham Purkait (1):
+  tests/intel/xe_err_injection: Add test for local Uncorrectable Error
+    Injection through LSC Storage
+
+ include/drm-uapi/drm_ras.h     |   67 ++
+ lib/igt_drm_netlink.c          |  557 ++++++++++++
+ lib/igt_drm_netlink.h          |   38 +
+ lib/meson.build                |    9 +
+ tests/intel/xe_cper.h          |   72 ++
+ tests/intel/xe_err_injection.c | 1477 ++++++++++++++++++++++++++++++++
+ tests/intel/xe_err_injection.h |   53 ++
+ tests/meson.build              |    1 +
+ 8 files changed, 2274 insertions(+)
+ create mode 100644 include/drm-uapi/drm_ras.h
+ create mode 100644 lib/igt_drm_netlink.c
+ create mode 100644 lib/igt_drm_netlink.h
+ create mode 100644 tests/intel/xe_cper.h
+ create mode 100644 tests/intel/xe_err_injection.c
+ create mode 100644 tests/intel/xe_err_injection.h
+
 -- 
 2.43.0
 
