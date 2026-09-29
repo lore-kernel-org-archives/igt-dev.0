@@ -4,27 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8EF4CA5FA5
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 17:55:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BF7ACA5FA7
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 18:23:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6863F10EFE3;
-	Tue, 29 Sep 2026 17:55:28 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AD3F10E1D6;
- Tue, 29 Sep 2026 17:54:43 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5690504366488455303=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3A29F10E442;
+	Tue, 29 Sep 2026 18:23:52 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Xmievf9N";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7CB9510E442
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 18:23:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790706189; x=1822242189;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BZmHVVRTVxMLrgLMSg1Jh9/742oUgzrqpYns4exMRzE=;
+ b=Xmievf9NK7y+w343PRrI9NtOmwnwxUkaDbxrNSG97M9TkHrfARx1V5S4
+ YGkiPyZ2EM4jNXxs7+66D+spI652ZJCZJdE3SJecv6NvuwIeSx8yqYEJH
+ AbrvTQcKKAI5Ik5HlEcv1n7EXlENdRq+DhVpFmZPykZLMQtTymkAP4EFX
+ 2FGF4r12pGQM5kxKHlcUHo4BgmSh6mddp/uPRoKKOfPeBONeTguXoYpSK
+ WuurfauNg8ZnlKudZmD9qKnlj1CoavblcNYz0SGuxU60knXyAL24Lpa7e
+ Yptw0NwHJc7GsTuTRd3LCqgEQahQbh6SOQ/5HeNo61yyBdQtRxYktxb3p Q==;
+X-CSE-ConnectionGUID: Pzof2PnyTMy3aRWs9PkOag==
+X-CSE-MsgGUID: iQd8UqiMTsaXwHUQVKg3Eg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="94147974"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="94147974"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 11:23:09 -0700
+X-CSE-ConnectionGUID: 5B3TCKxORQKN91maeU+W3w==
+X-CSE-MsgGUID: rVFs6IB1Tce60Zjx1WgLKA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="275582522"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by fmviesa008-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Sep 2026 11:23:07 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: maarten.lankhorst@linux.intel.com, Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/kms_color: Check crtc/output combo in bg-color
+ test
+Date: Wed, 30 Sep 2026 00:02:16 +0530
+Message-Id: <20260929183216.1139425-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_Preserve_const_qualifiers?=
- =?utf-8?q?_in_string_parsing_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Alex Hung" <alex.hung@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Sep 2026 17:54:43 -0000
-Message-ID: <179070448303.220377.7903552641769054130@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260929154950.838280-1-alex.hung@amd.com>
-In-Reply-To: <20260929154950.838280-1-alex.hung@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,164 +63,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5690504366488455303==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The background-color subtest does not validate whether the
+crtc/output combination is valid before committing. On
+big-joiner configurations, the output cannot be driven by a
+given pipe (e.g. pipe D), so the atomic commit fails and the
+dynamic subtest reports FAIL instead of SKIP.
 
-== Series Details ==
+Add crtc_output_combo_valid() check after test_setup(), so
+unsupported combinations are skipped.
 
-Series: Preserve const qualifiers in string parsing (rev2)
-URL   : https://patchwork.freedesktop.org/series/175019/
-State : failure
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ tests/kms_color.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-== Summary ==
+diff --git a/tests/kms_color.c b/tests/kms_color.c
+index 79ad6640a..fd419489d 100644
+--- a/tests/kms_color.c
++++ b/tests/kms_color.c
+@@ -994,6 +994,8 @@ run_background_color_tests_for_crtc(data_t *data, igt_crtc_t *crtc, igt_output_t
+ 
+ 	mode = igt_output_get_mode(output);
+ 
++	igt_require(crtc_output_combo_valid(data, crtc));
++
+ 	igt_create_fb(data->drm_fd, mode->hdisplay, mode->vdisplay,
+ 		      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb);
+ 
+-- 
+2.25.1
 
-CI Bug Log - changes from IGT_9116 -> IGTPW_15919
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_15919 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_15919, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html
-
-Participating hosts (38 -> 37)
-------------------------------
-
-  Missing    (1): bat-dg2-13 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_15919:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-arlh-3:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9116/bat-arlh-3/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/bat-arlh-3/igt@i915_pm_rpm@module-reload.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15919 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [FAIL][3] ([i915#16664]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9116/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#16664]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16664
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9116 -> IGTPW_15919
-
-  CI-20190529: 20190529
-  CI_DRM_19233: ecc5a84be849c400af610cdc613a0274e3b101b2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15919: 15919
-  IGT_9116: 9d4b6ef512b4e2e4d05129c6519313fd13a306d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html
-
---===============5690504366488455303==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Preserve const qualifiers in string parsing (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175019/">https://patchwork.freedesktop.org/series/175019/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9116 -&gt; IGTPW_15919</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_15919 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_15919, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html</p>
-<h2>Participating hosts (38 -&gt; 37)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_15919:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9116/bat-arlh-3/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/bat-arlh-3/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15919 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_hdmi_inject@inject-audio:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9116/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16664">i915#16664</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9116 -&gt; IGTPW_15919</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19233: ecc5a84be849c400af610cdc613a0274e3b101b2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15919: 15919<br />
-  IGT_9116: 9d4b6ef512b4e2e4d05129c6519313fd13a306d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============5690504366488455303==--
