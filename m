@@ -4,44 +4,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 667E7CA5FAC
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 15:53:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B29ACA5FAC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 15:54:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EFE0410EF2C;
-	Tue, 29 Sep 2026 15:53:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B581510E1A8;
+	Tue, 29 Sep 2026 15:54:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="2yWKNoap";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="i7Uw2A24";
 	dkim-atps=neutral
-Received: from CH1PR05CU001.outbound.protection.outlook.com
- (mail-northcentralusazon11010017.outbound.protection.outlook.com
- [52.101.193.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B2D5410E1AD
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 15:50:28 +0000 (UTC)
+Received: from SN4PR2101CU001.outbound.protection.outlook.com
+ (mail-southcentralusazon11012070.outbound.protection.outlook.com
+ [40.93.195.70])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8BFC110EF7C
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 15:51:17 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NM4vILBDlLBOg5H4188pM6C1sssWo32OnTHH7wMcMzlPkWp7birKiu5ll6QswvlgLdNjfExHkYpcMLB16nEj5mRgDsBcdBrmAFE8CrrCntFXOQwB1SRTu7cMyx3DmymNL9kmdWGlpuv+Rmmw50gYbLS57TzvaZORjFE18/I6EPR45GQ04/9YZ5sMX/vy0UZ6OLcvNO+p0itFygFLW583RogeJWY22HjAgUDW+PVcoJbCVl+iZkIS/xym1rBh/VyuXAwvFR8CBe0TLiQYmk7gEfOoXasAh839E837bGlwTzmXjZvmtDGtCJ+DzkgPAN+wvtFNkZ8OtGyENKNjQGmYug==
+ b=IFFNvTaLpvfX7o0TfXYw0b/Yr/VTc87Sicg0BeyFrSscNiSbq3Kzm5lI/zbcnoWykxqn4qXlaEooUQY1s1QkyQYo5CLgrnk9SL1AJzjreMlW9ohZPCvep4f4FWdFTLPpyxEkmYaYxHL7vmY60YCwBtuJlMiKmW8E5nlpa1IXqYwXk39mOFzXFl457U7hqMq6f8cDVzFUyNZOhTVWmYsngKLIKgK9YNWGT1/eYstF7vkqanNFG1ZFmVVu9xnCOuEf44v5A6ENisHMdBWXDugf2jjCneOeVEUKU8uIPNgLRMx923WfCDV380jqSAbyI4Trb0ABWt+PyJUU2LmbfteBAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0i7nKquLyLOJr3wQ/8OA4+TgfTCuvkV7W/Z079eMeP0=;
- b=go4ZIv4McajjVZNRNhs9BHLaM/F/I3RcWAXBmCGCxufKxo8DKmHXkREWwWgMw82k1CL/WFhXhmbQ/gA2i5d4zNKulPcISWM6+lNi+ixsRZcvbbTlKwc+/lqCsPgS1tiOhwrGM/eZE5fveFp9QugMC6usUvAQ/m/msFtVYgJlyK712AvHgNnax3FRsrnGuweJExN0XfAmk7svT2YXVxld3eACI8xro509rHy5hBqwoRS7N2pb/YPVuQuv2sUSLG1STuyYVpYqxEothHe7evd056k3205bKeYHpzk0TXxAOlnRYT59LbFt+ABJLkxxJFP8qvto85vnwZBVoZ870cE1mw==
+ bh=WF7wjRKP1OFYO3Xw5UfEqu7se5bt7OPm4Fx02G/u6Xo=;
+ b=FiRB0lfxSyMtpAneh17/UWChvuPzTYOehjRWj3KQQpProPLkqQyoaZUTXBpIqo6saUpe2lQ7VZUFPUinQdW4Zc0smVr4KnHehNoSMiR4UnaO+0Y3O8p1S/PH1Y37uXXZQXpHWEYQSrTxiDHH8ydKZFQ/3pws+jFRGt/eb6cUTcxytPNLQAIOojh40M5x3wUBbpgGrI9eb0l80w/x2GywzFS2cVBuYTMInn1cOMg7rQWhW3M34Ced5x8Zl3+WfBc4jwZ/0E2bePU6YIDoJ2U0dNatuw9u5J/Y5eqZ9kEXu9NCZAiiBQ5ewvQc88/OgtQ3vnmkrWgRO8rkuFxT0u84gA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0i7nKquLyLOJr3wQ/8OA4+TgfTCuvkV7W/Z079eMeP0=;
- b=2yWKNoap1qDTxq3ZoKr1NqH58flQry0FiQFp/MhkGxRzq5kfFXQxYKbbQuWY0AsUJgjDABGWUwhlHOXe1GiwOhaz8yG8/6UnAbj6VKKaRv3noR3Tmd7fVAgVVU5OXmT82UjXoZR/E1bZAED7jpM0d+qFYBq+tmJcnthiH01DxBQ=
-Received: from BN9PR03CA0711.namprd03.prod.outlook.com (2603:10b6:408:ef::26)
- by PH0PR12MB8799.namprd12.prod.outlook.com (2603:10b6:510:28e::6)
+ bh=WF7wjRKP1OFYO3Xw5UfEqu7se5bt7OPm4Fx02G/u6Xo=;
+ b=i7Uw2A24Ouh2JG9yyiqZBzJ0RJLHKCxUkl7zNLBDlpRrXa7ZT77ri4ie0z3W9s+jyLK33FWjPDiXuXJQ5lkkNT/4fRtbtCr1yY1V6HgwGmOW8E263QQYC6WVk+AIraoHYKdVuo5ou4XXJn3d/aVCF3YSaTdF3gZ4qNPwWVvolA8=
+Received: from CH2PR18CA0010.namprd18.prod.outlook.com (2603:10b6:610:4f::20)
+ by IA0PR12MB8328.namprd12.prod.outlook.com (2603:10b6:208:3dd::5)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.24; Tue, 29 Sep
- 2026 15:50:21 +0000
-Received: from BN2PEPF0000A804.namprd02.prod.outlook.com
- (2603:10b6:408:ef:cafe::1a) by BN9PR03CA0711.outlook.office365.com
- (2603:10b6:408:ef::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.24 via Frontend Transport; Tue,
- 29 Sep 2026 15:50:20 +0000
+ 2026 15:51:09 +0000
+Received: from BN2PEPF0000A802.namprd02.prod.outlook.com
+ (2603:10b6:610:4f:cafe::20) by CH2PR18CA0010.outlook.office365.com
+ (2603:10b6:610:4f::20) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.15 via Frontend Transport; Tue,
+ 29 Sep 2026 15:51:09 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
@@ -50,19 +50,19 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- BN2PEPF0000A804.mail.protection.outlook.com (10.167.245.168) with Microsoft
+ BN2PEPF0000A802.mail.protection.outlook.com (10.167.245.171) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 15:50:20 +0000
+ 15.21.472.14 via Frontend Transport; Tue, 29 Sep 2026 15:51:09 +0000
 Received: from rocky (10.180.168.240) by satlexmb07.amd.com (10.181.42.216)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.49; Tue, 29 Sep
- 2026 10:50:16 -0500
+ 2026 10:51:07 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Alex Hung <alex.hung@amd.com>
-Subject: [PATCH i-g-t v2 1/5] benchmarks/gem_wsim: Preserve const qualifiers
-Date: Tue, 29 Sep 2026 11:49:46 -0400
-Message-ID: <20260929154950.838280-2-alex.hung@amd.com>
+Subject: [PATCH i-g-t v2 5/5] tests/msm_mapping: Keep parser buffers writable
+Date: Tue, 29 Sep 2026 11:49:50 -0400
+Message-ID: <20260929154950.838280-6-alex.hung@amd.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260929154950.838280-1-alex.hung@amd.com>
 References: <20260929154950.838280-1-alex.hung@amd.com>
@@ -74,29 +74,29 @@ X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF0000A804:EE_|PH0PR12MB8799:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0df3e89e-bb9a-4c92-33c4-08df1e415df2
+X-MS-TrafficTypeDiagnostic: BN2PEPF0000A802:EE_|IA0PR12MB8328:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4a6d3be1-9b7f-4b62-782c-08df1e417b23
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|82310400026|23010399003|36860700016|3023799007|6133799003|10067099003|11063799006|18002099003|22082099003|56012099006;
-X-Microsoft-Antispam-Message-Info: U5MUnJf8I7B6b4VjorEJtivAwAa0nnWmTSVgWfTiz+XW/akDqg6EkCDAbcJsjFHf7uPkb/AKK5Jtn7MzwT0VHgBzBD7TJ0GEQiSC2ebJLLwbsrfu+tWUcEBn2OaFHzSHgFWQEG6kxo6qfzKi74k/JmsP4ut4Fp+4zbbrMDXf/6ZvIdyy9Y/bxhBOnqZ09aNy4YwuME5MsJzhXBWzpFxb7R5ILdFkOCkORL7sVQJhfzSeYHzZMPFb/UWRYneBqpwCMsdYx7ijEkMy8LLqD4j5XQulPAEOeKiYu3KOL1H7NRbghDMs5hCgfz3CYQf5KGwXXcbBv52ImSw/98CcxE/ptrdg85eQ5ijwhWSppHopP78jyemrpuB6WPdydNwfrzgumzyqjbpw0w0G4PCTk71iWl+EOXNiRxIp8fQov9TbQZHZpawBNB/0MbElL/WIb/EXkTmPg1W3sS3G0YnXeYKLOHyvKzex3LGqXVSGcIceA1ngux1yaGEsViFCmK92hHhjMHUSXknieT9fNvnDoSxzBmZGmha+nrI/xRalgowFEjzKSCqaIOHnyEjwu19Cm5DhW2dqn8c/uNI4jFR9Mudih7zGcyKZ7MC+6yFPYBDtqtFbWtsGdAtqUL0Sw9YDwUfyaiTyWlFQmyYipXg+PseYK0hyqu/OSBPEsc5f2gxArYkRhAci3Gy6a3R17codGsXLq+RG8YmJ9ndzjcQbjQZlMQ==
+ ARA:13230040|36860700016|376014|23010399003|82310400026|1800799024|10067099003|56012099006|11063799006|6133799003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: cHrR3TztxBAkxX9AV0Mv0oK7eplQm98qH1esuX2rhzTP+Cnl3km5qTa+xIB85WWAFXGxWfEokDXbI4eLbYItkt7hSV+qT8tgfDrSZQ+BRH9ocmGQRdgp1LPiElC7tfl97AI8TydxCAHXksmREkCvHRKxTJFd6CHPdLgX/NoE2qrTwK5aNgO7ZwQOGwyCKAe0FELUEzixizpQzdlDGPdKjyJfSPDVsG7MzsE1alufxh0HlXIwg3qoAT9Hxb4Gxz4MplI8Jn5WUGPJxK2oComfkTBSstjFrHWTEwZeVX36WQ1m19QWkHO0EioHb0VWQ/gegf5cf7/DrRlV1pwoDriEc60q1cbJAd73PsKXk+XJnGN3ZuL4L1WAhrsV4f00IQLh23foMhS1PgnxlUq66uAxChsW5gC9imVb+/gSZgo3Yiv1Pd8NOW1oEoPWxmeoz0s8DpMT2zjJj9/a5+p6/nW2imJPvy4azgSPpPtyRlbJel6hfeVy6TApvAD31buNL0f9K8j+7SgrZcMUYmvS9oLndCJk6v2lLTnRqEgw/0qOYNuVW/uPgtoU27/vG3s4IC2k7t/WmqM/Zb6+Kt0/kI49mAFDX8CQkdEo7g8+viHA4QlbObij7c+mdYI3qf+yakp3G4YirfaYo5bmskR5kJZ2ur2bkvdmlQnePmS6h9Q7x8O+fKX4FlgT7AzmI2gGWb6VOjEPf0NO5I8dnhF28KMExw==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(82310400026)(23010399003)(36860700016)(3023799007)(6133799003)(10067099003)(11063799006)(18002099003)(22082099003)(56012099006);
+ SFS:(13230040)(36860700016)(376014)(23010399003)(82310400026)(1800799024)(10067099003)(56012099006)(11063799006)(6133799003)(22082099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 4DhLNV9Cl7V88ObKGS3WZfPzRFUliLr3bPQpQ0sqNsU6W3/SKSH/rGqqk3PQp/qTrAVpnu4CgLP6VOMRNnhkOj6b0/pOLBh0nAFcHmqOWrzEATKkFDwuRnjsjs8jEi2kgozx65hPJPSeICiUXEM8cp7d7H8AeY/I0oDK8ffj30dOGHSfAYrDdiaNalRUzwzuRrjOogZnwUdFWmhY7MsooogSCedqqJLxuhz0VPGYPFR/YEHJ1Pgj+jfD2m8MMFZlJhcka81PhUuu/LCo9TbAjKOwPQJOW5gDq20M0UwtVWgzwRJMaGr06t2kpfyaTrVVdoU7mRwLMvZXQMYm+YIxfNM8poRaX6pbGI8CJ/53FDsuJlhWK8ruX/nK1vDTnrbFfetKVg3cKEna6XvJx7xp0b06WSu8bcht1zk0LNseZ0TDYC1xLs/+DStdiZLapzY8
+X-MS-Exchange-AntiSpam-MessageData-0: htoRK/OeVStTEj+blvSwPZLn3mkStDIAQwhwcMbDJ0m3aDkSwx+KoeHCny+ut0/1xIKWzy4Vq8djQ2YlozZRoq5vV4fyleqgdFBsXaNWmNz84Xh8E80HsqwSg9iFfGj83L0cFuG9CQpgKfZsBGehWqvmtxPS9Phwm3GEcsLCdVj24Tkbfbw6yP0I3TDUcbbLBZVxhw0aDs8p6IoRYEeq1JcWX4jn2PW2c6rwTkm/qO96pJEX14JEokQzDVX2b95A7M9MBpD0/fHQWBxA0CVr9ILjbJMVk+G5CH0BBnBuWrBg8Q1lcYUprFRCDN7hSj/oxbtdqdTl6XZiLJVsJR1Xk4sAXqPP5hUcFzQCGxNTK5bIG8cpHgMz0eap6NtsT6L2LdYNuNYDyXMlrWkwHmTJ9AvRDLIBGolTcszB2D/rO4rzdzPG6bWjiR6BOB/FTXNw
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 15:50:20.7323 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0df3e89e-bb9a-4c92-33c4-08df1e415df2
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Sep 2026 15:51:09.7091 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4a6d3be1-9b7f-4b62-782c-08df1e417b23
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF0000A804.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: BN2PEPF0000A802.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8799
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB8328
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,38 +112,58 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-With glibc 2.43, strchr() on const input returns a const pointer.
-Storing that result in char * causes a discarded-qualifier warning
-in str_to_engine().
+With glibc 2.43, strstr() on const input returns a const pointer.
+Assigning that result to char * in endswith() discards const and
+causes a compiler warning.
 
 The following warning is observed on Ubuntu 26.04 (wrapped):
 
-  ../benchmarks/gem_wsim.c: In function 'str_to_engine':
-  ../benchmarks/gem_wsim.c:590:27: warning:
+  ../tests/msm/msm_mapping.c: In function 'endswith':
+  ../tests/msm/msm_mapping.c:128:19: warning:
     initialization discards 'const' qualifier from pointer target type
     [-Wdiscarded-qualifiers]
 
-Use const char * for the engine separator, which is only read.
+Keep the get_line() return value, line pointer and endswith() input
+writable because endswith() modifies the buffer. This preserves
+mutable access through the parser without casting away const.
 
 Assisted-by: Copilot:GPT-6-Astra
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
- benchmarks/gem_wsim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tests/msm/msm_mapping.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/benchmarks/gem_wsim.c b/benchmarks/gem_wsim.c
-index 1a4139279..8cdf940f9 100644
---- a/benchmarks/gem_wsim.c
-+++ b/benchmarks/gem_wsim.c
-@@ -587,7 +587,7 @@ static intel_engine_t str_to_engine(const char *str)
- 	}
+diff --git a/tests/msm/msm_mapping.c b/tests/msm/msm_mapping.c
+index 05960627c..52b494abf 100644
+--- a/tests/msm/msm_mapping.c
++++ b/tests/msm/msm_mapping.c
+@@ -102,7 +102,7 @@ wait_for_stall_on_fault(int drm_fd)
+  * Helper to find named buffer address
+  */
  
- 	if (str[pos]) {
--		char *s = strchr(&str[pos], '-');
-+		const char *s = strchr(&str[pos], '-');
- 		char *endptr = NULL;
- 		long id;
+-static const char *
++static char *
+ get_line(char **buf)
+ {
+ 	char *ret, *eol;
+@@ -123,7 +123,7 @@ get_line(char **buf)
+ }
  
+ static bool
+-endswith(const char *str, const char *end)
++endswith(char *str, const char *end)
+ {
+ 	char *p = strstr(str, end);
+ 
+@@ -166,7 +166,7 @@ get_bo_addr(int drm_fd, const char *name)
+ 	 */
+ 
+ 	while (*p) {
+-		const char *line = get_line(&p);
++		char *line = get_line(&p);
+ 
+ 		if (endswith(line, name)) {
+ 			uint64_t addr, dummy;
 -- 
 2.53.0
 
