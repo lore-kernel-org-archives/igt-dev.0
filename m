@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B774CA5FA5
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 17:41:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9FE1CA5FAC
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 17:42:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B8B4F10EFC3;
-	Tue, 29 Sep 2026 17:41:12 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="eyaPJKnT";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E06CD10EFC3
- for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 17:40:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790703629; x=1822239629;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=GeUIlolTAldpnnY/B2ishl2dhqj/C52kgCP/KDmB8GM=;
- b=eyaPJKnTxJr0G7AFaWm7zxjZCrqawKbydr6/xIW3WzBITtA3HB456kVn
- tH8AhaBYfT5yCq52OFiJteAj10/M1R3pVoRwwni7yTv9dZ/Bv/+8wGZb1
- dS8dBikxuHBnGbO/C/EY/8rrj4JE9pIGITaeZfvzBnKoCDrklC71mtvRA
- m6w8jXRZn+YhPMy+JTb2VhJSGR3DSbmS6zp92oKCKCbOaClWeck2ptqHi
- 8BY7mWZCqRP2yyT1X97HaYSy8m+69UHWKm2VeuEZNJ1eHCqhXxh1IIHmT
- m3Fe7Ar13vEzUIYs61leBNZpVFqwBEAaEcy53PIwPqT32LMIZQMISnLWZ A==;
-X-CSE-ConnectionGUID: qGtkx4qLTjKA9GY3eS1X5Q==
-X-CSE-MsgGUID: oBSml54IS/uBe/1S5WOeAA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="90196951"
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="90196951"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 10:40:28 -0700
-X-CSE-ConnectionGUID: A1E6F8EFSOGhhVUBT8OPQA==
-X-CSE-MsgGUID: k+TKJKm6SsujFgDVatwFaw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="274537622"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Sep 2026 10:40:26 -0700
-From: Sk Anirban <sk.anirban@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH] tests/intel/i915_pm_rc6_residency: make residency ratio
- tolerance symmetric
-Date: Tue, 29 Sep 2026 22:58:11 +0530
-Message-ID: <20260929172810.2077612-2-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6232D10E2D1;
+	Tue, 29 Sep 2026 17:42:26 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 199C410E1D2;
+ Tue, 29 Sep 2026 17:41:42 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============3031036673251475650=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_Preserve_const_qualifiers_i?=
+ =?utf-8?q?n_string_parsing_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Alex Hung" <alex.hung@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 29 Sep 2026 17:41:42 -0000
+Message-ID: <179070370209.218638.14938498058854751670@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20260929154950.838280-1-alex.hung@amd.com>
+In-Reply-To: <20260929154950.838280-1-alex.hung@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,31 +37,133 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Bump the upper ratio bound from 1.05 to 1.1 so residency_accuracy()
-allows the same ±10% margin on both sides of the expected duration.
+--===============3031036673251475650==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17049
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
----
- tests/intel/i915_pm_rc6_residency.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+== Series Details ==
 
-diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-index 346796fb2..80c102e31 100644
---- a/tests/intel/i915_pm_rc6_residency.c
-+++ b/tests/intel/i915_pm_rc6_residency.c
-@@ -112,7 +112,7 @@ static void residency_accuracy(unsigned int diff,
- 
- 	igt_info("Residency in %s or deeper state: %u ms (sleep duration %u ms) (%.1f%% of expected duration)\n",
- 		 name_of_rc6_residency, diff, duration, 100*ratio);
--	igt_assert_f(ratio > 0.9 && ratio < 1.05,
-+	igt_assert_f(ratio > 0.9 && ratio < 1.1,
- 		     "Sysfs RC6 residency counter is inaccurate.\n");
- }
- 
--- 
-2.43.0
+Series: Preserve const qualifiers in string parsing (rev2)
+URL   : https://patchwork.freedesktop.org/series/175019/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9116_BAT -> XEIGTPW_15919_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_15919_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_15919_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_15919_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [PASS][1] -> [ABORT][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9116/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15919/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9116 -> IGTPW_15919
+
+  IGTPW_15919: 15919
+  IGT_9116: 9d4b6ef512b4e2e4d05129c6519313fd13a306d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2: ecc5a84be849c400af610cdc613a0274e3b101b2
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15919/index.html
+
+--===============3031036673251475650==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Preserve const qualifiers in string parsing (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175019/">https://patchwork.freedesktop.org/series/175019/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15919/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15919/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9116_BAT -&gt; XEIGTPW_15919_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_15919_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_15919_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_15919_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9116/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15919/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9116 -&gt; IGTPW_15919</li>
+</ul>
+<p>IGTPW_15919: 15919<br />
+  IGT_9116: 9d4b6ef512b4e2e4d05129c6519313fd13a306d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2: ecc5a84be849c400af610cdc613a0274e3b101b2</p>
+
+</body>
+</html>
+
+--===============3031036673251475650==--
