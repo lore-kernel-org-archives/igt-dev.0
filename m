@@ -4,28 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0259FCA5FA7
-	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 16:47:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F0ECCA5FA7
+	for <igt-dev@archiver.kernel.org>; Tue, 29 Sep 2026 17:40:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9150E10E348;
-	Tue, 29 Sep 2026 16:47:25 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6E9EA10E348;
- Tue, 29 Sep 2026 16:46:41 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3560270174958238538=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DF6210E561;
+	Tue, 29 Sep 2026 17:40:26 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="hXVFUVjf";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4704610E156
+ for <igt-dev@lists.freedesktop.org>; Tue, 29 Sep 2026 17:39:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790703580; x=1822239580;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=8g+6wVPBNMtafHYNXILS0I5rHWPWlrZTj1zW0qYoQpA=;
+ b=hXVFUVjfaV8yPQT7JzQ2lUNU0qFisauVqs599llEVqGgLJLY8hBTFM+R
+ hKt56r4Li3UsnTQM/VrA4Y/nocnVI4kNTDFjUXDc+K3TiEKSCs4zDtsvc
+ UlwSpmZAEqP45QjcQtag3iNKnGEQOn59U7zaVpvkFR8G3rdCcei0JCKwQ
+ 4hY/usUDCxDQQ7JZhQ0DsfxGgy8ZLzKYAxTLTtPnt5UfGNGsnZqZeN9Sa
+ V5+uiOo5/6WjE8404ly0wBfbnCYqb6u3nAoK9Sv0RV3A1c7Vp7wr18QE0
+ k/gUcOUwE0wcRwTYCa0nzdR+epUlCCxlRphFK/OCk49YyQsFzhGpi6/5n Q==;
+X-CSE-ConnectionGUID: c2hWyjMJQpydMVh5HD+nBg==
+X-CSE-MsgGUID: refIkA0lTBymn2A4t0/qdg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="90293114"
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="90293114"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 10:39:39 -0700
+X-CSE-ConnectionGUID: BA5FyCEWQ/C3OJFvElqbLQ==
+X-CSE-MsgGUID: LgU8yW3WSyiSsPZQXP4IKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,130,1787036400"; d="scan'208";a="275573008"
+Received: from varungup-desk.iind.intel.com ([10.190.238.71])
+ by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Sep 2026 10:39:38 -0700
+From: Varun Gupta <varun.gupta@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: priyanka.dandamudi@intel.com, thomas.hellstrom@intel.com,
+ nishit.sharma@intel.com
+Subject: [PATCH i-g-t] tests/intel/xe_evict: Drop blanket skip when system
+ memory < VRAM
+Date: Tue, 29 Sep 2026 23:09:29 +0530
+Message-ID: <20260929173928.3098760-2-varun.gupta@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Ferr=5Finje?=
- =?utf-8?q?ction=3A_Add_Local_Uncorrectable_Error_Injection_Through_LSC_Stor?=
- =?utf-8?q?age_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Soham Purkait" <soham.purkait@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 29 Sep 2026 16:46:41 -0000
-Message-ID: <179070040144.220377.1703534234374179722@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260929105543.2400108-5-soham.purkait@intel.com>
-In-Reply-To: <20260929105543.2400108-5-soham.purkait@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,110 +64,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3560270174958238538==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Since working_set() already clamps each subtest's allocation to what
+fits in VRAM plus 4/5 of available system memory, and every subtest
+loop has its own igt_skip_on_f(!ws) for cases that end up too small
+to run. The fixture-level skip is therefore redundant and skips the
+entire eviction suite.
+Remove the skip and rely on the per-subtest working_set() sizing.
 
-== Series Details ==
+Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+---
+ tests/intel/xe_evict.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-Series: tests/intel/xe_err_injection: Add Local Uncorrectable Error Injection Through LSC Storage (rev2)
-URL   : https://patchwork.freedesktop.org/series/172987/
-State : success
+diff --git a/tests/intel/xe_evict.c b/tests/intel/xe_evict.c
+index 5a7298db0..230357419 100644
+--- a/tests/intel/xe_evict.c
++++ b/tests/intel/xe_evict.c
+@@ -911,15 +911,6 @@ int igt_main()
+ 		igt_assert(vram_size);
+ 		system_size = igt_get_avail_ram_mb() << 20;
+ 
+-		/* Test requires SRAM to about as big as VRAM. For example, small-cm creates
+-		 * (448 / 2) BOs with a size (1 / 128) of the total VRAM size. For
+-		 * simplicity ensure the SRAM size >= VRAM before running this test.
+-		 */
+-		igt_skip_on_f(system_size < vram_size,
+-			      "System memory %llu MiB is less than local memory %llu MiB\n",
+-			      (unsigned long long)system_size >> 20,
+-			      (unsigned long long)vram_size >> 20);
+-
+ 		xe_for_each_engine(fd, hwe)
+ 			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COPY)
+ 				break;
+-- 
+2.43.0
 
-== Summary ==
-
-CI Bug Log - changes from XEIGT_9115_BAT -> XEIGTPW_15917_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 13)
-------------------------------
-
-  Missing    (2): bat-bmg-vm bat-ptl-vm 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9115 -> IGTPW_15917
-  * Linux: xe-5838-ecc5a84be849c400af610cdc613a0274e3b101b2 -> xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2
-
-  IGTPW_15917: cdd599f88f6d25b583486b8009ed294f0b8b6a14 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9115: 9115
-  xe-5838-ecc5a84be849c400af610cdc613a0274e3b101b2: ecc5a84be849c400af610cdc613a0274e3b101b2
-  xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2: ecc5a84be849c400af610cdc613a0274e3b101b2
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15917/index.html
-
---===============3560270174958238538==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_err_injection: Add Local Uncorrectable Error Injection Through LSC Storage (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172987/">https://patchwork.freedesktop.org/series/172987/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15917/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15917/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9115_BAT -&gt; XEIGTPW_15917_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 13)</h2>
-<p>Missing    (2): bat-bmg-vm bat-ptl-vm </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9115 -&gt; IGTPW_15917</li>
-<li>Linux: xe-5838-ecc5a84be849c400af610cdc613a0274e3b101b2 -&gt; xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2</li>
-</ul>
-<p>IGTPW_15917: cdd599f88f6d25b583486b8009ed294f0b8b6a14 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9115: 9115<br />
-  xe-5838-ecc5a84be849c400af610cdc613a0274e3b101b2: ecc5a84be849c400af610cdc613a0274e3b101b2<br />
-  xe-5840-ecc5a84be849c400af610cdc613a0274e3b101b2: ecc5a84be849c400af610cdc613a0274e3b101b2</p>
-
-</body>
-</html>
-
---===============3560270174958238538==--
