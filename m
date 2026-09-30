@@ -4,160 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 791B6CA5FB1
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Sep 2026 12:31:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6B77CA5FB1
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Sep 2026 12:52:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 204CA10EA09;
-	Wed, 30 Sep 2026 12:31:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 90F1710E85E;
+	Wed, 30 Sep 2026 12:52:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jP/6t9hS";
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.b="WGwxFzLB";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0988010EA09
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2026 12:30:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790771425; x=1822307425;
- h=content-transfer-encoding:date:message-id:to:cc:subject:
- from:references:in-reply-to:mime-version;
- bh=WiJRlqkPL80AF+Hb6FZJ9kVvCwdCR007aVgimV9kp0o=;
- b=jP/6t9hSm24B2Z+6SbItBHdaoXzkgVhJmmoNdSYCFsCqWzuV+UEzMezs
- PwqUl3AmyHTCBnbIePm2yM92Ljl4j+nJWQg0/6VVbqdblEufouG381243
- IXHCBZ/BXTMrKLWilEEAHCINhMKxn7S0L6XvSHTHUw0hGejsOXxuBVHaQ
- n4an2J6pxfpQ2OShvPx/wtaLA4zRv1V7zdTdKbGikxRsbJfv3D3CO+7N+
- mzOOM1+05uYAHyPYU47ejhcz3/DGKvto01nPxqrozhhO2hD0Hj4EKissg
- hsyXbBklhcv+2JVxq06DB2QppL0HjPzBDXdHi8JizWH6ejR0/kVV8IjWa w==;
-X-CSE-ConnectionGUID: EIMfuCuzTbOBnfYdTVu2ZA==
-X-CSE-MsgGUID: aTbYy9qASjma6tjLhjIXpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11920"; a="91524759"
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; d="scan'208";a="91524759"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2026 05:30:25 -0700
-X-CSE-ConnectionGUID: AcP/wtOJRTeXxk6+GotEDg==
-X-CSE-MsgGUID: oS9c4iPcTRCIeqK/d2oY6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; d="scan'208";a="273763470"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2026 05:30:22 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 30 Sep 2026 05:30:24 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 05:30:24 -0700
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.70) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 30 Sep 2026 05:30:23 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H2VgBnkUoAJibE8p6xDK6F8JR78gsW3On0Y2I60eV7Af4Mh7ELHsNovQCNGYXYMhztvHR4snJzKPr/L1o2IY+wakINDi7ggcTz4iMcLIETByeo4u5D8/BWH1dgwT3npoa37OyCLGd8kcrztJOVjeWZprwarz+L+S9jqsjlFGkDJ3VL0Ks2EkYiu+r4x6L+P+X/05aJqDjyww0MOa7eV7FEECWpfXNwSntSPlbkYfincjv6shdQc7gTuHiWsA/ljiVrhVZ9qwMkQSVw9Fq25HjpkfsZed9MyO1pW9S9UFip48m/a9VTVm1DDHja3jFbTXPpA1XDBDbYXyvNHdNAQ17A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=IUwZX4slzKJ5kREmYRlKKO8M7Mi8sMS+3a7fdePMqVI=;
- b=nwYhWhdfZh0G9LcI+H3opaEufc4c8Y752+72LAGK/Kx2TRKOzKuzhqrrWvl6aZEcX1FdfnNz/SMxR6k6s3h/ouxKFcjC/9Hs3B8k/ZSvK8m4SFaon24ZNIfUWZVysVwLLIEi9m5pUjGf2D35yw+05zkJwKJuzrLBBPtuA2Gh5GgC8OrbthAxULkdSDOrshatQEBbQwG7+qvWkZYaRl8wLQ4KHpeasDcc1CjQ21heIt5fF4NL8srRewWFRXrNq9nP2VHlRdHLToObzj6Od1nqtOV2pRyikBk0wogwBA6/iLApxRgmh9PKFBA8R6WiLLsW8lpdiWmzMuenWPwHugukyg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MW4PR11MB6909.namprd11.prod.outlook.com (2603:10b6:303:224::12)
- by DS0PR11MB7972.namprd11.prod.outlook.com (2603:10b6:8:124::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.19; Wed, 30 Sep
- 2026 12:30:18 +0000
-Received: from MW4PR11MB6909.namprd11.prod.outlook.com
- ([fe80::9eab:962:806:3794]) by MW4PR11MB6909.namprd11.prod.outlook.com
- ([fe80::9eab:962:806:3794%4]) with mapi id 15.21.0472.015; Wed, 30 Sep 2026
- 12:30:17 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
-Date: Wed, 30 Sep 2026 14:30:28 +0200
-Message-ID: <DLSNHP88FJSD.36EMO2RGBKGAB@intel.com>
-To: Krzysztof Karas <krzysztof.karas@intel.com>, Sebastian Brzezinka
- <sebastian.brzezinka@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <kamil.konieczny@linux.intel.com>,
- <krzysztof.niemiec@intel.com>
-Subject: Re: [PATCH i-g-t 1/8] tools/gputop/xe_gputop: fix struct layout and
- PMU read
-From: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-X-Mailer: aerc 0.22.0
-References: <cover.1790331690.git.sebastian.brzezinka@intel.com>
- <a839f4c50d30389830ea3436c5bc157770d81620.1790331690.git.sebastian.brzezinka@intel.com>
- <cvzmslku3u4tnyljjwtzeocdz2mkxopxpi6amy7n4icjbrmtqe@svjtvfgg2ii5>
-In-Reply-To: <cvzmslku3u4tnyljjwtzeocdz2mkxopxpi6amy7n4icjbrmtqe@svjtvfgg2ii5>
-X-ClientProxiedBy: VIVP296CA0115.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:358::9) To MW4PR11MB6909.namprd11.prod.outlook.com
- (2603:10b6:303:224::12)
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com
+ [209.85.214.170])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C9EAB10EA02
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2026 12:51:16 +0000 (UTC)
+Received: by mail-pl1-f170.google.com with SMTP id
+ d9443c01a7336-2caced6038eso11046175ad.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2026 05:51:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20251104; t=1790772676; x=1791377476; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+ bh=Z3ZgGsv2c6bb/b4Yjri0QbtZE2N4t+O+7/LCfC0TDEk=;
+ b=WGwxFzLBzKqQyq94RaQ6S3VpiscWJ45XEdY50+NOXqqqx/1VFi+gzmzlbMXQAMnOBW
+ hof6gPYpo4nQn1wWQjBUVAAaugnvuLpPGiBYgXLRhW/sts97j9mAS4knodiDUXONU33T
+ TM7rIu98z5aE5R7lKnTVliV4gSNfLVDVHh4npZnKYH4xCqzkHQxbSoZsjMT95WVq6k0i
+ 6lYNR6iHMuhB8fdnpCJlnyhq3kTXyoJgCGdlHPEw6tF/McPf6qTvGFHbox5YY/5AGa0M
+ 4zLOmIKnK173iVjO2mihRI38lJSs1YeYMSLecQkrZZZ0Ef/lClJnG2IXYHzNKBhRBnnd
+ B2bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20260707; t=1790772676; x=1791377476;
+ h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+ :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+ :message-id:reply-to:content-type;
+ bh=Z3ZgGsv2c6bb/b4Yjri0QbtZE2N4t+O+7/LCfC0TDEk=;
+ b=1p1UdTFbznEFoJb5PnWZKTJmgGSIAeiHIMPYS+UxPknOYJqLtj98VEzmZe590i1IHs
+ jK9QrLLLul7K4XFuRJIEx9NLzCcaNm3u8eCSW18EB8qln6NdrmLGWczwap+exGJ24Xyd
+ ENqUVlKwo6rvGZix9VvZYlinvxUJTcRHBaTuoDlbY/EEShdIPArcWlKUFTP9jaAfKG+4
+ li7kCiDDyLeDTEM5GS40LGEtNGP02eiZ4POAkayV1haYQMpiFC2G6n1apuvcJZu3jImh
+ ZMaXlQO0QlOb5iILUzPj7+mJRvTSj0jgP62SLqj0GMWcBmrtzt3ZfST9EFvdjKeAFh6w
+ Qmgg==
+X-Gm-Message-State: AFq9FYLsUJ4CLK1QS86VHOq7aboIxxqAOF+dSmXwjyEOQA3dpwNqRB/Q
+ U+gt7g/Pn5X4ComHg0DcbsdBC6Rb+4yl5ZqDIngWRqgq/7zS7WE9NjX3T70o4w==
+X-Gm-Gg: AYBFou2QCIg8GfHOVlqwjDxvuCbgCGLx+0no6VuSzNH7/XSG3ZtpKKtvKBoxUq1VSIM
+ 5yxv7fgZdGd5koOrO6+7DzvjiEyaBc2L0ug9UFni1JH4882xqkzJHQK7bkgDQgjRK6O9ujks1Av
+ mhsg3O43O8O1vLrLbnRrl4P36uUqZk4D3PnaIz5FgKqv1TZx86Uj5sFO1HLEAD1O1E3B22l6gxW
+ Rnu0sU9pLrRMqaykaOJdRKPDKA3aZ/kHPtVcT2qDUp2icJmaat+/cRbBV+39rzvsAm4qMMI3mvF
+ T7ABwETT0DK0CAJ7b4qrzVYsNpsHzTAnIhpv1RA3+pChdZOWSLifMDwGQyXRRj7lUCUH/i2pYZZ
+ WNX2HRtUOA3iZTIxHhC43eDS0WEtN+QOWX7wAzVc3bERV9LenpnGTXDBxLSfL0JEo05AAYQL+SG
+ qNChJY28yEHFXz2it1HtjUhmE8Tp9DUQ6Ffn0S6s6eDKUaMdTgn4553SvvExs2kw==
+X-Received: by 2002:a17:902:db05:b0:2d8:d4d2:d135 with SMTP id
+ d9443c01a7336-2e2e4b6f06cmr8036555ad.17.1790772676049; 
+ Wed, 30 Sep 2026 05:51:16 -0700 (PDT)
+Received: from gye-SER8.. ([1.243.227.27]) by smtp.gmail.com with ESMTPSA id
+ d9443c01a7336-2e2e5b89fd6sm6741815ad.26.2026.09.30.05.51.13
+ (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+ Wed, 30 Sep 2026 05:51:15 -0700 (PDT)
+From: Gyeyoung Baek <gye976@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: imagination@lists.freedesktop.org, alessio.belle@imgtec.com,
+ luigi.santivetti@imgtec.com, robert.mazur@imgtec.com,
+ matt.coster@imgtec.com, sarah.walker@imgtec.com, frank.binns@imgtec.com,
+ kamil.konieczny@linux.intel.com, Gyeyoung Baek <gye976@gmail.com>
+Subject: [PATCH i-g-t v2] tests/imagination: Add VM map and remap tests
+Date: Wed, 30 Sep 2026 21:50:57 +0900
+Message-ID: <20260930125057.1837788-1-gye976@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB6909:EE_|DS0PR11MB7972:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e6eb2b0-e061-4405-783a-08df1eee959d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|23010399003|1800799024|376014|11063799006|56012099006|4143699003|22082099003|18002099003|10067099003|6133799003;
-X-Microsoft-Antispam-Message-Info: 1PnbqhrDisLS9JhPVXLtqA4sxMUS2dxvd94PzDBM2Xc8QcRREfAPtJ7t0Jo9OqCAU8JqyClGoBkJ3OM83XZIxWOEu05n1u1WG+4oeC59CJnFeblpOqwVb1tMSJWpwHMg2vJnV9MH361UeKRIxeJmgHa9giB5LkqSxTFKH1aZ6wr7ZG4EC6oRubGYf1NHP8CqA7Ffg7pN3n+vkrrjuVfmSZxyDxn+aETg0nGecWZ4bSPNiDgj2SHFsgL6vqxcg7q50iadngUsQzGBukgWuPmmt2sAgl97psdbXZaS3pbH/5mTmvTy43G6qON0njhhUJYAGRl48EaqjpCGwkknJufxLa72zAkyWasDo5Wn3TxWr6Zo1V1d75ljm26PbooMXFU4IbVB+O/HLNFgqUl1lbX+E7BK5+hB3CyaVEebRMW8hG+dfGj/0ZIsiyqlEn9A+zYIrVa8C0UUNX8WUPCGmBfUAMQn1uZXi7fhgeAQEvxeTZbDJrjeOfYmR1c1oZNLfFfrRit840tqHlU2buX/Q8QKFH+q5tSaua5ja9QDv3+dFfF7Ge/en31laCzCZMyvyfA67iCWnm9ARn3AfIXTA9p8a754bH/DB5OWOY1K+A9Zl9NJHYogRqUd2r4ss2h1RzAsVX6Q47b4V7JAIOG7ZmsM3Xa+V+Fqrcl2aaKjN+cR/tg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW4PR11MB6909.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(23010399003)(1800799024)(376014)(11063799006)(56012099006)(4143699003)(22082099003)(18002099003)(10067099003)(6133799003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aXZ4THV3SDBMTUlNaXZ3dGNnb2wyaWZCSWFrbjlZV0hHM0xSWW9MV3NGQ0pY?=
- =?utf-8?B?a2ttdllHM2JWa2VQcnV5RUROYmxPMzczQ285Qk11RWZGUmZSdXFSYnVNQ0dO?=
- =?utf-8?B?bjdIV3lzd0tvdEI0cXB6bDhxMWY1c0p3bytzUGx3SjFjQVRLZzZUZDRPaW00?=
- =?utf-8?B?MFZkaENaampUd0tHN0ZJUGo2MkE0R3ZnK05JS21pd2N5SkNHVEhhQ0tld3F4?=
- =?utf-8?B?cGdORDFVNVFKMmNQdTNCdUJJTTdVRmFEbUEyQ0RxVjJvZUdRMHVLNFJ2M1ov?=
- =?utf-8?B?Wm9iRGRvMGFNcURDSUlxajZPWm9PamFpdllJNDBHOGF4MVh1UWp4V3A4b21H?=
- =?utf-8?B?Z28wMnlDSnJOeHgwcWZYNVhSbVFpbmJjYUFDd3hrZEU4UUd1TGw0cHY3MEMy?=
- =?utf-8?B?Snk4eFdZbHA4b21jTHU1OG96dVZzdVBVcld0R3U5TGlDSjRORUtTMEhDQlBv?=
- =?utf-8?B?bUNtbjhKNXl2T3JNNmJkSmRkN0FlQ1hLSi95dTRhSU5JWnJJcnFUaWh0WEp3?=
- =?utf-8?B?Z05GWXlNdURJL21aak0rTXQ2ODZqVVUyd0xmWldUODh2Y2V6VHhHSStWdmpX?=
- =?utf-8?B?aDVDWFdlRk9jMnlwQzNVZFRLWUF0bEJBWEkzcXhiU1Z6SW1PYVlPNDAvSENQ?=
- =?utf-8?B?Y2xxTzExV0FIdnRrWEtLMkltUmQ1RzRKb2w1YlFrUE50R29sMjViUnF2MU9W?=
- =?utf-8?B?MFhpL2tSWUZWcyswMmwvUDl4NWJHaVFwS3J6dElLeXpxZzJZMm1jemRTaE4w?=
- =?utf-8?B?d1laNHZNdDJrOUhqa0IzZVNnSW93TUsva0tsNThDWHpvUW9seDBRTHNYVmNx?=
- =?utf-8?B?SnE1NGs5azBWeng4TWlMbTVRelRTM0V6Mll3b2JIUDFVRVdmNjVXZm5UTjh0?=
- =?utf-8?B?bjBaSkVQdXZBZU1lSnlCNXRJc2xzeU45SWc1ME9MZVcxcUEzaUtRMCt3VDJz?=
- =?utf-8?B?WStRNFBtcTQxb3VXenRmbmRoZlUyQzJlWERuODZDY2Y3TnpIcWxwSm4vK0F5?=
- =?utf-8?B?a1Y1M0hWK2ZuMzkzR292Q1dtWmVDaVJOckp2VUJwU1A4NnJ6elZ5cWlPNk52?=
- =?utf-8?B?VHJSS2pwUjdldVd6MWdlTEdySmJOZ1ZlVlhKVWYxdFJHdzI4Wm1YdmczSGV5?=
- =?utf-8?B?ck82STFCaXh6cnpkM3dJdkgwLzdlaVZaNG9wdjlueUxPVmNieStaY0F3ZTNm?=
- =?utf-8?B?THpwamx2SElRdVprU2ZxK3g2QjIrdUtlQXNlTVJEcE9CYThLa21iWmx2b25S?=
- =?utf-8?B?NTYwUlMxL2RZbndlalhyTit1OEwxQzE5dGI3bzNsNEJaODNHcWJac1VxbVlG?=
- =?utf-8?B?VkU5SnhmZmlHYVMwYm5DdEZwVm9DbFRGZE92U1JlckovK0FJVHp2WHpQRkIx?=
- =?utf-8?B?WURVTEVKZTlGbEY0eSt4a0d1RWthQ3RVaXJ3SU8vM2s3S2M3bElvcHNxUnph?=
- =?utf-8?B?alFKUlRGUUxjQjV4MEpZM3luMTQrMTkvTmlmOGgweUVMd0ViR2NlT3FwNDZC?=
- =?utf-8?B?Q2Z5Ym5kZXRGK3dncElIT3prYVI0aFltSDdEUHJ0WHpvTFNheURDdE5zU0JQ?=
- =?utf-8?B?K0kzWFJKdURUOTRJMm5oWTRmT3NTak45WWVyR1pwc3NqZXJaZytlaVRMOHNS?=
- =?utf-8?B?ZE5MdlhpVGpETGlhUzV5c2hFc0JtVDhpRVMvUmo5YmR5VzR2WFcyTGRSK3c5?=
- =?utf-8?B?OU5TRGd1eWFMOVp0YkFObnJ3VittM0FndmZRYk4zZTFLRVozam9wZ1cvRnJQ?=
- =?utf-8?B?cXNqY2hHdFpMSWZEa3ovUi9ld0pYSjhIQzBCeENZY21aQWZJRkZxVjE5dFdV?=
- =?utf-8?B?M2pRaUNsekdETzFFdjdBQmNVb3JFMVd6V3BjcHpGcGREZUxaMTFkaWpTMDkv?=
- =?utf-8?B?bGF4eW90cjNCR3JDUlJ3VFZzK25WcTUwbTdMZFpmNzd2TUc5b25lempUY0kw?=
- =?utf-8?B?RHdneURLdUUyMDlsWDZHWExIWnBDOEVEeldnWXFlWkZ5dkVxaElGTFE3Zksz?=
- =?utf-8?B?YnM0WnFiVHpUZitLcEVVRk55Y3A1MS83UVdDNUNPOW1lQWlQM3A2ZCtONmhh?=
- =?utf-8?B?VUtkQnVKR2JQOWZWeVU2bldJcGFRUHFUY2d3YjdMYVZtSzFseXpiZXZXcEoy?=
- =?utf-8?B?azYyMEh2ZmNOcnViWDBac3h4eVBGcnVUUXRsaFB4MndVMVkwb1Z4OFJ5Y1Qw?=
- =?utf-8?B?dW9YYWQrS1FQa2pGL0hUeFgxcjRLd2xSTnlJQ3JaSkhNMGo0VHBPLzZ1eTYw?=
- =?utf-8?B?M2N1SGVwWjNlYXFUUURjczQzaHJRYURXWHFYcXhScUVpZThwM25zUkxjMHRx?=
- =?utf-8?B?S1hmMmZZY3NkUEZHSTZxalMyQTRRbUZzMnRUWDRGVFA1ZWhoc2FtSlFhMGZR?=
- =?utf-8?Q?FpUmv1e+oGubrMmU=3D?=
-X-Exchange-RoutingPolicyChecked: bRaJg51LDX+Visekswo9jqSUgTa5ZIXk/khH1kV6yVdt8qb5RegZ7WklyVQ1RrkGNMuQK/+gL8GG0kkgt93dz45NnOEiHgKyh3PhJb+1/pij/PVjs8GmJwGp5eApbUD5p1a58lrEjZ8IF8u3ZfAZsRPKcfvtpTKK4B0Vje/0igbUrgyX++SaN237Da2RXe8mZG+GCM3Y3KIi47D9NcbT07GaPJQVqqi2n5R/slltsh3VPNPKqy0c57E1D+k8JLONjgAxkV1niuWtCq44mxr+l3bvdI4hZhnTsUIHw6ACrNR9qxYiW80a4O/F2Q43mU9WulCUY5dQMJatmooaB/xTPQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e6eb2b0-e061-4405-783a-08df1eee959d
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB6909.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 12:30:17.2631 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IAYTI4b+GnJ77RJnIOgijSBEzw+smhuKozHVpC2eM5AEtxwEkBovWYjdpzwTPexfdunLO6MN0/WpCVdJ0iwDGQN+HY6ACSIKlye0vjhdtYk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7972
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -173,157 +85,249 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Krzysztof,
+Add pvr_vm_map, which tests DRM_IOCTL_PVR_VM_MAP and
+DRM_IOCTL_PVR_VM_UNMAP directly.
 
-On Mon Sep 28, 2026 at 10:49 AM CEST, Krzysztof Karas wrote:
-> Hi Sebastian,
->
-> On 2026-09-25 at 12:57:41 +0200, Sebastian Brzezinka wrote:
->> struct xe_pmu_device ended with a plain 'struct xe_engine engine' member=
-,
->> but xe_populate_engines() reallocs the struct to hold multiple engines
->> beyond that member, which is undefined behaviour. It is replaced with a
->> proper C99 flexible array member (engine[]), and engine_ptr() is updated
->> to use [] indexing accordingly.
->>=20
->> pmu_read_multi() and xe_pmu_sample() also used VLAs (uint64_t buf[2+num]=
-,
->> val[2+num_val]) which are forbidden by -Wvla in IGT builds, so both are
->> replaced with heap allocated buffers.
->>=20
->> pmu_read_multi() aborted the process via assert() whenever the perf
->> read returned an unexpected length since a monitoring tool should never
-> There needs to be some separation between these two sentences:
-> ...read returned an unexpected length. Since a monitoring tool
-> should never...
->
->> crash on a I/O error, the assert is replaced with an error message and
->> a graceful return.
->>=20
->> An explicit #include <glib.h> is also added for the CLAMP() macro used
->> in pmu_active_percentage().
->>=20
->> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
->> ---
->>  tools/gputop/xe_gputop.c | 35 +++++++++++++++++++++++++++--------
->>  tools/gputop/xe_gputop.h |  2 +-
->>  2 files changed, 28 insertions(+), 9 deletions(-)
->>=20
->> diff --git a/tools/gputop/xe_gputop.c b/tools/gputop/xe_gputop.c
->> index bb2caa6ea..119545c75 100644
->> --- a/tools/gputop/xe_gputop.c
->> +++ b/tools/gputop/xe_gputop.c
->> @@ -3,9 +3,10 @@
->>   * Copyright =C2=A9 2025 Intel Corporation
->>   */
->> =20
->> +#include <glib.h>
->>  #include "xe_gputop.h"
->> =20
->> -#define engine_ptr(pmu_device, n) (&(pmu_device)->engine + (n))
->> +#define engine_ptr(pmu_device, n) (&(pmu_device)->engine[(n)])
->> =20
->>  static void __update_sample(struct xe_pmu_counter *counter, uint64_t va=
-l)
->>  {
->> @@ -212,29 +213,45 @@ void *xe_populate_engines(const void *obj, int ind=
-ex)
->> =20
->>  static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
->>  {
->> -	uint64_t buf[2 + num];
->> +	const size_t buf_size =3D (2 + num) * sizeof(uint64_t);
->> +	uint64_t *buf;
->> +	uint64_t ts =3D 0;
->>  	unsigned int i;
->>  	ssize_t len;
->> =20
->> -	memset(buf, 0, sizeof(buf));
->> +	buf =3D malloc(buf_size);
->> +	if (!buf)
->> +		return 0;
->> =20
->> -	len =3D read(fd, buf, sizeof(buf));
->> -	assert(len =3D=3D sizeof(buf));
->> +	memset(buf, 0, buf_size);
->> +	len =3D read(fd, buf, buf_size);
->> +	if (len !=3D (ssize_t)buf_size) {
->> +		fprintf(stderr, "xe: PMU read error: expected %zu bytes, got %zd\n",
-> Please remove "xe: " prefix from the message. It may suggest
-> that this has been emitted from the driver somehow and other
-> tools do not use this convention.
-I removed it at one point and brought it back, since it's useful. It
-only goes to stderr, not syslog/dmesg, so there's no risk of it being
-mistaken for a message from the kernel driver. It's a simple way to tell
-which backend failed without needing more elaborate logging.
+For each of the following three cases, test five scenarios and check
+that the memory of the buffer objects is returned in each of them:
+1. Inside one 2MiB region
+2. Across a 2MiB boundary
+3. Across a 1GiB boundary
 
+- map-*: map a range and unmap it.
+- replace-*: map a range that completely covers a smaller existing
+  mapping.
+- remap-next-*: map over the left part of a mapping, which splits it.
+- remap-prev-*: map over the right part of a mapping, which splits it.
+- remap-both-*: map over the middle of a mapping, which splits it.
 
->> +			buf_size, len);
->> +		free(buf);
->> +		return 0;
->> +	}
->> =20
->>  	for (i =3D 0; i < num; i++)
->>  		val[i] =3D buf[2 + i];
->> =20
->> -	return buf[1];
->> +	ts =3D buf[1];
->> +	free(buf);
->> +	return ts;
-> This value is ignored (currently as well). Maybe, convert the
-> function to void type or add the return check to
-> xe_pmu_sample()?
->
->>  }
->> =20
->>  void xe_pmu_sample(const void *obj, int index)
->>  {
->>  	struct xe_gputop *ptr =3D ((struct xe_gputop *)obj) + index;
->>  	struct xe_pmu_device *engines =3D ptr->pmu_device_obj;
->> -	const int num_val =3D engines->num_counters;
->> -	uint64_t val[2 + num_val];
->> +	const unsigned int num_val =3D engines->num_counters;
->> +	uint64_t *val;
->>  	unsigned int i;
->> =20
->> +	val =3D calloc(num_val, sizeof(*val));
->> +	if (!val)
->> +		return;
->> +
->>  	pmu_read_multi(engines->fd, num_val, val);
->> =20
->>  	for (i =3D 0; i < engines->num_engines; i++) {
->> @@ -243,6 +260,8 @@ void xe_pmu_sample(const void *obj, int index)
->>  		update_sample(&engine->engine_active_ticks, val);
->>  		update_sample(&engine->engine_total_ticks, val);
->>  	}
->> +
->> +	free(val);
->>  }
->> =20
->>  int xe_pmu_init(const void *obj, int index)
->> diff --git a/tools/gputop/xe_gputop.h b/tools/gputop/xe_gputop.h
->> index 1e3856071..c26db0e7e 100644
->> --- a/tools/gputop/xe_gputop.h
->> +++ b/tools/gputop/xe_gputop.h
->> @@ -41,7 +41,7 @@ struct xe_pmu_device {
->>  	unsigned int num_counters;
->>  	int fd;
->>  	char *device;
->> -	struct xe_engine engine;
->> +	struct xe_engine engine[];
->>  };
->> =20
->>  struct xe_gputop {
->> --=20
->> 2.55.0
->>=20
+See the following document for the overlap cases:
+https://docs.kernel.org/gpu/drm-mm.html#drm-gpuvm
 
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+---
+v2:
+- Add (c) line
+- Clean up includes
+- Add IGT_TEST_DESCRIPTION()
+- Link to v1: https://lore.kernel.org/all/20260926152341.783867-1-gye976@gmail.com/
 
+ tests/imagination/meson.build  |   1 +
+ tests/imagination/pvr_vm_map.c | 193 +++++++++++++++++++++++++++++++++
+ 2 files changed, 194 insertions(+)
+ create mode 100644 tests/imagination/pvr_vm_map.c
 
-
-
---=20
-Best regards,
-Sebastian
+diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
+index 7ae8ddd0a..80d807c28 100644
+--- a/tests/imagination/meson.build
++++ b/tests/imagination/meson.build
+@@ -8,6 +8,7 @@ pvr_progs = [ 'pvr_dev_query',
+ 	      'pvr_runtime_info',
+ 	      'pvr_submit_jobs',
+ 	      'pvr_vm_context',
++	      'pvr_vm_map',
+ 	    ]
+ 
+ pvr_deps = test_deps
+diff --git a/tests/imagination/pvr_vm_map.c b/tests/imagination/pvr_vm_map.c
+new file mode 100644
+index 000000000..c74cc4f62
+--- /dev/null
++++ b/tests/imagination/pvr_vm_map.c
+@@ -0,0 +1,193 @@
++// SPDX-License-Identifier: GPL-2.0 or MIT
++/* Copyright (c) 2026 Gyeyoung Baek */
++
++#include <inttypes.h>
++#include <stddef.h>
++#include <stdint.h>
++#include <unistd.h>
++
++#include "igt.h"
++#include "igt_os.h"
++#include "igt_pvr.h"
++#include "igt_sizes.h"
++
++IGT_TEST_DESCRIPTION("Test that VM map, unmap and remap operations work");
++
++/*
++ * vm_map/unmap/remap() are each run on a range of RANGE_PAGES pages (p0..p3),
++ * placed in one of three ways. The drawings are not to scale.
++ *
++ * in-2m       Inside one 2MiB region. No boundary is crossed.
++ *
++ *             |<------------ 2MiB region ----------->|
++ *             |           [p0|p1|p2|p3]              |
++ *
++ * cross-2m    Across a 2MiB boundary.
++ *
++ *             |<--- 2MiB region A --->|<--- 2MiB region B --->|
++ *                            [p0|p1]|[p2|p3]
++ *                                    ^ 2MiB boundary
++ *
++ * cross-1g    Across a 1GiB boundary, which is also a 2MiB boundary.
++ *
++ *             |<--- 1GiB region A --->|<--- 1GiB region B --->|
++ *                            [p0|p1]|[p2|p3]
++ *                                    ^ 1GiB boundary
++ */
++
++#define RANGE_PAGES 4
++#define LEAK_BO_SIZE SZ_32M
++#define LEAK_THRESHOLD SZ_8M
++
++static uint64_t align_up(uint64_t value, uint64_t align)
++{
++	return (value + align - 1) & ~(align - 1);
++}
++
++static void assert_shmem_released(uint64_t baseline)
++{
++	uint64_t now = 0;
++
++	for (int i = 0; i < 20; i++) {
++		now = igt_get_meminfo("Shmem");
++		if (now < baseline + LEAK_THRESHOLD)
++			return;
++		usleep(100 * 1000);
++	}
++
++	igt_assert_f(false, "%" PRIu64 " bytes of shmem still held after close\n", now - baseline);
++}
++
++static void map_range(int fd, uint64_t addr, uint64_t size)
++{
++	const uint64_t baseline = igt_get_meminfo("Shmem");
++	const uint32_t vm_ctx = igt_pvr_ioctl_create_vm_context(fd, 0);
++	size_t bo_size = LEAK_BO_SIZE;
++	const uint32_t handle = igt_pvr_ioctl_create_bo(fd, &bo_size);
++
++	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle, addr, 0, size);
++	igt_pvr_ioctl_vm_unmap(fd, vm_ctx, addr, size);
++
++	gem_close(fd, handle);
++	igt_pvr_ioctl_destroy_vm_context(fd, vm_ctx, 0);
++
++	assert_shmem_released(baseline);
++}
++
++/*
++ * A new mapping is mapped over an old one. The overlaps follow "DOC: Split and Merge" in
++ * drivers/gpu/drm/drm_gpuvm.c: replace is case 14, remap-next 5, remap-prev 7, remap-both 11.
++ */
++static void remap_range(int fd, uint64_t old_addr, uint64_t old_size,
++			uint64_t new_addr, uint64_t new_size)
++{
++	const uint64_t baseline = igt_get_meminfo("Shmem");
++	const uint32_t vm_ctx = igt_pvr_ioctl_create_vm_context(fd, 0);
++	const uint64_t old_end = old_addr + old_size;
++	const uint64_t new_end = new_addr + new_size;
++	size_t size_a = LEAK_BO_SIZE;
++	size_t size_b = new_size;
++	const uint32_t handle_a = igt_pvr_ioctl_create_bo(fd, &size_a);
++	const uint32_t handle_b = igt_pvr_ioctl_create_bo(fd, &size_b);
++
++	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle_a, old_addr, 0, old_size);
++	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle_b, new_addr, 0, new_size);
++
++	if (new_addr > old_addr)
++		igt_pvr_ioctl_vm_unmap(fd, vm_ctx, old_addr, new_addr - old_addr);
++	igt_pvr_ioctl_vm_unmap(fd, vm_ctx, new_addr, new_size);
++	if (new_end < old_end)
++		igt_pvr_ioctl_vm_unmap(fd, vm_ctx, new_end, old_end - new_end);
++
++	gem_close(fd, handle_a);
++	gem_close(fd, handle_b);
++	igt_pvr_ioctl_destroy_vm_context(fd, vm_ctx, 0);
++
++	assert_shmem_released(baseline);
++}
++
++struct place {
++	const char *name;
++	uint64_t addr;
++};
++
++int igt_main()
++{
++	struct place places[] = { { "in-2m", 0 }, { "cross-2m", 0 }, { "cross-1g", 0 } };
++	struct drm_pvr_heap heap;
++	uint64_t size;
++	int fd;
++
++	igt_fixture()
++	{
++		fd = drm_open_driver(DRIVER_POWERVR);
++		heap = igt_pvr_find_general_heap(fd);
++
++		size = RANGE_PAGES * sysconf(_SC_PAGESIZE);
++		places[0].addr = align_up(heap.base, SZ_2M) + SZ_1M;
++		places[1].addr = align_up(heap.base + 1, SZ_2M) - size / 2;
++		places[2].addr = align_up(heap.base + 1, SZ_1G) - size / 2;
++
++		igt_require(places[2].addr + size <= heap.base + heap.size);
++	}
++
++	for (size_t i = 0; i < ARRAY_SIZE(places); i++) {
++		const char *name = places[i].name;
++		const uint64_t addr = places[i].addr;
++
++		igt_describe_f("A range can be mapped and unmapped, and the page tables it needs are available (%s)",
++			       name);
++		igt_subtest_f("map-%s", name)
++		{
++			/*
++			 * map         |nnnnnnnn|    a range is mapped, then unmapped
++			 */
++			map_range(fd, addr, size);
++		}
++
++		igt_describe_f("A mapping that covers an old one replaces it and leaves nothing of it behind (%s)",
++			       name);
++		igt_subtest_f("replace-%s", name)
++		{
++			/*
++			 * replace     |  oooo  |    o = old mapping, n = new mapping
++			 *             |nnnnnnnn|    nothing is left of the old one
++			 */
++			remap_range(fd, addr + size / 4, size / 2, addr, size);
++		}
++
++		igt_describe_f("Mapping over the left part of a mapping leaves its right part, and the original "
++			       "buffer object is released once everything is closed (%s)", name);
++		igt_subtest_f("remap-next-%s", name)
++		{
++			/*
++			 * remap-next  |oooooooo|    the right part of the old mapping is left
++			 *             |nnnn    |
++			 */
++			remap_range(fd, addr, size, addr, size / 2);
++		}
++
++		igt_describe_f("Mapping over the right part of a mapping leaves its left part, and the original "
++			       "buffer object is released once everything is closed (%s)", name);
++		igt_subtest_f("remap-prev-%s", name)
++		{
++			/*
++			 * remap-prev  |oooooooo|    the left part of the old mapping is left
++			 *             |    nnnn|
++			 */
++			remap_range(fd, addr, size, addr + size / 2, size / 2);
++		}
++
++		igt_describe_f("Mapping over the middle of a mapping leaves its left and right parts, and the "
++			       "original buffer object is released once everything is closed (%s)",
++			       name);
++		igt_subtest_f("remap-both-%s", name)
++		{
++			/*
++			 * remap-both  |oooooooo|    left and right parts of the old one are left
++			 *             |   nn   |
++			 */
++			remap_range(fd, addr, size, addr + size / 2, size / 4);
++		}
++	}
++}
+-- 
+2.43.0
 
