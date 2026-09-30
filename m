@@ -4,58 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2228ACA5FC7
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Sep 2026 15:41:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56F54CA5FC7
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Sep 2026 15:44:35 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C76DB10E234;
-	Wed, 30 Sep 2026 15:41:09 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0A26010E560;
+	Wed, 30 Sep 2026 15:44:35 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="FaUL6viq";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="LaRpyh/o";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9CADB10E234
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2026 15:38:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790782701; x=1822318701;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=RCz55fRCP/AzeHhxG59pnCE7F8eQoYAMe12LwQ8yQfc=;
- b=FaUL6viqKM83n44QjelnAShw/pKnlBjo52fHs9AiVAsfcYZ3OmBbXlJB
- XwK+dlK/Hh3w4kfItqWXrcu+niiLgmv/mRgY5lKrHVrrePDkI3pKxN9IC
- ZK1pszsGtssXUI862/TP/yJbDX9H2Gm78n2aUNN3lGsdAiuvh7/crZuKl
- M0ihOaj6wZ75ahwEBBxXZweLKozFXfi93LvdgosSc3K+c4SupotCHuVyE
- QWEzswIz6mNRvD+Zqv2p+CE801nQJwOHOm3BZrvF8HwJxjjC5jXAL2kP9
- jQRj4dHZ0kTXfXG4yLhsbDwLvN/aU3izPAXQdhrgY7wNbXPB2v3bvH9tL Q==;
-X-CSE-ConnectionGUID: XyXlNKjASPWQWDyvrRq8Sw==
-X-CSE-MsgGUID: Pj8P4aImTIOsS8MtDTDMsw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="102198144"
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; d="scan'208";a="102198144"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2026 08:38:20 -0700
-X-CSE-ConnectionGUID: vfrX5NxmTiak/5cedQWkzQ==
-X-CSE-MsgGUID: InGQsW0TTX6mb7aBVfdzkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,132,1787036400"; d="scan'208";a="279046849"
-Received: from psoham-ms-7e03.iind.intel.com ([10.223.55.64])
- by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2026 08:38:18 -0700
-From: Soham Purkait <soham.purkait@intel.com>
-To: igt-dev@lists.freedesktop.org, riana.tauro@intel.com,
- badal.nilawar@intel.com, kamil.konieczny@intel.com,
- ravi.kishore.koppuravuri@intel.com, raag.jadav@intel.com
-Cc: anshuman.gupta@intel.com,
-	soham.purkait@intel.com
-Subject: [PATCH i-g-t v2 3/3] tests/intel/xe_err_injection: Add test for local
- Uncorrectable Error Injection through LSC Storage
-Date: Wed, 30 Sep 2026 21:07:58 +0530
-Message-ID: <20260930153755.2447513-8-soham.purkait@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260930153755.2447513-5-soham.purkait@intel.com>
-References: <20260930153755.2447513-5-soham.purkait@intel.com>
+Received: from CH4PR04CU002.outbound.protection.outlook.com
+ (mail-northcentralusazon11013037.outbound.protection.outlook.com
+ [40.107.201.37])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 49E2F10E560
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2026 15:43:50 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gW9sDItby/abgEBMG5hMwJj5glyGwiujJA6YY4R4s72pDMXpXUOW+e8BQrCuMY1XHensaB7oMf/4YW7P3eYe0YQsbZ8VSEmsBaIAMcDRKMeFfOVH0qsXkdjTrzie/aqVJyqETMYlX9FHYKHP3TRxmsE5Tg2nlFv5I9VkD4xkJOR1BGgmQuupunCzcqprmzB011ghRsr8WwVd7mH9JWG+tCjl/k1ihmrkWEwIrp9HGr6yDGEizaeWJrRPFO8qzPlr8Y4FgKxYOV0GwY8MruIIj5OY10LS10JOR2Fs5srzWvahytZlRKRIW/uh0dtX8GqvGONbB+ySaVLHofK35RVbNw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nOr52z3cSIr5vV1ZHDkJVmzPNiexxuwKktzz0bAUS5o=;
+ b=zLRcBkPC+NQ2wjgCIVOBOTOL/5mPqZlSo6rr1xvgcOAh76r+SBsljNoJcvRHigm/e45uNQyKR2Uzgx9ghA0UL/QQoCWaRBsVLnFFGu1lanYMBXrESLl4o3dpbVcLnaIpKSaiQFVuogmS26+MHTWqk+FDf2E7pe4x9ooeYWBr0hbRPHCfgsqyJSZU3nGOd4sYT+Je1myYQXMk7auPwDBhEf/iT3ol54GXr9JLjHpbI6eeydFQfa/7hNoWZGOyEqWoKLHIx8VqDTOuw9uvY/+dBJXcvGmrn9a6bBgOBRG0u20I1FTJ90xz7ZaYT1dAYAHS38CQLUH8ggn3yh8FEVycTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nOr52z3cSIr5vV1ZHDkJVmzPNiexxuwKktzz0bAUS5o=;
+ b=LaRpyh/oy/DzwUIy5Q6wyuhe2IPDUpg9RJtXMlJY1ZjzA/LwXkJ0jfvcrY9FjfRVqyKe3t44ehQIx8yRlqeV3uFWNZzXZOyiOe0X2Iv8KOxUGKTDN0vJaeubk8s575prrn+u02fgBJeZgWOw+VKrBf8B+ToCydr6IRw6cjS4c64=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ0PR12MB7007.namprd12.prod.outlook.com (2603:10b6:a03:486::8)
+ by MN2PR12MB4287.namprd12.prod.outlook.com (2603:10b6:208:1dd::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Wed, 30 Sep
+ 2026 15:43:47 +0000
+Received: from SJ0PR12MB7007.namprd12.prod.outlook.com
+ ([fe80::6f95:c4a2:894d:9e8a]) by SJ0PR12MB7007.namprd12.prod.outlook.com
+ ([fe80::6f95:c4a2:894d:9e8a%3]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
+ 15:43:46 +0000
+Message-ID: <80f27d2a-28f2-4078-a1a2-7b90fb4101c9@amd.com>
+Date: Wed, 30 Sep 2026 11:43:40 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v5 5/8] lib/igt_kms: extend
+ igt_plane_set_color_pipeline to accept Bypass
+To: Melissa Wen <mwen@igalia.com>, Petri Latvala <adrinael@adrinael.net>,
+ Arkadiusz Hiler <arek@hiler.eu>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
+ Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
+ Ashutosh Dixit <ashutosh.dixit@intel.com>,
+ Karthik B S <karthik.b.s@intel.com>
+Cc: igt-dev@lists.freedesktop.org, kernel-dev@igalia.com,
+ Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ Alex Hung <alex.hung@amd.com>, Swati Sharma <swati2.sharma@intel.com>,
+ John Harrison <John.Harrison@Igalia.com>,
+ Rodrigo Siqueira <siqueira@igalia.com>, Simon Ser <contact@emersion.fr>,
+ Xaver Hugl <xaver.hugl@kde.org>, Uma Shankar <uma.shankar@intel.com>
+References: <20260902180016.303482-1-mwen@igalia.com>
+ <20260902180016.303482-6-mwen@igalia.com>
+Content-Language: en-US
+From: Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <20260902180016.303482-6-mwen@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR0101CA0092.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:4::25) To SJ0PR12MB7007.namprd12.prod.outlook.com
+ (2603:10b6:a03:486::8)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR12MB7007:EE_|MN2PR12MB4287:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ff2946b-c3d1-40dc-1d89-08df1f099d60
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|23010399003|1800799024|7416014|376014|366016|11063799006|56012099006|10067099003|4143699003|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: GlkURy8vj4dNZPKFE7ip1ZYckaIw0vT7nFPBHxw3NST3pjKnaXlq/5OZHHSLaFUTHmpNhI8OciM+9QlCCovmb7fSiahxfwrmaK53jaD3oBs1///Y8ohAwODpuCFrZWtF6YhBZB89NQEAnEzpGQyGcvbrGz4M0OSF60T9zQhUdxf8tHHOd59bbuHjgg2YP2S3srFfFxZhigF79ZQj7EKdeXy/7MbJxUZq+/eBrASIy4Fx9UoaFUsBvegoJyxDCpuT2s6NUvsIcvIiZhaUrOmnZtwDke92xPWN3SNqUHYPyv61mGee9vHWoxkETO/oBVfkRzQ6pclGqiuA8NyX5dmW+0Hh0Co70BZEAeYyfLfP4BNh5vUAwAh48JPxz88lUx6ytjDaRK82aY34KYMVUxXfgPrzh/XShYZ8uanQ2JPO7G8oRDMMJ24cR1eRORgvV0+pCUYLTUhS7sXVEqMwGwZJSiq8Dbv0tzn/HZzPwI+nhoNjYoZQete/W/AGdjJ4zopR5bjMfQjVzVnJGLEQ4IsSuYVyr46GIZ3GcYoB0EHd56H9kaV2Xy4Ix6/9hGViJi9poUzddlKGpJ8gUNAasDDQDRFwftPRAaHmqo3R70VrP+/ohd/FVWFn4n0uM/3eaFLI0LYBf/bhN+dm/ZwgIx1e8ZGo5HHa6dPOL8XPnHMmG3M=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SJ0PR12MB7007.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(11063799006)(56012099006)(10067099003)(4143699003)(6133799003)(18002099003)(22082099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dS9hdC8xVEVuSTdtUkNVWlZIVmYxT0J5eXdFWVB0YkVyZE5ObFZzTFM3Y2xh?=
+ =?utf-8?B?OWVJRjd0c3pGaWMxZjdxR0V5alNJSnhRM29MSkVYbVRXUGV0QVNjNWlKLzZN?=
+ =?utf-8?B?aFNWVWVnTUdpZExsY1NWZ1NpT3ZmeVZrdVh1M24zYmRKNldJbHhQQUcrQVc5?=
+ =?utf-8?B?dFV2UDRRcmJVbUhaVURmdHBSYlFIY1NCeno5OThqV1IrZEgrNmw1QXVzWk9p?=
+ =?utf-8?B?cVUxdHo0NVhhUGdkWFBxR09keGhqaG80NFRjWlZ5QkNWbGI0MmdnNG1ScWlC?=
+ =?utf-8?B?M2tqb21vK2NrV0dTOVNNbzNpMU1XeTFtR3c4S3JJemluVmhwMHJxeENkVm1T?=
+ =?utf-8?B?RGpBcTc1UUtGRHBjVmVWTVkxYnZyMm5JTVkzU2VBZXk2K3hyc1k1WnI5UTRB?=
+ =?utf-8?B?S0I5V0RGdUFaREZCbmY5MVJCLytPNDNsR2dZMEFsOHY1V0pjdG9xS0NtT1Fr?=
+ =?utf-8?B?R2drRXdVNU04bTRBOXMyckRKdUxlY0NwMWlUSXlDdWlmdGx3alFsL3BzL0p1?=
+ =?utf-8?B?dUVsSGxBbmJ2TTAyeG52Z0haVWJWZytKUTlLYTg5Y1lWZ250Um00cmJUcDdD?=
+ =?utf-8?B?bG5QVzhENjc1UFNuODNZMTZXaFVEK2t6a1h1Zkl4SERmZzZCTHhCQ09IeEp0?=
+ =?utf-8?B?dTN5YmtFR1dVTnQ0ekh4ZzZlODJVclkwbXpXbG14TzFXenVWNmRyTy8xdFUy?=
+ =?utf-8?B?V1lQWEs0L2VEZ0ZCYWZaWDlpVUUwUytSTVBWVm8zcldZUzBpbmR2VFdPOC9o?=
+ =?utf-8?B?WnBiM0VPS2FHcFNnN0NGSUVFalZjSEFmRGlrek1yYmVsRWlIcnhLN2RuRUpE?=
+ =?utf-8?B?ZVNudmRNVUtwdTdWZFFiem96R3h6cDlXbjU2eVZaR09uMTZYdFNjSzYydUI0?=
+ =?utf-8?B?anZkVVZjajdQV0pGalpRNU9Xc3oxSVNQK2hyS25hVlVlN0hyZHdobDJJaEZy?=
+ =?utf-8?B?ZSt4U2Z5U0UyUDBwOGFjRDFVMFUxZG4rZm50ajFzMmN6bTFybGZ5Vi9IOTBH?=
+ =?utf-8?B?Tmc4SWNVRktIU2hXM3QxQWVsMjVqdExHYkE1M2NvKzFySFZ6UkVUWkdZR2ov?=
+ =?utf-8?B?U0lSOUJuYWJ0eDNPZk1Iays1dXorR0VGS2pHRFFXYU9WUHBZMFlQOWZBcGhl?=
+ =?utf-8?B?SFhrVUdXeGlyZE0zZTlHcGtYaHcyOGZkSGdrRTh6Z2p4WmF3RmZiT2FabklI?=
+ =?utf-8?B?SC9jNmtrRzdsa1p6UWhMaEdMd0hpTDhjWXBtdjR1RXJIdXo0MnNkc2FocFRp?=
+ =?utf-8?B?MVdSRFIyaWJIQVV4Z28rS3l0QkkzTGl6SzRTQnpPWnRRODhZaVJNSTFSREFY?=
+ =?utf-8?B?a0h6eE5QV1dpQXg1TVNDMDZnQkd0THJmMGs3K0kvRndPSW1CL2pydWVudWxx?=
+ =?utf-8?B?d0JkMG9ueFY1c3ovdWdXNFZPYkNIOXZhaVZvTEZoMVJSSUFNM0RvSHZYblZT?=
+ =?utf-8?B?dlVFM2F3OUhVdjVWOFVTTTAxajdpanVPV1pSSXhpZThkOVhNYWtseXRLb3U2?=
+ =?utf-8?B?Q3pyL0tEd1hhMVAvT1hFWHpSejZLUFE1YnZveHhZVlM5WWtQdXhWb0JwNTh5?=
+ =?utf-8?B?eWVzaEE4dG14UlRRd1k1VzlhVGdQSnIwOGd4SlFSVjdtS2M5bDRhTkNBUkJ4?=
+ =?utf-8?B?eEJlbWtsMDRrMGVqQVRlYTE2SEtPOVJqS0ZXN1lhUzFrbTVCajl0am5xSmpY?=
+ =?utf-8?B?ZW05RlI5VE85aktjejJtWTlsZGQ2SE9NeW1ha3JuNERjSEpyZW9kWk1qMzZT?=
+ =?utf-8?B?SlYrZnlSbVBkOWxma29BTnRGZmdQbmZycEczNVgrWUdHQndWVmQrdjA2ZWdF?=
+ =?utf-8?B?UFEwYWt4WXZuOHNCcTZ3aUVnU3NjS2pVbmlLZXlYL3c0WURKTXhGeG9BM2I2?=
+ =?utf-8?B?Rkg2WXlQWW5Ic0VZWlNTZVdyTUFSNHRWcU1kNVBxdGVCYmJkWEdZdEdHQjFM?=
+ =?utf-8?B?OThJdWlKcGErZXFKRkpMNHRoRzNwMUsyZ0tkdEVQNS95YkxtQ0JsL1NaclBS?=
+ =?utf-8?B?QTJvWXNDZ1QzYVVxTEkwZitycy9GNlFOYnd0VkJOaThJWVZyclYvdXQwTmI2?=
+ =?utf-8?B?WkxnV3VQMVlkV2NiRW5FRHZLcGlDeDVVSi9qU0hmUlcrZ1RMbnRuOVptUGlD?=
+ =?utf-8?B?Qm8wWkxpajlHL0lUemdxdmVBZjlhd1RxWkxXdCtTUGNCT3Fjb3NVZ0c2MGlq?=
+ =?utf-8?B?Qmg1RTBMWVkxNC81SEZlNHlnSms4UkNLa1ZMTlB3eU5KQUNVUTBkVms3TzRt?=
+ =?utf-8?B?WmlIU1dtRHZiNzRKaW1OajNwb2NCQTRlNlNwRXgvVlNRbDcrWFVRSW94TS81?=
+ =?utf-8?B?UVJUNE85cnF4MjhNQ0RzcGh1bndxOTc3bE54N2dpdHZpUUNJVC9EZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ff2946b-c3d1-40dc-1d89-08df1f099d60
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB7007.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 15:43:46.7049 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HQQ5ZM+rGPO+ymgueonrBojr3cv3tJ5noMQgxFMOttm8xMYxIh8n7G9rsvGk5AwJlY6xVEqOUyvY2q2pDpEOFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4287
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,523 +148,165 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Local Uncorrectable Unicast LSC storage error injection driven by a heavy
-LSC workload on all compute engines to trigger recovery post error
-injection. Also validate error counter increment and post-recovery error
-counter stability.
+On 2026-09-02 13:58, Melissa Wen wrote:
+> "Bypass" is just the COLOR_PIPELINE enum value with no colorop object
+> behind it, so make igt_plane_set_color_pipeline accept NULL and set
+> "Bypass" instead of making callers poke the property directly. Convert
+> its callers, igt_plane_reset() included, and drop the now unused
+> set_color_pipeline_bypass() from kms_colorop_helper.
+> 
+> Keep assigned_color_pipeline pointing at the outgoing pipeline when NULL
+> is passed: the kernel accepts a colorop update whose pipeline is in the
+> plane's old state, so reset_colorops() must still be able to finalize
+> colorop settings in the same commit that deactivates them. No functional
+> change.
+> 
+> Signed-off-by: Melissa Wen <mwen@igalia.com>
 
-Signed-off-by: Soham Purkait <soham.purkait@intel.com>
----
- tests/intel/xe_cper.h          |  30 +++
- tests/intel/xe_err_injection.c | 344 ++++++++++++++++++++++++++++++++-
- tests/intel/xe_err_injection.h |  11 ++
- 3 files changed, 381 insertions(+), 4 deletions(-)
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 
-diff --git a/tests/intel/xe_cper.h b/tests/intel/xe_cper.h
-index ff061d35b..dfc245016 100644
---- a/tests/intel/xe_cper.h
-+++ b/tests/intel/xe_cper.h
-@@ -11,12 +11,15 @@
- #define XE_CPER_EVENT_DIR	TRACEFS_ROOT "/events/xe/xe_error_cper"
- #define XE_CPER_ENABLE		XE_CPER_EVENT_DIR "/enable"
- #define XE_CPER_FORMAT		XE_CPER_EVENT_DIR "/format"
-+#define XE_RESET_EVENT_DIR	TRACEFS_ROOT "/events/xe/xe_exec_queue_reset"
-+#define XE_RESET_ENABLE		XE_RESET_EVENT_DIR "/enable"
- #define TRACEFS_TRACE_PIPE	TRACEFS_ROOT "/trace_pipe"
- #define TRACEFS_TRACE		TRACEFS_ROOT "/trace"
- #define TRACEFS_TRACE_CLEAR	TRACEFS_ROOT "/trace"
- 
- /* Timeout waiting for a trace event to appear (seconds) */
- #define CPER_EVENT_TIMEOUT_SEC		10
-+#define RESET_EVENT_TIMEOUT_SEC		10
- 
- /* Standard UEFI CPER record header signature: "CPER" in little-endian */
- #define CPER_SIG_RECORD			0x52455043U  /* "CPER" */
-@@ -39,4 +42,31 @@
- #define CPER_INTEL_PUB_HDR_SIZE		328U
- #define UUID_SIZE			16U
- 
-+#define CPER_REC_ERROR_SEVERITY_OFF	12U
-+#define CPER_REC_RECORD_LENGTH_OFF	20U
-+
-+#define CPER_SEC_SEVERITY_OFF		176U
-+
-+#define CPER_INTEL_HDR_OFFSET		(CPER_RECORD_HEADER_SIZE + \
-+					 CPER_SECTION_DESC_SIZE)
-+#define CPER_INTEL_ERR_TYPE_OFF		0U
-+#define CPER_INTEL_ERR_COMPONENT_OFF	1U
-+
-+#define CPER_EINFO_OFFSET		(CPER_INTEL_HDR_OFFSET + \
-+					 CPER_INTEL_PUB_HDR_SIZE)
-+#define CPER_EINFO_EVT_COUNT_OFF	20U
-+#define CPER_EINFO_HDR_SIZE		24U
-+#define CPER_PRIV_ENTRY_METADATA_OFF	12U
-+
-+#define XE_RAS_SEV_CORRECTABLE		1U
-+#define XE_RAS_SEV_UNCORRECTABLE	2U
-+#define XE_RAS_SEV_INFORMATIONAL	3U
-+
-+#define XE_RAS_COMP_DEVICE_MEMORY	1U
-+#define XE_RAS_COMP_CORE_COMPUTE	2U
-+
-+#define CORE_COMPUTE_UNCORR_TYPE_SHIFT	25U
-+#define CORE_COMPUTE_UNCORR_TYPE_MASK	0x3U
-+#define GLOBAL_UNCORR_ERROR		2U
-+
- #endif /* XE_CPER_H */
-diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-index 6dcc2b1c4..d3e63fa8a 100644
---- a/tests/intel/xe_err_injection.c
-+++ b/tests/intel/xe_err_injection.c
-@@ -16,6 +16,8 @@
- #include <string.h>
- #include <time.h>
- #include <fcntl.h>
-+#include <sys/mman.h>
-+#include <sys/wait.h>
- #include <unistd.h>
- #include <sys/types.h>
- #include <sys/stat.h>
-@@ -42,6 +44,18 @@ enum {
- 
- time_t event_timeout = 10 * 1000; /* 10 seconds */
- 
-+#define LSC_HEAVY_WL_ITERS	64
-+#define LSC_HEAVY_WL_ELEMS	(256 * 1024)
-+
-+static bool tracefs_event_exists(void);
-+static bool tracefs_reset_event_exists(void);
-+static void tracefs_enable_xe_cper(bool enable);
-+static void tracefs_enable_xe_reset(bool enable);
-+static void tracefs_clear_trace(void);
-+static void poll_for_cper_and_reset(int timeout_sec,
-+				    char **out_cper, char **out_reset);
-+static void validate_local_uc_nonfatal_cper(const char *event_line);
-+
- /* Cleanup helper for injection test functions */
- #define CLEANUP_ON_ERROR(ctx, fw_handle) do { \
- 	igt_drm_netlink_cleanup(&ctx); \
-@@ -68,6 +82,44 @@ static void run_xe_compute_on_all_engines(int fd, bool state)
- 	}
- }
- 
-+static void run_heavy_lsc_workload(int fd, bool forward_failure)
-+{
-+	int err;
-+
-+	igt_info("Running heavy LSC workload %s (%d iters, %u elems) on all compute engines\n",
-+		 forward_failure ? "validate" : "stimulus",
-+		 LSC_HEAVY_WL_ITERS, LSC_HEAVY_WL_ELEMS);
-+
-+	igt_fork(child, 1) {
-+		struct drm_xe_engine_class_instance *hwe;
-+		struct user_execenv env = { .array_size = LSC_HEAVY_WL_ELEMS };
-+
-+		if (!forward_failure) {
-+			int devnull = open("/dev/null", O_WRONLY);
-+
-+			if (devnull >= 0) {
-+				dup2(devnull, STDOUT_FILENO);
-+				dup2(devnull, STDERR_FILENO);
-+				close(devnull);
-+			}
-+		}
-+
-+		xe_for_each_engine(fd, hwe) {
-+			if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+				continue;
-+			for (int i = 0; i < LSC_HEAVY_WL_ITERS; i++)
-+				xe_run_intel_compute_kernel_on_engine(fd, hwe, &env,
-+								      EXECENV_PREF_SYSTEM);
-+		}
-+	}
-+	err = __igt_waitchildren();
-+
-+	if (forward_failure)
-+		igt_assert_f(err == 0,
-+			     "Post-recovery heavy LSC workload failed (err=%d)\n",
-+			     err);
-+}
-+
- static void write_reg(struct xe_mmio *mmio, uint32_t reg, uint32_t value)
- {
- 	xe_mmio_write32(mmio, reg, value);
-@@ -106,6 +158,58 @@ static void release_steering_semaphore(struct xe_mmio *mmio)
- 			STEER_SEMAPHORE_MGSR_3D_VALUE);
- }
- 
-+static void acquire_steer_sem(struct xe_mmio *mmio, unsigned long timeout_ms)
-+{
-+	if (timeout_ms == 0) {
-+		igt_info("Waiting indefinitely for steering semaphore (0x%X)\n",
-+			 STEER_SEMAPHORE_MGSR_3D);
-+		while (xe_mmio_read32(mmio, STEER_SEMAPHORE_MGSR_3D) !=
-+		       STEER_SEMAPHORE_MGSR_3D_VALUE)
-+			usleep(STEER_SEM_POLL_INTERVAL_MS * 1000);
-+	} else {
-+		bool acquired;
-+
-+		acquired = igt_wait(xe_mmio_read32(mmio, STEER_SEMAPHORE_MGSR_3D) ==
-+				    STEER_SEMAPHORE_MGSR_3D_VALUE,
-+				    timeout_ms,
-+				    STEER_SEM_POLL_INTERVAL_MS);
-+		igt_assert_f(acquired,
-+			     "Timed out (%lums) waiting for steering semaphore (0x%X) to be acquired\n",
-+			     timeout_ms, STEER_SEMAPHORE_MGSR_3D);
-+	}
-+	igt_info("Steering semaphore acquired.\n");
-+}
-+
-+static void release_steer_sem(struct xe_mmio *mmio)
-+{
-+	xe_mmio_write32(mmio, STEER_SEMAPHORE_MGSR_3D,
-+			STEER_SEMAPHORE_MGSR_3D_VALUE);
-+	igt_info("Steering semaphore released.\n");
-+}
-+
-+static uint32_t disable_powergate(struct xe_mmio *mmio)
-+{
-+	uint32_t prev = xe_mmio_read32(mmio, POWERGATE_ENABLE_ADDRESS);
-+
-+	xe_mmio_write32(mmio, POWERGATE_ENABLE_ADDRESS,
-+			POWERGATE_ENABLE_DISABLE_ALL_VALUE);
-+	igt_info("POWERGATE_ENABLE (0x%X): 0x%08x -> 0x%08x (all PG disabled)\n",
-+		 POWERGATE_ENABLE_ADDRESS, prev,
-+		 xe_mmio_read32(mmio, POWERGATE_ENABLE_ADDRESS));
-+
-+	return prev;
-+}
-+
-+static void restore_powergate(struct xe_mmio *mmio, uint32_t saved_val)
-+{
-+	uint32_t cur = xe_mmio_read32(mmio, POWERGATE_ENABLE_ADDRESS);
-+
-+	xe_mmio_write32(mmio, POWERGATE_ENABLE_ADDRESS, saved_val);
-+	igt_info("POWERGATE_ENABLE (0x%X): 0x%08x -> 0x%08x (PG restored)\n",
-+		 POWERGATE_ENABLE_ADDRESS, cur,
-+		 xe_mmio_read32(mmio, POWERGATE_ENABLE_ADDRESS));
-+}
-+
- static int acquire_forcewake(int fd)
- {
- 	int fw_handle;
-@@ -308,6 +412,116 @@ static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
- 	gt_uc_wkr_parity_recovered = true;
- }
- 
-+/**
-+ * SUBTEST: test_GT-local-Uncorrectable-lsc-storage-err
-+ * Description: Inject GT Local Uncorrectable Unicast LSC storage error and
-+ * verify recovery via CPER and engine reset trace events.
-+ * Functionality: error injection
-+ */
-+static void lsc_storage_uc_err_injection(struct xe_mmio *mmio, int fd)
-+{
-+	int fw_handle;
-+	uint32_t error_counter_before;
-+	uint32_t error_counter_after;
-+	uint32_t saved_powergate;
-+	uint32_t node_id = NODE_ID_UNCORRECTABLE_ERROR;
-+	uint32_t error_id = ERROR_ID_CORE_COMPUTE;
-+	char *cper_event_line = NULL;
-+	char *reset_event_line = NULL;
-+	int poll_timeout;
-+
-+	igt_require_f(tracefs_event_exists(),
-+		      "xe_error_cper trace event not available; CPER-based "
-+		      "verification requires it\n");
-+	igt_require_f(tracefs_reset_event_exists(),
-+		      "xe_exec_queue_reset trace event not available; engine-reset "
-+		      "verification requires it\n");
-+
-+	fw_handle = acquire_forcewake(fd);
-+	saved_powergate = disable_powergate(mmio);
-+
-+	error_counter_before = get_counter(node_id, error_id);
-+
-+	tracefs_enable_xe_cper(true);
-+	tracefs_enable_xe_reset(true);
-+	tracefs_clear_trace();
-+
-+	acquire_steer_sem(mmio, STEER_SEM_POLL_TIMEOUT_MS);
-+	write_reg(mmio, MC_PKT_CTRL_MGSR_3D_ADDRESS,
-+		  MC_PKT_CTRL_MGSR_3D_ARM_VALUE);
-+	write_reg(mmio, LSC_STORAGE_ERR_INJ_TDL_GFX_ADDRESS,
-+		  LSC_STORAGE_ERR_INJ_TDL_GFX_VALUE);
-+	write_reg(mmio, MC_PKT_CTRL_MGSR_3D_ADDRESS,
-+		  MC_PKT_CTRL_MGSR_3D_VALUE);
-+	release_steer_sem(mmio);
-+
-+	igt_info("Injected GT Local Uncorrectable Unicast LSC Storage error\n");
-+
-+	run_heavy_lsc_workload(fd, false);
-+
-+	restore_powergate(mmio, saved_powergate);
-+	release_forcewake(fw_handle);
-+
-+	poll_timeout = max(CPER_EVENT_TIMEOUT_SEC, RESET_EVENT_TIMEOUT_SEC);
-+	poll_for_cper_and_reset(poll_timeout, &cper_event_line, &reset_event_line);
-+
-+	tracefs_enable_xe_cper(false);
-+	tracefs_enable_xe_reset(false);
-+	tracefs_clear_trace();
-+
-+	igt_assert_f(cper_event_line,
-+		     "No xe_error_cper trace event received within %d seconds "
-+		     "after LSC uncorrectable injection\n", poll_timeout);
-+	igt_info("Captured CPER trace event: %s\n", cper_event_line);
-+	validate_local_uc_nonfatal_cper(cper_event_line);
-+	free(cper_event_line);
-+
-+	igt_assert_f(reset_event_line,
-+		     "No xe_exec_queue_reset trace event received within %d seconds "
-+		     "after LSC uncorrectable injection; engine reset did not occur\n",
-+		     poll_timeout);
-+	igt_info("Captured engine reset trace event: %s\n", reset_event_line);
-+	free(reset_event_line);
-+
-+	error_counter_after = get_counter(node_id, error_id);
-+
-+	igt_assert_f(error_counter_before != UINT32_MAX &&
-+		     error_counter_after != UINT32_MAX,
-+		     "Failed to fetch valid error counters: before=%u after=%u\n",
-+		     error_counter_before, error_counter_after);
-+
-+	igt_info("error counter: before injection=%u after injection=%u\n",
-+		 error_counter_before, error_counter_after);
-+
-+	igt_assert_f(error_counter_after > error_counter_before,
-+		     "GT Local Uncorrectable Unicast LSC storage error injection "
-+		     "failed: before injection=%u after injection=%u\n",
-+		     error_counter_before, error_counter_after);
-+
-+	igt_info("Post recovery: re-running heavy LSC workload with no injection\n");
-+	error_counter_before = get_counter(node_id, error_id);
-+	run_heavy_lsc_workload(fd, true);
-+	error_counter_after = get_counter(node_id, error_id);
-+
-+	igt_assert_f(error_counter_before != UINT32_MAX &&
-+		     error_counter_after != UINT32_MAX,
-+		     "Failed to fetch valid Post recovery error counters: before=%u after=%u\n",
-+		     error_counter_before, error_counter_after);
-+
-+	igt_info("Post recovery error counter: before wl=%u after wl=%u\n",
-+		 error_counter_before, error_counter_after);
-+
-+	igt_assert_f(error_counter_before == error_counter_after,
-+		     "Post recovery LSC workload unexpectedly bumped error counter: "
-+		     "before=%u after=%u\n",
-+		     error_counter_before, error_counter_after);
-+
-+	igt_info("Post recovery LSC workload clean: counters match (%u)\n",
-+		 error_counter_after);
-+
-+	igt_info("GT Local Uncorrectable Unicast LSC storage error injection successful\n");
-+}
-+
- /* Inject a GT correctable error */
- static void l2_bank_corr_err_injection(struct xe_mmio *mmio, int fd)
- {
-@@ -585,6 +799,16 @@ static bool tracefs_event_exists(void)
- 	return stat(XE_CPER_EVENT_DIR, &st) == 0 && S_ISDIR(st.st_mode);
- }
- 
-+/**
-+ * tracefs_reset_event_exists - check xe_exec_queue_reset event directory is present
-+ */
-+static bool tracefs_reset_event_exists(void)
-+{
-+	struct stat st;
-+
-+	return stat(XE_RESET_EVENT_DIR, &st) == 0 && S_ISDIR(st.st_mode);
-+}
-+
- /**
-  * tracefs_enable_xe_cper - enable / disable the xe_error_cper trace event
-  */
-@@ -601,6 +825,22 @@ static void tracefs_enable_xe_cper(bool enable)
- 	close(fd);
- }
- 
-+/**
-+ * tracefs_enable_xe_reset - enable / disable the xe_exec_queue_reset trace event
-+ */
-+static void tracefs_enable_xe_reset(bool enable)
-+{
-+	int fd;
-+	const char val = enable ? '1' : '0';
-+
-+	fd = open(XE_RESET_ENABLE, O_WRONLY);
-+	igt_assert_f(fd >= 0, "Cannot open %s: %s\n", XE_RESET_ENABLE,
-+		     strerror(errno));
-+	igt_assert_eq(write(fd, &val, 1), 1);
-+	igt_info("Trace event %sabled: %s\n", enable ? "en" : "dis", XE_RESET_ENABLE);
-+	close(fd);
-+}
-+
- /**
-  * tracefs_clear_trace - wipe the trace ring buffer
-  */
-@@ -667,15 +907,15 @@ static char *wait_for_cper_event(int drm_fd)
- 	tracefs_clear_trace();
- 
- 	/* Call igt_get_error_counter to dump the cper in tracefs */
--	ret = igt_init_nl_socket(&ctx);
-+	ret = igt_drm_netlink_init(&ctx);
- 	if (ret < 0)
- 		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
- 
- 	ctx.node_id = 0;
- 	ctx.error_id = 1;
--	ret = igt_get_error_counter(&ctx);
-+	ret = igt_drm_netlink_get_error_counter(&ctx);
- 	if (ret < 0) {
--		igt_cleanup_nl_socket(&ctx);
-+		igt_drm_netlink_cleanup(&ctx);
- 		igt_assert_f(false, "Failed to query GT correctable error counter\n");
- 	}
- 
-@@ -695,7 +935,7 @@ static char *wait_for_cper_event(int drm_fd)
- 		free(trace);
- 	} while (!match && elapsed < CPER_EVENT_TIMEOUT_SEC);
- 
--	igt_cleanup_nl_socket(&ctx);
-+	igt_drm_netlink_cleanup(&ctx);
- 	tracefs_enable_xe_cper(false);
- 	tracefs_clear_trace();
- 
-@@ -777,6 +1017,98 @@ static void format_guid(const uint8_t guid[UUID_SIZE], char string[37])
- 		 guid[14], guid[15]);
- }
- 
-+/**
-+ * poll_for_cper_and_reset - scan the trace buffer for both an xe_error_cper
-+ * and an xe_exec_queue_reset event, up to @timeout_sec seconds. On return,
-+ * *out_cper / *out_reset hold a malloc'd copy of the first matching line
-+ * for each, or NULL if not seen. Caller must free each non-NULL pointer.
-+ */
-+static void poll_for_cper_and_reset(int timeout_sec,
-+				    char **out_cper, char **out_reset)
-+{
-+	char *trace, *line, *saveptr;
-+	int elapsed = 0;
-+
-+	*out_cper = NULL;
-+	*out_reset = NULL;
-+
-+	do {
-+		sleep(1);
-+		elapsed++;
-+		trace = tracefs_read_trace();
-+
-+		for (line = strtok_r(trace, "\n", &saveptr); line;
-+		     line = strtok_r(NULL, "\n", &saveptr)) {
-+			if (!*out_cper && strstr(line, "xe_error_cper:"))
-+				*out_cper = strdup(line);
-+			if (!*out_reset && strstr(line, "xe_exec_queue_reset:"))
-+				*out_reset = strdup(line);
-+			if (*out_cper && *out_reset)
-+				break;
-+		}
-+		free(trace);
-+	} while ((!*out_cper || !*out_reset) && elapsed < timeout_sec);
-+}
-+
-+static void validate_local_uc_nonfatal_cper(const char *event_line)
-+{
-+	const char *cper_raw;
-+	uint32_t rec_sev, sec_sev, rec_len, evt_count, err_hdr;
-+	uint32_t einfo_off, entry_off;
-+	uint8_t err_type, err_comp, uncorr_type;
-+
-+	cper_raw = parse_cper_event_field(event_line, "cper_raw");
-+	igt_assert_f(cper_raw, "cper_raw field not found in trace event\n");
-+
-+	rec_len = hexbuf_get_u32le(cper_raw, CPER_REC_RECORD_LENGTH_OFF);
-+
-+	rec_sev = hexbuf_get_u32le(cper_raw, CPER_REC_ERROR_SEVERITY_OFF);
-+	sec_sev = hexbuf_get_u32le(cper_raw, CPER_SEC_SEVERITY_OFF);
-+	igt_assert_f(rec_sev != CPER_SEV_FATAL,
-+		     "CPER record error_severity is FATAL (%u); expected non-fatal\n",
-+		     rec_sev);
-+	igt_assert_f(rec_sev == sec_sev,
-+		     "section_severity(%u) != record error_severity(%u)\n",
-+		     sec_sev, rec_sev);
-+	igt_assert_f(rec_sev == CPER_SEV_RECOVERABLE,
-+		     "Expected UEFI severity CPER_SEV_RECOVERABLE(%u) for uncorrectable "
-+		     "non-fatal, got %u\n", CPER_SEV_RECOVERABLE, rec_sev);
-+
-+	err_type = hexbuf_get_byte(cper_raw,
-+				   CPER_INTEL_HDR_OFFSET + CPER_INTEL_ERR_TYPE_OFF);
-+	err_comp = hexbuf_get_byte(cper_raw,
-+				   CPER_INTEL_HDR_OFFSET + CPER_INTEL_ERR_COMPONENT_OFF);
-+	igt_assert_f(err_type == XE_RAS_SEV_UNCORRECTABLE,
-+		     "Intel error_class.error_type=%u; expected XE_RAS_SEV_UNCORRECTABLE(%u)\n",
-+		     err_type, XE_RAS_SEV_UNCORRECTABLE);
-+	igt_assert_f(err_comp == XE_RAS_COMP_CORE_COMPUTE,
-+		     "Intel error_class.error_component=%u; expected XE_RAS_COMP_CORE_COMPUTE(%u)\n",
-+		     err_comp, XE_RAS_COMP_CORE_COMPUTE);
-+
-+	einfo_off = CPER_EINFO_OFFSET;
-+	entry_off = einfo_off + CPER_EINFO_HDR_SIZE;
-+	igt_assert_f(rec_len >= entry_off + CPER_PRIV_ENTRY_METADATA_OFF + sizeof(uint32_t),
-+		     "record_length %u too small to contain event entry error_log_header\n",
-+		     rec_len);
-+
-+	evt_count = hexbuf_get_u32le(cper_raw, einfo_off + CPER_EINFO_EVT_COUNT_OFF);
-+	igt_assert_f(evt_count > 0,
-+		     "event_queue_count is 0; cannot determine local/global scope\n");
-+
-+	err_hdr = hexbuf_get_u32le(cper_raw, entry_off + CPER_PRIV_ENTRY_METADATA_OFF);
-+	uncorr_type = (err_hdr >> CORE_COMPUTE_UNCORR_TYPE_SHIFT) &
-+		      CORE_COMPUTE_UNCORR_TYPE_MASK;
-+	igt_assert_f(uncorr_type != GLOBAL_UNCORR_ERROR,
-+		     "Expected local uncorrectable error (uncorr_type != %u), got %u "
-+		     "(error_log_header=0x%08x)\n",
-+		     GLOBAL_UNCORR_ERROR, uncorr_type, err_hdr);
-+
-+	igt_info("CPER classified as local uncorrectable non-fatal: "
-+		 "cper_sev=%u ras_sev=%u component=%u uncorr_type=%u "
-+		 "(error_log_header=0x%08x, evt_count=%u)\n",
-+		 rec_sev, err_type, err_comp, uncorr_type, err_hdr, evt_count);
-+}
-+
- /**
-  * SUBTEST: cper-tracefs-event-format
-  * Description: Verify that the xe_error_cper tracefs event exists under
-@@ -1103,6 +1435,10 @@ int igt_main()
- 		inject_error("test_GT-UC-unicast-wkr-cmd-parity-err-post-recovery-wl", &mmio, fd);
- 	}
- 
-+	igt_describe("Inject GT Local Uncorrectable Unicast LSC storage error and verify recovery via CPER.");
-+	igt_subtest("test_GT-local-Uncorrectable-lsc-storage-err")
-+		lsc_storage_uc_err_injection(&mmio, fd);
-+
- 	igt_describe("Inject GT correctable error and validate error-report event with threshold set to 1.");
- 	igt_subtest("test_l2-bank-corr-err-threshold-1")
- 		inject_error("test_l2-bank-corr-err-threshold-1", &mmio, fd);
-diff --git a/tests/intel/xe_err_injection.h b/tests/intel/xe_err_injection.h
-index a4b99711e..9b6f67cec 100644
---- a/tests/intel/xe_err_injection.h
-+++ b/tests/intel/xe_err_injection.h
-@@ -21,6 +21,17 @@
- #define STEER_SEMAPHORE_MGSR_3D 0x00FD0
- #define STEER_SEMAPHORE_MGSR_3D_VALUE 0x1
- 
-+#define STEER_SEM_POLL_TIMEOUT_MS 1000
-+#define STEER_SEM_POLL_INTERVAL_MS 1
-+
-+#define MC_PKT_CTRL_MGSR_3D_ARM_VALUE 0x1
-+
-+#define LSC_STORAGE_ERR_INJ_TDL_GFX_ADDRESS 0xE760
-+#define LSC_STORAGE_ERR_INJ_TDL_GFX_VALUE 0x8
-+
-+#define POWERGATE_ENABLE_ADDRESS 0xA210
-+#define POWERGATE_ENABLE_DISABLE_ALL_VALUE 0x0
-+
- /* Node types for error counters*/
- #define NODE_ID_CORRECTABLE_ERROR 0
- #define NODE_ID_UNCORRECTABLE_ERROR 1
--- 
-2.43.0
+Harry
+
+> ---
+> 
+> v3:
+> - new patch, replaces the open-coded "Bypass" setting in patch 6
+> ---
+>   lib/igt_kms.c                                 | 20 +++++++++++++------
+>   .../chamelium/kms_chamelium_color_pipeline.c  |  2 +-
+>   tests/kms_color_pipeline.c                    |  2 +-
+>   tests/kms_colorop.c                           |  6 +++---
+>   tests/kms_colorop_helper.c                    |  5 -----
+>   tests/kms_colorop_helper.h                    |  1 -
+>   6 files changed, 19 insertions(+), 17 deletions(-)
+> 
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 6039ad18a..cabe60a31 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2708,7 +2708,7 @@ static void igt_plane_reset(igt_plane_t *plane)
+>   		igt_plane_set_prop_value(plane, IGT_PLANE_HOTSPOT_Y, 0);
+>   
+>   	if (igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+> -		igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
+> +		igt_plane_set_color_pipeline(plane, NULL);
+>   
+>   	igt_plane_clear_prop_changed(plane, IGT_PLANE_IN_FENCE_FD);
+>   	plane->values[IGT_PLANE_IN_FENCE_FD] = ~0ULL;
+> @@ -4430,17 +4430,25 @@ bool igt_plane_is_valid_colorop(igt_plane_t *plane, igt_colorop_t *colorop)
+>   /**
+>    * igt_plane_set_color_pipeline:
+>    * @plane: Target plane.
+> - * @colorop: Colorop to set as color pipeline.
+> + * @colorop: Colorop to set as color pipeline, or NULL for "Bypass".
+>    *
+>    * This function sets the given @colorop as color pipeline on @plane, or fails
+> - * the test if it's an invalid color pipeline for the plane.
+> + * the test if it's an invalid color pipeline for the plane. Passing NULL sets
+> + * the plane color pipeline to "Bypass" but keeps the previously assigned
+> + * pipeline, so that pending colorop changes are still submitted with the
+> + * commit that deactivates it, which the kernel accepts because the colorop is
+> + * in the plane's old state.
+>    */
+>   void igt_plane_set_color_pipeline(igt_plane_t *plane, igt_colorop_t *colorop)
+>   {
+> -	igt_assert(igt_plane_is_valid_colorop(plane, colorop));
+> +	igt_assert(!colorop || igt_plane_is_valid_colorop(plane, colorop));
+>   
+> -	plane->assigned_color_pipeline = colorop;
+> -	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, colorop->name);
+> +	if (colorop)
+> +		plane->assigned_color_pipeline = colorop;
+> +
+> +	igt_plane_set_prop_enum(plane,
+> +				IGT_PLANE_COLOR_PIPELINE,
+> +				colorop ? colorop->name : "Bypass");
+>   }
+>   
+>   /**
+> diff --git a/tests/chamelium/kms_chamelium_color_pipeline.c b/tests/chamelium/kms_chamelium_color_pipeline.c
+> index db6107221..5738c6dd1 100644
+> --- a/tests/chamelium/kms_chamelium_color_pipeline.c
+> +++ b/tests/chamelium/kms_chamelium_color_pipeline.c
+> @@ -161,7 +161,7 @@ static void _test_plane_colorops(data_t *data,
+>   	chamelium_destroy_frame_dump(frame);
+>   
+>   	/* Cleanup */
+> -	set_color_pipeline_bypass(plane);
+> +	igt_plane_set_color_pipeline(plane, NULL);
+>   	reset_colorops(colorops);
+>   
+>   	igt_plane_set_fb(plane, NULL);
+> diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+> index 78860a845..f71416ce1 100644
+> --- a/tests/kms_color_pipeline.c
+> +++ b/tests/kms_color_pipeline.c
+> @@ -168,7 +168,7 @@ static void _test_plane_colorops(data_t *data,
+>   	igt_assert_crc_equal(crc_ref, &crc_pipe);
+>   
+>   	/* Cleanup per-test state */
+> -	set_color_pipeline_bypass(plane);
+> +	igt_plane_set_color_pipeline(plane, NULL);
+>   	reset_colorops(colorops);
+>   	igt_plane_set_fb(plane, NULL);
+>   	igt_display_commit_atomic(&data->display, 0, NULL);
+> diff --git a/tests/kms_colorop.c b/tests/kms_colorop.c
+> index 732b9d57f..2bee1eecd 100644
+> --- a/tests/kms_colorop.c
+> +++ b/tests/kms_colorop.c
+> @@ -287,7 +287,7 @@ static void colorop_plane_test(igt_display_t *display,
+>   
+>   	/* reset color pipeline*/
+>   
+> -	set_color_pipeline_bypass(plane);
+> +	igt_plane_set_color_pipeline(plane, NULL);
+>   
+>   	/* Commit */
+>   	igt_plane_set_fb(plane, input_fb);
+> @@ -315,7 +315,7 @@ static void colorop_plane_test(igt_display_t *display,
+>   
+>   	if (!colorops[0]) {
+>   		/* bypass test */
+> -		set_color_pipeline_bypass(plane);
+> +		igt_plane_set_color_pipeline(plane, NULL);
+>   	} else {
+>   		/* get COLOR_PIPELINE enum */
+>   		color_pipeline = get_color_pipeline(display, plane, colorops);
+> @@ -343,7 +343,7 @@ static void colorop_plane_test(igt_display_t *display,
+>   	/* Test bypass transition if requested */
+>   	if (verify_bypass) {
+>   		/* reset color pipeline*/
+> -		set_color_pipeline_bypass(plane);
+> +		igt_plane_set_color_pipeline(plane, NULL);
+>   
+>   		/* Commit */
+>   		igt_plane_set_fb(plane, input_fb);
+> diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
+> index da234410e..a109c1b06 100644
+> --- a/tests/kms_colorop_helper.c
+> +++ b/tests/kms_colorop_helper.c
+> @@ -450,11 +450,6 @@ void set_color_pipeline(igt_display_t *display,
+>   	}
+>   }
+>   
+> -void set_color_pipeline_bypass(igt_plane_t *plane)
+> -{
+> -	igt_plane_set_prop_enum(plane, IGT_PLANE_COLOR_PIPELINE, "Bypass");
+> -}
+> -
+>   static void reset_colorop(kms_colorop_t *colorop)
+>   {
+>   	igt_assert(colorop->colorop);
+> diff --git a/tests/kms_colorop_helper.h b/tests/kms_colorop_helper.h
+> index 9a1477666..2a0e3799f 100644
+> --- a/tests/kms_colorop_helper.h
+> +++ b/tests/kms_colorop_helper.h
+> @@ -114,7 +114,6 @@ void set_color_pipeline(igt_display_t *display,
+>   			igt_plane_t *plane,
+>   			kms_colorop_t *colorops[],
+>   			igt_colorop_t *color_pipeline);
+> -void set_color_pipeline_bypass(igt_plane_t *plane);
+>   void reset_colorops(kms_colorop_t *colorops[]);
+>   
+>   #endif /* __KMS_COLOROP_HELPER_H__ */
 
