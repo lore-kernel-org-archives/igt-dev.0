@@ -4,125 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBDF4CA5FC4
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Sep 2026 17:34:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 07CC5CA5FC1
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Sep 2026 17:40:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4D20010F1F3;
-	Wed, 30 Sep 2026 17:34:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9D39D10E320;
+	Wed, 30 Sep 2026 17:40:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="ud00RzBI";
+	dkim=pass (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.b="FltVqWO1";
 	dkim-atps=neutral
-Received: from CH4PR04CU002.outbound.protection.outlook.com
- (mail-northcentralusazon11013027.outbound.protection.outlook.com
- [40.107.201.27])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8CBD710F1F3
- for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2026 17:34:06 +0000 (UTC)
+Received: from CO1PR03CU002.outbound.protection.outlook.com
+ (mail-westus2azon11010017.outbound.protection.outlook.com [52.101.46.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98F2110F21D
+ for <igt-dev@lists.freedesktop.org>; Wed, 30 Sep 2026 17:39:34 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=u5Ip9i7Oh+zE2W933Y5gj/KN72C/VvLAx6fKBJb7FVF6fNInCZI976ar1UtCCAw6S2WGQlZiMTeZzuO57y/h88yLH+1UuSz2fT69gDgnZP5+PQv8jo8K+z+uTKKL1mYVpkuB3TGCYsrYptb4d7MSZJxqTYGX+Q8Mmv2TqsWq3l9OQwgYBrG7V0hj1xvH4rfS4Vum1mHYSnVKDfMm4Sd1aWx/szAlQRPrig0+J9gKNTuNmZD2mxtpMtL43TAitahGBRIW8nieSJ0XvkA0IqHnBMuHt78VRNKXkIu9UC1ih8Si7M6NtOalaoFudtiYbhx9IfcGF+PyOcbiImU709ooMQ==
+ b=querSGvj1CIQDUU3IhYEAZ+STG3/ajnXtqfHyofpIxyw5b44VYaiBfxpLZ7fcBT+sq+odySx1AXjPzaAZnYjTDHqDysfBhjcFvNRnYpgnkOhnRh4yuEcwzkue3Z26TTRwZGZVhmVnSApiNC98w2qlBweUoE+6tA0efYd3Atkqr3C7y1vvouHQDQxPG4HAkE1HO6XVdDKfH61Rpnl50pwahDtC/YRaOju7mUxCZVghJjBFJCUxd8U30CkEhCbuKXlitEISBtp1GziybBd/Ow4ncr13tJ8rqceOm67S1JFTrc2PARWp3wkZXqMHz/4+ODbQeTXjjK5UKwzP31OY2+z2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rDucsCMInlrNaTRk1aaBOaowk1I65WwNCb89g0urjA0=;
- b=Pt/UJBigEP03XxaZ2w4RW1QCCkcOpoCgVkbDhFcINqC6pPndesfzljHpUjM+dE1FL7eW2FWUeUq8fv8Hzbw6RY1zN85P/OWMkWEz3OKCcL7Rcas8Y5+B7KT8igvCXeJ0j16e0LiFs/bIjzDWD9tR5MlQAUti16ws3QfZarGRaZpguBvy+CaNji2/TatQ1w5fTMu6rJBQ+Y+VdSn2KALZPmAJ3ZIcwMZj2PxKvFismp2O0Pd+Fq1+R8VQ7q7owbK9HY4O8YDnXz8dT9Zc4pkDoZlldVU2O/kJrn3xjiHBfCN4vRO2f8VrhQavHh6eTLyrrAVTfgwGGzZ1/xvmvgAOCA==
+ bh=W3mu/Q/efT9lWemcVsYTawIIyIV9p3KAtAR2ZlQdxWM=;
+ b=QOOUpmD99976hzIAv1uKUxgXZjrNL1CyHmuJEqRLNaBhHSJTiZoftP/Ck35VLKfOViGJGrC4ew+ZAat/qTNsu3AhRAhmsiMlbM2KhEtB/6fo6xuGmrDdWQSpYctMO2HUr+FQx3WQlPkJRZUaX35tFNUqPJN0+aRz3JyOV79vv9x5FYCMCa+XIgt5IG/0ZIL1qLyewGrWocPub+Kx3kzNK06S/uszh6l2XfzkoqOQcbh6mFWzOoke22IqTohDUwsZZP1jA7ZmqJEgpp4tmjma3vOA0v7MBJns99Gqrz9ag63epmfE0jp94pwQJU8ff6f4lWFQSoF1/S0ftK+e+/4KvA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
  header.d=amd.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rDucsCMInlrNaTRk1aaBOaowk1I65WwNCb89g0urjA0=;
- b=ud00RzBI4zULkVI9rBbThDottbzjT3ozFQeR8G7/XfU+zahNThg5VKXNbgEShJbvynIcr+3BPWje1PEEkRytlKFjL7hLSrLRlLHqbxfCCtHBclyLwFb4NlLYOLfIS53pwqOgFHo8qDb9w9tc0STG/tgg20LC8tr5ah8bm/yLiWY=
+ bh=W3mu/Q/efT9lWemcVsYTawIIyIV9p3KAtAR2ZlQdxWM=;
+ b=FltVqWO1HtAVjB5o0M92NdhKw4cP44vaCLHckBI/2jLcetuVM0ECbs/zQr1FB8k/PnHj0NmRpX8vM7ifDZ+AFWvmfVHX6Kt4iAGTjDGvgRnr1OJPIcDiEUDkulv25GcYTGXidoMCARyKV65iGlBVEwp1liCnvrmg7lHtBzZ3yO4=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=amd.com;
 Received: from IA1PR12MB8190.namprd12.prod.outlook.com (2603:10b6:208:3f2::7)
- by CH3PR12MB8185.namprd12.prod.outlook.com (2603:10b6:610:123::17)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Wed, 30 Sep
- 2026 17:34:00 +0000
+ by DS7PR12MB5790.namprd12.prod.outlook.com (2603:10b6:8:75::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.16; Wed, 30 Sep
+ 2026 17:39:30 +0000
 Received: from IA1PR12MB8190.namprd12.prod.outlook.com
  ([fe80::c581:f5cc:c58f:c5de]) by IA1PR12MB8190.namprd12.prod.outlook.com
  ([fe80::c581:f5cc:c58f:c5de%5]) with mapi id 15.21.0451.022; Wed, 30 Sep 2026
- 17:33:59 +0000
-Message-ID: <9a9080bd-a119-45b1-901b-cbce1e2d8f3e@amd.com>
-Date: Wed, 30 Sep 2026 13:33:56 -0400
+ 17:39:29 +0000
+Message-ID: <ba96be44-c871-4c66-9b9d-7d5996ac642f@amd.com>
+Date: Wed, 30 Sep 2026 13:39:26 -0400
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2 1/3] include/drm-uapi/amdgpu: add queue id to
- user queue wait IOCTL
-To: Jesse Zhang <Jesse.Zhang@amd.com>, igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/2] tests/amdgpu: fix checkpatch errors in
+ amd_fuzzing
+To: Jesse Zhang <Jesse.Zhang@amd.com>, igt-dev@lists.freedesktop.org,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
  Alex Deucher <alexander.deucher@amd.com>,
  Christian Koenig <christian.koenig@amd.com>
-References: <20260924075300.172142-1-Jesse.Zhang@amd.com>
+References: <20260929030131.3415475-1-Jesse.Zhang@amd.com>
 Content-Language: en-US
 From: vitaly prosyak <vprosyak@amd.com>
-In-Reply-To: <20260924075300.172142-1-Jesse.Zhang@amd.com>
+In-Reply-To: <20260929030131.3415475-1-Jesse.Zhang@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR0101CA0145.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:e::18) To IA1PR12MB8190.namprd12.prod.outlook.com
+X-ClientProxiedBy: YT4PR01CA0242.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10f::21) To IA1PR12MB8190.namprd12.prod.outlook.com
  (2603:10b6:208:3f2::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR12MB8190:EE_|CH3PR12MB8185:EE_
-X-MS-Office365-Filtering-Correlation-Id: c718376d-2f99-4b74-fd67-08df1f1902ee
+X-MS-TrafficTypeDiagnostic: IA1PR12MB8190:EE_|DS7PR12MB5790:EE_
+X-MS-Office365-Filtering-Correlation-Id: 76c26db4-b8e4-4075-336c-08df1f19c752
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|23010399003|366016|1800799024|11063799006|56012099006|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: xx8rTAPgd2OrltTr7xdBzPnvzpA+Zp5g+NFn8CTzlJFvZHVoi2HZKOWQfv0h4DWYe+p471v+H1a+DZdlrCGrx5H64aST1NgdJ9mTBsrzvQ2NS9yRivUglPugces3qrWIqk3bYEQnVMhYh+lwVdN3eSUI2ASCn9lx4mWPNeDpmYqqHl1n8WG8Xv5wDVIfRoXzcmTyCf1ZZqQ9PoUCTwldNDHwEnhxyssnD1PNpqmts3rYWnOsr89/EmkqVxLW6J11RIod6mrndKe0V+LQfQgJdlq1yA30RwcfjJkZmXR36I0Uv4OfrbYZp/mDnwsFJvxd152HTnDw6l5xUEGc92Uj4JGLT6ZqCH9vaTJEJpwTdviOLMnHpnfsz0yAmpTu/+Twv+Q44vgT+RAtbRNTCS2HwCUyjFE72HFRuOnC+56Kl9UQQsV6fYwOgtlpCQ5HUE356bT20yTZ6nQpetJsEioAIVJbwYJl7d2ISe5WnGlwLiC4rmfnX4/Ob/Cmgv2iHTUWdGlwDEYWc1dXEv/i85SkiqC0MVwYR2XYr9BERd6YqFRclZQhIXBufgR/DjiR8Z9ythzPQYUyGszLtaTRHQxikBMUn4+4Gj+edrksVob7O8hFSf5RVTArFm5jLkmQNZGG
+ ARA:13230040|23010399003|376014|366016|1800799024|18002099003|22082099003|56012099006|11063799006|10067099003;
+X-Microsoft-Antispam-Message-Info: TIWlhowG5gJE3lr5O4hcmbURzyW+5nkvNHafWAoGOq+oprncGHSOWAjlLLwtCHEIbxDdrypQgKeJtORLCA/KB5r2n37zxYlmkKwusESp1/JQyCTxxrh8wu3XpgxZd55nl0HiyxmI6I980j2IJp1OzhFOcAm4Gz/KCu0QhhSAot8KUdhsg0GuicWY5nbQodLD67LPEshKVq9w3wmSKu38oWC0hLXWxNxQKJ5XmGNZh1SYONsYPIa3JhQCkj7XcgYN+uNVfgvkaBPpk0qMGgHBoSsWVVlyibGSOD+ew69msgZA5gAx0jSdTUocff3lGzRztX2P+jwncK888b1pQEy0V/AhGhlSTCq7uPI7Xp366QkZ3GjQbp96qqi63OTLO2t9czhvSkXwdEOmzHLSB/z8IBNvHGtbqDbzub0yVX+Kud7jCBNk/uPgWOIGp1MSgFXx2b75BcdF8W42PcCzoTCjhBV44d9oV/BGYKTshQXAL8/3Yivs4WDJGxSZuBHLxmS2kJoSaAB+KXgAOF1Y9ec8/lxLpmqLYP9nOR40S3CThuGmp+7I52E01ket03SIKs3GSV2PZ34c3lhcBw9ha55/53FbgRYbRVhFsR8mI7bsUAu1tUuMhIOAu5+dT5tv6zqcxUI9GiVrjyIKatBAO/VLSWCiLbQiVwb+7mXE8J3hpXI=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:IA1PR12MB8190.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(11063799006)(56012099006)(10067099003)(22082099003)(18002099003);
+ SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Z1RzNDM5ajZsK2QwMmNnb05Bb0NRc2czNVZyVm5vMndwR0tzQ2dKZStqNTVY?=
- =?utf-8?B?TXpCVjdrbE5nb0NKMzZvWUdNUGZpNDVUVzdhSGs2R1RXK3d1TlZCODZxN1h4?=
- =?utf-8?B?WkwxOFdkRkdkZVdZVTFQbHdTUkZqWjhtWjFvTnE5MTlFaWpuaGFrWU5GUFRn?=
- =?utf-8?B?aHRTUGJhSmg0OFVxQUsxMWxYQ2NsdTByK0JUb2pFMkJvZUJUZWV6WTJ3VjJs?=
- =?utf-8?B?M3pOSnpBcE56bnFyY29wSVhWUk1TUk1TcWxnRjF2ZlQyMGd2OEdBMGVOWWZt?=
- =?utf-8?B?MHNtSnM4RmhPbUpqTXA1MDJTbnB0K2ErbkdPYVREVXM4a09qYVcwcHlnWVdX?=
- =?utf-8?B?MFYwRG9WOUJXMjBHaHkxa1UrNU9rRVpmY293bEcyN090TlNGRlR2MmFXYWY2?=
- =?utf-8?B?MFllLzJrTVMzL2Yyc2tUSWh2MWtybzVhZXc2M2xVRkZvQXF2VjdMVlFORWFP?=
- =?utf-8?B?dE1wNHdxSS9uSWgwSnFSQkJRMFFvNlppK1crM3VqN0tJcVZpT3FQcnQ2eVVr?=
- =?utf-8?B?QUhlNDVEY1ViQVNIdU01K1ZPUUYwOEFtc0J6ajdERk93ME16UjRaZXRnMkpv?=
- =?utf-8?B?bGYyZ25zSHRhY1h3YTBBeUE3MWhqNUh1ZlBpd1FwZnNJRk5IZjYyaUxGZ1FF?=
- =?utf-8?B?eit6eTRJbmswUWE0YU5qejFMQlV1eERBZDRuTVBJVHlnWmhsanN5d3JpT3NX?=
- =?utf-8?B?RXVzbTN5Y2hGOVRrWTE5NDdETDZ3U292VVRkT0VaTS9TTm92TnMxeWZlUnlC?=
- =?utf-8?B?c1ZJRmVBQ0R5bmQrbWorZGd2TnRnNHEyRWswUXE0d0g3SzRvRzNPeWs3QkZW?=
- =?utf-8?B?VWpOSGhKbnV6TVpSYzhyVkFHRzZzTHJGeDByVHF0aHRjVktzWVlFQ1AwNVN0?=
- =?utf-8?B?OUIvVnZuOVMwVEFwTWl1bU80ZWYxcE4wSDFIdXpXNWFyWkxiRkpENWoyRHpW?=
- =?utf-8?B?U1MvZjZSYW82ZjlCRVJ6TklGZDFVVHp1VGk0NHdOellFZ0xRb0JOUzBKVER5?=
- =?utf-8?B?cS9ieThKQzRKbFpkQTRwVllxVEV2cDZjZzlzRU9HQkNqMHp0RnZsT3NYZVB6?=
- =?utf-8?B?V2l2U1ZpZ091b1JJdXNKZEEzK0RQbkZHOWhjcG9sMzV0WUFheTlRbDVsRmZO?=
- =?utf-8?B?M1pZekt1akk3dWl3cDdnTnZFb3dFUjhBMEI2QlVpZ3hQMDVwdlNaWDF3Nlll?=
- =?utf-8?B?RVc4TWVQcHBkM2E2SnFweFpVdmVLSlQyWkdTbTQxMlN5dmtOZjk3MlQ1YkFp?=
- =?utf-8?B?d2l5SWpQU00xNytXZzZtbUlkS0s0VUNLbno0QjhhR0RNMmI0eEdpaGVvNlVk?=
- =?utf-8?B?U3NrQno3UmtWWDdZSmptLzhlYUwvNVNEbXhuVWtmalloNkNLVFRRY3MraXo5?=
- =?utf-8?B?NlBBZnd5cTUzVko2ZUovaWgrOWcrSlRQSzJwODNPd3RPb0hGR2R1ZHBtQ1lD?=
- =?utf-8?B?VkFnc1NBamx0Q2VxZmM2U3RjVVA5TW9rUFltSG44bXAyTmlxSGFPdDhWaEhw?=
- =?utf-8?B?TVFsakgzbjc5M3RvdXhONU0vcHBsbnExWUZxUzlPdWtiUStWTVBTVUR6SUYr?=
- =?utf-8?B?S0Y3b0VRaW9nelFBcHNReVl5MS83WllqZUhVNlhtbTUrbDN4TmVBTUdwd0JQ?=
- =?utf-8?B?ZktmS2pkV1piN0Y5VjU0ZGVHK0VqUitaMDZRdTRQVWl1eFlxQ1ZLVGZKdndp?=
- =?utf-8?B?Q0pOWXEzSUhDQmt2SjU1b2FEUHNVNmJSU1NVdU42eVFucnR6RUlaa0hxTktk?=
- =?utf-8?B?RDVMQ0JRVDJOd0FLd1pFVGdId2x3cmhYT2c4ekpQNlY4MzhuN0NtWUQwMENh?=
- =?utf-8?B?clhJMkRjV2QrZEtJTnoxR0Z2MW43MFdtZ0srM3B3TnhPSjV1QlJ5QjlaRlNk?=
- =?utf-8?B?TjU0RlpHNGFNcGw5SllkMDYyNTNGcTR2V3BWYUcySm9XWlBjcFhZbzVuMFJD?=
- =?utf-8?B?ajRHeFFnVE9XZExJSWpVdkVuOFU1SUF6WGFTUnBLcmV3VlpPRXM2RTJhN0Nx?=
- =?utf-8?B?N25lSUxnODVxR1BXdDYxTk1GWUhPMHVNSnRNdnZRUXNJOHMrM3lNZW0vZ3ZN?=
- =?utf-8?B?c1dyQnh5dW1abStDRGlja2hJdHVpV0p2UkhPc2p6eDZrY0ZXK056MUZsVFdq?=
- =?utf-8?B?dlZKODRuRjkvR3RwaUpOKzE4bjEwMzlEMFViaXJnVzJBOFRaU1dUazhFN2lw?=
- =?utf-8?B?YzVhcU9OV3lPajdobzVKTGVZUDVwbHB4dlpHSS9YKy9GVXBBYU5DYXNqblBV?=
- =?utf-8?B?VG55eTA1bzArMWpoL0tFSjVSQzZtNkN3MFpwYkdaRUoxZUQ3ajYrakNRVzhq?=
- =?utf-8?B?ekhybXhNSGtHMWJVN0RURGxxYk9lUTl5cHBxWk01Rm5PUlJ4MHRNUT09?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cm00bmtvbHZ1aENoOGpobW9nWjcyd1RtTjhVbzIwdFpFbmJ1U05QNE16QWJm?=
+ =?utf-8?B?WVZxQUpZQzNFdVVBRzNhOWo5TlFQdVRqS2trd2wvYk41UzB4WmJTaEs4NFhn?=
+ =?utf-8?B?SjFTVWI5MndKQWprZ3ZGM0ZrUmJsT2ZmditVa1lQNjBHNjZBUDlxVHRDQTNq?=
+ =?utf-8?B?cEJFcWZMSjhHSjgzMWVSVTF4cGEyRVp6QWJIODZNNjhvenNPUm5LcDZLTlhu?=
+ =?utf-8?B?bjNOQXUzcjRkM2ZjU3I3dzNyaVY3MFhDQS9FeG9CNmVuV0ExWnlqVS9aSDRv?=
+ =?utf-8?B?LzlIT2RpcWg5L1hneGdlczloU1l3YThubkh6YlZBSTNWZlJjdDMrejVybGYz?=
+ =?utf-8?B?TGNlbGMxOVFXZExFV24rQmlodVUwVGU2N1IwdUdJVlR1aSttRzkrMEl3bGRR?=
+ =?utf-8?B?OEdJNUY3UDdXYXd0OEo5NGNwZURLQzF1RndOWGNtaU45ZjBxL0Q5ODJkWnVv?=
+ =?utf-8?B?TjBKN1dSQ241QnBxblM1SW9QcGRWWUxwOXA5MzNyK0poeXUyc2txRVIvMjR5?=
+ =?utf-8?B?S0FxMTNQaHRUSjY2UGpoaWFyWWtrVTQxQ2tldnp0b3ZTNzRKak5RdWYwWGh0?=
+ =?utf-8?B?VGlkZ2V5ZGR4UVY0d0F0RGw2ZmtkZXoxWnpOMXo0NWZpbnY1OXJNWjBQR0R5?=
+ =?utf-8?B?N3BDNEFZZzI5Y3g1WDExM3Fhb1A3cDNjbTF1djFBdmJQWTYvOWNsbTNqZStI?=
+ =?utf-8?B?cjNpZDVZaFRVZ0VJMXBDVWNVSFR2Uk13VXJOSVVwcEVvNzdzWUlnV3F6RmJh?=
+ =?utf-8?B?MEV4QXNvNjNDSzNBTFIrMlc4T1Q5QXpWM0VEd0hBZFJsNW9RVlB1eDljSnM1?=
+ =?utf-8?B?US9ZRE1LS2RDdjE2a3JTNllMaTVMS0phRllqWWJBcXdBbFlicE5wWVFCUGxw?=
+ =?utf-8?B?MFlCNXdXSXNWMk5KbjdPWlNKWWtBc0R4dktiWm8vL3dUV2Fkb2dWc1RZU3Av?=
+ =?utf-8?B?MjY0S0dWNURmN0pPRW5EKzZmOVB0SXNWYnpUUE0xV3V4VmRPWWowNlBmcTda?=
+ =?utf-8?B?R3NRZWJReHloK3paZUNqeUxicGtUMUxlV2l0Z0xoOGV5bkRBVUV3ZzltNmJo?=
+ =?utf-8?B?OFhaK1R0bk1rS1k4U1NibXhld01ReVRaWjdzaE5pWGFkU0V1SjBlVXgza3Fo?=
+ =?utf-8?B?cm0yQnNmTW9GU3VleUNUZndxV1Vxdy9lcDB3ZlZZUVhScSszeExwNm9EWWZv?=
+ =?utf-8?B?ZjhNT1ZRanZ3Wng0MGVEY2RxYWx3OUNTUmhZSVRpc2ViZ1VTMnU0KzdFMHlm?=
+ =?utf-8?B?Y3EyejBxbnovT3VnLzliSnZRejNzS1VaaFZtaUFjaTNVWjJhdFY4V21IRzUx?=
+ =?utf-8?B?aWtpbEw0N2FVVmNxaDFpdnBlVFAyQUcwMGFhRm9peHVqSzZ3RG1RM3c3Q3Bt?=
+ =?utf-8?B?VVNjTnpRTmcvQnA1REhRcXFNN0NjenBxbWRxeDg1YnFhc1RCVGRVYWZUdnJk?=
+ =?utf-8?B?WnMremQ2VUw3RDZCTTJNZkZhUnhxb0o5WEFpRG5Cb245UE1IcXNsZFVmaVBG?=
+ =?utf-8?B?bDJwQUtjNVdRditzZjI4cEhITnhZSGFGZnJ3RUQ0OTlOdkxMY1YzM1hpYnlv?=
+ =?utf-8?B?aFI0SGZ2R01Lc0pqRmdxWjVJelMrenhKOHBPZjJIbXF1NmRSZ3Z5WnpmRFlN?=
+ =?utf-8?B?bVhMQVhqYWRhQzIzUlQxbi9oaVdQVjdqank0ZVh6U3hsbUQ1Q1ZEWFd2ZnZH?=
+ =?utf-8?B?V3FrZ1ZPQmhRayt3QVFHQ0pjNXBtM0pHWnoyb2VBUUh6VDR5Mk1SWHF2QlpE?=
+ =?utf-8?B?eERveVJPY0dBWDhsakdPWXBZMnFsa1MrcEVYbDQ3U0hKWFpqZzdtOVk0U2lK?=
+ =?utf-8?B?SjFZTVlFbG5sc0tRVUM0Z0tCcWNxTURkRGxvVkNSVXpVV005MERUL0d4UU9q?=
+ =?utf-8?B?NE0wRUZIekhMK0NaVTlla0owWTBTcDJ2MDJaQzBSS1U1RXNGV3gxTFNQNVpD?=
+ =?utf-8?B?bFdIR0lHNzF6WW1rQUcwbEVkZVNjZjNDOXR0SFFqQ2NUU3NSZ0hyZXM1eTg5?=
+ =?utf-8?B?b2haSGNsSVIxM3d6UGt5U2IrTThTVjllcXltaWZBOXRjVURGWjQxTVRiMnQw?=
+ =?utf-8?B?YmMyM1Fqd290ME5WMlFoYzlzbzB3cVRkZ1poY21oeXRlbFhKdHY3clRzMEMv?=
+ =?utf-8?B?dUN3amRLWnRnMjhQbVBBOENwais4ZFpyZVVLN001Rm5XMzN0M1g2R2pCYlhX?=
+ =?utf-8?B?TDhaZllrT1VFQ0lIU3lsNlpReGVwTEZuc0FDelhiSUVOQTlBYysrSUtZMmlD?=
+ =?utf-8?B?aTloZUJNSVJ5dUxLcnJZN2V3RlBlNFVsOU9FVmh4MXQ2RWY2MElQcjdFMEFZ?=
+ =?utf-8?B?LzdXSHgvZjNjZjRnZndYWmwvOGFHbUJxK3NEazJCRVFDaXlwaU1QQT09?=
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c718376d-2f99-4b74-fd67-08df1f1902ee
+X-MS-Exchange-CrossTenant-Network-Message-Id: 76c26db4-b8e4-4075-336c-08df1f19c752
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR12MB8190.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 17:33:59.6502 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2026 17:39:29.2453 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SNFd1ns9/LwSXiNQoKLvidmE5d4HQq6l/FixRXrvhrzM2UKJfExwii58LRRP6HO61eQe7k8z6ELto8lo7YJUQg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8185
+X-MS-Exchange-CrossTenant-UserPrincipalName: k3vjyEB03sozeRIlz7sKs9CGQleVaMAvIg+Pn4rvw/vxKc2CStRotDDUL43e/i0aSxINfyI9ztu/Ks4W9jTrbA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5790
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -138,41 +138,300 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM all 3 patches, reviewed-by : Vitaly Prosyak <vitaly.prosyak@amd.com>
+Both patches look good to me. I will modify the subject line based on Kamil's suggestion.
+Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com
 
-On 2026-09-24 03:51, Jesse Zhang wrote:
-> Add waitq_id (plus padding) to the front of struct drm_amdgpu_userq_wait
-> to match the kernel/libdrm uAPI. The wait IOCTL uses the queue id to
-> retrieve the wait user queue and maintain the fence driver references in
-> it, so that queues in the same context release their fence-driver
-> references before queue destruction.
+On 2026-09-28 23:00, Jesse Zhang wrote:
+> Fix all checkpatch ERROR-level issues in amd_fuzzing.c:
+> - CODE_INDENT: use tabs for igt_assert_f() continuation-line indentation
+> - OPEN_BRACE: put the if-statement opening brace on the same line
 >
-> Mirrors the libdrm change "amdgpu: Add queue id support to the user
-> queue wait IOCTL" by Arunpravin Paneer Selvam:
->   https://gitlab.freedesktop.org/mesa/libdrm/-/commit/15e174c1ed2426be3228eb595f942481cfcf5a90
+> No functional change.
 >
-> v2: delete change-id
->
-> Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-> Co-Authored-By: Claude <noreply@anthropic.com>
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 > ---
->  include/drm-uapi/amdgpu_drm.h | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  tests/amdgpu/amd_fuzzing.c | 103 ++++++++++++++++++-------------------
+>  1 file changed, 51 insertions(+), 52 deletions(-)
 >
-> diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-> index ca24519c7..321f374d4 100644
-> --- a/include/drm-uapi/amdgpu_drm.h
-> +++ b/include/drm-uapi/amdgpu_drm.h
-> @@ -511,6 +511,12 @@ struct drm_amdgpu_userq_fence_info {
->  };
+> diff --git a/tests/amdgpu/amd_fuzzing.c b/tests/amdgpu/amd_fuzzing.c
+> index 36dd5d388..bcd3d66e0 100644
+> --- a/tests/amdgpu/amd_fuzzing.c
+> +++ b/tests/amdgpu/amd_fuzzing.c
+> @@ -291,8 +291,8 @@ run_drm_ioctl_field_cases(int fd, const char *ioctl_name, unsigned long request,
+>  		errno = 0;
+>  		ret = drmIoctl(fd, request, buf);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     ioctl_name, cases[i].case_name, buf);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     ioctl_name, cases[i].case_name, buf);
+>  	}
 >  
->  struct drm_amdgpu_userq_wait {
-> +	/**
-> +	 * @waitq_id: Queue handle used by the userq wait IOCTL to retrieve the
-> +	 * wait queue and maintain the fence driver references in it.
-> +	 */
-> +	__u32	waitq_id;
-> +	__u32	pad;
->  	/**
->  	 * @syncobj_handles: The list of syncobj handles submitted by the user queue
->  	 * job to get the va/value pairs.
+>  	free(buf);
+> @@ -452,8 +452,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		{
+>  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_BO_LIST, &base);
+>  			igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_BO_LIST", "bo_list.bo_number.huge", &base);
+> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +				     "DRM_IOCTL_AMDGPU_BO_LIST", "bo_list.bo_number.huge", &base);
+>  		}
+>  
+>  		/* bo_info_size cannot be zero. */
+> @@ -466,8 +466,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		{
+>  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_BO_LIST, &base);
+>  			igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_BO_LIST", "bo_list.bo_info_size.zero", &base);
+> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +				     "DRM_IOCTL_AMDGPU_BO_LIST", "bo_list.bo_info_size.zero", &base);
+>  		}
+>  
+>  		/* DESTROY should not require bo_info payload fields for a valid handle. */
+> @@ -747,8 +747,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		{
+>  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_WAIT_FENCES, &base);
+>  			igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fence_count.zero", &base);
+> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +				     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fence_count.zero", &base);
+>  		}
+>  
+>  		/* fence_count=0 must be rejected regardless of wait_all selector. */
+> @@ -758,8 +758,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		{
+>  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_WAIT_FENCES, &base);
+>  			igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fence_count.zero_wait_all", &base);
+> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +				     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fence_count.zero_wait_all", &base);
+>  		}
+>  
+>  		/* Non-zero fence_count with NULL fences pointer must fault copy-from-user. */
+> @@ -770,8 +770,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		{
+>  			int ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_WAIT_FENCES, &base);
+>  			igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fences.nonzero_count_null", &base);
+> +				     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +				     "DRM_IOCTL_AMDGPU_WAIT_FENCES", "wait_fences.fences.nonzero_count_null", &base);
+>  		}
+>  	}
+>  
+> @@ -924,24 +924,24 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.syncobj_handles.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.syncobj_handles.zero_count_nonnull", &arg);
+>  
+>  		memset(&arg, 0, sizeof(arg));
+>  		arg.bo_read_handles = 0x1;
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_read_handles.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_read_handles.zero_count_nonnull", &arg);
+>  
+>  		memset(&arg, 0, sizeof(arg));
+>  		arg.bo_write_handles = 0x1;
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_write_handles.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_write_handles.zero_count_nonnull", &arg);
+>  
+>  		/* non-zero count + NULL user pointer must fail in copy-from-user path */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -949,24 +949,24 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.syncobj_handles.nonzero_count_null", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.syncobj_handles.nonzero_count_null", &arg);
+>  
+>  		memset(&arg, 0, sizeof(arg));
+>  		arg.num_bo_read_handles = 1;
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_read_handles.nonzero_count_null", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_read_handles.nonzero_count_null", &arg);
+>  
+>  		memset(&arg, 0, sizeof(arg));
+>  		arg.num_bo_write_handles = 1;
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_write_handles.nonzero_count_null", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.bo_write_handles.nonzero_count_null", &arg);
+>  
+>  		/* queue lookup path: invalid queue_id with no dependency arrays */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -974,8 +974,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_SIGNAL, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.queue_id.invalid_empty", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_SIGNAL", "userq_signal.queue_id.invalid_empty", &arg);
+>  	}
+>  
+>  	/*
+> @@ -997,8 +997,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.syncobj_handles.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.syncobj_handles.zero_count_nonnull", &arg);
+>  
+>  		/* syncobj_timeline_handles: non-NULL + zero timeline count */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -1006,8 +1006,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_handles.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_handles.zero_count_nonnull", &arg);
+>  
+>  		/* syncobj_timeline_points: non-NULL + zero timeline count */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -1015,8 +1015,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_points.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_points.zero_count_nonnull", &arg);
+>  
+>  		/* bo_read_handles: non-NULL + zero count */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -1024,8 +1024,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_read_handles.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_read_handles.zero_count_nonnull", &arg);
+>  
+>  		/* bo_write_handles: non-NULL + zero count */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -1033,8 +1033,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_write_handles.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_write_handles.zero_count_nonnull", &arg);
+>  
+>  		/* out_fences: non-NULL + zero fence count */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -1042,8 +1042,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.out_fences.zero_count_nonnull", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.out_fences.zero_count_nonnull", &arg);
+>  
+>  		/* non-zero count + NULL user pointer must fail in copy-from-user path */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -1051,16 +1051,16 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.syncobj_handles.nonzero_count_null", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.syncobj_handles.nonzero_count_null", &arg);
+>  
+>  		memset(&arg, 0, sizeof(arg));
+>  		arg.num_syncobj_timeline_handles = 1;
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_handles.nonzero_count_null", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_handles.nonzero_count_null", &arg);
+>  
+>  		memset(&arg, 0, sizeof(arg));
+>  		arg.num_syncobj_timeline_handles = 1;
+> @@ -1068,24 +1068,24 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_points.nonzero_count_null", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.timeline_points.nonzero_count_null", &arg);
+>  
+>  		memset(&arg, 0, sizeof(arg));
+>  		arg.num_bo_read_handles = 1;
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_read_handles.nonzero_count_null", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_read_handles.nonzero_count_null", &arg);
+>  
+>  		memset(&arg, 0, sizeof(arg));
+>  		arg.num_bo_write_handles = 1;
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_write_handles.nonzero_count_null", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.bo_write_handles.nonzero_count_null", &arg);
+>  
+>  		/* wait queue lookup path: invalid waitq_id when out_fences requested */
+>  		memset(&arg, 0, sizeof(arg));
+> @@ -1095,8 +1095,8 @@ amd_kgd_multi_ioctl_field_fuzzing(int fd, amdgpu_device_handle amdgpu_dev)
+>  		errno = 0;
+>  		ret = drmIoctl(fd, DRM_IOCTL_AMDGPU_USERQ_WAIT, &arg);
+>  		igt_assert_f(ret != 0,
+> -                     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> -                     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.waitq_id.invalid_out_fences", &arg);
+> +			     "%s unexpectedly succeeded for %s (arg=%p)\n",
+> +			     "DRM_IOCTL_AMDGPU_USERQ_WAIT", "userq_wait.waitq_id.invalid_out_fences", &arg);
+>  	}
+>  	/*
+>  	 * USERQ_WAIT timeline points are 64-bit in UAPI.  Verify that the
+> @@ -2209,8 +2209,7 @@ amd_test_try_create_userq(int fd, amdgpu_device_handle amdgpu_dev, uint32_t ip_t
+>  
+>  	(void)fd;
+>  
+> -	if (!amdgpu_dev || !userq)
+> -	{
+> +	if (!amdgpu_dev || !userq) {
+>  		igt_info("userq create failed: invalid args dev=%p userq=%p ip=%u\n",
+>  			 amdgpu_dev, userq, ip_type);
+>  		return false;
