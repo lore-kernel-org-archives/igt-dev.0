@@ -4,24 +4,24 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE8D0CA5FC4
-	for <igt-dev@archiver.kernel.org>; Wed, 30 Sep 2026 18:09:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BD32CA5FC4
+	for <igt-dev@archiver.kernel.org>; Wed, 30 Sep 2026 19:23:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4ECA210E0CD;
-	Wed, 30 Sep 2026 18:09:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 444BC10E5E1;
+	Wed, 30 Sep 2026 19:23:20 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B46510E0CD;
- Wed, 30 Sep 2026 18:08:29 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E66C710E5E1;
+ Wed, 30 Sep 2026 19:22:35 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============7970619367377333106=="
+ boundary="===============6338283292432212476=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/intel=5Fcompute=3A_En?=
- =?utf-8?q?able_thread-group_preemption_on_NVL-P?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/intel=5Fcompute=3A_Enab?=
+ =?utf-8?q?le_thread-group_preemption_on_NVL-P?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Jan Maslak" <jan.maslak@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 30 Sep 2026 18:08:29 -0000
-Message-ID: <179079170953.225503.935087625646087035@61270ab9df2a>
+Date: Wed, 30 Sep 2026 19:22:35 -0000
+Message-ID: <179079615593.225504.15177000474733532749@61270ab9df2a>
 X-Patchwork-Hint: ignore
 References: <20260930141309.228834-1-jan.maslak@intel.com>
 In-Reply-To: <20260930141309.228834-1-jan.maslak@intel.com>
@@ -41,7 +41,7 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============7970619367377333106==
+--===============6338283292432212476==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -50,83 +50,50 @@ Content-Transfer-Encoding: 7bit
 
 Series: lib/intel_compute: Enable thread-group preemption on NVL-P
 URL   : https://patchwork.freedesktop.org/series/175307/
-State : failure
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9118 -> IGTPW_15926
+CI Bug Log - changes from XEIGT_9118_BAT -> XEIGTPW_15926_BAT
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with IGTPW_15926 absolutely need to be
-  verified manually.
+  No regressions found.
+
   
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_15926, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/index.html
-
-Participating hosts (38 -> 38)
+Participating hosts (15 -> 15)
 ------------------------------
 
   No changes in participating hosts
 
-Possible new issues
--------------------
 
-  Here are the unknown changes that may have been introduced in IGTPW_15926:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live@migrate:
-    - bat-arlh-3:         [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9118/bat-arlh-3/igt@i915_selftest@live@migrate.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/bat-arlh-3/igt@i915_selftest@live@migrate.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15926 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live:
-    - bat-arlh-3:         [PASS][3] -> [INCOMPLETE][4] ([i915#16547])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9118/bat-arlh-3/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/bat-arlh-3/igt@i915_selftest@live.html
-
-  
-  [i915#16547]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16547
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
   * IGT: IGT_9118 -> IGTPW_15926
-  * Linux: CI_DRM_19240 -> CI_DRM_19245
+  * Linux: xe-5846-f59db4a7bc845221736d574ec8a3bbb117eb23e4 -> xe-5851-71ee29e1a20f63cd880cf336e9dff825d87f025d
 
-  CI-20190529: 20190529
-  CI_DRM_19240: f59db4a7bc845221736d574ec8a3bbb117eb23e4 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19245: 71ee29e1a20f63cd880cf336e9dff825d87f025d @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_15926: 5e4e4d49b94a65e08acb982b62a891132898f642 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9118: 26513be3e0f711ed835ec50d5cdcb723ef224105 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5846-f59db4a7bc845221736d574ec8a3bbb117eb23e4: f59db4a7bc845221736d574ec8a3bbb117eb23e4
+  xe-5851-71ee29e1a20f63cd880cf336e9dff825d87f025d: 71ee29e1a20f63cd880cf336e9dff825d87f025d
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15926/index.html
 
---===============7970619367377333106==
+--===============6338283292432212476==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -148,57 +115,32 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>lib/intel_compute: Enable thread-group preemption on NVL-P</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175307/">https://patchwork.freedesktop.org/series/175307/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15926/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15926/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9118 -&gt; IGTPW_15926</h1>
+    <h1>CI Bug Log - changes from XEIGT_9118_BAT -&gt; XEIGTPW_15926_BAT</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_15926 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_15926, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/index.html</p>
-<h2>Participating hosts (38 -&gt; 38)</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
 <p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_15926:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live@migrate:<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9118/bat-arlh-3/igt@i915_selftest@live@migrate.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/bat-arlh-3/igt@i915_selftest@live@migrate.html">INCOMPLETE</a></li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15926 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9118/bat-arlh-3/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15926/bat-arlh-3/igt@i915_selftest@live.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16547">i915#16547</a>)</li>
-</ul>
-</li>
-</ul>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9118 -&gt; IGTPW_15926</li>
-<li>Linux: CI_DRM_19240 -&gt; CI_DRM_19245</li>
+<li>Linux: xe-5846-f59db4a7bc845221736d574ec8a3bbb117eb23e4 -&gt; xe-5851-71ee29e1a20f63cd880cf336e9dff825d87f025d</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19240: f59db4a7bc845221736d574ec8a3bbb117eb23e4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19245: 71ee29e1a20f63cd880cf336e9dff825d87f025d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15926: 5e4e4d49b94a65e08acb982b62a891132898f642 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9118: 26513be3e0f711ed835ec50d5cdcb723ef224105 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+<p>IGTPW_15926: 5e4e4d49b94a65e08acb982b62a891132898f642 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9118: 26513be3e0f711ed835ec50d5cdcb723ef224105 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5846-f59db4a7bc845221736d574ec8a3bbb117eb23e4: f59db4a7bc845221736d574ec8a3bbb117eb23e4<br />
+  xe-5851-71ee29e1a20f63cd880cf336e9dff825d87f025d: 71ee29e1a20f63cd880cf336e9dff825d87f025d</p>
 
 </body>
 </html>
 
---===============7970619367377333106==--
+--===============6338283292432212476==--
