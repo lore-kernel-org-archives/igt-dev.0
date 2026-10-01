@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFBEECA5FCE
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 19:10:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53238CA5FD2
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 19:37:15 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6963510E1E6;
-	Thu,  1 Oct 2026 19:10:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CF30910E025;
+	Thu,  1 Oct 2026 19:37:14 +0000 (UTC)
 Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B677D10E1E6;
- Thu,  1 Oct 2026 19:10:07 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 77C4610E251;
+ Thu,  1 Oct 2026 19:36:27 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3151989385275833760=="
+ boundary="===============2272081343624215636=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/kms=5Fcolor=5Fpipel?=
- =?utf-8?q?ine=3A_Skip_CRC_check_for_fixed_matrix?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tools/gputop=3A_add_i915_?=
+ =?utf-8?q?PMU_engine_monitoring_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Swati Sharma" <swati2.sharma@intel.com>
+To: "Sebastian Brzezinka" <sebastian.brzezinka@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Oct 2026 19:10:07 -0000
-Message-ID: <179088180773.230653.3759497332945265588@61270ab9df2a>
+Date: Thu, 01 Oct 2026 19:36:27 -0000
+Message-ID: <179088338748.230654.4579021917030735085@61270ab9df2a>
 X-Patchwork-Hint: ignore
-References: <20261001103748.1161693-1-swati2.sharma@intel.com>
-In-Reply-To: <20261001103748.1161693-1-swati2.sharma@intel.com>
+References: <cover.1790853076.git.sebastian.brzezinka@intel.com>
+In-Reply-To: <cover.1790853076.git.sebastian.brzezinka@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3151989385275833760==
+--===============2272081343624215636==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_color_pipeline: Skip CRC check for fixed matrix
-URL   : https://patchwork.freedesktop.org/series/175354/
+Series: tools/gputop: add i915 PMU engine monitoring (rev3)
+URL   : https://patchwork.freedesktop.org/series/174991/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9123 -> IGTPW_15932
+CI Bug Log - changes from IGT_9123 -> IGTPW_15933
 ====================================================
 
 Summary
@@ -64,7 +64,7 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15932/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15933/index.html
 
 Participating hosts (39 -> 37)
 ------------------------------
@@ -82,18 +82,18 @@ Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_9123 -> IGTPW_15932
+  * IGT: IGT_9123 -> IGTPW_15933
 
   CI-20190529: 20190529
   CI_DRM_19262: a064e93fc25c7d4600c0ff802918395291087517 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15932: a7014825f906d9ea99297a9f874b542df23cf3f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGTPW_15933: 08c305bababb34c63c1341e99c4f35317b58194e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9123: afd8cfb7aa15906974dd979b6dc739ed17ab9e33 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15932/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15933/index.html
 
---===============3151989385275833760==
+--===============2272081343624215636==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -113,20 +113,20 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_color_pipeline: Skip CRC check for fixed matrix</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175354/">https://patchwork.freedesktop.org/series/175354/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tools/gputop: add i915 PMU engine monitoring (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174991/">https://patchwork.freedesktop.org/series/174991/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15932/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15932/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15933/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15933/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9123 -&gt; IGTPW_15932</h1>
+    <h1>CI Bug Log - changes from IGT_9123 -&gt; IGTPW_15933</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15932/index.html</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15933/index.html</p>
 <h2>Participating hosts (39 -&gt; 37)</h2>
 <p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
 <h2>Changes</h2>
@@ -134,14 +134,14 @@ Content-Transfer-Encoding: 7bit
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9123 -&gt; IGTPW_15932</li>
+<li>IGT: IGT_9123 -&gt; IGTPW_15933</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_19262: a064e93fc25c7d4600c0ff802918395291087517 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15932: a7014825f906d9ea99297a9f874b542df23cf3f7 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGTPW_15933: 08c305bababb34c63c1341e99c4f35317b58194e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
   IGT_9123: afd8cfb7aa15906974dd979b6dc739ed17ab9e33 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============3151989385275833760==--
+--===============2272081343624215636==--
