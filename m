@@ -4,27 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6FE01CA5FCF
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 07:08:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C36DCA5FD2
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 07:17:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1BAD110F59B;
-	Thu,  1 Oct 2026 07:08:49 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A3B0710F59D;
- Thu,  1 Oct 2026 07:08:05 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4627990505624655742=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 99E8310F5A8;
+	Thu,  1 Oct 2026 07:17:22 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="S9ekS+B0";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4202910F598
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 07:16:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790838996; x=1822374996;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=VZJN/G6zTie2iYbT8EoFFlo9rs8d9c68NyXavsA0Ffc=;
+ b=S9ekS+B0MuyR4054iNmIkDac2TL7rmdiWbbdFEsgR//4AA4pp7B07IOT
+ 58g3g8vL/QuBhBM7TlOrx+oWyn2OGcNjNdf38jO4qEXHhhKKj3mAjdlHD
+ xlXkUxDs2IsAlQex2XG+RI6U9OWNybj0T29DNmSkR1DM3myONKtuZoSN9
+ G9N5rqVrbt7ILQkrnjJyS4SsCM9sDGZoOp9TurrdyXCGa/cO3JfsicWbo
+ nw6/zOPIXTLyUetTLrUyJEqLsjLTfW8OwLe4Y+W6OwR/PkOSPKxfgOQYc
+ +ny4HvZMONy6QLw8UbJhmpI2sQ5QuB8ueJwrkU0/4mHIVGIJhAJYfm4a0 w==;
+X-CSE-ConnectionGUID: 5bN5BumyRpywjFmB14OMqg==
+X-CSE-MsgGUID: D7fbaFmdTfKESxqAmwaRew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="91605984"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="91605984"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2026 00:15:44 -0700
+X-CSE-ConnectionGUID: h/I/dnPETRmcuomdCvt7hw==
+X-CSE-MsgGUID: 0Zbtn5wBR1yjYlYi6p2GPw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="279138301"
+Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
+ by ORVIESA003-auth.jf.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 00:15:43 -0700
+From: Kunal Joshi <kunal1.joshi@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kunal Joshi <kunal1.joshi@intel.com>,
+	Sowmiya S <sowmiya.s@intel.com>
+Subject: [PATCH i-g-t 01/13] lib/i915/i915_dp: add helpers for the allowed
+ link configs debugfs
+Date: Thu,  1 Oct 2026 13:06:51 +0530
+Message-Id: <20261001073703.5067-2-kunal1.joshi@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261001073703.5067-1-kunal1.joshi@intel.com>
+References: <20261001073703.5067-1-kunal1.joshi@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Preserve_const_qualifiers?=
- =?utf-8?q?_in_string_parsing_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Alex Hung" <alex.hung@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 01 Oct 2026 07:08:05 -0000
-Message-ID: <179083848566.227242.17784570178813461142@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20260929154950.838280-1-alex.hung@amd.com>
-In-Reply-To: <20260929154950.838280-1-alex.hung@amd.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,146 +66,162 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4627990505624655742==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The existing helpers don't tell which link configs can actually be used.
+i915_dp_get_max_supported_rate() parses i915_dp_force_link_rate, which
+only lists the source rates, and the driver silently clamps a forced
+rate the sink doesn't support.
 
-== Series Details ==
+The intel_dp_allowed_link_configs connector debugfs file lists the lane
+count and link rate combos the driver picks from. Add
+i915_dp_get_allowed_link_configs() to read them, and
+i915_dp_has_allowed_link_configs_debugfs() to check the file exists.
+We'll be adding a user in follow-up.
 
-Series: Preserve const qualifiers in string parsing (rev2)
-URL   : https://patchwork.freedesktop.org/series/175019/
-State : success
+Assisted-by: GitHub_Copilot:claude-opus-5
+Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
+Reviewed-by: Sowmiya S <sowmiya.s@intel.com>
+---
+ lib/i915/i915_dp.c | 81 ++++++++++++++++++++++++++++++++++++++++++++++
+ lib/i915/i915_dp.h | 17 ++++++++++
+ 2 files changed, 98 insertions(+)
 
-== Summary ==
+diff --git a/lib/i915/i915_dp.c b/lib/i915/i915_dp.c
+index 3d570f7cc..aba6aa8d5 100644
+--- a/lib/i915/i915_dp.c
++++ b/lib/i915/i915_dp.c
+@@ -37,6 +37,12 @@
+ #include "igt_core.h"
+ #include "igt_kms.h"
+ 
++/*
++ * The driver allows at most 10 link rates over 3 lane counts, i.e. 30 entries
++ * of at most "4x2000000 ", so 1024 has plenty of room to spare.
++ */
++#define LINK_CONFIGS_BUF_SIZE	1024
++
+ /**
+  * i915_dp_parse_marked_value:
+  * @buf: Buffer containing the content to parse
+@@ -391,6 +397,81 @@ int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output)
+ 	return max_rate;
+ }
+ 
++/**
++ * i915_dp_has_allowed_link_configs_debugfs:
++ * @drm_fd: A drm file descriptor
++ * @output: Target output
++ *
++ * Checks if the allowed link configs debugfs is available for a specific
++ * output.
++ *
++ * Returns: True if the debugfs is available, false otherwise
++ */
++bool i915_dp_has_allowed_link_configs_debugfs(int drm_fd, igt_output_t *output)
++{
++	char buf[LINK_CONFIGS_BUF_SIZE];
++
++	return igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
++					       "intel_dp_allowed_link_configs",
++					       buf, sizeof(buf)) == 0;
++}
++
++/**
++ * i915_dp_get_allowed_link_configs:
++ * @drm_fd: A drm file descriptor
++ * @output: Target output
++ * @configs: Array to store the allowed link configurations in
++ * @max_configs: Number of entries in @configs
++ *
++ * Read the link configurations the driver currently allows on @output, i.e.
++ * the intersection of the source rates, the rates the sink advertises and the
++ * current link limits.
++ *
++ * The driver lists them in the order it would pick them, which differs between
++ * SST and MST and depends on earlier link training results, so callers have to
++ * treat the result as an unordered set.
++ *
++ * Returns: The number of configurations stored in @configs
++ */
++int i915_dp_get_allowed_link_configs(int drm_fd, igt_output_t *output,
++				     struct i915_dp_link_config *configs,
++				     int max_configs)
++{
++	char buf[LINK_CONFIGS_BUF_SIZE];
++	char *token, *saveptr = NULL;
++	int count = 0;
++	int res;
++
++	res = igt_debugfs_read_connector_file(drm_fd, igt_output_name(output),
++					      "intel_dp_allowed_link_configs",
++					      buf, sizeof(buf));
++	igt_assert_f(res == 0, "Unable to read %s/intel_dp_allowed_link_configs\n",
++		     igt_output_name(output));
++
++	/* An empty set of allowed configurations reads back as a bare newline. */
++	buf[strcspn(buf, "\n")] = '\0';
++
++	for (token = strtok_r(buf, " ", &saveptr); token;
++	     token = strtok_r(NULL, " ", &saveptr)) {
++		int lane_count, link_rate;
++		char extra;
++
++		igt_assert_f(count < max_configs,
++			     "More than %d link configs on %s\n",
++			     max_configs, igt_output_name(output));
++		igt_assert_f(sscanf(token, "%dx%d%c", &lane_count, &link_rate,
++				    &extra) == 2 && lane_count > 0 &&
++			     link_rate > 0,
++			     "Failed to parse link config '%s'\n", token);
++
++		configs[count].lane_count = lane_count;
++		configs[count].link_rate = link_rate;
++		count++;
++	}
++
++	return count;
++}
++
+ /**
+  * i915_dp_get_next_lower_rate:
+  * @drm_fd: A drm file descriptor
+diff --git a/lib/i915/i915_dp.h b/lib/i915/i915_dp.h
+index 5d17713e2..c818b3937 100644
+--- a/lib/i915/i915_dp.h
++++ b/lib/i915/i915_dp.h
+@@ -10,6 +10,19 @@
+ /* DP link rates are in 10 kbit/s units; UHBR10 is 10 Gbps. */
+ #define I915_DP_UHBR10_LINK_RATE	1000000
+ 
++/**
++ * struct i915_dp_link_config:
++ * @lane_count: Number of lanes
++ * @link_rate: Link rate in 10 kbit/s units
++ *
++ * A single link configuration, as listed by the intel_dp_allowed_link_configs
++ * connector debugfs file.
++ */
++struct i915_dp_link_config {
++	int lane_count;
++	int link_rate;
++};
++
+ /**
+  * i915_dp_is_uhbr_rate:
+  * @link_rate: DP link rate in 10 kbit/s units, as reported by the
+@@ -40,6 +53,10 @@ void i915_dp_reset_link_params(int drm_fd, igt_output_t *output);
+ void i915_dp_set_link_params(int drm_fd, igt_output_t *output,
+ 			     const char *link_rate, const char *lane_count);
+ int i915_dp_get_max_supported_rate(int drm_fd, const igt_output_t *output);
++bool i915_dp_has_allowed_link_configs_debugfs(int drm_fd, igt_output_t *output);
++int i915_dp_get_allowed_link_configs(int drm_fd, igt_output_t *output,
++				     struct i915_dp_link_config *configs,
++				     int max_configs);
+ int i915_dp_get_next_lower_rate(int drm_fd, igt_output_t *output, int rate);
+ 
+ #endif
+-- 
+2.25.1
 
-CI Bug Log - changes from IGT_9116 -> IGTPW_15919
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html
-
-Participating hosts (38 -> 37)
-------------------------------
-
-  Missing    (1): bat-dg2-13 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15919 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-arlh-3:         [PASS][1] -> [INCOMPLETE][2] ([i915#17254])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9116/bat-arlh-3/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/bat-arlh-3/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [FAIL][3] ([i915#16664]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9116/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#16664]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16664
-  [i915#17254]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17254
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9116 -> IGTPW_15919
-
-  CI-20190529: 20190529
-  CI_DRM_19233: ecc5a84be849c400af610cdc613a0274e3b101b2 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15919: 15919
-  IGT_9116: 9d4b6ef512b4e2e4d05129c6519313fd13a306d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html
-
---===============4627990505624655742==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Preserve const qualifiers in string parsing (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175019/">https://patchwork.freedesktop.org/series/175019/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9116 -&gt; IGTPW_15919</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/index.html</p>
-<h2>Participating hosts (38 -&gt; 37)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15919 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9116/bat-arlh-3/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/bat-arlh-3/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17254">i915#17254</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_hdmi_inject@inject-audio:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9116/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16664">i915#16664</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15919/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9116 -&gt; IGTPW_15919</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19233: ecc5a84be849c400af610cdc613a0274e3b101b2 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15919: 15919<br />
-  IGT_9116: 9d4b6ef512b4e2e4d05129c6519313fd13a306d2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============4627990505624655742==--
