@@ -4,148 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A7FFCA5FB3
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 06:51:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E3369CA5FC5
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 07:00:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0767110E288;
-	Thu,  1 Oct 2026 06:51:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9108D10F588;
+	Thu,  1 Oct 2026 07:00:05 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="dmrhr5Vx";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="N9y8yfCJ";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B72610E051
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 06:50:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8500910F588
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 06:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790837416; x=1822373416;
- h=from:to:cc:subject:date:message-id:references:
+ t=1790837957; x=1822373957;
+ h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=ojoIOzUfdOreBWi3wCPg3jQwjst2FOv3PJYrH2vmmio=;
- b=dmrhr5VxPqKFfWnZw0FRSDj6djhoW7KKRZtdou/WkdHmpyJg70uS1Pp8
- PX5JbmQ/A9XJs/yLwV4nW8ECy+eZhs6iKAYgzkstrNGrMAcREi9zE4wb9
- VZkzRy340xigOA7VoX0WQrQPm3/OoeHWQdXQdC3ZzFozTGlNaNLHEVJ1w
- kX4oSx5MbbSFP2qCo3m+bQ6ha5VfW0lqMvvbAVIBZRoYTEZ5PucASuHBm
- kl7zBSTb4AXCY/DobTnBhH5jGtTK7I5bRgPDyMLyWXrcFS45roW8qO7uP
- W58M8MGiNaXknmAO+79dqoqOX/v0BNMgYOXwdTAN4Ryti+2GWbX/Y/fCs w==;
-X-CSE-ConnectionGUID: nhzrWanBSiGee+dgKqYfmA==
-X-CSE-MsgGUID: G441zeJVTR2uHD/4sQVBpw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="90354117"
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="90354117"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2026 23:50:15 -0700
-X-CSE-ConnectionGUID: 3TPTj3tlTDCpiiCEeySzGw==
-X-CSE-MsgGUID: c4Ti3YqKSRmA3iW6awHnyg==
+ bh=growbrgnvOvSrb7nnWghGfX2OtMUEdFc/gslbrlq8SE=;
+ b=N9y8yfCJuWKCqx23/xjmMkxmlpTQQmAJjnDRXUngC6rjYKZShobZyqb5
+ NT1BJTYZE+JmjGZJ2ls/aaYWfxNxr7ldG/Soaq/3G125Pph5RVc/O7x2p
+ SsWjmMZMe/J11OvQox7ivJ4E0uZR+ZiQzY8oyRgn8Sd8mgH/08Mt+fpid
+ XQuD2Gtu9UVNd5SQL5g2VBJ5rfNXhlu4EbgYkae1l8k6T9YVq8GpXgCYF
+ MFJd2ooQVx4zW0VbAUzjEn0JrTsBJhzNP5V0/6fNUBRvbbpnzT+VsJiQo
+ YOoT8cAmdyd//niQC7/VWwU1Ip+vd3oBrGjIIUpNe7yMOrxjrB+1ZYNuf w==;
+X-CSE-ConnectionGUID: EKU5o+RPS0i4VUYemCxJIA==
+X-CSE-MsgGUID: q5fzVWlYR1O9eGY6yJFxPw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="109070086"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="109070086"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2026 23:59:17 -0700
+X-CSE-ConnectionGUID: ez3Hsob+R12Um49c51yFJw==
+X-CSE-MsgGUID: j196YRrFSauezdb4k0xLcQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="275027680"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2026 23:50:15 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="279133876"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Sep 2026 23:59:17 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 30 Sep 2026 23:50:14 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.49; Wed, 30 Sep 2026 23:59:16 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 23:50:14 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.24) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.49 via Frontend Transport; Wed, 30 Sep 2026 23:59:16 -0700
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.45) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 30 Sep 2026 23:50:14 -0700
+ 15.2.2562.49; Wed, 30 Sep 2026 23:59:10 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=c+llKgO2c6Jf/r3P2OSB6olWmWdj0ODudlRYOuI5G8GIh9f84Thb88Fo97iYeeWYxZZhnl2PwqrfFSkpauD3OVQiW4v+UZrDn6m0Z+x1ysFnVkVlp1OtSjg1xvAW/2AnO4of/2/nkwQpRmuDKUQlgQu+g/cFEZPKHwgNWLSNKvR0bR3LzHDsIRg+PHs9wTjLLaA8hfIBbb6Rk07IvbOll23ZBMITc0eqrcSC7uYSwb2p4EMASKuSzZWn9JcPB23hTXNGRRocNA3HyqEJ1Xaqmvx/tUp7ueHA7Us5diItY6mCMLOQqzxSArIhgiput4czB9YqwBuxylaLXSGTZ+UbsA==
+ b=Eaof2EBYiitOIckicWfznbM203HXR+Ox6fbUAlplxKzWZlI6KLG742Ub5RM0n0W5eNivfKrUgNIngjbS4MJJTz00ngqFyzcLZojPn/4kKrcAK4gv5iDu71L6pNxRwl7ZI8CT3RpQCsAYOlmqcBD1/5oENwwE0TU8OcgGekVqe3gWiJUmQEsDa0eh7R79hi1ZNAO/uP88vYsU7pIepMrAr418uZFRuFmjDa/1Sh+OvxNnlfT6kHBYouzaGrXZHeXmiTp75ksOga/hs5qpY2lq5PiBt4IfQP1QE/6UerSv444HEVOxbSgf5UAMTw4i706mohH+GSdxUXZWproiwjQ3SQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I3nSgyAE6T1jjevHfgv3ieJmrrk4UBx3moe+myV/1kc=;
- b=PhU7XHbD+YkDXzuYwql/VMw66weFqN0xuxxknCntqzUw4s7s/Kc5eLq//wQDmc7AiqfV0Oak+N1H4tevWMmxexnaI6eaqUvsdpR6EN8rcXcOsq25RuehdDf0wxfBc0onUGEzg/JoKQ/mDgCWJcS8MyJ5GYEI6Y5en6y+HA4V3xtQXG6zFQsflSZf1ZM350iDHDay7m3PS+DyUMai0uQtVtOnPS75y6L6aMJkpDfl0mnB4BTtm8NMlGLO5hdFOlczihwm3alJTX48+TOBVOahg5uUzEcopsBxsv5thn6xeMJWubiSADbZtp0vtVSnQaoTWdIGxruIXdmR1zfiy0Iz2A==
+ bh=ecWC+efvSMu21GtJtYV7j/o/3qr0ruSMkQ5Z/h43RE4=;
+ b=oyovxK+B1KjHdu3miQu4+f4aVx2uh4TateizgEDTxnYohIzOyY02Fd/PXMVJ0h0sOr6+p7C+wv7ttQT992eAFIqPsqFmvdKkihLxRMrLRfBuri5gklktkSBzffVD54GzQB6OcTdsMVG13muwvCJU6N8lH8iK+bcPAnUZxzxf23nlGwYojWO4tjh0BlcmQ5jixx380Mc6NnsAElY4pZvFvZxzEKwYxMGaIm12cLJgYoIz68nRoWGEt/cZaptVBRsnCjHohNDfSjJ/XOFupQnDVj7+shmRcIRQPkuOPgPKugKSBGqsvOIUigdd+evYkX0OUOOysaLT0JuVlWTesYXBfA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
- by SJ0PR11MB4989.namprd11.prod.outlook.com (2603:10b6:a03:2d9::22)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Thu, 1 Oct
- 2026 06:50:06 +0000
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::52c4:16e1:a67e:63bc]) by CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::52c4:16e1:a67e:63bc%6]) with mapi id 15.21.0472.015; Thu, 1 Oct 2026
- 06:50:06 +0000
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Thomas, Sobin" <sobin.thomas@intel.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>, "Brost, Matthew" <matthew.brost@intel.com>
-CC: "Sharma, Nishit" <nishit.sharma@intel.com>
-Subject: RE: [PATCH i-g-t v5 2/5] tests/intel: Add random-size BO leak tests
-Thread-Topic: [PATCH i-g-t v5 2/5] tests/intel: Add random-size BO leak tests
-Thread-Index: AQHdSoIzlEmtFkpAfEaF63j0hTW3ErboTAMg
-Date: Thu, 1 Oct 2026 06:50:05 +0000
-Message-ID: <CH3PR11MB8434BAF67C445F8398131BB28D8A2@CH3PR11MB8434.namprd11.prod.outlook.com>
-References: <20260922110438.2402109-1-sobin.thomas@intel.com>
- <20260922110438.2402109-3-sobin.thomas@intel.com>
-In-Reply-To: <20260922110438.2402109-3-sobin.thomas@intel.com>
-Accept-Language: en-US, en-IN
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|SJ0PR11MB4989:EE_
-x-ms-office365-filtering-correlation-id: 4c906195-2b49-4ef6-936d-08df1f883a0c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|23010399003|376014|366016|1800799024|38070700021|4143699003|6133799003|10067099003|56012099006|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info: c7vcjlE9QwnMnpZM8zpLJBQKcy06SgEfXi+tIGsVY/9oAdpwiD5E22eJLlbUyMVlYVg8p4DHxZqwVx4vwt/l6DMwlsLCkHjZB9TTzXbrxBCHsULEMCMXqTFA43fbeGZxQEBxpLk7KGrNkRyQkudU3/d7lli8gKAYAcv/EtLfzUvCzNpv+tR+t543UoGbVyuGWfwJWSvpt1xZ4SkPRFmxGVVkvAcEedmFIUe8qOjgpZ5ZW7ewif3G7eQ2Pm/edQUeKQWfUY43Li/ANLDM4hDaO5IaoEG3SSkPhIrOw2gH0lOm/qrI/oVqoVSnD1mN6PkkKYkC4kHD2Faa5HXfDJ9/mtb6B3jFaV585PwcFghilVlTAMrxgB3Q+kelV5sx6k435vOPEfx0T8k+lzaN3hlyoKfgdWutliZHH+Ix6qOgZ/iSQBI/FH5BLl138XtuZYTvrLoSKOdz84YW4fBXfpT1WTOvjSQ5NJLKjeMiBvhk+vIKl3Lp4z0Wp1thmigXTZLIc11VzzrPm0s00bXF5Gx6LxSeqIHIqGixHPc0J7FTIDeod8/xJgS4uDaanbiOZEmmE2jsdaTI1mX0VzmDp3DyC4nMmIRnmoNM2gPOxnu92pQ8qRtHRJaWJihziHO4w0zcStPP1qvFN4LiYUL5iLHvG64Ji6JcB3qNn+dr/rJ6x/vigOboonW8eL66yY3eV9bKrDFVzor2OGwkhPaJybWOSkblF+Sb1jOw2d45Nwn7aq0=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(38070700021)(4143699003)(6133799003)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);
- DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?LuvKzlry8P92iHvPwALLpRxCf2jaKkGlknB8rMObHl4egflliod8NaKEjZ0B?=
- =?us-ascii?Q?OnsQNRzvQG3lyMx0C8UazS0WPlEa3VzBDb+CRizteF/jnEkZiYzImHA8BTz2?=
- =?us-ascii?Q?YdPwlT27dbZjTzN4VkmEbWxrQ/9wbw2Y9Rd5UPqqoc0RAO1E6z1X0Jgf5myc?=
- =?us-ascii?Q?kl+vz+oV3zVmOTZvRUnD+XPb887BwQoJYq7m8mXRtaMDyWsKstD1JWUj3hAv?=
- =?us-ascii?Q?6UO3Dzeb7XQ9YvhdVf82RQ/9N/2RKfzYuuLpbSlY1IZrIvMJRKMYsqDVcCbn?=
- =?us-ascii?Q?2zdryauERwESa0xDGy6lidD1Qt29xyU1KVbpZ93rfCp2YJUymD4KcPlIs8LV?=
- =?us-ascii?Q?FBmrncpMSkAoE2g9O4J+XEPQB5TVqOtXYH4+LV/wg5vmaiVZk/Eo9BA67gsX?=
- =?us-ascii?Q?0ID07SgrjzbQ74flsBc3amwN66KOPce/EwqnZh7uFCq4YBhPYFpuyp/Wnnoc?=
- =?us-ascii?Q?BWHxw1lehGcDuGYHCHTpQ6bEfCNjq1kS//dtOhSROBU1iZobehoZoMO4r4zi?=
- =?us-ascii?Q?VqPAOCkcazWkC93d7SStaEsZN2ugNPibMWqbHbBgO/kmCykKdbl1Iv0gZN/y?=
- =?us-ascii?Q?ryaqvCcAtrtJS7JzkUMITEFk0HjP41yNlGUPw+oitIoc3VWmHlPFs8dZku06?=
- =?us-ascii?Q?mKWO1uwcVMQw/EHgQQiGhh8NyhZEoIl1jj30H6oJIfHgjjV34/QByNbCCWTb?=
- =?us-ascii?Q?hIfcyhvoYVxkWSAmnG4KaaNI1uHh20+da6Q6mNHGzt7z03nrqzmeG+5EpAAc?=
- =?us-ascii?Q?paNo6mOd+ohF1WtBhF47MS9B6yb+wdZynzaaTjiyHozysRRnaFTFAa0eUAML?=
- =?us-ascii?Q?itc1QTKSNL08+JbnDCezWqzx7ujICQ1yI07s2eUuPQpkAmmu6zsrec8cDaNr?=
- =?us-ascii?Q?uPxvpVDwkQI+19aWuvX4NTGx9GOH9DevoDPvBFZv1rViIXbggbGXzpXNHTxs?=
- =?us-ascii?Q?hAdL08WL11CQY4fM+MGXw1wlWzFAgbps6PJ+EX+US85v1qxnT/Ci5znpRX0A?=
- =?us-ascii?Q?mRtDPp+OC+hcIdH/jK57Ua/rn5WfY/+uGIroUNcb0+UIQa7NwzDMxOR5k/kh?=
- =?us-ascii?Q?geerilD0ldQJBw0YWeRZYmJrzKiYLSwQBE9HK96QXOb1twXM08bkQZAIuDlw?=
- =?us-ascii?Q?hXZaLMBe4EHgPu4vRhGBllMaWcMR/DAypJXS9J9oLMXOdAFZAe0wOJR0ufDi?=
- =?us-ascii?Q?adcLUsPZbvViJPbUFxi+m9dms7XklBWwqmFZ0p1WOPo5RsXgDtRRCVnbeLOt?=
- =?us-ascii?Q?QIr/YHHzQ4Xa9Bwuquoss5nKBJ4a5VIaToMnU8sotom4CmgyqyiM+E5ksLGZ?=
- =?us-ascii?Q?fJOSF+63xERDy5eJgkkM49cr9Tn1NOzlPb73X/AdgSK8czzlPu6/mQrFZAc0?=
- =?us-ascii?Q?OjrVt/yqeNNjw7HE7+wwcu3HXbPA6E9MxH9WpyPrFRqMZ1kiGA9N6DhM76/Z?=
- =?us-ascii?Q?ovGziu1jkFwQcbxTVx/B8UgsF6GxIYXyAqBTM7hROQ+Hf1Dx7KdaEfRwz4Xz?=
- =?us-ascii?Q?1UkaRCiA+T6Ew6PaJvyyQ/6yFKEf1G/L4VxhXY5I4z1HX6rSlmH7Fp5ZJFka?=
- =?us-ascii?Q?zf7io8mnTL0MdgMG5KGNdJVqC3wBHctb7Sxyt3wVWfpEx3O2ofL1ToBc3sns?=
- =?us-ascii?Q?w76tTFQfKJTepT3cCB9TingTVUsIhz4KJuh3cPGZEUW+8ZL0qXREI+TeJKnT?=
- =?us-ascii?Q?YbOgmyF9NYiBTOaEg2y9A8T+aW6wu6vOTTXBLr7xjbJKLjjANL/o5++m2rr1?=
- =?us-ascii?Q?Ed5mJ61XEL2zL/qrlwV5wUHRJg9Tacg=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
+ SA1PR11MB8490.namprd11.prod.outlook.com (2603:10b6:806:3a7::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Thu, 1 Oct
+ 2026 06:59:08 +0000
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::8cb2:cffc:b684:9a99%5]) with mapi id 15.21.0472.015; Thu, 1 Oct 2026
+ 06:59:07 +0000
+Message-ID: <8981dc88-c74c-45cd-ab3c-c623ade9f90e@intel.com>
+Date: Thu, 1 Oct 2026 12:28:56 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v4] tests/intel/xe_ras: Add test for GPU health
+ indicator
+To: "Purkait, Soham" <soham.purkait@intel.com>,
+ <igt-dev@lists.freedesktop.org>, <badal.nilawar@intel.com>,
+ <kamil.konieczny@intel.com>, <sk.anirban@intel.com>, <raag.jadav@intel.com>,
+ Karthik Poosa <karthik.poosa@intel.com>
+CC: <anshuman.gupta@intel.com>
+References: <20260915133234.2105121-2-soham.purkait@intel.com>
+ <d8bf0a2d-c814-4642-a232-b39bdf9b9b8a@intel.com>
+ <bcc06ad3-1470-4e5f-ba7e-d84495502b48@intel.com>
+Content-Language: en-US
+From: "Tauro, Riana" <riana.tauro@intel.com>
+In-Reply-To: <bcc06ad3-1470-4e5f-ba7e-d84495502b48@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0115.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d0::15) To DS0PR11MB7958.namprd11.prod.outlook.com
+ (2603:10b6:8:f9::19)
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: Axd0+I5KXDDscwiNs/qhLKtkTyc78vG8CyDOEq3XxgHJLgDW0eXSS43qTxtHSwdF35u4/TzR4TjGmWDFKvQD8T919FSGzHU8/9uFkK7rTYbJwf94EX/BmPC5v9Kdvg5PJDxbHFeQQwD13xsiF2xeuOlD3ys81Ki+hnQ5DLtBXJwQKmEvjhNGpKzT6hfCDZSwa3kLSnrmyEeZsgMSm5xwfPVYj6kGeDaRnfblSqrgP3tEv9XwuH0fbm3x3mionyEPVsoZlEW+qRTlRNBU9BnNJ3QQvB/zLde83qjLvZ5pH03LXFLoqO8acgyXUgsFWQpK+a1nsUqUFDW4vHVKO2ZsbA==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|SA1PR11MB8490:EE_
+X-MS-Office365-Filtering-Correlation-Id: 04fe464d-edb4-4a9d-17cd-08df1f897ceb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|23010399003|366016|4143699003|56012099006|11063799006|5023799004|10067099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: EeehwaboKZ8gG2pCZH2zrWf9SBBdJuNkRR/sfXwL+vrHOga7BSLx/3joweqpRx6I7Kp+3iMSACEUfSsi63DIQ57ZUxxTQ/9Wu+ukFmEEQ8qZnt/gvrIne+oZHsEBXtXHETUCDS2rHFiJpvdcC5AC07fG3G5o+YofZEm+2OpQn9qqhZMqdTCsJGw0862K90QX314dZW6229KRiVHYilXUW0TGDvkMxDBC4iZI+o15mhZY5Pn66q559yGaXePhK4HTO5Q23Bikdgt3iFqYLWSxNdEvaRT2HbJ40sha3jMfuzOyUkEIbJ6WO128IA39s5xjXbV/aPoQtwYduDnJ4u9q+iEZk352eQBEM5k1XuzdPcz/+C94YS0WMyE67yjJoC96JI7NwzhFpgF1TqIPPpv9L30iXkYp2WgtuQN3CmLxHlyAgUAZIXjkgb0Sz7QqplKKOnDRT5/exGZ70m0iCA7ViILQHh0S5JejkBmRz+5QDl+2lUBw71zIFSjPxmE19ns+G8tsUko6fYwzThMCZJJwneCWXpMNvffT/LeLXOFQQZ95zdMFwB/2Loy7Cb7w7Nd0nhL2M2YQOxEtPQUsjnvASwsmVtSqffacvE8sjiuN+8yVxW1lb4bOYapNGjUK1mLZhY41NOP3JJQu5IAmGsLh5tvsQy4CvVguZeMZZFgxm3Y=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(4143699003)(56012099006)(11063799006)(5023799004)(10067099003)(22082099003)(18002099003)(6133799003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?STdKdnJ0RUlBbVRHNW43c0tYbzRtRDdZUnpVZEJCNWxwZU5lWkZPZHQ4dVdI?=
+ =?utf-8?B?WDg2dlRhQWkwZytwYmxiSUlJSXpESmQ2WWFTWDVpSUVqWFZKL3cxQWlJV29z?=
+ =?utf-8?B?SlhhUEtSYXZnOFJEYm0vZVpucjhDN25xSXY3ekpneS9RQ3RsVndwUytqSS9I?=
+ =?utf-8?B?aXdQV3FpTkRGK25EMU1oL3IxSDJoQkVyV0szVnVoT0x4eUlIS3IyR05kS0d0?=
+ =?utf-8?B?cC9RenM4RTZZUVRhOUxBejFOUkxOVTkyQk5idFZ4enhwd0NnTGZ4NjhjZG45?=
+ =?utf-8?B?bzBhSVlrU3JDckp5MUtWdk15NFl0MTExR1dYWnJQbnQ2YmtycmkvVDJXaXNY?=
+ =?utf-8?B?N1gyYnF6bmdOMy9PK25WMlVFaHlKcmlzOHRJNTZPblVtV00zakRPT2F4QVRu?=
+ =?utf-8?B?eVI5R0VvSit6THJEbTU1WWJiWDJGeTBiMXlhbnZRN0hhQ1N2WkFuQkJWalVa?=
+ =?utf-8?B?QzVaRTVyRG43ZnRiQkViVzdRa2dhcVZVTWNzMlFpS2w1Z0FBT1k2L0VCMEtW?=
+ =?utf-8?B?MUo0MTRIUlJka1pNMVV1cEZKYkFQbTFJdEVvdEdzVHU4NWl6MTd0Z1JMQ2xY?=
+ =?utf-8?B?d0g5bWcwaW51cSs2L25lRkhvcHZuRkc1OVpXQ0Y5cnQ1VXg3Qzc0RUdCSTZ5?=
+ =?utf-8?B?cnlwbXl4WWhpVVdtNVYvTEwvTThOM3lsL0R5Z09HaVRZU094cTBlSkpHdU5J?=
+ =?utf-8?B?VHRNeDNNc21hMjZydkc1VTVoUHBEcmxSQTBuZzJlSGRsSm0yTlhlbE1jc1FN?=
+ =?utf-8?B?YVJzVnNZTGo2ek1pMkJPa1F5NkVWMFR5czRkSEhObjloVWc4L2xKODNJMlVo?=
+ =?utf-8?B?aU0wVXhqUC9WbkNub0NUU0NQYzU0RWw0NE5Dc1l5WjgzSVB2ZTMyV2wyeTNi?=
+ =?utf-8?B?VDZQSi83MFVycHZlTlpkT0xaMGNqR3FDS3AwZjBRcWgwdmg3b2JSeXc2dC9x?=
+ =?utf-8?B?cXQrbkVtV3JCSHdXeGpRVVN2RElEbVErN0Zrd2l3Sk13Rm5oNXhhaTFHNU95?=
+ =?utf-8?B?a1Y4ZDVyWVQ2SU1NTDNUb0VBQUZObmgrdENxL2NLUmhxckczSTlXOWJwbnJu?=
+ =?utf-8?B?K05XMDRWZmJKZ3A1OTZrRXBadTd6c3dHWTVJUlZIcUNPMXBKYzBZTnNrdmV0?=
+ =?utf-8?B?S1ErK0xuTmZ4T1JCRDBKbStEOWt0S3NTNWdqWXR3MWR2anFzbjhXVUViQ3ZH?=
+ =?utf-8?B?QTZUWHY2MCt1eDRuY0VnWDhLT1lldGR3Y3o5NzljL3JlYmtOV29sNWhDMWta?=
+ =?utf-8?B?bmtaTkdPRnRCdnliR3I4SjFUaW9rR0E1b1pFZFkyLzRWVFpkNTF2L0YzckN1?=
+ =?utf-8?B?cHVTNzF1Qis4NFhNYUg2UkkwOEEwbHp3ckhoVjEwUSt0MUk3OXhRSTlRbnRp?=
+ =?utf-8?B?dnNleVhhcmFuOHBhOGI2cmNZV25pOVJwUzJPUkdjZzZGamp0SklHeVBEbExU?=
+ =?utf-8?B?cmVtMGJ0Sms0d3ljUHRNdnZvbUFkNkdxayt3Z2Q4R2RobUwwZ25DVFVNZ1B6?=
+ =?utf-8?B?aU56MnNRVm5lbmt1VUNMOUdaekQzaWk3RmNtMWpvb0JGS0dIWnR1cUdFNjRL?=
+ =?utf-8?B?TENBejQ3ZWpUQlNNdkRQcSt6TlVtdmIwbkNYVnNxeWo2c1VjVEtXVnQ0QUQ5?=
+ =?utf-8?B?cWsrbkhkb1ZrYkxGck9oMWo4M21NTkJyVGROQ2lzQ1ZUVEM1Q2hOdWdKZUtS?=
+ =?utf-8?B?b1k2MU1GS0M4R3dOb0djUnlVaCtteENnMTRsSjJYcmUvWXE1UEQ1NG5jNEFh?=
+ =?utf-8?B?eFZrTkE1UUNHK2hDWk91S3FkQnBHaG4vUWM4OWF1V0FGRnZkNnEzZHl1UFlp?=
+ =?utf-8?B?WXJDbXFGZ0RpVjIyVGZzVGVHU3JteGcyUFhiUmVSK2ViR09yUU5zRlAyVVVE?=
+ =?utf-8?B?ODFOMTlGT2FjWHNXUVhXWE12T0FTejNTaWJqa2JxSm1ub1pDZTNmN3hWRmh5?=
+ =?utf-8?B?ejRldVROSVpJeVNHdSt4WVNtVmpMTzJEWHBSeVZCYXgySWtSM0w5RW9LRmRF?=
+ =?utf-8?B?Q0l5QnN4c2xKOUo2blV4TlhUVnlHdXJOSW9OeFpNVU14NHRVUEdja2FTNzZt?=
+ =?utf-8?B?ZElyZjk2SXdRS0dFMVJpcyt3ZmpuMGlHTEJVeEx0UjBUbWV0Ky9kYmlmMHNr?=
+ =?utf-8?B?dWMwMTB6QitTRnJ4c1c2dlBRS3NwV2NRSktudVFqMkUrVWVza3Z3SHJadzFl?=
+ =?utf-8?B?WStmVDg1Znd1QWtjbkJleXpFSmxVbExIcVMwNDRQeGhKdEx3TGZxeEE2bHRS?=
+ =?utf-8?B?TGx4VFpzRGgwTTZJN2RmSVRyTzA4Ny9Rbll2Ni9FaEtuMEQ0Yy9Id2Mwc21Z?=
+ =?utf-8?B?OXFUTHkvRmwzbVB4UTlPM2F2RDlsSncxQVlsMEllMDFwWTREQWRXUT09?=
+X-Exchange-RoutingPolicyChecked: bB28WKbS9SzkhrFzdBglhYgTvVwfn4vmHRhqdE6Z8nRc3msCqF95LQcke52zlt6xShUVBkPRhaCZIyppAZ09998pVVJ9xV/j27ftB9kACsCAMn+GGEFWxyUKLM6kxrKBL8mzL7mT5yiYM7UnJ+kQPfK7gZ8Iua5LRBSU8rftpxW0y+547h8J7UXhI7TLH58rcUqoaG5foTEy+KIe6N+t3b7e4PU1+GdeKsUwenbU5wFfPiOZ/yVJQXmxvLp8c/ghCOack+Y8bGGi6VRWbpZDuRMQCeEJhkrvFJxpL+kALmZ1jF+DxWsLKvnu9g46Qu1huHphRC3Bh2g+kWJysidDwg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 04fe464d-edb4-4a9d-17cd-08df1f897ceb
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4c906195-2b49-4ef6-936d-08df1f883a0c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Oct 2026 06:50:05.9363 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Y0YJf+acf54ctkdcQwM/UC393euTzYi6Lcv6zUhCu2Ws6MDn/sUCWcMLa/MbbKaxy2dcfb1kk1cHWgEB+uM9JGsCJEJiYExcGmdpacKdFYE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4989
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 06:59:07.8111 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TGOfSOgbdlqoJxFvvA9zhHPiBNOoeIXvwF5uPCk+ZH94LODrTIwG7xVxBZ2zwFqL1zMuasXcd4rRMXivvczvrw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB8490
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -163,266 +175,234 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
+On 01-10-2026 10:02, Purkait, Soham wrote:
+>
+> On 30-09-2026 10:21, Tauro, Riana wrote:
+>>
+>> On 15-09-2026 19:02, Soham Purkait wrote:
+>>> Add a new Xe RAS test exercising the gpu_health sysfs attribute
+>>> exposed by the Xe driver on platforms that provide the system
+>>> controller. The attribute reports and allows updating the GPU
+>>> health state.
+>>>
+>>> The gpu-health subtest validates each valid state by writing it
+>>> and reading the value back, and checks that invalid writes are
+>>> rejected with -EINVAL, guarding against regressions in the
+>>> implementation.
+>>>
+>>> v1:
+>>>   - Add platform-conditional skip and exit handler. (Anirban)
+>>>
+>>> v2:
+>>>   - Add dynamic subtests for each case. (Riana)
+>>>
+>>> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+>>> Reviewed-by: Sk Anirban <sk.anirban@intel.com>
+>>> ---
+>>>   tests/intel/xe_ras.c | 146 
+>>> +++++++++++++++++++++++++++++++++++++++++++
+>>>   tests/meson.build    |   1 +
+>>>   2 files changed, 147 insertions(+)
+>>>   create mode 100644 tests/intel/xe_ras.c
+>>>
+>>> diff --git a/tests/intel/xe_ras.c b/tests/intel/xe_ras.c
+>>> new file mode 100644
+>>> index 000000000..91233e72f
+>>> --- /dev/null
+>>> +++ b/tests/intel/xe_ras.c
+>>> @@ -0,0 +1,146 @@
+>>> +// SPDX-License-Identifier: MIT
+>>> +/*
+>>> + * Copyright © 2026 Intel Corporation
+>>> + */
+>>> +
+>>> +#include <errno.h>
+>>> +#include <string.h>
+>>> +#include <unistd.h>
+>>> +
+>>> +#include "igt.h"
+>>> +#include "igt_sysfs.h"
+>>> +
+>>> +/**
+>>> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) 
+>>> functionality
+>>> + * Category: Core
+>>> + * Mega feature: RAS
+>>> + * Sub-category: RAS tests
+>>> + * Functionality: ras
+>>> + * Test category: Functional tests
+>>> + *
+>>> + * SUBTEST: gpu-health
+>>> + * Description: Verify the gpu_health sysfs attribute accepts each 
+>>> valid
+>>> + *        state (ok/warning/critical) and rejects invalid writes
+>>> + *        with -EINVAL.
+>> Provide a brief description. Don't we need description for each subtest.
+>>
+>> ++Karthik for Category check
+>>
+>>> + */
+>>> +
+>>> +IGT_TEST_DESCRIPTION("Tests for Xe RAS");
+>>> +
+>>> +#define GPU_HEALTH_ATTR    "device/gpu_health"
+>>> +
+>>> +static const char * const gpu_health_states[] = {
+>>> +    "ok",
+>>> +    "warning",
+>>> +    "critical",
+>>> +    "bogus",
+>> invalid?
+>>> +};
+>>> +
+>>> +#define GPU_HEALTH_VALID_STATE_COUNT (ARRAY_SIZE(gpu_health_states) 
+>>> - 1)
+>>> +
+>>> +static struct {
+>>> +    int sys_fd;
+>>> +    char *orig_health;
+>>> +} gpu_health_ctx = { .sys_fd = -1 };
+>>> +
+>>> +static void restore_gpu_health(int sig)
+>>> +{
+>>> +    if (gpu_health_ctx.sys_fd < 0)
+>>> +        return;
+>>> +
+>>> +    if (gpu_health_ctx.orig_health)
+>>> +        igt_sysfs_set(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, 
+>>> gpu_health_ctx.orig_health);
+>>> +    close(gpu_health_ctx.sys_fd);
+>>> +    gpu_health_ctx.sys_fd = -1;
+>>> +    if (sig)
+>>> +        return;
+>> Why?
+>
+> Is free() or igt_info() safe to call when fatal signal is being invoked?
+> Seems like these are not async-signal-safe.
 
-> -----Original Message-----
-> From: Thomas, Sobin <sobin.thomas@intel.com>
-> Sent: 22 September 2026 16:35
-> To: igt-dev@lists.freedesktop.org; Brost, Matthew <matthew.brost@intel.co=
-m>
-> Cc: Sharma, Nishit <nishit.sharma@intel.com>; Dandamudi, Priyanka
-> <priyanka.dandamudi@intel.com>
-> Subject: [PATCH i-g-t v5 2/5] tests/intel: Add random-size BO leak tests
->=20
-> Add new RANDOM_SIZE subtests exercising randomly sized BO allocation This
-> test excercises allocation, execution, validation and cleanup paths acros=
-s a wider
-> mix of BO size, helping to detect issues that may only appear with specif=
-ic size
-> combinations.
->=20
-> Add the following subtests:
-> - rand-sizes-10
-> - rand-sizes-100
-> - rand-sizes-100-unaligned
->=20
-> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
-> ---
->  tests/intel/xe_bo_alloc.c | 126 ++++++++++++++++++++++++++++++++++----
->  1 file changed, 115 insertions(+), 11 deletions(-)
->=20
-> diff --git a/tests/intel/xe_bo_alloc.c b/tests/intel/xe_bo_alloc.c index
-> 8680fe518..bd5bf5a33 100644
-> --- a/tests/intel/xe_bo_alloc.c
-> +++ b/tests/intel/xe_bo_alloc.c
-> @@ -34,6 +34,20 @@
->   * SUBTEST: all-sizes-once
->   * Description: Test all BO allocations sizes in test table
->   * Test category: functionality test
-> + *
-> + * SUBTEST: rand-sizes-10
-> + * Description: Test 10 random BO allocation sizes in test table
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: rand-sizes-100
-> + * Description: Test 100 random BO allocation sizes in test table
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: rand-sizes-100-unaligned
-> + * Description: Test 100 random BO allocation sizes in test table,
-> + unaligned bind addresses
-> + * Test category: functionality test
-> + *
-> + *
->   */
->=20
->  #define GB(x) (1024ULL * 1024ULL * 1024ULL * (x)) @@ -45,7 +59,7 @@ stat=
-ic
-> uint64_t *alloc_sizes;
->  /*
->   * Data-driven subtest matrix.
->   *
-> - * TYPE_ALL_SIZES / TYPE_SINGLE / TYPE_ARRAY_BIND all exercise exactly o=
-ne
-> + * TYPE_ALL_SIZES / TYPE_RANDOM_SIZE / TYPE_ARRAY_BIND all exercise
-> + exactly one
->   * engine per invocation, so they're wired up as a dynamic child subtest
->   * per engine below (igt_subtest_with_dynamic_f() + igt_dynamic_f()).
->   *
-> @@ -59,6 +73,7 @@ static uint64_t *alloc_sizes;
->   */
->  enum test_type {
->  	TYPE_ALL_SIZES,
-> +	TYPE_RANDOM_SIZE,
->  };
->=20
->  struct test_case {
-> @@ -337,6 +352,15 @@ static void test_map_bos(int fd, struct bo_alloc *bo=
-s, int
-> n_bos)
->  	}
->  }
->=20
-> +static void bo_release(int fd, struct bo_alloc *b) {
-> +	if (b->map)
-> +		munmap(b->map, b->bo_size);
-> +	if (b->bo)
-> +		gem_close(fd, b->bo);
-> +	bo_alloc_release_va(b);
-> +}
-> +
->  /*
->   * Build and submit one batch for every 4 KiB page of one BO.
->   */
-> @@ -414,15 +438,6 @@ static void execute_multi_bos(int fd, uint32_t
-> exec_queue,
->  		execute_bo(fd, exec_queue, &bos[i]);
->  }
->=20
-> -static void bo_release(int fd, struct bo_alloc *b) -{
-> -	if (b->map)
-> -		munmap(b->map, b->bo_size);
-> -	if (b->bo)
-> -		gem_close(fd, b->bo);
-> -	bo_alloc_release_va(b);
-> -}
-> -
->  /*
->   * Runs prepare + bind + execute for n_bos BOs at once (n_bos =3D=3D 1
->   * reproduces the original single-BO behaviour). If LEAK_BINDING is not =
-@@ -
-> 488,6 +503,88 @@ static struct bo_alloc *test_alloc_size(int fd, uint32_t=
- vm,
-> uint32_t q,
->  	return NULL;
->  }
->=20
-> +static void validate_bo_leak(int fd, uint32_t vm, struct bo_alloc *bos,
-> +			     int n_bos, uint32_t flags)
-> +{
-> +	int i;
-> +
-> +	for (i =3D 0; i < n_bos; ++i)
-> +		check_exec_data(bos[i].map, bos[i].bo_size >> SZ_4K_SHIFT);
-> +
-> +	/* Migrate the whole group back into VRAM, recheck */
-> +	if (flags & EVICT) {
-> +		igt_assert_eq(test_bind(fd, vm, bos, n_bos, flags), 0);
-> +
-> +		for (i =3D 0; i < n_bos; ++i)
-> +			check_exec_data(bos[i].map, bos[i].bo_size >>
-> SZ_4K_SHIFT);
-> +
-> +		test_unbind(fd, vm, bos, n_bos);
-> +	}
-> +
-> +	for (i =3D 0; i < n_bos; ++i)
-> +		bo_release(fd, &bos[i]);
-> +}
-> +
-> +static void check_leak_multi_group(int fd, uint32_t vm, struct bo_group
-> **groups,
-> +				   int count, uint32_t flags)
-> +{
-> +	int i;
-> +
-> +	for (i =3D 0; i < count; ++i) {
-> +		if (!groups[i])
-> +			continue;
-> +
-> +		validate_bo_leak(fd, vm, groups[i]->bos, groups[i]->n_bos, flags);
-> +		free(groups[i]);
-> +	}
-> +}
-> +
-> +static void alloc_rand_size_bos(int fd, struct drm_xe_engine_class_insta=
-nce
-> *hwe,
-> +				int count, uint64_t vram_per_process,
-> pthread_barrier_t *barrier,
-> +				uint32_t flags)
-> +{
-> +	struct bo_group **leaks =3D NULL;
-> +	uint32_t vm, q, bo_size;
-> +	uint64_t vram_used =3D 0;
-> +	int i, max_batches =3D (count =3D=3D -1) ? MAX_ALLOCATIONS : count;
-> +
-> +	igt_assert(count > 0 || (flags & EVICT && flags & LEAK_BO));
-> +	leaks =3D malloc(sizeof(*leaks) * max_batches);
-> +	igt_assert(leaks);
-> +
-> +	vm =3D xe_vm_create(fd, 0, 0);
-> +	q =3D  xe_exec_queue_create(fd, vm, hwe, 0);
-> +
-> +	for (i =3D 0; i < count || vram_used < vram_per_process; ++i) {
-> +		struct bo_alloc *bo;
-> +
-> +		bo_size =3D alloc_sizes[rand() % N_ALLOC_SIZES];
-> +
-> +		igt_assert(i < max_batches);
-> +		bo =3D test_alloc_size(fd, vm, q, hwe->gt_id, bo_size, flags,
-> +				     BO_BIND_BASE_ADDR);
-> +		if (bo) {
-> +			leaks[i] =3D malloc(sizeof(*leaks[i]));
-> +			igt_assert(leaks[i]);
-> +
-> +			leaks[i]->bos =3D bo;
-> +			leaks[i]->n_bos =3D 1;
-> +=20
-> +			vram_used +=3D bo->bo_size;
+I see other tests using it. Do you see an actual issue?
+If so, please store the index instead of char and access the array here.
 
-Currently, the test only does similar to alloc_all_size but does with rando=
-m size, leak is not happening.
-As LEAK_BO flag is not set in any of the three subtests,=20
-Code related to LEAK case is never being executed, it always goes to else c=
-ase.
-validate_leak_bo will not execute. So, LEAK_BO need to be set.
+Thanks
+Riana
 
-> +		} else {
-> +			leaks[i] =3D NULL;
-> +		}
-> +	}
-> +
-> +	if (barrier)
-> +		pthread_barrier_wait(barrier);
-> +	check_leak_multi_group(fd, vm, leaks, i, flags);
-> +
-> +	xe_exec_queue_destroy(fd, q);
-> +	xe_vm_destroy(fd, vm);
-> +	free(leaks);
-> +}
-> +
->  static void all_sizes_once(int fd, struct drm_xe_engine_class_instance *=
-hwe)  {
->  	uint32_t vm, q;
-> @@ -544,6 +641,9 @@ static void run_gt_dynamic_subtests(int fd, const str=
-uct
-> test_case *t)
->  			case TYPE_ALL_SIZES:
->  				all_sizes_once(fd, hwe);
->  				break;
-> +			case TYPE_RANDOM_SIZE:
-> +				alloc_rand_size_bos(fd, hwe, t->count, 0, NULL,
-> t->flags);
-> +				break;
->  			default:
->  				break;
->=20
-> @@ -555,7 +655,7 @@ static void run_gt_dynamic_subtests(int fd, const str=
-uct
-> test_case *
->  /*
->   * Data-driven subtest matrix.
->   *
-> - * TYPE_ALL_SIZES / TYPE_SINGLE / TYPE_ARRAY_BIND all exercise exactly o=
-ne
-> + * TYPE_ALL_SIZES / TYPE_RANDOM_SIZE / TYPE_ARRAY_BIND all exercise
-> + exactly one
->   * engine per invocation, so they're wired up as a dynamic child subtest
->   * per engine below (igt_subtest_with_dynamic_f() + igt_dynamic_f()).
->   *
-> @@ -570,6 +670,9 @@ static void run_gt_dynamic_subtests(int fd, const str=
-uct
-> test_case *t)
->=20
->  static const struct test_case test_matrix[] =3D {
->  	{ "all-sizes-once", 0, 0, TYPE_ALL_SIZES, false },
-> +	{ "rand-sizes-10", 10, 0, TYPE_RANDOM_SIZE, false },
-> +	{ "rand-sizes-100", 100, 0, TYPE_RANDOM_SIZE, false },
-> +	{ "rand-sizes-100-unaligned", 100, UNALIGNED, TYPE_RANDOM_SIZE,
-> false
-> +},
->  };
->=20
->  int igt_main()
-> @@ -586,6 +689,7 @@ int igt_main()
->=20
->  		switch (t->type) {
->  		case TYPE_ALL_SIZES:
-> +		case TYPE_RANDOM_SIZE:
->  			igt_subtest_with_dynamic_f("%s", t->name)
->  				run_gt_dynamic_subtests(fd, t);
->  		}
-> --
-> 2.52.0
-
+>
+> Thanks,
+> Soham
+>>> +    igt_info("Restored initial gpu_health to '%s'\n", 
+>>> gpu_health_ctx.orig_health);
+>>> +    free(gpu_health_ctx.orig_health);
+>>> +    gpu_health_ctx.orig_health = NULL;
+>>> +}
+>>> +
+>>> +static bool valid_gpu_health(const char *s)
+>>> +{
+>>> +    int i;
+>>> +
+>>> +    if (!s)
+>>> +        return false;
+>>> +
+>>> +    for (i = 0; i < GPU_HEALTH_VALID_STATE_COUNT; i++)
+>>> +        if (!strcmp(s, gpu_health_states[i]))
+>>> +            return true;
+>>> +
+>>> +    return false;
+>>> +}
+>>> +
+>>> +static void setup_gpu_health(int xe)
+>>> +{
+>>> +    gpu_health_ctx.sys_fd = igt_sysfs_open(xe);
+>>> +    igt_assert(gpu_health_ctx.sys_fd >= 0);
+>>> +
+>>> +    igt_skip_on_f(!igt_sysfs_has_attr(gpu_health_ctx.sys_fd, 
+>>> GPU_HEALTH_ATTR),
+>>> +              "gpu_health sysfs attribute not exposed by driver\n");
+>>> +
+>>> +    gpu_health_ctx.orig_health = 
+>>> igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
+>>> + igt_assert_f(valid_gpu_health(gpu_health_ctx.orig_health),
+>>> +             "Unexpected initial gpu_health value: '%s'\n",
+>>> +             gpu_health_ctx.orig_health);
+>>> +    igt_info("Initial gpu_health: %s\n", gpu_health_ctx.orig_health);
+>>> +}
+>>> +
+>>> +static void test_gpu_health_state(const char *state)
+>>> +{
+>>> +    char *health;
+>>> +    int ret;
+>>> +
+>>> +    if (!valid_gpu_health(state)) {
+>>> +        ret = igt_sysfs_write(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR,
+>>> +                      state, strlen(state));
+>>> +        igt_assert_f(ret == -EINVAL,
+>>> +                 "Write of invalid value to %s returned %d, 
+>>> expected -EINVAL\n",
+>>> +                 GPU_HEALTH_ATTR, ret);
+>>> +        return;
+>>> +    }
+>>> +
+>>> +    igt_info("Setting gpu_health to '%s'\n", state);
+>>> +
+>>> +    igt_assert_f(igt_sysfs_set(gpu_health_ctx.sys_fd, 
+>>> GPU_HEALTH_ATTR, state),
+>>> +             "Failed to write '%s' to %s\n",
+>>> +             state, GPU_HEALTH_ATTR);
+>>> +
+>>> +    health = igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
+>>> +    igt_assert(health);
+>>> +    igt_assert_f(!strcmp(health, state),
+>>> +             "gpu_health readback mismatch: wrote '%s', read '%s'\n",
+>>> +             state, health);
+>>> +    igt_info("Verified gpu_health state readback for '%s' 
+>>> successfully\n",
+>>> +         state);
+>>> +    free(health);
+>>> +}
+>>> +
+>>> +int igt_main()
+>>> +{
+>>> +    int xe;
+>>> +    int state;
+>>> +
+>>> +    igt_fixture() {
+>>> +        xe = drm_open_driver(DRIVER_XE);
+>>> +        igt_install_exit_handler(restore_gpu_health);
+>> This should be inside igt_subtest
+>>> +    }
+>>> +
+>>> +    igt_subtest_with_dynamic("gpu-health") {
+>>> +        setup_gpu_health(xe);
+>>> +
+>>> +        for (state = 0; state < ARRAY_SIZE(gpu_health_states); 
+>>> state++) {
+>>> +            igt_dynamic_f("%s",
+>>> + valid_gpu_health(gpu_health_states[state]) ?
+>>> +                      gpu_health_states[state] : "invalid-input") {
+>>
+>> Why do we need valid check here?. This is anyway done in test_gpu_health
+>>
+>> Thanks
+>> Riana
+>>
+>>> + test_gpu_health_state(gpu_health_states[state]);
+>>> +            }
+>>> +        }
+>>> +
+>>> +        restore_gpu_health(0);
+>>> +    }
+>>> +
+>>> +    igt_fixture()
+>>> +        drm_close_driver(xe);
+>>> +}
+>>> diff --git a/tests/meson.build b/tests/meson.build
+>>> index 1ac89bab7..3c2d4fdda 100644
+>>> --- a/tests/meson.build
+>>> +++ b/tests/meson.build
+>>> @@ -333,6 +333,7 @@ intel_xe_progs = [
+>>>       'xe_prime_self_import',
+>>>       'xe_pxp',
+>>>       'xe_query',
+>>> +    'xe_ras',
+>>>       'xe_render_copy',
+>>>       'xe_vm',
+>>>       'xe_userptr_pressure',
