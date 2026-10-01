@@ -4,56 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E994FCA5FCB
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 12:30:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49B3BCA5FCB
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 13:14:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9E87410E37C;
-	Thu,  1 Oct 2026 12:30:00 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="itEdLqMa";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F252C10E1F7
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 12:27:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790857631; x=1822393631;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=mNo4i+meim+x7AZiaUSgG1KgUeK3/FeQiOBa+BqLosg=;
- b=itEdLqMaEJuw09FxZo+rUs+8U8mPD9M6S/fNNWmBbsQT5P2T6QwcxazM
- PBfRcD5Ec9p3gT77CkHQEfi//iqUnqdSka6ONtFcOfOa4v4IztkH3HKUM
- p/tPFFIe8uZLRdWlB6gSdh+j000fK7U34wlKHF88Miw5m/ivHtrSRuPHd
- Sx6zl+VzlocRTDhPh3M0UIq/WDfyzJR8/lE5NYaYTlahs7FmuWveYoaUI
- YQxgaYsam9hWiT2GwHaHPZbP+rQQ4EBR9Z13wQ6aeTw9CBdiNF3mYXKY3
- gtLXCvAaVffi3hhc9mpF9Lu0RWZ1OzgzQqdahqB+/h2YprFFUU7qMq5iz Q==;
-X-CSE-ConnectionGUID: FXRF9q5AQJ+nixmL5Ji0Rg==
-X-CSE-MsgGUID: Cos6CeeZQ4aAxrji7Ra+bA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="91710125"
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="91710125"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2026 05:27:11 -0700
-X-CSE-ConnectionGUID: PQ0y6FzdQJKbaqaAboZkJg==
-X-CSE-MsgGUID: DmEEK8STQAePNtgS/Tntxg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="276105623"
-Received: from dut1129bmgfrd.igk.intel.com ([10.211.178.46])
- by fmviesa008.fm.intel.com with ESMTP; 01 Oct 2026 05:27:09 -0700
-From: shivtej.eknath.patil@intel.com
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
-Cc: karthik.poosa@intel.com, ramadevi.gandi@intel.com, badal.nilawar@intel.com,
- Shivtej Patil <shivtej.eknath.patil@intel.com>
-Subject: [PATCH v9 3/3] tests/intel-ci/xe.pm.d3cold.testlist: add xe_pm sysfs
- coverage subtests
-Date: Thu,  1 Oct 2026 12:26:58 +0000
-Message-ID: <20261001122658.6980-4-shivtej.eknath.patil@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261001122658.6980-1-shivtej.eknath.patil@intel.com>
-References: <20261001122658.6980-1-shivtej.eknath.patil@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id C5A3F10E3BE;
+	Thu,  1 Oct 2026 13:14:17 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3B6B010E3F0;
+ Thu,  1 Oct 2026 13:13:30 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8749436345368416698=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Expand_kms=5Fdp=5Flink=5F?=
+ =?utf-8?q?training_coverage_=28rev2=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kunal Joshi" <kunal1.joshi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 01 Oct 2026 13:13:30 -0000
+Message-ID: <179086041023.229102.6617569633880049428@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20261001073703.5067-1-kunal1.joshi@intel.com>
+In-Reply-To: <20261001073703.5067-1-kunal1.joshi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,43 +37,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Shivtej Patil <shivtej.eknath.patil@intel.com>
+--===============8749436345368416698==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add the newly introduced xe_pm sysfs coverage subtests
-to xe.pm.d3cold.testlist so they are executed by CI.
+== Series Details ==
 
-Also sort existing testlist entries alphabetically.
+Series: Expand kms_dp_link_training coverage (rev2)
+URL   : https://patchwork.freedesktop.org/series/174224/
+State : success
 
-Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
----
- tests/intel-ci/xe.pm.d3cold.testlist | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+== Summary ==
 
-diff --git a/tests/intel-ci/xe.pm.d3cold.testlist b/tests/intel-ci/xe.pm.d3cold.testlist
-index 783859fc7..b935d1e52 100644
---- a/tests/intel-ci/xe.pm.d3cold.testlist
-+++ b/tests/intel-ci/xe.pm.d3cold.testlist
-@@ -1,11 +1,13 @@
--igt@xe_pm@s2idle-d3cold-basic-exec
--igt@xe_pm@s3-d3cold-basic-exec
--igt@xe_pm@s4-d3cold-basic-exec
- igt@xe_pm@d3cold-basic
- igt@xe_pm@d3cold-basic-exec
- igt@xe_pm@d3cold-i2c
--igt@xe_pm@d3cold-multiple-execs
- igt@xe_pm@d3cold-mmap-system
- igt@xe_pm@d3cold-mmap-vram
- igt@xe_pm@d3cold-mocs
-+igt@xe_pm@d3cold-multiple-execs
-+igt@xe_pm@s2idle-d3cold-basic-exec
-+igt@xe_pm@s3-d3cold-basic-exec
-+igt@xe_pm@s4-d3cold-basic-exec
- igt@xe_pm@vram-d3cold-threshold
-+igt@xe_pm@vram-d3cold-threshold-show
-+igt@xe_pm@vram-d3cold-threshold-store
--- 
-2.43.0
+CI Bug Log - changes from IGT_9121 -> IGTPW_15930
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15930/index.html
+
+Participating hosts (39 -> 37)
+------------------------------
+
+  Missing    (2): bat-dg2-13 bat-adls-6 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9121 -> IGTPW_15930
+
+  CI-20190529: 20190529
+  CI_DRM_19259: 48433f4760819252dafd6bf71d1c0e4f38415842 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15930: 9873e2abea225a0c9a198debd4f4cf7405c9a838 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9121: 5b6d384b7771ca7719178cd70ba4acec28712dbf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15930/index.html
+
+--===============8749436345368416698==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Expand kms_dp_link_training coverage (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174224/">https://patchwork.freedesktop.org/series/174224/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15930/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15930/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9121 -&gt; IGTPW_15930</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15930/index.html</p>
+<h2>Participating hosts (39 -&gt; 37)</h2>
+<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9121 -&gt; IGTPW_15930</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19259: 48433f4760819252dafd6bf71d1c0e4f38415842 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15930: 9873e2abea225a0c9a198debd4f4cf7405c9a838 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9121: 5b6d384b7771ca7719178cd70ba4acec28712dbf @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============8749436345368416698==--
