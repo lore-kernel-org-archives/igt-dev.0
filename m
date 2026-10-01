@@ -4,64 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15521CA5FCE
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 08:08:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E81DBCA5FB3
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 08:09:04 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B53EE10E269;
-	Thu,  1 Oct 2026 08:08:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9544E10F5B3;
+	Thu,  1 Oct 2026 08:09:04 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="GjWG20Lc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Z3/CRLlG";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5142B10E327
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 08:07:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A6F5310E219
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 08:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790842053; x=1822378053;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=h1nJxeXkEgyYxwGpt/SgsLVerA9yJpg/rSw1/3d7vyg=;
- b=GjWG20Lc2iBqVEYF8OMvgVvsbsKXW1zfTNRaKazxTDsU346PAmPy7qaN
- x40bCBQFGaLh16dq64yRsbtv3NhUgTI8i5q41nL/9QtLjOAPUacNQmEba
- YvqKtrDIVuzoaI4gP27voCpyU3BEXfy6BBd2EgBmtX8fwOVCvOkGHvRl9
- 61dKXFddE+z6hCv6uXtrjeOaxYkzmVLKMh6o1oXASiyHC/gfrm7A5ZEO+
- 37o7UBINMA7RXhVRDFw/0MdbxoX+k2+BsAH0CMGne0zwzbhq5D0QbeoVA
- +776RDSWoWsYsw2lWTbk1QDTaz3nnq99E+e2YUE4TAtLz8fp5DTkO2Xue A==;
-X-CSE-ConnectionGUID: H3VxoRLHT3W76PhQ2m/NJw==
-X-CSE-MsgGUID: f7CAXRVKS4+u2rdBuwC43w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="101752689"
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; 
- d="scan'208,217";a="101752689"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2026 01:07:32 -0700
-X-CSE-ConnectionGUID: 5U3ns2lORgSwW4v6MhWHgQ==
-X-CSE-MsgGUID: yuDJj5DjTTiFj06rbRUOpw==
+ t=1790842097; x=1822378097;
+ h=message-id:date:subject:to:references:from:in-reply-to:
+ content-transfer-encoding:mime-version;
+ bh=Lb2cSiVAT0NRja4X9t0W/LscwhRO844xYa5/EDP45cE=;
+ b=Z3/CRLlGJ01mtHSPpPfboZwiYHcb7qGL+D9JHyzz1hodVjFwEB06EVPe
+ O0w4BTU/S64X35HoUbnItCvd8r/6ev2a1AFIcTnICFMxM5p7Cqb2sFKMN
+ Eq+wCoX02kZUdYcoFDwgx4zhO9gUkBOtNGOoZ0SwVqA1iJSqi6t1p1egv
+ hgnR1imQIsGMZhi/6yeBAkNvrcc0qZMrea6YrCOT2WxeqdsyeoiqahHaZ
+ D5QK5boGbwo6paw1Lg7j96r80CUE8daERuYzgYj8Jw9r2KjbYYuUQIHwS
+ UlQ7GWryWUrmwgYh47Lm5WI1OjqjT9ahU/a+0PfI/Uy/TXrp0vXbVQ3W0 g==;
+X-CSE-ConnectionGUID: KLj3IZ9RQ6i51GSEkBAxFg==
+X-CSE-MsgGUID: wPFkXMieSLWFKND23UvZRA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="100925708"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="100925708"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2026 01:08:17 -0700
+X-CSE-ConnectionGUID: Jfs0JxuYRH69aglGCLajBQ==
+X-CSE-MsgGUID: NZJ1yqLjR46p7geGs5M2zw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; 
- d="scan'208,217";a="275969174"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2026 01:07:32 -0700
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="305437286"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 01 Oct 2026 01:08:16 -0700
 Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 1 Oct 2026 01:07:31 -0700
+ 15.2.2562.49; Thu, 1 Oct 2026 01:08:15 -0700
 Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
  FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Thu, 1 Oct 2026 01:07:31 -0700
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.56) by
+ 15.2.2562.49 via Frontend Transport; Thu, 1 Oct 2026 01:08:15 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.19) by
  edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Thu, 1 Oct 2026 01:07:31 -0700
+ 15.2.2562.49; Thu, 1 Oct 2026 01:08:15 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=REEUMDuL9znmxUK9qkvri1FJ0MFPmT1BMPWXXZ5+YwQy4MotMEGst6uDmpBFpx90ciDNe+gjfX2XcHXIifKEtN71YAuZDE5RcT8wMbnfk7gwjE2kFNI1VYOhxx26WBJW6RwJJzXdYRlPboAd+nygfvF6cqQ2V3s3r6lrIoqS+AL0wtvs9i0wu3VIgTfBpeSShJ6j18414Z28V1r6E8xOEk+S4YkD2Xh+LMNoBtfNimuD+3WQLmEhWjEYiuvf/MZxVddda7a5VZnCUwh4SEs/ljllhc/l7EaYoJ8Fn8wDbBUAY6X0FUG5TY2PASBglZbZIc6A90jojYaQAsRZxzlW3Q==
+ b=DWTud+9hroeuHXqv5OX01Vkl2CnaoJdni3ZWXwdgTZ7kxot56xK9z9TZ1oTxShDDVTm+nJG0u6h3s2IZPvp4nwKWgjqYFnwVW55hbDPhCG8SbMYq6L+AIDq/b6XhCYZM1LU1tPY6htyBU+VREIp64KVGL2DqydJdktwyhdbwLexOkdCltWj1k69E7kInoSiHXfuA1L9XLAb7yDR/b7vVAU3gUWPCSYJ4GvPnuN1sP+sqKMGagR230MaXRZxyt0nzI9EjuMPvNIEYdu+G/7zpAbVNGR42Txsduy7PLMGui4XmjWpRjrbta+mvOd1YrQp+c975cU0tZKZG2re9fwuAuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9JsG7T3Hi7LBs/wnglOUQG4A7A4vuinuiTXb6zFJ22g=;
- b=dC5oiYq7zj55fZj7MiMU3a1VOmTY2GJ/5zK4BT6qozoD38bBhRwR+NLc74XbHLhZdI1yX20AjpBZ1FQKRLfPCPNzUSwVVSyV5KxCJF+Yvi8WNEGkGIbeuacc+rvckZCxTfwIKBnX5C/OjZT9bF/gBwRumpzaqPuJRAmE7Ryw9BYOEW7zzy5GwodpPfQyS1OdAm8r8mY8vaHIj+DbtDkRpEHP4KlyhuHq2a6ES+bhsTXZb4oVOM2FSdSaJOS27IETZRbt1pAijfg5pPnwmS82pymVHwAz/GO1Cz2nwSppBjpSiGxS6OvgLsViCQYZhAfUBMV1WW8im0isMQC6Vb1zyQ==
+ bh=C1ZFss65YIZix0Odtt//fHdVcrxEjquyk7TMhHxfua4=;
+ b=YktgTtlwXGeFNUKJMolJxykVaTrYjs7njIvdA2hH162t0CN+wKRd3an2Q75PKRgMFAVRUCQMGlHFQ7XlOVHu2IBDmxExb3KcO894ywVOqYfcFHA1xF/7nUiGOBdsEqWtBT4O10fO1ksTAqkE1VEh1WzoV9fYjYl8YJcKjI2WhVDhmvf+GVDMinqWOOF6tF0BaQqTpsLSueR3/RSabS8w3mI+BPI7E6ESbh7WvTNshlrKB7g/YIfvlOBYTT8/jTbE5rFC3SwA2ar/thww/Dh4C8T2t4QEJsItb66guh2HuKruHOj6LLzdyQzrCFx6O6+F2twVhYDb41gcUDkmVqWVLA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -71,95 +69,96 @@ Received: from DS0PR11MB7651.namprd11.prod.outlook.com (2603:10b6:8:149::8) by
  BL3PR11MB6409.namprd11.prod.outlook.com (2603:10b6:208:3b8::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Thu, 1 Oct
- 2026 08:07:28 +0000
+ 2026 08:07:59 +0000
 Received: from DS0PR11MB7651.namprd11.prod.outlook.com
  ([fe80::901e:b308:292b:1b2f]) by DS0PR11MB7651.namprd11.prod.outlook.com
  ([fe80::901e:b308:292b:1b2f%4]) with mapi id 15.21.0451.026; Thu, 1 Oct 2026
- 08:07:28 +0000
-Content-Type: multipart/alternative;
- boundary="------------TyvFVVp5K5vBoUxLRlq7VH0z"
-Message-ID: <fdaaf967-a492-48d6-8a21-1456bacf36cf@intel.com>
-Date: Thu, 1 Oct 2026 13:37:21 +0530
+ 08:07:59 +0000
+Message-ID: <c6f04f85-fcc5-424a-89af-258d9b26ba3c@intel.com>
+Date: Thu, 1 Oct 2026 13:37:51 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/10] lib/igt_drm_netlink: add set_error_threshold
- command support
-To: "Purkait, Soham" <soham.purkait@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: Riana Tauro <riana.tauro@intel.com>, Gupta Anshuman
+Subject: Re: [PATCH v4 07/10] tests/intel/xe_err_injection: Add GT UC Unicast
+ GAM Walker Command Parity Error Injection
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ <igt-dev@lists.freedesktop.org>, Purkait Soham <soham.purkait@intel.com>,
+ Riana Tauro <riana.tauro@intel.com>, Gupta Anshuman
  <anshuman.gupta@intel.com>, Jadav Raag <raag.jadav@intel.com>, Nilawar Badal
  <badal.nilawar@intel.com>, Koujalagi Mallesh <mallesh.koujalagi@intel.com>,
  Harish Chegondi <harish.chegondi@intel.com>
 References: <20260903073335.339540-1-ravi.kishore.koppuravuri@intel.com>
- <20260903073335.339540-7-ravi.kishore.koppuravuri@intel.com>
- <999a0436-4e30-425b-b8df-62b752615b87@intel.com>
+ <20260903073335.339540-8-ravi.kishore.koppuravuri@intel.com>
+ <20260911150349.d3bf36adl6ujstd6@kamilkon-DESK.igk.intel.com>
 Content-Language: en-US
 From: "Koppuravuri, Ravi Kishore" <ravi.kishore.koppuravuri@intel.com>
-In-Reply-To: <999a0436-4e30-425b-b8df-62b752615b87@intel.com>
-X-ClientProxiedBy: MA5P287CA0327.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:222::6) To DS0PR11MB7651.namprd11.prod.outlook.com
+In-Reply-To: <20260911150349.d3bf36adl6ujstd6@kamilkon-DESK.igk.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0145.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1d7::15) To DS0PR11MB7651.namprd11.prod.outlook.com
  (2603:10b6:8:149::8)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB7651:EE_|BL3PR11MB6409:EE_
-X-MS-Office365-Filtering-Correlation-Id: b7240870-779a-4587-7a34-08df1f930916
+X-MS-Office365-Filtering-Correlation-Id: c5471ac1-49ce-48fb-35d2-08df1f931b71
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|23010399003|10067099003|11063799006|56012099006|4143699003|3023799007|6133799003|8096899003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: zHdzV+9CjPBufJ161S0Cn6MfQOPqGppyuaDRr9S6IFclMpvNZA05Fj9MaaY9oFlG4QfMzLEOJVTfugOo5IS8Ds1wiLqcS7Yc9rfRegQfapeGr5qVyEM2A6rzw5pcuTsn8B0pmBHtUNP2KURzfAN3tsPXwLEnLa3Dc9OFPYeTzSDDJY4hXprtZuc2tk8KrgammxpTFtXJ/TMXHldWxj8ZfsLGnhVz5mxswZkNXqA+qh29w1invV6uT8YhzmAKRdzglIAgBpcStCv0PnnZDIO+pxth6WzfzPEP5ti9kwIpXcIL0uUvmiNmTiWwJAajq+fpiWknI93+IXHK4vsTrvwFyJPFdEpdlKrYZ3fwqWGAWUr2P9S43eT9ri8Lcc3eMK7DDkt/MCOylSFErmwjIB3eFiV2ntjz6EMltn1T+KJ5nVIe0+kqWBeTYqFuSoPv+AL18lUh5HquK30ickT6ndXCRueev+ctvLKcb/sMcwbqO3skeJ+YOHH31vE8MpPC1+hjx9ZXB/+T7InM8fF9VzSGzywJFZE263o3vjJsc+JIMki40dulRxpvEeVxDJNGWqk+H6XuKkGFSdBS4Dbj9rvau2Y9UH7gwJNrsrLV3BKHMPTPQGWX61U9bKZHfum8YrET2ETeuTv2zs56kAbI4oi/Tk6iWdV1LHakuj1OUDGnY0k=
+ ARA:13230040|376014|1800799024|366016|23010399003|10067099003|11063799006|56012099006|4143699003|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: oND8F+47PP4GLukLpNvFAj7f1qSX39Fi9/+eDnGh71aumAUBDHohnOgCDaW8F0W2GwA5NN4Y5c1dZ/fYQV531o19tCUyugeyNkpnIBw5Z71amD5YoDSelaW5K+0HeSoJ8WmQ0QBO0rusiXsJcaXla/7kDTaXOuboLjjxXG/DM6vA7DjMkvtlMK/OTd6Br8pxX3VJgYTN5LqTbUJ6oKhMjoPGnktqii5wY8FovQSSGLi6XsfGI3aCYchbSx041pt5hc06msOUq42ifKg8Hzi9qD3I7rdZ5gCw2hUpsmadtX79cvm4vf369p2TWGfXmzl4Fq4EVBFk/+WATAdGwEA5R7SKN/IIo7b/1B0S3OWw96GahrzxiDlzv3v1lB9ZgOmiUAIBuax4se3Zm3/fqM3W49103YvLYtxTB9a9z07DnoOxqOAaQ9HiJQpLDPryzbpwYqL+u3d8JhFCX7tPVtcJQz7Fy0WXdFvg/Vsd73hksF7ESXrbzTD/CYXdll01sa2uvt/IaFaNCWrlHZ5xW7bhzFguK2MVWofOHQuAfLI+9erhaTMZSPTFLMmRBNxKchnfA1G3dcYQEM8/e4JFqqV6C0Q0qC54ZXLnlPPdW5Bq2MA80lKgzXWCiaQ/mTqDiUVbAl/FTQhYF6MAHfNANhkdcA+NQUBfRNGn2vBQEnni2bk=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7651.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(10067099003)(11063799006)(56012099006)(4143699003)(3023799007)(6133799003)(8096899003)(18002099003)(22082099003);
+ SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(10067099003)(11063799006)(56012099006)(4143699003)(6133799003)(18002099003)(22082099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ay9nRjJHNDdrM1dncVJCOEFtSWk1TzU3VXc0SyszWVdBNFdRM3hkc083Z3Mz?=
- =?utf-8?B?MllNS3Y0UFpQcFhrb0xwVS9OOE9qUGtLV3cyUCtTVG1SSW5XZmh2Z05ESCt2?=
- =?utf-8?B?OU9PcHFwd1YrQTQ3NytsVWhRQ1pvN25yOWtEb25KeHl2QjhsOUllQUdQSmdM?=
- =?utf-8?B?RW5HdG9LSWdtVGtVQ1U1d0Vvd2JvS3dscTEwWnV5ZHB2cHpXRjgrajhRWEdz?=
- =?utf-8?B?YU1jQzJvdlh0WTYwaU0xQ2V3WGlKMGtwRFhwL21ZMGxIR3IxbWRkSUFvK2lS?=
- =?utf-8?B?OFFVOE0rYVhJZlpvWURSUEs4eGFnNXFUV2o0OTNKWHNSQ3A2UWZ3US84NTMr?=
- =?utf-8?B?WmpjaTdQUEZLaUxYaEdzcW5BbFJXWjUzVnA2UUExWHBaa3pJcVZvWXdmTjZO?=
- =?utf-8?B?V2ZYd2NEZVJ6M0xUeWJTSWhFRXZ0R0FaNm9VQlNYemtPZDBZMmpKNVZEdHhw?=
- =?utf-8?B?QjI3eEtXOFVFWWpoeWlyVE5qbndyeVlpZWpOZ0k5WElTbXczemhZeWRuL1Yw?=
- =?utf-8?B?WTYyN1pBS1RhZjRjNzFSMmZ5Sm1OZm9rRG5YNHkvUTMzV3JhZ3E2eXFZUkda?=
- =?utf-8?B?cmFsejJxaEJCSmFIMi81dVM1M1ZDNlhTY3F3KzIwaEJRMW9BbHhKbTY5RXRD?=
- =?utf-8?B?ZjdoRHhMSG1pQlE4U2ZMMVoydWhjUUh0UHA2TjlIcExtRVJtN0o1cjd0OUVr?=
- =?utf-8?B?UXhlYytySW5YM09OTTlmSk9MZkhJcDhsWldBQ2RyR1JsMUc5NUM5Qzdocjg3?=
- =?utf-8?B?ZFozYTk0MUFsRU5GVnBNLzZwb2Y1ZWtxM21zSFl3ajQ0VlpkQXRCejY2S1Z0?=
- =?utf-8?B?Mk9oektEd0tuKzQrc3ZCeWJObkhlTkxaQlV5bW93bzVuU3pwWFIyeEUxenov?=
- =?utf-8?B?NVRhMjg4YkZYRlVVWjdzT21WSlEzZjJFSEhJM0k4R0tQdmZxSDc5anJidVFF?=
- =?utf-8?B?VGRLLzBQZ2pmT3k4ZVVteE9Fa0E2cnlNSTNFbkowL09JMHhVM2l6MGR5QXBn?=
- =?utf-8?B?bXU3enkyQ2EvV1RVTXBpajliVmd1ZU5WT0dZYmpkbEJPcjc1TDJwemZZQXdM?=
- =?utf-8?B?Mk1zTmxrT0oxUWtXZS9jbExSYXFseGFUWkl6TjVzcjNqZjdVTE1pMkE0Qkdz?=
- =?utf-8?B?cTVZTk43cFRTUnpCTWRxT0pMM05TOUhFaTZSZzh0WlBIZ1gyek1lTnJqTlZP?=
- =?utf-8?B?VFZDNFk4cFo5Q1BpRUVFRERCQjBLemRLb2ZzU1c3eGEwQUVsRmt0TWpKa28z?=
- =?utf-8?B?a1RNUlJ5aVY5bzNEKzM0Slo5OHY1MkVZVHZoeHhTUW9INlNUS0k4UGF1R0M1?=
- =?utf-8?B?YkhrYktpVTMwbUVUVXlBZXNGVWJtdGNUcmtLMDg5QWdEV3NiYkpsWGRJMFJB?=
- =?utf-8?B?NitPRGl0VGFyazJwMkV6LzRjb29tQllBaHAxRjV2MXI3WUQxekRLZU5WNXF4?=
- =?utf-8?B?aUNmUmxSN0IvcVZNMWhxSlFWYkpwd2xMb0F2SjlxQmhnRHpmTFB4RDVwOGc0?=
- =?utf-8?B?bDhiclgwOTRZM0ViRlZiVnRLNWYxZlQxRnpjN1dXVXRNcW9VQ0R5Y1FVUmh3?=
- =?utf-8?B?VHh5VWxITHdpQ2YxTklCL2J0ak1oWHREdFVCekRkM3M3UkZqRzJHUUNqZmF0?=
- =?utf-8?B?ZElBM2lSNVpwNlRab2owT0hNU1UrSEJoZXlXTmllRGl3Mm5FdzEzQVM4cTdp?=
- =?utf-8?B?K0RSanRweGQyVzZYNWpqT2k3Mkd2MXZPeTAxbmFDQUlqUHM1TG9wL0YxeVgy?=
- =?utf-8?B?dGRxaC9JeGt2bVZZMy80OFJDUjNUT3V4REhDMXgzOWprdFdXTjRiR3FTZ0xY?=
- =?utf-8?B?WEljUUJCY1d2akdFSVJVTXlTRUVad3dEQkQycnIvU3UxdmRSVXQzR2VCQ1RF?=
- =?utf-8?B?NW5Rd1VKRFBZdTI4SndkbVFhTjcwYTRKUFY3RDZ5KzZKaDNDYlEyS2IzZS9u?=
- =?utf-8?B?eTdpeXdmbitzMXZoZXI4dE9GVzhvT1BhUGhDdmdaTlVUcW5LN0E3NW02M3BN?=
- =?utf-8?B?UzRPZHgwVTJEUnJjY1pqbHJvejV2SmVZUGRoMTBTS0J6SnNkYWd3ZndSZFJK?=
- =?utf-8?B?Z3U5NmpsNEV0QkxJYm5JVG9pbnJEdUJZRitXT1JseitZeVptRktKUGJVWDQ0?=
- =?utf-8?B?endTTEM5anpUWDFaYjkyeDJ2Mk5CQVl1MFdMM2N2V1R0UG1EVWZ4NW4xd0ti?=
- =?utf-8?B?aGdYaS94YngwM2ZnZ0p3VGQvRHd4bTUydy8yMmNEVzVJd0RSM3FtTVpBNXlN?=
- =?utf-8?B?R2VORyt0WDRjSUVNM0NaSWlqZVplcno1UEhYakpsK1VrY0JFR2pMTGM5Wmxa?=
- =?utf-8?B?UUlzdEpiVDN4YzFuRlZiNTFIQlVuUlNhVFMzbDBoRHNsQXlUM3hZVFlzUEpq?=
- =?utf-8?Q?GMURSa1ynSm4DkhpafXZFtq4ovtR4oORQWknf?=
-X-Exchange-RoutingPolicyChecked: 0JGQ+dBNum+RGPMzPrq5hCvme/Yox7EvtwLwLiRt9c1zdjrgHNcVQDatk/U5R+EIYJzRhZTHK3Zu3Gqu1+Kv4JCGcbbRdN3sGap0/0sMjud+BX4VBhQ+O/SSDkCnM+6Agabj2O7r2UPUvv/5xIsTBY3li7DtXpjlzGlH+dRyRliX5XR5BX6BVeJ7udmtwTdxb09ApFwDVhA1h20jFuu7F46KxInz9Jktd/WJviJNHteQenBqw1a1r38nSaS4A4pObCTs1Akbbrn55UScnrM/oDJgu5WZtBdoqc02EusMNwmtySqHZUqvYazhPjz9V3PWp4//lZ03Ywo+G9ib9qv1Nw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b7240870-779a-4587-7a34-08df1f930916
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?WDVyS0RGbVBobWdsUEtJallmMWVFM1V1Nkp1cVRwSjJGcDlOb3c2VmFBdGhu?=
+ =?utf-8?B?KzdGOUE4VTNORnZNd2xHUy9ETHdMbEpRWEg3ZTRxUU5ENG1DaCtIWC94YW4y?=
+ =?utf-8?B?a0JPU21zZFNtNUtCbWNrWnNYeEZOWHFjK1Q0NS9yUG1QYktIdEp3N2NXTGFV?=
+ =?utf-8?B?ZUZPblM3c1ZwUDZBenZiQ1Rvb1owZEdSYlk2c0lkT2c3NDZ5QVdrZENHOWts?=
+ =?utf-8?B?U3prbVg2VmFLR202K3lVZ1U2R3Zsc3ZJRUFLem5VaFNDbGJFWmt0RlpQd2NG?=
+ =?utf-8?B?ZGtMVjNJM3VnbER3RU1QeHRnK0lzcW1XSzJMazJBY3JGbGR6NTVINldBNVJH?=
+ =?utf-8?B?cE81UmxVZWxsUnAvNUdJYzFkRjNaV0lWV2JpVHh4bll4Zk91M2lLTXZoSVJJ?=
+ =?utf-8?B?VDlLWktjMGQySlh4Uk03VC9MQkMzaG55OENkSW9GVjV4MURoRUgzRUt1ajVr?=
+ =?utf-8?B?eHdOVXNvVytZQUJldkJpYkdsQ015SHpFRWFYeDA1azErTSs0MkhiOVE3Tk9a?=
+ =?utf-8?B?aU5TeW1LY2c1eDZtRnhOektNdFUwTEFwUGRyQ1lxNFArMHpidU1PbGRGYnE5?=
+ =?utf-8?B?Nnd2bkk0cEdLQVFVVXBJMjlMNU5SVnRKTUJMM0lVSEtKaU5FTXVGVDlTRXFP?=
+ =?utf-8?B?cm5Qa2VGV2pMb1hDWjU4dEtnS0lqZ0E4ZktqNFBJdVJFTjFuWlU3Um5yMGxq?=
+ =?utf-8?B?UXAxQmhwdnpiK3ZDZkxsY1hockV5ODJPMlFidzRFNmpDOHB3VlpDK21wWm5J?=
+ =?utf-8?B?Z3pZeWlWK2R5dzg0UktobTVKMWJSUit3aElOckxmZEhHKzJwRmdLb3c0MlBB?=
+ =?utf-8?B?M0FWZWdiUm5FaU1rUHZSUTNocXhHNXFJN0JORGh1Mmh5YVVOaUtBOWxjdWh0?=
+ =?utf-8?B?Vzc2L0UxL2hSTm9CWU8zR3p4dkdVSzhYbjhFdHpjYTFRd3V1bkVBY3BoREJX?=
+ =?utf-8?B?eHRrL0xUVjJpUzBpRkxOZHVRdHo3SFRFZ2hxYUw1cVM2aFdCTHlNaDlCMDZG?=
+ =?utf-8?B?UjgzdWtqckdrOCtzUlVBTFhMKzRrRXlLOHI5Z1E5ZTRXd2dqQWpIVERvUGl6?=
+ =?utf-8?B?REU4Z2ZrSzF2QmJoV2tLcnFYeHg5TVlkdEZURHUvNmo5YUZnYzVuVmdXdHVt?=
+ =?utf-8?B?WjVOM1hKOXk3bktkWFRwRE1oYXQvOGd2dHBCSUNMTmtQVTFVT0FOWmV4aDdz?=
+ =?utf-8?B?eUlSVXVPUmtVNWl4aTk5Szlmcjh6dzVlQjl1c296WVMvRWRGT3BqVEErbXlS?=
+ =?utf-8?B?UTUwWTV6cEF6bnNxejNmcFE0dlVQWnNqZDB6TEJNYWppVm81bEJYaVNEanhK?=
+ =?utf-8?B?Z2N3cjFMcDR1VG1JTUpvRXo0TDZSOVFuQkpEL3Z2YTJaWk9ZT0VxMDZCMnA1?=
+ =?utf-8?B?UkZWdnRzTDJ6SzBpSk81dmZsUHB2bWxIVGF0NDlXS25KMi92SzljT2VLNmhj?=
+ =?utf-8?B?TVI5WXYxcnZzUVd5RTJaTHNKbnp5b29SWjNQbHdJUWVHRGUvUnd0RHhJR2xn?=
+ =?utf-8?B?MEF3T3djRFlyQmtnVGNUZzNaaGRML0xmWGNCZFJuZTJJVEpKQmdXRUxXeXYz?=
+ =?utf-8?B?Zys3R1p5OEhIVnlVZVo1RHBaU0s5N3hxUkNkUUN4bGhuV3QzK1NmZFlJemQv?=
+ =?utf-8?B?ajZ0QktPaXdRMVkxTCs5b1Z4M2N4YlRxamVhTWl1YzF6UE54QmhYSndRY3R1?=
+ =?utf-8?B?SGNGU3RhQmN6U0pOZmd4UnVrTFVMNUZ3SE4yU094WTRoM2E1NUROeVBDMHFP?=
+ =?utf-8?B?dWNNRGs4WHRJOE1HQVAyT1lDaEd4U2pvUkkrOHBrbWRiaWVOeWhYdS91WmxP?=
+ =?utf-8?B?eTRCQmlOS0wwVmd5VzcvNHczSWI2R0E0d1k5SkRsYWxBdWMyeFRGYnhOc05l?=
+ =?utf-8?B?MDBEWWtiSEVCRGQrdE9vc3dtY0swSThuQkc5d3lSQzBkRmZoL3dPLzZQcHoy?=
+ =?utf-8?B?N2h6WVZmT3lQSlRVQXRmb0p3S2hpbENaN0dnTVlUemlLYUUvMUV0M09MTURr?=
+ =?utf-8?B?dGxrYTZsdDgxUngvbFArNmkxZHZCQk51R29CTzJzVlhIdzl5SGpYWDlOYThr?=
+ =?utf-8?B?UWtUZ0xnOStqUWFpUEdMd1NwNWFJYThXcnIxTDZhT1N5OFIxeVo5VUh6Zjc5?=
+ =?utf-8?B?QTZydmh5Sy9QbWNSZE9hdUQ4MkZtclpiYUhGNUFCV3haOFRnUDZscWxFdmJF?=
+ =?utf-8?B?dUlWZTdBQjV6VHJ0OUZ3QS9xdWVCNjJrL3FvTWwzRXJvQWl6Qnd6QmlaS2xJ?=
+ =?utf-8?B?c3c2Q2FzdW9vcHR0aDJSa3JBK1lYRUtTSWdTWlUxT1ZUK2RVNmcwem5rZUsy?=
+ =?utf-8?B?QTVjNjhLazFVM3pMNzVFSUdRNW9wWVhMWDJZY2U4SmUySU5UL3czN3MwOVZB?=
+ =?utf-8?Q?ZKIhW+qToAoDK2j75Dj/1a/hyMSav1LDKQu64?=
+X-Exchange-RoutingPolicyChecked: KE5zJhV32jG/LPB/0rHZTjCMRDFm639cYLhuDVzDt6NdaH3WM8XWOVWkbiGFTvbf88lgQ51beoJ9OuGp0ilfPX8385neK+2Vn7KXW70+WGL6LaB0LrIyxE6NM1AUXpGb2eG2nIRk2RWHIZvtP6LFGhgHHDHh9OwQTPjxB57fKJQHNlVBfu16d5q//out169yqq5KpiL2MYKr5x4ixebgY1ZaA/OrPLaaJ+RkFZFE98hPAWJ7QECicV4D6MeWloHBWSZTysWrfykz1qPHP1wANAhPaGnKjbIpYoQBE1pGdhY4xZU7KDDn6Cqq2zlItO/RLmgcqJDOnD3fA+0EUBU0ew==
+X-MS-Exchange-CrossTenant-Network-Message-Id: c5471ac1-49ce-48fb-35d2-08df1f931b71
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7651.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 08:07:28.4234 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2026 08:07:59.3488 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /ESMJL5L8A+RxmUedI22EZGsF+yaNUxwkKo0BrVkX5bcEH3+Pc8IkyQlbOsRKpMftT6nw8rdWI7EA4V4nShgW3od0GZ8rcDfdAosAu6MdwQwKj+c5jBsOVYnnpq0LSr0
+X-MS-Exchange-CrossTenant-UserPrincipalName: E4kkc3wIiEtOf+tvhYfztmP3eUNNdmuaMSvMhh7FMgYM8JSwXZstYRmJ6lW9s2PBdPTCx2mAQBX+JpmyOjua8d/Zxs0HfM1C40NLeGE39ft2b+w3nF5oeSzdOWlMkVQW
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6409
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -177,291 +176,80 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---------------TyvFVVp5K5vBoUxLRlq7VH0z
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
 
-
-On 11-09-2026 17:18, Purkait, Soham wrote:
->
+On 11-09-2026 20:33, Kamil Konieczny wrote:
 > Hi Ravi,
->
-> On 03-09-2026 13:03, Ravi Kishore Koppuravuri wrote:
->> Add support for SET_ERROR_THRESHOLD to set the custom error threshold
->> value
+> On 2026-09-03 at 13:03:32 +0530, Ravi Kishore Koppuravuri wrote:
+>> MMIO based GT Uncorrectable Unicast GAM Walker command parity error
+>> injection to verify the Xe driver error handling and recovery flows with
+>> the help of DRM Netlink API suite
 >>
->> Cc: Purkait Soham<soham.purkait@intel.com>
->> Cc: Riana Tauro<riana.tauro@intel.com>
->> Cc: Gupta Anshuman<anshuman.gupta@intel.com>
->> Cc: Jadav Raag<raag.jadav@intel.com>
->> Cc: Nilawar Badal<badal.nilawar@intel.com>
->> Cc: Koujalagi Mallesh<mallesh.koujalagi@intel.com>
->> Cc: Harish Chegondi<harish.chegondi@intel.com>
->> Signed-off-by: Ravi Kishore Koppuravuri<ravi.kishore.koppuravuri@intel.com>
+>> Cc: Purkait Soham <soham.purkait@intel.com>
+>> Cc: Riana Tauro <riana.tauro@intel.com>
+>> Cc: Gupta Anshuman <anshuman.gupta@intel.com>
+>> Cc: Jadav Raag <raag.jadav@intel.com>
+>> Cc: Nilawar Badal <badal.nilawar@intel.com>
+>> Cc: Koujalagi Mallesh <mallesh.koujalagi@intel.com>
+>> Cc: Harish Chegondi <harish.chegondi@intel.com>
+>> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 >> ---
->> v2:Marked this command as response not required
->> v4:Renamed the library functions with prefix "igt_drm_netlink_*" (Nikula
->>     Jani & Kamil)
+>> v4:
+>>    - Added Steer Semaphore for disabling and enabling multicast
+>>      operation(soham)
+>>    - Increased device recovery check timeout from 5secs to 10secs
+>>    - Used updated library names with igt_drm_netlink_* prefix (Nikula
+>>      Jani & Kamil)
 >> ---
->>   lib/igt_drm_netlink.c | 39 +++++++++++++++++++++++++++++++++++++++
->>   lib/igt_drm_netlink.h |  1 +
->>   2 files changed, 40 insertions(+)
+>>   tests/intel/xe_err_injection.c | 342 +++++++++++++++++++++++++++++++++
+>>   tests/intel/xe_err_injection.h |  31 +++
+>>   tests/meson.build              |   1 +
+>>   3 files changed, 374 insertions(+)
+>>   create mode 100644 tests/intel/xe_err_injection.c
+>>   create mode 100644 tests/intel/xe_err_injection.h
 >>
->> diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
->> index 1be7d4361..c0e3aff9b 100644
->> --- a/lib/igt_drm_netlink.c
->> +++ b/lib/igt_drm_netlink.c
->> @@ -26,6 +26,8 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
->>   	gnlh = nlmsg_data(nlh);
->>   
->>   	switch (gnlh->cmd) {
->> +	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
->> +		break;
->>   	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
->>   		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
->>   
->> @@ -201,6 +203,7 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
->>   	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
->>   	case DRM_RAS_CMD_GET_ERROR_COUNTER:
->>   		ctx->response_required = true;
->> +	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
->>   		ret = nla_put_u32(msg,
->>   				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
->>   				  ctx->node_id);
->> @@ -216,6 +219,16 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
->>   			nlmsg_free(msg);
->>   			return ret;
->>   		}
+>> diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
+>> new file mode 100644
+>> index 000000000..683994d1c
+>> --- /dev/null
+>> +++ b/tests/intel/xe_err_injection.c
+>> @@ -0,0 +1,342 @@
+>> +// SPDX-License-Identifier: MIT
+>> +/*
+>> + * Copyright © 2026 Intel Corporation
+>> + */
 >> +
->> +		if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD) {
+>> +/**
+>> + * TEST: MMIO based Error Injection
+>> + * Category: RAS
+>> + * Mega feature: Telemetry
+>> + * Sub-category: Driver
+>> + * Test category: Error Injection
+>> + */
+>> +
+>> +#include <stdio.h>
+>> +#include <stdlib.h>
+>> +#include <string.h>
+>> +#include <time.h>
+>> +#include <fcntl.h>
+> Keep it sorted, so fcntl.h should be first.
 >
-> For this command, better to validate it in the 
-> "igt_drm_netlink_set_error_threshold" with error_threshold as a 
-> parameter in the same function.
 >
-> Thanks, Soham
-
-send_command() is the common function across multiple commands to 
-prepare the message.
-
-Here, if the command is DRM_RAS_CMD_SET_ERROR_THRESHOLD, then it adds 
-the attribute DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD to the 
-message otherwise not. it is part of preparing the message before 
-sending. I feel that current location is appropriate for adding the 
-threshold attribute by checking the set_error_threshold command.
-
-Thanks,
-
-Ravi Kishore K.
-
->> +			ret = nla_put_u32(msg,
->> +					  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
->> +					  ctx->error_threshold);
->> +			if (ret < 0) {
->> +				nlmsg_free(msg);
->> +				return ret;
->> +			}
->> +		}
->>   		break;
->>   	default:
->>   		nlmsg_free(msg);
->> @@ -314,6 +327,14 @@ static int validate_inputs(struct app_context *ctx, uint8_t cmd)
->>   		return -EINVAL;
->>   	}
->>   
->> +	if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD &&
->> +	    (ctx->error_threshold < 1 || ctx->error_threshold > 16)) {
->> +		igt_warn("Invalid error_threshold (%u) provided. "
->> +			 "error_threshold should be >= 1 and <= 16.\n",
->> +			 ctx->error_threshold);
->> +		return -EINVAL;
->> +	}
+>
+> Regards,
+> Kamil
+I will update Kamil. Thanks
+>
+>> +#include <unistd.h>
 >> +
->>   	return 0;
->>   }
->>   
->> @@ -368,3 +389,21 @@ int igt_drm_netlink_get_error_threshold(struct app_context *ctx)
->>   
->>   	return 0;
->>   }
+>> +#include "igt.h"
+>> +#include "lib/igt_drm_netlink.h"
+>> +#include "lib/intel_reg.h"
+>> +#include "lib/intel_compute.h"
 >> +
->> +int igt_drm_netlink_set_error_threshold(struct app_context *ctx)
->> +{
->> +	int ret;
+>> +#include "xe_drm.h"
+>> +#include "xe/xe_ioctl.h"
+>> +#include "xe/xe_mmio.h"
+>> +#include "xe/xe_query.h"
+>> +#include "xe_err_injection.h"
 >> +
->> +	ret = validate_inputs(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	ret = send_command(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
->> +	if (ret < 0)
->> +		return ret;
->> +
->> +	igt_debug("Set error threshold: node_id=%u error_id=%u threshold=%u\n",
->> +		  ctx->node_id, ctx->error_id, ctx->error_threshold);
->> +
->> +	return 0;
->> +}
->> diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
->> index 89ef58243..9376e3dee 100644
->> --- a/lib/igt_drm_netlink.h
->> +++ b/lib/igt_drm_netlink.h
->> @@ -26,6 +26,7 @@ void igt_drm_netlink_cleanup(struct app_context *ctx);
->>   int igt_drm_netlink_init(struct app_context *ctx);
->>   int igt_drm_netlink_get_error_counter(struct app_context *ctx);
->>   int igt_drm_netlink_get_error_threshold(struct app_context *ctx);
->> +int igt_drm_netlink_set_error_threshold(struct app_context *ctx);
->>   
->>   #endif /* IGT_DRM_NETLINK_H */
->>   
---------------TyvFVVp5K5vBoUxLRlq7VH0z
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix">On 11-09-2026 17:18, Purkait, Soham
-      wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:999a0436-4e30-425b-b8df-62b752615b87@intel.com">
-      
-      <p>Hi Ravi,</p>
-      <div class="moz-cite-prefix">On 03-09-2026 13:03, Ravi Kishore
-        Koppuravuri wrote:<br>
-      </div>
-      <blockquote type="cite" cite="mid:20260903073335.339540-7-ravi.kishore.koppuravuri@intel.com">
-        <pre wrap="" class="moz-quote-pre">Add support for SET_ERROR_THRESHOLD to set the custom error threshold
-value
-
-Cc: Purkait Soham <a class="moz-txt-link-rfc2396E" href="mailto:soham.purkait@intel.com" moz-do-not-send="true">&lt;soham.purkait@intel.com&gt;</a>
-Cc: Riana Tauro <a class="moz-txt-link-rfc2396E" href="mailto:riana.tauro@intel.com" moz-do-not-send="true">&lt;riana.tauro@intel.com&gt;</a>
-Cc: Gupta Anshuman <a class="moz-txt-link-rfc2396E" href="mailto:anshuman.gupta@intel.com" moz-do-not-send="true">&lt;anshuman.gupta@intel.com&gt;</a>
-Cc: Jadav Raag <a class="moz-txt-link-rfc2396E" href="mailto:raag.jadav@intel.com" moz-do-not-send="true">&lt;raag.jadav@intel.com&gt;</a>
-Cc: Nilawar Badal <a class="moz-txt-link-rfc2396E" href="mailto:badal.nilawar@intel.com" moz-do-not-send="true">&lt;badal.nilawar@intel.com&gt;</a>
-Cc: Koujalagi Mallesh <a class="moz-txt-link-rfc2396E" href="mailto:mallesh.koujalagi@intel.com" moz-do-not-send="true">&lt;mallesh.koujalagi@intel.com&gt;</a>
-Cc: Harish Chegondi <a class="moz-txt-link-rfc2396E" href="mailto:harish.chegondi@intel.com" moz-do-not-send="true">&lt;harish.chegondi@intel.com&gt;</a>
-Signed-off-by: Ravi Kishore Koppuravuri <a class="moz-txt-link-rfc2396E" href="mailto:ravi.kishore.koppuravuri@intel.com" moz-do-not-send="true">&lt;ravi.kishore.koppuravuri@intel.com&gt;</a>
----
-v2:Marked this command as response not required
-v4:Renamed the library functions with prefix &quot;igt_drm_netlink_*&quot; (Nikula
-   Jani &amp; Kamil)
----
- lib/igt_drm_netlink.c | 39 +++++++++++++++++++++++++++++++++++++++
- lib/igt_drm_netlink.h |  1 +
- 2 files changed, 40 insertions(+)
-
-diff --git a/lib/igt_drm_netlink.c b/lib/igt_drm_netlink.c
-index 1be7d4361..c0e3aff9b 100644
---- a/lib/igt_drm_netlink.c
-+++ b/lib/igt_drm_netlink.c
-@@ -26,6 +26,8 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
- 	gnlh = nlmsg_data(nlh);
- 
- 	switch (gnlh-&gt;cmd) {
-+	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
-+		break;
- 	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
- 		struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
- 
-@@ -201,6 +203,7 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
- 	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
- 	case DRM_RAS_CMD_GET_ERROR_COUNTER:
- 		ctx-&gt;response_required = true;
-+	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
- 		ret = nla_put_u32(msg,
- 				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
- 				  ctx-&gt;node_id);
-@@ -216,6 +219,16 @@ static int send_command(struct app_context *ctx, uint8_t cmd)
- 			nlmsg_free(msg);
- 			return ret;
- 		}
-+
-+		if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD) {</pre>
-      </blockquote>
-      <p>For this command, better to validate it in the
-        &quot;igt_drm_netlink_set_error_threshold&quot; with&nbsp;<span style="white-space: pre-wrap">error_threshold as a parameter in the same function.</span></p>
-      <span style="white-space: pre-wrap">Thanks,
-Soham</span></blockquote>
-    <p>send_command() is the common function across multiple commands to
-      prepare the message.&nbsp;</p>
-    <p>Here, if the command is DRM_RAS_CMD_SET_ERROR_THRESHOLD, then it
-      adds the attribute DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD
-      to the message otherwise not. it is part of preparing the message
-      before sending. I feel that current location is appropriate for
-      adding the threshold attribute by checking the set_error_threshold
-      command.</p>
-    <p>Thanks,</p>
-    <p>Ravi Kishore K.</p>
-    <blockquote type="cite" cite="mid:999a0436-4e30-425b-b8df-62b752615b87@intel.com">
-      <blockquote type="cite" cite="mid:20260903073335.339540-7-ravi.kishore.koppuravuri@intel.com">
-        <pre wrap="" class="moz-quote-pre">+			ret = nla_put_u32(msg,
-+					  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
-+					  ctx-&gt;error_threshold);
-+			if (ret &lt; 0) {
-+				nlmsg_free(msg);
-+				return ret;
-+			}
-+		}
- 		break;
- 	default:
- 		nlmsg_free(msg);
-@@ -314,6 +327,14 @@ static int validate_inputs(struct app_context *ctx, uint8_t cmd)
- 		return -EINVAL;
- 	}
- 
-+	if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD &amp;&amp;
-+	    (ctx-&gt;error_threshold &lt; 1 || ctx-&gt;error_threshold &gt; 16)) {
-+		igt_warn(&quot;Invalid error_threshold (%u) provided. &quot;
-+			 &quot;error_threshold should be &gt;= 1 and &lt;= 16.\n&quot;,
-+			 ctx-&gt;error_threshold);
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
- 
-@@ -368,3 +389,21 @@ int igt_drm_netlink_get_error_threshold(struct app_context *ctx)
- 
- 	return 0;
- }
-+
-+int igt_drm_netlink_set_error_threshold(struct app_context *ctx)
-+{
-+	int ret;
-+
-+	ret = validate_inputs(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
-+	if (ret &lt; 0)
-+		return ret;
-+
-+	ret = send_command(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
-+	if (ret &lt; 0)
-+		return ret;
-+
-+	igt_debug(&quot;Set error threshold: node_id=%u error_id=%u threshold=%u\n&quot;,
-+		  ctx-&gt;node_id, ctx-&gt;error_id, ctx-&gt;error_threshold);
-+
-+	return 0;
-+}
-diff --git a/lib/igt_drm_netlink.h b/lib/igt_drm_netlink.h
-index 89ef58243..9376e3dee 100644
---- a/lib/igt_drm_netlink.h
-+++ b/lib/igt_drm_netlink.h
-@@ -26,6 +26,7 @@ void igt_drm_netlink_cleanup(struct app_context *ctx);
- int igt_drm_netlink_init(struct app_context *ctx);
- int igt_drm_netlink_get_error_counter(struct app_context *ctx);
- int igt_drm_netlink_get_error_threshold(struct app_context *ctx);
-+int igt_drm_netlink_set_error_threshold(struct app_context *ctx);
- 
- #endif /* IGT_DRM_NETLINK_H */
- 
-</pre>
-      </blockquote>
-    </blockquote>
-  </body>
-</html>
-
---------------TyvFVVp5K5vBoUxLRlq7VH0z--
+> [cut]
