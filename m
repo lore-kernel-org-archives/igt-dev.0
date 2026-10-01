@@ -4,51 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D243CA5FCE
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 07:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EA38CA5FC5
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 07:23:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4487C10F5A8;
-	Thu,  1 Oct 2026 07:23:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 11AB410F59D;
+	Thu,  1 Oct 2026 07:23:47 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="TtOEMwI5";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WKmu+C4b";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AFCC10F598
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 07:16:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 662F710F59F
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 07:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790838999; x=1822374999;
+ t=1790838997; x=1822374997;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=A3MvAm6/yX3x+2jl0SFgp8HDPWdVDm+Ww0DVMVlVuJQ=;
- b=TtOEMwI5PWuKgvQob3JC5hgwVs++EiH6wuRx3hV/f9y729I67VVI3+DD
- 9TjORhekUFK07b+GkC2B6gYV0ub0vbe9SpJwa+6LER7wTFk+Od7MmCuZ3
- uwCkEmFS3zjhd2t2p0erFpUATfdIBUXUtAdPjYf/x8Yph89HwHErguUYT
- fImf6Ne04+Ic+reJ172IxMoj/I3dJ1dviZiUCh8PssbP9T4df/kpAv5my
- xK2lxbKZsglbrnTNA3GWzqdwRqsc12Y7evEt99RYU38ovuGATm4gRqUu4
- uU2LDEJv/UpHlD015/DeS4yIyhGSXht62rGZcieKdRraSaHnOcoRlEqDg A==;
-X-CSE-ConnectionGUID: Xs6TlNFjSkCMhsPRB3hh6g==
-X-CSE-MsgGUID: KDegBA45RN6gg2s4lzhE3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="91606006"
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="91606006"
+ bh=iDQTbUC+zjlLBTMR9s+FiBKvvIIrpsoECDboeD+hXCQ=;
+ b=WKmu+C4bCduyrNHvDobqP6sirJdEVGk37Pr6fmiFUJ29k8KjtGCNJLtO
+ QixjkJskQ2O6rf3V9MVeDLT99Oh6gHeLx6egeSjliOPUvZXJtxJRIqMMl
+ 058aFFCzsvxGeQygSN/7liU/FETGzqZzR5IA+WpiGk2oTLFGNjfJpmGAT
+ C2vDSYl2FbP1QQLudKAxoovL+FD3mF/Y/I7xR6knigAo9OqFgI6Z8Tcxl
+ E1mgf3O9A0UO08IHheRo1U+4EVnfiQcyRVRK1szSGKheHoUKvuGu0S9hD
+ mzOxAKN+u1TdafCmsk7YzQmQumnGqXV+JRV4M+DMiPjrgqiOp4/M2dWsE w==;
+X-CSE-ConnectionGUID: dGIJkxhaQxaijbL7tcWq5Q==
+X-CSE-MsgGUID: 1ThL51aDQRyCnNk93LoXKg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="91605991"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="91605991"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 01 Oct 2026 00:15:59 -0700
-X-CSE-ConnectionGUID: C0PJJSjtQjuAxDsYUNm/Zw==
-X-CSE-MsgGUID: Ei08dG2/R8eM2e8prLmV/w==
+ 01 Oct 2026 00:15:49 -0700
+X-CSE-ConnectionGUID: sDYoW0luTuCHa9RAutqkmQ==
+X-CSE-MsgGUID: jfMc7NQoTg6DlQoyV+w1hg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="279138344"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="279138318"
 Received: from kunal-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.239.13])
  by ORVIESA003-auth.jf.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 00:15:58 -0700
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2026 00:15:49 -0700
 From: Kunal Joshi <kunal1.joshi@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kunal Joshi <kunal1.joshi@intel.com>,
 	Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t 12/13] lib/igt_dp: add DPCD link status and channel
- coding checks
-Date: Thu,  1 Oct 2026 13:07:02 +0530
-Message-Id: <20261001073703.5067-13-kunal1.joshi@intel.com>
+Subject: [PATCH i-g-t 05/13] tests/intel/kms_dp_link_training: use the lowest
+ pixel clock mode
+Date: Thu,  1 Oct 2026 13:06:55 +0530
+Message-Id: <20261001073703.5067-6-kunal1.joshi@intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20261001073703.5067-1-kunal1.joshi@intel.com>
 References: <20261001073703.5067-1-kunal1.joshi@intel.com>
@@ -69,150 +69,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add igt_dp_link_status_ok() for checking from the sink's DPCD that all
-the lanes in use are locked and aligned. 128b/132b has no clock
-recovery, and has a separate bit for training failure, so handle both
-channel codings, similar to drm_dp_channel_eq_ok() and the
-drm_dp_128b132b_*() helpers in the kernel.
+The preferred mode of a modern monitor may need most of the link
+bandwidth, leaving the lower link configs unusable. Use the mode with
+the lowest pixel clock instead, so that as many configs as possible can
+carry it. This should also keep DSC out of the picture.
 
-Add igt_dp_channel_coding_ok() for checking that
-MAIN_LINK_CHANNEL_CODING_SET matches the expected channel coding.
+The override is cleared by igt_display_reset(), so there's no need to
+clean up.
 
-Both return 1 or 0, or a negative error code if the DPCD can't be read,
-so the callers can tell a failed check from a failed read.
+This prepares for training all the allowed link configs.
 
 Assisted-by: GitHub_Copilot:claude-opus-5
 Signed-off-by: Kunal Joshi <kunal1.joshi@intel.com>
 Reviewed-by: Sowmiya S <sowmiya.s@intel.com>
 ---
- lib/igt_dp.c | 103 +++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_dp.h |   4 ++
- 2 files changed, 107 insertions(+)
+ tests/intel/kms_dp_link_training.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/lib/igt_dp.c b/lib/igt_dp.c
-index 0b1fe73de..a7d9f1e77 100644
---- a/lib/igt_dp.c
-+++ b/lib/igt_dp.c
-@@ -281,3 +281,106 @@ int igt_dp_dpcd_read_byte(int aux_fd, unsigned int offset, uint8_t *val)
- 
- 	return ret == 1 ? 0 : -EIO;
+diff --git a/tests/intel/kms_dp_link_training.c b/tests/intel/kms_dp_link_training.c
+index 8d079ffb0..76bbe3733 100644
+--- a/tests/intel/kms_dp_link_training.c
++++ b/tests/intel/kms_dp_link_training.c
+@@ -185,6 +185,25 @@ static void train_link_config(data_t *data, bool mst,
+ 	assert_link_retrain_not_disabled(data, config);
  }
-+
+ 
 +/*
-+ * DPCD registers and bits used by the sink side link checks, mirroring the
-+ * kernel's include/drm/display/drm_dp.h.
++ * override_lowest_mode - Drive the mode with the lowest pixel clock, so that
++ * the largest number of link configurations can carry it.
 + */
-+#define DPCD_MAIN_LINK_CHANNEL_CODING_SET	0x108
-+#define  DPCD_SET_ANSI_8B10B			(1 << 0)
-+#define  DPCD_SET_ANSI_128B132B			(1 << 1)
-+
-+#define DPCD_LANE0_1_STATUS			0x202
-+#define DPCD_LINK_STATUS_SIZE			6
-+#define  DPCD_LANE_CR_DONE			(1 << 0)
-+#define  DPCD_LANE_CHANNEL_EQ_DONE		(1 << 1)
-+#define  DPCD_LANE_SYMBOL_LOCKED		(1 << 2)
-+
-+/* DP_LANE_ALIGN_STATUS_UPDATED, the third byte of the status block. */
-+#define  DPCD_INTERLANE_ALIGN_DONE		(1 << 0)
-+#define  DPCD_128B132B_LT_FAILED		(1 << 4)
-+
-+static uint8_t dpcd_lane_status(const uint8_t link_status[DPCD_LINK_STATUS_SIZE],
-+				int lane)
++static void override_lowest_mode(data_t *data, igt_output_t *output)
 +{
-+	return (link_status[lane / 2] >> (4 * (lane % 2))) & 0xf;
++	drmModeConnector *connector = output->config.connector;
++	drmModeModeInfo *mode = NULL;
++	int i;
++
++	for (i = 0; i < connector->count_modes; i++)
++		if (!mode || connector->modes[i].clock < mode->clock)
++			mode = &connector->modes[i];
++
++	igt_assert_f(mode, "No mode on output %s\n", igt_output_name(output));
++
++	igt_output_override_mode(output, mode);
 +}
 +
-+/**
-+ * igt_dp_channel_coding_ok: Check the channel coding the sink was told to use
-+ * @aux_fd:	AUX channel device file descriptor from igt_dp_aux_open()
-+ * @uhbr:	Whether 128b/132b is expected
-+ *
-+ * Read MAIN_LINK_CHANNEL_CODING_SET and check that it selects the encoding the
-+ * link rate implies. This is the only direct evidence that the coding a UHBR
-+ * rate implies is the coding that reached the wire.
-+ *
-+ * Returns:
-+ * 1 when the expected coding is selected, 0 when it is not, or a negative
-+ * error code when the DPCD could not be read.
-+ */
-+int igt_dp_channel_coding_ok(int aux_fd, bool uhbr)
-+{
-+	uint8_t coding;
-+	int ret;
-+
-+	ret = igt_dp_dpcd_read_byte(aux_fd, DPCD_MAIN_LINK_CHANNEL_CODING_SET,
-+				    &coding);
-+	if (ret < 0)
-+		return ret;
-+
-+	return !!(coding & (uhbr ? DPCD_SET_ANSI_128B132B : DPCD_SET_ANSI_8B10B));
-+}
-+
-+/**
-+ * igt_dp_link_status_ok: Check the sink considers the link trained
-+ * @aux_fd:	AUX channel device file descriptor from igt_dp_aux_open()
-+ * @lane_count:	Number of lanes in use
-+ * @uhbr:	Whether the link runs at a UHBR rate, i.e. uses 128b/132b
-+ *
-+ * Read the link status block at DP_LANE0_1_STATUS and check that every lane in
-+ * use is locked and the lanes are aligned.
-+ *
-+ * 128b/132b reports this differently from 8b/10b: there is no clock recovery
-+ * bit, and a training failure has its own bit in
-+ * DP_LANE_ALIGN_STATUS_UPDATED. Mirrors drm_dp_channel_eq_ok() and the
-+ * drm_dp_128b132b_* predicates.
-+ *
-+ * Returns:
-+ * 1 when the sink considers the link trained, 0 when it does not, or a
-+ * negative error code when the DPCD could not be read.
-+ */
-+int igt_dp_link_status_ok(int aux_fd, int lane_count, bool uhbr)
-+{
-+	uint8_t link_status[DPCD_LINK_STATUS_SIZE];
-+	uint8_t lane_mask;
-+	uint8_t align;
-+	int ret;
-+	int lane;
-+
-+	ret = igt_dp_dpcd_read(aux_fd, DPCD_LANE0_1_STATUS, link_status,
-+			       sizeof(link_status));
-+	if (ret < 0)
-+		return ret;
-+	if (ret != sizeof(link_status))
-+		return -EIO;
-+
-+	align = link_status[2];
-+
-+	if (uhbr && (align & DPCD_128B132B_LT_FAILED))
-+		return 0;
-+
-+	if (!(align & DPCD_INTERLANE_ALIGN_DONE))
-+		return 0;
-+
-+	/* 128b/132b has no clock recovery phase, so no CR_DONE bit. */
-+	lane_mask = DPCD_LANE_CHANNEL_EQ_DONE | DPCD_LANE_SYMBOL_LOCKED;
-+	if (!uhbr)
-+		lane_mask |= DPCD_LANE_CR_DONE;
-+
-+	for (lane = 0; lane < lane_count; lane++)
-+		if ((dpcd_lane_status(link_status, lane) & lane_mask) != lane_mask)
-+			return 0;
-+
-+	return 1;
-+}
-diff --git a/lib/igt_dp.h b/lib/igt_dp.h
-index 44f3b11a1..332656aae 100644
---- a/lib/igt_dp.h
-+++ b/lib/igt_dp.h
-@@ -36,4 +36,8 @@ int igt_dp_dpcd_read(int aux_fd, unsigned int offset, void *buf, size_t size);
+ /*
+  * setup_planes_fbs - Create solid-color FBs and attach them to the primary plane.
+  */
+@@ -224,6 +243,7 @@ static void do_modeset(data_t *data, bool mst)
+ 	int n_pipes = 0;
+ 	int out_count = 0;
+ 	igt_crtc_t *crtc;
++	int i;
  
- int igt_dp_dpcd_read_byte(int aux_fd, unsigned int offset, uint8_t *val);
+ 	for_each_crtc(&data->display, crtc) {
+ 		valid_pipes_mask |= BIT(crtc->hardware_pipe);
+@@ -243,6 +263,9 @@ static void do_modeset(data_t *data, bool mst)
  
-+int igt_dp_channel_coding_ok(int aux_fd, bool uhbr);
+ 	igt_assert_f(out_count > 0, "Require at least one output\n");
+ 
++	for (i = 0; i < out_count; i++)
++		override_lowest_mode(data, outs[i]);
 +
-+int igt_dp_link_status_ok(int aux_fd, int lane_count, bool uhbr);
-+
- #endif
+ 	igt_set_all_master_pipes_for_platform(&data->display, &master_pipes_mask);
+ 
+ 	igt_assert_f(igt_assign_pipes_for_outputs(data->drm_fd,
 -- 
 2.25.1
 
