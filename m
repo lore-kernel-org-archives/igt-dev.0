@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01A2ACA5FA5
-	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 06:00:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F36C9CA5FB3
+	for <igt-dev@archiver.kernel.org>; Thu,  1 Oct 2026 06:01:27 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 677F410E1FB;
-	Thu,  1 Oct 2026 06:00:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A0E6E10E03D;
+	Thu,  1 Oct 2026 06:01:27 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="e5VmJQiD";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="h8exNw3D";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 16CFD10E03D
- for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 05:59:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 72FD910E03D
+ for <igt-dev@lists.freedesktop.org>; Thu,  1 Oct 2026 05:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790834356; x=1822370356;
+ t=1790834355; x=1822370355;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=lesxoUccromNdSLaWmM60DG9CXBoiwFKA2YPK/Wfbos=;
- b=e5VmJQiD7hiWDDicsFlmNTtmGp5FcK/GhoWfAqZMK49rsNziHt965IcS
- EcSIgpQqza03kowkg+coVZOt7B+A5Evgo0BOVd30MVMEAYEhwD2cNCtGR
- gEKAGYDSShVl99K4o0YjYBFUIneRUNyJtdT9PQ7+HiGxO+NJjY8QqyTrV
- zPoz9iTxwXBh4OLU2g3RaHmoXLpxB9CTee92G9Z7aSpHlQ0NeT15mKw+4
- r9/dlGax90jDa2EcaDjRElOfghubnbGtaXBtmDZ9YIektPl8vrSrEtsLQ
- gq2yklZGu7QoSg+pPmxoNkMParZ9DmNwAPza7brTgt159Mt1pubwG6eVC A==;
-X-CSE-ConnectionGUID: yI1DN2oNR1OLg1DELjiFmA==
-X-CSE-MsgGUID: ELFwzqLGT0afGMBSYtOR/A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="102156734"
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="102156734"
+ bh=gx2TMc8+seCGDs4KxHXtV5qLNLq3CwtIU9DuzrsjUIk=;
+ b=h8exNw3D/r7MLhqvpEJ63AGRxlSmzLbJaxWLHeyRx2qZvmr6EgzfoSdK
+ wwQZooLPQRoBNjPYX1r9EW/YIpE+XrvrDKWJXPk047ynx/HRpT2qqbSlU
+ QTBUBhD+UZUssh/M0WkGNDkzHGGL4MPOsMtmkKt2YhnqAyqp4VHDl9BS8
+ 3npRG2dkrBcqd6nRsLhJzL9BO30S6qF4REkfIcKb6vht8U6KEo5I40WZI
+ 20U5TgP3hdekRPTdOpy+MPaOWwhcPISkKMN6MiuQO1QKSQ2KxR9wajgde
+ wfv+3trJha7FvoVadTIq6hAz2R5gQAh2OaA2BjIaQGCszh/e1rMKh1l/T w==;
+X-CSE-ConnectionGUID: lZ/4Up8fTIeGpvWMKoeqhw==
+X-CSE-MsgGUID: cXK14v35Q+KeaBdGKY0nuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11921"; a="102156727"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="102156727"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Sep 2026 22:59:16 -0700
-X-CSE-ConnectionGUID: l+++d3NIShGvpYpYC5R7DQ==
-X-CSE-MsgGUID: VN3lC5//QpuoIl7Ge7AAAw==
+ 30 Sep 2026 22:59:14 -0700
+X-CSE-ConnectionGUID: s6tuO38SSoekp0POGGNyuw==
+X-CSE-MsgGUID: 1cdOc3pwR8OBM0StBSbCJw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="275444700"
+X-IronPort-AV: E=Sophos;i="6.27,134,1787036400"; d="scan'208";a="275444692"
 Received: from dut1129bmgfrd.igk.intel.com ([10.211.178.46])
- by orviesa007.jf.intel.com with ESMTP; 30 Sep 2026 22:59:14 -0700
+ by orviesa007.jf.intel.com with ESMTP; 30 Sep 2026 22:59:13 -0700
 From: shivtej.eknath.patil@intel.com
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
  nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
 Cc: Shivtej Patil <shivtej.eknath.patil@intel.com>
-Subject: [PATCH v8 2/3] tests/intel/xe_pm: add coverage for xe_device_sysfs
-Date: Thu,  1 Oct 2026 05:59:01 +0000
-Message-ID: <20261001055902.5430-3-shivtej.eknath.patil@intel.com>
+Subject: [PATCH v8 1/3] lib/igt_sysfs: add vram d3cold threshold helpers
+Date: Thu,  1 Oct 2026 05:59:00 +0000
+Message-ID: <20261001055902.5430-2-shivtej.eknath.patil@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261001055902.5430-1-shivtej.eknath.patil@intel.com>
 References: <20261001055902.5430-1-shivtej.eknath.patil@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -70,251 +69,92 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 From: Shivtej Patil <shivtej.eknath.patil@intel.com>
 
-Add new subtests to exercise the following
-xe_device_sysfs.c functions:
- 
-- vram_d3cold_threshold_show()
-- vram_d3cold_threshold_store()
-- lb_fan_control_version_show()
-- lb_voltage_regulator_version_show()
-- auto_link_downgrade_capable_show()
-- auto_link_downgrade_status_show()
- 
-The subtests validate the corresponding sysfs
-attributes and improve code coverage.
+Add vram_d3cold_threshold helper functions
+
+Add helper functions to read and write the
+vram_d3cold_threshold sysfs attribute.
 
 Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
 ---
- tests/intel/xe_pm.c | 176 ++++++++++++++++++++++++++++++++++++--------
- 1 file changed, 145 insertions(+), 31 deletions(-)
+ lib/igt_sysfs.c | 50 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h |  3 +++
+ 2 files changed, 53 insertions(+)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 543f46f5b..9a70b1645 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -111,34 +111,9 @@ static bool runtime_usage_available(struct pci_device *pci)
- 	return access(name, F_OK) == 0;
- }
- 
--static uint64_t get_vram_d3cold_threshold(int sysfs)
-+static bool sysfs_exists(int sysfs_fd, const char *path)
- {
--	uint64_t threshold;
--	char path[64];
--	int ret;
--
--	sprintf(path, "device/vram_d3cold_threshold");
--	igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_threshold is not present\n");
--
--	ret = igt_sysfs_scanf(sysfs, path, "%"PRIu64"", &threshold);
--	igt_assert_lt(0, ret);
--
--	return threshold;
--}
--
--static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
--{
--	char path[64];
--	int ret;
--
--	sprintf(path, "device/vram_d3cold_threshold");
--
--	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
--		ret = igt_sysfs_printf(sysfs, path, "%"PRIu64"", threshold);
--	else
--		igt_warn("vram_d3cold_threshold is not present\n");
--
--	igt_assert_lt(0, ret);
-+	return !faccessat(sysfs_fd, path, R_OK, 0);
- }
- 
- static void vram_d3cold_threshold_restore(int sig)
-@@ -148,7 +123,7 @@ static void vram_d3cold_threshold_restore(int sig)
- 	fd = drm_open_driver_master(DRIVER_XE);
- 	sysfs_fd = igt_sysfs_open(fd);
- 
--	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
-+	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
- 
- 	close(sysfs_fd);
- 	close(fd);
-@@ -620,6 +595,48 @@ test_exec(device_t device, int n_exec_queues, int n_execs,
- 	active_threads = 0;
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 3646dbacb..9952c1c0d 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -1012,6 +1012,56 @@ void igt_sysfs_set_u64(int dir, const char *attr, uint64_t value)
+ 		     value, attr, strerror(errno));
  }
  
 +/**
-+ * SUBTEST: vram-d3cold-threshold-show
-+ * Description:
-+ *      Validate reading of vram_d3cold_threshold sysfs entry.
-+ * Functionality: pm-d3cold
++ * igt_sysfs_get_vram_d3cold_threshold:
++ * @sysfs: sysfs directory corresponding to the device
++ *
++ * Reads the value of the vram_d3cold_threshold sysfs attribute.
++ *
++ * Returns:
++ * Current vram_d3cold_threshold value.
 + */
++uint64_t igt_sysfs_get_vram_d3cold_threshold(int sysfs)
++{
++	uint64_t threshold;
++	char path[64];
++	int ret;
++
++	sprintf(path, "device/vram_d3cold_threshold");
++
++	igt_require_f(!faccessat(sysfs, path, R_OK, 0),
++		      "vram_d3cold_threshold is not present\n");
++
++	ret = igt_sysfs_scanf(sysfs, path, "%" PRIu64, &threshold);
++	igt_assert_lt(0, ret);
++
++	return threshold;
++}
 +
 +/**
-+ * SUBTEST: vram-d3cold-threshold-store
-+ * Description:
-+ *      Validate writing and reading back vram_d3cold_threshold sysfs entry.
-+ * Functionality: pm-d3cold
++ * igt_sysfs_set_vram_d3cold_threshold:
++ * @sysfs: sysfs directory corresponding to the device
++ * @threshold: value to set
++ *
++ * Convenience wrapper to write a value to the
++ * vram_d3cold_threshold sysfs attribute.
++ * It asserts on failure.
 + */
++void igt_sysfs_set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
++{
++	char path[64];
++	int ret;
 +
-+/**
-+ * SUBTEST: lb-fan-control-version-show
-+ * Description:
-+ *      Validate reading lb_fan_control_version sysfs entry.
-+ * Functionality: pm-sysfs
-+ */
++	sprintf(path, "device/vram_d3cold_threshold");
 +
-+/**
-+ * SUBTEST: lb-voltage-regulator-version-show
-+ * Description:
-+ *      Validate reading lb_voltage_regulator_version sysfs entry.
-+ * Functionality: pm-sysfs
-+ */
++	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
++		ret = igt_sysfs_printf(sysfs, path, "%" PRIu64, threshold);
++	else
++		igt_warn("vram_d3cold_threshold is not present\n");
 +
-+/**
-+ * SUBTEST: auto-link-downgrade-capable-show
-+ * Description:
-+ *      Validate reading auto_link_downgrade_capable sysfs entry.
-+ * Functionality: pm-sysfs
-+ */
-+
-+/**
-+ * SUBTEST: auto-link-downgrade-status-show
-+ * Description:
-+ *      Validate reading auto_link_downgrade_status sysfs entry.
-+ * Functionality: pm-sysfs
-+ */
++	igt_assert_lt(0, ret);
++}
 +
  /**
-  * SUBTEST: vram-d3cold-threshold
-  * Functionality: pm - d3cold
-@@ -670,7 +687,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	map = xe_bo_map(device.fd_xe, bo, SIZE);
- 	memset(map, 0, SIZE);
- 	munmap(map, SIZE);
--	set_vram_d3cold_threshold(sysfs_fd, threshold);
-+	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, threshold);
+  * __igt_sysfs_get_boolean:
+  * @dir: directory corresponding to attribute
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 9cbd216e6..8bdf97060 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -135,6 +135,9 @@ uint64_t igt_sysfs_get_u64(int dir, const char *attr);
+ bool __igt_sysfs_set_u64(int dir, const char *attr, uint64_t value);
+ void igt_sysfs_set_u64(int dir, const char *attr, uint64_t value);
  
- 	/* Setup D3Cold but card should be in D3hot */
- 	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
-@@ -1082,7 +1099,7 @@ int igt_main()
- 		}
- 
- 		igt_describe_f("Validate mmap memory mappings with vram region,"
--			     "when device along with parent bridge in %s", d->name);
-+			       "when device along with parent bridge in %s", d->name);
- 		igt_subtest_f("%s-mmap-vram", d->name) {
- 			int delay_ms;
- 
-@@ -1116,11 +1133,108 @@ int igt_main()
- 		     "if vram used > vram threshold");
- 	igt_subtest("vram-d3cold-threshold") {
- 		igt_require_f(has_runtime_pm, "Runtime PM not available\n");
--		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
-+		orig_threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
- 		igt_install_exit_handler(vram_d3cold_threshold_restore);
- 		test_vram_d3cold_threshold(device, sysfs_fd);
- 	}
- 
-+	igt_subtest("vram-d3cold-threshold-show") {
-+		uint64_t threshold;
++uint64_t igt_sysfs_get_vram_d3cold_threshold(int sysfs);
++void igt_sysfs_set_vram_d3cold_threshold(int sysfs, uint64_t threshold);
 +
-+		igt_require(sysfs_exists(sysfs_fd,
-+					 "device/vram_d3cold_threshold"));
-+
-+		threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-+
-+		igt_info("threshold=%" PRIu64 "\n", threshold);
-+	}
-+
-+	igt_subtest("vram-d3cold-threshold-store") {
-+		uint64_t old_val;
-+		uint64_t new_val;
-+
-+		igt_require(sysfs_exists(sysfs_fd,
-+					 "device/vram_d3cold_threshold"));
-+		old_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-+		/*
-+		 * Ensure the original threshold is restored even if
-+		 * an assertion fails later in the test.
-+		 */
-+		orig_threshold = old_val;
-+		igt_install_exit_handler(vram_d3cold_threshold_restore);
-+		igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val + 1);
-+		new_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-+		igt_assert_eq(new_val, old_val + 1);
-+		/* restore */
-+		igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val);
-+		igt_info("old=%" PRIu64 " new=%" PRIu64 "\n",
-+			 old_val, new_val);
-+	}
-+
-+	igt_subtest("lb-fan-control-version-show") {
-+		char version[64];
-+		int ret;
-+
-+		igt_require(sysfs_exists(sysfs_fd,
-+					 "device/lb_fan_control_version"));
-+
-+		ret = igt_sysfs_scanf(sysfs_fd,
-+				      "device/lb_fan_control_version",
-+				      "%63s", version);
-+
-+		igt_assert(ret > 0);
-+
-+		igt_info("lb-fan-control-version=%s\n", version);
-+	}
-+
-+	igt_subtest("lb-voltage-regulator-version-show") {
-+		char version[64] = {};
-+		int ret;
-+
-+		igt_require(sysfs_exists(sysfs_fd,
-+					 "device/lb_voltage_regulator_version"));
-+
-+		ret = igt_sysfs_scanf(sysfs_fd,
-+				      "device/lb_voltage_regulator_version",
-+				      "%63s", version);
-+		igt_debug("ret=%d errno=%d\n", ret, errno);
-+
-+		igt_assert(ret > 0);
-+		igt_info("lb-voltage-regulator-version=%s\n", version);
-+	}
-+
-+	igt_subtest("auto-link-downgrade-capable-show") {
-+		int val;
-+		int ret;
-+
-+		igt_require(sysfs_exists(sysfs_fd,
-+					 "device/auto_link_downgrade_capable"));
-+
-+		ret = igt_sysfs_scanf(sysfs_fd,
-+				      "device/auto_link_downgrade_capable",
-+				      "%d", &val);
-+
-+		igt_assert(ret > 0);
-+		igt_info("auto-link-downgrade-capable=%d\n", val);
-+		igt_assert(val == 0 || val == 1);
-+	}
-+
-+	igt_subtest("auto-link-downgrade-status-show") {
-+		int val;
-+		int ret;
-+
-+		igt_require(sysfs_exists(sysfs_fd,
-+					 "device/auto_link_downgrade_status"));
-+
-+		ret = igt_sysfs_scanf(sysfs_fd,
-+				      "device/auto_link_downgrade_status",
-+				      "%d", &val);
-+
-+		igt_assert(ret > 0);
-+		igt_info("auto-link-downgrade-status=%d\n", val);
-+		igt_assert(val == 0 || val == 1);
-+	}
-+
- 	igt_fixture() {
- 		close(sysfs_fd);
- 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+ bool __igt_sysfs_get_boolean(int dir, const char *attr, bool *value);
+ bool igt_sysfs_get_boolean(int dir, const char *attr);
+ bool __igt_sysfs_set_boolean(int dir, const char *attr, bool value);
 -- 
 2.43.0
 
