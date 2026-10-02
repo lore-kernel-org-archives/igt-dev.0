@@ -4,82 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A196CA5FC4
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 09:00:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4447CA5FD4
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 11:35:00 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DEC9410E6B4;
-	Fri,  2 Oct 2026 09:00:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8005110E45B;
+	Fri,  2 Oct 2026 11:35:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ursulin.net header.i=@ursulin.net header.b="xuLJCw39";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IO9HfAjK";
 	dkim-atps=neutral
-Received: from mail-wr2-f35.google.com (mail-wr2-f35.google.com
- [74.125.225.99])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E9E4310E6B4
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2026 08:59:14 +0000 (UTC)
-Received: by mail-wr2-f35.google.com with SMTP id
- ffacd0b85a97d-48b059eae96so1684476f8f.0
- for <igt-dev@lists.freedesktop.org>; Fri, 02 Oct 2026 01:59:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=ursulin.net; s=google; t=1790931553; x=1791536353; darn=lists.freedesktop.org;
- h=content-transfer-encoding:content-type:in-reply-to:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:from:to:cc:subject:date:message-id:reply-to
- :content-type; bh=sYAduw/dL7f5WOAZQrXmC63DDSK49xX3s/02ur2phHU=;
- b=xuLJCw39IZYOyHXlufm4P7NlXOD1ZZbcR4sjjo+mwuhJXwizbEvS9wbOW2Y3x9lQEH
- BoHhEImYNOj2GAbpj2AgJG0unukqhNQ/61dwuljtsGp5SAcpmnCEa81HJ+lD7sx8QYd3
- IU0b2cRyWct+LsGnYLjqGghnL72aZSvQWV+JP1MpQ1PL7ET3kVeZk4o3ZnzxjgZNfZwe
- vnzGbq/P3BwGDJ6SXrQndRCcKYxIC2ylX4+wcDWuCaqBrE4ff8j5DNUqQ/OJf1Nch0bK
- eEPs0JjxhcC9HQ59iscFTcjq8O6ZuYQgrgTb8UIgv87qjJUw1oTB3BtePv+WB75HnzDM
- 1wbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1790931553; x=1791536353;
- h=content-transfer-encoding:content-type:in-reply-to:from
- :content-language:references:cc:to:subject:user-agent:mime-version
- :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to:content-type;
- bh=sYAduw/dL7f5WOAZQrXmC63DDSK49xX3s/02ur2phHU=;
- b=UAmWyPlgwnk+2UI/rT4bw9V+F2jp9V2wMYcQYcd4TMubJPCH5mntwPCIYMwZOWJRH3
- TPy1UN29BknIcC6OVOcTa8hSLtsG4WM2qwDUc6nrDdAkMrR+VQN49ESKxm6LgDftvTDO
- fK6ZwvRFB9wqm1fdglX6hLGfCF3NcKwWfX6k8Re9xUWiQAxwTuxvp/CQVIKjw0X1EX5A
- LE9NsKDWet3IVZKPxcTkDQClsQ5SR58aYOGlo8tzCofqSiMpSSryXZ/Xsq0yE1hci8K3
- VoXQSrqR4Vy1TCNVMA/8zfXzIKWwgsaXqMMdDCvEJbwkazZ/+VHAfmv0TBl95Hognh59
- CCXQ==
-X-Forwarded-Encrypted: i=1;
- AKwUvBxP6y4jXpC3xgwUIdgtW5adXvbtKscqg6OSu11aTVClc718jmP/btw7vw30Y0EYnMD2EB+WyS5x@lists.freedesktop.org
-X-Gm-Message-State: AFq9FYIgUcTIA/DDkP/jHwX3zJYocQ1ye2TbmNWY8Ob+KlAgVA++h96A
- 9jdjF0nfW5TxnsRkxCOWYl3tQWq6vjCI0HetGDWLYIf0qFOAEKfT0UZqDYFrkBlUGJ8=
-X-Gm-Gg: AYBFou2G6dkAXRX4+EGGO+zO7em9CQVd5iN+1O3cJXtX6PSZTye4qORWA/sq2p7buRK
- L/ACxgXForLSUbs10HWWnNXS/4eH5agCrPBLeCIeo98paYB/quv19STjhXcps1l0VrWhFq+5+AB
- Pzpvmi7g++JaredLRQV4w4EWjbt/1CR7MRAZefBvIaof5qthtnfU3+udHqRkp/PffWvFAOZ2ql9
- xVocWEv5knM19p3LCFlsOiPKTthmn/rM97fRVJAYXllCb4/MYE2lUfZUr4Pp1Kl1veQfQ7WGAUk
- KjT4lkQjcnD1EVq2XxS9/+Ee9GvhwoTTsLG2N2+Gi/qYtw125WiFJz1OM0gwHqKpK1iOXuqwwWw
- EbavuTQhkxYXueZBL91HtZ4E6dbptE4lJasE00RAIcj6EQw9q+baQwyw1gkQb4DiwKxsDNYfw1b
- ZCWt6HmMZxXj8HrmYjJTBMF5/K2g/ckRHh8IKdqAZByDe/0ue9OvwFlrt3ouqhefpeKH6TO96CA
- yJ80dXVKs8LFA==
-X-Received: by 2002:a5d:6f05:0:b0:48b:d17:139b with SMTP id
- ffacd0b85a97d-48b1271cd12mr3314923f8f.9.1790931553034; 
- Fri, 02 Oct 2026 01:59:13 -0700 (PDT)
-Received: from [192.168.0.116] ([81.79.79.1]) by smtp.gmail.com with ESMTPSA id
- ffacd0b85a97d-48b380fab06sm3941619f8f.20.2026.10.02.01.59.11
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 02 Oct 2026 01:59:11 -0700 (PDT)
-Message-ID: <e78e82ea-3cc3-4b22-b5e0-f7c57abfbc0d@ursulin.net>
-Date: Fri, 2 Oct 2026 09:59:11 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 4/8] tools/gputop/i915_gputop: add i915 PMU engine
- monitoring
-To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com, krzysztof.karas@intel.com,
- krzysztof.niemiec@intel.com
-References: <cover.1790331690.git.sebastian.brzezinka@intel.com>
- <84e6c1f62a64cd5f6a9ebe549ce32b123d623f42.1790331690.git.sebastian.brzezinka@intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tursulin@ursulin.net>
-In-Reply-To: <84e6c1f62a64cd5f6a9ebe549ce32b123d623f42.1790331690.git.sebastian.brzezinka@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4708510E0E1
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2026 11:34:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790940850; x=1822476850;
+ h=from:to:cc:subject:date:message-id:
+ content-transfer-encoding:mime-version;
+ bh=3oY9IMKiKzlJJj5liNSRW7WuLdUieu0pQZ4O2auqAR8=;
+ b=IO9HfAjKg7LvncbCYwzFUn1281+zrF/9Xf00sQ6IfYdbK4dgePx0sTrH
+ lpuT5kVZnTq6ZwM0WhBOYzMX2QHdyGgBTCoB5rwooBjqo5OEiuCGhHcYU
+ j7kI9sdqN4jjYBU4A2acHxxtx4P5e9m0dSG4iDzB3U81M1eD4zgQVGZ6y
+ X17LwF7VVaewCCLoUJN0773NG0NeOcUa6FyMxHPsdayHe5+vN1SnMh1Si
+ a1vPuW7M5IvLiJNVGvfcA9VKiQmlFt0ZkDd0UPb8fLxSq6WUfmi4IJ+AZ
+ JgJuozpKAPNC+Or/3MeOpc0tcxh4ALZY8VWAR6luFRMTnBXOEZiKtOPcM w==;
+X-CSE-ConnectionGUID: Z4fq1asERL+x3sWPygXONA==
+X-CSE-MsgGUID: ys14hxsVT+62a4xuW7beQA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="108084563"
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; d="scan'208";a="108084563"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2026 04:34:09 -0700
+X-CSE-ConnectionGUID: W7gFu5cUQbinsbqyn8WSFA==
+X-CSE-MsgGUID: pNwuuCUOSm+izSKFY0gGaA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; d="scan'208";a="279488997"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+ by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2026 04:34:09 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 2 Oct 2026 04:34:08 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Fri, 2 Oct 2026 04:34:08 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.29) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 2 Oct 2026 04:34:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QBStZuO3jFpCO/6TqZByp8jGUI6Lx+fIFT4/SXaSP+vRiGBb/IwLO4qvgzvR9ld2I1QnBQuJJ2yiilQPWbZgYf5ggtHoOeemuB9QgWU+RnpK+0DPhJ40tMmKrWYb22IqGi50WsUiyAG7UT+GMBeSBUFkIecvYCvKVmr4C5qeXtZLcnQIcaxamNnnNvZA87crReLxiDW41Jn7gWAKYo45jDXgUlj+9WUmOJdzHua11Pn5lZ4IcY82rHbgw254MEwESF9nUqBp/83GNMo6ljirhOPw4Q8qAoVGqJe7QiSNQkdkLL/J8Vr5T/I77N16/x/SY7UnY91SD3BZp5m4pExCFw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WIn7/BQacXrwq4sMzO6LgTiOUQRuf/p4vV+/dVPc90Q=;
+ b=gW+M40C7KTbYkwI2MzCfcHbLm+nylAt+53ni8aHIuBcd+EFot0g8kBmxqdP8A45G8EBv+sdeFXf2R0Aw9C6numjIdwXRrmRcfkp/yq3fH0BGjUpVWcedvDCbv3iJhjz24c4e8z9V7QMGa52Pzb6KTSv0IK2FW7BdcZlClGBpWh6c/eAwof/4QWCECr98H7YktOXqzn3FSzUeVyTr0/UcHMRUb6uUFaU7Ub6iMz1Elfe8F2X81vjKhB7BByBXPD+ihNXN6voCCmRjr/PihWTbQvTfdE1BdEcNpRs8VDLBGdQMyIPQxn6H3JBRbPEAS7MM+ueZwZI2iVxKAvJde8gAog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8039.namprd11.prod.outlook.com (2603:10b6:510:25f::18)
+ by CY8PR11MB6868.namprd11.prod.outlook.com (2603:10b6:930:5c::13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.26; Fri, 2 Oct
+ 2026 11:34:06 +0000
+Received: from PH8PR11MB8039.namprd11.prod.outlook.com
+ ([fe80::42df:f465:90a8:df92]) by PH8PR11MB8039.namprd11.prod.outlook.com
+ ([fe80::42df:f465:90a8:df92%2]) with mapi id 15.21.0451.022; Fri, 2 Oct 2026
+ 11:34:06 +0000
+From: =?UTF-8?q?Pi=C3=B3rkowski=2C=20Piotr?= <piotr.piorkowski@intel.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: =?UTF-8?q?Piotr=20Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>
+Subject: [PATCH v4 0/4] Add PCI configuration tests for SR-IOV VFs
+Date: Fri, 2 Oct 2026 13:33:52 +0200
+Message-ID: <20261002113356.3652805-1-piotr.piorkowski@intel.com>
+X-Mailer: git-send-email 2.34.1
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DUZPR01CA0264.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4b9::20) To PH8PR11MB8039.namprd11.prod.outlook.com
+ (2603:10b6:510:25f::18)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8039:EE_|CY8PR11MB6868:EE_
+X-MS-Office365-Filtering-Correlation-Id: 671f1147-20d5-4140-4fbf-08df2079113d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|23010399003|1800799024|366016|56012099006|10067099003|18002099003|11063799006|6133799003;
+X-Microsoft-Antispam-Message-Info: jSqk2S9lh1MClJJIG5nRfyTlj+DTYV+cGdDAOs1+ivmWMi6c9WV7Fw15IzERfJYZZhnFAV8Gh2Tu5xdAUQG8OPKtN91AfShKzR64UR3wad1TWTkIo1hek6oZCai8ywKo3sYkEvdYRWE8etqKGOzzMcZwPPrOeDl/tg7gtpdjkIAVQgpqycRqGZqL3Tn9TWkJ4jhD2bCWb8IzXh0m84sSK8lNFz2XkUb0whwt3572vpiwjf28bgeuG3rbe5Jl5o5QsFqnywkoNlUQ85luUoJk/Q9PAnV33BUbWyNtyVDRYsTNaLSFo09WVOYruREdviLHWLDNkUOHU7vQfdjFlyaO4Vp3AMSsCJ8MQMHbp3FMOEXhrZtS2MZgfLQo1wZeGJr2aD4/TreO4ceZnaMxIDrgW8m29QA7OxxHpI12pnjzNYu6/XsqeZ3OKxxYW0WEDrolduMKQUS561590HaV98UL7nlgfdQzyaqFBG4lED8iOlfPQPISfqRuPbIkXmLoBXiyPw6i2gwYziQX3EJ5Z02Mj3UPy6AOmDaWwq2KGoAmlaLlGN28mIDwsBU7AbTzT83JO9LF4QHXQ2wLRloNplnChmb5tlPEAtXx+nWbhBpAsGFwVRayBIuI/KdWyFJ87HAakLOd6EN7E35Fgx5oPq2CI6J8IZ1MwBW7DNWeS16L3Vg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:PH8PR11MB8039.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(56012099006)(10067099003)(18002099003)(11063799006)(6133799003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NE0xMmZUYW9Ebi9PT0h2NkxTWU9xWFlBUFA3MFlvV0I2YUVyRXk4bkxXejJj?=
+ =?utf-8?B?bnBGNCtjZkZqTmlQc1R4SURkRmVZMUJNL1VDSUZZaDlBa0plMlFudnBWTkNP?=
+ =?utf-8?B?bkhxdzlSV1ZuSnIwSDk0bUdjYmtNeW0vek95eE1VY0pvdUdEZVVuYktGOVp3?=
+ =?utf-8?B?MjJ5dzMvRlFRSS94R0hTWlV2R2lwNDVSUHZPMDdaQk0xZHJNOGQzOTV3WWNu?=
+ =?utf-8?B?MTJOSFFGQWFFR0ZERGtxdXdnRGVRSWxxN1ErcTgyK1U5TWd6bDhGbkhmMDZa?=
+ =?utf-8?B?Q3cwalhDY0pxY0lrUjhEZ0ZjbmhzVGQ4aXpKejdMYzJaelJWWVNybjhnZDBq?=
+ =?utf-8?B?YTZPNEpqdkdTLzQyckJoV2dLTkxYYzFNYitrTDNjYVlucytoWXRuZDdNRG1L?=
+ =?utf-8?B?SEMySlBUaXlXanlub2JlM3h0WXF2NTl4MWxsaW5KL1NKR0VKODNYTGhGYlMv?=
+ =?utf-8?B?N3NmUWpQdE1UUzVFSU1rdGFpMHZCeko4S0JJb1VrUDRuQ2FFKzJXVzcxOWxk?=
+ =?utf-8?B?SkFObnhzQXhDekRCeEtaaEpQQUdkNFphVHFJQ3daQm9mVkJFRU5xMmRPdWVY?=
+ =?utf-8?B?NnE2Zi9wM08xUFA2TDdINXJDYS80OTNaeWZCTVVTR3pISWVWOFR0YnZxdjJX?=
+ =?utf-8?B?TTQyZkZ5R2JIb1NwUVUyWUNkemRhQ3QrRlBnNHM4eFZ4ZXZVRnNFSW1CYjUx?=
+ =?utf-8?B?aVQxWmVjS2ZDMkRsRmRyRkxob1hSUWIwSS9XZHBtZ3BIOG1QREhUdW92RDhV?=
+ =?utf-8?B?WFl1VGpBMWdQQytJb2g0SkZIUS9JWHdkQ01UZFJsbEQvT0J4VlVWWE5pb214?=
+ =?utf-8?B?N3JwQk5peG93WTVwME56MkVtaXRJT2d1bmtmdWx3NU90SkZBandNOHoyNTRX?=
+ =?utf-8?B?eDU1VzdBSkJHV09EM0FIQm0zTFBwTTM5V1hoSC9JRzdmQ05rNGF1Rkp0U1dr?=
+ =?utf-8?B?OTZ2akZDWERoM2FuS3huVFEvcnd4cGFMRUx1OWRqb2NUYWRmbVJLTTQ3SDB2?=
+ =?utf-8?B?amdiYzl0ZEM5NzJwb1NGY2YrcWNpSkpKY1paSXoyZEVTdmRyNzB0REk3OU5Q?=
+ =?utf-8?B?dzhLdktyRXdXdlJhVHNlbmZ3bEFtSUxUcngzYnlVck92QnlscWNiUkJLbUpJ?=
+ =?utf-8?B?V1JJRUJCUWszSGxlTjF0L1NoTkdvb2RIRTJTVzA1ZVRGVmhDMnMzcmhHNGht?=
+ =?utf-8?B?VTliU2N3b2FCNmVRTUhqRUc1TEZNdEtab1ZIaHhGN1NXQmlzMW0xTVhRUXlY?=
+ =?utf-8?B?cVNSRG85UDRTcjBOdnN2ZmNBU1pYRThYRkE5SDN0ZkV4RnJaMnhQNGhMNVJX?=
+ =?utf-8?B?YU1QOVFWem5YN1JVaFoxOGZiUzFwUmFtN2hENTZXZlIvRmFiSXcxWmpEcXk1?=
+ =?utf-8?B?NjU2ZTRwT1VVK1FDY0FPMkJmZHF4ZmltWjFtMHU5ZHhMWHV3clg4aE54TUdC?=
+ =?utf-8?B?RHowRkh4all2dzMvUzg0b2pGNjZ0cUJrTnFET2F5ZmxrZXEyZ1M1NmRXandD?=
+ =?utf-8?B?RCs5cEc3NmRyc3dKRmZPdWUzQ3l4dU1PY0FNNGEzd1JCMm9UeDk4UThneG5H?=
+ =?utf-8?B?Wlh3cGV4M3I2VFBlbXNOcUNYcytQcnhGWlRJMi9VeElpWEhrcmNwRjBuS2kr?=
+ =?utf-8?B?R2JNVHVMV1dDeWVxd0duUmFEcnJ5YVNoZUVDcTVpL2FBNjBJRzZtc0JBNDQ2?=
+ =?utf-8?B?M29QQWE2bWk4OGZjS3BOWGVqUDBsdS9UZEFyZmNDOFlrUHNhSXoxVjRtM0FK?=
+ =?utf-8?B?TklJY2tpN3g4bk42ZU95cURYOUYvK3luL2lxSzA4eGpUNWFoNUlQUDJoaE1U?=
+ =?utf-8?B?SC8vUzErWklicW9pVXpKS3Q0S2RrcFpPZnpwdE9zQ25rTkEvU2Y1eG1sbkda?=
+ =?utf-8?B?bUhEcXNzSU1uMnpLMno0T2JxR1NKdHBtQnQ1ZDIvNGVhZ01RUjVVZXZSTzd3?=
+ =?utf-8?B?VzZkSVZLNlk4RVNRcXhQWDlrQW1jejlHeE43bXBGZjVSRTFJZkdpQkk4MzB0?=
+ =?utf-8?B?T2F0OFVmNzhocGU4dU9MTStwQnRuKzdDUXozV2hMdmZYalhlNDlHMm9SL0x4?=
+ =?utf-8?B?THVJc1YwY2hkV2NnOGsrTFQ2dExtaHdXdUVCb2xVMyswQ0t1UTJ6UHZmUmR6?=
+ =?utf-8?B?S3MwdTZEbU96V3Q0VUFPZ3hjdDNrV1BUZ0dBYlRxMGFERGs5UWtzQ1oyMlJG?=
+ =?utf-8?B?dHlyQkFmWFRhZHE1eUpFYnhwLy9xTlBQdVBXSmJJSHFZV2RuWjF5cUNjWklL?=
+ =?utf-8?B?aFVUbU8wZFg3MDRucHMxamhGSWRBQWZhS1RLa1VlTWc2NjB1bGtLRFFDeFB3?=
+ =?utf-8?B?cjc0YWN5ZlVLVjFzdzNQdUlVcDdzL2ZrczMvU2tkOXorZGNGRXFDbmlDNGtk?=
+ =?utf-8?Q?+a2JnlHiWbIpUu6w=3D?=
+X-Exchange-RoutingPolicyChecked: olb7jmCS9bVzHmYT1hqbvVEARuuqumLrwAeKNIn325hPyY7uPT6lB/7cCgQ/gJfrD2DfN4/vKbN+uROmRO+PSqwfAM3aLBlYdE3trdvdpNANdzx3bZd28PhP5/L/UVN/Qu4eUXgvL0G3izlNEaWUg7g2oCSdnk6wTmsudf1yzGF9Ohm/e0KEfMH8FuKwRjljDrpDIXWH+onlDGxNR+w0ie2zY38CEnjVhtMqugKRATCcHO6PS/ppKXoH44hvNzo1CXMk04mRIw6kASEcXVD1d5p0/oXquO8KIxIL65G6MmLeOZ/9FRW5tGhTSVMil53WeaELBs7daEU5ETMLj/+sJQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 671f1147-20d5-4140-4fbf-08df2079113d
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8039.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2026 11:34:06.4061 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fdo5uU9g+tGyUHh1kc/thKpQXwfy3LEMQEODpaWBOSDDMLYw+rfRbya4ygwLdUms1sf+oSjHauSkuABMYgQlETJypEB7ums7qzujp5w62m0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB6868
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -95,587 +166,71 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+From: Piotr Piórkowski <piotr.piorkowski@intel.com>
 
-On 25/09/2026 11:57, Sebastian Brzezinka wrote:
-> Add an i915 backend for gputop's PMU-based engine monitoring,
-> implementing the device_operations interface from utils.h.
-> 
-> i915_populate_engines() opens the render node (no DRM master needed),
-> scans /sys/bus/event_source/devices/<dev>/events/ for "*-busy" entries,
-> and decodes engine class/instance from the PMU config value.
-> 
-> i915_pmu_init() opens a perf event group via igt_perf_open_group()
-> (requires CAP_PERFMON or root) and cleans up FDs on partial failure.
-> 
-> i915_pmu_sample() reads all counters atomically from the group leader
-> fd into a heap-allocated buffer, and tracks read success explicitly
-> so a failed/short read leaves counters and timestamps unchanged
-> instead of using garbage.
+This series introduces PCI configuration space tests for SR-IOV Virtual
+Functions. It verifies the required values and read-only fields in the
+common PCI header, BARs, PCI Express capabilities, and optional Power
+Management, AER, and ATS capabilities. The series also adds the PCI
+helpers needed to read raw configuration space and find standard and
+extended capabilities.
 
-Looks like a bunch of code from intel_gpu_top so instead of duplicating 
-(be it code or functionality), and since you are making an abstraction 
-anyway, it would be much better to make it a library both gputop and 
-intel_gpu_top would use.
+v3 -> v4:
+- Added igt_pci_regs.h with the PCI register definitions used by the
+  helpers and the test, instead of relying on linux/pci_regs.h, which
+  may be too old on some distributions.
+- Used a BAR type specific attribute mask when validating the VF BARs,
+  so the address bits of an I/O BAR are no longer masked out along with
+  the memory BAR attribute bits.
 
-Same as I added a library for fdinfo access when adding per client 
-support to intel_gpu_top and bringing up gputop as a vendor agnostic 
-demonstration tool. That would seem like a logical route to take and 
-much better for maintenance to have one copy.
+v2 -> v3:
+- Shared the standard capability list walk between find_pci_cap_offset()
+  and igt_pci_config_raw_find_cap_offset().
+- Masked the reserved low bits of capability pointers instead of
+  rejecting them.
+- Reported an inaccessible (0xff) capability pointer as -ENODEV.
+- Stopped the extended capability walk on an all-ones header.
+- Documented the remaining raw configuration space helpers.
+- Used PCI_CFG_SPACE_EXP_SIZE from linux/pci_regs.h instead of a local
+  definition.
+- Moved the test state from globals to igt_main().
+- Rejected a 64-bit memory BAR type in BAR5.
 
-Down the road, once feature parity is achived, intel_gpu_top can become 
-a symlink to gputop.
+v1 -> v2:
+- Dropped the unused find_pci_ext_cap_offset() helper.
+- Registered sriov_pci_config in tests/meson.build.
+- Enabled the VF and read its configuration space once in the fixture
+  instead of repeating the setup for every subtest.
+- Restored the driver autoprobe state and disabled the VF in the final
+  fixture.
+- Removed redundant informational messages.
+- Simplified subtest descriptions while retaining detailed documentation.
+- Corrected PCI register macro names for compatibility with pci_regs.h.
+- Improved malformed conventional and extended capability chain handling.
+- Added unit tests for valid, invalid, cyclic, and boundary capability
+  chains.
+- Added sriov_pci_config to the Xe CI blocklist as a separate patch,
+  since it is intended for HW verification rather than recurring CI runs.
 
-Regards,
+Piotr Piórkowski (4):
+  lib/igt_pci: Add raw configuration space helpers
+  tests/sriov_pci_config: Add VF core config checks
+  tests/sriov_pci_config: Add optional capability checks
+  intel-ci: Block igt@sriov_pci_config.*
 
-Tvrtko
+ lib/igt_pci.c                   | 191 +++++++++++++++++--
+ lib/igt_pci.h                   |   7 +-
+ lib/igt_pci_regs.h              |  84 +++++++++
+ lib/tests/igt_pci.c             |  76 ++++++++
+ lib/tests/meson.build           |   1 +
+ tests/intel-ci/xe.blocklist.txt |   1 +
+ tests/meson.build               |   1 +
+ tests/sriov_pci_config.c        | 324 ++++++++++++++++++++++++++++++++
+ 8 files changed, 665 insertions(+), 20 deletions(-)
+ create mode 100644 lib/igt_pci_regs.h
+ create mode 100644 lib/tests/igt_pci.c
+ create mode 100644 tests/sriov_pci_config.c
 
-> Signed-off-by: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
-> ---
->   tools/gputop/i915_gputop.c | 473 +++++++++++++++++++++++++++++++++++++
->   tools/gputop/i915_gputop.h |  56 +++++
->   2 files changed, 529 insertions(+)
->   create mode 100644 tools/gputop/i915_gputop.c
->   create mode 100644 tools/gputop/i915_gputop.h
-> 
-> diff --git a/tools/gputop/i915_gputop.c b/tools/gputop/i915_gputop.c
-> new file mode 100644
-> index 000000000..de33bb3fd
-> --- /dev/null
-> +++ b/tools/gputop/i915_gputop.c
-> @@ -0,0 +1,473 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +#include <dirent.h>
-> +#include <errno.h>
-> +#include <fcntl.h>
-> +#include <inttypes.h>
-> +#include <stdbool.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +
-> +#include "drm-uapi/i915_drm.h"
-> +#include "i915_gputop.h"
-> +
-> +/* Minimum chars before the "-busy" suffix (e.g. "rcs0") */
-> +#define MIN_ENGINE_PREFIX_LEN 4
-> +
-> +#define engine_ptr(pmu_device, n) (&(pmu_device)->engine[(n)])
-> +
-> +static void __update_sample(struct i915_pmu_counter *counter, uint64_t val)
-> +{
-> +	counter->val.prev = counter->val.cur;
-> +	counter->val.cur = val;
-> +}
-> +
-> +static void update_sample(struct i915_pmu_counter *counter, uint64_t *val)
-> +{
-> +	if (counter->present)
-> +		__update_sample(counter, val[counter->idx]);
-> +}
-> +
-> +static const char *class_display_name(unsigned int class)
-> +{
-> +	switch (class) {
-> +	case I915_ENGINE_CLASS_RENDER:
-> +		return "Render/3D";
-> +	case I915_ENGINE_CLASS_COPY:
-> +		return "Blitter";
-> +	case I915_ENGINE_CLASS_VIDEO:
-> +		return "Video";
-> +	case I915_ENGINE_CLASS_VIDEO_ENHANCE:
-> +		return "VideoEnhance";
-> +	case I915_ENGINE_CLASS_COMPUTE:
-> +		return "Compute";
-> +	default:
-> +		return "[unknown]";
-> +	}
-> +}
-> +
-> +static int engine_cmp(const void *__a, const void *__b)
-> +{
-> +	const struct i915_engine *a = (const struct i915_engine *)__a;
-> +	const struct i915_engine *b = (const struct i915_engine *)__b;
-> +
-> +	if (a->class != b->class)
-> +		return a->class - b->class;
-> +	return a->instance - b->instance;
-> +}
-> +
-> +void i915_gputop_init(void *ptr, int index, struct igt_device_card *card)
-> +{
-> +	struct i915_gputop *obj = ((struct i915_gputop *)ptr) + index;
-> +
-> +	obj->card = card;
-> +}
-> +
-> +/*
-> + * Read a single uint64 value from a sysfs file relative to a directory fd.
-> + * Returns the value on success, or (uint64_t)-1 on failure.
-> + */
-> +static uint64_t read_sysfs_u64(int dirfd, const char *name)
-> +{
-> +	char buf[64];
-> +	uint64_t val;
-> +	ssize_t n;
-> +	int fd;
-> +
-> +	fd = openat(dirfd, name, O_RDONLY);
-> +	if (fd < 0)
-> +		return (uint64_t)-1;
-> +
-> +	n = read(fd, buf, sizeof(buf) - 1);
-> +	close(fd);
-> +	if (n <= 0)
-> +		return (uint64_t)-1;
-> +
-> +	buf[n] = '\0';
-> +
-> +	/* i915 PMU event files contain e.g. "config=0x1000" */
-> +	if (sscanf(buf, "config=0x%" SCNx64, &val) != 1 &&
-> +	    sscanf(buf, "event=0x%" SCNx64, &val) != 1 &&
-> +	    sscanf(buf, "0x%" SCNx64, &val) != 1 &&
-> +	    sscanf(buf, "%" SCNu64, &val) != 1)
-> +		return (uint64_t)-1;
-> +
-> +	return val;
-> +}
-> +
-> +void *i915_populate_engines(const void *obj, int index)
-> +{
-> +	struct i915_gputop *ptr = ((struct i915_gputop *)obj) + index;
-> +	struct igt_device_card *card = ptr->card;
-> +	struct i915_pmu_device *engines = NULL;
-> +	char sysfs_path[PATH_MAX];
-> +	char device[80];
-> +	struct dirent *dent;
-> +	DIR *d;
-> +	int render_fd = -1;
-> +	int ret = 0;
-> +
-> +	if (!card || (!strlen(card->render) && !strlen(card->card)))
-> +		return NULL;
-> +
-> +	/*
-> +	 * Open render node to determine i915 PMU device name.
-> +	 * Render nodes do not require DRM master privileges.
-> +	 */
-> +	if (strlen(card->render))
-> +		render_fd = igt_open_render(card);
-> +	else
-> +		render_fd = igt_open_card(card);
-> +
-> +	if (render_fd < 0) {
-> +		fprintf(stderr, "i915: Failed to open device: %s\n",
-> +			strerror(errno));
-> +		return NULL;
-> +	}
-> +
-> +	i915_perf_device(render_fd, device, sizeof(device));
-> +	close(render_fd);
-> +
-> +	snprintf(sysfs_path, sizeof(sysfs_path),
-> +		 "/sys/bus/event_source/devices/%s/events", device);
-> +
-> +	d = opendir(sysfs_path);
-> +	if (!d) {
-> +		fprintf(stderr, "i915: Cannot open %s: %s\n",
-> +			sysfs_path, strerror(errno));
-> +		return NULL;
-> +	}
-> +
-> +	engines = malloc(sizeof(struct i915_pmu_device));
-> +	if (!engines) {
-> +		closedir(d);
-> +		return NULL;
-> +	}
-> +	memset(engines, 0, sizeof(*engines));
-> +	engines->device = strdup(device);
-> +	engines->fd = -1;
-> +
-> +	/* Scan for engine-busy events: entries named like "rcs0-busy" */
-> +	while ((dent = readdir(d)) != NULL) {
-> +		const char *endswith = "-busy";
-> +		const size_t endlen = strlen(endswith);
-> +		struct i915_pmu_device *engines_tmp;
-> +		struct i915_engine *engine;
-> +		uint64_t config;
-> +		char namebuf[256];
-> +		size_t namelen;
-> +
-> +		if (dent->d_type != DT_REG && dent->d_type != DT_UNKNOWN)
-> +			continue;
-> +
-> +		namelen = strlen(dent->d_name);
-> +		if (namelen < endlen + MIN_ENGINE_PREFIX_LEN)
-> +			continue;
-> +		if (strcmp(&dent->d_name[namelen - endlen], endswith))
-> +			continue;
-> +
-> +		if (strstr(dent->d_name, ".scale") ||
-> +		    strstr(dent->d_name, ".unit"))
-> +			continue;
-> +
-> +		config = read_sysfs_u64(dirfd(d), dent->d_name);
-> +		if (config == (uint64_t)-1)
-> +			continue;
-> +
-> +		/* Only accept engine (non-other) configs */
-> +		if (config >= __I915_PMU_OTHER(0))
-> +			continue;
-> +
-> +		engines_tmp = realloc(engines,
-> +				      sizeof(struct i915_pmu_device) +
-> +				      (engines->num_engines + 1) *
-> +				      sizeof(struct i915_engine));
-> +		if (!engines_tmp) {
-> +			ret = errno;
-> +			break;
-> +		}
-> +		engines = engines_tmp;
-> +
-> +		engine = engine_ptr(engines, engines->num_engines);
-> +		memset(engine, 0, sizeof(*engine));
-> +
-> +		/* Strip "-busy" suffix to get engine name */
-> +		strncpy(namebuf, dent->d_name, namelen - endlen);
-> +		namebuf[namelen - endlen] = '\0';
-> +		engine->name = strdup(namebuf);
-> +		if (!engine->name) {
-> +			ret = errno;
-> +			break;
-> +		}
-> +
-> +		engine->busy.config = config;
-> +		engine->class = (config & (__I915_PMU_OTHER(0) - 1)) >>
-> +				I915_PMU_CLASS_SHIFT;
-> +		engine->instance = (config >> I915_PMU_SAMPLE_BITS) &
-> +				   ((1 << I915_PMU_SAMPLE_INSTANCE_BITS) - 1);
-> +
-> +		ret = asprintf(&engine->display_name, "%s/%u",
-> +			       class_display_name(engine->class),
-> +			       engine->instance);
-> +		if (ret <= 0) {
-> +			ret = errno;
-> +			free((void *)engine->name);
-> +			break;
-> +		}
-> +		ret = 0;
-> +
-> +		engines->num_engines++;
-> +	}
-> +
-> +	closedir(d);
-> +
-> +	if (ret) {
-> +		errno = ret;
-> +		goto err;
-> +	}
-> +
-> +	if (!engines->num_engines) {
-> +		fprintf(stderr, "i915: No engines found for device '%s'\n",
-> +			device);
-> +		goto err;
-> +	}
-> +
-> +	qsort(engine_ptr(engines, 0), engines->num_engines,
-> +	      sizeof(struct i915_engine), engine_cmp);
-> +
-> +	ptr->pmu_device_obj = engines;
-> +	return engines;
-> +
-> +err:
-> +	for (unsigned int i = 0; i < engines->num_engines; i++) {
-> +		struct i915_engine *engine = engine_ptr(engines, i);
-> +
-> +		free((void *)engine->name);
-> +		free(engine->display_name);
-> +	}
-> +	free(engines->device);
-> +	free(engines);
-> +	return NULL;
-> +}
-> +
-> +static int _open_pmu(uint64_t type, unsigned int *cnt,
-> +		     struct i915_pmu_counter *pmu, int *fd)
-> +{
-> +	int fd__ = igt_perf_open_group(type, pmu->config, *fd);
-> +
-> +	if (fd__ >= 0) {
-> +		if (*fd == -1)
-> +			*fd = fd__;
-> +		pmu->present = true;
-> +		pmu->idx = (*cnt)++;
-> +		pmu->fd = fd__;
-> +	}
-> +
-> +	return fd__;
-> +}
-> +
-> +int i915_pmu_init(const void *obj, int index)
-> +{
-> +	struct i915_gputop *ptr = ((struct i915_gputop *)obj) + index;
-> +	struct i915_pmu_device *engines = ptr->pmu_device_obj;
-> +	uint64_t type;
-> +
-> +	type = igt_perf_type_id(engines->device);
-> +	engines->fd = -1;
-> +	engines->num_counters = 0;
-> +
-> +	for (unsigned int i = 0; i < engines->num_engines; i++) {
-> +		struct i915_engine *engine = engine_ptr(engines, i);
-> +
-> +		if (_open_pmu(type, &engines->num_counters, &engine->busy,
-> +			      &engines->fd) < 0) {
-> +			/* Close FDs opened in earlier iterations */
-> +			for (unsigned int j = 0; j < i; j++) {
-> +				struct i915_engine *prev = engine_ptr(engines, j);
-> +
-> +				if (prev->busy.present) {
-> +					close(prev->busy.fd);
-> +					prev->busy.present = false;
-> +				}
-> +			}
-> +			engines->fd = -1;
-> +			engines->num_counters = 0;
-> +			return -1;
-> +		}
-> +
-> +		engine->num_counters++;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static uint64_t pmu_read_multi(int fd, unsigned int num, uint64_t *val)
-> +{
-> +	const size_t buf_size = (2 + num) * sizeof(uint64_t);
-> +	uint64_t *buf;
-> +	uint64_t ts = 0;
-> +	ssize_t len;
-> +
-> +	buf = malloc(buf_size);
-> +	if (!buf)
-> +		return 0;
-> +
-> +	memset(buf, 0, buf_size);
-> +	len = read(fd, buf, buf_size);
-> +	if (len != (ssize_t)buf_size) {
-> +		fprintf(stderr, "i915: PMU read error: expected %zu bytes, got %zd\n",
-> +			buf_size, len);
-> +		free(buf);
-> +		return 0;
-> +	}
-> +
-> +	for (unsigned int i = 0; i < num; i++)
-> +		val[i] = buf[2 + i];
-> +
-> +	ts = buf[1];
-> +	free(buf);
-> +	return ts;
-> +}
-> +
-> +void i915_pmu_sample(const void *obj, int index)
-> +{
-> +	struct i915_gputop *ptr = ((struct i915_gputop *)obj) + index;
-> +	struct i915_pmu_device *engines = ptr->pmu_device_obj;
-> +	const unsigned int num_val = engines->num_counters;
-> +	uint64_t *val;
-> +
-> +	val = calloc(num_val, sizeof(*val));
-> +	if (!val)
-> +		return;
-> +
-> +	engines->ts.prev = engines->ts.cur;
-> +	engines->ts.cur = pmu_read_multi(engines->fd, num_val, val);
-> +
-> +	for (unsigned int i = 0; i < engines->num_engines; i++) {
-> +		struct i915_engine *engine = engine_ptr(engines, i);
-> +
-> +		update_sample(&engine->busy, val);
-> +	}
-> +
-> +	free(val);
-> +}
-> +
-> +void i915_clean_up(void *obj, int len)
-> +{
-> +	struct i915_gputop *gputop_dev = (struct i915_gputop *)obj;
-> +
-> +	for (int i = 0; i < len; i++) {
-> +		if (gputop_dev[i].card)
-> +			free(gputop_dev[i].card);
-> +
-> +		if (!gputop_dev[i].pmu_device_obj)
-> +			continue;
-> +
-> +		for (unsigned int j = 0;
-> +		     j < gputop_dev[i].pmu_device_obj->num_engines; j++) {
-> +			struct i915_engine *eng =
-> +				engine_ptr(gputop_dev[i].pmu_device_obj, j);
-> +
-> +			free((void *)eng->name);
-> +			free(eng->display_name);
-> +
-> +			if (eng->busy.present)
-> +				close(eng->busy.fd);
-> +		}
-> +
-> +		free(gputop_dev[i].pmu_device_obj->device);
-> +		free(gputop_dev[i].pmu_device_obj);
-> +	}
-> +}
-> +
-> +static double pmu_busy_percentage(struct i915_engine *engine,
-> +				  uint64_t elapsed_ns)
-> +{
-> +	double busy_ns;
-> +	double percentage;
-> +
-> +	if (!elapsed_ns)
-> +		return 0.0;
-> +
-> +	busy_ns = engine->busy.val.cur - engine->busy.val.prev;
-> +	percentage = busy_ns * 100.0 / elapsed_ns;
-> +
-> +	return CLAMP(percentage, 0., 100.);
-> +}
-> +
-> +static int
-> +print_device_description(const void *obj, int lines, int w, int h)
-> +{
-> +	const struct i915_gputop *gputop = (const struct i915_gputop *)obj;
-> +	char *desc;
-> +	int len;
-> +
-> +	len = asprintf(&desc, "DRIVER: %s || BDF: %s",
-> +		       gputop->card->driver,
-> +		       gputop->card->pci_slot_name);
-> +
-> +	printf(ANSI_HEADER "%s%*s" ANSI_RESET "\n",
-> +	       desc, (int)(w - len), " ");
-> +	free(desc);
-> +
-> +	return ++lines;
-> +}
-> +
-> +static int
-> +print_engines_header(struct i915_pmu_device *engines, int lines,
-> +		     int con_w, int con_h)
-> +{
-> +	const char *a;
-> +
-> +	for (unsigned int i = 0;
-> +	     i < engines->num_engines && lines < con_h;
-> +	     i++) {
-> +		if (!engine_ptr(engines, i)->num_counters)
-> +			continue;
-> +
-> +		a = "            ENGINES   ACTIVITY  ";
-> +		printf(ANSI_HEADER "%s%*s" ANSI_RESET "\n",
-> +		       a, (int)(con_w - (int)strlen(a)), " ");
-> +		lines++;
-> +		break;
-> +	}
-> +
-> +	return lines;
-> +}
-> +
-> +static int
-> +print_engine(struct i915_pmu_device *engines, unsigned int i,
-> +	     uint64_t elapsed_ns, int lines, int con_w, int con_h)
-> +{
-> +	struct i915_engine *engine = engine_ptr(engines, i);
-> +	double percentage = pmu_busy_percentage(engine, elapsed_ns);
-> +
-> +	printf("%*s", (int)strlen("            ENGINES"), engine->display_name);
-> +	print_percentage_bar(percentage,
-> +			     con_w - (int)strlen("            ENGINES"));
-> +	printf("\n");
-> +
-> +	return ++lines;
-> +}
-> +
-> +int i915_print_engines(const void *obj, int index, int lines, int w, int h)
-> +{
-> +	struct i915_gputop *ptr = ((struct i915_gputop *)obj) + index;
-> +	struct i915_pmu_device *show = ptr->pmu_device_obj;
-> +	uint64_t elapsed_ns = show->ts.cur - show->ts.prev;
-> +
-> +	lines = print_device_description(ptr, lines, w, h);
-> +	lines = print_engines_header(show, lines, w, h);
-> +
-> +	for (unsigned int i = 0; i < show->num_engines && lines < h; i++)
-> +		lines = print_engine(show, i, elapsed_ns, lines, w, h);
-> +
-> +	lines = print_engines_footer(lines, w, h);
-> +
-> +	return lines;
-> +}
-> diff --git a/tools/gputop/i915_gputop.h b/tools/gputop/i915_gputop.h
-> new file mode 100644
-> index 000000000..65684f040
-> --- /dev/null
-> +++ b/tools/gputop/i915_gputop.h
-> @@ -0,0 +1,56 @@
-> +/* SPDX-License-Identifier: MIT */
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +#ifndef __I915_GPUTOP_H__
-> +#define __I915_GPUTOP_H__
-> +
-> +#include "igt_device_scan.h"
-> +#include "igt_perf.h"
-> +#include "utils.h"
-> +
-> +struct i915_pmu_pair {
-> +	uint64_t cur;
-> +	uint64_t prev;
-> +};
-> +
-> +struct i915_pmu_counter {
-> +	uint64_t config;
-> +	unsigned int idx;
-> +	struct i915_pmu_pair val;
-> +	int fd;
-> +	bool present;
-> +};
-> +
-> +struct i915_engine {
-> +	const char *name;
-> +	char *display_name;
-> +	unsigned int class;
-> +	unsigned int instance;
-> +	unsigned int num_counters;
-> +	struct i915_pmu_counter busy;
-> +};
-> +
-> +struct i915_pmu_device {
-> +	unsigned int num_engines;
-> +	unsigned int num_counters;
-> +	int fd;
-> +	char *device;
-> +	struct i915_pmu_pair ts; /* group timestamps from pmu_read_multi */
-> +	struct i915_engine engine[]; /* grown via realloc */
-> +};
-> +
-> +struct i915_gputop {
-> +	struct igt_device_card *card;
-> +	struct i915_pmu_device *pmu_device_obj;
-> +};
-> +
-> +void i915_gputop_init(void *ptr, int index, struct igt_device_card *card);
-> +void *i915_populate_engines(const void *obj, int index);
-> +int i915_pmu_init(const void *obj, int index);
-> +void i915_pmu_sample(const void *obj, int index);
-> +int i915_print_engines(const void *obj, int index, int lines, int w, int h);
-> +void i915_clean_up(void *obj, int len);
-> +
-> +#endif /* __I915_GPUTOP_H__ */
+-- 
+2.34.1
 
