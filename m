@@ -4,54 +4,57 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73ABECA5FDD
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 20:17:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D4D7CA5FE5
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 20:18:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0743410E693;
-	Fri,  2 Oct 2026 20:17:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D47FE10E693;
+	Fri,  2 Oct 2026 20:18:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HvDnaFRs";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="RhfvyK1a";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AB15110E693
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2026 20:16:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B5E9A10E693
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2026 20:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790972215; x=1822508215;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=/PyHzLton0n/SfeFwSWSscY6feQWrUSzekke9t8JJQU=;
- b=HvDnaFRssQRu/umKEem5/KcLDQeFQqOe1v2nWUJFXZbCaxUkXDV6N6RU
- y3xLFf9y+nifZOtbM/DQY72qM1MT5nDbcDTDhN+frLx5c6SaJJp73EnrD
- IREA0Kk5+l3tMPv8IwdCC7XpbzWrlmzb4l7p4PgZaDYqK4qH/HFa+NcXj
- fDuFV8TAlg8CT8YblIaUUQKgGdqJOrCgQJL/3PYlV74ebNrcuvLcAOOe3
- t77ZJmf4+kBZVp3o622KfDkEgXIXDH9Zsr3MtYdr3PHSKoEtOkghN2xxa
- lO2Ss8rDyXN5zWd12/yFyB18he/sfpVib28VZE+vBdqWVw1in8dXZxecv A==;
-X-CSE-ConnectionGUID: rKbYdQY4TuSGHl5BTGf+Qw==
-X-CSE-MsgGUID: rwFwjXjYSSSKdcotD8Vkww==
-X-IronPort-AV: E=McAfee;i="6800,10657,11923"; a="90877937"
-X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; d="scan'208";a="90877937"
+ t=1790972220; x=1822508220;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=RiAjnYxLK0wBjhDaNpRj/daKoqPiHzkeGasacfCC88Y=;
+ b=RhfvyK1arJi20G6rWeiB0CCE4ArrZ8E61gf8rbC3iWeefZSP84VTU3K/
+ xVqZ2dgKdMWaWRX6z0gnCjock726p8EBf/wElWJzPXOv2Nk06/3WKON9P
+ QrDXnaoedPbXY7ofgr1Owpt+hBPqruEYZfs+q8u5ypUkou9Jba8t/OAW0
+ BTxgWLqS87cUfrrih0XImZBz+tANsv9JYNPySekKLC47IWllKaLskU5xp
+ uV5MD7iZSXMHucyfrExvdRR2i5miTbcQG1j63ZsP/1M4fo0EYu2gj3phN
+ SKSTblcApjZszQCqvhSRmg2ju4s0tkvDOUk2vEloKjg80v5NaPDGKZYW4 g==;
+X-CSE-ConnectionGUID: mkC3fmt9TlC1fWC6v05zcw==
+X-CSE-MsgGUID: hc63UZt/S3S95MFyp1JLGw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11923"; a="90877944"
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; d="scan'208";a="90877944"
 Received: from fmviesa011.fm.intel.com ([10.60.135.151])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2026 13:16:54 -0700
-X-CSE-ConnectionGUID: 19fyPfI2Qkivm1+vAC4LuA==
-X-CSE-MsgGUID: npCVUngNTwyEGIykyBHo7g==
+ 02 Oct 2026 13:16:59 -0700
+X-CSE-ConnectionGUID: HscS1xOQQSuJLxvVE2GKaA==
+X-CSE-MsgGUID: zngdFW8+TO6p3j7vycEtvA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
-   d="scan'208";a="407070"
+   d="scan'208";a="407103"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2026 13:16:52 -0700
+ 02 Oct 2026 13:16:58 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
  juhapekka.heikkila@gmail.com, jani.nikula@intel.com,
  michal.grzelak@intel.com,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
-Subject: [PATCH i-g-t v7 0/7] tests: limiting suspend tests
-Date: Fri,  2 Oct 2026 22:15:18 +0200
-Message-ID: <20261002201525.466080-1-michal.grzelak@linux.intel.com>
+Subject: [PATCH i-g-t v7 3/7] tests/kms_vblank: limit #outputs tested during
+ suspend
+Date: Fri,  2 Oct 2026 22:15:21 +0200
+Message-ID: <20261002201525.466080-4-michal.grzelak@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20261002201525.466080-1-michal.grzelak@linux.intel.com>
+References: <20261002201525.466080-1-michal.grzelak@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
@@ -72,28 +75,96 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Next version of [1].
+We are iterating through each output while testing suspend. This results
+in extended execution time. In turn this leads to hitting CI enforced
+timeout.
 
-BR,
-Michał
+By default limit number of tested outputs to 2. Test each connected
+output when passing command-line parameter.
 
-[1] https://lore.kernel.org/igt-dev/20260924075019.4151374-1-michal.grzelak@linux.intel.com/
+v3->v4
+- reset output_count inside dynamic subtest (Thasleem)
+- fix help string's description (Thasleem)
 
-Michał Grzelak (7):
-  tests/kms_async_flips: split outer test loop into two
-  tests/kms_async_flips: limit #pipes tested during suspend
-  tests/kms_vblank: limit #outputs tested during suspend
-  tests/intel/kms_ccs: split outer test loop into two
-  tests/intel/kms_ccs: limit #outputs tested during suspend
-  tests/intel/kms_ccs: limit #pipes tested during suspend
-  tests/kms_hdr: run on 3 outputs when testing suspend
+v1->v2
+- fix off-by-one error (Thasleem)
+- reset output_count before subtest (Thasleem)
 
- tests/intel/kms_ccs.c   | 86 +++++++++++++++++++++++++++--------------
- tests/kms_async_flips.c | 68 ++++++++++++++++++--------------
- tests/kms_hdr.c         | 30 +++++++++++++-
- tests/kms_vblank.c      | 21 +++++++++-
- 4 files changed, 143 insertions(+), 62 deletions(-)
+Signed-off-by: Michał Grzelak <michal.grzelak@linux.intel.com>
+---
+ tests/kms_vblank.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
+diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
+index 47b733af15..5a2ba8b491 100644
+--- a/tests/kms_vblank.c
++++ b/tests/kms_vblank.c
+@@ -109,7 +109,10 @@ typedef struct {
+ #define RPM	0x80
+ } data_t;
+ 
++#define OUTPUT_LIMIT 2
++
+ static bool all_pipes;
++static bool all_outputs;
+ static int active_crtcs[IGT_MAX_PIPES];
+ static uint32_t last_crtc_index;
+ 
+@@ -476,6 +479,7 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
+ static void run_subtests(data_t *data)
+ {
+ 	igt_crtc_t *crtc;
++	int output_count = 0;
+ 	const struct {
+ 		const char *name;
+ 		void (*func)(data_t *, int, int);
+@@ -515,7 +519,14 @@ static void run_subtests(data_t *data)
+ 
+ 			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
+ 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
++				output_count = 0;
++
+ 				for_each_connected_output(&data->display, data->output) {
++					if (!all_outputs && (m->flags & SUSPEND) && output_count >= OUTPUT_LIMIT) {
++						igt_info("Skipping output %s\n", data->output->name);
++						continue;
++					}
++
+ 					for_each_crtc(&data->display, crtc) {
+ 						if(!igt_crtc_connector_valid(crtc, data->output))
+ 							continue;
+@@ -538,6 +549,8 @@ static void run_subtests(data_t *data)
+ 							run_test(data, f->func);
+ 						}
+ 					}
++
++					output_count++;
+ 				}
+ 			}
+ 
+@@ -628,6 +641,9 @@ static int opt_handler(int opt, int opt_index, void *data)
+ 		case 'e':
+ 			all_pipes = true;
+ 			break;
++		case 'o':
++			all_outputs = true;
++			break;
+ 		default:
+ 			return IGT_OPT_HANDLER_ERROR;
+ 	}
+@@ -636,9 +652,10 @@ static int opt_handler(int opt, int opt_index, void *data)
+ }
+ 
+ const char *help_str =
+-	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n";
++	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n"
++	"  -o \tRun on all outputs. (By default subtests will run on two outputs)\n";
+ 
+-int igt_main_args("e", NULL, help_str, opt_handler, NULL)
++int igt_main_args("eo", NULL, help_str, opt_handler, NULL)
+ {
+ 	igt_crtc_t *crtc;
+ 	int fd;
 -- 
 2.45.2
 
