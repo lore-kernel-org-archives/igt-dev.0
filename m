@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B2A2CA5FDD
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 12:57:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D60BCA5FE2
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 13:06:17 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 16E9C10F839;
-	Fri,  2 Oct 2026 12:57:05 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E298010F839;
- Fri,  2 Oct 2026 12:56:18 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6785730274668629885=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B7DB10E38E;
+	Fri,  2 Oct 2026 13:06:17 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="JXqhJ9cy";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48CDF10E38E
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2026 13:05:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790946332; x=1822482332;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=7nhYHT4hFXPkLUKW4THNHXnvJMqD0uvHUUD6DR7h8mE=;
+ b=JXqhJ9cyRWw94vWbCOUECrX7GKs+1YHKyfGFVF0S1dGOlt05hgG4SNy3
+ 0zubS+m5odISGidnXMAYuYN0D5GZkPXSyxB7um+6NfMiy+pRUeqNoHXLY
+ rt+dRnYxbGOS/rUWvKipcdzhv9rhgXVw1Kllq6PPhRpAtw3us7geAJekg
+ FAlIIglxuitpbswaZfYYmX78/4fdnzeWjJ67GbGVml05HIIiuv0qGpljf
+ LNaMUr/XkmK25e4/fFL+88mRamgTRvQb15vDukJy9K+olBCingT4vhzKd
+ 6KfZ94kgDHd8CG4BrwVjnObd4rBqiJ+cJRao2e9PkU4a0IeX2+zlRAxIq A==;
+X-CSE-ConnectionGUID: NXkyaRJLRkyEO2Zdo3FiqA==
+X-CSE-MsgGUID: lPiSPRFGRMSK5m4KnbAYQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11922"; a="102233423"
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; d="scan'208";a="102233423"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2026 06:05:32 -0700
+X-CSE-ConnectionGUID: D2KTTNxQTuKxmXRFOlD9WA==
+X-CSE-MsgGUID: 0A4+DCdYTKmvin9no/RqXg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; d="scan'208";a="274891656"
+Received: from cpetruta-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.244])
+ by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2026 06:05:30 -0700
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: [PATCH i-g-t v1] runner/executor: Fix writing endtime
+Date: Fri,  2 Oct 2026 15:05:22 +0200
+Message-ID: <20261002130522.42708-1-kamil.konieczny@linux.intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Add_PCI_configuration_tes?=
- =?utf-8?q?ts_for_SR-IOV_VFs?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Pi=C3=B3rkowski=2C_Piotr?= <piotr.piorkowski@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 02 Oct 2026 12:56:18 -0000
-Message-ID: <179094577892.232680.5393504599299348770@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20261002113356.3652805-1-piotr.piorkowski@intel.com>
-In-Reply-To: <20261002113356.3652805-1-piotr.piorkowski@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,143 +65,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6785730274668629885==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+When option --save-results-after-each-test is set, file
+endtime.txt is rewritten with current time, but O_EXCL option
+will make open fail and this in turn prevent creating partial
+results.json with already executed tests, except the very first
+test. Fix it and use O_TRUNC instead.
 
-== Series Details ==
+Cc: Ryszard Knop <ryszard.knop@intel.com>
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Fixes: 8d3284b5ae16 ("runner: Create results after each tests end")
+Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+---
+ runner/executor.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Series: Add PCI configuration tests for SR-IOV VFs
-URL   : https://patchwork.freedesktop.org/series/175414/
-State : success
+diff --git a/runner/executor.c b/runner/executor.c
+index bbe011cbc..8103c2a52 100644
+--- a/runner/executor.c
++++ b/runner/executor.c
+@@ -2480,7 +2480,7 @@ static int open_comms_if_valid(int resdirfd, size_t testidx)
+ 
+ static int write_endtime(int resdirfd, double a_time)
+ {
+-	int timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_EXCL, 0666);
++	int timefd = openat(resdirfd, "endtime.txt", O_CREAT | O_WRONLY | O_TRUNC, 0666);
+ 
+ 	if (timefd >= 0) {
+ 		dprintf(timefd, "%f\n", a_time);
+-- 
+2.55.0
 
-== Summary ==
-
-CI Bug Log - changes from IGT_9125 -> IGTPW_15934
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-glk-j4005 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15934 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-7567u:       [DMESG-WARN][1] ([i915#13735]) -> [PASS][2] +32 other tests pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-7567u:       [SKIP][3] -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/fi-kbl-7567u/igt@kms_hdmi_inject@inject-audio.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/fi-kbl-7567u/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9125 -> IGTPW_15934
-
-  CI-20190529: 20190529
-  CI_DRM_19266: fc5f5579dbfab13003fd4d6c1c9214a558f58c9d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15934: 15934
-  IGT_9125: 9125
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/index.html
-
---===============6785730274668629885==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Add PCI configuration tests for SR-IOV VFs</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175414/">https://patchwork.freedesktop.org/series/175414/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9125 -&gt; IGTPW_15934</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-13 fi-glk-j4005 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15934 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> +32 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/fi-kbl-7567u/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15934/fi-kbl-7567u/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9125 -&gt; IGTPW_15934</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19266: fc5f5579dbfab13003fd4d6c1c9214a558f58c9d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15934: 15934<br />
-  IGT_9125: 9125</p>
-
-</body>
-</html>
-
---===============6785730274668629885==--
