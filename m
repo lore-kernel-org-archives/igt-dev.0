@@ -4,27 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 001F6CA5FE2
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 14:15:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E296CA5FDD
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 14:16:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9943E10F874;
-	Fri,  2 Oct 2026 14:15:54 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0025510E607;
- Fri,  2 Oct 2026 14:15:09 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0581585526540277033=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 507C410E607;
+	Fri,  2 Oct 2026 14:16:38 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="lseRVYC0";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 99A4C10E607
+ for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2026 14:15:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1790950527; x=1822486527;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=l3TCY20cT2/tmwdfkEH2eYwoRJ34WiMR+Welp+3A/JA=;
+ b=lseRVYC0KYhoMUVsLbkEFisnRJWbPOGEmUDrP4Lp4HlG30/YACHSKC8n
+ 3zJdhgb1QhNlA1dj0XEMfPuytzCN/0Ru2qevxn3rvYJNjJm1aT8b/Pn9a
+ BXFD0jCKCeCMFg7PijkevkSGGayhid98lK1Z2Kme1hHDUxeqeyBe4gNCW
+ c1shJhXAc9/FXflWzPNXcmOthdRK+lW+U+tgfwoV2BinjFhIuHFANdy8z
+ S/uzQL+y5E1ZLMLe9a/9zPrYSoDvXQRDDIFIYMxJo1iifL9q2KzhD7nny
+ 4kZnu3J2aatg8cWIB/Fkw6EYhQvrOMY3LxcQB+Z3ENuQTX9AJspQ82dva g==;
+X-CSE-ConnectionGUID: YIRAMYmAR9uER/pco1k7PQ==
+X-CSE-MsgGUID: mxkohIHfS0y3wNWe8eRXmA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11923"; a="90616419"
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; d="scan'208";a="90616419"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2026 07:15:27 -0700
+X-CSE-ConnectionGUID: dpXqm80vSZS0tqqQi7c1QQ==
+X-CSE-MsgGUID: GTODLA1PQUCIlUR0Gh+RwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
+   d="scan'208";a="282477"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 02 Oct 2026 07:15:26 -0700
+Date: Fri, 2 Oct 2026 16:15:10 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: shivtej.eknath.patil@intel.com
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
+Subject: Re: [PATCH v8 2/3] tests/intel/xe_pm: add coverage for xe_device_sysfs
+Message-ID: <20261002141510.vpqe76evmxgawedz@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ shivtej.eknath.patil@intel.com, igt-dev@lists.freedesktop.org,
+ kamil.konieczny@intel.com, nishit.sharma@intel.com,
+ smitha.balasubramanyam@intel.com
+References: <20261001055902.5430-1-shivtej.eknath.patil@intel.com>
+ <20261001055902.5430-3-shivtej.eknath.patil@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_runner/executor=3A_Fix_wr?=
- =?utf-8?q?iting_endtime?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 02 Oct 2026 14:15:09 -0000
-Message-ID: <179095050999.232662.11339888188271670949@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20261002130522.42708-1-kamil.konieczny@linux.intel.com>
-In-Reply-To: <20261002130522.42708-1-kamil.konieczny@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261001055902.5430-3-shivtej.eknath.patil@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,159 +72,265 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0581585526540277033==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi,
+On 2026-10-01 at 05:59:01 +0000, shivtej.eknath.patil@intel.com wrote:
+> From: Shivtej Patil <shivtej.eknath.patil@intel.com>
+> 
+> Add new subtests to exercise the following
+> xe_device_sysfs.c functions:
+>  
+> - vram_d3cold_threshold_show()
+> - vram_d3cold_threshold_store()
+> - lb_fan_control_version_show()
+> - lb_voltage_regulator_version_show()
+> - auto_link_downgrade_capable_show()
+> - auto_link_downgrade_status_show()
+>  
+> The subtests validate the corresponding sysfs
+> attributes and improve code coverage.
+> 
 
-== Series Details ==
+Applied 1st and 2nd change, please look into logs and decide if
+we need to make some of new tests in blocklists (there are skips).
 
-Series: runner/executor: Fix writing endtime
-URL   : https://patchwork.freedesktop.org/series/175420/
-State : success
+Regards,
+Kamil
 
-== Summary ==
-
-CI Bug Log - changes from IGT_9125 -> IGTPW_15935
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-glk-j4005 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15935 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-arlh-3:         [PASS][1] -> [INCOMPLETE][2] ([i915#17254])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/bat-arlh-3/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/bat-arlh-3/igt@i915_pm_rpm@module-reload.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_selftest@live@gt_heartbeat:
-    - fi-kbl-7567u:       [DMESG-WARN][3] ([i915#13735]) -> [PASS][4] +32 other tests pass
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-kbl-7567u:       [SKIP][5] -> [PASS][6]
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/fi-kbl-7567u/igt@kms_hdmi_inject@inject-audio.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/fi-kbl-7567u/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#17254]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17254
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9125 -> IGTPW_15935
-
-  CI-20190529: 20190529
-  CI_DRM_19266: fc5f5579dbfab13003fd4d6c1c9214a558f58c9d @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15935: 15935
-  IGT_9125: 9125
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/index.html
-
---===============0581585526540277033==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>runner/executor: Fix writing endtime</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175420/">https://patchwork.freedesktop.org/series/175420/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9125 -&gt; IGTPW_15935</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-13 fi-glk-j4005 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15935 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>bat-arlh-3:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/bat-arlh-3/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/bat-arlh-3/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17254">i915#17254</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@gt_heartbeat:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/fi-kbl-7567u/igt@i915_selftest@live@gt_heartbeat.html">PASS</a> +32 other tests pass</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_hdmi_inject@inject-audio:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/fi-kbl-7567u/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/fi-kbl-7567u/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9125 -&gt; IGTPW_15935</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19266: fc5f5579dbfab13003fd4d6c1c9214a558f58c9d @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15935: 15935<br />
-  IGT_9125: 9125</p>
-
-</body>
-</html>
-
---===============0581585526540277033==--
+> Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
+> ---
+>  tests/intel/xe_pm.c | 176 ++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 145 insertions(+), 31 deletions(-)
+> 
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index 543f46f5b..9a70b1645 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -111,34 +111,9 @@ static bool runtime_usage_available(struct pci_device *pci)
+>  	return access(name, F_OK) == 0;
+>  }
+>  
+> -static uint64_t get_vram_d3cold_threshold(int sysfs)
+> +static bool sysfs_exists(int sysfs_fd, const char *path)
+>  {
+> -	uint64_t threshold;
+> -	char path[64];
+> -	int ret;
+> -
+> -	sprintf(path, "device/vram_d3cold_threshold");
+> -	igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_threshold is not present\n");
+> -
+> -	ret = igt_sysfs_scanf(sysfs, path, "%"PRIu64"", &threshold);
+> -	igt_assert_lt(0, ret);
+> -
+> -	return threshold;
+> -}
+> -
+> -static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
+> -{
+> -	char path[64];
+> -	int ret;
+> -
+> -	sprintf(path, "device/vram_d3cold_threshold");
+> -
+> -	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
+> -		ret = igt_sysfs_printf(sysfs, path, "%"PRIu64"", threshold);
+> -	else
+> -		igt_warn("vram_d3cold_threshold is not present\n");
+> -
+> -	igt_assert_lt(0, ret);
+> +	return !faccessat(sysfs_fd, path, R_OK, 0);
+>  }
+>  
+>  static void vram_d3cold_threshold_restore(int sig)
+> @@ -148,7 +123,7 @@ static void vram_d3cold_threshold_restore(int sig)
+>  	fd = drm_open_driver_master(DRIVER_XE);
+>  	sysfs_fd = igt_sysfs_open(fd);
+>  
+> -	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
+> +	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
+>  
+>  	close(sysfs_fd);
+>  	close(fd);
+> @@ -620,6 +595,48 @@ test_exec(device_t device, int n_exec_queues, int n_execs,
+>  	active_threads = 0;
+>  }
+>  
+> +/**
+> + * SUBTEST: vram-d3cold-threshold-show
+> + * Description:
+> + *      Validate reading of vram_d3cold_threshold sysfs entry.
+> + * Functionality: pm-d3cold
+> + */
+> +
+> +/**
+> + * SUBTEST: vram-d3cold-threshold-store
+> + * Description:
+> + *      Validate writing and reading back vram_d3cold_threshold sysfs entry.
+> + * Functionality: pm-d3cold
+> + */
+> +
+> +/**
+> + * SUBTEST: lb-fan-control-version-show
+> + * Description:
+> + *      Validate reading lb_fan_control_version sysfs entry.
+> + * Functionality: pm-sysfs
+> + */
+> +
+> +/**
+> + * SUBTEST: lb-voltage-regulator-version-show
+> + * Description:
+> + *      Validate reading lb_voltage_regulator_version sysfs entry.
+> + * Functionality: pm-sysfs
+> + */
+> +
+> +/**
+> + * SUBTEST: auto-link-downgrade-capable-show
+> + * Description:
+> + *      Validate reading auto_link_downgrade_capable sysfs entry.
+> + * Functionality: pm-sysfs
+> + */
+> +
+> +/**
+> + * SUBTEST: auto-link-downgrade-status-show
+> + * Description:
+> + *      Validate reading auto_link_downgrade_status sysfs entry.
+> + * Functionality: pm-sysfs
+> + */
+> +
+>  /**
+>   * SUBTEST: vram-d3cold-threshold
+>   * Functionality: pm - d3cold
+> @@ -670,7 +687,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
+>  	map = xe_bo_map(device.fd_xe, bo, SIZE);
+>  	memset(map, 0, SIZE);
+>  	munmap(map, SIZE);
+> -	set_vram_d3cold_threshold(sysfs_fd, threshold);
+> +	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, threshold);
+>  
+>  	/* Setup D3Cold but card should be in D3hot */
+>  	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
+> @@ -1082,7 +1099,7 @@ int igt_main()
+>  		}
+>  
+>  		igt_describe_f("Validate mmap memory mappings with vram region,"
+> -			     "when device along with parent bridge in %s", d->name);
+> +			       "when device along with parent bridge in %s", d->name);
+>  		igt_subtest_f("%s-mmap-vram", d->name) {
+>  			int delay_ms;
+>  
+> @@ -1116,11 +1133,108 @@ int igt_main()
+>  		     "if vram used > vram threshold");
+>  	igt_subtest("vram-d3cold-threshold") {
+>  		igt_require_f(has_runtime_pm, "Runtime PM not available\n");
+> -		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
+> +		orig_threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
+>  		igt_install_exit_handler(vram_d3cold_threshold_restore);
+>  		test_vram_d3cold_threshold(device, sysfs_fd);
+>  	}
+>  
+> +	igt_subtest("vram-d3cold-threshold-show") {
+> +		uint64_t threshold;
+> +
+> +		igt_require(sysfs_exists(sysfs_fd,
+> +					 "device/vram_d3cold_threshold"));
+> +
+> +		threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
+> +
+> +		igt_info("threshold=%" PRIu64 "\n", threshold);
+> +	}
+> +
+> +	igt_subtest("vram-d3cold-threshold-store") {
+> +		uint64_t old_val;
+> +		uint64_t new_val;
+> +
+> +		igt_require(sysfs_exists(sysfs_fd,
+> +					 "device/vram_d3cold_threshold"));
+> +		old_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
+> +		/*
+> +		 * Ensure the original threshold is restored even if
+> +		 * an assertion fails later in the test.
+> +		 */
+> +		orig_threshold = old_val;
+> +		igt_install_exit_handler(vram_d3cold_threshold_restore);
+> +		igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val + 1);
+> +		new_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
+> +		igt_assert_eq(new_val, old_val + 1);
+> +		/* restore */
+> +		igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val);
+> +		igt_info("old=%" PRIu64 " new=%" PRIu64 "\n",
+> +			 old_val, new_val);
+> +	}
+> +
+> +	igt_subtest("lb-fan-control-version-show") {
+> +		char version[64];
+> +		int ret;
+> +
+> +		igt_require(sysfs_exists(sysfs_fd,
+> +					 "device/lb_fan_control_version"));
+> +
+> +		ret = igt_sysfs_scanf(sysfs_fd,
+> +				      "device/lb_fan_control_version",
+> +				      "%63s", version);
+> +
+> +		igt_assert(ret > 0);
+> +
+> +		igt_info("lb-fan-control-version=%s\n", version);
+> +	}
+> +
+> +	igt_subtest("lb-voltage-regulator-version-show") {
+> +		char version[64] = {};
+> +		int ret;
+> +
+> +		igt_require(sysfs_exists(sysfs_fd,
+> +					 "device/lb_voltage_regulator_version"));
+> +
+> +		ret = igt_sysfs_scanf(sysfs_fd,
+> +				      "device/lb_voltage_regulator_version",
+> +				      "%63s", version);
+> +		igt_debug("ret=%d errno=%d\n", ret, errno);
+> +
+> +		igt_assert(ret > 0);
+> +		igt_info("lb-voltage-regulator-version=%s\n", version);
+> +	}
+> +
+> +	igt_subtest("auto-link-downgrade-capable-show") {
+> +		int val;
+> +		int ret;
+> +
+> +		igt_require(sysfs_exists(sysfs_fd,
+> +					 "device/auto_link_downgrade_capable"));
+> +
+> +		ret = igt_sysfs_scanf(sysfs_fd,
+> +				      "device/auto_link_downgrade_capable",
+> +				      "%d", &val);
+> +
+> +		igt_assert(ret > 0);
+> +		igt_info("auto-link-downgrade-capable=%d\n", val);
+> +		igt_assert(val == 0 || val == 1);
+> +	}
+> +
+> +	igt_subtest("auto-link-downgrade-status-show") {
+> +		int val;
+> +		int ret;
+> +
+> +		igt_require(sysfs_exists(sysfs_fd,
+> +					 "device/auto_link_downgrade_status"));
+> +
+> +		ret = igt_sysfs_scanf(sysfs_fd,
+> +				      "device/auto_link_downgrade_status",
+> +				      "%d", &val);
+> +
+> +		igt_assert(ret > 0);
+> +		igt_info("auto-link-downgrade-status=%d\n", val);
+> +		igt_assert(val == 0 || val == 1);
+> +	}
+> +
+>  	igt_fixture() {
+>  		close(sysfs_fd);
+>  		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+> -- 
+> 2.43.0
+> 
