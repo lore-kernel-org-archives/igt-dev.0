@@ -4,62 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6506ACA5FDD
-	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 20:22:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7568BCA5FE5
+	for <igt-dev@archiver.kernel.org>; Fri,  2 Oct 2026 20:35:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EFB6F10E048;
-	Fri,  2 Oct 2026 20:22:50 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="erBrr2sV";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0722410F9D7
- for <igt-dev@lists.freedesktop.org>; Fri,  2 Oct 2026 20:17:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1790972227; x=1822508227;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=hN4mzoMECdv1VQ6vvBzyr3a5FDfOcUyNQuwVjVXTbew=;
- b=erBrr2sVM+CLvOxC9jwYXh2PwS4UxhTkCOR+dMlmhSw+PdRasgju1s4m
- YSMWvTxbrPcLpPR5dZ9j0Lmj1FWWeFPOzHUPdKHOxvq5O/k8HKuRD1/rL
- RaTljOXYB3+mD2zFqY0DPeEGtYtGTTxpQpA9TaENKi6zu91v/7YYTjcce
- Q8Y/8RxEWzIN2JzOhnCMibTSkzDxT3u/Zm9Fjbjo/9dGx0/CzzJ7RftEK
- pcNf7ZUrZov+Mkt66hc+7Q3dW0CdVII8tPmV9QxnL7v3i9p8+sHd6WarM
- 11qQr8j8sXZ9FQblhv8dAXhZIjsl/xrOEUv2Lfsixcqtrw5p37fNtCfR1 w==;
-X-CSE-ConnectionGUID: NIrzWQH8T/Kv1e0+Aq2Fxw==
-X-CSE-MsgGUID: QnOyni8xRwe5ZMZohY/3zQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11923"; a="90877961"
-X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; d="scan'208";a="90877961"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2026 13:17:07 -0700
-X-CSE-ConnectionGUID: 4VwVyVXaQkGqcmbbvflKuw==
-X-CSE-MsgGUID: sL3afyLVTUCvxqxueIvP0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,136,1787036400"; 
-   d="scan'208";a="407150"
-Received: from dev-417.igk.intel.com ([10.91.214.181])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 02 Oct 2026 13:17:05 -0700
-From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, swati2.sharma@intel.com,
- juhapekka.heikkila@gmail.com, jani.nikula@intel.com,
- michal.grzelak@intel.com,
- =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
-Subject: [PATCH i-g-t v7 7/7] tests/kms_hdr: run on 3 outputs when testing
- suspend
-Date: Fri,  2 Oct 2026 22:15:25 +0200
-Message-ID: <20261002201525.466080-8-michal.grzelak@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20261002201525.466080-1-michal.grzelak@linux.intel.com>
-References: <20261002201525.466080-1-michal.grzelak@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E72D810E048;
+	Fri,  2 Oct 2026 20:35:55 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B6A710E048;
+ Fri,  2 Oct 2026 20:35:12 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0335430767678503047=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_insert_paus?=
+ =?utf-8?q?e_mnemonic_only_on_x86_/_x86=5F64_platforms?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Dmitry Baryshkov" <dmitry.baryshkov@oss.qualcomm.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 02 Oct 2026 20:35:12 -0000
+Message-ID: <179097331206.234617.9715731225431995114@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20261002191401.469214-1-dmitry.baryshkov@oss.qualcomm.com>
+In-Reply-To: <20261002191401.469214-1-dmitry.baryshkov@oss.qualcomm.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,96 +37,146 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Each suspend test is executed per output. Limit number of outputs tested
-to 3 by default. Add command-line option enabling execution on every
-output.
+--===============0335430767678503047==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-v3->v4
-- declare `data' as static (Thasleem)
-- add parenthesis around check (Thasleem)
+== Series Details ==
 
-v2->v3
-- add patch
+Series: tests/amdgpu: insert pause mnemonic only on x86 / x86_64 platforms
+URL   : https://patchwork.freedesktop.org/series/175449/
+State : success
 
-Signed-off-by: Michał Grzelak <michal.grzelak@linux.intel.com>
----
- tests/kms_hdr.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+== Summary ==
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index e23d5e4691..43f7191c75 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -74,6 +74,8 @@ IGT_TEST_DESCRIPTION("Test HDR metadata interfaces and bpc switch");
- 
- #define BACKLIGHT_PATH "/sys/class/backlight"
- 
-+#define OUTPUT_LIMIT 3
-+
- /* HDR test formats: 10bpc + FP16 */
- static const uint32_t hdr_test_formats[] = {
- 	DRM_FORMAT_XRGB2101010,
-@@ -110,6 +112,7 @@ typedef struct data {
- 	int w;
- 	int h;
- 	igt_fb_t afb;
-+	bool all_outputs;
- } data_t;
- 
- /* Common test cleanup. */
-@@ -250,6 +253,7 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- {
- 	igt_display_t *display = &data->display;
- 	igt_output_t *output;
-+	int output_count = 0;
- 
- 	igt_display_reset(display);
- 
-@@ -273,6 +277,11 @@ static void test_bpc_switch(data_t *data, uint32_t flags)
- 			continue;
- 		}
- 
-+		if (!data->all_outputs && (flags & TEST_SUSPEND) && output_count >= OUTPUT_LIMIT)
-+			continue;
-+
-+		output_count++;
-+
- 		for_each_crtc(display, crtc) {
- 			igt_output_set_crtc(output,
- 					    crtc);
-@@ -674,10 +683,27 @@ static void test_hdr(data_t *data, uint32_t flags)
- 	}
- }
- 
--int igt_main()
-+static int opt_handler(int opt, int opt_index, void *opt_data)
- {
--	data_t data = {};
-+	data_t *data = opt_data;
-+
-+	switch (opt) {
-+		case 'o':
-+			data->all_outputs = true;
-+			break;
-+		default:
-+			return IGT_OPT_HANDLER_ERROR;
-+	}
-+
-+	return IGT_OPT_HANDLER_SUCCESS;
-+}
- 
-+static const char help_str[] = "  -o \tRun on all outputs instead of 3 when testing suspend.\n";
-+
-+static data_t data = {};
-+
-+int igt_main_args("o", NULL, help_str, opt_handler, &data)
-+{
- 	igt_fixture() {
- 		data.fd = drm_open_driver_master(DRIVER_ANY);
- 
--- 
-2.45.2
+CI Bug Log - changes from XEIGT_9126_BAT -> XEIGTPW_15936_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15936_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-nvls-1:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#8762] / [Intel XE#9069])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9126/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15936/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+
+  
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [ABORT][3] ([Intel XE#9463]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9126/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15936/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
+  [Intel XE#9069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069
+  [Intel XE#9463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9126 -> IGTPW_15936
+  * Linux: xe-5882-b8b605784137aa007148f4872e958131bb33e341 -> xe-5883-28a2edb89a25a41d2a45e27d74dfd946872d0faf
+
+  IGTPW_15936: 167203602293e55253ed96729538f043f8d5edc3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9126: 4b27241425f55826ff2df54686e8e709f5baf9dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5882-b8b605784137aa007148f4872e958131bb33e341: b8b605784137aa007148f4872e958131bb33e341
+  xe-5883-28a2edb89a25a41d2a45e27d74dfd946872d0faf: 28a2edb89a25a41d2a45e27d74dfd946872d0faf
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15936/index.html
+
+--===============0335430767678503047==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: insert pause mnemonic only on x86 / x86_64 platforms</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175449/">https://patchwork.freedesktop.org/series/175449/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15936/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15936/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9126_BAT -&gt; XEIGTPW_15936_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15936_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9126/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15936/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069">Intel XE#9069</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9126/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463">Intel XE#9463</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15936/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9126 -&gt; IGTPW_15936</li>
+<li>Linux: xe-5882-b8b605784137aa007148f4872e958131bb33e341 -&gt; xe-5883-28a2edb89a25a41d2a45e27d74dfd946872d0faf</li>
+</ul>
+<p>IGTPW_15936: 167203602293e55253ed96729538f043f8d5edc3 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9126: 4b27241425f55826ff2df54686e8e709f5baf9dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5882-b8b605784137aa007148f4872e958131bb33e341: b8b605784137aa007148f4872e958131bb33e341<br />
+  xe-5883-28a2edb89a25a41d2a45e27d74dfd946872d0faf: 28a2edb89a25a41d2a45e27d74dfd946872d0faf</p>
+
+</body>
+</html>
+
+--===============0335430767678503047==--
