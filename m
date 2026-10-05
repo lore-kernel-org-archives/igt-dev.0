@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F273CA5FCE
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 10:28:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5C9ECA5FCE
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 10:29:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B922510E08F;
-	Mon,  5 Oct 2026 10:28:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3896210E24C;
+	Mon,  5 Oct 2026 10:29:19 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jo5O60SS";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="ST1sigUU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0A7A10E07C;
- Mon,  5 Oct 2026 10:27:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9EFD410E0D2;
+ Mon,  5 Oct 2026 10:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791196064; x=1822732064;
+ t=1791196115; x=1822732115;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=Kb0K2PRGm2gETJFLzQqZAcQkV+rIWGWfnTBjrFY7x7A=;
- b=jo5O60SS3m8tVUbIbXXvwKHceDeuhM0CX1i6RAeZJSrD6vonkAQlIfdI
- ZzeQuI7EsNTloEeq4EyBaPM6G+X0TZq3Z03Ur2cVdFAcEX14vB9aM56Q8
- BlI9XyNzS9i3Cq1CJiDlCyLHXb8UdcGRRWvQ0FVygajvylz9W/Rc/Y0QS
- 0SMZSQHoK8+hAmPTZF5phMNzSld7FqcdxCODcxG9TkFUxM7XDVb6j/Whp
- M/847oYRQo0AUMqBxhILEL6haXuUvsX+pk22NB/vFH9X+H38WhmGh0Gpv
- HDzsipH1GHDSwEItdoBEjuHzyVpQdf5Q8l2tWDzEC7U0oLCziNbuZG65J A==;
-X-CSE-ConnectionGUID: 1TwJqhvFQ8OhUi4x3QaBGQ==
-X-CSE-MsgGUID: N9BrVsoSQDel+DPcKd09dg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="113641094"
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="113641094"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Oct 2026 03:27:44 -0700
-X-CSE-ConnectionGUID: XoGVq7XGTSyX3EQm+oLilw==
-X-CSE-MsgGUID: rz44DJLCTimw7hbmdqpKsQ==
+ bh=x6bk4isPgceJ/m8YKi6qeEG37UTkrnBSgRRtLtqo6ms=;
+ b=ST1sigUUwxwYgGBi0BCpfYt8At0TcR9UVN19T8pBgjs8R6T48/uO3yZ+
+ ZlFkDUCSBvZk1u6OQKHvqxZPHgbTfDVW6G8PqASLQ+bfB9yFbO0ksORwp
+ YNV/aE6K/tdfbYjqU8sT0RSBri3eItUzRMVql4HmdmuwZhErW655Ewbhk
+ F7IfnvuYaN8XL5DO12sgq3JhojQx7rY79FaVlcUKEez5oxBVGbNorYN+1
+ B7H0WUOv07tcUbZ56BTk8GLt3gbYbO290j92WNSklvY3pe6bP+xtvl4rQ
+ 2kZuP3Nx/m9RtSVAXj3ksyUOcMriVJDfaBSKTz12N5eFbmMc5Icr7eCQU Q==;
+X-CSE-ConnectionGUID: lG/LD1ZASuuVWOPZ8kKY4w==
+X-CSE-MsgGUID: jJpS53b2REW3LA3aLvEjsA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="90898004"
+X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="90898004"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Oct 2026 03:28:35 -0700
+X-CSE-ConnectionGUID: HaNsT6BmT5KA5RfhhVPZ4Q==
+X-CSE-MsgGUID: CawhUaaHSUuBzWie5BOzHg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="273180201"
+X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; 
+   d="scan'208";a="830792"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by fmviesa009-auth.fm.intel.com with
- ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 03:27:42 -0700
-Date: Mon, 5 Oct 2026 12:27:26 +0200
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Oct 2026 03:28:33 -0700
+Date: Mon, 5 Oct 2026 12:28:31 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZVTEw=?= =?utf-8?Q?=3A?= failure for
+Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuRnVsbA==?= =?utf-8?Q?=3A?= failure for
  runner/executor: Fix writing endtime
-Message-ID: <20261005102726.x2ej5qlpya7hj3wl@kamilkon-DESK.igk.intel.com>
+Message-ID: <20261005102831.gyzzosxh7hkdt2fd@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
 References: <20261002130522.42708-1-kamil.konieczny@linux.intel.com>
- <179095580357.233267.10115965565999266056@61270ab9df2a>
+ <179102838275.236081.14714507546127892100@61270ab9df2a>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <179095580357.233267.10115965565999266056@61270ab9df2a>
+In-Reply-To: <179102838275.236081.14714507546127892100@61270ab9df2a>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,7 +73,7 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi igt-dev,
-On 2026-10-02 at 15:43:23 -0000, Patchwork wrote:
+On 2026-10-03 at 11:53:02 -0000, Patchwork wrote:
 > == Series Details ==
 > 
 > Series: runner/executor: Fix writing endtime
@@ -81,7 +82,7 @@ On 2026-10-02 at 15:43:23 -0000, Patchwork wrote:
 > 
 > == Summary ==
 > 
-> CI Bug Log - changes from XEIGT_9125_FULL -> XEIGTPW_15935_FULL
+> CI Bug Log - changes from IGT_9125_full -> IGTPW_15935_full
 > ====================================================
 > 
 > Summary
@@ -89,16 +90,16 @@ On 2026-10-02 at 15:43:23 -0000, Patchwork wrote:
 > 
 >   **FAILURE**
 > 
->   Serious unknown changes coming with XEIGTPW_15935_FULL absolutely need to be
+>   Serious unknown changes coming with IGTPW_15935_full absolutely need to be
 >   verified manually.
 >   
 >   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_15935_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   introduced in IGTPW_15935_full, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
 >   to document this new failure mode, which will reduce false positives in CI.
 > 
->   
+>   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/index.html
 > 
-> Participating hosts (3 -> 3)
+> Participating hosts (10 -> 10)
 > ------------------------------
 > 
 >   No changes in participating hosts
@@ -106,18 +107,29 @@ On 2026-10-02 at 15:43:23 -0000, Patchwork wrote:
 > Possible new issues
 > -------------------
 > 
->   Here are the unknown changes that may have been introduced in XEIGTPW_15935_FULL:
+>   Here are the unknown changes that may have been introduced in IGTPW_15935_full:
 > 
 > ### IGT changes ###
 > 
 > #### Possible regressions ####
 > 
->   * igt@xe_fault_injection@inject-fault-probe-function-xe_device_create:
->     - shard-bmg:          [PASS][1] -> [ABORT][2]
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9125/shard-bmg-3/igt@xe_fault_injection@inject-fault-probe-function-xe_device_create.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15935/shard-bmg-8/igt@xe_fault_injection@inject-fault-probe-function-xe_device_create.html
+>   * igt@gem_exec_suspend@basic-s3-devices:
+>     - shard-mtlp:         NOTRUN -> [FAIL][1] +1 other test fail
+>    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/shard-mtlp-4/igt@gem_exec_suspend@basic-s3-devices.html
+> 
+>   * igt@kms_busy@extended-modeset-hang-oldfb-with-reset@pipe-d:
+>     - shard-mtlp:         [PASS][2] -> [ABORT][3] +1 other test abort
+>    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/shard-mtlp-2/igt@kms_busy@extended-modeset-hang-oldfb-with-reset@pipe-d.html
+>    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/shard-mtlp-4/igt@kms_busy@extended-modeset-hang-oldfb-with-reset@pipe-d.html
 > 
 >   
+> #### Warnings ####
+> 
+>   * igt@kms_psr@fbc-pr-cursor-plane-move:
+>     - shard-mtlp:         [SKIP][4] ([i915#9688]) -> [ABORT][5]
+>    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9125/shard-mtlp-3/igt@kms_psr@fbc-pr-cursor-plane-move.html
+>    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/shard-mtlp-4/igt@kms_psr@fbc-pr-cursor-plane-move.html
+> 
 
 Unrelated,
 
@@ -125,32 +137,18 @@ Unrelated,
 Regards,
 Kamil
 
-> New tests
-> ---------
-> 
->   New tests have been introduced between XEIGT_9125_FULL and XEIGTPW_15935_FULL:
-> 
-> ### New IGT tests (1) ###
-> 
->   * igt@xe_tlb@basic-tlb:
->     - Statuses : 2 pass(s)
->     - Exec time: [0.03] s
-> 
 >   
-> 
 > Known issues
 > ------------
 > 
->   Here are the changes found in XEIGTPW_15935_FULL that come from known issues:
+>   Here are the changes found in IGTPW_15935_full that come from known issues:
 > 
 > ### IGT changes ###
 > 
 > #### Issues hit ####
 > 
->   * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
->     - shard-bmg:          NOTRUN -> [SKIP][3] ([Intel XE#2233])
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15935/shard-bmg-4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
->     - shard-ptl:          NOTRUN -> [SKIP][4] ([Intel XE#5765])
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15935/shard-ptl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+>   * igt@api_intel_bb@blit-reloc-keep-cache:
+>     - shard-dg1:          NOTRUN -> [SKIP][6] ([i915#8411])
+>    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15935/shard-dg1-18/igt@api_intel_bb@blit-reloc-keep-cache.html
 > 
 ...cut...
