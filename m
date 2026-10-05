@@ -4,27 +4,51 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5215DCA5FF5
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 23:30:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4E0CCA5FF5
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 23:34:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E4FA310E27E;
-	Mon,  5 Oct 2026 23:30:14 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1312E10E27E;
- Mon,  5 Oct 2026 23:29:29 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3509064132851202925=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 81A1F10E27E;
+	Mon,  5 Oct 2026 23:34:47 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HavrZiUq";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D766210E27E
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Oct 2026 23:34:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791243241; x=1822779241;
+ h=from:to:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=1xUFiHkHf4wHjf0Mk3KQX7l4rQPp0rAQXsNSVQfRG7g=;
+ b=HavrZiUqic4iua8Ikv9pJotjbDMWNvKj1THNnlj1QlU+CpUQkpE3mNWX
+ 8YfwybGtqSDnLPl5tF5wO1fKYmBGnOfuY91xafIEQfARTAmfknj+QTqkW
+ EOtHIkUl7aPzNOPMrzuS5mZseTXdEsqyU3Irujq2l8tgMLXRyMeN2ueq+
+ xVVkr6pPirl7bmdYVyEmkOLYoOo1UUZlE6oJascBSkAESzcD1fpWHGL7/
+ WT+4gS18j1Cw050qBwKQMMdmqw46h8MArc3gYncjECfQOgNap6FcPIYbq
+ npvD0riAmXJNPoW/iTTRo9i1RVYV3AmeKquBVMAt2kiPrN+1gw2IK/Ac/ g==;
+X-CSE-ConnectionGUID: ex8nHtvcTfaF6TiChshF0g==
+X-CSE-MsgGUID: AnjeTKMkSlO2cLfg+w+bwA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="90960814"
+X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; d="scan'208";a="90960814"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Oct 2026 16:34:01 -0700
+X-CSE-ConnectionGUID: ZFzFRrlpR5Sr2NdK+CZeoA==
+X-CSE-MsgGUID: 5FKgzjENRyeNOmAPmbpO1Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,142,1787036400"; d="scan'208";a="306452251"
+Received: from orsosgc001.jf.intel.com ([10.54.56.63])
+ by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Oct 2026 16:34:01 -0700
+From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+To: igt-dev@lists.freedesktop.org
+Subject: [PATCH] tests/perf_pmu: Fix busy-double-start for GuC backend
+Date: Mon,  5 Oct 2026 16:33:56 -0700
+Message-ID: <20261005233355.3452017-2-umesh.nerlige.ramappa@intel.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/xe=5Fpmu=3A_Do_not_en?=
- =?utf-8?q?able_VFs_in_unrelated_subtests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Gustavo Sousa" <gustavo.sousa@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 05 Oct 2026 23:29:29 -0000
-Message-ID: <179124296907.241880.2632520027395565772@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20261005-xe_pmu-do-not-enable-vfs-in-unrelated-subtests-v1-1-ccf95739aacc@intel.com>
-In-Reply-To: <20261005-xe_pmu-do-not-enable-vfs-in-unrelated-subtests-v1-1-ccf95739aacc@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,130 +61,95 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============3509064132851202925==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On GuC-based platforms, backend could switch work at a very fast rate
+determined by "timeslice_duration_ms". For a default value of 1 ms, the
+switching latencies could add up really quickly over the test duration.
 
-== Series Details ==
+While this works fine, workaround and other factors that may kick in for
+some platforms at context switches add to the context switch latencies.
 
-Series: tests/xe_pmu: Do not enable VFs in unrelated subtests
-URL   : https://patchwork.freedesktop.org/series/175577/
-State : success
+Choose a reasonable timeslice for this test so that expected and actual
+busyness is within acceptable threshold. A 10ms timeslice works well for
+this specific use case.
 
-== Summary ==
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/4349
+Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+---
+ tests/intel/perf_pmu.c | 44 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-CI Bug Log - changes from XEIGT_9130_BAT -> XEIGTPW_15942_BAT
-====================================================
+diff --git a/tests/intel/perf_pmu.c b/tests/intel/perf_pmu.c
+index 3a7f3410961f..b20f9bba1f9a 100644
+--- a/tests/intel/perf_pmu.c
++++ b/tests/intel/perf_pmu.c
+@@ -405,6 +405,33 @@ busy_start(int gem_fd, const intel_ctx_t *ctx,
+ 	gem_quiescent_gpu(gem_fd);
+ }
+ 
++static void set_timeslice(int cs, unsigned int value)
++{
++	unsigned int delay;
++
++	igt_debug("setting timeslice to %u ms\n", value);
++	igt_assert_lte(0, igt_sysfs_printf(cs, "timeslice_duration_ms", "%u", value));
++	igt_sysfs_scanf(cs, "timeslice_duration_ms", "%u", &delay);
++	igt_assert_eq(delay, value);
++}
++
++static int timeslice_fd(int fd, const struct intel_execution_engine2 *e)
++{
++	int sys, cs = -1;
++	char buf[32];
++
++	sys = igt_sysfs_open(fd);
++	igt_require(sys != -1);
++
++	snprintf(buf, sizeof(buf), "engine/%s", e->name);
++	cs = openat(sys, buf, O_RDONLY);
++	igt_require(cs != -1);
++
++	close(sys);
++
++	return cs;
++}
++
+ /*
+  * This test has a potentially low rate of catching the issue it is trying to
+  * catch. Or in other words, quite high rate of false negative successes. We
+@@ -420,6 +447,18 @@ busy_double_start(int gem_fd, const intel_ctx_t *ctx,
+ 	const intel_ctx_t *tmp_ctx;
+ 	int fd;
+ 	uint64_t ahnd = get_reloc_ahnd(gem_fd, ctx->id), ahndN;
++	unsigned int saved, cs;
++
++	/*
++	 * Set a larger timeslice to minimize the engine busyness differences
++	 * due to context switch times
++	 */
++	if (gem_using_guc_submission(gem_fd)) {
++		cs = timeslice_fd(gem_fd, e);
++		igt_assert(igt_sysfs_scanf(cs, "timeslice_duration_ms", "%u", &saved) == 1);
++		igt_debug("initial timeslice %u ms\n", saved);
++		set_timeslice(cs, 10);
++	}
+ 
+ 	tmp_ctx = intel_ctx_create(gem_fd, &ctx->cfg);
+ 	ahndN = get_reloc_ahnd(gem_fd, tmp_ctx->id);
+@@ -474,6 +513,11 @@ busy_double_start(int gem_fd, const intel_ctx_t *ctx,
+ 	put_ahnd(ahnd);
+ 	put_ahnd(ahndN);
+ 
++	if (gem_using_guc_submission(gem_fd)) {
++		set_timeslice(cs, saved);
++		close(cs);
++	}
++
+ 	assert_within_epsilon(val, ts[1] - ts[0], tolerance);
+ 	igt_assert_eq(val2, 0);
+ 
+-- 
+2.55.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15942_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-nvls-1:         [PASS][1] -> [DMESG-WARN][2] ([Intel XE#8762] / [Intel XE#9069])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9130/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15942/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
-
-  
-  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
-  [Intel XE#9069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069
-
-
-Build changes
--------------
-
-  * IGT: IGT_9130 -> IGTPW_15942
-  * Linux: xe-5889-c1341b7b7cec27ca50f287ec497e41a8cc88f22b -> xe-5892-8c3a206e2315b84f2d349b180c297a807d31b326
-
-  IGTPW_15942: d940f78c96b6671a9a4100c003cb52304d064a6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9130: 9130
-  xe-5889-c1341b7b7cec27ca50f287ec497e41a8cc88f22b: c1341b7b7cec27ca50f287ec497e41a8cc88f22b
-  xe-5892-8c3a206e2315b84f2d349b180c297a807d31b326: 8c3a206e2315b84f2d349b180c297a807d31b326
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15942/index.html
-
---===============3509064132851202925==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_pmu: Do not enable VFs in unrelated subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175577/">https://patchwork.freedesktop.org/series/175577/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15942/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15942/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9130_BAT -&gt; XEIGTPW_15942_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15942_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9130/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15942/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069">Intel XE#9069</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9130 -&gt; IGTPW_15942</li>
-<li>Linux: xe-5889-c1341b7b7cec27ca50f287ec497e41a8cc88f22b -&gt; xe-5892-8c3a206e2315b84f2d349b180c297a807d31b326</li>
-</ul>
-<p>IGTPW_15942: d940f78c96b6671a9a4100c003cb52304d064a6a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9130: 9130<br />
-  xe-5889-c1341b7b7cec27ca50f287ec497e41a8cc88f22b: c1341b7b7cec27ca50f287ec497e41a8cc88f22b<br />
-  xe-5892-8c3a206e2315b84f2d349b180c297a807d31b326: 8c3a206e2315b84f2d349b180c297a807d31b326</p>
-
-</body>
-</html>
-
---===============3509064132851202925==--
