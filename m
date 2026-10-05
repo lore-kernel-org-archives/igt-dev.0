@@ -4,157 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11F31CA5FCE
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 06:53:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 82D41CA5FCE
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 06:57:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9D84B10E22A;
-	Mon,  5 Oct 2026 06:53:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1246D10E594;
+	Mon,  5 Oct 2026 06:57:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="henZeB0a";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jlKAyPEj";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0DFFF10E22A
- for <igt-dev@lists.freedesktop.org>; Mon,  5 Oct 2026 06:52:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A1EF710E594
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Oct 2026 06:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791183162; x=1822719162;
- h=message-id:date:subject:to:cc:references:from:
+ t=1791183398; x=1822719398;
+ h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=SQnBbsSyUX2ZyyE0YOY46QCmpYCTxPVTm3URbZqizxw=;
- b=henZeB0aOrnwXzSElQ3MbIyX96SVxbZFD0+OzHxUSG3/cl2cMVnaSJiF
- a/7BfNDL7P2Aa0EeaeCcmFeQuEHILb/VZJwqAmZPzeLVI/dBXbo7SkhoE
- 7DdfxO0BPmIdc8tkpg1LE2HszEWBSEZb+UoUHEwTEmCA1LpsMpRk9e4Rx
- 1jdzmEnpT9P3Dkp1scPKpwlZiz4mL+VQJO+I0sz3iY3li4NZu2NE70eqh
- QlVj5Jo7qyutqociWwfEnECeTw+K9bBB62txGBo+bZXHAZ6JMKAA7p7VV
- HVX7gL4mQ9L3ARxzGA96GwELfFXC2Y7NO6b9tca0jWnDknaXoGEajdd+e Q==;
-X-CSE-ConnectionGUID: vDvYJA0SQKOwMvxsFSpgAw==
-X-CSE-MsgGUID: 91TfYnuhQsKqVh+4a+3M8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="95657653"
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="95657653"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2026 23:52:41 -0700
-X-CSE-ConnectionGUID: MHucpEA3RSixsKADwFweeQ==
-X-CSE-MsgGUID: mqxM7RoqT46FGZ8KqFb/Ng==
+ bh=b+CrkuvQAK3ThRcOgj5jMZ9To1AnjvoIAKB/Ng3eriY=;
+ b=jlKAyPEjUUYfuwT7NLJuiIBhTSZU+ZVPddFdoo1yLCEJEmA1bR2Xl3b9
+ MhYHyAkf7t+ctr2zJqLMNg+cSuBKAZaTeyiaCFLsqCdVPAGWLeeckkK1o
+ 1s1NFoo/SW9d/+TIwpQgJVdIVrJZM4B7f69vXqnO0ssWqC7GGK47UbeOg
+ 5tUI+ylsnOUhWxwvhlcTEuiewJ6Pyq1s/cyfrGAoAPc75F3I2vPoxgRI1
+ uYU2TxrtCG+hkS3bMrNLaIjoI8SJReqiGUh/G6+gjNu9D0zAQ4luAim+S
+ zTSYmjYrI5rBLJfy44YbhoUmbnBzUzYW0afM3qZh2yOSmZ5fV+TDbl6nI w==;
+X-CSE-ConnectionGUID: 0OW8rs56RTaLBgCniZ0huQ==
+X-CSE-MsgGUID: cI1b8OM+RSK8FaBjwIeBig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="79403700"
+X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="79403700"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Oct 2026 23:56:38 -0700
+X-CSE-ConnectionGUID: jvUftPwOQKGn5gpIjliMrQ==
+X-CSE-MsgGUID: ImhxswHfRZaY/qEdC2WIWA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="276294633"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Oct 2026 23:52:41 -0700
+X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; 
+   d="scan'208";a="823943"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+ by fmviesa011.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Oct 2026 23:56:39 -0700
 Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Sun, 4 Oct 2026 23:52:40 -0700
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ 15.2.2562.49; Sun, 4 Oct 2026 23:56:38 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
  FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Sun, 4 Oct 2026 23:52:40 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.19) by
- edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ 15.2.2562.49 via Frontend Transport; Sun, 4 Oct 2026 23:56:38 -0700
+Received: from PH8PR06CU001.outbound.protection.outlook.com (40.107.209.27) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Sun, 4 Oct 2026 23:52:40 -0700
+ 15.2.2562.49; Sun, 4 Oct 2026 23:56:37 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BIP0p8/KcY1F8y9nKkbGyPfnVHPZjQRjG/5mTn5PSlyCPMrB2VcfBPW3xcBHnZsOF8FsgU0joUYrMThzZVODp2kyU9n+NFcsqLBSQmHCoHay3pFBC+tobvM8nmsTmP0rvwrvdq2w2ZuURzKH1P0MFx4QNQxhJRGlIwEf2NdbI8UFs0r8rFWA5j4CjM6VmlF/78LktibUhNCXzMuxAUWaOE0BGY91lKl2Tt9J1howYM/uDam6SXLGNvUanjP0P4Q9PpElPQqtQpQw4PK4Axp+n9fa6O5US4PwLe089WmGrROujFgnxMvkcCgRndkJH8oIxZhqrXOZhGeZEYB5977qYw==
+ b=R/bB+bt2JiMKElhuWTMFjMqo8/WllsCuhlb+NYsvpKTfrJ2CiDMcHY13nz7j7uQaX+IMvsPhhl5/HY5ADbjEZltbVQCurLf53R7D4l+zcKEVsdPmINx6TksFjLDt8QbS6cUJVYrJQwc553udKbNp5PtsWTQ68SRR+Q6ifa0uatqkz5s7xaBG9C/buoux3az8H67DCbAlV3ZiMe97BGB1X3Ttzol2+c16Pcmx7LMeVGcAvj6gCBleIUk7Re0EIIsTTTiYxW7Q8MU0FDw0c/H/7yStFxhlo3gLq2ar9BckfxeHrhazNYV9oP1xGv3rCxaL908G4E3L7T0DBRgOktBtxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4u4CuecZ8zLmgexPlvEg8ChohnN7btb80nCs6qH/A4A=;
- b=UFOw7T0Xp5OgOCa1/7w4nL24YkvpQXGJnjH2IZRfuLrdadp6quy7TT63cx/hjUAoddxHqn+yKkFB3r0LC24xKHqt5cmBOwyWp+mTKt1IXCXlsTKBSwzMHw0/UEsMVA1c2erRmJM4UWWPsB0bHB3VPqVcoQlCDVxJqCn7xKwk990QV3SJ6ys2JaH037nxW68Ae8lt0txyJLy08ytREhISNF3El2hwSLfSlOF2c4bsrVgMCKe0UZVe0e1c8751qGkFK/CWi+TUthOjjuSppcogeICX29TP7hVjRcK9HZQqTbILocwQyncLSzoP/AcTA+84/wiaV9fbm9kO42Qlfy/tdA==
+ bh=HVSUPwTLCDMGTwG3AVT+gd4Awodj1sEDbj2bernY/TA=;
+ b=Eroh8JG9XRuQeXB5r08zKD3lL8mR7bZ695ttdMeM1tnDJ+FWguwPsnhPwFmKtMtvltM5XRew/ZNAmaACeQPuhG9Y3jMzKbGl+JnekPnE1MWQq2tM458Jx9XPIq72I8Lw9GqAYDcOEHSX0Uqm0uYBgHyIcNYQxqcD/sw21zt0V8b1gIxAxsAc/lWAZNtkdB7E2M6ljUok8p1KDz8e8DUlspI9GGTLk9O6fqbCZR76ZpQpoRkxzpJFM/RRL9WPyEKx9vz2D143hf7luaCXacf4x7c4PeaUhAL5Vxzg0vu5Y8cWTQHqQvTdQb7qWCutOv0j2jMaFedRejOP1dlXmVchTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB5249.namprd11.prod.outlook.com (2603:10b6:610:e0::17)
- by SN7PR11MB7019.namprd11.prod.outlook.com (2603:10b6:806:2ae::22)
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
+ by DS6PR11MB622039.namprd11.prod.outlook.com (2603:10b6:8:52b::12)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Mon, 5 Oct
- 2026 06:52:31 +0000
-Received: from CH0PR11MB5249.namprd11.prod.outlook.com
- ([fe80::a665:5444:d558:23c3]) by CH0PR11MB5249.namprd11.prod.outlook.com
- ([fe80::a665:5444:d558:23c3%6]) with mapi id 15.21.0472.015; Mon, 5 Oct 2026
- 06:52:31 +0000
-Message-ID: <c20b0a62-82a1-4efb-b76b-dd17f8fcdeb5@intel.com>
-Date: Mon, 5 Oct 2026 12:22:23 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/intel/i915_pm_rc6_residency: make residency ratio
- tolerance symmetric
-To: Sk Anirban <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
- <riana.tauro@intel.com>, <raag.jadav@intel.com>, <soham.purkait@intel.com>,
- <mallesh.koujalagi@intel.com>
-References: <20260929172810.2077612-2-sk.anirban@intel.com>
+ 2026 06:56:35 +0000
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::52c4:16e1:a67e:63bc]) by CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::52c4:16e1:a67e:63bc%6]) with mapi id 15.21.0472.015; Mon, 5 Oct 2026
+ 06:56:35 +0000
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Thomas, Sobin" <sobin.thomas@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>, "Brost, Matthew" <matthew.brost@intel.com>
+CC: "Sharma, Nishit" <nishit.sharma@intel.com>
+Subject: RE: [PATCH i-g-t v5 4/5] tests/intel: Add threaded random-size
+ allocation stress tests
+Thread-Topic: [PATCH i-g-t v5 4/5] tests/intel: Add threaded random-size
+ allocation stress tests
+Thread-Index: AQHdSoIvbYasOorVu02UheWCFeYr3LbulvVw
+Date: Mon, 5 Oct 2026 06:56:35 +0000
+Message-ID: <CH3PR11MB8434785B888540B99D8B4BCF8D962@CH3PR11MB8434.namprd11.prod.outlook.com>
+References: <20260922110438.2402109-1-sobin.thomas@intel.com>
+ <20260922110438.2402109-5-sobin.thomas@intel.com>
+In-Reply-To: <20260922110438.2402109-5-sobin.thomas@intel.com>
+Accept-Language: en-US, en-IN
 Content-Language: en-US
-From: "Poosa, Karthik" <karthik.poosa@intel.com>
-In-Reply-To: <20260929172810.2077612-2-sk.anirban@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0240.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b1::6) To CH0PR11MB5249.namprd11.prod.outlook.com
- (2603:10b6:610:e0::17)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB5249:EE_|SN7PR11MB7019:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3b4e2ee7-d5fd-41dc-3556-08df22ad3a05
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|1800799024|366016|23010399003|56012099006|11063799006|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: YeZaTb06Nzc6X9TpBdftayfaT6NuOC1Zwg1Zo+gfiUq2hu9SCvwIfRdGpqFUqmnXlQkR4tsVGcpcyTkZS+rKwf5L4PmBVnpt0IHZn07EaplmmWhnv8DnDZzz3mNNWjriTofvMnxjSLqydhAZAbS9fSBIuiWLJ2rsiVfMP8JDIVMLqVB6FpXjEyLoMiuO+wnZk5gej5G/wtYMJtcs25RW5OOAYcWid7nwVfOTRvW/xbT3YNpUM2By/yQDbzADCDv+7XyuJNMJSx1r7KT5BpWLF6DdFQ+qHlb9C/SmfaUCIX7ji/GiAvxgV0VsaEe+VOsB7iOIoMxxtRsNYlAYO0+xSQ7dW56x868YMxRFlfwkIiy6kkB1PenEEBM2MR50r54FYZx+CV6GT89TLfLt0vbjFk9xikhqlN1XS8bDfFEc+lZEP/fARRQtAE0RfNE0T0tSUGu5YRWfsB9Fum+iWWCcR7mpO+jWeOc4KbQi6r7dVKbVZVRfopjwMfB8m/X3EMNnherMPVWzeSuRTAfKjJ5GLy9LFDPxx57kzZ2d/L3cbHRocZnJNA2+8aMsEXaPKIETU7P9vODNYlMEk8WAvjQ3uIMOGu6g+TwLadCnz8w0taWGWMWXP0rlzu0AYwQsDxpu
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH0PR11MB5249.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(1800799024)(366016)(23010399003)(56012099006)(11063799006)(10067099003)(18002099003)(22082099003);
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|DS6PR11MB622039:EE_
+x-ms-office365-filtering-correlation-id: 5c664fe6-798d-465b-5b1a-08df22adcbb0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|23010399003|366016|1800799024|10070799003|10086099003|18002099003|22082099003|10067099003|38070700021|4143699003|56012099006|11063799006;
+x-microsoft-antispam-message-info: Kp7bqgwzJZLQ83xgduqhdhOEipNOg+RX4w44ixqiBta8MFW+UhqAAqu5bH+4rDZmuFr5wJ85ucUaR4cSeA5lx1wcHZ5jirz/Jf7DwjE69BaqsA8LS2O39lfhOR6Ksc9QWut0tV219N5aGlxmNsCXo7q/3xC4H0HMtqfnAnkgVZNsKJ8x5qj76CCcR4pRtGe+NEzfn4iY4MggD1xbaOSreAzqhcp9dWH7Vffuq09Nq1AKtiSa+SV0nZaKuAxnG+rg/624q1oi2IFLqOAlun0/zx8OfZyEasFy94o01M59Wy05WzWZDWNssmUOxuIXkmDExZgcnpOSz4UGV5y3tSDsFVaB2N3BvzinK8DIYGkMmIcNOUrjHvKVoqmCyxc1GcSjMxgivfRXF9Y+88/5TNKHNoYcEtsqIlgwhf0LvN/lK+nePTGnC7o+8C69C35jZXd0uLtlFFAXWe60kMrLKEO2D8Z11ahDTPtu7JM1Vkwk5hCwcynnk/ND149dV5ckJnUPuh3vcDz5RxTFGcjznSdFSqt563FFovc+SVzCQKLBbAgiJuvEVWD6HOgA/wddAoYtKvka+UVFgDB1bLA59o1wS8qz0DyFCgonLykCRaK8qB/QD+uBCm0Ifo2ODd8WL9VGECRBEkIhavCSx6zw9tZCktCqvJ5mUf59+poBfgBUyEV29ts47cCdbeSFrZ03m1VXG6yMZde/yl/6SrFlbBE6qOFRuShSSdjnI+mOdRomwuc=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(10070799003)(10086099003)(18002099003)(22082099003)(10067099003)(38070700021)(4143699003)(56012099006)(11063799006);
  DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eXQ3TEVnVXpFTjh6dXFuVCtVNFBzZFhHZG1aVzVveFhPN2ZMdkNYd2FwbHRx?=
- =?utf-8?B?eFlXYjgyNzJuKytNTkYzdlBFbTQ3NWhsRHFpVFNNUlVYcUJvYUlDRXVlU0hU?=
- =?utf-8?B?MHdBSlpNOXlVMSs4SEJyVHRqM2c1eWVnZEdrYjl2RjMwbWR6R3FIS1Q1ME81?=
- =?utf-8?B?a3puOUtpV09Vem5zV1YzVzhFWlE1enNsOTVSLzVBVEJiYVFVNEwrT2xoMmJ4?=
- =?utf-8?B?eTNWNGlhYmM1TTZCMml4Rm1sbWRMTG11ZHV5Z0ZGSmNrdlZYbFNSaUppeXlS?=
- =?utf-8?B?djlxYm9WY2g4dS9kN09XbHlBdHRtNTVKSWtKaUlsMHVodEJ6YVJLY3E1QnM1?=
- =?utf-8?B?bHZuQXJCS3NQQWE5RFVhRFhGY1hUYzhQZWdFOFNCVnRjYzU3T1lKOWpFcllO?=
- =?utf-8?B?dUtETHZkczdmSEdRODQ3QUdJMGFLWFBNUUMrRFVWM0JqVmx3ZVBUa0M3MWd5?=
- =?utf-8?B?aUJNSDVuRHVsWkowYXVSeGtXWHNhS0tkOGc4eEZ0QjhXTzZCTit1TzhrVFpl?=
- =?utf-8?B?L05BekR6Y2xGWG5FbFdQWWNPaVpacHZITUdPY1pEU0FzMjk3QldQZittdnpy?=
- =?utf-8?B?eUtZUnI3emd3Q05yZUgrVG5Xc0dsS2RwK09ld2svc0w1QThvbDZnUzhuVDNk?=
- =?utf-8?B?N1NXN054TUFlREpFVEhFYTE1RHJ3Q1MvSlBqYTgzamhhS29nREtMZGwwTS9J?=
- =?utf-8?B?OENJTUliWXh0R0R6bHlxekI1ak1STHJyM2FDdUcwUVlEaVAwaThWSFozR0Ey?=
- =?utf-8?B?TERxSmxUT29KMHl3K0dtMDhseVExV3IrWEVlWjg4TXB1dDluRU13bGN5N2VH?=
- =?utf-8?B?UDVJRDF2SEE3NFpZQTVXZlBibC9IVUNNK2VZY2o5eStiZU1paC8wZnVOdk05?=
- =?utf-8?B?OSs5aU1xL0pRWmtpMHdVd1FvSGZhMGdmSWxuWFJqQXlpdmFSS05pUEMyU3gr?=
- =?utf-8?B?QTFHcnllK0dqM2tDMHdyQmk4NnhUZUNUTHh4NmljcmR0VE5KdlJSU3d3NHZv?=
- =?utf-8?B?ZkVETFJFSWRndHZHalo1OEJMQU4zSHE4V1BHYzk1M0JJT1FUUEo2Y05sNGpD?=
- =?utf-8?B?RE5NZkZOU01LdmlPcC95dzlGVlNoS2xWM0JwcUNqcG1KNDlzNjJOUjFqbThB?=
- =?utf-8?B?ZkF4cElqcjdPR05mbHpMODd2bDR2NFdjRWp6bUN1aVBjTlBZZ0hUbERIRmx2?=
- =?utf-8?B?Z0k3YkxBTWpKQzd6b2xhbklJQmR2TXRka2JibENTS29jMWRMRG9RR1prMXNY?=
- =?utf-8?B?TXNFUy9KOHBSU2dVMWJlQTRoN3FwSnBFdjJXUVJhNE9zUkt6dGlUYnYvSXR0?=
- =?utf-8?B?dUMrb0N3Y1hzRDBVK2FpaU5GN0NBTjEzM2RML1V5VVNXSEtZbFBNZERUMGI3?=
- =?utf-8?B?U2dnaWQ2ZG1ndFlLMWFWekI5TlczN2xGcy96VXVTZmhUd3pyN0pJWW45cXZl?=
- =?utf-8?B?TUdma0x4WUJtVWtWSWRKMlExNVdKK2JXMzhmdmhQekxrK3o0U2Q5S1ZjQWtD?=
- =?utf-8?B?dzQ0dkRLWldrTWxteHVSVERRZklyZGE5elVzTnNhWktGbkJ5WXBJcERxVzFu?=
- =?utf-8?B?MUV3VWp0N0pSNkNtNytSazBjTTVMSld3M3NWRk02a21JWHgwVkpiMkMzTndj?=
- =?utf-8?B?aCtERjVEamdUcW5VWWNPNFJ2akdXbmQ0dnNtdGVyYXlYUDlNWXVHZU8yekR3?=
- =?utf-8?B?Vkl1cC9SZGg4NHFLeUFhcFo4NDAwUXBJb3VXQWxQRHZsa2ZQMnl0Smp0M2ZZ?=
- =?utf-8?B?a0s1aTNCekpNM0NUbmcxV3IyTVZyRy9BWXFFWkw2cTFnQWpxb1ZQeHZ4ZkJ0?=
- =?utf-8?B?VC9XVE1IazFCTnpkYkdHNWxSVmhTdm1JTXBocU5NQWNXWnVNYXhWM2xNKzVp?=
- =?utf-8?B?V1lLUExQakVpemh1WXp3THpzN0QvSVdQbGtIN0FCU2hsWDRnLzY5Z0xsU3N6?=
- =?utf-8?B?NDdQQWM3K0lTTXVJa3lYWTJNSFZGczdORzNzM05KRTFTN2hGa2pTVUI0OWlx?=
- =?utf-8?B?bmh3eFgxbjBBK2lKMGFYVWd0aTh0MklkRmNQTHJIZm4wYjcrbHVRZFRPY2JI?=
- =?utf-8?B?RU1ZVmlnRkpSZUVKL01FbzlwenpNUnJ1R1huSDUwRHpQNnNPaktKaEk2N05J?=
- =?utf-8?B?aWNtS2dRd0ZCcFdrcEVHWHowaVl6UkJFcmZHL0xNU045N0t6eG5SQmJqS3JW?=
- =?utf-8?B?ZEJTeUp2T1R6ektkMEViQWpUS2lKUkkvclhGbVZiT3ZxaGl5Zys4L05CS1Vo?=
- =?utf-8?B?enNCQ0psYmY3OXh0QkJSRlJKNmhWbENCU1liOHN0S3RSQnUyS1FlQjVaTWFq?=
- =?utf-8?B?aGJVWVZJVUF3Mk9BRmYyQ3NKSlNZdHZYMUJWTVJ4RWM1UEhreVdxUT09?=
-X-Exchange-RoutingPolicyChecked: b9Dx1CfqhzjpX284a7pUVSVtJPQWGmU9M7yJyvbAV22SLB6YhEUzxMnV0zGBA8GM8GS/0s6ITiWhrXi+DFzppbwvxbcFSD+htKR6rHyXYCaJK1odPByTTMRRE2XAOTUFammFD8YwWwRbqIbVsOmA+mCMJPsYutuUIbw53WvU+jZN1o7KDBi8PNpGR7AY5/g8eMnSNJvlaDnobYA4Ib3iv8up083FSo0SMHzuV4eYSWNB3jQ27P9ikLijjpBFnB7m/e14q9c7tzZHJKssoYORAFEvE6g1+6d4ntWT+ErmcstmaD8HslKltmf1+9hoFYzOXOMraCHcaOpL36KyleIiiA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3b4e2ee7-d5fd-41dc-3556-08df22ad3a05
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5249.namprd11.prod.outlook.com
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?hIP7EZ0weoS11oGkqNG05V2jffZArMJLI5sUOG2oLBKsrs84WqoCaL/vynKR?=
+ =?us-ascii?Q?jhAk2tDciDcZiLDkrG/tePC/3XAk0Xy7Vq2CtKYAnlOrYCactlFwhJ6Y5NZ5?=
+ =?us-ascii?Q?Wb+Q4f1BoK7FMeM49k+SKQ1ivja/QeE7S9xoCetDy0fuVDTvSETxR5NTm9oO?=
+ =?us-ascii?Q?KKSDLeqDU7fRB1Svt57s1Mbiiv5retl6mCK6H+j615Z8hpFI4qVBzJ0SX+cf?=
+ =?us-ascii?Q?5GIqcX7o17vHiZMaPSVQJROdN5VACxM0DTjMPzVe7i3fLBmAdx5YLD1Knk+W?=
+ =?us-ascii?Q?cSv6G88gdoNNOi6zzVsITaIfZO3tCcYVLM8t+roVpNLmstoA94XIVce2Py0B?=
+ =?us-ascii?Q?F3mD00tCrISRE7YcrmEOdWCJw3R3Com+fNRpAR8Ndu12RRtUqQqbF6YUdFvD?=
+ =?us-ascii?Q?ADh/8RV64ewT4PFGRVmWRsSKG9KI3/bw6wvnFePcZIwf6VJ8CzIDXXz0hfqj?=
+ =?us-ascii?Q?F1MZ4l49D74kDSPS8X9ZetMFfdZxTEMAIc7yqwimhhg3yM27pdC0IbevnuIV?=
+ =?us-ascii?Q?N+E9a/1Zmog61sNyYK1yrRqW3nyi72fB8t04KWOPd2HLh54Kr+DNgYwQ2SJ7?=
+ =?us-ascii?Q?w4c6iUz6w9XBctGZ9Xk0r6IT6qb4A4xUkQl7cu5hrUom3rT74V4a1qTymasv?=
+ =?us-ascii?Q?Aw9uNQ5lXHZGnchaSjWKnUPJqhHW9XVCJ1uH7Pjy4ypOLeZZCaMiISOEeHor?=
+ =?us-ascii?Q?1C4WqSy7LQaB64Pf5ySnqvJN3CFrfVAx+qOEFETqIoog6jDnl0nCd3y26yWb?=
+ =?us-ascii?Q?L7rT9v/h1dmFe6ChdmRpUNAgl2R01BPUUPiJ6mTGkthi8i8jCWtFgE9bJUov?=
+ =?us-ascii?Q?OYZWaB5E0KaFd8MuL3Ztn24WuFb62cnY/bWkDTdjgFyV/7ggprhDX5detaRm?=
+ =?us-ascii?Q?iYT960/FGXOGf3fBq2L9F5FhzLU7WQbdivtY7Xyba8S+FJ1hKQT9h3f+oirV?=
+ =?us-ascii?Q?AqUPFIj8NNLywKXWSPyJx/WFVRGn4gsZ14BsOURoKs0eckjc6jsMQQuR2LOq?=
+ =?us-ascii?Q?eRpM/4YsAi6utKhujECBAwj7GXGWSe5mouxyZqHiY+4AZMK4atlCxx/Iukbi?=
+ =?us-ascii?Q?plkY54HTwEYLEl9a7VyxMLynK3ppAGhnWtJOzAwvKLeMdBeXnN8AVUpgFAYa?=
+ =?us-ascii?Q?0Bg26V4nRmy0LwkLr1KaQojg8uFFgRB0qHEiCIt48qO/TKoo9AHVm7vsF6p0?=
+ =?us-ascii?Q?A6j5mpyV7wlXv/+wU5cSLMoUkmLRT9+cf+3NqLvMZ6ocbuCndp5T88AjfIvT?=
+ =?us-ascii?Q?5ICToiXUH5pE8rEZmvd1q6MhIbLKsKWW1R95bYhsvSuiWKQnJ0GXVj/psrvt?=
+ =?us-ascii?Q?7TeVFOZYJiEeC4tDuC1io9Z4SV5sCB2zrizg3JcGrfefrs2OuNbPE+MKw+DL?=
+ =?us-ascii?Q?Tf7H3uXxmTkbcucfjHy2BHLv32UPREgfNrIGUQH76IsMfVV14Tqmytz8v6IQ?=
+ =?us-ascii?Q?NQv/wYfJVCVYaMOlHqb1F+8aZHDqGW0lnF6eoOhOREqeAdVWHtsI0o79mdCO?=
+ =?us-ascii?Q?qJOqsFzukXlrUBX1Mn6Uey1SmEw7/YMQpawgxKY6cEx2BhwPm3KtBVHUpLrW?=
+ =?us-ascii?Q?LJauAL5GGjo2r5eCq1awAdAZXvCNBn1UgA93DruD7Msnqwlq75xEj2pQKl7S?=
+ =?us-ascii?Q?YWEiK8to3Tt2euyCtmBE+UGrEftyYiyAqBAiUQeocAsYN2LcYZWgSFQ8kHN3?=
+ =?us-ascii?Q?FKTjxrc1C7ihY2bAOEhOyaAbOQNDKsp9kZgpZS54U6g1OeYnB2u5ApxataNY?=
+ =?us-ascii?Q?vcotEeao3rYm6t8M4lxHB/bXcpBr/KnTaNL8sddG4+p72G6Lrrx3MrkpL39o?=
+x-ms-exchange-antispam-messagedata-1: b6uZeeyYLzmO6oTlSuCw1vWAyyip+u4W1uA=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: YRjp/GrQTOoZxS4Jq7AyQlH1O0H2O4QjxecJlo3U1bZfp9yPF8sRgvHGIi+O1Tir8MGf4lXeC8sDMZO5UuFzJTckSHtbYtrIZDsplfDLLzwP48R72YSD9d8eED5FjG+THgeE+b2hdIqWpwhyJLa6Nij0yJylxJmhLmTutbm8CkQZCJjZa3JCFVnrpQUarKjYPUSFEFcIIwme101bhHtz0X0O63iZj21zXaqaOQlsvnXll/HsBPqX/6wBD5XeMcbueqgABXxCrnCupZc9+Dz4TC84TjBNwhBUpWNzQUBQ+KnYFefT5v/vIFmvkT+lofATGFC3PNFmfClOOis+Hl/yrg==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Oct 2026 06:52:31.0052 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WC6KswMBLs4KpfiQX/1ARJo95UTxHkRxZgFJb9wK55Xv9OcVPa6h+VyXl+EtbEPHhimOncJyXY1bB4cV2u0Qig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7019
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5c664fe6-798d-465b-5b1a-08df22adcbb0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Oct 2026 06:56:35.1784 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Rdys1oiaECHa2nLr5e6E6Jbw0QrX6N3hMvSNjhGlZ9Cwdy6JW9Q/nCVkpXy/t6SfG1FJTgHeWswD6sSS9Q3XQb0NvVHH2gh/Oqr3a3tI460=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR11MB622039
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -172,31 +167,257 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 29-09-2026 22:58, Sk Anirban wrote:
-> Bump the upper ratio bound from 1.05 to 1.1 so residency_accuracy()
-> allows the same ±10% margin on both sides of the expected duration.
->
-> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17049
-> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+
+> -----Original Message-----
+> From: Thomas, Sobin <sobin.thomas@intel.com>
+> Sent: 22 September 2026 16:35
+> To: igt-dev@lists.freedesktop.org; Brost, Matthew <matthew.brost@intel.co=
+m>
+> Cc: Sharma, Nishit <nishit.sharma@intel.com>; Dandamudi, Priyanka
+> <priyanka.dandamudi@intel.com>
+> Subject: [PATCH i-g-t v5 4/5] tests/intel: Add threaded random-size alloc=
+ation
+> stress tests
+>=20
+> Add a new TYPE_THREAD test mode that creates a worker thread per availabl=
+e
+> engine and performs random-sized BO allocations concurrently.
+>=20
+> Each thread creates its own VM and execution queue and exercises the exis=
+ting
+> allocation path with both aligned and unaligned bind addresses.
+> Additional variants cover leaked bindings.
+>=20
+> These tests provide additional stress coverage for concurrent BO allocati=
+on and
+> VM bind activity across multiple engines.
+>=20
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
 > ---
->   tests/intel/i915_pm_rc6_residency.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tests/intel/i915_pm_rc6_residency.c b/tests/intel/i915_pm_rc6_residency.c
-> index 346796fb2..80c102e31 100644
-> --- a/tests/intel/i915_pm_rc6_residency.c
-> +++ b/tests/intel/i915_pm_rc6_residency.c
-> @@ -112,7 +112,7 @@ static void residency_accuracy(unsigned int diff,
->   
->   	igt_info("Residency in %s or deeper state: %u ms (sleep duration %u ms) (%.1f%% of expected duration)\n",
->   		 name_of_rc6_residency, diff, duration, 100*ratio);
-> -	igt_assert_f(ratio > 0.9 && ratio < 1.05,
-> +	igt_assert_f(ratio > 0.9 && ratio < 1.1,
+>  tests/intel/xe_bo_alloc.c | 149 +++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 148 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/tests/intel/xe_bo_alloc.c b/tests/intel/xe_bo_alloc.c index
+> 343d07626..d8368087b 100644
+> --- a/tests/intel/xe_bo_alloc.c
+> +++ b/tests/intel/xe_bo_alloc.c
+> @@ -56,6 +56,26 @@
+>   * Description: Test 10 batches of 10 random BO allocation sizes bound t=
+ogether
+> as a single
+>   * array of binds, unaligned bind addresses
+>   * Test category: functionality test
+> + *
+> + *
+> + * SUBTEST: threads-rand-sizes-50
+> + * Description: Test 50 random bo allocation sizes in test table with a
+> + thread per engine
+> + * test category: stress test
+> + *
+> + * SUBTEST: threads-rand-sizes-50-unaligned
+> + * Description: Test 50 random bo allocation sizes in test table with a
+> + thread per engine,
+> + * unaligned bind addresses
+> + * test category: stress test
+> + *
+> + * SUBTEST: threads-leak-binding-rand-sizes-50
+> + * Description: Test 50 random BO allocation sizes in test table with a
+> + thread per engine,
+> + * leak the binding
+> + * Test category: stress test
+> + *
+> + * SUBTEST: threads-leak-binding-rand-sizes-50-unaligned
+> + * Description: Test 50 random BO allocation sizes in test table with a
+> + thread per engine,
+> + * leak the binding, unaligned bind addresses
+> + * Test category: stress test
+>   */
+>=20
+>  #define GB(x) (1024ULL * 1024ULL * 1024ULL * (x)) @@ -82,7 +102,8 @@ sta=
+tic
+> uint64_t *alloc_sizes;  enum test_type {
+>  	TYPE_ALL_SIZES,
+>  	TYPE_RANDOM_SIZE,
+> -	TYPE_ARRAY_BIND
+> +	TYPE_ARRAY_BIND,
+> +	TYPE_THREAD
+>  };
+>=20
+>  struct test_case {
+> @@ -129,6 +150,20 @@ struct batch_data {
+>  	uint32_t data;
+>  };
+>=20
+> +struct thread_data {
+> +	uint64_t va_base;
+> +	pthread_t thread;
+> +	pthread_mutex_t *mutex;
+> +	pthread_cond_t *cond;
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	int fd;
+> +	int count;
+> +	uint32_t vm;
+> +	uint32_t flags;
+> +	unsigned int seed;
+seed variable is not used anywhere in this commit.
+> +	bool *go;
+> +};
+> +
+>  /*
+>   * Reserve a chunk of process address space to use as the VM bind addres=
+s
+>   * for a BO, and hand back a pointer inside it aligned either to bo_size=
+ @@ -766,6
+> +801,103 @@ static void alloc_random_size_bos_array_bind(int fd, struct
+> drm_xe_engine_class_
+>  	free(leaks);
+>  }
+>=20
+> +static void *bo_alloc_thread_fn(void *data) {
+> +	struct thread_data *t =3D data;
+> +	uint32_t q;
+> +	int i;
+> +
+> +	igt_assert(!(t->flags & LEAK_BO));
+> +
+> +	pthread_mutex_lock(t->mutex);
+> +	while (!*t->go)
+> +		pthread_cond_wait(t->cond, t->mutex);
+> +	pthread_mutex_unlock(t->mutex);
+> +
+> +	q =3D  xe_exec_queue_create(t->fd, t->vm, t->hwe, 0);
+> +
+> +	for (i =3D 0; i < t->count; ++i)
+> +		test_alloc_size(t->fd, t->vm, q, t->hwe->gt_id,
+> +				alloc_sizes[rand() % N_ALLOC_SIZES], here  rand_r(&t->seed) can be u=
+sed instead of global rand()
+> +				t->flags, t->va_base);
+Same va_base is being. t->va_base is set once per thread and never advanced=
+ between the 50 iterations.
+threads-rand-sizes-50 is fine as it binds and unbinds+releases after each i=
+teration but for leak it might collide with previous one.
+> +
+> +	xe_exec_queue_destroy(t->fd, q);
+> +
+> +	return NULL;
+> +}
+> +
+> +static void run_threaded_bo_alloc_test(int fd, int count, uint32_t
+> +flags) {
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	struct drm_xe_engine_class_instance **engines;
+> +	struct thread_data *threads_data;
+> +	pthread_mutex_t mutex;
+> +	pthread_cond_t cond;
+> +	bool begin_work =3D false;
+> +	int n_found =3D 0, n_threads =3D 0, i, ret;
+> +
+> +	xe_for_each_engine(fd, hwe)
+> +		n_found++;
+> +
+> +	igt_assert(n_found > 0);
+> +
+> +	engines =3D calloc(n_found, sizeof(*engines));
+> +	igt_assert(engines);
+> +
+> +	i =3D 0;
+> +	xe_for_each_engine(fd, hwe)
+> +		engines[i++] =3D hwe;
+> +
+> +	threads_data =3D calloc(n_found, sizeof(*threads_data));
+> +	igt_assert(threads_data);
+> +
+> +	pthread_mutex_init(&mutex, 0);
+> +	pthread_cond_init(&cond, 0);
+> +
+> +	for (i =3D 0; i < n_found; ++i) {
+> +		threads_data[i].mutex =3D &mutex;
+> +		threads_data[i].cond =3D &cond;
+> +		/* reuse engine 0 if only one exists */
+> +		threads_data[i].hwe =3D engines[i % n_found];
+Here i%n_found is not required just i is enough as both are same.
+> +		threads_data[i].fd =3D fd;
+> +		threads_data[i].count =3D count;
+> +		threads_data[i].vm =3D xe_vm_create(fd, 0, 0);
+> +		threads_data[i].flags =3D flags;
+> +		threads_data[i].go =3D &begin_work;
+> +		threads_data[i].seed =3D i + 1;
+> +		threads_data[i].va_base =3D BO_BIND_BASE_ADDR + (uint64_t)i *
+> THREAD_VA_STRIDE;
+> +		ret =3D pthread_create(&threads_data[i].thread, 0,
+> bo_alloc_thread_fn,
+> +				     &threads_data[i]);
+> +		if (ret)
+> +			break;
+> +		n_threads++;
+> +	}
+> +
+> +	ret =3D pthread_mutex_lock(&mutex);
+> +	igt_assert_eq(ret, 0);
+> +	begin_work =3D true;
+> +	ret =3D pthread_cond_broadcast(&cond);
+> +	igt_assert_eq(ret, 0);
+> +	ret =3D pthread_mutex_unlock(&mutex);
+> +	igt_assert_eq(ret, 0);
+> +
+> +	for (i =3D 0; i < n_threads; ++i) {
+> +		ret =3D pthread_join(threads_data[i].thread, NULL);
+> +		igt_assert_eq(ret, 0);
+> +	}
+> +
+> +	/* vm is created for every slot up to n_found regardless of thread
+> creation success */
+> +	for (i =3D 0; i < n_found; ++i)
+> +		xe_vm_destroy(fd, threads_data[i].vm);
+> +
+> +	ret =3D pthread_cond_destroy(&cond);
+> +	igt_assert_eq(ret, 0);
+> +	ret =3D pthread_mutex_destroy(&mutex);
+> +	igt_assert_eq(ret, 0);
+> +	free(threads_data);
+> +	free(engines);
+> +}
+> +
+>  static void run_gt_dynamic_subtests(int fd, const struct test_case *t)  =
+{
+>  	struct drm_xe_engine_class_instance *hwe; @@ -849,6 +981,11 @@
+> static const struct test_case test_matrix[] =3D {
+>  	{ "array-binds-rand-sizes-10", 10, ARRAY_BIND, TYPE_ARRAY_BIND, true
+> },
+>  	{ "array-binds-rand-sizes-10-unaligned", 10,  ARRAY_BIND | UNALIGNED,
+> TYPE_ARRAY_BIND,
+>  	  true },
+> +	{ "threads-rand-sizes-50", 50, 0, TYPE_THREAD, false },
+> +	{ "threads-rand-sizes-50-unaligned", 50, UNALIGNED, TYPE_THREAD,
+> false },
+> +	{ "threads-leak-binding-rand-sizes-50", 50, LEAK_BINDING,
+> TYPE_THREAD, false },
+> +	{ "threads-leak-binding-rand-sizes-50-unaligned", 50, LEAK_BINDING |
+> UNALIGNED,
+> +	  TYPE_THREAD, false },
+>  };
+>=20
+>  int igt_main()
+> @@ -864,6 +1001,16 @@ int igt_main()
+>  		const struct test_case *t =3D &test_matrix[i];
+>=20
+>  		switch (t->type) {
+> +		case TYPE_THREAD:
+> +			igt_subtest_f("%s", t->name) {
+> +				if (t->requires_evict_ram) {
+> +					igt_require(xe_has_vram(fd));
+> +					igt_require(igt_get_avail_ram_mb() >=3D
+> +						    (xe_visible_vram_size(fd, 0)
+> >> 20) / 2);
+> +				}
+> +				run_threaded_bo_alloc_test(fd, t->count, t-
+> >flags);
+> +			}
+> +			break;
+>  		case TYPE_ALL_SIZES:
+>  		case TYPE_RANDOM_SIZE:
+>  		case TYPE_ARRAY_BIND:
+> --
+> 2.52.0
 
-Looks fine,
-
-but what is the reason upper bound was different previously ?
-
->   		     "Sysfs RC6 residency counter is inaccurate.\n");
->   }
->   
