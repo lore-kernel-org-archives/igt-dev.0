@@ -4,27 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29172CA5FCE
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 10:05:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F273CA5FCE
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 10:28:29 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B076310E066;
-	Mon,  5 Oct 2026 10:05:44 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1B25C10E066;
- Mon,  5 Oct 2026 10:04:59 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0787879051418660139=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B922510E08F;
+	Mon,  5 Oct 2026 10:28:28 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jo5O60SS";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A0A7A10E07C;
+ Mon,  5 Oct 2026 10:27:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791196064; x=1822732064;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=Kb0K2PRGm2gETJFLzQqZAcQkV+rIWGWfnTBjrFY7x7A=;
+ b=jo5O60SS3m8tVUbIbXXvwKHceDeuhM0CX1i6RAeZJSrD6vonkAQlIfdI
+ ZzeQuI7EsNTloEeq4EyBaPM6G+X0TZq3Z03Ur2cVdFAcEX14vB9aM56Q8
+ BlI9XyNzS9i3Cq1CJiDlCyLHXb8UdcGRRWvQ0FVygajvylz9W/Rc/Y0QS
+ 0SMZSQHoK8+hAmPTZF5phMNzSld7FqcdxCODcxG9TkFUxM7XDVb6j/Whp
+ M/847oYRQo0AUMqBxhILEL6haXuUvsX+pk22NB/vFH9X+H38WhmGh0Gpv
+ HDzsipH1GHDSwEItdoBEjuHzyVpQdf5Q8l2tWDzEC7U0oLCziNbuZG65J A==;
+X-CSE-ConnectionGUID: 1TwJqhvFQ8OhUi4x3QaBGQ==
+X-CSE-MsgGUID: N9BrVsoSQDel+DPcKd09dg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="113641094"
+X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="113641094"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Oct 2026 03:27:44 -0700
+X-CSE-ConnectionGUID: XoGVq7XGTSyX3EQm+oLilw==
+X-CSE-MsgGUID: rz44DJLCTimw7hbmdqpKsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="273180201"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Oct 2026 03:27:42 -0700
+Date: Mon, 5 Oct 2026 12:27:26 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: I915-ci-infra@lists.freedesktop.org
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZVTEw=?= =?utf-8?Q?=3A?= failure for
+ runner/executor: Fix writing endtime
+Message-ID: <20261005102726.x2ej5qlpya7hj3wl@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
+References: <20261002130522.42708-1-kamil.konieczny@linux.intel.com>
+ <179095580357.233267.10115965565999266056@61270ab9df2a>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=3A_fix_missi?=
- =?utf-8?q?ng_resource_cleanup_in_several_tests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: priyanka.dandamudi@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 05 Oct 2026 10:04:59 -0000
-Message-ID: <179119469910.239640.15886861091896875054@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20261005085943.3176069-2-priyanka.dandamudi@intel.com>
-In-Reply-To: <20261005085943.3176069-2-priyanka.dandamudi@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <179095580357.233267.10115965565999266056@61270ab9df2a>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +68,89 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0787879051418660139==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi igt-dev,
+On 2026-10-02 at 15:43:23 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: runner/executor: Fix writing endtime
+> URL   : https://patchwork.freedesktop.org/series/175420/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_9125_FULL -> XEIGTPW_15935_FULL
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_15935_FULL absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_15935_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (3 -> 3)
+> ------------------------------
+> 
+>   No changes in participating hosts
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_15935_FULL:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@xe_fault_injection@inject-fault-probe-function-xe_device_create:
+>     - shard-bmg:          [PASS][1] -> [ABORT][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9125/shard-bmg-3/igt@xe_fault_injection@inject-fault-probe-function-xe_device_create.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15935/shard-bmg-8/igt@xe_fault_injection@inject-fault-probe-function-xe_device_create.html
+> 
+>   
 
-== Series Details ==
-
-Series: tests/intel/xe: fix missing resource cleanup in several tests
-URL   : https://patchwork.freedesktop.org/series/175548/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_9127_BAT -> XEIGTPW_15939_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (14 -> 14)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9127 -> IGTPW_15939
-
-  IGTPW_15939: 2deeba2de081b32377c6b07462ad8317dcaf3e18 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9127: 9127
-  xe-5887-b0bd9fb9e92aae2a653efa1d0407daa2aabe99d0: b0bd9fb9e92aae2a653efa1d0407daa2aabe99d0
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15939/index.html
-
---===============0787879051418660139==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Unrelated,
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+Regards,
+Kamil
 
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe: fix missing resource cleanup in several tests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175548/">https://patchwork.freedesktop.org/series/175548/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15939/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15939/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9127_BAT -&gt; XEIGTPW_15939_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (14 -&gt; 14)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9127 -&gt; IGTPW_15939</li>
-</ul>
-<p>IGTPW_15939: 2deeba2de081b32377c6b07462ad8317dcaf3e18 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9127: 9127<br />
-  xe-5887-b0bd9fb9e92aae2a653efa1d0407daa2aabe99d0: b0bd9fb9e92aae2a653efa1d0407daa2aabe99d0</p>
-
-</body>
-</html>
-
---===============0787879051418660139==--
+> New tests
+> ---------
+> 
+>   New tests have been introduced between XEIGT_9125_FULL and XEIGTPW_15935_FULL:
+> 
+> ### New IGT tests (1) ###
+> 
+>   * igt@xe_tlb@basic-tlb:
+>     - Statuses : 2 pass(s)
+>     - Exec time: [0.03] s
+> 
+>   
+> 
+> Known issues
+> ------------
+> 
+>   Here are the changes found in XEIGTPW_15935_FULL that come from known issues:
+> 
+> ### IGT changes ###
+> 
+> #### Issues hit ####
+> 
+>   * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
+>     - shard-bmg:          NOTRUN -> [SKIP][3] ([Intel XE#2233])
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15935/shard-bmg-4/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+>     - shard-ptl:          NOTRUN -> [SKIP][4] ([Intel XE#5765])
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15935/shard-ptl-2/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
+> 
+...cut...
