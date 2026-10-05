@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1A99CA5FCE
-	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 08:14:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53DA8CA5FF0
+	for <igt-dev@archiver.kernel.org>; Mon,  5 Oct 2026 08:24:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 53A7910E139;
-	Mon,  5 Oct 2026 08:14:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E016210EBEB;
+	Mon,  5 Oct 2026 08:24:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="d+v9wNS4";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="oKQqZ4Oz";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF2A510EC1E;
- Mon,  5 Oct 2026 08:13:29 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B4DD10EBEB
+ for <igt-dev@lists.freedesktop.org>; Mon,  5 Oct 2026 08:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791188010; x=1822724010;
- h=message-id:subject:from:to:cc:date:in-reply-to:
- references:mime-version;
- bh=Cc4oHLy/vFmkh/zqyOY4/uRcB1sBBq7KDAY4nRjSVjg=;
- b=d+v9wNS4zfJtS7O7i6Qu/XCSkclJWpDHpZDi7fiqXul+7QGwP0VSXtgt
- 46MWNX9BOc+ByHFwG9DygHG1/ZLEFWDY6hsLrGTj6zHJLUB5oAAaDC0TM
- fWZnlRWlz6hoVZvWVXOLcs5Yd1BcUP6MK/rowcL52qjbUgc8VBqhg+1bd
- 47yJzpAcyn1+QnImjH7XaBQ/K+Twf/Y+rFneUCoXFN+oq/KnKzh2P/k48
- bKAO/wwZBUuZPXyKpmiLQR0F0+VScT1OXFSfSnBneGQXlrmVSATbL4ERN
- vn05S8/ircrPf8VL+nUx4JIhmdLUNaRgGtrX5uGqZ+66UI7Gm1O/Fcfye A==;
-X-CSE-ConnectionGUID: 7izw7OzqSf6Tk4GOYXLH0Q==
-X-CSE-MsgGUID: 3FCJtrF3S620EG891Csn8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="90801933"
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208,217";a="90801933"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Oct 2026 01:13:30 -0700
-X-CSE-ConnectionGUID: tqdW4cPqS6+sL60Pux4u/w==
-X-CSE-MsgGUID: 1DJaAxPeT8aKPhFz45QM4A==
+ t=1791188605; x=1822724605;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=jkgkvWw5eLGCT1WjRRItPww1SzkNNcHu+AGtDiyOs0g=;
+ b=oKQqZ4OzGkrfLUvYx406qneDJE2gd8ZKdrLbE5O98P7NR2Su4Vl9X/9L
+ 6DBl7DBu+VheIkSQgZ3NnWoJ87bIqToZgZRHv0pvYK4Ft8ftHL4/cVGgX
+ wi+yQsZyQhBeosRFZfK2gb0splUeg3OIoxAM8cB9MMzlAXV9gcg3pPS3T
+ STLF6yHd09Sfo+ZDDoSQ0gkShbusfcmt2dyJgGMeqSfPmZnpxKWzevV6+
+ +JzpiO8NkMrjc2q6VHO7ocvCIhsobjogpeIC0A/arsq20ospP664BLog7
+ QVnI5xS27sZM3IIY2I7LhsqQ/OI8dC3PcB6xbiQiHB4Dksa/YgF9ZJG8r A==;
+X-CSE-ConnectionGUID: 7ipvWAfHQ1S3RPznHNm5lQ==
+X-CSE-MsgGUID: 29QNCGXMQlK6LRMyE26cVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11925"; a="91060587"
+X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="91060587"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Oct 2026 01:23:21 -0700
+X-CSE-ConnectionGUID: Hl+i/Eq9ROCEioDsz9RzIw==
+X-CSE-MsgGUID: 2r4oxt7lQe++9J+9+I6ubg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; 
- d="scan'208,217";a="275388277"
-Received: from mjarzebo-mobl1.ger.corp.intel.com (HELO
- jkrzyszt-mobl2.ger.corp.intel.com) ([10.245.246.73])
- by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Oct 2026 01:13:28 -0700
-Message-ID: <b686f1e04539972035a956484ba2d1c64c826ffd.camel@linux.intel.com>
-Subject: Re: =?UTF-8?Q?=E2=9C=97?= i915.CI.Full: failure for tests/intel:
- Don't probe intel_allocator offsets without full-ppgtt (rev2)
-From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-To: I915-ci-infra@lists.freedesktop.org
-Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 05 Oct 2026 10:13:25 +0200
-In-Reply-To: <179098253053.235005.17621157884243839447@61270ab9df2a>
-References: <20260924152443.829382-4-janusz.krzysztofik@linux.intel.com>
- <179098253053.235005.17621157884243839447@61270ab9df2a>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
- 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
-Content-Type: multipart/alternative; boundary="=-Mk2b8YsWg4kzqRBiNJKy"
-User-Agent: Evolution 3.60.2 
+X-IronPort-AV: E=Sophos;i="6.27,141,1787036400"; d="scan'208";a="284838097"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.175])
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Oct 2026 01:23:19 -0700
+Date: Mon, 5 Oct 2026 10:23:17 +0200
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: "Wang, X" <x.wang@intel.com>
+Cc: igt-dev@lists.freedesktop.org, matthew.d.roper@intel.com, 
+ kamil.konieczny@linux.intel.com, stuart.summers@intel.com
+Subject: Re: [PATCH i-g-t v14 4/4] lib/intel_device_info: remove the
+ graphics_rel from xe2+ devices
+Message-ID: <4bqcnrztxbdirr7v7ugjyzbvxznjkpkrtdk25fddjnufmu2nuv@zmbh2ubfr5de>
+References: <20260928172713.1341060-1-x.wang@intel.com>
+ <20260928172713.1341060-5-x.wang@intel.com>
+ <bpunru5h7bshkbvwkthco6uyfpc6tfsx25lh4d7puozo4pcx7j@jtlzpc5seuzs>
+ <a9119b28-9ec1-4e18-8ebf-44c7f2087ef8@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a9119b28-9ec1-4e18-8ebf-44c7f2087ef8@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -73,154 +74,100 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---=-Mk2b8YsWg4kzqRBiNJKy
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Fri, Oct 02, 2026 at 12:50:54AM -0700, Wang, X wrote:
+> 
+> 
+> On 10/1/2026 22:05, Zbigniew Kempczyński wrote:
+> > On Mon, Sep 28, 2026 at 10:27:07AM -0700, Xin Wang wrote:
+> > > On Xe2+ platforms, the graphics IP version is no longer a stable
+> > > property of a PCI ID "device type". After IP disaggregation, devices
+> > > sharing the same PCI ID can report different IP versions via GMD_ID, so
+> > > encoding graphics_rel in the static PCI-ID table gives wrong minor
+> > > versions on such devices.
+> > > 
+> > > Drop graphics_rel for these platforms and rely on the runtime value
+> > > that xe_device_get() reads from GMD_ID.
+> > > 
+> > > v2:
+> > >   - also drop graphics_rel from WCL and NVL-P.
+> > > 
+> > > Signed-off-by: Xin Wang <x.wang@intel.com>
+> > > ---
+> > >   lib/intel_device_info.c | 7 -------
+> > >   1 file changed, 7 deletions(-)
+> > > 
+> > > diff --git a/lib/intel_device_info.c b/lib/intel_device_info.c
+> > > index 9201ca806c..0879f49038 100644
+> > > --- a/lib/intel_device_info.c
+> > > +++ b/lib/intel_device_info.c
+> > > @@ -512,7 +512,6 @@ static const struct intel_device_info intel_pontevecchio_info = {
+> > >   static const struct intel_device_info intel_lunarlake_info = {
+> > >   	.graphics_ver = 20,
+> > > -	.graphics_rel = 4,
+> > Can't we drop ver as well?
+> We still have PCI-ID-only consumers, such as intel_gtt, which accesses
+> the device through PCI BARs rather than xe_device_get(). Its GTT
+> address decoding uses intel_gen(devid), including an explicit case
+> for graphics version 20. Dropping graphics_ver would make that path
+> report an unsupported platform on Lunar Lake.
 
-Hi=C2=A0I915-ci-infra@lists.freedesktop.org,
+Ok, so no objections from my side:
 
-On Fri, 2026-10-02 at 23:08 +0000, Patchwork wrote:
-> Patch Details
->=20
-> Series:tests/intel: Don't probe intel_allocator offsets without full-
-> ppgtt (rev2)
->=20
-> URL:https://patchwork.freedesktop.org/series/174930/
->=20
-> State:failure
-> Details:https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/index.html
-> CI Bug Log - changes from CI_DRM_19262_full -> IGTPW_15931_fullSummaryFAI=
-LURE
-> Serious unknown changes coming with IGTPW_15931_full absolutely need to
-> be
-> verified manually.
-> If you think the reported changes have nothing to do with the changes
-> introduced in IGTPW_15931_full, please notify your bug team (I915-ci-
-> infra@lists.freedesktop.org) to allow them
-> to document this new failure mode, which will reduce false positives in
-> CI.
-> External URL: https://intel-gfx-ci.01.org/tree/drm-
-> tip/IGTPW_15931/index.html
-> Participating hosts (10 -> 10)No changes in participating hosts
-> Possible new issuesHere are the unknown changes that may have been introd=
-uced in
-> IGTPW_15931_full:
-> IGT changesPossible regressions *=20
->    igt@i915_selftest@live:shard-tglu: PASS [4] -> DMESG-FAIL [3]shard-mtl=
-p:
->    PASS [6] -> DMESG-FAIL [5]
->  *=20
->    igt@kms_async_flips@async-flip-suspend-resume@pipe-d-edp-1:
->     - shard-mtlp:         PASS [2] -> ABORT [1] +1 other test abort
+Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-My series tested under this pre-merge run introduces changes to two tests:
-gem_softpin and gem_close_races. =C2=A0None of them has been reported as
-failing, and the above failures are not related. =C2=A0Please update CBL fi=
-lters
-and re-report.
+--
+Zbigniew
 
-Thanks,
-Janusz
-
-> Known issues
-...
-
-[1] ABORT
-    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/shard-mtlp-2/igt@k=
-ms_async_flips@async-flip-suspend-resume@pipe-d-edp-1.html
-[2] PASS
-    https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_19262/shard-mtlp-2/igt@=
-kms_async_flips@async-flip-suspend-resume@pipe-d-edp-1.html
-[3] DMESG-FAIL
-    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/shard-tglu-10/igt@=
-i915_selftest@live.html
-[4] PASS
-    https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_19262/shard-tglu-9/igt@=
-i915_selftest@live.html
-[5] DMESG-FAIL
-    https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/shard-mtlp-2/igt@i=
-915_selftest@live.html
-[6] PASS
-    https://intel-gfx-ci.01.org/tree/drm-tip/CI_DRM_19262/shard-mtlp-5/igt@=
-i915_selftest@live.html
-
---=-Mk2b8YsWg4kzqRBiNJKy
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-<html><head>
- =20
-  <title>Project List - Patchwork</title>
-  <style id=3D"css-table-select" type=3D"text/css">
-   td { padding: 2pt; }
-  </style>
-<style>pre,code,address {
-  margin: 0px;
-}
-h1,h2,h3,h4,h5,h6 {
-  margin-top: 0.2em;
-  margin-bottom: 0.2em;
-}
-ol,ul {
-  margin-top: 0em;
-  margin-bottom: 0em;
-}
-blockquote {
-  margin-top: 0em;
-  margin-bottom: 0em;
-}
-</style></head>
-<body><div>Hi&nbsp;I915-ci-infra@lists.freedesktop.org,</div><div><br></div=
-><div>On Fri, 2026-10-02 at 23:08 +0000, Patchwork wrote:</div><blockquote =
-type=3D"cite" style=3D"margin:0 0 0 .8ex; border-left:2px #729fcf solid;pad=
-ding-left:1ex"><div><b>Patch Details</b></div>
-<div><table>
-<tbody><tr><td><b>Series:</b></td><td>tests/intel: Don't probe intel_alloca=
-tor offsets without full-ppgtt (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href=3D"https://patchwork.freedesktop.org/se=
-ries/174930/">https://patchwork.freedesktop.org/series/174930/</a></td></tr=
->
-<tr><td><b>State:</b></td><td>failure</td></tr> <tr><td><b>Details:</b></td=
-><td><a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/index.=
-html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/index.html</a></=
-td></tr></tbody></table> </div><h1>CI Bug Log - changes from CI_DRM_19262_f=
-ull -&gt; IGTPW_15931_full</h1><h2>Summary</h2><p><strong>FAILURE</strong><=
-/p><p>Serious unknown changes coming with IGTPW_15931_full absolutely need =
-to be<br> verified manually.</p><p>If you think the reported changes have n=
-othing to do with the changes<br> introduced in IGTPW_15931_full, please no=
-tify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br> =
-to document this new failure mode, which will reduce false positives in CI.=
-</p><p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/i=
-ndex.html</p><h2>Participating hosts (10 -&gt; 10)</h2><p>No changes in par=
-ticipating hosts</p><h2>Possible new issues</h2><p>Here are the unknown cha=
-nges that may have been introduced in IGTPW_15931_full:</p><h3>IGT changes<=
-/h3><h4>Possible regressions</h4><ul>
-<li>
-<p>igt@i915_selftest@live:</p><ul>
-<li>shard-tglu:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_19262/shard-tglu-9/igt@i915_selftest@live.html">PASS</a> -&gt; <a h=
-ref=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/shard-tglu-10/i=
-gt@i915_selftest@live.html">DMESG-FAIL</a></li>
-<li>shard-mtlp:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_19262/shard-mtlp-5/igt@i915_selftest@live.html">PASS</a> -&gt; <a h=
-ref=3D"https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15931/shard-mtlp-2/ig=
-t@i915_selftest@live.html">DMESG-FAIL</a></li>
-</ul></li>
-<li>
-<p>igt@kms_async_flips@async-flip-suspend-resume@pipe-d-edp-1:</p></li><ul>
-<li>shard-mtlp:         <a href=3D"https://intel-gfx-ci.01.org/tree/drm-tip=
-/CI_DRM_19262/shard-mtlp-2/igt@kms_async_flips@async-flip-suspend-resume@pi=
-pe-d-edp-1.html">PASS</a> -&gt; <a href=3D"https://intel-gfx-ci.01.org/tree=
-/drm-tip/IGTPW_15931/shard-mtlp-2/igt@kms_async_flips@async-flip-suspend-re=
-sume@pipe-d-edp-1.html">ABORT</a> +1 other test abort</li>
-</ul>
-</ul></blockquote><div><br></div><div>My series tested under this pre-merge=
- run introduces changes to two tests:<br>gem_softpin and gem_close_races. &=
-nbsp;None of them has been reported as<br>failing, and the above failures a=
-re not related. &nbsp;Please update CBL filters<br>and re-report.</div><div=
-><br></div><div>Thanks,<br>Janusz</div><div><br></div><blockquote type=3D"c=
-ite" style=3D"margin:0 0 0 .8ex; border-left:2px #729fcf solid;padding-left=
-:1ex"><h2>Known issues</h2></blockquote><div>...</div><div><span></span></d=
-iv></body></html>
-
---=-Mk2b8YsWg4kzqRBiNJKy--
+> 
+> > --
+> > Zbigniew
+> > 
+> > >   	.display_ver = 20,
+> > >   	.has_4tile = true,
+> > >   	.has_flatccs = true,
+> > > @@ -524,7 +523,6 @@ static const struct intel_device_info intel_lunarlake_info = {
+> > >   static const struct intel_device_info intel_battlemage_info = {
+> > >   	.graphics_ver = 20,
+> > > -	.graphics_rel = 1,
+> > >   	.display_ver = 14,
+> > >   	.has_4tile = true,
+> > >   	.has_flatccs = true,
+> > > @@ -536,7 +534,6 @@ static const struct intel_device_info intel_battlemage_info = {
+> > >   static const struct intel_device_info intel_pantherlake_info = {
+> > >   	.graphics_ver = 30,
+> > > -	.graphics_rel = 0,
+> > >   	.display_ver = 30,
+> > >   	.has_4tile = true,
+> > >   	.has_flatccs = true,
+> > > @@ -548,7 +545,6 @@ static const struct intel_device_info intel_pantherlake_info = {
+> > >   static const struct intel_device_info intel_wildcatlake_info = {
+> > >   	.graphics_ver = 30,
+> > > -	.graphics_rel = 3,
+> > >   	.display_ver = 30,
+> > >   	.has_4tile = true,
+> > >   	.has_flatccs = true,
+> > > @@ -560,7 +556,6 @@ static const struct intel_device_info intel_wildcatlake_info = {
+> > >   static const struct intel_device_info intel_novalake_s_info = {
+> > >   	.graphics_ver = 30,
+> > > -	.graphics_rel = 04,
+> > >   	.display_ver = 35,
+> > >   	.has_4tile = true,
+> > >   	.has_oam = true,
+> > > @@ -572,7 +567,6 @@ static const struct intel_device_info intel_novalake_s_info = {
+> > >   static const struct intel_device_info intel_novalake_p_info = {
+> > >   	.graphics_ver = 35,
+> > > -	.graphics_rel = 10,
+> > >   	.display_ver = 35,
+> > >   	.has_4tile = true,
+> > >   	.has_oam = true,
+> > > @@ -584,7 +578,6 @@ static const struct intel_device_info intel_novalake_p_info = {
+> > >   static const struct intel_device_info intel_crescentisland_info = {
+> > >   	.graphics_ver = 35,
+> > > -	.graphics_rel = 11,
+> > >   	.display_ver = 0,
+> > >   	.has_oam = true,
+> > >   	.is_crescentisland = true,
+> > > -- 
+> > > 2.43.0
+> > > 
+> 
