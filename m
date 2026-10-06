@@ -4,65 +4,73 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A43FDCA6001
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Oct 2026 14:26:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2A6FCA5FED
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Oct 2026 14:28:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5039610E373;
-	Tue,  6 Oct 2026 14:26:28 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5DE5E10E373;
+	Tue,  6 Oct 2026 14:28:11 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="k6tXsRoc";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="SAph0kYM";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8048A10E373;
- Tue,  6 Oct 2026 14:25:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF35310E187;
+ Tue,  6 Oct 2026 14:27:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791296743; x=1822832743;
+ t=1791296846; x=1822832846;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=dpSezw1vAFeWydVGk5lFKT7rjIzK17tOOhkf/mQmcDk=;
- b=k6tXsRocs8Ve1AaJdXRXdU3FIuYfewSaGT76d7wPsH2VLRLhrU5qig5v
- cWBfkv8SR7KGSyqg2zT5mnYRE2QbwA7vBx7GvhkkwWv2tuIpb9kLsALm5
- U42VEIuUZo51mZmB2bkun4w1sBwtu9m0SVeH8TmvMYJ/cO/KDjBVXnmo1
- RtBFRVBSZY4hY7cjmvWQX7U6tuJhH7v84OMIrNNSprO/x+Yf/Pn6syzBX
- b7MN1/5CNnnqdKCt8E+k13iVeRCQKaMaykzqvoWCWJiyFCmEQ/Jn47sTs
- N0JGhDxWeRXsAEgaPwtp+J+WaUiO5riniGc3ddX1z3jVy8QeCleoJOivy Q==;
-X-CSE-ConnectionGUID: RKcCbU8NTdyDg6XlrIku9w==
-X-CSE-MsgGUID: oU37k9ZpSbmDJqsV2AbCNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="40162"
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=vOisMCBpIVF71mz1epqwZ6zu5BUewVSRbOLJtz4WBa8=;
+ b=SAph0kYMjSkCSLoOsNgTGQgLM53+apGN499h7B5dkPlQpMPORKtCFyt9
+ ZSHJ23Wu5bQVL8hQZbGJW63sejF7+mIcUtG1H0Brvm+zz1LirIjRpSP0B
+ kStSUbsjR/s94n9bU+8MDyRNQ6KHus2cGOO/3NEPlUZsT/jvQIdtDggwJ
+ WCTlZ3anJ8GBuJKdYIC4DmuV/Zu9TfYkw1eX8UrE6ujB2rOG6nvH3tH4j
+ tfk715i5I6eDWmV3Tj+VP0f1m5RIh4ZebR9UK7rzvaGZGX3NW7v500VLz
+ PUBGuLZc22EJf5XNqZ7PITPkzI4JdE0ZiBJMjozoTsSfZ7PWS2Cx/3CbE A==;
+X-CSE-ConnectionGUID: MSAOq9N3TGq+GNTbc4U9pg==
+X-CSE-MsgGUID: J6kTF1kdSoGHb4ghlhpCAw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="40338"
 X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="40162"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+   d="scan'208";a="40338"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2026 07:25:43 -0700
-X-CSE-ConnectionGUID: 8aKvgX2wRymwPa05Du662g==
-X-CSE-MsgGUID: pS5FmxkKTmyPHIHyKklCCw==
+ 06 Oct 2026 07:27:22 -0700
+X-CSE-ConnectionGUID: Jogz9JikRvyH3+h669u0lw==
+X-CSE-MsgGUID: pQlpHmalRQ+iXpBK32O3pw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
-   d="scan'208";a="1231715"
+X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; d="scan'208";a="273533775"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2026 07:25:41 -0700
-Date: Tue, 6 Oct 2026 16:25:39 +0200
+ by fmviesa009-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Oct 2026 07:27:20 -0700
+Date: Tue, 6 Oct 2026 16:27:18 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Gyeyoung Baek <gye976@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, imagination@lists.freedesktop.org,
- alessio.belle@imgtec.com, luigi.santivetti@imgtec.com,
- robert.mazur@imgtec.com, matt.coster@imgtec.com,
- sarah.walker@imgtec.com, frank.binns@imgtec.com
-Subject: Re: [PATCH i-g-t v2] tests/imagination: Add VM map and remap tests
-Message-ID: <20261006142539.kntdgp2hsi2xd5jq@kamilkon-DESK.igk.intel.com>
+To: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+Subject: Re: [PATCH i-g-t 2/2] tests/intel/gem_close_race: Skip offset
+ probing without full-ppgtt
+Message-ID: <20261006142718.nzikm7la5pql3phi@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Gyeyoung Baek <gye976@gmail.com>, igt-dev@lists.freedesktop.org,
- imagination@lists.freedesktop.org, alessio.belle@imgtec.com,
- luigi.santivetti@imgtec.com, robert.mazur@imgtec.com,
- matt.coster@imgtec.com, sarah.walker@imgtec.com,
- frank.binns@imgtec.com
-References: <20260930125057.1837788-1-gye976@gmail.com>
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
+ igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org,
+ Andi Shyti <andi.shyti@linux.intel.com>,
+ Krzysztof Karas <krzysztof.karas@intel.com>,
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
+ Krzysztof Niemiec <krzysztof.niemiec@intel.com>
+References: <20260924152443.829382-4-janusz.krzysztofik@linux.intel.com>
+ <20260924152443.829382-6-janusz.krzysztofik@linux.intel.com>
+ <7tycj7qmuxox256zwdz57uictfkg4fdufzvkfnwg3z4wrujnmd@oi6lpt7yhtz5>
+ <5fc31c9b0fd3e9fc469102b726174e165bec8161.camel@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260930125057.1837788-1-gye976@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5fc31c9b0fd3e9fc469102b726174e165bec8161.camel@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,257 +86,92 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Gyeyoung,
-On 2026-09-30 at 21:50:57 +0900, Gyeyoung Baek wrote:
-> Add pvr_vm_map, which tests DRM_IOCTL_PVR_VM_MAP and
-> DRM_IOCTL_PVR_VM_UNMAP directly.
+Hi Janusz,
+On 2026-09-25 at 11:47:41 +0200, Janusz Krzysztofik wrote:
+> Hi Zbyszek,
 > 
-> For each of the following three cases, test five scenarios and check
-> that the memory of the buffer objects is returned in each of them:
-> 1. Inside one 2MiB region
-> 2. Across a 2MiB boundary
-> 3. Across a 1GiB boundary
+> Thanks for looking at this.
 > 
-> - map-*: map a range and unmap it.
-> - replace-*: map a range that completely covers a smaller existing
->   mapping.
-> - remap-next-*: map over the left part of a mapping, which splits it.
-> - remap-prev-*: map over the right part of a mapping, which splits it.
-> - remap-both-*: map over the middle of a mapping, which splits it.
-> 
-> See the following document for the overlap cases:
-> https://docs.kernel.org/gpu/drm-mm.html#drm-gpuvm
-> 
-> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
-LGTM
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> On Fri, 2026-09-25 at 10:40 +0200, Zbigniew Kempczyński wrote:
+> > On Thu, Sep 24, 2026 at 05:24:18PM +0200, Janusz Krzysztofik wrote:
+> > > gem_close_race computed exec_addr/data_addr via
+> > > gem_detect_safe_start_offset() and gem_detect_safe_alignment()
+> > > whenever the kernel disallowed relocations, without checking ppgtt
+> > > mode. Those helpers exist solely to bootstrap intel_allocator and are
+> > > meaningless without full-ppgtt, since the kernel can't see the ranges
+> > > intel_allocator considers reserved and may hand them out to other
+> > > users, as already acknowledged by __intel_bb_create() which enforces
+> > > relocations and skips the allocator entirely in that case.
+> > > 
+> > > Require gem_uses_full_ppgtt() as well before enabling the softpin
+> > > path, mirroring __intel_bb_create()'s logic, and skip the probing
+> > > calls otherwise so the existing relocation fallback is used.
+> > > 
+> > > Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > Assisted-by: GitHub Copilot (Claude Sonnet 5)
+
+Applied, thanks!
+
 
 Regards,
 Kamil
 
-> ---
-> v2:
-> - Add (c) line
-> - Clean up includes
-> - Add IGT_TEST_DESCRIPTION()
-> - Link to v1: https://lore.kernel.org/all/20260926152341.783867-1-gye976@gmail.com/
+> > > ---
+> > >  tests/intel/gem_close_race.c | 19 ++++++++++++++-----
+> > >  1 file changed, 14 insertions(+), 5 deletions(-)
+> > > 
+> > > diff --git a/tests/intel/gem_close_race.c b/tests/intel/gem_close_race.c
+> > > index b2688774d7..ff2877f67e 100644
+> > > --- a/tests/intel/gem_close_race.c
+> > > +++ b/tests/intel/gem_close_race.c
+> > > @@ -348,11 +348,20 @@ int igt_main()
+> > >  
+> > >  		devid = intel_get_drm_devid(fd);
+> > >  		has_64bit_relocations = intel_gen(devid) >= 8;
+> > > -		has_softpin = !gem_has_relocations(fd);
+> > > -		exec_addr = gem_detect_safe_start_offset(fd);
+> > > -		data_addr = gem_detect_safe_alignment(fd);
+> > > -		exec_addr = max_t(exec_addr, exec_addr, data_addr);
+> > > -		data_addr += exec_addr;
+> > > +		/*
+> > > +		 * Without full-ppgtt the kernel can't see the ranges the
+> > > +		 * detected offsets are meant to reserve and may hand them
+> > > +		 * out to other users, so pinning at a detected offset isn't
+> > > +		 * meaningful; fall back to relocations in that case, same
+> > > +		 * as __intel_bb_create() does.
+> > > +		 */
+> > > +		has_softpin = !gem_has_relocations(fd) && gem_uses_full_ppgtt(fd);
+> > 
+> > Which platforms don't have relocations and are not using full ppgtt?
 > 
->  tests/imagination/meson.build  |   1 +
->  tests/imagination/pvr_vm_map.c | 193 +++++++++++++++++++++++++++++++++
->  2 files changed, 194 insertions(+)
->  create mode 100644 tests/imagination/pvr_vm_map.c
+> Correct, today all configurations without relocations also expose full
+> PPGTT, so the added check does not currently change runtime behavior.
+> However, the purpose of the check is not to distinguish existing platforms.
+> The probing helpers are conceptually valid only with full PPGTT, as they
+> rely on allocator-managed address space reservations being respected by the
+> kernel. Therefore I would prefer to keep the explicit gem_uses_full_ppgtt()
+> requirement to document that dependency and to keep the code aligned with
+> the logic already described in __intel_bb_create().  The condition is
+> intentionally expressing the semantic requirement of the helpers, not
+> distinguishing currently known hardware configurations.
 > 
-> diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
-> index 7ae8ddd0a..80d807c28 100644
-> --- a/tests/imagination/meson.build
-> +++ b/tests/imagination/meson.build
-> @@ -8,6 +8,7 @@ pvr_progs = [ 'pvr_dev_query',
->  	      'pvr_runtime_info',
->  	      'pvr_submit_jobs',
->  	      'pvr_vm_context',
-> +	      'pvr_vm_map',
->  	    ]
->  
->  pvr_deps = test_deps
-> diff --git a/tests/imagination/pvr_vm_map.c b/tests/imagination/pvr_vm_map.c
-> new file mode 100644
-> index 000000000..c74cc4f62
-> --- /dev/null
-> +++ b/tests/imagination/pvr_vm_map.c
-> @@ -0,0 +1,193 @@
-> +// SPDX-License-Identifier: GPL-2.0 or MIT
-> +/* Copyright (c) 2026 Gyeyoung Baek */
-> +
-> +#include <inttypes.h>
-> +#include <stddef.h>
-> +#include <stdint.h>
-> +#include <unistd.h>
-> +
-> +#include "igt.h"
-> +#include "igt_os.h"
-> +#include "igt_pvr.h"
-> +#include "igt_sizes.h"
-> +
-> +IGT_TEST_DESCRIPTION("Test that VM map, unmap and remap operations work");
-> +
-> +/*
-> + * vm_map/unmap/remap() are each run on a range of RANGE_PAGES pages (p0..p3),
-> + * placed in one of three ways. The drawings are not to scale.
-> + *
-> + * in-2m       Inside one 2MiB region. No boundary is crossed.
-> + *
-> + *             |<------------ 2MiB region ----------->|
-> + *             |           [p0|p1|p2|p3]              |
-> + *
-> + * cross-2m    Across a 2MiB boundary.
-> + *
-> + *             |<--- 2MiB region A --->|<--- 2MiB region B --->|
-> + *                            [p0|p1]|[p2|p3]
-> + *                                    ^ 2MiB boundary
-> + *
-> + * cross-1g    Across a 1GiB boundary, which is also a 2MiB boundary.
-> + *
-> + *             |<--- 1GiB region A --->|<--- 1GiB region B --->|
-> + *                            [p0|p1]|[p2|p3]
-> + *                                    ^ 1GiB boundary
-> + */
-> +
-> +#define RANGE_PAGES 4
-> +#define LEAK_BO_SIZE SZ_32M
-> +#define LEAK_THRESHOLD SZ_8M
-> +
-> +static uint64_t align_up(uint64_t value, uint64_t align)
-> +{
-> +	return (value + align - 1) & ~(align - 1);
-> +}
-> +
-> +static void assert_shmem_released(uint64_t baseline)
-> +{
-> +	uint64_t now = 0;
-> +
-> +	for (int i = 0; i < 20; i++) {
-> +		now = igt_get_meminfo("Shmem");
-> +		if (now < baseline + LEAK_THRESHOLD)
-> +			return;
-> +		usleep(100 * 1000);
-> +	}
-> +
-> +	igt_assert_f(false, "%" PRIu64 " bytes of shmem still held after close\n", now - baseline);
-> +}
-> +
-> +static void map_range(int fd, uint64_t addr, uint64_t size)
-> +{
-> +	const uint64_t baseline = igt_get_meminfo("Shmem");
-> +	const uint32_t vm_ctx = igt_pvr_ioctl_create_vm_context(fd, 0);
-> +	size_t bo_size = LEAK_BO_SIZE;
-> +	const uint32_t handle = igt_pvr_ioctl_create_bo(fd, &bo_size);
-> +
-> +	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle, addr, 0, size);
-> +	igt_pvr_ioctl_vm_unmap(fd, vm_ctx, addr, size);
-> +
-> +	gem_close(fd, handle);
-> +	igt_pvr_ioctl_destroy_vm_context(fd, vm_ctx, 0);
-> +
-> +	assert_shmem_released(baseline);
-> +}
-> +
-> +/*
-> + * A new mapping is mapped over an old one. The overlaps follow "DOC: Split and Merge" in
-> + * drivers/gpu/drm/drm_gpuvm.c: replace is case 14, remap-next 5, remap-prev 7, remap-both 11.
-> + */
-> +static void remap_range(int fd, uint64_t old_addr, uint64_t old_size,
-> +			uint64_t new_addr, uint64_t new_size)
-> +{
-> +	const uint64_t baseline = igt_get_meminfo("Shmem");
-> +	const uint32_t vm_ctx = igt_pvr_ioctl_create_vm_context(fd, 0);
-> +	const uint64_t old_end = old_addr + old_size;
-> +	const uint64_t new_end = new_addr + new_size;
-> +	size_t size_a = LEAK_BO_SIZE;
-> +	size_t size_b = new_size;
-> +	const uint32_t handle_a = igt_pvr_ioctl_create_bo(fd, &size_a);
-> +	const uint32_t handle_b = igt_pvr_ioctl_create_bo(fd, &size_b);
-> +
-> +	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle_a, old_addr, 0, old_size);
-> +	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle_b, new_addr, 0, new_size);
-> +
-> +	if (new_addr > old_addr)
-> +		igt_pvr_ioctl_vm_unmap(fd, vm_ctx, old_addr, new_addr - old_addr);
-> +	igt_pvr_ioctl_vm_unmap(fd, vm_ctx, new_addr, new_size);
-> +	if (new_end < old_end)
-> +		igt_pvr_ioctl_vm_unmap(fd, vm_ctx, new_end, old_end - new_end);
-> +
-> +	gem_close(fd, handle_a);
-> +	gem_close(fd, handle_b);
-> +	igt_pvr_ioctl_destroy_vm_context(fd, vm_ctx, 0);
-> +
-> +	assert_shmem_released(baseline);
-> +}
-> +
-> +struct place {
-> +	const char *name;
-> +	uint64_t addr;
-> +};
-> +
-> +int igt_main()
-> +{
-> +	struct place places[] = { { "in-2m", 0 }, { "cross-2m", 0 }, { "cross-1g", 0 } };
-> +	struct drm_pvr_heap heap;
-> +	uint64_t size;
-> +	int fd;
-> +
-> +	igt_fixture()
-> +	{
-> +		fd = drm_open_driver(DRIVER_POWERVR);
-> +		heap = igt_pvr_find_general_heap(fd);
-> +
-> +		size = RANGE_PAGES * sysconf(_SC_PAGESIZE);
-> +		places[0].addr = align_up(heap.base, SZ_2M) + SZ_1M;
-> +		places[1].addr = align_up(heap.base + 1, SZ_2M) - size / 2;
-> +		places[2].addr = align_up(heap.base + 1, SZ_1G) - size / 2;
-> +
-> +		igt_require(places[2].addr + size <= heap.base + heap.size);
-> +	}
-> +
-> +	for (size_t i = 0; i < ARRAY_SIZE(places); i++) {
-> +		const char *name = places[i].name;
-> +		const uint64_t addr = places[i].addr;
-> +
-> +		igt_describe_f("A range can be mapped and unmapped, and the page tables it needs are available (%s)",
-> +			       name);
-> +		igt_subtest_f("map-%s", name)
-> +		{
-> +			/*
-> +			 * map         |nnnnnnnn|    a range is mapped, then unmapped
-> +			 */
-> +			map_range(fd, addr, size);
-> +		}
-> +
-> +		igt_describe_f("A mapping that covers an old one replaces it and leaves nothing of it behind (%s)",
-> +			       name);
-> +		igt_subtest_f("replace-%s", name)
-> +		{
-> +			/*
-> +			 * replace     |  oooo  |    o = old mapping, n = new mapping
-> +			 *             |nnnnnnnn|    nothing is left of the old one
-> +			 */
-> +			remap_range(fd, addr + size / 4, size / 2, addr, size);
-> +		}
-> +
-> +		igt_describe_f("Mapping over the left part of a mapping leaves its right part, and the original "
-> +			       "buffer object is released once everything is closed (%s)", name);
-> +		igt_subtest_f("remap-next-%s", name)
-> +		{
-> +			/*
-> +			 * remap-next  |oooooooo|    the right part of the old mapping is left
-> +			 *             |nnnn    |
-> +			 */
-> +			remap_range(fd, addr, size, addr, size / 2);
-> +		}
-> +
-> +		igt_describe_f("Mapping over the right part of a mapping leaves its left part, and the original "
-> +			       "buffer object is released once everything is closed (%s)", name);
-> +		igt_subtest_f("remap-prev-%s", name)
-> +		{
-> +			/*
-> +			 * remap-prev  |oooooooo|    the left part of the old mapping is left
-> +			 *             |    nnnn|
-> +			 */
-> +			remap_range(fd, addr, size, addr + size / 2, size / 2);
-> +		}
-> +
-> +		igt_describe_f("Mapping over the middle of a mapping leaves its left and right parts, and the "
-> +			       "original buffer object is released once everything is closed (%s)",
-> +			       name);
-> +		igt_subtest_f("remap-both-%s", name)
-> +		{
-> +			/*
-> +			 * remap-both  |oooooooo|    left and right parts of the old one are left
-> +			 *             |   nn   |
-> +			 */
-> +			remap_range(fd, addr, size, addr + size / 2, size / 4);
-> +		}
-> +	}
-> +}
-> -- 
-> 2.43.0
+> Thanks,
+> Janusz
 > 
+> > 
+> > --
+> > Zbigniew
+> > 
+> > > +		if (has_softpin) {
+> > > +			exec_addr = gem_detect_safe_start_offset(fd);
+> > > +			data_addr = gem_detect_safe_alignment(fd);
+> > > +			exec_addr = max_t(exec_addr, exec_addr, data_addr);
+> > > +			data_addr += exec_addr;
+> > > +		}
+> > >  
+> > >  		gpu_count = igt_device_filter_count();
+> > >  
+> > > -- 
+> > > 2.55.0
+> > > 
