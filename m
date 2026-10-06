@@ -4,172 +4,160 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0821DCA5FF0
-	for <igt-dev@archiver.kernel.org>; Tue,  6 Oct 2026 09:56:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BD826CA5FED
+	for <igt-dev@archiver.kernel.org>; Tue,  6 Oct 2026 10:03:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A89BB10E2A3;
-	Tue,  6 Oct 2026 09:56:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6257610F285;
+	Tue,  6 Oct 2026 10:03:58 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=imgtec.com header.i=@imgtec.com header.b="PBN3uwnA";
-	dkim=pass (1024-bit key; unprotected) header.d=IMGTecCRM.onmicrosoft.com header.i=@IMGTecCRM.onmicrosoft.com header.b="MaNdnEbG";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m5bO1yks";
 	dkim-atps=neutral
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
- [185.132.180.163])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CD15310E2A3;
- Tue,  6 Oct 2026 09:55:33 +0000 (UTC)
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
- by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 6966csDa1414851; Tue, 6 Oct 2026 10:55:28 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
- :content-id:content-transfer-encoding:content-type:date:from
- :in-reply-to:message-id:mime-version:references:subject:to; s=
- dk201812; bh=/41uqClsr/s0Uhg87q5p3mnHSBEq+8IW6jaASy4U4zA=; b=PBN
- 3uwnAOFDT6cnRIzL3MRb0VO2Oh+3ZOep51xdZRBd767PtulTKvHe5gGphLnwY4WZ
- UqP9TQ3/IRv49HbKLZAooThKxxQd/cwR+nQ1Ze3AoEgA3+i9xTwB3/+rEX0exiZc
- NgIJ9dM2lAG6NQn/G3+lGjA+mXPLXW09DfylrgpUVrHNn9W6B8B/CZuIesdUM5BX
- /lofVlJE3/4z0aByf/fVTbsQyQZS7rzAruRZk/5nM341qcy6IHopeORWpry8C1KD
- 6Cexxe5kBrQe2qREcnCFUmpkXgfenjD7dGbuuTe64U/RJ4g174OXa0tTGyHj2p6N
- kMmqS/S8W/eC9yH6zyg==
-Received: from lo0p265cu003.outbound.protection.outlook.com
- (mail-uksouthazon11022114.outbound.protection.outlook.com [52.101.96.114])
- by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4h4brugsvn-1
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Tue, 06 Oct 2026 10:55:28 +0100 (BST)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7AC6810E29A
+ for <igt-dev@lists.freedesktop.org>; Tue,  6 Oct 2026 10:03:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791280993; x=1822816993;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:mime-version;
+ bh=5gZXCx3A/kLpyBl29poD7N7mQvsvTr+zxs8yIZeUQI0=;
+ b=m5bO1yksa5oFb+i+IretLVlKDzAvswF32YF01OglLjBqwCzLZY+nRjcB
+ gACVR9rzdbzM80gGjJ5us/J6LmfpBpV079e42VYAYIEaTT0bXIsBW8DJe
+ ERAL2j1dxQD9PTGuncII6FxkP6ouVaOAUuuty1G4QLYpumPJcHays/2l1
+ 0yGvHYJbkFdMwCb0IFBPyO/X4tD5axdOrkn6T+K+hvyU8xcV9xwRvXTaG
+ zM2VCUFpmKTBFsldG1CCFO38gdgdCIC31mBUojuMzKkjxgjk23gSkgYut
+ 5olAz64o+48RjdOpNnx+d3lfUrnJdH2GqqL2AOgD2QQV+13MxJzXtSS0X A==;
+X-CSE-ConnectionGUID: 4Mp6AU7BS0yBAGQOAVG0OA==
+X-CSE-MsgGUID: bPQtv885S3+XClCS58mAsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11926"; a="108339299"
+X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
+ d="scan'208,217";a="108339299"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Oct 2026 03:03:11 -0700
+X-CSE-ConnectionGUID: 86uJbP9LQIKFmaZruc8CNA==
+X-CSE-MsgGUID: DfA8qFA/RHSDKgOs8d4IBQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,143,1787036400"; 
+ d="scan'208,217";a="280355433"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Oct 2026 03:03:11 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 03:03:10 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Tue, 6 Oct 2026 03:03:10 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.41) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 6 Oct 2026 03:03:10 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E5tPIo5YZmwjRYjVxs6ROEFiaNVWwSXvfR6e84oQWAXg/b04oYAgdDTbkq4aaIA7f/sJIEkcbO1ZaSciB/Qf+MyDEPXKcxj5MHXNCP3dJfs1mvjHjDo6woks8z/z2Xn08W18cADNXcb6WgZse+gEVExIjgYJltKGMrPWLPp/wBqAcaZ1ZIrRC1+lDWre5kUIw00nhxuUNMBqMnAxxrPBFG7JW70J4tltyKVOHM0vrU4PVXlbte1Kv9iDe3gOEkL+DQs2U1eErwFupRQF9o8vs7f+0Ml36sVFF7PXyHWyQAIRfeH350lk5WP+wcsuKmCG8xFJ56HMTK42KoTy41Fi8A==
+ b=E9GYdwnr3TK+XKh2WIOwLd0eoTmkb8eQNnAyEEif/ahiH6JLwlDRj5qmA7x6rG5mBDcKcyrIOet+izK97yNSQW8gYP0UBUBinKqDPyIy8Ei5TqndNUBS2VK12L40rtatjG2BH8PAoHRvQZEORbgTnvkSqaLEfUU2sI3bjQ+Yr8aVkeXd/E2LMwi31k658LIpDW7QQRCuQj6BI13RZXngG/RCkno/knh8jKn7RviIsKpCt+/SvNJUvdNRjAHaAJv2zOhkAvkgNAse6vzlBQaDQwiLQo44XiBtR7icrpkkN06y/9HmIxJNiUpJJU5XbfyMu8Rju3e8hrZvWPjc5rYxkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/41uqClsr/s0Uhg87q5p3mnHSBEq+8IW6jaASy4U4zA=;
- b=nHsDuIqdhdDfIHNwsL+jceekEzHKlFacjgSbUcfCnteUQocORb6CDLzTCPiAWPx8BvsBu6ELMNx1dg7g+coXv6mZVIEThryNDxK0sG04tLEtaGcGgxbFfzCm7RbQYcVixqrq8na/mx66wmHoWKDMW08VaDe/jaYDH91YCPBSmGbleWknLzKtipWLdLSYopo+8U8RjPI7sptPXLYZjmigEeHTANRLmCetGSGJebGuIqToRHQzViIlAzec44+JYzU7LrTXMiRHgS9LPXAI9PgxJy6tkW79Qv3nN2o+6AZT6qkQb7HBMQnn3NKasSRftLsByRd5MGCFlaHw8ftHkf3baw==
+ bh=t1to7hqC2ntmcJSXiz1VGnftwruvjVchv7SobYEf+rU=;
+ b=WOv3cqN/xU6BR87ulNGvdzprYiGnF5TAvmjWQFER7TnKQaic9qxb2QmVkpUT8eBNJGwpEkyc6iuwfAM6uTylCmGeGThbTCvaCvVxvT/SeI9LVQRXoTbEUnND5EM7tBr18cQS98t9058/3pN7Bcp0pW2qUO6W3yBv4Ye/KOsaf+nwlESBHvg5LlMes77lChGFg7MaJHb6E7aZtpeoydTn/vVUddqLA97Qic5loNeg4fHTDqjslyYck2elD8kktjJJsJzcRP4kc2bS+RF4R0tVXvZPWqbEd/RUArun6ehkAEvRIQFrhi8FB6Jy4QZm39YfJHnCwhtgmfXGn+AkfC/omA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=imgtec.com; dmarc=pass action=none header.from=imgtec.com;
- dkim=pass header.d=imgtec.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=IMGTecCRM.onmicrosoft.com; s=selector2-IMGTecCRM-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/41uqClsr/s0Uhg87q5p3mnHSBEq+8IW6jaASy4U4zA=;
- b=MaNdnEbGdUfaGSCDXeTzuu30aImNjAQbauJstT0i94F44Z95cBsw9+/q1IHqnl7lBxzsp/JKWYyfKxaQHtZkXwED4x2gxjByroyi/7TmLkSVGN5a8c72s88QJnOxMC9+F7jZNwdhTtpO3joEydia6a0ujrez+/RiqKekkqLjmrQ=
-Received: from LOCP265MB8661.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:4b5::14)
- by CW1P265MB8667.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:27e::15)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.21; Tue, 6 Oct
- 2026 09:55:26 +0000
-Received: from LOCP265MB8661.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6b99:94f7:a14f:a722]) by LOCP265MB8661.GBRP265.PROD.OUTLOOK.COM
- ([fe80::6b99:94f7:a14f:a722%3]) with mapi id 15.21.0472.016; Tue, 6 Oct 2026
- 09:55:25 +0000
-From: Brajesh Gupta <Brajesh.Gupta@imgtec.com>
-To: "gye976@gmail.com" <gye976@gmail.com>, "igt-dev@lists.freedesktop.org"
- <igt-dev@lists.freedesktop.org>
-CC: Luigi Santivetti <Luigi.Santivetti@imgtec.com>, Robert Mazur
- <Robert.Mazur@imgtec.com>,
- "matt.coster@imgtec.com" <matt.coster@imgtec.com>,
- "imagination@lists.freedesktop.org" <imagination@lists.freedesktop.org>,
- Frank Binns <Frank.Binns@imgtec.com>, "kamil.konieczny@linux.intel.com"
- <kamil.konieczny@linux.intel.com>, "sarah.walker@imgtec.com"
- <sarah.walker@imgtec.com>, Alessio Belle <Alessio.Belle@imgtec.com>
-Subject: Re: [PATCH i-g-t v2] tests/imagination: Add VM map and remap tests
-Thread-Topic: [PATCH i-g-t v2] tests/imagination: Add VM map and remap tests
-Thread-Index: AQHdUQEf+JoPcFV5qEiRFs7KcbfSw7bwT5oA
-Date: Tue, 6 Oct 2026 09:55:25 +0000
-Message-ID: <c411561205e58417c5bbdc51c4a520b84023b384.camel@imgtec.com>
-References: <20260930125057.1837788-1-gye976@gmail.com>
-In-Reply-To: <20260930125057.1837788-1-gye976@gmail.com>
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from CH0PR11MB5249.namprd11.prod.outlook.com (2603:10b6:610:e0::17)
+ by IA3PPF8627DB357.namprd11.prod.outlook.com
+ (2603:10b6:20f:fc04::c9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.18; Tue, 6 Oct
+ 2026 10:03:08 +0000
+Received: from CH0PR11MB5249.namprd11.prod.outlook.com
+ ([fe80::a665:5444:d558:23c3]) by CH0PR11MB5249.namprd11.prod.outlook.com
+ ([fe80::a665:5444:d558:23c3%6]) with mapi id 15.21.0472.015; Tue, 6 Oct 2026
+ 10:03:08 +0000
+From: "Poosa, Karthik" <karthik.poosa@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, "Patil, Shivtej Eknath"
+ <shivtej.eknath.patil@intel.com>
+CC: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>,
+ "Konieczny, Kamil" <kamil.konieczny@intel.com>, "Sharma, Nishit"
+ <nishit.sharma@intel.com>, "Balasubramanyam, Smitha"
+ <smitha.balasubramanyam@intel.com>, "Ramadeva, Dwarakanath"
+ <dwarakanath.ramadeva@intel.com>, "Gupta, Anshuman"
+ <anshuman.gupta@intel.com>
+Subject: Re: [PATCH v8 2/3] tests/intel/xe_pm: add coverage for xe_device_sysfs
+Thread-Topic: [PATCH v8 2/3] tests/intel/xe_pm: add coverage for
+ xe_device_sysfs
+Thread-Index: AQHdUWpP6bEVK0qUT0aKcCTq0RGbVrbohzIAgAfIKG4=
+Date: Tue, 6 Oct 2026 10:03:08 +0000
+Message-ID: <CH0PR11MB5249CE0D8F980246C56ECBA6E5952@CH0PR11MB5249.namprd11.prod.outlook.com>
+References: <20261001055902.5430-1-shivtej.eknath.patil@intel.com>
+ <20261001055902.5430-3-shivtej.eknath.patil@intel.com>
+ <20261001110714.3prjjfvzgsu4nyr2@kamilkon-DESK.igk.intel.com>
+In-Reply-To: <20261001110714.3prjjfvzgsu4nyr2@kamilkon-DESK.igk.intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
+msip_labels: 
 authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=imgtec.com;
+ header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LOCP265MB8661:EE_|CW1P265MB8667:EE_
-x-ms-office365-filtering-correlation-id: 29c9775c-5ddf-45ad-a8e5-08df238ff210
+x-ms-traffictypediagnostic: CH0PR11MB5249:EE_|IA3PPF8627DB357:EE_
+x-ms-office365-filtering-correlation-id: 2e1dec80-1143-4e63-a9ff-08df23910595
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|366016|376014|23010399003|6133799003|18002099003|22082099003|10067099003|38070700021|5023799004|56012099006;
-x-microsoft-antispam-message-info: 4KRH5ekMdtlGrAGiPHhxYe2mMGgfctYvvBYDY0rx3OP7tCNGwbUc7BJlqicME3hReUwSia2F4ceOhDRX7LEbG0ZyOWjgfcxawuKiEXcMIA1jVIkr1VwfASy59lmH0hVPxdNVRLCeZ33+ZENx9/JdtcsB35BjeImZz88cdoZbRvxdSn+h2NrMZ0U7G1FDTS0WX2z7yAFCWlYAW+w03ys3JfqbRogcDp02UpxMNe2HvW/Zn76pyxYE0LeThoH+naeK2FWt9GWkDw4mId7muQnTCeRgjeKBlxqN37sqr3BqCQSRpq9b9CFVIzd2YBnyoUEGWOTQHRF1x09ahpu+QePpB0FF/H0dKB3U/gV2CzxevxGPBsQZDiNK1Fz6lV/rPpnIGgaFBDUMX+XvCFXS+tfCm4gwVe+aNduAYFQ4eugYTW4NMv/0glVGTCB0FjVeyRWJuXsD3o4GmTY8wmevPyT/aGsR86BAxkh0/IniTXfWfD/SQCb1FYvV/qHmjp36UTSR1zn55HpTk5bOdDmGQ/pmZZSp+S70jRnX5T3X24R/+ugrjuDTrgRafBCeAqS8v50ibzwj3Sua+z3YPq3AXjVkepRaxNoOBAHasS6ZEm7AsSxpsV97rYwt6sUGOlFce3sI4tUsvSKK3zp4WL2Jp57qauhYLD9kdKPJbvjd6Qcvoe0=
+ ARA:13230040|366016|1800799024|23010399003|376014|22082099003|18002099003|38070700021|4143699003|56012099006|6133799003|10067099003|5023799004|8096899003|11063799006;
+x-microsoft-antispam-message-info: rvCrjnOkn3Sv8PvoKJT8FPOQfZ5Uzfx805CPj4z2xXHPrLl4F4xRA+3wkUB3wo97F17EDvV2Bj7vpX6/fs0/EJcN3UoKdjMKGdy1++xoxBP9BoDSuRMRWxlpAnjT7j/8ZW34u+vuVhkt1KGgwtUlKcwefIsHm0z5CrpkcRzfpLNbV9/UfoSlS1MJbxdw+yk/Jmd4cskxQEBHaxQDP2M1//S5RVm40kJKfcz7iEULaOzZGtfFEbH6Nki+iHDHCM6hdJ6H9i8TuI3gh4DadTDfbmE0I62lvUQc4E0MH6iK+zLKydkLRqpmj7Ggmcw6gb4A6KSQXZ4tVJ6Db2bkZPxzAQ8crFA+g8jvb1mjsZ6DOhgi8sJzFPzuy2z3XeNYQ1QE3ddIwlS5nAOaDKP1zLLqIzsVSm8pMeGLPTk5n554Pt9H07/hThc9t42IdUKbDsm9T6z/t4XalpXxhTnzlyoE6KWaHqIkfVdjmEJLIACafzLVDDgWe4UrYNsEo17pP7yNZziYkPWZJXJ7m7anzsoYjyZK5Nv7zaISHVyK++ZwBAJd/c8OIb8ZttaHZ6iBv+AKoC6WFpPG0wQasEocdYjHvb10+w3eWmOT/FAXyKTGYkdYwdiWTqdYe0eXoAO/Up+2gx2PPBlVyioi4Qp+QTZpIpk8wdrXZ+xpCWQpXMaIQ+0iFAz8NBvgloiViqwLwJBjjdp6tOZ8stzHVxUqPIcuwatfT5rFD9knMvWcl0es9Ic=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LOCP265MB8661.GBRP265.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(6133799003)(18002099003)(22082099003)(10067099003)(38070700021)(5023799004)(56012099006);
- DIR:OUT; SFP:1102; 
+ IPV:NLI; SFV:NSPM; H:CH0PR11MB5249.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(22082099003)(18002099003)(38070700021)(4143699003)(56012099006)(6133799003)(10067099003)(5023799004)(8096899003)(11063799006);
+ DIR:OUT; SFP:1101; 
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NCtrT2haQjNrcE0rUFdjaTVsazExR2phT2xFZFR0Z0lLdWNObkZYclN1YUdr?=
- =?utf-8?B?b0lIWk9MZDlxajB4UjBWMkNGRCtqSnJmTkZ1Y29sK0ZoSkFQcmlGaFcxeEM4?=
- =?utf-8?B?RkUrR0Z3LzRML2V6ckhhZ1FWNVVmTlBzZDdGcnFEaGcvWEp1Q2djbUUvRjJ6?=
- =?utf-8?B?U0duTEFsL01RT2Z6RDM4S1dJSm1XMTRpcUg1MmNIZHp5c1pMcS9VYjZRM3Jz?=
- =?utf-8?B?cE81YmFTTWg1QkdrbXdiQ1IrTDZDRVo0dG5PYlhsTCtkMG1ibHpxVmd2R25E?=
- =?utf-8?B?bzA4WGpxR2NzSE1VL2RaUFExWVJ6VVpacmVlNnZxdTNTOVpELzE5cEdQWnVC?=
- =?utf-8?B?MkozL3JGZWF5UklJdWtmbVpkQmN2ZnR1TGFydE1DU0xwZC9SekRuMitPNXRX?=
- =?utf-8?B?U3E0NERWRG1jTmUrMWZVMnJWRURyVmJQNEhMbWd1SXpIcGRmclJma3VKdmJB?=
- =?utf-8?B?LzZZRU9xOFYyc0FoT2lLbTBkRytMcTZ6dDNBWjdNalJERnRjS3BlZmx1WER5?=
- =?utf-8?B?SEpFWVZiMmVMTGZjOTUwaXRLZVBCKytlcTljLzVacnM2eDlwWW5iQldYL3JS?=
- =?utf-8?B?QVQwbjJ0cVppM3dBYnU1elhwQWV0WFhQTGxvSzdZNnh5QnJ1Y2Z6UjA4Z2NX?=
- =?utf-8?B?OGsvdTBXcTBoT3pNZFF3dlBBNzFRZVp6dWZkWjd2UjR4NVdvUWh4SlJYTjlV?=
- =?utf-8?B?NFJxNU5DTTAxOHZHUDVIdkdVU2loVXEyQzZMUDd4OHpxakxBOVdiL3A5eVNx?=
- =?utf-8?B?ZTBYZ1FzZGRvdnRDNUR2SG40YUJmQUtoWlhtM2tMOWZ4VWcrTHNuV0F0Zk4z?=
- =?utf-8?B?Z2l6UkZvdkFWbE5EZzVYRGYwTDFQSnJwYXpiZGwvQW1nQVRTS3hjMWFjMmpm?=
- =?utf-8?B?RCtMdzJZRXhTa1ZRU3hKS016Y2tBYmVzcXpra0xiR3FISUNTQ2JHOXdvdlla?=
- =?utf-8?B?N1BLOHpzM09uZ3BlMkw3b1ZnRHV5WmRLdkh5YVArRlVJZDNSc3QreURuZzRQ?=
- =?utf-8?B?YUFWOFRiNUtGc2lPVHlFRU5IbXQvRmI0NSs2UEdNYkZJdVJFcjVwbmFhSUFD?=
- =?utf-8?B?VkgrU2taTzY3WldvSmg3SG0rcWZEVEJTOGVyanRuVnZhdVNrUkMrY3RjUUpC?=
- =?utf-8?B?ZytjdjcrNDJIUVdRaTcwUjd0UndWM1IrQUVxYy9jUmt1U014Q3ZqWjJpRFl3?=
- =?utf-8?B?alBNUnRSVU0rK01LK1phS0ZiQTU3Mlhab1M1RHBjbTkyQnNUejJaUmJqRUsr?=
- =?utf-8?B?L3dGU3FCSWxwU0M3VWttT3NIeS9aOTErZFh4ZENReW1ERnB6YkpwdU1tL3B5?=
- =?utf-8?B?MFJhRENnczFHcWxNenhRMS9aS29MaFNCOUU2Z1VWSFl5ZjBtUGxlWmhkYm9q?=
- =?utf-8?B?RnhvTzdGR0d3ZXNpb0F6cFMzZVFmTnlmaENjNmIvckZkalU3VFhVcW5IalNP?=
- =?utf-8?B?ZlZJN0VweEZWTzVvWXpvaW16V3dOWDhvWUk5VlZhWTc0eFowTEN6dGNWdVBH?=
- =?utf-8?B?NU9xUzh1S0grTnJTSWVOMDBUVG40S01MWXExaGZXUXBLQU5ualFkOUJPeWNp?=
- =?utf-8?B?OWtiejd1SUlHZmhRRnBDNktPYUtCcmFUSkpFakJERVhGUTc4RjVwaHQ4V3Jm?=
- =?utf-8?B?Q1RweW5PL2F5YVR1TTFpZllhZUV4b20zL3U4blU4MXN2WFFBSUIxWlJoOGt0?=
- =?utf-8?B?T0I1dkxrVG5lTndRNXdzVXMzOXd0eXFCdm1zZ3l6MnJ2YW1vN2ZHODBmVGpX?=
- =?utf-8?B?WnRiaHlwY0lTK2RVaGtsWFVTVlhXaGdrS2NsMjZPQ0VYbUJicnMzWVNZSjNz?=
- =?utf-8?B?RkQyRTJZNk5TZlhsNUdIUmpqckhKU3plOGwxWmZGdXJhWTViRXFIdEZ6S2tF?=
- =?utf-8?B?UzRMbnV6OU1XMGtMNXZkMEVnVnhtSDlhM2NIRnhmeFpRMjZuZnRoYjVpSFgz?=
- =?utf-8?B?TEJCd0R3YjFRYlZLQ0RmSEJEM3VvckRUeGZ5M0MvZEUvSCtPa1ZpdmYzRFh1?=
- =?utf-8?B?MGFkbGFYeEk1Q3M3SlhRaEFmTnpRZ3ZCRjNWWVhtRG9sN0xnN3gzd2NrZmhl?=
- =?utf-8?B?alZmTVcrZ1phSG9vTU5SRzJYeVdRWjJjRGZ2UHBybG1ONGQ5SklTb1VuN2hB?=
- =?utf-8?B?V2M0TjU0RWM2ZzRlOUlzK2h4WlhpVks0cEJ6ZlNLVHdFbEdUalh6ZEhpY2ww?=
- =?utf-8?B?THJJNlBNRjQvbWZTN2NobW42Zk5tMGNWWjI3alFRMFJucnBZVjdaZHBQNUM4?=
- =?utf-8?B?VVZZdUpLSGtXK1M0dHRHYk5xQ1lHa2JONnl1RC81V01EOWEvaW94Tk52WUlQ?=
- =?utf-8?B?Vmp0b1AvVEtBU05acHZHejZ5ZkZwMGJURGVXV3p2aHZ5NkViaTFQN3ArUVZ5?=
- =?utf-8?Q?ZbxBdWUr3vm/qkuI=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9D3D150C53D74446AA0C7C53460451E6@GBRP265.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?oqhggOQ7jmJ720cGYDuMjfolNFoxiJc8bUKpsZQst7eXyeQuwEryfLGqQl?=
+ =?iso-8859-1?Q?4BtaMrAepOlciKb0vSPcJBncrRUVDAVlfgphMfc3NgVKZglZx5m49XaivG?=
+ =?iso-8859-1?Q?gFyF3b4TzV+YLEt/MflJyb22tntVRqrJ2Nwihlw297ijqp7u6507+veP2D?=
+ =?iso-8859-1?Q?4fAIi37+RqOA3TJ8aWVsZ88gqLNZy04+Fnat97IPBNenODNWDH9nnTkK7b?=
+ =?iso-8859-1?Q?UJBu6+mOqiYa7keqth86M2zv5lC0nw6RjtSlf7a/c7oCUVnYR+777y285v?=
+ =?iso-8859-1?Q?BVPZHU6DG7WYz9B1Vwv2mCGQY4Nb9uLO6zEHL4Cl1rssqH3K6eU+IndqpL?=
+ =?iso-8859-1?Q?lX113Dd/39vbQAT5Ac7mK5sAL7f+pAtHI5NJu9UG8bKlKmQmW6kZEvOYL5?=
+ =?iso-8859-1?Q?SXN5vx6TfhxNzW8nwNB8aiToJ4VYJNhypaz7DHnd2vKEbIFBMlUQwjVRV7?=
+ =?iso-8859-1?Q?Ag+Ta6udAEbm2fdo2PljQUFqYUSFW9JwHHh3KntH1rdu8qyW5Cj46sZHXJ?=
+ =?iso-8859-1?Q?DknVO1ODhP34W+zI0WDlMOFc2Ght+QRrD7ZbDBf4h+8mtMIM6WdcsV1FzN?=
+ =?iso-8859-1?Q?87Hx408tQFF07Gkux8hAAtAlSdVcNZxURpgZy2bvReXpV6pFG82QrDvSlH?=
+ =?iso-8859-1?Q?fafMSUixrUczkk3qTN3b+DhtwtXEzDsPXzP3S76JC5UAWkGA/rg8laj38k?=
+ =?iso-8859-1?Q?Fx8NV5i1BPU15SAG131NJ0u9FdmpSNLRKCA/pzjEaNdy61YogUCAbJsIpV?=
+ =?iso-8859-1?Q?/DMQ8I/SUfwR2caZJj58/W1ZmcoFu4WVlN6ILCevQqSyCweWzZUPccQMz3?=
+ =?iso-8859-1?Q?71zRabJ94jCAK33zxGIXsOwPIyRomhu6BeNb1+39D6yl7x2JLzztyGpUrX?=
+ =?iso-8859-1?Q?W/PFG42FmnMdIrOe8XZYzOMHi+QtPvC/K+LDgrhpMzvhDRcUyYRKtVUWaC?=
+ =?iso-8859-1?Q?Bdj5sxRan5+KHoHY9yJHJlBXAfLT1SVBzuEJa7gpzcA1nI2QuyAnVP22xx?=
+ =?iso-8859-1?Q?6ZuLZ8fCsyGlB+BZrIvk8OJPGsesOWeIr/E4A+pOh3t/TqdWYcBBVu3UoV?=
+ =?iso-8859-1?Q?yY1NTgxX9PEpIWV42/uz70Q/dh5oO6TWx/LM73TZVoWVy5CZKjjOYMd9aq?=
+ =?iso-8859-1?Q?wd73LyNIwtAEdPqOgG6gdNC5VbakiULM/pctdUsX7owABs4UC7fw1nBqTf?=
+ =?iso-8859-1?Q?W+CV7CU39MQ70X0RYFu2dRUZNFwmzB42kVh+ed9ScpDj8qxmQPIy1D7Afg?=
+ =?iso-8859-1?Q?+ZXtgXvlKHmykMvGNxPZUUw6SbIUn08LOaSK2+0fXBIIQHSF/LwDIKqYNz?=
+ =?iso-8859-1?Q?AbFTGCKTXWcgH6KgRzJOtyXEqbSNWjyEqil+LxWn+mwDptmhh5a2nt9+2l?=
+ =?iso-8859-1?Q?KuxFqoIdaQ3XOcRReTrL0GlL9raEtKWJ7fuQHP5vwdvvjuTKruxQYpqxm5?=
+ =?iso-8859-1?Q?ALD6F37v1EisVO3yRIYMU5WIhQ0StJ8/63onzMcfr8HjSJZSUPJZYtNFKO?=
+ =?iso-8859-1?Q?clS+lq+atAiF37JBu7I/RJLoxaqP2I6hee/WXIeC/FliPD6jf71+7YsvdU?=
+ =?iso-8859-1?Q?71N3TQYWv/xHApNP+HGwSBCpaGn562kkND+YDTxmpMJdGewUT69J9eSiYS?=
+ =?iso-8859-1?Q?ivbOLfLuR5UluLyOTdWHZf7jcK3/T6uBAW28bvNd8l3BVae8ZnWhUzKwqD?=
+ =?iso-8859-1?Q?33YpySLKQ0KqkpbSRiP0R/FF9ys5rkKdMLN7BuwuPG91FLfxfCBMD6gNA/?=
+ =?iso-8859-1?Q?Wd8qlgmvTIiDW6ZGg8gdbeValjN7+9JYlH0HQQ+wNzFVpP0zHwJYUpwpi7?=
+ =?iso-8859-1?Q?Kh8RvXVCVg=3D=3D?=
+Content-Type: multipart/alternative;
+ boundary="_000_CH0PR11MB5249CE0D8F980246C56ECBA6E5952CH0PR11MB5249namp_"
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: vMTeRUhyNEA6NkevZJOfdEInfLpONaaN/cfub8MrFjBJO5Fk0CxZuIG5Sb3xZ3UXpZv30tFSrz1RTtcEzEethOgIS7+hTt0JIEjpEs6N1HnV79T9YwX26FI+jI8c8wNZZ7+9j/bbSea5zDR4H+JR1LViSFeEQMnrDfeK0NKySUbEk+Wf4vi62UtwjtGpFmBq5I2nL+bF3iI9NMG5tNmRYBzYayv6uhrqN1FO7uOp1EmZyBV77X7r9zDRi6KEhcrw01GRNxTA1Eh+chkpkfocP8zbfTvtEzWMMGfuWofYfTv1XpBoRK9CI1wrPr2FAu3N3raXgYE+Mgk/jJ1nGBadsA==
-X-OriginatorOrg: imgtec.com
+X-Exchange-RoutingPolicyChecked: VkQOpfMi24pL5e6Q1gIWDfKyjcPIi4g6jlvl3/hW14wp6fsNyI4v4W1q0FU1xLZQjtVMAd8CZtbBbf/Epoh+Q8E/72gE8PekpHsVV5IrHc27BThQ3TErXz9Aaxb/QynaD1ycmtO+D5tFgvd06x9Cdfh+eHLLAPc8CXexw/566eNScHHm4v3v0XUEi0d5BkrNSB+lT6fHkhs95I5c7y4KtfDEn/Y5x2ft96+yaN/nkyMHO7Aq2uCTZSrpI1OUBSfqO8cIQq7oTVKAkJSovgJdq9aZ3Jto4SeyclNgpce+cM77kO226ilK6CD7cl90WnyNdJjDe1HCV0uPbjtHeUXmwg==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LOCP265MB8661.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 29c9775c-5ddf-45ad-a8e5-08df238ff210
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Oct 2026 09:55:25.7093 (UTC)
+X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB5249.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2e1dec80-1143-4e63-a9ff-08df23910595
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Oct 2026 10:03:08.0778 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0d5fd8bb-e8c2-4e0a-8dd5-2c264f7140fe
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: nWk7/aoG2aA1Q4ISv2mLZil/T28aHVtY+jaNSMTUZecFU28RiqGgU8hL3yBnhZTGIynTOW+H25txQsUksAtN33smAXMrkFk3cXNZNZPfS9g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CW1P265MB8667
-X-Authority-Analysis: v=2.4 cv=FNOOVOos c=1 sm=1 tr=0 ts=6ac4c590 cx=c_pps
- a=673ql/e48/6XQeJdsZqaiw==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=660iZSQnnn4A:10 a=NgoYpvdbvlAA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22 a=VwQbUJbxAAAA:8
- a=pGLkceISAAAA:8 a=r_1tXGB3AAAA:8 a=U0rydj4kql9-lcJAFfAA:9 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDA2MDAzOSBTYWx0ZWRfXxOw8i+nFK6U/
- M0P+wXPjxDnLPLKAONdt5Ktg8aGZAGzCHgHRFhS+vPn9+ZFR/r5qVs3WhhXNrJZ4RuYThM8YXxw
- zsw7a9n/3h5dGieFOQId1doKfygUAlU=
-X-Proofpoint-ORIG-GUID: L7x09izQe5joD4jnX-xE8vBDMLpWZfKP
-X-Proofpoint-GUID: L7x09izQe5joD4jnX-xE8vBDMLpWZfKP
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDA2MDAzOSBTYWx0ZWRfX+6vEVhvklBSA
- g1E6WuHdPtFxtRfq4urXsCDhGufRUKBPPZuVyk/yARlGaJ9DHf4OdkZ8Ejwx1UkVZ9PiC6kTQbo
- yuYapMMQkgThn4u7VXmP+kvJY/ITPYcFPA5guJtpqTRw71pUbvjGGq9gX+DhYpBCullosKzEspi
- k4l+Pp0r1Ynfmzq6UF1CJuXheTqAJDBuNykjLtMPVHHm6hjxtR42z3Alc0DT+ukVvUhAWtcBj3R
- n+Dh6TOI/b/fpbi2xP1/1eyd3qeA+4FpE5B5ts2JkhHOzKDVGUE9B/D6+HFupt77rdHPROSF1al
- 0IeaJtGd5sH1WmKc2RxGAmrS8ViQ67w7+ecnGzPQVm5EEbisq62WvvRvcCsuNk7iOEgTfDC4yj4
- LmHcJZRWvb/vmp2yUymQ2N5fIopKPBY4ASmVcrIRXtoYKEaBqywzQf78m/PxXEqDdfuA6SI41Zy
- Qt+mhRo05iJtX02MWFA==
+X-MS-Exchange-CrossTenant-userprincipalname: Ds7kt7nDjUAe8R4Zpm0LU04qTIbjRgw+l3QjS5ZN0oCv9UF6AeTn1+70vess6JkMl3F2jNfT3YuOoEbXzRknZg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PPF8627DB357
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -185,157 +173,794 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-T24gV2VkLCAyMDI2LTA5LTMwIGF0IDIxOjUwICswOTAwLCBHeWV5b3VuZyBCYWVrIHdyb3RlOg0K
-SGkgR3lleW91bmcsDQoNClRlc3RzIGFyZSBwYXNzaW5nIG9uIEJlYWdsZVBsYXkgYWZ0ZXIgaW5j
-bHVkaW5nIG1hcCgpIGZpeGVzLg0KDQpUZXN0ZWQtYnk6IEJyYWplc2ggR3VwdGEgPGJyYWplc2gu
-Z3VwdGFAaW1ndGVjLmNvbT4NCg0KVGhhbmtzLA0KQnJhamVzaA0KDQo+IEFkZCBwdnJfdm1fbWFw
-LCB3aGljaCB0ZXN0cyBEUk1fSU9DVExfUFZSX1ZNX01BUCBhbmQNCj4gRFJNX0lPQ1RMX1BWUl9W
-TV9VTk1BUCBkaXJlY3RseS4NCj4gDQo+IEZvciBlYWNoIG9mIHRoZSBmb2xsb3dpbmcgdGhyZWUg
-Y2FzZXMsIHRlc3QgZml2ZSBzY2VuYXJpb3MgYW5kIGNoZWNrDQo+IHRoYXQgdGhlIG1lbW9yeSBv
-ZiB0aGUgYnVmZmVyIG9iamVjdHMgaXMgcmV0dXJuZWQgaW4gZWFjaCBvZiB0aGVtOg0KPiAxLiBJ
-bnNpZGUgb25lIDJNaUIgcmVnaW9uDQo+IDIuIEFjcm9zcyBhIDJNaUIgYm91bmRhcnkNCj4gMy4g
-QWNyb3NzIGEgMUdpQiBib3VuZGFyeQ0KPiANCj4gLSBtYXAtKjogbWFwIGEgcmFuZ2UgYW5kIHVu
-bWFwIGl0Lg0KPiAtIHJlcGxhY2UtKjogbWFwIGEgcmFuZ2UgdGhhdCBjb21wbGV0ZWx5IGNvdmVy
-cyBhIHNtYWxsZXIgZXhpc3RpbmcNCj4gICBtYXBwaW5nLg0KPiAtIHJlbWFwLW5leHQtKjogbWFw
-IG92ZXIgdGhlIGxlZnQgcGFydCBvZiBhIG1hcHBpbmcsIHdoaWNoIHNwbGl0cyBpdC4NCj4gLSBy
-ZW1hcC1wcmV2LSo6IG1hcCBvdmVyIHRoZSByaWdodCBwYXJ0IG9mIGEgbWFwcGluZywgd2hpY2gg
-c3BsaXRzIGl0Lg0KPiAtIHJlbWFwLWJvdGgtKjogbWFwIG92ZXIgdGhlIG1pZGRsZSBvZiBhIG1h
-cHBpbmcsIHdoaWNoIHNwbGl0cyBpdC4NCj4gDQo+IFNlZSB0aGUgZm9sbG93aW5nIGRvY3VtZW50
-IGZvciB0aGUgb3ZlcmxhcCBjYXNlczoNCj4gaHR0cHM6Ly9kb2NzLmtlcm5lbC5vcmcvZ3B1L2Ry
-bS1tbS5odG1sI2RybS1ncHV2bQ0KPiANCj4gU2lnbmVkLW9mZi1ieTogR3lleW91bmcgQmFlayA8
-Z3llOTc2QGdtYWlsLmNvbT4NCj4gLS0tDQo+IHYyOg0KPiAtIEFkZCAoYykgbGluZQ0KPiAtIENs
-ZWFuIHVwIGluY2x1ZGVzDQo+IC0gQWRkIElHVF9URVNUX0RFU0NSSVBUSU9OKCkNCj4gLSBMaW5r
-IHRvIHYxOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvMjAyNjA5MjYxNTIzNDEuNzgzODY3
-LTEtZ3llOTc2QGdtYWlsLmNvbS8NCj4gDQo+ICB0ZXN0cy9pbWFnaW5hdGlvbi9tZXNvbi5idWls
-ZCAgfCAgIDEgKw0KPiAgdGVzdHMvaW1hZ2luYXRpb24vcHZyX3ZtX21hcC5jIHwgMTkzICsrKysr
-KysrKysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgMiBmaWxlcyBjaGFuZ2VkLCAxOTQgaW5z
-ZXJ0aW9ucygrKQ0KPiAgY3JlYXRlIG1vZGUgMTAwNjQ0IHRlc3RzL2ltYWdpbmF0aW9uL3B2cl92
-bV9tYXAuYw0KPiANCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ltYWdpbmF0aW9uL21lc29uLmJ1aWxk
-IGIvdGVzdHMvaW1hZ2luYXRpb24vbWVzb24uYnVpbGQNCj4gaW5kZXggN2FlOGRkZDBhLi44MGQ4
-MDdjMjggMTAwNjQ0DQo+IC0tLSBhL3Rlc3RzL2ltYWdpbmF0aW9uL21lc29uLmJ1aWxkDQo+ICsr
-KyBiL3Rlc3RzL2ltYWdpbmF0aW9uL21lc29uLmJ1aWxkDQo+IEBAIC04LDYgKzgsNyBAQCBwdnJf
-cHJvZ3MgPSBbICdwdnJfZGV2X3F1ZXJ5JywNCj4gIAkgICAgICAncHZyX3J1bnRpbWVfaW5mbycs
-DQo+ICAJICAgICAgJ3B2cl9zdWJtaXRfam9icycsDQo+ICAJICAgICAgJ3B2cl92bV9jb250ZXh0
-JywNCj4gKwkgICAgICAncHZyX3ZtX21hcCcsDQo+ICAJICAgIF0NCj4gIA0KPiAgcHZyX2RlcHMg
-PSB0ZXN0X2RlcHMNCj4gZGlmZiAtLWdpdCBhL3Rlc3RzL2ltYWdpbmF0aW9uL3B2cl92bV9tYXAu
-YyBiL3Rlc3RzL2ltYWdpbmF0aW9uL3B2cl92bV9tYXAuYw0KPiBuZXcgZmlsZSBtb2RlIDEwMDY0
-NA0KPiBpbmRleCAwMDAwMDAwMDAuLmM3NGNjNGY2Mg0KPiAtLS0gL2Rldi9udWxsDQo+ICsrKyBi
-L3Rlc3RzL2ltYWdpbmF0aW9uL3B2cl92bV9tYXAuYw0KPiBAQCAtMCwwICsxLDE5MyBAQA0KPiAr
-Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAgb3IgTUlUDQo+ICsvKiBDb3B5cmln
-aHQgKGMpIDIwMjYgR3lleW91bmcgQmFlayAqLw0KPiArDQo+ICsjaW5jbHVkZSA8aW50dHlwZXMu
-aD4NCj4gKyNpbmNsdWRlIDxzdGRkZWYuaD4NCj4gKyNpbmNsdWRlIDxzdGRpbnQuaD4NCj4gKyNp
-bmNsdWRlIDx1bmlzdGQuaD4NCj4gKw0KPiArI2luY2x1ZGUgImlndC5oIg0KPiArI2luY2x1ZGUg
-ImlndF9vcy5oIg0KPiArI2luY2x1ZGUgImlndF9wdnIuaCINCj4gKyNpbmNsdWRlICJpZ3Rfc2l6
-ZXMuaCINCj4gKw0KPiArSUdUX1RFU1RfREVTQ1JJUFRJT04oIlRlc3QgdGhhdCBWTSBtYXAsIHVu
-bWFwIGFuZCByZW1hcCBvcGVyYXRpb25zIHdvcmsiKTsNCj4gKw0KPiArLyoNCj4gKyAqIHZtX21h
-cC91bm1hcC9yZW1hcCgpIGFyZSBlYWNoIHJ1biBvbiBhIHJhbmdlIG9mIFJBTkdFX1BBR0VTIHBh
-Z2VzIChwMC4ucDMpLA0KPiArICogcGxhY2VkIGluIG9uZSBvZiB0aHJlZSB3YXlzLiBUaGUgZHJh
-d2luZ3MgYXJlIG5vdCB0byBzY2FsZS4NCj4gKyAqDQo+ICsgKiBpbi0ybSAgICAgICBJbnNpZGUg
-b25lIDJNaUIgcmVnaW9uLiBObyBib3VuZGFyeSBpcyBjcm9zc2VkLg0KPiArICoNCj4gKyAqICAg
-ICAgICAgICAgIHw8LS0tLS0tLS0tLS0tIDJNaUIgcmVnaW9uIC0tLS0tLS0tLS0tPnwNCj4gKyAq
-ICAgICAgICAgICAgIHwgICAgICAgICAgIFtwMHxwMXxwMnxwM10gICAgICAgICAgICAgIHwNCj4g
-KyAqDQo+ICsgKiBjcm9zcy0ybSAgICBBY3Jvc3MgYSAyTWlCIGJvdW5kYXJ5Lg0KPiArICoNCj4g
-KyAqICAgICAgICAgICAgIHw8LS0tIDJNaUIgcmVnaW9uIEEgLS0tPnw8LS0tIDJNaUIgcmVnaW9u
-IEIgLS0tPnwNCj4gKyAqICAgICAgICAgICAgICAgICAgICAgICAgICAgIFtwMHxwMV18W3AyfHAz
-XQ0KPiArICogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBeIDJNaUIgYm91bmRh
-cnkNCj4gKyAqDQo+ICsgKiBjcm9zcy0xZyAgICBBY3Jvc3MgYSAxR2lCIGJvdW5kYXJ5LCB3aGlj
-aCBpcyBhbHNvIGEgMk1pQiBib3VuZGFyeS4NCj4gKyAqDQo+ICsgKiAgICAgICAgICAgICB8PC0t
-LSAxR2lCIHJlZ2lvbiBBIC0tLT58PC0tLSAxR2lCIHJlZ2lvbiBCIC0tLT58DQo+ICsgKiAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICBbcDB8cDFdfFtwMnxwM10NCj4gKyAqICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgXiAxR2lCIGJvdW5kYXJ5DQo+ICsgKi8NCj4gKw0KPiAr
-I2RlZmluZSBSQU5HRV9QQUdFUyA0DQo+ICsjZGVmaW5lIExFQUtfQk9fU0laRSBTWl8zMk0NCj4g
-KyNkZWZpbmUgTEVBS19USFJFU0hPTEQgU1pfOE0NCj4gKw0KPiArc3RhdGljIHVpbnQ2NF90IGFs
-aWduX3VwKHVpbnQ2NF90IHZhbHVlLCB1aW50NjRfdCBhbGlnbikNCj4gK3sNCj4gKwlyZXR1cm4g
-KHZhbHVlICsgYWxpZ24gLSAxKSAmIH4oYWxpZ24gLSAxKTsNCj4gK30NCj4gKw0KPiArc3RhdGlj
-IHZvaWQgYXNzZXJ0X3NobWVtX3JlbGVhc2VkKHVpbnQ2NF90IGJhc2VsaW5lKQ0KPiArew0KPiAr
-CXVpbnQ2NF90IG5vdyA9IDA7DQo+ICsNCj4gKwlmb3IgKGludCBpID0gMDsgaSA8IDIwOyBpKysp
-IHsNCj4gKwkJbm93ID0gaWd0X2dldF9tZW1pbmZvKCJTaG1lbSIpOw0KPiArCQlpZiAobm93IDwg
-YmFzZWxpbmUgKyBMRUFLX1RIUkVTSE9MRCkNCj4gKwkJCXJldHVybjsNCj4gKwkJdXNsZWVwKDEw
-MCAqIDEwMDApOw0KPiArCX0NCj4gKw0KPiArCWlndF9hc3NlcnRfZihmYWxzZSwgIiUiIFBSSXU2
-NCAiIGJ5dGVzIG9mIHNobWVtIHN0aWxsIGhlbGQgYWZ0ZXIgY2xvc2VcbiIsIG5vdyAtIGJhc2Vs
-aW5lKTsNCj4gK30NCj4gKw0KPiArc3RhdGljIHZvaWQgbWFwX3JhbmdlKGludCBmZCwgdWludDY0
-X3QgYWRkciwgdWludDY0X3Qgc2l6ZSkNCj4gK3sNCj4gKwljb25zdCB1aW50NjRfdCBiYXNlbGlu
-ZSA9IGlndF9nZXRfbWVtaW5mbygiU2htZW0iKTsNCj4gKwljb25zdCB1aW50MzJfdCB2bV9jdHgg
-PSBpZ3RfcHZyX2lvY3RsX2NyZWF0ZV92bV9jb250ZXh0KGZkLCAwKTsNCj4gKwlzaXplX3QgYm9f
-c2l6ZSA9IExFQUtfQk9fU0laRTsNCj4gKwljb25zdCB1aW50MzJfdCBoYW5kbGUgPSBpZ3RfcHZy
-X2lvY3RsX2NyZWF0ZV9ibyhmZCwgJmJvX3NpemUpOw0KPiArDQo+ICsJaWd0X3B2cl9pb2N0bF92
-bV9tYXAoZmQsIHZtX2N0eCwgaGFuZGxlLCBhZGRyLCAwLCBzaXplKTsNCj4gKwlpZ3RfcHZyX2lv
-Y3RsX3ZtX3VubWFwKGZkLCB2bV9jdHgsIGFkZHIsIHNpemUpOw0KPiArDQo+ICsJZ2VtX2Nsb3Nl
-KGZkLCBoYW5kbGUpOw0KPiArCWlndF9wdnJfaW9jdGxfZGVzdHJveV92bV9jb250ZXh0KGZkLCB2
-bV9jdHgsIDApOw0KPiArDQo+ICsJYXNzZXJ0X3NobWVtX3JlbGVhc2VkKGJhc2VsaW5lKTsNCj4g
-K30NCj4gKw0KPiArLyoNCj4gKyAqIEEgbmV3IG1hcHBpbmcgaXMgbWFwcGVkIG92ZXIgYW4gb2xk
-IG9uZS4gVGhlIG92ZXJsYXBzIGZvbGxvdyAiRE9DOiBTcGxpdCBhbmQgTWVyZ2UiIGluDQo+ICsg
-KiBkcml2ZXJzL2dwdS9kcm0vZHJtX2dwdXZtLmM6IHJlcGxhY2UgaXMgY2FzZSAxNCwgcmVtYXAt
-bmV4dCA1LCByZW1hcC1wcmV2IDcsIHJlbWFwLWJvdGggMTEuDQo+ICsgKi8NCj4gK3N0YXRpYyB2
-b2lkIHJlbWFwX3JhbmdlKGludCBmZCwgdWludDY0X3Qgb2xkX2FkZHIsIHVpbnQ2NF90IG9sZF9z
-aXplLA0KPiArCQkJdWludDY0X3QgbmV3X2FkZHIsIHVpbnQ2NF90IG5ld19zaXplKQ0KPiArew0K
-PiArCWNvbnN0IHVpbnQ2NF90IGJhc2VsaW5lID0gaWd0X2dldF9tZW1pbmZvKCJTaG1lbSIpOw0K
-PiArCWNvbnN0IHVpbnQzMl90IHZtX2N0eCA9IGlndF9wdnJfaW9jdGxfY3JlYXRlX3ZtX2NvbnRl
-eHQoZmQsIDApOw0KPiArCWNvbnN0IHVpbnQ2NF90IG9sZF9lbmQgPSBvbGRfYWRkciArIG9sZF9z
-aXplOw0KPiArCWNvbnN0IHVpbnQ2NF90IG5ld19lbmQgPSBuZXdfYWRkciArIG5ld19zaXplOw0K
-PiArCXNpemVfdCBzaXplX2EgPSBMRUFLX0JPX1NJWkU7DQo+ICsJc2l6ZV90IHNpemVfYiA9IG5l
-d19zaXplOw0KPiArCWNvbnN0IHVpbnQzMl90IGhhbmRsZV9hID0gaWd0X3B2cl9pb2N0bF9jcmVh
-dGVfYm8oZmQsICZzaXplX2EpOw0KPiArCWNvbnN0IHVpbnQzMl90IGhhbmRsZV9iID0gaWd0X3B2
-cl9pb2N0bF9jcmVhdGVfYm8oZmQsICZzaXplX2IpOw0KPiArDQo+ICsJaWd0X3B2cl9pb2N0bF92
-bV9tYXAoZmQsIHZtX2N0eCwgaGFuZGxlX2EsIG9sZF9hZGRyLCAwLCBvbGRfc2l6ZSk7DQo+ICsJ
-aWd0X3B2cl9pb2N0bF92bV9tYXAoZmQsIHZtX2N0eCwgaGFuZGxlX2IsIG5ld19hZGRyLCAwLCBu
-ZXdfc2l6ZSk7DQo+ICsNCj4gKwlpZiAobmV3X2FkZHIgPiBvbGRfYWRkcikNCj4gKwkJaWd0X3B2
-cl9pb2N0bF92bV91bm1hcChmZCwgdm1fY3R4LCBvbGRfYWRkciwgbmV3X2FkZHIgLSBvbGRfYWRk
-cik7DQo+ICsJaWd0X3B2cl9pb2N0bF92bV91bm1hcChmZCwgdm1fY3R4LCBuZXdfYWRkciwgbmV3
-X3NpemUpOw0KPiArCWlmIChuZXdfZW5kIDwgb2xkX2VuZCkNCj4gKwkJaWd0X3B2cl9pb2N0bF92
-bV91bm1hcChmZCwgdm1fY3R4LCBuZXdfZW5kLCBvbGRfZW5kIC0gbmV3X2VuZCk7DQo+ICsNCj4g
-KwlnZW1fY2xvc2UoZmQsIGhhbmRsZV9hKTsNCj4gKwlnZW1fY2xvc2UoZmQsIGhhbmRsZV9iKTsN
-Cj4gKwlpZ3RfcHZyX2lvY3RsX2Rlc3Ryb3lfdm1fY29udGV4dChmZCwgdm1fY3R4LCAwKTsNCj4g
-Kw0KPiArCWFzc2VydF9zaG1lbV9yZWxlYXNlZChiYXNlbGluZSk7DQo+ICt9DQo+ICsNCj4gK3N0
-cnVjdCBwbGFjZSB7DQo+ICsJY29uc3QgY2hhciAqbmFtZTsNCj4gKwl1aW50NjRfdCBhZGRyOw0K
-PiArfTsNCj4gKw0KPiAraW50IGlndF9tYWluKCkNCj4gK3sNCj4gKwlzdHJ1Y3QgcGxhY2UgcGxh
-Y2VzW10gPSB7IHsgImluLTJtIiwgMCB9LCB7ICJjcm9zcy0ybSIsIDAgfSwgeyAiY3Jvc3MtMWci
-LCAwIH0gfTsNCj4gKwlzdHJ1Y3QgZHJtX3B2cl9oZWFwIGhlYXA7DQo+ICsJdWludDY0X3Qgc2l6
-ZTsNCj4gKwlpbnQgZmQ7DQo+ICsNCj4gKwlpZ3RfZml4dHVyZSgpDQo+ICsJew0KPiArCQlmZCA9
-IGRybV9vcGVuX2RyaXZlcihEUklWRVJfUE9XRVJWUik7DQo+ICsJCWhlYXAgPSBpZ3RfcHZyX2Zp
-bmRfZ2VuZXJhbF9oZWFwKGZkKTsNCj4gKw0KPiArCQlzaXplID0gUkFOR0VfUEFHRVMgKiBzeXNj
-b25mKF9TQ19QQUdFU0laRSk7DQo+ICsJCXBsYWNlc1swXS5hZGRyID0gYWxpZ25fdXAoaGVhcC5i
-YXNlLCBTWl8yTSkgKyBTWl8xTTsNCj4gKwkJcGxhY2VzWzFdLmFkZHIgPSBhbGlnbl91cChoZWFw
-LmJhc2UgKyAxLCBTWl8yTSkgLSBzaXplIC8gMjsNCj4gKwkJcGxhY2VzWzJdLmFkZHIgPSBhbGln
-bl91cChoZWFwLmJhc2UgKyAxLCBTWl8xRykgLSBzaXplIC8gMjsNCj4gKw0KPiArCQlpZ3RfcmVx
-dWlyZShwbGFjZXNbMl0uYWRkciArIHNpemUgPD0gaGVhcC5iYXNlICsgaGVhcC5zaXplKTsNCj4g
-Kwl9DQo+ICsNCj4gKwlmb3IgKHNpemVfdCBpID0gMDsgaSA8IEFSUkFZX1NJWkUocGxhY2VzKTsg
-aSsrKSB7DQo+ICsJCWNvbnN0IGNoYXIgKm5hbWUgPSBwbGFjZXNbaV0ubmFtZTsNCj4gKwkJY29u
-c3QgdWludDY0X3QgYWRkciA9IHBsYWNlc1tpXS5hZGRyOw0KPiArDQo+ICsJCWlndF9kZXNjcmli
-ZV9mKCJBIHJhbmdlIGNhbiBiZSBtYXBwZWQgYW5kIHVubWFwcGVkLCBhbmQgdGhlIHBhZ2UgdGFi
-bGVzIGl0IG5lZWRzIGFyZSBhdmFpbGFibGUgKCVzKSIsDQo+ICsJCQkgICAgICAgbmFtZSk7DQo+
-ICsJCWlndF9zdWJ0ZXN0X2YoIm1hcC0lcyIsIG5hbWUpDQo+ICsJCXsNCj4gKwkJCS8qDQo+ICsJ
-CQkgKiBtYXAgICAgICAgICB8bm5ubm5ubm58ICAgIGEgcmFuZ2UgaXMgbWFwcGVkLCB0aGVuIHVu
-bWFwcGVkDQo+ICsJCQkgKi8NCj4gKwkJCW1hcF9yYW5nZShmZCwgYWRkciwgc2l6ZSk7DQo+ICsJ
-CX0NCj4gKw0KPiArCQlpZ3RfZGVzY3JpYmVfZigiQSBtYXBwaW5nIHRoYXQgY292ZXJzIGFuIG9s
-ZCBvbmUgcmVwbGFjZXMgaXQgYW5kIGxlYXZlcyBub3RoaW5nIG9mIGl0IGJlaGluZCAoJXMpIiwN
-Cj4gKwkJCSAgICAgICBuYW1lKTsNCj4gKwkJaWd0X3N1YnRlc3RfZigicmVwbGFjZS0lcyIsIG5h
-bWUpDQo+ICsJCXsNCj4gKwkJCS8qDQo+ICsJCQkgKiByZXBsYWNlICAgICB8ICBvb29vICB8ICAg
-IG8gPSBvbGQgbWFwcGluZywgbiA9IG5ldyBtYXBwaW5nDQo+ICsJCQkgKiAgICAgICAgICAgICB8
-bm5ubm5ubm58ICAgIG5vdGhpbmcgaXMgbGVmdCBvZiB0aGUgb2xkIG9uZQ0KPiArCQkJICovDQo+
-ICsJCQlyZW1hcF9yYW5nZShmZCwgYWRkciArIHNpemUgLyA0LCBzaXplIC8gMiwgYWRkciwgc2l6
-ZSk7DQo+ICsJCX0NCj4gKw0KPiArCQlpZ3RfZGVzY3JpYmVfZigiTWFwcGluZyBvdmVyIHRoZSBs
-ZWZ0IHBhcnQgb2YgYSBtYXBwaW5nIGxlYXZlcyBpdHMgcmlnaHQgcGFydCwgYW5kIHRoZSBvcmln
-aW5hbCAiDQo+ICsJCQkgICAgICAgImJ1ZmZlciBvYmplY3QgaXMgcmVsZWFzZWQgb25jZSBldmVy
-eXRoaW5nIGlzIGNsb3NlZCAoJXMpIiwgbmFtZSk7DQo+ICsJCWlndF9zdWJ0ZXN0X2YoInJlbWFw
-LW5leHQtJXMiLCBuYW1lKQ0KPiArCQl7DQo+ICsJCQkvKg0KPiArCQkJICogcmVtYXAtbmV4dCAg
-fG9vb29vb29vfCAgICB0aGUgcmlnaHQgcGFydCBvZiB0aGUgb2xkIG1hcHBpbmcgaXMgbGVmdA0K
-PiArCQkJICogICAgICAgICAgICAgfG5ubm4gICAgfA0KPiArCQkJICovDQo+ICsJCQlyZW1hcF9y
-YW5nZShmZCwgYWRkciwgc2l6ZSwgYWRkciwgc2l6ZSAvIDIpOw0KPiArCQl9DQo+ICsNCj4gKwkJ
-aWd0X2Rlc2NyaWJlX2YoIk1hcHBpbmcgb3ZlciB0aGUgcmlnaHQgcGFydCBvZiBhIG1hcHBpbmcg
-bGVhdmVzIGl0cyBsZWZ0IHBhcnQsIGFuZCB0aGUgb3JpZ2luYWwgIg0KPiArCQkJICAgICAgICJi
-dWZmZXIgb2JqZWN0IGlzIHJlbGVhc2VkIG9uY2UgZXZlcnl0aGluZyBpcyBjbG9zZWQgKCVzKSIs
-IG5hbWUpOw0KPiArCQlpZ3Rfc3VidGVzdF9mKCJyZW1hcC1wcmV2LSVzIiwgbmFtZSkNCj4gKwkJ
-ew0KPiArCQkJLyoNCj4gKwkJCSAqIHJlbWFwLXByZXYgIHxvb29vb29vb3wgICAgdGhlIGxlZnQg
-cGFydCBvZiB0aGUgb2xkIG1hcHBpbmcgaXMgbGVmdA0KPiArCQkJICogICAgICAgICAgICAgfCAg
-ICBubm5ufA0KPiArCQkJICovDQo+ICsJCQlyZW1hcF9yYW5nZShmZCwgYWRkciwgc2l6ZSwgYWRk
-ciArIHNpemUgLyAyLCBzaXplIC8gMik7DQo+ICsJCX0NCj4gKw0KPiArCQlpZ3RfZGVzY3JpYmVf
-ZigiTWFwcGluZyBvdmVyIHRoZSBtaWRkbGUgb2YgYSBtYXBwaW5nIGxlYXZlcyBpdHMgbGVmdCBh
-bmQgcmlnaHQgcGFydHMsIGFuZCB0aGUgIg0KPiArCQkJICAgICAgICJvcmlnaW5hbCBidWZmZXIg
-b2JqZWN0IGlzIHJlbGVhc2VkIG9uY2UgZXZlcnl0aGluZyBpcyBjbG9zZWQgKCVzKSIsDQo+ICsJ
-CQkgICAgICAgbmFtZSk7DQo+ICsJCWlndF9zdWJ0ZXN0X2YoInJlbWFwLWJvdGgtJXMiLCBuYW1l
-KQ0KPiArCQl7DQo+ICsJCQkvKg0KPiArCQkJICogcmVtYXAtYm90aCAgfG9vb29vb29vfCAgICBs
-ZWZ0IGFuZCByaWdodCBwYXJ0cyBvZiB0aGUgb2xkIG9uZSBhcmUgbGVmdA0KPiArCQkJICogICAg
-ICAgICAgICAgfCAgIG5uICAgfA0KPiArCQkJICovDQo+ICsJCQlyZW1hcF9yYW5nZShmZCwgYWRk
-ciwgc2l6ZSwgYWRkciArIHNpemUgLyAyLCBzaXplIC8gNCk7DQo+ICsJCX0NCj4gKwl9DQo+ICt9
-DQoNCg==
+--_000_CH0PR11MB5249CE0D8F980246C56ECBA6E5952CH0PR11MB5249namp_
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+
+
+________________________________
+From: igt-dev <igt-dev-bounces@lists.freedesktop.org> on behalf of Kamil Ko=
+nieczny <kamil.konieczny@linux.intel.com>
+Sent: Thursday, October 01, 2026 4:37 PM
+To: Patil, Shivtej Eknath <shivtej.eknath.patil@intel.com>
+Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>; Konieczn=
+y, Kamil <kamil.konieczny@intel.com>; Sharma, Nishit <nishit.sharma@intel.c=
+om>; Balasubramanyam, Smitha <smitha.balasubramanyam@intel.com>
+Subject: Re: [PATCH v8 2/3] tests/intel/xe_pm: add coverage for xe_device_s=
+ysfs
+
+Hi,
+On 2026-10-01 at 05:59:01 +0000, shivtej.eknath.patil@intel.com wrote:
+> From: Shivtej Patil <shivtej.eknath.patil@intel.com>
+>
+> Add new subtests to exercise the following
+> xe_device_sysfs.c functions:
+>
+> - vram_d3cold_threshold_show()
+> - vram_d3cold_threshold_store()
+> - lb_fan_control_version_show()
+> - lb_voltage_regulator_version_show()
+> - auto_link_downgrade_capable_show()
+> - auto_link_downgrade_status_show()
+>
+> The subtests validate the corresponding sysfs
+> attributes and improve code coverage.
+>
+> Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Hi kamil,
+
+I think these tests in this patch, need not be part of xe_pm test and these=
+ are not exercising any PM related functionality.
+It is only verifying on the existence of the sysfs nodes !
+For vram-d3cold-threshold-store test, already existing test vram-d3cold-thr=
+eshold does that.
+
+-Karthik.
+
+Regards,
+Kamil
+
+> ---
+>  tests/intel/xe_pm.c | 176 ++++++++++++++++++++++++++++++++++++--------
+>  1 file changed, 145 insertions(+), 31 deletions(-)
+>
+> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
+> index 543f46f5b..9a70b1645 100644
+> --- a/tests/intel/xe_pm.c
+> +++ b/tests/intel/xe_pm.c
+> @@ -111,34 +111,9 @@ static bool runtime_usage_available(struct pci_devic=
+e *pci)
+>        return access(name, F_OK) =3D=3D 0;
+>  }
+>
+> -static uint64_t get_vram_d3cold_threshold(int sysfs)
+> +static bool sysfs_exists(int sysfs_fd, const char *path)
+>  {
+> -     uint64_t threshold;
+> -     char path[64];
+> -     int ret;
+> -
+> -     sprintf(path, "device/vram_d3cold_threshold");
+> -     igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_thresh=
+old is not present\n");
+> -
+> -     ret =3D igt_sysfs_scanf(sysfs, path, "%"PRIu64"", &threshold);
+> -     igt_assert_lt(0, ret);
+> -
+> -     return threshold;
+> -}
+> -
+> -static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
+> -{
+> -     char path[64];
+> -     int ret;
+> -
+> -     sprintf(path, "device/vram_d3cold_threshold");
+> -
+> -     if (!faccessat(sysfs, path, R_OK | W_OK, 0))
+> -             ret =3D igt_sysfs_printf(sysfs, path, "%"PRIu64"", threshol=
+d);
+> -     else
+> -             igt_warn("vram_d3cold_threshold is not present\n");
+> -
+> -     igt_assert_lt(0, ret);
+> +     return !faccessat(sysfs_fd, path, R_OK, 0);
+>  }
+>
+>  static void vram_d3cold_threshold_restore(int sig)
+> @@ -148,7 +123,7 @@ static void vram_d3cold_threshold_restore(int sig)
+>        fd =3D drm_open_driver_master(DRIVER_XE);
+>        sysfs_fd =3D igt_sysfs_open(fd);
+>
+> -     set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
+> +     igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
+>
+>        close(sysfs_fd);
+>        close(fd);
+> @@ -620,6 +595,48 @@ test_exec(device_t device, int n_exec_queues, int n_=
+execs,
+>        active_threads =3D 0;
+>  }
+>
+> +/**
+> + * SUBTEST: vram-d3cold-threshold-show
+> + * Description:
+> + *      Validate reading of vram_d3cold_threshold sysfs entry.
+> + * Functionality: pm-d3cold
+> + */
+> +
+> +/**
+> + * SUBTEST: vram-d3cold-threshold-store
+> + * Description:
+> + *      Validate writing and reading back vram_d3cold_threshold sysfs en=
+try.
+> + * Functionality: pm-d3cold
+> + */
+> +
+> +/**
+> + * SUBTEST: lb-fan-control-version-show
+> + * Description:
+> + *      Validate reading lb_fan_control_version sysfs entry.
+> + * Functionality: pm-sysfs
+> + */
+> +
+> +/**
+> + * SUBTEST: lb-voltage-regulator-version-show
+> + * Description:
+> + *      Validate reading lb_voltage_regulator_version sysfs entry.
+> + * Functionality: pm-sysfs
+> + */
+> +
+> +/**
+> + * SUBTEST: auto-link-downgrade-capable-show
+> + * Description:
+> + *      Validate reading auto_link_downgrade_capable sysfs entry.
+> + * Functionality: pm-sysfs
+> + */
+> +
+> +/**
+> + * SUBTEST: auto-link-downgrade-status-show
+> + * Description:
+> + *      Validate reading auto_link_downgrade_status sysfs entry.
+> + * Functionality: pm-sysfs
+> + */
+> +
+>  /**
+>   * SUBTEST: vram-d3cold-threshold
+>   * Functionality: pm - d3cold
+> @@ -670,7 +687,7 @@ static void test_vram_d3cold_threshold(device_t devic=
+e, int sysfs_fd)
+>        map =3D xe_bo_map(device.fd_xe, bo, SIZE);
+>        memset(map, 0, SIZE);
+>        munmap(map, SIZE);
+> -     set_vram_d3cold_threshold(sysfs_fd, threshold);
+> +     igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, threshold);
+>
+>        /* Setup D3Cold but card should be in D3hot */
+>        igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
+> @@ -1082,7 +1099,7 @@ int igt_main()
+>                }
+>
+>                igt_describe_f("Validate mmap memory mappings with vram re=
+gion,"
+> -                          "when device along with parent bridge in %s", =
+d->name);
+> +                            "when device along with parent bridge in %s"=
+, d->name);
+>                igt_subtest_f("%s-mmap-vram", d->name) {
+>                        int delay_ms;
+>
+> @@ -1116,11 +1133,108 @@ int igt_main()
+>                     "if vram used > vram threshold");
+>        igt_subtest("vram-d3cold-threshold") {
+>                igt_require_f(has_runtime_pm, "Runtime PM not available\n"=
+);
+> -             orig_threshold =3D get_vram_d3cold_threshold(sysfs_fd);
+> +             orig_threshold =3D igt_sysfs_get_vram_d3cold_threshold(sysf=
+s_fd);
+>                igt_install_exit_handler(vram_d3cold_threshold_restore);
+>                test_vram_d3cold_threshold(device, sysfs_fd);
+>        }
+>
+> +     igt_subtest("vram-d3cold-threshold-show") {
+> +             uint64_t threshold;
+> +
+> +             igt_require(sysfs_exists(sysfs_fd,
+> +                                      "device/vram_d3cold_threshold"));
+> +
+> +             threshold =3D igt_sysfs_get_vram_d3cold_threshold(sysfs_fd)=
+;
+> +
+> +             igt_info("threshold=3D%" PRIu64 "\n", threshold);
+> +     }
+> +
+> +     igt_subtest("vram-d3cold-threshold-store") {
+> +             uint64_t old_val;
+> +             uint64_t new_val;
+> +
+> +             igt_require(sysfs_exists(sysfs_fd,
+> +                                      "device/vram_d3cold_threshold"));
+> +             old_val =3D igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
+> +             /*
+> +              * Ensure the original threshold is restored even if
+> +              * an assertion fails later in the test.
+> +              */
+> +             orig_threshold =3D old_val;
+> +             igt_install_exit_handler(vram_d3cold_threshold_restore);
+> +             igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val + 1);
+> +             new_val =3D igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
+> +             igt_assert_eq(new_val, old_val + 1);
+> +             /* restore */
+> +             igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val);
+> +             igt_info("old=3D%" PRIu64 " new=3D%" PRIu64 "\n",
+> +                      old_val, new_val);
+> +     }
+> +
+> +     igt_subtest("lb-fan-control-version-show") {
+> +             char version[64];
+> +             int ret;
+> +
+> +             igt_require(sysfs_exists(sysfs_fd,
+> +                                      "device/lb_fan_control_version"));
+> +
+> +             ret =3D igt_sysfs_scanf(sysfs_fd,
+> +                                   "device/lb_fan_control_version",
+> +                                   "%63s", version);
+> +
+> +             igt_assert(ret > 0);
+> +
+> +             igt_info("lb-fan-control-version=3D%s\n", version);
+> +     }
+> +
+> +     igt_subtest("lb-voltage-regulator-version-show") {
+> +             char version[64] =3D {};
+> +             int ret;
+> +
+> +             igt_require(sysfs_exists(sysfs_fd,
+> +                                      "device/lb_voltage_regulator_versi=
+on"));
+> +
+> +             ret =3D igt_sysfs_scanf(sysfs_fd,
+> +                                   "device/lb_voltage_regulator_version"=
+,
+> +                                   "%63s", version);
+> +             igt_debug("ret=3D%d errno=3D%d\n", ret, errno);
+> +
+> +             igt_assert(ret > 0);
+> +             igt_info("lb-voltage-regulator-version=3D%s\n", version);
+> +     }
+> +
+> +     igt_subtest("auto-link-downgrade-capable-show") {
+> +             int val;
+> +             int ret;
+> +
+> +             igt_require(sysfs_exists(sysfs_fd,
+> +                                      "device/auto_link_downgrade_capabl=
+e"));
+> +
+> +             ret =3D igt_sysfs_scanf(sysfs_fd,
+> +                                   "device/auto_link_downgrade_capable",
+> +                                   "%d", &val);
+> +
+> +             igt_assert(ret > 0);
+> +             igt_info("auto-link-downgrade-capable=3D%d\n", val);
+> +             igt_assert(val =3D=3D 0 || val =3D=3D 1);
+> +     }
+> +
+> +     igt_subtest("auto-link-downgrade-status-show") {
+> +             int val;
+> +             int ret;
+> +
+> +             igt_require(sysfs_exists(sysfs_fd,
+> +                                      "device/auto_link_downgrade_status=
+"));
+> +
+> +             ret =3D igt_sysfs_scanf(sysfs_fd,
+> +                                   "device/auto_link_downgrade_status",
+> +                                   "%d", &val);
+> +
+> +             igt_assert(ret > 0);
+> +             igt_info("auto-link-downgrade-status=3D%d\n", val);
+> +             igt_assert(val =3D=3D 0 || val =3D=3D 1);
+> +     }
+> +
+>        igt_fixture() {
+>                close(sysfs_fd);
+>                igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_all=
+owed);
+> --
+> 2.43.0
+>
+
+--_000_CH0PR11MB5249CE0D8F980246C56ECBA6E5952CH0PR11MB5249namp_
+Content-Type: text/html; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
+1">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<hr style=3D"display: inline-block; width: 98%;">
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<b>From:</b> igt-dev &lt;igt-dev-bounces@lists.freedesktop.org&gt; on behal=
+f of Kamil Konieczny &lt;kamil.konieczny@linux.intel.com&gt;<br>
+<b>Sent:</b> Thursday, October 01, 2026 4:37 PM<br>
+<b>To:</b> Patil, Shivtej Eknath &lt;shivtej.eknath.patil@intel.com&gt;<br>
+<b>Cc:</b> igt-dev@lists.freedesktop.org &lt;igt-dev@lists.freedesktop.org&=
+gt;; Konieczny, Kamil &lt;kamil.konieczny@intel.com&gt;; Sharma, Nishit &lt=
+;nishit.sharma@intel.com&gt;; Balasubramanyam, Smitha &lt;smitha.balasubram=
+anyam@intel.com&gt;<br>
+<b>Subject:</b> Re: [PATCH v8 2/3] tests/intel/xe_pm: add coverage for xe_d=
+evice_sysfs
+</div>
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<br>
+</div>
+<div style=3D"font-size: 11pt;">Hi,<br>
+On 2026-10-01 at 05:59:01 +0000, shivtej.eknath.patil@intel.com wrote:<br>
+&gt; From: Shivtej Patil &lt;shivtej.eknath.patil@intel.com&gt;<br>
+&gt;<br>
+&gt; Add new subtests to exercise the following<br>
+&gt; xe_device_sysfs.c functions:<br>
+&gt; &nbsp;<br>
+&gt; - vram_d3cold_threshold_show()<br>
+&gt; - vram_d3cold_threshold_store()<br>
+&gt; - lb_fan_control_version_show()<br>
+&gt; - lb_voltage_regulator_version_show()<br>
+&gt; - auto_link_downgrade_capable_show()<br>
+&gt; - auto_link_downgrade_status_show()<br>
+&gt; &nbsp;<br>
+&gt; The subtests validate the corresponding sysfs<br>
+&gt; attributes and improve code coverage.<br>
+&gt;<br>
+&gt; Signed-off-by: Shivtej Patil &lt;shivtej.eknath.patil@intel.com&gt;<br=
+>
+LGTM<br>
+Reviewed-by: Kamil Konieczny &lt;kamil.konieczny@linux.intel.com&gt;</div>
+<div style=3D"font-size: 11pt;"><br>
+</div>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;">Hi kamil,&nbsp;</d=
+iv>
+<div class=3D"elementToProof" style=3D"font-size: 11pt;"><br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+I think these tests in this patch, need not be part of xe_pm test and these=
+ are not exercising any PM related functionality.</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+It is only verifying on the existence of the sysfs nodes !</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+For vram-d3cold-threshold-store test, already existing test vram-d3cold-thr=
+eshold does that.</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+<br>
+</div>
+<div class=3D"elementToProof" style=3D"font-family: Aptos, Aptos_EmbeddedFo=
+nt, Aptos_MSFontService, Calibri, Helvetica, sans-serif; font-size: 11pt; c=
+olor: rgb(0, 0, 0);">
+-Karthik.<br>
+<br>
+Regards,<br>
+Kamil<br>
+<br>
+&gt; ---<br>
+&gt;&nbsp; tests/intel/xe_pm.c | 176 ++++++++++++++++++++++++++++++++++++--=
+------<br>
+&gt;&nbsp; 1 file changed, 145 insertions(+), 31 deletions(-)<br>
+&gt;<br>
+&gt; diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c<br>
+&gt; index 543f46f5b..9a70b1645 100644<br>
+&gt; --- a/tests/intel/xe_pm.c<br>
+&gt; +++ b/tests/intel/xe_pm.c<br>
+&gt; @@ -111,34 +111,9 @@ static bool runtime_usage_available(struct pci_de=
+vice *pci)<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return access(name, F_OK) =
+=3D=3D 0;<br>
+&gt;&nbsp; }<br>
+&gt;&nbsp;<br>
+&gt; -static uint64_t get_vram_d3cold_threshold(int sysfs)<br>
+&gt; +static bool sysfs_exists(int sysfs_fd, const char *path)<br>
+&gt;&nbsp; {<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; uint64_t threshold;<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; char path[64];<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; int ret;<br>
+&gt; -<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; sprintf(path, &quot;device/vram_d3cold_thres=
+hold&quot;);<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; igt_require_f(!faccessat(sysfs, path, R_OK, =
+0), &quot;vram_d3cold_threshold is not present\n&quot;);<br>
+&gt; -<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; ret =3D igt_sysfs_scanf(sysfs, path, &quot;%=
+&quot;PRIu64&quot;&quot;, &amp;threshold);<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_lt(0, ret);<br>
+&gt; -<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; return threshold;<br>
+&gt; -}<br>
+&gt; -<br>
+&gt; -static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)<=
+br>
+&gt; -{<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; char path[64];<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; int ret;<br>
+&gt; -<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; sprintf(path, &quot;device/vram_d3cold_thres=
+hold&quot;);<br>
+&gt; -<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; if (!faccessat(sysfs, path, R_OK | W_OK, 0))=
+<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; ret =3D igt_sysfs_printf(sysfs, path, &quot;%&quot;PRIu64&quot;&quot;, =
+threshold);<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; else<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_warn(&quot;vram_d3cold_threshold is not present\n&quot;);<br>
+&gt; -<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; igt_assert_lt(0, ret);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; return !faccessat(sysfs_fd, path, R_OK, 0);<=
+br>
+&gt;&nbsp; }<br>
+&gt;&nbsp;<br>
+&gt;&nbsp; static void vram_d3cold_threshold_restore(int sig)<br>
+&gt; @@ -148,7 +123,7 @@ static void vram_d3cold_threshold_restore(int sig)=
+<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fd =3D drm_open_driver_maste=
+r(DRIVER_XE);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; sysfs_fd =3D igt_sysfs_open(=
+fd);<br>
+&gt;&nbsp;<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; set_vram_d3cold_threshold(sysfs_fd, orig_thr=
+eshold);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_sysfs_set_vram_d3cold_threshold(sysfs_fd=
+, orig_threshold);<br>
+&gt;&nbsp;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; close(sysfs_fd);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; close(fd);<br>
+&gt; @@ -620,6 +595,48 @@ test_exec(device_t device, int n_exec_queues, int=
+ n_execs,<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; active_threads =3D 0;<br>
+&gt;&nbsp; }<br>
+&gt;&nbsp;<br>
+&gt; +/**<br>
+&gt; + * SUBTEST: vram-d3cold-threshold-show<br>
+&gt; + * Description:<br>
+&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Validate reading of vram_d3cold_thre=
+shold sysfs entry.<br>
+&gt; + * Functionality: pm-d3cold<br>
+&gt; + */<br>
+&gt; +<br>
+&gt; +/**<br>
+&gt; + * SUBTEST: vram-d3cold-threshold-store<br>
+&gt; + * Description:<br>
+&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Validate writing and reading back vr=
+am_d3cold_threshold sysfs entry.<br>
+&gt; + * Functionality: pm-d3cold<br>
+&gt; + */<br>
+&gt; +<br>
+&gt; +/**<br>
+&gt; + * SUBTEST: lb-fan-control-version-show<br>
+&gt; + * Description:<br>
+&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Validate reading lb_fan_control_vers=
+ion sysfs entry.<br>
+&gt; + * Functionality: pm-sysfs<br>
+&gt; + */<br>
+&gt; +<br>
+&gt; +/**<br>
+&gt; + * SUBTEST: lb-voltage-regulator-version-show<br>
+&gt; + * Description:<br>
+&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Validate reading lb_voltage_regulato=
+r_version sysfs entry.<br>
+&gt; + * Functionality: pm-sysfs<br>
+&gt; + */<br>
+&gt; +<br>
+&gt; +/**<br>
+&gt; + * SUBTEST: auto-link-downgrade-capable-show<br>
+&gt; + * Description:<br>
+&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Validate reading auto_link_downgrade=
+_capable sysfs entry.<br>
+&gt; + * Functionality: pm-sysfs<br>
+&gt; + */<br>
+&gt; +<br>
+&gt; +/**<br>
+&gt; + * SUBTEST: auto-link-downgrade-status-show<br>
+&gt; + * Description:<br>
+&gt; + *&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Validate reading auto_link_downgrade=
+_status sysfs entry.<br>
+&gt; + * Functionality: pm-sysfs<br>
+&gt; + */<br>
+&gt; +<br>
+&gt;&nbsp; /**<br>
+&gt;&nbsp;&nbsp; * SUBTEST: vram-d3cold-threshold<br>
+&gt;&nbsp;&nbsp; * Functionality: pm - d3cold<br>
+&gt; @@ -670,7 +687,7 @@ static void test_vram_d3cold_threshold(device_t de=
+vice, int sysfs_fd)<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; map =3D xe_bo_map(device.fd_=
+xe, bo, SIZE);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; memset(map, 0, SIZE);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; munmap(map, SIZE);<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp; set_vram_d3cold_threshold(sysfs_fd, threshol=
+d);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_sysfs_set_vram_d3cold_threshold(sysfs_fd=
+, threshold);<br>
+&gt;&nbsp;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Setup D3Cold but card sho=
+uld be in D3hot */<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_assert(setup_d3(device, =
+IGT_ACPI_D3Cold));<br>
+&gt; @@ -1082,7 +1099,7 @@ int igt_main()<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; }<br>
+&gt;&nbsp;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; igt_describe_f(&quot;Validate mmap memory mappings with=
+ vram region,&quot;<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp; &quot;when device along with parent bridge in %s&quot;, d-&gt;name);=
+<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp; &quot;when device along with parent bridge in %s&quot;, =
+d-&gt;name);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; igt_subtest_f(&quot;%s-mmap-vram&quot;, d-&gt;name) {<b=
+r>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; int del=
+ay_ms;<br>
+&gt;&nbsp;<br>
+&gt; @@ -1116,11 +1133,108 @@ int igt_main()<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;if vram used &gt; v=
+ram threshold&quot;);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest(&quot;vram-d3col=
+d-threshold&quot;) {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; igt_require_f(has_runtime_pm, &quot;Runtime PM not avai=
+lable\n&quot;);<br>
+&gt; -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; orig_threshold =3D get_vram_d3cold_threshold(sysfs_fd);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; orig_threshold =3D igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; igt_install_exit_handler(vram_d3cold_threshold_restore)=
+;<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; test_vram_d3cold_threshold(device, sysfs_fd);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt;&nbsp;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest(&quot;vram-d3cold-threshold-show=
+&quot;) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; uint64_t threshold;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_require(sysfs_exists(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; &quot;device/vram_d3cold_threshold&quot;));<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; threshold =3D igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_info(&quot;threshold=3D%&quot; PRIu64 &quot;\n&quot;, threshold);<b=
+r>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest(&quot;vram-d3cold-threshold-stor=
+e&quot;) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; uint64_t old_val;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; uint64_t new_val;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_require(sysfs_exists(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; &quot;device/vram_d3cold_threshold&quot;));<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; old_val =3D igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; /*<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; * Ensure the original threshold is restored even if<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; * an assertion fails later in the test.<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp; */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; orig_threshold =3D old_val;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_install_exit_handler(vram_d3cold_threshold_restore);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val + 1);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; new_val =3D igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_assert_eq(new_val, old_val + 1);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; /* restore */<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_info(&quot;old=3D%&quot; PRIu64 &quot; new=3D%&quot; PRIu64 &quot;\=
+n&quot;,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; old_val, new_val)=
+;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest(&quot;lb-fan-control-version-sho=
+w&quot;) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; char version[64];<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; int ret;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_require(sysfs_exists(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; &quot;device/lb_fan_control_version&quot;));<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; ret =3D igt_sysfs_scanf(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;device/l=
+b_fan_control_version&quot;,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;%63s&quo=
+t;, version);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_assert(ret &gt; 0);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_info(&quot;lb-fan-control-version=3D%s\n&quot;, version);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest(&quot;lb-voltage-regulator-versi=
+on-show&quot;) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; char version[64] =3D {};<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; int ret;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_require(sysfs_exists(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; &quot;device/lb_voltage_regulator_version&quot;));<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; ret =3D igt_sysfs_scanf(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;device/l=
+b_voltage_regulator_version&quot;,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;%63s&quo=
+t;, version);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_debug(&quot;ret=3D%d errno=3D%d\n&quot;, ret, errno);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_assert(ret &gt; 0);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_info(&quot;lb-voltage-regulator-version=3D%s\n&quot;, version);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest(&quot;auto-link-downgrade-capabl=
+e-show&quot;) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; int val;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; int ret;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_require(sysfs_exists(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; &quot;device/auto_link_downgrade_capable&quot;));<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; ret =3D igt_sysfs_scanf(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;device/a=
+uto_link_downgrade_capable&quot;,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;%d&quot;=
+, &amp;val);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_assert(ret &gt; 0);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_info(&quot;auto-link-downgrade-capable=3D%d\n&quot;, val);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_assert(val =3D=3D 0 || val =3D=3D 1);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; igt_subtest(&quot;auto-link-downgrade-status=
+-show&quot;) {<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; int val;<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; int ret;<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_require(sysfs_exists(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; &quot;device/auto_link_downgrade_status&quot;));<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; ret =3D igt_sysfs_scanf(sysfs_fd,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;device/a=
+uto_link_downgrade_status&quot;,<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;%d&quot;=
+, &amp;val);<br>
+&gt; +<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_assert(ret &gt; 0);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_info(&quot;auto-link-downgrade-status=3D%d\n&quot;, val);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nb=
+sp; igt_assert(val =3D=3D 0 || val =3D=3D 1);<br>
+&gt; +&nbsp;&nbsp;&nbsp;&nbsp; }<br>
+&gt; +<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; igt_fixture() {<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; close(sysfs_fd);<br>
+&gt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp=
+;&nbsp;&nbsp;&nbsp; igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_=
+allowed);<br>
+&gt; --<br>
+&gt; 2.43.0<br>
+&gt;<br>
+</div>
+</body>
+</html>
+
+--_000_CH0PR11MB5249CE0D8F980246C56ECBA6E5952CH0PR11MB5249namp_--
