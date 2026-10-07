@@ -4,59 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FB94CA5FFF
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 09:40:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 532BACA5FFF
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 09:42:41 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BBA0D10E419;
-	Wed,  7 Oct 2026 09:40:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0184910E428;
+	Wed,  7 Oct 2026 09:42:41 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="IWL/s+TK";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M/kkx1DU";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AEE5910E419
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 09:39:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0AEA010E419
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 09:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791365985; x=1822901985;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=FBRwpEV0TobG5ykTIc+thq30q16nmXlRpda2v/AHLAw=;
- b=IWL/s+TKpQ6gUwXY+AbedY32kTpmwo0lpZrDSGEeH9AnkURUrlWRUFJi
- anPKGws54+ue0mhwUktuTnVs/WpQ4eIfmb68/qLlI9AomYIQGEjF3esEu
- vyZLjOx4VEQUOnhwX82yzp90YoB5pSJOwroE5gKTIhkVgexUXLR7+W+65
- bPHhFYTzAwI6jfBdwBn3WICzvLcDEIc3E7+jLqPMgeYcFuW1loA+3wwrw
- 54TufpPnBeLrzcfxeDnKWXFjuIhpIc5B4OUV3QxWzLkIrRyvY8trRmd8P
- 8Sb3OdkqaKim/LSQlntR1WLQl8Eqwju+7fcRXrrJOVM5p+srgkiYGJITK A==;
-X-CSE-ConnectionGUID: oHwlom69QiyRaaNEUJjvbg==
-X-CSE-MsgGUID: YQRc8DPkQmu5CWt8pstdog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="18676"
+ t=1791366116; x=1822902116;
+ h=from:subject:date:message-id:mime-version:
+ content-transfer-encoding:to:cc;
+ bh=nckqhg9bHHnROehFvaGchDczlbhh/0DGAExN0MHnk5w=;
+ b=M/kkx1DULYewjUS1gYH2WHvxr1Nt8/Uq8HpdxrbNJTT9T1FiTDtEibuS
+ noYmikIorM0wPcjVPfn7AERdLXDbu6wz+2wXd+WydOMqwJsbgfcPwSw4l
+ tkZgMaREqyGx5ZfGDGrRu0WeD4a8FYp+8YH1U+Jt6LrhnCLEcUqjYyE2A
+ Rc4bJ5aWZ0vF9iHAcEikLqZKNKEnACrtnaquqKz0ddpUFbmap8SH38MCk
+ Kcx+kV9FI8t9qfKcuNcbua2ct41P+5vxrx2M7HhQyWBgNr7dBzltE5qH4
+ GQxWAfoxxMCTKvIcOKLl+mkhtVt/3/L6m61ZioeyWmnDmmzuafDx6sm76 A==;
+X-CSE-ConnectionGUID: 8p49ZcrKSUOZx+9hRJKjbw==
+X-CSE-MsgGUID: PYWofZH0SPaXgdrjXTDVGQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="230472"
 X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="18676"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 02:39:45 -0700
-X-CSE-ConnectionGUID: xVqXw2YfReWaM/6e9sBipQ==
-X-CSE-MsgGUID: KPHOJs34Rpu9LTbk9MCR1Q==
+   d="scan'208";a="230472"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2026 02:41:56 -0700
+X-CSE-ConnectionGUID: w2f1id7qQkuqUgomX1vgdg==
+X-CSE-MsgGUID: usn/eOxLSrKklIKvxylJcQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="305380256"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.3])
- ([172.28.182.3])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 02:39:43 -0700
-Message-ID: <4d92c8d8-2ae9-48a2-94f3-41a9a5636547@linux.intel.com>
-Date: Wed, 7 Oct 2026 11:39:41 +0200
+X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="275195467"
+Received: from srr4-3-linux-106-armuthy.iind.intel.com ([10.190.238.56])
+ by orviesa006.jf.intel.com with ESMTP; 07 Oct 2026 02:41:54 -0700
+From: Arun R Murthy <arun.r.murthy@intel.com>
+Subject: [PATCH i-g-t 0/2] EDITME: Update pipe joiner test to get free crtc
+Date: Wed, 07 Oct 2026 15:10:38 +0530
+Message-Id: <20261007-joiner-v1-0-b40826411fa8@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] tests/intel/xe_pmu: Do not enable VFs in
- unrelated subtests
-To: Gustavo Sousa <gustavo.sousa@intel.com>, igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-References: <20261006-xe_pmu-do-not-enable-vfs-in-unrelated-subtests-v2-1-38f204d54553@intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20261006-xe_pmu-do-not-enable-vfs-in-unrelated-subtests-v2-1-38f204d54553@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJYTxmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzNDAwNz3az8zLzUIt1E4ySTNKMUM5MUo0QloOKCotS0zAqwQdGxtbUAhrM
+ aJFgAAAA=
+X-Change-ID: 20261007-joiner-a3b4f2d64d2a
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com, 
+ Arun R Murthy <arun.r.murthy@intel.com>
+X-Mailer: b4 0.15-dev
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,96 +71,32 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+Call a new API(drmModeGetCrtcList) exported by libdrm to get the list of
+active crtc and then call modeset with the first freely available crtc.
 
-On 10/6/2026 4:11 PM, Gustavo Sousa wrote:
-> The test xe_pmu has a subtest group that enables SRIOV VFs as part of
-> its fixture.  Even though the fixture is part of a subtest group, the
-> enabling/disabling will happen regardless of whether those subests are
-> selected or not (via --run-subtest).
->
-> As most subtests in xe_pmu don't need that, avoid doing that as a
-> fixture and rather incorporate the enabling/disabling as part of a new
-> macro called test_each_engine_with_vfs().
->
-> v2:
->    - Add "intel" to commit subject prefix. (Kamil)
->    - Fix argument name of test_each_engine_with_vfs():
->      s/num_vfs/num_fns/. (Kamil)
->    - Enable/disable VFs only once per macro call by moving the call to
->      xe_for_each_engine() inside the for-loop. (Marcin)
->
-> Cc: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-> ---
->   tests/intel/xe_pmu.c | 21 ++++++++++++---------
->   1 file changed, 12 insertions(+), 9 deletions(-)
->
-> diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-> index d41ebba1faef..eda56c078653 100644
-> --- a/tests/intel/xe_pmu.c
-> +++ b/tests/intel/xe_pmu.c
-> @@ -124,6 +124,15 @@ static bool has_engine_active_ticks;
->   			igt_dynamic_f("engine-%s%d", xe_engine_class_string(hwe->engine_class), \
->   				      hwe->engine_instance)
->   
-> +#define test_each_engine_with_vfs(test, fd, hwe, num_fns) \
-> +	igt_subtest_with_dynamic(test) \
-> +		for (num_fns = enable_and_provision_vfs(fd) + 1; \
-> +		     num_fns; \
-> +		     unprovision_and_disable_vfs(fd), num_fns = 0) \
-> +			xe_for_each_engine(fd, hwe) \
-> +				igt_dynamic_f("engine-%s%d", xe_engine_class_string(hwe->engine_class), \
-> +					      hwe->engine_instance)
-> +
+The libdrm patch is still not merged and is floated for review @
+https://gitlab.freedesktop.org/mesa/libdrm/-/merge_requests/490/
 
-igt_assert (from enable_and_provision_vfs) before entering igt_dynamic 
-can hit an internal assertion and abort.
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com
+Cc: kunal1.joshi@intel.com
 
-Could we move VF setup into the dynamic case and reuse the enabled VFs 
-across engines, like xe_sriov_scheduling does?
+Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+---
+Arun R Murthy (2):
+      tests/intel/kms_joiner_helper: Add igt_get_free_pipes_mask()
+      tests/intel/kms_joiner: Use the CRTCs reported free before a modeset
 
-Unfortunately it complicates the code, adds state and cleanup logic, but 
-I don’t see a simpler way to keep setup assertions safe.
+ meson.build                     |  7 ++++
+ tests/intel/kms_joiner.c        | 75 ++++++++++++++++++++++++++++++++++++++---
+ tests/intel/kms_joiner_helper.c | 66 ++++++++++++++++++++++++++++++++++++
+ tests/intel/kms_joiner_helper.h |  1 +
+ 4 files changed, 144 insertions(+), 5 deletions(-)
+---
+base-commit: 5e43e9df3a1581074f0de2bbeddd939ebd950b93
+change-id: 20261007-joiner-a3b4f2d64d2a
 
->   static bool has_event(const char *device, const char *event)
->   {
->   	char buf[512];
-> @@ -1192,26 +1201,20 @@ int igt_main()
->   	igt_subtest_group() {
->   		unsigned int num_fns;
->   
-> -		igt_fixture()
-> -			num_fns = enable_and_provision_vfs(fd) + 1;
-> -
->   		igt_describe("Validate engine activity on all functions");
-> -		test_each_engine("all-fn-engine-activity-load", fd, eci)
-> +		test_each_engine_with_vfs("all-fn-engine-activity-load", fd, eci, num_fns)
->   			engine_activity_all_fn(fd, eci, num_fns);
->   
->   		igt_describe("Validate per-function engine activity");
-> -		test_each_engine("fn-engine-activity-load", fd, eci)
-> +		test_each_engine_with_vfs("fn-engine-activity-load", fd, eci, num_fns)
->   			for (int fn = 0; fn < num_fns; fn++)
->   				engine_activity_fn(fd, eci, fn, XE_SRIOV_SCHED_PRIORITY_LOW);
->   
->   		igt_describe("Validate per-function engine activity when sched-if-idle is set");
-> -		test_each_engine("fn-engine-activity-sched-if-idle", fd, eci) {
-> +		test_each_engine_with_vfs("fn-engine-activity-sched-if-idle", fd, eci, num_fns) {
->   			for (int fn = 0; fn < num_fns; fn++)
->   				engine_activity_fn(fd, eci, fn, XE_SRIOV_SCHED_PRIORITY_NORMAL);
->   		}
-> -
-> -		igt_fixture()
-> -			unprovision_and_disable_vfs(fd);
->   	}
->   
->   	igt_subtest_group() {
->
-> ---
-> base-commit: faad2cd0e3e8eb2e18111c2358823a7bdfb56d94
-> change-id: 20261005-xe_pmu-do-not-enable-vfs-in-unrelated-subtests-e24c1cd95d71
->
-> Best regards,
-> --
-> Gustavo Sousa <gustavo.sousa@intel.com>
+Best regards,
+-- 
+Arun R Murthy <arun.r.murthy@intel.com>
+
