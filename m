@@ -4,45 +4,45 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1DC1CA5FF1
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 13:35:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 47254CA5FFC
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 13:37:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1D8C610F5C9;
-	Wed,  7 Oct 2026 13:35:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E7BD910E5FE;
+	Wed,  7 Oct 2026 13:37:08 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Oua/2rkV";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="K4Kv+RBH";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 184F810F5C9
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 13:35:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 189BE10F5C9
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 13:36:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791380103; x=1822916103;
+ t=1791380184; x=1822916184;
  h=from:to:cc:subject:in-reply-to:references:date:
  message-id:mime-version;
- bh=KN3pUyW3RZVcUVM1kLZVSZZmbb7eiEUV9eTroagYqDE=;
- b=Oua/2rkVzFNQEGmPZuT1pYta/7fyM8+5NQT+lByuCiiJ0hGPEAyOO4Qx
- Qm+b9T8QqQH8vCqB9xsU75r8PEGK978UIzuweA/gBcVmAjv9Vr7FcAgvC
- xLyp5vev+JKTV9+D2R/UTs5NLImKzw4tz8Nj69NeG788UZDxx0r1kHvpE
- LhFTIoqjfBcmoPW+quVDznj1+Zca80DIkYwCVZowLfufmWtN+qBUGdjJA
- RcEc9o2rWIrzQaltXWmepW8t75SlRo6cCgTOPgZqDixdHA/d5rEE5JH+Z
- SPgA4dLd44fiV7+4AlljRbFY6x4+g0gw10YXePiyv14UOPWXXR405H/rX g==;
-X-CSE-ConnectionGUID: Uhl2u6ZvRM+43ggTXmVlCQ==
-X-CSE-MsgGUID: OVaDbwuRQ0OeCZUwbv6K+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="148340"
+ bh=EbLlGWop21Hwvdy44hV9JRQ7QfZccAo/BRrh2r91h7Y=;
+ b=K4Kv+RBHYibafrMbm63QLZttL+ONmySo2f2lbeiJqq4+Vpy+PD2ruzp3
+ cpCsl0HC71p7HByl2ajaXqG1GIJR8APvL8obj2n/aFcIESdzwFpyM6f1Z
+ aeO1ZgIIslnE29a8QM5ruEhTAY6BmhyZENzXFIbs1OVyMUe464DqDkggH
+ 61rNtnsl89XmAbrzhSpmGH7dimUUjz717nthWM5EofUa8qVHJmTD63uuc
+ Sn9EAd0247cgSuR9+VdOqPI3Q8UACbEuq++d+dcUBy3M4y99+Hyj8akzb
+ 0YPqa8Ucrw6heLEn3cvLvUHbJvsem9lRIszfmdNjOVyr8gwRGB5PnML0s Q==;
+X-CSE-ConnectionGUID: 1+TycxnGQSWHNpWNLhRT5A==
+X-CSE-MsgGUID: 50lldlGwRlS4gRuWO0pPLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="249464"
 X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="148340"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 06:34:45 -0700
-X-CSE-ConnectionGUID: LiwYB4piQYWLH4f551tr2g==
-X-CSE-MsgGUID: vhY83vvnS66Lu7rcsx8a1g==
+   d="scan'208";a="249464"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2026 06:36:24 -0700
+X-CSE-ConnectionGUID: IfyPNW5UR9iX1weVaraMIQ==
+X-CSE-MsgGUID: jSSLYR1GT2mBIrjJzM+EsQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="315472246"
+X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="285538688"
 Received: from hrotuna-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.244.231])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 06:34:43 -0700
+ by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2026 06:36:22 -0700
 From: Jani Nikula <jani.nikula@intel.com>
 To: Arun R Murthy <arun.r.murthy@intel.com>, igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com, Arun R Murthy
@@ -54,8 +54,8 @@ Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
  6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
 References: <20261007-joiner-v1-0-b40826411fa8@intel.com>
  <20261007-joiner-v1-1-b40826411fa8@intel.com>
-Date: Wed, 07 Oct 2026 16:34:41 +0300
-Message-ID: <5b5f1fcb19f9c6052bd0daa857c5997bb9b08130@intel.com>
+Date: Wed, 07 Oct 2026 16:36:19 +0300
+Message-ID: <45b38494fa17817bbcbae211010c3161706f364a@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -84,21 +84,6 @@ On Wed, 07 Oct 2026, Arun R Murthy <arun.r.murthy@intel.com> wrote:
 >
 > drmModeGetCrtcList() is a recent libdrm addition, so probe for it in
 > meson and fall back to plain CRTC enumeration when it is missing.
-
-Why is this so pipe based, and located in kms_joiner_helper?
-
-You could just as well get the information about whether the CRTC is
-available, like the IOCTL, and then use that information in the joiner.
-
-It's not helping to plug the pipe everywhere, we should be heading the
-other way, and only use it at the last point where absolutely needed.
-
-And there's nothing Intel specific about the IOCTL, so this should not
-be hidden under tests/intel either.
-
-BR,
-Jani.
-
 >
 > Assisted-by: LLM
 > Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
@@ -153,6 +138,9 @@ Jani.
 > +{
 > +	uint32_t free_mask = 0;
 > +#ifdef HAVE_DRMMODEGETCRTCLIST
+
+#ifdefs belong outside of functions, not inside.
+
 > +	drmModeCrtcListPtr list;
 > +	int i;
 > +
