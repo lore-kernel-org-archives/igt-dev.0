@@ -4,57 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EEE0CA5FF1
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 14:18:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84A83CA5FF1
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 14:19:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AF12510E29C;
-	Wed,  7 Oct 2026 14:18:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C15A10E605;
+	Wed,  7 Oct 2026 14:19:02 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="llPawuTW";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="MRIgh+b5";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 26D9B10E29C
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 14:17:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2AB0810E29C
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 14:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791382651; x=1822918651;
- h=from:subject:date:message-id:mime-version:
- content-transfer-encoding:to:cc;
- bh=mcFdwqw9YTjHj4b/rzRxUi8UzzI10nXF5s6QiTA4Tdg=;
- b=llPawuTW68UObSiQlx1Bf0jvL09wL6kHaUTEXg+pf3lGS1c4Y8shb26Y
- mIkh2fyjFXHKSbTmTYfl2Pb8zBbCx+LseBi8i0qIUhR1C4ArHhOAJj0Kx
- 0HtK1LFSrytgjMThfB/g+Q2oYdR1kpVuSkkqaDlBXX7GRqTC0llqIdCIx
- y5/k/sGZrOeILeVGLjV+eaj4MHp/liQQE0zyalbDTIoD4V8HbxQfTOZlz
- ZT6QJWgfaHnee4kDulos3ZcTrdAPIe+7X6zauj7hCN5NzFUkMyrj2VNNT
- SjUwlzZ+UnHN6e0LuLOlImNUdzEzTlWqkG2QBuW13DzUE3Iy9iK/ECo+8 Q==;
-X-CSE-ConnectionGUID: EIErxRHTRB+u5VzZmhPOMw==
-X-CSE-MsgGUID: BOUithf7SYSJIzKBSoAH8w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="32046"
+ t=1791382652; x=1822918652;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:references:in-reply-to:to:cc;
+ bh=msyxsvsF+0DWI5F7f6qJLXlt6MreDsz7Mnh+sO0R3fw=;
+ b=MRIgh+b5Jgk6L/zgXr++jR9uZQv8GyqwPEvioQ31VJKUueELNDIRqhMk
+ rGYM1rHlxjZYKE/ckD8KEYIZMC6PzqkTAAke1IZ56TAPepD3UJ0gNifsO
+ SXUVVxdVhQCgfg7VFUI+VidYlIbFP0cnF7m2PR72N+ouYil6DeUK52CQc
+ bnUUZoZN7EjZZC9FBCHtCGT35wPnYkNLWdYjOuI4pFuswOoyiivSao09h
+ Qw+vM2i+1sBgDeIqP45OjLBJQGajrNylsz6jyjXAYVcRNPRYVAB1qPsoq
+ Cj7zRZN+r3ARuWKLA0JcBDktO0XekjIXf23c8iylHkYQbgQvM+OAAwWRm g==;
+X-CSE-ConnectionGUID: pJKhM4cwTZuJG9wgNPL9tw==
+X-CSE-MsgGUID: /d2bCp91T7OmONSqCWx66Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="32049"
 X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="32046"
+   d="scan'208";a="32049"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 07:17:30 -0700
-X-CSE-ConnectionGUID: nhzpR0wZRbm2l7tW7PFlaA==
-X-CSE-MsgGUID: lanDK5k4QbKot4XAeiMFWA==
+ 07 Oct 2026 07:17:31 -0700
+X-CSE-ConnectionGUID: bQtznatbSQqmbstSSYeJrg==
+X-CSE-MsgGUID: /LUY9i5NRFexcDni9Hlu7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="275233270"
+X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="275233289"
 Received: from khuang2-desk.gar.corp.intel.com (HELO [192.168.1.16])
  ([10.124.221.37])
  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 07:17:29 -0700
+ 07 Oct 2026 07:17:30 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
-Subject: [PATCH i-g-t 0/2] Fix igt_runner hang and resource leak associated
- with pw-reserve
-Date: Wed, 07 Oct 2026 11:16:25 -0300
-Message-Id: <20261007-stop-pw-reserve-v1-0-abbd3b879612@intel.com>
+Date: Wed, 07 Oct 2026 11:16:26 -0300
+Subject: [PATCH i-g-t 1/2] lib/igt_core: Check if helper proc was alive
+ before kill()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MMQqAMAxA0atIZgNtlQpeRRyKxpqlLY2oIN7d4
- PiH9x8QqkwCY/NApZOFc9KwbQPLHlIk5FUbnHHeGuNRjlywXFhJ5UkYyHemH8Lm1h5UlUob3/9
- xAsaIB8zv+wEWp7JyaAAAAA==
-X-Change-ID: 20261006-stop-pw-reserve-ae63047af2d4
+Message-Id: <20261007-stop-pw-reserve-v1-1-abbd3b879612@intel.com>
+References: <20261007-stop-pw-reserve-v1-0-abbd3b879612@intel.com>
+In-Reply-To: <20261007-stop-pw-reserve-v1-0-abbd3b879612@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Gustavo Sousa <gustavo.sousa@intel.com>
 X-Mailer: b4 0.15-dev
@@ -73,53 +71,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-When running igt_runner on an interactive SSH session we realized that
-the runner would hang when testlists contained test cases that would
-unbind/rebind (or unload/reload) the driver multiple times.
+The function igt_stop_helper() does a sanity check by verifying if the
+helper process died "too early", however it does that by checking if
+it was terminated due to not handling the signal used in the kill()
+call.
 
-Some debugging revealed that the hangs were caused by pw-reserve
-processes created by IGT not being properly terminated.  Let's fix
-that.
+That logic has a flaw though: it the helper process gracefully handles
+the signal sent by kill() and exits normally, igt_stop_helper() will
+mistakenly take that as dying too early, because WIFSIGNALED(status)
+will be false.
+
+That's the case with the pw-reserve process: in an upcoming change we
+will change pipewire_reserve_wait() to call it with execlp().  Because
+it handles SIGTERM and exits normally, a warning and assertion failure
+would happen with the current logic.
+
+Fix that by checking if the process was alive before calling kill().
 
 Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+---
+ lib/igt_core.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/lib/igt_aux.c b/lib/igt_aux.c
-index dbb90756babc..18053db8ff46 100644
---- a/lib/igt_aux.c
-+++ b/lib/igt_aux.c
-@@ -1898,13 +1898,10 @@ static void pipewire_reserve_wait(void)
- 		setenv("HOME", homedir, 1);
- 		setenv("XDG_RUNTIME_DIR",xdg_dir, 1);
- 
--		/*
--		 * pw-reserve will run in background. It will only exit when
--		 * igt_kill_children() is called later on. So, it shouldn't
--		 * call igt_waitchildren(). Instead, just exit with the return
--		 * code from pw-reserve.
--		 */
--		exit(system("pw-reserve -n Audio0 -r"));
-+		if (execlp("pw-reserve", "pw-reserve", "-n", "Audio0", "-r", NULL)) {
-+			igt_warn("Failed to start pw-reserve: %s\n", strerror(errno));
-+			exit(1);
-+		}
- 	}
+diff --git a/lib/igt_core.c b/lib/igt_core.c
+index 8ee9432923e6..d9949ea131f8 100644
+--- a/lib/igt_core.c
++++ b/lib/igt_core.c
+@@ -2652,13 +2652,6 @@ int igt_wait_helper(struct igt_helper_process *proc)
+ 	return status;
  }
  
+-static bool helper_was_alive(struct igt_helper_process *proc,
+-			     int status)
+-{
+-	return (WIFSIGNALED(status) &&
+-		WTERMSIG(status) == (proc->use_SIGKILL ? SIGKILL : SIGTERM));
+-}
+-
+ /**
+  * igt_stop_helper:
+  * @proc: #igt_helper_process structure
+@@ -2670,17 +2663,22 @@ static bool helper_was_alive(struct igt_helper_process *proc,
+ void igt_stop_helper(struct igt_helper_process *proc)
+ {
+ 	int status;
++	int ret;
+ 
+ 	if (!proc->running) /* never even started */
+ 		return;
+ 
++	ret = waitpid(proc->pid, &status, WNOHANG);
++
++	if (ret == proc->pid)
++		igt_debug("Helper died too early with status=%d\n", status);
++
+ 	/* failure here means the pid is already dead and so waiting is safe */
+ 	kill(proc->pid, proc->use_SIGKILL ? SIGKILL : SIGTERM);
+ 
+-	status = igt_wait_helper(proc);
+-	if (!helper_was_alive(proc, status))
+-		igt_debug("Helper died too early with status=%d\n", status);
+-	assert(helper_was_alive(proc, status));
++	assert(ret == 0);
++
++	igt_wait_helper(proc);
+ }
+ 
+ static void children_exit_handler(int sig)
 
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
----
-Gustavo Sousa (2):
-      lib/igt_core: Check if helper proc was alive before kill()
-      lib/igt_aux: Call pw-reserve with execlp()
-
- lib/igt_aux.c  | 11 ++++-------
- lib/igt_core.c | 20 +++++++++-----------
- 2 files changed, 13 insertions(+), 18 deletions(-)
----
-base-commit: faad2cd0e3e8eb2e18111c2358823a7bdfb56d94
-change-id: 20261006-stop-pw-reserve-ae63047af2d4
-
-Best regards,
---  
-Gustavo Sousa <gustavo.sousa@intel.com>
+-- 
+2.55.0
 
