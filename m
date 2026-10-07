@@ -4,53 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0D7CCA5FF1
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 05:45:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 179A8CA5FFF
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 06:10:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3984D10E325;
-	Wed,  7 Oct 2026 05:45:33 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U7u+vwc+";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 141E010E325
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 05:44:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791351886; x=1822887886;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=OV5lwCHV31T2un0mupteWQjOc/x5BIU5sEwvA6JtDmc=;
- b=U7u+vwc+nr9cZJgujVQdBPfpl/loz4cKmPuRSV3x4QdTacIlfxtjoBOM
- pI82u/yrpNUkWRufpsleEKIBqJ+1k5u/ocFAdP+YxbLmGYxwYQXktX5oI
- 4sd40GNMphJVinWEpbgWCGxuk1KvRfipF7evJN0U+8KZncqCHVjiiJ6jw
- L3KJx7S1jcHPnvSHxI2zboh5Uv4r7LEbKYboSgsEl6zuElJ2ufHmWuEcA
- oRXwV2NIyI/TarehZ4uWGcMbtUHuE38Z69fT4LAQnZHJTtrQ5fQ+WDRRr
- s6y5ZIprsjcDN6AFUa4K926UQqIJPv5LCzsxscX8RmwzgF2jHg/ecqrWH Q==;
-X-CSE-ConnectionGUID: 7EWpgR3IS9uQtBRiZwMPJA==
-X-CSE-MsgGUID: IOQpjvmXSmGcXx7l+u+fWQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="108432170"
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="108432170"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2026 22:44:46 -0700
-X-CSE-ConnectionGUID: M40xuV8pTL6E5I3Ef5083A==
-X-CSE-MsgGUID: KZLcYwh9T321/t5l0V4t7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="281095077"
-Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
- by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2026 22:44:44 -0700
-From: Shekhar Chauhan <shekhar.chauhan@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: shekhar.chauhan@intel.com,
-	umesh.nerlige.ramappa@intel.com
-Subject: [PATCH i-g-t v3] tools/xe-perf-recorder: Wait for mmio-trigger-report
-Date: Wed,  7 Oct 2026 11:14:09 +0530
-Message-ID: <20261007054409.3694489-1-shekhar.chauhan@intel.com>
-X-Mailer: git-send-email 2.53.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7979810E23D;
+	Wed,  7 Oct 2026 06:10:38 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B366D10E23D;
+ Wed,  7 Oct 2026 06:09:51 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============4647880585926982314=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Revert_=22tests/intel/xe=5F?=
+ =?utf-8?q?pm=3A_add_coverage_for_xe=5Fdevice=5Fsysfs=22?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: shivtej.eknath.patil@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 07 Oct 2026 06:09:51 -0000
+Message-ID: <179135339172.246459.11547857731489390225@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20261007051044.6399-1-shivtej.eknath.patil@intel.com>
+In-Reply-To: <20261007051044.6399-1-shivtej.eknath.patil@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,170 +37,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Ashutosh Dixit <ashutosh.dixit@intel.com>
+--===============4647880585926982314==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-After mmio trigger is issued, we should wait till we receive a report with
-the context id issued in the mmio trigger.
+== Series Details ==
 
-While waiting, propagate write_perf_data() failures back to main(). A
-failed write can drop an already-read trigger report before it is checked,
-which would otherwise leave the recorder waiting indefinitely.
+Series: Revert "tests/intel/xe_pm: add coverage for xe_device_sysfs"
+URL   : https://patchwork.freedesktop.org/series/175641/
+State : success
 
-v3: Propagate write_perf_data() failures out of the trigger wait (Shekhar)
+== Summary ==
 
-Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
-Co-developed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
-Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
----
- tools/xe-perf/xe_perf_recorder.c | 57 ++++++++++++++++++++++++++------
- 1 file changed, 47 insertions(+), 10 deletions(-)
+CI Bug Log - changes from XEIGT_9131_BAT -> XEIGTPW_15948_BAT
+====================================================
 
-diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
-index e13eef519..6ec29558d 100644
---- a/tools/xe-perf/xe_perf_recorder.c
-+++ b/tools/xe-perf/xe_perf_recorder.c
-@@ -370,6 +370,7 @@ struct recording_context {
- 	uint32_t vm;
- 	uint32_t exec_queue;
- 	struct intel_bb *ibb;
-+	uint32_t mmio_trg_val;
- };
- 
- static uint32_t oa_unit_mmio_trigger_reg(struct recording_context *ctx)
-@@ -642,13 +643,15 @@ check_mmio_trigger_report(struct recording_context *ctx, const void *report)
- 	const uint32_t *report_32 = report;
- 	uint64_t value;
- 
--	if (report_reason(report_32))
-+	if (!ctx->mmio_trg_val || report_reason(report_32))
- 		return;
- 
- 	value = (fmt->header == HDR_64_BIT) ? ((const uint64_t *)report)[2] : report_32[2];
- 
--	if (value == 0xc0ffee01 || value == 0xc0ffee02)
-+	if (value == ctx->mmio_trg_val) {
- 		fprintf(stdout, "Received trigger report with value 0x%" PRIx64 "\n", value);
-+		ctx->mmio_trg_val = 0;
-+	}
- }
- 
- static bool write_stream_data(struct recording_context *ctx,
-@@ -712,6 +715,21 @@ static bool write_perf_data(FILE *output, struct recording_context *ctx)
- 	return false;
- }
- 
-+static bool write_mmio_trigger_data(struct recording_context *ctx)
-+{
-+	struct pollfd pollfd = { .fd = ctx->perf_fd, .events = POLLIN };
-+
-+	while (ctx->mmio_trg_val) {
-+		poll(&pollfd, 1, -1);
-+		assert(pollfd.revents & POLLIN);
-+
-+		if (!write_perf_data(ctx->output_stream, ctx))
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static clock_t correlation_clock_id = CLOCK_MONOTONIC;
- 
- static const char *
-@@ -790,23 +808,27 @@ static void emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint3
- 	intel_bb_out(ibb, value);
- }
- 
--static void emit_oa_trigger(struct recording_context *ctx, uint32_t value)
-+static bool emit_oa_trigger(struct recording_context *ctx, uint32_t value)
- {
- 	emit_mmio_triggered_report(ctx->ibb, oa_unit_mmio_trigger_reg(ctx), value);
- 
- 	intel_bb_flush_render(ctx->ibb);
- 	intel_bb_sync(ctx->ibb);
- 	intel_bb_reset(ctx->ibb, false);
-+
-+	ctx->mmio_trg_val = value;
-+
-+	return write_mmio_trigger_data(ctx);
- }
- 
--static void
-+static bool
- read_command_file(struct recording_context *ctx)
- {
- 	struct recorder_command_base header;
- 	ssize_t ret = read(ctx->command_fifo_fd, &header, sizeof(header));
- 
- 	if (ret < 0)
--		return;
-+		return true;
- 
- 	switch (header.command) {
- 	case RECORDER_COMMAND_DUMP: {
-@@ -814,8 +836,10 @@ read_command_file(struct recording_context *ctx)
- 		uint8_t *dump = malloc(len);
- 		FILE *file;
- 
--		emit_oa_trigger(ctx, 0xc0ffee02);
--		write_perf_data(ctx->output_stream, ctx);
-+		if (!emit_oa_trigger(ctx, 0xc0ffee02)) {
-+			free(dump);
-+			return false;
-+		}
- 
- 		while (offset < len &&
- 		       ((ret = read(ctx->command_fifo_fd,
-@@ -859,6 +883,8 @@ read_command_file(struct recording_context *ctx)
- 		fprintf(stderr, "Unknown command 0x%x\n", header.command);
- 		break;
- 	}
-+
-+	return true;
- }
- 
- static void
-@@ -1320,7 +1346,11 @@ main(int argc, char *argv[])
- 	}
- 
- 	init_mmio_trigger_ctx(&ctx);
--	emit_oa_trigger(&ctx, 0xc0ffee01);
-+	if (!emit_oa_trigger(&ctx, 0xc0ffee01)) {
-+		fprintf(stderr, "Failed to write xe-oa data: %s\n",
-+			strerror(errno));
-+		goto fail;
-+	}
- 
- 	corr_period_ns = corr_period * 1000000000ul;
- 	poll_time_ns = corr_period_ns;
-@@ -1351,7 +1381,11 @@ main(int argc, char *argv[])
- 			}
- 
- 			if (pollfd[1].revents & POLLIN) {
--				read_command_file(&ctx);
-+				if (!read_command_file(&ctx)) {
-+					fprintf(stderr, "Failed to write xe-oa data: %s\n",
-+						strerror(errno));
-+					break;
-+				}
- 			}
- 		}
- 
-@@ -1370,7 +1404,10 @@ main(int argc, char *argv[])
- 	}
- 
- 	/* Emit second OA trigger for the case where circular buffer is not used */
--	emit_oa_trigger(&ctx, 0xc0ffee02);
-+	if (!emit_oa_trigger(&ctx, 0xc0ffee02))
-+		fprintf(stderr, "Failed to write xe-oa data: %s\n",
-+			strerror(errno));
-+
- 	fprintf(stdout, "Exiting...\n");
- 
- 	if (!write_perf_data(ctx.output_stream, &ctx)) {
--- 
-2.53.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15948_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [PASS][1] -> [ABORT][2] ([Intel XE#9463])
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9131/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15948/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+    - bat-nvls-1:         [PASS][3] -> [DMESG-WARN][4] ([Intel XE#8762] / [Intel XE#9069])
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9131/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15948/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
+  [Intel XE#9069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069
+  [Intel XE#9463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9131 -> IGTPW_15948
+  * Linux: xe-5895-7db399fbf387d3656d4a43bdc7d9580e3880bc2c -> xe-5899-daeb062fc40f727fafefed080c6d12a5ad1d0d12
+
+  IGTPW_15948: 15948
+  IGT_9131: 5e43e9df3a1581074f0de2bbeddd939ebd950b93 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5895-7db399fbf387d3656d4a43bdc7d9580e3880bc2c: 7db399fbf387d3656d4a43bdc7d9580e3880bc2c
+  xe-5899-daeb062fc40f727fafefed080c6d12a5ad1d0d12: daeb062fc40f727fafefed080c6d12a5ad1d0d12
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15948/index.html
+
+--===============4647880585926982314==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Revert &quot;tests/intel/xe_pm: add coverage for xe_device_sysfs&quot;</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175641/">https://patchwork.freedesktop.org/series/175641/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15948/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15948/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9131_BAT -&gt; XEIGTPW_15948_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15948_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9131/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15948/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463">Intel XE#9463</a>)</li>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9131/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15948/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069">Intel XE#9069</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9131 -&gt; IGTPW_15948</li>
+<li>Linux: xe-5895-7db399fbf387d3656d4a43bdc7d9580e3880bc2c -&gt; xe-5899-daeb062fc40f727fafefed080c6d12a5ad1d0d12</li>
+</ul>
+<p>IGTPW_15948: 15948<br />
+  IGT_9131: 5e43e9df3a1581074f0de2bbeddd939ebd950b93 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5895-7db399fbf387d3656d4a43bdc7d9580e3880bc2c: 7db399fbf387d3656d4a43bdc7d9580e3880bc2c<br />
+  xe-5899-daeb062fc40f727fafefed080c6d12a5ad1d0d12: daeb062fc40f727fafefed080c6d12a5ad1d0d12</p>
+
+</body>
+</html>
+
+--===============4647880585926982314==--
