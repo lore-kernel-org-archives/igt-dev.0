@@ -4,54 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 532BACA5FFF
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 09:42:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D3B8DCA5FFF
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 09:43:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0184910E428;
-	Wed,  7 Oct 2026 09:42:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7A79D10E419;
+	Wed,  7 Oct 2026 09:43:24 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="M/kkx1DU";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="I7RtgMMt";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0AEA010E419
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 09:41:55 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9B6C810E419
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 09:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791366116; x=1822902116;
- h=from:subject:date:message-id:mime-version:
- content-transfer-encoding:to:cc;
- bh=nckqhg9bHHnROehFvaGchDczlbhh/0DGAExN0MHnk5w=;
- b=M/kkx1DULYewjUS1gYH2WHvxr1Nt8/Uq8HpdxrbNJTT9T1FiTDtEibuS
- noYmikIorM0wPcjVPfn7AERdLXDbu6wz+2wXd+WydOMqwJsbgfcPwSw4l
- tkZgMaREqyGx5ZfGDGrRu0WeD4a8FYp+8YH1U+Jt6LrhnCLEcUqjYyE2A
- Rc4bJ5aWZ0vF9iHAcEikLqZKNKEnACrtnaquqKz0ddpUFbmap8SH38MCk
- Kcx+kV9FI8t9qfKcuNcbua2ct41P+5vxrx2M7HhQyWBgNr7dBzltE5qH4
- GQxWAfoxxMCTKvIcOKLl+mkhtVt/3/L6m61ZioeyWmnDmmzuafDx6sm76 A==;
-X-CSE-ConnectionGUID: 8p49ZcrKSUOZx+9hRJKjbw==
-X-CSE-MsgGUID: PYWofZH0SPaXgdrjXTDVGQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="230472"
+ t=1791366119; x=1822902119;
+ h=from:date:subject:mime-version:content-transfer-encoding:
+ message-id:references:in-reply-to:to:cc;
+ bh=WLzSbP/oFGANsorwaYWxf7xRZPucJLw5Q8m3u/YpiNA=;
+ b=I7RtgMMtbajv1MyQYv8nHLUXMwkLxi27d6OdHn81yxz/+UVojBMqTuXj
+ nbYFYJtYL2ZWCeGn62xVCS8riWViYgMNoKWV4rdpNgeTttJZkeDXW5OQ8
+ 7UrykWFdR5E8GfeiaMkEMV3WWPez1iZujH4SEwL2ulACLxCv9NVDCukXh
+ 7PSXQNVCMP5ic8MpM7QFVZyEEukn6OD7g9gWlsT1ZfUFwIF4aVXT9EmaB
+ pWS23/aNidGfuka5VzWrAJKfBZbFQS6OEtPwcw9r6PyTYEXiDypv8isaa
+ tS1DD2PfdCGRRUqj8dv3zf0eJey7GSs7KU7fw/9mucYsTIlKcy7vdyYx6 A==;
+X-CSE-ConnectionGUID: W1GXiUMfQpO7KtppAes1yw==
+X-CSE-MsgGUID: 7RXhrBk6QEO4hTeJzcRwJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="230481"
 X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="230472"
+   d="scan'208";a="230481"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 02:41:56 -0700
-X-CSE-ConnectionGUID: w2f1id7qQkuqUgomX1vgdg==
-X-CSE-MsgGUID: usn/eOxLSrKklIKvxylJcQ==
+ 07 Oct 2026 02:41:58 -0700
+X-CSE-ConnectionGUID: 714RidjTRieX/1csDl62dA==
+X-CSE-MsgGUID: UGXIeK72QoqpfuM8r2Ctxw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="275195467"
+X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="275195480"
 Received: from srr4-3-linux-106-armuthy.iind.intel.com ([10.190.238.56])
- by orviesa006.jf.intel.com with ESMTP; 07 Oct 2026 02:41:54 -0700
+ by orviesa006.jf.intel.com with ESMTP; 07 Oct 2026 02:41:57 -0700
 From: Arun R Murthy <arun.r.murthy@intel.com>
-Subject: [PATCH i-g-t 0/2] EDITME: Update pipe joiner test to get free crtc
-Date: Wed, 07 Oct 2026 15:10:38 +0530
-Message-Id: <20261007-joiner-v1-0-b40826411fa8@intel.com>
+Date: Wed, 07 Oct 2026 15:10:40 +0530
+Subject: [PATCH i-g-t 2/2] tests/intel/kms_joiner: Use the CRTCs reported
+ free before a modeset
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJYTxmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDAwNz3az8zLzUIt1E4ySTNKMUM5MUo0QloOKCotS0zAqwQdGxtbUAhrM
- aJFgAAAA=
-X-Change-ID: 20261007-joiner-a3b4f2d64d2a
+Message-Id: <20261007-joiner-v1-2-b40826411fa8@intel.com>
+References: <20261007-joiner-v1-0-b40826411fa8@intel.com>
+In-Reply-To: <20261007-joiner-v1-0-b40826411fa8@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com, 
  Arun R Murthy <arun.r.murthy@intel.com>
@@ -71,32 +70,213 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Call a new API(drmModeGetCrtcList) exported by libdrm to get the list of
-active crtc and then call modeset with the first freely available crtc.
+Every joiner modeset here picks pipes out of BIT(n_pipes) - 1, i.e. it
+assumes all pipes are free, and the ultra joiner and last-pipe paths
+pick a pipe without checking it at all. When another client owns a
+pipe the commit fails for an unrelated reason and the subtest reports
+a bogus failure.
 
-The libdrm patch is still not merged and is floated for review @
-https://gitlab.freedesktop.org/mesa/libdrm/-/merge_requests/490/
+Query the free pipes with igt_get_free_pipes_mask() right before each
+modeset sequence and use only those CRTCs that are available.
+igt_display_reset doesnt land to KMD without committing, so
+the pipes were never actually released before sampling; add the
+missing commit.
 
-To: igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com
-Cc: kunal1.joshi@intel.com
-
+Assisted-by: LLM
 Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
 ---
-Arun R Murthy (2):
-      tests/intel/kms_joiner_helper: Add igt_get_free_pipes_mask()
-      tests/intel/kms_joiner: Use the CRTCs reported free before a modeset
+ tests/intel/kms_joiner.c | 75 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 70 insertions(+), 5 deletions(-)
 
- meson.build                     |  7 ++++
- tests/intel/kms_joiner.c        | 75 ++++++++++++++++++++++++++++++++++++++---
- tests/intel/kms_joiner_helper.c | 66 ++++++++++++++++++++++++++++++++++++
- tests/intel/kms_joiner_helper.h |  1 +
- 4 files changed, 144 insertions(+), 5 deletions(-)
----
-base-commit: 5e43e9df3a1581074f0de2bbeddd939ebd950b93
-change-id: 20261007-joiner-a3b4f2d64d2a
+diff --git a/tests/intel/kms_joiner.c b/tests/intel/kms_joiner.c
+index fce24f2bd08767351c1b323cc0a7f03c6d2fa0ec..c0e358a319734b8876deffe74e0416474b7e64e5 100644
+--- a/tests/intel/kms_joiner.c
++++ b/tests/intel/kms_joiner.c
+@@ -131,6 +131,21 @@ static void enable_force_joiner_on_all_non_ultra_joiner_outputs(data_t *data)
+ 	}
+ }
+ 
++/*
++ * A joiner modeset needs @count consecutive free pipes starting at @pipe.
++ * @free_pipe_mask is the snapshot taken from drmModeGetCrtcList().
++ */
++static bool pipes_are_free(uint32_t free_pipe_mask, enum hardware_pipe pipe, int count)
++{
++	uint32_t needed_mask = 0;
++	int i;
++
++	for (i = 0; i < count; i++)
++		needed_mask |= BIT(pipe + i);
++
++	return (free_pipe_mask & needed_mask) == needed_mask;
++}
++
+ static enum hardware_pipe get_next_master_pipe(data_t *data, uint32_t available_pipe_mask)
+ {
+ 	if ((data->master_pipes & available_pipe_mask) == 0)
+@@ -223,7 +238,8 @@ static void switch_modeset_ultra_joiner_big_joiner(data_t *data, igt_output_t *o
+ 	drmModeModeInfo uj_mode;
+ 	int status;
+ 	bool ultrajoiner_found;
+-	enum hardware_pipe pipe;
++	/* set_joiner_mode() always drives pipe A */
++	enum hardware_pipe pipe = PIPE_A;
+ 	bool force_joiner_supported;
+ 
+ 	drmModeConnector *connector = output->config.connector;
+@@ -246,6 +262,14 @@ static void switch_modeset_ultra_joiner_big_joiner(data_t *data, igt_output_t *o
+ 	}
+ 
+ 	igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
++		/* Release the pipes a previous output was using if any */
++		igt_display_reset(&data->display);
++		igt_display_commit2(&data->display, COMMIT_ATOMIC);
++		igt_require_f(pipes_are_free(igt_get_free_pipes_mask(&data->display),
++					     pipe, 4),
++			      "No 4 free consecutive pipes starting at %s\n",
++			      kmstest_pipe_name(pipe));
++
+ 		set_joiner_mode(data, output, &uj_mode);
+ 		/* Switch to big joiner mode */
+ 		if (bigjoiner_mode_found(data->drm_fd, output->config.connector,
+@@ -279,7 +303,7 @@ static void test_single_joiner(data_t *data, int output_count, bool force_joiner
+ {
+ 	int i;
+ 	enum hardware_pipe pipe, master_pipe;
+-	uint32_t available_pipe_mask = BIT(data->n_pipes) - 1;
++	uint32_t available_pipe_mask;
+ 	igt_output_t *output;
+ 	igt_plane_t *primary;
+ 	igt_output_t **outputs;
+@@ -290,6 +314,9 @@ static void test_single_joiner(data_t *data, int output_count, bool force_joiner
+ 	igt_display_reset(&data->display);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
++	available_pipe_mask = igt_get_free_pipes_mask(&data->display);
++	igt_require_f(available_pipe_mask, "No free CRTC available\n");
++
+ 	for (i = 0; i < output_count; i++) {
+ 		output = outputs[i];
+ 		for (pipe = 0; pipe < data->n_pipes - 1; pipe++) {
+@@ -320,13 +347,15 @@ static void test_multi_joiner(data_t *data, int output_count, bool force_joiner)
+ 	igt_fb_t fb[output_count];
+ 	drmModeModeInfo *mode;
+ 
+-	available_pipe_mask = BIT(data->n_pipes) - 1;
+ 	outputs = force_joiner ? data->non_big_joiner_output : data->big_joiner_output;
+ 	cleanup = 0;
+ 
+ 	igt_display_reset(&data->display);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
++	available_pipe_mask = igt_get_free_pipes_mask(&data->display);
++	igt_require_f(available_pipe_mask, "No free CRTC available\n");
++
+ 	for (i = 0; i < output_count; i++) {
+ 		output = outputs[i];
+ 		for (pipe = 0; pipe < data->n_pipes; pipe++) {
+@@ -366,12 +395,14 @@ static void test_invalid_modeset_two_joiner(data_t *data,
+ 	igt_fb_t fb[INVALID_TEST_OUTPUT];
+ 	drmModeModeInfo mode;
+ 
+-	available_pipe_mask = BIT(data->n_pipes) - 1;
+ 	outputs = force_joiner ? data->non_big_joiner_output :
+ 		  mixed ? data->mixed_output : data->big_joiner_output;
+ 	igt_display_reset(&data->display);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
++	available_pipe_mask = igt_get_free_pipes_mask(&data->display);
++	igt_require_f(available_pipe_mask, "No free CRTC available\n");
++
+ 	for (i = 0; i < data->n_pipes - 1; i++) {
+ 		attempt_mask = BIT(data->pipe_seq[i]);
+ 		master_pipe = get_next_master_pipe(data, available_pipe_mask & attempt_mask);
+@@ -447,6 +478,12 @@ static void test_joiner_on_last_pipe(data_t *data, bool force_joiner)
+ 		igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 		output = outputs[i];
+ 
++		if (!pipes_are_free(igt_get_free_pipes_mask(display), pipe, 1)) {
++			igt_info("Pipe %s is not free, skipping output %s\n",
++				 kmstest_pipe_name(pipe), output->name);
++			continue;
++		}
++
+ 		if (!force_joiner) {
+ 			igt_require_f(bigjoiner_mode_found(data->drm_fd, output->config.connector, max_dotclock, &mode),
+ 						  "No big joiner mode found on output %s\n", output->name);
+@@ -478,7 +515,8 @@ static void test_joiner_on_last_pipe(data_t *data, bool force_joiner)
+ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display, bool force_joiner)
+ {
+ 	igt_display_t *display = &data->display;
+-	int i, j, k, ret, count;
++	int i, j, k, ret, count, needed_pipes;
++	uint32_t free_pipe_mask;
+ 	igt_output_t *output, *non_ultra_joiner_output;
+ 	igt_plane_t *primary;
+ 	igt_output_t **outputs;
+@@ -496,6 +534,16 @@ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display,
+ 	igt_display_reset(&data->display);
+ 	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+ 
++	/*
++	 * A successful ultra joiner modeset occupies four consecutive pipes,
++	 * so all four have to be free.
++	 * The invalid_pipe is a -ve test & expects the commit to be rejected,
++	 * so dont skip the test if 4 pipes are not available, allow it to fail.
++	 */
++	needed_pipes = invalid_pipe ? 1 : 4;
++	free_pipe_mask = igt_get_free_pipes_mask(&data->display);
++	igt_require_f(free_pipe_mask, "No free CRTC available\n");
++
+ 	for (i = 0; i < count; i++) {
+ 		output = outputs[i];
+ 
+@@ -519,6 +567,14 @@ static void test_ultra_joiner(data_t *data, bool invalid_pipe, bool two_display,
+ 				continue;
+ 
+ 			pipe = data->pipe_seq[j];
++
++			if (!pipes_are_free(free_pipe_mask, pipe, needed_pipes)) {
++				igt_info("No %d free consecutive pipes from %s, skipping output %s\n",
++					 needed_pipes, kmstest_pipe_name(pipe),
++					 output->name);
++				continue;
++			}
++
+ 			crtc = igt_crtc_for_pipe(display, pipe);
+ 			igt_assert_f(crtc, "There is no pipe %s\n", kmstest_pipe_name(pipe));
+ 
+@@ -579,6 +635,7 @@ static void test_basic_max_non_joiner(data_t *data)
+ {
+ 	igt_display_t *display = &data->display;
+ 	int count;
++	uint32_t free_pipe_mask;
+ 	enum hardware_pipe pipe;
+ 	igt_output_t **outputs, *output;
+ 	igt_fb_t fb;
+@@ -588,6 +645,10 @@ static void test_basic_max_non_joiner(data_t *data)
+ 	count = data->non_joiner_output_count;
+ 	outputs = data->non_joiner_output;
+ 	igt_display_reset(&data->display);
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++
++	/* A non-joiner modeset needs a single free pipe. */
++	free_pipe_mask = igt_get_free_pipes_mask(&data->display);
+ 
+ 	for (int i = 0; i < count; i++) {
+ 		output = outputs[i];
+@@ -596,6 +657,10 @@ static void test_basic_max_non_joiner(data_t *data)
+ 			igt_dynamic_f("pipe-%s-%s", kmstest_pipe_name(pipe), output->name) {
+ 				igt_crtc_t *crtc;
+ 
++				igt_require_f(pipes_are_free(free_pipe_mask, pipe, 1),
++					      "Pipe %s is not free\n",
++					      kmstest_pipe_name(pipe));
++
+ 				crtc = igt_crtc_for_pipe(display, pipe);
+ 				igt_assert_f(crtc, "There is no pipe %s\n", kmstest_pipe_name(pipe));
+ 
 
-Best regards,
 -- 
-Arun R Murthy <arun.r.murthy@intel.com>
+2.25.1
 
