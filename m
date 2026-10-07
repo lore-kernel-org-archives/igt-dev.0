@@ -4,64 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BD55CA5FFC
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 13:51:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16845CA5FF1
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 13:53:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0EB2610EB26;
-	Wed,  7 Oct 2026 13:51:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A0D0510E20C;
+	Wed,  7 Oct 2026 13:53:52 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="J0r7z3wi";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="PDipoNWn";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 59DDE10E5C8
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 13:50:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D85DC10F5EE
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 13:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791381051; x=1822917051;
+ t=1791381187; x=1822917187;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=e8Sp4j9MNzoky4lbf1nENMp/9TrPI9ym5E+i1uAEL64=;
- b=J0r7z3wiDDMJWgYHLu+lJVaXucordcsxzdRgXR1k+z52TJwl+lkh9g/v
- U/4ZdGcCNLHAeMKriF6/kdicGsM8BYvwV8d62TGMiOCJo1J8xzJ3JM1Ub
- RBcWYN2ZeSMAgFjUZ6U2XXQmlqSUzZ3e4RKxFjWUe7JeLmtZINfTJPcg0
- qKAIYgsdTCo/ehHbxA2ukt7o/GOwc0R8qURSFeKfMwntqWppuTCk8R8i6
- ENN4DCHg1qyU9lCRm9s5Ww3bZYMwCkwDfA3VtRLZj3LXslwADRteBZlqJ
- QI2Ms96gdBtyv4hmruUTCNpC5s023lcDFWLKy9djeWdVwEyY/EjAtu+QZ Q==;
-X-CSE-ConnectionGUID: XHczyQS6QuWNcyCa0W8Ieg==
-X-CSE-MsgGUID: /AOTJCmpToC0lUaMmpB/aQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="244413"
+ bh=61k62HYyNzOarT07ZYtGGhztJ5zBofa2e/OLZCM+0LA=;
+ b=PDipoNWnDHG7cLQBKxOSZshZV54KKJh1qhXh6NMJYBAM2Jm16+InZhUS
+ cOM0VFnHhu7JdmUbIHvJgyPhaWYWyWNiDWRm69cw9ieiKOTJHj0aacr1q
+ aTdX39UsezxaHK/GXE40h/5j8er1U0yJB+zqQdSs577514kMVxgeEkiOO
+ YKZAbKxj/22KTvL/3QIWbM1elGU5a87g/Jq40wutJ2h9qLNFuOTVdkLou
+ 68SD1SyDZTJwdlzwQAWkQzYMSh6JNk5igHwbCqpxnOD2tUFi5a9ipgjOp
+ 2IvW/cav3YMYfAaw93oKtsQOlG2R0FG1VHg/km0lB8IJ3E6quO80xP7FR w==;
+X-CSE-ConnectionGUID: ASZsAAFrRGCO7TWK6PU2AA==
+X-CSE-MsgGUID: PuOIz/VgQp2+2K8d3Q0GCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="137231"
 X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="244413"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 06:50:51 -0700
-X-CSE-ConnectionGUID: XWocWCygTpqWSyMI9zdOZg==
-X-CSE-MsgGUID: wjeQXZTiTTO5j9Lf4yzDFg==
+   d="scan'208";a="137231"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2026 06:53:06 -0700
+X-CSE-ConnectionGUID: SoQnkVzIS0SU7IKJVpCeTw==
+X-CSE-MsgGUID: n5sPgseQR5ew1iozQcKWrQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="305437933"
+X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="285377882"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 06:50:49 -0700
-Date: Wed, 7 Oct 2026 15:50:46 +0200
+ by fmviesa003-auth.fm.intel.com with
+ ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2026 06:53:05 -0700
+Date: Wed, 7 Oct 2026 15:53:03 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: shivtej.eknath.patil@intel.com
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- nishit.sharma@intel.com, smitha.balasubramanyam@intel.com,
- karthik.poosa@intel.com, dwarakanath.ramadeva@intel.com
-Subject: Re: [PATCH v1] Revert "tests/intel/xe_pm: add coverage for
- xe_device_sysfs"
-Message-ID: <20261007135046.ga2yenstriqpbi3k@kamilkon-DESK.igk.intel.com>
+To: "Girotra, Himanshu" <himanshu.girotra@intel.com>
+Cc: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZVTEw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
+ lib/pciids: sync with kernel commit 682b943f1547
+Message-ID: <20261007135303.dzqf3gwuqtkfwhbb@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- shivtej.eknath.patil@intel.com, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com, nishit.sharma@intel.com,
- smitha.balasubramanyam@intel.com, karthik.poosa@intel.com,
- dwarakanath.ramadeva@intel.com
-References: <20261007051044.6399-1-shivtej.eknath.patil@intel.com>
+ "Girotra, Himanshu" <himanshu.girotra@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20261005063943.2638847-1-himanshu.girotra@intel.com>
+ <179118974541.239246.2561991615486442754@61270ab9df2a>
+ <CH0PR11MB55648B1BB0A609084A85F9E598962@CH0PR11MB5564.namprd11.prod.outlook.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261007051044.6399-1-shivtej.eknath.patil@intel.com>
+In-Reply-To: <CH0PR11MB55648B1BB0A609084A85F9E598962@CH0PR11MB5564.namprd11.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,266 +75,86 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Shivtej,
-On 2026-10-07 at 05:10:44 +0000, shivtej.eknath.patil@intel.com wrote:
-> From: Shivtej Patil <shivtej.eknath.patil@intel.com>
+Hi Girotra,,
+On 2026-10-05 at 09:16:16 +0000, Girotra, Himanshu wrote:
+> Hi, the below failures are not related to my change.
 > 
-> The added subtests exercise sysfs interfaces exposed by
-> xe_device_sysfs.c. Subsequent discussion identified that
-> these checks are better suited for a dedicated xe_sysfs
-> test rather than xe_pm.
+> Thanks
 
-Please do not cite original commit message, above should be
-removed.
+Please cut your responses after 'Known failures', until you
+want to comment on some of them. See below.
 
->  
-> Revert the xe_pm coverage for now. The sysfs coverage will
-> be revisited and reintroduced in a more appropriate test.
+> --Himanshu
+> From: Patchwork <patchwork@emeril.freedesktop.org>
+> Sent: 05 October 2026 14:12
+> To: Girotra, Himanshu <himanshu.girotra@intel.com>
+> Cc: igt-dev@lists.freedesktop.org
+> Subject: ✗ Xe.CI.FULL: failure for lib/pciids: sync with kernel commit 682b943f1547
 > 
-> This reverts commit 92dd3081aa8de197a5dc37b9799526a0de183c8f.
+> Patch Details
+> Series:
+> lib/pciids: sync with kernel commit 682b943f1547
+> URL:
+> https://patchwork.freedesktop.org/series/175538/
+> State:
+> failure
+> Details:
+> https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15938/index.html
+> CI Bug Log - changes from XEIGT_9126_FULL -> XEIGTPW_15938_FULL
+> Summary
 > 
-> Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
+> FAILURE
+> 
+> Serious unknown changes coming with XEIGTPW_15938_FULL absolutely need to be
+> verified manually.
+> 
+> If you think the reported changes have nothing to do with the changes
+> introduced in XEIGTPW_15938_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org<mailto:I915-ci-infra@lists.freedesktop.org>) to allow them
+> to document this new failure mode, which will reduce false positives in CI.
+> 
+> Participating hosts (3 -> 3)
+> 
+> No changes in participating hosts
+> 
+> Possible new issues
+> 
+> Here are the unknown changes that may have been introduced in XEIGTPW_15938_FULL:
+> 
+> IGT changes
+> Possible regressions
+> 
+>   *   igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip:
+> 
+>      *   shard-bmg: PASS<https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9126/shard-bmg-8/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html> -> FAIL<https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15938/shard-bmg-5/igt@kms_big_fb@4-tiled-max-hw-stride-64bpp-rotate-0-hflip.html>
+> 
+> New tests
+> 
+> New tests have been introduced between XEIGT_9126_FULL and XEIGTPW_15938_FULL:
+> 
+> New IGT tests (3)
+> 
+>   *   igt@kms_cursor_crc@cursor-size-hints@pipe-a-dp-2:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [0.67] s
+> 
+>   *   igt@kms_cursor_crc@cursor-size-hints@pipe-c-edp-1:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.42] s
+> 
+>   *   igt@kms_cursor_crc@cursor-size-hints@pipe-d-dp-2:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [0.50] s
+> 
+> Known issues
+> 
+> Here are the changes found in XEIGTPW_15938_FULL that come from known issues:
+> 
+[cut]
 
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
 
 Regards,
 Kamil
-
-PS. Reading of sysfs nodes should be covered by core_sysfs,
-if not core test should be fixed.
-
-> ---
->  tests/intel/xe_pm.c | 176 ++++++++------------------------------------
->  1 file changed, 31 insertions(+), 145 deletions(-)
-> 
-> diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-> index 9a70b1645..543f46f5b 100644
-> --- a/tests/intel/xe_pm.c
-> +++ b/tests/intel/xe_pm.c
-> @@ -111,9 +111,34 @@ static bool runtime_usage_available(struct pci_device *pci)
->  	return access(name, F_OK) == 0;
->  }
->  
-> -static bool sysfs_exists(int sysfs_fd, const char *path)
-> +static uint64_t get_vram_d3cold_threshold(int sysfs)
->  {
-> -	return !faccessat(sysfs_fd, path, R_OK, 0);
-> +	uint64_t threshold;
-> +	char path[64];
-> +	int ret;
-> +
-> +	sprintf(path, "device/vram_d3cold_threshold");
-> +	igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_threshold is not present\n");
-> +
-> +	ret = igt_sysfs_scanf(sysfs, path, "%"PRIu64"", &threshold);
-> +	igt_assert_lt(0, ret);
-> +
-> +	return threshold;
-> +}
-> +
-> +static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
-> +{
-> +	char path[64];
-> +	int ret;
-> +
-> +	sprintf(path, "device/vram_d3cold_threshold");
-> +
-> +	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
-> +		ret = igt_sysfs_printf(sysfs, path, "%"PRIu64"", threshold);
-> +	else
-> +		igt_warn("vram_d3cold_threshold is not present\n");
-> +
-> +	igt_assert_lt(0, ret);
->  }
->  
->  static void vram_d3cold_threshold_restore(int sig)
-> @@ -123,7 +148,7 @@ static void vram_d3cold_threshold_restore(int sig)
->  	fd = drm_open_driver_master(DRIVER_XE);
->  	sysfs_fd = igt_sysfs_open(fd);
->  
-> -	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
-> +	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
->  
->  	close(sysfs_fd);
->  	close(fd);
-> @@ -595,48 +620,6 @@ test_exec(device_t device, int n_exec_queues, int n_execs,
->  	active_threads = 0;
->  }
->  
-> -/**
-> - * SUBTEST: vram-d3cold-threshold-show
-> - * Description:
-> - *      Validate reading of vram_d3cold_threshold sysfs entry.
-> - * Functionality: pm-d3cold
-> - */
-> -
-> -/**
-> - * SUBTEST: vram-d3cold-threshold-store
-> - * Description:
-> - *      Validate writing and reading back vram_d3cold_threshold sysfs entry.
-> - * Functionality: pm-d3cold
-> - */
-> -
-> -/**
-> - * SUBTEST: lb-fan-control-version-show
-> - * Description:
-> - *      Validate reading lb_fan_control_version sysfs entry.
-> - * Functionality: pm-sysfs
-> - */
-> -
-> -/**
-> - * SUBTEST: lb-voltage-regulator-version-show
-> - * Description:
-> - *      Validate reading lb_voltage_regulator_version sysfs entry.
-> - * Functionality: pm-sysfs
-> - */
-> -
-> -/**
-> - * SUBTEST: auto-link-downgrade-capable-show
-> - * Description:
-> - *      Validate reading auto_link_downgrade_capable sysfs entry.
-> - * Functionality: pm-sysfs
-> - */
-> -
-> -/**
-> - * SUBTEST: auto-link-downgrade-status-show
-> - * Description:
-> - *      Validate reading auto_link_downgrade_status sysfs entry.
-> - * Functionality: pm-sysfs
-> - */
-> -
->  /**
->   * SUBTEST: vram-d3cold-threshold
->   * Functionality: pm - d3cold
-> @@ -687,7 +670,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
->  	map = xe_bo_map(device.fd_xe, bo, SIZE);
->  	memset(map, 0, SIZE);
->  	munmap(map, SIZE);
-> -	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, threshold);
-> +	set_vram_d3cold_threshold(sysfs_fd, threshold);
->  
->  	/* Setup D3Cold but card should be in D3hot */
->  	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
-> @@ -1099,7 +1082,7 @@ int igt_main()
->  		}
->  
->  		igt_describe_f("Validate mmap memory mappings with vram region,"
-> -			       "when device along with parent bridge in %s", d->name);
-> +			     "when device along with parent bridge in %s", d->name);
->  		igt_subtest_f("%s-mmap-vram", d->name) {
->  			int delay_ms;
->  
-> @@ -1133,108 +1116,11 @@ int igt_main()
->  		     "if vram used > vram threshold");
->  	igt_subtest("vram-d3cold-threshold") {
->  		igt_require_f(has_runtime_pm, "Runtime PM not available\n");
-> -		orig_threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-> +		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
->  		igt_install_exit_handler(vram_d3cold_threshold_restore);
->  		test_vram_d3cold_threshold(device, sysfs_fd);
->  	}
->  
-> -	igt_subtest("vram-d3cold-threshold-show") {
-> -		uint64_t threshold;
-> -
-> -		igt_require(sysfs_exists(sysfs_fd,
-> -					 "device/vram_d3cold_threshold"));
-> -
-> -		threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-> -
-> -		igt_info("threshold=%" PRIu64 "\n", threshold);
-> -	}
-> -
-> -	igt_subtest("vram-d3cold-threshold-store") {
-> -		uint64_t old_val;
-> -		uint64_t new_val;
-> -
-> -		igt_require(sysfs_exists(sysfs_fd,
-> -					 "device/vram_d3cold_threshold"));
-> -		old_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-> -		/*
-> -		 * Ensure the original threshold is restored even if
-> -		 * an assertion fails later in the test.
-> -		 */
-> -		orig_threshold = old_val;
-> -		igt_install_exit_handler(vram_d3cold_threshold_restore);
-> -		igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val + 1);
-> -		new_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-> -		igt_assert_eq(new_val, old_val + 1);
-> -		/* restore */
-> -		igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val);
-> -		igt_info("old=%" PRIu64 " new=%" PRIu64 "\n",
-> -			 old_val, new_val);
-> -	}
-> -
-> -	igt_subtest("lb-fan-control-version-show") {
-> -		char version[64];
-> -		int ret;
-> -
-> -		igt_require(sysfs_exists(sysfs_fd,
-> -					 "device/lb_fan_control_version"));
-> -
-> -		ret = igt_sysfs_scanf(sysfs_fd,
-> -				      "device/lb_fan_control_version",
-> -				      "%63s", version);
-> -
-> -		igt_assert(ret > 0);
-> -
-> -		igt_info("lb-fan-control-version=%s\n", version);
-> -	}
-> -
-> -	igt_subtest("lb-voltage-regulator-version-show") {
-> -		char version[64] = {};
-> -		int ret;
-> -
-> -		igt_require(sysfs_exists(sysfs_fd,
-> -					 "device/lb_voltage_regulator_version"));
-> -
-> -		ret = igt_sysfs_scanf(sysfs_fd,
-> -				      "device/lb_voltage_regulator_version",
-> -				      "%63s", version);
-> -		igt_debug("ret=%d errno=%d\n", ret, errno);
-> -
-> -		igt_assert(ret > 0);
-> -		igt_info("lb-voltage-regulator-version=%s\n", version);
-> -	}
-> -
-> -	igt_subtest("auto-link-downgrade-capable-show") {
-> -		int val;
-> -		int ret;
-> -
-> -		igt_require(sysfs_exists(sysfs_fd,
-> -					 "device/auto_link_downgrade_capable"));
-> -
-> -		ret = igt_sysfs_scanf(sysfs_fd,
-> -				      "device/auto_link_downgrade_capable",
-> -				      "%d", &val);
-> -
-> -		igt_assert(ret > 0);
-> -		igt_info("auto-link-downgrade-capable=%d\n", val);
-> -		igt_assert(val == 0 || val == 1);
-> -	}
-> -
-> -	igt_subtest("auto-link-downgrade-status-show") {
-> -		int val;
-> -		int ret;
-> -
-> -		igt_require(sysfs_exists(sysfs_fd,
-> -					 "device/auto_link_downgrade_status"));
-> -
-> -		ret = igt_sysfs_scanf(sysfs_fd,
-> -				      "device/auto_link_downgrade_status",
-> -				      "%d", &val);
-> -
-> -		igt_assert(ret > 0);
-> -		igt_info("auto-link-downgrade-status=%d\n", val);
-> -		igt_assert(val == 0 || val == 1);
-> -	}
-> -
->  	igt_fixture() {
->  		close(sysfs_fd);
->  		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
-> -- 
-> 2.43.0
-> 
