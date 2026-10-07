@@ -4,55 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 808CBCA5FFF
-	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 05:11:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B0D7CCA5FF1
+	for <igt-dev@archiver.kernel.org>; Wed,  7 Oct 2026 05:45:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E322E10E0C2;
-	Wed,  7 Oct 2026 05:11:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3984D10E325;
+	Wed,  7 Oct 2026 05:45:33 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="WbBtvQa0";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="U7u+vwc+";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5519610E0C2
- for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 05:10:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 141E010E325
+ for <igt-dev@lists.freedesktop.org>; Wed,  7 Oct 2026 05:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791349852; x=1822885852;
+ t=1791351886; x=1822887886;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=AQUQ4ufzyoIt9RuWVw3ls4z5LwC02LZwUuXJ6v6PHsg=;
- b=WbBtvQa0GTRnUjXofMLsEErTyP7SoVG4K9NjNSoJzvjYIAaY8uxOciu8
- 1xOEHh3ygCntyW/JqN5NE6TI3qK9Ic65PJKbJr89vRGAahka/ISR724Mr
- TR9W5dkbc7AqrXGZazGhq2CzTxD/zprmltWguscEHM1mknSBCUusAcA2O
- suH+3t+xtrj0vM9+aijtX//QemfQfR2rdc07mkt3/hMkDpsGmtLeMbm7D
- ak0AMtYjmvUvvel5M8lzpMy/EUJFC1QoVatwc25ZV35WGTa22Szp1w8Je
- R+C1iPQhJaJcRmiSFJ4eJ+LA2QK0oH8a0J0Gre0u4jj9sf2xBu7i6khSy g==;
-X-CSE-ConnectionGUID: 0oAj0NtJREaNF6OhfqgEFQ==
-X-CSE-MsgGUID: OqWYS5FeRlW+1GcxE0OUuQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="108710"
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; 
-   d="scan'208";a="108710"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Oct 2026 22:10:51 -0700
-X-CSE-ConnectionGUID: nz75bw+ORqWD1nTczen4fg==
-X-CSE-MsgGUID: /sB1hYmKSm2FRZ0F4Ezisg==
+ bh=OV5lwCHV31T2un0mupteWQjOc/x5BIU5sEwvA6JtDmc=;
+ b=U7u+vwc+nr9cZJgujVQdBPfpl/loz4cKmPuRSV3x4QdTacIlfxtjoBOM
+ pI82u/yrpNUkWRufpsleEKIBqJ+1k5u/ocFAdP+YxbLmGYxwYQXktX5oI
+ 4sd40GNMphJVinWEpbgWCGxuk1KvRfipF7evJN0U+8KZncqCHVjiiJ6jw
+ L3KJx7S1jcHPnvSHxI2zboh5Uv4r7LEbKYboSgsEl6zuElJ2ufHmWuEcA
+ oRXwV2NIyI/TarehZ4uWGcMbtUHuE38Z69fT4LAQnZHJTtrQ5fQ+WDRRr
+ s6y5ZIprsjcDN6AFUa4K926UQqIJPv5LCzsxscX8RmwzgF2jHg/ecqrWH Q==;
+X-CSE-ConnectionGUID: 7EWpgR3IS9uQtBRiZwMPJA==
+X-CSE-MsgGUID: IOQpjvmXSmGcXx7l+u+fWQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11927"; a="108432170"
+X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="108432170"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Oct 2026 22:44:46 -0700
+X-CSE-ConnectionGUID: M40xuV8pTL6E5I3Ef5083A==
+X-CSE-MsgGUID: KZLcYwh9T321/t5l0V4t7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="305313011"
-Received: from dut1129bmgfrd.igk.intel.com ([10.211.178.46])
- by fmviesa001.fm.intel.com with ESMTP; 06 Oct 2026 22:10:49 -0700
-From: shivtej.eknath.patil@intel.com
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
-Cc: karthik.poosa@intel.com, dwarakanath.ramadeva@intel.com,
- Shivtej Patil <shivtej.eknath.patil@intel.com>
-Subject: [PATCH v1] Revert "tests/intel/xe_pm: add coverage for
- xe_device_sysfs"
-Date: Wed,  7 Oct 2026 05:10:44 +0000
-Message-ID: <20261007051044.6399-1-shivtej.eknath.patil@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.27,144,1787036400"; d="scan'208";a="281095077"
+Received: from shekharc-mobl2.iind.intel.com ([10.190.239.16])
+ by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Oct 2026 22:44:44 -0700
+From: Shekhar Chauhan <shekhar.chauhan@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: shekhar.chauhan@intel.com,
+	umesh.nerlige.ramappa@intel.com
+Subject: [PATCH i-g-t v3] tools/xe-perf-recorder: Wait for mmio-trigger-report
+Date: Wed,  7 Oct 2026 11:14:09 +0530
+Message-ID: <20261007054409.3694489-1-shekhar.chauhan@intel.com>
+X-Mailer: git-send-email 2.53.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,250 +66,167 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Shivtej Patil <shivtej.eknath.patil@intel.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-The added subtests exercise sysfs interfaces exposed by
-xe_device_sysfs.c. Subsequent discussion identified that
-these checks are better suited for a dedicated xe_sysfs
-test rather than xe_pm.
- 
-Revert the xe_pm coverage for now. The sysfs coverage will
-be revisited and reintroduced in a more appropriate test.
+After mmio trigger is issued, we should wait till we receive a report with
+the context id issued in the mmio trigger.
 
-This reverts commit 92dd3081aa8de197a5dc37b9799526a0de183c8f.
+While waiting, propagate write_perf_data() failures back to main(). A
+failed write can drop an already-read trigger report before it is checked,
+which would otherwise leave the recorder waiting indefinitely.
 
-Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
+v3: Propagate write_perf_data() failures out of the trigger wait (Shekhar)
+
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Co-developed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
+Signed-off-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
 ---
- tests/intel/xe_pm.c | 176 ++++++++------------------------------------
- 1 file changed, 31 insertions(+), 145 deletions(-)
+ tools/xe-perf/xe_perf_recorder.c | 57 ++++++++++++++++++++++++++------
+ 1 file changed, 47 insertions(+), 10 deletions(-)
 
-diff --git a/tests/intel/xe_pm.c b/tests/intel/xe_pm.c
-index 9a70b1645..543f46f5b 100644
---- a/tests/intel/xe_pm.c
-+++ b/tests/intel/xe_pm.c
-@@ -111,9 +111,34 @@ static bool runtime_usage_available(struct pci_device *pci)
- 	return access(name, F_OK) == 0;
+diff --git a/tools/xe-perf/xe_perf_recorder.c b/tools/xe-perf/xe_perf_recorder.c
+index e13eef519..6ec29558d 100644
+--- a/tools/xe-perf/xe_perf_recorder.c
++++ b/tools/xe-perf/xe_perf_recorder.c
+@@ -370,6 +370,7 @@ struct recording_context {
+ 	uint32_t vm;
+ 	uint32_t exec_queue;
+ 	struct intel_bb *ibb;
++	uint32_t mmio_trg_val;
+ };
+ 
+ static uint32_t oa_unit_mmio_trigger_reg(struct recording_context *ctx)
+@@ -642,13 +643,15 @@ check_mmio_trigger_report(struct recording_context *ctx, const void *report)
+ 	const uint32_t *report_32 = report;
+ 	uint64_t value;
+ 
+-	if (report_reason(report_32))
++	if (!ctx->mmio_trg_val || report_reason(report_32))
+ 		return;
+ 
+ 	value = (fmt->header == HDR_64_BIT) ? ((const uint64_t *)report)[2] : report_32[2];
+ 
+-	if (value == 0xc0ffee01 || value == 0xc0ffee02)
++	if (value == ctx->mmio_trg_val) {
+ 		fprintf(stdout, "Received trigger report with value 0x%" PRIx64 "\n", value);
++		ctx->mmio_trg_val = 0;
++	}
  }
  
--static bool sysfs_exists(int sysfs_fd, const char *path)
-+static uint64_t get_vram_d3cold_threshold(int sysfs)
- {
--	return !faccessat(sysfs_fd, path, R_OK, 0);
-+	uint64_t threshold;
-+	char path[64];
-+	int ret;
+ static bool write_stream_data(struct recording_context *ctx,
+@@ -712,6 +715,21 @@ static bool write_perf_data(FILE *output, struct recording_context *ctx)
+ 	return false;
+ }
+ 
++static bool write_mmio_trigger_data(struct recording_context *ctx)
++{
++	struct pollfd pollfd = { .fd = ctx->perf_fd, .events = POLLIN };
 +
-+	sprintf(path, "device/vram_d3cold_threshold");
-+	igt_require_f(!faccessat(sysfs, path, R_OK, 0), "vram_d3cold_threshold is not present\n");
++	while (ctx->mmio_trg_val) {
++		poll(&pollfd, 1, -1);
++		assert(pollfd.revents & POLLIN);
 +
-+	ret = igt_sysfs_scanf(sysfs, path, "%"PRIu64"", &threshold);
-+	igt_assert_lt(0, ret);
++		if (!write_perf_data(ctx->output_stream, ctx))
++			return false;
++	}
 +
-+	return threshold;
++	return true;
 +}
 +
-+static void set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
-+{
-+	char path[64];
-+	int ret;
-+
-+	sprintf(path, "device/vram_d3cold_threshold");
-+
-+	if (!faccessat(sysfs, path, R_OK | W_OK, 0))
-+		ret = igt_sysfs_printf(sysfs, path, "%"PRIu64"", threshold);
-+	else
-+		igt_warn("vram_d3cold_threshold is not present\n");
-+
-+	igt_assert_lt(0, ret);
+ static clock_t correlation_clock_id = CLOCK_MONOTONIC;
+ 
+ static const char *
+@@ -790,23 +808,27 @@ static void emit_mmio_triggered_report(struct intel_bb *ibb, uint32_t reg, uint3
+ 	intel_bb_out(ibb, value);
  }
  
- static void vram_d3cold_threshold_restore(int sig)
-@@ -123,7 +148,7 @@ static void vram_d3cold_threshold_restore(int sig)
- 	fd = drm_open_driver_master(DRIVER_XE);
- 	sysfs_fd = igt_sysfs_open(fd);
+-static void emit_oa_trigger(struct recording_context *ctx, uint32_t value)
++static bool emit_oa_trigger(struct recording_context *ctx, uint32_t value)
+ {
+ 	emit_mmio_triggered_report(ctx->ibb, oa_unit_mmio_trigger_reg(ctx), value);
  
--	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
-+	set_vram_d3cold_threshold(sysfs_fd, orig_threshold);
- 
- 	close(sysfs_fd);
- 	close(fd);
-@@ -595,48 +620,6 @@ test_exec(device_t device, int n_exec_queues, int n_execs,
- 	active_threads = 0;
+ 	intel_bb_flush_render(ctx->ibb);
+ 	intel_bb_sync(ctx->ibb);
+ 	intel_bb_reset(ctx->ibb, false);
++
++	ctx->mmio_trg_val = value;
++
++	return write_mmio_trigger_data(ctx);
  }
  
--/**
-- * SUBTEST: vram-d3cold-threshold-show
-- * Description:
-- *      Validate reading of vram_d3cold_threshold sysfs entry.
-- * Functionality: pm-d3cold
-- */
--
--/**
-- * SUBTEST: vram-d3cold-threshold-store
-- * Description:
-- *      Validate writing and reading back vram_d3cold_threshold sysfs entry.
-- * Functionality: pm-d3cold
-- */
--
--/**
-- * SUBTEST: lb-fan-control-version-show
-- * Description:
-- *      Validate reading lb_fan_control_version sysfs entry.
-- * Functionality: pm-sysfs
-- */
--
--/**
-- * SUBTEST: lb-voltage-regulator-version-show
-- * Description:
-- *      Validate reading lb_voltage_regulator_version sysfs entry.
-- * Functionality: pm-sysfs
-- */
--
--/**
-- * SUBTEST: auto-link-downgrade-capable-show
-- * Description:
-- *      Validate reading auto_link_downgrade_capable sysfs entry.
-- * Functionality: pm-sysfs
-- */
--
--/**
-- * SUBTEST: auto-link-downgrade-status-show
-- * Description:
-- *      Validate reading auto_link_downgrade_status sysfs entry.
-- * Functionality: pm-sysfs
-- */
--
- /**
-  * SUBTEST: vram-d3cold-threshold
-  * Functionality: pm - d3cold
-@@ -687,7 +670,7 @@ static void test_vram_d3cold_threshold(device_t device, int sysfs_fd)
- 	map = xe_bo_map(device.fd_xe, bo, SIZE);
- 	memset(map, 0, SIZE);
- 	munmap(map, SIZE);
--	igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, threshold);
-+	set_vram_d3cold_threshold(sysfs_fd, threshold);
+-static void
++static bool
+ read_command_file(struct recording_context *ctx)
+ {
+ 	struct recorder_command_base header;
+ 	ssize_t ret = read(ctx->command_fifo_fd, &header, sizeof(header));
  
- 	/* Setup D3Cold but card should be in D3hot */
- 	igt_assert(setup_d3(device, IGT_ACPI_D3Cold));
-@@ -1099,7 +1082,7 @@ int igt_main()
- 		}
+ 	if (ret < 0)
+-		return;
++		return true;
  
- 		igt_describe_f("Validate mmap memory mappings with vram region,"
--			       "when device along with parent bridge in %s", d->name);
-+			     "when device along with parent bridge in %s", d->name);
- 		igt_subtest_f("%s-mmap-vram", d->name) {
- 			int delay_ms;
+ 	switch (header.command) {
+ 	case RECORDER_COMMAND_DUMP: {
+@@ -814,8 +836,10 @@ read_command_file(struct recording_context *ctx)
+ 		uint8_t *dump = malloc(len);
+ 		FILE *file;
  
-@@ -1133,108 +1116,11 @@ int igt_main()
- 		     "if vram used > vram threshold");
- 	igt_subtest("vram-d3cold-threshold") {
- 		igt_require_f(has_runtime_pm, "Runtime PM not available\n");
--		orig_threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
-+		orig_threshold = get_vram_d3cold_threshold(sysfs_fd);
- 		igt_install_exit_handler(vram_d3cold_threshold_restore);
- 		test_vram_d3cold_threshold(device, sysfs_fd);
+-		emit_oa_trigger(ctx, 0xc0ffee02);
+-		write_perf_data(ctx->output_stream, ctx);
++		if (!emit_oa_trigger(ctx, 0xc0ffee02)) {
++			free(dump);
++			return false;
++		}
+ 
+ 		while (offset < len &&
+ 		       ((ret = read(ctx->command_fifo_fd,
+@@ -859,6 +883,8 @@ read_command_file(struct recording_context *ctx)
+ 		fprintf(stderr, "Unknown command 0x%x\n", header.command);
+ 		break;
+ 	}
++
++	return true;
+ }
+ 
+ static void
+@@ -1320,7 +1346,11 @@ main(int argc, char *argv[])
  	}
  
--	igt_subtest("vram-d3cold-threshold-show") {
--		uint64_t threshold;
--
--		igt_require(sysfs_exists(sysfs_fd,
--					 "device/vram_d3cold_threshold"));
--
--		threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
--
--		igt_info("threshold=%" PRIu64 "\n", threshold);
--	}
--
--	igt_subtest("vram-d3cold-threshold-store") {
--		uint64_t old_val;
--		uint64_t new_val;
--
--		igt_require(sysfs_exists(sysfs_fd,
--					 "device/vram_d3cold_threshold"));
--		old_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
--		/*
--		 * Ensure the original threshold is restored even if
--		 * an assertion fails later in the test.
--		 */
--		orig_threshold = old_val;
--		igt_install_exit_handler(vram_d3cold_threshold_restore);
--		igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val + 1);
--		new_val = igt_sysfs_get_vram_d3cold_threshold(sysfs_fd);
--		igt_assert_eq(new_val, old_val + 1);
--		/* restore */
--		igt_sysfs_set_vram_d3cold_threshold(sysfs_fd, old_val);
--		igt_info("old=%" PRIu64 " new=%" PRIu64 "\n",
--			 old_val, new_val);
--	}
--
--	igt_subtest("lb-fan-control-version-show") {
--		char version[64];
--		int ret;
--
--		igt_require(sysfs_exists(sysfs_fd,
--					 "device/lb_fan_control_version"));
--
--		ret = igt_sysfs_scanf(sysfs_fd,
--				      "device/lb_fan_control_version",
--				      "%63s", version);
--
--		igt_assert(ret > 0);
--
--		igt_info("lb-fan-control-version=%s\n", version);
--	}
--
--	igt_subtest("lb-voltage-regulator-version-show") {
--		char version[64] = {};
--		int ret;
--
--		igt_require(sysfs_exists(sysfs_fd,
--					 "device/lb_voltage_regulator_version"));
--
--		ret = igt_sysfs_scanf(sysfs_fd,
--				      "device/lb_voltage_regulator_version",
--				      "%63s", version);
--		igt_debug("ret=%d errno=%d\n", ret, errno);
--
--		igt_assert(ret > 0);
--		igt_info("lb-voltage-regulator-version=%s\n", version);
--	}
--
--	igt_subtest("auto-link-downgrade-capable-show") {
--		int val;
--		int ret;
--
--		igt_require(sysfs_exists(sysfs_fd,
--					 "device/auto_link_downgrade_capable"));
--
--		ret = igt_sysfs_scanf(sysfs_fd,
--				      "device/auto_link_downgrade_capable",
--				      "%d", &val);
--
--		igt_assert(ret > 0);
--		igt_info("auto-link-downgrade-capable=%d\n", val);
--		igt_assert(val == 0 || val == 1);
--	}
--
--	igt_subtest("auto-link-downgrade-status-show") {
--		int val;
--		int ret;
--
--		igt_require(sysfs_exists(sysfs_fd,
--					 "device/auto_link_downgrade_status"));
--
--		ret = igt_sysfs_scanf(sysfs_fd,
--				      "device/auto_link_downgrade_status",
--				      "%d", &val);
--
--		igt_assert(ret > 0);
--		igt_info("auto-link-downgrade-status=%d\n", val);
--		igt_assert(val == 0 || val == 1);
--	}
--
- 	igt_fixture() {
- 		close(sysfs_fd);
- 		igt_pm_set_d3cold_allowed(device.pci_slot_name, d3cold_allowed);
+ 	init_mmio_trigger_ctx(&ctx);
+-	emit_oa_trigger(&ctx, 0xc0ffee01);
++	if (!emit_oa_trigger(&ctx, 0xc0ffee01)) {
++		fprintf(stderr, "Failed to write xe-oa data: %s\n",
++			strerror(errno));
++		goto fail;
++	}
+ 
+ 	corr_period_ns = corr_period * 1000000000ul;
+ 	poll_time_ns = corr_period_ns;
+@@ -1351,7 +1381,11 @@ main(int argc, char *argv[])
+ 			}
+ 
+ 			if (pollfd[1].revents & POLLIN) {
+-				read_command_file(&ctx);
++				if (!read_command_file(&ctx)) {
++					fprintf(stderr, "Failed to write xe-oa data: %s\n",
++						strerror(errno));
++					break;
++				}
+ 			}
+ 		}
+ 
+@@ -1370,7 +1404,10 @@ main(int argc, char *argv[])
+ 	}
+ 
+ 	/* Emit second OA trigger for the case where circular buffer is not used */
+-	emit_oa_trigger(&ctx, 0xc0ffee02);
++	if (!emit_oa_trigger(&ctx, 0xc0ffee02))
++		fprintf(stderr, "Failed to write xe-oa data: %s\n",
++			strerror(errno));
++
+ 	fprintf(stdout, "Exiting...\n");
+ 
+ 	if (!write_perf_data(ctx.output_stream, &ctx)) {
 -- 
-2.43.0
+2.53.0
 
