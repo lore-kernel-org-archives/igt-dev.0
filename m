@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 69E02CA6002
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 05:43:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2FFCCA6007
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 06:15:30 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0BCC710E509;
-	Thu,  8 Oct 2026 05:43:55 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A29E710E509;
- Thu,  8 Oct 2026 05:42:52 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1141566995408619258=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1287610FC40;
+	Thu,  8 Oct 2026 06:15:30 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j5xJhXPz";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3BFC610FC40
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2026 06:14:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791440080; x=1822976080;
+ h=from:subject:date:message-id:mime-version:
+ content-transfer-encoding:to:cc;
+ bh=y+DjrstijfMs+8qx56jj6VHAaDDUxT0zWyt3ssqllQ0=;
+ b=j5xJhXPzpZyznvrropn537QXpjcNIasvf3LnSUYGR3qDuWRkzh8KpRAx
+ drVPBriEsjoaYe17DCeYYT7iPAmeVG/kQPQPX2xf1eOWSZplK96+IOK/8
+ IVlNlXwaWU8ZFJLzqvGO23eAIdzXgeY1c0h9xYfQXa6nIh+odb2RVXe+B
+ la8Sfqol7lXhBbIvDGu9y5mWnxHA6KTwinbzdgCnUyk5Abeva1zsFs/yK
+ JzkI5aPTOist4vl6pSXnqV/HJ9sjORcymPZaV90tQ5amWdkk1u8rUAVGJ
+ 8QdOwR4JeVrGZejeTsNpVKeaqY4DnRI3zskUS5EKYSs2JPyVATLjkdFgr g==;
+X-CSE-ConnectionGUID: UbPuha2JTNGqemQVCklXpw==
+X-CSE-MsgGUID: TxbdcKQIS/6QS+uGssNxOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="210480"
+X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
+   d="scan'208";a="210480"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2026 23:14:17 -0700
+X-CSE-ConnectionGUID: jmqPYItfTYyVh3f3N3T/Tw==
+X-CSE-MsgGUID: U4jTtPnrQi2JFgzM+/EYJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
+   d="scan'208";a="386460"
+Received: from srr4-3-linux-106-armuthy.iind.intel.com ([10.190.238.56])
+ by fmviesa010.fm.intel.com with ESMTP; 07 Oct 2026 23:14:16 -0700
+From: Arun R Murthy <arun.r.murthy@intel.com>
+Subject: [PATCH i-g-t v2 0/2] EDITME: Update pipe joiner test to get free crtc
+Date: Thu, 08 Oct 2026 11:42:51 +0530
+Message-Id: <20261008-joiner-v2-0-693aed4be6a1@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Revert_=22intel-ci=3A_All?=
- =?utf-8?q?ow_PXP_negative_testing_on_CRI=22?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: himanshu.girotra@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 08 Oct 2026 05:42:52 -0000
-Message-ID: <179143817265.250908.1829197745557328101@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20261008044627.2730162-1-himanshu.girotra@intel.com>
-In-Reply-To: <20261008044627.2730162-1-himanshu.girotra@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGM0x2oC/2XMQQ7CIBCF4as0sxYDI8HGlfcwXdAy2DEKDTRE0
+ 3B3sVuX/8vLt0GmxJTh0m2QqHDmGFrgoYNptuFOgl1rQIlGSXkWj8iBkrCnUXt0Rju00M5LIs/
+ vHboNrWfOa0yf3S3qt/4RRQkpRi17NFopb/srh5Wexym+YKi1fgEgfqi2nAAAAA==
+X-Change-ID: 20261007-joiner-a3b4f2d64d2a
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, kunal1.joshi@intel.com, 
+ Arun R Murthy <arun.r.murthy@intel.com>
+X-Mailer: b4 0.15-dev
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,134 +69,41 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1141566995408619258==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Call a new API(drmModeGetCrtcList) exported by libdrm to get the list of
+active crtc and then call modeset with the first freely available crtc.
 
-== Series Details ==
+The libdrm patch is still not merged and is floated for review @
+https://gitlab.freedesktop.org/mesa/libdrm/-/merge_requests/490/
 
-Series: Revert "intel-ci: Allow PXP negative testing on CRI"
-URL   : https://patchwork.freedesktop.org/series/175726/
-State : success
+To: igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com
+Cc: kunal1.joshi@intel.com
 
-== Summary ==
+Signed-off-by: Arun R Murthy <arun.r.murthy@intel.com>
+---
+Changes in v2:
+- EDITME: describe what is new in this series revision.
+- EDITME: use bulletpoints and terse descriptions.
+- Link to v1: https://lore.kernel.org/r/20261007-joiner-v1-0-b40826411fa8@intel.com
 
-CI Bug Log - changes from IGT_9134 -> IGTPW_15959
-====================================================
+---
+Arun R Murthy (2):
+      lib/igt_kms: Add igt_get_free_pipes_mask()
+      tests/intel/kms_joiner: Use the CRTCs reported free before a modeset
 
-Summary
--------
+ lib/igt_kms.c            | 69 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h            |  1 +
+ meson.build              |  7 +++++
+ tests/intel/kms_joiner.c | 75 ++++++++++++++++++++++++++++++++++++++++++++----
+ 4 files changed, 147 insertions(+), 5 deletions(-)
+---
+base-commit: 5e43e9df3a1581074f0de2bbeddd939ebd950b93
+change-id: 20261007-joiner-a3b4f2d64d2a
 
-  **SUCCESS**
+Best regards,
+-- 
+Arun R Murthy <arun.r.murthy@intel.com>
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15959/index.html
-
-Participating hosts (39 -> 38)
-------------------------------
-
-  Missing    (1): bat-dg2-13 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_15959 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@kms_hdmi_inject@inject-audio:
-    - fi-tgl-1115g4:      [FAIL][1] ([i915#16664]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9134/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15959/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html
-
-  
-  [i915#16664]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16664
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9134 -> IGTPW_15959
-  * Linux: CI_DRM_19294 -> CI_DRM_19297
-
-  CI-20190529: 20190529
-  CI_DRM_19294: c55090c5898a23460a6b17613532bef0ec028ea7 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19297: facc562ab96d7b9fa3dec0528022e0009a5bf875 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15959: 15959
-  IGT_9134: 23f88758399c4e526aab1db26f35208faea9816a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15959/index.html
-
---===============1141566995408619258==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Revert &quot;intel-ci: Allow PXP negative testing on CRI&quot;</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175726/">https://patchwork.freedesktop.org/series/175726/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15959/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15959/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9134 -&gt; IGTPW_15959</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15959/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_15959 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_hdmi_inject@inject-audio:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9134/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16664">i915#16664</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15959/fi-tgl-1115g4/igt@kms_hdmi_inject@inject-audio.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9134 -&gt; IGTPW_15959</li>
-<li>Linux: CI_DRM_19294 -&gt; CI_DRM_19297</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19294: c55090c5898a23460a6b17613532bef0ec028ea7 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19297: facc562ab96d7b9fa3dec0528022e0009a5bf875 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15959: 15959<br />
-  IGT_9134: 23f88758399c4e526aab1db26f35208faea9816a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1141566995408619258==--
