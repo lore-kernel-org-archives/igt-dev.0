@@ -4,55 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DFA6ACA6007
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 05:25:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9B5CA6007
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 05:32:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7561210E509;
-	Thu,  8 Oct 2026 05:25:44 +0000 (UTC)
-Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="CA9CQdQH";
-	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8555910E509
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2026 05:24:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791437098; x=1822973098;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=T7zeVudB+Cagdp7HE/cZX/sH4I5C9WEw+4W57tQOxi8=;
- b=CA9CQdQHnA4LzRpE300/w3CAXq+TQBvD6k+cOm1Y57DQqssxOY9n11+2
- n66otkyPgXWGs5Nxgau2owKIy09PU9GzfqWMlrXW/weFzn+sy+eHzwL/m
- HVJo6Is6Snu2xJQeXLvHOS1Fako/Lnw8yqovo9g4WKS7iu6a+2wk0jDXL
- 6D+9SmCfdJ4jgYj0m4HgUiBsHoZPoUWUpqpqNZQSAcFmPCdC+fE8z5+am
- KzKf/3Jbt1aZbmfSYE1Oi1xv6MeFfVUeCQW1eVyWpW/PG6gEwRn6gyPfy
- AuZWYq0BMF6YbwD6kTtrNzsFZ0qhBTbbUFZKwegJJ8bsJYd/kpI7axYgg Q==;
-X-CSE-ConnectionGUID: /2FmJ1ygTj6A9obOlKp+XQ==
-X-CSE-MsgGUID: w3t8TLsnQgCZiXm5GPSe5w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="214859"
-X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
-   d="scan'208";a="214859"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 07 Oct 2026 22:24:58 -0700
-X-CSE-ConnectionGUID: wtKVzHgeQ5yEH/SG5MoQQg==
-X-CSE-MsgGUID: A8ke8RA0R6y3lN63/tt40w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
-   d="scan'208";a="22527"
-Received: from gkmtlh2654.igk.intel.com ([10.211.179.188])
- by fmviesa005.fm.intel.com with ESMTP; 07 Oct 2026 22:24:57 -0700
-From: shivtej.eknath.patil@intel.com
-To: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
-Cc: daniele.ceraolospurio@intel.com, priyanka.dandamudi@intel.com,
- Shivtej Patil <shivtej.eknath.patil@intel.com>
-Subject: [PATCH v2 1/2] tests/xe_pxp:add coverage for xe_pxp_debugfs
-Date: Thu,  8 Oct 2026 05:24:50 +0000
-Message-ID: <20261008052450.42805-1-shivtej.eknath.patil@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id B2F2310E052;
+	Thu,  8 Oct 2026 05:32:17 +0000 (UTC)
+Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 24CF710E052;
+ Thu,  8 Oct 2026 05:31:31 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5825233927744107875=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Revert_=22intel-ci=3A_Allow?=
+ =?utf-8?q?_PXP_negative_testing_on_CRI=22?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: himanshu.girotra@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 08 Oct 2026 05:31:31 -0000
+Message-ID: <179143749114.250898.17665084556448576800@61270ab9df2a>
+X-Patchwork-Hint: ignore
+References: <20261008044627.2730162-1-himanshu.girotra@intel.com>
+In-Reply-To: <20261008044627.2730162-1-himanshu.girotra@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,78 +37,110 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-From: Shivtej Patil <shivtej.eknath.patil@intel.com>
+--===============5825233927744107875==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Add a new test to exercise the following functions in
-xe_pxp_debugfs.c:
+== Series Details ==
 
-- pxp_status_to_str()
-- pxp_info()
+Series: Revert "intel-ci: Allow PXP negative testing on CRI"
+URL   : https://patchwork.freedesktop.org/series/175726/
+State : success
 
-The subtest verifies that the pxp/info debugfs entry can be
-read successfully and improves code coverage.
+== Summary ==
 
-Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
----
- tests/intel/xe_pxp.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+CI Bug Log - changes from XEIGT_9134_BAT -> XEIGTPW_15959_BAT
+====================================================
 
-diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
-index 5460bf6db..76a3939c0 100644
---- a/tests/intel/xe_pxp.c
-+++ b/tests/intel/xe_pxp.c
-@@ -506,6 +506,28 @@ static void trigger_pxp_debugfs_forced_teardown(int xe_fd)
- 	sleep(1);
- }
- 
-+/**
-+ * SUBTEST: pxp-debugfs-info
-+ * Description: Verify reading of the PXP debugfs info entry.
-+ */
-+
-+static void read_pxp_debugfs_info(int xe_fd)
-+{
-+	char str[256];
-+	int ret;
-+	int fd;
-+
-+	fd = igt_debugfs_dir(xe_fd);
-+	igt_assert(fd >= 0);
-+
-+	ret = igt_debugfs_simple_read(fd, "pxp/info", str, sizeof(str));
-+	igt_assert_f(ret > 0, "Can't read pxp info debugfs\n");
-+
-+	igt_info("pxp info:\n%s\n", str);
-+
-+	close(fd);
-+}
-+
- enum termination_type {
- 	PXP_TERMINATION_IRQ,
- 	PXP_TERMINATION_RPM,
-@@ -762,6 +784,7 @@ static void test_pxp_stale_queue_execution(int fd, enum termination_type type)
-  * Description: verify that submssions with stale objects/queues are not blocked
-  *              if the user does not opt-in to the PXP checks.
-  */
-+
- static void test_pxp_optout(int fd)
- {
- 	__test_pxp_stale_bo_exec(fd, PXP_TERMINATION_IRQ, false);
-@@ -1157,6 +1180,11 @@ int igt_main()
- 			require_pxp(pxp_supported);
- 			test_pxp_optout(xe_fd);
- 		}
-+
-+		igt_subtest("pxp-debugfs-info") {
-+			require_pxp(pxp_supported);
-+			read_pxp_debugfs_info(xe_fd);
-+		}
- 	}
- 
- 	igt_subtest_group() {
--- 
-2.43.0
+Summary
+-------
 
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9134 -> IGTPW_15959
+  * Linux: xe-5902-c55090c5898a23460a6b17613532bef0ec028ea7 -> xe-5905-facc562ab96d7b9fa3dec0528022e0009a5bf875
+
+  IGTPW_15959: 15959
+  IGT_9134: 23f88758399c4e526aab1db26f35208faea9816a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5902-c55090c5898a23460a6b17613532bef0ec028ea7: c55090c5898a23460a6b17613532bef0ec028ea7
+  xe-5905-facc562ab96d7b9fa3dec0528022e0009a5bf875: facc562ab96d7b9fa3dec0528022e0009a5bf875
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15959/index.html
+
+--===============5825233927744107875==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Revert &quot;intel-ci: Allow PXP negative testing on CRI&quot;</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175726/">https://patchwork.freedesktop.org/series/175726/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15959/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15959/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9134_BAT -&gt; XEIGTPW_15959_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9134 -&gt; IGTPW_15959</li>
+<li>Linux: xe-5902-c55090c5898a23460a6b17613532bef0ec028ea7 -&gt; xe-5905-facc562ab96d7b9fa3dec0528022e0009a5bf875</li>
+</ul>
+<p>IGTPW_15959: 15959<br />
+  IGT_9134: 23f88758399c4e526aab1db26f35208faea9816a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5902-c55090c5898a23460a6b17613532bef0ec028ea7: c55090c5898a23460a6b17613532bef0ec028ea7<br />
+  xe-5905-facc562ab96d7b9fa3dec0528022e0009a5bf875: facc562ab96d7b9fa3dec0528022e0009a5bf875</p>
+
+</body>
+</html>
+
+--===============5825233927744107875==--
