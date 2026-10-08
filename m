@@ -4,61 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C24B5CA6007
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 13:59:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4A3FCA6007
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 14:09:18 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 72EB510E88F;
-	Thu,  8 Oct 2026 13:59:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0E25E10E8C7;
+	Thu,  8 Oct 2026 14:09:18 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="L3S40MFw";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="jFHOht7C";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 22F5810E88F
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2026 13:56:11 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0949C10E8CD;
+ Thu,  8 Oct 2026 14:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791467771; x=1823003771;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=0gF2nUQYWOeD2k3mu47PrN7PbWEXirQl2DDW4xlAS10=;
- b=L3S40MFwb+Z7pUPno6ZkAwvNI3wWaDx6WF07HUHFlGiCn0y3+9qTVYu3
- qpWwC//UDZB8Pso2cNbvD8YX8fiUMCrn57UJ3/Z0RWuWJ8yLNN5k+IOiW
- 09tQvkcTL50/wl3xU6kS07SMvsFF9zCPfxysfRTLuj40YPz2f9K2K+a4d
- UbD7J3lInTdI/3wVTCSwtMiWV/L3w7Sl7s60yhAALW4By6xOqy5z9xh//
- 41IyAuFLdrUn8/Oy0DZuGKIMkf/dpUBV/7NXg36C7JZfSVC/OCOItwZsf
- j4PJjdOz4X0pvP9Lg24su2DK3s5D2X4BPkTBDwAoUKViPTt5RxfDwcDI+ w==;
-X-CSE-ConnectionGUID: 5CuouC9DR+a/MCorutqceg==
-X-CSE-MsgGUID: lmBoFPfbRQCChmwi2naWHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="139325"
+ t=1791468512; x=1823004512;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=PRszrO44DPB2yknyVqFG+ilG8GPefAcy1VDdayjCsUw=;
+ b=jFHOht7CV7/Qd8Mx6CsJukem3SS3LWiz3LeO9s0Rz0rlTgH6trJPIgQ8
+ gmIuQmTYjDtjwfOr3GYt7ypOQFTH+D6tSo7bG6/17iwqM/4lkcxjc2+45
+ YdWuWZXz/akEySL4cLKydVI7j2T1GFxMxag6HBw8ljnGJBuMPSY75zOIR
+ 6ZdxIkQ4t3S6H3RNQstgtl+4Hk4+Zn/RlNMeJbmOohzmTpe4bdfmsVLvE
+ y5x91hT55HvVArrli1EHOVcBMptJVrzN8izGyt1fgz68k6MeQrH8Fs35l
+ CHmXsb6ntjJd2YS/VbvpopoKnhGHgD8dctZaH+JGkdEFDRigS5Sphv+r3 A==;
+X-CSE-ConnectionGUID: XLAIQoaESAmAtTP7Sdr0dA==
+X-CSE-MsgGUID: KrVLDXm5RsGGexymkpE5SA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="259622"
 X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="139325"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 06:56:11 -0700
-X-CSE-ConnectionGUID: UX4PdirEQ+SMR+YRnrz52g==
-X-CSE-MsgGUID: QaiYMSOPSNSHT/oxUtee8Q==
+   d="scan'208";a="259622"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2026 07:08:32 -0700
+X-CSE-ConnectionGUID: Vq4b0re2RUOaOWyr2w5Ljw==
+X-CSE-MsgGUID: hZxAHzHFQcu5Os+E+ABnHg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="1873258"
-Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.3])
- ([172.28.182.3])
+   d="scan'208";a="59625"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 06:56:10 -0700
-Message-ID: <d8aa547c-4fa4-41a4-b6cf-af232dac0876@linux.intel.com>
-Date: Thu, 8 Oct 2026 15:56:07 +0200
+ 08 Oct 2026 07:08:29 -0700
+Date: Thu, 8 Oct 2026 16:08:10 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Gyeyoung Baek <gye976@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, imagination@lists.freedesktop.org,
+ alessio.belle@imgtec.com, luigi.santivetti@imgtec.com,
+ robert.mazur@imgtec.com, matt.coster@imgtec.com,
+ sarah.walker@imgtec.com, frank.binns@imgtec.com,
+ Brajesh Gupta <Brajesh.Gupta@imgtec.com>
+Subject: Re: [PATCH i-g-t v2] tests/imagination: Add VM map and remap tests
+Message-ID: <20261008140810.gcu2dddq4e5uihxs@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Gyeyoung Baek <gye976@gmail.com>, igt-dev@lists.freedesktop.org,
+ imagination@lists.freedesktop.org, alessio.belle@imgtec.com,
+ luigi.santivetti@imgtec.com, robert.mazur@imgtec.com,
+ matt.coster@imgtec.com, sarah.walker@imgtec.com,
+ frank.binns@imgtec.com, Brajesh Gupta <Brajesh.Gupta@imgtec.com>
+References: <20260930125057.1837788-1-gye976@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 6/7] tools/vmtb: Add VM dmesg wait support
-To: Adam Miszczak <adam.miszczak@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com
-References: <20260928072600.426902-1-adam.miszczak@linux.intel.com>
- <20260928072600.426902-7-adam.miszczak@linux.intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260928072600.426902-7-adam.miszczak@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260930125057.1837788-1-gye976@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,106 +79,258 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM,
+Hi Gyeyoung,
+On 2026-09-30 at 21:50:57 +0900, Gyeyoung Baek wrote:
+> Add pvr_vm_map, which tests DRM_IOCTL_PVR_VM_MAP and
+> DRM_IOCTL_PVR_VM_UNMAP directly.
+> 
+> For each of the following three cases, test five scenarios and check
+> that the memory of the buffer objects is returned in each of them:
+> 1. Inside one 2MiB region
+> 2. Across a 2MiB boundary
+> 3. Across a 1GiB boundary
+> 
+> - map-*: map a range and unmap it.
+> - replace-*: map a range that completely covers a smaller existing
+>   mapping.
+> - remap-next-*: map over the left part of a mapping, which splits it.
+> - remap-prev-*: map over the right part of a mapping, which splits it.
+> - remap-both-*: map over the middle of a mapping, which splits it.
+> 
+> See the following document for the overlap cases:
+> https://docs.kernel.org/gpu/drm-mm.html#drm-gpuvm
+> 
+> Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
 
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+Applied, thanks!
 
-On 9/28/2026 9:25 AM, Adam Miszczak wrote:
-> Introduce VirtualMachine.wait_for_dmesg() to block until a line matching
-> a given regex pattern appears on the guest serial console, returning the
-> matched line or raising an exception on timeout.
->
-> QEMU output (including guest dmesg) is buffered in a thread-safe buffer
-> guarded by a condition variable, notifying waiters as new lines arrive.
-> ANSI escape (color) codes are stripped from dmesg before logging.
->
-> New function provides 'from_beginning' parameter:
-> default (from_beginning=True) scans the whole dmesg collected since
-> power on, while from_beginning=False resumes right after the previously
-> matched line (uses cursor shared for all patterns).
->
-> Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
+
+Regards,
+Kamil
+
 > ---
->   tools/vmtb/bench/machines/virtual/vm.py | 48 ++++++++++++++++++++++++-
->   1 file changed, 47 insertions(+), 1 deletion(-)
->
-> diff --git a/tools/vmtb/bench/machines/virtual/vm.py b/tools/vmtb/bench/machines/virtual/vm.py
-> index e0b6fb150..6b8425d13 100644
-> --- a/tools/vmtb/bench/machines/virtual/vm.py
-> +++ b/tools/vmtb/bench/machines/virtual/vm.py
-> @@ -26,6 +26,10 @@ from bench.machines.virtual.device import VirtualDevice
->   
->   logger = logging.getLogger('VirtualMachine')
->   
-> +# Matches ANSI escape sequences (e.g. color codes like \x1b[0;32m) emitted on the
-> +# guest serial console, so they can be stripped before logging dmesg lines.
-> +ANSI_ESCAPE_RE = re.compile(r'\x1b\[[0-9;]*[A-Za-z]')
+> v2:
+> - Add (c) line
+> - Clean up includes
+> - Add IGT_TEST_DESCRIPTION()
+> - Link to v1: https://lore.kernel.org/all/20260926152341.783867-1-gye976@gmail.com/
+> 
+>  tests/imagination/meson.build  |   1 +
+>  tests/imagination/pvr_vm_map.c | 193 +++++++++++++++++++++++++++++++++
+>  2 files changed, 194 insertions(+)
+>  create mode 100644 tests/imagination/pvr_vm_map.c
+> 
+> diff --git a/tests/imagination/meson.build b/tests/imagination/meson.build
+> index 7ae8ddd0a..80d807c28 100644
+> --- a/tests/imagination/meson.build
+> +++ b/tests/imagination/meson.build
+> @@ -8,6 +8,7 @@ pvr_progs = [ 'pvr_dev_query',
+>  	      'pvr_runtime_info',
+>  	      'pvr_submit_jobs',
+>  	      'pvr_vm_context',
+> +	      'pvr_vm_map',
+>  	    ]
+>  
+>  pvr_deps = test_deps
+> diff --git a/tests/imagination/pvr_vm_map.c b/tests/imagination/pvr_vm_map.c
+> new file mode 100644
+> index 000000000..c74cc4f62
+> --- /dev/null
+> +++ b/tests/imagination/pvr_vm_map.c
+> @@ -0,0 +1,193 @@
+> +// SPDX-License-Identifier: GPL-2.0 or MIT
+> +/* Copyright (c) 2026 Gyeyoung Baek */
 > +
->   
->   class VirtualMachine(MachineInterface):
->       class Decorators():
-> @@ -113,6 +117,13 @@ class VirtualMachine(MachineInterface):
->           self.migrate_destination_vm: bool = False
->           self._migration_ongoing: bool = False
->   
-> +        # Buffer of guest serial console (dmesg) lines captured since power on,
-> +        # guarded by a condition variable to allow waiting for specific messages.
-> +        self._dmesg_buffer: typing.List[str] = []
-> +        self._dmesg_condition = threading.Condition()
-> +        # Dmesg wait cursor (shared across patterns): first dmesg line not consumed yet
-> +        self._dmesg_scan_idx: int = 0
+> +#include <inttypes.h>
+> +#include <stddef.h>
+> +#include <stdint.h>
+> +#include <unistd.h>
 > +
->           self.dmesg_logger = self.__setup_dmesg_logger()
->   
->       def __str__(self) -> str:
-> @@ -180,7 +191,11 @@ class VirtualMachine(MachineInterface):
->   
->       def __log_qemu_output(self, out: typing.TextIO) -> None:
->           for line in iter(out.readline, ''):
-> -            self.dmesg_logger.debug(line.strip())
-> +            stripped_line = ANSI_ESCAPE_RE.sub('', line).strip()
-> +            self.dmesg_logger.debug(stripped_line)
-> +            with self._dmesg_condition:
-> +                self._dmesg_buffer.append(stripped_line)
-> +                self._dmesg_condition.notify_all()
->   
->       def __sockets_exists(self) -> bool:
->           return self.questagent_sockpath.exists() and self.qmp_sockpath.exists()
-> @@ -587,6 +602,37 @@ class VirtualMachine(MachineInterface):
->   
->           return True
->   
-> +    @Decorators.timeout_signal
-> +    def wait_for_dmesg(self, pattern: str, from_beginning: bool = True, timeout: int = 300) -> str:
-> +        """Wait until a line matching the given regex pattern appears in the guest dmesg.
+> +#include "igt.h"
+> +#include "igt_os.h"
+> +#include "igt_pvr.h"
+> +#include "igt_sizes.h"
 > +
-> +        Scans the guest serial console output and blocks until a matching line is observed.
-> +        By default the whole dmesg collected since VM power on is scanned.
-> +        Clear 'from_beginning' to start right after the line matched by a previous
-> +        wait_for_dmesg() call, to match consecutive occurrences of a repeating message.
-> +        Returns the matched dmesg line (e.g. for further parsing) or raises AlarmTimeoutError
-> +        if the pattern does not appear within the given timeout (in seconds).
-> +        """
-> +        regex = re.compile(pattern)
-> +        logger.debug("[VM%s] Waiting for dmesg pattern: '%s'%s", self.vmnum, pattern,
-> +                     '' if from_beginning else ' (since last match)')
+> +IGT_TEST_DESCRIPTION("Test that VM map, unmap and remap operations work");
 > +
-> +        with self._dmesg_condition:
-> +            scan_idx = 0 if from_beginning else self._dmesg_scan_idx
-> +            while True:
-> +                while scan_idx < len(self._dmesg_buffer):
-> +                    line = self._dmesg_buffer[scan_idx]
-> +                    scan_idx += 1
-> +                    if regex.search(line):
-> +                        # Do not rewind the cursor
-> +                        self._dmesg_scan_idx = max(self._dmesg_scan_idx, scan_idx)
-> +                        logger.debug("[VM%s] Matched dmesg pattern: '%s'", self.vmnum, pattern)
-> +                        return line
+> +/*
+> + * vm_map/unmap/remap() are each run on a range of RANGE_PAGES pages (p0..p3),
+> + * placed in one of three ways. The drawings are not to scale.
+> + *
+> + * in-2m       Inside one 2MiB region. No boundary is crossed.
+> + *
+> + *             |<------------ 2MiB region ----------->|
+> + *             |           [p0|p1|p2|p3]              |
+> + *
+> + * cross-2m    Across a 2MiB boundary.
+> + *
+> + *             |<--- 2MiB region A --->|<--- 2MiB region B --->|
+> + *                            [p0|p1]|[p2|p3]
+> + *                                    ^ 2MiB boundary
+> + *
+> + * cross-1g    Across a 1GiB boundary, which is also a 2MiB boundary.
+> + *
+> + *             |<--- 1GiB region A --->|<--- 1GiB region B --->|
+> + *                            [p0|p1]|[p2|p3]
+> + *                                    ^ 1GiB boundary
+> + */
 > +
-> +                # Poll with a short timeout so the SIGALRM raised by
-> +                # Decorators.timeout_signal can interrupt the wait and propagate.
-> +                self._dmesg_condition.wait(timeout=1)
+> +#define RANGE_PAGES 4
+> +#define LEAK_BO_SIZE SZ_32M
+> +#define LEAK_THRESHOLD SZ_8M
 > +
->       def save_state_init(self) -> None:
->           """Initiate VM snapshot-save operation (asynchronous)."""
->           logger.debug("Starting VM%s state save (snapshot)", self.vmnum)
+> +static uint64_t align_up(uint64_t value, uint64_t align)
+> +{
+> +	return (value + align - 1) & ~(align - 1);
+> +}
+> +
+> +static void assert_shmem_released(uint64_t baseline)
+> +{
+> +	uint64_t now = 0;
+> +
+> +	for (int i = 0; i < 20; i++) {
+> +		now = igt_get_meminfo("Shmem");
+> +		if (now < baseline + LEAK_THRESHOLD)
+> +			return;
+> +		usleep(100 * 1000);
+> +	}
+> +
+> +	igt_assert_f(false, "%" PRIu64 " bytes of shmem still held after close\n", now - baseline);
+> +}
+> +
+> +static void map_range(int fd, uint64_t addr, uint64_t size)
+> +{
+> +	const uint64_t baseline = igt_get_meminfo("Shmem");
+> +	const uint32_t vm_ctx = igt_pvr_ioctl_create_vm_context(fd, 0);
+> +	size_t bo_size = LEAK_BO_SIZE;
+> +	const uint32_t handle = igt_pvr_ioctl_create_bo(fd, &bo_size);
+> +
+> +	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle, addr, 0, size);
+> +	igt_pvr_ioctl_vm_unmap(fd, vm_ctx, addr, size);
+> +
+> +	gem_close(fd, handle);
+> +	igt_pvr_ioctl_destroy_vm_context(fd, vm_ctx, 0);
+> +
+> +	assert_shmem_released(baseline);
+> +}
+> +
+> +/*
+> + * A new mapping is mapped over an old one. The overlaps follow "DOC: Split and Merge" in
+> + * drivers/gpu/drm/drm_gpuvm.c: replace is case 14, remap-next 5, remap-prev 7, remap-both 11.
+> + */
+> +static void remap_range(int fd, uint64_t old_addr, uint64_t old_size,
+> +			uint64_t new_addr, uint64_t new_size)
+> +{
+> +	const uint64_t baseline = igt_get_meminfo("Shmem");
+> +	const uint32_t vm_ctx = igt_pvr_ioctl_create_vm_context(fd, 0);
+> +	const uint64_t old_end = old_addr + old_size;
+> +	const uint64_t new_end = new_addr + new_size;
+> +	size_t size_a = LEAK_BO_SIZE;
+> +	size_t size_b = new_size;
+> +	const uint32_t handle_a = igt_pvr_ioctl_create_bo(fd, &size_a);
+> +	const uint32_t handle_b = igt_pvr_ioctl_create_bo(fd, &size_b);
+> +
+> +	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle_a, old_addr, 0, old_size);
+> +	igt_pvr_ioctl_vm_map(fd, vm_ctx, handle_b, new_addr, 0, new_size);
+> +
+> +	if (new_addr > old_addr)
+> +		igt_pvr_ioctl_vm_unmap(fd, vm_ctx, old_addr, new_addr - old_addr);
+> +	igt_pvr_ioctl_vm_unmap(fd, vm_ctx, new_addr, new_size);
+> +	if (new_end < old_end)
+> +		igt_pvr_ioctl_vm_unmap(fd, vm_ctx, new_end, old_end - new_end);
+> +
+> +	gem_close(fd, handle_a);
+> +	gem_close(fd, handle_b);
+> +	igt_pvr_ioctl_destroy_vm_context(fd, vm_ctx, 0);
+> +
+> +	assert_shmem_released(baseline);
+> +}
+> +
+> +struct place {
+> +	const char *name;
+> +	uint64_t addr;
+> +};
+> +
+> +int igt_main()
+> +{
+> +	struct place places[] = { { "in-2m", 0 }, { "cross-2m", 0 }, { "cross-1g", 0 } };
+> +	struct drm_pvr_heap heap;
+> +	uint64_t size;
+> +	int fd;
+> +
+> +	igt_fixture()
+> +	{
+> +		fd = drm_open_driver(DRIVER_POWERVR);
+> +		heap = igt_pvr_find_general_heap(fd);
+> +
+> +		size = RANGE_PAGES * sysconf(_SC_PAGESIZE);
+> +		places[0].addr = align_up(heap.base, SZ_2M) + SZ_1M;
+> +		places[1].addr = align_up(heap.base + 1, SZ_2M) - size / 2;
+> +		places[2].addr = align_up(heap.base + 1, SZ_1G) - size / 2;
+> +
+> +		igt_require(places[2].addr + size <= heap.base + heap.size);
+> +	}
+> +
+> +	for (size_t i = 0; i < ARRAY_SIZE(places); i++) {
+> +		const char *name = places[i].name;
+> +		const uint64_t addr = places[i].addr;
+> +
+> +		igt_describe_f("A range can be mapped and unmapped, and the page tables it needs are available (%s)",
+> +			       name);
+> +		igt_subtest_f("map-%s", name)
+> +		{
+> +			/*
+> +			 * map         |nnnnnnnn|    a range is mapped, then unmapped
+> +			 */
+> +			map_range(fd, addr, size);
+> +		}
+> +
+> +		igt_describe_f("A mapping that covers an old one replaces it and leaves nothing of it behind (%s)",
+> +			       name);
+> +		igt_subtest_f("replace-%s", name)
+> +		{
+> +			/*
+> +			 * replace     |  oooo  |    o = old mapping, n = new mapping
+> +			 *             |nnnnnnnn|    nothing is left of the old one
+> +			 */
+> +			remap_range(fd, addr + size / 4, size / 2, addr, size);
+> +		}
+> +
+> +		igt_describe_f("Mapping over the left part of a mapping leaves its right part, and the original "
+> +			       "buffer object is released once everything is closed (%s)", name);
+> +		igt_subtest_f("remap-next-%s", name)
+> +		{
+> +			/*
+> +			 * remap-next  |oooooooo|    the right part of the old mapping is left
+> +			 *             |nnnn    |
+> +			 */
+> +			remap_range(fd, addr, size, addr, size / 2);
+> +		}
+> +
+> +		igt_describe_f("Mapping over the right part of a mapping leaves its left part, and the original "
+> +			       "buffer object is released once everything is closed (%s)", name);
+> +		igt_subtest_f("remap-prev-%s", name)
+> +		{
+> +			/*
+> +			 * remap-prev  |oooooooo|    the left part of the old mapping is left
+> +			 *             |    nnnn|
+> +			 */
+> +			remap_range(fd, addr, size, addr + size / 2, size / 2);
+> +		}
+> +
+> +		igt_describe_f("Mapping over the middle of a mapping leaves its left and right parts, and the "
+> +			       "original buffer object is released once everything is closed (%s)",
+> +			       name);
+> +		igt_subtest_f("remap-both-%s", name)
+> +		{
+> +			/*
+> +			 * remap-both  |oooooooo|    left and right parts of the old one are left
+> +			 *             |   nn   |
+> +			 */
+> +			remap_range(fd, addr, size, addr + size / 2, size / 4);
+> +		}
+> +	}
+> +}
+> -- 
+> 2.43.0
+> 
