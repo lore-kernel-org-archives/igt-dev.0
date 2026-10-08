@@ -4,28 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20154CA600D
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 19:07:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EDECCA600D
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 19:42:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97AE910E91F;
-	Thu,  8 Oct 2026 19:07:55 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 449CF10E91F;
- Thu,  8 Oct 2026 19:07:08 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6136234228283954028=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B155310E09B;
+	Thu,  8 Oct 2026 19:42:51 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="NVa4Wg53";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7589F10E09B
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2026 19:42:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791488524; x=1823024524;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=efnP5lCD1vfrcoxovTTxUvtOZvDmwIM12QOPwcv22Ag=;
+ b=NVa4Wg53pVsIaLti7xc+0QnHbAxTCrSszZ6I2t0NzjJ6bQ9fIliqA+LC
+ OpYM0wFXdZZMpLks1iKjqYE7vxWBk23Ph4Z8Qa+pRoHpsjNpPltfKCjLA
+ +m9T5DOPgVNh2Z6JH+XSguC88LAMyT0VPASHPa25t4IN5jq7U+uzd0Px/
+ Q590c4fdEGXFpIkXgIHgU0R7kpcYAN9Mf+CwCsEAOIrmMlNvL3jp9oyBT
+ WQOmuYDg6sNCVQ0prPvv0zoGSI6IAqt3CgGOsUg9QXYCD1PDrjksJx8/L
+ x4Nnf9g0lQkhe39Pv63mQVEna+GOKBM+wKRqux4n01NaKf3lAkfc5C4jB Q==;
+X-CSE-ConnectionGUID: 6Z5aHJsiSfyXG2PllsAe/g==
+X-CSE-MsgGUID: tzlbf8FsQW29m4wAi85CdQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="187456"
+X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
+   d="scan'208";a="187456"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2026 12:42:03 -0700
+X-CSE-ConnectionGUID: 8NTuX2wkSYeRT8SdT0L7FQ==
+X-CSE-MsgGUID: PjW53+v0RCSK4uAXNMiR7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
+   d="scan'208";a="218213"
+Received: from rabbit.fm.intel.com ([10.36.54.170])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2026 12:42:03 -0700
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: jonathan.cavitt@intel.com, alex.zuo@intel.com,
+ dnyaneshwar.bhadane@intel.com
+Subject: [PATCH] tests/intel/xe_exec_queue_property: Free eq and vm after test
+Date: Fri,  9 Oct 2026 03:42:02 +0800
+Message-ID: <20261008194203.126177-1-jonathan.cavitt@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
- =?utf-8?q?-t=2C1/5=5D_lib/igt=5Ffb=3A_add_igt=5Fformat=5Fget=5Fsubsampling?=
- =?utf-8?q?=28=29_function?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 08 Oct 2026 19:07:08 -0000
-Message-ID: <179148642827.70.763388807538273727@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261008151604.2657835-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20261008151604.2657835-1-juhapekka.heikkila@gmail.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -38,110 +65,46 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6136234228283954028==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The function test_set_property() creates both an exec queue and a VM
+every run, but fails to free either of them after completion.  This may
+result in memory leaks.  Attempt to free them.
 
-== Series Details ==
+Note that the exec queue only needs to be freed if it is expected to be
+created.  This is only the case when the expected error value is zero.
 
-Series: series starting with [i-g-t,1/5] lib/igt_fb: add igt_format_get_subsampling() function
-URL   : https://patchwork.freedesktop.org/series/175775/
-State : success
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+---
+ tests/intel/xe_exec_queue_property.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-== Summary ==
+diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
+index 3504f19b71..31a2ec2a7d 100644
+--- a/tests/intel/xe_exec_queue_property.c
++++ b/tests/intel/xe_exec_queue_property.c
+@@ -61,11 +61,17 @@ static void test_set_property(int xe, int property_name,
+ 		.property = property_name,
+ 		.value = property_value,
+ 	};
++	uint32_t vm;
+ 	uint32_t exec_queue_id;
+ 
+-	igt_assert_eq(__xe_exec_queue_create(xe, xe_vm_create(xe, 0, 0), 1, 1,
+-					     &instance, to_user_pointer(&ext),
++	vm = xe_vm_create(xe, 0, 0);
++
++	igt_assert_eq(__xe_exec_queue_create(xe, vm, 1, 1, &instance,
++					     to_user_pointer(&ext),
+ 					     &exec_queue_id), err_val);
++	if (!err_val)
++		xe_exec_queue_destroy(xe, exec_queue_id);
++	xe_vm_destroy(xe, vm);
+ }
+ 
+ static void test_property_min_max(int xe, int engine, const char **property,
+-- 
+2.43.0
 
-CI Bug Log - changes from XEIGT_9137_BAT -> XEIGTPW_15963_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9137 -> IGTPW_15963
-  * Linux: xe-5906-95bc52ddf34f72a3996b1f32e946304d3823be3c -> xe-5910-b51796fb74d179b7ccf4657efbf60f554fce191f
-
-  IGTPW_15963: c8641cd98c74327dbf38d26e3aabc4b855a843a5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9137: 125c0289617f3c7ba7ee376ea1d8aabd2ff5afdc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5906-95bc52ddf34f72a3996b1f32e946304d3823be3c: 95bc52ddf34f72a3996b1f32e946304d3823be3c
-  xe-5910-b51796fb74d179b7ccf4657efbf60f554fce191f: b51796fb74d179b7ccf4657efbf60f554fce191f
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15963/index.html
-
---===============6136234228283954028==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,1/5] lib/igt_fb: add igt_format_get_subsampling() function</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175775/">https://patchwork.freedesktop.org/series/175775/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15963/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15963/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9137_BAT -&gt; XEIGTPW_15963_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9137 -&gt; IGTPW_15963</li>
-<li>Linux: xe-5906-95bc52ddf34f72a3996b1f32e946304d3823be3c -&gt; xe-5910-b51796fb74d179b7ccf4657efbf60f554fce191f</li>
-</ul>
-<p>IGTPW_15963: c8641cd98c74327dbf38d26e3aabc4b855a843a5 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9137: 125c0289617f3c7ba7ee376ea1d8aabd2ff5afdc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5906-95bc52ddf34f72a3996b1f32e946304d3823be3c: 95bc52ddf34f72a3996b1f32e946304d3823be3c<br />
-  xe-5910-b51796fb74d179b7ccf4657efbf60f554fce191f: b51796fb74d179b7ccf4657efbf60f554fce191f</p>
-
-</body>
-</html>
-
---===============6136234228283954028==--
