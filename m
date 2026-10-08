@@ -4,61 +4,62 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AED40CA6007
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 13:55:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CAC6CA6007
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 13:56:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5754810E092;
-	Thu,  8 Oct 2026 13:55:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B887D10E853;
+	Thu,  8 Oct 2026 13:56:09 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="E9dtEiKk";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="kUUr+pc/";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D55210E092
- for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2026 13:54:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5A8FE10E853
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2026 13:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791467663; x=1823003663;
+ t=1791467690; x=1823003690;
  h=message-id:date:mime-version:subject:to:cc:references:
  from:in-reply-to:content-transfer-encoding;
- bh=8yeUIQqLFWqLdatx95LG3jteRWsY55jkaAIIXPjwLyM=;
- b=E9dtEiKkJDn3k9hPoPx+QjTH7BgJN44TIbEijkAp6OrBI270WDW8W5kc
- MzhKu9cmoadsw8u1MOGd1uMnZXklmrN6tCrWn/2T2ZeUjfFVxvTAIrHFs
- h0m8iPV8uXgnYSocmkdD9K2zH1zkgepSpEdUpPQCFRcl99yq/kqqr6m4V
- IDZFOkrCIS5F7n0EH2KQ6hQNYm74194cKIq4ERZsryvZOc4qe8e+G6SMf
- wvExpchOB/cCogyYZLq+923aS9nbGWPAwAb7zbu3CWtspvRHnrkVvJyyy
- M81QtGQn7P+PA34tSHXCaPT5EKjmulNaa27J35rs9rN2ZyJzat1ir72QY w==;
-X-CSE-ConnectionGUID: Z7pVsHfkRqO3qa3knJevbw==
-X-CSE-MsgGUID: 8SXnFdWPT228kRRY6KrGmg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="277281"
+ bh=RzKTBI+bCJfBPcPlC6GfGSAxZFVmMLVjanTaaBy5MgI=;
+ b=kUUr+pc/qCgeMHUfY56ntore+KMDPzbIwrFb9iqhcjSKL21vCNWSd91T
+ HgtC0Qvgza7iu33jdfk5SCL/ONEVa+y/N+uZM7XyxNvqAyAHG5Oiv8JU4
+ KewgI9p3yHgt4jAQCzx3UtfPLb7B/XRplpsSm/xbYdXz9XcsZltpKZKv4
+ N2Tt3UOXlFX9+D8wo/Ne8aopVJPFnZlwbyyYrsEuwN1r5ZJs0kN0Hyy1o
+ L4tJFuA5SY9ipRU+GE8V/OvTdfYzvNsHrlQqi5P9RoXGCmuEkLXmvG8kt
+ aA3+buVYzVKrjefctQW6aHl9HHIbKLwkOj9YFA9T17qG7NOzJbf2cWX5B A==;
+X-CSE-ConnectionGUID: JlRa/PrkRumbMRIKolBOOg==
+X-CSE-MsgGUID: jXSIS1+VTl2Ftktyy1yG1Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="362144"
 X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="277281"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 06:54:23 -0700
-X-CSE-ConnectionGUID: jNvw41TNSYm3RwsVXsDg2g==
-X-CSE-MsgGUID: 3XAE11oHT/2HnokmevNqTg==
+   d="scan'208";a="362144"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2026 06:54:49 -0700
+X-CSE-ConnectionGUID: Kgxk674gT8mKMJE0Dcf2+w==
+X-CSE-MsgGUID: SRqSWMgRSkehf9ilgkwKUA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,146,1787036400"; 
-   d="scan'208";a="54706"
+   d="scan'208";a="51211"
 Received: from soc-5cg43972f8.clients.intel.com (HELO [172.28.182.3])
  ([172.28.182.3])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 06:54:22 -0700
-Message-ID: <f3951eff-b985-4069-8aaa-ad880bff6564@linux.intel.com>
-Date: Thu, 8 Oct 2026 15:54:20 +0200
+ 08 Oct 2026 06:54:48 -0700
+Message-ID: <72e41ecd-9c3d-4e07-b3e1-1e642e805e96@linux.intel.com>
+Date: Thu, 8 Oct 2026 15:54:45 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/7] tools/vmtb: Rework VF scheduler provisioning
+Subject: Re: [PATCH i-g-t 3/7] tools/vmtb: Align driver/device layer with
+ current xe SR-IOV interfaces
 To: Adam Miszczak <adam.miszczak@linux.intel.com>,
  igt-dev@lists.freedesktop.org
 Cc: kamil.konieczny@linux.intel.com
 References: <20260928072600.426902-1-adam.miszczak@linux.intel.com>
- <20260928072600.426902-3-adam.miszczak@linux.intel.com>
+ <20260928072600.426902-4-adam.miszczak@linux.intel.com>
 Content-Language: en-US
 From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20260928072600.426902-3-adam.miszczak@linux.intel.com>
+In-Reply-To: <20260928072600.426902-4-adam.miszczak@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,242 +80,185 @@ LGTM,
 Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
 
 On 9/28/2026 9:25 AM, Adam Miszczak wrote:
-> Align default VF scheduling setup with the current xe KMD behavior.
-> Scheduling settings: execution quanta (EQ) and preemption-timeout (PT)
-> are set to 16ms by default (instead of infinite/0), therefore:
-> - rename VfSchedulingMode.INFINITE → AUTO
-> - update VmmTestingConfig default from INFINITE to AUTO
+> Move VF VRAM quota provisioning from the obsolete debugfs lmem_quota
+> attribute to the sysfs SRIOV admin tree
+> (/sys/bus/pci/drivers/xe/[BDF]/sriov_admin/vf[N]/profile/vram_quota)
+> and update the driver abstraction and provisioning helpers.
 >
-> Fix scheduler-only manual provisioning - support VF config variants
-> where only the scheduler setup is needed (auto resources provisioning
-> with a concrete scheduling mode). In this case load scheduler profile
-> even when no matching resources profile exists.
+> Fix physical Device bind()/unbind() calls that still passed a PCI BDF
+> to DriverInterface, breaking unload_drivers() with a TypeError.
 >
-> In addition, fix max VFs handling, improve assertions for creating VFs
-> and skip unsupported test configs instead of failing.
+> Add DeviceInterface.reset() that triggers an FLR via
+> /sys/bus/pci/devices/[BDF]/reset - PF FLR on the host for physical
+> devices and VF FLR in the guest for virtual devices.
 >
 > Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
 > ---
->   .../configurators/vgpu_profile_config.py      | 20 +++++---
->   tools/vmtb/bench/exceptions.py                |  4 ++
->   tools/vmtb/bench/machines/physical/device.py  |  9 ++--
->   tools/vmtb/vmm_flows/conftest.py              | 46 +++++++++++--------
->   tools/vmtb/vmm_flows/test_basic.py            |  2 +-
->   5 files changed, 52 insertions(+), 29 deletions(-)
+>   tools/vmtb/bench/drivers/driver_interface.py  |  8 ++--
+>   tools/vmtb/bench/drivers/xe.py                | 39 ++++++++++---------
+>   tools/vmtb/bench/machines/device_interface.py |  7 ++++
+>   tools/vmtb/bench/machines/physical/device.py  | 12 ++++--
+>   tools/vmtb/bench/machines/virtual/device.py   |  4 ++
+>   5 files changed, 44 insertions(+), 26 deletions(-)
 >
-> diff --git a/tools/vmtb/bench/configurators/vgpu_profile_config.py b/tools/vmtb/bench/configurators/vgpu_profile_config.py
-> index 4bddb641e..35a8a8835 100644
-> --- a/tools/vmtb/bench/configurators/vgpu_profile_config.py
-> +++ b/tools/vmtb/bench/configurators/vgpu_profile_config.py
-> @@ -23,7 +23,7 @@ class VfProvisioningMode(Enum):
+> diff --git a/tools/vmtb/bench/drivers/driver_interface.py b/tools/vmtb/bench/drivers/driver_interface.py
+> index 0b0bd5abb..9d1e5ab00 100644
+> --- a/tools/vmtb/bench/drivers/driver_interface.py
+> +++ b/tools/vmtb/bench/drivers/driver_interface.py
+> @@ -201,19 +201,19 @@ class PfDriverInterface(DriverInterface, abc.ABC):
 >   
+>       # VF provisioning
+>       @abc.abstractmethod
+> -    def get_ggtt_quota(self, vf_num: int, gt_num: int) -> int:
+> +    def get_vram_quota(self, vf_num: int) -> int:
+>           raise NotImplementedError
 >   
->   class VfSchedulingMode(str, Enum):
-> -    INFINITE = 'Infinite' # Infinite EQ/PT - HW default
-> +    AUTO = 'Auto' # Default EQ/PT (set by xe KMD automatically)
->       DEFAULT_PROFILE = 'Default_Profile' # Default vGPU scheduler profile
->       FLEXIBLE_30FPS = 'Flexible_30fps_GPUTimeSlicing'
->       FIXED_30FPS = 'Fixed_30fps_GPUTimeSlicing'
-> @@ -87,8 +87,8 @@ class VgpuProfileConfigurator:
->                   break
+>       @abc.abstractmethod
+> -    def set_ggtt_quota(self, vf_num: int, gt_num: int, val: int) -> None:
+> +    def set_vram_quota(self, vf_num: int, val: int) -> None:
+>           raise NotImplementedError
 >   
->           if not is_vf_resource_found:
-> -            logger.error("vGPU VF resources profile %sxVF not found!", requested_num_vfs)
-> -            raise exceptions.VgpuProfileError(f'vGPU VF resources profile {requested_num_vfs}xVF not found!')
-> +            logger.warning("vGPU resources profile (%sxVF) not found!", requested_num_vfs)
-> +            raise exceptions.VgpuProfileNotFound(f'vGPU resources profile ({requested_num_vfs}xVF) not found!')
+>       @abc.abstractmethod
+> -    def get_lmem_quota(self, vf_num: int, gt_num: int) -> int:
+> +    def get_ggtt_quota(self, vf_num: int, gt_num: int) -> int:
+>           raise NotImplementedError
 >   
->           return vgpu_resources_config
+>       @abc.abstractmethod
+> -    def set_lmem_quota(self, vf_num: int, gt_num: int, val: int) -> None:
+> +    def set_ggtt_quota(self, vf_num: int, gt_num: int, val: int) -> None:
+>           raise NotImplementedError
 >   
-> @@ -99,7 +99,7 @@ class VgpuProfileConfigurator:
->           # pylint: disable=W0123
->           vgpu_scheduler_config = VgpuSchedulerConfig()
+>       @abc.abstractmethod
+> diff --git a/tools/vmtb/bench/drivers/xe.py b/tools/vmtb/bench/drivers/xe.py
+> index 26e4e0a08..479c1dd87 100644
+> --- a/tools/vmtb/bench/drivers/xe.py
+> +++ b/tools/vmtb/bench/drivers/xe.py
+> @@ -140,7 +140,27 @@ class XeDriver(PfDriverInterface):
+>           path = self.__helper_create_debugfs_path(0, gt_num, '', 'sample_period_ms')
+>           self.write_debugfs(path, str(val))
 >   
-> -        if requested_scheduler is VfSchedulingMode.INFINITE:
-> +        if requested_scheduler is VfSchedulingMode.AUTO:
->               return vgpu_scheduler_config
->   
->           for scheduler in self.supported_vgpu_profiles.scheduler_configs:
-> @@ -136,13 +136,19 @@ class VgpuProfileConfigurator:
->   
->           return vgpu_security_config
->   
-> -    def get_vgpu_profile(self, requested_num_vfs: int, requested_scheduler: VfSchedulingMode) -> VgpuProfile:
-> -        """Get vGPU profile for requested number of VFs, scheduler and security modes."""
-> +    def get_vgpu_profile(self, requested_num_vfs: int, requested_scheduler: VfSchedulingMode,
-> +                         require_resources: bool = True) -> VgpuProfile:
-> +        """Get vGPU profile for requested number of VFs, scheduler and security modes.
-> +        If require_resources is False, skip VF resources lookup
-> +        (e.g. for auto provisioning where only the scheduler config is needed).
-> +        """
->           logger.info("Requested vGPU profile: %s VFs / scheduling: %s", requested_num_vfs, requested_scheduler)
->   
->           vgpu_profile: VgpuProfile = VgpuProfile()
->           vgpu_profile.num_vfs = requested_num_vfs
-> -        vgpu_profile.resources = self.select_vgpu_resources_profile(requested_num_vfs)
+> -    # VF and PF provisioning parameters
+> +    # VF provisioning parameters
+> +    # Sysfs location: [SRIOV sysfs base path]/sriov_admin/[vfN]/profile
+> +    # @vf_num: VF number (1-based) or 0 for PF
+> +    def get_vram_quota(self, vf_num: int) -> int:
+> +        if vf_num == 0:
+> +            logger.warning("PF vram_quota not available")
+> +            return 0
 > +
-> +        if require_resources:
-> +            vgpu_profile.resources = self.select_vgpu_resources_profile(requested_num_vfs)
->   
->           if requested_scheduler is VfSchedulingMode.DEFAULT_PROFILE:
->               requested_scheduler = VfSchedulingMode(self.supported_vgpu_profiles.scheduler_config_default)
-> diff --git a/tools/vmtb/bench/exceptions.py b/tools/vmtb/bench/exceptions.py
-> index 1c151669a..557b44142 100644
-> --- a/tools/vmtb/bench/exceptions.py
-> +++ b/tools/vmtb/bench/exceptions.py
-> @@ -40,6 +40,10 @@ class VgpuProfileError(BenchError):
->       pass
->   
->   
-> +class VgpuProfileNotFound(VgpuProfileError):
-> +    pass
+> +        sriov_admin_path = self.__helper_create_sriov_admin_path(vf_num, 'vram_quota')
+> +        return int(self.read_sysfs(self.sysfs_device_path / sriov_admin_path)) if self.has_lmem() else 0
 > +
+> +    def set_vram_quota(self, vf_num: int, val: int) -> None:
+> +        if vf_num == 0:
+> +            logger.warning("PF vram_quota not available")
+> +            return
 > +
->   class NotAvailableError(BenchError):
->       pass
+> +        sriov_admin_path = self.__helper_create_sriov_admin_path(vf_num, 'vram_quota')
+> +        if self.has_lmem():
+> +            self.write_sysfs(self.sysfs_device_path / sriov_admin_path, str(val))
+> +
+> +    # VF provisioning parameters (debugfs)
+>       # Debugfs location: [SRIOV debugfs base path]/gtM/[pf|vfN]
+>       # @vf_num: VF number (1-based) or 0 for PF
+>       def get_ggtt_quota(self, vf_num: int, gt_num: int) -> int:
+> @@ -159,23 +179,6 @@ class XeDriver(PfDriverInterface):
+>           path = self.__helper_create_debugfs_path(vf_num, gt_num, '', 'ggtt_quota')
+>           self.write_debugfs(path, str(val))
 >   
+> -    def get_lmem_quota(self, vf_num: int, gt_num: int) -> int:
+> -        if vf_num == 0:
+> -            logger.warning("PF lmem_quota not available")
+> -            return 0
+> -
+> -        path = self.__helper_create_debugfs_path(vf_num, gt_num, '', 'lmem_quota')
+> -        return int(self.read_debugfs(path)) if self.has_lmem() else 0
+> -
+> -    def set_lmem_quota(self, vf_num: int, gt_num: int, val: int) -> None:
+> -        if vf_num == 0:
+> -            logger.warning("PF lmem_quota not available")
+> -            return
+> -
+> -        path = self.__helper_create_debugfs_path(vf_num, gt_num, '', 'lmem_quota')
+> -        if self.has_lmem():
+> -            self.write_debugfs(path, str(val))
+> -
+>       def get_contexts_quota(self, vf_num: int, gt_num: int) -> int:
+>           if vf_num == 0:
+>               logger.warning("PF contexts_quota not available")
+> diff --git a/tools/vmtb/bench/machines/device_interface.py b/tools/vmtb/bench/machines/device_interface.py
+> index 0eff493f0..76b47de03 100644
+> --- a/tools/vmtb/bench/machines/device_interface.py
+> +++ b/tools/vmtb/bench/machines/device_interface.py
+> @@ -10,8 +10,15 @@ class DeviceInterface(abc.ABC):
+>       """
+>       @abc.abstractmethod
+>       def bind_driver(self) -> None:
+> +        """Bind driver to device."""
+>           raise NotImplementedError
+>   
+>       @abc.abstractmethod
+>       def unbind_driver(self) -> None:
+> +        """Unbind driver from device."""
+> +        raise NotImplementedError
+> +
+> +    @abc.abstractmethod
+> +    def reset(self) -> None:
+> +        """Reset device (trigger FLR)."""
+>           raise NotImplementedError
 > diff --git a/tools/vmtb/bench/machines/physical/device.py b/tools/vmtb/bench/machines/physical/device.py
-> index f1f24c65c..6c0dc4ff9 100644
+> index 6c0dc4ff9..b4eebc245 100644
 > --- a/tools/vmtb/bench/machines/physical/device.py
 > +++ b/tools/vmtb/bench/machines/physical/device.py
-> @@ -59,7 +59,7 @@ class Device(DeviceInterface):
->               driver_module = importlib.import_module(module_name)
->               driver_class = getattr(driver_module, class_name)
->           except (ImportError, AttributeError) as exc:
-> -            logging.error("Driver module/class is not available: %s", exc)
-> +            logger.error("Driver module/class is not available: %s", exc)
->               raise exceptions.VmtbConfigError(f'Requested driver module {driver_name} is not available!')
->   
->           return driver_class(bdf)
-> @@ -102,7 +102,9 @@ class Device(DeviceInterface):
->   
->           self.driver.set_numvfs(num)
->           ret = self.driver.get_numvfs()
-> -        assert ret == num
-> +        if ret != num:
-> +            logger.error("Failed to create requested number of VFs - expected: %s, got: %s", num, ret)
-> +            raise exceptions.HostError(f'Failed to create requested number of VFs ({num})')
->   
+> @@ -125,10 +125,14 @@ class Device(DeviceInterface):
 >           return ret
 >   
-> @@ -114,7 +116,8 @@ class Device(DeviceInterface):
->           self.driver.set_numvfs(0)
->           ret = self.driver.get_numvfs()
->           if ret != 0:
-> -            raise exceptions.HostError('VFs not disabled after 0 write')
-> +            logger.error("Failed to disable VFs - expected 0, got: %s", ret)
-> +            raise exceptions.HostError('Failed to disable all VFs')
+>       def bind_driver(self) -> None:
+> -        self.driver.bind(self.pci_info.bdf)
+> +        self.driver.bind()
 >   
->           logger.debug("[%s] Enable drivers autoprobe", self.pci_info.bdf)
->           self.set_drivers_autoprobe(True)
-> diff --git a/tools/vmtb/vmm_flows/conftest.py b/tools/vmtb/vmm_flows/conftest.py
-> index 02c297f93..ba6487c84 100644
-> --- a/tools/vmtb/vmm_flows/conftest.py
-> +++ b/tools/vmtb/vmm_flows/conftest.py
-> @@ -44,7 +44,7 @@ class VmmTestingConfig:
->       - num_vfs: requested number of VFs to enable
->       - max_num_vms: maximal number of VMs (the value can be different than enabled number of VFs)
->       - provisioning_mode: auto (fair resources allocation by a driver) or vGPU profile
-> -    - scheduling_mode: requested vGPU scheduling profile (infinite maps to default 0's)
-> +    - scheduling_mode: requested vGPU scheduling profile (auto maps to default EQ=16ms and PT=16000us)
->       - auto_poweron_vm: assign VFs and power on VMs automatically in setup fixture
->       - auto_probe_vm_driver: probe guest DRM driver in setup fixture (VM must be powered on)
->       - unload_host_drivers_on_teardown: unload host DRM drivers in teardown fixture
-> @@ -53,7 +53,7 @@ class VmmTestingConfig:
->       num_vfs: int = 1
->       max_num_vms: int = 2
->       provisioning_mode: VfProvisioningMode = VfProvisioningMode.AUTO
-> -    scheduling_mode: VfSchedulingMode = VfSchedulingMode.INFINITE
-> +    scheduling_mode: VfSchedulingMode = VfSchedulingMode.AUTO
->   
->       auto_poweron_vm: bool = True
->       auto_probe_vm_driver: bool = True
-> @@ -68,8 +68,11 @@ class VmmTestingConfig:
->               self.num_vfs = 0 # Actual value set in VmmTestingSetup
->   
->       def __str__(self) -> str:
-> -        test_config_id = (f'{self.num_vfs if not self.enable_max_vfs else "Max"}VF'
-> -                          + f'-(P:{self.provisioning_mode.name} S:{self.scheduling_mode.name})')
-> +        test_config_id = (f'{self.num_vfs if not self.enable_max_vfs else "Max"}VF')
+>       def unbind_driver(self) -> None:
+> -        self.driver.unbind(self.pci_info.bdf)
+> +        self.driver.unbind()
 > +
-> +        if self.provisioning_mode is not VfProvisioningMode.AUTO or self.scheduling_mode is not VfSchedulingMode.AUTO:
-> +            test_config_id += f'-(P:{self.provisioning_mode.name} S:{self.scheduling_mode.name})'
+> +    def reset(self) -> None:
+> +        logger.debug("[%s] Trigger reset (PF FLR)", self.pci_info.bdf)
+> +        self.driver.flr()
+>   
+>       def override_vf_driver(self, vf_num: int) -> str:
+>           """Set VFIO as VF driver."""
+> @@ -224,8 +228,8 @@ class Device(DeviceInterface):
+>               self.driver.set_pf_doorbells_spare(gt_num, resources_config.pfDoorbells)
+>           else:
+>               if not self.is_gt_media_type(gt_num):
+> +                self.driver.set_vram_quota(fn_num, resources_config.vfLmem)
+>                   self.driver.set_ggtt_quota(fn_num, gt_num, resources_config.vfGgtt)
+> -                self.driver.set_lmem_quota(fn_num, gt_num, resources_config.vfLmem)
+>               self.driver.set_contexts_quota(fn_num, gt_num, resources_config.vfContexts)
+>               self.driver.set_doorbells_quota(fn_num, gt_num, resources_config.vfDoorbells)
+>   
+> @@ -246,8 +250,8 @@ class Device(DeviceInterface):
+>                   self.driver.set_contexts_quota(vf_num, gt_num, 0)
+>                   self.driver.set_doorbells_quota(vf_num, gt_num, 0)
+>                   if not self.is_gt_media_type(gt_num):
+> +                    self.driver.set_vram_quota(vf_num, 0)
+>                       self.driver.set_ggtt_quota(vf_num, gt_num, 0)
+> -                    self.driver.set_lmem_quota(vf_num, gt_num, 0)
+>   
+>       def reset_provisioning(self, num_vfs: int) -> None:
+>           """Clear provisioning config for a given number of VFs and restore auto provisioning mode."""
+> diff --git a/tools/vmtb/bench/machines/virtual/device.py b/tools/vmtb/bench/machines/virtual/device.py
+> index c838db59d..b36dbba58 100644
+> --- a/tools/vmtb/bench/machines/virtual/device.py
+> +++ b/tools/vmtb/bench/machines/virtual/device.py
+> @@ -68,6 +68,10 @@ class VirtualDevice(DeviceInterface):
+>                        self.vm.get_drm_driver_name(), self.pci_info.bdf)
+>           self.driver.unbind()
+>   
+> +    def reset(self) -> None:
+> +        logger.debug("[%s] Trigger reset (VF FLR)", self.pci_info.bdf)
+> +        self.driver.flr() # VF FLR from guest's sysfs
 > +
->           return test_config_id
->   
->       def __repr__(self) -> str:
-> @@ -126,10 +129,11 @@ class VmmTestingSetup:
->           self.wsim_wl_dir = vmtb_root_path / vmtb_config.config.wsim_wl_path / self.get_dut().gpu_model.name.lower()
->   
->           if (self.testing_config.provisioning_mode is VfProvisioningMode.VGPU_PROFILE
-> -            or self.testing_config.scheduling_mode is not VfSchedulingMode.INFINITE):
-> +            or self.testing_config.scheduling_mode is not VfSchedulingMode.AUTO):
-> +            # vGPU profile or auto resources provisioning with concrete scheduling
->               self.vgpu_profile: VgpuProfile = self.get_vgpu_profile()
-> -
-> -        if self.testing_config.provisioning_mode is VfProvisioningMode.AUTO and self.testing_config.enable_max_vfs:
-> +        elif self.testing_config.enable_max_vfs:
-> +            # Auto provisioning (with default/auto scheduling) for max VFs (HW limit)
->               self.testing_config.num_vfs = self.total_vfs
->   
->           # Start maximum requested number of VMs, but not more than VFs supported by the given vGPU profile
-> @@ -143,17 +147,22 @@ class VmmTestingSetup:
->       def get_vgpu_profile(self) -> VgpuProfile:
->           configurator = VgpuProfileConfigurator(self.vgpu_profiles_dir, self.get_dut().gpu_model)
->           if self.testing_config.enable_max_vfs:
-> -            # Get a vGPU profile with the most VFs (not necessarily equal to sysfs/sriov_totalvfs)
-> -            self.testing_config.num_vfs = max(configurator.supported_vgpu_profiles.vf_resources,
-> -                                              key=lambda profile: profile.vf_count).vf_count
-> -            logger.debug("Max VFs supported by vGPU profiles: %s", self.testing_config.num_vfs)
-> +            if self.testing_config.provisioning_mode is VfProvisioningMode.VGPU_PROFILE:
-> +                # Get a vGPU profile with the most VFs (not necessarily equal to sysfs/sriov_totalvfs)
-> +                self.testing_config.num_vfs = max(configurator.supported_vgpu_profiles.vf_resources,
-> +                                                  key=lambda profile: profile.vf_count).vf_count
-> +                logger.debug("Max VFs supported by vGPU profiles: %s", self.testing_config.num_vfs)
-> +            else:
-> +                # Use HW VFs limit (sysfs/sriov_totalvfs) with auto resources provisioning and concrete scheduling
-> +                self.testing_config.num_vfs = self.total_vfs
->   
->           try:
-> +            require_resources = self.testing_config.provisioning_mode is VfProvisioningMode.VGPU_PROFILE
->               vgpu_profile = configurator.get_vgpu_profile(self.testing_config.num_vfs,
-> -                                                         self.testing_config.scheduling_mode)
-> -        except exceptions.VgpuProfileError as exc:
-> -            logger.error("Suitable vGPU profile not found: %s", exc)
-> -            raise exceptions.VgpuProfileError('Invalid test setup - vGPU profile not found!')
-> +                                                         self.testing_config.scheduling_mode,
-> +                                                         require_resources)
-> +        except exceptions.VgpuProfileNotFound as exc:
-> +            pytest.skip(f'Test config not supported: {exc}')
->   
->           return vgpu_profile
->   
-> @@ -277,11 +286,12 @@ def fixture_setup_vms(get_vmtb_config, get_cmdline_config, get_host, request):
->       else:
->           device.driver.restore_auto_provisioning()
->   
-> -    assert device.create_vf(num_vfs) == num_vfs
-> +    assert num_vfs <= ts.total_vfs, f'Requested number of VFs ({num_vfs}) exceeds total VFs ({ts.total_vfs})'
-> +    device.create_vf(num_vfs)
->   
->       if (ts.testing_config.provisioning_mode is VfProvisioningMode.AUTO and
-> -        ts.testing_config.scheduling_mode is not VfSchedulingMode.INFINITE):
-> -        # Auto resources provisioning with concrete scheduling (i.e. different than HW default: infinite).
-> +        ts.testing_config.scheduling_mode is not VfSchedulingMode.AUTO):
-> +        # Auto resources provisioning with scheduling override (i.e. different than default/auto).
->           # Scheduler params override must be done after enabling VFs
->           # to allow hard resources auto provisioning by KMD.
->           ts.vgpu_profile.print_scheduler_config()
-> diff --git a/tools/vmtb/vmm_flows/test_basic.py b/tools/vmtb/vmm_flows/test_basic.py
-> index 9b8731273..597ebbb68 100644
-> --- a/tools/vmtb/vmm_flows/test_basic.py
-> +++ b/tools/vmtb/vmm_flows/test_basic.py
-> @@ -43,7 +43,7 @@ def set_test_config(test_variants: List[Tuple[int, VfProvisioningMode, VfSchedul
->   
->   test_variants_1 = [(1, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
->                      (2, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
-> -                   (2, VfProvisioningMode.AUTO, VfSchedulingMode.INFINITE)]
-> +                   (2, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO)]
->   
->   @pytest.mark.parametrize('setup_vms', set_test_config(test_variants_1), ids=idfn_test_config, indirect=['setup_vms'])
->   class TestVmSetup:
+>       @property
+>       def lmem_size(self) -> typing.Optional[int]:
+>           if self._lmem_size is None:
