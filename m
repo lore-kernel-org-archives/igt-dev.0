@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A9B5CA6007
-	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 05:32:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1794ECA6002
+	for <igt-dev@archiver.kernel.org>; Thu,  8 Oct 2026 05:43:10 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B2F2310E052;
-	Thu,  8 Oct 2026 05:32:17 +0000 (UTC)
-Received: from 61270ab9df2a (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 24CF710E052;
- Thu,  8 Oct 2026 05:31:31 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============5825233927744107875=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 960F510E509;
+	Thu,  8 Oct 2026 05:43:10 +0000 (UTC)
+Authentication-Results: gabe.freedesktop.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="iT+70rFt";
+	dkim-atps=neutral
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 361F210E509
+ for <igt-dev@lists.freedesktop.org>; Thu,  8 Oct 2026 05:42:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791438145; x=1822974145;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=DDNGiBkl6srDXFP2CsEtxFuLX16CY82s5qw37xK4KdQ=;
+ b=iT+70rFtSqAMykbcygKloygSY4EEjlF/HOMOY7/hSnXD3aOXTo/cLyfN
+ Wb68bkQ3UfiXFKb20jVwiohHizFRt1LiCHNnbcjAnRK35+TJ23gA7EvSm
+ oi8EqzKWZRAAKFrkYEbEdnyh6iYUmuuv0WwsaCUVXEqofMOuVpdkuquoV
+ LlSkWICu3tMOhV1nQTL4WHD8quERdAlTz7XdEYr68sNkvj9qKJon1JeXS
+ mIjoUFPcUlfV6W5+0Q3I4ZfvWYsJ3qFOpwm38MwJaTAS78su8QV+uCCRK
+ dv6bjodC4/qpk2+S+V2Xxc/o4mCnigPxm518JP5zJfhfIGJTIuYlebk4m w==;
+X-CSE-ConnectionGUID: OMbllV06RlyGZ+sbLyMOlg==
+X-CSE-MsgGUID: +X9x784qSZ616WX16qkbzQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11928"; a="214475"
+X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
+   d="scan'208";a="214475"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 07 Oct 2026 22:42:24 -0700
+X-CSE-ConnectionGUID: MqeIm9xpQY6HiK6Zzjs3Pg==
+X-CSE-MsgGUID: mIoCYo6CRO+RLLKm+bgx0g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,145,1787036400"; 
+   d="scan'208";a="21290"
+Received: from dut1608bmgfrd.igk.intel.com ([10.211.180.169])
+ by fmviesa004.fm.intel.com with ESMTP; 07 Oct 2026 22:42:23 -0700
+From: shivtej.eknath.patil@intel.com
+To: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
+ nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
+Cc: dominik.karol.piatkowski@intel.com,
+ Shivtej Patil <shivtej.eknath.patil@intel.com>
+Subject: [PATCH v10 1/4] lib/igt_sysfs: add vram d3cold threshold helpers
+Date: Thu,  8 Oct 2026 05:42:20 +0000
+Message-ID: <20261008054220.6121-1-shivtej.eknath.patil@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Revert_=22intel-ci=3A_Allow?=
- =?utf-8?q?_PXP_negative_testing_on_CRI=22?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: himanshu.girotra@intel.com
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 08 Oct 2026 05:31:31 -0000
-Message-ID: <179143749114.250898.17665084556448576800@61270ab9df2a>
-X-Patchwork-Hint: ignore
-References: <20261008044627.2730162-1-himanshu.girotra@intel.com>
-In-Reply-To: <20261008044627.2730162-1-himanshu.girotra@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,110 +65,96 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============5825233927744107875==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Shivtej Patil <shivtej.eknath.patil@intel.com>
 
-== Series Details ==
+Add vram_d3cold_threshold helper functions
 
-Series: Revert "intel-ci: Allow PXP negative testing on CRI"
-URL   : https://patchwork.freedesktop.org/series/175726/
-State : success
+Add helper functions to read and write the
+vram_d3cold_threshold sysfs attribute.
 
-== Summary ==
+Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
+---
+ lib/igt_sysfs.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_sysfs.h |  3 +++
+ 2 files changed, 52 insertions(+)
 
-CI Bug Log - changes from XEIGT_9134_BAT -> XEIGTPW_15959_BAT
-====================================================
+diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
+index 3646dbacb..601e898ec 100644
+--- a/lib/igt_sysfs.c
++++ b/lib/igt_sysfs.c
+@@ -1012,6 +1012,55 @@ void igt_sysfs_set_u64(int dir, const char *attr, uint64_t value)
+ 		     value, attr, strerror(errno));
+ }
+ 
++/**
++ * igt_sysfs_get_vram_d3cold_threshold:
++ * @sysfs: sysfs directory corresponding to the device
++ *
++ * Reads the value of the vram_d3cold_threshold sysfs attribute.
++ *
++ * Returns:
++ * Current vram_d3cold_threshold value.
++ */
++uint64_t igt_sysfs_get_vram_d3cold_threshold(int sysfs)
++{
++	uint64_t threshold;
++	char path[64];
++	int ret;
++
++	sprintf(path, "device/vram_d3cold_threshold");
++
++	igt_require_f(!faccessat(sysfs, path, R_OK, 0),
++		      "vram_d3cold_threshold is not present\n");
++
++	ret = igt_sysfs_scanf(sysfs, path, "%" PRIu64, &threshold);
++	igt_assert_lt(0, ret);
++
++	return threshold;
++}
++
++/**
++ * igt_sysfs_set_vram_d3cold_threshold:
++ * @sysfs: sysfs directory corresponding to the device
++ * @threshold: value to set
++ *
++ * Convenience wrapper to write a value to the
++ * vram_d3cold_threshold sysfs attribute.
++ * It asserts on failure.
++ */
++void igt_sysfs_set_vram_d3cold_threshold(int sysfs, uint64_t threshold)
++{
++	char path[64];
++	int ret;
++
++	sprintf(path, "device/vram_d3cold_threshold");
++
++	igt_require_f(!faccessat(sysfs, path, R_OK | W_OK, 0),
++		      "vram_d3cold_threshold is not present\n");
++
++	ret = igt_sysfs_printf(sysfs, path, "%" PRIu64, threshold);
++	igt_assert_lt(0, ret);
++}
++
+ /**
+  * __igt_sysfs_get_boolean:
+  * @dir: directory corresponding to attribute
+diff --git a/lib/igt_sysfs.h b/lib/igt_sysfs.h
+index 9cbd216e6..8bdf97060 100644
+--- a/lib/igt_sysfs.h
++++ b/lib/igt_sysfs.h
+@@ -135,6 +135,9 @@ uint64_t igt_sysfs_get_u64(int dir, const char *attr);
+ bool __igt_sysfs_set_u64(int dir, const char *attr, uint64_t value);
+ void igt_sysfs_set_u64(int dir, const char *attr, uint64_t value);
+ 
++uint64_t igt_sysfs_get_vram_d3cold_threshold(int sysfs);
++void igt_sysfs_set_vram_d3cold_threshold(int sysfs, uint64_t threshold);
++
+ bool __igt_sysfs_get_boolean(int dir, const char *attr, bool *value);
+ bool igt_sysfs_get_boolean(int dir, const char *attr);
+ bool __igt_sysfs_set_boolean(int dir, const char *attr, bool value);
+-- 
+2.43.0
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9134 -> IGTPW_15959
-  * Linux: xe-5902-c55090c5898a23460a6b17613532bef0ec028ea7 -> xe-5905-facc562ab96d7b9fa3dec0528022e0009a5bf875
-
-  IGTPW_15959: 15959
-  IGT_9134: 23f88758399c4e526aab1db26f35208faea9816a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5902-c55090c5898a23460a6b17613532bef0ec028ea7: c55090c5898a23460a6b17613532bef0ec028ea7
-  xe-5905-facc562ab96d7b9fa3dec0528022e0009a5bf875: facc562ab96d7b9fa3dec0528022e0009a5bf875
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15959/index.html
-
---===============5825233927744107875==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>Revert &quot;intel-ci: Allow PXP negative testing on CRI&quot;</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175726/">https://patchwork.freedesktop.org/series/175726/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15959/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15959/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9134_BAT -&gt; XEIGTPW_15959_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9134 -&gt; IGTPW_15959</li>
-<li>Linux: xe-5902-c55090c5898a23460a6b17613532bef0ec028ea7 -&gt; xe-5905-facc562ab96d7b9fa3dec0528022e0009a5bf875</li>
-</ul>
-<p>IGTPW_15959: 15959<br />
-  IGT_9134: 23f88758399c4e526aab1db26f35208faea9816a @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5902-c55090c5898a23460a6b17613532bef0ec028ea7: c55090c5898a23460a6b17613532bef0ec028ea7<br />
-  xe-5905-facc562ab96d7b9fa3dec0528022e0009a5bf875: facc562ab96d7b9fa3dec0528022e0009a5bf875</p>
-
-</body>
-</html>
-
---===============5825233927744107875==--
