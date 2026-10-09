@@ -4,58 +4,153 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 01816CA5FED
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Oct 2026 05:32:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BE22CA5FED
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Oct 2026 05:33:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 996BF10E51B;
-	Fri,  9 Oct 2026 05:32:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EDE2810E51B;
+	Fri,  9 Oct 2026 05:33:00 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="HoK23ZaY";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="m/XrfU/w";
 	dkim-atps=neutral
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9C2A710E0FD
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Oct 2026 05:26:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7393410E51B
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Oct 2026 05:28:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791523610; x=1823059610;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=0vTjPGznJ1Q2ffnbP8VMPsCptHt9Z+RBk33ZB+9qdQE=;
- b=HoK23ZaY0gqPBK8vnbgUGydFDAhtJj4bN6FgRG56D6LpJKLzELIPm+YO
- +0jbNKkRQW2lH0ja9CjSJE1/a0ANnVGdalSoKGsjamT/yAEfpd69IeDFh
- uE5SzpRg4v7Cgi5kPCRUcj0QmokJkBdukS76xd7OWIOdjY4yVT/9nZS/X
- ubsKDwbEZeMVJiaM2dP7e+P/qQ8nqvKbs8mZKzDy00OYxdM7iLgqdHVy7
- KfaOaTabmq2cNAN+c+/ORSif/3bv0ZHjINBYSKarnT/Ky9zfIbZ87XZ1P
- U/HScR9WpvF+N8KNnHuF68InM1/WxhY0vGqyBxNLNrShOw9hBo5Xhw+LJ A==;
-X-CSE-ConnectionGUID: jttKSMavQt+5JbURRRY+OQ==
-X-CSE-MsgGUID: Weesk72+RGuwNOOVRoou3w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="318198"
+ t=1791523702; x=1823059702;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=gq6A83iz3tPdBsDF3Z8rEfOWlkc8WDwR2+lS9p74OT4=;
+ b=m/XrfU/w8NuIR1rt5/vJUQ4XO/xV5ZPxYcEil02y6hTiUveymzA8TP9k
+ q3CQkbjx4H2vuoUKnnlOiOM1SBQsPnvug1bvc/szNsNX6hSP2W7nqhpDY
+ GEfmcz0lShc9RL0DzJn1SJpJGhQp502GAhvERQ02PRMibbe5oNEw72K/Z
+ myfF6jEnzOncH69oA61bQeBU5P5M0ZjPu+xkKEVGYBnb6ogkMNOzKGSzM
+ XLLx+JWPRTcgeT70EhpxisMxbEfsAFxa+IT8W4cl5pP71lsxsg8AFffqV
+ jjzL2HMcDsc8G4g3GWQPCTzHd3siZsqDUO3uyaCNF7XP+lcmTEDYS6phq g==;
+X-CSE-ConnectionGUID: liW3YnykS7KKQjRktaJeiw==
+X-CSE-MsgGUID: omzuPr8STR+TtzBJgXR7bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="344919"
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="318198"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 22:26:50 -0700
-X-CSE-ConnectionGUID: YUDNwFxRRwC6lDhkmPxxSw==
-X-CSE-MsgGUID: 69F5M2ACSxOXMPX3BjVz4Q==
+   d="scan'208";a="344919"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2026 22:28:22 -0700
+X-CSE-ConnectionGUID: CBT0LbqeS92zGYCVmcc1Ug==
+X-CSE-MsgGUID: M7MTEihMR0WyQpTDbrf5Jw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="2040621"
-Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 22:26:47 -0700
-From: Pranay Samala <pranay.samala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: kunal1.joshi@intel.com, sameer.lattannavar@intel.com,
- pranay.samala@intel.com
-Subject: [PATCH i-g-t v2 7/7] tests/chamelium/kms_chamelium_hpd: Add HPD from
- runtime suspended D3hot
-Date: Fri,  9 Oct 2026 10:56:25 +0530
-Message-ID: <20261009052625.419259-8-pranay.samala@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261009052625.419259-1-pranay.samala@intel.com>
+   d="scan'208";a="549504"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 08 Oct 2026 22:28:21 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 8 Oct 2026 22:28:20 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Thu, 8 Oct 2026 22:28:20 -0700
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.31)
+ by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 8 Oct 2026 22:28:20 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dSSmyajwVV26NRjOp2nPtIGrMfZr/sa3fc1vRFLKszecFFasge+tDAP26DRaSq1DsqPcrluUlgJdQupamxVs+qldYAWkhk9CMBz/37SaVux8iJe5CAn/NsaSsT0p0RSaiSRQlWMCSlXfzaDfIbmWmvnZdfTioxziXtPq75rqfGv6bHP+gYzOlPSMXTZJFag3jGepyOI04KxTAx0M0HFV7o0Q6TpMcynl4t5e22Jd3aOYIFZ4Rh2nxPk+RlHrWQa5o+69RYKwCUACLzDyWEzs2VpFt2NsRYEqgIu3SCG1rN1n0HwcGE1nuTsbM6u2lqlaG3Ri+ZS8H7+KgUp8lqB4zA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gq6A83iz3tPdBsDF3Z8rEfOWlkc8WDwR2+lS9p74OT4=;
+ b=txK/PlsZfb9WV4XxPt2Wvx/JjB53A9/CxcGHBMeh6JpDlXCGUmn/KU9CuwWPvdqs4VXgIL85Y/YUovQC00z+5jsQcRgEMe/Z/PWGxPp7hyuucz3H6RH/MBFX/5zM8QKtpxeV62urF0SbasNMOCY2lmIOyE0Abrwx8Cni4I00Lv8WpJdxSQU0G//wN0Ik/5CYK+r84/Aqgu1L3AytOvR6n0mHOJPFwWVais/st0LjFTfMt0KvBDkhGgG8k7vHrZCojlnWe7S9cWFIvkGyuQ+HQC7flznpiDdObtDkWp21QCvWZtqZqBm587Mu+6uXXP+IK5JfPDgJFyz8jQb7gW4Ftw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from MW4PR11MB5776.namprd11.prod.outlook.com (2603:10b6:303:183::9)
+ by PH0PR11MB7421.namprd11.prod.outlook.com (2603:10b6:510:281::16)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.15; Fri, 9 Oct
+ 2026 05:28:16 +0000
+Received: from MW4PR11MB5776.namprd11.prod.outlook.com
+ ([fe80::b568:69e9:7abf:180e]) by MW4PR11MB5776.namprd11.prod.outlook.com
+ ([fe80::b568:69e9:7abf:180e%5]) with mapi id 15.21.0496.010; Fri, 9 Oct 2026
+ 05:28:15 +0000
+From: "Joshi, Kunal1" <kunal1.joshi@intel.com>
+To: "Samala, Pranay" <pranay.samala@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Lattannavar, Sameer" <sameer.lattannavar@intel.com>
+Subject: RE: [PATCH i-g-t v2 1/7] lib/igt_pci: Add PCI Power Management
+ capability register layout
+Thread-Topic: [PATCH i-g-t v2 1/7] lib/igt_pci: Add PCI Power Management
+ capability register layout
+Thread-Index: AQHdV67Gf8ISUAIPj0uK2eqBwZ6DTrb0rnLQ
+Date: Fri, 9 Oct 2026 05:28:15 +0000
+Message-ID: <MW4PR11MB57763F7FDEB5D456D45B9799DA922@MW4PR11MB5776.namprd11.prod.outlook.com>
 References: <20261009052625.419259-1-pranay.samala@intel.com>
+ <20261009052625.419259-2-pranay.samala@intel.com>
+In-Reply-To: <20261009052625.419259-2-pranay.samala@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: MW4PR11MB5776:EE_|PH0PR11MB7421:EE_
+x-ms-office365-filtering-correlation-id: 41e165fb-ebcf-436c-c618-08df25c61eae
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|23010399003|376014|366016|1800799024|6133799003|22082099003|18002099003|4143699003|11063799006|10067099003|38070700021|56012099006;
+x-microsoft-antispam-message-info: Xel/lIBM/3B7SMRdLDV91yh6a8qdvec46VsgDE3eWH3aHL+TTNjZXdyApn36kZkOs4kIBfJBqMmEPyXWnMhe1zK0lCmk+LQtD11UAWk7zuGPRk0VZ+5uWthevRGsLHNpEj+3NMqU2j91Hk7yqZTrB9yW5NYQgnP9tV9nlc+C99Jm2vllHOWhFU0b/3QmDOJD968ANtKlDBFf2pIJxUFw9AXjr8kvrfj44cravP66o0Yqv7ksQ28C6KnifX6bzkTqw9CbbxwN2NgnS1ssGAPF/bihqIYTE8u4HT2JJRKCdQUOq2Ud+7kRtvUVFoGZUGf/oVc36koURGchKUw8Ds2pw5TH68jcx+tWeG8CRwDgWPqJVVTCFfGs//XVtDmrA90lSv9o47gO9MiHChyphiU0nqo3rRbnJRZ9RbHX0Vg6bvghFNcghxelmikjXYqYK5ctVtYDDczJHpQpe/vxzUiUS3dM9mlxGsPMZ1rgf9+fJXCPm7y+Li9aQiFA1Txaeeu+LplGIVl9GUQmagWaC42cybNOmEeqt0l+jJTrOTJK1K5edhEx/l57ly66MJQDJiDGRqc/dOI5rThg4G+3R40EfpzxLCrOdkTWhGMIifGfGkm2q5Hsp9AgWJlrEJ6pGATDy5nREFvJfKDpZfe5+th/jQmZsnrEkXMIxM1mADLu1WA8p99tKl4GOASF0MT9x8BN+YBhT6kDpQ90MC2tun/u6qRQJskyKZDat3QmYmtu+kE=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW4PR11MB5776.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(6133799003)(22082099003)(18002099003)(4143699003)(11063799006)(10067099003)(38070700021)(56012099006);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Nl8hhAvOHhMUBKGBm1GHSP14RMPDRSjo52tTqXK63Mk6kkuZjYyPOIO6WHwI?=
+ =?us-ascii?Q?f/kUYCfxHRa1r59YymKvm0qpQUM3NbYX0UxaJ+uXmeUg6nQjCwzABf5jtHKr?=
+ =?us-ascii?Q?MnVR7LReVf8u7x+319BKk7POWYGVHwM6iV6vPmDjpL5GUWx3C9dIV9snvPmP?=
+ =?us-ascii?Q?CObTqH8abmKUpSTjd5m7NCNsOm5J0KjWAms4/LUQPzGAE6hVaIph7KeONiOJ?=
+ =?us-ascii?Q?E/ANDNx+cV6xwcNDmYg8bFHfwcElyzOD9hvUBRttL92Bnx27ti8/a0NeX5mr?=
+ =?us-ascii?Q?ALPuR+PH6n1TRy6fBf69ojeFyJbcOJh0VKvwT9DUCMvvayMcZzy4fNxY+Del?=
+ =?us-ascii?Q?vObF1Ud3u/tRErHUMo8lAIjoBqCObHqXCAsetCdVY9H3XOi8KLdX3STxdEKq?=
+ =?us-ascii?Q?zDsBS20FQcl0/aWajdDM8ZzQesPcULtd6AHnmUKFuesYHRtOGQ9HKci0hLoy?=
+ =?us-ascii?Q?5Ig7giUWHCgSGy3YpN0sw7WEOvsKuI2gcZWVIcUc2yYUvDzqyIyhnYfhZ2Sa?=
+ =?us-ascii?Q?UD6tp7/Umzm3Y9m0aQPNShoEDi39mHK1U1J9/eOkoxxpB6BwYARv8z8sXlTF?=
+ =?us-ascii?Q?uERdOkBHZVjWvf7rGD+Fsj1wL0id5OaIOuxm8rbcT0ZLPh5/E4Mc9kyNFcXq?=
+ =?us-ascii?Q?5gfNbRFMSSEdnONJIs3xCtabaSlPkHd4Lzx4Mi7qYXwFsHpQW/QZ1DbWJb9I?=
+ =?us-ascii?Q?/ETXA6ByLLlFv+5nq/VIoTUfqsoS1qo2WXBy9XiNeYORRb/VjIvUBKXuG0iP?=
+ =?us-ascii?Q?EdSvm8vXgDa9fpZ20gBzpet41FIBTHO9LW/APTFpIOtvlt2V+E1s6JBRULWz?=
+ =?us-ascii?Q?AsozVRp+n0VIZHHvUNcrG8+g1KtRXKfgWEQP0wLZOWyUcGPDZznurxU4HYB4?=
+ =?us-ascii?Q?K1LnnXK9WpA0qB4Qz0P7vtbyouriadnsSOo3t7GoPIA2a4OMktZqjN4YV3I4?=
+ =?us-ascii?Q?5OGk5N1PMarXhGdn9ZaL+4MaO912YeyUaYa+DqyjlzBLDekq3rtkSnsozqYy?=
+ =?us-ascii?Q?XLj9rugNjH/IaZcjivDkcXcuyt1ndlWUt8KRUf/cqFRX4XyY1J9Mn60E22ae?=
+ =?us-ascii?Q?7hluASNxyMUd2Lh2HZyCbTw+MLeCcS5N2W0x45h2WLO02WFO6paZusaybgdU?=
+ =?us-ascii?Q?bxTpiXFIpLqaLXi0NO7cGUcP9ujq7rDwDR/hACowsyma7omzJP7v8s1ThdFW?=
+ =?us-ascii?Q?F6apLoFFu9WCBOCBQ2QTPAj7yoy0j51wdN2bWTmtlXtyZCdDlhWntQDf7stn?=
+ =?us-ascii?Q?APKnTZZju0h5kWOl3eCSthTXpckLi02Iv5p407dEvGaWSupLZh5daCMRejQp?=
+ =?us-ascii?Q?Ou2BCJysyfMfUYTgNxcTY/xH7kkHYErXmbJM+o1m2dFBxxbcyWeA8u6JZh12?=
+ =?us-ascii?Q?A+HDc/Ba/7iMU3XWPdWaxJMHJkXBeD6VyX+R7KB4wTRF2PTXq9oO8APganEr?=
+ =?us-ascii?Q?iUhQJ2DnwDVX+6m+VQqqWuobVRR0GPa0qdbVJvWEErippfOXGg19k1qJaWp0?=
+ =?us-ascii?Q?HF/hF/93xCnrX2vaTZtclu9ZACc6ILktjIIva0cbG/4rd6rfLdHAn7q1K9k0?=
+ =?us-ascii?Q?HMFq3NvrI9PwBCuJ0xBek1bxrvWCGm+ZRrjxnlL8dCXaq6fpIPPfEMrZT9U7?=
+ =?us-ascii?Q?MZb6RiIP67gtkda03FpBqTuxreHadvAwRjWFd8bIOwq/kFxiUDcZWnkUbFM5?=
+ =?us-ascii?Q?4AgTH+DzxEXpuQk0tU4JNale6i0XUxoIrWX3wEOBoKN+ASZnbUrs7TvJfT0i?=
+ =?us-ascii?Q?hCO+HposZA=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Exchange-RoutingPolicyChecked: q/QufdPgmRVxIvg6vFv3fIi2QPFP+2WiSdnb+0yI51+S+v4I+SzGTArJk25WdIc/rn6CMh+QS++MBRldAkDMER2aZzTgSYIltm0dFWoy6bcytkR3jox4NZ/9QuvIGKK8f/uVOcCJtfvN3VqbV19qcGgTGfnVLxFz89BzxXKdgZL1RuBpe982h8vcl8GhSgEG5BLuVCCbYN64nR8hJixnq7YDjDN1HZcAcatueQvR+3qy8KMOZ9S5b2NWsAHsQqdvnuGzy1PA0CkpWY7euTNPJHVQKZ2rYn2Ro245cfPtiA5nGI7fEdmsbHkRBNPZdYClCjh7Xdv12tN83Gqh7vIVIA==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB5776.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41e165fb-ebcf-436c-c618-08df25c61eae
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2026 05:28:15.8317 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Mud5OkGBmJOERaeW26qgEBSFtfj3rS/824uO7+fsejTRl+//IKI5lnaaGsBG3ldJDwOOtPUIwqqutlz9Iz7C/A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7421
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,426 +166,35 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add dp-hpd-after-runtime-suspend-d3hot and
-hdmi-hpd-after-runtime-suspend-d3hot, covering a hotplug signalled by a
-PME while the device is runtime suspended in D3hot. The existing
-*-hpd-after-suspend subtests use system suspend instead.
+Hello Pranay,
 
-Checking only that the display comes back would pass whether or not the
-driver fell back to the ~10s connector poll, so the subtest runs two
-phases against the same suspended device.
+> -----Original Message-----
+> From: Samala, Pranay <pranay.samala@intel.com>
+> Sent: Friday, October 9, 2026 10:56 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Joshi, Kunal1 <kunal1.joshi@intel.com>; Lattannavar, Sameer
+> <sameer.lattannavar@intel.com>; Samala, Pranay
+> <pranay.samala@intel.com>
+> Subject: [PATCH i-g-t v2 1/7] lib/igt_pci: Add PCI Power Management
+> capability register layout
+>=20
+> Add the register offsets and field masks of the PCI Power Management
+> capability. Two registers are needed.
+>=20
+> PMC (PM Capabilities) holds the PME_Support field, which says what D stat=
+es
+> the device can send a PME from.
+>=20
+> PMCS (PM Control/Status) holds the PowerState field, the PME_En bit and
+> the PME_Status bit, which say what D state the device is in, whether it i=
+s
+> armed to send a PME, and whether it has one pending. PME_Status is write-
+> 1-to-clear and stays set until someone acknowledges the PME, so it
+> distinguishes a device that never signalled from one whose signal was nev=
+er
+> delivered.
+>=20
+> Assisted-by: GitHub_Copilot:claude-opus-5
+> Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 
-Phase 1 parks the device in D3hot with PME_En set and samples the D
-state from the PCI Power Management Control/Status register across a
-window longer than two poll periods, requiring that it never leaves
-D3hot. Any resume there means polling is still enabled.
-
-Phase 2 toggles the HPD from the chamelium and requires a prompt uevent,
-an updated connector status, and an increase in
-power/wakeup_active_count. The counter is what shows the device
-signalled its own resume rather than the host initiating one.
-
-Both phases report the D state, PME_Status and the counter delta on
-failure rather than asserting a cause, which separates a device that
-never signalled from one whose PME was not delivered and from one that
-resumed and dropped the HPD afterwards.
-
-Assisted-by: GitHub_Copilot:claude-opus-5
-Signed-off-by: Pranay Samala <pranay.samala@intel.com>
----
- tests/chamelium/kms_chamelium_hpd.c | 344 ++++++++++++++++++++++++++++
- 1 file changed, 344 insertions(+)
-
-diff --git a/tests/chamelium/kms_chamelium_hpd.c b/tests/chamelium/kms_chamelium_hpd.c
-index bd8731c02..1135019c4 100644
---- a/tests/chamelium/kms_chamelium_hpd.c
-+++ b/tests/chamelium/kms_chamelium_hpd.c
-@@ -33,6 +33,7 @@
-  */
- 
- #include "kms_chamelium_helper.h"
-+#include "igt_device.h"
- 
- /**
-  * SUBTEST: dp-hpd-fast
-@@ -114,6 +115,18 @@
-  * Description: Toggle HPD during Suspend, check that uevents are sent and
-  *              connector status is updated
-  *
-+ * SUBTEST: dp-hpd-after-runtime-suspend-d3hot
-+ * Description: Toggle HPD while runtime suspended in D3hot with PME signalling
-+ *              available, check that connector polling stayed disabled, that the
-+ *              device woke itself up and that uevents are sent and connector
-+ *              status is updated
-+ *
-+ * SUBTEST: hdmi-hpd-after-runtime-suspend-d3hot
-+ * Description: Toggle HPD while runtime suspended in D3hot with PME signalling
-+ *              available, check that connector polling stayed disabled, that the
-+ *              device woke itself up and that uevents are sent and connector
-+ *              status is updated
-+ *
-  * SUBTEST: common-hpd-after-suspend
-  * Description: Toggle HPD during suspend on all connectors, check that uevents
-  * 		are sent and connector status is updated
-@@ -152,6 +165,33 @@
- #define HPD_TOGGLE_COUNT_DP_HDMI 15
- #define HPD_TOGGLE_COUNT_FAST 3
- 
-+/*
-+ * The KMS helper polls connectors every 10s, so watch for longer than two poll
-+ * periods: a single delayed or coalesced poll then cannot make the test pass.
-+ */
-+#define PME_POLL_PROOF_WINDOW_MS 25000
-+/*
-+ * How often to sample the D state during that window. Config space reads do not
-+ * resume a device suspended into D3hot, so this catches a poll induced resume
-+ * that is too brief to stand out in the runtime PM accounting.
-+ */
-+#define PME_D_STATE_SAMPLE_MS 100
-+/*
-+ * If the device never leaves D3hot, all elapsed time is accounted to
-+ * runtime_suspended_time and runtime_active_time does not move at all. Allow a
-+ * small amount for one unrelated wakeup rather than requiring exactly zero,
-+ * while staying well under what two or three poll induced resumes would cost.
-+ */
-+#define PME_ACTIVE_TIME_SLACK_MS 100
-+/* Tolerance for accounting granularity and usleep() overshoot. */
-+#define PME_POLL_PROOF_SLACK_MS 500
-+/*
-+ * A PME is delivered as an interrupt, so the wake is expected to be prompt. The
-+ * whole point of the feature is that this is not the ~10s a poll would take.
-+ */
-+#define PME_WAKE_LATENCY_MAX_MS 3000
-+#define PME_HPD_TOGGLE_DELAY_MS 1000
-+
- enum test_modeset_mode {
- 	TEST_MODESET_ON,
- 	TEST_MODESET_ON_OFF,
-@@ -383,6 +423,302 @@ static void test_suspend_resume_hpd_common(chamelium_data_t *data,
- 	igt_cleanup_uevents(mon);
- }
- 
-+/*
-+ * Name a D state read back from config space, for failure messages. PMCS cannot
-+ * report D3cold - a device in D3cold is resumed by the read itself and answers
-+ * as D0 - so an unknown state here means the read failed outright, i.e. the
-+ * device has gone away.
-+ */
-+static const char *pme_d_state_name(enum igt_acpi_d_state state)
-+{
-+	switch (state) {
-+	case IGT_ACPI_D0:
-+		return "D0";
-+	case IGT_ACPI_D1:
-+		return "D1";
-+	case IGT_ACPI_D2:
-+		return "D2";
-+	case IGT_ACPI_D3Hot:
-+		return "D3hot";
-+	case IGT_ACPI_D3Cold:
-+		return "D3cold";
-+	default:
-+		return "an unreadable state";
-+	}
-+}
-+
-+static void try_hpd_runtime_suspend_pme(chamelium_data_t *data,
-+					struct chamelium_port *port,
-+					struct pci_device *pci_dev,
-+					struct udev_monitor *mon,
-+					bool connected)
-+{
-+	drmModeConnection target_state = connected ? DRM_MODE_DISCONNECTED :
-+						     DRM_MODE_CONNECTED;
-+	int timeout = CHAMELIUM_HOTPLUG_TIMEOUT;
-+	uint64_t susp_before, active_before, wakeups_before, wakeups_after;
-+	uint64_t wakeups_at_toggle;
-+	uint64_t susp_delta, active_delta;
-+	struct timespec start, end;
-+	int latency;
-+
-+	igt_flush_uevents(mon);
-+
-+	igt_assert_f(igt_wait_for_pm_status(IGT_RUNTIME_PM_STATUS_SUSPENDED),
-+		     "Device did not runtime suspend\n");
-+
-+	/*
-+	 * Intel graphics devices support PME in D3hot but not in D3cold, and xe
-+	 * chooses the target state itself, so there is nothing to force from
-+	 * userspace. In practice an integrated device always lands in D3hot,
-+	 * since xe needs an ACPI _PR3 power resource on the upstream port before
-+	 * it considers D3cold at all. Check anyway: on a device that did drop to
-+	 * D3cold there is no PME to observe and everything below would only
-+	 * exercise the polling fallback, so skip.
-+	 *
-+	 * A device in D3cold answers this read as D0 rather than as D3cold, for
-+	 * the reason described above pme_d_state_name(), which fails the check
-+	 * just the same.
-+	 */
-+	igt_require_f(igt_pm_pci_get_d_state(pci_dev) == IGT_ACPI_D3Hot,
-+		      "Device is not suspended in D3hot, so there is no PME to "
-+		      "observe\n");
-+
-+	/*
-+	 * PME_En is the direct sign that the feature engaged; without it, the test
-+	 * would only be measuring the polling fallback.
-+	 */
-+	igt_assert_f(igt_pm_pci_pme_enabled(pci_dev),
-+		     "PME_En is not set after suspending into D3hot\n");
-+
-+	/*
-+	 * Phase 1: ensure the device stays in D3hot while idle. If polling remains on,
-+	 * the KMS helper will resume it to probe connectors.
-+	 */
-+	susp_before = igt_pm_get_runtime_suspended_time(pci_dev);
-+	active_before = igt_pm_get_runtime_active_time(pci_dev);
-+	wakeups_before = igt_pm_get_wakeup_active_count(pci_dev);
-+
-+	igt_assert_eq(igt_gettime(&start), 0);
-+	do {
-+		enum igt_acpi_d_state d_state = igt_pm_pci_get_d_state(pci_dev);
-+
-+		/*
-+		 * Distinguish self-woken resumes from host-driven ones. A self-wakeup bumps
-+		 * wakeup_active_count; a host-driven resume does not.
-+		 */
-+		if (d_state != IGT_ACPI_D3Hot) {
-+			bool self_woke;
-+
-+			wakeups_after = igt_pm_get_wakeup_active_count(pci_dev);
-+			self_woke = wakeups_after > wakeups_before;
-+
-+			igt_assert_eq(igt_gettime(&end), 0);
-+			igt_assert_f(false,
-+				     "Device left D3hot into %s after %.0fms of "
-+				     "a %dms idle window.\n"
-+				     "wakeup_active_count %" PRIu64 " -> %" PRIu64
-+				     ", so the resume was %s.\n%s\n",
-+				     pme_d_state_name(d_state),
-+				     igt_time_elapsed(&start, &end) * 1000,
-+				     PME_POLL_PROOF_WINDOW_MS,
-+				     wakeups_before, wakeups_after,
-+				     self_woke ? "signalled by the device" :
-+						 "initiated by the host",
-+				     self_woke ?
-+				     "No hotplug was requested yet, so this is a "
-+				     "spurious or still pending PME rather than "
-+				     "the polling fallback." :
-+				     "The polling fallback resumes on a 10s period, "
-+				     "or 1s while a delayed event is pending, so "
-+				     "compare the elapsed time above: a wake at an "
-+				     "unrelated delay is some other client or "
-+				     "driver taking a display power reference "
-+				     "rather than connector polling.");
-+		}
-+
-+		usleep(PME_D_STATE_SAMPLE_MS * 1000);
-+
-+		igt_assert_eq(igt_gettime(&end), 0);
-+	} while (igt_time_elapsed(&start, &end) * 1000 < PME_POLL_PROOF_WINDOW_MS);
-+
-+	susp_delta = igt_pm_get_runtime_suspended_time(pci_dev) - susp_before;
-+	active_delta = igt_pm_get_runtime_active_time(pci_dev) - active_before;
-+
-+	igt_info("Idle for %dms in D3hot: suspended +%" PRIu64 "ms, active +%" PRIu64 "ms\n",
-+		 PME_POLL_PROOF_WINDOW_MS, susp_delta, active_delta);
-+
-+	/*
-+	 * Belt and braces on top of the D state sampling above, which covers
-+	 * resumes shorter than the sample interval: with the device parked in
-+	 * D3hot for the whole window, all of the elapsed time is accounted to
-+	 * runtime_suspended_time and runtime_active_time should barely move.
-+	 */
-+	igt_assert_f(active_delta <= PME_ACTIVE_TIME_SLACK_MS,
-+		     "Device was active for %" PRIu64 "ms of a %dms idle window, "
-+		     "so it resumed for shorter than the %dms sample interval. "
-+		     "Something is still waking the device while idle and the "
-+		     "feature saves no power\n",
-+		     active_delta, PME_POLL_PROOF_WINDOW_MS,
-+		     PME_D_STATE_SAMPLE_MS);
-+	igt_assert_lte(PME_POLL_PROOF_WINDOW_MS - PME_POLL_PROOF_SLACK_MS,
-+		       susp_delta);
-+
-+	/*
-+	 * Phase 2: fire the HPD and check the device wakes up promptly. The
-+	 * toggle is scheduled over XMLRPC, which travels over the network and so
-+	 * does not disturb the GPU while we wait for the uevent.
-+	 *
-+	 * Take a fresh wakeup baseline rather than reusing the one from phase 1,
-+	 * which is a whole idle window old by now. Phase 1 only requires that
-+	 * the device stayed in D3hot, which a PME that resumed nothing at all
-+	 * would not violate, so the counter is not guaranteed to be unchanged.
-+	 */
-+	wakeups_at_toggle = igt_pm_get_wakeup_active_count(pci_dev);
-+
-+	chamelium_schedule_hpd_toggle(data->chamelium, port,
-+				      PME_HPD_TOGGLE_DELAY_MS, !connected);
-+
-+	igt_assert_eq(igt_gettime(&start), 0);
-+	if (!chamelium_wait_for_hotplug(mon, &timeout)) {
-+		enum igt_acpi_d_state d_state = igt_pm_pci_get_d_state(pci_dev);
-+		bool pending = igt_pm_pci_pme_status(pci_dev);
-+		const char *cause;
-+
-+		wakeups_after = igt_pm_get_wakeup_active_count(pci_dev);
-+
-+		/*
-+		 * If the device stays in D3hot, the wake is from PME. If it returns to D0,
-+		 * the HPD was handled by the driver resume path.
-+		 */
-+		if (d_state == IGT_ACPI_D3Hot)
-+			cause = pending ?
-+				"The device signalled a PME that was never "
-+				"delivered, so the PME is not reaching the OS." :
-+				"The device never signalled a PME, so the HPD "
-+				"is not reaching the PME logic.";
-+		else
-+			cause = "The device resumed but sent no uevent, so the "
-+				"HPD was dropped on the resume path.";
-+
-+		igt_assert_f(false,
-+			     "No hotplug uevent %ds after an HPD toggle in D3hot.\n"
-+			     "Device is in %s, PME_Status is %s, "
-+			     "wakeup_active_count %" PRIu64 " -> %" PRIu64 ".\n%s\n",
-+			     CHAMELIUM_HOTPLUG_TIMEOUT,
-+			     pme_d_state_name(d_state),
-+			     pending ? "set" : "clear",
-+			     wakeups_at_toggle, wakeups_after, cause);
-+	}
-+	igt_assert_eq(igt_gettime(&end), 0);
-+
-+	latency = igt_time_elapsed(&start, &end) * 1000 -
-+		  PME_HPD_TOGGLE_DELAY_MS;
-+
-+	/*
-+	 * wakeup_active_count incrementing means the resume was signalled by the
-+	 * device itself, i.e. by a PME. Unlike PME_Status, which the PCI/PM core
-+	 * clears on the way back to D0, this counter survives the resume and so
-+	 * is not racy to sample here.
-+	 */
-+	wakeups_after = igt_pm_get_wakeup_active_count(pci_dev);
-+
-+	igt_info("HPD to uevent latency %dms, wakeup_active_count %" PRIu64 " -> %" PRIu64 "\n",
-+		 latency, wakeups_at_toggle, wakeups_after);
-+
-+	igt_assert_f(wakeups_after > wakeups_at_toggle,
-+		     "power/wakeup_active_count did not increment, so the resume "
-+		     "was not triggered by a PME from the device\n");
-+	igt_assert_lt(latency, PME_WAKE_LATENCY_MAX_MS);
-+
-+	chamelium_assert_reachable(data->chamelium, ONLINE_TIMEOUT);
-+	igt_assert_eq(chamelium_reprobe_connector(&data->display,
-+						  data->chamelium, port),
-+		      target_state);
-+}
-+
-+/*
-+ * Mirror of the driver's own HAS_PM_PME_SUPPORT(): only xe reports PME
-+ * capability to the display code, and only from graphics IP 35.10 on.
-+ */
-+#define PME_HPD_MIN_GRAPHICS_VERX100 3500
-+
-+static bool pme_hpd_supported(int fd)
-+{
-+	const struct intel_device_info *info;
-+
-+	if (!is_xe_device(fd))
-+		return false;
-+
-+	info = intel_get_device_info(intel_get_drm_devid(fd));
-+
-+	return info->graphics_ver * 100 + info->graphics_rel >=
-+	       PME_HPD_MIN_GRAPHICS_VERX100;
-+}
-+
-+static const char test_hpd_runtime_suspend_pme_desc[] =
-+	"Toggle HPD while runtime suspended in D3hot with PME signalling "
-+	"available, check that connector polling stayed disabled, that the "
-+	"device woke itself up and that uevents are sent and connector status "
-+	"is updated";
-+static void test_hpd_runtime_suspend_pme(chamelium_data_t *data,
-+					 struct chamelium_port *port)
-+{
-+	struct pci_device *pci_dev;
-+	struct udev_monitor *mon;
-+
-+	pci_dev = igt_device_get_pci_device(data->drm_fd);
-+
-+	/*
-+	 * Without driver support the device keeps HPD polling enabled and phase
-+	 * 1 would fail rather than skip, so gate on the platform before looking
-+	 * at the hardware capability at all.
-+	 */
-+	igt_require_f(pme_hpd_supported(data->drm_fd),
-+		      "Driver does not use PME for HPD on this platform\n");
-+
-+	igt_require_f(igt_pm_pci_pme_supported(pci_dev, IGT_ACPI_D3Hot),
-+		      "Device does not advertise PME support in D3hot\n");
-+	igt_require_f(igt_pm_has_wakeup_support(pci_dev),
-+		      "Device does not expose power/wakeup\n");
-+	igt_require(igt_setup_runtime_pm(data->drm_fd));
-+	igt_require_hpd_storm_ctl(data->drm_fd);
-+
-+	/*
-+	 * Need both: PME is only armed when device_may_wakeup() is true, and
-+	 * without wakeup support the PM core never records the PME wakeup.
-+	 */
-+	igt_pm_set_wakeup_enabled(pci_dev, true);
-+
-+	/*
-+	 * Save the poll setting so a previous test cannot leave it disabled and
-+	 * fake a pass. Polling must stay enabled; the test checks that the driver
-+	 * does not use it when PME is available.
-+	 */
-+	igt_require(igt_pm_kms_poll_save());
-+	igt_pm_kms_poll_set(true);
-+
-+	/* Don't let our own toggles trip the storm detection into polling. */
-+	igt_hpd_storm_set_threshold(data->drm_fd, 0);
-+
-+	igt_modeset_disable_all_outputs(&data->display);
-+
-+	mon = igt_watch_uevents();
-+	chamelium_reset_state(&data->display, data->chamelium, port,
-+			      data->ports, data->port_count);
-+
-+	/* Ports are left disconnected by the reset, so plug first. */
-+	try_hpd_runtime_suspend_pme(data, port, pci_dev, mon, false);
-+
-+	/* Now check we notice a disconnect signalled from D3hot too. */
-+	try_hpd_runtime_suspend_pme(data, port, pci_dev, mon, true);
-+
-+	igt_cleanup_uevents(mon);
-+	igt_hpd_storm_reset(data->drm_fd);
-+	igt_pm_kms_poll_restore();
-+	igt_pm_restore_wakeup();
-+}
-+
- static const char test_hpd_without_ddc_desc[] =
- 	"Disable DDC on a VGA connector, check we still get a uevent on hotplug";
- static void test_hpd_without_ddc(chamelium_data_t *data,
-@@ -500,6 +836,10 @@ int igt_main()
- 	connector_subtest("dp-hpd-after-hibernate", DisplayPort, &data, test_suspend_resume_hpd,
- 			  SUSPEND_STATE_DISK, SUSPEND_TEST_DEVICES);
- 
-+	igt_describe(test_hpd_runtime_suspend_pme_desc);
-+	connector_subtest("dp-hpd-after-runtime-suspend-d3hot", DisplayPort,
-+			  &data, test_hpd_runtime_suspend_pme);
-+
- 	igt_describe(test_hpd_storm_detect_desc);
- 	connector_subtest("dp-hpd-storm", DisplayPort, &data, test_hpd_storm_detect,
- 			  HPD_STORM_PULSE_INTERVAL_DP);
-@@ -538,6 +878,10 @@ int igt_main()
- 	connector_subtest("hdmi-hpd-after-hibernate", HDMIA, &data, test_suspend_resume_hpd,
- 			  SUSPEND_STATE_DISK, SUSPEND_TEST_DEVICES);
- 
-+	igt_describe(test_hpd_runtime_suspend_pme_desc);
-+	connector_subtest("hdmi-hpd-after-runtime-suspend-d3hot", HDMIA,
-+			  &data, test_hpd_runtime_suspend_pme);
-+
- 	igt_describe(test_hpd_storm_detect_desc);
- 	connector_subtest("hdmi-hpd-storm", HDMIA, &data, test_hpd_storm_detect,
- 			  HPD_STORM_PULSE_INTERVAL_HDMI);
--- 
-2.53.0
-
+Reviewed-by: Kunal Joshi <kunal1.joshi@intel.com>
