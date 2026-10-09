@@ -4,53 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 571C2CA5FED
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Oct 2026 05:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CD3ADCA6015
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Oct 2026 05:29:01 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D660410E0FD;
-	Fri,  9 Oct 2026 05:28:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 72EBB10E0FD;
+	Fri,  9 Oct 2026 05:29:01 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="j+Hvh31W";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="Dk9PHq+6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C600510E0FD
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Oct 2026 05:26:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CA2F10E0FD
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Oct 2026 05:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791523599; x=1823059599;
+ t=1791523603; x=1823059603;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GgU3pIDzZ9Mr/YNdJm2T9BlPhb7qL4WYT45Ue59axZQ=;
- b=j+Hvh31WDa/KfyXRZelZ272aqdS0XAX11c0ALpsTVaCJAnaOa1tfL00/
- Fy+GAkUybatGDMJ0LRvYC9uueEUzrP1d7ujpY83Hh0rjfDK/bEPeUgobl
- Ac+H75tphcFxQeYpy7RS1nTwNZDISeSF4Eb46g0a1PPpFl6TFxyTMIgJP
- WAqgt7gak7oDQNa9Y/mgM56UAJskeDPrETZXDUkREHpSXu3ghNDIHFkJr
- VvacrMf9jCwwGqO/xLf22CtdaafkgohZlw7jn0a1RJLMfVerwYHVQqVzj
- ILODeSaot/iSaKVACVPZuPOkDXQAJdOYDTdL27jxSfbeCjYDMXbQkykLM w==;
-X-CSE-ConnectionGUID: mZ0BHr2pRx27AG+J/rU18A==
-X-CSE-MsgGUID: rpAfTGgTT9qwq4KFqHjS2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="318185"
+ bh=ulPLn/KKc9Tjf6X2YorS3keClFAut7EkFn+A1wY68OY=;
+ b=Dk9PHq+6qQrPgYxy1yqZHQQ0N8HaxwMlURPwmaNVUyzClBW4Mnc9BDOP
+ plQKmxIga6dch9zSkvI57Wi8fKguWnzYgt9Nh2psb8HoQ+gLDYw8su5q9
+ szyynLF16Q9XiABetnGazsnF6ooIdHx6yHRgfEbmNOhS0x8d+qEXuife+
+ 9KQUOZ2lPjDzPilNdv3bA0lKYBCx4/vI5bpYJ/zl7V7uQEwYQW6wrpu5k
+ ID+MycDI3l7ShnKlfXxMJXRFrmogC/qF4P16eXhgDvy10HrPLQZy0Rqof
+ rAHwSH4tB/3WqW6eNO8GtN51hcLlpNFirUikDHM/Ik9Yd1ugXmvK2PS3X g==;
+X-CSE-ConnectionGUID: Z9uczG++Rye9QMnjtcAlNg==
+X-CSE-MsgGUID: fFHNNDoxSjiiwAuvZEUvrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="318188"
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="318185"
+   d="scan'208";a="318188"
 Received: from fmviesa011.fm.intel.com ([10.60.135.151])
  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 22:26:39 -0700
-X-CSE-ConnectionGUID: t6KnRIs3R3aQrA1dBexDnw==
-X-CSE-MsgGUID: CUBF2y8qSxm8eEei44GKcg==
+ 08 Oct 2026 22:26:42 -0700
+X-CSE-ConnectionGUID: gR9jAEp7SbO33QW8hrbpxw==
+X-CSE-MsgGUID: /znPJb5wSYK85EAvntG+8w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="2040525"
+   d="scan'208";a="2040553"
 Received: from pranay-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.54])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 22:26:37 -0700
+ 08 Oct 2026 22:26:40 -0700
 From: Pranay Samala <pranay.samala@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: kunal1.joshi@intel.com, sameer.lattannavar@intel.com,
  pranay.samala@intel.com
-Subject: [PATCH i-g-t v2 1/7] lib/igt_pci: Add PCI Power Management capability
- register layout
-Date: Fri,  9 Oct 2026 10:56:19 +0530
-Message-ID: <20261009052625.419259-2-pranay.samala@intel.com>
+Subject: [PATCH i-g-t v2 3/7] lib/igt_pm: Factor out power attribute path
+ construction
+Date: Fri,  9 Oct 2026 10:56:21 +0530
+Message-ID: <20261009052625.419259-4-pranay.samala@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261009052625.419259-1-pranay.samala@intel.com>
 References: <20261009052625.419259-1-pranay.samala@intel.com>
@@ -71,48 +71,76 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add the register offsets and field masks of the PCI Power Management
-capability. Two registers are needed.
+igt_pm_get_power_attr_fd() and igt_pm_get_power_attr_fd_rdonly() build the
+same sysfs path with the same snprintf(). The only difference is the open()
+flags.
 
-PMC (PM Capabilities) holds the PME_Support field, which says what D states
-the device can send a PME from.
+Move the shared part into __igt_pm_get_power_attr_fd(), which takes the
+flags and returns -1 instead of asserting.
 
-PMCS (PM Control/Status) holds the PowerState field, the PME_En bit and the
-PME_Status bit, which say what D state the device is in, whether it is
-armed to send a PME, and whether it has one pending. PME_Status is
-write-1-to-clear and stays set until someone acknowledges the PME, so it
-distinguishes a device that never signalled from one whose signal was never
-delivered.
+Nothing changes for existing callers. Both wrappers still assert, so they
+behave exactly as before.
+
+The point of the change is the -1. Not every power attribute exists on
+every device, so later callers need to ask whether one is present and get
+an answer back rather than failing the test. Without this they would each
+have to repeat the snprintf().
 
 Assisted-by: GitHub_Copilot:claude-opus-5
 Signed-off-by: Pranay Samala <pranay.samala@intel.com>
 ---
- lib/igt_pci.h | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ lib/igt_pm.c | 24 +++++++++++++++---------
+ 1 file changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/lib/igt_pci.h b/lib/igt_pci.h
-index 509345b2d..ae612d611 100644
---- a/lib/igt_pci.h
-+++ b/lib/igt_pci.h
-@@ -26,6 +26,18 @@ enum pci_cap_id {
- #define PCI_SLOT_CAP_OFFSET 0x14
- #define  PCI_SLOT_PWR_CTRL_PRESENT (1 << 1)
+diff --git a/lib/igt_pm.c b/lib/igt_pm.c
+index b1f9868eb..7ad56fbce 100644
+--- a/lib/igt_pm.c
++++ b/lib/igt_pm.c
+@@ -1033,15 +1033,26 @@ static void __igt_pm_pci_card_exit_handler(int sig)
+ 	igt_pm_restore_pci_card_runtime_pm();
+ }
  
+-static int igt_pm_get_power_attr_fd(struct pci_device *pci_dev, const char *attr)
 +/*
-+ * PCI Power Management capability registers, at the given offsets from the
-+ * start of the PM capability as returned by find_pci_cap_offset().
++ * Open a power attribute of @pci_dev with @flags, returning -1 if it does not
++ * exist. Not all attributes are present on all devices, so callers that want to
++ * probe for one need an error rather than an assertion.
 + */
-+#define PCI_PM_PMC_OFFSET 0x2			/* PM Capabilities */
-+#define  PCI_PM_PMC_PME_SUPPORT_SHIFT 11	/* PME_Support, bits [15:11] */
-+#define  PCI_PM_PMC_PME_SUPPORT_MASK (0x1f << PCI_PM_PMC_PME_SUPPORT_SHIFT)
-+#define PCI_PM_PMCS_OFFSET 0x4			/* PM Control/Status */
-+#define  PCI_PM_PMCS_PSTATE_MASK 0x3		/* PowerState, bits [1:0] */
-+#define  PCI_PM_PMCS_PME_EN (1 << 8)		/* PME_En */
-+#define  PCI_PM_PMCS_PME_STATUS (1 << 15)	/* PME_Status, write 1 to clear */
++static int __igt_pm_get_power_attr_fd(struct pci_device *pci_dev,
++				      const char *attr, int flags)
+ {
+ 	char name[PATH_MAX];
+-	int fd;
+ 
+ 	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/%s",
+ 		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, attr);
+ 
+-	fd = open(name, O_RDWR);
++	return open(name, flags);
++}
 +
- int find_pci_cap_offset(struct pci_device *dev, enum pci_cap_id cap_id);
- int igt_pci_device_unbind(const char *pci_slot);
- int igt_pci_driver_bind(const char *driver, const char *pci_slot);
++static int igt_pm_get_power_attr_fd(struct pci_device *pci_dev, const char *attr)
++{
++	int fd = __igt_pm_get_power_attr_fd(pci_dev, attr, O_RDWR);
++
+ 	igt_assert_f(fd >= 0, "Can't open %s\n", attr);
+ 
+ 	return fd;
+@@ -1049,13 +1060,8 @@ static int igt_pm_get_power_attr_fd(struct pci_device *pci_dev, const char *attr
+ 
+ static int igt_pm_get_power_attr_fd_rdonly(struct pci_device *pci_dev, const char *attr)
+ {
+-	char name[PATH_MAX];
+-	int fd;
++	int fd = __igt_pm_get_power_attr_fd(pci_dev, attr, O_RDONLY);
+ 
+-	snprintf(name, PATH_MAX, "/sys/bus/pci/devices/%04x:%02x:%02x.%01x/power/%s",
+-		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func, attr);
+-
+-	fd = open(name, O_RDONLY);
+ 	igt_assert_f(fd >= 0, "Can't open %s\n", attr);
+ 
+ 	return fd;
 -- 
 2.53.0
 
