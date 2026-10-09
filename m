@@ -4,53 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63663CA6015
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Oct 2026 00:31:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EBF59CA6017
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Oct 2026 00:32:25 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E92CB10E98F;
-	Fri,  9 Oct 2026 00:31:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7341C10EA58;
+	Fri,  9 Oct 2026 00:32:25 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="fAn7Rpwj";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="EcDWN1a6";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 995BC10E188
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Oct 2026 00:29:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 303B010E188
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Oct 2026 00:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791505783; x=1823041783;
+ t=1791505775; x=1823041775;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=GRhZkEWXb03sFE41KFjxa68289MrYWcnU0Oi8Bm2Gzg=;
- b=fAn7RpwjXAznyPulCU0FVW2ST2+qX7U88UNIKx1hY67FWRP1qM5HfQeQ
- bNI5p5tH+CL6hgWQdM9EP2xp5T8OvGkhh/0I87M9LzJzVkIBKdqNYQcuh
- vqCcPxtQ9yWoopHiwGl5okKCyGF4SKFr+4qMcdCRpG0l+fHel1v6TiibT
- wVP1x+Mr+dkKVCSp0vER6T7aCw5KjTHGoLsozGeXqvbWPNE4+rywWxbAU
- s+dSVITQ1HgUV1VQhWx51l6Bbocq7T0DcBIvhU3MAXCtvZiRZMI1s1jT+
- Ngxz1uoqPAg7QNUgM4a87tfveuDk0g/gUiGguCjNcXUSYMSDTn6zHdezy g==;
-X-CSE-ConnectionGUID: +jxZRg/7Sh2CislRoBk2oQ==
-X-CSE-MsgGUID: Pn58Np3LRpiQa6W+yhAghw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="306345"
+ bh=eFDR7Eq/H8pOMFfoSqDk7e6Cq/QzqlQDFIscyby397I=;
+ b=EcDWN1a64RtglW4Ffgd0PRlHAq5nBwsSMDpfgp1uAvWGSlsrvTlK2vCm
+ oRfG/IyC6UPxPioOdwDyLB2Oyyyr8NqrIAbHvEbGLJ+9Hh3Ukx0om+I1Q
+ ycAHTPMgt1V6YVKRfv42vh7MlUbstZKmqybfkZ+cGXD/te3wF3utZMK/r
+ T5p+gNZLdz2j3tp7ZSc36tNvXc9981ymhsEGG73vmE0VQZ+NmcGSwkGf4
+ KcWYCXh5LUC7NQR2hSO29/yMKzqgBacaVlyGpL9hLjlc+rthh0QebQ4yU
+ 5YQujZY50VaPcnHVzphwmQJBB6lYKX6TjgTY98s2ArGO8ICWKgQX66w2L w==;
+X-CSE-ConnectionGUID: FH6SvyvyQY6mZRBrXwX/JA==
+X-CSE-MsgGUID: 7/nX1eKvToSjlJdP7pzzVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="306337"
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="306345"
+   d="scan'208";a="306337"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 17:29:43 -0700
-X-CSE-ConnectionGUID: mavv5PvWT1yK7MQx4oZDBQ==
-X-CSE-MsgGUID: oAuKtGmtT1KYsX+B6Io1CA==
+ 08 Oct 2026 17:29:33 -0700
+X-CSE-ConnectionGUID: 0YvW6XBARPGmkr41k112OA==
+X-CSE-MsgGUID: RnN7jI7NSymGWA80y9ChxA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="263949"
+   d="scan'208";a="263923"
 Received: from osgcshtiger.sh.intel.com ([10.239.81.49])
- by fmviesa004.fm.intel.com with ESMTP; 08 Oct 2026 17:29:41 -0700
+ by fmviesa004.fm.intel.com with ESMTP; 08 Oct 2026 17:29:31 -0700
 From: Shuicheng Lin <shuicheng.lin@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
- Satyanarayana K V P <satyanarayana.k.v.p@intel.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH v2 3/4] tests/intel/xe_fault_injection: Avoid backslash
- escapes in dmesg ignore regex
-Date: Fri,  9 Oct 2026 00:29:11 +0000
-Message-Id: <20261009002912.1391610-4-shuicheng.lin@intel.com>
+ Nishit Sharma <nishit.sharma@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Jonathan Cavitt <jonathan.cavitt@intel.com>
+Subject: [PATCH v2 1/4] tests/intel/xe_exec_reset: Fix gt reset fault dmesg
+ ignore regex
+Date: Fri,  9 Oct 2026 00:29:09 +0000
+Message-Id: <20261009002912.1391610-2-shuicheng.lin@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261009002912.1391610-1-shuicheng.lin@intel.com>
 References: <20261009002912.1391610-1-shuicheng.lin@intel.com>
@@ -72,39 +73,47 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 igt_emit_ignore_dmesg_regex() passes the regex to igt_runner through
-/dev/kmsg, which escapes '\' as "\x5c". "\*ERROR\*" therefore turns into
-"\x5c*ERROR\x5c*", i.e. "ERROR" surrounded by optional backslashes,
-which only works by accident and also matches any line containing
-"ERROR". Use "[*]ERROR[*]" so the regex matches what it says.
+/dev/kmsg, and the kernel escapes '\' as "\x5c" in kmsg records.
+igt_runner compiles the ignore regex from the escaped record, so
+"\(-ECANCELED\)" turns into "\x5c(-ECANCELED\x5c)", which requires a
+literal backslash and never matches. As a result the expected
+"(-ECANCELED) ... GT: reset failed" and "(-EIO) WEDGED" errors are
+reported as dmesg-warn/dmesg-fail in gt-reset-fault-injection.
 
-v2: Add example dmesg lines to the comment (Kamil)
+Avoid backslash escapes by dropping the opening parenthesis and
+matching the closing one with '.'.
 
-Cc: Satyanarayana K V P <satyanarayana.k.v.p@intel.com>
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+v2: Drop the parentheses instead of using bracket expressions and drop
+    the comment (Kamil)
+
+Cc: Nishit Sharma <nishit.sharma@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
 Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 ---
- tests/intel/xe_fault_injection.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tests/intel/xe_exec_reset.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index 4f4a7922c..e32f841a3 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -70,9 +70,12 @@ static void ignore_dmesg_errors_from_dut(const char pci_slot[])
- 	/*
- 	 * Driver probe is expected to fail in all cases.
- 	 * Additionally, error-level reports are expected,
--	 * so ignore these in igt_runner.
-+	 * so ignore these in igt_runner, e.g.:
-+	 *
-+	 *   xe 0000:03:00.0: [drm] *ERROR* Tile0: GT0: GuC init failed with -ENOMEM
-+	 *   xe 0000:03:00.0: probe with driver xe failed with error -12
- 	 */
--	static const char *store = "probe with driver xe failed with error|\\*ERROR\\*";
-+	static const char *store = "probe with driver xe failed with error|[*]ERROR[*]";
- 	char regex[1024];
+diff --git a/tests/intel/xe_exec_reset.c b/tests/intel/xe_exec_reset.c
+index 50771af53..3e8ca794b 100644
+--- a/tests/intel/xe_exec_reset.c
++++ b/tests/intel/xe_exec_reset.c
+@@ -928,12 +928,12 @@ static int try_vm_create(int fd)
  
- 	/* Only block dmesg reports that target the pci slot of the given fd */
+ static void ignore_gt_reset_fault_dmesg(void)
+ {
+-	igt_emit_ignore_dmesg_regex("\\(-ECANCELED\\) .* GT: reset failed"
+-				    "|\\(-EIO\\) WEDGED: Device declared wedged"
++	igt_emit_ignore_dmesg_regex("-ECANCELED.* GT: reset failed"
++				    "|-EIO. WEDGED: Device declared wedged"
+ 				    "|IOCTLs and executions are now blocked"
+ 				    "|For recovery procedure, refer to"
+ 				    "|Please file a _new_ bug report at"
+-				    "|Failed to invalidate GGTT \\(-ENOTRECOVERABLE\\)"
++				    "|Failed to invalidate GGTT .-ENOTRECOVERABLE"
+ 				    "|GPU HANG"
+ 				    "|Failed to reset");
+ }
 -- 
 2.43.0
 
