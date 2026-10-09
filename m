@@ -4,51 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70047CA6015
-	for <igt-dev@archiver.kernel.org>; Fri,  9 Oct 2026 00:30:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDE10CA6017
+	for <igt-dev@archiver.kernel.org>; Fri,  9 Oct 2026 00:30:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EB4D010E188;
-	Fri,  9 Oct 2026 00:30:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6C51810EA58;
+	Fri,  9 Oct 2026 00:30:55 +0000 (UTC)
 Authentication-Results: gabe.freedesktop.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="AUkPPaNh";
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.b="A/QiVnBv";
 	dkim-atps=neutral
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 33E6F10E188
- for <igt-dev@lists.freedesktop.org>; Fri,  9 Oct 2026 00:29:22 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B73DB10E188
+ for <igt-dev@lists.freedesktop.org>; Fri,  9 Oct 2026 00:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791505763; x=1823041763;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=6LUYRj9QEH3Wly7wP53KLJQ2vcIYlWbhTbMFbOIIHr4=;
- b=AUkPPaNhfcrNdHm8jKwcAh6Cbda/rF1xdqBahrC5V2dR08eoyydx75q3
- PpjxjRndFN86153AVchAW+za8as+bBMsEUyf3K520KNUDFYKRInXt7Tr8
- q55OwBue7Y5FUw4JYEIR8laG6mJMaEUEIYGz7d/TPbwpBTP//mSAiGQ/z
- wWskL05PR0ig9uVOC0vH2WO3XSus+LQQ/8EaFjxvgTjEMoEjzDin2u0TQ
- YkdQoO6tFa0wFSXg+OLxEmXOEhVVKbcYaXUL6MsASGH9Rw3swWsybSgRr
- 6oIcC0y60kmX//fw3vrbaoNUYnDwJPf0UyIOnw6LzkKW3OTd6lXOfTbP5 w==;
-X-CSE-ConnectionGUID: wruMHSRhTEebt1MtSrBR1A==
-X-CSE-MsgGUID: o9/Nk70bTRC8YvMsLs9T/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="306329"
+ t=1791505779; x=1823041779;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=mGNVBltn3CU2Mh5bjWA7lY1KC/CYwBc4dSLcfEHc0Vc=;
+ b=A/QiVnBvtez2lqWJ8k245eQlB7jlsIF6wrru3Oe5xHbWiI1+bG8SMYeg
+ +VOTjpn0roo1mjCDe9SHTwZYLcTQ/Bz4uE/XX8j0pUpqS9APHC9AHz1Um
+ jUdQ8ogXjTKxtgjqU4BcEjr2+FLt8fktCD4dFunuDZV2M7MzwwmOq5Zds
+ Dq76j/sUeU4BGJdPJ2/ryzS21rwiCNIWcpnke5z7tBfabbjPRXb4iEGjc
+ J73jZWbbY+F7KGwhvCDHkosiguYJlCuMHqU1Vlr1gjucwXE+/9JImmtvg
+ aiXvUU3LtkQ7cy8WhhfpamZOaGAj+uWaV/V+0lZBbF5KZV4ZF4qTHpv/5 Q==;
+X-CSE-ConnectionGUID: aVEnnuBUQ/a7/m9AmSldGg==
+X-CSE-MsgGUID: TC8u2sGwTSyV+bLi7qkNHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11929"; a="306341"
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="306329"
+   d="scan'208";a="306341"
 Received: from fmviesa004.fm.intel.com ([10.60.135.144])
  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 08 Oct 2026 17:29:22 -0700
-X-CSE-ConnectionGUID: gDKJktAvTuawrsLFN4aXQA==
-X-CSE-MsgGUID: pYsQ1wCdTK6w5vr8NABspQ==
+ 08 Oct 2026 17:29:38 -0700
+X-CSE-ConnectionGUID: khU8ieUqSK+OrlViMnxGqA==
+X-CSE-MsgGUID: gr/t+CsjSB2IEedjf52awQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,147,1787036400"; 
-   d="scan'208";a="263899"
+   d="scan'208";a="263942"
 Received: from osgcshtiger.sh.intel.com ([10.239.81.49])
- by fmviesa004.fm.intel.com with ESMTP; 08 Oct 2026 17:29:19 -0700
+ by fmviesa004.fm.intel.com with ESMTP; 08 Oct 2026 17:29:36 -0700
 From: Shuicheng Lin <shuicheng.lin@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-Subject: [PATCH v2 0/4] Fix dmesg ignore regexes with backslash escapes
-Date: Fri,  9 Oct 2026 00:29:08 +0000
-Message-Id: <20261009002912.1391610-1-shuicheng.lin@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Nishit Sharma <nishit.sharma@intel.com>
+Subject: [PATCH v2 2/4] tests/intel/xe_wedged: Fix wedged dmesg ignore regex
+Date: Fri,  9 Oct 2026 00:29:10 +0000
+Message-Id: <20261009002912.1391610-3-shuicheng.lin@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261009002912.1391610-1-shuicheng.lin@intel.com>
+References: <20261009002912.1391610-1-shuicheng.lin@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -66,58 +70,64 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-igt_emit_ignore_dmesg_regex() passes the regex to igt_runner through
-/dev/kmsg, and the kernel escapes '\' as "\x5c" in kmsg records. Since
-resultgen compiles the ignore regex from the escaped record, any regex
-using a backslash escape, such as "\(-ECANCELED\)", silently never
-matches. As a result, the expected errors in
-xe_exec_reset@gt-reset-fault-injection are reported as dmesg-warn.
+The kernel now reports the failed GT reset and the device wedge through
+SIGID-based logging:
 
-Patches 1-3 fix the affected tests by avoiding backslash escapes, so
-they work with the current igt_runner:
- - xe_exec_reset: "\(" never matches, the expected GT reset failure and
-   wedge errors leak.
- - xe_wedged: besides the CAT error escapes (and a missing space), the
-   patterns no longer match the SIGID-based messages that newer kernels
-   use for the GT reset failure and wedge.
- - xe_fault_injection: "\*ERROR\*" only matches by accident, as it
-   degrades to "ERROR" with optional backslashes around it.
+  SIGID=106 FATAL (-ECANCELED) Tile0: GT0: GT: reset failed
+  SIGID=102 FATAL (-EIO) WEDGED: Device declared wedged!
 
-Patch 4 fixes igt_runner itself by decoding the kmsg escapes before
-compiling the ignore regex, so future regexes can use backslash escapes
-as written.
+which the existing "reset failed .-ECANCELED" and "declared device ...
+as wedged" patterns no longer match, so these expected errors are
+reported as dmesg-warn. Add patterns for the new messages.
 
-Tested on BMG with drm-tip: the expected errors are no longer reported
-for xe_exec_reset@gt-reset-fault-injection,
-xe_wedged@{basic-wedged,wedged-at-any-timeout} and
-xe_fault_injection@inject-fault-probe-function-xe_guc_ct_init, and
-the new igt_runner also ignores them with the unfixed xe_exec_reset.
+Also fix the CAT error pattern, which never matched. The kernel reports
+it as either of:
 
-v2:
- - Patch 1: Drop the parentheses instead of using bracket expressions
-   and drop the comment (Kamil)
- - Patch 2: Simplify the SIGID patterns, match only the start of the
-   CAT error and add example lines (Kamil)
- - Patch 3: Add example dmesg lines to the comment (Kamil)
- - Patch 4: No change
- - Add Reviewed-by tags (Jonathan, Kamil)
+  Tile0: GT0: Engine memory CAT error [3]: class=rcs, logical_mask: 0x1, guc_id=2
+  Tile0: GT0: Engine memory CAT error: class=ccs, logical_mask: 0x1, guc_id=5
 
-Shuicheng Lin (4):
-  tests/intel/xe_exec_reset: Fix gt reset fault dmesg ignore regex
-  tests/intel/xe_wedged: Fix wedged dmesg ignore regex
-  tests/intel/xe_fault_injection: Avoid backslash escapes in dmesg
-    ignore regex
-  runner/resultgen: Decode kmsg escapes in ignored dmesg regex
+The pattern only covered the first form, lacked the space before
+"class=", and used "\[", which igt_emit_ignore_dmesg_regex() passes to
+igt_runner through /dev/kmsg as "\x5c[" so it no longer matches a
+literal '['. Match only up to "Engine memory CAT error", which covers
+both forms. These lines are logged at info level, so this does not
+change the test result today.
 
- .../json_tests_data/dmesg-escapes/0/dmesg.txt |  2 +
- .../json_tests_data/dmesg-escapes/README.txt  |  4 ++
- .../dmesg-escapes/reference.json              |  2 +-
- runner/resultgen.c                            | 48 ++++++++++++-------
- tests/intel/xe_exec_reset.c                   |  6 +--
- tests/intel/xe_fault_injection.c              |  7 ++-
- tests/intel/xe_wedged.c                       |  7 ++-
- 7 files changed, 51 insertions(+), 25 deletions(-)
+v2: Simplify the SIGID patterns, match only the start of the CAT error
+    and add example lines (Kamil)
 
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Nishit Sharma <nishit.sharma@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+---
+ tests/intel/xe_wedged.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+index 8c3c8bd36..4f5197e2a 100644
+--- a/tests/intel/xe_wedged.c
++++ b/tests/intel/xe_wedged.c
+@@ -41,6 +41,10 @@ static void ignore_wedged_in_dmesg(void)
+ 				    "|GT[0-9A-Fa-f]*: Failed to submit"
+ 				    "|Modules linked in:"
+ 				    "|__pfx___drm_"
++				    /* SIGID-based logging (newer kernels) */
++				    "|-ECANCELED.* GT: reset failed"
++				    "|-EIO. WEDGED: Device declared wedged"
++				    "|IOCTLs and executions are now blocked"
+ 				    "|Tile[0-9]+: GT[0-9A-Fa-f]*:$"
+ 				    "|ASID: [0-9]+"
+ 				    "|Faulted Address: 0x[0-9A-Fa-f]+"
+@@ -50,8 +54,7 @@ static void ignore_wedged_in_dmesg(void)
+ 				    "|EngineClass: [0-9]+ [a-z]+"
+ 				    "|EngineInstance: [0-9]+"
+ 				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Fault response: Unsuccessful -EINVAL"
+-				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error \\[[0-9]+\\]:"
+-				    "class=[a-z]+, logical_mask: 0x[0-9A-Fa-f]+, guc_id=[0-9]+");
++				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error");
+ }
+ 
+ static void force_wedged(int fd)
 -- 
 2.43.0
 
