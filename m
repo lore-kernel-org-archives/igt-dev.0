@@ -4,119 +4,155 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D66B3CC6B1A
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 18:46:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3040CC6B12
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 18:54:48 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7507D10E9C3;
-	Tue, 13 Oct 2026 18:46:17 +0000 (UTC)
-Received: from BL2PR02CU003.outbound.protection.outlook.com
- (mail-eastusazon11011004.outbound.protection.outlook.com [52.101.52.4])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 624AC10F989
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 18:45:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4D80010E985;
+	Tue, 13 Oct 2026 18:54:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 657E610E985
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 18:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791917631; x=1823453631;
+ h=from:to:subject:in-reply-to:references:date:message-id:
+ content-transfer-encoding:mime-version;
+ bh=tezzHli7KEJeNUii2yyy9E+uQievRaa284a00hcDsbg=;
+ b=gtKLyofR/3iN23t8IghJZjeACwU/dvlkPjH9HP68e56BPhky4hR9j6Rg
+ AmbpLOcH+TceS8tggnXqGjphTpuslf482w3JqD+slj+88iGcjhJzaMiiJ
+ z1yOvOClZh5Y/3xi6SPtW55/P/wgMZH1RcfQgTAu/3i8fJ7hCs4rv6nbu
+ tCEeBUUcONoFgEid6bhE3Y0C4f1La9Jx3FD2gYoxPcZRT6Nu6BUhdhwul
+ 35iHuk6Fw/IfvA+e0+vLnVRSbLwB/HApnNDXs0eZiHngYCTj+68VMgBvu
+ GqtFodf+TUwxD+fAZylVXr1lqiPQg6UifPB5rre0USv1ceuEaLsJuUx0o w==;
+X-CSE-ConnectionGUID: Rd6fjOQyTo69KL9qi5XZlw==
+X-CSE-MsgGUID: oyoTcwKVScm8rtwdvbs6LQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="542293"
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="542293"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2026 11:53:51 -0700
+X-CSE-ConnectionGUID: jG1UX/RmTsqsZK9cqi2q8w==
+X-CSE-MsgGUID: D0OweydGTSqU/m/hPzirJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="3076178"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+ by fmviesa011.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2026 11:53:47 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 13 Oct 2026 11:53:46 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Tue, 13 Oct 2026 11:53:46 -0700
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.42) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Tue, 13 Oct 2026 11:53:46 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZnioIH2bUCgGcVcIlhr/Qb9hq+TPO9b1uviQh99a24pqgvseGkQHIv2DZVlFdFTTS1cL0wVGiK3u79T59v7sw891X7sWhhcWPaH+mmg11xDkjEPG2p+iyvdpA3cA3usHAxgVd7P57zz7sEJoadbDP0rxoRPMNKPWcZQFmtURiepCfbK6Hr68U7TduiGEHl+MfziJ+VXbBKvlqTp7gdbybPigzWiCZKl2Ymy1lRTFkzKGZSB9j0zu2Aap68B2Fxm/YE/0FqIdbN9LuGVKyB6sPD/0trQGb2d7Ub5ZQvPpAKoJPAi/ArqbIqSKIUseqzPozvoh9ABj2cBHWF2ol0qJIQ==
+ b=FcYlWXpQm9auIXextLwPoKGBRar+m9bVeZ8yFUWS0GLJWXHC+WRzB8nPrAIWQ1agbVJmvOXpteOu4jYpjyuai58tqgP/9UC2jZ+gwFrBefEh7+YwkyTZmiW/q4NNS90NB6GmNCv/rxlRILo/uPziCQDxN9zO4QCTnDZTfnKyeGFc4BpoxccyClJTOj8f+1Uwot++KPgE+wJEPHPqIJjcVH/0P0TNYEO5VbkwPHAfXKL29GNSwdGsF+LEqUaUxEGRE8Blr3VMHDqYPQljokHHUzaDP98j3iDWmUqemdSdh1XXfD5NlrP/zRTr9lWD3w+r9XQx1jdgWWX5lm/c3dYnNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n+02ShH9MKV0BX+v0zIhmkNnumgmxa7oX9d1Qmgxcr4=;
- b=jDBJXbmxmZVe2wgJbyk0OpHuSMT/SLKShTdCXSxtnZYK82ruXrQS4qdxztSW20BdnEM/ja4Zhoyh/JQhARrNX6KBqQu/MLXh1OEBB6Izz+VKOtbHlFVslHVIaueeZGBGpR0+/JCB8SHABcxkOBSykJNYDWGfmAtXmdSVxClS/+iM1ti/ZjhyQ+V8z6b8bbVVXW5N0Vz9cE1XIKF/RDaNSJvlxrYtS3XbGNSYLSuwO73PonmoPYPyzeEaBgyqHYmlJYIp0z8G4iAw31mazl/m0lSk3WHkv368WgYc6CcElbLUVGkEHzrqgkDtikq4ZDTmznsiEMY3wgVsc3WVnpyJUA==
+ bh=n9IUa9ApGlylvBogwpeMtuqCJ+mIQPaszX88hzewH24=;
+ b=F+cfDPvNptlIZhb7mOcp4SpQtYWsqvO1kGGE8hgU6EmIZwQ0FQo6UVpcjLITnKA/NKv1T1YGDpF6gcDnWKE4RC9ybby/a62Ye/HBNYV3dWouL48TGkwlKvxR1iIZmRCrNuJxH9XqiIcrsOaJgfvtLW/faflJHaXn0rEWYRYZ0/YgQonQUvH7OJHCj0X+/nnJX11odDq/D+Icu3Z1fUmX6NwXDdJZL1DBRSEkLmXM8Z7rSt+M94d9R/yn+tGDc0pKuZk7Wfksw0eL7LBawtQsqTHH2gtPUeM5BN+AL40s81h+1z5FQubuvbbV6Qz84/pUtkSMztQugA2xVQ24UVr0jQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n+02ShH9MKV0BX+v0zIhmkNnumgmxa7oX9d1Qmgxcr4=;
- b=KSgUvqE7zI9oHM0fQU/rFw86gDxVmqFkRwuIobRRpZBzU2MNkpWNdUK6TT2q+fHv23h8JIULSP7DwrwjqgJaeQfR9tNolcF+7CbeY3YJVqd2GEH6eYZgTHwFvkEPraEOcFiroJXZBlHMIifEUjvCs1Yaqpylsr2Dp/GvltNiELk=
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com (2603:10b6:8:17e::15)
- by LV2PR12MB5895.namprd12.prod.outlook.com (2603:10b6:408:173::14) with
- Microsoft SMTP Server (version=TLS1_2,
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH0PR11MB5095.namprd11.prod.outlook.com (2603:10b6:510:3b::14)
+ by SN7PR11MB7708.namprd11.prod.outlook.com (2603:10b6:806:352::11)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
- 2026 18:45:19 +0000
-Received: from DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2d79:122f:c62b:1cd8]) by DM4PR12MB8476.namprd12.prod.outlook.com
- ([fe80::2d79:122f:c62b:1cd8%6]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
- 18:45:18 +0000
-Message-ID: <1703ecf4-2d21-4208-a09a-12028fc4c3c0@amd.com>
-Date: Tue, 13 Oct 2026 12:45:17 -0600
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/amdgpu/amd_hotplug: Check sleep statistics before
- suspend
-To: Aurabindo Pillai <aurabindo.pillai@amd.com>, igt-dev@lists.freedesktop.org
-Cc: Harry.Wentland@amd.com
-References: <20261013180128.3128748-1-aurabindo.pillai@amd.com>
-Content-Language: en-US
-From: Alex Hung <alex.hung@amd.com>
-In-Reply-To: <20261013180128.3128748-1-aurabindo.pillai@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0054.namprd04.prod.outlook.com
- (2603:10b6:303:6a::29) To DM4PR12MB8476.namprd12.prod.outlook.com
- (2603:10b6:8:17e::15)
+ 2026 18:53:44 +0000
+Received: from PH0PR11MB5095.namprd11.prod.outlook.com
+ ([fe80::770b:7229:68c0:5ded]) by PH0PR11MB5095.namprd11.prod.outlook.com
+ ([fe80::770b:7229:68c0:5ded%3]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
+ 18:53:44 +0000
+From: Gustavo Sousa <gustavo.sousa@intel.com>
+To: Daniel Charles <daniel.charles@intel.com>, <igt-dev@lists.freedesktop.org>
+Subject: Re: [i-g-t,1/2] lib/igt_core: Check if helper proc was alive before
+ kill()
+In-Reply-To: <1f2844aa-cb5c-4c77-bfbf-a8e473698ea5@intel.com>
+References: <20261007-stop-pw-reserve-v1-1-abbd3b879612@intel.com>
+ <583c175f-9c84-4069-93f9-ec1a76cafd67@intel.com>
+ <87o6cxa3ig.fsf@intel.com>
+ <1f2844aa-cb5c-4c77-bfbf-a8e473698ea5@intel.com>
+Date: Tue, 13 Oct 2026 15:53:38 -0300
+Message-ID: <87h5ipa0ul.fsf@intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: SJ0PR13CA0153.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c7::8) To PH0PR11MB5095.namprd11.prod.outlook.com
+ (2603:10b6:510:3b::14)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB8476:EE_|LV2PR12MB5895:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4542be0f-be7a-4bf3-2934-08df295a20bb
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5095:EE_|SN7PR11MB7708:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4de1603e-f48f-4b3a-23c3-08df295b4e2b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|23010399003|1800799024|366016|5023799004|56012099006|11063799006|261009223027099003|10067099003|22082099003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info: MbKupF0l8mssXACLyQYhbMnwUIbD3DqYYz2w0QbLP9gg4+Q7dLa+0V4TqvUmQDRsDVGg2K+Hk2Z9wsALra62Ikyi6D9eOHkjJp5ZB7muRC1r0bIirIot5RWl1FvcB/arrllUBMgcsDeGsi4H2D31e4DL/fxSp22AuXviYXhg9ORlrnKKN/diOTfFRpXJ8nnW0OwEhBE6e6L5UCMWxRk4xCXszj+WVIbs8B3vxnCs8G/Rm5QdGmZ/nBUc/7UV+135soaqJlWS2gAOoK535zJiqFzfCphuoL5/itBPosWnfssz9BTXiBOuLs7o7L1WXYJ4AISzv7kqzYXykk32xiCJfmqmN1iZZf/B5a9j/31spDpKoNdTm+rOci9QeqQqNu2IkiCkciFlnq1qYmleFhOP+YYuXlyzDo0ZfbosJ+1nFIlkFhp+lqIWLIle6Lh9lsoABKghi392+73gzUuv6jrEyJGexNv1FVWKZndTUNEy539Sreu4YGNlpxb6yHTAXFBFpXWh3ChPIPWoG/osAqrrQklNgYbvCd06Pmy695i1X+MDxE9tPPQ2TN6tyVeWBpI1WWWGv7ttHG00HgkdbGmjlqh9E66ZkVBH0FJbxcy/M/IXUlOU9LuRJgQD/1jpyhRbxgPUw4/KFewPZaHV/mWOm56ieUggVMOhHyCQbextUVE=
+ ARA:13230040|1800799024|23010399003|376014|366016|10067099003|261009223027099003|11063799006|4143699003|18002099003|22082099003|56012099006;
+X-Microsoft-Antispam-Message-Info: u17gXE++l7NURtfgDs7koHcy8cuaIu9rlB2uyTaWy6fTKpByafUg7mvZfCghvn70ApmlgIXhMKg96nQwIX5hPKuN7UOzeYzm3i83g7KGaOW63y3uc/9h/xheOGOo0yP+bjl/Qlt5AFxywD3rzAlg3LnHq7lAu1TI9tGGaciICftYsFbHi7Wu7huUU564fKGr0ebG01wz4eUPIxoGwmvBPe3tE+DEgs4zkh/Iui+sAf4mVRQzin8KTYi789wfLHPNwHsjAxz4wPW/81eeKGN1AKvTqBLp76iLXyebdnpChnlMH7zUytfeVdDoLGVU9jw9Xgr6FYP+I/m3xnxMdrzyzRVwQcRXoa03cDIIdJjCpjfHMhNiZYTxaDIfR/zqJ7odwZTI8PXaR3MUbGNPyU65Ix5v14hR6fUzEF5rrvT9o08wQqAS1S5TaqI75YZLgZgK6eXLMZXLOYXEpgn+SEUbwNatQrC3rXSBh024cwY0/uZ8u4z4hSUxFAZzxbIgOoRHSiHRtMe0bLIWaIuB4BEyFx2YfefEt34t7+wUrQdgzjGCLs8hUuaTYZc6j4f3k8HiY3e1kqkDu6pj1G+nir1RP1QE+dvKD9c7Mtcq7nSY8918xychk3o15kKcO0dLFkntJE63p3RrgCiFs+S+ekzz+Mqouwb95cMBUa6f2WIy/r4=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DM4PR12MB8476.namprd12.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(23010399003)(1800799024)(366016)(5023799004)(56012099006)(11063799006)(261009223027099003)(10067099003)(22082099003)(18002099003)(3023799007);
+ IPV:NLI; SFV:NSPM; H:PH0PR11MB5095.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(23010399003)(376014)(366016)(10067099003)(261009223027099003)(11063799006)(4143699003)(18002099003)(22082099003)(56012099006);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?L3NkTHdPUlZXNG54QUZ5d2RQc1VQR3h0VWxZVzZZc0U5ZXB5TDRtYzVLUktu?=
- =?utf-8?B?Rkk4dHdhS2cvcXNWbjJ5MHJWTlV5cTJSenBZYWtPTGhDM1JiN1ZYUCtRYnJ0?=
- =?utf-8?B?d3drT0pVU056WWd2MStRWDE5OHJ0KzI3MEFFVExtS2Uwelg1MzZLdSs2NWR0?=
- =?utf-8?B?YjNLNWRoMjcxRDNvTG1GNG9KaDRGQzFZcW12VUZPbElMZldDZFU0dENDSDlj?=
- =?utf-8?B?aThoMVZoRlhmQ05EZEhpSkdkcnhYTWNuTWxMRUx1WTBXQld2L0ZmcXZDM3Yr?=
- =?utf-8?B?S0JLbXNSMjhxZzlESWJaMXF1eEEybFFRUm9SU0E4cXlnS1o3UG01Rk4xT1Nt?=
- =?utf-8?B?UzBWemh4M0NYQk5xbGI5REFJa0crQk5wV3pXK1BsRlZJYTViZExzOFR3SWlE?=
- =?utf-8?B?SmF0dHI0V3dHa2YxZFJtbzk3OWcrenF4M3J6aG52VUplY2xseUxjRFRwN1pl?=
- =?utf-8?B?cVFaYktEazA1ZkQ0ZWRqd3N4TGdvNnUybXBhdnY1WkQyTXFsOTB5YnBOM2dp?=
- =?utf-8?B?V3UyQ1RsdUg3NHVxS2g3cVlhVEJRTmFHUHQzRGI0Q3FPZ1BZVThPaEZoYTlQ?=
- =?utf-8?B?aFNkUUlDK0hIUW5VU2tDdTRxWldCVjROS1d6aEZTcUkwWDFYaDFoOEx3OWZ5?=
- =?utf-8?B?UE1tNEdPdXlwK25jUUh4NkFsWU1VTXFiWVBaWW53TTVwUVY0blFNWTkvbDV4?=
- =?utf-8?B?NVdZeStlcC8rMGNFNDdHbUhFdjdUY3NCL05rNXF1MmtHQ0tqVTh0aitGNUFr?=
- =?utf-8?B?aDZ0T3BCYXJaUlh6S05Ua0Eya3h2WkRBQ05tM2tDb2t2VS9IRVpEWiszU1hu?=
- =?utf-8?B?OHFiQ0FjaE5GUXNrcmk4aGcxVk5TbHFvdXhNU09rL21CNjB5NHJEMkZnbWR6?=
- =?utf-8?B?STVPaEkvcWQ4b3ZQcXg0eFJvbmJmZ1pBY3p2eC9pWVBpY29lOGZ5S2taY0dj?=
- =?utf-8?B?V0JlVG9oUWc3Z2tQYUFKZW96bnJMVloxTTByL0MwV1JpTWxFQ29NTk1xRWdB?=
- =?utf-8?B?Vk5OSStjQyt3aERtanVmKzg2LzVlK3NoNlJZY05pMURMN3RuYVd2dGdiS0dQ?=
- =?utf-8?B?SjZhRDNjakVXMm5IVVh2OWR5MXNQeCtlOFdxQlluTmRuUFVBZ05lK3BQTFRt?=
- =?utf-8?B?dEZYOXQ2TnA2bkd6d0RCMjBmVUd5d2RVREJSOW14VXpzOEhpM1NQQi83R2hI?=
- =?utf-8?B?TlYvOUY2OTR2bkd1VU1nU2JWRkZRekxJV2ozOEREaUgzYW9ZWUVTSi93aysr?=
- =?utf-8?B?c1Rxa2JpMUFYUFVXTCt1OTFwTlMvc0I5VHhVK0pOMVVId21TcHRiSkJCWFlD?=
- =?utf-8?B?SVlVTG5vZFEzUzhMWThkSE9wRlBOWXFtZDVFSXV6R0J4WWRncXoxMlpueWUy?=
- =?utf-8?B?YzVncElDaVJ0YzdmU0ZkOHlRSUpYM2dneXpZRFgwRzRqUlVzdFZPdkFLcWNC?=
- =?utf-8?B?V3B0UmlVZnpTVTdGRlRTcWdWcE5HdXVGMzZUV0xQdWtDZmg3dkJrL1NOMVU4?=
- =?utf-8?B?bXlBL2lHUDlzQWlPVkJJeFlaSmNTUlUwN3d5a3lGL1pQQVNXMUhaUnp5WURT?=
- =?utf-8?B?c2RmWFBTNmp0YW5ldDBUaDI0eU5OWUMveHdzdDQ0dFBIbmQvZ2Z5TEY1aHl6?=
- =?utf-8?B?OFVYcksydmxzSEIrRDZqVjVpUnd6TTdVcHUxUUUvTGs5ano5YThsQW9qSGQ4?=
- =?utf-8?B?ckttUGVvR1BEd2o4REJmZ1Jtd3ExZzlNcnFDSUtuM3BlZjJOTWNNYldYMWll?=
- =?utf-8?B?SXpJdVZMLzdaVnhjUDRGcFBGZ3lISk1scHVML2kvV3ZjbithT2w0NzllNSto?=
- =?utf-8?B?UTRZcEtNc2FjZkxLa1ZSTjZuWVlvbDRPVlRMTnVFclBmUDdTSEZiZlJIZDhy?=
- =?utf-8?B?dllpTzJvNTBEb0w3Uy9uQi9ZUFlOSVVTYjNwcUhBZTVwd3ByUFRmSGhuS2Jw?=
- =?utf-8?B?c3V6SmdleWttSWthbTZvUER1aFZ3NUlCZ0xVTlIrak9LeFppVVRYdG9sOS8z?=
- =?utf-8?B?ZThFdWFPRGFKdjZvdGd2WDNGZVJ1RzQ2T2IrRkpmWUxyc0xLRFNtUHByTFBX?=
- =?utf-8?B?Zmt4RzZnYjZyL0ZOakRoMmNRa21wYnhqWURXQ2NPZk9meURrVElBK0RGTHU5?=
- =?utf-8?B?cDdMSzJjdTY1NlNCSVhEbTF1U0U4UTlVaVZmRlJnYlp0eU52K21nbzd6KzNB?=
- =?utf-8?B?S2l5R3F4TzFnYXBiWHg3eVVPMktnRGhDQ0lIa0lpYkFXSWpYYXl3bHB3REwy?=
- =?utf-8?B?QXh6dlNYRlJibGNtMnBYZWtPZmdFMzU0SXlETVZoMnEyUmE0SXJZUXQ5a01j?=
- =?utf-8?Q?IQ7KbKLDqhLPaXyuhl?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4542be0f-be7a-4bf3-2934-08df295a20bb
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB8476.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b1RObzlmNjFvUzBmNWFCdXphR1NLVG80UmNrNnRRNWI2cmRWbitZT3JUMVhR?=
+ =?utf-8?B?dk5VekpOa0JaSzBQZFdyRWRGMHd6bGFNRUg3NU1oR1VFbVhLZUVtanFiK3JV?=
+ =?utf-8?B?TjFTa0tWUmg1QUQ0SVkvMk53Z1ROMDdlSE1jbUpwZUEyVk12bVdnTmNBTFhx?=
+ =?utf-8?B?NDFDQ2tIYUdmbm1lUitOdWpRaUxONU42Vk1RdklTUlJWbWt2S05FVlpMVk5F?=
+ =?utf-8?B?WG9SVjY3S1UvMlArbUpjRjBaWnJrdmdkNEVlWEpJVjNaaHlMQ2FDZnRyMi9Z?=
+ =?utf-8?B?NDQxWTluemIrTFE4SjJkd0Rkc1huWFQ2bDU3L0Y5N0U0UmFkQjhPdzdsQklR?=
+ =?utf-8?B?c1JpWGI5WldXbkY3a0RqZVp1bTQrRE5YUlZ5c1FObHE2Y1Jvc3VPWklRNm9j?=
+ =?utf-8?B?QzExOTZzWldEUmxFM0tBSGdxR21iT1NwckEweE1hN0ZpanRnbDVZL2lCZFJs?=
+ =?utf-8?B?OUp3T0Y4Y3NzL0twUU9JeW5Xbk83QndUaFFXQVhZY1BOTHBqTjdBQXFqT2FH?=
+ =?utf-8?B?WXRZR0JRVFJZaTRNdEtYQW5kdHJzZTB4S3B4RlJtcjJ6eW9NMmlQZ002MkNB?=
+ =?utf-8?B?TGRnVnB0ZWNtR2hLelRNK2JoaWpwdEhhM0xuM3daaGFOZENVN2kxMXY4UTVX?=
+ =?utf-8?B?Mit6Q1RIQmJuaVMvRCtDbklCQ1dwZGpJY3g4NzhXbXhJYjQ5ckNTcmw2SXl6?=
+ =?utf-8?B?Qm5yMjR1VmF1WDVzRFlFeisyZUFuSHhWTUZPeVBnVHF3SElqSVpwdXczV1lz?=
+ =?utf-8?B?VXpha2U5bzIyVFJnT1crZXZ5SVpBd3BSeTVGTGlHYXpNTFIxZjFudzUvUVd6?=
+ =?utf-8?B?anZBSFdyWklPNWtqSENUV0owZHVlMHlUbDI5M0IwVHRrQ2QreTlNOTMyeEJC?=
+ =?utf-8?B?UGh3MEJoVkd0NWJ5ZW12U3JPS3ArNjJVVENDYTBSS2c3K0ZBNlhyb2dpb3pG?=
+ =?utf-8?B?RG56aTRuMlM3WW5ScWh1MkNBTXNBZHd4ZUNkdXNMa3g0RkRCTEY5SWI2S0ZR?=
+ =?utf-8?B?SWZLaG5UQ2VWY2JoUTd5SE5YUHRCOGVKQ29YV1BtRVFnSVVhREFuYUtvZ3l3?=
+ =?utf-8?B?UkcvU2ZUTVJPbzFXMHllMHlvVnNieHlkYllTbmxFY1Y4TmpLMXBoYkRrQWU2?=
+ =?utf-8?B?ZGZQYlIyT0V1SnIwL1BrajY5Y2dEOEpEaWsvdUEyTlJrOWpMSFpQby9ZeStt?=
+ =?utf-8?B?SW4vaFZ6dTNMMkYyRG1JL2VGaEFPV1dPRTVabjV2dE9JeUQ5NFJSWHpaSk1u?=
+ =?utf-8?B?NSszdlZMNCtiM1RvNXBML2FaTDMyWFZvNExrV3kvZHpmRXI4bGNCVXpJTFc4?=
+ =?utf-8?B?dkgwdlA1YXdSYVhrUXpvMVJYS2lBVXFJT3RxdERFYUpuYTZEVU13UVZBRGV0?=
+ =?utf-8?B?WlFOZkJVNzkwZ0h4dmwwYm9HVlJRalhZb1grZ1AvcCtuOWRYK2VHdnhlU2lX?=
+ =?utf-8?B?eHhqaFZRSys2R1FyYWpRT1ZDU09HTmljYzA4MWQzTmllUEgyNDJsbWgzMEVq?=
+ =?utf-8?B?cTRTVE5EdXp5R3pYaC9lY3I3OWprbW9KVWVTY2dvZG5DeGI5MWkzdzZaNDc1?=
+ =?utf-8?B?ZHZRMWZJY0ZjSXBQa2t1UTFZT0F6RTVwQnE0Q1VPNkowREl4M0tUZ1g5dGpS?=
+ =?utf-8?B?aFl6ZmQwUDYxNEJYU2YxU213RVo3b0JRUUh3MFkwWW10dFNndzJBdHN6ZUVN?=
+ =?utf-8?B?WmdVaGpMc3Q4akE5ODdnNndwbmFaY0VIZmlwOFpyd3RSQUVxWVhrcUh6My9J?=
+ =?utf-8?B?bXZyWGNQTHRYWTZ2STArUXFGR3llYTE2cUVaeDdoeGNrZnBxVkc5OGdqUW9p?=
+ =?utf-8?B?cWk5cjJuQWlQcEJOUWRHdkdyOEtkaVIwK1pua2cvMVZyYXNwRlQ0S2hTb3JS?=
+ =?utf-8?B?cnBUaDQybDhyNUtvRlhyYTE3VjN5TXNjUFJ3RitJTXpsYlBZclpseWdlVkpI?=
+ =?utf-8?B?SFJQRWV0U0xPMGZKNlYwUklKaWRHU05pN25LdlYyci9SZFZ4a0lMbUlrd3lW?=
+ =?utf-8?B?N09zL3hsZzhKQWp3L3J0b2lOTWV3aHZxNGFydzlaMmZVa0hFdWRIdnZ5aW1n?=
+ =?utf-8?B?OHdWQ1h4TmxrOHBtZE5sWkl5U2Rmd09wMHR1Tm91U2RlaEpwd3lpa2pSUXZj?=
+ =?utf-8?B?UklrdVZlTmdOemJwaFZjaVFhNFNGeVJXSU5zbFBhN0R0eitBQTlDeWZMYXdK?=
+ =?utf-8?B?OEFtQ280SEwrMGVzL0tVNldVS3hKbEF2bjRIbTNjRU9nNEtJMkdXRHQ3ZkFm?=
+ =?utf-8?B?UEhxOTFhSXh2S2xKUFpReHNvUUtCOXlLeVovOWJka1A3UUlxNEErNk14OUNJ?=
+ =?utf-8?B?YXB5U0NYaVpQVkZSb1I5anQyOExSc0lqcldmTjlGbGNkMWp3THRIQT09?=
+X-Exchange-RoutingPolicyChecked: tvmcwuCarNBJ6shXYv2YO0RaYgHToqN2ut1y7JdNGGtNsRJX3tNuIjGXE2BWiC7rk/68CQUYccKGyjZA6H5WWR4678LIBqrVEDURZJJjW/rkNSHTIoa4e0lTYTwTZQOJkQ74bluJExBnZPSU/8gWO49TG+muI6PDawvAfD5xdbMCupw5irSOj8XKEWCemDR6QR2KiVKc1KtBI++NCI9TlnZEf9z0lkRm3TeMI/6leDR5g4ts6i17vtrQx1Ugs3PWAlnXx6Pk7uDuymKTBeOHrslJE/zQr48uVsZ83V6D22k4i+oMU4rSBC351GTSMZ19t5ueqY6N+52nDZo9HjMpxg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4de1603e-f48f-4b3a-23c3-08df295b4e2b
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5095.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 18:45:18.6949 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 18:53:44.1252 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: pRz+sDDEO7BPdrwOXmbHG6Fnqt022Q3fBp5Vqq2Dqj91QtKsg+WFn1Tukn7+LHIf6+616mb417pHDKtUxtzMfg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5895
+X-MS-Exchange-CrossTenant-UserPrincipalName: G6IQD3z58PnpS+V6iRORzYWP9uHtGY9yfCNc9Hko3FNA9ZuivEb8BnqkO5hq/xt0RpVo+3zWN2IfERkoWXQaKA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7708
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -132,35 +168,130 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
+Daniel Charles <daniel.charles@intel.com> writes:
 
-On 10/13/26 12:01, Aurabindo Pillai wrote:
-> basic-suspend currently checks hardware sleep statistics only after resume.
-> If the interface is unavailable, the test skips after programming the
-> display and performing a suspend/resume cycle.
-> 
-> Read the statistics before test_init() for the suspend variant so a
-> missing or unreadable interface causes an early skip. Accept an initial
-> zero and retain the positive-duration assertion after resume.
-> 
-> Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> ---
->   tests/amdgpu/amd_hotplug.c | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/tests/amdgpu/amd_hotplug.c b/tests/amdgpu/amd_hotplug.c
-> index 509d828e6..29d0df153 100644
-> --- a/tests/amdgpu/amd_hotplug.c
-> +++ b/tests/amdgpu/amd_hotplug.c
-> @@ -129,6 +129,10 @@ static void test_hotplug_basic(data_t *data, bool suspend)
->   	igt_display_t *display = &data->display;
->   	igt_crtc_t *crtc;
->   
-> +	/* Check reporting before setup or suspend; an initial zero is valid. */
-> +	if (suspend)
-> +		get_last_hw_sleep_time();
-> +
->   	test_init(data);
->   
->   	/* Setup all outputs */
+> On 10/13/2026 10:56 AM, Gustavo Sousa wrote:
+>> Daniel Charles <daniel.charles@intel.com> writes:
+>>
+>>> On 10/7/2026 7:16 AM, Gustavo Sousa wrote:
+>>>> The function igt_stop_helper() does a sanity check by verifying if the
+>>>> helper process died "too early", however it does that by checking if
+>>>> it was terminated due to not handling the signal used in the kill()
+>>>> call.
+>>>>
+>>>> That logic has a flaw though: it the helper process gracefully handles
+>>>> the signal sent by kill() and exits normally, igt_stop_helper() will
+>>>> mistakenly take that as dying too early, because WIFSIGNALED(status)
+>>>> will be false.
+>>>>
+>>>> That's the case with the pw-reserve process: in an upcoming change we
+>>>> will change pipewire_reserve_wait() to call it with execlp().  Because
+>>>> it handles SIGTERM and exits normally, a warning and assertion failure
+>>>> would happen with the current logic.
+>>>>
+>>>> Fix that by checking if the process was alive before calling kill().
+>>>>
+>>>> Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+>>>> ---
+>>>>    lib/igt_core.c | 20 +++++++++-----------
+>>>>    1 file changed, 9 insertions(+), 11 deletions(-)
+>>>>
+>>>> diff --git a/lib/igt_core.c b/lib/igt_core.c
+>>>> index 8ee9432923e6..d9949ea131f8 100644
+>>>> --- a/lib/igt_core.c
+>>>> +++ b/lib/igt_core.c
+>>>> @@ -2652,13 +2652,6 @@ int igt_wait_helper(struct igt_helper_process *=
+proc)
+>>>>    	return status;
+>>>>    }
+>>>>   =20
+>>>> -static bool helper_was_alive(struct igt_helper_process *proc,
+>>>> -			     int status)
+>>>> -{
+>>>> -	return (WIFSIGNALED(status) &&
+>>>> -		WTERMSIG(status) =3D=3D (proc->use_SIGKILL ? SIGKILL : SIGTERM));
+>>>> -}
+>>>> -
+>>>>    /**
+>>>>     * igt_stop_helper:
+>>>>     * @proc: #igt_helper_process structure
+>>>> @@ -2670,17 +2663,22 @@ static bool helper_was_alive(struct igt_helper=
+_process *proc,
+>>>>    void igt_stop_helper(struct igt_helper_process *proc)
+>>>>    {
+>>>>    	int status;
+>>>> +	int ret;
+>>>>   =20
+>>>>    	if (!proc->running) /* never even started */
+>>>>    		return;
+>>>>   =20
+>>>> +	ret =3D waitpid(proc->pid, &status, WNOHANG);
+>>> put waitpid in a do/while loop to catch any EINT return that may need a
+>>> retry.
+>> Do you mean EINTR? EINTR would happen only if WNOHANG was not passed in
+>> options.
+> Yes it was a typo=C2=A0 and you're right on WNOHANG according to [1]
+>>
+>> This call is to check if the child process was still alive by the time
+>> we are about to kill it.
+>>
+>>>> +
+>>>> +	if (ret =3D=3D proc->pid)
+>>>> +		igt_debug("Helper died too early with status=3D%d\n", status);
+>>>> +
+>>>>    	/* failure here means the pid is already dead and so waiting is sa=
+fe */
+>>>>    	kill(proc->pid, proc->use_SIGKILL ? SIGKILL : SIGTERM);
+>>>>   =20
+>>>> -	status =3D igt_wait_helper(proc);
+>>>> -	if (!helper_was_alive(proc, status))
+>>>> -		igt_debug("Helper died too early with status=3D%d\n", status);
+>>>> -	assert(helper_was_alive(proc, status));
+>>>> +	assert(ret =3D=3D 0);
+>>> This assert can be moved before kill call to make sure the correct
+>>> process is killed.
+>> Hm... This function already assumes proc->pid is the correct process to
+>> be killed.  The objective of the waitpid() call above is rather to check
+>> if the process was still alive (the expected scenario).
+>>
+>> If we move this assert() to happen before the kill() call, we risk
+>> leaking the process, because an assertion failure would keep us from
+>> killing the child process.
+>
+> The process will be already reaped after waitpid if it returns the PID,=20
+> then kill may signal a different process that took the same PID.
 
+Hm... Yeah, I can see this edge case where the PID could get re-used
+between the waitpid() and kill() call.  Not sure, how easily we would
+hit it, but this doesn't make the patch right and I agree we should
+avoid trying to kill the process if the waitpid() call tells us the
+process is already dead.
+
+>
+> So call kill only when ret =3D=3D 0 ? and keep the assert in the current =
+place.
+
+I think we should call kill() only if ret !=3D proc->pid, which ensures we
+also try to kill() if the waitpid() call fails for unexpected reasons.
+
+--
+Gustavo Sousa
+
+>
+>
+> [1] https://man7.org/linux/man-pages/man2/wait.2.html#ERRORS
+>
+> --=20
+>
+> Daniel.
+>
+>> --
+>> Gustavo Sousa
+>>
+>>> -- Daniel.
+>>>
+>>>> +
+>>>> +	igt_wait_helper(proc);
+>>>>    }
+>>>>   =20
+>>>>    static void children_exit_handler(int sig)
