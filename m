@@ -4,50 +4,49 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C4B5CC6B1C
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 15:18:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44F73CC6B12
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 15:19:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E4EA610E929;
-	Tue, 13 Oct 2026 15:18:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BE30D10E0C3;
+	Tue, 13 Oct 2026 15:19:27 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D10C310E90B
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 15:16:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2374A10EF01
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 15:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791904613; x=1823440613;
+ t=1791904617; x=1823440617;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=MYqUO/nMCLxIpOjx+DOSCtWvxQdNqpnnuLlv1a1r7yM=;
- b=LuOR6dsOeV5RR2ebmAE7Px8qOPoC1wsLb0yYVErE6xH9IKSecmmLG23j
- 8Blt7cy6jXzDl4ANwoB4TOvKuLGFSOqSghmab2w6dhbsX7znGGAe3iqlX
- TfNERlXKMyq78M4m9+UaGMkMhGVO51Xk4niqUnLScteYsX+8KL/a4SUdE
- t7EGOdjzUAWuOxpo4yPAan0nd+N+Il8Zg8rXz+l8Ncd0OWQanmNzA+rcd
- iqzrDm3Q2w2B/w13X5FtJYasEm+x9Nx7roXU3lbmzYxljtGyNh84wOnsf
- JMbCsFZ4N/kD1/sHIKLsyBq4ekIXWK5WZG31uCWuwSRChfiLQpnNt09gZ g==;
-X-CSE-ConnectionGUID: PZ1zZdnJQfiGGupjDUit2A==
-X-CSE-MsgGUID: TLZv6NsvQrqXp1l/ZfSbxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="626592"
+ bh=Wd04JOL027SMDd4Q/Aba26HS2Gq2KqM11qRwf1d5Nes=;
+ b=XH/j+NWauVGm6YIjO2fJpTz4DnjVGF2BC3irEp9NGbm6M+ftLPE/Opd4
+ RM/FkzXz/axePIoRpyClNtHranBR3VAMwLDBM6/8kTXK3RRQxJk7YZXZ+
+ QVTx3OYN6N9QMamA5UXaUGk2kZ1xmEZmswywC4fbTfTk9Zls/GZ9HGqWa
+ 9ryqaxaqnwXd2o+AkI3/A+4sVT75+KYg+dEHz43gpxKkQoy+4nsvSicZb
+ xOSy/+w/JLIo+QQDB3zUMq8hRWbBywPQoy8Wk6hxb58zR4mEIEuwE5q+v
+ xyvK45uQ2dskOlRSwD16VAQQ1ZVUdqJYu4a9jJPNGQ7D/UBjIrWgZEYY0 Q==;
+X-CSE-ConnectionGUID: OSINuqIDQvSr/ScjRDSYDg==
+X-CSE-MsgGUID: xktbDBKkTvCpmhkbueXbxA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="626603"
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="626592"
+   d="scan'208";a="626603"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 08:16:53 -0700
-X-CSE-ConnectionGUID: 4jbB9DROSZmYm7Jc+a9qhg==
-X-CSE-MsgGUID: //edutWLTcyPXQcydk1wwg==
+ 13 Oct 2026 08:16:57 -0700
+X-CSE-ConnectionGUID: THqSlqIHQ26xCMnzhVcFCg==
+X-CSE-MsgGUID: /9gRtZRUS5OzLmEex442qw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1078106"
+   d="scan'208";a="1078124"
 Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
  ([10.245.245.145])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 08:16:53 -0700
+ 13 Oct 2026 08:16:56 -0700
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v1 1/2] lib/igt_chamelium_stream: Fix warn about
- discarded const
-Date: Tue, 13 Oct 2026 17:16:43 +0200
-Message-ID: <20261013151644.174387-2-kamil.konieczny@linux.intel.com>
+Subject: [PATCH i-g-t v1 2/2] runner/resultgen: Fix warn about discarded const
+Date: Tue, 13 Oct 2026 17:16:44 +0200
+Message-ID: <20261013151644.174387-3-kamil.konieczny@linux.intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261013151644.174387-1-kamil.konieczny@linux.intel.com>
 References: <20261013151644.174387-1-kamil.konieczny@linux.intel.com>
@@ -71,29 +70,29 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Fix following warning which is observed on Ubuntu 26.04:
 
-../lib/igt_chamelium_stream.c: In function ‘parse_url_host’:
-../lib/igt_chamelium_stream.c:119:15: warning: assignment
-	discards ‘const’ qualifier from pointer target type
+../runner/resultgen.c: In function ‘next_line’:
+../runner/resultgen.c:144:13: warning: assignment discards
+	‘const’ qualifier from pointer target type
 	[-Wdiscarded-qualifiers]
-  119 |         colon = strchr(url, ':');
+  144 |         ret = memchr(line, '\n', bufend - line);
 
 Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 ---
- lib/igt_chamelium_stream.c | 2 +-
+ runner/resultgen.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/igt_chamelium_stream.c b/lib/igt_chamelium_stream.c
-index a8cd19e51..062feca26 100644
---- a/lib/igt_chamelium_stream.c
-+++ b/lib/igt_chamelium_stream.c
-@@ -110,7 +110,7 @@ static const char *stream_error_str(enum stream_error err)
- static char *parse_url_host(const char *url)
- {
- 	static const char prefix[] = "http://";
--	char *colon;
-+	const char *colon;
+diff --git a/runner/resultgen.c b/runner/resultgen.c
+index 127d8a9e8..94cdd0e2e 100644
+--- a/runner/resultgen.c
++++ b/runner/resultgen.c
+@@ -136,7 +136,7 @@ static char *find_line_starting_with(char *haystack, const char *needle, char *e
  
- 	if (strstr(url, prefix) != url)
+ static const char *next_line(const char *line, const char *bufend)
+ {
+-	char *ret;
++	const char *ret;
+ 
+ 	if (!line)
  		return NULL;
 -- 
 2.55.0
