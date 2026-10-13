@@ -4,27 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70DC9CC6B12
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 22:05:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA55CCC6B12
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 22:25:19 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBE6710E150;
-	Tue, 13 Oct 2026 22:05:42 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 101CF10E150;
- Tue, 13 Oct 2026 22:04:56 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0280200936912009477=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 42D6010E15E;
+	Tue, 13 Oct 2026 22:25:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E7E2F10E15E
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 22:24:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791930262; x=1823466262;
+ h=from:subject:date:message-id:mime-version:
+ content-transfer-encoding:to:cc;
+ bh=eKkc7EDoihVQZFAUJX6IVt7T8lWPBM2iArnS+M7n3bc=;
+ b=KxT4mnmSB/uIPKZMrl+broWo8MTjb3Fs3UWBGA4WBhljzmChGYbfmKvE
+ pCnrfwXUaV7fF17L0xf0YHtZKa1MSznllLpONQH4Ps2Uq3fu4vgikNu7w
+ VA+Dwz6dOWxi75gRE1xiMwCOl8vyWdnHN4rQeuC3pGylo3rHwvbqmX/RF
+ nOhaa/h2rha4yDnTJpb9M7/lqzoJvq8nUAWU055wcbjOrLtqYCYx8Ahuz
+ E4tCZJ4PFzkwl+S++5VnxOUnSS+D1BnRXuvCBJnszYnp88l+1j7zM+CJK
+ IIxTCLe7/R+ILW2sPVoeddUH0lD60gdo9Ken3ZZOJ5z+KM4z+bFwdxRH5 Q==;
+X-CSE-ConnectionGUID: 2si2EuS3TZOgrkjf65p0GQ==
+X-CSE-MsgGUID: aledjrj7QW6ICkzjL03ZDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="566017"
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="566017"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2026 15:24:21 -0700
+X-CSE-ConnectionGUID: 8lCDVwsMTPShdXIqMPHfYg==
+X-CSE-MsgGUID: ytHf6ujTTwKU1XlWhoKCbg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="1713173"
+Received: from hanvin-mobl3.amr.corp.intel.com (HELO [192.168.1.16])
+ ([10.124.222.196])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2026 15:24:19 -0700
+From: Gustavo Sousa <gustavo.sousa@intel.com>
+Subject: [PATCH i-g-t v2 0/2] Fix igt_runner hang and resource leak
+ associated with pw-reserve
+Date: Tue, 13 Oct 2026 19:23:34 -0300
+Message-Id: <20261013-stop-pw-reserve-v2-0-58f268cb4f06@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_xe=5Fpmu=3A_Do_not_enable_V?=
- =?utf-8?q?Fs_in_unrelated_subtests?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Oct 2026 22:04:56 -0000
-Message-ID: <179192909605.20765.8687118653837974973@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <cover.1791900914.git.marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <cover.1791900914.git.marcin.bernatowicz@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WNwQ6CMBBEf4Xs2TVtIUU98R+GQ4EFNtFC2qZqS
+ P/dpvHmcWby3hzgyTF5uFUHOIrsebM5qFMF42rsQshTzqCE0lIIjT5sO+4vdJTJSGhI16Jpzay
+ mBjK1O5r5XYx3YFwwQJ/rlTPoPuUnyjL+lO2fMkoUaIZhqodLe9VSdWwDPc7j9oQ+pfQFLUqAS
+ bUAAAA=
+X-Change-ID: 20261006-stop-pw-reserve-ae63047af2d4
+To: igt-dev@lists.freedesktop.org
+Cc: Gustavo Sousa <gustavo.sousa@intel.com>, 
+ Daniel Charles <daniel.charles@intel.com>
+X-Mailer: b4 0.15-dev
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +70,36 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============0280200936912009477==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+When running igt_runner on an interactive SSH session we realized that
+the runner would hang when testlists contained test cases that would
+unbind/rebind (or unload/reload) the driver multiple times.
 
-== Series Details ==
+Some debugging revealed that the hangs were caused by pw-reserve
+processes created by IGT not being properly terminated.  Let's fix
+that.
 
-Series: xe_pmu: Do not enable VFs in unrelated subtests
-URL   : https://patchwork.freedesktop.org/series/176050/
-State : success
+Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
+---
+Changes in v2:
+- Incorporate review feedback (see patch changelog for details).
+- Link to v1: https://patch.msgid.link/20261007-stop-pw-reserve-v1-0-abbd3b879612@intel.com
 
-== Summary ==
+---
+Gustavo Sousa (2):
+      lib/igt_core: Check if helper proc was alive before kill()
+      lib/igt_aux: Call pw-reserve with execlp()
 
-CI Bug Log - changes from XEIGT_9143_BAT -> XEIGTPW_15977_BAT
-====================================================
+ lib/igt_aux.c  | 11 ++++-------
+ lib/igt_core.c | 21 +++++++++------------
+ 2 files changed, 13 insertions(+), 19 deletions(-)
+---
+base-commit: aada5ae74aa135d2b448e25ec417f4f0dee9439c
+change-id: 20261006-stop-pw-reserve-ae63047af2d4
 
-Summary
--------
+Best regards,
+--  
+Gustavo Sousa <gustavo.sousa@intel.com>
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 13)
-------------------------------
-
-  Missing    (2): bat-lnl-2 bat-lnl-1 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9143 -> IGTPW_15977
-
-  IGTPW_15977: b2cc4af5ae912534172ac5e4d6e6149dcab1500e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9143: 992e2bc5d5fcaef292ea89e3db5cb7a50b6edfc2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5940-3bb5625e4dccd61506ad2815da07ac082e1df614: 3bb5625e4dccd61506ad2815da07ac082e1df614
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15977/index.html
-
---===============0280200936912009477==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>xe_pmu: Do not enable VFs in unrelated subtests</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176050/">https://patchwork.freedesktop.org/series/176050/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15977/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15977/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9143_BAT -&gt; XEIGTPW_15977_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 13)</h2>
-<p>Missing    (2): bat-lnl-2 bat-lnl-1 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9143 -&gt; IGTPW_15977</li>
-</ul>
-<p>IGTPW_15977: b2cc4af5ae912534172ac5e4d6e6149dcab1500e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9143: 992e2bc5d5fcaef292ea89e3db5cb7a50b6edfc2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5940-3bb5625e4dccd61506ad2815da07ac082e1df614: 3bb5625e4dccd61506ad2815da07ac082e1df614</p>
-
-</body>
-</html>
-
---===============0280200936912009477==--
