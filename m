@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3AD94CC6B19
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 16:15:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B28A3CC6B0E
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 16:16:46 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C4EF910E51D;
-	Tue, 13 Oct 2026 16:15:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 430F810E0E9;
+	Tue, 13 Oct 2026 16:16:41 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4E0510E51D
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 16:10:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7E32D10E8E7
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 16:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791907859; x=1823443859;
+ t=1791907864; x=1823443864;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=eNi0BeRg1aeYsyW51F3MyePIgXy2nuE8Emh6ocNUNRc=;
- b=dEMB/CFxrz2uhhqZevpbo66lTxLsByv+IxB3X+8mAHBW2gPwUuirmGJR
- BMYWgc/yMRGDGDhzDWCAiOyxDqstHiY6G21y0ENzaXtgS7Mu8J08v19jt
- FpOi+NKuaN9Gyxb8iZIRlwIYxRdJ9jeEU+/h5LZl8f1URCFdcz+Mf8k9a
- +T3eddXLXrvBn9PS7XGPt7jB4w3VyPLStpLPInFpdPLqCSvVNJ85CaDok
- KO2qhJ6Iytl7soI7iIxTnvbcRs3Av067v0XzJXe46gsOh8yjrsByPcx9G
- fOgEEvMQ5kjZI7T/5f+s0TIxPoLyrWU/vdE3E3R8tmjCQsZfQN+UMMr+z w==;
-X-CSE-ConnectionGUID: rdFl6X0DQQ+dVTBAqTvgKg==
-X-CSE-MsgGUID: 6T+d9SRNQRKIWmga0rNs+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="656309"
+ bh=tsryCHkhwyMwg3Dghki+8om54cBo8WdthYKsj2cPAPQ=;
+ b=JxUbPJHV8vzNQfQQtZ+FyqKwrRZUpsxc8Fw24hmxqlClNjkdC9I7m8H0
+ 0Ohm89TzeOVGZY1FYvHpgVjCRr8oBANSMfavPsZU1Z8c/CPSHa5cOYkpC
+ ZJFAJqVU4h70ZAtR3NnAnivkD/qYk//21Iyza0QTwgwLalR0YV3d5pgvn
+ +/hCrKgRddgEhIdTBWy/pDzy2gu3YfrlZBxc4/kju94b82fByNyR50tuX
+ bazqjYv8ehvIgi6RuPicvmaU74Zea4ir7nTOpQ6tKLI54pSfQPh1LaJsW
+ PKoT1sve2KQaWWaGO8feCrDqAnN62+FZNKerxUMjAL0fJC+kFVoOz8gvD A==;
+X-CSE-ConnectionGUID: daMwMbgdQs6HPREqGUj9XQ==
+X-CSE-MsgGUID: VabFtSEZRqGebZnm6H93sw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="656319"
 X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="656309"
+   d="scan'208";a="656319"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 09:10:59 -0700
-X-CSE-ConnectionGUID: FjQA1OUcSrS8PjzMrOw8Xw==
-X-CSE-MsgGUID: y/b9w0ZuTJmxXj39BvLnVw==
+ 13 Oct 2026 09:11:04 -0700
+X-CSE-ConnectionGUID: PbsmXoT+QBOX5LqIhm45WA==
+X-CSE-MsgGUID: nyre4N4gTl+lmeSTDQhQcw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="1096315"
+   d="scan'208";a="1096328"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 09:10:57 -0700
+ 13 Oct 2026 09:11:01 -0700
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Karthik B S <karthik.b.s@intel.com>,
@@ -48,10 +48,10 @@ Cc: Karthik B S <karthik.b.s@intel.com>,
  Jani Nikula <jani.nikula@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
-Subject: [PATCH i-g-t v8 3/9] tests/kms_async_flips: limit #pipes tested
- during suspend
-Date: Tue, 13 Oct 2026 18:10:07 +0200
-Message-ID: <20261013161013.1364753-4-michal.grzelak@linux.intel.com>
+Subject: [PATCH i-g-t v8 5/9] tests/intel/kms_ccs: split outer test loop into
+ two
+Date: Tue, 13 Oct 2026 18:10:09 +0200
+Message-ID: <20261013161013.1364753-6-michal.grzelak@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20261013161013.1364753-1-michal.grzelak@linux.intel.com>
 References: <20261013161013.1364753-1-michal.grzelak@linux.intel.com>
@@ -75,68 +75,99 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Test suspend on first and last pipe by default.
+for_each_crtc_with_valid_output() iterates over every crtc with
+connected output. Split it into two loops. This is needed to handle per
+output and per crtc cases.
 
-Alternatively test could be run on first and last CRTC; but due to pipe
-reordering, this would result in using arbitrary pipes. Thus set first
-and last pipe as the only available in suspend resume case.
-
-v7->v8
-- use pipe mask (Jani)
-
-v6->v7
-- use hardware pipe instead of CRTC (J-P, Jani)
-
-v5->v6
-- describe how pipe reordering affects the test (Jani)
-
-v3->v4
-- use crtc instead of display->crtcs (Thasleem)
-- use proper logic operator (Thasleem)
-
-v2->v3
-- add missing S-O-B
+v4->v5
+- fix indentation (Thasleem)
 
 Signed-off-by: Michał Grzelak <michal.grzelak@linux.intel.com>
 ---
- tests/kms_async_flips.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tests/intel/kms_ccs.c | 58 +++++++++++++++++++++----------------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
 
-diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index a548c73cd9..1d930260c6 100644
---- a/tests/kms_async_flips.c
-+++ b/tests/kms_async_flips.c
-@@ -298,7 +298,9 @@ static bool set_available_hw_pipes(data_t *data)
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 4d0bda6a78..1a922792c5 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -1152,47 +1152,47 @@ static void test_output(data_t *data, const int testnum)
+ 					      "Older than Xe2 platform needed.\n");
+ 			}
  
- 	for_each_crtc(&data->display, crtc) {
- 		hw_pipe = crtc->hardware_pipe;
--		data->available_pipes[hw_pipe] = true;
+-			for_each_crtc_with_valid_output(&data->display, crtc,
+-							data->output) {
+-				data->crtc = crtc;
+-				igt_display_reset(&data->display);
++			for_each_connected_output(&data->display, data->output) {
++				for_each_crtc(&data->display, crtc) {
++					if (!igt_crtc_connector_valid(crtc, data->output))
++						continue;
+ 
+-				igt_output_set_crtc(data->output,
+-						    crtc);
+-				if (!intel_pipe_output_combo_valid(&data->display))
+-					continue;
++					data->crtc = crtc;
++					igt_display_reset(&data->display);
+ 
+-				igt_dynamic_f("pipe-%s-%s",
+-							    igt_crtc_name(crtc),
+-							    data->output->name) {
+-					int valid_tests = 0;
++					igt_output_set_crtc(data->output, crtc);
++					if (!intel_pipe_output_combo_valid(&data->display))
++						continue;
+ 
+-					if (data->flags == TEST_RANDOM)
+-						igt_info("Testing with seed %d\n", data->seed);
++					igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc), data->output->name) {
++						int valid_tests = 0;
+ 
+-					if (data->flags & TEST_ALL_PLANES) {
+-						igt_display_require_output_on_crtc(crtc);
++						if (data->flags == TEST_RANDOM)
++							igt_info("Testing with seed %d\n", data->seed);
+ 
+-						for_each_plane_on_crtc(crtc,
+-								       data->plane) {
+-							if (skip_plane(data, data->plane))
+-								continue;
++						if (data->flags & TEST_ALL_PLANES) {
++							igt_display_require_output_on_crtc(crtc);
+ 
++							for_each_plane_on_crtc(crtc, data->plane) {
++								if (skip_plane(data, data->plane))
++									continue;
 +
-+		if (data->suspend_resume)
-+			data->available_pipes[hw_pipe] = true;
- 
- 		if (last_pipe < hw_pipe)
- 			last_pipe = hw_pipe;
-@@ -310,6 +312,9 @@ static bool set_available_hw_pipes(data_t *data)
- 	if (first_pipe == IGT_MAX_PIPES || last_pipe == PIPE_NONE)
- 	        return false;
- 
-+	data->available_pipes[first_pipe] = true;
-+	data->available_pipes[last_pipe] = true;
-+
- 	return true;
- }
- 
-@@ -1227,8 +1232,8 @@ int igt_main()
- 
- 	igt_describe("Verify the async flip functionality after suspend and resume cycle");
- 	igt_subtest_with_dynamic("async-flip-suspend-resume") {
--		test_init_ops(&data);
- 		data.suspend_resume = true;
-+		test_init_ops(&data);
- 		run_test(&data, test_async_flip);
- 		data.suspend_resume = false;
- 	}
++								for (int j = 0; j < ARRAY_SIZE(formats); j++) {
++									data->format = formats[j];
++									valid_tests += test_ccs(data);
++								}
++							}
++						} else {
+ 							for (int j = 0; j < ARRAY_SIZE(formats); j++) {
+ 								data->format = formats[j];
+ 								valid_tests += test_ccs(data);
+ 							}
+ 						}
+-					} else {
+-						for (int j = 0; j < ARRAY_SIZE(formats); j++) {
+-							data->format = formats[j];
+-							valid_tests += test_ccs(data);
+-						}
++						igt_require_f(valid_tests > 0,
++							      "no valid tests for %s on pipe %s\n",
++							      ccs_modifiers[i].str,
++							      igt_crtc_name(crtc));
+ 					}
+-					igt_require_f(valid_tests > 0,
+-						      "no valid tests for %s on pipe %s\n",
+-						      ccs_modifiers[i].str,
+-						      igt_crtc_name(crtc));
+ 				}
+ 			}
+ 		}
 -- 
 2.45.2
 
