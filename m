@@ -4,27 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90076CC6B03
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 11:39:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9593ECC6B03
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 13:23:58 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4311110E1E9;
-	Tue, 13 Oct 2026 11:39:51 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 89B0110E1E9;
- Tue, 13 Oct 2026 11:39:02 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4540038125121997737=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4261D10E83B;
+	Tue, 13 Oct 2026 13:23:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5CCDB10E0AA
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 13:22:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1791897779; x=1823433779;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=/JSBxBQwmKiu9mXyE0Qk02MKactJFJ2/Jm3sSsOZ1JI=;
+ b=Fzkmzhmnvtu0D/mmZKhFqY3G3e+YqgJsl1GR757pZLF013jfYm6pEq7k
+ 0DeADdsLAN9FGv54Tnqlg9CdlXS3rUgPvq66zokQlxxC/OD1QCuhF9ETz
+ 0HXoKtvd1lC6qx7s/4Yv3EUsGFKjXSVEyatZHRZX5p19jdZToPp+jFtgt
+ IZyAdeqMxoDKDXA3E3LTQs2B3vO6THdFIo4tRziNbfjjWcbcEgZtgKg4E
+ WyGT0Wsx94z+q/14HUvqvyEs42ojh2IcltuL8pyhGO7VKFaYvpne6o9DT
+ 71OABQAMK4zx0iVL6Kc6QwnUiQ8QODFJZwBiVaQh7yLZemFbaIvrsGIrZ w==;
+X-CSE-ConnectionGUID: F0r69corTY6Zt964rfY3PA==
+X-CSE-MsgGUID: /9Fx43XjQAKcRL4aOzYLHA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="495861"
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="495861"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2026 06:22:59 -0700
+X-CSE-ConnectionGUID: sa0kNVIiRo6tlQQyXubqJw==
+X-CSE-MsgGUID: tKMf6Ps8SZ2DRqyl0L1TGw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
+   d="scan'208";a="2935863"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2026 06:22:56 -0700
+Date: Tue, 13 Oct 2026 15:22:37 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: igt-dev@lists.freedesktop.org, Nishit Sharma <nishit.sharma@intel.com>
+Subject: Re: [PATCH v2 2/4] tests/intel/xe_wedged: Fix wedged dmesg ignore
+ regex
+Message-ID: <20261013132237.hlpandogbha3tjbw@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Shuicheng Lin <shuicheng.lin@intel.com>,
+ igt-dev@lists.freedesktop.org,
+ Nishit Sharma <nishit.sharma@intel.com>
+References: <20261009002912.1391610-1-shuicheng.lin@intel.com>
+ <20261009002912.1391610-3-shuicheng.lin@intel.com>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fvm=3A_Vali?=
- =?utf-8?q?date_host_memory_for_overcommit_tests_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sobin Thomas" <sobin.thomas@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 13 Oct 2026 11:39:02 -0000
-Message-ID: <179189154255.17616.15655548089451429256@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261013073532.2885788-1-sobin.thomas@intel.com>
-In-Reply-To: <20261013073532.2885788-1-sobin.thomas@intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261009002912.1391610-3-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,106 +69,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============4540038125121997737==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Shuicheng,
+On 2026-10-09 at 00:29:10 +0000, Shuicheng Lin wrote:
+> The kernel now reports the failed GT reset and the device wedge through
+> SIGID-based logging:
+> 
+>   SIGID=106 FATAL (-ECANCELED) Tile0: GT0: GT: reset failed
+>   SIGID=102 FATAL (-EIO) WEDGED: Device declared wedged!
+> 
+> which the existing "reset failed .-ECANCELED" and "declared device ...
+> as wedged" patterns no longer match, so these expected errors are
+> reported as dmesg-warn. Add patterns for the new messages.
+> 
+> Also fix the CAT error pattern, which never matched. The kernel reports
+> it as either of:
+> 
+>   Tile0: GT0: Engine memory CAT error [3]: class=rcs, logical_mask: 0x1, guc_id=2
+>   Tile0: GT0: Engine memory CAT error: class=ccs, logical_mask: 0x1, guc_id=5
+> 
+> The pattern only covered the first form, lacked the space before
+> "class=", and used "\[", which igt_emit_ignore_dmesg_regex() passes to
+> igt_runner through /dev/kmsg as "\x5c[" so it no longer matches a
+> literal '['. Match only up to "Engine memory CAT error", which covers
+> both forms. These lines are logged at info level, so this does not
+> change the test result today.
+> 
+> v2: Simplify the SIGID patterns, match only the start of the CAT error
+>     and add example lines (Kamil)
+> 
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Nishit Sharma <nishit.sharma@intel.com>
+> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
-== Series Details ==
+Regards,
+Kamil
 
-Series: tests/intel/xe_vm: Validate host memory for overcommit tests (rev3)
-URL   : https://patchwork.freedesktop.org/series/174990/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from XEIGT_9141_BAT -> XEIGTPW_15976_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9141 -> IGTPW_15976
-
-  IGTPW_15976: e0d841505e9dee343a6901fc76bb47a3b83f4909 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9141: 272395cfec06bd5809c9b9c0a17a32f34c48799c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5936-882b0f966d25236f00d6ec0c349f7948d2ed1376: 882b0f966d25236f00d6ec0c349f7948d2ed1376
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15976/index.html
-
---===============4540038125121997737==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_vm: Validate host memory for overcommit tests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/174990/">https://patchwork.freedesktop.org/series/174990/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15976/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15976/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9141_BAT -&gt; XEIGTPW_15976_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9141 -&gt; IGTPW_15976</li>
-</ul>
-<p>IGTPW_15976: e0d841505e9dee343a6901fc76bb47a3b83f4909 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9141: 272395cfec06bd5809c9b9c0a17a32f34c48799c @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5936-882b0f966d25236f00d6ec0c349f7948d2ed1376: 882b0f966d25236f00d6ec0c349f7948d2ed1376</p>
-
-</body>
-</html>
-
---===============4540038125121997737==--
+> ---
+>  tests/intel/xe_wedged.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
+> index 8c3c8bd36..4f5197e2a 100644
+> --- a/tests/intel/xe_wedged.c
+> +++ b/tests/intel/xe_wedged.c
+> @@ -41,6 +41,10 @@ static void ignore_wedged_in_dmesg(void)
+>  				    "|GT[0-9A-Fa-f]*: Failed to submit"
+>  				    "|Modules linked in:"
+>  				    "|__pfx___drm_"
+> +				    /* SIGID-based logging (newer kernels) */
+> +				    "|-ECANCELED.* GT: reset failed"
+> +				    "|-EIO. WEDGED: Device declared wedged"
+> +				    "|IOCTLs and executions are now blocked"
+>  				    "|Tile[0-9]+: GT[0-9A-Fa-f]*:$"
+>  				    "|ASID: [0-9]+"
+>  				    "|Faulted Address: 0x[0-9A-Fa-f]+"
+> @@ -50,8 +54,7 @@ static void ignore_wedged_in_dmesg(void)
+>  				    "|EngineClass: [0-9]+ [a-z]+"
+>  				    "|EngineInstance: [0-9]+"
+>  				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Fault response: Unsuccessful -EINVAL"
+> -				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error \\[[0-9]+\\]:"
+> -				    "class=[a-z]+, logical_mask: 0x[0-9A-Fa-f]+, guc_id=[0-9]+");
+> +				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error");
+>  }
+>  
+>  static void force_wedged(int fd)
+> -- 
+> 2.43.0
+> 
