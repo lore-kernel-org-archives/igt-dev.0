@@ -4,155 +4,156 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC39ECC6B03
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 05:32:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D10ACC6B09
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 05:33:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5BC3D10E073;
-	Tue, 13 Oct 2026 05:32:28 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F1CDA10E073
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 05:31:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D426F10E726;
+	Tue, 13 Oct 2026 05:33:15 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ABA7010E073
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 05:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791869497; x=1823405497;
+ t=1791869532; x=1823405532;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=D38Sb4Jeu/igzX6IVd95Wx+LI4gmwluE7H12Bvj113Y=;
- b=nvusDf6iFuK2p6wpHwPYBvKnkkTf6Hw3ddR1nO67L0aW5IKilc8sIYyl
- Rl5/YDc/8L9sKoUKNj63098rS9z2w/xBoVS8cUDoYL4lv+CzJuPkg4kYz
- oaJVrRKanRUJkkBqUfVF7J+BAXqaWX4LAD/ppHrC49fovS/dz+QBivy8K
- f2ucIY9UJgoVQVNr5VyGSh8guqslwT+I1vvvsjCGln2akKA91Exy/xF0C
- BeuOckVK8xnPGeS4YzNzHkoKt67w7PMDBaVnA9KP9oySrVPPKzi20AI+U
- ZZpf8AetvAu6XQTzWfEfpr7LV6poUpDAm4YPkz08oEwCOSiusDmMxAzS7 w==;
-X-CSE-ConnectionGUID: 1tlERjohQaaz2SzCSKm7Kw==
-X-CSE-MsgGUID: 9Wmh6PAuQuK5b0QRQMyByg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="575007"
+ bh=RURBIxBMhTGacSMcNEzaYtIUhYiDGcaBWTOWnKNLLh4=;
+ b=VPKc3s0DjKeg1NmzzSPDiPv5q0/vgWofMU4/Ey4iuZAuIPbkwZXcD+Ik
+ wpmWUOPC9VM9UbUq/mZBq17npFIpX741yvxirZGDnwqvv2E5b4Rm0WvBj
+ 0ljZaJ/QrrYoy0TNGicrsDJamzlyNrANQAN6Ut46tWnN446J74OaramNu
+ /7gBkFDlzxqBrUC8CRv+3n8sUGeaeqvUAoaCoTIQMjJDAKuBUUCLuiwAH
+ Bkte1o15TiMMzz8CuN826sNwCVFW7Dsy7ZmdvTn+0TTFvp1x/FNxP0Fur
+ 38SaqYjhyvhEpawalbKr+JuVhj9kRgUPt/q4AiTqLcZUT2CIw17A1wm8I w==;
+X-CSE-ConnectionGUID: Qe+3X/bdR+CepcShYgNrwg==
+X-CSE-MsgGUID: j7ZAf2CPRgyDg3gXy2AEmg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="464905"
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="575007"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Oct 2026 22:31:36 -0700
-X-CSE-ConnectionGUID: kmxWbP4UR36ob4E0FPAZiA==
-X-CSE-MsgGUID: c/IhV/T9TpCiPK3Mv5woAw==
+   d="scan'208";a="464905"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Oct 2026 22:32:12 -0700
+X-CSE-ConnectionGUID: vifVBv5FTn2NQYzeshrUGg==
+X-CSE-MsgGUID: rS8U2Vx4RKyibRT92O9slg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="2850946"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa012.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 12 Oct 2026 22:31:35 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+   d="scan'208";a="972126"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 12 Oct 2026 22:32:13 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 12 Oct 2026 22:31:34 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.49; Mon, 12 Oct 2026 22:32:11 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 12 Oct 2026 22:31:34 -0700
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.31) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ 15.2.2562.49 via Frontend Transport; Mon, 12 Oct 2026 22:32:11 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.52) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 12 Oct 2026 22:31:34 -0700
+ 15.2.2562.49; Mon, 12 Oct 2026 22:32:11 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fvOfxS/w2XQImjWlHl2XDy7dLr9T+U3ygDf+PaNKbqd+xAyFmIJgLZvwu1nRQ0T+iKaelbXyXYh69XnmOy2LxHubKEuaH5TiwQIJfJzAS39anxOkVs3P+nLJvDckAjSIM7dlJ1ORrjGAOO64aPpBmkHnrKgoNpSZXbXP+E4t7aD69P5VvImY1hW4v3HMZ+AZwaXMZauLAGqLxKF37vd51N9R/9RX7juBY8uQ0TBmvKqZCAnjNrzk7Wh+rPPerKwBErkYQ7Cp5YO0CCs6HchXyH1sqIRVKqNZK7y8V1xtG2ibepc5gxbyhzgdXRKkrbvs3kAL8A6uHdZB3i1/D0cWFg==
+ b=KDipaWiu3/XhOy7yZvXz1w/unX8dvBc8w+UIdlKCrteXtSRCqzUQ+hM0t2aXulyzzhl++ur2j5oSftbYVe9euKGvxaH/V1n8nGoqA5J5+qq9Gnlhu0FSaehP3mc/Z5FYts5KliGO159D/uG15Z4WPaXXxOFe+dra4ESAcK6DntNPKW3ciWMvnOqC1xLl+6/3g9fZTcYiJWstJHCBCZmpnfu1pIxVRq/yI9Rz0zf7w699mc/bvT19IviIVIHBHhiO7MrtX0CTapgPoufbMAyZ8rR2AmJe81Yv4PYmKy53tQdDzvFTTaFLDAES0MHwRIjUrgJsB2QzJznt1IAktfqVPg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jRbkPfSXz9BfqkgmmzxmXulGPKD4lFpX76mYqxH6AAA=;
- b=jhhDEBFBY36h/KXP3gvwnZS3Hl8+AGPZrN58CgLGCDbYsHwrXm6rOoCXT2Lnqfd9/Qrt06nC2HdaDarihYZAJEgTBeMx9PVHBx/qG7GOdJDpBXsT/taPSjkQUqPi8t5XiqiqQcmrFv0j4d4+pc/DnTh6nekbMFZVPnZ1s2fY8/lW+XUK3biM0XrGjvjpWtxOUsIKj9MBFsy89tF4q9Tg6up4RPnBmHlPXrkStjVzRwDbb+9ZQvMWNG+KJWq/N+Xs4Vru9x8UOEHp98nz7qvORHfk6JuSPxq5Mtsf5fcwftX9pbq3WW/QAKysH330caDnCQas8HgSVl7yWZBVJH5U7Q==
+ bh=TCj+/tizhFehWzCvWDkF4R0uMBDli/AVGrztLcEU3IE=;
+ b=fwBcjP3RAWTeNsKVk0SnkdV1BcPqO6SzhrVvJr1jtOlC+XGl/cT3JrVakVEyJkSaTtiAyvPw4Zyu1scLDqH2aHYd/6EEEgeLzLUpoKoLzkxdmKwXj1KpO5M3ztcpegVNP6oouyep2vy3MPd3Wwu89HTm1ZSzZ+DWhzqD5LEENrXAAV7JHGs/p36Xgq+v2rZZ3AhaW7ow8zZ7o3efdRUM5OVcqLWc4xSBrNtyvAg5HJ6cLqj8pDop/T4nD1XUNESwSm6/aC3TC+hK5RQy2TMmW2pWcdOGgzREIVWpNpbp/5WmPbUMV3PhTFJ2SpQ4Z1+X+KOmCoOBlB37KO+Gk4Y4Ag==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS6PR11MB335692.namprd11.prod.outlook.com (2603:10b6:8:4c5::21)
- by MW3PR11MB4523.namprd11.prod.outlook.com (2603:10b6:303:5b::16)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.21; Tue, 13 Oct
- 2026 05:31:32 +0000
-Received: from DS6PR11MB335692.namprd11.prod.outlook.com
- ([fe80::78a1:490b:60e4:6d57]) by DS6PR11MB335692.namprd11.prod.outlook.com
- ([fe80::78a1:490b:60e4:6d57%5]) with mapi id 15.21.0496.021; Tue, 13 Oct 2026
- 05:31:32 +0000
-Message-ID: <670491b1-0f6e-4f2a-87b4-6144da4d257a@intel.com>
-Date: Tue, 13 Oct 2026 11:01:25 +0530
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
+ DS4PPF691668CDD.namprd11.prod.outlook.com (2603:10b6:f:fc02::2a) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Tue, 13 Oct
+ 2026 05:32:09 +0000
+Received: from DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
+ ([fe80::8cb2:cffc:b684:9a99%5]) with mapi id 15.21.0472.016; Tue, 13 Oct 2026
+ 05:32:08 +0000
+Message-ID: <bd9fb870-486c-49f4-a992-c45e56d43f74@intel.com>
+Date: Tue, 13 Oct 2026 11:02:00 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] tests/intel/xe_vm: Validate host memory for
- overcommit tests
-To: "Sharma, Nishit" <nishit.sharma@intel.com>, <igt-dev@lists.freedesktop.org>
-CC: <kamil.konieczny@intel.com>
-References: <20261010134809.2844905-1-sobin.thomas@intel.com>
- <fcbf40ff-fc1c-4fa3-8c8e-414614ef95f2@intel.com>
+Subject: Re: [PATCH i-g-t v6] tests/intel/xe_ras: Add test for GPU health
+ indicator
+To: Soham Purkait <soham.purkait@intel.com>, <igt-dev@lists.freedesktop.org>, 
+ <badal.nilawar@intel.com>, <kamil.konieczny@intel.com>,
+ <sk.anirban@intel.com>, <raag.jadav@intel.com>
+CC: <anshuman.gupta@intel.com>
+References: <20261005174702.2574483-2-soham.purkait@intel.com>
 Content-Language: en-US
-From: "Thomas, Sobin" <sobin.thomas@intel.com>
-In-Reply-To: <fcbf40ff-fc1c-4fa3-8c8e-414614ef95f2@intel.com>
+From: "Tauro, Riana" <riana.tauro@intel.com>
+In-Reply-To: <20261005174702.2574483-2-soham.purkait@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA0PR01CA0044.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:81::17) To DS6PR11MB335692.namprd11.prod.outlook.com
- (2603:10b6:8:4c5::21)
+X-ClientProxiedBy: MA5P287CA0168.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ba::10) To DS0PR11MB7958.namprd11.prod.outlook.com
+ (2603:10b6:8:f9::19)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS6PR11MB335692:EE_|MW3PR11MB4523:EE_
-X-MS-Office365-Filtering-Correlation-Id: 435cab49-14db-4de1-3cc9-08df28eb3d28
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|DS4PPF691668CDD:EE_
+X-MS-Office365-Filtering-Correlation-Id: d4a9f2e3-9e59-4b49-3bb6-08df28eb52e4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|1800799024|366016|376014|260925021911599003|260925021311599003|260925022911599003|10067099003|261009223027099003|4143699003|11063799006|5023799004|6133799003|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info: d33t8flEDUgPAaHfCFCQuIEieo5qoPAoY4sEuZV8Irmb2OxLYGO2QL+edOmd+WUd2oycf/gM1/8jl4/0qn0kElkWejkGGaPcLCfbOvbjfYE9+ZXiFn1/Q0Z+GQHGQThbV29C8qlSoeMKdRspQdk5HNlkr80cCZF4zaVkoPLYUaA7L2EOKKzkzH8ZCRi/kaUepxjZu46Qr7vFkDLxW+vTQ3twbnUVsq3XhCgPscA2q+7xVumSeHm4Jpf136iavja6wJ+Hm4qHe7HmBZat+SKNDRNHsMgQ2QRmzwlL9etsx0bdcrJJ8/6jSDCB/bpHq+v7YB9uyxU33v4O6d88cOEiO80c/h66EvsRmlrZz5j6SFA3tYUPZRt2yN6t5GJ5Gs2dfNZR/BlT1AmTo9+fCzTfiDtah5TKZAJxus9GRI5UtPwWTRwPzW0LZrMy0oIKnXdl/Y/69jdxK49QOmgr+u4zrjju2OoD8iDxvz5RN2np1fiO/v6QUi/oZ83HTIMrnEB8IhG9xhIFIt3YfTtffmzssCJ08dmUidCz7qqqGXn9is3Y9VKwBjR6j5QuWvXKW4HXIcBvDvHhO1nehnLbuZSMC12QjTuyYHZAQfOKM6Hieqq/vCr0403lUAN8wC0F/3OCHrGBSFQ74VhPzhxfohwyVi3kWj8E/6NPbjOvFcqcMv4=
+ ARA:13230040|376014|366016|1800799024|23010399003|56012099006|11063799006|261009223027099003|10067099003|22082099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info: 6EZQIs0eziv5/L4gjJEn1X6k1ALNvm5boPM5TaYRgEvzZxtruo8u8O3jKTAmD6jLstL4R7je3HnjZ/MIMp6ycYLuNdDyHJxWOY7yMtS+dq2q7HJiItQ3LBZt6MCXqaWLzLLaVqejg/KpWk6Ctyr1hcssM7uPc7uw3NKYASvarujgdGaOC2e+Wn97zjzMNRZWyg6haEcGxq96YiVJCG3ALBxEiMiJ4QhhpgC4VIPEhIOSak86GNRRBWZmB8VbUGlTnq2K/YkKaDT+7IFA1nUHDYHb6+Awtq33BPG7ox8DuR9IYPomHhreA2zcRlr+ugZ1s/qc8IwDbpH4UM5gPOmlHiOgLH6dTOOwOPEMgS72po/yngUZsv8mPWnohzcdC1PJO7lercYuUrRZigDv8wp2AP6/xHSWG1wzRJ2khNXvp88M9CCemYPvzYqn4DXlRGDoBvd6VYnK/g50Pfe6BNDkstP/3wtQhkl32wRzOjZHwrLNViDYU+zcno4onGUrU8nID922R4vwVDShqfD5TkpIygjPh+ugUNKzgSYkZU2dcbZ0hKmgnbdj212Dwp9lm3ArTk/zSNIzp5aJ3dU8J+c/pK25SjuYEP/+qMJ7NOJ2YxXpfpk0Dp5doCUnSmV/rqR64DO57bX9vrxWnbkIn+6drJ2VdVRwvbsxoiL8fZhmglY=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS6PR11MB335692.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(260925021911599003)(260925021311599003)(260925022911599003)(10067099003)(261009223027099003)(4143699003)(11063799006)(5023799004)(6133799003)(22082099003)(18002099003)(56012099006);
+ IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(56012099006)(11063799006)(261009223027099003)(10067099003)(22082099003)(18002099003)(6133799003)(3023799007);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YTZvM0lFdzREMkdJOVBYZFpwYm51bWxWK0VtK0pTWWxTSENkT01Hd0tpMmhw?=
- =?utf-8?B?U3k2NHl5SFlpYnJUVXJJUjJvWGsreWNCTDA3ajdEMHJFYy9rblNUdXJNYXdn?=
- =?utf-8?B?d3o0OXBpUWlQcTE5SGRnanIvbEZ1T0hiMnNYTlRWcFZwaGdaZ0hrT0I1cGVo?=
- =?utf-8?B?S3dIQkNBMGtVUnlNS0NDK2QyZDRtUklKR1RXWU1GSnVOem9wb2llNWcyWXFj?=
- =?utf-8?B?bW9DL28yWUJHNmlhcFBBUnhXaThYL21zT3ExZkxlenhQeExNdjBBRXBkU0F6?=
- =?utf-8?B?R1NVclBtUzlYbWhDdTJISWJjb2RpajRjRzI1dFNtODB5SnhtMmcxMHJYRUd1?=
- =?utf-8?B?OUovR0kzQWFvMmQvOEl4RkRPTWNrc1BYVXR4a1FZZmw4UkZibjl4T1dGVkJO?=
- =?utf-8?B?L0prTy9RL0JBRjlCZURQOUNTWHNrbWxOQW5WMGJqaExRWjd1UmgxRFdyMHZH?=
- =?utf-8?B?NEpQMDZwQWVuMG96eERqMjZheWY3NGx5MDhLUlNpd3pPVlNaM2NQK3FoRk9V?=
- =?utf-8?B?eVdYdkh2ay9VTG5Nc3NIQlY5ZjRCdmcxT1hrTFlEM2xvMUttS2dSR2JPSEJh?=
- =?utf-8?B?ZTZTOGtVVUowT252WElLMldNcVZPNG1pRFV0R1VBQ29obVFEUDBPOVBUdzAw?=
- =?utf-8?B?WVl3aG9id1FQeHJVK1FjRmdPa3h5U3J5bHNrMGFrblUwdktnTUl4bXhtZ1J5?=
- =?utf-8?B?Z3dYUkEvR0RaRlFtcEVqT3pURkxYSjNiV1l2TUx4TjZRb2F0WmVjNWhoMU5R?=
- =?utf-8?B?elRUM3lGOTl2bHJMbnZpNTNGanB0WkNZbi9XeE1kK05UUG5hU2FBekJQbkpG?=
- =?utf-8?B?ZTJLZngzL0RxYStkL0x4bnkwaEdTdUtQWlltclFGdGo0bWxGaDh1ekF6cm5V?=
- =?utf-8?B?R1pWMUkycU1LV1RZUENaclpaOVgvZXNuall4SWR0c24wSUtQTEc0bHBqblpX?=
- =?utf-8?B?RTl4RFErdmRyWGVYbWZNdUFMQTVoeldGWkRzcnFrV2pCdVdtMjBzY21kUWVE?=
- =?utf-8?B?SkI3enJNd3c3VDRoWGlEN3pQbXU0YXRYckUrSXpYL3gwUGVNSXNUbVRVZDNp?=
- =?utf-8?B?ZWNKbmliN1hoeDJaZWN3TjVveFZjQVZqaU9Kc0dpS05BN1ZROW81TmMxNWRJ?=
- =?utf-8?B?MVgzOWtZczA3V3I2SHIvZ3l2ZTZZd29IcWVBV0JmSlVZa2cwQWRLMXJVcjR5?=
- =?utf-8?B?aURlQkFJNGsxSG8zVTB3RXlVL08wT2NmSU1zdFF4dHdGY2NQSzFTM3JuRVd3?=
- =?utf-8?B?UnZGMXdXR0FFZ3NWMnN1ZzZ1NS9HUHZrWWYzNUJpN0J2SCtNcTQ0bTI1Ymp2?=
- =?utf-8?B?UXNuUVJEdUMxclREdmpublZsSHhMY2VpOVc4WGxsbFVDL0E1TFN6ZHl1djY1?=
- =?utf-8?B?QUNocitodUw4TEFwQ09WTkJEaVJrbnc5Y2orVWhjd2o2azdPVEwrS3MvTzF4?=
- =?utf-8?B?QW5DcUJqL3l4bmFneXdvemVySXJUamtQcWg5Zmp2N2IybU9oUHJqYkw2SGdi?=
- =?utf-8?B?ZTJoRGkzR01WNzNkR2ZMRlRoSStMMHd5K3FaR2d0MjJodGtOTDkrZXlJTFRx?=
- =?utf-8?B?MHpybU5WU2w4UFpVZEJPRTd5aFNwaGNTVkR3cmdLR0VvMGkwbm9aTmdYdVJm?=
- =?utf-8?B?WDAzVWdwZ25uOXFoRnBEWUtIaDkySjRnV2preDVvcXErSW93bEJmMlp2bmk4?=
- =?utf-8?B?UUxSVEdERDBEaGRGc2JwNzIyZ09hZHpmNDBMTUtyck5wcitEa21QeFMxcGJD?=
- =?utf-8?B?SjA3ejZPMEVyMWNqU3J0OTEzUjlNVCtrZTBSWVBXQmZpSmpKTEZQYWhiRDhR?=
- =?utf-8?B?a2VFeGc0RUpjMGoveWFReXhTbDMrM1kxVUVNWVVQU1FZNHorSGEvQTgvdmxp?=
- =?utf-8?B?akx1L0pLejVZZEZGWTBXTWlsdm9GVkszbFc4OFN2UmhiUDZWUExaU0IyOWlZ?=
- =?utf-8?B?NmpCcndSS2svYkM0RWpxUUMxVjlleWdYVnZ4aGxUUU1WZFAvS0VNS0NDSGZK?=
- =?utf-8?B?U0xhWnVuYytJeDR0QzAvRjNZVk9LOStoQ0V5WGk3Sit1SHIxQlZXQ25HYUto?=
- =?utf-8?B?RnZtMWpCb1Y4R0IzVGNHWTBVT2txK01Dc2lmckRwM2FZbEVaSEJuUmN5M2J4?=
- =?utf-8?B?NWdSM2JsQmh6TUxZTjB1YTlkcmNGUnh2TnNBeHNaTSs5amRRV05VMis0SW9I?=
- =?utf-8?B?SkdJLytIa3FQTjNpRkNBdWFzMlJzWUdYNnB5enpvOStDT1R3TnBnc1FwMTFC?=
- =?utf-8?B?VWN0eUFRbGFzb2tiS1F0MWxGNFAvRzQ3c1J1aHFMQkI0RUk5OHhXRHVrWWRQ?=
- =?utf-8?B?bkpLU1IxU001OWdDOWFnTXAvSkJLM1U0V0M2WFhOZXBpOHZPSTVrdz09?=
-X-Exchange-RoutingPolicyChecked: ncu1MRHzzuxcPEvpO9NPKFTKXX7p5Y/BneE5b+vppoVU23Xtdb4SqOU/BuU89gTXnWZImyjBSMahaydrjWLnyw0sv4gwdBxeEz3NPId3b597tcs5TG9Lz91S6szZpDVcsJvRiBPAEN3V+Q8xpYNOzyNNHCJSufGDgigdKrJ6hZKDf/iCjCtvqysdyMGEApvflFhScpEbHBzWMEDREeMgbyAOfncM579XFMYhV+WLwipaQT3vnCBTXXV1YG5grUrA3qAXfolUb0bdP7w5zktMgzkPB8r6UFOvH18FhEu3Ni5HRXuH3yu78VwhJfcSJIFoIrog6s+5ss14ATCSnk4mEQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 435cab49-14db-4de1-3cc9-08df28eb3d28
-X-MS-Exchange-CrossTenant-AuthSource: DS6PR11MB335692.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N0NyZXJ3REloa3QyaFM4WWY4WW9jZzUybEdGNnlWcjRCZzBiMDYrNmczYk15?=
+ =?utf-8?B?bHdZL3VrWDl5WG5tbmRYdE9XV3dNUWR2dWFuSm1JYWhBVGxPdG96NmUrY1hY?=
+ =?utf-8?B?UU1EbVNLQUpnUFNNZVVJQy92WmxOZlhiQ3pxQ040Z3VHUk9FTVJEdlgyR0hY?=
+ =?utf-8?B?ZytUeExiR0xpeXB1UVFYbGk3c01ObnFoNTJVZGNaYnp0ZXhNVmZaWXNMajRo?=
+ =?utf-8?B?ZFNqV3ZGaGV6M2ZLWHNnOUdVNkRqbC9Kd3BTV2RWb1hNYWpQNGE0TTcrMjIz?=
+ =?utf-8?B?Z3V5SVBzT1c2dVZPcUpzWDJRakhUWEdkcThGTDNUdnpOOFBWRzVDNVMyOVBv?=
+ =?utf-8?B?NWtkOFpyYThMSDB4UVErdWsxWTRoSGcxdEdlMytoQ213U2JFZnhpRU56WHYw?=
+ =?utf-8?B?bFdmdGNQL09GenRpVjIxTzQwbjAvWEtRaWpNRzhKbGFiYW5YWTFVcm40dUJh?=
+ =?utf-8?B?aGhsazBzSzgwdlY2Mkc0RHRxVHNRRXpHZkxWdWlDTXNuQmNDclRmUEFITnNi?=
+ =?utf-8?B?RlBNM0VoOGs5ZitNNVFSbkV6VWhOc2pqeWRIZ3U5TCtnWTFPRWtQNkdFdDEr?=
+ =?utf-8?B?a0tUc3l6dlpXOFZ1RzdQZE5iWHlXQkdSY0plUHZmWUNqT25KYjNid2ZqVlRG?=
+ =?utf-8?B?V21ScWhmQXp2UDdSV1ZFT2lFbEFLVlltQk9FYitybkJBak16MUhUQnZwTGtW?=
+ =?utf-8?B?VnJEYnExRStMTU01UmVYaXpDY3AyYkJNdmpGRnFjdlhQOEFHQjRVZDJEdk5T?=
+ =?utf-8?B?QzJLRndZckovTFhGSHp4SG54a1VKZXZJdmpMTmtIbHpickZuc1plRWhnYXA1?=
+ =?utf-8?B?QjFEYkFITVhlSXJ6TzZFYTYwY3g4YnRsWTNlaCtqL2VmaXlNaVBCNmRIYktj?=
+ =?utf-8?B?UXk5RTNuZGYvUnZIMXhrbkNhOU9kd1llbjJBYmlpcWd0WnhXSHRtQlplOTFR?=
+ =?utf-8?B?dk5mc0xwYzd6a2tTbmdLclNmb0VDeDhNRDJHOXlFYzJQVHI1ZThxRVQzbHNt?=
+ =?utf-8?B?NzJ3WHlvczZhL3ZXMVIwQ3ArblRleGJtWTlyTm1RblhzSHJIOER5MEF4NE1q?=
+ =?utf-8?B?SlUxbGtqR1VycW1tNkdZeEV1dnpKY1YzRklyMWtXSGplTUo1Vmd6ZVhtK243?=
+ =?utf-8?B?R25iUUxBeWhNanc1RGtBMW4yaDQ4VkRvN3VvR3I3ZndxNVNIcGZMZnZ2WG02?=
+ =?utf-8?B?MEI4OTVHekozaURnVmFZaXFLVHNTSW01M3RWRXpqY2RnWStNVEptL0cyd3JZ?=
+ =?utf-8?B?QVA4VjV6UlpFYXRaZ3B6eW5SK1hmaG1YSHBuYnREcURkaXRDTGMwM3hNcDBq?=
+ =?utf-8?B?TUkxWEM3RTB4ZkhFU1d3bEdmdFBZTW5vMU5lN09qSWZlM3hJMUcwdUhmMjcx?=
+ =?utf-8?B?Tjc1THRleTJTc2w4RDBUaS9Yc1MxREV2S2ZYbFJOU2FPdm1leG53KzJxRk45?=
+ =?utf-8?B?cVJVNzd2V29CM3ZSeUJMc0U4eGJBM2pCNlB2anpSOER2dDFlOEJiRUJYTVlK?=
+ =?utf-8?B?OVorbFNudUZxanZxaXlQNDN2Z3BCRS9mZVh2N3dOQXMxZ09aV2RGZURKRUc0?=
+ =?utf-8?B?L2U0TDE1aDFXZ1hMc3R1VWtsMlZaMmRlVXRhRnI4bmwxbm5vc3FsZExsZWVZ?=
+ =?utf-8?B?UmpOOXJJMnFIcFZ2Uk4wVXhSYUIvdzJRZWJWZ1VkdkpNZmxacUVCQjYwYnpq?=
+ =?utf-8?B?a1UrMmZMTXZUbFM2dlA1QXBFbm1OcUUwSklBL0p1TWhTVExWTkxOcjJDWkZR?=
+ =?utf-8?B?bHRSUDJINCt6OUM2aEIvcStOUk14VWtybVlsMFZMTUE3QWI5VmJCRU16ZUE5?=
+ =?utf-8?B?cVVpdkN3ZzZkTk1rZXMzdWFJNjZISGJ3MG00cU0waDdsQ2NlclVPOHpGYnJv?=
+ =?utf-8?B?VCszbUFhMkxHOXhPaFgvTWlSQnpySEJqdkxobU9BczBTWEZJTS9GOVJ1emJh?=
+ =?utf-8?B?L1hqTmw1Zi81b3k4WHlrUFI5U2kyamRaaVduRnVVQTBBYXlNc3dpYjdPSDRs?=
+ =?utf-8?B?R1F2N1Z4bkd4TFpRZXFxLzM0RWQ3TXFuZGdBeWJ6bFNnSk5TTHZuMWFKdXV0?=
+ =?utf-8?B?K3VnUzcxNlU5TmlMYTBLY0dsdWxBSzhiZmNQOEdBWHJ3WFVDMm9OVzdjazF4?=
+ =?utf-8?B?UDM2NXdDQzFNbkhqRTRUNmtMQ2ZyU1RrbGxoV0Q0YWhtOFVodEVTdFVaWUNo?=
+ =?utf-8?B?OGl4ZzRETWxSck11clhBMzFvS2pwNDFSWEFqZFI3TXJZeW4rQW90Y0o4U3lo?=
+ =?utf-8?B?dGdMUFM4bXJoWUhDditBa0JSUkxjcHgzL1pqNGdSMXVCNFBTYVBMNUpuZkhu?=
+ =?utf-8?B?YXRDM2o4N1g0SmVGZStPUDNwaFFxaFZXVldxc29WdGpVZVhYbWdyUT09?=
+X-Exchange-RoutingPolicyChecked: KNLtHnIYjPITOZZh30FnPnEiTTJRiDQz4ZYm5BPsqeavEQVclcFll31Q/v8fF49FiFjqE9EY/bIbQgQ5w3gDpHs6YeR+eCB3yB9QZN+xRqnP9JWgCmZ5Z4r1Q46rPxtzkDfabytOQ5XKNuoywagEAakcky552mothZ0ZD6FmilZCHTsvvLiLNxLHc0e0FpeSF0NfyLasIlxU2oep1f2NXQyKPwPDrp+t24XbgpPopFRo4UatrfW4lIzTtzploayCjKAQfARccbBhQPU8kNIYv0iQ1v9AaGILJGcJGFwdx8Bn3cc9Lio7rAs063fte51GlwaqGxRdD601xNpYL4PU5w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4a9f2e3-9e59-4b49-3bb6-08df28eb52e4
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 05:31:32.1616 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Oct 2026 05:32:08.6740 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Jj5Y9qT2HUWgmCSkDpqHJkWImNG9yxN+Y4Y9a8kI4hjxpGkxCUKNzJb4LoBzeIg9aNA3S7w0jbjFceOrUfkRcQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4523
+X-MS-Exchange-CrossTenant-UserPrincipalName: jTsLtMtXiM9FQZ7OvIhIWbUT47pCerVTyEDH1ET/U1gsrTTLi8ssk5A0ejVc2IknSI3QdqmZm/MtXNJagECyBQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF691668CDD
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -170,248 +171,211 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 
-On 10/12/2026 11:29 AM, Sharma, Nishit wrote:
+On 05-10-2026 23:17, Soham Purkait wrote:
+> Add a new Xe RAS test exercising the gpu_health sysfs attribute
+> exposed by the Xe driver on platforms that provide the system
+> controller. The attribute reports and allows updating the GPU
+> health state.
 >
-> On 10/10/2026 7:18 PM, Sobin Thomas wrote:
->> The amount of VRAM available for the overcommit tests varies
->> across platforms. As a result the host RAM space required to
->> support the overcommit workload also varies based on eviction.
->>
->> Query the platform RAM space and visible VRAM before running
->> overcommit tests. Limit the overcommit working set to 50% of
->> the currently available RAM.
->>
->> v2:
->> - Base host-memory requirement based on the run time budget
->> - Drop user_vram and SRAM Handling; all the cases are VRAM
->>
->> Signed-off-by: Sobin Thomas <sobin.thomas@intel.com>
->> ---
->>   tests/intel/xe_vm.c | 48 ++++++++++++++++++++++++++++-----------------
->>   1 file changed, 30 insertions(+), 18 deletions(-)
->>
->> diff --git a/tests/intel/xe_vm.c b/tests/intel/xe_vm.c
->> index 1d109e783..5598c8ae7 100644
->> --- a/tests/intel/xe_vm.c
->> +++ b/tests/intel/xe_vm.c
->> @@ -2385,10 +2385,10 @@ static void invalid_vm_id(int fd)
->>   }
->>     static enum overcommit_stage create_data_bos(int fd, uint32_t vm, 
->> uint32_t *bos, int num_bos,
->> -                         uint64_t nf_bo_size, bool use_vram, 
->> uint64_t data_addr,
->> +                         uint64_t nf_bo_size, uint64_t data_addr,
->>                            uint32_t bo_flags, int gt_id, int 
->> *num_bound_out)
->>   {
->> -    uint32_t placement = use_vram ? vram_memory(fd, gt_id) : 
->> system_memory(fd);
->> +    uint32_t placement = vram_memory(fd, gt_id);
-> Here if vram is not available (iGPU) it'll return 0 and bo creating, 
-> cpu_caching will be happening using 0 placement which is wrong. 
-> vram_if_possible(fd, gt_id) should be used.
+> The gpu-health subtest validates each valid state by writing it
+> and reading the value back, and checks that invalid writes are
+> rejected with -EINVAL, guarding against regressions.
+>
+> v1:
+>   - Add platform-conditional skip and exit handler. (Anirban)
+> v2:
+>   - Add dynamic subtests for each case. (Riana)
+> v3:
+>   - Add health state description.
+>   - Store original health state as an index instead of a char pointer. (Riana)
+>
+> Signed-off-by: Soham Purkait <soham.purkait@intel.com>
+> Reviewed-by: Sk Anirban <sk.anirban@intel.com>
+
+LGTM
+
+Reviewed-by: Riana Tauro <riana.tauro@intel.com>
 
 
-The overcommit subtests are VRAM-only: the caller has 
-igt_require(vram_size), so on iGPU
-the subtest skips before create_data_bos() is reached and placement 0
-is never used.
-
-
->>         *num_bound_out = 0;
->>   @@ -2497,7 +2497,6 @@ struct vm_overcommit_case {
->>       const char *name;
->>       uint32_t vm_flags;
->>       uint32_t bo_flags;
->> -    bool use_vram;
->>       uint64_t data_addr;
->>       int overcommit_mult;
->>       enum overcommit_stage expected_stage;
->> @@ -2510,7 +2509,6 @@ static const struct vm_overcommit_case 
->> overcommit_cases[] = {
->>           .vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE,
->>           .bo_flags = DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING |
->>                   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
->> -        .use_vram = true,
->>           .data_addr = 0x1a0000,
->>           .overcommit_mult = 2,
->>           .expected_stage = EXPECT_BIND,
->> @@ -2520,7 +2518,6 @@ static const struct vm_overcommit_case 
->> overcommit_cases[] = {
->>           .name = "vram-lr-external-nodefer",
->>           .vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE,
->>           .bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
->> -        .use_vram = true,
->>           .data_addr = 0x1a0000,
->>           .overcommit_mult = 2,
->>           .expected_stage = EXPECT_BIND,
->> @@ -2531,7 +2528,6 @@ static const struct vm_overcommit_case 
->> overcommit_cases[] = {
->>           .vm_flags = DRM_XE_VM_CREATE_FLAG_LR_MODE |
->>                   DRM_XE_VM_CREATE_FLAG_FAULT_MODE,
->>           .bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
->> -        .use_vram = true,
->>           .data_addr = 0x300000000,
->>           .overcommit_mult = 2,
->>           .expected_stage = EXPECT_NONE,
->> @@ -2541,7 +2537,6 @@ static const struct vm_overcommit_case 
->> overcommit_cases[] = {
->>           .name = "vram-no-lr",
->>           .vm_flags = 0,
->>           .bo_flags = DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
->> -        .use_vram = true,
->>           .data_addr = 0x300000000,
->>           .overcommit_mult = 2,
->>           .expected_stage = EXPECT_EXEC,
->> @@ -2553,7 +2548,6 @@ static const struct vm_overcommit_case 
->> overcommit_cases[] = {
->>                   DRM_XE_VM_CREATE_FLAG_FAULT_MODE,
->>           .bo_flags = DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING |
->>                   DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM,
->> -        .use_vram = true,
->>           .data_addr = 0x300000000,
->>           .overcommit_mult = 2,
->>           /*
->> @@ -2568,15 +2562,14 @@ static const struct vm_overcommit_case 
->> overcommit_cases[] = {
->>     static void
->>   test_vm_overcommit(int fd, struct drm_xe_engine_class_instance *eci,
->> -           const struct vm_overcommit_case *c,
->> -           uint64_t system_size, uint64_t vram_size)
->> +           const struct vm_overcommit_case *c, uint64_t vram_size)
->>   {
->>       uint32_t vm = 0, *bos, batch_bo = 0, exec_queue = 0, 
->> bind_exec_queue = 0;
->>       uint64_t sync_addr = 0x1000000000, batch_addr = 0x200000000;
->>       int i, num_bos, num_bound = 0, bind_err, create_ret, wait_ret;
->>       size_t sync_size, nf_bo_size = 64 * 1024 * 1024;
->>       enum overcommit_stage actual_stage = EXPECT_NONE;
->> -    uint64_t stride = 1024 * 1024, base_size;
->> +    uint64_t stride = 1024 * 1024;
->>       uint64_t overcommit_size, off, data_addr;
->>       int64_t timeout = 20 * NSEC_PER_SEC;
->>       struct drm_xe_sync bind_sync[1] = {
->> @@ -2607,10 +2600,15 @@ test_vm_overcommit(int fd, struct 
->> drm_xe_engine_class_instance *eci,
->>       uint64_t *user_fence_sync = NULL;
->>         data_addr = c->data_addr;
->> -    base_size = c->use_vram ? vram_size : system_size;
->> -    overcommit_size = ALIGN((uint64_t)(base_size * 
->> c->overcommit_mult), 4096);
->> +    overcommit_size = ALIGN((uint64_t)(vram_size * 
->> c->overcommit_mult), 4096);
->>         num_bos = (overcommit_size / nf_bo_size) + 1;
->> +    igt_debug("Overcommit sizing: case=%s multiplier=%d "
->> +          "vram_size=%" PRIu64
->> +          " MiB overcommit_size=%" PRIu64 " MiB "
->> +          "bo_size=%" PRIu64 " MiB num_bos=%d\n",
->> +          c->name, c->overcommit_mult, vram_size >> 20,
->> +          overcommit_size >> 20, nf_bo_size >> 20, num_bos);
->>       bos = calloc(num_bos, sizeof(*bos));
->>       igt_assert(bos);
->>   @@ -2632,8 +2630,10 @@ test_vm_overcommit(int fd, struct 
->> drm_xe_engine_class_instance *eci,
->>       exec_sync->addr = to_user_pointer(&user_fence_sync[0]);
->>         /* Create and bind data BOs */
->> -    actual_stage = create_data_bos(fd, vm, bos, num_bos, nf_bo_size, 
->> c->use_vram, data_addr,
->> +    actual_stage = create_data_bos(fd, vm, bos, num_bos, nf_bo_size, 
->> data_addr,
->>                          c->bo_flags, eci->gt_id, &num_bound);
->> +    igt_debug("Overcommit BO creation: case=%s actual_stage=%d 
->> num_bound=%d/%d\n",
->> +          c->name, actual_stage, num_bound, num_bos);
->>       /*
->>        * On EXPECT_CREATE nothing was bound so bail out entirely.
->>        * On EXPECT_BIND with no BOs bound there is nothing to execute 
->> either.
->> @@ -3499,10 +3499,22 @@ int igt_main()
->>           const char *mode = (c->vm_flags & 
->> DRM_XE_VM_CREATE_FLAG_FAULT_MODE) ?
->>                       "fault" : "nonfault";
->>           igt_subtest_f("overcommit-%s-%s", mode, c->name) {
->> -            igt_require(xe_has_vram(fd));
->> -            igt_require(xe_visible_vram_size(fd, 0));
->> -            test_vm_overcommit(fd, hwe_non_copy, c, 
->> (igt_get_avail_ram_mb() << 20),
->> -                       xe_visible_vram_size(fd, 0));
->> +            uint64_t vram_mb = xe_visible_vram_size(fd, 0) >> 20;
+> ---
+>   tests/intel/xe_ras.c | 158 +++++++++++++++++++++++++++++++++++++++++++
+>   tests/meson.build    |   1 +
+>   2 files changed, 159 insertions(+)
+>   create mode 100644 tests/intel/xe_ras.c
 >
-> VRAM-size query repeated. Called here and below in 
-> test_vm_overcommit(). use something like
->
-> uint64_t vram_size = xe_visible_vram_size(fd, 0);
->
-> uint64_t vram_mb = vram_size >> 20;
->
-Done. The visible VRAM size is now queried once in the subtest:
-
-     vram_size = xe_visible_vram_size(fd, 0);
-     igt_require(vram_size);
-     vram_mb = vram_size >> 20;
-
-The cached value feeds overcommit_size, num_bos and required_mb.
-test_vm_overcommit() no longer takes or re-queries the VRAM size;
-
-it only receives num_bos.
-
-
->
->> +            uint64_t avail_ram_mb = igt_get_avail_ram_mb();
->> +            uint64_t ram_mb = igt_get_total_ram_mb();
->> +            uint64_t required_mb = 0, budget_mb = 0;
->> +
->> +            igt_require(vram_mb);
->> +            igt_debug("Overcommit sizing: case=%s multi=%d ram=%" 
->> PRIu64 " MiB\n",
->> +                  c->name, c->overcommit_mult, ram_mb);
->> +            igt_debug("Overcommit sizing: mode=%s avail_ram=%" 
->> PRIu64 "MiB vram=%" PRIu64 "MiB\n",
->> +                  mode, avail_ram_mb, vram_mb);
->> +
->> +            required_mb = ALIGN(vram_mb * (c->overcommit_mult - 1), 
->> 64) + 64;
->> +            igt_require_f(required_mb <= avail_ram_mb * 50 / 100,
->> +                      "Overcommit needs %" PRIu64 " MiB, over 50%% 
->> of RAM + swap %" PRIu64 " MiB)\n",
->> +                       required_mb, avail_ram_mb);
->> +            test_vm_overcommit(fd, hwe_non_copy, c, 
->> xe_visible_vram_size(fd, 0));
->
-> Target and BO count were being recomputed. It can be calculate BO 
-> count and Target once and pass them as argument in test_vm_overcommit. 
-> Something like
->
-> uint64_t overcommit_size, bo_size_count, require_MB; --> randomly used 
-> these variable names, change them
->
-> int number_bo;
->
-> #define OVERCOMMIT_BO_SIZE (64 * 1024 * 1024)
->
-> overcommit_size = ALIGN(vram_size * c->overcommit_mult, 4096);
->
-> number_bo = (overcommit_size / OVERCOMMIT_BO_SIZE) + 1;
->
-> total_bo_size = (uint64_t)number_bo * OVERCOMMIT_BO_SIZE;
->
-> igt_assert(total_bo_size, vram_size);
->
-> required_mb = ALIGN((total_bo_size - vram_size + ((1ull << 20) - 1)) 
-> >> 20, 64) + 64;
->
-> test_vm_overcommit(fd, hwe_non_copy, c, vram_size, overcommit_size, 
-> number_bos);
->
-> overcommit_size and BO count computation can be removed from called 
-> function
->
->>           }
->>       }
-
-
-Done. The target size and BO count are now computed once in the
-subtest and test_vm_overcommit() no longer recomputes them:
-
-
-
+> diff --git a/tests/intel/xe_ras.c b/tests/intel/xe_ras.c
+> new file mode 100644
+> index 000000000..c98a10f00
+> --- /dev/null
+> +++ b/tests/intel/xe_ras.c
+> @@ -0,0 +1,158 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
+> +
+> +#include <errno.h>
+> +#include <string.h>
+> +#include <unistd.h>
+> +
+> +#include "igt.h"
+> +#include "igt_sysfs.h"
+> +
+> +/**
+> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) functionality
+> + * Category: Core
+> + * Mega feature: RAS
+> + * Sub-category: RAS tests
+> + * Functionality: ras
+> + * Test category: Functional tests
+> + *
+> + * SUBTEST: gpu-health
+> + * Description: Verify the gpu_health sysfs attribute accepts each valid state
+> + *		and rejects invalid writes with -EINVAL.
+> + *		The valid states are:
+> + *		ok	 - The gpu is healthy and operating within normal
+> + *			   parameters.
+> + *		warning	 - The gpu is experiencing minor issues but remains
+> + *			   operational.
+> + *		critical - The gpu is in a critical state and may not be
+> + *			   operational.
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Tests for Xe RAS");
+> +
+> +#define GPU_HEALTH_ATTR	"device/gpu_health"
+> +
+> +static const char * const gpu_health_states[] = {
+> +	"ok",
+> +	"warning",
+> +	"critical",
+> +	"invalid-input",
+> +};
+> +
+> +#define GPU_HEALTH_VALID_STATE_COUNT (ARRAY_SIZE(gpu_health_states) - 1)
+> +
+> +static struct {
+> +	int sys_fd;
+> +	int orig_health;
+> +} gpu_health_ctx = { .sys_fd = -1, .orig_health = -1 };
+> +
+> +static void restore_gpu_health(int sig)
+> +{
+> +	if (gpu_health_ctx.sys_fd < 0)
+> +		return;
+> +
+> +	if (gpu_health_ctx.orig_health >= 0) {
+> +		igt_sysfs_set(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR,
+> +			      gpu_health_states[gpu_health_ctx.orig_health]);
+> +		igt_info("Restored initial gpu_health to '%s'\n",
+> +			 gpu_health_states[gpu_health_ctx.orig_health]);
+> +		gpu_health_ctx.orig_health = -1;
+> +	}
+> +	close(gpu_health_ctx.sys_fd);
+> +	gpu_health_ctx.sys_fd = -1;
+> +}
+> +
+> +static bool valid_gpu_health(const char *s)
+> +{
+> +	int i;
+> +
+> +	if (!s)
+> +		return false;
+> +
+> +	for (i = 0; i < GPU_HEALTH_VALID_STATE_COUNT; i++)
+> +		if (!strcmp(s, gpu_health_states[i]))
+> +			return true;
+> +
+> +	return false;
+> +}
+> +
+> +static void setup_gpu_health(int xe)
+> +{
+> +	char *health;
+> +	int i;
+> +
+> +	gpu_health_ctx.sys_fd = igt_sysfs_open(xe);
+> +	igt_assert(gpu_health_ctx.sys_fd >= 0);
+> +
+> +	igt_skip_on_f(!igt_sysfs_has_attr(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR),
+> +		      "gpu_health sysfs attribute not exposed by driver\n");
+> +
+> +	health = igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
+> +	igt_assert_f(valid_gpu_health(health),
+> +		     "Unexpected initial gpu_health value: '%s'\n", health);
+> +
+> +	for (i = 0; i < GPU_HEALTH_VALID_STATE_COUNT; i++)
+> +		if (!strcmp(health, gpu_health_states[i]))
+> +			gpu_health_ctx.orig_health = i;
+> +
+> +	igt_info("Initial gpu_health: %s\n", health);
+> +	free(health);
+> +}
+> +
+> +static void test_gpu_health_state(const char *state)
+> +{
+> +	char *health;
+> +	int ret;
+> +
+> +	if (!valid_gpu_health(state)) {
+> +		ret = igt_sysfs_write(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR,
+> +				      state, strlen(state));
+> +		igt_assert_f(ret == -EINVAL,
+> +			     "Writing invalid value to %s returned %d, expected -EINVAL\n",
+> +			     GPU_HEALTH_ATTR, ret);
+> +		return;
+> +	}
+> +
+> +	igt_info("Setting gpu_health to '%s'\n", state);
+> +
+> +	igt_assert_f(igt_sysfs_set(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR, state),
+> +		     "Failed to write '%s' to %s\n",
+> +		     state, GPU_HEALTH_ATTR);
+> +
+> +	health = igt_sysfs_get(gpu_health_ctx.sys_fd, GPU_HEALTH_ATTR);
+> +	igt_assert(health);
+> +	igt_assert_f(!strcmp(health, state),
+> +		     "gpu_health readback mismatch: wrote '%s', read '%s'\n",
+> +		     state, health);
+> +	igt_info("Verified gpu_health state readback for '%s' successfully\n",
+> +		 state);
+> +	free(health);
+> +}
+> +
+> +int igt_main()
+> +{
+> +	int xe;
+> +	int state;
+> +
+> +	igt_fixture() {
+> +		xe = drm_open_driver(DRIVER_XE);
+> +	}
+> +
+> +	igt_subtest_with_dynamic("gpu-health") {
+> +		igt_install_exit_handler(restore_gpu_health);
+> +		setup_gpu_health(xe);
+> +
+> +		for (state = 0; state < ARRAY_SIZE(gpu_health_states); state++) {
+> +			igt_dynamic_f("%s", gpu_health_states[state]) {
+> +				test_gpu_health_state(gpu_health_states[state]);
+> +			}
+> +		}
+> +
+> +		restore_gpu_health(0);
+> +	}
+> +
+> +	igt_fixture()
+> +		drm_close_driver(xe);
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 1ac89bab7..3c2d4fdda 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -333,6 +333,7 @@ intel_xe_progs = [
+>   	'xe_prime_self_import',
+>   	'xe_pxp',
+>   	'xe_query',
+> +	'xe_ras',
+>   	'xe_render_copy',
+>   	'xe_vm',
+>   	'xe_userptr_pressure',
