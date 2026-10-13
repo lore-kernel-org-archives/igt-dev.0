@@ -4,42 +4,42 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C2E98CC6B12
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 19:15:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 357F3CC6B1A
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 19:15:53 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6A46510E5E5;
-	Tue, 13 Oct 2026 19:15:00 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BA0D110E5E5;
+	Tue, 13 Oct 2026 19:15:47 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F59110E5E5
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 19:08:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A079310E8DD
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 19:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791918501; x=1823454501;
+ t=1791918474; x=1823454474;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=eVG8BJvsJf+jfYOhFMkbQJn4TBbVCPPUkFUaglbr2w0=;
- b=YxA9S/a2ndOLrfjSSgxPp6eW8xZLNukcIjhKhE8R+GreXWlTVX4+50BA
- b7YHTVlZ/cFsHEaZC+yLozVl4SpbZj9h7DUbBs6TLoN9HGcVXlj8TJYWy
- VigEtOEtUXZmCiKTHERG+KkG3EK0swZ113hJpwdVtnWEup3m0/9RrJn4j
- EHo7uQ6x3NWv3Rgv+oDQZTOE9zgyBDoypn7JwiZ8KyD2/yC7AYThGtSuW
- r7vDCiYdSO157mAZdsQzlExpx75sw3sOziqHIYSoSHgAqzd0DmB9RZwt3
- o6UUD+6lsq11uFC9z+DlO9OTMFDQjdCzSrnpKRr5rL0SGGYmoMzaIoCco w==;
-X-CSE-ConnectionGUID: OECy9Kp0SdOdaPeMEwGk8g==
-X-CSE-MsgGUID: WSqoHkO4SsOmF3VXmJD9Og==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="687321"
+ bh=QiW3519jPKUDuxwYt+vJJLNsiW1IqtWkBNPx4Ot8CZM=;
+ b=KXTL/EQdAWj2Ezf49D2CTEpVWKOMGiXp0HiWkLhkbRFOcQ0CN9frs7eo
+ C14ztIGg7NBH5tT9ijT7c5phK5eLHk7qzd6TyT3dEVv8Fz9sbuFn2k6rZ
+ D6umGVm10FYhFgZkTRqfxiQEZO/VvokguX+EIrr1u353UPhE7NoJgKS99
+ oKTNuG79w1biO8o/jSsZd0B/s1CdKSJz5XGEoC+2MgRbVooAR1JjapOZw
+ 23z7YKzlZxl+kCLAoA2JOPGUpMeTZJifXcvIVg6+6LE64wXunnOOI+5hw
+ 0juUJp0GPVgWfcJXhQIkF9K2bsbWl/vdRWfpUQZZMRNjABlKdeTYFo182 Q==;
+X-CSE-ConnectionGUID: maI8xH6cQCuAU4h+B8dR/Q==
+X-CSE-MsgGUID: cBjbfjq3RaWKyNAa1fUcHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="687265"
 X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="687321"
+   d="scan'208";a="687265"
 Received: from fmviesa012.fm.intel.com ([10.60.135.152])
  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 12:08:21 -0700
-X-CSE-ConnectionGUID: QXbghMsRSPaSpKGl1luRPw==
-X-CSE-MsgGUID: Zp0LnlimR2WwFi+mEqhxeQ==
+ 13 Oct 2026 12:07:54 -0700
+X-CSE-ConnectionGUID: LkBDs8N3SyaOeTRRz4Y4KA==
+X-CSE-MsgGUID: a9495QcGTa+hcK5wR2CluA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="3004518"
+   d="scan'208";a="3004476"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 12:08:17 -0700
+ 13 Oct 2026 12:07:50 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
@@ -49,10 +49,10 @@ Cc: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
  Raag Jadav <raag.jadav@intel.com>, Badal Nilawar <badal.nilawar@intel.com>,
  Mallesh Koujalagi <mallesh.koujalagi@intel.com>,
  Harish Chegondi <harish.chegondi@intel.com>
-Subject: [PATCH v5 10/10] tests/intel/xe_err_injection: add CRI GPU
- requirement check
-Date: Wed, 14 Oct 2026 00:36:51 +0530
-Message-Id: <20261013190651.897241-11-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v5 06/10] lib/igt_drm_netlink: add set_error_threshold command
+ support
+Date: Wed, 14 Oct 2026 00:36:47 +0530
+Message-Id: <20261013190651.897241-7-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261013190651.897241-1-ravi.kishore.koppuravuri@intel.com>
 References: <20261013190651.897241-1-ravi.kishore.koppuravuri@intel.com>
@@ -73,8 +73,8 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add support to verify the CRI GPU and skips test gracefully
-on non-cri platforms
+Add support for SET_ERROR_THRESHOLD to set the custom error threshold
+value
 
 Cc: Soham Purkait <soham.purkait@intel.com>
 Cc: Riana Tauro <riana.tauro@intel.com>
@@ -85,50 +85,101 @@ Cc: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
 Cc: Harish Chegondi <harish.chegondi@intel.com>
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 ---
-v5: Renamed the CRI GPU check function
+v4:Renamed the library functions with prefix "igt_drm_netlink_*" (Nikula
+   Jani & Kamil)
+v2:Marked this command as response not required
 ---
- tests/intel/xe_err_injection.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ lib/igt_drm_ras_nl.c | 39 +++++++++++++++++++++++++++++++++++++++
+ lib/igt_drm_ras_nl.h |  1 +
+ 2 files changed, 40 insertions(+)
 
-diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-index 796b4d696..46d9f7f42 100644
---- a/tests/intel/xe_err_injection.c
-+++ b/tests/intel/xe_err_injection.c
-@@ -20,6 +20,7 @@
+diff --git a/lib/igt_drm_ras_nl.c b/lib/igt_drm_ras_nl.c
+index f8f289329..94fcc40ac 100644
+--- a/lib/igt_drm_ras_nl.c
++++ b/lib/igt_drm_ras_nl.c
+@@ -68,6 +68,8 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+ 		return NL_SKIP;
  
- #include "igt.h"
- #include "lib/igt_drm_ras_nl.h"
-+#include "lib/intel_chipset.h"
- #include "lib/intel_reg.h"
- #include "lib/intel_compute.h"
+ 	switch (gnlh->cmd) {
++	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
++		break;
+ 	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
+ 		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE])
+ 			return NL_SKIP;
+@@ -237,6 +239,7 @@ static int send_command(struct igt_drm_ras_nl_context *ctx, uint8_t cmd)
+ 	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
+ 	case DRM_RAS_CMD_GET_ERROR_COUNTER:
+ 		ctx->response_required = true;
++	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
+ 		ret = nla_put_u32(msg,
+ 				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
+ 				  ctx->node_id);
+@@ -252,6 +255,16 @@ static int send_command(struct igt_drm_ras_nl_context *ctx, uint8_t cmd)
+ 			nlmsg_free(msg);
+ 			return normalize_nl_error(ret);
+ 		}
++
++		if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD) {
++			ret = nla_put_u32(msg,
++					  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
++					  ctx->error_threshold);
++			if (ret < 0) {
++				nlmsg_free(msg);
++				return ret;
++			}
++		}
+ 		break;
+ 	default:
+ 		nlmsg_free(msg);
+@@ -347,6 +360,14 @@ static int validate_inputs(struct igt_drm_ras_nl_context *ctx, uint8_t cmd)
+ 		return -EINVAL;
+ 	}
  
-@@ -597,6 +598,14 @@ static void test_l2_bank_single_corr_err_injection(struct xe_mmio *mmio, int fd)
- 	CLEANUP_ON_ERROR(ctx, fw_handle);
++	if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD &&
++	    (ctx->error_threshold < 1 || ctx->error_threshold > 16)) {
++		igt_warn("Invalid error_threshold (%u) provided. "
++			 "error_threshold should be >= 1 and <= 16.\n",
++			 ctx->error_threshold);
++		return -EINVAL;
++	}
++
+ 	return 0;
  }
  
-+static void require_cri_gpu(int fd)
+@@ -401,3 +422,21 @@ int igt_drm_ras_nl_get_error_threshold(struct igt_drm_ras_nl_context *ctx)
+ 
+ 	return 0;
+ }
++
++int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx)
 +{
-+	uint16_t dev_id = xe_dev_id(fd);
++	int ret;
 +
-+	igt_require_f(IS_CRESCENTISLAND(dev_id),
-+		      "This test requires CRI GPU, but found device ID 0x%04x\n", dev_id);
++	ret = validate_inputs(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
++	if (ret < 0)
++		return ret;
++
++	ret = send_command(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
++	if (ret < 0)
++		return ret;
++
++	igt_debug("Set error threshold: node_id=%u error_id=%u threshold=%u\n",
++		  ctx->node_id, ctx->error_id, ctx->error_threshold);
++
++	return 0;
 +}
-+
- enum xe_err_injection_type {
- 	XE_ERR_INJ_GT_UC_WKR_CMD_PARITY,
- 	XE_ERR_INJ_GT_UC_WKR_CMD_PARITY_POST_RECOVERY_WL,
-@@ -647,6 +656,11 @@ int igt_main()
- 		fd = drm_open_driver(DRIVER_XE);
- 		igt_require_f(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY),
- 			      "forcewake_all is not available in debugfs\n");
-+		require_cri_gpu(fd);
-+		/*
-+		 * TODO: Add firmware query for error injection support.
-+		 * Should check: EOM (End of Manufacturing) status and error injection jumper state.
-+		 */
- 		xe_mmio_access_init(fd, &mmio);
- 		igt_require_f(xe_mmio_is_initialized(&mmio),
- 			      "Failed to initialize Xe MMIO access\n");
+diff --git a/lib/igt_drm_ras_nl.h b/lib/igt_drm_ras_nl.h
+index 86cfd79d0..5c9be5b17 100644
+--- a/lib/igt_drm_ras_nl.h
++++ b/lib/igt_drm_ras_nl.h
+@@ -53,6 +53,7 @@ void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_get_error_threshold(struct igt_drm_ras_nl_context *ctx);
++int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx);
+ 
+ #endif /* IGT_DRM_RAS_NL_H */
+ 
 -- 
 2.34.1
 
