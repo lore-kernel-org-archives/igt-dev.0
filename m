@@ -4,56 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B69ECC6B0F
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 14:02:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EF92CC6B10
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 14:10:12 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A8FB10E85B;
-	Tue, 13 Oct 2026 14:02:32 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A064D10E85B
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 14:01:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 18BAF10E8C3;
+	Tue, 13 Oct 2026 14:10:07 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 38B4C10E819
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 14:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791900095; x=1823436095;
+ t=1791900547; x=1823436547;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=wvn+Pnzj61e2wbfyCCF1e8ye5yU+cTPvEaCtNuI63Q8=;
- b=WjaT71p8n5ZgUUFAsftUvL2G6XYQb4Yt3kk1AJCkmRhs4O1gYc+Qd+jy
- v0B63KA3TCQNwC3QSAgiqWN/iIlQbKbyvSJd1vu/s6ctDcNMaWFutMAzk
- /5RcjkCnJmVi+6k7PFxaGA0xfmb+2DXroJAfoqH1H9LAzB3Rn/2baHs1x
- TD9HTOXbKdMtV1TLXtjEkIJ24fjOUeACLOFHkEoJTmnlE6KVDKzQwXowg
- u0UUA1cs082nGtW0UsPfzQ6iKK0PjGqU6lyCineXr4vWye5M3pIuWA7Y2
- yVTfPbx+R20/7xuWjt0+5UP0btoYOypZMMQdHyycl45CEKr9aKVqfk8Xa Q==;
-X-CSE-ConnectionGUID: i4NDYq5mToOdTmPwmJrvhw==
-X-CSE-MsgGUID: Be3B1qPETau+dXrTk5gFSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="641290"
+ bh=yBwA4b/eeY1mjMI0SyC6/bwkSYTv5RY4Lycu4DqnSiE=;
+ b=oAZzqDdJRt6pNrhAPAaArmPfFvzB8Fo53JIOP7BI+ouSmUqG26LaJI50
+ NNDUHFCxhfE8tqOkRm9Jx7hqEza1Wl91jmI3MpauPtQ45piL1Yb10hgj4
+ wpD3TGh5QjLcWuf7HRdUXpJP3MlGa2A0qN9lAwl+pMKR4FSzDtQ3TZHUp
+ SWjjGE8sGfTrO4mVtt21PxLmhpd+ThTHIOJZhvHWomMI1ttVkpMqMaYNi
+ GTIw7D3AJTMRfH51HwJdp2BMw+9CkTHct+zK+K+q47ErADzeMkQWUw7mB
+ Uu2uFq8lpV3+aEX3Hx1cIytdffEyJtISxteVR/K1DofIhnUlWOIjueyI1 g==;
+X-CSE-ConnectionGUID: R4kxdppvRN6ryi1esBxzhQ==
+X-CSE-MsgGUID: WbDYvKy7QveDXD/DXlsssQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11933"; a="513460"
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="641290"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 07:01:12 -0700
-X-CSE-ConnectionGUID: jQIGbVF4SJ2yf0XV2mZNFA==
-X-CSE-MsgGUID: nQLZV2pISWmK2F2e1XdKcw==
+   d="scan'208";a="513460"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2026 07:08:46 -0700
+X-CSE-ConnectionGUID: +miYpP75TyGMRrNEbgOk0A==
+X-CSE-MsgGUID: /5xEqejzSieMi27VGVsxIA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1507847"
+   d="scan'208";a="1502270"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 07:01:10 -0700
-Date: Tue, 13 Oct 2026 16:01:08 +0200
+ 13 Oct 2026 07:08:45 -0700
+Date: Tue, 13 Oct 2026 16:08:42 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH 0/4] Fix dmesg ignore regexes with backslash escapes
-Message-ID: <20261013140108.ttpcxukwddnrug2z@kamilkon-DESK.igk.intel.com>
+To: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: igt-dev@lists.freedesktop.org, alex.zuo@intel.com,
+ dnyaneshwar.bhadane@intel.com
+Subject: Re: [PATCH] tests/intel/xe_exec_queue_property: Free eq and vm after
+ test
+Message-ID: <20261013140842.27qtagzzyrb4lmd6@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Shuicheng Lin <shuicheng.lin@intel.com>,
- igt-dev@lists.freedesktop.org
-References: <20261007210603.1350158-1-shuicheng.lin@intel.com>
+ Jonathan Cavitt <jonathan.cavitt@intel.com>,
+ igt-dev@lists.freedesktop.org, alex.zuo@intel.com,
+ dnyaneshwar.bhadane@intel.com
+References: <20261008194203.126177-1-jonathan.cavitt@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261007210603.1350158-1-shuicheng.lin@intel.com>
+In-Reply-To: <20261008194203.126177-1-jonathan.cavitt@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,57 +72,51 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Shuicheng,
-On 2026-10-07 at 21:05:59 +0000, Shuicheng Lin wrote:
-> igt_emit_ignore_dmesg_regex() passes the regex to igt_runner through
-> /dev/kmsg, and the kernel escapes '\' as "\x5c" in kmsg records. Since
-> resultgen compiles the ignore regex from the escaped record, any regex
-> using a backslash escape, such as "\(-ECANCELED\)", silently never
-> matches. As a result, the expected errors in
-> xe_exec_reset@gt-reset-fault-injection are reported as dmesg-warn.
+Hi Jonathan,
+On 2026-10-09 at 03:42:02 +0800, Jonathan Cavitt wrote:
+> The function test_set_property() creates both an exec queue and a VM
+> every run, but fails to free either of them after completion.  This may
+> result in memory leaks.  Attempt to free them.
 > 
-> Patches 1-3 fix the affected tests by using bracket expressions instead
-> of backslash escapes, so they work with the current igt_runner:
->  - xe_exec_reset: "\(" never matches, the expected GT reset failure and
->    wedge errors leak.
->  - xe_wedged: besides the CAT error escapes (and a missing space), the
->    patterns no longer match the SIGID-based messages that newer kernels
->    use for the GT reset failure and wedge.
->  - xe_fault_injection: "\*ERROR\*" only matches by accident, as it
->    degrades to "ERROR" with optional backslashes around it.
+> Note that the exec queue only needs to be freed if it is expected to be
+> created.  This is only the case when the expected error value is zero.
 > 
-> Patch 4 fixes igt_runner itself by decoding the kmsg escapes before
-> compiling the ignore regex, so future regexes can use backslash escapes
-> as written.
-> 
-> Tested on BMG with drm-tip: the expected errors are no longer reported
-> for xe_exec_reset@gt-reset-fault-injection and
-> xe_wedged@{basic-wedged,wedged-at-any-timeout}, and
-> the new igt_runner also ignores them with the unfixed xe_exec_reset.
-> 
-
-Applied, thanks!
-
+> Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+> Cc: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> Shuicheng Lin (4):
->   tests/intel/xe_exec_reset: Fix gt reset fault dmesg ignore regex
->   tests/intel/xe_wedged: Fix wedged dmesg ignore regex
->   tests/intel/xe_fault_injection: Avoid backslash escapes in dmesg
->     ignore regex
->   runner/resultgen: Decode kmsg escapes in ignored dmesg regex
+> ---
+>  tests/intel/xe_exec_queue_property.c | 10 ++++++++--
+>  1 file changed, 8 insertions(+), 2 deletions(-)
 > 
->  .../json_tests_data/dmesg-escapes/0/dmesg.txt |  2 +
->  .../json_tests_data/dmesg-escapes/README.txt  |  4 ++
->  .../dmesg-escapes/reference.json              |  2 +-
->  runner/resultgen.c                            | 48 ++++++++++++-------
->  tests/intel/xe_exec_reset.c                   | 11 +++--
->  tests/intel/xe_fault_injection.c              |  2 +-
->  tests/intel/xe_wedged.c                       |  6 ++-
->  7 files changed, 52 insertions(+), 23 deletions(-)
-> 
+> diff --git a/tests/intel/xe_exec_queue_property.c b/tests/intel/xe_exec_queue_property.c
+> index 3504f19b71..31a2ec2a7d 100644
+> --- a/tests/intel/xe_exec_queue_property.c
+> +++ b/tests/intel/xe_exec_queue_property.c
+> @@ -61,11 +61,17 @@ static void test_set_property(int xe, int property_name,
+>  		.property = property_name,
+>  		.value = property_value,
+>  	};
+> +	uint32_t vm;
+>  	uint32_t exec_queue_id;
+>  
+> -	igt_assert_eq(__xe_exec_queue_create(xe, xe_vm_create(xe, 0, 0), 1, 1,
+> -					     &instance, to_user_pointer(&ext),
+> +	vm = xe_vm_create(xe, 0, 0);
+> +
+> +	igt_assert_eq(__xe_exec_queue_create(xe, vm, 1, 1, &instance,
+> +					     to_user_pointer(&ext),
+>  					     &exec_queue_id), err_val);
+> +	if (!err_val)
+> +		xe_exec_queue_destroy(xe, exec_queue_id);
+> +	xe_vm_destroy(xe, vm);
+>  }
+>  
+>  static void test_property_min_max(int xe, int engine, const char **property,
 > -- 
 > 2.43.0
 > 
