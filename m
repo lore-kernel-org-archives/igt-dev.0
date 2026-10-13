@@ -4,57 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12160CC6B0E
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 17:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43B25CC6B1A
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 17:47:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A9E8C10E80C;
-	Tue, 13 Oct 2026 17:09:44 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DE4DD10E68E
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 17:08:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791911288; x=1823447288;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=E7yZWonm/huwO+/JIPlYrar9z+DP17+lgu93PvTaGUw=;
- b=jZ4hUZmNvLJy6cNMlbpP/QOVbEIHXmk17G435H3xHiGqyVM6CcA7NwBQ
- 2cTF6C/qu/7OIJULRbgYDTazuQDqQVo5FneJixKKtyr0UyNkG4Uvf0obM
- D9Fg+WkXlONyNehNTUgzJ3pNqnDK32E6x3V+cYqbb+VYvLSRlT8re47Dv
- Jnm/KaNwlVf6Lyfe4YbMefsYR5P/maIGBjhOjHPKGWA1G/HMjQWjPRLbD
- OpZlmD08DCZ7KfINaRdA7YZeleLnkI6cMeBQnqwZQoIfL+ufS+Dl3tOo+
- 48eZxHWexQLWBwoxZlWVBOBmz4q/LTNs4mIrMCbQOHZ6IyWE0Psg+Rs0p w==;
-X-CSE-ConnectionGUID: 0gzn1XLMQya0XmqN69G3Rg==
-X-CSE-MsgGUID: AuohMqQfS82eqLF9u28ztw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="638519"
-X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="638519"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 10:08:08 -0700
-X-CSE-ConnectionGUID: x5HibEJKTP2BsTHGmoCYjA==
-X-CSE-MsgGUID: rc+iQ+p8T82tuQHeaE/jgg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
-   d="scan'208";a="1287983"
-Received: from ettammin-mobl3.ger.corp.intel.com (HELO localhost)
- ([10.245.245.50])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 10:08:05 -0700
-Date: Tue, 13 Oct 2026 19:08:03 +0200
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Subject: Re: [PATCH i-g-t v1 2/2] runner/resultgen: Fix warn about discarded
- const
-Message-ID: <obxye5ms44knsrmxap3jzkhlwu4r4bftt3mdjheiw3ufowmk67@4l5z3avbooiu>
-References: <20261013151644.174387-1-kamil.konieczny@linux.intel.com>
- <20261013151644.174387-3-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D5D5610E709;
+	Tue, 13 Oct 2026 17:47:48 +0000 (UTC)
+Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 01B8D10E709;
+ Tue, 13 Oct 2026 17:46:58 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1392755567041731846=="
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261013151644.174387-3-kamil.konieczny@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_xe=5Fpmu=3A_Do_not_enable?=
+ =?utf-8?q?_VFs_in_unrelated_subtests?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Marcin Bernatowicz" <marcin.bernatowicz@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 13 Oct 2026 17:46:57 -0000
+Message-ID: <179191361799.19493.18227495071518896977@221881a7231d>
+X-Patchwork-Hint: ignore
+References: <cover.1791900914.git.marcin.bernatowicz@linux.intel.com>
+In-Reply-To: <cover.1791900914.git.marcin.bernatowicz@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,41 +37,111 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Tue, Oct 13, 2026 at 05:16:44PM +0200, Kamil Konieczny wrote:
-> Fix following warning which is observed on Ubuntu 26.04:
-> 
-> ../runner/resultgen.c: In function ‘next_line’:
-> ../runner/resultgen.c:144:13: warning: assignment discards
-> 	‘const’ qualifier from pointer target type
-> 	[-Wdiscarded-qualifiers]
->   144 |         ret = memchr(line, '\n', bufend - line);
-> 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  runner/resultgen.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/runner/resultgen.c b/runner/resultgen.c
-> index 127d8a9e8..94cdd0e2e 100644
-> --- a/runner/resultgen.c
-> +++ b/runner/resultgen.c
-> @@ -136,7 +136,7 @@ static char *find_line_starting_with(char *haystack, const char *needle, char *e
->  
->  static const char *next_line(const char *line, const char *bufend)
->  {
-> -	char *ret;
-> +	const char *ret;
->  
->  	if (!line)
->  		return NULL;
-> -- 
-> 2.55.0
-> 
+--===============1392755567041731846==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Reviewed-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+== Series Details ==
 
---
-Zbigniew
+Series: xe_pmu: Do not enable VFs in unrelated subtests
+URL   : https://patchwork.freedesktop.org/series/176050/
+State : success
+
+== Summary ==
+
+CI Bug Log - changes from IGT_9143 -> IGTPW_15977
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15977/index.html
+
+Participating hosts (39 -> 38)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9143 -> IGTPW_15977
+
+  CI-20190529: 20190529
+  CI_DRM_19331: 3bb5625e4dccd61506ad2815da07ac082e1df614 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15977: b2cc4af5ae912534172ac5e4d6e6149dcab1500e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9143: 992e2bc5d5fcaef292ea89e3db5cb7a50b6edfc2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15977/index.html
+
+--===============1392755567041731846==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>xe_pmu: Do not enable VFs in unrelated subtests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176050/">https://patchwork.freedesktop.org/series/176050/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15977/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15977/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9143 -&gt; IGTPW_15977</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15977/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9143 -&gt; IGTPW_15977</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19331: 3bb5625e4dccd61506ad2815da07ac082e1df614 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15977: b2cc4af5ae912534172ac5e4d6e6149dcab1500e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9143: 992e2bc5d5fcaef292ea89e3db5cb7a50b6edfc2 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
+
+</body>
+</html>
+
+--===============1392755567041731846==--
