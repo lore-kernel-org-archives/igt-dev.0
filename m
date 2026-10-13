@@ -4,54 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44F73CC6B12
-	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 15:19:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1149FCC6B12
+	for <igt-dev@archiver.kernel.org>; Tue, 13 Oct 2026 16:11:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BE30D10E0C3;
-	Tue, 13 Oct 2026 15:19:27 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2374A10EF01
- for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 15:16:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9EFC510E51D;
+	Tue, 13 Oct 2026 16:11:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3E01E10E51D
+ for <igt-dev@lists.freedesktop.org>; Tue, 13 Oct 2026 16:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791904617; x=1823440617;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=Wd04JOL027SMDd4Q/Aba26HS2Gq2KqM11qRwf1d5Nes=;
- b=XH/j+NWauVGm6YIjO2fJpTz4DnjVGF2BC3irEp9NGbm6M+ftLPE/Opd4
- RM/FkzXz/axePIoRpyClNtHranBR3VAMwLDBM6/8kTXK3RRQxJk7YZXZ+
- QVTx3OYN6N9QMamA5UXaUGk2kZ1xmEZmswywC4fbTfTk9Zls/GZ9HGqWa
- 9ryqaxaqnwXd2o+AkI3/A+4sVT75+KYg+dEHz43gpxKkQoy+4nsvSicZb
- xOSy/+w/JLIo+QQDB3zUMq8hRWbBywPQoy8Wk6hxb58zR4mEIEuwE5q+v
- xyvK45uQ2dskOlRSwD16VAQQ1ZVUdqJYu4a9jJPNGQ7D/UBjIrWgZEYY0 Q==;
-X-CSE-ConnectionGUID: OSINuqIDQvSr/ScjRDSYDg==
-X-CSE-MsgGUID: xktbDBKkTvCpmhkbueXbxA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="626603"
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="626603"
+ t=1791907854; x=1823443854;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=+iOqsE9PYQwH39xpVqBGgBfAmOD+JRX37/1/kwXgj5c=;
+ b=IdhAMNHX84nLZB7fs6GpCxNeRv/fdbmbUx3/ukAVcm4t+AqRli7oFUgY
+ LYsoJWGocqk6FSnth+8nW/1O3MM5pfUEu/xNcI7FHUGILzzTy3qovDqu6
+ WXyHWGelBYx/esz8GFfx8wLE8Xez/scI2+sFhRztpCyG+P7rLgVBb9ERY
+ ySU916k1aSgR4GWuY9Mv46XWSpXIVml4uCoj8RjQcg85TD5KqXzSH+pvB
+ 5qJnXmsrOBT3vOBbhxsR00JccsSPqaFM69APpZBfw90dnJb7vT2BEH9dB
+ JgqYnoTXl/D0w4nCdXpNTmjF7WfidvyZfGNxfUFMhz8ChVZrrtrR0sGiH g==;
+X-CSE-ConnectionGUID: tbQfEQC3RVyNVSFfFP87MQ==
+X-CSE-MsgGUID: 8HVb+AvlRMCNBg1VXmWtEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="656290"
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="656290"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 08:16:57 -0700
-X-CSE-ConnectionGUID: THqSlqIHQ26xCMnzhVcFCg==
-X-CSE-MsgGUID: /9gRtZRUS5OzLmEex442qw==
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Oct 2026 09:10:52 -0700
+X-CSE-ConnectionGUID: ZXaslbuuQBapMqN2aO3dRg==
+X-CSE-MsgGUID: ceBzihk2TMiuFj/D6XfNHQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,155,1787036400"; 
-   d="scan'208";a="1078124"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.245.145])
+X-IronPort-AV: E=Sophos;i="6.27,156,1787036400"; 
+   d="scan'208";a="1096295"
+Received: from dev-417.igk.intel.com ([10.91.214.181])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Oct 2026 08:16:56 -0700
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+ 13 Oct 2026 09:10:50 -0700
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: [PATCH i-g-t v1 2/2] runner/resultgen: Fix warn about discarded const
-Date: Tue, 13 Oct 2026 17:16:44 +0200
-Message-ID: <20261013151644.174387-3-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261013151644.174387-1-kamil.konieczny@linux.intel.com>
-References: <20261013151644.174387-1-kamil.konieczny@linux.intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
+Subject: [PATCH i-g-t v8 0/9] tests: limiting suspend tests
+Date: Tue, 13 Oct 2026 18:10:04 +0200
+Message-ID: <20261013161013.1364753-1-michal.grzelak@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -68,32 +72,37 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Fix following warning which is observed on Ubuntu 26.04:
+Next version of [1].
 
-../runner/resultgen.c: In function ‘next_line’:
-../runner/resultgen.c:144:13: warning: assignment discards
-	‘const’ qualifier from pointer target type
-	[-Wdiscarded-qualifiers]
-  144 |         ret = memchr(line, '\n', bufend - line);
+BR,
+Michał
 
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+[1] https://lore.kernel.org/igt-dev/20261002201525.466080-1-michal.grzelak@linux.intel.com/
+
 ---
- runner/resultgen.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changelog:
 
-diff --git a/runner/resultgen.c b/runner/resultgen.c
-index 127d8a9e8..94cdd0e2e 100644
---- a/runner/resultgen.c
-+++ b/runner/resultgen.c
-@@ -136,7 +136,7 @@ static char *find_line_starting_with(char *haystack, const char *needle, char *e
- 
- static const char *next_line(const char *line, const char *bufend)
- {
--	char *ret;
-+	const char *ret;
- 
- 	if (!line)
- 		return NULL;
+v7->v8
+- use pipe mask (Jani)
+- add 2 new patches
+
+Michał Grzelak (9):
+  tests/kms_async_flips: split outer test loop into two
+  tests/kms_async_flips: set mask for available hardware pipes
+  tests/kms_async_flips: limit #pipes tested during suspend
+  tests/kms_vblank: limit #outputs tested during suspend
+  tests/intel/kms_ccs: split outer test loop into two
+  tests/intel/kms_ccs: limit #outputs tested during suspend
+  tests/intel/kms_ccs: set mask for available hardware pipes
+  tests/intel/kms_ccs: limit #pipes tested during suspend
+  tests/kms_hdr: run on 3 outputs when testing suspend
+
+ tests/intel/kms_ccs.c   | 115 ++++++++++++++++++++++++++++++----------
+ tests/kms_async_flips.c | 100 +++++++++++++++++++++++-----------
+ tests/kms_hdr.c         |  30 ++++++++++-
+ tests/kms_vblank.c      |  21 +++++++-
+ 4 files changed, 203 insertions(+), 63 deletions(-)
+
 -- 
-2.55.0
+2.45.2
 
