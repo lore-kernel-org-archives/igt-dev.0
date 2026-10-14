@@ -4,54 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 67AC3CC6B1D
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Oct 2026 11:51:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDC5BCC6B1A
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Oct 2026 12:25:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1969E10E12E;
-	Wed, 14 Oct 2026 11:51:45 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A0D9910E12E
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Oct 2026 11:50:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791978653; x=1823514653;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=eJ4zExG1OgKmKooyv4GRweCPe72QXkS3eETKVEec+D8=;
- b=bRaJC7xhMAbou5qrAqnQS/ribmS1v1E7OgvPktLoTVlLI1W88+2K/60+
- BP7QdXYVNJC6p2fOUUSEKdEkuod1L5euT7UNpmz/Va3hiYBqRjgBy3K1S
- HK8aguibvr2rzzE60ogjBtUiw+cmvqOyEC4BtsqxgxVVAnPnDYrkttHDD
- 0+tRtOGmx4vWoebbjc2/jakv8KYrGqgX4txwVgFA96F8talny8hNYXrlz
- fRQTllHCkAwhS0hMAgMldnHddYqcNvb953x5pTXLCp5zOVDmSjXg/a4xd
- cPmgJx5Qggp4xqk7M6tJiuHcUQTksdQuWcQR3Scx33LWgGvouvrUwbg8A w==;
-X-CSE-ConnectionGUID: 9hMYi96UT3iJ4xZwwDbjFw==
-X-CSE-MsgGUID: uPWNF1DbRjuMXnDjmw32tQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11934"; a="820297"
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="820297"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2026 04:50:53 -0700
-X-CSE-ConnectionGUID: 2vTlaC+nRAKdOw8YCzPkpw==
-X-CSE-MsgGUID: jdXDHL+oSDGUyfTE4Ap2MQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,157,1787036400"; 
-   d="scan'208";a="3259541"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
- by fmviesa011.fm.intel.com with ESMTP; 14 Oct 2026 04:50:51 -0700
-From: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, vinay.belgaumkar@intel.com,
- badal.nilawar@intel.com, riana.tauro@intel.com, karthik.poosa@intel.com,
- sk.anirban@intel.com, raag.jadav@intel.com,
- Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-Subject: [PATCH] tests/intel/xe_wedged: ignore expected CORE_COMPUTE error in
- dmesg
-Date: Wed, 14 Oct 2026 17:20:47 +0530
-Message-ID: <20261014115047.352174-2-mallesh.koujalagi@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 801EC10FD1D;
+	Wed, 14 Oct 2026 12:25:33 +0000 (UTC)
+Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1008010E112;
+ Wed, 14 Oct 2026 12:24:46 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8333170760856122775=="
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fsync=5Ffil?=
+ =?utf-8?q?e=3A_Fix_driver=5Fname_expectation_in_sync=5Ffile=5Frace?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Tejas Upadhyay" <tejas.upadhyay@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 14 Oct 2026 12:24:46 -0000
+Message-ID: <179198068605.23580.13329383312804508867@221881a7231d>
+X-Patchwork-Hint: ignore
+References: <20261014061138.1748313-2-tejas.upadhyay@intel.com>
+In-Reply-To: <20261014061138.1748313-2-tejas.upadhyay@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,35 +37,126 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Wedge tests intentionally force a GT reset failure, which can trigger
-a CORE_COMPUTE hardware error (SIGID=203) in dmesg.
+--===============8333170760856122775==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Ignore this expected error so igt_runner does not treat it as a test
-failure.
+== Series Details ==
 
-Signed-off-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-Cc: Riana Tauro <riana.tauro@intel.com>
----
- tests/intel/xe_wedged.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Series: tests/intel/xe_sync_file: Fix driver_name expectation in sync_file_race
+URL   : https://patchwork.freedesktop.org/series/176099/
+State : success
 
-diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-index 4f5197e2a..fe8ea6969 100644
---- a/tests/intel/xe_wedged.c
-+++ b/tests/intel/xe_wedged.c
-@@ -54,7 +54,8 @@ static void ignore_wedged_in_dmesg(void)
- 				    "|EngineClass: [0-9]+ [a-z]+"
- 				    "|EngineInstance: [0-9]+"
- 				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Fault response: Unsuccessful -EINVAL"
--				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error");
-+				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error"
-+				    "|SIGID=203");
- }
- 
- static void force_wedged(int fd)
--- 
-2.48.1
+== Summary ==
 
+CI Bug Log - changes from XEIGT_9145_BAT -> XEIGTPW_15984_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 14)
+------------------------------
+
+  Missing    (1): bat-ptl-vm 
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15984_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-nvls-1:         [DMESG-WARN][1] ([Intel XE#8762] / [Intel XE#9069]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9145/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15984/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
+  [Intel XE#9069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9145 -> IGTPW_15984
+
+  IGTPW_15984: 0579a5d020cddc1b0b9fbf30a25725a3a1ec7605 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9145: 05c13a14f7f8bcda7bff83b8aa033c3c47a4b1fb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5945-9c288c4ff8029788ae0bd13bb1f875bf3d9dc4f6: 9c288c4ff8029788ae0bd13bb1f875bf3d9dc4f6
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15984/index.html
+
+--===============8333170760856122775==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_sync_file: Fix driver_name expectation in sync_file_race</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176099/">https://patchwork.freedesktop.org/series/176099/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15984/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15984/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9145_BAT -&gt; XEIGTPW_15984_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 14)</h2>
+<p>Missing    (1): bat-ptl-vm </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15984_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9145/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069">Intel XE#9069</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15984/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9145 -&gt; IGTPW_15984</li>
+</ul>
+<p>IGTPW_15984: 0579a5d020cddc1b0b9fbf30a25725a3a1ec7605 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9145: 05c13a14f7f8bcda7bff83b8aa033c3c47a4b1fb @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5945-9c288c4ff8029788ae0bd13bb1f875bf3d9dc4f6: 9c288c4ff8029788ae0bd13bb1f875bf3d9dc4f6</p>
+
+</body>
+</html>
+
+--===============8333170760856122775==--
