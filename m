@@ -4,71 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 804A2CC6B1A
-	for <igt-dev@archiver.kernel.org>; Wed, 14 Oct 2026 14:53:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF227CC6B1A
+	for <igt-dev@archiver.kernel.org>; Wed, 14 Oct 2026 15:02:28 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 15FA410E152;
-	Wed, 14 Oct 2026 14:53:02 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 44B5B10E152
- for <igt-dev@lists.freedesktop.org>; Wed, 14 Oct 2026 14:52:04 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54C7E10EC4E;
+	Wed, 14 Oct 2026 15:02:23 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1DD0210E9BD
+ for <igt-dev@lists.freedesktop.org>; Wed, 14 Oct 2026 15:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1791989527; x=1823525527;
+ t=1791990085; x=1823526085;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=hiF71IaHxZPjPXih44K8+Dox7MSclqpm7WlVIZxkk4M=;
- b=XsgPOCUfT7U9jfAzfZaS4vYFInx5vgVqGZs/L3UAn3XCDGLHOvB74zaS
- rGXjH7tBrpoWIp3O9+89+Hi/DCHd2s+6+jfDuEdgEyl6NfVObTe65yHLl
- y30TCKnTCUMKbu8m9rIYHBRPpYzoXiYI5tq2YGNLm9wRE4dQgzScdk/Cp
- YxkMdhoA3Ic6OyEt3hh3pPcsi5v0+HdO79w+tul9eIXAzW5Xo0lXCCIwQ
- g7soC4bHHdHwQ+kz6PZW6lQMvShJ2J3GUUrNYKgylgTPtrniM1JyzcbSI
- tO5hMupy0RgNGBN/7+adpKPx9CmVdHOO/0+ahzPL/aLJYhvCrI3fwF8ka A==;
-X-CSE-ConnectionGUID: CA+3YfG9TmaUpRhY79kTTw==
-X-CSE-MsgGUID: 0qytqRjWSIu8qurl/Y1Jgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="642021"
+ bh=dCOARGQoLwj1L86BJhuGgRv+DrAxvwhUiaVlxOtNo2M=;
+ b=jLIEsG2NG02g5rXt6XgI/HTzoFX/qSgOR+iB6ozNVQYnhm4fO6fdBQJq
+ PHirJWljEBOYekFA32D0oWgxnCv7SO66glLb+Hv+ELEzkBXXhC0MxR8cs
+ tS9cgDJHtZ2F/2kpeVFI2Kc2McWZHtERKPHT2Afucw7Fq0rUYbDVglBIx
+ RkpawrfZM8sldxrZiqTU9ZSIHAnZk8FiLemDkSaW48clIoJc2k2eY23DW
+ /RM/fRfFtBPMY27ob8o99wCKE5np2DDyieOQy4gS6G+B8wdxgBlkw15S7
+ WkoNikq2BYZ379SZs0GhLEZaWk9zHskbOxi7jdhJjuHvjZetsuMTXzRR+ Q==;
+X-CSE-ConnectionGUID: Xyn9DEGOQY6F3ucjZoGdyA==
+X-CSE-MsgGUID: X3jhPECUTs6TctWsmibGWA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="749416"
 X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
-   d="scan'208";a="642021"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2026 07:52:04 -0700
-X-CSE-ConnectionGUID: pwMw6PrMQhSgjzSSMsKwGQ==
-X-CSE-MsgGUID: HvC7tFxBR4GTuMZfaIPPWw==
+   d="scan'208";a="749416"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 14 Oct 2026 08:01:24 -0700
+X-CSE-ConnectionGUID: 2UBLUAQvQYKFzM1/VRuOeQ==
+X-CSE-MsgGUID: sRbhh8m/RKyVhZksRLF8Aw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,158,1787036400"; 
-   d="scan'208";a="1403514"
+   d="scan'208";a="3291436"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2026 07:52:00 -0700
-Date: Wed, 14 Oct 2026 16:51:58 +0200
+ 14 Oct 2026 08:01:23 -0700
+Date: Wed, 14 Oct 2026 17:01:19 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Junhua Shen <Junhua.Shen@amd.com>
-Cc: igt-dev@lists.freedesktop.org, Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Huang Rui <ray.huang@amd.com>, Oak Zeng <Oak.Zeng@amd.com>,
- Xiaogang Chen <Xiaogang.Chen@amd.com>, Jenny Liu <Jenny-Jing.Liu@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>,
- Zhu Lingshan <lingshan.zhu@amd.com>, Yiru Ma <yiru.ma@amd.com>
-Subject: Re: [PATCH i-g-t v2 2/3] lib/amdgpu: add SVM helper library
- (amd_svm.{c,h})
-Message-ID: <20261014145158.mdhncinddtsmsmmn@kamilkon-DESK.igk.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Mark Yacoub <markyacoub@google.com>, Ryszard Knop <ryszard.knop@intel.com>,
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+Subject: Re: [PATCH i-g-t v2] meson: Bump meson version to 1.3.0
+Message-ID: <20261014150119.6xmcgji5c75lrssp@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Junhua Shen <Junhua.Shen@amd.com>, igt-dev@lists.freedesktop.org,
- Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Christian Koenig <christian.koenig@amd.com>,
- Huang Rui <ray.huang@amd.com>, Oak Zeng <Oak.Zeng@amd.com>,
- Xiaogang Chen <Xiaogang.Chen@amd.com>,
- Jenny Liu <Jenny-Jing.Liu@amd.com>,
- Honglei Huang <honglei1.huang@amd.com>,
- Zhu Lingshan <lingshan.zhu@amd.com>, Yiru Ma <yiru.ma@amd.com>
-References: <20260825072300.16348-1-Junhua.Shen@amd.com>
- <20260825072300.16348-3-Junhua.Shen@amd.com>
+ igt-dev@lists.freedesktop.org,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Mark Yacoub <markyacoub@google.com>,
+ Ryszard Knop <ryszard.knop@intel.com>,
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+References: <20260924102404.86580-1-kamil.konieczny@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260825072300.16348-3-Junhua.Shen@amd.com>
+In-Reply-To: <20260924102404.86580-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -84,271 +78,125 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi Junhua,
-On 2026-08-25 at 15:22:59 +0800, Junhua Shen wrote:
-
-please drop last (amd_svm.{c,h}), imho this is ok:
-
-[PATCH i-g-t v2 2/3] lib/amdgpu: add SVM helper library
-
-> Add a reusable SVM helper library (lib/amdgpu/amd_svm.{c,h}) wrapping the
-
-Decipher SVM here:
-
-Add a reusable SVM shared virtual memory ...
-
-> amdgpu-drm-svm uapi (DRM_IOCTL_AMDGPU_GEM_SVM) via the render-node CS
-> path, along with the corresponding meson wiring.
+Hi igt-dev,
+On 2026-09-24 at 12:24:04 +0200, Kamil Konieczny wrote:
+> Bump meson version to 1.3.0 and update minimal version used in
+> fedora Dokerfile. Also, update some old deprecated functions with
+> a new ones.
 > 
-> Signed-off-by: Junhua Shen <Junhua.Shen@amd.com>
-> ---
->  lib/amdgpu/amd_svm.c | 151 +++++++++++++++++++++++++++++++++++++++++++
->  lib/amdgpu/amd_svm.h |  41 ++++++++++++
->  lib/meson.build      |   1 +
->  3 files changed, 193 insertions(+)
->  create mode 100644 lib/amdgpu/amd_svm.c
->  create mode 100644 lib/amdgpu/amd_svm.h
-> 
-> diff --git a/lib/amdgpu/amd_svm.c b/lib/amdgpu/amd_svm.c
-> new file mode 100644
-> index 000000000..b31cfe33f
-> --- /dev/null
-> +++ b/lib/amdgpu/amd_svm.c
-> @@ -0,0 +1,151 @@
-> +/* SPDX-License-Identifier: MIT
-> + * Copyright 2026 Advanced Micro Devices, Inc.
-> + *
-> + * Permission is hereby granted, free of charge, to any person obtaining a
+> v2: update fedora dockerfile (Kamil)
 
-Remove text 'Permission...' to end, SPDX replaces it.
-
-> + * copy of this software and associated documentation files (the "Software"),
-> + * to deal in the Software without restriction, including without limitation
-> + * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-> + * and/or sell copies of the Software, and to permit persons to whom the
-> + * Software is furnished to do so, subject to the following conditions:
-> + *
-> + * The above copyright notice and this permission notice shall be included in
-> + * all copies or substantial portions of the Software.
-> + *
-> + * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-> + * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-> + * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-> + * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-> + * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-> + * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-> + * OTHER DEALINGS IN THE SOFTWARE.
-> + *
-> + *
-> + */
-> +
-> +#include "amd_svm.h"
-> +
-> +#include "amd_memory.h"
-> +#include "amd_PM4.h"
-> +#include "amd_ip_blocks.h"
-> +#include "amd_sdma.h"
-> +#include "amd_command_submission.h"
-> +#include "igt.h"
-
-IGT headers should be after system ones.
-
-> +
-> +#include <errno.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <unistd.h>
-> +#include <sys/mman.h>
-> +#include <sys/user.h>
-
-Please try to use <mman.h> and <user.h> if possible.
-
-> +#include <inttypes.h>
-> +
-> +
-
-Add description to each new lib function, here and for all
-other public functions below.
-
-> +int amdgpu_svm_register_range(amdgpu_device_handle dev,
-> +			      void *addr, uint64_t size, uint32_t nattr,
-> +			      struct drm_amdgpu_svm_attribute *attrs)
-> +{
-> +	return amdgpu_svm_set_attr(dev, (uint64_t)(uintptr_t)addr,
-> +				    size, nattr, attrs);
-> +}
-> +
-> +int amdgpu_svm_unregister_range(amdgpu_device_handle dev,
-> +				void *addr, uint64_t size)
-> +{
-> +	return amdgpu_svm_reset_attr(dev, (uint64_t)(uintptr_t)addr, size);
-> +}
-> +
-> +int amdgpu_svm_set_prefetch_loc(amdgpu_device_handle dev,
-> +				void *addr, uint64_t size, uint32_t location)
-> +{
-> +	struct drm_amdgpu_svm_attribute attr = {
-> +		AMDGPU_SVM_ATTR_PREFETCH_LOC, location
-> +	};
-> +
-> +	return amdgpu_svm_set_attr(dev, (uint64_t)(uintptr_t)addr,
-> +				   size, 1, &attr);
-> +}
-> +
-> +int amdgpu_svm_get_prefetch_loc(amdgpu_device_handle dev,
-> +				void *addr, uint64_t size,
-> +				uint32_t *out)
-> +{
-> +	struct drm_amdgpu_svm_attribute attr = {
-> +		AMDGPU_SVM_ATTR_PREFETCH_LOC, 0
-> +	};
-> +	int r;
-> +
-> +	r = amdgpu_svm_get_attr(dev, (uint64_t)(uintptr_t)addr,
-> +				size, 1, &attr);
-> +	if (r == 0)
-> +		*out = attr.value;
-> +	return r;
-> +}
-> +
-> +int amdgpu_svm_sdma_fill(amdgpu_device_handle device, uint64_t dst_va,
-> +			 uint32_t fill_value, uint32_t fill_size)
-> +{
-> +	cmd_context_t *ctx;
-> +	struct amdgpu_dma_limits limits;
-> +	uint64_t max_bytes;
-> +	uint64_t dst = dst_va;
-> +	uint32_t remaining = fill_size;
-> +	int r = 0;
-> +
-> +	amdgpu_dma_limits_query(device, &limits);
-> +	max_bytes = amdgpu_dma_max_bytes(&limits, AMDGPU_HW_IP_DMA);
-> +
-> +	ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
-> +	if (!ctx)
-> +		return -ENODEV;
-> +
-> +	while (remaining > 0) {
-> +		uint32_t chunk = remaining > max_bytes ?
-> +				 (uint32_t)max_bytes : remaining;
-> +
-> +		r = cmd_submit_const_fill(ctx, dst, chunk, fill_value);
-> +		if (r)
-> +			break;
-> +
-> +		dst += chunk;
-> +		remaining -= chunk;
-> +	}
-> +
-> +	cmd_context_destroy(ctx);
-> +	return r;
-> +}
-> +
-> +int amdgpu_svm_sdma_copy(amdgpu_device_handle device, uint64_t dst_va,
-> +			 uint64_t src_va, uint32_t copy_size)
-> +{
-> +	cmd_context_t *ctx;
-> +	struct amdgpu_dma_limits limits;
-> +	uint64_t max_bytes;
-> +	uint64_t dst = dst_va;
-> +	uint64_t src = src_va;
-> +	uint32_t remaining = copy_size;
-> +	int r = 0;
-> +
-> +	amdgpu_dma_limits_query(device, &limits);
-> +	max_bytes = amdgpu_dma_max_bytes(&limits, AMDGPU_HW_IP_DMA);
-> +
-> +	ctx = cmd_context_create(device, AMD_IP_DMA, 0, false);
-> +	if (!ctx)
-> +		return -ENODEV;
-> +
-> +	while (remaining > 0) {
-> +		uint32_t chunk = remaining > max_bytes ?
-> +				 (uint32_t)max_bytes : remaining;
-> +
-> +		r = cmd_submit_copy_linear(ctx, src, dst, chunk);
-> +		if (r)
-> +			break;
-> +
-> +		src += chunk;
-> +		dst += chunk;
-> +		remaining -= chunk;
-> +	}
-> +
-> +	cmd_context_destroy(ctx);
-> +	return r;
-> +}
-> diff --git a/lib/amdgpu/amd_svm.h b/lib/amdgpu/amd_svm.h
-> new file mode 100644
-> index 000000000..588feb3da
-> --- /dev/null
-> +++ b/lib/amdgpu/amd_svm.h
-> @@ -0,0 +1,41 @@
-> +/* SPDX-License-Identifier: MIT
-> + * Copyright 2026 Advanced Micro Devices, Inc.
-> + */
-> +
-> +#ifndef AMD_SVM_H
-> +#define AMD_SVM_H
-> +
-> +#include "drmtest.h"
-> +#include <amdgpu.h>
-> +#include <amdgpu_drm.h>
-> +
-> +/*
-> + * The IGT-specific convenience helpers below are thin wrappers around that
-> + * core libdrm svm set/get/reset APIs.
-
-Decipher 'svm' also here.
-
-> + */
-> +
-> +int amdgpu_svm_register_range(amdgpu_device_handle dev,
-> +			      void *addr, uint64_t size, uint32_t nattr,
-> +			      struct drm_amdgpu_svm_attribute *attrs);
-> +
-> +int amdgpu_svm_unregister_range(amdgpu_device_handle dev,
-> +				void *addr, uint64_t size);
-> +
-> +int amdgpu_svm_set_prefetch_loc(amdgpu_device_handle dev,
-> +				void *addr, uint64_t size, uint32_t location);
-> +int amdgpu_svm_get_prefetch_loc(amdgpu_device_handle dev,
-> +				void *addr, uint64_t size,
-> +				uint32_t *out);
-> +
-> +/*
-> + * Fill / copy an SVM range from the GPU's SDMA engine. @dst_va (and @src_va
-> + * for copy) are raw SVM virtual addresses, so they may be SVM VAs with no
-> + * backing amdgpu BO.
-> + * Returns 0 on success, non-zero on failure.
-> + */
-> +int amdgpu_svm_sdma_fill(amdgpu_device_handle device, uint64_t dst_va,
-> +			 uint32_t fill_value, uint32_t fill_size);
-> +int amdgpu_svm_sdma_copy(amdgpu_device_handle device, uint64_t dst_va,
-> +			 uint64_t src_va, uint32_t copy_size);
-> +
-> +#endif /* AMD_SVM_H */
-> diff --git a/lib/meson.build b/lib/meson.build
-> index 3001b473e..6e1d6634c 100644
-> --- a/lib/meson.build
-> +++ b/lib/meson.build
-> @@ -180,6 +180,7 @@ if libdrm_amdgpu.found()
->  	lib_deps += libdrm_amdgpu
->  	lib_sources += [
->  		'amdgpu/amd_memory.c',
-> +		'amdgpu/amd_svm.c',
-
-I suggest to keep alphabetical order here, but it is
-already broken...
+I will postpone this after there will be debian container with trixie.
 
 
 Regards,
 Kamil
 
->  		'amdgpu/amd_command_submission.c',
->  		'amdgpu/amd_compute.c',
->  		'amdgpu/amd_cs_radv.c',
+> 
+> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+> Cc: Boris Brezillon <boris.brezillon@collabora.com>
+> Cc: Mark Yacoub <markyacoub@google.com>
+> Cc: Ryszard Knop <ryszard.knop@intel.com>
+> Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Closes: https://gitlab.freedesktop.org/drm/igt-gpu-tools/-/work_items/206
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> ---
+>  Dockerfile.build-fedora     | 2 +-
+>  data/meson.build            | 4 +++-
+>  lib/meson.build             | 4 ++--
+>  meson.build                 | 2 +-
+>  runner/testdata/meson.build | 7 +++----
+>  5 files changed, 10 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Dockerfile.build-fedora b/Dockerfile.build-fedora
+> index a65f1030d..26d069d55 100644
+> --- a/Dockerfile.build-fedora
+> +++ b/Dockerfile.build-fedora
+> @@ -46,6 +46,6 @@ RUN dnf install -y findutils
+>  
+>  # Meson version switching shenanigans
+>  RUN dnf install -y python3-pip
+> -RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/43/9a/e0bcec70d290986c6265d32e0a2d16ace7ef38f58aa5a65308967129d094/{meson-0.52.1.tar.gz}"
+> +RUN curl -o "/usr/src/#1" "https://files.pythonhosted.org/packages/aa/2c/75bcc2722460ef94a9eb3231f6b3466d04a1766ddcd7d660a11ee1cee53a/{meson-1.3.0.tar.gz}"
+>  
+>  RUN dnf clean all
+> diff --git a/data/meson.build b/data/meson.build
+> index 9490d20ac..8898c27e3 100644
+> --- a/data/meson.build
+> +++ b/data/meson.build
+> @@ -1,3 +1,5 @@
+> +fs = import('fs')
+> +
+>  image_files = [
+>    '1080p-left.png',
+>    '1080p-right.png',
+> @@ -5,7 +7,7 @@ image_files = [
+>  ]
+>  
+>  foreach img : image_files
+> -      configure_file(output:img, input:img, copy:true)
+> +	fs.copyfile(img)
+>  endforeach
+>  
+>  install_data(sources : image_files, install_dir : datadir)
+> diff --git a/lib/meson.build b/lib/meson.build
+> index f3e6d9669..66558d5d3 100644
+> --- a/lib/meson.build
+> +++ b/lib/meson.build
+> @@ -218,7 +218,7 @@ if libdrm_amdgpu.found()
+>  	if llvm_mc_prog.found()
+>  		add_project_arguments('-DAMDGPU_LLVM_ENABLED', language : ['c'])
+>  		lib_sources += ['amdgpu/shaders/amd_llvm_asm.c']
+> -		message('Found ' + llvm_mc_prog.path() + ' enabling runtime AMDGPU ISA assembly')
+> +		message('Found ' + llvm_mc_prog.full_path() + ' enabling runtime AMDGPU ISA assembly')
+>  	else
+>  		lib_sources += ['amdgpu/shaders/amd_llvm_asm_stub.c']
+>  		message('llvm-mc not found: using stub implementation (tests will skip)')
+> @@ -295,7 +295,7 @@ foreach f: iga64_assembly_sources
+>  	iga64_codes_targets += custom_target(name,
+>  		input: [ f + '.gen.iga64_codes.c', libiga64_asms.extract_objects(f) ],
+>  		output: name,
+> -		depend_files: [ 'iga64_macros.h', generate_iga64_codes.path() ],
+> +		depend_files: [ 'iga64_macros.h', generate_iga64_codes.full_path() ],
+>  		command: [ 'env', 'IGT_SRCDIR=@SOURCE_ROOT@', generate_iga64_codes, '-o', '@OUTPUT@', '-i', '@INPUT0@', '@INPUT1@' ],
+>  		console: true,
+>  	)
+> diff --git a/meson.build b/meson.build
+> index 980fb6421..b05385795 100644
+> --- a/meson.build
+> +++ b/meson.build
+> @@ -7,7 +7,7 @@ project('igt-gpu-tools', 'c',
+>            'buildtype=debugoptimized',
+>          ],
+>  	license : 'MIT',
+> -	meson_version : '>=0.52.1')
+> +	meson_version : '>=1.3.0')
+>  
+>  if get_option('b_ndebug') != 'false'
+>  	error('Building without -Db_ndebug=false is not supported')
+> diff --git a/runner/testdata/meson.build b/runner/testdata/meson.build
+> index 1f8225918..574067cdb 100644
+> --- a/runner/testdata/meson.build
+> +++ b/runner/testdata/meson.build
+> @@ -1,3 +1,4 @@
+> +fs = import('fs')
+>  
+>  testdata_progs = [ 'successtest',
+>  		   'no-subtests',
+> @@ -17,10 +18,8 @@ foreach prog : testdata_progs
+>  					   install : false)
+>  endforeach
+>  
+> -configure_file(input : 'test-blacklist.txt',
+> -	       output : 'test-blacklist.txt', copy : true)
+> -configure_file(input : 'test-blacklist2.txt',
+> -	       output : 'test-blacklist2.txt', copy : true)
+> +fs.copyfile('test-blacklist.txt')
+> +fs.copyfile('test-blacklist2.txt')
+>  
+>  testdata_list = custom_target('testdata_testlist',
+>  			      output : 'test-list.txt',
 > -- 
-> 2.34.1
+> 2.55.0
 > 
