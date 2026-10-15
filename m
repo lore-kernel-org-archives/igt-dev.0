@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCA8FCC6B33
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 15:56:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A141DCC6B39
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 16:07:45 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6170210EC40;
-	Thu, 15 Oct 2026 15:56:33 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 075C310EC40
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 15:55:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3774B10EC1C;
+	Thu, 15 Oct 2026 16:07:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 46C2D10EC1C
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 16:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792079740; x=1823615740;
+ t=1792080404; x=1823616404;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=+X+uXR5rEFmzz242LNrLlywZVALlzyAR+8+iIYO9Qtg=;
- b=jDkI5V8+dU+e8TvP9gPdXF7BRxoeSCpHh8+5nIHvx6blll7KBNuRFsgf
- vPHWYdb4hgmVzIA10oz1dOmei8GNgapLzbMT2EfFMAWXCkZ4eEctCJHkp
- QybEo+RfgdZ5Hs5gb15+QDDKohRKNOc2eY0i/b9S9YZSNU9YmboQeesar
- RWPrFQTgvkiYQkWSQrr8cL4PqYT2l0W5GVWTZGjoZd3a6HBGUHBnl58LY
- OFPiWL5blXNmTsi9AG9/71QxMS5z+gi3JVx2d318bTaPQh+zc4Yk+xTUl
- GTprKOk7mAIH1fADGQegO+tcly8YYYvtNkDHuVlpkDkR4VH6EtOFHR/ph A==;
-X-CSE-ConnectionGUID: YED9pzKITF2pai/x5Zmcwg==
-X-CSE-MsgGUID: TU2obG5CSmChtdZy1yivDg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="959200"
+ bh=Abcqfum8uR+lne92OoCWyZ5af3mcBx/ZdqaQy8Cy6u0=;
+ b=gYTmUvlK8DLY8KoeIlylfNSyYQX4mUvgZSyDcaGVAXJa9LsRbmTu9+P9
+ I6nlSTv0Tyd0MnGoEiod2Ofzu30TDivafwHTmsPsyI0Kd99Dte2u3OjTE
+ v+xu6OVO72VPDrzDi3gXF+5uIyXw9pMyg6FF3xOrT7R11C1whf1Tc4wiz
+ Q22zAZrsX7HoyCSojwdui8ExqN76Lffawux4Ti6akuxJxq79OIHqQxB32
+ qCILYmWryHB1QVPV38a+ZUX+hxva5koGwXEiUahK9aAbrETo5+MwyfncN
+ IPBlVyHBTcd8Xfyr+BDY0u4uxSp+IQMdNTl7PLCwUczvJnkg4PSGD4JCs g==;
+X-CSE-ConnectionGUID: XmOoEx8gSiSqNs/kxCvVrA==
+X-CSE-MsgGUID: hG2gRejrSR+nFJDqVlxJ9A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="868331"
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="959200"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2026 08:55:39 -0700
-X-CSE-ConnectionGUID: cAcNpUoXTUml00uGBAA3jQ==
-X-CSE-MsgGUID: c6yd4vShQ6eQsluj/iSmvw==
+   d="scan'208";a="868331"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Oct 2026 09:06:37 -0700
+X-CSE-ConnectionGUID: WyXpW/SzQYacQGP/7Z+/tA==
+X-CSE-MsgGUID: cBuLsO+dQN+MMGPJ93y9Nw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="2082068"
+   d="scan'208";a="2196617"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2026 08:55:37 -0700
-Date: Thu, 15 Oct 2026 17:55:35 +0200
+ 15 Oct 2026 09:06:36 -0700
+Date: Thu, 15 Oct 2026 18:06:33 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Daniel Stone <daniels@collabora.com>
 Cc: igt-dev@lists.freedesktop.org, boris.brezillon@collabora.com,
  laura.nao@collabora.com, adrian.larumbe@collabora.com,
  daniel.almeida@collabora.com, liviu.dudau@arm.com
-Subject: Re: [PATCH 3/4] panthor: Add more CSF instructions
-Message-ID: <20261015155535.r7kpj6cagxzkyuei@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH 4/4] panthor: Add simple compute-shader test
+Message-ID: <20261015160633.kqalb7pxpgduquwi@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Daniel Stone <daniels@collabora.com>, igt-dev@lists.freedesktop.org,
  boris.brezillon@collabora.com, laura.nao@collabora.com,
  adrian.larumbe@collabora.com, daniel.almeida@collabora.com,
  liviu.dudau@arm.com
 References: <20261015130837.710795-1-daniels@collabora.com>
- <20261015130837.710795-4-daniels@collabora.com>
+ <20261015130837.710795-5-daniels@collabora.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261015130837.710795-4-daniels@collabora.com>
+In-Reply-To: <20261015130837.710795-5-daniels@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,207 +75,546 @@ Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
 Hi Daniel,
-On 2026-10-15 at 14:05:48 +0100, Daniel Stone wrote:
-> Add a few more CSF instructions which we will need to execute shader
-> workloads.
+On 2026-10-15 at 14:05:49 +0100, Daniel Stone wrote:
+> This test launches a compute shader which performs RMW on a memory
+> array, to check that we can actually launch jobs and see the results.
 > 
 > Signed-off-by: Daniel Stone <daniels@collabora.com>
-LGTM
+> ---
+>  lib/igt_panthor.h             | 204 +++++++++++++++++++++++++++++
+>  tests/panthor/panthor_group.c | 240 ++++++++++++++++++++++++++++++++++
+>  2 files changed, 444 insertions(+)
+> 
+> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
+> index dfeb0ac60..35882fad7 100644
+> --- a/lib/igt_panthor.h
+> +++ b/lib/igt_panthor.h
+> @@ -363,4 +363,208 @@ cs_error_barrier(void)
+>  	return instr.raw;
+>  }
+>  
+> +struct gpu_src_reg {
+> +	uint8_t reg;
+> +	bool last;
+> +	uint8_t rep;
+> +};
+> +
+> +struct gpu_dst_reg {
+> +	uint8_t reg;
+> +};
+> +
+> +enum gpu_flow_ctrl {
+> +	FLOW_NONE = 0,
+> +	FLOW_WAIT0 = 0x1,
+> +	FLOW_WAIT1 = 0x2,
+> +	FLOW_WAIT01 = 0x3,
+> +	FLOW_WAIT2 = 0x4,
+> +	FLOW_WAIT02 = 0x5,
+> +	FLOW_WAIT12 = 0x6,
+> +	FLOW_WAIT012 = 0x7,
+> +	FLOW_WAIT0126 = 0x8,
+> +	FLOW_WAIT = 0x9,
+> +	FLOW_RECONVERGE = 0xa,
+> +	FLOW_WAIT_RESOURCE = 0xc,
+> +	FLOW_DISCARD = 0xd,
+> +	FLOW_END = 0xf,
+> +};
+> +
+> +enum gpu_reg_width {
+> +	REG_WIDTH_LO16 = 0x1,
+> +	REG_WIDTH_HI16 = 0x2,
+> +	REG_WIDTH_32 = 0x3,
+> +};
+> +
+> +static inline struct gpu_dst_reg
+> +gpu_dst_reg(uint8_t reg)
+> +{
+> +	struct gpu_dst_reg ret = {
+> +		.reg = reg
+> +	};
+> +	return ret;
+> +}
+> +
+> +static inline struct gpu_src_reg
+> +gpu_src_zero(void)
+> +{
+> +	struct gpu_src_reg ret = {
+> +		.reg = 255, /* architecturally invalid */
+> +		.last = false,
+> +		.rep = (0x3 << 6),
+> +	};
+> +	return ret;
+> +}
+> +
+> +static inline struct gpu_src_reg
+> +gpu_src_reg(uint8_t reg)
+> +{
+> +	struct gpu_src_reg ret = {
+> +		.reg = reg,
+> +		.last = false,
+> +		.rep = reg,
+> +	};
+> +	return ret;
+> +}
+> +
+> +static inline struct gpu_src_reg
+> +gpu_src_reg_last(uint8_t reg)
+> +{
+> +	struct gpu_src_reg ret = {
+> +		.reg = reg,
+> +		.last = true,
+> +		.rep = (reg | (1 << 6)),
+> +	};
+> +	return ret;
+> +}
+> +
+> +#define ins(x, v, s) x |= ((uint64_t) v << s)
+
+imho this should be:
+#define ins(x, v, s) x |= (((uint64_t)(v)) << (s))
+
+See warning from checkpatch.pl script. Warn about x could be ignored.
+
+> +
+> +static inline uint64_t
+> +gpu_mov_imm_i32(struct gpu_dst_reg dst, int32_t imm, enum gpu_flow_ctrl flow)
+> +{
+> +	uint64_t ret = 0;
+
+Add newline.
+
+> +	ins(ret, gpu_src_zero().rep, 0);
+> +	ins(ret, imm, 8);
+> +	ins(ret, dst.reg, 40);
+> +	ins(ret, REG_WIDTH_32, 46);
+> +	ins(ret, 0x0, 48); /* opcode */
+> +	ins(ret, 0x11, 52); /* class */
+> +	ins(ret, 0x0, 57); /* FAU */
+> +	ins(ret, flow, 59);
+
+Add newline.
+
+> +	return ret;
+> +}
+> +
+> +static inline uint64_t
+> +gpu_lshift_or_i32(struct gpu_dst_reg dst, struct gpu_src_reg src,
+> +		  struct gpu_src_reg shift, struct gpu_src_reg or,
+> +		  enum gpu_flow_ctrl flow)
+> +{
+> +	uint64_t ret = 0;
+
+Add newline.
+
+> +	ins(ret, src.rep, 0);
+> +	ins(ret, shift.rep, 8);
+> +	ins(ret, or.rep, 16);
+> +	ins(ret, 0x1, 24); /* logicop = or */
+> +	ins(ret, 0x4, 26); /* lanes = b0 */
+> +	ins(ret, 0x0, 30); /* dst.not = false */
+> +	ins(ret, 0x1, 32); /* shift = left */
+> +	ins(ret, 0x0, 35); /* src2.not = false */
+> +	ins(ret, 0x0, 36); /* widen = false */
+> +	ins(ret, dst.reg, 40);
+> +	ins(ret, REG_WIDTH_32, 46);
+> +	ins(ret, 0x4, 48); /* opcode */
+> +	ins(ret, 0xb, 52); /* class */
+> +	ins(ret, 0x0, 57); /* FAU */
+> +	ins(ret, flow, 59);
+
+Add newline.
+
+> +	return ret;
+> +}
+> +
+> +static inline uint64_t
+> +gpu_iadd_u32(struct gpu_dst_reg dst, struct gpu_src_reg left,
+> +	     struct gpu_src_reg right, enum gpu_flow_ctrl flow)
+> +{
+> +	uint64_t ret = 0;
+
+Add newline.
+
+> +	ins(ret, left.rep, 0);
+> +	ins(ret, right.rep, 8);
+> +	ins(ret, 0x0, 16); /* opcode */
+> +	ins(ret, 0x0, 26); /* widen1 */
+> +	ins(ret, 0x0, 30); /* saturate */
+> +	ins(ret, 0x0, 36); /* widen0 */
+> +	ins(ret, dst.reg, 40);
+> +	ins(ret, REG_WIDTH_32, 46);
+> +	ins(ret, 0x0, 48); /* data type */
+> +	ins(ret, 0xa, 52); /* class */
+> +	ins(ret, 0x0, 57); /* FAU */
+> +	ins(ret, flow, 59);
+
+Add newline.
+
+> +	return ret;
+> +}
+> +
+> +static inline uint64_t
+> +gpu_imul_u32(struct gpu_dst_reg dst, struct gpu_src_reg left,
+> +	     struct gpu_src_reg right, enum gpu_flow_ctrl flow)
+> +{
+> +	uint64_t ret = 0;
+
+Add newline.
+
+> +	ins(ret, left.rep, 0);
+> +	ins(ret, right.rep, 8);
+> +	ins(ret, 0xa, 16); /* opcode */
+> +	ins(ret, 0x0, 26); /* widen1 */
+> +	ins(ret, 0x0, 30); /* saturate */
+> +	ins(ret, 0x0, 36); /* widen0 */
+> +	ins(ret, dst.reg, 40);
+> +	ins(ret, REG_WIDTH_32, 46);
+> +	ins(ret, 0x0, 48); /* data type */
+> +	ins(ret, 0xa, 52); /* class */
+> +	ins(ret, 0x0, 57); /* FAU */
+> +	ins(ret, flow, 59);
+
+Add newline.
+
+> +	return ret;
+> +}
+> +
+> +static inline uint64_t
+> +gpu_load_i32(struct gpu_dst_reg dst, struct gpu_src_reg addr_lo,
+> +	     struct gpu_src_reg addr_hi, uint16_t offset,
+> +	     uint8_t sb_slot, enum gpu_flow_ctrl flow)
+> +{
+> +	uint64_t ret = 0;
+
+Add newline.
+
+> +	igt_assert_eq(addr_hi.reg, addr_lo.reg + 1);
+> +	ins(ret, addr_lo.rep, 0);
+> +	ins(ret, offset, 8);
+> +	ins(ret, 0x0, 24); /* access mode */
+> +	ins(ret, REG_WIDTH_32, 27);
+> +	ins(ret, sb_slot, 30);
+> +	ins(ret, 0x1, 33); /* staging register count */
+> +	ins(ret, 0x0, 36); /* load 32 */
+> +	ins(ret, 0x1, 39); /* no sign extension */
+> +	ins(ret, dst.reg, 40); /* base staging register */
+> +	ins(ret, 0x2, 46); /* write staging registers */
+> +	ins(ret, 0x0, 48); /* opcode */
+> +	ins(ret, 0x6, 52); /* class */
+> +	ins(ret, 0x0, 57); /* FAU */
+> +	ins(ret, flow, 59);
+
+Add newline.
+
+> +	return ret;
+> +}
+> +
+> +static inline uint64_t
+> +gpu_store_i32(struct gpu_src_reg addr_lo, struct gpu_src_reg addr_hi,
+> +	      struct gpu_src_reg val, uint16_t offset,
+> +	      uint8_t sb_slot, enum gpu_flow_ctrl flow)
+> +{
+> +	uint64_t ret = 0;
+
+Add newline.
+
+> +	igt_assert_eq(addr_hi.reg, addr_lo.reg + 1);
+> +	ins(ret, addr_lo.rep, 0);
+> +	ins(ret, offset, 8);
+> +	ins(ret, 0x0, 24); /* access mode */
+> +	ins(ret, REG_WIDTH_32, 27);
+> +	ins(ret, sb_slot, 30);
+> +	ins(ret, 0x1, 33); /* staging register count */
+> +	ins(ret, val.reg, 40); /* base staging register */
+> +	ins(ret, 0x1, 46); /* read staging registers */
+> +	ins(ret, 0x1, 48); /* opcode */
+> +	ins(ret, 0x6, 52); /* class */
+> +	ins(ret, 0x0, 57); /* FAU */
+> +	ins(ret, flow, 59);
+
+Add newline.
+
+> +	return ret;
+> +}
+> +
+> +#undef ins
+> +
+>  #endif /* IGT_PANTHOR_H */
+> diff --git a/tests/panthor/panthor_group.c b/tests/panthor/panthor_group.c
+> index c79f8d629..feca42482 100644
+> --- a/tests/panthor/panthor_group.c
+> +++ b/tests/panthor/panthor_group.c
+> @@ -10,6 +10,133 @@
+>  #include "igt_syncobj.h"
+>  #include "panthor_drm.h"
+>  
+> +/*
+> + * Record a simple compute program:
+> + * {
+> + *     extern uint32_t shared_buf[num_invocations];
+> + *     extern const uint32_t my_invocation_id;
+> + *     shared_buf[my_invocation_id] *= my_invocation_id;
+> + * }
+> + */
+> +static void
+> +record_compute_prog(uint8_t *csf_cmdbuf, unsigned int *csf_cmdbuf_size,
+> +		    uint8_t *gpu_cmdbuf, unsigned int *gpu_cmdbuf_size,
+> +		    uint32_t srt_gpuva, uint32_t fau_gpuva, uint32_t spd_gpuva,
+> +		    uint32_t tsd_gpuva, uint32_t data_gpuva)
+> +{
+> +	const uint8_t reg_id_global_x = 60; /* preloaded */
+> +	const uint8_t reg_addr_lo = 0;
+> +	const uint8_t reg_addr_hi = 1;
+> +	const uint8_t reg_val = 2;
+> +	const uint8_t reg_offset = 3;
+> +	const uint8_t reg_shift = 4;
+> +	const uint8_t compute_sr_base = 0;
+> +	const uint8_t zero_reg = 40;
+> +
+> +	uint64_t gpu_instrs[] = {
+> +		/* MOV_IMM.i32 rADDRLO, 0x10000 */
+> +		gpu_mov_imm_i32(gpu_dst_reg(reg_addr_lo), data_gpuva, FLOW_NONE),
+> +		/* MOV_IMM.i32 rADDRHI, 0x0 */
+> +		gpu_mov_imm_i32(gpu_dst_reg(reg_addr_hi), 0x0, FLOW_NONE),
+> +		/* MOV_IMM.i32 rSHIFT, 0x2 */
+> +		gpu_mov_imm_i32(gpu_dst_reg(reg_shift), 0x2, FLOW_NONE),
+> +		/* LSHIFT_OR.i32 rOFFSET, rGLOBALID, rSHIFT^, 0x0 */
+> +		gpu_lshift_or_i32(gpu_dst_reg(reg_offset),
+> +				  gpu_src_reg(reg_id_global_x),
+> +				  gpu_src_reg_last(reg_shift),
+> +				  gpu_src_zero(),
+> +				  FLOW_NONE),
+> +		/* IADD.u32 rADDRLO, rADDRLO^, rOFFSET^ */
+> +		gpu_iadd_u32(gpu_dst_reg(reg_addr_lo),
+> +			     gpu_src_reg_last(reg_addr_lo),
+> +			     gpu_src_reg_last(reg_offset),
+> +			     FLOW_NONE),
+> +		/* LOAD.i32.slot0.wait0 @rVAL, [rADDRLO:rADDRHI], offset:0 */
+> +		gpu_load_i32(gpu_dst_reg(reg_val),
+> +			     gpu_src_reg(reg_addr_lo),
+> +			     gpu_src_reg(reg_addr_hi),
+> +			     0x0,
+> +			     0, FLOW_WAIT0),
+> +		/* IMUL_u32 rVAL, rVAL^, rGLOBALID^ */
+> +		gpu_imul_u32(gpu_dst_reg(reg_val),
+> +			     gpu_src_reg_last(reg_val),
+> +			     gpu_src_reg_last(reg_id_global_x),
+> +			     FLOW_NONE),
+> +		/* STORE.i32.slot1.end @rVAL, [rADDRLO^:rADDRHI^], offset:0 */
+> +		gpu_store_i32(gpu_src_reg_last(reg_addr_lo),
+> +			      gpu_src_reg_last(reg_addr_hi),
+> +			      gpu_src_reg(reg_val),
+> +			      0x0,
+> +			      1, FLOW_END),
+> +	};
+> +
+> +	uint64_t csf_instrs[] = {
+> +		/* REQ_RESOURCE.compute */
+> +		cs_req_resource(true, false, false, false),
+> +		/* MOV32 r40, 0 (always force cache flush/invalidate) */
+> +		cs_mov32(zero_reg, 0),
+> +		/* FLUSH_CACHE.clean_invalidate_l2.clean_invalidate_lsc.invalidate_other.sb0 */
+> +		cs_flush(CS_FLUSH_MODE_CLEAN_AND_INVALIDATE,
+> +			 CS_FLUSH_MODE_CLEAN_AND_INVALIDATE,
+> +			 CS_FLUSH_MODE_INVALIDATE,
+> +			 0, zero_reg, 1),
+> +		/* WAIT (flush) */
+> +		cs_wait(0xff, false),
+> +		/* ShaderResourceTable 0-3 pointers */
+> +		cs_mov48(compute_sr_base +  0, srt_gpuva),
+> +		cs_mov48(compute_sr_base +  2, 0x222222222222),
+> +		cs_mov48(compute_sr_base +  4, 0x333333333333),
+> +		cs_mov48(compute_sr_base +  6, 0x444444444444),
+> +		/* FastAccessUniform table 0-3 pointers */
+> +		cs_mov48(compute_sr_base +  8, fau_gpuva),
+> +		cs_mov48(compute_sr_base + 10, 0x666666666666),
+> +		cs_mov48(compute_sr_base + 12, 0x777777777777),
+> +		cs_mov48(compute_sr_base + 14, 0x888888888888),
+> +		/* ShaderProgramDescriptor 0-3 pointers */
+> +		cs_mov48(compute_sr_base + 16, spd_gpuva),
+> +		cs_mov48(compute_sr_base + 18, 0x999999999999),
+> +		cs_mov48(compute_sr_base + 20, 0xaaaaaaaaaaaa),
+> +		cs_mov48(compute_sr_base + 22, 0xbbbbbbbbbbbb),
+> +		/* ThreadStorageDescriptor 0-3 pointers */
+> +		cs_mov48(compute_sr_base + 24, tsd_gpuva),
+> +		cs_mov48(compute_sr_base + 26, 0xdddddddddddd),
+> +		cs_mov48(compute_sr_base + 28, 0xeeeeeeeeeeee),
+> +		cs_mov48(compute_sr_base + 30, 0xffffffffffff),
+> +		/* global ID offset = 0 */
+> +		cs_mov32(compute_sr_base + 32, 0),
+> +		/* workgroup size 64x1x1, allow merge */
+> +		cs_mov32(compute_sr_base + 33, (63 << 0) | (0 << 10) | (0 << 20) | (1 << 31)),
+> +		/* job offset (x/y/z) = { 0, 0, 0 } */
+> +		cs_mov32(compute_sr_base + 34, 0),
+> +		cs_mov32(compute_sr_base + 35, 0),
+> +		cs_mov32(compute_sr_base + 36, 0),
+> +		/* job size (x/y/z) = { 64, 1, 1 } */
+> +		cs_mov32(compute_sr_base + 37, 64),
+> +		cs_mov32(compute_sr_base + 38, 1),
+> +		cs_mov32(compute_sr_base + 39, 1),
+> +		/* SET_SB_ENTRY.async_ep1.other1 */
+> +		cs_set_sb_entry(1, 1),
+> +		/* RUN_COMPUTE.increment64.x_axis.no_increment.srt0.spd0.tsd0.fau0 */
+> +		cs_run_compute(64, CS_TASK_AXIS_X, 0, 0, 0, 0, 0),
+> +		/* WAIT (RUN_COMPUTE) */
+> +		cs_wait(0xff, false),
+> +		/* FLUSH_CACHE.clean_invalidate_l2.clean_invalidate_lsc.invalidate_other.sb0 */
+> +		cs_flush(CS_FLUSH_MODE_CLEAN_AND_INVALIDATE,
+> +			 CS_FLUSH_MODE_CLEAN_AND_INVALIDATE,
+> +			 CS_FLUSH_MODE_INVALIDATE,
+> +			 0, zero_reg, 1),
+> +		/* WAIT (flush) */
+> +		cs_wait(0xff, false),
+> +		/* ERROR_BARRIER */
+> +		cs_error_barrier(),
+> +	};
+> +
+> +	memcpy(gpu_cmdbuf, gpu_instrs, sizeof(gpu_instrs));
+> +	*gpu_cmdbuf_size = sizeof(gpu_instrs);
+> +	memcpy(csf_cmdbuf, csf_instrs, sizeof(csf_instrs));
+> +	*csf_cmdbuf_size = sizeof(csf_instrs);
+> +}
+> +
+>  static size_t
+>  issue_store_multiple(uint8_t *cs, uint64_t kernel_va, uint32_t constant)
+>  {
+> @@ -118,6 +245,119 @@ int igt_main() {
+>  		igt_panthor_free_bo(fd, &result_bo);
+>  	}
+>  
+> +	igt_describe("Submit a simple compute job with memory access.");
+> +	igt_subtest("simple_compute") {
+> +		uint32_t vm_id;
+> +		uint32_t group_handle;
+> +		struct panthor_bo csf_cmdbuf_bo = {};
+> +		struct panthor_bo gpu_cmdbuf_bo = {};
+> +		struct panthor_bo resource_table_bo = {};
+> +		struct panthor_bo data_bo = {};
+> +		uint64_t csf_cmdbuf_gpuva;
+> +		uint32_t csf_cmdbuf_size;
+> +		uint64_t gpu_cmdbuf_gpuva;
+> +		uint32_t gpu_cmdbuf_size;
+> +		uint32_t resource_table_gpuva;
+> +		uint32_t data_gpuva;
+> +		uint32_t syncobj_handle;
+> +		uint32_t srt_offset;
+> +		uint32_t fau_offset;
+> +		uint32_t spd_offset;
+> +		uint32_t *spd_ptr;
+> +		uint32_t spd_gpuva;
+> +		uint32_t tsd_offset;
+> +		uint32_t *tsd_ptr;
+> +		int arch = igt_panthor_get_arch(fd);
+> +
+> +		igt_require(arch < 15);
+> +
+> +		igt_panthor_vm_create(fd, &vm_id, 0);
+> +
+> +		/* CSF ISA command stream */
+> +		csf_cmdbuf_gpuva = 0x1000000;
+> +		igt_panthor_bo_create_mapped(fd, &csf_cmdbuf_bo, 4096, 0, 0);
+> +		igt_panthor_vm_bind(fd, vm_id, csf_cmdbuf_bo.handle, csf_cmdbuf_gpuva,
+> +				    csf_cmdbuf_bo.size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
+> +		memset(csf_cmdbuf_bo.map, 0, csf_cmdbuf_bo.size);
+> +
+> +		/* GPU ISA command stream */
+> +		gpu_cmdbuf_gpuva = 0x2000000;
+> +		igt_panthor_bo_create_mapped(fd, &gpu_cmdbuf_bo, 4096, 0, 0);
+> +		igt_panthor_vm_bind(fd, vm_id, gpu_cmdbuf_bo.handle, gpu_cmdbuf_gpuva,
+> +				    gpu_cmdbuf_bo.size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
+> +		memset(gpu_cmdbuf_bo.map, 0, gpu_cmdbuf_bo.size);
+> +
+> +		/* resource tables passed to RUN_COMPUTE */
+> +		resource_table_gpuva = 0x3000000;
+> +		igt_panthor_bo_create_mapped(fd, &resource_table_bo, 4096, 0, 0);
+> +		igt_panthor_vm_bind(fd, vm_id, resource_table_bo.handle, resource_table_gpuva,
+> +				    resource_table_bo.size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
+> +		memset(resource_table_bo.map, 0, resource_table_bo.size);
+> +		/* ShaderResourceTable descriptor (zeroed) */
+> +		srt_offset = 0;
+> +		/* FastAccessUniform descriptor (zeroed) */
+> +		fau_offset = 128;
+> +		/* ShaderProgramDescriptor */
+> +		spd_offset = 256;
+> +		spd_gpuva = resource_table_gpuva + spd_offset;
+> +		if (arch == 14)
+> +			spd_gpuva |= 2; /* register allocation propagated into ptr */
+> +		spd_ptr = (uint32_t *) ((unsigned char *) resource_table_bo.map + spd_offset);
+
+No need for space after a cast:
+
+		spd_ptr = (uint32_t *)((unsigned char *)resource_table_bo.map + spd_offset);
+
+> +		spd_ptr[0] = 0x8 | (0x1 << 4); /* compute shader */
+> +		spd_ptr[0] |= (0 << 16) | (0 << 17) | (0 << 19); /* no NaN suppress, FTZ, inf suppress */
+
+You can ignore checkpatch warn 'line too long'.
+
+> +		spd_ptr[0] |= (0 << 29) | (2 << 30); /* no JUMP_EX, max 32 registers */
+> +		spd_ptr[1] |= (1 << 12); /* preload GlobalInvocationID.x into r60 */
+> +		spd_ptr[2] = gpu_cmdbuf_gpuva; /* initial PC */
+> +		/* ThreadStorageDescriptor */
+> +		tsd_offset = 512;
+> +		tsd_ptr = (uint32_t *) ((unsigned char *) resource_table_bo.map + tsd_offset);
+> +		tsd_ptr[1] = 0x1f; /* max wls_instances */
+> +
+> +		/* CPU<->GPU shared data */
+> +		data_gpuva = 0x4000000;
+> +		igt_panthor_bo_create_mapped(fd, &data_bo, 16384, 0, 0);
+> +		igt_panthor_vm_bind(fd, vm_id, data_bo.handle, data_gpuva,
+> +				    data_bo.size, DRM_PANTHOR_VM_BIND_OP_TYPE_MAP, 0);
+> +		for (unsigned int i = 0; i < 64 * 64; i++) {
+> +			uint32_t *x = data_bo.map + (i * sizeof(uint32_t));
+> +			*x = i;
+> +		}
+> +
+> +		record_compute_prog(csf_cmdbuf_bo.map, &csf_cmdbuf_size,
+> +				    gpu_cmdbuf_bo.map, &gpu_cmdbuf_size,
+> +				    resource_table_gpuva + srt_offset,
+> +				    resource_table_gpuva + fau_offset,
+> +				    spd_gpuva,
+> +				    resource_table_gpuva + tsd_offset,
+> +				    data_gpuva);
+> +
+> +		group_handle = igt_panthor_group_create_simple(fd, vm_id, 0);
+> +		igt_assert_neq(group_handle, 0);
+> +
+> +		syncobj_handle = syncobj_create(fd, 0);
+> +
+> +		igt_panthor_group_submit_simple(fd, group_handle, 0,
+> +						csf_cmdbuf_gpuva, csf_cmdbuf_size,
+> +						syncobj_handle, 0);
+> +		igt_assert(syncobj_wait(fd, &syncobj_handle, 1, INT64_MAX, 0, NULL));
+> +
+> +		for (unsigned int i = 0; i < 64 * 64; i++) {
+> +			uint32_t *x = data_bo.map + (i * sizeof(uint32_t));
+
+Add newline.
+
+With above fixed this is
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
-> ---
->  lib/igt_panthor.h | 126 ++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 126 insertions(+)
-> 
-> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
-> index 3056ebd75..dfeb0ac60 100644
-> --- a/lib/igt_panthor.h
-> +++ b/lib/igt_panthor.h
-> @@ -64,8 +64,13 @@ enum cs_opcode {
->  	CS_OPCODE_MOVE48 = 1,
->  	CS_OPCODE_MOVE32 = 2,
->  	CS_OPCODE_WAIT = 3,
-> +	CS_OPCODE_RUN_COMPUTE = 4,
->  	CS_OPCODE_STM = 21,
-> +	CS_OPCODE_SET_SB_ENTRY = 23,
-> +	CS_OPCODE_CALL = 32,
-> +	CS_OPCODE_REQ_RESOURCE = 34,
->  	CS_OPCODE_FLUSH_CACHE = 36,
-> +	CS_OPCODE_ERROR_BARRIER = 47,
->  };
->  
->  enum cs_flush_mode {
-> @@ -75,6 +80,12 @@ enum cs_flush_mode {
->  	CS_FLUSH_MODE_CLEAN_AND_INVALIDATE = 3,
->  };
->  
-> +enum cs_task_axis {
-> +	CS_TASK_AXIS_X = 0,
-> +	CS_TASK_AXIS_Y = 1,
-> +	CS_TASK_AXIS_Z = 2,
-> +};
+> +			igt_assert_eq(*x, i * i);
+> +		}
 > +
->  /* There's no plan to support big endian in the UMD, so keep
->   * things simple and don't bother supporting it.
->   */
-> @@ -108,6 +119,19 @@ struct cs_instr {
->  			uint64_t unused1: 23;
->  			uint64_t opcode: 8;
->  		} wait;
-> +		struct {
-> +			uint64_t task_increment: 14;
-> +			uint64_t task_axis: 2;
-> +			uint64_t unused0: 16;
-> +			uint64_t progress: 1;
-> +			uint64_t unused1: 7;
-> +			uint64_t srt_entry: 2;
-> +			uint64_t spd_entry: 2;
-> +			uint64_t tsd_entry: 2;
-> +			uint64_t fau_entry: 2;
-> +			uint64_t unused2: 8;
-> +			uint64_t opcode: 8;
-> +		} run_compute;
->  		struct {
->  			uint64_t offset: 16;
->  			uint64_t mask: 16;
-> @@ -116,6 +140,27 @@ struct cs_instr {
->  			uint64_t src: 8;
->  			uint64_t opcode: 8;
->  		} stm;
-> +		struct {
-> +			uint64_t ep_entry: 4;
-> +			uint64_t other_entry: 4;
-> +			uint64_t unused: 48;
-> +			uint64_t opcode: 8;
-> +		} set_sb_entry;
-> +		struct {
-> +			uint64_t unused0: 32;
-> +			uint64_t len: 8;
-> +			uint64_t addr: 8;
-> +			uint64_t unused1: 8;
-> +			uint64_t opcode: 8;
-> +		} call;
-> +		struct {
-> +			uint64_t compute: 1;
-> +			uint64_t fragment: 1;
-> +			uint64_t tiler: 1;
-> +			uint64_t idvs: 1;
-> +			uint64_t unused: 52;
-> +			uint64_t opcode: 8;
-> +		} req_resource;
->  		struct {
->  			uint64_t l2_mode: 4;
->  			uint64_t lsc_mode: 4;
-> @@ -128,6 +173,10 @@ struct cs_instr {
->  			uint64_t unused2: 4;
->  			uint64_t opcode: 8;
->  		} flush;
-> +		struct {
-> +			uint64_t unused: 56;
-> +			uint64_t opcode: 8;
-> +		} error_barrier;
->  		uint64_t raw;
->  	};
->  };
-> @@ -186,6 +235,27 @@ cs_wait(uint16_t wait_mask, bool progress_inc)
->  	return instr.raw;
->  }
->  
-> +static inline uint64_t
-> +cs_run_compute(uint16_t task_increment, enum cs_task_axis task_axis, bool progress,
-> +	       uint32_t srt_entry, uint32_t spd_entry, uint32_t tsd_entry,
-> +	       uint32_t fau_entry)
-> +{
-> +	struct cs_instr instr = {
-> +		.run_compute = {
-> +			.task_increment = task_increment,
-> +			.task_axis = task_axis,
-> +			.progress = progress,
-> +			.srt_entry = srt_entry,
-> +			.spd_entry = spd_entry,
-> +			.tsd_entry = tsd_entry,
-> +			.fau_entry = fau_entry,
-> +			.opcode = CS_OPCODE_RUN_COMPUTE,
-> +		},
-> +	};
+> +		syncobj_destroy(fd, syncobj_handle);
 > +
-> +	return instr.raw;
-> +}
+> +		igt_panthor_group_destroy(fd, group_handle, 0);
 > +
->  static inline uint64_t
->  cs_stm(uint8_t address, uint8_t src, uint16_t mask, int16_t offset)
->  {
-> @@ -214,6 +284,50 @@ cs_stm64(uint8_t address, uint8_t src, int16_t offset)
->  	return cs_stm(address, src, 0x3, offset);
->  }
->  
-> +static inline uint64_t
-> +cs_set_sb_entry(uint32_t ep_entry, uint32_t other_entry)
-> +{
-> +	struct cs_instr instr = {
-> +		.set_sb_entry = {
-> +			.ep_entry = ep_entry,
-> +			.other_entry = other_entry,
-> +			.opcode = CS_OPCODE_SET_SB_ENTRY,
-> +		},
-> +	};
+> +		igt_panthor_vm_destroy(fd, vm_id, 0);
 > +
-> +	return instr.raw;
-> +}
+> +		igt_panthor_free_bo(fd, &data_bo);
+> +		igt_panthor_free_bo(fd, &resource_table_bo);
+> +		igt_panthor_free_bo(fd, &gpu_cmdbuf_bo);
+> +		igt_panthor_free_bo(fd, &csf_cmdbuf_bo);
+> +	}
 > +
-> +static inline uint64_t
-> +cs_call(uint8_t addr, uint8_t len)
-> +{
-> +	struct cs_instr instr = {
-> +		.call = {
-> +			.addr = addr,
-> +			.len = len,
-> +			.opcode = CS_OPCODE_CALL,
-> +		},
-> +	};
-> +
-> +	return instr.raw;
-> +}
-> +
-> +static inline uint64_t
-> +cs_req_resource(bool compute, bool fragment, bool tiler, bool idvs)
-> +{
-> +	struct cs_instr instr = {
-> +		.req_resource = {
-> +			.compute = compute,
-> +			.fragment = fragment,
-> +			.tiler = tiler,
-> +			.idvs = idvs,
-> +			.opcode = CS_OPCODE_REQ_RESOURCE,
-> +		},
-> +	};
-> +
-> +	return instr.raw;
-> +}
-> +
->  static inline uint64_t
->  cs_flush(enum cs_flush_mode l2_mode,
->  	 enum cs_flush_mode lsc_mode,
-> @@ -237,4 +351,16 @@ cs_flush(enum cs_flush_mode l2_mode,
->  	return instr.raw;
->  }
->  
-> +static inline uint64_t
-> +cs_error_barrier(void)
-> +{
-> +	struct cs_instr instr = {
-> +		.error_barrier = {
-> +			.opcode = CS_OPCODE_ERROR_BARRIER,
-> +		},
-> +	};
-> +
-> +	return instr.raw;
-> +}
-> +
->  #endif /* IGT_PANTHOR_H */
+>  	igt_fixture() {
+>  		drm_close_driver(fd);
+>  	}
 > -- 
 > 2.47.3
 > 
