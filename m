@@ -4,27 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A36B6CC6B2F
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 04:14:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0EC79CC6B2F
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 04:55:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4F87E10EB63;
-	Thu, 15 Oct 2026 04:14:30 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 87FA410E224;
+	Thu, 15 Oct 2026 04:55:50 +0000 (UTC)
 Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28A3310EB63;
- Thu, 15 Oct 2026 04:13:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A2E8410E224;
+ Thu, 15 Oct 2026 04:55:03 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6862257690394227817=="
+ boundary="===============2303478650761825358=="
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Support_PMT_for_BMG_and_CRI?=
- =?utf-8?q?_devices?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1?=
+ =?utf-8?q?/3=5D_lib/amdgpu=3A_add_MES_reset_test_helpers?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ruhl, Michael J" <michael.j.ruhl@intel.com>
+To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Oct 2026 04:13:44 -0000
-Message-ID: <179203762415.27011.10832725813524691515@221881a7231d>
+Date: Thu, 15 Oct 2026 04:55:03 -0000
+Message-ID: <179204010366.26939.16445195693444075510@221881a7231d>
 X-Patchwork-Hint: ignore
-References: <20261014160516.3542311-4-michael.j.ruhl@intel.com>
-In-Reply-To: <20261014160516.3542311-4-michael.j.ruhl@intel.com>
+References: <20261015040236.112017-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20261015040236.112017-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -41,20 +41,20 @@ Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============6862257690394227817==
+--===============2303478650761825358==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Support PMT for BMG and CRI devices
-URL   : https://patchwork.freedesktop.org/series/176144/
+Series: series starting with [1/3] lib/amdgpu: add MES reset test helpers
+URL   : https://patchwork.freedesktop.org/series/176166/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9146_BAT -> XEIGTPW_15988_BAT
+CI Bug Log - changes from IGT_9146 -> IGTPW_15989
 ====================================================
 
 Summary
@@ -64,52 +64,38 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15989/index.html
 
-Participating hosts (15 -> 15)
+Participating hosts (39 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): bat-dg2-13 
 
-Known issues
-------------
 
-  Here are the changes found in XEIGTPW_15988_BAT that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-bmg-2:          [ABORT][1] ([Intel XE#9463]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15988/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-    - bat-nvls-1:         [DMESG-WARN][3] ([Intel XE#8762] / [Intel XE#9069]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15988/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
-
-  
-  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
-  [Intel XE#9069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069
-  [Intel XE#9463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463
+  No changes found
 
 
 Build changes
 -------------
 
-  * IGT: IGT_9146 -> IGTPW_15988
-  * Linux: xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662 -> xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9146 -> IGTPW_15989
+  * Linux: CI_DRM_19336 -> CI_DRM_19340
 
-  IGTPW_15988: 83493932faf2ff02f1c101d9346224edc41a9e42 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  CI-20190529: 20190529
+  CI_DRM_19336: c06d7623a198463e9aa2d09a3c33d96fe66ea662 @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19340: ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_15989: 4d44937acee5e59fd0bac3a67085b011701ea88b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
   IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662: c06d7623a198463e9aa2d09a3c33d96fe66ea662
-  xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3: ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15988/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15989/index.html
 
---===============6862257690394227817==
+--===============2303478650761825358==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -129,43 +115,37 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Support PMT for BMG and CRI devices</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176144/">https://patchwork.freedesktop.org/series/176144/</a></td></tr>
+<tr><td><b>Series:</b></td><td>series starting with [1/3] lib/amdgpu: add MES reset test helpers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176166/">https://patchwork.freedesktop.org/series/176166/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15988/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15988/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15989/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15989/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9146_BAT -&gt; XEIGTPW_15988_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9146 -&gt; IGTPW_15989</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15988_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463">Intel XE#9463</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15988/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069">Intel XE#9069</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15988/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-</ul>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15989/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9146 -&gt; IGTPW_15988</li>
-<li>Linux: xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662 -&gt; xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3</li>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9146 -&gt; IGTPW_15989</li>
+<li>Linux: CI_DRM_19336 -&gt; CI_DRM_19340</li>
 </ul>
-<p>IGTPW_15988: 83493932faf2ff02f1c101d9346224edc41a9e42 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662: c06d7623a198463e9aa2d09a3c33d96fe66ea662<br />
-  xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3: ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19336: c06d7623a198463e9aa2d09a3c33d96fe66ea662 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19340: ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_15989: 4d44937acee5e59fd0bac3a67085b011701ea88b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
 
 </body>
 </html>
 
---===============6862257690394227817==--
+--===============2303478650761825358==--
