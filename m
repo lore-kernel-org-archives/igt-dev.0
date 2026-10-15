@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ACC2ACC6B34
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 06:25:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A390DCC6B34
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 06:26:38 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B09410E9F5;
-	Thu, 15 Oct 2026 06:25:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 20A3910EB73;
+	Thu, 15 Oct 2026 06:26:33 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 0FBEF10E9F5
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 06:24:37 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 394DF10EB73
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 06:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792045478; x=1823581478;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=A3m+U+LioOjFSeT1dDf6rc1Q0P+4pyB/mTW+9jWxb+k=;
- b=g0J7nYQBwztvJoNHIlplnD/pa9IsvkhljI4TwOAPJP0t44QWuzDoAfjh
- HBzUlQ+jx2l3qAYr0VbOlAbBdwkEqWcLooQ8m0H9LUlxMoTJ4N88o+jHp
- 60k+BA6nwVxelJNNkFKsRtTQ6cjazaX3nnuLqAQvFz4GAj8dxdcRsIi8T
- 71DIILUAXPioPcACtvJhyAAEmRv0QpLNr5qdQeZ4bEh9uGhJmkA8XTz9v
- kCDuG4ZRqy14DDSzXf7l1hw626uIh4fjOu86FvjPd/0ht0H+tKnCYSY5s
- raAEt2O56LyQZeUnf6v+pRd4h0uZ45H+Wg7XJdmpod/qe7SgMZqmmWZmR w==;
-X-CSE-ConnectionGUID: t89T1xAaRYO1f2Q8TO6HFQ==
-X-CSE-MsgGUID: qchucINQT+mIi4oEA4w0/Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="680118"
+ t=1792045479; x=1823581479;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=viHuy3SIjiuTnR0Y+YuwcIZEl5072FypUXEepCV0Ztc=;
+ b=kVLXdCE+evIwOPgy7h8r8osVzXX2p2E64Da0etHJEFgAP1wK39h+yeVT
+ KvlhL8du4ZqhLEjP0JFP/91Go57CUGtmUGkQ7XvZqx1AzKApIdxRBNrex
+ 2Z0D4IrE3vHFE/pLi5qcgyhidVWyREhZn3vtGpQZovSAkcwR/4Jm/LP+g
+ JxXQ0hsp+H9z8ZSCKopbcMgSsE0wRVKujuNy1I7yyh2LhVynydvsmAKBk
+ Y9fqC0Beijh4EUHO95naI3nVn9zd7qMi45JrHOt7ogqkL9lma/JoohT7l
+ BZKhYsIM/GfseAIArUcSDRnqztkhbjUukd+tHEAQWQ2cc8UHHRdT6vtlP w==;
+X-CSE-ConnectionGUID: 3vuu45khSI6oqEVaYvXzSw==
+X-CSE-MsgGUID: jV+a2XdkRWynueLm+TJYEA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="680120"
 X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="680118"
+   d="scan'208";a="680120"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2026 23:24:37 -0700
-X-CSE-ConnectionGUID: K2eFUTT9QyGbyIFLtZhfvw==
-X-CSE-MsgGUID: nHUJzo9UTby6d5Srfa3vQg==
+ 14 Oct 2026 23:24:39 -0700
+X-CSE-ConnectionGUID: 64IGKC1ERGeuPtQJI1hvCw==
+X-CSE-MsgGUID: u7oUX0CdTg6eNa6L5p8qRA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="1582589"
+   d="scan'208";a="1582594"
 Received: from sowmi-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.74.56])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2026 23:24:35 -0700
+ 14 Oct 2026 23:24:37 -0700
 From: Sowmiya S <sowmiya.s@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: swati2.sharma@intel.com, karthik.b.s@intel.com,
  Sowmiya S <sowmiya.s@intel.com>
-Subject: [PATCH i-g-t v1 0/2] lib/igt_hdcp: extract shared HDCP helpers from
- kms_content_protection
-Date: Thu, 15 Oct 2026 11:54:03 +0530
-Message-ID: <20261015062411.268693-1-sowmiya.s@intel.com>
+Subject: [PATCH i-g-t v1 1/2] lib/igt_hdcp: add shared HDCP helper library
+Date: Thu, 15 Oct 2026 11:54:04 +0530
+Message-ID: <20261015062411.268693-2-sowmiya.s@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261015062411.268693-1-sowmiya.s@intel.com>
+References: <20261015062411.268693-1-sowmiya.s@intel.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -66,45 +68,536 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-tests/kms_content_protection.c duplicates nearly every HDCP primitive
-(enable, disable, Link Integrity Check wait, sink capability probing,
-force-HDCP1.4 toggling, DP-MST topology grouping, etc.) between its
-single-output and DP-MST code paths. This series pulls that mechanism
-out into a new shared library, lib/igt_hdcp.{c,h}, so it isn't
-maintained as two near-identical copies, and so it's available to
-future HDCP-related tests (e.g. a concurrency test exercising HDCP
-alongside other dependent modules) instead of being re-implemented
-from scratch.
+Introduce lib/igt_hdcp.{c,h} providing shared HDCP helpers (content
+protection property get/set, sink/output capability checks,
+force-HDCP1.4 debugfs toggling, and DP-MST topology detection)
+parametrized over output arrays so single-output and DP-MST callers
+can share the same primitives. This is purely additive and not yet
+used by any test.
 
-The functions are parametrized over output arrays (count == 1 for the
-single-output case, count == N for DP-MST) so both code paths share
-the exact same primitives rather than near-duplicate copies.
-Test-specific policy - retry loops, FB/plane handling, SRM firmware
-writing, uevent-vs-poll waiting, and the subtest tables - stays in the
-test file; only the HDCP mechanism itself moves to the library.
-
-Patch 1 adds the library. It's purely additive and not used by any
-test yet, so it doesn't change behavior on its own.
-
-Patch 2 switches kms_content_protection.c over to the new library,
-removing its duplicated local helpers. Each call site's original
-behavior is preserved exactly, including places where the
-single-output and DP-MST paths used to differ subtly (LIC retry
-tolerance, which output's name appears in a failure message, and
-which outputs get actively polled vs. spot-checked during disable).
-
-Sowmiya S (2):
-  lib/igt_hdcp: add shared HDCP helper library
-  tests/kms_content_protection: use shared igt_hdcp library
-
- lib/igt_hdcp.c                 | 423 +++++++++++++++++++++++++++++++
- lib/igt_hdcp.h                 |  67 +++++
- lib/meson.build                |   1 +
- tests/kms_content_protection.c | 444 +++++++--------------------------
- 4 files changed, 586 insertions(+), 349 deletions(-)
+Signed-off-by: Sowmiya S <sowmiya.s@intel.com>
+---
+ lib/igt_hdcp.c  | 423 ++++++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_hdcp.h  |  67 ++++++++
+ lib/meson.build |   1 +
+ 3 files changed, 491 insertions(+)
  create mode 100644 lib/igt_hdcp.c
  create mode 100644 lib/igt_hdcp.h
 
+diff --git a/lib/igt_hdcp.c b/lib/igt_hdcp.c
+new file mode 100644
+index 000000000..bbf32cbae
+--- /dev/null
++++ b/lib/igt_hdcp.c
+@@ -0,0 +1,423 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++#include <errno.h>
++#include <fcntl.h>
++#include <inttypes.h>
++#include <string.h>
++#include <unistd.h>
++
++#include "drmtest.h"
++#include "igt_debugfs.h"
++#include "igt_edid.h"
++#include "igt_hdcp.h"
++#include "igt_panel.h"
++#include "igt_sysfs.h"
++
++#define MAX_SINK_HDCP_CAP_BUF_LEN	5000
++
++static void __debugfs_read(int fd, const char *param, char *buf, int len)
++{
++	len = igt_debugfs_simple_read(fd, param, buf, len);
++	igt_require(len != -ENOENT);
++	if (len < 0)
++		igt_assert_eq(len, -ENODEV);
++}
++
++#define debugfs_read(fd, p, arr) __debugfs_read(fd, p, arr, sizeof(arr))
++
++/**
++ * igt_hdcp_set_content_protection_desired:
++ * @output: output to enable content protection on
++ * @content_type: IGT_HDCP_CONTENT_TYPE_0 or IGT_HDCP_CONTENT_TYPE_1
++ * @type_change: when false, also sets the "Content Protection" property
++ * to DESIRED; when true, only updates the HDCP content type (used for
++ * type-change-while-enabled testing).
++ *
++ * Does not commit the display - the caller is responsible for that.
++ */
++void igt_hdcp_set_content_protection_desired(igt_output_t *output,
++					     int content_type,
++					     bool type_change)
++{
++	if (!type_change)
++		igt_output_set_prop_value(output,
++					  IGT_CONNECTOR_CONTENT_PROTECTION,
++					  IGT_HDCP_DESIRED);
++
++	if (output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE])
++		igt_output_set_prop_value(output,
++					  IGT_CONNECTOR_HDCP_CONTENT_TYPE,
++					  content_type);
++}
++
++/**
++ * igt_hdcp_set_content_protection_undesired:
++ * @output: output to disable content protection on
++ *
++ * Does not commit the display - the caller is responsible for that.
++ */
++void igt_hdcp_set_content_protection_undesired(igt_output_t *output)
++{
++	igt_output_set_prop_value(output, IGT_CONNECTOR_CONTENT_PROTECTION,
++				  IGT_HDCP_UNDESIRED);
++}
++
++/**
++ * igt_hdcp_wait_for_prop_value:
++ * @output: output to poll
++ * @expected: expected "Content Protection" property value
++ * @timeout_mSec: timeout, in milliseconds
++ *
++ * Returns: true if @output's "Content Protection" property reached
++ * @expected within @timeout_mSec.
++ */
++bool igt_hdcp_wait_for_prop_value(igt_output_t *output, uint64_t expected,
++				  uint32_t timeout_mSec)
++{
++	uint64_t val;
++	int i;
++
++	for (i = 0; i < timeout_mSec; i++) {
++		val = igt_output_get_prop(output,
++					  IGT_CONNECTOR_CONTENT_PROTECTION);
++		if (val == expected)
++			return true;
++		usleep(1000);
++	}
++
++	igt_info("prop_value mismatch %" PRId64 " != %" PRId64 "\n",
++		 val, expected);
++
++	return false;
++}
++
++/**
++ * igt_hdcp_wait_for_prop_value_multi:
++ * @outputs: array of outputs to poll
++ * @count: number of outputs in @outputs
++ * @expected: expected "Content Protection" property value
++ * @first_timeout_mSec: timeout used while waiting on outputs[0]
++ * @additional_timeout_mSec: timeout used while waiting on outputs[1..count)
++ *
++ * Generalizes igt_hdcp_wait_for_prop_value() to an array of outputs that are
++ * expected to reach @expected together (e.g. a DP-MST topology). Pass
++ * @count == 1 for a single output.
++ *
++ * Returns: true if all outputs reached @expected within their timeout.
++ */
++bool igt_hdcp_wait_for_prop_value_multi(igt_output_t **outputs, int count,
++					uint64_t expected,
++					uint32_t first_timeout_mSec,
++					uint32_t additional_timeout_mSec)
++{
++	bool ret;
++	int i;
++
++	ret = igt_hdcp_wait_for_prop_value(outputs[0], expected,
++					   first_timeout_mSec);
++
++	for (i = 1; i < count; i++)
++		ret &= igt_hdcp_wait_for_prop_value(outputs[i], expected,
++						    additional_timeout_mSec);
++
++	return ret;
++}
++
++/**
++ * igt_hdcp_check_lic:
++ * @outputs: array of outputs that share a Link Integrity Check cycle
++ * @count: number of outputs in @outputs
++ * @first_output: index, within @outputs, of the output to actively wait on
++ * @period_mSec: time to wait for a Link Integrity Check cycle
++ * @retry_once: if true, a single degrade-to-DESIRED is tolerated and a
++ * second @period_mSec window is given for reauthentication before failing.
++ * If false, any transition to DESIRED during @period_mSec is a hard failure.
++ * @failed_index: if non-NULL, set to the index (within @outputs) of the
++ * output that failed the check. Only meaningful when the return value is
++ * false.
++ *
++ * Waits up to @period_mSec for outputs[@first_output]'s "Content Protection"
++ * property to degrade to DESIRED, which signals a Link Integrity Check
++ * failure (the property is expected to stay at ENABLED for the whole
++ * window). Then checks that none of the outputs after it in @outputs also
++ * degraded to DESIRED in the meantime.
++ *
++ * Returns: true if the Link Integrity Check held on all outputs.
++ */
++bool igt_hdcp_check_lic(igt_output_t **outputs, int count, int first_output,
++			uint32_t period_mSec, bool retry_once,
++			int *failed_index)
++{
++	bool became_desired, ret;
++	int i;
++	uint64_t val;
++
++	if (failed_index)
++		*failed_index = first_output;
++
++	/* Wait for period_mSec (min 2 cycles of Link Integrity Check) */
++	became_desired = igt_hdcp_wait_for_prop_value(outputs[first_output],
++						      IGT_HDCP_DESIRED,
++						      period_mSec);
++	if (became_desired && retry_once) {
++		igt_debug("Link Integrity Check failed, waiting for reauthentication\n");
++		became_desired = igt_hdcp_wait_for_prop_value(outputs[first_output],
++							      IGT_HDCP_DESIRED,
++							      period_mSec);
++	}
++
++	ret = !became_desired;
++
++	for (i = first_output + 1; ret && i < count; i++) {
++		val = igt_output_get_prop(outputs[i],
++					  IGT_CONNECTOR_CONTENT_PROTECTION);
++		ret = (val != IGT_HDCP_DESIRED);
++		if (!ret && failed_index)
++			*failed_index = i;
++	}
++
++	return ret;
++}
++
++static bool debugfs_read_sink_capability(int drm_fd, igt_output_t *output,
++					 char *buf, int len)
++{
++	int fd;
++
++	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
++	if (fd < 0)
++		return false;
++
++	/*
++	 * FIXME: As of now XE's debugfs is using i915 namespace. Once Kernel
++	 * changes got landed, please update this logic to use XE specific
++	 * debugfs.
++	 */
++	if (is_intel_device(drm_fd))
++		__debugfs_read(fd, "i915_hdcp_sink_capability", buf, len);
++	else if (is_mtk_device(drm_fd))
++		__debugfs_read(fd, "mtk_hdcp_sink_capability", buf, len);
++	else
++		__debugfs_read(fd, "hdcp_sink_capability", buf, len);
++
++	close(fd);
++
++	igt_debug("Sink capability: %s\n", buf);
++
++	return true;
++}
++
++/**
++ * igt_hdcp_sink_capable:
++ * @drm_fd: drm file descriptor
++ * @output: output whose sink should be checked
++ * @hdcp_version: 1 for HDCP1.4, 2 for HDCP2.2
++ *
++ * Returns: true if the connected sink advertises support for @hdcp_version.
++ */
++bool igt_hdcp_sink_capable(int drm_fd, igt_output_t *output, int hdcp_version)
++{
++	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
++
++	if (!debugfs_read_sink_capability(drm_fd, output, buf, sizeof(buf)))
++		return false;
++
++	return strstr(buf, hdcp_version == 2 ? "HDCP2.2" : "HDCP1.4");
++}
++
++/**
++ * igt_hdcp_output_capable:
++ * @drm_fd: drm file descriptor
++ * @output: output to check
++ * @content_type: IGT_HDCP_CONTENT_TYPE_0 or IGT_HDCP_CONTENT_TYPE_1
++ *
++ * Returns: true if @output supports the required Content Protection
++ * properties and the connected sink supports the requested @content_type.
++ */
++bool igt_hdcp_output_capable(int drm_fd, igt_output_t *output,
++			     int content_type)
++{
++	if (!output->props[IGT_CONNECTOR_CONTENT_PROTECTION])
++		return false;
++
++	if (!output->props[IGT_CONNECTOR_HDCP_CONTENT_TYPE] && content_type)
++		return false;
++
++	if (content_type && !igt_hdcp_sink_capable(drm_fd, output, 2)) {
++		igt_info("\tSkip %s (Sink has no HDCP2.2 support)\n",
++			 output->name);
++		return false;
++	} else if (!igt_hdcp_sink_capable(drm_fd, output, 1)) {
++		igt_info("\tSkip %s (Sink has no HDCP support)\n",
++			 output->name);
++		return false;
++	}
++
++	return true;
++}
++
++/**
++ * igt_hdcp_is_output_test_exempt:
++ * @drm_fd: drm file descriptor
++ * @output: output to check
++ * @blocklist: array of sink names that should be excluded from HDCP testing
++ * @blocklist_size: number of entries in @blocklist
++ *
++ * Returns: true if @output's connected sink is on @blocklist (or doesn't
++ * report a sink name at all).
++ */
++bool igt_hdcp_is_output_test_exempt(int drm_fd, igt_output_t *output,
++				    const char *const blocklist[],
++				    size_t blocklist_size)
++{
++	drmModePropertyBlobPtr edid_blob = NULL;
++	uint64_t edid_blob_id;
++	const struct edid *edid;
++	char edid_vendor[4];
++	char sink_name[20];
++
++	igt_assert(kmstest_get_property(drm_fd,
++					output->config.connector->connector_id,
++					DRM_MODE_OBJECT_CONNECTOR, "EDID", NULL,
++					&edid_blob_id, NULL));
++
++	igt_assert(edid_blob = drmModeGetPropertyBlob(drm_fd, edid_blob_id));
++
++	edid = (const struct edid *)edid_blob->data;
++	edid_get_mfg(edid, edid_vendor);
++	edid_vendor[3] = '\0';
++
++	edid_get_monitor_name(edid, sink_name, ARRAY_SIZE(sink_name));
++
++	drmModeFreePropertyBlob(edid_blob);
++
++	/* Not all monitors have sink names */
++	if (sink_name[0] == '\0') {
++		igt_debug("no sink name\n");
++		return true;
++	}
++
++	return igt_is_panel_blocked(sink_name, blocklist, blocklist_size);
++}
++
++/**
++ * igt_hdcp_get_capable_outputs:
++ * @display: igt_display_t to iterate
++ * @drm_fd: drm file descriptor
++ * @content_type: IGT_HDCP_CONTENT_TYPE_0 or IGT_HDCP_CONTENT_TYPE_1
++ * @blocklist: array of sink names excluded from HDCP testing
++ * @blocklist_size: number of entries in @blocklist
++ * @hdcp_outputs: array to be filled with HDCP-capable, non-exempt outputs
++ * @max_outputs: capacity of @hdcp_outputs
++ *
++ * Returns: the number of outputs written to @hdcp_outputs.
++ */
++int igt_hdcp_get_capable_outputs(igt_display_t *display, int drm_fd,
++				 int content_type,
++				 const char *const blocklist[],
++				 size_t blocklist_size,
++				 igt_output_t **hdcp_outputs,
++				 int max_outputs)
++{
++	igt_output_t *output;
++	int count = 0;
++
++	for_each_connected_output(display, output) {
++		if (!igt_hdcp_output_capable(drm_fd, output, content_type))
++			continue;
++
++		if (igt_hdcp_is_output_test_exempt(drm_fd, output, blocklist,
++						   blocklist_size)) {
++			igt_info("Skipping HDCP test on %s, as the panel is blocklisted\n",
++				 output->name);
++			continue;
++		}
++
++		if (count < max_outputs)
++			hdcp_outputs[count++] = output;
++	}
++
++	return count;
++}
++
++/**
++ * igt_hdcp_force_hdcp14:
++ * @drm_fd: drm file descriptor
++ * @output: output to toggle
++ * @enable: true to force HDCP1.4, false to clear the override
++ *
++ * Toggles the "i915_force_hdcp14" debugfs knob for @output, if present.
++ */
++void igt_hdcp_force_hdcp14(int drm_fd, igt_output_t *output, bool enable)
++{
++	int fd, ret;
++	char buf[MAX_SINK_HDCP_CAP_BUF_LEN];
++
++	fd = igt_debugfs_connector_dir(drm_fd, output->name, O_RDONLY);
++	igt_require_f(fd >= 0, "Cannot open %s debugfs\n", output->name);
++
++	if (enable) {
++		ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf,
++					      sizeof(buf));
++		if (ret <= 0) {
++			igt_info("i915_force_hdcp14 not supported\n");
++			close(fd);
++			return;
++		}
++
++		ret = igt_sysfs_write(fd, "i915_force_hdcp14", "1", 2);
++		igt_require_f(ret > 0, "i915_force_hdcp14 is not enabled\n");
++
++		ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf,
++					      sizeof(buf));
++		igt_assert_f(ret > 0 && strstr(buf, "yes"),
++			     "i915_force_hdcp14 is not set to 'yes' on %s debugfs\n",
++			     output->name);
++	} else {
++		ret = igt_sysfs_write(fd, "i915_force_hdcp14", "0", 2);
++		igt_require_f(ret > 0, "i915_force_hdcp14 is not disabled\n");
++
++		ret = igt_debugfs_simple_read(fd, "i915_force_hdcp14", buf,
++					      sizeof(buf));
++		igt_assert_f(ret > 0 && strstr(buf, "no"),
++			     "i915_force_hdcp14 is not set to 'no' on %s debugfs\n",
++			     output->name);
++	}
++
++	close(fd);
++}
++
++/**
++ * igt_hdcp_output_is_dp_mst:
++ * @output: output to check
++ * @index: index of @output within the set of outputs being iterated
++ * @prev_connector_id: in/out connector id of the DP-MST topology being
++ * tracked across calls; the caller owns this state (set to a sentinel like
++ * -1 before iterating). Updated when @index == 0.
++ *
++ * Returns: true if @output is a DP-MST connector belonging to the same
++ * topology as the one seen at @index == 0.
++ */
++bool igt_hdcp_output_is_dp_mst(igt_output_t *output, int index,
++			       int *prev_connector_id)
++{
++	int connector_id;
++
++	connector_id = igt_get_dp_mst_connector_id(output);
++	if (connector_id < 0)
++		return false;
++
++	/*
++	 * Discarding outputs of other DP MST topology.
++	 * Testing only on outputs on the topology we got previously
++	 */
++	if (index == 0)
++		*prev_connector_id = connector_id;
++	else if (connector_id != *prev_connector_id)
++		return false;
++
++	return true;
++}
+diff --git a/lib/igt_hdcp.h b/lib/igt_hdcp.h
+new file mode 100644
+index 000000000..0abaa9904
+--- /dev/null
++++ b/lib/igt_hdcp.h
+@@ -0,0 +1,67 @@
++/* SPDX-License-Identifier: MIT */
++/*
++ * Copyright © 2026 Intel Corporation
++ */
++
++#ifndef IGT_HDCP_H
++#define IGT_HDCP_H
++
++#include <stdbool.h>
++#include <linux/types.h>
++
++#include "igt_kms.h"
++
++#define IGT_HDCP_UNDESIRED	0
++#define IGT_HDCP_DESIRED	1
++#define IGT_HDCP_ENABLED	2
++
++/*
++ * IGT_HDCP_CONTENT_TYPE_0 can be handled on both HDCP1.4 and HDCP2.2. Where
++ * as IGT_HDCP_CONTENT_TYPE_1 can be handled only through HDCP2.2.
++ */
++#define IGT_HDCP_CONTENT_TYPE_0	0
++#define IGT_HDCP_CONTENT_TYPE_1	1
++
++#define IGT_HDCP_LIC_PERIOD_MSEC			(4 * 1000)
++/* Kernel retry count=3, Max time per authentication allowed = 6Sec */
++#define IGT_HDCP_KERNEL_AUTH_TIME_ALLOWED_MSEC		(3 *  6 * 1000)
++#define IGT_HDCP_KERNEL_AUTH_TIME_ADDITIONAL_MSEC	100
++#define IGT_HDCP_KERNEL_DISABLE_TIME_ALLOWED_MSEC	(1 * 1000)
++
++void igt_hdcp_set_content_protection_desired(igt_output_t *output,
++					     int content_type,
++					     bool type_change);
++void igt_hdcp_set_content_protection_undesired(igt_output_t *output);
++
++bool igt_hdcp_wait_for_prop_value(igt_output_t *output, uint64_t expected,
++				  uint32_t timeout_mSec);
++bool igt_hdcp_wait_for_prop_value_multi(igt_output_t **outputs, int count,
++					uint64_t expected,
++					uint32_t first_timeout_mSec,
++					uint32_t additional_timeout_mSec);
++
++bool igt_hdcp_check_lic(igt_output_t **outputs, int count, int first_output,
++			uint32_t period_mSec, bool retry_once,
++			int *failed_index);
++
++bool igt_hdcp_sink_capable(int drm_fd, igt_output_t *output,
++			   int hdcp_version);
++bool igt_hdcp_output_capable(int drm_fd, igt_output_t *output,
++			     int content_type);
++
++bool igt_hdcp_is_output_test_exempt(int drm_fd, igt_output_t *output,
++				    const char *const blocklist[],
++				    size_t blocklist_size);
++int igt_hdcp_get_capable_outputs(igt_display_t *display, int drm_fd,
++				 int content_type,
++				 const char *const blocklist[],
++				 size_t blocklist_size,
++				 igt_output_t **hdcp_outputs,
++				 int max_outputs);
++
++void igt_hdcp_force_hdcp14(int drm_fd, igt_output_t *output, bool enable);
++
++bool igt_hdcp_output_is_dp_mst(igt_output_t *output, int index,
++			       int *prev_connector_id);
++
++#endif /* IGT_HDCP_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index d15d25f15..792173497 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -105,6 +105,7 @@ lib_sources = [
+ 	'igt_list.c',
+ 	'igt_map.c',
+ 	'igt_panel.c',
++	'igt_hdcp.c',
+ 	'igt_pm.c',
+ 	'igt_dummyload.c',
+ 	'igt_store.c',
 -- 
 2.43.0
 
