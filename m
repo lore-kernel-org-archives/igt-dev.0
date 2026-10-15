@@ -4,27 +4,41 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0768BCC6B2F
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 09:06:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E99BCC6B33
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 10:07:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A02E9112208;
-	Thu, 15 Oct 2026 09:06:31 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A0851120A0;
- Thu, 15 Oct 2026 09:05:41 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1701946473687062984=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1C62810EBB9;
+	Thu, 15 Oct 2026 10:07:47 +0000 (UTC)
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8092010EBB9
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 10:06:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:From:To:Subject:
+ MIME-Version:Date:Message-ID:From:Reply-To;
+ bh=x7REM0soZS+0WLTIqTxDfaYlR5tf+E+09yYmJ8kOtpA=; b=mcghU6eD5+I534CsqYkbhBndPh
+ hK1UxCDPG/mBGGQDmQ9GuFjwdeV+6LN8HSAtic9Yom1JakeVd/ra7zppR6h0MMRmvYR4KF2IeTT6F
+ NTDJiMbmVt2N+M7EXxx3MylIR1GP/wV1dPG1AroBUne5rMwD+1N34cLye3RIUgNLmt9Q0AjPERfTr
+ oQXZguC0eqUjaU4Y+ihdw3DFxMI5D/3jhGPbl1LAVEIB+p5KvAhXndavghj1rBxsgmMaMk4l6E15z
+ B1BypGdSLeu8PyBItHYDskohT+aNXbwmvfuCLFbOVM19e8IZODm9n1MDTsrcU8M4bQL6tshSr6q3x
+ NnVFpVDw==;
+Received: from [81.79.79.1] (helo=[192.168.0.116])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1xHIMJ-000UA8-UG; Thu, 15 Oct 2026 12:06:47 +0200
+Message-ID: <35594202-7315-4c82-9e52-337ee12361aa@igalia.com>
+Date: Thu, 15 Oct 2026 11:06:47 +0100
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tools/vmtb=3A_Parallel_mu?=
- =?utf-8?q?lti-VM_migration_and_tests_reconfiguration?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Adam Miszczak" <adam.miszczak@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Oct 2026 09:05:41 -0000
-Message-ID: <179205514123.27529.4925051295904119005@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261015071037.10898-1-adam.miszczak@linux.intel.com>
-In-Reply-To: <20261015071037.10898-1-adam.miszczak@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [i-g-t] tests/intel/xe_sync_file: Fix driver_name expectation in
+ sync_file_race
+To: Tejas Upadhyay <tejas.upadhyay@intel.com>, igt-dev@lists.freedesktop.org
+References: <20261014061138.1748313-2-tejas.upadhyay@intel.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <20261014061138.1748313-2-tejas.upadhyay@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,115 +51,53 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============1701946473687062984==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 14/10/2026 07:11, Tejas Upadhyay wrote:
+> sync_file_get_status() is checked right after confirming the exported
+> sync file's status is already signaled (status == 1). At that point,
+> dma_fence_driver_name() has already taken its signaled-fence path and
+> will unconditionally return "detached-driver" - it never calls back
+> into the driver's own get_driver_name() once a fence is observed
+> signaled.
 
-Series: tools/vmtb: Parallel multi-VM migration and tests reconfiguration
-URL   : https://patchwork.freedesktop.org/series/176174/
-State : success
+I don't quite understand how this slipped through because I am pretty 
+sure I tested it locally both without and with the kernel fix
+3ed11c671ff7 ("dma-buf/dma-fence: fix checking signaling bit for 
+timeline and driver name v3").
 
-== Summary ==
+For what CI results are concerned I *think* I misattributed the fail to 
+the above fix not having landed yet (at the time). But again for local 
+testing I don't know how I got the pass.
 
-CI Bug Log - changes from IGT_9146 -> IGTPW_15991
-====================================================
+Anyway, the fix is good, thanks for making it!
 
-Summary
--------
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-  **SUCCESS**
+Regards,
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15991/index.html
-
-Participating hosts (39 -> 37)
-------------------------------
-
-  Missing    (2): bat-dg2-13 fi-glk-j4005 
+Tvrtko
 
 
-Changes
--------
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+> ---
+>   tests/intel/xe_sync_file.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/intel/xe_sync_file.c b/tests/intel/xe_sync_file.c
+> index 842c3856a..578b2b1ea 100644
+> --- a/tests/intel/xe_sync_file.c
+> +++ b/tests/intel/xe_sync_file.c
+> @@ -100,7 +100,7 @@ static void test_race(int xe, struct drm_xe_engine_class_instance *eci)
+>   	driver_name = NULL;
+>   	igt_assert_eq(sync_file_get_status(sync_fence, &driver_name), 1);
+>   	igt_assert(driver_name);
+> -	igt_assert(!strcmp(driver_name, "drm_sched"));
+> +	igt_assert(!strcmp(driver_name, "detached-driver"));
+>   	free(driver_name);
+>   
+>   	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
 
-  No changes found
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9146 -> IGTPW_15991
-  * Linux: CI_DRM_19336 -> CI_DRM_19341
-
-  CI-20190529: 20190529
-  CI_DRM_19336: c06d7623a198463e9aa2d09a3c33d96fe66ea662 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19341: d0f854d04f85e2bd88bce0b7bd153e5a67957a5b @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_15991: 197ccebe18af93a30f98f68c5bc13a483add1d5e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15991/index.html
-
---===============1701946473687062984==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tools/vmtb: Parallel multi-VM migration and tests reconfiguration</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176174/">https://patchwork.freedesktop.org/series/176174/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15991/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15991/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9146 -&gt; IGTPW_15991</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_15991/index.html</p>
-<h2>Participating hosts (39 -&gt; 37)</h2>
-<p>Missing    (2): bat-dg2-13 fi-glk-j4005 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9146 -&gt; IGTPW_15991</li>
-<li>Linux: CI_DRM_19336 -&gt; CI_DRM_19341</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19336: c06d7623a198463e9aa2d09a3c33d96fe66ea662 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19341: d0f854d04f85e2bd88bce0b7bd153e5a67957a5b @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_15991: 197ccebe18af93a30f98f68c5bc13a483add1d5e @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============1701946473687062984==--
