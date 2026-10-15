@@ -4,52 +4,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0341CC6B33
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 14:24:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C76BCC6B33
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 14:25:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 886F310E9F2;
-	Thu, 15 Oct 2026 14:24:49 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C1EC310E5D7;
+	Thu, 15 Oct 2026 14:25:43 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A7C5110E9F2
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 14:23:52 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 48D9910EA14
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 14:23:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792074232; x=1823610232;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=0gvkIq96L+z80ec7ztbQN6lwLWctr8YwwbEi1B6x7Pg=;
- b=TX5LBMKH93HuL2Hti32HhroraHdWZDSlz6w0SDWdDfhR1SGD7Pge2IQN
- T4mKAnOKB4d8IY+47xARTTbi3SNU87uC2UrL7Qp7n2g2wCduhVAQd0Qjc
- EaAJi35SRudjcthGoQqx8pyPf/cwFRhuhe0qV4ZNhth/39UEqfz3GyhOp
- l9meDWsFtK0pjFxSbebs120beGbvnkfTl6vdg/FVGKZZuufwyb+b6QFYb
- UoIJ6uV+jbsK+bK5bMhfo3P1zHeiYm4j7dc/oe9pevjVImZLlFNkTUPxy
- g9pfFhoht5Kbgcpm0DLesRe417aTf8oE89QWPDcQlkpoIsZQLrBS/u5cB A==;
-X-CSE-ConnectionGUID: dWAzRyQWQoiHp5jsLwW5lw==
-X-CSE-MsgGUID: Ct5klH2cTZCJRTJHw0TnjQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="831666"
+ t=1792074236; x=1823610236;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=yEZcXSP4ll6FLazmgxTHmPfOeA1ypcTbbP9h6ae9IVY=;
+ b=iPei7EsrNEaNB4sOnxrXxZJZpEqVM+4wO0Pz2PS+tvPkCjVVFuu/HsrI
+ ZjBWWZcAdVpHRh/y+LFYnXV6MVOK2AdZh8DJxSWa/zayUBM4+ELwPvdgm
+ WgDlZ+4PRdqCCXxzK7Z0Kv5npe7R0bnaofMrBvVPOshie4YqdwTUap0o6
+ /Yn75fwSoBcJIdgY9StbId24L3ceRj0IbDV6apu+otpaTh3PoYkaFqpo+
+ H6MxwcEzYUP3DVY5B/ppgYhQDcgrEHb+GKMJDPNFYNK13FaloLFwn9O1Q
+ 5qDLk75vzG9BvkaNuMh+C9eEpIr/bAYL+/62RiNPZ+8kKGeKhlUMeade7 Q==;
+X-CSE-ConnectionGUID: ozLE6E1TQvi097fjYrd+Cw==
+X-CSE-MsgGUID: PIwTC1ZTSq2UcsQyWnHt4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="831679"
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="831666"
+   d="scan'208";a="831679"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 15 Oct 2026 07:23:52 -0700
-X-CSE-ConnectionGUID: vWgZmICQTtmateYfySgpMQ==
-X-CSE-MsgGUID: xuS7Fw5yTt+SORjS8mV70Q==
+ 15 Oct 2026 07:23:56 -0700
+X-CSE-ConnectionGUID: v3rUU4EKSBSyXY5yZlcszA==
+X-CSE-MsgGUID: RaK3yatRRDyJNTGfUBseWA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
-   d="scan'208";a="1618010"
+   d="scan'208";a="1618034"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by orviesa008.jf.intel.com with ESMTP; 15 Oct 2026 07:23:51 -0700
+ by orviesa008.jf.intel.com with ESMTP; 15 Oct 2026 07:23:55 -0700
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ Sk Anirban <sk.anirban@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
- Jeevan B <jeevan.b@intel.com>, Swati Sharma <swati2.sharma@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-Subject: [PATCH i-g-t 1/3] tests/intel/xe_fault_injection: Reload audio driver
+ Jeevan B <jeevan.b@intel.com>, Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 3/3] tests/intel/xe_survivability: Reload audio driver
  on exit
-Date: Thu, 15 Oct 2026 19:30:33 +0530
-Message-ID: <20261015140035.2686997-1-chaitanya.kumar.borah@intel.com>
+Date: Thu, 15 Oct 2026 19:30:35 +0530
+Message-ID: <20261015140035.2686997-3-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20261015140035.2686997-1-chaitanya.kumar.borah@intel.com>
+References: <20261015140035.2686997-1-chaitanya.kumar.borah@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -71,42 +73,51 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 Commit 117e9ecbdd1d ("xe/igt_kmod_unbind: release audio before
 unbinding xe") made igt_audio_driver_unload() be called before
 unbinding xe to avoid the audio-component bind warnings/errors that
-happen if xe is removed while snd_hda_intel is still attached. These
-call sites passed NULL for the unloaded driver name, so it was never
-tracked, and nothing in this file ever reloaded it afterwards.
+happen if xe is unbound while snd_hda_intel is still attached. Both
+call sites in this file passed NULL for the unloaded driver name, so
+it was never tracked, and nothing ever reloaded it afterwards.
 
 As a result snd_hda_intel/snd_hdmi_lpe_audio is left unloaded for the
-rest of the boot even when every subtest passes, since the test's own
-teardown only ever rebinds xe, never the audio driver.
+rest of the boot even when every subtest passes, since xe always ends
+up rebound by restore() but audio never does.
 
-Capture the unloaded driver name and reload it from the exit handler,
-which IGT guarantees runs on both normal completion and a fatal abort.
+Capture the unloaded driver name and reload it wherever xe gets bound
+again in restore().
 
+Cc: Sk Anirban <sk.anirban@intel.com>
 Cc: Michał Grzelak <michal.grzelak@intel.com>
 Cc: Jeevan B <jeevan.b@intel.com>
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Francois Dugast <francois.dugast@intel.com>
 Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- tests/intel/xe_fault_injection.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ tests/intel/xe_survivability.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
-index e32f841a3..3713abe23 100644
---- a/tests/intel/xe_fault_injection.c
-+++ b/tests/intel/xe_fault_injection.c
-@@ -31,6 +31,7 @@
- #define MAX_INJECTIONS_PER_ITER	100
+diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
+index bae9eca27..2be8e9ec0 100644
+--- a/tests/intel/xe_survivability.c
++++ b/tests/intel/xe_survivability.c
+@@ -39,6 +39,7 @@
+  */
  
- int32_t inject_iters_raw;
+ static char bus_addr[NAME_MAX];
 +static char *snd_driver;
- struct fault_injection_params {
- 	/* @probability: Likelihood of failure injection, in percent. */
- 	uint32_t probability;
-@@ -196,6 +197,12 @@ static void setup_injection_fault(const struct fault_injection_params *fault_par
- static void cleanup_injection_fault(int sig)
+ 
+ static void ignore_wedged_in_dmesg(void)
  {
- 	injection_list_clear();
+@@ -158,7 +159,7 @@ static void restore(int sig)
+ {
+ 	int configfs_fd;
+ 
+-	igt_audio_driver_unload(NULL);
++	igt_audio_driver_unload(&snd_driver);
+ 	igt_kmod_unbind("xe", bus_addr);
+ 
+ 	configfs_fd = igt_configfs_open("xe");
+@@ -167,11 +168,17 @@ static void restore(int sig)
+ 	close(configfs_fd);
+ 
+ 	igt_kmod_bind("xe", bus_addr);
 +
 +	if (snd_driver) {
 +		igt_kmod_load(snd_driver, NULL);
@@ -115,34 +126,13 @@ index e32f841a3..3713abe23 100644
 +	}
  }
  
- static int get_remaining_injection_count(void)
-@@ -312,7 +319,7 @@ static void probe_fail_guc(const char pci_slot[], const char function_name[],
- 		fault_params->times = MAX_INJECTIONS_PER_ITER;
- 		setup_injection_fault(fault_params);
- 		inject_fault_probe(pci_slot, function_name);
--		igt_audio_driver_unload(NULL);
-+		igt_audio_driver_unload(&snd_driver);
- 		igt_kmod_unbind("xe", pci_slot);
- 
- 		/*
-@@ -668,7 +675,7 @@ int igt_main_args("I:", NULL, help_str, opt_handler, NULL)
- 	igt_fixture() {
- 		close(sysfs);
- 		drm_close_driver(fd);
--		igt_audio_driver_unload(NULL);
-+		igt_audio_driver_unload(&snd_driver);
- 		igt_kmod_unbind("xe", pci_slot);
- 	}
- 
-@@ -680,7 +687,7 @@ int igt_main_args("I:", NULL, help_str, opt_handler, NULL)
- 			err = inject_fault_probe(pci_slot, s->name);
- 
- 			igt_assert_eq(should_pass ? 0 : INJECT_ERRNO, err);
--			igt_audio_driver_unload(NULL);
-+			igt_audio_driver_unload(&snd_driver);
- 			igt_kmod_unbind("xe", pci_slot);
- 		}
- 
+ static void set_survivability_mode(int configfs_device_fd, bool value)
+ {
+-	igt_audio_driver_unload(NULL);
++	igt_audio_driver_unload(&snd_driver);
+ 	igt_kmod_unbind("xe", bus_addr);
+ 	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
+ 	igt_kmod_bind("xe", bus_addr);
 -- 
 2.50.1
 
