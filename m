@@ -4,27 +4,55 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C9B4CC6B34
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 13:25:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0341CC6B33
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 14:24:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0359410EBB5;
-	Thu, 15 Oct 2026 13:25:56 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 09FDE10EBCD;
- Thu, 15 Oct 2026 13:21:08 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2285765615577436516=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 886F310E9F2;
+	Thu, 15 Oct 2026 14:24:49 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A7C5110E9F2
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 14:23:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1792074232; x=1823610232;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=0gvkIq96L+z80ec7ztbQN6lwLWctr8YwwbEi1B6x7Pg=;
+ b=TX5LBMKH93HuL2Hti32HhroraHdWZDSlz6w0SDWdDfhR1SGD7Pge2IQN
+ T4mKAnOKB4d8IY+47xARTTbi3SNU87uC2UrL7Qp7n2g2wCduhVAQd0Qjc
+ EaAJi35SRudjcthGoQqx8pyPf/cwFRhuhe0qV4ZNhth/39UEqfz3GyhOp
+ l9meDWsFtK0pjFxSbebs120beGbvnkfTl6vdg/FVGKZZuufwyb+b6QFYb
+ UoIJ6uV+jbsK+bK5bMhfo3P1zHeiYm4j7dc/oe9pevjVImZLlFNkTUPxy
+ g9pfFhoht5Kbgcpm0DLesRe417aTf8oE89QWPDcQlkpoIsZQLrBS/u5cB A==;
+X-CSE-ConnectionGUID: dWAzRyQWQoiHp5jsLwW5lw==
+X-CSE-MsgGUID: Ct5klH2cTZCJRTJHw0TnjQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="831666"
+X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
+   d="scan'208";a="831666"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 15 Oct 2026 07:23:52 -0700
+X-CSE-ConnectionGUID: vWgZmICQTtmateYfySgpMQ==
+X-CSE-MsgGUID: xuS7Fw5yTt+SORjS8mV70Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,160,1787036400"; 
+   d="scan'208";a="1618010"
+Received: from dut-2a59.iind.intel.com ([10.190.239.113])
+ by orviesa008.jf.intel.com with ESMTP; 15 Oct 2026 07:23:51 -0700
+From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+ Jeevan B <jeevan.b@intel.com>, Swati Sharma <swati2.sharma@intel.com>,
+ Francois Dugast <francois.dugast@intel.com>
+Subject: [PATCH i-g-t 1/3] tests/intel/xe_fault_injection: Reload audio driver
+ on exit
+Date: Thu, 15 Oct 2026 19:30:33 +0530
+Message-ID: <20261015140035.2686997-1-chaitanya.kumar.borah@intel.com>
+X-Mailer: git-send-email 2.50.1
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fhdcp=3A_extract_s?=
- =?utf-8?q?hared_HDCP_helpers_from_kms=5Fcontent=5Fprotection?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sowmiya S" <sowmiya.s@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 15 Oct 2026 13:21:08 -0000
-Message-ID: <179207046803.29708.535219184119441204@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261015062411.268693-1-sowmiya.s@intel.com>
-In-Reply-To: <20261015062411.268693-1-sowmiya.s@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,135 +65,84 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
---===============2285765615577436516==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Commit 117e9ecbdd1d ("xe/igt_kmod_unbind: release audio before
+unbinding xe") made igt_audio_driver_unload() be called before
+unbinding xe to avoid the audio-component bind warnings/errors that
+happen if xe is removed while snd_hda_intel is still attached. These
+call sites passed NULL for the unloaded driver name, so it was never
+tracked, and nothing in this file ever reloaded it afterwards.
 
-== Series Details ==
+As a result snd_hda_intel/snd_hdmi_lpe_audio is left unloaded for the
+rest of the boot even when every subtest passes, since the test's own
+teardown only ever rebinds xe, never the audio driver.
 
-Series: lib/igt_hdcp: extract shared HDCP helpers from kms_content_protection
-URL   : https://patchwork.freedesktop.org/series/176168/
-State : success
+Capture the unloaded driver name and reload it from the exit handler,
+which IGT guarantees runs on both normal completion and a fatal abort.
 
-== Summary ==
+Cc: Michał Grzelak <michal.grzelak@intel.com>
+Cc: Jeevan B <jeevan.b@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Francois Dugast <francois.dugast@intel.com>
+Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+---
+ tests/intel/xe_fault_injection.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-CI Bug Log - changes from XEIGT_9146_BAT -> XEIGTPW_15990_BAT
-====================================================
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index e32f841a3..3713abe23 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -31,6 +31,7 @@
+ #define MAX_INJECTIONS_PER_ITER	100
+ 
+ int32_t inject_iters_raw;
++static char *snd_driver;
+ struct fault_injection_params {
+ 	/* @probability: Likelihood of failure injection, in percent. */
+ 	uint32_t probability;
+@@ -196,6 +197,12 @@ static void setup_injection_fault(const struct fault_injection_params *fault_par
+ static void cleanup_injection_fault(int sig)
+ {
+ 	injection_list_clear();
++
++	if (snd_driver) {
++		igt_kmod_load(snd_driver, NULL);
++		free(snd_driver);
++		snd_driver = NULL;
++	}
+ }
+ 
+ static int get_remaining_injection_count(void)
+@@ -312,7 +319,7 @@ static void probe_fail_guc(const char pci_slot[], const char function_name[],
+ 		fault_params->times = MAX_INJECTIONS_PER_ITER;
+ 		setup_injection_fault(fault_params);
+ 		inject_fault_probe(pci_slot, function_name);
+-		igt_audio_driver_unload(NULL);
++		igt_audio_driver_unload(&snd_driver);
+ 		igt_kmod_unbind("xe", pci_slot);
+ 
+ 		/*
+@@ -668,7 +675,7 @@ int igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 	igt_fixture() {
+ 		close(sysfs);
+ 		drm_close_driver(fd);
+-		igt_audio_driver_unload(NULL);
++		igt_audio_driver_unload(&snd_driver);
+ 		igt_kmod_unbind("xe", pci_slot);
+ 	}
+ 
+@@ -680,7 +687,7 @@ int igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 			err = inject_fault_probe(pci_slot, s->name);
+ 
+ 			igt_assert_eq(should_pass ? 0 : INJECT_ERRNO, err);
+-			igt_audio_driver_unload(NULL);
++			igt_audio_driver_unload(&snd_driver);
+ 			igt_kmod_unbind("xe", pci_slot);
+ 		}
+ 
+-- 
+2.50.1
 
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_15990_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-bmg-2:          [ABORT][1] ([Intel XE#9463]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15990/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-    - bat-nvls-1:         [DMESG-WARN][3] ([Intel XE#8762] / [Intel XE#9069]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15990/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
-
-  
-  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
-  [Intel XE#9069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069
-  [Intel XE#9463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463
-
-
-Build changes
--------------
-
-  * IGT: IGT_9146 -> IGTPW_15990
-  * Linux: xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662 -> xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3
-
-  IGTPW_15990: 6a2663929216a37def260eae3273ec5b99d60c51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662: c06d7623a198463e9aa2d09a3c33d96fe66ea662
-  xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3: ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15990/index.html
-
---===============2285765615577436516==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_hdcp: extract shared HDCP helpers from kms_content_protection</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176168/">https://patchwork.freedesktop.org/series/176168/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15990/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15990/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9146_BAT -&gt; XEIGTPW_15990_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_15990_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463">Intel XE#9463</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15990/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069">Intel XE#9069</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15990/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9146 -&gt; IGTPW_15990</li>
-<li>Linux: xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662 -&gt; xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3</li>
-</ul>
-<p>IGTPW_15990: 6a2663929216a37def260eae3273ec5b99d60c51 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662: c06d7623a198463e9aa2d09a3c33d96fe66ea662<br />
-  xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3: ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3</p>
-
-</body>
-</html>
-
---===============2285765615577436516==--
