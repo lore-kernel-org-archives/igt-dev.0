@@ -4,41 +4,27 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E99BCC6B33
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 10:07:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A500CC6B34
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 10:12:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C62810EBB9;
-	Thu, 15 Oct 2026 10:07:47 +0000 (UTC)
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8092010EBB9
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 10:06:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:From:To:Subject:
- MIME-Version:Date:Message-ID:From:Reply-To;
- bh=x7REM0soZS+0WLTIqTxDfaYlR5tf+E+09yYmJ8kOtpA=; b=mcghU6eD5+I534CsqYkbhBndPh
- hK1UxCDPG/mBGGQDmQ9GuFjwdeV+6LN8HSAtic9Yom1JakeVd/ra7zppR6h0MMRmvYR4KF2IeTT6F
- NTDJiMbmVt2N+M7EXxx3MylIR1GP/wV1dPG1AroBUne5rMwD+1N34cLye3RIUgNLmt9Q0AjPERfTr
- oQXZguC0eqUjaU4Y+ihdw3DFxMI5D/3jhGPbl1LAVEIB+p5KvAhXndavghj1rBxsgmMaMk4l6E15z
- B1BypGdSLeu8PyBItHYDskohT+aNXbwmvfuCLFbOVM19e8IZODm9n1MDTsrcU8M4bQL6tshSr6q3x
- NnVFpVDw==;
-Received: from [81.79.79.1] (helo=[192.168.0.116])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1xHIMJ-000UA8-UG; Thu, 15 Oct 2026 12:06:47 +0200
-Message-ID: <35594202-7315-4c82-9e52-337ee12361aa@igalia.com>
-Date: Thu, 15 Oct 2026 11:06:47 +0100
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8F8D310EBB9;
+	Thu, 15 Oct 2026 10:12:49 +0000 (UTC)
+Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4426410EBBF;
+ Thu, 15 Oct 2026 10:12:02 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============0139169398792373487=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [i-g-t] tests/intel/xe_sync_file: Fix driver_name expectation in
- sync_file_race
-To: Tejas Upadhyay <tejas.upadhyay@intel.com>, igt-dev@lists.freedesktop.org
-References: <20261014061138.1748313-2-tejas.upadhyay@intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <20261014061138.1748313-2-tejas.upadhyay@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5B1/3?=
+ =?utf-8?q?=5D_lib/amdgpu=3A_add_MES_reset_test_helpers?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: vitaly.prosyak@amd.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 15 Oct 2026 10:12:02 -0000
+Message-ID: <179205912227.28772.11669898841707430868@221881a7231d>
+X-Patchwork-Hint: ignore
+References: <20261015040236.112017-1-vitaly.prosyak@amd.com>
+In-Reply-To: <20261015040236.112017-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -51,53 +37,135 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+--===============0139169398792373487==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 14/10/2026 07:11, Tejas Upadhyay wrote:
-> sync_file_get_status() is checked right after confirming the exported
-> sync file's status is already signaled (status == 1). At that point,
-> dma_fence_driver_name() has already taken its signaled-fence path and
-> will unconditionally return "detached-driver" - it never calls back
-> into the driver's own get_driver_name() once a fence is observed
-> signaled.
+== Series Details ==
 
-I don't quite understand how this slipped through because I am pretty 
-sure I tested it locally both without and with the kernel fix
-3ed11c671ff7 ("dma-buf/dma-fence: fix checking signaling bit for 
-timeline and driver name v3").
+Series: series starting with [1/3] lib/amdgpu: add MES reset test helpers
+URL   : https://patchwork.freedesktop.org/series/176166/
+State : success
 
-For what CI results are concerned I *think* I misattributed the fail to 
-the above fix not having landed yet (at the time). But again for local 
-testing I don't know how I got the pass.
+== Summary ==
 
-Anyway, the fix is good, thanks for making it!
+CI Bug Log - changes from XEIGT_9146_BAT -> XEIGTPW_15989_BAT
+====================================================
 
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Summary
+-------
 
-Regards,
+  **SUCCESS**
 
-Tvrtko
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_15989_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@core_hotunplug@unbind-rebind:
+    - bat-bmg-2:          [ABORT][1] ([Intel XE#9463]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15989/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+    - bat-nvls-1:         [DMESG-WARN][3] ([Intel XE#8762] / [Intel XE#9069]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15989/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html
+
+  
+  [Intel XE#8762]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762
+  [Intel XE#9069]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069
+  [Intel XE#9463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463
 
 
-> Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-> ---
->   tests/intel/xe_sync_file.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tests/intel/xe_sync_file.c b/tests/intel/xe_sync_file.c
-> index 842c3856a..578b2b1ea 100644
-> --- a/tests/intel/xe_sync_file.c
-> +++ b/tests/intel/xe_sync_file.c
-> @@ -100,7 +100,7 @@ static void test_race(int xe, struct drm_xe_engine_class_instance *eci)
->   	driver_name = NULL;
->   	igt_assert_eq(sync_file_get_status(sync_fence, &driver_name), 1);
->   	igt_assert(driver_name);
-> -	igt_assert(!strcmp(driver_name, "drm_sched"));
-> +	igt_assert(!strcmp(driver_name, "detached-driver"));
->   	free(driver_name);
->   
->   	sync[0].flags |= DRM_XE_SYNC_FLAG_SIGNAL;
+Build changes
+-------------
 
+  * IGT: IGT_9146 -> IGTPW_15989
+  * Linux: xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662 -> xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3
+
+  IGTPW_15989: 4d44937acee5e59fd0bac3a67085b011701ea88b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662: c06d7623a198463e9aa2d09a3c33d96fe66ea662
+  xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3: ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15989/index.html
+
+--===============0139169398792373487==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [1/3] lib/amdgpu: add MES reset test helpers</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176166/">https://patchwork.freedesktop.org/series/176166/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15989/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15989/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9146_BAT -&gt; XEIGTPW_15989_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_15989_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@core_hotunplug@unbind-rebind:<ul>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463">Intel XE#9463</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15989/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9146/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8762">Intel XE#8762</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9069">Intel XE#9069</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_15989/bat-nvls-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9146 -&gt; IGTPW_15989</li>
+<li>Linux: xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662 -&gt; xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3</li>
+</ul>
+<p>IGTPW_15989: 4d44937acee5e59fd0bac3a67085b011701ea88b @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9146: 9e6040664f13f0767bb4d1028b422b7ee00425dc @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  xe-5946-c06d7623a198463e9aa2d09a3c33d96fe66ea662: c06d7623a198463e9aa2d09a3c33d96fe66ea662<br />
+  xe-5950-ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3: ea0d7e7169afc7f6dfdc72e2e5e44e8710dabda3</p>
+
+</body>
+</html>
+
+--===============0139169398792373487==--
