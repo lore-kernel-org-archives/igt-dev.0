@@ -4,161 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BE1BCA9EDE
-	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 03:44:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15FD0CC6B1C
+	for <igt-dev@archiver.kernel.org>; Thu, 15 Oct 2026 04:03:54 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 89E9710E9DD;
-	Thu, 15 Oct 2026 03:44:38 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7E41410E82C
- for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 03:43:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792035825; x=1823571825;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=a+sOXN4PC0/3ejAtynheHsXOErr2WFpMBqXyN7cJibw=;
- b=bop0JiLSs8Vb6rHK21zMIr1yMjSe3tzuUl/u6K/FPL6YZe2PPe80vKmR
- dGeyaThvp2Hs+0xq+m9EhS55/FNY8PZ98e8wc5Y8xjph4q54aHm8P2aUt
- BQaRcqm5LWbs89X9vJNzOB+hL4MLJjfniBFVRy7LRbTV68asJQjq161QS
- biv6xw3D4k9dlykJJ9gMdCzBPKxzxNpfVH1hHAO63Z1h4vRnngypU6oUG
- dvta+6mJ5zqWDAJML18zS0AuhQMJnOkNmmJ1XtSypL3EVL39onHkWHA1L
- tE6a8AJTxyJ0+MvlMd6go0Bg8rtKeLtkjyPlTwXqrLefmKx6NgLqPGuHn A==;
-X-CSE-ConnectionGUID: x/uhrDlgRjiRWlhNB/qIDw==
-X-CSE-MsgGUID: rY8E6ti+QXmQHqK1FnNONQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11935"; a="900936"
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="900936"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2026 20:43:45 -0700
-X-CSE-ConnectionGUID: FYjDzdvdQuW2CK7qeIpzvw==
-X-CSE-MsgGUID: +naxhwWjQRSsAp8vPkp4NA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,159,1787036400"; 
-   d="scan'208";a="1542779"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 14 Oct 2026 20:43:45 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 14 Oct 2026 20:43:44 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Wed, 14 Oct 2026 20:43:44 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.22) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Wed, 14 Oct 2026 20:43:44 -0700
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A4C910EB6D;
+	Thu, 15 Oct 2026 04:03:48 +0000 (UTC)
+Received: from CY3PR05CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11013010.outbound.protection.outlook.com
+ [40.93.201.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 14E5410EB63
+ for <igt-dev@lists.freedesktop.org>; Thu, 15 Oct 2026 04:02:51 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=hKMkZcPdzRBC9IsPV+lNSQykWhWRpmJ4fdhQiSSEoO7LlpTSpvVQSe1tbjrXugiImgb7g8JrKxcl7kFiMCme4IhtFEU1/zIofZxoknhomi/oaBbXnOEOB3aesao540ZWNcetSAbmRbfFeyJdBNf/9c33bRTVoEIuAYyLzQFtxOuiG/6lx8W2Idp/RtodcW17buTDGGhnIqgBHMW9d5LAv5IXyw6ya26CYwVO1Ng8OX9kCWpY62SqMJZELVeoGvTmeTMMJnvfVMO+Pnk5Ra8hyEhtvWAGgbDnQNkCU55CJT1qDqc/0fuuttVm9iaxs7i9F6A6CRsf4De9WIfKh2rNgw==
+ b=vq+iL+VXbDlOkjPKdf4ZbInyP6hqIW5stKEKKkHqKU/irNdBz1BjBrxxU1sWhskGOgvU1JRmvPUlDVNGQ+qlxeCXPrwzrab92sjm4Q2y4X/FX9C1UeyqdgTcCLhxGLwy4czY5cnS8JA7076AS+tL71QAm4RTA9JTjbcgtbB5mniejkMBje12N/KwP5abwAte/JpP0xYJt56869mnwJYlW59eEq4xrFBLdpgNXMODLuH1VAtGu+UVyjllxybtXk9a4xknDSwVREKjdrbNMUo92h6oeS0V/jZwEt9c+faR2wCseAPS5iyyq5WNbYjMaxcozc3bG1b/TUr7PWv5kcv8zA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=EXlUAK14oIH0I9QyoV5FiZMmPHedONdLDHBh2EJ4emQ=;
- b=TY7CFe0Rsm6tiXVfuzPof38LlwaMO/tmzmiRqc7uqUKlzCObhxOfvZBIWwjcUqHAhnn8QBGxFsv0eDOn+kvcS4UEg7jjERWXW+KDrV8byPnEqEqgE5BZwE4QWB+fbB7LDw5BwPehlSs9lrfktQ6b5SzIBVNiOviiL9vzDP7Yhlk4A4SY9ZlSDrlZlSqwwXgLBllK5sBTYkSmGDr+856/wKdmvBM3BLEhKWVlLYO9SADpyQUjOWpfVJjJvxxLJQe+Ge4sk7A6JXmeSVyKlwGyhzCXgUNtn+O5eNrw15vtFGdgF0RScVKFU8rhcJLm9VG+55BX8Q+2Ml99JritBmyPxw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MN0PR11MB6207.namprd11.prod.outlook.com (2603:10b6:208:3c5::21)
- by IA0PR11MB7695.namprd11.prod.outlook.com (2603:10b6:208:400::5)
+ bh=EuoyGNjyvotAD9Fk2l2gikzBvG2L/SfPXbzF2EJ77BM=;
+ b=qjPckp7hrK4g1m4mh8glDymzvvcxOjjPcpBlahY4L7qPgQ4WbkrFzeLl/KIlI1oE5Gov/mxu+b/H/E4eSpt9kiSrHq4YWuq4rvlniBMqO0PuRDmzm1nKaeUcFkXMJ9VM0xDBUJQBN88MwJjccdzmVnZ5bVZXKA0289P2IeSmpD+PJxO6ySQydedtB2bEVge1WXSuVNf+7UyRdZVS2Hz1A6l/D/0aB26wRWpy6e/oJTr4ef/b3v6FDSRT98bQp1i9DjwyhNWAmQww/u7GwMKtGMACmLN5TsARXk6PRniR2ILNWEUn0iDQl0kPJcjve6LJqi9P93VRMU4pnfgIoQ613Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EuoyGNjyvotAD9Fk2l2gikzBvG2L/SfPXbzF2EJ77BM=;
+ b=eqGSZsX/nhSRKCYUu7ngGyb964uaqJpeu5qGGiZA3mY5/NQ46KypnKaaxxyJYyHmeLjxbQK3eUqESPENQuHRwV+jxgjskHlolKNQJ8BcfP6XYSjSOSAH/HxCmsdDedKY+CSyAASa3sAr7mYQZDPgkgcr/AgUQt7mYqcNe2RxcdM=
+Received: from CH0P221CA0004.NAMP221.PROD.OUTLOOK.COM (2603:10b6:610:11c::14)
+ by SA3PR12MB9177.namprd12.prod.outlook.com (2603:10b6:806:39d::5)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Thu, 15 Oct
- 2026 03:43:42 +0000
-Received: from MN0PR11MB6207.namprd11.prod.outlook.com
- ([fe80::52eb:929f:a8b2:139d]) by MN0PR11MB6207.namprd11.prod.outlook.com
- ([fe80::52eb:929f:a8b2:139d%4]) with mapi id 15.21.0522.011; Thu, 15 Oct 2026
- 03:43:41 +0000
-Message-ID: <1b0fc53b-6344-43aa-bbd3-f374fe0dc1a4@intel.com>
-Date: Thu, 15 Oct 2026 09:13:29 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/intel/xe_wedged: ignore expected CORE_COMPUTE error
- in dmesg
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- <igt-dev@lists.freedesktop.org>, <anshuman.gupta@intel.com>,
- <vinay.belgaumkar@intel.com>, <badal.nilawar@intel.com>,
- <riana.tauro@intel.com>, <karthik.poosa@intel.com>, <sk.anirban@intel.com>,
- <raag.jadav@intel.com>, Nishit Sharma <nishit.sharma@intel.com>, "Shuicheng
- Lin" <shuicheng.lin@intel.com>
-References: <20261014115047.352174-2-mallesh.koujalagi@intel.com>
- <20261014132143.k3z6i2aqzsv3cnyi@kamilkon-DESK.igk.intel.com>
-Content-Language: en-US
-From: "Mallesh, Koujalagi" <mallesh.koujalagi@intel.com>
-In-Reply-To: <20261014132143.k3z6i2aqzsv3cnyi@kamilkon-DESK.igk.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5PR01CA0202.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:1b0::9) To MN0PR11MB6207.namprd11.prod.outlook.com
- (2603:10b6:208:3c5::21)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.13; Thu, 15 Oct
+ 2026 04:02:47 +0000
+Received: from CH1PEPF0000AD7F.namprd04.prod.outlook.com
+ (2603:10b6:610:11c:cafe::52) by CH0P221CA0004.outlook.office365.com
+ (2603:10b6:610:11c::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Thu,
+ 15 Oct 2026 04:02:45 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ CH1PEPF0000AD7F.mail.protection.outlook.com (10.167.244.88) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.522.6 via Frontend Transport; Thu, 15 Oct 2026 04:02:44 +0000
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Wed, 14 Oct
+ 2026 23:02:38 -0500
+Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
+ Transport; Wed, 14 Oct 2026 23:02:37 -0500
+From: <vitaly.prosyak@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Jatin Kataria
+ <jkataria@netflix.com>, =?UTF-8?q?Christian=20K=C3=B6nig?=
+ <christian.koenig@amd.com>, Alex Deucher <alexander.deucher@amd.com>, "Jesse
+ Zhang" <jesse.zhang@amd.com>
+Subject: [PATCH 1/3] lib/amdgpu: add MES reset test helpers
+Date: Thu, 15 Oct 2026 00:00:49 -0400
+Message-ID: <20261015040236.112017-1-vitaly.prosyak@amd.com>
+X-Mailer: git-send-email 2.55.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR11MB6207:EE_|IA0PR11MB7695:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9507c87-f87d-463c-1ff3-08df2a6e815d
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD7F:EE_|SA3PR12MB9177:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9391723e-5b77-4b1f-002d-08df2a712a9f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|366016|1800799024|376014|6133799003|10067099003|22082099003|18002099003|921020|11063799006|4143699003|56012099006;
-X-Microsoft-Antispam-Message-Info: gBOTtMjTQgeTzZV6ZpeAwlrkL8Rhz6Nqn2go4IpxmgWAglscMVWxt81e63PXAAi0+fNGWOBpJ0bpkRxdimH3970r8NWNLm1GuWQ3wCNeo2f6yEPqSaMEvsupmw+2aNWbYvjYdMlDLontpoUpOAm+aDpkexB46mKylfFUpjZpe9mVUZhuuu2d+gv/A5+umZF0dRP9ji/LXvs3chtzsAt/oN95lw4ktFd6BFT38MWfy556bxEXgOjzpbeugJNWqeh4e7jOl/JFdTYJ3cTdQTkAZFPjM5BorlU/qfH/TwVj6/9sa6GZ5yhZPxTDfL4TYFzEiIcqwubZlk52yv8TAKUkAY4Hb95h1IzjMtcgDHusMl6sP+OIMHDy9pZSfAJvlOQLWmONvX1/lwGHredudi8Jt7UsjbyoBv2U7HcxCQUj+CPCSiCB61YOgqJB1RlvEzJXI6MKYkfjfE3MyyDKxrGi6MjxwDCayN2JN8+ShuTsRFj3wUfOQzg62xgeaFdpiswOyaNpRUKj+nX6rfJ105LTkQLphDB4wpi8OQj5R5LKaIgJ7TSywbQMTmJ8sdtM3gj0mJzvLfPWnbpdYIkz6seS6jeLaW5TKAGXdLUr8ARA5QXBZSwmTVB3/KE/i1YgJIZ0ft1rd/C0UGKKaQzVlWsEmpcnrZTgDGl6htJ6bWGX+NnEeQvWkc9VpoG9ws2dg42t7Lstx463lptiSVboRHQQpQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MN0PR11MB6207.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(6133799003)(10067099003)(22082099003)(18002099003)(921020)(11063799006)(4143699003)(56012099006);
+ ARA:13230040|1800799024|376014|82310400026|23010399003|36860700016|56012099006|11063799006|261009223027099003|261009221227099003|10067099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: w2r+TYVAgXlGdOnuR8dFGkppTjKXjh+r8HU+AZyp+z2XL+GbfGshYxiWi2yusMwVvcKJS7wxQee+r+8IWBXN9OLiycUehrVV7FoxP/g2z6taDfF8tknFrJrhKSxALBc5W7XVOSbUCWbfTPWh3ET/cYGwDolMeULKkFcbGeFZZ9Qpvw1/Z6yaWCN9nfPPokio8vZZFF7+7Y7BqP61pXWlw649tCh9COlGFET37xQ9TbKP7j5F/9yNWmdH1nM/tdZAisXQw70WVUntA1fp7bLACo0NP4YIOMQFjqHB6tsG5J+YVtBzE5WblYVOey5fP1HZL+0vTgFoGMRY+Ro/O7MGpZqRpLIGZQtUotwtxYC2HfPHupc2+eikuVNLqLEidK9pjhqSyzXJns4pTDalcImDD3VNlGyEBCdujDXULQV9yqwsyzhc83sAvIjsxXnyXAB7dZqiyS+gRu+7xOCTkfSQS3gLF+Xgg3AVXJon7kL+i+4vVLAXs5Ogs10zMa/+FM+PgJGzpOcPzFob3zA4cPDqHtd4js6HipP3jIbypB0UZuI64sdmXhT2S4k7jwjIn4ymrNhm0xbpS7Kx29X5pOZpI4qt42YVTeXgFJ1aKga7HnvpHGeUXLJ5O6qSyQ/yF8Amzdl9crMmoxGfqbm2xC6RabXSlmQ3vbGHpx+FZEz/VcPWDuPTQLHjblCslCLkk+oyLN1Oi31I3SoGWCq387s7jQ==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(82310400026)(23010399003)(36860700016)(56012099006)(11063799006)(261009223027099003)(261009221227099003)(10067099003)(18002099003)(6133799003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?S3dza1d0aFFxRlN0NGN0UHhUcktVK1hMVnA0ZVlPNWdhZExTWWcwVEF4alEr?=
- =?utf-8?B?ZU5JeE5MRENoMitUNmFBNVV0UkliS0pFY1pKZm8yUVhLM0huWld4M3FRdWdv?=
- =?utf-8?B?REhNcFZhOVo4ak5LUmNJY1VDVXdQejFDejRpd1NCN0J5RVJiRklweVdxV3JG?=
- =?utf-8?B?aWxFNlZYM2FFc01OU1Z5eVV0cUx5aWVsTkpQSWdrcGpNWjR2cTBtQlBHOTV2?=
- =?utf-8?B?V0sxOXhReGczR043L2ZiQ0dTZDVnSnVnVndjZ3BQSEpZb3o3dFJQak1LMHRk?=
- =?utf-8?B?blUweVAvdVZvSHZlNXFYcS9TbHN0Tm1SclVpUjNCV3JUYWVIUFZYWmM3M3dt?=
- =?utf-8?B?aHdTVGhuK05nUFpMcy9PUVpCTWhvd1lJMXo2NE1WN1RsZEF0aGN2aUtwUGdm?=
- =?utf-8?B?NFU0b3YvQTBweGdjZFpGajBLL1prQ0JSWENSK0hweFBUUFZtU1gwcmpySUVq?=
- =?utf-8?B?eFZ0L3VRYm5lemdFRDhaN2FFQnUrK1h4aElmRFFGZ3daOWdWRTR1WTJWb1l0?=
- =?utf-8?B?QkpRTXZSMTdBMndJMGFhaXUwc3N4WlZMeUxsTFZpaEdEV1NPaklVVnBjRXB5?=
- =?utf-8?B?Q3JOLzQ3bHFKVlo5NTlFOEJ5TTVGTytWWXNvakZMWVF1WTQwb2twQkF1QWVm?=
- =?utf-8?B?VG9vNlpiNVM4MlFSRy9ZNkV1NmpwZlZWaWpRT290V25HN3dPOGFWRVpMRkZo?=
- =?utf-8?B?emxNY1FkT3Z3N1Z0ZklsSFdmNDZtNE5iTVdrQlpjSUExMWY3YyszbXpxY1lE?=
- =?utf-8?B?YzRXWlV4RnB4Qyt5SGZlditWNVFBUW1ickZOSUNvOUtvZHZLWWlwLytJYTdE?=
- =?utf-8?B?UFV6WnVLbU1KSVN2Y0xEMjRtdHAyUTk4UzdpSkRvTm9Hd3hJc0xaTU43dFY3?=
- =?utf-8?B?YmcyMnpXR3Z5N2tpdGRnMmFLNjlMMk9MbUxESTFreGNiRnNtV1RIc3pEQVpu?=
- =?utf-8?B?bjV5NktyL0drRXhZcUxZWnlQZTE1TzhhMnZZV1NZaDNFcnhwWnNDN3ROcUxt?=
- =?utf-8?B?eXpuMUV1NDllNktISFJDS1FPS2hxazZuVndFWVNxOXV5YURma21nKzlETlBM?=
- =?utf-8?B?T1ZzQ2NFSVNiOElpNVlYYjV1eEcyNkRSVTRJUFkrTzh3amlBdi84b1c4Y3JP?=
- =?utf-8?B?MEVVMDRNKy83MDRJRlp6YklJNU0yYWk2NlNPWTFaWXlnYjh5U211MXR4bWlJ?=
- =?utf-8?B?K0hlc05oTm5jeWVJc2hQa1RGV1NkblBiODRkY01CYUdmNWVxUmlPZnJYYlBv?=
- =?utf-8?B?eW00ZDBHQkhCRmJPblRONzk2RTQ3WXdWRG51bWNiSnNVQkN4Q2RzT2JJcURI?=
- =?utf-8?B?bElxSHA4YlAwRGgxUEFzMGJ0TmtSL3FlNEVIbkkvOGdpVXRCOVFnWVI1MnZQ?=
- =?utf-8?B?VU5lMUZtQXIxOTdPdXl1eFdUNXh6VkFZcFJOelBwckFubGZJa21MbzJJWEk0?=
- =?utf-8?B?Q01OMjU2Nmd3Tm9VbER5OGt3QTBGUVZQM2t1TGlKb3RwWXRVS2J1aHpYenUv?=
- =?utf-8?B?azVRRmN6czREa1VpMDNjZWhMWmpZQlZ1RHd4NnlhaFhlRFBjQitPaU1SeXMz?=
- =?utf-8?B?aEhLOU5MU0FScXJRVTZhT3NhcTJISFlmak5WY3V6aVlZRlFLTC81VWFDZENB?=
- =?utf-8?B?M08wMVNEbWE4WVA5VUEzSUFPVXhuNGFkNEVwNW5wcFBXVmppVDFrN0I4WFhK?=
- =?utf-8?B?UFkvNzVoUkFqRkJZQldBMjlKYjB4NnoxZUFLTWFadzFlVENiMTBmY3NiaWpV?=
- =?utf-8?B?VkVrbUNIcGVGaGZpNnFMbE50L1g3VlZIaHNCMkdyVmZWSGt2YlNyRm9pdVYy?=
- =?utf-8?B?cDJNOWMvTkFRWGlMdURPeThjTVJnUlQ4bnljZy9lamxKM1J5UGdDeWcyODI0?=
- =?utf-8?B?ZGVuTVIyWHF6WDREdys2N0U5ay92cjlIYWJ1NXdXU3lEWFQvMTBGQnZMRTJ3?=
- =?utf-8?B?WENYOTZseWJLc2l6Z0pmeThJUi80MnRDTVYvd2VlNWhRNm9xZm1xZnN1MExW?=
- =?utf-8?B?UUlCQzlSaE02QnhiMERZRHRQTStSU2VCM2pqUTdxYkhtTEQwWjVndjVWaGJo?=
- =?utf-8?B?TFRSdDR4R3JLYTJ4QjNKb0dhd3JRZDhXZmNPUzdrUU5Ncm5oVGZZN3NCTkpk?=
- =?utf-8?B?d3RmSEZXaTVYY29DYnJsSW04NnI5ejUwK2o1dWVsTDZFd0QreGZ4VWVMczQ1?=
- =?utf-8?B?bjUvTVlka3NOVDg2d08wUXh4Qi9xdVpxbXlxWjNLTGhpbnVMQ282R0lGWDRh?=
- =?utf-8?B?Tmt2R3I5N1JaaUprMTZKMExrZ1AvVXpkMEcxRUlnUW1hL20rUlpoUllDeERn?=
- =?utf-8?B?U01qRU5CSERHTGhOcC8xZEY3YkZScllqWk1lMTA2ZmRoMG50L2lQWFhxYytr?=
- =?utf-8?Q?SINjQwe0UBlLUDB0=3D?=
-X-Exchange-RoutingPolicyChecked: sqWJFGeW1/Q2R4pU9kk0n/kk1+U9iaZnYbfmvirrzqtLFbcCwsyDLmTm4I3r0ma+sQY8r1n55LLWwRmSL4cUXqKMENavaPipkPxu/WZzkSdO/0xnso3hp/hKHQZ5mCbL28vII79nUxv5f/sj4chGYUoJ+m8cAo1pBCTAeqvNYZwG5qzehcyISBHr9DcM0hopuG2b4fSr7unwj0R6aoYqjQtrWc8SlRkkS1Z+9ufrwGwPXPILOm4ZjWDyhxVNKRG7NUjRqJ+/P24XDR6hYIl+fULA7PiKVYidosZBr63E3eHXP07YoiAej+RnVZyCgc38g2K9+dp8825tOXAEnnVvDQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9507c87-f87d-463c-1ff3-08df2a6e815d
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB6207.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 03:43:41.8699 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KjAuFMEY5RfLRaRr6JBJ5l3U6NvugH6PlUjmDqYNFNyT+c1y0tRs4+KOfZllW2FpXYgUOMYbajsPsnjtMjKsSF6DPj13RqambWQAOygF9Hw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7695
-X-OriginatorOrg: intel.com
+X-MS-Exchange-AntiSpam-MessageData-0: /TYqd26rR5Y4FVhkoMNgGdxORLL1cmRbuAnw1XDRs0zYWUZFmBAs/j4V8umMY8DZdjPrpFdonKzkUjE4uZR+Bw3oO6o8xLqImY7Jwc5fcSbvSyj8vbgLQmOzjmD62BptGAQtwwh+DkUz/+zMg3HxBj5o59tpY5bB4wDLwc26E2MwFc+uLbmyFeMdVzCaRMORabX0OBlBwRGGRi6psuZxTmlDb2n6hKAIYDc1UZJXm+OlSdkYc41ECVgrXmkWIhTZn/dA07bVzwO+72Bk4TwntK8qzNRsxlMG5/6JxxhYVogMuSjoY3ktlFxOwaxKecVClpnQ0XMMabcd5TOYVaJtV4+wfxIMaT8w6VpPMstcXvsPwOQTftWINJ5dn/3TaGqOvH6zokNeyqSZxLPoMjIXaXkEFl1Gx8NuHfM/YMK873P+2Z5BShEUvTlCdxtXNGMB
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2026 04:02:44.4330 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9391723e-5b77-4b1f-002d-08df2a712a9f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CH1PEPF0000AD7F.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9177
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -174,49 +110,308 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
+From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-On 14-10-2026 07:24 pm, Kamil Konieczny wrote:
-> Hi Mallesh,
-> On 2026-10-14 at 17:20:47 +0530, Mallesh Koujalagi wrote:
->> Wedge tests intentionally force a GT reset failure, which can trigger
->> a CORE_COMPUTE hardware error (SIGID=203) in dmesg.
->>
->> Ignore this expected error so igt_runner does not treat it as a test
->> failure.
->>
-> Add cc before your s-o-b, also add few more devs found by git blame,
-> so also +cc
->
-> Nishit Sharma <nishit.sharma@intel.com>
-> Shuicheng Lin <shuicheng.lin@intel.com>
-Sure!!
->> Signed-off-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
->> Cc: Riana Tauro <riana.tauro@intel.com>
->> ---
->>   tests/intel/xe_wedged.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
->> index 4f5197e2a..fe8ea6969 100644
->> --- a/tests/intel/xe_wedged.c
->> +++ b/tests/intel/xe_wedged.c
->> @@ -54,7 +54,8 @@ static void ignore_wedged_in_dmesg(void)
->>   				    "|EngineClass: [0-9]+ [a-z]+"
->>   				    "|EngineInstance: [0-9]+"
->>   				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Fault response: Unsuccessful -EINVAL"
->> -				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error");
->> +				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error"
->> +				    "|SIGID=203");
-> LGTM
-> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Thanks Kamil!
->
-> Regards,
-> Kamil
->
->>   }
->>   
->>   static void force_wedged(int fd)
->> -- 
->> 2.48.1
->>
+Provide reusable helpers for allocating and mapping indirect-buffer and
+destination BOs, releasing their resources, submitting command streams,
+and unmapping a BO VA. Keep MES resource ownership and submission details
+out of IGT scenario code.
+
+Build the helpers with the AMDGPU library when libdrm-amdgpu is available.
+The native MES reset IGT subtests use these routines to prepare workloads
+and exercise teardown while GPU work is in flight.
+
+Originally designed by Jatin Kataria <jkataria@netflix.com>; ported to 
+IGT and redesigned to fit IGT architecture.
+
+Cc: Jatin Kataria <jkataria@netflix.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Change-Id: Ib6be27f4ccd4d22e3b370ce1026ad503fff996de
+---
+ lib/amdgpu/amd_mes_reset.c | 205 +++++++++++++++++++++++++++++++++++++
+ lib/amdgpu/amd_mes_reset.h |  45 ++++++++
+ lib/meson.build            |   1 +
+ 3 files changed, 251 insertions(+)
+ create mode 100644 lib/amdgpu/amd_mes_reset.c
+ create mode 100644 lib/amdgpu/amd_mes_reset.h
+
+diff --git a/lib/amdgpu/amd_mes_reset.c b/lib/amdgpu/amd_mes_reset.c
+new file mode 100644
+index 000000000..013e2dbc4
+--- /dev/null
++++ b/lib/amdgpu/amd_mes_reset.c
+@@ -0,0 +1,205 @@
++/* SPDX-License-Identifier: MIT
++ *
++ * Originally developed by Jatin Kataria at Netflix.
++ * Copyright (c) 2026 Netflix, Inc.
++ *
++ * Adapted for IGT by Advanced Micro Devices, Inc., 2026.
++ */
++
++#include <amdgpu_drm.h>
++#include "igt.h"
++#include "amd_mes_reset.h"
++#include "amd_PM4.h"
++#include <string.h>
++#include <errno.h>
++
++#define MES_NOP_PACKET PACKET3(PACKET3_NOP, 0)
++
++/* ========================================================================
++ * Buffer Object Management
++ * ======================================================================== */
++
++int mes_create_ib_bo(amdgpu_device_handle device, uint32_t size, uint64_t va,
++		     struct mes_ib_node *node)
++{
++	struct amdgpu_bo_alloc_request req = {0};
++	amdgpu_bo_handle buf_handle;
++	void *cpu_ptr;
++	int r;
++
++	if (!node)
++		return -1;
++
++	memset(node, 0, sizeof(*node));
++
++	req.alloc_size = size;
++	req.phys_alignment = 4096;
++	req.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
++	req.flags = 0;
++
++	r = amdgpu_bo_alloc(device, &req, &buf_handle);
++	if (r)
++		return r;
++
++	r = amdgpu_va_range_alloc(device, amdgpu_gpu_va_range_general,
++				  size, 4096, 0, &node->va, &node->va_handle,
++				  0);
++	if (r) {
++		amdgpu_bo_free(buf_handle);
++		return r;
++	}
++
++	r = amdgpu_bo_va_op_raw(device, buf_handle, 0, size, node->va,
++				AMDGPU_VM_PAGE_READABLE |
++				AMDGPU_VM_PAGE_WRITEABLE |
++				AMDGPU_VM_PAGE_EXECUTABLE,
++				AMDGPU_VA_OP_MAP);
++	if (r) {
++		amdgpu_va_range_free(node->va_handle);
++		amdgpu_bo_free(buf_handle);
++		return r;
++	}
++
++	r = amdgpu_bo_cpu_map(buf_handle, &cpu_ptr);
++	if (r) {
++		amdgpu_bo_va_op(buf_handle, 0, size, node->va, 0, AMDGPU_VA_OP_CLEAR);
++		amdgpu_va_range_free(node->va_handle);
++		amdgpu_bo_free(buf_handle);
++		return r;
++	}
++
++	node->bo_handle = buf_handle;
++	node->cpu_ptr = (uint32_t *)cpu_ptr;
++	node->size_bytes = size;
++
++	return 0;
++}
++
++int mes_create_dst_bo(amdgpu_device_handle device, uint32_t size, uint64_t va,
++		      uint32_t flags, struct mes_ib_node *node)
++{
++	struct amdgpu_bo_alloc_request req = {0};
++	amdgpu_bo_handle buf_handle;
++	void *cpu_ptr = NULL;
++	int r;
++
++	if (!node)
++		return -1;
++
++	memset(node, 0, sizeof(*node));
++
++	req.alloc_size = size;
++	req.phys_alignment = 4096;
++	req.preferred_heap = AMDGPU_GEM_DOMAIN_GTT;
++	req.flags = 0;
++
++	r = amdgpu_bo_alloc(device, &req, &buf_handle);
++	if (r)
++		return r;
++
++	r = amdgpu_va_range_alloc(device, amdgpu_gpu_va_range_general,
++				  size, 4096, 0, &node->va, &node->va_handle,
++				  0);
++	if (r) {
++		amdgpu_bo_free(buf_handle);
++		return r;
++	}
++
++	r = amdgpu_bo_va_op_raw(device, buf_handle, 0, size, node->va, flags,
++				AMDGPU_VA_OP_MAP);
++	if (r) {
++		amdgpu_va_range_free(node->va_handle);
++		amdgpu_bo_free(buf_handle);
++		return r;
++	}
++
++	if (flags & AMDGPU_VM_PAGE_READABLE) {
++		r = amdgpu_bo_cpu_map(buf_handle, &cpu_ptr);
++		if (r) {
++			amdgpu_bo_va_op(buf_handle, 0, size, node->va, 0,
++					AMDGPU_VA_OP_CLEAR);
++			amdgpu_va_range_free(node->va_handle);
++			amdgpu_bo_free(buf_handle);
++			return r;
++		}
++	}
++
++	node->bo_handle = buf_handle;
++	node->cpu_ptr = (uint32_t *)cpu_ptr;
++	node->size_bytes = size;
++
++	return 0;
++}
++
++void mes_free_bo(struct mes_ib_node *node)
++{
++	if (!node || !node->bo_handle)
++		return;
++
++	if (node->cpu_ptr)
++		amdgpu_bo_cpu_unmap(node->bo_handle);
++
++	if (node->va)
++		amdgpu_bo_va_op(node->bo_handle, 0, node->size_bytes,
++				node->va, 0, AMDGPU_VA_OP_CLEAR);
++
++	if (node->va_handle)
++		amdgpu_va_range_free(node->va_handle);
++
++	amdgpu_bo_free(node->bo_handle);
++	memset(node, 0, sizeof(*node));
++}
++
++/* ========================================================================
++ * IB Filling Functions
++ * ======================================================================== */
++
++int mes_submit_ib(amdgpu_device_handle device, amdgpu_context_handle context,
++		  amdgpu_bo_handle *bo_handles, int num_handles,
++		  uint64_t ib_va, uint32_t ib_bytes, int ip_type)
++{
++	struct amdgpu_cs_ib_info ib_info = {0};
++	struct amdgpu_cs_request cs_req = {0};
++	amdgpu_bo_list_handle bo_list = NULL;
++	int r;
++
++	/* Create BO list */
++	r = amdgpu_bo_list_create(device, num_handles, bo_handles, NULL,
++				  &bo_list);
++	if (r)
++		return r;
++
++	/* Setup IB */
++	ib_info.ib_mc_address = ib_va;
++	ib_info.size = ib_bytes / 4;
++
++	/* Setup CS request */
++	cs_req.ip_type = ip_type;
++	cs_req.ring = 0;
++	cs_req.number_of_ibs = 1;
++	cs_req.ibs = &ib_info;
++	cs_req.resources = bo_list;
++
++	/* Submit */
++	r = amdgpu_cs_submit(context, 0, &cs_req, 1);
++
++	/* Cleanup */
++	amdgpu_bo_list_destroy(bo_list);
++
++	return r;
++}
++
++int mes_unmap_bo_va(struct mes_ib_node *node)
++{
++	int r;
++
++	if (!node || !node->bo_handle || !node->va)
++		return -EINVAL;
++
++	r = amdgpu_bo_va_op(node->bo_handle, 0, node->size_bytes,
++			    node->va, 0, AMDGPU_VA_OP_UNMAP);
++	if (!r)
++		node->va = 0;
++
++	return r;
++}
+diff --git a/lib/amdgpu/amd_mes_reset.h b/lib/amdgpu/amd_mes_reset.h
+new file mode 100644
+index 000000000..7cb426f31
+--- /dev/null
++++ b/lib/amdgpu/amd_mes_reset.h
+@@ -0,0 +1,45 @@
++/* SPDX-License-Identifier: MIT
++ *
++ * Originally developed by Jatin Kataria at Netflix.
++ * Copyright (c) 2026 Netflix, Inc.
++ *
++ * Adapted for IGT by Advanced Micro Devices, Inc., 2026.
++ */
++
++#ifndef AMD_MES_RESET_H
++#define AMD_MES_RESET_H
++
++#include <stdint.h>
++#include "amdgpu.h"
++
++#define MES_HW_IP_GFX       0
++#define MES_HW_IP_COMPUTE   1
++
++#define MES_DEFAULT_IB_SIZE     (64 * 1024)
++#define MES_DEFAULT_CHAIN_LEN   512
++#define MES_VA_BASE             0x40000000ULL
++#define MES_VA_GAP              0x20000ULL
++#define MES_DST_BO_SIZE         (4 * 1024 * 1024)
++
++struct mes_ib_node {
++	amdgpu_bo_handle bo_handle;
++	amdgpu_va_handle va_handle;
++	uint64_t va;
++	uint32_t *cpu_ptr;
++	uint32_t size_bytes;
++};
++
++/* Buffer management */
++int mes_create_ib_bo(amdgpu_device_handle device, uint32_t size, uint64_t va, struct mes_ib_node *node);
++int mes_create_dst_bo(amdgpu_device_handle device, uint32_t size, uint64_t va, uint32_t flags, struct mes_ib_node *node);
++void mes_free_bo(struct mes_ib_node *node);
++
++/* Submission */
++int mes_submit_ib(amdgpu_device_handle device, amdgpu_context_handle context,
++                  amdgpu_bo_handle *bo_handles, int num_handles,
++                  uint64_t ib_va, uint32_t ib_bytes, int ip_type);
++
++/* VA management */
++int mes_unmap_bo_va(struct mes_ib_node *node);
++
++#endif /* AMD_MES_RESET_H */
+diff --git a/lib/meson.build b/lib/meson.build
+index d15d25f15..911bf3550 100644
+--- a/lib/meson.build
++++ b/lib/meson.build
+@@ -186,6 +186,7 @@ if libdrm_amdgpu.found()
+ 	lib_sources += [
+ 		'amdgpu/amd_memory.c',
+ 		'amdgpu/amd_platform.c',
++		'amdgpu/amd_mes_reset.c',
+ 		'amdgpu/amd_command_submission.c',
+ 		'amdgpu/amd_compute.c',
+ 		'amdgpu/amd_cs_radv.c',
+-- 
+2.55.0
+
