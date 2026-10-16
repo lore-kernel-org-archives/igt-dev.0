@@ -4,50 +4,50 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBA1DCCA462
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Oct 2026 07:46:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CEED3CCA464
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Oct 2026 07:56:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 89F9F10E030;
-	Fri, 16 Oct 2026 07:46:00 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D130C10E030
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2026 07:45:07 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8024A10E1C7;
+	Fri, 16 Oct 2026 07:56:42 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 63BF110E209
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2026 07:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792136708; x=1823672708;
+ t=1792137348; x=1823673348;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=JMQxEucOpcmVE3qiomsv81V1z5HoKK0PXF0NAWu75gw=;
- b=Z0B81gGvTkZ+yw1oxxTLilSRexhllzXpCtH6GXNNaCPNU3bT23Ck7G9u
- oUWJMRZV5PGcRqX5FGS+Ph8XpYyv7BAuFTZq6e+6bRapem63MidMg4DF9
- K4pgmpOwkKYJXyltLSh7VSE9uEwjXFhuQv8ofpoowwSzsf3PevHg4ayc9
- e/dzSMoHb6AvTSmJAQm0W2Np65vVFcVdlgFG4/ahSUBCcaqnFRtnN3KO6
- ECaKQ2VRx85gQPs0iLvIVJ0XAQFsSjzGPfDS26OVQ9Uza29gP0uzZ4Dxf
- WpF/FFl0ymUUM8RCSRYkjqqiifN86S6UdBqVY/4WtoYvXuJPPbZNrzqHb g==;
-X-CSE-ConnectionGUID: nUODjF0bSgKRnP3kTp3OJg==
-X-CSE-MsgGUID: VlQjNLceS1yuttigQk/g+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="909992"
+ bh=8D9gNpjveNKO0Ax/lTV+vhpQjqgs3Q4anqjVt9v9RFQ=;
+ b=SlhRXLkGHxxy/c+SJXw+1VegQkjIfmrUoJMspeEBSiqdkMbe5uIc0pIJ
+ pgddPEY96RJjHUqnenMKxTpC8a9MKKXIB2OoKu+GtWOKD6omQ8WNSlxvz
+ RQJCp3T1jPluwEPl1VvR+Z/5QsZ1FapDncW47aERTJz1cXBqAWykT+dCp
+ 8RpbAgcqCbn5isDJajpQqtz/BEqWRU3WGOgDCMgdkeIi2ni50+JEA7jD5
+ Eh7MAsqKX4h9MZqS2f7GlbCS4iuojhbjmCOs7ii3sEnjcgcFeTIHrYOBz
+ NVlKT+MVtgAant/96FRobua19L8MGcM25hPymD1h3Kuq09apMDLJNRiin g==;
+X-CSE-ConnectionGUID: FPxLljSySrKUY5pfnB2ryA==
+X-CSE-MsgGUID: XjvhVH1BQIisdPXc245gZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="929200"
 X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="909992"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2026 00:45:07 -0700
-X-CSE-ConnectionGUID: B6XWKvP7RgysU6TowZB7SA==
-X-CSE-MsgGUID: Qul52Ko+Rpu8Et5vlXK5DQ==
+   d="scan'208";a="929200"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2026 00:55:48 -0700
+X-CSE-ConnectionGUID: y57TBKMSTn6LVvBlHVKuyQ==
+X-CSE-MsgGUID: 5Efw+z2yTqOHBpeHXu14Sw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="2307962"
-Received: from jraag-z790m-itx-wifi.iind.intel.com ([10.190.239.23])
- by orviesa010.jf.intel.com with ESMTP; 16 Oct 2026 00:45:06 -0700
-From: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
+   d="scan'208";a="2266336"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2026 00:55:46 -0700
+From: Swati Sharma <swati2.sharma@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: riana.tauro@intel.com, nishit.sharma@intel.com, shuicheng.lin@intel.com,
- kamil.konieczny@linux.intel.com,
- Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-Subject: [PATCH] tests/intel/xe_wedged: ignore expected GuC error in dmesg
-Date: Fri, 16 Oct 2026 13:15:02 +0530
-Message-ID: <20261016074501.458311-2-mallesh.koujalagi@intel.com>
-X-Mailer: git-send-email 2.43.0
+Cc: Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t] tests/kms_color_pipeline: Test only first/last plane in
+ simulation
+Date: Fri, 16 Oct 2026 13:35:00 +0530
+Message-Id: <20261016080500.1378982-1-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -65,30 +65,62 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Ignore the expected GuC uncorrectable local error message seen
-during wedge tests.
+The plane-fixed-matrix-* subtests run a dynamic subtest for every plane
+that supports a color pipeline, on every pipe. On simulation this takes
+long enough that the subtests time out.
 
-Cc: Riana Tauro <riana.tauro@intel.com>
-Cc: Nishit Sharma <nishit.sharma@intel.com>
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Signed-off-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
+When running in simulation, test only the first and last planes that
+support a color pipeline, as other tests (e.g. kms_plane_alpha_blend)
+already do. Non-simulation runs still cover all planes.
+
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 ---
- tests/intel/xe_wedged.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/kms_color_pipeline.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-index fe8ea6969..a75433c91 100644
---- a/tests/intel/xe_wedged.c
-+++ b/tests/intel/xe_wedged.c
-@@ -55,6 +55,7 @@ static void ignore_wedged_in_dmesg(void)
- 				    "|EngineInstance: [0-9]+"
- 				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Fault response: Unsuccessful -EINVAL"
- 				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: Engine memory CAT error"
-+				    "|Tile[0-9]+: GT[0-9A-Fa-f]*: GuC: Uncorrectable local error!"
- 				    "|SIGID=203");
- }
+diff --git a/tests/kms_color_pipeline.c b/tests/kms_color_pipeline.c
+index bf4781796..9a5c44e41 100644
+--- a/tests/kms_color_pipeline.c
++++ b/tests/kms_color_pipeline.c
+@@ -407,6 +407,8 @@ static void test_plane_fixed_matrix_colorops(data_t *data, igt_crtc_t *crtc,
+ 					     kms_colorop_t *colorops[])
+ {
+ 	int n_planes = crtc->n_planes;
++	int first_plane = -1, last_plane = -1;
++	bool in_simulation = igt_run_in_simulation();
+ 	igt_output_t *output = data->output;
+ 	drmModeModeInfo *mode = data->mode;
+ 	igt_plane_t *plane;
+@@ -433,12 +435,29 @@ static void test_plane_fixed_matrix_colorops(data_t *data, igt_crtc_t *crtc,
+ 	capture_sw_converted_ref_crc(data, output, &yuv_fb, &ref_crc);
+ 	igt_remove_fb(data->drm_fd, &yuv_fb);
  
++	/* Get first & last planes supporting color pipeline. */
+ 	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
+ 		plane = igt_output_get_plane(output, plane_id);
+ 
+ 		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+ 			continue;
+ 
++		if (first_plane < 0)
++			first_plane = plane_id;
++
++		last_plane = plane_id;
++	}
++
++	for (int plane_id = 0; plane_id < n_planes; plane_id++) {
++		plane = igt_output_get_plane(output, plane_id);
++
++		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
++			continue;
++
++		if (in_simulation &&
++		    plane_id != first_plane && plane_id != last_plane)
++			continue;
++
+ 		igt_dynamic_f("pipe-%s-plane-%u", igt_crtc_name(crtc), plane_id)
+ 			_test_plane_colorops(data, plane, fb_colors,
+ 					     &ref_crc, colorops,
 -- 
-2.48.1
+2.25.1
 
