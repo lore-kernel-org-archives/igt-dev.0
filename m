@@ -4,53 +4,158 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 332C2CCF2C0
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Oct 2026 18:05:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8B1CCCF2C3
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Oct 2026 18:16:56 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A800D10E05C;
-	Fri, 16 Oct 2026 18:05:05 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F302210E1D7
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2026 18:04:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 542B310E379;
+	Fri, 16 Oct 2026 18:16:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 84EC610E1EC
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2026 18:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792173851; x=1823709851;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=X88ObWxnehUdKhneQhBCID8jWtTEj2r9npnW2GZq4dQ=;
- b=IFiLoe1biuRTdGntdMT2sCAAbgmiqdW0mQLzHMUAhh50owyKv502w3Hy
- 6ExEzkfz5iyGz87DEitFRsqgTv90AFctcgqzzi+x2arL+5wwKbT6zHuK6
- GREYnwK8lfAJWSWjTHoaiKwM32tCUHV28j/OLgg9thLkyXdDk55Ogsw8D
- mqy1Ysc1PkyxaubKr12YOLyrqMhM2nrBQMCXGwHoIyASq/XFILKLbl4kq
- X9zyZZjfCo/szf0k5M+z8z8ZtLOXL8EpovAM9Msa19nmpZNw/A3EXfcfL
- zrqs/R2RvFPL2hISDmTVliMXTWBj+ox764VexBL9CicwO7xGYbHXppejx w==;
-X-CSE-ConnectionGUID: LU9IA1ehQlyGqcsclWeGiA==
-X-CSE-MsgGUID: 5gd0BrcMSuKFeMGdOnbhzA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11937"; a="954463"
+ t=1792174558; x=1823710558;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=r00k6fxffiez5sXzOQaaoLS08fLBPc+Pi0CUT5+5JQo=;
+ b=Td1ig9EphXetzVxQjtfaKTBWTwfbnYsQzElj7DoQTHuiT3Usj1Sm5o4k
+ BVZB6FZCM9Gs2bnVORrx1EIghxjecYqe8veac+fPTa1BBvVJfNffNHsya
+ 3Jts+H2UJcG4H+QbI7li83fRepzNh0FMMOdcrTdkC6mKs3Eyl0+2+dp0R
+ +p7p39dV2aPeZO0MEAQvhB5f0ZK+WrhgI5k6HuqLW4vX9S3XnkFPBgb2H
+ Okk0rgUCilbIru4003gJ9LGbP0jY6k1Lmu0zp9Q6SYKT9A7bwdzeVEGg2
+ Q9NjEsH8NhHDZDrfPzrWb3bIFOnFq5i6MOJbIHIsUwGFh7ljh3yKybxFm Q==;
+X-CSE-ConnectionGUID: zUnftxAOQqCuIH5oVe3Y5w==
+X-CSE-MsgGUID: rX/FZYhzQ92AuAIZojKX3A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11937"; a="865260"
 X-IronPort-AV: E=Sophos;i="6.27,162,1787036400"; 
-   d="scan'208";a="954463"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2026 11:04:10 -0700
-X-CSE-ConnectionGUID: HlkIEpqeQJWHSJXsP49sqw==
-X-CSE-MsgGUID: 464+q72+SlKuLcMPAy+jEg==
+   d="scan'208";a="865260"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2026 11:15:58 -0700
+X-CSE-ConnectionGUID: 7GR4xo8gT0GG1ahRnYSKEw==
+X-CSE-MsgGUID: u//iqEwBSCSQ5FZXSooNmw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,162,1787036400"; 
-   d="scan'208";a="1980785"
-Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2026 11:04:08 -0700
-From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ankit.k.nautiyal@intel.com, kunal1.joshi@intel.com,
- swati2.sharma@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-Subject: [PATCH i-g-t v1] tests/intel/kms_link_m_n: Add DisplayPort Link M/N
- ratio validation tests
-Date: Fri, 16 Oct 2026 23:33:58 +0530
-Message-ID: <20261016180358.2224883-1-ramanaidu.naladala@intel.com>
-X-Mailer: git-send-email 2.43.0
+   d="scan'208";a="2256475"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2026 11:15:58 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 16 Oct 2026 11:15:57 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Fri, 16 Oct 2026 11:15:57 -0700
+Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.32) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Fri, 16 Oct 2026 11:15:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CcoA041M9f7zxwVdCGXeNNhlcF3Ldj7988v2ETi/36ixtG/HG+XGTOfIijBgdgLuvaMpFeXnZVUdnIZgFd0R4EGOSPchukVc1IcBlOhpkLr4/cXM8FuC6GQChVFTJDaLAGK0t8JEXfHzpAa3Ln4gK1gGI8uFOfr/5wRMZEXtMNe26rmxgQkrFS0DuJqhOSH2GcnLc+oLCICJ//wbfjp2Nm+jL10BgKpAuvNAZOq6UkGKcQOWnRPvaa8WdMYnljNWwiRSO9m9JnOO8KcYnknwNsnuYDzz8YLVSQGhKFmy4cHr0Kv9UyZQpFVxlFwDVHIPMavMoARZF4vmkfFEBdxmbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=9QyAvEWDdNchIWWqY7SM6wrcFIjMRdh04toXFSjKzw4=;
+ b=yP/71yoGGqN86kbduuoSNW7m9/pBSI9PtPuIgIwLo7NMBWaYOTVt657KAwZThy1yQBMW+R9TYsU4BbWIJ1Qpdu9/KYhg/vuYVkrmWnO803cJF2BPxKhgJT/GUvn5BClTG8VHbJndok2HU1tKXnCFYO7o67rxKOGCyz0GJUlTZvn4/U+YpdVkou6Z/lRMq7ymcopntt1o0QNAtGAZFACq+DgEHLLtVDkOj/u2EKSpjl1D30lpuywIFZ0PSBAnYECIoAZTC84DnLq2mHOsOcPaduW61RVEMReXEGFe0Rggiqy8sopMrSkBZBYW94hVLG5t8COWCude3oNKqrofEZiTjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SA1PR11MB5803.namprd11.prod.outlook.com (2603:10b6:806:23e::8)
+ by SA1PR11MB9802.namprd11.prod.outlook.com (2603:10b6:806:4d9::7)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.496.23; Fri, 16 Oct
+ 2026 18:15:50 +0000
+Received: from SA1PR11MB5803.namprd11.prod.outlook.com
+ ([fe80::ddb:eca0:d411:c638]) by SA1PR11MB5803.namprd11.prod.outlook.com
+ ([fe80::ddb:eca0:d411:c638%5]) with mapi id 15.21.0522.012; Fri, 16 Oct 2026
+ 18:15:50 +0000
+Message-ID: <f5e47f10-cd27-495b-8a85-86a9928d867b@intel.com>
+Date: Fri, 16 Oct 2026 23:45:41 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] tests/intel: Add helper to dump GT debug state on C6
+ wait failures
+To: Sk Anirban <sk.anirban@intel.com>, <igt-dev@lists.freedesktop.org>
+CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
+ <riana.tauro@intel.com>, <karthik.poosa@intel.com>, <raag.jadav@intel.com>,
+ <mallesh.koujalagi@intel.com>
+References: <20261016095145.330496-2-sk.anirban@intel.com>
+Content-Language: en-US
+From: "Purkait, Soham" <soham.purkait@intel.com>
+In-Reply-To: <20261016095145.330496-2-sk.anirban@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA0PR01CA0099.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:af::7) To SA1PR11MB5803.namprd11.prod.outlook.com
+ (2603:10b6:806:23e::8)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR11MB5803:EE_|SA1PR11MB9802:EE_
+X-MS-Office365-Filtering-Correlation-Id: a349ac82-a07e-45bd-66e2-08df2bb18228
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|376014|23010399003|1800799024|18002099003|261009223027099003|10067099003|11063799006|56012099006|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info: fuCCcykZ53CnKBrVy2Ij72f0omab4R6N7CVPUAyds5yDHEGvv24EUhCQihw6cIsdCtFJiVgS7JfqKLm4mtcG9927b63t0C05MGn5puszpCP/LhKAB8tVsIOYKHl4aX621xhbowghjBf47Pc4mQV6H5H++6WGLXvRjZ5kqfdkbsQnY13Zc0XMpKWbNakk3aadh7b2cnbk12w8uITsv/aoP772y0BWvnY1tqQ0lYQdAWrB7A0e5IwaShidgTYt3ftVvSwONPFJhefcN+kUoNbJfZelj6mkPyqMYZQs2WibNVK+ecF6IcfXOHqHiF0DgWAotseVCiCSZ0rQw/uL5pO9sG4Dc4fVjh/tUkpn/Gu1tOwAtIh/a2+ESvjPmsqJufpcOdn9uT5Pwfhg5bRDs7p3KCkVYTlxdFPo83ScYsyW13L+R5r4SnHy1kwZrItNTVD8BUyo9uFFTntxbp0miHvOqg1Sec4C9LuNsA7LkIefkUh+KyJa0Uhf1sHDryzzDMJHJ9trl6YHQ6Kkg4r7jBIpOOSR51tCvrKHfJPdrlWdWyk+UdyUu+rGR1a2Xq6Ooh8WY9f64nqsxPrTOJRCqcssagtW45FJ/MHj7Ojky2IJX16uO1WHeQaugMsysP6/d0Qw8rwW9cZN557YIe8/ZD3x4zzYMFFkOIN+l1+Lfj9w1wM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:SA1PR11MB5803.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(18002099003)(261009223027099003)(10067099003)(11063799006)(56012099006)(22082099003)(6133799003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q1UwY1NQMS96RUxwdmxYL3lKdVNYRFVMUVVpUXNma3k3VE5mcWJYTG9GOC94?=
+ =?utf-8?B?blNkTmpxUGpaKzhmazhRa2xZRlUvLzQ3R3NoaFBpbW5qbEVjaGJsVjcrRElz?=
+ =?utf-8?B?REZWVmoxTVFjbUp6cDlRR2o4M0NZSERaZys1NGpmcEJ6LzhCeGZ1blhhbXhs?=
+ =?utf-8?B?ZUY0RE5OMWpEdDBuQitkYWhxSXkrRFZ2bDJTYjgzVWFJTDlJNkZCT2VzSUp1?=
+ =?utf-8?B?QWcwQmZTU25sSzRQa2pvSitURXhvZ3JlNHNuOVJHLzRhWHhGR0JiNjNtVVRp?=
+ =?utf-8?B?ZTArTHRxNnhLaFNiSU9QNHlVSGxRckFpQ241ZkN4VURveGZET0kxTzJCNk0y?=
+ =?utf-8?B?YldlWW5iVHFxNTh1blIvVjNuMHV6OVJHL0xHaDBTREswZWdCWFU4aEdXT0FL?=
+ =?utf-8?B?NzhlWkdvUW5qdHgrR1V5Rm9JQXJ4L2F6VFdlZmlpa2s0NmwyRDZ4eG1wWTUy?=
+ =?utf-8?B?bEY2c2JtclJVRzdqcjJNdnhMU3JJRWpJV2g5c2xKM0ZLczgrTGI0QXdHRUhJ?=
+ =?utf-8?B?YTlmdkRKdERWUjYrMlNMNlFaZUxrb1NrdEVkY1dlbCt3S1ROSmZ0VSt3Q2xp?=
+ =?utf-8?B?cVNXVVBIMk5vZStZU0swQkx5YTRJd2NQZEs2R1dnQ3c2K0ZBN3JwVGdYSFpr?=
+ =?utf-8?B?WlRlV2o5cUsyYVIzdUd3ODBpaEd3cXlWVGVDM0NlKzRITzdZbEQzcFYzRFly?=
+ =?utf-8?B?UGdRdk43cytXUjF2NUl4d2dKbFpPNlBuY2VVYnlpT09naHJNTkRvTmtkUGsz?=
+ =?utf-8?B?cHV5TlNXRTc0V0dUTW1FWlJ6eFFZTk5pV0d1NEtSdzUxWE9FWDhjU2VWRTVi?=
+ =?utf-8?B?SHBFeExWUXZJRFMyUnhBc3Mxb0xubVN6VzNnWXk4bmtKZkl5cHAzSnM1L3VT?=
+ =?utf-8?B?Rjc1eUQzMWhrMkRORHp3WGg5MmZNVTR3cnFjbWthQWFDc28rMTl4bk1mdVZL?=
+ =?utf-8?B?czRhV2Z1aytmYkZ1UnVzRWZqam1jbEpkazdhejVnOUVTQi91bnFwaVdFeGlE?=
+ =?utf-8?B?TURyUVFzL3Z3Z2FwdnFUeTJhZ0JUa1VLdkhmSTY3NWxaOXE5ZG1zekVudlZD?=
+ =?utf-8?B?aDN6TDdXcU1WOVU2OXpzM2NkWjBFTndrU2UxSzJwOEg2QnorR0d6Zk1ENVUz?=
+ =?utf-8?B?NVdsZDhDQ3lkMzhPbFJkaVlSNlpGZlJJTTJxaEs3b0JRYklIUWE5UGhNeUd5?=
+ =?utf-8?B?NEQ2ZGhtWXYzNzY0aE1tNUh3a0ZxTTlTZGdZWExTNTN5K0hhK2NyT2ZkU0k3?=
+ =?utf-8?B?MG50Mk1XTllCbmtPNk16WnViZy9vYU1VSDl0MHZuWmxUN1Y0ajdJT3V0Ulgv?=
+ =?utf-8?B?UHAxcW5nWk0vU1NySlQvT2lVRVFUU2JBN2tSN1R3OThQWldLanNLU2tBUDhN?=
+ =?utf-8?B?aEc4WWNmc1RxRzBqRm1xTkxrYXpXSjdTNGZld3VGS0RuNGRNNXNMUkx6bUla?=
+ =?utf-8?B?eXp6S0dyNEkwMG1xeldXc3h1RGRZcVlSNUg1eFk1clRPYWM3MGdMemxuVExh?=
+ =?utf-8?B?ZHEwK3gxYUFSYTdLVzZhaDZod1ViYnEvSC8veFBEZ3VpOGF5SlR5a09JSVRO?=
+ =?utf-8?B?VGZFZjBaLzlkRjBMZTBaTUJUZkY2ZG5Sd0dLaTZ1WURQSHJXYUFZVzJ1Vzgz?=
+ =?utf-8?B?UDB1U1A3N2JZUGtyWERETFV0MEFPQllyVTV1dWdEcGxVOStZcTRtQ3djZ0g1?=
+ =?utf-8?B?VTVuMm5MVzRjTVpQTmlIRTlXK1ZEWCszQmtUQlJBUnJ5L3BObFF6azFWTXRH?=
+ =?utf-8?B?c3BjMG9ndUIrMWZEdUNkNUhZTmxVTXFXb3FuOFUzMkhYbUxjdDJCeDh0TDRs?=
+ =?utf-8?B?MnZwNzM4bjF4cDRnME1IZjFTQlRIQmFNNHd0RlVqaCs5a1ZWdzk3QWJsMStP?=
+ =?utf-8?B?YW1ycExpMHEvVDROc0FqNUpna3JwajJqaVI0c2JibmUwL3cxYUQ5RHR5dFB4?=
+ =?utf-8?B?ZkN2VnAvOWhJMXNQc3dCNy81M1RUWWNVREhxK1o5cXJ5WldDQjZHNFJKTnNM?=
+ =?utf-8?B?Y2pNVW8vSHI2M1h3TlN6ejNxanhvdWZ0SERGbGttRWJxbzVJaFVJM05EN2NT?=
+ =?utf-8?B?ank2UVE1c3gxaHprUzJXdXhiU20yOFJMTkRMTmV6YTRicDVRRWJqYkwrZHZH?=
+ =?utf-8?B?QjZqeUxiZmp4UjEyclZ0TTZaMTRwTXZIelBpenI0UWloMnhqRmZEN25tK0th?=
+ =?utf-8?B?b0oxN1FWbHUrUzlqQ244VUk5SnNKMWc1NjI5ZnlwNVVOV3VEN09tRUJVWUZ2?=
+ =?utf-8?B?S0VvcVc5dWtReGhsbHo4dzNabTVGRHRhZ0RsZG9qcmRMYVFRWExBcE9RbGFh?=
+ =?utf-8?B?U2YrVWloWFFMSnJzbXYzNFN4MWVlUm1SUytjREhFOWJuUEFwdFZqamROWTJm?=
+ =?utf-8?Q?f0/ilzaD38MfmKrg=3D?=
+X-Exchange-RoutingPolicyChecked: Ms7LZoz2Qy++5RYk71Jd3XdditkR2FEmS3W1liwZdKw5O5mYAKLEs7Ikc0zAdB0BXuCB6hjk2gv63PbdppE9pQXxqkNZ7EXqgQxAKg7xvHBNo98HvCLFgy8yafEayhWV8SkzBsV5anURp6NJjR+p8majzMWLz41DfEvB4iTyo6FwxS0WHvZ1k8m1FfxuPb/ouW8L4yn/0VGeJNsMKVzTTKMtBUKtMpmZOZ1oqJUMU6DAIgFKchR2+BpVAKRzxjgJI0n6pK8x48tIEyB+3Pt0SQHm6Q9mTpAx2hVgO4D4fLZ8qFzELO50wXzIGNTNK/e0CiOVGqXZgxLY5zX5YcwxRw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: a349ac82-a07e-45bd-66e2-08df2bb18228
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB5803.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2026 18:15:50.4426 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OVDGQuXIPsR+Im6ql1h/ZIHjIS0qWqzs8Dp3yJWVpPqS/e3BkpndQ0gMWIarJlVI5v/PQOQGcd7ztENwIUH8BQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB9802
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,485 +171,233 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Add a DisplayPort Link M/N validation test based on pipe CRC
-comparison.
+Hi Anirban,
 
-The test exercises a range of Link M/N integer ratios across supported
-link configurations and verifies that the generated output remains
-unchanged. CRC mismatches indicate potential link timing, transmission,
-or sink synchronization issues.
+On 16-10-2026 15:21, Sk Anirban wrote:
+> GT C6 assertions currently only print GT state on failure, giving
+> no insight into what kept the GT busy.
+> Add a helper that prints both hw_engines and powergate_info whenever
+> a GT C6 check fails or is skipped.
+>
+> v2: Inlcude NULL check & cosmetic changes (Soham)
+typo: "Inlcude" -> "Include"
+>
+> Assisted-by: LLM
+> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
+> ---
+>   lib/xe/xe_gt.c                | 37 +++++++++++++++++++++++++++++++++++
+>   lib/xe/xe_gt.h                |  1 +
+>   tests/intel/xe_gt_freq.c      | 21 +++++++++++++-------
+>   tests/intel/xe_pm_residency.c | 13 ++++++++----
+>   tests/intel/xe_pmu.c          |  4 +++-
+>   5 files changed, 64 insertions(+), 12 deletions(-)
+>
+> diff --git a/lib/xe/xe_gt.c b/lib/xe/xe_gt.c
+> index 3d8b4f68a..2c9778dd8 100644
+> --- a/lib/xe/xe_gt.c
+> +++ b/lib/xe/xe_gt.c
+> @@ -8,6 +8,7 @@
+>   #include <sys/stat.h>
+>   
+>   #include "igt_core.h"
+> +#include "igt_debugfs.h"
+>   #include "igt_sysfs.h"
+>   #include "lib/intel_chipset.h"
+>   #include "xe_gt.h"
+> @@ -229,6 +230,42 @@ bool xe_gt_is_in_c6(int fd, int gt)
+>   	return false;
+>   }
+>   
+> +/**
+> + * xe_gt_dump_debug_info:
+> + * @fd: pointer to xe drm fd
+fd is an int, not a pointer.
+> + * @gt: gt number
+> + *
+> + * Dumps the hw_engines and powergate_info debugfs entries for @gt via
+> + * igt_info, so they are printed unconditionally on both FAIL and SKIP paths.
+> + * Always returns false, so it can be OR'd with the result of an igt_wait()
+> + * condition to dump state only when the wait fails.
+Use a Returns: tag.
+> + */
+> +bool xe_gt_dump_debug_info(int fd, int gt)
+> +{
+> +	char *info;
+> +	int dir;
+> +
+> +	dir = igt_debugfs_gt_dir(fd, gt);
+> +	if (dir < 0)
+> +		return false;
+> +
+> +	info = igt_sysfs_get(dir, "hw_engines");
+> +	if (info) {
+> +		igt_info("GT%d hw_engines:\n%s\n", gt, info);
+> +		free(info);
+> +	}
+> +
+> +	info = igt_sysfs_get(dir, "powergate_info");
+> +	if (info) {
+> +		igt_info("GT%d powergate_info:\n%s\n", gt, info);
 
-Subtests are generated dynamically for each display pipeline, while
-unsupported configurations are skipped automatically.
+Is it really necessary to print the same gt value twice ?
 
-Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
----
- tests/intel/kms_link_m_n.c | 434 +++++++++++++++++++++++++++++++++++++
- tests/meson.build          |   3 +
- 2 files changed, 437 insertions(+)
- create mode 100644 tests/intel/kms_link_m_n.c
+Thanks,
+Soham
 
-diff --git a/tests/intel/kms_link_m_n.c b/tests/intel/kms_link_m_n.c
-new file mode 100644
-index 000000000..17dd58cd5
---- /dev/null
-+++ b/tests/intel/kms_link_m_n.c
-@@ -0,0 +1,434 @@
-+// SPDX-License-Identifier: MIT
-+/**
-+ * TEST: kms link M/N
-+ * Category: Display
-+ * Description: Validate video Link M/N integer ratios from zero through ten
-+ * Driver requirement: i915, xe
-+ * Mega feature: General Display Features
-+ */
-+
-+/**
-+ * SUBTEST: link_m_n_ratio_int0
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 0.
-+ *
-+ * SUBTEST: link_m_n_ratio_int1
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 1.
-+ *
-+ * SUBTEST: link_m_n_ratio_int2
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 2.
-+ *
-+ * SUBTEST: link_m_n_ratio_int3
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 3.
-+ *
-+ * SUBTEST: link_m_n_ratio_int4
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 4.
-+ *
-+ * SUBTEST: link_m_n_ratio_int5
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 5.
-+ *
-+ * SUBTEST: link_m_n_ratio_int6
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 6.
-+ *
-+ * SUBTEST: link_m_n_ratio_int7
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 7.
-+ *
-+ * SUBTEST: link_m_n_ratio_int8
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 8.
-+ *
-+ * SUBTEST: link_m_n_ratio_int9
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 9.
-+ *
-+ * SUBTEST: link_m_n_ratio_int10
-+ * Description: Compare pipe CRCs for configurations with integer M/N ratio 10.
-+ */
-+
-+#include <stdint.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <time.h>
-+#include <unistd.h>
-+
-+#include "i915/i915_dp.h"
-+#include "igt.h"
-+#include "kms_joiner_helper.h"
-+
-+#define LINK_N 0x80000ULL
-+#define MAX_LINK_CONFIGS 32
-+
-+struct test_data {
-+	int drm_fd;
-+	igt_display_t display;
-+};
-+
-+static uint64_t link_symbol_clock_khz(int link_rate)
-+{
-+	uint64_t symbol_size = i915_dp_is_uhbr_rate(link_rate) ? 32 : 10;
-+
-+	return (uint64_t)link_rate * 10 / symbol_size;
-+}
-+
-+static uint64_t link_m_value(const drmModeModeInfo *mode, int link_rate)
-+{
-+	uint64_t clock = link_symbol_clock_khz(link_rate);
-+
-+	return ((uint64_t)mode->clock * LINK_N + clock / 2) / clock;
-+}
-+
-+static uint32_t link_m_n_integer(const drmModeModeInfo *mode, int link_rate)
-+{
-+	return link_m_value(mode, link_rate) / LINK_N;
-+}
-+
-+static bool wait_for_retrain(struct test_data *data, igt_output_t *output)
-+{
-+	struct timespec start, now;
-+
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+	for (;;) {
-+		if (!i915_dp_get_pending_retrain(data->drm_fd, output))
-+			return true;
-+
-+		clock_gettime(CLOCK_MONOTONIC, &now);
-+		if ((now.tv_sec - start.tv_sec) +
-+		    (now.tv_nsec - start.tv_nsec) / 1e9 > 20.0)
-+			return false;
-+		usleep(100000);
-+	}
-+}
-+
-+static bool same_pixel_clock(const drmModeModeInfo *modes, int index)
-+{
-+	int i;
-+
-+	for (i = 0; i < index; i++)
-+		if (modes[i].clock == modes[index].clock)
-+			return true;
-+	return false;
-+}
-+
-+static void force_link(struct test_data *data, igt_output_t *output,
-+		       const struct i915_dp_link_config *config)
-+{
-+	char rate[32], lanes[32];
-+
-+	snprintf(rate, sizeof(rate), "%d", config->link_rate);
-+	snprintf(lanes, sizeof(lanes), "%d", config->lane_count);
-+	i915_dp_set_link_params(data->drm_fd, output, rate, lanes);
-+}
-+
-+static bool commit_mode(struct test_data *data, igt_output_t *output,
-+			igt_crtc_t *crtc, drmModeModeInfo *mode,
-+			struct igt_fb *fb,
-+			const struct i915_dp_link_config *config)
-+{
-+	igt_plane_t *primary;
-+	int ret;
-+
-+	/* Force link first: redetection invalidates connector mode pointers. */
-+	force_link(data, output, config);
-+	igt_display_reset(&data->display);
-+	igt_output_set_crtc(output, crtc);
-+	igt_output_override_mode(output, mode);
-+	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, fb);
-+
-+	if (!igt_fit_modes_in_bw(&data->display)) {
-+		igt_info("Skipping %s at %d/%d: insufficient bandwidth\n",
-+			 mode->name, config->lane_count, config->link_rate);
-+		return false;
-+	}
-+
-+	/*
-+	 * DSC-required configurations fail atomic check with -EINVAL when DSC
-+	 * is unavailable. Treat that as an unsupported mode/link combination,
-+	 * not as a failure of the M/N test.
-+	 */
-+	ret = igt_display_try_commit_atomic(&data->display,
-+					    DRM_MODE_ATOMIC_TEST_ONLY |
-+					    DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					    NULL);
-+	if (ret) {
-+		igt_info("Skipping %s at %d/%d: atomic check failed (%d), likely DSC required\n",
-+			 mode->name, config->lane_count, config->link_rate, ret);
-+		return false;
-+	}
-+
-+	igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+	i915_dp_force_link_retrain(data->drm_fd, output, 1);
-+	if (!wait_for_retrain(data, output)) {
-+		igt_info("Skipping %s at %d/%d: link retrain timed out\n",
-+			 mode->name, config->lane_count, config->link_rate);
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
-+static int fixed_lane_count(const struct i915_dp_link_config *configs,
-+			    int num_configs)
-+{
-+	int i, lanes = 0;
-+
-+	for (i = 0; i < num_configs; i++)
-+		if (configs[i].lane_count > lanes)
-+			lanes = configs[i].lane_count;
-+
-+	return lanes;
-+}
-+
-+static bool has_ratio(int drm_fd, const drmModeConnector *connector,
-+		      const struct i915_dp_link_config *configs,
-+		      int num_configs, int fixed_lanes,
-+		      uint32_t target_ratio)
-+{
-+	int mode, config;
-+
-+	for (mode = 0; mode < connector->count_modes; mode++) {
-+		if (same_pixel_clock(connector->modes, mode) ||
-+		    intel_mode_needs_joiner(drm_fd, &connector->modes[mode]))
-+			continue;
-+		for (config = 0; config < num_configs; config++)
-+			if (configs[config].lane_count == fixed_lanes &&
-+			    link_m_n_integer(&connector->modes[mode],
-+					     configs[config].link_rate) == target_ratio)
-+				return true;
-+	}
-+	return false;
-+}
-+
-+static void test_ratio_for_output(struct test_data *data,
-+				  igt_output_t *output,
-+				  igt_crtc_t *crtc,
-+				  uint32_t target_ratio)
-+{
-+	struct i915_dp_link_config configs[MAX_LINK_CONFIGS];
-+	struct i915_dp_link_config max_config = { 0 };
-+	drmModeConnector *connector;
-+	drmModeModeInfo *modes;
-+	int fixed_lanes;
-+	int num_configs, mode, config;
-+
-+	i915_dp_reset_link_params(data->drm_fd, output);
-+	num_configs = i915_dp_get_allowed_link_configs(data->drm_fd, output,
-+						       configs, ARRAY_SIZE(configs));
-+	igt_require_f(num_configs > 0, "No allowed link configs for %s\n",
-+		      igt_output_name(output));
-+	connector = output->config.connector;
-+	fixed_lanes = fixed_lane_count(configs, num_configs);
-+
-+	/* Select the highest available rate while keeping one fixed lane count. */
-+	for (config = 0; config < num_configs; config++)
-+		if (configs[config].lane_count == fixed_lanes &&
-+		    configs[config].link_rate > max_config.link_rate)
-+			max_config = configs[config];
-+
-+	modes = calloc(connector->count_modes, sizeof(*modes));
-+	igt_assert(modes);
-+	memcpy(modes, connector->modes,
-+	       connector->count_modes * sizeof(*modes));
-+
-+	for (mode = 0; mode < connector->count_modes; mode++) {
-+		struct igt_fb fb;
-+		igt_pipe_crc_t *pipe_crc;
-+		igt_crc_t reference, current;
-+		igt_plane_t *primary = NULL;
-+		bool mode_has_ratio = false;
-+
-+		if (same_pixel_clock(modes, mode)) {
-+			igt_info("Skipping %s on %s: duplicate pixel clock\n",
-+				 modes[mode].name, igt_crtc_name(crtc));
-+			continue;
-+		}
-+
-+		if (intel_mode_needs_joiner(data->drm_fd, &modes[mode])) {
-+			igt_info("Skipping %s on %s: joiner required\n",
-+				 modes[mode].name, igt_crtc_name(crtc));
-+			continue;
-+		}
-+
-+		for (config = 0; config < num_configs; config++)
-+			if (configs[config].lane_count == fixed_lanes &&
-+			    link_m_n_integer(&modes[mode], configs[config].link_rate) ==
-+			    target_ratio) {
-+				mode_has_ratio = true;
-+				break;
-+			}
-+
-+		if (!mode_has_ratio) {
-+			igt_info("Skipping %s on %s: no link rate gives integer ratio %u at %d lanes\n",
-+				 modes[mode].name, igt_crtc_name(crtc),
-+				 target_ratio, fixed_lanes);
-+			continue;
-+		}
-+
-+		igt_create_color_fb(data->drm_fd, modes[mode].hdisplay,
-+				    modes[mode].vdisplay, DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0, &fb);
-+
-+		/* Capture one reference CRC at the maximum supported link rate. */
-+		if (!commit_mode(data, output, crtc, &modes[mode], &fb,
-+				 &max_config)) {
-+			igt_remove_fb(data->drm_fd, &fb);
-+			continue;
-+		}
-+
-+		pipe_crc = igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
-+		igt_pipe_crc_start(pipe_crc);
-+		igt_pipe_crc_collect_crc(pipe_crc, &reference);
-+		primary = igt_output_get_plane_type(output,
-+						    DRM_PLANE_TYPE_PRIMARY);
-+
-+		/* Reuse the reference for every matching ratio configuration. */
-+		for (config = 0; config < num_configs; config++) {
-+			unsigned int ratio;
-+
-+			if (configs[config].lane_count != fixed_lanes)
-+				continue;
-+			ratio = link_m_n_integer(&modes[mode],
-+						 configs[config].link_rate);
-+
-+			if (ratio != target_ratio)
-+				continue;
-+
-+			igt_info("Testing %s@%u: M=%llu N=%llu ratio=%u at %d/%d\n",
-+				 modes[mode].name, modes[mode].vrefresh,
-+				 (unsigned long long)link_m_value(&modes[mode],
-+								  configs[config].link_rate),
-+				 (unsigned long long)LINK_N, ratio,
-+				 configs[config].lane_count, configs[config].link_rate);
-+
-+			if (!commit_mode(data, output, crtc, &modes[mode], &fb,
-+					 &configs[config]))
-+				continue;
-+			primary = igt_output_get_plane_type(output,
-+							    DRM_PLANE_TYPE_PRIMARY);
-+			igt_plane_set_fb(primary, &fb);
-+			igt_display_commit2(&data->display, COMMIT_ATOMIC);
-+			igt_pipe_crc_drain(pipe_crc);
-+			igt_pipe_crc_collect_crc(pipe_crc, &current);
-+
-+			igt_assert_f(igt_check_crc_equal(&reference, &current),
-+				     "CRC mismatch for %s: max %d/%d, ratio %d/%d\n",
-+				     modes[mode].name,
-+				     max_config.lane_count, max_config.link_rate,
-+				     configs[config].lane_count, configs[config].link_rate);
-+		}
-+
-+		igt_pipe_crc_free(pipe_crc);
-+		igt_plane_set_fb(primary, NULL);
-+		igt_remove_fb(data->drm_fd, &fb);
-+	}
-+
-+	free(modes);
-+}
-+
-+static bool run_ratio_test(struct test_data *data, uint32_t target_ratio)
-+{
-+	igt_output_t *output;
-+	igt_crtc_t *crtc;
-+	bool ran = false;
-+
-+	for_each_crtc_with_single_output(&data->display, crtc, output) {
-+		struct i915_dp_link_config configs[MAX_LINK_CONFIGS];
-+		int num_configs, fixed_lanes;
-+
-+		if (output->config.connector->connector_type !=
-+		    DRM_MODE_CONNECTOR_DisplayPort ||
-+		    igt_check_output_is_dp_mst(output))
-+			continue;
-+
-+		i915_dp_reset_link_params(data->drm_fd, output);
-+		num_configs = i915_dp_get_allowed_link_configs(data->drm_fd, output,
-+							       configs, ARRAY_SIZE(configs));
-+		igt_require_f(num_configs > 0, "No allowed link configs for %s\n",
-+			      igt_output_name(output));
-+		fixed_lanes = fixed_lane_count(configs, num_configs);
-+		if (!has_ratio(data->drm_fd, output->config.connector, configs, num_configs,
-+			       fixed_lanes, target_ratio))
-+			continue;
-+
-+		igt_dynamic_f("%s-%s", igt_output_name(output), igt_crtc_name(crtc)) {
-+			test_ratio_for_output(data, output, crtc, target_ratio);
-+		}
-+		ran = true;
-+	}
-+
-+	return ran;
-+}
-+
-+IGT_TEST_DESCRIPTION("Validate video Link M/N integer ratios from zero through ten");
-+
-+int igt_main()
-+{
-+	struct test_data data = {};
-+
-+	igt_fixture() {
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
-+		kmstest_set_vt_graphics_mode();
-+		igt_display_require(&data.display, data.drm_fd);
-+		igt_display_require_output(&data.display);
-+		igt_require_pipe_crc(data.drm_fd);
-+	}
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 0.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int0")
-+		igt_require_f(run_ratio_test(&data, 0),
-+			      "No DP mode/link configuration has integer M/N ratio 0\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 1.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int1")
-+		igt_require_f(run_ratio_test(&data, 1),
-+			      "No DP mode/link configuration has integer M/N ratio 1\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 2.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int2")
-+		igt_require_f(run_ratio_test(&data, 2),
-+			      "No DP mode/link configuration has integer M/N ratio 2\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 3.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int3")
-+		igt_require_f(run_ratio_test(&data, 3),
-+			      "No DP mode/link configuration has integer M/N ratio 3\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 4.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int4")
-+		igt_require_f(run_ratio_test(&data, 4),
-+			      "No DP mode/link configuration has integer M/N ratio 4\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 5.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int5")
-+		igt_require_f(run_ratio_test(&data, 5),
-+			      "No DP mode/link configuration has integer M/N ratio 5\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 6.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int6")
-+		igt_require_f(run_ratio_test(&data, 6),
-+			      "No DP mode/link configuration has integer M/N ratio 6\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 7.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int7")
-+		igt_require_f(run_ratio_test(&data, 7),
-+			      "No DP mode/link configuration has integer M/N ratio 7\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 8.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int8")
-+		igt_require_f(run_ratio_test(&data, 8),
-+			      "No DP mode/link configuration has integer M/N ratio 8\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 9.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int9")
-+		igt_require_f(run_ratio_test(&data, 9),
-+			      "No DP mode/link configuration has integer M/N ratio 9\n");
-+
-+	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 10.");
-+	igt_subtest_with_dynamic("link_m_n_ratio_int10")
-+		igt_require_f(run_ratio_test(&data, 10),
-+			      "No DP mode/link configuration has integer M/N ratio 10\n");
-+
-+	igt_fixture() {
-+		igt_reset_connectors();
-+		igt_display_fini(&data.display);
-+		close(data.drm_fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 519a9e727..1f82ba868 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -253,6 +253,7 @@ intel_kms_progs = [
- 	'kms_cdclk',
- 	'kms_dirtyfb',
- 	'kms_dp_link_training',
-+	'kms_link_m_n',
-         'kms_dp_linktrain_fallback',
- 	'kms_draw_crc',
- 	'kms_dsc',
-@@ -403,6 +404,8 @@ extra_sources = {
- 	'kms_dp_link_training': [
-           join_paths ('intel', 'kms_mst_helper.c'),
-           join_paths ('intel', 'kms_joiner_helper.c') ],
-+	'kms_link_m_n': [
-+          join_paths ('intel', 'kms_joiner_helper.c') ],
- 	'kms_dsc': [
-           join_paths ('intel', 'kms_dsc_helper.c'),
-           join_paths ('intel', 'kms_joiner_helper.c') ],
--- 
-2.43.0
-
+> +		free(info);
+> +	}
+> +
+> +	close(dir);
+> +
+> +	return false;
+> +}
+> +
+>   /**
+>    * xe_gt_fill_engines_by_class:
+>    * @fd: pointer to xe drm fd
+> diff --git a/lib/xe/xe_gt.h b/lib/xe/xe_gt.h
+> index 93525ea35..9ef15d7dd 100644
+> --- a/lib/xe/xe_gt.h
+> +++ b/lib/xe/xe_gt.h
+> @@ -21,6 +21,7 @@ void xe_post_hang_ring(int fd, igt_hang_t arg);
+>   int xe_gt_stats_get_count(int fd, int gt, const char *stat);
+>   
+>   bool xe_gt_is_in_c6(int fd, int gt);
+> +bool xe_gt_dump_debug_info(int fd, int gt);
+>   
+>   int xe_gt_fill_engines_by_class(int fd, int gt, int class,
+>   				struct drm_xe_engine_class_instance eci[static XE_MAX_ENGINE_INSTANCE]);
+> diff --git a/tests/intel/xe_gt_freq.c b/tests/intel/xe_gt_freq.c
+> index 886537862..ab1c30ea1 100644
+> --- a/tests/intel/xe_gt_freq.c
+> +++ b/tests/intel/xe_gt_freq.c
+> @@ -57,7 +57,8 @@ static void test_throttle_basic_api(int fd, int gt_id)
+>   	char *throttle_reasons;
+>   	int gt_fd;
+>   
+> -	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+> +	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10) ||
+> +		     xe_gt_dump_debug_info(fd, gt_id),
+>   		     "GT %d should be in C6\n", gt_id);
+>   
+>   	gt_fd = xe_sysfs_gt_open(fd, gt_id);
+> @@ -145,7 +146,8 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+>   
+>   	if (gt_idle) {
+>   		/* Wait for GT to go in C6 as previous xe_gt_get_freq wakes up GT*/
+> -		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+> +		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10) ||
+> +			     xe_gt_dump_debug_info(fd, gt_id),
+>   			     "GT %d should be in C6\n", gt_id);
+>   		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
+>   	} else {
+> @@ -160,7 +162,8 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+>   	igt_assert_lte_u32((rpmid - FREQ_UNIT_MHZ), cur_freq);
+>   
+>   	if (gt_idle) {
+> -		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+> +		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10) ||
+> +			     xe_gt_dump_debug_info(fd, gt_id),
+>   			     "GT %d should be in C6\n", gt_id);
+>   		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
+>   	} else {
+> @@ -179,7 +182,8 @@ static void test_freq_fixed(int fd, int gt_id, bool gt_idle)
+>   	igt_assert_eq_u32(xe_gt_get_freq(fd, gt_id, "cur"), rp0);
+>   
+>   	if (gt_idle) {
+> -		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+> +		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10) ||
+> +			     xe_gt_dump_debug_info(fd, gt_id),
+>   			     "GT %d should be in C6\n", gt_id);
+>   		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
+>   	}
+> @@ -210,7 +214,8 @@ static void test_freq_range(int fd, int gt_id, bool gt_idle)
+>   	igt_assert(rpn <= cur && cur <= rpmid + FREQ_UNIT_MHZ);
+>   
+>   	if (gt_idle) {
+> -		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10),
+> +		igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt_id), 1000, 10) ||
+> +			     xe_gt_dump_debug_info(fd, gt_id),
+>   			     "GT %d should be in C6\n", gt_id);
+>   		igt_assert(xe_gt_get_freq(fd, gt_id, "act") == 0);
+>   	} else {
+> @@ -412,7 +417,8 @@ int igt_main()
+>   
+>   	igt_subtest("freq_fixed_idle") {
+>   		xe_for_each_gt(fd, gt) {
+> -			igt_require_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
+> +			igt_require_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10) ||
+> +				      xe_gt_dump_debug_info(fd, gt),
+>   				      "GT %d should be in C6\n", gt);
+>   			test_freq_fixed(fd, gt, true);
+>   		}
+> @@ -430,7 +436,8 @@ int igt_main()
+>   
+>   	igt_subtest("freq_range_idle") {
+>   		xe_for_each_gt(fd, gt) {
+> -			igt_require_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
+> +			igt_require_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10) ||
+> +				      xe_gt_dump_debug_info(fd, gt),
+>   				      "GT %d should be in C6\n", gt);
+>   			test_freq_range(fd, gt, true);
+>   		}
+> diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+> index e976048a9..c5240378a 100644
+> --- a/tests/intel/xe_pm_residency.c
+> +++ b/tests/intel/xe_pm_residency.c
+> @@ -217,7 +217,9 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
+>   	unsigned long elapsed_ms, residency_start, residency_end;
+>   	struct timespec ts_start, ts_end;
+>   
+> -	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1), "GT %d not in C6\n", gt);
+> +	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1) ||
+> +		     xe_gt_dump_debug_info(fd, gt),
+> +		     "GT %d not in C6\n", gt);
+>   
+>   	if (flag == TEST_S2IDLE) {
+>   		clock_gettime(CLOCK_BOOTTIME, &ts_start);
+> @@ -326,7 +328,8 @@ static void toggle_gt_c6(int fd, int n)
+>   		close(fw_handle);
+>   		/* check if all gts are in C6 after forcewake is released */
+>   		xe_for_each_gt(fd, gt)
+> -			igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1),
+> +			igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1) ||
+> +				     xe_gt_dump_debug_info(fd, gt),
+>   				     "Forcewake released, GT %d should be in C6\n", gt);
+>   
+>   		if (n == NUM_REPS)
+> @@ -392,7 +395,8 @@ static void cpg_gt_toggle(int fd)
+>   	int gt;
+>   
+>   	xe_for_each_gt(fd, gt)
+> -		igt_skip_on_f(!igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10),
+> +		igt_skip_on_f(!(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 10) ||
+> +				xe_gt_dump_debug_info(fd, gt)),
+>   			      "GT %d is not in C6\n", gt);
+>   
+>   	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+> @@ -581,7 +585,8 @@ int igt_main()
+>   	igt_subtest_with_dynamic("gt-c6-on-idle") {
+>   		xe_for_each_gt(fd, gt)
+>   			igt_dynamic_f("gt%u", gt)
+> -				igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1),
+> +				igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1) ||
+> +					     xe_gt_dump_debug_info(fd, gt),
+>   					     "GT %d not in C6\n", gt);
+>   	}
+>   
+> diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
+> index 1dc102a7b..de07c2236 100644
+> --- a/tests/intel/xe_pmu.c
+> +++ b/tests/intel/xe_pmu.c
+> @@ -878,7 +878,9 @@ static void test_gt_c6_idle(int xe, unsigned int gt)
+>   
+>   	pmu_fd = open_pmu(xe, pmu_config);
+>   
+> -	igt_require_f(igt_wait(xe_gt_is_in_c6(xe, gt), 1000, 10), "GT %d should be in C6\n", gt);
+> +	igt_require_f(igt_wait(xe_gt_is_in_c6(xe, gt), 1000, 10) ||
+> +		      xe_gt_dump_debug_info(xe, gt),
+> +		      "GT %d should be in C6\n", gt);
+>   
+>   	/* While idle check full RC6. */
+>   	start = read_idle_residency(xe, gt);
