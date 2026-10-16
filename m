@@ -4,49 +4,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77658CCA464
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Oct 2026 11:54:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3BC2ACCA464
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Oct 2026 11:55:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0A1D810E269;
-	Fri, 16 Oct 2026 11:54:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E617610E269;
+	Fri, 16 Oct 2026 11:55:27 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E93F410E1C0
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2026 11:53:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4547C10E1C0
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2026 11:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792151624; x=1823687624;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=weimjY8Ios0j0nleLBxx8hFycVL4RuwMWPCxfLV+isA=;
- b=nM9t0VX9ouc0TxO5uecTlFe3HBdHTOdQFtHRZqWZVLvjmLW2GtNCx+D1
- DoLdNzM/bHeOjxv8oHWJ4RhhFMyTpPqVjGS1YvbFICail3sDkFgpNHxbJ
- nXjuiNTDJ0baRlweXekFY0E+Hxhkt+Rl1+xhxRcrPjZwCOkJQqNnkzqCD
- S7m9lQl8TvrMwpHke9nnUH7rhF+SgugKxnw1SRjEm3RUHd9nvFFPn1FST
- neME+9DvZBkSR0Rz502ZLV1nLixeAVwxvkUQJ5KKkg/3y08qpicik+1vU
- qvBipsYKRK5135AGI5XO6kZ/CUk1W5/mmpfc/gF+6tKAe5glOJwaTmBLN w==;
-X-CSE-ConnectionGUID: Ylx9F/5lSuWaNB7z8jovtA==
-X-CSE-MsgGUID: TO5EP2ANTA6s9uk+YcelKw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="837952"
+ t=1792151632; x=1823687632;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=mxpoV2WjRdlUnmrDR2ZGAfPsMbgp0ncn345uj0uR/ns=;
+ b=PS/g1JxGP33RgsmG8pezH1TQfNp7KbnheSoiObq1oc+xv/JKozFzayxk
+ EHSzBAtDaKaAmePrauVsburrNYgMBM85B+/l2unk3NweeqxPUhlAHsTho
+ Ceff5pxJOvfLp/NmxoyG4FyKPYK1oH+6hluRB17lJsSyir1BEFcsJhUKT
+ ujkYefgLKJkQ7kfpyU2kT/qoi2dV4m4VVk4L70vFQ5a0OMIihe+KlyAMg
+ 4ntW2hn2LHG8E6sPgotWLJBvE8+ZdgrB2fqv4xmS8eJNis+/g03uQxoAV
+ N8JFmibEmve3dA6s1JaSJh4l3BEukfZEQuKKS9VYDffNJ9tdX84W+qp63 w==;
+X-CSE-ConnectionGUID: zefPOvuASVGBwzWQSlZpWA==
+X-CSE-MsgGUID: xwnT0ctoSY6ojBYz8kXCsQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11936"; a="837956"
 X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="837952"
+   d="scan'208";a="837956"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2026 04:53:44 -0700
-X-CSE-ConnectionGUID: ti0vOXwuS8SWZaQ6SMOFTw==
-X-CSE-MsgGUID: RTKsTslhR+WfWdmuehI+Fw==
+ 16 Oct 2026 04:53:52 -0700
+X-CSE-ConnectionGUID: rP9a6LIYRhy7i4zk/tagNw==
+X-CSE-MsgGUID: ffxfP56iQQGQC0vTqb3KQQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,161,1787036400"; 
-   d="scan'208";a="1901943"
+   d="scan'208";a="1901983"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2026 04:53:42 -0700
+ 16 Oct 2026 04:53:49 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [i-g-t v1 0/1] Ignore AER error and recovery messages in dmesg
-Date: Fri, 16 Oct 2026 17:23:19 +0530
-Message-Id: <20261016115320.920094-1-ravi.kishore.koppuravuri@intel.com>
+Cc: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
+ Soham Purkait <soham.purkait@intel.com>,
+ Riana Tauro <riana.tauro@intel.com>, Sk Anirban <sk.anirban@intel.com>,
+ Anshuman Gupta <anshuman.gupta@intel.com>,
+ Raag Jadav <raag.jadav@intel.com>, Badal Nilawar <badal.nilawar@intel.com>,
+ Mallesh Koujalagi <mallesh.koujalagi@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Subject: [i-g-t v1 1/1] tests/intel/xe_err_injection: regex to ignore AER
+ messages in dmesg
+Date: Fri, 16 Oct 2026 17:23:20 +0530
+Message-Id: <20261016115320.920094-2-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20261016115320.920094-1-ravi.kishore.koppuravuri@intel.com>
+References: <20261016115320.920094-1-ravi.kishore.koppuravuri@intel.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -64,35 +73,74 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Error injection tests in xe_err_injection intentionally trigger AER
-(Advanced Error Reporting) errors, which leads to PCIe device recovery.
-Corresponding logs are recorded in dmesg.
+Error injection tests deliberately triggers AER error, device recovery
+messages and CORE_COMPUTE hardware error (SIGID=203) in dmesg. Add a
+regex to ignore these messages and inform igt_runner that it should not
+treat these expected error logs as failures
 
-This series adds a regex to inform igt_runner that these AER error and
-recovery messages are expected and should not be treated as failures.
-
-Example dmesg output that will be ignored by the added regex:
-```
-[ 1177.150094] pcieport 0000:00:06.0: AER: Uncorrectable (Non-Fatal) error message received from 0000:02:00.0
-[ 1177.150105] pcieport 0000:02:00.0: PCIe Bus Error: severity=Uncorrectable (Non-Fatal), type=Transaction Layer, (Receiver ID)
-[ 1177.161455] pcieport 0000:02:00.0:   device [8086:676b] error status/mask=00400000/00000000
-[ 1177.169882] pcieport 0000:02:00.0:    [22] UncorrIntErr           (First)
-[ 1177.200971] xe 0000:04:00.0: Xe Pci error recovery: error detected state 1
-[ 1177.207965] mei_csc 0000:05:00.0: error recovery: error detected. state 1
-[ 1177.209324] xe 0000:04:00.0: Xe Pci error recovery: MMIO enabled
-[ 1179.875612] pcieport 0000:00:06.0: AER: Root Port link has been reset (0)
-[ 1179.875772] xe 0000:04:00.0: Xe Pci error recovery: Slot reset
-[ 1196.217239] xe 0000:04:00.0: Xe Pci error recovery: Recovered
-[ 1196.217273] mei_csc 0000:05:00.0: error recovery: resume
-[ 1196.703850] pcieport 0000:00:06.0: AER: device recovery successful
-```
-
-Ravi Kishore Koppuravuri (1):
-  tests/intel/xe_err_injection: regex to ignore AER messages in dmesg
-
+Cc: Soham Purkait <soham.purkait@intel.com>
+Cc: Riana Tauro <riana.tauro@intel.com>
+Cc: Sk Anirban <sk.anirban@intel.com>
+Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+Cc: Raag Jadav <raag.jadav@intel.com>
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+---
  tests/intel/xe_err_injection.c | 32 ++++++++++++++++++++++++++++++++
  1 file changed, 32 insertions(+)
 
+diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
+index 46d9f7f42..c7e73d105 100644
+--- a/tests/intel/xe_err_injection.c
++++ b/tests/intel/xe_err_injection.c
+@@ -260,6 +260,36 @@ static void print_aer_recovery_status(void)
+ 		igt_info("AER device recovery successful\n");
+ }
+ 
++/* Dmesg regex to inform igt_runner not to treat the expected AER error messages as failures */
++static void ignore_aer_in_dmesg(void)
++{
++	igt_emit_ignore_dmesg_regex("pcieport [0-9A-Fa-f:.]*: AER: Uncorrectable "
++				    "\\(Non-Fatal\\) error message received from "
++				    "[0-9A-Fa-f:.]*"
++				    "|pcieport [0-9A-Fa-f:.]*: PCIe Bus Error: "
++				    "severity=Uncorrectable \\(Non-Fatal\\)"
++				    "|pcieport [0-9A-Fa-f:.]*:\\s+device "
++				    "\\[[0-9A-Fa-f]+:[0-9A-Fa-f]+\\] error "
++				    "status/mask=[0-9A-Fa-f]+/[0-9A-Fa-f]+"
++				    "|pcieport [0-9A-Fa-f:.]*:\\s+\\[[0-9A-Fa-f]+\\] "
++				    "UncorrIntErr"
++				    "|xe [0-9A-Fa-f:.]*: Xe Pci error recovery: error "
++				    "detected state [0-9]+"
++				    "|mei_csc [0-9A-Fa-f:.]*: error recovery: error "
++				    "detected. state [0-9]+"
++				    "|xe [0-9A-Fa-f:.]*: Xe Pci error recovery: MMIO "
++				    "enabled"
++				    "|pcieport [0-9A-Fa-f:.]*: AER: Root Port link has "
++				    "been reset \\([0-9]+\\)"
++				    "|xe [0-9A-Fa-f:.]*: Xe Pci error recovery: Slot "
++				    "reset"
++				    "|xe [0-9A-Fa-f:.]*: Xe Pci error recovery: Recovered"
++				    "|mei_csc [0-9A-Fa-f:.]*: error recovery: resume"
++				    "|pcieport [0-9A-Fa-f:.]*: AER: device recovery "
++				    "successful"
++				    "|SIGID=203");
++}
++
+ static bool gt_uc_wkr_parity_recovered;
+ 
+ /**
+@@ -290,6 +320,8 @@ static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
+ 		igt_assert_f(false, "Failed to read error counter before injection\n");
+ 	}
+ 
++	ignore_aer_in_dmesg();
++
+ 	acquire_steering_semaphore(mmio);
+ 	/* Arm the injection sequence. */
+ 	xe_mmio_write32(mmio, XE_MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
 -- 
 2.34.1
 
