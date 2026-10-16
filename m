@@ -4,58 +4,53 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25825CCA46C
-	for <igt-dev@archiver.kernel.org>; Fri, 16 Oct 2026 17:04:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 332C2CCF2C0
+	for <igt-dev@archiver.kernel.org>; Fri, 16 Oct 2026 18:05:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B0B4C10E151;
-	Fri, 16 Oct 2026 17:04:46 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C450510E047
- for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2026 17:02:40 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A800D10E05C;
+	Fri, 16 Oct 2026 18:05:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F302210E1D7
+ for <igt-dev@lists.freedesktop.org>; Fri, 16 Oct 2026 18:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792170161; x=1823706161;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=FsuMdD/QSCRndK9cm9bpGwzFOTQsT8cz/fbEI+156Og=;
- b=MaSz2RkEB4DZYHG83THqbXe6PzdrEgaHRCRXD0xtnffGsoKTXcyojV7d
- F39Uqi3MkWjOj7qekdl73t5+sTxKf026PbGM3d7PeXO+6pvMyHcn4WA7A
- Vr82x0rNblqG6jNzf4BNck7ugQdgwZd/dNXkm1iLqXc3iKGeUZNEOl+mu
- qihb5BrwafEh64aTsN+zar8hhfAgN6to94jetaLTqj9fkKnvRUgXZhIOk
- QcZebD4pjJq8CxD2GijG9F70nTdhoy5ORud+HaiIDezFuJWSCbE9JiS7O
- UEayXcRWf9IU5JyVomhCQt1trepyZA3dw+FS0REpt5QCr2wXip6H7k0rb g==;
-X-CSE-ConnectionGUID: 1oOnMA7jRiSNv0CMxJl7Zg==
-X-CSE-MsgGUID: erqC9l/OTA+Ot+lHCA4FZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11937"; a="824669"
+ t=1792173851; x=1823709851;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=X88ObWxnehUdKhneQhBCID8jWtTEj2r9npnW2GZq4dQ=;
+ b=IFiLoe1biuRTdGntdMT2sCAAbgmiqdW0mQLzHMUAhh50owyKv502w3Hy
+ 6ExEzkfz5iyGz87DEitFRsqgTv90AFctcgqzzi+x2arL+5wwKbT6zHuK6
+ GREYnwK8lfAJWSWjTHoaiKwM32tCUHV28j/OLgg9thLkyXdDk55Ogsw8D
+ mqy1Ysc1PkyxaubKr12YOLyrqMhM2nrBQMCXGwHoIyASq/XFILKLbl4kq
+ X9zyZZjfCo/szf0k5M+z8z8ZtLOXL8EpovAM9Msa19nmpZNw/A3EXfcfL
+ zrqs/R2RvFPL2hISDmTVliMXTWBj+ox764VexBL9CicwO7xGYbHXppejx w==;
+X-CSE-ConnectionGUID: LU9IA1ehQlyGqcsclWeGiA==
+X-CSE-MsgGUID: 5gd0BrcMSuKFeMGdOnbhzA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11937"; a="954463"
 X-IronPort-AV: E=Sophos;i="6.27,162,1787036400"; 
-   d="scan'208";a="824669"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
- by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2026 10:02:41 -0700
-X-CSE-ConnectionGUID: DTXria7jTHOGDuEwd2g11Q==
-X-CSE-MsgGUID: CgfHmyHwQAOl/87rYxj3nA==
+   d="scan'208";a="954463"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Oct 2026 11:04:10 -0700
+X-CSE-ConnectionGUID: HlkIEpqeQJWHSJXsP49sqw==
+X-CSE-MsgGUID: 464+q72+SlKuLcMPAy+jEg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,162,1787036400"; 
-   d="scan'208";a="2415082"
-Received: from manusebx-mobl.ger.corp.intel.com (HELO [10.245.80.139])
- ([10.245.80.139])
+   d="scan'208";a="1980785"
+Received: from rgsanthosh-system-product-name.iind.intel.com ([10.190.238.65])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Oct 2026 10:02:40 -0700
-Message-ID: <2c57bd4d-1cb5-433a-92c1-347ea6106941@linux.intel.com>
-Date: Fri, 16 Oct 2026 19:02:36 +0200
+ 16 Oct 2026 11:04:08 -0700
+From: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ankit.k.nautiyal@intel.com, kunal1.joshi@intel.com,
+ swati2.sharma@intel.com, Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Subject: [PATCH i-g-t v1] tests/intel/kms_link_m_n: Add DisplayPort Link M/N
+ ratio validation tests
+Date: Fri, 16 Oct 2026 23:33:58 +0530
+Message-ID: <20261016180358.2224883-1-ramanaidu.naladala@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 3/3] tools/vmtb: Reconfigure tests setup
-To: Adam Miszczak <adam.miszczak@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: kamil.konieczny@linux.intel.com
-References: <20261015071037.10898-1-adam.miszczak@linux.intel.com>
- <20261015071037.10898-4-adam.miszczak@linux.intel.com>
-Content-Language: en-US
-From: "Bernatowicz, Marcin" <marcin.bernatowicz@linux.intel.com>
-In-Reply-To: <20261015071037.10898-4-adam.miszczak@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,222 +66,485 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-LGTM,
+Add a DisplayPort Link M/N validation test based on pipe CRC
+comparison.
 
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
+The test exercises a range of Link M/N integer ratios across supported
+link configurations and verifies that the generated output remains
+unchanged. CRC mismatches indicate potential link timing, transmission,
+or sink synchronization issues.
 
-On 10/15/2026 9:10 AM, Adam Miszczak wrote:
-> Switch test config variants from vGPU profiles to auto resources
-> and scheduling provisioning (basic and migration tests).
->
-> Drop the 'full' migration config variant - all busy migration tests
-> by default run in the basic 1xVF and 2xVF scope.
->
-> Add dedicated TestBusyMigrationParallel class with 4xVF and 6xVF
-> config variants to validate parallel multi-VM migration:
-> - 4xVMs migration: VM0->VM3 and VM1->VM2
-> - 6xVMs migration: VM0->VM5, VM1->VM4 and VM2->VM3
-> Raise default max_vms in test_migration config helper (2 -> 24)
-> to allow running VMs on all enabled VFs.
->
-> Remove manual EQ/PT override in test_migration::test_2vm_pause_resume
-> (no longer needed since the driver provides finite defaults).
->
-> Reduce max VMs number (4 -> 2) for test_basic::TestVfDriverLoadRemove
-> to prevent host's memory depletion on systems with limited host RAM.
->
-> Signed-off-by: Adam Miszczak <adam.miszczak@linux.intel.com>
-> ---
->   tools/vmtb/vmm_flows/test_basic.py     | 15 ++++----
->   tools/vmtb/vmm_flows/test_migration.py | 51 ++++++++++++--------------
->   2 files changed, 30 insertions(+), 36 deletions(-)
->
-> diff --git a/tools/vmtb/vmm_flows/test_basic.py b/tools/vmtb/vmm_flows/test_basic.py
-> index 597ebbb68..d7041c61f 100644
-> --- a/tools/vmtb/vmm_flows/test_basic.py
-> +++ b/tools/vmtb/vmm_flows/test_basic.py
-> @@ -41,8 +41,7 @@ def set_test_config(test_variants: List[Tuple[int, VfProvisioningMode, VfSchedul
->       return test_configs
->   
->   
-> -test_variants_1 = [(1, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
-> -                   (2, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
-> +test_variants_1 = [(1, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO),
->                      (2, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO)]
->   
->   @pytest.mark.parametrize('setup_vms', set_test_config(test_variants_1), ids=idfn_test_config, indirect=['setup_vms'])
-> @@ -63,9 +62,9 @@ class TestVmSetup:
->               assert driver_check(vm)
->   
->   
-> -test_variants_2 = [(1, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
-> -                   (2, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
-> -                   (4, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE)]
-> +test_variants_2 = [(1, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO),
-> +                   (2, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO),
-> +                   (4, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO)]
->   
->   @pytest.mark.parametrize('setup_vms', set_test_config(test_variants_2), ids=idfn_test_config, indirect=['setup_vms'])
->   class TestVmWorkload:
-> @@ -106,10 +105,10 @@ class TestVmWorkload:
->           logger.info("Execute wsim parallel on VMs - results: %s", result)
->   
->   
-> -test_variants_3 = [(2, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
-> -                   (4, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE)]
-> +test_variants_3 = [(2, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO),
-> +                   (4, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO)]
->   
-> -@pytest.mark.parametrize('setup_vms', set_test_config(test_variants=test_variants_3, max_vms=4, vf_driver_load=False),
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants=test_variants_3, max_vms=2, vf_driver_load=False),
->                            ids = idfn_test_config, indirect=['setup_vms'])
->   class TestVfDriverLoadRemove:
->       """Verify VF (guest) driver load or remove doesn't affect execution on the other VM:
-> diff --git a/tools/vmtb/vmm_flows/test_migration.py b/tools/vmtb/vmm_flows/test_migration.py
-> index c4f3f00a4..273ff5768 100644
-> --- a/tools/vmtb/vmm_flows/test_migration.py
-> +++ b/tools/vmtb/vmm_flows/test_migration.py
-> @@ -30,17 +30,14 @@ IGT_RESTORE_DELAY = 3 # Time between VM resume and WL status check (post-restore
->   MS_IN_SEC = 1000
->   
->   
-> -# Full configuration variant: 1xVF, 2xVF and MAXxVF with auto and vGPU profiles provisioning
-> -# TODO: add max VFs variants
-> -test_variants_full = [(1, VfProvisioningMode.AUTO, VfSchedulingMode.DEFAULT_PROFILE),
-> -                      (2, VfProvisioningMode.AUTO, VfSchedulingMode.DEFAULT_PROFILE),
-> -                      (1, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE),
-> -                      (2, VfProvisioningMode.VGPU_PROFILE, VfSchedulingMode.DEFAULT_PROFILE)]
-> +# Basic configuration variant: 1xVF and 2xVF with auto provisioning
-> +test_variants_basic = [(1, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO),
-> +                       (2, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO)]
->   
->   
-> -# Basic configuration variant: 1xVF and 2xVF with auto provisioning
-> -test_variants_basic = [(1, VfProvisioningMode.AUTO, VfSchedulingMode.DEFAULT_PROFILE),
-> -                       (2, VfProvisioningMode.AUTO, VfSchedulingMode.DEFAULT_PROFILE)]
-> +# Parallel-migration configuration variant: 4xVF and 6xVF with auto provisioning
-> +test_variants_parallel = [(4, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO),
-> +                          (6, VfProvisioningMode.AUTO, VfSchedulingMode.AUTO)]
->   
->   
->   # vGPU profiles configuration variant: 1xVF and 2xVF with vGPU profiles provisioning
-> @@ -365,7 +362,7 @@ def idfn_workload(workload: MigrationWorkloadWsim):
->   
->   
->   def set_test_config(test_variants: List[Tuple[int, VfProvisioningMode, VfSchedulingMode]],
-> -                    max_vms: int = 2, wa_reduce_vf_lmem: bool = False) -> List[VmmTestingConfig]:
-> +                    max_vms: int = 24, wa_reduce_vf_lmem: bool = False) -> List[VmmTestingConfig]:
->       """Helper function to provide a parametrized test with a list of test configuration variants."""
->       test_configs: List[VmmTestingConfig] = []
->   
-> @@ -380,7 +377,8 @@ def set_test_config(test_variants: List[Tuple[int, VfProvisioningMode, VfSchedul
->   # Busy migration TCs with WSIM workload
->   @pytest.mark.parametrize('set_migration_wl', [wsim_short_preempt],
->                            ids=idfn_workload, indirect=['set_migration_wl'])
-> -@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_full), ids=idfn_test_config, indirect=['setup_vms'])
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_basic),
-> +                         ids=idfn_test_config, indirect=['setup_vms'])
->   class TestBusyMigrationWsim1(BaseTestBusyMigration):
->       """Save-restore VM state with VF busy executing short (5ms) preemptable batches.
->   
-> @@ -468,7 +466,7 @@ class TestBusyMigrationIgtExecReset2(BaseTestBusyMigration):
->   
->   @pytest.mark.parametrize('set_migration_wl', [igt_exec_reset_long_spin_many_preempt_threads],
->                            ids=idfn_workload, indirect=['set_migration_wl'])
-> -@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_full),
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_basic),
->                            ids=idfn_test_config, indirect=['setup_vms'])
->   class TestBusyMigrationIgtExecReset3(BaseTestBusyMigration):
->       """Save-restore VM state with VF busy executing IGT xe_exec_reset@long-spin-many-preempt-threads."""
-> @@ -508,7 +506,7 @@ class TestBusyMigrationIgtExecReset7(BaseTestBusyMigration):
->   
->   @pytest.mark.parametrize('set_migration_wl', [igt_exec_reset_long_spin_reuse_many_preempt_threads],
->                            ids=idfn_workload, indirect=['set_migration_wl'])
-> -@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_full),
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_basic),
->                            ids=idfn_test_config, indirect=['setup_vms'])
->   class TestBusyMigrationIgtExecReset8(BaseTestBusyMigration):
->       """Save-restore VM state with VF busy executing IGT xe_exec_reset@long-spin-reuse-many-preempt-threads."""
-> @@ -532,7 +530,7 @@ class TestBusyMigrationIgtExecReset10(BaseTestBusyMigration):
->   
->   @pytest.mark.parametrize('set_migration_wl', [igt_exec_reset_long_spin_sys_reuse_many_preempt_threads],
->                            ids=idfn_workload, indirect=['set_migration_wl'])
-> -@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_full),
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_basic),
->                            ids=idfn_test_config, indirect=['setup_vms'])
->   class TestBusyMigrationIgtExecReset11(BaseTestBusyMigration):
->       """Save-restore VM state with VF busy executing IGT xe_exec_reset@long-spin-sys-reuse-many-preempt-threads."""
-> @@ -540,7 +538,7 @@ class TestBusyMigrationIgtExecReset11(BaseTestBusyMigration):
->   
->   @pytest.mark.parametrize('set_migration_wl', [igt_exec_reset_long_spin_comp_reuse_many_preempt_threads],
->                            ids=idfn_workload, indirect=['set_migration_wl'])
-> -@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_full),
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_basic),
->                            ids=idfn_test_config, indirect=['setup_vms'])
->   class TestBusyMigrationIgtExecReset12(BaseTestBusyMigration):
->       """Save-restore VM state with VF busy executing IGT xe_exec_reset@long-spin-comp-reuse-many-preempt-threads."""
-> @@ -580,7 +578,7 @@ class TestBusyMigrationIgtExecReset16(BaseTestBusyMigration):
->   
->   @pytest.mark.parametrize('set_migration_wl', [igt_exec_threads_basic],
->                            ids=idfn_workload, indirect=['set_migration_wl'])
-> -@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_full),
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_basic),
->                            ids=idfn_test_config, indirect=['setup_vms'])
->   class TestBusyMigrationIgtExecThreads1(BaseTestBusyMigration):
->       """Save-restore VM state with VF busy executing IGT xe_exec_threads@threads-basic."""
-> @@ -604,7 +602,7 @@ class TestBusyMigrationIgtExecThreads3(BaseTestBusyMigration):
->   
->   @pytest.mark.parametrize('set_migration_wl', [igt_exec_threads_many_queues],
->                           ids=idfn_workload, indirect=['set_migration_wl'])
-> -@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_full),
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_basic),
->                            ids=idfn_test_config, indirect=['setup_vms'])
->   class TestBusyMigrationIgtExecThreads4(BaseTestBusyMigration):
->       """Save-restore VM state with VF busy executing IGT xe_exec_threads@threads-many-queues."""
-> @@ -634,6 +632,14 @@ class TestBusyMigrationIgtComputePreempt(BaseTestBusyMigration):
->       """Save-restore VM state with VF busy executing IGT xe_compute_preempt@compute-preempt-many (CCS path)."""
->   
->   
-> +@pytest.mark.parametrize('set_migration_wl', [igt_exec_threads_many_queues],
-> +                        ids=idfn_workload, indirect=['set_migration_wl'])
-> +@pytest.mark.parametrize('setup_vms', set_test_config(test_variants_parallel),
-> +                         ids=idfn_test_config, indirect=['setup_vms'])
-> +class TestBusyMigrationParallel(BaseTestBusyMigration):
-> +    """Save-restore multiple VMs state in parallel with VF busy executing IGT xe_exec_threads@threads-many-queues."""
-> +
-> +
->   @pytest.mark.parametrize('setup_vms', set_test_config(test_variants_basic),
->                            ids=idfn_test_config, indirect=['setup_vms'])
->   class TestIdleMigration:
-> @@ -1175,8 +1181,6 @@ def test_2vm_pause_resume(create_1host_2vm):
->       vm1.assign_vf(vf2)
->       ts.poweron_vms()
->   
-> -    pause_vf_num = 1
-> -
->       assert modprobe_driver_run_check(vm0)
->       assert modprobe_driver_run_check(vm1)
->   
-> @@ -1194,11 +1198,6 @@ def test_2vm_pause_resume(create_1host_2vm):
->       logger.debug("Submit IGT WL (gem_spin_batch) on VM1")
->       igt_vm1 = IgtExecutor(vm1, IgtType.SPIN_BATCH)
->   
-> -    # Special handling of pausing VMs with infinite ExecQuanta - refer to SAS for details
-> -    logger.debug("Set VF1 EQ/PF before the pause")
-> -    ts.get_dut().driver.set_exec_quantum_ms(pause_vf_num, 1)
-> -    ts.get_dut().driver.set_preempt_timeout_us(pause_vf_num, 100)
-> -
->       logger.debug("Pause execution on VM0/VF1")
->       vm0.pause()
->   
-> @@ -1208,10 +1207,6 @@ def test_2vm_pause_resume(create_1host_2vm):
->       logger.debug("Resume execution on VM0/VF1")
->       vm0.resume()
->   
-> -    logger.debug("Reset VF1 EQ/PF to the initial values (infinite) after resume")
-> -    ts.get_dut().driver.set_exec_quantum_ms(pause_vf_num, 0)
-> -    ts.get_dut().driver.set_preempt_timeout_us(pause_vf_num, 0)
-> -
->       result_vm0 = gem_wsim_vm0.wait_results() # Throws exception on wsim fail
->       assert expected_elapsed_sec * 0.8 < result_vm0.elapsed_sec < expected_elapsed_sec * 1.5
->       logger.debug("VM0 IGT WL (paused-resumed) finished successfully")
+Subtests are generated dynamically for each display pipeline, while
+unsupported configurations are skipped automatically.
+
+Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+---
+ tests/intel/kms_link_m_n.c | 434 +++++++++++++++++++++++++++++++++++++
+ tests/meson.build          |   3 +
+ 2 files changed, 437 insertions(+)
+ create mode 100644 tests/intel/kms_link_m_n.c
+
+diff --git a/tests/intel/kms_link_m_n.c b/tests/intel/kms_link_m_n.c
+new file mode 100644
+index 000000000..17dd58cd5
+--- /dev/null
++++ b/tests/intel/kms_link_m_n.c
+@@ -0,0 +1,434 @@
++// SPDX-License-Identifier: MIT
++/**
++ * TEST: kms link M/N
++ * Category: Display
++ * Description: Validate video Link M/N integer ratios from zero through ten
++ * Driver requirement: i915, xe
++ * Mega feature: General Display Features
++ */
++
++/**
++ * SUBTEST: link_m_n_ratio_int0
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 0.
++ *
++ * SUBTEST: link_m_n_ratio_int1
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 1.
++ *
++ * SUBTEST: link_m_n_ratio_int2
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 2.
++ *
++ * SUBTEST: link_m_n_ratio_int3
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 3.
++ *
++ * SUBTEST: link_m_n_ratio_int4
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 4.
++ *
++ * SUBTEST: link_m_n_ratio_int5
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 5.
++ *
++ * SUBTEST: link_m_n_ratio_int6
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 6.
++ *
++ * SUBTEST: link_m_n_ratio_int7
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 7.
++ *
++ * SUBTEST: link_m_n_ratio_int8
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 8.
++ *
++ * SUBTEST: link_m_n_ratio_int9
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 9.
++ *
++ * SUBTEST: link_m_n_ratio_int10
++ * Description: Compare pipe CRCs for configurations with integer M/N ratio 10.
++ */
++
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <time.h>
++#include <unistd.h>
++
++#include "i915/i915_dp.h"
++#include "igt.h"
++#include "kms_joiner_helper.h"
++
++#define LINK_N 0x80000ULL
++#define MAX_LINK_CONFIGS 32
++
++struct test_data {
++	int drm_fd;
++	igt_display_t display;
++};
++
++static uint64_t link_symbol_clock_khz(int link_rate)
++{
++	uint64_t symbol_size = i915_dp_is_uhbr_rate(link_rate) ? 32 : 10;
++
++	return (uint64_t)link_rate * 10 / symbol_size;
++}
++
++static uint64_t link_m_value(const drmModeModeInfo *mode, int link_rate)
++{
++	uint64_t clock = link_symbol_clock_khz(link_rate);
++
++	return ((uint64_t)mode->clock * LINK_N + clock / 2) / clock;
++}
++
++static uint32_t link_m_n_integer(const drmModeModeInfo *mode, int link_rate)
++{
++	return link_m_value(mode, link_rate) / LINK_N;
++}
++
++static bool wait_for_retrain(struct test_data *data, igt_output_t *output)
++{
++	struct timespec start, now;
++
++	clock_gettime(CLOCK_MONOTONIC, &start);
++	for (;;) {
++		if (!i915_dp_get_pending_retrain(data->drm_fd, output))
++			return true;
++
++		clock_gettime(CLOCK_MONOTONIC, &now);
++		if ((now.tv_sec - start.tv_sec) +
++		    (now.tv_nsec - start.tv_nsec) / 1e9 > 20.0)
++			return false;
++		usleep(100000);
++	}
++}
++
++static bool same_pixel_clock(const drmModeModeInfo *modes, int index)
++{
++	int i;
++
++	for (i = 0; i < index; i++)
++		if (modes[i].clock == modes[index].clock)
++			return true;
++	return false;
++}
++
++static void force_link(struct test_data *data, igt_output_t *output,
++		       const struct i915_dp_link_config *config)
++{
++	char rate[32], lanes[32];
++
++	snprintf(rate, sizeof(rate), "%d", config->link_rate);
++	snprintf(lanes, sizeof(lanes), "%d", config->lane_count);
++	i915_dp_set_link_params(data->drm_fd, output, rate, lanes);
++}
++
++static bool commit_mode(struct test_data *data, igt_output_t *output,
++			igt_crtc_t *crtc, drmModeModeInfo *mode,
++			struct igt_fb *fb,
++			const struct i915_dp_link_config *config)
++{
++	igt_plane_t *primary;
++	int ret;
++
++	/* Force link first: redetection invalidates connector mode pointers. */
++	force_link(data, output, config);
++	igt_display_reset(&data->display);
++	igt_output_set_crtc(output, crtc);
++	igt_output_override_mode(output, mode);
++	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
++	igt_plane_set_fb(primary, fb);
++
++	if (!igt_fit_modes_in_bw(&data->display)) {
++		igt_info("Skipping %s at %d/%d: insufficient bandwidth\n",
++			 mode->name, config->lane_count, config->link_rate);
++		return false;
++	}
++
++	/*
++	 * DSC-required configurations fail atomic check with -EINVAL when DSC
++	 * is unavailable. Treat that as an unsupported mode/link combination,
++	 * not as a failure of the M/N test.
++	 */
++	ret = igt_display_try_commit_atomic(&data->display,
++					    DRM_MODE_ATOMIC_TEST_ONLY |
++					    DRM_MODE_ATOMIC_ALLOW_MODESET,
++					    NULL);
++	if (ret) {
++		igt_info("Skipping %s at %d/%d: atomic check failed (%d), likely DSC required\n",
++			 mode->name, config->lane_count, config->link_rate, ret);
++		return false;
++	}
++
++	igt_display_commit2(&data->display, COMMIT_ATOMIC);
++	i915_dp_force_link_retrain(data->drm_fd, output, 1);
++	if (!wait_for_retrain(data, output)) {
++		igt_info("Skipping %s at %d/%d: link retrain timed out\n",
++			 mode->name, config->lane_count, config->link_rate);
++		return false;
++	}
++
++	return true;
++}
++
++static int fixed_lane_count(const struct i915_dp_link_config *configs,
++			    int num_configs)
++{
++	int i, lanes = 0;
++
++	for (i = 0; i < num_configs; i++)
++		if (configs[i].lane_count > lanes)
++			lanes = configs[i].lane_count;
++
++	return lanes;
++}
++
++static bool has_ratio(int drm_fd, const drmModeConnector *connector,
++		      const struct i915_dp_link_config *configs,
++		      int num_configs, int fixed_lanes,
++		      uint32_t target_ratio)
++{
++	int mode, config;
++
++	for (mode = 0; mode < connector->count_modes; mode++) {
++		if (same_pixel_clock(connector->modes, mode) ||
++		    intel_mode_needs_joiner(drm_fd, &connector->modes[mode]))
++			continue;
++		for (config = 0; config < num_configs; config++)
++			if (configs[config].lane_count == fixed_lanes &&
++			    link_m_n_integer(&connector->modes[mode],
++					     configs[config].link_rate) == target_ratio)
++				return true;
++	}
++	return false;
++}
++
++static void test_ratio_for_output(struct test_data *data,
++				  igt_output_t *output,
++				  igt_crtc_t *crtc,
++				  uint32_t target_ratio)
++{
++	struct i915_dp_link_config configs[MAX_LINK_CONFIGS];
++	struct i915_dp_link_config max_config = { 0 };
++	drmModeConnector *connector;
++	drmModeModeInfo *modes;
++	int fixed_lanes;
++	int num_configs, mode, config;
++
++	i915_dp_reset_link_params(data->drm_fd, output);
++	num_configs = i915_dp_get_allowed_link_configs(data->drm_fd, output,
++						       configs, ARRAY_SIZE(configs));
++	igt_require_f(num_configs > 0, "No allowed link configs for %s\n",
++		      igt_output_name(output));
++	connector = output->config.connector;
++	fixed_lanes = fixed_lane_count(configs, num_configs);
++
++	/* Select the highest available rate while keeping one fixed lane count. */
++	for (config = 0; config < num_configs; config++)
++		if (configs[config].lane_count == fixed_lanes &&
++		    configs[config].link_rate > max_config.link_rate)
++			max_config = configs[config];
++
++	modes = calloc(connector->count_modes, sizeof(*modes));
++	igt_assert(modes);
++	memcpy(modes, connector->modes,
++	       connector->count_modes * sizeof(*modes));
++
++	for (mode = 0; mode < connector->count_modes; mode++) {
++		struct igt_fb fb;
++		igt_pipe_crc_t *pipe_crc;
++		igt_crc_t reference, current;
++		igt_plane_t *primary = NULL;
++		bool mode_has_ratio = false;
++
++		if (same_pixel_clock(modes, mode)) {
++			igt_info("Skipping %s on %s: duplicate pixel clock\n",
++				 modes[mode].name, igt_crtc_name(crtc));
++			continue;
++		}
++
++		if (intel_mode_needs_joiner(data->drm_fd, &modes[mode])) {
++			igt_info("Skipping %s on %s: joiner required\n",
++				 modes[mode].name, igt_crtc_name(crtc));
++			continue;
++		}
++
++		for (config = 0; config < num_configs; config++)
++			if (configs[config].lane_count == fixed_lanes &&
++			    link_m_n_integer(&modes[mode], configs[config].link_rate) ==
++			    target_ratio) {
++				mode_has_ratio = true;
++				break;
++			}
++
++		if (!mode_has_ratio) {
++			igt_info("Skipping %s on %s: no link rate gives integer ratio %u at %d lanes\n",
++				 modes[mode].name, igt_crtc_name(crtc),
++				 target_ratio, fixed_lanes);
++			continue;
++		}
++
++		igt_create_color_fb(data->drm_fd, modes[mode].hdisplay,
++				    modes[mode].vdisplay, DRM_FORMAT_XRGB8888,
++				    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0, &fb);
++
++		/* Capture one reference CRC at the maximum supported link rate. */
++		if (!commit_mode(data, output, crtc, &modes[mode], &fb,
++				 &max_config)) {
++			igt_remove_fb(data->drm_fd, &fb);
++			continue;
++		}
++
++		pipe_crc = igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
++		igt_pipe_crc_start(pipe_crc);
++		igt_pipe_crc_collect_crc(pipe_crc, &reference);
++		primary = igt_output_get_plane_type(output,
++						    DRM_PLANE_TYPE_PRIMARY);
++
++		/* Reuse the reference for every matching ratio configuration. */
++		for (config = 0; config < num_configs; config++) {
++			unsigned int ratio;
++
++			if (configs[config].lane_count != fixed_lanes)
++				continue;
++			ratio = link_m_n_integer(&modes[mode],
++						 configs[config].link_rate);
++
++			if (ratio != target_ratio)
++				continue;
++
++			igt_info("Testing %s@%u: M=%llu N=%llu ratio=%u at %d/%d\n",
++				 modes[mode].name, modes[mode].vrefresh,
++				 (unsigned long long)link_m_value(&modes[mode],
++								  configs[config].link_rate),
++				 (unsigned long long)LINK_N, ratio,
++				 configs[config].lane_count, configs[config].link_rate);
++
++			if (!commit_mode(data, output, crtc, &modes[mode], &fb,
++					 &configs[config]))
++				continue;
++			primary = igt_output_get_plane_type(output,
++							    DRM_PLANE_TYPE_PRIMARY);
++			igt_plane_set_fb(primary, &fb);
++			igt_display_commit2(&data->display, COMMIT_ATOMIC);
++			igt_pipe_crc_drain(pipe_crc);
++			igt_pipe_crc_collect_crc(pipe_crc, &current);
++
++			igt_assert_f(igt_check_crc_equal(&reference, &current),
++				     "CRC mismatch for %s: max %d/%d, ratio %d/%d\n",
++				     modes[mode].name,
++				     max_config.lane_count, max_config.link_rate,
++				     configs[config].lane_count, configs[config].link_rate);
++		}
++
++		igt_pipe_crc_free(pipe_crc);
++		igt_plane_set_fb(primary, NULL);
++		igt_remove_fb(data->drm_fd, &fb);
++	}
++
++	free(modes);
++}
++
++static bool run_ratio_test(struct test_data *data, uint32_t target_ratio)
++{
++	igt_output_t *output;
++	igt_crtc_t *crtc;
++	bool ran = false;
++
++	for_each_crtc_with_single_output(&data->display, crtc, output) {
++		struct i915_dp_link_config configs[MAX_LINK_CONFIGS];
++		int num_configs, fixed_lanes;
++
++		if (output->config.connector->connector_type !=
++		    DRM_MODE_CONNECTOR_DisplayPort ||
++		    igt_check_output_is_dp_mst(output))
++			continue;
++
++		i915_dp_reset_link_params(data->drm_fd, output);
++		num_configs = i915_dp_get_allowed_link_configs(data->drm_fd, output,
++							       configs, ARRAY_SIZE(configs));
++		igt_require_f(num_configs > 0, "No allowed link configs for %s\n",
++			      igt_output_name(output));
++		fixed_lanes = fixed_lane_count(configs, num_configs);
++		if (!has_ratio(data->drm_fd, output->config.connector, configs, num_configs,
++			       fixed_lanes, target_ratio))
++			continue;
++
++		igt_dynamic_f("%s-%s", igt_output_name(output), igt_crtc_name(crtc)) {
++			test_ratio_for_output(data, output, crtc, target_ratio);
++		}
++		ran = true;
++	}
++
++	return ran;
++}
++
++IGT_TEST_DESCRIPTION("Validate video Link M/N integer ratios from zero through ten");
++
++int igt_main()
++{
++	struct test_data data = {};
++
++	igt_fixture() {
++		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
++		kmstest_set_vt_graphics_mode();
++		igt_display_require(&data.display, data.drm_fd);
++		igt_display_require_output(&data.display);
++		igt_require_pipe_crc(data.drm_fd);
++	}
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 0.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int0")
++		igt_require_f(run_ratio_test(&data, 0),
++			      "No DP mode/link configuration has integer M/N ratio 0\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 1.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int1")
++		igt_require_f(run_ratio_test(&data, 1),
++			      "No DP mode/link configuration has integer M/N ratio 1\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 2.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int2")
++		igt_require_f(run_ratio_test(&data, 2),
++			      "No DP mode/link configuration has integer M/N ratio 2\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 3.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int3")
++		igt_require_f(run_ratio_test(&data, 3),
++			      "No DP mode/link configuration has integer M/N ratio 3\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 4.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int4")
++		igt_require_f(run_ratio_test(&data, 4),
++			      "No DP mode/link configuration has integer M/N ratio 4\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 5.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int5")
++		igt_require_f(run_ratio_test(&data, 5),
++			      "No DP mode/link configuration has integer M/N ratio 5\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 6.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int6")
++		igt_require_f(run_ratio_test(&data, 6),
++			      "No DP mode/link configuration has integer M/N ratio 6\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 7.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int7")
++		igt_require_f(run_ratio_test(&data, 7),
++			      "No DP mode/link configuration has integer M/N ratio 7\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 8.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int8")
++		igt_require_f(run_ratio_test(&data, 8),
++			      "No DP mode/link configuration has integer M/N ratio 8\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 9.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int9")
++		igt_require_f(run_ratio_test(&data, 9),
++			      "No DP mode/link configuration has integer M/N ratio 9\n");
++
++	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 10.");
++	igt_subtest_with_dynamic("link_m_n_ratio_int10")
++		igt_require_f(run_ratio_test(&data, 10),
++			      "No DP mode/link configuration has integer M/N ratio 10\n");
++
++	igt_fixture() {
++		igt_reset_connectors();
++		igt_display_fini(&data.display);
++		close(data.drm_fd);
++	}
++}
+diff --git a/tests/meson.build b/tests/meson.build
+index 519a9e727..1f82ba868 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -253,6 +253,7 @@ intel_kms_progs = [
+ 	'kms_cdclk',
+ 	'kms_dirtyfb',
+ 	'kms_dp_link_training',
++	'kms_link_m_n',
+         'kms_dp_linktrain_fallback',
+ 	'kms_draw_crc',
+ 	'kms_dsc',
+@@ -403,6 +404,8 @@ extra_sources = {
+ 	'kms_dp_link_training': [
+           join_paths ('intel', 'kms_mst_helper.c'),
+           join_paths ('intel', 'kms_joiner_helper.c') ],
++	'kms_link_m_n': [
++          join_paths ('intel', 'kms_joiner_helper.c') ],
+ 	'kms_dsc': [
+           join_paths ('intel', 'kms_dsc_helper.c'),
+           join_paths ('intel', 'kms_joiner_helper.c') ],
+-- 
+2.43.0
+
