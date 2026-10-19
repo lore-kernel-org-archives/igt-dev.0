@@ -4,32 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4040CCCF2D6
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Oct 2026 11:52:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA200CCF2E3
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Oct 2026 12:20:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E035D10E5E4;
-	Mon, 19 Oct 2026 11:52:09 +0000 (UTC)
-Received: from coelho.fi (coelho.fi [88.99.146.29])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F3B2F10EC83
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Oct 2026 11:50:58 +0000 (UTC)
-Received: from 91-152-156-14.elisa-laajakaista.fi ([91.152.156.14]
- helo=[192.168.100.138])
- by coelho.fi with esmtpsa (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
- (Exim 4.98.2) (envelope-from <luca@coelho.fi>)
- id 1xIlTU-00000004VY9-0EPw; Mon, 19 Oct 2026 14:24:28 +0300
-Message-ID: <7610cab7027015a52485901ef4cbbcc8d69aeb0d.camel@coelho.fi>
-From: Luca Coelho <luca@coelho.fi>
-To: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>, 
- igt-dev@lists.freedesktop.org
-Date: Mon, 19 Oct 2026 14:24:28 +0300
-In-Reply-To: <20261015131616.3172918-1-juhapekka.heikkila@gmail.com>
-References: <20261015131616.3172918-1-juhapekka.heikkila@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-10+b1 
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7CB5C10EC66;
+	Mon, 19 Oct 2026 12:20:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7F51410EC9B
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Oct 2026 12:19:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1792412360; x=1823948360;
+ h=date:from:to:subject:message-id:references:mime-version:
+ in-reply-to; bh=AXHP118RdQ0iTvcFO624z3VylW7iogs/PHHbjDDiQBI=;
+ b=Cz1A8VG3jXOUDa4FpNBOda99iCZex0ycvBYpUdAADtb5O5iAHXHog+qm
+ 6xDvDXO9GJ9q3isv4qKKNuy4Lo+GF4bUv8Mp2HcGIhdicrKvg02IfYwXa
+ 1z0nOdPEhbFLxcjWueKVHnLB+RQ0LChQ9co+aR6DdmUtWFTLV53JnHhSp
+ 9udK6ngBJurW8TOZUvt8TbU0qBDEInePFKqhJ+9cF3zox28wi+ekxdoJ5
+ JQTEXgSBXiDADvZpHfbls4i9yeHc2JNHAvcnjOdi9zmM7bRBc5ffxfbml
+ gN+YYo50xAUrn3tTNFNrAnLAnjY7f47qnAeBCUwLfhONB2RUGxXuL+IT+ w==;
+X-CSE-ConnectionGUID: g3JnhXctTbGmUfLbnRIrkA==
+X-CSE-MsgGUID: 06vLyGQ6SZSum8HzT3Y9RQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="1112871"
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="1112871"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Oct 2026 05:19:20 -0700
+X-CSE-ConnectionGUID: 99ASQXgpQRy43+Fa8qJ6uA==
+X-CSE-MsgGUID: IbW+RjuAR5Gk0y4gFWtecA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
+   d="scan'208";a="2989913"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Oct 2026 05:19:20 -0700
+Date: Mon, 19 Oct 2026 14:19:16 +0200
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org, ankit.k.nautiyal@intel.com,
+ kunal1.joshi@intel.com, swati2.sharma@intel.com
+Subject: Re: [PATCH i-g-t v1] tests/intel/kms_link_m_n: Add DisplayPort Link
+ M/N ratio validation tests
+Message-ID: <20261019121916.pssx7yin7766wyyy@kamilkon-DESK.igk.intel.com>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org, ankit.k.nautiyal@intel.com,
+ kunal1.joshi@intel.com, swati2.sharma@intel.com
+References: <20261016180358.2224883-1-ramanaidu.naladala@intel.com>
+ <20261019111606.cxypyywrc5iktxcs@kamilkon-DESK.igk.intel.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH i-g-t 1/9] lib/igt_fb: add igt_format_get_subsampling()
- function
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261019111606.cxypyywrc5iktxcs@kamilkon-DESK.igk.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -45,73 +72,34 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-On Thu, 2026-10-15 at 16:16 +0300, Juha-Pekka Heikkila wrote:
-> add function to query given pixel format hsub and vsub
-> parameters.
->=20
-> Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->  lib/igt_fb.c | 22 ++++++++++++++++++++++
->  lib/igt_fb.h |  1 +
->  2 files changed, 23 insertions(+)
->=20
-> diff --git a/lib/igt_fb.c b/lib/igt_fb.c
-> index 6c3b9b0b9..3d15f0595 100644
-> --- a/lib/igt_fb.c
-> +++ b/lib/igt_fb.c
-> @@ -5300,6 +5300,28 @@ int igt_format_plane_bpp(uint32_t drm_format, int =
-plane)
->  	return format->plane_bpp[plane];
->  }
-> =20
-> +/**
-> + * igt_format_get_subsampling:
-> + * @drm_format: drm fourcc
-> + * @hsub: chroma subsampling factor in the horizontal direction (out)
-> + * @vsub: chroma subsampling factor in the vertical direction (out)
-> + *
-> + * This function returns the chroma subsampling factors of the @drm_form=
-at.
-> + * For non-subsampled (e.g. RGB or 4:4:4 YUV) formats both factors are 1=
-.
-> + */
-> +void igt_format_get_subsampling(uint32_t drm_format, int *hsub, int *vsu=
-b)
-> +{
-> +	const struct format_desc_struct *format =3D
-> +		lookup_drm_format(drm_format);
-> +
-> +	igt_assert(format);
-> +
-> +	if (hsub)
-> +		*hsub =3D format->hsub;
-> +	if (vsub)
-> +		*vsub =3D format->vsub;
-> +}
-> +
->  /**
->   * igt_format_array_fill:
->   * @formats_array: a pointer to the formats array pointer to be allocate=
-d
-> diff --git a/lib/igt_fb.h b/lib/igt_fb.h
-> index 213e2d777..4562164df 100644
-> --- a/lib/igt_fb.h
-> +++ b/lib/igt_fb.h
-> @@ -237,6 +237,7 @@ uint32_t igt_drm_format_str_to_format(const char *drm=
-_format);
-> =20
->  bool igt_format_is_fp16(uint32_t drm_format);
->  int igt_format_plane_bpp(uint32_t drm_format, int plane);
-> +void igt_format_get_subsampling(uint32_t drm_format, int *hsub, int *vsu=
-b);
->  void igt_format_array_fill(uint32_t **formats_array, unsigned int *count=
-,
->  			   bool allow_yuv);
->  int igt_fill_cts_color_ramp_framebuffer(uint32_t *pixmap, uint32_t video=
-_width,
+Hi Naladala,
+On 2026-10-19 at 13:16:06 +0200, Kamil Konieczny wrote:
+> Hi Naladala,
+> On 2026-10-16 at 23:33:58 +0530, Naladala Ramanaidu wrote:
+> > Add a DisplayPort Link M/N validation test based on pipe CRC
+> > comparison.
+> > 
+> > The test exercises a range of Link M/N integer ratios across supported
+> > link configurations and verifies that the generated output remains
+> > unchanged. CRC mismatches indicate potential link timing, transmission,
+> > or sink synchronization issues.
+> > 
+> > Subtests are generated dynamically for each display pipeline, while
+> > unsupported configurations are skipped automatically.
+> > 
+> 
+> You patch didn't apply, please rebase on current top and resend.
+> 
 
-Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
+Sorry for that, I mixed this from some other patch, your's do apply.
 
---
-Cheers,
-Luca.
+
+
+Regards,
+Kamil
+
+> > Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> > ---
+> >  tests/intel/kms_link_m_n.c | 434 +++++++++++++++++++++++++++++++++++++
+> 
+[cut]
