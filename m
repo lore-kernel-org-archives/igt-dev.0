@@ -4,58 +4,59 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6ABF1CCF2D5
-	for <igt-dev@archiver.kernel.org>; Mon, 19 Oct 2026 11:02:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 400C0CCF2E3
+	for <igt-dev@archiver.kernel.org>; Mon, 19 Oct 2026 11:17:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB44410E538;
-	Mon, 19 Oct 2026 11:02:33 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 332DD10EA3D
- for <igt-dev@lists.freedesktop.org>; Mon, 19 Oct 2026 11:01:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E044610EA55;
+	Mon, 19 Oct 2026 11:17:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E79BB10E127
+ for <igt-dev@lists.freedesktop.org>; Mon, 19 Oct 2026 11:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792407701; x=1823943701;
+ t=1792408571; x=1823944571;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=P6xfjLZUou0UrBWuxNQvpje+/LOJ+2gxBzHHugD9WKQ=;
- b=iKVBAyizGs2N3ynyOG/+2RY3yTO8NXEYD/AMnpGNrvawVKg/D7KFyfZw
- di/xZOh4U3yJJ9jFRFheqWqHCvwCJiZnrW2YNg9qs8e0iGWrFL9ICEKd4
- YIf3LEDRjSpOxLm6q2+IjaFDuRo8afa2+kPrdPXA2KDEzb5GT5Xm9cjfq
- MyJvgmXgUGks/sgz8mg4YzKzeMGRE2QqJzQCInL7D5d3YZTHiclGsKab5
- LU6XeYf+2g978+ein1mS8mEmoLHUcEZF17nKSdFNTaSvq+BL7lVBreGhW
- CNuTf/N48dTbyH5ieBjvBZpf4GjbAspF70aFRv+FKZ4eGuJjJ0NY6S0YM g==;
-X-CSE-ConnectionGUID: eZ5B+5fMQ5qHcbEj71hqSA==
-X-CSE-MsgGUID: cAiXHUTDQZO569rROqGS9g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="1192689"
+ bh=mWrM3ujCXSAdY80mCc4ZcgfByYEzqHxZmNZiRBtbpR0=;
+ b=nXd6/+2R0FsuPQOmrWTO9VXSQLZbZCEZ03teu/aSqJKlAYz1quOjipUv
+ StpXVAQJLA1SO8+Oj13mzROS30k+iAZAyUhmMA1M9fQ5q2obpZc3r4Fqb
+ XPHPZXqaS53MkfI2+868fZ3Xbjsn8wAjLipT5becT65MzJ9CAOZxExw7Q
+ Dztgru+b55+ucyqIuN4YMAWMZdd8/0wGL5hmObeROXKAmU1lXOm55a4kF
+ sR92wE8nKWr2H4fc2U/qJMK9hdmSS4Q9oEJ4qNSkos6Polrr2Y0cN//1w
+ hOcXu8FAx3HA9V0rgx2SAyZrkQzBEguO3gHMDT02pnPqRYCgotrAvC6cI A==;
+X-CSE-ConnectionGUID: g0icCAspSLud+WWXqIha3g==
+X-CSE-MsgGUID: FUDwU1ANSwqL9cbY4abnjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11939"; a="1097632"
 X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
-   d="scan'208";a="1192689"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2026 04:01:41 -0700
-X-CSE-ConnectionGUID: KXziDscERpiZ+UcOxCOQEw==
-X-CSE-MsgGUID: 352nyAwzTXa6JJtKJy6ayg==
+   d="scan'208";a="1097632"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Oct 2026 04:16:11 -0700
+X-CSE-ConnectionGUID: 9wud9ZVFRNyA/eVZxVJffw==
+X-CSE-MsgGUID: /Z2viUAHRICl/fcwZL2QOA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,167,1787036400"; 
-   d="scan'208";a="2843842"
+   d="scan'208";a="2508399"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Oct 2026 04:01:40 -0700
-Date: Mon, 19 Oct 2026 13:01:23 +0200
+ 19 Oct 2026 04:16:09 -0700
+Date: Mon, 19 Oct 2026 13:16:06 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Deborah Brouwer <deborah.brouwer@collabora.com>
-Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkZVTEw6IGZhaWx1cg==?= =?utf-8?Q?e?= for
- panthor: add dev_query tests for userspace buffer
-Message-ID: <20261019110123.rsr2isvcadb35nzv@kamilkon-DESK.igk.intel.com>
+To: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+Cc: igt-dev@lists.freedesktop.org, ankit.k.nautiyal@intel.com,
+ kunal1.joshi@intel.com, swati2.sharma@intel.com
+Subject: Re: [PATCH i-g-t v1] tests/intel/kms_link_m_n: Add DisplayPort Link
+ M/N ratio validation tests
+Message-ID: <20261019111606.cxypyywrc5iktxcs@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- igt-dev@lists.freedesktop.org,
- Deborah Brouwer <deborah.brouwer@collabora.com>
-References: <20261016-b4-dev_query-v2-0-067661858810@collabora.com>
- <179221258385.36801.14076858094873734928@221881a7231d>
+ Naladala Ramanaidu <ramanaidu.naladala@intel.com>,
+ igt-dev@lists.freedesktop.org, ankit.k.nautiyal@intel.com,
+ kunal1.joshi@intel.com, swati2.sharma@intel.com
+References: <20261016180358.2224883-1-ramanaidu.naladala@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <179221258385.36801.14076858094873734928@221881a7231d>
+In-Reply-To: <20261016180358.2224883-1-ramanaidu.naladala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -71,116 +72,516 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
 Errors-To: igt-dev-bounces@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 
-Hi igt-dev,
-On 2026-10-17 at 04:49:43 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Naladala,
+On 2026-10-16 at 23:33:58 +0530, Naladala Ramanaidu wrote:
+> Add a DisplayPort Link M/N validation test based on pipe CRC
+> comparison.
 > 
-> Series: panthor: add dev_query tests for userspace buffer
-> URL   : https://patchwork.freedesktop.org/series/176320/
-> State : failure
+> The test exercises a range of Link M/N integer ratios across supported
+> link configurations and verifies that the generated output remains
+> unchanged. CRC mismatches indicate potential link timing, transmission,
+> or sink synchronization issues.
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from XEIGT_9150_FULL -> XEIGTPW_16005_FULL
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with XEIGTPW_16005_FULL absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in XEIGTPW_16005_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   
-> 
-> Participating hosts (3 -> 3)
-> ------------------------------
-> 
->   No changes in participating hosts
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in XEIGTPW_16005_FULL:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_plane@plane-panning-bottom-right-suspend:
->     - shard-ptl:          [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
->    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9150/shard-ptl-8/igt@kms_plane@plane-panning-bottom-right-suspend.html
->    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16005/shard-ptl-7/igt@kms_plane@plane-panning-bottom-right-suspend.html
-> 
->   * igt@kms_plane@plane-panning-bottom-right-suspend@pipe-a:
->     - shard-ptl:          [PASS][3] -> [FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9150/shard-ptl-8/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-a.html
->    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16005/shard-ptl-7/igt@kms_plane@plane-panning-bottom-right-suspend@pipe-a.html
-> 
->   * igt@kms_pm_rpm@legacy-planes-dpms@plane-70:
->     - shard-ptl:          NOTRUN -> [FAIL][5] +2 other tests fail
->    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16005/shard-ptl-7/igt@kms_pm_rpm@legacy-planes-dpms@plane-70.html
-> 
->   * igt@xe_pat@pat-sw-hw-suspend:
->     - shard-ptl:          NOTRUN -> [INCOMPLETE][6]
->    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16005/shard-ptl-7/igt@xe_pat@pat-sw-hw-suspend.html
+> Subtests are generated dynamically for each display pipeline, while
+> unsupported configurations are skipped automatically.
 > 
 
-Unrelated,
+You patch didn't apply, please rebase on current top and resend.
+
+> Signed-off-by: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
+> ---
+>  tests/intel/kms_link_m_n.c | 434 +++++++++++++++++++++++++++++++++++++
+
+Can you name it differently? For example kms_link_dp_ratio or
+kms_dp_link_ratio seems better.
+
+>  tests/meson.build          |   3 +
+>  2 files changed, 437 insertions(+)
+>  create mode 100644 tests/intel/kms_link_m_n.c
+> 
+> diff --git a/tests/intel/kms_link_m_n.c b/tests/intel/kms_link_m_n.c
+> new file mode 100644
+> index 000000000..17dd58cd5
+> --- /dev/null
+> +++ b/tests/intel/kms_link_m_n.c
+> @@ -0,0 +1,434 @@
+> +// SPDX-License-Identifier: MIT
+
+Add copyright here.
+
+> +/**
+> + * TEST: kms link M/N
+> + * Category: Display
+> + * Description: Validate video Link M/N integer ratios from zero through ten
+> + * Driver requirement: i915, xe
+> + * Mega feature: General Display Features
+> + */
+> +
+> +/**
+> + * SUBTEST: link_m_n_ratio_int0
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 0.
+
+All those subtests could also have other name: link_dp_ratio_int0
+
+> + *
+> + * SUBTEST: link_m_n_ratio_int1
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 1.
+> + *
+> + * SUBTEST: link_m_n_ratio_int2
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 2.
+> + *
+> + * SUBTEST: link_m_n_ratio_int3
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 3.
+> + *
+> + * SUBTEST: link_m_n_ratio_int4
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 4.
+> + *
+> + * SUBTEST: link_m_n_ratio_int5
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 5.
+> + *
+> + * SUBTEST: link_m_n_ratio_int6
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 6.
+> + *
+> + * SUBTEST: link_m_n_ratio_int7
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 7.
+> + *
+> + * SUBTEST: link_m_n_ratio_int8
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 8.
+> + *
+> + * SUBTEST: link_m_n_ratio_int9
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 9.
+> + *
+> + * SUBTEST: link_m_n_ratio_int10
+> + * Description: Compare pipe CRCs for configurations with integer M/N ratio 10.
+> + */
+> +
+> +#include <stdint.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <time.h>
+> +#include <unistd.h>
+> +
+> +#include "i915/i915_dp.h"
+> +#include "igt.h"
+> +#include "kms_joiner_helper.h"
+> +
+> +#define LINK_N 0x80000ULL
+> +#define MAX_LINK_CONFIGS 32
+> +
+> +struct test_data {
+> +	int drm_fd;
+> +	igt_display_t display;
+> +};
+> +
+> +static uint64_t link_symbol_clock_khz(int link_rate)
+> +{
+> +	uint64_t symbol_size = i915_dp_is_uhbr_rate(link_rate) ? 32 : 10;
+> +
+> +	return (uint64_t)link_rate * 10 / symbol_size;
+> +}
+> +
+> +static uint64_t link_m_value(const drmModeModeInfo *mode, int link_rate)
+> +{
+> +	uint64_t clock = link_symbol_clock_khz(link_rate);
+> +
+> +	return ((uint64_t)mode->clock * LINK_N + clock / 2) / clock;
+> +}
+> +
+> +static uint32_t link_m_n_integer(const drmModeModeInfo *mode, int link_rate)
+> +{
+> +	return link_m_value(mode, link_rate) / LINK_N;
+> +}
+> +
+> +static bool wait_for_retrain(struct test_data *data, igt_output_t *output)
+> +{
+> +	struct timespec start, now;
+> +
+> +	clock_gettime(CLOCK_MONOTONIC, &start);
+> +	for (;;) {
+> +		if (!i915_dp_get_pending_retrain(data->drm_fd, output))
+> +			return true;
+> +
+> +		clock_gettime(CLOCK_MONOTONIC, &now);
+> +		if ((now.tv_sec - start.tv_sec) +
+> +		    (now.tv_nsec - start.tv_nsec) / 1e9 > 20.0)
+> +			return false;
+> +		usleep(100000);
+> +	}
+> +}
+> +
+> +static bool same_pixel_clock(const drmModeModeInfo *modes, int index)
+> +{
+> +	int i;
+> +
+> +	for (i = 0; i < index; i++)
+> +		if (modes[i].clock == modes[index].clock)
+> +			return true;
+> +	return false;
+> +}
+> +
+> +static void force_link(struct test_data *data, igt_output_t *output,
+> +		       const struct i915_dp_link_config *config)
+> +{
+> +	char rate[32], lanes[32];
+> +
+> +	snprintf(rate, sizeof(rate), "%d", config->link_rate);
+> +	snprintf(lanes, sizeof(lanes), "%d", config->lane_count);
+> +	i915_dp_set_link_params(data->drm_fd, output, rate, lanes);
+> +}
+> +
+> +static bool commit_mode(struct test_data *data, igt_output_t *output,
+> +			igt_crtc_t *crtc, drmModeModeInfo *mode,
+> +			struct igt_fb *fb,
+> +			const struct i915_dp_link_config *config)
+> +{
+> +	igt_plane_t *primary;
+> +	int ret;
+> +
+> +	/* Force link first: redetection invalidates connector mode pointers. */
+> +	force_link(data, output, config);
+> +	igt_display_reset(&data->display);
+> +	igt_output_set_crtc(output, crtc);
+> +	igt_output_override_mode(output, mode);
+> +	primary = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
+> +	igt_plane_set_fb(primary, fb);
+> +
+> +	if (!igt_fit_modes_in_bw(&data->display)) {
+> +		igt_info("Skipping %s at %d/%d: insufficient bandwidth\n",
+> +			 mode->name, config->lane_count, config->link_rate);
+> +		return false;
+> +	}
+> +
+> +	/*
+> +	 * DSC-required configurations fail atomic check with -EINVAL when DSC
+> +	 * is unavailable. Treat that as an unsupported mode/link combination,
+> +	 * not as a failure of the M/N test.
+> +	 */
+> +	ret = igt_display_try_commit_atomic(&data->display,
+> +					    DRM_MODE_ATOMIC_TEST_ONLY |
+> +					    DRM_MODE_ATOMIC_ALLOW_MODESET,
+> +					    NULL);
+> +	if (ret) {
+> +		igt_info("Skipping %s at %d/%d: atomic check failed (%d), likely DSC required\n",
+> +			 mode->name, config->lane_count, config->link_rate, ret);
+> +		return false;
+> +	}
+> +
+> +	igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +	i915_dp_force_link_retrain(data->drm_fd, output, 1);
+> +	if (!wait_for_retrain(data, output)) {
+> +		igt_info("Skipping %s at %d/%d: link retrain timed out\n",
+> +			 mode->name, config->lane_count, config->link_rate);
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static int fixed_lane_count(const struct i915_dp_link_config *configs,
+> +			    int num_configs)
+> +{
+> +	int i, lanes = 0;
+> +
+> +	for (i = 0; i < num_configs; i++)
+> +		if (configs[i].lane_count > lanes)
+> +			lanes = configs[i].lane_count;
+> +
+> +	return lanes;
+> +}
+> +
+> +static bool has_ratio(int drm_fd, const drmModeConnector *connector,
+> +		      const struct i915_dp_link_config *configs,
+> +		      int num_configs, int fixed_lanes,
+> +		      uint32_t target_ratio)
+> +{
+> +	int mode, config;
+> +
+> +	for (mode = 0; mode < connector->count_modes; mode++) {
+> +		if (same_pixel_clock(connector->modes, mode) ||
+> +		    intel_mode_needs_joiner(drm_fd, &connector->modes[mode]))
+> +			continue;
+> +		for (config = 0; config < num_configs; config++)
+> +			if (configs[config].lane_count == fixed_lanes &&
+> +			    link_m_n_integer(&connector->modes[mode],
+> +					     configs[config].link_rate) == target_ratio)
+> +				return true;
+> +	}
+> +	return false;
+> +}
+> +
+> +static void test_ratio_for_output(struct test_data *data,
+> +				  igt_output_t *output,
+> +				  igt_crtc_t *crtc,
+> +				  uint32_t target_ratio)
+> +{
+> +	struct i915_dp_link_config configs[MAX_LINK_CONFIGS];
+> +	struct i915_dp_link_config max_config = { 0 };
+> +	drmModeConnector *connector;
+> +	drmModeModeInfo *modes;
+> +	int fixed_lanes;
+> +	int num_configs, mode, config;
+> +
+> +	i915_dp_reset_link_params(data->drm_fd, output);
+> +	num_configs = i915_dp_get_allowed_link_configs(data->drm_fd, output,
+> +						       configs, ARRAY_SIZE(configs));
+> +	igt_require_f(num_configs > 0, "No allowed link configs for %s\n",
+> +		      igt_output_name(output));
+> +	connector = output->config.connector;
+> +	fixed_lanes = fixed_lane_count(configs, num_configs);
+> +
+> +	/* Select the highest available rate while keeping one fixed lane count. */
+> +	for (config = 0; config < num_configs; config++)
+> +		if (configs[config].lane_count == fixed_lanes &&
+> +		    configs[config].link_rate > max_config.link_rate)
+> +			max_config = configs[config];
+> +
+> +	modes = calloc(connector->count_modes, sizeof(*modes));
+> +	igt_assert(modes);
+> +	memcpy(modes, connector->modes,
+> +	       connector->count_modes * sizeof(*modes));
+> +
+> +	for (mode = 0; mode < connector->count_modes; mode++) {
+> +		struct igt_fb fb;
+> +		igt_pipe_crc_t *pipe_crc;
+> +		igt_crc_t reference, current;
+> +		igt_plane_t *primary = NULL;
+> +		bool mode_has_ratio = false;
+> +
+> +		if (same_pixel_clock(modes, mode)) {
+> +			igt_info("Skipping %s on %s: duplicate pixel clock\n",
+> +				 modes[mode].name, igt_crtc_name(crtc));
+> +			continue;
+> +		}
+> +
+> +		if (intel_mode_needs_joiner(data->drm_fd, &modes[mode])) {
+> +			igt_info("Skipping %s on %s: joiner required\n",
+> +				 modes[mode].name, igt_crtc_name(crtc));
+> +			continue;
+> +		}
+> +
+> +		for (config = 0; config < num_configs; config++)
+> +			if (configs[config].lane_count == fixed_lanes &&
+> +			    link_m_n_integer(&modes[mode], configs[config].link_rate) ==
+> +			    target_ratio) {
+> +				mode_has_ratio = true;
+> +				break;
+> +			}
+> +
+> +		if (!mode_has_ratio) {
+> +			igt_info("Skipping %s on %s: no link rate gives integer ratio %u at %d lanes\n",
+> +				 modes[mode].name, igt_crtc_name(crtc),
+> +				 target_ratio, fixed_lanes);
+> +			continue;
+> +		}
+> +
+> +		igt_create_color_fb(data->drm_fd, modes[mode].hdisplay,
+> +				    modes[mode].vdisplay, DRM_FORMAT_XRGB8888,
+> +				    DRM_FORMAT_MOD_LINEAR, 0.0, 1.0, 0.0, &fb);
+> +
+> +		/* Capture one reference CRC at the maximum supported link rate. */
+> +		if (!commit_mode(data, output, crtc, &modes[mode], &fb,
+> +				 &max_config)) {
+> +			igt_remove_fb(data->drm_fd, &fb);
+> +			continue;
+> +		}
+> +
+> +		pipe_crc = igt_crtc_crc_new(crtc, IGT_PIPE_CRC_SOURCE_AUTO);
+> +		igt_pipe_crc_start(pipe_crc);
+> +		igt_pipe_crc_collect_crc(pipe_crc, &reference);
+> +		primary = igt_output_get_plane_type(output,
+> +						    DRM_PLANE_TYPE_PRIMARY);
+> +
+> +		/* Reuse the reference for every matching ratio configuration. */
+> +		for (config = 0; config < num_configs; config++) {
+> +			unsigned int ratio;
+> +
+> +			if (configs[config].lane_count != fixed_lanes)
+> +				continue;
+> +			ratio = link_m_n_integer(&modes[mode],
+> +						 configs[config].link_rate);
+> +
+> +			if (ratio != target_ratio)
+> +				continue;
+> +
+> +			igt_info("Testing %s@%u: M=%llu N=%llu ratio=%u at %d/%d\n",
+> +				 modes[mode].name, modes[mode].vrefresh,
+> +				 (unsigned long long)link_m_value(&modes[mode],
+> +								  configs[config].link_rate),
+> +				 (unsigned long long)LINK_N, ratio,
+> +				 configs[config].lane_count, configs[config].link_rate);
+> +
+> +			if (!commit_mode(data, output, crtc, &modes[mode], &fb,
+> +					 &configs[config]))
+> +				continue;
+> +			primary = igt_output_get_plane_type(output,
+> +							    DRM_PLANE_TYPE_PRIMARY);
+> +			igt_plane_set_fb(primary, &fb);
+> +			igt_display_commit2(&data->display, COMMIT_ATOMIC);
+> +			igt_pipe_crc_drain(pipe_crc);
+> +			igt_pipe_crc_collect_crc(pipe_crc, &current);
+> +
+> +			igt_assert_f(igt_check_crc_equal(&reference, &current),
+> +				     "CRC mismatch for %s: max %d/%d, ratio %d/%d\n",
+> +				     modes[mode].name,
+> +				     max_config.lane_count, max_config.link_rate,
+> +				     configs[config].lane_count, configs[config].link_rate);
+> +		}
+> +
+> +		igt_pipe_crc_free(pipe_crc);
+> +		igt_plane_set_fb(primary, NULL);
+> +		igt_remove_fb(data->drm_fd, &fb);
+> +	}
+> +
+> +	free(modes);
+> +}
+> +
+> +static bool run_ratio_test(struct test_data *data, uint32_t target_ratio)
+> +{
+> +	igt_output_t *output;
+> +	igt_crtc_t *crtc;
+> +	bool ran = false;
+> +
+> +	for_each_crtc_with_single_output(&data->display, crtc, output) {
+> +		struct i915_dp_link_config configs[MAX_LINK_CONFIGS];
+> +		int num_configs, fixed_lanes;
+> +
+> +		if (output->config.connector->connector_type !=
+> +		    DRM_MODE_CONNECTOR_DisplayPort ||
+> +		    igt_check_output_is_dp_mst(output))
+> +			continue;
+> +
+> +		i915_dp_reset_link_params(data->drm_fd, output);
+> +		num_configs = i915_dp_get_allowed_link_configs(data->drm_fd, output,
+> +							       configs, ARRAY_SIZE(configs));
+> +		igt_require_f(num_configs > 0, "No allowed link configs for %s\n",
+> +			      igt_output_name(output));
+> +		fixed_lanes = fixed_lane_count(configs, num_configs);
+> +		if (!has_ratio(data->drm_fd, output->config.connector, configs, num_configs,
+> +			       fixed_lanes, target_ratio))
+> +			continue;
+> +
+> +		igt_dynamic_f("%s-%s", igt_output_name(output), igt_crtc_name(crtc)) {
+> +			test_ratio_for_output(data, output, crtc, target_ratio);
+> +		}
+> +		ran = true;
+> +	}
+> +
+> +	return ran;
+> +}
+> +
+> +IGT_TEST_DESCRIPTION("Validate video Link M/N integer ratios from zero through ten");
+> +
+> +int igt_main()
+> +{
+> +	struct test_data data = {};
+> +
+> +	igt_fixture() {
+> +		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+> +		kmstest_set_vt_graphics_mode();
+> +		igt_display_require(&data.display, data.drm_fd);
+> +		igt_display_require_output(&data.display);
+> +		igt_require_pipe_crc(data.drm_fd);
+> +	}
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 0.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int0")
+> +		igt_require_f(run_ratio_test(&data, 0),
+> +			      "No DP mode/link configuration has integer M/N ratio 0\n");
+
+Where is actual test? I see only require here.
+
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 1.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int1")
+> +		igt_require_f(run_ratio_test(&data, 1),
+> +			      "No DP mode/link configuration has integer M/N ratio 1\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 2.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int2")
+> +		igt_require_f(run_ratio_test(&data, 2),
+> +			      "No DP mode/link configuration has integer M/N ratio 2\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 3.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int3")
+> +		igt_require_f(run_ratio_test(&data, 3),
+> +			      "No DP mode/link configuration has integer M/N ratio 3\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 4.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int4")
+> +		igt_require_f(run_ratio_test(&data, 4),
+> +			      "No DP mode/link configuration has integer M/N ratio 4\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 5.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int5")
+> +		igt_require_f(run_ratio_test(&data, 5),
+> +			      "No DP mode/link configuration has integer M/N ratio 5\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 6.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int6")
+> +		igt_require_f(run_ratio_test(&data, 6),
+> +			      "No DP mode/link configuration has integer M/N ratio 6\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 7.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int7")
+> +		igt_require_f(run_ratio_test(&data, 7),
+> +			      "No DP mode/link configuration has integer M/N ratio 7\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 8.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int8")
+> +		igt_require_f(run_ratio_test(&data, 8),
+> +			      "No DP mode/link configuration has integer M/N ratio 8\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 9.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int9")
+> +		igt_require_f(run_ratio_test(&data, 9),
+> +			      "No DP mode/link configuration has integer M/N ratio 9\n");
+> +
+> +	igt_describe("Compare pipe CRCs for configurations with integer M/N ratio 10.");
+> +	igt_subtest_with_dynamic("link_m_n_ratio_int10")
+> +		igt_require_f(run_ratio_test(&data, 10),
+> +			      "No DP mode/link configuration has integer M/N ratio 10\n");
+> +
+> +	igt_fixture() {
+> +		igt_reset_connectors();
+> +		igt_display_fini(&data.display);
+> +		close(data.drm_fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 519a9e727..1f82ba868 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -253,6 +253,7 @@ intel_kms_progs = [
+>  	'kms_cdclk',
+>  	'kms_dirtyfb',
+>  	'kms_dp_link_training',
+> +	'kms_link_m_n',
+
+Move this down, keep alphabetical order. As there is already
+kms_dp_link_training so meaybe kms_dp_link_ratio name would be
+better.
+
+>          'kms_dp_linktrain_fallback',
+>  	'kms_draw_crc',
+>  	'kms_dsc',
+> @@ -403,6 +404,8 @@ extra_sources = {
+>  	'kms_dp_link_training': [
+>            join_paths ('intel', 'kms_mst_helper.c'),
+>            join_paths ('intel', 'kms_joiner_helper.c') ],
+> +	'kms_link_m_n': [
+> +          join_paths ('intel', 'kms_joiner_helper.c') ],
+
+Same here, keep alphabetical order.
+
+
 
 Regards,
 Kamil
 
->   
-> New tests
-> ---------
+>  	'kms_dsc': [
+>            join_paths ('intel', 'kms_dsc_helper.c'),
+>            join_paths ('intel', 'kms_joiner_helper.c') ],
+> -- 
+> 2.43.0
 > 
->   New tests have been introduced between XEIGT_9150_FULL and XEIGTPW_16005_FULL:
-> 
-> ### New IGT tests (6) ###
-> 
->   * igt@kms_invalid_mode@bad-hsync-start@pipe-d-dp-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.05] s
-> 
->   * igt@kms_invalid_mode@zero-vdisplay@pipe-d-dp-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.02] s
-> 
->   * igt@kms_sequence@get-busy@pipe-d-dp-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.56] s
-> 
->   * igt@kms_vblank@query-forked@pipe-d-dp-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.36] s
-> 
->   * igt@kms_vblank@ts-continuation-modeset-hang@pipe-d-dp-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [0.41] s
-> 
->   * igt@kms_vblank@wait-forked-busy@pipe-d-dp-1:
->     - Statuses : 1 pass(s)
->     - Exec time: [2.51] s
-> 
->   
-> 
-> Known issues
-> ------------
-> 
->   Here are the changes found in XEIGTPW_16005_FULL that come from known issues:
-> 
-> ### IGT changes ###
-> 
-> #### Issues hit ####
-> 
->   * igt@intel_hwmon@hwmon-write:
->     - shard-lnl:          NOTRUN -> [SKIP][7] ([Intel XE#1125] / [Intel XE#7312])
->    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16005/shard-lnl-5/igt@intel_hwmon@hwmon-write.html
-> 
-...cut...
