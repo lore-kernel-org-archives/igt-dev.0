@@ -2,60 +2,61 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A82606A319
-	for <igt-dev@archiver.kernel.org>; Tue, 20 Oct 2026 12:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF794606A327
+	for <igt-dev@archiver.kernel.org>; Tue, 20 Oct 2026 12:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SvcdSAsU
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HftPyCQw
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF0B110F51F;
-	Tue, 20 Oct 2026 12:11:18 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0E0210F54B
- for <igt-dev@lists.freedesktop.org>; Tue, 20 Oct 2026 12:10:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 97ED610E0CF;
+	Tue, 20 Oct 2026 12:13:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1ADF210E6F2
+ for <igt-dev@lists.freedesktop.org>; Tue, 20 Oct 2026 12:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792498225; x=1824034225;
+ t=1792498385; x=1824034385;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=HiI0PuD4cy6AG2JK3M6m6OFdAqNQXq+uh8sQLvfoOn4=;
- b=SvcdSAsUvSOr8wrCLXJEANMiVRDghM2k+XQ7HN8MW+w6VVLz/thg5hEo
- Wy9JT46v9heLWLUmRG8JuXFPJblV98e5jRlwWhtYc2k9AYgPRhf6VyTbT
- s7dbSdHhaZFO4hsgoKiQsuUx7ON7csY4Hm2J7r7/m9wQpS1ZBH1jDF4hR
- oa0IiSQql+5LswEtii/y64LFP3krI6bA2vFPaYX1WcmelVB7VGFrsmmYk
- iNChrgBa8puhjnXMS+9tEanVEVgPGbKk76mztKoHD/Mmrgqd76g+2hSnN
- +XB1kfSBTIKrl9U8gwJv/m51+y8tjZ6u2LcfmffZuLtbzwXnxgv8bMfwm Q==;
-X-CSE-ConnectionGUID: qMq7yXDbTaiqPDGXibryDg==
-X-CSE-MsgGUID: aQq8b9j4RTCid3N/IbFHyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1179685"
+ bh=Z/1NxjfV3lFEGBAV1nAe25A6eaAczlbstimUmeTh0Tw=;
+ b=HftPyCQwEbFKJE+G7ssBKXXtYC5TeELzweVwjxxrhAf1pu/XOFAg0JPp
+ OawwA9U7+4TYLCdC7ZlykKXKkWUEYWRDGQG8p8kq/qITT6bDOnDle7k5J
+ lbMORGajkAxcKmWtiEl9V+Rh+ViwuP2xIxkwH6r0KD/7xT9ZihaHQrwTs
+ rI6/LWxa5dod8n/s4z+vxWfJFTuvT5xJz0S8Ev/jRIQ9x1QWGd+/DhCaG
+ 4dZJ+4Pv9EgNUvKvFFwEzuEkexAVVcRkGoo4+2ZzaQjhEsdCUeUdX56Qb
+ HPRRlQK/mBRekUPQ9eB07e51zyOUfqrYZnv/NIxqViT7WCIvH294WHeEt g==;
+X-CSE-ConnectionGUID: LmSA2fD2QcSY7ldUhYvPfw==
+X-CSE-MsgGUID: 1+yLf1dRSEqrq0iy57ibKQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11940"; a="1087036"
 X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="1179685"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2026 05:10:24 -0700
-X-CSE-ConnectionGUID: JslZFnFsSGOXJk3lRj36cA==
-X-CSE-MsgGUID: GS7/jP/QRK6TZLUoXsssmQ==
+   d="scan'208";a="1087036"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Oct 2026 05:13:04 -0700
+X-CSE-ConnectionGUID: GTTddDt/SY+cS8f3qORksA==
+X-CSE-MsgGUID: 51SxXrCDQEaYnjke2imfTw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,168,1787036400"; 
-   d="scan'208";a="4605609"
+   d="scan'208";a="3143750"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Oct 2026 05:10:22 -0700
-Date: Tue, 20 Oct 2026 14:10:20 +0200
+ 20 Oct 2026 05:13:01 -0700
+Date: Tue, 20 Oct 2026 14:12:55 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Mark Yacoub <markyacoub@google.com>
-Cc: igt-dev@lists.freedesktop.org,
-	Louis Chauvet <louis.chauvet@bootlin.com>
-Subject: Re: [PATCH i-g-t] tests/unigraf_lt: Restrict to Intel drivers
-Message-ID: <20261020121020.yuxlfao7gro5zaym@kamilkon-DESK.igk.intel.com>
+Cc: igt-dev@lists.freedesktop.org, Louis Chauvet <louis.chauvet@bootlin.com>,
+ Imre Deak <imre.deak@intel.com>
+Subject: Re: [PATCH i-g-t] tests/unigraf_lt: Optimize DP lane count validations
+Message-ID: <20261020121255.tllrb3utrcaj2ch6@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Mark Yacoub <markyacoub@google.com>, igt-dev@lists.freedesktop.org,
- Louis Chauvet <louis.chauvet@bootlin.com>
-References: <20260813171156.2353078-1-markyacoub@google.com>
+ Louis Chauvet <louis.chauvet@bootlin.com>,
+ Imre Deak <imre.deak@intel.com>
+References: <20260813175955.2450321-1-markyacoub@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260813171156.2353078-1-markyacoub@google.com>
+In-Reply-To: <20260813175955.2450321-1-markyacoub@google.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,16 +76,21 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 Hi Mark,
-On 2026-08-13 at 13:11:56 -0400, Mark Yacoub wrote:
-> Currently, `igt_dp_force_link_retrain` natively maps to Intel's
-> i915 debugfs architecture. Thus, enforce
-> `igt_require_f(is_intel_device(drm_fd))` in the test fixture so
-> that this suite explicitly skips rather than blindly failing on
-> generic drivers. Other drivers should implement equivalent generic
-> IGT hooks before they can execute this verification.
+On 2026-08-13 at 13:59:55 -0400, Mark Yacoub wrote:
+> Some drivers dynamically optimize power by downshifting lane utilization
+> if the current video mode (e.g., 1080p) has low bandwidth requirements,
+> regardless of the physical ceiling.
 > 
-> Signed-off-by: Mark Yacoub <markyacoub@google.com>
+> To avoid pointlessly testing artificially high lane mock ceilings
+> that would result in false-negative failures, we introduce a pre-check
+> in the lane count subtest. We safely pre-calculate the kernel's natural
+> max lane utilization for the current mode through an unconstrained HPD
+> sequence, allowing us to skip unachievable configurations.
+> 
 
++cc Imre Deak <imre.deak@intel.com>
+
+> Signed-off-by: Mark Yacoub <markyacoub@google.com>
 LGTM
 Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
@@ -92,22 +98,68 @@ Regards,
 Kamil
 
 > ---
->  tests/unigraf/unigraf_lt.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  tests/unigraf/unigraf_lt.c | 37 ++++++++++++++++++++++++++++++++++---
+>  1 file changed, 34 insertions(+), 3 deletions(-)
 > 
 > diff --git a/tests/unigraf/unigraf_lt.c b/tests/unigraf/unigraf_lt.c
-> index 81e6ecd3f..c0d1161f6 100644
+> index 81e6ecd3f..7b9a2fc27 100644
 > --- a/tests/unigraf/unigraf_lt.c
 > +++ b/tests/unigraf/unigraf_lt.c
-> @@ -94,6 +94,8 @@ int igt_main()
->  	igt_fixture() {
->  		drm_fd = drm_open_driver(DRIVER_ANY);
->  		igt_assert(drm_fd >= 0);
-> +		igt_require_f(is_intel_device(drm_fd),
-> +			      "This test relies on Intel-specific debugfs endpoints (e.g., i915_dp_force_link_rate, i915_dp_force_lane_count) for link training verification. Other drivers should implement equivalent generic IGT hooks.\n");
+> @@ -103,12 +103,43 @@ int igt_main()
 >  
->  		igt_display_require(&display, drm_fd);
->  		unigraf_require_device(drm_fd);
+>  	igt_subtest_with_dynamic("unigraf-dp-lane-count") {
+>  		int lane_counts[3] = {1, 2, 4};
+> +		int max_natural_lanes = 0;
+>  		int current_lanes;
+>  
+> +		/*
+> +		 * Some drivers dynamically optimize power by downshifting lane
+> +		 * utilization if the current video mode (e.g., 1080p) has low
+> +		 * bandwidth requirements, regardless of the physical ceiling.
+> +		 *
+> +		 * To avoid pointlessly testing artificially high lane mock
+> +		 * ceilings (e.g. testing 4 lanes when we know the driver adamantly
+> +		 * refuses to use more than 1 or 2 for this mode), we first
+> +		 * perform an unconstrained HPD sequence. We initialize the output
+> +		 * and observe precisely how many lanes the kernel naturally demands.
+> +		 */
+> +		unigraf_reset();
+> +		unigraf_set_max_lane_count(4);
+> +		unigraf_hpd_pulse(500000);
+> +
+> +		igt_display_require_output(&display);
+> +		output = igt_output_from_connector(&display, connector);
+> +		igt_assert(output);
+> +		igt_dp_force_link_retrain(drm_fd, output, 2);
+> +		init_output_and_display_pattern(&display, output);
+> +
+> +		max_natural_lanes = igt_dp_get_current_lane_count(drm_fd, output);
+> +		igt_info("Pre-check: Kernel naturally trains a maximum of %d lanes for the current mode.\n",
+> +			 max_natural_lanes);
+> +
+>  		for (i = 0; i < ARRAY_SIZE(lane_counts); i++) {
+> -			igt_dynamic_f("unigraf-dp-lane-count-%d", lane_counts[i]) {
+> +			int lane_count = lane_counts[i];
+> +
+> +			if (lane_count > max_natural_lanes)
+> +				continue;
+> +
+> +			igt_dynamic_f("unigraf-dp-lane-count-%d", lane_count) {
+>  				unigraf_reset();
+> -				unigraf_set_max_lane_count(lane_counts[i]);
+> +				unigraf_set_max_lane_count(lane_count);
+>  				unigraf_hpd_pulse(500000);
+>  
+>  				igt_display_require_output(&display);
+> @@ -118,7 +149,7 @@ int igt_main()
+>  				init_output_and_display_pattern(&display, output);
+>  
+>  				current_lanes = igt_dp_get_current_lane_count(drm_fd, output);
+> -				igt_assert_eq(current_lanes, lane_counts[i]);
+> +				igt_assert_eq(current_lanes, lane_count);
+>  			}
+>  		}
+>  	}
 > -- 
 > 2.55.0.691.gc56d675ccc-goog
 > 
