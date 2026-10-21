@@ -2,29 +2,29 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34858606A31A
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 15:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5415606A31A
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 15:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=WArkk2iV
+	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=haEcgXeo
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E2E6910E317;
-	Wed, 21 Oct 2026 15:21:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7B3AA10E031;
+	Wed, 21 Oct 2026 15:21:59 +0000 (UTC)
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF2CD10E1AC
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E3D6C10E317
  for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 15:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=hFimBO3AaWoW1dTPVQeQ8TN0T7+frrw9KkwXnZCTkjY=; b=
- WArkk2iVBA5nV9u+1FJmD79uVx16PydvvAgoBWvl+iEoTWPKBij9JYxRbvsJ33kQUpElQAerOuUzF
- 6hQz/iDyHXDLkuCqVHZZaqhbCFGRemum6vAMWnG7YwOjARZrlkYivfVWLjsP25r1KDwsWP9iubpsT
- oYsXtnTMrgVEq58SYh5fGYkmK5oaPWDomkzYV2tiOAM2XOZnGO6MGnkv5Mx8UOFQueQfiFnNgJ0+D
- uyWzsIMyZaF6+JVuztv7HQmmF+KB2cP9N/fK/pzCcHAo1yVssSPiCt14flmoRFrU6pk9PS1rLiQZJ
- WFGMKy9h2NCr3rIYiIcdhFZRgYBUs9BwMw==;
+ Cc:To:From:From:Reply-To; bh=6tUHIp25u7jUN0dked7fkhZwdPpzaQlwCYN3X+HsJYU=; b=
+ haEcgXeo/rnRb+7U5KepMjyEY/QsBjFq/yRhSlVGOiPXEAat68RZuQOX1u1bClrdPj8MnQu88VKHD
+ AifnA5AiYiQAq0/4Jj04WZugkg1AVWMyM+eHrRF6l4HtZbYPxJBN1mSQ1tRImjpty1bG106hPrA/T
+ oR4hGtxHnG26LjkzNRh366djFNd+F9jr1tMzkCPoagNJFEedS4ilk/gXLf65hmblBp5kJpIYD7KvJ
+ EeRg2BHqNq60qaDPL52M9Bo3lKiuLl6CCoO1tbtk7zpxQAGWNp4XLzUDWERLxHAQG56TalYWjLuR5
+ gs4+LHAm9GdXGrG6e6TjjilFZVRAnqM+bA==;
 Received: from 62-87-103-230.red-acceso.airtel.net ([62.87.103.230]
  helo=killbill.home) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1xJY6j-005l0E-KS; Wed, 21 Oct 2026 17:20:01 +0200
+ id 1xJY6h-005l0E-GF; Wed, 21 Oct 2026 17:19:59 +0200
 From: Melissa Wen <mwen@igalia.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -39,10 +39,10 @@ Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
  Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
  Uma Shankar <uma.shankar@intel.com>, Jani Nikula <jani.nikula@intel.com>,
  igt-dev@lists.freedesktop.org, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v6 2/8] tests/kms_colorop_helper: only check if a given
- enum value exists
-Date: Wed, 21 Oct 2026 17:18:26 +0200
-Message-ID: <20261021151929.62529-3-mwen@igalia.com>
+Subject: [PATCH i-g-t v6 1/8] lib/igt_kms: clear colorop-changed flag after
+ commit
+Date: Wed, 21 Oct 2026 17:18:25 +0200
+Message-ID: <20261021151929.62529-2-mwen@igalia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261021151929.62529-1-mwen@igalia.com>
 References: <20261021151929.62529-1-mwen@igalia.com>
@@ -67,87 +67,52 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Don't trigger unnecessary colorop property changes just to probe that a
-prop enum exists and can be applied. Make can_use_colorop() read-only,
-preventing atomic commit rejections after test skips.
+The userspace can update only currently active colorops or colorops that
+will be activated or deactivated in the same commit. Active colorop
+means a colorop that is in the chain of an active color pipeline, i.e.
+the pipeline in plane COLOR_PIPELINE property.
+
+Don't request colorop updates if there is no change in the atomic
+commit. This fixes incorrect re-submission of property changes in
+inactive colorops after a successful atomic commit.
 
 Assisted-by: Claude:claude-opus-4-7
 Tested-by: Alex Hung <alex.hung@amd.com>
 Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 Signed-off-by: Melissa Wen <mwen@igalia.com>
 ---
- lib/igt_kms.c              | 26 ++++++++++++++++++++++++++
- lib/igt_kms.h              |  4 ++++
- tests/kms_colorop_helper.c |  4 +++-
- 3 files changed, 33 insertions(+), 1 deletion(-)
+ lib/igt_kms.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 365fb0cc3..dcd62d46a 100644
+index af0f7c4e5..365fb0cc3 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -4515,6 +4515,32 @@ igt_colorop_replace_prop_blob(igt_colorop_t *colorop, enum igt_atomic_colorop_pr
- 	igt_colorop_set_prop_changed(colorop, prop);
- }
+@@ -4898,8 +4898,24 @@ display_commit_changed(igt_display_t *display, enum igt_commit_style s)
+ 				       plane) {
+ 			if (s == COMMIT_ATOMIC) {
+ 				int fd;
++				igt_colorop_t *colorop;
++
+ 				plane->changed = 0;
  
-+/**
-+ * igt_colorop_has_prop_enum_value:
-+ * @colorop: Target colorop.
-+ * @prop: Enum property to check.
-+ * @val: Enum value (as string) to look up.
-+ *
-+ * Read-only counterpart to igt_colorop_try_prop_enum(): returns whether
-+ * @colorop's @prop accepts the enum value @val, without setting it or
-+ * marking @prop as changed in IGT's cache.
-+ *
-+ * Returns: true if @val is a valid value of the enum @prop on @colorop.
-+ */
-+bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
-+				     enum igt_atomic_colorop_properties prop,
-+				     const char *val)
-+{
-+	igt_display_t *display = colorop->plane->crtc->display;
-+	uint64_t uval;
++				/* clear changed flags on every colorop in the assigned chain
++				 * so already-committed property values aren't re-emitted on
++				 * the next commit.
++				 */
++				colorop = plane->assigned_color_pipeline;
++				while (colorop) {
++					uint32_t next_val;
 +
-+	igt_assert(colorop->props[prop]);
++					colorop->changed = 0;
++					next_val = igt_colorop_get_prop(display, colorop,
++									IGT_COLOROP_NEXT);
++					colorop = igt_find_colorop(display, next_val);
++				}
 +
-+	return igt_mode_object_get_prop_enum_value(display->drm_fd,
-+						   colorop->props[prop],
-+						   val, &uval);
-+}
-+
- /**
-  * igt_colorop_try_prop_enum:
-  * @colorop: Target colorop.
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index 9b8779a62..0949862dc 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1032,6 +1032,10 @@ uint64_t igt_colorop_get_prop(igt_display_t *display, igt_colorop_t *colorop, en
- 	} while (0)
- 
- 
-+extern bool igt_colorop_has_prop_enum_value(igt_colorop_t *colorop,
-+					    enum igt_atomic_colorop_properties prop,
-+					    const char *val);
-+
- extern bool igt_colorop_try_prop_enum(igt_colorop_t *colorop,
- 				      enum igt_atomic_colorop_properties prop,
- 				      const char *val);
-diff --git a/tests/kms_colorop_helper.c b/tests/kms_colorop_helper.c
-index 5c0baeb12..e612859f9 100644
---- a/tests/kms_colorop_helper.c
-+++ b/tests/kms_colorop_helper.c
-@@ -259,7 +259,9 @@ static bool can_use_colorop(igt_display_t *display, igt_colorop_t *colorop, kms_
- 	switch (desired->type) {
- 	case KMS_COLOROP_ENUMERATED_LUT1D:
- 		if (igt_colorop_get_prop(display, colorop, IGT_COLOROP_TYPE) == DRM_COLOROP_1D_CURVE &&
--		    igt_colorop_try_prop_enum(colorop, IGT_COLOROP_CURVE_1D_TYPE, kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
-+		    igt_colorop_has_prop_enum_value(colorop,
-+						    IGT_COLOROP_CURVE_1D_TYPE,
-+						    kms_colorop_lut1d_tf_names[desired->enumerated_lut1d_info.tf]))
- 			return true;
- 		return false;
- 	case KMS_COLOROP_CTM_3X4:
+ 				fd = plane->values[IGT_PLANE_IN_FENCE_FD];
+ 				if (fd != -1)
+ 					close(fd);
 -- 
 2.53.0
 
