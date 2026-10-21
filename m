@@ -2,53 +2,45 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0312F606A31A
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 15:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D25B606A328
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 15:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=oSehor+v
+	dkim=fail reason="signature verification failed" (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=tWDYdVqE
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD93410E317;
-	Wed, 21 Oct 2026 15:27:28 +0000 (UTC)
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9ED4D10E02C
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 15:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=YrrmFwsc1ulDxtCoBHTG+PdgiW2ud9F5BO+Tlz3FGPg=; b=
- oSehor+vaRQs+kH0lwfm0m1dLdCjonyvVPyQ4WqcGUhwMqSqArRojLRafswxhpEsQ7oGXpbOf3RWm
- lawo3B3EniSfCn3G6KWu8E0pZoxAQUAbah1D+Ay+bqcer5xusDPSwflYow+A/LA1rZFUfq69J4raY
- YYRDzfila8wptZ0CxrijpyXsl+9rQgwBoY3gDY4XxODu6oRiR8Cd3xYawXSkOK4bTGy59QEeOb4Ix
- C38CmdvCaItL9IkyHhGlL5uTESdpDASFDx6OW9S/ez1T1HYJDwo5gULfthA7j0pEGtsJBV9QImOFC
- FEGPptfcxbZbVXQAudsKObWjtQvV1LrmbA==;
-Received: from 62-87-103-230.red-acceso.airtel.net ([62.87.103.230]
- helo=killbill.home) by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1xJY6u-005l0E-6u; Wed, 21 Oct 2026 17:20:12 +0200
-From: Melissa Wen <mwen@igalia.com>
-To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>,
- Bhanuprakash Modem <bhanuprakash.modem@gmail.com>,
- Ashutosh Dixit <ashutosh.dixit@intel.com>,
- Karthik B S <karthik.b.s@intel.com>
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- Alex Hung <alex.hung@amd.com>, Swati Sharma <swati2.sharma@intel.com>,
- John Harrison <John.Harrison@Igalia.com>,
- Rodrigo Siqueira <siqueira@igalia.com>, Simon Ser <contact@emersion.fr>,
- Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
- Uma Shankar <uma.shankar@intel.com>, Jani Nikula <jani.nikula@intel.com>,
- igt-dev@lists.freedesktop.org, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v6 7/8] tests/intel/kms_color_pipeline: move
- driver-specific test to intel's folder
-Date: Wed, 21 Oct 2026 17:18:31 +0200
-Message-ID: <20261021151929.62529-8-mwen@igalia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261021151929.62529-1-mwen@igalia.com>
-References: <20261021151929.62529-1-mwen@igalia.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5738A10E31E;
+	Wed, 21 Oct 2026 15:52:22 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by gabe.freedesktop.org (Postfix) with ESMTP id 0E25610E31E
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 15:51:25 +0000 (UTC)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+ by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2E4C4152B
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 08:51:22 -0700 (PDT)
+Received: from [192.168.0.1] (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+ by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id
+ 210443F7D8
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 08:51:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+ t=1792597885; bh=xf3W7AWQUrqU7+LNTwFLXctd0bR4xGcLeirmI3fXF0w=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=tWDYdVqEKv8LCdGjLye5+G7N9GzzYEy5uF0u6fWmnsVo8e2fP796BgnPvbKE/rbCs
+ L8U2IawIDu1kOtXyPbNOgTv6iFfGfErNPpoEagUZ5GHrPFrjw6tVlJRRj2x04vAcNO
+ qMuH8Kk7OiFHmeJ9BeML2W4SJIs8Sy0ClB5rJPFw=
+Date: Wed, 21 Oct 2026 16:51:22 +0100
+From: Liviu Dudau <liviu.dudau@arm.com>
+To: Daniel Stone <daniels@collabora.com>
+Cc: igt-dev@lists.freedesktop.org, boris.brezillon@collabora.com,
+ laura.nao@collabora.com, adrian.larumbe@collabora.com,
+ daniel.almeida@collabora.com
+Subject: Re: [PATCH 1/4] panthor: Use all available GPU cores
+Message-ID: <atjfepzxX_1CFQOQ@e142607>
+References: <20261015130837.710795-1-daniels@collabora.com>
+ <20261015130837.710795-2-daniels@collabora.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261015130837.710795-2-daniels@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,71 +52,105 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-13.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-As stated in test docs, the kms_color_pipeline isn't driver-agnostic. It
-validates color transformations using CRC, which is less accurate than
-comparing writeback buffers, but the i915 and xe drivers require CRC
-validation when the writeback connector is not supported: kms_colorop
-tests don't run when writeback is not supported. Since other drivers
-that support colorops also support writeback, this CRC option is
-currently only required by Intel; therefore, move kms_color_pipeline
-test to the Intel folder and only open Intel's drivers (not any).
+On Thu, Oct 15, 2026 at 02:05:46PM +0100, Daniel Stone wrote:
+> There's no reason to limit ourselves to one arbitrarily-chosen core.
+> 
+> Signed-off-by: Daniel Stone <daniels@collabora.com>
 
-If the CRC-based colorop test is useful for some other driver, the
-required generalizations and switch to the common folder should be made.
+Reviewed-by: Liviu Dudau <liviu.dudau@arm.com>
 
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Acked-by: Harry Wentland <harry.wentland@amd.com>
----
- tests/{ => intel}/kms_color_pipeline.c | 2 +-
- tests/meson.build                      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
- rename tests/{ => intel}/kms_color_pipeline.c (99%)
+Best regards,
+Liviu
 
-diff --git a/tests/kms_color_pipeline.c b/tests/intel/kms_color_pipeline.c
-similarity index 99%
-rename from tests/kms_color_pipeline.c
-rename to tests/intel/kms_color_pipeline.c
-index 88419db8a..7286718f6 100644
---- a/tests/kms_color_pipeline.c
-+++ b/tests/intel/kms_color_pipeline.c
-@@ -624,7 +624,7 @@ int igt_main()
- 	data_t data = {};
- 
- 	igt_fixture() {
--		data.drm_fd = drm_open_driver_master(DRIVER_ANY);
-+		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
- 
- 		/*
- 		 * Plane color pipeline support requires atomic modesetting.
-diff --git a/tests/meson.build b/tests/meson.build
-index 519a9e727..bb8bef0f9 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -25,7 +25,6 @@ test_progs = [
- 	'kms_atomic_transition',
- 	'kms_bw',
- 	'kms_color',
--	'kms_color_pipeline',
- 	'kms_concurrent',
- 	'kms_colorop',
- 	'kms_content_protection',
-@@ -251,6 +250,7 @@ intel_kms_progs = [
- 	'kms_busy',
- 	'kms_ccs',
- 	'kms_cdclk',
-+	'kms_color_pipeline',
- 	'kms_dirtyfb',
- 	'kms_dp_link_training',
-         'kms_dp_linktrain_fallback',
+> ---
+>  lib/igt_panthor.c | 29 +++++++----------------------
+>  lib/igt_panthor.h |  1 -
+>  2 files changed, 7 insertions(+), 23 deletions(-)
+> 
+> diff --git a/lib/igt_panthor.c b/lib/igt_panthor.c
+> index 11d8ec342..cd6b6b7fd 100644
+> --- a/lib/igt_panthor.c
+> +++ b/lib/igt_panthor.c
+> @@ -2,6 +2,7 @@
+>  // SPDX-FileCopyrightText: Copyright (C) 2025 Collabora Ltd.
+>  
+>  #include "drmtest.h"
+> +#include "igt_aux.h"
+>  #include "igt_panthor.h"
+>  #include "ioctl_wrappers.h"
+>  #include "panthor_drm.h"
+> @@ -69,22 +70,6 @@ void igt_panthor_group_submit(int fd, struct drm_panthor_group_submit *group_sub
+>  		do_ioctl(fd, DRM_IOCTL_PANTHOR_GROUP_SUBMIT, group_submit);
+>  }
+>  
+> -/**
+> - * igt_panthor_get_first_core:
+> - * @cores_present: bitmask of available cores
+> - *
+> - * Get a mask with only the first available core bit set.
+> - *
+> - * Returns: core mask with first available core, or 0 if no cores available
+> - */
+> -uint64_t igt_panthor_get_first_core(uint64_t cores_present)
+> -{
+> -	if (cores_present == 0)
+> -		return 0;
+> -
+> -	return 1ULL << (ffs(cores_present) - 1);
+> -}
+> -
+>  /**
+>   * igt_panthor_group_create_simple:
+>   * @fd: device file descriptor
+> @@ -109,13 +94,13 @@ uint32_t igt_panthor_group_create_simple(int fd, uint32_t vm_id, int err)
+>  	queues = (struct drm_panthor_obj_array)DRM_PANTHOR_OBJ_ARRAY(1, &queue);
+>  
+>  	group_create.queues = queues;
+> -	group_create.max_compute_cores = 1;
+> -	group_create.max_fragment_cores = 1;
+> -	group_create.max_tiler_cores = 1;
+> +	group_create.max_compute_cores = igt_hweight(gpu_info.shader_present);
+> +	group_create.max_fragment_cores = igt_hweight(gpu_info.shader_present);
+> +	group_create.max_tiler_cores = igt_hweight(gpu_info.tiler_present);
+>  	group_create.priority = PANTHOR_GROUP_PRIORITY_MEDIUM;
+> -	group_create.compute_core_mask = igt_panthor_get_first_core(gpu_info.shader_present);
+> -	group_create.fragment_core_mask = igt_panthor_get_first_core(gpu_info.shader_present);
+> -	group_create.tiler_core_mask = igt_panthor_get_first_core(gpu_info.tiler_present);
+> +	group_create.compute_core_mask = gpu_info.shader_present;
+> +	group_create.fragment_core_mask = gpu_info.shader_present;
+> +	group_create.tiler_core_mask = gpu_info.tiler_present;
+>  	group_create.vm_id = vm_id;
+>  
+>  	igt_panthor_group_create(fd, &group_create, err);
+> diff --git a/lib/igt_panthor.h b/lib/igt_panthor.h
+> index ba4a9bf1e..63c4f2bf4 100644
+> --- a/lib/igt_panthor.h
+> +++ b/lib/igt_panthor.h
+> @@ -36,7 +36,6 @@ void igt_panthor_group_submit_simple(int fd, uint32_t group_handle,
+>  				     uint32_t queue_index, uint64_t stream_addr,
+>  				     uint32_t stream_size, uint32_t syncobj_handle,
+>  				     int err);
+> -uint64_t igt_panthor_get_first_core(uint64_t cores_present);
+>  
+>  static inline void igt_panthor_vm_bind(int fd, uint32_t vm_id, uint32_t bo_handle,
+>  				       uint64_t va, uint64_t size, uint32_t flags, int err)
+> -- 
+> 2.47.3
+> 
+
 -- 
-2.53.0
-
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯
