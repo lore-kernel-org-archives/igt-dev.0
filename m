@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416DE606A322
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 23:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46239606A31D
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 00:00:02 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E6E9210E233;
-	Wed, 21 Oct 2026 23:18:20 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D1CD410E1F2;
+	Thu, 22 Oct 2026 00:00:01 +0000 (UTC)
 Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4746F10E233;
- Wed, 21 Oct 2026 23:17:31 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 716E310E084;
+ Wed, 21 Oct 2026 23:59:13 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5035609190985664449=="
+ boundary="===============4571287715047539697=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fwedged=3A_?=
- =?utf-8?q?Add_cold-reset_wedge_test_=28rev6=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Add_BO_Allocation_and_VM_Bi?=
+ =?utf-8?q?nd_stress_infra_=28rev6=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Sk Anirban" <sk.anirban@intel.com>
+To: "Sobin Thomas" <sobin.thomas@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 21 Oct 2026 23:17:31 -0000
-Message-ID: <179262465128.54127.7154478725347474105@221881a7231d>
+Date: Wed, 21 Oct 2026 23:59:13 -0000
+Message-ID: <179262715345.54145.10601510932637064509@221881a7231d>
 X-Patchwork-Hint: ignore
-References: <20261021163012.508187-2-sk.anirban@intel.com>
-In-Reply-To: <20261021163012.508187-2-sk.anirban@intel.com>
+References: <20261021174032.18337-1-sobin.thomas@intel.com>
+In-Reply-To: <20261021174032.18337-1-sobin.thomas@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,20 +42,20 @@ X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============5035609190985664449==
+--===============4571287715047539697==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_wedged: Add cold-reset wedge test (rev6)
-URL   : https://patchwork.freedesktop.org/series/175755/
+Series: Add BO Allocation and VM Bind stress infra (rev6)
+URL   : https://patchwork.freedesktop.org/series/172310/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9156_BAT -> XEIGTPW_16027_BAT
+CI Bug Log - changes from XEIGT_9156_BAT -> XEIGTPW_16028_BAT
 ====================================================
 
 Summary
@@ -70,7 +70,7 @@ Summary
 Participating hosts (15 -> 14)
 ------------------------------
 
-  Missing    (1): bat-ptl-vm 
+  Missing    (1): bat-bmg-vm 
 
 
 Changes
@@ -82,19 +82,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_9156 -> IGTPW_16027
+  * IGT: IGT_9156 -> IGTPW_16028
   * Linux: xe-5980-24d867f5e671c78760ab39087a57c25ad98e1f42 -> xe-5994-c6e562bf40e09550958664912c45eff53eca562a
 
-  IGTPW_16027: 16027
+  IGTPW_16028: 16028
   IGT_9156: 9156
   xe-5980-24d867f5e671c78760ab39087a57c25ad98e1f42: 24d867f5e671c78760ab39087a57c25ad98e1f42
   xe-5994-c6e562bf40e09550958664912c45eff53eca562a: c6e562bf40e09550958664912c45eff53eca562a
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16027/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16028/index.html
 
---===============5035609190985664449==
+--===============4571287715047539697==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,29 +114,29 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_wedged: Add cold-reset wedge test (rev6)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175755/">https://patchwork.freedesktop.org/series/175755/</a></td></tr>
+<tr><td><b>Series:</b></td><td>Add BO Allocation and VM Bind stress infra (rev6)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172310/">https://patchwork.freedesktop.org/series/172310/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16027/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16027/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16028/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16028/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9156_BAT -&gt; XEIGTPW_16027_BAT</h1>
+    <h1>CI Bug Log - changes from XEIGT_9156_BAT -&gt; XEIGTPW_16028_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
 <h2>Participating hosts (15 -&gt; 14)</h2>
-<p>Missing    (1): bat-ptl-vm </p>
+<p>Missing    (1): bat-bmg-vm </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9156 -&gt; IGTPW_16027</li>
+<li>IGT: IGT_9156 -&gt; IGTPW_16028</li>
 <li>Linux: xe-5980-24d867f5e671c78760ab39087a57c25ad98e1f42 -&gt; xe-5994-c6e562bf40e09550958664912c45eff53eca562a</li>
 </ul>
-<p>IGTPW_16027: 16027<br />
+<p>IGTPW_16028: 16028<br />
   IGT_9156: 9156<br />
   xe-5980-24d867f5e671c78760ab39087a57c25ad98e1f42: 24d867f5e671c78760ab39087a57c25ad98e1f42<br />
   xe-5994-c6e562bf40e09550958664912c45eff53eca562a: c6e562bf40e09550958664912c45eff53eca562a</p>
@@ -144,4 +144,4 @@ Content-Transfer-Encoding: 7bit
 </body>
 </html>
 
---===============5035609190985664449==--
+--===============4571287715047539697==--
