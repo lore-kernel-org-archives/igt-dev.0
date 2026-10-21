@@ -2,43 +2,127 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398B0606A31A
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 14:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A93D606A319
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 14:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WRpqC3g4
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=CEJE81Ge
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DF66110E185;
-	Wed, 21 Oct 2026 14:30:47 +0000 (UTC)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E32A710E3BD
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 14:29:54 +0000 (UTC)
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
- by tor.source.kernel.org (Postfix) with ESMTP id CDDAF601F6
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 14:29:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04A211F000C4;
- Wed, 21 Oct 2026 14:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
- s=k20260515; t=1792592993;
- bh=SZ5gqCDieF5ngb2aIlIOVk+h4r9VWY/atCy/qQnWfCo=;
- h=From:To:Cc:Subject:Date;
- b=WRpqC3g4kZoVhvJXvOdAOVFQ/VfTaY0bw0VGuJXlPYj5HdvrVVCXyprRIqX867Xoc
- tIAa0rAzEsZ4se8YkVddBZN5PdCpZ5BvOJbAHGTHDZf5CKMfbbb0H0Zc8yyNcl/BYK
- cZjVA6SV4JhCE0q6UG6a9f1CgCfjJxkO6DjEBQGcgvM9zQ9Od0RGfdw+vl9I7P203p
- MdN0EBETVomn5ywnZO0bEfC6FgGZn6WkboeZ/ASYY+tMJuDY4p2AzNtN8A84LbVcnG
- z6FA1SUHM4+I2BYtVqfQlBLXtgIPH/2YM0FxW8ZaFok7h14lluOx9pae4O+pmwgbgO
- fGKaNjjRdoEEA==
-From: Maxime Ripard <mripard@kernel.org>
-To: igt-dev@lists.freedesktop.org
-Cc: Maxime Ripard <mripard@kernel.org>
-Subject: [PATCH i-g-t v2] tests/kms_atomic_reset: Add tests for
- DRM_MODE_ATOMIC_RESET
-Date: Wed, 21 Oct 2026 16:29:48 +0200
-Message-ID: <20261021142949.3027432-1-mripard@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id B533F10E316;
+	Wed, 21 Oct 2026 14:59:46 +0000 (UTC)
+Received: from CY3PR05CU001.outbound.protection.outlook.com
+ (mail-westcentralusazon11013028.outbound.protection.outlook.com
+ [40.93.201.28])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5754D10E207
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 14:58:53 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fI3+FCfFO+3sP4kX9y3Rh4v0KRWpUxFwpHP41t4kfswY4soTW9kTc63Co/btrtxo9AC1Np9fk8TrRXyf9FOnyZWmuZtzrzH1Yz1N7lm27mzlXCMnMU/pXrJkuSoBUB1dLAlxgtZq730VFHDXxXIKxazhEWa+7Hsb4a4yqNQg/HYphCuuHza5ThzuUfd7ktPXiOmyVl+klPXgCrteq81X38fv6NvU3T+1n19z+NX+R6FDPZRcuNYLAqUPvuSH/GsqH0sA7aAgo3UM5FX1RVQxAzuEohOym7ve1Bg7JMdcu7jTJxf0/7x+g9vUPzvdb2fyX80/wGGxmDzhp+tCZkd0iw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Bg8qoK9FWcykcn65JoOrymas1r5J6Edc7NKloeHiTiI=;
+ b=USJ/0xeD91NJQD5uiA3g8GTjQYvog6ccLQGmsOERgvOqJI1UG7OcgOtVT5NQskH82tGV/SvVQAStyPyuWnsPoRrERFvgzQHDpT15c0QB4PTH2PCzsDvKXhrlEUfieV2tGPqGZhcblRUx4WVbnc0gP5EcKQQAM5VmGn/j3+UpJYZETsVvNPaClbqU1U+HSXqqxZN985ZJkVt2Hk/41kWxwPGtdQdrCU2iBP/xirhZZjOwxIHx5IpcrQQHKZ6+toHalZzPvYgiU/q7055/CxnmoPmbp+i4w7EeagsE202UWFMLd90dxQbLp+j4PxjyIynVFkYKIf2fb9ujN4MCWTp6zA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Bg8qoK9FWcykcn65JoOrymas1r5J6Edc7NKloeHiTiI=;
+ b=CEJE81GeU8jGdlg5x7xz2dn6oaIHYkn6oBfcvM9RLT6isb5lwnYVaDPwTW28JxG2PQJwtbXJ1o4kGmNwFM9VLzSdjp2RK5HoCUaikdN9zXkFQQ0iLGytF8RCK70BLX2xd+7744hBQvZhKmcmqUt621drQAGnGWC2ud7QyGyDoB4=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DSVPR12MB449095.namprd12.prod.outlook.com (2603:10b6:8:4fe::22)
+ by MW4PR12MB6999.namprd12.prod.outlook.com (2603:10b6:303:20a::11)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.522.14; Wed, 21 Oct
+ 2026 14:58:46 +0000
+Received: from DSVPR12MB449095.namprd12.prod.outlook.com
+ ([fe80::76a6:7a4f:a0a5:18c0]) by DSVPR12MB449095.namprd12.prod.outlook.com
+ ([fe80::76a6:7a4f:a0a5:18c0%4]) with mapi id 15.21.0546.012; Wed, 21 Oct 2026
+ 14:58:46 +0000
+Content-Type: multipart/mixed; boundary="------------6wi0Xqa60RW2i9xX5yjbb0Hq"
+Message-ID: <81a6187d-0454-4188-b655-e3eee2063a80@amd.com>
+Date: Wed, 21 Oct 2026 10:58:43 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/amdgpu: insert pause mnemonic only on x86 /
+ x86_64 platforms
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ igt-dev@lists.freedesktop.org, Jesse Zhang <jesse.zhang@amd.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>
+References: <20261002191401.469214-1-dmitry.baryshkov@oss.qualcomm.com>
+ <20261006142929.v262wmhkjaia2jmf@kamilkon-DESK.igk.intel.com>
+ <ced89749-5a9e-494c-9283-59c9cb6c9eae@amd.com>
+ <20261020193135.zyucqqpy75yopzsg@kamilkon-DESK.igk.intel.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20261020193135.zyucqqpy75yopzsg@kamilkon-DESK.igk.intel.com>
+X-ClientProxiedBy: YT1PR01CA0041.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:2e::10) To DSVPR12MB449095.namprd12.prod.outlook.com
+ (2603:10b6:8:4fe::22)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DSVPR12MB449095:EE_|MW4PR12MB6999:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2a4ad4bd-b53a-4797-ed3c-08df2f83ceab
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|1800799024|376014|366016|6049299003|23010399003|56012099006|4143699003|11063799006|261009223027099003|18002099003|10067099003|22082099003|4013099003|4053099003|3023799007;
+X-Microsoft-Antispam-Message-Info: voTZwVFLQSET0fqlyg4vwc/R5waWB/YfVwtyUhUP7ZPHYWQEFElTpBa92g1BNSxVmzVDAMrq6l9F0dEIhGyslB7li005vAzDuIybjwsAQ4WQ6PrKFAI/Ed2Ir7wCiK0zr3OkjObEeTNOOZ3tBwulGfhmA1z2Uei13ArLLtbGSbUpl8YT0DJxYIIF18YbgCnU0ahJC6JhOkZ/TKCOprN2BVncMgEITXVZVUfKAZqHdhqEmS1ayuCyOwJLz+xJo+Jh4txbB7RbEPVp4SAraLleuaOnigTWSmhI5JQfYcclodL0JLnvfaPXkAK8uAjr4pZiFVnzYgcs6jevapOl5pHdzeXIkjPOEZdb0UFOm8sRu5fnYM7t4KSGb/9L7GG0meNKCD3q4IpYU6x1QGYAv8/3DPNX4H9kyyoLnxeN4J6xd4U/uLYmZEMqkcZXGYlwXJSw5rJsuJdoskE0faEVVRnz7YG7t5lh/TiYMjM6yGGv7qmpxgsRkn3jB4l8YrDgwfwROGvb9/pyyHAJS8IhRzx+RILE+WW+TOd4g4tV39jLImD72uNz6ZoYQssOv/5p9AsLYWccxTNx480MD9I838b1LkZ3lX0sANvkFCvg2DjQvQYT7mxD3YHG8BlBd7FOviCKK3Nn0F2kMR34sffDioYiggJoPtK8Rv/TMMxLOaE1xS0=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:DSVPR12MB449095.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(1800799024)(376014)(366016)(6049299003)(23010399003)(56012099006)(4143699003)(11063799006)(261009223027099003)(18002099003)(10067099003)(22082099003)(4013099003)(4053099003)(3023799007);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RWtEZHpyT1BZdnZ3SU9QSlRncFRDcDNNM1JteXZ5UmhqY3pld1FUbzR6Ny9M?=
+ =?utf-8?B?blIzQkZZeWdFank5NGkxZ2xXd2lNTkxzU1lOUi9zdUVpUzBBN3AyL3UyUk9w?=
+ =?utf-8?B?Z3YwN3IzQ3JMcXpaZjM2Rnh3dGhzcnJkeDhHVFhOL0FNYVg2Z2dGUmxoM0hR?=
+ =?utf-8?B?TjZaNEgvT0ZvQzdvT1JZZ09tSDBiR2lVVE11K2RFZDl2RzJ1QlhMTUJPZzlx?=
+ =?utf-8?B?VS9pc0ZlUXhia3JyZkpyb1RGTkYxRitZZlNidEpXVk1YTmN0b0pOUTl1OFE0?=
+ =?utf-8?B?TXY3c3RJYlZ5MFJUUEJoNlErSUlIMlpqU3NtbmVMY1l1ZkNiQUdzQkRnMlNw?=
+ =?utf-8?B?dk5ldU9aME5HbHVEd1NKbnpaTjFOY2E3Uks5aTFMWXdSSDRUR25LNUNxSUlj?=
+ =?utf-8?B?czAyMjZkRTNKM0tXTThCbXlJbStjV2RpT01YdW8weTNnZXRsU0krSzQxb3gr?=
+ =?utf-8?B?L2VZdWY5MjVnNVZkejgvdjRSYzVmK1h2ZVNHMjRKRHBmSzM1NDdwZjZGVEQ2?=
+ =?utf-8?B?OWdGRk1Ta0pjcHN6ZERBVDdybzd0NnQ0YWMrUm5iWWZ5RnppdUo0cGpZdGxv?=
+ =?utf-8?B?RU5adnFKZGRoWkRUWS91dTJOblY1VUtSZCtHYUZ5K0hlR1d3TmMxNWJGQ0k5?=
+ =?utf-8?B?TmRDeE85WWdkL091WGJ0aVNwUjlyc3o2eUhJTEZzQUJjTFR6RVZDK2ROR2dP?=
+ =?utf-8?B?Nzc4amxqUHZGeTRscDY3MndQR1cxb1RWbEVINms2NmFseko1MmlwSDArM2tO?=
+ =?utf-8?B?T0txQ2xGNTNtL3o2YmJzUXRmOWtPd2Jic2VjZHNPQWhBUWI0YWFWWGpGT04y?=
+ =?utf-8?B?bDJvbndHM0NPR2Q1dm1HQ1lSTW8vaXJseVEyQ0c0eUkyVTZBN2pXeTNCaWV4?=
+ =?utf-8?B?ZWF6WXNQdFZxaktCZlBkcWRENnhNZnNKVTRKSk8vVGp2YW1MVGpIZUJPU3Rx?=
+ =?utf-8?B?R21HZmNleWNITCtYakt1VEJYSUZDRkNYYXg3T3dWTmZ1Zzk2R0FZaldJY2xJ?=
+ =?utf-8?B?Z2RTSW92N2ZLUkhrN2pQSVF5a0pHMWhTSkhiYmdlN1pvd0hBbkRHNlJLdXNR?=
+ =?utf-8?B?RUJjVEgyeGFEbG5Ub0RmWHFOdWhRQlo0UW9JNDExdlFUcG5iZUVNS0o4aVlw?=
+ =?utf-8?B?ZHdvd0paRzdLazB5VW91UmZXVHFvT1RsNzQ4OThtQU5HdjFQa0dTY05xUE85?=
+ =?utf-8?B?NVJPQzEzTlFSd3JQZ1ZCMnF4Mk9GZjFVaGVub2tabXQ3bk5pL1BSalh5KzNs?=
+ =?utf-8?B?NjJPbnpvT3J4U2VONXRzeTZuTURyRzlGSXBkOEREUGZ3ZXNnM0NRbUNSOHNJ?=
+ =?utf-8?B?c0UwZzlTbjBFeXMxMVB1NEVMM2pQZm9LSEpBMXJKV0FpRSszTW5zT0MzcmVP?=
+ =?utf-8?B?NFd3dWxKM2tHOGk0dkxBMkVjTmdVaG1lSmFyMS9lZThGOEo3emlFQ1RnaVZH?=
+ =?utf-8?B?OUJuQXo5ZHZvZkxnR3Rudlo3bDczRU04aFQrOFRoVVFHU25UdUpPenJSNy92?=
+ =?utf-8?B?d2ZMQThsTi9aRGpra0NHbHc3b1ovR2IxODZZekxLdk5vc290aENuRjFGNEpI?=
+ =?utf-8?B?VDdRN1hkNnArTC9FUEs4SlNuMlJzMTgzK1QvV3h4dHJUQjExNy8rWm4xRzg5?=
+ =?utf-8?B?L3lTbkVLa05xVmpZWEVPVUhyQzFqVVBCVWgrQUQzeUdyOE1KQWJGdVRiektI?=
+ =?utf-8?B?OWU3Ny9HT1lZYmFUdk56NVRHRkNmRkZSR05nZDdGUy9GaHVVWGFreFNBM1BG?=
+ =?utf-8?B?Y21ZdzF1VHV2OXVaWXpkSzZVdVRIbklvS1krb3J3eGt0ME9UQmhJUzVMaUJZ?=
+ =?utf-8?B?RGZES3ZvalZ6ZHE2MlJKaHZLSHZGZ1VTejc3ZVhyYm8wYU5nemRBRVQyRkc4?=
+ =?utf-8?B?blRSTmZjWnBxRkFrejY1WGhLMEpCdi8yaG52ekRkbDJQaXZkQVFTY05aNUVD?=
+ =?utf-8?B?S01hVTMzYzZRbzJESHBkWWhqOUlvRHNWNjBtQURPTGJkRlNVenhPQ3BLV1ZG?=
+ =?utf-8?B?b1RYUHRFZnYrSHpsN3AwdDJKdHl2dGFMcFEwVStUOUhSa1pFVEl6Y1VrM2d3?=
+ =?utf-8?B?SGYrYTRYenVabXFkWGUwaWlPcHhKV2llanNaZ1dwT0tva0RlQ0V1UHBNTzNW?=
+ =?utf-8?B?ckNXUnlJUURwWHJ5TkhKN1lHZVd2aGxEZkN2V3NkOGZWc1hPY3VwSVlma2w0?=
+ =?utf-8?B?N3dKOEpLWmJscEloTk1JRmx5djE2Rm9yaHNTZ3hwM2ozRUVEQjIxQkQySEV4?=
+ =?utf-8?B?dzNETVhHWWw3TEFpSk01Tk85U2NsRGdMeDhGM3ZXZEtudVhwY1ZQanMxMGF3?=
+ =?utf-8?B?YlJjZGhBbnppcE5PYVZXUlQ3UFMvcnArS1BwdFpnVVl2dlpOZ1BYZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a4ad4bd-b53a-4797-ed3c-08df2f83ceab
+X-MS-Exchange-CrossTenant-AuthSource: DSVPR12MB449095.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Oct 2026 14:58:46.5514 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2oSmKbSJUfbRRrQA0L9pl13YntsPJNjVwiggI0zvkIPcIVDcmJuKhuqOrt0/NYEP30za/5Wr3nFD6NGPMV444w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6999
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -50,665 +134,169 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.6 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The kernel gained a DRM_MODE_ATOMIC_RESET flag that resets KMS object
-states to their defaults before applying the properties carried in a
-commit. This flag is advertised through DRM_CAP_ATOMIC_RESET.
+--------------6wi0Xqa60RW2i9xX5yjbb0Hq
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-When the commit comes from a lessee, only the objects part of its
-lease are reset, and every other object is left untouched. Indeed, a
-lessee has no access to the objects outside of its lease, and must not
-be able to affect them.
+Hi Kamil,
 
-Add a test covering both the basic semantics of the flag and its
-interaction with leases:
+Thanks for catching the incorrect macro names.
 
-- cap-atomic-reset: the capability is reported.
-- invalid-reset-with-async: ATOMIC_RESET rejects PAGE_FLIP_ASYNC.
-- reset-test-only: TEST_ONLY succeeds without altering committed
-state.
-- reset-disables-crtc: a bare reset brings ACTIVE back to 0.
-- reset-with-crtc-enable: explicit properties in the same commit
-override the reset defaults.
-- lessee-reset: a reset from a lessee shuts down its leased pipeline.
-It is run with the planes added implicitly by the kernel, with only
-the primary plane, and with all the planes of the CRTC.
-- lessee-reset-unleased-pipe: a reset from a lessee leaves the
-pipelines outside of its lease untouched.
+As an alternative to correcting the guard, I've prepared a patch removing
+the optional x86 pause instruction and its architecture guard from
+wait_for_value64().
 
-The latter requires two pipelines, and will be skipped on the default
-vkms instance.
+The sleep path, volatile polling reads, and timeout handling remain
+unchanged. When no polling interval is requested, the function continues
+busy-waiting without a CPU hint.
 
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+This simplifies the helper and removes its x86 assembly dependency, at the
+cost of losing the spin-wait optimization on x86. I verified that amd_basic
+builds on x86_64; ARM/AArch64 cross-compilation remains untested.
 
----
+Would you accept this approach instead of correcting the macro names?
 
-Changes in v2:
-- Add tests for leases
----
- tests/kms_atomic_reset.c | 596 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 597 insertions(+)
- create mode 100644 tests/kms_atomic_reset.c
+Regards,
+Vitaly
 
-diff --git a/tests/kms_atomic_reset.c b/tests/kms_atomic_reset.c
-new file mode 100644
-index 000000000000..eaae17ea0575
---- /dev/null
-+++ b/tests/kms_atomic_reset.c
-@@ -0,0 +1,596 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Maxime Ripard
-+ *
-+ * Tests for the DRM_MODE_ATOMIC_RESET flag.
-+ */
-+
-+/**
-+ * TEST: kms atomic reset
-+ * Category: Display
-+ * Mega feature: General Display Features
-+ * Sub-category: Atomic
-+ * Functionality: atomic reset
-+ * Description: Tests for the DRM_MODE_ATOMIC_RESET flag, which resets
-+ *		all KMS object states to defaults before applying
-+ *		properties in a commit.
-+ * Driver requirement: any
-+ */
-+
-+#include "igt.h"
-+#include "igt_kms.h"
-+
-+#include <drm.h>
-+#include <fcntl.h>
-+
-+#ifndef DRM_MODE_ATOMIC_RESET
-+#define DRM_MODE_ATOMIC_RESET	0x0800
-+#endif
-+
-+#ifndef DRM_CAP_ATOMIC_RESET
-+#define DRM_CAP_ATOMIC_RESET	0x16
-+#endif
-+
-+typedef struct {
-+	int fd;
-+	igt_display_t display;
-+	igt_output_t *output;
-+	igt_crtc_t *crtc;
-+	igt_plane_t *primary;
-+	igt_fb_t fb;
-+} data_t;
-+
-+static uint32_t
-+get_prop_id(int fd, uint32_t obj_id, uint32_t obj_type, const char *name)
-+{
-+	drmModeObjectPropertiesPtr props;
-+	uint32_t id = 0;
-+
-+	props = drmModeObjectGetProperties(fd, obj_id, obj_type);
-+	igt_assert(props);
-+
-+	for (int i = 0; i < (int)props->count_props; i++) {
-+		drmModePropertyPtr prop;
-+
-+		prop = drmModeGetProperty(fd, props->props[i]);
-+		if (prop && !strcmp(prop->name, name))
-+			id = props->props[i];
-+		drmModeFreeProperty(prop);
-+
-+		if (id)
-+			break;
-+	}
-+
-+	drmModeFreeObjectProperties(props);
-+	return id;
-+}
-+
-+static uint64_t
-+read_prop(int fd, uint32_t obj_id, uint32_t obj_type, uint32_t prop_id)
-+{
-+	drmModeObjectPropertiesPtr props;
-+	uint64_t val = 0;
-+	bool found = false;
-+
-+	props = drmModeObjectGetProperties(fd, obj_id, obj_type);
-+	igt_assert(props);
-+
-+	for (int i = 0; i < (int)props->count_props; i++) {
-+		if (props->props[i] == prop_id) {
-+			val = props->prop_values[i];
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	drmModeFreeObjectProperties(props);
-+	igt_assert(found);
-+	return val;
-+}
-+
-+static void
-+enable_output(data_t *data)
-+{
-+	igt_display_reset(&data->display);
-+	igt_output_set_crtc(data->output, data->crtc);
-+	igt_plane_set_fb(data->primary, &data->fb);
-+	igt_display_commit_atomic(&data->display,
-+				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+}
-+
-+/*
-+ * libdrm's drmModeAtomicCommit() returns 0 without issuing the
-+ * ioctl when the request carries no properties.  Bypass it so
-+ * the kernel sees the flags even on an empty request.
-+ */
-+static int
-+raw_atomic_commit(int fd, uint32_t flags)
-+{
-+	struct drm_mode_atomic arg = { .flags = flags };
-+
-+	if (drmIoctl(fd, DRM_IOCTL_MODE_ATOMIC, &arg))
-+		return -errno;
-+	return 0;
-+}
-+
-+static int
-+create_lease(data_t *data, const uint32_t *objects, uint32_t count,
-+	     bool universal_planes, int *lease_fd)
-+{
-+	struct drm_mode_create_lease mcl = {
-+		.object_ids = to_user_pointer(objects),
-+		.object_count = count,
-+		.flags = O_CLOEXEC,
-+	};
-+	int ret = 0;
-+
-+	/*
-+	 * Without DRM_CLIENT_CAP_UNIVERSAL_PLANES, the kernel
-+	 * implicitly adds the primary and cursor planes of each
-+	 * leased CRTC.
-+	 */
-+	if (!universal_planes)
-+		igt_assert_eq(drmSetClientCap(data->fd,
-+					      DRM_CLIENT_CAP_UNIVERSAL_PLANES,
-+					      0), 0);
-+
-+	if (igt_ioctl(data->fd, DRM_IOCTL_MODE_CREATE_LEASE, &mcl))
-+		ret = -errno;
-+
-+	if (!universal_planes)
-+		igt_assert_eq(drmSetClientCap(data->fd,
-+					      DRM_CLIENT_CAP_UNIVERSAL_PLANES,
-+					      1), 0);
-+
-+	if (ret)
-+		return ret;
-+
-+	*lease_fd = mcl.fd;
-+	return 0;
-+}
-+
-+static bool
-+lease_has_object(int lease_fd, uint32_t obj_id)
-+{
-+	struct drm_mode_get_lease mgl = {};
-+	uint32_t *objects;
-+	bool found = false;
-+
-+	do_ioctl(lease_fd, DRM_IOCTL_MODE_GET_LEASE, &mgl);
-+
-+	objects = calloc(mgl.count_objects, sizeof(*objects));
-+	igt_assert(objects);
-+
-+	mgl.objects_ptr = to_user_pointer(objects);
-+	do_ioctl(lease_fd, DRM_IOCTL_MODE_GET_LEASE, &mgl);
-+
-+	for (uint32_t i = 0; i < mgl.count_objects; i++) {
-+		if (objects[i] == obj_id) {
-+			found = true;
-+			break;
-+		}
-+	}
-+
-+	free(objects);
-+	return found;
-+}
-+
-+/*
-+ * A lessee only has access to the objects in its lease. ATOMIC_RESET
-+ * coming from a lessee must thus succeed, but only reset the leased
-+ * objects, and leave everything else untouched.
-+ */
-+static void
-+check_pipe(data_t *data, igt_crtc_t *crtc, igt_output_t *output,
-+	   igt_plane_t *primary, igt_fb_t *fb, int lease_fd, bool enabled)
-+{
-+	uint32_t plane_id = primary->drm_plane->plane_id;
-+	uint32_t crtc_id = crtc->crtc_id;
-+	uint32_t conn_id = output->id;
-+	uint32_t prop;
-+
-+	prop = get_prop_id(data->fd, crtc_id, DRM_MODE_OBJECT_CRTC, "ACTIVE");
-+	igt_assert(prop);
-+	igt_assert_eq(read_prop(data->fd, crtc_id, DRM_MODE_OBJECT_CRTC, prop),
-+		      enabled);
-+
-+	prop = get_prop_id(data->fd, conn_id, DRM_MODE_OBJECT_CONNECTOR,
-+			   "CRTC_ID");
-+	igt_assert(prop);
-+	igt_assert_eq(read_prop(data->fd, conn_id, DRM_MODE_OBJECT_CONNECTOR,
-+				prop),
-+		      enabled ? crtc_id : 0);
-+
-+	/*
-+	 * A lessee reset only disables the primary plane if it's part
-+	 * of the lease, so make sure it is. Since the primary plane is
-+	 * enabled, an unleased one would also prevent the CRTC from
-+	 * being shut down.
-+	 */
-+	if (lease_fd >= 0)
-+		igt_assert(lease_has_object(lease_fd, plane_id));
-+
-+	prop = get_prop_id(data->fd, plane_id, DRM_MODE_OBJECT_PLANE,
-+			   "FB_ID");
-+	igt_assert(prop);
-+	igt_assert_eq(read_prop(data->fd, plane_id, DRM_MODE_OBJECT_PLANE,
-+				prop),
-+		      enabled ? fb->fb_id : 0);
-+
-+	prop = get_prop_id(data->fd, plane_id, DRM_MODE_OBJECT_PLANE,
-+			   "CRTC_ID");
-+	igt_assert(prop);
-+	igt_assert_eq(read_prop(data->fd, plane_id, DRM_MODE_OBJECT_PLANE,
-+				prop),
-+		      enabled ? crtc_id : 0);
-+}
-+
-+static void
-+lessee_reset(data_t *data, const uint32_t *objects, uint32_t count,
-+	     bool universal_planes)
-+{
-+	int lease_fd;
-+
-+	enable_output(data);
-+
-+	igt_assert_eq(create_lease(data, objects, count, universal_planes,
-+				   &lease_fd), 0);
-+	igt_assert_eq(drmSetClientCap(lease_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
-+
-+	igt_assert_eq(raw_atomic_commit(lease_fd,
-+					DRM_MODE_ATOMIC_RESET |
-+					DRM_MODE_ATOMIC_ALLOW_MODESET |
-+					DRM_MODE_ATOMIC_TEST_ONLY), 0);
-+	check_pipe(data, data->crtc, data->output, data->primary, &data->fb,
-+		   lease_fd, true);
-+
-+	igt_assert_eq(raw_atomic_commit(lease_fd,
-+					DRM_MODE_ATOMIC_RESET |
-+					DRM_MODE_ATOMIC_ALLOW_MODESET), 0);
-+	check_pipe(data, data->crtc, data->output, data->primary, &data->fb,
-+		   lease_fd, false);
-+
-+	close(lease_fd);
-+}
-+
-+/*
-+ * The lease only lists the CRTC and connector, and is created by a
-+ * lessor without DRM_CLIENT_CAP_UNIVERSAL_PLANES. The kernel then adds
-+ * the primary and cursor planes of the CRTC to the lease on its own.
-+ *
-+ * This checks that the objects the kernel implicitly added to the
-+ * lease are reset as well, the same way they would be if they were
-+ * listed explicitly.
-+ */
-+static void
-+lessee_reset_implicit_planes(data_t *data)
-+{
-+	uint32_t objects[] = {
-+		data->crtc->crtc_id,
-+		data->output->id,
-+	};
-+
-+	lessee_reset(data, objects, ARRAY_SIZE(objects), false);
-+}
-+
-+/*
-+ * The lease explicitly lists the CRTC, connector and primary plane
-+ * only. This is the minimal lease a lessor using universal planes can
-+ * create, and leaves the other planes of the CRTC (cursor, overlays)
-+ * outside of the lease.
-+ *
-+ * Those unleased planes are disabled, so there's no state we can
-+ * check on them to make sure they haven't been reset. This is covered
-+ * by lessee-reset-unleased-pipe instead.
-+ */
-+static void
-+lessee_reset_primary_plane(data_t *data)
-+{
-+	uint32_t objects[] = {
-+		data->crtc->crtc_id,
-+		data->output->id,
-+		data->primary->drm_plane->plane_id,
-+	};
-+
-+	lessee_reset(data, objects, ARRAY_SIZE(objects), true);
-+}
-+
-+/*
-+ * The lease explicitly lists the CRTC, connector and every plane that
-+ * can be used with that CRTC (primary, cursor and overlays), so that
-+ * the lessee owns the whole pipeline.
-+ *
-+ * Planes can usually be attached to more than one CRTC, so this also
-+ * leases planes that could be in use by another, unleased, CRTC.
-+ */
-+static void
-+lessee_reset_all_planes(data_t *data)
-+{
-+	uint32_t *objects;
-+	uint32_t count = 0;
-+	igt_plane_t *plane;
-+
-+	objects = calloc(2 + data->crtc->n_planes, sizeof(*objects));
-+	igt_assert(objects);
-+
-+	objects[count++] = data->crtc->crtc_id;
-+	objects[count++] = data->output->id;
-+	for_each_plane_on_crtc(data->crtc, plane)
-+		objects[count++] = plane->drm_plane->plane_id;
-+
-+	lessee_reset(data, objects, count, true);
-+	free(objects);
-+}
-+
-+/*
-+ * Lease one pipeline out of two active ones, and check that a reset
-+ * from the lessee shuts down the leased pipeline only, leaving the
-+ * CRTC, connector and plane of the other one untouched.
-+ */
-+static void
-+lessee_reset_unleased_pipe(data_t *data)
-+{
-+	igt_output_t *output, *other_output = NULL;
-+	igt_crtc_t *crtc, *other_crtc = NULL;
-+	drmModeModeInfo *mode;
-+	igt_plane_t *primary;
-+	uint32_t objects[3];
-+	igt_fb_t other_fb;
-+	int lease_fd;
-+
-+	for_each_connected_output(&data->display, output) {
-+		if (output == data->output)
-+			continue;
-+
-+		for_each_crtc(&data->display, crtc) {
-+			if (crtc == data->crtc ||
-+			    !igt_crtc_connector_valid(crtc, output))
-+				continue;
-+
-+			other_output = output;
-+			other_crtc = crtc;
-+			break;
-+		}
-+
-+		if (other_output)
-+			break;
-+	}
-+	igt_require_f(other_output, "Needs two usable pipelines\n");
-+
-+	mode = igt_output_get_mode(other_output);
-+	igt_create_color_fb(data->fd, mode->hdisplay, mode->vdisplay,
-+			    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
-+			    0.0, 0.0, 0.0, &other_fb);
-+
-+	igt_display_reset(&data->display);
-+	igt_output_set_crtc(data->output, data->crtc);
-+	igt_plane_set_fb(data->primary, &data->fb);
-+	igt_output_set_crtc(other_output, other_crtc);
-+	primary = igt_crtc_get_plane_type(other_crtc, DRM_PLANE_TYPE_PRIMARY);
-+	igt_plane_set_fb(primary, &other_fb);
-+	igt_require(igt_display_try_commit_atomic(&data->display,
-+						  DRM_MODE_ATOMIC_ALLOW_MODESET,
-+						  NULL) == 0);
-+
-+	objects[0] = data->crtc->crtc_id;
-+	objects[1] = data->output->id;
-+	objects[2] = data->primary->drm_plane->plane_id;
-+	igt_assert_eq(create_lease(data, objects, ARRAY_SIZE(objects), true,
-+				   &lease_fd), 0);
-+	igt_assert_eq(drmSetClientCap(lease_fd, DRM_CLIENT_CAP_ATOMIC, 1), 0);
-+
-+	igt_assert_eq(raw_atomic_commit(lease_fd,
-+					DRM_MODE_ATOMIC_RESET |
-+					DRM_MODE_ATOMIC_ALLOW_MODESET), 0);
-+
-+	check_pipe(data, data->crtc, data->output, data->primary, &data->fb,
-+		   lease_fd, false);
-+	check_pipe(data, other_crtc, other_output, primary, &other_fb,
-+		   -1, true);
-+
-+	close(lease_fd);
-+
-+	igt_display_reset(&data->display);
-+	igt_display_commit_atomic(&data->display,
-+				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_remove_fb(data->fd, &other_fb);
-+}
-+
-+int igt_main()
-+{
-+	data_t data = {};
-+	uint64_t cap = 0;
-+
-+	igt_fixture() {
-+		data.fd = drm_open_driver_master(DRIVER_ANY | DRIVER_VKMS);
-+		igt_require(drmSetClientCap(data.fd,
-+					    DRM_CLIENT_CAP_ATOMIC, 1) == 0);
-+		igt_display_require(&data.display, data.fd);
-+		igt_require(data.display.is_atomic);
-+	}
-+
-+	/**
-+	 * SUBTEST: cap-atomic-reset
-+	 * Description: Check that DRM_CAP_ATOMIC_RESET is reported.
-+	 */
-+	igt_describe("Check that DRM_CAP_ATOMIC_RESET is reported.");
-+	igt_subtest("cap-atomic-reset") {
-+		igt_assert_eq(drmGetCap(data.fd,
-+					DRM_CAP_ATOMIC_RESET, &cap), 0);
-+		igt_assert_eq(cap, 1);
-+	}
-+
-+	igt_fixture() {
-+		drmModeModeInfo *mode;
-+
-+		igt_require(drmGetCap(data.fd,
-+				      DRM_CAP_ATOMIC_RESET, &cap) == 0);
-+		igt_require(cap == 1);
-+
-+		for_each_connected_output(&data.display, data.output)
-+			break;
-+		igt_require(igt_output_is_connected(data.output));
-+		data.crtc = igt_first_crtc(&data.display);
-+
-+		data.primary = igt_crtc_get_plane_type(data.crtc,
-+						       DRM_PLANE_TYPE_PRIMARY);
-+		igt_assert(data.primary);
-+
-+		mode = igt_output_get_mode(data.output);
-+		igt_create_color_fb(data.fd,
-+				    mode->hdisplay, mode->vdisplay,
-+				    DRM_FORMAT_XRGB8888,
-+				    DRM_FORMAT_MOD_LINEAR,
-+				    0.0, 0.0, 0.0, &data.fb);
-+	}
-+
-+	/**
-+	 * SUBTEST: invalid-reset-with-async
-+	 * Description: Verify ATOMIC_RESET cannot be combined with
-+	 *		PAGE_FLIP_ASYNC.
-+	 */
-+	igt_describe("Verify ATOMIC_RESET cannot be combined with "
-+		     "PAGE_FLIP_ASYNC.");
-+	igt_subtest("invalid-reset-with-async") {
-+		igt_assert_eq(raw_atomic_commit(data.fd,
-+						DRM_MODE_ATOMIC_RESET |
-+						DRM_MODE_PAGE_FLIP_ASYNC),
-+			      -EINVAL);
-+	}
-+
-+	/**
-+	 * SUBTEST: reset-test-only
-+	 * Description: ATOMIC_RESET with TEST_ONLY must succeed but leave the
-+	 *		committed state unchanged.
-+	 */
-+	igt_describe("ATOMIC_RESET with TEST_ONLY must succeed but "
-+		     "leave the committed state unchanged.");
-+	igt_subtest("reset-test-only") {
-+		uint32_t crtc_id, active_prop;
-+
-+		enable_output(&data);
-+
-+		crtc_id = data.crtc->crtc_id;
-+		active_prop = get_prop_id(data.fd, crtc_id,
-+					  DRM_MODE_OBJECT_CRTC, "ACTIVE");
-+		igt_assert(active_prop);
-+
-+		igt_assert_eq(raw_atomic_commit(data.fd,
-+						DRM_MODE_ATOMIC_RESET |
-+						DRM_MODE_ATOMIC_ALLOW_MODESET |
-+						DRM_MODE_ATOMIC_TEST_ONLY), 0);
-+
-+		igt_assert_eq(read_prop(data.fd, crtc_id,
-+					DRM_MODE_OBJECT_CRTC,
-+					active_prop), 1);
-+	}
-+
-+	/*
-+	 * ACTIVE is a standard CRTC property present on every driver.
-+	 * The reset path calls atomic_create_state() for every object
-+	 * and replaces the entire state, so verifying any single
-+	 * property changed is sufficient to confirm the mechanism
-+	 * works. ACTIVE is the most convenient: it is universal and
-+	 * has a known non-default value (1) after enable_output().
-+	 */
-+	/**
-+	 * SUBTEST: reset-disables-crtc
-+	 * Description: Enable a display pipeline, then reset and verify the
-+	 *		CRTC becomes inactive.
-+	 */
-+	igt_describe("Enable a display pipeline, then reset and verify "
-+		     "the CRTC becomes inactive.");
-+	igt_subtest("reset-disables-crtc") {
-+		uint32_t crtc_id, active_prop;
-+
-+		enable_output(&data);
-+
-+		crtc_id = data.crtc->crtc_id;
-+		active_prop = get_prop_id(data.fd, crtc_id,
-+					  DRM_MODE_OBJECT_CRTC, "ACTIVE");
-+		igt_assert(active_prop);
-+
-+		igt_assert_eq(read_prop(data.fd, crtc_id,
-+					DRM_MODE_OBJECT_CRTC,
-+					active_prop), 1);
-+
-+		igt_assert_eq(raw_atomic_commit(data.fd,
-+						DRM_MODE_ATOMIC_RESET |
-+						DRM_MODE_ATOMIC_ALLOW_MODESET),
-+			      0);
-+
-+		igt_assert_eq(read_prop(data.fd, crtc_id,
-+					DRM_MODE_OBJECT_CRTC,
-+					active_prop), 0);
-+	}
-+
-+	/**
-+	 * SUBTEST: reset-with-crtc-enable
-+	 * Description: Reset while also re-enabling the CRTC in the same
-+	 *		commit; the explicit property must override the default.
-+	 */
-+	igt_describe("Reset while also re-enabling the CRTC in the "
-+		     "same commit; the explicit property must override "
-+		     "the default.");
-+	igt_subtest("reset-with-crtc-enable") {
-+		uint32_t crtc_id, active_prop;
-+
-+		enable_output(&data);
-+
-+		crtc_id = data.crtc->crtc_id;
-+		active_prop = get_prop_id(data.fd, crtc_id,
-+					  DRM_MODE_OBJECT_CRTC, "ACTIVE");
-+		igt_assert(active_prop);
-+
-+		igt_assert_eq(read_prop(data.fd, crtc_id,
-+					DRM_MODE_OBJECT_CRTC,
-+					active_prop), 1);
-+
-+		igt_display_reset(&data.display);
-+		igt_output_set_crtc(data.output, data.crtc);
-+		igt_plane_set_fb(data.primary, &data.fb);
-+		igt_display_commit_atomic(&data.display,
-+					  DRM_MODE_ATOMIC_ALLOW_MODESET |
-+					  DRM_MODE_ATOMIC_RESET, NULL);
-+
-+		igt_assert_eq(read_prop(data.fd, crtc_id,
-+					DRM_MODE_OBJECT_CRTC,
-+					active_prop), 1);
-+	}
-+
-+	/**
-+	 * SUBTEST: lessee-reset
-+	 * Description: Verify that ATOMIC_RESET from a lessee only resets
-+	 *		the objects in its lease.
-+	 *
-+	 * SUBTEST: lessee-reset-unleased-pipe
-+	 * Description: Verify that ATOMIC_RESET from a lessee leaves the
-+	 *		pipelines outside of its lease untouched.
-+	 */
-+	igt_describe("Verify that ATOMIC_RESET from a lessee only "
-+		     "resets the objects in its lease.");
-+	igt_subtest_with_dynamic("lessee-reset") {
-+		/* CRTC and connector, planes added by the kernel */
-+		igt_dynamic("implicit-planes")
-+			lessee_reset_implicit_planes(&data);
-+
-+		/* CRTC, connector and primary plane */
-+		igt_dynamic("primary-plane")
-+			lessee_reset_primary_plane(&data);
-+
-+		/* CRTC, connector and every plane usable on that CRTC */
-+		igt_dynamic("all-planes")
-+			lessee_reset_all_planes(&data);
-+	}
-+
-+	igt_describe("Verify that ATOMIC_RESET from a lessee leaves "
-+		     "the pipelines outside of its lease untouched.");
-+	igt_subtest("lessee-reset-unleased-pipe")
-+		lessee_reset_unleased_pipe(&data);
-+
-+	igt_fixture() {
-+		igt_remove_fb(data.fd, &data.fb);
-+		igt_display_fini(&data.display);
-+		drm_close_driver(data.fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index c7c614e7cd06..37d27dd97d4d 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -23,4 +23,5 @@ test_progs = [
- 	'kms_atomic',
- 	'kms_atomic_interruptible',
-+	'kms_atomic_reset',
- 	'kms_atomic_transition',
- 	'kms_bw',
--- 
-2.55.0
 
+On 2026-10-20 15:31, Kamil Konieczny wrote:
+> Hi vitaly,
+> On 2026-10-06 at 19:08:58 -0400, vitaly prosyak wrote:
+>> Thanks Dmitry!
+>>
+>> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>>
+>> On 2026-10-06 10:29, Kamil Konieczny wrote:
+>>> Hi Dmitry,
+>>> On 2026-10-02 at 22:14:01 +0300, Dmitry Baryshkov wrote:
+>>>> The "pause" assembly mnemonic is only available on IA-32 platforms,
+>>>> breaking e.g. debug IGT builds on ARM / AArch64. The issue manifests
+>>>> only with -O1 or -O0, the default -O2 seems to optimize the condition
+>>>> away.
+>>>>
+>>>> Guard this inline assembly with the preprocessor checks, making sure
+>>>> that other platforms don't see the invalid assembly.
+>>>>
+>>>> FAILED: [code=1] tests/amdgpu/amd_basic.p/amd_basic.c.o
+>>>> Assembler messages:
+>>>> {standard input}:3702: Error: unknown mnemonic `pause' -- `pause'
+>>>>
+>>> Please add in Cc amdgpu devs, found by git log -- testname.c
+>>> here
+>>> Cc: Jesse Zhang <jesse.zhang@amd.com>
+>>> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+>>>
+>>>> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+>>> LGTM
+>>> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>>>
+>>>
+>>> Regards,
+>>> Kamil
+>>>
+>>>> ---
+>>>>  tests/amdgpu/amd_basic.c | 2 ++
+>>>>  1 file changed, 2 insertions(+)
+>>>>
+>>>> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+>>>> index 418db286f81f..494934c1c321 100644
+>>>> --- a/tests/amdgpu/amd_basic.c
+>>>> +++ b/tests/amdgpu/amd_basic.c
+>>>> @@ -705,8 +705,10 @@ static int wait_for_value64(volatile uint64_t *ptr, uint64_t expected,
+>>>>  		/* Sleep if interval specified, otherwise tight loop */
+>>>>  		if (check_interval_ns > 0)
+>>>>  			nanosleep(&sleep_time, NULL);
+>>>> +#if defined(x86_64) || defined(i386)
+> Our AI review pointed out that there are no such defines used
+> by gcc, they should be __x86_64__ and __i386__ respectivly,
+> so this commit 125c0289617f ("tests/amdgpu: insert pause mnemonic only on x86 / x86_64 platforms")
+> should be fixed. Sorry for this, I should cross check it with
+> simple
+>
+> #else
+> #error "Unexpected"
+> #endif
+>
+> and see this error pop-up.
+>
+>
+>
+> Regards,
+> Kamil
+>
+>
+>>>>  		else
+>>>>  			__asm__ __volatile__("pause" ::: "memory"); /* CPU hint for spin-wait */
+>>>> +#endif
+>>>>  	}
+>>>>  }
+>>>>  
+>>>> -- 
+>>>> 2.53.0
+>>>>
+--------------6wi0Xqa60RW2i9xX5yjbb0Hq
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-tests-amdgpu-remove-the-x86-pause-hint-from-value-po.patch"
+Content-Disposition: attachment;
+ filename*0="0001-tests-amdgpu-remove-the-x86-pause-hint-from-value-po.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
+
+RnJvbSA3NDVmZWRjMWFjM2ZlYmQxM2YzZmE0MjNmYzQyMTZkYTc3Njg0YTA1IE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBWaXRhbHkgUHJvc3lhayA8dml0YWx5LnByb3N5YWtAYW1kLmNv
+bT4KRGF0ZTogV2VkLCAyMSBPY3QgMjAyNiAxMDo1MDozOCAtMDQwMApTdWJqZWN0OiBbUEFUQ0hd
+IHRlc3RzL2FtZGdwdTogcmVtb3ZlIHRoZSB4ODYgcGF1c2UgaGludCBmcm9tIHZhbHVlIHBvbGxp
+bmcKCndhaXRfZm9yX3ZhbHVlNjQoKSB1c2VzIG5hbm9zbGVlcCgpIHdoZW4gYSBwb2xsaW5nIGlu
+dGVydmFsIGlzIHJlcXVlc3RlZAphbmQgb3RoZXJ3aXNlIHBvbGxzIHVudGlsIHRoZSBleHBlY3Rl
+ZCB2YWx1ZSBpcyBvYnNlcnZlZCBvciB0aGUgdGltZW91dApleHBpcmVzLiBUaGUgcGF1c2UgaW5z
+dHJ1Y3Rpb24gaXMgYW4gb3B0aW9uYWwgeDg2IHNwaW4td2FpdCBoaW50LCBub3QgYQpyZXF1aXJl
+bWVudCBmb3IgZGV0ZWN0aW5nIGNvbXBsZXRpb24gb3IgZW5mb3JjaW5nIHRoZSB0aW1lb3V0LgoK
+VGhlIG9yaWdpbmFsIHVuZ3VhcmRlZCBhc3NlbWJseSB3YXMgcmVqZWN0ZWQgYnkgQVJNL0FBcmNo
+NjQgYXNzZW1ibGVycwppbiBkZWJ1ZyBidWlsZHMuIENvbW1pdCAxMjVjMDI4OTYxN2YgZ3VhcmRl
+ZCBpdCwgYnV0IHVzZWQgeDg2XzY0IGFuZCBpMzg2Cmluc3RlYWQgb2YgdGhlIGNvbXBpbGVyIHBy
+ZWRlZmluZWQgX194ODZfNjRfXyBhbmQgX19pMzg2X18gbWFjcm9zLiBUaGF0CnNpbGVudGx5IGV4
+Y2x1ZGVzIHRoZSBoaW50IG9uIG5vcm1hbCBHQ0MgeDg2IGJ1aWxkcyBhcyB3ZWxsLgoKUmF0aGVy
+IHRoYW4gY29ycmVjdCB0aGUgZ3VhcmQgYW5kIHJldGFpbiBhcmNoaXRlY3R1cmUtc3BlY2lmaWMg
+YXNzZW1ibHkKZm9yIHRoaXMgcG9sbGluZyBoZWxwZXIsIHJlbW92ZSB0aGUgb3B0aW9uYWwgaGlu
+dCBhbmQgaXRzIGd1YXJkIGVudGlyZWx5LgpLZWVwIHRoZSBuYW5vc2xlZXAgcGF0aCwgdm9sYXRp
+bGUgdmFsdWUgcmVhZHMsIGFuZCB0aW1lb3V0IGhhbmRsaW5nCnVuY2hhbmdlZC4gV2l0aCBubyBp
+bnRlcnZhbCByZXF1ZXN0ZWQsIHRoZSBoZWxwZXIgY29udGludWVzIHRpZ2h0IHBvbGxpbmcKd2l0
+aG91dCBhbiBhcmNoaXRlY3R1cmUtc3BlY2lmaWMgaW5zdHJ1Y3Rpb24uCgpUaGlzIGRlbGliZXJh
+dGVseSBnaXZlcyB1cCB0aGUgeDg2IHBhdXNlIG9wdGltaXphdGlvbiwgd2hpY2ggY2FuIHJlZHVj
+ZQpzcGluLWxvb3AgcG93ZXIgY29uc3VtcHRpb24gYW5kIGNvbnRlbnRpb24gd2l0aCBhbiBTTVQg
+c2libGluZy4gSXQgaXMgbm90CmEgcG93ZXIgb3IgcGVyZm9ybWFuY2UgaW1wcm92ZW1lbnQ7IGl0
+IHRyYWRlcyB0aGF0IG9wdGltaXphdGlvbiBmb3IgYQpzaW1wbGVyIHBvbGxpbmcgaW1wbGVtZW50
+YXRpb24gd2l0aCBubyB4ODYgYXNzZW1ibHkgZGVwZW5kZW5jeS4gUmVsYXRpdmUKdG8gdGhlIGV4
+aXN0aW5nIGluY29ycmVjdCBHQ0MgZ3VhcmQsIHRoZSBoaW50IHdhcyBhbHJlYWR5IG9taXR0ZWQu
+CgpUaGUgcmVtb3ZlZCBtZW1vcnkgY2xvYmJlciBpcyBhIGNvbXBpbGVyIGJhcnJpZXIsIG5vdCBh
+IGhhcmR3YXJlIG1lbW9yeQpmZW5jZS4gVGhpcyBjaGFuZ2UgZG9lcyBub3QgYWRkIG9yIGNsYWlt
+IGNyb3NzLWFyY2hpdGVjdHVyZSBtZW1vcnktb3JkZXJpbmcKZ3VhcmFudGVlczsgaXQgcmV0YWlu
+cyB0aGUgZXhpc3Rpbmcgdm9sYXRpbGUgcG9sbGluZyBhY2Nlc3Nlcy4KClRoaXMgaXMgYW4gYWx0
+ZXJuYXRpdmUgdG8gY29ycmVjdGluZyB0aGUgYXJjaGl0ZWN0dXJlIG1hY3JvIG5hbWVzLCBub3Qg
+YW4KYWRkaXRpb25hbCBmaXggdG8gYXBwbHkgb24gdG9wIG9mIHRoYXQgYWx0ZXJuYXRpdmUuCgpB
+Uk0vQUFyY2g2NCBjcm9zcy1jb21waWxhdGlvbiBhbmQgR1BVIHJ1bnRpbWUgdGVzdGluZyB3ZXJl
+IG5vdCBwZXJmb3JtZWQuCgpDYzogS2FtaWwgS29uaWVjem55IDxrYW1pbC5rb25pZWN6bnlAbGlu
+dXguaW50ZWwuY29tPgpDYzogRG1pdHJ5IEJhcnlzaGtvdiA8ZG1pdHJ5LmJhcnlzaGtvdkBvc3Mu
+cXVhbGNvbW0uY29tPgpTaWduZWQtb2ZmLWJ5OiBWaXRhbHkgUHJvc3lhayA8dml0YWx5LnByb3N5
+YWtAYW1kLmNvbT4KLS0tCiB0ZXN0cy9hbWRncHUvYW1kX2Jhc2ljLmMgfCA0IC0tLS0KIDEgZmls
+ZSBjaGFuZ2VkLCA0IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3Rlc3RzL2FtZGdwdS9hbWRf
+YmFzaWMuYyBiL3Rlc3RzL2FtZGdwdS9hbWRfYmFzaWMuYwppbmRleCA0OTQ5MzRjMWMuLjU5MDE2
+M2I3YiAxMDA2NDQKLS0tIGEvdGVzdHMvYW1kZ3B1L2FtZF9iYXNpYy5jCisrKyBiL3Rlc3RzL2Ft
+ZGdwdS9hbWRfYmFzaWMuYwpAQCAtNzA1LDEwICs3MDUsNiBAQCBzdGF0aWMgaW50IHdhaXRfZm9y
+X3ZhbHVlNjQodm9sYXRpbGUgdWludDY0X3QgKnB0ciwgdWludDY0X3QgZXhwZWN0ZWQsCiAJCS8q
+IFNsZWVwIGlmIGludGVydmFsIHNwZWNpZmllZCwgb3RoZXJ3aXNlIHRpZ2h0IGxvb3AgKi8KIAkJ
+aWYgKGNoZWNrX2ludGVydmFsX25zID4gMCkKIAkJCW5hbm9zbGVlcCgmc2xlZXBfdGltZSwgTlVM
+TCk7Ci0jaWYgZGVmaW5lZCh4ODZfNjQpIHx8IGRlZmluZWQoaTM4NikKLQkJZWxzZQotCQkJX19h
+c21fXyBfX3ZvbGF0aWxlX18oInBhdXNlIiA6OjogIm1lbW9yeSIpOyAvKiBDUFUgaGludCBmb3Ig
+c3Bpbi13YWl0ICovCi0jZW5kaWYKIAl9CiB9CiAKLS0gCjIuNTUuMAoK
+
+--------------6wi0Xqa60RW2i9xX5yjbb0Hq--
