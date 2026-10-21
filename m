@@ -2,29 +2,29 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC886606A31B
-	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 15:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD81606A31A
+	for <igt-dev@archiver.kernel.org>; Wed, 21 Oct 2026 15:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=YIOWDMfi
+	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=gpVmBPKy
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9154D10E1AC;
-	Wed, 21 Oct 2026 15:23:32 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9F1210E031;
+	Wed, 21 Oct 2026 15:24:19 +0000 (UTC)
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B54FF10FD6E
- for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 15:20:20 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D103A10FD6E
+ for <igt-dev@lists.freedesktop.org>; Wed, 21 Oct 2026 15:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=GS0x84EG98ClphlOG4YQS570/cPhF3/mrj+U49PDjr4=; b=
- YIOWDMfizphAjzvhy6TraUigwteO+PJc2huRt8CH5FV3kUWJPVE9NtxOZDztnAL6hpdhhFaHBRmo2
- TsmSygInP5TAFIyA+pj01feur9sUcSHcKEDQrAUU5GZWIyb5Srk3NDc4jDG8O11/neq/nDjhIlM/H
- T+WXdpAFkW5TgCpY3zY6/rI/6VG7SioxcpSvSkdFOsO6arD3QHJzjRnbjtfaiZ8mchlH7eWBJOtqf
- s+7L9jmCwBhelDyZyLu+Sc3VSfYDGyUT8qEbWCOSg/XS6JBbN1xThqlknTfrS/OESHd3xzqLQC3Ls
- IHRWIVL4Fj/Wmz1pi6lhX6BlZll4y2Fu3Q==;
+ Cc:To:From:From:Reply-To; bh=fgASsy6JPiYYfAGkF8gQ/h8HneCHx8J4CPf14dYStx8=; b=
+ gpVmBPKy+0xwBYcmLXDP5Suij9sWERJptOb/3fBNidts4NDq8UCAw5LFMi8jLsexUt6kNIMStSoEM
+ horyc+nmWNztOTC2RzvC+y75150iU6KrJs1PYLzljGKEZssahh082KE/mPr0tkbyj6daMBUK/XJBi
+ bd3+S5VZflie5oj56A9+99Gf7VbreTvTEvI85uii7eKl5IdGbjU4ERz12Bk/ri9i7xxSh2/R7/pF6
+ draQ9QWTVvtS6EkhmIVbp9xklEQ5Y4rQ3d0Mf3u5i/8IruVkVK/R/0X9ANmH77zYg/K3tFzSqRUqv
+ txD+FSgXmYUf1HcDrq4GDAx/vEOyEKhQ0w==;
 Received: from 62-87-103-230.red-acceso.airtel.net ([62.87.103.230]
  helo=killbill.home) by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1xJY6l-005l0E-TB; Wed, 21 Oct 2026 17:20:04 +0200
+ id 1xJY6s-005l0E-4K; Wed, 21 Oct 2026 17:20:10 +0200
 From: Melissa Wen <mwen@igalia.com>
 To: Petri Latvala <adrinael@adrinael.net>, Arkadiusz Hiler <arek@hiler.eu>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
@@ -39,10 +39,10 @@ Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
  Xaver Hugl <xaver.hugl@kde.org>, Harry Wentland <harry.wentland@amd.com>,
  Uma Shankar <uma.shankar@intel.com>, Jani Nikula <jani.nikula@intel.com>,
  igt-dev@lists.freedesktop.org, kernel-dev@igalia.com
-Subject: [PATCH i-g-t v6 3/8] tests/kms_properties: don't check colorop if no
- plane color pipeline prop
-Date: Wed, 21 Oct 2026 17:18:27 +0200
-Message-ID: <20261021151929.62529-4-mwen@igalia.com>
+Subject: [PATCH i-g-t v6 6/8] tests/kms_properties: check colorop properties
+ on active color pipelines
+Date: Wed, 21 Oct 2026 17:18:30 +0200
+Message-ID: <20261021151929.62529-7-mwen@igalia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261021151929.62529-1-mwen@igalia.com>
 References: <20261021151929.62529-1-mwen@igalia.com>
@@ -67,33 +67,40 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Don't check the colorop properties on planes that do not support them
-(for example, on AMD driver cursor planes). If the COLOR_PIPELINE
-property of the plane is not available, the plane does not support
-colorop pipelines and there is no point in checking the colorop
-properties in this case.
+A colorop property can only be changed if its color pipeline is active,
+i.e. the colorop is in the chain of the color pipeline set in the plane
+COLOR_PIPELINE property. Set each color pipeline active before checking
+the properties of its colorops, and restore Bypass afterwards.
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Melissa Wen <mwen@igalia.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 ---
- tests/kms_properties.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tests/kms_properties.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/tests/kms_properties.c b/tests/kms_properties.c
-index 93bf1ea26..2b4cb152b 100644
+index 07594f669..649b20e6b 100644
 --- a/tests/kms_properties.c
 +++ b/tests/kms_properties.c
-@@ -247,6 +247,10 @@ static void run_colorop_property_tests(igt_display_t *display,
- 		     &fb);
- 
- 	for_each_plane_on_crtc(crtc, plane) {
-+		/* skip planes that don't support color pipelines */
-+		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
-+			continue;
+@@ -272,6 +272,9 @@ static void run_colorop_property_tests(igt_display_t *display,
+ 		for (i = 0; i < plane->num_color_pipelines; ++i) {
+ 			/* iterate over all colorops in pipeline*/
+ 			colorop = plane->color_pipelines[i];
++			igt_plane_set_color_pipeline(plane, colorop);
++			igt_display_commit2(display, COMMIT_ATOMIC);
 +
- 		igt_info("Testing colorop properties on plane %s.#%d-%s (output: %s)\n",
- 			 igt_crtc_name(crtc), plane->index,
- 			 kmstest_plane_type_name(plane->type), output->name);
+ 			while (colorop) {
+ 				igt_info("Testing colorop properties on %s.#%d.#%d-%s (output: %s)\n",
+ 					  igt_crtc_name(crtc), plane->index,
+@@ -286,6 +289,8 @@ static void run_colorop_property_tests(igt_display_t *display,
+ 			}
+ 		}
+ 
++		igt_plane_set_color_pipeline(plane, NULL);
++
+ 		/* only the fb created above needs to go away here */
+ 		if (plane->type != DRM_PLANE_TYPE_PRIMARY) {
+ 			igt_plane_set_fb(plane, NULL);
 -- 
 2.53.0
 
