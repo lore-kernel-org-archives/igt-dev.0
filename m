@@ -2,64 +2,60 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C01606A31B
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 12:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840BB606A31A
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 12:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=entJK4eZ
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=juHHRTVh
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0283310E3C7;
-	Thu, 22 Oct 2026 12:49:18 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6B71D1125D4
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Oct 2026 12:48:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 382161125D4;
+	Thu, 22 Oct 2026 12:50:51 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 952BB1125D4
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Oct 2026 12:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792673303; x=1824209303;
+ t=1792673396; x=1824209396;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=m15VSSGQnBPbnqh/kCKuhz6RachE1BXsw2zFq/5kpu4=;
- b=entJK4eZiyjGOjqAvTJh2tpg80y3KSsHS+jv1YpySSlufDLCWkL8MRcH
- wfP4inxvZ9ipvpZO1/nAQHdxXWRKLuQu0qTx19Iqtcn/+MRJRbCoDOz1s
- og6ISaTlQkxpE7tqzkYk0Qb/fgmYKikL7UhlAkis2P/C2McNeePDiAKK6
- V2RxRthXXrui3tl1NToKTxn0qerj5BenlCNw7vC/YG21BmflU14HyvPcG
- ml7ugTNHso4P10cM/o9WFUKROOOrcNHMCdEyzSHRlnlVcaBGax8+aAbvs
- B2DrCyA+W028aOO1K9y3hYfwe3H97p5Nznbg/8rA7mg+jkcASOVZaoI23 Q==;
-X-CSE-ConnectionGUID: zIxnICtaSOqk9LOLtj12Iw==
-X-CSE-MsgGUID: flSluTIISHeTV/F0ZkrgQg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1408032"
+ bh=1b5ABMVsDM4dnug8doORpkXZODRmE0CMK7SH5qX2OAQ=;
+ b=juHHRTVhs9N337Qo68V9vtRbSwOuYJZgiaydm1x71iZwiD38W/sU4+C1
+ u6dZQCKD88aYuemBOJQMc8xzZlATsoNL9CV7Lc/QX2ADMTK1D0BCpszOs
+ 7KUbdBlTfETw9QCZM8HHsK3rnW73mWKgypNwKQ0ZTnbCSDhgseYXUvYCq
+ ly8UNLAje4xDBvYtYZ68xHKAPSMj4uEX0Tlu6LQ2t+4IjyIdh8fWRRX7J
+ IcQiEvspjvf+F6TfTpI/g1FVnrEpDN424URO9AQ8kWt6eKjVG82cLflPg
+ 0vmGpta1owtEEHDjCwMYElzpDngTy8AZREh71YkHDMcsR66BJ1gJ+3xoQ w==;
+X-CSE-ConnectionGUID: KKN7OyjNRNa1Jg07+Dz1hQ==
+X-CSE-MsgGUID: Huqnkt+STY2lRbgjQyS9lQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1318841"
 X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="1408032"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2026 05:48:23 -0700
-X-CSE-ConnectionGUID: 4JP3AxcwR5aOFZ7/LT1N6w==
-X-CSE-MsgGUID: 6L3667IwQGGvQ5D7eGC8/g==
+   d="scan'208";a="1318841"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2026 05:49:56 -0700
+X-CSE-ConnectionGUID: CIdzqcorR3GRXGmN9TnMhg==
+X-CSE-MsgGUID: 0ymkUI/CT5+oE+N+wytIzw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="5196875"
+   d="scan'208";a="3404485"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2026 05:48:21 -0700
-Date: Thu, 22 Oct 2026 14:48:18 +0200
+ 22 Oct 2026 05:49:53 -0700
+Date: Thu, 22 Oct 2026 14:49:50 +0200
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: shivtej.eknath.patil@intel.com
-Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
- nishit.sharma@intel.com, smitha.balasubramanyam@intel.com,
- priyanka.dandamudi@intel.com, daniele.ceraolospurio@intel.com
-Subject: Re: [PATCH v2 1/2] tests/xe_pxp:add coverage for xe_pxp_debugfs
-Message-ID: <20261022124818.byby7zk2uy3w2nhy@kamilkon-DESK.igk.intel.com>
+To: vitaly.prosyak@amd.com
+Cc: igt-dev@lists.freedesktop.org,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Subject: Re: [PATCH] tests/amdgpu: remove the x86 pause hint from value polling
+Message-ID: <20261022124950.ysunrqufdbpq3327@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- shivtej.eknath.patil@intel.com, igt-dev@lists.freedesktop.org,
- kamil.konieczny@intel.com, nishit.sharma@intel.com,
- smitha.balasubramanyam@intel.com, priyanka.dandamudi@intel.com,
- daniele.ceraolospurio@intel.com
-References: <20261022054420.180035-1-shivtej.eknath.patil@intel.com>
- <20261022054420.180035-2-shivtej.eknath.patil@intel.com>
+ vitaly.prosyak@amd.com, igt-dev@lists.freedesktop.org,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+References: <20261021150044.52953-1-vitaly.prosyak@amd.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261022054420.180035-2-shivtej.eknath.patil@intel.com>
+In-Reply-To: <20261021150044.52953-1-vitaly.prosyak@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,99 +74,71 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi shivtej.eknath.patil,
-On 2026-10-22 at 05:44:19 +0000, shivtej.eknath.patil@intel.com wrote:
-> From: Shivtej Patil <shivtej.eknath.patil@intel.com>
+Hi Vitaly,
+On 2026-10-21 at 11:00:27 -0400, vitaly.prosyak@amd.com wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > 
-
-please improve subject, imho it should have 'intel/' prefix,
-also add space afetr ':', so it will be:
-
-[PATCH v2 1/2] tests/intel/xe_pxp: add coverage for xe_pxp_debugfs
-
-> Add a new test to exercise the following functions in
-> xe_pxp_debugfs.c:
+> wait_for_value64() uses nanosleep() when a polling interval is requested
+> and otherwise polls until the expected value is observed or the timeout
+> expires. The pause instruction is an optional x86 spin-wait hint, not a
+> requirement for detecting completion or enforcing the timeout.
 > 
-> - pxp_status_to_str()
-> - pxp_info()
-
-Those function should alredy be covered by core_debugfs@read-all
-If it is not, please look and help fix that test.
-
+> The original unguarded assembly was rejected by ARM/AArch64 assemblers
+> in debug builds. Commit 125c0289617f guarded it, but used x86_64 and i386
+> instead of the compiler predefined __x86_64__ and __i386__ macros. That
+> silently excludes the hint on normal GCC x86 builds as well.
 > 
-> The subtest verifies that the pxp/info debugfs entry can be
-> read successfully and improves code coverage.
-
-What is really added here is printing that info, code_debugs
-do not know types of readed debugfs nodes, so it do not print
-any.
-
+> Rather than correct the guard and retain architecture-specific assembly
+> for this polling helper, remove the optional hint and its guard entirely.
+> Keep the nanosleep path, volatile value reads, and timeout handling
+> unchanged. With no interval requested, the helper continues tight polling
+> without an architecture-specific instruction.
 > 
-> Signed-off-by: Shivtej Patil <shivtej.eknath.patil@intel.com>
-> ---
->  tests/intel/xe_pxp.c | 28 ++++++++++++++++++++++++++++
->  1 file changed, 28 insertions(+)
+> This deliberately gives up the x86 pause optimization, which can reduce
+> spin-loop power consumption and contention with an SMT sibling. It is not
+> a power or performance improvement; it trades that optimization for a
+> simpler polling implementation with no x86 assembly dependency. Relative
+> to the existing incorrect GCC guard, the hint was already omitted.
 > 
-> diff --git a/tests/intel/xe_pxp.c b/tests/intel/xe_pxp.c
-> index 5460bf6db..76a3939c0 100644
-> --- a/tests/intel/xe_pxp.c
-> +++ b/tests/intel/xe_pxp.c
-> @@ -506,6 +506,28 @@ static void trigger_pxp_debugfs_forced_teardown(int xe_fd)
->  	sleep(1);
->  }
->  
-> +/**
-> + * SUBTEST: pxp-debugfs-info
-> + * Description: Verify reading of the PXP debugfs info entry.
-> + */
-> +
-> +static void read_pxp_debugfs_info(int xe_fd)
-> +{
-> +	char str[256];
-> +	int ret;
-> +	int fd;
-> +
-> +	fd = igt_debugfs_dir(xe_fd);
-> +	igt_assert(fd >= 0);
-> +
-> +	ret = igt_debugfs_simple_read(fd, "pxp/info", str, sizeof(str));
-> +	igt_assert_f(ret > 0, "Can't read pxp info debugfs\n");
-> +
-> +	igt_info("pxp info:\n%s\n", str);
-> +
-> +	close(fd);
-> +}
-> +
->  enum termination_type {
->  	PXP_TERMINATION_IRQ,
->  	PXP_TERMINATION_RPM,
-> @@ -762,6 +784,7 @@ static void test_pxp_stale_queue_execution(int fd, enum termination_type type)
->   * Description: verify that submssions with stale objects/queues are not blocked
->   *              if the user does not opt-in to the PXP checks.
->   */
-> +
-
-Please remove this, do not introduce unrelated changes.
-Please fix this and resend, imho you can keep r-b from Priyanka.
+> The removed memory clobber is a compiler barrier, not a hardware memory
+> fence. This change does not add or claim cross-architecture memory-ordering
+> guarantees; it retains the existing volatile polling accesses.
+> 
+> This is an alternative to correcting the architecture macro names, not an
+> additional fix to apply on top of that alternative.
+> 
+> ARM/AArch64 cross-compilation and GPU runtime testing were not performed.
+> 
+LGTM
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
->  static void test_pxp_optout(int fd)
->  {
->  	__test_pxp_stale_bo_exec(fd, PXP_TERMINATION_IRQ, false);
-> @@ -1157,6 +1180,11 @@ int igt_main()
->  			require_pxp(pxp_supported);
->  			test_pxp_optout(xe_fd);
->  		}
-> +
-> +		igt_subtest("pxp-debugfs-info") {
-> +			require_pxp(pxp_supported);
-> +			read_pxp_debugfs_info(xe_fd);
-> +		}
+PS. someone from AMD GPU devs could give r-b here.
+
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> ---
+>  tests/amdgpu/amd_basic.c | 4 ----
+>  1 file changed, 4 deletions(-)
+> 
+> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+> index 494934c1c..590163b7b 100644
+> --- a/tests/amdgpu/amd_basic.c
+> +++ b/tests/amdgpu/amd_basic.c
+> @@ -705,10 +705,6 @@ static int wait_for_value64(volatile uint64_t *ptr, uint64_t expected,
+>  		/* Sleep if interval specified, otherwise tight loop */
+>  		if (check_interval_ns > 0)
+>  			nanosleep(&sleep_time, NULL);
+> -#if defined(x86_64) || defined(i386)
+> -		else
+> -			__asm__ __volatile__("pause" ::: "memory"); /* CPU hint for spin-wait */
+> -#endif
 >  	}
+>  }
 >  
->  	igt_subtest_group() {
 > -- 
-> 2.43.0
+> 2.55.0
 > 
