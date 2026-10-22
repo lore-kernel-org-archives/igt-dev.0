@@ -2,28 +2,62 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4E9F606A31E
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 11:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A781606A322
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 11:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dNdACwpo
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 834831124F5;
-	Thu, 22 Oct 2026 11:04:43 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 570CA1124FF;
- Thu, 22 Oct 2026 11:03:53 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6130635891258333230=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id C1C65112558;
+	Thu, 22 Oct 2026 11:26:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4CB17112558
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Oct 2026 11:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1792668342; x=1824204342;
+ h=message-id:date:mime-version:subject:to:cc:references:
+ from:in-reply-to:content-transfer-encoding;
+ bh=kcmrEYI8SeQRfkjBoIGz5X7IxM/Gsh1TSbfPfoHgjYI=;
+ b=dNdACwpon0YiN3F0naqNIYX1QKzZDAUCwwoDiarkyJSp1+BVQiCVaBUT
+ PDzWmWKUuBCJ+a0jC1ZtypFB+vI5ng4yH52DwIESKyejsUTt+gOfKySaF
+ dUTcMQkScN3AvBGfxnBTt/GG6w7IGLx9KiyL9ouZEBDTnsLOriUWFh/+A
+ X5CrhuEEircX+5omT5sn/UvqSWhL4LqBknCzJNuuMV8Nxk79RHCf9Ds6F
+ YHufZEE6qLzbOtE57Tv6noYR/pBn29hs+A71SCXhBGQ0CwWSMuXV/kYuV
+ 5g7ljVeP0YK39M+EnzBgOmYYvVmqJWf7E9bhHqdr/e/HThpaKFVWduvaC w==;
+X-CSE-ConnectionGUID: fk5KhhOIRoed7iIyg/ndOA==
+X-CSE-MsgGUID: OfQ8SxHeSOaeGNLmwkgjxw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1414072"
+X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
+   d="scan'208";a="1414072"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2026 04:22:16 -0700
+X-CSE-ConnectionGUID: EEVOkKuNQDOEco3mcs8vuQ==
+X-CSE-MsgGUID: I7jS2VO7QOmQNJblWiQw/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
+   d="scan'208";a="3681540"
+Received: from abityuts-desk1.ger.corp.intel.com (HELO [10.245.245.243])
+ ([10.245.245.243])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2026 04:22:14 -0700
+Message-ID: <98f71c1f-bb91-431e-8dbe-c3cae049eeba@intel.com>
+Date: Thu, 22 Oct 2026 12:22:11 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/xe=5Foa=3A_OAM_has_?=
- =?utf-8?q?broken_stream_on_Xe3+_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Shekhar Chauhan" <shekhar.chauhan@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Oct 2026 11:03:53 -0000
-Message-ID: <179266703334.56155.1327995476988499120@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261019051200.1071936-1-shekhar.chauhan@intel.com>
-In-Reply-To: <20261019051200.1071936-1-shekhar.chauhan@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/xe_bo_shrink: Add a user-space shrinker
+ test
+To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ igt-dev@lists.freedesktop.org
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Matthew Brost <matthew.brost@intel.com>
+References: <20261021123315.10033-1-thomas.hellstrom@linux.intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20261021123315.10033-1-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,164 +68,58 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============6130635891258333230==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On 21/10/2026 13:33, Thomas Hellström wrote:
+> Add a user-space counterpart of the xe_bo_shrink kunit test, now that
+> user-space can mark buffer objects purgeable using the madvise IOCTL.
+> 
+> The test creates 64 MiB system buffer objects corresponding to twice
+> the amount of free system memory, fills them with pseudo-random data
+> through CPU mappings that are kept alive until readback, and verifies
+> the contents after the overcommit has forced the shrinker to back up
+> or purge them. As in the kunit test, the share of the memory that
+> doesn't fit in free RAM and swap is marked purgeable (DONTNEED) and
+> allocated first. Purgeable objects are only verified if found retained
+> when marked WILLNEED again; purged objects are never accessed.
+> 
+> Subtests:
+> - shrink: The kunit test equivalent.
+> - purge: Ignore swap space when sizing the purgeable share, so that
+>    the shrinker needs to purge rather than swap.
+> - shrink-fault-inject: Enable TTM backup / restore fault injection
+>    through debugfs, if available, making the shrinker back up only part
+>    of the objects and making backup and restore of individual pages
+>    fail. The number of injected faults is checked to be non-zero.
+> - *-blit: Rather than restoring objects by CPU faults, restore them
+>    through a GPU bind and read them back by a MEM_COPY blit to a dummy
+>    object in a separate VM. On discrete devices, objects are created
+>    with system and VRAM placements, prefetched to system memory on
+>    creation and prefetched to VRAM before the copy, so that they are
+>    restored by the migration to VRAM.
 
-== Series Details ==
+Do we use any compression here on igpu? IIRC that is still a pretty big 
+test gap. We have the equivalent for VRAM via the CCS evict test, but I 
+don't think we have anything for igpu + CCS via shrinker. Maybe the 
+kunit does it, but IIUC that is never run in CI?
 
-Series: tests/xe_oa: OAM has broken stream on Xe3+ (rev3)
-URL   : https://patchwork.freedesktop.org/series/175999/
-State : success
+> - *-private: Create the objects private to the test VM rather than as
+>    external objects.
+> - *-fast: Allocate at most the free system memory, half of it
+>    purgeable, capped to 8 GiB purgeable and 8 GiB non-purgeable, and
+>    shrink using drop_caches rather than memory overcommit.
+> 
+> The non-fast subtests are slow and require a substantial amount of
+> swap space for meaningful coverage, so block them in CI and run only
+> the fast subtests.
 
-== Summary ==
+Were there any issues with the test itself getting killed? I seem to 
+vaguely remember something like that from the i915 shrinker test. Or is 
+that not a concern here?
 
-CI Bug Log - changes from IGT_9158 -> IGTPW_16033
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/index.html
-
-Participating hosts (40 -> 39)
-------------------------------
-
-  Missing    (1): bat-dg2-13 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_16033 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +79 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [PASS][3] -> [DMESG-WARN][4] ([i915#13735] / [i915#180])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [PASS][5] -> [DMESG-WARN][6] ([i915#13735] / [i915#15673] / [i915#180]) +52 other tests dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9158 -> IGTPW_16033
-  * Linux: CI_DRM_19382 -> CI_DRM_19383
-
-  CI-20190529: 20190529
-  CI_DRM_19382: dccfdbc40b10720efe537dfc63de84eed983fc8f @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19383: 5610e76967a79520ac04fd6a0db6d33e28f3a8b0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16033: 16033
-  IGT_9158: c06ac65c584387323e8322c258d74cea1ce07b18 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/index.html
-
---===============6130635891258333230==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe_oa: OAM has broken stream on Xe3+ (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/175999/">https://patchwork.freedesktop.org/series/175999/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9158 -&gt; IGTPW_16033</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16033 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +79 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16033/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +52 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9158 -&gt; IGTPW_16033</li>
-<li>Linux: CI_DRM_19382 -&gt; CI_DRM_19383</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19382: dccfdbc40b10720efe537dfc63de84eed983fc8f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19383: 5610e76967a79520ac04fd6a0db6d33e28f3a8b0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16033: 16033<br />
-  IGT_9158: c06ac65c584387323e8322c258d74cea1ce07b18 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6130635891258333230==--
