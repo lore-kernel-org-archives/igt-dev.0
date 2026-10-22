@@ -2,68 +2,151 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A28606A31A
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 13:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42B4606A31D
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 13:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hgwG7P2u
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MUHbQoDZ
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1D32410E417;
-	Thu, 22 Oct 2026 13:14:20 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5821510E41C
- for <igt-dev@lists.freedesktop.org>; Thu, 22 Oct 2026 13:13:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 54B76112619;
+	Thu, 22 Oct 2026 13:24:53 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EB84911261E
+ for <igt-dev@lists.freedesktop.org>; Thu, 22 Oct 2026 13:23:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792674806; x=1824210806;
+ t=1792675439; x=1824211439;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=ZGThxRyxCDZVO7U8XNuNvx9kvdWTl85o3BLQcWRAwA8=;
- b=hgwG7P2uPGWmZK1b0rlWhFFHEFGodm8IOBgDF7x9HXcCe3NVKSAESf/O
- B6R6h9uFd9cyfQTyNbzIqfanRDwaK6on069h2Osjs6FsqP+PMMTYgbTN5
- DLF60Pm1Wzzt317tQXuxSN5AOkDXKw/SrMKuKrGTwLlQgXy4vpM3ui7MR
- MQmFadof5r5sxO9juHouGDzHEOMMXnRE2hP1+lAOi1nvB5yFsXdaUP9aO
- hT0KDwAlRNUVPklaEdFyz+gWz349dobnUjeL9bTrWjWV+Ehla8Jyvcj5f
- RYluDgugTzxXFvqrDeZp1ym1/sJT2hx5YrL/E/hSlEl3JExYjW9cyXQDj A==;
-X-CSE-ConnectionGUID: Qlosa8fQQt6rK/qipXaPiw==
-X-CSE-MsgGUID: fFXRzx5rS/W8l2x+shbJSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1436337"
+ in-reply-to:mime-version;
+ bh=UXCY/vdRIOuy80jaUhZ6n2WYJglfROmaEHptl6hRuVk=;
+ b=MUHbQoDZM74MHKYqxcJrN37WxRk7weZVH5kvmEBX38imzqUxigh3oxMG
+ 78IrZ5gi/lWnNiWN70vHneZHWu7k8pWjGU7hSPPVzbH9NHJIfr4+oUHBK
+ dJa1h1aICKI5GzuLJHJgQF1fQoqQFaBAbWDw92vk6ed05TS4+qfN6GMKw
+ jG9qjU1h6cTpPk/7teCYS0b0NYI2vRWLGhAr+rW+py0psXH5DZ7Ch1Q+3
+ 1lao3hlIN/6gOb+ounW3DOJGQ2bMWuX2xImgSixg99LVt542A4oVJmt6R
+ B/HKg8KO7ZpyUAGizYEuMtRwYT2Z/+NHkmGc4DF/6qENiHEJGED4mkwTc g==;
+X-CSE-ConnectionGUID: kiuTg3yYTlKbebcs7YUCCQ==
+X-CSE-MsgGUID: T8Ib4NkhRZOktqUFYK7EXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11942"; a="1300228"
 X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="1436337"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2026 06:13:25 -0700
-X-CSE-ConnectionGUID: 86aIXDMkRUy0KvS33bruBw==
-X-CSE-MsgGUID: Dcit2pExRk+OJ6Hv4BvIJw==
+   d="scan'208";a="1300228"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2026 06:23:59 -0700
+X-CSE-ConnectionGUID: 1KWhiUotSxmpzG8Krp0fhQ==
+X-CSE-MsgGUID: /9oxkNOqSl287i5qZ4lsDQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,172,1787036400"; 
-   d="scan'208";a="3697948"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Oct 2026 06:13:23 -0700
-Date: Thu, 22 Oct 2026 15:13:21 +0200
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: vitaly prosyak <vprosyak@amd.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- igt-dev@lists.freedesktop.org, Jesse Zhang <jesse.zhang@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-Subject: Re: [PATCH i-g-t] tests/amdgpu: insert pause mnemonic only on x86 /
- x86_64 platforms
-Message-ID: <20261022131321.g2wiqv7rlq6soenv@kamilkon-DESK.igk.intel.com>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- vitaly prosyak <vprosyak@amd.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- igt-dev@lists.freedesktop.org, Jesse Zhang <jesse.zhang@amd.com>,
- Vitaly Prosyak <vitaly.prosyak@amd.com>
-References: <20261002191401.469214-1-dmitry.baryshkov@oss.qualcomm.com>
- <20261006142929.v262wmhkjaia2jmf@kamilkon-DESK.igk.intel.com>
- <ced89749-5a9e-494c-9283-59c9cb6c9eae@amd.com>
- <20261020193135.zyucqqpy75yopzsg@kamilkon-DESK.igk.intel.com>
- <81a6187d-0454-4188-b655-e3eee2063a80@amd.com>
+   d="scan'208";a="3729383"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by fmviesa009.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Oct 2026 06:23:58 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 22 Oct 2026 06:23:58 -0700
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49 via Frontend Transport; Thu, 22 Oct 2026 06:23:58 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.16) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.49; Thu, 22 Oct 2026 06:23:57 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ssSqDCBnv1w4cwNmLkTZBdeh1PPGdyTSo1LpeR/dwX0RPBT9SLIZ6K3cOr63dXFBPZABDQgblg9qt7IyN2XxZSdP/yarb7WPoW9ogKflQ1rvheaaML9m8R/C29yK+ZhoQCnUqRj1LZhHcetqEUBT9b+J9qoNjOmohLRyacRuBFRfcBFoyAQApBHX8rZpX95sQGIk0z8NlzUOy3YrVy9ZT9fRM60/9qyyIe8/qof9YXKsK2NAOyTqg6qOIjD+MTD0pEwL6Zf1N7xRWh2c3oglAZ7cV8kiBQH9A1XuMJIu4shEZBLjLKaubzJjdLFuqKLbhMcXODjG9JlTHLyJ4SuaVg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=K5XvJTEABzRu/XK9nFyFdcLs9fkzNIh6ZH50GAH2oB8=;
+ b=Fax8SElFK1DbCnFH4XwVhMa9YfmNnAikxTRkKR36DHFW35LTBnCHR0Lw1pHcu5XTAZQR01zWazphtvCvoAEHjRxw//9/avo4Kn97FubSRg1ycRmlCGVUam/4SupT1SfUzKCxbqK3KZRYieH9umwIF8IxQZcrA8lkpfXta5RClhqhlZwgtRHXX8Vhlq1zyvHd0OLgNv85wXBim+5tCNEd8QGWAZ/bhEd5bVkc/IRI+0QHG67yzt4JOuEvmyDYHzkByKEM17lF4bXZl28YUqsn8qSO7CegtOw6Hi/FPJoiU3E/d3+OzS80jUdEIufNHKmcKSyQBiWgMDQlq9ZtcnuJ6A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from IA0PR11MB7187.namprd11.prod.outlook.com (2603:10b6:208:441::12)
+ by PH3PPFD9B78DE02.namprd11.prod.outlook.com (2603:10b6:518:1::d53)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.15; Thu, 22 Oct
+ 2026 13:23:55 +0000
+Received: from IA0PR11MB7187.namprd11.prod.outlook.com
+ ([fe80::be96:3f58:953d:6565]) by IA0PR11MB7187.namprd11.prod.outlook.com
+ ([fe80::be96:3f58:953d:6565%4]) with mapi id 15.21.0546.016; Thu, 22 Oct 2026
+ 13:23:55 +0000
+Date: Thu, 22 Oct 2026 09:23:51 -0400
+From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+To: "Cavitt, Jonathan" <jonathan.cavitt@intel.com>
+CC: "Maslak, Jan" <jan.maslak@intel.com>, "igt-dev@lists.freedesktop.org"
+ <igt-dev@lists.freedesktop.org>, "Dong, Zhanjun" <zhanjun.dong@intel.com>,
+ "Brost, Matthew" <matthew.brost@intel.com>
+Subject: Re: [PATCH 1/1] tests/intel/xe_exec_capture: Add coredump decode
+ validation subtests
+Message-ID: <atoOZ3fo4PiHvXgD@intel.com>
+References: <20260816180906.884247-1-jan.maslak@intel.com>
+ <20260816180906.884247-2-jan.maslak@intel.com>
+ <CH0PR11MB53955FFEBDF6F99506698165E59D2@CH0PR11MB5395.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <CH0PR11MB53955FFEBDF6F99506698165E59D2@CH0PR11MB5395.namprd11.prod.outlook.com>
+X-ClientProxiedBy: SJ2P220CA0008.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5da::18) To IA0PR11MB7187.namprd11.prod.outlook.com
+ (2603:10b6:208:441::12)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <81a6187d-0454-4188-b655-e3eee2063a80@amd.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR11MB7187:EE_|PH3PPFD9B78DE02:EE_
+X-MS-Office365-Filtering-Correlation-Id: 21e49949-ab08-4a10-0d48-08df303fb8ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|23010399003|1800799024|376014|366016|6133799003|22082099003|18002099003|10067099003|261021130227099003|261021121427099003|3023799007|261021135927099003|261021123027099003|4143699003|11063799006|261009223027099003|261021133027099003|56012099006;
+X-Microsoft-Antispam-Message-Info: FtHiipKD82oJog/O1N4qwiK8/ktwsLXlt6qO3a+Tna15gCUVX3OlKTwct1F4xMMJas0nEBmXfqtZ89TVuAMWkp1nFpYBOaB6UBymkOuhWiU1zgre0m1HtJKuS7fUfutoCq9HgIbfFUVyNgUTtA5S82mh/2Ggj3Fr3PdqEy34nmqHKtogIKUCyaj7t2HPx4NzEGsctH0/WJzIqtlimGooLwAP9igPW0go3P+rvvp3deowmTowElJHOrZm2iWd40flU3KqeLNYnJE750l2vvvXmBregaFY8IOB+cd4kn6RKyeNLxQioBejhXtPcNFf4aHHXDOGHSuUIf+2g0nxMVkOzpBc6BnqZb6sLU8e/CKgb/yakiK20kwEOmCD4/i1lJM00J4BXK00qo2lwjD1dziBN/xNFso1MyKtZQ18U1Syy30i51+Av3QR7OI1jC4zpR4OB5I+1yUpL1TUCcAkYd2gJmKAQdAI+YGJFNiBbidaCrm+iH8x3VuQx8RjoqBEYdiHmjTtaQY+BUR1TiXT1/05euPM8P7Rq02PtI37S6dIpSe4c8XR+PE+ZXhX7mEfdDCeD5Hbp4OTgo0YjfDkJ1T8WV7qsMFD6HiQ2cHE3LTqzEvGz6IJX1AEYWanRfNphlwytnV9yVVAeOokHmPY42tXXFi6bjZxCKGGThFcJcecGDk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:IA0PR11MB7187.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(6133799003)(22082099003)(18002099003)(10067099003)(261021130227099003)(261021121427099003)(3023799007)(261021135927099003)(261021123027099003)(4143699003)(11063799006)(261009223027099003)(261021133027099003)(56012099006);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?dsK+pGbKdj6HwtTr/DtFx3kp1/70KvdDUtGr+S6XNWzTpdlAky2znRjqpKdc?=
+ =?us-ascii?Q?VKSqvBmp+8gjWFmDIS3HjpoMeCK/+OTuMU70m9L9yeHBhjkNuetKA09u97P0?=
+ =?us-ascii?Q?IbeDBbzd1w2yhyIrlhZxXrV9qggYxrQZ6diJkM6hsPqGZmQHoTIBUD2WjeUN?=
+ =?us-ascii?Q?ccTOp4X8Yvdc77ygxtxTm1EKumriaJ0+WgsmGwe/FZ9OUV0XyIPVzBR9nMi4?=
+ =?us-ascii?Q?FiWzmLVJF3WxgGMrI41JJeFbPd74NNsEmVWKRixYGbrE6U2/y3Aijq8aGm5T?=
+ =?us-ascii?Q?8dt2IWdHNmgMNWnSBqQaEHxRG7+NFEGib+tBAkVj/KH7/DiiOab+Rj1/wiWH?=
+ =?us-ascii?Q?NtZSkagNIFZwIsu52tOHowDhy2IOjFQ6lwCiBlpn0gpfVjQmdPUKVJT95dbk?=
+ =?us-ascii?Q?XFxKZIDxuCKbFMCm3DxIAOni0FSPPlYFOUZSLibU6SdRAqakHxPmRezI9q6N?=
+ =?us-ascii?Q?+3URso2dFy07zOmaM9kkBV8b/DhugWedchhvz/S4TwYUTzez0/WFFYFsnaCZ?=
+ =?us-ascii?Q?sRZ8SKWLwwJGVwSQ6kK/1J2L/XNm9pI7ObcqeneQ6OZN+2q9SH7/DAWKUjdr?=
+ =?us-ascii?Q?WRPC5K2q2COO6Kl8ciu0KJFeeOuWRt6GYG55pFlr1aNYB5eWnSj0RVhoSuFD?=
+ =?us-ascii?Q?0xIaE1W0pFGGWKxCSdGXkld5+elDJGE1yLD3UxX25xpN3JC4Zcd14+fj8fau?=
+ =?us-ascii?Q?Zg5foj9HIVecaI5BJCSx4ADm5NJeTrg+dohcNnINLeH1Ycf1HI2Eqy8VxHa8?=
+ =?us-ascii?Q?85QM0YijMgRab0D56ND/EtJCHNIgxcfGYYJNVyTeeqnOgNzoN+xnpfMSyzmg?=
+ =?us-ascii?Q?05aXLOG+G1FtBDL+k+PI/e+rryce8CpCEXb1vyFdQL/BCc4RjdZxwpQYArr9?=
+ =?us-ascii?Q?8Ren6WTG72nNpvj28ePpbzD3bucKwV4+My/DJpP2UtEePcWnRedmYH4M6rr9?=
+ =?us-ascii?Q?UgQahLYrQO2BWe5/r1UyhGHual6jxnGktsBmOkDHKbD5oNAxkB2wAOtnHlkQ?=
+ =?us-ascii?Q?u6JhaVwPrnNs4Xtsn2EGs/A9MF3I9ZunyCD9GP+L3DGjVOhdLixl8qDFP7Ja?=
+ =?us-ascii?Q?tfXJYXQKVkw0nNYA5lwZ4keH4jFAqg40mKfYbKbznxMNSCPUDjGUVP3G07WA?=
+ =?us-ascii?Q?ro/kpPAGtJsy4nqwB8RuE0iEBsn7mPVJKn8hjrnWHEyoSdBwbZ97OSBGdJ6A?=
+ =?us-ascii?Q?aeVVQg6KC6kykuMJ5hkfXgHqHb2DHAYbUmNGQh4/NVn+kTR1NkAm0MuzGoEL?=
+ =?us-ascii?Q?g32YZgt/j8cfrG9seX73nAf42kEe+zUKLLDu7o5FJkz15ggo2+DgIhi4+hdU?=
+ =?us-ascii?Q?SmVhi/G+wHXEgMFwLGZ4R46F4q83LE7vZ/nnL+vzLILCkHpflrxYEEEs5gIe?=
+ =?us-ascii?Q?X9a6EvsJ4CJ2g5HWMf5ukqMpZlPu3BO8UXk9uhX5PiM3ckUlg/qb8XHGhNCl?=
+ =?us-ascii?Q?rN8Rypgxn3Uj+iQCM6S6Y7K1t52Ig248U2w34WCALTbcX8ovJedHN+SQYsLN?=
+ =?us-ascii?Q?XRLxM8Zm6vEpH6HYR6ZnN3M6h36F8QlSKAtfOgupXMeqDIB2DiRckKSiFvzW?=
+ =?us-ascii?Q?CqMe1ikOHo79sLGMWftB0WBiwBnPi77zGFFj0XyqcYRUICEL2S94h2r81+Ez?=
+ =?us-ascii?Q?8wC1nzu12+9Oh1lIt/5mqU/hUjE5lkMngjlywgpC7xrhYHcxYeefDK6u2prZ?=
+ =?us-ascii?Q?XU3IisqRdpDdSkMoE/T9AKkasxyqPMifYRXqmN94QuFDmdcemlO+rLQy8cJb?=
+ =?us-ascii?Q?6fGdccWUmQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: boRWWlLv0B/uD5wTrZXKbq7I7rTlexaQiZgVaRFxHP7ZXRDpHg0/wAhh1UYO8j5O6EZ5FU+V4X5D6XgLUFa6ioYRP11Hnc7wPjYBULUXgRcAp3aEPricd9AEC6qra3aSAUrIE049OrZ1DZMMP1uN3Q5W+PP7dtSPJnMui+1QQSDamFvtlAuassS9fXoVGVZNw8Hg7PShLUgGEuNV5wQx2M29lfkoWGgczV07pkGjkH45aSoq2xE476EzkDTcZObVWxbr4YYj+NzPGdz8NyM9n6ZiCtKl80LA9DTEqLKdmMrSIUTNddQgd8A3Dy1YUHpHnMDZxvZBWGUuSxXHvJe1yA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 21e49949-ab08-4a10-0d48-08df303fb8ca
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7187.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2026 13:23:55.4178 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: dBDVKiYa6rUyT0bKIMC/fXXaipO68H+j0a0VXHHrAb3Lxa49WkBGoBNlvzUG3Lag12Ha3bXPo6KiYQTQrztrwA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPFD9B78DE02
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,119 +158,669 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi vitaly,
-On 2026-10-21 at 10:58:43 -0400, vitaly prosyak wrote:
-> Hi Kamil,
+On Wed, Oct 14, 2026 at 03:09:18PM +0000, Cavitt, Jonathan wrote:
+> -----Original Message-----
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Jan Maslak
+> Sent: Sunday, August 16, 2026 11:09 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Brost, Matthew <matthew.brost@intel.com>; Maslak, Jan <jan.maslak@intel.com>
+> Subject: [PATCH 1/1] tests/intel/xe_exec_capture: Add coredump decode validation subtests
+> > 
+> > Add decode-data and decode-data-large subtests that create dumpable VM
+> > buffers with deterministic contents, hang an engine, and validate the
+> > resulting devcoredump.
+> > 
+> > Decode every ASCII85 blob and verify its decoded size matches the
+> > advertised length. For test-created VM blobs, also verify the decoded
+> > contents. The large variant crosses the kernel coredump chunking
+> > threshold and legacy rendering limit.
+> > 
+> > Signed-off-by: Jan Maslak <jan.maslak@intel.com>
 > 
-> Thanks for catching the incorrect macro names.
+> I don't see anything wrong with this patch that warrants immediate attention.
+> I mean, could some of the ASCII decoding and payload/blob parsing code
+> be separated out into a separate lib file?  Sure.  But I don't think that's strictly
+> necessary for this patch.
+> There's also the minor concern of what happens if the devcoredump file is empty,
+> but I'm going to work under the assumption that an empty devcoredump file is
+> impossible (I.E. the file would just not open), and as such adding extra handling
+> for that case is unnecessary.
+> And, of course, it's good that the new tests have already been validated locally.
 > 
-> As an alternative to correcting the guard, I've prepared a patch removing
-> the optional x86 pause instruction and its architecture guard from
-> wait_for_value64().
-> 
-> The sleep path, volatile polling reads, and timeout handling remain
-> unchanged. When no polling interval is requested, the function continues
-> busy-waiting without a CPU hint.
-> 
-> This simplifies the helper and removes its x86 assembly dependency, at the
-> cost of losing the spin-wait optimization on x86. I verified that amd_basic
-> builds on x86_64; ARM/AArch64 cross-compilation remains untested.
-> 
-> Would you accept this approach instead of correcting the macro names?
+> Of course, I'm not exactly an expert on devcoredump protocol, so I'd recommend
+> getting a second/third opinion on this before merging.  I'm tagging Zhanjun to
+> handle that, but maybe Rodrigo could also help here.
+> I'll give this my RB if they don't have any revision notes.
 
-Well, it is an AMD GPU test, so I will accept any solution you propose,
-and also imho someone from AMD GPU devs could do a review.
+it is a good test and it already checks for ram space before running, the
+only blocker is that it is not handling the new zstd compression recently
+merged.
 
+It needs some refactor and re-test on drm-tip.
 
-Regards,
-Kamil
-
+> -Jonathan Cavitt
 > 
-> Regards,
-> Vitaly
-> 
-> 
-> On 2026-10-20 15:31, Kamil Konieczny wrote:
-> > Hi vitaly,
-> > On 2026-10-06 at 19:08:58 -0400, vitaly prosyak wrote:
-> >> Thanks Dmitry!
-> >>
-> >> Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> >>
-> >> On 2026-10-06 10:29, Kamil Konieczny wrote:
-> >>> Hi Dmitry,
-> >>> On 2026-10-02 at 22:14:01 +0300, Dmitry Baryshkov wrote:
-> >>>> The "pause" assembly mnemonic is only available on IA-32 platforms,
-> >>>> breaking e.g. debug IGT builds on ARM / AArch64. The issue manifests
-> >>>> only with -O1 or -O0, the default -O2 seems to optimize the condition
-> >>>> away.
-> >>>>
-> >>>> Guard this inline assembly with the preprocessor checks, making sure
-> >>>> that other platforms don't see the invalid assembly.
-> >>>>
-> >>>> FAILED: [code=1] tests/amdgpu/amd_basic.p/amd_basic.c.o
-> >>>> Assembler messages:
-> >>>> {standard input}:3702: Error: unknown mnemonic `pause' -- `pause'
-> >>>>
-> >>> Please add in Cc amdgpu devs, found by git log -- testname.c
-> >>> here
-> >>> Cc: Jesse Zhang <jesse.zhang@amd.com>
-> >>> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-> >>>
-> >>>> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-> >>> LGTM
-> >>> Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> >>>
-> >>>
-> >>> Regards,
-> >>> Kamil
-> >>>
-> >>>> ---
-> >>>>  tests/amdgpu/amd_basic.c | 2 ++
-> >>>>  1 file changed, 2 insertions(+)
-> >>>>
-> >>>> diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-> >>>> index 418db286f81f..494934c1c321 100644
-> >>>> --- a/tests/amdgpu/amd_basic.c
-> >>>> +++ b/tests/amdgpu/amd_basic.c
-> >>>> @@ -705,8 +705,10 @@ static int wait_for_value64(volatile uint64_t *ptr, uint64_t expected,
-> >>>>  		/* Sleep if interval specified, otherwise tight loop */
-> >>>>  		if (check_interval_ns > 0)
-> >>>>  			nanosleep(&sleep_time, NULL);
-> >>>> +#if defined(x86_64) || defined(i386)
-> > Our AI review pointed out that there are no such defines used
-> > by gcc, they should be __x86_64__ and __i386__ respectivly,
-> > so this commit 125c0289617f ("tests/amdgpu: insert pause mnemonic only on x86 / x86_64 platforms")
-> > should be fixed. Sorry for this, I should cross check it with
-> > simple
-> >
-> > #else
-> > #error "Unexpected"
-> > #endif
-> >
-> > and see this error pop-up.
-> >
-> >
-> >
-> > Regards,
-> > Kamil
-> >
-> >
-> >>>>  		else
-> >>>>  			__asm__ __volatile__("pause" ::: "memory"); /* CPU hint for spin-wait */
-> >>>> +#endif
-> >>>>  	}
-> >>>>  }
-> >>>>  
-> >>>> -- 
-> >>>> 2.53.0
-> >>>>
-
-
+> > ---
+> >  tests/intel/xe_exec_capture.c | 549 +++++++++++++++++++++++++++++++++-
+> >  1 file changed, 548 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tests/intel/xe_exec_capture.c b/tests/intel/xe_exec_capture.c
+> > index 6e454cfff3..2d726cabf9 100644
+> > --- a/tests/intel/xe_exec_capture.c
+> > +++ b/tests/intel/xe_exec_capture.c
+> > @@ -17,10 +17,13 @@
+> >  #include <inttypes.h>
+> >  #include <regex.h>
+> >  #include <stdio.h>
+> > +#include <stdlib.h>
+> >  #include <string.h>
+> > +#include <sys/mman.h>
+> >  
+> >  #include "igt.h"
+> >  #include "igt_device.h"
+> > +#include "igt_os.h"
+> >  #include "igt_sriov_device.h"
+> >  #include "igt_sysfs.h"
+> >  #include "lib/igt_syncobj.h"
+> > @@ -82,6 +85,43 @@
+> >  #define INDEX_VM_LENGTH			2
+> >  #define INDEX_VM_SIZE			3
+> >  
+> > +/*
+> > + * Binary sections of the dump are encoded with the kernel's
+> > + * include/linux/ascii85.h: a zero dword becomes a single 'z', every other
+> > + * dword becomes 5 characters in the '!'..'u' range.
+> > + */
+> > +#define ASCII85_ZERO			'z'
+> > +#define ASCII85_MIN			'!'
+> > +#define ASCII85_MAX			'u'
+> > +#define ASCII85_GROUP_LEN		5
+> > +
+> > +#define LENGTH_SUFFIX			"].length:"
+> > +#define DATA_SUFFIX			"].data:"
+> > +#define ERROR_SUFFIX			"].error:"
+> > +#define MAX_BLOB_NAME_LEN		64
+> > +
+> > +#define CAPTURE_SPIN_ADDRESS		0x1a0000ull
+> > +#define CAPTURE_PAYLOAD_ADDRESS		0x100000000ull
+> > +
+> > +/* Largest dump size the kernel could render before it learned to chunk (VLK-71080) */
+> > +#define DEVCOREDUMP_LEGACY_MAX_SIZE	((uint64_t)INT_MAX)
+> > +
+> > +/*
+> > + * The test payloads contain no zero dwords, so their ASCII85 size is exactly
+> > + * 5/4 of their binary size. The decoder still supports zero dwords.
+> > + */
+> > +#define ASCII85_ENCODED_SIZE(bytes)	((bytes) / 4 * 5)
+> > +
+> > +/* Small, but already far past any line-oriented parser */
+> > +#define DECODE_PAYLOAD_SIZE		SZ_2M
+> > +#define DECODE_PAYLOAD_COUNT		2
+> > +
+> > +#define LARGE_PAYLOAD_SIZE		SZ_64M
+> > +/* One extra buffer makes the encoded payload exceed the legacy cap */
+> > +#define LARGE_PAYLOAD_COUNT		\
+> > +	((int)(DEVCOREDUMP_LEGACY_MAX_SIZE / \
+> > +	       ASCII85_ENCODED_SIZE(LARGE_PAYLOAD_SIZE)) + 1)
+> > +
+> >  static u64
+> >  xe_sysfs_get_job_timeout_ms(int fd, struct drm_xe_engine_class_instance *eci)
+> >  {
+> > @@ -224,6 +264,323 @@ static bool rm_devcoredump(char *path)
+> >  	return false;
+> >  }
+> >  
+> > +static bool devcoredump_exists(char *path)
+> > +{
+> > +	return access_devcoredump(path, NULL, NULL) != 0;
+> > +}
+> > +
+> > +/**
+> > + * struct payload_bo - A buffer object the test fills with known dword values
+> > + * @handle: GEM handle
+> > + * @addr: GPU virtual address the buffer is bound at, which is also the name the
+> > + *	  dump gives it, i.e. "[<addr>].data:"
+> > + * @size: buffer size in bytes
+> > + * @payload_index: zero-based payload index, used to generate this buffer's
+> > + *		   dword values
+> > + * @seen: set once the dump has been found to carry this buffer intact
+> > + */
+> > +struct payload_bo {
+> > +	uint32_t handle;
+> > +	uint64_t addr;
+> > +	uint64_t size;
+> > +	uint32_t payload_index;
+> > +	bool seen;
+> > +};
+> > +
+> > +/* Keep each payload's dword values distinct and non-zero. */
+> > +#define PAYLOAD_INDEX_STRIDE		0x04000000u
+> > +
+> > +/**
+> > + * payload_dword - Return the expected dword at a payload offset
+> > + * @payload_index: zero-based payload index
+> > + * @dword_index: dword offset in the payload
+> > + *
+> > + * Returns: expected dword value
+> > + */
+> > +static uint32_t payload_dword(uint32_t payload_index, uint64_t dword_index)
+> > +{
+> > +	return (payload_index + 1) * PAYLOAD_INDEX_STRIDE + (uint32_t)dword_index;
+> > +}
+> > +
+> > +/**
+> > + * struct ascii85_decoder - Position within one encoded blob
+> > + * @pos: next character to consume
+> > + * @bad: set once a group is found that no encoder could have produced
+> > + * @truncated: set when the blob ends part way through a group
+> > + */
+> > +struct ascii85_decoder {
+> > +	const char *pos;
+> > +	bool bad;
+> > +	bool truncated;
+> > +};
+> > +
+> > +/**
+> > + * ascii85_next_dword - Decode the next dword of a blob
+> > + * @dec: decoder positioned at the start of a group
+> > + * @out: filled with the decoded value
+> > + *
+> > + * Returns: false at the end of the blob, on the first malformed group or on a
+> > + * group cut short, the last two reported through @dec->bad and @dec->truncated.
+> > + */
+> > +static bool ascii85_next_dword(struct ascii85_decoder *dec, uint32_t *out)
+> > +{
+> > +	uint64_t acc = 0;
+> > +	int i;
+> > +
+> > +	if (!*dec->pos || *dec->pos == '\n')
+> > +		return false;
+> > +
+> > +	/* A zero dword is abbreviated to one character */
+> > +	if (*dec->pos == ASCII85_ZERO) {
+> > +		dec->pos++;
+> > +		*out = 0;
+> > +		return true;
+> > +	}
+> > +
+> > +	/* Otherwise five base-85 digits, most significant first */
+> > +	for (i = 0; i < ASCII85_GROUP_LEN; i++) {
+> > +		if (!dec->pos[i] || dec->pos[i] == '\n') {
+> > +			dec->truncated = true;
+> > +			return false;
+> > +		}
+> > +		if (dec->pos[i] < ASCII85_MIN || dec->pos[i] > ASCII85_MAX) {
+> > +			dec->bad = true;
+> > +			return false;
+> > +		}
+> > +		acc = acc * 85 + (dec->pos[i] - ASCII85_MIN);
+> > +	}
+> > +
+> > +	/* 85^5 exceeds 2^32, so not every group is encodable */
+> > +	if (acc > UINT32_MAX) {
+> > +		dec->bad = true;
+> > +		return false;
+> > +	}
+> > +
+> > +	dec->pos += ASCII85_GROUP_LEN;
+> > +	*out = acc;
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +/**
+> > + * parse_blob_field - Split a "[<name>]<suffix> <value>" devcoredump line
+> > + * @line: line to match, e.g. "[4e4800000].length: 0x4000000"
+> > + * @suffix: LENGTH_SUFFIX, DATA_SUFFIX or ERROR_SUFFIX, matched literally so that
+> > + *	    "].replay_length:" does not look like "].length:"
+> > + * @name: filled with the bracketed name on success
+> > + * @name_size: size of @name
+> > + * @value: set to the first character of the value on success
+> > + *
+> > + * Returns: true when @line carries @suffix, false otherwise.
+> > + */
+> > +static bool
+> > +parse_blob_field(const char *line, const char *suffix, char *name, size_t name_size,
+> > +		 const char **value)
+> > +{
+> > +	const char *open = strchr(line, '[');
+> > +	const char *close;
+> > +	size_t len;
+> > +
+> > +	if (!open)
+> > +		return false;
+> > +
+> > +	open++;
+> > +	close = strchr(open, ']');
+> > +	if (!close || strncmp(close, suffix, strlen(suffix)))
+> > +		return false;
+> > +
+> > +	len = close - open;
+> > +	if (len >= name_size)
+> > +		return false;
+> > +
+> > +	memcpy(name, open, len);
+> > +	name[len] = '\0';
+> > +
+> > +	*value = close + strlen(suffix);
+> > +	while (**value == ' ' || **value == '\t')
+> > +		(*value)++;
+> > +
+> > +	return true;
+> > +}
+> > +
+> > +/**
+> > + * payload_by_name - Find the payload a blob name refers to
+> > + * @name: bracketed blob name, e.g. "4e4800000" or "HWSP"
+> > + * @payloads: buffers the test bound before hanging, or NULL
+> > + * @n_payloads: number of entries in @payloads
+> > + *
+> > + * Returns: the matching payload, or NULL when @name is not one of them. The
+> > + * dump also uses labels such as "HWSP" and "CTB" for driver-owned sections;
+> > + * names that are not entirely hexadecimal never match, which keeps "CTB" from
+> > + * resolving as the address 0xc.
+> > + */
+> > +static struct payload_bo *
+> > +payload_by_name(const char *name, struct payload_bo *payloads, int n_payloads)
+> > +{
+> > +	uint64_t addr;
+> > +	char *end;
+> > +	int i;
+> > +
+> > +	if (!payloads)
+> > +		return NULL;
+> > +
+> > +	addr = strtoull(name, &end, 16);
+> > +	if (end == name || *end)
+> > +		return NULL;
+> > +
+> > +	for (i = 0; i < n_payloads; i++)
+> > +		if (payloads[i].addr == addr)
+> > +			return &payloads[i];
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +/**
+> > + * check_blob - Validate one ".length"/".data" pair of a devcoredump
+> > + * @name: bracketed blob name, a hex VMA address for VM state sections
+> > + * @length: byte count advertised by the ".length" line
+> > + * @data: encoded payload of the ".data" line
+> > + * @payloads: buffers the test bound before hanging, or NULL
+> > + * @n_payloads: number of entries in @payloads
+> > + *
+> > + * Asserts that the blob is valid ASCII85 and decodes to exactly @length bytes.
+> > + * Test-created payloads are also checked against their expected contents.
+> > + */
+> > +static void
+> > +check_blob(const char *name, uint64_t length, const char *data,
+> > +	   struct payload_bo *payloads, int n_payloads)
+> > +{
+> > +	struct ascii85_decoder dec = { .pos = data };
+> > +	struct payload_bo *expected_payload;
+> > +	uint64_t expected_dwords = 0;
+> > +	uint64_t dwords = 0;
+> > +	uint32_t val;
+> > +
+> > +	expected_payload = payload_by_name(name, payloads, n_payloads);
+> > +	if (expected_payload) {
+> > +		igt_assert_f(length == expected_payload->size,
+> > +			     "[%s]: .length reports 0x%" PRIx64
+> > +			     " bytes, bound VMA is 0x%" PRIx64 " bytes\n",
+> > +			     name, length, expected_payload->size);
+> > +		expected_dwords = expected_payload->size / sizeof(uint32_t);
+> > +	}
+> > +
+> > +	/*
+> > +	 * Decode every blob for structural validation. Only test-created payloads
+> > +	 * need the additional content comparison.
+> > +	 */
+> > +	while (ascii85_next_dword(&dec, &val)) {
+> > +		if (expected_payload) {
+> > +			igt_assert_f(dwords < expected_dwords,
+> > +				     "[%s]: .data contains more dwords than the bound payload\n",
+> > +				     name);
+> > +			igt_assert_f(val == payload_dword(expected_payload->payload_index,
+> > +							  dwords),
+> > +				     "[%s]: decoded dword %" PRIu64
+> > +				     " differs from the content written to the buffer\n",
+> > +				     name, dwords);
+> > +		}
+> > +		dwords++;
+> > +	}
+> > +
+> > +	igt_assert_f(!dec.truncated,
+> > +		     "[%s]: .data ends mid-ASCII85 group after %" PRIu64 " of %" PRIu64
+> > +		     " dwords, the dump was cut short\n",
+> > +		     name, dwords, length / sizeof(uint32_t));
+> > +
+> > +	igt_assert_f(!dec.bad,
+> > +		     "[%s]: .data is not valid ASCII85 at dword %" PRIu64
+> > +		     " of %" PRIu64 " announced by .length\n",
+> > +		     name, dwords, length / sizeof(uint32_t));
+> > +
+> > +	igt_assert_f(dwords * sizeof(uint32_t) == length,
+> > +		     "[%s]: .length reports 0x%" PRIx64 " bytes but .data decodes to"
+> > +		     " 0x%" PRIx64 " bytes\n",
+> > +		     name, length, dwords * sizeof(uint32_t));
+> > +
+> > +	if (!expected_payload)
+> > +		return;
+> > +
+> > +	expected_payload->seen = true;
+> > +	igt_debug("Cross-validated 0x%" PRIx64 " bytes of VMA [%s]\n", length, name);
+> > +}
+> > +
+> > +/**
+> > + * validate_devcoredump - Check every ASCII85 blob of a devcoredump
+> > + * @path: path of the devcoredump data file
+> > + * @payloads: buffers the test bound before hanging, or NULL
+> > + * @n_payloads: number of entries in @payloads
+> > + *
+> > + * Walks the whole dump, checks each blob's decoded size, and verifies that all
+> > + * test-created payloads are present with the expected contents.
+> > + */
+> > +static void
+> > +validate_devcoredump(const char *path, struct payload_bo *payloads, int n_payloads)
+> > +{
+> > +	char pending_name[MAX_BLOB_NAME_LEN] = {0};
+> > +	char name[MAX_BLOB_NAME_LEN];
+> > +	uint64_t pending_length = 0;
+> > +	bool have_pending = false;
+> > +	bool read_error;
+> > +	size_t line_size = 0;
+> > +	char *line = NULL;
+> > +	const char *value;
+> > +	int n_blobs = 0, read_errno, i;
+> > +	FILE *f;
+> > +
+> > +	f = fopen(path, "r");
+> > +	igt_assert_f(f, "Failed to open %s, errno=%d\n", path, errno);
+> > +
+> > +	/* .data lines can be megabytes long, so let getline() grow the buffer. */
+> > +	while (getline(&line, &line_size, f) > 0) {
+> > +		if (parse_blob_field(line, LENGTH_SUFFIX, name, sizeof(name), &value)) {
+> > +			pending_length = strtoull(value, NULL, 0);
+> > +			memcpy(pending_name, name, strlen(name) + 1);
+> > +			have_pending = true;
+> > +			continue;
+> > +		}
+> > +
+> > +		if (parse_blob_field(line, ERROR_SUFFIX, name, sizeof(name), &value)) {
+> > +			if (have_pending && !strcmp(name, pending_name))
+> > +				have_pending = false;
+> > +
+> > +			igt_assert_f(!payload_by_name(name, payloads, n_payloads),
+> > +				     "[%s]: kernel could not snapshot the buffer: %s",
+> > +				     name, value);
+> > +			continue;
+> > +		}
+> > +
+> > +		if (!parse_blob_field(line, DATA_SUFFIX, name, sizeof(name), &value))
+> > +			continue;
+> > +
+> > +		igt_assert_f(have_pending && !strcmp(name, pending_name),
+> > +			     "[%s].data is not preceded by a matching .length line\n",
+> > +			     name);
+> > +
+> > +		have_pending = false;
+> > +		n_blobs++;
+> > +		check_blob(name, pending_length, value, payloads, n_payloads);
+> > +	}
+> > +
+> > +	read_error = ferror(f);
+> > +	read_errno = read_error ? errno : 0;
+> > +	free(line);
+> > +	fclose(f);
+> > +
+> > +	igt_assert_f(!read_error, "Failed to read %s, errno=%d\n", path, read_errno);
+> > +	igt_assert_f(!have_pending,
+> > +		     "[%s].length has no matching .data or .error line\n",
+> > +		     pending_name);
+> > +
+> > +	igt_assert_f(n_blobs, "No ASCII85 blob found in %s\n", path);
+> > +	igt_debug("Validated %d ASCII85 blobs\n", n_blobs);
+> > +
+> > +	for (i = 0; i < n_payloads; i++)
+> > +		igt_assert_f(payloads[i].seen,
+> > +			     "VMA 0x%" PRIx64 " missing from the devcoredump VM state\n",
+> > +			     payloads[i].addr);
+> > +}
+> > +
+> >  static char
+> >  *get_coredump_item(regex_t *regex, char **lines, const char *tag, int tag_index, int target_index)
+> >  {
+> > @@ -392,6 +749,8 @@ static void test_card(int fd)
+> >  		check_item_u64(&regex, lines, "length:", addr,
+> >  			       addr + BATCH_DW_COUNT * sizeof(u32), INDEX_VALUE, INDEX_KEY);
+> >  
+> > +		validate_devcoredump(path, NULL, 0);
+> > +
+> >  		/* clear devcoredump */
+> >  		rm_devcoredump(path);
+> >  		sleep(1);
+> > @@ -404,10 +763,183 @@ static void test_card(int fd)
+> >  	regfree(&regex);
+> >  }
+> >  
+> > +/**
+> > + * hang_with_payloads - Hang @eci with dumpable buffers of known content
+> > + * @fd: xe device file descriptor
+> > + * @eci: engine to hang
+> > + * @payloads: buffers to create, fill and bind; handles are returned to the
+> > + *	      caller, which owns them
+> > + * @n_payloads: number of entries in @payloads
+> > + *
+> > + * Submits a batch that spins forever, so the job timeout fires and the driver
+> > + * writes a devcoredump. The payloads share the address space of that batch and
+> > + * are bound DUMPABLE, which is what tells the driver to copy their contents
+> > + * into the dump, giving us blobs whose expected bytes are known exactly.
+> > + */
+> > +static void
+> > +hang_with_payloads(int fd, struct drm_xe_engine_class_instance *eci,
+> > +		   struct payload_bo *payloads, int n_payloads)
+> > +{
+> > +	struct drm_xe_sync sync = {
+> > +		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+> > +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
+> > +	};
+> > +	struct drm_xe_exec exec = {
+> > +		.num_batch_buffer = 1,
+> > +		.num_syncs = 1,
+> > +		.syncs = to_user_pointer(&sync),
+> > +	};
+> > +	struct xe_spin_opts spin_opts = { .addr = CAPTURE_SPIN_ADDRESS };
+> > +	uint64_t spin_size = xe_bb_size(fd, sizeof(struct xe_spin));
+> > +	uint32_t vm = xe_vm_create(fd, 0, 0);
+> > +	uint32_t spin_bo, exec_queue, bind_syncobj, exec_syncobj;
+> > +	struct xe_spin *spin;
+> > +	int i;
+> > +
+> > +	spin_bo = xe_bo_create(fd, vm, spin_size, vram_if_possible(fd, eci->gt_id),
+> > +			       DRM_XE_GEM_CREATE_FLAG_NEEDS_VISIBLE_VRAM);
+> > +	spin = xe_bo_map(fd, spin_bo, spin_size);
+> > +
+> > +	bind_syncobj = syncobj_create(fd, 0);
+> > +	sync.handle = bind_syncobj;
+> > +
+> > +	__xe_vm_bind_assert(fd, vm, 0, spin_bo, 0, CAPTURE_SPIN_ADDRESS, spin_size,
+> > +			    DRM_XE_VM_BIND_OP_MAP, DRM_XE_VM_BIND_FLAG_DUMPABLE,
+> > +			    &sync, 1, 0, 0);
+> > +	igt_assert(syncobj_wait(fd, &bind_syncobj, 1, INT64_MAX, 0, NULL));
+> > +
+> > +	for (i = 0; i < n_payloads; i++) {
+> > +		uint32_t *map;
+> > +		uint64_t j;
+> > +
+> > +		/* Use system memory so the large capture does not require large VRAM. */
+> > +		payloads[i].handle = xe_bo_create(fd, vm, payloads[i].size,
+> > +						  system_memory(fd), 0);
+> > +		map = xe_bo_map(fd, payloads[i].handle, payloads[i].size);
+> > +		for (j = 0; j < payloads[i].size / sizeof(*map); j++)
+> > +			map[j] = payload_dword(payloads[i].payload_index, j);
+> > +		munmap(map, payloads[i].size);
+> > +
+> > +		syncobj_reset(fd, &bind_syncobj, 1);
+> > +		__xe_vm_bind_assert(fd, vm, 0, payloads[i].handle, 0, payloads[i].addr,
+> > +				    payloads[i].size, DRM_XE_VM_BIND_OP_MAP,
+> > +				    DRM_XE_VM_BIND_FLAG_DUMPABLE, &sync, 1, 0, 0);
+> > +		igt_assert(syncobj_wait(fd, &bind_syncobj, 1, INT64_MAX, 0, NULL));
+> > +	}
+> > +
+> > +	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+> > +	exec_syncobj = syncobj_create(fd, 0);
+> > +
+> > +	xe_spin_init(spin, &spin_opts);
+> > +
+> > +	sync.handle = exec_syncobj;
+> > +	exec.exec_queue_id = exec_queue;
+> > +	exec.address = CAPTURE_SPIN_ADDRESS;
+> > +	xe_exec(fd, &exec);
+> > +
+> > +	xe_spin_wait_started(spin);
+> > +
+> > +	/* The job timeout resets the queue, which is what creates the dump */
+> > +	igt_assert(syncobj_wait(fd, &exec_syncobj, 1, INT64_MAX, 0, NULL));
+> > +
+> > +	syncobj_destroy(fd, exec_syncobj);
+> > +	syncobj_destroy(fd, bind_syncobj);
+> > +	xe_exec_queue_destroy(fd, exec_queue);
+> > +	munmap(spin, spin_size);
+> > +	gem_close(fd, spin_bo);
+> > +	xe_vm_destroy(fd, vm);
+> > +}
+> > +
+> > +/**
+> > + * SUBTEST: decode-data
+> > + * Description: Create payloads with known contents, hang an engine, and
+> > + * 		verify the resulting coredump's blob lengths and payload
+> > + * 		contents before removing it
+> > + *
+> > + * SUBTEST: decode-data-large
+> > + * Description: Same as decode-data, but with enough data to exercise kernel's
+> > + * 		coredump chunking and the legacy size limit
+> > + */
+> > +static void
+> > +test_capture_payload(int fd, struct drm_xe_engine_class_instance *eci,
+> > +		     int n_payloads, uint64_t payload_size)
+> > +{
+> > +	char path[MAX_SYSFS_PATH_LEN];
+> > +	struct payload_bo *payloads;
+> > +	int i;
+> > +
+> > +	/* Every buffer needs its own slice of the 32-bit value space */
+> > +	igt_assert(payload_size / sizeof(uint32_t) <= PAYLOAD_INDEX_STRIDE &&
+> > +		   n_payloads <= UINT32_MAX / PAYLOAD_INDEX_STRIDE);
+> > +
+> > +	payloads = calloc(n_payloads, sizeof(*payloads));
+> > +	igt_assert(payloads);
+> > +
+> > +	for (i = 0; i < n_payloads; i++) {
+> > +		payloads[i].addr = CAPTURE_PAYLOAD_ADDRESS + i * payload_size;
+> > +		payloads[i].size = payload_size;
+> > +		payloads[i].payload_index = i;
+> > +	}
+> > +
+> > +	get_devcoredump_path(igt_device_get_card_index(fd), path);
+> > +	rm_devcoredump(path);
+> > +
+> > +	/* Wait for the previous coredump to disappear before creating another. */
+> > +	igt_assert_f(igt_wait(!devcoredump_exists(path), 5000, 100),
+> > +		     "Devcoredump not removed, errno=%d.\n", errno);
+> > +
+> > +	hang_with_payloads(fd, eci, payloads, n_payloads);
+> > +
+> > +	/*
+> > +	 * Close our BO handles; the snapshot holds BO references until it copies
+> > +	 * their contents into kernel-owned buffers for the coredump.
+> > +	 */
+> > +	for (i = 0; i < n_payloads; i++)
+> > +		gem_close(fd, payloads[i].handle);
+> > +
+> > +	igt_assert_f(igt_wait(devcoredump_exists(path), 5000, 100),
+> > +		     "Devcoredump not created, a previous dump may still be held\n");
+> > +
+> > +	validate_devcoredump(path, payloads, n_payloads);
+> > +
+> > +	free(payloads);
+> > +
+> > +	rm_devcoredump(path);
+> > +
+> > +	/* Wait for the dump to disappear so its large buffers can be released. */
+> > +	igt_assert_f(igt_wait(!devcoredump_exists(path), 5000, 100),
+> > +		     "Devcoredump not removed, errno=%d.\n", errno);
+> > +}
+> > +
+> > +/**
+> > + * require_capture_memory - Skip unless the machine can hold the whole capture
+> > + * @n_payloads: number of buffers the subtest binds
+> > + * @payload_size: size of each buffer
+> > + *
+> > + * Upper bound on the footprint: the payloads, the snapshot copy the kernel
+> > + * takes of them, the chunk the kernel renders and the longest line getline()
+> > + * has to buffer. Not all of them peak at the same instant. The rendering buffer
+> > + * is sized for the unfixed kernel, which is the one this has to survive.
+> > + */
+> > +static void require_capture_memory(int n_payloads, uint64_t payload_size)
+> > +{
+> > +	uint64_t payload = (uint64_t)n_payloads * payload_size;
+> > +	uint64_t encoded = ASCII85_ENCODED_SIZE(payload);
+> > +	uint64_t rendered = encoded < DEVCOREDUMP_LEGACY_MAX_SIZE ?
+> > +			    encoded : DEVCOREDUMP_LEGACY_MAX_SIZE;
+> > +
+> > +	igt_require_memory(1, 2 * payload + rendered +
+> > +			   ASCII85_ENCODED_SIZE(payload_size), CHECK_RAM);
+> > +}
+> > +
+> >  int igt_main()
+> >  {
+> >  	int xe;
+> > -	struct drm_xe_engine_class_instance *hwe;
+> > +	/*
+> > +	 * The payload tests exercise VM capture and need one engine to trigger it.
+> > +	 * The reset subtest separately iterates over every available engine.
+> > +	 */
+> > +	struct drm_xe_engine_class_instance *hwe, *hang_hwe = NULL;
+> >  	u64 timeouts[DRM_XE_ENGINE_CLASS_VM_BIND] = {0};
+> >  
+> >  	igt_fixture() {
+> > @@ -416,6 +948,8 @@ int igt_main()
+> >  			/* Skip kernel only classes */
+> >  			if (hwe->engine_class >= DRM_XE_ENGINE_CLASS_VM_BIND)
+> >  				continue;
+> > +			if (!hang_hwe)
+> > +				hang_hwe = hwe;
+> >  			/* Skip classes already set */
+> >  			if (timeouts[hwe->engine_class])
+> >  				continue;
+> > @@ -433,6 +967,19 @@ int igt_main()
+> >  	igt_subtest("reset")
+> >  		test_card(xe);
+> >  
+> > +	igt_subtest("decode-data") {
+> > +		igt_require(hang_hwe);
+> > +		test_capture_payload(xe, hang_hwe, DECODE_PAYLOAD_COUNT,
+> > +				     DECODE_PAYLOAD_SIZE);
+> > +	}
+> > +
+> > +	igt_subtest("decode-data-large") {
+> > +		igt_require(hang_hwe);
+> > +		require_capture_memory(LARGE_PAYLOAD_COUNT, LARGE_PAYLOAD_SIZE);
+> > +		test_capture_payload(xe, hang_hwe, LARGE_PAYLOAD_COUNT,
+> > +				     LARGE_PAYLOAD_SIZE);
+> > +	}
+> > +
+> >  	igt_fixture() {
+> >  		xe_for_each_engine(xe, hwe) {
+> >  			u64 store, timeout;
+> > -- 
+> > 2.43.0
+> > 
+> > 
