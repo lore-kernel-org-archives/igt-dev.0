@@ -2,28 +2,54 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B45606A33E
-	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 15:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C0BC606A319
+	for <igt-dev@archiver.kernel.org>; Thu, 22 Oct 2026 15:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=E0f7Iqo/
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB79E10E436;
-	Thu, 22 Oct 2026 15:10:16 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 81F7C10E436;
- Thu, 22 Oct 2026 15:09:26 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6281670285869816442=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3171F11273E;
+	Thu, 22 Oct 2026 15:31:20 +0000 (UTC)
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6194F11273A;
+ Thu, 22 Oct 2026 15:30:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
+ MIME-Version:Date:Message-ID:From:Reply-To;
+ bh=SYWwh2VRytE5FRj1bzQwo6n4zw1NVdUhiGY7gh4Fghk=; b=E0f7Iqo/V4v+mUmAE3UwW8tij1
+ MqOnVTo5o5e1oC1oEdO3bK8ZxMmFkCCdUt5digRtZOgRDX4gG6orhNZ+BigPkUKIl71DPaXDJ2vAQ
+ iSvRUv1OmtjS75UkNU/wb0zlFYASQd6VCtHlT3vUNZKDNU9hyD+lytx/Yjqukz3kJW4UqHs/KK6py
+ sLQ1CfHX6SjB3Ow3TSfjFxZsiW3UQcVZ0wVJlm3U+/6ReJk9UH/J118twZk+sFbO90lDjyPmYyunO
+ zUVgojiXlDO3gXJ2vxNmCgUkNN7X9KzWIq59grTV5h1UvAeij8TZb9/UAJtWLwYZUqCIuAUr0mXe1
+ /fg1vh9g==;
+Received: from [81.79.79.1] (helo=[192.168.0.116])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1xJukJ-006vdp-Gk; Thu, 22 Oct 2026 17:30:23 +0200
+Message-ID: <e9ed9a33-80b4-4cd0-98f6-61695aa981cf@igalia.com>
+Date: Thu, 22 Oct 2026 16:30:22 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Fdirtyfb?=
- =?utf-8?q?=3A_Use_a_smaller_fb_on_simulation_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Samala, Pranay" <pranay.samala@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 22 Oct 2026 15:09:26 -0000
-Message-ID: <179268176652.58374.1921724392996309383@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261016052243.633897-1-pranay.samala@intel.com>
-In-Reply-To: <20261016052243.633897-1-pranay.samala@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t v7 9/9] tests/cgroup_dmem: add test for dmem.current
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ igt-dev@lists.freedesktop.org
+Cc: siqueira@igalia.com, dri-devel@lists.freedesktop.org,
+ amd-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ Christian Koenig <christian.koenig@amd.com>,
+ maarten.lankhorst@linux.intel.com,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+ Vitaly Prosyak <vitaly.prosyak@amd.com>, Natalie Vock <natalie.vock@gmx.de>,
+ kernel-dev@igalia.com
+References: <20260923-dmem_max-v7-0-194ea47bbb4d@igalia.com>
+ <20260923-dmem_max-v7-9-194ea47bbb4d@igalia.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <20260923-dmem_max-v7-9-194ea47bbb4d@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,164 +60,236 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============6281670285869816442==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
-== Series Details ==
+On 23/09/2026 21:44, Thadeu Lima de Souza Cascardo wrote:
+> Based on the work of Thomas Hellström to test dmem.max eviction, add a
+> test for dmem.current usage after allocations and setting dmem.max.
 
-Series: tests/intel/kms_dirtyfb: Use a smaller fb on simulation (rev2)
-URL   : https://patchwork.freedesktop.org/series/176261/
-State : success
+Isn't 7/9 testing current after setting max already? I went back and 
+forth a bit and isn't the new thing in this test is looking at current 
+after freeing objects? Unless I got confused maybe then rename the test 
+and update the commit message. One more comment below.
 
-== Summary ==
+> Create a dmem cgroup, allocate close to capacity (or at most 4GiB),
+> check current usage is within a small slack of the expected allocation.
+> Then, set max to a small value and check allocations and current usage
+> are limited to the max set.  Set max to less than a single BO size, then
+> check no allocations are allowed and current usage is also within the
+> slack. After each allocation, release memory and check current usage
+> has gone down.
+> 
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> ---
+>   tests/cgroup_dmem.c | 147 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 147 insertions(+)
+> 
+> diff --git a/tests/cgroup_dmem.c b/tests/cgroup_dmem.c
+> index 7f3cfe22db2c..1f01037e1cf2 100644
+> --- a/tests/cgroup_dmem.c
+> +++ b/tests/cgroup_dmem.c
+> @@ -36,6 +36,8 @@
+>   #define BO_SIZE			SZ_64M
+>   #define MAX_LIMIT		((uint64_t)4 * SZ_1G)
+>   #define EVICT_STEP		SZ_128M
+> +#define USAGE_POLL_MS		10
+> +#define USAGE_DROP_TIMEOUT_MS	1000
+>   
+>   #define TEST_INTERRUPTIBLE	(1 << 0)
+>   #define TEST_NONBLOCK		(1 << 1)
+> @@ -48,6 +50,20 @@
+>    *  and configured limits, then destroys the cgroup.
+>    */
+>   
+> +/**
+> + * SUBTEST: current
+> + * DESCRIPTION:
+> + *  Create a dmem cgroup, allocate close to capacity (or at most 4GiB),
+> + *  check current usage is within a small slack of the expected allocation.
+> + *  Then, set max to a small value and check allocations and current usage
+> + *  are limited to the max set.
+> + *  Set max to less than a single BO size, then check no allocations are allowed
+> + *  and current usage is also within the slack.
+> + *  After each allocation, release memory and check current usage has gone
+> + *  down.
+> + *  This subtest requires GPU device with at least one VRAM region.
+> + */
+> +
+>   /**
+>    * SUBTEST: write_eviction
+>    * DESCRIPTION:
+> @@ -116,6 +132,23 @@ static void install_sigcont_counter(void)
+>   	sigaction(SIGCONT, &sa, &sigcont_oldact);
+>   }
+>   
+> +static uint64_t wait_for_usage_drop(struct igt_cgroup *cg, const char *region,
+> +				    uint64_t limit)
+> +{
+> +	uint64_t current;
+> +	unsigned int elapsed = 0;
+> +
+> +	do {
+> +		igt_cgroup_dmem_get_current(cg, region, &current);
+> +		if (current <= limit)
+> +			return current;
+> +		usleep(USAGE_POLL_MS * 1000);
+> +		elapsed += USAGE_POLL_MS;
+> +	} while (elapsed < USAGE_DROP_TIMEOUT_MS);
+> +
+> +	return current;
+> +}
+> +
+>   static int allocate_vram(void **handles, const struct igt_dmem_driver *drv,
+>   			 void *ctx, int max_bo, size_t len)
+>   {
+> @@ -137,6 +170,119 @@ static int allocate_vram(void **handles, const struct igt_dmem_driver *drv,
+>   	return err;
+>   }
+>   
+> +static void free_vram(void **handles, const struct igt_dmem_driver *drv,
+> +		      void *ctx, int max_bo)
+> +{
+> +	int i;
+> +	for (i = 0; i < max_bo; i++)
+> +		drv->free_vram(ctx, handles[i]);
+> +}
+> +
+> +static void test_current(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv, void *ctx)
+> +{
+> +	struct igt_cgroup *cg;
+> +	void **handles;
+> +	uint64_t current, capacity, cg_max;
+> +	int n_bo = 0, max_bo;
+> +
+> +	igt_cgroup_dmem_get_capacity(cg_region, &capacity);
+> +	igt_require_f(capacity >= 4 * BO_SIZE,
+> +		      "VRAM capacity (%"PRIu64" MiB) too small to test\n",
+> +		      capacity / SZ_1M);
+> +
+> +	/*
+> +	 * Use up to 4 GiB, or the full capacity if the device has less.
+> +	 * Leave one BO_SIZE worth of headroom so the device isn't completely
+> +	 * exhausted before the cgroup limit is hit.
+> +	 */
+> +	cg_max = min(MAX_LIMIT, capacity - BO_SIZE);
+> +	cg_max = ALIGN_DOWN(cg_max, BO_SIZE);
+> +
+> +	/* Create cgroup and move into it */
+> +	cg = igt_cgroup_new("igt_cgroups_test");
+> +	igt_cgroup_move_current(cg);
+> +
+> +	max_bo = cg_max / BO_SIZE;
+> +
+> +	handles = calloc(max_bo, sizeof(handles[0]));
+> +	igt_assert_f(handles, "failed to allocate handles array");
+> +
+> +	n_bo = allocate_vram(handles, drv, ctx, max_bo, BO_SIZE);
+> +	igt_assert_f(n_bo > 0, "failed to allocate VRAM\n");
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After fill: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == cg_max,
+> +		     "current usage (%"PRIu64" MiB) is not requested allocation (%"PRIu64" MiB)\n",
+> +		     current / SZ_1M, cg_max / SZ_1M);
+> +
+> +	free_vram(handles, drv, ctx, n_bo);
+> +	wait_for_usage_drop(cg, cg_region, 0);
 
-CI Bug Log - changes from IGT_9158 -> IGTPW_16036
-====================================================
+The fact in there is a sleeping loop makes me think dmem cgroup contract 
+is not for current to go down immediate when bos are freed from 
+userspace, but when the driver feels like it?
 
-Summary
--------
+In which case, to ask an annoying question, does it ever have to go down 
+(in a generic case) if no one is touching neither the fd nor the device. 
+Or maybe I am misunderstanding something.
 
-  **SUCCESS**
+Regards,
 
-  No regressions found.
+Tvrtko
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/index.html
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After free: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 0,
+> +		     "current usage (%"PRIu64" MiB) is not zero\n",
+> +		     current / SZ_1M);
+> +
+> +	igt_cgroup_dmem_set_max(cg, cg_region, 2 * BO_SIZE, false);
+> +
+> +	n_bo = allocate_vram(handles, drv, ctx, max_bo, BO_SIZE);
+> +	igt_assert_f(n_bo > 0, "failed to allocate VRAM\n");
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After fill: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 2 * BO_SIZE,
+> +		     "current usage (%"PRIu64" MiB) is not requested max allocation (%"PRIu64" MiB)\n",
+> +		     current / SZ_1M, cg_max / SZ_1M);
+> +
+> +	free_vram(handles, drv, ctx, n_bo);
+> +	wait_for_usage_drop(cg, cg_region, 0);
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After free: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 0,
+> +		     "current usage (%"PRIu64" MiB) is not zero\n",
+> +		     current / SZ_1M);
+> +
+> +	igt_cgroup_dmem_set_max(cg, cg_region, 0, false);
+> +
+> +	n_bo = allocate_vram(handles, drv, ctx, max_bo, BO_SIZE);
+> +
+> +	/*
+> +	 * amdgpu may succeed the allocation, by falling back to GTT, so no assertion here.
+> +	 * Verify by reading current usage.
+> +	 */
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After fill: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 0,
+> +		     "current usage (%"PRIu64" MiB) is not zero\n",
+> +		     current / SZ_1M);
+> +
+> +	if (n_bo > 0)
+> +		free_vram(handles, drv, ctx, n_bo);
+> +	wait_for_usage_drop(cg, cg_region, 0);
+> +
+> +	igt_cgroup_dmem_get_current(cg, cg_region, &current);
+> +	igt_debug("After free: cgroup current = %"PRIu64" MiB, "
+> +		  "max = %"PRIu64" MiB\n",
+> +		  current / SZ_1M, cg_max / SZ_1M);
+> +	igt_assert_f(current == 0,
+> +		     "current usage (%"PRIu64" MiB) is not zero\n",
+> +		     current / SZ_1M);
+> +}
+> +
+>   static void test_write_eviction(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv, void *ctx)
+>   {
+>   	struct igt_cgroup *cg;
+> @@ -246,6 +392,7 @@ static const struct {
+>   	void (*test_fn)(int fd, char *cg_region, unsigned int flags, const struct igt_dmem_driver *drv, void *ctx);
+>   	unsigned int flags;
+>   } subtests[] = {
+> +	{ "current", test_current, 0 },
+>   	{ "write_eviction", test_write_eviction, 0 },
+>   	{ "write_eviction_interruptible", test_write_eviction, TEST_INTERRUPTIBLE },
+>   	{ "write_eviction_nonblock", test_write_eviction, TEST_NONBLOCK },
+> 
 
-Participating hosts (40 -> 39)
-------------------------------
-
-  Missing    (1): bat-dg2-13 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_16036 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +79 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [PASS][3] -> [DMESG-WARN][4] ([i915#13735] / [i915#180])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [PASS][5] -> [DMESG-WARN][6] ([i915#13735] / [i915#15673] / [i915#180]) +52 other tests dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9158 -> IGTPW_16036
-  * Linux: CI_DRM_19382 -> CI_DRM_19384
-
-  CI-20190529: 20190529
-  CI_DRM_19382: dccfdbc40b10720efe537dfc63de84eed983fc8f @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19384: b2af5f9ef576a3026836cca5ec8757cc045a1856 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16036: 16036
-  IGT_9158: c06ac65c584387323e8322c258d74cea1ce07b18 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/index.html
-
---===============6281670285869816442==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/kms_dirtyfb: Use a smaller fb on simulation (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176261/">https://patchwork.freedesktop.org/series/176261/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9158 -&gt; IGTPW_16036</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16036 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +79 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9158/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16036/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +52 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9158 -&gt; IGTPW_16036</li>
-<li>Linux: CI_DRM_19382 -&gt; CI_DRM_19384</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19382: dccfdbc40b10720efe537dfc63de84eed983fc8f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19384: b2af5f9ef576a3026836cca5ec8757cc045a1856 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16036: 16036<br />
-  IGT_9158: c06ac65c584387323e8322c258d74cea1ce07b18 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git</p>
-
-</body>
-</html>
-
---===============6281670285869816442==--
