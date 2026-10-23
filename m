@@ -2,36 +2,37 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372CD606A31D
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Oct 2026 14:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B54606A31B
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Oct 2026 14:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=XxEV+BcO
+	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=C/PpTYj5
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E27DF10E637;
-	Fri, 23 Oct 2026 14:55:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9415A10E0AA;
+	Fri, 23 Oct 2026 14:56:42 +0000 (UTC)
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B759112BC4
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Oct 2026 14:50:43 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B198510E63C
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Oct 2026 14:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=zar1PaWatmvnL9SK35LWzRwOHkPFzcCHWQQ9FIhs4tY=; b=
- XxEV+BcOv3QmwaIeeYnPPeNMzCWh8vGy1CfCGnwCJpsIjIyB8E4dRxEwTM9Kd24laxWxM5gFk8cB1
- 2IwZDoIThSoeLHfewi7rwIKZocm5T5u9YhireZm9l++jDJPpPqdeG+EARL8OVQYt1LH7yhmkBXSEo
- WcUWuV9XYB7ljDv7wmxjO4VY+w9KP2PpniX2iES0l0nHCn357USkJ7IcgwRqitkPkj8dKrfntiD6Q
- pj0VyeHwOXw6M/V7qt2lbWNrjbubqNrcbB67FsYT3o1L4/vkWsDUUnZ1R3H/j8bw/NxCfxyeaF2LO
- JH1IgXa6hL1PKYPVOoUwCkphll4DKOeLlQ==;
+ Cc:To:From:From:Reply-To; bh=m5Ba1EDmHV1Fm/NRaXakA9VjpPiJCCl6Bz0VDfPxMw4=; b=
+ C/PpTYj5WZiLfY7iQwKA3NBq7qlofbVH5z6/L0GTVS0/T042Lk8xZ+JvRkatedEimAx6CqZlfhskJ
+ UBr4emobeWTy1hFOO9z2WV9uhEMWD/25Qd5HNQ4BC6O2WOw8/MyRrGlWy0GW7P0/Ksiz9amkPRHZE
+ aaHbsdWwFb8AuVmL2UJBvy9w+WDItYqwjQ1398DD91LJM+2HVhP9tb6mEvTjXQTVozES3zCV84T27
+ h82LnfhSDrKvvVI+idsUs12wnsgy9lpKoU/1Ik90pwLxoiXV8MEpACyJGRKYHoKLPwqKi2n8WM5m3
+ iHb+d+iMMoB+UaYGhR8skSZZI/VchyGiXA==;
 Received: from [81.79.79.1] (helo=localhost)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1xKGbR-007yoX-K0; Fri, 23 Oct 2026 16:50:41 +0200
+ id 1xKGbO-007yoB-PJ; Fri, 23 Oct 2026 16:50:38 +0200
 From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 To: igt-dev@lists.freedesktop.org
 Cc: David Francis <David.Francis@amd.com>,
  Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH i-g-t 06/10] tests/amd/criu: Test with more than one buffer
-Date: Fri, 23 Oct 2026 15:50:28 +0100
-Message-ID: <20261023145032.22650-7-tvrtko.ursulin@igalia.com>
+Subject: [PATCH i-g-t 02/10] tests/amd/gem_list_handles: Add basic test for
+ DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES
+Date: Fri, 23 Oct 2026 15:50:24 +0100
+Message-ID: <20261023145032.22650-3-tvrtko.ursulin@igalia.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261023145032.22650-1-tvrtko.ursulin@igalia.com>
 References: <20261023145032.22650-1-tvrtko.ursulin@igalia.com>
@@ -56,121 +57,186 @@ X-Spam-Status: No, score=-17.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add a subtest which creates and maps multiple buffer objects.
+Looks like we had no test for this so far se lets add one.
+
+Just some basic test cases to verify input checking and normal
+operation.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: David Francis <David.Francis@amd.com>
 ---
- tests/amdgpu/amd_criu.c | 62 ++++++++++++++++++++++++++++-------------
- 1 file changed, 42 insertions(+), 20 deletions(-)
+ tests/amdgpu/amd_list_handles.c | 149 ++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build        |   1 +
+ 2 files changed, 150 insertions(+)
+ create mode 100644 tests/amdgpu/amd_list_handles.c
 
-diff --git a/tests/amdgpu/amd_criu.c b/tests/amdgpu/amd_criu.c
-index 453c53d9a7df..c37ab9c4758b 100644
---- a/tests/amdgpu/amd_criu.c
-+++ b/tests/amdgpu/amd_criu.c
-@@ -21,37 +21,48 @@ static void wait_checkpoint(void)
- #define MAP_BO		(1 << 1)
- #define MMAP_BO		(1 << 2)
- #define DO_FORK		(1 << 3)
-+#define MULTI_BO	(1 << 4)
- 
- static void basic(amdgpu_device_handle dev, unsigned int flags)
- {
--	amdgpu_bo_handle bo;
--	amdgpu_va_handle va;
--	uint64_t gva;
-+	const int num_bos = (flags & MULTI_BO) ? 10 : 1;
-+	amdgpu_bo_handle bo[10];
-+	amdgpu_va_handle va[10];
-+	uint64_t gva[10];
- 	void *addr;
--	int ret;
+diff --git a/tests/amdgpu/amd_list_handles.c b/tests/amdgpu/amd_list_handles.c
+new file mode 100644
+index 000000000000..2c05e8fcdfed
+--- /dev/null
++++ b/tests/amdgpu/amd_list_handles.c
+@@ -0,0 +1,149 @@
++// SPDX-License-Identifier: MIT
++/*
++ * Copyright (c) 2026 Valve Corporation
++ */
++#include <sys/ioctl.h>
++
++#include "igt.h"
++#include "drmtest.h"
++
++#include <amdgpu.h>
++#include <amdgpu_drm.h>
++
++#include "lib/amdgpu/amd_memory.h"
++
++#define TEST_PADDING (1 << 0)
++#define TEST_FAULT   (1 << 1)
++#define TEST_TWOPASS (1 << 2)
++#define TEST_PROBE   (1 << 3)
++
++#define BUFFER_SIZE	4096
++
++static void
++basic(amdgpu_device_handle dev, unsigned int num_bos, unsigned int flags)
++{
++	struct drm_amdgpu_gem_list_handles_entry entry[num_bos];
++	struct drm_amdgpu_gem_list_handles list = {
++		.entries = (uintptr_t)entry,
++		.num_entries = num_bos,
++	};
++	int fd = amdgpu_device_get_fd(dev);
++	amdgpu_bo_handle bo[num_bos];
 +	int i, ret;
- 
- 	if (flags & CREATE_BO) {
- 		struct amdgpu_bo_alloc_request alloc = {
- 			.alloc_size = BUFFER_SIZE,
- 			.preferred_heap = AMDGPU_GEM_DOMAIN_GTT,
- 		};
--		ret = amdgpu_bo_alloc(dev, &alloc, &bo);
--		igt_assert_eq(ret, 0);
 +
-+		for (i = 0; i < num_bos; i++) {
-+			ret = amdgpu_bo_alloc(dev, &alloc, &bo[i]);
-+			igt_assert_eq(ret, 0);
-+		}
- 	}
- 
- 	if (flags & MAP_BO) {
--		ret = amdgpu_va_range_alloc(dev, amdgpu_gpu_va_range_general,
--					    BUFFER_SIZE, 0, 0, &gva, &va, 0);
--		igt_assert_eq(ret, 0);
-+		for (i = 0; i < num_bos; i++) {
-+			ret = amdgpu_va_range_alloc(dev,
-+						    amdgpu_gpu_va_range_general,
-+						    BUFFER_SIZE, 0, 0, &gva[i],
-+						    &va[i], 0);
-+			igt_assert_eq(ret, 0);
- 
--		ret = amdgpu_bo_va_op(bo, 0, BUFFER_SIZE, gva, 0,
--				      AMDGPU_VA_OP_MAP);
--		igt_assert_eq(ret, 0);
-+			ret = amdgpu_bo_va_op(bo[i], 0, BUFFER_SIZE, gva[i], 0,
-+					      AMDGPU_VA_OP_MAP);
-+			igt_assert_eq(ret, 0);
-+		}
- 	}
- 
- 	if (flags & MMAP_BO) {
--		ret = amdgpu_bo_cpu_map(bo, &addr);
--		igt_assert_eq(ret, 0);
-+		for (i = 0; i < num_bos; i++) {
-+			ret = amdgpu_bo_cpu_map(bo[i], &addr);
-+			igt_assert_eq(ret, 0);
-+		}
- 	}
- 
- 	if (flags & DO_FORK) {
-@@ -65,16 +76,23 @@ static void basic(amdgpu_device_handle dev, unsigned int flags)
- 		wait_checkpoint();
- 	}
- 
--	if (flags & MMAP_BO)
--		amdgpu_bo_cpu_unmap(bo);
-+	if (flags & MMAP_BO) {
-+		for (i = 0; i < num_bos; i++)
-+			amdgpu_bo_cpu_unmap(bo[i]);
-+	}
- 
- 	if (flags & MAP_BO) {
--		amdgpu_bo_va_op(bo, 0, BUFFER_SIZE, gva, 0, AMDGPU_VA_OP_UNMAP);
--		amdgpu_va_range_free(va);
-+		for (i = 0; i < num_bos; i++) {
-+			amdgpu_bo_va_op(bo[i], 0, BUFFER_SIZE, gva[i], 0,
-+					AMDGPU_VA_OP_UNMAP);
-+			amdgpu_va_range_free(va[i]);
-+		}
- 	}
- 
--	if (flags & CREATE_BO)
--		amdgpu_bo_free(bo);
-+	if (flags & CREATE_BO) {
-+		for (i = 0; i < num_bos; i++)
-+			amdgpu_bo_free(bo[i]);
-+	}
- }
- 
- int igt_main()
-@@ -112,6 +130,10 @@ int igt_main()
- 	igt_subtest("map-and-mmap-one")
- 		basic(dev, CREATE_BO | MAP_BO | MMAP_BO);
- 
-+	igt_describe("Map and mmap multiple buffer objects");
-+	igt_subtest("map-and-mmap-multiple")
-+		basic(dev, CREATE_BO | MAP_BO | MMAP_BO | MULTI_BO);
++	igt_assert_fd(fd);
 +
- 	igt_describe("Map and mmap one buffer object, then fork");
- 	igt_subtest("map-mmap-fork")
- 		basic(dev, CREATE_BO | MAP_BO | MMAP_BO | DO_FORK);
++	for (i = 0; i < num_bos; i++) {
++		struct amdgpu_bo_alloc_request alloc = {
++			.alloc_size = BUFFER_SIZE,
++			.preferred_heap = AMDGPU_GEM_DOMAIN_GTT,
++		};
++
++		ret = amdgpu_bo_alloc(dev, &alloc, &bo[i]);
++		igt_assert_eq(ret, 0);
++	}
++
++	if (flags & TEST_PADDING) {
++		/*
++		 * Apparently kernel never checked for mbz so now we have to
++		 * keep accepting garbage.
++		 */
++		list.padding = 0x13ac5;
++	} else if (flags & TEST_FAULT) {
++		list.entries = 0;
++	}
++
++	if (flags & TEST_TWOPASS) {
++		if (flags & TEST_PROBE) {
++			list.num_entries = 0;
++		} else {
++			igt_assert(num_bos > 1);
++			list.num_entries = num_bos - 1;
++		}
++		ret = ioctl(fd, DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES, &list);
++		igt_assert_eq(ret, 0);
++		igt_assert_eq(list.num_entries, num_bos);
++	}
++
++	ret = ioctl(fd, DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES, &list);
++	if (flags & TEST_FAULT) {
++		i = errno;
++		igt_assert_eq(ret, -1);
++		igt_assert_eq(i, EFAULT);
++		goto out;
++	}
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(list.num_entries, num_bos);
++
++	for (i = 0; i < num_bos; i++) {
++		struct drm_amdgpu_gem_list_handles_entry *e = &entry[i];
++		uint32_t handle;
++
++		ret = amdgpu_bo_export(bo[i],
++				       amdgpu_bo_handle_type_kms_noimport,
++				       &handle);
++		igt_assert_eq(ret, 0);
++		igt_assert_eq(e->gem_handle, handle);
++
++		igt_assert_eq(e->flags, 0);
++		igt_assert_eq(e->size, BUFFER_SIZE);
++		igt_assert_eq(e->preferred_domains, AMDGPU_GEM_DOMAIN_GTT);
++		igt_assert_eq(e->alloc_flags,
++			      AMDGPU_GEM_CREATE_VRAM_CLEARED |
++			      AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE);
++		igt_assert_eq(e->alignment, 0);
++	}
++
++out:
++	for (i = 0; i < num_bos; i++)
++		amdgpu_bo_free(bo[i]);
++}
++
++int igt_main()
++{
++	amdgpu_device_handle dev;
++	int fd = -1;
++
++	igt_fixture() {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver_render(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &dev);
++		igt_require(err == 0);
++	}
++
++	igt_describe("Check padding backward compatibility");
++	igt_subtest("padding")
++		basic(dev, 1, TEST_PADDING);
++
++	igt_describe("Check fault detection");
++	igt_subtest("fault")
++		basic(dev, 1, TEST_FAULT);
++
++	igt_describe("List no buffer objects");
++	igt_subtest("no-bos")
++		basic(dev, 0, 0);
++
++	igt_describe("Create and list one buffer object");
++	igt_subtest("one-bo")
++		basic(dev, 1, 0);
++
++	igt_describe("Create and list many buffer objects");
++	igt_subtest("many-bo")
++		basic(dev, 1024, 0);
++
++	igt_describe("Create and list many buffer objects in two-pass mode");
++	igt_subtest("many-bo-two-pass")
++		basic(dev, 16, TEST_TWOPASS);
++
++	igt_describe("Create and list many buffer objects in two-pass probe mode");
++	igt_subtest("many-bo-two-pass-probe")
++		basic(dev, 16, TEST_TWOPASS | TEST_PROBE);
++
++	igt_fixture() {
++		amdgpu_device_deinitialize(dev);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 61b81c81407d..2dcc3228b583 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -28,6 +28,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_jpeg_dec',
+ 			  'amd_jpeg_queue',
+ 			  'amd_link_settings',
++			  'amd_list_handles',
+ 			  'amd_lockdep',
+ 			  'amd_max_bpc',
+ 			  'amd_mem_leak',
 -- 
 2.56.0
 
