@@ -2,59 +2,60 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C47606A31B
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Oct 2026 21:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E97606A31B
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Oct 2026 21:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+MXmSTO
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W+tSMHOP
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B1A2910E6E9;
-	Fri, 23 Oct 2026 21:12:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2B0AD10E6E8;
+	Fri, 23 Oct 2026 21:12:57 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EB1D10E709
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Oct 2026 21:03:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86CE210E5F1
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Oct 2026 21:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792789406; x=1824325406;
+ t=1792789399; x=1824325399;
  h=from:date:subject:mime-version:content-transfer-encoding:
  message-id:references:in-reply-to:to:cc;
- bh=FDOFz2nbfntCMdoCKPad34WjkogxM2UN3DtlNE9tdwc=;
- b=W+MXmSTOkojwJ2hsRuG9bd+Pr08SBVd4trxquJay1JEJ/lWScyE+bF4u
- 9SjlKKk0dwisx7Bc8z7gSgELi3NYG1vxQda872lqAISmQHw+vo0a9g8Ud
- fnWBD2dhrolCARNo0OpHUFRLilKARbpV5YkEo8Kbm2hmBULN0DvsMvGpo
- aOe8nwWOrWA2YWsRhntiha1NYnTfCYADxoBhqc41Dsu3XWokANWtn0Ptg
- pV0yRhNer6QGAW/2BNMvY8alnkrbPHpI6XEYRGpyRgiBIJ5J+n16c1Ggs
- R56UHfqhhhCSAUXo5U6/aBsipR3pkwmHYJZmrdRaREErmZmBX7k6G87D7 A==;
-X-CSE-ConnectionGUID: fSX7zPXsTNCjKXcO1ZET6Q==
-X-CSE-MsgGUID: xMtHCFuBQOGBvKlxTX8ffA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1457472"
+ bh=xun5C4Dv0NgBQRlq3ATfefBOHDBr/OMoJd/tPzVuvBE=;
+ b=W+tSMHOPDgCi5qDJNTU2c6lQiEq3ppEGzJdwmwcZVZrOqPbvVHkR7JJy
+ z5lC/dVktxDcTsVfWT66Iggq1T8otAiBiR+n11t/94HVt3pRp8kG8hNfM
+ vNditNlYJYc4JV/Kf/y6isPRF1+4fanOL7PkjPOfqeIj0okCi+LJ2R+WY
+ CPz2LwyGAZOlchDxaD4EclDawxxLYygu7T827PQO2wy+QBoXqbrIhrsnB
+ 52fWBFT9As+OvBllbsfYLDtyY7W6awutU5FMKu7pHnibtK6dLDz3GQ6kC
+ phSi6xRHTJC4yzby1D8mhydeZlBhE6bRFwBGUMxovpO9XFiQmnBlnFqnY g==;
+X-CSE-ConnectionGUID: PozA4PpDTLKbuQBCGXu6gg==
+X-CSE-MsgGUID: rpiDI3v/QjKOA3oa4n7y/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11944"; a="1457467"
 X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
-   d="scan'208";a="1457472"
+   d="scan'208";a="1457467"
 Received: from fmviesa011.fm.intel.com ([10.60.135.151])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2026 14:03:21 -0700
-X-CSE-ConnectionGUID: sRJrpu1DTRi6+hDI8s0bhA==
-X-CSE-MsgGUID: AmBUZ8qbS+KXk+ftSSOYOg==
+ 23 Oct 2026 14:03:15 -0700
+X-CSE-ConnectionGUID: WE8+WQeASx2/wwRcjrXIMQ==
+X-CSE-MsgGUID: 1k8qI61iSdWFbclgDJkvMA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,175,1787036400"; 
-   d="scan'208";a="5585838"
+   d="scan'208";a="5585805"
 Received: from iherna2-mobl4.amr.corp.intel.com (HELO [192.168.1.16])
  ([10.124.221.115])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Oct 2026 14:03:19 -0700
+ 23 Oct 2026 14:03:14 -0700
 From: Gustavo Sousa <gustavo.sousa@intel.com>
-Date: Fri, 23 Oct 2026 18:02:45 -0300
-Subject: [PATCH i-g-t v3 10/11] lib/intel_pat: Pass xe_device to
- xe_get_pat_config()
+Date: Fri, 23 Oct 2026 18:02:41 -0300
+Subject: [PATCH i-g-t v3 06/11] lib/xe: Assert that cache is available for
+ xe_wa()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261023-wa_14026539277-v3-10-b8723ececb7f@intel.com>
+Message-Id: <20261023-wa_14026539277-v3-6-b8723ececb7f@intel.com>
 References: <20261023-wa_14026539277-v3-0-b8723ececb7f@intel.com>
 In-Reply-To: <20261023-wa_14026539277-v3-0-b8723ececb7f@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Gustavo Sousa <gustavo.sousa@intel.com>, 
- Matt Roper <matthew.d.roper@intel.com>
+ Matt Roper <matthew.d.roper@intel.com>, 
+ Matt Atwood <matthew.s.atwood@intel.com>
 X-Mailer: b4 0.15-dev
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -74,72 +75,40 @@ X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In an upcoming change, we will need to check for a workaround as part
-of xe_get_pat_config().  Since xe_get_pat_config() also gets called
-during xe_device_get(), we will need to use xe_wa_from_cache() instead
-of the regular xe_wa() function.  In preparation for that, make sure
-that xe_get_pat_config() gets called with the xe_device struct instead
-of the drm file descriptor.
+While we do print a warning if xe_wa() is called without the necessary
+data cached in xe_device, it would make any test that relies on it to
+be unreliable in that scenario.
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Make sure that we cause the test to fail instead by adding an
+igt_assert() to check that the wa_cache is not NULL.
+
+Suggested-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Matt Atwood <matthew.s.atwood@intel.com>
 Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
 ---
- lib/intel_pat.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ lib/xe/xe_wa.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/lib/intel_pat.c b/lib/intel_pat.c
-index db0f057cbd1e..6808eaa9b77e 100644
---- a/lib/intel_pat.c
-+++ b/lib/intel_pat.c
-@@ -24,7 +24,7 @@ enum xe_pat_config {
-  * Returns: The number of PAT entries successfully read on success, or a negative error
-  *          code on failure
+diff --git a/lib/xe/xe_wa.c b/lib/xe/xe_wa.c
+index 2f1a90a3b0b0..fc1d9e59e65e 100644
+--- a/lib/xe/xe_wa.c
++++ b/lib/xe/xe_wa.c
+@@ -186,14 +186,12 @@ int xe_wa_test_debugfs_dump_has_wa(char *dump, const char *wa)
+  * @wa: Name of the workaround to be checked.
+  *
+  * Return a boolean indicating whether the workaround is enabled.
+- * On error, returns false and a warning is printed.
   */
--static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cache,
-+static int32_t xe_get_pat_config(struct xe_device *xe_dev, struct intel_pat_cache *xe_pat_cache,
- 				 int gt, enum xe_pat_config pat_config)
+ bool xe_wa(int fd, const char *wa)
  {
- 	char *line = NULL;
-@@ -40,7 +40,7 @@ static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cach
- 	else
- 		snprintf(config, sizeof(config), "gt%d/pat", gt);
+ 	struct xe_wa_cache *wa_cache = xe_device_get(fd)->wa_cache;
  
--	dbgfs_fd = igt_debugfs_open(drm_fd, config, O_RDONLY);
-+	dbgfs_fd = igt_debugfs_open(xe_dev->fd, config, O_RDONLY);
- 	if (dbgfs_fd < 0)
- 		return dbgfs_fd;
- 	dbgfs_file = fdopen(dbgfs_fd, "r");
-@@ -125,7 +125,9 @@ static int32_t xe_get_pat_config(int drm_fd, struct intel_pat_cache *xe_pat_cach
-  */
- int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
- {
--	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_SW_CONFIG);
-+	struct xe_device *xe_dev = xe_device_get(drm_fd);
-+
-+	return xe_get_pat_config(xe_dev, xe_pat_cache, gt, PAT_SW_CONFIG);
- }
+-	if (igt_warn_on(!wa_cache))
+-		return false;
++	igt_assert(wa_cache);
  
- /**
-@@ -141,7 +143,9 @@ int32_t xe_get_pat_sw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, i
-  */
- int32_t xe_get_pat_hw_config(int drm_fd, struct intel_pat_cache *xe_pat_cache, int gt)
- {
--	return xe_get_pat_config(drm_fd, xe_pat_cache, gt, PAT_HW_CONFIG);
-+	struct xe_device *xe_dev = xe_device_get(drm_fd);
-+
-+	return xe_get_pat_config(xe_dev, xe_pat_cache, gt, PAT_HW_CONFIG);
- }
- 
- void intel_pat_build_xe_cache(struct xe_device *xe_dev)
-@@ -151,7 +155,7 @@ void intel_pat_build_xe_cache(struct xe_device *xe_dev)
- 	pat_cache = calloc(1, sizeof(*pat_cache));
- 	igt_assert(pat_cache);
- 
--	if (igt_debug_on(xe_get_pat_sw_config(xe_dev->fd, pat_cache, 0) <= 0)) {
-+	if (igt_debug_on(xe_get_pat_config(xe_dev, pat_cache, 0, PAT_SW_CONFIG) <= 0)) {
- 		free(pat_cache);
- 		return;
- 	}
+ 	for (int i = 0; i < wa_cache->num_dumps; i++)
+ 		if (debugfs_dump_has_wa(wa_cache->dumps[i], wa))
 
 -- 
 2.56.0
