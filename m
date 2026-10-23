@@ -2,37 +2,36 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7577606A31A
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Oct 2026 14:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB788606A31A
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Oct 2026 15:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=qmhEsWbZ
+	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=pqCd68ym
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 803AE10E0AA;
-	Fri, 23 Oct 2026 14:58:19 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6501110E0AA;
+	Fri, 23 Oct 2026 15:01:07 +0000 (UTC)
 Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 56ADD10E63C
- for <igt-dev@lists.freedesktop.org>; Fri, 23 Oct 2026 14:50:46 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4AAB010E663
+ for <igt-dev@lists.freedesktop.org>; Fri, 23 Oct 2026 14:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
  s=20170329;
  h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
- Cc:To:From:From:Reply-To; bh=EPzz+C9x0BAU5MI9q9NYlcSd6594yoxxI6wLPzADHX4=; b=
- qmhEsWbZOSCYVq42PV/550KDiODa4Ae1SosGibU9uf+LTh/I26fSh7UnXNTFILNqiCaQvG0ouSgB8
- zPRtJwEUuPvUgaR0EwIOUPixNQt+7LbGuJBQx3EnZ8g0xowX5XlIheaifcZTY/33MMSEuyEiXqj5l
- bENyOuumcnEMJ3SwFKTc2BflC1Wd0iewmflnYpUq8mGXuV6ykAtAPwW5+1RsU1iUy+O6Mfb5rG8YU
- ncz8qQ/hcgetU/89fz02oNU5zq4mWeDE8mTBlFJGPUVhIaqHgnmAxMmprrVr2mw3ocat/BsWwN3ke
- W2WuYgFImQVPyxDS1/AzUdQ99nK/6n4zMg==;
+ Cc:To:From:From:Reply-To; bh=f7cjTCNbIUIDR2rE99G/eJgrFtwkaUeq0bbuz171Vag=; b=
+ pqCd68ymGOChYWmV0r3yYoGhhjvstCSGgGq73tXyEv31JNSXAkBnywVo9TI0IxZ8rTMoBp8mm5BVW
+ lvZQ3Rl0zQg4y0aGk1H8pcIUw4CJbfLiYXuU4/JuAkKYBd6yyDIKjgxACi+DyH7iBvmpjMR6LePD9
+ 3XpD4aQ9zIdK/mAPfqCO5z7b4zR65Um+m391gkzLS7qYVL+PCG9uJtz+8cxlBMgYjI4buTbvnr/sL
+ lkGltsYunBvMdkF0gAusCrWyN6xpr8/lAYObQ/fe80KR63p/xt9wdxkBB+GoeE/yvqlbGeGqXlJRK
+ RgFVskDEWNVOgPuOTdz+NfJ3q/XbM5h1IQ==;
 Received: from [81.79.79.1] (helo=localhost)
  by fanzine2.igalia.com with esmtpsa 
  (Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
- id 1xKGbU-007ypL-GF; Fri, 23 Oct 2026 16:50:44 +0200
+ id 1xKGbP-007yoF-Fz; Fri, 23 Oct 2026 16:50:39 +0200
 From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 To: igt-dev@lists.freedesktop.org
 Cc: David Francis <David.Francis@amd.com>,
  Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Subject: [PATCH i-g-t 10/10] tests/amd/criu: Add buffer object content
- verification tests
-Date: Fri, 23 Oct 2026 15:50:32 +0100
-Message-ID: <20261023145032.22650-11-tvrtko.ursulin@igalia.com>
+Subject: [PATCH i-g-t 03/10] tests/amd/gem_list_handles: Test the userptr flag
+Date: Fri, 23 Oct 2026 15:50:25 +0100
+Message-ID: <20261023145032.22650-4-tvrtko.ursulin@igalia.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261023145032.22650-1-tvrtko.ursulin@igalia.com>
 References: <20261023145032.22650-1-tvrtko.ursulin@igalia.com>
@@ -57,124 +56,127 @@ X-Spam-Status: No, score=-17.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-So far the tests only looked at whether clients with different
-combinations of amdgpu uapi usage can be checkpointed and restored,
-with the exception of the busy client test which also required the
-indirect buffer content to be somewhat preserved.
-
-Lets add some more detailed content verification to some paths via a
-couple of new subtests.
+Add a test case which creates a mix of normal and userptr buffer objects
+so we can exercise the new AMDGPU_GEM_LIST_HANDLES_FLAG_IS_USERPTR flag.
 
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: David Francis <David.Francis@amd.com>
 ---
- tests/amdgpu/amd_criu.c | 45 +++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 43 insertions(+), 2 deletions(-)
+ tests/amdgpu/amd_list_handles.c | 59 ++++++++++++++++++++++++++-------
+ 1 file changed, 47 insertions(+), 12 deletions(-)
 
-diff --git a/tests/amdgpu/amd_criu.c b/tests/amdgpu/amd_criu.c
-index 490661dd4f22..74f539f5e0c8 100644
---- a/tests/amdgpu/amd_criu.c
-+++ b/tests/amdgpu/amd_criu.c
-@@ -29,6 +29,7 @@ static void wait_checkpoint(void)
- #define POST_TOUCH	(1 << 6)
- #define POST_SUBMIT	(1 << 7)
- #define TEST_CONTEXT	(1 << 8)
-+#define VERIFY_CONTENT	(1 << 9)
+diff --git a/tests/amdgpu/amd_list_handles.c b/tests/amdgpu/amd_list_handles.c
+index 2c05e8fcdfed..b594ce4e984e 100644
+--- a/tests/amdgpu/amd_list_handles.c
++++ b/tests/amdgpu/amd_list_handles.c
+@@ -16,9 +16,12 @@
+ #define TEST_FAULT   (1 << 1)
+ #define TEST_TWOPASS (1 << 2)
+ #define TEST_PROBE   (1 << 3)
++#define TEST_USERPTR (1 << 4)
  
- static void basic(amdgpu_device_handle dev, unsigned int flags)
+ #define BUFFER_SIZE	4096
+ 
++#define __AMDGPU_GEM_LIST_HANDLES_FLAG_IS_USERPTR	(1 << 1)
++
+ static void
+ basic(amdgpu_device_handle dev, unsigned int num_bos, unsigned int flags)
  {
-@@ -88,6 +89,15 @@ static void basic(amdgpu_device_handle dev, unsigned int flags)
- 		}
+@@ -29,17 +32,32 @@ basic(amdgpu_device_handle dev, unsigned int num_bos, unsigned int flags)
+ 	};
+ 	int fd = amdgpu_device_get_fd(dev);
+ 	amdgpu_bo_handle bo[num_bos];
++	void *userptr[num_bos];
++	long page_size;
+ 	int i, ret;
+ 
+ 	igt_assert_fd(fd);
+ 
++	page_size = sysconf(_SC_PAGESIZE);
++	igt_assert(page_size > 0);
++
+ 	for (i = 0; i < num_bos; i++) {
+-		struct amdgpu_bo_alloc_request alloc = {
+-			.alloc_size = BUFFER_SIZE,
+-			.preferred_heap = AMDGPU_GEM_DOMAIN_GTT,
+-		};
++		if ((flags & TEST_USERPTR) && (i & 1)) {
++			ret = posix_memalign(&userptr[i], page_size,
++					     BUFFER_SIZE);
++			igt_assert_eq(ret, 0);
++			ret = amdgpu_create_bo_from_user_mem(dev,
++							     userptr[i],
++							     BUFFER_SIZE,
++							     &bo[i]);
++		} else {
++			struct amdgpu_bo_alloc_request alloc = {
++				.alloc_size = BUFFER_SIZE,
++				.preferred_heap = AMDGPU_GEM_DOMAIN_GTT,
++			};
+ 
+-		ret = amdgpu_bo_alloc(dev, &alloc, &bo[i]);
++			ret = amdgpu_bo_alloc(dev, &alloc, &bo[i]);
++		}
+ 		igt_assert_eq(ret, 0);
  	}
  
-+	if (flags & VERIFY_CONTENT) {
-+		for (i = 0; i < num_bos; i++) {
-+			uint32_t *ptr = addr[i];
-+
-+			for (int j = 0; j < BUFFER_SIZE / sizeof(u32); j++, ptr++)
-+				*ptr = 0xdeadc0de;
+@@ -77,6 +95,7 @@ basic(amdgpu_device_handle dev, unsigned int num_bos, unsigned int flags)
+ 
+ 	for (i = 0; i < num_bos; i++) {
+ 		struct drm_amdgpu_gem_list_handles_entry *e = &entry[i];
++		bool is_userptr = (flags & TEST_USERPTR) && (i & 1);
+ 		uint32_t handle;
+ 
+ 		ret = amdgpu_bo_export(bo[i],
+@@ -85,18 +104,30 @@ basic(amdgpu_device_handle dev, unsigned int num_bos, unsigned int flags)
+ 		igt_assert_eq(ret, 0);
+ 		igt_assert_eq(e->gem_handle, handle);
+ 
+-		igt_assert_eq(e->flags, 0);
++		if (is_userptr) {
++			igt_assert_eq(e->flags, __AMDGPU_GEM_LIST_HANDLES_FLAG_IS_USERPTR);
++			igt_assert_eq(e->alloc_flags,
++				      AMDGPU_GEM_USERPTR_ANONONLY |
++				      AMDGPU_GEM_USERPTR_VALIDATE |
++				      AMDGPU_GEM_USERPTR_REGISTER);
++			igt_assert_eq(e->alignment, (uint64_t)userptr[i]);
++		} else {
++			igt_assert_eq(e->flags, 0);
++			igt_assert_eq(e->preferred_domains, AMDGPU_GEM_DOMAIN_GTT);
++			igt_assert_eq(e->alloc_flags,
++				      AMDGPU_GEM_CREATE_VRAM_CLEARED |
++				      AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE);
++			igt_assert_eq(e->alignment, 0);
 +		}
-+	}
-+
- 	if (flags & TEST_CONTEXT) {
- 		ret = amdgpu_cs_ctx_create(dev, &context);
- 		igt_assert_eq(ret, 0);
-@@ -166,6 +176,15 @@ static void basic(amdgpu_device_handle dev, unsigned int flags)
- 		igt_assert_eq(ret, 0);
+ 		igt_assert_eq(e->size, BUFFER_SIZE);
+-		igt_assert_eq(e->preferred_domains, AMDGPU_GEM_DOMAIN_GTT);
+-		igt_assert_eq(e->alloc_flags,
+-			      AMDGPU_GEM_CREATE_VRAM_CLEARED |
+-			      AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE);
+-		igt_assert_eq(e->alignment, 0);
  	}
  
-+	if (flags & VERIFY_CONTENT) {
-+		for (i = 0; i < num_bos; i++) {
-+			uint32_t *ptr = addr[i];
-+
-+			for (int j = 0; j < BUFFER_SIZE / sizeof(u32); j++, ptr++)
-+				igt_assert_eq(*ptr, 0xdeadc0de);
-+		}
+ out:
+-	for (i = 0; i < num_bos; i++)
++	for (i = 0; i < num_bos; i++) {
+ 		amdgpu_bo_free(bo[i]);
++		if ((flags & TEST_USERPTR) && (i & 1))
++			free(userptr[i]);
 +	}
-+
- 	if (flags & MMAP_BO) {
- 		for (i = 0; i < num_bos; i++)
- 			amdgpu_bo_cpu_unmap(bo[i]);
-@@ -220,7 +239,7 @@ static void context_rename(amdgpu_device_handle dev)
- 	igt_assert_eq(ret, 0);
  }
  
--static void busy_client(amdgpu_device_handle dev)
-+static void busy_client(amdgpu_device_handle dev, unsigned int flags)
- {
- 	struct amdgpu_cs_fence fence_status = {
- 		.ip_type = AMDGPU_HW_IP_DMA,
-@@ -246,6 +265,14 @@ static void busy_client(amdgpu_device_handle dev)
- 				      &ib_mc, &va_handle);
- 	igt_assert_eq(ret, 0);
+ int igt_main()
+@@ -134,6 +165,10 @@ int igt_main()
+ 	igt_subtest("many-bo")
+ 		basic(dev, 1024, 0);
  
-+	if (flags & VERIFY_CONTENT) {
-+		/*
-+		 * IB buffer is just a buffer and it is alredy mapped so we can
-+		 * use it to check if buffer object content has been correctly
-+		 * preserved.
-+		 */
-+		memset(ib_cpu, 0xff, 4096);
-+	}
- 	*ib_cpu = SDMA_NOP;
- 
- 	ib.ib_mc_address = ib_mc;
-@@ -271,6 +298,12 @@ static void busy_client(amdgpu_device_handle dev)
- 	ret = amdgpu_cs_ctx_free(context);
- 	igt_assert_eq(ret, 0);
- 
-+	if (flags & VERIFY_CONTENT) {
-+		igt_assert_eq(ib_cpu[0], SDMA_NOP);
-+		for (int i = 1; i < 4096 / sizeof(*ib_cpu); i++)
-+			igt_assert_eq(ib_cpu[i], -1);
-+	}
++	igt_describe("Create and list many buffer and userptr objects");
++	igt_subtest("many-mixed-bo")
++		basic(dev, 1024, TEST_USERPTR);
 +
- 	amdgpu_bo_unmap_and_free(ib_handle, va_handle, ib_mc, 4096);
- }
- 
-@@ -321,6 +354,10 @@ int igt_main()
- 	igt_subtest("mmap-one")
- 		basic(dev, CREATE_BO | MMAP_BO);
- 
-+	igt_describe("Mmap one buffer object and check content");
-+	igt_subtest("mmap-one-check")
-+		basic(dev, CREATE_BO | MMAP_BO | VERIFY_CONTENT);
-+
- 	igt_describe("Map and mmap one buffer object");
- 	igt_subtest("map-and-mmap-one")
- 		basic(dev, CREATE_BO | MAP_BO | MMAP_BO);
-@@ -339,7 +376,11 @@ int igt_main()
- 
- 	igt_describe("Busy client test");
- 	igt_subtest("busy-client")
--		busy_client(dev);
-+		busy_client(dev, 0);
-+
-+	igt_describe("Busy client test with content check");
-+	igt_subtest("busy-client-content")
-+		busy_client(dev, VERIFY_CONTENT);
- 
- 	igt_fixture() {
- 		amdgpu_device_deinitialize(dev);
+ 	igt_describe("Create and list many buffer objects in two-pass mode");
+ 	igt_subtest("many-bo-two-pass")
+ 		basic(dev, 16, TEST_TWOPASS);
 -- 
 2.56.0
 
