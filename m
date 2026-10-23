@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E94606A320
-	for <igt-dev@archiver.kernel.org>; Fri, 23 Oct 2026 20:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC704606A31A
+	for <igt-dev@archiver.kernel.org>; Fri, 23 Oct 2026 20:14:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BD79F10E26F;
-	Fri, 23 Oct 2026 20:08:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7E08010E26F;
+	Fri, 23 Oct 2026 20:14:40 +0000 (UTC)
 Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CF03910E26F;
- Fri, 23 Oct 2026 20:07:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5F25310E26F;
+ Fri, 23 Oct 2026 20:13:51 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============5329531000122424146=="
+ boundary="===============8330163697567558071=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_drm-uapi/xe=5Fdrm=3A_sync?=
- =?utf-8?q?_with_kernel_69183b706206?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Ffrontbuff?=
+ =?utf-8?q?er=5Ftracking=3A_Use_small_modes_on_simulation_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Ravi Kishore Koppuravuri" <ravi.kishore.koppuravuri@intel.com>
+To: "Samala, Pranay" <pranay.samala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 23 Oct 2026 20:07:33 -0000
-Message-ID: <179278605384.63745.11408674477889844571@221881a7231d>
+Date: Fri, 23 Oct 2026 20:13:51 -0000
+Message-ID: <179278643138.63768.17791346717944855772@221881a7231d>
 X-Patchwork-Hint: ignore
-References: <20261023085101.978447-1-ravi.kishore.koppuravuri@intel.com>
-In-Reply-To: <20261023085101.978447-1-ravi.kishore.koppuravuri@intel.com>
+References: <20261020143830.772865-1-pranay.samala@intel.com>
+In-Reply-To: <20261020143830.772865-1-pranay.samala@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,26 +36,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============5329531000122424146==
+--===============8330163697567558071==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: drm-uapi/xe_drm: sync with kernel 69183b706206
-URL   : https://patchwork.freedesktop.org/series/176706/
+Series: tests/intel/kms_frontbuffer_tracking: Use small modes on simulation (rev2)
+URL   : https://patchwork.freedesktop.org/series/176492/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9162 -> IGTPW_16039
+CI Bug Log - changes from XEIGT_9162_BAT -> XEIGTPW_16040_BAT
 ====================================================
 
 Summary
@@ -65,12 +65,12 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16039/index.html
+  
 
-Participating hosts (40 -> 39)
+Participating hosts (15 -> 15)
 ------------------------------
 
-  Missing    (1): bat-dg2-13 
+  No changes in participating hosts
 
 
 Changes
@@ -82,19 +82,17 @@ Changes
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9162 -> IGTPW_16039
+  * IGT: IGT_9162 -> IGTPW_16040
 
-  CI-20190529: 20190529
-  CI_DRM_19391: b255dd13059988fddde9ea187d1dd1017c9a5766 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16039: 16039
+  IGTPW_16040: 16040
   IGT_9162: 9162
+  xe-6006-b255dd13059988fddde9ea187d1dd1017c9a5766: b255dd13059988fddde9ea187d1dd1017c9a5766
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16039/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16040/index.html
 
---===============5329531000122424146==
+--===============8330163697567558071==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,35 +112,32 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>drm-uapi/xe_drm: sync with kernel 69183b706206</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176706/">https://patchwork.freedesktop.org/series/176706/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/kms_frontbuffer_tracking: Use small modes on simulation (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176492/">https://patchwork.freedesktop.org/series/176492/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16039/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16039/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16040/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16040/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9162 -&gt; IGTPW_16039</h1>
+    <h1>CI Bug Log - changes from XEIGT_9162_BAT -&gt; XEIGTPW_16040_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16039/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9162 -&gt; IGTPW_16039</li>
+<li>IGT: IGT_9162 -&gt; IGTPW_16040</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19391: b255dd13059988fddde9ea187d1dd1017c9a5766 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16039: 16039<br />
-  IGT_9162: 9162</p>
+<p>IGTPW_16040: 16040<br />
+  IGT_9162: 9162<br />
+  xe-6006-b255dd13059988fddde9ea187d1dd1017c9a5766: b255dd13059988fddde9ea187d1dd1017c9a5766</p>
 
 </body>
 </html>
 
---===============5329531000122424146==--
+--===============8330163697567558071==--
