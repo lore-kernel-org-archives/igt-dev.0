@@ -2,72 +2,64 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F459606A31B
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 14:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D977E606A31B
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 15:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VWcMxcc6
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=W/wgfmpr
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C0A910E31B;
-	Mon, 26 Oct 2026 14:40:29 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 87F6F10EE94;
+	Mon, 26 Oct 2026 15:38:32 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 527A010E21A
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2026 14:39:32 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E62E210E02C;
+ Mon, 26 Oct 2026 15:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793025572; x=1824561572;
+ t=1793029058; x=1824565058;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=RTxlQEsbuBnLAOUMHAC/XyJLGrH/tq5WeaQcWyaOhAE=;
- b=VWcMxcc6tdPrJqJv4seAjoM9ZqOQX3B46PHY3BtELhlpCUZSKRYwb4Mx
- iZXp1GUEj+EPBFuKnMF7e/wD2DxBk3IHe1XNCE+N83Vsnbb3ELGTtHfAx
- ITsWd1aP0031R8flT7qmccoItZ6PwBjrw0MrMmryJG5M5K0YECJdJXtOj
- qOyyA1inCGyd63Zq2lthN3aq+SSzcevCExTRGqamVmc0Y9Zd8tdFoWI5I
- L36RbAMRZjC52p5g1qgbHcCjHUI5fzZlMTKvtB5XXGUdcw1el66LaMY6E
- ewm1XBeb6DJuLSwKfONmTho6fM9EVJqQgVQS+VhF1PsFggIcahvVRAiMr g==;
-X-CSE-ConnectionGUID: ExaMLJ5ORGyNc+Awi7Vz4w==
-X-CSE-MsgGUID: ziqsdg+3RZ63Mab9jZWzwA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1705308"
+ bh=ABzbBfcKkptUCHkSrV+1KuKjKwYsif+aBVWDr4ugau0=;
+ b=W/wgfmprl0FBT9ye/4vBCieg5vCFcGjSNC4IFBNzi7bK7LPosgwJvpEM
+ CN7BJu1DC3u4LlCbei8oj7uRRMxhtl22X0OLt3cr92BF5F/bZS8V1uxUw
+ zXXwHUJyAqgAwCjzXs3FzW8AviN3YQ8HMRgNWUlZqXPsw6uUDtQoRnC7B
+ U71h3fp9pjmE9IkKgN/yKD7WPQD376oclgd1caAG0t3/BOUdosfiawuXk
+ J5vJF/KNhjniBahNTlFiEhvQjbB45SE97g/iyCIXBKcbpdO7PfnUQSHsx
+ Fmc4E47QHYQUP4adh/Tq5IuLqIbuHiBqEbozuQLxXwqm0uHqwuPLZauGC A==;
+X-CSE-ConnectionGUID: A5Pov6d0SlCKaUN6QHv7Lg==
+X-CSE-MsgGUID: aq2AInAFSVa8ABEPu4S0Jg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1711817"
 X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="1705308"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
+   d="scan'208";a="1711817"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2026 07:39:32 -0700
-X-CSE-ConnectionGUID: GyiFKPCBRSSzy0rVEAiuIQ==
-X-CSE-MsgGUID: 59fHCiOZRsKE0ghiWTiEPQ==
+ 26 Oct 2026 08:37:37 -0700
+X-CSE-ConnectionGUID: gJc8ZQ2uROWZbfb52Lw5uw==
+X-CSE-MsgGUID: uhH7Zg1qTROBOaShTRvWmg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="4225513"
+   d="scan'208";a="4802389"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2026 07:39:30 -0700
-Date: Mon, 26 Oct 2026 15:39:14 +0100
+ 26 Oct 2026 08:37:36 -0700
+Date: Mon, 26 Oct 2026 16:37:33 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Cc: igt-dev@lists.freedesktop.org, Soham Purkait <soham.purkait@intel.com>,
- Riana Tauro <riana.tauro@intel.com>, Sk Anirban <sk.anirban@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>,
- Raag Jadav <raag.jadav@intel.com>, Badal Nilawar <badal.nilawar@intel.com>,
- Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-Subject: Re: [PATCH v2 2/2] tests/intel/xe_err_injection: regex to ignore AER
- messages in dmesg
-Message-ID: <20261026143914.rwdzdq3mp2dmona5@kamilkon-DESK.igk.intel.com>
+To: atipre <tipreaditya@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+ louis.chauvet@bootlin.com, Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+Subject: Re: [PATCH i-g-t] tests/kms_writeback: Check CRC capture survives
+ writeback
+Message-ID: <20261026153733.fdbw34baxoduq357@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
- igt-dev@lists.freedesktop.org,
- Soham Purkait <soham.purkait@intel.com>,
- Riana Tauro <riana.tauro@intel.com>,
- Sk Anirban <sk.anirban@intel.com>,
- Anshuman Gupta <anshuman.gupta@intel.com>,
- Raag Jadav <raag.jadav@intel.com>,
- Badal Nilawar <badal.nilawar@intel.com>,
- Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-References: <20261023171326.982997-1-ravi.kishore.koppuravuri@intel.com>
- <20261023171326.982997-3-ravi.kishore.koppuravuri@intel.com>
+ atipre <tipreaditya@gmail.com>, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, louis.chauvet@bootlin.com,
+ Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>
+References: <20261025182420.52258-1-tipreaditya@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261023171326.982997-3-ravi.kishore.koppuravuri@intel.com>
+In-Reply-To: <20261025182420.52258-1-tipreaditya@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -82,105 +74,152 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Status: No, score=-14.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ravi,
-On 2026-10-23 at 22:43:26 +0530, Ravi Kishore Koppuravuri wrote:
-> Error injection tests deliberately triggers AER error, device recovery
-> messages and CORE_COMPUTE hardware error (SIGID=203) in dmesg. Add a
-> regex to ignore these messages and inform igt_runner that it should not
-> treat these expected error logs as failures.
+Hi atipre,
+On 2026-10-25 at 14:24:20 -0400, atipre wrote:
+> The existing writeback tests validate captured framebuffer contents, but
+> do not keep pipe CRC capture active across writeback completion. This
+> misses the VKMS bug where writeback cleanup disables the composer while
+> CRC capture still needs it, leaving subsequent CRC reads waiting for
+> samples that never arrive.
 > 
-> Sample AER log is provided below
+> Add writeback-preserves-crc. Complete the initial modeset before starting
+> capture and establish reference CRCs for separate red and blue input
+> framebuffers. Keep capture open across four alternating writebacks, wait
+> for each output fence, and compare three fresh CRC samples with the
+> corresponding reference after each writeback. Use atomic updates without
+> ALLOW_MODESET once capture starts, and release capture from the final
+> fixture so a failed subtest also closes it.
 > 
-> ```
-
-Remove this line.
-
-> pcieport 0000:00:06.0: AER: Uncorrectable (Non-Fatal) error message received from 0000:02:00.0
-> pcieport 0000:02:00.0: PCIe Bus Error: severity=Uncorrectable (Non-Fatal), type=Transaction Layer, (Receiver ID)
-> pcieport 0000:02:00.0:   device [8086:676b] error status/mask=00400000/00000000
-> pcieport 0000:02:00.0:    [22] UncorrIntErr (First)
-> xe 0000:04:00.0: Xe Pci error recovery: error detected state 1
-> mei_csc 0000:05:00.0: error recovery: error detected. state 1
-> xe 0000:04:00.0: Xe Pci error recovery: MMIO enabled
-> pcieport 0000:00:06.0: AER: Root Port link has been reset (0)
-> xe 0000:04:00.0: Xe Pci error recovery: Slot reset
-> xe 0000:04:00.0: Xe Pci error recovery: Recovered
-> mei_csc 0000:05:00.0: error recovery: resume
-> pcieport 0000:00:06.0: AER: device recovery successful
-> ```
-
-Same here, remove line with "```", it is not a doc.
-
+> Check output fence status in the shared wait helper so a signalled error
+> fence cannot be treated as a successful writeback.
 > 
-> Cc: Soham Purkait <soham.purkait@intel.com>
-> Cc: Riana Tauro <riana.tauro@intel.com>
-> Cc: Sk Anirban <sk.anirban@intel.com>
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Cc: Raag Jadav <raag.jadav@intel.com>
-> Cc: Badal Nilawar <badal.nilawar@intel.com>
-> Cc: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-> ---
-> v2: simplified the regex and removed duplicate strings (Kamil)
-> ---
->  tests/intel/xe_err_injection.c | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
+> On ARM64 QEMU with one and two CPUs, the new subtest fails on unmodified
+> mainline and passes with the local VKMS composer-user lifetime
+> fix. Four existing applicable writeback subtests pass on both kernels;
+> the two XRGB2101010 subtests skip because the format probe rejects them.
 > 
-> diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-> index 46d9f7f42..62d4258e1 100644
-> --- a/tests/intel/xe_err_injection.c
-> +++ b/tests/intel/xe_err_injection.c
-> @@ -260,6 +260,19 @@ static void print_aer_recovery_status(void)
->  		igt_info("AER device recovery successful\n");
->  }
->  
-> +/* Dmesg regex to inform igt_runner not to treat the expected AER error messages as failures */
-> +static void ignore_aer_in_dmesg(void)
-> +{
-> +	char *aer_msg = "AER: Uncorrectable .Non-Fatal. error message received from"
-> +			"|PCIe Bus Error: severity=Uncorrectable .Non-Fatal."
+> Signed-off-by: atipre <tipreaditya@gmail.com>
 
-Remove final dot, it is meaningless there.
+It would be preferable to have Full Name instead of nick,
+should this be:
+Signed-off-by: Tipre Aditya <tipreaditya@gmail.com>
+?
 
-> +			"|Xe Pci error recovery"
 
-imho remove this, as this is catched by below.
+If yes, add also same From: at beginnig or configure your git.
 
-> +			"|error recovery"
-
-imho better:
-			"|error recovery:"
-
-> +			"|AER: Root Port link has been reset"
-> +			"|AER: device recovery successful"
-
-Move these two lines after first line starting with "AER", also sort
-all regexes alphabetically.
++cc Swati and Karthik
+Cc: Karthik B S <karthik.b.s@intel.com>
+Cc: Swati Sharma <swati2.sharma@intel.com>
 
 Regards,
 Kamil
 
-> +			"|SIGID=203";
-> +	igt_emit_ignore_dmesg_regex(aer_msg);
-> +}
-> +
->  static bool gt_uc_wkr_parity_recovered;
+> ---
+>  tests/kms_writeback.c | 62 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 62 insertions(+)
+> 
+> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+> index 7c30e8e..71317cf 100644
+> --- a/tests/kms_writeback.c
+> +++ b/tests/kms_writeback.c
+> @@ -64,6 +64,10 @@
+>   *
+>   * SUBTEST: writeback-pixel-formats
+>   * Description: Check the writeback format
+> + *
+> + * SUBTEST: writeback-preserves-crc
+> + * Description: CRC capture remains active across completed writebacks
+> + * Driver requirement: i915, xe, vkms
+>   */
 >  
->  /**
-> @@ -290,6 +303,8 @@ static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
->  		igt_assert_f(false, "Failed to read error counter before injection\n");
+>  IGT_TEST_DESCRIPTION(
+> @@ -317,6 +321,7 @@ static void get_and_wait_out_fence(igt_output_t *output)
+>  
+>  	ret = sync_fence_wait(output->writeback_out_fence_fd, 1000);
+>  	igt_assert_f(ret == 0, "sync_fence_wait failed: %s\n", strerror(-ret));
+> +	igt_assert_eq(sync_fence_status(output->writeback_out_fence_fd), 1);
+>  	close(output->writeback_out_fence_fd);
+>  	output->writeback_out_fence_fd = -1;
+>  }
+> @@ -537,6 +542,7 @@ int igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+>  	igt_output_t *output;
+>  	igt_plane_t *plane;
+>  	igt_fb_t input_fb, input_fb_10bit;
+> +	static igt_pipe_crc_t *pipe_crc;
+>  	drmModeModeInfo mode;
+>  	unsigned int fb_id;
+>  	int ret;
+> @@ -709,7 +715,63 @@ int igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+>  		igt_remove_fb(display.drm_fd, &output_fb);
 >  	}
 >  
-> +	ignore_aer_in_dmesg();
+> +	igt_describe("CRC capture remains active across completed writebacks");
+> +	igt_subtest("writeback-preserves-crc") {
+> +		igt_fb_t blue_fb, output_fb;
+> +		igt_fb_t *colors[] = { &input_fb, &blue_fb };
+> +		igt_crc_t reference[2], crc;
+> +		int i, j;
 > +
->  	acquire_steering_semaphore(mmio);
->  	/* Arm the injection sequence. */
->  	xe_mmio_write32(mmio, XE_MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
+> +		igt_skip_on(data.dump_check || data.list_modes);
+> +		igt_require(data.supported_colors & XRGB8888);
+> +		igt_require_pipe_crc(display.drm_fd);
+> +
+> +		igt_create_color_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
+> +				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +				    0.0, 0.0, 1.0, &blue_fb);
+> +		igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
+> +			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
+> +			      &output_fb);
+> +		fill_fb(&input_fb, 0x00ff0000);
+> +		igt_plane_set_fb(plane, &input_fb);
+> +		igt_output_set_writeback_fb(output, NULL);
+> +		igt_display_commit_atomic(&display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +
+> +		/* Finish the modeset before starting continuous CRC capture. */
+> +		pipe_crc = igt_pipe_crc_new(display.drm_fd, output->config.crtc_index,
+> +					    IGT_PIPE_CRC_SOURCE_AUTO);
+> +		igt_pipe_crc_start(pipe_crc);
+> +
+> +		/* Establish both references before writeback can affect capture. */
+> +		for (i = 0; i < ARRAY_SIZE(colors); i++) {
+> +			igt_plane_set_fb(plane, colors[i]);
+> +			igt_display_commit_atomic(&display, 0, NULL);
+> +			igt_pipe_crc_get_current(display.drm_fd, pipe_crc, &reference[i]);
+> +		}
+> +
+> +		for (i = 0; i < 4; i++) {
+> +			int color = i % ARRAY_SIZE(colors);
+> +
+> +			igt_plane_set_fb(plane, colors[color]);
+> +			igt_output_set_writeback_fb(output, &output_fb);
+> +			igt_display_commit_atomic(&display, 0, NULL);
+> +			get_and_wait_out_fence(output);
+> +
+> +			/* Require fresh frames without stopping or restarting capture. */
+> +			for (j = 0; j < 3; j++) {
+> +				igt_pipe_crc_get_current(display.drm_fd, pipe_crc, &crc);
+> +				igt_assert_crc_equal(&reference[color], &crc);
+> +			}
+> +		}
+> +
+> +		igt_plane_set_fb(plane, &input_fb);
+> +		igt_display_commit_atomic(&display, 0, NULL);
+> +		igt_remove_fb(display.drm_fd, &blue_fb);
+> +		igt_remove_fb(display.drm_fd, &output_fb);
+> +	}
+> +
+>  	igt_fixture() {
+> +		igt_pipe_crc_free(pipe_crc);
+>  		cleanup_writeback(&display, output);
+>  		igt_remove_fb(display.drm_fd, &input_fb);
+>  
+> 
+> base-commit: bb76404eac7032ba85c53eac15b76e4fadaff0de
 > -- 
-> 2.34.1
+> 2.50.1 (Apple Git-155)
 > 
