@@ -2,25 +2,25 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C44606A31F
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 18:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433B2606A31A
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 18:59:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F10EC10F0D4;
-	Mon, 26 Oct 2026 18:39:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C91EE10E31A;
+	Mon, 26 Oct 2026 18:59:41 +0000 (UTC)
 Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 862FF10E381;
- Mon, 26 Oct 2026 18:38:28 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2439E10E31A;
+ Mon, 26 Oct 2026 18:58:53 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6510550144338334608=="
+ boundary="===============1777559817473248085=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Runner=3A_report_test_comma?=
- =?utf-8?q?nd_line_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Runner=3A_report_test_com?=
+ =?utf-8?q?mand_line_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Oct 2026 18:38:28 -0000
-Message-ID: <179303990854.72354.8902308366225155675@221881a7231d>
+Date: Mon, 26 Oct 2026 18:58:53 -0000
+Message-ID: <179304113314.72462.9212186808546031472@221881a7231d>
 X-Patchwork-Hint: ignore
 References: <20261026141702.44811-1-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20261026141702.44811-1-kamil.konieczny@linux.intel.com>
@@ -36,13 +36,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============6510550144338334608==
+--===============1777559817473248085==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -55,7 +55,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9165_BAT -> XEIGTPW_16047_BAT
+CI Bug Log - changes from IGT_9165 -> IGTPW_16047
 ====================================================
 
 Summary
@@ -65,12 +65,12 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16047/index.html
 
-Participating hosts (15 -> 15)
+Participating hosts (40 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-dg2-13 fi-glk-j4005 
 
 
 Changes
@@ -82,17 +82,19 @@ Changes
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_9165 -> IGTPW_16047
 
+  CI-20190529: 20190529
+  CI_DRM_19396: 3543fd9d737a3f30b44d036b5de64c379d1c376f @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_16047: 16047
   IGT_9165: 9165
-  xe-6012-3543fd9d737a3f30b44d036b5de64c379d1c376f: 3543fd9d737a3f30b44d036b5de64c379d1c376f
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16047/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16047/index.html
 
---===============6510550144338334608==
+--===============1777559817473248085==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -116,28 +118,31 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151715/">https://patchwork.freedesktop.org/series/151715/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16047/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16047/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16047/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16047/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9165_BAT -&gt; XEIGTPW_16047_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9165 -&gt; IGTPW_16047</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16047/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-dg2-13 fi-glk-j4005 </p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9165 -&gt; IGTPW_16047</li>
 </ul>
-<p>IGTPW_16047: 16047<br />
-  IGT_9165: 9165<br />
-  xe-6012-3543fd9d737a3f30b44d036b5de64c379d1c376f: 3543fd9d737a3f30b44d036b5de64c379d1c376f</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19396: 3543fd9d737a3f30b44d036b5de64c379d1c376f @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_16047: 16047<br />
+  IGT_9165: 9165</p>
 
 </body>
 </html>
 
---===============6510550144338334608==--
+--===============1777559817473248085==--
