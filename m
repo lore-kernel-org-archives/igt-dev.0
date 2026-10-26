@@ -2,147 +2,147 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205F4606A31A
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 19:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAAD606A338
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 19:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kbQ7Gp52
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iG4F2gAv
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BBB8B10F0F6;
-	Mon, 26 Oct 2026 19:39:07 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3264B10F0F6
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2026 19:38:13 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7C7D810F100;
+	Mon, 26 Oct 2026 19:45:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id ACDD710F0F6
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2026 19:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793043494; x=1824579494;
+ t=1793043850; x=1824579850;
  h=from:to:cc:subject:in-reply-to:references:date:
  message-id:mime-version;
- bh=aoD+2kuZqwjZpALnI6ceSyUnmzUD+h6PHwpwb1pb1Lw=;
- b=kbQ7Gp52sw5YW0kDB2rCXcGvf4cHMX4ccnmUpshSAAxkT41b+LZJDUo5
- ZCimQ7/OpfoSdEn4p13OT4foOB0bywDNviMEMlvGyKF0+Ua98eujLEheG
- H2JaSynZMDK8aQ2/xg8esdIUuuakInR764kOMEuF5b5R/9qKm8cCQfRjs
- IIJ4hFUGNj0c14aGgxuAvQzOZEZjet2dVt5CSmMMLC8xpkpYCLgpilEqY
- /rYDALbXElbiuV8NHmhHZ2n4CZLhx3oTvc+lbmRbRBnOVGaGgW3dfe4xY
- kNIVB5j0KpfxBivpKN/YpS9RBbbu4PZZ3MDwUooYoY5T5pBCRXFKb5F51 Q==;
-X-CSE-ConnectionGUID: c1oBbpflR/GyLMHNWMPR8g==
-X-CSE-MsgGUID: MB1rgtBISF+iAlMZ7fIf4Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1620997"
+ bh=8+JLu/Bob/6hihOkFDg8RJ/yD29RuSmvaoUC2jIyUvQ=;
+ b=iG4F2gAvbd2fIz3msG9kn6FSn2p2cqaNPdCZMvHjTajWrIGote4zsi43
+ pBsgsBTo5EQb3sEDxHJqADhoHiYN0qRzMoW0sBjRLcrGpAEumOL0L/V6K
+ MlAdatNJj6syDsWNdrSxPJ38A04jjMA+jkzKaX1X/Nq016loI389Xd7Cn
+ C3h0ziZrMQE02d+dlOBVRosJa8hFT21vUXq/eRg/7XCxgAFbuLRgLKp1o
+ 9/TJWJacXm8g+kdzfm+hoR/PUpZFd90AsEKS4UlDieNjU0y4fIPSNdd/N
+ RjVPy59Kk6gOYU+YILQf7rwtC/zFfL8F4ui2iQfLjFSU6Xk+DizlP8JIE Q==;
+X-CSE-ConnectionGUID: YtdTml+US5u2CKaOMxcZhw==
+X-CSE-MsgGUID: wE9BJ+KETCW5IURcG+MYLA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1761048"
 X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="1620997"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2026 12:38:13 -0700
-X-CSE-ConnectionGUID: BSrdGZdRQ02SXdZqKCsBNw==
-X-CSE-MsgGUID: 4sHu9Qr7Tu2wr7cB3zRYcw==
+   d="scan'208";a="1761048"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Oct 2026 12:44:09 -0700
+X-CSE-ConnectionGUID: c80tRYVqRQy9DlSoa1B2Pg==
+X-CSE-MsgGUID: m8mxgFZlT5eMuvVgBGrvpw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,180,1787036400"; 
-   d="scan'208";a="4496000"
+   d="scan'208";a="4431818"
 Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
- by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2026 12:38:13 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Oct 2026 12:44:10 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 12:38:12 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ 15.2.2562.49; Mon, 26 Oct 2026 12:44:08 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 12:38:12 -0700
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.69) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ 15.2.2562.49 via Frontend Transport; Mon, 26 Oct 2026 12:44:08 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.1) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.49; Mon, 26 Oct 2026 12:38:11 -0700
+ 15.2.2562.49; Mon, 26 Oct 2026 12:44:08 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lzZ15sUIlOc63qfZhkTZ0Rv4+Nw8vmFz5+ZAAZDkLgv+W7Yxrwxnu2A0uGfjGjMGumwzPHZ1nYRKO8AS1e6WPh8hFGsxRWhyBISLDqbuSnkt0AdD9bODGAt6vJBZt/7fSRwsJo/DCDoyUW7WSf5iSBTMFwI9+VjPnX8pou1QEGvhZaAoerjd2i3Vvb3fhVP4lSjvVwWWmGopxjneZKDOqRVYsjtQ5dgdK09QrBoqUph2OYhnD8P2KZCBJvyc1wXyT4T/+nswZL2mPvtgTuYcckn+y4qQ876R6aIaFrT937hyvA+JtTqLsHhU/xRXkeGoKnsje11jPG3036OfQPiN9Q==
+ b=aX20Q2cKYusN9ZQc4JVtU5Y+Er4b2U7T/6hviYFCDZ9qbCWI9wCE2Zx0V1U8YR6Edjf7/lfELX3AkwSUI2cQ9ngrlGXFH2mmX7xCyxoh+hxMvmhttMfB9WnfSIBvhUOjtSMQN9gbj+vwaJeavwB7PCv8j75gTc3T3BviVM5MHn0zE+XbZ9bQZMWU7yF5vg1aPg5Y/GfJBSqjYKuJb2+pRW6AF9grWI18lBYVJld5DWvNQduWpWLdnabh0Hgf+CRMtWGPdTXjND87UMFWz/LcoyoZPyLIelNltjhVVG3Vi5M+0xa5M2JyF7Bun7vzFUcRs6DzrFqHi2YhUfb4xptKxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n4TCzFn4Wgs2BsaMmi6Lez940Y6WAO+8FlBPZhkHWPw=;
- b=xHo9/Ai/orp6iS7apyrLt/42xyBUH2fZYEvV6ac+SXzyrlLhqnjZvQ5yMiZeWqopBKTUcNTRKDQOlb5ZSEXUlOiub16kqWDHIe/eiHMtH4Aqb6Zuhzhad+C7ghslO6yMCHBtSHfdCX6NGO2jQjU60V9oHqy3+G2qwBCM0IHe5iUxrVA3ySs/etrzTEMlEd7bs5C6Fbp5K//8wYrOaTj5f31n7DnLsmkO1VONs6MevwGj1qkpprvOI7iqxqVp7d5XiGIvRdpECizOkk4pruTA6eFjFQYjHCH5+eChJloorU148K8Lwe0mDQjevQrK7YFQj11z79j1RoPlzxQjMgQQAg==
+ bh=K+7shIwQm57TUNLpqqksZk4YgymgHFqe0CsgNpcrKsM=;
+ b=nezwMq/sfm/DJRS4zwwRNC8lRIvq0w6Id0ZS4MVYHAfyudDatfAPZ5FwCy2W1FA+bQ+fFHgkpRR/XwKvpwihAEqtLBjWAkxzspxY0y64PoHJ6M7++XK/vPXFdDnKxhfSDUzUJQ7RAP3X7WT06az7zCV7zenlsmPufojJ5/WxASqoE6rJdnEwmRfV9Hp68BkpG4otxziMO4ZQz+u0JO2Ub0BZbEpHNBH2C6WW6ETi9y3sYiIP1v4J2SCw3qTVmRPWXMPZELjVII1tSgj3lbwd2HAUP5ivPt766duqv9v3nK40Bell7cKeDWDsM1n4+5Sub7xC0SHs9NmJK+SzJxp56Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from PH0PR11MB5095.namprd11.prod.outlook.com (2603:10b6:510:3b::14)
- by SN7PR11MB7638.namprd11.prod.outlook.com (2603:10b6:806:34b::22)
+ by CO1PR11MB5155.namprd11.prod.outlook.com (2603:10b6:303:91::11)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.546.22; Mon, 26 Oct
- 2026 19:38:10 +0000
+ 2026 19:44:06 +0000
 Received: from PH0PR11MB5095.namprd11.prod.outlook.com
  ([fe80::770b:7229:68c0:5ded]) by PH0PR11MB5095.namprd11.prod.outlook.com
  ([fe80::770b:7229:68c0:5ded%3]) with mapi id 15.21.0546.021; Mon, 26 Oct 2026
- 19:38:10 +0000
+ 19:44:06 +0000
 From: Gustavo Sousa <gustavo.sousa@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2 1/2] runner/executor: Build test command line
- before fork
-In-Reply-To: <20261026141702.44811-2-kamil.konieczny@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2 2/2] runner/executor: Report command used for
+ test exec
+In-Reply-To: <20261026141702.44811-3-kamil.konieczny@linux.intel.com>
 References: <20261026141702.44811-1-kamil.konieczny@linux.intel.com>
- <20261026141702.44811-2-kamil.konieczny@linux.intel.com>
-Date: Mon, 26 Oct 2026 16:38:05 -0300
-Message-ID: <871p9cb6ci.fsf@intel.com>
+ <20261026141702.44811-3-kamil.konieczny@linux.intel.com>
+Date: Mon, 26 Oct 2026 16:44:01 -0300
+Message-ID: <87wlr49ri6.fsf@intel.com>
 Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0102.namprd03.prod.outlook.com
- (2603:10b6:a03:333::17) To PH0PR11MB5095.namprd11.prod.outlook.com
+X-ClientProxiedBy: SJ2P220CA0007.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5da::13) To PH0PR11MB5095.namprd11.prod.outlook.com
  (2603:10b6:510:3b::14)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR11MB5095:EE_|SN7PR11MB7638:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5465b215-655b-4c42-e487-08df3398aa51
+X-MS-TrafficTypeDiagnostic: PH0PR11MB5095:EE_|CO1PR11MB5155:EE_
+X-MS-Office365-Filtering-Correlation-Id: 247347b5-faf4-4237-7e33-08df33997ec4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|23010399003|261026121527099003|11063799006|4143699003|5023799004|56012099006|261022075727099003|261021121427099003|261022105027099003|261021123027099003|261009223027099003|10067099003|18002099003|22082099003|6133799003|261026140227099003|3023799007;
-X-Microsoft-Antispam-Message-Info: BBdeM0xVbc1tj894H0FYWMVjNb2l77ogDioPGrLX9PFhm5wNm3cmXprEw88M/v1SgdS/BD00X7K8QSgWcH5DMZ7jzI1HG1b9A9Fh/LbAm+oMPYDdBME9erXPlLPsrgBIA9ONcRXw50my+mm/vFMmio7NJ8JDH+L4ibj1ybYA1oX5yW+XTH20i7Hf8k+YbfQ1bEiNxJvFD0B8G+5KrD8tBigfIArcZyn/vVPzccBOEju4EBgqCR9sAS/EZqfMA5gvrIRXat/lSRKh2lOq51XDCqXXajEexDxLrMWrpJ2+LFoEWEbfBotMCtKaw2aaXLPlOO418gwWYdm/hxtTS4/DLRYfpZgbquR3GCR3CIMWK2TtcvYlb5ectj8pUle7CPULqEYoCSCBo5CRprVHkICRx7TrR64kpBL56EMBaHXWcPrQzV3HPJIvxaee+XVyWCooJUn1v+BK3aWh7PijbMtQbsmYM0ZqIyhiBccAYZvtPGgQn/M0r0n7qsGWnWiXA5g12lpqjNqu/xEfUtLu5OU5RMEBIrgFiIRktNcGJgSnXCR5Cnq+6zC5VpTp4Pl0El8VLHpnF0EnYD4btsKlb1pyx/MIG7JY5oW89IxljGOXNJzbh52FpfutCvuvnkf4w4081bIPpn0ogw0XjpnQPeFwf2rgv58VBUudIkGmUrOh1e8=
+ ARA:13230040|376014|366016|23010399003|1800799024|261026121527099003|4143699003|11063799006|56012099006|261026135527099003|261021123027099003|261021121427099003|261022115727099003|261022113327099003|261022075727099003|261021133027099003|261021135927099003|261021130227099003|261022105027099003|261009223027099003|10067099003|22082099003|18002099003|6133799003|261026140227099003|261026130827099003;
+X-Microsoft-Antispam-Message-Info: Uwnfky+k1ZaEp+YP5mwoMZpjhbKYyWihNyp9ufpFhcudllhOaKvUZHjYFWQqW1CHEy2jq0V7J/ZsauGnxwQt9DcACHjzsB0xNXarnrU2Kf0hYjBqv6bdvrpuEGreQu+7ntXMBgfvrv9dY7dadaYrEYShTlbfVqIrnI93xq55xXB4hNF4Eo/BVEZOJdl7/1YKer2ngrk1QDTi4YcH94Z4q9/3Xa6EPzx7veLAojC8Pl9aVddmTUDB6Y7mvL5wKJwkNCdP4poeNigAIywS9ijczxzWoGQ8xmbQNTA6yNV+8TO587eYs9c2t1QAnCC/QPSezZ8NA2aCbPlLszH0SGEUQ3gWaKJDJkNE/kJZrmf5aLBrpR6Vrgsv6g0wBZVvxvT1lnHYr7Xp0FOsV+Ay0N4KB74Yp2Rk/eUGDdUX3KI8Pjenq+/A/7T4YLDdL4mLLNdNFTsNdVkMsApFoA1V7RqkBltV/qImLgWsZCt8YLD0SN2xywd29HhtjD/uutEUgNocUXjjKagdh25OHJrY1EaftYUZ/JuOvtc0fqYWQBCMCzDszNceJ6j1lMtfd1t3jINT2+13qv82eZlfS8dAfrMPutMy3GoXd5iob10cs4+EzMRlpUL4xyDoKu2CdqVZNTZCQYQakzCPbklMdCpkUVw2X1azOvMz4qzzgmpgEI/f8bs=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:PH0PR11MB5095.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(261026121527099003)(11063799006)(4143699003)(5023799004)(56012099006)(261022075727099003)(261021121427099003)(261022105027099003)(261021123027099003)(261009223027099003)(10067099003)(18002099003)(22082099003)(6133799003)(261026140227099003)(3023799007);
+ SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(261026121527099003)(4143699003)(11063799006)(56012099006)(261026135527099003)(261021123027099003)(261021121427099003)(261022115727099003)(261022113327099003)(261022075727099003)(261021133027099003)(261021135927099003)(261021130227099003)(261022105027099003)(261009223027099003)(10067099003)(22082099003)(18002099003)(6133799003)(261026140227099003)(261026130827099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?ml2eTU00+HmRCRPmyrW9oknDfPiLHRx7xlAJWDKeopWXYSx1Gz5eTZAhyAKu?=
- =?us-ascii?Q?NMlj9eXE+vi5kAa6sPdGgQYTjfv0Y1bcJWHh3pAmhh5wc3+6djl9mofDYMCt?=
- =?us-ascii?Q?PFxz6NS4p6YEcLU79qEr/Hf3CVBrT1l6WUb4sCc8lyAMexC4sYUMlJVGh0VZ?=
- =?us-ascii?Q?clgNETlYPMEqd3DkSLeV+vB09DgcDyhxxMetHfm1DZjyDXbr1cvRSexUwNsf?=
- =?us-ascii?Q?zLcIE1s6mXzkIudamFN7LmHDJ7fqj2gSgAJWJeQTs3vvVOAtRfRA0TBfKo83?=
- =?us-ascii?Q?gdXVX37Y2vc4xSXztk/Cl7PyJ0ftU5Degxpuq8Qa514Jxd7gLAVIxf32f1kt?=
- =?us-ascii?Q?ZETtq7MoAlQuIVfO4nd409tV/6cIBPRKQYR6hqQaUWPVs5L9kN+ezTrnY2VB?=
- =?us-ascii?Q?CMu0Zes9SIk/H2DsewY1/GSPQszVsRqB9lSuw3/hrrrNpSm3uOEbLmROYGZO?=
- =?us-ascii?Q?4010OfC1S7nIpXLqnaHkyWbQHh9TkCFCsZNa7ilYSZC52q3lXyiG9vpRT+jm?=
- =?us-ascii?Q?M7eCtiqApfmpued4x748/42TvHTe6gntBscJFFEh5w9Ph+/19BPYX5Zcvg68?=
- =?us-ascii?Q?ICBg341b13Ktvnu8Vo12kplcMe/+miHQiVzonJO9PPNIg+kVEESGz98+uGXD?=
- =?us-ascii?Q?CSKEjD6dJr55cLft+4dU2y89XMbon/VK8Z3WSuBLDIITAeLUAwASPfw3Sh0L?=
- =?us-ascii?Q?Dv19ZkY7ZXbMZPkR6VcTIz62EuIzZK0gotC4DTGertB3hBu0YnUqjGbf3UTt?=
- =?us-ascii?Q?62BKQGy8rEoozrD3kRmXunkJg7l9PW6zrxokWD+pBz6ljWIa+2XU+Z7nowbR?=
- =?us-ascii?Q?vDojr+FKKtuM+SG1HUF/MuDR/nr0sO6bogSdiPPl+WyRbdXuHYVg15mX4sMJ?=
- =?us-ascii?Q?7iFaFLxWx0w8kJnHbnN0iH0dYwOYglAiQFZprdHJ/FgQJWyIOW7kcSk+sSmx?=
- =?us-ascii?Q?ePFm/Tm6wYxiJguWrvhQN++Mevg5NcaAaADakTsCrbkfBAowPKwIxO/2zbQX?=
- =?us-ascii?Q?aQ8N5RI+pf4HN6/stB8QNNuVr0QA8TbglZ11HQYEeO1PJs1lAf+U6HMfe9YR?=
- =?us-ascii?Q?SNYeqXnpNC/sZ0WfHIhPCe9Yvo+gkFjt/f3IW/h2wuX9P6L/NIa6b/nEkgpj?=
- =?us-ascii?Q?KECUN09eA1FL6df5vzhCv2hkkKw5p7A1wH0lnrYGUEkoAk05C5SsO7LdtKcP?=
- =?us-ascii?Q?zJUFqjoUNwyOmmpKnjgq1LJTilDmkaHtpeb3EJf+jJrxQKTLrCVEO+Io+fig?=
- =?us-ascii?Q?QxfNFUuGBZkqbfA5860QFtXK0PX3ffWpeKaQDkiuwEyV8iQq4lrELwX2qsko?=
- =?us-ascii?Q?JHDoQkvC+5QNrAW9PPawMZPFB9vx67cySr80C0HR6BgnYvgwp11zHYmJyxYD?=
- =?us-ascii?Q?8Z7xQ/fqQ+UdAhjequ4ghkE7Chsn3dsIDSvgkTUkX/KVRV1iEW1JNiitEyeM?=
- =?us-ascii?Q?aSfF4b+jTCFAjSeNrd0s9SS2vyJQDt5dP3+S4PEyd2sHJ9/yITiMkmN/j1i5?=
- =?us-ascii?Q?NuAWZKayrJk4irzVwvoNOP0TTiou02OOR7wrRevBvSHD8bbFfuwIqCyc2PUs?=
- =?us-ascii?Q?ueYRpR967U9Zf+21EBuw3FEsxx3imYj+JMj+BzYvFNseN+lkR3/d147xVbxk?=
- =?us-ascii?Q?I1yPY5oIod7ko4E3ZKq0AzQVbjyid+UxU4uodhadpWQivNQ5Vqe8RXaNFkVl?=
- =?us-ascii?Q?Nlzi8EK5J2886U28ujrXk1eAO66xABTCrWxtBdxUFGHQZF8OTP/JgWhGEVJ7?=
- =?us-ascii?Q?nmyfBdp7Tg=3D=3D?=
-X-Exchange-RoutingPolicyChecked: GH9N8tI2AEjB0aZViMrZyAch5OO72P3ZMoMThYNpzP9wHgGjjvCQ36+m1iuKwACAdkrtVeAcqXKS8ArJ6kixZVIF6PxaqJvVevoPkTnsGtTIHqAaV3M1wgqHeAk4pljq25/+GxfPM89XldydDw3fu04PgeqjejNPRmPF1Y0q7pPYIJsqyJZndoHxi4xtb2LiwKgcHlxwtaIX5DLQgBdaEP2hhpvO982t33bqsmTg8NYIrLDBgkwAGYQvoZ/C385vzPjClFfEEKvZL9qi9D07Ojn7/qXenAvrJGF1Xn+55AYjLDkbsgeyvzQkQQLVanwmaWWTK0+5iv2moLsTYvGCmg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5465b215-655b-4c42-e487-08df3398aa51
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?zCLtPe8Fadu6rPAgtwEm6i/ShbNcUXFBIV7RvwjPjnvMJR/SwA1XOh/ZqiVG?=
+ =?us-ascii?Q?r+2TQ3NYK5d71M3LgkWMEUXY27Nyn2EASJL2VHZtoMUWmO+JBYGyKxqfOXC8?=
+ =?us-ascii?Q?FAk6/i3Q0PRItqrrn2UMtdlpEgsi0xGgy1yM+gr7H5FXoNsRvI7UBAlxk2Jo?=
+ =?us-ascii?Q?cw9gNtrGsgGi3c5aTKfoqURxNPTGZ5sGj4VemNlcwYC0cM1h3syUXfP4rGHk?=
+ =?us-ascii?Q?fN07jnbDoixyagOduGTjyqX+yoDhUdU8LDSr3/AlfA74PfSsIFibqRfhbkje?=
+ =?us-ascii?Q?IXJXMsJ2/T4m0o4cUU0U47yLWBKr+tLAflM+LEKCzm1eAGfZHPkZq3MyxPXj?=
+ =?us-ascii?Q?DCt24a85BYDQAYhXRGpPQNyNPbLmvZWxauZbGJ8IP7DtmaBYVRzOy0BcAu6S?=
+ =?us-ascii?Q?y8cccybtFN1QAznYQEBnl2T6MdxAKCEM1TASaATmMtwfwzO0frAeYvVxf1li?=
+ =?us-ascii?Q?iGCXuhLR+7GzI+UluOPbWCf21VVmuqGCheoQKcT0JuKzOM310W9b1QfM9pjd?=
+ =?us-ascii?Q?5kDAJLd8qAXWRpXTaQNR+DLlsHPaQK7yrzGeYTqiownSKiDhmf2dZbvJsXU1?=
+ =?us-ascii?Q?41e6f6ttp5NE+oYlGD9bwQEI52zGrEPYDwaGF2+VD1VCS4EZ0NJmuXX9M9ov?=
+ =?us-ascii?Q?6rw7Enn/YkzKmM8HI6dIydgqgsTc++v8TGsAywjG7trMHGb63XQvr92d4j/2?=
+ =?us-ascii?Q?6UXSjJDg0s8sEygf/bfwZniDqLgUDbO3Wp60ij+4RkKh9xGUYQ44Y2mZ77x3?=
+ =?us-ascii?Q?jV3qcmnHNWJLoYzsLzynP7o313GncuvvyQGI0pQk6qS9nJzHgTN+C/RCtIDb?=
+ =?us-ascii?Q?3l/UaJkmdMOQz7aySfp6JeP2qYPghrTBixP6AnhhaoN5zG1iDPIo1cmVHzFw?=
+ =?us-ascii?Q?Pob5LN0OMYHMfhpzkfgqNZEiRa+v9vsSmBYmG7J9l0mKJNo9kGCrk2y2R2ig?=
+ =?us-ascii?Q?KmXRYJFQJtumCjURzS1ZFLcm+UUYTZwK3NutytKZKbnxkaKwHmJN1+PkP64j?=
+ =?us-ascii?Q?c42SV++cnBfNjuZjT4AdTJ95LLkSkxhf6iIGekW3tk5Fg8vsMoZLu50UnRuL?=
+ =?us-ascii?Q?ziBHF8+drAUQUsZBXwEZlc8UbGF/HjrMBBZoHyJhmxbAXz5jn/YkjYcG5q1x?=
+ =?us-ascii?Q?Pvij72g7wegS/5+nkP4VN0azjR6cYlf6MazPc86RZ/snNFaNVb6g3uKuXSe8?=
+ =?us-ascii?Q?JoHGbQuyFev0vGwdXLXWK6uu1vHFQcP/uGMoS6EG6qIKn3WJj/G8g/NcJn3K?=
+ =?us-ascii?Q?/qafEwJninY6h0Wk9lTjxsm5go1N7HpevFAVnSEgbAJPYwZMnQgvokvvKo7N?=
+ =?us-ascii?Q?rX37gbI+5t7Yt+HqglAXul3I3HrlSz9WooGcA3kEAMw7nj0BDEun81/GYRn6?=
+ =?us-ascii?Q?8RrhU1jekXn22BTmH6ecxI3Qp9G1staX/6J88A9tcTDlaWw8g3hxKU0bDeOA?=
+ =?us-ascii?Q?WuxAzLixeL6oB011UCkzWE8UAGCVrxSYg+tzzn3ZT63682aKvPNDHx9YIWuA?=
+ =?us-ascii?Q?cODjXDSvG0OCehW508X/gzDqUZs495fyI2cM12478fr91xp/ZCzX47WXU5Ba?=
+ =?us-ascii?Q?vEoZ6sR5sT8Sd88RKPbuG95vaJ3+PgerXnf17LnrYpTSGmqrUUSxtIn04ICG?=
+ =?us-ascii?Q?FYJYIT1AIvxhFcQsL6Ex/gYkEHFCqWzcgGYZkZrdqhA8V/ajxYaxQAKD2bJI?=
+ =?us-ascii?Q?kGl3/5G0Uyxq5xWm1ClmbUyl5q/Nz28+FYfgRLhiqztnejEi+6SRy82u+WJp?=
+ =?us-ascii?Q?UB8rlwiEDQ=3D=3D?=
+X-Exchange-RoutingPolicyChecked: CHHAkONyVUQRcd5D+/ux0v57DnVsAXAutWgjMPu3kgq2Nvrn7zcW006OsYeHi7jw9Sm5ra9nT2o8BhoOYR4GcOu97QgU/swRIg85WG2POA/12sKEa3+homkd/lFkgZIyBB2V77J4Lpw2tWVVhJcCReOlYqBnUsRTRZVYSvSYk6UC9M/S9U3XUEI/aFfx+9ePHC1js17df5K5dPGxW/HrMiipj5o+oq5fjoLIsaNzCZ9NdXklrkJ9rqy3TZDS+oGShc4sFWTL8BrnVGxO12PND5wGo9Y53+cKpx2Vn2uEgaYW8vxP0/k9MXjoeXZIrwhUOYJAmzqqazhW1KtK5fm54Q==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 247347b5-faf4-4237-7e33-08df33997ec4
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR11MB5095.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 19:38:10.0077 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Oct 2026 19:44:06.2190 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NjgT4CC2oyN1dGo3OoNRxiCXdELoHrxb1DFROlSfkqi8CFDX5cuXBauvBJEOXJGqKQ/ZX8Nx0s1tzMG3kAJyww==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR11MB7638
+X-MS-Exchange-CrossTenant-UserPrincipalName: OsWQR13kad/8SVEK/oqnSAVt7rL3wPmP9mrpFL1MD8DGDlJnxMSJ9diZMU3AeRhqEdeSH+ZSMK0w+GolJdUKlA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5155
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -164,177 +164,108 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Kamil Konieczny <kamil.konieczny@linux.intel.com> writes:
 
-> Create a separate test command line building in main runner
-> process before forking, so it could be later processed for other
-> purposes like reporting.
+> Add printing of command line used for executing a test, when
+> the log level is normal or above.
 >
-> v2: free cmd line before closing fd, rename label (Gustavo)
+> v2: move constructing exec command string to separate function
+>     (Gustavo)
 >
 > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-
-Reviewed-by: Gustavo Sousa <gustavo.sousa@intel.com>
-
 > ---
->  runner/executor.c | 68 ++++++++++++++++++++++++++++++-----------------
->  1 file changed, 43 insertions(+), 25 deletions(-)
+>  runner/executor.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 49 insertions(+), 1 deletion(-)
 >
 > diff --git a/runner/executor.c b/runner/executor.c
-> index 8103c2a52..5bd95b929 100644
+> index 5bd95b929..91ad05d58 100644
 > --- a/runner/executor.c
 > +++ b/runner/executor.c
-> @@ -1618,28 +1618,29 @@ static int monitor_output(pid_t child,
->  	return killed;
+> @@ -1626,6 +1626,49 @@ static void free_test_command(struct igt_vec *arg_vec)
+>  	igt_vec_fini(arg_vec);
 >  }
 >  
-> -static void __attribute__((noreturn))
-> -execute_test_process(int outfd, int errfd, int socketfd,
-> -		     struct settings *settings,
-> -		     struct job_list_entry *entry)
-> +static void free_test_command(struct igt_vec *arg_vec)
->  {
-> -	struct igt_vec arg_vec;
-> -	char *arg;
-> -	size_t rootlen;
-> +	for (size_t i = 0; i < igt_vec_length(arg_vec); i++)
-> +		free(*((char **)igt_vec_elem(arg_vec, i)));
->  
-> -	dup2(outfd, STDOUT_FILENO);
-> -	dup2(errfd, STDERR_FILENO);
-> +	igt_vec_fini(arg_vec);
-> +}
->  
-> -	setpgid(0, 0);
-> +static void build_test_command(struct settings *settings,
-> +			       struct job_list_entry *entry,
-> +			       struct igt_vec *arg_vec)
+> +static char *entry_exec_cmd(struct igt_vec *arg_vec)
 > +{
-> +	size_t rootlen;
-> +	char *arg;
->  
-> -	igt_vec_init(&arg_vec, sizeof(char *));
-> +	igt_vec_init(arg_vec, sizeof(char *));
->  
->  	rootlen = strlen(settings->test_root);
->  	arg = malloc(rootlen + strlen(entry->binary) + 2);
->  	strcpy(arg, settings->test_root);
->  	arg[rootlen] = '/';
->  	strcpy(arg + rootlen + 1, entry->binary);
-> -	igt_vec_push(&arg_vec, &arg);
-> +	igt_vec_push(arg_vec, &arg);
->  
->  	if (entry->subtest_count) {
->  		size_t argsize;
-> @@ -1647,7 +1648,7 @@ execute_test_process(int outfd, int errfd, int socketfd,
->  		size_t i;
->  
->  		arg = strdup("--run-subtest");
-> -		igt_vec_push(&arg_vec, &arg);
-> +		igt_vec_push(arg_vec, &arg);
->  
->  		if ((dynbegin = strchr(entry->subtests[0], '@')) != NULL)
->  			argsize = dynbegin - entry->subtests[0];
-> @@ -1670,35 +1671,49 @@ execute_test_process(int outfd, int errfd, int socketfd,
->  			argsize += sublen + 1;
->  		}
->  
-> -		igt_vec_push(&arg_vec, &arg);
-> +		igt_vec_push(arg_vec, &arg);
->  
->  		if (dynbegin) {
->  			arg = strdup("--dynamic-subtest");
-> -			igt_vec_push(&arg_vec, &arg);
-> +			igt_vec_push(arg_vec, &arg);
->  			arg = strdup(dynbegin + 1);
-> -			igt_vec_push(&arg_vec, &arg);
-> +			igt_vec_push(arg_vec, &arg);
->  		}
->  	}
->  
->  	for (size_t i = 0; i < igt_vec_length(&settings->hook_strs); i++) {
->  		arg = strdup("--hook");
-> -		igt_vec_push(&arg_vec, &arg);
-> +		igt_vec_push(arg_vec, &arg);
->  		arg = strdup(*((char **)igt_vec_elem(&settings->hook_strs, i)));
-> -		igt_vec_push(&arg_vec, &arg);
-> +		igt_vec_push(arg_vec, &arg);
->  	}
->  
->  	arg = NULL;
-> -	igt_vec_push(&arg_vec, &arg);
-> +	igt_vec_push(arg_vec, &arg);
+> +	char *m, *n;
+> +	int mlen, s_len, vec_len;
+> +
+> +	mlen = 4096;
+> +	m = malloc(mlen);
+> +	if (!m)
+> +		return NULL;
+> +
+> +	vec_len = igt_vec_length(arg_vec);
+> +	s_len = 0;
+> +	for (size_t i = 0; i < vec_len; i++) {
+> +		int nlen;
+> +
+> +		n = *((char **)igt_vec_elem(arg_vec, i));
+> +		if (!n)
+> +			break;
+> +
+> +		nlen = strlen(n);
+> +		if (s_len + nlen + 2 > mlen) {
+> +			char *p;
+> +
+> +			mlen *= 2;
+> +			p = realloc(m, mlen);
+> +			if (!p)
+> +				break;
+> +
+> +			m = p;
+> +		}
+> +
+> +		if (i)
+> +			m[s_len++] = ' ';
+> +
+> +		memcpy(m + s_len, n, nlen);
+> +		s_len += nlen;
+> +	}
+> +
+> +	m[s_len++] = 0;
+> +
+> +	return m;
 > +}
 > +
-> +static void __attribute__((noreturn))
-> +execute_test_process(int outfd, int errfd, int socketfd,
-> +		     struct settings *settings,
-> +		     struct job_list_entry *entry,
-> +		     struct igt_vec *arg_vec)
-> +{
-> +	char *arg;
-> +
-> +	dup2(outfd, STDOUT_FILENO);
-> +	dup2(errfd, STDERR_FILENO);
-> +
-> +	setpgid(0, 0);
->  
->  	if (socketfd >= 0) {
->  		struct runnerpacket *packet;
->  
-> -		packet = runnerpacket_exec(arg_vec.elems);
-> +		packet = runnerpacket_exec(arg_vec->elems);
->  		write(socketfd, packet, packet->size);
->  	}
->  
-> -	arg = *((char **)igt_vec_elem(&arg_vec, 0));
-> -	execv(arg, arg_vec.elems);
-> +	arg = *((char **)igt_vec_elem(arg_vec, 0));
-> +	execv(arg, arg_vec->elems);
->  	fprintf(stderr, "Cannot execute %s\n", arg);
->  	exit(IGT_EXIT_INVALID);
->  }
-> @@ -1776,6 +1791,7 @@ static int execute_next_entry(struct execute_state *state,
->  			      bool *abort_already_written)
->  {
->  	int idirfd;
-> +	struct igt_vec arg_vec;
->  	int outputs[_F_LAST];
->  	int kmsgfd;
->  	int outpipe[2] = { -1, -1 };
-> @@ -1829,6 +1845,7 @@ static int execute_next_entry(struct execute_state *state,
->  		lseek(kmsgfd, 0, SEEK_END);
->  	}
->  
-> +	build_test_command(settings, entry, &arg_vec);
+>  static void build_test_command(struct settings *settings,
+>  			       struct job_list_entry *entry,
+>  			       struct igt_vec *arg_vec)
+> @@ -1849,7 +1892,7 @@ static int execute_next_entry(struct execute_state *state,
 >  
 >  	if (settings->log_level >= LOG_LEVEL_NORMAL) {
 >  		char buf[100];
-> @@ -1860,7 +1877,7 @@ static int execute_next_entry(struct execute_state *state,
->  	if (child < 0) {
->  		errf("Failed to fork: %m\n");
->  		result = -1;
-> -		goto out_kmsgfd;
-> +		goto out_fork_failed;
->  	} else if (child == 0) {
->  		char envstring[16];
+> -		char *displayname;
+> +		char *displayname, *cmd;
+>  		int width = digits(total);
+>  		int len;
 >  
-> @@ -1880,7 +1897,7 @@ static int execute_next_entry(struct execute_state *state,
->  		setenv("IGT_SENTINEL_ON_STDERR", "1", 1);
->  		setenv("IGT_RUNNER_ATTACHMENTS_DIR", attdirname, 1);
+> @@ -1864,6 +1907,11 @@ static int execute_next_entry(struct execute_state *state,
+>  		free(displayname);
 >  
-> -		execute_test_process(outfd, errfd, socketfd, settings, entry);
-> +		execute_test_process(outfd, errfd, socketfd, settings, entry, &arg_vec);
->  		/* unreachable */
+>  		outf("%s\n", buf);
+> +		cmd = entry_exec_cmd(&arg_vec);
+> +		if (cmd) {
+> +			outf("cmd: %s\n", cmd);
+> +			free(cmd);
+> +		}
+
+The function entry_exec_cmd() and its usage look correct to me, but I
+wonder if we could avoid the memory allocation with something like
+below:
+
+    outf("cmd:");
+
+    for (size_t i = 0;
+         i < igt_vec_length(&arg_vec) && *(char **)igt_vec_elem(&arg_vec, i);
+         i++)
+    	outf(" %s", *(char **)igt_vec_elem(&arg_vec, i));
+
+    outf("\n");
+
+--
+Gustavo Sousa
+
 >  	}
 >  
-> @@ -1897,7 +1914,8 @@ static int execute_next_entry(struct execute_state *state,
->  				outputs, time_spent, settings,
->  				abortreason, abort_already_written);
->  
-> -out_kmsgfd:
-> +out_fork_failed:
-> +	free_test_command(&arg_vec);
->  	close(kmsgfd);
->  out_pipe:
->  	close(outpipe[0]);
+>  	/*
 > -- 
 > 2.55.0
