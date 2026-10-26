@@ -2,52 +2,52 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6231D606A31A
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 17:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A45606A31A
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 17:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M4lS2Jgh
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SWUfRxFS
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1281710E1FD;
-	Mon, 26 Oct 2026 17:21:02 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6F96A10E2F1;
+	Mon, 26 Oct 2026 17:21:51 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 095EB10E2BA
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2026 17:18:30 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9576F10E1FD
+ for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2026 17:18:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793035110; x=1824571110;
+ t=1793035115; x=1824571115;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=kFe+LKVMhfMpVMqw6n5zeJWb6uH8RP144Ao0Yzhzgko=;
- b=M4lS2Jgh2pfYgNOjIFBLpvqet2iHAMqgaAThxnrpcodcjivBSGhPAmUv
- LBdBv3ZxxvpdJkqIuZ+1bm956j0ycdpyQ0KtVf6X5Gm+0mASeH1+4Hmb0
- Cab9xgwR9qQZGePtVxNfqzrXvCGbsZMGyqmEHJLsYmHp9LgLHDC1MHvkO
- 2Lpp7rBAW19JkgkSMUEDaxuSmOvF3EItUjSLyOF8TnyVdvDHQYM9U+cTJ
- CXTZXokCLDTQP66TDGU5iZwsFU0fxmi/2dC6LuVYQLs+n7Ru6wK3XLk9s
- JtwCm0diTbtLQC0xRcjrprEO9Xkplda5Jd99ikg8IGxKaGN4IsGkeGVlR g==;
-X-CSE-ConnectionGUID: siTjr9sXTj6jQJsBkHGMvw==
-X-CSE-MsgGUID: ZyG3SfjjQSavnZMD93W+nA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1589191"
+ bh=nFTJFCXYW12pt8X+sYRb9hDJvMDeuDXzh8XV6cJFrqA=;
+ b=SWUfRxFS5uY3qV3v70MtcWvL57SrOL0A3jfEuJzTt3xJBIRWPXfvR1af
+ EoxST/VB3gCX9ZQa0wuQUbsEJV+in+JBqLxZPnYq8mrEQygN+5OHnN4Sk
+ kKSGjkknZDwPwbiZJ3VSR3UAdDipHK9PKRCTNkO759CDAm7X5pfJM0+Ik
+ A4rJeksSMg9kkD7nYC1xn6d9Qd0cJJvt2v4QgqqUTaEYgAkgqmJEfAvN9
+ KdMvvHUm5V6Er1AQR48mWppp0NFtd+MeW//87ebMSOcpLz922uXzic8qa
+ 7HN6JDorvdIxkIOLMjrzD4Bc2/Wzl4t3NNk29kKt2BkNQW6X/mYxP2p2i Q==;
+X-CSE-ConnectionGUID: 6zsukPzmSwScXOM+tqgoQw==
+X-CSE-MsgGUID: zoLNGtJ+RHOR4B6cA8q3ew==
+X-IronPort-AV: E=McAfee;i="6800,10657,11947"; a="1589206"
 X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="1589191"
+   d="scan'208";a="1589206"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2026 10:18:28 -0700
-X-CSE-ConnectionGUID: Tx66N2yOSSSbQvq1JIsF0Q==
-X-CSE-MsgGUID: QagfqnZpQzmW/G8b8IZnyw==
+ 26 Oct 2026 10:18:34 -0700
+X-CSE-ConnectionGUID: CA2xD1JAS/uhb72B3rTb3A==
+X-CSE-MsgGUID: Pvxx0cfqRy+BPFwe/N0GJA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,179,1787036400"; 
-   d="scan'208";a="4275107"
+   d="scan'208";a="4275176"
 Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
  jeevan-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.190.238.87])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Oct 2026 10:18:26 -0700
+ 26 Oct 2026 10:18:33 -0700
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: pranay.samala@intel.com,
 	Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH 1/3] tests/kms_cursor_legacy: reduce CI debug output
-Date: Mon, 26 Oct 2026 22:48:34 +0530
-Message-ID: <20261026171836.1434992-2-jeevan.b@intel.com>
+Subject: [PATCH 3/3] tests/kms_rotation_crc: reduce multiplane CI debug output
+Date: Mon, 26 Oct 2026 22:48:36 +0530
+Message-ID: <20261026171836.1434992-4-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261026171836.1434992-1-jeevan.b@intel.com>
 References: <20261026171836.1434992-1-jeevan.b@intel.com>
@@ -72,48 +72,139 @@ X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Use DRM_UT_CORE instead of DRM_UT_KMS in CI to reduce log volume while
-retaining diagnostics. This applies to all subtests, including the
-reported cursorA-vs-flipA-atomic-transitions case.
+Use DRM_UT_CORE in CI for multiplane-rotation and both cropping variants
+to suppress KMS debug logs while retaining CORE diagnostics. Restore the
+original mask after the group and on exit; other subtests are unchanged.
 
-Log the actual debug mask instead of the hard-coded 0x4.
-Intel CI output-limit validation is still pending.
-
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/16961
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/work_items/16184
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- lib/igt_sysfs.c           | 3 ++-
- tests/kms_cursor_legacy.c | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ tests/kms_rotation_crc.c | 96 ++++++++++++++++++++++------------------
+ 1 file changed, 53 insertions(+), 43 deletions(-)
 
-diff --git a/lib/igt_sysfs.c b/lib/igt_sysfs.c
-index 9952c1c0d..873015bdc 100644
---- a/lib/igt_sysfs.c
-+++ b/lib/igt_sysfs.c
-@@ -537,7 +537,8 @@ void update_debug_mask_if_ci(unsigned int debug_mask_if_ci)
- 	const char *ci_run = getenv("IGT_CI_RUN");
+diff --git a/tests/kms_rotation_crc.c b/tests/kms_rotation_crc.c
+index a01aac78f..c3481880b 100644
+--- a/tests/kms_rotation_crc.c
++++ b/tests/kms_rotation_crc.c
+@@ -31,6 +31,7 @@
+  */
  
- 	if (ci_run && ci_run[0] == '1') {
--		igt_debug("Currently under CI execution, reducing the DRM debug mask to 0x4\n");
-+		igt_debug("Currently under CI execution, reducing the DRM debug mask to 0x%x\n",
-+			  debug_mask_if_ci);
- 		igt_drm_debug_mask_update(debug_mask_if_ci);
+ #include "igt.h"
++#include "igt_sysfs.h"
+ #include "igt_vec.h"
+ #include <math.h>
+ 
+@@ -1437,6 +1438,7 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 
+ 		igt_display_require(&data.display, data.gfx_fd);
+ 		igt_require(data.display.is_atomic);
++		igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
  	}
- }
-diff --git a/tests/kms_cursor_legacy.c b/tests/kms_cursor_legacy.c
-index 62339855e..5d8bcae9e 100644
---- a/tests/kms_cursor_legacy.c
-+++ b/tests/kms_cursor_legacy.c
-@@ -1888,7 +1888,8 @@ int igt_main()
- 	};
  
- 	igt_fixture() {
--		unsigned int debug_mask_if_ci = DRM_UT_KMS;
-+		/* Keep CORE diagnostics without the high-volume KMS debug logs. */
-+		unsigned int debug_mask_if_ci = DRM_UT_CORE;
- 		display.drm_fd = drm_open_driver_master(DRIVER_ANY);
- 		kmstest_set_vt_graphics_mode();
+ 	igt_describe("Rotation test with 90/270 degree for primary and sprite planes of gen9+");
+@@ -1502,51 +1504,59 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 		}
+ 	}
  
+-	igt_describe("Rotation test on both planes by making them fully visible");
+-	igt_subtest_f("multiplane-rotation") {
+-		igt_crtc_t *crtc = igt_first_crtc(&data.display);
+-
+-		igt_require(gen >= 9);
+-		cleanup_crtc(&data);
+-		data.planepos[0].origo = p_top | p_left;
+-		data.planepos[0].x = .2f;
+-		data.planepos[0].y = .1f;
+-		data.planepos[1].origo = p_top | p_right;
+-		data.planepos[1].x = -.4f;
+-		data.planepos[1].y = .1f;
+-		test_multi_plane_rotation(&data, crtc);
+-	}
++	igt_subtest_group() {
++		igt_fixture()
++			update_debug_mask_if_ci(DRM_UT_CORE);
+ 
+-	igt_describe("Rotation test on both planes by cropping left/top corner of primary plane and"
+-			"right/top corner of sprite plane");
+-	igt_subtest_f("multiplane-rotation-cropping-top") {
+-		igt_crtc_t *crtc = igt_first_crtc(&data.display);
+-
+-		igt_require(gen >= 9);
+-		cleanup_crtc(&data);
+-		data.planepos[0].origo = p_top | p_left;
+-		data.planepos[0].x = -.05f;
+-		data.planepos[0].y = -.15f;
+-		data.planepos[1].origo = p_top | p_right;
+-		data.planepos[1].x = -.15f;
+-		data.planepos[1].y = -.15f;
+-		test_multi_plane_rotation(&data, crtc);
+-	}
++		igt_describe("Rotation test on both planes by making them fully visible");
++		igt_subtest_f("multiplane-rotation") {
++			igt_crtc_t *crtc = igt_first_crtc(&data.display);
++
++			igt_require(gen >= 9);
++			cleanup_crtc(&data);
++			data.planepos[0].origo = p_top | p_left;
++			data.planepos[0].x = .2f;
++			data.planepos[0].y = .1f;
++			data.planepos[1].origo = p_top | p_right;
++			data.planepos[1].x = -.4f;
++			data.planepos[1].y = .1f;
++			test_multi_plane_rotation(&data, crtc);
++		}
+ 
+-	igt_describe("Rotation test on both planes by cropping left/bottom corner of primary plane"
+-			"and right/bottom corner of sprite plane");
+-	igt_subtest_f("multiplane-rotation-cropping-bottom") {
+-		igt_crtc_t *crtc = igt_first_crtc(&data.display);
+-
+-		igt_require(gen >= 9);
+-		cleanup_crtc(&data);
+-		data.planepos[0].origo = p_bottom | p_left;
+-		data.planepos[0].x = -.05f;
+-		data.planepos[0].y = -.20f;
+-		data.planepos[1].origo = p_bottom | p_right;
+-		data.planepos[1].x = -.15f;
+-		data.planepos[1].y = -.20f;
+-		test_multi_plane_rotation(&data, crtc);
++		igt_describe("Rotation test on both planes by cropping left/top corner of primary "
++			     "plane and right/top corner of sprite plane");
++		igt_subtest_f("multiplane-rotation-cropping-top") {
++			igt_crtc_t *crtc = igt_first_crtc(&data.display);
++
++			igt_require(gen >= 9);
++			cleanup_crtc(&data);
++			data.planepos[0].origo = p_top | p_left;
++			data.planepos[0].x = -.05f;
++			data.planepos[0].y = -.15f;
++			data.planepos[1].origo = p_top | p_right;
++			data.planepos[1].x = -.15f;
++			data.planepos[1].y = -.15f;
++			test_multi_plane_rotation(&data, crtc);
++		}
++
++		igt_describe("Rotation test on both planes by cropping left/bottom corner of "
++			     "primary plane and right/bottom corner of sprite plane");
++		igt_subtest_f("multiplane-rotation-cropping-bottom") {
++			igt_crtc_t *crtc = igt_first_crtc(&data.display);
++
++			igt_require(gen >= 9);
++			cleanup_crtc(&data);
++			data.planepos[0].origo = p_bottom | p_left;
++			data.planepos[0].x = -.05f;
++			data.planepos[0].y = -.20f;
++			data.planepos[1].origo = p_bottom | p_right;
++			data.planepos[1].x = -.15f;
++			data.planepos[1].y = -.20f;
++			test_multi_plane_rotation(&data, crtc);
++		}
++
++		igt_fixture()
++			igt_drm_debug_mask_reset();
+ 	}
+ 
+ 	igt_describe("Rotation test on primary plane with concurrent cursor movement");
 -- 
 2.43.0
 
