@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B548E606A31A
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 17:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C44606A31F
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 18:39:24 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6768210E357;
-	Mon, 26 Oct 2026 17:34:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id F10EC10F0D4;
+	Mon, 26 Oct 2026 18:39:23 +0000 (UTC)
 Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B6EFD10E357;
- Mon, 26 Oct 2026 17:33:40 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 862FF10E381;
+ Mon, 26 Oct 2026 18:38:28 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============6510550144338334608=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_LGCI=2EVerificationFailed=3A_failure_for_tests/kms=5Fwri?=
- =?utf-8?q?teback=3A_Check_CRC_capture_survives_writeback?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_Runner=3A_report_test_comma?=
+ =?utf-8?q?nd_line_=28rev2=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "atipre" <tipreaditya@gmail.com>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 26 Oct 2026 17:33:40 -0000
-Message-ID: <179303602074.72043.1691403182870906690@221881a7231d>
+Date: Mon, 26 Oct 2026 18:38:28 -0000
+Message-ID: <179303990854.72354.8902308366225155675@221881a7231d>
 X-Patchwork-Hint: ignore
-References: <20261025182420.52258-1-tipreaditya@gmail.com>
-In-Reply-To: <20261025182420.52258-1-tipreaditya@gmail.com>
+References: <20261026141702.44811-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20261026141702.44811-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,22 +36,108 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+--===============6510550144338334608==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/kms_writeback: Check CRC capture survives writeback
-URL   : https://patchwork.freedesktop.org/series/176841/
-State : failure
+Series: Runner: report test command line (rev2)
+URL   : https://patchwork.freedesktop.org/series/151715/
+State : success
 
 == Summary ==
 
-Series author address 'tipreaditya@gmail.com' is not on the allowlist, which prevents CI from being automatically triggered.
-If you want CI to run for this series, ask Patchwork project owners to click 'retest' on the series in Patchwork.
-Exception occurred during validation, bailing out!
-Build URL: http://gfx-ci.igk.intel.com:8080/job/CI_IGTPW_check/243181/ (on cidrm1)
+CI Bug Log - changes from XEIGT_9165_BAT -> XEIGTPW_16047_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
 
 
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9165 -> IGTPW_16047
+
+  IGTPW_16047: 16047
+  IGT_9165: 9165
+  xe-6012-3543fd9d737a3f30b44d036b5de64c379d1c376f: 3543fd9d737a3f30b44d036b5de64c379d1c376f
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16047/index.html
+
+--===============6510550144338334608==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>Runner: report test command line (rev2)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/151715/">https://patchwork.freedesktop.org/series/151715/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16047/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16047/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9165_BAT -&gt; XEIGTPW_16047_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9165 -&gt; IGTPW_16047</li>
+</ul>
+<p>IGTPW_16047: 16047<br />
+  IGT_9165: 9165<br />
+  xe-6012-3543fd9d737a3f30b44d036b5de64c379d1c376f: 3543fd9d737a3f30b44d036b5de64c379d1c376f</p>
+
+</body>
+</html>
+
+--===============6510550144338334608==--
