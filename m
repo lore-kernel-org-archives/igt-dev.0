@@ -2,55 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01697606A31A
-	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 05:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ft6MQ8E2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2A9606A31D
+	for <igt-dev@archiver.kernel.org>; Mon, 26 Oct 2026 06:03:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A63A710E06F;
-	Mon, 26 Oct 2026 05:21:50 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8F6810E26B
- for <igt-dev@lists.freedesktop.org>; Mon, 26 Oct 2026 05:20:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1792992054; x=1824528054;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=Lh53ILyOwV+8Qpd4eB/O37mJ6Dr8RCBUJ47t/kShn24=;
- b=ft6MQ8E26ZZmW8JsRLwbmuOEQlN6McGQX9EhvW8AYKh+NkxJ6U+0y4CY
- kDVxfwYDFPVKiwYRwimOt3emFCZwpEX02uweFGKKB5YPRuT4c9ybfdHUA
- FQYUNCut0bZt+PqeosFLGSufulxQ3E7Sjc1op7jAyI+baksO5nNXipCFI
- xr3dVsixpx9e2NOY+sY2jJSNyjDp0tBDTO9VD/brOzmnRJWwEhZpL68nX
- 5XHqb+BavgTvmPowPunx7hYufvbt1aqe1aY6QY5KjvblGhZc4INtQTwGe
- OG6af3p2LH4CdbZUDnLlh8plGEhJaCFFv4aTjgg2QrIp7nJW3HsfxWWTG w==;
-X-CSE-ConnectionGUID: enIaAquhT1uQsxUooZ5f5Q==
-X-CSE-MsgGUID: LNBtNnF7QgqS3gqvGBeSHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11946"; a="1543931"
-X-IronPort-AV: E=Sophos;i="6.27,178,1787036400"; 
-   d="scan'208";a="1543931"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 25 Oct 2026 22:20:54 -0700
-X-CSE-ConnectionGUID: RQgURpIhQZ+FItW08R2A2A==
-X-CSE-MsgGUID: JTB1MaQQQKGoTERzUc27/A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,178,1787036400"; 
-   d="scan'208";a="4201174"
-Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
- by fmviesa004.fm.intel.com with ESMTP; 25 Oct 2026 22:20:52 -0700
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org,
-	arvind.yadav@intel.com
-Cc: kamil.konieczny@intel.com
-Subject: [PATCH] tests/intel/xe_exec_system_allocator: Skip unsupported PAT
- madvise indices
-Date: Mon, 26 Oct 2026 05:20:51 +0000
-Message-ID: <20261026052051.1472943-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id BE02910E303;
+	Mon, 26 Oct 2026 06:03:25 +0000 (UTC)
+Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A188310EA51;
+ Mon, 26 Oct 2026 06:02:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5339697905135928997=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fsys?=
+ =?utf-8?q?tem=5Fallocator=3A_Skip_unsupported_PAT_madvise_indices?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: nishit.sharma@intel.com
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 26 Oct 2026 06:02:34 -0000
+Message-ID: <179299455465.67195.17380206312466802398@221881a7231d>
+X-Patchwork-Hint: ignore
+References: <20261026052051.1472943-1-nishit.sharma@intel.com>
+In-Reply-To: <20261026052051.1472943-1-nishit.sharma@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,62 +34,129 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-19.1 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+--===============5339697905135928997==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Skip PAT-index madvise subtests when the selected 2-way coherent index is
-rejected by the workaround, avoiding an assertion failure on
-affected platforms.
+== Series Details ==
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+Series: tests/intel/xe_exec_system_allocator: Skip unsupported PAT madvise indices
+URL   : https://patchwork.freedesktop.org/series/176802/
+State : success
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 45ec62813..2519b9e62 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -1216,6 +1216,22 @@ xe_vm_madvixe_pat_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 		      DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0, 0);
- }
- 
-+static bool pat_idx_unsupported_by_wa(int fd, uint8_t pat_idx)
-+{
-+	struct intel_pat_cache pat = {};
-+	int32_t n;
-+
-+	if (intel_graphics_ver(intel_get_drm_devid(fd)) < IP_VER(35, 0) ||
-+	    xe_has_vram(fd))
-+		return false;
-+
-+	n = xe_get_pat_sw_config(fd, &pat, 0);
-+	if (n <= pat_idx)
-+		return false;
-+
-+	return (pat.entries[pat_idx].pat & 0x3) == 3;
-+}
-+
- static void
- xe_vm_madvise_atomic_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 			  int mem_attr)
-@@ -2887,6 +2903,9 @@ int igt_main()
- 			if (IS_PONTEVECCHIO(dev_id) &&
- 			    strstr(s->name, "madvise-pat-idx-uc-comp-"))
- 				igt_skip("Skipping compression-related PAT index on PVC\n");
-+
-+			igt_skip_on_f(pat_idx_unsupported_by_wa(fd, s->fn(fd)),
-+				      "2-way coherent PAT index not allowed\n");
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
- 		}
--- 
-2.43.0
+== Summary ==
 
+CI Bug Log - changes from XEIGT_9164_BAT -> XEIGTPW_16045_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_16045_BAT that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@xe_live_ktest@xe_migrate@xe_migrate_access_memory_kunit:
+    - bat-atsm-2:         [PASS][1] -> [ABORT][2] ([Intel XE#9663]) +1 other test abort
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9164/bat-atsm-2/igt@xe_live_ktest@xe_migrate@xe_migrate_access_memory_kunit.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16045/bat-atsm-2/igt@xe_live_ktest@xe_migrate@xe_migrate_access_memory_kunit.html
+
+  
+  [Intel XE#9663]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9663
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9164 -> IGTPW_16045
+
+  IGTPW_16045: 16045
+  IGT_9164: 9164
+  xe-6010-d56ff005f0d16ec136ee31fe3238eb447fefdc1a: d56ff005f0d16ec136ee31fe3238eb447fefdc1a
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16045/index.html
+
+--===============5339697905135928997==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_system_allocator: Skip unsupported PAT madvise indices</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176802/">https://patchwork.freedesktop.org/series/176802/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16045/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16045/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9164_BAT -&gt; XEIGTPW_16045_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_16045_BAT that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@xe_live_ktest@xe_migrate@xe_migrate_access_memory_kunit:<ul>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9164/bat-atsm-2/igt@xe_live_ktest@xe_migrate@xe_migrate_access_memory_kunit.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16045/bat-atsm-2/igt@xe_live_ktest@xe_migrate@xe_migrate_access_memory_kunit.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9663">Intel XE#9663</a>) +1 other test abort</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9164 -&gt; IGTPW_16045</li>
+</ul>
+<p>IGTPW_16045: 16045<br />
+  IGT_9164: 9164<br />
+  xe-6010-d56ff005f0d16ec136ee31fe3238eb447fefdc1a: d56ff005f0d16ec136ee31fe3238eb447fefdc1a</p>
+
+</body>
+</html>
+
+--===============5339697905135928997==--
