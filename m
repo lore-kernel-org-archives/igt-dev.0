@@ -2,70 +2,69 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D29606A31A
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Oct 2026 14:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5902606A31A
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Oct 2026 15:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cKmqPlyd
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Ek7zKZ1I
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F092B10FD1D;
-	Wed, 28 Oct 2026 14:59:23 +0000 (UTC)
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com
- [209.85.215.182])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2DEA810FD11
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Oct 2026 14:53:10 +0000 (UTC)
-Received: by mail-pg1-f182.google.com with SMTP id
- 41be03b00d2f7-cd8ba7c2694so459392a12.1
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Oct 2026 07:53:10 -0700 (PDT)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8830410FD28;
+	Wed, 28 Oct 2026 15:00:13 +0000 (UTC)
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com
+ [209.85.215.175])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 755E910FD11
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Oct 2026 14:53:19 +0000 (UTC)
+Received: by mail-pg1-f175.google.com with SMTP id
+ 41be03b00d2f7-cc147d86bebso656219a12.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Oct 2026 07:53:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20260707; t=1793199190; x=1793803990; darn=lists.freedesktop.org;
+ d=gmail.com; s=20260707; t=1793199199; x=1793803999; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to:content-type;
- bh=2Tds66M0rETMQeKpRB8g0y9hLq21m6K/e4mj9NJE2ns=;
- b=cKmqPlydpL7tY7TyXoWSMHelDAHaKuwTHCkEr5pfxDyRcMS22mDsqGA6xwDAJE6j9t
- wQ8rhRXGdH8XheSrov4Ld7tyIXp2CRaWV5jE+72xxrQ7pmNIzuV0PYsOj57OEdnrUquP
- q2IVuxOd5LPxzAieYfp5pTfm1ZP68zTOC767wuAgVi5dZd+9/oLh73EqSevtbu8I2Gjy
- OWmIziVsDFzQaaKPL5lAGBzrXSsxulwf6j3QP8M15nFWSmKB2m9JWbtjLtEBIJdoVIv8
- r10SCBcvn7fnh8hatsBg0T5SHQhKn2uh+jFqiavPL016Y4VkL5Gm+WACCHGCRChXIjTp
- MunA==
+ bh=/lLAtn82jLmXFkF/w+af788+HFQcM9FxLJjsYiT7v08=;
+ b=Ek7zKZ1IXrcu2CPXHUhJim8/Yq1ozYKOILD9+Y/0WZl6JYCuM1huyuxGthBAERlld8
+ vvPGMYmIlpqUXGu1DeFsZV8QnAA+d9Z0QxYA67tbeRoMsVtkVSLDBpPauzyT4Suxj4rW
+ kxbYraeivXvXGDyKZai0lH7BsIQWEJLNHAdRo71iFx9Ab0MOhTQ3faZWYBdNPoiDVCoK
+ 5JP0M+eetD7yT3AP8ZkWs7NmdxxC8S6T/V1zB+yTQKB+J46yr91x7r40+NB9UseA95dX
+ fU+EJldOnTLbJj7odsunKm4ZhUXojAXXqC9upWZQ7DQ4nq+LhvHXkFp7zqND9w79o6LT
+ eL9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1793199190; x=1793803990;
+ d=1e100.net; s=20260707; t=1793199199; x=1793803999;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to:content-type;
- bh=2Tds66M0rETMQeKpRB8g0y9hLq21m6K/e4mj9NJE2ns=;
- b=KsnejsSXn8fC1q6ED3+noYjEDPlYqeOnjTxn5GoPmGax8N6g/51YHeQJ+jXsjGZBT4
- 684/8LxcPgrVEqWVS8pe4LlzFvwVRLPHZnAJ9J6Hp7hG2ehBl3T3QLN4+EeFsaOGw5wb
- J8BWmCZuKBUYnIZ3wGr8co+Z/v0PxEWyNL34ihJSGG504KWHFIXBqE679yg2B99Cpi7/
- oVbL7R81JBpvRL4D0Oy8zKwThOthp0ljWaGBsi1LIuEFMG5BucEBzBvY9LBlCAWUGAKC
- fkx66GJa+luJop2KuPYM+D6HdXyfrxbymEemoKxyDnJnmH5C/XoSwGEJitKUKBd/HMjV
- h97A==
-X-Gm-Message-State: AFq9FYI0uLRRaKhByka+kh2evSqSlc6X+RY8I8EB6Z9aOs9qeMWiZU6g
- U6PjS6FSnDD+i6IkfQ9BnzB84SctE+JCRhdnwg7xaLpZ+Mm+RBIJcjYHKKBAw+lr0jI=
-X-Gm-Gg: AYBFou1Wdab3tqkdBUt/4Dz/DFDFOOlR+zoqHNGHUhuS+DnygQYM0Exwgnn4r8yw08q
- oQuj3R0It/G1Jt8lMp+SxWJswJH1uok8X7kr1XObjc01V4lVMZclfl8dHEYK7m+C4QPwK7+nmUt
- LBj6XxBfzq+XLyIBFXrSDEt/mcb3LYyJB3a6HunPV2bMw0Wr/NE1IhBhdNpl7jxmCPs9lHK06sl
- /3TUZCt3mJqzWU9lP5MS34Q5BfIu9A6GCyJUDV4HOTBag+I7OZxswdO7kvURZZuqrw0w3xpGpFp
- 5si5TSRELxLBjwOG4Dr8JQXq8AVpDNwqJNWdtI3NuUWCbvT8AxJFvm7xhEmqAma6r3IDcWJ9pja
- p1DNzqne6aesJTgQ2UjcVym2Pu9NyrFgM5QbX+yaeJT+XFWpC6QYYZ1If7jvAqm5fCOpGcRx4gh
- DygpNKmQh3Xu64timoNFO5wc3i75lidWd1TPbn7QoeBnKbZ68N+dGjnJibMlG65CeGr+GuZ4Bak
- tR4IKPSKEo9m8r1lATHruQuBEhWuoGD7mQv8Q0b/gUYFP9N542QlPMS8vNf5XTzFy8GiAAueIJF
- oJrBBy14KKRVUwRm+eyldocaH5pL8CsxJIq9GzKCoZiDLFXc+AE6YJNGgmB03Svzog+5KbzIx9/
- LpfzXb3/4gGcp
-X-Received: by 2002:a05:6300:4083:b0:3e2:b561:2b28 with SMTP id
- adf61e73a8af0-3e902306de7mr1972647637.36.1793199189433; 
- Wed, 28 Oct 2026 07:53:09 -0700 (PDT)
+ bh=/lLAtn82jLmXFkF/w+af788+HFQcM9FxLJjsYiT7v08=;
+ b=QOBjwc6/m1X9csVAFrxaO/IlWveaDx3aQZDLjHfHYS7SRWUBwoiimAgqwLyGO1qXX/
+ 7DDseHO2ge5mUtcH1rxDoMuwLglimSxLWA8wiCexzDxw04NJ63Sm1Ej0txQUPU0EH2bB
+ SwsqIMp97yr1urFyEHuhLy+PYyYsduOTPJ158PDF8FMMS9PlTwBl/fQtIo0jj8kMSzbf
+ bVsxdju4NinqwTO6XfupX+6Vhe3JrEGmPbKM1vXoPS1lDKcn1CwbzyTP1yEcbLb6ElCW
+ e5TtFxpqC2KBL/UhSxrxUqDUVbadrvi1X54/2XTwuuUdVgjSGWVdG74b1I4Cz61W/pwt
+ vyWA==
+X-Gm-Message-State: AFq9FYIl0diZ3PUXdq+GgVvwwMraMqLwJgIyQK9y2Ka4itU98sSyRu8V
+ 1VApdkNVu27N8rXJ8Y0HkYrsn64wW+4kHvovMUC71ppbtfdGn2uJMLVyck0nVcfs9Tc=
+X-Gm-Gg: AYBFou2AcE0+1rF4TNMjoqH89S41xtpsVWaFM4xjZSnJJrPOOFjd2dAQyNi/56nbuk+
+ m3u9S34pj3Ymq6q1jSgbndCpcU1W+n5HIWoCbf8NaMVgQnXr0LL3V9sqSLZM+XlckROSsF7RdGp
+ HFWYuwL+39rPRIAaOfUzmwcJn2lzrXmMK5AAAX7SuJtFOmMMolBk/Oamel8FfCXpzmj9+/uwHwx
+ cENq5jwHOmNsKKdellIlnuxfBbeBsTxveL6gAw4ZCy5hvyiXqpm42d4B2Q5zJq+p5wh86ojiSlV
+ Drw1ytTn3BlLixTW+JXuFqSrk9e3vwnuDeoxSOR7DSyipxkj6Md7+TaxwVPKjj73QdaNaGMAieF
+ 1ixbGkWfzrm8dUw2Ep3wk4p+UVr2oww2guQDr/auxlt9+fS26stIXp/vcK+o0N9YSroKQJrF5FB
+ n1avtT6Q83zc4J03In6LJmR3UeMNU8v3vSiHY+fmtULl1D1rCU2p45k28y3G7C3xCcS88y3g0F/
+ TYPFZlUI9kCUQCWz6N4OgyB1CDI2buZqtfcz/KjdX+Ha2igC8HrjLcymkLt0fV+zlUd0WjxbJjE
+ qhMKfjU5p46l+9tTMIpS3scUJVthjJkkkeIwJv/fnKbTtAKywzbyAWOjBlV6hoW1d6U=
+X-Received: by 2002:a05:6a20:9145:b0:3da:3401:c13b with SMTP id
+ adf61e73a8af0-3e9080116d5mr980520637.7.1793199198707; 
+ Wed, 28 Oct 2026 07:53:18 -0700 (PDT)
 Received: from localhost ([192.55.54.47]) by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-cdac68402a1sm3367673a12.1.2026.10.28.07.53.08
+ d2e1a72fcca58-8a6a6cfc292sm1269456b3a.42.2026.10.28.07.53.17
  (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Wed, 28 Oct 2026 07:53:08 -0700 (PDT)
+ Wed, 28 Oct 2026 07:53:18 -0700 (PDT)
 From: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 08/10] tests/kms_plane_scaling: test overlay plane in
- plane-*-max-crc
-Date: Wed, 28 Oct 2026 16:52:00 +0200
-Message-ID: <20261028145202.3128915-8-juhapekka.heikkila@gmail.com>
+Subject: [PATCH i-g-t 10/10] tests/kms_plane_scaling: remove legacy subtests
+ covered by max-crc tests
+Date: Wed, 28 Oct 2026 16:52:02 +0200
+Message-ID: <20261028145202.3128915-10-juhapekka.heikkila@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261028145202.3128915-1-juhapekka.heikkila@gmail.com>
 References: <20261028145202.3128915-1-juhapekka.heikkila@gmail.com>
@@ -91,257 +90,793 @@ X-Spam-Status: No, score=-15.7 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-After primary plane, put first overlay plane alone in place of primary at
-the same scaling limit and check it produces the same crc as the unscaled
-reference. If overlay does not accept primary plane limits,
-search its own limit and report difference. Overlay is skipped if it does
-not support the format, modifier or rotation under test.
+The plane-*-max-crc subtests search scaling limits kernel actually accepts
+for each pixel format, modifier and rotation, on all pipes, for primary
+and overlay planes alone and together, and verify result with crc. Legacy
+subtests below only checked that commit with fixed scaling factor was
+accepted, skipping on -EINVAL or -ERANGE, so they never
+verified the scaled output.
 
-With at least two scalers on pipe, also scale primary and overlay at
-the same time into adjacent bands and compare against both planes unscaled,
-so second scaler on pipe gets crc checked as well.
+The first three removed groups each had six variants: upscale-20x20,
+upscale-factor-0-25, downscale-factor-0-25, downscale-factor-0-5,
+downscale-factor-0-75 and scaler-unity-scaling.
 
-Each failing step is reported by axis and plane in the final assert.
+plane-*-with-pixel-format
+  Covered by plane-{up/down}scale-max-crc-linear, which tests every
+  format at largest accepted factor and checks the crc.
+  Unity scaling is reference commit of each max-crc step.
+
+plane-*-with-modifiers
+  Covered by per modifier plane-{up/down}scale-max-crc-* subtests.
+
+plane-*-with-rotation
+  Linear XRGB8888 walking rotations 0, 90, 180, 270 and returning on the
+  first rejected commit. Where 90 is advertised it is rejected with
+  linear, so only rotation 0 was ever exercised; Covered by
+  plane-{up/down}scale-max-crc-* and plane-{up/down}scale-max-crc-rotation-*
+
+planes-* (24 subtests)
+  Covered by the two plane steps of the max-crc subtests on pipes with
+  at least two scalers: both planes unscaled as the crc reference, both
+  planes at their limits at the same time, and the primary at its limit
+  with the overlay scaled 2x in the opposite direction.
 
 Signed-off-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 ---
- tests/kms_plane_scaling.c | 160 ++++++++++++++++++++++++++++++--------
- 1 file changed, 129 insertions(+), 31 deletions(-)
+ tests/kms_plane_scaling.c | 697 --------------------------------------
+ 1 file changed, 697 deletions(-)
 
 diff --git a/tests/kms_plane_scaling.c b/tests/kms_plane_scaling.c
-index 506c03393..dfd19b1f5 100644
+index ef99544a8..df33b7403 100644
 --- a/tests/kms_plane_scaling.c
 +++ b/tests/kms_plane_scaling.c
-@@ -901,7 +901,8 @@ struct scale_axis {
- 	bool scale_width;
- 	struct igt_fb fb;
- 	int dst_w, dst_h, dst_scaled, limit;
--	bool tested, failed;
-+	int align, cap;
-+	bool tested;
+@@ -36,144 +36,14 @@
+ #include <math.h>
+ 
+ /**
+- * SUBTEST: plane-scaler-unity-scaling-with-modifiers
+- * Description: Tests scaling with modifiers, unity scaling.
+- *
+  * SUBTEST: plane-scaler-with-clipping-clamping-modifiers
+  * Description: Tests scaling with clipping and clamping, modifiers.
+  *
+- * SUBTEST: plane-upscale-%s-with-modifiers
+- * Description: Tests upscaling with modifiers %arg[1].
+- *
+- * arg[1]:
+- *
+- * @20x20:          from 20x20 fb
+- * @factor-0-25:    for 0.25 scaling factor
+- */
+-
+-/**
+- * SUBTEST: plane-downscale-factor-%s-with-modifiers
+- * Description: Tests downscaling with modifiers for %arg[1] scaling factor.
+- *
+- * arg[1]:
+- *
+- * @0-25:   0.25
+- * @0-5:    0.5
+- * @0-75:   0.75
+- */
+-
+-/**
+- * SUBTEST: plane-scaler-unity-scaling-with-rotation
+- * Description: Tests scaling with rotation, unity scaling.
+- *
+  * SUBTEST: plane-scaler-with-clipping-clamping-rotation
+  * Description: Tests scaling with clipping and clamping, rotation.
+  *
+- * SUBTEST: plane-upscale-%s-with-rotation
+- * Description: Tests upscaling with rotation %arg[1].
+- *
+- * arg[1]:
+- *
+- * @20x20:          from 20x20 fb
+- * @factor-0-25:    for 0.25 scaling factor
+- */
+-
+-/**
+- * SUBTEST: plane-downscale-factor-%s-with-rotation
+- * Description: Tests downscaling with rotation for %arg[1] scaling factor.
+- *
+- * arg[1]:
+- *
+- * @0-25:   0.25
+- * @0-5:    0.5
+- * @0-75:   0.75
+- */
+-
+-/**
+- * SUBTEST: plane-scaler-unity-scaling-with-pixel-format
+- * Description: Tests scaling with pixel formats, unity scaling.
+- *
+  * SUBTEST: plane-scaler-with-clipping-clamping-pixel-formats
+  * Description: Tests scaling with clipping and clamping, pixel formats.
+- *
+- * SUBTEST: plane-upscale-%s-with-pixel-format
+- * Description: Tests upscaling with pixel formats %arg[1].
+- *
+- * arg[1]:
+- *
+- * @20x20:          from 20x20 fb
+- * @factor-0-25:    for 0.25 scaling factor
+- */
+-
+-/**
+- * SUBTEST: plane-downscale-factor-%s-with-pixel-format
+- * Description: Tests downscaling with pixel formats for %arg[1] scaling factor.
+- *
+- * arg[1]:
+- *
+- * @0-25:   0.25
+- * @0-5:    0.5
+- * @0-75:   0.75
+- */
+-
+-/**
+- * SUBTEST: planes-downscale-factor-%s
+- * Description: Tests downscaling of 2 planes for %arg[1] scaling factor.
+- *
+- * arg[1]:
+- *
+- * @0-25:  0.25
+- * @0-5:   0.5
+- * @0-75:  0.75
+- */
+-
+-/**
+- * SUBTEST: planes-downscale-factor-%s-%s
+- * Description: Tests downscaling (scaling factor %arg[1]) and upscaling (%arg[2])
+- *              of 2 planes.
+- *
+- * arg[1]:
+- *
+- * @0-25:  0.25
+- * @0-5:   0.5
+- * @0-75:  0.75
+- *
+- * arg[2]:
+- *
+- * @upscale-20x20:           upscale 20x20
+- * @upscale-factor-0-25:     scaling factor 0.25
+- * @unity-scaling:           Unity
+- */
+-
+-/**
+- * SUBTEST: planes-scaler-unity-scaling
+- * Description: Tests scaling of 2 planes, unity scaling.
+- *
+- * SUBTEST: planes-upscale-%s
+- * Description: Tests upscaling of 2 planes %arg[1].
+- *
+- * arg[1]:
+- *
+- * @20x20:          from 20x20 fb
+- * @factor-0-25:    for 0.25 scaling factor
+- */
+-
+-/**
+- * SUBTEST: planes-%s-downscale-factor-%s
+- * Description: Tests scaling (%arg[1]) and downscaling (scaling factor %arg[2])
+- *              of 2 planes.
+- *
+- * arg[1]:
+- *
+- * @unity-scaling:           Unity
+- * @upscale-factor-0-25:     scaling factor 0.25
+- * @upscale-20x20:           upscale 20x20
+- *
+- * arg[2]:
+- *
+- * @0-25:  0.25
+- * @0-5:   0.5
+- * @0-75:  0.75
+  */
+ 
+ /**
+@@ -260,13 +130,6 @@
+ 
+ IGT_TEST_DESCRIPTION("Test display plane scaling");
+ 
+-enum scaler_combo_test_type {
+-	TEST_PLANES_UPSCALE = 0,
+-	TEST_PLANES_DOWNSCALE,
+-	TEST_PLANES_UPSCALE_DOWNSCALE,
+-	TEST_PLANES_DOWNSCALE_UPSCALE,
+-};
+-
+ typedef struct {
+ 	uint32_t devid;
+ 	int drm_fd;
+@@ -293,315 +156,6 @@ static const struct invalid_paramtests intel_paramtests[] = {
+ 	},
  };
  
- /* 90/270 rotation swaps which source axis lands on the scaled dst axis. */
-@@ -1024,6 +1025,50 @@ static void set_legacy_lut(data_t *data, igt_crtc_t *crtc,
- 	free(lut);
+-const struct {
+-	const char * const describe;
+-	const char * const name;
+-	const double sf;
+-	const bool is_upscale;
+-} scaler_with_pixel_format_tests[] = {
+-	{
+-		"Tests upscaling with pixel formats, from 20x20 fb.",
+-		"plane-upscale-20x20-with-pixel-format",
+-		0.0,
+-		true,
+-	},
+-	{
+-		"Tests upscaling with pixel formats for 0.25 scaling factor.",
+-		"plane-upscale-factor-0-25-with-pixel-format",
+-		0.25,
+-		true,
+-	},
+-	{
+-		"Tests downscaling with pixel formats for 0.25 scaling factor.",
+-		"plane-downscale-factor-0-25-with-pixel-format",
+-		0.25,
+-		false,
+-	},
+-	{
+-		"Tests downscaling with pixel formats for 0.5 scaling factor.",
+-		"plane-downscale-factor-0-5-with-pixel-format",
+-		0.5,
+-		false,
+-	},
+-	{
+-		"Tests downscaling with pixel formats for 0.75 scaling factor.",
+-		"plane-downscale-factor-0-75-with-pixel-format",
+-		0.75,
+-		false,
+-	},
+-	{
+-		"Tests scaling with pixel formats, unity scaling.",
+-		"plane-scaler-unity-scaling-with-pixel-format",
+-		1.0,
+-		true,
+-	},
+-};
+-
+-const struct {
+-	const char * const describe;
+-	const char * const name;
+-	const double sf;
+-	const bool is_upscale;
+-} scaler_with_rotation_tests[] = {
+-	{
+-		"Tests upscaling with rotation, from 20x20 fb.",
+-		"plane-upscale-20x20-with-rotation",
+-		0.0,
+-		true,
+-	},
+-	{
+-		"Tests upscaling with rotation for 0.25 scaling factor.",
+-		"plane-upscale-factor-0-25-with-rotation",
+-		0.25,
+-		true,
+-	},
+-	{
+-		"Tests downscaling with rotation for 0.25 scaling factor.",
+-		"plane-downscale-factor-0-25-with-rotation",
+-		0.25,
+-		false,
+-	},
+-	{
+-		"Tests downscaling with rotation for 0.5 scaling factor.",
+-		"plane-downscale-factor-0-5-with-rotation",
+-		0.5,
+-		false,
+-	},
+-	{
+-		"Tests downscaling with rotation for 0.75 scaling factor.",
+-		"plane-downscale-factor-0-75-with-rotation",
+-		0.75,
+-		false,
+-	},
+-	{
+-		"Tests scaling with rotation, unity scaling.",
+-		"plane-scaler-unity-scaling-with-rotation",
+-		1.0,
+-		true,
+-	},
+-};
+-
+-const struct {
+-	const char * const describe;
+-	const char * const name;
+-	const double sf;
+-	const bool is_upscale;
+-} scaler_with_modifiers_tests[] = {
+-	{
+-		"Tests upscaling with modifiers, from 20x20 fb.",
+-		"plane-upscale-20x20-with-modifiers",
+-		0.0,
+-		true,
+-	},
+-	{
+-		"Tests upscaling with modifiers for 0.25 scaling factor.",
+-		"plane-upscale-factor-0-25-with-modifiers",
+-		0.25,
+-		true,
+-	},
+-	{
+-		"Tests downscaling with modifiers for 0.25 scaling factor.",
+-		"plane-downscale-factor-0-25-with-modifiers",
+-		0.25,
+-		false,
+-	},
+-	{
+-		"Tests downscaling with modifiers for 0.5 scaling factor.",
+-		"plane-downscale-factor-0-5-with-modifiers",
+-		0.5,
+-		false,
+-	},
+-	{
+-		"Tests downscaling with modifiers for 0.75 scaling factor.",
+-		"plane-downscale-factor-0-75-with-modifiers",
+-		0.75,
+-		false,
+-	},
+-	{
+-		"Tests scaling with modifiers, unity scaling.",
+-		"plane-scaler-unity-scaling-with-modifiers",
+-		1.0,
+-		true,
+-	},
+-};
+-
+-const struct {
+-	const char * const describe;
+-	const char * const name;
+-	const double sf_plane1;
+-	const double sf_plane2;
+-	const enum scaler_combo_test_type test_type;
+-} scaler_with_2_planes_tests[] = {
+-	{
+-		"Tests upscaling of 2 planes, from 20x20 fb.",
+-		"planes-upscale-20x20",
+-		0.0,
+-		0.0,
+-		TEST_PLANES_UPSCALE,
+-	},
+-	{
+-		"Tests upscaling of 2 planes for 0.25 scaling factor.",
+-		"planes-upscale-factor-0-25",
+-		0.25,
+-		0.25,
+-		TEST_PLANES_UPSCALE,
+-	},
+-	{
+-		"Tests scaling of 2 planes, unity scaling.",
+-		"planes-scaler-unity-scaling",
+-		1.0,
+-		1.0,
+-		TEST_PLANES_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling of 2 planes for 0.25 scaling factor.",
+-		"planes-downscale-factor-0-25",
+-		0.25,
+-		0.25,
+-		TEST_PLANES_DOWNSCALE,
+-	},
+-	{
+-		"Tests downscaling of 2 planes for 0.5 scaling factor.",
+-		"planes-downscale-factor-0-5",
+-		0.5,
+-		0.5,
+-		TEST_PLANES_DOWNSCALE,
+-	},
+-	{
+-		"Tests downscaling of 2 planes for 0.75 scaling factor.",
+-		"planes-downscale-factor-0-75",
+-		0.75,
+-		0.75,
+-		TEST_PLANES_DOWNSCALE,
+-	},
+-	{
+-		"Tests upscaling (20x20) and downscaling (scaling factor 0.25) of 2 planes.",
+-		"planes-upscale-20x20-downscale-factor-0-25",
+-		0.0,
+-		0.25,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests upscaling (20x20) and downscaling (scaling factor 0.5) of 2 planes.",
+-		"planes-upscale-20x20-downscale-factor-0-5",
+-		0.0,
+-		0.5,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests upscaling (20x20) and downscaling (scaling factor 0.75) of 2 planes.",
+-		"planes-upscale-20x20-downscale-factor-0-75",
+-		0.0,
+-		0.75,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.25) of 2 planes.",
+-		"planes-upscale-factor-0-25-downscale-factor-0-25",
+-		0.25,
+-		0.25,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.5) of 2 planes.",
+-		"planes-upscale-factor-0-25-downscale-factor-0-5",
+-		0.25,
+-		0.5,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests upscaling (scaling factor 0.25) and downscaling (scaling factor 0.75) of 2 planes.",
+-		"planes-upscale-factor-0-25-downscale-factor-0-75",
+-		0.25,
+-		0.75,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests scaling (unity) and downscaling (scaling factor 0.25) of 2 planes.",
+-		"planes-unity-scaling-downscale-factor-0-25",
+-		1.0,
+-		0.25,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests scaling (unity) and downscaling (scaling factor 0.5) of 2 planes.",
+-		"planes-unity-scaling-downscale-factor-0-5",
+-		1.0,
+-		0.5,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests scaling (unity) and downscaling (scaling factor 0.75) of 2 planes.",
+-		"planes-unity-scaling-downscale-factor-0-75",
+-		1.0,
+-		0.75,
+-		TEST_PLANES_UPSCALE_DOWNSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.25) and upscaling (20x20) of 2 planes.",
+-		"planes-downscale-factor-0-25-upscale-20x20",
+-		0.25,
+-		0.0,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.25) and upscaling (scaling factor 0.25) of 2 planes.",
+-		"planes-downscale-factor-0-25-upscale-factor-0-25",
+-		0.25,
+-		0.25,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.25) and scaling (unity) of 2 planes.",
+-		"planes-downscale-factor-0-25-unity-scaling",
+-		0.25,
+-		1.0,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.5) and upscaling (20x20) of 2 planes.",
+-		"planes-downscale-factor-0-5-upscale-20x20",
+-		0.5,
+-		0.0,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.5) and upscaling (scaling factor 0.25) of 2 planes.",
+-		"planes-downscale-factor-0-5-upscale-factor-0-25",
+-		0.5,
+-		0.25,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.5) and scaling (unity) of 2 planes.",
+-		"planes-downscale-factor-0-5-unity-scaling",
+-		0.5,
+-		1.0,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.75) and upscaling (20x20) of 2 planes.",
+-		"planes-downscale-factor-0-75-upscale-20x20",
+-		0.75,
+-		0.0,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.75) and upscaling (scaling factor 0.25) of 2 planes.",
+-		"planes-downscale-factor-0-75-upscale-factor-0-25",
+-		0.75,
+-		0.25,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-	{
+-		"Tests downscaling (scaling factor 0.75) and scaling (unity) of 2 planes.",
+-		"planes-downscale-factor-0-75-unity-scaling",
+-		0.75,
+-		1.0,
+-		TEST_PLANES_DOWNSCALE_UPSCALE,
+-	},
+-};
+-
+ static int get_width(drmModeModeInfo *mode, double scaling_factor)
+ {
+ 	if (scaling_factor == 0.0)
+@@ -1502,133 +1056,6 @@ find_connected_pipe(igt_display_t *display, bool second, igt_output_t **output)
+ 	return crtc;
  }
  
-+static bool scale_has_headroom(enum scale_dir dir, int limit, int dst)
-+{
-+	if (limit < 0)
-+		return false;
-+
-+	return dir == SCALE_DOWN ? limit > dst : limit < dst;
-+}
-+
-+static void scale_plane_set(igt_plane_t *plane, struct scale_axis *a,
-+			    igt_rotation_t rot, int len, int x, int y)
-+{
-+	int w, h;
-+
-+	scale_src_size(a, rot, len, &w, &h);
-+	igt_plane_set_fb(plane, &a->fb);
-+	igt_plane_set_rotation(plane, rot);
-+	igt_fb_set_position(&a->fb, plane, 0, 0);
-+	igt_fb_set_size(&a->fb, plane, w, h);
-+	igt_plane_set_position(plane, x, y);
-+	igt_plane_set_size(plane, a->dst_w, a->dst_h);
-+}
-+
-+static bool scale_try_commit(igt_display_t *display)
-+{
-+	return igt_display_try_commit_atomic(display,
-+					     DRM_MODE_ATOMIC_TEST_ONLY |
-+					     DRM_MODE_ATOMIC_ALLOW_MODESET,
-+					     NULL) == 0;
-+}
-+
-+static void scale_crc_check(const igt_crc_t *ref, const igt_crc_t *crc,
-+			    const char *axis, const char *step,
-+			    char *failures, size_t len)
-+{
-+	size_t used = strlen(failures);
-+
-+	if (igt_check_crc_equal(ref, crc))
-+		return;
-+
-+	igt_critical("CRC mismatch on %s %s\n", axis, step);
-+	snprintf(failures + used, len - used, "%s%s %s",
-+		 used ? ", " : "", axis, step);
-+}
-+
+-static int
+-__test_planes_scaling_combo(data_t *d, int w1, int h1, int w2, int h2, igt_output_t *output,
+-			    igt_plane_t *p1, igt_plane_t *p2,
+-			    struct igt_fb *fb1, struct igt_fb *fb2,
+-			    enum scaler_combo_test_type test_type)
+-{
+-	igt_display_t *display = &d->display;
+-	drmModeModeInfo *mode;
+-	int ret;
+-
+-	mode = igt_output_get_mode(output);
+-
+-	igt_plane_set_fb(p1, fb1);
+-	igt_plane_set_fb(p2, fb2);
+-
+-	switch (test_type) {
+-	case TEST_PLANES_UPSCALE:
+-		igt_plane_set_size(p1, mode->hdisplay, mode->vdisplay);
+-		igt_plane_set_size(p2, mode->hdisplay - 20, mode->vdisplay - 20);
+-		break;
+-	case TEST_PLANES_DOWNSCALE:
+-		igt_plane_set_size(p1, w1, h1);
+-		igt_plane_set_size(p2, w2, h2);
+-		break;
+-	case TEST_PLANES_UPSCALE_DOWNSCALE:
+-		igt_plane_set_size(p1, mode->hdisplay, mode->vdisplay);
+-		igt_plane_set_size(p2, w2, h2);
+-		break;
+-	case TEST_PLANES_DOWNSCALE_UPSCALE:
+-		igt_plane_set_size(p1, w1, h1);
+-		igt_plane_set_size(p2, mode->hdisplay, mode->vdisplay);
+-		break;
+-	default:
+-		igt_assert(0);
+-	}
+-
+-	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+-
+-	igt_plane_set_fb(p1, NULL);
+-	igt_plane_set_fb(p2, NULL);
+-
+-	if (ret == -EINVAL || ret == -ERANGE)
+-		igt_debug("Scaling op not supported by driver with %s\n",
+-			 (ret == -EINVAL) ? "-EINVAL" : "-ERANGE");
+-	return ret;
+-}
+-
+-static void setup_fb(int fd, int width, int height, struct igt_fb *fb)
+-{
+-	igt_create_fb(fd, width, height,
+-		      DRM_FORMAT_XRGB8888,
+-		      DRM_FORMAT_MOD_LINEAR,
+-		      fb);
+-}
+-
+-static uint32_t
+-test_planes_scaling_combo(data_t *d, double sf_plane1,
+-			  double sf_plane2, igt_crtc_t *crtc,
+-			  igt_output_t *output,
+-			  enum scaler_combo_test_type test_type)
+-{
+-	igt_display_t *display = &d->display;
+-	drmModeModeInfo *mode;
+-	int n_planes;
+-	int w1, h1, w2, h2;
+-	int ret;
+-
+-	cleanup_crtc(d);
+-
+-	igt_output_set_crtc(output, crtc);
+-	for_each_connector_mode(output, mode) {
+-		igt_output_override_mode(output, mode);
+-		igt_debug("Trying mode %dx%d\n",
+-			  mode->hdisplay, mode->vdisplay);
+-		w1 = get_width(mode, sf_plane1);
+-		h1 = get_height(mode, sf_plane1);
+-		w2 = get_width(mode, sf_plane2);
+-		h2 = get_height(mode, sf_plane2);
+-
+-		n_planes = crtc->n_planes;
+-		igt_require(n_planes >= 2);
+-
+-		switch (test_type) {
+-		case TEST_PLANES_UPSCALE:
+-			setup_fb(display->drm_fd, w1, h1, &d->fb[1]);
+-			setup_fb(display->drm_fd, w2, h2, &d->fb[2]);
+-			break;
+-		case TEST_PLANES_DOWNSCALE:
+-			setup_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, &d->fb[1]);
+-			setup_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, &d->fb[2]);
+-			break;
+-		case TEST_PLANES_UPSCALE_DOWNSCALE:
+-			setup_fb(display->drm_fd, w1, h1, &d->fb[1]);
+-			setup_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, &d->fb[2]);
+-			break;
+-		case TEST_PLANES_DOWNSCALE_UPSCALE:
+-			setup_fb(display->drm_fd, mode->hdisplay, mode->vdisplay, &d->fb[1]);
+-			setup_fb(display->drm_fd, w2, h2, &d->fb[2]);
+-			break;
+-		default:
+-			igt_assert(0);
+-		}
+-
+-		for (int k = 0; k < n_planes - 1; k += 2) {
+-			igt_plane_t *p1, *p2;
+-
+-			p1 = &crtc->planes[k];
+-			igt_require(p1);
+-			p2 = &crtc->planes[k+1];
+-			igt_require(p2);
+-
+-			if (p1->type == DRM_PLANE_TYPE_CURSOR || p2->type == DRM_PLANE_TYPE_CURSOR)
+-				continue;
+-			ret = __test_planes_scaling_combo(d, w1, h1, w2, h2, output,
+-							  p1, p2,
+-							  &d->fb[1], &d->fb[2],
+-							  test_type);
+-			if (ret != 0)
+-				break;
+-		}
+-		cleanup_fbs(d);
+-		if (ret == 0)
+-			break;
+-	}
+-	return ret;
+-}
+-
  static void
- check_one_scale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
- 			uint32_t format, uint64_t modifier, enum scale_dir dir,
-@@ -1036,10 +1081,11 @@ check_one_scale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
- 		{ .name = "vertical", .scale_width = false },
- 	};
- 	igt_pipe_crc_t *pipe_crc;
--	igt_crc_t ref_crc, scaled_crc;
-+	igt_crc_t ref_crc, both_ref_crc, crc;
- 	drmModeModeInfo mode;
--	igt_plane_t *plane;
--	int halign, valign, dalign;
-+	igt_plane_t *plane, *overlay = NULL;
-+	int halign, valign, dalign, num_scalers;
-+	char failures[256] = "";
- 	char limits[128] = "";
- 	bool any_tested = false;
- 	/* Pre-ver14 scalers round planar YUV differently from 1:1. */
-@@ -1067,6 +1113,18 @@ check_one_scale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
- 	plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
- 	igt_require(plane);
+ test_invalid_num_scalers(data_t *d, igt_crtc_t *crtc, igt_output_t *output)
+ {
+@@ -2068,99 +1495,6 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 	igt_subtest_group() {
+ 		igt_output_t *output;
  
-+	if (igt_crtc_count_plane_type(crtc, DRM_PLANE_TYPE_OVERLAY) > 0)
-+		overlay = igt_crtc_get_plane_type(crtc, DRM_PLANE_TYPE_OVERLAY);
-+	if (overlay && (!igt_plane_has_format_mod(overlay, format, modifier) ||
-+			!igt_plane_has_rotation(overlay, rot))) {
-+		igt_debug("Overlay plane skipped, no " IGT_FORMAT_FMT " "
-+			  IGT_MODIFIER_FMT " rotation %s support\n",
-+			  IGT_FORMAT_ARGS(format), IGT_MODIFIER_ARGS(modifier),
-+			  igt_plane_rotation_name(rot));
-+		overlay = NULL;
-+	}
-+	num_scalers = igt_crtc_num_scalers(crtc);
-+
- 	yuv_src_alignment(d, format, rot, &halign, &valign);
- 	/* Each dst side is also a source side at 1:1, possibly rotated. */
- 	dalign = max(halign, valign);
-@@ -1085,6 +1143,8 @@ check_one_scale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
- 		a->dst_scaled = a->scale_width ? a->dst_w : a->dst_h;
+-		for (int index = 0; index < ARRAY_SIZE(scaler_with_pixel_format_tests); index++) {
+-			igt_describe(scaler_with_pixel_format_tests[index].describe);
+-			igt_subtest_with_dynamic(scaler_with_pixel_format_tests[index].name) {
+-				for_each_crtc(&data.display, crtc) {
+-					igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+-						for_each_valid_output_on_crtc(&data.display,
+-									      crtc,
+-									      output) {
+-							igt_info("Trying on %s\n", igt_output_name(output));
+-							if (!crtc_output_combo_valid(&data.display, crtc, output))
+-								continue;
+-							if (igt_crtc_num_scalers(crtc) < 1)
+-								continue;
+-
+-							ret = test_scaler_with_pixel_format_crtc(&data,
+-									scaler_with_pixel_format_tests[index].sf,
+-									false,
+-									scaler_with_pixel_format_tests[index].is_upscale,
+-									crtc,
+-									output);
+-							if (ret == 0)
+-								break;
+-							igt_info("Required scaling operation not supported on %s trying on next output\n",
+-								 igt_output_name(output));
+-						}
+-						skip_if_erange_or_einval(ret);
+-					}
+-				}
+-			}
+-		}
+-
+-		for (int index = 0; index < ARRAY_SIZE(scaler_with_rotation_tests); index++) {
+-			igt_describe(scaler_with_rotation_tests[index].describe);
+-			igt_subtest_with_dynamic(scaler_with_rotation_tests[index].name) {
+-				for_each_crtc(&data.display, crtc) {
+-					igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+-						for_each_valid_output_on_crtc(&data.display,
+-									      crtc,
+-									      output) {
+-							igt_info("Trying on %s\n", igt_output_name(output));
+-							if (!crtc_output_combo_valid(&data.display, crtc, output))
+-								continue;
+-							if (igt_crtc_num_scalers(crtc) < 1)
+-								continue;
+-
+-							ret = test_scaler_with_rotation_crtc(&data,
+-									scaler_with_rotation_tests[index].sf,
+-									false,
+-									scaler_with_rotation_tests[index].is_upscale,
+-									crtc,
+-									output);
+-							if (ret == 0)
+-								break;
+-							igt_info("Required scaling operation not supported on %s trying on next output\n",
+-								 igt_output_name(output));
+-						}
+-						skip_if_erange_or_einval(ret);
+-					}
+-				}
+-			}
+-		}
+-
+-		for (int index = 0; index < ARRAY_SIZE(scaler_with_modifiers_tests); index++) {
+-			igt_describe(scaler_with_modifiers_tests[index].describe);
+-			igt_subtest_with_dynamic(scaler_with_modifiers_tests[index].name) {
+-				for_each_crtc(&data.display, crtc) {
+-					igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+-						for_each_valid_output_on_crtc(&data.display,
+-									      crtc,
+-									      output) {
+-							igt_info("Trying on %s\n", igt_output_name(output));
+-							if (!crtc_output_combo_valid(&data.display, crtc, output))
+-								continue;
+-							if (igt_crtc_num_scalers(crtc) < 1)
+-								continue;
+-
+-							ret = test_scaler_with_modifier_crtc(&data,
+-									scaler_with_modifiers_tests[index].sf,
+-									false,
+-									scaler_with_modifiers_tests[index].is_upscale,
+-									crtc,
+-									output);
+-							if (ret == 0)
+-								break;
+-							igt_info("Required scaling operation not supported on %s trying on next output\n",
+-								 igt_output_name(output));
+-						}
+-						skip_if_erange_or_einval(ret);
+-					}
+-				}
+-			}
+-		}
+-
+ 		igt_describe("Tests scaling with clipping and clamping, pixel formats.");
+ 		igt_subtest_with_dynamic("plane-scaler-with-clipping-clamping-pixel-formats") {
+ 			for_each_crtc(&data.display, crtc) {
+@@ -2243,37 +1577,6 @@ int igt_main_args("", long_opts, help_str, opt_handler, &data)
+ 			}
+ 		}
  
- 		cap = scale_src_cap(d, dir, src_width, a->dst_scaled, align);
-+		a->align = align;
-+		a->cap = cap;
- 
- 		/* Every probed and committed source is a crop of this fb. */
- 		scale_src_size(a, rot, cap, &w, &h);
-@@ -1093,9 +1153,7 @@ check_one_scale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
- 
- 		a->limit = find_scale_src_limit(d, plane, &a->fb, dir, a, rot,
- 						align, cap);
--		if (a->limit < 0 ||
--		    (dir == SCALE_DOWN ? a->limit <= a->dst_scaled :
--					 a->limit >= a->dst_scaled)) {
-+		if (!scale_has_headroom(dir, a->limit, a->dst_scaled)) {
- 			igt_debug("No %s %s headroom (limit src %d, dst %d)\n",
- 				  a->name, scale_dir_name(dir),
- 				  a->limit, a->dst_scaled);
-@@ -1132,36 +1190,81 @@ check_one_scale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
- 
- 	for (int i = 0; i < ARRAY_SIZE(axes); i++) {
- 		struct scale_axis *a = &axes[i];
--		int w, h;
-+		/* The overlay band sits right next to the primary band. */
-+		int ox = a->scale_width ? 0 : a->dst_w;
-+		int oy = a->scale_width ? a->dst_h : 0;
-+		int ovl_limit;
- 
- 		if (!a->tested)
- 			continue;
- 
- 		/* Reference: unscaled crop of exactly the destination size. */
--		scale_src_size(a, rot, a->dst_scaled, &w, &h);
--		igt_plane_set_fb(plane, &a->fb);
--		igt_plane_set_rotation(plane, rot);
--		igt_fb_set_position(&a->fb, plane, 0, 0);
--		igt_fb_set_size(&a->fb, plane, w, h);
--		igt_plane_set_position(plane, 0, 0);
--		igt_plane_set_size(plane, a->dst_w, a->dst_h);
-+		scale_plane_set(plane, a, rot, a->dst_scaled, 0, 0);
- 		igt_display_commit2(display, COMMIT_ATOMIC);
- 		igt_pipe_crc_collect_crc(pipe_crc, &ref_crc);
- 
--		/* Test: limit sized crop scaled into the same rectangle. */
--		scale_src_size(a, rot, a->limit, &w, &h);
--		igt_fb_set_position(&a->fb, plane, 0, 0);
--		igt_fb_set_size(&a->fb, plane, w, h);
-+		/* Primary: limit sized crop scaled into the same rectangle. */
-+		scale_plane_set(plane, a, rot, a->limit, 0, 0);
- 		igt_display_commit2(display, COMMIT_ATOMIC);
--		igt_pipe_crc_collect_crc(pipe_crc, &scaled_crc);
-+		igt_pipe_crc_collect_crc(pipe_crc, &crc);
-+		scale_crc_check(&ref_crc, &crc, a->name, "primary",
-+				failures, sizeof(failures));
-+
-+		if (!overlay)
-+			continue;
-+
-+		/* Overlay alone in the primary's place, at primary's limit. */
-+		igt_plane_set_fb(plane, NULL);
-+		ovl_limit = a->limit;
-+		scale_plane_set(overlay, a, rot, ovl_limit, 0, 0);
-+		if (!scale_try_commit(display)) {
-+			ovl_limit = find_scale_src_limit(d, overlay, &a->fb,
-+							 dir, a, rot,
-+							 a->align, a->cap);
-+			igt_info("Overlay %s %s limit %d, primary %d\n",
-+				 a->name, scale_dir_name(dir), ovl_limit,
-+				 a->limit);
-+			if (!scale_has_headroom(dir, ovl_limit,
-+						a->dst_scaled))
-+				continue;
-+			scale_plane_set(overlay, a, rot, ovl_limit, 0, 0);
-+		}
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		igt_pipe_crc_collect_crc(pipe_crc, &crc);
-+		scale_crc_check(&ref_crc, &crc, a->name, "overlay",
-+				failures, sizeof(failures));
-+
-+		if (num_scalers < 2) {
-+			igt_plane_set_fb(overlay, NULL);
-+			continue;
-+		}
-+
-+		/* Both planes scaled at once, each into its own band. */
-+		scale_plane_set(plane, a, rot, a->dst_scaled, 0, 0);
-+		scale_plane_set(overlay, a, rot, a->dst_scaled, ox, oy);
-+		igt_display_commit2(display, COMMIT_ATOMIC);
-+		igt_pipe_crc_collect_crc(pipe_crc, &both_ref_crc);
-+
-+		scale_plane_set(plane, a, rot, a->limit, 0, 0);
-+		scale_plane_set(overlay, a, rot, ovl_limit, ox, oy);
-+		if (scale_try_commit(display)) {
-+			igt_display_commit2(display, COMMIT_ATOMIC);
-+			igt_pipe_crc_collect_crc(pipe_crc, &crc);
-+			scale_crc_check(&both_ref_crc, &crc, a->name,
-+					"primary+overlay", failures,
-+					sizeof(failures));
-+		} else {
-+			igt_info("Primary and overlay %s %s at their limits "
-+				 "rejected together\n",
-+				 a->name, scale_dir_name(dir));
-+		}
- 
--		a->failed = !igt_check_crc_equal(&ref_crc, &scaled_crc);
--		if (a->failed)
--			igt_critical("CRC mismatch on %s %s\n",
--				     a->name, scale_dir_name(dir));
-+		igt_plane_set_fb(overlay, NULL);
- 	}
- 
- 	igt_plane_set_fb(plane, NULL);
-+	if (overlay)
-+		igt_plane_set_fb(overlay, NULL);
- 	igt_display_commit2(display, COMMIT_ATOMIC);
- 
- 	igt_reset_fifo_underrun_reporting(display->drm_fd);
-@@ -1173,13 +1276,8 @@ check_one_scale_max_crc(data_t *d, igt_crtc_t *crtc, igt_output_t *output,
- 	if (mask_lut)
- 		set_legacy_lut(d, crtc, 0xffff);
- 
--	igt_assert_f(!(axes[0].failed || axes[1].failed) ||
--		     igt_skip_crc_compare,
--		     "%s%s%s %s CRC mismatch\n",
--		     axes[0].failed ? axes[0].name : "",
--		     axes[0].failed && axes[1].failed ? " and " : "",
--		     axes[1].failed ? axes[1].name : "",
--		     scale_dir_name(dir));
-+	igt_assert_f(!failures[0] || igt_skip_crc_compare,
-+		     "%s CRC mismatch on: %s\n", scale_dir_name(dir), failures);
- }
- 
- static void
+-		for (int index = 0; index < ARRAY_SIZE(scaler_with_2_planes_tests); index++) {
+-			igt_describe(scaler_with_2_planes_tests[index].describe);
+-			igt_subtest_with_dynamic(scaler_with_2_planes_tests[index].name) {
+-				for_each_crtc(&data.display, crtc) {
+-					igt_dynamic_f("pipe-%s", igt_crtc_name(crtc)) {
+-						for_each_valid_output_on_crtc(&data.display,
+-									      crtc,
+-									      output) {
+-							igt_info("Trying on %s\n",
+-								 igt_output_name(output));
+-							if (!crtc_output_combo_valid(&data.display, crtc, output))
+-								continue;
+-							if (igt_crtc_num_scalers(crtc) < 2)
+-								continue;
+-							ret = test_planes_scaling_combo(&data,
+-								scaler_with_2_planes_tests[index].sf_plane1,
+-								scaler_with_2_planes_tests[index].sf_plane2,
+-								crtc,
+-								output,
+-								scaler_with_2_planes_tests[index].test_type);
+-							if (ret == 0)
+-								break;
+-							igt_info("Required scaling operation not supported on %s trying on next output\n",
+-								 igt_output_name(output));
+-						}
+-						skip_if_erange_or_einval(ret);
+-					}
+-				}
+-			}
+-		}
+-
+ 		for (int index = 0; index < ARRAY_SIZE(intel_paramtests); index++) {
+ 			igt_describe("Test for validating max source size.");
+ 			igt_subtest_with_dynamic(intel_paramtests[index].testname) {
 -- 
 2.43.0
 
