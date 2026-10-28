@@ -2,64 +2,62 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BD0606A31C
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Oct 2026 12:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E667F606A31A
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Oct 2026 12:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y50umfc0
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DQxj/4XB
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 624FB10FBE8;
-	Wed, 28 Oct 2026 12:26:53 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8A02810FBE5
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Oct 2026 12:25:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9DE0510FBE8;
+	Wed, 28 Oct 2026 12:38:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 442BD10E2E0
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Oct 2026 12:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793190357; x=1824726357;
+ t=1793191029; x=1824727029;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=9pY2Uuh0th7niKSFbiDswaabnaV3qNL6xBBm6vgZ69s=;
- b=Y50umfc0nE3KPVbzxWQtov8/P+6eDvIVufOshFt+1hNLDOhG1PrHitAa
- C23kCAYQ/p1wuQBswmnpmuwR3Yh4ySmf+BJ++3THYtFBiF62F+ZYmkk3S
- dvLUokOePqM5UxCn2E1kc5TKTMnM7Hx17XsBik7/ZVZqx2rRFmkEcsiQW
- 1L/F+bASUqqfobCcXdbGVZfAmNheqYU/uJC9yvZQzoW277gZj2OmANNZ3
- zQzCL71/647VeGoGiW9Q473eraChqka6hcB71x3TXCHQaFAjG7wrCsBRt
- SZV1okyOtz2OrfTrV0l1d3Imp1JLZR9UWU1WNjFEVDeoUR9HSm0gdbsF9 g==;
-X-CSE-ConnectionGUID: d0GBOS+5RJSK1sxZL9YqFw==
-X-CSE-MsgGUID: Lr91cQTCS2SjNNPGOHBumA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1800858"
+ bh=rQZ9YRkFkq8bImL4aio3+GxRGQzQXoLcuzc0SfT5FIc=;
+ b=DQxj/4XBQJztfHVXrmqNmRiR3hWzGOCo1q2ialMBDFPAOfNxNffAUYb0
+ CGXltZaRTqOgsKzymgwehvg+IIl+yr1Yn8dMsHFhrz+Rdmq12J+3dxPFi
+ Us3PVxzgDoTDFc3vDLVzNr+rksJ/l9fBVOBhI6iJQvf99XU0cY4cEXRfG
+ cWABGcCAH6JRleeZ/d5/AoXPrypXdFE1sni98BoaqNQBrwKndseVdyIio
+ NTDkD1RxD6bNjtuP3kCRuVGqclH4NZ0WqLqKYCoPTYmNu9LB1G8b6TUj+
+ IrwwHvuZnqkm6t86VeXwg8E59q+rOIf1mXnt/cYJdgHUbz/AuKIpCNJHP A==;
+X-CSE-ConnectionGUID: 4gD6Z3fNSCe0ZG/Z7Q1Yvw==
+X-CSE-MsgGUID: ivJ3lD3sRdKbftXq11iGCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1818650"
 X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="1800858"
-Received: from fmviesa013.fm.intel.com ([10.60.135.153])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2026 05:25:56 -0700
-X-CSE-ConnectionGUID: I9n6YGiDTju6xbzARhUhwA==
-X-CSE-MsgGUID: jYRIKCh3Rv2QlH4+6zbidA==
+   d="scan'208";a="1818650"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 28 Oct 2026 05:37:09 -0700
+X-CSE-ConnectionGUID: DwHgD16cTb+IpublFllWkg==
+X-CSE-MsgGUID: HwI3ezQeRJmF5s2a4+b11g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="6645728"
+   d="scan'208";a="6674012"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2026 05:25:55 -0700
-Date: Wed, 28 Oct 2026 13:25:35 +0100
+ 28 Oct 2026 05:37:08 -0700
+Date: Wed, 28 Oct 2026 13:37:06 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: nishit.sharma@intel.com
-Cc: igt-dev@lists.freedesktop.org, arvind.yadav@intel.com,
- kamil.konieczny@intel.com, Jia Yao <jia.yao@intel.com>,
- Gustavo Sousa <gustavo.sousa@intel.com>
-Subject: Re: [PATCH] tests/intel/xe_exec_system_allocator: Skip unsupported
- PAT madvise indices
-Message-ID: <20261028122535.the7nobqbeotvnei@kamilkon-DESK.igk.intel.com>
+To: Gustavo Sousa <gustavo.sousa@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t v2 2/2] runner/executor: Report command used for
+ test exec
+Message-ID: <20261028123706.vkcmgxknerggyidv@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- nishit.sharma@intel.com, igt-dev@lists.freedesktop.org,
- arvind.yadav@intel.com, kamil.konieczny@intel.com,
- Jia Yao <jia.yao@intel.com>,
- Gustavo Sousa <gustavo.sousa@intel.com>
-References: <20261026052051.1472943-1-nishit.sharma@intel.com>
+ Gustavo Sousa <gustavo.sousa@intel.com>,
+ igt-dev@lists.freedesktop.org
+References: <20261026141702.44811-1-kamil.konieczny@linux.intel.com>
+ <20261026141702.44811-3-kamil.konieczny@linux.intel.com>
+ <87wlr49ri6.fsf@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261026052051.1472943-1-nishit.sharma@intel.com>
+In-Reply-To: <87wlr49ri6.fsf@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,61 +76,123 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi nishit.sharma,
-On 2026-10-26 at 05:20:51 +0000, nishit.sharma@intel.com wrote:
-> From: Nishit Sharma <nishit.sharma@intel.com>
+Hi Gustavo,
+On 2026-10-26 at 16:44:01 -0300, Gustavo Sousa wrote:
+> Kamil Konieczny <kamil.konieczny@linux.intel.com> writes:
 > 
-> Skip PAT-index madvise subtests when the selected 2-way coherent index is
-> rejected by the workaround, avoiding an assertion failure on
-> affected platforms.
+> > Add printing of command line used for executing a test, when
+> > the log level is normal or above.
+> >
+> > v2: move constructing exec command string to separate function
+> >     (Gustavo)
+> >
+> > Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > ---
+> >  runner/executor.c | 50 ++++++++++++++++++++++++++++++++++++++++++++++-
+> >  1 file changed, 49 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/runner/executor.c b/runner/executor.c
+> > index 5bd95b929..91ad05d58 100644
+> > --- a/runner/executor.c
+> > +++ b/runner/executor.c
+> > @@ -1626,6 +1626,49 @@ static void free_test_command(struct igt_vec *arg_vec)
+> >  	igt_vec_fini(arg_vec);
+> >  }
+> >  
+> > +static char *entry_exec_cmd(struct igt_vec *arg_vec)
+> > +{
+> > +	char *m, *n;
+> > +	int mlen, s_len, vec_len;
+> > +
+> > +	mlen = 4096;
+> > +	m = malloc(mlen);
+> > +	if (!m)
+> > +		return NULL;
+> > +
+> > +	vec_len = igt_vec_length(arg_vec);
+> > +	s_len = 0;
+> > +	for (size_t i = 0; i < vec_len; i++) {
+> > +		int nlen;
+> > +
+> > +		n = *((char **)igt_vec_elem(arg_vec, i));
+> > +		if (!n)
+> > +			break;
+> > +
+> > +		nlen = strlen(n);
+> > +		if (s_len + nlen + 2 > mlen) {
+> > +			char *p;
+> > +
+> > +			mlen *= 2;
+> > +			p = realloc(m, mlen);
+> > +			if (!p)
+> > +				break;
+> > +
+> > +			m = p;
+> > +		}
+> > +
+> > +		if (i)
+> > +			m[s_len++] = ' ';
+> > +
+> > +		memcpy(m + s_len, n, nlen);
+> > +		s_len += nlen;
+> > +	}
+> > +
+> > +	m[s_len++] = 0;
+> > +
+> > +	return m;
+> > +}
+> > +
+> >  static void build_test_command(struct settings *settings,
+> >  			       struct job_list_entry *entry,
+> >  			       struct igt_vec *arg_vec)
+> > @@ -1849,7 +1892,7 @@ static int execute_next_entry(struct execute_state *state,
+> >  
+> >  	if (settings->log_level >= LOG_LEVEL_NORMAL) {
+> >  		char buf[100];
+> > -		char *displayname;
+> > +		char *displayname, *cmd;
+> >  		int width = digits(total);
+> >  		int len;
+> >  
+> > @@ -1864,6 +1907,11 @@ static int execute_next_entry(struct execute_state *state,
+> >  		free(displayname);
+> >  
+> >  		outf("%s\n", buf);
+> > +		cmd = entry_exec_cmd(&arg_vec);
+> > +		if (cmd) {
+> > +			outf("cmd: %s\n", cmd);
+> > +			free(cmd);
+> > +		}
+> 
+> The function entry_exec_cmd() and its usage look correct to me, but I
+> wonder if we could avoid the memory allocation with something like
+> below:
+> 
+>     outf("cmd:");
+> 
+>     for (size_t i = 0;
+>          i < igt_vec_length(&arg_vec) && *(char **)igt_vec_elem(&arg_vec, i);
+>          i++)
+>     	outf(" %s", *(char **)igt_vec_elem(&arg_vec, i));
+> 
+>     outf("\n");
 > 
 
-+cc
-Jia Yao <jia.yao@intel.com>
-Gustavo Sousa <gustavo.sousa@intel.com>
+The idea for building string was to resue it and saving it
+into cmd.txt or journal.txt, so it will survive any unexpected
+reboot, then put it into results.json
 
-> Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
-> ---
->  tests/intel/xe_exec_system_allocator.c | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
+Let me write that part in v3.
+
+
+Regards,
+Kamil
+
+> --
+> Gustavo Sousa
 > 
-> diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-> index 45ec62813..2519b9e62 100644
-> --- a/tests/intel/xe_exec_system_allocator.c
-> +++ b/tests/intel/xe_exec_system_allocator.c
-> @@ -1216,6 +1216,22 @@ xe_vm_madvixe_pat_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
->  		      DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0, 0);
->  }
->  
-> +static bool pat_idx_unsupported_by_wa(int fd, uint8_t pat_idx)
-> +{
-> +	struct intel_pat_cache pat = {};
-> +	int32_t n;
-> +
-> +	if (intel_graphics_ver(intel_get_drm_devid(fd)) < IP_VER(35, 0) ||
-> +	    xe_has_vram(fd))
-> +		return false;
-> +
-> +	n = xe_get_pat_sw_config(fd, &pat, 0);
-> +	if (n <= pat_idx)
-> +		return false;
-> +
-> +	return (pat.entries[pat_idx].pat & 0x3) == 3;
-> +}
-> +
->  static void
->  xe_vm_madvise_atomic_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
->  			  int mem_attr)
-> @@ -2887,6 +2903,9 @@ int igt_main()
->  			if (IS_PONTEVECCHIO(dev_id) &&
->  			    strstr(s->name, "madvise-pat-idx-uc-comp-"))
->  				igt_skip("Skipping compression-related PAT index on PVC\n");
-> +
-> +			igt_skip_on_f(pat_idx_unsupported_by_wa(fd, s->fn(fd)),
-> +				      "2-way coherent PAT index not allowed\n");
->  			xe_for_each_engine(fd, hwe)
->  				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
->  		}
-> -- 
-> 2.43.0
-> 
+> >  	}
+> >  
+> >  	/*
+> > -- 
+> > 2.55.0
