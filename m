@@ -2,55 +2,53 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2552606A31A
-	for <igt-dev@archiver.kernel.org>; Wed, 28 Oct 2026 06:27:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F367606A31A
+	for <igt-dev@archiver.kernel.org>; Wed, 28 Oct 2026 06:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nrwl1io5
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cRrxKiJ0
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 96FEB10E556;
-	Wed, 28 Oct 2026 06:27:06 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0532810E556;
+	Wed, 28 Oct 2026 06:27:56 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A055810F9D6
- for <igt-dev@lists.freedesktop.org>; Wed, 28 Oct 2026 06:25:17 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 845B710F9DB
+ for <igt-dev@lists.freedesktop.org>; Wed, 28 Oct 2026 06:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793168717; x=1824704717;
+ t=1793168719; x=1824704719;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=AKen6JMU5t+UWCcFPe4TQe5zNFa5dxRXITrsQeS7+Ws=;
- b=nrwl1io5BJ2DKQRV/wEV6w/5JJ2X1qDCPoKatQqUBXGE8/j+4tufdvJ6
- r+GkrbfKtTb5KYXNA/tuAtRxpf90PHz8pmO8pntCIUANE/cFkcyaOnw9x
- 1e50JY3KyHV388pWhaK10dWgZ1hsKQXU2e0IDmTobJvf9qkCeBodrDVJF
- pOmSEjUcVN1JJznQ7VM0QZkNakcMYN2piFUru34hqMhRwzDpVEygmWJeW
- gWyvzBvAWUj1gWIECbDQQU0i5ktEjJMokuqq+cAXDCk7C1G0kuwYqNkv+
- NNEvgs3lbs6mO3a1o6PunvnOvM9RCCo3Xdxz+M7MzMyxmrrrw8koV5vus Q==;
-X-CSE-ConnectionGUID: t1LXzE6wSYiF6l9KN/BTMA==
-X-CSE-MsgGUID: 1NO9ltkfRm2eEkQbPwG1Rg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1911630"
+ bh=KVXUXjiDcA9o4lnPDQy2QL3X2lCTb3HdOsw2J1AHhf8=;
+ b=cRrxKiJ0FCMYnr3Ww4vmB/S4POOLyra39Gn6UNixq6oYDkkleUj5M76m
+ sQiawVmY6XK50w/I4A/1Tu4nrlGEeUeGjN4XzgO7t880ZwrbVBchWxlP5
+ /eSWftGKpDeL5jJzyMOrLPT59H6jCRErcR7VaUWj80tJVGqB5E5AXEsvz
+ GReIsZ1cDA63TjhdGq4bKV3ZfkGW7l9Xv+v+Pxg1OIq15r+5zAhnb21qw
+ Waqtp3qARZzyb3ivBcAyMMcqZeEjYjgow1tz53Q2fpc3qP2lkPohpb99N
+ T3oZihE0MNHKD/QnU69RxRKIIYZEg7edI2YhnphT/4UzUGuXcMeDKRYe/ Q==;
+X-CSE-ConnectionGUID: tONAIKz9Q625eG1/Hhj9+Q==
+X-CSE-MsgGUID: mbC67dmrRFeS/PeRUn/Nqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11948"; a="1911632"
 X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="1911630"
+   d="scan'208";a="1911632"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Oct 2026 23:25:17 -0700
-X-CSE-ConnectionGUID: IvnqVb75Rs6flBTb4jLSPg==
-X-CSE-MsgGUID: 1b/EqUDvSiSiQgV2fpTaIw==
+ 27 Oct 2026 23:25:19 -0700
+X-CSE-ConnectionGUID: TIsSe8b+TD+uPS2FNs0QrQ==
+X-CSE-MsgGUID: zcdTEkp8QriqOvLRnuClRA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,182,1787036400"; 
-   d="scan'208";a="5270336"
+   d="scan'208";a="5270341"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by fmviesa010.fm.intel.com with ESMTP; 27 Oct 2026 23:25:15 -0700
+ by fmviesa010.fm.intel.com with ESMTP; 27 Oct 2026 23:25:17 -0700
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- Riana Tauro <riana.tauro@intel.com>,
+ Sk Anirban <sk.anirban@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
- Jeevan B <jeevan.b@intel.com>, Swati Sharma <swati2.sharma@intel.com>,
- Pranay Samala <pranay.samala@intel.com>,
- Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-Subject: [PATCH i-g-t v2 2/3] tests/intel/xe_configfs: Reload audio driver on
- exit
-Date: Wed, 28 Oct 2026 11:32:01 +0530
-Message-ID: <20261028060202.2968778-2-chaitanya.kumar.borah@intel.com>
+ Jeevan B <jeevan.b@intel.com>, Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t v2 3/3] tests/intel/xe_survivability: Reload audio
+ driver on exit
+Date: Wed, 28 Oct 2026 11:32:02 +0530
+Message-ID: <20261028060202.2968778-3-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20261028060202.2968778-1-chaitanya.kumar.borah@intel.com>
 References: <20261028060202.2968778-1-chaitanya.kumar.borah@intel.com>
@@ -79,7 +77,7 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 Commit 117e9ecbdd1d ("xe/igt_kmod_unbind: release audio before
 unbinding xe") made igt_audio_driver_unload() be called before
 unbinding xe to avoid the audio-component bind warnings/errors that
-happen if xe is unbound while snd_hda_intel is still attached. All
+happen if xe is unbound while snd_hda_intel is still attached. Both
 call sites in this file passed NULL for the unloaded driver name, so
 it was never tracked, and nothing ever reloaded it afterwards.
 
@@ -94,31 +92,30 @@ v2:
 - Add Fixes tag (Pranay)
 - Use the new igt_audio_driver_load() helper (Dnyaneshwar)
 
-Cc: Riana Tauro <riana.tauro@intel.com>
+Cc: Sk Anirban <sk.anirban@intel.com>
 Cc: Michał Grzelak <michal.grzelak@intel.com>
 Cc: Jeevan B <jeevan.b@intel.com>
 Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Pranay Samala <pranay.samala@intel.com>
-Cc: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
 Fixes: 117e9ecbdd1d ("xe/igt_kmod_unbind: release audio before unbinding xe")
+
 Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 ---
- tests/intel/xe_configfs.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ tests/intel/xe_survivability.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
-index 450c0a119..1b881507c 100644
---- a/tests/intel/xe_configfs.c
-+++ b/tests/intel/xe_configfs.c
-@@ -25,6 +25,7 @@
+diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
+index bae9eca27..41d85bcea 100644
+--- a/tests/intel/xe_survivability.c
++++ b/tests/intel/xe_survivability.c
+@@ -39,6 +39,7 @@
+  */
  
  static char bus_addr[NAME_MAX];
- static struct pci_device *pci_dev;
 +static char *snd_driver;
  
- static bool check_registers(const uint32_t reg[], const uint32_t val[],
- 			    size_t max)
-@@ -55,7 +56,7 @@ static void restore(int sig)
+ static void ignore_wedged_in_dmesg(void)
+ {
+@@ -158,7 +159,7 @@ static void restore(int sig)
  {
  	int configfs_fd;
  
@@ -126,10 +123,10 @@ index 450c0a119..1b881507c 100644
 +	igt_audio_driver_unload(&snd_driver);
  	igt_kmod_unbind("xe", bus_addr);
  
- 	/* Drop all custom configfs settings from subtests */
-@@ -66,11 +67,13 @@ static void restore(int sig)
+ 	configfs_fd = igt_configfs_open("xe");
+@@ -167,11 +168,13 @@ static void restore(int sig)
+ 	close(configfs_fd);
  
- 	/* Bind again a clean driver with no custom settings */
  	igt_kmod_bind("xe", bus_addr);
 +
 +	igt_audio_driver_load(&snd_driver);
@@ -142,51 +139,6 @@ index 450c0a119..1b881507c 100644
  	igt_kmod_unbind("xe", bus_addr);
  	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
  	igt_kmod_bind("xe", bus_addr);
-@@ -115,7 +118,7 @@ static void test_engines_allowed_invalid(int configfs_device_fd)
- 	 * These only test if engine parsing is correct, so just make sure
- 	 * there's no device bound
- 	 */
--	igt_audio_driver_unload(NULL);
-+	igt_audio_driver_unload(&snd_driver);
- 	igt_kmod_unbind("xe", bus_addr);
- 
- 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
-@@ -142,7 +145,7 @@ static void test_engines_allowed(int configfs_device_fd)
- 	 * These only test if engine parsing is correct, so just make sure
- 	 * there's no device bound
- 	 */
--	igt_audio_driver_unload(NULL);
-+	igt_audio_driver_unload(&snd_driver);
- 	igt_kmod_unbind("xe", bus_addr);
- 
- 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
-@@ -173,7 +176,7 @@ static void test_gt_types_allowed(int configfs_device_fd)
- 	 * These only test if gt type parsing is correct, so just make sure
- 	 * there's no device bound
- 	 */
--	igt_audio_driver_unload(NULL);
-+	igt_audio_driver_unload(&snd_driver);
- 	igt_kmod_unbind("xe", bus_addr);
- 
- 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
-@@ -240,7 +243,7 @@ static void test_ctx_restore_invalid(int configfs_device_fd, const char *type)
- 	 * These only test if command parsing is correct,
- 	 * so just make sure there's no device bound
- 	 */
--	igt_audio_driver_unload(NULL);
-+	igt_audio_driver_unload(&snd_driver);
- 	igt_kmod_unbind("xe", bus_addr);
- 
- 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
-@@ -325,7 +328,7 @@ static void test_ctx_restore(int configfs_device_fd, const char *type,
- 	for (size_t i = 0; i < ARRAY_SIZE(values); i++) {
- 		const struct value *v = &values[i];
- 
--		igt_audio_driver_unload(NULL);
-+		igt_audio_driver_unload(&snd_driver);
- 		igt_kmod_unbind("xe", bus_addr);
- 
- 		for (int j = 0, off = 0; v->in[j]; j++)
 -- 
 2.50.1
 
