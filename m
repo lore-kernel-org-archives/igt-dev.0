@@ -2,162 +2,29 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA494606A31C
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 09:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=amXnnKes
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBC5606A31A
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 10:32:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 803C710E7C1;
-	Thu, 29 Oct 2026 09:21:56 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A5C3410E4A3
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 09:20:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793265660; x=1824801660;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=udSkToiLLmz3k9LhbT5c/g50AeCn4DP2uSbc7E5vEyw=;
- b=amXnnKess0esyTzOLtyPS4duqvmzZzAeW4pD2l5HoLsQgexUSV1nwZ5j
- PAkX2pDNuDBya1mUflRyqnKXhfAmsQy9hjRnCJqSMOcJVy2cDQBARYkU1
- cJPr7hhMXa2X3KW3OMdRaoaptoRdYJcC3sxY0hIbUe/PyGphhY8+N/jbt
- hVTVnhZHTdeXEIG+2ZaHDnQ1wUbQFpNKj+yzdtF+MwsciIWxi/JkSpQrS
- +gRi+RVqEXZmw6ZXM3FDoZj3ktFJM+2LJwbtJSMBGH+pP5h4yqzv+wWmx
- STcejDMhYGjt40udlBeCAP7VwbobAahwsIhWeYsxuImm6R3IbzKqdAx5h A==;
-X-CSE-ConnectionGUID: olqw9KnPR1O0ykWNjQy73g==
-X-CSE-MsgGUID: 6VkOszmVQ/O/ZcvAv8qGZg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2001406"
-X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="2001406"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 02:21:00 -0700
-X-CSE-ConnectionGUID: kcBmSa3vT0aIwdrAg5w/Lw==
-X-CSE-MsgGUID: gz7jzq/GQdOvxNmwSJdBYg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="4965835"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 02:20:59 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 29 Oct 2026 02:20:58 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Thu, 29 Oct 2026 02:20:58 -0700
-Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.71) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 29 Oct 2026 02:20:58 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x2flcq3OeZSOM8Q6Zz327DDkhDv7F6SHCPHqNL9j8I2CkYQbvDjQQUe5dFpYHosk5+PFgDMm+BJZfisBbIuWuoUwEkS9DZIEcr3ZU8PF66o+oq2imAu8dasnOwH7X50NDL7fXOQelXgIf2X2/vFVOoR0KLzUx4gaT0uSH6X+kgUvDe9npzjcwDXWtF3fShKv3LQbj3dJ6YgQqismyWf7/lGbBIU+4zlX3o9Pksk2q7u5MjY9LZ+WwHXTQXkO4KEgX17s91W5zlNKhu9mOaPQm6bBo3H+5rEDBGIQItj9MZMifKdIKb7EMNJ/bqXMMNeyrJztLDII7VBQRnkS50djKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ao+6UjXeJ26MyRXOevsWbQzeE3eWcadhjwffWqnEe2U=;
- b=T0kB/q+1EyftrxiL3H0Jv/Sbtkusclvm4d/B5A6+WByFACHPAeSthQCQ7Wr/LfthrrG/rT2z7YS4OJUnA7C+GMb3rE6SkSa2gSr3n/+1RDJWLxIvXfs8fgmZF1JYTuVJBdNncdLPh0q5UUQd9PHTeCo9NdAi/o+hbHfunT/ThNa+uNzO9GR6ajS2JggutJuz8M/pU+21VUmjJ4AU1KuAaJrF5V0qRdtcCVWEdaSk3AYrwCPAtmF5D6eZQP39mMs8pKQq+iZPaGg1w2XgImj/xiYKCtEB3+2Yh0zPSmr19kZOdrV8bFv8EVwHNv4zHyMoREwSgps6YZs5IkAxziXaLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
- SA3PR11MB7435.namprd11.prod.outlook.com (2603:10b6:806:305::6) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.8; Thu, 29 Oct 2026 09:20:51 +0000
-Received: from DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
- ([fe80::8cb2:cffc:b684:9a99%4]) with mapi id 15.21.0546.021; Thu, 29 Oct 2026
- 09:20:51 +0000
-Message-ID: <f0b5e079-d209-40a9-af10-cdc7cd9fada7@intel.com>
-Date: Thu, 29 Oct 2026 14:50:43 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 07/10] tests/intel/xe_err_injection: Add Core Compute
- Uncorr Error injection
-To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: <soham.purkait@intel.com>, <anshuman.gupta@intel.com>,
- <raag.jadav@intel.com>, <mallesh.koujalagi@intel.com>,
- <harish.chegondi@intel.com>, <kamil.konieczny@linux.intel.com>
-References: <20261029085955.1232163-1-ravi.kishore.koppuravuri@intel.com>
- <20261029085955.1232163-8-ravi.kishore.koppuravuri@intel.com>
-Content-Language: en-US
-From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <20261029085955.1232163-8-ravi.kishore.koppuravuri@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0037.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:175::17) To DS0PR11MB7958.namprd11.prod.outlook.com
- (2603:10b6:8:f9::19)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DD04110E7AE;
+	Thu, 29 Oct 2026 10:32:22 +0000 (UTC)
+Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5949C1121D6;
+ Thu, 29 Oct 2026 10:31:31 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5068646323159127934=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|SA3PR11MB7435:EE_
-X-MS-Office365-Filtering-Correlation-Id: bfedd51e-0138-481b-08f6-08df359deced
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|23010399003|6133799003|22082099003|18002099003|261028144727099003|56012099006|4143699003|11063799006|261026121527099003|261022105027099003|261021121427099003|261026140227099003|10067099003|261009220027099003|261022113327099003|261009223327099003|261009223027099003|261009221727099003|261009221227099003;
-X-Microsoft-Antispam-Message-Info: 8LeYQH5xkbhIQT86y0b254pc2b1DMBWNbeJoNLVtLAOUhs9cP7BbtsI+l5iFc37RJQagHyN8y9gEVvx3GztfVVOG2X9OrSB+Mab1MPDWXrlIwYUxQFF8Bvtvl11RGQQ4x0Djw/5yHbnsUXOkde4Pyxysp07FdRrAEosgcSmgz8dCOeyiYdx95f9RJPUQpRScs8flEKKdknMujQXrAJaQCaL4K1ibzflrUDK/diFxS66vJ6e6pAt7BuIHshQP76YE/yFN8tz3fV5r4u0CUigPhlbZuR0INTSMLXvRc9PSqxiTyUa4bQPDUyrNux+jasgpzyoSMHwELC9XMqgvfcu2EIEl17Jj5Ab/tCqdKPPLc/XD+bdxRLmt/tI/pdn59InaJFgH9CrPWI/H7eLPNZxBjcSDw4gOozeVk16T7y3AxEmTE6es9NkzvYqgDQ46sxoLPaZDGw0M7eR05OnSEQnjTv7yx7gfEiFwK7DY2MFiQatgjI8RpR/TCwT+84vCSjhKSUW/plftiApFPwFTyKU7Alg58FruxJHOErQoF6wlSMV2YOEb6b7l8Ax1mJ4/MqAluPUlKvF2lDxVvLfr+iYJDcFLaTXuAJd+fms5Lqos97U3l0x96E5WvFGPRyx0Lv/z5ffKeStmj5QRKRgql7J/SIeGD4YPDQthKvTpQm6Yhz0=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(6133799003)(22082099003)(18002099003)(261028144727099003)(56012099006)(4143699003)(11063799006)(261026121527099003)(261022105027099003)(261021121427099003)(261026140227099003)(10067099003)(261009220027099003)(261022113327099003)(261009223327099003)(261009223027099003)(261009221727099003)(261009221227099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d3pYL2tnekRqTllVK2cvSjVzK3N2MjFObjYrclR2Q05Pb000dFpaK2J4aU5X?=
- =?utf-8?B?QjBwODNYVXNuRmZrNW1WcU1aQjhEU3ZHcGxVSUx5aXNwRldocTMzOVh4cWtn?=
- =?utf-8?B?Zi9QajRYdE9PamkwSHNhSFFNRFVGNjJsWG5pa3p1MnlIazltbWhvVzFoaXFy?=
- =?utf-8?B?aE5uTkM3b29pNVRyTWNERkdKd0RYdFY1MGRveXpUYXpjMFFNdlpaV09ldEM0?=
- =?utf-8?B?eExjTE5SQU56L0ZMQmpOTU1TVzc0TXl5V01GbGNSL3I3ZThWSDY5aEt6M1VN?=
- =?utf-8?B?aTIxZ3BjdUlpRUFkcmFXM1hRYjB0aDhjN3V5bTNUcEdRUzltdGpZWERRRGtT?=
- =?utf-8?B?L2RwTzN2Y3g0MDFxQXZhMyt2WmdaWjZQVzRVZkxvR3M1aWN0SVUrYitkYTZU?=
- =?utf-8?B?Vi9mRTF3YWE0OURCWGZod1dSdk8zOHpjQjJvU0oyL1Q2ekRlUkh6SUo3dkF6?=
- =?utf-8?B?c1piSGN6aEtQRExCMHpCaHpScDZnQkhLeWwvRGo1ZkVOc25VemdYYmgwbnpB?=
- =?utf-8?B?ZC9PZUFvaGx6R1R6WmpFTnVyRDR1dmdzNDNSSFpab0VIV24wMTFOdUdNNmh5?=
- =?utf-8?B?R0VWb29XZm53QlZpM05LMkVjM1kyTW02T3l2OU1NSDlVNXFVNE5NbnNobktu?=
- =?utf-8?B?bFhVb2wxK2E0UW1leDJDUkQ3YW1kV294MHVGUDdkSWVkQWt0eWs4cXBsY3ZE?=
- =?utf-8?B?S2k3QU1DbUNMN3VJSVVXT0tDSktFbUNxUWpCS2d0amJTMHNPeWhGZDc0Snk3?=
- =?utf-8?B?bjVsbkg3WnVFY1JpVzFhWTdqWHVza2hJaFJYRmQrOG15dENRRGdQME1ocUZp?=
- =?utf-8?B?aXh6Z2FSYlpqTjZ4NHpjcTROeEZFYkJCOUYwZVZEMitqT3I3NjRaaUJNUjJY?=
- =?utf-8?B?eC9lZEpBbVl0YmtJdlh6M2FmeFVzcnFXeVBKQUloOXRRY280eFU4YStxQ2Fr?=
- =?utf-8?B?S1RVd0FHczlGaG9SV0JtaHhWMmFBY1lCVnI1bjkrNDlzeTZoOHJzRThjaTN0?=
- =?utf-8?B?cHVSVTZPS0dwRkJYK3NOWFdrcUFtb2I4ODlFaFpmVWM3L1lUVElzZ00wd0JI?=
- =?utf-8?B?WGl0T2hrZUNGMGhQcHNONEpqQ0tCWE5UUStqcDEwUXJ3aGgxTkQ1TytmUDM0?=
- =?utf-8?B?U05zdGJ5RG9aMWVnWlV0R3dncnFJZ1JZcEVuLzRkRkozaXRSRHFsRm41dk5l?=
- =?utf-8?B?QXJwRG1ZWU91LzV3VUdRR1IvUEdVU2lsaHFuK0dJLzA0aWMzZVZ2T1kzQk5J?=
- =?utf-8?B?enVSMU1jdytWU1crMG1ZMmYvNE1yUGtvY014TGkzT1Z6VXlYdWxsZk9PMlJi?=
- =?utf-8?B?N3Q3MC9BYjZPY0RVeHg0NGpQWDA0clZFZlFpeVh6eGduZyt3Q1M5NVMwTklm?=
- =?utf-8?B?U0NQNnZtWWRBWkRrN2xKVlNGSHJqR2VWeTRuMHBHQ1FlcUZBSGw4ZTlRdnhG?=
- =?utf-8?B?UTIxY3VHMUFHSVV1TzlKSlVPSDg5RVlieUZXSVc0dHBjOWJNaUFHdFdzeFN1?=
- =?utf-8?B?RFBuOUlmRVZRODVyR1lDTFVzRHA0akh4aDNEYWp4VjZ1d1VZblpwSFQxdE1K?=
- =?utf-8?B?aEszQWpyVEx0NGo5TlhmT0dIOXhWOU9iUW5ubm1GTGpibUJWTVpnS3ZlYm5u?=
- =?utf-8?B?V1lyQTU0UlBHMXBnTEJ5KzMzOWdCcDg0YVErbWF2ejZMR3lXY2dXVjZ1ekRI?=
- =?utf-8?B?aTlUcmZCZ2xXV3RSVFhVVGpvbVNqa0wrNlJkeW5hYnRLUUhEK3REamtsU2RD?=
- =?utf-8?B?U3ErUFhsYTlsK0p0TitYRVNUR3FNczc1bGMzRDZvYTBSSEd4bXVyczZ4bVJt?=
- =?utf-8?B?Z0c1alRTREt2ZmhBaFAyWUFiTlI5b3RoMCtHTGxWT2lNcGJrUEk3TlJFTXdw?=
- =?utf-8?B?TThLSXpuS3VaL1NaK1I5dVNUVEkxVkdVWjErVUJyN0w0R0c1VTROTVJzL3p0?=
- =?utf-8?B?T0s1YUJnYUZneWFPSmhhNERxc0ZJWkpnMTRiMWJUdkZOb0tqSzlPdlY3dElj?=
- =?utf-8?B?MGtocWg5ZTlQUjhmcEhnNmhrRFJpOHRRaUNSVlB1cHFad2FiMDFwM1FRRUpt?=
- =?utf-8?B?YkkvTTNMM1F3MmkvNm9pcTF0UXVBdkc2NDI5bm8vc2pJUUtsbXZjaERMWllt?=
- =?utf-8?B?alV1OUJFL1Z4V1VWS05tclFKOHdoMXNBUi9YdnhwZ0piMXVIVEtkRzdiTjJM?=
- =?utf-8?B?YjAzS3ZSbTk2MFc4eGlKZ0xUZ2FhTnNxSHRBOS9mT2wvNkF1TmhSc2tHeDNU?=
- =?utf-8?B?WlZ1UkgvUys0d2pTS2c3UDdWdEp5MlJUV2RPVW53VWo3NlgveEprMUlzUkx2?=
- =?utf-8?B?UG0wTkdRUU5EUUdMMEovNjRjNHlzNmRrTWhIWGk0TlRzdWNMMWpsdz09?=
-X-Exchange-RoutingPolicyChecked: prNYKP/YLoMFF6akkcOdyEBnVhJRzhP+w2AbIOzxrcEjtA+zXMc3Vi1AvFamhrHEGfaHz7dCQJmce4pSksFWeWfjt3NDl3eUAhXcp2VQ6qb2sviuWsDN6en5BdAuQpylZOusRqbWGOolaucZgQu6c8BsHyLWTWNvqC+C+l9VBJwuukkoFMBguWbIGiuP1ZikHDZF7QHs4CoR5AXOt6PgAMHadLOHFaow93UBv+l7/lOlnbCr8+I5K9TZ4q4oVO+vnfkaT4Yzp7LVcEzy7FJnIgOvPXKwmmkGQCoDwCXbQi78iGNdN3qvDEmGBrvG+CSi+Hs4Og2Iy+OFObiCX5x6fA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: bfedd51e-0138-481b-08f6-08df359deced
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 09:20:51.4545 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6fNdfLwhEIGz1Ngmyhwpm30lgymNRZRia3orjH1+m1hTeq1KqC2O82wB+BJBERI8vKpmO0O3GE2xgWbGTdG0IQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7435
-X-OriginatorOrg: intel.com
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_series_starting_with_=5Bi-?=
+ =?utf-8?q?g-t=2C01/10=5D_lib/igt=5Ffb=3A_add_igt=5Fformat=5Fget=5Fsubsampli?=
+ =?utf-8?q?ng=28=29_function?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 29 Oct 2026 10:31:31 -0000
+Message-ID: <179326989134.87306.10524499319225719819@221881a7231d>
+X-Patchwork-Hint: ignore
+References: <20261028145202.3128915-1-juhapekka.heikkila@gmail.com>
+In-Reply-To: <20261028145202.3128915-1-juhapekka.heikkila@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -168,448 +35,11472 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+--===============5068646323159127934==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 29-10-2026 14:29, Ravi Kishore Koppuravuri wrote:
-> Add MMIO based Core Compute Uncorrectable Error injection to verify
-> the Xe driver error handling and recovery flows with the help of
-> DRM Netlink API suite
->
-> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+== Series Details ==
 
-Overall patch looks in good shape.
-Acked-by: Riana Tauro <riana.tauro@intel.com>
+Series: series starting with [i-g-t,01/10] lib/igt_fb: add igt_format_get_subsampling() function
+URL   : https://patchwork.freedesktop.org/series/177043/
+State : failure
+
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9170_FULL -> XEIGTPW_16063_FULL
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_16063_FULL absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_16063_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (3 -> 3)
+------------------------------
+
+  No changes in participating hosts
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_16063_FULL:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled (NEW):
+    - shard-bmg:          NOTRUN -> [FAIL][1] +4 other tests fail
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled.html
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-270-y-tiled (NEW):
+    - shard-bmg:          NOTRUN -> [SKIP][2] +8 other tests skip
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-1/igt@kms_plane_scaling@plane-downscale-max-crc-rotation-270-y-tiled.html
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-90-y-tiled (NEW):
+    - shard-lnl:          NOTRUN -> [SKIP][3] +10 other tests skip
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_plane_scaling@plane-downscale-max-crc-rotation-90-y-tiled.html
+
+  
+New tests
+---------
+
+  New tests have been introduced between XEIGT_9170_FULL and XEIGTPW_16063_FULL:
+
+### New IGT tests (915) ###
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled:
+    - Statuses : 2 pass(s)
+    - Exec time: [75.79, 79.10] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.58] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.07] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.63] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.68] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.36] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.24] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.39] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.57] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.42] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.25] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.37] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.58] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.61] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.37] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.57] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.61] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [75.45, 79.14] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.61] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.08] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.43] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.22] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.40] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.58] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.64] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.48] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.41] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.25] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.38] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.26] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.60] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.38] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.48] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled:
+    - Statuses : 2 pass(s)
+    - Exec time: [75.47, 79.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.60] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.03] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.68] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.36] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.24] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.39] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.00] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.50] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.44] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.23] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.39] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.63] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.50] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.35] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.60] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.63] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [75.74, 79.23] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.57] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.11] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.50] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.42] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.23] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.40] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.58] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.64] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.50] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.43] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.23] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.39] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.58] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.50] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.37] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.21] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.57] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.68] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.51] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled:
+    - Statuses : 1 fail(s) 1 pass(s)
+    - Exec time: [75.42, 79.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-p010:
+    - Statuses : 1 fail(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.11] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.68] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.52] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.37] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.22] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.40] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-p010:
+    - Statuses : 1 fail(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.50] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.44] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.23] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.38] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.21] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-p010:
+    - Statuses : 1 fail(s)
+    - Exec time: [1.63] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.61] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.51] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.36] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.21] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-p010:
+    - Statuses : 1 fail(s)
+    - Exec time: [1.64] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.65] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.0] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.70] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-y-tiled:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.02] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-yf-tiled:
+    - Statuses : 1 skip(s)
+    - Exec time: [0.01] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-270-y-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.02, 0.06] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-rotation-90-y-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.02, 0.06] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled:
+    - Statuses : 2 pass(s)
+    - Exec time: [75.66, 79.34] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.10] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.63] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.50] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.24] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.35] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.23] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.40] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.22] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.64] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.64] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.52] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.43] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.23] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.39] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.60] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.96] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.63] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.66] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.51] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.38] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.59] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [3.62] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.99] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.67] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.49] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-y-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.03, 0.05] s
+
+  * igt@kms_plane_scaling@plane-downscale-max-crc-yf-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.03, 0.06] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled:
+    - Statuses : 2 pass(s)
+    - Exec time: [62.09, 72.76] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.43] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.42] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.12] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.76] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.43] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.11] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.74] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.21] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.74] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [62.24, 72.64] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.12] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.08] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.40] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.76] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.43] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.12] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.43] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.76] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled:
+    - Statuses : 2 pass(s)
+    - Exec time: [62.11, 72.66] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.40] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.12] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.16] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.12] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.43] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.15] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear:
+    - Statuses : 2 pass(s)
+    - Exec time: [62.66, 72.65] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.98] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.13] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.30] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.74] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.13] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.30] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.43] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.40] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.30] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.43] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.97] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.30] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.40] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled:
+    - Statuses : 2 pass(s)
+    - Exec time: [62.35, 72.71] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.76] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.24] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.11] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.29] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.20] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.14] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.76] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.11] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.28] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.40] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.30] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.27] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.19] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.17] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [2.18] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-y-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.02, 0.06] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-yf-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.02, 0.05] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-270-y-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.02, 0.05] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-rotation-90-y-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.03, 0.06] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled:
+    - Statuses : 1 pass(s)
+    - Exec time: [62.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.40] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.76] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.31] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.40] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.45] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.46] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.38] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-nv12:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-p010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.36] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-rgb565:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xrgb16161616f:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xrgb2101010:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.75] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xrgb8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xv30:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xv36:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.47] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xyuv8888:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.37] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-y210:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.39] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-yuyv:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.35] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-y-tiled:
+    - Statuses : 2 skip(s)
+    - Exec time: [0.02, 0.05] s
+
+  * igt@kms_plane_scaling@plane-upscale-max-crc-yf-tiled:
+    - Statuses :
+    - Exec time: [None] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in XEIGTPW_16063_FULL that come from known issues:
+
+### IGT changes ###
+
+#### Issues hit ####
+
+  * igt@kms_async_flips@alternate-sync-async-flip:
+    - shard-bmg:          [PASS][4] -> [FAIL][5] ([Intel XE#3718] / [Intel XE#6078])
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-5/igt@kms_async_flips@alternate-sync-async-flip.html
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_async_flips@alternate-sync-async-flip.html
+
+  * igt@kms_async_flips@alternate-sync-async-flip@pipe-b-dp-2:
+    - shard-bmg:          [PASS][6] -> [FAIL][7] ([Intel XE#6078])
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-5/igt@kms_async_flips@alternate-sync-async-flip@pipe-b-dp-2.html
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_async_flips@alternate-sync-async-flip@pipe-b-dp-2.html
+
+  * igt@kms_big_fb@linear-32bpp-rotate-270:
+    - shard-bmg:          NOTRUN -> [SKIP][8] ([Intel XE#2327])
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_big_fb@linear-32bpp-rotate-270.html
+
+  * igt@kms_big_fb@y-tiled-64bpp-rotate-90:
+    - shard-bmg:          NOTRUN -> [SKIP][9] ([Intel XE#1124]) +4 other tests skip
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_big_fb@y-tiled-64bpp-rotate-90.html
+
+  * igt@kms_big_fb@y-tiled-addfb-size-overflow:
+    - shard-bmg:          NOTRUN -> [SKIP][10] ([Intel XE#610] / [Intel XE#7387])
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_big_fb@y-tiled-addfb-size-overflow.html
+
+  * igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip:
+    - shard-lnl:          NOTRUN -> [SKIP][11] ([Intel XE#1124]) +2 other tests skip
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip.html
+
+  * igt@kms_big_fb@yf-tiled-addfb:
+    - shard-bmg:          NOTRUN -> [SKIP][12] ([Intel XE#2328] / [Intel XE#7367])
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@kms_big_fb@yf-tiled-addfb.html
+
+  * igt@kms_bw@connected-linear-tiling-4-displays-target-2560x1440p:
+    - shard-bmg:          NOTRUN -> [SKIP][13] ([Intel XE#7679])
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_bw@connected-linear-tiling-4-displays-target-2560x1440p.html
+
+  * igt@kms_bw@linear-tiling-4-displays-target-2560x1440p:
+    - shard-bmg:          NOTRUN -> [SKIP][14] ([Intel XE#367]) +2 other tests skip
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_bw@linear-tiling-4-displays-target-2560x1440p.html
+
+  * igt@kms_bw@linear-tiling-4-displays-target-3840x2160p:
+    - shard-lnl:          NOTRUN -> [SKIP][15] ([Intel XE#8365])
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_bw@linear-tiling-4-displays-target-3840x2160p.html
+
+  * igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs:
+    - shard-lnl:          NOTRUN -> [SKIP][16] ([Intel XE#2887]) +2 other tests skip
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs.html
+
+  * igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs:
+    - shard-bmg:          NOTRUN -> [SKIP][17] ([Intel XE#2887]) +5 other tests skip
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs.html
+
+  * igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-mc-ccs:
+    - shard-bmg:          NOTRUN -> [SKIP][18] ([Intel XE#3432])
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-mc-ccs.html
+
+  * igt@kms_ccs@random-ccs-data-4-tiled-lnl-ccs@pipe-b-dp-1:
+    - shard-bmg:          NOTRUN -> [SKIP][19] ([Intel XE#2652]) +12 other tests skip
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-7/igt@kms_ccs@random-ccs-data-4-tiled-lnl-ccs@pipe-b-dp-1.html
+
+  * igt@kms_cdclk@mode-transition-all-outputs:
+    - shard-lnl:          NOTRUN -> [SKIP][20] ([Intel XE#7008])
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_cdclk@mode-transition-all-outputs.html
+
+  * igt@kms_chamelium_audio@hdmi-audio-after-suspend:
+    - shard-lnl:          NOTRUN -> [SKIP][21] ([Intel XE#2252])
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_chamelium_audio@hdmi-audio-after-suspend.html
+
+  * igt@kms_chamelium_color@ctm-max:
+    - shard-bmg:          NOTRUN -> [SKIP][22] ([Intel XE#2325] / [Intel XE#7358])
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_chamelium_color@ctm-max.html
+
+  * igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt601-lut1d:
+    - shard-bmg:          NOTRUN -> [SKIP][23] ([Intel XE#7358]) +2 other tests skip
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-2/igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt601-lut1d.html
+
+  * igt@kms_chamelium_frames@hdmi-aspect-ratio:
+    - shard-bmg:          NOTRUN -> [SKIP][24] ([Intel XE#2252]) +2 other tests skip
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_chamelium_frames@hdmi-aspect-ratio.html
+
+  * igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode:
+    - shard-lnl:          NOTRUN -> [SKIP][25] ([Intel XE#373]) +1 other test skip
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode.html
+
+  * igt@kms_color_pipeline@plane-ctm3x4-lut1d@pipe-b-plane-4:
+    - shard-bmg:          NOTRUN -> [SKIP][26] ([Intel XE#6969]) +7 other tests skip
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_color_pipeline@plane-ctm3x4-lut1d@pipe-b-plane-4.html
+
+  * igt@kms_content_protection@dp-mst-lic-type-0-hdcp14:
+    - shard-lnl:          NOTRUN -> [SKIP][27] ([Intel XE#6974])
+   [27]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html
+
+  * igt@kms_content_protection@dp-mst-type-1:
+    - shard-bmg:          NOTRUN -> [SKIP][28] ([Intel XE#2390] / [Intel XE#6974]) +1 other test skip
+   [28]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@kms_content_protection@dp-mst-type-1.html
+
+  * igt@kms_content_protection@legacy-hdcp14@pipe-a-dp-2:
+    - shard-bmg:          NOTRUN -> [FAIL][29] ([Intel XE#1178] / [Intel XE#3304] / [Intel XE#7374]) +1 other test fail
+   [29]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_content_protection@legacy-hdcp14@pipe-a-dp-2.html
+
+  * igt@kms_cursor_crc@cursor-offscreen-256x85:
+    - shard-bmg:          NOTRUN -> [SKIP][30] ([Intel XE#2320]) +1 other test skip
+   [30]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_cursor_crc@cursor-offscreen-256x85.html
+
+  * igt@kms_cursor_crc@cursor-rapid-movement-512x512:
+    - shard-lnl:          NOTRUN -> [SKIP][31] ([Intel XE#2321] / [Intel XE#7355])
+   [31]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_cursor_crc@cursor-rapid-movement-512x512.html
+
+  * igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size:
+    - shard-lnl:          NOTRUN -> [SKIP][32] ([Intel XE#309] / [Intel XE#7343])
+   [32]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size.html
+
+  * igt@kms_dirtyfb@fbc-dirtyfb-ioctl:
+    - shard-bmg:          NOTRUN -> [SKIP][33] ([Intel XE#4210] / [Intel XE#7467])
+   [33]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_dirtyfb@fbc-dirtyfb-ioctl.html
+
+  * igt@kms_dirtyfb@psr-dirtyfb-ioctl:
+    - shard-bmg:          NOTRUN -> [SKIP][34] ([Intel XE#1508])
+   [34]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_dirtyfb@psr-dirtyfb-ioctl.html
+
+  * igt@kms_dp_link_training@non-uhbr-sst:
+    - shard-lnl:          NOTRUN -> [SKIP][35] ([Intel XE#9530])
+   [35]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_dp_link_training@non-uhbr-sst.html
+
+  * igt@kms_dp_link_training@uhbr-sst-direct-train:
+    - shard-lnl:          NOTRUN -> [SKIP][36] ([Intel XE#9529])
+   [36]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_dp_link_training@uhbr-sst-direct-train.html
+
+  * igt@kms_dp_link_training@uhbr-sst-tbtalt-train:
+    - shard-bmg:          NOTRUN -> [SKIP][37] ([Intel XE#9537])
+   [37]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_dp_link_training@uhbr-sst-tbtalt-train.html
+
+  * igt@kms_dsc@dsc-with-bpc:
+    - shard-bmg:          NOTRUN -> [SKIP][38] ([Intel XE#8265]) +1 other test skip
+   [38]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_dsc@dsc-with-bpc.html
+
+  * igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area:
+    - shard-lnl:          NOTRUN -> [SKIP][39] ([Intel XE#4422] / [Intel XE#7442])
+   [39]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area.html
+
+  * igt@kms_feature_discovery@psr2:
+    - shard-bmg:          NOTRUN -> [SKIP][40] ([Intel XE#2374] / [Intel XE#6128])
+   [40]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-2/igt@kms_feature_discovery@psr2.html
+
+  * igt@kms_flip@2x-flip-vs-modeset:
+    - shard-lnl:          NOTRUN -> [SKIP][41] ([Intel XE#1421]) +1 other test skip
+   [41]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_flip@2x-flip-vs-modeset.html
+
+  * igt@kms_flip@flip-vs-expired-vblank@b-edp1:
+    - shard-lnl:          [PASS][42] -> [FAIL][43] ([Intel XE#301]) +1 other test fail
+   [42]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-3/igt@kms_flip@flip-vs-expired-vblank@b-edp1.html
+   [43]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank@b-edp1.html
+
+  * igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling:
+    - shard-bmg:          NOTRUN -> [SKIP][44] ([Intel XE#7178] / [Intel XE#7351]) +1 other test skip
+   [44]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling.html
+
+  * igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-msflip-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][45] ([Intel XE#6312] / [Intel XE#651]) +2 other tests skip
+   [45]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-msflip-blt.html
+
+  * igt@kms_frontbuffer_tracking@drrs-argb161616f-draw-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][46] ([Intel XE#7061] / [Intel XE#7356]) +1 other test skip
+   [46]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-2/igt@kms_frontbuffer_tracking@drrs-argb161616f-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@drrshdr-1p-offscreen-pri-shrfb-draw-render:
+    - shard-bmg:          NOTRUN -> [SKIP][47] ([Intel XE#2311]) +26 other tests skip
+   [47]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_frontbuffer_tracking@drrshdr-1p-offscreen-pri-shrfb-draw-render.html
+
+  * igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][48] ([Intel XE#4141]) +4 other tests skip
+   [48]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-wc:
+    - shard-lnl:          NOTRUN -> [SKIP][49] ([Intel XE#656] / [Intel XE#7905]) +9 other tests skip
+   [49]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-wc.html
+
+  * igt@kms_frontbuffer_tracking@fbcdrrshdr-1p-primscrn-pri-indfb-draw-render:
+    - shard-lnl:          NOTRUN -> [SKIP][50] ([Intel XE#6312]) +2 other tests skip
+   [50]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_frontbuffer_tracking@fbcdrrshdr-1p-primscrn-pri-indfb-draw-render.html
+
+  * igt@kms_frontbuffer_tracking@fbchdr-argb161616f-draw-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][51] ([Intel XE#7061])
+   [51]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_frontbuffer_tracking@fbchdr-argb161616f-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@hdr-2p-scndscrn-pri-shrfb-draw-mmap-wc:
+    - shard-lnl:          NOTRUN -> [SKIP][52] ([Intel XE#7905]) +9 other tests skip
+   [52]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_frontbuffer_tracking@hdr-2p-scndscrn-pri-shrfb-draw-mmap-wc.html
+
+  * igt@kms_frontbuffer_tracking@hdr-argb161616f-draw-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][53] ([Intel XE#7061])
+   [53]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_frontbuffer_tracking@hdr-argb161616f-draw-blt.html
+
+  * igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-plflip-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][54] ([Intel XE#2313]) +22 other tests skip
+   [54]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-plflip-blt.html
+
+  * igt@kms_frontbuffer_tracking@psrhdr-rgb101010-draw-render:
+    - shard-lnl:          NOTRUN -> [SKIP][55] ([Intel XE#7865]) +4 other tests skip
+   [55]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_frontbuffer_tracking@psrhdr-rgb101010-draw-render.html
+
+  * igt@kms_hdmi_inject@inject-audio:
+    - shard-bmg:          NOTRUN -> [SKIP][56] ([Intel XE#7308])
+   [56]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_hdmi_inject@inject-audio.html
+
+  * igt@kms_hdr@invalid-metadata-sizes:
+    - shard-lnl:          NOTRUN -> [SKIP][57] ([Intel XE#1503])
+   [57]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_hdr@invalid-metadata-sizes.html
+
+  * igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier:
+    - shard-bmg:          NOTRUN -> [SKIP][58] ([Intel XE#7283])
+   [58]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier.html
+
+  * igt@kms_plane@pixel-format-y-tiled-modifier:
+    - shard-lnl:          NOTRUN -> [SKIP][59] ([Intel XE#7283])
+   [59]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_plane@pixel-format-y-tiled-modifier.html
+
+  * igt@kms_plane_multiple@tiling-yf:
+    - shard-bmg:          NOTRUN -> [SKIP][60] ([Intel XE#5020] / [Intel XE#7348])
+   [60]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-1/igt@kms_plane_multiple@tiling-yf.html
+
+  * igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b:
+    - shard-lnl:          NOTRUN -> [SKIP][61] ([Intel XE#2763] / [Intel XE#6886]) +1 other test skip
+   [61]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b.html
+
+  * igt@kms_pm_backlight@fade-with-dpms:
+    - shard-bmg:          NOTRUN -> [SKIP][62] ([Intel XE#7376] / [Intel XE#7760] / [Intel XE#870])
+   [62]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_pm_backlight@fade-with-dpms.html
+
+  * igt@kms_pm_dc@dc3co-vpb-framegap@pr-xrgb8888:
+    - shard-lnl:          NOTRUN -> [SKIP][63] ([Intel XE#8395] / [Intel XE#8396]) +1 other test skip
+   [63]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_pm_dc@dc3co-vpb-framegap@pr-xrgb8888.html
+
+  * igt@kms_pm_dc@dc3co-vpb-framegap@psr2-xrgb8888:
+    - shard-lnl:          NOTRUN -> [SKIP][64] ([Intel XE#8396]) +1 other test skip
+   [64]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_pm_dc@dc3co-vpb-framegap@psr2-xrgb8888.html
+
+  * igt@kms_pm_lpsp@kms-lpsp:
+    - shard-bmg:          NOTRUN -> [SKIP][65] ([Intel XE#2499])
+   [65]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_pm_lpsp@kms-lpsp.html
+
+  * igt@kms_pm_rpm@modeset-lpsp:
+    - shard-bmg:          NOTRUN -> [SKIP][66] ([Intel XE#1439] / [Intel XE#3141] / [Intel XE#7383] / [Intel XE#836])
+   [66]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-7/igt@kms_pm_rpm@modeset-lpsp.html
+
+  * igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf:
+    - shard-lnl:          NOTRUN -> [SKIP][67] ([Intel XE#2893] / [Intel XE#7304]) +1 other test skip
+   [67]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf.html
+
+  * igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf:
+    - shard-bmg:          NOTRUN -> [SKIP][68] ([Intel XE#1489]) +3 other tests skip
+   [68]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf.html
+
+  * igt@kms_psr@pr-sprite-blt:
+    - shard-lnl:          NOTRUN -> [SKIP][69] ([Intel XE#1406]) +1 other test skip
+   [69]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_psr@pr-sprite-blt.html
+
+  * igt@kms_psr@psr2-sprite-blt:
+    - shard-bmg:          NOTRUN -> [SKIP][70] ([Intel XE#2234] / [Intel XE#2850]) +7 other tests skip
+   [70]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_psr@psr2-sprite-blt.html
+
+  * igt@kms_setmode@basic:
+    - shard-bmg:          [PASS][71] -> [FAIL][72] ([Intel XE#8618]) +6 other tests fail
+   [71]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-10/igt@kms_setmode@basic.html
+   [72]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_setmode@basic.html
+
+  * igt@kms_setmode@invalid-clone-single-crtc:
+    - shard-lnl:          NOTRUN -> [SKIP][73] ([Intel XE#1435] / [Intel XE#9142])
+   [73]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_setmode@invalid-clone-single-crtc.html
+
+  * igt@kms_sharpness_filter@invalid-filter-with-scaling-mode:
+    - shard-bmg:          NOTRUN -> [SKIP][74] ([Intel XE#6503])
+   [74]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_sharpness_filter@invalid-filter-with-scaling-mode.html
+
+  * igt@kms_tv_load_detect@load-detect:
+    - shard-bmg:          NOTRUN -> [SKIP][75] ([Intel XE#2450] / [Intel XE#5857])
+   [75]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-7/igt@kms_tv_load_detect@load-detect.html
+
+  * igt@kms_vrr@cmrr-desktop-mode:
+    - shard-lnl:          NOTRUN -> [SKIP][76] ([Intel XE#9271]) +1 other test skip
+   [76]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_vrr@cmrr-desktop-mode.html
+
+  * igt@xe_ccs@vm-bind-decompress:
+    - shard-lnl:          NOTRUN -> [SKIP][77] ([Intel XE#7644])
+   [77]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@xe_ccs@vm-bind-decompress.html
+
+  * igt@xe_evict@evict-beng-cm-threads-small:
+    - shard-lnl:          NOTRUN -> [SKIP][78] ([Intel XE#6540] / [Intel XE#688]) +2 other tests skip
+   [78]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_evict@evict-beng-cm-threads-small.html
+
+  * igt@xe_evict@evict-small-external-multi-queue-cm:
+    - shard-bmg:          NOTRUN -> [SKIP][79] ([Intel XE#8370]) +1 other test skip
+   [79]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@xe_evict@evict-small-external-multi-queue-cm.html
+
+  * igt@xe_exec_balancer@once-virtual-rebind:
+    - shard-lnl:          NOTRUN -> [SKIP][80] ([Intel XE#7482]) +4 other tests skip
+   [80]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@xe_exec_balancer@once-virtual-rebind.html
+
+  * igt@xe_exec_basic@multigpu-once-basic-defer-mmap:
+    - shard-lnl:          NOTRUN -> [SKIP][81] ([Intel XE#1392]) +2 other tests skip
+   [81]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_exec_basic@multigpu-once-basic-defer-mmap.html
+
+  * igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind:
+    - shard-bmg:          NOTRUN -> [SKIP][82] ([Intel XE#2322] / [Intel XE#7372]) +5 other tests skip
+   [82]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind.html
+
+  * igt@xe_exec_fault_mode@once-multi-queue-userptr-imm:
+    - shard-bmg:          NOTRUN -> [SKIP][83] ([Intel XE#8374]) +5 other tests skip
+   [83]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-2/igt@xe_exec_fault_mode@once-multi-queue-userptr-imm.html
+
+  * igt@xe_exec_fault_mode@twice-multi-queue-userptr:
+    - shard-lnl:          NOTRUN -> [SKIP][84] ([Intel XE#8374]) +1 other test skip
+   [84]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@xe_exec_fault_mode@twice-multi-queue-userptr.html
+
+  * igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-basic-smem:
+    - shard-lnl:          NOTRUN -> [SKIP][85] ([Intel XE#8364]) +5 other tests skip
+   [85]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-basic-smem.html
+
+  * igt@xe_exec_multi_queue@two-queues-basic-smem:
+    - shard-bmg:          NOTRUN -> [SKIP][86] ([Intel XE#8364]) +17 other tests skip
+   [86]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@xe_exec_multi_queue@two-queues-basic-smem.html
+
+  * igt@xe_exec_reset@multi-queue-long-spin-many-queue-switch:
+    - shard-bmg:          NOTRUN -> [SKIP][87] ([Intel XE#8369]) +1 other test skip
+   [87]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@xe_exec_reset@multi-queue-long-spin-many-queue-switch.html
+
+  * igt@xe_exec_system_allocator@many-stride-new-prefetch:
+    - shard-bmg:          NOTRUN -> [INCOMPLETE][88] ([Intel XE#7098] / [Intel XE#8159])
+   [88]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-7/igt@xe_exec_system_allocator@many-stride-new-prefetch.html
+
+  * igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr:
+    - shard-lnl:          NOTRUN -> [SKIP][89] ([Intel XE#8378]) +2 other tests skip
+   [89]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr.html
+
+  * igt@xe_exec_threads@threads-multi-queue-mixed-rebind:
+    - shard-bmg:          NOTRUN -> [SKIP][90] ([Intel XE#8378]) +4 other tests skip
+   [90]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-1/igt@xe_exec_threads@threads-multi-queue-mixed-rebind.html
+
+  * igt@xe_media_fill@media-fill:
+    - shard-bmg:          NOTRUN -> [SKIP][91] ([Intel XE#2459] / [Intel XE#2596] / [Intel XE#7321] / [Intel XE#7453])
+   [91]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@xe_media_fill@media-fill.html
+
+  * igt@xe_mempage_offline@inject-duplicate-page:
+    - shard-bmg:          NOTRUN -> [SKIP][92] ([Intel XE#9203])
+   [92]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@xe_mempage_offline@inject-duplicate-page.html
+
+  * igt@xe_multigpu_svm@mgpu-atomic-op-basic:
+    - shard-lnl:          NOTRUN -> [SKIP][93] ([Intel XE#6964])
+   [93]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@xe_multigpu_svm@mgpu-atomic-op-basic.html
+
+  * igt@xe_multigpu_svm@mgpu-migration-basic:
+    - shard-bmg:          NOTRUN -> [SKIP][94] ([Intel XE#6964]) +1 other test skip
+   [94]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-1/igt@xe_multigpu_svm@mgpu-migration-basic.html
+
+  * igt@xe_page_reclaim@binds-full-pd:
+    - shard-lnl:          NOTRUN -> [SKIP][95] ([Intel XE#7793])
+   [95]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@xe_page_reclaim@binds-full-pd.html
+
+  * igt@xe_page_reclaim@boundary-split:
+    - shard-bmg:          NOTRUN -> [SKIP][96] ([Intel XE#7793]) +1 other test skip
+   [96]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@xe_page_reclaim@boundary-split.html
+
+  * igt@xe_pm@s3-basic-exec:
+    - shard-lnl:          NOTRUN -> [SKIP][97] ([Intel XE#584] / [Intel XE#7369])
+   [97]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_pm@s3-basic-exec.html
+
+  * igt@xe_pm@s4-exec-after:
+    - shard-lnl:          [PASS][98] -> [DMESG-WARN][99] ([Intel XE#7727])
+   [98]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-2/igt@xe_pm@s4-exec-after.html
+   [99]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@xe_pm@s4-exec-after.html
+
+  * igt@xe_pm@s4-vm-bind-userptr:
+    - shard-lnl:          [PASS][100] -> [ABORT][101] ([Intel XE#9362]) +1 other test abort
+   [100]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-4/igt@xe_pm@s4-vm-bind-userptr.html
+   [101]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@xe_pm@s4-vm-bind-userptr.html
+
+  * igt@xe_pm_residency@gt-c6-freeze@gt1:
+    - shard-bmg:          [PASS][102] -> [FAIL][103] ([Intel XE#9254])
+   [102]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-2/igt@xe_pm_residency@gt-c6-freeze@gt1.html
+   [103]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@xe_pm_residency@gt-c6-freeze@gt1.html
+
+  * igt@xe_pxp@pxp-optout:
+    - shard-bmg:          NOTRUN -> [SKIP][104] ([Intel XE#4733] / [Intel XE#7417]) +1 other test skip
+   [104]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@xe_pxp@pxp-optout.html
+
+  * igt@xe_query@multigpu-query-oa-units:
+    - shard-lnl:          NOTRUN -> [SKIP][105] ([Intel XE#944])
+   [105]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@xe_query@multigpu-query-oa-units.html
+
+  * igt@xe_sriov_admin@sched-priority-vf-write-denied:
+    - shard-lnl:          NOTRUN -> [SKIP][106] ([Intel XE#7174])
+   [106]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@xe_sriov_admin@sched-priority-vf-write-denied.html
+
+  
+#### Possible fixes ####
+
+  * igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs@pipe-c-dp-2:
+    - shard-bmg:          [INCOMPLETE][107] ([Intel XE#7084] / [Intel XE#8150]) -> [PASS][108] +1 other test pass
+   [107]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-6/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs@pipe-c-dp-2.html
+   [108]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs@pipe-c-dp-2.html
+
+  * igt@kms_flip@flip-vs-expired-vblank-interruptible:
+    - shard-lnl:          [FAIL][109] ([Intel XE#301]) -> [PASS][110] +1 other test pass
+   [109]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-2/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
+   [110]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank-interruptible.html
+
+  * igt@kms_hdmi_audio_bw@audio-bw-hblank160:
+    - shard-bmg:          [FAIL][111] ([Intel XE#9313]) -> [PASS][112]
+   [111]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-7/igt@kms_hdmi_audio_bw@audio-bw-hblank160.html
+   [112]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_hdmi_audio_bw@audio-bw-hblank160.html
+
+  * igt@kms_pm_dc@dc6-dpms:
+    - shard-lnl:          [FAIL][113] ([Intel XE#8399]) -> [PASS][114]
+   [113]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html
+   [114]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_pm_dc@dc6-dpms.html
+
+  * igt@xe_evict@evict-beng-mixed-many-threads-small:
+    - shard-bmg:          [INCOMPLETE][115] ([Intel XE#6321] / [Intel XE#8355]) -> [PASS][116]
+   [115]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-9/igt@xe_evict@evict-beng-mixed-many-threads-small.html
+   [116]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@xe_evict@evict-beng-mixed-many-threads-small.html
+
+  * igt@xe_pm@s4-vm-bind-unbind-all:
+    - shard-lnl:          [ABORT][117] ([Intel XE#9362]) -> [PASS][118]
+   [117]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-4/igt@xe_pm@s4-vm-bind-unbind-all.html
+   [118]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_pm@s4-vm-bind-unbind-all.html
+
+  * igt@xe_pm_residency@gt-c6-freeze@gt0:
+    - shard-bmg:          [FAIL][119] ([Intel XE#9254]) -> [PASS][120]
+   [119]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-2/igt@xe_pm_residency@gt-c6-freeze@gt0.html
+   [120]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@xe_pm_residency@gt-c6-freeze@gt0.html
+
+  * igt@xe_sriov_flr@flr-vf1-clear:
+    - shard-bmg:          [FAIL][121] ([Intel XE#6569]) -> [PASS][122]
+   [121]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-2/igt@xe_sriov_flr@flr-vf1-clear.html
+   [122]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@xe_sriov_flr@flr-vf1-clear.html
+
+  
+#### Warnings ####
+
+  * igt@kms_big_fb@linear-8bpp-rotate-90:
+    - shard-lnl:          [ABORT][123] ([Intel XE#4760]) -> [SKIP][124] ([Intel XE#1407])
+   [123]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-8/igt@kms_big_fb@linear-8bpp-rotate-90.html
+   [124]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_big_fb@linear-8bpp-rotate-90.html
+
+  * igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery:
+    - shard-bmg:          [FAIL][125] ([Intel XE#9319] / [Intel XE#9346]) -> [FAIL][126] ([Intel XE#9346])
+   [125]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-10/igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery.html
+   [126]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery.html
+
+  
+  [Intel XE#1124]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124
+  [Intel XE#1178]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1178
+  [Intel XE#1392]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1392
+  [Intel XE#1406]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406
+  [Intel XE#1407]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1407
+  [Intel XE#1421]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1421
+  [Intel XE#1435]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1435
+  [Intel XE#1439]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1439
+  [Intel XE#1489]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1489
+  [Intel XE#1503]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1503
+  [Intel XE#1508]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/1508
+  [Intel XE#2234]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234
+  [Intel XE#2252]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252
+  [Intel XE#2311]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2311
+  [Intel XE#2313]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2313
+  [Intel XE#2320]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2320
+  [Intel XE#2321]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2321
+  [Intel XE#2322]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2322
+  [Intel XE#2325]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2325
+  [Intel XE#2327]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2327
+  [Intel XE#2328]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2328
+  [Intel XE#2374]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2374
+  [Intel XE#2390]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2390
+  [Intel XE#2450]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2450
+  [Intel XE#2459]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2459
+  [Intel XE#2499]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2499
+  [Intel XE#2596]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2596
+  [Intel XE#2652]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2652
+  [Intel XE#2763]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2763
+  [Intel XE#2850]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850
+  [Intel XE#2887]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887
+  [Intel XE#2893]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/2893
+  [Intel XE#301]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/301
+  [Intel XE#309]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/309
+  [Intel XE#3141]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3141
+  [Intel XE#3304]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3304
+  [Intel XE#3432]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3432
+  [Intel XE#367]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/367
+  [Intel XE#3718]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/3718
+  [Intel XE#373]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/373
+  [Intel XE#4141]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4141
+  [Intel XE#4210]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4210
+  [Intel XE#4422]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4422
+  [Intel XE#4733]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4733
+  [Intel XE#4760]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/4760
+  [Intel XE#5020]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5020
+  [Intel XE#584]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/584
+  [Intel XE#5857]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/5857
+  [Intel XE#6078]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6078
+  [Intel XE#610]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/610
+  [Intel XE#6128]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6128
+  [Intel XE#6312]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6312
+  [Intel XE#6321]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6321
+  [Intel XE#6503]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6503
+  [Intel XE#651]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/651
+  [Intel XE#6540]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540
+  [Intel XE#656]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/656
+  [Intel XE#6569]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6569
+  [Intel XE#688]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/688
+  [Intel XE#6886]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6886
+  [Intel XE#6964]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964
+  [Intel XE#6969]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6969
+  [Intel XE#6974]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974
+  [Intel XE#7008]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7008
+  [Intel XE#7061]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061
+  [Intel XE#7084]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7084
+  [Intel XE#7098]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7098
+  [Intel XE#7174]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7174
+  [Intel XE#7178]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7178
+  [Intel XE#7283]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7283
+  [Intel XE#7304]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7304
+  [Intel XE#7308]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7308
+  [Intel XE#7321]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7321
+  [Intel XE#7343]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7343
+  [Intel XE#7348]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7348
+  [Intel XE#7351]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7351
+  [Intel XE#7355]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7355
+  [Intel XE#7356]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7356
+  [Intel XE#7358]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7358
+  [Intel XE#7367]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7367
+  [Intel XE#7369]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7369
+  [Intel XE#7372]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7372
+  [Intel XE#7374]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7374
+  [Intel XE#7376]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7376
+  [Intel XE#7383]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7383
+  [Intel XE#7387]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7387
+  [Intel XE#7417]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7417
+  [Intel XE#7442]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7442
+  [Intel XE#7453]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7453
+  [Intel XE#7467]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7467
+  [Intel XE#7482]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482
+  [Intel XE#7644]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7644
+  [Intel XE#7679]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7679
+  [Intel XE#7727]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7727
+  [Intel XE#7760]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7760
+  [Intel XE#7793]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7793
+  [Intel XE#7865]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7865
+  [Intel XE#7905]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/7905
+  [Intel XE#8150]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8150
+  [Intel XE#8159]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8159
+  [Intel XE#8265]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8265
+  [Intel XE#8355]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8355
+  [Intel XE#836]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/836
+  [Intel XE#8364]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364
+  [Intel XE#8365]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8365
+  [Intel XE#8369]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8369
+  [Intel XE#8370]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8370
+  [Intel XE#8374]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8374
+  [Intel XE#8378]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8378
+  [Intel XE#8395]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8395
+  [Intel XE#8396]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8396
+  [Intel XE#8399]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8399
+  [Intel XE#8618]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/8618
+  [Intel XE#870]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/870
+  [Intel XE#9142]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9142
+  [Intel XE#9203]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9203
+  [Intel XE#9254]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9254
+  [Intel XE#9271]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9271
+  [Intel XE#9313]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9313
+  [Intel XE#9319]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9319
+  [Intel XE#9346]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9346
+  [Intel XE#9362]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9362
+  [Intel XE#944]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/944
+  [Intel XE#9529]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9529
+  [Intel XE#9530]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9530
+  [Intel XE#9537]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9537
 
 
-> ---
-> v6:
->    - Updated aquire steering semaphore logic (Soham & Riana)
->    - Removed enum to string mappings for test names (Riana)
->    - Updated metadata in the file (Riana)
-> v5:
->    - Removed xe_err_injection.h and moved its contents into the .c file (Riana)
->    - Prefixed all register address and bit value names with "XE_" (Riana)
->    - Updated AER recovery dmesg strings to use enum-indexed arrays (Soham)
->    - Added error handling logic for function calls
->    - Changed test name comparisons from strings to enums (Riana)
->    - Added UC test and post-recovery workload tests as dynamic subtests (Riana)
-> v4:
->    - Added Steer Semaphore for disabling and enabling multicast
->      operation(soham)
->    - Increased device recovery check timeout from 5secs to 10secs
->    - Used updated library names with igt_drm_netlink_* prefix (Nikula
->      Jani & Kamil)
-> ---
->   tests/intel/xe_err_injection.c | 382 +++++++++++++++++++++++++++++++++
->   tests/meson.build              |   1 +
->   2 files changed, 383 insertions(+)
->   create mode 100644 tests/intel/xe_err_injection.c
->
-> diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-> new file mode 100644
-> index 000000000..2f5f85b07
-> --- /dev/null
-> +++ b/tests/intel/xe_err_injection.c
-> @@ -0,0 +1,382 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) MMIO based Error Injection
-> + * Category: Core
-> + * Mega feature: RAS
-> + * Sub-category: RAS tests
-> + * Functionality: Error Injection
-> + * Test category: Functional tests
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
-> +#include <time.h>
-> +#include <unistd.h>
-> +
-> +#include "igt.h"
-> +#include "lib/igt_drm_ras_nl.h"
-> +#include "lib/intel_reg.h"
-> +#include "lib/intel_compute.h"
-> +
-> +#include "xe_drm.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_mmio.h"
-> +#include "xe/xe_query.h"
-> +
-> +/* Steering Control Register (MC_PKT_CTRL) */
-> +#define XE_MC_PKT_CTRL_MGSR_3D_ADDRESS 0x00FD4
-> +#define XE_MC_PKT_CTRL_MGSR_3D_VALUE 0x80000000
-> +
-> +/* Core Compute Uncorrectable error injection */
-> +#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS 0xF310
-> +#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE 0x1
-> +
-> +#define POST_RECOVERY_WL 1
-> +#define POST_ARMING_INJECTION_WL 0
-> +
-> +/* STEER_SEMAPHORE_MGSR_3D */
-> +#define XE_STEER_SEMAPHORE_MGSR_3D 0x00FD0
-> +#define XE_STEER_SEMAPHORE_MGSR_3D_VALUE 0x1
-> +
-> +/* Node types for error counters*/
-> +#define NODE_ID_UNCORRECTABLE_ERROR 1
-> +
-> +/* Error types for error counter */
-> +#define ERROR_ID_CORE_COMPUTE 1
-> +
-> +enum {
-> +	SUCCESS = 1,
-> +	FAILED,
-> +	TIMEOUT,
-> +};
-> +
-> +static bool run_xe_compute_on_all_engines(int fd, bool state)
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	bool ret = false;
-> +
-> +	igt_info("Running compute-square on all engines post %s\n",
-> +		 state == POST_ARMING_INJECTION_WL ? "injection" : "recovery");
-> +
-> +	xe_for_each_engine(fd, hwe) {
-> +		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-> +			continue;
-> +
-> +		ret = xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL, EXECENV_PREF_SYSTEM);
-> +	}
-> +	return ret;
-> +}
-> +
-> +static void modify_reg_bit(struct xe_mmio *mmio, uint32_t reg_addr,
-> +			   uint32_t bit_mask, bool set)
-> +{
-> +	uint32_t regval;
-> +
-> +	regval = xe_mmio_read32(mmio, reg_addr);
-> +	if (set)
-> +		regval |= bit_mask;
-> +	else
-> +		regval &= ~bit_mask;
-> +
-> +	xe_mmio_write32(mmio, reg_addr, regval);
-> +}
-> +
-> +static bool acquire_steering_semaphore(struct xe_mmio *mmio)
-> +{
-> +	uint32_t regval;
-> +	time_t start_time = time(NULL);
-> +	time_t timeout = 10; /* 10 secs */
-> +
-> +	while (time(NULL) - start_time < timeout) {
-> +		regval = xe_mmio_read32(mmio, XE_STEER_SEMAPHORE_MGSR_3D);
-> +		if (regval == XE_STEER_SEMAPHORE_MGSR_3D_VALUE)
-> +			return true;
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +static void release_steering_semaphore(struct xe_mmio *mmio)
-> +{
-> +	xe_mmio_write32(mmio, XE_STEER_SEMAPHORE_MGSR_3D,
-> +			XE_STEER_SEMAPHORE_MGSR_3D_VALUE);
-> +}
-> +
-> +static int acquire_forcewake(int fd)
-> +{
-> +	int fw_handle;
-> +
-> +	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-> +	igt_assert_lte(0, fw_handle);
-> +	return fw_handle;
-> +}
-> +
-> +static void release_forcewake(int fw_handle)
-> +{
-> +	if (fw_handle >= 0)
-> +		close(fw_handle);
-> +}
-> +
-> +static uint32_t get_counter(uint32_t node_id, uint32_t error_id)
-> +{
-> +	struct igt_drm_ras_nl_context ctx;
-> +	int ret;
-> +	uint32_t error_value = UINT32_MAX;
-> +
-> +	ret = igt_drm_ras_nl_init(&ctx);
-> +	if (ret < 0) {
-> +		igt_warn("Failed to initialize socket for get_error command (ret=%d)\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ctx.node_id = node_id;
-> +	ctx.error_id = error_id;
-> +
-> +	ret = igt_drm_ras_nl_get_error_counter(&ctx);
-> +	if (ret < 0) {
-> +		igt_warn("get_error_counter failed from error command path (ret=%d)\n", ret);
-> +		igt_drm_ras_nl_cleanup(&ctx);
-> +		return ret;
-> +	} else {
-> +		error_value = ctx.error_value;
-> +		igt_info("get_error_counter: node_id=%u error_id=%u value=%u\n",
-> +			 ctx.node_id, ctx.error_id, ctx.error_value);
-> +	}
-> +
-> +	igt_drm_ras_nl_cleanup(&ctx);
-> +
-> +	return error_value;
-> +}
-> +
-> +static int check_dmesg(const char *marker, int elapsed_secs)
-> +{
-> +	static const char * const dmesg_status[] = {
-> +		[SUCCESS] = "AER: device recovery successful",
-> +		[FAILED] = "AER: device recovery failed",
-> +	};
-> +	char *buff = NULL;
-> +	size_t buff_size = 0;
-> +	size_t i;
-> +	ssize_t line_len;
-> +	FILE *fp;
-> +	bool marker_seen = false;
-> +
-> +	fp = popen("dmesg", "r");
-> +	if (!fp) {
-> +		igt_warn("Unable to open dmesg to check recovery status\n");
-> +		return -1;
-> +	}
-> +
-> +	while ((line_len = getline(&buff, &buff_size, fp)) != -1) {
-> +		if (!marker_seen) {
-> +			if (strstr(buff, marker))
-> +				marker_seen = true;
-> +			continue;
-> +		}
-> +
-> +		for (i = SUCCESS; i < ARRAY_SIZE(dmesg_status); i++) {
-> +			if (!dmesg_status[i] || !strstr(buff, dmesg_status[i]))
-> +				continue;
-> +
-> +			igt_debug("Found \"%s\" in dmesg after %d secs\n",
-> +				  dmesg_status[i], elapsed_secs);
-> +			free(buff);
-> +			pclose(fp);
-> +			return i;
-> +		}
-> +	}
-> +
-> +	free(buff);
-> +	pclose(fp);
-> +	return TIMEOUT;
-> +}
-> +
-> +/*
-> + * TODO: AER device recovery logic is pending to be implemented using
-> + * "uevents emitted by the aer driver" instead of relying on the dmesg
-> + * logs.
-> + */
-> +
-> +static int check_err_recovery(void)
-> +{
-> +	time_t start_time = time(NULL);
-> +	time_t timeout = 10 * 60; /* 10 mins */
-> +	int time_interval = 30; /* 30 secs */
-> +	time_t elapsed_time;
-> +	int status;
-> +	char marker[128];
-> +
-> +	snprintf(marker, sizeof(marker),
-> +		 "IGT xe_err_injection recovery marker pid=%d start=%lld",
-> +		 getpid(), (long long)start_time);
-> +	igt_kmsg(KMSG_INFO "%s\n", marker);
-> +
-> +	while (1) {
-> +		elapsed_time = time(NULL) - start_time;
-> +		status = check_dmesg(marker, elapsed_time);
-> +		if (status < 0) {
-> +			igt_warn("Failed to query dmesg for recovery status\n");
-> +			return FAILED;
-> +		}
-> +		if (status == SUCCESS || status == FAILED)
-> +			return status;
-> +
-> +		if (elapsed_time >= timeout) {
-> +			igt_warn("Timed out while waiting for error recovery\n");
-> +			return TIMEOUT;
-> +		}
-> +
-> +		sleep(time_interval);
-> +	}
-> +}
-> +
-> +static void print_aer_recovery_status(void)
-> +{
-> +	int recovery_ret;
-> +
-> +	recovery_ret = check_err_recovery();
-> +	igt_assert_f(recovery_ret != TIMEOUT,
-> +		     "AER error recovery timed out\n");
-> +	igt_assert_f(recovery_ret != FAILED,
-> +		     "AER device recovery failed\n");
-> +	if (recovery_ret == SUCCESS)
-> +		igt_info("AER device recovery successful\n");
-> +}
-> +
-> +static bool uncorr_error_recovered;
-> +
-> +/**
-> + * SUBTEST: inject_core_compute_uncorr_error
-> + * Description: Inject a Core Compute Uncorrectable error and verify
-> + *		AER-based device recovery.
-> + *		The dynamic subtests are:
-> + *		inject            - Injects Core Compute Uncorrectable error
-> + *				    and verifies device recovery.
-> + *		post-recovery-wl  - Runs a compute workload on all compute
-> + *				    engines after recovery to confirm the GPU
-> + *				    remains functional.
-> + * Functionality: error injection
-> + */
-> +static void test_inject_core_compute_uncorr_error(struct xe_mmio *mmio, int fd)
-> +{
-> +	int fw_handle;
-> +	bool ret;
-> +	uint32_t counter_before;
-> +	uint32_t counter_after;
-> +	/** TODO
-> +	 *  Fetching node_id and error_id dynamically is pending to implement.
-> +	 *  For now, using
-> +	 *  node_id=1 (uncorrectable_errors) and
-> +	 *  error_id=1 (core_compute)
-> +	 */
-> +	uint32_t node_id = NODE_ID_UNCORRECTABLE_ERROR;
-> +	uint32_t error_id = ERROR_ID_CORE_COMPUTE;
-> +
-> +	fw_handle = acquire_forcewake(fd);
-> +
-> +	counter_before = get_counter(node_id, error_id);
-> +	if (counter_before < 0) {
-> +		release_forcewake(fw_handle);
-> +		igt_assert_f(false, "Failed to read error counter before injection\n");
-> +	}
-> +
-> +	if (!acquire_steering_semaphore(mmio)) {
-> +		release_forcewake(fw_handle);
-> +		igt_assert_f(false, "Timed out acquiring steering semaphore\n");
-> +	}
-> +
-> +	/* Arm the injection sequence. */
-> +	xe_mmio_write32(mmio, XE_MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
-> +	modify_reg_bit(mmio,
-> +		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS,
-> +		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE,
-> +		       true);
-> +	modify_reg_bit(mmio,
-> +		       XE_MC_PKT_CTRL_MGSR_3D_ADDRESS,
-> +		       XE_MC_PKT_CTRL_MGSR_3D_VALUE,
-> +		       true);
-> +	release_steering_semaphore(mmio);
-> +	igt_debug("Injected Core Compute Uncorrectable error\n");
-> +
-> +	/* Run traffic to trigger the injected error */
-> +	ret = run_xe_compute_on_all_engines(fd, POST_ARMING_INJECTION_WL);
-> +	if (!ret) {
-> +		release_forcewake(fw_handle);
-> +		igt_assert_f(false, "Failed to run Xe compute on all engines post injection\n");
-> +	}
-> +
-> +	release_forcewake(fw_handle);
-> +	print_aer_recovery_status();
-> +
-> +	counter_after = get_counter(node_id, error_id);
-> +	igt_assert_f(counter_after < 0, "Failed to read error counter after injection\n");
-> +
-> +	igt_assert_f(counter_before != UINT32_MAX && counter_after != UINT32_MAX,
-> +		     "Failed to fetch valid error counters: before=%u after=%u\n",
-> +		     counter_before, counter_after);
-> +
-> +	igt_info("error counter: before injection=%u after injection=%u\n",
-> +		 counter_before, counter_after);
-> +
-> +	igt_assert_f(counter_after > counter_before,
-> +		     "Core Compute Uncorrectable error injection failed: "
-> +		     "before=%u after=%u\n", counter_before, counter_after);
-> +	uncorr_error_recovered = true;
-> +}
-> +
-> +enum xe_err_injection_type {
-> +	XE_CORE_COMPUTE_UNCORR_ERR_INJ,
-> +	XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL,
-> +};
-> +
-> +static void inject_error(enum xe_err_injection_type injection, struct xe_mmio *mmio, int fd)
-> +{
-> +	switch (injection) {
-> +	case XE_CORE_COMPUTE_UNCORR_ERR_INJ:
-> +		test_inject_core_compute_uncorr_error(mmio, fd);
-> +		break;
-> +	case XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL:
-> +		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
-> +		break;
-> +	default:
-> +		igt_info("Invalid Error Injection specified\n");
-> +	}
-> +}
-> +
-> +int igt_main()
-> +{
-> +	int fd;
-> +	struct xe_mmio mmio;
-> +
-> +	igt_fixture() {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		igt_require_f(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY),
-> +			      "forcewake_all is not available in debugfs\n");
-> +		xe_mmio_access_init(fd, &mmio);
-> +		igt_require_f(xe_mmio_is_initialized(&mmio),
-> +			      "Failed to initialize Xe MMIO access\n");
-> +	}
-> +
-> +	igt_describe("Inject core compute uncorrectable error and run post-recovery workload.");
-> +	igt_subtest_with_dynamic("inject_core_compute_uncorr_error") {
-> +		igt_dynamic("inject")
-> +			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ, &mmio, fd);
-> +
-> +		igt_dynamic("post-recovery-wl") {
-> +			igt_require_f(uncorr_error_recovered,
-> +				      "Run the \"inject\" dynamic subtest first\n");
-> +			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL, &mmio, fd);
-> +		}
-> +	}
-> +
-> +	igt_fixture() {
-> +		xe_mmio_access_fini(&mmio);
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 519a9e727..c8a4c9a6a 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -294,6 +294,7 @@ intel_xe_progs = [
->   	'xe_debugfs',
->   	'xe_dma_buf_sync',
->   	'xe_drm_fdinfo',
-> +	'xe_err_injection',
->   	'xe_eu_stall',
->   	'xe_evict',
->   	'xe_evict_ccs',
+Build changes
+-------------
+
+  * IGT: IGT_9170 -> IGTPW_16063
+  * Linux: xe-6022-f00a1fa90fcfdf84b1600e0aca74c965fb86fe76 -> xe-6024-81fce6ce260af07e3f7a1211b6fe813941cbd17b
+
+  IGTPW_16063: 16063
+  IGT_9170: 9170
+  xe-6022-f00a1fa90fcfdf84b1600e0aca74c965fb86fe76: f00a1fa90fcfdf84b1600e0aca74c965fb86fe76
+  xe-6024-81fce6ce260af07e3f7a1211b6fe813941cbd17b: 81fce6ce260af07e3f7a1211b6fe813941cbd17b
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/index.html
+
+--===============5068646323159127934==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,01/10] lib/igt_fb: add igt_format_get_subsampling() function</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177043/">https://patchwork.freedesktop.org/series/177043/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9170_FULL -&gt; XEIGTPW_16063_FULL</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_16063_FULL absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_16063_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (3 -&gt; 3)</h2>
+<p>No changes in participating hosts</p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_16063_FULL:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled (NEW):</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled.html">FAIL</a> +4 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-270-y-tiled (NEW):</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-1/igt@kms_plane_scaling@plane-downscale-max-crc-rotation-270-y-tiled.html">SKIP</a> +8 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-90-y-tiled (NEW):</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_plane_scaling@plane-downscale-max-crc-rotation-90-y-tiled.html">SKIP</a> +10 other tests skip</li>
+</ul>
+</li>
+</ul>
+<h2>New tests</h2>
+<p>New tests have been introduced between XEIGT_9170_FULL and XEIGTPW_16063_FULL:</p>
+<h3>New IGT tests (915)</h3>
+<ul>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [75.79, 79.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.07] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-4-tiled@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [75.45, 79.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.22] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.64] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.48] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.41] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.25] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.26] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-linear@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.48] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [75.47, 79.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [75.74, 79.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.64] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.58] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.21] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.57] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-linear@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.51] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled:</p>
+<ul>
+<li>Statuses : 1 fail(s) 1 pass(s)</li>
+<li>Exec time: [75.42, 79.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.68] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.52] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.22] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.21] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [1.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.61] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.51] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.21] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 fail(s)</li>
+<li>Exec time: [1.64] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.0] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.70] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-y-tiled:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.02] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-180-yf-tiled:</p>
+<ul>
+<li>Statuses : 1 skip(s)</li>
+<li>Exec time: [0.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-270-y-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.02, 0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-rotation-90-y-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.02, 0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [75.66, 79.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.10] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.50] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.22] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.64] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.64] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.52] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.23] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.60] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.96] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.63] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.51] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.59] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [3.62] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.67] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-x-tiled@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.49] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-y-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.03, 0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-downscale-max-crc-yf-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.03, 0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [62.09, 72.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.42] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.74] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.21] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.74] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-4-tiled@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [62.24, 72.64] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.08] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-linear@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [62.11, 72.66] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.16] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.12] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.15] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-4-tiled@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [62.66, 72.65] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-dp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.74] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-dp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.13] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-dp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.43] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-linear@pipe-d-dp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled:</p>
+<ul>
+<li>Statuses : 2 pass(s)</li>
+<li>Exec time: [62.35, 72.71] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.24] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.29] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.20] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.14] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-a-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.11] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.28] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-b-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.30] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.27] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.19] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.17] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-c-edp-1-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [2.18] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-x-tiled@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-y-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.02, 0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-180-yf-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.02, 0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-270-y-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.02, 0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-rotation-90-y-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.03, 0.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [62.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-a-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.76] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.31] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.40] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.45] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-b-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.46] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.38] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-c-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-nv12:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-p010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.36] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-rgb565:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xrgb16161616f:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xrgb2101010:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.75] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xrgb8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xv30:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xv36:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.47] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-xyuv8888:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.37] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-y210:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.39] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-x-tiled@pipe-d-dp-2-yuyv:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.35] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-y-tiled:</p>
+<ul>
+<li>Statuses : 2 skip(s)</li>
+<li>Exec time: [0.02, 0.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-upscale-max-crc-yf-tiled:</p>
+<ul>
+<li>Statuses :</li>
+<li>Exec time: [None] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in XEIGTPW_16063_FULL that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>
+<p>igt@kms_async_flips@alternate-sync-async-flip:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-5/igt@kms_async_flips@alternate-sync-async-flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_async_flips@alternate-sync-async-flip.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3718">Intel XE#3718</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6078">Intel XE#6078</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_async_flips@alternate-sync-async-flip@pipe-b-dp-2:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-5/igt@kms_async_flips@alternate-sync-async-flip@pipe-b-dp-2.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_async_flips@alternate-sync-async-flip@pipe-b-dp-2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6078">Intel XE#6078</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@linear-32bpp-rotate-270:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_big_fb@linear-32bpp-rotate-270.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2327">Intel XE#2327</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@y-tiled-64bpp-rotate-90:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_big_fb@y-tiled-64bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124">Intel XE#1124</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@y-tiled-addfb-size-overflow:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_big_fb@y-tiled-addfb-size-overflow.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/610">Intel XE#610</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7387">Intel XE#7387</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_big_fb@y-tiled-max-hw-stride-32bpp-rotate-0-hflip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1124">Intel XE#1124</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_big_fb@yf-tiled-addfb:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@kms_big_fb@yf-tiled-addfb.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2328">Intel XE#2328</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7367">Intel XE#7367</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@connected-linear-tiling-4-displays-target-2560x1440p:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_bw@connected-linear-tiling-4-displays-target-2560x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7679">Intel XE#7679</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@linear-tiling-4-displays-target-2560x1440p:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_bw@linear-tiling-4-displays-target-2560x1440p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/367">Intel XE#367</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_bw@linear-tiling-4-displays-target-3840x2160p:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_bw@linear-tiling-4-displays-target-3840x2160p.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8365">Intel XE#8365</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_ccs@bad-rotation-90-4-tiled-dg2-rc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887">Intel XE#2887</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_ccs@crc-primary-basic-y-tiled-gen12-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2887">Intel XE#2887</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-mc-ccs:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_ccs@crc-primary-suspend-4-tiled-dg2-mc-ccs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3432">Intel XE#3432</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_ccs@random-ccs-data-4-tiled-lnl-ccs@pipe-b-dp-1:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-7/igt@kms_ccs@random-ccs-data-4-tiled-lnl-ccs@pipe-b-dp-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2652">Intel XE#2652</a>) +12 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cdclk@mode-transition-all-outputs:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_cdclk@mode-transition-all-outputs.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7008">Intel XE#7008</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_audio@hdmi-audio-after-suspend:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_chamelium_audio@hdmi-audio-after-suspend.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252">Intel XE#2252</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_color@ctm-max:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_chamelium_color@ctm-max.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2325">Intel XE#2325</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7358">Intel XE#7358</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt601-lut1d:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-2/igt@kms_chamelium_color_pipeline@plane-fixed-matrix-yuv-rgb-bt601-lut1d.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7358">Intel XE#7358</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_frames@hdmi-aspect-ratio:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_chamelium_frames@hdmi-aspect-ratio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2252">Intel XE#2252</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_chamelium_hpd@hdmi-hpd-with-enabled-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/373">Intel XE#373</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_color_pipeline@plane-ctm3x4-lut1d@pipe-b-plane-4:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_color_pipeline@plane-ctm3x4-lut1d@pipe-b-plane-4.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6969">Intel XE#6969</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-lic-type-0-hdcp14:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_content_protection@dp-mst-lic-type-0-hdcp14.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974">Intel XE#6974</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@dp-mst-type-1:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@kms_content_protection@dp-mst-type-1.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2390">Intel XE#2390</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6974">Intel XE#6974</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_content_protection@legacy-hdcp14@pipe-a-dp-2:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_content_protection@legacy-hdcp14@pipe-a-dp-2.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1178">Intel XE#1178</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3304">Intel XE#3304</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7374">Intel XE#7374</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-offscreen-256x85:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_cursor_crc@cursor-offscreen-256x85.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2320">Intel XE#2320</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_crc@cursor-rapid-movement-512x512:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_cursor_crc@cursor-rapid-movement-512x512.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2321">Intel XE#2321</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7355">Intel XE#7355</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_cursor_legacy@cursorb-vs-flipa-atomic-transitions-varying-size.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/309">Intel XE#309</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7343">Intel XE#7343</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dirtyfb@fbc-dirtyfb-ioctl:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_dirtyfb@fbc-dirtyfb-ioctl.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4210">Intel XE#4210</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7467">Intel XE#7467</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dirtyfb@psr-dirtyfb-ioctl:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_dirtyfb@psr-dirtyfb-ioctl.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1508">Intel XE#1508</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_link_training@non-uhbr-sst:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_dp_link_training@non-uhbr-sst.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9530">Intel XE#9530</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_link_training@uhbr-sst-direct-train:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_dp_link_training@uhbr-sst-direct-train.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9529">Intel XE#9529</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dp_link_training@uhbr-sst-tbtalt-train:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_dp_link_training@uhbr-sst-tbtalt-train.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9537">Intel XE#9537</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_dsc@dsc-with-bpc:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_dsc@dsc-with-bpc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8265">Intel XE#8265</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_fbc_dirty_rect@fbc-dirty-rectangle-out-visible-area.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4422">Intel XE#4422</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7442">Intel XE#7442</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_feature_discovery@psr2:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-2/igt@kms_feature_discovery@psr2.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2374">Intel XE#2374</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6128">Intel XE#6128</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@2x-flip-vs-modeset:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_flip@2x-flip-vs-modeset.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1421">Intel XE#1421</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank@b-edp1:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-3/igt@kms_flip@flip-vs-expired-vblank@b-edp1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_flip@flip-vs-expired-vblank@b-edp1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a>) +1 other test fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_flip_scaled_crc@flip-64bpp-ytile-to-16bpp-ytile-upscaling.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7178">Intel XE#7178</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7351">Intel XE#7351</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-msflip-blt:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_frontbuffer_tracking@drrs-1p-primscrn-shrfb-msflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6312">Intel XE#6312</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/651">Intel XE#651</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrs-argb161616f-draw-blt:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-2/igt@kms_frontbuffer_tracking@drrs-argb161616f-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7356">Intel XE#7356</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@drrshdr-1p-offscreen-pri-shrfb-draw-render:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_frontbuffer_tracking@drrshdr-1p-offscreen-pri-shrfb-draw-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2311">Intel XE#2311</a>) +26 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-blt:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_frontbuffer_tracking@fbc-2p-primscrn-cur-indfb-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4141">Intel XE#4141</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-wc:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_frontbuffer_tracking@fbcdrrs-2p-scndscrn-spr-indfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/656">Intel XE#656</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7905">Intel XE#7905</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbcdrrshdr-1p-primscrn-pri-indfb-draw-render:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_frontbuffer_tracking@fbcdrrshdr-1p-primscrn-pri-indfb-draw-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6312">Intel XE#6312</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@fbchdr-argb161616f-draw-blt:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_frontbuffer_tracking@fbchdr-argb161616f-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@hdr-2p-scndscrn-pri-shrfb-draw-mmap-wc:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_frontbuffer_tracking@hdr-2p-scndscrn-pri-shrfb-draw-mmap-wc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7905">Intel XE#7905</a>) +9 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@hdr-argb161616f-draw-blt:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@kms_frontbuffer_tracking@hdr-argb161616f-draw-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7061">Intel XE#7061</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-plflip-blt:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_frontbuffer_tracking@psr-2p-primscrn-indfb-plflip-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2313">Intel XE#2313</a>) +22 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_frontbuffer_tracking@psrhdr-rgb101010-draw-render:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_frontbuffer_tracking@psrhdr-rgb101010-draw-render.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7865">Intel XE#7865</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_inject@inject-audio:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@kms_hdmi_inject@inject-audio.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7308">Intel XE#7308</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdr@invalid-metadata-sizes:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_hdr@invalid-metadata-sizes.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1503">Intel XE#1503</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_plane@pixel-format-4-tiled-dg2-rc-ccs-cc-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7283">Intel XE#7283</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane@pixel-format-y-tiled-modifier:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_plane@pixel-format-y-tiled-modifier.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7283">Intel XE#7283</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_multiple@tiling-yf:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-1/igt@kms_plane_multiple@tiling-yf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5020">Intel XE#5020</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7348">Intel XE#7348</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@kms_plane_scaling@plane-scaler-with-clipping-clamping-pixel-formats@pipe-b.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2763">Intel XE#2763</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6886">Intel XE#6886</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_backlight@fade-with-dpms:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_pm_backlight@fade-with-dpms.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7376">Intel XE#7376</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7760">Intel XE#7760</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/870">Intel XE#870</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc3co-vpb-framegap@pr-xrgb8888:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_pm_dc@dc3co-vpb-framegap@pr-xrgb8888.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8395">Intel XE#8395</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8396">Intel XE#8396</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc3co-vpb-framegap@psr2-xrgb8888:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@kms_pm_dc@dc3co-vpb-framegap@psr2-xrgb8888.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8396">Intel XE#8396</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_lpsp@kms-lpsp:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_pm_lpsp@kms-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2499">Intel XE#2499</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@modeset-lpsp:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-7/igt@kms_pm_rpm@modeset-lpsp.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1439">Intel XE#1439</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/3141">Intel XE#3141</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7383">Intel XE#7383</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/836">Intel XE#836</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_psr2_sf@fbc-pr-cursor-plane-update-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2893">Intel XE#2893</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7304">Intel XE#7304</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@kms_psr2_sf@psr2-overlay-plane-move-continuous-exceed-fully-sf.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1489">Intel XE#1489</a>) +3 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@pr-sprite-blt:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@kms_psr@pr-sprite-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1406">Intel XE#1406</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_psr@psr2-sprite-blt:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_psr@psr2-sprite-blt.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2234">Intel XE#2234</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2850">Intel XE#2850</a>) +7 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@basic:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-10/igt@kms_setmode@basic.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_setmode@basic.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8618">Intel XE#8618</a>) +6 other tests fail</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_setmode@invalid-clone-single-crtc:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_setmode@invalid-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1435">Intel XE#1435</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9142">Intel XE#9142</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_sharpness_filter@invalid-filter-with-scaling-mode:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@kms_sharpness_filter@invalid-filter-with-scaling-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6503">Intel XE#6503</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_tv_load_detect@load-detect:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-7/igt@kms_tv_load_detect@load-detect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2450">Intel XE#2450</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/5857">Intel XE#5857</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_vrr@cmrr-desktop-mode:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_vrr@cmrr-desktop-mode.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9271">Intel XE#9271</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_ccs@vm-bind-decompress:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@xe_ccs@vm-bind-decompress.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7644">Intel XE#7644</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-cm-threads-small:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_evict@evict-beng-cm-threads-small.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6540">Intel XE#6540</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/688">Intel XE#688</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-small-external-multi-queue-cm:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@xe_evict@evict-small-external-multi-queue-cm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8370">Intel XE#8370</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_balancer@once-virtual-rebind:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@xe_exec_balancer@once-virtual-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7482">Intel XE#7482</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-basic-defer-mmap:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_exec_basic@multigpu-once-basic-defer-mmap.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1392">Intel XE#1392</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@xe_exec_basic@multigpu-once-bindexecqueue-userptr-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2322">Intel XE#2322</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7372">Intel XE#7372</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@once-multi-queue-userptr-imm:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-2/igt@xe_exec_fault_mode@once-multi-queue-userptr-imm.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8374">Intel XE#8374</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_fault_mode@twice-multi-queue-userptr:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@xe_exec_fault_mode@twice-multi-queue-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8374">Intel XE#8374</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-basic-smem:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@xe_exec_multi_queue@few-execs-preempt-mode-fault-basic-smem.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364">Intel XE#8364</a>) +5 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_multi_queue@two-queues-basic-smem:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@xe_exec_multi_queue@two-queues-basic-smem.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8364">Intel XE#8364</a>) +17 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_reset@multi-queue-long-spin-many-queue-switch:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-10/igt@xe_exec_reset@multi-queue-long-spin-many-queue-switch.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8369">Intel XE#8369</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_system_allocator@many-stride-new-prefetch:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-7/igt@xe_exec_system_allocator@many-stride-new-prefetch.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7098">Intel XE#7098</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8159">Intel XE#8159</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_exec_threads@threads-multi-queue-cm-shared-vm-userptr.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8378">Intel XE#8378</a>) +2 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_exec_threads@threads-multi-queue-mixed-rebind:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-1/igt@xe_exec_threads@threads-multi-queue-mixed-rebind.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8378">Intel XE#8378</a>) +4 other tests skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_media_fill@media-fill:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-9/igt@xe_media_fill@media-fill.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2459">Intel XE#2459</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/2596">Intel XE#2596</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7321">Intel XE#7321</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7453">Intel XE#7453</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_mempage_offline@inject-duplicate-page:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@xe_mempage_offline@inject-duplicate-page.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9203">Intel XE#9203</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_multigpu_svm@mgpu-atomic-op-basic:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@xe_multigpu_svm@mgpu-atomic-op-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964">Intel XE#6964</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_multigpu_svm@mgpu-migration-basic:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-1/igt@xe_multigpu_svm@mgpu-migration-basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6964">Intel XE#6964</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_page_reclaim@binds-full-pd:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@xe_page_reclaim@binds-full-pd.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7793">Intel XE#7793</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_page_reclaim@boundary-split:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@xe_page_reclaim@boundary-split.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7793">Intel XE#7793</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm@s3-basic-exec:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_pm@s3-basic-exec.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/584">Intel XE#584</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7369">Intel XE#7369</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm@s4-exec-after:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-2/igt@xe_pm@s4-exec-after.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-3/igt@xe_pm@s4-exec-after.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7727">Intel XE#7727</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm@s4-vm-bind-userptr:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-4/igt@xe_pm@s4-vm-bind-userptr.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-5/igt@xe_pm@s4-vm-bind-userptr.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9362">Intel XE#9362</a>) +1 other test abort</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-freeze@gt1:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-2/igt@xe_pm_residency@gt-c6-freeze@gt1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@xe_pm_residency@gt-c6-freeze@gt1.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9254">Intel XE#9254</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pxp@pxp-optout:</p>
+<ul>
+<li>shard-bmg:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-8/igt@xe_pxp@pxp-optout.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4733">Intel XE#4733</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7417">Intel XE#7417</a>) +1 other test skip</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_query@multigpu-query-oa-units:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@xe_query@multigpu-query-oa-units.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/944">Intel XE#944</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_admin@sched-priority-vf-write-denied:</p>
+<ul>
+<li>shard-lnl:          NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-8/igt@xe_sriov_admin@sched-priority-vf-write-denied.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7174">Intel XE#7174</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs@pipe-c-dp-2:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-6/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs@pipe-c-dp-2.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/7084">Intel XE#7084</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8150">Intel XE#8150</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@kms_ccs@crc-primary-suspend-4-tiled-bmg-ccs@pipe-c-dp-2.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@flip-vs-expired-vblank-interruptible:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-2/igt@kms_flip@flip-vs-expired-vblank-interruptible.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/301">Intel XE#301</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-4/igt@kms_flip@flip-vs-expired-vblank-interruptible.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_audio_bw@audio-bw-hblank160:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-7/igt@kms_hdmi_audio_bw@audio-bw-hblank160.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9313">Intel XE#9313</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-5/igt@kms_hdmi_audio_bw@audio-bw-hblank160.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_dc@dc6-dpms:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-3/igt@kms_pm_dc@dc6-dpms.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8399">Intel XE#8399</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@kms_pm_dc@dc6-dpms.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_evict@evict-beng-mixed-many-threads-small:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-9/igt@xe_evict@evict-beng-mixed-many-threads-small.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6321">Intel XE#6321</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/8355">Intel XE#8355</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@xe_evict@evict-beng-mixed-many-threads-small.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm@s4-vm-bind-unbind-all:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-4/igt@xe_pm@s4-vm-bind-unbind-all.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9362">Intel XE#9362</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-7/igt@xe_pm@s4-vm-bind-unbind-all.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_pm_residency@gt-c6-freeze@gt0:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-2/igt@xe_pm_residency@gt-c6-freeze@gt0.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9254">Intel XE#9254</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-4/igt@xe_pm_residency@gt-c6-freeze@gt0.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@xe_sriov_flr@flr-vf1-clear:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-2/igt@xe_sriov_flr@flr-vf1-clear.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/6569">Intel XE#6569</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-6/igt@xe_sriov_flr@flr-vf1-clear.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h4>Warnings</h4>
+<ul>
+<li>
+<p>igt@kms_big_fb@linear-8bpp-rotate-90:</p>
+<ul>
+<li>shard-lnl:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-lnl-8/igt@kms_big_fb@linear-8bpp-rotate-90.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/4760">Intel XE#4760</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-lnl-2/igt@kms_big_fb@linear-8bpp-rotate-90.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/1407">Intel XE#1407</a>)</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery:</p>
+<ul>
+<li>shard-bmg:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9170/shard-bmg-10/igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9319">Intel XE#9319</a> / <a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9346">Intel XE#9346</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16063/shard-bmg-3/igt@kms_hdmi_audio_bw@suspend-disk-audio-recovery.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9346">Intel XE#9346</a>)</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9170 -&gt; IGTPW_16063</li>
+<li>Linux: xe-6022-f00a1fa90fcfdf84b1600e0aca74c965fb86fe76 -&gt; xe-6024-81fce6ce260af07e3f7a1211b6fe813941cbd17b</li>
+</ul>
+<p>IGTPW_16063: 16063<br />
+  IGT_9170: 9170<br />
+  xe-6022-f00a1fa90fcfdf84b1600e0aca74c965fb86fe76: f00a1fa90fcfdf84b1600e0aca74c965fb86fe76<br />
+  xe-6024-81fce6ce260af07e3f7a1211b6fe813941cbd17b: 81fce6ce260af07e3f7a1211b6fe813941cbd17b</p>
+
+</body>
+</html>
+
+--===============5068646323159127934==--
