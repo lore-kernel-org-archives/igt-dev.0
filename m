@@ -2,52 +2,52 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC9B606A31A
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 06:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B04606A31C
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 07:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PPq0uWyE
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iErcFlVU
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A3EC010E7C8;
-	Thu, 29 Oct 2026 06:37:22 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2486F10FFA8
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 06:36:25 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id BCE9410FFA8;
+	Thu, 29 Oct 2026 07:05:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5DD0F10E792
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 07:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793255785; x=1824791785;
+ t=1793257454; x=1824793454;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=q//3q//ncqAQNtzqgGvoxyHFdpExKKFue3KKjZQiRGY=;
- b=PPq0uWyE1/dVpaxMkpEOE1sd38ZvlucuEUSb7F1Z964Ixih/lMUE7utQ
- +kt6xzAQ+C/GqB6zpKxvbW6hQ6h4Zj9xxVe1UZoJMolxFsIYR+Me1kRkE
- mh5K2x9Kbi1bTgPdDzKKIXOEMN5Kn3XtBlpdeXkNKpzvo4IBNL+dMwmYV
- QlUN93cf5LYRM0yquHOJV2GdpFqYyhqjl8MCLsUxuPsTFXR0E7uqwO9rL
- SbiB6RB61zcDEaIBJmHvBIKwoeavy07K9BfWVVkrEPuUi0nndYZSynHqo
- Tgg81FiW0tOp9+9hMPdFWY674DjuGHThj936YDEF4EKqtNEg9UqbxCAoS w==;
-X-CSE-ConnectionGUID: uxxgCu2iRFKND51wS93dlA==
-X-CSE-MsgGUID: LZ2muVgnQreSIU6UsQalkw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2005595"
+ bh=apDNWwAoWY1fd5ojc0RgRhPsE70gQ18rLXnhko4Gmf0=;
+ b=iErcFlVUdxeB/97uG51rkRJ4QIJuPnHcATpLVqs+Kzan0+0l4dLq5ws5
+ jYp9dMEgDNAmaWaftL7bv79MWO6MLKuW74NjBmcK1LGFSQ+Oilbjj1c2P
+ pkffdj/QEZce8yMVI1Ls6X90MNOSjn8KlQ0KAIxMQRrFZabBWlPzMnWit
+ aRaE4f+itiz8VQ8lt2F/Vbnjfdqp8SsvxSh9yEodLIiztoA/lwhB9bvnD
+ 3o94uo1TPAsjc97qyMvQaCugfYaa3nYKy5UDVZUpTEVu1UTOGW5iFv4cE
+ E2zRlaHXD/bYwrVJOTw5UT9bEoNL85zw4dhxhMryME0BoIyZvlG9eS4Dz A==;
+X-CSE-ConnectionGUID: WAOT9lIsSTGAFOSfcVYxrA==
+X-CSE-MsgGUID: eZtvHjI7RFqSvVGfpZkYVw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1875965"
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="2005595"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 28 Oct 2026 23:36:25 -0700
-X-CSE-ConnectionGUID: /xcPjokzR+WipySAlXqc9w==
-X-CSE-MsgGUID: gl4wrYBWT06evsqSS9cMVQ==
+   d="scan'208";a="1875965"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2026 00:04:13 -0700
+X-CSE-ConnectionGUID: 6TM+96eYQN2y7DqWo9L4hQ==
+X-CSE-MsgGUID: 5IJXHNGCQwKytDEeDglIxA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="4957437"
+   d="scan'208";a="5391392"
 Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
- by orviesa005.jf.intel.com with ESMTP; 28 Oct 2026 23:36:22 -0700
+ by fmviesa008.fm.intel.com with ESMTP; 29 Oct 2026 00:04:11 -0700
 From: nishit.sharma@intel.com
 To: igt-dev@lists.freedesktop.org,
-	arvind.yadav@intel.com
-Cc: kamil.konieczny@linux.intel.com,
-	gustavo.sousa@intel.com
-Subject: [PATCH] tests/intel/xe_exec_system_allocator: Skip reserved PAT
- madvise indices
-Date: Thu, 29 Oct 2026 06:36:20 +0000
-Message-ID: <20261029063620.1540187-1-nishit.sharma@intel.com>
+	jia.yao@intel.com
+Cc: himanshu.girotra@intel.com, kamil.konieczny@linux.intel.com,
+ gustavo.sousa@intel.com
+Subject: [PATCH] tests/intel/xe_exec_threads: handle reset rejection in
+ multi-queue hang test
+Date: Thu, 29 Oct 2026 07:04:10 +0000
+Message-ID: <20261029070410.1549615-1-nishit.sharma@intel.com>
 X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -72,62 +72,40 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Nishit Sharma <nishit.sharma@intel.com>
 
-With Wa_14026539277 active, KMD marks the 2-way-coherent PAT entries as
-reserved in the debugfs pat_sw_config dump and they must not be used.
-Skip the PAT-index madvise subtests when the selected PAT index is
-reserved instead of decoding the coherency bits of the PAT entry.
+The multi-queue hang subtests intentionally hang one queue of a
+multi-queue group. All queues in the group share the same reset domain,
+so when the hang queue triggers a GPU reset the sibling queues are reset
+as well and the kernel rejects further execs on them with -ECANCELED.
 
 Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
 ---
- tests/intel/xe_exec_system_allocator.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ tests/intel/xe_exec_threads.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index 45ec62813..38e550896 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -26,6 +26,7 @@
- #include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_wa.h"
- #include <string.h>
- 
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-@@ -1216,6 +1217,24 @@ xe_vm_madvixe_pat_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 		      DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0, 0);
- }
- 
-+static bool pat_idx_is_reserved(int fd, uint8_t pat_idx)
-+{
-+	struct intel_pat_cache pat_sw_config = {};
-+	int32_t num_pat_entries;
+diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+index 2974fc312..f03f20142 100644
+--- a/tests/intel/xe_exec_threads.c
++++ b/tests/intel/xe_exec_threads.c
+@@ -766,6 +766,20 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 			do {
+ 				err = igt_ioctl(fd, DRM_IOCTL_XE_EXEC, &exec);
+ 			} while (err && errno == ENOMEM);
++		} else if (flags & HANG && flags & MULTI_QUEUE) {
++			int err;
 +
-+	if (!xe_wa(fd, "14026539277"))
-+		return false;
-+
-+	num_pat_entries = xe_get_pat_sw_config(fd, &pat_sw_config, 0);
-+	igt_assert_f(num_pat_entries > 0,
-+		     "Couldn't get Xe PAT software configuration\n");
-+
-+	if (pat_idx >= num_pat_entries)
-+		return false;
-+
-+	return pat_sw_config.entries[pat_idx].rsvd;
-+}
-+
- static void
- xe_vm_madvise_atomic_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
- 			  int mem_attr)
-@@ -2887,6 +2906,9 @@ int igt_main()
- 			if (IS_PONTEVECCHIO(dev_id) &&
- 			    strstr(s->name, "madvise-pat-idx-uc-comp-"))
- 				igt_skip("Skipping compression-related PAT index on PVC\n");
-+
-+			igt_skip_on_f(pat_idx_is_reserved(fd, s->fn(fd)),
-+				      "PAT index reserved by Wa_14026539277\n");
- 			xe_for_each_engine(fd, hwe)
- 				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
++			/*
++			 * In multi-queue mode all queues share a single reset
++			 * domain. When the hang queue triggers a GPU reset the
++			 * sibling (non-hang) queues are reset as well and the
++			 * exec ioctl is rejected with -ECANCELED. This is
++			 * expected and should be handled gracefully.
++			 */
++			do {
++				err = __xe_exec(fd, &exec);
++			} while (err == -ENOMEM);
++			igt_assert(err == 0 || err == -ECANCELED);
+ 		} else {
+ 			xe_exec(fd, &exec);
  		}
 -- 
 2.43.0
