@@ -2,64 +2,65 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD55F606A31A
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 11:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8221606A31A
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 11:31:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O+3FAZn2
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mTHxenLg
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 80FFF1121FD;
-	Thu, 29 Oct 2026 11:16:37 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3E011121FD
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 11:15:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 79CAC11221C;
+	Thu, 29 Oct 2026 11:31:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 127F510E4CB
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 11:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793272542; x=1824808542;
+ t=1793273406; x=1824809406;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=T/DbKUtlwyFxZcoKoCA8gAd09LQfCQkj7Ze5rEpq5AM=;
- b=O+3FAZn2rFScIiutls9cD4GXHKsrwLcnh4lTYwtQivxJiI6dFB4zlx1O
- jq6R4YeVDpdnClFW+ekJnZj+ANttfLdWna0Yiqt6Op9vxyMqdrbt1X/bO
- ah02HW8bueEd1aj5+TbQqFLViHKE3zrocZxXpUbGumCo7A4mWQ/3SnBoD
- QSXUjBa3q8R9BMBPmbXTH9P4q4E1Q2nGI21vwxsQBbB8Eyf5Le3ehsKRA
- L5mMuJh25EFBdjUniQl2sJPtDEscHCf8RNJYYSR/NisKfvKJAOmFrfd/P
- v9EUEJ83Sov7ERPR5GYMIR97sYFvDK3zceAWbwZTCZdqhkd20y8LF9Qco A==;
-X-CSE-ConnectionGUID: GgkQEdmXQO2KwwlZwFE7rg==
-X-CSE-MsgGUID: FoWLKDtySI+BnK6FtvDFRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1918646"
+ bh=qtNHm53YLXOb4Ly3m04t1yMwUVjmw3atrVnPpLJPUNo=;
+ b=mTHxenLgZiGoAF8ZdBnJHbR99lUObgSDjFUN57I5yUZJyWWb90fkyHc3
+ 8OacOhc06lkuL9NR+d96SB8OZlHrC/8vE88D7bhujr685wfNo0KxGzPK9
+ SypuwnSNwecskT8kFrqPds3epEDVtPnu9do4BmDOAy4mCdOYmfTsJUujq
+ nZ71qzpFUk7DT04zJwE/2lF/EEHqceMH2DdLvS7AfEjf1JSoiFF81BwH5
+ 3KgELNeBP8WgaIVtExamzC4gysUysMlchnvNcXn2n1xLmKnS+IyxOpsX3
+ Sr6dDabSY3HuEaD6KD7br+H8/tE+LUA+8yVixGj+n+1g2nmiE6j4pTaYh g==;
+X-CSE-ConnectionGUID: Ho/hXJ2lQHKRKKRcvmRyQg==
+X-CSE-MsgGUID: 0IxUgnz5RM6NWqMWJfnogA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2011665"
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="1918646"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 04:15:42 -0700
-X-CSE-ConnectionGUID: QHnDBuJ2Qom09s5OBcST6w==
-X-CSE-MsgGUID: trqchbAiR62MX+OYww31Eg==
+   d="scan'208";a="2011665"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2026 04:30:05 -0700
+X-CSE-ConnectionGUID: 3eXqQiGfS6uwvkbl91hgwA==
+X-CSE-MsgGUID: EPo7uud4Rd+13vJ9ZMLcmw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="5251617"
+   d="scan'208";a="5456700"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 04:15:41 -0700
-Date: Thu, 29 Oct 2026 12:15:25 +0100
+ 29 Oct 2026 04:30:04 -0700
+Date: Thu, 29 Oct 2026 12:30:01 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: Brajesh Gupta <brajesh.gupta@imgtec.com>
 Cc: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>, 
  Alessio Belle <alessio.belle@imgtec.com>,
  Luigi Santivetti <luigi.santivetti@imgtec.com>
-Subject: Re: [PATCH i-g-t] tests/imagination: Add query Firmware information
- test
-Message-ID: <20261029111525.w36iwhg3jdrue7we@kamilkon-DESK.igk.intel.com>
+Subject: Re: [PATCH i-g-t 1/2] Drop CPU access flag for a few Render related
+ allocations
+Message-ID: <20261029113001.ydli5rt5l6lgqyvj@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Brajesh Gupta <brajesh.gupta@imgtec.com>,
  Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>,
  Alessio Belle <alessio.belle@imgtec.com>,
  Luigi Santivetti <luigi.santivetti@imgtec.com>
-References: <20261029-b4-fw_info-v1-1-0eb3c0969a7f@imgtec.com>
+References: <20261029-b4-render_update-v1-0-4a92ec210d6a@imgtec.com>
+ <20261029-b4-render_update-v1-1-4a92ec210d6a@imgtec.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261029-b4-fw_info-v1-1-0eb3c0969a7f@imgtec.com>
+In-Reply-To: <20261029-b4-render_update-v1-1-4a92ec210d6a@imgtec.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,154 +80,164 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 Hi Brajesh,
-On 2026-10-29 at 07:45:36 +0530, Brajesh Gupta wrote:
-> Update pvr_dev_query test to include querying of Firmware
-> information.
+On 2026-10-29 at 08:22:26 +0530, Brajesh Gupta wrote:
+
+please use a prefix indicating for which GPU you introduce changes,
+so here:
+
+[PATCH i-g-t 1/2] imagination: Drop CPU access flag for a few Render related allocations
+
+> tests/imagination: Skip CPU access flag for a few render related allocations
+> 
+> Skip passing CPU access flag for BO's that don't need access.
+> 
+> lib/igt: Interface update to pass extra flags for general heap allocation
+
+lib/igt_pvr:
+
+> 
+> Allow users to pass specific flag other than DRM_PVR_BO_BYPASS_DEVICE_CACHE
+> for general heap allocation.
 > 
 > Signed-off-by: Brajesh Gupta <brajesh.gupta@imgtec.com>
 > ---
-> Add test for new Firmware information query subtype added to DEV_QUERY
-> under upstream review https://patchwork.freedesktop.org/series/176800/.
-> ---
->  include/drm-uapi/pvr_drm.h        | 21 +++++++++++++++++++++
+>  lib/igt_pvr.c                       | 23 +++++++++++------------
+>  lib/igt_pvr.h                       |  3 ++-
+>  tests/imagination/pvr_submit_jobs.c |  9 ++++++---
 
-Please split drm-uapi update to separate patch and give a commit
-hash and description to which tree you are syncing, and if
-it is not drm-next give also link at lore.kernel.org to change
-in kernel.
+imho these should be two patches, first you change lib and make
+tests follow it, then you change a test for that 'skip CPU access'
+so there will be clear picture where was a real change here.
+
+>  3 files changed, 19 insertions(+), 16 deletions(-)
+> 
+> diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
+> index 799852da5..ecca46c48 100644
+> --- a/lib/igt_pvr.c
+> +++ b/lib/igt_pvr.c
+> @@ -397,9 +397,8 @@ uint32_t igt_pvr_ioctl_create_context(int fd, enum drm_pvr_ctx_type type,
+>  	switch (type) {
+>  	case DRM_PVR_CTX_TYPE_RENDER:
+>  		create_context_args.callstack_addr =
+> -			igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd,
+> -								      vm_ctx_handle,
+> -								      POWERVR_GPU_PAGE_SIZE));
+> +			igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx_handle,
+> +								      POWERVR_GPU_PAGE_SIZE, 0));
+>  		create_context_args.static_context_state = to_user_pointer(init_render_context_stream);
+>  		create_context_args.static_context_state_len =
+>  			init_render_context_state_stream(init_render_context_stream);
+> @@ -673,16 +672,16 @@ struct igt_pvr_allocation *igt_pvr_allocate(int fd, uint32_t vm_ctx, size_t size
+>   * @fd: The file descriptor of the DRM device.
+>   * @vm_ctx: The virtual memory context.
+>   * @size: The size of the allocation.
+> + * @flags: Extra allocation flags.
+>   *
+>   * Function to allocate and map GPU memory from the general heap.
+>   *
+>   * Returns: Pointer to the allocation structure.
+>   */
+> -struct igt_pvr_allocation *igt_pvr_allocate_general(int fd, uint32_t vm_ctx, size_t size)
+> +struct igt_pvr_allocation *igt_pvr_allocate_general(int fd, uint32_t vm_ctx, size_t size, uint64_t flags)
+>  {
+>  	return igt_pvr_allocate(fd, vm_ctx, size,
+> -				DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS |
+> -				DRM_PVR_BO_BYPASS_DEVICE_CACHE,
+> +				flags | DRM_PVR_BO_BYPASS_DEVICE_CACHE,
+
+You introduced flags here so why a lib function adds '| other_flag'?
+Well, it is your code so it is up to you, so
+
+Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 
 Regards,
 Kamil
 
+PS. please tell me if you want to merge it as is or you will change
+anything here. Should I wait for review by Alessio or Luigi?
 
->  tests/imagination/pvr_dev_query.c | 28 +++++++++++++++++++++++++---
->  2 files changed, 46 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/drm-uapi/pvr_drm.h b/include/drm-uapi/pvr_drm.h
-> index ccf6c2112..1179c1e7d 100644
-> --- a/include/drm-uapi/pvr_drm.h
-> +++ b/include/drm-uapi/pvr_drm.h
-> @@ -434,6 +434,21 @@ struct drm_pvr_dev_query_static_data_areas {
->  	struct drm_pvr_obj_array static_data_areas;
->  };
+
+>  				DRM_PVR_HEAP_GENERAL);
+>  }
 >  
-> +/**
-> + * struct drm_pvr_dev_query_fw_info - Container used to fetch information
-> + * about the GPU Firmware like its version.
-> + */
-> +struct drm_pvr_dev_query_fw_info {
-> +	/** @major_version: Major version of the Firmware. */
-> +	__u16 major_version;
-> +
-> +	/** @minor_version: Minor version of the Firmware. */
-> +	__u16 minor_version;
-> +
-> +	/** @_padding_4: Reserved. This field must be zeroed. */
-> +	__u32 _padding_4;
-> +};
-> +
->  /**
->   * enum drm_pvr_dev_query - For use with &drm_pvr_ioctl_dev_query_args.type to
->   * indicate the type of the receiving container.
-> @@ -476,6 +491,12 @@ enum drm_pvr_dev_query {
->  	 * a pointer to &struct drm_pvr_dev_query_static_data_areas.
->  	 */
->  	DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-> +
-> +	/**
-> +	 * @DRM_PVR_DEV_QUERY_FW_INFO_GET: The dev query args contain
-> +	 * a pointer to &struct drm_pvr_dev_query_fw_info.
-> +	 */
-> +	DRM_PVR_DEV_QUERY_FW_INFO_GET,
->  };
+> @@ -817,11 +816,11 @@ static void igt_pvr_create_hwrt_geom_data_args(int fd, uint32_t vm_ctx,
+>  					       *geom_data_args)
+>  {
+>  	geom_data_args->rtc_dev_addr =
+> -		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE));
+> +		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE, 0));
+>  	geom_data_args->tpc_dev_addr =
+> -		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE));
+> +		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE, 0));
+>  	geom_data_args->vheap_table_dev_addr =
+> -		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE));
+> +		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE, 0));
+>  	geom_data_args->tpc_size = POWERVR_GPU_PAGE_SIZE;
+>  	geom_data_args->tpc_stride = 0x1;
+>  }
+> @@ -839,11 +838,11 @@ static void igt_pvr_create_hwrt_rt_data_args(int fd, uint32_t vm_ctx,
+>  					     struct drm_pvr_create_hwrt_rt_data_args *rt_data_args)
+>  {
+>  	rt_data_args->pm_mlist_dev_addr =
+> -		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE));
+> +		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE, 0));
+>  	rt_data_args->macrotile_array_dev_addr =
+> -		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE));
+> +		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE, 0));
+>  	rt_data_args->region_header_dev_addr =
+> -		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE));
+> +		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE, 0));
+>  }
 >  
 >  /**
-> diff --git a/tests/imagination/pvr_dev_query.c b/tests/imagination/pvr_dev_query.c
-> index 29c7eb550..8995ea777 100644
-> --- a/tests/imagination/pvr_dev_query.c
-> +++ b/tests/imagination/pvr_dev_query.c
-> @@ -19,6 +19,7 @@ int igt_main()
->  		DRM_PVR_DEV_QUERY_ENHANCEMENTS_GET,
->  		DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
->  		DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-> +		DRM_PVR_DEV_QUERY_FW_INFO_GET,
->  	};
+> diff --git a/lib/igt_pvr.h b/lib/igt_pvr.h
+> index b6e3dd676..bed02f968 100644
+> --- a/lib/igt_pvr.h
+> +++ b/lib/igt_pvr.h
+> @@ -67,7 +67,8 @@ struct igt_pvr_allocation *igt_pvr_allocate_addr(int fd, uint32_t vm_ctx, size_t
+>  						 uint64_t flags, uint64_t gpu_addr);
+>  struct igt_pvr_allocation *igt_pvr_allocate(int fd, uint32_t vm_ctx, size_t size, uint64_t flags,
+>  					    uint32_t heap_index);
+> -struct igt_pvr_allocation *igt_pvr_allocate_general(int fd, uint32_t vm_ctx, size_t size);
+> +struct igt_pvr_allocation *igt_pvr_allocate_general(int fd, uint32_t vm_ctx, size_t size,
+> +					    uint64_t flags);
+>  void *igt_pvr_get_cpu_addr(int fd, struct igt_pvr_allocation *alloc);
+>  uint64_t igt_pvr_get_gpu_addr(struct igt_pvr_allocation *alloc);
+>  size_t igt_pvr_get_size(struct igt_pvr_allocation *alloc);
+> diff --git a/tests/imagination/pvr_submit_jobs.c b/tests/imagination/pvr_submit_jobs.c
+> index 566f9d2b2..78a4b0bbf 100644
+> --- a/tests/imagination/pvr_submit_jobs.c
+> +++ b/tests/imagination/pvr_submit_jobs.c
+> @@ -52,7 +52,8 @@ static uint32_t init_compute_cmd_stream(int fd, uint32_t vm_ctx,
+>  	void *cdm_stream_map;
+>  	uint32_t stream_length;
 >  
->  	const uint64_t sizes[] = {
-> @@ -34,6 +35,8 @@ int igt_main()
->  			sizeof(struct drm_pvr_dev_query_heap_info),
->  		[DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET] =
->  			sizeof(struct drm_pvr_dev_query_static_data_areas),
-> +		[DRM_PVR_DEV_QUERY_FW_INFO_GET] =
-> +			sizeof(struct drm_pvr_dev_query_fw_info),
->  	};
+> -	struct igt_pvr_allocation *cdm_stream_alloc = igt_pvr_allocate_general(fd, vm_ctx, 0x1000);
+> +	struct igt_pvr_allocation *cdm_stream_alloc =
+> +		igt_pvr_allocate_general(fd, vm_ctx, 0x1000, DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS);
 >  
->  	struct drm_pvr_dev_query_gpu_info gpu_info = {0};
-> @@ -42,6 +45,7 @@ int igt_main()
->  	struct drm_pvr_dev_query_enhancements enhancements = {0};
->  	struct drm_pvr_dev_query_heap_info heap_info = {0};
->  	struct drm_pvr_dev_query_static_data_areas static_data_areas = {0};
-> +	struct drm_pvr_dev_query_fw_info fw_info = {0};
+>  	cdm_stream_gpu_addr = igt_pvr_get_gpu_addr(cdm_stream_alloc);
 >  
->  	void *const containers[] = {
->  		[DRM_PVR_DEV_QUERY_GPU_INFO_GET] = &gpu_info,
-> @@ -50,19 +54,26 @@ int igt_main()
->  		[DRM_PVR_DEV_QUERY_ENHANCEMENTS_GET] = &enhancements,
->  		[DRM_PVR_DEV_QUERY_HEAP_INFO_GET] = &heap_info,
->  		[DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET] = &static_data_areas,
-> +		[DRM_PVR_DEV_QUERY_FW_INFO_GET] = &fw_info,
->  	};
+> @@ -212,14 +213,16 @@ int igt_main()
+>  		pds_buffer_base[0x20] = pds_inst_encode_halt();
 >  
-> -	int fd;
-> +	int fd, version_major, version_minor;
+>  		vdm_alloc =
+> -			igt_pvr_allocate_general(fd, render_vm_ctx_handle, size);
+> +			igt_pvr_allocate_general(fd, render_vm_ctx_handle, size,
+> +						 DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS);
 >  
->  	static_assert(ARRAY_SIZE(types) == ARRAY_SIZE(sizes));
->  	static_assert(ARRAY_SIZE(types) == ARRAY_SIZE(containers));
+>  		vdm_buffer = igt_pvr_get_cpu_addr(fd, vdm_alloc);
 >  
->  	igt_fixture()
->  	{
-> +		drmVersionPtr version;
->  		fd = drm_open_driver(DRIVER_POWERVR);
+>  		size = PVR_BO_SIZE;
 >  
->  		for (int i = 0; i < ARRAY_SIZE(types); i++)
->  			memset(containers[i], 0, sizes[i]);
-> +
-> +		version = drmGetVersion(fd);
-> +		version_major = version->version_major;
-> +		version_minor = version->version_minor;
-> +		drmFreeVersion(version);
->  	}
+>  		ppp_alloc =
+> -			igt_pvr_allocate_general(fd, render_vm_ctx_handle, size);
+> +			igt_pvr_allocate_general(fd, render_vm_ctx_handle, size,
+> +						 DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS);
 >  
->  	igt_describe("Test invalid dev query");
-> @@ -73,9 +84,20 @@ int igt_main()
+>  		ppp_buffer_base = igt_pvr_get_cpu_addr(fd, ppp_alloc);
 >  
->  	igt_describe("Test valid dev query");
->  	igt_subtest("dev-query-success-all") {
-> +		struct drm_pvr_ioctl_dev_query_args args;
->  		for (int i = 0; i < ARRAY_SIZE(types); i++) {
-> -			struct drm_pvr_ioctl_dev_query_args args =
-> -				igt_pvr_ioctl_dev_query(fd, types[i], 0, NULL, 0);
-> +
-> +			/* DRM_PVR_DEV_QUERY_FW_INFO_GET only supported
-> +			 * from major version 1 and minor version 1 onwards.
-> +			 * Skip query on older version.
-> +			 */
-> +			if (types[i] == DRM_PVR_DEV_QUERY_FW_INFO_GET &&
-> +				version_major == 1 && version_minor < 1) {
-> +				igt_log("igt-pvr", IGT_LOG_INFO, "Skipping FW_INFO_GET query due to no support\n");
-> +				continue;
-> +			}
-> +
-> +			args = igt_pvr_ioctl_dev_query(fd, types[i], 0, NULL, 0);
->  
->  			igt_assert(args.size);
->  			igt_assert(args.size <= sizes[i]);
 > 
-> ---
-> base-commit: fc75d6d7ffcb79e8a3316e80c7085460568a7670
-> change-id: 20261029-b4-fw_info-269a74116374
-> 
-> Best regards,
-> --  
-> Brajesh Gupta <brajesh.gupta@imgtec.com>
+> -- 
+> 2.43.0
 > 
