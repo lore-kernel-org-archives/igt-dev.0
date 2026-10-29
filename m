@@ -2,63 +2,63 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02348606A31D
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 09:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA494606A31C
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 09:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cEoPQ9vF
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=amXnnKes
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A60BC1120FA;
-	Thu, 29 Oct 2026 09:18:50 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 898621120F7
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 09:17:53 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 803C710E7C1;
+	Thu, 29 Oct 2026 09:21:56 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A5C3410E4A3
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 09:20:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793265473; x=1824801473;
+ t=1793265660; x=1824801660;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=u0lQVQ7l2bHNWlsld/b1QnpjJgOSRYE/QeHXPJI9w9c=;
- b=cEoPQ9vFAF+0Hb9TA8POLj8E+ywdadnbI0vcrd8E1rifyS3nRrSS+YSB
- 71+ZzGh9AsUVNvT8JEKmCOAWLlB+uyarky1nS6mmvHUy4gWZHuYaLO5Hg
- OzLJAzi07T9v3gWDAPG11QPlvfORjN2uimWvjO9+5IO8sprtAxs8zxUYl
- E4Q/npr+UHWqTmtJVCtfnl0xs4hbdmYSVLnOR3gIs7DYscUaKaHcGX+f7
- jvwcUHo5tMizRYO1qqAb/G/hA9CWHZDnrPvKkzOVILKqFGaPzi+/uTnLA
- 2Fwj7Schn3SD4icW8QfpYD+8zxu38wryiK9ARGAeEZ5F0oiSUutdRzcvZ g==;
-X-CSE-ConnectionGUID: sQS/kiGPRCK7LzOrIA+AsA==
-X-CSE-MsgGUID: L4zPKEpXT9qA5untrLd3qA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2005934"
+ bh=udSkToiLLmz3k9LhbT5c/g50AeCn4DP2uSbc7E5vEyw=;
+ b=amXnnKess0esyTzOLtyPS4duqvmzZzAeW4pD2l5HoLsQgexUSV1nwZ5j
+ PAkX2pDNuDBya1mUflRyqnKXhfAmsQy9hjRnCJqSMOcJVy2cDQBARYkU1
+ cJPr7hhMXa2X3KW3OMdRaoaptoRdYJcC3sxY0hIbUe/PyGphhY8+N/jbt
+ hVTVnhZHTdeXEIG+2ZaHDnQ1wUbQFpNKj+yzdtF+MwsciIWxi/JkSpQrS
+ +gRi+RVqEXZmw6ZXM3FDoZj3ktFJM+2LJwbtJSMBGH+pP5h4yqzv+wWmx
+ STcejDMhYGjt40udlBeCAP7VwbobAahwsIhWeYsxuImm6R3IbzKqdAx5h A==;
+X-CSE-ConnectionGUID: olqw9KnPR1O0ykWNjQy73g==
+X-CSE-MsgGUID: 6VkOszmVQ/O/ZcvAv8qGZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2001406"
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="2005934"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 02:17:53 -0700
-X-CSE-ConnectionGUID: cf3PpwWnTuS1Yfsqfsc4Sg==
-X-CSE-MsgGUID: nog2pYFaQMq5FvylRkD4ow==
+   d="scan'208";a="2001406"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2026 02:21:00 -0700
+X-CSE-ConnectionGUID: kcBmSa3vT0aIwdrAg5w/Lw==
+X-CSE-MsgGUID: gz7jzq/GQdOvxNmwSJdBYg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="5212784"
+   d="scan'208";a="4965835"
 Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 02:17:53 -0700
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2026 02:20:59 -0700
 Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
  fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 29 Oct 2026 02:17:52 -0700
+ 15.2.2562.56; Thu, 29 Oct 2026 02:20:58 -0700
 Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
  FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Thu, 29 Oct 2026 02:17:52 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.41) by
+ 15.2.2562.56 via Frontend Transport; Thu, 29 Oct 2026 02:20:58 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.71) by
  edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Thu, 29 Oct 2026 02:17:51 -0700
+ 15.2.2562.56; Thu, 29 Oct 2026 02:20:58 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XNQqlfKSbgwo4p35ok+HjzC1/rRUnIm31BKM4JBm7dX+NS6K6NNIXrvPLs5DDTDCOb4vzloeiLQyewRO/5zARyDvxQ9lmTpKvsR9uU9AuyqC8Pn5g9g8VBHn+VK9rsOqoadVE0vz92yUzVkO8Ay8Xcg3kHYrIlb3z36Az3dGE2kk2SzC4LEgXXFjE8kdUlBMSpfTiu/hTocIKVAWNxAINn5QA3FUYeqa3G1m+BD4bTpMMoptbXqpjOaEqI7uiI2UFV+s30rLwhxI6O9IHnOXswuWMzOXxWZx9PBOICjxm5phrCgbP/Gp90pzS7nI6rX6g53VWLc7vCtfdqYs69ubeA==
+ b=x2flcq3OeZSOM8Q6Zz327DDkhDv7F6SHCPHqNL9j8I2CkYQbvDjQQUe5dFpYHosk5+PFgDMm+BJZfisBbIuWuoUwEkS9DZIEcr3ZU8PF66o+oq2imAu8dasnOwH7X50NDL7fXOQelXgIf2X2/vFVOoR0KLzUx4gaT0uSH6X+kgUvDe9npzjcwDXWtF3fShKv3LQbj3dJ6YgQqismyWf7/lGbBIU+4zlX3o9Pksk2q7u5MjY9LZ+WwHXTQXkO4KEgX17s91W5zlNKhu9mOaPQm6bBo3H+5rEDBGIQItj9MZMifKdIKb7EMNJ/bqXMMNeyrJztLDII7VBQRnkS50djKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4vyPOJxVFCyPl5hpikMjdQsYR9sWHFS2F0B8EzC968Y=;
- b=EpR7S8A4dZBgoo6n5qW7SSA/uEmBFJukMukc8yw2qlZd2QofdFVYvPiqQ9eyrnTYIigM3/gcR6PixN4N6gXSDq8iAZid13pCZLnaeCB2FMRC5Ct32gnEY5fK2J+3NCKs0yvOKC6LzJXr92BEqhZk8kqnrVDUBCWgqwomN2k2Pa2zvzJB6ROLHOevQsDzKOZcTj6NZm2GJcWQZ14uVOo6FR4TFZ7YV+EkZPrxtAiZsX2y7kbfbt7ZaY7Qg1drNponIlbifda6smjaaq8YHZcuG0VsEAj1SPc6Pt7+5VViJbsaqhmi2XboWL9RwXCmhq+T7YzjTqsBB85mHHOxnYVzWg==
+ bh=ao+6UjXeJ26MyRXOevsWbQzeE3eWcadhjwffWqnEe2U=;
+ b=T0kB/q+1EyftrxiL3H0Jv/Sbtkusclvm4d/B5A6+WByFACHPAeSthQCQ7Wr/LfthrrG/rT2z7YS4OJUnA7C+GMb3rE6SkSa2gSr3n/+1RDJWLxIvXfs8fgmZF1JYTuVJBdNncdLPh0q5UUQd9PHTeCo9NdAi/o+hbHfunT/ThNa+uNzO9GR6ajS2JggutJuz8M/pU+21VUmjJ4AU1KuAaJrF5V0qRdtcCVWEdaSk3AYrwCPAtmF5D6eZQP39mMs8pKQq+iZPaGg1w2XgImj/xiYKCtEB3+2Yh0zPSmr19kZOdrV8bFv8EVwHNv4zHyMoREwSgps6YZs5IkAxziXaLQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -68,94 +68,94 @@ Received: from DS0PR11MB7958.namprd11.prod.outlook.com (2603:10b6:8:f9::19) by
  SA3PR11MB7435.namprd11.prod.outlook.com (2603:10b6:806:305::6) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.569.8; Thu, 29 Oct 2026 09:17:44 +0000
+ 15.21.569.8; Thu, 29 Oct 2026 09:20:51 +0000
 Received: from DS0PR11MB7958.namprd11.prod.outlook.com
  ([fe80::8cb2:cffc:b684:9a99]) by DS0PR11MB7958.namprd11.prod.outlook.com
  ([fe80::8cb2:cffc:b684:9a99%4]) with mapi id 15.21.0546.021; Thu, 29 Oct 2026
- 09:17:43 +0000
-Message-ID: <6afb9c8b-e33e-4d96-9eae-fa902db8a02f@intel.com>
-Date: Thu, 29 Oct 2026 14:47:35 +0530
+ 09:20:51 +0000
+Message-ID: <f0b5e079-d209-40a9-af10-cdc7cd9fada7@intel.com>
+Date: Thu, 29 Oct 2026 14:50:43 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 09/10] tests/intel/xe_err_injection: Add Core Compute
- Corr Error injection
+Subject: Re: [PATCH v6 07/10] tests/intel/xe_err_injection: Add Core Compute
+ Uncorr Error injection
 To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: <soham.purkait@intel.com>, <anshuman.gupta@intel.com>,
  <raag.jadav@intel.com>, <mallesh.koujalagi@intel.com>,
  <harish.chegondi@intel.com>, <kamil.konieczny@linux.intel.com>
 References: <20261029085955.1232163-1-ravi.kishore.koppuravuri@intel.com>
- <20261029085955.1232163-10-ravi.kishore.koppuravuri@intel.com>
+ <20261029085955.1232163-8-ravi.kishore.koppuravuri@intel.com>
 Content-Language: en-US
 From: "Tauro, Riana" <riana.tauro@intel.com>
-In-Reply-To: <20261029085955.1232163-10-ravi.kishore.koppuravuri@intel.com>
+In-Reply-To: <20261029085955.1232163-8-ravi.kishore.koppuravuri@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA5P287CA0039.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:175::16) To DS0PR11MB7958.namprd11.prod.outlook.com
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0037.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:175::17) To DS0PR11MB7958.namprd11.prod.outlook.com
  (2603:10b6:8:f9::19)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR11MB7958:EE_|SA3PR11MB7435:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f739809-fc42-4fec-9410-08df359d7d1d
+X-MS-Office365-Filtering-Correlation-Id: bfedd51e-0138-481b-08f6-08df359deced
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|1800799024|23010399003|6133799003|22082099003|18002099003|261028144727099003|56012099006|4143699003|11063799006|261026121527099003|261022105027099003|261021121427099003|261026140227099003|10067099003|261021135927099003|261022075727099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info: IyYxRMUoIzQq8faBQKmOEhYJkTPBFf/VnqcXyyrdyKlHry8VRSMTOq4rpDs5Dxdm+MeXVqLJhN+L22/fcj9VF/IqS4/R7RNUFHgg6o5MfA3X2NNiCmH9GOJT5qIqLkecsNusDSA4GDoRRul5p4PpFcE+CxTrTOMMRWlPCKYEzBk5IincswNvs70emXcu8oLq+jU2ELGSEOkZf3YkrxBbCxBRhs+i6YdJKvpul2iq/zZRwzQ/4z8cRCjHmD/FXnf7h9GbalmZmahXvX3vntvXYdMyq0UtyWnLZ1xJ9T9yxSUeqbHqDx1wysg1bFrC51+CgmKjXLkxBLHl5EMzMVfJrjHH+fOPNFYr4ernnHpuquu8pZju1suaNXfD0SqqKJZDRXfGvMCKl4rfFp03Tn4PC3N93qRkttdlqxdvC6dH78fdewQllAmPVAAztpWuPhhmL6nzAUCk73teRu+gwNpJlBkteBMhtju7T8zTkYxgGbBFuh1GduUsQU8LnPQ1uLoYNbIPvR7UUT52Jsjv5OLnV2hKRriU7z01msqRUullSW8yO6eXxi9WAWpC4EJhYBeunR54FZ046SJJDlT4g9eFuJqxO+qQehFQrbguofTeQmA0boCZ36hvev4fm7iRaOizM/XK0HeZHl7m2/W50K89wcYlhModkqh3Fd5n1LThvuY=
+ ARA:13230040|366016|376014|1800799024|23010399003|6133799003|22082099003|18002099003|261028144727099003|56012099006|4143699003|11063799006|261026121527099003|261022105027099003|261021121427099003|261026140227099003|10067099003|261009220027099003|261022113327099003|261009223327099003|261009223027099003|261009221727099003|261009221227099003;
+X-Microsoft-Antispam-Message-Info: 8LeYQH5xkbhIQT86y0b254pc2b1DMBWNbeJoNLVtLAOUhs9cP7BbtsI+l5iFc37RJQagHyN8y9gEVvx3GztfVVOG2X9OrSB+Mab1MPDWXrlIwYUxQFF8Bvtvl11RGQQ4x0Djw/5yHbnsUXOkde4Pyxysp07FdRrAEosgcSmgz8dCOeyiYdx95f9RJPUQpRScs8flEKKdknMujQXrAJaQCaL4K1ibzflrUDK/diFxS66vJ6e6pAt7BuIHshQP76YE/yFN8tz3fV5r4u0CUigPhlbZuR0INTSMLXvRc9PSqxiTyUa4bQPDUyrNux+jasgpzyoSMHwELC9XMqgvfcu2EIEl17Jj5Ab/tCqdKPPLc/XD+bdxRLmt/tI/pdn59InaJFgH9CrPWI/H7eLPNZxBjcSDw4gOozeVk16T7y3AxEmTE6es9NkzvYqgDQ46sxoLPaZDGw0M7eR05OnSEQnjTv7yx7gfEiFwK7DY2MFiQatgjI8RpR/TCwT+84vCSjhKSUW/plftiApFPwFTyKU7Alg58FruxJHOErQoF6wlSMV2YOEb6b7l8Ax1mJ4/MqAluPUlKvF2lDxVvLfr+iYJDcFLaTXuAJd+fms5Lqos97U3l0x96E5WvFGPRyx0Lv/z5ffKeStmj5QRKRgql7J/SIeGD4YPDQthKvTpQm6Yhz0=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS0PR11MB7958.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(6133799003)(22082099003)(18002099003)(261028144727099003)(56012099006)(4143699003)(11063799006)(261026121527099003)(261022105027099003)(261021121427099003)(261026140227099003)(10067099003)(261021135927099003)(261022075727099003)(261009223027099003);
+ SFS:(13230040)(366016)(376014)(1800799024)(23010399003)(6133799003)(22082099003)(18002099003)(261028144727099003)(56012099006)(4143699003)(11063799006)(261026121527099003)(261022105027099003)(261021121427099003)(261026140227099003)(10067099003)(261009220027099003)(261022113327099003)(261009223327099003)(261009223027099003)(261009221727099003)(261009221227099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?RTJOVHEwVTRWVG1aV0hqSGIralRjb0l6VGpqME1INFFFVVlRTkFZdjlnbzNm?=
- =?utf-8?B?K3Q3aXFNWW9oOTFWTm9Qd29vbXZCVi8rcUZjNGRkVmVCOHBQbUUyQVZWaFFn?=
- =?utf-8?B?YkQ3QnprMUxPNC91RGpIeHdCMy9KeUpuK3o1YWIvSStLOHB0bXJXT0F4K2Vo?=
- =?utf-8?B?SEQyOTg2cFd2Z3MxK3YzUllQbm9EM2VBZ0UrME15Y3BMK21LNHVhNWNiMHRE?=
- =?utf-8?B?Z2dVejBlTnFLTVZQNlpZZnRqczhGMDVXYmpYR2J2OUdqRDJWaDZ2M1pKcHdi?=
- =?utf-8?B?T0ZQdkFWUU1uejNueVhRNkU1U2g2aUl6K0J5TXpEOWgxNlliZVdCRlVrdGo3?=
- =?utf-8?B?d3VSMnk0TnJLZFkvaFVFWnF0ZDM1bzJOQ2NGQ3NiUEViN0JYbHNVVjBUckQ4?=
- =?utf-8?B?SXZOVnhCY3NjTGxJK00wM0M0SksvbkUveDFOYmlLUmNLQ3NEeUFYS2M0cE4v?=
- =?utf-8?B?ZEcrdmUzdE5FVjdacjZrVm52UENIa01yaDlCUWZHcEhMT2FyWEs2QkRncy9S?=
- =?utf-8?B?dGRIVFA2NUJFUmp6QVF6VncwdUxaeVpjaEhxY1dHN0VKMVFheXRwMktUSE02?=
- =?utf-8?B?Wm9SVkZZTC9pSS9MZ2Y4ZytDYkltZDlkZWwzczRPV3BOWW1sOXUwenJzYW9K?=
- =?utf-8?B?eU1IYVJJZEZZQ1d2YjhrVExDdFdaNExsZ2lTUjArRzJUaUdGSHRPQXhNeGg3?=
- =?utf-8?B?M2FUcklYa2JlaER1Zi9oMjRuOFBCd0tPZC9HelFSaHhhSk9KeVNmOVdIVFpr?=
- =?utf-8?B?c05lcjF2N0NJZmV1MldQVjkyclVwcVVUTVdFelhoaGpibjZkUzVZZHpsY0lq?=
- =?utf-8?B?cGdiN3U3d1N4UHNsMWllbSt6VFdWK0V2OUpDZUZ6V2lmK012aCtPYjJEWnBE?=
- =?utf-8?B?L1ZkeU9ZVVdLSUE1amM2UXBtTlJ5aVNmMmtEU0RRQmNuMVROYUZ3SUxkaThW?=
- =?utf-8?B?WXJ6RGVVRnFPUEpGRzhMWi80Q3pmampsc21WZWxYQU81UGh6R05EYTB4dnFl?=
- =?utf-8?B?ek1Ueno0QncvMlB4TkJOZWFoUXVPMG4ycXhmaXJ2L0tJZC9LMXpDcE9FRzFX?=
- =?utf-8?B?ZmhobWM1UlA2VXZwVytxUVczNXVqMDJHZkZFZUV3aVRqTzFFemdpK0JLa0Yy?=
- =?utf-8?B?SGtsVnlvMkd2UDNEbDhUVkxDUnRGWGVOc2NUQjZNNzI0QVpLQzg2TDlITk5B?=
- =?utf-8?B?RXlvaTh6S1NUTmhkU0hLYmcwbjl0KytmamxlZUV4cVNEZTVPdmlyTHZZZCtZ?=
- =?utf-8?B?WnlSMFljSXRVYUhMdDhSTjRFVXh2SHFtMW5tYkl3OGhSVjRyZEQ0YlE2Unpq?=
- =?utf-8?B?WFovSVh0RTZxd01tWUpLRERMN2E5WkU3Wk45QzVtRnVORElraXBLcHM2T0dB?=
- =?utf-8?B?WnlmNUxjc2tYMEtoWmFDSmVYd09FVzNVdTNBTVVlVUY1OEtxN3pucmtTUVdu?=
- =?utf-8?B?S3dwYVFKMG9LM2tERUE3cld4bFdxMlpWeWFxT0YwcERRQ2tFTTRhQ3p3anQ1?=
- =?utf-8?B?QW9IMXlEVjgraFpYY2t4K3grUjAwNWZXU2lTc0U3ZExxWmFIQXdJZFgrNjdR?=
- =?utf-8?B?aEhWbmVGV1FBN0NvSHhMOENld1h3NGgwbW5hTGZqb3Y0RUhWa3lkbkNJUUpX?=
- =?utf-8?B?Uy9yVklQelBlMlRtVWtpS2FqbnpnR3Q4YXZ0NVRkeXQvTm95cHQzWkl3ZzJM?=
- =?utf-8?B?bzNtTzU0WjFuSXZHdlpHTnVmRHdwaUpPUDBqaEFDM0VpZ3JFS01teGEzM2Zr?=
- =?utf-8?B?cGEvVkpoNjlKL0lVaDdsNWVFUXdKSjNPMElQRGxKRlBESUJwR2c0Z3JNU1NC?=
- =?utf-8?B?dnp5KzZ1WEVvTlE0NDJ0OFRKcldpNWlIQkVTMVVpU3gzelBnenBRdUtlRnFy?=
- =?utf-8?B?YlFKTGIyNWZteG9Hek84aFZOUVg3Wi8rS2E1Y1RzOXU1eEcwbmQ1WXVaVi8w?=
- =?utf-8?B?OTVYYzh1NHFuM3JMS09pdy85OGNmOWJOQ3FncnkyN3hmY2hNY2RiZys3K0N5?=
- =?utf-8?B?Y3JMNWlIVE5EdW04Z0dWbTZsV2RQQ0pPcHJZb1Vub2crcnErejNPQmFTQXVQ?=
- =?utf-8?B?cXJCY1FzcU9SSit5Z2JnKytqVnhkYVdUL0ZYdEdLNnlzOWREUlBicDdwWWlG?=
- =?utf-8?B?ejNTZmVucHlHTkltQ2hOYnRRR0ljSS9EekJWblBQUUlpTkFVWk1uaUpONEQ2?=
- =?utf-8?B?RnRRTTJaVnNQaWd3NjhKNGk4MFRnN3VCL1lQaThmR3Z0NWUzM2dXUllSay9Q?=
- =?utf-8?B?OEhaWXExb241bnNVcWFJTnFxZUNhKy9teEdnN1dYNUFOLys3RHQ4RFVWb1hM?=
- =?utf-8?B?VTZ6TWVacXRUOHhvM0swMXo4bjJRbzRQelZ6d1ZoUTFyUDZuUmFpQT09?=
-X-Exchange-RoutingPolicyChecked: 0yWrqVlEi6JsoaAyjqMyv0thZAEt1UgEeOb4y7UiMo3kckEs3ZK0TvB4a+J8+ryBSRifv+xHm3TzbPh9urXXQ9iQcmzRBMS3Z1kIUF5NDrQK8Rkk+vbEuyYDWx0VI+LdPkZPIxzJ8mberSqimpWU4y5zJXpBDlz+9HjOLMfqy/21xyBo37VSCb8dlGh5uCd1J27y6rG+n3rm21vG/R5ut2eYCL7eSSZd7fscSDWWmnGJyjuimSBlWtJ2g3gWNYCBL3o2jb2rJsHqniVh13ERQ4ZVtgro5kPx83uzUliCN5GS8D75yFI6Fadyx0pq9oiXKfo802dvjuzhndfWGaaVvQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f739809-fc42-4fec-9410-08df359d7d1d
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?d3pYL2tnekRqTllVK2cvSjVzK3N2MjFObjYrclR2Q05Pb000dFpaK2J4aU5X?=
+ =?utf-8?B?QjBwODNYVXNuRmZrNW1WcU1aQjhEU3ZHcGxVSUx5aXNwRldocTMzOVh4cWtn?=
+ =?utf-8?B?Zi9QajRYdE9PamkwSHNhSFFNRFVGNjJsWG5pa3p1MnlIazltbWhvVzFoaXFy?=
+ =?utf-8?B?aE5uTkM3b29pNVRyTWNERkdKd0RYdFY1MGRveXpUYXpjMFFNdlpaV09ldEM0?=
+ =?utf-8?B?eExjTE5SQU56L0ZMQmpOTU1TVzc0TXl5V01GbGNSL3I3ZThWSDY5aEt6M1VN?=
+ =?utf-8?B?aTIxZ3BjdUlpRUFkcmFXM1hRYjB0aDhjN3V5bTNUcEdRUzltdGpZWERRRGtT?=
+ =?utf-8?B?L2RwTzN2Y3g0MDFxQXZhMyt2WmdaWjZQVzRVZkxvR3M1aWN0SVUrYitkYTZU?=
+ =?utf-8?B?Vi9mRTF3YWE0OURCWGZod1dSdk8zOHpjQjJvU0oyL1Q2ekRlUkh6SUo3dkF6?=
+ =?utf-8?B?c1piSGN6aEtQRExCMHpCaHpScDZnQkhLeWwvRGo1ZkVOc25VemdYYmgwbnpB?=
+ =?utf-8?B?ZC9PZUFvaGx6R1R6WmpFTnVyRDR1dmdzNDNSSFpab0VIV24wMTFOdUdNNmh5?=
+ =?utf-8?B?R0VWb29XZm53QlZpM05LMkVjM1kyTW02T3l2OU1NSDlVNXFVNE5NbnNobktu?=
+ =?utf-8?B?bFhVb2wxK2E0UW1leDJDUkQ3YW1kV294MHVGUDdkSWVkQWt0eWs4cXBsY3ZE?=
+ =?utf-8?B?S2k3QU1DbUNMN3VJSVVXT0tDSktFbUNxUWpCS2d0amJTMHNPeWhGZDc0Snk3?=
+ =?utf-8?B?bjVsbkg3WnVFY1JpVzFhWTdqWHVza2hJaFJYRmQrOG15dENRRGdQME1ocUZp?=
+ =?utf-8?B?aXh6Z2FSYlpqTjZ4NHpjcTROeEZFYkJCOUYwZVZEMitqT3I3NjRaaUJNUjJY?=
+ =?utf-8?B?eC9lZEpBbVl0YmtJdlh6M2FmeFVzcnFXeVBKQUloOXRRY280eFU4YStxQ2Fr?=
+ =?utf-8?B?S1RVd0FHczlGaG9SV0JtaHhWMmFBY1lCVnI1bjkrNDlzeTZoOHJzRThjaTN0?=
+ =?utf-8?B?cHVSVTZPS0dwRkJYK3NOWFdrcUFtb2I4ODlFaFpmVWM3L1lUVElzZ00wd0JI?=
+ =?utf-8?B?WGl0T2hrZUNGMGhQcHNONEpqQ0tCWE5UUStqcDEwUXJ3aGgxTkQ1TytmUDM0?=
+ =?utf-8?B?U05zdGJ5RG9aMWVnWlV0R3dncnFJZ1JZcEVuLzRkRkozaXRSRHFsRm41dk5l?=
+ =?utf-8?B?QXJwRG1ZWU91LzV3VUdRR1IvUEdVU2lsaHFuK0dJLzA0aWMzZVZ2T1kzQk5J?=
+ =?utf-8?B?enVSMU1jdytWU1crMG1ZMmYvNE1yUGtvY014TGkzT1Z6VXlYdWxsZk9PMlJi?=
+ =?utf-8?B?N3Q3MC9BYjZPY0RVeHg0NGpQWDA0clZFZlFpeVh6eGduZyt3Q1M5NVMwTklm?=
+ =?utf-8?B?U0NQNnZtWWRBWkRrN2xKVlNGSHJqR2VWeTRuMHBHQ1FlcUZBSGw4ZTlRdnhG?=
+ =?utf-8?B?UTIxY3VHMUFHSVV1TzlKSlVPSDg5RVlieUZXSVc0dHBjOWJNaUFHdFdzeFN1?=
+ =?utf-8?B?RFBuOUlmRVZRODVyR1lDTFVzRHA0akh4aDNEYWp4VjZ1d1VZblpwSFQxdE1K?=
+ =?utf-8?B?aEszQWpyVEx0NGo5TlhmT0dIOXhWOU9iUW5ubm1GTGpibUJWTVpnS3ZlYm5u?=
+ =?utf-8?B?V1lyQTU0UlBHMXBnTEJ5KzMzOWdCcDg0YVErbWF2ejZMR3lXY2dXVjZ1ekRI?=
+ =?utf-8?B?aTlUcmZCZ2xXV3RSVFhVVGpvbVNqa0wrNlJkeW5hYnRLUUhEK3REamtsU2RD?=
+ =?utf-8?B?U3ErUFhsYTlsK0p0TitYRVNUR3FNczc1bGMzRDZvYTBSSEd4bXVyczZ4bVJt?=
+ =?utf-8?B?Z0c1alRTREt2ZmhBaFAyWUFiTlI5b3RoMCtHTGxWT2lNcGJrUEk3TlJFTXdw?=
+ =?utf-8?B?TThLSXpuS3VaL1NaK1I5dVNUVEkxVkdVWjErVUJyN0w0R0c1VTROTVJzL3p0?=
+ =?utf-8?B?T0s1YUJnYUZneWFPSmhhNERxc0ZJWkpnMTRiMWJUdkZOb0tqSzlPdlY3dElj?=
+ =?utf-8?B?MGtocWg5ZTlQUjhmcEhnNmhrRFJpOHRRaUNSVlB1cHFad2FiMDFwM1FRRUpt?=
+ =?utf-8?B?YkkvTTNMM1F3MmkvNm9pcTF0UXVBdkc2NDI5bm8vc2pJUUtsbXZjaERMWllt?=
+ =?utf-8?B?alV1OUJFL1Z4V1VWS05tclFKOHdoMXNBUi9YdnhwZ0piMXVIVEtkRzdiTjJM?=
+ =?utf-8?B?YjAzS3ZSbTk2MFc4eGlKZ0xUZ2FhTnNxSHRBOS9mT2wvNkF1TmhSc2tHeDNU?=
+ =?utf-8?B?WlZ1UkgvUys0d2pTS2c3UDdWdEp5MlJUV2RPVW53VWo3NlgveEprMUlzUkx2?=
+ =?utf-8?B?UG0wTkdRUU5EUUdMMEovNjRjNHlzNmRrTWhIWGk0TlRzdWNMMWpsdz09?=
+X-Exchange-RoutingPolicyChecked: prNYKP/YLoMFF6akkcOdyEBnVhJRzhP+w2AbIOzxrcEjtA+zXMc3Vi1AvFamhrHEGfaHz7dCQJmce4pSksFWeWfjt3NDl3eUAhXcp2VQ6qb2sviuWsDN6en5BdAuQpylZOusRqbWGOolaucZgQu6c8BsHyLWTWNvqC+C+l9VBJwuukkoFMBguWbIGiuP1ZikHDZF7QHs4CoR5AXOt6PgAMHadLOHFaow93UBv+l7/lOlnbCr8+I5K9TZ4q4oVO+vnfkaT4Yzp7LVcEzy7FJnIgOvPXKwmmkGQCoDwCXbQi78iGNdN3qvDEmGBrvG+CSi+Hs4Og2Iy+OFObiCX5x6fA==
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfedd51e-0138-481b-08f6-08df359deced
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7958.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 09:17:43.6427 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2026 09:20:51.4545 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v10tRLujhoTAWgeOCZSN7KAVWPCYdsMq5g4FUp4s+U9AGcRBdYNBfHPN/GRWPiXJfiW7h2H7zThB4RCmd9QG8A==
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6fNdfLwhEIGz1Ngmyhwpm30lgymNRZRia3orjH1+m1hTeq1KqC2O82wB+BJBERI8vKpmO0O3GE2xgWbGTdG0IQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR11MB7435
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -178,301 +178,438 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-
-
 On 29-10-2026 14:29, Ravi Kishore Koppuravuri wrote:
-> Add Core Compute Correctable error injection tests:
->     - Inject a single correctable error
->     - Inject a single correctable error with the threshold set to 1
->     - Inject correctable errors up to the configured threshold
->
-> Add DRM RAS netlink error event subscription and get error counter to
-> verify exceed threshold and correctable error scenarios respectively.
+> Add MMIO based Core Compute Uncorrectable Error injection to verify
+> the Xe driver error handling and recovery flows with the help of
+> DRM Netlink API suite
 >
 > Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+
+Overall patch looks in good shape.
+Acked-by: Riana Tauro <riana.tauro@intel.com>
+
+
 > ---
-> v6:Merged 3 Correctable error test functions into a single function to remove redundant code (Riana)
->     Updated test names to maintain consistent names (Riana)
-> v5:Removed xe_err_injection.h and moved its contents into the .c file (Riana)
->     Prefixed all register address and bit value names with "XE_" (Riana)
->     Added error handling logic for function calls
->     Changed test name comparisons from strings to enums (Riana)
-> v4:Add support for steer semaphore while disabling and enabling
->     multicast (Soham)
->     Used updated library names with igt_drm_netlink_* prefix (Nikula
->     Jani & Kamil)
->     Updated error event name from error-notify to error-report to align
->     with the latest changes in drm-uapi/drm_ras.h
-> v2:Disabled multicast before arming the injection to perform an unicast
->     injection.
->     Updated the condition to verify response from wait_for_error_notify_event
->     condition from an event error value of exactly 1 to the configured error
->     threshold.
+> v6:
+>    - Updated aquire steering semaphore logic (Soham & Riana)
+>    - Removed enum to string mappings for test names (Riana)
+>    - Updated metadata in the file (Riana)
+> v5:
+>    - Removed xe_err_injection.h and moved its contents into the .c file (Riana)
+>    - Prefixed all register address and bit value names with "XE_" (Riana)
+>    - Updated AER recovery dmesg strings to use enum-indexed arrays (Soham)
+>    - Added error handling logic for function calls
+>    - Changed test name comparisons from strings to enums (Riana)
+>    - Added UC test and post-recovery workload tests as dynamic subtests (Riana)
+> v4:
+>    - Added Steer Semaphore for disabling and enabling multicast
+>      operation(soham)
+>    - Increased device recovery check timeout from 5secs to 10secs
+>    - Used updated library names with igt_drm_netlink_* prefix (Nikula
+>      Jani & Kamil)
 > ---
->   tests/intel/xe_err_injection.c | 203 +++++++++++++++++++++++++++++++++
->   1 file changed, 203 insertions(+)
+>   tests/intel/xe_err_injection.c | 382 +++++++++++++++++++++++++++++++++
+>   tests/meson.build              |   1 +
+>   2 files changed, 383 insertions(+)
+>   create mode 100644 tests/intel/xe_err_injection.c
 >
 > diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-> index 2f5f85b07..33fa19821 100644
-> --- a/tests/intel/xe_err_injection.c
+> new file mode 100644
+> index 000000000..2f5f85b07
+> --- /dev/null
 > +++ b/tests/intel/xe_err_injection.c
-> @@ -45,17 +45,35 @@
->   #define XE_STEER_SEMAPHORE_MGSR_3D_VALUE 0x1
->   
->   /* Node types for error counters*/
-> +#define NODE_ID_CORRECTABLE_ERROR 0
->   #define NODE_ID_UNCORRECTABLE_ERROR 1
->   
->   /* Error types for error counter */
->   #define ERROR_ID_CORE_COMPUTE 1
->   
-> +/* L2 Bank (LBCFLOCKMSGREG) error injection */
-
-If you are sending a new rev remove this details.
-Such details are unnecessary in igt.
-
-Just assign the value to XE_L2_BANK_DATA_1BIT_ERR_INJ_CONFIG With that 
-Reviewed-by: Riana Tauro <riana.tauro@intel.com>
-
-
-> +#define XE_L2_BANK_ERR_INJ 0xB1B4
-> +#define DATA_1BIT_ERR_INJ_REQ (1 << 3)
-> +#define FUSA_TEST_MODE_ERR_INJ_REQ (1 << 2)
-> +#define MASK_BIT_FOR_DATA_1BIT_ERR_INJ_REQ (1 << 19)
-> +#define MASK_BIT_FOR_FUSA_TEST_MODE_ERR_INJ_REQ (1 << 18)
-> +#define XE_L2_BANK_DATA_1BIT_ERR_INJ_CONFIG \
-> +	(DATA_1BIT_ERR_INJ_REQ | FUSA_TEST_MODE_ERR_INJ_REQ | \
-> +	 MASK_BIT_FOR_DATA_1BIT_ERR_INJ_REQ | MASK_BIT_FOR_FUSA_TEST_MODE_ERR_INJ_REQ)
+> @@ -0,0 +1,382 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
 > +
->   enum {
->   	SUCCESS = 1,
->   	FAILED,
->   	TIMEOUT,
->   };
->   
-> +#define INJ_ONCE 1
-> +#define INJ_MANY 16
-> +#define THRESHOLD_NONE 0
-> +#define THRESHOLD_ONE 1
+> +/**
+> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) MMIO based Error Injection
+> + * Category: Core
+> + * Mega feature: RAS
+> + * Sub-category: RAS tests
+> + * Functionality: Error Injection
+> + * Test category: Functional tests
+> + */
 > +
-> +time_t event_timeout = 10 * 1000; /* 10 seconds */
+> +#include <fcntl.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <time.h>
+> +#include <unistd.h>
 > +
->   static bool run_xe_compute_on_all_engines(int fd, bool state)
->   {
->   	struct drm_xe_engine_class_instance *hwe;
-> @@ -123,6 +141,12 @@ static void release_forcewake(int fw_handle)
->   		close(fw_handle);
->   }
->   
-> +static void cleanup_on_error(struct igt_drm_ras_nl_context *ctx, int fw_handle)
+> +#include "igt.h"
+> +#include "lib/igt_drm_ras_nl.h"
+> +#include "lib/intel_reg.h"
+> +#include "lib/intel_compute.h"
+> +
+> +#include "xe_drm.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_mmio.h"
+> +#include "xe/xe_query.h"
+> +
+> +/* Steering Control Register (MC_PKT_CTRL) */
+> +#define XE_MC_PKT_CTRL_MGSR_3D_ADDRESS 0x00FD4
+> +#define XE_MC_PKT_CTRL_MGSR_3D_VALUE 0x80000000
+> +
+> +/* Core Compute Uncorrectable error injection */
+> +#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS 0xF310
+> +#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE 0x1
+> +
+> +#define POST_RECOVERY_WL 1
+> +#define POST_ARMING_INJECTION_WL 0
+> +
+> +/* STEER_SEMAPHORE_MGSR_3D */
+> +#define XE_STEER_SEMAPHORE_MGSR_3D 0x00FD0
+> +#define XE_STEER_SEMAPHORE_MGSR_3D_VALUE 0x1
+> +
+> +/* Node types for error counters*/
+> +#define NODE_ID_UNCORRECTABLE_ERROR 1
+> +
+> +/* Error types for error counter */
+> +#define ERROR_ID_CORE_COMPUTE 1
+> +
+> +enum {
+> +	SUCCESS = 1,
+> +	FAILED,
+> +	TIMEOUT,
+> +};
+> +
+> +static bool run_xe_compute_on_all_engines(int fd, bool state)
 > +{
-> +	igt_drm_ras_nl_cleanup(ctx);
-> +	release_forcewake(fw_handle);
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	bool ret = false;
+> +
+> +	igt_info("Running compute-square on all engines post %s\n",
+> +		 state == POST_ARMING_INJECTION_WL ? "injection" : "recovery");
+> +
+> +	xe_for_each_engine(fd, hwe) {
+> +		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+> +			continue;
+> +
+> +		ret = xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL, EXECENV_PREF_SYSTEM);
+> +	}
+> +	return ret;
 > +}
 > +
->   static uint32_t get_counter(uint32_t node_id, uint32_t error_id)
->   {
->   	struct igt_drm_ras_nl_context ctx;
-> @@ -330,9 +354,164 @@ static void test_inject_core_compute_uncorr_error(struct xe_mmio *mmio, int fd)
->   	uncorr_error_recovered = true;
->   }
->   
-> +static void inject_core_compute_corr_error(struct xe_mmio *mmio, int fd)
+> +static void modify_reg_bit(struct xe_mmio *mmio, uint32_t reg_addr,
+> +			   uint32_t bit_mask, bool set)
 > +{
-> +	/* Disable Multicast for unicast error injection */
-> +	acquire_steering_semaphore(mmio);
+> +	uint32_t regval;
+> +
+> +	regval = xe_mmio_read32(mmio, reg_addr);
+> +	if (set)
+> +		regval |= bit_mask;
+> +	else
+> +		regval &= ~bit_mask;
+> +
+> +	xe_mmio_write32(mmio, reg_addr, regval);
+> +}
+> +
+> +static bool acquire_steering_semaphore(struct xe_mmio *mmio)
+> +{
+> +	uint32_t regval;
+> +	time_t start_time = time(NULL);
+> +	time_t timeout = 10; /* 10 secs */
+> +
+> +	while (time(NULL) - start_time < timeout) {
+> +		regval = xe_mmio_read32(mmio, XE_STEER_SEMAPHORE_MGSR_3D);
+> +		if (regval == XE_STEER_SEMAPHORE_MGSR_3D_VALUE)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +static void release_steering_semaphore(struct xe_mmio *mmio)
+> +{
+> +	xe_mmio_write32(mmio, XE_STEER_SEMAPHORE_MGSR_3D,
+> +			XE_STEER_SEMAPHORE_MGSR_3D_VALUE);
+> +}
+> +
+> +static int acquire_forcewake(int fd)
+> +{
+> +	int fw_handle;
+> +
+> +	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+> +	igt_assert_lte(0, fw_handle);
+> +	return fw_handle;
+> +}
+> +
+> +static void release_forcewake(int fw_handle)
+> +{
+> +	if (fw_handle >= 0)
+> +		close(fw_handle);
+> +}
+> +
+> +static uint32_t get_counter(uint32_t node_id, uint32_t error_id)
+> +{
+> +	struct igt_drm_ras_nl_context ctx;
+> +	int ret;
+> +	uint32_t error_value = UINT32_MAX;
+> +
+> +	ret = igt_drm_ras_nl_init(&ctx);
+> +	if (ret < 0) {
+> +		igt_warn("Failed to initialize socket for get_error command (ret=%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ctx.node_id = node_id;
+> +	ctx.error_id = error_id;
+> +
+> +	ret = igt_drm_ras_nl_get_error_counter(&ctx);
+> +	if (ret < 0) {
+> +		igt_warn("get_error_counter failed from error command path (ret=%d)\n", ret);
+> +		igt_drm_ras_nl_cleanup(&ctx);
+> +		return ret;
+> +	} else {
+> +		error_value = ctx.error_value;
+> +		igt_info("get_error_counter: node_id=%u error_id=%u value=%u\n",
+> +			 ctx.node_id, ctx.error_id, ctx.error_value);
+> +	}
+> +
+> +	igt_drm_ras_nl_cleanup(&ctx);
+> +
+> +	return error_value;
+> +}
+> +
+> +static int check_dmesg(const char *marker, int elapsed_secs)
+> +{
+> +	static const char * const dmesg_status[] = {
+> +		[SUCCESS] = "AER: device recovery successful",
+> +		[FAILED] = "AER: device recovery failed",
+> +	};
+> +	char *buff = NULL;
+> +	size_t buff_size = 0;
+> +	size_t i;
+> +	ssize_t line_len;
+> +	FILE *fp;
+> +	bool marker_seen = false;
+> +
+> +	fp = popen("dmesg", "r");
+> +	if (!fp) {
+> +		igt_warn("Unable to open dmesg to check recovery status\n");
+> +		return -1;
+> +	}
+> +
+> +	while ((line_len = getline(&buff, &buff_size, fp)) != -1) {
+> +		if (!marker_seen) {
+> +			if (strstr(buff, marker))
+> +				marker_seen = true;
+> +			continue;
+> +		}
+> +
+> +		for (i = SUCCESS; i < ARRAY_SIZE(dmesg_status); i++) {
+> +			if (!dmesg_status[i] || !strstr(buff, dmesg_status[i]))
+> +				continue;
+> +
+> +			igt_debug("Found \"%s\" in dmesg after %d secs\n",
+> +				  dmesg_status[i], elapsed_secs);
+> +			free(buff);
+> +			pclose(fp);
+> +			return i;
+> +		}
+> +	}
+> +
+> +	free(buff);
+> +	pclose(fp);
+> +	return TIMEOUT;
+> +}
+> +
+> +/*
+> + * TODO: AER device recovery logic is pending to be implemented using
+> + * "uevents emitted by the aer driver" instead of relying on the dmesg
+> + * logs.
+> + */
+> +
+> +static int check_err_recovery(void)
+> +{
+> +	time_t start_time = time(NULL);
+> +	time_t timeout = 10 * 60; /* 10 mins */
+> +	int time_interval = 30; /* 30 secs */
+> +	time_t elapsed_time;
+> +	int status;
+> +	char marker[128];
+> +
+> +	snprintf(marker, sizeof(marker),
+> +		 "IGT xe_err_injection recovery marker pid=%d start=%lld",
+> +		 getpid(), (long long)start_time);
+> +	igt_kmsg(KMSG_INFO "%s\n", marker);
+> +
+> +	while (1) {
+> +		elapsed_time = time(NULL) - start_time;
+> +		status = check_dmesg(marker, elapsed_time);
+> +		if (status < 0) {
+> +			igt_warn("Failed to query dmesg for recovery status\n");
+> +			return FAILED;
+> +		}
+> +		if (status == SUCCESS || status == FAILED)
+> +			return status;
+> +
+> +		if (elapsed_time >= timeout) {
+> +			igt_warn("Timed out while waiting for error recovery\n");
+> +			return TIMEOUT;
+> +		}
+> +
+> +		sleep(time_interval);
+> +	}
+> +}
+> +
+> +static void print_aer_recovery_status(void)
+> +{
+> +	int recovery_ret;
+> +
+> +	recovery_ret = check_err_recovery();
+> +	igt_assert_f(recovery_ret != TIMEOUT,
+> +		     "AER error recovery timed out\n");
+> +	igt_assert_f(recovery_ret != FAILED,
+> +		     "AER device recovery failed\n");
+> +	if (recovery_ret == SUCCESS)
+> +		igt_info("AER device recovery successful\n");
+> +}
+> +
+> +static bool uncorr_error_recovered;
+> +
+> +/**
+> + * SUBTEST: inject_core_compute_uncorr_error
+> + * Description: Inject a Core Compute Uncorrectable error and verify
+> + *		AER-based device recovery.
+> + *		The dynamic subtests are:
+> + *		inject            - Injects Core Compute Uncorrectable error
+> + *				    and verifies device recovery.
+> + *		post-recovery-wl  - Runs a compute workload on all compute
+> + *				    engines after recovery to confirm the GPU
+> + *				    remains functional.
+> + * Functionality: error injection
+> + */
+> +static void test_inject_core_compute_uncorr_error(struct xe_mmio *mmio, int fd)
+> +{
+> +	int fw_handle;
+> +	bool ret;
+> +	uint32_t counter_before;
+> +	uint32_t counter_after;
+> +	/** TODO
+> +	 *  Fetching node_id and error_id dynamically is pending to implement.
+> +	 *  For now, using
+> +	 *  node_id=1 (uncorrectable_errors) and
+> +	 *  error_id=1 (core_compute)
+> +	 */
+> +	uint32_t node_id = NODE_ID_UNCORRECTABLE_ERROR;
+> +	uint32_t error_id = ERROR_ID_CORE_COMPUTE;
+> +
+> +	fw_handle = acquire_forcewake(fd);
+> +
+> +	counter_before = get_counter(node_id, error_id);
+> +	if (counter_before < 0) {
+> +		release_forcewake(fw_handle);
+> +		igt_assert_f(false, "Failed to read error counter before injection\n");
+> +	}
+> +
+> +	if (!acquire_steering_semaphore(mmio)) {
+> +		release_forcewake(fw_handle);
+> +		igt_assert_f(false, "Timed out acquiring steering semaphore\n");
+> +	}
+> +
+> +	/* Arm the injection sequence. */
 > +	xe_mmio_write32(mmio, XE_MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
-> +
-> +	/* Arm the Injection */
-> +	xe_mmio_write32(mmio, XE_L2_BANK_ERR_INJ, XE_L2_BANK_DATA_1BIT_ERR_INJ_CONFIG);
-> +
-> +	/* Rollback to Multicast */
+> +	modify_reg_bit(mmio,
+> +		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS,
+> +		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE,
+> +		       true);
 > +	modify_reg_bit(mmio,
 > +		       XE_MC_PKT_CTRL_MGSR_3D_ADDRESS,
 > +		       XE_MC_PKT_CTRL_MGSR_3D_VALUE,
 > +		       true);
 > +	release_steering_semaphore(mmio);
-> +}
+> +	igt_debug("Injected Core Compute Uncorrectable error\n");
 > +
-> +/**
-> + * SUBTEST: inject_core_compute_corr_error_threshold_one
-> + * Description: Inject one Core Compute Correctable Error with the
-> + *		threshold set to 1 and verify exceed-threshold reporting.
-> + * Functionality: error injection
-> + *
-> + * SUBTEST: inject_core_compute_corr_error_threshold_default
-> + * Description: Inject enough Core Compute Correctable Errors to cross
-> + *		the current threshold and verify exceed-threshold reporting.
-> + * Functionality: error injection
-> + *
-> + * SUBTEST: inject_core_compute_corr_error_once
-> + * Description: Inject one Core Compute Correctable Error and verify the
-> + *		error counter increments by 1.
-> + * Functionality: error injection
-> + */
-> +static void test_inject_core_compute_corr_error(struct xe_mmio *mmio, int fd,
-> +						uint32_t ntimes, uint32_t threshold,
-> +						bool check_event)
-> +{
-> +	uint32_t counter_before = 0, counter_after = 0;
-> +	uint32_t current_threshold = UINT32_MAX;
-> +	struct igt_drm_ras_nl_context ctx;
-> +	int fw_handle, ret;
-> +
-> +	fw_handle = acquire_forcewake(fd);
-> +
-> +	ret = igt_drm_ras_nl_init(&ctx);
-> +	if (ret < 0) {
+> +	/* Run traffic to trigger the injected error */
+> +	ret = run_xe_compute_on_all_engines(fd, POST_ARMING_INJECTION_WL);
+> +	if (!ret) {
 > +		release_forcewake(fw_handle);
-> +		igt_assert_f(false, "Failed to initialize netlink socket (ret=%d)\n", ret);
+> +		igt_assert_f(false, "Failed to run Xe compute on all engines post injection\n");
 > +	}
 > +
-> +	/** TODO
-> +	 *  Fetching node_id and error_id dynamically is pending to implement.
-> +	 *  For now, using
-> +	 *  node_id=0 (correctable_errors) and
-> +	 *  error_id=1 (core_compute)
-> +	 */
-> +	ctx.node_id = NODE_ID_CORRECTABLE_ERROR;
-> +	ctx.error_id = ERROR_ID_CORE_COMPUTE;
+> +	release_forcewake(fw_handle);
+> +	print_aer_recovery_status();
 > +
-> +	/* Query the error counter before injection */
-> +	counter_before = get_counter(ctx.node_id, ctx.error_id);
-> +	if (counter_before < 0) {
-> +		cleanup_on_error(&ctx, fw_handle);
-> +		igt_assert_f(false,
-> +			     "Failed to query Core Compute Correctable error counter before injection\n");
-> +	}
+> +	counter_after = get_counter(node_id, error_id);
+> +	igt_assert_f(counter_after < 0, "Failed to read error counter after injection\n");
 > +
-> +	/* Query the current error threshold before injection */
-> +	ret = igt_drm_ras_nl_get_error_threshold(&ctx);
-> +	if (ret < 0) {
-> +		cleanup_on_error(&ctx, fw_handle);
-> +		igt_assert_f(false,
-> +			     "Failed to query Core Compute correctable error threshold before injection\n");
-> +	}
-> +	current_threshold = ctx.error_threshold;
-> +
-> +	if (threshold == THRESHOLD_NONE && ntimes != INJ_ONCE) {
-> +		/* set ntimes to current_threshold for injecting enough times to exceed threshold*/
-> +		ntimes = current_threshold;
-> +	}
-> +
-> +	if (threshold != THRESHOLD_NONE) {
-> +		/* Set the error threshold to the specified value */
-> +		ctx.error_threshold = threshold;
-> +		ret = igt_drm_ras_nl_set_error_threshold(&ctx);
-> +		if (ret < 0) {
-> +			cleanup_on_error(&ctx, fw_handle);
-> +			igt_assert_f(false, "Failed to set Core Compute correctable error threshold before injection\n");
-> +		}
-> +	}
-> +
-> +	if (check_event) {
-> +		/* Subscribe to error event */
-> +		ret = igt_drm_ras_nl_subscribe_error_report(&ctx, DRM_RAS_MCGRP_ERROR_REPORT);
-> +		if (ret < 0) {
-> +			cleanup_on_error(&ctx, fw_handle);
-> +			igt_assert_f(false, "Failed to subscribe to error event (ret=%d)\n", ret);
-> +		}
-> +	}
-> +
-> +	for (uint32_t i = 0; i < ntimes; i++) {
-> +		igt_debug("****** Injection iteration: %u ***********\n", i + 1);
-> +		inject_core_compute_corr_error(mmio, fd);
-> +	}
-> +
-> +	if (check_event) {
-> +		/* wait 10 secs for error report event */
-> +		ret = igt_drm_ras_nl_wait_for_error_report_event(&ctx, event_timeout);
-> +		if (ret == 0 && ctx.event_error_value >= ctx.error_threshold) {
-> +			igt_info("Success: Received error event notification from: "
-> +				 "group=%s node_id=%u error_id=%u error_value=%u match=%d\n",
-> +				 DRM_RAS_MCGRP_ERROR_REPORT, ctx.event_node_id, ctx.event_error_id,
-> +				 ctx.event_error_value, ctx.event_received);
-> +		} else {
-> +			if (threshold != THRESHOLD_NONE) {
-> +				/* restore threshold to original value before exit */
-> +				ctx.error_threshold = current_threshold;
-> +				igt_drm_ras_nl_set_error_threshold(&ctx);
-> +			}
-> +			cleanup_on_error(&ctx, fw_handle);
-> +			igt_assert_f(false,
-> +				     "Failed: NOT received error event notification from: "
-> +				     "group=%s node_id=%u error_id=%u error_value=%u match=%d\n",
-> +				     DRM_RAS_MCGRP_ERROR_REPORT, ctx.event_node_id, ctx.event_error_id,
-> +				     ctx.event_error_value, ctx.event_received);
-> +		}
-> +	}
-> +
-> +	if (threshold != THRESHOLD_NONE) {
-> +		/* restore Core Compute Correctable error threshold to original value */
-> +		ctx.error_threshold = current_threshold;
-> +		ret = igt_drm_ras_nl_set_error_threshold(&ctx);
-> +		if (ret < 0)
-> +			igt_warn("Failed to restore Core Compute Correctable threshold to original value\n");
-> +	}
-> +
-> +	ret = igt_drm_ras_nl_get_error_counter(&ctx);
-> +	if (ret < 0) {
-> +		cleanup_on_error(&ctx, fw_handle);
-> +		igt_assert_f(false,
-> +			     "Failed to query Core Compute Correctable error counter after injection\n");
-> +	}
-> +	counter_after = ctx.error_value;
+> +	igt_assert_f(counter_before != UINT32_MAX && counter_after != UINT32_MAX,
+> +		     "Failed to fetch valid error counters: before=%u after=%u\n",
+> +		     counter_before, counter_after);
 > +
 > +	igt_info("error counter: before injection=%u after injection=%u\n",
 > +		 counter_before, counter_after);
-> +	igt_assert_f(counter_after - counter_before == ntimes,
-> +		     "Core Compute Correctable error injection Failed\n");
 > +
-> +	cleanup_on_error(&ctx, fw_handle);
+> +	igt_assert_f(counter_after > counter_before,
+> +		     "Core Compute Uncorrectable error injection failed: "
+> +		     "before=%u after=%u\n", counter_before, counter_after);
+> +	uncorr_error_recovered = true;
 > +}
 > +
->   enum xe_err_injection_type {
->   	XE_CORE_COMPUTE_UNCORR_ERR_INJ,
->   	XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL,
-> +	XE_CORE_COMPUTE_CORR_ERR_INJ_THRESHOLD_ONE,
-> +	XE_CORE_COMPUTE_CORR_ERR_INJ_THRESHOLD_DEFAULT,
-> +	XE_CORE_COMPUTE_CORR_ERR_INJ_ONCE,
->   };
->   
->   static void inject_error(enum xe_err_injection_type injection, struct xe_mmio *mmio, int fd)
-> @@ -344,6 +523,15 @@ static void inject_error(enum xe_err_injection_type injection, struct xe_mmio *m
->   	case XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL:
->   		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
->   		break;
-> +	case XE_CORE_COMPUTE_CORR_ERR_INJ_THRESHOLD_ONE:
-> +		test_inject_core_compute_corr_error(mmio, fd, INJ_ONCE, THRESHOLD_ONE, true);
-> +		break;
-> +	case XE_CORE_COMPUTE_CORR_ERR_INJ_THRESHOLD_DEFAULT:
-> +		test_inject_core_compute_corr_error(mmio, fd, INJ_MANY, THRESHOLD_NONE, true);
-> +		break;
-> +	case XE_CORE_COMPUTE_CORR_ERR_INJ_ONCE:
-> +		test_inject_core_compute_corr_error(mmio, fd, INJ_ONCE, THRESHOLD_NONE, false);
-> +		break;
->   	default:
->   		igt_info("Invalid Error Injection specified\n");
->   	}
-> @@ -375,6 +563,21 @@ int igt_main()
->   		}
->   	}
->   
-> +	igt_describe("Inject one Core Compute Correctable Error with the "
-> +		     "threshold set to 1 and verify exceed-threshold reporting");
-> +	igt_subtest("inject_core_compute_corr_error_threshold_one")
-> +		inject_error(XE_CORE_COMPUTE_CORR_ERR_INJ_THRESHOLD_ONE, &mmio, fd);
+> +enum xe_err_injection_type {
+> +	XE_CORE_COMPUTE_UNCORR_ERR_INJ,
+> +	XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL,
+> +};
 > +
-> +	igt_describe("Inject enough Core Compute Correctable Errors to cross"
-> +		     " the current threshold and verify exceed-threshold reporting");
-> +	igt_subtest("inject_core_compute_corr_error_threshold_default")
-> +		inject_error(XE_CORE_COMPUTE_CORR_ERR_INJ_THRESHOLD_DEFAULT, &mmio, fd);
+> +static void inject_error(enum xe_err_injection_type injection, struct xe_mmio *mmio, int fd)
+> +{
+> +	switch (injection) {
+> +	case XE_CORE_COMPUTE_UNCORR_ERR_INJ:
+> +		test_inject_core_compute_uncorr_error(mmio, fd);
+> +		break;
+> +	case XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL:
+> +		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
+> +		break;
+> +	default:
+> +		igt_info("Invalid Error Injection specified\n");
+> +	}
+> +}
 > +
-> +	igt_describe("Inject one Core Compute Correctable Error and verify the "
-> +		     "error counter increments by 1");
-> +	igt_subtest("inject_core_compute_corr_error_once")
-> +		inject_error(XE_CORE_COMPUTE_CORR_ERR_INJ_ONCE, &mmio, fd);
+> +int igt_main()
+> +{
+> +	int fd;
+> +	struct xe_mmio mmio;
 > +
->   	igt_fixture() {
->   		xe_mmio_access_fini(&mmio);
->   		drm_close_driver(fd);
+> +	igt_fixture() {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_require_f(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY),
+> +			      "forcewake_all is not available in debugfs\n");
+> +		xe_mmio_access_init(fd, &mmio);
+> +		igt_require_f(xe_mmio_is_initialized(&mmio),
+> +			      "Failed to initialize Xe MMIO access\n");
+> +	}
+> +
+> +	igt_describe("Inject core compute uncorrectable error and run post-recovery workload.");
+> +	igt_subtest_with_dynamic("inject_core_compute_uncorr_error") {
+> +		igt_dynamic("inject")
+> +			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ, &mmio, fd);
+> +
+> +		igt_dynamic("post-recovery-wl") {
+> +			igt_require_f(uncorr_error_recovered,
+> +				      "Run the \"inject\" dynamic subtest first\n");
+> +			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL, &mmio, fd);
+> +		}
+> +	}
+> +
+> +	igt_fixture() {
+> +		xe_mmio_access_fini(&mmio);
+> +		drm_close_driver(fd);
+> +	}
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 519a9e727..c8a4c9a6a 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -294,6 +294,7 @@ intel_xe_progs = [
+>   	'xe_debugfs',
+>   	'xe_dma_buf_sync',
+>   	'xe_drm_fdinfo',
+> +	'xe_err_injection',
+>   	'xe_eu_stall',
+>   	'xe_evict',
+>   	'xe_evict_ccs',
