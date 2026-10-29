@@ -2,60 +2,59 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1312606A31C
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 09:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54F6606A31D
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 09:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=b1UBqyoS
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SEbijcro
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8A40D1120F6;
-	Thu, 29 Oct 2026 09:03:35 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8C54E1120F6;
+	Thu, 29 Oct 2026 09:04:27 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8D51E1120F7
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 09:00:41 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 856FD1120EE
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 09:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793264442; x=1824800442;
+ t=1793264447; x=1824800447;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dJDigfrur/IPrvNBt7EdgaSGxTSCNie2bFqMRlJfCAs=;
- b=b1UBqyoStTibJonLJy1xkwOaWWjg2hsO9sP37y7NCnnuxowjnV1tgkst
- RITyDD3GVrY/cPVn9PymSZwZTpvxGOodghjf+o9fJDXKQY0tpQtoGUcvB
- OSLyxGLTn+4iomE8CKQ4+FKhnUtzvN5qUmRv2qgpFOI3kDxilp/bVlEd9
- 2NHAKoc/zqHQAec/Z0EkRRZ+f7/8byd3nIdjatcqUlaoZMgZoJ89U3Xi5
- BSImaEMZzjDD3htRsucaXrBmcb8fxHZV/PiWuvqA0ngqeHZOC/CJTQlm2
- 19Ou7OnFhtJUx7/eofMhnROoo4hmOjLqPcgHnubQ7m3EvGrdjqM+GF2Cq g==;
-X-CSE-ConnectionGUID: Hy3rXqBzTR+LwXgBW+sAaw==
-X-CSE-MsgGUID: PSi3LHSyQhihiXZHQmoZtQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1991713"
+ bh=2om7piUdFgwgVRko8A98M82HZkzvQC9+3exW7WMj3jk=;
+ b=SEbijcroDET7wH0bOCm+pFNqKs8xRSH1uB762+6sDXSpNrfcu7gi6U6x
+ v+RHUOl9UM7mQ1OUzyHmyWWAAwEBzaLV/U0Sl+r3TiD0E2mhdrzsioXrc
+ 3wsEvQ3V01fG1Ieip+17TaMNCE8cvGGyV0KMDjcJ3pjeo4Tp5tEPo5gVL
+ lWclhuP7pK8Tv87eYSZdKxolUEw3bTn6l1IH0Ly9zmS7YjFCO8YPw7xir
+ /zpm05v4+fc2uKVICsx+RGIVfOzqjlDhbilPLo3Z5GbI2R1dfylbptOrt
+ 62ch5UfrOhquOSECOitqPaoMxFuuU29qM3b+VJWpM4jNKKMYCQk5ZINe2 Q==;
+X-CSE-ConnectionGUID: YTFetR+TR5q3LG5VCqFPBg==
+X-CSE-MsgGUID: eItfsXQlQl6sM8pJugaDBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1991721"
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="1991713"
+   d="scan'208";a="1991721"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 02:00:42 -0700
-X-CSE-ConnectionGUID: eUSRtLUkQhibgtUR4NkCtA==
-X-CSE-MsgGUID: HSr+B08kTGCzNMWXiv9z/A==
+ 29 Oct 2026 02:00:47 -0700
+X-CSE-ConnectionGUID: Ta22BF5jQLqHT8wSvsNtFA==
+X-CSE-MsgGUID: WQ0F6MnnT72dzLTQjx7T5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="5092979"
+   d="scan'208";a="5092998"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 02:00:39 -0700
+ 29 Oct 2026 02:00:44 -0700
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: soham.purkait@intel.com, riana.tauro@intel.com, anshuman.gupta@intel.com,
  raag.jadav@intel.com, mallesh.koujalagi@intel.com,
  harish.chegondi@intel.com, kamil.konieczny@linux.intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v6 08/10] lib/igt_drm_ras_nl: add event notify subscription
- and event wait support
-Date: Thu, 29 Oct 2026 14:29:53 +0530
-Message-Id: <20261029085955.1232163-9-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v6 10/10] tests/intel/xe_err_injection: add CRI GPU
+ requirement check
+Date: Thu, 29 Oct 2026 14:29:55 +0530
+Message-Id: <20261029085955.1232163-11-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261029085955.1232163-1-ravi.kishore.koppuravuri@intel.com>
 References: <20261029085955.1232163-1-ravi.kishore.koppuravuri@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -75,296 +74,54 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Added event notification support with subscribe for an error-notify event
-and wait for the event notification functionalities.
+Add support to verify the CRI GPU and skips test gracefully
+on non-cri platforms
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+Reviewed-by: Soham Purkait <soham.purkait@intel.com>
 ---
-v6:Added normalize_nl_error() for subscribe and wait_for_event functions
-v5:Added a guard to prevent duplicate multicast group subscriptions (Soham)
-v4:Renamed the library functions with prefix "igt_drm_netlink_*" (Nikula
-   Jani & Kamil)
-   updated error event name from error-notify to error-report to align
-   with the latest changes in drm-uapi/drm_ras.h
-v2:Handled SEQ_CHECK nl response using separate callback
-   Added monotonic-clock deadline to wait for messages without exceeding the
-   caller’s total timeout.
-   Added support to receive events until it sees an event whose node ID and
-   error ID match the requested values.
----
- lib/igt_drm_ras_nl.c | 184 +++++++++++++++++++++++++++++++++++++++++--
- lib/igt_drm_ras_nl.h |  18 +++++
- 2 files changed, 195 insertions(+), 7 deletions(-)
+ tests/intel/xe_err_injection.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/lib/igt_drm_ras_nl.c b/lib/igt_drm_ras_nl.c
-index d23fce08f..62e48662e 100644
---- a/lib/igt_drm_ras_nl.c
-+++ b/lib/igt_drm_ras_nl.c
-@@ -6,6 +6,7 @@
- #include <errno.h>
- #include <poll.h>
- #include <stdint.h>
-+#include <time.h>
+diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
+index 77e983d4f..623fd1ac1 100644
+--- a/tests/intel/xe_err_injection.c
++++ b/tests/intel/xe_err_injection.c
+@@ -21,6 +21,7 @@
  
- #include <netlink/errno.h>
- #include <netlink/genl/ctrl.h>
-@@ -62,10 +63,12 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
- 	nlh = nlmsg_hdr(msg);
- 	gnlh = nlmsg_data(nlh);
+ #include "igt.h"
+ #include "lib/igt_drm_ras_nl.h"
++#include "lib/intel_chipset.h"
+ #include "lib/intel_reg.h"
+ #include "lib/intel_compute.h"
  
--	ret = genlmsg_parse(nlh, 0, attrs,
--			    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
--	if (ret < 0)
--		return NL_SKIP;
-+	if (gnlh->cmd != DRM_RAS_CMD_ERROR_EVENT) {
-+		ret = genlmsg_parse(nlh, 0, attrs,
-+				    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
-+		if (ret < 0)
-+			return NL_SKIP;
-+	}
- 
- 	switch (gnlh->cmd) {
- 	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
-@@ -85,14 +88,44 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
- 			nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]);
- 		break;
- 	}
-+	case DRM_RAS_CMD_ERROR_EVENT: {
-+		struct nlattr *event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_MAX + 1];
-+
-+		ret = genlmsg_parse(nlh, 0, event_attrs,
-+				    DRM_RAS_A_ERROR_EVENT_ATTRS_MAX, NULL);
-+		if (ret < 0)
-+			return NL_SKIP;
-+
-+		if (!event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID] ||
-+		    !event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID] ||
-+		    !event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE])
-+			return NL_SKIP;
-+
-+		ctx->event_node_id =
-+			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID]);
-+		ctx->event_error_id =
-+			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID]);
-+		ctx->event_error_value =
-+			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE]);
-+		ctx->event_received = ctx->event_node_id == ctx->node_id &&
-+				      ctx->event_error_id == ctx->error_id;
-+		break;
-+	}
- 	default:
- 		return NL_SKIP;
- 	}
- 
--	ctx->reply_received = true;
--	if (ctx->ack_received)
--		ctx->cmd_done = true;
-+	if (gnlh->cmd != DRM_RAS_CMD_ERROR_EVENT) {
-+		ctx->reply_received = true;
-+		if (ctx->ack_received)
-+			ctx->cmd_done = true;
-+	}
-+
-+	return NL_OK;
-+}
- 
-+static int ras_multicast_seq_check_cb(struct nl_msg *msg, void *arg)
-+{
- 	return NL_OK;
+@@ -506,6 +507,14 @@ static void test_inject_core_compute_corr_error(struct xe_mmio *mmio, int fd,
+ 	cleanup_on_error(&ctx, fw_handle);
  }
  
-@@ -158,6 +191,27 @@ static int register_callbacks(struct nl_cb *cb, struct igt_drm_ras_nl_context *c
- 	return 0;
- }
- 
-+static int register_multicast_callbacks(struct nl_cb *cb,
-+					struct igt_drm_ras_nl_context *ctx)
++static void require_cri_gpu(int fd)
 +{
-+	int ret;
++	uint16_t dev_id = xe_dev_id(fd);
 +
-+	ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, ctx);
-+	if (ret < 0) {
-+		igt_warn("Failed to set NL_CB_VALID callback (ret=%d)\n", ret);
-+		return ret;
-+	}
-+
-+	ret = nl_cb_set(cb, NL_CB_SEQ_CHECK, NL_CB_CUSTOM,
-+			ras_multicast_seq_check_cb, ctx);
-+	if (ret < 0) {
-+		igt_warn("Failed to set NL_CB_SEQ_CHECK callback (ret=%d)\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
++	igt_require_f(IS_CRESCENTISLAND(dev_id),
++		      "This test requires CRI GPU, but found device ID 0x%04x\n", dev_id);
 +}
 +
- static int send_and_recv_nl_msg(struct igt_drm_ras_nl_context *ctx,
- 				struct nl_cb *cb,
- 				struct nl_msg *msg)
-@@ -303,7 +357,12 @@ static void reset_drm_ras_nl_context(struct igt_drm_ras_nl_context *ctx)
- 	ctx->ack_received = false;
- 	ctx->response_required = false;
- 	ctx->error_threshold = 0;
-+	ctx->event_node_id = UINT32_MAX;
-+	ctx->event_error_id = UINT32_MAX;
-+	ctx->event_error_value = 0;
-+	ctx->event_received = false;
- 	ctx->family_id = -1;
-+	ctx->subscribed_grp_id = -1;
- }
- 
- void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx)
-@@ -446,3 +505,114 @@ int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx)
- 
- 	return 0;
- }
-+
-+int igt_drm_ras_nl_subscribe_error_report(struct igt_drm_ras_nl_context *ctx,
-+					  const char *notify_group_name)
-+{
-+	int grp_id;
-+	int ret;
-+
-+	if (!ctx || !ctx->sock || ctx->family_id < 0 ||
-+	    !notify_group_name || notify_group_name[0] == '\0')
-+		return -EINVAL;
-+
-+	grp_id = genl_ctrl_resolve_grp(ctx->sock,
-+				       DRM_RAS_FAMILY_NAME,
-+				       notify_group_name);
-+	if (grp_id < 0)
-+		return normalize_nl_error(grp_id);
-+
-+	/* Check if already subscribed to the requested multicast group */
-+	if (ctx->subscribed_grp_id == grp_id) {
-+		igt_debug("Already subscribed to DRM RAS multicast group '%s' (id=%d).\n",
-+			  notify_group_name, grp_id);
-+		return 0;
-+	}
-+
-+	ret = nl_socket_add_membership(ctx->sock, grp_id);
-+	if (ret < 0)
-+		return normalize_nl_error(ret);
-+
-+	ctx->subscribed_grp_id = grp_id;
-+
-+	igt_debug("Subscribed to DRM RAS multicast group '%s' (id=%d).\n",
-+		  notify_group_name, grp_id);
-+
-+	return 0;
-+}
-+
-+int igt_drm_ras_nl_wait_for_error_report_event(struct igt_drm_ras_nl_context *ctx,
-+					       int timeout_ms)
-+{
-+	struct nl_cb *cb;
-+	struct pollfd pfd;
-+	struct timespec start, now;
-+	int remaining_ms;
-+	int ret;
-+
-+	if (!ctx || !ctx->sock || ctx->family_id < 0)
-+		return -EINVAL;
-+
-+	if (timeout_ms < -1)
-+		return -EINVAL;
-+
-+	cb = nl_cb_alloc(NL_CB_DEFAULT);
-+	if (!cb)
-+		return -ENOMEM;
-+
-+	ret = register_multicast_callbacks(cb, ctx);
-+	if (ret < 0) {
-+		nl_cb_put(cb);
-+		return normalize_nl_error(ret);
-+	}
-+
-+	ctx->event_received = false;
-+	clock_gettime(CLOCK_MONOTONIC, &start);
-+
-+	pfd.fd = nl_socket_get_fd(ctx->sock);
-+	pfd.events = POLLIN;
-+	pfd.revents = 0;
-+
-+	while (!ctx->event_received) {
-+		if (timeout_ms == -1) {
-+			remaining_ms = -1;
-+		} else {
-+			clock_gettime(CLOCK_MONOTONIC, &now);
-+			remaining_ms = timeout_ms -
-+				       (int)((now.tv_sec - start.tv_sec) * 1000 +
-+				       (now.tv_nsec - start.tv_nsec) / 1000000);
-+			if (remaining_ms <= 0) {
-+				ret = -ETIMEDOUT;
-+				break;
-+			}
-+		}
-+
-+		ret = poll(&pfd, 1, remaining_ms);
-+		if (ret == 0) {
-+			ret = -ETIMEDOUT;
-+			break;
-+		}
-+
-+		if (ret < 0) {
-+			ret = -errno;
-+			break;
-+		}
-+
-+		ret = nl_recvmsgs(ctx->sock, cb);
-+		if (ret < 0) {
-+			ret = normalize_nl_error(ret);
-+			break;
-+		}
-+	}
-+	nl_cb_put(cb);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!ctx->event_received)
-+		return -ENOMSG;
-+
-+	igt_debug("Received error-notify event: node_id=%u error_id=%u value=%u\n",
-+		  ctx->event_node_id, ctx->event_error_id, ctx->event_error_value);
-+
-+	return 0;
-+}
-diff --git a/lib/igt_drm_ras_nl.h b/lib/igt_drm_ras_nl.h
-index 5c9be5b17..057c6026f 100644
---- a/lib/igt_drm_ras_nl.h
-+++ b/lib/igt_drm_ras_nl.h
-@@ -47,6 +47,21 @@ struct igt_drm_ras_nl_context {
- 
- 	/** @error_threshold: Error threshold value to query/set */
- 	uint32_t error_threshold;
-+
-+	/** @event_node_id: RAS node ID reported by an error-report event */
-+	uint32_t event_node_id;
-+
-+	/** @event_error_id: RAS error ID reported by an error-report event */
-+	uint32_t event_error_id;
-+
-+	/** @event_error_value: Error counter value reported by an error-report event */
-+	uint32_t event_error_value;
-+
-+	/** @event_received: Set when a matching error-report event has been received */
-+	bool event_received;
-+
-+	/** @subscribed_grp_id: Multicast group ID currently subscribed to, or -1 if none */
-+	int subscribed_grp_id;
- };
- 
- void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
-@@ -54,6 +69,9 @@ int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
- int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx);
- int igt_drm_ras_nl_get_error_threshold(struct igt_drm_ras_nl_context *ctx);
- int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx);
-+int igt_drm_ras_nl_subscribe_error_report(struct igt_drm_ras_nl_context *ctx,
-+					  const char *notify_group_name);
-+int igt_drm_ras_nl_wait_for_error_report_event(struct igt_drm_ras_nl_context *ctx, int timeout_ms);
- 
- #endif /* IGT_DRM_RAS_NL_H */
- 
+ enum xe_err_injection_type {
+ 	XE_CORE_COMPUTE_UNCORR_ERR_INJ,
+ 	XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL,
+@@ -546,6 +555,11 @@ int igt_main()
+ 		fd = drm_open_driver(DRIVER_XE);
+ 		igt_require_f(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY),
+ 			      "forcewake_all is not available in debugfs\n");
++		require_cri_gpu(fd);
++		/*
++		 * TODO: Add firmware query for error injection support.
++		 * Should check: EOM (End of Manufacturing) status and error injection jumper state.
++		 */
+ 		xe_mmio_access_init(fd, &mmio);
+ 		igt_require_f(xe_mmio_is_initialized(&mmio),
+ 			      "Failed to initialize Xe MMIO access\n");
 -- 
 2.34.1
 
