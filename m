@@ -2,66 +2,63 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1E3606A338
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 13:46:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9990D606A323
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 13:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=X/ta0IhW
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=DZKj+Njk
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3FCC610E81F;
-	Thu, 29 Oct 2026 13:46:52 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A6959112301
- for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 13:45:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4EA9611231F;
+	Thu, 29 Oct 2026 13:58:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 696A510E11B
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 13:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793281555; x=1824817555;
+ t=1793282233; x=1824818233;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=ctge7cadGBhAjPKgjhrs/bLQ45dY6tg0qaJNTO278EA=;
- b=X/ta0IhWHyRz25jIfRhJQkq/UYg03ojEqEMQ47dacV4SH1a/o+tTDYjp
- GVtix5gxMXNSt6cGzkVrLhZ6AbvByUgXOcJwmR6SWvr7R0bnIEjECNx+A
- 2E8WwaqVsJ9jGQtLfnVMZIm6/bMvbKknL1YJE4dNAeavD8Bms63VHu5K4
- APs6dPgiBPgWwGP2QWUFS9IHKICxK5/aVwfjEWIA8fp8e311QvUYUifu1
- CdPunEZOq7F63/cZ2W1yWM/2KYbP0W4CiE8T08BFMkoqxPD52YlhySqNO
- DUGCz2ICV2lvR/XyqIOIYZKxu/lmzLoEgj9qIREyE/Trzgb3uwd/wRRQH g==;
-X-CSE-ConnectionGUID: B6AI2HD4QLuc7x41W0Ds8g==
-X-CSE-MsgGUID: QQ5nOPG8S/mQFC7xltQO5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="1916522"
+ bh=qBy+QTmm5pVLkkIa+5Ez23VRetlAEn6vEZ1V6NJnUaw=;
+ b=DZKj+Njky6IrDNGCr1acFz1PuZ9PQLf1a7BGxa0Fy5OZyXaGs97FeFNR
+ 3Nt3TbkEWKRxyoNtp+ZURtQGrq3K8iYcluV+yrVtl0p99TCNp0dF7RcM5
+ P31fd/KGM+INBxIR6otbP63Cf+FTAjiahjwMancDwGcJ4bZ7UehB/UiJq
+ 0uymO5cdRmMc4S7nTdOhAWzFvFE8z6a4ODxidwVS1P3w2Enbz0asc5bDG
+ nqG2lme8ixWoI7e7D3bt/sef0Vrc/XTa6ox9oIpbEB1qZ8MQSVfeJW8rd
+ 2TLZOvu+5bVV+qxWFSirze/S59tojZnVS7bRn9ueaOSkFje1BdxhPLIc6 w==;
+X-CSE-ConnectionGUID: daMVj2aoQuutdmO4I58jkA==
+X-CSE-MsgGUID: BLJE+T3OR92lINMzYttfqA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11949"; a="2029929"
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="1916522"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 06:45:55 -0700
-X-CSE-ConnectionGUID: ianMv2OMS/GnMEi4cIgmfw==
-X-CSE-MsgGUID: 8i1KJFfDTzKZRr4IjWVKAQ==
+   d="scan'208";a="2029929"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2026 06:57:12 -0700
+X-CSE-ConnectionGUID: bGKUZr47TgOocFa7AjX86g==
+X-CSE-MsgGUID: 725glfZXQDaZbI26P0mjvQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,184,1787036400"; 
-   d="scan'208";a="5275861"
+   d="scan'208";a="6916870"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 29 Oct 2026 06:45:53 -0700
-Date: Thu, 29 Oct 2026 14:45:29 +0100
+ 29 Oct 2026 06:52:50 -0700
+Date: Thu, 29 Oct 2026 14:52:46 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Cc: igt-dev@lists.freedesktop.org, soham.purkait@intel.com,
- riana.tauro@intel.com, anshuman.gupta@intel.com,
- raag.jadav@intel.com, mallesh.koujalagi@intel.com, sk.anirban@intel.com
-Subject: Re: [PATCH v3 2/2] tests/intel/xe_err_injection: regex to ignore AER
- messages in dmesg
-Message-ID: <20261029134529.footw3g75jthg7ot@kamilkon-DESK.igk.intel.com>
+To: Jitta Vignan <jvignan@qti.qualcomm.com>
+Cc: igt-dev@lists.freedesktop.org, robclark@qti.qualcomm.com,
+ akhilpo@qti.qualcomm.com
+Subject: Re: [PATCH i-g-t v2 2/2] tests/msm/msm_bo: Add CACHED_COHERENT
+ allocation test
+Message-ID: <20261029135246.dhx2andem6wygtfb@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
- igt-dev@lists.freedesktop.org, soham.purkait@intel.com,
- riana.tauro@intel.com, anshuman.gupta@intel.com,
- raag.jadav@intel.com, mallesh.koujalagi@intel.com,
- sk.anirban@intel.com
-References: <20261029115320.1235169-1-ravi.kishore.koppuravuri@intel.com>
- <20261029115320.1235169-3-ravi.kishore.koppuravuri@intel.com>
+ Jitta Vignan <jvignan@qti.qualcomm.com>,
+ igt-dev@lists.freedesktop.org, robclark@qti.qualcomm.com,
+ akhilpo@qti.qualcomm.com
+References: <20261028151559.4069953-1-jvignan@qti.qualcomm.com>
+ <20261028151559.4069953-3-jvignan@qti.qualcomm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261029115320.1235169-3-ravi.kishore.koppuravuri@intel.com>
+In-Reply-To: <20261028151559.4069953-3-jvignan@qti.qualcomm.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,73 +77,75 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ravi,
-On 2026-10-29 at 17:23:20 +0530, Ravi Kishore Koppuravuri wrote:
-> Error injection tests deliberately triggers AER error, device recovery
-> messages and CORE_COMPUTE hardware error (SIGID=203) in dmesg. Add a
-> regex to ignore these messages and inform igt_runner that it should not
-> treat these expected error logs as failures.
+Hi Jitta,
+On 2026-10-28 at 20:45:59 +0530, Jitta Vignan wrote:
+> Add coverage for MSM_BO_CACHED_COHERENT buffer allocation on
+> supported A6xx and newer GPUs. Verify the reported cache mode using
+> MSM_INFO_GET_FLAGS and handle unsupported configurations gracefully.
 > 
-> Sample dmesg log is provided below
-> pcieport 0000:00:06.0: AER: Uncorrectable (Non-Fatal) error message received from 0000:02:00.0
-> pcieport 0000:02:00.0: PCIe Bus Error: severity=Uncorrectable (Non-Fatal), type=Transaction Layer, (Receiver ID)
-> pcieport 0000:02:00.0:   device [8086:676b] error status/mask=00400000/00000000
-> pcieport 0000:02:00.0:    [22] UncorrIntErr           (First)
-> xe 0000:04:00.0: Xe Pci error recovery: error detected state 1
-> mei_csc 0000:05:00.0: error recovery: error detected. state 1
-> xe 0000:04:00.0: Xe Pci error recovery: MMIO enabled
-> pcieport 0000:00:06.0: AER: Root Port link has been reset (0)
-> xe 0000:04:00.0: Xe Pci error recovery: Slot reset
-> xe 0000:04:00.0: Xe Pci error recovery: Recovered
-> mei_csc 0000:05:00.0: error recovery: resume
-> pcieport 0000:00:06.0: AER: device recovery successful
-> 
-> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+> Signed-off-by: Jitta Vignan <jvignan@qti.qualcomm.com>
+> Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
-> v3: Removed redundant strings and arranged the regex in alphabetical order (Kamil)
-> v2: simplified the regex and removed duplicate strings (Kamil)
-> ---
->  tests/intel/xe_err_injection.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-> index 46d9f7f42..df5f73b8c 100644
-> --- a/tests/intel/xe_err_injection.c
-> +++ b/tests/intel/xe_err_injection.c
-> @@ -260,6 +260,18 @@ static void print_aer_recovery_status(void)
->  		igt_info("AER device recovery successful\n");
->  }
->  
-> +/* Dmesg regex to inform igt_runner not to treat the expected AER error messages as failures */
-> +static void ignore_aer_in_dmesg(void)
-> +{
-> +	char *aer_msg = "AER: device recovery successful"
-> +			"|AER: Root Port link has been reset"
-> +			"|AER: Uncorrectable .Non-Fatal. error"
-> +			"|error recovery"
-> +			"|PCIe Bus Error: severity=Uncorrectable .Non-Fatal"
-> +			"|SIGID=203";
-> +	igt_emit_ignore_dmesg_regex(aer_msg);
-> +}
-> +
->  static bool gt_uc_wkr_parity_recovered;
->  
->  /**
-> @@ -290,6 +302,8 @@ static void wkr_cmd_parity_err_injection(struct xe_mmio *mmio, int fd)
->  		igt_assert_f(false, "Failed to read error counter before injection\n");
->  	}
->  
-> +	ignore_aer_in_dmesg();
-> +
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+>  tests/msm/msm_bo.c | 39 +++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 39 insertions(+)
+
+All applied, thanks!
+
 
 Regards,
 Kamil
 
->  	acquire_steering_semaphore(mmio);
->  	/* Arm the injection sequence. */
->  	xe_mmio_write32(mmio, XE_MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
+> 
+> diff --git a/tests/msm/msm_bo.c b/tests/msm/msm_bo.c
+> index 94714dfc7..3257697f5 100644
+> --- a/tests/msm/msm_bo.c
+> +++ b/tests/msm/msm_bo.c
+> @@ -95,6 +95,45 @@ int igt_main()
+>  		igt_msm_bo_free(bo);
+>  	}
+>  
+> +	igt_describe("Test MSM_BO_CACHED_COHERENT on A6xx+ GPUs");
+> +	igt_subtest("bo-alloc-cached-coherent") {
+> +		struct drm_msm_gem_new req = { 0 };
+> +		int ret;
+> +
+> +		/* MSM_BO_CACHED_COHERENT is only supported on A6xx and newer GPUs */
+> +		igt_require(dev->gen >= 6);
+> +
+> +		req.size = DEFAULT_BUFFER_SIZE;
+> +		req.flags = MSM_BO_CACHED_COHERENT;
+> +
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_NEW, &req);
+> +
+> +		if (ret == 0) {
+> +			struct drm_msm_gem_info info_req = { 0 };
+> +
+> +			igt_info("MSM_BO_CACHED_COHERENT supported on A%dxx GPU\n", dev->gen);
+> +
+> +			/* Verify flags */
+> +			info_req.handle = req.handle;
+> +			info_req.info = MSM_INFO_GET_FLAGS;
+> +			ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_INFO, &info_req);
+> +			igt_assert_eq(ret, 0);
+> +
+> +			igt_assert_f((info_req.value & MSM_BO_CACHE_MASK) == MSM_BO_CACHED_COHERENT,
+> +				     "Cache mode mismatch for CACHED_COHERENT\n");
+> +
+> +			igt_info("CACHED_COHERENT BO flags: 0x%llx (expected 0x%x)\n",
+> +				 (unsigned long long)info_req.value,
+> +				 MSM_BO_CACHED_COHERENT);
+> +
+> +			gem_close(dev->fd, req.handle);
+> +		} else {
+> +			igt_assert_eq(errno, EINVAL);
+> +			igt_info("MSM_BO_CACHED_COHERENT not supported on A%dxx GPU "
+> +				 "(EINVAL)\n", dev->gen);
+> +		}
+> +	}
+> +
+>  	/* Buffer Information Tests - Positive Cases */
+>  	igt_describe("Get offset for valid BO");
+>  	igt_subtest("bo-get-offset-valid") {
 > -- 
 > 2.34.1
 > 
