@@ -2,29 +2,74 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA051606A31D
-	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 16:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E46606A31A
+	for <igt-dev@archiver.kernel.org>; Thu, 29 Oct 2026 17:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=imgtec.com header.i=@imgtec.com header.a=rsa-sha256 header.s=dk201812 header.b=k41baNvp
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3C45D10E32B;
-	Thu, 29 Oct 2026 16:59:18 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD4D610E32B;
- Thu, 29 Oct 2026 16:58:22 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============1447954599962438441=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id ABA8D10E301;
+	Thu, 29 Oct 2026 17:09:04 +0000 (UTC)
+Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
+ [185.132.180.163])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6B47E10E301
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 17:08:03 +0000 (UTC)
+Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
+ by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
+ 69TGCQnd3024551
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 17:08:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=dk201812; bh=y
+ 6zHmPi+0ZzCLGs8jn/3/XfQzHQ2pk4TCu5W6oH3lHs=; b=k41baNvpx/SbY1PtJ
+ kR+/CRGxxVzQcKKVicWEZ7CVo1Zjzri16xpUkX14B9RRhUvv57E2ortphqWpou6p
+ owNahSQ8FHosr4K7zauA9u6yJM9SUOHuDQgHPeX54wER6cE9FJ5f0w3/lQH70xtD
+ DDZ2e3fJCDTMqONUAHWHjDObCPLRwyy+Iohn3f090NQAX2Ruv2bMHwCIuBzBLDah
+ 4GB9zOyjg8z5IIMlqc4xKvV5G84NBMjruXjXHizZIykutF9senElthS6RwexQ84f
+ 2M/sIXxjcuex85KsUAYTd2ufauIXLQ0VYymVKA/iF2Fw1c7qHgFEDsHYbdUCAOsP
+ wuGMA==
+Received: from hhmail01.hh.imgtec.org
+ (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+ by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4hkvbj8pbs-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+ for <igt-dev@lists.freedesktop.org>; Thu, 29 Oct 2026 17:08:01 +0000 (GMT)
+Received: from np-a-belle.kl.imgtec.org (172.25.6.177) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 29 Oct 2026 17:08:00 +0000
+Message-ID: <b62f13bd6feaf945cd7d0b3ce5c8ff11a40550d5.camel@imgtec.com>
+Subject: Re: [PATCH i-g-t v2 0/3] imagination: Update allocation flags for
+ buffers in submit job
+From: Luigi Santivetti <luigi.santivetti@imgtec.com>
+To: Brajesh Gupta <brajesh.gupta@imgtec.com>, "Development mailing list for
+ IGT GPU Tools" <igt-dev@lists.freedesktop.org>
+CC: Alessio Belle <alessio.belle@imgtec.com>
+Date: Thu, 29 Oct 2026 17:07:32 +0000
+In-Reply-To: <20261029-b4-render_update-v2-0-b3185bbe8091@imgtec.com>
+References: <20261029-b4-render_update-v2-0-b3185bbe8091@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
- =?utf-8?q?-g-t=2C01/10=5D_lib/igt=5Ffb=3A_add_igt=5Fformat=5Fget=5Fsubsampl?=
- =?utf-8?q?ing=28=29_function_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Juha-Pekka Heikkila" <juhapekka.heikkila@gmail.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 29 Oct 2026 16:58:22 -0000
-Message-ID: <179329310276.89972.14067735045530175135@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261028145202.3128915-1-juhapekka.heikkila@gmail.com>
-In-Reply-To: <20261028145202.3128915-1-juhapekka.heikkila@gmail.com>
+X-Proofpoint-ORIG-GUID: tSzL6ysW2cfcPeTmrvdQ6K7qCZfO8lq8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDI5MDA2NyBTYWx0ZWRfX4ReMtcTr/R0E
+ d7RdfkrX1UBonYHsybB3rxrc+AeVwVnF9tMSZbl4kNfwmzaYT3EiTznichwMv5oSQfIr5gyqGs7
+ zcz5thK/7wJeRsSRJ1lfDnvZdcJaDBDm3yR3VnAJlbsEWtkq+K1+blavPVvj4o6tpOYQiolRpuy
+ c5z1livR4nP0jFKeEra3bkDY7E7oOwb7hEfnUTls995sWLUR39b2buXTXuUlY6bXo4nZrERifyz
+ 6gqF7/A4nGaTQnH7HOwK2Pmr39Y9IDQJjW8SmuIKlIX1n3aFIwBoJk42RgTCBV9A1WRTQXGaVPU
+ pJPHA/XTNjamXMtTdzneDfphdYyqJHpvgW49Rn0Zmq+Kcz29SsERrYqVvI+w1k49na1T2gXliVe
+ XVXqKReoX3vWaSq82LuAKIYGNVv2/U3u2/Oen2mJpxD1FKfqRN+tknNZixlOESVtslsMjSN7ix1
+ B9TmsFqTS2vJmOXXy3A==
+X-Proofpoint-GUID: tSzL6ysW2cfcPeTmrvdQ6K7qCZfO8lq8
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMDI5MDA2NyBTYWx0ZWRfX2deRIsXBx8ps
+ f4eZvDc5adt2VU2j0PKVMPQ32Y/nOT/5i6QAUfRLah0ZuceNFxzW2svIr+nn/PGmcHcmGu9L5wI
+ 3Y4nY7CTvVDNGDgNNLVuIaBQbSL4eVY=
+X-Authority-Analysis: v=2.4 cv=NvdE4MdJ c=1 sm=1 tr=0 ts=6ae37d71 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=2JH569OHYJkA:10 a=IkcTkHD0fZMA:10 a=660iZSQnnn4A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
+ a=bC-a23v3AAAA:8 a=r_1tXGB3AAAA:8 a=N93Xhe3uVhPD9u9-aIEA:9 a=QEXdDO2ut3YA:10
+ a=FO4_E8m0qiDe52t0p3_H:22 a=t8nPyN_e6usw4ciXM-Pk:22
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -35,296 +80,65 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============1447954599962438441==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Brajesh,
 
-== Series Details ==
+On Thu, 2026-10-29 at 18:03 +0530, Brajesh Gupta wrote:
+> Update BO allocation flags to match expectation:
 
-Series: series starting with [i-g-t,01/10] lib/igt_fb: add igt_format_get_subsampling() function (rev2)
-URL   : https://patchwork.freedesktop.org/series/177043/
-State : success
+Sorry, what would those expectations be with respect to upstream?=C2=A0
 
-== Summary ==
+I take IGT has always been broken, but nothing has really changed recently =
+with
+regard to PM/FW protect?!
 
-CI Bug Log - changes from IGT_9171 -> IGTPW_16071
-====================================================
+Perhaps it's worth adding a description of what makes (or doesn't) the flag
+needed in patch [3/3] commit message, especially as we expect to extend the
+heaps in the future I can see how easy is to generate confusion around this
+area. I'd suggest to describe rather precisely what it is that requires the=
+ new
+flag so we keep good records.
 
-Summary
--------
+Thank you!
 
-  **SUCCESS**
+> - Remove the CPU_ACCESS flag from BOs that are not host-accessed.
+> - Use DRM_PVR_BO_PM_FW_PROTECT for MList allocations.
+>=20
+> Signed-off-by: Brajesh Gupta <brajesh.gupta@imgtec.com>
+> ---
+> Changes in v2:
+> - Update as per Kamil's feedback.
+> - Updated description to map commits are specific to Imagination.
+> - Spilt lib/igt change to two: Interface update and flags update.
+> - Link to v1: https://patch.msgid.link/20261029-b4-render_update-v1-0-4a9=
+2ec210d6a@imgtec.com
+>=20
+> ---
+> Brajesh Gupta (3):
+>       lib/igt_pvr: Update general heap allocation interface to pass flags
+>       imagination: Skip CPU access flag for a few Render related allocati=
+ons
+>       lib/igt_pvr: Pass DRM_PVR_BO_PM_FW_PROTECT flag for PM MList alloca=
+tion
+>=20
+>  lib/igt_pvr.c                       | 33 +++++++++++++++++++------------=
+--
+>  lib/igt_pvr.h                       |  3 ++-
+>  tests/imagination/pvr_submit_jobs.c | 13 ++++++++++---
+>  3 files changed, 31 insertions(+), 18 deletions(-)
+> ---
+> base-commit: fc75d6d7ffcb79e8a3316e80c7085460568a7670
+> change-id: 20261029-b4-render_update-79d0cf70eb0e
+>=20
+> Best regards,
+> -- =20
+> Brajesh Gupta <brajesh.gupta@imgtec.com>
+>=20
 
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/index.html
-
-Participating hosts (39 -> 38)
-------------------------------
-
-  Additional (1): fi-bsw-nick 
-  Missing    (2): bat-dg2-13 fi-cfl-8700k 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_16071 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@fbdev@info:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][1] ([i915#1849])
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@fbdev@info.html
-
-  * igt@fbdev@read:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][2] ([i915#17464]) +3 other tests skip
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@fbdev@read.html
-
-  * igt@gem_huc_copy@huc-copy:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][3] ([i915#17468])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@gem_huc_copy@huc-copy.html
-
-  * igt@gem_lmem_swapping@parallel-random-engines:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][4] ([i915#11671]) +3 other tests skip
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@gem_lmem_swapping@parallel-random-engines.html
-
-  * igt@intel_hwmon@hwmon-write:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][5] ([i915#11680]) +1 other test skip
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@intel_hwmon@hwmon-write.html
-
-  * igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][6] ([i915#17469])
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html
-
-  * igt@kms_flip@basic-flip-vs-wf_vblank:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][7] ([i915#3637]) +3 other tests skip
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_flip@basic-flip-vs-wf_vblank.html
-
-  * igt@kms_force_connector_basic@force-load-detect:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][8] ([i915#17465])
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_force_connector_basic@force-load-detect.html
-
-  * igt@kms_frontbuffer_tracking@basic:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][9] ([i915#17466])
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html
-
-  * igt@kms_pipe_crc_basic@read-crc-frame-sequence:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][10] ([i915#11190]) +16 other tests skip
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html
-
-  * igt@kms_pm_backlight@basic-brightness:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][11] ([i915#17462])
-   [11]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_pm_backlight@basic-brightness.html
-
-  * igt@kms_psr@psr-sprite-plane-onoff:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][12] ([i915#9732]) +3 other tests skip
-   [12]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_psr@psr-sprite-plane-onoff.html
-
-  * igt@kms_setmode@basic-clone-single-crtc:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][13] ([i915#17463])
-   [13]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html
-
-  * igt@prime_vgem@basic-fence-flip:
-    - fi-bsw-nick:        NOTRUN -> [SKIP][14] ([i915#17467])
-   [14]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@prime_vgem@basic-fence-flip.html
-
-  
-#### Possible fixes ####
-
-  * igt@kms_pm_rpm@basic-rte:
-    - bat-rpls-4:         [DMESG-WARN][15] ([i915#13400]) -> [PASS][16]
-   [15]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9171/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html
-   [16]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html
-
-  
-  [i915#11190]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11190
-  [i915#11671]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671
-  [i915#11680]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11680
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
-  [i915#17462]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17462
-  [i915#17463]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17463
-  [i915#17464]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17464
-  [i915#17465]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17465
-  [i915#17466]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17466
-  [i915#17467]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17467
-  [i915#17468]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17468
-  [i915#17469]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17469
-  [i915#1849]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849
-  [i915#3637]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637
-  [i915#9732]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9171 -> IGTPW_16071
-
-  CI-20190529: 20190529
-  CI_DRM_19415: e650cd4c5bd5d3b068ed7a1eb3c55cde4386b355 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16071: 16071
-  IGT_9171: 9171
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/index.html
-
---===============1447954599962438441==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,01/10] lib/igt_fb: add igt_format_get_subsampling() function (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177043/">https://patchwork.freedesktop.org/series/177043/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9171 -&gt; IGTPW_16071</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/index.html</p>
-<h2>Participating hosts (39 -&gt; 38)</h2>
-<p>Additional (1): fi-bsw-nick <br />
-  Missing    (2): bat-dg2-13 fi-cfl-8700k </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16071 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@fbdev@info:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@fbdev@info.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/1849">i915#1849</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@fbdev@read:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@fbdev@read.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17464">i915#17464</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_huc_copy@huc-copy:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@gem_huc_copy@huc-copy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17468">i915#17468</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@gem_lmem_swapping@parallel-random-engines:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@gem_lmem_swapping@parallel-random-engines.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11671">i915#11671</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@intel_hwmon@hwmon-write:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@intel_hwmon@hwmon-write.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11680">i915#11680</a>) +1 other test skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_addfb_basic@addfb25-y-tiled-small-legacy.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17469">i915#17469</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_flip@basic-flip-vs-wf_vblank:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_flip@basic-flip-vs-wf_vblank.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3637">i915#3637</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_force_connector_basic@force-load-detect:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_force_connector_basic@force-load-detect.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17465">i915#17465</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_frontbuffer_tracking@basic:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_frontbuffer_tracking@basic.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17466">i915#17466</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_pipe_crc_basic@read-crc-frame-sequence.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11190">i915#11190</a>) +16 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_backlight@basic-brightness:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_pm_backlight@basic-brightness.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17462">i915#17462</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_psr@psr-sprite-plane-onoff:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_psr@psr-sprite-plane-onoff.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/9732">i915#9732</a>) +3 other tests skip</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_setmode@basic-clone-single-crtc:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@kms_setmode@basic-clone-single-crtc.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17463">i915#17463</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@prime_vgem@basic-fence-flip:</p>
-<ul>
-<li>fi-bsw-nick:        NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/fi-bsw-nick/igt@prime_vgem@basic-fence-flip.html">SKIP</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17467">i915#17467</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@kms_pm_rpm@basic-rte:<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9171/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16071/bat-rpls-4/igt@kms_pm_rpm@basic-rte.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9171 -&gt; IGTPW_16071</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19415: e650cd4c5bd5d3b068ed7a1eb3c55cde4386b355 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16071: 16071<br />
-  IGT_9171: 9171</p>
-
-</body>
-</html>
-
---===============1447954599962438441==--
