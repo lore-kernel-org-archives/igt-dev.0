@@ -2,85 +2,56 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6695C606A31A
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Oct 2026 06:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60937606A31A
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Oct 2026 06:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Qe2yZfqL
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=RHOmoTpK
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 04B5B10E535;
-	Fri, 30 Oct 2026 06:07:47 +0000 (UTC)
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com
- [205.220.168.131])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7692310E535
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2026 06:06:45 +0000 (UTC)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
- by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 69U5F6xp725207
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2026 06:06:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
- cc:content-transfer-encoding:date:from:message-id:mime-version
- :subject:to; s=qcppdkim1; bh=taGmiwtjtS7IXD63KjaxfweFhabM3pO4etn
- R3UoLlwA=; b=Qe2yZfqLPcrZO/fJHHeQSp8SS9tULIr56P4PHxAIrDXlEJCx/qG
- LIbVX4+D5yzfZnkU+N9fevsoqB/RiptOaB+Fa+X+yMI68Mi45TPkjEYXHNHcnZof
- G9jb0AHzgnnjUeTN9mMP0DkCXoHoJh4iDwL38xUUl2OZkzR3rH1OLhg+dVTkONx4
- 2rgDfL8o9K1MT++F6IAHs37sNX6uUXm5p1BKLNzDIOqd9hNyPyORH9zjP/t0wl5l
- Ri99WRzPqYihvuacuKwWp3/WJn4PcUmGrRXQg40hb3wMS9nmitV9rtdINiMzLAP3
- +c6d+HGBorXvZO1isIPrPGDOlLVB1HXPZgQ==
-Received: from apblrppmta01.qualcomm.com
- (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
- by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hme6phen2-1
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2026 06:06:43 +0000 (GMT)
-Received: from pps.filterd (apblrppmta01.qualcomm.com [127.0.0.1])
- by APBLRPPMTA01.qualcomm.com (8.18.1.11/8.18.1.11) with ESMTP id
- 69U66fXT750515; Fri, 30 Oct 2026 06:06:41 GMT
-Received: from hu-devc-hyd-u22-c.qualcomm.com (hu-spatraya-hyd.qualcomm.com
- [10.213.108.244])
- by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 69U66fv8750506
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
- Fri, 30 Oct 2026 06:06:41 +0000 (GMT)
-Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 4830552)
- id 3F2DA644; Fri, 30 Oct 2026 11:36:40 +0530 (+0530)
-From: Sri Vidya Patrayani <spatraya@qti.qualcomm.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id ED19710E83E;
+	Fri, 30 Oct 2026 06:30:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A593110E22C
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2026 06:29:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1793341749; x=1824877749;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=PNTMd6izX98/cAgxErfq+IZEvxOzx7A39E2+6oaz6Ts=;
+ b=RHOmoTpKnmhPO4rhVKmtKAUTlcocAXrNFvbnkdtllP5H4QQadn6Wnhd3
+ MTZdmY9OubPguXqLG3593Q59P2+ylE2qhjIKoaiTuHYlJyA6pELhU81fa
+ UYi7f5jlK6EC//mvDyDoc2MOta4NP/exhI4AT9+t7U7nxcX5wvuUfMLM5
+ SBqA/PPFwz8cxxLy7zBwyY4kcaV+MfnQ1xWDEqawEjp6dPyIqT8e5w/jc
+ 6V+c5wlga8SMKp7R5ZvShwRVLkiWDPq9EWUbyVap9CUtJAPitEbfkKbJz
+ 5uzexMGYbxqGVVptIdI4JXk8rwutcPBheC7gMz4WOg5aK1KaI612uscXq A==;
+X-CSE-ConnectionGUID: UHIBabCmSZi0wZoSVa4WYw==
+X-CSE-MsgGUID: TIK6Ld2eTlCfOXSIu7qNiw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2129641"
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="2129641"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2026 23:29:09 -0700
+X-CSE-ConnectionGUID: mGRWOmxMQH+IvJ88dbt+8A==
+X-CSE-MsgGUID: 4GfyNvoSRoeZ/XWMkq/vbQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,185,1787036400"; 
+   d="scan'208";a="5451120"
+Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 29 Oct 2026 23:29:07 -0700
+From: Sk Anirban <sk.anirban@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jvignan@qti.qualcomm.com, robclark@qti.qualcomm.com,
- akhilpo@qti.qualcomm.com, Sri Vidya Patrayani <spatraya@qti.qualcomm.com>
-Subject: [PATCH i-g-t] tests/msm/msm_bo: Add memory advice tests
-Date: Fri, 30 Oct 2026 11:36:38 +0530
-Message-Id: <20261030060638.2849895-1-spatraya@qti.qualcomm.com>
-X-Mailer: git-send-email 2.34.1
+Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
+ karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
+ mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
+Subject: [PATCH v3] tests/intel/xe_configfs: reuse pre-existing configfs group
+Date: Fri, 30 Oct 2026 11:44:41 +0530
+Message-ID: <20261030061440.2342301-2-sk.anirban@intel.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMDMwMDAyNCBTYWx0ZWRfXzaB/mpeOghzf
- ZKe+j1svJtzL7PqGVv1ONdtA8Zmbr3VVgJ1Jr8PooReEeBNDa39Fzz6qXTgFXb4Kg4nwrXaax88
- fHYv7R9aQVC4/pc5gZ4qZcMZyYc+PHuw6R/wDUWhjN7kgutu+VPGtYfqlfnhw2BQ6KeWIuHgaGM
- V3GTuCfV1eRf38H7dz+bGsmIpoLpXuPyMSlRzdClja7RV6UBQqqftk6ba1ZY3qPeKWP7bPQEgS7
- b6JArKzPnXl46b12RymS+rpePe32E0sl/xyJoeHsmBmk99CbPNNNhHmZ85mhRG3mIQvYx6rSuX9
- iNv47TkmY/pIZq+TR22qRPqyisMBvk4NBhrgRPftf0hY0HzbSIVjEFDnu01guKws+ExT4LdOUme
- uSN3Gt79+re7hnCPm/h36pwmRN2BsGdCg93KQV8oysCqiGO2rGwkt6+RbPNAm2gIKvngkvHHiZl
- NcZBwXs8A0SrQtSOzvw==
-X-Proofpoint-ORIG-GUID: raaK1ww4Px-pqWfq121DvJ2KV1MK3M31
-X-Proofpoint-GUID: raaK1ww4Px-pqWfq121DvJ2KV1MK3M31
-X-Authority-Analysis: v=2.4 cv=AJ83otAg c=1 sm=1 tr=0 ts=6ae433f4 cx=c_pps
- a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=660iZSQnnn4A:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=DJpcGTmdVt4CTyJn9g5Z:22 a=EUspDBNiAAAA:8 a=WglK9uJATtDPBe5JlcUA:9
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMDMwMDAyNCBTYWx0ZWRfX7GEHi82V5WUI
- 2IHAQkz38E1yooASF0fVaMF7997rY4rpzn70IlwZO1AZlZuR+ycuqVaqFd7RMEK/rWVOaYBL9e2
- FCOoBN4gzupf8TDGtcfVZNtAy2RroUE=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-10-30_02,2026-10-21_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 bulkscore=0 phishscore=0 malwarescore=0
- lowpriorityscore=0 clxscore=1011 priorityscore=1501 suspectscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2610190000
- definitions=main-2610300024
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -92,276 +63,360 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add positive and negative coverage for MSM buffer object memory advice.
+Handle a pre-existing configfs group by opening and reusing it, retain
+it across cleanup, and validate the fd so the test fails early with a
+clear message on any error.
 
-Exercise WILLNEED and DONTNEED advice across write-combine, cached,
-mapped, large, and multiple buffer objects, including CPU access
-transitions.
+v2: Add a common function (Soham)
+v3: Close fd and handle failure (Soham)
 
-Verify invalid handles, invalid advice values, and advice requests
-after buffer release are rejected as expected.
-
-Signed-off-by: Sri Vidya Patrayani <spatraya@qti.qualcomm.com>
+Signed-off-by: Sk Anirban <sk.anirban@intel.com>
 ---
- tests/msm/msm_bo.c | 238 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 238 insertions(+)
+ lib/igt_configfs.c             | 62 +++++++++++++++++++++++++
+ lib/igt_configfs.h             |  6 +++
+ tests/intel/xe_configfs.c      | 85 ++++++++++++++++++++--------------
+ tests/intel/xe_survivability.c | 22 +++------
+ 4 files changed, 124 insertions(+), 51 deletions(-)
 
-diff --git a/tests/msm/msm_bo.c b/tests/msm/msm_bo.c
-index 3257697f5..906f801ef 100644
---- a/tests/msm/msm_bo.c
-+++ b/tests/msm/msm_bo.c
-@@ -414,6 +414,244 @@ int igt_main()
- 		igt_msm_bo_free(bo);
+diff --git a/lib/igt_configfs.c b/lib/igt_configfs.c
+index e0cba92a1..7bbeca746 100644
+--- a/lib/igt_configfs.c
++++ b/lib/igt_configfs.c
+@@ -10,9 +10,12 @@
+ #include <fcntl.h>
+ #include <limits.h>
+ #include <sys/mount.h>
++#include <sys/stat.h>
++#include <unistd.h>
+ 
+ #include "igt_aux.h"
+ #include "igt_configfs.h"
++#include "igt_fs.h"
+ 
+ /**
+  * SECTION:igt_configfs
+@@ -84,3 +87,62 @@ int igt_configfs_open(const char *name)
+ 
+ 	return open(path, O_DIRECTORY | O_RDONLY);
+ }
++
++/**
++ * igt_configfs_create_device_group: create or reuse a device's configfs group
++ * @configfs_fd: configfs directory fd
++ * @name: name of the device group
++ * @preexisting: set to true when @name already existed
++ *
++ * Creates the configfs group @name under @configfs_fd. If the group already
++ * exists, it is opened and reused instead.
++ *
++ * Returns:
++ * The group directory fd.
++ */
++int igt_configfs_create_device_group(int configfs_fd, const char *name,
++				     bool *preexisting)
++{
++	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
++	int device_fd;
++
++	device_fd = igt_fs_create_dir(configfs_fd, name, mode);
++	if (device_fd == -EEXIST) {
++		if (preexisting)
++			*preexisting = true;
++
++		device_fd = openat(configfs_fd, name, O_DIRECTORY);
++		if (device_fd < 0)
++			device_fd = -errno;
++	}
++	igt_assert_f(device_fd >= 0,
++		     "Failed to create/open configfs group for %s: %s\n",
++		     name, strerror(-device_fd));
++
++	return device_fd;
++}
++
++/**
++ * igt_configfs_close_device_group: close a device's configfs group
++ * @configfs_fd: configfs directory fd, as returned by igt_configfs_open()
++ * @name: name of the device group
++ * @device_fd: group directory fd
++ * @preexisting: whether the group already existed before it was created by
++ * igt_configfs_create_device_group()
++ *
++ * Closes @device_fd and removes the @name group, unless it was pre-existing.
++ */
++void igt_configfs_close_device_group(int configfs_fd, const char *name,
++				     int device_fd, bool preexisting)
++{
++	int ret;
++
++	close(device_fd);
++
++	if (!preexisting) {
++		ret = igt_fs_remove_dir(configfs_fd, name);
++		if (ret)
++			igt_debug("Failed to remove configfs group %s: %s\n",
++				  name, strerror(-ret));
++	}
++}
+diff --git a/lib/igt_configfs.h b/lib/igt_configfs.h
+index 91f95659b..0f4cfe5d3 100644
+--- a/lib/igt_configfs.h
++++ b/lib/igt_configfs.h
+@@ -9,7 +9,13 @@
+ #ifndef __IGT_CONFIGFS_H__
+ #define __IGT_CONFIGFS_H__
+ 
++#include <stdbool.h>
++
+ const char *igt_configfs_mount(void);
+ int igt_configfs_open(const char *name);
+ 
++int igt_configfs_create_device_group(int configfs_fd, const char *name, bool *preexisting);
++void igt_configfs_close_device_group(int configfs_fd, const char *name, int device_fd,
++				     bool preexisting);
++
+ #endif /* __IGT_CONFIGFS_H__ */
+diff --git a/tests/intel/xe_configfs.c b/tests/intel/xe_configfs.c
+index 450c0a119..68daed690 100644
+--- a/tests/intel/xe_configfs.c
++++ b/tests/intel/xe_configfs.c
+@@ -26,6 +26,8 @@
+ static char bus_addr[NAME_MAX];
+ static struct pci_device *pci_dev;
+ 
++static bool configfs_group_preexisting;
++
+ static bool check_registers(const uint32_t reg[], const uint32_t val[],
+ 			    size_t max)
+ {
+@@ -60,7 +62,7 @@ static void restore(int sig)
+ 
+ 	/* Drop all custom configfs settings from subtests */
+ 	configfs_fd = igt_configfs_open("xe");
+-	if (configfs_fd >= 0)
++	if (configfs_fd >= 0 && !configfs_group_preexisting)
+ 		igt_fs_remove_dir(configfs_fd, bus_addr);
+ 	close(configfs_fd);
+ 
+@@ -70,10 +72,19 @@ static void restore(int sig)
+ 
+ static void set_survivability_mode(int configfs_device_fd, bool value)
+ {
++	int ret;
++
+ 	igt_audio_driver_unload(NULL);
+-	igt_kmod_unbind("xe", bus_addr);
++
++	ret = igt_kmod_unbind("xe", bus_addr);
++	igt_assert_f(!ret, "Failed to unbind xe from %s: %s\n",
++		     bus_addr, strerror(-ret));
++
+ 	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
+-	igt_kmod_bind("xe", bus_addr);
++
++	ret = igt_kmod_bind("xe", bus_addr);
++	igt_assert_f(!ret, "Failed to bind xe to %s: %s\n",
++		     bus_addr, strerror(-ret));
+ }
+ 
+ /**
+@@ -93,6 +104,9 @@ static void test_survivability_mode(int configfs_device_fd)
+ 
+ 	fd = open(path, O_RDONLY);
+ 	igt_assert_f(fd >= 0, "Survivability mode not set\n");
++
++	set_survivability_mode(configfs_device_fd, false);
++
+ 	close(fd);
+ }
+ 
+@@ -357,23 +371,6 @@ static void set_bus_addr(int fd)
+ 		 pci_dev->domain, pci_dev->bus, pci_dev->dev, pci_dev->func);
+ }
+ 
+-static int create_device_configfs_group(int configfs_fd)
+-{
+-	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+-	int configfs_device_fd;
+-
+-	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
+-	igt_assert(configfs_device_fd);
+-
+-	return configfs_device_fd;
+-}
+-
+-static void close_configfs_group(int configfs_fd, int configfs_device_fd)
+-{
+-	close(configfs_device_fd);
+-	igt_fs_remove_dir(configfs_fd, bus_addr);
+-}
+-
+ int igt_main()
+ {
+ 	int fd, configfs_fd, configfs_device_fd;
+@@ -412,62 +409,78 @@ int igt_main()
+ 	igt_subtest("survivability-mode") {
+ 		igt_require(has_survivability);
+ 		igt_require_f(!is_vf_device, "survivability mode not supported in VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		test_survivability_mode(configfs_device_fd);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
  	}
  
-+	/* Memory Advice Tests - Positive Cases */
-+	igt_describe("Set WILLNEED advice and verify that the buffer is retained");
-+	igt_subtest("bo-madvise-willneed") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		struct msm_bo *bo;
-+		int ret;
-+
-+		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-+		igt_assert_f(bo, "Failed to allocate buffer object\n");
-+
-+		req.handle = bo->handle;
-+		req.madv = MSM_MADV_WILLNEED;
-+
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+		igt_assert_eq(req.retained, 1);
-+
-+		igt_msm_bo_free(bo);
-+	}
-+
-+	igt_describe("Set DONTNEED advice on a buffer object");
-+	igt_subtest("bo-madvise-dontneed") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		struct msm_bo *bo;
-+		int ret;
-+
-+		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-+		igt_assert_f(bo, "Failed to allocate buffer object\n");
-+
-+		req.handle = bo->handle;
-+		req.madv = MSM_MADV_DONTNEED;
-+
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+
-+		igt_info("Buffer retained status after DONTNEED: %d\n", req.retained);
-+		igt_msm_bo_free(bo);
-+	}
-+
-+	igt_describe("Apply WILLNEED and DONTNEED advice to the same buffer");
-+	igt_subtest("bo-madvise-multiple-calls") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		struct msm_bo *bo;
-+		int ret;
-+
-+		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-+		igt_assert_f(bo, "Failed to allocate buffer object\n");
-+
-+		req.handle = bo->handle;
-+		req.madv = MSM_MADV_WILLNEED;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+		igt_assert_eq(req.retained, 1);
-+
-+		req.madv = MSM_MADV_DONTNEED;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+
-+		igt_info("Buffer retained status after DONTNEED: %d\n", req.retained);
-+		igt_msm_bo_free(bo);
-+	}
-+
-+	igt_describe("Apply DONTNEED advice to a mapped buffer object");
-+	igt_subtest("bo-madvise-mapped-buffer") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		struct msm_bo *bo;
-+		void *map;
-+		int ret;
-+
-+		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-+		igt_assert_f(bo, "Failed to allocate buffer object\n");
-+
-+		map = igt_msm_bo_map(bo);
-+		igt_assert_f(map, "Failed to map buffer object\n");
-+
-+		req.handle = bo->handle;
-+		req.madv = MSM_MADV_DONTNEED;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+
-+		igt_info("Mapped buffer retained status: %d\n", req.retained);
-+		igt_msm_bo_free(bo);
-+	}
-+
-+	igt_describe("Apply WILLNEED advice to a cached buffer object");
-+	igt_subtest("bo-madvise-cached-buffer") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		struct msm_bo *bo;
-+		int ret;
-+
-+		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_CACHED);
-+		igt_assert_f(bo, "Failed to allocate cached buffer object\n");
-+
-+		req.handle = bo->handle;
-+		req.madv = MSM_MADV_WILLNEED;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+		igt_assert_eq(req.retained, 1);
-+
-+		igt_msm_bo_free(bo);
-+	}
-+
-+	igt_describe("Apply DONTNEED advice to a large buffer object");
-+	igt_subtest("bo-madvise-large-buffer") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		const size_t large_size = 64 * 1024 * 1024;
-+		struct msm_bo *bo;
-+		int ret;
-+
-+		bo = igt_msm_bo_new(dev, large_size, MSM_BO_WC);
-+		igt_assert_f(bo, "Failed to allocate large buffer object\n");
-+
-+		req.handle = bo->handle;
-+		req.madv = MSM_MADV_DONTNEED;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+
-+		igt_info("Large buffer retained status: %d\n", req.retained);
-+		igt_msm_bo_free(bo);
-+	}
-+
-+	igt_describe("Apply memory advice to multiple buffer objects");
-+	igt_subtest("bo-madvise-multiple-buffers") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		struct msm_bo *bo1, *bo2;
-+		int ret;
-+
-+		bo1 = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-+		bo2 = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE * 2, MSM_BO_CACHED);
-+		igt_assert_f(bo1 && bo2, "Failed to allocate buffer objects\n");
-+
-+		req.handle = bo1->handle;
-+		req.madv = MSM_MADV_WILLNEED;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+		igt_assert_eq(req.retained, 1);
-+
-+		req.handle = bo2->handle;
-+		req.madv = MSM_MADV_DONTNEED;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
-+		igt_assert_eq(ret, 0);
-+
-+		igt_info("Second buffer retained status: %d\n", req.retained);
-+		igt_msm_bo_free(bo1);
-+		igt_msm_bo_free(bo2);
-+	}
-+
-+	igt_describe("Apply DONTNEED advice after balanced CPU access");
-+	igt_subtest("bo-madvise-after-cpu-prep") {
-+		struct drm_msm_gem_cpu_prep prep_req = { 0 };
-+		struct drm_msm_gem_cpu_fini fini_req = { 0 };
-+		struct drm_msm_gem_madvise madv_req = { 0 };
-+		struct msm_bo *bo;
-+		uint32_t *ptr;
-+		void *map;
-+		int ret;
-+
-+		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-+		igt_assert_f(bo, "Failed to allocate buffer object\n");
-+
-+		map = igt_msm_bo_map(bo);
-+		igt_assert_f(map, "Failed to map buffer object\n");
-+		ptr = map;
-+
-+		prep_req.handle = bo->handle;
-+		prep_req.op = MSM_PREP_READ | MSM_PREP_WRITE | MSM_PREP_NOSYNC;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_CPU_PREP, &prep_req);
-+		igt_assert_eq(ret, 0);
-+
-+		ptr[0] = 0xDEADBEEF;
-+
-+		fini_req.handle = bo->handle;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_CPU_FINI, &fini_req);
-+		igt_assert_eq(ret, 0);
-+
-+		madv_req.handle = bo->handle;
-+		madv_req.madv = MSM_MADV_DONTNEED;
-+		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &madv_req);
-+		igt_assert_eq(ret, 0);
-+
-+		igt_info("Buffer retained status: %d\n", madv_req.retained);
-+		igt_msm_bo_free(bo);
-+	}
-+
-+	/* Memory Advice Tests - Negative Cases */
-+	igt_describe("Reject memory advice for an invalid buffer handle");
-+	igt_subtest("bo-madvise-invalid-bo") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+
-+		req.handle = 0xDEADBEEF;
-+		req.madv = MSM_MADV_WILLNEED;
-+
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req, ENOENT);
-+	}
-+
-+	igt_describe("Reject memory advice for handle zero");
-+	igt_subtest("bo-madvise-zero-handle") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+
-+		req.handle = 0;
-+		req.madv = MSM_MADV_WILLNEED;
-+
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req, ENOENT);
-+	}
-+
-+	igt_describe("Reject an invalid memory advice value");
-+	igt_subtest("bo-madvise-invalid-advice") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		struct msm_bo *bo;
-+
-+		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-+		igt_assert_f(bo, "Failed to allocate buffer object\n");
-+
-+		req.handle = bo->handle;
-+		req.madv = 0xDEADBEEF;
-+
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req, EINVAL);
-+		igt_msm_bo_free(bo);
-+	}
-+
-+	igt_describe("Reject memory advice after a buffer has been freed");
-+	igt_subtest("bo-madvise-after-free") {
-+		struct drm_msm_gem_madvise req = { 0 };
-+		struct msm_bo *bo;
-+		uint32_t handle;
-+
-+		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-+		igt_assert_f(bo, "Failed to allocate buffer object\n");
-+		handle = bo->handle;
-+
-+		igt_msm_bo_free(bo);
-+
-+		req.handle = handle;
-+		req.madv = MSM_MADV_WILLNEED;
-+
-+		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req, ENOENT);
-+	}
-+
+ 	igt_describe("Validate engines_allowed with invalid options");
+ 	igt_subtest("engines-allowed-invalid") {
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		test_engines_allowed_invalid(configfs_device_fd);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
+ 	}
+ 
+ 	igt_describe("Validate engines_allowed");
+ 	igt_subtest("engines-allowed") {
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		test_engines_allowed(configfs_device_fd);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
+ 	}
+ 
+ 	igt_describe("Validate gt_types_allowed");
+ 	igt_subtest("gt-types-allowed") {
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		test_gt_types_allowed(configfs_device_fd);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
+ 	}
+ 
+ 	igt_describe("Validate ctx_restore_post_bb with invalid options");
+ 	igt_subtest("ctx-restore-post-bb-invalid") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		test_ctx_restore_invalid(configfs_device_fd, "post");
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
+ 	}
+ 
+ 	igt_describe("Validate ctx_restore_post_bb");
+ 	igt_subtest("ctx-restore-post-bb") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		test_ctx_restore(configfs_device_fd, "post", engine);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
+ 	}
+ 
+ 	igt_describe("Validate ctx_restore_mid_bb with invalid options");
+ 	igt_subtest("ctx-restore-mid-bb-invalid") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		test_ctx_restore_invalid(configfs_device_fd, "mid");
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
+ 	}
+ 
+ 	igt_describe("Validate ctx_restore_mid_bb");
+ 	igt_subtest("ctx-restore-mid-bb") {
+ 		igt_skip_on_f(is_vf_device, "MMIO register readback not possible on VF\n");
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		test_ctx_restore(configfs_device_fd, "mid", engine);
+-		close_configfs_group(configfs_fd, configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
+ 	}
+ 
  	igt_fixture() {
- 		igt_msm_dev_close(dev);
+diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
+index bae9eca27..015b22051 100644
+--- a/tests/intel/xe_survivability.c
++++ b/tests/intel/xe_survivability.c
+@@ -40,6 +40,8 @@
+ 
+ static char bus_addr[NAME_MAX];
+ 
++static bool configfs_group_preexisting;
++
+ static void ignore_wedged_in_dmesg(void)
+ {
+ 	/* this is needed for igt_runner so it will ignore it */
+@@ -162,7 +164,7 @@ static void restore(int sig)
+ 	igt_kmod_unbind("xe", bus_addr);
+ 
+ 	configfs_fd = igt_configfs_open("xe");
+-	if (configfs_fd >= 0)
++	if (configfs_fd >= 0 && !configfs_group_preexisting)
+ 		igt_fs_remove_dir(configfs_fd, bus_addr);
+ 	close(configfs_fd);
+ 
+@@ -194,17 +196,6 @@ static void test_i2c_functionality(int configfs_device_fd, struct pci_device *pc
+ 	}
+ }
+ 
+-static int create_device_configfs_group(int configfs_fd)
+-{
+-	mode_t mode = S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH;
+-	int configfs_device_fd;
+-
+-	configfs_device_fd = igt_fs_create_dir(configfs_fd, bus_addr, mode);
+-	igt_assert(configfs_device_fd);
+-
+-	return configfs_device_fd;
+-}
+-
+ static void test_spinner_after_recovery(int fd)
+ {
+ 	uint64_t ahnd;
+@@ -232,7 +223,8 @@ int igt_main()
+ 		igt_device_get_pci_slot_name(fd, bus_addr);
+ 		configfs_fd = igt_configfs_open("xe");
+ 		igt_require(configfs_fd != -1);
+-		configfs_device_fd = create_device_configfs_group(configfs_fd);
++		configfs_device_fd = igt_configfs_create_device_group(configfs_fd, bus_addr,
++								      &configfs_group_preexisting);
+ 		igt_install_exit_handler(restore);
+ 	}
+ 
+@@ -269,8 +261,8 @@ int igt_main()
+ 	}
+ 
+ 	igt_fixture() {
+-		igt_fs_remove_dir(configfs_fd, bus_addr);
+-		close(configfs_device_fd);
++		igt_configfs_close_device_group(configfs_fd, bus_addr, configfs_device_fd,
++						configfs_group_preexisting);
+ 		close(configfs_fd);
+ 		drm_close_driver(fd);
  	}
 -- 
-2.34.1
+2.43.0
 
