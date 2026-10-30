@@ -2,62 +2,61 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ED2606A325
-	for <igt-dev@archiver.kernel.org>; Fri, 30 Oct 2026 11:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4F21606A31C
+	for <igt-dev@archiver.kernel.org>; Fri, 30 Oct 2026 11:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=hBURpYBy
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OROHncpd
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 33072112771;
-	Fri, 30 Oct 2026 11:56:06 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AD713112771
- for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2026 11:55:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6EEEF10E115;
+	Fri, 30 Oct 2026 11:58:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8EAE810E115
+ for <igt-dev@lists.freedesktop.org>; Fri, 30 Oct 2026 11:57:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793361311; x=1824897311;
+ t=1793361426; x=1824897426;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=X2gTPBoFkc7+VYi7Vc+YlXGtd9oU6ATOACV+8o03Jj0=;
- b=hBURpYByyzk4p3AMZyJoECN1R5STx6BsFc/7Qp8edtEXAOw2iUEn+IiT
- U7foCLNSc6w6i4u+FBYqwsGLT6N1E3zt8qHLEFN6LxKFrsXrORx6zHqtU
- m6HemLBHYtkv6zZvndkyZ6iCwifUphFY9RNdqTx5vBeQug3sFAwOGtzbG
- 7dvxt5ajmo9HcFf0H7YHRFeJnfYGY5zHCo/EkVy48GgSqphCPVxQJBMIK
- L8s6mhCqqSpQvRvuPXMvi5YKPjV8qpNVMRmAHDc2dTezJLggcnmjH/iSk
- lj2fdfMtzJ5U/T3xcBYPh90atORZDAatmxJKS+lynPePq5cYm+OTtm+YS g==;
-X-CSE-ConnectionGUID: lM2QWtioTw+ist4ZCyyuOw==
-X-CSE-MsgGUID: 85Bvj92rRnW6QWI0L/gnqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2149042"
+ bh=P2ej4qsGnPuYEhMASwvTSZoCndgbicIuMBC78qhzB6s=;
+ b=OROHncpdDzQDVg6H84UKDmVmCvTzGi9DQZJVYgv6idxeM8pKEGWGRb+8
+ DibRAZVoJfikkkxE/N/DCu+RmIyNf6exQGuACrUXAj0459DXRy64NMj3J
+ /UqIJ6nHXNs+dCn5D21TLx9C5UiFivzAeKNfParirw5zjHWWrB0KDrH/S
+ IeBpQGvV6PY3v/OSHd/XKamA9/lAgHF7dSzAbj8v42N/7mDmLY6e/+9+V
+ pbaSHFF+UVV35KTN4WTHx11zjowYHGIW1BwdY/BauPSKSfdYeqm4qt9ce
+ 6ScnH9zdR+xWn0Z+KnMBMS9ni092K/GpZ23sGWIuIQIJQ9q3YetH0AakG g==;
+X-CSE-ConnectionGUID: M2ViUYgySti788L5/LZcrw==
+X-CSE-MsgGUID: /ZiHvFfCT32OytKgutP9GA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11950"; a="2125707"
 X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="2149042"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2026 04:55:10 -0700
-X-CSE-ConnectionGUID: LXBFqkOZREGqMBcSd7cwfw==
-X-CSE-MsgGUID: xgd55xEoS7Kb1nIEUk1MJw==
+   d="scan'208";a="2125707"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 30 Oct 2026 04:57:06 -0700
+X-CSE-ConnectionGUID: +nClNxcERbWtcj/IjiPvPA==
+X-CSE-MsgGUID: u3/AHUp4SFKF3eMZaKAi/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,186,1787036400"; 
-   d="scan'208";a="5787011"
+   d="scan'208";a="5310471"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 30 Oct 2026 04:55:08 -0700
-Date: Fri, 30 Oct 2026 12:55:06 +0100
+ 30 Oct 2026 04:57:03 -0700
+Date: Fri, 30 Oct 2026 12:57:00 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jitta Vignan <jvignan@qti.qualcomm.com>
-Cc: igt-dev@lists.freedesktop.org, robclark@qti.qualcomm.com,
- akhilpo@qti.qualcomm.com
-Subject: Re: [PATCH i-g-t 2/2] tests/msm/msm_bo: Add buffer free tests
-Message-ID: <20261030115506.2x4pq5t7v63li4xp@kamilkon-DESK.igk.intel.com>
+To: Sri Vidya Patrayani <spatraya@qti.qualcomm.com>
+Cc: igt-dev@lists.freedesktop.org, jvignan@qti.qualcomm.com,
+ robclark@qti.qualcomm.com, akhilpo@qti.qualcomm.com
+Subject: Re: [PATCH i-g-t] tests/msm/msm_bo: Add memory advice tests
+Message-ID: <20261030115700.gqeyuk33hjady7jf@kamilkon-DESK.igk.intel.com>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Jitta Vignan <jvignan@qti.qualcomm.com>,
- igt-dev@lists.freedesktop.org, robclark@qti.qualcomm.com,
- akhilpo@qti.qualcomm.com
-References: <20261029165553.1108121-1-jvignan@qti.qualcomm.com>
- <20261029165553.1108121-3-jvignan@qti.qualcomm.com>
+ Sri Vidya Patrayani <spatraya@qti.qualcomm.com>,
+ igt-dev@lists.freedesktop.org, jvignan@qti.qualcomm.com,
+ robclark@qti.qualcomm.com, akhilpo@qti.qualcomm.com
+References: <20261030060638.2849895-1-spatraya@qti.qualcomm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261029165553.1108121-3-jvignan@qti.qualcomm.com>
+In-Reply-To: <20261030060638.2849895-1-spatraya@qti.qualcomm.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,169 +75,262 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Jitta,
-On 2026-10-29 at 22:25:53 +0530, Jitta Vignan wrote:
-> Add positive and negative coverage for freeing MSM buffer objects.
+Hi Sri,
+On 2026-10-30 at 11:36:38 +0530, Sri Vidya Patrayani wrote:
+> Add positive and negative coverage for MSM buffer object memory advice.
 > 
-> Exercise single and multiple buffer cleanup, large buffer cleanup,
-> repeated allocation and free operations, invalid and zero handles,
-> double-free attempts, and queries made after a buffer has been freed.
+> Exercise WILLNEED and DONTNEED advice across write-combine, cached,
+> mapped, large, and multiple buffer objects, including CPU access
+> transitions.
 > 
-> Verify that released buffer handles can no longer be queried through
-> the MSM GEM info interface.
+> Verify invalid handles, invalid advice values, and advice requests
+> after buffer release are rejected as expected.
 > 
-> Signed-off-by: Jitta Vignan <jvignan@qti.qualcomm.com>
-LGTM
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Signed-off-by: Sri Vidya Patrayani <spatraya@qti.qualcomm.com>
+
+I forgot to add an ask for devs on Cc: please provide a tested-by
+and/or r-b to this patch, thanks in advance!
+
 
 Regards,
 Kamil
 
-PS. could someone from Cc provide tested-by or r-b? Thanks!
-
 > ---
->  tests/msm/msm_bo.c | 150 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 150 insertions(+)
+>  tests/msm/msm_bo.c | 238 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 238 insertions(+)
 > 
 > diff --git a/tests/msm/msm_bo.c b/tests/msm/msm_bo.c
-> index 295c7b0d3..f76e78e73 100644
+> index 3257697f5..906f801ef 100644
 > --- a/tests/msm/msm_bo.c
 > +++ b/tests/msm/msm_bo.c
-> @@ -834,6 +834,156 @@ int igt_main()
+> @@ -414,6 +414,244 @@ int igt_main()
 >  		igt_msm_bo_free(bo);
 >  	}
 >  
-> +	/* Buffer Free Tests - Positive Cases */
-> +	igt_describe("Free single buffer object");
-> +	igt_subtest("bo-free-single") {
+> +	/* Memory Advice Tests - Positive Cases */
+> +	igt_describe("Set WILLNEED advice and verify that the buffer is retained");
+> +	igt_subtest("bo-madvise-willneed") {
+> +		struct drm_msm_gem_madvise req = { 0 };
 > +		struct msm_bo *bo;
-> +		struct drm_msm_gem_info req = { 0 };
-> +		uint32_t handle;
+> +		int ret;
 > +
 > +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
 > +		igt_assert_f(bo, "Failed to allocate buffer object\n");
-> +		handle = bo->handle;
+> +
+> +		req.handle = bo->handle;
+> +		req.madv = MSM_MADV_WILLNEED;
+> +
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
+> +		igt_assert_eq(req.retained, 1);
 > +
 > +		igt_msm_bo_free(bo);
-> +
-> +		/* Verify the handle is actually gone */
-> +		req.handle = handle;
-> +		req.info = MSM_INFO_GET_IOVA;
-> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_INFO, &req, ENOENT);
-> +
-> +		igt_info("Successfully freed single buffer object (handle %u)\n", handle);
 > +	}
 > +
-> +	igt_describe("Free multiple buffer objects");
-> +	igt_subtest("bo-free-multiple") {
-> +		struct msm_bo *bo1, *bo2, *bo3;
-> +		uint32_t handle1, handle2, handle3;
-> +
-> +		/* Allocate multiple buffers */
-> +		bo1 = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-> +		bo2 = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE * 2, MSM_BO_CACHED);
-> +		bo3 = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE * 4, MSM_BO_WC);
-> +
-> +		igt_assert_f(bo1 && bo2 && bo3, "Failed to allocate buffer objects\n");
-> +
-> +		handle1 = bo1->handle;
-> +		handle2 = bo2->handle;
-> +		handle3 = bo3->handle;
-> +
-> +		/* Free all buffers */
-> +		igt_msm_bo_free(bo1);
-> +		igt_msm_bo_free(bo2);
-> +		igt_msm_bo_free(bo3);
-> +
-> +		igt_info("Successfully freed multiple buffer objects (handles %u, %u, %u)\n",
-> +			 handle1, handle2, handle3);
-> +	}
-> +
-> +	igt_describe("Free large buffer object");
-> +	igt_subtest("bo-free-large") {
+> +	igt_describe("Set DONTNEED advice on a buffer object");
+> +	igt_subtest("bo-madvise-dontneed") {
+> +		struct drm_msm_gem_madvise req = { 0 };
 > +		struct msm_bo *bo;
-> +		size_t large_size = 64 * 1024 * 1024; /* 64MB */
-> +		uint32_t handle;
+> +		int ret;
+> +
+> +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
+> +		igt_assert_f(bo, "Failed to allocate buffer object\n");
+> +
+> +		req.handle = bo->handle;
+> +		req.madv = MSM_MADV_DONTNEED;
+> +
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
+> +
+> +		igt_info("Buffer retained status after DONTNEED: %d\n", req.retained);
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_describe("Apply WILLNEED and DONTNEED advice to the same buffer");
+> +	igt_subtest("bo-madvise-multiple-calls") {
+> +		struct drm_msm_gem_madvise req = { 0 };
+> +		struct msm_bo *bo;
+> +		int ret;
+> +
+> +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
+> +		igt_assert_f(bo, "Failed to allocate buffer object\n");
+> +
+> +		req.handle = bo->handle;
+> +		req.madv = MSM_MADV_WILLNEED;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
+> +		igt_assert_eq(req.retained, 1);
+> +
+> +		req.madv = MSM_MADV_DONTNEED;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
+> +
+> +		igt_info("Buffer retained status after DONTNEED: %d\n", req.retained);
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_describe("Apply DONTNEED advice to a mapped buffer object");
+> +	igt_subtest("bo-madvise-mapped-buffer") {
+> +		struct drm_msm_gem_madvise req = { 0 };
+> +		struct msm_bo *bo;
+> +		void *map;
+> +		int ret;
+> +
+> +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
+> +		igt_assert_f(bo, "Failed to allocate buffer object\n");
+> +
+> +		map = igt_msm_bo_map(bo);
+> +		igt_assert_f(map, "Failed to map buffer object\n");
+> +
+> +		req.handle = bo->handle;
+> +		req.madv = MSM_MADV_DONTNEED;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
+> +
+> +		igt_info("Mapped buffer retained status: %d\n", req.retained);
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_describe("Apply WILLNEED advice to a cached buffer object");
+> +	igt_subtest("bo-madvise-cached-buffer") {
+> +		struct drm_msm_gem_madvise req = { 0 };
+> +		struct msm_bo *bo;
+> +		int ret;
+> +
+> +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_CACHED);
+> +		igt_assert_f(bo, "Failed to allocate cached buffer object\n");
+> +
+> +		req.handle = bo->handle;
+> +		req.madv = MSM_MADV_WILLNEED;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
+> +		igt_assert_eq(req.retained, 1);
+> +
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_describe("Apply DONTNEED advice to a large buffer object");
+> +	igt_subtest("bo-madvise-large-buffer") {
+> +		struct drm_msm_gem_madvise req = { 0 };
+> +		const size_t large_size = 64 * 1024 * 1024;
+> +		struct msm_bo *bo;
+> +		int ret;
 > +
 > +		bo = igt_msm_bo_new(dev, large_size, MSM_BO_WC);
-> +		igt_assert_f(bo, "Failed to allocate large buffer (64MB)\n");
-> +		handle = bo->handle;
+> +		igt_assert_f(bo, "Failed to allocate large buffer object\n");
 > +
+> +		req.handle = bo->handle;
+> +		req.madv = MSM_MADV_DONTNEED;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
+> +
+> +		igt_info("Large buffer retained status: %d\n", req.retained);
 > +		igt_msm_bo_free(bo);
-> +
-> +		igt_info("Successfully freed large buffer (64MB, handle %u)\n", handle);
 > +	}
 > +
-> +	igt_describe("Allocate and free buffers in sequence");
-> +	igt_subtest("bo-free-sequence") {
-> +		const int num_iterations = 10;
+> +	igt_describe("Apply memory advice to multiple buffer objects");
+> +	igt_subtest("bo-madvise-multiple-buffers") {
+> +		struct drm_msm_gem_madvise req = { 0 };
+> +		struct msm_bo *bo1, *bo2;
+> +		int ret;
 > +
-> +		for (int i = 0; i < num_iterations; i++) {
-> +			struct msm_bo *bo;
-> +			uint32_t handle;
+> +		bo1 = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
+> +		bo2 = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE * 2, MSM_BO_CACHED);
+> +		igt_assert_f(bo1 && bo2, "Failed to allocate buffer objects\n");
 > +
-> +			bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
-> +			igt_assert_f(bo, "Failed to allocate buffer in iteration %d\n", i);
-> +			handle = bo->handle;
+> +		req.handle = bo1->handle;
+> +		req.madv = MSM_MADV_WILLNEED;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
+> +		igt_assert_eq(req.retained, 1);
 > +
-> +			igt_msm_bo_free(bo);
+> +		req.handle = bo2->handle;
+> +		req.madv = MSM_MADV_DONTNEED;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req);
+> +		igt_assert_eq(ret, 0);
 > +
-> +			igt_debug("Iteration %d: allocated and freed handle %u\n", i, handle);
-> +		}
-> +
-> +		igt_info("Successfully completed %d allocate/free cycles\n", num_iterations);
+> +		igt_info("Second buffer retained status: %d\n", req.retained);
+> +		igt_msm_bo_free(bo1);
+> +		igt_msm_bo_free(bo2);
 > +	}
 > +
-> +	/* Buffer Free Tests - Negative Cases */
-> +	igt_describe("Free invalid handle (expects EINVAL)");
-> +	igt_subtest("bo-free-invalid") {
-> +		struct drm_gem_close close_req = { 0 };
-> +
-> +		close_req.handle = 0xDEADBEEF;
-> +
-> +		do_ioctl_err(dev->fd, DRM_IOCTL_GEM_CLOSE, &close_req, EINVAL);
-> +
-> +		igt_info("Correctly rejected freeing invalid handle with EINVAL\n");
-> +	}
-> +
-> +	igt_describe("Free same handle twice (expects EINVAL)");
-> +	igt_subtest("bo-double-free") {
+> +	igt_describe("Apply DONTNEED advice after balanced CPU access");
+> +	igt_subtest("bo-madvise-after-cpu-prep") {
+> +		struct drm_msm_gem_cpu_prep prep_req = { 0 };
+> +		struct drm_msm_gem_cpu_fini fini_req = { 0 };
+> +		struct drm_msm_gem_madvise madv_req = { 0 };
 > +		struct msm_bo *bo;
-> +		struct drm_gem_close close_req = { 0 };
+> +		uint32_t *ptr;
+> +		void *map;
+> +		int ret;
 > +
 > +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
 > +		igt_assert_f(bo, "Failed to allocate buffer object\n");
 > +
-> +		close_req.handle = bo->handle;
+> +		map = igt_msm_bo_map(bo);
+> +		igt_assert_f(map, "Failed to map buffer object\n");
+> +		ptr = map;
 > +
-> +		/*
-> +		 * Free it once using gem_close and free bo struct manually
-> +		 * (bypassing igt_msm_bo_free to test double-free behavior)
-> +		 */
-> +		gem_close(dev->fd, bo->handle);
-> +		free(bo);
+> +		prep_req.handle = bo->handle;
+> +		prep_req.op = MSM_PREP_READ | MSM_PREP_WRITE | MSM_PREP_NOSYNC;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_CPU_PREP, &prep_req);
+> +		igt_assert_eq(ret, 0);
 > +
-> +		/* Try to free it again - should fail */
-> +		do_ioctl_err(dev->fd, DRM_IOCTL_GEM_CLOSE, &close_req, EINVAL);
+> +		ptr[0] = 0xDEADBEEF;
 > +
-> +		igt_info("Correctly rejected double-free with EINVAL\n");
+> +		fini_req.handle = bo->handle;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_CPU_FINI, &fini_req);
+> +		igt_assert_eq(ret, 0);
+> +
+> +		madv_req.handle = bo->handle;
+> +		madv_req.madv = MSM_MADV_DONTNEED;
+> +		ret = igt_ioctl(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &madv_req);
+> +		igt_assert_eq(ret, 0);
+> +
+> +		igt_info("Buffer retained status: %d\n", madv_req.retained);
+> +		igt_msm_bo_free(bo);
 > +	}
 > +
-> +	igt_describe("Free handle zero (expects EINVAL)");
-> +	igt_subtest("bo-free-zero-handle") {
-> +		struct drm_gem_close close_req = { 0 };
+> +	/* Memory Advice Tests - Negative Cases */
+> +	igt_describe("Reject memory advice for an invalid buffer handle");
+> +	igt_subtest("bo-madvise-invalid-bo") {
+> +		struct drm_msm_gem_madvise req = { 0 };
 > +
-> +		close_req.handle = 0;
+> +		req.handle = 0xDEADBEEF;
+> +		req.madv = MSM_MADV_WILLNEED;
 > +
-> +		do_ioctl_err(dev->fd, DRM_IOCTL_GEM_CLOSE, &close_req, EINVAL);
-> +
-> +		igt_info("Correctly rejected freeing handle 0 with EINVAL\n");
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req, ENOENT);
 > +	}
 > +
-> +	igt_describe("Query offset and IOVA of a freed buffer (expects ENOENT)");
-> +	igt_subtest("bo-use-after-free") {
+> +	igt_describe("Reject memory advice for handle zero");
+> +	igt_subtest("bo-madvise-zero-handle") {
+> +		struct drm_msm_gem_madvise req = { 0 };
+> +
+> +		req.handle = 0;
+> +		req.madv = MSM_MADV_WILLNEED;
+> +
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req, ENOENT);
+> +	}
+> +
+> +	igt_describe("Reject an invalid memory advice value");
+> +	igt_subtest("bo-madvise-invalid-advice") {
+> +		struct drm_msm_gem_madvise req = { 0 };
 > +		struct msm_bo *bo;
-> +		struct drm_msm_gem_info req = { 0 };
+> +
+> +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
+> +		igt_assert_f(bo, "Failed to allocate buffer object\n");
+> +
+> +		req.handle = bo->handle;
+> +		req.madv = 0xDEADBEEF;
+> +
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req, EINVAL);
+> +		igt_msm_bo_free(bo);
+> +	}
+> +
+> +	igt_describe("Reject memory advice after a buffer has been freed");
+> +	igt_subtest("bo-madvise-after-free") {
+> +		struct drm_msm_gem_madvise req = { 0 };
+> +		struct msm_bo *bo;
 > +		uint32_t handle;
 > +
 > +		bo = igt_msm_bo_new(dev, DEFAULT_BUFFER_SIZE, MSM_BO_WC);
@@ -247,15 +339,10 @@ PS. could someone from Cc provide tested-by or r-b? Thanks!
 > +
 > +		igt_msm_bo_free(bo);
 > +
-> +		/* Both info queries on the freed handle must fail */
 > +		req.handle = handle;
-> +		req.info = MSM_INFO_GET_IOVA;
-> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_INFO, &req, ENOENT);
+> +		req.madv = MSM_MADV_WILLNEED;
 > +
-> +		req.info = MSM_INFO_GET_OFFSET;
-> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_INFO, &req, ENOENT);
-> +
-> +		igt_info("Correctly rejected use-after-free with ENOENT\n");
+> +		do_ioctl_err(dev->fd, DRM_IOCTL_MSM_GEM_MADVISE, &req, ENOENT);
 > +	}
 > +
 >  	igt_fixture() {
