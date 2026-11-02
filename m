@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB58606A324
-	for <igt-dev@archiver.kernel.org>; Mon,  2 Nov 2026 19:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79BF606A324
+	for <igt-dev@archiver.kernel.org>; Mon,  2 Nov 2026 20:18:21 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 94A0D10E0FE;
-	Mon,  2 Nov 2026 19:50:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7859410E68A;
+	Mon,  2 Nov 2026 20:18:21 +0000 (UTC)
 Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8B88D10E0CB;
- Mon,  2 Nov 2026 19:49:42 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CFEA510E3E8;
+ Mon,  2 Nov 2026 20:17:21 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8308541865856693071=="
+ boundary="===============6158337203693932407=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EFULL=3A_success_for_tests/kms=5Fwriteback=3A_C?=
- =?utf-8?q?heck_CRC_capture_survives_writeback_=28rev3=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/xe=3A_Add_bad_page_de?=
+ =?utf-8?q?cay_reclaim_coverage?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Aditya Tipre" <tipreaditya@gmail.com>
+To: "Tejas Upadhyay" <tejas.upadhyay@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 02 Nov 2026 19:49:42 -0000
-Message-ID: <179364898256.106471.9022799366202280388@221881a7231d>
+Date: Mon, 02 Nov 2026 20:17:21 -0000
+Message-ID: <179365064184.106577.16061193358865428446@221881a7231d>
 X-Patchwork-Hint: ignore
-References: <20261025182420.52258-1-tipreaditya@gmail.com>
-In-Reply-To: <20261025182420.52258-1-tipreaditya@gmail.com>
+References: <20261102121630.2360816-2-tejas.upadhyay@intel.com>
+In-Reply-To: <20261102121630.2360816-2-tejas.upadhyay@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,20 +42,20 @@ X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============8308541865856693071==
+--===============6158337203693932407==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/kms_writeback: Check CRC capture survives writeback (rev3)
-URL   : https://patchwork.freedesktop.org/series/176841/
+Series: tests/xe: Add bad page decay reclaim coverage
+URL   : https://patchwork.freedesktop.org/series/177444/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9175_FULL -> XEIGTPW_16083_FULL
+CI Bug Log - changes from XEIGT_9175_BAT -> XEIGTPW_16085_BAT
 ====================================================
 
 Summary
@@ -67,7 +67,7 @@ Summary
 
   
 
-Participating hosts (3 -> 3)
+Participating hosts (15 -> 15)
 ------------------------------
 
   No changes in participating hosts
@@ -82,17 +82,19 @@ Changes
 Build changes
 -------------
 
-  * IGT: IGT_9175 -> IGTPW_16083
+  * IGT: IGT_9175 -> IGTPW_16085
+  * Linux: xe-6046-79cefeb775e63da397152ab01c2f1d4fa1b9b46d -> xe-6047-2cd78713d917a02987f21b437561a5e1e13ddda2
 
-  IGTPW_16083: 16083
+  IGTPW_16085: 16085
   IGT_9175: 9175
   xe-6046-79cefeb775e63da397152ab01c2f1d4fa1b9b46d: 79cefeb775e63da397152ab01c2f1d4fa1b9b46d
+  xe-6047-2cd78713d917a02987f21b437561a5e1e13ddda2: 2cd78713d917a02987f21b437561a5e1e13ddda2
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16083/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16085/index.html
 
---===============8308541865856693071==
+--===============6158337203693932407==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -112,32 +114,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/kms_writeback: Check CRC capture survives writeback (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176841/">https://patchwork.freedesktop.org/series/176841/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/xe: Add bad page decay reclaim coverage</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177444/">https://patchwork.freedesktop.org/series/177444/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16083/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16083/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16085/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16085/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9175_FULL -&gt; XEIGTPW_16083_FULL</h1>
+    <h1>CI Bug Log - changes from XEIGT_9175_BAT -&gt; XEIGTPW_16085_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (3 -&gt; 3)</h2>
+<h2>Participating hosts (15 -&gt; 15)</h2>
 <p>No changes in participating hosts</p>
 <h2>Changes</h2>
 <p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9175 -&gt; IGTPW_16083</li>
+<li>IGT: IGT_9175 -&gt; IGTPW_16085</li>
+<li>Linux: xe-6046-79cefeb775e63da397152ab01c2f1d4fa1b9b46d -&gt; xe-6047-2cd78713d917a02987f21b437561a5e1e13ddda2</li>
 </ul>
-<p>IGTPW_16083: 16083<br />
+<p>IGTPW_16085: 16085<br />
   IGT_9175: 9175<br />
-  xe-6046-79cefeb775e63da397152ab01c2f1d4fa1b9b46d: 79cefeb775e63da397152ab01c2f1d4fa1b9b46d</p>
+  xe-6046-79cefeb775e63da397152ab01c2f1d4fa1b9b46d: 79cefeb775e63da397152ab01c2f1d4fa1b9b46d<br />
+  xe-6047-2cd78713d917a02987f21b437561a5e1e13ddda2: 2cd78713d917a02987f21b437561a5e1e13ddda2</p>
 
 </body>
 </html>
 
---===============8308541865856693071==--
+--===============6158337203693932407==--
