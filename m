@@ -2,55 +2,48 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB6C4606A33B
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Nov 2026 11:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D2F606D81B
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Nov 2026 12:28:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=edzf59UE
+	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=sNI5pBfC
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6D24510E7EC;
-	Tue,  3 Nov 2026 11:41:51 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7F1F110F533
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2026 11:40:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793706052; x=1825242052;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=oIw0kHKOPyvKy8o12O/rOK21dPO5ZUbTVctPSkJcpPU=;
- b=edzf59UEfCb4gBq2T75qWyaUcsRoRP1rnkl8OlRVBk4Am4VItdD8BpJL
- zcDB4VK6eDIq6rGbONgkLzf6W+4+Thru6cbfhDbxUG/TJKHT4pd682mWu
- N1hgn/BPifd2R3wAPjFvd9xNCBE9ZpmAEC7dfUwSMUobfFiBrxu4PFDHe
- +KWihXU/6B8k5AxhDNhykkd14A4LhzUbZFsdy1fPzUJpuSgwg3KrncpmB
- qcgR+NyShpEKaOcDcVbJyyivsPz/r7jeFiiS9ykWKGHnsYkq7fyTzZ7jg
- xjZPuYlVEvX67Ts7AEKCLOg5Ro3lS50+fzz7g8D1bt5bSOd7AWABG1HWK g==;
-X-CSE-ConnectionGUID: 8BwNiYewR+OtrFyNrBHdCQ==
-X-CSE-MsgGUID: 6xTWUW2jTbi83dj54bbI4g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2456974"
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="2456974"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Nov 2026 03:40:51 -0800
-X-CSE-ConnectionGUID: 7DaUVeW9TgGQ9sKjqWwvIQ==
-X-CSE-MsgGUID: uK2P/McsRQ+ceGC1tPveeA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
-   d="scan'208";a="6728869"
-Received: from hgirotra-desk.iind.intel.com ([10.190.216.57])
- by fmviesa008.fm.intel.com with ESMTP; 03 Nov 2026 03:40:49 -0800
-From: himanshu.girotra@intel.com
-To: igt-dev@lists.freedesktop.org
-Cc: ramadevi.gandi@intel.com, varun.gupta@intel.com, nishit.sharma@intel.com,
- riana.tauro@intel.com, matthew.d.roper@intel.com, rodrigo.vivi@intel.com
-Subject: [RFC PATCH i-g-t] runner/resultgen: Don't flag local errors caused by
- CAT errors on CRI
-Date: Tue,  3 Nov 2026 17:10:48 +0530
-Message-ID: <20261103114048.3302874-1-himanshu.girotra@intel.com>
-X-Mailer: git-send-email 2.53.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id BCFC410E113;
+	Tue,  3 Nov 2026 12:28:01 +0000 (UTC)
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E58EB89C86
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2026 12:27:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
+ s=20170329;
+ h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
+ MIME-Version:Date:Message-ID:From:Reply-To;
+ bh=BwqJZvLDnPuJJNETBjHj2jvvU7WjpRwK2mySsUGqHbc=; t=1793708821; x=2109068821; 
+ b=sNI5pBfCzKRrZrCMqheF0wL38uB0iYp8yBn5EQpQg8QmeykUgrgiXmrn/0f7oCBkJPKOrt2NTbI
+ SMAO1pqQd24cbY2lKvkElZM97sZD+C7eP8nUNy0hdu1CWMsePEJjC5CoqXCpBXCf67p9xpWyeKnT0
+ 2maPooEde4MXF/XsYEJZWxeCG0nhU/HB1h7HtUZEzP+wr9wyAcbYmpTORc3QTQmB+ttIiFCv5ECJr
+ jSlXfuZCRJXnDM8VAMnOiIEa3JJUihs5mYOMTs3LE5Z+Ona28qmswRaC6A0D2yMsl2CBQov1LtaLq
+ MQXXgzZHWGRSKzCXsyOyGC5YqgKmlkkd6fxA==;
+Received: from [81.79.79.1] (helo=[192.168.0.116])
+ by fanzine2.igalia.com with esmtpsa 
+ (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+ id 1xODbP-001CiJ-Sy; Tue, 03 Nov 2026 13:26:59 +0100
+Message-ID: <691dfe6c-fd4f-4300-8686-d1e0e414dd46@igalia.com>
+Date: Tue, 3 Nov 2026 12:26:59 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 02/10] tests/amd/gem_list_handles: Add basic test
+ for DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES
+To: "Francis, David" <David.Francis@amd.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+References: <20261023145032.22650-1-tvrtko.ursulin@igalia.com>
+ <20261023145032.22650-3-tvrtko.ursulin@igalia.com>
+ <CHAPR12MB999247B0A449B8C9260E9CE183EF6F2@CHAPR12MB999247.namprd12.prod.outlook.com>
+Content-Language: en-GB
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <CHAPR12MB999247B0A449B8C9260E9CE183EF6F2@CHAPR12MB999247.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -62,150 +55,226 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Himanshu Girotra <himanshu.girotra@intel.com>
 
-On CRI, a memory CAT error triggered by userspace is followed by an
-error-level GuC report:
+On 28/10/2026 14:02, Francis, David wrote:
+>> +               /*
+>> +                * Apparently kernel never checked for mbz so now we have to
+>> +                * keep accepting garbage.
+>> +                */
+>> +               list.padding = 0x13ac5;
+> 
+> Mea culpa on this one
+> 
+> This patch is
+> Reviewed-by: David Francis <David.Francis@amd.com>
 
-  Engine memory CAT error [18]: class=bcs, ..., guc_id=4
-  *ERROR* Tile0: GT0: GuC: Uncorrectable local error! guc_id=4 ...
+Thanks!
 
-Every test that deliberately causes a CAT error therefore ends up
-as dmesg-warn. Track CAT errors per subtest by device, GT and guc_id,
-and skip the local error only when it matches one. Unmatched or
-unknown-guc_id local errors are still reported.
+Can you pick up the first two and merge to IGT? Or maybe Vitaly we 
+should first do a smoke run somehow? Probably best since I only tested 
+on the Steam Deck.
 
-Signed-off-by: Himanshu Girotra <himanshu.girotra@intel.com>
----
- runner/resultgen.c | 51 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 49 insertions(+), 2 deletions(-)
+Regards,
 
-diff --git a/runner/resultgen.c b/runner/resultgen.c
-index 94cdd0e2e..8e7b7bb7c 100644
---- a/runner/resultgen.c
-+++ b/runner/resultgen.c
-@@ -1018,6 +1018,36 @@ static void add_empty_dmesgs_where_missing(struct json_t *tests,
- 
- }
- 
-+/*
-+ * A memory CAT error is user-triggerable and on CRI GuC follows it
-+ * with an "Uncorrectable local error" for the same exec queue. Such
-+ * local errors are expected; Don't flag these as warnings.
-+ */
-+static const char xe_cat_error_regex[] =
-+	"^(.*)\\[drm\\] (\\*ERROR\\* )?((Tile[0-9]+: )?GT[0-9]+: )"
-+	"(Engine memory CAT error.*|GuC: Uncorrectable local error! )guc_id=([0-9]+)";
-+
-+static bool is_expected_local_error(GRegex *re, GHashTable *cat_errors,
-+				    const char *message)
-+{
-+	GMatchInfo *info;
-+	bool expected = false;
-+
-+	if (g_regex_match(re, message, 0, &info)) {
-+		char *key = g_match_info_expand_references(info, "\\1\\3\\6", NULL);
-+
-+		if (strstr(message, "CAT error")) {
-+			g_hash_table_add(cat_errors, key);
-+		} else {
-+			expected = g_hash_table_remove(cat_errors, key);
-+			g_free(key);
-+		}
-+	}
-+	g_match_info_free(info);
-+
-+	return expected;
-+}
-+
- static bool fill_from_dmesg(int fd,
- 			    struct settings *settings,
- 			    char *binary,
-@@ -1038,6 +1068,8 @@ static bool fill_from_dmesg(int fd,
- 	size_t i;
- 	GRegex *re;
- 	GRegex *re_ignore; /* regex for dynamically ignored dmesg line */
-+	GRegex *re_cat;
-+	GHashTable *cat_errors;
- 
- 	if (!f) {
- 		return false;
-@@ -1048,6 +1080,13 @@ static bool fill_from_dmesg(int fd,
- 		return false;
- 	}
- 
-+	if (!init_dmesg_regex(&re_cat, xe_cat_error_regex, "xe CAT error regex")) {
-+		g_regex_unref(re);
-+		fclose(f);
-+		return false;
-+	}
-+	cat_errors = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, NULL);
-+
- 	re_ignore = NULL;
- 	while (getline(&line, &linelen, f) > 0) {
- 		char *formatted;
-@@ -1055,6 +1094,7 @@ static bool fill_from_dmesg(int fd,
- 		unsigned long long ts_usec;
- 		char continuation;
- 		char *message, *subtest, *dynamic_subtest, *ignore;
-+		bool expected;
- 
- 		if (!parse_dmesg_line(line, &flags, &ts_usec, &continuation, &message))
- 			continue;
-@@ -1085,6 +1125,7 @@ static bool fill_from_dmesg(int fd,
- 			generate_piglit_name(binary, subtest, piglit_name, sizeof(piglit_name));
- 			current_test = get_or_create_json_object(tests, piglit_name);
- 			clean_regex(&re_ignore);
-+			g_hash_table_remove_all(cat_errors);
- 		}
- 
- 		if (current_test != NULL &&
-@@ -1103,15 +1144,19 @@ static bool fill_from_dmesg(int fd,
- 			generate_piglit_name_for_dynamic(piglit_name, dynamic_subtest, dynamic_piglit_name, sizeof(dynamic_piglit_name));
- 			current_dynamic_test = get_or_create_json_object(tests, dynamic_piglit_name);
- 			clean_regex(&re_ignore);
-+			g_hash_table_remove_all(cat_errors);
- 		}
- 
- 		if ((ignore = strstr(message, IGT_ADD_IGNORED_REGEX_DMESG)) != NULL)
- 			add_ignored_regex(&re_ignore, ignore + strlen(IGT_ADD_IGNORED_REGEX_DMESG));
- 
-+		expected = continuation != 'c' &&
-+			   is_expected_local_error(re_cat, cat_errors, message);
-+
- 		if (settings->piglit_style_dmesg) {
- 			if ((flags & 0x07) <= settings->dmesg_warn_level && continuation != 'c' &&
- 			    g_regex_match(re, message, 0, NULL) &&
--			    not_ignored(re_ignore, message)) {
-+			    not_ignored(re_ignore, message) && !expected) {
- 				append_line(&warnings, &warningslen, formatted);
- 				if (current_test != NULL)
- 					append_line(&dynamic_warnings, &dynamic_warnings_len, formatted);
-@@ -1119,7 +1164,7 @@ static bool fill_from_dmesg(int fd,
- 		} else {
- 			if ((flags & 0x07) <= settings->dmesg_warn_level && continuation != 'c' &&
- 			    !g_regex_match(re, message, 0, NULL) &&
--			    not_ignored(re_ignore, message)) {
-+			    not_ignored(re_ignore, message) && !expected) {
- 				append_line(&warnings, &warningslen, formatted);
- 				if (current_test != NULL)
- 					append_line(&dynamic_warnings, &dynamic_warnings_len, formatted);
-@@ -1167,6 +1212,8 @@ static bool fill_from_dmesg(int fd,
- 	free(warnings);
- 	free(dynamic_warnings);
- 	clean_regex(&re_ignore);
-+	g_regex_unref(re_cat);
-+	g_hash_table_destroy(cat_errors);
- 	g_regex_unref(re);
- 	fclose(f);
- 	return true;
--- 
-2.53.0
+Tvrtko
+
+
+> ________________________________________
+> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Sent: Friday, October 23, 2026 10:50 AM
+> To: igt-dev@lists.freedesktop.org
+> Cc: Francis, David; Tvrtko Ursulin
+> Subject: [PATCH i-g-t 02/10] tests/amd/gem_list_handles: Add basic test for DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES
+> 
+> Looks like we had no test for this so far se lets add one.
+> 
+> Just some basic test cases to verify input checking and normal
+> operation.
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Cc: David Francis <David.Francis@amd.com>
+> ---
+>   tests/amdgpu/amd_list_handles.c | 149 ++++++++++++++++++++++++++++++++
+>   tests/amdgpu/meson.build        |   1 +
+>   2 files changed, 150 insertions(+)
+>   create mode 100644 tests/amdgpu/amd_list_handles.c
+> 
+> diff --git a/tests/amdgpu/amd_list_handles.c b/tests/amdgpu/amd_list_handles.c
+> new file mode 100644
+> index 000000000000..2c05e8fcdfed
+> --- /dev/null
+> +++ b/tests/amdgpu/amd_list_handles.c
+> @@ -0,0 +1,149 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright (c) 2026 Valve Corporation
+> + */
+> +#include <sys/ioctl.h>
+> +
+> +#include "igt.h"
+> +#include "drmtest.h"
+> +
+> +#include <amdgpu.h>
+> +#include <amdgpu_drm.h>
+> +
+> +#include "lib/amdgpu/amd_memory.h"
+> +
+> +#define TEST_PADDING (1 << 0)
+> +#define TEST_FAULT   (1 << 1)
+> +#define TEST_TWOPASS (1 << 2)
+> +#define TEST_PROBE   (1 << 3)
+> +
+> +#define BUFFER_SIZE    4096
+> +
+> +static void
+> +basic(amdgpu_device_handle dev, unsigned int num_bos, unsigned int flags)
+> +{
+> +       struct drm_amdgpu_gem_list_handles_entry entry[num_bos];
+> +       struct drm_amdgpu_gem_list_handles list = {
+> +               .entries = (uintptr_t)entry,
+> +               .num_entries = num_bos,
+> +       };
+> +       int fd = amdgpu_device_get_fd(dev);
+> +       amdgpu_bo_handle bo[num_bos];
+> +       int i, ret;
+> +
+> +       igt_assert_fd(fd);
+> +
+> +       for (i = 0; i < num_bos; i++) {
+> +               struct amdgpu_bo_alloc_request alloc = {
+> +                       .alloc_size = BUFFER_SIZE,
+> +                       .preferred_heap = AMDGPU_GEM_DOMAIN_GTT,
+> +               };
+> +
+> +               ret = amdgpu_bo_alloc(dev, &alloc, &bo[i]);
+> +               igt_assert_eq(ret, 0);
+> +       }
+> +
+> +       if (flags & TEST_PADDING) {
+> +               /*
+> +                * Apparently kernel never checked for mbz so now we have to
+> +                * keep accepting garbage.
+> +                */
+> +               list.padding = 0x13ac5;
+> +       } else if (flags & TEST_FAULT) {
+> +               list.entries = 0;
+> +       }
+> +
+> +       if (flags & TEST_TWOPASS) {
+> +               if (flags & TEST_PROBE) {
+> +                       list.num_entries = 0;
+> +               } else {
+> +                       igt_assert(num_bos > 1);
+> +                       list.num_entries = num_bos - 1;
+> +               }
+> +               ret = ioctl(fd, DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES, &list);
+> +               igt_assert_eq(ret, 0);
+> +               igt_assert_eq(list.num_entries, num_bos);
+> +       }
+> +
+> +       ret = ioctl(fd, DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES, &list);
+> +       if (flags & TEST_FAULT) {
+> +               i = errno;
+> +               igt_assert_eq(ret, -1);
+> +               igt_assert_eq(i, EFAULT);
+> +               goto out;
+> +       }
+> +       igt_assert_eq(ret, 0);
+> +       igt_assert_eq(list.num_entries, num_bos);
+> +
+> +       for (i = 0; i < num_bos; i++) {
+> +               struct drm_amdgpu_gem_list_handles_entry *e = &entry[i];
+> +               uint32_t handle;
+> +
+> +               ret = amdgpu_bo_export(bo[i],
+> +                                      amdgpu_bo_handle_type_kms_noimport,
+> +                                      &handle);
+> +               igt_assert_eq(ret, 0);
+> +               igt_assert_eq(e->gem_handle, handle);
+> +
+> +               igt_assert_eq(e->flags, 0);
+> +               igt_assert_eq(e->size, BUFFER_SIZE);
+> +               igt_assert_eq(e->preferred_domains, AMDGPU_GEM_DOMAIN_GTT);
+> +               igt_assert_eq(e->alloc_flags,
+> +                             AMDGPU_GEM_CREATE_VRAM_CLEARED |
+> +                             AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE);
+> +               igt_assert_eq(e->alignment, 0);
+> +       }
+> +
+> +out:
+> +       for (i = 0; i < num_bos; i++)
+> +               amdgpu_bo_free(bo[i]);
+> +}
+> +
+> +int igt_main()
+> +{
+> +       amdgpu_device_handle dev;
+> +       int fd = -1;
+> +
+> +       igt_fixture() {
+> +               uint32_t major, minor;
+> +               int err;
+> +
+> +               fd = drm_open_driver_render(DRIVER_AMDGPU);
+> +
+> +               err = amdgpu_device_initialize(fd, &major, &minor, &dev);
+> +               igt_require(err == 0);
+> +       }
+> +
+> +       igt_describe("Check padding backward compatibility");
+> +       igt_subtest("padding")
+> +               basic(dev, 1, TEST_PADDING);
+> +
+> +       igt_describe("Check fault detection");
+> +       igt_subtest("fault")
+> +               basic(dev, 1, TEST_FAULT);
+> +
+> +       igt_describe("List no buffer objects");
+> +       igt_subtest("no-bos")
+> +               basic(dev, 0, 0);
+> +
+> +       igt_describe("Create and list one buffer object");
+> +       igt_subtest("one-bo")
+> +               basic(dev, 1, 0);
+> +
+> +       igt_describe("Create and list many buffer objects");
+> +       igt_subtest("many-bo")
+> +               basic(dev, 1024, 0);
+> +
+> +       igt_describe("Create and list many buffer objects in two-pass mode");
+> +       igt_subtest("many-bo-two-pass")
+> +               basic(dev, 16, TEST_TWOPASS);
+> +
+> +       igt_describe("Create and list many buffer objects in two-pass probe mode");
+> +       igt_subtest("many-bo-two-pass-probe")
+> +               basic(dev, 16, TEST_TWOPASS | TEST_PROBE);
+> +
+> +       igt_fixture() {
+> +               amdgpu_device_deinitialize(dev);
+> +               drm_close_driver(fd);
+> +       }
+> +}
+> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+> index 61b81c81407d..2dcc3228b583 100644
+> --- a/tests/amdgpu/meson.build
+> +++ b/tests/amdgpu/meson.build
+> @@ -28,6 +28,7 @@ if libdrm_amdgpu.found()
+>                            'amd_jpeg_dec',
+>                            'amd_jpeg_queue',
+>                            'amd_link_settings',
+> +                         'amd_list_handles',
+>                            'amd_lockdep',
+>                            'amd_max_bpc',
+>                            'amd_mem_leak',
+> --
+> 2.56.0
+> 
 
