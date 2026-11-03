@@ -2,72 +2,70 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF3D606D81B
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Nov 2026 21:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FE4606A330
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Nov 2026 21:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=LKdA+pdX
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=CLCzxrng
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 705E510E839;
-	Tue,  3 Nov 2026 21:43:45 +0000 (UTC)
-Received: from SA9PR02CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11013052.outbound.protection.outlook.com
- [40.93.196.52])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8AAE810F896
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3322610F8A2;
+	Tue,  3 Nov 2026 21:44:37 +0000 (UTC)
+Received: from PH7PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11010037.outbound.protection.outlook.com [52.101.201.37])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B296610F897
  for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2026 21:38:26 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZvzOl5q3z8UBLi4lBcC/39LVF2ITmCcgmYl3ZFZ0uE6E/yKufTV3xMlWPiBxLyik4E8v49mzl1cvgrZ1FF1VxgU+5JgMAJmMLz/eejlCUDlZ42wDSqIwqGF4+RiWLpsTysTc/58T2kxbAPXKJkhPIU6zYFrvC/kmfZLLMy6/aRtmVkb2ISgZEuljSMdvg2o6Q+NFM2kynymKBlvzLe85ZzCJtC47Gt1vMAIWpkfuBCMfnMkhcacZml8HOQPwTyHffRiG6CRFuyO0XmJdg9FGofNUmXdqH5w1RkjLwHrpTTjFhZcnNquGYjM94KWvRVIr88LY9kKB8PuXhg+K42NbuQ==
+ b=AyiJ+YXynNFS4Ux+viAaghGlmx3D4nHbyoBCQr3FrriG11hyEetFIIKMWxpEPiSX0QWvX3pTwDo1UcAecmomQEBL6jmtbnthdGgSN8+5QVc23Q6OxZs+bu+DLOsezb6X5GA0YnoUBg3lN9OdnCx2Szhh8UFolVRwUz031dtGqaWnS3Y9oPDUPveGZyLEuka8NZcwfV+In5cMUHCFwz2D/0jGVr6y+glJbP0ZyiT2H/BfxBSQF5H3LKMxwKxqPhTqFwQz9/ZP1NFk5UJ8jOc/0OveRZoC60HpMpVtWLKVHrZx06bLg4Ff9ubceZUre2AHWWq7/JAPMAG9QwlhSWs4vA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=P7zi5M4vjHjaxXy+m2ueFURugiP1pW1+lfl/mxu8YB0=;
- b=KVM8f7CiUyw/EqO8KQzVouA2Y4dFdQdMywfwbwdbv3LvOkT69kS7qO38HKaE3AQMJSFngUqsjMwqDkk7juNr4Di9Y6N/ij2JgLU0qbLBAIUnQKlh8/LMGnQyOwnXWixpWjOFhqg/HEGpnZrQmptAMdMh8qWAPFY1Wr89PwUko/Ii5SmBXQAZjfZjuZe5wZBFAMne2uOYqGYLTitW4Eqy5QdiRAiFLEOdd3ybPO73HA6xfA1pqGUeUxFlACrOh3+ZWBNXLNen5tM4o/5d7D5CLd1rCwfi28KOuWXXqHe9q1c+Cyh1gkljrrIXX6aC8Ez++E13v6XAeSt+Xrtvga4zOQ==
+ bh=jN44nUXYPpY9d/TLarW2RnfBmd3+9lhaiOr2uVcIDNE=;
+ b=qTcwI8sxogX41IG24zOzRiXKtKIR4HQBzHMTPrv+Tgv0Bw9I42saN5pO6wqB1S++Tov0XksYAwAQxPYDSholq7wzSEdol7rPCV4+WQgSprvNq7i6Ef0+TiH4zLIFIg26WhTbry7WvWhs/47UgY1+K0YcMtW+VckucNxo0ngjfPdc42eRNKYmBCxLzLGwDcBZ+yPzdFjLL8+OWWvmmsI9N36zLvIuCno0YtGzBL4sxF+ZEw4KR09+GLWM0INHwUFhf+7VJYn2I5/nwNAvi9/AYiezuZ0dmhQ5NniQ8EsDoqWMJwXpT955lNjNqyE7q1K3vUZqpPWjWFB1tiSm/Vmn9Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P7zi5M4vjHjaxXy+m2ueFURugiP1pW1+lfl/mxu8YB0=;
- b=LKdA+pdX1jqf3e2edJbUUWNTEqcYAxHrHw1KqldypVrbE9VvGzVAewcIkhFgB79W8BLHQusaTs5axMLeH/VYqu1mOpCrmEIJkeuW5WviCy7pTYtIJvHMi40t8gnA9qfm1vtVJFIMjdv9DiJ488UDzliM5/rxhn1CDbx/gUwsimU=
-Received: from BN0PR02CA0021.namprd02.prod.outlook.com (2603:10b6:408:e4::26)
- by CH3PR12MB7572.namprd12.prod.outlook.com (2603:10b6:610:144::17)
+ bh=jN44nUXYPpY9d/TLarW2RnfBmd3+9lhaiOr2uVcIDNE=;
+ b=CLCzxrng3vjXNmo9/ttfa6QaLT/t+WVmrUDeN/SLx7WC/NZWNXNMJvUvrDeGRJ5eQIxSBPsq0hzwlMuA6XaO5FODMHgUhaQz5L9pLQcvd9pE3s697rGHYFCC+CtLecHbiCTLKiF3Y3dK4M7w+CjFHFOtUg2ZVw/5oGC6szb/6QI=
+Received: from BN0PR02CA0028.namprd02.prod.outlook.com (2603:10b6:408:e4::33)
+ by DS5PR12MB378793.namprd12.prod.outlook.com (2603:10b6:8:47d::23)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
- 21:38:21 +0000
+ 21:38:19 +0000
 Received: from BN1PEPF00018075.namprd04.prod.outlook.com
- (2603:10b6:408:e4:cafe::2b) by BN0PR02CA0021.outlook.office365.com
- (2603:10b6:408:e4::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.569.12 via Frontend Transport; Tue, 3
- Nov 2026 21:38:21 +0000
+ (2603:10b6:408:e4:cafe::7a) by BN0PR02CA0028.outlook.office365.com
+ (2603:10b6:408:e4::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.8 via Frontend Transport; Tue, 3
+ Nov 2026 21:38:19 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
  BN1PEPF00018075.mail.protection.outlook.com (10.167.245.203) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 21:38:21 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 21:38:19 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 3 Nov
- 2026 15:38:20 -0600
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 15:38:18 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 3 Nov
- 2026 15:38:20 -0600
+ 2026 15:38:18 -0600
 Received: from hwentlanryzen (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Tue, 3 Nov 2026 15:38:20 -0600
+ Transport; Tue, 3 Nov 2026 15:38:18 -0600
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Harry Wentland <harry.wentland@amd.com>
-Subject: [PATCH v1 08/10] tests/kms_colorop_dma: test a merged in-fence
- covering DMA 3D LUT producers
-Date: Tue, 3 Nov 2026 16:37:58 -0500
-Message-ID: <20261103213800.618130-9-harry.wentland@amd.com>
+Subject: [PATCH v1 02/10] lib/igt_kms: add DMA 3D LUT colorop properties
+Date: Tue, 3 Nov 2026 16:37:52 -0500
+Message-ID: <20261103213800.618130-3-harry.wentland@amd.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261103213800.618130-1-harry.wentland@amd.com>
 References: <20261103213800.618130-1-harry.wentland@amd.com>
@@ -77,29 +75,29 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00018075:EE_|CH3PR12MB7572:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7af970b9-2be1-444f-418d-08df39f2c822
+X-MS-TrafficTypeDiagnostic: BN1PEPF00018075:EE_|DS5PR12MB378793:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7676bfde-604b-4c25-b87e-08df39f2c6f8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|82310400026|23010399003|36860700016|1800799024|261009223027099003|261026140227099003|261028144727099003|261102123227099003|261022105027099003|261021121427099003|261022075727099003|261021123027099003|11063799006|56012099006|3023799007|10067099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: m8NFVxn6rcvMuPWJywWJMAcuHMTexwYdvV8CMZETp1U0efX7D0dlMs3C27D3WsM9lDmqPPPsE+Adi1G7+5jOuWBvKZCsRl+6mi6ckQLwyYJ8cewPQDSHZaO06hQJ2CIiZdmHgl1em9kbZQB9DRYmwtXsqPDXeU6FU23zzLm2MYO0QvOA/bsiDkZAl6FTLSe9JIUrUY+5Hvm5SNnODF3fgr0y0iRKUT395MHgEcc79AdJUtDczoFi/3/AULdLX6PyTK3YyP+7eqKBhKznVaFxnVcfCZo11jz9XWQkNtA31ro5YCk1rPHMnNw+K3mSs/nEwviWQsQdJxuPNi93JnvPLqpYO3vTsqDqkr5NCzg2B5eKjcYs0vBgwIDGbLncVHJJ0zFLzX9v/VVyHeut4JyA4Fwetc2vaBJf9+9OEL/6Ol6uxaao+JD42RBUN7Oj53Aqy8ty0abBDxfD01s9n47cwukIQR/lrt4fP2YUYLMtIa55hU5WV12aHH1my9AfHHbHdSR/ul1UtzRf20FO9IxF4lsUZJyDqk32YaDM+lNPyvgSwEntBkWnDilgNbwjUML6j5JBr8UQzAdXtW6JytI9gVdAyUB4XhckZIDFM4cHCCoVEFL73Jr/K4hN7N6ANKE9sahObgUgxG4kehDE4rGYyL+12GEAP4wW15+C0QTYnttpey2aUiwzfnRfey7AM5ctvoqu75dSWe85lUDUuWMJ9Q==
+ ARA:13230040|23010399003|1800799024|376014|82310400026|36860700016|11063799006|56012099006|261021123027099003|261009223027099003|261102123227099003|261021121427099003|10067099003|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 3xP/84pfD/SZeBxDUhbrDHw5O/zT1BWhoyiFJr9dBsi8wScSWXOvMYP9vvyZ5Xdk/XxPpxpMG569W5o4GsUKfXgDhrziQaV6tbY//8FTCx+p8PbPIHoEXQPNkQfsOSc1zmqDan74FSjocbVR94rbOnL2/E+CaJfEggFWGFtBCJ+enGGvoA+iKnsW1Awtxs4fjbAaD4gfNWhwigI2p/bicc+f+kcjPGPZa+N5Mwypl8Hk10fiEZTErdqkK/YlB3bsA5pEyd2YEsFCL6OLTz6mRWfpLDc9hrivvlmaOBk5zPd1jn0nuSzQI02EwUBlShUMIxSrfs5YfjR35hb1B2JaasG/UriCzrUWd8nXniEkHjEhvTSc3pFTaJI7C81xf68HGMnOutVAILxEI2E8f/LCoQcBc7JZML2e/ilV+4HC1SwAgx/XPfmXQ1CnKUGhycPqVH4HWailsE26qBstFcWQ4Pvh6Bafob/y096lfRPBD31tuLsjqh8aQ/Fa4OQRzbSA3AjhaP8YILIPbTScjJzgKbQBTb3g4WXYQWqQiHEmZJySny/4pD75iGF+wCEZLQlJ5iUyYwIgML1ZghQE5DEsVVaLl1j+7rHHofVqlzZtK5BfW8PrW22ip3KwF8eC8f0grSNkV0ZFOBBKhkbKzezzVq/6uQd6fKBMKsiCPGNp9Dl6oI9coi7IK9o5xlTIMM0A9NJx9u0ZuRU7/RTA1LC77g==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(82310400026)(23010399003)(36860700016)(1800799024)(261009223027099003)(261026140227099003)(261028144727099003)(261102123227099003)(261022105027099003)(261021121427099003)(261022075727099003)(261021123027099003)(11063799006)(56012099006)(3023799007)(10067099003)(18002099003)(22082099003);
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(23010399003)(1800799024)(376014)(82310400026)(36860700016)(11063799006)(56012099006)(261021123027099003)(261009223027099003)(261102123227099003)(261021121427099003)(10067099003)(22082099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 3THImagKlT/SxUeKgU3TKKC89JmGSCIhSdTIImtIKuvcR1s2WMfUHUS2ORs9ZGdZf3sDDMS534/7S0hn2bysVWaHTJgSA5YewxG9zBVDDR3Pg80I4tPTqFdChDMDoG268Zzrf4Up0iBO8zU0Wn073qe+LuYPjpmDyJtetpyL5bF6RV8Pjc1qYQCg7l0Cg4LPgRP+Dhj/iVGkyovrBB9VSrtMz0AwUUcQbZm4l9JCGyXQkkBJk7/KxorOI5RVLkKlbueOdisR3ZYHsQkwzee6HU08XhM08wGLLxzBV3uayOJSrv2O7/FVhqyMjFkwTtb2Azp7g+qdKUXrrmdajY44Vb/IdwAavD3FD05CciIPs//ukQ3jtHhcTg/rvNcE3qjJsg4uGzWEDFXb6GMG2Nr6ml6ZKN8GxgVhzaQh+8rdv6t4uPArKQccTW4GL0GBKu5d
+X-MS-Exchange-AntiSpam-MessageData-0: SvgDo/j2EPKJBNUpOwzS+sL+hI3B7r4JUYQaBuxGC880IP+oqxxIm2ybZZQJzB/JiG/UDuBXOlI3YbujxO7f5ubTw6Nd8sx2x6uKnlAP2q2ZGPnOTYkI5IgfFn5iFlJSPLx3gaya56DHesuA91kLJNhzmXOJ9j2719/7AH9Sszc8foYXW6Y8ee8DUIU92IevpDadczu5NSF0o/DoRfEAaK3Oq0xIa15W92T0HO1yK2nVU6NjP8fwqsppGLcP5wiwD6LZiEvJHs7NqNhThf9a17bkOYT3xj38XmkVJ4BWC9p9PMvXTN7nFtPPswGk730lLelolvnVuz5CTUzZ/hKPdZcZc3MS7vCBjyLgHoKh9QqrgMZJjktxAWEXm3wGUyE5TpWIifW0zkr8PLWdV7MPQ5JM35b1oF8xRQ/I4lYrcMFsQK9J8uXwQD17z/BHG5Jq
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 21:38:21.2032 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7af970b9-2be1-444f-418d-08df39f2c822
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 21:38:19.2531 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7676bfde-604b-4c25-b87e-08df39f2c6f8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
+ Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00018075.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB7572
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PR12MB378793
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -118,144 +116,54 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When userspace supplies an explicit plane IN_FENCE_FD, implicit write
-fences on the scanout and DMA 3D LUT buffers are not dependencies of the
-commit. The explicit fence then has to cover every producer the commit
-consumes, including the LUT writer.
-
-Add subtests that flip both the scanout and DMA 3D LUT framebuffers and
-pass a merge of their producer fences through IN_FENCE_FD instead of
-attaching implicit fences. Check that completion stays pending until
-both producers signal, in either order.
+Add the LUT_3D_FORMATS, LUT_3D_FORMAT and FB_ID colorop properties to the
+colorop property enum and name table so they are discovered and can be
+programmed through the generic colorop property setters and the atomic
+commit path.
 
 Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 ---
- tests/kms_colorop_dma.c | 72 +++++++++++++++++++++++++++++++++++------
- 1 file changed, 62 insertions(+), 10 deletions(-)
+ lib/igt_kms.c | 5 ++++-
+ lib/igt_kms.h | 3 +++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_colorop_dma.c b/tests/kms_colorop_dma.c
-index 5fa2934e1721..2a07faecab8d 100644
---- a/tests/kms_colorop_dma.c
-+++ b/tests/kms_colorop_dma.c
-@@ -41,6 +41,17 @@
-  * Mega feature: General Display Features
-  * Test category: functionality test
-  *
-+ * SUBTEST: plane-3dlut_dma-merged-in-fence-signal-lut-first
-+ * SUBTEST: plane-3dlut_dma-merged-in-fence-signal-scanout-first
-+ * Description: A commit flipping both the scanout and DMA 3D LUT
-+ *              framebuffers, with their producer fences merged into the
-+ *              plane IN_FENCE_FD, must not complete until both producers
-+ *              signal, in either order
-+ * Driver requirement: vkms, amdgpu
-+ * Functionality: kms_core
-+ * Mega feature: General Display Features
-+ * Test category: functionality test
-+ *
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 915c6a8a2cbd..9a6d4f1e9996 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -100,7 +100,7 @@
+ #define MAX_CONNECTORS 32
+ #define MAX_EDID 2
+ #define DISPLAY_TILE_BLOCK 0x12
+-#define MAX_NUM_COLOROPS 256
++#define MAX_NUM_COLOROPS 1024
+ /**
+  * IGT_KMS_CONNECTOR_NAME_SIZE - Size used when a connector name is needed
   */
- 
- typedef struct {
-@@ -252,6 +263,11 @@ static const char * const lut3d_dma_producer_desc[] = {
- struct lut3d_dma_fence_case {
- 	/* Also flip to a new scanout FB with its own producer fence. */
- 	bool fence_scanout;
-+	/*
-+	 * Merge the producer fences into the plane's IN_FENCE_FD instead of
-+	 * attaching them to the BOs as implicit write fences.
-+	 */
-+	bool explicit_fence;
- 	/* Producer signaled first when there are two. */
- 	enum lut3d_dma_producer first;
+@@ -727,6 +727,9 @@ const char * const igt_colorop_prop_names[IGT_NUM_COLOROP_PROPS] = {
+ 	[IGT_COLOROP_LUT3D_INTERPOLATION] = "LUT3D_INTERPOLATION",
+ 	[IGT_COLOROP_FIXED_MATRIX_TYPE] = "FIXED_MATRIX_TYPE",
+ 	[IGT_COLOROP_NEXT] = "NEXT",
++	[IGT_COLOROP_LUT_3D_FORMATS] = "LUT_3D_FORMATS",
++	[IGT_COLOROP_LUT_3D_FORMAT] = "LUT_3D_FORMAT",
++	[IGT_COLOROP_FB_ID] = "FB_ID",
  };
-@@ -315,11 +331,13 @@ static void attach_implicit_write_fence(int drm_fd, uint32_t gem_handle,
- }
  
- /*
-- * Switch from LUT A to LUT B behind unsignaled producer fences. B's BO always
-- * carries an implicit write fence. With fence_scanout, the plane also flips
-- * to a copy of the input FB whose BO carries an independent implicit write
-- * fence. The commit must stay pending until every producer fence signals,
-- * and the captured output must then reflect LUT B.
-+ * Switch from LUT A to LUT B behind unsignaled producer fences. B always has
-+ * a producer fence. With fence_scanout, the plane also flips to a copy of the
-+ * input FB with an independent producer fence. By default each fence is
-+ * attached to its BO as an implicit write fence; with explicit_fence they
-+ * are merged into the plane's IN_FENCE_FD instead. The commit must stay
-+ * pending until every producer fence signals, and the captured output must
-+ * then reflect LUT B.
-  *
-  * The exit handler signals the producer fence if the test fails while the
-  * commit is pending.
-@@ -350,6 +368,8 @@ static void lut3d_dma_fence_test(igt_display_t *display,
- 	bool match = false;
+ const char * const igt_crtc_prop_names[IGT_NUM_CRTC_PROPS] = {
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index dfcb91e02218..d8f2dd4d1525 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -371,6 +371,9 @@ enum igt_atomic_colorop_properties {
+ 	IGT_COLOROP_LUT3D_INTERPOLATION,
+ 	IGT_COLOROP_FIXED_MATRIX_TYPE,
+ 	IGT_COLOROP_NEXT,
++	IGT_COLOROP_LUT_3D_FORMATS,
++	IGT_COLOROP_LUT_3D_FORMAT,
++	IGT_COLOROP_FB_ID,
+ 	IGT_NUM_COLOROP_PROPS
+ };
  
- 	igt_require_sw_sync();
-+	if (tc->explicit_fence)
-+		igt_require(igt_plane_has_prop(plane, IGT_PLANE_IN_FENCE_FD));
- 	igt_install_exit_handler(signal_pending_producer_fences);
- 	igt_assert(crtc);
- 
-@@ -401,16 +421,32 @@ static void lut3d_dma_fence_test(igt_display_t *display,
- 		igt_plane_set_fb(plane, &scanout_b);
- 	}
- 
--	attach_implicit_write_fence(display->drm_fd, lut_b.lut3d_dma_fb.gem_handle,
--				    fences[LUT3D_DMA_PRODUCER_LUT]);
--	if (tc->fence_scanout)
--		attach_implicit_write_fence(display->drm_fd, scanout_b.gem_handle,
--					    fences[LUT3D_DMA_PRODUCER_SCANOUT]);
-+	if (tc->explicit_fence) {
-+		int in_fence = fences[LUT3D_DMA_PRODUCER_LUT];
-+
-+		if (tc->fence_scanout) {
-+			in_fence = sync_fence_merge(fences[LUT3D_DMA_PRODUCER_LUT],
-+						    fences[LUT3D_DMA_PRODUCER_SCANOUT]);
-+			igt_assert_lte(0, in_fence);
-+		}
-+
-+		igt_plane_set_fence_fd(plane, in_fence);
-+		if (in_fence != fences[LUT3D_DMA_PRODUCER_LUT])
-+			close(in_fence);
-+	} else {
-+		attach_implicit_write_fence(display->drm_fd, lut_b.lut3d_dma_fb.gem_handle,
-+					    fences[LUT3D_DMA_PRODUCER_LUT]);
-+		if (tc->fence_scanout)
-+			attach_implicit_write_fence(display->drm_fd, scanout_b.gem_handle,
-+						    fences[LUT3D_DMA_PRODUCER_SCANOUT]);
-+	}
- 
- 	igt_output_set_writeback_fb(output, output_fb);
- 	igt_crtc_request_out_fence(crtc);
- 
- 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_NONBLOCK, NULL);
-+	/* A successful commit consumes the in-fence; a failed one leaves it set. */
-+	igt_plane_set_fence_fd(plane, -1);
- 
- 	if (ret == 0) {
- 		out_fence = crtc->out_fence_fd;
-@@ -649,6 +685,22 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
- 							     });
- 			}
- 
-+			for (int p = 0; p < LUT3D_DMA_NUM_PRODUCERS; p++) {
-+				igt_describe("A commit flipping both the scanout and DMA 3D LUT "
-+					     "framebuffers, with their producer fences merged "
-+					     "into the plane IN_FENCE_FD, must not complete "
-+					     "until both producers signal, in either order");
-+				igt_subtest_f("plane-3dlut_dma-merged-in-fence-signal-%s-first",
-+					      lut3d_dma_producer_names[p])
-+					lut3d_dma_fence_test(&display, output, plane,
-+							     &input_fb, &output_fb,
-+							     &(struct lut3d_dma_fence_case) {
-+								.fence_scanout = true,
-+								.explicit_fence = true,
-+								.first = p,
-+							     });
-+			}
-+
- 			igt_fixture() {
- 				igt_detach_crtc(&display, output);
- 				igt_remove_fb(display.drm_fd, &input_fb);
 -- 
 2.56.0
 
