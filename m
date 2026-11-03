@@ -2,48 +2,77 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D2F606D81B
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Nov 2026 12:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41AF8606A327
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Nov 2026 12:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=sNI5pBfC
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SLUZu2tC
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BCFC410E113;
-	Tue,  3 Nov 2026 12:28:01 +0000 (UTC)
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E58EB89C86
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2026 12:27:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
- MIME-Version:Date:Message-ID:From:Reply-To;
- bh=BwqJZvLDnPuJJNETBjHj2jvvU7WjpRwK2mySsUGqHbc=; t=1793708821; x=2109068821; 
- b=sNI5pBfCzKRrZrCMqheF0wL38uB0iYp8yBn5EQpQg8QmeykUgrgiXmrn/0f7oCBkJPKOrt2NTbI
- SMAO1pqQd24cbY2lKvkElZM97sZD+C7eP8nUNy0hdu1CWMsePEJjC5CoqXCpBXCf67p9xpWyeKnT0
- 2maPooEde4MXF/XsYEJZWxeCG0nhU/HB1h7HtUZEzP+wr9wyAcbYmpTORc3QTQmB+ttIiFCv5ECJr
- jSlXfuZCRJXnDM8VAMnOiIEa3JJUihs5mYOMTs3LE5Z+Ona28qmswRaC6A0D2yMsl2CBQov1LtaLq
- MQXXgzZHWGRSKzCXsyOyGC5YqgKmlkkd6fxA==;
-Received: from [81.79.79.1] (helo=[192.168.0.116])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1xODbP-001CiJ-Sy; Tue, 03 Nov 2026 13:26:59 +0100
-Message-ID: <691dfe6c-fd4f-4300-8686-d1e0e414dd46@igalia.com>
-Date: Tue, 3 Nov 2026 12:26:59 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id E798410E07F;
+	Tue,  3 Nov 2026 12:48:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 6D16610E07F
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2026 12:47:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1793710076; x=1825246076;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=XBbtUq7Q02A6f6XTJMkBlKMWBcCg51cyDMC8SD9FAas=;
+ b=SLUZu2tCQIBKzpOKohH1EJ8HUTlAVuCMwQlUf+S1QsVNi8Iau9q7T1Dm
+ TuSgpdAcNOhIfm4ljxJBBLm97TRiH8G4RMGLZ9Ar/HYiuqL1oOw2SAf9C
+ qgZ9wdIM62u+N31C/65j6U0d00V/raY8StOyF2RBiRlSn5yB5+oXECQ9y
+ tBDXGrGS3Sn1VrLOxvCNHat2krKi9TWuDU+lj9pt15HaP/CFcCKHp2LlW
+ RejDkJOpj/3/egmq13BDI9btNyo5bWfcqFiV4nXcJu1/6htWhV7cxaBqC
+ qCCByMVzQ/4NqtpqA74tbEUDscDk7ufGn73DUfIlFaA7K7QPdI6/c+MtO Q==;
+X-CSE-ConnectionGUID: jOFCWu4ZQJq2Csovw3EZ+Q==
+X-CSE-MsgGUID: jIUGWEjeTAKEVDebn6LnDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11954"; a="2315927"
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="2315927"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Nov 2026 04:47:56 -0800
+X-CSE-ConnectionGUID: sZqPrvQKSAWwfUDi+l5fRg==
+X-CSE-MsgGUID: rBRXeoNxRP6gtUB4qOSsFg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,193,1787036400"; 
+   d="scan'208";a="6572655"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Nov 2026 04:47:53 -0800
+Date: Tue, 3 Nov 2026 13:47:32 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Cc: igt-dev@lists.freedesktop.org, Vitaly Prosyak <vitaly.prosyak@amd.com>, 
+ Felix Kuehling <felix.kuehling@amd.com>, Lancelot Six <lancelot.six@amd.com>, 
+ James Zhu <james.zhu@amd.com>, Lijo Lazar <lijo.lazar@amd.com>, 
+ Samuel Pitoiset <hakzsam@gmail.com>, Natalie Vock <natalie.vock@gmx.de>, 
+ Timur =?utf-8?Q?Krist=C3=B3f?= <timur.kristof@gmail.com>,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+ Alex Deucher <alexander.deucher@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Subject: Re: [PATCH] tests/amdgpu: Add SLTH validation tests for trap
+ handling and trap return.
+Message-ID: <rx6mv4bwvbf7wtudfwv552majaxiasayt7ed6pmdw2y2loesnq@l2otmnrbjdnf>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+ igt-dev@lists.freedesktop.org, 
+ Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Felix Kuehling <felix.kuehling@amd.com>, 
+ Lancelot Six <lancelot.six@amd.com>, James Zhu <james.zhu@amd.com>,
+ Lijo Lazar <lijo.lazar@amd.com>, 
+ Samuel Pitoiset <hakzsam@gmail.com>, Natalie Vock <natalie.vock@gmx.de>, 
+ Timur =?utf-8?Q?Krist=C3=B3f?= <timur.kristof@gmail.com>,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+ Alex Deucher <alexander.deucher@amd.com>,
+ Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+References: <20261102152147.1456213-1-srinivasan.shanmugam@amd.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 02/10] tests/amd/gem_list_handles: Add basic test
- for DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES
-To: "Francis, David" <David.Francis@amd.com>,
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-References: <20261023145032.22650-1-tvrtko.ursulin@igalia.com>
- <20261023145032.22650-3-tvrtko.ursulin@igalia.com>
- <CHAPR12MB999247B0A449B8C9260E9CE183EF6F2@CHAPR12MB999247.namprd12.prod.outlook.com>
-Content-Language: en-GB
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <CHAPR12MB999247B0A449B8C9260E9CE183EF6F2@CHAPR12MB999247.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261102152147.1456213-1-srinivasan.shanmugam@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,226 +84,56 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-On 28/10/2026 14:02, Francis, David wrote:
->> +               /*
->> +                * Apparently kernel never checked for mbz so now we have to
->> +                * keep accepting garbage.
->> +                */
->> +               list.padding = 0x13ac5;
+Hi Srinivasan,
+On 2026-11-02 at 20:51:47 +0530, Srinivasan Shanmugam wrote:
+> SLTH allows a shader to trigger a trap, execute a trap
+> handler, return from the trap, and continue shader
+> execution.
 > 
-> Mea culpa on this one
+> This patch adds validation tests to verify that each step
+> of this flow works correctly.
 > 
-> This patch is
-> Reviewed-by: David Francis <David.Francis@amd.com>
+[cut]
+> 
+> Together, these tests verify trap entry, trap handler
+> execution, trap return, VGPR state preservation across
+> trap return, and correct resumption of shader execution.
+> 
+> Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Cc: Felix Kuehling <felix.kuehling@amd.com>
+> Cc: Lancelot Six <lancelot.six@amd.com>
+> Cc: James Zhu <james.zhu@amd.com>
+> Cc: Lijo Lazar <lijo.lazar@amd.com>
+> Cc: Samuel Pitoiset <hakzsam@gmail.com>
+> Cc: Natalie Vock <natalie.vock@gmx.de>
+> Cc: Timur Kristóf <timur.kristof@gmail.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+> Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+> ---
+>  include/drm-uapi/amdgpu_drm.h         |   18 +-
 
-Thanks!
+Please make changes to UAPI in separate commit, also note to which
+public tree you sync, drm-next or some other, and write a commit
+hash. If it is not drm-next, imho write also a link to lore.kernel.org
+so anyone can see and pull your kernel change.
 
-Can you pick up the first two and merge to IGT? Or maybe Vitaly we 
-should first do a smoke run somehow? Probably best since I only tested 
-on the Steam Deck.
+For example see commit a31c48a76e8849084afd70331484a019d55d82f8
+drm-uapi/xe: sync with kernel f99a05cc0b85
 
 Regards,
+Kamil
 
-Tvrtko
-
-
-> ________________________________________
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Sent: Friday, October 23, 2026 10:50 AM
-> To: igt-dev@lists.freedesktop.org
-> Cc: Francis, David; Tvrtko Ursulin
-> Subject: [PATCH i-g-t 02/10] tests/amd/gem_list_handles: Add basic test for DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES
+>  lib/amdgpu/shaders/amd_shader_store.h |  190 +++
+>  tests/amdgpu/amd_basic.c              | 1860 +++++++++++++++++++++++--
+>  3 files changed, 1928 insertions(+), 140 deletions(-)
 > 
-> Looks like we had no test for this so far se lets add one.
-> 
-> Just some basic test cases to verify input checking and normal
-> operation.
-> 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Cc: David Francis <David.Francis@amd.com>
-> ---
->   tests/amdgpu/amd_list_handles.c | 149 ++++++++++++++++++++++++++++++++
->   tests/amdgpu/meson.build        |   1 +
->   2 files changed, 150 insertions(+)
->   create mode 100644 tests/amdgpu/amd_list_handles.c
-> 
-> diff --git a/tests/amdgpu/amd_list_handles.c b/tests/amdgpu/amd_list_handles.c
-> new file mode 100644
-> index 000000000000..2c05e8fcdfed
-> --- /dev/null
-> +++ b/tests/amdgpu/amd_list_handles.c
-> @@ -0,0 +1,149 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright (c) 2026 Valve Corporation
-> + */
-> +#include <sys/ioctl.h>
-> +
-> +#include "igt.h"
-> +#include "drmtest.h"
-> +
-> +#include <amdgpu.h>
-> +#include <amdgpu_drm.h>
-> +
-> +#include "lib/amdgpu/amd_memory.h"
-> +
-> +#define TEST_PADDING (1 << 0)
-> +#define TEST_FAULT   (1 << 1)
-> +#define TEST_TWOPASS (1 << 2)
-> +#define TEST_PROBE   (1 << 3)
-> +
-> +#define BUFFER_SIZE    4096
-> +
-> +static void
-> +basic(amdgpu_device_handle dev, unsigned int num_bos, unsigned int flags)
-> +{
-> +       struct drm_amdgpu_gem_list_handles_entry entry[num_bos];
-> +       struct drm_amdgpu_gem_list_handles list = {
-> +               .entries = (uintptr_t)entry,
-> +               .num_entries = num_bos,
-> +       };
-> +       int fd = amdgpu_device_get_fd(dev);
-> +       amdgpu_bo_handle bo[num_bos];
-> +       int i, ret;
-> +
-> +       igt_assert_fd(fd);
-> +
-> +       for (i = 0; i < num_bos; i++) {
-> +               struct amdgpu_bo_alloc_request alloc = {
-> +                       .alloc_size = BUFFER_SIZE,
-> +                       .preferred_heap = AMDGPU_GEM_DOMAIN_GTT,
-> +               };
-> +
-> +               ret = amdgpu_bo_alloc(dev, &alloc, &bo[i]);
-> +               igt_assert_eq(ret, 0);
-> +       }
-> +
-> +       if (flags & TEST_PADDING) {
-> +               /*
-> +                * Apparently kernel never checked for mbz so now we have to
-> +                * keep accepting garbage.
-> +                */
-> +               list.padding = 0x13ac5;
-> +       } else if (flags & TEST_FAULT) {
-> +               list.entries = 0;
-> +       }
-> +
-> +       if (flags & TEST_TWOPASS) {
-> +               if (flags & TEST_PROBE) {
-> +                       list.num_entries = 0;
-> +               } else {
-> +                       igt_assert(num_bos > 1);
-> +                       list.num_entries = num_bos - 1;
-> +               }
-> +               ret = ioctl(fd, DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES, &list);
-> +               igt_assert_eq(ret, 0);
-> +               igt_assert_eq(list.num_entries, num_bos);
-> +       }
-> +
-> +       ret = ioctl(fd, DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES, &list);
-> +       if (flags & TEST_FAULT) {
-> +               i = errno;
-> +               igt_assert_eq(ret, -1);
-> +               igt_assert_eq(i, EFAULT);
-> +               goto out;
-> +       }
-> +       igt_assert_eq(ret, 0);
-> +       igt_assert_eq(list.num_entries, num_bos);
-> +
-> +       for (i = 0; i < num_bos; i++) {
-> +               struct drm_amdgpu_gem_list_handles_entry *e = &entry[i];
-> +               uint32_t handle;
-> +
-> +               ret = amdgpu_bo_export(bo[i],
-> +                                      amdgpu_bo_handle_type_kms_noimport,
-> +                                      &handle);
-> +               igt_assert_eq(ret, 0);
-> +               igt_assert_eq(e->gem_handle, handle);
-> +
-> +               igt_assert_eq(e->flags, 0);
-> +               igt_assert_eq(e->size, BUFFER_SIZE);
-> +               igt_assert_eq(e->preferred_domains, AMDGPU_GEM_DOMAIN_GTT);
-> +               igt_assert_eq(e->alloc_flags,
-> +                             AMDGPU_GEM_CREATE_VRAM_CLEARED |
-> +                             AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE);
-> +               igt_assert_eq(e->alignment, 0);
-> +       }
-> +
-> +out:
-> +       for (i = 0; i < num_bos; i++)
-> +               amdgpu_bo_free(bo[i]);
-> +}
-> +
-> +int igt_main()
-> +{
-> +       amdgpu_device_handle dev;
-> +       int fd = -1;
-> +
-> +       igt_fixture() {
-> +               uint32_t major, minor;
-> +               int err;
-> +
-> +               fd = drm_open_driver_render(DRIVER_AMDGPU);
-> +
-> +               err = amdgpu_device_initialize(fd, &major, &minor, &dev);
-> +               igt_require(err == 0);
-> +       }
-> +
-> +       igt_describe("Check padding backward compatibility");
-> +       igt_subtest("padding")
-> +               basic(dev, 1, TEST_PADDING);
-> +
-> +       igt_describe("Check fault detection");
-> +       igt_subtest("fault")
-> +               basic(dev, 1, TEST_FAULT);
-> +
-> +       igt_describe("List no buffer objects");
-> +       igt_subtest("no-bos")
-> +               basic(dev, 0, 0);
-> +
-> +       igt_describe("Create and list one buffer object");
-> +       igt_subtest("one-bo")
-> +               basic(dev, 1, 0);
-> +
-> +       igt_describe("Create and list many buffer objects");
-> +       igt_subtest("many-bo")
-> +               basic(dev, 1024, 0);
-> +
-> +       igt_describe("Create and list many buffer objects in two-pass mode");
-> +       igt_subtest("many-bo-two-pass")
-> +               basic(dev, 16, TEST_TWOPASS);
-> +
-> +       igt_describe("Create and list many buffer objects in two-pass probe mode");
-> +       igt_subtest("many-bo-two-pass-probe")
-> +               basic(dev, 16, TEST_TWOPASS | TEST_PROBE);
-> +
-> +       igt_fixture() {
-> +               amdgpu_device_deinitialize(dev);
-> +               drm_close_driver(fd);
-> +       }
-> +}
-> diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
-> index 61b81c81407d..2dcc3228b583 100644
-> --- a/tests/amdgpu/meson.build
-> +++ b/tests/amdgpu/meson.build
-> @@ -28,6 +28,7 @@ if libdrm_amdgpu.found()
->                            'amd_jpeg_dec',
->                            'amd_jpeg_queue',
->                            'amd_link_settings',
-> +                         'amd_list_handles',
->                            'amd_lockdep',
->                            'amd_max_bpc',
->                            'amd_mem_leak',
-> --
-> 2.56.0
-> 
-
+[cut]
