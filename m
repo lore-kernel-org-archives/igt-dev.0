@@ -2,68 +2,72 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14464606D83E
-	for <igt-dev@archiver.kernel.org>; Tue,  3 Nov 2026 21:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46533606A324
+	for <igt-dev@archiver.kernel.org>; Tue,  3 Nov 2026 21:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=2txrTtWi
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=jU2getIu
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A773D10F899;
-	Tue,  3 Nov 2026 21:41:09 +0000 (UTC)
-Received: from SN4PR2101CU001.outbound.protection.outlook.com
- (mail-southcentralusazon11012040.outbound.protection.outlook.com
- [40.93.195.40])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BB3E910F898
- for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2026 21:38:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E022310E839;
+	Tue,  3 Nov 2026 21:42:01 +0000 (UTC)
+Received: from SN4PR0501CU005.outbound.protection.outlook.com
+ (mail-southcentralusazon11011016.outbound.protection.outlook.com
+ [40.93.194.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8783410F89E
+ for <igt-dev@lists.freedesktop.org>; Tue,  3 Nov 2026 21:38:28 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d3H16E/1bM3lkaH+/ReK8EfsnKnK3ntElsrbZfOy7NuTJeQGLNjjcVEumdz7DoV1VpgV2FhoTuOfny5+FOWYaqAZorPqVpEEbd61YYP+QSQOuiCkKix1VTBEF7+jKSoKxAQPzcjQ9+R9Wuv/9CH4+RwQzMJ8xZGvV+OS/YPaiDN5kRzpakGvpagyPh7a9s8dKtAWIG68yoRfl34oCsCT26j7M/U9QvyhAm8T4DqtJ7DeaqJHc4s1FVxqqlXjfQ4GzKlpHeOA6qnvxyawH2naoJqLrTVmpS7v6iFnslUAsIr355uV+8GzXxneAm+RDAJbdw/WSBCM6tvFe5K0jrI3tg==
+ b=P6dPty9wSCuv0dX86zD1HQkcV09McNMuAfhGCtkwAPRHEs8zOO2MCbRnctI3njP2fhgbWT3cs9xgy4LwmIDSYJQ0aCcqTmUzfuPVqYjtYB+Un53SFgKhFmyTIXUZZBnLwHRxk3ppwZz+uPQXEDet75QfoaN5OMiInLX1Tdd5Nl8JuSd6wxXvpqxZ6mb0+hpRpMCKgGKkH4DiWOK47XTWX9R0h7JAP6Eu7VzHVU3Mx6oIPl+6kKjw4KmML8jR8P/gLKjfVir35Dk8+AEfnrou7h4UF9IWNg/MqNjgUuqdkF1B5rO129hgj5O/tJmBbzG9hhWqNZIq2f2A9J5mccngLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=puMle4r6PussUT9TnqByUT3Bd2PwkWOTDulwNP0fvas=;
- b=GkiHPVg82+iYn4t4gj4929H8IvXxjr9Ow2YNbOJ/iP+VUqDuXm4fqOqiqV7JAQ4wauQ4ivYVyaM2X4w13y0iwFJn0cxCvN/j2CB3Nl6CmPlZc2Xk/gfbJ2zR4Iu0QR4+nYEymuJ0Bc8oUvMgwiOx6tJrkyiz4WJ9DlDrueMSUP6XuF3h65XYlqJRbCPTipOreCtHhBmBotaFXS2Isrq393OIVBsSTQm4xrEZwyEcFVTNCTQs4sPbAr4uS04XxhjgSlwztQB4ZcRSxYbslYOvkWQZu3lBqVF2/TyE6q0QQE0Iky1PtLJbVZSKkxVJoIgvcLtdEUtu03F4nRJoCf5AZA==
+ bh=vF5nyI5no8sHs+Xx6T8je/5GoNnbgYF7dk0zfj5/hzU=;
+ b=XGBABLOtqfAHasPnu2/9RwVF/La6J0hQ9mzwNKy65KjhLg6f++K+Kwg2TCTCkgQ7tA3sKjg+aiWWzgPgRPAndNHhFAQ6fcrJcX4nJNPapqB3VFbEbzs8q6VkEcmppBB/DngODSKI87TEghwwFvBXDF6qyQE74KxNC55i+Odtwp2dfDtHugqJnv521cIYDPsR1sX/eb8bi0i2TUTyclyQppWGtgsYJHtMlwzOLjrSrgbcGPfTS54PPNdtKhYzabrXf0vplEfS+8QS+xuC/ejWfnPzZIa9IdJpFZLZAax34vzhdh2Xr+3oXWQIkeHAWc5qYFOJq78qxo36tq9uxKlbJA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=puMle4r6PussUT9TnqByUT3Bd2PwkWOTDulwNP0fvas=;
- b=2txrTtWihyqSwtceeeESgf4/NcNgZwobJ6B66CHgwUNzWGXuwJddUtkjmKh/NXHa4H+QjrQ2NsS/qOU9YFNnnf6CyMqYDLDteVeIK07x+YqFYMvQKv5a3smAsxZZjtxkaWTVpBMOhZNFU5NiEBzlYHWgWI5y2zBdsh38nw9NPlQ=
-Received: from BN0PR02CA0027.namprd02.prod.outlook.com (2603:10b6:408:e4::32)
- by LY0PR12MB250945.namprd12.prod.outlook.com (2603:10b6:404:214::15)
+ bh=vF5nyI5no8sHs+Xx6T8je/5GoNnbgYF7dk0zfj5/hzU=;
+ b=jU2getIuxG3NY/vI8T1VszWQz6WgB7AOAP11OmADDLkBVbxdTBCOjomPVEYHPR4IIQAH+Ge6cXHp9SYdYINNDK8rogoDNgo2lb/RxIjNgJ/k+OINWKZJw31f1mbQHQ0DGwkBSrBZUaY3dCWvkQoTbRIgU9kPlCu7WffvtWXgyps=
+Received: from BN0PR02CA0028.namprd02.prod.outlook.com (2603:10b6:408:e4::33)
+ by CH3PR12MB8307.namprd12.prod.outlook.com (2603:10b6:610:12f::13)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Tue, 3 Nov 2026
- 21:38:21 +0000
+ 21:38:20 +0000
 Received: from BN1PEPF00018075.namprd04.prod.outlook.com
- (2603:10b6:408:e4:cafe::7b) by BN0PR02CA0027.outlook.office365.com
- (2603:10b6:408:e4::32) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:408:e4:cafe::9e) by BN0PR02CA0028.outlook.office365.com
+ (2603:10b6:408:e4::33) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.8 via Frontend Transport; Tue, 3
- Nov 2026 21:38:21 +0000
+ Nov 2026 21:38:20 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
  BN1PEPF00018075.mail.protection.outlook.com (10.167.245.203) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 21:38:21 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.592.5 via Frontend Transport; Tue, 3 Nov 2026 21:38:20 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 3 Nov
- 2026 15:38:19 -0600
+ 2026 15:38:20 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Tue, 3 Nov
+ 2026 15:38:20 -0600
 Received: from hwentlanryzen (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
  Transport; Tue, 3 Nov 2026 15:38:19 -0600
 From: Harry Wentland <harry.wentland@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Harry Wentland <harry.wentland@amd.com>
-Subject: [PATCH v1 06/10] tests/kms_colorop_dma: test implicit fencing of DMA
- 3D LUT framebuffers
-Date: Tue, 3 Nov 2026 16:37:56 -0500
-Message-ID: <20261103213800.618130-7-harry.wentland@amd.com>
+Subject: [PATCH v1 07/10] tests/kms_colorop_dma: test scanout and DMA 3D LUT
+ implicit fences together
+Date: Tue, 3 Nov 2026 16:37:57 -0500
+Message-ID: <20261103213800.618130-8-harry.wentland@amd.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261103213800.618130-1-harry.wentland@amd.com>
 References: <20261103213800.618130-1-harry.wentland@amd.com>
@@ -73,29 +77,29 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF00018075:EE_|LY0PR12MB250945:EE_
-X-MS-Office365-Filtering-Correlation-Id: 23554bf4-87af-47ee-8d97-08df39f2c818
+X-MS-TrafficTypeDiagnostic: BN1PEPF00018075:EE_|CH3PR12MB8307:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4d5b9ec-c37b-4bc0-1846-08df39f2c7d5
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700016|82310400026|376014|23010399003|1800799024|6133799003|10067099003|18002099003|22082099003|3023799007|56012099006|261022113327099003|261022105027099003|11063799006|261022075727099003|261021130227099003|261009223027099003|261021123027099003|261021135927099003|261028144727099003|261102123227099003|261022115727099003|261026140227099003|261026130827099003|261026135527099003|261021133027099003|261026121527099003|261021121427099003;
-X-Microsoft-Antispam-Message-Info: lEZJjN/d7NxW5+Tt084Sn5XN6GQCusnS39Dp768JKBzOFz3wJicSdKCXlklGekQ4kqbI0wJy0o/xRT0frdkHAbVGetA2OZU9RhlmFHEWU1icTC8rEn7v7Aph6KHQ5SyikQG2/Q4H79F4bFonCarmGeIKgdtL51DpdyEyntMaaSewlUh91yqSrAOa6oGYToJr2KA2wdInpIH6k9F1+Q7W434+p5ME7Oj90s48210qpJygzhkRuJ96P82UM1UX0ViAX2W51TEkt5r+Nxbv8SxexfdqyoTieF5rYE7k/leM1z/ZLtfuwWTXRp4i/4yu1kYM/kTDBNlG9ZCp6gVVONm7h9P22TOvB2mMVQijmBTBJmOQDV0ESW3t+H+cjctc4jOW2RYm7YNmp5N86kf+0CKcFUpURuNc9grxyPZA4JGnW9xrr8tBN1QDli/QEpgHVDTOtluKSd2f39Gp/ZFieZlRCYDpHv1SgrbsZul8FCf9QV776SRkNV9G0I1hvATPSTTw1/9OtTpXfBil8gT2Ipxs+tstKjTXDUxglOLqUzggc4gp/ZAhHEcsbrR2ehpsQDsFhhzSJ/yb0vM/PYW14j6IcFPXnWQgZ4KrJMO/hVFeZHIqDh2LMyUS+3WILdXvjTWevepoPaOYRgWL436a3d8M7SLyBgDHojiB1nfrAk0N+Zf6ED5n+/whODaYUmBNbYZ/PuXkH6O2s/F5wA4K8FlvMg==
+ ARA:13230040|1800799024|23010399003|376014|82310400026|36860700016|261021123027099003|11063799006|261009223027099003|261026121527099003|261022105027099003|261022075727099003|56012099006|261102123227099003|261021121427099003|261026140227099003|261028144727099003|10067099003|18002099003|22082099003|3023799007;
+X-Microsoft-Antispam-Message-Info: GgnJ5OdWNmgV+y7oJR+mH037BB7QzSbyPK8stqqcWvU4RDbJRGdtvk6rw53UlTdWSJBo3JnJ3IbRx9Rp1bYMXN4BoFSvc449bjudg3kEIl458YXjyKOaTYinw8+zD64O9+loC+ndOJp4uQDyVx/vD15MoUzZUirbns+s1h7qa2KlsSuZoWW6CtcoG7/3Z219dx4jo8f9mRf/sNUBXYBlrNmFBRTvLufNxnSVBRvx25PLrC2/jSojXcvGu8IAtOzawfNW9zsaSpW3nDuFoNM5eYIWshtGsRq4yJh4SUZ5luwOmPHxbRIQcOoDnAJQ3AbLAA4IeS9O+VTcgNQAhx+hjiI/QJOaZ9tlxyGvNgypFV7HnWaYM7z2lkISM65QxZaOwuTIo9O/qse8Loj9Htdo7VVVcduIQOhDfH7kYN9iIS6JCoX354Vv8kbOllcosmOkhKEqI+/+CIrhYzPiU4IiUaMXqAnT664yOAEhSKhe8PwkVNDva1yZzL60dVa9l0Gq8S2MaYrMnqUYZn2GheTa3tf3lOa62wZ1QH21uyGtGvLOtG8iaMVw/xYUj+rgKFhzJe6o+WykRdyioDJCBVHD8MsZgY1WOvmpSOgN5QD5J0mRFd4+0jp83EMS9nu1HFOzBtpWV/aagMRwja4KB0UazF+WImsywa2O5WDYJeV+S8y0QcWnsr5Ef0XJP7Xz8Zo+p7IwHBsxA9wVxFFmaI8y5g==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700016)(82310400026)(376014)(23010399003)(1800799024)(6133799003)(10067099003)(18002099003)(22082099003)(3023799007)(56012099006)(261022113327099003)(261022105027099003)(11063799006)(261022075727099003)(261021130227099003)(261009223027099003)(261021123027099003)(261021135927099003)(261028144727099003)(261102123227099003)(261022115727099003)(261026140227099003)(261026130827099003)(261026135527099003)(261021133027099003)(261026121527099003)(261021121427099003);
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(1800799024)(23010399003)(376014)(82310400026)(36860700016)(261021123027099003)(11063799006)(261009223027099003)(261026121527099003)(261022105027099003)(261022075727099003)(56012099006)(261102123227099003)(261021121427099003)(261026140227099003)(261028144727099003)(10067099003)(18002099003)(22082099003)(3023799007);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: VEEtFrYLWblrqFuo+BDBi11E86HXkFa+RBRP+X6Tu+LxWw0S0pfyFiWGczKXetax6STB4Wt9KIDnVUdc147TKtGHkJxe+f3Xt3u+TEUNVuYZi6tdUrIdd074TdBQOhzJSGT4Dqt+z/Pph1OWPz2Fv4K+njS2otowN46nwwTd61eggIxM6XJVBSK9vF8tHH/PbGkFI9t7mh1/oqqav8M5xX3o9LA3G8GxZEXRP8rBb+phZS8xX9iRFOReC14PWf/y+XDrTERiEi9wGtTIUtQUlMfvidB4xcUXqeS6beaPfSdxCbmRtEcYb8DhkkRkkjCX7LISqc4rM4GvXjv+rFKDG+kndn1MlxPUpd00olFW7knoYOGLyXTej7WfxMmfqje9FXVZ334+piH0hI5EMZ3/7kBijDDyQKhbh9VfruoYTY4BC0iOOd7T4aun8tUFOhWb
+X-MS-Exchange-AntiSpam-MessageData-0: pKSPDu+YjOSccNdKLubh+uF7wuFsTJtb0bBFJYIU8wN9hdhLuaRyb92qL6gmRdc6ThicwUzZ5djdJFLswdfRTy9Z2aVViHHuQ55oEbTkNkQ8eVPWIrGQB8tCqe9iNH5UhBV6huePJtMBoDVbbEv/bdOGRvAIl3SPz1ewjsDHemulyhUKWoVlDshEscH1oJExNtma/i7K4wht4Vatz1E9m161At5zdnimgoOn3JWtHsQcPGHvHsbVQ0vSj/bWXeJjZ3DT/AXAm4mHwi0i58wU/dXIUjfaCfsh/ZzKK28IXKzHPd2XCHe50/84WRdFi4jJ7nBh60bfWa6AWQYkkTJurhfsowxQmYGrthxRZ7o3JCteplFYk2va9EFWKZ0a8tsYzPj2VRCaTALAuJ/UF+ZgvDkkM71Z8jiAzqidCZXskvj3/tLK1qXtTs3GW9RmVOZn
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 21:38:21.1401 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 23554bf4-87af-47ee-8d97-08df39f2c818
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2026 21:38:20.6963 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4d5b9ec-c37b-4bc0-1846-08df39f2c7d5
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
+ Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource: BN1PEPF00018075.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LY0PR12MB250945
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8307
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -114,45 +118,36 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The display must wait for a DMA 3D LUT framebuffer's producer before
-consuming its contents. Existing LUT output tests populate the buffer
-before committing and do not exercise an outstanding implicit write
-fence.
+A commit that flips both the scanout framebuffer and the DMA 3D LUT
+framebuffer depends on two producers. The display must wait for both,
+and the scanout framebuffer's implicit fence must not be mistaken for an
+explicit fence that would cause the LUT's implicit write fence to be
+ignored.
 
-Switch between distinct LUTs with an unsignaled write fence attached to
-the new LUT BO. Check that CRTC and writeback completion remain pending
-until the fence signals, then compare the captured output against the
-new LUT's software reference. Install an exit handler that signals the
-producer fence if the test fails while the commit is pending.
-
-Keep producer-fence setup and release indexed so follow-up tests can add
-independent producers without duplicating synchronization logic.
+Generalize the implicit LUT fence test to optionally flip to a copy of
+the input framebuffer that carries its own unsignaled implicit write
+fence. Release the producer fences one at a time and check that CRTC and
+writeback completion stay pending until the last one signals. Cover both
+signaling orders.
 
 Signed-off-by: Harry Wentland <harry.wentland@amd.com>
 ---
- tests/kms_colorop_dma.c | 288 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 288 insertions(+)
+ tests/kms_colorop_dma.c | 120 +++++++++++++++++++++++++++++++++-------
+ 1 file changed, 99 insertions(+), 21 deletions(-)
 
 diff --git a/tests/kms_colorop_dma.c b/tests/kms_colorop_dma.c
-index 5fb127de60eb..e8cbbf58dd60 100644
+index e8cbbf58dd60..5fa2934e1721 100644
 --- a/tests/kms_colorop_dma.c
 +++ b/tests/kms_colorop_dma.c
-@@ -3,6 +3,7 @@
-  * Copyright 2025 Advanced Micro Devices, Inc.
-  */
- 
-+#include "dmabuf_sync_file.h"
- #include "sw_sync.h"
- #include "kms_colorop_helper.h"
- 
-@@ -21,6 +22,15 @@
+@@ -31,6 +31,16 @@
   * Mega feature: General Display Features
   * Test category: functionality test
   *
-+ * SUBTEST: plane-3dlut_dma-implicit-fence
-+ * Description: A commit switching to a DMA 3D LUT framebuffer with an
-+ *              unsignaled implicit write fence must not complete until that
-+ *              fence signals, and must then apply the new LUT
++ * SUBTEST: plane-3dlut_dma-scanout-implicit-fences-signal-lut-first
++ * SUBTEST: plane-3dlut_dma-scanout-implicit-fences-signal-scanout-first
++ * Description: A commit flipping both the scanout and DMA 3D LUT
++ *              framebuffers, each with an unsignaled implicit write fence,
++ *              must not complete until both fences signal, in either order
 + * Driver requirement: vkms, amdgpu
 + * Functionality: kms_core
 + * Mega feature: General Display Features
@@ -161,298 +156,204 @@ index 5fb127de60eb..e8cbbf58dd60 100644
   */
  
  typedef struct {
-@@ -187,6 +197,232 @@ static void lut3d_dma_negative_test(igt_display_t *display,
- 		     lut3d_dma_neg_names[neg]);
+@@ -225,11 +235,25 @@ static const kms_colorop_t lut3d_dma_fence_lut_b = {
+ 
+ enum lut3d_dma_producer {
+ 	LUT3D_DMA_PRODUCER_LUT,
++	LUT3D_DMA_PRODUCER_SCANOUT,
+ 	LUT3D_DMA_NUM_PRODUCERS,
+ };
+ 
++static const char * const lut3d_dma_producer_names[] = {
++	[LUT3D_DMA_PRODUCER_LUT] = "lut",
++	[LUT3D_DMA_PRODUCER_SCANOUT] = "scanout",
++};
++
+ static const char * const lut3d_dma_producer_desc[] = {
+ 	[LUT3D_DMA_PRODUCER_LUT] = "DMA 3D LUT",
++	[LUT3D_DMA_PRODUCER_SCANOUT] = "scanout",
++};
++
++struct lut3d_dma_fence_case {
++	/* Also flip to a new scanout FB with its own producer fence. */
++	bool fence_scanout;
++	/* Producer signaled first when there are two. */
++	enum lut3d_dma_producer first;
+ };
+ 
+ static struct {
+@@ -291,9 +315,11 @@ static void attach_implicit_write_fence(int drm_fd, uint32_t gem_handle,
  }
  
-+#define LUT3D_DMA_FENCE_TIMEOUT_MS	1000
-+#define LUT3D_DMA_FENCE_PENDING_FRAMES	10
-+#define LUT3D_DMA_FENCE_PENDING_MIN_MS	200
-+
-+/* A differs visibly from B, so a stale LUT fails the comparison. */
-+static const kms_colorop_t lut3d_dma_fence_lut_a = {
-+	.type = KMS_COLOROP_3DLUT_DMA,
-+	.lut3d = &igt_3dlut_17_green_only,
-+	.lut3d_info = {
-+		.size = 17,
-+		.interpolation = DRM_COLOROP_LUT3D_INTERPOLATION_TETRAHEDRAL,
-+	},
-+	.name = "3dlut DMA passing only green channel (RGB order)",
-+};
-+
-+static const kms_colorop_t lut3d_dma_fence_lut_b = {
-+	.type = KMS_COLOROP_3DLUT_DMA,
-+	.lut3d = &igt_3dlut_17_rgb,
-+	.lut3d_info = {
-+		.size = 17,
-+		.interpolation = DRM_COLOROP_LUT3D_INTERPOLATION_TETRAHEDRAL,
-+	},
-+	.name = "3dlut DMA with traversal order RGB",
-+	.transform = &igt_color_3dlut_17_12_rgb,
-+};
-+
-+enum lut3d_dma_producer {
-+	LUT3D_DMA_PRODUCER_LUT,
-+	LUT3D_DMA_NUM_PRODUCERS,
-+};
-+
-+static const char * const lut3d_dma_producer_desc[] = {
-+	[LUT3D_DMA_PRODUCER_LUT] = "DMA 3D LUT",
-+};
-+
-+static struct {
-+	int timelines[LUT3D_DMA_NUM_PRODUCERS];
-+	bool needs_signal[LUT3D_DMA_NUM_PRODUCERS];
-+} pending_producer_fences = {
-+	.timelines = { -1 },
-+};
-+
-+static int create_producer_fence(enum lut3d_dma_producer producer)
-+{
-+	int timeline = sw_sync_timeline_create();
-+
-+	pending_producer_fences.timelines[producer] = timeline;
-+	pending_producer_fences.needs_signal[producer] = true;
-+
-+	return sw_sync_timeline_create_fence(timeline, 1);
-+}
-+
-+static void signal_producer_fence(enum lut3d_dma_producer producer)
-+{
-+	if (pending_producer_fences.timelines[producer] < 0 ||
-+	    !pending_producer_fences.needs_signal[producer])
-+		return;
-+
-+	sw_sync_timeline_inc(pending_producer_fences.timelines[producer], 1);
-+	pending_producer_fences.needs_signal[producer] = false;
-+}
-+
-+static void signal_pending_producer_fences(int sig)
-+{
-+	for (int i = 0; i < LUT3D_DMA_NUM_PRODUCERS; i++) {
-+		signal_producer_fence(i);
-+		pending_producer_fences.timelines[i] = -1;
-+	}
-+}
-+
-+static void destroy_producer_fences(void)
-+{
-+	for (int i = 0; i < LUT3D_DMA_NUM_PRODUCERS; i++) {
-+		int timeline = pending_producer_fences.timelines[i];
-+
-+		if (timeline < 0)
-+			continue;
-+
-+		signal_producer_fence(i);
-+		pending_producer_fences.timelines[i] = -1;
-+		close(timeline);
-+	}
-+}
-+
-+static void attach_implicit_write_fence(int drm_fd, uint32_t gem_handle,
-+					int fence)
-+{
-+	int dmabuf = prime_handle_to_fd(drm_fd, gem_handle);
-+
-+	dmabuf_import_sync_file(dmabuf, DMA_BUF_SYNC_WRITE, fence);
-+	close(dmabuf);
-+}
-+
-+/*
-+ * Switch from LUT A to LUT B behind an unsignaled implicit producer fence.
-+ * The commit must stay pending until the fence signals, and the captured
-+ * output must then reflect LUT B.
-+ *
-+ * The exit handler signals the producer fence if the test fails while the
-+ * commit is pending.
-+ */
-+static void lut3d_dma_fence_test(igt_display_t *display,
-+				 igt_output_t *output,
-+				 igt_plane_t *plane,
-+				 igt_fb_t *input_fb,
-+				 igt_fb_t *output_fb)
-+{
-+	kms_colorop_t lut_a = lut3d_dma_fence_lut_a;
-+	kms_colorop_t lut_b = lut3d_dma_fence_lut_b;
-+	kms_colorop_t *colorops_a[] = { &lut_a, NULL };
-+	kms_colorop_t *colorops_b[] = { &lut_b, NULL };
-+	enum lut3d_dma_producer order[LUT3D_DMA_NUM_PRODUCERS];
-+	int fences[LUT3D_DMA_NUM_PRODUCERS] = { -1 };
-+	int producer_pending[LUT3D_DMA_NUM_PRODUCERS] = { };
-+	int crtc_pending[LUT3D_DMA_NUM_PRODUCERS] = { };
-+	int wb_pending[LUT3D_DMA_NUM_PRODUCERS] = { };
-+	igt_colorop_t *color_pipeline;
-+	igt_crtc_t *crtc = igt_output_get_driving_crtc(output);
-+	drmModeModeInfo *mode = igt_output_get_mode(output);
-+	igt_fb_t sw_transform_fb;
-+	int out_fence = -1, wb_fence = -1;
-+	int pending_ms, ret;
-+	int crtc_done = -1, wb_done = -1;
-+	bool match = false;
-+
-+	igt_require_sw_sync();
-+	igt_install_exit_handler(signal_pending_producer_fences);
-+	igt_assert(crtc);
-+
-+	order[0] = LUT3D_DMA_PRODUCER_LUT;
-+	pending_ms = max_t(int, LUT3D_DMA_FENCE_PENDING_MIN_MS,
-+			   LUT3D_DMA_FENCE_PENDING_FRAMES * 1000 /
-+			   (mode->vrefresh ? mode->vrefresh : 60));
-+
-+	igt_plane_set_color_pipeline(plane, NULL);
-+	igt_plane_set_fb(plane, input_fb);
-+
-+	color_pipeline = get_color_pipeline(display, plane, colorops_a);
-+	igt_skip_on(!color_pipeline);
-+	igt_assert(get_color_pipeline(display, plane, colorops_b) == color_pipeline);
-+
-+	ret = igt_create_fb(display->drm_fd, input_fb->width, input_fb->height,
-+			    output_fb->drm_format, DRM_FORMAT_MOD_LINEAR,
-+			    &sw_transform_fb);
-+	igt_assert_lte(0, ret);
-+	apply_transforms(colorops_b, input_fb, &sw_transform_fb);
-+
-+	/* Establish LUT A as the current state. */
-+	set_color_pipeline(display, plane, colorops_a, color_pipeline);
-+	igt_output_set_writeback_fb(output, output_fb);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_get_and_wait_out_fence(output);
-+
-+	/* Stage LUT B; its contents are written and unmapped here. */
-+	set_color_pipeline(display, plane, colorops_b, color_pipeline);
-+
-+	fences[LUT3D_DMA_PRODUCER_LUT] = create_producer_fence(LUT3D_DMA_PRODUCER_LUT);
-+	attach_implicit_write_fence(display->drm_fd, lut_b.lut3d_dma_fb.gem_handle,
-+				    fences[LUT3D_DMA_PRODUCER_LUT]);
-+
-+	igt_output_set_writeback_fb(output, output_fb);
-+	igt_crtc_request_out_fence(crtc);
-+
-+	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_NONBLOCK, NULL);
-+
-+	if (ret == 0) {
-+		out_fence = crtc->out_fence_fd;
-+		wb_fence = output->writeback_out_fence_fd;
-+		crtc->out_fence_fd = -1;
-+		output->writeback_out_fence_fd = -1;
-+	}
-+
-+	if (ret == 0) {
-+		crtc_pending[0] = sync_fence_wait(out_fence, pending_ms);
-+		wb_pending[0] = sync_fence_status(wb_fence);
-+		producer_pending[0] = sync_fence_status(fences[order[0]]);
-+	}
-+
-+	signal_producer_fence(order[0]);
-+
-+	if (ret == 0) {
-+		crtc_done = sync_fence_wait(out_fence, LUT3D_DMA_FENCE_TIMEOUT_MS);
-+		wb_done = sync_fence_wait(wb_fence, LUT3D_DMA_FENCE_TIMEOUT_MS);
-+		close(out_fence);
-+		close(wb_fence);
-+	}
-+
-+	destroy_producer_fences();
-+	close(fences[LUT3D_DMA_PRODUCER_LUT]);
-+
-+	igt_assert_f(ret == 0, "nonblocking commit of the fenced DMA 3D LUT failed: %s\n",
-+		     strerror(-ret));
-+
-+	igt_assert_f(crtc_done == 0, "commit did not complete after the producer "
-+		     "fences signaled: %s\n", strerror(-crtc_done));
-+	igt_assert_f(wb_done == 0, "writeback did not complete after the producer "
-+		     "fences signaled: %s\n", strerror(-wb_done));
-+
-+	if (data.dump_check) {
-+		igt_dump_fb(display, &sw_transform_fb, ".", "sw_transform");
-+		igt_dump_fb(display, output_fb, ".", "output");
-+	}
-+	match = compare_with_bracket(&sw_transform_fb, output_fb);
-+
-+	reset_colorops(colorops_b);
-+	igt_plane_set_color_pipeline(plane, NULL);
-+	igt_plane_set_fb(plane, input_fb);
-+	igt_output_set_writeback_fb(output, output_fb);
-+	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
-+	igt_get_and_wait_out_fence(output);
-+
-+	igt_remove_fb(display->drm_fd, &lut_a.lut3d_dma_fb);
-+	igt_remove_fb(display->drm_fd, &lut_b.lut3d_dma_fb);
-+	igt_remove_fb(display->drm_fd, &sw_transform_fb);
-+
-+	igt_assert_f(producer_pending[0] == 0, "DMA 3D LUT producer fence signaled "
-+		     "before the test released it\n");
-+	igt_assert_f(crtc_pending[0] == -ETIME, "commit completed while the DMA 3D "
-+		     "LUT producer fence was unsignaled\n");
-+	igt_assert_f(wb_pending[0] == 0, "writeback completed while the DMA 3D "
-+		     "LUT producer fence was unsignaled\n");
-+
-+	igt_assert_f(match, "output does not reflect the DMA 3D LUT committed "
-+		     "behind the implicit fence\n");
-+}
-+
- static int opt_handler(int option, int option_index, void *_data)
+ /*
+- * Switch from LUT A to LUT B behind an unsignaled implicit producer fence.
+- * The commit must stay pending until the fence signals, and the captured
+- * output must then reflect LUT B.
++ * Switch from LUT A to LUT B behind unsignaled producer fences. B's BO always
++ * carries an implicit write fence. With fence_scanout, the plane also flips
++ * to a copy of the input FB whose BO carries an independent implicit write
++ * fence. The commit must stay pending until every producer fence signals,
++ * and the captured output must then reflect LUT B.
+  *
+  * The exit handler signals the producer fence if the test fails while the
+  * commit is pending.
+@@ -302,7 +328,8 @@ static void lut3d_dma_fence_test(igt_display_t *display,
+ 				 igt_output_t *output,
+ 				 igt_plane_t *plane,
+ 				 igt_fb_t *input_fb,
+-				 igt_fb_t *output_fb)
++				 igt_fb_t *output_fb,
++				 const struct lut3d_dma_fence_case *tc)
  {
- 	switch (option) {
-@@ -291,6 +527,58 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
- 		}
+ 	kms_colorop_t lut_a = lut3d_dma_fence_lut_a;
+ 	kms_colorop_t lut_b = lut3d_dma_fence_lut_b;
+@@ -316,9 +343,9 @@ static void lut3d_dma_fence_test(igt_display_t *display,
+ 	igt_colorop_t *color_pipeline;
+ 	igt_crtc_t *crtc = igt_output_get_driving_crtc(output);
+ 	drmModeModeInfo *mode = igt_output_get_mode(output);
+-	igt_fb_t sw_transform_fb;
++	igt_fb_t scanout_b = { }, sw_transform_fb;
+ 	int out_fence = -1, wb_fence = -1;
+-	int pending_ms, ret;
++	int num_producers, pending_ms, ret, i;
+ 	int crtc_done = -1, wb_done = -1;
+ 	bool match = false;
+ 
+@@ -326,7 +353,16 @@ static void lut3d_dma_fence_test(igt_display_t *display,
+ 	igt_install_exit_handler(signal_pending_producer_fences);
+ 	igt_assert(crtc);
+ 
+-	order[0] = LUT3D_DMA_PRODUCER_LUT;
++	if (tc->fence_scanout) {
++		num_producers = 2;
++		order[0] = tc->first;
++		order[1] = tc->first == LUT3D_DMA_PRODUCER_LUT ?
++			   LUT3D_DMA_PRODUCER_SCANOUT : LUT3D_DMA_PRODUCER_LUT;
++	} else {
++		num_producers = 1;
++		order[0] = LUT3D_DMA_PRODUCER_LUT;
++	}
++
+ 	pending_ms = max_t(int, LUT3D_DMA_FENCE_PENDING_MIN_MS,
+ 			   LUT3D_DMA_FENCE_PENDING_FRAMES * 1000 /
+ 			   (mode->vrefresh ? mode->vrefresh : 60));
+@@ -344,6 +380,11 @@ static void lut3d_dma_fence_test(igt_display_t *display,
+ 	igt_assert_lte(0, ret);
+ 	apply_transforms(colorops_b, input_fb, &sw_transform_fb);
+ 
++	/* Same contents as the input, so one reference covers both flips. */
++	if (tc->fence_scanout)
++		igt_assert(igt_fb_convert(&scanout_b, input_fb, input_fb->drm_format,
++					  input_fb->modifier));
++
+ 	/* Establish LUT A as the current state. */
+ 	set_color_pipeline(display, plane, colorops_a, color_pipeline);
+ 	igt_output_set_writeback_fb(output, output_fb);
+@@ -354,8 +395,17 @@ static void lut3d_dma_fence_test(igt_display_t *display,
+ 	set_color_pipeline(display, plane, colorops_b, color_pipeline);
+ 
+ 	fences[LUT3D_DMA_PRODUCER_LUT] = create_producer_fence(LUT3D_DMA_PRODUCER_LUT);
++	if (tc->fence_scanout) {
++		fences[LUT3D_DMA_PRODUCER_SCANOUT] =
++			create_producer_fence(LUT3D_DMA_PRODUCER_SCANOUT);
++		igt_plane_set_fb(plane, &scanout_b);
++	}
++
+ 	attach_implicit_write_fence(display->drm_fd, lut_b.lut3d_dma_fb.gem_handle,
+ 				    fences[LUT3D_DMA_PRODUCER_LUT]);
++	if (tc->fence_scanout)
++		attach_implicit_write_fence(display->drm_fd, scanout_b.gem_handle,
++					    fences[LUT3D_DMA_PRODUCER_SCANOUT]);
+ 
+ 	igt_output_set_writeback_fb(output, output_fb);
+ 	igt_crtc_request_out_fence(crtc);
+@@ -369,13 +419,16 @@ static void lut3d_dma_fence_test(igt_display_t *display,
+ 		output->writeback_out_fence_fd = -1;
  	}
  
-+	/* DMA 3D LUT framebuffer synchronization tests */
-+	{
-+		igt_output_t *output;
-+		igt_plane_t *plane;
-+		igt_fb_t input_fb, output_fb;
-+		unsigned int fb_id;
-+		drmModeModeInfo mode;
-+
-+		igt_subtest_group() {
-+			igt_fixture() {
-+				__u32 wb_fmt = writeback_format_supported(&display, DRM_FORMAT_XRGB8888) ?
-+					DRM_FORMAT_XRGB8888 : DRM_FORMAT_XRGB2101010;
-+
-+				output = kms_writeback_get_output(&display, wb_fmt, wb_fmt);
-+				igt_require(output);
-+
-+				if (output->use_override_mode)
-+					memcpy(&mode, &output->override_mode, sizeof(mode));
-+				else
-+					memcpy(&mode, &output->config.default_mode, sizeof(mode));
-+
-+				plane = igt_output_get_plane_type(output, DRM_PLANE_TYPE_PRIMARY);
-+				igt_assert(plane);
-+				igt_require(igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE));
-+
-+				fb_id = igt_create_color_pattern_fb(display.drm_fd,
-+								mode.hdisplay, mode.vdisplay,
-+								wb_fmt, DRM_FORMAT_MOD_LINEAR,
-+								0.2, 0.2, 0.2, &input_fb);
-+				igt_assert(fb_id >= 0);
-+
-+				fb_id = igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
-+							wb_fmt, igt_fb_mod_to_tiling(0),
-+							&output_fb);
-+				igt_require(fb_id > 0);
-+			}
-+
-+			igt_describe("A commit switching to a DMA 3D LUT framebuffer with an "
-+				     "unsignaled implicit write fence must not complete until "
-+				     "that fence signals, and must then apply the new LUT");
-+			igt_subtest("plane-3dlut_dma-implicit-fence")
-+				lut3d_dma_fence_test(&display, output, plane,
-+						     &input_fb, &output_fb);
-+
-+			igt_fixture() {
-+				igt_detach_crtc(&display, output);
-+				igt_remove_fb(display.drm_fd, &input_fb);
-+				igt_remove_fb(display.drm_fd, &output_fb);
-+			}
+-	if (ret == 0) {
+-		crtc_pending[0] = sync_fence_wait(out_fence, pending_ms);
+-		wb_pending[0] = sync_fence_status(wb_fence);
+-		producer_pending[0] = sync_fence_status(fences[order[0]]);
+-	}
++	/* Release the producers one at a time; each step must stay pending. */
++	for (i = 0; i < num_producers; i++) {
++		if (ret == 0) {
++			crtc_pending[i] = sync_fence_wait(out_fence, pending_ms);
++			wb_pending[i] = sync_fence_status(wb_fence);
++			producer_pending[i] = sync_fence_status(fences[order[i]]);
 +		}
+ 
+-	signal_producer_fence(order[0]);
++		signal_producer_fence(order[i]);
 +	}
+ 
+ 	if (ret == 0) {
+ 		crtc_done = sync_fence_wait(out_fence, LUT3D_DMA_FENCE_TIMEOUT_MS);
+@@ -385,7 +438,9 @@ static void lut3d_dma_fence_test(igt_display_t *display,
+ 	}
+ 
+ 	destroy_producer_fences();
+-	close(fences[LUT3D_DMA_PRODUCER_LUT]);
++	for (i = 0; i < LUT3D_DMA_NUM_PRODUCERS; i++)
++		if (fences[i] >= 0)
++			close(fences[i]);
+ 
+ 	igt_assert_f(ret == 0, "nonblocking commit of the fenced DMA 3D LUT failed: %s\n",
+ 		     strerror(-ret));
+@@ -410,14 +465,21 @@ static void lut3d_dma_fence_test(igt_display_t *display,
+ 
+ 	igt_remove_fb(display->drm_fd, &lut_a.lut3d_dma_fb);
+ 	igt_remove_fb(display->drm_fd, &lut_b.lut3d_dma_fb);
++	igt_remove_fb(display->drm_fd, &scanout_b);
+ 	igt_remove_fb(display->drm_fd, &sw_transform_fb);
+ 
+-	igt_assert_f(producer_pending[0] == 0, "DMA 3D LUT producer fence signaled "
+-		     "before the test released it\n");
+-	igt_assert_f(crtc_pending[0] == -ETIME, "commit completed while the DMA 3D "
+-		     "LUT producer fence was unsignaled\n");
+-	igt_assert_f(wb_pending[0] == 0, "writeback completed while the DMA 3D "
+-		     "LUT producer fence was unsignaled\n");
++	for (i = 0; i < num_producers; i++) {
++		/* The last producer is unsignaled at every step. */
++		const char *waiting = lut3d_dma_producer_desc[order[num_producers - 1]];
 +
- 	igt_fixture() {
- 		igt_display_fini(&display);
- 		drm_close_driver(display.drm_fd);
++		igt_assert_f(producer_pending[i] == 0, "%s producer fence signaled "
++			     "before the test released it\n",
++			     lut3d_dma_producer_desc[order[i]]);
++		igt_assert_f(crtc_pending[i] == -ETIME, "commit completed while the %s "
++			     "producer fence was unsignaled\n", waiting);
++		igt_assert_f(wb_pending[i] == 0, "writeback completed while the %s "
++			     "producer fence was unsignaled\n", waiting);
++	}
+ 
+ 	igt_assert_f(match, "output does not reflect the DMA 3D LUT committed "
+ 		     "behind the implicit fence\n");
+@@ -569,7 +631,23 @@ int igt_main_args("d", long_options, help_str, opt_handler, NULL)
+ 				     "that fence signals, and must then apply the new LUT");
+ 			igt_subtest("plane-3dlut_dma-implicit-fence")
+ 				lut3d_dma_fence_test(&display, output, plane,
+-						     &input_fb, &output_fb);
++						     &input_fb, &output_fb,
++						     &(struct lut3d_dma_fence_case) { });
++
++			for (int p = 0; p < LUT3D_DMA_NUM_PRODUCERS; p++) {
++				igt_describe("A commit flipping both the scanout and DMA 3D LUT "
++					     "framebuffers, each with an unsignaled implicit "
++					     "write fence, must not complete until both fences "
++					     "signal, in either order");
++				igt_subtest_f("plane-3dlut_dma-scanout-implicit-fences-signal-%s-first",
++					      lut3d_dma_producer_names[p])
++					lut3d_dma_fence_test(&display, output, plane,
++							     &input_fb, &output_fb,
++							     &(struct lut3d_dma_fence_case) {
++								.fence_scanout = true,
++								.first = p,
++							     });
++			}
+ 
+ 			igt_fixture() {
+ 				igt_detach_crtc(&display, output);
 -- 
 2.56.0
 
