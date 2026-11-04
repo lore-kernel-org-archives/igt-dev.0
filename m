@@ -2,58 +2,50 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA837606A329
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 12:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56E2606A328
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 13:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cLIX/fFm
+	dkim=pass (2048-bit key, unprotected) header.d=hsal.es header.i=@hsal.es header.a=rsa-sha256 header.s=MBO0001 header.b=BLBJ+dS3
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6E4A01123DC;
-	Thu,  5 Nov 2026 12:47:45 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F229A1123E2
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 12:45:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793882707; x=1825418707;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=RBHg6ZF7+B4awx6wfA0V/SHByfA/+NpPvL+9d49IRBI=;
- b=cLIX/fFm5V3VSqfhVb2FI6bwEhg2QMABmHFJcoy9wZ3HmffrYzWoDtMU
- qhVBILKCwTz8cI7upaLbjtVziYkZYvm60PZoObVlb4P1RSC9hxxLm8ouh
- MgewiXCSennArSDfTncNGgeSKKrON8RBufI8xiyEtfzRUWttdi0+13GVI
- e9vtDKrw8kg/J6EQxIjypjP74M3PncHfPmc6jlk5SiFdUHdhaczoKvIy0
- VHjwwzo4czccSBzSzxd8juDyJs8Fq9uLDMmqsVdciYfTV7+yNXs16beDY
- rrAYP9q6rbMP80ndqPsl7kptHtfTt5Yi86bfaW1L2gQQNyV7QRQV4RDas w==;
-X-CSE-ConnectionGUID: Dt2NERKfQqaJ1CMHHqyB7w==
-X-CSE-MsgGUID: GteJ4csdQwmxoS0PE0oGCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2768227"
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2768227"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2026 04:45:06 -0800
-X-CSE-ConnectionGUID: wGMFX9IqRMGdizGqvilt0w==
-X-CSE-MsgGUID: 6UTp2tgmSD+6WkrXClZKvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="6885991"
-Received: from anirban-z690i-a-ultra-plus.iind.intel.com ([10.190.216.83])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 05 Nov 2026 04:45:04 -0800
-From: Sk Anirban <sk.anirban@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8A02410E269;
+	Thu,  5 Nov 2026 13:36:57 +0000 (UTC)
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 79C4B10E86F;
+ Wed,  4 Nov 2026 17:08:48 +0000 (UTC)
+Received: from smtp102.mailbox.org (smtp102.mailbox.org
+ [IPv6:2001:67c:2050:b231:465::102])
+ (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+ key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest
+ SHA256) (No client certificate requested)
+ by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4jKX316sshz8v5f;
+ Wed, 04 Nov 2026 18:08:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hsal.es; s=MBO0001;
+ t=1793812126;
+ h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+ to:to:cc:cc:mime-version:mime-version:
+ content-transfer-encoding:content-transfer-encoding;
+ bh=h3c/WSm6Brx9RGmPW3KlcJgpIiaebOde6dRyE2+QOgw=;
+ b=BLBJ+dS3KXX3SjcnRv5UYL7ZJABdVZbuwd8exlcfAyUuPeo5yd0qDrcjuliQevP2aKT8KY
+ 8phVtXPUB5QG8Ljo+xg1c66QjibINbTylShaRHjSAK/Wm2OENMfrSD+n/HagXBl0YtX/LO
+ hmwxsgfI5uvAqSxHxl8Ja9qRIt48nKNrR6q0GzETaI0k0pbsLyFkjqhqE4EhfLL7InoTjU
+ nNPIqiO5mk3Alv+Vk98ggx5tj6sEqr/odpJ9U0PB9ROhSgpBQPO3cNswHCdghNNQEZG3gN
+ knQMWvFs6MWbEl5UkURoBmeE3QTnWtg4VeIdVIbwTOHEJIXJFi5P4LNhVBjVSA==
+Authentication-Results: outgoing_mbo_mout; dkim=none;
+ spf=pass (outgoing_mbo_mout: domain of hugo@hsal.es designates
+ 2001:67c:2050:b231:465::102 as permitted sender) smtp.mailfrom=hugo@hsal.es
+From: Hugo Sales <hugo@hsal.es>
 To: igt-dev@lists.freedesktop.org
-Cc: anshuman.gupta@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- karthik.poosa@intel.com, raag.jadav@intel.com, soham.purkait@intel.com,
- mallesh.koujalagi@intel.com, Sk Anirban <sk.anirban@intel.com>
-Subject: [PATCH v6 2/2] tests/intel/xe_wedged: Add cold-reset wedge test
-Date: Thu,  5 Nov 2026 18:00:05 +0530
-Message-ID: <20261105123002.1368655-6-sk.anirban@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261105123002.1368655-4-sk.anirban@intel.com>
-References: <20261105123002.1368655-4-sk.anirban@intel.com>
+Cc: amd-gfx@lists.freedesktop.org, chiahsuan.chung@amd.com, sunpeng.li@amd.com,
+ kamil.konieczny@linux.intel.com
+Subject: [PATCH i-g-t] tests/amdgpu/amd_abm: Do a modeset in test_init()
+Date: Wed,  4 Nov 2026 17:08:43 +0000
+Message-ID: <20261104170843.3719734-1-hugo@hsal.es>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4jKX316sshz8v5f
+X-Mailman-Approved-At: Thu, 05 Nov 2026 13:35:58 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,203 +57,50 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Inject cold-reset at probe, validate the WEDGED=cold-reset
-notification, and verify the device is functional after driver
-recovery/rebinding.
+Since set_abm_level() commits without ALLOW_MODESET, the first commit
+of every subtest fails with -EINVAL when the eDP runs in a mode other
+than the one test_init() picks, for example when video= sets the
+console mode. All five subtests then fail
 
-v2: Fix restore flow (Mallesh)
-    Cosmetic changes (Mallesh)
-v3: Fix verbose and dmesg regex
-v4: Add code comment (Riana)
-v5: Modify regex (Riana)
-v6: Add platform check
+Commit the test's mode and framebuffer with ALLOW_MODESET at the end of
+test_init(), so the subtests start from the state they commit
 
-Tested-by: Sk Anirban <sk.anirban@intel.com>
-Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-Reviewed-by: Mallesh Koujalagi <mallesh.koujalagi@intel.com>
+Fixes: e63b2671fcdb ("tests/amdgpu/amd_abm: Remove the modeset for ABM level setting")
+Signed-off-by: Hugo Sales <hugo@hsal.es>
 ---
- tests/intel/xe_wedged.c | 116 +++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 115 insertions(+), 1 deletion(-)
+Tested on an ASUS ROG Flow X13 (DCN 2.1, eDP) booted with video= set to
+a non-native mode, on IGT 2.3 with this change and a local fix for the
+card index and backlight name that master now has as:
 
-diff --git a/tests/intel/xe_wedged.c b/tests/intel/xe_wedged.c
-index 2dcab029f..c67a4dda5 100644
---- a/tests/intel/xe_wedged.c
-+++ b/tests/intel/xe_wedged.c
-@@ -14,6 +14,8 @@
- 
- #include <limits.h>
- #include <dirent.h>
-+#include <libudev.h>
-+#include <poll.h>
- 
- #include "igt.h"
- #include "igt_device.h"
-@@ -28,6 +30,25 @@
- #include "xe/xe_query.h"
- #include "xe/xe_spin.h"
- 
-+static char pci_slot[NAME_MAX];
+  4e939e73adfd ("tests/amdgpu: Resolve DRM card index dynamically instead of hardcoding card0")
+  055ffbee8325 ("tests/amdgpu: Discover amdgpu backlight device dynamically instead of hardcoding amdgpu_bl0")
+
+All five subtests failed with -EINVAL before and pass with this change
+---
+ tests/amdgpu/amd_abm.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tests/amdgpu/amd_abm.c b/tests/amdgpu/amd_abm.c
+index 7992dfd87..833d950eb 100644
+--- a/tests/amdgpu/amd_abm.c
++++ b/tests/amdgpu/amd_abm.c
+@@ -192,6 +192,9 @@ static void test_init(data_t *data)
+ 	fbmem_draw_smpte_pattern(data->fb_mem, data->w, data->h);
+ 	igt_create_color_fb(data->drm_fd, data->mode->hdisplay,
+ 		data->mode->vdisplay, DRM_FORMAT_XRGB8888, 0, 0.05, 0.05, 0.05, &data->ref_fb2);
 +
-+static void cold_reset_restore(int sig)
-+{
-+	char path[PATH_MAX];
-+	int dir;
-+
-+	snprintf(path, sizeof(path), "/sys/kernel/debug/dri/%s", pci_slot);
-+	dir = open(path, O_RDONLY);
-+	if (dir >= 0) {
-+		igt_sysfs_write(dir, "wedge_cold_reset/probability", "0", 1);
-+		igt_sysfs_write(dir, "wedge_cold_reset/times", "1", 1);
-+		igt_debugfs_write(dir, "wedge_cold_reset/verbose", "2");
-+		close(dir);
-+	}
-+
-+	igt_kmod_rebind("xe", pci_slot);
-+}
-+
- static void ignore_wedged_in_dmesg(void)
- {
- 	/*
-@@ -59,6 +80,7 @@ static void ignore_wedged_in_dmesg(void)
- 				    "|GT[0-9A-Fa-f]*: Invalid gsc header in proxy reply"
- 				    "|SIGID=[0-9]+ .*GT: reset failed"
- 				    "|SIGID=102"
-+				    "|cold-reset wedge injected"
- 				    "|SIGID=203");
++	igt_plane_set_fb(data->primary, &data->ref_fb);
++	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, 0);
  }
  
-@@ -71,6 +93,60 @@ static void force_wedged(int fd)
- 	sleep(1);
- }
- 
-+static void wait_for_wedged_uevent(struct udev_monitor *mon)
-+{
-+	struct udev_device *dev;
-+	const char *prop_val;
-+	const char *dev_path;
-+	struct pollfd poll_fd = {
-+		.fd = udev_monitor_get_fd(mon),
-+		.events = POLLIN
-+	};
-+	bool event_received = false;
-+	int timeout_secs = 30;
-+
-+	igt_until_timeout(timeout_secs) {
-+		if (poll(&poll_fd, 1, 1000) <= 0)
-+			continue;
-+
-+		dev = udev_monitor_receive_device(mon);
-+		if (!dev)
-+			continue;
-+
-+		prop_val = udev_device_get_property_value(dev, "WEDGED");
-+		dev_path = udev_device_get_property_value(dev, "DEVPATH");
-+
-+		if (prop_val && !strcmp(prop_val, "cold-reset")) {
-+			event_received = true;
-+			igt_assert_f(dev_path && strstr(dev_path, pci_slot),
-+				     "Expected bus address '%s' to be part of DEVPATH '%s'",
-+				     pci_slot, dev_path);
-+			udev_device_unref(dev);
-+			break;
-+		}
-+
-+		udev_device_unref(dev);
-+	}
-+
-+	igt_cleanup_uevents(mon);
-+
-+	igt_assert_f(event_received,
-+		     "Timeout waiting for cold-reset-wedged event after %d seconds",
-+		     timeout_secs);
-+}
-+
-+static void test_spinner_after_recovery(int fd)
-+{
-+	uint64_t ahnd;
-+	igt_spin_t *spin;
-+
-+	ahnd = intel_allocator_open(fd, 0, INTEL_ALLOCATOR_RELOC);
-+	spin = igt_spin_new(fd, .ahnd = ahnd);
-+
-+	igt_spin_free(fd, spin);
-+	put_ahnd(ahnd);
-+}
-+
- static int simple_ioctl(int fd)
- {
- 	int ret;
-@@ -233,11 +309,14 @@ simple_hang(int fd, struct drm_xe_sync *sync)
-  * SUBTEST: basic-wedged-read
-  * Description: Read wedged_mode debugfs
-  */
-+/**
-+ * SUBTEST: cold-reset-wedged
-+ * Description: Inject a cold reset wedge and validate cold-reset uevent
-+ */
- int igt_main()
- {
- 	struct drm_xe_engine_class_instance *hwe;
- 	int fd;
--	char pci_slot[NAME_MAX];
- 
- 	igt_fixture() {
- 		fd = drm_open_driver(DRIVER_XE);
-@@ -334,12 +413,47 @@ int igt_main()
- 		igt_assert_f(str[0] != '\0', "Failed to read wedged_mode from debugfs!\n");
- 	}
- 
-+	igt_subtest_f("cold-reset-wedged") {
-+		struct udev_monitor *mon;
-+
-+		errno = 0;
-+		igt_skip_on_f(!IS_CRESCENTISLAND(intel_get_drm_devid(fd)),
-+			      "cold-reset-wedged is only supported on Crescent Island (CRI)\n");
-+		igt_require(igt_debugfs_exists(fd, "wedge_cold_reset/probability",
-+					       O_RDWR));
-+		igt_install_exit_handler(cold_reset_restore);
-+
-+		igt_debugfs_write(fd, "wedge_cold_reset/verbose", "1");
-+		igt_debugfs_write(fd, "wedge_cold_reset/probability", "100");
-+		igt_debugfs_write(fd, "wedge_cold_reset/times", "1");
-+
-+		ignore_wedged_in_dmesg();
-+		mon = igt_watch_uevents();
-+
-+		drm_close_driver(fd);
-+		igt_kmod_rebind("xe", pci_slot);
-+		wait_for_wedged_uevent(mon);
-+		/*
-+		 * Rebind to restore device operation. The first wedge decrements
-+		 * times to zero, disabling further fault injection even though
-+		 * probability remains at 100.
-+		 */
-+		igt_kmod_rebind("xe", pci_slot);
-+		fd = drm_open_driver(DRIVER_XE);
-+		test_spinner_after_recovery(fd);
-+	}
-+
- 	igt_fixture() {
- 		if (igt_debugfs_exists(fd, "fail_gt_reset/probability", O_RDWR)) {
- 			igt_debugfs_write(fd, "fail_gt_reset/probability", "0");
- 			igt_debugfs_write(fd, "fail_gt_reset/times", "1");
- 		}
- 
-+		if (igt_debugfs_exists(fd, "wedge_cold_reset/probability", O_RDWR)) {
-+			igt_debugfs_write(fd, "wedge_cold_reset/probability", "0");
-+			igt_debugfs_write(fd, "wedge_cold_reset/times", "1");
-+		}
-+
- 		/* Tests might have failed, force a rebind before exiting */
- 		drm_close_driver(fd);
- 		igt_kmod_rebind("xe", pci_slot);
+ /* Common test cleanup. */
 -- 
-2.43.0
+2.56.0
 
