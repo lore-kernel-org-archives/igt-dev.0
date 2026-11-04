@@ -2,41 +2,41 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1ED606A31B
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Nov 2026 00:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F300606A31B
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Nov 2026 00:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MpjktiBQ
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=V+YAs6M7
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DB4B110E335;
-	Wed,  4 Nov 2026 00:57:59 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3BAAD10F8EE;
+	Wed,  4 Nov 2026 00:58:55 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A51810E4C7
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2026 00:55:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 134D510E4C7
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2026 00:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793753720; x=1825289720;
+ t=1793753714; x=1825289714;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=x8pWFFkkbY41bIP0lkrVlLkXjGLj51h4E9ubpQKk3Dc=;
- b=MpjktiBQX6MAz6ZE2FFdt3qnVpKPjO/iUYBLrarQAJdT+ZsRkWbgLn58
- 7xNmTE5x9+uruEYQmlmr3NYfi/n2kGQDpG7WI8dRw4HLLplw/G04uzjnv
- s0n6M7h8bQJ5rq1WllOtKkZdx9XZA0QrpPEtB86Mlu7Ew4vlnIymLmpDq
- kOEQNlEC3zD+X4K1PBGa+Hg68O29woE6CVLXYVTK2JJsubiIykeeyyb5B
- zwCw3Q/OfnUvIGifPltgwBV5w1fQUcY7EueKm86v/SbEIePknWYGzvWRO
- 9ffJ1/DyjJf93Tqb0YAeN6d0fQ4+LYiZDCW5ykBiNcB2pyN2RgDWu9GBV A==;
-X-CSE-ConnectionGUID: OgeeALJaRQukUXuJcvX+mA==
-X-CSE-MsgGUID: wj10BuD9Q12Hi0Sq/fDjWA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2506018"
+ bh=IAe3AjWfhxRRN36BaCRBe/cUciekvhqNeCklCs+8gwE=;
+ b=V+YAs6M7PkAVKh6HWru/kTxqbk3OtA9LRcdBe58ubLaMy8WTa+MkhX1+
+ l8zaRr4kn0SVPFPjnj866qR5lP8vAG8LtTtMD5WPnGjKXoBrWGc248Sq0
+ udaVPnPn/4/j+k1GEWVmNK115Yc5VAtIYz2wvX4ryQy89frDiXefjzuOw
+ ek9S7ylTmf2SAYo+z4JD8MBHA68FnmHHFAM3UEorfE6hZk2ykdBiI9q5v
+ ZpRljq7TK/EFi3Dhb0ECejXmRrCK422Eq1GZYa19Y6AZbbnL1hVvZaBHM
+ GPZRKxiYlvUCCk4zHrdX9rbIQJuwpBaRH2PRUh+/m5aN2PSSgAyT31gpG g==;
+X-CSE-ConnectionGUID: JKukRSSQTIKZixaFc+2P+g==
+X-CSE-MsgGUID: LiNZXD/WQZKAwq6bo4DcJA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2506015"
 X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2506018"
+   d="scan'208";a="2506015"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 Nov 2026 16:55:09 -0800
-X-CSE-ConnectionGUID: 5Rwrz8MAQj6u7VRmTtrqvQ==
-X-CSE-MsgGUID: DWqnVssfR5++bau21zv1Iw==
+X-CSE-ConnectionGUID: oCzU5Od0RW6Gz90k7ZMxEw==
+X-CSE-MsgGUID: B6FgCHJDQRi58UCFmcTc0w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="6421546"
+   d="scan'208";a="6421537"
 Received: from orsosgc001.jf.intel.com ([10.54.56.63])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  03 Nov 2026 16:55:08 -0800
@@ -44,9 +44,10 @@ From: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
 To: igt-dev@lists.freedesktop.org,
 	shekhar.chauhan@intel.com
 Cc: harish.chegondi@intel.com
-Subject: [PATCH v2 4/8] tests/intel/xe_oa: Check OA buffer mmaps across unbind
-Date: Tue,  3 Nov 2026 16:55:10 -0800
-Message-ID: <20261104005505.3232485-14-umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH v2 1/8] tests/intel/xe_oa: Move device setup and teardown into
+ helpers
+Date: Tue,  3 Nov 2026 16:55:07 -0800
+Message-ID: <20261104005505.3232485-11-umesh.nerlige.ramappa@intel.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261104005505.3232485-10-umesh.nerlige.ramappa@intel.com>
 References: <20261104005505.3232485-10-umesh.nerlige.ramappa@intel.com>
@@ -71,139 +72,142 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-mmap the OA buffer before unbind. Unbind zaps the mapping and refaults
-get a zeroed dummy page, so check that the mapping reads zeros
-afterwards, after making sure it held OA reports before. Also check
-that new mmaps of the stream fd fail with ENODEV.
+Move the device dependent setup from the main fixture into
+oa_device_init() and the teardown from the final fixture into
+oa_device_fini(), so that the same state can be rebuilt by tests that
+unbind and rebind the device.
+
+oa_device_fini() also closes the sysfs fd, drops the xe device cache
+entry and resets the state, so oa_device_init() can be called again.
 
 Signed-off-by: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Shekhar Chauhan <shekhar.chauhan@intel.com>
 ---
- tests/intel/xe_oa.c | 55 ++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 52 insertions(+), 3 deletions(-)
+v2: Drop redundant drm_fd check from main fixture (Shekhar)
+---
+ tests/intel/xe_oa.c | 86 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 55 insertions(+), 31 deletions(-)
 
 diff --git a/tests/intel/xe_oa.c b/tests/intel/xe_oa.c
-index e10b77bca1b2..e4b63c982200 100644
+index 91d0ad9c4023..8758ab15bf46 100644
 --- a/tests/intel/xe_oa.c
 +++ b/tests/intel/xe_oa.c
-@@ -2831,6 +2831,18 @@ static void probe_stream_after_removal(int fd, const char *when)
- 	igt_assert_eq(err, ENODEV);
+@@ -1332,6 +1332,59 @@ init_sys_info(void)
+ 	return true;
  }
  
-+static bool mem_is_zero(const void *vaddr, size_t len)
++/*
++ * Open the xe device and set up all device dependent state. Also used to restore that
++ * state after the device has been unbound and rebound.
++ */
++static void oa_device_init(void)
 +{
-+	const uint8_t *p = vaddr;
-+	size_t i;
++	struct xe_device *xe_dev;
 +
-+	for (i = 0; i < len; i++)
-+		if (p[i])
-+			return false;
++	igt_assert_eq(drm_fd, -1);
 +
-+	return true;
++	drm_fd = drm_open_driver(DRIVER_XE);
++	xe_dev = xe_device_get(drm_fd);
++
++	/* See xe_query_oa_units_new() */
++	igt_require(xe_dev->oa_units);
++	igt_require(xe_dev->oa_units->num_oa_units);
++
++	devid = intel_get_drm_devid(drm_fd);
++	sysfs = igt_sysfs_open(drm_fd);
++
++	/* Currently only run on Xe2+ */
++	igt_require(intel_graphics_ver(devid) >= IP_VER(20, 0));
++
++	igt_require(init_sys_info());
++
++	write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
++
++	render_copy = igt_get_render_copyfunc(drm_fd);
 +}
 +
- #define UNBIND_CLOSE_BEFORE_REBIND	(1 << 0)
- 
- #define UNBIND_MAX_STREAMS	16
-@@ -2842,6 +2854,8 @@ struct unbind_stream {
- 	struct intel_xe_oa_open_prop param;
- 	size_t report_size;
- 	int fd;
-+	void *vaddr;
-+	size_t size;
- };
- 
- static char unbind_pci_slot[NAME_MAX];
-@@ -2853,10 +2867,12 @@ static void unbind_stream_open(struct unbind_stream *s, const struct drm_xe_oa_u
- {
- 	struct intel_xe_perf_metric_set *test_set = oa_unit_metric_set(oau);
- 	uint64_t fmt = test_set->perf_oa_format;
-+	struct drm_xe_oa_stream_info info = {};
- 	int n = 0;
- 
- 	s->oa_unit_id = oau->oa_unit_id;
- 	s->fd = -1;
-+	s->vaddr = NULL;
- 	s->properties[n++] = DRM_XE_OA_PROPERTY_OA_UNIT_ID;
- 	s->properties[n++] = oau->oa_unit_id;
- 	s->properties[n++] = DRM_XE_OA_PROPERTY_SAMPLE_OA;
-@@ -2875,10 +2891,20 @@ static void unbind_stream_open(struct unbind_stream *s, const struct drm_xe_oa_u
- 
- 	s->fd = intel_xe_perf_ioctl(drm_fd, DRM_XE_OBSERVATION_OP_STREAM_OPEN, &s->param);
- 	igt_assert_lte(0, s->fd);
++/* Release all device dependent state set up by oa_device_init() */
++static void oa_device_fini(void)
++{
++	/* leave sysctl options in their default state... */
++	write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
 +
-+	do_ioctl(s->fd, DRM_XE_OBSERVATION_IOCTL_INFO, &info);
-+	s->size = info.oa_buf_size;
-+	s->vaddr = mmap(NULL, s->size, PROT_READ, MAP_PRIVATE, s->fd, 0);
-+	igt_assert(s->vaddr != MAP_FAILED);
++	if (intel_xe_perf) {
++		intel_xe_perf_free(intel_xe_perf);
++		intel_xe_perf = NULL;
++	}
 +
-+	/* Fault in the mapping while the device is still bound */
-+	(void)READ_ONCE(*(const volatile uint32_t *)s->vaddr);
- }
- 
- static void unbind_stream_close(struct unbind_stream *s)
- {
-+	igt_assert_eq(munmap(s->vaddr, s->size), 0);
-+	s->vaddr = NULL;
- 	close(s->fd);
- 	s->fd = -1;
- }
-@@ -2894,13 +2920,34 @@ static void unbind_stream_check_live(struct unbind_stream *s)
- 	ret = read(s->fd, buf, sizeof(buf));
- 	igt_debug("Pre-unbind read: ret=%d\n", ret);
- 	igt_assert_lt(0, ret);
++	if (sysfs >= 0) {
++		close(sysfs);
++		sysfs = -1;
++	}
 +
-+	/*
-+	 * Reports are written from the start of the OA buffer, so the mapping holds data
-+	 * now. Makes the zeroed dummy page check after unbind meaningful.
-+	 */
-+	igt_assert(!mem_is_zero(s->vaddr, s->report_size));
- }
- 
- static void unbind_stream_check_dead(struct unbind_stream *s, const char *when)
- {
-+	size_t page_size = sysconf(_SC_PAGESIZE);
-+	void *vaddr;
++	if (drm_fd >= 0) {
++		xe_device_put(drm_fd);
++		drm_close_driver(drm_fd);
++		drm_fd = -1;
++	}
++}
 +
- 	igt_debug("[%s] checking stream on oa unit %d\n", when, s->oa_unit_id);
- 
- 	probe_stream_after_removal(s->fd, when);
-+
-+	/*
-+	 * Unbind zaps the existing mapping and refaults get a zeroed dummy page instead of
-+	 * the OA buffer: check first and last page
-+	 */
-+	igt_assert(mem_is_zero(s->vaddr, page_size));
-+	igt_assert(mem_is_zero((uint8_t *)s->vaddr + s->size - page_size, page_size));
-+
-+	/* New mappings are refused */
-+	vaddr = mmap(NULL, s->size, PROT_READ, MAP_PRIVATE, s->fd, 0);
-+	igt_assert(vaddr == MAP_FAILED);
-+	igt_assert_eq(errno, ENODEV);
- }
- 
- /*
-@@ -2915,6 +2962,8 @@ static void unbind_rebind_recover(void)
- 	for (i = 0; i < unbind_num_streams; i++) {
- 		struct unbind_stream *s = &unbind_streams[i];
- 
-+		if (s->vaddr && s->vaddr != MAP_FAILED)
-+			munmap(s->vaddr, s->size);
- 		if (s->fd >= 0)
- 			close(s->fd);
- 	}
-@@ -2936,9 +2985,9 @@ static void unbind_rebind_recover(void)
- 
  /**
-  * SUBTEST: unbind-rebind-stream
-- * Description: Open an OA stream and test the effects of unbind and rebind: the stream
-- *		dies, no new streams can be opened on the removed device and the device
-- *		works after rebind.
-+ * Description: Open OA streams with mmapped OA buffers and test the effects of unbind
-+ *		and rebind: streams die, mmaps read a zeroed dummy page, no new streams can
-+ *		be opened on the removed device and the device works after rebind.
-  */
- static void test_unbind_rebind(const struct drm_xe_oa_unit *oau0, unsigned int flags)
- {
+  * SUBTEST: non-system-wide-paranoid
+  * Description: CAP_SYS_ADMIN is required to open system wide metrics, unless
+@@ -4970,7 +5023,6 @@ int igt_main_args("b:td", long_options, help_str, opt_handler, NULL)
+ 		{ NULL },
+ 	};
+ 	const struct drm_xe_oa_unit *oau0, *oau;
+-	struct xe_device *xe_dev;
+ 
+ 	igt_fixture() {
+ 		struct stat sb;
+@@ -4989,31 +5041,9 @@ int igt_main_args("b:td", long_options, help_str, opt_handler, NULL)
+ 		test_sysctl_defaults();
+ 
+ 	igt_fixture() {
+-		/* We expect that the ref count test before these fixtures
+-		 * should have closed drm_fd...
+-		 */
+-		igt_assert_eq(drm_fd, -1);
+-
+ 		enable_trace_log();
+-		drm_fd = drm_open_driver(DRIVER_XE);
+-		xe_dev = xe_device_get(drm_fd);
+-
+-		/* See xe_query_oa_units_new() */
+-		igt_require(xe_dev->oa_units);
+-		igt_require(xe_dev->oa_units->num_oa_units);
++		oa_device_init();
+ 		oau0 = oa_unit_by_id(drm_fd, 0);
+-
+-		devid = intel_get_drm_devid(drm_fd);
+-		sysfs = igt_sysfs_open(drm_fd);
+-
+-		/* Currently only run on Xe2+ */
+-		igt_require(intel_graphics_ver(devid) >= IP_VER(20, 0));
+-
+-		igt_require(init_sys_info());
+-
+-		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
+-
+-		render_copy = igt_get_render_copyfunc(drm_fd);
+ 	}
+ 
+ 	igt_subtest("non-system-wide-paranoid")
+@@ -5222,13 +5252,7 @@ int igt_main_args("b:td", long_options, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_fixture() {
+-		/* leave sysctl options in their default state... */
+-		write_u64_file("/proc/sys/dev/xe/observation_paranoid", 1);
+-
+-		if (intel_xe_perf)
+-			intel_xe_perf_free(intel_xe_perf);
+-
+-		drm_close_driver(drm_fd);
++		oa_device_fini();
+ 		disable_trace_log();
+ 	}
+ }
 -- 
 2.55.0
 
