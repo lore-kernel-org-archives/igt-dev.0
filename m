@@ -2,43 +2,43 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFEA6606A31B
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Nov 2026 07:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51654606A31B
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Nov 2026 07:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BZ66n3u1
+	dkim=fail reason="signature verification failed" (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iVcxt5Hv
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 97AC310E83C;
-	Wed,  4 Nov 2026 07:30:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0527C10E83C;
+	Wed,  4 Nov 2026 07:31:42 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BD09010E858
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2026 07:29:23 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 947A910E83C
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2026 07:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793777363; x=1825313363;
+ t=1793777343; x=1825313343;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=dm3y5bSvhz9JC8YsiUPKGvL6nZ7X4gnzYW1MG1KXO7c=;
- b=BZ66n3u1shHF3+Cdw0ugkou6cfcEnJY1l0YtAuSIX5HYQR18CpdVex4Q
- rfGzyNZ7fhckkFgmV0T6fAS9PZ4m343E9Z0VFujoqTS/DvGl5qPhcaJ1Z
- u1Py5j+pGb+Awj9/Rvxoh70txuhg0HH2NjQ+LH95A4auTCrKdQBUK+TlO
- Z80xItU34mC7dlcaXu+EsxnnxZAP6MrMYNNcqBWXILURWuOro1C3RRvjU
- TdidWRtdD+b6TFY1+BmB+PO2cM+aofqdNxbRcZVW+YSPkhhg15Ewlxms7
- 9oRouLj7UJ65akTCGyQ/qW6iRFTidgi4Aun/+qkI0RLTYYJtTBvM8mqKx Q==;
-X-CSE-ConnectionGUID: JjKo7ywcRxys8o85q0rPXA==
-X-CSE-MsgGUID: EEuDeikkRiWsYaF45VJ6IQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2400921"
+ bh=KNTIWN44vdj5Z4mZtJiBJGjjjIcn8zERO+nnML2xte4=;
+ b=iVcxt5Hv2EJguWURuzQZKOGdzeVnhYp2GQqL58sVNDwcMaFBxcyQ5r0o
+ ky4Ay8axClhALIwNFZ5G1Lgt5RZZEtBDvLc/xHeadUnBhXeAO6VZp0RVu
+ nRmqycYoPyzIljNl3M6tQ61WJA9zkFf0KBnB8BSHxgEmx/xj8Zn/LhEwu
+ uBcksY6Q6ThkwX49t6SDS8oc2udXS+kqCY9RC2m3hhdbJ5XQesEyj5Mdq
+ hX2/ac74awvWgbKfBGcaXt03hmpJgPmi9EAWuXg9uyBYMzReYXRZuyXos
+ AcISAE9Ru1EKqhty7X9jTyEt7MbbsYGLoX1ogKrdOzsVL2/VhOTs8Wqgy Q==;
+X-CSE-ConnectionGUID: f7ux/dzjT/a97SpsmcPOSQ==
+X-CSE-MsgGUID: jJhibQlTTZSctYeVJM2SBA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2400918"
 X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="2400921"
+   d="scan'208";a="2400918"
 Received: from fmviesa011.fm.intel.com ([10.60.135.151])
  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 03 Nov 2026 23:29:06 -0800
-X-CSE-ConnectionGUID: L4YcnV5RQzuwC2UYMRDKYw==
-X-CSE-MsgGUID: +SwSjIy4TEu0AEb2AbKMzA==
+ 03 Nov 2026 23:29:03 -0800
+X-CSE-ConnectionGUID: vEYMX37bS0uCOPn3WASiWg==
+X-CSE-MsgGUID: HToCxU6dSrmB05kbfvIEgA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
-   d="scan'208";a="8422313"
+   d="scan'208";a="8422305"
 Received: from dut1105bmgfrd.igk.intel.com ([10.211.177.74])
- by fmviesa011.fm.intel.com with ESMTP; 03 Nov 2026 23:29:03 -0800
+ by fmviesa011.fm.intel.com with ESMTP; 03 Nov 2026 23:29:01 -0800
 From: shivtej.eknath.patil@intel.com
 To: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com,
  nishit.sharma@intel.com, smitha.balasubramanyam@intel.com
@@ -46,10 +46,10 @@ Cc: karthik.poosa@intel.com, ramadevi.gandi@intel.com,
 	badal.nilawar@intel.com, peter.senna@intel.com,
 	"Patil, Shivtej Eknath" <shivtej.eknath.patil@intel.com>,
 	Patil@freedesktop.org
-Subject: [PATCH v1 2/2] tests/intel-ci: blocklist unsupported core_sysfs sysfs
- tests on iGPU
-Date: Wed,  4 Nov 2026 07:28:50 +0000
-Message-ID: <20261104072850.18413-3-shivtej.eknath.patil@intel.com>
+Subject: [PATCH v1 1/2] tests/core_sysfs: add coverage for xe_device_sysfs
+ entries
+Date: Wed,  4 Nov 2026 07:28:49 +0000
+Message-ID: <20261104072850.18413-2-shivtej.eknath.patil@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261104072850.18413-1-shivtej.eknath.patil@intel.com>
 References: <20261104072850.18413-1-shivtej.eknath.patil@intel.com>
@@ -76,74 +76,155 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: "Patil, Shivtej Eknath" <shivtej.eknath.patil@intel.com>
 
-Some core_sysfs subtests exercise xe_device_sysfs attributes
-that are not exposed on iGPU platforms.
-
-As a result, the following subtests generate expected skips
-on iGPU platforms:
-
-- auto-link-downgrade-capable-show
-- auto-link-downgrade-status-show
-- lb-fan-control-version-show
-- lb-voltage-regulator-version-show
+Add sysfs coverage subtests to validate the following
+xe_device_sysfs entries:
+- auto-link-downgrade-capable
+- auto-link-downgrade-status
+- lb-fan-control-version
+- lb-voltage-regulator-version
 - vram-d3cold-threshold-show
 - vram-d3cold-threshold-store
 
-Add blocklist entries for these subtests on affected
-platforms to avoid reporting expected skips as CI failures.
-
 Signed-off-by: Patil, Shivtej Eknath <shivtej.eknath.patil@intel.com>
 ---
- tests/intel-ci/xe.lnl.core.blocklist.txt | 7 +++++++
- tests/intel-ci/xe.nvl.core.blocklist.txt | 7 +++++++
- tests/intel-ci/xe.ptl.core.blocklist.txt | 7 +++++++
- 3 files changed, 21 insertions(+)
+ tests/core_sysfs.c | 115 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 115 insertions(+)
 
-diff --git a/tests/intel-ci/xe.lnl.core.blocklist.txt b/tests/intel-ci/xe.lnl.core.blocklist.txt
-index 88115ec22..0ca64b10f 100644
---- a/tests/intel-ci/xe.lnl.core.blocklist.txt
-+++ b/tests/intel-ci/xe.lnl.core.blocklist.txt
-@@ -106,3 +106,10 @@ igt@xe_pm@d3hot-i2c
- ##################################################################
- igt@.*multi.queue.*
- ##################################################################
-+# Expected skips on iGPU platforms where the corresponding sysfs
-+# entries are not exposed
-+##################################################################
-+igt@core_sysfs@auto-link-downgrade-.*
-+igt@core_sysfs@lb-.*
-+igt@core_sysfs@vram-d3cold-threshold-.*
-+##################################################################
-diff --git a/tests/intel-ci/xe.nvl.core.blocklist.txt b/tests/intel-ci/xe.nvl.core.blocklist.txt
-index 7de332352..1e150783c 100644
---- a/tests/intel-ci/xe.nvl.core.blocklist.txt
-+++ b/tests/intel-ci/xe.nvl.core.blocklist.txt
-@@ -107,3 +107,10 @@ igt@xe_exec_sip@.*
- igt@xe_exec_sip_eudebug@.*
- igt@xe_live_ktest@xe_eudebug
- ##################################################################
-+# Expected skips on iGPU platforms where the corresponding sysfs
-+# entries are not exposed
-+##################################################################
-+igt@core_sysfs@auto-link-downgrade-.*
-+igt@core_sysfs@lb-.*
-+igt@core_sysfs@vram-d3cold-threshold-.*
-+##################################################################
-diff --git a/tests/intel-ci/xe.ptl.core.blocklist.txt b/tests/intel-ci/xe.ptl.core.blocklist.txt
-index 9716e6071..93c8d32ed 100644
---- a/tests/intel-ci/xe.ptl.core.blocklist.txt
-+++ b/tests/intel-ci/xe.ptl.core.blocklist.txt
-@@ -86,3 +86,10 @@ igt@.*survivability.*
- ##################################################################
- igt@.*multi.queue.*
- ##################################################################
-+# Expected skips on iGPU platforms where the corresponding sysfs
-+# entries are not exposed
-+##################################################################
-+igt@core_sysfs@auto-link-downgrade-.*
-+igt@core_sysfs@lb-.*
-+igt@core_sysfs@vram-d3cold-threshold-.*
-+##################################################################
+diff --git a/tests/core_sysfs.c b/tests/core_sysfs.c
+index 3173ffa7b..a10e462c8 100644
+--- a/tests/core_sysfs.c
++++ b/tests/core_sysfs.c
+@@ -20,8 +20,30 @@
+  * SUBTEST: read-all-entries
+  * Description: Read all entries from sysfs path
+  *
++ * SUBTEST: auto-link-downgrade-capable-show
++ * Description: Read auto_link_downgrade_capable sysfs entry
++ *
++ * SUBTEST: auto-link-downgrade-status-show
++ * Description: Read auto_link_downgrade_status sysfs entry
++ *
++ * SUBTEST: lb-fan-control-version-show
++ * Description: Read lb_fan_control_version sysfs entry
++ *
++ * SUBTEST: lb-voltage-regulator-version-show
++ * Description: Read lb_voltage_regulator_version sysfs entry
++ *
++ * SUBTEST: vram-d3cold-threshold-show
++ * Description: Read vram_d3cold_threshold sysfs entry
++ *
++ * SUBTEST: vram-d3cold-threshold-store
++ * Description: Write and read back vram_d3cold_threshold sysfs entry
+  */
+ 
++static bool sysfs_exists(int sysfs_fd, const char *path)
++{
++	return !faccessat(sysfs_fd, path, R_OK, 0);
++}
++
+ IGT_TEST_DESCRIPTION("Read entries from sysfs paths.");
+ 
+ int igt_main()
+@@ -41,6 +63,99 @@ int igt_main()
+ 	igt_subtest("read-all-entries")
+ 		igt_dir_process_files_simple(sysfs);
+ 
++	igt_subtest("auto-link-downgrade-capable-show") {
++		int val;
++		int ret;
++
++		igt_require(sysfs_exists(sysfs,
++					 "device/auto_link_downgrade_capable"));
++
++		ret = igt_sysfs_scanf(sysfs,
++				      "device/auto_link_downgrade_capable",
++				      "%d", &val);
++
++		igt_assert(ret > 0);
++		igt_info("auto-link-downgrade-capable=%d\n", val);
++		igt_assert(val == 0 || val == 1);
++	}
++
++	igt_subtest("auto-link-downgrade-status-show") {
++		int val;
++		int ret;
++
++		igt_require(sysfs_exists(sysfs,
++					 "device/auto_link_downgrade_status"));
++
++		ret = igt_sysfs_scanf(sysfs,
++				      "device/auto_link_downgrade_status",
++				      "%d", &val);
++
++		igt_assert(ret > 0);
++		igt_info("auto-link-downgrade-status=%d\n", val);
++		igt_assert(val == 0 || val == 1);
++	}
++
++	igt_subtest("lb-fan-control-version-show") {
++		char version[64];
++		int ret;
++
++		igt_require(sysfs_exists(sysfs,
++					 "device/lb_fan_control_version"));
++
++		ret = igt_sysfs_scanf(sysfs,
++				      "device/lb_fan_control_version",
++				      "%63s", version);
++
++		igt_debug("ret=%d errno=%d\n", ret, errno);
++
++		igt_assert(ret > 0);
++
++		igt_info("lb-fan-control-version=%s\n", version);
++	}
++
++	igt_subtest("lb-voltage-regulator-version-show") {
++		char version[64] = {};
++		int ret;
++
++		igt_require(sysfs_exists(sysfs,
++					 "device/lb_voltage_regulator_version"));
++
++		ret = igt_sysfs_scanf(sysfs,
++				      "device/lb_voltage_regulator_version",
++				      "%63s", version);
++		igt_debug("ret=%d errno=%d\n", ret, errno);
++
++		igt_assert(ret > 0);
++		igt_info("lb-voltage-regulator-version=%s\n", version);
++	}
++
++	igt_subtest("vram-d3cold-threshold-show") {
++		uint64_t threshold;
++
++		igt_require(sysfs_exists(sysfs,
++					 "device/vram_d3cold_threshold"));
++
++		threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs);
++
++		igt_info("threshold=%" PRIu64 "\n", threshold);
++	}
++
++	igt_subtest("vram-d3cold-threshold-store") {
++		uint64_t old_val;
++		uint64_t new_val;
++
++		igt_require(sysfs_exists(sysfs,
++					 "device/vram_d3cold_threshold"));
++		old_val = igt_sysfs_get_vram_d3cold_threshold(sysfs);
++		igt_sysfs_set_vram_d3cold_threshold(sysfs, old_val + 1);
++		new_val = igt_sysfs_get_vram_d3cold_threshold(sysfs);
++		igt_assert_eq(new_val, old_val + 1);
++		/* restore */
++		igt_sysfs_set_vram_d3cold_threshold(sysfs, old_val);
++		igt_info("old=%" PRIu64 " new=%" PRIu64 "\n",
++			 old_val, new_val);
++	}
++
+ 	igt_fixture() {
+ 		close(sysfs);
+ 		drm_close_driver(fd);
 -- 
 2.34.1
 
