@@ -2,28 +2,55 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0B9606A31B
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Nov 2026 07:33:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2A7606A329
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Nov 2026 07:52:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HHnsw+iK
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 24C0710E83C;
-	Wed,  4 Nov 2026 07:33:21 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 88F2110E83C;
- Wed,  4 Nov 2026 07:32:27 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3773136397264187455=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id F059010FA21;
+	Wed,  4 Nov 2026 07:52:32 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2FB3810FA18
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2026 07:51:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1793778693; x=1825314693;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=qtYalubiZM8gdBtvPXl/9CW0YWN3xEXIKutbrb3W1pY=;
+ b=HHnsw+iK/Ob4pglLJIHS0+OIUYGJ3jc6fiGdeNKW1hHQcdmFQ/gtuKG+
+ IRtVMtrrSn9bSO2bDE9pGc6W/5XEP1g2cl3Xewet0vOyfqC3IanOUSOTw
+ bbjcq4UvIUpwHKNnza2MFV1/HfyfPpw880yQQDH4YYWrxASUgtISW1hwM
+ trpBX0jk50UqzDp09GbAc1Egf8XVW4DfmWUSb3/9u9GLH9+llag91KzPM
+ OhwjrXfrTS1QqDIrMYnrw2HDDIqCUbtlzhdQdMuHJngUEbiBa5Cbagw2E
+ NJwhZlTERBzTXTa25xJGUVZnjcszJiiPIdTgW3tmQ9iqXx1ad1Tu2FUxd w==;
+X-CSE-ConnectionGUID: rNAXy8ltSmaFyQy93Rreiw==
+X-CSE-MsgGUID: I5pzdKEtR3S50ZAaZisLMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11955"; a="2399784"
+X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
+   d="scan'208";a="2399784"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 03 Nov 2026 23:51:32 -0800
+X-CSE-ConnectionGUID: E7tAZnVVRWuzEE2PpNIB7w==
+X-CSE-MsgGUID: yd/F8Kr7SRuGawDC9lYxgg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,194,1787036400"; 
+   d="scan'208";a="6504332"
+Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
+ by orviesa005.jf.intel.com with ESMTP; 03 Nov 2026 23:51:30 -0800
+From: nishit.sharma@intel.com
+To: igt-dev@lists.freedesktop.org, gustavo.sousa@intel.com,
+ arvind.yadav@intel.com
+Cc: kamil.konieczny@linux.intel.com
+Subject: [PATCH] tests/intel/xe_exec_system_allocator: Skip reserved PAT
+ madvise indices
+Date: Wed,  4 Nov 2026 07:51:29 +0000
+Message-ID: <20261104075129.1615348-1-nishit.sharma@intel.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fsetmode=3A_Conv?=
- =?utf-8?q?ert_to_igt=5Fdisplay_atomic_API_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jeevan B" <jeevan.b@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 04 Nov 2026 07:32:27 -0000
-Message-ID: <179377754754.115099.12890084142689987923@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261104063442.2208555-1-jeevan.b@intel.com>
-In-Reply-To: <20261104063442.2208555-1-jeevan.b@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,114 +61,107 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============3773136397264187455==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+From: Nishit Sharma <nishit.sharma@intel.com>
 
-== Series Details ==
+KMD may mark some PAT entries as reserved in the debugfs pat_sw_config
+dump (e.g. Wa_14026539277 reserves the 2-way-coherent entries), and
+such entries must not be used. Skip the PAT-index madvise subtests when
+the selected PAT index is reserved instead of decoding the coherency
+bits of the PAT entry.
 
-Series: tests/kms_setmode: Convert to igt_display atomic API (rev3)
-URL   : https://patchwork.freedesktop.org/series/164189/
-State : success
+Always read the PAT software configuration rather than only when a
+specific workaround is active, so that any future reservation is
+honoured as well. Kernels that don't expose pat_sw_config have no
+reserved entries to report, so every index is treated as usable there.
 
-== Summary ==
+v2:
+- Read pat_sw_config unconditionally (Gustavo)
+- Don't mention Wa_14026539277 in the skip message (Gustavo)
 
-CI Bug Log - changes from XEIGT_9177_BAT -> XEIGTPW_16100_BAT
-====================================================
+Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
+---
+ tests/intel/xe_exec_system_allocator.c | 32 ++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-Summary
--------
+diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
+index 45ec62813..c6a8872b4 100644
+--- a/tests/intel/xe_exec_system_allocator.c
++++ b/tests/intel/xe_exec_system_allocator.c
+@@ -1216,6 +1216,16 @@ xe_vm_madvixe_pat_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
+ 		      DRM_XE_MEM_RANGE_ATTR_PAT, pat_index, 0, 0);
+ }
+ 
++static bool pat_idx_is_reserved(const struct intel_pat_cache *pat_sw_config,
++				int32_t num_pat_entries,
++				uint8_t pat_idx)
++{
++	if (pat_idx >= num_pat_entries)
++		return false;
++
++	return pat_sw_config->entries[pat_idx].rsvd;
++}
++
+ static void
+ xe_vm_madvise_atomic_attr(int fd, uint32_t vm, uint64_t addr, uint64_t range,
+ 			  int mem_attr)
+@@ -2647,6 +2657,8 @@ int igt_main()
+ 
+ 	int fd, svm_compute_loops = getenv_int("IGT_SVM_COMPUTE_LOOPS", 1);
+ 	uint16_t dev_id;
++	struct intel_pat_cache pat_sw_config = {};
++	int32_t num_pat_entries = 0;
+ 
+ 	igt_fixture() {
+ 		struct xe_device *xe;
+@@ -2658,6 +2670,19 @@ int igt_main()
+ 		va_bits = xe->va_bits;
+ 		open_sync_file();
+ 		dev_id = intel_get_drm_devid(fd);
++
++		/*
++		 * KMD may mark PAT entries as reserved for various reasons
++		 * (e.g. workarounds). Older kernels without the debugfs
++		 * pat_sw_config entry don't expose that information, so
++		 * treat every index as usable in that case.
++		 */
++		num_pat_entries = xe_get_pat_sw_config(fd, &pat_sw_config, 0);
++		if (num_pat_entries <= 0) {
++			igt_debug("Couldn't get Xe PAT software configuration (%d)\n",
++				  num_pat_entries);
++			num_pat_entries = 0;
++		}
+ 	}
+ 
+ 	for (const struct section *s = sections; s->name; s++) {
+@@ -2879,6 +2904,8 @@ int igt_main()
+ 
+ 	for (const struct section *s = intel_get_pat_idx_functions; s->name; s++) {
+ 		igt_subtest_f("pat-index-%s", s->name) {
++			uint8_t pat_idx;
++
+ 			if ((strstr(s->name, "madvise-pat-idx-wt-") ||
+ 			     strstr(s->name, "madvise-pat-idx-uc-comp-")) &&
+ 			     !xe_has_vram(fd)) {
+@@ -2887,6 +2914,11 @@ int igt_main()
+ 			if (IS_PONTEVECCHIO(dev_id) &&
+ 			    strstr(s->name, "madvise-pat-idx-uc-comp-"))
+ 				igt_skip("Skipping compression-related PAT index on PVC\n");
++
++			pat_idx = s->fn(fd);
++			igt_skip_on_f(pat_idx_is_reserved(&pat_sw_config, num_pat_entries,
++							  pat_idx),
++				      "PAT index %u is reserved\n", pat_idx);
+ 			xe_for_each_engine(fd, hwe)
+ 				test_exec(fd, hwe, 1, 1, SZ_4M, 0, 0, NULL, NULL, s->flags, s->fn);
+ 		}
+-- 
+2.43.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 14)
-------------------------------
-
-  Missing    (1): bat-nvls-2 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9177 -> IGTPW_16100
-  * Linux: xe-6058-34c3200b517db45a621c4963d87759823be13bbd -> xe-6059-d11bbfdac0f3d443b367857ffe683ae6bb80d560
-
-  IGTPW_16100: 16100
-  IGT_9177: 9177
-  xe-6058-34c3200b517db45a621c4963d87759823be13bbd: 34c3200b517db45a621c4963d87759823be13bbd
-  xe-6059-d11bbfdac0f3d443b367857ffe683ae6bb80d560: d11bbfdac0f3d443b367857ffe683ae6bb80d560
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16100/index.html
-
---===============3773136397264187455==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_setmode: Convert to igt_display atomic API (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/164189/">https://patchwork.freedesktop.org/series/164189/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16100/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16100/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9177_BAT -&gt; XEIGTPW_16100_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 14)</h2>
-<p>Missing    (1): bat-nvls-2 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9177 -&gt; IGTPW_16100</li>
-<li>Linux: xe-6058-34c3200b517db45a621c4963d87759823be13bbd -&gt; xe-6059-d11bbfdac0f3d443b367857ffe683ae6bb80d560</li>
-</ul>
-<p>IGTPW_16100: 16100<br />
-  IGT_9177: 9177<br />
-  xe-6058-34c3200b517db45a621c4963d87759823be13bbd: 34c3200b517db45a621c4963d87759823be13bbd<br />
-  xe-6059-d11bbfdac0f3d443b367857ffe683ae6bb80d560: d11bbfdac0f3d443b367857ffe683ae6bb80d560</p>
-
-</body>
-</html>
-
---===============3773136397264187455==--
