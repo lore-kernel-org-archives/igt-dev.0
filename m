@@ -2,62 +2,147 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE92606A326
-	for <igt-dev@archiver.kernel.org>; Wed,  4 Nov 2026 18:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8D1606A32E
+	for <igt-dev@archiver.kernel.org>; Wed,  4 Nov 2026 18:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GKO6uqwQ
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=m4qlxc/x
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CDB5010E5F5;
-	Wed,  4 Nov 2026 18:19:57 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 517DD10E5F5
- for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2026 18:18:57 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 4878010E5F5;
+	Wed,  4 Nov 2026 18:25:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4E48310E5CE
+ for <igt-dev@lists.freedesktop.org>; Wed,  4 Nov 2026 18:24:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793816337; x=1825352337;
- h=message-id:date:mime-version:subject:to:cc:references:
- from:in-reply-to:content-transfer-encoding;
- bh=DsHqVxl1QAaXPCnevfnDkFIXFMf/pY85fB1RETDoCak=;
- b=GKO6uqwQdhPdidZdkoVuqbeC2urQKuFxTn2ZWqVa0sDFxYIKRjqKr4YQ
- LILzlgoGHa9TLRo6TOfvzfnY5oOjgHMyOz0Lz2c8PzqeEwx7kNZqd+5UG
- 22c4Zly1benD43U2JRFI5N7tC/tlQwE54XueitYehQA9gwjBgoa5GQK7p
- ShRY9lttp128QrywNfSAu7zYiuYbujBackE5voym1uNrOep6FD8mX3P1B
- ypOcLHjUw/uHmxXAQIJeVLFPdlzcFzL8meAATPG7+qQyYi1DCWSxBDYZo
- fReaTRkMPZ4B86dRtz8gjzYJ2aj9Cg8NlYKHU0OpcBftebyrB5VAiIXKf Q==;
-X-CSE-ConnectionGUID: xLlePmSvSZyCWgLMzHkNKw==
-X-CSE-MsgGUID: eJ5uwKArSu2pzH0nxjiKPg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2483212"
+ t=1793816641; x=1825352641;
+ h=date:from:to:cc:subject:message-id:references:
+ in-reply-to:mime-version;
+ bh=lO9SsAQzaz3ogz/FcM4foRUv3rcgTQ1jor/PBHQg2T0=;
+ b=m4qlxc/xR3Y8snC7nXzmGcrF4xSMT08yyHtPrAwvvWl/JAwISFw9nJBc
+ emQnK6NcFG82Teuk3I9ANs1VpaccOJqLlXPwfJ8PxFYpCKYdhTs/KeORf
+ gGsrlm80BXhkteJo24yV39eofCCAendn+zEUJQCfUGLygZgrE703NS+r6
+ CpjKfHYQbRyG78mvOh9w6KAmNCn9KI/7Op9LRs2FRt0BGh2A91y51xVwa
+ jZ65OQ2F8QuQqR237AXowO3g0FlgEyoNbJO6ZfqY5w2loqOoxh7kKN62T
+ 9oJmjPhg1Cs30bCGX9dttg0yE6fDx2WQFmw2asglqYBqKKVC0cvWJC7ln w==;
+X-CSE-ConnectionGUID: FAY4xBk2SzicH/NHtGGAaQ==
+X-CSE-MsgGUID: +ZnXmLmCTAGtqVLrmm+/kA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2456631"
 X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="2483212"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2026 10:18:57 -0800
-X-CSE-ConnectionGUID: 7Numv4FGQHGU1IoFz7umvg==
-X-CSE-MsgGUID: NuaXtyoXQjuWw2MddudPTQ==
+   d="scan'208";a="2456631"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2026 10:24:00 -0800
+X-CSE-ConnectionGUID: YHFLUxeXTg+UHRESMDZSTQ==
+X-CSE-MsgGUID: BIdqlhd3RviXGMNG4KlFvg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,195,1787036400"; 
-   d="scan'208";a="8563023"
-Received: from ncintean-mobl1.ger.corp.intel.com (HELO [10.245.244.43])
- ([10.245.244.43])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2026 10:18:55 -0800
-Message-ID: <c7768123-c36c-4b13-b4c9-f57e34a80ff8@intel.com>
-Date: Wed, 4 Nov 2026 18:18:53 +0000
+   d="scan'208";a="6687861"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 04 Nov 2026 10:24:00 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 4 Nov 2026 10:23:59 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Wed, 4 Nov 2026 10:23:59 -0800
+Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.47) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Wed, 4 Nov 2026 10:23:58 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=H1v3/9Vx8A4Qz5IriSYluILgTMa18MSWxSILVzeRfj7Z1/nXGXd83Sxpu6CTlJp8awv4Jnlp0n5fCkp/pSKa86dxVXGJP39ev50JqYJ/EzN9zHE/RutPWRLIxymhFqAz8MU14wNn0Mdan5BqkoMK5COGaZCgBa1za6KrWsgFoxruwZvYX6UQdKc/Hm+9a+LuTKBgom7OMz/enZwIkRKXi+9TnACgvLGMHAzKJUa0GMDn9NW5pC66Sjf2yDhSDzxH6vMEdtP8NV23JL+JlZqM8SmoZSlUWA4xy8cKKZwyR6XWLxNikf8i4BNvPuF2uYC7Trpzq5sI8pZaQnC+d6czRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mzrYdf81TXSO7PZ773rp+JSt/PiAifuSh3Eqy+BgxQw=;
+ b=SKpohvRcZF/L4rgnolOrv/HluksqNVBfCLZC8vZvRbfT2iFg9yCO4IwPE/LubN4dPSnbfb1KzEKW1Custqo//893vBzOPIQltAJz4IZo3c2gWzOmBjHL3T+SjMn5x0Wx70bDFnlHIhh025qcZ6/yNH5g0Hptqix7tBH1uCI8D6dW5Yq0d73twIWOgHlDDrjlZK76GsJ2/0e5HUu2cRCuYbaQS1Q9+GymiXmrJKNbknVH8OBWanTTjnEURtXZv2haYf+dscAjRv17iShtLH2xySB/pu0qZhOTYcaAa+SKp6oCPilMrmlSPir88oh8qZGWU58TrVEizkeC1SkqQJXUkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MW3PR11MB4684.namprd11.prod.outlook.com (2603:10b6:303:5d::14)
+ by LV1PR11MB8843.namprd11.prod.outlook.com (2603:10b6:408:2b5::15)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.8; Wed, 4 Nov 2026
+ 18:23:56 +0000
+Received: from MW3PR11MB4684.namprd11.prod.outlook.com
+ ([fe80::2f5a:96ce:f7e4:c315]) by MW3PR11MB4684.namprd11.prod.outlook.com
+ ([fe80::2f5a:96ce:f7e4:c315%7]) with mapi id 15.21.0569.011; Wed, 4 Nov 2026
+ 18:23:55 +0000
+Date: Wed, 4 Nov 2026 10:23:52 -0800
+From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+To: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+CC: <igt-dev@lists.freedesktop.org>
+Subject: Re: [PATCH i-g-t v3 1/2] tests/intel/xe_exec_threads: Parametrise
+ worker and queue counts
+Message-ID: <aut4OMBl-hC6jSRD@nvishwa1-desk>
+References: <20261103195149.48923-1-jagmeet.randhawa@intel.com>
+Content-Type: text/plain; charset="us-ascii"; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261103195149.48923-1-jagmeet.randhawa@intel.com>
+X-ClientProxiedBy: SJ0PR05CA0162.namprd05.prod.outlook.com
+ (2603:10b6:a03:339::17) To MW3PR11MB4684.namprd11.prod.outlook.com
+ (2603:10b6:303:5d::14)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t v2] tests/intel/xe_bo_shrink: Add a user-space
- shrinker test
-To: =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Matthew Brost <matthew.brost@intel.com>
-References: <20261104163351.2417-1-thomas.hellstrom@linux.intel.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <20261104163351.2417-1-thomas.hellstrom@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW3PR11MB4684:EE_|LV1PR11MB8843:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4f2fa636-a02a-4d3d-8c8c-08df3aa0c8da
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|366016|23010399003|1800799024|261028144727099003|261026140227099003|261022105027099003|261009223027099003|261022075727099003|261021121427099003|11063799006|56012099006|261021123027099003|261102123227099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: UUwtYRJXn0vrQl+59Xr4FO888LQmyr60oUkSIW+deESRhtI0PkEi3zo1ebHkOZP++8sYwVBau6tATWtwkUT++5ePWuPIr06r9ugqlxUUvJJpQMFresopcCfoRRhPHM2SXNkmpPVtjMlokhrO85cEgm4uhJpY5XSB/VpIXEAlIYiMS0TKm+JQM84A/7oBiC6fK1ejQkTMOnhfkp5Qh8/MalZmswAuq0VK+26XKsr/xltEKwMfhkHjseZUyNn7FcI52E8zXZIBwNdf5E/j5nS2/W0MuVA/p/s6TcsmwGwS/jE2wm51TSD97txBZ6eWp99uwQFeH6J5x0JiHD+YlWfoW3xnZf/scQ2QdJCSY2HpWEO8VfPLIpeUbgIlIa03cIVNbj5EwoC4tx+PZE8c0EyeK8NjhEqK3ghfg2k/iWhz1FrBjHbjLdEqPBZPKib+L0g2kSK5QxR9piEQNeMoslgldcASEPaYSlrK9x629e7xXckquwrBT4EgTitCf506+KyQZ2jDsjsgzWVPksuEA/C+tM3kd71EmeRMjmcwxtFggShgmfCuuxCe3nVrU5f3Xo8KEOgwnFl+Ls9LsCBKLtqGFhZgeMHKBO6fy1tiiSmTqFC8NbNGQf82kuIQXKPxxM/AEJLjYO5baCUlMNY/nK4p7VVD5LK/js3Fa8z0VF5CLVw=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW3PR11MB4684.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(366016)(23010399003)(1800799024)(261028144727099003)(261026140227099003)(261022105027099003)(261009223027099003)(261022075727099003)(261021121427099003)(11063799006)(56012099006)(261021123027099003)(261102123227099003)(10067099003)(18002099003)(22082099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?HwXmGUXuSorPLFtzuIoljN6faIX2UoN1rLPl+N6YLYsTa81iJRLj6ayb8waq?=
+ =?us-ascii?Q?KAz07+wxftri2UmKhYYOTr6mNqN3tByDZbwWg1dIUA7l/BwwmUeRNfDfGfM+?=
+ =?us-ascii?Q?jsEwm6lPSMRCjTMI4x6hoPrSRwJJ4fQhDr+JqcVeVA7nIT8uo3pryMCZPpUY?=
+ =?us-ascii?Q?DbhOQXBx/r50EQxZ/IXRNmoZ9452cEKUrGVVSPbHRXxssRiFSHEhDXJbn9jw?=
+ =?us-ascii?Q?GlL9QSPQSi6lcYCMAonglfkAnL8cMBQn5xe6ohVk1/WhpQ/hhkbUwbXOdWIM?=
+ =?us-ascii?Q?v4hJuJHDgh5vrORMsDQupVrp0XL1V7EcLEgRbGH2d1RamPVmpaC2Tr1WuQB1?=
+ =?us-ascii?Q?zSYR3stis1aC3nNGPcjT1vA4Uvlf88CU9hq8qmbwR0lWuAtMKWn/PptL9b75?=
+ =?us-ascii?Q?BYFNdBVVlPAMZOsGsNQj9COJvTIf/u+4wSYIxj27N2vefEmYOsqT39v/S00Q?=
+ =?us-ascii?Q?bV2JsgTy3kMA2IGrszKhazOE444BbtpMg4RXIj0fDBbtiEPj2fH7URpLOJCU?=
+ =?us-ascii?Q?AAtKz9gnPTYpmOIKlcKsdyIEcC95R0u7uvUxtzUoqYWKputhQLEAB2AaG/52?=
+ =?us-ascii?Q?yTkXTKDGg44630mLOT4qFMTPVcUt+B/eAC/Cv38KFNjuUsvGgj2yCb0Oj18N?=
+ =?us-ascii?Q?4eV7rtM/XTwqj5hOVSdE8mVJ7JIXK2dPfPttKNrhXiwlRVEFwVeIYbFY5xRJ?=
+ =?us-ascii?Q?+CxGrKsbvTeMzNhSt16yjtR7eZi5GhAaz5tWCRPNIhVybSOpJVy3/9mA/2uL?=
+ =?us-ascii?Q?1q09aib116XjkKDpM4karDLjuaTgmRf0TYsj/4XTsbH5ljn2F1MWXE0iaxgw?=
+ =?us-ascii?Q?gBBtNz7x25ECedKUwhyJEdxubdgsqoK11jciMaMCCzDa3VPr/zHe7XFa16Vv?=
+ =?us-ascii?Q?pNWHunZotvDrbSO0+XeTiwuuyNkpSlJ2a5WKYhduWbjQVf/uStKY/b6YYaFV?=
+ =?us-ascii?Q?Kz/FE6hnjJJdDtFOssSjIqY4EcBPj1Kkm3NQ4Id2grFLnZJCfi1rPRqDNeTM?=
+ =?us-ascii?Q?zjNc7/sLQEQ7jGVjK/X+v5uLFODzat7qhByi3QXtcbbRQoUlBhL+4C3ENFZh?=
+ =?us-ascii?Q?OB5HFBLcdPIZH3CebQ+D07gYyIp9gRh8CZvOVvr0woQbQT/v7a8cf1luIXDg?=
+ =?us-ascii?Q?yANj3+A8PyQnz8G0frFq2W9+Y4fdsIQ3XWSHDKRHg8GcRqXP8bLbug9sTFtW?=
+ =?us-ascii?Q?ZRaJ/7Fm7Tf4PK+1zdzY0fJbBHasaTxiaz9GeQ1lY1krotfjeQmNdsKhfk9l?=
+ =?us-ascii?Q?0ufTVWjhdGbL1KKraizvaYwDHeTwhDLel63Dd4iSZsmwlSOKeq4I18BUYyxn?=
+ =?us-ascii?Q?fFSkz+eaQdXTrrVFeBjdDn3P0PwuBkKt9WorTRJjZjoxzznTMkw6wuLVQA8Y?=
+ =?us-ascii?Q?oJ5qmGLUbJC4oNV7i+An5b/y9zMhMDEk/Qrq4cWZcFhlpPPfN/3L6BWCaYJ0?=
+ =?us-ascii?Q?hnSwZ4q5EruqdiY+WplH6u/364JjgBcTR69s4/1eeimXOnSMjNhKnbyoHL6w?=
+ =?us-ascii?Q?MPRs92hLJo6kBKwPgq0+TxONj0HpE0INs8s/LXW75yeZOYkafpdfi7OlZxI2?=
+ =?us-ascii?Q?fd3ypYFuqG+/fLHT6jaY3aSHZ3mBcXNFAj8zKCmTHLUoiW3LIXwRwGLBsair?=
+ =?us-ascii?Q?4vL6VibSI/ZnUrymemwICEdlu2HUipzRH0z2B074fF4k5aIMMH01I9mAKz0j?=
+ =?us-ascii?Q?0dtZlVqLENNn2h9WYWEtRCzRY3Q3QefQjE2WaGnijhFiYiwCs9ISFLaBKsvm?=
+ =?us-ascii?Q?eMnAlsROB8fiwV+L+h+4iqo78nW9ujS1fbU+/x2Vz+Th1hSutZFK?=
+X-Exchange-RoutingPolicyChecked: 4MPyuylwVYLL2BcWpGhJuRb6xqy4/9kFwYz6D8lSdObXG1GqKJbx5CtsRb/CHdY/Qal/XsljdIwUv2zmoMa8egzsX/t4RDh7X+Qd/Ip3s2fIhDfi2ywyRTE8spxR9MffxaGSWaaKyoW6Fyo+Azf93ion0KUNoWg9Z+uUA1EM2GZcTJks5wAfY6Aaa4xe0LECB0h/uqYD7nRA0a+u+ms2QCPWYRokfvHjun9AVHJrniGBfzCgGdafnWE+uH1eNsNI94iThcUUY6pLZD0U+VqhwPrPI2qN2Y/XlFAuiFyv8ZNFizeSGhEk7J4MTPA0iVhmFfXQ8yF2BtiUDwTZ+vwNZw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4f2fa636-a02a-4d3d-8c8c-08df3aa0c8da
+X-MS-Exchange-CrossTenant-AuthSource: MW3PR11MB4684.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2026 18:23:55.0280 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MW97Reec2eX9bKOJyrO2buX6+p62MFEEm/2abf1HbxMvNSGhsZfYIx7BP3j5/YRbSjZ+pJ8ghWgWSbe4/JV396MbVgsd+NY3/HmS1ib+aB+f6GUe14q1qOOoVHZnWk9A
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV1PR11MB8843
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -69,821 +154,188 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 04/11/2026 16:30, Thomas Hellström wrote:
-> Add a user-space counterpart of the xe_bo_shrink kunit test, now that
-> user-space can mark buffer objects purgeable using the madvise IOCTL.
-> 
-> The test creates 64 MiB system buffer objects corresponding to twice
-> the amount of free system memory, fills them with pseudo-random data
-> through CPU mappings that are kept alive until readback, and verifies
-> the contents after the overcommit has forced the shrinker to back up
-> or purge them. As in the kunit test, the share of the memory that
-> doesn't fit in free RAM and swap is marked purgeable (DONTNEED) and
-> allocated first. Purgeable objects are only verified if found retained
-> when marked WILLNEED again; purged objects are never accessed.
-> 
-> Subtests:
-> - shrink: The kunit test equivalent.
-> - purge: Ignore swap space when sizing the purgeable share, so that
->    the shrinker needs to purge rather than swap.
-> - shrink-fault-inject: Enable TTM backup / restore fault injection
->    through debugfs, if available, making the shrinker back up only part
->    of the objects and making backup and restore of individual pages
->    fail. The number of injected faults is checked to be non-zero,
->    unless there was less than 1 GiB of free swap space at test start.
-> - *-blit: Never access the objects using the CPU. Instead fill them
->    from, and read them back to, a CPU-mapped dummy object using MEM_COPY
->    blits in a separate VM, so that they are restored through the GPU
->    paths. On integrated devices with flat CCS, bind the objects using a
->    compressed PAT index to cover shrinking of compressed system memory
->    objects. On discrete devices, objects are created with system and VRAM
->    placements, prefetched to system memory before the fill and prefetched
->    to VRAM before the readback, so that they are restored by the
->    migration to VRAM.
-> - *-private: Create the objects private to the test VM rather than as
->    external objects.
-> - *-fast: Allocate at most the free system memory, half of it
->    purgeable, capped to 8 GiB purgeable and 8 GiB non-purgeable, and
->    shrink using drop_caches rather than memory overcommit.
-> 
-> The non-fast subtests are slow and require a substantial amount of
-> swap space for meaningful coverage, so block them in CI and run only
-> the fast subtests.
-> 
-> v2:
-> - Don't fail the fault-inject subtests if no faults were injected and
->    there was less than XE_BO_SHRINK_FI_MIN_SWAP (1 GiB) free swap space
->    at test start, since nothing is then backed up or restored
-> - Never access the blit variant bos using the CPU, not even for the
->    fill. Fill them by blitting from the dummy bo instead
-> - Bind the blit variant bos using a compressed PAT index on integrated
->    devices with flat CCS to test shrinking of compressed system memory
->    bos (Matthew Auld)
-> 
-> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Assisted-by: GitHub_Copilot:claude-opus-5.5
-> ---
->   tests/intel-ci/xe.blocklist.txt |   3 +-
->   tests/intel/xe_bo_shrink.c      | 700 ++++++++++++++++++++++++++++++++
->   tests/meson.build               |   1 +
->   3 files changed, 703 insertions(+), 1 deletion(-)
->   create mode 100644 tests/intel/xe_bo_shrink.c
-> 
-> diff --git a/tests/intel-ci/xe.blocklist.txt b/tests/intel-ci/xe.blocklist.txt
-> index c1dd3c7a8..ba589aac2 100644
-> --- a/tests/intel-ci/xe.blocklist.txt
-> +++ b/tests/intel-ci/xe.blocklist.txt
-> @@ -35,9 +35,10 @@ igt@gpu_buddy
->   igt@drm_mm
->   igt@kms_selftest.*
->   ##################################################################
-> -# Exclude slow KUnit test which should run as manual test
-> +# Exclude slow shrinker tests which should run as manual tests
->   ##################################################################
->   igt@xe_live_ktest@xe_bo_shrink
-> +igt@xe_bo_shrink@(?!.*-fast$).*
->   ##################################################################
->   # Exclude all other non-Xe tests
->   ##################################################################
-> diff --git a/tests/intel/xe_bo_shrink.c b/tests/intel/xe_bo_shrink.c
-> new file mode 100644
-> index 000000000..8b72f207a
-> --- /dev/null
-> +++ b/tests/intel/xe_bo_shrink.c
-> @@ -0,0 +1,700 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: Exercise the xe buffer object shrinker from user-space
-> + * Category: Core
-> + * Mega feature: General Core features
-> + * Sub-category: Memory management tests
-> + * Functionality: shrinker, swap, purgeable
-> + *
-> + * This is a user-space counterpart of the xe_bo_shrink kunit test.
-> + * It creates system memory buffer objects corresponding to twice the
-> + * amount of free system memory. All objects are filled with pseudo-random
-> + * data through a CPU mapping that is kept alive until the data is verified
-> + * after the overcommit. Purgeable objects are additionally marked DONTNEED
-> + * using the madvise IOCTL so that the shrinker may discard their contents.
-> + * Those are only verified if still retained when marked WILLNEED again.
-> + *
-> + * The blit variants never access the bos using the CPU. Instead each bo is
-> + * bound to a separate VM and filled from, and read back to, a CPU-mapped
-> + * dummy bo using the MEM_COPY blitter command, so that bos are restored by
-> + * the GPU paths rather than by CPU faults, and the content of the dummy bo
-> + * is verified. On integrated devices with flat CCS, the bos are bound using
-> + * a compressed PAT index, so that compressed system memory bos, including
-> + * their CCS metadata, are subject to shrinking and restore. On discrete
-> + * devices, the blit variants create the bos with both system and VRAM
-> + * placements and prefetch them to system memory before the fill. Before
-> + * the readback copy, each bo is prefetched to VRAM, so that it is restored
-> + * by the migration to VRAM.
-> + *
-> + * The private variants create the bos private to the test VM, sharing
-> + * the VM's reservation object, rather than as external bos.
-> + *
-> + * The fast variants instead create bos corresponding to the amount of
-> + * free system memory, half of them purgeable, capped to
-> + * XE_BO_SHRINK_FAST_MAX purgeable and non-purgeable each, and shrink
-> + * them by writing to /proc/sys/vm/drop_caches rather than relying on
-> + * reclaim caused by memory overcommit.
-> + */
-> +
-> +#include <sys/random.h>
-> +#include <sys/sysinfo.h>
-> +
-> +#include "igt.h"
-> +#include "igt_debugfs.h"
-> +#include "igt_rand.h"
-> +#include "igt_syncobj.h"
-> +#include "igt_sysfs.h"
-> +#include "intel_blt.h"
-> +#include "intel_mocs.h"
-> +#include "intel_pat.h"
-> +#include "xe_drm.h"
-> +
-> +#include "intel_reg.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_query.h"
-> +
-> +#define XE_BO_SHRINK_SIZE	(64ull << 20)
-> +#define XE_BO_SHRINK_VA_BASE	(1ull << 32)
-> +/* Max purgeable and max non-purgeable memory, each, for fast variants. */
-> +#define XE_BO_SHRINK_FAST_MAX	(8ull << 30)
-> +/* Min free swap at test start for fault injection to be required. */
-> +#define XE_BO_SHRINK_FI_MIN_SWAP	(1ull << 30)
-> +
-> +#define BLIT_BATCH_ADDR		(1ull << 20)
-> +/* Offset of the readback copy batch, after the fill copy batch. */
-> +#define BLIT_READBACK_OFFSET	256
-> +#define BLIT_DUMMY_ADDR		(1ull << 32)
-> +#define BLIT_BO_ADDR		(2ull << 32)
-> +
-> +#define SHRINK_PURGE		(0x1 << 0)
-> +#define SHRINK_FAULT_INJECT	(0x1 << 1)
-> +#define SHRINK_BLIT		(0x1 << 2)
-> +#define SHRINK_FAST		(0x1 << 3)
-> +#define SHRINK_PRIVATE		(0x1 << 4)
-> +
-> +/**
-> + * struct shrink_bo - A shrinker test bo
-> + * @map: Persistent CPU mapping of the bo, kept from fill until readback,
-> + * or NULL if the bo is filled and read back using blitter copies.
-> + * @handle: GEM handle of the bo.
-> + * @addr: GPU virtual address of the bo in the test VM, if @bound.
-> + * @val: The first pseudo-random value written, used to detect a PRNG
-> + * that is out of sync on readback.
-> + * @purgeable: Whether the bo is marked DONTNEED and thus may be purged.
-> + * @bound: Whether the bo is bound at @addr in the test VM.
-> + */
-> +struct shrink_bo {
-> +	uint32_t *map;
-> +	uint32_t handle;
-> +	uint64_t addr;
-> +	uint32_t val;
-> +	bool purgeable;
-> +	bool bound;
-> +};
-> +
-> +/**
-> + * struct shrink_blit - State for blitter fill and readback of bos
-> + * @vm: A separate VM used for the copies.
-> + * @exec_queue: Copy engine exec queue in @vm.
-> + * @batch: Batch bo holding the fill and readback MEM_COPY commands.
-> + * @dummy: Dummy bo in system memory, the source of the fill copies and
-> + * the destination of the readback copies.
-> + * @dummy_map: CPU mapping of @dummy, used to generate and verify content.
-> + * @syncobj: Syncobj used to wait for binds of the bos.
-> + * @pat_index: PAT index used to bind the bos, compressed if supported.
-> + */
-> +struct shrink_blit {
-> +	uint32_t vm;
-> +	uint32_t exec_queue;
-> +	uint32_t batch;
-> +	uint32_t dummy;
-> +	uint32_t *dummy_map;
-> +	uint32_t syncobj;
-> +	uint8_t pat_index;
-> +};
-> +
-> +/**
-> + * struct ttm_fault_inject - TTM backup / restore fault injection state
-> + * @dir: Debugfs directory fd of the fault attributes, or -1 if not opened.
-> + * @probability: Original probability, restored after the test.
-> + * @interval: Original interval, restored after the test.
-> + * @times: Original times, restored after the test.
-> + * @verbose: Original verbosity, restored after the test.
-> + * @task_filter: Original task-filter setting, restored after the test.
-> + */
-> +static struct ttm_fault_inject {
-> +	int dir;
-> +	uint32_t probability;
-> +	uint32_t interval;
-> +	int32_t times;
-> +	uint32_t verbose;
-> +	bool task_filter;
-> +} ttm_fi = { .dir = -1 };
-> +
-> +static void ttm_fault_inject_restore(int sig)
-> +{
-> +	if (ttm_fi.dir < 0)
-> +		return;
-> +
-> +	__igt_sysfs_set_u32(ttm_fi.dir, "probability", ttm_fi.probability);
-> +	__igt_sysfs_set_u32(ttm_fi.dir, "interval", ttm_fi.interval);
-> +	__igt_sysfs_set_s32(ttm_fi.dir, "times", ttm_fi.times);
-> +	__igt_sysfs_set_u32(ttm_fi.dir, "verbose", ttm_fi.verbose);
-> +	__igt_sysfs_set_boolean(ttm_fi.dir, "task-filter", ttm_fi.task_filter);
-> +	close(ttm_fi.dir);
-> +	ttm_fi.dir = -1;
-> +}
-> +
-> +/*
-> + * Enable the TTM backup_fault_inject attribute, which makes the shrinker
-> + * back up only part of a bo, fails backup of individual folios and makes
-> + * interruptible restores fail with -EINTR. Requires CONFIG_FAULT_INJECTION
-> + * and CONFIG_FAULT_INJECTION_DEBUG_FS.
-> + */
-> +static void ttm_fault_inject_enable(void)
-> +{
-> +	const char *debugfs_root = igt_debugfs_mount();
-> +	char path[PATH_MAX];
-> +
-> +	igt_require_f(debugfs_root, "debugfs not available\n");
-> +	snprintf(path, sizeof(path), "%s/ttm/backup_fault_inject", debugfs_root);
-> +	ttm_fi.dir = open(path, O_RDONLY | O_DIRECTORY);
-> +	igt_require_f(ttm_fi.dir >= 0,
-> +		      "TTM backup fault injection not available (%s)\n", path);
-> +
-> +	ttm_fi.probability = igt_sysfs_get_u32(ttm_fi.dir, "probability");
-> +	ttm_fi.interval = igt_sysfs_get_u32(ttm_fi.dir, "interval");
-> +	ttm_fi.times = igt_sysfs_get_s32(ttm_fi.dir, "times");
-> +	ttm_fi.verbose = igt_sysfs_get_u32(ttm_fi.dir, "verbose");
-> +	ttm_fi.task_filter = igt_sysfs_get_boolean(ttm_fi.dir, "task-filter");
-> +	igt_install_exit_handler(ttm_fault_inject_restore);
-> +
-> +	igt_sysfs_set_boolean(ttm_fi.dir, "task-filter", false);
-> +	igt_sysfs_set_u32(ttm_fi.dir, "verbose", 0);
-> +	igt_sysfs_set_u32(ttm_fi.dir, "interval", 1);
-> +	/* The kernel decrements times on each injection. */
-> +	igt_sysfs_set_s32(ttm_fi.dir, "times", INT32_MAX);
-> +	igt_sysfs_set_u32(ttm_fi.dir, "probability", 10);
-> +}
-> +
-> +static int32_t ttm_fault_inject_count(void)
-> +{
-> +	return INT32_MAX - igt_sysfs_get_s32(ttm_fi.dir, "times");
-> +}
-> +
-> +static bool xe_has_purgeable_support(int fd)
-> +{
-> +	struct drm_xe_query_config *config = xe_config(fd);
-> +
-> +	return config->info[DRM_XE_QUERY_CONFIG_FLAGS] &
-> +		DRM_XE_QUERY_CONFIG_FLAG_HAS_PURGING_SUPPORT;
-> +}
-> +
-> +/* Fill @map with pseudo-random data and return the first value. */
-> +static uint32_t shrink_fill_random(uint32_t *map, uint32_t *prng)
-> +{
-> +	size_t i;
-> +
-> +	for (i = 0; i < XE_BO_SHRINK_SIZE / sizeof(*map); i++)
-> +		map[i] = hars_petruska_f54_1_random(prng);
-> +
-> +	return map[0];
-> +}
-> +
-> +/*
-> + * The CPU mapping is kept until shrink_verify(), so that the shrinker
-> + * needs to zap the PTEs of a live mapping and readback restores the
-> + * bo through that same mapping.
-> + */
-> +static void shrink_fill_cpu(int fd, struct shrink_bo *bo, uint32_t *prng)
-> +{
-> +	bo->map = xe_bo_map(fd, bo->handle, XE_BO_SHRINK_SIZE);
-> +	bo->val = shrink_fill_random(bo->map, prng);
-> +}
-> +
-> +static void shrink_verify(const uint32_t *map, uint32_t first_val,
-> +			  unsigned int bo_nr, uint32_t *prng)
-> +{
-> +	size_t i;
-> +
-> +	for (i = 0; i < XE_BO_SHRINK_SIZE / sizeof(*map); i++) {
-> +		uint32_t val = hars_petruska_f54_1_random(prng);
-> +
-> +		igt_assert_f(map[i] == val,
-> +			     "Content not preserved, bo %u offset 0x%016zx. "
-> +			     "Failed value is 0x%08x, recorded 0x%08x.%s\n",
-> +			     bo_nr, i * sizeof(*map), map[i], val,
-> +			     (i == 0 && val != first_val) ?
-> +			     " Looks like PRNG is out of sync." : "");
-> +	}
-> +}
-> +
-> +/*
-> + * The bo was purged. Never touch its mapping, but advance the
-> + * pseudo-random sequence to keep it in sync for the following bos.
-> + */
-> +static void shrink_skip(struct shrink_bo *bo, uint32_t *prng)
-> +{
-> +	size_t i;
-> +
-> +	for (i = 0; i < XE_BO_SHRINK_SIZE / sizeof(uint32_t); i++)
-> +		hars_petruska_f54_1_random(prng);
-> +
-> +	if (bo->map)
-> +		munmap(bo->map, XE_BO_SHRINK_SIZE);
-> +}
-> +
-> +/* Emit a linear page mode MEM_COPY of a bo sized range. */
-> +static int shrink_blit_emit_copy(int fd, uint32_t *cmd, int i,
-> +				 uint64_t src, uint64_t dst)
-> +{
-> +	uint32_t width = XE_BO_SHRINK_SIZE / 256;
-> +	uint32_t mocs = intel_get_uc_mocs_index(fd);
+On Tue, Nov 03, 2026 at 07:51:48PM +0000, Jagmeet Randhawa wrote:
+>threads() hardcodes one worker thread per engine and N_EXEC_QUEUE exec
+>queues per worker. Subtests that need a different shape have no way to ask
+>for one.
+>
+>Pass the number of worker threads per engine and the number of exec queues
+>per worker as arguments, with the existing callers keeping the current
+>behaviour by passing 1 and N_EXEC_QUEUE.
+>
+>No functional change.
+>
+>Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
 
-Any reason not to go with cached mocs here? I figure that is the more 
-nasty/insteresting default?
+Patch series missing cover-letter. Please add one in next revision.
 
-> +
-> +	/* 256 byte units. */
-> +	cmd[i++] = MEM_COPY_CMD | (1 << 19);
-> +	cmd[i++] = width - 1;
-> +	cmd[i++] = 0;
-> +	cmd[i++] = width - 1;
-> +	cmd[i++] = width - 1;
-> +	cmd[i++] = lower_32_bits(src);
-> +	cmd[i++] = upper_32_bits(src);
-> +	cmd[i++] = lower_32_bits(dst);
-> +	cmd[i++] = upper_32_bits(dst);
-> +	if (intel_graphics_ver(intel_get_drm_devid(fd)) >= IP_VER(20, 0))
-> +		cmd[i++] = mocs << XE2_MEM_COPY_SRC_MOCS_SHIFT | mocs;
-> +	else
-> +		cmd[i++] = mocs << GEN12_MEM_COPY_MOCS_SHIFT | mocs;
-> +	cmd[i++] = MI_BATCH_BUFFER_END;
-> +
-> +	return i;
-> +}
-> +
-> +/*
-> + * Set up a separate VM with a dummy bo and batches copying from the dummy
-> + * bo to a bo bound at BLIT_BO_ADDR, and vice versa. A separate VM is used
-> + * so that exec doesn't need to revalidate any other shrinker test bos.
-> + */
-> +static void shrink_blit_init(int fd, struct shrink_blit *blit,
-> +			     uint8_t pat_index)
-> +{
-> +	uint64_t bb_size = xe_bb_size(fd, SZ_4K);
-> +	uint32_t *cmd;
-> +	int i;
-> +
-> +	blit->pat_index = pat_index;
-> +	blit->syncobj = syncobj_create(fd, 0);
-> +	blit->vm = xe_vm_create(fd, 0, 0);
-> +	blit->exec_queue = xe_exec_queue_create_class(fd, blit->vm,
-> +						      DRM_XE_ENGINE_CLASS_COPY);
-> +
-> +	blit->dummy = xe_bo_create_caching(fd, 0, XE_BO_SHRINK_SIZE,
-> +					   system_memory(fd), 0,
-> +					   DRM_XE_GEM_CPU_CACHING_WB);
-> +	blit->dummy_map = xe_bo_map(fd, blit->dummy, XE_BO_SHRINK_SIZE);
-> +	xe_vm_bind_sync(fd, blit->vm, blit->dummy, 0, BLIT_DUMMY_ADDR,
-> +			XE_BO_SHRINK_SIZE);
-> +
-> +	blit->batch = xe_bo_create(fd, 0, bb_size, system_memory(fd), 0);
-> +	cmd = xe_bo_map(fd, blit->batch, bb_size);
-> +	i = shrink_blit_emit_copy(fd, cmd, 0, BLIT_DUMMY_ADDR, BLIT_BO_ADDR);
-> +	igt_assert(i * sizeof(*cmd) <= BLIT_READBACK_OFFSET);
-> +	shrink_blit_emit_copy(fd, cmd, BLIT_READBACK_OFFSET / sizeof(*cmd),
-> +			      BLIT_BO_ADDR, BLIT_DUMMY_ADDR);
-> +	munmap(cmd, bb_size);
-> +	xe_vm_bind_sync(fd, blit->vm, blit->batch, 0, BLIT_BATCH_ADDR, bb_size);
-> +}
-> +
-> +static void shrink_blit_fini(int fd, struct shrink_blit *blit)
-> +{
-> +	munmap(blit->dummy_map, XE_BO_SHRINK_SIZE);
-> +	xe_exec_queue_destroy(fd, blit->exec_queue);
-> +	xe_vm_destroy(fd, blit->vm);
-> +	gem_close(fd, blit->batch);
-> +	gem_close(fd, blit->dummy);
-> +	syncobj_destroy(fd, blit->syncobj);
-> +}
-> +
-> +/* Bind @bo using the blit PAT index, run the batch at @batch_addr. */
-> +static void shrink_blit_copy(int fd, struct shrink_blit *blit,
-> +			     struct shrink_bo *bo, uint64_t batch_addr)
-> +{
-> +	struct drm_xe_sync sync = {
-> +		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
-> +		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
-> +		.handle = blit->syncobj,
-> +	};
-> +
-> +	igt_assert_eq(__xe_vm_bind(fd, blit->vm, 0, bo->handle, 0,
-> +				   BLIT_BO_ADDR, XE_BO_SHRINK_SIZE,
-> +				   DRM_XE_VM_BIND_OP_MAP, 0, &sync, 1, 0,
-> +				   blit->pat_index, 0), 0);
-> +	igt_assert(syncobj_wait(fd, &blit->syncobj, 1, INT64_MAX, 0, NULL));
-> +	syncobj_reset(fd, &blit->syncobj, 1);
-> +	xe_exec_wait(fd, blit->exec_queue, batch_addr);
-> +	xe_vm_unbind_sync(fd, blit->vm, 0, BLIT_BO_ADDR, XE_BO_SHRINK_SIZE);
-> +}
-> +
-> +/* Fill @bo with pseudo-random data through the dummy bo. */
-> +static void shrink_blit_fill(int fd, struct shrink_blit *blit,
-> +			     struct shrink_bo *bo, uint32_t *prng)
-> +{
-> +	bo->val = shrink_fill_random(blit->dummy_map, prng);
-> +	shrink_blit_copy(fd, blit, bo, BLIT_BATCH_ADDR);
-> +}
-> +
-> +/* Restore @bo through a GPU bind and copy, and return the copy. */
-> +static const uint32_t *shrink_blit_readback(int fd, struct shrink_blit *blit,
-> +					    struct shrink_bo *bo)
-> +{
-> +	shrink_blit_copy(fd, blit, bo, BLIT_BATCH_ADDR + BLIT_READBACK_OFFSET);
-> +
-> +	return blit->dummy_map;
-> +}
-> +
-> +/**
-> + * SUBTEST: shrink
-> + * Description:
-> + *	Create system bos corresponding to twice the amount of free system
-> + *	memory to test shrinker functionality. If no swap space is available
-> + *	to accommodate the memory overcommit, mark bos purgeable.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: purge
-> + * Description:
-> + *	Create system bos corresponding to twice the amount of free system
-> + *	memory and mark the bos needed to accommodate the memory overcommit
-> + *	purgeable regardless of available swap space, to make sure the
-> + *	shrinker purges rather than swaps.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-fault-inject
-> + * Description:
-> + *	Same as shrink, but with TTM backup and restore fault injection
-> + *	enabled, making the shrinker back up only part of the bos and
-> + *	making backup and restore of individual pages fail. Fail if no
-> + *	faults were injected, unless there was less than
-> + *	XE_BO_SHRINK_FI_MIN_SWAP free swap space at test start.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-blit
-> + * Description:
-> + *	Same as shrink, but fill, restore and read back bos using
-> + *	blitter copies from and to a dummy bo instead of CPU access.
-> + *	On integrated devices with flat CCS, the bos are compressed.
-> + *	On discrete devices, bos are restored by a prefetch to VRAM.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: purge-blit
-> + * Description:
-> + *	Same as purge, but fill, restore and read back bos using
-> + *	blitter copies from and to a dummy bo instead of CPU access.
-> + *	On integrated devices with flat CCS, the bos are compressed.
-> + *	On discrete devices, bos are restored by a prefetch to VRAM.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-fault-inject-blit
-> + * Description:
-> + *	Same as shrink-fault-inject, but fill, restore and read back bos using
-> + *	blitter copies from and to a dummy bo instead of CPU access.
-> + *	On integrated devices with flat CCS, the bos are compressed.
-> + *	On discrete devices, bos are restored by a prefetch to VRAM.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-fast
-> + * Description:
-> + *	Create system bos corresponding to the amount of free system memory,
-> + *	half of them purgeable, and shrink them using drop_caches rather
-> + *	than memory overcommit.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-blit-fast
-> + * Description:
-> + *	Same as shrink-fast, but fill, restore and read back bos using
-> + *	blitter copies from and to a dummy bo instead of CPU access.
-> + *	On integrated devices with flat CCS, the bos are compressed.
-> + *	On discrete devices, bos are restored by a prefetch to VRAM.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-fault-inject-fast
-> + * Description:
-> + *	Same as shrink-fast, but with TTM backup and restore fault injection
-> + *	enabled.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-fault-inject-blit-fast
-> + * Description:
-> + *	Same as shrink-blit-fast, but with TTM backup and restore fault
-> + *	injection enabled.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-private-fast
-> + * Description:
-> + *	Same as shrink-fast, but with bos private to the test VM.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-fault-inject-private-fast
-> + * Description:
-> + *	Same as shrink-fault-inject-fast, but with bos private to the test VM.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-private
-> + * Description:
-> + *	Same as shrink, but with bos private to the test VM.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: purge-private
-> + * Description:
-> + *	Same as purge, but with bos private to the test VM.
-> + * Test category: functionality test
-> + *
-> + * SUBTEST: shrink-fault-inject-private
-> + * Description:
-> + *	Same as shrink-fault-inject, but with bos private to the test VM.
-> + * Test category: functionality test
-> + */
-> +static void shrink_test_run_device(int fd, unsigned int flags)
-> +{
-> +	uint64_t ram, swap, ram_and_swap, purgeable = 0, alloced, to_alloc, limit;
-> +	unsigned int count = 0, nr_bos = 0, purged = 0, retained = 0;
-> +	struct shrink_bo *bos;
-> +	struct sysinfo si;
-> +	struct shrink_blit blit;
-> +	uint64_t placement = system_memory(fd);
-> +	uint16_t cpu_caching = DRM_XE_GEM_CPU_CACHING_WB;
-> +	uint32_t seed, prng, vram_region = 0;
-> +	uint8_t pat_index = DEFAULT_PAT_INDEX;
-> +	bool prefetch = false;
-> +	uint32_t vm;
-> +	int ret;
-> +
-> +	if (flags & SHRINK_BLIT) {
-> +		uint16_t devid = intel_get_drm_devid(fd);
-> +
-> +		igt_require_f(blt_has_mem_copy(fd), "MEM_COPY not supported\n");
-> +		prefetch = xe_has_vram(fd);
-> +
-> +		/*
-> +		 * Test compressed system memory bos. On discrete devices,
-> +		 * system memory can't be compressed.
-> +		 */
-> +		if (!xe_has_vram(fd) && intel_gen(devid) >= 20 &&
-> +		    HAS_FLATCCS(devid) && blt_platform_has_flat_ccs_enabled(fd)) {
-> +			pat_index = intel_get_pat_idx_uc_comp(fd);
-> +			/* The compressed PAT index is not coherent. */
-> +			cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-> +		}
-> +		igt_info("Blit using %s bos.\n",
-> +			 pat_index == DEFAULT_PAT_INDEX ? "uncompressed" :
-> +			 "compressed");
-> +	}
-> +
-> +	if (prefetch) {
-> +		placement |= vram_memory(fd, 0);
-> +		cpu_caching = DRM_XE_GEM_CPU_CACHING_WC;
-> +		vram_region = xe_mem_region(fd, vram_memory(fd, 0))->instance;
-> +	}
-> +
-> +	igt_assert_eq(getrandom(&seed, sizeof(seed), 0), sizeof(seed));
-> +	igt_info("Random seed is 0x%08x.\n", seed);
-> +
-> +	/* Skip if execution time is expected to be too long. */
-> +	limit = 32ull << 30;
-> +	/* IGFX with flat CCS needs to copy when swapping / shrinking */
-> +	if (!xe_has_vram(fd) && blt_platform_has_flat_ccs_enabled(fd))
+>---
+> tests/intel/xe_exec_threads.c | 71 +++++++++++++++++++----------------
+> 1 file changed, 39 insertions(+), 32 deletions(-)
+>
+>diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
+>index f03f20142..e7e472b4a 100644
+>--- a/tests/intel/xe_exec_threads.c
+>+++ b/tests/intel/xe_exec_threads.c
+>@@ -32,6 +32,7 @@
+> #include <string.h>
+>
+> #define MAX_N_EXEC_QUEUES	16
+>+#define N_EXEC_QUEUE		16
+> #define USERPTR		(0x1 << 0)
+> #define REBIND		(0x1 << 1)
+> #define INVALIDATE	(0x1 << 2)
+>@@ -1343,7 +1344,8 @@ static void *thread(void *data)
+>  *	multi-queue compute mode fd userptr invalidate race
+>  */
+>
+>-static void threads(int fd, int flags)
+>+static void threads(int fd, int flags, int n_threads_per_engine,
+>+		    int n_exec_queues)
+> {
+> 	struct thread_data *threads_data;
+> 	struct drm_xe_engine_class_instance *hwe;
+>@@ -1351,7 +1353,7 @@ static void threads(int fd, int flags)
+> 	uint64_t userptr = 0x00007000eadbe000;
+> 	pthread_mutex_t mutex;
+> 	pthread_cond_t cond;
+>-	int n_engines = 0, class;
+>+	int n_engines = 0, class, t;
+> 	uint64_t i = 0;
+> 	uint32_t vm_legacy_mode = 0, vm_compute_mode = 0;
+> 	bool go = false;
+>@@ -1374,7 +1376,8 @@ static void threads(int fd, int flags)
+> 			}
+> 	}
+>
+>-	threads_data = calloc(n_engines, sizeof(*threads_data));
+>+	threads_data = calloc(n_engines * n_threads_per_engine,
+>+			      sizeof(*threads_data));
+> 	igt_assert(threads_data);
+>
+> 	pthread_mutex_init(&mutex, 0);
+>@@ -1387,34 +1390,37 @@ static void threads(int fd, int flags)
+> 					       0);
+> 	}
+>
+>-	xe_for_each_engine(fd, hwe) {
+>-		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(fd, hwe->engine_class))
+>-			continue;
+>-		threads_data[i].mutex = &mutex;
+>-		threads_data[i].cond = &cond;
+>+	for (t = 0; t < n_threads_per_engine; t++) {
+>+		xe_for_each_engine(fd, hwe) {
+>+			if ((flags & MULTI_QUEUE) &&
+>+			    !xe_engine_class_supports_multi_queue(fd,
+>+								  hwe->engine_class))
+>+				continue;
 
-Would it make sense to use DRM_XE_GEM_CREATE_FLAG_NO_COMPRESSION for 
-non-comp case? That would give consitent behaviour with lnl vs 
-everything else due to WC stuff. Otherwise I think we are actually 
-triggering the CCS shrinker path everywhere on some igpu platforms. Not 
-an issue though, and maybe that is what you wanted here.
+It will look good if we reverse the loop order and add the n_threads_per_engine
+loop here after the above 'continue'. That we we truely create required number
+of threads per engine on which we will be running the job.
 
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+>+			threads_data[i].mutex = &mutex;
+>+			threads_data[i].cond = &cond;
+> #define ADDRESS_SHIFT	39
+>-		threads_data[i].addr = addr | (i << ADDRESS_SHIFT);
+>-		threads_data[i].userptr = userptr | (i << ADDRESS_SHIFT);
+>-		threads_data[i].fd = fd;
+>-		threads_data[i].vm_legacy_mode = vm_legacy_mode;
+>-		threads_data[i].vm_compute_mode = vm_compute_mode;
+>-		threads_data[i].eci = hwe;
+>-#define N_EXEC_QUEUE	16
+>-		threads_data[i].n_exec_queue = N_EXEC_QUEUE;
+>+			threads_data[i].addr = addr | (i << ADDRESS_SHIFT);
+>+			threads_data[i].userptr = userptr | (i << ADDRESS_SHIFT);
+>+			threads_data[i].fd = fd;
+>+			threads_data[i].vm_legacy_mode = vm_legacy_mode;
+>+			threads_data[i].vm_compute_mode = vm_compute_mode;
+>+			threads_data[i].eci = hwe;
+>+			threads_data[i].n_exec_queue = N_EXEC_QUEUE;
 
-> +		limit = 16ull << 30;
-> +
-> +	igt_assert_eq(sysinfo(&si), 0);
-> +	ram = (uint64_t)si.freeram * si.mem_unit;
-> +	swap = (uint64_t)si.freeswap * si.mem_unit;
-> +
-> +	if (flags & SHRINK_FAST) {
-> +		/* No overcommit. Shrinking is triggered using drop_caches. */
-> +		purgeable = min_t(uint64_t, ram / 2, XE_BO_SHRINK_FAST_MAX);
-> +		to_alloc = purgeable + min_t(uint64_t, ram - purgeable,
-> +					   XE_BO_SHRINK_FAST_MAX);
-> +	} else {
-> +		igt_require_f(ram <= limit, "Too long expected execution time.\n");
-> +		to_alloc = ram * 2;
-> +
-> +		ram_and_swap = (flags & SHRINK_PURGE) ? ram : ram + swap;
-> +		if (to_alloc > ram_and_swap)
-> +			purgeable = to_alloc - ram_and_swap;
-> +		purgeable += purgeable / 5;
-> +	}
-> +
-> +	igt_info("Free ram is %" PRIu64 " bytes. Will allocate %" PRIu64
-> +		 " bytes, %" PRIu64 " bytes purgeable.\n",
-> +		 ram, to_alloc, purgeable);
-> +	igt_require_f(!purgeable || xe_has_purgeable_support(fd),
-> +		      "Kernel does not support purgeable buffer objects\n");
-> +
-> +	if (flags & SHRINK_FAULT_INJECT)
-> +		ttm_fault_inject_enable();
-> +
-> +	bos = calloc(DIV_ROUND_UP(to_alloc, XE_BO_SHRINK_SIZE), sizeof(*bos));
-> +	igt_assert(bos);
-> +
-> +	if (flags & SHRINK_BLIT)
-> +		shrink_blit_init(fd, &blit, pat_index);
-> +
-> +	vm = xe_vm_create(fd, 0, 0);
-> +	prng = seed;
-> +	for (alloced = 0; alloced < to_alloc; alloced += XE_BO_SHRINK_SIZE) {
-> +		struct shrink_bo *bo = &bos[nr_bos];
-> +
-> +		/* The uAPI requires WC with VRAM placement. */
-> +		ret = __xe_bo_create_caching(fd,
-> +					     (flags & SHRINK_PRIVATE) ? vm : 0,
-> +					     XE_BO_SHRINK_SIZE,
-> +					     placement, 0, cpu_caching,
-> +					     &bo->handle);
-> +		if (ret) {
-> +			igt_assert_f(ret == -ENOMEM || ret == -ENOSPC ||
-> +				     ret == -EINTR,
-> +				     "Error creating bo: %d\n", ret);
-> +			igt_info("Bo creation failed with %d after %" PRIu64
-> +				 " bytes.\n", ret, alloced);
-> +			break;
-> +		}
-> +		nr_bos++;
-> +
-> +		/*
-> +		 * Allocate purgeable bos first, because if we do it the
-> +		 * other way around, they may not be subject to swapping...
-> +		 * Purgeable state and prefetch are set per VMA, so bind
-> +		 * the bo first.
-> +		 */
-> +		bo->purgeable = alloced < purgeable;
-> +		bo->bound = bo->purgeable || prefetch;
-> +		bo->addr = XE_BO_SHRINK_VA_BASE + alloced;
-> +		if (bo->bound)
-> +			xe_vm_bind_sync(fd, vm, bo->handle, 0, bo->addr,
-> +					XE_BO_SHRINK_SIZE);
-> +		/* The blit bind and exec wait for the migration. */
-> +		if (prefetch)
-> +			xe_vm_prefetch_async(fd, vm, 0, 0, bo->addr,
-> +					     XE_BO_SHRINK_SIZE, NULL, 0, 0);
-> +
-> +		/* mmap() is blocked in DONTNEED state, so fill first. */
-> +		if (flags & SHRINK_BLIT)
-> +			shrink_blit_fill(fd, &blit, bo, &prng);
-> +		else
-> +			shrink_fill_cpu(fd, bo, &prng);
-> +
-> +		/*
-> +		 * A CPU mapping is kept, but must not be accessed until
-> +		 * the bo is marked WILLNEED and found retained.
-> +		 */
-> +		if (bo->purgeable)
-> +			xe_vm_madvise_purgeable(fd, vm, bo->addr,
-> +						XE_BO_SHRINK_SIZE,
-> +						DRM_XE_VMA_PURGEABLE_STATE_DONTNEED);
-> +	}
-> +
-> +	if (flags & SHRINK_FAST)
-> +		igt_purge_vm_caches(fd);
-> +
-> +	/*
-> +	 * Read back and destroy bos. Reset the pseudo-random seed to get an
-> +	 * identical pseudo-random number sequence for readback.
-> +	 */
-> +	prng = seed;
-> +	for (count = 0; count < nr_bos; count++) {
-> +		struct shrink_bo *bo = &bos[count];
-> +
-> +		if (bo->purgeable &&
-> +		    !xe_vm_madvise_purgeable(fd, vm, bo->addr,
-> +					     XE_BO_SHRINK_SIZE,
-> +					     DRM_XE_VMA_PURGEABLE_STATE_WILLNEED)) {
-> +			purged++;
-> +			shrink_skip(bo, &prng);
-> +		} else {
-> +			const uint32_t *map = bo->map;
-> +
-> +			retained += bo->purgeable;
-> +			/* The blit bind and exec wait for the migration. */
-> +			if (prefetch)
-> +				xe_vm_prefetch_async(fd, vm, 0, 0, bo->addr,
-> +						     XE_BO_SHRINK_SIZE, NULL, 0,
-> +						     vram_region);
-> +			if (flags & SHRINK_BLIT)
-> +				map = shrink_blit_readback(fd, &blit, bo);
-> +			shrink_verify(map, bo->val, count + 1, &prng);
-> +			if (bo->map)
-> +				munmap(bo->map, XE_BO_SHRINK_SIZE);
-> +		}
-> +
-> +		if (bo->bound)
-> +			xe_vm_unbind_sync(fd, vm, 0, bo->addr, XE_BO_SHRINK_SIZE);
-> +		gem_close(fd, bo->handle);
-> +	}
-> +
-> +	igt_info("Readbacks successful: %u (%u purgeable retained), purgeable bos purged: %u\n",
-> +		 nr_bos - purged, retained, purged);
-> +
-> +	if (flags & SHRINK_BLIT)
-> +		shrink_blit_fini(fd, &blit);
-> +	xe_vm_destroy(fd, vm);
-> +	free(bos);
-> +
-> +	if (flags & SHRINK_FAST)
-> +		igt_assert_f(purged > 0, "No purgeable bos were purged\n");
-> +
-> +	if (flags & SHRINK_FAULT_INJECT) {
-> +		int32_t injected = ttm_fault_inject_count();
-> +
-> +		ttm_fault_inject_restore(0);
-> +		igt_info("TTM backup / restore faults injected: %d\n", injected);
-> +		/* Without swap space, nothing is backed up or restored. */
-> +		igt_assert_f(injected > 0 || swap < XE_BO_SHRINK_FI_MIN_SWAP,
-> +			     "No TTM backup / restore faults were injected\n");
-> +	}
-> +}
-> +
-> +int igt_main()
-> +{
-> +	const struct section {
-> +		const char *name;
-> +		unsigned int flags;
-> +	} sections[] = {
-> +		{ "shrink-fast", SHRINK_FAST },
-> +		{ "shrink-blit-fast", SHRINK_FAST | SHRINK_BLIT },
-> +		{ "shrink-fault-inject-fast", SHRINK_FAST | SHRINK_FAULT_INJECT },
-> +		{ "shrink-fault-inject-blit-fast",
-> +		  SHRINK_FAST | SHRINK_FAULT_INJECT | SHRINK_BLIT },
-> +		{ "shrink-private-fast", SHRINK_FAST | SHRINK_PRIVATE },
-> +		{ "shrink-fault-inject-private-fast",
-> +		  SHRINK_FAST | SHRINK_FAULT_INJECT | SHRINK_PRIVATE },
-> +		{ "shrink", 0 },
-> +		{ "shrink-blit", SHRINK_BLIT },
-> +		{ "purge", SHRINK_PURGE },
-> +		{ "purge-blit", SHRINK_PURGE | SHRINK_BLIT },
-> +		{ "shrink-fault-inject", SHRINK_FAULT_INJECT },
-> +		{ "shrink-fault-inject-blit", SHRINK_FAULT_INJECT | SHRINK_BLIT },
-> +		{ "shrink-private", SHRINK_PRIVATE },
-> +		{ "purge-private", SHRINK_PURGE | SHRINK_PRIVATE },
-> +		{ "shrink-fault-inject-private", SHRINK_FAULT_INJECT | SHRINK_PRIVATE },
-> +		{ }
-> +	};
-> +	int fd;
-> +
-> +	igt_fixture() {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		xe_device_get(fd);
-> +	}
-> +
-> +	for (const struct section *s = sections; s->name; s++)
-> +		igt_subtest(s->name)
-> +			shrink_test_run_device(fd, s->flags);
-> +
-> +	igt_fixture() {
-> +		ttm_fault_inject_restore(0);
-> +		xe_device_put(fd);
-> +		drm_close_driver(fd);
-> +	}
-> +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 519a9e727..2f50f000d 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -284,6 +284,7 @@ intel_kms_progs = [
->   
->   intel_xe_progs = [
->   	'xe_wedged',
-> +	'xe_bo_shrink',
->   	'xe_ccs',
->   	'xe_create',
->   	'xe_compute',
+Still setting it to static value N_EXEC_QUEUE instead of dynamic n_exec_queues.
 
+> #define N_EXEC		1024
+>-		threads_data[i].n_exec = N_EXEC;
+>-		threads_data[i].flags = flags;
+>-		if (flags & MIXED_MODE) {
+>-			threads_data[i].flags &= ~MIXED_MODE;
+>-			if (i & 1)
+>-				threads_data[i].flags |= COMPUTE_MODE;
+>-		}
+>-		threads_data[i].go = &go;
+>+			threads_data[i].n_exec = N_EXEC;
+>+			threads_data[i].flags = flags;
+>+			if (flags & MIXED_MODE) {
+>+				threads_data[i].flags &= ~MIXED_MODE;
+>+				if (i & 1)
+>+					threads_data[i].flags |= COMPUTE_MODE;
+>+			}
+>+			threads_data[i].go = &go;
+>
+>-		++n_threads;
+>-		pthread_create(&threads_data[i].thread, 0, thread,
+>-			       &threads_data[i]);
+>-		++i;
+>+			++n_threads;
+>+			pthread_create(&threads_data[i].thread, 0, thread,
+>+				       &threads_data[i]);
+>+			++i;
+>+		}
+> 	}
+>
+> 	if (flags & BALANCER) {
+>@@ -1448,7 +1454,7 @@ static void threads(int fd, int flags)
+> 					threads_data[i].vm_legacy_mode =
+> 						vm_legacy_mode;
+> 					threads_data[i].class = class;
+>-					threads_data[i].n_exec_queue = N_EXEC_QUEUE;
+>+					threads_data[i].n_exec_queue = n_exec_queues;
+> 					threads_data[i].n_exec = N_EXEC;
+> 					threads_data[i].flags = flags;
+> 					threads_data[i].flags &= ~BALANCER;
+
+This is the BALANCER loop and we are not applying n_threads_per_engine here as
+it is not required. But we should add a assert in the beginning of this function
+that n_threads_per_engine is always 1 if BALANCER flag is set.
+
+Niranjana
+
+>@@ -1471,7 +1477,7 @@ static void threads(int fd, int flags)
+> 	pthread_cond_broadcast(&cond);
+> 	pthread_mutex_unlock(&mutex);
+>
+>-	for (i = 0; i < n_engines; ++i)
+>+	for (i = 0; i < n_threads; ++i)
+> 		pthread_join(threads_data[i].thread, NULL);
+>
+> 	if (vm_legacy_mode)
+>@@ -1762,7 +1768,7 @@ int igt_main()
+> 			if ((s->flags & MULTI_QUEUE) && (s->flags & HANG))
+> 				ignore_multi_queue_hang_warnings_in_dmesg();
+>
+>-			threads(fd, s->flags);
+>+			threads(fd, s->flags, 1, N_EXEC_QUEUE);
+> 		}
+> 	}
+>
+>@@ -1863,7 +1869,8 @@ int igt_main()
+> 			atomic_store(&wq_stress_hang_detected, false);
+> 			igt_until_timeout(WQ_STRESS_DURATION_SEC) {
+> 				threads(child_fd,
+>-					REBIND | BIND_EXEC_QUEUE | WQ_STRESS);
+>+					REBIND | BIND_EXEC_QUEUE | WQ_STRESS,
+>+					1, N_EXEC_QUEUE);
+> 				if (atomic_load(&wq_stress_hang_detected))
+> 					break;
+> 			}
+>-- 
+>2.53.0
+>
