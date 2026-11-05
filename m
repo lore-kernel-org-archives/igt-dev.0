@@ -2,82 +2,161 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30431606A329
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 15:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9ED606A903
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 16:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=imgtec.com header.i=@imgtec.com header.a=rsa-sha256 header.s=dk201812 header.b=AOlthvhc
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MINblJaT
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D5D9510E147;
-	Thu,  5 Nov 2026 15:43:06 +0000 (UTC)
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
- [185.132.180.163])
- by gabe.freedesktop.org (Postfix) with ESMTPS id ABAD010E147
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 15:42:04 +0000 (UTC)
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
- by mx07-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id
- 6A5EQNKR4087401
- for <igt-dev@lists.freedesktop.org>; Thu, 5 Nov 2026 15:42:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
- :content-transfer-encoding:content-type:date:from:message-id
- :mime-version:subject:to; s=dk201812; bh=Aq79+nImZWV/uC4kd/ZwtcC
- tL9OV6JVRNq1/+AcFK14=; b=AOlthvhcgk6GkorNwy7mc8wEGiWlPeJmn2a/h9N
- yzIzC55Z4yMmmEm6ygYTd/gkf/xFQ4wrPtb+hYL3csjt5j0LAmUovmsg5GKW+AXV
- DIs1Gh4Jo2dPmzSeT8Hj6JaxyHlpQNJVZEHzBv6yjwyA9z4PNa96fPgZUMvuB91c
- JwWDeG1Jqg5q3z+UkuP1JJlXVqFy50tSCVIPJXLKD/Ku7Xa2BkWbubR0zHhhrmyb
- 77f5J0hx+IEc2FATmm/+4rr2m8UR+7umF3Na2db3jOjjdq4aOGxtmIRZDs5fp0KE
- Yx9kWCqoKL+FaZu+M/aZyKyE+xCGgYmsBzxYfROrtyxjgJg==
-Received: from hhmail01.hh.imgtec.org
- (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
- by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4hn99wmfh1-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
- for <igt-dev@lists.freedesktop.org>; Thu, 05 Nov 2026 15:42:02 +0000 (GMT)
-Received: from [127.0.1.1] (172.25.6.177) by HHMAIL01.hh.imgtec.org
- (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Thu, 5 Nov
- 2026 15:41:56 +0000
-From: Luigi Santivetti <luigi.santivetti@imgtec.com>
-Date: Thu, 5 Nov 2026 15:41:22 +0000
-Subject: [PATCH i-g-t] tests/imagination: add more heap info and static
- areas query tests
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9074E10E2C1;
+	Thu,  5 Nov 2026 16:44:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id DC13710E2C1
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 16:42:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1793896979; x=1825432979;
+ h=message-id:date:subject:to:cc:references:from:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=AlUBFQrbS86q7YulN5mr6dhLkIQOC2rY83tinkS+jLI=;
+ b=MINblJaTtA8PzA7GBwIcLpCmiVJkbmbRDL/+v2TodO+aVN04Ib7vSsyi
+ wvDLbklI04iIH0OgtAsM4eUb8OVINu2WhuZJdhstr+zbubb6uQJVlMJi5
+ sGnKpzj4G7+OS6oG8ujukxq5zqRsd0tDciHPBhBDa5GxcFh6vQqqECp06
+ Ky6EekixUhas0ec471y+oRglGck/xohTf6R+I7UcgBHmhno8cVLHmRJU8
+ F+M3aucTUgx+5FBTwU1UHVVGds+b3jG+0p7uvpIeKTzwqVGNxJ6a44J26
+ gcXPwzxdWfkpOsTVK73phymwFUGexzv2rSthaNFxNRB4kfhF0o2CDhRXq Q==;
+X-CSE-ConnectionGUID: ShT6h6HnQ02MHqaTZ/yH+g==
+X-CSE-MsgGUID: zRug+oijT7GnRYxZkTknZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2785587"
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="2785587"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2026 08:42:59 -0800
+X-CSE-ConnectionGUID: xIbfV1ArQjWdu6PJkdZKfQ==
+X-CSE-MsgGUID: /m8QUIlOQc64jXa4dfQWbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="6956328"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2026 08:42:58 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 08:42:58 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56 via Frontend Transport; Thu, 5 Nov 2026 08:42:58 -0800
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.12) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Thu, 5 Nov 2026 08:42:57 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kD+NF+KEfk5n9fYGr0ZKke+jpyOgaB85wkVR2fgkefo4PznrSkji9u5HL/LMqr14z7x2yt+1mwKkyavPlI0uYYwc4CuOkE2wb+VZPY5UOjOIsQyUG7P4W7A1eR5bHxK56c5cV0gU4UnovtJ6Nk/f/zor1JsavNZtbIfVJLeyoGSLR2guX+WhuPgzSyFLZGDsiWXYTo2Qq9NdUr8NoTVeQHiKF0OEyv5a+kLYl84BBx6JE5JeVqQ0AEi9Gu01IAzr2qC1UmJfhRUczGJNLBrigELVzPCYzB43n+3j8r2Ttp7pfKSmFjxoDFxjmFArDaPW8T+DAE/q+sSOJ/hAim8o7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G/b/1DTtHD33iUMBH50uwAUdM5uaokj1cDYqfclqJMs=;
+ b=Jp9upk+3y8Mqr0aZG45BTzSSYOjb6YG8DLEg+vmsFRSPc4yIzvUyJeocTXeJINCFD5eRAv7ZfF9s2ag73SImP+ve3A8RdfxtOOzl4dlNOJA5UdSqoVHXEx95bTjnmmWBzITl/5yANRDYJ/lCcwnxirm4/+Kdy+w3iNva/KGs8fcTsarIUMuyua+0Mwfebvdx4zAjl6Cvoa3t8f3TiIib9PyEYbOhiR/g69nWkxMVPtCYCUr12BmTzyhTR4HLJsXnMoMFb0j78KF+i4IAbUHHnFrcIBJsh2vj1kgHMi1Lt+dXGJ6952+ZyHlkA4Il5AMh/SCoyzs01v3AT3jj0MYU8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CH9PR11MB309436.namprd11.prod.outlook.com
+ (2603:10b6:610:339::19) by PH0PR11MB4983.namprd11.prod.outlook.com
+ (2603:10b6:510:40::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
+ 2026 16:42:55 +0000
+Received: from CH9PR11MB309436.namprd11.prod.outlook.com
+ ([fe80::a9c1:3c1e:c160:a3f0]) by CH9PR11MB309436.namprd11.prod.outlook.com
+ ([fe80::a9c1:3c1e:c160:a3f0%4]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
+ 16:42:55 +0000
+Message-ID: <b7ebfad9-6e26-4c34-93f4-61f8f23fcf95@intel.com>
+Date: Thu, 5 Nov 2026 22:12:47 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t] tests/intel/i915_pm_rpm: Print reason for skipping
+ PC8 subtest
+To: Hiresh Kumar Yadav <hiresh.kumar.yadav@intel.com>,
+ <igt-dev@lists.freedesktop.org>
+CC: <anshuman.gupta@intel.com>, <badal.nilawar@intel.com>,
+ <riana.tauro@intel.com>, <karthik.poosa@intel.com>, <raag.jadav@intel.com>,
+ <soham.purkait@intel.com>, <mallesh.koujalagi@intel.com>
+References: <20261105100027.1940039-1-hiresh.kumar.yadav@intel.com>
+Content-Language: en-US
+From: "Anirban, Sk" <sk.anirban@intel.com>
+In-Reply-To: <20261105100027.1940039-1-hiresh.kumar.yadav@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MA5P287CA0205.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1ab::14) To CH9PR11MB309436.namprd11.prod.outlook.com
+ (2603:10b6:610:339::19)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20261105-b4-heap-static-area-info-get-v1-1-8d5aa15a5e30@imgtec.com>
-X-B4-Tracking: v=1; b=H4sIAKGj7GoC/yXMMQ7DIAwAwK9EnmsJUGDoV6oOhprEHUiEaRUpy
- t9L0vGW20G5Civchx0qf0VlKR32NkCaqUyM8uoGZ1yw1niMI85MK2qjJgmpMqGUvODEDWN0xvs
- wmpAd9GKtnGW7+sfzb/3EN6d2nnAcP3T3XSmAAAAA
-X-Change-ID: 20261105-b4-heap-static-area-info-get-bb20556406f2
-To: <igt-dev@lists.freedesktop.org>
-CC: <alessio.belle@imgtec.com>, <brajesh.gupta@imgtec.com>, Luigi Santivetti
- <luigi.santivetti@imgtec.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793893316; l=22714;
- i=luigi.santivetti@imgtec.com; s=20261105; h=from:subject:message-id;
- bh=zrkUhaYbmQYJk5XSkxPKIyUzC6djm6TC6SY6FXtk5QU=;
- b=YZSVrr6GrYjAJ+9xBgegfOHB/ta/N59DG9kfP0Uib9I43Rr/OFlkf5O+1TECeBLQycpikJ29P
- ROfhPb+xAXHA99FwA6Nl0YwMRGZD2E4yXLiCsnUuoqgCOKeElyDxh9d
-X-Developer-Key: i=luigi.santivetti@imgtec.com; a=ed25519;
- pk=sMsTKDNJBkwKmfYlaKvcp7AS6G2k9adXmXxmK4dwtNg=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA1MDA2MiBTYWx0ZWRfX5xzpJr1Xe5EW
- s3fP8nfCKZJKxS7gvrjGZAso+8W8eCKb2Wy+Hr1mvSLsxHVY2m2a5cXWVZuVHw/l5iKkKjlLymx
- DAsRsrC0DwEWlfXogQiW4xDg/4IOuKsExx3SrNmEfLcLctlO+6Iypa7ZWWvI35JnWNN14Qgc/Hn
- Vpo6Z1nSgVP4uw/xnXUHD8lpLTZtaay/nQWA9ATbL3O9alX0fSyoC+WMyyaHdBtinyhPxcXCeh5
- 6NkW0xkFSu5EjO90rsLuUD578yT5GUayoP7jFY11OSb6MLzD1eHCIoxrQ/m795GUZOPAinux71P
- XxADakTNbuPxhB9+RkiOyuIqRCXBwhHkGQtEcs7I1w5AvYCvYhcD2OwiQ/993xv0VVBF6AQFI/4
- jfWXPnhadvZMss2JteJ/FJxAHDmx+GWJnRKU9whyZ1kj2rjjaHRc7F/o5Tw7xTJl065rZjm+iJy
- mHlVgzNj6xc8MtNweKw==
-X-Proofpoint-ORIG-GUID: rj4W86IyJ0boLnVhpX1daE80OzmJKBOP
-X-Proofpoint-GUID: rj4W86IyJ0boLnVhpX1daE80OzmJKBOP
-X-Authority-Analysis: v=2.4 cv=BZlNQbt2 c=1 sm=1 tr=0 ts=6aeca3ca cx=c_pps
- a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
- a=2JH569OHYJkA:10 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
- a=VwQbUJbxAAAA:8 a=r_1tXGB3AAAA:8 a=ILvtnK42Qjb62hDhzoMA:9 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA1MDA2MiBTYWx0ZWRfX3XINJTxxk43H
- sc6dsbRegAW/S5P6U15O+7y5AmKbLjudLXHFPjj3Ryq8tq2jq0OfcF1pzev+qVgJ203595dgyzi
- 7a1ErZhiaDOWyFCP7+iUA5EeCdaKLR8=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH9PR11MB309436:EE_|PH0PR11MB4983:EE_
+X-MS-Office365-Filtering-Correlation-Id: c70b0292-d5d4-45de-21ed-08df3b5bd795
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|366016|1800799024|23010399003|376014|11063799006|56012099006|261021123027099003|261009223027099003|261102123227099003|261022075727099003|261021121427099003|261022113327099003|261026140227099003|261026121527099003|261028144727099003|261022105027099003|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info: ab5+gnxylD40j1wAlPL7uLM3banrAof8gCXQBOvv52qXmXl557DC+v3V9elNh04e02lpUMj7GOwbJaqnGiNYs962gahJTxbwni0prL5+MH1K9WwEFrt3RnGKiCzVz8dfVK8SOBE1CR4YoAh1iw/rFKKDxZHi/4IEhqZL5+9aXykgKS62YQB3Q8VyVbq/6V9YRw9LRJwh0yp55T/WGUsE9AzJSO7SX+Oxp9IIr92R8R5Gfix7mxpHxOauL0q3rGvvr6lQIq1NqGtYWl77uMPzReELkCf8yTMbvqPeF5C+mYSJDiFs0UOWxsOny3KfTe1okyZ07gfM4ZlObTkYL+5VoaJAW826orpwJkmcHn98iUX8DO90yt3I1zQn4xbAqNYbqj5EIQ0J1LLZAfRDVwEBudplBQZ3bwaw4ctVNdj3Z1y2jMv7tr9kzcCkGYCXTUrBGA9F7Cct5uyXqXg3DoebayiV5DgxjqQXFMS0iQeiRFFZD2WUuVFMefRZjL1iXAAN3nKW3AnBJal7qr6Wi8W9lsIxMa3dnqkhUWQjCLsXZF7HSVw4cJ/Mbuc9Cr+yc6cOsYdWAziUfW8DdVIaMdPxmN18n/HVW8XYtsnDUNc7xC0yprN4z1ji3nfB3oMolKl2wKmgMLygZrwqUUXI9bxA7IfQelf7uG6cKCc0rHflc/g=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH9PR11MB309436.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(11063799006)(56012099006)(261021123027099003)(261009223027099003)(261102123227099003)(261022075727099003)(261021121427099003)(261022113327099003)(261026140227099003)(261026121527099003)(261028144727099003)(261022105027099003)(10067099003)(18002099003)(22082099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MDFPbkhUaGJlNWV2Y0pIN0FIRmRaR0xWNDJES0VyY3M4Zk5ieFRFNWVhZzdm?=
+ =?utf-8?B?S3NYT1JDSVpZYWRXOXlsWlh1bVFkU0d4MTJVVlAxT3AyUHA5Y01mQnpobHhH?=
+ =?utf-8?B?ek1LcllVSU5WcTVTV3oyY1NmMnlETEl2RmVxS0c2YVJWMy9FVWJLMGxNejJx?=
+ =?utf-8?B?b0ZQenZ2UHprak1VQzNoVDJ4R09ubGNGaFJLVzNIWWtYSEtkQVZUV05LOFZ6?=
+ =?utf-8?B?Tk1nM2VQRFoxUnNyOTVuVjYyamJmN2lKMU41cEFWbEk4Szk5endCSlNodDhV?=
+ =?utf-8?B?bTNpVzFyTTg5Qnd4OXo0QWRVbk9xZVlQQ3FaRnljdlB4NWRZZ09qVGJIck1V?=
+ =?utf-8?B?L3ROVjdrQTNSVlBWV21QSXJGRisvYXRPdlQ1a3kyRFNxVXZVQnlIYnlTblRU?=
+ =?utf-8?B?QnRvc2lsZzlGcE0yRmpGQkxOL3ZkMTdtMG9qbVd6QWZlcEw2Znl5VFVSNHds?=
+ =?utf-8?B?MkpIdyt1NDlXTEFya0Z3eng0Tk10Nm1CMEZPeERVbytNTldKQ09pYTFUcXNT?=
+ =?utf-8?B?aW5uN0RyWG5MaGtYQkJITHZ4c21uTmhFcDhjSnhnTGNHak0wOTlNaVhkeDNa?=
+ =?utf-8?B?alpRVDd2ZlVzL0NHOXRQenlZSlFwWFBHQmVTRFd3VjdiR1VUbmZMQlhXYy9o?=
+ =?utf-8?B?UWdqYVo3bkxLL3ZGeHMzV05pVmhrZTVOSVpLNGE3NHpESWgrY3J4d0FWZ3lV?=
+ =?utf-8?B?aGlpalpnS1RFUkFTUGZVbStzaFU4dDFvMmV2K0hjYy9WNG1mRXZuR1dlMXlv?=
+ =?utf-8?B?bjlkVVZ3REJURGdzNWpGUzc3WlMwbG9jQ2RwcGo2ejhKWnB6Y1M4RElJcjE2?=
+ =?utf-8?B?ME1wWXpXNnlyeXdidVM5ZlJ4MTBqc0FxbFpCSUpHMGZlYkx2cFBoLzF0ODlN?=
+ =?utf-8?B?OFQ3ckVmVHNUZXh4OERxUTJuWUFkNnBNcXNCZ1NVQnM3elg4aTVEemhSZmtj?=
+ =?utf-8?B?VjhCdERJa0RpcEd0d3QvQTNRRnJxeXlWYjhnNGpOaHZyYjd6bjQ5WDdCTDVP?=
+ =?utf-8?B?WXN6a1cvT1pVWEFYbUhmcVg5STI4aitrakZVRVdvN3FFcU5weVA1WnFUL1gz?=
+ =?utf-8?B?UlBpaTFud3QwdWpoaWVDUjJDcUVCUnlQRG9QbEZKK01Yc2h5bHUrYTY0dXFT?=
+ =?utf-8?B?b2J0dU8xdHE2bDNDUW1XcDlaTTErYU5JWHV4dklwaVBBLzNhY3VkVXlNU25Z?=
+ =?utf-8?B?YVNPY2dxQ1kyTkRqVFBSWWs2NVVaQjQ4VEwrV3hUcXJyM1o5TVZKR2hXYWdm?=
+ =?utf-8?B?S1l1ZmZWOWFUVVZqNFVhSnpXZi9CV0lvOXpvUUZZM25aR21VblBqRkhLQ1NN?=
+ =?utf-8?B?UW0xNnF5ampseWhGK3NBaC9rcHlGUm15YUdYYlhjaW5yNW1vdWNRNUErMFJO?=
+ =?utf-8?B?T09pWUtqQ1RRdjBDWkRnSmFzbXY5Q2RVQ0d3ZEdWd21pTFlzaGgyaDJvWitO?=
+ =?utf-8?B?WklBVXJsaFQ0UzR5aUwxYnl2OXJ5bjUzUGtJajgxajljck9JOGdITVZjZitp?=
+ =?utf-8?B?YlE3ZDhhcmZpNk9nd05vUWpvck80MG9YRDhyT3FVVE1WZjNXa3dxNGg1Tk5T?=
+ =?utf-8?B?a2ZGWnpSUDNVSnU4LzVsSkNlWFJDUlpDWWZXdEo1bnZKVWZ4ejQ4c2czMUNG?=
+ =?utf-8?B?VDVtMzFkN2x3L1ZvOGphQ2dEa3lPczBkTnRQMXJBNE5wb2tmMTZIUC9ETWNw?=
+ =?utf-8?B?bVh2c25oVmt5ZEhJOVl0VEhEalBwb2pYR0FvSC9QdGo2N2F0bE5nWS9SOXBo?=
+ =?utf-8?B?TURQeTErci9nT0RzY0Y4RklPaWJqRVdZa2tZMTQ0RFNkMmhiLzdmVWQ1b0FC?=
+ =?utf-8?B?elN6Q3NuMGJoK2NEL0svMHZhS2ZYS29rSUlCV1MvZXBhTy9xc1FoTFNvR1dh?=
+ =?utf-8?B?OXM5dGVrcGd3eE9RRURQZEgvQ0xXSDRCWXFTOUZNUFJOd2RiNnJCa3VFaTg1?=
+ =?utf-8?B?TURwamRwaVh3S2ZDRXNoeGJoSGhsVERLNUs1WDFxK1orU0M0L21jSWU0cDdz?=
+ =?utf-8?B?S2huK2VSdFlvdnI3enNOQ2VUVUxUVmdIZ3gwQlFDOW5CZmtMQmVMM3RybzVl?=
+ =?utf-8?B?NGFqNGZnR1R6RDFhOWN2dTBsWjNtMnloSitwZGRjQzh0bTRIV1RGVXM1Ryt2?=
+ =?utf-8?B?cWJncXFNQmdlVFV6NzZDcTlHZjliZ3I2NklheUhVVzFndXNmT3VuQXFUblRF?=
+ =?utf-8?B?ZFlIZVR1S2FtTExhU3liakRWRm1kZVF5MjNjUHE3R1dlQ1JyVTBZSlFxdEJ3?=
+ =?utf-8?B?Q3dBVFpwTm1mMDJ4Q1JGdVE3QWZvT0VldnJvN0szQTVtNVJZVGVpZkFDeEVr?=
+ =?utf-8?B?cUNVWFdXbVhEdXdUWGNjeTYyWVJYQXp4VDh1aXF0dks2b1J2WDRPZz09?=
+X-Exchange-RoutingPolicyChecked: DMUm/RpMZiFQjnvWko5OfoNQcmH30xKS3gIm0GH2hONbrl0pc321l4qx+Zyq7i14gVmWCRN6wlY0Y5l8GNTMuJIuwAmAn/1I+L8j6dbv2TsvKjciirP8Bg7aJHtMFR5OopmWLIi2+S+TZ5ZYQM9sUJDfwS5+0ZNm48MmM6aGIuS2UWw6JBIH+usd+j7E0wOolutn4C4fs9DZtP5mXdVNq8XwUAMdZiJHbDHJHJchEnEncRGCOKMvJ/tW8frhZVqOE6wXY1rkgRGkGrjfG4TeVN9/numMb3tX44ecZmlZZFUVsupRErLYRg2iddXK+CCVtUJ+H05vuV69oVDUUjRgDw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: c70b0292-d5d4-45de-21ed-08df3b5bd795
+X-MS-Exchange-CrossTenant-AuthSource: CH9PR11MB309436.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 16:42:55.7896 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5OY77bZnnrHXdhnY/vG+GaQOQN3UscuPDDHL0d8Du6xVP6NZxKIVSkViieOAxbPiPn4tkUUouF3eHaoMdLaknA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4983
+X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,681 +168,105 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Test the following combination of properties:
+Hi Hiresh,
 
-  P01. Make 1 ioctl call to query either heaps or static data
-  P02. Make 2 ioctl calls to query either heaps or static data
-  P03. UMD(stride) > KMD(stride)
-  P04. UMD(count) > KMD(count)
-  P05. UMD(count) < KMD(count)
-  P06. count is zero
-  P07. stride is too small
-  P08. retrieve the legacy value of KMD(stride)
-  P09. retrieve the legacy value of KMD(count)
-  P10. retrieve the value of KMD(stride)
-  P11. retrieve the value of KMD(count), where count is:
-       - for heaps, defined in the UAPI as DRM_PVR_HEAP_COUNT
-       - for static data areas, only known to the kernel
-  P12. count is UMD(DRM_PVR_HEAP_COUNT)
+On 05-11-2026 15:30, Hiresh Kumar Yadav wrote:
+> gem-execbuf-stress-pc8 skips with only "Test requirement: has_pc8",
+> which doesn't tell the user why PC8+ support is unavailable.
+>
+> Record the specific reason in setup_pc8() (unsupported platform,
+> PC8+ residency MSRs not readable, or package C-states limited by
+> BIOS) and print it along with the platform name when skipping.
+>
+> Signed-off-by: Hiresh Kumar Yadav <hiresh.kumar.yadav@intel.com>
+> ---
+>   tests/intel/i915_pm_rpm.c | 24 +++++++++++++++++++-----
+>   1 file changed, 19 insertions(+), 5 deletions(-)
+>
+> diff --git a/tests/intel/i915_pm_rpm.c b/tests/intel/i915_pm_rpm.c
+> index b4da27b21..7ea0ce306 100644
+> --- a/tests/intel/i915_pm_rpm.c
+> +++ b/tests/intel/i915_pm_rpm.c
+> @@ -131,6 +131,7 @@ enum plane_type {
+>   int drm_fd, msr_fd, pc8_status_fd;
+>   int debugfs;
+>   bool has_runtime_pm, has_pc8;
+> +static const char *pc8_skip_reason = "PC8+ setup not run";
+Is there any situation possible where the test can print "PC8+ setup not 
+run"?
+>   struct mode_set_data ms_data;
+>   
+>   /* Stuff used when creating FBs and mode setting. */
+> @@ -222,15 +223,24 @@ static bool supports_pc8_plus_residencies(void)
+>   
+>   	rc = pread(msr_fd, &val, sizeof(uint64_t), MSR_PC8_RES);
+>   	if (rc != sizeof(val))
+> -		return false;
+> +		goto no_msr;
+>   	rc = pread(msr_fd, &val, sizeof(uint64_t), MSR_PC9_RES);
+>   	if (rc != sizeof(val))
+> -		return false;
+> +		goto no_msr;
+>   	rc = pread(msr_fd, &val, sizeof(uint64_t), MSR_PC10_RES);
+>   	if (rc != sizeof(val))
+> +		goto no_msr;
+> +
+> +	if (!igt_pm_pc8_plus_residencies_enabled(msr_fd)) {
+> +		pc8_skip_reason = "package C-states limited below PC8 by the BIOS";
+In case of read failures also igt_pm_pc8_plus_residencies_enabled() will 
+return false. So the above message is misleading. Also if disabled by 
+bios, internally also
+the same string will be printed.
+>   		return false;
+> +	}
+>   
+> -	return igt_pm_pc8_plus_residencies_enabled(msr_fd);
+> +	return true;
+> +
+> +no_msr:
+> +	pc8_skip_reason = "PC8/PC9/PC10 residency MSRs not readable (non-ULT/ULX SKU?)";
 
-DRM_PVR_DEV_QUERY_HEAP_INFO_GET:
+why "?" ?
 
-       |P01|P02|P03|P04|P05|P06|P07|P08|P09|P10|P11|P12|
-   T1  |  X|   |   |   |   |  X|   |   |   |   |   |   |
-   T2  |  X|   |   |   |   |   |  X|   |   |   |   |   |
-   T3  |  X|   |   |   |   |   |   |   |   |   |   |  X|
-   T4  |  X|   |   |   |   |   |   |  X|  X|   |   |   |
-   T5  |   |  X|   |   |   |   |   |   |   |  X|  X|   |
-   T6  |   |  X|   |   |   |   |   |  X|  X|   |   |   |
-   T7  |   |  X|   |   |  X|   |   |   |   |   |   |   |
-   T8  |   |  X|   |  X|   |   |   |   |   |   |   |   |
-   T9  |   |  X|  X|   |   |   |   |   |   |   |   |   |
+> +	return false;
+>   }
+>   
+>   static uint64_t get_residency(uint32_t type)
+> @@ -550,8 +560,10 @@ static void setup_pc8(void)
+>   	has_pc8 = false;
+>   
+>   	/* Only Haswell supports the PC8 feature. */
+> -	if (!IS_HASWELL(ms_data.devid) && !IS_BROADWELL(ms_data.devid))
+> +	if (!IS_HASWELL(ms_data.devid) && !IS_BROADWELL(ms_data.devid)) {
+> +		pc8_skip_reason = "PC8+ residency is only supported on Haswell/Broadwell";
+>   		return;
+> +	}
+>   
+>   	/* Make sure our Kernel supports MSR and the module is loaded. */
+>   	igt_require(modprobe("msr") == 0);
+> @@ -1147,7 +1159,9 @@ gem_execbuf_stress_subtest(int rounds, int wait_flags,
+>   	igt_require_gem(drm_fd);
+>   
+>   	if (wait_flags & WAIT_PC8_RES)
+> -		igt_require(has_pc8);
+> +		igt_require_f(has_pc8, "Platform %s: %s\n",
+> +			      intel_get_device_info(ms_data.devid)->codename,
+> +			      pc8_skip_reason);
 
-DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET:
+Please handle the platforms here for which code-names are not available, 
+else %s can cause issue.
 
-       |P01|P02|P03|P04|P05|P06|P07|P08|P09|P10|P11|P12|
-   T1  |  X|   |   |   |   |  X|   |   |   |   |   |   |
-   T2  |  X|   |   |   |   |   |  X|   |   |   |   |   |
-   T3  | -------------------- N/A -------------------- |
-   T4  |  X|   |   |   |   |   |   |  X|  X|   |   |   |
-   T5  |   |  X|   |   |   |   |   |   |   |  X|  X|   |
-   T6  |   |  X|   |   |   |   |   |  X|  X|   |   |   |
-   T7  |   |  X|   |   |  X|   |   |   |   |   |   |   |
-   T8  |   |  X|   |  X|   |   |   |   |   |   |   |   |
-   T9  |   |  X|  X|   |   |   |   |   |   |   |   |   |
+Thanks,
+Anirban
 
-Signed-off-by: Luigi Santivetti <luigi.santivetti@imgtec.com>
----
-This patch depends on one kernel series that is not yet merged:
-
-  https://lore.kernel.org/all/20261104-ioctl-query-count-stride-fixes-v1-0-2bf86dd7cf29@imgtec.com/
----
- tests/imagination/pvr_heap_info.c | 585 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 585 insertions(+)
-
-diff --git a/tests/imagination/pvr_heap_info.c b/tests/imagination/pvr_heap_info.c
-index fa8591a97..e2547cbd8 100644
---- a/tests/imagination/pvr_heap_info.c
-+++ b/tests/imagination/pvr_heap_info.c
-@@ -28,6 +28,10 @@ int igt_main()
- 		fd = drm_open_driver(DRIVER_POWERVR);
- 	}
- 
-+	/***********************************************************************
-+	   DRM_PVR_DEV_QUERY_HEAP_INFO_GET
-+	 ***********************************************************************/
-+
- 	igt_describe("Test getting the size of an array from the kernel");
- 	igt_subtest("heap-info-get-size")
- 	{
-@@ -123,6 +127,309 @@ int igt_main()
- 		free(heaps);
- 	}
- 
-+/* Value of stride and count as defined in the first released version of the UAPI. */
-+#define LEGACY_STRIDE (offsetof(struct drm_pvr_heap, page_size_log2) + sizeof(heaps->page_size_log2))
-+#define LEGACY_COUNT (DRM_PVR_HEAP_TRANSFER_FRAG + 1)
-+
-+	igt_describe("Query, with one ioctl call, zero DRM PVR heaps");
-+	igt_subtest("heap-info-get-1-count-zero")
-+	{
-+		struct drm_pvr_heap heaps = { 0 };
-+		struct drm_pvr_dev_query_heap_info query = {
-+			.heaps = DRM_PVR_OBJ_ARRAY(0, &heaps),
-+		};
-+
-+		igt_assert(!query.heaps.count &&
-+			   query.heaps.stride &&
-+			   query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count ||
-+			    query.heaps.stride != sizeof(heaps) ||
-+			    query.heaps.array != (uintptr_t)&heaps);
-+	}
-+
-+	igt_describe("Query, with one ioctl call, one heap using an invalid stride");
-+	igt_subtest("heap-info-get-1-stride-too-small")
-+	{
-+		struct drm_pvr_heap heaps = { 0 };
-+		struct drm_pvr_dev_query_heap_info query = {
-+			.heaps = DRM_PVR_OBJ_ARRAY(1, &heaps),
-+		};
-+
-+		query.heaps.stride = 1;
-+
-+		igt_assert(query.heaps.count &&
-+			   query.heaps.stride &&
-+			   query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, EINVAL);
-+	}
-+
-+	igt_describe("Query, with one ioctl call, all heaps known to userspace");
-+	igt_subtest("heap-info-get-1")
-+	{
-+		struct drm_pvr_heap heaps[DRM_PVR_HEAP_COUNT] = { 0 };
-+		struct drm_pvr_dev_query_heap_info query = {
-+			.heaps = DRM_PVR_OBJ_ARRAY(ARRAY_SIZE(heaps), heaps),
-+		};
-+
-+		igt_assert(DRM_PVR_HEAP_COUNT == ARRAY_SIZE(heaps));
-+		igt_assert(query.heaps.count == DRM_PVR_HEAP_COUNT &&
-+			   query.heaps.stride == sizeof(*heaps) &&
-+			   query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count > DRM_PVR_HEAP_COUNT ||
-+			    query.heaps.stride != sizeof(*heaps) ||
-+			    query.heaps.array != (uintptr_t)heaps);
-+	}
-+
-+	igt_describe("Query, with one ioctl call, the legacy value of stride and count");
-+	igt_subtest("heap-info-get-1-legacy")
-+	{
-+		struct drm_pvr_dev_query_heap_info query = { 0 };
-+		struct drm_pvr_heap *heaps = NULL;
-+
-+		igt_assert(!query.heaps.count &&
-+			   !query.heaps.stride &&
-+			   !query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count != LEGACY_COUNT ||
-+			    query.heaps.stride != LEGACY_STRIDE ||
-+			    query.heaps.array);
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, all heaps known to the kernel");
-+	igt_subtest("heap-info-get-2")
-+	{
-+		struct drm_pvr_dev_query_heap_info query = {
-+			.heaps = { .stride = ~0U, .count = ~0U, },
-+		};
-+		uint32_t ioctl1_count = ~0U, ioctl1_stride = ~0U;
-+		struct drm_pvr_heap *heaps = NULL;
-+
-+		igt_assert(query.heaps.count &&
-+			   query.heaps.stride &&
-+			   !query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count == ~0U ||
-+			    query.heaps.stride == ~0U ||
-+			    query.heaps.array);
-+
-+		ioctl1_stride = query.heaps.stride;
-+		ioctl1_count = query.heaps.count;
-+
-+		heaps = calloc(ioctl1_count, ioctl1_stride);
-+		igt_fail_on(!heaps);
-+
-+		query.heaps = (struct drm_pvr_obj_array)
-+			DRM_PVR_OBJ_ARRAY(query.heaps.count, heaps);
-+
-+		igt_assert(query.heaps.count &&
-+			   query.heaps.stride &&
-+			   query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count != ioctl1_count ||
-+			    query.heaps.stride != ioctl1_stride ||
-+			    query.heaps.array != (uintptr_t)heaps);
-+
-+		free(heaps);
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, the legacy value of stride and count");
-+	igt_subtest("heap-info-get-2-legacy")
-+	{
-+		struct drm_pvr_dev_query_heap_info query = { 0 };
-+		struct drm_pvr_heap *heaps = NULL;
-+
-+		igt_assert(!query.heaps.count &&
-+			   !query.heaps.stride &&
-+			   !query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count != LEGACY_COUNT ||
-+			    query.heaps.stride != LEGACY_STRIDE ||
-+			    query.heaps.array);
-+
-+		heaps = calloc(query.heaps.count, sizeof(*heaps));
-+		igt_fail_on(!heaps);
-+
-+		query.heaps = (struct drm_pvr_obj_array)
-+			DRM_PVR_OBJ_ARRAY(query.heaps.count, heaps);
-+
-+		igt_assert(query.heaps.count &&
-+			   query.heaps.stride &&
-+			   query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count != LEGACY_COUNT ||
-+			    query.heaps.stride != LEGACY_STRIDE ||
-+			    query.heaps.array != (uintptr_t)heaps);
-+
-+		free(heaps);
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, heaps where UMD(count) < KMD(count)");
-+	igt_subtest("heap-info-get-2-count-umd-lt-kmd")
-+	{
-+		struct drm_pvr_dev_query_heap_info query = {
-+			.heaps = { .stride = ~0U, .count = ~0U, },
-+		};
-+		uint32_t umd_count, kmd_count;
-+
-+		igt_assert(query.heaps.count &&
-+			   query.heaps.stride &&
-+			   !query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count == ~0U ||
-+			    query.heaps.stride == ~0U ||
-+			    query.heaps.array);
-+
-+		kmd_count = query.heaps.count;
-+		umd_count = kmd_count - 1;
-+
-+		igt_assert(kmd_count && umd_count < kmd_count);
-+
-+		for (uint32_t count = umd_count; count; count--) {
-+			struct drm_pvr_heap *heaps = calloc(count, sizeof(*heaps));
-+			query = (struct drm_pvr_dev_query_heap_info){
-+				.heaps = DRM_PVR_OBJ_ARRAY(count, heaps),
-+			};
-+
-+			igt_assert(query.heaps.count < kmd_count &&
-+				   query.heaps.stride &&
-+				   query.heaps.array);
-+
-+			igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+						sizeof(query), &query, 0);
-+
-+			igt_fail_on(query.heaps.count != count ||
-+				    query.heaps.stride != sizeof(*heaps) ||
-+				    query.heaps.array != (uintptr_t)heaps);
-+
-+			free(heaps);
-+		}
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, heaps where UMD(count) > KMD(count)");
-+	igt_subtest("heap-info-get-2-count-umd-gt-kmd")
-+	{
-+		struct drm_pvr_dev_query_heap_info query = {
-+			.heaps = { .stride = ~0U, .count = ~0U, },
-+		};
-+		uint32_t umd_count, kmd_count;
-+
-+		igt_assert(query.heaps.count &&
-+			   query.heaps.stride &&
-+			   !query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count == ~0U ||
-+			    query.heaps.stride == ~0U ||
-+			    query.heaps.array);
-+
-+		kmd_count = query.heaps.count;
-+		umd_count = kmd_count * 2;
-+
-+		igt_assert(kmd_count && umd_count > kmd_count);
-+
-+		for (uint32_t count = umd_count; count > kmd_count; count--) {
-+			struct drm_pvr_heap *heaps = calloc(count, sizeof(*heaps));
-+			query = (struct drm_pvr_dev_query_heap_info){
-+				.heaps = DRM_PVR_OBJ_ARRAY(count, heaps),
-+			};
-+
-+			igt_assert(query.heaps.count > kmd_count &&
-+				   query.heaps.stride &&
-+				   query.heaps.array);
-+
-+			igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+						sizeof(query), &query, 0);
-+
-+			igt_fail_on(query.heaps.count != kmd_count ||
-+				    query.heaps.stride != sizeof(*heaps) ||
-+				    query.heaps.array != (uintptr_t)heaps);
-+
-+			free(heaps);
-+		}
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, heaps where UMD(stride) > KMD(stride)");
-+	igt_subtest("heap-info-get-2-stride-umd-gt-kmd")
-+	{
-+		struct drm_pvr_dev_query_heap_info query = {
-+			.heaps = { .stride = ~0U, .count = ~0U, },
-+		};
-+		struct drm_pvr_heap heaps = { 0 };
-+		uint32_t umd_stride, kmd_stride;
-+
-+		igt_assert(query.heaps.count &&
-+			   query.heaps.stride &&
-+			   !query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count == ~0U ||
-+			    query.heaps.stride == ~0U ||
-+			    query.heaps.array);
-+
-+		kmd_stride = query.heaps.stride;
-+		umd_stride = ALIGN(kmd_stride + 1, sizeof(uint64_t));
-+
-+		igt_assert(kmd_stride && umd_stride > kmd_stride);
-+
-+		query = (struct drm_pvr_dev_query_heap_info){
-+			.heaps = {
-+				.count = 1,
-+				.stride = umd_stride,
-+				.array = (uintptr_t)&heaps,
-+			},
-+		};
-+
-+		igt_assert(query.heaps.count &&
-+			   query.heaps.stride > kmd_stride &&
-+			   query.heaps.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_HEAP_INFO_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.heaps.count != 1 ||
-+			    query.heaps.stride != umd_stride ||
-+			    query.heaps.array != (uintptr_t)&heaps);
-+	}
-+
-+#undef LEGACY_STRIDE
-+#undef LEGACY_COUNT
-+
-+	/***********************************************************************
-+	   DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET
-+	 ***********************************************************************/
-+
- 	igt_describe("Test validity of static data areas");
- 	igt_subtest("heap-info-static-data-areas-valid")
- 	{
-@@ -162,6 +469,284 @@ int igt_main()
- 		free(static_data_areas);
- 	}
- 
-+/* Value of stride and count as defined in the first released version of the UAPI. */
-+#define LEGACY_STRIDE (offsetof(struct drm_pvr_static_data_area, offset) + sizeof(areas->offset))
-+#define LEGACY_COUNT (5U)
-+
-+	igt_describe("Query, with one ioctl call, zero static areas");
-+	igt_subtest("heap-info-static-data-areas-get-1-count-zero")
-+	{
-+		struct drm_pvr_static_data_area areas = { 0 };
-+		struct drm_pvr_dev_query_static_data_areas query = {
-+			.static_data_areas = DRM_PVR_OBJ_ARRAY(0, &areas),
-+		};
-+
-+		igt_assert(!query.static_data_areas.count &&
-+			   query.static_data_areas.stride &&
-+			   query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count ||
-+			    query.static_data_areas.stride != sizeof(areas) ||
-+			    query.static_data_areas.array != (uintptr_t)&areas);
-+	}
-+
-+	igt_describe("Query, with one ioctl call, one static area using an invalid stride");
-+	igt_subtest("heap-info-static-data-areas-get-1-stride-too-small")
-+	{
-+		struct drm_pvr_static_data_area areas = { 0 };
-+		struct drm_pvr_dev_query_static_data_areas query = {
-+			.static_data_areas = DRM_PVR_OBJ_ARRAY(1, &areas),
-+		};
-+
-+		query.static_data_areas.stride = 1;
-+
-+		igt_assert(query.static_data_areas.count &&
-+			   query.static_data_areas.stride &&
-+			   query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, EINVAL);
-+	}
-+
-+	igt_describe("Query, with one ioctl call, the legacy value of stride and count");
-+	igt_subtest("heap-info-static-data-areas-get-1-legacy")
-+	{
-+		struct drm_pvr_dev_query_static_data_areas query = { 0 };
-+		struct drm_pvr_static_data_area *areas = NULL;
-+
-+		igt_assert(!query.static_data_areas.count &&
-+			   !query.static_data_areas.stride &&
-+			   !query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count != LEGACY_COUNT ||
-+			    query.static_data_areas.stride != LEGACY_STRIDE ||
-+			    query.static_data_areas.array);
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, all static areas known to the kernel");
-+	igt_subtest("heap-info-static-data-areas-get-2")
-+	{
-+		struct drm_pvr_dev_query_static_data_areas query = {
-+			.static_data_areas = { .stride = ~0U, .count = ~0U, },
-+		};
-+		uint32_t ioctl1_count = ~0U, ioctl1_stride = ~0U;
-+		struct drm_pvr_static_data_area *areas = NULL;
-+
-+		igt_assert(query.static_data_areas.count &&
-+			   query.static_data_areas.stride &&
-+			   !query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.stride == ~0U ||
-+			    query.static_data_areas.count == ~0U ||
-+			    query.static_data_areas.array);
-+
-+		ioctl1_stride = query.static_data_areas.stride;
-+		ioctl1_count = query.static_data_areas.count;
-+
-+		areas = calloc(ioctl1_count, ioctl1_stride);
-+		igt_fail_on(!areas);
-+
-+		query.static_data_areas = (struct drm_pvr_obj_array)
-+			DRM_PVR_OBJ_ARRAY(query.static_data_areas.count, areas);
-+
-+		igt_assert(query.static_data_areas.count &&
-+			   query.static_data_areas.stride &&
-+			   query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count != ioctl1_count ||
-+			    query.static_data_areas.stride != ioctl1_stride ||
-+			    query.static_data_areas.array != (uintptr_t)areas);
-+
-+		free(areas);
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, the legacy value of stride and count");
-+	igt_subtest("heap-info-static-data-areas-get-2-legacy")
-+	{
-+		struct drm_pvr_dev_query_static_data_areas query = { 0 };
-+		struct drm_pvr_static_data_area *areas = NULL;
-+
-+		igt_assert(!query.static_data_areas.count &&
-+			   !query.static_data_areas.stride &&
-+			   !query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count != LEGACY_COUNT ||
-+			    query.static_data_areas.stride != LEGACY_STRIDE ||
-+			    query.static_data_areas.array);
-+
-+		areas = calloc(query.static_data_areas.count, sizeof(*areas));
-+		igt_fail_on(!areas);
-+
-+		query.static_data_areas = (struct drm_pvr_obj_array)
-+			DRM_PVR_OBJ_ARRAY(query.static_data_areas.count, areas);
-+
-+		igt_assert(query.static_data_areas.count &&
-+			   query.static_data_areas.stride &&
-+			   query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count != LEGACY_COUNT ||
-+			    query.static_data_areas.stride != LEGACY_STRIDE ||
-+			    query.static_data_areas.array != (uintptr_t)areas);
-+
-+		free(areas);
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, static areas where UMD(count) < KMD(count)");
-+	igt_subtest("heap-info-static-data-areas-get-2-count-umd-gt-kmd")
-+	{
-+		struct drm_pvr_dev_query_static_data_areas query = {
-+			.static_data_areas = { .stride = ~0U, .count = ~0U, },
-+		};
-+		uint32_t umd_count, kmd_count;
-+
-+		igt_assert(query.static_data_areas.count &&
-+			   query.static_data_areas.stride &&
-+			   !query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count == ~0U ||
-+			    query.static_data_areas.stride == ~0U ||
-+			    query.static_data_areas.array);
-+
-+		kmd_count = query.static_data_areas.count;
-+		umd_count = kmd_count - 1;
-+
-+		igt_assert(kmd_count && umd_count < kmd_count);
-+
-+		for (uint32_t count = umd_count; count; count--) {
-+			struct drm_pvr_static_data_area *areas = calloc(count, sizeof(*areas));
-+			query = (struct drm_pvr_dev_query_static_data_areas){
-+				.static_data_areas = DRM_PVR_OBJ_ARRAY(count, areas),
-+			};
-+
-+			igt_assert(query.static_data_areas.count < kmd_count &&
-+				   query.static_data_areas.stride &&
-+				   query.static_data_areas.array);
-+
-+			igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+						sizeof(query), &query, 0);
-+
-+			igt_fail_on(query.static_data_areas.count != count ||
-+				    query.static_data_areas.stride != sizeof(*areas) ||
-+				    query.static_data_areas.array != (uintptr_t)areas);
-+
-+			free(areas);
-+		}
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, static areas where UMD(count) > KMD(count)");
-+	igt_subtest("heap-info-static-data-areas-get-2-count-umd-gt-kmd")
-+	{
-+		struct drm_pvr_dev_query_static_data_areas query = {
-+			.static_data_areas = { .stride = ~0U, .count = ~0U, },
-+		};
-+		uint32_t umd_count, kmd_count;
-+
-+		igt_assert(query.static_data_areas.count &&
-+			   query.static_data_areas.stride &&
-+			   !query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count == ~0U ||
-+			    query.static_data_areas.stride == ~0U ||
-+			    query.static_data_areas.array);
-+
-+		kmd_count = query.static_data_areas.count;
-+		umd_count = kmd_count * 2;
-+
-+		igt_assert(kmd_count && umd_count > kmd_count);
-+
-+		for (uint32_t count = umd_count; count > kmd_count; count--) {
-+			struct drm_pvr_static_data_area *areas = calloc(count, sizeof(*areas));
-+			query = (struct drm_pvr_dev_query_static_data_areas){
-+				.static_data_areas = DRM_PVR_OBJ_ARRAY(count, areas),
-+			};
-+
-+			igt_assert(query.static_data_areas.count > kmd_count &&
-+				   query.static_data_areas.stride &&
-+				   query.static_data_areas.array);
-+
-+			igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+						sizeof(query), &query, 0);
-+
-+			igt_fail_on(query.static_data_areas.count != kmd_count ||
-+				    query.static_data_areas.stride != sizeof(*areas) ||
-+				    query.static_data_areas.array != (uintptr_t)areas);
-+
-+			free(areas);
-+		}
-+	}
-+
-+	igt_describe("Query, with two ioctl calls, static areas where UMD(stride) > KMD(stride)");
-+	igt_subtest("heap-info-static-data-areas-get-2-stride-umd-gt-kmd")
-+	{
-+		struct drm_pvr_dev_query_static_data_areas query = {
-+			.static_data_areas = { .stride = ~0U, .count = ~0U, },
-+		};
-+		struct drm_pvr_static_data_area areas = { 0 };
-+		uint32_t umd_stride, kmd_stride;
-+
-+		igt_assert(query.static_data_areas.count &&
-+			   query.static_data_areas.stride &&
-+			   !query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count == ~0U ||
-+			    query.static_data_areas.stride == ~0U ||
-+			    query.static_data_areas.array);
-+
-+		kmd_stride = query.static_data_areas.stride;
-+		umd_stride = ALIGN(kmd_stride + 1, sizeof(uint64_t));
-+
-+		igt_assert(kmd_stride && umd_stride > kmd_stride);
-+
-+		query = (struct drm_pvr_dev_query_static_data_areas){
-+			.static_data_areas = {
-+				.count = 1,
-+				.stride = umd_stride,
-+				.array = (uintptr_t)&areas,
-+			},
-+		};
-+
-+		igt_assert(query.static_data_areas.count &&
-+			   query.static_data_areas.stride > kmd_stride &&
-+			   query.static_data_areas.array);
-+
-+		igt_pvr_ioctl_dev_query(fd, DRM_PVR_DEV_QUERY_STATIC_DATA_AREAS_GET,
-+					sizeof(query), &query, 0);
-+
-+		igt_fail_on(query.static_data_areas.count != 1 ||
-+			    query.static_data_areas.stride != umd_stride ||
-+			    query.static_data_areas.array != (uintptr_t)&areas);
-+	}
-+
-+#undef LEGACY_STRIDE
-+#undef LEGACY_COUNT
-+
- 	igt_fixture()
- 	{
- 		drm_close_driver(fd);
-
----
-base-commit: a946c7a2536db43501127e3dc6339e68bd1d6112
-change-id: 20261105-b4-heap-static-area-info-get-bb20556406f2
-
-Best regards,
---  
-Luigi Santivetti <luigi.santivetti@imgtec.com>
-
+>   
+>   	i = 0;
+>   	batch_buf[i++] = MI_NOOP;
