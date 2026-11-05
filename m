@@ -2,51 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949BB606D809
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 11:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=igalia.com header.i=@igalia.com header.a=rsa-sha256 header.s=20170329 header.b=FMR0ZSZr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4B6606A339
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 12:01:50 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 45F5410E0ED;
-	Thu,  5 Nov 2026 11:08:09 +0000 (UTC)
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 9ADE810E051
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 11:07:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com; 
- s=20170329;
- h=Content-Transfer-Encoding:Content-Type:From:Cc:To:Subject:
- MIME-Version:Date:Message-ID:From:Reply-To;
- bh=/Gdyz8PqKNDm96Zpo4WGnMPREzycPTv+tic9I1Q/Qx0=; t=1793876832; x=2109236832; 
- b=FMR0ZSZrRnHeHX9prI2OIHM3ZiWdilIAUCNahB9VEe9rXor1vrNbmUxSCkWnOHvsyJ6zlXbyMiE
- 7F3susebs/8jLQma1ivql3xQiw3o6Kb+VC0UGdXMgYkYoht3cPOlUxMKa9jaOY4AfjhKljtJV2rzD
- Un7cceFyhNGK+PwGn6Zh2NPUDHFamhRp3R953Yny7LTYFDQjVkwGdXnXSMkGD4JACTQo3iiIIE0kD
- MqCSPOjy6n/HwpNJmkn3eGQBnTFEwJtjLsesCNpAmgu4A+I4m2JTCldRpno0d/xEHTfhPOfCgf5Yp
- WtxTb17FCFm0cWl3c6v/GDf3raGi/FMH3eNw==;
-Received: from [81.79.79.1] (helo=[192.168.0.116])
- by fanzine2.igalia.com with esmtpsa 
- (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
- id 1xOvJB-003G79-O0; Thu, 05 Nov 2026 12:07:05 +0100
-Message-ID: <72d94198-4678-4641-bbfb-e140c982b059@igalia.com>
-Date: Thu, 5 Nov 2026 11:07:04 +0000
+	by gabe.freedesktop.org (Postfix) with ESMTP id DFB7810E26E;
+	Thu,  5 Nov 2026 12:01:49 +0000 (UTC)
+Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A45B110E201;
+ Thu,  5 Nov 2026 12:00:41 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2334808115933270266=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tests/intel: Add edge case and race condition tests for
- GEM_CHANGE_HANDLE
-To: Sebastian Brzezinka <sebastian.brzezinka@intel.com>,
- David Francis <David.Francis@amd.com>, igt-dev@lists.freedesktop.org
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
- Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Christian Konig <christian.koenig@amd.com>, Simona Vetter <simona@ffwll.ch>,
- Alex Deucher <alexander.deucher@amd.com>
-References: <20261007141209.2928162-1-David.Francis@amd.com>
- <b9ffe1b9-1a65-45bd-858b-74f6ddd40a3b@igalia.com>
- <DMN81PMG934A.3W1P5EQFBJ9XU@intel.com>
-Content-Language: en-GB
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-In-Reply-To: <DMN81PMG934A.3W1P5EQFBJ9XU@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/i915=5Fpm=5Frpm?=
+ =?utf-8?q?=3A_Print_reason_for_skipping_PC8_subtest?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Hiresh Kumar Yadav" <hiresh.kumar.yadav@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 05 Nov 2026 12:00:41 -0000
+Message-ID: <179388004166.124534.3866595103057752286@221881a7231d>
+X-Patchwork-Hint: ignore
+References: <20261105100027.1940039-1-hiresh.kumar.yadav@intel.com>
+In-Reply-To: <20261105100027.1940039-1-hiresh.kumar.yadav@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -57,49 +34,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-11.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,HK_RANDOM_FROM,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+--===============2334808115933270266==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On 05/11/2026 10:56, Sebastian Brzezinka wrote:
-> Hi Tvrtko,
->   
-> On Thu Nov 5, 2026 at 11:49 AM CET, Tvrtko Ursulin wrote:
->>
->> Sorry for the delay, a combination of things..
->>
->> On 07/10/2026 15:12, David Francis wrote:
->>> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
->>>
->>> Add a GPU-agnostic GEM_CHANGE_HANDLE tests. These test for basic
->>> functionality, edge cases, and race conditions of this ioctl against
->>> itself, gem close, gem create, and prime import and export.
->>>
->>> GEM_CHANGE_HANDLE is currently wired to drm_invalid_op in DRM core. This IGT
->>> coverage is a prerequisite for validating the eventual kernel-side ioctl
->>> implementation and makes fixing its security bugs safer.
->>>
->>> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
->>> Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
->>> Cc: Christian Konig <christian.koenig@amd.com>
->>> Cc: Simona Vetter <simona@ffwll.ch>
->>> Cc: Alex Deucher <alexander.deucher@amd.com>
->>> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
->>> Signed-off-by: David Francis <David.Francis@amd.com>
->>> ---
-> There's already a v2. I commented here by accident, sorry for not
-> correcting it sooner.
+== Series Details ==
 
-Ah right, thank you. I wasn't copied on v2. Anyway, I think some of my 
-comments still stand so I will let David sort through them first and 
-maybe agree on v3 before I re-read it.
+Series: tests/intel/i915_pm_rpm: Print reason for skipping PC8 subtest
+URL   : https://patchwork.freedesktop.org/series/177832/
+State : success
 
-Regards,
+== Summary ==
 
-Tvrtko
+CI Bug Log - changes from XEIGT_9177_BAT -> XEIGTPW_16109_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9177 -> IGTPW_16109
+  * Linux: xe-6058-34c3200b517db45a621c4963d87759823be13bbd -> xe-6069-d076071d544fe6745f6fd7553e532c8a13a0cb55
+
+  IGTPW_16109: 23b90961e279d5dc79bdb116bd78a804da96ff97 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9177: 9177
+  xe-6058-34c3200b517db45a621c4963d87759823be13bbd: 34c3200b517db45a621c4963d87759823be13bbd
+  xe-6069-d076071d544fe6745f6fd7553e532c8a13a0cb55: d076071d544fe6745f6fd7553e532c8a13a0cb55
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16109/index.html
+
+--===============2334808115933270266==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/i915_pm_rpm: Print reason for skipping PC8 subtest</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177832/">https://patchwork.freedesktop.org/series/177832/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16109/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16109/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9177_BAT -&gt; XEIGTPW_16109_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9177 -&gt; IGTPW_16109</li>
+<li>Linux: xe-6058-34c3200b517db45a621c4963d87759823be13bbd -&gt; xe-6069-d076071d544fe6745f6fd7553e532c8a13a0cb55</li>
+</ul>
+<p>IGTPW_16109: 23b90961e279d5dc79bdb116bd78a804da96ff97 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9177: 9177<br />
+  xe-6058-34c3200b517db45a621c4963d87759823be13bbd: 34c3200b517db45a621c4963d87759823be13bbd<br />
+  xe-6069-d076071d544fe6745f6fd7553e532c8a13a0cb55: d076071d544fe6745f6fd7553e532c8a13a0cb55</p>
+
+</body>
+</html>
+
+--===============2334808115933270266==--
