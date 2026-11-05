@@ -2,28 +2,79 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D890606A31B
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 22:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C319B606A31B
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 22:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L2oKww8+
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CAF7210E049;
-	Thu,  5 Nov 2026 22:54:32 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A861C10E049;
- Thu,  5 Nov 2026 22:53:34 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============2863426186941042495=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 67DC110E9A0;
+	Thu,  5 Nov 2026 22:57:47 +0000 (UTC)
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com
+ [209.85.210.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF28010E99B
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 22:56:43 +0000 (UTC)
+Received: by mail-ot1-f44.google.com with SMTP id
+ 46e09a7af769-845f3fa7f38so41507a34.3
+ for <igt-dev@lists.freedesktop.org>; Thu, 05 Nov 2026 14:56:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=gmail.com; s=20260707; t=1793919403; x=1794524203; darn=lists.freedesktop.org;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+ :message-id:reply-to:content-type;
+ bh=3RsdbC2bbI8UhChgtAfOULi3ppDsu1ChEm9HZQL/Z6U=;
+ b=L2oKww8+pqE5dx52IsOZioFZaPQ0AYIDlEDeIEho/SwD4/qnnd+2PEwZ+WRhLsaxrt
+ IW57pFgB6TR81b+ESc+Y4ECqcblzSPV+ePbodLYYM7Zy91O5iEf+40WmD3/ckRqGh7f+
+ xhrJn8HnWlrz5ULjvBqppU6iIMI++zFkb9mPBe/YzDWn55vnonVzbkB7hKwMcdiUBBWz
+ WojBx6xWx4R+26bz1hpayRe+zCKj5xUh9M7b7SnyxsvH12e/ZEZNo0y+LRdjzhCuaq4Z
+ oWhUJCOBZiPpEgEIw+h0sIPfDz1BiTNr1o0ZKJLwNACGjtm9thQbGDjufJr3GWp1/YtV
+ vexw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20260707; t=1793919403; x=1794524203;
+ h=content-transfer-encoding:mime-version:references:in-reply-to
+ :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+ :to:cc:subject:date:message-id:reply-to:content-type;
+ bh=3RsdbC2bbI8UhChgtAfOULi3ppDsu1ChEm9HZQL/Z6U=;
+ b=mWc9J8iZb+92RcB4kg1uhGISPKgvUYEeWBS2OuMRin4N8LxmLLajU8TbPnu6VGwDMi
+ Z3CmL17bvd4rvGs+vEpjxvLwk3aDpgSOhI1UhA8KhAxzB1/5IJMzWZr63oPMUtVu3V3R
+ P42TmNoOO4efhFtSwS542nym14+yasBzbwPWHAVr93BO0U/BKfRXCIuqNNr8l+XFHP86
+ 3KRxbvN017RNwPFE0FgxbFcHOOBglgZuATKa1borXQgyy4A9TcuIksJJnSpB5HTzWVG0
+ +65/Uh7TykIYd4eVJSlHpCLR5Y8cGmb0U0+7NsvDiFyazXDNtVj+QykQbPDJBhhgl4iN
+ ZgkA==
+X-Gm-Message-State: APuU4Z/17J0M7j/vFL1fgKzCA7tm2DPDdee/fSGFznXnaC093RKT4W5R
+ MHqt+DRoWcflFoiRx9Vxm5FJpb5iIMpLxdY5rZZ4mv0XgAc38PfWzl5FruBUYKXE
+X-Gm-Gg: AYBFou1nZNxK0ngMMyYHZlmBWL8+Hmrc2xDng2S2jIhkSd0/2VFK9AZKAK11UxmVHx0
+ cJqqUwSQ+GNFgsPC7lJd1J0+bvsKA8QIpfVxBuAo6LN4BE0DLCMkh+zaleo6gbFetVIihEiNzLM
+ dnVueAe28dAc25Z8gCU6R9bL/U+Q2n9M2ZUw5CD0V72oXJxtSiqvn6+cc0Yq4uSObkgMGqeYD+e
+ Uja/yO527Hh33iFIYgQhsGGhRWKpzxys6+OEX2jKx7fDIWduR4v65qlrTh9JmgXhaX8NkCJg64g
+ QPPP0Fd/c1ZC98HDJKdU8FOEVVgXlwp4xGhX4qJ8b0qbdcmqQEAT5GNwcZ3z2+EcL7xFbJvQzzK
+ IM+e44i3I1aabcRCuE4uv6rSHi2OMbJqwCPtEPAoQFMcCsoX0/25orn2dZ5JdE6H0IeKWE6jNrq
+ 4xbZsmXKo/TIEmWTUs3MC98Il2v4U+cS3xrRVw6AsIzwrzq90Q0GMslDEkPjmBRkOlCRvuoSV0t
+ wR2N5AETi7tUT2L9cnAH93Q4hlq9XJQ13f2LcV9QzE57kclhf7zgCpq3XKVnA89twzLtuPEzYYC
+ VbOhFXqBwteCz5WlW7H/vFniBspdmzqSbmEA2grpxPEe2w4eQBn80/InexaNQzUJwyBAfTd5kGW
+ gnzIv+gewtg==
+X-Received: by 2002:a05:6830:719c:b0:81c:292f:97a3 with SMTP id
+ 46e09a7af769-85f1cee5befmr758396a34.5.1793919402763; 
+ Thu, 05 Nov 2026 14:56:42 -0800 (PST)
+Received: from localhost.localdomain ([72.12.197.23])
+ by smtp.gmail.com with ESMTPSA id
+ 46e09a7af769-85f1dbf3741sm553742a34.9.2026.11.05.14.56.41
+ (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+ Thu, 05 Nov 2026 14:56:42 -0800 (PST)
+From: Aditya Tipre <tipreaditya@gmail.com>
+To: igt-dev@lists.freedesktop.org
+Cc: dri-devel@lists.freedesktop.org, louis.chauvet@bootlin.com,
+ sowmiya.s@intel.com, kamil.konieczny@linux.intel.com,
+ karthik.b.s@intel.com, swati2.sharma@intel.com, tipreaditya@gmail.com
+Subject: [PATCH i-g-t v3 1/2] tests/kms_writeback: Wait for the valid FB ID
+ writeback
+Date: Thu,  5 Nov 2026 17:56:27 -0500
+Message-ID: <20261105225628.4123-1-tipreaditya@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <PH7PR11MB6796FA8DDA56651E65E018D2E5682@PH7PR11MB6796.namprd11.prod.outlook.com>
+References: <PH7PR11MB6796FA8DDA56651E65E018D2E5682@PH7PR11MB6796.namprd11.prod.outlook.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fcap?=
- =?utf-8?q?ture=3A_Add_coredump_decode_validation_subtests_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jan Maslak" <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Nov 2026 22:53:34 -0000
-Message-ID: <179391921465.129270.5195033568464063658@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261103093927.1668349-1-jan.maslak@intel.com>
-In-Reply-To: <20261103093927.1668349-1-jan.maslak@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,114 +85,75 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============2863426186941042495==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The positive WRITEBACK_FB_ID test submits a writeback to the common input
+framebuffer without requesting or waiting for its completion fence. A
+blocking atomic commit does not imply that writeback has finished.
 
-== Series Details ==
+The following pixel-output test fills the same buffer with its reference
+color. The earlier writeback can still be modifying it, leaving a mixture
+of the old and new contents and causing intermittent checksum failures.
+On ARM64 VKMS, a diagnostic run observed the prior fence still unsignalled
+and a black row in both the input and the captured output after the input
+had been filled red.
 
-Series: tests/intel/xe_exec_capture: Add coredump decode validation subtests (rev3)
-URL   : https://patchwork.freedesktop.org/series/172303/
-State : success
+Request a fence for the successful FB ID writeback and wait for it before
+returning. Only require the returned fence descriptor to be -1 when the
+commit fails, so the shared commit helper also accepts this successful
+fenced operation. Keep all invalid-parameter checks intact.
 
-== Summary ==
+Signed-off-by: Aditya Tipre <tipreaditya@gmail.com>
+---
+New prerequisite in v3:
+- Wait for the existing valid FB ID writeback before its target buffer is
+  reused as input by the next subtest.
 
-CI Bug Log - changes from XEIGT_9180_BAT -> XEIGTPW_16111_BAT
-====================================================
+A diagnostic run observed the prior fence still unsignalled and a row of
+old black pixels replacing red input pixels. Waiting for the fence removes
+this race. The standalone fix passes the four applicable existing subtests
+on unfixed and fixed VKMS kernels with one and two CPUs; both XRGB2101010
+cases skip.
 
-Summary
--------
+ tests/kms_writeback.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-  **SUCCESS**
+diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+index 7c30e8e..550d603 100644
+--- a/tests/kms_writeback.c
++++ b/tests/kms_writeback.c
+@@ -228,7 +228,7 @@ static int do_writeback_test(igt_output_t *output, uint32_t fb_id,
+ 
+ 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 
+-	if (ptr_valid)
++	if (ptr_valid && ret)
+ 		igt_assert(*out_fence_ptr == -1);
+ 
+ 	/* WRITEBACK_FB_ID must always read as zero */
+@@ -288,8 +288,12 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
+ 	igt_assert_eq(ret, 0);
+ 
+ 	/* Valid output buffer */
+-	ret = do_writeback_test(output, valid_fb->fb_id, NULL, false);
++	ret = do_writeback_test(output, valid_fb->fb_id,
++				&output->writeback_out_fence_fd, true);
+ 	igt_assert_eq(ret, 0);
++
++	/* The next subtest may reuse this buffer as input. */
++	igt_get_and_wait_out_fence(output);
+ }
+ 
+ static void fill_fb(igt_fb_t *fb, uint32_t pixel)
 
-  No regressions found.
+base-commit: 454657e58fbcfd6fa8a9db0830aa1652fe6364c2
+-- 
+2.50.1 (Apple Git-155)
 
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9180 -> IGTPW_16111
-  * Linux: xe-6073-44f84d69c4528c0d36dbe06ea327f41182dfcc55 -> xe-6074-be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb
-
-  IGTPW_16111: 16111
-  IGT_9180: 9180
-  xe-6073-44f84d69c4528c0d36dbe06ea327f41182dfcc55: 44f84d69c4528c0d36dbe06ea327f41182dfcc55
-  xe-6074-be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb: be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16111/index.html
-
---===============2863426186941042495==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_capture: Add coredump decode validation subtests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172303/">https://patchwork.freedesktop.org/series/172303/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16111/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16111/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9180_BAT -&gt; XEIGTPW_16111_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9180 -&gt; IGTPW_16111</li>
-<li>Linux: xe-6073-44f84d69c4528c0d36dbe06ea327f41182dfcc55 -&gt; xe-6074-be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb</li>
-</ul>
-<p>IGTPW_16111: 16111<br />
-  IGT_9180: 9180<br />
-  xe-6073-44f84d69c4528c0d36dbe06ea327f41182dfcc55: 44f84d69c4528c0d36dbe06ea327f41182dfcc55<br />
-  xe-6074-be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb: be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb</p>
-
-</body>
-</html>
-
---===============2863426186941042495==--
