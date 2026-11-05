@@ -2,76 +2,77 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C319B606A31B
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 22:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD5E3606A31B
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 22:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=L2oKww8+
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UdyElfHO
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 67DC110E9A0;
-	Thu,  5 Nov 2026 22:57:47 +0000 (UTC)
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com
- [209.85.210.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF28010E99B
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 22:56:43 +0000 (UTC)
-Received: by mail-ot1-f44.google.com with SMTP id
- 46e09a7af769-845f3fa7f38so41507a34.3
- for <igt-dev@lists.freedesktop.org>; Thu, 05 Nov 2026 14:56:43 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6270310E9B5;
+	Thu,  5 Nov 2026 22:58:50 +0000 (UTC)
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com
+ [209.85.210.43])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 06F6B10E9A0
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 22:56:50 +0000 (UTC)
+Received: by mail-ot1-f43.google.com with SMTP id
+ 46e09a7af769-843ea301d60so70207a34.0
+ for <igt-dev@lists.freedesktop.org>; Thu, 05 Nov 2026 14:56:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20260707; t=1793919403; x=1794524203; darn=lists.freedesktop.org;
+ d=gmail.com; s=20260707; t=1793919409; x=1794524209; darn=lists.freedesktop.org;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:from:to:cc:subject:date
  :message-id:reply-to:content-type;
- bh=3RsdbC2bbI8UhChgtAfOULi3ppDsu1ChEm9HZQL/Z6U=;
- b=L2oKww8+pqE5dx52IsOZioFZaPQ0AYIDlEDeIEho/SwD4/qnnd+2PEwZ+WRhLsaxrt
- IW57pFgB6TR81b+ESc+Y4ECqcblzSPV+ePbodLYYM7Zy91O5iEf+40WmD3/ckRqGh7f+
- xhrJn8HnWlrz5ULjvBqppU6iIMI++zFkb9mPBe/YzDWn55vnonVzbkB7hKwMcdiUBBWz
- WojBx6xWx4R+26bz1hpayRe+zCKj5xUh9M7b7SnyxsvH12e/ZEZNo0y+LRdjzhCuaq4Z
- oWhUJCOBZiPpEgEIw+h0sIPfDz1BiTNr1o0ZKJLwNACGjtm9thQbGDjufJr3GWp1/YtV
- vexw==
+ bh=dJG9EjcLX0J+je4F8kocncl8s7YZhNKoH4ApuoT+Q7M=;
+ b=UdyElfHOhsFFgt0yGmYrEf/t91BIKLeE32M/h+ucCjBlYmntxplz0SKyIy9ISts4Co
+ ndplwWJpLesCvRB/eDNOiNG2NcgzBK2omPNk33y/Iofc3o6jDKDbTUmTmC4vrtBa3FRr
+ 2Xa1XCKHOmZVM/izWT6tO3f1yhmMh7SQr28iJ4KpcZpXwCPz2Z1VOhnUnEq3rCuqSSEX
+ sZNKDT4bOkbaXCvea+BdUVd4nIxOHyIt51/BTZrcc4a7UpVkugMDXIRrSZ+3nZt5L+Yd
+ glMHTjrp8X/3HJ2SjIg1Yrkszo3kClFyIeF3Y/4f9S90zrMRJmH2d+wlYuRqy1cYbNDa
+ 2Vfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1793919403; x=1794524203;
+ d=1e100.net; s=20260707; t=1793919409; x=1794524209;
  h=content-transfer-encoding:mime-version:references:in-reply-to
  :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
  :to:cc:subject:date:message-id:reply-to:content-type;
- bh=3RsdbC2bbI8UhChgtAfOULi3ppDsu1ChEm9HZQL/Z6U=;
- b=mWc9J8iZb+92RcB4kg1uhGISPKgvUYEeWBS2OuMRin4N8LxmLLajU8TbPnu6VGwDMi
- Z3CmL17bvd4rvGs+vEpjxvLwk3aDpgSOhI1UhA8KhAxzB1/5IJMzWZr63oPMUtVu3V3R
- P42TmNoOO4efhFtSwS542nym14+yasBzbwPWHAVr93BO0U/BKfRXCIuqNNr8l+XFHP86
- 3KRxbvN017RNwPFE0FgxbFcHOOBglgZuATKa1borXQgyy4A9TcuIksJJnSpB5HTzWVG0
- +65/Uh7TykIYd4eVJSlHpCLR5Y8cGmb0U0+7NsvDiFyazXDNtVj+QykQbPDJBhhgl4iN
- ZgkA==
-X-Gm-Message-State: APuU4Z/17J0M7j/vFL1fgKzCA7tm2DPDdee/fSGFznXnaC093RKT4W5R
- MHqt+DRoWcflFoiRx9Vxm5FJpb5iIMpLxdY5rZZ4mv0XgAc38PfWzl5FruBUYKXE
-X-Gm-Gg: AYBFou1nZNxK0ngMMyYHZlmBWL8+Hmrc2xDng2S2jIhkSd0/2VFK9AZKAK11UxmVHx0
- cJqqUwSQ+GNFgsPC7lJd1J0+bvsKA8QIpfVxBuAo6LN4BE0DLCMkh+zaleo6gbFetVIihEiNzLM
- dnVueAe28dAc25Z8gCU6R9bL/U+Q2n9M2ZUw5CD0V72oXJxtSiqvn6+cc0Yq4uSObkgMGqeYD+e
- Uja/yO527Hh33iFIYgQhsGGhRWKpzxys6+OEX2jKx7fDIWduR4v65qlrTh9JmgXhaX8NkCJg64g
- QPPP0Fd/c1ZC98HDJKdU8FOEVVgXlwp4xGhX4qJ8b0qbdcmqQEAT5GNwcZ3z2+EcL7xFbJvQzzK
- IM+e44i3I1aabcRCuE4uv6rSHi2OMbJqwCPtEPAoQFMcCsoX0/25orn2dZ5JdE6H0IeKWE6jNrq
- 4xbZsmXKo/TIEmWTUs3MC98Il2v4U+cS3xrRVw6AsIzwrzq90Q0GMslDEkPjmBRkOlCRvuoSV0t
- wR2N5AETi7tUT2L9cnAH93Q4hlq9XJQ13f2LcV9QzE57kclhf7zgCpq3XKVnA89twzLtuPEzYYC
- VbOhFXqBwteCz5WlW7H/vFniBspdmzqSbmEA2grpxPEe2w4eQBn80/InexaNQzUJwyBAfTd5kGW
- gnzIv+gewtg==
-X-Received: by 2002:a05:6830:719c:b0:81c:292f:97a3 with SMTP id
- 46e09a7af769-85f1cee5befmr758396a34.5.1793919402763; 
- Thu, 05 Nov 2026 14:56:42 -0800 (PST)
+ bh=dJG9EjcLX0J+je4F8kocncl8s7YZhNKoH4ApuoT+Q7M=;
+ b=eQ06FIcivCr3eXf4zn4PIDi68beqximXYGkkfGlEWIBts2wjjSzGVAdcvCx9RpfD1k
+ TrrgGxHACECB98tBefFoVyfz/oa1Mo/2ZbjHstvF20q4e5QEtfQ/jwyVqHmQ/7h8SibL
+ Yrcr4WB2fizHl7lsvqks5WUXxruoqhlF1KJ8xbXuzDa1dSvPOwwcyqSjoy+ZCMDm5kDK
+ PlGFAlzkGYcbmoSwIaS1UsQFn4JqUlTtRhi73J7hHJ6f6hiYH1gfnB4GQ45H6XmFQA1X
+ fCsHO+CjZWhpkv5hUrew0sNykFrqObk1gC6ySG49cLAB2z8BiJH0+lDvXQDLKn9k6Pow
+ DUcg==
+X-Gm-Message-State: APuU4Z9hRsdX/AW3WokQ/UnjwVSqoHmdPAyktTs1DCBiKw5cWPygEZyz
+ rqVitW7V841GHWlaQxub1+50jHhlM6Kys5i8wL0d0wINmvBOdtfY9OMMMak6lYDO
+X-Gm-Gg: AYBFou3fzC2FcFdDRjMi7wsMct2ukL3A+sbAy/j+epwJFqDE8HmhW5TVdND4DSrKyz5
+ qjK4/ZKTSG4Wf0evI6IM9BUjXSy6TmB+reSpJRj388WD0FOOzCcEs7Vp32AKxRGO9lZRDNmwJ04
+ 7QiGsx224eHBMLABKRQ86DGtAbfEwXtzz41u/6KSmnXU8e1glVLeJKCIxe/lV1NoSZwGsjDRdM4
+ eNBnQW7M1s0pWRxTQp03/Uk4mW8KaHYBLKtYEjJ0EGj/dzZB+lzzJzj6xCuLbJCZiZWxRWX/q2i
+ A0HjmmiUg2Z6LNWv8mIezC0kCJiFggBglKOc4N8dytFWtpbOpIhDnL7BpNKiqotkcDDJRwTSZZ1
+ 8F/nJ7Koz/oKb9xOcUD1YTibDP79vu3fJTlBVbcHHkpYLvlmAqz+CPcmFv5dcqpVD1KYt4ZrrOz
+ Cvzk7LVIMjcwL3qe9NpV/WSTjlv28Xv67lH2vvbxJeFx7q0piKf+1gxcZ1w1cxtaA/YauDra0Tj
+ 3ZsPAeaeGO3DKwZaY+X4cBs2Hm0h7zz+vXXb1cGNz2inP2KZHxllFwRVZtHpeUCbBcE7JqXv3nh
+ zCxWIiQKfun8BUD7m92QicMvjFLSC+x6e7xDv2GFVk2hJZwLtIDG+8qwTtVY4UT/oc1oQGI3gZj
+ tAdaSJ3yh8Fg=
+X-Received: by 2002:a05:6830:2695:b0:817:fe44:989c with SMTP id
+ 46e09a7af769-85f1cfcdef1mr897832a34.19.1793919409069; 
+ Thu, 05 Nov 2026 14:56:49 -0800 (PST)
 Received: from localhost.localdomain ([72.12.197.23])
  by smtp.gmail.com with ESMTPSA id
- 46e09a7af769-85f1dbf3741sm553742a34.9.2026.11.05.14.56.41
+ 46e09a7af769-85f1dbf3741sm553742a34.9.2026.11.05.14.56.48
  (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
- Thu, 05 Nov 2026 14:56:42 -0800 (PST)
+ Thu, 05 Nov 2026 14:56:48 -0800 (PST)
 From: Aditya Tipre <tipreaditya@gmail.com>
 To: igt-dev@lists.freedesktop.org
 Cc: dri-devel@lists.freedesktop.org, louis.chauvet@bootlin.com,
  sowmiya.s@intel.com, kamil.konieczny@linux.intel.com,
  karthik.b.s@intel.com, swati2.sharma@intel.com, tipreaditya@gmail.com
-Subject: [PATCH i-g-t v3 1/2] tests/kms_writeback: Wait for the valid FB ID
+Subject: [PATCH i-g-t v3 2/2] tests/kms_writeback: Check CRC capture survives
  writeback
-Date: Thu,  5 Nov 2026 17:56:27 -0500
-Message-ID: <20261105225628.4123-1-tipreaditya@gmail.com>
+Date: Thu,  5 Nov 2026 17:56:28 -0500
+Message-ID: <20261105225628.4123-2-tipreaditya@gmail.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <PH7PR11MB6796FA8DDA56651E65E018D2E5682@PH7PR11MB6796.namprd11.prod.outlook.com>
+In-Reply-To: <20261105225628.4123-1-tipreaditya@gmail.com>
 References: <PH7PR11MB6796FA8DDA56651E65E018D2E5682@PH7PR11MB6796.namprd11.prod.outlook.com>
+ <20261105225628.4123-1-tipreaditya@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -94,66 +95,160 @@ X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The positive WRITEBACK_FB_ID test submits a writeback to the common input
-framebuffer without requesting or waiting for its completion fence. A
-blocking atomic commit does not imply that writeback has finished.
+The existing writeback tests validate captured framebuffer contents, but
+do not keep pipe CRC capture active across writeback completion. This
+misses the VKMS bug where writeback cleanup disables the composer while
+CRC capture still needs it, leaving subsequent CRC reads waiting for
+samples that never arrive.
 
-The following pixel-output test fills the same buffer with its reference
-color. The earlier writeback can still be modifying it, leaving a mixture
-of the old and new contents and causing intermittent checksum failures.
-On ARM64 VKMS, a diagnostic run observed the prior fence still unsignalled
-and a black row in both the input and the captured output after the input
-had been filled red.
+Add a VKMS-only writeback-preserves-crc subtest. Complete the initial
+modeset before starting capture and establish reference CRCs for separate
+red and blue input framebuffers. Keep capture open across four alternating
+writebacks, wait for each output fence, and compare three fresh CRC samples
+with the corresponding reference after each writeback. Do not allow
+modesets once capture starts, since they may disrupt CRC generation.
 
-Request a fence for the successful FB ID writeback and wait for it before
-returning. Only require the returned fence descriptor to be -1 when the
-commit fails, so the shared commit helper also accepts this successful
-fenced operation. Keep all invalid-parameter checks intact.
+Clear the pending out-fence request left by the configuration probe before
+the initial modeset so the subtest also works when run independently.
+Use the final fixture to close capture, disable the output, and remove the
+two new framebuffers so subtest failure or skip also cleans them up.
+
+Check output fence status in the shared wait helper so a signalled error
+fence cannot be treated as a successful writeback.
+
+On ARM64 QEMU with one and two CPUs, the new subtest fails with a CRC read
+timeout on the unmodified kernel and passes with the VKMS composer-user
+lifetime fix, both independently and in the full writeback suite.
 
 Signed-off-by: Aditya Tipre <tipreaditya@gmail.com>
 ---
-New prerequisite in v3:
-- Wait for the existing valid FB ID writeback before its target buffer is
-  reused as input by the next subtest.
+Changes in v3:
+- Add the preceding writeback-fb-id completion fix so earlier subtests do
+  not race while reusing the shared input framebuffer.
+- Restrict the new subtest to VKMS in metadata and at runtime.
+- Explain why commits after starting CRC capture do not allow modesets.
+- Release the new framebuffers in the final fixture after disabling output.
+- Clear the configuration probe's pending writeback out-fence request so
+  the subtest works independently of earlier writeback subtests.
 
-A diagnostic run observed the prior fence still unsignalled and a row of
-old black pixels replacing red input pixels. Waiting for the fence removes
-this race. The standalone fix passes the four applicable existing subtests
-on unfixed and fixed VKMS kernels with one and two CPUs; both XRGB2101010
-cases skip.
+Changes in v2:
+- Use my full name in the author and Signed-off-by fields.
+- No code changes.
 
- tests/kms_writeback.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+Validation on ARM64 QEMU/HVF with one and two CPUs:
+- With both patches applied, all four existing applicable subtests pass on
+  the unfixed and fixed kernels; both XRGB2101010 cases skip.
+- The new regression, independently and in the full suite, times out at
+  the post-writeback CRC read on the unfixed kernel and passes with the
+  VKMS composer lifetime fix.
+- Disposable probes verify FB and buffer-handle cleanup before DRM FD close
+  after partial setup, CRC comparison failure while blue is scanned out,
+  the natural baseline timeout, success, and skip.
+
+ tests/kms_writeback.c | 67 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
 
 diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-index 7c30e8e..550d603 100644
+index 550d603..e277752 100644
 --- a/tests/kms_writeback.c
 +++ b/tests/kms_writeback.c
-@@ -228,7 +228,7 @@ static int do_writeback_test(igt_output_t *output, uint32_t fb_id,
+@@ -64,6 +64,10 @@
+  *
+  * SUBTEST: writeback-pixel-formats
+  * Description: Check the writeback format
++ *
++ * SUBTEST: writeback-preserves-crc
++ * Description: CRC capture remains active across completed writebacks
++ * Driver requirement: vkms
+  */
  
- 	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ IGT_TEST_DESCRIPTION(
+@@ -321,6 +325,7 @@ static void get_and_wait_out_fence(igt_output_t *output)
  
--	if (ptr_valid)
-+	if (ptr_valid && ret)
- 		igt_assert(*out_fence_ptr == -1);
- 
- 	/* WRITEBACK_FB_ID must always read as zero */
-@@ -288,8 +288,12 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
- 	igt_assert_eq(ret, 0);
- 
- 	/* Valid output buffer */
--	ret = do_writeback_test(output, valid_fb->fb_id, NULL, false);
-+	ret = do_writeback_test(output, valid_fb->fb_id,
-+				&output->writeback_out_fence_fd, true);
- 	igt_assert_eq(ret, 0);
-+
-+	/* The next subtest may reuse this buffer as input. */
-+	igt_get_and_wait_out_fence(output);
+ 	ret = sync_fence_wait(output->writeback_out_fence_fd, 1000);
+ 	igt_assert_f(ret == 0, "sync_fence_wait failed: %s\n", strerror(-ret));
++	igt_assert_eq(sync_fence_status(output->writeback_out_fence_fd), 1);
+ 	close(output->writeback_out_fence_fd);
+ 	output->writeback_out_fence_fd = -1;
  }
+@@ -541,6 +546,8 @@ int igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 	igt_output_t *output;
+ 	igt_plane_t *plane;
+ 	igt_fb_t input_fb, input_fb_10bit;
++	static igt_pipe_crc_t *pipe_crc;
++	static igt_fb_t crc_blue_fb, crc_output_fb;
+ 	drmModeModeInfo mode;
+ 	unsigned int fb_id;
+ 	int ret;
+@@ -713,8 +720,68 @@ int igt_main_args("b:c:f:dl", long_options, help_str, opt_handler, NULL)
+ 		igt_remove_fb(display.drm_fd, &output_fb);
+ 	}
  
- static void fill_fb(igt_fb_t *fb, uint32_t pixel)
-
-base-commit: 454657e58fbcfd6fa8a9db0830aa1652fe6364c2
++	igt_describe("CRC capture remains active across completed writebacks");
++	igt_subtest("writeback-preserves-crc") {
++		igt_fb_t *colors[] = { &input_fb, &crc_blue_fb };
++		igt_crc_t reference[2], crc;
++		int i, j;
++
++		igt_skip_on(data.dump_check || data.list_modes);
++		igt_require(is_vkms_device(display.drm_fd));
++		igt_require(data.supported_colors & XRGB8888);
++		igt_require_pipe_crc(display.drm_fd);
++
++		igt_create_color_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
++				    DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++				    0.0, 0.0, 1.0, &crc_blue_fb);
++		igt_create_fb(display.drm_fd, mode.hdisplay, mode.vdisplay,
++			      DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR,
++			      &crc_output_fb);
++		fill_fb(&input_fb, 0x00ff0000);
++		igt_plane_set_fb(plane, &input_fb);
++		igt_output_set_writeback_fb(output, NULL);
++		/* Discard the out-fence request left by the configuration probe. */
++		igt_output_set_prop_value(output, IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
++					  to_user_pointer(NULL));
++		igt_display_commit_atomic(&display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
++
++		/* Finish the modeset before starting continuous CRC capture. */
++		pipe_crc = igt_pipe_crc_new(display.drm_fd, output->config.crtc_index,
++					    IGT_PIPE_CRC_SOURCE_AUTO);
++		igt_pipe_crc_start(pipe_crc);
++
++		/*
++		 * Establish both references before writeback can affect capture.
++		 * Do not allow modesets below: they may disrupt continuous CRC
++		 * generation.
++		 */
++		for (i = 0; i < ARRAY_SIZE(colors); i++) {
++			igt_plane_set_fb(plane, colors[i]);
++			igt_display_commit_atomic(&display, 0, NULL);
++			igt_pipe_crc_get_current(display.drm_fd, pipe_crc, &reference[i]);
++		}
++
++		for (i = 0; i < 4; i++) {
++			int color = i % ARRAY_SIZE(colors);
++
++			igt_plane_set_fb(plane, colors[color]);
++			igt_output_set_writeback_fb(output, &crc_output_fb);
++			igt_display_commit_atomic(&display, 0, NULL);
++			get_and_wait_out_fence(output);
++
++			/* Require fresh frames without stopping or restarting capture. */
++			for (j = 0; j < 3; j++) {
++				igt_pipe_crc_get_current(display.drm_fd, pipe_crc, &crc);
++				igt_assert_crc_equal(&reference[color], &crc);
++			}
++		}
++	}
++
+ 	igt_fixture() {
++		igt_pipe_crc_free(pipe_crc);
+ 		cleanup_writeback(&display, output);
++		igt_remove_fb(display.drm_fd, &crc_blue_fb);
++		igt_remove_fb(display.drm_fd, &crc_output_fb);
+ 		igt_remove_fb(display.drm_fd, &input_fb);
+ 
+ 		if (data.supported_colors & XRGB2101010)
 -- 
 2.50.1 (Apple Git-155)
 
