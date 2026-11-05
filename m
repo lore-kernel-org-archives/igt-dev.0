@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A8A606A31B
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 06:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6D8606A31B
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 06:40:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C39DB10E939;
-	Thu,  5 Nov 2026 06:20:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2D99A112043;
+	Thu,  5 Nov 2026 06:40:39 +0000 (UTC)
 Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C123A10E939;
- Thu,  5 Nov 2026 06:19:44 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EAD9310E929;
+ Thu,  5 Nov 2026 06:39:42 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============6767128437234096399=="
+ boundary="===============8371831268938402273=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_Multi-queue_CGP=5FSYNC_re?=
- =?utf-8?q?play_coverage_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_test/intel-ci=3A_Add_xe=2Em?=
+ =?utf-8?q?ultigpu=2Eblocklist_to_config=2Ejson?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jagmeet Randhawa" <jagmeet.randhawa@intel.com>
+To: "Venkateswara Rao Muppidi" <venkateswara.rao.muppidi@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Nov 2026 06:19:44 -0000
-Message-ID: <179385958478.122612.14913081535807742051@221881a7231d>
+Date: Thu, 05 Nov 2026 06:39:42 -0000
+Message-ID: <179386078295.122642.15391260124988017947@221881a7231d>
 X-Patchwork-Hint: ignore
-References: <20261104201119.14137-1-jagmeet.randhawa@intel.com>
-In-Reply-To: <20261104201119.14137-1-jagmeet.randhawa@intel.com>
+References: <20261105044609.365584-1-venkateswara.rao.muppidi@intel.com>
+In-Reply-To: <20261105044609.365584-1-venkateswara.rao.muppidi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,26 +36,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============6767128437234096399==
+--===============8371831268938402273==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: Multi-queue CGP_SYNC replay coverage (rev2)
-URL   : https://patchwork.freedesktop.org/series/177781/
+Series: test/intel-ci: Add xe.multigpu.blocklist to config.json
+URL   : https://patchwork.freedesktop.org/series/177815/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9177 -> IGTPW_16107
+CI Bug Log - changes from XEIGT_9177_BAT -> XEIGTPW_16108_BAT
 ====================================================
 
 Summary
@@ -65,61 +65,36 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/index.html
+  
 
-Participating hosts (40 -> 39)
+Participating hosts (15 -> 15)
 ------------------------------
 
-  Missing    (1): bat-dg2-13 
+  No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_16107 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@i915_selftest@live@sanitycheck:
-    - fi-kbl-7567u:       [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +79 other tests dmesg-warn
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9177/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html
-
-  * igt@kms_busy@basic@flip:
-    - fi-kbl-7567u:       [PASS][3] -> [DMESG-WARN][4] ([i915#13735] / [i915#180])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9177/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/fi-kbl-7567u/igt@kms_busy@basic@flip.html
-
-  * igt@kms_pm_rpm@basic-pci-d3-state:
-    - fi-kbl-7567u:       [PASS][5] -> [DMESG-WARN][6] ([i915#13735] / [i915#15673] / [i915#180]) +52 other tests dmesg-warn
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9177/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html
-
-  
-  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
-  [i915#15673]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673
-  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9177 -> IGTPW_16107
-  * Linux: CI_DRM_19443 -> CI_DRM_19449
+  * IGT: IGT_9177 -> IGTPW_16108
+  * Linux: xe-6058-34c3200b517db45a621c4963d87759823be13bbd -> xe-6065-39c3efaee12b7c3e5e66247abea832c1986f15e3
 
-  CI-20190529: 20190529
-  CI_DRM_19443: d11bbfdac0f3d443b367857ffe683ae6bb80d560 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19449: 39c3efaee12b7c3e5e66247abea832c1986f15e3 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16107: 16107
+  IGTPW_16108: 16108
   IGT_9177: 9177
+  xe-6058-34c3200b517db45a621c4963d87759823be13bbd: 34c3200b517db45a621c4963d87759823be13bbd
+  xe-6065-39c3efaee12b7c3e5e66247abea832c1986f15e3: 39c3efaee12b7c3e5e66247abea832c1986f15e3
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16108/index.html
 
---===============6767128437234096399==
+--===============8371831268938402273==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -139,59 +114,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>Multi-queue CGP_SYNC replay coverage (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177781/">https://patchwork.freedesktop.org/series/177781/</a></td></tr>
+<tr><td><b>Series:</b></td><td>test/intel-ci: Add xe.multigpu.blocklist to config.json</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177815/">https://patchwork.freedesktop.org/series/177815/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16108/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16108/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9177 -&gt; IGTPW_16107</h1>
+    <h1>CI Bug Log - changes from XEIGT_9177_BAT -&gt; XEIGTPW_16108_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16107 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@i915_selftest@live@sanitycheck:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9177/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/fi-kbl-7567u/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +79 other tests dmesg-warn</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_busy@basic@flip:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9177/fi-kbl-7567u/igt@kms_busy@basic@flip.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/fi-kbl-7567u/igt@kms_busy@basic@flip.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
-<ul>
-<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9177/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16107/fi-kbl-7567u/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15673">i915#15673</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +52 other tests dmesg-warn</li>
-</ul>
-</li>
-</ul>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9177 -&gt; IGTPW_16107</li>
-<li>Linux: CI_DRM_19443 -&gt; CI_DRM_19449</li>
+<li>IGT: IGT_9177 -&gt; IGTPW_16108</li>
+<li>Linux: xe-6058-34c3200b517db45a621c4963d87759823be13bbd -&gt; xe-6065-39c3efaee12b7c3e5e66247abea832c1986f15e3</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19443: d11bbfdac0f3d443b367857ffe683ae6bb80d560 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19449: 39c3efaee12b7c3e5e66247abea832c1986f15e3 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16107: 16107<br />
-  IGT_9177: 9177</p>
+<p>IGTPW_16108: 16108<br />
+  IGT_9177: 9177<br />
+  xe-6058-34c3200b517db45a621c4963d87759823be13bbd: 34c3200b517db45a621c4963d87759823be13bbd<br />
+  xe-6065-39c3efaee12b7c3e5e66247abea832c1986f15e3: 39c3efaee12b7c3e5e66247abea832c1986f15e3</p>
 
 </body>
 </html>
 
---===============6767128437234096399==--
+--===============8371831268938402273==--
