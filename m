@@ -2,54 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFA3606A31B
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 04:43:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O5vJ36mr
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C56606A328
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 04:52:47 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B53C310E227;
-	Thu,  5 Nov 2026 04:43:51 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3EBC910E227
- for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 04:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793853773; x=1825389773;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=dw3s0TvvB6Ci+PRWfUm74rzwsln7paAUb8nAO2Cqblk=;
- b=O5vJ36mr0gBn/Y3NgeiICPq0RNxl/PKVH+Seo7de5ZYI2nI+KIT6ExkD
- 3/kaxBXHcizeuUci3N7/C7qrJNT2ERmL9n//VO4Q9+ADShzvhz/P3Q5Om
- dDyVsnd7JqNX6Q9ktjDZu16ulgddjMxlJ63rr5XDH7yQIEesFoI0Lfo1a
- tyJvA7e/UqCISrk8FTsu36hcA1uoG03OiP8789nKJXEBYbYvOVRxdyC5l
- Tt51k9eB+1WyLUm6PJwn+ZYAjzHLQ28/wen8zhD4beqjtpgG/R4x82GC6
- 2aZEx8VzYCCKTSeGKwTHri4JCGuLvEUP6E9lCtOJLMKTPhv2mmRW5lfdb A==;
-X-CSE-ConnectionGUID: TlMW8iB4SJSX1qW6z5tCrQ==
-X-CSE-MsgGUID: qtAHtplER2OL3uZdNiEblw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11956"; a="2530579"
-X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
-   d="scan'208";a="2530579"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 04 Nov 2026 20:42:53 -0800
-X-CSE-ConnectionGUID: oDDsB+srS4+WWRMNxuE/dg==
-X-CSE-MsgGUID: GM52scXvTxawQ4SlSYRYxQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,196,1787036400"; 
-   d="scan'208";a="7239012"
-Received: from vmuppidi-nuc8i7beh.iind.intel.com ([10.223.55.76])
- by fmviesa001.fm.intel.com with ESMTP; 04 Nov 2026 20:42:52 -0800
-From: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ramadevi.gandi@intel.com, himanshu.girotra@intel.com,
- Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-Subject: [PATCH i-g-t] test/intel-ci: Add xe.multigpu.blocklist to config.json
-Date: Thu,  5 Nov 2026 10:16:09 +0530
-Message-ID: <20261105044609.365584-1-venkateswara.rao.muppidi@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2BCEF10EE2E;
+	Thu,  5 Nov 2026 04:52:47 +0000 (UTC)
+Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE0E710EE2E;
+ Thu,  5 Nov 2026 04:51:53 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1856842165742660207=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fbo=5Fshrin?=
+ =?utf-8?q?k=3A_Add_a_user-space_shrinker_test_=28rev3=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 05 Nov 2026 04:51:53 -0000
+Message-ID: <179385431396.122478.10721795700533727098@221881a7231d>
+X-Patchwork-Hint: ignore
+References: <20261104163351.2417-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20261104163351.2417-1-thomas.hellstrom@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,35 +34,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add xe.multigpu.blocklist.txt to the "GPU excluded platform" section of
-xe_test_config.json as MULTIGPU-CRI, so that testlists can be generated
-for the multi-GPU CRI configuration for CI execution.
+--===============1856842165742660207==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
----
- tests/intel/xe_test_config.json | 1 +
- 1 file changed, 1 insertion(+)
+== Series Details ==
 
-diff --git a/tests/intel/xe_test_config.json b/tests/intel/xe_test_config.json
-index 43c758f5c..f6524166e 100644
---- a/tests/intel/xe_test_config.json
-+++ b/tests/intel/xe_test_config.json
-@@ -82,6 +82,7 @@
- 			{ "CRI": "../intel-ci/xe.cri.core.blocklist.txt" },
- 			{ "NVL": "../intel-ci/xe.nvl.core.blocklist.txt" },
- 			{ "PTL": "../intel-ci/xe.ptl.core.blocklist.txt" },
-+			{ "MULTIGPU-CRI": "../intel-ci/xe.multigpu.blocklist.txt" },
- 			{ "WCL": "../intel-ci/xe.wcl.core.blocklist.txt" },
- 			{ "all": "../intel-ci/xe.blocklist.txt" }
- 		    ]
--- 
-2.43.0
+Series: tests/intel/xe_bo_shrink: Add a user-space shrinker test (rev3)
+URL   : https://patchwork.freedesktop.org/series/176563/
+State : success
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9177_BAT -> XEIGTPW_16106_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9177 -> IGTPW_16106
+  * Linux: xe-6058-34c3200b517db45a621c4963d87759823be13bbd -> xe-6064-3379b0f74f31bfc3746b692822a7700aeeebe15d
+
+  IGTPW_16106: 16106
+  IGT_9177: 9177
+  xe-6058-34c3200b517db45a621c4963d87759823be13bbd: 34c3200b517db45a621c4963d87759823be13bbd
+  xe-6064-3379b0f74f31bfc3746b692822a7700aeeebe15d: 3379b0f74f31bfc3746b692822a7700aeeebe15d
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16106/index.html
+
+--===============1856842165742660207==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_bo_shrink: Add a user-space shrinker test (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176563/">https://patchwork.freedesktop.org/series/176563/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16106/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16106/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9177_BAT -&gt; XEIGTPW_16106_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9177 -&gt; IGTPW_16106</li>
+<li>Linux: xe-6058-34c3200b517db45a621c4963d87759823be13bbd -&gt; xe-6064-3379b0f74f31bfc3746b692822a7700aeeebe15d</li>
+</ul>
+<p>IGTPW_16106: 16106<br />
+  IGT_9177: 9177<br />
+  xe-6058-34c3200b517db45a621c4963d87759823be13bbd: 34c3200b517db45a621c4963d87759823be13bbd<br />
+  xe-6064-3379b0f74f31bfc3746b692822a7700aeeebe15d: 3379b0f74f31bfc3746b692822a7700aeeebe15d</p>
+
+</body>
+</html>
+
+--===============1856842165742660207==--
