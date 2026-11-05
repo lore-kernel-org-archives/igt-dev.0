@@ -2,28 +2,56 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA4E606A32C
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 23:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF12606A31B
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 23:27:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=O1mN8oZT
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 24D9410E1D9;
-	Thu,  5 Nov 2026 23:14:22 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 65F8A10E1D9;
- Thu,  5 Nov 2026 23:13:22 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0666468520257849188=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E7B0510ED59;
+	Thu,  5 Nov 2026 23:27:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A238A112963
+ for <igt-dev@lists.freedesktop.org>; Thu,  5 Nov 2026 23:26:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1793921162; x=1825457162;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=QWuzN2RZeHPXA78z1m6EAyr8+gHhHD0+4M+VY4pbdLA=;
+ b=O1mN8oZTAvW7HTdUcFNdJCGKgKK3w2uRk8yMp9eHuZvIQ9n9Icwag1rD
+ 6e9x2WC9yd54Yr61JOs0IWUX9ojMIzISNmwi1bA9VMTyqDs/oV93RCZA1
+ mFYnUwE2R1969uIJUkSdVcdLIBSmSfgaLuObW3vy+IDsvPiui7VShGeKG
+ putxfJaxdYz50P9tYa0wXf8jxAYzkJMe6sPj7BuQBshRYoiywjWQD0mxs
+ WsohwKaKI2OXB2J6zfPl56DJ2E8XarlaRx4CWV4W6bciNeFyy4QJRmnEa
+ MZqIZKplSJAijYtSe27rmsaGMs5Ure34WAYsz4+FGa5JeYHEqWsM/UqM9 Q==;
+X-CSE-ConnectionGUID: KnEMODGGQEepErZUpYyYKw==
+X-CSE-MsgGUID: y9pYvc+SSQ204sfJswQ9hg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2769424"
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="2769424"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2026 15:25:59 -0800
+X-CSE-ConnectionGUID: QNj4MIuoRLCyufdXhr1o2Q==
+X-CSE-MsgGUID: S2/TTcOSQC6v54v+QphcOg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="7185766"
+Received: from dceraolo-desk1.fm.intel.com (HELO dceraolo-desk1)
+ ([10.121.64.151])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 05 Nov 2026 15:25:59 -0800
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_fault_injection: drop xe_wopcm_init
+ subtest
+Date: Thu,  5 Nov 2026 23:25:46 +0000
+Message-ID: <20261105232545.359318-2-daniele.ceraolospurio@intel.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fc?=
- =?utf-8?q?apture=3A_Add_coredump_decode_validation_subtests_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jan Maslak" <jan.maslak@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Nov 2026 23:13:22 -0000
-Message-ID: <179392040241.129326.7752070128685963937@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261103093927.1668349-1-jan.maslak@intel.com>
-In-Reply-To: <20261103093927.1668349-1-jan.maslak@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,115 +62,44 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============0666468520257849188==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The xe_wopcm_init function is being removed from the kernel because the
+wopcm handling is being simplified [1], so drop the matching test as it
+it no longer applicable.
 
-== Series Details ==
+[1] https://lore.kernel.org/intel-xe/20261105004254.262075-4-daniele.ceraolospurio@intel.com/
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+---
+ tests/intel/xe_fault_injection.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Series: tests/intel/xe_exec_capture: Add coredump decode validation subtests (rev3)
-URL   : https://patchwork.freedesktop.org/series/172303/
-State : success
+diff --git a/tests/intel/xe_fault_injection.c b/tests/intel/xe_fault_injection.c
+index e32f841a3..e0a461820 100644
+--- a/tests/intel/xe_fault_injection.c
++++ b/tests/intel/xe_fault_injection.c
+@@ -260,7 +260,6 @@ static void ignore_fail_dump_in_dmesg(const char function_name[], bool enable)
+  * @xe_tile_init_early:			xe_tile_init_early
+  * @xe_uc_fw_init:			xe_uc_fw_init
+  * @xe_wa_gt_init:			xe_wa_gt_init
+- * @xe_wopcm_init:			xe_wopcm_init
+  */
+ static int
+ inject_fault_probe(const char pci_slot[], const char function_name[])
+@@ -585,7 +584,6 @@ int igt_main_args("I:", NULL, help_str, opt_handler, NULL)
+ 		{ "xe_tile_init_early" },
+ 		{ "xe_uc_fw_init" },
+ 		{ "xe_wa_gt_init" },
+-		{ "xe_wopcm_init", 0, true },
+ 		{ }
+ 	};
+ 	const struct section vm_create_fail_functions[] = {
+-- 
+2.53.0
 
-== Summary ==
-
-CI Bug Log - changes from IGT_9180 -> IGTPW_16111
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16111/index.html
-
-Participating hosts (40 -> 37)
-------------------------------
-
-  Missing    (3): bat-dg2-13 bat-adlp-9 bat-adls-6 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9180 -> IGTPW_16111
-
-  CI-20190529: 20190529
-  CI_DRM_19458: be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16111: 16111
-  IGT_9180: 9180
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16111/index.html
-
---===============0666468520257849188==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_capture: Add coredump decode validation subtests (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172303/">https://patchwork.freedesktop.org/series/172303/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16111/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16111/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9180 -&gt; IGTPW_16111</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16111/index.html</p>
-<h2>Participating hosts (40 -&gt; 37)</h2>
-<p>Missing    (3): bat-dg2-13 bat-adlp-9 bat-adls-6 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9180 -&gt; IGTPW_16111</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19458: be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16111: 16111<br />
-  IGT_9180: 9180</p>
-
-</body>
-</html>
-
---===============0666468520257849188==--
