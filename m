@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AF22606A326
-	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 21:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D890606A31B
+	for <igt-dev@archiver.kernel.org>; Thu,  5 Nov 2026 22:54:33 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B59C710E99D;
-	Thu,  5 Nov 2026 21:58:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id CAF7210E049;
+	Thu,  5 Nov 2026 22:54:32 +0000 (UTC)
 Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2CFB10E382;
- Thu,  5 Nov 2026 21:57:46 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A861C10E049;
+ Thu,  5 Nov 2026 22:53:34 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============2863426186941042495=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: =?utf-8?q?=E2=9C=97_LGCI=2EVerificationFailed=3A_failure_for_tests/amdgpu/am?=
- =?utf-8?q?d=5Fabm=3A_Do_a_modeset_in_test=5Finit=28=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fcap?=
+ =?utf-8?q?ture=3A_Add_coredump_decode_validation_subtests_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Hugo Sales" <hugo@hsal.es>
+To: "Jan Maslak" <jan.maslak@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 05 Nov 2026 21:57:46 -0000
-Message-ID: <179391586666.129168.5626016270601447220@221881a7231d>
+Date: Thu, 05 Nov 2026 22:53:34 -0000
+Message-ID: <179391921465.129270.5195033568464063658@221881a7231d>
 X-Patchwork-Hint: ignore
-References: <20261104170843.3719734-1-hugo@hsal.es>
-In-Reply-To: <20261104170843.3719734-1-hugo@hsal.es>
+References: <20261103093927.1668349-1-jan.maslak@intel.com>
+In-Reply-To: <20261103093927.1668349-1-jan.maslak@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,22 +36,112 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+--===============2863426186941042495==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
 == Series Details ==
 
-Series: tests/amdgpu/amd_abm: Do a modeset in test_init()
-URL   : https://patchwork.freedesktop.org/series/177846/
-State : failure
+Series: tests/intel/xe_exec_capture: Add coredump decode validation subtests (rev3)
+URL   : https://patchwork.freedesktop.org/series/172303/
+State : success
 
 == Summary ==
 
-Series author address 'hugo@hsal.es' is not on the allowlist, which prevents CI from being automatically triggered.
-If you want CI to run for this series, ask Patchwork project owners to click 'retest' on the series in Patchwork.
-Exception occurred during validation, bailing out!
-Build URL: http://gfx-ci.igk.intel.com:8080/job/CI_IGTPW_check/243457/ (on cidrm1)
+CI Bug Log - changes from XEIGT_9180_BAT -> XEIGTPW_16111_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
 
 
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9180 -> IGTPW_16111
+  * Linux: xe-6073-44f84d69c4528c0d36dbe06ea327f41182dfcc55 -> xe-6074-be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb
+
+  IGTPW_16111: 16111
+  IGT_9180: 9180
+  xe-6073-44f84d69c4528c0d36dbe06ea327f41182dfcc55: 44f84d69c4528c0d36dbe06ea327f41182dfcc55
+  xe-6074-be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb: be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16111/index.html
+
+--===============2863426186941042495==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_capture: Add coredump decode validation subtests (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/172303/">https://patchwork.freedesktop.org/series/172303/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16111/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16111/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9180_BAT -&gt; XEIGTPW_16111_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9180 -&gt; IGTPW_16111</li>
+<li>Linux: xe-6073-44f84d69c4528c0d36dbe06ea327f41182dfcc55 -&gt; xe-6074-be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb</li>
+</ul>
+<p>IGTPW_16111: 16111<br />
+  IGT_9180: 9180<br />
+  xe-6073-44f84d69c4528c0d36dbe06ea327f41182dfcc55: 44f84d69c4528c0d36dbe06ea327f41182dfcc55<br />
+  xe-6074-be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb: be7a4fe8d1795219f7d033830ec4cf6e8ca1ecdb</p>
+
+</body>
+</html>
+
+--===============2863426186941042495==--
