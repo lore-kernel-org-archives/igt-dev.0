@@ -2,44 +2,44 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A74606A32D
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Nov 2026 18:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1297D606A326
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Nov 2026 18:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n0/PKc7W
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KL3FAbi4
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E236410E32D;
-	Fri,  6 Nov 2026 18:12:55 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A687010E3F0;
+	Fri,  6 Nov 2026 18:13:53 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E8F0610E1B1
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Nov 2026 18:09:14 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4EC3D10E204
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Nov 2026 18:09:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793988555; x=1825524555;
+ t=1793988560; x=1825524560;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=WDlTkocmyrJ0FjdMMazTO4ca5TdqdLLKNjs9DFrOjtU=;
- b=n0/PKc7WJ8TTP5PbTXBdVSAzhbpstj3JFKzbGte7VpyxArmcPjCpcv8u
- oNAkatNUrPNRjHtVozLcZyjit9m+k1iUmqfzEJJKLGmhyNauLMzzpFkVq
- 6Cfn0LGXFyx+RVdNNBQkn74gbCAoJfXnDgGO8kUatQ/p0h/N9G5LqxVqT
- zz9SGITPS8Ak/UGEwubeHwfbrv5GonqCw5mWjjY8CcNKwS4CqO2Z+a71a
- cbhlfQZ5AEjRoDBD9ghF1wrvnPowKJM81ysk4XWdW1ONhzEGwdvliwlwX
- Q54fCAYaU7VJMBQNrFxZpoCn9V+qi/2Qxx5CUM8q3aAZ+t/l4dLyhqcvd Q==;
-X-CSE-ConnectionGUID: h0vFQx1LQ7qQ2MIqalo+Qg==
-X-CSE-MsgGUID: UshOIGlVRXeVSxGflyl3HA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2723927"
+ bh=HsuB1JYQAotY4zDeuCaNPPLUvaJZYaum4H0om8JVeF0=;
+ b=KL3FAbi4+fWt/wnjmOlIm2NXgXAfZcFkcMAWZA1cGwlnlUc1agdG+5BU
+ CnQDJvjMj+7dIkewgGSaweIWP2CoT82YjmOsoDC4PcwyQaSFPZ4lVpa1D
+ aRVfbGkA33K1fBMtQPBiYfkyS3LWHjxnPYgoGA7Mfd1DT47JPXLCXLifP
+ Ng2IrNfXZXVDJ96iTxBwkee2UHRKpsPPTzLWEo6wFT6bJu+/IBIftT0Gl
+ nGoiXcqSZ8oIKt4CZxR4KLvHzZ6XkHS40LZYpluszO5PJ+XTC3CPKJ8g6
+ 8fwD+TzobFlFJNQdsDr3bcv7Hlexdo+/jd0MERlpChPVrj3inBmfnX2+V A==;
+X-CSE-ConnectionGUID: dY4KZeJmTzmQpbxiTdvzXg==
+X-CSE-MsgGUID: mfeHaLwPQVa9bqD0zpkfDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2723935"
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2723927"
+   d="scan'208";a="2723935"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2026 10:09:15 -0800
-X-CSE-ConnectionGUID: Hj6EqwSMTjWFEbhpvUdXJA==
-X-CSE-MsgGUID: JSr16CZwR16D1KKUx/B+Ng==
+ 06 Nov 2026 10:09:19 -0800
+X-CSE-ConnectionGUID: X0tc3w3bTkiIkhOrqg/FeQ==
+X-CSE-MsgGUID: MwR7ojehSiOaER6BT3oK3A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="7362633"
+   d="scan'208";a="7362640"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2026 10:09:13 -0800
+ 06 Nov 2026 10:09:18 -0800
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Karthik B S <karthik.b.s@intel.com>,
@@ -48,10 +48,10 @@ Cc: Karthik B S <karthik.b.s@intel.com>,
  Jani Nikula <jani.nikula@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
-Subject: [PATCH i-g-t v9 6/9] tests/intel/kms_ccs: limit #outputs tested
- during suspend
-Date: Fri,  6 Nov 2026 19:08:46 +0100
-Message-ID: <20261106180849.156578-7-michal.grzelak@linux.intel.com>
+Subject: [PATCH i-g-t v9 8/9] tests/intel/kms_ccs: limit #pipes tested during
+ suspend
+Date: Fri,  6 Nov 2026 19:08:48 +0100
+Message-ID: <20261106180849.156578-9-michal.grzelak@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20261106180849.156578-1-michal.grzelak@linux.intel.com>
 References: <20261106180849.156578-1-michal.grzelak@linux.intel.com>
@@ -79,87 +79,87 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Each suspend test is executed per output. Limit number of outputs tested
-to 3 by default. Add command-line option enabling execution on every
-output.
+Limit execution of suspend tests to first and last active pipe unless
+using `extended` flag. This reduces default execution time of the test.
+In turn this can lower chances of hitting CI timeout.
+
+Alternatively test could be run on first and last CRTC; but due to pipe
+reordering, this would result in using arbitrary pipes. Thus set first
+and last pipe as the only available in suspend resume case.
+
+v8->v9
+- fix extra long opts string (JP)
+
+v7->v8
+- use pipe mask (Jani)
+
+v6->v7
+- use first and last hardware pipe instead of CRTCs (J-P, Jani)
+
+v5->v6
+- describe how pipe reordering affects the test (Jani)
 
 v3->v4
-- reset output_count per each dynamic subtest (Thasleem)
-- correct description from help string (Thasleem)
-
-v1->v2
-- fix off-by-one error
+- set `first' and `last' indices outside of crtc loop (Thasleem)
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Michał Grzelak <michal.grzelak@linux.intel.com>
 ---
- tests/intel/kms_ccs.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ tests/intel/kms_ccs.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
-index 1a922792c5..8526f1ccfd 100644
+index 734dafd110..887b9ba7bd 100644
 --- a/tests/intel/kms_ccs.c
 +++ b/tests/intel/kms_ccs.c
-@@ -141,6 +141,8 @@
-  * @yf-tiled-ccs:              YF tiled ccs
-  */
- 
-+#define OUTPUT_LIMIT 3
-+
- #define SDR_PLANE_BASE	3
- 
- IGT_TEST_DESCRIPTION("Test render compression (RC), in which the main surface "
-@@ -188,6 +190,7 @@ typedef struct {
- 	enum igt_commit_style commit;
- 	int fb_list_length;
+@@ -192,6 +192,7 @@ typedef struct {
+ 	bool available_pipes[IGT_MAX_PIPES];
  	bool do_hibernate;
-+	bool all_outputs;
+ 	bool all_outputs;
++	bool all_crtcs;
  	struct {
  		struct igt_fb fb;
  		int width, height;
-@@ -1128,6 +1131,7 @@ static void test_output(data_t *data, const int testnum)
- {
- 	igt_crtc_t *crtc;
- 	uint16_t dev_id;
-+	int output_count = 0;
+@@ -1098,7 +1099,9 @@ static bool set_available_hw_pipes(data_t *data)
  
- 	igt_fixture()
- 		dev_id = intel_get_drm_devid(data->drm_fd);
-@@ -1152,7 +1156,15 @@ static void test_output(data_t *data, const int testnum)
- 					      "Older than Xe2 platform needed.\n");
- 			}
+ 	for_each_crtc(&data->display, crtc) {
+ 		hw_pipe = crtc->hardware_pipe;
+-		data->available_pipes[hw_pipe] = true;
++
++		if (data->all_crtcs)
++			data->available_pipes[hw_pipe] = true;
  
-+			output_count = 0;
+ 		if (last_pipe < hw_pipe)
+ 			last_pipe = hw_pipe;
+@@ -1110,6 +1113,9 @@ static bool set_available_hw_pipes(data_t *data)
+ 	if (first_pipe == IGT_MAX_PIPES || last_pipe == PIPE_NONE)
+ 		return false;
+ 
++	data->available_pipes[first_pipe] = true;
++	data->available_pipes[last_pipe] = true;
 +
- 			for_each_connected_output(&data->display, data->output) {
-+				if (!data->all_outputs && (data->flags & TEST_SUSPEND) &&
-+				    output_count >= OUTPUT_LIMIT)
-+					continue;
-+
-+				output_count++;
-+
- 				for_each_crtc(&data->display, crtc) {
- 					if (!igt_crtc_connector_valid(crtc, data->output))
- 						continue;
-@@ -1217,6 +1229,9 @@ static int opt_handler(int opt, int opt_index, void *opt_data)
- 	case 'r':
- 		data->do_hibernate = true;
+ 	return true;
+ }
+ 
+@@ -1260,6 +1266,9 @@ static int opt_handler(int opt, int opt_index, void *opt_data)
+ 	case 'n':
+ 		data->all_outputs = true;
  		break;
-+	case 'n':
-+		data->all_outputs = true;
++	case 'e':
++		data->all_crtcs = true;
 +		break;
  	default:
  		return IGT_OPT_HANDLER_ERROR;
  	}
-@@ -1230,9 +1245,10 @@ static const char *help_str =
- "  -c\t\tCheck the presence of compression meta-data\n"
+@@ -1274,9 +1283,10 @@ static const char *help_str =
  "  -s <seed>\tSeed for random number generator\n"
  "  -r\t\tOn suspend test do full hibernate with reboot\n"
-+"  -n\t\tRun on all connectors. (By default suspend subtests will run on 3 connectors)\n"
+ "  -n\t\tRun on all connectors. (By default suspend subtests will run on 3 connectors)\n"
++"  -e\t\tRun on all CRTCs. (By default subtests will run on two CRTCs)\n"
  ;
  
--int igt_main_args("csr:", NULL, help_str, opt_handler, &data)
-+int igt_main_args("csrn:", NULL, help_str, opt_handler, &data)
+-int igt_main_args("csrn:", NULL, help_str, opt_handler, &data)
++int igt_main_args("cs:rne", NULL, help_str, opt_handler, &data)
  {
  	igt_fixture() {
  		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
