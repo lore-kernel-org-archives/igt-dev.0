@@ -2,75 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B274606A326
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Nov 2026 14:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nUZbtSNK
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED180606A339
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Nov 2026 17:00:05 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD80C112E0E;
-	Fri,  6 Nov 2026 14:12:57 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1844C112E0E
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Nov 2026 14:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793974216; x=1825510216;
- h=from:date:subject:mime-version:content-transfer-encoding:
- message-id:references:in-reply-to:to:cc;
- bh=LxOGb9M1w8J5hyColnYbSkLXRUro/Qd1aI8rn8HBieo=;
- b=nUZbtSNKJoyhXrEMCAnx+CRd683xK3anfhui/7QtuUOjJFA/Z3GhWV+5
- 6VpXZFHkm0PSwQsIh4IlrVnVDmkKpLkCK2+tjb6gGBBq0oNhyftNn+T5f
- hQRHaRB2idN9pEIZbalK/auT9+Oel5CeTUqh9IV7iV2FyminkHh40LvaR
- pnB6q3sFgp/1bo4A/9TJ9qIh5zqlYgoTF26SksMGcR5AMXguTHYFG7ypH
- x/fR+EmwJSoPcp27vyyqC160xYadD7AJcLFsvtUGbHWKI7u2ymUuAfaxf
- CzJ9XDSeZqCT85JW9AUtAvr3BJeQAIQZZAJ3VgICjmbNsT4KsZCd+RwGt Q==;
-X-CSE-ConnectionGUID: 5T4TboETQWeqaHQhxb6bUw==
-X-CSE-MsgGUID: Uza03xUHRXW+Adv0qvtNCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2780579"
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2780579"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2026 06:10:16 -0800
-X-CSE-ConnectionGUID: AP8skScJTEydVTV28tZmZQ==
-X-CSE-MsgGUID: Rd3namFJQxWgSVWphkC3ww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="7451548"
-Received: from lab-ah.igk.intel.com (HELO [127.0.1.1]) ([10.211.135.228])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2026 06:10:14 -0800
-From: Andrzej Hajda <andrzej.hajda@intel.com>
-Date: Fri, 06 Nov 2026 15:07:54 +0100
-Subject: [PATCH v3 1/2] lib/shaders: remove explicit regioning and channel
- offsets
+	by gabe.freedesktop.org (Postfix) with ESMTP id 83ED0112F29;
+	Fri,  6 Nov 2026 17:00:05 +0000 (UTC)
+Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 941AE112F14;
+ Fri,  6 Nov 2026 16:58:58 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1911971453092710195=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-remove_gpu_asm_annotations-v3-1-f3c1e3cb71d7@intel.com>
-References: <20261106-remove_gpu_asm_annotations-v3-0-f3c1e3cb71d7@intel.com>
-In-Reply-To: <20261106-remove_gpu_asm_annotations-v3-0-f3c1e3cb71d7@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- =?utf-8?q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Dominik Karol Piatkowski <dominik.karol.piatkowski@intel.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>
-X-Mailer: b4 0.17-dev-6be7c
-X-Developer-Signature: v=1; a=openpgp-sha256; l=24220;
- i=andrzej.hajda@intel.com; h=from:subject:message-id;
- bh=LxOGb9M1w8J5hyColnYbSkLXRUro/Qd1aI8rn8HBieo=;
- b=owEB7QES/pANAwAKASNispPeEP3XAcsmYgBq7d9AcbMv5eZnrnElounuS8vp74C/ZNRHoTYAz
- Y8m+yR+AAKJAbMEAAEKAB0WIQT8qEQxNN2/XeF/A00jYrKT3hD91wUCau3fQAAKCRAjYrKT3hD9
- 19YpDACVhfn4ADfkgoxFy7byxu6JbnYLnFVmQEeymh1+5TtgphkVsgEF8nZwtqSCaLeTlKTyQY1
- 6aNa1AEwZfFbG6oLrJPwxnIPO4j4CViAQ0li6icCTq/4d4o/t+ReveOReM9CiGZgT4fXXSdfhXo
- 8EM2eiZf4f3/8tLPPPOILX5Iux6UfXsNK+yfP/puCwj55bLF4H4mmdoevkAkxMCw+bbGBoV5JMO
- G7sqpVsZN4b35idCDvmHGpAUVHsDIyw0Ab1/z+vZh3cAYwsUEizgFoBUQKyO+p1xvFxFEVTUBdc
- i6Bm5yEfMR+1lkM/sjJMy+4sbYhpeSwntZMMK/z64mwd5fnDMMJKkWVqjpsbrm1k37W2S6omqdy
- IBEjJY4Z/GpCIxup81Q3jVX1FCRLBmlCyNXOfqW4+hNkcuy9/0teYwbjbn4uEhJjP3/Qond5vZg
- 7WR1iaAKxMtYQlMmBk7p4M5nwKPr7no3bYsyx/CWiepJpqE9dugJlwS+zODQ2+CqKKcuM=
-X-Developer-Key: i=andrzej.hajda@intel.com; a=openpgp;
- fpr=FCA8443134DDBF5DE17F034D2362B293DE10FDD7
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fbo=5Fshr?=
+ =?utf-8?q?ink=3A_Add_a_user-space_shrinker_test_=28rev4=29?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Fri, 06 Nov 2026 16:58:58 -0000
+Message-ID: <179398433860.133912.18063927581502243683@221881a7231d>
+X-Patchwork-Hint: ignore
+References: <20261106131226.40643-1-thomas.hellstrom@linux.intel.com>
+In-Reply-To: <20261106131226.40643-1-thomas.hellstrom@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,635 +34,526 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-There is no need to specify regioning and channel offset in
-most cases. Default genisa values are:
-- <0;1,0> for source region,
-- <1> for destination region,
-- M0 for channel offset.
-The patch also enforces common formating for all asms:
-- preprocessor instructions and predicates start from beginning of the line,
-- instruction mnemonic starts from 1st tab,
-- mnemonic is followed by exec size without space,
-- flag modifiers, if any, are placed after exec size,
-- arguments starts from 3rd tab,
-- args are tab aligned per shader - argN should be place at the same column
+--===============1911971453092710195==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The changes do not affect produced binary code.
+== Series Details ==
 
-Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
----
- lib/gpgpu_fill.c                     | 100 +++++++++++++-------------
- lib/gpgpu_fill.c.gen.iga64_codes.c   |   2 +-
- lib/gpgpu_shader.c                   | 132 +++++++++++++++++------------------
- lib/gpgpu_shader.c.gen.iga64_codes.c |   2 +-
- lib/iga64_macros.h                   |  58 +++++++--------
- 5 files changed, 147 insertions(+), 147 deletions(-)
+Series: tests/intel/xe_bo_shrink: Add a user-space shrinker test (rev4)
+URL   : https://patchwork.freedesktop.org/series/176563/
+State : success
 
-diff --git a/lib/gpgpu_fill.c b/lib/gpgpu_fill.c
-index b351a14cd6b5..2d66dd9eb177 100644
---- a/lib/gpgpu_fill.c
-+++ b/lib/gpgpu_fill.c
-@@ -294,22 +294,22 @@ static struct gpgpu_shader *__xehp_gpgpu_kernel(int fd, struct intel_buf *buf)
- 
- 	emit_iga64_code(kernel, gpgpu_fill, R"(
- // fill up r1 with target colour
--mov (4|M0)		r1.0<1>:ub	r1.0<0;1,0>:ub
-+	mov(4)		r1.0:ub		r1.0:ub
- // prepare block x offset (Thread Group Id X * 16)
--shl (1|M0)		r2.0<1>:ud	r0.1<0;1,0>:ud	0x4:ud
-+	shl(1)		r2.0:ud		r0.1:ud		0x4:ud
- // prepare block y offset (Thread Group Id Y)
--mov (1|M0)		r2.1<1>:ud	r0.6<0;1,0>:ud
-+	mov(1)		r2.1:ud		r0.6:ud
- // zero message header payload
--mov (8|M0)		r4.0<1>:ud	0x0:ud
-+	mov(8)		r4.0:ud		0x0:ud
- // fill up message payload with target colour
--mov (16|M0)		r5.0<1>:ud	r1.0<0;1,0>:ud
-+	mov(16)		r5.0:ud		r1.0:ud
- #if GFX_VER < 2000
- // load block offsets into message header payload
--mov (2|M0)		r4.0<1>:ud	r2.0<2;2,1>:ud
-+	mov(2)		r4.0:ud		r2.0<2;2,1>:ud
- // load block width
--mov (1|M0)		r4.2<1>:ud	0xF:ud
-+	mov(1)		r4.2:ud		0xF:ud
- // load FFTID from R0 header
--mov (1|M0)		r4.4<1>:ud	r0.5<0;1,0>:ud
-+	mov(1)		r4.4:ud		r0.5:ud
- // Media block write to bti[0] surface
- // Message Descriptor
- //	0x40A8000:
-@@ -318,12 +318,12 @@ mov (1|M0)		r4.4<1>:ud	r0.5<0;1,0>:ud
- //	[19]		Header: 1 (included)
- //	[18:14]		MessageType: 0xA (media block write)
- //	[7:0]		BTI: 0
--send.dc1 (16|M0)	null	r4	src1_null	0x0	0x40A8000
-+	send.dc1(16)	null		r4		src1_null	0x0	0x40A8000
- #elif GFX_VER < 3000
- // load block offsets into message header payload
--mov (2|M0)		r4.5<1>:ud	r2.0<2;2,1>:ud
-+	mov(2)		r4.5:ud		r2.0<2;2,1>:ud
- // load block width
--mov (1|M0)		 r4.14<1>:w	0xF:w
-+	mov(1)		r4.14:w		0xF:w
- // Typed 2D block store to bti[0] surface
- // Message Descriptor
- //	0x6400007:
-@@ -332,21 +332,21 @@ mov (1|M0)		 r4.14<1>:w	0xF:w
- //	[24:20]		Rlen: 0
- //	[19:17]		Caching: 0  (use state settings for both L1 and L3)
- //	[5:0]		Opcode: 0x07  (store_block2d)
--send.tgm (16|M0)	null	r4	null	0x0	0x64000007
-+	send.tgm(16)	null		r4		null		0x0	0x64000007
- #else
- // load A64 base surface state offset into address payload
--mov (1|M0)		r4.0<1>:ud	ARG(0):ud
--mov (1|M0)		r4.1<1>:ud	ARG(1):ud
-+	mov(1)		r4.0:ud		ARG(0):ud
-+	mov(1)		r4.1:ud		ARG(1):ud
- // load surface width
--mov (1|M0)		r4.2<1>:ud	ARG(2):ud
-+	mov(1)		r4.2:ud		ARG(2):ud
- // load surface height
--mov (1|M0)		r4.3<1>:ud	ARG(3):ud
-+	mov(1)		r4.3:ud		ARG(3):ud
- // load surface pitch
--mov (1|M0)		r4.4<1>:ud	ARG(4):ud
-+	mov(1)		r4.4:ud		ARG(4):ud
- // load block offsets
--mov (2|M0)		r4.5<1>:ud	r2.0<2;2,1>:ud
-+	mov(2)		r4.5:ud		r2.0<2;2,1>:ud
- // load block width
--mov (1|M0)		r4.14<1>:w	0xF:w
-+	mov(1)		r4.14:w		0xF:w
- // Untyped 2D block store
- // Message Descriptor
- //	bspec:63981
-@@ -358,7 +358,7 @@ mov (1|M0)		r4.14<1>:w	0xF:w
- //	[15]		DataOrder: 0  non-transposed
- //	[11:9]		DataSize: 0  (8b per data element)
- //	[5:0]		Opcode: 0x07  (store_block2d)
--send.ugm (1|M0)		null	r4	r5:1	0x0	0x2020007
-+	send.ugm(1)	null		r4		r5:1		0x0	0x2020007
- #endif
- 	)", offset & 0xffffffff, offset >> 32,
- 	intel_buf_width(buf) * buf->bpp/8 - 1, intel_buf_height(buf) - 1,
-@@ -392,49 +392,49 @@ static struct gpgpu_shader *__xe3p_gpgpu_kernel(int xe)
- #define TMP		r3.7
- #define ADDR_LO		r4.0
- #if GFX_VER >= 3500
--(W)	add (1)		XEND<1>:ud	XPOS:ud		WIDTH:ud
--(W)	mov (1)		OFFSET<1>:ud	0x0:ud
-+(W)	add(1)		XEND:ud		XPOS:ud		WIDTH:ud
-+(W)	mov(1)		OFFSET:ud	0x0:ud
- 
--(W)	shl (1)		XOFFSET<1>:ud	RX:ud		0x4:ud
--(W)	add (1)		XOFFSET<1>:ud	XOFFSET:ud	XPOS:ud
--(W)	mov (1)		XCURRENT<1>:ud	XOFFSET:ud
-+(W)	shl(1)		XOFFSET:ud	RX:ud		0x4:ud
-+(W)	add(1)		XOFFSET:ud	XOFFSET:ud	XPOS:ud
-+(W)	mov(1)		XCURRENT:ud	XOFFSET:ud
- 
--(W)	add (1)		TMP<1>:ud	RY:ud		YPOS:ud
--(W)	mul (1)		YOFFSET<1>:ud	TMP:ud		SURFWIDTH:ud
--(W)	add (1)		OFFSET<1>:ud	XOFFSET:ud	YOFFSET:ud
-+(W)	add(1)		TMP:ud		RY:ud		YPOS:ud
-+(W)	mul(1)		YOFFSET:ud	TMP:ud		SURFWIDTH:ud
-+(W)	add(1)		OFFSET:ud	XOFFSET:ud	YOFFSET:ud
- 
- // Set base address with scalar register
--(W)	add (1)		ADDR_LO<1>:ud	OFFSET:ud	ADDR_BO_LOW:ud
--(W)	mov (1)		s0.0<1>:ud	ADDR_LO:ud
--(W)	mov (1)		s0.1<1>:ud	ADDR_BO_HIGH:ud
-+(W)	add(1)		ADDR_LO:ud	OFFSET:ud	ADDR_BO_LOW:ud
-+(W)	mov(1)		s0.0:ud		ADDR_LO:ud
-+(W)	mov(1)		s0.1:ud		ADDR_BO_HIGH:ud
- 
- // color
--(W)	mov (4)		r20.0<1>:ub		COLOR:ub
-+(W)	mov(4)		r20.0:ub	COLOR:ub
- 
- // A64 offset
--(W)	mov (8)		r30.0<1>:uq		0x0:uq
-+(W)	mov(8)		r30.0:uq	0x0:uq
- 
- //dword: 0
--(W)	cmp (1)		(lt)f0.0 null:ud        XCURRENT:ud	XEND:ud
--(W&f0.0)sendg.ugm (1)	null	r30:1	r20:1	s0.0	0x29404
-+(W)	cmp(1)(lt)f0.0	null:ud		XCURRENT:ud	XEND:ud
-+(W&f0.0)sendg.ugm(1)	null		r30:1		r20:1	s0.0	0x29404
- //dword: 1
--(W)	add (1)		XCURRENT<1>:ud		XCURRENT:ud	4:ud
--(W)	add (1)		ADDR_LO<1>:ud		ADDR_LO:ud	0x4:ud
--(W)	mov (1)		s0.0<1>:ud		ADDR_LO:ud
--(W)	cmp (1)		(lt)f0.0 null:ud        XCURRENT:ud	XEND:ud
--(W&f0.0)sendg.ugm (1)	null	r30:1	r20:1	s0.0	0x29404
-+(W)	add(1)		XCURRENT:ud	XCURRENT:ud	4:ud
-+(W)	add(1)		ADDR_LO:ud	ADDR_LO:ud	0x4:ud
-+(W)	mov(1)		s0.0:ud		ADDR_LO:ud
-+(W)	cmp(1)(lt)f0.0	null:ud		XCURRENT:ud	XEND:ud
-+(W&f0.0)sendg.ugm(1)	null		r30:1		r20:1	s0.0	0x29404
- //dword: 2
--(W)	add (1)		XCURRENT<1>:ud		XCURRENT:ud	4:ud
--(W)	add (1)		ADDR_LO<1>:ud		ADDR_LO:ud	0x4:ud
--(W)	mov (1)		s0.0<1>:ud		ADDR_LO:ud
--(W)	cmp (1)		(lt)f0.0 null:ud        XCURRENT:ud	XEND:ud
--(W&f0.0)sendg.ugm (1)	null	r30:1	r20:1	s0.0	0x29404
-+(W)	add(1)		XCURRENT:ud	XCURRENT:ud	4:ud
-+(W)	add(1)		ADDR_LO:ud	ADDR_LO:ud	0x4:ud
-+(W)	mov(1)		s0.0:ud		ADDR_LO:ud
-+(W)	cmp(1)(lt)f0.0	null:ud		XCURRENT:ud	XEND:ud
-+(W&f0.0)sendg.ugm(1)	null		r30:1		r20:1	s0.0	0x29404
- //dword: 3
--(W)	add (1)		XCURRENT<1>:ud		XCURRENT:ud	4:ud
--(W)	add (1)		ADDR_LO<1>:ud		ADDR_LO:ud	0x4:ud
--(W)	mov (1)		s0.0<1>:ud		ADDR_LO:ud
--(W)	cmp (1)		(lt)f0.0 null:ud        XCURRENT:ud	XEND:ud
--(W&f0.0)sendg.ugm (1)	null	r30:1	r20:1	s0.0	0x29404
-+(W)	add(1)		XCURRENT:ud	XCURRENT:ud	4:ud
-+(W)	add(1)		ADDR_LO:ud	ADDR_LO:ud	0x4:ud
-+(W)	mov(1)		s0.0:ud		ADDR_LO:ud
-+(W)	cmp(1)(lt)f0.0	null:ud		XCURRENT:ud	XEND:ud
-+(W&f0.0)sendg.ugm(1)	null		r30:1		r20:1	s0.0	0x29404
- #endif
- )");
- 
-diff --git a/lib/gpgpu_fill.c.gen.iga64_codes.c b/lib/gpgpu_fill.c.gen.iga64_codes.c
-index 19905659e9b4..467a2686f86c 100644
---- a/lib/gpgpu_fill.c.gen.iga64_codes.c
-+++ b/lib/gpgpu_fill.c.gen.iga64_codes.c
-@@ -3,7 +3,7 @@
- 
- #include "gpgpu_shader.h"
- 
--#define MD5_SUM_IGA64_ASMS 50a6ea7d435db3bab74c742ce25265c0
-+#define MD5_SUM_IGA64_ASMS 0a2221edb21775cf2319cd7240765ec4
- 
- struct iga64_template const iga64_code_xe3p_gpgpu_fill[] = {
- 	{ .gfx_ver = 3500, .size = 144, .code = (const uint32_t []) {
-diff --git a/lib/gpgpu_shader.c b/lib/gpgpu_shader.c
-index ea13fd3c7de8..32a777c519da 100644
---- a/lib/gpgpu_shader.c
-+++ b/lib/gpgpu_shader.c
-@@ -553,7 +553,7 @@ void gpgpu_shader__breakpoint(struct gpgpu_shader *shdr)
- void gpgpu_shader__wait(struct gpgpu_shader *shdr)
- {
- 	emit_iga64_code(shdr, sync_host, R"(
--(W)	sync.host	        null
-+(W)	sync.host	null
- 	)");
- }
- 
-@@ -580,20 +580,20 @@ void gpgpu_shader__eot(struct gpgpu_shader *shdr)
- {
- 	if (shdr->vrt == VRT_96)
- 		emit_iga64_code(shdr, eot_vrt, R"(
--(W)	mov (8|M0)               r80.0<1>:ud  r0.0<8;8,1>:ud
--(W)	send.gtwy (8|M0)         null r80 src1_null     0 0x02000000 {EOT}
-+(W)	mov(8)		r80.0:ud	r0.0<8;8,1>:ud
-+(W)	send.gtwy(8)	null		r80	src1_null	0	0x02000000	{EOT}
- 		)");
- 	else
- 		emit_iga64_code(shdr, eot, R"(
--(W)	mov (8|M0)               r112.0<1>:ud  r0.0<8;8,1>:ud
-+(W)	mov(8)		r112.0:ud	r0.0<8;8,1>:ud
- #if GFX_VER < 1250
--(W)	send.ts (16|M0)          null r112 null 0x10000000 0x02000010 {EOT,@1}
-+(W)	send.ts(16)	null		r112	null		0x10000000	0x02000010	{EOT,@1}
- 
- #elif GFX_VER <= 3000
--(W)	send.gtwy (8|M0)         null r112 src1_null     0 0x02000000 {EOT}
-+(W)	send.gtwy(8)	null		r112	src1_null	0		0x02000000	{EOT}
- 
- #else
--(W)	sendg.gtwy (1|M0)        null     r0:1  null:0  0x0 {EOT}
-+(W)	sendg.gtwy(1)	null		r0:1	null:0		0x0		{EOT}
- #endif
- 		)");
- }
-@@ -653,7 +653,7 @@ void gpgpu_shader__jump(struct gpgpu_shader *shdr, int label_id)
- 
- 	shader_size = emit_iga64_code(shdr, jump, R"(
- L0:
--(W)	jmpi        L0
-+(W)	jmpi		L0
- 	)");
- 
- 	__patch_indexed_jump(shdr, label_id, shader_size);
-@@ -676,12 +676,12 @@ void gpgpu_shader__jump_neq(struct gpgpu_shader *shdr, int label_id,
- 
- 	size = emit_iga64_code(shdr, jump_dw_neq, R"(
- L0:
--		SET_SHARED_SPACE_ADDR(r30, ARG(0):ud, 4)
--(W)		LOAD_SPACE_DW(r31, r30)
--	// clear the flag register
--(W)		mov (1|M0)               f0.0<1>:ud    0x0:ud
--(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r31.0<0;1,0>:ud   ARG(1):ud
--(W&f0.0)	jmpi                     L0
-+	SET_SHARED_SPACE_ADDR(r30, ARG(0):ud, 4)
-+(W)	LOAD_SPACE_DW(r31, r30)
-+// clear the flag register
-+(W)	mov(1)		f0.0:ud		0x0:ud
-+(W)	cmp(1)(ne)f0.0	null:ud		r31.0:ud	ARG(1):ud
-+(W&f0.0)jmpi		L0
- 	)", y_offset, value);
- 
- 	__patch_indexed_jump(shdr, label_id, size);
-@@ -701,7 +701,7 @@ void gpgpu_shader__loop_begin(struct gpgpu_shader *shdr, int label_id)
- {
- 	emit_iga64_code(shdr, clear_r40, R"(
- L0:
--(W)	mov (1|M0)               r40:ud    0x0:ud
-+(W)	mov(1)		r40:ud	0x0:ud
- 	)");
- 
- 	gpgpu_shader__label(shdr, label_id);
-@@ -721,10 +721,10 @@ void gpgpu_shader__loop_end(struct gpgpu_shader *shdr, int label_id, uint32_t it
- 
- 	size = emit_iga64_code(shdr, inc_r40_jump_neq, R"(
- L0:
--(W)		add (1|M0)              r40:ud          r40.0<0;1,0>:ud 0x1:ud
--(W)		mov (1|M0)              f0.0<1>:ud      0x0:ud
--(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r40.0<0;1,0>:ud   ARG(0):ud
--(W&f0.0)	jmpi                     L0
-+(W)	add(1)		r40:ud		r40.0:ud	0x1:ud
-+(W)	mov(1)		f0.0:ud		0x0:ud
-+(W)	cmp(1)(ne)f0.0	null:ud		r40.0:ud	ARG(0):ud
-+(W&f0.0)jmpi		L0
- 	)", iter);
- 
- 	__patch_indexed_jump(shdr, label_id, size);
-@@ -742,11 +742,11 @@ void gpgpu_shader__common_target_write(struct gpgpu_shader *shdr,
- 				       uint32_t y_offset, const uint32_t value[4])
- {
- 	emit_iga64_code(shdr, common_target_write, R"(
--(W)	mov (16|M0)		r31.0<1>:ud	0x0:ud
--(W)	mov (1|M0)		r31.0<1>:ud	ARG(1):ud
--(W)	mov (1|M0)		r31.1<1>:ud	ARG(2):ud
--(W)	mov (1|M0)		r31.2<1>:ud	ARG(3):ud
--(W)	mov (1|M0)		r31.3<1>:ud	ARG(4):ud
-+(W)	mov(16)		r31.0:ud	0x0:ud
-+(W)	mov(1)		r31.0:ud	ARG(1):ud
-+(W)	mov(1)		r31.1:ud	ARG(2):ud
-+(W)	mov(1)		r31.2:ud	ARG(3):ud
-+(W)	mov(1)		r31.3:ud	ARG(4):ud
- 	SET_SHARED_SPACE_ADDR(r30, ARG(0):ud, 16)
- (W)	STORE_SPACE_DW(r30, r31)
- 	)", y_offset, value[0], value[1], value[2], value[3]);
-@@ -779,8 +779,8 @@ void gpgpu_shader__common_target_write_u32(struct gpgpu_shader *shdr,
- void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset)
- {
- 	emit_iga64_code(shdr, media_block_write_aip, R"(
--	// Payload
--(W)	mov (1|M0)               r5.0<1>:ud    cr0.2:ud
-+// Payload
-+(W)	mov(1)		r5.0:ud		cr0.2:ud
- 	SET_THREAD_SPACE_ADDR(r4, 0, ARG(0):ud, 4)
- (W)	STORE_SPACE_DW(r4, r5)
- 	)", y_offset);
-@@ -796,7 +796,7 @@ void gpgpu_shader__write_aip(struct gpgpu_shader *shdr, uint32_t y_offset)
- void gpgpu_shader__increase_aip(struct gpgpu_shader *shdr, uint32_t value)
- {
- 	emit_iga64_code(shdr, write_aip, R"(
--(W)	add (1|M0)		cr0.2:ud	cr0.2:ud	ARG(0):ud
-+(W)	add(1)		cr0.2:ud	cr0.2:ud	ARG(0):ud
- 	)", value);
- }
- 
-@@ -812,7 +812,7 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
- 			       uint32_t y_offset)
- {
- 	emit_iga64_code(shdr, media_block_write, R"(
--(W)	mov (1)		r5.0<1>:ud    ARG(1):ud
-+(W)	mov(1)		r5.0:ud		ARG(1):ud
- 	SET_THREAD_SPACE_ADDR(r4, 0, ARG(0):ud, 4)
- (W)	STORE_SPACE_DW(r4, r5)
- 	)", y_offset, value);
-@@ -828,7 +828,7 @@ void gpgpu_shader__write_dword(struct gpgpu_shader *shdr, uint32_t value,
- void gpgpu_shader__clear_exception(struct gpgpu_shader *shdr, uint32_t value)
- {
- 	emit_iga64_code(shdr, clear_exception, R"(
--(W)	and (1|M0) cr0.1<1>:ud cr0.1<0;1,0>:ud ARG(0):ud
-+(W)	and(1)		cr0.1:ud	cr0.1:ud	ARG(0):ud
- 	)", ~value);
- }
- 
-@@ -842,7 +842,7 @@ void gpgpu_shader__clear_exception(struct gpgpu_shader *shdr, uint32_t value)
- void gpgpu_shader__set_exception(struct gpgpu_shader *shdr, uint32_t value)
- {
- 	emit_iga64_code(shdr, set_exception, R"(
--(W)	or (1|M0) cr0.1<1>:ud cr0.1<0;1,0>:ud ARG(0):ud
-+(W)	or(1)		cr0.1:ud	cr0.1:ud	ARG(0):ud
- 	)", value);
- }
- 
-@@ -863,13 +863,13 @@ void gpgpu_shader__write_on_exception(struct gpgpu_shader *shdr, uint32_t value,
- 				      uint32_t y_offset, uint32_t mask, uint32_t expected)
- {
- 	emit_iga64_code(shdr, write_on_exception, R"(
--(W)	mov (1|M0)		r5.0<1>:ud	ARG(2):ud
-+(W)	mov(1)		r5.0:ud		ARG(2):ud
- 	SET_THREAD_SPACE_ADDR(r4, ARG(0), ARG(1):ud, 4)
--	// Check if masked exception is equal to provided value and write conditionally
--(W)     and (1|M0)		r3.0<1>:ud     cr0.1<0;1,0>:ud ARG(3):ud
--(W)     mov (1|M0)		f0.0<1>:ud     0x0:ud
--(W)     cmp (1|M0) (eq)f0.0	null:ud        r3.0<0;1,0>:ud  ARG(4):ud
--(W&f0.0) STORE_SPACE_DW(r4, r5)
-+// Check if masked exception is equal to provided value and write conditionally
-+(W)	and(1)		r3.0:ud		cr0.1:ud	ARG(3):ud
-+(W)	mov(1)		f0.0:ud		0x0:ud
-+(W)	cmp(1)(eq)f0.0	null:ud		r3.0:ud		ARG(4):ud
-+(W&f0.0)STORE_SPACE_DW(r4, r5)
- 	)", 4 * x_offset, y_offset, value, mask, expected);
- }
- 
-@@ -890,13 +890,13 @@ void gpgpu_shader__end_system_routine(struct gpgpu_shader *shdr,
- 	 */
- 	if (breakpoint_suppress)
- 		emit_iga64_code(shdr, breakpoint_suppress, R"(
--(W)	or  (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x8000:ud
-+(W)	or(1)		cr0.0:ud	cr0.0:ud	0x8000:ud
- 		)");
- 
- 	emit_iga64_code(shdr, end_system_routine, R"(
--(W)	and (1|M0)               cr0.1<1>:ud   cr0.1<0;1,0>:ud   ARG(0):ud
--	// return to an application
--(W)	and (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x7FFFFFFD:ud
-+(W)	and(1)		cr0.1:ud	cr0.1:ud	ARG(0):ud
-+// return to an application
-+(W)	and(1)		cr0.0:ud	cr0.0:ud	0x7FFFFFFD:ud
- 	)", 0x7fffff | (1 << 26)); /* clear all exceptions, except read only bit */
- }
- 
-@@ -915,16 +915,16 @@ void gpgpu_shader__end_system_routine_step_if_eq(struct gpgpu_shader *shdr,
- 						 uint32_t value)
- {
- 	emit_iga64_code(shdr, end_system_routine_step_if_eq, R"(
--(W)		or  (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x8000:ud
--(W)		and (1|M0)               cr0.1<1>:ud   cr0.1<0;1,0>:ud   ARG(0):ud
--		SET_SHARED_SPACE_ADDR(r30, ARG(0):ud, 4)
--(W)		LOAD_SPACE_DW(r31, r30)
--		// clear the flag register
--(W)		mov (1|M0)               f0.0<1>:ud    0x0:ud
--(W)		cmp (1|M0)    (ne)f0.0   null<1>:ud     r31.0<0;1,0>:ud   ARG(2):ud
--(W&f0.0)	and (1|M0)              cr0.1<1>:ud     cr0.1<0;1,0>:ud   ARG(3):ud
--		// return to an application
--(W)		and (1|M0)               cr0.0<1>:ud   cr0.0<0;1,0>:ud   0x7FFFFFFD:ud
-+(W)	or(1)		cr0.0:ud	cr0.0:ud	0x8000:ud
-+(W)	and(1)		cr0.1:ud	cr0.1:ud	ARG(0):ud
-+	SET_SHARED_SPACE_ADDR(r30, ARG(0):ud, 4)
-+(W)	LOAD_SPACE_DW(r31, r30)
-+// clear the flag register
-+(W)	mov(1)		f0.0:ud		0x0:ud
-+(W)	cmp(1)(ne)f0.0	null:ud		r31.0:ud	ARG(2):ud
-+(W&f0.0)and(1)		cr0.1:ud	cr0.1:ud	ARG(3):ud
-+// return to an application
-+(W)	and(1)		cr0.0:ud	cr0.0:ud	0x7FFFFFFD:ud
- 	)", 0x807fffff, /* leave breakpoint exception */
- 	y_offset, value, 0x7fffff /* clear all exceptions */ );
- }
-@@ -967,17 +967,17 @@ void gpgpu_shader__write_a64_d32(struct gpgpu_shader *shdr, uint64_t ppgtt_addr,
- // [95:64] Untyped 2D Surface Width: 0x3f (width is 64 bytes)
- // [63:0] Untyped 2D Surface Base Address
- // initialize register
--(W)	mov (8)			r30.0<1>:uq	0x0:uq
-+(W)	mov(8)		r30.0:uq	0x0:uq
- // [31:0] Untyped 2D Surface Base Address low
--(W)	mov (1)			r30.0<1>:ud	ARG(0):ud
-+(W)	mov(1)		r30.0:ud	ARG(0):ud
- // [63:32] Untyped 2D Surface Base Address high
--(W)	mov (1)			r30.1<1>:ud ARG(1):ud
-+(W)	mov(1)		r30.1:ud	ARG(1):ud
- // [95:64] Untyped 2D Surface Width: 0x3f
- //	   (Width minus 1 (in bytes) of the 2D surface, it represents 64)
--(W)	mov (1)			r30.2<1>:ud	0x3f:ud
-+(W)	mov(1)		r30.2:ud	0x3f:ud
- // [159:128] Untyped 2D Surface Pitch: 0x3f
- //	     (Pitch minus 1 (in bytes) of the 2D surface, it represents 64)
--(W)	mov (1)			r30.4<1>:ud	0x3f:ud
-+(W)	mov(1)		r30.4:ud	0x3f:ud
- // [231:224] Block Width: 0x3 (4 bytes)
- //	     (Specifies the width minus 1 (in number of data elements) for this
- //	     rectangular region, it represents 4)
-@@ -988,13 +988,13 @@ void gpgpu_shader__write_a64_d32(struct gpgpu_shader *shdr, uint64_t ppgtt_addr,
- // [243:240] Array Length: 0
- //	     (Specifies Array Length minus 1 for Load2DBlockArray messages,
- //	     must be zero for 2D Block Store messages, it represents 1)
--(W)	mov (1)			r30.7<1>:ud	0x3:ud
-+(W)	mov(1)		r30.7:ud	0x3:ud
- // src1 data payload size
- // Block Height x Block Width x Data size / GRF Register size
- //	=> 1 x 16 x 32bit / 512bit = 1
- // data payload size is 1
--(W)	mov (8)			r31.0<1>:uq	0x0:uq
--(W)	mov (1|M0)		r31.0<1>:ud	ARG(2):ud
-+(W)	mov(8)		r31.0:uq	0x0:uq
-+(W)	mov(1)		r31.0:ud	ARG(2):ud
- // send.ugm Untyped 2D Block Array Store
- // Format: send.ugm (1) dst src0 src1 ExtMsg MsgDesc
- // Execution Mask restriction: SIMT1
-@@ -1014,7 +1014,7 @@ void gpgpu_shader__write_a64_d32(struct gpgpu_shader *shdr, uint64_t ppgtt_addr,
- // [19:16] Cache : 2 (L1UC_L3UC)
- // [11:9] Data Size: 2 (D32)
- // [5:0] Store Operation: 7
--(W)	send.ugm (1)		null	r30	r31:1	0x0	0x2020407
-+(W)	send.ugm(1)	null		r30	r31:1	0x0	0x2020407
- #endif
- 	)", lower_32_bits(addr), upper_32_bits(addr), value);
- }
-@@ -1055,17 +1055,17 @@ void gpgpu_shader__read_a64_d32(struct gpgpu_shader *shdr, uint64_t ppgtt_addr)
- // [95:64] Untyped 2D Surface Width: 0x3f (width is 64 bytes)
- // [63:0] Untyped 2D Surface Base Address
- // initialize register
--(W)	mov (8)			r30.0<1>:uq	0x0:uq
-+(W)	mov(8)		r30.0:uq	0x0:uq
- // [31:0] Untyped 2D Surface Base Address low
--(W)	mov (1)			r30.0<1>:ud	ARG(0):ud
-+(W)	mov(1)		r30.0:ud	ARG(0):ud
- // [63:32] Untyped 2D Surface Base Address high
--(W)	mov (1)			r30.1<1>:ud ARG(1):ud
-+(W)	mov(1)		r30.1:ud	ARG(1):ud
- // [95:64] Untyped 2D Surface Width: 0x3f
- //	   (Width minus 1 (in bytes) of the 2D surface, it represents 64)
--(W)	mov (1)			r30.2<1>:ud	0x3f:ud
-+(W)	mov(1)		r30.2:ud	0x3f:ud
- // [159:128] Untyped 2D Surface Pitch: 0x3f
- //	     (Pitch minus 1 (in bytes) of the 2D surface, it represents 64)
--(W)	mov (1)			r30.4<1>:ud	0x3f:ud
-+(W)	mov(1)		r30.4:ud	0x3f:ud
- // [231:224] Block Width: 0x3 (4 bytes)
- //	     (Specifies the width minus 1 (in number of data elements) for this
- //	     rectangular region, it represents 4)
-@@ -1076,7 +1076,7 @@ void gpgpu_shader__read_a64_d32(struct gpgpu_shader *shdr, uint64_t ppgtt_addr)
- // [243:240] Array Length: 0
- //	     (Specifies Array Length minus 1 for Load2DBlockArray messages,
- //	     must be zero for 2D Block Store messages, it represents 1)
--(W)	mov (1)			r30.7<1>:ud	0x3:ud
-+(W)	mov(1)		r30.7:ud	0x3:ud
- //
- // dest data payload format is selected by Data Size.
- // Block Height x Block Width x Data size / GRF Register size
-@@ -1104,7 +1104,7 @@ void gpgpu_shader__read_a64_d32(struct gpgpu_shader *shdr, uint64_t ppgtt_addr)
- // [11:9] Data Size: 2 (D32) 10
- // [7] VNNI Transform: 0
- // [5:0] Load Operation: 3 (Load 2D Block) 11
--(W)	send.ugm (1)		r31	r30	null	0x0	0x2128403
-+(W)	send.ugm(1)	r31		r30	null	0x0	0x2128403
- #endif
- 	)", lower_32_bits(addr), upper_32_bits(addr));
- }
-diff --git a/lib/gpgpu_shader.c.gen.iga64_codes.c b/lib/gpgpu_shader.c.gen.iga64_codes.c
-index a279f1dc7d71..c03914a69a7e 100644
---- a/lib/gpgpu_shader.c.gen.iga64_codes.c
-+++ b/lib/gpgpu_shader.c.gen.iga64_codes.c
-@@ -3,7 +3,7 @@
- 
- #include "gpgpu_shader.h"
- 
--#define MD5_SUM_IGA64_ASMS 4068ae55c6aa50d845b74f5d61da4630
-+#define MD5_SUM_IGA64_ASMS a428d5bacd5eeee4ee187971ec476f48
- 
- struct iga64_template const iga64_code_read_a64_d32[] = {
- 	{ .gfx_ver = 2000, .size = 40, .code = (const uint32_t []) {
-diff --git a/lib/iga64_macros.h b/lib/iga64_macros.h
-index 26d41387a1c5..17acac4d0ed8 100644
---- a/lib/iga64_macros.h
-+++ b/lib/iga64_macros.h
-@@ -17,55 +17,55 @@
- #endif
- 
- /* GPGPU_R0Payload fields, Bspec: 55396, 56587 */
--#define R0_TGIDX r0.1<0;1,0>:ud
--#define R0_TGIDY r0.6<0;1,0>:ud
--#define R0_FFTID r0.5<0;1,0>:ud
-+#define R0_TGIDX r0.1:ud
-+#define R0_TGIDY r0.6:ud
-+#define R0_FFTID r0.5:ud
- 
- /* Inline data from COMPUTE_WALKER*, Bspec: 47203, 73584
-  * Filled by __xe*_gpgpu_execfunc.
-  */
--#define R1_TGT_ADDRESS r1.0<0;1,0>:uq
--#define R1_TGT_WIDTH r1.2<0;1,0>:ud
--#define R1_TGT_HEIGHT r1.3<0;1,0>:ud
--#define R1_DIM_X r1.4<0;1,0>:ud
-+#define R1_TGT_ADDRESS r1.0:uq
-+#define R1_TGT_WIDTH r1.2:ud
-+#define R1_TGT_HEIGHT r1.3:ud
-+#define R1_DIM_X r1.4:ud
- 
- #define SET_SHARED_MEDIA_BLOCK_MSG_HDR(dst, y, width)	\
--(W)	mov (8)		dst.0<1>:ud	0x0:ud		;\
--(W)	mov (1)		dst.1<1>:ud	y		;\
--(W)	mov (1)		dst.2<1>:ud	(width - 1):ud	;\
--(W)	mov (1)		dst.4<1>:ud	R0_FFTID
-+(W)	mov (8)		dst.0:ud	0x0:ud		;\
-+(W)	mov (1)		dst.1:ud	y		;\
-+(W)	mov (1)		dst.2:ud	(width - 1):ud	;\
-+(W)	mov (1)		dst.4:ud	R0_FFTID
- 
- #define SET_THREAD_MEDIA_BLOCK_MSG_HDR(dst, x, y, width)	\
--(W)	mov (8)		dst.0<1>:ud	0x0:ud			;\
--(W)	shl (1)		dst.0<1>:ud	R0_TGIDX	0x2:ud	;\
--(W)	add (1)		dst.0<1>:ud	dst.0<0;1,0>:ud	x:ud	;\
--(W)	add (1)		dst.1<1>:ud	R0_TGIDY	y	;\
--(W)	mov (1)		dst.2<1>:ud	(width - 1):ud		;\
--(W)	mov (1)		dst.4<1>:ud	R0_FFTID
-+(W)	mov (8)		dst.0:ud	0x0:ud			;\
-+(W)	shl (1)		dst.0:ud	R0_TGIDX	0x2:ud	;\
-+(W)	add (1)		dst.0:ud	dst.0:ud	x:ud	;\
-+(W)	add (1)		dst.1:ud	R0_TGIDY	y	;\
-+(W)	mov (1)		dst.2:ud	(width - 1):ud		;\
-+(W)	mov (1)		dst.4:ud	R0_FFTID
- 
- #if GFX_VER < 3000
- #define SET_SURFACE_DESC(dst)			\
--(W)	mov (8)		dst.0<1>:ud	0x0:ud
-+(W)	mov (8)		dst.0:ud	0x0:ud
- #else
- #define SET_SURFACE_DESC(dst)					\
--(W)	mov (1)		dst.0<1>:uq	R1_TGT_ADDRESS		;\
--(W)	add (1)		dst.2<1>:ud	R1_TGT_WIDTH	-1:d	;\
--(W)	add (1)		dst.3<1>:ud	R1_TGT_HEIGHT	-1:d	;\
--(W)	add (1)		dst.4<1>:ud	R1_TGT_WIDTH	-1:d
-+(W)	mov (1)		dst.0:uq	R1_TGT_ADDRESS		;\
-+(W)	add (1)		dst.2:ud	R1_TGT_WIDTH	-1:d	;\
-+(W)	add (1)		dst.3:ud	R1_TGT_HEIGHT	-1:d	;\
-+(W)	add (1)		dst.4:ud	R1_TGT_WIDTH	-1:d
- #endif
- 
- #define SET_SHARED_MEDIA_A2DBLOCK_PAYLOAD(dst, y, width)	\
- 	SET_SURFACE_DESC(dst)					;\
--(W)	mov (1)		dst.5<1>:ud	0x0:ud			;\
--(W)	mov (1)		dst.6<1>:ud	y			;\
--(W)	mov (1)		dst.7<1>:ud	(width - 1):ud
-+(W)	mov (1)		dst.5:ud	0x0:ud			;\
-+(W)	mov (1)		dst.6:ud	y			;\
-+(W)	mov (1)		dst.7:ud	(width - 1):ud
- 
- #define SET_THREAD_MEDIA_A2DBLOCK_PAYLOAD(dst, x, y, width)	\
- 	SET_SURFACE_DESC(dst)					;\
--(W)	shl (1)		dst.5<1>:ud	R0_TGIDX	0x2:ud	;\
--(W)	add (1)		dst.5<1>:ud	dst.5<0;1,0>:ud	x:ud	;\
--(W)	add (1)		dst.6<1>:ud	R0_TGIDY	y	;\
--(W)	mov (1)		dst.7<1>:ud	(width - 1):ud		;\
-+(W)	shl (1)		dst.5:ud	R0_TGIDX	0x2:ud	;\
-+(W)	add (1)		dst.5:ud	dst.5:ud	x:ud	;\
-+(W)	add (1)		dst.6:ud	R0_TGIDY	y	;\
-+(W)	mov (1)		dst.7:ud	(width - 1):ud		;\
- 
- #if GFX_VER < 2000
- #define SET_SHARED_SPACE_ADDR(dst, y, width) SET_SHARED_MEDIA_BLOCK_MSG_HDR(dst, y, width)
+== Summary ==
 
--- 
-2.55.0
+CI Bug Log - changes from IGT_9181 -> IGTPW_16118
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16118/index.html
+
+Participating hosts (40 -> 39)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+New tests
+---------
+
+  New tests have been introduced between IGT_9181 and IGTPW_16118:
+
+### New IGT tests (34) ###
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.00] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@a-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.99] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@b-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.01] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@b-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.01] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@c-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.97] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@c-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.97] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@d-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.98] s
+
+  * igt@kms_flip@basic-flip-vs-dpms@d-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.97] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.01] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@a-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.00] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@b-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.01] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@b-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.00] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@c-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.97] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@c-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.97] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@d-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.98] s
+
+  * igt@kms_flip@basic-flip-vs-modeset@d-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.97] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@a-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.44] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@b-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.34] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@c-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.33] s
+
+  * igt@kms_flip@basic-flip-vs-wf_vblank@d-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.32] s
+
+  * igt@kms_flip@basic-plain-flip@a-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.16] s
+
+  * igt@kms_flip@basic-plain-flip@a-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.06] s
+
+  * igt@kms_flip@basic-plain-flip@b-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.06] s
+
+  * igt@kms_flip@basic-plain-flip@b-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.05] s
+
+  * igt@kms_flip@basic-plain-flip@c-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.04] s
+
+  * igt@kms_flip@basic-plain-flip@c-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.03] s
+
+  * igt@kms_flip@basic-plain-flip@d-dp6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.04] s
+
+  * igt@kms_flip@basic-plain-flip@d-dp7:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.05] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-6:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.79] s
+
+  * igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-7:
+    - Statuses : 1 pass(s)
+    - Exec time: [1.72] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-6:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.89] s
+
+  * igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-6:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.89] s
+
+  * igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.83] s
+
+  * igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-6:
+    - Statuses : 1 pass(s)
+    - Exec time: [0.82] s
+
+  
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_16118 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - fi-kbl-7567u:       [ABORT][1] ([i915#17788]) -> [PASS][2] +1 other test pass
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9181/fi-kbl-7567u/igt@i915_selftest@live.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16118/fi-kbl-7567u/igt@i915_selftest@live.html
+
+  
+  [i915#17788]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17788
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9181 -> IGTPW_16118
+  * Linux: CI_DRM_19463 -> CI_DRM_19465
+
+  CI-20190529: 20190529
+  CI_DRM_19463: 7797f00bc4da28646c612b8130ccd5192548ceea @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19465: ecd0e93e7ee855e1b0e3b51ade3d18333fc21ed4 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_16118: 1c555b1b65518cf2f7d37daee37d1456e0884b29 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9181: 9181
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16118/index.html
+
+--===============1911971453092710195==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_bo_shrink: Add a user-space shrinker test (rev4)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176563/">https://patchwork.freedesktop.org/series/176563/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16118/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16118/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9181 -&gt; IGTPW_16118</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16118/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>New tests</h2>
+<p>New tests have been introduced between IGT_9181 and IGTPW_16118:</p>
+<h3>New IGT tests (34)</h3>
+<ul>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@a-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@a-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.99] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@b-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@b-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@c-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@c-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@d-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-dpms@d-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@a-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.01] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@b-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.00] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@c-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@c-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@d-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.98] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-modeset@d-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.97] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@a-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.44] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@b-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.34] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@c-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.33] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-flip-vs-wf_vblank@d-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.32] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@a-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.16] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@a-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@b-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.06] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@b-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@c-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@c-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.03] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@d-dp6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.04] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_flip@basic-plain-flip@d-dp7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.05] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-b-dp-6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.79] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@hang-read-crc@pipe-c-dp-7:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [1.72] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc-frame-sequence@pipe-b-dp-6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.89] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@nonblocking-crc@pipe-b-dp-6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.89] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc-frame-sequence@pipe-b-dp-6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.83] s</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-dp-6:</p>
+<ul>
+<li>Statuses : 1 pass(s)</li>
+<li>Exec time: [0.82] s</li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_16118 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>fi-kbl-7567u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9181/fi-kbl-7567u/igt@i915_selftest@live.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17788">i915#17788</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16118/fi-kbl-7567u/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9181 -&gt; IGTPW_16118</li>
+<li>Linux: CI_DRM_19463 -&gt; CI_DRM_19465</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19463: 7797f00bc4da28646c612b8130ccd5192548ceea @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19465: ecd0e93e7ee855e1b0e3b51ade3d18333fc21ed4 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_16118: 1c555b1b65518cf2f7d37daee37d1456e0884b29 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9181: 9181</p>
+
+</body>
+</html>
+
+--===============1911971453092710195==--
