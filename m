@@ -2,52 +2,52 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3D7606A329
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Nov 2026 18:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB52F6082BD0
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Nov 2026 18:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T67Ze1rq
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KHmE5Fab
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4326510E129;
-	Fri,  6 Nov 2026 18:35:50 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 56A8910E179;
+	Fri,  6 Nov 2026 18:36:49 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E4C9910E3F1
- for <igt-dev@lists.freedesktop.org>; Fri,  6 Nov 2026 18:32:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0481D10E413
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Nov 2026 18:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1793989974; x=1825525974;
+ t=1793989975; x=1825525975;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Wvdl/kinVogDdNbqop2LTRcurZ6199vJo/QaLnQeWuE=;
- b=T67Ze1rqX2fBH99YIUDkvo3exU66z2ZVcI8O74OQ8Fj9iXVejan/VNJy
- yUv8CbyOGMfHKj4gBdYuA2rcx24rMHtucQisWXLqFMWiR3r6EUKPCkTya
- QlqPw3mo1t6jsriUjQCFkOxquA1pVH2dsnL5pgjxdVCXQrzFEJeV1BR+u
- asQA8OJh6c4Rg+n7tQ8IrwCRM88r3iw+lKddeexJAxZphnAZsD3/M4iW+
- KTdpDdYjTHi9JdiHmiHgLm4EuhsZz/q7jUhhAH4FkkDT38yb+bkY00K0h
- NEzuLDeKTOey0/WrHYs/38f6xqgilZuVpN2rLAqLKlgd9oxn5m56EEjDN w==;
-X-CSE-ConnectionGUID: bdJ02OPFT6CRMouOihJ7iA==
-X-CSE-MsgGUID: uE+JZ9s8QwigInYb2znBng==
-X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2910365"
+ bh=VBaVUo7SDA07ABsOatVvkMF9hvO9pvsP0M0mp2wnFqw=;
+ b=KHmE5FabGc0NQAT1aRA2TKeaNDqFljSqsvAuyC9qXqFWCeJsgIfFeQcu
+ Qn0ExfiDPAa8MCPa4cJwGhTcrp9N06pZJXZQmRagztWv1LPPmMJilOtqD
+ FXsAEyPDJAeHl5WPa0BK95K+nw74zCB+JJ/9J2fL2JCRI4BjKqD4xhBFG
+ OKylm8vyvFg3cTBX5H6yVL6iP129cmXVwIfAkdjtg5QkfWSQXzaL8mnlg
+ +V4m/IEeECoMVp/mpJ7CJTVxfMGrgCcjIPfsKzrHYcYQgCQze9es1U4Tk
+ NRwE1aFYTNz7+krYznEeZDYdz/y2DO9zyarRZVlcycQsniyjYF1WzrrSO w==;
+X-CSE-ConnectionGUID: hAD1qKmrTkG1rkPpxWqJLg==
+X-CSE-MsgGUID: DBZ+Zf/CSyi3SNxrPYOCTA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2910366"
 X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
-   d="scan'208";a="2910365"
+   d="scan'208";a="2910366"
 Received: from fmviesa013.fm.intel.com ([10.60.135.153])
  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2026 10:32:54 -0800
-X-CSE-ConnectionGUID: DgHQqBNOR2yB7SmnkayyFQ==
-X-CSE-MsgGUID: SmBprGsYQaqgB1g+OzEHRg==
+ 06 Nov 2026 10:32:55 -0800
+X-CSE-ConnectionGUID: Kmwxj7bxQLWepSUq4QcY6A==
+X-CSE-MsgGUID: 6dtKpnUHQmeG1m0ecJfwBg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
-   d="scan'208";a="9198513"
+   d="scan'208";a="9198517"
 Received: from dut4040nvlp.fm.intel.com (HELO DUT4040NVLP) ([10.105.10.98])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 06 Nov 2026 10:32:54 -0800
+ 06 Nov 2026 10:32:55 -0800
 From: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: niranjana.vishwanathapura@intel.com,
  Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-Subject: [PATCH i-g-t v6 1/3] tests/intel/xe_exec_threads: Parametrise worker
- and queue counts
-Date: Fri,  6 Nov 2026 18:32:44 +0000
-Message-ID: <20261106183246.14482-2-jagmeet.randhawa@intel.com>
+Subject: [PATCH i-g-t v6 2/3] tests/intel/xe_exec_threads: Allocate the exec
+ queue arrays dynamically
+Date: Fri,  6 Nov 2026 18:32:45 +0000
+Message-ID: <20261106183246.14482-3-jagmeet.randhawa@intel.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261106183246.14482-1-jagmeet.randhawa@intel.com>
 References: <20261106183246.14482-1-jagmeet.randhawa@intel.com>
@@ -72,186 +72,104 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-threads() hardcodes one worker thread per engine and N_EXEC_QUEUE exec
-queues per worker. Subtests that need a different shape have no way to ask
-for one.
+test_legacy_mode() and test_compute_mode() keep their exec queue, syncobj
+and sync arrays on the stack, sized to MAX_N_EXEC_QUEUES. A caller that
+wants more queues than that can only be served by raising the limit, which
+would grow the arrays for every caller that does not need them.
 
-Pass the number of worker threads per engine and the number of exec queues
-per worker as arguments, with the existing callers keeping the current
-behaviour by passing 1 and N_EXEC_QUEUE.
-
-The balancer threads are not created per engine, so require one worker per
-engine when BALANCER is set. A queue cannot be destroyed while its
-multi-queue group is live, so reject MANY_QUEUES together with MULTI_QUEUE.
+Allocate the arrays to the requested queue count instead and drop the
+limit check.
 
 No functional change.
 
-v5:
- - Assert that MULTI_QUEUE and MANY_QUEUES are not requested together.
-
-v4:
- - Actually use n_exec_queues for the per engine workers. The previous
-   revision still set the fixed N_EXEC_QUEUE there, so the queue count
-   never reached them.
- - Nest the worker loop inside the engine walk, after the engines that
-   cannot run the job are skipped.
- - Assert one worker per engine when BALANCER is set.
-
 Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
 ---
- tests/intel/xe_exec_threads.c | 73 +++++++++++++++++++++--------------
- 1 file changed, 43 insertions(+), 30 deletions(-)
+ tests/intel/xe_exec_threads.c | 25 +++++++++++++++++--------
+ 1 file changed, 17 insertions(+), 8 deletions(-)
 
 diff --git a/tests/intel/xe_exec_threads.c b/tests/intel/xe_exec_threads.c
-index f03f20142..773627140 100644
+index 773627140..6f46781d8 100644
 --- a/tests/intel/xe_exec_threads.c
 +++ b/tests/intel/xe_exec_threads.c
-@@ -32,6 +32,7 @@
- #include <string.h>
+@@ -379,7 +379,7 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		.syncs = to_user_pointer(sync),
+ 	};
+ 	int64_t fence_timeout;
+-	uint32_t exec_queues[MAX_N_EXEC_QUEUES];
++	uint32_t *exec_queues;
+ 	size_t bo_size, sync_size;
+ 	uint32_t bo = 0;
+ 	struct {
+@@ -393,7 +393,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 	int map_fd = -1;
+ 	bool owns_vm = false, owns_fd = false;
  
- #define MAX_N_EXEC_QUEUES	16
-+#define N_EXEC_QUEUE		16
- #define USERPTR		(0x1 << 0)
- #define REBIND		(0x1 << 1)
- #define INVALIDATE	(0x1 << 2)
-@@ -1343,7 +1344,8 @@ static void *thread(void *data)
-  *	multi-queue compute mode fd userptr invalidate race
-  */
+-	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
++	exec_queues = calloc(n_exec_queues, sizeof(*exec_queues));
++	igt_assert(exec_queues);
  
--static void threads(int fd, int flags)
-+static void threads(int fd, int flags, int n_threads_per_engine,
-+		    int n_exec_queues)
- {
- 	struct thread_data *threads_data;
- 	struct drm_xe_engine_class_instance *hwe;
-@@ -1351,13 +1353,18 @@ static void threads(int fd, int flags)
- 	uint64_t userptr = 0x00007000eadbe000;
- 	pthread_mutex_t mutex;
- 	pthread_cond_t cond;
--	int n_engines = 0, class;
-+	int n_engines = 0, class, t;
- 	uint64_t i = 0;
- 	uint32_t vm_legacy_mode = 0, vm_compute_mode = 0;
- 	bool go = false;
- 	int n_threads = 0;
- 	int gt;
- 
-+	/* The balancer threads below are not created per engine. */
-+	igt_assert(!(flags & BALANCER) || n_threads_per_engine == 1);
-+	/* A queue cannot be destroyed while its multi-queue group is live. */
-+	igt_assert(!(flags & MULTI_QUEUE) || !(flags & MANY_QUEUES));
+ 	if (flags & FD) {
+ 		fd = drm_reopen_driver(fd);
+@@ -609,6 +610,8 @@ test_compute_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 	if (owns_fd) {
+ 		drm_close_driver(fd);
+ 	}
 +
- 	xe_for_each_engine(fd, hwe) {
- 		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(fd, hwe->engine_class))
- 			continue;
-@@ -1374,7 +1381,8 @@ static void threads(int fd, int flags)
- 			}
++	free(exec_queues);
+ }
+ 
+ static void
+@@ -620,15 +623,13 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+ 		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+ 	};
+-	struct drm_xe_sync sync_all[MAX_N_EXEC_QUEUES];
++	struct drm_xe_sync *sync_all;
+ 	struct drm_xe_exec exec = {
+ 		.num_batch_buffer = 1,
+ 		.num_syncs = 2,
+ 		.syncs = to_user_pointer(sync),
+ 	};
+-	uint32_t exec_queues[MAX_N_EXEC_QUEUES] = {};
+-	uint32_t bind_exec_queues[MAX_N_EXEC_QUEUES];
+-	uint32_t syncobjs[MAX_N_EXEC_QUEUES];
++	uint32_t *exec_queues, *bind_exec_queues, *syncobjs;
+ 	size_t bo_size;
+ 	uint32_t bo = 0;
+ 	struct {
+@@ -641,7 +642,11 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
+ 	int i, j, b, hang_exec_queue = n_exec_queues / 2;
+ 	bool owns_vm = false, owns_fd = false;
+ 
+-	igt_assert_lte(n_exec_queues, MAX_N_EXEC_QUEUES);
++	sync_all = calloc(n_exec_queues, sizeof(*sync_all));
++	exec_queues = calloc(n_exec_queues, sizeof(*exec_queues));
++	bind_exec_queues = calloc(n_exec_queues, sizeof(*bind_exec_queues));
++	syncobjs = calloc(n_exec_queues, sizeof(*syncobjs));
++	igt_assert(sync_all && exec_queues && bind_exec_queues && syncobjs);
+ 
+ 	if (flags & FD) {
+ 		fd = drm_reopen_driver(fd);
+@@ -676,7 +681,6 @@ test_legacy_mode(int fd, uint32_t vm, uint64_t addr, uint64_t userptr,
  	}
+ 	memset(data, 0, bo_size);
  
--	threads_data = calloc(n_engines, sizeof(*threads_data));
-+	threads_data = calloc(n_engines * n_threads_per_engine,
-+			      sizeof(*threads_data));
- 	igt_assert(threads_data);
- 
- 	pthread_mutex_init(&mutex, 0);
-@@ -1388,33 +1396,37 @@ static void threads(int fd, int flags)
- 	}
- 
- 	xe_for_each_engine(fd, hwe) {
--		if ((flags & MULTI_QUEUE) && !xe_engine_class_supports_multi_queue(fd, hwe->engine_class))
-+		if ((flags & MULTI_QUEUE) &&
-+		    !xe_engine_class_supports_multi_queue(fd,
-+							  hwe->engine_class))
- 			continue;
--		threads_data[i].mutex = &mutex;
--		threads_data[i].cond = &cond;
+-	memset(sync_all, 0, sizeof(sync_all));
+ 	for (i = 0; i < n_exec_queues; i++) {
+ 		if (flags & MULTI_QUEUE) {
+ 			struct drm_xe_ext_set_property multi_queue = {
+@@ -942,6 +946,11 @@ wq_stress_cleanup:
+ 		xe_vm_destroy(fd, vm);
+ 	if (owns_fd)
+ 		drm_close_driver(fd);
 +
-+		for (t = 0; t < n_threads_per_engine; t++) {
-+			threads_data[i].mutex = &mutex;
-+			threads_data[i].cond = &cond;
- #define ADDRESS_SHIFT	39
--		threads_data[i].addr = addr | (i << ADDRESS_SHIFT);
--		threads_data[i].userptr = userptr | (i << ADDRESS_SHIFT);
--		threads_data[i].fd = fd;
--		threads_data[i].vm_legacy_mode = vm_legacy_mode;
--		threads_data[i].vm_compute_mode = vm_compute_mode;
--		threads_data[i].eci = hwe;
--#define N_EXEC_QUEUE	16
--		threads_data[i].n_exec_queue = N_EXEC_QUEUE;
-+			threads_data[i].addr = addr | (i << ADDRESS_SHIFT);
-+			threads_data[i].userptr = userptr | (i << ADDRESS_SHIFT);
-+			threads_data[i].fd = fd;
-+			threads_data[i].vm_legacy_mode = vm_legacy_mode;
-+			threads_data[i].vm_compute_mode = vm_compute_mode;
-+			threads_data[i].eci = hwe;
-+			threads_data[i].n_exec_queue = n_exec_queues;
- #define N_EXEC		1024
--		threads_data[i].n_exec = N_EXEC;
--		threads_data[i].flags = flags;
--		if (flags & MIXED_MODE) {
--			threads_data[i].flags &= ~MIXED_MODE;
--			if (i & 1)
--				threads_data[i].flags |= COMPUTE_MODE;
--		}
--		threads_data[i].go = &go;
-+			threads_data[i].n_exec = N_EXEC;
-+			threads_data[i].flags = flags;
-+			if (flags & MIXED_MODE) {
-+				threads_data[i].flags &= ~MIXED_MODE;
-+				if (i & 1)
-+					threads_data[i].flags |= COMPUTE_MODE;
-+			}
-+			threads_data[i].go = &go;
++	free(sync_all);
++	free(exec_queues);
++	free(bind_exec_queues);
++	free(syncobjs);
+ }
  
--		++n_threads;
--		pthread_create(&threads_data[i].thread, 0, thread,
--			       &threads_data[i]);
--		++i;
-+			++n_threads;
-+			pthread_create(&threads_data[i].thread, 0, thread,
-+				       &threads_data[i]);
-+			++i;
-+		}
- 	}
- 
- 	if (flags & BALANCER) {
-@@ -1448,7 +1460,7 @@ static void threads(int fd, int flags)
- 					threads_data[i].vm_legacy_mode =
- 						vm_legacy_mode;
- 					threads_data[i].class = class;
--					threads_data[i].n_exec_queue = N_EXEC_QUEUE;
-+					threads_data[i].n_exec_queue = n_exec_queues;
- 					threads_data[i].n_exec = N_EXEC;
- 					threads_data[i].flags = flags;
- 					threads_data[i].flags &= ~BALANCER;
-@@ -1471,7 +1483,7 @@ static void threads(int fd, int flags)
- 	pthread_cond_broadcast(&cond);
- 	pthread_mutex_unlock(&mutex);
- 
--	for (i = 0; i < n_engines; ++i)
-+	for (i = 0; i < n_threads; ++i)
- 		pthread_join(threads_data[i].thread, NULL);
- 
- 	if (vm_legacy_mode)
-@@ -1762,7 +1774,7 @@ int igt_main()
- 			if ((s->flags & MULTI_QUEUE) && (s->flags & HANG))
- 				ignore_multi_queue_hang_warnings_in_dmesg();
- 
--			threads(fd, s->flags);
-+			threads(fd, s->flags, 1, N_EXEC_QUEUE);
- 		}
- 	}
- 
-@@ -1863,7 +1875,8 @@ int igt_main()
- 			atomic_store(&wq_stress_hang_detected, false);
- 			igt_until_timeout(WQ_STRESS_DURATION_SEC) {
- 				threads(child_fd,
--					REBIND | BIND_EXEC_QUEUE | WQ_STRESS);
-+					REBIND | BIND_EXEC_QUEUE | WQ_STRESS,
-+					1, N_EXEC_QUEUE);
- 				if (atomic_load(&wq_stress_hang_detected))
- 					break;
- 			}
+ struct thread_data {
 -- 
 2.53.0
 
