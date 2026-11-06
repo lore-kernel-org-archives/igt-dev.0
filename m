@@ -2,28 +2,62 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC86606A32D
-	for <igt-dev@archiver.kernel.org>; Fri,  6 Nov 2026 17:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11125606A326
+	for <igt-dev@archiver.kernel.org>; Fri,  6 Nov 2026 18:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=P/c9miex
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2E8B510E436;
-	Fri,  6 Nov 2026 17:04:25 +0000 (UTC)
-Received: from 221881a7231d (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 60F2E10E3B1;
- Fri,  6 Nov 2026 17:03:24 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3465296478081047043=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id A24B310E32D;
+	Fri,  6 Nov 2026 18:10:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 220EA10E1B1
+ for <igt-dev@lists.freedesktop.org>; Fri,  6 Nov 2026 18:09:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1793988542; x=1825524542;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=K0k0KeFN9bROnPq4ZtdvNuI3EQPnSk3n3XxZ+cdKUS4=;
+ b=P/c9miexgbhgGPp0ABUSxUnFETcZSCrCHfk9s8YL2aqZ+JNPT4Rpj4nR
+ HjjuyOL0cTU/1trtyO863i5NybIGYrh3tYakJEgyn/14nBIMHx0dUsjJH
+ ldqI1pz2o5b8IM8eKzhh3djJ+2LfgLx1EV/CVoY5KsQITXo4S99IYEzrp
+ lIn7TUOAf4E9y8r2s18C4jeKPoSAFKbBgVDgj3OI2YNAnnfPg30SYE/rh
+ QjNUartNlAlmD1GWCAyt9JAiV57nmjbL+cuJeDhdBQFAIi4Pn9U0xbnyH
+ beRfy9A1Kf6tfYndhF363pmbzHf6SAFcCEKF1GTK5a8EWGQhz7ZGbFHbn g==;
+X-CSE-ConnectionGUID: H6Kx8YHhTwufaB/JeNu0Bw==
+X-CSE-MsgGUID: d4mQL7hSQaC2jvJfNi+i4A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2723903"
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="2723903"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2026 10:09:02 -0800
+X-CSE-ConnectionGUID: VA+1HziTQG23O2lvPzrl6w==
+X-CSE-MsgGUID: n9IYMrQkQFC/kggxAERcxQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
+   d="scan'208";a="7362601"
+Received: from dev-417.igk.intel.com ([10.91.214.181])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 06 Nov 2026 10:09:00 -0800
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
+Subject: [PATCH i-g-t v9 0/9] tests: limiting suspend tests
+Date: Fri,  6 Nov 2026 19:08:40 +0100
+Message-ID: <20261106180849.156578-1-michal.grzelak@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fbo=5Fshrin?=
- =?utf-8?q?k=3A_Add_a_user-space_shrinker_test_=28rev4=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 06 Nov 2026 17:03:24 -0000
-Message-ID: <179398460439.133912.7282077535761128263@221881a7231d>
-X-Patchwork-Hint: ignore
-References: <20261106131226.40643-1-thomas.hellstrom@linux.intel.com>
-In-Reply-To: <20261106131226.40643-1-thomas.hellstrom@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,114 +68,47 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============3465296478081047043==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Next version of [1].
 
-== Series Details ==
+BR,
+Michał
 
-Series: tests/intel/xe_bo_shrink: Add a user-space shrinker test (rev4)
-URL   : https://patchwork.freedesktop.org/series/176563/
-State : success
+[1] https://lore.kernel.org/igt-dev/20261013161013.1364753-1-michal.grzelak@linux.intel.com/
 
-== Summary ==
+---
+Changelog:
+v8->v9
+- fix extra long opts string for kms_ccs (JP)
 
-CI Bug Log - changes from XEIGT_9181_BAT -> XEIGTPW_16118_BAT
-====================================================
+v7->v8
+- use pipe mask (Jani)
+- add 2 new patches
 
-Summary
--------
+Michał Grzelak (9):
+  tests/kms_async_flips: split outer test loop into two
+  tests/kms_async_flips: set mask for available hardware pipes
+  tests/kms_async_flips: limit #pipes tested during suspend
+  tests/kms_vblank: limit #outputs tested during suspend
+  tests/intel/kms_ccs: split outer test loop into two
+  tests/intel/kms_ccs: limit #outputs tested during suspend
+  tests/intel/kms_ccs: set mask for available hardware pipes
+  tests/intel/kms_ccs: limit #pipes tested during suspend
+  tests/kms_hdr: run on 3 outputs when testing suspend
 
-  **SUCCESS**
+ tests/intel/kms_ccs.c   | 115 ++++++++++++++++++++++++++++++----------
+ tests/kms_async_flips.c | 100 +++++++++++++++++++++++-----------
+ tests/kms_hdr.c         |  30 ++++++++++-
+ tests/kms_vblank.c      |  21 +++++++-
+ 4 files changed, 203 insertions(+), 63 deletions(-)
 
-  No regressions found.
+-- 
+2.45.2
 
-  
-
-Participating hosts (15 -> 8)
-------------------------------
-
-  Missing    (7): bat-bmg-1 bat-lnl-2 bat-ptl-1 bat-ptl-2 bat-wcl-2 bat-bmg-2 bat-adlp-7 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9181 -> IGTPW_16118
-  * Linux: xe-6079-7797f00bc4da28646c612b8130ccd5192548ceea -> xe-6081-ecd0e93e7ee855e1b0e3b51ade3d18333fc21ed4
-
-  IGTPW_16118: 1c555b1b65518cf2f7d37daee37d1456e0884b29 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
-  IGT_9181: 9181
-  xe-6079-7797f00bc4da28646c612b8130ccd5192548ceea: 7797f00bc4da28646c612b8130ccd5192548ceea
-  xe-6081-ecd0e93e7ee855e1b0e3b51ade3d18333fc21ed4: ecd0e93e7ee855e1b0e3b51ade3d18333fc21ed4
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16118/index.html
-
---===============3465296478081047043==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_bo_shrink: Add a user-space shrinker test (rev4)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176563/">https://patchwork.freedesktop.org/series/176563/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16118/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16118/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9181_BAT -&gt; XEIGTPW_16118_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 8)</h2>
-<p>Missing    (7): bat-bmg-1 bat-lnl-2 bat-ptl-1 bat-ptl-2 bat-wcl-2 bat-bmg-2 bat-adlp-7 </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9181 -&gt; IGTPW_16118</li>
-<li>Linux: xe-6079-7797f00bc4da28646c612b8130ccd5192548ceea -&gt; xe-6081-ecd0e93e7ee855e1b0e3b51ade3d18333fc21ed4</li>
-</ul>
-<p>IGTPW_16118: 1c555b1b65518cf2f7d37daee37d1456e0884b29 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9181: 9181<br />
-  xe-6079-7797f00bc4da28646c612b8130ccd5192548ceea: 7797f00bc4da28646c612b8130ccd5192548ceea<br />
-  xe-6081-ecd0e93e7ee855e1b0e3b51ade3d18333fc21ed4: ecd0e93e7ee855e1b0e3b51ade3d18333fc21ed4</p>
-
-</body>
-</html>
-
---===============3465296478081047043==--
