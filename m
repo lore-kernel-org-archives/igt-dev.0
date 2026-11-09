@@ -2,108 +2,106 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C41606A31C
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Nov 2026 23:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1ADE606A31C
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Nov 2026 23:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=j/k+niwx
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=33rnpuUk
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0B38710E0E8;
-	Mon,  9 Nov 2026 23:50:42 +0000 (UTC)
-Received: from CY7PR03CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11010059.outbound.protection.outlook.com
- [40.93.198.59])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 17E8E10E0E8
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Nov 2026 23:49:41 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9723610E0E8;
+	Mon,  9 Nov 2026 23:51:34 +0000 (UTC)
+Received: from BL0PR03CU003.outbound.protection.outlook.com
+ (mail-eastusazon11012044.outbound.protection.outlook.com [52.101.53.44])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4F12C10E211
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Nov 2026 23:49:43 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ArdutsD9wJI2LtQRsGelO0JwlK0AFYB7LAU8J+56yf+99DpBcuNQAcZy3I9A142sNMwqlYopUF8ojRqXzph+Ppzd6G+m5/8xmdxoHQY9t2lsq57uXULA7zxZljKAGEIvJHB2t11QJ5egYn7tV1wJMlmQES+A2vzWCQ4LxUK6FmecmhcHywRy14rnxbH0ZwsmqdcHHvE6qcpEIAFTS+p6eu3w7CHJvoRgfiGwxZEAhiBm8rH17R27BSyJWD9GTOn7YLzI9pkHkD0EDpm8ReTbuqTKPTZU6fr3U2XthgcKZaXXy/QH5TdF6PIY27pHkLK4P2uGeuhjFl6zs/DKVPTilQ==
+ b=TZBv67NE1SayEvLDoHaDie4RlqjirLYpgH2L/4QQb5uO/ppMk3h72esZH+J31u0WUUNZ9cGqNegsKH0+2w2PgK05I5e6YRel6JmxP5Zpa+X+wbbsD2JN9IIDpPIA5uxvpCg6BTai2JgOkYM5+7DQWu5WmvfFlYAeK5gs+FFn6heUau43PphWShqUGWfzSlTmYpf3jWgtF0yMnLZnW7g/xwuxJf35nJjoQBZ1EY7WrxFuArj51R1QgxV8SmcEqbGl4X05XOJN8x5+Sgx0eM2nBMdmiZQbRWH1mIeO1OTW6x//KIaT2SvR+6EBTJJJtWJ86riCU3+PR1PKYntFD61FhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rUEVKX8HhCC1MNcR484IImioy2JtnUolypKJZz1TkMU=;
- b=nsRGGlm3y5FDWutQ6jtt4TOBJhkVv/sBiSLkH/080vLtARzgrQDwkbBEBYmcmKthPlvMbMD1shalFm7dF+Rj1r5e9qHjPcicCuud1/PWnUvpTL7pxjoodj+4FYrs00wrv8+QC07VWp7pe4PcgSPoxIbKhhZFbnZyD8fLRKrwpSKRPGO51zFZoDMj79EdJ3w0HV2L5/W4C5ugMKoRsP4U1bAC8FFxOBx7GfCbfgH8t/k8rQFVtVoBoxe5O5yuuQeJEJbjJTUf3c/FzuKkiIAcaCd6LgLdIrJ/MG6til2zkz6JC9q5yMeMNsk8o2e1Nz3oqdqj5LPfeoEJJHPjXuhOZg==
+ bh=uG84/Mgfqsk3P9yqjT3BUiJWu1srQdPKbr4xmkoYNT8=;
+ b=iR6vn5jZR9GhBFE8l5NvcTkpJFgLghEwu7T2qtgb1hKOGUUF5QXXy1hKolqTkOaLK/u4X33fBgWxwgze++n6i7Ebgl84CnJDqH7v9rumD42/M0KIJzSoLjin4sqzsxo+hG6yBY3Gtte4I2tZBZgeXBeLpeP2BxIE7CvFr+LceWyqp0SpTIPo50MvogaHDRjUJQA77T0gvrEwc2PV/b7yyLYa5tnObxom2VAY6DZVIkbqtudympvP5GHvxjRY/edk7slbdvNt4oaEZe/6Rb8ES7sZEU6OjVPCxeoat/VSGDtq+yH5PlnYpjVQdPtaa2IeradEf2Gx+0oXkQCfDFOSdg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rUEVKX8HhCC1MNcR484IImioy2JtnUolypKJZz1TkMU=;
- b=j/k+niwxHbir0LKW/pFluucYgof5s1w4/Ow21ZJv+hUBe+iRM062A6X2zxVYQC18PohT2SuvXgXCtmSlbrDmVEBqjHUKl4wQi/FJvKNYlqgAfiEOe7ynmeZ7QWB2I9oFBdPCCQWHrdhkA/y21eJgixJcvIez4fTunEXccBm4lls=
-Received: from CY8PR02CA0001.namprd02.prod.outlook.com (2603:10b6:930:4d::7)
- by LV0PR12MB243158.namprd12.prod.outlook.com (2603:10b6:408:3fc::8) with
- Microsoft SMTP Server (version=TLS1_2,
+ bh=uG84/Mgfqsk3P9yqjT3BUiJWu1srQdPKbr4xmkoYNT8=;
+ b=33rnpuUksfDMmqj2Zad3eiv2kwKMSnUqUa24o9uz/UEFO8ccteIs68gFS+8xEHcDeL5PvAyNhf05Zx2sHSyJuyphR2WrNnbK4yIb3sgDbjAVNI6nFvYTSpVhBJn0PqIXVF6ptFbNUeZVX9++jzcaFBuw8LshYl9OjnKM0UThNB4=
+Received: from BN9PR03CA0689.namprd03.prod.outlook.com (2603:10b6:408:10e::34)
+ by CH3PR12MB9316.namprd12.prod.outlook.com (2603:10b6:610:1ce::21)
+ with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
  2026 23:49:38 +0000
-Received: from CY7PEPF000000F0.namprd05.prod.outlook.com
- (2603:10b6:930:4d:cafe::76) by CY8PR02CA0001.outlook.office365.com
- (2603:10b6:930:4d::7) with Microsoft SMTP Server (version=TLS1_3,
+Received: from IA0PEPF00000043.namprd04.prod.outlook.com
+ (2603:10b6:408:10e:cafe::81) by BN9PR03CA0689.outlook.office365.com
+ (2603:10b6:408:10e::34) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.592.13 via Frontend Transport; Mon, 9
- Nov 2026 23:49:37 +0000
+ Nov 2026 23:49:38 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- CY7PEPF000000F0.mail.protection.outlook.com (10.167.247.148) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ IA0PEPF00000043.mail.protection.outlook.com (10.167.249.165) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 23:49:36 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 23:49:38 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 9 Nov
- 2026 17:49:36 -0600
+ 2026 17:49:37 -0600
 Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
  (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 9 Nov
- 2026 17:49:36 -0600
+ 2026 17:49:37 -0600
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.53 via Frontend
- Transport; Mon, 9 Nov 2026 17:49:35 -0600
+ Transport; Mon, 9 Nov 2026 17:49:36 -0600
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
-CC: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, Pierre-Eric Pelloux-Prayer
- <pierre-eric.pelloux-prayer@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Sunil Khatri <sunil.khatri@amd.com>, Vitaly Prosyak <vitaly.prosyak@amd.com>, 
- Jesse.Zhang <Jesse.Zhang@amd.com>, Yogesh Mohan Marimuthu
- <yogesh.mohanmarimuthu@amd.com>
-Subject: [PATCH 2/3] lib/amdgpu: preserve libdrm userq metadata compatibility
-Date: Mon, 9 Nov 2026 18:48:21 -0500
-Message-ID: <20261109234926.146697-2-vitaly.prosyak@amd.com>
+CC: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, Alex Deucher
+ <alexander.deucher@amd.com>, Jesse Zhang <jesse.zhang@amd.com>, "Vitaly
+ Prosyak" <vitaly.prosyak@amd.com>
+Subject: [PATCH] tests/amd/gem_list_handles: Add basic test for
+ DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES
+Date: Mon, 9 Nov 2026 18:48:22 -0500
+Message-ID: <20261109234926.146697-3-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261109234926.146697-1-vitaly.prosyak@amd.com>
 References: <20261109234926.146697-1-vitaly.prosyak@amd.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY7PEPF000000F0:EE_|LV0PR12MB243158:EE_
-X-MS-Office365-Filtering-Correlation-Id: b9461988-af49-4051-b8e2-08df3ebc1cf1
+X-MS-TrafficTypeDiagnostic: IA0PEPF00000043:EE_|CH3PR12MB9316:EE_
+X-MS-Office365-Filtering-Correlation-Id: d12d7aae-a943-4889-1885-08df3ebc1ddc
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700016|82310400026|1800799024|376014|23010399003|18002099003|22082099003|6133799003|10067099003|3023799007|11063799006|261102123227099003|261026121527099003|261026140227099003|261021121427099003|261022105027099003|261021123027099003|56012099006|261028144727099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info: QnPHlb+hT0nVhszp7TEAnrGuv5guZ5JqXACMt2pscLiU2jDdg6GVJIydAe/cBg3JOVloNbjvvoQseQZtJViR/MtdMvAoXxssgawte4wGp25EAXXZJ7cAv42zxdMazOk1lAMd7RAdzEu42eZCgAKTosG9EMKJLrp12z9iMUsJI6nsclCR3cws6PIFQzPG+frrfMe+QYSqzSRGOWpdMiDZPLVTHx9SjpWCWXBIjNS/M+dTvHL3TnbVecr5LEKJv5zMl/vaX8RyleGmksacrP6pUqiyq/o2umJT5LQ1vpPfO92l/pTl8ekAgoDz3gNkUY5PQDxfE+4Zjku/5WoWiT02JF6Mhp3RAxFFmr/uIA5cwGceTzqMGLhwqIzObq1YcqhL3RKB4zu165Bmq7QIDviR2ihUSj+19zAlSGnTNfsM/ps26a9xqOBg5D5IqEQVeVm7bgSDgmODg/epFPZkaOMAGrfP/tNU+XkEWdMKK697jkvl0rdqxOvVSrqBShFoXqyhLHgX4Rhl8rh0Hb2Yb1CgXZ1FrEHbRtMZXhKMlQUegTYjILXkfDosja9bHo5hSwAl+imNlR2QynfBv9PpMY1XtGzufH8Webobc4cIwfC8eMnDn+4xIEkH2w4qOy7EqT1tuXtQMJnbFpMD/2GmQEj7GwWXI6KPUaNZ6ZYyeRaZaAb9Neaxm3XSAsN5PdVuUYHPrHuTCxJcams6NCosCXJ2kQ==
+ ARA:13230040|23010399003|82310400026|36860700016|376014|1800799024|22082099003|18002099003|10067099003|3023799007|11063799006|261009223027099003|261102123227099003|261028144727099003|261026121527099003|261022105027099003|56012099006|261022113327099003|261021123027099003|261021121427099003|261026140227099003|261102130727099003;
+X-Microsoft-Antispam-Message-Info: NrQsUdjtXlRRDroIPtPEJqqoFjFPBB6x5uSNVE1lF9+lw6HE9zKFsRsQxum9nsR8tBNrEYn/gIND5FKYIPgDNzWrZxeTh62bz0Cr/b1xo4k4bYgqzOUzM4sPsCX8Ddp+Y+t+FgAYd9PMr5PgKe+KRYdnvraJBaARzQlccLmuO5zA+t8Pcsb1AChaPg79/+tM7vanbojd2DQHrNGX7ImMg8IwHicGWMNLTlQhaVQnG1iLyVtmF4hjwXNSCbFGdRgbOvKs4HaME01gO6rvBjI69y0O7STEO4Eb7h55aUo4VyoRo7ZqxidCnZXYAMBBY6n7JnJwbsynLuWxt4gY+NCbxm3iohhd8tr8vlP0fb8Y9QprgEX9Cs3sE23Vu3xQkp6EQyAivZo0wSZtIlGsQyT/XuQlAkiZVHgu8VxgIyxm+uU+E0TJ143SFSjEylhXP8mPiz8chNxwBkqdNZnrYPLQgpCLAXKuHa8ffFxeAWG8Q2sP3gGa38k4RlxQhO8q6RIlCF7706D32nbowEGpzuukodIIX3EmE3tmbn4mIZhZ0oV1ZhFZsUSifVo/C2EwEe7eGyO1q0+8aTkSN0PJCcmaLTwLdo6vnT7/0bNvBGGStb6GtE471Ppu17asn08tzuJ0T4Uo3xq23mOjICsqv/lzMv+lHq/GW78z5igUpdAsM9TxQYyMroU2Sqt1J6bKfYawTqf57v3AEtZOFhjYfE7NUA==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700016)(82310400026)(1800799024)(376014)(23010399003)(18002099003)(22082099003)(6133799003)(10067099003)(3023799007)(11063799006)(261102123227099003)(261026121527099003)(261026140227099003)(261021121427099003)(261022105027099003)(261021123027099003)(56012099006)(261028144727099003)(261009223027099003);
+ IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(23010399003)(82310400026)(36860700016)(376014)(1800799024)(22082099003)(18002099003)(10067099003)(3023799007)(11063799006)(261009223027099003)(261102123227099003)(261028144727099003)(261026121527099003)(261022105027099003)(56012099006)(261022113327099003)(261021123027099003)(261021121427099003)(261026140227099003)(261102130727099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: XLcJnWhDjqR2NM3eq2USXaPqReQc0bAB3rRQsAuKS5rsQ7GFXqPIM2P4Cv94s8Zt0Y1CL8N4u7hwkskemuctxVdTkCwrM/7SavvG9S5OPKBSbFyPa4C8X+utJEmoVOq+nfqe8Y/VjkN4OWDemK9/rlaoM8r4s8UfINkf7b01LOlgUHey7gO49ROagsF4B/BfmlN/g3qrb0snSaivNqT/OMMACRAmZv4OTBKfHaW9Eed+c8HZKelOA85Kbr+MG59eV2KPHiXSAo1rNkHFdiTERSzvL7CIYXowCkYHR1aztrB9RAcEdB35Qp7t7Q8NT4r+S8nxyhluwcMBfN/za/EBbz9yQTm8jl0VxQJ5HAj+VJ/0k8//M/DBYbobyXQiQrmfLnQKMnWKdtv17s9mnqpnJkbFZMoamfINpVdrlHAZcRX0OdMB1HS7qTMIah2gGz10
+X-MS-Exchange-AntiSpam-MessageData-0: +e3oZRUWcrFkKeVD1haXAxgjBkNFIuTPEdVOH0oEsNcSo2y3/iAZvZQIiStKQiTgdtHe/GaXJy1vUErkXmZua9+H34R+buiNeiKZ3odN8MLcGkHDcbj6BKDxcyiNl5Jl+ml554a9Z00U+RG87iyyCRWcBYBa+aURWzsWi/qsOjm6WdWXz2uVJvuRdmBdiZweXmLKttnqwKfYvHfhIR5p3bW3GhKUXXiSU+htiz6e3aV0Bm+dpUrcsb8aKaBaU6BBjM/XErz5g+uXRMMOGHMnGxZ0TKqeqLv5bbTdRVIfpMBjOMHun3YTTb8M1fnVXFKsQ9lKWBrU/5K2ZKCL+A9J/5SRwx+vX4zXDGRck1fiI1iV6BcR5gi4JezL8iTai9d+CntpAWD6PyoUfqbLHOZ9etpq3kdbeAP0i2jimGajDrJBAr//N1LxniRQ7M6YXiCb
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 23:49:36.9380 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b9461988-af49-4051-b8e2-08df3ebc1cf1
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 23:49:38.5204 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d12d7aae-a943-4889-1885-08df3ebc1ddc
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY7PEPF000000F0.namprd05.prod.outlook.com
+ Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: IA0PEPF00000043.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR12MB243158
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9316
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -124,85 +122,204 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-Move drm_amdgpu_info_uq_fw_areas out of the synced UAPI header and into
-amd_ip_blocks.h as an IGT compatibility wrapper. Installed libdrm still
-declares and exposes this public type, while the newer kernel UAPI uses
-drm_amdgpu_info_uq_metadata and provides gfx, compute and SDMA members.
+Add basic cases to verify input checking and normal operation: padding
+compatibility, invalid userspace output pointers, zero/one/many buffer
+objects, and two-pass count discovery. Check the returned GEM handles,
+sizes, preferred domains, allocation flags and alignment.
 
-Keep the legacy type used by libdrm's amdgpu_query_gpu_info_fw() API and
-the existing IGT queue-setup code. Define its union from the corresponding
-synced kernel metadata structures so existing GFX field access and layout
-remain compatible while compute and SDMA metadata become available to IGT.
-This is a declaration and source-compatibility change only; it does not
-alter queue creation, resource sizing, ring selection or submission.
-
-This commit follows the UAPI sync commit. It removes the temporary legacy
-declaration from the UAPI header and places the wrapper in amd_ip_blocks.h,
-keeping the preceding commit buildable while making this compatibility
-workaround independently reviewable.
-
-Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian Koenig <christian.koenig@amd.com>
-Cc: Sunil Khatri <sunil.khatri@amd.com>
-Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Cc: Jesse.Zhang <Jesse.Zhang@amd.com>
-Cc: Yogesh Mohan Marimuthu <yogesh.mohanmarimuthu@amd.com>
+Cc: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 Reviewed-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- include/drm-uapi/amdgpu_drm.h | 14 --------------
- lib/amdgpu/amd_ip_blocks.h    | 12 ++++++++++++
- 2 files changed, 12 insertions(+), 14 deletions(-)
+ tests/amdgpu/amd_list_handles.c | 151 ++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build        |   7 +-
+ 2 files changed, 155 insertions(+), 3 deletions(-)
+ create mode 100644 tests/amdgpu/amd_list_handles.c
 
-diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
-index 708034253..29009f6aa 100644
---- a/include/drm-uapi/amdgpu_drm.h
-+++ b/include/drm-uapi/amdgpu_drm.h
-@@ -1668,20 +1668,6 @@ struct drm_amdgpu_info_uq_metadata {
- 	};
- };
- 
--/* Preserve the libdrm public type until the compatibility wrapper is moved into IGT. */
--struct drm_amdgpu_info_uq_fw_areas_gfx {
--	__u32 shadow_size;
--	__u32 shadow_alignment;
--	__u32 csa_size;
--	__u32 csa_alignment;
--};
--
--struct drm_amdgpu_info_uq_fw_areas {
--	union {
--		struct drm_amdgpu_info_uq_fw_areas_gfx gfx;
--	};
--};
--
- /*
-  * Supported GPU families
-  */
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index 3c694ddc5..fc123fe1a 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -275,6 +275,18 @@ amdgpu_dma_default_bytes(const struct amdgpu_dma_limits *lim,
- 	}
- }
- 
+diff --git a/tests/amdgpu/amd_list_handles.c b/tests/amdgpu/amd_list_handles.c
+new file mode 100644
+index 000000000..8c5529239
+--- /dev/null
++++ b/tests/amdgpu/amd_list_handles.c
+@@ -0,0 +1,151 @@
++// SPDX-License-Identifier: MIT
 +/*
-+ * libdrm exposes this legacy name although the kernel UAPI now calls the
-+ * corresponding container drm_amdgpu_info_uq_metadata.
++ * Copyright (c) 2026 Valve Corporation
 + */
-+struct drm_amdgpu_info_uq_fw_areas {
-+	union {
-+		struct drm_amdgpu_info_uq_metadata_gfx gfx;
-+		struct drm_amdgpu_info_uq_metadata_compute compute;
-+		struct drm_amdgpu_info_uq_metadata_sdma sdma;
-+	};
-+};
++#include <sys/ioctl.h>
 +
- /* aux struct to hold misc parameters for convenience to maintain */
- struct amdgpu_ring_context {
- 
++#include "igt.h"
++#include "drmtest.h"
++
++#include <amdgpu.h>
++#include <amdgpu_drm.h>
++
++#include "lib/amdgpu/amd_memory.h"
++
++#define TEST_PADDING (1 << 0)
++#define TEST_FAULT   (1 << 1)
++#define TEST_TWOPASS (1 << 2)
++#define TEST_PROBE   (1 << 3)
++
++#define BUFFER_SIZE    4096
++#define MAX_BOS        1024
++
++static void
++basic(amdgpu_device_handle dev, unsigned int num_bos, unsigned int flags)
++{
++	struct drm_amdgpu_gem_list_handles_entry entry[MAX_BOS];
++	struct drm_amdgpu_gem_list_handles list = {
++		.entries = (uintptr_t)entry,
++		.num_entries = num_bos,
++	};
++	int fd = amdgpu_device_get_fd(dev);
++	amdgpu_bo_handle bo[MAX_BOS];
++	int i, ret;
++
++	igt_assert(num_bos <= MAX_BOS);
++	igt_assert_fd(fd);
++
++	for (i = 0; i < num_bos; i++) {
++		struct amdgpu_bo_alloc_request alloc = {
++			.alloc_size = BUFFER_SIZE,
++			.preferred_heap = AMDGPU_GEM_DOMAIN_GTT,
++		};
++
++		ret = amdgpu_bo_alloc(dev, &alloc, &bo[i]);
++		igt_assert_eq(ret, 0);
++	}
++
++	if (flags & TEST_PADDING) {
++		/*
++		 * Apparently kernel never checked for mbz so now we have to
++		 * keep accepting garbage.
++		 */
++		list.padding = 0x13ac5;
++	} else if (flags & TEST_FAULT) {
++		list.entries = 0;
++	}
++
++	if (flags & TEST_TWOPASS) {
++		if (flags & TEST_PROBE) {
++			list.num_entries = 0;
++		} else {
++			igt_assert(num_bos > 1);
++			list.num_entries = num_bos - 1;
++		}
++		ret = ioctl(fd, DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES, &list);
++		igt_assert_eq(ret, 0);
++		igt_assert_eq(list.num_entries, num_bos);
++	}
++
++	ret = ioctl(fd, DRM_IOCTL_AMDGPU_GEM_LIST_HANDLES, &list);
++	if (flags & TEST_FAULT) {
++		i = errno;
++		igt_assert_eq(ret, -1);
++		igt_assert_eq(i, EFAULT);
++		goto out;
++	}
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(list.num_entries, num_bos);
++
++	for (i = 0; i < num_bos; i++) {
++		struct drm_amdgpu_gem_list_handles_entry *e = &entry[i];
++		uint32_t handle;
++
++		ret = amdgpu_bo_export(bo[i],
++			       amdgpu_bo_handle_type_kms_noimport,
++			       &handle);
++		igt_assert_eq(ret, 0);
++		igt_assert_eq(e->gem_handle, handle);
++
++		igt_assert_eq(e->flags, 0);
++		igt_assert_eq(e->size, BUFFER_SIZE);
++		igt_assert_eq(e->preferred_domains, AMDGPU_GEM_DOMAIN_GTT);
++		igt_assert_eq(e->alloc_flags,
++			      AMDGPU_GEM_CREATE_VRAM_CLEARED |
++			      AMDGPU_GEM_CREATE_VRAM_WIPE_ON_RELEASE);
++		igt_assert_eq(e->alignment, 0);
++	}
++
++out:
++	for (i = 0; i < num_bos; i++)
++		amdgpu_bo_free(bo[i]);
++}
++
++int igt_main()
++{
++	amdgpu_device_handle dev;
++	int fd = -1;
++
++	igt_fixture() {
++		uint32_t major, minor;
++		int err;
++
++		fd = drm_open_driver_render(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &dev);
++		igt_require(err == 0);
++	}
++
++	igt_describe("Check padding backward compatibility");
++	igt_subtest("padding")
++		basic(dev, 1, TEST_PADDING);
++
++	igt_describe("Check fault detection");
++	igt_subtest("fault")
++		basic(dev, 1, TEST_FAULT);
++
++	igt_describe("List no buffer objects");
++	igt_subtest("no-bos")
++		basic(dev, 0, 0);
++
++	igt_describe("Create and list one buffer object");
++	igt_subtest("one-bo")
++		basic(dev, 1, 0);
++
++	igt_describe("Create and list many buffer objects");
++	igt_subtest("many-bo")
++		basic(dev, 1024, 0);
++
++	igt_describe("Create and list many buffer objects in two-pass mode");
++	igt_subtest("many-bo-two-pass")
++		basic(dev, 16, TEST_TWOPASS);
++
++	igt_describe("Create and list many buffer objects in two-pass probe mode");
++	igt_subtest("many-bo-two-pass-probe")
++		basic(dev, 16, TEST_TWOPASS | TEST_PROBE);
++
++	igt_fixture() {
++		amdgpu_device_deinitialize(dev);
++		drm_close_driver(fd);
++	}
++}
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 61b81c814..11e5c00da 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -28,6 +28,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_jpeg_dec',
+ 			  'amd_jpeg_queue',
+ 			  'amd_link_settings',
++			  'amd_list_handles',
+ 			  'amd_lockdep',
+ 			  'amd_max_bpc',
+ 			  'amd_mem_leak',
+@@ -53,9 +54,9 @@ if libdrm_amdgpu.found()
+ 			  'amd_subvp',
+ 			  'amd_mem',
+ 			  'amd_remote_mem',
+-                          'amd_userptr_invalidation',
+-                          'amd_close_race',
+-                          'amd_mes_reset',
++			  'amd_userptr_invalidation',
++			  'amd_close_race',
++			  'amd_mes_reset',
+ 			]
+ 	if libdrm_amdgpu.version().version_compare('> 2.4.97')
+ 		amdgpu_progs +=[ 'amd_syncobj', ]
 -- 
 2.55.0
 
