@@ -2,61 +2,69 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3A4606A31C
-	for <igt-dev@archiver.kernel.org>; Mon,  9 Nov 2026 14:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BAA606EE9B
+	for <igt-dev@archiver.kernel.org>; Mon,  9 Nov 2026 14:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OP0SzB9a
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nMtV7oX6
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3D01410E066;
-	Mon,  9 Nov 2026 14:45:35 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F243510E090
- for <igt-dev@lists.freedesktop.org>; Mon,  9 Nov 2026 14:44:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 6BFFF10E1A2;
+	Mon,  9 Nov 2026 14:58:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8A7EF10E345
+ for <igt-dev@lists.freedesktop.org>; Mon,  9 Nov 2026 14:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794235475; x=1825771475;
+ t=1794236278; x=1825772278;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=5KsRhVwRYivzpe0zkFR/h20DlMI/bhvhv1x8KyQ6t0k=;
- b=OP0SzB9aDgFc8zCFmm2R1vsDY105vzlc5kdu8c4XzKjDPuGi4N3HjY/t
- +4kX2Cbe1BCYQ08uGS0pKSpDyphnYMcLl6hshYmt0DwXjcS+sAHatgBz0
- ipEZ1XpRNISPMk/cAppIR0IpdnPkoVfEIXIbgVoViPRf9Fw4ZGsitdNxT
- cD2hhC5yYxURPjcG7sODysE2o/OOeXWuA7ImuwGtSHHZBHnaTYPin3qck
- jrvhnxV0aJnbuZsSrDEaaDa29Tk1n9m1bLUurNYDq+sRmdLALmWRXPnJu
- ODCih7TTimPEIyiLbyxxC3D5A8G84SjS32qqGAmfv/uRvge30fkek1LYl g==;
-X-CSE-ConnectionGUID: XLf4EfnmQOu4nBMMgDtyPQ==
-X-CSE-MsgGUID: tFYsBJmxQGOffU3AUtoeOA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2960463"
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="2960463"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2026 06:44:34 -0800
-X-CSE-ConnectionGUID: A7jkWYO8QCqePijEgTUUEQ==
-X-CSE-MsgGUID: xNzZ/TZgQHqs6tN1Yvbw1g==
+ bh=98mvuRB8Y7pNIHJBsuzRWN//vDaInmyq9SqFjn8+Xec=;
+ b=nMtV7oX6gPAjW3HoGKaB4RLKBIL+wl0SLAyjXjqDozQXymJ4uZI9k+JB
+ SfFeVdJ1wYCb4TVzsL/vDK5XLkc3z2NNX9I2SX4sMZ7vXKpNQTFR75yae
+ FDiUk4WhtaILtAf7sIFzaCH9l7r1hD3hNjuXsLxfFKg9XsOHAMUzvF+B9
+ oiVYYXxoPV6/JXzoVP86xM3PmqbUV+MlqtAcrAMoqKQzJAC9+7xCwLOMc
+ FPJ+PbkjY0EcHTTGvBIra4IXaIO/+3xtFSKxTDvLHz3RkU191y7sXqt6v
+ 3HcT0gkeGw/K3rldMOdYuMXnNdNd08ge7hxi///Dhmryh6L7kdExXTE9V w==;
+X-CSE-ConnectionGUID: LRH9TXUpRgurNgZ7q5Py9g==
+X-CSE-MsgGUID: MDivSfZKTvCdaxxjglfb6Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2838922"
+X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
+   d="scan'208";a="2838922"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 09 Nov 2026 06:57:58 -0800
+X-CSE-ConnectionGUID: NOiYJlorTI6z5lDfG0bVSA==
+X-CSE-MsgGUID: 1PLrmrlKSw2FvxmFH+bvLQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,204,1787036400"; 
-   d="scan'208";a="8207899"
+   d="scan'208";a="8324995"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 09 Nov 2026 06:44:15 -0800
-Date: Mon, 9 Nov 2026 15:44:11 +0100
+ 09 Nov 2026 06:57:54 -0800
+Date: Mon, 9 Nov 2026 15:57:51 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-Cc: igt-dev@lists.freedesktop.org, niranjana.vishwanathapura@intel.com
-Subject: Re: [PATCH i-g-t v6 3/3] tests/intel/xe_exec_threads: Add
- multi-queue CGP_SYNC replay subtests
-Message-ID: <7qstl6a3reqbsaweguauxk5xlczlivzskgwldvent6armei5iq@67tngcevxhs7>
+To: shivtej.eknath.patil@intel.com
+Cc: igt-dev@lists.freedesktop.org, kamil.konieczny@intel.com, 
+ nishit.sharma@intel.com, smitha.balasubramanyam@intel.com,
+ karthik.poosa@intel.com, 
+ ramadevi.gandi@intel.com, badal.nilawar@intel.com, peter.senna@intel.com, 
+ Patil@freedesktop.org
+Subject: Re: [PATCH v1 1/2] tests/core_sysfs: add coverage for
+ xe_device_sysfs entries
+Message-ID: <wrnao7lanzy3ujr3rnpqvdqty42a36bb4adtaoyylti6pyotsj@cgxaucfjphwh>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Jagmeet Randhawa <jagmeet.randhawa@intel.com>, igt-dev@lists.freedesktop.org, 
- niranjana.vishwanathapura@intel.com
-References: <20261106183246.14482-1-jagmeet.randhawa@intel.com>
- <20261106183246.14482-4-jagmeet.randhawa@intel.com>
+ shivtej.eknath.patil@intel.com, igt-dev@lists.freedesktop.org,
+ kamil.konieczny@intel.com, 
+ nishit.sharma@intel.com, smitha.balasubramanyam@intel.com,
+ karthik.poosa@intel.com, 
+ ramadevi.gandi@intel.com, badal.nilawar@intel.com, peter.senna@intel.com, 
+ Patil@freedesktop.org
+References: <20261104072850.18413-1-shivtej.eknath.patil@intel.com>
+ <20261104072850.18413-2-shivtej.eknath.patil@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261106183246.14482-4-jagmeet.randhawa@intel.com>
+In-Reply-To: <20261104072850.18413-2-shivtej.eknath.patil@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -75,84 +83,181 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Jagmeet,
-On 2026-11-06 at 18:32:46 +0000, Jagmeet Randhawa wrote:
-> Add coverage for the replay paths introduced by "drm/xe/multi_queue: Handle
-> lost message during VF migration":
-> https://patchwork.freedesktop.org/series/165324/
-> 
-> A CGP_SYNC message can be lost during VF migration and is replayed by the
-> KMD on recovery. Exercising that needs a CGP_SYNC queued or outstanding on
-> a live multi-queue group when the migration lands.
-> 
-> A group serialises on one outstanding sync, so both CGP sources are needed:
-> queue creation for registration updates, MULTI_QUEUE_PRIORITY for dynamic
-> ones. Both are driven from the legacy and the compute mode paths, so a
-> mixed mode run spreads the groups and the updates across both.
-> 
-> A group holds at most MULTI_QUEUE_GROUP_SIZE queues, so asking for more
-> queues than that spans several groups and registers them in parallel.
-> 
-> Add MULTI_QUEUE_PRIORITY to issue a short burst of priority updates after
-> each exec, alternating the values since the KMD ignores a set to the
-> current value.
-> 
-> Add three subtests built from these sources, repeated under
-> igt_until_timeout() with a bounded wall clock:
-> 
->   multi-queue-many-groups                registers several full groups in
->                                          parallel from multiple workers
->                                          per engine
->   multi-queue-mixed-many-groups          the same across legacy and
->                                          compute mode workers
->   multi-queue-mixed-many-groups-priority drives dynamic updates on those
->                                          groups from a single worker per
->                                          engine
+Hi shivtej.eknath.patil,
+On 2026-11-04 at 07:28:49 +0000, shivtej.eknath.patil@intel.com wrote:
+> From: "Patil, Shivtej Eknath" <shivtej.eknath.patil@intel.com>
 
-There are skips on LNL, PTL and BMG for these new subtests,
-please add a follow-up patch 'intel-ci: Block ...'
-as a last one in this series, or as a separate one, up to you.
+This should be:
+
+> From: "Shivtej Eknath Patil" <shivtej.eknath.patil@intel.com>
+
+
+> 
+> Add sysfs coverage subtests to validate the following
+> xe_device_sysfs entries:
+
+Nack, please do not add driver-specific code to generic core
+tests, if possible.
+
+> - auto-link-downgrade-capable
+> - auto-link-downgrade-status
+> - lb-fan-control-version
+> - lb-voltage-regulator-version
+> - vram-d3cold-threshold-show
+> - vram-d3cold-threshold-store
+> 
+> Signed-off-by: Patil, Shivtej Eknath <shivtej.eknath.patil@intel.com>
+
+This should be:
+
+Signed-off-by: Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>
+
+Let me propose some changes to this test, so it should be
+easier to spot a problem, if there is any.
+
 
 Regards,
 Kamil
 
-> 
-> Registration and dynamic traffic are kept apart. Driving dynamic updates
-> alongside many parallel registrations makes an update wait long enough to
-> exceed the KMD sync timeout, which bans the group instead of leaving the
-> update to be replayed.
-> 
-> v6:
->  - Issue the priority burst from the compute mode path as well, and make
->    the priority subtest a mixed mode one.
-> 
-> v5:
->  - Rename the worker count to MULTI_QUEUE_THREADS_PER_ENGINE.
->  - Move the dynamic array allocation to its own patch, it is not specific
->    to multi-queue.
->  - Place queues the same way in test_compute_mode() so the group limit is
->    honoured there too, and add multi-queue-mixed-many-groups.
-> 
-> v4:
->  - Keep the multi-queue extension at its only use site.
->  - Mask instead of dividing in multi_queue_group_value().
-> 
-> v3:
->  - Use the MULTI_QUEUE prefix.
->  - Drop the many groups flag and derive the group layout from the queue
->    count, since a group is limited to MULTI_QUEUE_GROUP_SIZE queues.
->  - Take the worker and queue counts from the section rather than deriving
->    them from flags.
->  - No subtest destroys queues, so the churn flag and the queue recreate
->    path are dropped: registration traffic comes from the repeated runs
->    under igt_until_timeout().
-> 
-> v2:
->  - Drop the secondary churn. A secondary cannot be replaced within a live
->    group.
-> 
-> Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
 > ---
->  tests/intel/xe_exec_threads.c | 83 +++++++++++++++++++++++++++++++++--
->  1 file changed, 80 insertions(+), 3 deletions(-)
-[cut]
+>  tests/core_sysfs.c | 115 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 115 insertions(+)
+> 
+> diff --git a/tests/core_sysfs.c b/tests/core_sysfs.c
+> index 3173ffa7b..a10e462c8 100644
+> --- a/tests/core_sysfs.c
+> +++ b/tests/core_sysfs.c
+> @@ -20,8 +20,30 @@
+>   * SUBTEST: read-all-entries
+>   * Description: Read all entries from sysfs path
+>   *
+> + * SUBTEST: auto-link-downgrade-capable-show
+> + * Description: Read auto_link_downgrade_capable sysfs entry
+> + *
+> + * SUBTEST: auto-link-downgrade-status-show
+> + * Description: Read auto_link_downgrade_status sysfs entry
+> + *
+> + * SUBTEST: lb-fan-control-version-show
+> + * Description: Read lb_fan_control_version sysfs entry
+> + *
+> + * SUBTEST: lb-voltage-regulator-version-show
+> + * Description: Read lb_voltage_regulator_version sysfs entry
+> + *
+> + * SUBTEST: vram-d3cold-threshold-show
+> + * Description: Read vram_d3cold_threshold sysfs entry
+> + *
+> + * SUBTEST: vram-d3cold-threshold-store
+> + * Description: Write and read back vram_d3cold_threshold sysfs entry
+>   */
+>  
+> +static bool sysfs_exists(int sysfs_fd, const char *path)
+> +{
+> +	return !faccessat(sysfs_fd, path, R_OK, 0);
+> +}
+> +
+>  IGT_TEST_DESCRIPTION("Read entries from sysfs paths.");
+>  
+>  int igt_main()
+> @@ -41,6 +63,99 @@ int igt_main()
+>  	igt_subtest("read-all-entries")
+>  		igt_dir_process_files_simple(sysfs);
+>  
+> +	igt_subtest("auto-link-downgrade-capable-show") {
+> +		int val;
+> +		int ret;
+> +
+> +		igt_require(sysfs_exists(sysfs,
+> +					 "device/auto_link_downgrade_capable"));
+> +
+> +		ret = igt_sysfs_scanf(sysfs,
+> +				      "device/auto_link_downgrade_capable",
+> +				      "%d", &val);
+> +
+> +		igt_assert(ret > 0);
+> +		igt_info("auto-link-downgrade-capable=%d\n", val);
+> +		igt_assert(val == 0 || val == 1);
+> +	}
+> +
+> +	igt_subtest("auto-link-downgrade-status-show") {
+> +		int val;
+> +		int ret;
+> +
+> +		igt_require(sysfs_exists(sysfs,
+> +					 "device/auto_link_downgrade_status"));
+> +
+> +		ret = igt_sysfs_scanf(sysfs,
+> +				      "device/auto_link_downgrade_status",
+> +				      "%d", &val);
+> +
+> +		igt_assert(ret > 0);
+> +		igt_info("auto-link-downgrade-status=%d\n", val);
+> +		igt_assert(val == 0 || val == 1);
+> +	}
+> +
+> +	igt_subtest("lb-fan-control-version-show") {
+> +		char version[64];
+> +		int ret;
+> +
+> +		igt_require(sysfs_exists(sysfs,
+> +					 "device/lb_fan_control_version"));
+> +
+> +		ret = igt_sysfs_scanf(sysfs,
+> +				      "device/lb_fan_control_version",
+> +				      "%63s", version);
+> +
+> +		igt_debug("ret=%d errno=%d\n", ret, errno);
+> +
+> +		igt_assert(ret > 0);
+> +
+> +		igt_info("lb-fan-control-version=%s\n", version);
+> +	}
+> +
+> +	igt_subtest("lb-voltage-regulator-version-show") {
+> +		char version[64] = {};
+> +		int ret;
+> +
+> +		igt_require(sysfs_exists(sysfs,
+> +					 "device/lb_voltage_regulator_version"));
+> +
+> +		ret = igt_sysfs_scanf(sysfs,
+> +				      "device/lb_voltage_regulator_version",
+> +				      "%63s", version);
+> +		igt_debug("ret=%d errno=%d\n", ret, errno);
+> +
+> +		igt_assert(ret > 0);
+> +		igt_info("lb-voltage-regulator-version=%s\n", version);
+> +	}
+> +
+> +	igt_subtest("vram-d3cold-threshold-show") {
+> +		uint64_t threshold;
+> +
+> +		igt_require(sysfs_exists(sysfs,
+> +					 "device/vram_d3cold_threshold"));
+> +
+> +		threshold = igt_sysfs_get_vram_d3cold_threshold(sysfs);
+> +
+> +		igt_info("threshold=%" PRIu64 "\n", threshold);
+> +	}
+> +
+> +	igt_subtest("vram-d3cold-threshold-store") {
+> +		uint64_t old_val;
+> +		uint64_t new_val;
+> +
+> +		igt_require(sysfs_exists(sysfs,
+> +					 "device/vram_d3cold_threshold"));
+> +		old_val = igt_sysfs_get_vram_d3cold_threshold(sysfs);
+> +		igt_sysfs_set_vram_d3cold_threshold(sysfs, old_val + 1);
+> +		new_val = igt_sysfs_get_vram_d3cold_threshold(sysfs);
+> +		igt_assert_eq(new_val, old_val + 1);
+> +		/* restore */
+> +		igt_sysfs_set_vram_d3cold_threshold(sysfs, old_val);
+> +		igt_info("old=%" PRIu64 " new=%" PRIu64 "\n",
+> +			 old_val, new_val);
+> +	}
+> +
+>  	igt_fixture() {
+>  		close(sysfs);
+>  		drm_close_driver(fd);
+> -- 
+> 2.34.1
+> 
