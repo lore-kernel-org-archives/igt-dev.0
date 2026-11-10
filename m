@@ -2,26 +2,26 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C536606A31C
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 01:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92F760A2605
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 01:21:39 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1DEDB10E67B;
-	Tue, 10 Nov 2026 01:08:56 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7964810E5E7;
+	Tue, 10 Nov 2026 01:21:39 +0000 (UTC)
 Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A2C0610E1EB;
- Tue, 10 Nov 2026 01:07:58 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 21CB910E5E7;
+ Tue, 10 Nov 2026 01:20:44 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3136310107511739455=="
+ boundary="===============3828184753673881620=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Flink=5Fm?=
- =?utf-8?q?=5Fn=3A_Add_DisplayPort_Link_M/N_ratio_validation_tests_=28rev2?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/kms=5Flink=5F?=
+ =?utf-8?q?m=5Fn=3A_Add_DisplayPort_Link_M/N_ratio_validation_tests_=28rev2?=
  =?utf-8?q?=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Naladala Ramanaidu" <ramanaidu.naladala@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 10 Nov 2026 01:07:58 -0000
-Message-ID: <179427287865.11.4939603788150145739@9ac1b63fe3ea>
+Date: Tue, 10 Nov 2026 01:20:44 -0000
+Message-ID: <179427364412.12.1278921262784351945@9ac1b63fe3ea>
 X-Patchwork-Hint: ignore
 References: <20261016180358.2224883-1-ramanaidu.naladala@intel.com>
 In-Reply-To: <20261016180358.2224883-1-ramanaidu.naladala@intel.com>
@@ -37,13 +37,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+	autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============3136310107511739455==
+--===============3828184753673881620==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -56,7 +56,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9182_BAT -> XEIGTPW_16122_BAT
+CI Bug Log - changes from IGT_9182 -> IGTPW_16122
 ====================================================
 
 Summary
@@ -66,47 +66,58 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/index.html
 
-Participating hosts (13 -> 13)
+Participating hosts (40 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-dg2-13 bat-adls-6 
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_16122_BAT that come from known issues:
+  Here are the changes found in IGTPW_16122 that come from known issues:
 
 ### IGT changes ###
 
-#### Possible fixes ####
+#### Issues hit ####
 
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-bmg-2:          [ABORT][1] ([Intel XE#9463]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9182/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16122/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-1115g4:      [PASS][1] -> [FAIL][2] ([i915#17751])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9182/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
 
   
-  [Intel XE#9463]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463
+#### Possible fixes ####
+
+  * igt@i915_selftest@live@vma:
+    - bat-mtlp-9:         [INCOMPLETE][3] ([i915#16229]) -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9182/bat-mtlp-9/igt@i915_selftest@live@vma.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/bat-mtlp-9/igt@i915_selftest@live@vma.html
+
+  
+  [i915#16229]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16229
+  [i915#17751]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17751
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_9182 -> IGTPW_16122
-  * Linux: xe-6095-d72707a042b6aff601449a9cf87e5fe55decbc5c -> xe-6097-808930035a8f606c1e19906bf8f2704b77c08e27
+  * Linux: CI_DRM_19475 -> CI_DRM_19477
 
+  CI-20190529: 20190529
+  CI_DRM_19475: d72707a042b6aff601449a9cf87e5fe55decbc5c @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19477: 808930035a8f606c1e19906bf8f2704b77c08e27 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_16122: 16122
   IGT_9182: 9182
-  xe-6095-d72707a042b6aff601449a9cf87e5fe55decbc5c: d72707a042b6aff601449a9cf87e5fe55decbc5c
-  xe-6097-808930035a8f606c1e19906bf8f2704b77c08e27: 808930035a8f606c1e19906bf8f2704b77c08e27
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16122/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/index.html
 
---===============3136310107511739455==
+--===============3828184753673881620==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -130,38 +141,48 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176310/">https://patchwork.freedesktop.org/series/176310/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16122/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16122/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9182_BAT -&gt; XEIGTPW_16122_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9182 -&gt; IGTPW_16122</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (13 -&gt; 13)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_16122_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_16122 that come from known issues:</p>
 <h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9182/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17751">i915#17751</a>)</li>
+</ul>
+</li>
+</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9182/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9463">Intel XE#9463</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16122/bat-bmg-2/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+<li>igt@i915_selftest@live@vma:<ul>
+<li>bat-mtlp-9:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9182/bat-mtlp-9/igt@i915_selftest@live@vma.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16229">i915#16229</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16122/bat-mtlp-9/igt@i915_selftest@live@vma.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9182 -&gt; IGTPW_16122</li>
-<li>Linux: xe-6095-d72707a042b6aff601449a9cf87e5fe55decbc5c -&gt; xe-6097-808930035a8f606c1e19906bf8f2704b77c08e27</li>
+<li>Linux: CI_DRM_19475 -&gt; CI_DRM_19477</li>
 </ul>
-<p>IGTPW_16122: 16122<br />
-  IGT_9182: 9182<br />
-  xe-6095-d72707a042b6aff601449a9cf87e5fe55decbc5c: d72707a042b6aff601449a9cf87e5fe55decbc5c<br />
-  xe-6097-808930035a8f606c1e19906bf8f2704b77c08e27: 808930035a8f606c1e19906bf8f2704b77c08e27</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19475: d72707a042b6aff601449a9cf87e5fe55decbc5c @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19477: 808930035a8f606c1e19906bf8f2704b77c08e27 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_16122: 16122<br />
+  IGT_9182: 9182</p>
 
 </body>
 </html>
 
---===============3136310107511739455==--
+--===============3828184753673881620==--
