@@ -2,53 +2,56 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CD060A2615
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 08:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A637C60A263C
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 08:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JVFJwcWy
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=LDh02KHV
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C77E210E02F;
-	Tue, 10 Nov 2026 08:27:27 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 61AB510E7CD
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2026 08:26:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 52FD010E35A;
+	Tue, 10 Nov 2026 08:29:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1E67110E02F
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2026 08:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794299188; x=1825835188;
+ t=1794299331; x=1825835331;
  h=from:to:cc:subject:date:message-id:mime-version:
  content-transfer-encoding;
- bh=1mA0Ao7FeBw2zhv6uoSv3kIWDCS5GpLRGgTY70Dj+co=;
- b=JVFJwcWy9UMEB4uhFO+dHD2ddpFNqyS04rUz/SozQ2SRo3n/42V1lPat
- wt4idQlqba0O8fz5kwCNJH9MjM4ZllIJvRDFynBoFyzrCndSzo4P029O7
- m+O9QFtcBqW4+JRnWPbgwXm1XX34U9MGtRYt9/YRb1EIAx8aKVTBmeHj0
- VlxKFLKFdcbWRpDtx9h+cpb9L8K4fa777iXiK4GePMZNU2uPyhk1T+7PB
- uCQ1Kluf+1gae3IKV2iBAyznZhXoSuquhGCSB7KAVQt8jwVvlvud3Xow9
- HPhjJO/byd/MKq235k2Hf5dq+CDSw9sxm4KOQ8YY3loTKZ6YvvpdVimNa A==;
-X-CSE-ConnectionGUID: vsE66A7zSsKiry3YUAncOQ==
-X-CSE-MsgGUID: MHekgd4hTaekf6z6mCY+BA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2955922"
+ bh=zmNv2lK0ZmifnddQshz8oYe3l/EPiK/I4ggSMzm8FPw=;
+ b=LDh02KHVTqeKcIhipZZ64YfHX5YQN19Vr6jiS6mG+/2hsQ+p5MP0wF5G
+ RcNk9xj/5UOjoZ/5y0J1/m/qd4T4d+I1s/AM6xeX67kM6z2JWROEKgG3E
+ xY3bDv3aqOhddsxEF/nfuWmJSr4coCGn7I0ebmpbbXunxxzvZNXNBrPti
+ bfk6VCORcx2yIFkrJ0z0lKt3vGKiZ8Hp2SnrBko9PXy3rXM62GOD0Xx51
+ UuGplq6Ql/8tx2rVvmgUdi0OYJOQmubk6AO/8Wo/CE+wfKj8R/2VPuSno
+ 6rGKsrKLaP1Gxjrx5F5ofOEhpsi+BDAAmT7VeRnEgLVR6k5/sWLPHPFGj A==;
+X-CSE-ConnectionGUID: Pd1/r+HGRWOq2t5yIGQHIg==
+X-CSE-MsgGUID: bMcRPmg1SouiSBJlZRZMNg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="2938155"
 X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="2955922"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2026 00:26:26 -0800
-X-CSE-ConnectionGUID: GLwphj38TsS/f01hwmCe9A==
-X-CSE-MsgGUID: dKQc56DkTF+5c2d92IInKA==
+   d="scan'208";a="2938155"
+Received: from fmviesa013.fm.intel.com ([10.60.135.153])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2026 00:28:50 -0800
+X-CSE-ConnectionGUID: H6fxGlhDR/K6eJmV7qrjiA==
+X-CSE-MsgGUID: cmD+pCslTLKYOYFsTENhQA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="8095589"
-Received: from display-adls.igk.intel.com ([10.211.131.198])
- by orviesa002.jf.intel.com with ESMTP; 10 Nov 2026 00:26:25 -0800
-From: Mika Kahola <mika.kahola@intel.com>
+   d="scan'208";a="9958926"
+Received: from dev-150.igk.intel.com (HELO localhost) ([10.91.214.40])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2026 00:28:50 -0800
+From: Lukasz Laguna <lukasz.laguna@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Mika Kahola <mika.kahola@intel.com>
-Subject: [PATCH i-g-t] tests/intel/kms_psr2_sf: Skip PSR2 subtests when PSR2
- isn't enabled
-Date: Tue, 10 Nov 2026 08:26:22 +0000
-Message-ID: <20261110082622.3473582-1-mika.kahola@intel.com>
+Cc: marcin.bernatowicz@intel.com,
+	piotr.piorkowski@intel.com
+Subject: [PATCH v4 0/3] tests/intel/xe_sriov_mmio_regs: Add tests to verify
+ registers on VFs
+Date: Tue, 10 Nov 2026 09:28:35 +0100
+Message-ID: <20261110082838.2034264-1-lukasz.laguna@intel.com>
 X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -61,58 +64,32 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The driver can fall back to PSR1 even though the sink supports PSR2.
-The psr2 subtests then never reach DEEP_SLEEP and fail with:
+In case of SR-IOV, the VF has limited access to the registers. Let's add
+tests to verify that the VF actually has access only to the allowed list
+of registers, and verify that registers dedicated to VFs work properly.
 
-  CRITICAL: Test assertion failure function run, file ../tests/intel/kms_psr2_sf.c:964:
-  CRITICAL: Failed assertion: psr_wait_entry(data->debugfs_fd, data->psr_mode, data->output)
+Lukasz Laguna (2):
+  lib/igt_sriov_device: Add helpers to get SR-IOV function name
+  intel-ci: Block igt@xe_sriov_mmio_regs.*
 
-Turn this failure into a skip when the driver didn't enable PSR2. Clean
-up first, so that the Panel Replay subtests running next start from a
-clean state.
+Piotr Piórkowski (1):
+  tests/intel/xe_sriov_mmio_regs: Add tests to verify registers on VFs
 
-Signed-off-by: Mika Kahola <mika.kahola@intel.com>
----
- tests/intel/kms_psr2_sf.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ lib/igt_sriov_device.c           |  53 +++-
+ lib/igt_sriov_device.h           |   2 +
+ tests/intel-ci/xe.blocklist.txt  |   1 +
+ tests/intel/xe_sriov_mmio_regs.c | 408 +++++++++++++++++++++++++++++++
+ tests/meson.build                |   1 +
+ 5 files changed, 462 insertions(+), 3 deletions(-)
+ create mode 100644 tests/intel/xe_sriov_mmio_regs.c
 
-diff --git a/tests/intel/kms_psr2_sf.c b/tests/intel/kms_psr2_sf.c
-index fa7090ce8..2a5915c72 100644
---- a/tests/intel/kms_psr2_sf.c
-+++ b/tests/intel/kms_psr2_sf.c
-@@ -401,6 +401,8 @@ static void plane_move_setup_square(data_t *data, igt_fb_t *fb, uint32_t h,
- 	set_clip(&data->plane_move_clip, x, y, SQUARE_SIZE, SQUARE_SIZE);
- }
- 
-+static void cleanup(data_t *data);
-+
- static void prepare(data_t *data)
- {
- 	igt_output_t *output = data->output;
-@@ -562,6 +564,16 @@ static void prepare(data_t *data)
- 	if (data->op_fbc_mode == FBC_ENABLED)
- 		igt_require_f(data->fbc_flag,
- 			      "Can't test FBC with PSR\n");
-+
-+	/* Sink support doesn't guarantee the driver enables PSR2. */
-+	if (data->psr_mode == PSR_MODE_2) {
-+		enum psr_mode mode = psr_get_mode(data->debugfs_fd, output);
-+
-+		if (mode != PSR_MODE_2 && mode != PSR_MODE_2_SEL_FETCH) {
-+			cleanup(data);
-+			igt_skip("PSR2 not enabled by the driver\n");
-+		}
-+	}
- }
- 
- static inline void manual(const char *expected)
 -- 
 2.43.0
 
