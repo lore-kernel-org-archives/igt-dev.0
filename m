@@ -2,62 +2,64 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B9560A2611
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 11:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87120606A321
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 11:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bkCp4W0C
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=N3kOixi0
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B42F10EFF9;
-	Tue, 10 Nov 2026 11:43:20 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 98F8510EFF7
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2026 11:42:15 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3283C10E92E;
+	Tue, 10 Nov 2026 11:55:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7748810E92E
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2026 11:54:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794310935; x=1825846935;
+ t=1794311692; x=1825847692;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=+aLSDsdXhJSNFg6xgNX2klZVttVwt538k4HpDr1QRfk=;
- b=bkCp4W0CzjUF9AhogQLnJX6z1fgxLVJOs1+RQj3cmKzSG3HwchmCFMnD
- qitAb5eczcqgK15GthII0L4yTlRRSgJalt2qJg0iMTM6wdVp7PKf1LZky
- 4pXD5HSCVaP62QdCtEvpX7mK8/dqt8QssRnoKf4pwolyDLh6HmURmR6Ya
- bEj/ooJ2dGAZZ4MAAB2aCF4vtnVUHw5x4LW1pJlxJaUHubLkD8PEF+867
- tQKfHqtoOarZ/4knPNez2LCbHAxcFeVSW9vhWs/szGZnuqu9zz0CCA1mW
- y21yqQX8GkMck/nKTjp68lWVdra3wSOnzkkim52YNZ4TWAkzhxrWjwVj2 w==;
-X-CSE-ConnectionGUID: uAreyZwgS52iAgISRguvjg==
-X-CSE-MsgGUID: pTjIvqfNTA+0oWM3H+3oIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3051056"
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=55DSMsJvV/NyA7e3cMriqw5cf+ChBk82sRLJx74xOCo=;
+ b=N3kOixi02pFeaUBeVTOiK38UdPEqtxq+MJU4DT6/HeD4BHsE0W8DYXP5
+ Xmh4QatZ4gWGgU8pNVJkox1dixYjuvX4fDHj56u0lAjQKOhrqUiMRIqsG
+ iQ5hChOIwloY3myP7peVjeNI6EzWcItoxrE4Vi1hN+PDvzd+gl5BnJUBb
+ NacqhTF/zVIpEYO9lVmXmAgfJCL8KZogX7IArwc6zoQpVH7MZjnp4EV9x
+ d6YI6/I7I1gc++TqKUj39tiqAUvINieB7OxEYPwBTeK+LUSNQ4vlVtxar
+ fyB5z79o8jzUBmpXI/GZb9s3bX3BswRUynKcx+G2/Y+HxmmkPg6H7cLHv Q==;
+X-CSE-ConnectionGUID: LMHWwegrQT64oU+kAUc7MQ==
+X-CSE-MsgGUID: Uwvh0NMDSMaM/ANJIQZ8dQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3088056"
 X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="3051056"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
- by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2026 03:42:15 -0800
-X-CSE-ConnectionGUID: 383383gnQQ2Z2AnZoMwSLQ==
-X-CSE-MsgGUID: b8aHJkrfRzqWG6CAxV5njQ==
+   d="scan'208";a="3088056"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2026 03:54:51 -0800
+X-CSE-ConnectionGUID: O1RCaiRrQJOo8M7DLSV4cA==
+X-CSE-MsgGUID: aoM9AZ2BSOuBfpAiqtB4dg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="8457104"
+   d="scan'208";a="7961542"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2026 03:42:15 -0800
-Date: Tue, 10 Nov 2026 12:42:11 +0100
+ 10 Nov 2026 03:54:50 -0800
+Date: Tue, 10 Nov 2026 12:54:47 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Lukasz Laguna <lukasz.laguna@intel.com>
-Cc: igt-dev@lists.freedesktop.org, marcin.bernatowicz@intel.com, 
- piotr.piorkowski@intel.com
-Subject: Re: [PATCH v4 1/3] lib/igt_sriov_device: Add helpers to get SR-IOV
- function name
-Message-ID: <cgrcaprc5yhcgbm2kx3iyrlsdwwm6palcslarndlwzmigkcxt5@c7zzucjpcwno>
+To: "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>
+Cc: igt-dev@lists.freedesktop.org, niranjana.vishwanathapura@intel.com
+Subject: Re: [PATCH i-g-t v6 3/3] tests/intel/xe_exec_threads: Add
+ multi-queue CGP_SYNC replay subtests
+Message-ID: <olahnebt7bud4pfreujrj44tdqdnzygyn76ptfjucrjiwvkvxv@jhqp4bnafwpb>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org,
- marcin.bernatowicz@intel.com, piotr.piorkowski@intel.com
-References: <20261110082838.2034264-1-lukasz.laguna@intel.com>
- <20261110082838.2034264-2-lukasz.laguna@intel.com>
+ "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>, igt-dev@lists.freedesktop.org,
+ niranjana.vishwanathapura@intel.com
+References: <20261106183246.14482-1-jagmeet.randhawa@intel.com>
+ <20261106183246.14482-4-jagmeet.randhawa@intel.com>
+ <7qstl6a3reqbsaweguauxk5xlczlivzskgwldvent6armei5iq@67tngcevxhs7>
+ <9b99f4ef-1f2c-459f-9dca-14e0b10933b7@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261110082838.2034264-2-lukasz.laguna@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <9b99f4ef-1f2c-459f-9dca-14e0b10933b7@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -76,130 +78,125 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Lukasz,
-On 2026-11-10 at 09:28:36 +0100, Lukasz Laguna wrote:
-> Introduce helpers to format SR-IOV function names in lowercase and
-> uppercase variants. They format PF as "pf" or "PF" and VFs as "vf%u" or
-> "VF%u" depending on the variant.
+Hi Randhawa,,
+On 2026-11-09 at 10:33:31 -0800, Randhawa, Jagmeet wrote:
 > 
-> Keep igt_sriov_func_str() as a compatibility wrapper around the
-> lowercase, so existing callers continue to work while the code migrates
-> to the new API.
+> On 11/9/2026 6:44 AM, Kamil Konieczny wrote:
+> > Hi Jagmeet,
+> > On 2026-11-06 at 18:32:46 +0000, Jagmeet Randhawa wrote:
+> > > Add coverage for the replay paths introduced by "drm/xe/multi_queue: Handle
+> > > lost message during VF migration":
+> > > https://patchwork.freedesktop.org/series/165324/
+> > > 
+> > > A CGP_SYNC message can be lost during VF migration and is replayed by the
+> > > KMD on recovery. Exercising that needs a CGP_SYNC queued or outstanding on
+> > > a live multi-queue group when the migration lands.
+> > > 
+> > > A group serialises on one outstanding sync, so both CGP sources are needed:
+> > > queue creation for registration updates, MULTI_QUEUE_PRIORITY for dynamic
+> > > ones. Both are driven from the legacy and the compute mode paths, so a
+> > > mixed mode run spreads the groups and the updates across both.
+> > > 
+> > > A group holds at most MULTI_QUEUE_GROUP_SIZE queues, so asking for more
+> > > queues than that spans several groups and registers them in parallel.
+> > > 
+> > > Add MULTI_QUEUE_PRIORITY to issue a short burst of priority updates after
+> > > each exec, alternating the values since the KMD ignores a set to the
+> > > current value.
+> > > 
+> > > Add three subtests built from these sources, repeated under
+> > > igt_until_timeout() with a bounded wall clock:
+> > > 
+> > >    multi-queue-many-groups                registers several full groups in
+> > >                                           parallel from multiple workers
+> > >                                           per engine
+> > >    multi-queue-mixed-many-groups          the same across legacy and
+> > >                                           compute mode workers
+> > >    multi-queue-mixed-many-groups-priority drives dynamic updates on those
+> > >                                           groups from a single worker per
+> > >                                           engine
+> > There are skips on LNL, PTL and BMG for these new subtests,
+> > please add a follow-up patch 'intel-ci: Block ...'
+> > as a last one in this series, or as a separate one, up to you.
+> > 
+> > Regards,
+> > Kamil
+> Thanks for looking.
 > 
-> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
-> ---
->  lib/igt_sriov_device.c | 53 +++++++++++++++++++++++++++++++++++++++---
->  lib/igt_sriov_device.h |  2 ++
->  2 files changed, 52 insertions(+), 3 deletions(-)
+> The three core blocklists already carry a wildcard that covers these
+> subtests:
 > 
-> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
-> index 6c9fbdf70..de446aca1 100644
-> --- a/lib/igt_sriov_device.c
-> +++ b/lib/igt_sriov_device.c
-> @@ -54,13 +54,60 @@ const char *igt_sriov_func_str(unsigned int vf_num)
->  {
->  	static __thread char buf[16];
->  
-> -	if (vf_num == 0)
-> -		return "pf";
-> +	return igt_sriov_function_name_lower(vf_num, buf, sizeof(buf));
-> +}
-> +
-> +static const char *sriov_function_name(unsigned int vf_num, bool uppercase,
+>   tests/intel-ci/xe.lnl.core.blocklist.txt
+>   tests/intel-ci/xe.ptl.core.blocklist.txt
+>   tests/intel-ci/xe.bmg.core.blocklist.txt
+> 
+>     # Multi-queue is not supported on platforms older than xe3p
+>     igt@.*multi.queue.*
+> 
+> That was added in 758f22d62 and it matches all three new subtests:
+> 
+>   igt@xe_exec_threads@threads-multi-queue-many-groups
+>   igt@xe_exec_threads@threads-multi-queue-mixed-many-groups
+>   igt@xe_exec_threads@threads-multi-queue-mixed-many-groups-priority
+> 
+> They are also not in xe.fast-feedback.testlist.
+> 
+> If the run you are looking at uses a list that does not read those files,
+> let me
+> 
+> know which one and I will send a separate 'intel-ci: Block ...' patch for
+> it.
 
-bool param is imho unneceserry here, better to have for example
-two strings:
-
-static const char *sriov_function_name(unsigned int vf_num, char *pfname, char *vfname,
-
-> +				       char *buf, size_t size)
-> +{
-> +	int ret;
-> +
-> +	igt_assert(buf && size);
-> +
-> +	if (vf_num)
-> +		ret = snprintf(buf, size, uppercase ? "VF%u" : "vf%u", vf_num);
-
-Using above:
-
-		ret = snprintf(buf, size, "%s%u", vfname, vf_num);
-
-> +	else
-> +		ret = snprintf(buf, size, uppercase ? "PF" : "pf");
-
-		ret = snprintf(buf, size, "%s", pfname);
-
-> +
-> +	igt_assert(ret >= 0 && (size_t)ret < size);
->  
-> -	snprintf(buf, sizeof(buf), "vf%u", vf_num);
->  	return buf;
->  }
->  
-> +/**
-> + * igt_sriov_function_name_lower - Get SR-IOV function name in lowercase
-> + * @vf_num: VF number (1-based to identify single VF) or 0 for PF
-> + * @buf: buffer
-> + * @size: size of the buffer
-> + *
-> + * It formats the function name as "pf" when @vf_num is 0, or as "vf%u"
-> + * when @vf_num is greater than 0.
-> + *
-> + * Return: formatted function name.
-> + */
-> +const char *igt_sriov_function_name_lower(unsigned int vf_num, char *buf,
-> +					 size_t size)
-> +{
-> +	return sriov_function_name(vf_num, false, buf, size);
-
-imho better:
-	return sriov_function_name(vf_num, "pf", "vf", buf, size);
-
-> +}
-> +
-> +/**
-> + * igt_sriov_function_name_upper - Get SR-IOV function name in uppercase
-> + * @vf_num: VF number (1-based to identify single VF) or 0 for PF
-> + * @buf: buffer
-> + * @size: size of the buffer
-> + *
-> + * It formats the function name as "PF" when @vf_num is 0, or as "VF%u"
-> + * when @vf_num is greater than 0.
-> + *
-> + * Return: formatted function name.
-> + */
-> +const char *igt_sriov_function_name_upper(unsigned int vf_num, char *buf,
-> +					 size_t size)
-> +{
-
-imho better:
-	return sriov_function_name(vf_num, "PF", "VF", buf, size);
-
+Hmm, sorry for noise, you are right, I forgot  about them
+being already blocked. Just make sure you did not see skips
+for these new tests in a Xe CI report.
 
 
 Regards,
 Kamil
 
-> +	return sriov_function_name(vf_num, true, buf, size);
-> +}
-> +
->  static bool __pf_attr_get_u32(int pf, const char *attr, uint32_t *value)
->  {
->  	int sysfs;
-> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
-> index 4e4ba230a..0e94c521a 100644
-> --- a/lib/igt_sriov_device.h
-> +++ b/lib/igt_sriov_device.h
-> @@ -36,6 +36,8 @@ bool igt_sriov_device_reset_exists(int pf, unsigned int vf_num);
->  bool igt_sriov_device_reset(int pf, unsigned int vf_num);
->  bool intel_is_vf_device(int device);
->  const char *igt_sriov_func_str(unsigned int vf_num);
-> +const char *igt_sriov_function_name_lower(unsigned int vf_num, char *buf, size_t size);
-> +const char *igt_sriov_function_name_upper(unsigned int vf_num, char *buf, size_t size);
->  typedef void (*igt_sriov_exit_cleanup_fn)(int pf, int sig, void *user_data);
->  void igt_sriov_install_exit_handler(int pf,
->  				    igt_sriov_exit_cleanup_fn cleanup_fn,
-> -- 
-> 2.43.0
 > 
+> If appropriate, Can you merge this patch series, Thanks!
+> 
+> Jagmeet
+> 
+> > 
+> > > Registration and dynamic traffic are kept apart. Driving dynamic updates
+> > > alongside many parallel registrations makes an update wait long enough to
+> > > exceed the KMD sync timeout, which bans the group instead of leaving the
+> > > update to be replayed.
+> > > 
+> > > v6:
+> > >   - Issue the priority burst from the compute mode path as well, and make
+> > >     the priority subtest a mixed mode one.
+> > > 
+> > > v5:
+> > >   - Rename the worker count to MULTI_QUEUE_THREADS_PER_ENGINE.
+> > >   - Move the dynamic array allocation to its own patch, it is not specific
+> > >     to multi-queue.
+> > >   - Place queues the same way in test_compute_mode() so the group limit is
+> > >     honoured there too, and add multi-queue-mixed-many-groups.
+> > > 
+> > > v4:
+> > >   - Keep the multi-queue extension at its only use site.
+> > >   - Mask instead of dividing in multi_queue_group_value().
+> > > 
+> > > v3:
+> > >   - Use the MULTI_QUEUE prefix.
+> > >   - Drop the many groups flag and derive the group layout from the queue
+> > >     count, since a group is limited to MULTI_QUEUE_GROUP_SIZE queues.
+> > >   - Take the worker and queue counts from the section rather than deriving
+> > >     them from flags.
+> > >   - No subtest destroys queues, so the churn flag and the queue recreate
+> > >     path are dropped: registration traffic comes from the repeated runs
+> > >     under igt_until_timeout().
+> > > 
+> > > v2:
+> > >   - Drop the secondary churn. A secondary cannot be replaced within a live
+> > >     group.
+> > > 
+> > > Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+> > > ---
+> > >   tests/intel/xe_exec_threads.c | 83 +++++++++++++++++++++++++++++++++--
+> > >   1 file changed, 80 insertions(+), 3 deletions(-)
+> > [cut]
