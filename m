@@ -2,60 +2,59 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9741C606A320
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 16:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1F3606A331
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 16:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KL0PG1vy
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Q05/NF+3
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3586910E21C;
-	Tue, 10 Nov 2026 16:12:31 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id DA06D10E48E;
+	Tue, 10 Nov 2026 16:13:28 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C29C010E21C
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2026 16:08:00 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5678910E2A7
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2026 16:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794326881; x=1825862881;
+ t=1794326891; x=1825862891;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=x8igFfd0y2MjTa3gdQum1Rm5GxI1pMkxdvCh+BT9GMc=;
- b=KL0PG1vy6ATEYeIKsmSy15SKqImwBM/Fyj6xL6RMbl6gsHsL+tyNdwmT
- LvYy685e7Bwgwzk2jeAvF3KHYLGrXR9T4DkG2KyaiNiU+Ezx7GMKABJB7
- MNaAQBX8pqj4ZCOWShbGgo1b5cMXj7fvCTRVnY+rT9+hCXzPw6Mbgje/f
- cJStvYUvfAxy9kvlUp438mE6ig7tSbquqPCpSFVmxgX0KrdkGkx3joTYv
- 9NEMTmNf9B3K52wXRedJHDCzaUqzgrEW9x+SOQeksnWs8JKCNwrlKJl5O
- 42K7LkmGtOzIpat2DKBPjSdoK6NHT3QzOeIJayaCFRWiSfMav1DIOfERr A==;
-X-CSE-ConnectionGUID: HIjIr88pRUa4gintxRtKug==
-X-CSE-MsgGUID: W35U4mzBSt2ruVnunHhAPQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3079313"
+ bh=aLKVDamL062F5LkWGbW6xb93ZPWhtcgOZgGSW9TSvIU=;
+ b=Q05/NF+34IVPRN8xJ3oladLRjGYqYTgTgbE9k8SQtBTEkOoSM9zqKSw7
+ czz5qh+1a8DcQKlATBE1iyLzuNkOBpnLyaYchgNcbAjqaXOFFFZS7Nzn9
+ 8MvVvJlDIX+rfdIW6340sHbXabJVW2H5bi6P35azP+d66R2hPYjOTlLBa
+ uZBvKucXLregn5ZMVz7HiEOkd4+XT2xH8RPSPT8wlXxCsis6QkYDLRrMn
+ JRovWgSgaUcNR3H6OkIqA3E/pTkzTgIPIaaNlK/80UV6wbFv3Jdd7mINt
+ fq3RI13TwNefvQvhCcQgQ/JsDB6WFIwEooWAJIdDrUen1zyz2ZNuRUTYy A==;
+X-CSE-ConnectionGUID: ZzHX58DoTryKqj7VBn0owg==
+X-CSE-MsgGUID: DfvVTntpTXSiiQBxMB7Auw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3079337"
 X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
-   d="scan'208";a="3079313"
+   d="scan'208";a="3079337"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2026 08:05:35 -0800
-X-CSE-ConnectionGUID: aM7mulTqTUCaHL1DE6QAWA==
-X-CSE-MsgGUID: 7BaDevzcRzepbR5QyFsgDQ==
+ 10 Nov 2026 08:05:43 -0800
+X-CSE-ConnectionGUID: osyoFuDCTqOBvHZhdhjxuQ==
+X-CSE-MsgGUID: PDDEQ9OpQsOnAM3bqVp/mA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,206,1787036400"; 
-   d="scan'208";a="8781800"
+   d="scan'208";a="8781830"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2026 08:05:32 -0800
+ 10 Nov 2026 08:05:41 -0800
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: soham.purkait@intel.com, riana.tauro@intel.com, anshuman.gupta@intel.com,
  raag.jadav@intel.com, mallesh.koujalagi@intel.com,
  harish.chegondi@intel.com, kamil.konieczny@linux.intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v7 03/10] lib/igt_drm_ras_nl: Introduce DRM RAS Netlink
- interface library
-Date: Tue, 10 Nov 2026 21:34:57 +0530
-Message-Id: <20261110160504.1315160-4-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v7 06/10] lib/igt_drm_ras_nl: add set_error_threshold command
+ support
+Date: Tue, 10 Nov 2026 21:35:00 +0530
+Message-Id: <20261110160504.1315160-7-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261110160504.1315160-1-ravi.kishore.koppuravuri@intel.com>
 References: <20261110160504.1315160-1-ravi.kishore.koppuravuri@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -75,117 +74,108 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Introduce an IGT library for communicating with DRM RAS Generic Netlink
-interface. Add helpers for Generic Netlink socket initialization and
-cleanup.
+Add support for SET_ERROR_THRESHOLD to set the custom error threshold
+value
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 Reviewed-by: Soham Purkait <soham.purkait@intel.com>
 ---
-v7: Improved error handling to return standard errno values instead of a generic -1
+v6: Added normalize_nl_error() for SET_ERROR_THRESHOLD in send_command() (Soham)
+v4:Renamed the library functions with prefix "igt_drm_netlink_*" (Nikula
+   Jani & Kamil)
+v2:Marked this command as response not required
 ---
- lib/igt_drm_ras_nl.c | 51 ++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_drm_ras_nl.h | 20 +++++++++++++++++
- lib/meson.build      |  1 +
- 3 files changed, 72 insertions(+)
- create mode 100644 lib/igt_drm_ras_nl.c
- create mode 100644 lib/igt_drm_ras_nl.h
+ lib/igt_drm_ras_nl.c | 39 +++++++++++++++++++++++++++++++++++++++
+ lib/igt_drm_ras_nl.h |  1 +
+ 2 files changed, 40 insertions(+)
 
 diff --git a/lib/igt_drm_ras_nl.c b/lib/igt_drm_ras_nl.c
-new file mode 100644
-index 000000000..91396452d
---- /dev/null
+index 3ce04dda7..ccd1d7fa3 100644
+--- a/lib/igt_drm_ras_nl.c
 +++ b/lib/igt_drm_ras_nl.c
-@@ -0,0 +1,51 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
+@@ -70,6 +70,8 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+ 		return NL_SKIP;
+ 
+ 	switch (gnlh->cmd) {
++	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
++		break;
+ 	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
+ 		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE])
+ 			return NL_SKIP;
+@@ -277,6 +279,7 @@ static int send_command(struct igt_drm_ras_nl_context *ctx, uint8_t cmd)
+ 	case DRM_RAS_CMD_GET_ERROR_THRESHOLD:
+ 	case DRM_RAS_CMD_GET_ERROR_COUNTER:
+ 		ctx->response_required = true;
++	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
+ 		ret = nla_put_u32(msg,
+ 				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
+ 				  ctx->node_id);
+@@ -292,6 +295,16 @@ static int send_command(struct igt_drm_ras_nl_context *ctx, uint8_t cmd)
+ 			nlmsg_free(msg);
+ 			return normalize_nl_error(ret);
+ 		}
 +
-+#include <errno.h>
-+#include <stdint.h>
-+
-+#include <netlink/genl/ctrl.h>
-+#include <netlink/genl/genl.h>
-+
-+#include "igt_core.h"
-+#include "igt_drm_ras_nl.h"
-+
-+void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx)
-+{
-+	if (!ctx || !ctx->sock)
-+		return;
-+
-+	nl_close(ctx->sock);
-+	nl_socket_free(ctx->sock);
-+	ctx->sock = NULL;
-+	ctx->family_id = -1;
-+
-+	igt_debug("Cleaned up netlink socket.\n");
-+}
-+
-+int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx)
-+{
-+	ctx->sock = nl_socket_alloc();
-+	if (!ctx->sock)
-+		return -ENOMEM;
-+
-+	if (genl_connect(ctx->sock) < 0) {
-+		igt_warn("Failed to connect to Generic Netlink\n");
-+		igt_drm_ras_nl_cleanup(ctx);
-+		return -EIO;
++		if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD) {
++			ret = nla_put_u32(msg,
++					  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD,
++					  ctx->error_threshold);
++			if (ret < 0) {
++				nlmsg_free(msg);
++				return normalize_nl_error(ret);
++			}
++		}
+ 		break;
+ 	default:
+ 		nlmsg_free(msg);
+@@ -387,6 +400,14 @@ static int validate_inputs(struct igt_drm_ras_nl_context *ctx, uint8_t cmd)
+ 		return -EINVAL;
+ 	}
+ 
++	if (cmd == DRM_RAS_CMD_SET_ERROR_THRESHOLD &&
++	    (ctx->error_threshold < 1 || ctx->error_threshold > 16)) {
++		igt_warn("Invalid error_threshold (%u) provided. "
++			 "error_threshold should be >= 1 and <= 16.\n",
++			 ctx->error_threshold);
++		return -EINVAL;
 +	}
 +
-+	ctx->family_id = genl_ctrl_resolve(ctx->sock, DRM_RAS_FAMILY_NAME);
-+	if (ctx->family_id < 0) {
-+		igt_warn("Failed to resolve Netlink family '%s': %s\n",
-+			 DRM_RAS_FAMILY_NAME, nl_geterror(ctx->family_id));
-+		igt_drm_ras_nl_cleanup(ctx);
-+		return -EIO;
-+	}
+ 	return 0;
+ }
+ 
+@@ -443,3 +464,21 @@ int igt_drm_ras_nl_get_error_threshold(struct igt_drm_ras_nl_context *ctx)
+ 
+ 	return 0;
+ }
 +
-+	igt_debug("Resolved Generic Netlink family '%s' with id %d.\n",
-+		  DRM_RAS_FAMILY_NAME, ctx->family_id);
++int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx)
++{
++	int ret;
++
++	ret = validate_inputs(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
++	if (ret < 0)
++		return ret;
++
++	ret = send_command(ctx, DRM_RAS_CMD_SET_ERROR_THRESHOLD);
++	if (ret < 0)
++		return ret;
++
++	igt_debug("Set error threshold: node_id=%u error_id=%u threshold=%u\n",
++		  ctx->node_id, ctx->error_id, ctx->error_threshold);
++
 +	return 0;
 +}
 diff --git a/lib/igt_drm_ras_nl.h b/lib/igt_drm_ras_nl.h
-new file mode 100644
-index 000000000..011f3bc05
---- /dev/null
+index 86cfd79d0..5c9be5b17 100644
+--- a/lib/igt_drm_ras_nl.h
 +++ b/lib/igt_drm_ras_nl.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: MIT */
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+#ifndef IGT_DRM_RAS_NL_H
-+#define IGT_DRM_RAS_NL_H
-+
-+#include <drm-uapi/drm_ras.h>
-+
-+struct igt_drm_ras_nl_context {
-+	struct nl_sock *sock;
-+	int family_id;
-+};
-+
-+void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
-+int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
-+
-+#endif /* IGT_DRM_RAS_NL_H */
-+
-diff --git a/lib/meson.build b/lib/meson.build
-index c345895bc..8c22ded8a 100644
---- a/lib/meson.build
-+++ b/lib/meson.build
-@@ -27,6 +27,7 @@ lib_sources = [
- 	'igt_device_scan.c',
- 	'igt_drm_clients.h',
- 	'igt_drm_fdinfo.c',
-+	'igt_drm_ras_nl.c',
-         'igt_fs.c',
- 	'igt_aux.c',
- 	'igt_dp.c',
+@@ -53,6 +53,7 @@ void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_get_error_threshold(struct igt_drm_ras_nl_context *ctx);
++int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx);
+ 
+ #endif /* IGT_DRM_RAS_NL_H */
+ 
 -- 
 2.34.1
 
