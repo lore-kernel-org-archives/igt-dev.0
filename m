@@ -2,65 +2,62 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA36606A321
-	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 11:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B9560A2611
+	for <igt-dev@archiver.kernel.org>; Tue, 10 Nov 2026 11:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IRu8k9tH
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=bkCp4W0C
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FF2010E051;
-	Tue, 10 Nov 2026 11:31:36 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3A96910E051
- for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2026 11:30:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2B42F10EFF9;
+	Tue, 10 Nov 2026 11:43:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 98F8510EFF7
+ for <igt-dev@lists.freedesktop.org>; Tue, 10 Nov 2026 11:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794310227; x=1825846227;
+ t=1794310935; x=1825846935;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=iNg0SgxSyTI8YRhEWX6p5a6tnfLpuODNWTgpHrpKi5E=;
- b=IRu8k9tHBGyMI7w0WOiaDo8OZC3GeiO8Y3Gms5brmdLzATTHcktDvtPD
- QE8hkIELdM2FW0irli9fVX4WM0gIAsIsVP+0nKhcuHN81yW7hsWgM1b7b
- w/3d8Kyj94XEmpTR2NITU1wUGrrYEes8Nq86SMhj3qohZWd0AA+p//JDo
- qO5+/toRqsDnCcohCdHHYMcGv4sQ8LAIbAyKW53Vfv4zAOspxtcRdfmOA
- SXnTIRMXJE/Usnq7kHVddDCKHYWBAViXCDVQU6WtpY/ZKqWO3w4aEEISG
- 2NxboKEMqTOE7vJ3+3MCzHbr8W1CiSizA8860WEnwDyxEat0HRqoOvyq3 w==;
-X-CSE-ConnectionGUID: 9otU8go5TSi0S9hAcUPoYQ==
-X-CSE-MsgGUID: DdyTlOpbRh+xMurqybrKfw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3067826"
+ bh=+aLSDsdXhJSNFg6xgNX2klZVttVwt538k4HpDr1QRfk=;
+ b=bkCp4W0CzjUF9AhogQLnJX6z1fgxLVJOs1+RQj3cmKzSG3HwchmCFMnD
+ qitAb5eczcqgK15GthII0L4yTlRRSgJalt2qJg0iMTM6wdVp7PKf1LZky
+ 4pXD5HSCVaP62QdCtEvpX7mK8/dqt8QssRnoKf4pwolyDLh6HmURmR6Ya
+ bEj/ooJ2dGAZZ4MAAB2aCF4vtnVUHw5x4LW1pJlxJaUHubLkD8PEF+867
+ tQKfHqtoOarZ/4knPNez2LCbHAxcFeVSW9vhWs/szGZnuqu9zz0CCA1mW
+ y21yqQX8GkMck/nKTjp68lWVdra3wSOnzkkim52YNZ4TWAkzhxrWjwVj2 w==;
+X-CSE-ConnectionGUID: uAreyZwgS52iAgISRguvjg==
+X-CSE-MsgGUID: pTjIvqfNTA+0oWM3H+3oIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11961"; a="3051056"
 X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="3067826"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2026 03:30:27 -0800
-X-CSE-ConnectionGUID: 6FKaw/DAQdSjEHoSPPkC6w==
-X-CSE-MsgGUID: Y1iTk1ODR9qJY4D27MG95g==
+   d="scan'208";a="3051056"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 10 Nov 2026 03:42:15 -0800
+X-CSE-ConnectionGUID: 383383gnQQ2Z2AnZoMwSLQ==
+X-CSE-MsgGUID: b8aHJkrfRzqWG6CAxV5njQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,205,1787036400"; 
-   d="scan'208";a="7999051"
+   d="scan'208";a="8457104"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 10 Nov 2026 03:30:24 -0800
-Date: Tue, 10 Nov 2026 12:30:05 +0100
+ 10 Nov 2026 03:42:15 -0800
+Date: Tue, 10 Nov 2026 12:42:11 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Sk Anirban <sk.anirban@intel.com>
-Cc: igt-dev@lists.freedesktop.org, anshuman.gupta@intel.com, 
- badal.nilawar@intel.com, riana.tauro@intel.com, karthik.poosa@intel.com, 
- raag.jadav@intel.com, soham.purkait@intel.com, mallesh.koujalagi@intel.com, 
- kamil.konieczny@intel.com
-Subject: Re: [PATCH] intel-ci: Block cold-reset-wedged test
-Message-ID: <s7qlxrpwjdjolb722c6l322sjqfxg7ww63h47tatpfpksl2yze@iw7hh5yns6ft>
+To: Lukasz Laguna <lukasz.laguna@intel.com>
+Cc: igt-dev@lists.freedesktop.org, marcin.bernatowicz@intel.com, 
+ piotr.piorkowski@intel.com
+Subject: Re: [PATCH v4 1/3] lib/igt_sriov_device: Add helpers to get SR-IOV
+ function name
+Message-ID: <cgrcaprc5yhcgbm2kx3iyrlsdwwm6palcslarndlwzmigkcxt5@c7zzucjpcwno>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Sk Anirban <sk.anirban@intel.com>, igt-dev@lists.freedesktop.org,
- anshuman.gupta@intel.com, 
- badal.nilawar@intel.com, riana.tauro@intel.com, karthik.poosa@intel.com, 
- raag.jadav@intel.com, soham.purkait@intel.com, mallesh.koujalagi@intel.com, 
- kamil.konieczny@intel.com
-References: <20261110104115.1734778-2-sk.anirban@intel.com>
+ Lukasz Laguna <lukasz.laguna@intel.com>, igt-dev@lists.freedesktop.org,
+ marcin.bernatowicz@intel.com, piotr.piorkowski@intel.com
+References: <20261110082838.2034264-1-lukasz.laguna@intel.com>
+ <20261110082838.2034264-2-lukasz.laguna@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261110104115.1734778-2-sk.anirban@intel.com>
+In-Reply-To: <20261110082838.2034264-2-lukasz.laguna@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -79,65 +76,130 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Sk,
-On 2026-11-10 at 16:11:16 +0530, Sk Anirban wrote:
-> cold-reset-wedged is only supported on CRI, so block it on the other
-> xe platforms.
+Hi Lukasz,
+On 2026-11-10 at 09:28:36 +0100, Lukasz Laguna wrote:
+> Introduce helpers to format SR-IOV function names in lowercase and
+> uppercase variants. They format PF as "pf" or "PF" and VFs as "vf%u" or
+> "VF%u" depending on the variant.
 > 
-> Signed-off-by: Sk Anirban <sk.anirban@intel.com>
-LGTM
-Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Keep igt_sriov_func_str() as a compatibility wrapper around the
+> lowercase, so existing callers continue to work while the code migrates
+> to the new API.
+> 
+> Signed-off-by: Lukasz Laguna <lukasz.laguna@intel.com>
+> ---
+>  lib/igt_sriov_device.c | 53 +++++++++++++++++++++++++++++++++++++++---
+>  lib/igt_sriov_device.h |  2 ++
+>  2 files changed, 52 insertions(+), 3 deletions(-)
+> 
+> diff --git a/lib/igt_sriov_device.c b/lib/igt_sriov_device.c
+> index 6c9fbdf70..de446aca1 100644
+> --- a/lib/igt_sriov_device.c
+> +++ b/lib/igt_sriov_device.c
+> @@ -54,13 +54,60 @@ const char *igt_sriov_func_str(unsigned int vf_num)
+>  {
+>  	static __thread char buf[16];
+>  
+> -	if (vf_num == 0)
+> -		return "pf";
+> +	return igt_sriov_function_name_lower(vf_num, buf, sizeof(buf));
+> +}
+> +
+> +static const char *sriov_function_name(unsigned int vf_num, bool uppercase,
+
+bool param is imho unneceserry here, better to have for example
+two strings:
+
+static const char *sriov_function_name(unsigned int vf_num, char *pfname, char *vfname,
+
+> +				       char *buf, size_t size)
+> +{
+> +	int ret;
+> +
+> +	igt_assert(buf && size);
+> +
+> +	if (vf_num)
+> +		ret = snprintf(buf, size, uppercase ? "VF%u" : "vf%u", vf_num);
+
+Using above:
+
+		ret = snprintf(buf, size, "%s%u", vfname, vf_num);
+
+> +	else
+> +		ret = snprintf(buf, size, uppercase ? "PF" : "pf");
+
+		ret = snprintf(buf, size, "%s", pfname);
+
+> +
+> +	igt_assert(ret >= 0 && (size_t)ret < size);
+>  
+> -	snprintf(buf, sizeof(buf), "vf%u", vf_num);
+>  	return buf;
+>  }
+>  
+> +/**
+> + * igt_sriov_function_name_lower - Get SR-IOV function name in lowercase
+> + * @vf_num: VF number (1-based to identify single VF) or 0 for PF
+> + * @buf: buffer
+> + * @size: size of the buffer
+> + *
+> + * It formats the function name as "pf" when @vf_num is 0, or as "vf%u"
+> + * when @vf_num is greater than 0.
+> + *
+> + * Return: formatted function name.
+> + */
+> +const char *igt_sriov_function_name_lower(unsigned int vf_num, char *buf,
+> +					 size_t size)
+> +{
+> +	return sriov_function_name(vf_num, false, buf, size);
+
+imho better:
+	return sriov_function_name(vf_num, "pf", "vf", buf, size);
+
+> +}
+> +
+> +/**
+> + * igt_sriov_function_name_upper - Get SR-IOV function name in uppercase
+> + * @vf_num: VF number (1-based to identify single VF) or 0 for PF
+> + * @buf: buffer
+> + * @size: size of the buffer
+> + *
+> + * It formats the function name as "PF" when @vf_num is 0, or as "VF%u"
+> + * when @vf_num is greater than 0.
+> + *
+> + * Return: formatted function name.
+> + */
+> +const char *igt_sriov_function_name_upper(unsigned int vf_num, char *buf,
+> +					 size_t size)
+> +{
+
+imho better:
+	return sriov_function_name(vf_num, "PF", "VF", buf, size);
+
+
 
 Regards,
 Kamil
 
-> ---
->  tests/intel-ci/xe.bmg.core.blocklist.txt | 2 ++
->  tests/intel-ci/xe.lnl.core.blocklist.txt | 2 ++
->  tests/intel-ci/xe.nvl.core.blocklist.txt | 2 ++
->  tests/intel-ci/xe.ptl.core.blocklist.txt | 2 ++
->  4 files changed, 8 insertions(+)
-> 
-> diff --git a/tests/intel-ci/xe.bmg.core.blocklist.txt b/tests/intel-ci/xe.bmg.core.blocklist.txt
-> index f83b544cb..e7b57558b 100644
-> --- a/tests/intel-ci/xe.bmg.core.blocklist.txt
-> +++ b/tests/intel-ci/xe.bmg.core.blocklist.txt
-> @@ -78,3 +78,5 @@ igt@xe_pm@d3hot-i2c
->  ##################################################################
->  igt@.*multi.queue.*
->  ##################################################################
-> +igt@xe_wedged@cold-reset-wedged
-> +##################################################################
-> diff --git a/tests/intel-ci/xe.lnl.core.blocklist.txt b/tests/intel-ci/xe.lnl.core.blocklist.txt
-> index 88115ec22..970c88932 100644
-> --- a/tests/intel-ci/xe.lnl.core.blocklist.txt
-> +++ b/tests/intel-ci/xe.lnl.core.blocklist.txt
-> @@ -106,3 +106,5 @@ igt@xe_pm@d3hot-i2c
->  ##################################################################
->  igt@.*multi.queue.*
->  ##################################################################
-> +igt@xe_wedged@cold-reset-wedged
-> +##################################################################
-> diff --git a/tests/intel-ci/xe.nvl.core.blocklist.txt b/tests/intel-ci/xe.nvl.core.blocklist.txt
-> index 7de332352..b960c15cc 100644
-> --- a/tests/intel-ci/xe.nvl.core.blocklist.txt
-> +++ b/tests/intel-ci/xe.nvl.core.blocklist.txt
-> @@ -107,3 +107,5 @@ igt@xe_exec_sip@.*
->  igt@xe_exec_sip_eudebug@.*
->  igt@xe_live_ktest@xe_eudebug
->  ##################################################################
-> +igt@xe_wedged@cold-reset-wedged
-> +##################################################################
-> diff --git a/tests/intel-ci/xe.ptl.core.blocklist.txt b/tests/intel-ci/xe.ptl.core.blocklist.txt
-> index 9716e6071..e2284bdfe 100644
-> --- a/tests/intel-ci/xe.ptl.core.blocklist.txt
-> +++ b/tests/intel-ci/xe.ptl.core.blocklist.txt
-> @@ -86,3 +86,5 @@ igt@.*survivability.*
->  ##################################################################
->  igt@.*multi.queue.*
->  ##################################################################
-> +igt@xe_wedged@cold-reset-wedged
-> +##################################################################
+> +	return sriov_function_name(vf_num, true, buf, size);
+> +}
+> +
+>  static bool __pf_attr_get_u32(int pf, const char *attr, uint32_t *value)
+>  {
+>  	int sysfs;
+> diff --git a/lib/igt_sriov_device.h b/lib/igt_sriov_device.h
+> index 4e4ba230a..0e94c521a 100644
+> --- a/lib/igt_sriov_device.h
+> +++ b/lib/igt_sriov_device.h
+> @@ -36,6 +36,8 @@ bool igt_sriov_device_reset_exists(int pf, unsigned int vf_num);
+>  bool igt_sriov_device_reset(int pf, unsigned int vf_num);
+>  bool intel_is_vf_device(int device);
+>  const char *igt_sriov_func_str(unsigned int vf_num);
+> +const char *igt_sriov_function_name_lower(unsigned int vf_num, char *buf, size_t size);
+> +const char *igt_sriov_function_name_upper(unsigned int vf_num, char *buf, size_t size);
+>  typedef void (*igt_sriov_exit_cleanup_fn)(int pf, int sig, void *user_data);
+>  void igt_sriov_install_exit_handler(int pf,
+>  				    igt_sriov_exit_cleanup_fn cleanup_fn,
 > -- 
 > 2.43.0
 > 
