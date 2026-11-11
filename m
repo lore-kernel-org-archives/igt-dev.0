@@ -2,29 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0D0606A33A
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 16:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71EC606A324
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 16:29:11 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B91D110E425;
-	Wed, 11 Nov 2026 16:13:24 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D40610FC2C;
+	Wed, 11 Nov 2026 16:29:11 +0000 (UTC)
 Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DA28210E291;
- Wed, 11 Nov 2026 16:12:27 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B547910EA98;
+ Wed, 11 Nov 2026 16:28:15 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============8234505178021545340=="
+ boundary="===============2518080398291224608=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
- =?utf-8?q?-g-t=2Cv3=2C1/3=5D_tests/intel/xe=5Ffault=5Finjection=3A_Reload_a?=
- =?utf-8?q?udio_driver_on_exit?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Feld=3A_Log_module?=
+ =?utf-8?q?_load_state_when_no_eld=23_nodes_are_found_=28rev3=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Borah, Chaitanya Kumar" <chaitanya.kumar.borah@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Wed, 11 Nov 2026 16:12:27 -0000
-Message-ID: <179441354788.10661.18205598683121585501@9ac1b63fe3ea>
+Date: Wed, 11 Nov 2026 16:28:15 -0000
+Message-ID: <179441449573.11020.10628871702077655627@9ac1b63fe3ea>
 X-Patchwork-Hint: ignore
-References: <20261111114600.4104768-1-chaitanya.kumar.borah@intel.com>
-In-Reply-To: <20261111114600.4104768-1-chaitanya.kumar.borah@intel.com>
+References: <20261111115551.4106029-1-chaitanya.kumar.borah@intel.com>
+In-Reply-To: <20261111115551.4106029-1-chaitanya.kumar.borah@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -37,26 +36,26 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============8234505178021545340==
+--===============2518080398291224608==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: series starting with [i-g-t,v3,1/3] tests/intel/xe_fault_injection: Reload audio driver on exit
-URL   : https://patchwork.freedesktop.org/series/178313/
+Series: lib/igt_eld: Log module load state when no eld# nodes are found (rev3)
+URL   : https://patchwork.freedesktop.org/series/176206/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9186 -> IGTPW_16135
+CI Bug Log - changes from XEIGT_9186_BAT -> XEIGTPW_16136_BAT
 ====================================================
 
 Summary
@@ -66,49 +65,36 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16135/index.html
+  
 
-Participating hosts (40 -> 39)
+Participating hosts (15 -> 15)
 ------------------------------
 
-  Missing    (1): bat-dg2-13 
+  No changes in participating hosts
 
-Known issues
-------------
 
-  Here are the changes found in IGTPW_16135 that come from known issues:
+Changes
+-------
 
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@vgem_basic@unload:
-    - bat-rpls-4:         [DMESG-WARN][1] ([i915#13400]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9186/bat-rpls-4/igt@vgem_basic@unload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16135/bat-rpls-4/igt@vgem_basic@unload.html
-
-  
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  No changes found
 
 
 Build changes
 -------------
 
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9186 -> IGTPW_16135
-  * Linux: CI_DRM_19484 -> CI_DRM_19493
+  * IGT: IGT_9186 -> IGTPW_16136
+  * Linux: xe-6104-c8d0fb6110b86aa64eb59502df08b529e221f232 -> xe-6113-1434742f20cf3d14b493e40c453536b5414b9762
 
-  CI-20190529: 20190529
-  CI_DRM_19484: c8d0fb6110b86aa64eb59502df08b529e221f232 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19493: 1434742f20cf3d14b493e40c453536b5414b9762 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16135: 16135
+  IGTPW_16136: 16136
   IGT_9186: 9186
+  xe-6104-c8d0fb6110b86aa64eb59502df08b529e221f232: c8d0fb6110b86aa64eb59502df08b529e221f232
+  xe-6113-1434742f20cf3d14b493e40c453536b5414b9762: 1434742f20cf3d14b493e40c453536b5414b9762
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16135/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16136/index.html
 
---===============8234505178021545340==
+--===============2518080398291224608==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -128,45 +114,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v3,1/3] tests/intel/xe_fault_injection: Reload audio driver on exit</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178313/">https://patchwork.freedesktop.org/series/178313/</a></td></tr>
+<tr><td><b>Series:</b></td><td>lib/igt_eld: Log module load state when no eld# nodes are found (rev3)</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/176206/">https://patchwork.freedesktop.org/series/176206/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16135/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16135/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16136/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16136/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9186 -&gt; IGTPW_16135</h1>
+    <h1>CI Bug Log - changes from XEIGT_9186_BAT -&gt; XEIGTPW_16136_BAT</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16135/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16135 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@vgem_basic@unload:<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9186/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16135/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a></li>
-</ul>
-</li>
-</ul>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
 <h2>Build changes</h2>
 <ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9186 -&gt; IGTPW_16135</li>
-<li>Linux: CI_DRM_19484 -&gt; CI_DRM_19493</li>
+<li>IGT: IGT_9186 -&gt; IGTPW_16136</li>
+<li>Linux: xe-6104-c8d0fb6110b86aa64eb59502df08b529e221f232 -&gt; xe-6113-1434742f20cf3d14b493e40c453536b5414b9762</li>
 </ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19484: c8d0fb6110b86aa64eb59502df08b529e221f232 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19493: 1434742f20cf3d14b493e40c453536b5414b9762 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16135: 16135<br />
-  IGT_9186: 9186</p>
+<p>IGTPW_16136: 16136<br />
+  IGT_9186: 9186<br />
+  xe-6104-c8d0fb6110b86aa64eb59502df08b529e221f232: c8d0fb6110b86aa64eb59502df08b529e221f232<br />
+  xe-6113-1434742f20cf3d14b493e40c453536b5414b9762: 1434742f20cf3d14b493e40c453536b5414b9762</p>
 
 </body>
 </html>
 
---===============8234505178021545340==--
+--===============2518080398291224608==--
