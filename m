@@ -2,60 +2,59 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B3F606A326
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 13:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E795606A31C
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 13:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CLLGHCiv
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TgbyhFtT
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7547610E2FC;
-	Wed, 11 Nov 2026 13:15:27 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 055C410E2FC;
+	Wed, 11 Nov 2026 13:16:26 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B569E10E942
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 13:06:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 43D4710E908
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 13:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794402413; x=1825938413;
+ t=1794402416; x=1825938416;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=J2TN+kDoM5Cb/2KRITcBeyGzX4Ht7+7hzIVCPaFm/Mk=;
- b=CLLGHCivVICQ/MsiP4+F9b991tr5O/sA5zUr5O8EhL7GKEvzvx7iNVGP
- UNab7kM3F/o0oyPA/nTS6gBFX4OrvC1yorPwhElZmaZ0PjaCTY43VJCdY
- AGfviKWu2AR2iwcdjrK+Yt/S2fFetndFAxMJfulxk21ebE4Vy/ekzEmOK
- wwdfp1o3BfWWvtfHrLDgZLTWi1DahUNIaKTifC/q7fjqzHhkiUegplnvh
- 6YKmwqhFi4w9a3O5xwH5MVOZacCj0q6Lead/Ut+2+yin06MqJERE0NKWY
- cIXbSpiX2xp2WXM1TquUigcZO3G/wg6TcrPa8i9tNpNX1aBvi0Vaqnb3Y Q==;
-X-CSE-ConnectionGUID: BrcTKEbRTI+uP76Pp7I88Q==
-X-CSE-MsgGUID: ihRM1yT9Q1eHLW1qeD5gaw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3054413"
+ bh=MTySqEIEO29YUe07gubfSl2nPzln09/Xy87rVCAKMSs=;
+ b=TgbyhFtTjb6SDyf4pn3FxHhUrI9nNbnFIAV9YV54D11kTCi7wcE37XuJ
+ xqLpgsWhodPmpYSpAkAcE4kTUwpJwEPYVdcggqRj61HdqxFdL2DA2P+NN
+ yNF1iS7V3Sx4SdZ+YHZK6KmnLrijQfDSKngFS9O+1ZBpFFlOZD6o1UIWL
+ qWqsIhz89III7J3tlI41qCJVDwLBaEEgA71d6tzqYiwexaszCGB5wd/m4
+ BY1zVf7N7Kbf4mzuTjrohZUAreaDeNkRuEjt2HyScI3QLBOAEtzC1YD9O
+ 3q3tEfH7jZykHdcJ2GoVq58iH+RWchH6WmToUNZJ0Ln8jNzf2YOnjigOH Q==;
+X-CSE-ConnectionGUID: gFGD9D7gTvGtsxDqUT0bJg==
+X-CSE-MsgGUID: Iyf3aXF8QzC2Yxi9dvbCsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3054415"
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="3054413"
+   d="scan'208";a="3054415"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 05:06:53 -0800
-X-CSE-ConnectionGUID: s2Jswp3ERZeu4QWkIx3E8w==
-X-CSE-MsgGUID: z2Ex7qRCQliPf2DqGvzgvw==
+ 11 Nov 2026 05:06:56 -0800
+X-CSE-ConnectionGUID: PsebE7XiRc6QVi3mctZ/Lg==
+X-CSE-MsgGUID: w1y7orArSF6I/mwloHd/xw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="8413441"
+   d="scan'208";a="8413450"
 Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 05:06:51 -0800
+ 11 Nov 2026 05:06:54 -0800
 From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: soham.purkait@intel.com, riana.tauro@intel.com, anshuman.gupta@intel.com,
  raag.jadav@intel.com, mallesh.koujalagi@intel.com,
  harish.chegondi@intel.com, kamil.konieczny@linux.intel.com,
  Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v8 07/10] tests/intel/xe_err_injection: Add Core Compute
- Uncorr Error injection
-Date: Wed, 11 Nov 2026 18:36:21 +0530
-Message-Id: <20261111130624.1446908-8-ravi.kishore.koppuravuri@intel.com>
+Subject: [PATCH v8 08/10] lib/igt_drm_ras_nl: add event notify subscription
+ and event wait support
+Date: Wed, 11 Nov 2026 18:36:22 +0530
+Message-Id: <20261111130624.1446908-9-ravi.kishore.koppuravuri@intel.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261111130624.1446908-1-ravi.kishore.koppuravuri@intel.com>
 References: <20261111130624.1446908-1-ravi.kishore.koppuravuri@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -75,12 +74,10 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add MMIO based Core Compute Uncorrectable Error injection to verify
-the Xe driver error handling and recovery flows with the help of
-DRM Netlink API suite
+Added event notification support with subscribe for an error-notify event
+and wait for the event notification functionalities.
 
 Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Acked-by: Riana Tauro <riana.tauro@intel.com>
 Reviewed-by: Soham Purkait <soham.purkait@intel.com>
 ---
 v7:
@@ -104,421 +101,285 @@ v4:
   - Used updated library names with igt_drm_netlink_* prefix (Nikula
     Jani & Kamil)
 ---
- tests/intel/xe_err_injection.c | 389 +++++++++++++++++++++++++++++++++
- tests/meson.build              |   4 +
- 2 files changed, 393 insertions(+)
- create mode 100644 tests/intel/xe_err_injection.c
+ lib/igt_drm_ras_nl.c | 190 +++++++++++++++++++++++++++++++++++++++++--
+ lib/igt_drm_ras_nl.h |  18 ++++
+ 2 files changed, 201 insertions(+), 7 deletions(-)
 
-diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-new file mode 100644
-index 000000000..67cc81a89
---- /dev/null
-+++ b/tests/intel/xe_err_injection.c
-@@ -0,0 +1,389 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
-+
-+/**
-+ * TEST: Test Xe RAS (Reliability, Availability, Serviceability) MMIO based Error Injection
-+ * Category: Core
-+ * Mega feature: RAS
-+ * Sub-category: RAS tests
-+ * Functionality: Error Injection
-+ * Test category: Functional tests
-+ */
-+
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
+diff --git a/lib/igt_drm_ras_nl.c b/lib/igt_drm_ras_nl.c
+index b34986333..f7ee3e373 100644
+--- a/lib/igt_drm_ras_nl.c
++++ b/lib/igt_drm_ras_nl.c
+@@ -6,6 +6,7 @@
+ #include <errno.h>
+ #include <poll.h>
+ #include <stdint.h>
 +#include <time.h>
-+#include <unistd.h>
+ 
+ #include <netlink/errno.h>
+ #include <netlink/genl/ctrl.h>
+@@ -64,10 +65,12 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+ 	nlh = nlmsg_hdr(msg);
+ 	gnlh = nlmsg_data(nlh);
+ 
+-	ret = genlmsg_parse(nlh, 0, attrs,
+-			    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
+-	if (ret < 0)
+-		return NL_SKIP;
++	if (gnlh->cmd != DRM_RAS_CMD_ERROR_EVENT) {
++		ret = genlmsg_parse(nlh, 0, attrs,
++				    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
++		if (ret < 0)
++			return NL_SKIP;
++	}
+ 
+ 	switch (gnlh->cmd) {
+ 	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
+@@ -87,14 +90,44 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+ 			nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]);
+ 		break;
+ 	}
++	case DRM_RAS_CMD_ERROR_EVENT: {
++		struct nlattr *event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_MAX + 1];
 +
-+#include "igt.h"
-+#include "lib/igt_drm_ras_nl.h"
-+#include "lib/intel_reg.h"
-+#include "lib/intel_compute.h"
++		ret = genlmsg_parse(nlh, 0, event_attrs,
++				    DRM_RAS_A_ERROR_EVENT_ATTRS_MAX, NULL);
++		if (ret < 0)
++			return NL_SKIP;
 +
-+#include "xe_drm.h"
-+#include "xe/xe_ioctl.h"
-+#include "xe/xe_mmio.h"
-+#include "xe/xe_query.h"
++		if (!event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID] ||
++		    !event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID] ||
++		    !event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE])
++			return NL_SKIP;
 +
-+/* Steering Control Register (MC_PKT_CTRL) */
-+#define XE_MC_PKT_CTRL_MGSR_3D_ADDRESS 0x00FD4
-+#define XE_MC_PKT_CTRL_MGSR_3D_VALUE 0x80000000
-+
-+/* Core Compute Uncorrectable error injection */
-+#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS 0xF310
-+#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE 0x1
-+
-+#define POST_RECOVERY_WL 1
-+#define POST_ARMING_INJECTION_WL 0
-+
-+/* STEER_SEMAPHORE_MGSR_3D */
-+#define XE_STEER_SEMAPHORE_MGSR_3D 0x00FD0
-+#define XE_STEER_SEMAPHORE_MGSR_3D_VALUE 0x1
-+
-+/* Node types for error counters*/
-+#define NODE_ID_UNCORRECTABLE_ERROR 1
-+
-+/* Error types for error counter */
-+#define ERROR_ID_CORE_COMPUTE 1
-+
-+enum {
-+	SUCCESS = 1,
-+	FAILED,
-+	TIMEOUT,
-+};
-+
-+static bool run_xe_compute_on_all_engines(int fd, bool state)
-+{
-+	struct drm_xe_engine_class_instance *hwe;
-+	bool found_engine = false;
-+	bool all_succeeded = true;
-+
-+	igt_info("Running compute-square on all engines post %s\n",
-+		 state == POST_ARMING_INJECTION_WL ? "injection" : "recovery");
-+
-+	xe_for_each_engine(fd, hwe) {
-+		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-+			continue;
-+
-+		found_engine = true;
-+		if (!xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL,
-+							   EXECENV_PREF_SYSTEM))
-+			all_succeeded = false;
++		ctx->event_node_id =
++			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID]);
++		ctx->event_error_id =
++			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID]);
++		ctx->event_error_value =
++			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE]);
++		ctx->event_received = ctx->event_node_id == ctx->node_id &&
++				      ctx->event_error_id == ctx->error_id;
++		break;
++	}
+ 	default:
+ 		return NL_SKIP;
+ 	}
+ 
+-	ctx->reply_received = true;
+-	if (ctx->ack_received)
+-		ctx->cmd_done = true;
++	if (gnlh->cmd != DRM_RAS_CMD_ERROR_EVENT) {
++		ctx->reply_received = true;
++		if (ctx->ack_received)
++			ctx->cmd_done = true;
 +	}
 +
-+	return found_engine && all_succeeded;
++	return NL_OK;
 +}
-+
-+static void modify_reg_bit(struct xe_mmio *mmio, uint32_t reg_addr,
-+			   uint32_t bit_mask, bool set)
+ 
++static int ras_multicast_seq_check_cb(struct nl_msg *msg, void *arg)
 +{
-+	uint32_t regval;
-+
-+	regval = xe_mmio_read32(mmio, reg_addr);
-+	if (set)
-+		regval |= bit_mask;
-+	else
-+		regval &= ~bit_mask;
-+
-+	xe_mmio_write32(mmio, reg_addr, regval);
-+}
-+
-+static bool acquire_steering_semaphore(struct xe_mmio *mmio)
+ 	return NL_OK;
+ }
+ 
+@@ -160,6 +193,27 @@ static int register_callbacks(struct nl_cb *cb, struct igt_drm_ras_nl_context *c
+ 	return 0;
+ }
+ 
++static int register_multicast_callbacks(struct nl_cb *cb,
++					struct igt_drm_ras_nl_context *ctx)
 +{
-+	uint32_t regval;
-+	time_t start_time = time(NULL);
-+	time_t timeout = 10; /* 10 secs */
-+
-+	while (time(NULL) - start_time < timeout) {
-+		regval = xe_mmio_read32(mmio, XE_STEER_SEMAPHORE_MGSR_3D);
-+		if (regval == XE_STEER_SEMAPHORE_MGSR_3D_VALUE)
-+			return true;
-+		sleep(1);
-+	}
-+
-+	return false;
-+}
-+
-+static void release_steering_semaphore(struct xe_mmio *mmio)
-+{
-+	xe_mmio_write32(mmio, XE_STEER_SEMAPHORE_MGSR_3D,
-+			XE_STEER_SEMAPHORE_MGSR_3D_VALUE);
-+}
-+
-+static int acquire_forcewake(int fd)
-+{
-+	int fw_handle;
-+
-+	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-+	igt_assert_lte(0, fw_handle);
-+	return fw_handle;
-+}
-+
-+static void release_forcewake(int fw_handle)
-+{
-+	if (fw_handle >= 0)
-+		close(fw_handle);
-+}
-+
-+static int get_counter(uint32_t node_id, uint32_t error_id)
-+{
-+	struct igt_drm_ras_nl_context ctx;
-+	uint32_t error_value = UINT32_MAX;
 +	int ret;
 +
-+	ret = igt_drm_ras_nl_init(&ctx);
++	ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, ctx);
 +	if (ret < 0) {
-+		igt_warn("Failed to initialize socket for get_error command (ret=%d)\n", ret);
++		igt_warn("Failed to set NL_CB_VALID callback (ret=%d)\n", ret);
 +		return ret;
 +	}
 +
-+	ctx.node_id = node_id;
-+	ctx.error_id = error_id;
-+
-+	ret = igt_drm_ras_nl_get_error_counter(&ctx);
++	ret = nl_cb_set(cb, NL_CB_SEQ_CHECK, NL_CB_CUSTOM,
++			ras_multicast_seq_check_cb, ctx);
 +	if (ret < 0) {
-+		igt_warn("get_error_counter failed from error command path (ret=%d)\n", ret);
-+		igt_drm_ras_nl_cleanup(&ctx);
++		igt_warn("Failed to set NL_CB_SEQ_CHECK callback (ret=%d)\n", ret);
 +		return ret;
-+	} else {
-+		error_value = ctx.error_value;
-+		igt_info("get_error_counter: node_id=%u error_id=%u value=%u\n",
-+			 ctx.node_id, ctx.error_id, ctx.error_value);
 +	}
 +
-+	igt_drm_ras_nl_cleanup(&ctx);
-+
-+	return error_value;
++	return 0;
 +}
 +
-+static int check_dmesg(const char *marker, int elapsed_secs)
-+{
-+	static const char * const dmesg_status[] = {
-+		[SUCCESS] = "AER: device recovery successful",
-+		[FAILED] = "AER: device recovery failed",
-+	};
-+	char *buff = NULL;
-+	size_t buff_size = 0;
-+	size_t i;
-+	ssize_t line_len;
-+	FILE *fp;
-+	bool marker_seen = false;
-+
-+	fp = popen("dmesg", "r");
-+	if (!fp) {
-+		igt_warn("Unable to open dmesg to check recovery status\n");
-+		return -1;
-+	}
-+
-+	while ((line_len = getline(&buff, &buff_size, fp)) != -1) {
-+		if (!marker_seen) {
-+			if (strstr(buff, marker))
-+				marker_seen = true;
-+			continue;
-+		}
-+
-+		for (i = SUCCESS; i < ARRAY_SIZE(dmesg_status); i++) {
-+			if (!dmesg_status[i] || !strstr(buff, dmesg_status[i]))
-+				continue;
-+
-+			igt_debug("Found \"%s\" in dmesg after %d secs\n",
-+				  dmesg_status[i], elapsed_secs);
-+			free(buff);
-+			pclose(fp);
-+			return i;
-+		}
-+	}
-+
-+	free(buff);
-+	pclose(fp);
-+	return TIMEOUT;
-+}
-+
-+/*
-+ * TODO: AER device recovery logic is pending to be implemented using
-+ * "uevents emitted by the aer driver" instead of relying on the dmesg
-+ * logs.
-+ */
-+
-+static int check_err_recovery(void)
-+{
-+	time_t start_time = time(NULL);
-+	time_t timeout = 10 * 60; /* 10 mins */
-+	int time_interval = 30; /* 30 secs */
-+	time_t elapsed_time;
-+	char marker[128];
-+	int status;
-+
-+	snprintf(marker, sizeof(marker),
-+		 "IGT xe_err_injection recovery marker pid=%d start=%lld",
-+		 getpid(), (long long)start_time);
-+	igt_kmsg(KMSG_INFO "%s\n", marker);
-+
-+	while (1) {
-+		elapsed_time = time(NULL) - start_time;
-+		status = check_dmesg(marker, elapsed_time);
-+		if (status < 0) {
-+			igt_warn("Failed to query dmesg for recovery status\n");
-+			return FAILED;
-+		}
-+		if (status == SUCCESS || status == FAILED)
-+			return status;
-+
-+		if (elapsed_time >= timeout) {
-+			igt_warn("Timed out while waiting for error recovery\n");
-+			return TIMEOUT;
-+		}
-+
-+		sleep(time_interval);
-+	}
-+}
-+
-+static void print_aer_recovery_status(void)
-+{
-+	int recovery_ret;
-+
-+	recovery_ret = check_err_recovery();
-+	igt_assert_f(recovery_ret != TIMEOUT,
-+		     "AER error recovery timed out\n");
-+	igt_assert_f(recovery_ret != FAILED,
-+		     "AER device recovery failed\n");
-+	if (recovery_ret == SUCCESS)
-+		igt_info("AER device recovery successful\n");
-+}
-+
-+static bool uncorr_error_recovered;
-+
-+/**
-+ * SUBTEST: inject_core_compute_uncorr_error
-+ * Description: Inject a Core Compute Uncorrectable error and verify
-+ *		AER-based device recovery.
-+ *		The dynamic subtests are:
-+ *		inject            - Injects Core Compute Uncorrectable error
-+ *				    and verifies device recovery.
-+ *		post-recovery-wl  - Runs a compute workload on all compute
-+ *				    engines after recovery to confirm the GPU
-+ *				    remains functional.
-+ * Functionality: error injection
-+ */
-+static void test_inject_core_compute_uncorr_error(struct xe_mmio *mmio, int fd)
-+{
-+	int counter_before;
-+	int counter_after;
-+	int fw_handle;
-+	bool ret;
-+
-+	/** TODO
-+	 *  Fetching node_id and error_id dynamically is pending to implement.
-+	 *  For now, using
-+	 *  node_id=1 (uncorrectable_errors) and
-+	 *  error_id=1 (core_compute)
-+	 */
-+	uint32_t node_id = NODE_ID_UNCORRECTABLE_ERROR;
-+	uint32_t error_id = ERROR_ID_CORE_COMPUTE;
-+
-+	fw_handle = acquire_forcewake(fd);
-+
-+	counter_before = get_counter(node_id, error_id);
-+	if (counter_before < 0) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Failed to read error counter before injection\n");
-+	}
-+
-+	if (!acquire_steering_semaphore(mmio)) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Timed out acquiring steering semaphore\n");
-+	}
-+
-+	/* Arm the injection sequence. */
-+	xe_mmio_write32(mmio, XE_MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
-+	modify_reg_bit(mmio,
-+		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS,
-+		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE,
-+		       true);
-+	modify_reg_bit(mmio,
-+		       XE_MC_PKT_CTRL_MGSR_3D_ADDRESS,
-+		       XE_MC_PKT_CTRL_MGSR_3D_VALUE,
-+		       true);
-+	release_steering_semaphore(mmio);
-+	igt_debug("Injected Core Compute Uncorrectable error\n");
-+
-+	/* Run traffic to trigger the injected error */
-+	ret = run_xe_compute_on_all_engines(fd, POST_ARMING_INJECTION_WL);
-+	if (!ret) {
-+		release_forcewake(fw_handle);
-+		igt_assert_f(false, "Failed to run Xe compute on all engines post injection\n");
-+	}
-+
-+	release_forcewake(fw_handle);
-+	print_aer_recovery_status();
-+
-+	counter_after = get_counter(node_id, error_id);
-+	igt_assert_f(counter_after >= 0, "Failed to read error counter after injection\n");
-+
-+	igt_assert_f(counter_before != UINT32_MAX && counter_after != UINT32_MAX,
-+		     "Failed to fetch valid error counters: before=%u after=%u\n",
-+		     counter_before, counter_after);
-+
-+	igt_info("error counter: before injection=%u after injection=%u\n",
-+		 counter_before, counter_after);
-+
-+	igt_assert_f(counter_after > counter_before,
-+		     "Core Compute Uncorrectable error injection failed: "
-+		     "before=%u after=%u\n", counter_before, counter_after);
-+	uncorr_error_recovered = true;
-+}
-+
-+enum xe_err_injection_type {
-+	XE_CORE_COMPUTE_UNCORR_ERR_INJ,
-+	XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL,
-+};
-+
-+static void inject_error(enum xe_err_injection_type injection, struct xe_mmio *mmio, int fd)
-+{
-+	switch (injection) {
-+	case XE_CORE_COMPUTE_UNCORR_ERR_INJ:
-+		test_inject_core_compute_uncorr_error(mmio, fd);
-+		break;
-+	case XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL:
-+		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
-+		break;
-+	default:
-+		igt_info("Invalid Error Injection specified\n");
-+	}
-+}
-+
-+int igt_main()
-+{
-+	int fd;
-+	struct xe_mmio mmio;
-+
-+	igt_fixture() {
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_require_f(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY),
-+			      "forcewake_all is not available in debugfs\n");
-+		xe_mmio_access_init(fd, &mmio);
-+		igt_require_f(xe_mmio_is_initialized(&mmio),
-+			      "Failed to initialize Xe MMIO access\n");
-+	}
-+
-+	igt_describe("Inject core compute uncorrectable error and run post-recovery workload.");
-+	igt_subtest_with_dynamic("inject_core_compute_uncorr_error") {
-+		igt_dynamic("inject")
-+			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ, &mmio, fd);
-+
-+		igt_dynamic("post-recovery-wl") {
-+			igt_require_f(uncorr_error_recovered,
-+				      "Run the \"inject\" dynamic subtest first\n");
-+			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL, &mmio, fd);
-+		}
-+	}
-+
-+	igt_fixture() {
-+		xe_mmio_access_fini(&mmio);
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index f0a4cef4c..132bb445d 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -360,6 +360,10 @@ intel_xe_progs = [
-         'xe_tlb',
- ]
+ static int send_and_recv_nl_msg(struct igt_drm_ras_nl_context *ctx,
+ 				struct nl_cb *cb,
+ 				struct nl_msg *msg)
+@@ -338,7 +392,12 @@ static void reset_drm_ras_nl_context(struct igt_drm_ras_nl_context *ctx)
+ 	ctx->ack_received = false;
+ 	ctx->response_required = false;
+ 	ctx->error_threshold = 0;
++	ctx->event_node_id = UINT32_MAX;
++	ctx->event_error_id = UINT32_MAX;
++	ctx->event_error_value = 0;
++	ctx->event_received = false;
+ 	ctx->family_id = -1;
++	ctx->subscribed_grp_id = -1;
+ }
  
-+if have_libnl
-+        intel_xe_progs += 'xe_err_injection'
-+endif
+ void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx)
+@@ -481,3 +540,120 @@ int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx)
+ 
+ 	return 0;
+ }
 +
- chamelium_progs = [
- 	'kms_chamelium_audio',
- 	'kms_chamelium_color',
++int igt_drm_ras_nl_subscribe_error_report(struct igt_drm_ras_nl_context *ctx,
++					  const char *notify_group_name)
++{
++	int grp_id;
++	int ret;
++
++	if (!ctx || !ctx->sock || ctx->family_id < 0 ||
++	    !notify_group_name || notify_group_name[0] == '\0') {
++		igt_warn("Invalid input: ctx or sock or family_id=%d, or notify_group_name=%s\n",
++			 ctx ? ctx->family_id : -1,
++			 notify_group_name ? notify_group_name : "(null)");
++		return -EINVAL;
++	}
++
++	grp_id = genl_ctrl_resolve_grp(ctx->sock,
++				       DRM_RAS_FAMILY_NAME,
++				       notify_group_name);
++	if (grp_id < 0)
++		return normalize_nl_error(grp_id);
++
++	/* Check if already subscribed to the requested multicast group */
++	if (ctx->subscribed_grp_id == grp_id) {
++		igt_debug("Already subscribed to DRM RAS multicast group '%s' (id=%d).\n",
++			  notify_group_name, grp_id);
++		return 0;
++	}
++
++	ret = nl_socket_add_membership(ctx->sock, grp_id);
++	if (ret < 0)
++		return normalize_nl_error(ret);
++
++	ctx->subscribed_grp_id = grp_id;
++
++	igt_debug("Subscribed to DRM RAS multicast group '%s' (id=%d).\n",
++		  notify_group_name, grp_id);
++
++	return 0;
++}
++
++int igt_drm_ras_nl_wait_for_error_report_event(struct igt_drm_ras_nl_context *ctx,
++					       int timeout_ms)
++{
++	struct timespec start, now;
++	struct pollfd pfd;
++	struct nl_cb *cb;
++	int remaining_ms;
++	int ret;
++
++	if (!ctx || !ctx->sock || ctx->family_id < 0)
++		return -EINVAL;
++
++	if (timeout_ms < -1)
++		return -EINVAL;
++
++	cb = nl_cb_alloc(NL_CB_DEFAULT);
++	if (!cb)
++		return -ENOMEM;
++
++	ret = register_multicast_callbacks(cb, ctx);
++	if (ret < 0) {
++		nl_cb_put(cb);
++		return normalize_nl_error(ret);
++	}
++
++	ctx->event_received = false;
++	clock_gettime(CLOCK_MONOTONIC, &start);
++
++	pfd.fd = nl_socket_get_fd(ctx->sock);
++	pfd.events = POLLIN;
++	pfd.revents = 0;
++
++	while (!ctx->event_received) {
++		if (timeout_ms == -1) {
++			remaining_ms = -1;
++		} else {
++			clock_gettime(CLOCK_MONOTONIC, &now);
++			remaining_ms = timeout_ms -
++				       (int)((now.tv_sec - start.tv_sec) * 1000 +
++				       (now.tv_nsec - start.tv_nsec) / 1000000);
++			if (remaining_ms <= 0) {
++				igt_warn("Timeout reached while waiting for error event.\n");
++				ret = -ETIMEDOUT;
++				break;
++			}
++		}
++
++		ret = poll(&pfd, 1, remaining_ms);
++		if (ret == 0) {
++			igt_warn("timed out while polling for error event.\n");
++			ret = -ETIMEDOUT;
++			break;
++		}
++
++		if (ret < 0) {
++			ret = -errno;
++			break;
++		}
++
++		ret = nl_recvmsgs(ctx->sock, cb);
++		if (ret < 0) {
++			ret = normalize_nl_error(ret);
++			break;
++		}
++	}
++	nl_cb_put(cb);
++	if (ret < 0)
++		return ret;
++
++	if (!ctx->event_received)
++		return -ENOMSG;
++
++	igt_debug("Received error event: node_id=%u error_id=%u value=%u\n",
++		  ctx->event_node_id, ctx->event_error_id, ctx->event_error_value);
++
++	return 0;
++}
+diff --git a/lib/igt_drm_ras_nl.h b/lib/igt_drm_ras_nl.h
+index 5c9be5b17..057c6026f 100644
+--- a/lib/igt_drm_ras_nl.h
++++ b/lib/igt_drm_ras_nl.h
+@@ -47,6 +47,21 @@ struct igt_drm_ras_nl_context {
+ 
+ 	/** @error_threshold: Error threshold value to query/set */
+ 	uint32_t error_threshold;
++
++	/** @event_node_id: RAS node ID reported by an error-report event */
++	uint32_t event_node_id;
++
++	/** @event_error_id: RAS error ID reported by an error-report event */
++	uint32_t event_error_id;
++
++	/** @event_error_value: Error counter value reported by an error-report event */
++	uint32_t event_error_value;
++
++	/** @event_received: Set when a matching error-report event has been received */
++	bool event_received;
++
++	/** @subscribed_grp_id: Multicast group ID currently subscribed to, or -1 if none */
++	int subscribed_grp_id;
+ };
+ 
+ void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
+@@ -54,6 +69,9 @@ int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_get_error_threshold(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx);
++int igt_drm_ras_nl_subscribe_error_report(struct igt_drm_ras_nl_context *ctx,
++					  const char *notify_group_name);
++int igt_drm_ras_nl_wait_for_error_report_event(struct igt_drm_ras_nl_context *ctx, int timeout_ms);
+ 
+ #endif /* IGT_DRM_RAS_NL_H */
+ 
 -- 
 2.34.1
 
