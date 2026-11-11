@@ -2,148 +2,125 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB55606A339
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 19:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACED9606A327
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 23:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fasHjwx7
+	dkim=fail reason="signature verification failed" (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=shKs9DeT
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 898CC10FC0E;
-	Wed, 11 Nov 2026 19:25:23 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4799510E32D
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 19:23:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794425039; x=1825961039;
- h=date:from:to:cc:subject:message-id:references:
- in-reply-to:mime-version;
- bh=fahMEf+H6d4dHOhryK8QE4TJJnth9ag0H0OfyEPegHY=;
- b=fasHjwx7fp4Npd1E5pKRmUMTK1sY1T2f+7Fue+ra3S3E3qz4uDspaiAR
- fRTf6dVYWDxYVAGrfEyWk6evsCV5kKuYPmMSE3UJwKDhpcxnRnG64WpWB
- fJWmS6Ee29ZDesYXsp+ElgHXXns4Isyjij8JF/IkJT18U96j0nxyekQko
- OSe8JBnekJ0cExNlJ0uXx5mc52eViH9D6A1VA493ZrSIpyt7RrO4QYwHH
- zQcEnoAQpNSKJO02nMqA9Ij0lIAWr3+iUl2RagB1qPDeKm3Z60gyxl9aa
- y+ohLgzlZn9EXPQJHAFD0nJHn5yk91aalhGHw0AEApyExX0x0Gv7sduKn Q==;
-X-CSE-ConnectionGUID: zLH8DHXARxOGO7/hj7F7iQ==
-X-CSE-MsgGUID: jOQfLwx1QgeCsAcUAZTCSA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11963"; a="3198013"
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="3198013"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 11:23:59 -0800
-X-CSE-ConnectionGUID: Qye94fS6Q4KHFVZkNpbOEA==
-X-CSE-MsgGUID: v3qdiuNDSRKYT/zRIwPjTw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,208,1787036400"; 
-   d="scan'208";a="8564950"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 11:23:58 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 11 Nov 2026 11:23:57 -0800
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Wed, 11 Nov 2026 11:23:57 -0800
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.13) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 11 Nov 2026 11:23:57 -0800
+	by gabe.freedesktop.org (Postfix) with ESMTP id 42A7F10E484;
+	Wed, 11 Nov 2026 23:32:30 +0000 (UTC)
+Received: from BN8PR05CU002.outbound.protection.outlook.com
+ (mail-eastus2azon11011070.outbound.protection.outlook.com [52.101.57.70])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D768610E487
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 23:31:23 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RvK7IDOU2FoLhEfCoHWWGM0G+213CTCaBlxe3hHPt5x56OFj1UzrCeVOCFzM5LFLRJlJ8GuCarz0BA5IPu24tu64ulAhQQF/wBXIzwOKnteLUWQTbdcGiM53RAyU6rysJGvB11sLDtX/4u03spUNTwSFIR3CtQsWUIaI+rH7cWR1F661DCSySU/ro4EcQ9VY4POZI/Nd2piDPLJDgrVdfO4fQcLL+czdpRWvqdaxeLt/F4IzV+PSWwx4745mxSjwZIka3fFmHQTNzZfdX/bNX83VW+BWVC3/Eu4PJQbOW6+7RAFNXovUf48SiiZaW31griGBgqj5Tz8HaDo+MA4YYw==
+ b=GA+c8pK97xFzO8xSkUonwQ4/bV/0FWfzr67bJpCfRNzrroKkjDj+Ffu1MMOKutc+uGAa/2RJkaA3QK46wHK/S7Ayvce2vpGs4jbk+AUha0jyPQfRL0HKMqotlHWp9WXGDB4oUp2BJ0Z7xgLz+Ckg5idogiw3bOo38M3qIm9Yg3d81v/28tlGTBUYDwz0pLUek57vx1fkpZczOcqHWhuk//mBAfYLNjGOLhtsDdSekdjf1y2MwN+djuGvHCT3Kzq3lnUlR0mQsRStuAGWMdXlOhnWAl3v7vukJW7+vIgzQSJrWcQTvdue9GAi14fpN8s6amxEiJqEGhrALDWNQxxxPw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=z8YtJCULnoczHq7zys53PaG1cxFGkvqzF1x6niqpqBc=;
- b=Vgj0HJzDViqq6oI/eH31u2Wqyym14Anz0nIw01qOZMOoKEfl3K+MJF9Q2CqLlOWgcB8PKHRq8QH3T3V7tPUtJHEAK8YDOeELW72fNKhV1ndi0sSKL0Waps7hJf1KJppbvHrTOjC20uI5HTG7bhFklc0YFFRy/M+7IMY5K9VA0ngf2gwyEIR8EaB7JDIeP7Jq1KWOXv0asj9qNe7CjLQ7NRmAuI6GDK4zKZWS3dbukABJ/GeWkmuV6bsxIYcS3W6jc54vLXi0kk/2qbp/RDdDaxbTZ1AkOV74nnvM+XUo7pFuYczzkcCqutQ4Exl1cE/K9AhK4As7xGo5WIHaDc4kCw==
+ bh=sCjdUi9VbgPDiQWsod3npXHHEha7Th+HDVd9b8TuXSE=;
+ b=DBLZ0eHQE3Vf6c9RqiMIijR0a23rypqB0ltmOVK8k/vYC85gAvsaRGy8BvQR3WLMDWYqyb3xvB6X5EcrYMyPruwxNic2yDeGLbJhbIFDL8gRtv71fA7u2SFGM/rjxPLl2wOFX+BlGx6GLFBDcSY0qO/mJn6+JkqptZgNTjC8Ej/mqEhxrQrGqTd967Nt17XvB6XBn/EbJUOMjd/TvVFtdLfld8qef4bqDAMhZOuT7/qGMAtMWJx4jAsxGVq2ZKVMXaZU/QKCKYstpGzU29u/tw2/onCQWmVFBaCy8poNsHVfNaWaKKFOe8fjo8cTWBPSHW38rrt4vssd6Y2eRTMRJg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sCjdUi9VbgPDiQWsod3npXHHEha7Th+HDVd9b8TuXSE=;
+ b=shKs9DeTdKiq/a/vsY/Rx6LpvgYd/gakI0Z/XjPchLKTGDWwK5ZYPDG4hgCawTs4rslSW71hMMtosmTnDJXP7PX/54mZYf//Qu+YavPeVG1LPGmjCEIrw3uvAOod44pr/oEx9Qprx1Q3alTjP6U/e1ymEEHCExVSfnNLpcRI+6c=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from IA0PR11MB7187.namprd11.prod.outlook.com (2603:10b6:208:441::12)
- by MN6PR11MB8193.namprd11.prod.outlook.com (2603:10b6:208:47a::10)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DSVPR12MB449095.namprd12.prod.outlook.com (2603:10b6:8:4fe::22)
+ by SN7PR12MB8770.namprd12.prod.outlook.com (2603:10b6:806:34b::21)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.9; Wed, 11 Nov
- 2026 19:23:55 +0000
-Received: from IA0PR11MB7187.namprd11.prod.outlook.com
- ([fe80::be96:3f58:953d:6565]) by IA0PR11MB7187.namprd11.prod.outlook.com
- ([fe80::be96:3f58:953d:6565%4]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
- 19:23:53 +0000
-Date: Wed, 11 Nov 2026 14:23:46 -0500
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: "Michael J. Ruhl" <michael.j.ruhl@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, <frank.scarbrough@intel.com>,
- <david.e.box@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2 2/2] test/intel/xe_pmt: Support CRI PMT
-Message-ID: <avTAwlIEjX8DgDDS@intel.com>
-References: <20261028200500.4005780-4-michael.j.ruhl@intel.com>
- <20261028200500.4005780-6-michael.j.ruhl@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20261028200500.4005780-6-michael.j.ruhl@intel.com>
-X-ClientProxiedBy: SJ0PR13CA0155.namprd13.prod.outlook.com
- (2603:10b6:a03:2c7::10) To IA0PR11MB7187.namprd11.prod.outlook.com
- (2603:10b6:208:441::12)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.8; Wed, 11 Nov
+ 2026 23:31:20 +0000
+Received: from DSVPR12MB449095.namprd12.prod.outlook.com
+ ([fe80::76a6:7a4f:a0a5:18c0]) by DSVPR12MB449095.namprd12.prod.outlook.com
+ ([fe80::76a6:7a4f:a0a5:18c0%4]) with mapi id 15.21.0615.008; Wed, 11 Nov 2026
+ 23:31:19 +0000
+Content-Type: multipart/alternative;
+ boundary="------------tpWGa30DU8nqOC0qSS2QLzso"
+Message-ID: <46712990-8d7f-43a2-afb1-e60f7b075c17@amd.com>
+Date: Wed, 11 Nov 2026 18:31:17 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH i-g-t 1/2] lib/amdgpu: wait for the dispatch and write
+ back the caches on user queues
+To: Jesse Zhang <Jesse.Zhang@amd.com>, igt-dev@lists.freedesktop.org
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ Christian Koenig <christian.koenig@amd.com>,
+ Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+References: <20261111054935.3862301-1-Jesse.Zhang@amd.com>
+Content-Language: en-US
+From: vitaly prosyak <vprosyak@amd.com>
+In-Reply-To: <20261111054935.3862301-1-Jesse.Zhang@amd.com>
+X-ClientProxiedBy: YQBPR0101CA0321.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:6c::9) To DSVPR12MB449095.namprd12.prod.outlook.com
+ (2603:10b6:8:4fe::22)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR11MB7187:EE_|MN6PR11MB8193:EE_
-X-MS-Office365-Filtering-Correlation-Id: f1b2df1a-f7d1-4dec-b726-08df40295244
+X-MS-TrafficTypeDiagnostic: DSVPR12MB449095:EE_|SN7PR12MB8770:EE_
+X-MS-Office365-Filtering-Correlation-Id: 921fbbc5-5ec3-4edb-b77b-08df404be3bf
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|1800799024|23010399003|376014|18002099003|22082099003|6133799003|261009223027099003|4143699003|261021121427099003|11063799006|261102123227099003|56012099006|261028144727099003|261022105027099003|261022075727099003|10067099003|261026140227099003|261026121527099003|261022115727099003|261021123027099003;
-X-Microsoft-Antispam-Message-Info: Y/eKvlndr6aig+zI8v35d8nrr70lOqueHEOJU9/LkOpPkQ7QSldVcJwtTHka0BXKw8fzrr6nZOJrUAUd72sUI7reXFBSF0mDXXIaPiZEQl9w3Y4JMlB+3zzMjTIQFGJVDljifsYxXiG4E3O4Fyqo7dCFABuMed/Dt3pwSQpQ3JKYiRWTI43H7ZnG4pH/be90Kf29F2aerBONadvt1dh6DqPHnOn7DApuodQhFXo4DpohWCfpO6FFsbyhbDHWMXfMGvW0fDiFbW9bHQR5xlwoQ9Ts8q75bTP89FZM1F3R3vAvvjTw+UeBHMLzfLzUYCgv5h2tQf5PwBmE9Gg0WFYn/e6RcVvtL3OLNaSVYCoRdXmezo0IN47JLllO5uaOuCAG4cDcknYLor1VflgPgsknhJ2E/EDqJD/Wh+3We/YPugVSYUuGcY8LU0LFkjkqZOfvPZn8ptnSVyKa78uQsf3kDhP7l4d2k+pC1Q3JxmXHd6T1HzWkZwbktxWH8M4Yqjg48GOdTEWbwvPw8a/NkSdlByrGn3HM81gM2oLg996BnCeQ73LP3FWRiylSxpGXrB4rBjVA2uRkTlsqJHm4eMJCGy2L28QJg/TVdBHwBJXNKJAM2MQngrBBS0fuoH4mcBW3l0G+T+d605zPbM/9PJGpFTFQVwoJtEHz2CU6amUMyPY=
+ ARA:13230040|376014|1800799024|23010399003|366016|6133799003|261026121527099003|8096899003|261009223027099003|261022115727099003|261026135527099003|10067099003|261028144727099003|261026140227099003|3023799007|261021135927099003|261021123027099003|261021133027099003|261102123227099003|261022113327099003|261021121427099003|261026130827099003|261022075727099003|261022105027099003|261021130227099003|56012099006|5023799004|11063799006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: 5HE6J2uSxC3aJvHRxWx7tAhmi4L7aOCog3AfC23CuDygmUzc07XCwK7YLxAxllFreTKpqh+JjDDpSno8pmQ4cJZROTAVo++LB9wljTyOHJ4qrcAOnsLLHqKj9K3fcIHiZ6DnN2uILHc+JXfHirsIclWIaQEBX3JFR18AIAiC4yaDgM2vS1/YbdEFwFOJXZQZh7+aYO67y6ENKrGTEH3jPF9ovefDKslgMP+6bMGKD9SKldrhGHzmrkA1hKOqS7lXqA5AiS51rXR2GovZyoRYvfqjJhjT6LwHD9HtD5+3/pbJ3rg2US1I1Nqsov9o3Eq38PCl+cZeRiPoJ5FZ5u83lIJk5UrUpkqO665/XrShfZcBgXhMFXnnnl1V7k9M8i/DfxB0IsD4d9GarvxV76bAdv9Xk0Z/uZB0qgUMJYTGM1EVkk7QkFAwZSVYfh/XasEzeDGV6Qvij1jnvm/8VcM4CgL2SbMsbl9NgU6Jgmal/Fe8iIuzbEfl7vLcr6N9Mv5GO7w/XesH633SnKZPzCC5xuRQkENnFN3y+4qAaq/qBaRibFU7GEtOWfMWFHpbesYU3N9OLmIgSPApKVnY9aHP+SOyAAqmpyflQVd5Bi8wUp1Elo1iEtgQ+uRAvrVsb89X8qaoh8Y0/6/fSGoAQglCgjw4QuNOtHVG+v/Hha2ItaQ=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:IA0PR11MB7187.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(18002099003)(22082099003)(6133799003)(261009223027099003)(4143699003)(261021121427099003)(11063799006)(261102123227099003)(56012099006)(261028144727099003)(261022105027099003)(261022075727099003)(10067099003)(261026140227099003)(261026121527099003)(261022115727099003)(261021123027099003);
+ IPV:NLI; SFV:NSPM; H:DSVPR12MB449095.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(1800799024)(23010399003)(366016)(6133799003)(261026121527099003)(8096899003)(261009223027099003)(261022115727099003)(261026135527099003)(10067099003)(261028144727099003)(261026140227099003)(3023799007)(261021135927099003)(261021123027099003)(261021133027099003)(261102123227099003)(261022113327099003)(261021121427099003)(261026130827099003)(261022075727099003)(261022105027099003)(261021130227099003)(56012099006)(5023799004)(11063799006)(22082099003)(18002099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?aHrTQ2V0l8XbVOd/cUl37LF/1bYvBTfKYBOAN4/jgN1QJuCDzPIUI+wgzX3M?=
- =?us-ascii?Q?lsAI+SlQImn1RhuGeiJOt/TuBCwjnaQ2FnhYdydSXfU3cZzuvsyfSGg5bgGr?=
- =?us-ascii?Q?zq4dxMfaSAsWbdo1EikPCGXp9nfxssLyQo5Rw2ZBbnbcENVn2Criq8TXAiNe?=
- =?us-ascii?Q?jQJ1zoSGHD6ErWgio0djrbrpp5W3wrllf1uOlWtPJCE8O4DjsnP77EPaxlUf?=
- =?us-ascii?Q?R85XtQ/S2aqXeoXi7+UnDOXRWSF/hnMG7YDQx7Eo1aPpkwNHB3Btiqc+05NS?=
- =?us-ascii?Q?ECQ7j15h0Fwh3ngBX+JrVvCe+GHWI1pvv4rSMg0SwwDEYyyL5aPICRBNTVKV?=
- =?us-ascii?Q?PUgUBfeouK5AM5lA0/8pdn4GR6jpLYX9iV27KkQjdf8LwKJ2ZOLWdQHstEl1?=
- =?us-ascii?Q?QfahA+vs9yVT3w5Mo/cqU1YRQHLiKexnghkI2+m9TOAuXW5Y+Vpw7oMedsWC?=
- =?us-ascii?Q?qKZVk4sHR4i4EufK4ZrszDZYjfflqe231Il6q4T73an1Zt/s+SDuC4kfumlZ?=
- =?us-ascii?Q?DQ1nEcdtsZNC6dR/APGlqyHKoRt2uH2atT+n5yrKmfXh5wJJNv4KVENuQnrJ?=
- =?us-ascii?Q?Ex5vzTGVmqArZQziPULbv/nGBcRJOvzKYOTKWP0XyYJDk7P0OqMlMlXOCDFQ?=
- =?us-ascii?Q?M4pqlb9DOpM4R7YBPmqJP4cwsRIMwVO7YEyQDAW5FOwqkC4vJjKxe0Nr4CEm?=
- =?us-ascii?Q?HFuHNPdyMez9tsw9KHat9HrVSezS50vajsrQ84YbWeSj7jqcig7MOb8kY6RA?=
- =?us-ascii?Q?5+LtfDG3mxbhZ2VdAv7xY4V3s1ZLmXzyJg+uAd8wffL2eVw3MExy90OxYLdW?=
- =?us-ascii?Q?/o6ZhGmN75L1YjnFkiD7xDvwb1Qre6GP6wyYZzHp8R0XoRByoWflsgOW15n4?=
- =?us-ascii?Q?jOWCObTGwjrQIKdGH5iTtvySZbGdwVTjJ1wVKJql01dylNwK5a9AexbCVzDP?=
- =?us-ascii?Q?PnYU/W9bbhDJX+0soV2Bo9nwey05VkK2fYolzfZofAZ6bKfoydHSDiz2LM6B?=
- =?us-ascii?Q?zCQ2/8iI/zOuBbXZwdFaYgkYF4tgn/fpMiQeTuNbdf2GQakXK3FYAper3BG3?=
- =?us-ascii?Q?gBMnIFNUwsyydQ9WiGF8TVUkK0+KHO400WWiIbl75OfMWGEoYYH3N2FLwlMP?=
- =?us-ascii?Q?PeAmQgyWt/lwiPRfsLSdrE6s8k0IERCFGw1nDkMOXL3s3cgmz/lDqybSo5DM?=
- =?us-ascii?Q?MeCs7gFhSqIH2ORioCIszCbbqkvGKFva6ybkq5MqVGDiAiHG9+xaAnwETiMv?=
- =?us-ascii?Q?IBJa8qqcHgpoaF32ksQt5LKOJ978q7WKb1K0+un00fYp2XpWKbEIuku3j06p?=
- =?us-ascii?Q?dHskFqxJHwN9ZtvRE3tSbYAFjLDb6Dg9ZpaPH6/sBc1Ig+ZemVgGOkwLeaWz?=
- =?us-ascii?Q?Xp7i3MpR0b7J85Hb7gzo2MrU3GTwa/3py0Lz69/mSkRmDi/9+OBw5Y3LPfIZ?=
- =?us-ascii?Q?/YJD/9ajkg8i1vwRcUbaTiqy8pmTaBhm7NwDzf+0LLwFxCcymOwPUWE6NhGW?=
- =?us-ascii?Q?hU6hsd0cTWwJufeixhVRMMcfpDvPW941oBNYenaH/PaHcK36jD+/aGhZ8Tb1?=
- =?us-ascii?Q?WivAExGSRD7pqJdVW1SHpad/wib/aU8ZVw2ubjUrmKNMweHW30E/Q11bBALy?=
- =?us-ascii?Q?bgClFIatby2QluREQ9uFXbbV/91GbQjPPnhXV/gVb0QF0VVGCMY096Nc7nAc?=
- =?us-ascii?Q?9FPh7XNStVGDtE1ApH79e4ixK0ob7RcctK8R84xK2W7l9fOn11MzJPHSeSzM?=
- =?us-ascii?Q?5NzMuISeKA=3D=3D?=
-X-Exchange-RoutingPolicyChecked: ivelNnk4jBtKD1pQfjwnJRyB/MNtStnYj19j0ItWelFfmerAByw5Y4IvKK3X9Tk6prXEvtACJQIBDQbnwDyxze+xkF2yd5ycHbPWPBmf0lywdssbGHvJvaP5BLZIK8XzA7FEt3tfikp8Th0Zl28UKeNEYSi6rRs4tgz3HAP/LYum1Pn5HrWfyzwU4eCwT6SX8aqdKHQIYkkNUbbg8pazz9RX14dqu4KrhKIYLBFpcp4reOdg2vmet6a2RL5rE33WPBoXE4ZFi9B/PeZnc3yAViFaG+sFNu1+KymSkjFx8HEvL3QTVrs2ZxZpuncFYHfk0it6R5V9nxVIWm4pRG+1mw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: f1b2df1a-f7d1-4dec-b726-08df40295244
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR11MB7187.namprd11.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SXZnRVMxU2FuSFhhaXJMQklKaXJLSHg5aG1mRW1ndTl2VEFKUDVORUsvV2RL?=
+ =?utf-8?B?elhWS2tMZjY2NFNRTEo5UmU0VHFpbmdSM1lQOHJRV3JXNVltQ1RVMzVFZmo0?=
+ =?utf-8?B?ZnFDcFVJSFlYTlcvU3c3WjJlQ2xhOFNPUE9IOEwrR0xINGtjNnZEN0kxcllp?=
+ =?utf-8?B?NkI0amYrMWtZeGFCMS9rSWJEZ2Q2b044VFdpNUZDbFFqNGZjMm16NlMwQ2Ex?=
+ =?utf-8?B?WmZRZEc0YTcxUWhna05uU0Zzb1Zic3l6Rm5pc2tndzRqakt5RGFpNHJkaWJw?=
+ =?utf-8?B?Zm84WFFoZGthTTk2R2pmRFdOZ2t1Z2QyRm9VZ21YMVJqWjdicmZhRUF2UVkv?=
+ =?utf-8?B?dUxhMUNFcmk5SmR1NWRDNzdPMEhBSEpNQ1FSdThZOUlUelZySmcwa3BMVXJV?=
+ =?utf-8?B?LzhTOUFUNTA4aFFoL1psMU9rcmpLV3doMkdkeU82aXRBaDU4QjA3cFJQbnJF?=
+ =?utf-8?B?VEt6QnJuVHZZTkkrTjM2UHFNR3EzVEo3cmI3NGNpbkxHMHdMajRlRmpwOVVo?=
+ =?utf-8?B?L1oyRWlvVmFxQThtRFZsK1BGU3dyWVROWFFxK3IzVUNGdXlJZFY1amYrbXN2?=
+ =?utf-8?B?SEdUdEtzdkV6Z0hOVklwQ0laSUxITmEyNm1PUVZKNEhBV3ROK3pBNGM5MGI1?=
+ =?utf-8?B?Q2lUdXJtUFNsZ1BwOVZKYnE0T3FTL3JpNS9XeUw1MDcyZVhFUEFObEx2Z1BP?=
+ =?utf-8?B?Mk55TDN4RmpqdGJUUXFVcmtIcmZMWStmcWhpZVg1VWVuRnZwSFBzQ3c3MGFI?=
+ =?utf-8?B?azg5eUVJRnhmYUpRTStGekVCYWU4d1VrQ0l4d3UxOGRqS2YrYmtRN0ZhUGxo?=
+ =?utf-8?B?bzNnbXZWaUdGTmVHRS9HVUVvL2VyU2h5a1RaUkZ5TkJQTEUvbnFMUFh5VXgw?=
+ =?utf-8?B?dUpuZFZJcWRaelJTVTFOejI1R2tzL1gwUlFwQ2k4K21lSjBEdldMNWY1dWc4?=
+ =?utf-8?B?WlRZbmZWTjlXQWNqS3kyS01uQ2U0eXk1bVNPZ1hMK0hMMnFnVTJ4blQ3eHBZ?=
+ =?utf-8?B?T294ak5NM21uR0lNbi83b0VHcmNLblAzdFZMQXF6TFhkallGc21CVkZ0blBv?=
+ =?utf-8?B?Z0lxak5DZlc3Q1Q2MGI1TGJ2RUNVNktiVUJpYi9wMG14TWxuOURzN1gzZ3BT?=
+ =?utf-8?B?eEtpZjNZT08zV1psUFpSY3V5cFF6eVZXL2NubXo2ZFExTm1tWjNoNnE5RGlo?=
+ =?utf-8?B?RUovT1J0alVSRGpIVXZSVGdjNmFmb21vU0E0T3FkZXBrU1U5VlpBMFp3UHk4?=
+ =?utf-8?B?d1A5cGo3ZGdFaWtGeEQyb1N2MWFSOTEwMEpBZmJZSW54Ujc5QTdWbE9uMjdQ?=
+ =?utf-8?B?VmpFN2NmekFaR0YxV0tDUzNZQS85ZG9uaGg2dE1wMTBkTDI1NW9GSHZpR1Iv?=
+ =?utf-8?B?cjlvM09rUFRsY3U3OGlLUG5WcHlTdkgxcUtrbCtvb3V5dWV4MmJ3dG1WVmhl?=
+ =?utf-8?B?dU9Yd3Arb3UvQUhVeVVHSVdLTjQxWG5GQ3M2dStIcmZVeGN0blRQTHFYUEow?=
+ =?utf-8?B?eDBQUm9KWWtWbXBaSWZpc0U1MjdHN2I1aVJFSnZQU3oxbFd5d3V5TlFwYTJQ?=
+ =?utf-8?B?M20rQ254WWdURHVTeTQvZGhyQkJjR1V2OTF2T3p6ZWNQRk9UaW9vaTRJZUFH?=
+ =?utf-8?B?WXVQS0R6K2pZL1JqTitvbXJLc1hCOHBLQWhldmdFK3RsSHJjalRrNkVjNmR5?=
+ =?utf-8?B?dDhXSmhteDBzRzgrbFNKaW5iVDJhbnc2OXdOdWwwUFFDM29DNHJQakRvbmNS?=
+ =?utf-8?B?QmVuZ1pIc25CYm1nS0hRcDc5Y2luN293SmNicWNJSDRBV0Q4REhKM3I3eXJh?=
+ =?utf-8?B?bDFwVnBIUzBVSmJFVVk0ejVtdUxiVHhRd2JXTlFIVWNJcG5GcTUvaitXYk1H?=
+ =?utf-8?B?MndMOUNDNjd2RUxKV1FhcE1IZXI4UitiMFlZYThWZnIrYXloalpUeEdrNzU0?=
+ =?utf-8?B?WGwrNXgxdzBMRHF2eGVYWUthUkVIUFFnTTV4MTUyTXJRaWtEUm9QeDhRdjVS?=
+ =?utf-8?B?WTFHZ2RxZ1BwZ2lXUlRvYWJQR3MxcGFla3BwcnFnM3VIS3dtVkVSbWtpZElx?=
+ =?utf-8?B?dDJXMWhHYVhURlAybUFkdVhIbGFrcGhMOFVIVVQxQ1pZMnFDa1FGVWVmS09s?=
+ =?utf-8?B?b0N3T3VhNGwrNmhobk1oV1gvS09OZk0vUGxnNmJmMEhHalFKaTJkV2JPb3lx?=
+ =?utf-8?B?UUV6YlpENXJFNUpDR3hpenBlT2tPTTNyMm43Y1ZRb2NPcFBkWTdwajAzSGxG?=
+ =?utf-8?B?d1Q5aWZRMU9BbkxjMXZTSzEyblplUFFLMHc2TERsSi9MdmxhaGZzb1QvYmx6?=
+ =?utf-8?B?U3VUc1d4aFJ3YUd6KzdTbVhMMEtZTG5mbXg4RFd0L3F0azJtbWUyQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 921fbbc5-5ec3-4edb-b77b-08df404be3bf
+X-MS-Exchange-CrossTenant-AuthSource: DSVPR12MB449095.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 19:23:53.4808 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 23:31:19.8736 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vccl67UIrp5ryS1Id5Rvh8S4MV+faVGgMkDQeEseA0PVugbj94yLoX7ZtCcOexuBqIxaV+hFQcm4+uUVJaT5Wg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN6PR11MB8193
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-UserPrincipalName: K9p+4aW6y+66fI9zCWjVs89Z1iETY4TDiG5CkNIHSdenl1DHrT2vWivAJE7PiNZhI7fbveTs1ZPp6lV22bxAlw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8770
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -155,551 +132,551 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-12.1 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,HTML_MESSAGE,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 01:05:02PM -0700, Michael J. Ruhl wrote:
-> Crescent Island (CRI) devices have the Platform Monitoring
-> Technology (PMT) support for the telemetry and crashlog
-> (type 1/version2) functions.
-> 
-> Add test support for the device.
-> 
-> Signed-off-by: Michael J. Ruhl <michael.j.ruhl@intel.com>
+--------------tpWGa30DU8nqOC0qSS2QLzso
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+This series of 2 patches is:
+Reviewed-by: Vitaly Prosyak vitaly.prosyak@amd.com <mailto:vitaly.prosyak@amd.com>
+
+On 2026-11-11 00:49, Jesse Zhang wrote:
+> A user queue only signals its fence after the IB: unlike the kernel fence
+> of a kernel queue, it neither waits for the dispatched waves nor writes
+> the caches back. So the shader results of the dispatch helpers were never
+> visible on user queues, which went unnoticed as their check was skipped.
+> On navi31, with the check enabled:
+>
+>   dst mismatch at byte 0 of 16384: got 0x00, expected 0x22
+>
+> Add amdgpu_dispatch_write_sync() (CS_PARTIAL_FLUSH, then ACQUIRE_MEM
+> writing back and invalidating the caches) and emit it at the end of the
+> memset and memcpy dispatch IBs on user queues. Also wait for the page
+> table updates of their buffers there, and check the results on user
+> queues too.
+>
+> Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 > ---
->  tests/intel/xe_pmt.c | 259 ++++++++++++++++++++++++++++---------------
->  1 file changed, 171 insertions(+), 88 deletions(-)
-> 
-> diff --git a/tests/intel/xe_pmt.c b/tests/intel/xe_pmt.c
-> index af5d470b5..ebd3fe3f6 100644
-> --- a/tests/intel/xe_pmt.c
-> +++ b/tests/intel/xe_pmt.c
-> @@ -8,6 +8,7 @@
->  #include <fcntl.h>
->  #include <limits.h>
->  #include <string.h>
-> +#include <linux/limits.h>
+>  lib/amdgpu/compute_utils/amd_dispatch.c       | 85 +++++++++++++------
+>  .../compute_utils/amd_dispatch_helpers.c      | 44 ++++++++++
+>  .../compute_utils/amd_dispatch_helpers.h      |  2 +
+>  3 files changed, 107 insertions(+), 24 deletions(-)
+>
+> diff --git a/lib/amdgpu/compute_utils/amd_dispatch.c b/lib/amdgpu/compute_utils/amd_dispatch.c
+> index feac6aa2e..9cee17d6f 100644
+> --- a/lib/amdgpu/compute_utils/amd_dispatch.c
+> +++ b/lib/amdgpu/compute_utils/amd_dispatch.c
+> @@ -115,21 +115,34 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
+>  	memset(ptr_cmd, 0, bo_cmd_size);
+>  	base_cmd->attach_buf(base_cmd, ptr_cmd, bo_cmd_size);
 >  
->  #include "igt.h"
->  #include "igt_sysfs.h"
-> @@ -25,9 +26,9 @@
->   * Description: Verify that the available PMT files (crashlog and telemetry)
->   *   are created, are accessable, and respond as per design.
->   *
-> - * SUBTEST: pmt-bmg-all
-> + * SUBTEST: pmt-api
->   * Description:
-> - *   Exercise the BMG PMT feature
-> + *   Verify that the correct PMT sysfs file exist and verify access
->   *
->   */
+> -	r = amdgpu_bo_alloc_and_map(device_handle, bo_shader_size, 4096,
+> -					AMDGPU_GEM_DOMAIN_VRAM, 0,
+> +	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_shader_size, 4096,
+> +					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+>  					&bo_shader, &ptr_shader,
+> -					&mc_address_shader, &va_shader);
+> +					&mc_address_shader, &va_shader,
+> +					user_queue ? ring_context->timeline_syncobj_handle : 0,
+> +					user_queue ? ++ring_context->point : 0,
+> +					user_queue);
+>  	igt_assert_eq(r, 0);
+>  	memset(ptr_shader, 0, bo_shader_size);
 >  
-> @@ -40,16 +41,34 @@ IGT_TEST_DESCRIPTION("Verify Platform Monitoring Technology (PMT) files operatio
->  #define TELEMETRY_DIR "telem"
+>  	r = amdgpu_dispatch_load_cs_shader(ptr_shader, CS_BUFFERCLEAR, version);
+>  	igt_assert_eq(r, 0);
 >  
->  /* itemize the available instances for the specific device */
-> -enum bmg_crashlog_instances {
-> -	bmg_crashlog_punit = 0,
-> -	bmg_crashlog_oobmsm,
-> -	bmg_crashlog_max
-> +enum pmt_device {
-> +	PMT_DEVICE_BMG,
-> +	PMT_DEVICE_CRI,
->  };
+> -	r = amdgpu_bo_alloc_and_map(device_handle, bo_dst_size, 4096,
+> -					AMDGPU_GEM_DOMAIN_VRAM, 0,
+> +	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_dst_size, 4096,
+> +					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+>  					&bo_dst, (void **)&ptr_dst,
+> -					&mc_address_dst, &va_dst);
+> +					&mc_address_dst, &va_dst,
+> +					user_queue ? ring_context->timeline_syncobj_handle : 0,
+> +					user_queue ? ++ring_context->point : 0,
+> +					user_queue);
+>  	igt_assert_eq(r, 0);
+> +	/* A user queue doesn't wait for the page table updates by itself */
+> +	if (user_queue) {
+> +		r = amdgpu_timeline_syncobj_wait(device_handle,
+> +						 ring_context->timeline_syncobj_handle,
+> +						 ring_context->point);
+> +		igt_assert_eq(r, 0);
+> +	}
+>  	/// TODO helper function for this bloc
+>  	amdgpu_dispatch_init(ip_type, base_cmd, version);
 >  
-> -enum bmg_telemety_instances {
-> -	bmg_telemetry_punit = 0,
-> -	bmg_telemetry_oobmsm,
-> -	bmg_telemetry_max
-> +struct pmt_device_info {
-> +	uint32_t max_crashlog;
-> +	uint32_t max_telem;
-> +};
+> @@ -178,6 +191,10 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
+>  	base_cmd->emit(base_cmd, 1);
+>  	base_cmd->emit(base_cmd, 1);
+>  
+> +	/* Nothing waits for the dispatch on a user queue but the IB itself */
+> +	if (user_queue)
+> +		amdgpu_dispatch_write_sync(base_cmd, version);
 > +
-> +#define BMG_CRASHLOG_MAX	(2)
-> +#define BMG_TELEM_MAX		(2)
-> +
-> +#define CRI_CRASHLOG_MAX	(2)
-> +#define CRI_TELEM_MAX		(3)
-> +
-> +#define CRASHLOG_MAX		CRI_CRASHLOG_MAX
-> +#define TELEM_MAX		CRI_TELEM_MAX
-> +
-> +struct pmt_device_info device_info[] = {
-> +	[PMT_DEVICE_BMG] = {
-> +		.max_crashlog = BMG_CRASHLOG_MAX,
-> +		.max_telem = BMG_TELEM_MAX,
-> +	},
-> +	[PMT_DEVICE_CRI] = {
-> +		.max_crashlog = CRI_CRASHLOG_MAX,
-> +		.max_telem = CRI_TELEM_MAX,
-> +	},
->  };
+>  	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
+>  	resources[0] = bo_dst;
+>  	resources[1] = bo_shader;
+> @@ -199,8 +216,9 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
 >  
->  static char dev_path[PATH_MAX];
-> @@ -59,13 +78,18 @@ static char work_path[PATH_MAX * 2];
->   * In most case there should be a single instance of the crashlog and telemetry
->   * directories. If DVSEC entries are not contiguous the structure will be different,
->   * and the code will need to reflect the structure.
-> + * vsec directory string size is sizeof(xxx_DIR) + idx.  For instance:
-> + *    intel_vsec.crashlog.3
-> + *    intel_vsec.telemetry.23
->   */
-> -static char crashlog_vsec_dir[32];
-> -static char telemetry_vsec_dir[32];
-> +#define MAX_VSEC_DIR (32)
-> +
-> +static char crashlog_vsec_dir[MAX_VSEC_DIR];
-> +static char telemetry_vsec_dir[MAX_VSEC_DIR];
->  
->  /* This needs to be specific for each supported device */
-> -static char crashlog_dir[bmg_crashlog_max][32];
-> -static char telemetry_dir[bmg_telemetry_max][32];
-> +static char crashlog_dir[CRASHLOG_MAX][MAX_VSEC_DIR];
-> +static char telemetry_dir[TELEM_MAX][MAX_VSEC_DIR];
->  
->  /* telemetry file names */
->  static const char *telem = "telem";
-> @@ -90,7 +114,7 @@ struct crashlog_v2_info {
->  	int rearm_fd;
->  	int trigger_fd;
->  	u_int32_t guid;
-> -} bmg_info[bmg_crashlog_max];
-> +} crashlog_info[CRASHLOG_MAX];
->  
->  #define DEV_PATH_LEN 80
->  
-> @@ -121,17 +145,22 @@ static char *device_sysfs_path(int fd, char *path)
->  /*
->   * Verify the PMT directory structure
->   *
-> - * BMG PMT directory structure:
-> + * BMG/CRI PMT directory structure:
->   *   device/intel_vsec.crashlog.x/intel_pmt/crashlog<a,b>
->   *   device/intel_vsec.telemetry.x/intel_pmt/telemetry<c,d>
->   *
->   * Note: different platforms could have a different pattern
->   */
-> -static void test_pmt_directories(int dev_fd)
-> +static void test_pmt_directories(int dev_fd, enum pmt_device pmt_dev)
->  {
->  	struct dirent *ent;
-> -	int index;
-> +	uint32_t index;
->  	DIR *dir;
-> +	uint32_t max_crashlog;
-> +	uint32_t max_telem;
-> +
-> +	max_crashlog = device_info[pmt_dev].max_crashlog;
-> +	max_telem = device_info[pmt_dev].max_telem;
->  
->  	igt_assert(device_sysfs_path(dev_fd, dev_path));
->  
-> @@ -161,7 +190,7 @@ static void test_pmt_directories(int dev_fd)
->  	/* find the crashlog<x> directory instances */
->  	while ((ent = readdir(dir)) != NULL) {
->  		if (strncmp(CRASHLOG_DIR, ent->d_name, sizeof(CRASHLOG_DIR) - 1) == 0) {
-> -			if (index < bmg_crashlog_max)
-> +			if (index < max_crashlog)
->  				strcpy(crashlog_dir[index], ent->d_name);
->  			index++;
->  		}
-> @@ -169,8 +198,9 @@ static void test_pmt_directories(int dev_fd)
->  
->  	closedir(dir);
->  
-> -	igt_assert_f(index == bmg_crashlog_max, "too many crashlog entries %d\n", index);
-> -	for (int i = 0; i < ARRAY_SIZE(crashlog_dir); i++)
-> +	igt_assert_f(index == max_crashlog, "unexpected crashlog entries: %d  vs expected: %d\n",
-> +		     index, max_crashlog);
-> +	for (int i = 0; i < max_crashlog && i < ARRAY_SIZE(crashlog_dir); i++)
->  		igt_assert_f(strlen(crashlog_dir[i]), "missing crashlog[%d] directory\n", i);
->  
->  	/* verify telemetry directory structure */
-> @@ -182,7 +212,7 @@ static void test_pmt_directories(int dev_fd)
->  	index = 0;
->  	while ((ent = readdir(dir)) != NULL) {
->  		if (strncmp(TELEMETRY_DIR, ent->d_name, sizeof(TELEMETRY_DIR) - 1) == 0) {
-> -			if (index < bmg_telemetry_max)
-> +			if (index < max_telem)
->  				strcpy(telemetry_dir[index], ent->d_name);
->  			index++;
->  		}
-> @@ -190,8 +220,9 @@ static void test_pmt_directories(int dev_fd)
->  
->  	closedir(dir);
->  
-> -	igt_assert_f(index == bmg_telemetry_max, "too many telemetry entries %d\n", index);
-> -	for (int i = 0; i < ARRAY_SIZE(telemetry_dir); i++)
-> +	igt_assert_f(index == max_telem, "unexpected telemetry entries: %d  vs expected: %d\n",
-> +		     index, max_telem);
-> +	for (int i = 0; i < max_telem && i < ARRAY_SIZE(telemetry_dir); i++)
->  		igt_assert_f(strlen(telemetry_dir[i]), "missing telemetry[%d] directory\n", i);
->  
->  }
-> @@ -227,11 +258,11 @@ static void open_pmt_file(const char *path, const char *file, int *fd, int flags
->  /*
->   * verify that the expected telemetry file(s) are in place
->   */
-> -static void test_pmt_telemetry_files(int dev_fd)
-> +static void test_pmt_telemetry_files(int dev_fd, enum pmt_device pmt_dev)
->  {
->  	int i;
->  
-> -	for (i = 0; i < bmg_telemetry_max; i++) {
-> +	for (i = 0; i < device_info[pmt_dev].max_telem; i++) {
->  		sprintf(work_path, "%s/%s/%s/%s", dev_path, telemetry_vsec_dir,
->  			"intel_pmt", telemetry_dir[i]);
->  		find_pmt_file(work_path, telem);
-> @@ -241,7 +272,7 @@ static void test_pmt_telemetry_files(int dev_fd)
->  /*
->   * verify that a read will be successful
->   */
-> -static void test_pmt_telemetry_read_data(int dev_fd)
-> +static void test_pmt_telemetry_read_data(int dev_fd, enum pmt_device pmt_dev)
->  {
->  	char buf[64] = {};
->  	u_int32_t *val;
-> @@ -252,7 +283,7 @@ static void test_pmt_telemetry_read_data(int dev_fd)
->  	int len;
->  	int i;
->  
-> -	for (i = 0; i < bmg_telemetry_max; i++) {
-> +	for (i = 0; i < device_info[pmt_dev].max_telem; i++) {
->  		sprintf(work_path, "%s/%s/%s/%s", dev_path, telemetry_vsec_dir,
->  			"intel_pmt", telemetry_dir[i]);
->  		open_pmt_file(work_path, telem, &telem_fd, O_RDONLY);
-> @@ -278,29 +309,29 @@ static void test_pmt_telemetry_read_data(int dev_fd)
->  /*
->   * verify that the expected crashlog files are in place
->   */
-> -static void test_pmt_crashlog_files(int dev_fd)
-> +static void test_pmt_crashlog_files(int dev_fd, enum pmt_device pmt_dev)
->  {
->  	char buf[64] = {};
->  	int ret;
->  	int i;
->  
-> -	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
-> +	for (i = 0; i < device_info[pmt_dev].max_crashlog; i++) {
->  		sprintf(work_path, "%s/%s/%s/%s", dev_path, crashlog_vsec_dir, "intel_pmt",
->  			crashlog_dir[i]);
->  
-> -		open_pmt_file(work_path, clear, &bmg_info[i].clear_fd, O_RDONLY);
-> -		open_pmt_file(work_path, consumed, &bmg_info[i].consumed_fd, O_RDWR);
-> -		open_pmt_file(work_path, crashlog, &bmg_info[i].crashlog_fd, O_RDONLY);
-> -		open_pmt_file(work_path, enable, &bmg_info[i].enable_fd, O_RDWR);
-> -		open_pmt_file(work_path, error, &bmg_info[i].error_fd, O_RDONLY);
-> -		open_pmt_file(work_path, dev_guid, &bmg_info[i].guid_fd, O_RDONLY);
-> -		open_pmt_file(work_path, rearm, &bmg_info[i].rearm_fd, O_RDWR);
-> -		open_pmt_file(work_path, trigger, &bmg_info[i].trigger_fd, O_RDWR);
-> +		open_pmt_file(work_path, clear, &crashlog_info[i].clear_fd, O_RDONLY);
-> +		open_pmt_file(work_path, consumed, &crashlog_info[i].consumed_fd, O_RDWR);
-> +		open_pmt_file(work_path, crashlog, &crashlog_info[i].crashlog_fd, O_RDONLY);
-> +		open_pmt_file(work_path, enable, &crashlog_info[i].enable_fd, O_RDWR);
-> +		open_pmt_file(work_path, error, &crashlog_info[i].error_fd, O_RDONLY);
-> +		open_pmt_file(work_path, dev_guid, &crashlog_info[i].guid_fd, O_RDONLY);
-> +		open_pmt_file(work_path, rearm, &crashlog_info[i].rearm_fd, O_RDWR);
-> +		open_pmt_file(work_path, trigger, &crashlog_info[i].trigger_fd, O_RDWR);
->  
-> -		ret = pread(bmg_info[i].guid_fd, buf, sizeof(buf), 0);
-> +		ret = pread(crashlog_info[i].guid_fd, buf, sizeof(buf), 0);
->  		igt_assert_f(ret > 0, "failed to read guid for device %d\n", i);
-> -		bmg_info[i].guid = strtol(buf, NULL, 16);
-> -		igt_assert_f(bmg_info[i].guid > 0, "failed to set guid for device %d\n", i);
-> +		crashlog_info[i].guid = strtol(buf, NULL, 16);
-> +		igt_assert_f(crashlog_info[i].guid > 0, "failed to set guid for device %d\n", i);
+>  	if (user_queue) {
+>  		ring_context->pm4_dw = ib_info.size;
+> -		ip_block->funcs->userq_submit(device_handle, ring_context, ip_block->type,
+> -				       mc_address_cmd);
+> +		r = ip_block->funcs->userq_submit(device_handle, ring_context, ip_block->type,
+> +						  mc_address_cmd);
+> +		igt_assert_eq(r, 0);
+>  		seq_no = ring_context->point;
+>  	} else {
+>  		r = amdgpu_cs_submit(context_handle, 0, &ibs_request, 1);
+> @@ -232,7 +250,7 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
 >  	}
->  }
 >  
-> @@ -336,15 +367,15 @@ static bool verify_msg(int fd, const char *msg, const char *file) {
->  /*
->   * Set enable enable/disable bit and verify usage
->   */
-> -static void test_pmt_crashlog_enable(int dev_fd)
-> +static void test_pmt_crashlog_enable(int dev_fd, enum pmt_device pmt_dev)
->  {
->  	u_int32_t guid;
->  	int fd;
->  	int i;
+>  	/* The shader only filled the buffer if the submission completed. */
+> -	if (!user_queue && r == 0) {
+> +	if (r == 0) {
+>  		for (i = 0; i < bo_dst_size; i++)
+>  			igt_assert_f(ptr_dst[i] == 0x22,
+>  				     "dst mismatch at byte %d of %d: got 0x%02x, expected 0x22\n",
+> @@ -320,10 +338,13 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+>  	memset(ptr_cmd, 0, bo_cmd_size);
+>  	base_cmd->attach_buf(base_cmd, ptr_cmd, bo_cmd_size);
 >  
-> -	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
-> -		fd = bmg_info[i].enable_fd;
-> -		guid = bmg_info[i].guid;
-> +	for (i = 0; i < device_info[pmt_dev].max_crashlog; i++) {
-> +		fd = crashlog_info[i].enable_fd;
-> +		guid = crashlog_info[i].guid;
+> -	r = amdgpu_bo_alloc_and_map(device_handle, bo_shader_size, 4096,
+> -					AMDGPU_GEM_DOMAIN_VRAM, 0,
+> +	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_shader_size, 4096,
+> +					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+>  					&bo_shader, &ptr_shader,
+> -					&mc_address_shader, &va_shader);
+> +					&mc_address_shader, &va_shader,
+> +					user_queue ? ring_context->timeline_syncobj_handle : 0,
+> +					user_queue ? ++ring_context->point : 0,
+> +					user_queue);
+>  	igt_assert_eq(r, 0);
+>  	memset(ptr_shader, 0, bo_shader_size);
 >  
->  		/* force enable so we are in a known state */
->  		igt_assert_f(send_msg(fd, ENABLE_MSG, enable), "0x%x: send enable\n", guid);
-> @@ -365,14 +396,14 @@ static void test_pmt_crashlog_enable(int dev_fd)
->   * The error bit is set when a crashlog fails in HW.  It is read only so only
->   * need to verify that it is "0".
->   */
-> -static void test_pmt_crashlog_error(int dev_fd)
-> +static void test_pmt_crashlog_error(int dev_fd, enum pmt_device pmt_dev)
->  {
->  	uint32_t guid;
->  	int i;
+> @@ -331,17 +352,30 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+>  	r = amdgpu_dispatch_load_cs_shader(ptr_shader, cs_type, version);
+>  	igt_assert_eq(r, 0);
 >  
-> -	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
-> -		guid = bmg_info[i].guid;
-> -		igt_assert_f(verify_msg(bmg_info[i].error_fd, DISABLE_MSG, error),
-> +	for (i = 0; i < device_info[pmt_dev].max_crashlog; i++) {
-> +		guid = crashlog_info[i].guid;
-> +		igt_assert_f(verify_msg(crashlog_info[i].error_fd, DISABLE_MSG, error),
->  			     "0x%x: error clear\n", guid);
+> -	r = amdgpu_bo_alloc_and_map(device_handle, bo_dst_size, 4096,
+> -					AMDGPU_GEM_DOMAIN_VRAM, 0,
+> +	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_dst_size, 4096,
+> +					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+>  					&bo_src, (void **)&ptr_src,
+> -					&mc_address_src, &va_src);
+> +					&mc_address_src, &va_src,
+> +					user_queue ? ring_context->timeline_syncobj_handle : 0,
+> +					user_queue ? ++ring_context->point : 0,
+> +					user_queue);
+>  	igt_assert_eq(r, 0);
+>  
+> -	r = amdgpu_bo_alloc_and_map(device_handle, bo_dst_size, 4096,
+> -					AMDGPU_GEM_DOMAIN_VRAM, 0,
+> +	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_dst_size, 4096,
+> +					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+>  					&bo_dst, (void **)&ptr_dst,
+> -					&mc_address_dst, &va_dst);
+> +					&mc_address_dst, &va_dst,
+> +					user_queue ? ring_context->timeline_syncobj_handle : 0,
+> +					user_queue ? ++ring_context->point : 0,
+> +					user_queue);
+>  	igt_assert_eq(r, 0);
+> +	/* A user queue doesn't wait for the page table updates by itself */
+> +	if (user_queue) {
+> +		r = amdgpu_timeline_syncobj_wait(device_handle,
+> +						 ring_context->timeline_syncobj_handle,
+> +						 ring_context->point);
+> +		igt_assert_eq(r, 0);
+> +	}
+>  	///TODO helper function for this bloc
+>  	amdgpu_dispatch_init(ip_type, base_cmd,  version);
+>  	/*  Issue commands to set cu mask used in current dispatch */
+> @@ -407,6 +441,10 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+>  	base_cmd->emit(base_cmd, 1);
+>  	base_cmd->emit(base_cmd, 1);
+>  
+> +	/* Nothing waits for the dispatch on a user queue but the IB itself */
+> +	if (user_queue)
+> +		amdgpu_dispatch_write_sync(base_cmd, version);
+> +
+>  	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP); /* type3 nop packet */
+>  
+>  	resources[0] = bo_shader;
+> @@ -429,8 +467,8 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+>  	ibs_request.fence_info.handle = NULL;
+>  	if (user_queue) {
+>  		ring_context->pm4_dw = ib_info.size;
+> -		ip_block->funcs->userq_submit(device_handle, ring_context, ip_block->type,
+> -				       mc_address_cmd);
+> +		r = ip_block->funcs->userq_submit(device_handle, ring_context, ip_block->type,
+> +						  mc_address_cmd);
+>  		seq_no = ring_context->point;
+>  	} else {
+>  		r = amdgpu_cs_submit(context_handle_in_use, 0, &ibs_request, 1);
+> @@ -455,10 +493,9 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
 >  	}
->  }
-> @@ -381,24 +412,65 @@ static void test_pmt_crashlog_error(int dev_fd)
->   * The rearm bit is set at cold boot.  It cannot be reset unless are real crashlog
->   * occurs (i.e. setting trigger will not change its value).  Verify that it is "1".
->   */
-> -static void test_pmt_crashlog_rearm(int dev_fd)
-> +static void test_pmt_crashlog_rearm(int dev_fd, size_t pmt_dev)
->  {
->  	uint32_t guid;
->  	int i;
 >  
-> -	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
-> -		guid = bmg_info[i].guid;
-> -		igt_assert_f(verify_msg(bmg_info[i].rearm_fd, ENABLE_MSG, rearm),
-> +	for (i = 0; i < device_info[pmt_dev].max_crashlog; i++) {
-> +		guid = crashlog_info[i].guid;
-> +		igt_assert_f(verify_msg(crashlog_info[i].rearm_fd, ENABLE_MSG, rearm),
->  			     "0x%x: rearm set\n", guid);
->  	}
+>  	if (!hang) {
+> -		if (!user_queue) {
+> -		    igt_assert_eq(r, 0);
+> -		    igt_assert_eq(expired, true);
+> -		}
+> +		igt_assert_eq(r, 0);
+> +		if (!user_queue)
+> +			igt_assert_eq(expired, true);
+>  
+>  		/* verify if memcpy test result meets with expected */
+>  		i = 0;
+> diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
+> index 180fbdd40..1105bb54b 100644
+> --- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
+> +++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
+> @@ -99,6 +99,50 @@ amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base, uint32_t version)
+>  	return base->cdw - offset_prev;
 >  }
 >  
 > +/*
-> + * Verify the crashlog data is in the initialized state
-> + * 0xdeadbeef BMG PUINT/OOBMSM default, CRI PUNIT default
-> + * 0xba0b6afe CRI OOBMSM default
+> + * The fence the kernel emits after a job on a kernel queue waits for the
+> + * dispatched waves and writes the caches back. A user queue only signals its
+> + * fence after the IB, so the IB has to do that itself before the results can be
+> + * read: wait for the dispatches to finish, then write back and invalidate the
+> + * caches like the kernel's emit_mem_sync does.
 > + */
-> +static void test_pmt_crashlog_inited(int dev_fd, enum pmt_device pmt_dev)
+> +int
+> +amdgpu_dispatch_write_sync(struct amdgpu_cmd_base *base, uint32_t version)
 > +{
-> +	char buf[64] = {};
-> +	u_int32_t guid;
-> +	int crashlog_fd;
-> +	int clear_fd;
-> +	int *val;
-> +	int len;
-> +	int i;
+> +	int offset_prev = base->cdw;
 > +
-> +	for (i = 0; i < device_info[pmt_dev].max_crashlog; i++) {
-> +		clear_fd = crashlog_info[i].clear_fd;
-> +		crashlog_fd = crashlog_info[i].crashlog_fd;
-> +		guid = crashlog_info[i].guid;
+> +	/* EVENT_WRITE: CS_PARTIAL_FLUSH, wait for the dispatches to finish */
+> +	base->emit(base, PACKET3_COMPUTE(PACKET3_EVENT_WRITE, 0));
+> +	base->emit(base, 0x7 | (4 << 8));
 > +
-> +		/* make sure the bit is clear */
-> +		igt_assert_f(verify_msg(clear_fd, DISABLE_MSG, clear), "0x%x: verify clear\n", guid);
-> +
-> +		len = read(crashlog_fd, buf, sizeof(buf));
-> +		igt_assert_f(len == sizeof(buf), "0x%x: failed to read crashlog data\n", guid);
-> +
-> +		val = (int *)buf;
-> +		igt_assert_f(*val == 0xdeadbeef || *val == 0xba0b6afe,
-> +			     "0x%x: invalid clear data value: : 0x%x\n", guid, *val);
-
-perhaps here it should be a igt_skip instead?
-
+> +	if (version == 9) {
+> +		/* ACQUIRE_MEM: CP_COHER_CNTL SH_ICACHE, SH_KCACHE, TC, TCL1 and TC_WB actions */
+> +		base->emit(base, PACKET3_COMPUTE(PACKET3_ACQUIRE_MEM, 5));
+> +		base->emit(base, (1 << 29) | (1 << 27) | (1 << 23) | (1 << 22) | (1 << 18));
+> +		base->emit(base, 0xffffffff);	/* CP_COHER_SIZE */
+> +		base->emit(base, 0xffffff);	/* CP_COHER_SIZE_HI */
+> +		base->emit(base, 0);		/* CP_COHER_BASE */
+> +		base->emit(base, 0);		/* CP_COHER_BASE_HI */
+> +		base->emit(base, 0xa);		/* POLL_INTERVAL */
+> +	} else {
+> +		/*
+> +		 * ACQUIRE_MEM: GCR_CNTL GL2 and GLM write back and invalidate,
+> +		 * GL1, GLV, GLK and GLI invalidate
+> +		 */
+> +		base->emit(base, PACKET3_COMPUTE(PACKET3_ACQUIRE_MEM, 6));
+> +		base->emit(base, 0);		/* CP_COHER_CNTL */
+> +		base->emit(base, 0xffffffff);	/* CP_COHER_SIZE */
+> +		base->emit(base, 0xffffff);	/* CP_COHER_SIZE_HI */
+> +		base->emit(base, 0);		/* CP_COHER_BASE */
+> +		base->emit(base, 0);		/* CP_COHER_BASE_HI */
+> +		base->emit(base, 0xa);		/* POLL_INTERVAL */
+> +		base->emit(base, (1 << 15) | (1 << 14) | (1 << 5) | (1 << 4) |
+> +			   (1 << 9) | (1 << 8) | (1 << 7) | (1 << 0));
 > +	}
+> +
+> +	return base->cdw - offset_prev;
 > +}
 > +
->  //#define PMT_CRASHLOG_TRIGGER_ENABLE 1
->  #if PMT_CRASHLOG_TRIGGER_ENABLE
-> +/*
-> + * Triggering a Crashlog requires a power cycle to return the device to a usable
-> + * state.
-> + * This is very disruptive and doesn't necessarily verify much more than the
-> + * current set of tests.
-> + * Commentting out the trigger, consumed, clear path for "normal" testing.
-> + * Compile flag so these tests can be done expclity.
-> + */
+>  
+>  int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base, uint64_t shader_addr, uint32_t version, enum  cmd_error_type hang)
+>  {
+> diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
+> index c0113519b..e1c6e37f4 100644
+> --- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
+> +++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
+> @@ -33,6 +33,8 @@ int amdgpu_dispatch_init(uint32_t ip_type, struct amdgpu_cmd_base *base_cmd, uin
+>  
+>  int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base_cmd, uint32_t version);
+>  
+> +int amdgpu_dispatch_write_sync(struct amdgpu_cmd_base *base_cmd, uint32_t version);
 > +
->  /*
->   * Set the manual trigger bit and make sure the data is not 0xdeadbeef
->   */
-> -static void test_pmt_crashlog_trigger(int dev_fd)
-> +static void test_pmt_crashlog_trigger(int dev_fd, size_t pmt_dev)
->  {
->  	char buf[64] = {};
->  	u_int32_t *val;
-> @@ -408,10 +480,10 @@ static void test_pmt_crashlog_trigger(int dev_fd)
->  	int len;
->  	int i;
+>  int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version, enum cmd_error_type err);
 >  
-> -	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
-> -		crashlog_fd = bmg_info[i].crashlog_fd;
-> -		trigger_fd = bmg_info[i].trigger_fd;
-> -		guid = bmg_info[i].guid;
-> +	for (i = 0; i < device_info[pmt_dev].max_crashlog; i++) {
-> +		crashlog_fd = crashlog_info[i].crashlog_fd;
-> +		trigger_fd = crashlog_info[i].trigger_fd;
-> +		guid = crashlog_info[i].guid;
->  
->  		/* make sure the bit is clear */
->  		igt_assert_f(verify_msg(trigger_fd, DISABLE_MSG, trigger), "0x%x: trigger clear\n",
-> @@ -431,7 +503,8 @@ static void test_pmt_crashlog_trigger(int dev_fd)
->  
->  		val = (u_int32_t *)buf;
->  
-> -		igt_assert_f(*val != 0xdeadbeef, "0x%x: invalid trigger value: : 0x%x", guid, *val);
-> +		igt_assert_f(*val != 0xdeadbeef && *val != 0xba0b6afe,
-> +			     "0x%x: invalid trigger value: : 0x%x\n", guid, *val);
->  	}
->  }
->  
-> @@ -439,15 +512,15 @@ static void test_pmt_crashlog_trigger(int dev_fd)
->   * After a crashlog has been "consumed" (read), setting this bit can be done.
->   * Verify that it is set correctly.
->   */
-> -static void test_pmt_crashlog_consumed(int dev_fd)
-> +static void test_pmt_crashlog_consumed(int dev_fd, enum pmt_device pmt_dev)
->  {
->  	uint32_t guid;
->  	int fd;
->  	int i;
->  
-> -	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
-> -		fd = bmg_info[i].consumed_fd;
-> -		guid = bmg_info[i].guid;
-> +	for (i = 0; i < device_info[pmt_dev].max_crashlog; i++) {
-> +		fd = crashlog_info[i].consumed_fd;
-> +		guid = crashlog_info[i].guid;
->  
->  		/* check, set, verify */
->  		igt_assert_f(verify_msg(fd, DISABLE_MSG, consumed), "0x%x: consumed clear\n", guid);
-> @@ -460,12 +533,12 @@ static void test_pmt_crashlog_consumed(int dev_fd)
->  
->  /*
->   * Test the clear crashlog bit. After setting the crashlog data buffer should be
-> - * set to 0xdeadbeef.
-> + * set to 0xdeadbeef or 0xba0b6afe.
->   * BMG supports writing "1" to the clear file, but writing "0" (DISABLE_MSG) to trigger
->   * file is the "standard" usage, so test that usage.
->   * This bit cannot be cleared by software (i.e. reboot required).
->   */
-> -static void test_pmt_crashlog_clear(int dev_fd)
-> +static void test_pmt_crashlog_clear(int dev_fd, enum pmt_device pmt_dev)
->  {
->  	char buf[64] = {};
->  	u_int32_t guid;
-> @@ -476,11 +549,11 @@ static void test_pmt_crashlog_clear(int dev_fd)
->  	int len;
->  	int i;
->  
-> -	for (i = 0; i < ARRAY_SIZE(bmg_info); i++) {
-> -		clear_fd = bmg_info[i].clear_fd;
-> -		crashlog_fd = bmg_info[i].crashlog_fd;
-> -		trigger_fd = bmg_info[i].trigger_fd;
-> -		guid = bmg_info[i].guid;
-> +	for (i = 0; i < device_info[pmt_dev].max_crashlog; i++) {
-> +		clear_fd = crashlog_info[i].clear_fd;
-> +		crashlog_fd = crashlog_info[i].crashlog_fd;
-> +		trigger_fd = crashlog_info[i].trigger_fd;
-> +		guid = crashlog_info[i].guid;
->  
->  		/* make sure the bit is clear */
->  		igt_assert_f(verify_msg(clear_fd, DISABLE_MSG, clear), "0x%x: verify clear\n", guid);
-> @@ -496,39 +569,45 @@ static void test_pmt_crashlog_clear(int dev_fd)
->  		igt_assert_f(len == sizeof(buf), "0x%x: failed to read crashlog data\n", guid);
->  
->  		val = (int *)buf;
-> -		igt_assert_f(*val == 0xdeadbeef, "0x%x: invalid clear data value: : 0x%x", guid, *val);
-> +		igt_assert_f(*val == 0xdeadbeef || *val == 0xba0b6afe,
-> +			     "0x%x: invalid clear data value: : 0x%x\n", guid, *val);
->  	}
->  }
->  #endif
->  
->  /**
-> - * SUBTEST: pmt-bmg-all
-> + * SUBTEST: pmt-api
->   * Description:
->   *   Because of how the Crashlog Instances behave, these tests are ordered. Do not use them
->   *   individually unless you understand the underlying HW behavior.  Because of this behavior,
-> - *   all of the test will be done in order in one step.
-> + *   all of the test will be done in order in one sub-test.
-> + *
-> + *   Crashlog will cause the GPU to be in an un-useful state.  Reseting to recover
-> + *   is not yet fully defined.
->   *   NOTE:
-> + *     o PMT file info is accumulated from successful tests and is used in sequence
->   *     o Testing MUST be done after a cold reset
->   *     o Once crashlog is triggered the device behavior is undefined and requires a cold reset
->   *
->   *  Test category: functionality test
->   */
-> -static void test_pmt_bmg(int fd)
-> +static void test_pmt_api(int fd, enum pmt_device pmt_dev)
->  {
-> -	test_pmt_directories(fd);
-> +	test_pmt_directories(fd, pmt_dev);
->  
-> -	test_pmt_telemetry_files(fd);
-> -	test_pmt_telemetry_read_data(fd);
-> +	test_pmt_telemetry_files(fd, pmt_dev);
-> +	test_pmt_telemetry_read_data(fd, pmt_dev);
->  
-> -	test_pmt_crashlog_files(fd);
-> -	test_pmt_crashlog_error(fd);
-> -	test_pmt_crashlog_enable(fd);
-> -	test_pmt_crashlog_rearm(fd);
-> +	test_pmt_crashlog_files(fd, pmt_dev);
-> +	test_pmt_crashlog_error(fd, pmt_dev);
-> +	test_pmt_crashlog_enable(fd, pmt_dev);
-> +	test_pmt_crashlog_rearm(fd, pmt_dev);
-> +	test_pmt_crashlog_inited(fd, pmt_dev);
->  
->  #if PMT_CRASHLOG_TRIGGER_ENABLE
-> -	test_pmt_crashlog_trigger(fd);
-> -	test_pmt_crashlog_consumed(fd);
-> -	test_pmt_crashlog_clear(fd);
-> +	test_pmt_crashlog_trigger(fd, pmt_dev);
-> +	test_pmt_crashlog_consumed(fd, pmt_dev);
-> +	test_pmt_crashlog_clear(fd, pmt_dev);
->  #endif
->  }
->  
-> @@ -536,25 +615,29 @@ int igt_main()
->  {
->  	const struct {
->  		const char *name;
-> -		void (*func)(int);
-> +		void (*func)(int, enum pmt_device);
->  	} funcs[] = {
-> -		{ "pmt-bmg-all", test_pmt_bmg },
-> +		{ "pmt-api", test_pmt_api },
->  		{ }
->  	}, *f;
->  	int dev_fd;
-> +	enum pmt_device pmt_dev;
->  
->  	igt_fixture() {
->  		uint16_t dev_id;
->  
->  		dev_fd = drm_open_driver(DRIVER_XE);
->  		dev_id = intel_get_drm_devid(dev_fd);
-> -		igt_require_f(IS_BATTLEMAGE(dev_id), "PMT supported on BMG GPU\n");
-> +		igt_require_f(IS_BATTLEMAGE(dev_id) || IS_CRESCENTISLAND(dev_id),
-> +			      "PMT supported on BMG or CRI GPUs\n");
-> +
-> +		pmt_dev = IS_BATTLEMAGE(dev_id) ? PMT_DEVICE_BMG : PMT_DEVICE_CRI;
->  	}
->  
->  	igt_describe("PMT access and API testing");
->  	for (f = funcs; f->name; f++) {
->  		igt_subtest_f("%s", f->name)
-> -			f->func(dev_fd);
-> +			f->func(dev_fd, pmt_dev);
->  	}
->  
->  	igt_fixture()
-> -- 
-> 2.43.0
-> 
+>  int execute_compute_dispatch(amdgpu_device_handle device,
+--------------tpWGa30DU8nqOC0qSS2QLzso
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  </head>
+  <body>
+    <p>This series of 2 patches is:<br data-sfc-root="c" data-sfc-pl="|||[]" data-complete="true" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(22, 23, 26);">
+      Reviewed-by: Vitaly Prosyak <span class="R78TQ" data-sfc-cp="" data-sfc-root="c" data-complete="true" data-sfc-inited="2" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(22, 23, 26);"><span data-sfc-cp="" data-sfc-root="c" data-complete="true" data-sfc-inited="2" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 400; margin: 0px; text-decoration: none; border-bottom: 0px rgb(22, 23, 26);"><a class="gQWhZ moz-txt-link-freetext" target="_blank" rel="noopener" data-sfc-cp="" data-sfc-root="c" data-ved="2ahUKEwiLu4exiYGYAxXBrysGHfwKGsMQy_kOegYIAAgKEAM" data-hveid="CAAIChAD" href="mailto:vitaly.prosyak@amd.com" data-sb="/url?sa=i&amp;source=web&amp;rct=j&amp;url=mailto:vitaly.prosyak@amd.com&amp;ved=2ahUKEwiLu4exiYGYAxXBrysGHfwKGsMQy_kOegYIAAgKEAM&amp;opi=89978449&amp;cd&amp;psig=AOvVaw3JCUyzdst5mLnaslwxsmgm&amp;ust=1794526255129000" data-complete="true" aria-owns="act
+ ion-menu-parent-container" style="font-family: Google Sans, sans-serif; font-size: 16px; font-weight: 500; margin: 0px; text-decoration: underline 1px rgb(21, 88, 214); border-bottom: 0px rgb(21, 88, 214);">vitaly.prosyak@amd.com</a></span></span></p>
+    <div class="moz-cite-prefix">On 2026-11-11 00:49, Jesse Zhang wrote:<br>
+    </div>
+    <blockquote type="cite" cite="mid:20261111054935.3862301-1-Jesse.Zhang@amd.com">
+      <pre wrap="" class="moz-quote-pre">A user queue only signals its fence after the IB: unlike the kernel fence
+of a kernel queue, it neither waits for the dispatched waves nor writes
+the caches back. So the shader results of the dispatch helpers were never
+visible on user queues, which went unnoticed as their check was skipped.
+On navi31, with the check enabled:
+
+  dst mismatch at byte 0 of 16384: got 0x00, expected 0x22
+
+Add amdgpu_dispatch_write_sync() (CS_PARTIAL_FLUSH, then ACQUIRE_MEM
+writing back and invalidating the caches) and emit it at the end of the
+memset and memcpy dispatch IBs on user queues. Also wait for the page
+table updates of their buffers there, and check the results on user
+queues too.
+
+Signed-off-by: Jesse Zhang <a class="moz-txt-link-rfc2396E" href="mailto:Jesse.Zhang@amd.com">&lt;Jesse.Zhang@amd.com&gt;</a>
+---
+ lib/amdgpu/compute_utils/amd_dispatch.c       | 85 +++++++++++++------
+ .../compute_utils/amd_dispatch_helpers.c      | 44 ++++++++++
+ .../compute_utils/amd_dispatch_helpers.h      |  2 +
+ 3 files changed, 107 insertions(+), 24 deletions(-)
+
+diff --git a/lib/amdgpu/compute_utils/amd_dispatch.c b/lib/amdgpu/compute_utils/amd_dispatch.c
+index feac6aa2e..9cee17d6f 100644
+--- a/lib/amdgpu/compute_utils/amd_dispatch.c
++++ b/lib/amdgpu/compute_utils/amd_dispatch.c
+@@ -115,21 +115,34 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
+ 	memset(ptr_cmd, 0, bo_cmd_size);
+ 	base_cmd-&gt;attach_buf(base_cmd, ptr_cmd, bo_cmd_size);
+ 
+-	r = amdgpu_bo_alloc_and_map(device_handle, bo_shader_size, 4096,
+-					AMDGPU_GEM_DOMAIN_VRAM, 0,
++	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_shader_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+ 					&amp;bo_shader, &amp;ptr_shader,
+-					&amp;mc_address_shader, &amp;va_shader);
++					&amp;mc_address_shader, &amp;va_shader,
++					user_queue ? ring_context-&gt;timeline_syncobj_handle : 0,
++					user_queue ? ++ring_context-&gt;point : 0,
++					user_queue);
+ 	igt_assert_eq(r, 0);
+ 	memset(ptr_shader, 0, bo_shader_size);
+ 
+ 	r = amdgpu_dispatch_load_cs_shader(ptr_shader, CS_BUFFERCLEAR, version);
+ 	igt_assert_eq(r, 0);
+ 
+-	r = amdgpu_bo_alloc_and_map(device_handle, bo_dst_size, 4096,
+-					AMDGPU_GEM_DOMAIN_VRAM, 0,
++	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_dst_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+ 					&amp;bo_dst, (void **)&amp;ptr_dst,
+-					&amp;mc_address_dst, &amp;va_dst);
++					&amp;mc_address_dst, &amp;va_dst,
++					user_queue ? ring_context-&gt;timeline_syncobj_handle : 0,
++					user_queue ? ++ring_context-&gt;point : 0,
++					user_queue);
+ 	igt_assert_eq(r, 0);
++	/* A user queue doesn't wait for the page table updates by itself */
++	if (user_queue) {
++		r = amdgpu_timeline_syncobj_wait(device_handle,
++						 ring_context-&gt;timeline_syncobj_handle,
++						 ring_context-&gt;point);
++		igt_assert_eq(r, 0);
++	}
+ 	/// TODO helper function for this bloc
+ 	amdgpu_dispatch_init(ip_type, base_cmd, version);
+ 
+@@ -178,6 +191,10 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
+ 	base_cmd-&gt;emit(base_cmd, 1);
+ 	base_cmd-&gt;emit(base_cmd, 1);
+ 
++	/* Nothing waits for the dispatch on a user queue but the IB itself */
++	if (user_queue)
++		amdgpu_dispatch_write_sync(base_cmd, version);
++
+ 	base_cmd-&gt;emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
+ 	resources[0] = bo_dst;
+ 	resources[1] = bo_shader;
+@@ -199,8 +216,9 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
+ 
+ 	if (user_queue) {
+ 		ring_context-&gt;pm4_dw = ib_info.size;
+-		ip_block-&gt;funcs-&gt;userq_submit(device_handle, ring_context, ip_block-&gt;type,
+-				       mc_address_cmd);
++		r = ip_block-&gt;funcs-&gt;userq_submit(device_handle, ring_context, ip_block-&gt;type,
++						  mc_address_cmd);
++		igt_assert_eq(r, 0);
+ 		seq_no = ring_context-&gt;point;
+ 	} else {
+ 		r = amdgpu_cs_submit(context_handle, 0, &amp;ibs_request, 1);
+@@ -232,7 +250,7 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
+ 	}
+ 
+ 	/* The shader only filled the buffer if the submission completed. */
+-	if (!user_queue &amp;&amp; r == 0) {
++	if (r == 0) {
+ 		for (i = 0; i &lt; bo_dst_size; i++)
+ 			igt_assert_f(ptr_dst[i] == 0x22,
+ 				     &quot;dst mismatch at byte %d of %d: got 0x%02x, expected 0x22\n&quot;,
+@@ -320,10 +338,13 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+ 	memset(ptr_cmd, 0, bo_cmd_size);
+ 	base_cmd-&gt;attach_buf(base_cmd, ptr_cmd, bo_cmd_size);
+ 
+-	r = amdgpu_bo_alloc_and_map(device_handle, bo_shader_size, 4096,
+-					AMDGPU_GEM_DOMAIN_VRAM, 0,
++	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_shader_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+ 					&amp;bo_shader, &amp;ptr_shader,
+-					&amp;mc_address_shader, &amp;va_shader);
++					&amp;mc_address_shader, &amp;va_shader,
++					user_queue ? ring_context-&gt;timeline_syncobj_handle : 0,
++					user_queue ? ++ring_context-&gt;point : 0,
++					user_queue);
+ 	igt_assert_eq(r, 0);
+ 	memset(ptr_shader, 0, bo_shader_size);
+ 
+@@ -331,17 +352,30 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+ 	r = amdgpu_dispatch_load_cs_shader(ptr_shader, cs_type, version);
+ 	igt_assert_eq(r, 0);
+ 
+-	r = amdgpu_bo_alloc_and_map(device_handle, bo_dst_size, 4096,
+-					AMDGPU_GEM_DOMAIN_VRAM, 0,
++	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_dst_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+ 					&amp;bo_src, (void **)&amp;ptr_src,
+-					&amp;mc_address_src, &amp;va_src);
++					&amp;mc_address_src, &amp;va_src,
++					user_queue ? ring_context-&gt;timeline_syncobj_handle : 0,
++					user_queue ? ++ring_context-&gt;point : 0,
++					user_queue);
+ 	igt_assert_eq(r, 0);
+ 
+-	r = amdgpu_bo_alloc_and_map(device_handle, bo_dst_size, 4096,
+-					AMDGPU_GEM_DOMAIN_VRAM, 0,
++	r = amdgpu_bo_alloc_and_map_sync(device_handle, bo_dst_size, 4096,
++					AMDGPU_GEM_DOMAIN_VRAM, 0, 0,
+ 					&amp;bo_dst, (void **)&amp;ptr_dst,
+-					&amp;mc_address_dst, &amp;va_dst);
++					&amp;mc_address_dst, &amp;va_dst,
++					user_queue ? ring_context-&gt;timeline_syncobj_handle : 0,
++					user_queue ? ++ring_context-&gt;point : 0,
++					user_queue);
+ 	igt_assert_eq(r, 0);
++	/* A user queue doesn't wait for the page table updates by itself */
++	if (user_queue) {
++		r = amdgpu_timeline_syncobj_wait(device_handle,
++						 ring_context-&gt;timeline_syncobj_handle,
++						 ring_context-&gt;point);
++		igt_assert_eq(r, 0);
++	}
+ 	///TODO helper function for this bloc
+ 	amdgpu_dispatch_init(ip_type, base_cmd,  version);
+ 	/*  Issue commands to set cu mask used in current dispatch */
+@@ -407,6 +441,10 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+ 	base_cmd-&gt;emit(base_cmd, 1);
+ 	base_cmd-&gt;emit(base_cmd, 1);
+ 
++	/* Nothing waits for the dispatch on a user queue but the IB itself */
++	if (user_queue)
++		amdgpu_dispatch_write_sync(base_cmd, version);
++
+ 	base_cmd-&gt;emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP); /* type3 nop packet */
+ 
+ 	resources[0] = bo_shader;
+@@ -429,8 +467,8 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+ 	ibs_request.fence_info.handle = NULL;
+ 	if (user_queue) {
+ 		ring_context-&gt;pm4_dw = ib_info.size;
+-		ip_block-&gt;funcs-&gt;userq_submit(device_handle, ring_context, ip_block-&gt;type,
+-				       mc_address_cmd);
++		r = ip_block-&gt;funcs-&gt;userq_submit(device_handle, ring_context, ip_block-&gt;type,
++						  mc_address_cmd);
+ 		seq_no = ring_context-&gt;point;
+ 	} else {
+ 		r = amdgpu_cs_submit(context_handle_in_use, 0, &amp;ibs_request, 1);
+@@ -455,10 +493,9 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
+ 	}
+ 
+ 	if (!hang) {
+-		if (!user_queue) {
+-		    igt_assert_eq(r, 0);
+-		    igt_assert_eq(expired, true);
+-		}
++		igt_assert_eq(r, 0);
++		if (!user_queue)
++			igt_assert_eq(expired, true);
+ 
+ 		/* verify if memcpy test result meets with expected */
+ 		i = 0;
+diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
+index 180fbdd40..1105bb54b 100644
+--- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
++++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
+@@ -99,6 +99,50 @@ amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base, uint32_t version)
+ 	return base-&gt;cdw - offset_prev;
+ }
+ 
++/*
++ * The fence the kernel emits after a job on a kernel queue waits for the
++ * dispatched waves and writes the caches back. A user queue only signals its
++ * fence after the IB, so the IB has to do that itself before the results can be
++ * read: wait for the dispatches to finish, then write back and invalidate the
++ * caches like the kernel's emit_mem_sync does.
++ */
++int
++amdgpu_dispatch_write_sync(struct amdgpu_cmd_base *base, uint32_t version)
++{
++	int offset_prev = base-&gt;cdw;
++
++	/* EVENT_WRITE: CS_PARTIAL_FLUSH, wait for the dispatches to finish */
++	base-&gt;emit(base, PACKET3_COMPUTE(PACKET3_EVENT_WRITE, 0));
++	base-&gt;emit(base, 0x7 | (4 &lt;&lt; 8));
++
++	if (version == 9) {
++		/* ACQUIRE_MEM: CP_COHER_CNTL SH_ICACHE, SH_KCACHE, TC, TCL1 and TC_WB actions */
++		base-&gt;emit(base, PACKET3_COMPUTE(PACKET3_ACQUIRE_MEM, 5));
++		base-&gt;emit(base, (1 &lt;&lt; 29) | (1 &lt;&lt; 27) | (1 &lt;&lt; 23) | (1 &lt;&lt; 22) | (1 &lt;&lt; 18));
++		base-&gt;emit(base, 0xffffffff);	/* CP_COHER_SIZE */
++		base-&gt;emit(base, 0xffffff);	/* CP_COHER_SIZE_HI */
++		base-&gt;emit(base, 0);		/* CP_COHER_BASE */
++		base-&gt;emit(base, 0);		/* CP_COHER_BASE_HI */
++		base-&gt;emit(base, 0xa);		/* POLL_INTERVAL */
++	} else {
++		/*
++		 * ACQUIRE_MEM: GCR_CNTL GL2 and GLM write back and invalidate,
++		 * GL1, GLV, GLK and GLI invalidate
++		 */
++		base-&gt;emit(base, PACKET3_COMPUTE(PACKET3_ACQUIRE_MEM, 6));
++		base-&gt;emit(base, 0);		/* CP_COHER_CNTL */
++		base-&gt;emit(base, 0xffffffff);	/* CP_COHER_SIZE */
++		base-&gt;emit(base, 0xffffff);	/* CP_COHER_SIZE_HI */
++		base-&gt;emit(base, 0);		/* CP_COHER_BASE */
++		base-&gt;emit(base, 0);		/* CP_COHER_BASE_HI */
++		base-&gt;emit(base, 0xa);		/* POLL_INTERVAL */
++		base-&gt;emit(base, (1 &lt;&lt; 15) | (1 &lt;&lt; 14) | (1 &lt;&lt; 5) | (1 &lt;&lt; 4) |
++			   (1 &lt;&lt; 9) | (1 &lt;&lt; 8) | (1 &lt;&lt; 7) | (1 &lt;&lt; 0));
++	}
++
++	return base-&gt;cdw - offset_prev;
++}
++
+ 
+ int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base, uint64_t shader_addr, uint32_t version, enum  cmd_error_type hang)
+ {
+diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
+index c0113519b..e1c6e37f4 100644
+--- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
++++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
+@@ -33,6 +33,8 @@ int amdgpu_dispatch_init(uint32_t ip_type, struct amdgpu_cmd_base *base_cmd, uin
+ 
+ int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base_cmd, uint32_t version);
+ 
++int amdgpu_dispatch_write_sync(struct amdgpu_cmd_base *base_cmd, uint32_t version);
++
+ int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version, enum cmd_error_type err);
+ 
+ int execute_compute_dispatch(amdgpu_device_handle device,
+</pre>
+    </blockquote>
+  </body>
+</html>
+
+--------------tpWGa30DU8nqOC0qSS2QLzso--
