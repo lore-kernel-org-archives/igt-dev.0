@@ -2,61 +2,55 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A74C606A321
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 12:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481C4606A321
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 12:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=iutKLY0R
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VunU7XJp
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D73D010FB45;
-	Wed, 11 Nov 2026 12:12:08 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id F408C10FA44
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 12:09:10 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D45B710FB77;
+	Wed, 11 Nov 2026 12:20:01 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 432A010FBA4
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 12:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794398951; x=1825934951;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=SD5RV6r0Sk8Fgg5gVsjcRIvVnDqCD1VbJV60sM/uY/8=;
- b=iutKLY0RtaJDfMv2Rw5EDLF157TNTFPinkqFjrg89OhdIM3+5fQMKxv+
- XqbQrHE0+Au8ZMwLvBiRQuQfw75i5LpV/JFu3cAGaKAEWZ5f5Y89tQ4Th
- KJn1eLrxWd56z6IP8awfWsMkO7yQPiu79elLPvNIa/T+H9ygq3ycFv3D4
- kwuivuwO0cw0kG8MEx0Go3HOpp4bbt4qBb1kAG37PrGsZrfq9P6OuDc7P
- NKkZJp8DUPQzVeVwki1eHrsMWxDKj1Vlmo4cbfuTRuMhD1f/vZN2MUwR2
- nJSaXbVJThb90oDfTnGIcPFscm3kNHYJBBxodmChhexrQMIzbYvsVzy4G g==;
-X-CSE-ConnectionGUID: HcN3LoG3T8qHHVqYwjHJjg==
-X-CSE-MsgGUID: p1Ua6StbRbCMr+w9pOOitw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3212759"
+ t=1794399538; x=1825935538;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=J+SyQV9RBYJ7BceVMIDWrTFt5BtRmVw9wYrTOnrzGow=;
+ b=VunU7XJp8XEbILQ6bwF+O5/l2qDkg2ku3iPl9K2qDnSmFV1WY+02jffs
+ JpbQo9EU1KA3QVo7fOeh8X6m4mqJFNuktSx3NNjfgbLxLj81ywnDCmU9u
+ m/CQYJWeWfjHtuNxnqUWacWGrpfyRrYckgGl98MlFl9ypZNLPyIDiULtP
+ zpV67qMFtQuuPS9ACc4E0D4mwxir4RJR7WYkGnei4C1R0RtjC4OOljCjg
+ eUUss4U5OsFBVtU3rjEz5J6Rq2OmSrNKwbmHosRprfJNYydLW4s0HC6MV
+ pdAtuxMDSHi52og1XCZUIHFU3kKC0dORgOeubyfC8shzdTKQeu9J6fOFr g==;
+X-CSE-ConnectionGUID: 781QSAmeSLeH99kPddKCzg==
+X-CSE-MsgGUID: eVi/r36nTXO/eaIEUsd0VQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3070104"
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="3212759"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 04:09:11 -0800
-X-CSE-ConnectionGUID: 84OYOfkJSyyru/3/3x+FNQ==
-X-CSE-MsgGUID: L8a9V9MsROut5XovFNjxig==
+   d="scan'208";a="3070104"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Nov 2026 04:18:58 -0800
+X-CSE-ConnectionGUID: Tp7BHp7eQi+O+zaNR2kVoA==
+X-CSE-MsgGUID: b/Z9QRfITMWMyqrgXpgn9A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="8323977"
+   d="scan'208";a="8746847"
 Received: from dut-2a59.iind.intel.com ([10.190.239.113])
- by orviesa007.jf.intel.com with ESMTP; 11 Nov 2026 04:09:09 -0800
+ by fmviesa001.fm.intel.com with ESMTP; 11 Nov 2026 04:18:56 -0800
 From: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- Sk Anirban <sk.anirban@intel.com>,
- =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
  Jeevan B <jeevan.b@intel.com>, Swati Sharma <swati2.sharma@intel.com>,
- Pranay Samala <pranay.samala@intel.com>,
- Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-Subject: [PATCH i-g-t v3 3/3] tests/intel/xe_survivability: Reload audio
- driver on exit
-Date: Wed, 11 Nov 2026 17:16:00 +0530
-Message-ID: <20261111114600.4104768-3-chaitanya.kumar.borah@intel.com>
+ Pranay Samala <pranay.samala@intel.com>
+Subject: [PATCH i-g-t v2] lib/igt_eld: Log module load state when no eld#
+ nodes are found
+Date: Wed, 11 Nov 2026 17:25:51 +0530
+Message-ID: <20261111115551.4106029-1-chaitanya.kumar.borah@intel.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261111114600.4104768-1-chaitanya.kumar.borah@intel.com>
-References: <20261111114600.4104768-1-chaitanya.kumar.borah@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -76,78 +70,53 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit 117e9ecbdd1d ("xe/igt_kmod_unbind: release audio before
-unbinding xe") made igt_audio_driver_unload() be called before
-unbinding xe to avoid the audio-component bind warnings/errors that
-happen if xe is unbound while snd_hda_intel is still attached. Both
-call sites in this file passed NULL for the unloaded driver name, so
-it was never tracked, and nothing ever reloaded it afterwards.
-
-As a result snd_hda_intel/snd_hdmi_lpe_audio is left unloaded for the
-rest of the boot even when every subtest passes, since xe always ends
-up rebound by restore() but audio never does.
-
-Capture the unloaded driver name and reload it wherever xe gets bound
-again in restore().
+eld_is_supported() silently fails when ELD procfs node polling times out.
+Log module load state to identify whether audio drivers are loaded when
+IGT attempts to read the ELD nodes.
 
 v2:
-- Add Fixes tag (Pranay)
-- Use the new igt_audio_driver_load() helper (Dnyaneshwar)
+- Use igt_warn() instead of igt_debug(): igt_skip() doesn't dump the
+  debug buffer, so the message would be lost on the skip path (Pranay)
 
-v3:
-- Free snd_driver explicitly after igt_audio_driver_load(), which
-  no longer frees it itself (Dnyaneshwar)
-
-Cc: Sk Anirban <sk.anirban@intel.com>
-Cc: Michał Grzelak <michal.grzelak@intel.com>
 Cc: Jeevan B <jeevan.b@intel.com>
 Cc: Swati Sharma <swati2.sharma@intel.com>
 Cc: Pranay Samala <pranay.samala@intel.com>
-Cc: Dnyaneshwar Bhadane <dnyaneshwar.bhadane@intel.com>
-Fixes: 117e9ecbdd1d ("xe/igt_kmod_unbind: release audio before unbinding xe")
 Signed-off-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
+Reviewed-by: Pranay Samala <pranay.samala@intel.com>
 ---
- tests/intel/xe_survivability.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ lib/igt_eld.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tests/intel/xe_survivability.c b/tests/intel/xe_survivability.c
-index 015b22051..6d5423be7 100644
---- a/tests/intel/xe_survivability.c
-+++ b/tests/intel/xe_survivability.c
-@@ -39,6 +39,7 @@
-  */
+diff --git a/lib/igt_eld.c b/lib/igt_eld.c
+index 0d3c6689b..d0698f6ad 100644
+--- a/lib/igt_eld.c
++++ b/lib/igt_eld.c
+@@ -36,6 +36,7 @@
+ #include "igt_aux.h"
+ #include "igt_core.h"
+ #include "igt_eld.h"
++#include "igt_kmod.h"
  
- static char bus_addr[NAME_MAX];
-+static char *snd_driver;
- 
- static bool configfs_group_preexisting;
- 
-@@ -160,7 +161,7 @@ static void restore(int sig)
+ #define ELD_PREFIX "eld#"
+ #define ELD_DELIM " \t"
+@@ -318,8 +319,15 @@ static bool eld_has_nodes(void)
+  * for a bounded amount of time before giving up to avoid spurious skips. */
+ bool eld_is_supported(void)
  {
- 	int configfs_fd;
- 
--	igt_audio_driver_unload(NULL);
-+	igt_audio_driver_unload(&snd_driver);
- 	igt_kmod_unbind("xe", bus_addr);
- 
- 	configfs_fd = igt_configfs_open("xe");
-@@ -169,11 +170,15 @@ static void restore(int sig)
- 	close(configfs_fd);
- 
- 	igt_kmod_bind("xe", bus_addr);
+-	return igt_wait(eld_has_nodes(), ELD_SUPPORTED_TIMEOUT_MS,
+-			ELD_SUPPORTED_INTERVAL_MS);
++	bool supported = igt_wait(eld_has_nodes(), ELD_SUPPORTED_TIMEOUT_MS,
++				   ELD_SUPPORTED_INTERVAL_MS);
 +
-+	igt_audio_driver_load(&snd_driver);
-+	free(snd_driver);
-+	snd_driver = NULL;
++	if (!supported)
++		igt_warn("No eld# nodes found; snd_hda_intel loaded: %s, snd_hda_core loaded: %s\n",
++			 igt_kmod_is_loaded("snd_hda_intel") ? "yes" : "no",
++			 igt_kmod_is_loaded("snd_hda_core") ? "yes" : "no");
++
++	return supported;
  }
  
- static void set_survivability_mode(int configfs_device_fd, bool value)
- {
--	igt_audio_driver_unload(NULL);
-+	igt_audio_driver_unload(&snd_driver);
- 	igt_kmod_unbind("xe", bus_addr);
- 	igt_sysfs_set_boolean(configfs_device_fd, "survivability_mode", value);
- 	igt_kmod_bind("xe", bus_addr);
+ #define ELD_MAX_SIZE 256
 -- 
 2.50.1
 
