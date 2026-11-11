@@ -2,161 +2,161 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A98606A324
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 10:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FD7606A334
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 10:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WT5lZCRf
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gzvEvxQ8
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2040D10E9D8;
-	Wed, 11 Nov 2026 10:47:57 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id E619F10E0A9
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 10:46:54 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 10F9810E190;
+	Wed, 11 Nov 2026 10:48:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 86B0010E0A9
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 10:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794394015; x=1825930015;
+ t=1794394062; x=1825930062;
  h=message-id:date:subject:to:cc:references:from:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=ImKUtav1YDW+4Ur+LkRx1V23iwajuqlOLRA94s6a+Nk=;
- b=WT5lZCRfM7j9UayGVsLRS5SsrlV5MBHeHRWUkKeGaC9CmMvfWUasfsRo
- wppiwraUuSz/5M/4hfimDxr6/91gxZye680M2YS+9TX9J+3RNOxBapDu7
- y3D1jW1mLpjse0sjKOqrhS/9iiUt5Hu6Jn8zoccmaa708ohyNuHjnh56p
- qdS85YKtS72WTOlj8jQNJWy5qU4VrNqyRWTF0HCTxIixjj/P3m3KvhQ4d
- p7BLIwGZHNtWU/bH+hrXdxi7KRgjJ3feSecQhc3J6zUG36ONU6CXFr+mB
- PRkcr4cdS63tI4pw1o/9LGzocT0CiVha5Luu9SE3z/P7GspdEGrQKdM81 A==;
-X-CSE-ConnectionGUID: cSqluImWSTiSi3S97tzi7g==
-X-CSE-MsgGUID: 0dSFmwdRSZeK+icN8p0WHw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3190844"
+ bh=bTLLtBec+jWsd/jSxFN8NH7pgmsc07XDoLhPOdZhIGk=;
+ b=gzvEvxQ8n9KehYrSWdIaI6batsXdxyDkdGMKtwMg90fq0FsWRS5pHHvw
+ TbcYqDLOtwlXvdd3xjR3/g9Y1bTcGnKcjh7EXgg1xZnZlkQxQIyk5ghE7
+ cWAbhu/mdbAvYrYf5Uft/fhwr9Fc2q+Tef78jPXk4qNyzSTcMYy1Lae32
+ WWZSooP24SvA7Jp06rQ1XNgGmNvIBngwkD/R+iDQn92lMwUApMloCRGsY
+ HZnRFvie8TjLB3HqpggVC4lOt0LQQxjDYIl89imG0SSiMy3j8ma4ELzlj
+ ZwJ0i/vz9TwQB02K6r5WH1Uu7H5IX99AjmBa7xawMi4l8l1yLSpvq67qw A==;
+X-CSE-ConnectionGUID: JOi7s7JOSxOaGI3out8z0A==
+X-CSE-MsgGUID: 1sLa538QQsuNUYN8/jymEQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3169222"
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="3190844"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 02:46:55 -0800
-X-CSE-ConnectionGUID: pAgcgIfZRIO3hp3H1TjYWQ==
-X-CSE-MsgGUID: usYhJUN2RyKoBD9/+NKVag==
+   d="scan'208";a="3169222"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Nov 2026 02:47:42 -0800
+X-CSE-ConnectionGUID: EEdGNPNRQLOkVbJRRNYl4g==
+X-CSE-MsgGUID: 4l5koEe+SnWJWha6VV1b7Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
-   d="scan'208";a="8393563"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
- by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 02:46:54 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+   d="scan'208";a="8310421"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Nov 2026 02:47:42 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 11 Nov 2026 02:46:54 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ 15.2.2562.56; Wed, 11 Nov 2026 02:47:41 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Wed, 11 Nov 2026 02:46:54 -0800
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.27) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.56 via Frontend Transport; Wed, 11 Nov 2026 02:47:41 -0800
+Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.56) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 11 Nov 2026 02:46:53 -0800
+ 15.2.2562.56; Wed, 11 Nov 2026 02:47:41 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uAEu2W3W/MjM+1HEwKCcHTZqK0TRJhs/yoUsoem6d9aiV8oO3DDgyupY+xpK852pSB6+a8aH7DkArCNE3isnzGotELNdwvfL7uAhNe/tVyj/07X3R8AGTxRm7N6zx27vn6Oke+NFu8GmZsalBi4ENoFm1fXYh8t3/FX9TjYG+dkxlY1RCq+VBds/h72VZ8HFBDi4S1GwiZhgLiEx7GQydzFHLv6/WfWEwDyvpgpSNr+N+d4nMKKfUa983JVmPjumMXKsgoF0Ob5dTEaoXtl9cBSlBsTbrJS8rF3mJPxb6vY01+DBQ/RnIJ1CiTWDPw+0SiwMlhX9V4Ob7pIPphLssg==
+ b=sy4wlMb2GXJHzGTMbuVz2GlaDZHLlEIbUgqQLZtR13JyUy6VYzuq/in1kq/K/il+pJYxT8dEy4AXyzYFXKYFQUil2xqyWXnHMNDzo/EFJrpOl0pz5GShUKJVFV9rGTcpnkxEiSpsO1t0n7lSryAffRGFVIdG8ffAC1fnpnY4vdiGmlb8j1yb8jHxSjCe9UuDb+DHYN9//HSBF/w3tW/c+agrFD4ZUD1RENY45Kx6JcqKKp/jBDl+a2lpzDNYdjFfB808ZsIBrUch59wEL7Bwo5hLSmHLNbmdXLPih/Z6xtaLLgjxx+z5+RKdZHajo1zBxgJuUu4/Hsr+vyJXj0i9Qg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vlcd7YAzlVpkk35tkUWXRqLzFfT0mssbAzn+hnQBa58=;
- b=xH0at+Ww7azXq0aSqvmY5WStdH6QnmKvZNJhpD/MzBJsYV2ds2KUHZKXsvvNR+xKnK8gJVjcgG7JzyBwoSspTA5nLQIzryhNoIRdnScSN3BOH8AQ2CqgAmFZdwHBbuxi2eVM3l6uQJy1l90gUYC6RGR3HXgo1ElrrwDZJWhqpozCix3PvE25teaCFiR9vTDlHm/fvISFbNJksj0Vk9asf8nLVyHietmqKnpj8thmCbsF+UTjykSogqNJWCT8BWW9xMYCCA27adAYYOIa3loLiDbVybb18gwZi0gmIS6B4TRwL6hWkaiNJn/UiQq4AraETatfC9HW4cueUx83Qv5j/g==
+ bh=KZ+alnJs052O2WNeSyFAUulHa0Bkby3Aw4qzbh34Hjo=;
+ b=FDJSCuf/FmFYhz2TreGg2tNwfn3CZ3xr4QXYBZe+FRyTGU10tYtMibVGTiqSg8oulioUIgtNYoeFsajz00cO2ka6GYO2DXWhT8O10AmgKfLt5rY99sgsJFS+1bJpM3dElhFHq+2eOhM4Ig69enMZRyu3WxFIeFLh+a7U8iYdbDhEfuHwbQrUpOiNsflxpazdow+S9f4PsqM9+ojgzFFufDJMIeFxXMZceiFzyTQ4fj0thexDLpLS2wOTXyMuuVlLskAAevm40rzntOZducngENozzUjCiFD7kMCL6SwK1ZDymep078HGcTHbYIxCQgOof0tQToqj5sqVrcSV49da5A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS6PR11MB087165.namprd11.prod.outlook.com (2603:10b6:8:4c4::7)
- by CY8PR11MB7747.namprd11.prod.outlook.com (2603:10b6:930:91::17)
+ by PH7PR11MB8600.namprd11.prod.outlook.com (2603:10b6:510:30a::18)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 11 Nov
- 2026 10:46:51 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Wed, 11 Nov
+ 2026 10:47:35 +0000
 Received: from DS6PR11MB087165.namprd11.prod.outlook.com
  ([fe80::4223:7b03:1329:265f]) by DS6PR11MB087165.namprd11.prod.outlook.com
  ([fe80::4223:7b03:1329:265f%5]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
- 10:46:51 +0000
-Message-ID: <ca326d87-f356-4352-b161-bd77095ef8fa@intel.com>
-Date: Wed, 11 Nov 2026 16:16:43 +0530
+ 10:47:35 +0000
+Message-ID: <2516cf97-4fbe-414d-9899-a50863f7beba@intel.com>
+Date: Wed, 11 Nov 2026 16:17:25 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 07/10] tests/intel/xe_err_injection: Add Core Compute
- Uncorr Error injection
+Subject: Re: [PATCH v7 08/10] lib/igt_drm_ras_nl: add event notify
+ subscription and event wait support
 To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: <riana.tauro@intel.com>, <anshuman.gupta@intel.com>,
  <raag.jadav@intel.com>, <mallesh.koujalagi@intel.com>,
  <harish.chegondi@intel.com>, <kamil.konieczny@linux.intel.com>
 References: <20261110160504.1315160-1-ravi.kishore.koppuravuri@intel.com>
- <20261110160504.1315160-8-ravi.kishore.koppuravuri@intel.com>
+ <20261110160504.1315160-9-ravi.kishore.koppuravuri@intel.com>
 Content-Language: en-US
 From: "Purkait, Soham" <soham.purkait@intel.com>
-In-Reply-To: <20261110160504.1315160-8-ravi.kishore.koppuravuri@intel.com>
+In-Reply-To: <20261110160504.1315160-9-ravi.kishore.koppuravuri@intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0064.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b3::13) To DS6PR11MB087165.namprd11.prod.outlook.com
+X-ClientProxiedBy: MA0PR01CA0055.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:ac::11) To DS6PR11MB087165.namprd11.prod.outlook.com
  (2603:10b6:8:4c4::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS6PR11MB087165:EE_|CY8PR11MB7747:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0c9315d-e0c7-4239-cd70-08df3fe1181e
+X-MS-TrafficTypeDiagnostic: DS6PR11MB087165:EE_|PH7PR11MB8600:EE_
+X-MS-Office365-Filtering-Correlation-Id: d1f2192d-769a-433c-a68c-08df3fe1320c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|23010399003|1800799024|10067099003|4143699003|261009220027099003|261021123027099003|11063799006|261028144727099003|261021121427099003|261009223327099003|261009223027099003|56012099006|261022105027099003|261102123227099003|261022113327099003|261009221727099003|261026140227099003|261009221227099003|261026121527099003|22082099003|18002099003|6133799003;
-X-Microsoft-Antispam-Message-Info: AzT6593rtUB6pYjJzxqp4QSkpNwGw82y3OBwzT7ZEY9bPL0La3jyHChsf0TLpkYHQCgJrNhXpawTrgf1W9jEp3rKr9ycehIkPpFX5Kd5Sm+b7umsZoWDroya4jIt43OVxFtuXcUIcRUYf8YkgNRqImkDkDSuMG5xuFOnu9S5RhD0vhv+E3kXIezHy3clQZpfKb0DsBj8izROm80guFPqOqqmAlyYAZTPVK9bqgXrbucMQtOup/hHTskXrIsVN28tFdTO358MoFRrQYMvCqSzK0+RfacH8C1Gg/n940ryHTImoikaair0ebU4yO6iavHVCL+TrVQtYnnRkerDzZ/0wTPXQRQNlgcD6zTkRMdTShc5XZ7MrvRf9OiVB/5pfZ+QLiSHv7rPR3O2HcstveYFvPJviy0sJsZMf8sjBMKXq19+tjck1KSHd8ZH0T8TUaZq388e6oGHTYtVZVMAAkYdh7gd3zCCX5BF+mUFk147I4q0UinOKT32KQ1WWLZvORZRMyuF+BtnsCMzuwVu5k+mhB4HCHw0A8bPOx1dHm1EDs3cPdn/K5aJeRd0t1tPiD+IYIO4tCCM+N3kzC7u9rqM1R/36hLopteWAM/1VnOTJ8e6TWlO7K6MyRMaDRkeenuutdVms4kFxl7boCsAOSWwDsYbpRFIRC4ucKozYD7XPcc=
+ ARA:13230040|23010399003|376014|366016|1800799024|4143699003|261102123227099003|56012099006|261021135927099003|11063799006|261021121427099003|261022105027099003|261026140227099003|261009223027099003|261021123027099003|261026121527099003|261022075727099003|261028144727099003|22082099003|18002099003|6133799003|10067099003;
+X-Microsoft-Antispam-Message-Info: RkIMX/X/fNaDm1zq3X7WY6jp7TEyQYmnQFgo5DJlJt+QVHBevD8euX2+iO36dTeH63hiwSQi5phabkNSJBCyAH8URZYz0wtD9RBoJwn1Y6m86idre3RunfDqfZKWHW9aV4PyLRD2OahoLL0ekV1jQUzx9U0dy566kKud+xORaajGOW7I4S7CUEAxm+OYf1cI+x09USFEsDi3LWIFQYTcZUypwyUaxBX4jrZROC89VRoCxDpOBB1v0TDNHSRCfNWB+FZTMBIJPDF7vZHZUR4/Fz9LTuNdZhkuJNJosL0uf+V/ikUhpATsQP/bz6oKvIkys1OZWUU+3nfOnP0uiS9Mg+A6gBBdrD2MUDOMZtYdxpzkL/5z/GBN52YV/7yHpUktY7LXJaiEYJpFHMwB41aVodCYPP0s0Z537Ai8AXIZyIB6SD6aqb9Z0OF+ZhylRvr1G1awNXZXGi5Z/hI0yvgmIC4vZ0Heofghn/ETlpCn/81tMEgFiSoenJKobsh0+tI9jnVQRYDLoEHxkvZHl3+oWeg2xIaW/NP0eVbqV4DwygQRahL9zJlLG6J3cpsTf0kW2IpQ65mCriFK1UXPm2N5YG/A+Xir0tZbRNSXGHm2DF146ULe0qyEEw/xTj6S8bqTOn9DznhrvI2eBkQ95dtOi2vrchjykFLzYVtqa5PJdxY=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS6PR11MB087165.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(4143699003)(261009220027099003)(261021123027099003)(11063799006)(261028144727099003)(261021121427099003)(261009223327099003)(261009223027099003)(56012099006)(261022105027099003)(261102123227099003)(261022113327099003)(261009221727099003)(261026140227099003)(261009221227099003)(261026121527099003)(22082099003)(18002099003)(6133799003);
+ SFS:(13230040)(23010399003)(376014)(366016)(1800799024)(4143699003)(261102123227099003)(56012099006)(261021135927099003)(11063799006)(261021121427099003)(261022105027099003)(261026140227099003)(261009223027099003)(261021123027099003)(261026121527099003)(261022075727099003)(261028144727099003)(22082099003)(18002099003)(6133799003)(10067099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZWxvczZkY25XTlU0bUZiWnQzTkV6M0x1Z3RkY3lBb2ttSStMcGxuVjBKbTY0?=
- =?utf-8?B?SWxUeUlpY290eEdFMlZqUW5ia1VoY1NadGpWOCtKTG96MHlpbmtrTi9GaVA2?=
- =?utf-8?B?YnA4ems1TWQ5RVBqcHFEWUMxMkdaZEJPOEJhc0dyZEVrVlNNQk9LMTN4R0xP?=
- =?utf-8?B?RUx0Z0Zvc3NPRVRLUTIrV1BXVjJJOWxpelZ6UzFrM3RuVTFkR01Xdm9ta2pi?=
- =?utf-8?B?SnpFbFhSRldnSTFIUU1vS3hZVFNDRXA1cXMvZGpHbWtTeXlTQ01UaVVuOE1a?=
- =?utf-8?B?UlA0akJGY0tSbVA2UVphYzA1cUFPRmVvZVYwdlU5RHg4YUltc0dyK3p1Q0pw?=
- =?utf-8?B?VDdidlNkMVZRbXhJeXV6ZHo3VUhrOEZDNnFGY0czVVVZQ2cyMHBMYmVjMjNK?=
- =?utf-8?B?bE9VdU8vSTBkQ0syaFp0eEkxczk1blJBNkpFRjJqbzBRdGxqSDBVOUdGR01X?=
- =?utf-8?B?NGM3Y2Vhbjg4NnZvaTZabW9TUTlYODVYMzNESmhXN1B1SVN2Y0J1TS9nVU1p?=
- =?utf-8?B?cXRJZ3NRRlRlbU9idGxhcGlmbkQ3UDJwdnFtT2g4d3dPbmMvMnI0TzhDa2Ez?=
- =?utf-8?B?d01BNTQ4SlduZXVnQUxpWldjZS9EZUp1MVZ3L0VvYjlORFBJMk5icllkZGlV?=
- =?utf-8?B?NCsxanJYV0pHcTZ4S0lwODZveGtWSzhnbkNkY1R3WHVYWmNJQ29BU3R6amsy?=
- =?utf-8?B?UkNLbkZ0T3lxM2NvaGpNVEpTOFhabENGMkdETzhDWVc0cFhnWTdFOGxSNVh1?=
- =?utf-8?B?WXpjcE5RcytFaElUQ3VVSU5MZXlUckk2eTQ0NjBQQkdGSjZPSGVhNmNQUExY?=
- =?utf-8?B?TWV3K2FXUHNEMFUzZFcvOVA4dGVWQ1lZd0VKZ3ZuMDc0MWtiZUgzSEtNRHJw?=
- =?utf-8?B?T1NOYXdyWDVndmZHcmpxcTRTTWtYc0xkUXhSYml0VkJPdFpGZEVHcW9SRCtw?=
- =?utf-8?B?UllnSTZ1Vmg3THNiQlNtRUpZVGlvRW1sQVRGQ3lnamg2S3BNMTZYUTFpQ3BH?=
- =?utf-8?B?YVVaWjByOEVwUkxlT1I0aUxOUGFKYnVnZHE0U1Q3R3pxZVpxSFJKWkNzNlRH?=
- =?utf-8?B?T2F2R3dCRjc0OTJtWHRPUkxrZHZ1Sk45VWdyVmtyYkRKbUg3VkpIT2pTYzZX?=
- =?utf-8?B?azhtVVdlK0V4SDUzQnlaMXZKa3NHMC9mdk4rbWRtcU0xKzRhaDBFYW43TG9Y?=
- =?utf-8?B?d1IyK0NLaVJYSm50b0NVUEhQdVdxenIwMVU1RnZaRVBDQmhndmswcW8zVmdq?=
- =?utf-8?B?OE1FL0NjandoeFFqeFhZZmczaHBaTyt0MDVzUG15VU0zclZ3TDdITTdIVGJj?=
- =?utf-8?B?S0ttYXhTWkhocStIMUUzaEdJOXNIRzFMNi9JZWZCd0ovRCtMTlFYck14ck1M?=
- =?utf-8?B?Mk9jcjNxeWsrNWVhdTAxQzdpMTBTYTlyZmN5c3loWG42YXMxTXBaSTV2ZGtU?=
- =?utf-8?B?eWk1TkhnU3d3L1htaUNwMUhmeVJqTVE0dXlaMlZFSDMwN0UyNDZKTWJEQTFk?=
- =?utf-8?B?UHNoYUQ4dXIycE1WZ3FDVzg5a1QxVHB0S2Mwb1NWK2tKNkMwTjdKMFFIZlg0?=
- =?utf-8?B?TzVWRmg4QVE3QUREdHNzdGYrOUFnMXM3b1pZVkpSa0JXeWVZVTcxUGxoYmtk?=
- =?utf-8?B?cmJtRFBlRzREcVIrZ3NUenVWN0dvTTdoUmFkOWNMY1RWbkd1WDZpSFYvWEtS?=
- =?utf-8?B?OU5nOUxGV0dhZXAxWWg3ZzdmZXYyUE5SbVYrNnpwMit6cGlVRTgzNkkxV2dh?=
- =?utf-8?B?UzVQbnJTV1J0cnJxS3ZVQ05nVmFWaFVneC9ob2NKVjQrbElWYlh0KzNtVGdN?=
- =?utf-8?B?Um9RTFAwSTFybG9LV2xWVlZ4MzJlekU5UjlzMlF1bFVYRVpxSm8wR3FEZWFL?=
- =?utf-8?B?TmtkcmFqd3Y1ODNkY1ArNkhOZk1QN3lPZzBkUHZyQ0ZiSUR5UmVKcHFXZkUx?=
- =?utf-8?B?NVRKdlRCS2poWVNNNy9FOEVIM09LdlRKVXNJaVRacG9OUDNrbWREaHF0OUMw?=
- =?utf-8?B?ckJNSk8vM1ROd2dWSUZtYm1tckRuUTVEMzFPYmxwTXZ4TjRoSHdLYmduOFVQ?=
- =?utf-8?B?dEZHeEs2dzhiekk5d0RoZzVidmdBcTh6UnhOU3VYd05QQjVmM2QrOWZWbjVz?=
- =?utf-8?B?UVg2MXVLZER6QnlKc1ZkRi9LdVRNRkdUUU45TG9seEg3b09IaDNlZFg5ajcz?=
- =?utf-8?B?T1V2aHhlRWpqVjRFSk1lbTgrbnI0UEZOeGl4S3hZM3ltWlF2b3JsdWx4ZjNH?=
- =?utf-8?B?TTFrcXg1Zzc3aVdlVnJlWWlkb0VKWmdUMDV0bWkwc09tMFBaOG12aWY3TFow?=
- =?utf-8?B?VmJqTU9Zb2NLcnFRaVJrQmdGY2JINE4rNUU2TUlYWGNJdllxWmplZz09?=
-X-Exchange-RoutingPolicyChecked: eqasWoCdHSfzXzHVTO1d8gTi9Obzm+KwMGwpezQrKpQOf+LpRFKtEv/70xg4uEudaIQMaaJB4rDc/o/7pWqXlVlPPKFJW0yHm3POJZuhLsinUsSUgAULQ2Scof2E5MXn+14umfsG4mkirDMf5YB21Eb2pUtbNOJ7PS1iQa7JLRCIq4aoJjLvtbu12x1o9T9YFjem0xrcnNc5rjotXIBMcTzHyFZqp1uIPCkysu98EukHDATTkNHbaqNpRxCC3P+/E42SiRptKXpkmQIlcsFdgCsLrrpsHkD1uxVAkwoXmc2MVqsxYQzuBbKVCi0vWkUkdeWFEa5s0GFi7StDDaznpw==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0c9315d-e0c7-4239-cd70-08df3fe1181e
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?TE43V3ZnWVBMWFZiaHowcHB5YnFjdVZRNU5xalpBNkJJcHl1QWtwdysxUWhs?=
+ =?utf-8?B?VmRHY29kWWpYR0owMERrRXRNdGUvZXI4UG9zZmluelFSSW1CeFJER2tVZ1hv?=
+ =?utf-8?B?MGFDMStLMStueWlUQU1LL3FQbmZkWXNSL2lNQ3E3d0pVcU44QytsaVgrdC9u?=
+ =?utf-8?B?WDltMVVMZW5lTUN1ZlB3UjlKLysxcHYvRWgwcFNaRVY0T0NueWZxTkRtUDFZ?=
+ =?utf-8?B?eVlTcjROc1h3SzZCWE5uUWlFWmRQQlY3M1RzemU0MmZyc3YxNTlFTlo4Q1hm?=
+ =?utf-8?B?Y1VZNnhVQlZIQ1ZVNllUdnRJTTRpekFiWVlmbmNmbmJubnZ0VmdXV2syR3BG?=
+ =?utf-8?B?TnlkMnJFNUg2cUxMaHkzT1M3VTBJVk56aTZFRUJCRERDSVVHcFgvNTJ6MWF1?=
+ =?utf-8?B?aUZ5eWxJTU9tYVZkUlExcnU2aW5HVkw2bUJ3NnNGR2J0SWgxY3ZvZUZzaFVk?=
+ =?utf-8?B?N09SbzJNeWVWN3dKSU1PUjlndjBwS3V0TnNtVXJsSGFRY05VQzJnUU04VWZU?=
+ =?utf-8?B?NnhWL0c3MkdhSGgvcnMzNkE4WXJSSDMyMzY5Z2JqVUdtN29kSXhNa3FZU3JH?=
+ =?utf-8?B?czRQVUVrQ2ZxVUQ5QklNQnRjeTBIdC9rMXpXZnN4VXE1NTRlcVZnR1h2V2Jp?=
+ =?utf-8?B?SzZ4UXE4R0dPRllHNmdSWExsSGRjYTRRRWJraDRUR0F3OUpRbEw3SUQ1NVZ2?=
+ =?utf-8?B?a0Z5bW9aWk9oeUp4ZzY2WkZWQllFWFlHazY3TlY4K0J2NUJqaHNNUkJvRExx?=
+ =?utf-8?B?ZDQvcXBNay94dTFRNWNGSTFsaHkvdzJqWEtTTmJXeit4K1dqRkUzN3hNblBj?=
+ =?utf-8?B?SlNyNzl5RUM0V3lybldZdTNtMXMzcElVMEtZMXZQZlNUc3NMTGYrQjZuTGlE?=
+ =?utf-8?B?OXFlZHdDSUdMNTlwRGtHTXBkWmJibXdMdFlGVTlOQ1JodkxFMk9SbHNlTG9j?=
+ =?utf-8?B?WWYydHJJQjFucVo4RHkwYmF6UXpQMjRuejMwN2lXM094UitNeUNZZzJUdGpt?=
+ =?utf-8?B?WEVieGoxUEVka0ZDcGVreDA1NDV6dUcyWVNtVkJtUUZ0Zk5xeWlEemtBWFFJ?=
+ =?utf-8?B?R04zcDk0OTRqSi8rUWJlTkR5ZVNxWHRoRTNITEk3ZnFMWlNIMktoQ0hUWU1n?=
+ =?utf-8?B?MTFDZnBWV3dFcUFQUVluOFFHbnBWdXl3YUZJMmc5ZHFSazRFZjFPZ01FT205?=
+ =?utf-8?B?V09ScXZLUzI5WWdURzFZYmVXT3BFSWxNaEJ2MzJqcWpOaStsdG02bE1qWjhS?=
+ =?utf-8?B?MEF2Qm00L0oxajZxbXNxV2hjZHV2dGh3QWJidXIxd01wNDRqaGN4UG1QLzB4?=
+ =?utf-8?B?T0NHVjVMckdSeGV5TzBNcVF3QzZId21IZ0VmRk8wL0VMV0htYnZYMG9kQXRn?=
+ =?utf-8?B?SHl3dytFVkNYVm1rdWNhYU4vVHZ3c3V1YUFWMVNQNjJXZHpFOTllN2pub0dj?=
+ =?utf-8?B?d3VQa1ZuajgxS2pmMkNlMkVjUFVkUm1PSFpzY0ZnR1BxOTBDSThkWWlHZlJz?=
+ =?utf-8?B?SUhmTU04alBtL2JWSEpQL3EzUjlYaVpselcvVVkrWURuaXltamNlM2thclRt?=
+ =?utf-8?B?RldzcUoreU5tZ1VtWkh4R1A1WmpoeC9MTUNXQzBvb0hEeXNjZ2xoRlFDRHh2?=
+ =?utf-8?B?Q1RUajBXemlVZ0FYc1lWY2RMSmg0clMrWFFURjdvaWsrMUh5U09RMTBFZDdO?=
+ =?utf-8?B?TElOaXJ5MDk2Vk5hblQxbVNqdVNVYnRqUXlXa2N5VGsxcExkT3Q3ejd6c0li?=
+ =?utf-8?B?enBRUWxmTjNBQS9jdUN2Wk1NbTd1TE10Vk1hYjg1bTJsYXBhSGkzQlRVSDNB?=
+ =?utf-8?B?MXIwMWtiSzFvUWpWRDFYWklSbENqYi9FTDhLQ1RXY0htb3pFcUUyczRyKzdQ?=
+ =?utf-8?B?RHZmdUZ3TUFMTkxBaGEzYTk2WHRJNTJ4UUdVejFHVlUvQkRobG9jYklYOWF4?=
+ =?utf-8?B?UFIrcHp3c1VzYm42d1VLVFhib2ozTmJ6bWZQOXJ6ZGc3bUIvUjU0MHhrRVJs?=
+ =?utf-8?B?cDBlK2JJdVlvT1dOMnpONnpKWE5ZZy9jTkg0YTZSWE85TW1KL09HWFVucWVh?=
+ =?utf-8?B?M0xyMkF1Qlp5ZmF4VlB3ZFM1V2sweHE1Q3JQN0E4RXREQU1QR3haTmtMazZh?=
+ =?utf-8?B?VElHTjNxSk5XdnM2b0tNTGlMUldxaFc2UEl2dzJibVNYR3Y4bXI3MWhoZEdU?=
+ =?utf-8?B?SEsvVWtLV2Z4bmtabWNHTUVnWTZ3emd0WUdkTWtuVVFHK2liRk5OV1ZlbExY?=
+ =?utf-8?B?MHBDeDN4VmkxQ2h2Y1hZM3daMXZuVkxqeXlBdkVabno3clY2ellYVnZLQXdE?=
+ =?utf-8?B?Vk9HS09HWmNIRTFtWXZHaSs5Vnl4NW56cWxSRktWMVFwSmpYUVBhdz09?=
+X-Exchange-RoutingPolicyChecked: Vfi5Z2BwtuU6ZV+UdCSZ3oBod2tpdKv8SVlkpoCUvI6OT4QIqWB4f8638tzRTS1JEjwXsu1irurAwPRtcfNefhKEl0Rz28HAYzwCqWMU9HqoXB8oKgpG08//uzHY/f1SQe2ldsWEJEF+2p+bHJ0qGfl9VIJmoKh9VB51cnjVk1KWHdXAwKcpLnp0eYmsS0Q1tiu6rHGH4HzchuThiuzNBn1XeIFseSh3jSwrCVHh/ArhDJkDaIv0J2VBYpcexQ+lmv39FFJiNHNEaXG3QNMw/rfFT7hDzT96H9WpD3TESItJQZBRjlG+sSt8vLhZv+Ev5PDn6fgXTSK/HbhXk8klMw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1f2192d-769a-433c-a68c-08df3fe1320c
 X-MS-Exchange-CrossTenant-AuthSource: DS6PR11MB087165.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 10:46:51.7755 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 10:47:35.2891 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: x8+N1ntDj/k/JWtjfLQ+6s0OWQVZegeHfmug0x3zhJ1NaVEo0NWGZMhecPde1Zfl185lveTT/+JqwlgcVY5bgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7747
+X-MS-Exchange-CrossTenant-UserPrincipalName: VOCc0FRthXG8XqtYW8NRp0BkW0YUx7Bs5meIKoJVCi0P9V52ERPQQVXSxR2vNAGUiDiZL4MgK3I8N9NFgfY9bA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB8600
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -180,446 +180,303 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 Hi Ravi,
 
 On 10-11-2026 21:35, Ravi Kishore Koppuravuri wrote:
-> Add MMIO based Core Compute Uncorrectable Error injection to verify
-> the Xe driver error handling and recovery flows with the help of
-> DRM Netlink API suite
+> Added event notification support with subscribe for an error-notify event
+> and wait for the event notification functionalities.
 >
 > Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-> Acked-by: Riana Tauro <riana.tauro@intel.com>
 > ---
-> v7:
->    - Added support to ensure that tests pass on all available compute nodes
->    - Added a one-second delay between semaphore acquisition attempts
-> v6:
->    - Updated aquire steering semaphore logic (Soham & Riana)
->    - Removed enum to string mappings for test names (Riana)
->    - Updated metadata in the file (Riana)
-> v5:
->    - Removed xe_err_injection.h and moved its contents into the .c file (Riana)
->    - Prefixed all register address and bit value names with "XE_" (Riana)
->    - Updated AER recovery dmesg strings to use enum-indexed arrays (Soham)
->    - Added error handling logic for function calls
->    - Changed test name comparisons from strings to enums (Riana)
->    - Added UC test and post-recovery workload tests as dynamic subtests (Riana)
-> v4:
->    - Added Steer Semaphore for disabling and enabling multicast
->      operation(soham)
->    - Increased device recovery check timeout from 5secs to 10secs
->    - Used updated library names with igt_drm_netlink_* prefix (Nikula
->      Jani & Kamil)
+> v7:Added detailed debug messages to aid diagnosis of failure conditions
+> v6:Added normalize_nl_error() for subscribe and wait_for_event functions
+> v5:Added a guard to prevent duplicate multicast group subscriptions (Soham)
+> v4:Renamed the library functions with prefix "igt_drm_netlink_*" (Nikula
+>     Jani & Kamil)
+>     updated error event name from error-notify to error-report to align
+>     with the latest changes in drm-uapi/drm_ras.h
+> v2:Handled SEQ_CHECK nl response using separate callback
+>     Added monotonic-clock deadline to wait for messages without exceeding the
+>     caller’s total timeout.
+>     Added support to receive events until it sees an event whose node ID and
+>     error ID match the requested values.
 > ---
->   tests/intel/xe_err_injection.c | 389 +++++++++++++++++++++++++++++++++
->   tests/meson.build              |   1 +
->   2 files changed, 390 insertions(+)
->   create mode 100644 tests/intel/xe_err_injection.c
+>   lib/igt_drm_ras_nl.c | 190 +++++++++++++++++++++++++++++++++++++++++--
+>   lib/igt_drm_ras_nl.h |  18 ++++
+>   2 files changed, 201 insertions(+), 7 deletions(-)
 >
-> diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-> new file mode 100644
-> index 000000000..67cc81a89
-> --- /dev/null
-> +++ b/tests/intel/xe_err_injection.c
-> @@ -0,0 +1,389 @@
-> +// SPDX-License-Identifier: MIT
-> +/*
-> + * Copyright © 2026 Intel Corporation
-> + */
-> +
-> +/**
-> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) MMIO based Error Injection
-> + * Category: Core
-> + * Mega feature: RAS
-> + * Sub-category: RAS tests
-> + * Functionality: Error Injection
-> + * Test category: Functional tests
-> + */
-> +
-> +#include <fcntl.h>
-> +#include <stdio.h>
-> +#include <stdlib.h>
-> +#include <string.h>
+> diff --git a/lib/igt_drm_ras_nl.c b/lib/igt_drm_ras_nl.c
+> index ccd1d7fa3..1cf9935ae 100644
+> --- a/lib/igt_drm_ras_nl.c
+> +++ b/lib/igt_drm_ras_nl.c
+> @@ -6,6 +6,7 @@
+>   #include <errno.h>
+>   #include <poll.h>
+>   #include <stdint.h>
 > +#include <time.h>
-> +#include <unistd.h>
+>   
+>   #include <netlink/errno.h>
+>   #include <netlink/genl/ctrl.h>
+> @@ -64,10 +65,12 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+>   	nlh = nlmsg_hdr(msg);
+>   	gnlh = nlmsg_data(nlh);
+>   
+> -	ret = genlmsg_parse(nlh, 0, attrs,
+> -			    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
+> -	if (ret < 0)
+> -		return NL_SKIP;
+> +	if (gnlh->cmd != DRM_RAS_CMD_ERROR_EVENT) {
+> +		ret = genlmsg_parse(nlh, 0, attrs,
+> +				    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
+> +		if (ret < 0)
+> +			return NL_SKIP;
+> +	}
+>   
+>   	switch (gnlh->cmd) {
+>   	case DRM_RAS_CMD_SET_ERROR_THRESHOLD:
+> @@ -87,14 +90,44 @@ static int ras_command_cb(struct nl_msg *msg, void *arg)
+>   			nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_THRESHOLD]);
+>   		break;
+>   	}
+> +	case DRM_RAS_CMD_ERROR_EVENT: {
+> +		struct nlattr *event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_MAX + 1];
 > +
-> +#include "igt.h"
-> +#include "lib/igt_drm_ras_nl.h"
-> +#include "lib/intel_reg.h"
-> +#include "lib/intel_compute.h"
+> +		ret = genlmsg_parse(nlh, 0, event_attrs,
+> +				    DRM_RAS_A_ERROR_EVENT_ATTRS_MAX, NULL);
+> +		if (ret < 0)
+> +			return NL_SKIP;
 > +
-> +#include "xe_drm.h"
-> +#include "xe/xe_ioctl.h"
-> +#include "xe/xe_mmio.h"
-> +#include "xe/xe_query.h"
+> +		if (!event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID] ||
+> +		    !event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID] ||
+> +		    !event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE])
+> +			return NL_SKIP;
 > +
-> +/* Steering Control Register (MC_PKT_CTRL) */
-> +#define XE_MC_PKT_CTRL_MGSR_3D_ADDRESS 0x00FD4
-> +#define XE_MC_PKT_CTRL_MGSR_3D_VALUE 0x80000000
-> +
-> +/* Core Compute Uncorrectable error injection */
-> +#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS 0xF310
-> +#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE 0x1
-> +
-> +#define POST_RECOVERY_WL 1
-> +#define POST_ARMING_INJECTION_WL 0
-> +
-> +/* STEER_SEMAPHORE_MGSR_3D */
-> +#define XE_STEER_SEMAPHORE_MGSR_3D 0x00FD0
-> +#define XE_STEER_SEMAPHORE_MGSR_3D_VALUE 0x1
-> +
-> +/* Node types for error counters*/
-> +#define NODE_ID_UNCORRECTABLE_ERROR 1
-> +
-> +/* Error types for error counter */
-> +#define ERROR_ID_CORE_COMPUTE 1
-> +
-> +enum {
-> +	SUCCESS = 1,
-> +	FAILED,
-> +	TIMEOUT,
-> +};
-> +
-> +static bool run_xe_compute_on_all_engines(int fd, bool state)
-> +{
-> +	struct drm_xe_engine_class_instance *hwe;
-> +	bool found_engine = false;
-> +	bool all_succeeded = true;
-> +
-> +	igt_info("Running compute-square on all engines post %s\n",
-> +		 state == POST_ARMING_INJECTION_WL ? "injection" : "recovery");
-> +
-> +	xe_for_each_engine(fd, hwe) {
-> +		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-> +			continue;
-> +
-> +		found_engine = true;
-> +		if (!xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL,
-> +							   EXECENV_PREF_SYSTEM))
-> +			all_succeeded = false;
+> +		ctx->event_node_id =
+> +			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_NODE_ID]);
+> +		ctx->event_error_id =
+> +			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_ID]);
+> +		ctx->event_error_value =
+> +			nla_get_u32(event_attrs[DRM_RAS_A_ERROR_EVENT_ATTRS_ERROR_VALUE]);
+> +		ctx->event_received = ctx->event_node_id == ctx->node_id &&
+> +				      ctx->event_error_id == ctx->error_id;
+> +		break;
+> +	}
+>   	default:
+>   		return NL_SKIP;
+>   	}
+>   
+> -	ctx->reply_received = true;
+> -	if (ctx->ack_received)
+> -		ctx->cmd_done = true;
+> +	if (gnlh->cmd != DRM_RAS_CMD_ERROR_EVENT) {
+> +		ctx->reply_received = true;
+> +		if (ctx->ack_received)
+> +			ctx->cmd_done = true;
 > +	}
 > +
-> +	return found_engine && all_succeeded;
+> +	return NL_OK;
 > +}
-> +
-> +static void modify_reg_bit(struct xe_mmio *mmio, uint32_t reg_addr,
-> +			   uint32_t bit_mask, bool set)
+>   
+> +static int ras_multicast_seq_check_cb(struct nl_msg *msg, void *arg)
 > +{
-> +	uint32_t regval;
-> +
-> +	regval = xe_mmio_read32(mmio, reg_addr);
-> +	if (set)
-> +		regval |= bit_mask;
-> +	else
-> +		regval &= ~bit_mask;
-> +
-> +	xe_mmio_write32(mmio, reg_addr, regval);
-> +}
-> +
-> +static bool acquire_steering_semaphore(struct xe_mmio *mmio)
+>   	return NL_OK;
+>   }
+>   
+> @@ -160,6 +193,27 @@ static int register_callbacks(struct nl_cb *cb, struct igt_drm_ras_nl_context *c
+>   	return 0;
+>   }
+>   
+> +static int register_multicast_callbacks(struct nl_cb *cb,
+> +					struct igt_drm_ras_nl_context *ctx)
 > +{
-> +	uint32_t regval;
-> +	time_t start_time = time(NULL);
-> +	time_t timeout = 10; /* 10 secs */
-> +
-> +	while (time(NULL) - start_time < timeout) {
-> +		regval = xe_mmio_read32(mmio, XE_STEER_SEMAPHORE_MGSR_3D);
-> +		if (regval == XE_STEER_SEMAPHORE_MGSR_3D_VALUE)
-> +			return true;
-> +		sleep(1);
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +static void release_steering_semaphore(struct xe_mmio *mmio)
-> +{
-> +	xe_mmio_write32(mmio, XE_STEER_SEMAPHORE_MGSR_3D,
-> +			XE_STEER_SEMAPHORE_MGSR_3D_VALUE);
-> +}
-> +
-> +static int acquire_forcewake(int fd)
-> +{
-> +	int fw_handle;
-> +
-> +	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
-> +	igt_assert_lte(0, fw_handle);
-> +	return fw_handle;
-> +}
-> +
-> +static void release_forcewake(int fw_handle)
-> +{
-> +	if (fw_handle >= 0)
-> +		close(fw_handle);
-> +}
-> +
-> +static int get_counter(uint32_t node_id, uint32_t error_id)
-> +{
-> +	struct igt_drm_ras_nl_context ctx;
-> +	uint32_t error_value = UINT32_MAX;
 > +	int ret;
 > +
-> +	ret = igt_drm_ras_nl_init(&ctx);
+> +	ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, ctx);
 > +	if (ret < 0) {
-> +		igt_warn("Failed to initialize socket for get_error command (ret=%d)\n", ret);
+> +		igt_warn("Failed to set NL_CB_VALID callback (ret=%d)\n", ret);
 > +		return ret;
 > +	}
 > +
-> +	ctx.node_id = node_id;
-> +	ctx.error_id = error_id;
-> +
-> +	ret = igt_drm_ras_nl_get_error_counter(&ctx);
+> +	ret = nl_cb_set(cb, NL_CB_SEQ_CHECK, NL_CB_CUSTOM,
+> +			ras_multicast_seq_check_cb, ctx);
 > +	if (ret < 0) {
-> +		igt_warn("get_error_counter failed from error command path (ret=%d)\n", ret);
-> +		igt_drm_ras_nl_cleanup(&ctx);
+> +		igt_warn("Failed to set NL_CB_SEQ_CHECK callback (ret=%d)\n", ret);
 > +		return ret;
-> +	} else {
-> +		error_value = ctx.error_value;
-> +		igt_info("get_error_counter: node_id=%u error_id=%u value=%u\n",
-> +			 ctx.node_id, ctx.error_id, ctx.error_value);
 > +	}
 > +
-> +	igt_drm_ras_nl_cleanup(&ctx);
-> +
-> +	return error_value;
+> +	return 0;
 > +}
 > +
-> +static int check_dmesg(const char *marker, int elapsed_secs)
-> +{
-> +	static const char * const dmesg_status[] = {
-> +		[SUCCESS] = "AER: device recovery successful",
-> +		[FAILED] = "AER: device recovery failed",
-> +	};
-> +	char *buff = NULL;
-> +	size_t buff_size = 0;
-> +	size_t i;
-> +	ssize_t line_len;
-> +	FILE *fp;
-> +	bool marker_seen = false;
+>   static int send_and_recv_nl_msg(struct igt_drm_ras_nl_context *ctx,
+>   				struct nl_cb *cb,
+>   				struct nl_msg *msg)
+> @@ -339,7 +393,12 @@ static void reset_drm_ras_nl_context(struct igt_drm_ras_nl_context *ctx)
+>   	ctx->ack_received = false;
+>   	ctx->response_required = false;
+>   	ctx->error_threshold = 0;
+> +	ctx->event_node_id = UINT32_MAX;
+> +	ctx->event_error_id = UINT32_MAX;
+> +	ctx->event_error_value = 0;
+> +	ctx->event_received = false;
+>   	ctx->family_id = -1;
+> +	ctx->subscribed_grp_id = -1;
+>   }
+>   
+>   void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx)
+> @@ -482,3 +541,120 @@ int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx)
+>   
+>   	return 0;
+>   }
 > +
-> +	fp = popen("dmesg", "r");
-> +	if (!fp) {
-> +		igt_warn("Unable to open dmesg to check recovery status\n");
-> +		return -1;
+> +int igt_drm_ras_nl_subscribe_error_report(struct igt_drm_ras_nl_context *ctx,
+> +					  const char *notify_group_name)
+> +{
+> +	int grp_id;
+> +	int ret;
+> +
+> +	if (!ctx || !ctx->sock || ctx->family_id < 0 ||
+> +	    !notify_group_name || notify_group_name[0] == '\0') {
+> +		igt_warn("Invalid input: ctx or sock or family_id=%d, or notify_group_name=%s\n",
+> +			 ctx ? ctx->family_id : -1,
+> +			 notify_group_name ? notify_group_name : "(null)");
+> +		return -EINVAL;
 > +	}
 > +
-> +	while ((line_len = getline(&buff, &buff_size, fp)) != -1) {
-> +		if (!marker_seen) {
-> +			if (strstr(buff, marker))
-> +				marker_seen = true;
-> +			continue;
+> +	grp_id = genl_ctrl_resolve_grp(ctx->sock,
+> +				       DRM_RAS_FAMILY_NAME,
+> +				       notify_group_name);
+> +	if (grp_id < 0)
+> +		return normalize_nl_error(grp_id);
+> +
+> +	/* Check if already subscribed to the requested multicast group */
+> +	if (ctx->subscribed_grp_id == grp_id) {
+> +		igt_debug("Already subscribed to DRM RAS multicast group '%s' (id=%d).\n",
+> +			  notify_group_name, grp_id);
+> +		return 0;
+> +	}
+> +
+> +	ret = nl_socket_add_membership(ctx->sock, grp_id);
+> +	if (ret < 0)
+> +		return normalize_nl_error(ret);
+> +
+> +	ctx->subscribed_grp_id = grp_id;
+> +
+> +	igt_debug("Subscribed to DRM RAS multicast group '%s' (id=%d).\n",
+> +		  notify_group_name, grp_id);
+> +
+> +	return 0;
+> +}
+> +
+> +int igt_drm_ras_nl_wait_for_error_report_event(struct igt_drm_ras_nl_context *ctx,
+> +					       int timeout_ms)
+> +{
+> +	struct timespec start, now;
+> +	struct pollfd pfd;
+> +	struct nl_cb *cb;
+> +	int remaining_ms;
+> +	int ret;
+> +
+> +	if (!ctx || !ctx->sock || ctx->family_id < 0)
+> +		return -EINVAL;
+> +
+> +	if (timeout_ms < -1)
+> +		return -EINVAL;
+> +
+> +	cb = nl_cb_alloc(NL_CB_DEFAULT);
+> +	if (!cb)
+> +		return -ENOMEM;
+> +
+> +	ret = register_multicast_callbacks(cb, ctx);
+> +	if (ret < 0) {
+> +		nl_cb_put(cb);
+> +		return normalize_nl_error(ret);
+> +	}
+> +
+> +	ctx->event_received = false;
+> +	clock_gettime(CLOCK_MONOTONIC, &start);
+> +
+> +	pfd.fd = nl_socket_get_fd(ctx->sock);
+> +	pfd.events = POLLIN;
+> +	pfd.revents = 0;
+> +
+> +	while (!ctx->event_received) {
+> +		if (timeout_ms == -1) {
+> +			remaining_ms = -1;
+> +		} else {
+> +			clock_gettime(CLOCK_MONOTONIC, &now);
+> +			remaining_ms = timeout_ms -
+> +				       (int)((now.tv_sec - start.tv_sec) * 1000 +
+> +				       (now.tv_nsec - start.tv_nsec) / 1000000);
+> +			if (remaining_ms <= 0) {
+> +				igt_warn("Timeout reached while waiting for error event.\n");
+> +				ret = -ETIMEDOUT;
+> +				break;
+> +			}
 > +		}
 > +
-> +		for (i = SUCCESS; i < ARRAY_SIZE(dmesg_status); i++) {
-> +			if (!dmesg_status[i] || !strstr(buff, dmesg_status[i]))
-> +				continue;
-> +
-> +			igt_debug("Found \"%s\" in dmesg after %d secs\n",
-> +				  dmesg_status[i], elapsed_secs);
-> +			free(buff);
-> +			pclose(fp);
-> +			return i;
-> +		}
-> +	}
-> +
-> +	free(buff);
-> +	pclose(fp);
-> +	return TIMEOUT;
-> +}
-> +
-> +/*
-> + * TODO: AER device recovery logic is pending to be implemented using
-> + * "uevents emitted by the aer driver" instead of relying on the dmesg
-> + * logs.
-> + */
-> +
-> +static int check_err_recovery(void)
-> +{
-> +	time_t start_time = time(NULL);
-> +	time_t timeout = 10 * 60; /* 10 mins */
-> +	int time_interval = 30; /* 30 secs */
-> +	time_t elapsed_time;
-> +	char marker[128];
-> +	int status;
-> +
-> +	snprintf(marker, sizeof(marker),
-> +		 "IGT xe_err_injection recovery marker pid=%d start=%lld",
-> +		 getpid(), (long long)start_time);
-> +	igt_kmsg(KMSG_INFO "%s\n", marker);
-> +
-> +	while (1) {
-> +		elapsed_time = time(NULL) - start_time;
-> +		status = check_dmesg(marker, elapsed_time);
-> +		if (status < 0) {
-> +			igt_warn("Failed to query dmesg for recovery status\n");
-> +			return FAILED;
-> +		}
-> +		if (status == SUCCESS || status == FAILED)
-> +			return status;
-> +
-> +		if (elapsed_time >= timeout) {
-> +			igt_warn("Timed out while waiting for error recovery\n");
-> +			return TIMEOUT;
+> +		ret = poll(&pfd, 1, remaining_ms);
+> +		if (ret == 0) {
+> +			igt_warn("timed out while polling for error event.\n");
+> +			ret = -ETIMEDOUT;
+> +			break;
 > +		}
 > +
-> +		sleep(time_interval);
-> +	}
-> +}
+> +		if (ret < 0) {
+> +			ret = -errno;
+> +			break;
+> +		}
 > +
-> +static void print_aer_recovery_status(void)
-> +{
-> +	int recovery_ret;
-> +
-> +	recovery_ret = check_err_recovery();
-> +	igt_assert_f(recovery_ret != TIMEOUT,
-> +		     "AER error recovery timed out\n");
-> +	igt_assert_f(recovery_ret != FAILED,
-> +		     "AER device recovery failed\n");
-> +	if (recovery_ret == SUCCESS)
-> +		igt_info("AER device recovery successful\n");
-> +}
-> +
-> +static bool uncorr_error_recovered;
-> +
-> +/**
-> + * SUBTEST: inject_core_compute_uncorr_error
-> + * Description: Inject a Core Compute Uncorrectable error and verify
-> + *		AER-based device recovery.
-> + *		The dynamic subtests are:
-> + *		inject            - Injects Core Compute Uncorrectable error
-> + *				    and verifies device recovery.
-> + *		post-recovery-wl  - Runs a compute workload on all compute
-> + *				    engines after recovery to confirm the GPU
-> + *				    remains functional.
-> + * Functionality: error injection
-> + */
-> +static void test_inject_core_compute_uncorr_error(struct xe_mmio *mmio, int fd)
-> +{
-> +	int counter_before;
-> +	int counter_after;
-> +	int fw_handle;
-> +	bool ret;
-> +
-> +	/** TODO
-> +	 *  Fetching node_id and error_id dynamically is pending to implement.
-> +	 *  For now, using
-> +	 *  node_id=1 (uncorrectable_errors) and
-> +	 *  error_id=1 (core_compute)
-> +	 */
-> +	uint32_t node_id = NODE_ID_UNCORRECTABLE_ERROR;
-> +	uint32_t error_id = ERROR_ID_CORE_COMPUTE;
-> +
-> +	fw_handle = acquire_forcewake(fd);
-> +
-> +	counter_before = get_counter(node_id, error_id);
-> +	if (counter_before < 0) {
-> +		release_forcewake(fw_handle);
-> +		igt_assert_f(false, "Failed to read error counter before injection\n");
-> +	}
-> +
-> +	if (!acquire_steering_semaphore(mmio)) {
-> +		release_forcewake(fw_handle);
-> +		igt_assert_f(false, "Timed out acquiring steering semaphore\n");
-> +	}
-> +
-> +	/* Arm the injection sequence. */
-> +	xe_mmio_write32(mmio, XE_MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
-> +	modify_reg_bit(mmio,
-> +		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS,
-> +		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE,
-> +		       true);
-> +	modify_reg_bit(mmio,
-> +		       XE_MC_PKT_CTRL_MGSR_3D_ADDRESS,
-> +		       XE_MC_PKT_CTRL_MGSR_3D_VALUE,
-> +		       true);
-> +	release_steering_semaphore(mmio);
-> +	igt_debug("Injected Core Compute Uncorrectable error\n");
-> +
-> +	/* Run traffic to trigger the injected error */
-> +	ret = run_xe_compute_on_all_engines(fd, POST_ARMING_INJECTION_WL);
-> +	if (!ret) {
-> +		release_forcewake(fw_handle);
-> +		igt_assert_f(false, "Failed to run Xe compute on all engines post injection\n");
-> +	}
-> +
-> +	release_forcewake(fw_handle);
-> +	print_aer_recovery_status();
-> +
-> +	counter_after = get_counter(node_id, error_id);
-> +	igt_assert_f(counter_after >= 0, "Failed to read error counter after injection\n");
-> +
-> +	igt_assert_f(counter_before != UINT32_MAX && counter_after != UINT32_MAX,
-> +		     "Failed to fetch valid error counters: before=%u after=%u\n",
-> +		     counter_before, counter_after);
-> +
-> +	igt_info("error counter: before injection=%u after injection=%u\n",
-> +		 counter_before, counter_after);
-> +
-> +	igt_assert_f(counter_after > counter_before,
-> +		     "Core Compute Uncorrectable error injection failed: "
-> +		     "before=%u after=%u\n", counter_before, counter_after);
-> +	uncorr_error_recovered = true;
-> +}
-> +
-> +enum xe_err_injection_type {
-> +	XE_CORE_COMPUTE_UNCORR_ERR_INJ,
-> +	XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL,
-> +};
-> +
-> +static void inject_error(enum xe_err_injection_type injection, struct xe_mmio *mmio, int fd)
-> +{
-> +	switch (injection) {
-> +	case XE_CORE_COMPUTE_UNCORR_ERR_INJ:
-> +		test_inject_core_compute_uncorr_error(mmio, fd);
-> +		break;
-> +	case XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL:
-> +		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
-> +		break;
-> +	default:
-> +		igt_info("Invalid Error Injection specified\n");
-> +	}
-> +}
-> +
-> +int igt_main()
-> +{
-> +	int fd;
-> +	struct xe_mmio mmio;
-> +
-> +	igt_fixture() {
-> +		fd = drm_open_driver(DRIVER_XE);
-> +		igt_require_f(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY),
-> +			      "forcewake_all is not available in debugfs\n");
-> +		xe_mmio_access_init(fd, &mmio);
-> +		igt_require_f(xe_mmio_is_initialized(&mmio),
-> +			      "Failed to initialize Xe MMIO access\n");
-> +	}
-> +
-> +	igt_describe("Inject core compute uncorrectable error and run post-recovery workload.");
-> +	igt_subtest_with_dynamic("inject_core_compute_uncorr_error") {
-> +		igt_dynamic("inject")
-> +			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ, &mmio, fd);
-> +
-> +		igt_dynamic("post-recovery-wl") {
-> +			igt_require_f(uncorr_error_recovered,
-> +				      "Run the \"inject\" dynamic subtest first\n");
-> +			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL, &mmio, fd);
+> +		ret = nl_recvmsgs(ctx->sock, cb);
+> +		if (ret < 0) {
+> +			ret = normalize_nl_error(ret);
+> +			break;
 > +		}
 > +	}
+> +	nl_cb_put(cb);
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +	igt_fixture() {
-> +		xe_mmio_access_fini(&mmio);
-> +		drm_close_driver(fd);
-> +	}
+> +	if (!ctx->event_received)
+> +		return -ENOMSG;
+> +
+> +	igt_debug("Received error event: node_id=%u error_id=%u value=%u\n",
+> +		  ctx->event_node_id, ctx->event_error_id, ctx->event_error_value);
+> +
+> +	return 0;
 > +}
-> diff --git a/tests/meson.build b/tests/meson.build
-> index 519a9e727..c8a4c9a6a 100644
-> --- a/tests/meson.build
-> +++ b/tests/meson.build
-> @@ -294,6 +294,7 @@ intel_xe_progs = [
->   	'xe_debugfs',
->   	'xe_dma_buf_sync',
->   	'xe_drm_fdinfo',
-> +	'xe_err_injection',
->   	'xe_eu_stall',
->   	'xe_evict',
->   	'xe_evict_ccs',
+> diff --git a/lib/igt_drm_ras_nl.h b/lib/igt_drm_ras_nl.h
+> index 5c9be5b17..057c6026f 100644
+> --- a/lib/igt_drm_ras_nl.h
+> +++ b/lib/igt_drm_ras_nl.h
+> @@ -47,6 +47,21 @@ struct igt_drm_ras_nl_context {
+>   
+>   	/** @error_threshold: Error threshold value to query/set */
+>   	uint32_t error_threshold;
+> +
+> +	/** @event_node_id: RAS node ID reported by an error-report event */
+> +	uint32_t event_node_id;
+> +
+> +	/** @event_error_id: RAS error ID reported by an error-report event */
+> +	uint32_t event_error_id;
+> +
+> +	/** @event_error_value: Error counter value reported by an error-report event */
+> +	uint32_t event_error_value;
+> +
+> +	/** @event_received: Set when a matching error-report event has been received */
+> +	bool event_received;
+> +
+> +	/** @subscribed_grp_id: Multicast group ID currently subscribed to, or -1 if none */
+> +	int subscribed_grp_id;
+>   };
+>   
+>   void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
+> @@ -54,6 +69,9 @@ int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
+>   int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx);
+>   int igt_drm_ras_nl_get_error_threshold(struct igt_drm_ras_nl_context *ctx);
+>   int igt_drm_ras_nl_set_error_threshold(struct igt_drm_ras_nl_context *ctx);
+> +int igt_drm_ras_nl_subscribe_error_report(struct igt_drm_ras_nl_context *ctx,
+> +					  const char *notify_group_name);
+> +int igt_drm_ras_nl_wait_for_error_report_event(struct igt_drm_ras_nl_context *ctx, int timeout_ms);
+>   
+>   #endif /* IGT_DRM_RAS_NL_H */
+>   
 LGTM
 Reviewed-by: Soham Purkait <soham.purkait@intel.com>
 
