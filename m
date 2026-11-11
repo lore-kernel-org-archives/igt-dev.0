@@ -2,92 +2,92 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BC0606A326
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 05:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D3D606A320
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 05:06:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.a=rsa-sha256 header.s=dk201812 header.b=KESIPwzj
+	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.a=rsa-sha256 header.s=dk201812 header.b=IbHaRsuT
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B8D4B10E2ED;
-	Wed, 11 Nov 2026 05:05:17 +0000 (UTC)
-Received: from mx08-00376f01.pphosted.com (mx08-00376f01.pphosted.com
- [91.207.212.86])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5EF0610E2ED
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 05:02:37 +0000 (UTC)
-Received: from pps.filterd (m0168888.ppops.net [127.0.0.1])
- by mx08-00376f01.pphosted.com (8.18.1.12/8.18.1.12) with ESMTP id
- 6AB4YEjV2835333
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 05:02:36 GMT
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1CA8C10E2ED;
+	Wed, 11 Nov 2026 05:06:10 +0000 (UTC)
+Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
+ [185.132.180.163])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EEF1D10E997
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 05:02:38 +0000 (UTC)
+Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
+ by mx07-00376f01.pphosted.com (8.18.1.12/8.18.1.12) with ESMTP id
+ 6AB4tbLW2806102
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 05:02:37 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
  :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=dk201812; bh=u
- ZmGQvdlK/WQ6L2nKXcelWXCnL9hzOjuTyamMmC3kVM=; b=KESIPwzjspX4QD3hz
- 6uO11OxCPAvin229rTQ+VkrU6P2jBTGg15U74ekRjxmI8kGX1NUISp5KDOcshLDv
- zxi4AX9QmCu3RyTpcvayIvaLVy0P0ocPXuIHZ/i3KiEIEHI5gh89lO4wShTOIafO
- avaiXRwCD+Qpq45v0g1UxYwd5UEzKTdg06bBu2kc+s/NNPkQrW2Gce795IB2IJMS
- f/eEw39pGdfnJfUHP8/K6Jo+btSi/aFZeOIOLe3Mk/B3l2E9PNqwQDeyFMOVXwRs
- EDIybyzSJHOZcMeMhY0/Kzve5QhhfyNirHtY3tlodXsl+3Fj20lWj0bqGgAl+uHM
- x6uNQ==
+ :message-id:mime-version:references:subject:to; s=dk201812; bh=S
+ 9uMfbpHhy9sRhy/S++XhBr2bwHLGHT/zYUzMYITMIQ=; b=IbHaRsuTgXhyXWWbn
+ Xy7srJhz1YihT00yg6kAV7dmAXs1vqdK0u9d3XZZWFvuof8vIUdwXBPBLlmSRtnO
+ BHq9y/fhEXp1JmzH+N4eq+SmTddMKS7KGTB0gXgMCnn83eQn5gtZFSCwrLcmn1sN
+ kygQLWu7NRS5KF4G+qrBaorWNulXWgRJa59QlEAt7GagA9MwjBRcUp26mhGOjMIA
+ my5qf/xQUVzcHO/VbFbKtxeDcvhQeKCIJtsDyVTQH/aZ8wKJQCtdMZuyYc274xXL
+ vT765qzhzRsroHtlTuIpaPfkLMWZgXrMoSYvTUgW46Ek05QMwcnLD3QSbrSBpjzF
+ vGbGQ==
 Received: from hhmail01.hh.imgtec.org
  (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
- by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4hu8pn9fak-1
+ by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4hsvxx2xc5-1
  (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT
  key_exchange=secp384r1)
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 05:02:35 +0000 (GMT)
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 05:02:37 +0000 (GMT)
 Received: from [127.0.1.1] (172.25.128.158) by HHMAIL01.hh.imgtec.org
  (10.100.10.19) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.56; Wed, 11 Nov
- 2026 05:02:34 +0000
+ 2026 05:02:35 +0000
 From: Brajesh Gupta <brajesh.gupta@imgtec.com>
-Date: Wed, 11 Nov 2026 10:32:22 +0530
-Subject: [PATCH i-g-t v3 2/3] imagination: Skip CPU access flag for a few
- Render related allocations
+Date: Wed, 11 Nov 2026 10:32:23 +0530
+Subject: [PATCH i-g-t v3 3/3] lib/igt_pvr: Pass DRM_PVR_BO_PM_FW_PROTECT
+ flag for PM MList allocation
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20261111-b4-render_update-v3-2-979dcf01ff43@imgtec.com>
+Message-ID: <20261111-b4-render_update-v3-3-979dcf01ff43@imgtec.com>
 References: <20261111-b4-render_update-v3-0-979dcf01ff43@imgtec.com>
 In-Reply-To: <20261111-b4-render_update-v3-0-979dcf01ff43@imgtec.com>
 To: Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
 CC: Alessio Belle <alessio.belle@imgtec.com>, Brajesh Gupta
  <brajesh.gupta@imgtec.com>, Luigi Santivetti <luigi.santivetti@imgtec.com>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2521;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=924;
  i=brajesh.gupta@imgtec.com; h=from:subject:message-id;
- bh=CtDK6ASfUFmxKR8G0bTwXdZgrTq/eHB/wQvnuB9x0Ac=;
- b=owEBbQKS/ZANAwAKAdAmd1l+AvFwAcsmYgBq8/bmfdViQZFzbjuaSFa3zBD0a2r9ctxnzjpsq
- gcf4hzml62JAjMEAAEKAB0WIQSQIkZAwD1cxcAsz3LQJndZfgLxcAUCavP25gAKCRDQJndZfgLx
- cKnwD/0ctmiSroUM0ME2WsLPV4Eune9bKP3o4cOUyXu+I7x4n2rn5WpVULxu5HQ5bP4j/2wPzKp
- Ua/0kYjnK6LwV8pnWeQ9cr5HrPBIbVaOIsCzHYvY2ZQHg6FNT97yoqyRiPpEDvQ7tNW1VUdcXDO
- 1+XFYrXgQSWJqatbyIsQUT/3dEgWSPVBjnJJXYcoytcssBIFhvGibLO6d7Ed8sqgSmSyk6hEgZI
- H/v2wjqS0ZxTPjKgvrGCvY+296NYRHiBpAuXN0RYQRPzz3Xpe1fEN017SrtSc/4fRUsl4FHj1AO
- 7S6wURu8KIK5SNr/oHW5wYbzZci/yYFnEUg3Jh/Rhj3yLsdhRA4C/8ixgNZai7jYku/OSKj/u4U
- qbKtaiU1rMHSXmy+hlkk/ibeFOjBdB9R7UZuHJGQ2a/ITXLYelv4rH0xDkbJP3FkMk3vFyO+T/A
- cxPl+eGw96f8A6KYx1qw9FOlGTS7PrDAr47qbB8kTsGCYzLZpncwImr0/QypATMxqkeULfZsJbM
- 0puPbzKP1uGZ5E36V0qYBE3H5X77xhliyBz3EqvbtujZydw0La9lAaUN7ns6kXCB9goH3OUy8JR
- jLI4Z/mF43BbS6iuBVWNdMxx4xek53iHD8JXSRv3Q+DsbmCjEa3rguBXziPEVCRqxRJ8UuuAHKC
- 5CJsbU6VatZcADg==
+ bh=r9BgkWrCfbRhgRy3RdE0UovF8W9zYtms04Hk79l69Cc=;
+ b=owEBbQKS/ZANAwAKAdAmd1l+AvFwAcsmYgBq8/bm+8nz01cXZvEbVfeQYy3pKggcQrjCjFS7s
+ C4g3t7p/R+JAjMEAAEKAB0WIQSQIkZAwD1cxcAsz3LQJndZfgLxcAUCavP25gAKCRDQJndZfgLx
+ cJPCD/9U/bZ3VcZWbV7RTfCPwQzb6qBzQ7CEo9iGgXh16YbyWHLObs5wUvdEV9mTC7Jj1QHM+Vp
+ 2ohB9b+CB1ReqsetnsBWjjlFABB4EicChan8if5FsJZIyEOGTVY38sSO1kKHoHjab8ANiWqozqX
+ xiaQIYp0YgAW+gJD0Di7KnnRlABi33YQzqq2PkDdhJHq2S/0gT9UyzdQw2oDv/ECR3QdqPLZPrQ
+ MJ/d2LkFeZyamr8ewbYaN0hF9JGxrYyzNi9FejsxqDmWQQ/6nBB822KDkZqnIUWRJWuju7Go3/Q
+ ah+C3oMjkpdKdYttQMbGdHOJRsHcM6fX10GPJAdTqSEL/9B+3XbTXms/4Yys4uRPvVqxUBIKqO6
+ qMFJPIuANEwmLZfOHetoodN5zEsKY+8QT4afHZcWkokBjYCWdA9cfHEdSnadacePWNFQQ1nC0f4
+ DR5BhMlE0byCT/492grHjn4V8a2xcojl2+sFD+ii/gNFhLClaXj5BtDNUdbnAFHpiZx1cnT+bls
+ Vr19lPsAwdmobJmB48cygT4TbsaPkU61LNA/MsQjzkOtzTSO0NH0yFdA4/lVttI4Pb+tQox46mh
+ zwkT9mIsq4rqqnkb0KH/+G1wYjqa/BHIXgBs/qI1j1dPIwWvwBpYoKPT6SVSlzfLxdEW43LEJ6M
+ nejpsl7XjH0cmzA==
 X-Developer-Key: i=brajesh.gupta@imgtec.com; a=openpgp;
  fpr=05BAA300FD5C580EFD3F8D2F073292BAD0D39671
-X-Authority-Analysis: v=2.4 cv=P46vFSAu c=1 sm=1 tr=0 ts=6af3f6eb cx=c_pps
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDAxOSBTYWx0ZWRfX0FjbtF5DjAYl
+ UVR6XwQKzIRV76W2N2qobpkDUsZItp039TJDlvt/+yZOM0JlsiFV8Bzg+N1E2QQEaqSkoBF5wAe
+ tiHFac6C3N/oAiyIO8eSoAt5+ySszcM=
+X-Proofpoint-ORIG-GUID: CC5jdlagBfS0xy_Kib5VKsIqETeamuB3
+X-Authority-Analysis: v=2.4 cv=H+JOUOYi c=1 sm=1 tr=0 ts=6af3f6ed cx=c_pps
  a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
  a=x1VBDH5lXswA:10 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=qZQ2PDNLMSdLoqI-hfl9:22
- a=r_1tXGB3AAAA:8 a=BY7FiyTaXdFL-9TwcfAA:9 a=QEXdDO2ut3YA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
+ a=r_1tXGB3AAAA:8 a=orU94MdlTBgBgQKew8cA:9 a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10
  a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDAxOSBTYWx0ZWRfX138D3ipw5WYv
- 5yHcEUJzaJJgMH5HXXhKrimcleWGnmSVJs7vTf7KgScn/jOJwumkzO+Y6HGvNMUXd6VRDYARiWo
- ZeAIiPjM0qvYaQXpVlRb3bhodL0GcpN1cEHqUAu7SphIcMvqTUDFoelB7/yGEKW79PFaUpkwhB3
- HshBUz4Y+hU7ZQiHEnKpRk9l0qBTcayebp0MzLm/X4SvH8lX9tEe6ZSXc4/2LcRdhlpIP4yKKBn
- Hcm+1KhtaND523GZM3hZmys96oWmFifH/iOozr8Q0aWmlXLDEFdXhcEneZkSSlo0QWfHARYQqvD
- vYO0+lPov239H4SOwq6qS6yzq4SXb9zuWlc/kVulbI9Qede4PaQ+sX3HGSRXX4+rpYelnMkGK6i
- aaZ/4/26/A5FEBrUI5USnJJC/FzSM6nYRaY+LnNN2L2ESb2S9ECMYfUO2Ktwt3kHnaYiMDP22M8
- Sj9CgxwFz/OMyrE/b+g==
-X-Proofpoint-ORIG-GUID: L4UsLh6OMBn0Wywrf8RHrmeu9H9dWI1K
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTExMDAxOSBTYWx0ZWRfX7jFAVXMrVZvO
- 5exJSmu8XO09dzxoGRTZIJY0mr7X+77Y8D3332xAk3oLYmPdv+mq9A1lxrfEkz1WiRh93FASfJ9
- /6Q6zlBYyDqf4XBzfaS4bvuv8anG4ek=
-X-Proofpoint-GUID: L4UsLh6OMBn0Wywrf8RHrmeu9H9dWI1K
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTExMDAxOSBTYWx0ZWRfX6bTQs52SwzhX
+ Dq12uJCHGCthSkxB8FgTdxWwFLSe3y+QZ1GL0L6DKETJo1bQlDnF18c5cmKVKqGp6hn6K3g8iwu
+ 0I5OwgMBwXazT38OatoarRqeKWc2ceyXptiIgiliVrM3zCA0BjrmxHx9Jsmegmc9WBmMWRDmNWU
+ 6dTGq8XtEvs+qud8MvcHBYyjfl7jnGCghPoeh73PX0+89MFHyK9o/g6Wx/XmK5hcPAwHIcwpGZ2
+ NN+fEMYDp9+koFmmT0BLrN7r7EM9b+JvYh1AXGlanouBMx7hrZxsHQMA13gR6KrAV/3/hVaTcpz
+ 8MEc8It7Sjn6TBCjjLNyA2at85D4jyrnSJb9DoAD8UtbTi/AzDCFAMzaGmbZuWPCHonrNNEIJqz
+ BfxyLWRoNg0GUlreA8q77ayxXqnMQuc2kuk6W0wyaUQ0FhzWUH2oQh3LgU+ue2FfPlInmF6MTzc
+ yBo39ABl8qOm68M294A==
+X-Proofpoint-GUID: CC5jdlagBfS0xy_Kib5VKsIqETeamuB3
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -106,58 +106,28 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Skip passing CPU access flag for BO's that don't need host access.
+Pass DRM_PVR_BO_PM_FW_PROTECT flag for PM MList allocation to indicate
+only PM/FW allowed to access the memory.
 
-Reviewed-by: Luigi Santivetti <luigi.santivetti@imgtec.com>
 Signed-off-by: Brajesh Gupta <brajesh.gupta@imgtec.com>
 ---
- lib/igt_pvr.c | 7 -------
- 1 file changed, 7 deletions(-)
+ lib/igt_pvr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
-index e771d0660..9e88b2e41 100644
+index 9e88b2e41..36846d7d6 100644
 --- a/lib/igt_pvr.c
 +++ b/lib/igt_pvr.c
-@@ -400,7 +400,6 @@ uint32_t igt_pvr_ioctl_create_context(int fd, enum drm_pvr_ctx_type type,
- 			igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd,
- 								      vm_ctx_handle,
- 								      POWERVR_GPU_PAGE_SIZE,
--								      DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS |
- 								      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
- 		create_context_args.static_context_state = to_user_pointer(init_render_context_stream);
- 		create_context_args.static_context_state_len =
-@@ -818,15 +817,12 @@ static void igt_pvr_create_hwrt_geom_data_args(int fd, uint32_t vm_ctx,
- {
- 	geom_data_args->rtc_dev_addr =
- 		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE,
--							      DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS |
- 							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
- 	geom_data_args->tpc_dev_addr =
- 		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE,
--							      DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS |
- 							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
- 	geom_data_args->vheap_table_dev_addr =
- 		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE,
--							      DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS |
- 							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
- 	geom_data_args->tpc_size = POWERVR_GPU_PAGE_SIZE;
- 	geom_data_args->tpc_stride = 0x1;
-@@ -846,15 +842,12 @@ static void igt_pvr_create_hwrt_rt_data_args(int fd, uint32_t vm_ctx,
+@@ -842,7 +842,8 @@ static void igt_pvr_create_hwrt_rt_data_args(int fd, uint32_t vm_ctx,
  {
  	rt_data_args->pm_mlist_dev_addr =
  		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE,
--							      DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS |
- 							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
+-							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
++							      DRM_PVR_BO_BYPASS_DEVICE_CACHE |
++							      DRM_PVR_BO_PM_FW_PROTECT));
  	rt_data_args->macrotile_array_dev_addr =
  		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE,
--							      DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS |
  							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
- 	rt_data_args->region_header_dev_addr =
- 		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_PAGE_SIZE,
--							      DRM_PVR_BO_ALLOW_CPU_USERSPACE_ACCESS |
- 							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
- }
- 
 
 -- 
 2.43.0
