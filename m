@@ -2,61 +2,63 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAA7606A326
-	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 10:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A98606A324
+	for <igt-dev@archiver.kernel.org>; Wed, 11 Nov 2026 10:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KYl06uV6
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WT5lZCRf
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3D90610FAC0;
-	Wed, 11 Nov 2026 10:45:23 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 320EC10FA9C
- for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 10:44:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2040D10E9D8;
+	Wed, 11 Nov 2026 10:47:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E619F10E0A9
+ for <igt-dev@lists.freedesktop.org>; Wed, 11 Nov 2026 10:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794393859; x=1825929859;
+ t=1794394015; x=1825930015;
  h=message-id:date:subject:to:cc:references:from:
- in-reply-to:mime-version;
- bh=bg/GxNXGN1JtkILp6xnSWlbPVowlvyLWh6wWTprLIBI=;
- b=KYl06uV6Kbjiu2p6XkJAtOgK7VlIg0y0rOIHT7pKTgSnU2sGYdqrx3o2
- 8JG99cK7fMPpRdxHPjkheGnXPgEV6aj36zT5XUvprY1jTaBCnobKMiHji
- qTitRM+BeGS1AWZ9r3DKYDmVMb+HxEKGW84qQUvlVL/y7qpY7onyYSoJd
- rn7y7otwHE8Zozms/tMJ6cJiR8bprI5sVue4pzHGogfajvBbNUeGwXMfV
- Im86ucAiTZeKsL8ju0x2JP11OI+5j30Iv6tv59D0jvOLDFwfqJB5n4rZ5
- r2CH912euQGXR5C1PbSXEpD5FpGLk4u+8AQGzZ/jJGje754bIrwrDZMXj g==;
-X-CSE-ConnectionGUID: T+lEfDCnRQ+KCZKJ0PEDig==
-X-CSE-MsgGUID: 74fcDeGbTTCOrSaq7dYvXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3194856"
-X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; d="scan'208,217";a="3194856"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 02:44:18 -0800
-X-CSE-ConnectionGUID: 8mrm6m8IS6uesiAEECPbIQ==
-X-CSE-MsgGUID: ROnq2eibTtCttYKNLxpTiQ==
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=ImKUtav1YDW+4Ur+LkRx1V23iwajuqlOLRA94s6a+Nk=;
+ b=WT5lZCRfM7j9UayGVsLRS5SsrlV5MBHeHRWUkKeGaC9CmMvfWUasfsRo
+ wppiwraUuSz/5M/4hfimDxr6/91gxZye680M2YS+9TX9J+3RNOxBapDu7
+ y3D1jW1mLpjse0sjKOqrhS/9iiUt5Hu6Jn8zoccmaa708ohyNuHjnh56p
+ qdS85YKtS72WTOlj8jQNJWy5qU4VrNqyRWTF0HCTxIixjj/P3m3KvhQ4d
+ p7BLIwGZHNtWU/bH+hrXdxi7KRgjJ3feSecQhc3J6zUG36ONU6CXFr+mB
+ PRkcr4cdS63tI4pw1o/9LGzocT0CiVha5Luu9SE3z/P7GspdEGrQKdM81 A==;
+X-CSE-ConnectionGUID: cSqluImWSTiSi3S97tzi7g==
+X-CSE-MsgGUID: 0dSFmwdRSZeK+icN8p0WHw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11962"; a="3190844"
+X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
+   d="scan'208";a="3190844"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Nov 2026 02:46:55 -0800
+X-CSE-ConnectionGUID: pAgcgIfZRIO3hp3H1TjYWQ==
+X-CSE-MsgGUID: usYhJUN2RyKoBD9/+NKVag==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; d="scan'208,217";a="8282504"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 11 Nov 2026 02:44:17 -0800
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.27,207,1787036400"; 
+   d="scan'208";a="8393563"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+ by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 11 Nov 2026 02:46:54 -0800
+Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 11 Nov 2026 02:44:17 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ 15.2.2562.56; Wed, 11 Nov 2026 02:46:54 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Wed, 11 Nov 2026 02:44:17 -0800
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (52.101.43.34) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.56 via Frontend Transport; Wed, 11 Nov 2026 02:46:54 -0800
+Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.27) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 11 Nov 2026 02:44:17 -0800
+ 15.2.2562.56; Wed, 11 Nov 2026 02:46:53 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OlgkN3bdkTCvy06c+xGmT1hXNc1YVtApLLqmnwbpmlyLlojqAoRuUxBhgQdqCRXVISow3U/uTw6LXFs0Bt3hdu+EeXrUrPkmh+58c0EWDg9pnVqkCG7RXOzCEc3WI8dQmKgSB/Pa9yJv5cmOC80Y73nH7sm9qzU+gJEKGvyzygPDaoeotW/HTRXzqoIpeTtcJyfFyFQBaKkDgUe3UzQJ6N6vqAQxAvTP5FZ5CYDsSS8hGldiD5J8zCbXrjUq4uX8Y9AcwU7Gh/KXSMsS57vMcoFKE22JnB/pUUQ64uRr1SqztrlikUwWODUQhbpa6nHn8sFkQKrHYDojRPGwhKhtFQ==
+ b=uAEu2W3W/MjM+1HEwKCcHTZqK0TRJhs/yoUsoem6d9aiV8oO3DDgyupY+xpK852pSB6+a8aH7DkArCNE3isnzGotELNdwvfL7uAhNe/tVyj/07X3R8AGTxRm7N6zx27vn6Oke+NFu8GmZsalBi4ENoFm1fXYh8t3/FX9TjYG+dkxlY1RCq+VBds/h72VZ8HFBDi4S1GwiZhgLiEx7GQydzFHLv6/WfWEwDyvpgpSNr+N+d4nMKKfUa983JVmPjumMXKsgoF0Ob5dTEaoXtl9cBSlBsTbrJS8rF3mJPxb6vY01+DBQ/RnIJ1CiTWDPw+0SiwMlhX9V4Ob7pIPphLssg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HMFpzJ/bX4fqQTBSBXVkU/2oDP14iZspkoR60rwrgVI=;
- b=SGko7Kwi/eoLRa/UzXmDPBHeX8RMv6bYZ3FWNHTK7n46fjnkCEsl5VniSP3ZjKCa7/3w1E3QtsfWMFqePqrqn+DnVPGH4EWIQ4Je3HIxOHgjreBAGrt6FAJl0Hjfqvjv9hCjbpHRhbo13KaRKppwmhTarAlh6Yh0+Zax4haIj4OyeZoF5HuCc39fQQySS71xOltzPq8a9R8kVRx0sfYcWguM0AcwlRv81gFiRKqbW0qeoj25JbpbpJfdCfUnfaDZT8Z3WFY0rxI6LtcFSzMJF2AUUErqn+MpBIS9q1MgPt8V4M21p04IxBu5wdUKpp1TtrnfJ7PyDrcTQPko1187RQ==
+ bh=vlcd7YAzlVpkk35tkUWXRqLzFfT0mssbAzn+hnQBa58=;
+ b=xH0at+Ww7azXq0aSqvmY5WStdH6QnmKvZNJhpD/MzBJsYV2ds2KUHZKXsvvNR+xKnK8gJVjcgG7JzyBwoSspTA5nLQIzryhNoIRdnScSN3BOH8AQ2CqgAmFZdwHBbuxi2eVM3l6uQJy1l90gUYC6RGR3HXgo1ElrrwDZJWhqpozCix3PvE25teaCFiR9vTDlHm/fvISFbNJksj0Vk9asf8nLVyHietmqKnpj8thmCbsF+UTjykSogqNJWCT8BWW9xMYCCA27adAYYOIa3loLiDbVybb18gwZi0gmIS6B4TRwL6hWkaiNJn/UiQq4AraETatfC9HW4cueUx83Qv5j/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -66,93 +68,94 @@ Received: from DS6PR11MB087165.namprd11.prod.outlook.com (2603:10b6:8:4c4::7)
  by CY8PR11MB7747.namprd11.prod.outlook.com (2603:10b6:930:91::17)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Wed, 11 Nov
- 2026 10:44:15 +0000
+ 2026 10:46:51 +0000
 Received: from DS6PR11MB087165.namprd11.prod.outlook.com
  ([fe80::4223:7b03:1329:265f]) by DS6PR11MB087165.namprd11.prod.outlook.com
  ([fe80::4223:7b03:1329:265f%5]) with mapi id 15.21.0615.007; Wed, 11 Nov 2026
- 10:44:15 +0000
-Content-Type: multipart/alternative;
- boundary="------------jnVHFaMDMis1crz7emcHx69M"
-Message-ID: <e17c0709-217a-469a-aa7b-1752e90d47e3@intel.com>
-Date: Wed, 11 Nov 2026 16:14:05 +0530
+ 10:46:51 +0000
+Message-ID: <ca326d87-f356-4352-b161-bd77095ef8fa@intel.com>
+Date: Wed, 11 Nov 2026 16:16:43 +0530
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 04/10] lib/igt_drm_ras_nl: add get_error_counter support
+Subject: Re: [PATCH v7 07/10] tests/intel/xe_err_injection: Add Core Compute
+ Uncorr Error injection
 To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
  <igt-dev@lists.freedesktop.org>
 CC: <riana.tauro@intel.com>, <anshuman.gupta@intel.com>,
  <raag.jadav@intel.com>, <mallesh.koujalagi@intel.com>,
  <harish.chegondi@intel.com>, <kamil.konieczny@linux.intel.com>
 References: <20261110160504.1315160-1-ravi.kishore.koppuravuri@intel.com>
- <20261110160504.1315160-5-ravi.kishore.koppuravuri@intel.com>
+ <20261110160504.1315160-8-ravi.kishore.koppuravuri@intel.com>
 Content-Language: en-US
 From: "Purkait, Soham" <soham.purkait@intel.com>
-In-Reply-To: <20261110160504.1315160-5-ravi.kishore.koppuravuri@intel.com>
-X-ClientProxiedBy: MA5P287CA0072.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:1b3::12) To DS6PR11MB087165.namprd11.prod.outlook.com
+In-Reply-To: <20261110160504.1315160-8-ravi.kishore.koppuravuri@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: MA5P287CA0064.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:a01:1b3::13) To DS6PR11MB087165.namprd11.prod.outlook.com
  (2603:10b6:8:4c4::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS6PR11MB087165:EE_|CY8PR11MB7747:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5319fc14-277d-4ef5-1690-08df3fe0bab1
+X-MS-Office365-Filtering-Correlation-Id: b0c9315d-e0c7-4239-cd70-08df3fe1181e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|23010399003|1800799024|10067099003|4143699003|261021123027099003|11063799006|261028144727099003|261021121427099003|261009223027099003|56012099006|261022105027099003|261102123227099003|261026140227099003|261022075727099003|261026121527099003|22082099003|18002099003|8096899003|6133799003;
-X-Microsoft-Antispam-Message-Info: 7i2u5WuxGwijfyPm4Y/3mFKKf0NdE0Cgcqu6FPPyqtqelb1XZTbYCcjhtDWIO5BLQaEFUHDRaU8mZUD1zachxwpuFYH06decxNKqYEU6yu+45HAdK993LkWCyq6MZVGeivluBm0kMfsESI6XH2Ow72UHY8VTRJhRYuBfoW9im5A/rERAGvERkErfLJA8zeoOR60xeJ3X2n6D8ZFyKSPTtDRjF6XhkjGGtMyrO6+jbtsZ8TG8dXEFqkqiyXA5dIMCAkDS3JGEbyD61oNnQykkmJh+PQlMfxWVhlpXziiRaaDaTgXOcRMqnWlg+99snPs0bBn7TMOimtqcX1xmmwln5qw+wZKWgduVJJbJV4BBOCCYmp2dEmZFE7STisnwwGKBCgZ7w67cgEFUirGPsXXH/INZIqVwrpbFpHyU2RhQJK0kMG1NoBy7++HsrGY+WfjBgiS/rRx/yw0KOmfEpRmRTAgkpI+bjAc8Gem/h6NBHRE4zKrQn6DNI1AcAq1A7ngyML9bJqchrWX1rQALCJaP5mrdbsXh6JG/n4T7bx9TupZvvjeJGpbZJr4xbQluHucCU/s8944cIdITcYA7OSts2psdk5nCKeKmibp272y9CN/+c0hz9c0rvjocEPAOZlsSwXyDnD6kkrdpz/wRsH5xpXIIKCQuaUcPZQyoY0btRT8=
+ ARA:13230040|366016|376014|23010399003|1800799024|10067099003|4143699003|261009220027099003|261021123027099003|11063799006|261028144727099003|261021121427099003|261009223327099003|261009223027099003|56012099006|261022105027099003|261102123227099003|261022113327099003|261009221727099003|261026140227099003|261009221227099003|261026121527099003|22082099003|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: AzT6593rtUB6pYjJzxqp4QSkpNwGw82y3OBwzT7ZEY9bPL0La3jyHChsf0TLpkYHQCgJrNhXpawTrgf1W9jEp3rKr9ycehIkPpFX5Kd5Sm+b7umsZoWDroya4jIt43OVxFtuXcUIcRUYf8YkgNRqImkDkDSuMG5xuFOnu9S5RhD0vhv+E3kXIezHy3clQZpfKb0DsBj8izROm80guFPqOqqmAlyYAZTPVK9bqgXrbucMQtOup/hHTskXrIsVN28tFdTO358MoFRrQYMvCqSzK0+RfacH8C1Gg/n940ryHTImoikaair0ebU4yO6iavHVCL+TrVQtYnnRkerDzZ/0wTPXQRQNlgcD6zTkRMdTShc5XZ7MrvRf9OiVB/5pfZ+QLiSHv7rPR3O2HcstveYFvPJviy0sJsZMf8sjBMKXq19+tjck1KSHd8ZH0T8TUaZq388e6oGHTYtVZVMAAkYdh7gd3zCCX5BF+mUFk147I4q0UinOKT32KQ1WWLZvORZRMyuF+BtnsCMzuwVu5k+mhB4HCHw0A8bPOx1dHm1EDs3cPdn/K5aJeRd0t1tPiD+IYIO4tCCM+N3kzC7u9rqM1R/36hLopteWAM/1VnOTJ8e6TWlO7K6MyRMaDRkeenuutdVms4kFxl7boCsAOSWwDsYbpRFIRC4ucKozYD7XPcc=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS6PR11MB087165.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(4143699003)(261021123027099003)(11063799006)(261028144727099003)(261021121427099003)(261009223027099003)(56012099006)(261022105027099003)(261102123227099003)(261026140227099003)(261022075727099003)(261026121527099003)(22082099003)(18002099003)(8096899003)(6133799003);
+ SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(4143699003)(261009220027099003)(261021123027099003)(11063799006)(261028144727099003)(261021121427099003)(261009223327099003)(261009223027099003)(56012099006)(261022105027099003)(261102123227099003)(261022113327099003)(261009221727099003)(261026140227099003)(261009221227099003)(261026121527099003)(22082099003)(18002099003)(6133799003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Q2lYM1lncUNwZ3ZOVjFNSUZMc2MyQURTWkh5MmpMY1Rnc3BBckc0OW54eWQv?=
- =?utf-8?B?akJoTEdESFJHbHVoRVNlQmRXeHViL0pqdzlKYnpRUDFFcE9ib0N6VksrZEZ2?=
- =?utf-8?B?QndmVHdWMDZJLzY1T1Z3WHBTU09jV3Y5T0RLMXlxMnZsNGpLb0ErenR3Qi8v?=
- =?utf-8?B?b3NLcnhuN1BFZVYyN25EYnJOSEpvUHBaTUh2a0xmVkZKWURCd2hMM0VQUElz?=
- =?utf-8?B?ODI1aFltVTlWZU42Q0lmK3ZTdlVhdFptRFN3amIxZ2dOVHJWa3NjRVdHSXdF?=
- =?utf-8?B?ZWVyS2xqZnZYNURGYThuc1F6b0w1aFMxUW1mQkpVU0syOFpyalN4cTd4dGpp?=
- =?utf-8?B?L21RbkJ3cThjNVF0WktROTM1R1hhN3VGNnNBc3hkS2ZvNjFJVGs5dkV3VmpE?=
- =?utf-8?B?M09KeFE5VGgzenBhU0ZzaVdCbGtOUEV3Nyt4Mjg2dCtlTUNXUEJYL2JxeFdQ?=
- =?utf-8?B?RmZvWkVrcXlaL0FselZCeHEwWWhQcEVXUUhnMnQxQndxY2gvNlJiU2tnbUMw?=
- =?utf-8?B?dnlDL1RWQVFqSElHRUpVUVhTUTdyY0FGcW1wVks2bzdhRXVhYTNNeXN6RXJy?=
- =?utf-8?B?NGhGdzBpMlhBK01EVUtTWWVZdEJ4WVlVR20yQkxFekR2TmNadHNjZ1NXRGtQ?=
- =?utf-8?B?UWZ1dTRENnZ4WGNqb0NpaC9lWkt0Um1GNmxpVnZGa2RuL2RwOFR6cCs4ZUNm?=
- =?utf-8?B?cDZOQXFXTUlCRHYydG82dGlVc0RNQmQzMWs4NEtjckFnd2VsaDlucENXTlYz?=
- =?utf-8?B?K2kxWThZeTluLzl1ODAxb2dtUXl5UDE0N3pqdURCZW9LanFYUjhwMCtvVk02?=
- =?utf-8?B?N2lQelpONjRPM3ZJK045UkIxcEc1aXZQSDlnTjhHM0I1UUp5aFJSVWJVL0Nr?=
- =?utf-8?B?QzNPa1NuSFUweG1mNXpNWVVLU29DQ3BIaytwT2tRVlFUN21SWklTbkhwajgw?=
- =?utf-8?B?b2hIRlpWTWpER3JxT0xqQ3N0UVBoMTZtTW9yRnA3ZXBwRkxsL3l3YjI3WVBX?=
- =?utf-8?B?NGUxUzBPWEkzeFJCemk4akVsa2FVQTRURldLUWpzWGNSNjk2VStoNlBlamFR?=
- =?utf-8?B?c0R4dHd1QStXWk1kSFlvZHR1dVovUXpoOUgyUU9TL3pPZVJFa052TTQyVm80?=
- =?utf-8?B?S1hBbXozSjFHMFQ4dnZ2QmU1RDVmNVpKUk4rdXYvNEVwaEhUbm5YdVhSWWFv?=
- =?utf-8?B?V29NRUpheUYzMFlmTHJEUEYzYVp1blhING1wSFZSMERZNk15aUFHYU4vekZy?=
- =?utf-8?B?bjE3ZlFiNEEvdjNWYURGN3FheXlJVTJrWDQzWFNUU2hmWWpySEtjTkVPcEl1?=
- =?utf-8?B?T2tQMzUzUnk2THFpVDJkSkw5bVh4Y2YyUmRGNkVsOHJCZEkwR201YWFqZzJK?=
- =?utf-8?B?eGZGdlhwT0VtaFhGYkwwNTNiRE9MZDNodCtWYzFUQWJHOGwvb0w2a1FDVVZx?=
- =?utf-8?B?UHhqbFNob2dRRVlyWHVMQlpZSXNMY0dHazd3Z2toSDA4MjQ4bzVJVnArRkRn?=
- =?utf-8?B?anBHamE3c1ZyRXdRT1kyYlY3WUJwTVRaU1FTakN1K05ZU2lCZlUyVTMxNUNh?=
- =?utf-8?B?QUhpR1RNcTl6clhFKzdLS1N4MmVwKzhTOHoyU2pWUkozYk5xcU9ZRXhSOFFW?=
- =?utf-8?B?TFNkTThrbzJFSjRRWTNmVG9XUTZkVWFITmlqdmF4Wi9uRjh2MDN6VTJlTDBw?=
- =?utf-8?B?dDJEb0ROSXpHblpHR09lMHFCL1hZTTkvTERpeG5VRllvc3dxUHFQbUR2QnZI?=
- =?utf-8?B?ZERLb1k2OFEzZHVURmJEbFRpejhJSVZCcXpmVXZaeVQyMnB3aUVqdVhCT3N4?=
- =?utf-8?B?R3VzdUNqcDV0a01XdnQvMHQrZUttRG1mSlBVWndWMmlNZ3NPV3c3YlcyL01K?=
- =?utf-8?B?R28wQ1ZNSW1LWXlVZ2hnMmRSQ0Y0RUxRdzBxbUs0RVpyaDUvd2NGMEs1Rk93?=
- =?utf-8?B?UGZnVGNwTXdxQXNqZDdkeWQ4bVlKc2xoWGFybDdicFJKeURzRGNMN2w5YzVG?=
- =?utf-8?B?Y2JKUFdpTUtib3c2cHdocHdEWHpIc3FrVzNWS3ZMVnFtU0d5NkJzdWVUb2VM?=
- =?utf-8?B?UVpBTThDWDgxazZkcVVLS252YnV2czdxZjlPY09BU1M5VGhObzBCMzNnQmJX?=
- =?utf-8?B?QjljUXAvSlFIdHM2c1ViNXRuZlJXM3hoaWprWTlaSFFFYnlzTXVlTEJpL2JT?=
- =?utf-8?B?bUQ0RjNQdjZyQllyWGlNWDBEYm0wMkZVd3ZsR25TSElDdGVWbGtyUEVtQjJF?=
- =?utf-8?B?YnVYSjRsRno3Y0JYNlZYaHJOUDBxVEpFUkhJeUdKNW5vNjBPTFNYYTRSVnU4?=
- =?utf-8?B?bVRVaVBSeE1xcUkzTHhScHowaGlqK1ZxUHdTR3hHRjNSMmR4bFhzZz09?=
-X-Exchange-RoutingPolicyChecked: Sm1I14rqwKgiuGfCPhw6nu+oetJ4qVoAYgU2QAqIclwSsTXOZfSlxumbBm2SkzuLAvl/wcUzZYcW8xNzsIZCEjP+wHAebqgn0xg4OccLddmEoNG7nDrPONAeyFJ5hZDRVPEHhVF/9Z3pRAt13q1nwmXDliiyvc/6HUEzXd27zPEDb1SrZPGeIjNv4jn3mImpdOAZ9hfbiefLGhQqmRr/X3Tn3N/GCdsG1PajJVB0olPUwSKQB3IOnV0KhZkwnrqj45wG1GVk0iJ4Mq0Mg8IdMqgRjhqCntmnsrj+53TklmCcNUO2YF2Ip0pOKlmFTZcr/AnVf6Sx0LWwKvD3WOmHLg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5319fc14-277d-4ef5-1690-08df3fe0bab1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZWxvczZkY25XTlU0bUZiWnQzTkV6M0x1Z3RkY3lBb2ttSStMcGxuVjBKbTY0?=
+ =?utf-8?B?SWxUeUlpY290eEdFMlZqUW5ia1VoY1NadGpWOCtKTG96MHlpbmtrTi9GaVA2?=
+ =?utf-8?B?YnA4ems1TWQ5RVBqcHFEWUMxMkdaZEJPOEJhc0dyZEVrVlNNQk9LMTN4R0xP?=
+ =?utf-8?B?RUx0Z0Zvc3NPRVRLUTIrV1BXVjJJOWxpelZ6UzFrM3RuVTFkR01Xdm9ta2pi?=
+ =?utf-8?B?SnpFbFhSRldnSTFIUU1vS3hZVFNDRXA1cXMvZGpHbWtTeXlTQ01UaVVuOE1a?=
+ =?utf-8?B?UlA0akJGY0tSbVA2UVphYzA1cUFPRmVvZVYwdlU5RHg4YUltc0dyK3p1Q0pw?=
+ =?utf-8?B?VDdidlNkMVZRbXhJeXV6ZHo3VUhrOEZDNnFGY0czVVVZQ2cyMHBMYmVjMjNK?=
+ =?utf-8?B?bE9VdU8vSTBkQ0syaFp0eEkxczk1blJBNkpFRjJqbzBRdGxqSDBVOUdGR01X?=
+ =?utf-8?B?NGM3Y2Vhbjg4NnZvaTZabW9TUTlYODVYMzNESmhXN1B1SVN2Y0J1TS9nVU1p?=
+ =?utf-8?B?cXRJZ3NRRlRlbU9idGxhcGlmbkQ3UDJwdnFtT2g4d3dPbmMvMnI0TzhDa2Ez?=
+ =?utf-8?B?d01BNTQ4SlduZXVnQUxpWldjZS9EZUp1MVZ3L0VvYjlORFBJMk5icllkZGlV?=
+ =?utf-8?B?NCsxanJYV0pHcTZ4S0lwODZveGtWSzhnbkNkY1R3WHVYWmNJQ29BU3R6amsy?=
+ =?utf-8?B?UkNLbkZ0T3lxM2NvaGpNVEpTOFhabENGMkdETzhDWVc0cFhnWTdFOGxSNVh1?=
+ =?utf-8?B?WXpjcE5RcytFaElUQ3VVSU5MZXlUckk2eTQ0NjBQQkdGSjZPSGVhNmNQUExY?=
+ =?utf-8?B?TWV3K2FXUHNEMFUzZFcvOVA4dGVWQ1lZd0VKZ3ZuMDc0MWtiZUgzSEtNRHJw?=
+ =?utf-8?B?T1NOYXdyWDVndmZHcmpxcTRTTWtYc0xkUXhSYml0VkJPdFpGZEVHcW9SRCtw?=
+ =?utf-8?B?UllnSTZ1Vmg3THNiQlNtRUpZVGlvRW1sQVRGQ3lnamg2S3BNMTZYUTFpQ3BH?=
+ =?utf-8?B?YVVaWjByOEVwUkxlT1I0aUxOUGFKYnVnZHE0U1Q3R3pxZVpxSFJKWkNzNlRH?=
+ =?utf-8?B?T2F2R3dCRjc0OTJtWHRPUkxrZHZ1Sk45VWdyVmtyYkRKbUg3VkpIT2pTYzZX?=
+ =?utf-8?B?azhtVVdlK0V4SDUzQnlaMXZKa3NHMC9mdk4rbWRtcU0xKzRhaDBFYW43TG9Y?=
+ =?utf-8?B?d1IyK0NLaVJYSm50b0NVUEhQdVdxenIwMVU1RnZaRVBDQmhndmswcW8zVmdq?=
+ =?utf-8?B?OE1FL0NjandoeFFqeFhZZmczaHBaTyt0MDVzUG15VU0zclZ3TDdITTdIVGJj?=
+ =?utf-8?B?S0ttYXhTWkhocStIMUUzaEdJOXNIRzFMNi9JZWZCd0ovRCtMTlFYck14ck1M?=
+ =?utf-8?B?Mk9jcjNxeWsrNWVhdTAxQzdpMTBTYTlyZmN5c3loWG42YXMxTXBaSTV2ZGtU?=
+ =?utf-8?B?eWk1TkhnU3d3L1htaUNwMUhmeVJqTVE0dXlaMlZFSDMwN0UyNDZKTWJEQTFk?=
+ =?utf-8?B?UHNoYUQ4dXIycE1WZ3FDVzg5a1QxVHB0S2Mwb1NWK2tKNkMwTjdKMFFIZlg0?=
+ =?utf-8?B?TzVWRmg4QVE3QUREdHNzdGYrOUFnMXM3b1pZVkpSa0JXeWVZVTcxUGxoYmtk?=
+ =?utf-8?B?cmJtRFBlRzREcVIrZ3NUenVWN0dvTTdoUmFkOWNMY1RWbkd1WDZpSFYvWEtS?=
+ =?utf-8?B?OU5nOUxGV0dhZXAxWWg3ZzdmZXYyUE5SbVYrNnpwMit6cGlVRTgzNkkxV2dh?=
+ =?utf-8?B?UzVQbnJTV1J0cnJxS3ZVQ05nVmFWaFVneC9ob2NKVjQrbElWYlh0KzNtVGdN?=
+ =?utf-8?B?Um9RTFAwSTFybG9LV2xWVlZ4MzJlekU5UjlzMlF1bFVYRVpxSm8wR3FEZWFL?=
+ =?utf-8?B?TmtkcmFqd3Y1ODNkY1ArNkhOZk1QN3lPZzBkUHZyQ0ZiSUR5UmVKcHFXZkUx?=
+ =?utf-8?B?NVRKdlRCS2poWVNNNy9FOEVIM09LdlRKVXNJaVRacG9OUDNrbWREaHF0OUMw?=
+ =?utf-8?B?ckJNSk8vM1ROd2dWSUZtYm1tckRuUTVEMzFPYmxwTXZ4TjRoSHdLYmduOFVQ?=
+ =?utf-8?B?dEZHeEs2dzhiekk5d0RoZzVidmdBcTh6UnhOU3VYd05QQjVmM2QrOWZWbjVz?=
+ =?utf-8?B?UVg2MXVLZER6QnlKc1ZkRi9LdVRNRkdUUU45TG9seEg3b09IaDNlZFg5ajcz?=
+ =?utf-8?B?T1V2aHhlRWpqVjRFSk1lbTgrbnI0UEZOeGl4S3hZM3ltWlF2b3JsdWx4ZjNH?=
+ =?utf-8?B?TTFrcXg1Zzc3aVdlVnJlWWlkb0VKWmdUMDV0bWkwc09tMFBaOG12aWY3TFow?=
+ =?utf-8?B?VmJqTU9Zb2NLcnFRaVJrQmdGY2JINE4rNUU2TUlYWGNJdllxWmplZz09?=
+X-Exchange-RoutingPolicyChecked: eqasWoCdHSfzXzHVTO1d8gTi9Obzm+KwMGwpezQrKpQOf+LpRFKtEv/70xg4uEudaIQMaaJB4rDc/o/7pWqXlVlPPKFJW0yHm3POJZuhLsinUsSUgAULQ2Scof2E5MXn+14umfsG4mkirDMf5YB21Eb2pUtbNOJ7PS1iQa7JLRCIq4aoJjLvtbu12x1o9T9YFjem0xrcnNc5rjotXIBMcTzHyFZqp1uIPCkysu98EukHDATTkNHbaqNpRxCC3P+/E42SiRptKXpkmQIlcsFdgCsLrrpsHkD1uxVAkwoXmc2MVqsxYQzuBbKVCi0vWkUkdeWFEa5s0GFi7StDDaznpw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: b0c9315d-e0c7-4239-cd70-08df3fe1181e
 X-MS-Exchange-CrossTenant-AuthSource: DS6PR11MB087165.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 10:44:15.0719 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2026 10:46:51.7755 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h8fV7ebwHvnPuLQ8to3M70/ePKvi9Yb2hodd1wr450nwSn0n0zp93GyxCkAGuO/QhFtwjIRuHz1KY/eqXTaulA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: x8+N1ntDj/k/JWtjfLQ+6s0OWQVZegeHfmug0x3zhJ1NaVEo0NWGZMhecPde1Zfl185lveTT/+JqwlgcVY5bgg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7747
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -166,976 +169,459 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	HTML_MESSAGE,INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---------------jnVHFaMDMis1crz7emcHx69M
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-
 Hi Ravi,
 
-On 10-11-2026 21:34, Ravi Kishore Koppuravuri wrote:
-> Add netlink request/response handling for DRM_RAS_CMD_GET_ERROR_COUNTER.
+On 10-11-2026 21:35, Ravi Kishore Koppuravuri wrote:
+> Add MMIO based Core Compute Uncorrectable Error injection to verify
+> the Xe driver error handling and recovery flows with the help of
+> DRM Netlink API suite
 >
-> Signed-off-by: Ravi Kishore Koppuravuri<ravi.kishore.koppuravuri@intel.com>
+> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
+> Acked-by: Riana Tauro <riana.tauro@intel.com>
 > ---
-> v7:Added detailed debug messages to aid diagnosis of failure conditions
->     Introduced an overall timeout for Netlink response completion
->     Consolidated redundant error-handling paths using a common goto label
-> v6:Removed normalize_nl_error() for standard errno in ras_error_cb() and
->     send_and_recv_nl_msg() (Soham)
-> v5:Renamed library function names prefixed with igt_drm_ras_nl_*
->     (Riana and Soham)
->     Normalized libnl error codes to standard errnos (Soham)
->     Added error messages for error handling functions (Riana)
->     Changed the error-id max value from UINT32_MAX to DRM_XE_RAS_ERR_COMP_MAX (Riana)
-> v4:Added support to poll for incoming netlink messages with 10 seconds timeout
->     Renamed the library functions with prefix "igt_drm_netlink_*" and
->     other cosmetic changes (Nikula Jani & Kamil)
-> v2:Handled ACK/FINISH/ERR nl responses using separate callbacks
->     Added a check whether error_value updated by valid callback or not
->     Added a check whether response required for the command or not
+> v7:
+>    - Added support to ensure that tests pass on all available compute nodes
+>    - Added a one-second delay between semaphore acquisition attempts
+> v6:
+>    - Updated aquire steering semaphore logic (Soham & Riana)
+>    - Removed enum to string mappings for test names (Riana)
+>    - Updated metadata in the file (Riana)
+> v5:
+>    - Removed xe_err_injection.h and moved its contents into the .c file (Riana)
+>    - Prefixed all register address and bit value names with "XE_" (Riana)
+>    - Updated AER recovery dmesg strings to use enum-indexed arrays (Soham)
+>    - Added error handling logic for function calls
+>    - Changed test name comparisons from strings to enums (Riana)
+>    - Added UC test and post-recovery workload tests as dynamic subtests (Riana)
+> v4:
+>    - Added Steer Semaphore for disabling and enabling multicast
+>      operation(soham)
+>    - Increased device recovery check timeout from 5secs to 10secs
+>    - Used updated library names with igt_drm_netlink_* prefix (Nikula
+>      Jani & Kamil)
 > ---
->   lib/igt_drm_ras_nl.c | 352 ++++++++++++++++++++++++++++++++++++++++++-
->   lib/igt_drm_ras_nl.h |  34 +++++
->   2 files changed, 384 insertions(+), 2 deletions(-)
+>   tests/intel/xe_err_injection.c | 389 +++++++++++++++++++++++++++++++++
+>   tests/meson.build              |   1 +
+>   2 files changed, 390 insertions(+)
+>   create mode 100644 tests/intel/xe_err_injection.c
 >
-> diff --git a/lib/igt_drm_ras_nl.c b/lib/igt_drm_ras_nl.c
-> index 91396452d..10a433525 100644
-> --- a/lib/igt_drm_ras_nl.c
-> +++ b/lib/igt_drm_ras_nl.c
-> @@ -4,14 +4,321 @@
->    */
->   
->   #include <errno.h>
-> +#include <poll.h>
->   #include <stdint.h>
->   
-> +#include <netlink/errno.h>
->   #include <netlink/genl/ctrl.h>
->   #include <netlink/genl/genl.h>
->   
->   #include "igt_core.h"
->   #include "igt_drm_ras_nl.h"
->   
-> +#define DRM_RAS_NL_OVERALL_TIMEOUT_MS 60000
-> +#define DRM_RAS_NL_MSG_TIMEOUT_MS 10000
+> diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
+> new file mode 100644
+> index 000000000..67cc81a89
+> --- /dev/null
+> +++ b/tests/intel/xe_err_injection.c
+> @@ -0,0 +1,389 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright © 2026 Intel Corporation
+> + */
 > +
-> +/* Normalize netlink error codes to standard errnos */
-> +static int normalize_nl_error(int ret)
+> +/**
+> + * TEST: Test Xe RAS (Reliability, Availability, Serviceability) MMIO based Error Injection
+> + * Category: Core
+> + * Mega feature: RAS
+> + * Sub-category: RAS tests
+> + * Functionality: Error Injection
+> + * Test category: Functional tests
+> + */
+> +
+> +#include <fcntl.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <time.h>
+> +#include <unistd.h>
+> +
+> +#include "igt.h"
+> +#include "lib/igt_drm_ras_nl.h"
+> +#include "lib/intel_reg.h"
+> +#include "lib/intel_compute.h"
+> +
+> +#include "xe_drm.h"
+> +#include "xe/xe_ioctl.h"
+> +#include "xe/xe_mmio.h"
+> +#include "xe/xe_query.h"
+> +
+> +/* Steering Control Register (MC_PKT_CTRL) */
+> +#define XE_MC_PKT_CTRL_MGSR_3D_ADDRESS 0x00FD4
+> +#define XE_MC_PKT_CTRL_MGSR_3D_VALUE 0x80000000
+> +
+> +/* Core Compute Uncorrectable error injection */
+> +#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS 0xF310
+> +#define XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE 0x1
+> +
+> +#define POST_RECOVERY_WL 1
+> +#define POST_ARMING_INJECTION_WL 0
+> +
+> +/* STEER_SEMAPHORE_MGSR_3D */
+> +#define XE_STEER_SEMAPHORE_MGSR_3D 0x00FD0
+> +#define XE_STEER_SEMAPHORE_MGSR_3D_VALUE 0x1
+> +
+> +/* Node types for error counters*/
+> +#define NODE_ID_UNCORRECTABLE_ERROR 1
+> +
+> +/* Error types for error counter */
+> +#define ERROR_ID_CORE_COMPUTE 1
+> +
+> +enum {
+> +	SUCCESS = 1,
+> +	FAILED,
+> +	TIMEOUT,
+> +};
+> +
+> +static bool run_xe_compute_on_all_engines(int fd, bool state)
 > +{
-> +	if (ret >= 0)
-> +		return ret;
+> +	struct drm_xe_engine_class_instance *hwe;
+> +	bool found_engine = false;
+> +	bool all_succeeded = true;
 > +
-> +	switch (-ret) {
-> +	case NLE_INVAL:
-> +		return -EINVAL;
-> +	case NLE_NOMEM:
-> +		return -ENOMEM;
-> +	case NLE_NOATTR:
-> +	case NLE_MISSING_ATTR:
-> +		return -ENODATA;
-> +	case NLE_OPNOTSUPP:
-> +		return -EOPNOTSUPP;
-> +	case NLE_EXIST:
-> +		return -EEXIST;
-> +	case NLE_NOADDR:
-> +		return -EADDRNOTAVAIL;
-> +	case NLE_PERM:
-> +		return -EPERM;
-> +	case NLE_NOACCESS:
-> +		return -EACCES;
-> +	case NLE_NODEV:
-> +		return -ENODEV;
-> +	case NLE_BUSY:
-> +		return -EBUSY;
-> +	case NLE_AGAIN:
-> +		return -EAGAIN;
-> +	default:
-> +		igt_debug("Unhandled netlink error code: %d\n", -ret);
-> +		return -EIO;
-> +	}
-> +}
+> +	igt_info("Running compute-square on all engines post %s\n",
+> +		 state == POST_ARMING_INJECTION_WL ? "injection" : "recovery");
 > +
-> +static int ras_command_cb(struct nl_msg *msg, void *arg)
-> +{
-> +	struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
-> +	struct igt_drm_ras_nl_context *ctx = arg;
-> +	struct genlmsghdr *gnlh;
-> +	struct nlmsghdr *nlh;
-> +	int ret;
-> +
-> +	nlh = nlmsg_hdr(msg);
-> +	gnlh = nlmsg_data(nlh);
-> +
-> +	ret = genlmsg_parse(nlh, 0, attrs,
-> +			    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
-> +	if (ret < 0)
-> +		return NL_SKIP;
-> +
-> +	switch (gnlh->cmd) {
-> +	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
-> +		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE])
-> +			return NL_SKIP;
-> +
-> +		ctx->error_value = nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE]);
-> +		break;
-> +	}
-> +	default:
-> +		return NL_SKIP;
-> +	}
-> +
-> +	ctx->reply_received = true;
-> +	if (ctx->ack_received)
-> +		ctx->cmd_done = true;
-> +
-> +	return NL_OK;
-> +}
-> +
-> +static int ras_error_cb(struct sockaddr_nl *nla, struct nlmsgerr *err, void *arg)
-> +{
-> +	struct igt_drm_ras_nl_context *ctx = arg;
-> +
-> +	/* err->error is a raw kernel errno, not a libnl NLE_* code */
-> +	ctx->last_nl_error = err->error;
-> +	ctx->cmd_done = true;
-> +
-> +	return NL_STOP;
-> +}
-> +
-> +static int ras_ack_cb(struct nl_msg *msg, void *arg)
-> +{
-> +	struct igt_drm_ras_nl_context *ctx = arg;
-> +
-> +	ctx->ack_received = true;
-> +	if (!ctx->response_required || ctx->reply_received)
-> +		ctx->cmd_done = true;
-> +
-> +	return NL_STOP;
-> +}
-> +
-> +static int ras_finish_cb(struct nl_msg *msg, void *arg)
-> +{
-> +	struct igt_drm_ras_nl_context *ctx = arg;
-> +
-> +	ctx->cmd_done = true;
-> +
-> +	return NL_STOP;
-> +}
-> +
-> +static int register_callbacks(struct nl_cb *cb, struct igt_drm_ras_nl_context *ctx)
-> +{
-> +	int ret;
-> +
-> +	ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, ctx);
-> +	if (ret < 0) {
-> +		igt_warn("Failed to set NL_CB_VALID callback (ret=%d)\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = nl_cb_set(cb, NL_CB_ACK, NL_CB_CUSTOM, ras_ack_cb, ctx);
-> +	if (ret < 0) {
-> +		igt_warn("Failed to set NL_CB_ACK callback (ret=%d)\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = nl_cb_set(cb, NL_CB_FINISH, NL_CB_CUSTOM, ras_finish_cb, ctx);
-> +	if (ret < 0) {
-> +		igt_warn("Failed to set NL_CB_FINISH callback (ret=%d)\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	ret = nl_cb_err(cb, NL_CB_CUSTOM, ras_error_cb, ctx);
-> +	if (ret < 0) {
-> +		igt_warn("Failed to set NL_CB_ERR callback (ret=%d)\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int send_and_recv_nl_msg(struct igt_drm_ras_nl_context *ctx,
-> +				struct nl_cb *cb,
-> +				struct nl_msg *msg)
-> +{
-> +	struct pollfd pfd = {
-> +		.fd = nl_socket_get_fd(ctx->sock),
-> +		.events = POLLIN,
-> +	};
-> +	const uint64_t timeout_ns = (uint64_t)DRM_RAS_NL_OVERALL_TIMEOUT_MS * 1000000;
-> +	const uint64_t msg_timeout_ns =
-> +		(uint64_t)DRM_RAS_NL_MSG_TIMEOUT_MS * 1000000;
-> +	struct timespec start, message_start;
-> +	int ret, err_ret;
-> +
-> +	ret = nl_send_auto(ctx->sock, msg);
-> +	nlmsg_free(msg);
-> +	if (ret < 0) {
-> +		err_ret = normalize_nl_error(ret);
-> +		goto process_error;
-> +	}
-> +
-> +	ret = igt_gettime(&start);
-> +	if (ret < 0) {
-> +		err_ret = -errno;
-> +		goto process_error;
-> +	}
-> +
-> +	message_start = start;
-> +
-> +	/* NL Reply and ACK arrive as separate responses */
-> +	while (!ctx->cmd_done) {
-> +		uint64_t msg_elapsed_ns = igt_nsec_elapsed(&message_start);
-> +		uint64_t elapsed_ns = igt_nsec_elapsed(&start);
-> +		uint64_t remaining_ns;
-> +		int timeout_ms;
-> +
-> +		if (elapsed_ns >= timeout_ns || msg_elapsed_ns >= msg_timeout_ns) {
-> +			err_ret = -ETIMEDOUT;
-> +			goto process_error;
-> +		}
-> +
-> +		remaining_ns = timeout_ns - elapsed_ns;
-> +		if (msg_timeout_ns - msg_elapsed_ns < remaining_ns)
-> +			remaining_ns = msg_timeout_ns - msg_elapsed_ns;
-> +		timeout_ms = (remaining_ns + 999999) / 1000000;
-> +		ret = poll(&pfd, 1, timeout_ms);
-> +		if (ret < 0 && errno == EINTR)
+> +	xe_for_each_engine(fd, hwe) {
+> +		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
 > +			continue;
 > +
-> +		/* poll()/errno results are already standard errnos, not libnl codes */
-> +		if (ret == 0) {
-> +			err_ret = -ETIMEDOUT;
-> +			goto process_error;
-> +		}
-> +
-> +		if (ret < 0) {
-> +			err_ret = -errno;
-> +			goto process_error;
-> +		}
-> +
-> +		if (!(pfd.revents & POLLIN)) {
-> +			igt_debug("Received unexpected poll revents: %d\n", pfd.revents);
-> +			err_ret = -EIO;
-> +			goto process_error;
-> +		}
-> +
-> +		ret = nl_recvmsgs(ctx->sock, cb);
-> +		if (ret < 0) {
-> +			err_ret = normalize_nl_error(ret);
-> +			goto process_error;
-> +		}
-> +
-> +		ret = igt_gettime(&message_start);
-> +		if (ret < 0) {
-> +			err_ret = -errno;
-> +			goto process_error;
-> +		}
+> +		found_engine = true;
+> +		if (!xe_run_intel_compute_kernel_on_engine(fd, hwe, NULL,
+> +							   EXECENV_PREF_SYSTEM))
+> +			all_succeeded = false;
 > +	}
-> +	nl_cb_put(cb);
-> +	return 0;
-This is not required. Just initialize err_ret to 0.
-Reviewed-by: Soham Purkait <soham.purkait@intel.com>
-> +process_error:
-> +	nl_cb_put(cb);
-> +	return err_ret;
+> +
+> +	return found_engine && all_succeeded;
 > +}
 > +
-> +static int send_command(struct igt_drm_ras_nl_context *ctx, uint8_t cmd)
+> +static void modify_reg_bit(struct xe_mmio *mmio, uint32_t reg_addr,
+> +			   uint32_t bit_mask, bool set)
 > +{
-> +	struct nl_msg *msg;
-> +	struct nl_cb *cb;
-> +	void *msg_head;
-> +	int ret;
+> +	uint32_t regval;
 > +
-> +	msg = nlmsg_alloc();
-> +	if (!msg)
-> +		return -ENOMEM;
+> +	regval = xe_mmio_read32(mmio, reg_addr);
+> +	if (set)
+> +		regval |= bit_mask;
+> +	else
+> +		regval &= ~bit_mask;
 > +
-> +	ctx->last_nl_error = 0;
-> +	ctx->cmd_done = false;
-> +	ctx->reply_received = false;
-> +	ctx->ack_received = false;
-> +	ctx->response_required = false;
+> +	xe_mmio_write32(mmio, reg_addr, regval);
+> +}
 > +
-> +	msg_head = genlmsg_put(msg,
-> +			       NL_AUTO_PORT,
-> +			       NL_AUTO_SEQ,
-> +			       ctx->family_id,
-> +			       0,
-> +			       NLM_F_REQUEST | NLM_F_ACK,
-> +			       cmd,
-> +			       DRM_RAS_FAMILY_VERSION);
-> +	if (!msg_head) {
-> +		nlmsg_free(msg);
-> +		return -ENOMEM;
+> +static bool acquire_steering_semaphore(struct xe_mmio *mmio)
+> +{
+> +	uint32_t regval;
+> +	time_t start_time = time(NULL);
+> +	time_t timeout = 10; /* 10 secs */
+> +
+> +	while (time(NULL) - start_time < timeout) {
+> +		regval = xe_mmio_read32(mmio, XE_STEER_SEMAPHORE_MGSR_3D);
+> +		if (regval == XE_STEER_SEMAPHORE_MGSR_3D_VALUE)
+> +			return true;
+> +		sleep(1);
 > +	}
 > +
-> +	switch (cmd) {
-> +	case DRM_RAS_CMD_GET_ERROR_COUNTER:
-> +		ctx->response_required = true;
-> +		ret = nla_put_u32(msg,
-> +				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
-> +				  ctx->node_id);
-> +		if (ret < 0) {
-> +			nlmsg_free(msg);
-> +			return normalize_nl_error(ret);
+> +	return false;
+> +}
+> +
+> +static void release_steering_semaphore(struct xe_mmio *mmio)
+> +{
+> +	xe_mmio_write32(mmio, XE_STEER_SEMAPHORE_MGSR_3D,
+> +			XE_STEER_SEMAPHORE_MGSR_3D_VALUE);
+> +}
+> +
+> +static int acquire_forcewake(int fd)
+> +{
+> +	int fw_handle;
+> +
+> +	fw_handle = igt_debugfs_open(fd, "forcewake_all", O_RDONLY);
+> +	igt_assert_lte(0, fw_handle);
+> +	return fw_handle;
+> +}
+> +
+> +static void release_forcewake(int fw_handle)
+> +{
+> +	if (fw_handle >= 0)
+> +		close(fw_handle);
+> +}
+> +
+> +static int get_counter(uint32_t node_id, uint32_t error_id)
+> +{
+> +	struct igt_drm_ras_nl_context ctx;
+> +	uint32_t error_value = UINT32_MAX;
+> +	int ret;
+> +
+> +	ret = igt_drm_ras_nl_init(&ctx);
+> +	if (ret < 0) {
+> +		igt_warn("Failed to initialize socket for get_error command (ret=%d)\n", ret);
+> +		return ret;
+> +	}
+> +
+> +	ctx.node_id = node_id;
+> +	ctx.error_id = error_id;
+> +
+> +	ret = igt_drm_ras_nl_get_error_counter(&ctx);
+> +	if (ret < 0) {
+> +		igt_warn("get_error_counter failed from error command path (ret=%d)\n", ret);
+> +		igt_drm_ras_nl_cleanup(&ctx);
+> +		return ret;
+> +	} else {
+> +		error_value = ctx.error_value;
+> +		igt_info("get_error_counter: node_id=%u error_id=%u value=%u\n",
+> +			 ctx.node_id, ctx.error_id, ctx.error_value);
+> +	}
+> +
+> +	igt_drm_ras_nl_cleanup(&ctx);
+> +
+> +	return error_value;
+> +}
+> +
+> +static int check_dmesg(const char *marker, int elapsed_secs)
+> +{
+> +	static const char * const dmesg_status[] = {
+> +		[SUCCESS] = "AER: device recovery successful",
+> +		[FAILED] = "AER: device recovery failed",
+> +	};
+> +	char *buff = NULL;
+> +	size_t buff_size = 0;
+> +	size_t i;
+> +	ssize_t line_len;
+> +	FILE *fp;
+> +	bool marker_seen = false;
+> +
+> +	fp = popen("dmesg", "r");
+> +	if (!fp) {
+> +		igt_warn("Unable to open dmesg to check recovery status\n");
+> +		return -1;
+> +	}
+> +
+> +	while ((line_len = getline(&buff, &buff_size, fp)) != -1) {
+> +		if (!marker_seen) {
+> +			if (strstr(buff, marker))
+> +				marker_seen = true;
+> +			continue;
 > +		}
 > +
-> +		ret = nla_put_u32(msg,
-> +				  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
-> +				  ctx->error_id);
-> +		if (ret < 0) {
-> +			nlmsg_free(msg);
-> +			return normalize_nl_error(ret);
+> +		for (i = SUCCESS; i < ARRAY_SIZE(dmesg_status); i++) {
+> +			if (!dmesg_status[i] || !strstr(buff, dmesg_status[i]))
+> +				continue;
+> +
+> +			igt_debug("Found \"%s\" in dmesg after %d secs\n",
+> +				  dmesg_status[i], elapsed_secs);
+> +			free(buff);
+> +			pclose(fp);
+> +			return i;
 > +		}
+> +	}
+> +
+> +	free(buff);
+> +	pclose(fp);
+> +	return TIMEOUT;
+> +}
+> +
+> +/*
+> + * TODO: AER device recovery logic is pending to be implemented using
+> + * "uevents emitted by the aer driver" instead of relying on the dmesg
+> + * logs.
+> + */
+> +
+> +static int check_err_recovery(void)
+> +{
+> +	time_t start_time = time(NULL);
+> +	time_t timeout = 10 * 60; /* 10 mins */
+> +	int time_interval = 30; /* 30 secs */
+> +	time_t elapsed_time;
+> +	char marker[128];
+> +	int status;
+> +
+> +	snprintf(marker, sizeof(marker),
+> +		 "IGT xe_err_injection recovery marker pid=%d start=%lld",
+> +		 getpid(), (long long)start_time);
+> +	igt_kmsg(KMSG_INFO "%s\n", marker);
+> +
+> +	while (1) {
+> +		elapsed_time = time(NULL) - start_time;
+> +		status = check_dmesg(marker, elapsed_time);
+> +		if (status < 0) {
+> +			igt_warn("Failed to query dmesg for recovery status\n");
+> +			return FAILED;
+> +		}
+> +		if (status == SUCCESS || status == FAILED)
+> +			return status;
+> +
+> +		if (elapsed_time >= timeout) {
+> +			igt_warn("Timed out while waiting for error recovery\n");
+> +			return TIMEOUT;
+> +		}
+> +
+> +		sleep(time_interval);
+> +	}
+> +}
+> +
+> +static void print_aer_recovery_status(void)
+> +{
+> +	int recovery_ret;
+> +
+> +	recovery_ret = check_err_recovery();
+> +	igt_assert_f(recovery_ret != TIMEOUT,
+> +		     "AER error recovery timed out\n");
+> +	igt_assert_f(recovery_ret != FAILED,
+> +		     "AER device recovery failed\n");
+> +	if (recovery_ret == SUCCESS)
+> +		igt_info("AER device recovery successful\n");
+> +}
+> +
+> +static bool uncorr_error_recovered;
+> +
+> +/**
+> + * SUBTEST: inject_core_compute_uncorr_error
+> + * Description: Inject a Core Compute Uncorrectable error and verify
+> + *		AER-based device recovery.
+> + *		The dynamic subtests are:
+> + *		inject            - Injects Core Compute Uncorrectable error
+> + *				    and verifies device recovery.
+> + *		post-recovery-wl  - Runs a compute workload on all compute
+> + *				    engines after recovery to confirm the GPU
+> + *				    remains functional.
+> + * Functionality: error injection
+> + */
+> +static void test_inject_core_compute_uncorr_error(struct xe_mmio *mmio, int fd)
+> +{
+> +	int counter_before;
+> +	int counter_after;
+> +	int fw_handle;
+> +	bool ret;
+> +
+> +	/** TODO
+> +	 *  Fetching node_id and error_id dynamically is pending to implement.
+> +	 *  For now, using
+> +	 *  node_id=1 (uncorrectable_errors) and
+> +	 *  error_id=1 (core_compute)
+> +	 */
+> +	uint32_t node_id = NODE_ID_UNCORRECTABLE_ERROR;
+> +	uint32_t error_id = ERROR_ID_CORE_COMPUTE;
+> +
+> +	fw_handle = acquire_forcewake(fd);
+> +
+> +	counter_before = get_counter(node_id, error_id);
+> +	if (counter_before < 0) {
+> +		release_forcewake(fw_handle);
+> +		igt_assert_f(false, "Failed to read error counter before injection\n");
+> +	}
+> +
+> +	if (!acquire_steering_semaphore(mmio)) {
+> +		release_forcewake(fw_handle);
+> +		igt_assert_f(false, "Timed out acquiring steering semaphore\n");
+> +	}
+> +
+> +	/* Arm the injection sequence. */
+> +	xe_mmio_write32(mmio, XE_MC_PKT_CTRL_MGSR_3D_ADDRESS, 0x0);
+> +	modify_reg_bit(mmio,
+> +		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_ADDRESS,
+> +		       XE_WKR_FABRIC_ERR_INJ_GAMWALK_3D_VALUE,
+> +		       true);
+> +	modify_reg_bit(mmio,
+> +		       XE_MC_PKT_CTRL_MGSR_3D_ADDRESS,
+> +		       XE_MC_PKT_CTRL_MGSR_3D_VALUE,
+> +		       true);
+> +	release_steering_semaphore(mmio);
+> +	igt_debug("Injected Core Compute Uncorrectable error\n");
+> +
+> +	/* Run traffic to trigger the injected error */
+> +	ret = run_xe_compute_on_all_engines(fd, POST_ARMING_INJECTION_WL);
+> +	if (!ret) {
+> +		release_forcewake(fw_handle);
+> +		igt_assert_f(false, "Failed to run Xe compute on all engines post injection\n");
+> +	}
+> +
+> +	release_forcewake(fw_handle);
+> +	print_aer_recovery_status();
+> +
+> +	counter_after = get_counter(node_id, error_id);
+> +	igt_assert_f(counter_after >= 0, "Failed to read error counter after injection\n");
+> +
+> +	igt_assert_f(counter_before != UINT32_MAX && counter_after != UINT32_MAX,
+> +		     "Failed to fetch valid error counters: before=%u after=%u\n",
+> +		     counter_before, counter_after);
+> +
+> +	igt_info("error counter: before injection=%u after injection=%u\n",
+> +		 counter_before, counter_after);
+> +
+> +	igt_assert_f(counter_after > counter_before,
+> +		     "Core Compute Uncorrectable error injection failed: "
+> +		     "before=%u after=%u\n", counter_before, counter_after);
+> +	uncorr_error_recovered = true;
+> +}
+> +
+> +enum xe_err_injection_type {
+> +	XE_CORE_COMPUTE_UNCORR_ERR_INJ,
+> +	XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL,
+> +};
+> +
+> +static void inject_error(enum xe_err_injection_type injection, struct xe_mmio *mmio, int fd)
+> +{
+> +	switch (injection) {
+> +	case XE_CORE_COMPUTE_UNCORR_ERR_INJ:
+> +		test_inject_core_compute_uncorr_error(mmio, fd);
+> +		break;
+> +	case XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL:
+> +		run_xe_compute_on_all_engines(fd, POST_RECOVERY_WL);
 > +		break;
 > +	default:
-> +		nlmsg_free(msg);
-> +		return -EOPNOTSUPP;
+> +		igt_info("Invalid Error Injection specified\n");
 > +	}
-> +
-> +	cb = nl_cb_alloc(NL_CB_DEFAULT);
-> +	if (!cb) {
-> +		nlmsg_free(msg);
-> +		return -ENOMEM;
-> +	}
-> +
-> +	ret = register_callbacks(cb, ctx);
-> +	if (ret < 0) {
-> +		nl_cb_put(cb);
-> +		nlmsg_free(msg);
-> +		return normalize_nl_error(ret);
-> +	}
-> +
-> +	return send_and_recv_nl_msg(ctx, cb, msg);
 > +}
 > +
-> +static void reset_drm_ras_nl_context(struct igt_drm_ras_nl_context *ctx)
+> +int igt_main()
 > +{
-> +	ctx->sock = NULL;
-> +	ctx->node_id = UINT32_MAX;
-> +	ctx->error_id = DRM_XE_RAS_ERR_COMP_MAX;
-> +	ctx->error_value = 0;
-> +	ctx->last_nl_error = 0;
-> +	ctx->cmd_done = false;
-> +	ctx->reply_received = false;
-> +	ctx->ack_received = false;
-> +	ctx->response_required = false;
-> +	ctx->family_id = -1;
+> +	int fd;
+> +	struct xe_mmio mmio;
+> +
+> +	igt_fixture() {
+> +		fd = drm_open_driver(DRIVER_XE);
+> +		igt_require_f(igt_debugfs_exists(fd, "forcewake_all", O_RDONLY),
+> +			      "forcewake_all is not available in debugfs\n");
+> +		xe_mmio_access_init(fd, &mmio);
+> +		igt_require_f(xe_mmio_is_initialized(&mmio),
+> +			      "Failed to initialize Xe MMIO access\n");
+> +	}
+> +
+> +	igt_describe("Inject core compute uncorrectable error and run post-recovery workload.");
+> +	igt_subtest_with_dynamic("inject_core_compute_uncorr_error") {
+> +		igt_dynamic("inject")
+> +			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ, &mmio, fd);
+> +
+> +		igt_dynamic("post-recovery-wl") {
+> +			igt_require_f(uncorr_error_recovered,
+> +				      "Run the \"inject\" dynamic subtest first\n");
+> +			inject_error(XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL, &mmio, fd);
+> +		}
+> +	}
+> +
+> +	igt_fixture() {
+> +		xe_mmio_access_fini(&mmio);
+> +		drm_close_driver(fd);
+> +	}
 > +}
-> +
->   void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx)
->   {
->   	if (!ctx || !ctx->sock)
-> @@ -19,14 +326,19 @@ void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx)
->   
->   	nl_close(ctx->sock);
->   	nl_socket_free(ctx->sock);
-> -	ctx->sock = NULL;
-> -	ctx->family_id = -1;
-> +
-> +	reset_drm_ras_nl_context(ctx);
->   
->   	igt_debug("Cleaned up netlink socket.\n");
->   }
->   
->   int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx)
->   {
-> +	if (!ctx)
-> +		return -EINVAL;
-> +
-> +	reset_drm_ras_nl_context(ctx);
-> +
->   	ctx->sock = nl_socket_alloc();
->   	if (!ctx->sock)
->   		return -ENOMEM;
-> @@ -49,3 +361,39 @@ int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx)
->   		  DRM_RAS_FAMILY_NAME, ctx->family_id);
->   	return 0;
->   }
-> +
-> +int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx)
-> +{
-> +	int ret;
-> +
-> +	if (!ctx || !ctx->sock || ctx->family_id < 0) {
-> +		igt_warn("Invalid DRM RAS netlink context\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (ctx->node_id == UINT32_MAX ||
-> +	    ctx->error_id == DRM_XE_RAS_ERR_COMP_MAX ||
-> +	    ctx->error_id == 0) {
-> +		igt_warn("Invalid node_id (%u) or error_id (%u) provided\n",
-> +			 ctx->node_id, ctx->error_id);
-> +		return -EINVAL;
-> +	}
-> +
-> +	ctx->error_value = UINT32_MAX;
-> +
-> +	ret = send_command(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (ctx->error_value == UINT32_MAX) {
-> +		igt_warn("No valid error counter reply: node_id=%u error_id=%u kernel_error=%d\n",
-> +			 ctx->node_id, ctx->error_id, ctx->last_nl_error);
-> +
-> +		return ctx->last_nl_error ? ctx->last_nl_error : -ENODATA;
-> +	}
-> +
-> +	igt_debug("Retrieved error counter: node_id=%u error_id=%u value=%u\n",
-> +		  ctx->node_id, ctx->error_id, ctx->error_value);
-> +
-> +	return 0;
-> +}
-> diff --git a/lib/igt_drm_ras_nl.h b/lib/igt_drm_ras_nl.h
-> index 011f3bc05..f51784524 100644
-> --- a/lib/igt_drm_ras_nl.h
-> +++ b/lib/igt_drm_ras_nl.h
-> @@ -7,14 +7,48 @@
->   #define IGT_DRM_RAS_NL_H
->   
->   #include <drm-uapi/drm_ras.h>
-> +#include <drm-uapi/xe_drm.h>
->   
-> +/**
-> + * struct igt_drm_ras_nl_context - DRM RAS generic netlink context
-> + *
-> + * Holds the state for a DRM RAS generic netlink request/response exchange.
-> + */
->   struct igt_drm_ras_nl_context {
-> +	/** @sock: Netlink socket used for the exchange */
->   	struct nl_sock *sock;
-> +
-> +	/** @node_id: DRM RAS node ID to query the error counters */
-> +	uint32_t node_id;
-> +
-> +	/** @error_id: RAS error ID to query the error counter */
-> +	uint32_t error_id;
-> +
-> +	/** @error_value: Error counter value returned by the kernel */
-> +	uint32_t error_value;
-> +
-> +	/** @last_nl_error: Last netlink error reported by the kernel */
-> +	int last_nl_error;
-> +
-> +	/** @cmd_done: Set when the command exchange has completed */
-> +	bool cmd_done;
-> +
-> +	/** @reply_received: Set when the command reply has been received */
-> +	bool reply_received;
-> +
-> +	/** @ack_received: Set when the command ACK has been received */
-> +	bool ack_received;
-> +
-> +	/** @response_required: Set when a reply is expected before @cmd_done */
-> +	bool response_required;
-> +
-> +	/** @family_id: Generic netlink family ID */
->   	int family_id;
->   };
->   
->   void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
->   int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
-> +int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx);
->   
->   #endif /* IGT_DRM_RAS_NL_H */
->   
---------------jnVHFaMDMis1crz7emcHx69M
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 519a9e727..c8a4c9a6a 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -294,6 +294,7 @@ intel_xe_progs = [
+>   	'xe_debugfs',
+>   	'xe_dma_buf_sync',
+>   	'xe_drm_fdinfo',
+> +	'xe_err_injection',
+>   	'xe_eu_stall',
+>   	'xe_evict',
+>   	'xe_evict_ccs',
+LGTM
+Reviewed-by: Soham Purkait <soham.purkait@intel.com>
 
-<!DOCTYPE html><html><head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  </head>
-  <body>
-    <p>Hi Ravi,</p>
-    <div class="moz-cite-prefix">On 10-11-2026 21:34, Ravi Kishore
-      Koppuravuri wrote:<br>
-    </div>
-    <blockquote type="cite" cite="mid:20261110160504.1315160-5-ravi.kishore.koppuravuri@intel.com">
-      <pre wrap="" class="moz-quote-pre">Add netlink request/response handling for DRM_RAS_CMD_GET_ERROR_COUNTER.
-
-Signed-off-by: Ravi Kishore Koppuravuri <a class="moz-txt-link-rfc2396E" href="mailto:ravi.kishore.koppuravuri@intel.com">&lt;ravi.kishore.koppuravuri@intel.com&gt;</a>
----
-v7:Added detailed debug messages to aid diagnosis of failure conditions
-   Introduced an overall timeout for Netlink response completion
-   Consolidated redundant error-handling paths using a common goto label
-v6:Removed normalize_nl_error() for standard errno in ras_error_cb() and
-   send_and_recv_nl_msg() (Soham)
-v5:Renamed library function names prefixed with igt_drm_ras_nl_*
-   (Riana and Soham)
-   Normalized libnl error codes to standard errnos (Soham)
-   Added error messages for error handling functions (Riana)
-   Changed the error-id max value from UINT32_MAX to DRM_XE_RAS_ERR_COMP_MAX (Riana)
-v4:Added support to poll for incoming netlink messages with 10 seconds timeout
-   Renamed the library functions with prefix &quot;igt_drm_netlink_*&quot; and
-   other cosmetic changes (Nikula Jani &amp; Kamil)
-v2:Handled ACK/FINISH/ERR nl responses using separate callbacks
-   Added a check whether error_value updated by valid callback or not
-   Added a check whether response required for the command or not
----
- lib/igt_drm_ras_nl.c | 352 ++++++++++++++++++++++++++++++++++++++++++-
- lib/igt_drm_ras_nl.h |  34 +++++
- 2 files changed, 384 insertions(+), 2 deletions(-)
-
-diff --git a/lib/igt_drm_ras_nl.c b/lib/igt_drm_ras_nl.c
-index 91396452d..10a433525 100644
---- a/lib/igt_drm_ras_nl.c
-+++ b/lib/igt_drm_ras_nl.c
-@@ -4,14 +4,321 @@
-  */
- 
- #include &lt;errno.h&gt;
-+#include &lt;poll.h&gt;
- #include &lt;stdint.h&gt;
- 
-+#include &lt;netlink/errno.h&gt;
- #include &lt;netlink/genl/ctrl.h&gt;
- #include &lt;netlink/genl/genl.h&gt;
- 
- #include &quot;igt_core.h&quot;
- #include &quot;igt_drm_ras_nl.h&quot;
- 
-+#define DRM_RAS_NL_OVERALL_TIMEOUT_MS 60000
-+#define DRM_RAS_NL_MSG_TIMEOUT_MS 10000
-+
-+/* Normalize netlink error codes to standard errnos */
-+static int normalize_nl_error(int ret)
-+{
-+	if (ret &gt;= 0)
-+		return ret;
-+
-+	switch (-ret) {
-+	case NLE_INVAL:
-+		return -EINVAL;
-+	case NLE_NOMEM:
-+		return -ENOMEM;
-+	case NLE_NOATTR:
-+	case NLE_MISSING_ATTR:
-+		return -ENODATA;
-+	case NLE_OPNOTSUPP:
-+		return -EOPNOTSUPP;
-+	case NLE_EXIST:
-+		return -EEXIST;
-+	case NLE_NOADDR:
-+		return -EADDRNOTAVAIL;
-+	case NLE_PERM:
-+		return -EPERM;
-+	case NLE_NOACCESS:
-+		return -EACCES;
-+	case NLE_NODEV:
-+		return -ENODEV;
-+	case NLE_BUSY:
-+		return -EBUSY;
-+	case NLE_AGAIN:
-+		return -EAGAIN;
-+	default:
-+		igt_debug(&quot;Unhandled netlink error code: %d\n&quot;, -ret);
-+		return -EIO;
-+	}
-+}
-+
-+static int ras_command_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct nlattr *attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX + 1];
-+	struct igt_drm_ras_nl_context *ctx = arg;
-+	struct genlmsghdr *gnlh;
-+	struct nlmsghdr *nlh;
-+	int ret;
-+
-+	nlh = nlmsg_hdr(msg);
-+	gnlh = nlmsg_data(nlh);
-+
-+	ret = genlmsg_parse(nlh, 0, attrs,
-+			    DRM_RAS_A_ERROR_COUNTER_ATTRS_MAX, NULL);
-+	if (ret &lt; 0)
-+		return NL_SKIP;
-+
-+	switch (gnlh-&gt;cmd) {
-+	case DRM_RAS_CMD_GET_ERROR_COUNTER: {
-+		if (!attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE])
-+			return NL_SKIP;
-+
-+		ctx-&gt;error_value = nla_get_u32(attrs[DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_VALUE]);
-+		break;
-+	}
-+	default:
-+		return NL_SKIP;
-+	}
-+
-+	ctx-&gt;reply_received = true;
-+	if (ctx-&gt;ack_received)
-+		ctx-&gt;cmd_done = true;
-+
-+	return NL_OK;
-+}
-+
-+static int ras_error_cb(struct sockaddr_nl *nla, struct nlmsgerr *err, void *arg)
-+{
-+	struct igt_drm_ras_nl_context *ctx = arg;
-+
-+	/* err-&gt;error is a raw kernel errno, not a libnl NLE_* code */
-+	ctx-&gt;last_nl_error = err-&gt;error;
-+	ctx-&gt;cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int ras_ack_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct igt_drm_ras_nl_context *ctx = arg;
-+
-+	ctx-&gt;ack_received = true;
-+	if (!ctx-&gt;response_required || ctx-&gt;reply_received)
-+		ctx-&gt;cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int ras_finish_cb(struct nl_msg *msg, void *arg)
-+{
-+	struct igt_drm_ras_nl_context *ctx = arg;
-+
-+	ctx-&gt;cmd_done = true;
-+
-+	return NL_STOP;
-+}
-+
-+static int register_callbacks(struct nl_cb *cb, struct igt_drm_ras_nl_context *ctx)
-+{
-+	int ret;
-+
-+	ret = nl_cb_set(cb, NL_CB_VALID, NL_CB_CUSTOM, ras_command_cb, ctx);
-+	if (ret &lt; 0) {
-+		igt_warn(&quot;Failed to set NL_CB_VALID callback (ret=%d)\n&quot;, ret);
-+		return ret;
-+	}
-+
-+	ret = nl_cb_set(cb, NL_CB_ACK, NL_CB_CUSTOM, ras_ack_cb, ctx);
-+	if (ret &lt; 0) {
-+		igt_warn(&quot;Failed to set NL_CB_ACK callback (ret=%d)\n&quot;, ret);
-+		return ret;
-+	}
-+
-+	ret = nl_cb_set(cb, NL_CB_FINISH, NL_CB_CUSTOM, ras_finish_cb, ctx);
-+	if (ret &lt; 0) {
-+		igt_warn(&quot;Failed to set NL_CB_FINISH callback (ret=%d)\n&quot;, ret);
-+		return ret;
-+	}
-+
-+	ret = nl_cb_err(cb, NL_CB_CUSTOM, ras_error_cb, ctx);
-+	if (ret &lt; 0) {
-+		igt_warn(&quot;Failed to set NL_CB_ERR callback (ret=%d)\n&quot;, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int send_and_recv_nl_msg(struct igt_drm_ras_nl_context *ctx,
-+				struct nl_cb *cb,
-+				struct nl_msg *msg)
-+{
-+	struct pollfd pfd = {
-+		.fd = nl_socket_get_fd(ctx-&gt;sock),
-+		.events = POLLIN,
-+	};
-+	const uint64_t timeout_ns = (uint64_t)DRM_RAS_NL_OVERALL_TIMEOUT_MS * 1000000;
-+	const uint64_t msg_timeout_ns =
-+		(uint64_t)DRM_RAS_NL_MSG_TIMEOUT_MS * 1000000;
-+	struct timespec start, message_start;
-+	int ret, err_ret;
-+
-+	ret = nl_send_auto(ctx-&gt;sock, msg);
-+	nlmsg_free(msg);
-+	if (ret &lt; 0) {
-+		err_ret = normalize_nl_error(ret);
-+		goto process_error;
-+	}
-+
-+	ret = igt_gettime(&amp;start);
-+	if (ret &lt; 0) {
-+		err_ret = -errno;
-+		goto process_error;
-+	}
-+
-+	message_start = start;
-+
-+	/* NL Reply and ACK arrive as separate responses */
-+	while (!ctx-&gt;cmd_done) {
-+		uint64_t msg_elapsed_ns = igt_nsec_elapsed(&amp;message_start);
-+		uint64_t elapsed_ns = igt_nsec_elapsed(&amp;start);
-+		uint64_t remaining_ns;
-+		int timeout_ms;
-+
-+		if (elapsed_ns &gt;= timeout_ns || msg_elapsed_ns &gt;= msg_timeout_ns) {
-+			err_ret = -ETIMEDOUT;
-+			goto process_error;
-+		}
-+
-+		remaining_ns = timeout_ns - elapsed_ns;
-+		if (msg_timeout_ns - msg_elapsed_ns &lt; remaining_ns)
-+			remaining_ns = msg_timeout_ns - msg_elapsed_ns;
-+		timeout_ms = (remaining_ns + 999999) / 1000000;
-+		ret = poll(&amp;pfd, 1, timeout_ms);
-+		if (ret &lt; 0 &amp;&amp; errno == EINTR)
-+			continue;
-+
-+		/* poll()/errno results are already standard errnos, not libnl codes */
-+		if (ret == 0) {
-+			err_ret = -ETIMEDOUT;
-+			goto process_error;
-+		}
-+
-+		if (ret &lt; 0) {
-+			err_ret = -errno;
-+			goto process_error;
-+		}
-+
-+		if (!(pfd.revents &amp; POLLIN)) {
-+			igt_debug(&quot;Received unexpected poll revents: %d\n&quot;, pfd.revents);
-+			err_ret = -EIO;
-+			goto process_error;
-+		}
-+
-+		ret = nl_recvmsgs(ctx-&gt;sock, cb);
-+		if (ret &lt; 0) {
-+			err_ret = normalize_nl_error(ret);
-+			goto process_error;
-+		}
-+
-+		ret = igt_gettime(&amp;message_start);
-+		if (ret &lt; 0) {
-+			err_ret = -errno;
-+			goto process_error;
-+		}
-+	}
-+	nl_cb_put(cb);
-+	return 0;</pre>
-    </blockquote>
-    This is not required.&nbsp;<span style="white-space: pre-wrap">Just initialize </span><span style="white-space: pre-wrap">err_ret to 0.</span><span style="white-space: pre-wrap">
-</span><br>
-    <span style="white-space: pre-wrap">Reviewed-by: Soham Purkait <a class="moz-txt-link-rfc2396E" href="mailto:soham.purkait@intel.com">&lt;soham.purkait@intel.com&gt;</a></span>
-    <blockquote type="cite" cite="mid:20261110160504.1315160-5-ravi.kishore.koppuravuri@intel.com">
-      <pre wrap="" class="moz-quote-pre">+process_error:
-+	nl_cb_put(cb);
-+	return err_ret;
-+}
-+
-+static int send_command(struct igt_drm_ras_nl_context *ctx, uint8_t cmd)
-+{
-+	struct nl_msg *msg;
-+	struct nl_cb *cb;
-+	void *msg_head;
-+	int ret;
-+
-+	msg = nlmsg_alloc();
-+	if (!msg)
-+		return -ENOMEM;
-+
-+	ctx-&gt;last_nl_error = 0;
-+	ctx-&gt;cmd_done = false;
-+	ctx-&gt;reply_received = false;
-+	ctx-&gt;ack_received = false;
-+	ctx-&gt;response_required = false;
-+
-+	msg_head = genlmsg_put(msg,
-+			       NL_AUTO_PORT,
-+			       NL_AUTO_SEQ,
-+			       ctx-&gt;family_id,
-+			       0,
-+			       NLM_F_REQUEST | NLM_F_ACK,
-+			       cmd,
-+			       DRM_RAS_FAMILY_VERSION);
-+	if (!msg_head) {
-+		nlmsg_free(msg);
-+		return -ENOMEM;
-+	}
-+
-+	switch (cmd) {
-+	case DRM_RAS_CMD_GET_ERROR_COUNTER:
-+		ctx-&gt;response_required = true;
-+		ret = nla_put_u32(msg,
-+				  DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID,
-+				  ctx-&gt;node_id);
-+		if (ret &lt; 0) {
-+			nlmsg_free(msg);
-+			return normalize_nl_error(ret);
-+		}
-+
-+		ret = nla_put_u32(msg,
-+				  DRM_RAS_A_ERROR_COUNTER_ATTRS_ERROR_ID,
-+				  ctx-&gt;error_id);
-+		if (ret &lt; 0) {
-+			nlmsg_free(msg);
-+			return normalize_nl_error(ret);
-+		}
-+		break;
-+	default:
-+		nlmsg_free(msg);
-+		return -EOPNOTSUPP;
-+	}
-+
-+	cb = nl_cb_alloc(NL_CB_DEFAULT);
-+	if (!cb) {
-+		nlmsg_free(msg);
-+		return -ENOMEM;
-+	}
-+
-+	ret = register_callbacks(cb, ctx);
-+	if (ret &lt; 0) {
-+		nl_cb_put(cb);
-+		nlmsg_free(msg);
-+		return normalize_nl_error(ret);
-+	}
-+
-+	return send_and_recv_nl_msg(ctx, cb, msg);
-+}
-+
-+static void reset_drm_ras_nl_context(struct igt_drm_ras_nl_context *ctx)
-+{
-+	ctx-&gt;sock = NULL;
-+	ctx-&gt;node_id = UINT32_MAX;
-+	ctx-&gt;error_id = DRM_XE_RAS_ERR_COMP_MAX;
-+	ctx-&gt;error_value = 0;
-+	ctx-&gt;last_nl_error = 0;
-+	ctx-&gt;cmd_done = false;
-+	ctx-&gt;reply_received = false;
-+	ctx-&gt;ack_received = false;
-+	ctx-&gt;response_required = false;
-+	ctx-&gt;family_id = -1;
-+}
-+
- void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx)
- {
- 	if (!ctx || !ctx-&gt;sock)
-@@ -19,14 +326,19 @@ void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx)
- 
- 	nl_close(ctx-&gt;sock);
- 	nl_socket_free(ctx-&gt;sock);
--	ctx-&gt;sock = NULL;
--	ctx-&gt;family_id = -1;
-+
-+	reset_drm_ras_nl_context(ctx);
- 
- 	igt_debug(&quot;Cleaned up netlink socket.\n&quot;);
- }
- 
- int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx)
- {
-+	if (!ctx)
-+		return -EINVAL;
-+
-+	reset_drm_ras_nl_context(ctx);
-+
- 	ctx-&gt;sock = nl_socket_alloc();
- 	if (!ctx-&gt;sock)
- 		return -ENOMEM;
-@@ -49,3 +361,39 @@ int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx)
- 		  DRM_RAS_FAMILY_NAME, ctx-&gt;family_id);
- 	return 0;
- }
-+
-+int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx)
-+{
-+	int ret;
-+
-+	if (!ctx || !ctx-&gt;sock || ctx-&gt;family_id &lt; 0) {
-+		igt_warn(&quot;Invalid DRM RAS netlink context\n&quot;);
-+		return -EINVAL;
-+	}
-+
-+	if (ctx-&gt;node_id == UINT32_MAX ||
-+	    ctx-&gt;error_id == DRM_XE_RAS_ERR_COMP_MAX ||
-+	    ctx-&gt;error_id == 0) {
-+		igt_warn(&quot;Invalid node_id (%u) or error_id (%u) provided\n&quot;,
-+			 ctx-&gt;node_id, ctx-&gt;error_id);
-+		return -EINVAL;
-+	}
-+
-+	ctx-&gt;error_value = UINT32_MAX;
-+
-+	ret = send_command(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER);
-+	if (ret &lt; 0)
-+		return ret;
-+
-+	if (ctx-&gt;error_value == UINT32_MAX) {
-+		igt_warn(&quot;No valid error counter reply: node_id=%u error_id=%u kernel_error=%d\n&quot;,
-+			 ctx-&gt;node_id, ctx-&gt;error_id, ctx-&gt;last_nl_error);
-+
-+		return ctx-&gt;last_nl_error ? ctx-&gt;last_nl_error : -ENODATA;
-+	}
-+
-+	igt_debug(&quot;Retrieved error counter: node_id=%u error_id=%u value=%u\n&quot;,
-+		  ctx-&gt;node_id, ctx-&gt;error_id, ctx-&gt;error_value);
-+
-+	return 0;
-+}
-diff --git a/lib/igt_drm_ras_nl.h b/lib/igt_drm_ras_nl.h
-index 011f3bc05..f51784524 100644
---- a/lib/igt_drm_ras_nl.h
-+++ b/lib/igt_drm_ras_nl.h
-@@ -7,14 +7,48 @@
- #define IGT_DRM_RAS_NL_H
- 
- #include &lt;drm-uapi/drm_ras.h&gt;
-+#include &lt;drm-uapi/xe_drm.h&gt;
- 
-+/**
-+ * struct igt_drm_ras_nl_context - DRM RAS generic netlink context
-+ *
-+ * Holds the state for a DRM RAS generic netlink request/response exchange.
-+ */
- struct igt_drm_ras_nl_context {
-+	/** @sock: Netlink socket used for the exchange */
- 	struct nl_sock *sock;
-+
-+	/** @node_id: DRM RAS node ID to query the error counters */
-+	uint32_t node_id;
-+
-+	/** @error_id: RAS error ID to query the error counter */
-+	uint32_t error_id;
-+
-+	/** @error_value: Error counter value returned by the kernel */
-+	uint32_t error_value;
-+
-+	/** @last_nl_error: Last netlink error reported by the kernel */
-+	int last_nl_error;
-+
-+	/** @cmd_done: Set when the command exchange has completed */
-+	bool cmd_done;
-+
-+	/** @reply_received: Set when the command reply has been received */
-+	bool reply_received;
-+
-+	/** @ack_received: Set when the command ACK has been received */
-+	bool ack_received;
-+
-+	/** @response_required: Set when a reply is expected before @cmd_done */
-+	bool response_required;
-+
-+	/** @family_id: Generic netlink family ID */
- 	int family_id;
- };
- 
- void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
- int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
-+int igt_drm_ras_nl_get_error_counter(struct igt_drm_ras_nl_context *ctx);
- 
- #endif /* IGT_DRM_RAS_NL_H */
- 
-</pre>
-    </blockquote>
-  </body>
-</html>
-
---------------jnVHFaMDMis1crz7emcHx69M--
+Regards,
+Soham
