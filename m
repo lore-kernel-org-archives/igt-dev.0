@@ -2,76 +2,65 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EC0606A323
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Nov 2026 14:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F26F606A891
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Nov 2026 16:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=imgtec.com header.i=@imgtec.com header.a=rsa-sha256 header.s=dk201812 header.b=LOep/lQq
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l4yuojoU
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E301711263A;
-	Fri, 13 Nov 2026 14:45:17 +0000 (UTC)
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
- [185.132.180.163])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A160610EC25
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2026 14:44:09 +0000 (UTC)
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
- by mx07-00376f01.pphosted.com (8.18.1.12/8.18.1.12) with ESMTP id
- 6ADCsNwX541072
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2026 14:44:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
- :content-transfer-encoding:content-type:date:from:in-reply-to
- :message-id:mime-version:references:subject:to; s=dk201812; bh=8
- zT+hMsQo8X9VKJ1zV61mmy6tEN9EOWCUQ9wPBExQLk=; b=LOep/lQq+IuOD0XaV
- iGL2Yo9uwzzScgCG/d0r4L6oytWpjCnStKaN9phhb6mUEFgiAyHW8HU87DS1vZum
- CnschfNWgK2YPqS3WXCUnxqIdSTNGAK/e4hlXDvMMi+c+iHf7NDtOwYLxXiasXaA
- j7J5hza5R2IKSUrR19pM/oDFZNq7mr09WpW+msdWpk5lMJn0T+y/LB4hyWIKC/y5
- G3eYPO1VWF9HNeZgSdaHss5FX/YA6W/U87Ic2pZWSDHCuPs8CDv83KNzFoINDbxw
- kcSfRFkXRS3iDwXDMYw7nSRAvbJoYRlH51rPHlw9g3JIdXs5/onFqA873+ykxSsE
- FXE7Q==
-Received: from hhmail01.hh.imgtec.org
- (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
- by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4hwpd4rhap-1
- (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT
- key_exchange=secp384r1)
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2026 14:44:04 +0000 (GMT)
-Received: from np-a-belle.kl.imgtec.org (172.25.6.177) by
- HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Fri, 13 Nov 2026 14:44:04 +0000
-Message-ID: <90b2f69fea302fe0c698ac0eaabec03ddbaa37de.camel@imgtec.com>
-Subject: Re: [PATCH i-g-t v3 3/3] lib/igt_pvr: Pass DRM_PVR_BO_PM_FW_PROTECT
- flag for PM MList allocation
-From: Luigi Santivetti <luigi.santivetti@imgtec.com>
-To: Brajesh Gupta <brajesh.gupta@imgtec.com>, "Development mailing list for
- IGT GPU Tools" <igt-dev@lists.freedesktop.org>
-CC: Alessio Belle <alessio.belle@imgtec.com>
-Date: Fri, 13 Nov 2026 14:43:58 +0000
-In-Reply-To: <20261111-b4-render_update-v3-3-979dcf01ff43@imgtec.com>
-References: <20261111-b4-render_update-v3-0-979dcf01ff43@imgtec.com>
- <20261111-b4-render_update-v3-3-979dcf01ff43@imgtec.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	by gabe.freedesktop.org (Postfix) with ESMTP id 10C4510E7E5;
+	Fri, 13 Nov 2026 16:12:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 88F6E112697
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2026 16:11:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1794586297; x=1826122297;
+ h=date:from:to:subject:message-id:references:mime-version:
+ content-transfer-encoding:in-reply-to;
+ bh=kRwWiCcoeSwB5+iVSvddPQzUWLI7H4ql1Qf6gsAPnLw=;
+ b=l4yuojoUbGvPCnAAwwRW8hGsUZGC3abSmDEhrqcaCj7Tn2arftn32bkL
+ vLKQLUpERo2Ot3B+D3JcOJxK14U510E0yQPDwsQU72E8RnufKTUwgM7JE
+ QcqdvoWt9q4V/Mu9Yky9PPxPfWKZBu+GWv+J54+eN7gIZuDSvk6MwBPe3
+ Oc3JTQoASdj+rR72caQuT0USjp7WXrIZP+2qIaZa8U94UPxoDutbFeDbB
+ sXKqlAcBKvRRMsVNZlvPdgS4Bbf/p2xKH+FNGBWePtbX5DfYSEE5p0LtC
+ +n/7k7pZifJ/ZFzjtrZLGpcXDjTvqgFcGJi8DvD66Gwh4x9D6JMDZpJN4 g==;
+X-CSE-ConnectionGUID: UxFRHvk5R0uSvZ9F42uNIQ==
+X-CSE-MsgGUID: ll1nMWldQd2i8a0Dvr6Arw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3298484"
+X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
+   d="scan'208";a="3298484"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2026 08:11:37 -0800
+X-CSE-ConnectionGUID: h1ZiSV+MSQ62UITX3CqETQ==
+X-CSE-MsgGUID: XsMl9cZ5SdSy1TuNk6AIDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
+   d="scan'208";a="8968215"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 13 Nov 2026 08:11:36 -0800
+Date: Fri, 13 Nov 2026 17:11:20 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>, 
+ igt-dev@lists.freedesktop.org, niranjana.vishwanathapura@intel.com
+Subject: Re: [PATCH i-g-t v6 3/3] tests/intel/xe_exec_threads: Add
+ multi-queue CGP_SYNC replay subtests
+Message-ID: <iqfbmktmouv5zss5osryitmkeh6hcirazxtrfwpikvz42lnyos@ekcc3of3w27d>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ "Randhawa, Jagmeet" <jagmeet.randhawa@intel.com>, igt-dev@lists.freedesktop.org,
+ niranjana.vishwanathapura@intel.com
+References: <20261106183246.14482-1-jagmeet.randhawa@intel.com>
+ <20261106183246.14482-4-jagmeet.randhawa@intel.com>
+ <7qstl6a3reqbsaweguauxk5xlczlivzskgwldvent6armei5iq@67tngcevxhs7>
+ <9b99f4ef-1f2c-459f-9dca-14e0b10933b7@intel.com>
+ <olahnebt7bud4pfreujrj44tdqdnzygyn76ptfjucrjiwvkvxv@jhqp4bnafwpb>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Authority-Analysis: v=2.4 cv=aP1lOr9m c=1 sm=1 tr=0 ts=6af72234 cx=c_pps
- a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
- a=2JH569OHYJkA:10 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
- a=r_1tXGB3AAAA:8 a=sg5-cvHtWS2g9pmdw-UA:9 a=QEXdDO2ut3YA:10
- a=t8nPyN_e6usw4ciXM-Pk:22
-X-Proofpoint-GUID: i1cstEwXURYXOIWsOCa8asyto3vo-iJ_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA1OCBTYWx0ZWRfXzkf8PhRdnExS
- KyE1XKpKo+5Z51K90sDKiZeD9JExwnf41GRBBPDEbWh8pqg5TUnOsQeIskJS/bAEYW33pO0grd2
- 7cyqx5SpQgp6x6OpUMuGuy3UssEyAl62fcD06WFSzrfDAthay9NaTbGWIB+SYwW19YNlO22UcHP
- PiSodH354Y0zuxfGAPNU8wVLFGvvngXoyIpmvo1PVmBNBCHB80Z0MCvw19qYfGhHBPVmAXK+Osc
- 67FTgQvYGEEXJ00D1U3NMjn3RQmjkPhaBXbCMxdr4WJtWtGxe6jX3FeB18TW3sl/5ehMVemfu+U
- 6B0NAOKcZEFDw6qn7DTkCPUkXGqmdf2m+dnCHdwRdPcJfTedgdgOF7qjKPCAePLIq9jV2cOk1cC
- Zis/bdf/y401CjeAc5jekdd85poVxSw82r+5yjE2okVmiu2bF1ftLjcRDpBHbjGi8mCbcjE2Hu4
- 2fywBpSCff3VqeYQrYg==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA1OCBTYWx0ZWRfXxnX2oJIq2RPn
- vzXtFsfs//bhGZsrFDexYwA5EngWarINPrh9LKUIvPwhha2sWGbLeJs4Vk4pMVL/ozO2AVQ6yIO
- aYlO1pNqlb8jkdgN54+WCE+eAyW/eAw=
-X-Proofpoint-ORIG-GUID: i1cstEwXURYXOIWsOCa8asyto3vo-iJ_
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <olahnebt7bud4pfreujrj44tdqdnzygyn76ptfjucrjiwvkvxv@jhqp4bnafwpb>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -83,42 +72,141 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Brajesh,
+Hi Randhawa,,
+On 2026-11-10 at 12:54:47 +0100, Kamil Konieczny wrote:
+> Hi Randhawa,,
+> On 2026-11-09 at 10:33:31 -0800, Randhawa, Jagmeet wrote:
+> > 
+> > On 11/9/2026 6:44 AM, Kamil Konieczny wrote:
+> > > Hi Jagmeet,
+> > > On 2026-11-06 at 18:32:46 +0000, Jagmeet Randhawa wrote:
+> > > > Add coverage for the replay paths introduced by "drm/xe/multi_queue: Handle
+> > > > lost message during VF migration":
+> > > > https://patchwork.freedesktop.org/series/165324/
+> > > > 
+> > > > A CGP_SYNC message can be lost during VF migration and is replayed by the
+> > > > KMD on recovery. Exercising that needs a CGP_SYNC queued or outstanding on
+> > > > a live multi-queue group when the migration lands.
+> > > > 
+> > > > A group serialises on one outstanding sync, so both CGP sources are needed:
+> > > > queue creation for registration updates, MULTI_QUEUE_PRIORITY for dynamic
+> > > > ones. Both are driven from the legacy and the compute mode paths, so a
+> > > > mixed mode run spreads the groups and the updates across both.
+> > > > 
+> > > > A group holds at most MULTI_QUEUE_GROUP_SIZE queues, so asking for more
+> > > > queues than that spans several groups and registers them in parallel.
+> > > > 
+> > > > Add MULTI_QUEUE_PRIORITY to issue a short burst of priority updates after
+> > > > each exec, alternating the values since the KMD ignores a set to the
+> > > > current value.
+> > > > 
+> > > > Add three subtests built from these sources, repeated under
+> > > > igt_until_timeout() with a bounded wall clock:
+> > > > 
+> > > >    multi-queue-many-groups                registers several full groups in
+> > > >                                           parallel from multiple workers
+> > > >                                           per engine
+> > > >    multi-queue-mixed-many-groups          the same across legacy and
+> > > >                                           compute mode workers
+> > > >    multi-queue-mixed-many-groups-priority drives dynamic updates on those
+> > > >                                           groups from a single worker per
+> > > >                                           engine
+> > > There are skips on LNL, PTL and BMG for these new subtests,
+> > > please add a follow-up patch 'intel-ci: Block ...'
+> > > as a last one in this series, or as a separate one, up to you.
+> > > 
+> > > Regards,
+> > > Kamil
+> > Thanks for looking.
+> > 
+> > The three core blocklists already carry a wildcard that covers these
+> > subtests:
+> > 
+> >   tests/intel-ci/xe.lnl.core.blocklist.txt
+> >   tests/intel-ci/xe.ptl.core.blocklist.txt
+> >   tests/intel-ci/xe.bmg.core.blocklist.txt
+> > 
+> >     # Multi-queue is not supported on platforms older than xe3p
+> >     igt@.*multi.queue.*
+> > 
+> > That was added in 758f22d62 and it matches all three new subtests:
+> > 
+> >   igt@xe_exec_threads@threads-multi-queue-many-groups
+> >   igt@xe_exec_threads@threads-multi-queue-mixed-many-groups
+> >   igt@xe_exec_threads@threads-multi-queue-mixed-many-groups-priority
+> > 
+> > They are also not in xe.fast-feedback.testlist.
+> > 
+> > If the run you are looking at uses a list that does not read those files,
+> > let me
+> > 
+> > know which one and I will send a separate 'intel-ci: Block ...' patch for
+> > it.
+> 
+> Hmm, sorry for noise, you are right, I forgot  about them
+> being already blocked. Just make sure you did not see skips
+> for these new tests in a Xe CI report.
+> 
+> 
+> Regards,
+> Kamil
+> 
+> > 
+> > If appropriate, Can you merge this patch series, Thanks!
+> > 
+> > Jagmeet
 
-did you mean to drop this patch in v3?
+Applied, thanks!
 
-On Wed, 2026-11-11 at 10:32 +0530, Brajesh Gupta wrote:
-> Pass DRM_PVR_BO_PM_FW_PROTECT flag for PM MList allocation to indicate
-> only PM/FW allowed to access the memory.
->=20
-> Signed-off-by: Brajesh Gupta <brajesh.gupta@imgtec.com>
-> ---
->  lib/igt_pvr.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->=20
-> diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
-> index 9e88b2e41..36846d7d6 100644
-> --- a/lib/igt_pvr.c
-> +++ b/lib/igt_pvr.c
-> @@ -842,7 +842,8 @@ static void igt_pvr_create_hwrt_rt_data_args(int fd, =
-uint32_t vm_ctx,
->  {
->  	rt_data_args->pm_mlist_dev_addr =3D
->  		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_=
-PAGE_SIZE,
-> -							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
-> +							      DRM_PVR_BO_BYPASS_DEVICE_CACHE |
-> +							      DRM_PVR_BO_PM_FW_PROTECT));
->  	rt_data_args->macrotile_array_dev_addr =3D
->  		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_=
-PAGE_SIZE,
->  							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
->=20
 
+Regards,
+Kamil
+
+> > 
+> > > 
+> > > > Registration and dynamic traffic are kept apart. Driving dynamic updates
+> > > > alongside many parallel registrations makes an update wait long enough to
+> > > > exceed the KMD sync timeout, which bans the group instead of leaving the
+> > > > update to be replayed.
+> > > > 
+> > > > v6:
+> > > >   - Issue the priority burst from the compute mode path as well, and make
+> > > >     the priority subtest a mixed mode one.
+> > > > 
+> > > > v5:
+> > > >   - Rename the worker count to MULTI_QUEUE_THREADS_PER_ENGINE.
+> > > >   - Move the dynamic array allocation to its own patch, it is not specific
+> > > >     to multi-queue.
+> > > >   - Place queues the same way in test_compute_mode() so the group limit is
+> > > >     honoured there too, and add multi-queue-mixed-many-groups.
+> > > > 
+> > > > v4:
+> > > >   - Keep the multi-queue extension at its only use site.
+> > > >   - Mask instead of dividing in multi_queue_group_value().
+> > > > 
+> > > > v3:
+> > > >   - Use the MULTI_QUEUE prefix.
+> > > >   - Drop the many groups flag and derive the group layout from the queue
+> > > >     count, since a group is limited to MULTI_QUEUE_GROUP_SIZE queues.
+> > > >   - Take the worker and queue counts from the section rather than deriving
+> > > >     them from flags.
+> > > >   - No subtest destroys queues, so the churn flag and the queue recreate
+> > > >     path are dropped: registration traffic comes from the repeated runs
+> > > >     under igt_until_timeout().
+> > > > 
+> > > > v2:
+> > > >   - Drop the secondary churn. A secondary cannot be replaced within a live
+> > > >     group.
+> > > > 
+> > > > Signed-off-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+> > > > ---
+> > > >   tests/intel/xe_exec_threads.c | 83 +++++++++++++++++++++++++++++++++--
+> > > >   1 file changed, 80 insertions(+), 3 deletions(-)
+> > > [cut]
