@@ -2,57 +2,76 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C628606A898
-	for <igt-dev@archiver.kernel.org>; Fri, 13 Nov 2026 13:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50EC0606A323
+	for <igt-dev@archiver.kernel.org>; Fri, 13 Nov 2026 14:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NYTH30Lf
+	dkim=pass (2048-bit key, unprotected) header.d=imgtec.com header.i=@imgtec.com header.a=rsa-sha256 header.s=dk201812 header.b=LOep/lQq
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BDAE9112594;
-	Fri, 13 Nov 2026 13:54:18 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 798A510F2D1
- for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2026 13:53:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794577996; x=1826113996;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=2kW+zVJGzvB5beE8zbVfjBREZvTfUXa4R3CiaYlU3SY=;
- b=NYTH30LfPqnK2/rTsc2gLGcmsVR4307CMPvXsPC/dtIGeBOM50srirm8
- kYexQZhmX04ipTkVsW6WBMfYkIB3PrHFEwOtzBhEyr2H2nZGoHRHsV0Lp
- xduPm+cW7qybaPYfIDUB93uY+FShE1aCF8TjjoVOoPQ5lMTBGaBvDJt+w
- LvlAa9wqyruyeR77qYEhJtgnecudKmMLlMoyx26iHD/LFFY+5Z6jXuUbA
- HcrVDhqBWbBUwcQmuetzsZgvkDopUgwHtFICfpaGsM8yvw3z+F22Jm8Iv
- lfdMlRK6etxNiT57/PGpEWIjQdz1GeWaf7CsqFy9S1+pNyjbtxv0bQIgT A==;
-X-CSE-ConnectionGUID: 6zJr2eMBSaWBZFIBFTpDFg==
-X-CSE-MsgGUID: peLY0dpRS/SXufu3M4stmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11965"; a="3409549"
-X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; 
-   d="scan'208";a="3409549"
-Received: from fmviesa011.fm.intel.com ([10.60.135.151])
- by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2026 05:53:16 -0800
-X-CSE-ConnectionGUID: INqWitcSSSe2mGoJaQzzGA==
-X-CSE-MsgGUID: JSPfMfZmSMGTBisT3naWsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,211,1787036400"; d="scan'208";a="10703796"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.202])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 13 Nov 2026 05:53:14 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, Jeevan B <jeevan.b@intel.com>
-Subject: Re: [PATCH i-g-t] tests/kms_plane_cursor: limit simulation to 2 pipes
-In-Reply-To: <20261112041907.2876691-1-jeevan.b@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20261112041907.2876691-1-jeevan.b@intel.com>
-Date: Fri, 13 Nov 2026 15:53:11 +0200
-Message-ID: <566ec9cb86e08992f2f89b18553562230d7dd30e@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id E301711263A;
+	Fri, 13 Nov 2026 14:45:17 +0000 (UTC)
+Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
+ [185.132.180.163])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A160610EC25
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2026 14:44:09 +0000 (UTC)
+Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
+ by mx07-00376f01.pphosted.com (8.18.1.12/8.18.1.12) with ESMTP id
+ 6ADCsNwX541072
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2026 14:44:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+ :content-transfer-encoding:content-type:date:from:in-reply-to
+ :message-id:mime-version:references:subject:to; s=dk201812; bh=8
+ zT+hMsQo8X9VKJ1zV61mmy6tEN9EOWCUQ9wPBExQLk=; b=LOep/lQq+IuOD0XaV
+ iGL2Yo9uwzzScgCG/d0r4L6oytWpjCnStKaN9phhb6mUEFgiAyHW8HU87DS1vZum
+ CnschfNWgK2YPqS3WXCUnxqIdSTNGAK/e4hlXDvMMi+c+iHf7NDtOwYLxXiasXaA
+ j7J5hza5R2IKSUrR19pM/oDFZNq7mr09WpW+msdWpk5lMJn0T+y/LB4hyWIKC/y5
+ G3eYPO1VWF9HNeZgSdaHss5FX/YA6W/U87Ic2pZWSDHCuPs8CDv83KNzFoINDbxw
+ kcSfRFkXRS3iDwXDMYw7nSRAvbJoYRlH51rPHlw9g3JIdXs5/onFqA873+ykxSsE
+ FXE7Q==
+Received: from hhmail01.hh.imgtec.org
+ (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+ by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4hwpd4rhap-1
+ (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT
+ key_exchange=secp384r1)
+ for <igt-dev@lists.freedesktop.org>; Fri, 13 Nov 2026 14:44:04 +0000 (GMT)
+Received: from np-a-belle.kl.imgtec.org (172.25.6.177) by
+ HHMAIL01.hh.imgtec.org (10.100.10.19) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Fri, 13 Nov 2026 14:44:04 +0000
+Message-ID: <90b2f69fea302fe0c698ac0eaabec03ddbaa37de.camel@imgtec.com>
+Subject: Re: [PATCH i-g-t v3 3/3] lib/igt_pvr: Pass DRM_PVR_BO_PM_FW_PROTECT
+ flag for PM MList allocation
+From: Luigi Santivetti <luigi.santivetti@imgtec.com>
+To: Brajesh Gupta <brajesh.gupta@imgtec.com>, "Development mailing list for
+ IGT GPU Tools" <igt-dev@lists.freedesktop.org>
+CC: Alessio Belle <alessio.belle@imgtec.com>
+Date: Fri, 13 Nov 2026 14:43:58 +0000
+In-Reply-To: <20261111-b4-render_update-v3-3-979dcf01ff43@imgtec.com>
+References: <20261111-b4-render_update-v3-0-979dcf01ff43@imgtec.com>
+ <20261111-b4-render_update-v3-3-979dcf01ff43@imgtec.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=aP1lOr9m c=1 sm=1 tr=0 ts=6af72234 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=2JH569OHYJkA:10 a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22
+ a=r_1tXGB3AAAA:8 a=sg5-cvHtWS2g9pmdw-UA:9 a=QEXdDO2ut3YA:10
+ a=t8nPyN_e6usw4ciXM-Pk:22
+X-Proofpoint-GUID: i1cstEwXURYXOIWsOCa8asyto3vo-iJ_
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEzMDA1OCBTYWx0ZWRfXzkf8PhRdnExS
+ KyE1XKpKo+5Z51K90sDKiZeD9JExwnf41GRBBPDEbWh8pqg5TUnOsQeIskJS/bAEYW33pO0grd2
+ 7cyqx5SpQgp6x6OpUMuGuy3UssEyAl62fcD06WFSzrfDAthay9NaTbGWIB+SYwW19YNlO22UcHP
+ PiSodH354Y0zuxfGAPNU8wVLFGvvngXoyIpmvo1PVmBNBCHB80Z0MCvw19qYfGhHBPVmAXK+Osc
+ 67FTgQvYGEEXJ00D1U3NMjn3RQmjkPhaBXbCMxdr4WJtWtGxe6jX3FeB18TW3sl/5ehMVemfu+U
+ 6B0NAOKcZEFDw6qn7DTkCPUkXGqmdf2m+dnCHdwRdPcJfTedgdgOF7qjKPCAePLIq9jV2cOk1cC
+ Zis/bdf/y401CjeAc5jekdd85poVxSw82r+5yjE2okVmiu2bF1ftLjcRDpBHbjGi8mCbcjE2Hu4
+ 2fywBpSCff3VqeYQrYg==
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEzMDA1OCBTYWx0ZWRfXxnX2oJIq2RPn
+ vzXtFsfs//bhGZsrFDexYwA5EngWarINPrh9LKUIvPwhha2sWGbLeJs4Vk4pMVL/ozO2AVQ6yIO
+ aYlO1pNqlb8jkdgN54+WCE+eAyW/eAw=
+X-Proofpoint-ORIG-GUID: i1cstEwXURYXOIWsOCa8asyto3vo-iJ_
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,68 +83,42 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 12 Nov 2026, Jeevan B <jeevan.b@intel.com> wrote:
-> Running on every pipe makes the test hit the timeout on simulation.
-> Restrict it to 2 pipes when running in simulation.
+Hi Brajesh,
 
-This is not an Intel specific test. We should prefer generic drm/kms
-naming in generic code, i.e. CRTC instead of pipe.
+did you mean to drop this patch in v3?
 
-BR,
-Jani.
-
-
-
->
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+On Wed, 2026-11-11 at 10:32 +0530, Brajesh Gupta wrote:
+> Pass DRM_PVR_BO_PM_FW_PROTECT flag for PM MList allocation to indicate
+> only PM/FW allowed to access the memory.
+>=20
+> Signed-off-by: Brajesh Gupta <brajesh.gupta@imgtec.com>
 > ---
->  tests/kms_plane_cursor.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
->
-> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-> index 4b69f1a17..5938b50c1 100644
-> --- a/tests/kms_plane_cursor.c
-> +++ b/tests/kms_plane_cursor.c
-> @@ -68,6 +68,9 @@ typedef struct {
->  	int h;
->  } rect_t;
->  
-> +/* Max pipes to test on simulation, to avoid timeouts */
-> +#define SIM_MAX_PIPES 2
-> +
->  /* Common test data. */
->  typedef struct data {
->  	igt_display_t display;
-> @@ -327,8 +330,14 @@ int igt_main()
->  	for (i = 0; i < ARRAY_SIZE(tests); i++) {
->  		igt_describe_f("%s", tests[i].desc);
->  		igt_subtest_with_dynamic_f("%s", tests[i].name) {
-> +			int pipes_tested = 0;
-> +
->  			for_each_crtc_with_single_output(&data.display, crtc,
->  							 output) {
-> +				if (igt_run_in_simulation() &&
-> +				    pipes_tested >= SIM_MAX_PIPES)
-> +					break;
-> +
->  				if ((tests[i].flags & TEST_OVERLAY) &&
->  				    !igt_crtc_get_plane_type(crtc,
->  							     DRM_PLANE_TYPE_OVERLAY))
-> @@ -361,6 +370,7 @@ int igt_main()
->  				}
->  
->  				test_fini(&data);
-> +				pipes_tested++;
->  			}
->  		}
->  	}
+>  lib/igt_pvr.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/lib/igt_pvr.c b/lib/igt_pvr.c
+> index 9e88b2e41..36846d7d6 100644
+> --- a/lib/igt_pvr.c
+> +++ b/lib/igt_pvr.c
+> @@ -842,7 +842,8 @@ static void igt_pvr_create_hwrt_rt_data_args(int fd, =
+uint32_t vm_ctx,
+>  {
+>  	rt_data_args->pm_mlist_dev_addr =3D
+>  		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_=
+PAGE_SIZE,
+> -							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
+> +							      DRM_PVR_BO_BYPASS_DEVICE_CACHE |
+> +							      DRM_PVR_BO_PM_FW_PROTECT));
+>  	rt_data_args->macrotile_array_dev_addr =3D
+>  		igt_pvr_get_gpu_addr(igt_pvr_allocate_general(fd, vm_ctx, POWERVR_GPU_=
+PAGE_SIZE,
+>  							      DRM_PVR_BO_BYPASS_DEVICE_CACHE));
+>=20
 
--- 
-Jani Nikula, Intel
