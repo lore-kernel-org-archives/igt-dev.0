@@ -2,65 +2,63 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2E9606A31C
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 05:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABE3606A329
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 05:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RbhlNgn0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=MffwAaNi
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D12C810E009;
-	Mon, 16 Nov 2026 05:22:22 +0000 (UTC)
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
- [209.85.160.197])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 28A7310E027
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 22:29:06 +0000 (UTC)
-Received: by mail-qt1-f197.google.com with SMTP id
- d75a77b69052e-55d2c5f10ddso8573111cf.0
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 14:29:06 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5D53410E114;
+	Mon, 16 Nov 2026 05:23:15 +0000 (UTC)
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 11B9D10E3AA
+ for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 22:29:14 +0000 (UTC)
+Received: by mail-qt1-f199.google.com with SMTP id
+ d75a77b69052e-5383d650f2dso488371cf.0
+ for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 14:29:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20260707; t=1794695345; x=1795300145;
+ d=google.com; s=20260707; t=1794695353; x=1795300153;
  darn=lists.freedesktop.org; 
  h=content-type:cc:to:from:subject:message-id:mime-version:date:from
  :to:cc:subject:date:message-id:reply-to:content-type;
- bh=ukCJS5Rpy8S+pdkFLRO93CxP9JlBgrgii0jaQRv/9fA=;
- b=RbhlNgn0ipmK+x2LYXs1hCz6vyUNq57ywGbBOBjchbFGmm3WgDmTTMBUzbCyvo2Ufn
- 5aG3MUudPuUedFd5FwhIJIX8F0izu3k2AZGTz1Iwi81yP0V8k/5e1Ju4AYERjiz9F1od
- /5ruGkFdg13i3CdWwIavcaQ0uTmTwWHjL1N2cmKvrlyJVe9DTSiWYCDxfXAbIvEW7cQD
- eD1zXfpEXbZVe4kmPVjKiWW7vvJu+EQYYEEXyEMBhofDj97iCZ9YM51QkueOYUG8oQNm
- 0QvFnwouAANZOhyrghDY3hkxO+l6OCm23/dUJSHY2JKngBRm4Gp+0xEBacDAJ6pk3GmO
- twag==
+ bh=honyIFoW8MifYP2EpWRhT8DiqJpVOD5FKTPE7ZpiK0Y=;
+ b=MffwAaNiEX+EfhwGkdvWY8zKODOz8e61Ktegmuv0rfPHmjIlNoUehnIxeTqE3lAHxb
+ ynjrsa8KrRdcE2qFzrXZQsrM3r9fwx6AmrIcSvf21+RFQNFp5Hu5NvAeL2ByZIKsWWlE
+ PvGD487teeZ69pmiZyxo0o3E4P7vq+zMuihwmBcy+tPbklnvJz9AtmAfUqgAnL/vJ8dx
+ QBos4ZMAHGS0iw/krd0P14Z/OSsgOV+bbkfsFQm6PNCgsnc1ib2U2hPSovCvHA5jnH2n
+ 7fLL0TzTeTqZZ55PKBe5bJy8b/T9kkk66EQpyzp7moNuG1IAEfUkkCNdJOTEc/mzSKGr
+ a5LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1794695345; x=1795300145;
+ d=1e100.net; s=20260707; t=1794695353; x=1795300153;
  h=content-type:cc:to:from:subject:message-id:mime-version:date
  :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
  :content-type;
- bh=ukCJS5Rpy8S+pdkFLRO93CxP9JlBgrgii0jaQRv/9fA=;
- b=gVtKFHU0IkuRlfFanryGijVfE/CVyDg9Q8DXpcHeXHBeepGta3dWoUXeigOTnrTRVI
- nHrNZRB29oY0OE14TqOwbQ9Ts7/yJzpzbEbXRMUakISGjcYUBnWqbgMvPjy+rWyxcfYF
- NN4MpldnNO46oO1Y8UJ6kjkYchLV+IaRcCVheepKYrak/3XfWrORzAAH0z1eFKLgX/Oz
- YfmWmxEnRB5RetxXwI9zeLPfwpxUuS5QsG7IjQ3oVtzB4uNX7sEUGlibblgzpC+YZyMF
- V+mvh33LFxHwi5eEeTLnBcvkjGKHhvvf4uBlwV1Aj3iF/QEpGMcltP2HQKL4l+hUoaeh
- acng==
-X-Gm-Message-State: APuU4Z9Eb0eHDaYbujmNBXXac719eFLAGYCnawTV1nYxkljddBh19Xte
- nq0Ie2eSU0Ju29Ze7JctgQ5rd1TwxJD51KkeuFeZgIteSOblC1QPxek5kcUeviBjvgdwni+Ietb
- Y7/eksf8pAHnTJaQDbzZTS9j10NJBUugMUPUZOUnNsuvWnJhu7HFrsccyFBTguZSohKFLXsC7Pr
- cvgM32L2m8j2HbsySFOj1iQLoJ6N8RqJEXSSWRyXyLqhq/GvbN+x1RdDZE
-X-Received: from qvblx3.prod.google.com ([2002:a05:6214:5f03:b0:91f:2f1d:db07])
+ bh=honyIFoW8MifYP2EpWRhT8DiqJpVOD5FKTPE7ZpiK0Y=;
+ b=n0W3n0vNIqaxF1XCzweJu2MsEsBOEDn2XY9ftqRi8Ew7QJE3NmuKPUbI3Ui1VvzB+X
+ ZmXz7qHZLWsxHjaEkwu2W9U3d1VNhKT4Pl1sYBT5xfz1BPRCNno5OzQMCOYTujzaAxKe
+ NBug/YT8Y8JoKkU+luMlHzJSEeNb17yHDXFLeWgVY+hb+AnZM1HGrJqzp0KVQ/cgYBcA
+ gZGBF9t2IAKwmOHNPDk1FmPbs9ordc/kNWZOGJa5J6A39OPwsCRjvxZAAk/5Rg9BCYS0
+ L5j8VPyLgo0zYdGK3VRZV05M7lqr30pf9dfECBvJQ7JrjyMSk+gknH45yk/sY7MWZake
+ Tc8Q==
+X-Gm-Message-State: APuU4Z8J08Ochu/kU1v3mjOEN6Se9Cq+SNYNrdiW7g4CC4NcLHcxaucf
+ xdWwe6VdrdWN5cXv+JtisURiCMUWMFZ9SE3NygLJvfTM93fBQIpLWlp1TxWA3b2+mbCqde40J/a
+ QfuoZESeR/CNmUwVVd9V6auhw5NqHx7WMhB01LhW1QQSWZ2GnSzn8m+yYipwEzZV35hr+rTGrZd
+ kTmlSyZLv2qqtK+rahySJaATPnuNqMNWcs0i5XG+pW/CTR4OMfCUBnOjEc
+X-Received: from qtrb1.prod.google.com ([2002:ac8:7541:0:b0:535:d04c:ec22])
  (user=gildekel job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:514b:b0:55c:8389:57f3 with SMTP id
- d75a77b69052e-55c83895b79mr43986161cf.49.1794695343560; 
- Sat, 14 Nov 2026 14:29:03 -0800 (PST)
-Date: Sat, 14 Nov 2026 17:29:00 -0500
+ 2002:ac8:5f47:0:b0:537:a19d:41e5 with SMTP id
+ d75a77b69052e-55ac8576de7mr102393911cf.50.1794695352408; 
+ Sat, 14 Nov 2026 14:29:12 -0800 (PST)
+Date: Sat, 14 Nov 2026 17:29:08 -0500
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
-Message-ID: <20261114222902.1404033-1-gildekel@google.com>
-Subject: [PATCH i-g-t 0/2] lib/igt_kms: Reset leftover KMS color state
+Message-ID: <20261114222911.1405626-1-gildekel@google.com>
+Subject: [PATCH i-g-t 0/3] lib/igt_hdr: Find HDR in DisplayID EDIDs
 From: Gil Dekel <gildekel@google.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Gil Dekel <gildekel@google.com>, Melissa Wen <mwen@igalia.com>, 
- Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>, 
- Mark Yacoub <markyacoub@google.com>
+Cc: Gil Dekel <gildekel@google.com>, Swati Sharma <swati2.sharma@intel.com>, 
+ Karthik B S <karthik.b.s@intel.com>, Mark Yacoub <markyacoub@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Mon, 16 Nov 2026 05:17:02 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -82,24 +80,30 @@ X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A KMS client that exits without cleaning up can leave plane color
-pipelines and connector colorimetry set, and IGT inherits that state
-without always being able to see it. Patch 1 resets COLOR_PIPELINE to
-Bypass even for tests that never enable the color pipeline client cap.
-Patch 2 resets the connector Colorspace property to Default.
+igt_is_panel_hdr() only looks in CTA-861 extensions. eDP panels that
+describe HDR inside a DisplayID extension are therefore treated as SDR,
+and kms_hdr runs invalid-hdr on them, which then fails. Patch 1 splits
+the EDID parser out so it can be tested on the host, bounds it by the
+blob size, and adds lib/tests/igt_hdr. Patch 2 also walks the CTA data
+blocks inside DisplayID extensions. Patch 3 makes invalid-hdr read only
+the kernel log written by its own commit.
 
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
 Cc: Mark Yacoub <markyacoub@google.com>
 
-Gil Dekel (2):
-  lib/igt_kms: Reset leftover COLOR_PIPELINE
-  lib/igt_kms: Reset connector Colorspace
+Gil Dekel (3):
+  lib/igt_hdr: Add a testable igt_is_edid_hdr()
+  lib/igt_hdr: Parse DisplayID CTA data blocks
+  tests/kms_hdr: Use /dev/kmsg in invalid-hdr
 
- lib/igt_kms.c | 126 ++++++++++++++++++++++++++++++++++++++++++++++++++
- lib/igt_kms.h |   1 +
- 2 files changed, 127 insertions(+)
+ lib/igt_hdr.c         | 147 ++++++++++++++++++++++++++++++++----------
+ lib/igt_hdr.h         |   1 +
+ lib/tests/igt_hdr.c   | 136 ++++++++++++++++++++++++++++++++++++++
+ lib/tests/meson.build |   1 +
+ tests/kms_hdr.c       |  49 +++++++++++++-
+ 5 files changed, 300 insertions(+), 34 deletions(-)
+ create mode 100644 lib/tests/igt_hdr.c
 
 -- 
 Gil Dekel, Software Engineer, Google / ChromeOS Display and Graphics
