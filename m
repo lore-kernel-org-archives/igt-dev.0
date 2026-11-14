@@ -2,67 +2,66 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0288C606A329
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 05:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81269606A31C
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 05:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=m7xvbRYi
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OCCg6ANW
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AD95E10E16A;
-	Mon, 16 Nov 2026 05:18:49 +0000 (UTC)
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2E83C10E097
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 22:29:06 +0000 (UTC)
-Received: by mail-qk1-f200.google.com with SMTP id
- af79cd13be357-93f26dd2165so704286985a.3
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 14:29:06 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3761710E175;
+	Mon, 16 Nov 2026 05:19:42 +0000 (UTC)
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id AF46210E1D3
+ for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 22:29:17 +0000 (UTC)
+Received: by mail-qv1-f70.google.com with SMTP id
+ 6a1803df08f44-91c046843f1so16360466d6.1
+ for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 14:29:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20260707; t=1794695345; x=1795300145;
+ d=google.com; s=20260707; t=1794695356; x=1795300156;
  darn=lists.freedesktop.org; 
  h=content-type:cc:to:from:subject:message-id:references:mime-version
  :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
- :content-type; bh=LyPREl7/l2Jl0SA51ZS64FckK5WvtTo9iYF3kC8s+Wc=;
- b=m7xvbRYiXBNfFdEm7FwSGGTBi8XfOb6KkOoDrWwf4d6vUKkkgQjEAA/umbsjJfr3U6
- yz95zE+wZqchsGQuaIfFuqTM+pMgFTO8i664KU94gYfALssRh3/BgGH1eMrKdxpe27nQ
- tDZhAAk8mxA4qklIAyP9F7rpF3ek2XFhNbYwKMqxBtJ8t8+BBjVTZa7tLn/C+JRCaBT9
- VqNSTidOL5PgXdbFU3olhDRZEV5zGHKFaTaP48pISSBgIlXrGegdNvNDDidAgOjwjstx
- tZKuot4hjgQgC5ei/cwrVpXp5Q7FO1kXXd2FFe6DeZ36HvnbJwB9R80ZgRN8CZlYaWgX
- /aZw==
+ :content-type; bh=9ZKCJgfqeK9anWwh0gKycSMAbxUnr7i246FX/YvgOFM=;
+ b=OCCg6ANWG2AvUJZ18uqwsL/P1Y5hyGE0hwYJ4ZuIb2A3Q8z6M+5ZB31TbBUVr3SSyr
+ 5GmXlKG6/f9FANWV6zCyja/gl3tRB6nlsoFhyYjFXfY58xRNzFOK+5mv9VsCVmuhr9gC
+ I24CIAPv7sIC4HT/gaALB3cNhlQjgUNG9WsUHiOQWRARi0EDL8FBMxvc/uBwBh5FAAHB
+ 7m/jzCQO23nf9ABl09m8mG3Qh7pBLYxDMSAL0hkSVc4tLN+uLcANsoBwiv9o+yldw1FJ
+ RM/5z7UoJ6WIO71/tVRJ4WDKqFeL1kXaOhNKPfuJVk6qhA/ImqFIgPaKb9D67u71cxe/
+ zztA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1794695345; x=1795300145;
+ d=1e100.net; s=20260707; t=1794695356; x=1795300156;
  h=content-type:cc:to:from:subject:message-id:references:mime-version
  :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to:content-type;
- bh=LyPREl7/l2Jl0SA51ZS64FckK5WvtTo9iYF3kC8s+Wc=;
- b=GU/j72KtK+/Oq9I9y9hPoN1FVNWkBRPa6XoUfyVEhBbj3l2i8bu83NaU8iOVgTj9gd
- 2WtXolAXx+VchaZjMN7fVxXfvj1ZNOS6cP3kcQpytlDg4qDdBTr5y/YD1badQMk1LtuI
- VV3Mq0Sc9coMBtBVnDXC6vcvYwYkkR2VhKiHB/Oax/7e3Jh4WWzA5dYzxrSujtDIdnYv
- Ol/75Y73t7gOWRmMjJ1PFdG0Vubs+k7QbOWdel4MGkquLgTjEsU5YY0f5wFVCtZ08AfY
- 8CcvO5Z6zCYtULzD2ZySxiZulB4T66jL7xEpOWx3SHtdJH11S+81KChXa88lKRA2Io2W
- rhcA==
-X-Gm-Message-State: APuU4Z9/cgslZYxwEM36TcWgUuH+jnuPXsOr03IZ6k41qEX0qEEI7vfc
- BCXrg3RwIw8nkRIz/LQPKhvrzACvNwEFxM7XYRATy7pjBy5J1fuKalbiLokcOv5grf1z8paUxBB
- +hGYTF3/laZwK2h1fFJw/0zGnC9A6a3DxQDPJqz8N6FSDuMOmEadON6UqzhT1LNCTkNeY0eoYwS
- Osrwj9fJhc60XLPJccaJowu5VrizHgHP7Qfqkxxtz9SLuy88JBd1kW4mN2
-X-Received: from qkbp4.prod.google.com ([2002:a05:620a:6f44:b0:93e:7793:940c])
+ bh=9ZKCJgfqeK9anWwh0gKycSMAbxUnr7i246FX/YvgOFM=;
+ b=sy0iYLaSQ/hzcEQ/8EfU3PsXBTCmtSCyHpXjWbmQnT+Bh5iVhWpbhhSJl+wbjlrb12
+ CWzdgPd3EKKm/2xisF6+Jb6XRhkGAKpIvj/kEZlMhJ0OEcnhfoBELHH/uSY0pXT3kw8S
+ 4mNdFcuGiYqCUig2CiNvnq1S2b0+BojvGUNNFzregKHQFlSANz5CYzb3qHInH9D3w59i
+ RKk2AXp+zaD5hrTqX8ODJa0wOOaZclkBl29iB1w+wiSoGdDpVETv57CfiRvbo4l9rLcO
+ 7/Rmg0JLjAGnpCGvq+3Q4IL5QYu95DgHXgC5OINKYAMFA/zdPgtS4V3XufifacXz9pix
+ KvJg==
+X-Gm-Message-State: APuU4Z+ZmGB3sMkDD+BXpMTEBMQNn1UAqwae3ziS44Vy53dgAJpC8cSE
+ pRboWCN2Ko30q1nIB5lp27foNzQer6+7MrJAgecT/iVNvRn+EqUNo3bIWOLjNmJk7ifzIPgZtTu
+ 0KBff+N9z55sfPK6AVH9AKZ9rdflhZrOmhd+j/SbOMgMWNq2mI9DsGEi42sjP4HRvmeH3Jotjtb
+ /a4ZaGtupLL7nCGak5bCF7MFU1Vbe7jhnUT7tFxeX1ZpCwRiSPnAqYDU0s
+X-Received: from qvbjt13.prod.google.com
+ ([2002:a05:6214:27ed:b0:91f:17bb:c527])
  (user=gildekel job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:2685:b0:949:710e:2cd9 with SMTP id
- af79cd13be357-949710e4826mr204159185a.76.1794695344793; 
- Sat, 14 Nov 2026 14:29:04 -0800 (PST)
-Date: Sat, 14 Nov 2026 17:29:01 -0500
-In-Reply-To: <20261114222902.1404033-1-gildekel@google.com>
+ 2002:a05:6214:3984:b0:91e:ed24:f5c1 with SMTP id
+ 6a1803df08f44-91f241e0e50mr105179626d6.20.1794695356346; 
+ Sat, 14 Nov 2026 14:29:16 -0800 (PST)
+Date: Sat, 14 Nov 2026 17:29:11 -0500
+In-Reply-To: <20261114222911.1405626-1-gildekel@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-References: <20261114222902.1404033-1-gildekel@google.com>
+References: <20261114222911.1405626-1-gildekel@google.com>
 X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
-Message-ID: <20261114222902.1404033-2-gildekel@google.com>
-Subject: [PATCH i-g-t 1/2] lib/igt_kms: Reset leftover COLOR_PIPELINE
+Message-ID: <20261114222911.1405626-4-gildekel@google.com>
+Subject: [PATCH i-g-t 3/3] tests/kms_hdr: Use /dev/kmsg in invalid-hdr
 From: Gil Dekel <gildekel@google.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Gil Dekel <gildekel@google.com>, Melissa Wen <mwen@igalia.com>, 
- Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
- Swati Sharma <swati2.sharma@intel.com>, 
- Mark Yacoub <markyacoub@google.com>
+Cc: Gil Dekel <gildekel@google.com>, Swati Sharma <swati2.sharma@intel.com>, 
+ Karthik B S <karthik.b.s@intel.com>, Mark Yacoub <markyacoub@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Mon, 16 Nov 2026 05:17:02 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -84,176 +83,110 @@ X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The plane COLOR_PIPELINE property is only visible to clients that set
-DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE. Most tests don't, so a pipeline
-left active by the previous KMS client stays applied to every plane
-they scan out, and IGT has no way to see it. igt_plane_reset() already
-resets COLOR_PIPELINE, but only when the test enabled the cap before
-igt_display_require().
+invalid-hdr checks that the kernel refused the EOTF by running
+system("dmesg|tail -n 1000|grep -E \"Unknown EOTF [0-9]+\"").
+That grep also matches "Unknown EOTF" lines left by earlier subtests or
+other outputs, so the check can pass even when this commit logged
+nothing. It also needs a shell, dmesg and grep on the target.
 
-The kernel keeps plane state when a client closes its fd, so a color
-pipeline a compositor selected stays active after it exits unless it
-puts the planes back to Bypass first. Anything a test then scans out
-on those planes goes through that color transform. On an xe laptop,
-two planes were still on non-Bypass pipelines after the compositor was
-stopped.
+Open /dev/kmsg with O_NONBLOCK and seek to its end right before the
+commit that sets the HDR metadata. After the commit, read the new
+records until EAGAIN, skip EPIPE when older records were overwritten,
+and assert that one of them contains "Unknown EOTF <n>".
 
-In igt_display_require(), before the planes are initialized, turn the
-cap on for a moment and commit COLOR_PIPELINE = 0 on every plane
-where it isn't 0. If that commit fails, retry plane by plane and only
-log failures, so a driver that rejects the reset can't break unrelated
-tests. Then turn the cap off again, unless a plane already exposed
-COLOR_PIPELINE, which means the caller had enabled it. With the cap on
-the kernel hides and rejects COLOR_ENCODING and COLOR_RANGE, which
-tests that don't use color pipelines still set.
-
-Cc: Melissa Wen <mwen@igalia.com>
-Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
 Cc: Swati Sharma <swati2.sharma@intel.com>
+Cc: Karthik B S <karthik.b.s@intel.com>
 Cc: Mark Yacoub <markyacoub@google.com>
 Assisted-by: Claude:claude-opus-5.5
 Signed-off-by: Gil Dekel <gildekel@google.com>
 ---
- lib/igt_kms.c | 120 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 120 insertions(+)
+ tests/kms_hdr.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 48 insertions(+), 1 deletion(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 915c6a8a2..541dd8c35 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -3110,6 +3110,122 @@ static int crtc_pipe_compare(const void *_a, const void *_b)
- 	return a->hardware_pipe - b->hardware_pipe;
+diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
+index e23d5e469..acfc38920 100644
+--- a/tests/kms_hdr.c
++++ b/tests/kms_hdr.c
+@@ -29,6 +29,8 @@
+  */
+ 
+ #include "igt.h"
++#include <ctype.h>
++#include <errno.h>
+ #include <fcntl.h>
+ #include <termios.h>
+ #include <unistd.h>
+@@ -354,6 +356,44 @@ static void adjust_brightness(data_t *data, uint32_t flags)
+ 	igt_assert_eq(igt_backlight_write(context.old, "brightness", &context), 0);
  }
  
-+static bool planes_expose_color_pipeline(int drm_fd,
-+					 const drmModePlaneRes *plane_res)
-+{
-+	for (int i = 0; i < plane_res->count_planes; i++)
-+		if (kmstest_get_property(drm_fd, plane_res->planes[i],
-+					 DRM_MODE_OBJECT_PLANE, "COLOR_PIPELINE",
-+					 NULL, NULL, NULL))
-+			return true;
-+
-+	return false;
-+}
-+
-+static int commit_plane_color_pipeline_bypass(int drm_fd,
-+					      const uint32_t *plane_ids,
-+					      const uint32_t *prop_ids,
-+					      int count)
-+{
-+	drmModeAtomicReq *req = drmModeAtomicAlloc();
-+	int ret;
-+
-+	igt_assert(req);
-+
-+	for (int i = 0; i < count; i++)
-+		igt_assert_lte(0, drmModeAtomicAddProperty(req, plane_ids[i],
-+							   prop_ids[i], 0));
-+
-+	ret = drmModeAtomicCommit(drm_fd, req, DRM_MODE_ATOMIC_ALLOW_MODESET,
-+				  NULL);
-+	drmModeAtomicFree(req);
-+
-+	return ret;
-+}
-+
 +/*
-+ * Put every plane COLOR_PIPELINE back to Bypass (0).
-+ *
-+ * COLOR_PIPELINE is only visible with DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE,
-+ * so a pipeline left active by a previous client (e.g. a compositor that
-+ * was killed) is invisible to IGT and alters every plane it scans out.
-+ * Enable the cap just for this reset, then drop it again unless the
-+ * caller had already enabled it: with the cap set the kernel rejects
-+ * COLOR_ENCODING and COLOR_RANGE, which legacy tests rely on.
++ * Opens /dev/kmsg positioned at its end, so that only kernel messages
++ * logged after this call are read back.
 + */
-+static void igt_reset_plane_color_pipelines(int drm_fd)
++static int kmsg_open_at_end(void)
 +{
-+	drmModePlaneRes *plane_res;
-+	uint32_t *plane_ids, *prop_ids;
-+	bool cap_was_set;
-+	int count = 0, ret;
++	int fd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
 +
-+	plane_res = drmModeGetPlaneResources(drm_fd);
-+	if (!plane_res)
-+		return;
++	igt_assert_f(fd >= 0, "Failed to open /dev/kmsg: %s\n", strerror(errno));
++	igt_assert(lseek(fd, 0, SEEK_END) >= 0);
 +
-+	if (!plane_res->count_planes) {
-+		drmModeFreePlaneResources(plane_res);
-+		return;
-+	}
-+
-+	cap_was_set = planes_expose_color_pipeline(drm_fd, plane_res);
-+	if (!cap_was_set &&
-+	    drmSetClientCap(drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1)) {
-+		drmModeFreePlaneResources(plane_res);
-+		return;
-+	}
-+
-+	plane_ids = calloc(plane_res->count_planes, sizeof(*plane_ids));
-+	prop_ids = calloc(plane_res->count_planes, sizeof(*prop_ids));
-+	igt_assert(plane_ids && prop_ids);
-+
-+	for (int i = 0; i < plane_res->count_planes; i++) {
-+		uint32_t prop_id;
-+		uint64_t value;
-+
-+		if (!kmstest_get_property(drm_fd, plane_res->planes[i],
-+					  DRM_MODE_OBJECT_PLANE, "COLOR_PIPELINE",
-+					  &prop_id, &value, NULL) || !value)
-+			continue;
-+
-+		igt_debug("Plane %u: resetting leaked COLOR_PIPELINE %" PRIu64
-+			  " to Bypass\n", plane_res->planes[i], value);
-+		plane_ids[count] = plane_res->planes[i];
-+		prop_ids[count] = prop_id;
-+		count++;
-+	}
-+
-+	if (count) {
-+		ret = commit_plane_color_pipeline_bypass(drm_fd, plane_ids,
-+							 prop_ids, count);
-+		if (ret)
-+			igt_debug("Resetting %d COLOR_PIPELINE(s) at once failed: %s\n",
-+				  count, strerror(-ret));
-+
-+		/* Retry plane by plane so one bad plane can't block the rest. */
-+		for (int i = 0; ret && i < count; i++) {
-+			int plane_ret;
-+
-+			plane_ret = commit_plane_color_pipeline_bypass(drm_fd,
-+								       &plane_ids[i],
-+								       &prop_ids[i],
-+								       1);
-+			if (plane_ret)
-+				igt_info("Plane %u: failed to reset COLOR_PIPELINE to Bypass: %s\n",
-+					 plane_ids[i], strerror(-plane_ret));
-+		}
-+	}
-+
-+	free(plane_ids);
-+	free(prop_ids);
-+
-+	if (!cap_was_set)
-+		drmSetClientCap(drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 0);
-+
-+	drmModeFreePlaneResources(plane_res);
++	return fd;
 +}
 +
- /**
-  * igt_display_require:
-  * @display: a pointer to an #igt_display_t structure
-@@ -3195,6 +3311,10 @@ void igt_display_require(igt_display_t *display, int drm_fd)
- 	if (drmSetClientCap(drm_fd, LOCAL_DRM_CLIENT_CAP_CURSOR_PLANE_HOTSPOT, 1) == 0)
- 		display->has_virt_cursor_plane = 1;
- 
-+	/* Before igt_crtc_init(), so plane props are read with the caller's caps. */
-+	if (display->is_atomic)
-+		igt_reset_plane_color_pipelines(drm_fd);
++/* Returns true if a record read from @kmsg_fd contains "Unknown EOTF <n>". */
++static bool kmsg_has_unknown_eotf(int kmsg_fd)
++{
++	static const char pattern[] = "Unknown EOTF ";
++	char buf[8192];
++	ssize_t len;
 +
- 	plane_resources = drmModeGetPlaneResources(display->drm_fd);
- 	igt_assert(plane_resources);
++	for (;;) {
++		const char *match;
++
++		/* Each read() returns one record, EAGAIN once drained. */
++		len = read(kmsg_fd, buf, sizeof(buf) - 1);
++		if (len < 0 && errno == EPIPE)
++			continue; /* Older records were overwritten, keep going. */
++		if (len <= 0)
++			return false;
++
++		buf[len] = '\0';
++		match = strstr(buf, pattern);
++		if (match && isdigit((unsigned char)match[sizeof(pattern) - 1]))
++			return true;
++	}
++}
++
+ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
+ 			       uint32_t format, uint32_t flags)
+ {
+@@ -361,6 +401,7 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
+ 	struct hdr_output_metadata hdr;
+ 	igt_crc_t ref_crc, new_crc;
+ 	int afb_id;
++	int kmsg_fd = -1;
+ 
+ 	/* 10-bit formats are slow, so limit the size. */
+ 	afb_id = igt_create_fb(data->fd, 512, 512,
+@@ -392,11 +433,17 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
+ 	}
+ 
+ 	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
++	if (flags & TEST_INVALID_HDR)
++		kmsg_fd = kmsg_open_at_end();
+ 	igt_hdr_set_metadata(data->output, &hdr);
+ 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
+ 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+ 	if (flags & TEST_INVALID_HDR) {
+-		igt_assert_eq(system("dmesg|tail -n 1000|grep -E \"Unknown EOTF [0-9]+\""), 0);
++		bool logged = kmsg_has_unknown_eotf(kmsg_fd);
++
++		close(kmsg_fd);
++		igt_assert_f(logged,
++			     "Kernel did not log \"Unknown EOTF\" for invalid HDR metadata\n");
+ 		return;
+ 	}
  
 -- 
 Gil Dekel, Software Engineer, Google / ChromeOS Display and Graphics
