@@ -2,61 +2,62 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01A93606A31C
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 05:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A4C606A31C
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 05:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=M8EUnbur
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jFRs3kg/
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A2B3410E2BF;
-	Mon, 16 Nov 2026 05:30:29 +0000 (UTC)
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A90210E0F8
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 22:29:07 +0000 (UTC)
-Received: by mail-qt1-f198.google.com with SMTP id
- d75a77b69052e-5364605e74bso17048131cf.3
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 14:29:07 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 358A710E2DB;
+	Mon, 16 Nov 2026 05:31:25 +0000 (UTC)
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B3CED10E3CC
+ for <igt-dev@lists.freedesktop.org>; Sun, 15 Nov 2026 00:18:59 +0000 (UTC)
+Received: by mail-qt1-f200.google.com with SMTP id
+ d75a77b69052e-54af6c38073so53476221cf.1
+ for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 16:18:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20260707; t=1794695346; x=1795300146;
+ d=google.com; s=20260707; t=1794701938; x=1795306738;
  darn=lists.freedesktop.org; 
  h=content-type:cc:to:from:subject:message-id:references:mime-version
  :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
- :content-type; bh=cy7Q0Xrhv7OQpUPROJ1Wjj4AI4y1ERrfUY0Ynb/2VIc=;
- b=M8EUnburfDt32wrD6lydVLiQP87oMxMOmgCXRpD9zr6RkIcaJcbIuhmPHrVD0/xjWm
- 0UNEFawkuTLrq63bG+eEg9hWHhh4J7bgrd0Jct81SwrF/5RqPigGqmYhPWJO+YfwlmSb
- azPR6UqnL9cPvuOWPRn1b2DtKSOxx9C5NMsGuKJBAltt3LnwqGIO4Gd4gtBHmiGisty/
- t4/COxdz209LK2LCsLkOCLW45O0FVb+0Os+0HqtY4fqD/g/f7HcvReWvSQe2S55BBUtW
- YraCDiPNWQQ6/uI6umxli3qz9twTFCsbHfHt7zNzQarMO0PGWqskAwnweZ7nGLUl+QbA
- y+pg==
+ :content-type; bh=Yj0RnOGxJfa0zckkYO1wlSOf/y9NpXiIb/xoFf2o5TM=;
+ b=jFRs3kg/B687Tt40lEXADave1IKl0VbZcpu2cMvfKubqMi77KIlMypEPWilzyO2j52
+ WARuyZgu5gCq8BVilAAI3ML5wqlwYffif7p0/WXdklVWQnDDuKY7+STaheaD0VDU2FRl
+ oVbgQTDYKmxew8NS27XpXPHc102+9pvCbUiiALFc6hqGVjCb2N9ce5VHUPvGRVJfP/yu
+ EdHDU4C+4nEvM4Xx2scYNDVe+hPZGEZSSOGUju9Y9gHXNWGKAu+3/XaD/lflxQs0+vqH
+ y6VQGNsDouRImp3pprEeIudGNnLaUmXKY4IzsCoMJGkY4UO5L0NMT3Pw+EvKIJdNzpfF
+ 0Plw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1794695346; x=1795300146;
+ d=1e100.net; s=20260707; t=1794701938; x=1795306738;
  h=content-type:cc:to:from:subject:message-id:references:mime-version
  :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to:content-type;
- bh=cy7Q0Xrhv7OQpUPROJ1Wjj4AI4y1ERrfUY0Ynb/2VIc=;
- b=gmCh3meUIcmTVQy4pZSXLF/BQM1DrS39Y9vfHfrghbMPyUm0OCgoU49hBv0F3OdUc7
- Lk1wGBXsKKbAfgoXYksS/HiavujsfZ+U0WSIWw7UFZui67lqj7gqx6MqWQXG4rpYtmuY
- glaqYFicO3UbfGE1Scdg/HXWhmWJ34ymqBnkhMD24hxY94Phpl2Bm5TSMFAxy5dETT+0
- 8CkI38kQmJa6FNH/Lo7nq6tEV+I9D3OvoCLWfmFu8dYbKkClWIACeexlxmyYT6U7AWpU
- LZ30k5wYsIgSMaiXwPlr2DR3IXySxReTSz7uldR6l0QSToXVQU0aKiy0KZKOfYA0r1n+
- +3rg==
-X-Gm-Message-State: APuU4Z+MSPQtYzuo7jTmhORxi64HTHgEJvQtnFeoS+7Prdi2qwGVaXs2
- lcL5NBOisCVccU6AcdQTWV36nfxj/gSOprp0aNkKeSDK7r7YMrSkfP12rkdijD8qEGG9KryeRlq
- E3dFUM1JqB6ti8e9DsiIhCIvcxIVhhrGy3z7c87BRNbltLSnGolJ+lnE4XuWnYYPuo/HrsnuXFc
- VS5r+elHi6YDVDww6bliEzQtwFiOqmyjhOV4TgEC3DMDnXHlEo9Kfy8QkX
-X-Received: from qvwo17.prod.google.com ([2002:a05:6214:1811:b0:91c:6c73:b023])
+ bh=Yj0RnOGxJfa0zckkYO1wlSOf/y9NpXiIb/xoFf2o5TM=;
+ b=xfF33FBqDxSLXHnsM+OpHm+HD27GeCMLETN62Qu13Uavn7bnv69ghhDZXgV0DkuLQw
+ NKlKikVVpqvcxoGUHs4qWigeo85pwyHpGVZ9FTsV7GOG81XYIkFNekhrTpG8KlIq3OMq
+ LayaYBqycMExA6RrYIbkcirBhWhXe2HRmoWbXruwNp//oQC5BVGDzyufa8jmFn4CAl/a
+ +er9ciHgrNloAXQ7F0st1RLSFYOQoeiASnV1EFCYmbINyjsbPBMcR6/YXaLx6adAiOzt
+ MKCN9ovP7XLGiMGQi1CQ/E3B9JUp+t7mzgEOis0dye9nm51jlnF7JdWQePh2kjgMfkyT
+ v04A==
+X-Gm-Message-State: APuU4Z/iaZG+aULK7Tlz2pcskMAWRLrW9twMrWzydGch8VkSEa5+beqh
+ DVejG3ZyjnhN5Lmoi0jzRAk2JsNiSPAH8tc33R0KSozqhF/FbX0AHj2NOFmiO/jEXn1aKisjpQd
+ Fw0aeJPZ0gy0dnAw+BkTOp28NIdu78ZT4ALkSFRRdmUkMu1CJLDpzfFI5RD+nh0EVDf6/jfhabw
+ wg/XFBx7sNJSGZR8D+dBB7JrBjDa8ZkWzfbp0v+eWzrzg/VwTm2Fws5494
+X-Received: from qvbfo15.prod.google.com ([2002:ad4:5f0f:0:b0:91f:1004:2b99])
  (user=gildekel job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:2592:b0:535:28bf:556a with SMTP id
- d75a77b69052e-55ac7b550f1mr98134961cf.37.1794695346042; 
- Sat, 14 Nov 2026 14:29:06 -0800 (PST)
-Date: Sat, 14 Nov 2026 17:29:02 -0500
-In-Reply-To: <20261114222902.1404033-1-gildekel@google.com>
+ 2002:ac8:570d:0:b0:530:e682:87c with SMTP id
+ d75a77b69052e-55957059cbbmr163031881cf.33.1794701938028; 
+ Sat, 14 Nov 2026 16:18:58 -0800 (PST)
+Date: Sat, 14 Nov 2026 19:18:54 -0500
+In-Reply-To: <20261115001855.2931860-1-gildekel@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261114222902.1404033-1-gildekel@google.com>
+ <20261115001855.2931860-1-gildekel@google.com>
 X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
-Message-ID: <20261114222902.1404033-3-gildekel@google.com>
-Subject: [PATCH i-g-t 2/2] lib/igt_kms: Reset connector Colorspace
+Message-ID: <20261115001855.2931860-2-gildekel@google.com>
+Subject: [PATCH i-g-t v2 1/2] lib/igt_kms: Reset leftover COLOR_PIPELINE
 From: Gil Dekel <gildekel@google.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Gil Dekel <gildekel@google.com>, Melissa Wen <mwen@igalia.com>, 
@@ -84,16 +85,28 @@ X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-igt_display_reset() leaves the connector Colorspace property alone, so
-tests inherit whatever the previous KMS client set. After a compositor
-that drove an HDR eDP panel exits, the connector can stay at
-BT2020_RGB. The next test then sends BT.2020 colorimetry to the sink
-while it renders plain sRGB content.
+The plane COLOR_PIPELINE property is only visible to clients that set
+DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE. Most tests don't, so a pipeline
+left active by the previous KMS client stays applied to every plane
+they scan out, and IGT has no way to see it. igt_plane_reset() already
+resets COLOR_PIPELINE, but only when the test enabled the cap before
+igt_display_require().
 
-Track Colorspace as IGT_CONNECTOR_COLORSPACE and set it back to
-"Default" in igt_output_reset(), next to HDR_OUTPUT_METADATA. Use
-igt_output_try_prop_enum() so a driver whose enum lacks "Default" can't
-abort the reset.
+The kernel keeps plane state when a client closes its fd, so a color
+pipeline a compositor selected stays active after it exits unless it
+puts the planes back to Bypass first. Anything a test then scans out
+on those planes goes through that color transform. On an xe laptop,
+two planes were still on non-Bypass pipelines after the compositor was
+stopped.
+
+In igt_display_require(), before the planes are initialized, turn the
+cap on for a moment and commit COLOR_PIPELINE = 0 on every plane
+where it isn't 0. Log any commit failure without aborting, so a driver
+that rejects the reset can't break unrelated tests. Then turn the cap
+off again, unless a plane already exposed COLOR_PIPELINE, which means
+the caller had enabled it. With the cap on the kernel hides and
+rejects COLOR_ENCODING and COLOR_RANGE, which tests that don't use
+color pipelines still set.
 
 Cc: Melissa Wen <mwen@igalia.com>
 Cc: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
@@ -104,57 +117,99 @@ Signed-off-by: Gil Dekel <gildekel@google.com>
 ---
 
 Notes:
-    The new enum entry is indented with a tab to keep checkpatch quiet
-    (LEADING_SPACE), while the existing entries in this block use
-    spaces. Happy to switch it to spaces to match.
+    v2: Apologies for the over-engineered v1 bloat from agent-assisted
+        drafting; reuse plane_resources from igt_display_require() and
+        build one drmModeAtomicReq inline without temporary id arrays.
 
- lib/igt_kms.c | 6 ++++++
- lib/igt_kms.h | 1 +
- 2 files changed, 7 insertions(+)
+ lib/igt_kms.c | 68 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 68 insertions(+)
 
 diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 541dd8c35..af8c0ff0e 100644
+index 915c6a8a2..33060eaac 100644
 --- a/lib/igt_kms.c
 +++ b/lib/igt_kms.c
-@@ -759,6 +759,7 @@ const char * const igt_connector_prop_names[IGT_NUM_CONNECTOR_PROPS] = {
- 	[IGT_CONNECTOR_WRITEBACK_FB_ID] = "WRITEBACK_FB_ID",
- 	[IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR] = "WRITEBACK_OUT_FENCE_PTR",
- 	[IGT_CONNECTOR_DITHERING_MODE] = "dithering mode",
-+	[IGT_CONNECTOR_COLORSPACE] = "Colorspace",
- };
- 
- const char * const igt_rotation_names[] = {
-@@ -2763,6 +2764,10 @@ static void igt_output_reset(igt_output_t *output)
- 	if (igt_output_has_prop(output, IGT_CONNECTOR_DITHERING_MODE))
- 		igt_output_set_prop_enum(output, IGT_CONNECTOR_DITHERING_MODE,
- 					 "off");
-+
-+	if (igt_output_has_prop(output, IGT_CONNECTOR_COLORSPACE))
-+		igt_output_try_prop_enum(output, IGT_CONNECTOR_COLORSPACE,
-+					 "Default");
+@@ -3110,6 +3110,70 @@ static int crtc_pipe_compare(const void *_a, const void *_b)
+ 	return a->hardware_pipe - b->hardware_pipe;
  }
  
++/*
++ * Put every plane COLOR_PIPELINE back to Bypass (0).
++ *
++ * COLOR_PIPELINE is only visible with DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE,
++ * so a pipeline left active by a previous client (e.g. a compositor that
++ * was killed) is invisible to IGT and alters every plane it scans out.
++ * Enable the cap just for this reset, then drop it again unless the
++ * caller had already enabled it: with the cap set the kernel rejects
++ * COLOR_ENCODING and COLOR_RANGE, which legacy tests rely on.
++ */
++static void igt_reset_plane_color_pipelines(int drm_fd,
++					    const drmModePlaneRes *plane_res)
++{
++	drmModeAtomicReq *req = NULL;
++	bool cap_was_set = false;
++
++	for (int i = 0; i < plane_res->count_planes; i++) {
++		if (kmstest_get_property(drm_fd, plane_res->planes[i],
++					 DRM_MODE_OBJECT_PLANE,
++					 "COLOR_PIPELINE", NULL, NULL, NULL)) {
++			cap_was_set = true;
++			break;
++		}
++	}
++
++	if (!cap_was_set &&
++	    drmSetClientCap(drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 1))
++		return;
++
++	for (int i = 0; i < plane_res->count_planes; i++) {
++		uint32_t prop_id;
++		uint64_t value;
++
++		if (!kmstest_get_property(drm_fd, plane_res->planes[i],
++					  DRM_MODE_OBJECT_PLANE,
++					  "COLOR_PIPELINE",
++					  &prop_id, &value, NULL) || !value)
++			continue;
++
++		igt_debug("Plane %u: resetting leaked COLOR_PIPELINE %" PRIu64
++			  " to Bypass\n", plane_res->planes[i], value);
++		if (!req) {
++			req = drmModeAtomicAlloc();
++			igt_assert(req);
++		}
++		igt_assert_lte(0, drmModeAtomicAddProperty(req,
++							   plane_res->planes[i],
++							   prop_id, 0));
++	}
++
++	if (req) {
++		int ret = drmModeAtomicCommit(drm_fd, req,
++					      DRM_MODE_ATOMIC_ALLOW_MODESET,
++					      NULL);
++		if (ret)
++			igt_debug("Resetting COLOR_PIPELINE failed: %s\n",
++				  strerror(-ret));
++		drmModeAtomicFree(req);
++	}
++
++	if (!cap_was_set)
++		drmSetClientCap(drm_fd, DRM_CLIENT_CAP_PLANE_COLOR_PIPELINE, 0);
++}
++
  /**
-@@ -2778,6 +2783,7 @@ static void igt_output_reset(igt_output_t *output)
-  *   %IGT_CONNECTOR_CONTENT_PROTECTION (if applicable)
-  *   %IGT_CONNECTOR_HDR_OUTPUT_METADATA (if applicable)
-  * - %IGT_CONNECTOR_DITHERING_MODE (if applicable)
-+ * - %IGT_CONNECTOR_COLORSPACE (if applicable)
-  * - igt_output_override_mode() to default.
-  *
-  * For pipes:
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index dfcb91e02..e6326dea8 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -201,6 +201,7 @@ enum igt_atomic_connector_properties {
-        IGT_CONNECTOR_WRITEBACK_FB_ID,
-        IGT_CONNECTOR_WRITEBACK_OUT_FENCE_PTR,
-        IGT_CONNECTOR_DITHERING_MODE,
-+	IGT_CONNECTOR_COLORSPACE,
-        IGT_NUM_CONNECTOR_PROPS
- };
+  * igt_display_require:
+  * @display: a pointer to an #igt_display_t structure
+@@ -3198,6 +3262,10 @@ void igt_display_require(igt_display_t *display, int drm_fd)
+ 	plane_resources = drmModeGetPlaneResources(display->drm_fd);
+ 	igt_assert(plane_resources);
  
++	/* Before igt_crtc_init(), so plane props are read with the caller's caps. */
++	if (display->is_atomic)
++		igt_reset_plane_color_pipelines(drm_fd, plane_resources);
++
+ 	display->n_planes = plane_resources->count_planes;
+ 	display->planes = calloc(display->n_planes, sizeof(igt_plane_t));
+ 	igt_assert_f(display->planes, "Failed to allocate memory for %d planes\n", display->n_planes);
 -- 
 Gil Dekel, Software Engineer, Google / ChromeOS Display and Graphics
 
