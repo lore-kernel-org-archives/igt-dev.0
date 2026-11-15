@@ -2,66 +2,67 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81269606A31C
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 05:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D1E606A31C
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 05:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=OCCg6ANW
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=H8kI6gtz
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3761710E175;
-	Mon, 16 Nov 2026 05:19:42 +0000 (UTC)
-Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
- [209.85.219.70])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AF46210E1D3
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 22:29:17 +0000 (UTC)
-Received: by mail-qv1-f70.google.com with SMTP id
- 6a1803df08f44-91c046843f1so16360466d6.1
- for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 14:29:17 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 827E210E201;
+	Mon, 16 Nov 2026 05:20:35 +0000 (UTC)
+Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
+ [74.125.224.72])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1B7C010E290
+ for <igt-dev@lists.freedesktop.org>; Sun, 15 Nov 2026 00:18:53 +0000 (UTC)
+Received: by mail-yx1-f72.google.com with SMTP id
+ 956f58d0204a3-67bda487981so3961637d50.2
+ for <igt-dev@lists.freedesktop.org>; Sat, 14 Nov 2026 16:18:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=google.com; s=20260707; t=1794695356; x=1795300156;
+ d=google.com; s=20260707; t=1794701932; x=1795306732;
  darn=lists.freedesktop.org; 
  h=content-type:cc:to:from:subject:message-id:references:mime-version
  :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
- :content-type; bh=9ZKCJgfqeK9anWwh0gKycSMAbxUnr7i246FX/YvgOFM=;
- b=OCCg6ANWG2AvUJZ18uqwsL/P1Y5hyGE0hwYJ4ZuIb2A3Q8z6M+5ZB31TbBUVr3SSyr
- 5GmXlKG6/f9FANWV6zCyja/gl3tRB6nlsoFhyYjFXfY58xRNzFOK+5mv9VsCVmuhr9gC
- I24CIAPv7sIC4HT/gaALB3cNhlQjgUNG9WsUHiOQWRARi0EDL8FBMxvc/uBwBh5FAAHB
- 7m/jzCQO23nf9ABl09m8mG3Qh7pBLYxDMSAL0hkSVc4tLN+uLcANsoBwiv9o+yldw1FJ
- RM/5z7UoJ6WIO71/tVRJ4WDKqFeL1kXaOhNKPfuJVk6qhA/ImqFIgPaKb9D67u71cxe/
- zztA==
+ :content-type; bh=DVjrl6a6YX9X/89JP7RvTu0QF+BOSCzUGTp63AnMjio=;
+ b=H8kI6gtzmKBBQNiTrL86CI7BPOtHrBijAnz7PM5lOpcw87M8dC41ml7lCu/L39Xyi5
+ qwakVgJCX3CnAPc1QIhjEdIFt7HI7H5tNVo5Ze4xHMVdWhvts/p156Iido3IshtAG9GG
+ 3K44j1ciOm4tMiMTkWBcB0+ku82CvJNLafoFb0bStPg6qJQxdAAYYNNffh6gNQvJt4Mg
+ nxUHgYj3jl3xJTfJtDD9anAhgLeddqHHA5ildbeMOeqFNhI6Y8CmIlAaJ1xhoAwowQ79
+ KPJmXgaHiROQ4M2U9Ul6136dNo7Uagq9ZkYUeTD5GQbQRhLDqO9bTbxoapq6h85X12nv
+ X8IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1794695356; x=1795300156;
+ d=1e100.net; s=20260707; t=1794701932; x=1795306732;
  h=content-type:cc:to:from:subject:message-id:references:mime-version
  :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to:content-type;
- bh=9ZKCJgfqeK9anWwh0gKycSMAbxUnr7i246FX/YvgOFM=;
- b=sy0iYLaSQ/hzcEQ/8EfU3PsXBTCmtSCyHpXjWbmQnT+Bh5iVhWpbhhSJl+wbjlrb12
- CWzdgPd3EKKm/2xisF6+Jb6XRhkGAKpIvj/kEZlMhJ0OEcnhfoBELHH/uSY0pXT3kw8S
- 4mNdFcuGiYqCUig2CiNvnq1S2b0+BojvGUNNFzregKHQFlSANz5CYzb3qHInH9D3w59i
- RKk2AXp+zaD5hrTqX8ODJa0wOOaZclkBl29iB1w+wiSoGdDpVETv57CfiRvbo4l9rLcO
- 7/Rmg0JLjAGnpCGvq+3Q4IL5QYu95DgHXgC5OINKYAMFA/zdPgtS4V3XufifacXz9pix
- KvJg==
-X-Gm-Message-State: APuU4Z+ZmGB3sMkDD+BXpMTEBMQNn1UAqwae3ziS44Vy53dgAJpC8cSE
- pRboWCN2Ko30q1nIB5lp27foNzQer6+7MrJAgecT/iVNvRn+EqUNo3bIWOLjNmJk7ifzIPgZtTu
- 0KBff+N9z55sfPK6AVH9AKZ9rdflhZrOmhd+j/SbOMgMWNq2mI9DsGEi42sjP4HRvmeH3Jotjtb
- /a4ZaGtupLL7nCGak5bCF7MFU1Vbe7jhnUT7tFxeX1ZpCwRiSPnAqYDU0s
-X-Received: from qvbjt13.prod.google.com
- ([2002:a05:6214:27ed:b0:91f:17bb:c527])
+ bh=DVjrl6a6YX9X/89JP7RvTu0QF+BOSCzUGTp63AnMjio=;
+ b=YW4LESKQw7UNlTDNHMeBZ/QJssl/OCiksbNFR35b24qMduXjPYTpD5FnF72oODNN2l
+ q9zIkhiStLYb72QJODIK9bDDHvCDqgnL7ORmuzTiUQrF+1/32JQU+yJ1Xy28J1Y+ZgFk
+ yYNMlsUiLZiBBY5avV5n5+fdidJCShrh1lcY6mpepiL7G1H8hi7WfEb7EE9F9i6kCJ3J
+ pJgaNsxfN/u6Xun6oc7n2SrkVH3PpPw1Vksv8lsUNnaiwmrIx7p4LsSGGGtZA4CSGnqR
+ j47nKATOodC2XJ+cvc6iS4aJzia5xO6K3m6dJXn03YYYgG6x5hkMGCVm9vl7M3TpsXbQ
+ PCgA==
+X-Gm-Message-State: APuU4Z8NKWDrifH01P60r9sUQ/mJUYQBOefSNnAEa1Ytjv9ypDjZuN3W
+ z0VN0NiDCE7sQJ7+OdU7MaNV8vuwP+XMOWHpZytduJdMN78fIPMIhn3GFMw4hEL1zJ8n5YYsQ9x
+ Z2R+r83KG49JKznHLBbM06JM/X+Ix9YZtFxgQcd0FzP7PdBjSjj257S7zJ/NC2cDPfxkLtLWx7A
+ kXu8226cdELXhXjITBHa0OgV0/Ga0QzkNB3xn3TnSIgpFIXSinZ3+JnpzM
+X-Received: from ywbgn8.prod.google.com ([2002:a05:690c:4388:b0:8ae:2b76:3db0])
  (user=gildekel job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6214:3984:b0:91e:ed24:f5c1 with SMTP id
- 6a1803df08f44-91f241e0e50mr105179626d6.20.1794695356346; 
- Sat, 14 Nov 2026 14:29:16 -0800 (PST)
-Date: Sat, 14 Nov 2026 17:29:11 -0500
-In-Reply-To: <20261114222911.1405626-1-gildekel@google.com>
+ 2002:a05:690c:a213:20b0:8b2:e7dc:dff5 with SMTP id
+ 00721157ae682-8b4aa2e13demr24804037b3.50.1794701931313; 
+ Sat, 14 Nov 2026 16:18:51 -0800 (PST)
+Date: Sat, 14 Nov 2026 19:18:50 -0500
+In-Reply-To: <20261114222855.1403127-1-gildekel@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-References: <20261114222911.1405626-1-gildekel@google.com>
+References: <20261114222855.1403127-1-gildekel@google.com>
 X-Mailer: git-send-email 2.56.0.611.g1030f0b940-goog
-Message-ID: <20261114222911.1405626-4-gildekel@google.com>
-Subject: [PATCH i-g-t 3/3] tests/kms_hdr: Use /dev/kmsg in invalid-hdr
+Message-ID: <20261115001850.2931093-1-gildekel@google.com>
+Subject: [PATCH i-g-t v2] lib/igt_kms: Skip connectors that can't scan out
 From: Gil Dekel <gildekel@google.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Gil Dekel <gildekel@google.com>, Swati Sharma <swati2.sharma@intel.com>, 
- Karthik B S <karthik.b.s@intel.com>, Mark Yacoub <markyacoub@google.com>
+Cc: Gil Dekel <gildekel@google.com>, 
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Mark Yacoub <markyacoub@google.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Mailman-Approved-At: Mon, 16 Nov 2026 05:17:02 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -83,111 +84,262 @@ X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-invalid-hdr checks that the kernel refused the EOTF by running
-system("dmesg|tail -n 1000|grep -E \"Unknown EOTF [0-9]+\"").
-That grep also matches "Unknown EOTF" lines left by earlier subtests or
-other outputs, so the check can pass even when this commit logged
-nothing. It also needs a shell, dmesg and grep on the target.
+igt_output_is_connected() trusts the connector status alone. Some
+drivers expose writeback outputs as always-connected
+DRM_MODE_CONNECTOR_VIRTUAL connectors next to their eDP and DP
+connectors; the downstream msm SDE driver is one. IGT then picks such
+a connector as a display. Its first modeset fails with -EINVAL because
+no writeback framebuffer is attached, and every test that calls
+igt_display_require() fails in its fixture.
 
-Open /dev/kmsg with O_NONBLOCK and seek to its end right before the
-commit that sets the HDR metadata. After the commit, read the new
-records until EAGAIN, skip EPIPE when older records were overwritten,
-and assert that one of them contains "Unknown EOTF <n>".
+Commit 321448df7fc9 ("lib/igt_kms: Do not treat writeback and virtual
+connectors as connected") skipped all virtual connectors. It broke VKMS,
+which has nothing but virtual connectors, and was reverted.
 
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
+In igt_display_reset_outputs(), classify each output from the uAPI
+alone:
+- Writeback connectors, and any connector exposing WRITEBACK_FB_ID,
+  are never scanout sinks.
+- On devices that only expose virtual connectors (VKMS, virtio-gpu,
+  vmwgfx, ...), the virtual connectors are the displays and are left
+  alone.
+- Next to physical connectors, a connected virtual connector is hidden
+  only if the kernel rejects a TEST_ONLY commit that lights it up with
+  a plain XRGB8888 primary plane on every CRTC it can use. If the probe
+  can't be sent (no atomic cap, or not DRM master), the connector is
+  kept.
+
+igt_output_is_connected() honours non_scanout_sink. kms_setmode
+enumerates connectors on a legacy fd, so it initializes a temporary
+igt_display_t in its fixture to classify them and drops the atomic cap
+afterwards. kms_writeback walks for_each_output() and still finds its
+connector.
+
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: Mark Yacoub <markyacoub@google.com>
 Assisted-by: Claude:claude-opus-5.5
 Signed-off-by: Gil Dekel <gildekel@google.com>
 ---
- tests/kms_hdr.c | 49 ++++++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 48 insertions(+), 1 deletion(-)
 
-diff --git a/tests/kms_hdr.c b/tests/kms_hdr.c
-index e23d5e469..acfc38920 100644
---- a/tests/kms_hdr.c
-+++ b/tests/kms_hdr.c
-@@ -29,6 +29,8 @@
-  */
+Notes:
+    v2: Apologies for the over-engineered v1 bloat from agent-assisted
+        drafting; replace custom libdrm dumb-buffer probing with an
+        igt_display_t/igt_fb TEST_ONLY probe in
+        igt_display_reset_outputs().
+
+ lib/igt_kms.c       | 79 +++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_kms.h       |  8 +++--
+ tests/kms_setmode.c | 26 +++++++++++++++
+ 3 files changed, 110 insertions(+), 3 deletions(-)
+
+diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+index 915c6a8a2..ba9e39062 100644
+--- a/lib/igt_kms.c
++++ b/lib/igt_kms.c
+@@ -2823,6 +2823,7 @@ void igt_display_reset(igt_display_t *display)
  
- #include "igt.h"
-+#include <ctype.h>
-+#include <errno.h>
- #include <fcntl.h>
- #include <termios.h>
- #include <unistd.h>
-@@ -354,6 +356,44 @@ static void adjust_brightness(data_t *data, uint32_t flags)
- 	igt_assert_eq(igt_backlight_write(context.old, "brightness", &context), 0);
+ static void igt_fill_plane_format_mod(igt_display_t *display, igt_plane_t *plane);
+ static void igt_fill_display_format_mod(igt_display_t *display);
++static int igt_atomic_commit(igt_display_t *display, uint32_t flags, void *user_data);
+ 
+ static bool igt_crtc_has_valid_output(igt_crtc_t *crtc)
+ {
+@@ -2883,6 +2884,52 @@ static void igt_handle_spurious_hpd(igt_display_t *display)
+ 	dump_connector_attrs();
  }
  
-+/*
-+ * Opens /dev/kmsg positioned at its end, so that only kernel messages
-+ * logged after this call are read back.
-+ */
-+static int kmsg_open_at_end(void)
++static bool connector_type_is_physical(uint32_t connector_type)
 +{
-+	int fd = open("/dev/kmsg", O_RDONLY | O_NONBLOCK);
-+
-+	igt_assert_f(fd >= 0, "Failed to open /dev/kmsg: %s\n", strerror(errno));
-+	igt_assert(lseek(fd, 0, SEEK_END) >= 0);
-+
-+	return fd;
++	return connector_type != DRM_MODE_CONNECTOR_VIRTUAL &&
++	       connector_type != DRM_MODE_CONNECTOR_WRITEBACK;
 +}
 +
-+/* Returns true if a record read from @kmsg_fd contains "Unknown EOTF <n>". */
-+static bool kmsg_has_unknown_eotf(int kmsg_fd)
++static bool virtual_output_can_scanout(igt_display_t *display,
++				       igt_output_t *output)
 +{
-+	static const char pattern[] = "Unknown EOTF ";
-+	char buf[8192];
-+	ssize_t len;
++	drmModeModeInfo *mode = igt_output_get_mode(output);
++	struct igt_fb fb;
++	igt_crtc_t *crtc;
++	int ret = -ENODEV;
 +
-+	for (;;) {
-+		const char *match;
++	if (!display->is_atomic || !mode ||
++	    igt_create_fb(display->drm_fd, mode->hdisplay, mode->vdisplay,
++			  DRM_FORMAT_XRGB8888, DRM_FORMAT_MOD_LINEAR, &fb) <= 0)
++		return true;
 +
-+		/* Each read() returns one record, EAGAIN once drained. */
-+		len = read(kmsg_fd, buf, sizeof(buf) - 1);
-+		if (len < 0 && errno == EPIPE)
-+			continue; /* Older records were overwritten, keep going. */
-+		if (len <= 0)
-+			return false;
++	for_each_crtc(display, crtc) {
++		igt_plane_t *primary, *orig_ref;
 +
-+		buf[len] = '\0';
-+		match = strstr(buf, pattern);
-+		if (match && isdigit((unsigned char)match[sizeof(pattern) - 1]))
-+			return true;
++		if (!(output->config.valid_crtc_index_mask &
++		      (1 << crtc->crtc_index)))
++			continue;
++
++		igt_output_set_crtc(output, crtc);
++		primary = igt_output_get_plane_type(output,
++						    DRM_PLANE_TYPE_PRIMARY);
++		orig_ref = primary->ref->ref;
++		igt_plane_set_fb(primary, &fb);
++		ret = igt_atomic_commit(display,
++					DRM_MODE_ATOMIC_TEST_ONLY |
++					DRM_MODE_ATOMIC_ALLOW_MODESET,
++					NULL);
++		igt_plane_set_fb(primary, NULL);
++		igt_plane_set_crtc(orig_ref, orig_ref->crtc);
++		igt_output_set_crtc(output, NULL);
++		if (!ret || ret == -EACCES)
++			break;
 +	}
++
++	igt_remove_fb(display->drm_fd, &fb);
++	return !ret || ret == -EACCES;
 +}
 +
- static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 			       uint32_t format, uint32_t flags)
- {
-@@ -361,6 +401,7 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 	struct hdr_output_metadata hdr;
- 	igt_crc_t ref_crc, new_crc;
- 	int afb_id;
-+	int kmsg_fd = -1;
+ /**
+  * igt_display_reset_outputs:
+  * @display: a pointer to an initialized #igt_display_t structure
+@@ -2895,6 +2942,7 @@ void igt_display_reset_outputs(igt_display_t *display)
+ 	igt_crtc_t *crtc;
+ 	int i;
+ 	drmModeRes *resources;
++	bool has_physical = false;
  
- 	/* 10-bit formats are slow, so limit the size. */
- 	afb_id = igt_create_fb(data->fd, 512, 512,
-@@ -392,11 +433,17 @@ static void test_static_toggle(data_t *data, igt_crtc_t *crtc,
- 	}
+ 	/* Clear any existing outputs*/
+ 	if (display->n_outputs) {
+@@ -2947,6 +2995,37 @@ void igt_display_reset_outputs(igt_display_t *display)
+ 	 * display. */
+ 	igt_display_reset(display);
  
- 	/* Apply HDR metadata and 10bpc. We expect a modeset for entering. */
-+	if (flags & TEST_INVALID_HDR)
-+		kmsg_fd = kmsg_open_at_end();
- 	igt_hdr_set_metadata(data->output, &hdr);
- 	igt_output_set_prop_value(data->output, IGT_CONNECTOR_MAX_BPC, 10);
- 	igt_display_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
- 	if (flags & TEST_INVALID_HDR) {
--		igt_assert_eq(system("dmesg|tail -n 1000|grep -E \"Unknown EOTF [0-9]+\""), 0);
-+		bool logged = kmsg_has_unknown_eotf(kmsg_fd);
++	for (i = 0; i < display->n_outputs; i++) {
++		drmModeConnector *c = display->outputs[i].config.connector;
 +
-+		close(kmsg_fd);
-+		igt_assert_f(logged,
-+			     "Kernel did not log \"Unknown EOTF\" for invalid HDR metadata\n");
- 		return;
++		if (c && connector_type_is_physical(c->connector_type)) {
++			has_physical = true;
++			break;
++		}
++	}
++
++	for (i = 0; i < display->n_outputs; i++) {
++		igt_output_t *output = &display->outputs[i];
++		drmModeConnector *c = output->config.connector;
++
++		if (!c)
++			continue;
++
++		if (c->connector_type == DRM_MODE_CONNECTOR_WRITEBACK ||
++		    output->props[IGT_CONNECTOR_WRITEBACK_FB_ID]) {
++			output->non_scanout_sink = true;
++		} else if (c->connector_type == DRM_MODE_CONNECTOR_VIRTUAL &&
++			   has_physical &&
++			   c->connection == DRM_MODE_CONNECTED &&
++			   c->count_modes) {
++			output->non_scanout_sink =
++				!virtual_output_can_scanout(display, output);
++			if (output->non_scanout_sink)
++				igt_info("%s: not a scanout sink, not used as a display\n",
++					 output->name);
++		}
++	}
++
+ 	for_each_crtc(display, crtc) {
+ 		igt_output_t *output;
+ 
+diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+index dfcb91e02..ae8de13d2 100644
+--- a/lib/igt_kms.h
++++ b/lib/igt_kms.h
+@@ -512,6 +512,7 @@ typedef struct {
+ 	struct kmstest_connector_config config;
+ 	char *name;
+ 	bool force_reprobe;
++	bool non_scanout_sink;
+ 	igt_crtc_t *pending_crtc;
+ 	bool use_override_mode;
+ 	drmModeModeInfo override_mode;
+@@ -668,14 +669,15 @@ void igt_wait_for_vblank_ts_seq(igt_crtc_t *crtc, uint64_t *ts_ns, unsigned int
+  * igt_output_is_connected:
+  * @output: #igt_output_t to check.
+  *
+- * Returns: True if given @output's connection status is CONNECTED,
+- * else False.
++ * Returns: True if given @output is a scanout sink whose connection
++ * status is CONNECTED, else False.
+  */
+ static inline bool igt_output_is_connected(igt_output_t *output)
+ {
+ 	/* Something went wrong during probe? */
+ 	if (!output->config.connector ||
+-	    !output->config.connector->count_modes)
++	    !output->config.connector->count_modes ||
++	    output->non_scanout_sink)
+ 		return false;
+ 
+ 	if (output->config.connector->connection == DRM_MODE_CONNECTED)
+diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+index a65ea8b23..86839fb6f 100644
+--- a/tests/kms_setmode.c
++++ b/tests/kms_setmode.c
+@@ -92,6 +92,7 @@
+ 
+ static int drm_fd;
+ static drmModeRes *drm_resources;
++static bool *non_scanout_sink;
+ static int filter_test_id;
+ static bool dry_run;
+ static bool extended = false;
+@@ -895,6 +896,9 @@ static int get_connectors(drmModeRes *resources, int *connector_idxs,
+ 		igt_assert_lt(connector_idx, resources->count_connectors);
+ 		connector_id = resources->connectors[connector_idx];
+ 
++		if (non_scanout_sink[connector_idx])
++			goto err;
++
+ 		if (get_one_connector(resources, connector_id, &cconfs[i]) < 0)
+ 			goto err;
+ 
+@@ -1047,6 +1051,25 @@ static void restore_cpu_deep_sleep_at_exit(int sig)
+ 	igt_pm_enable_cpu_deep_sleep();
+ }
+ 
++static void find_non_scanout_sinks(void)
++{
++	igt_display_t display;
++
++	non_scanout_sink = calloc(drm_resources->count_connectors,
++				  sizeof(*non_scanout_sink));
++	igt_assert(non_scanout_sink);
++	if (dry_run || !drm_resources->count_connectors ||
++	    !drm_resources->count_crtcs)
++		return;
++
++	igt_display_require(&display, drm_fd);
++	for (int i = 0; i < display.n_outputs &&
++	     i < drm_resources->count_connectors; i++)
++		non_scanout_sink[i] = display.outputs[i].non_scanout_sink;
++	igt_display_fini(&display);
++	drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 0);
++}
++
+ static int opt_handler(int opt, int opt_index, void *data)
+ {
+ 	switch (opt) {
+@@ -1103,6 +1126,8 @@ int igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ 		drm_resources = drmModeGetResources(drm_fd);
+ 		igt_require(drm_resources);
+ 
++		find_non_scanout_sinks();
++
+ 		max_dotclock = igt_get_max_dotclock(drm_fd);
  	}
  
+@@ -1143,6 +1168,7 @@ int igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+ 	}
+ 
+ 	igt_fixture() {
++		free(non_scanout_sink);
+ 		drmModeFreeResources(drm_resources);
+ 		drm_close_driver(drm_fd);
+ 	}
 -- 
 Gil Dekel, Software Engineer, Google / ChromeOS Display and Graphics
 
