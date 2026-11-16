@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410BC606A31C
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 23:25:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 783F2606A31C
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 23:49:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id DBBAF10E49F;
-	Mon, 16 Nov 2026 23:25:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2DD6A10E4C2;
+	Mon, 16 Nov 2026 23:49:23 +0000 (UTC)
 Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B9B0010E49F;
- Mon, 16 Nov 2026 23:24:36 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 66A7410EABC;
+ Mon, 16 Nov 2026 23:48:22 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============0560159519574077782=="
+ boundary="===============5129311949523523482=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_tests/imagination=3A_add_mo?=
- =?utf-8?q?re_heap_info_and_static_areas_query_tests_=28rev2=29?=
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_add_new_tes?=
+ =?utf-8?q?ts_for_VPE3?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Luigi Santivetti" <luigi.santivetti@imgtec.com>
+To: "Caden Chien" <chih-wei.chien@amd.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Mon, 16 Nov 2026 23:24:36 -0000
-Message-ID: <179487147675.34777.1884129158301991420@9ac1b63fe3ea>
+Date: Mon, 16 Nov 2026 23:48:22 -0000
+Message-ID: <179487290241.34777.9230573882149673962@9ac1b63fe3ea>
 X-Patchwork-Hint: ignore
-References: <20261116-b4-heap-static-area-info-get-v2-1-0afb0bfbb07e@imgtec.com>
-In-Reply-To: <20261116-b4-heap-static-area-info-get-v2-1-0afb0bfbb07e@imgtec.com>
+References: <20261116132028.2021-1-chih-wei.chien@amd.com>
+In-Reply-To: <20261116132028.2021-1-chih-wei.chien@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,24 +42,59 @@ X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============0560159519574077782==
+--===============5129311949523523482==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/imagination: add more heap info and static areas query tests (rev2)
-URL   : https://patchwork.freedesktop.org/series/177878/
-State : failure
+Series: tests/amdgpu: add new tests for VPE3
+URL   : https://patchwork.freedesktop.org/series/178695/
+State : success
 
 == Summary ==
 
-Series 177878 revision 2 was fully merged or fully failed: no git log
+CI Bug Log - changes from XEIGT_9195_BAT -> XEIGTPW_16158_BAT
+====================================================
+
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
 
 
+Changes
+-------
 
---===============0560159519574077782==
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9195 -> IGTPW_16158
+  * Linux: xe-6153-d5a6e2921e68b0cc42812376ca6c8095b6c941a2 -> xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda
+
+  IGTPW_16158: 16158
+  IGT_9195: 9195
+  xe-6153-d5a6e2921e68b0cc42812376ca6c8095b6c941a2: d5a6e2921e68b0cc42812376ca6c8095b6c941a2
+  xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda: ccb10a534282f16c6d068bc06e5c722680045dda
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16158/index.html
+
+--===============5129311949523523482==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -79,16 +114,34 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/imagination: add more heap info and static areas query tests (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177878/">https://patchwork.freedesktop.org/series/177878/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>Series:</b></td><td>tests/amdgpu: add new tests for VPE3</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178695/">https://patchwork.freedesktop.org/series/178695/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16158/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16158/index.html</a></td></tr>
 
 </table>
 
 
-    <p>Series 177878 revision 2 was fully merged or fully failed: no git log</p>
+    <h1>CI Bug Log - changes from XEIGT_9195_BAT -&gt; XEIGTPW_16158_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9195 -&gt; IGTPW_16158</li>
+<li>Linux: xe-6153-d5a6e2921e68b0cc42812376ca6c8095b6c941a2 -&gt; xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda</li>
+</ul>
+<p>IGTPW_16158: 16158<br />
+  IGT_9195: 9195<br />
+  xe-6153-d5a6e2921e68b0cc42812376ca6c8095b6c941a2: d5a6e2921e68b0cc42812376ca6c8095b6c941a2<br />
+  xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda: ccb10a534282f16c6d068bc06e5c722680045dda</p>
 
 </body>
 </html>
 
---===============0560159519574077782==--
+--===============5129311949523523482==--
