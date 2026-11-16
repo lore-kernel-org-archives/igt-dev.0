@@ -2,56 +2,58 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF93606A31C
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 09:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2F5606A323
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 09:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MwYtR4Bi
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mMLUAeHU
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9ED6C10EDF6;
-	Mon, 16 Nov 2026 09:23:53 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 1BDF310ED9C
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 09:22:01 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1C8C910E28A;
+	Mon, 16 Nov 2026 09:36:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E9A8510ED97
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 09:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794820921; x=1826356921;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=drnjSRUsNUKIytO5G6qt3kki/PoEFquWJmgKBEcB2Sw=;
- b=MwYtR4BiXWvc2xDSytnP0qNl00VDcwUClSKTa/VxYotv8bfm7Kb05QzI
- I2eAkrA3jmeroX+hJjdbfgzEzObEStPLHGGob1nHScGH1hCPHiImRX4RF
- 14UAP4iuzFsFMMq5GlxoV5/QB+FsvZL2p2Q1rBqd39IHYGwUMLu4RUG/t
- mQZTr2ajBJoYseIezFA/Xih4JQErGFPhCh1BOZ52wrquoqLLIhc3WRdzi
- R9y7Tple8gpbNe+PmPUz3ocH8neYyjLBcU7qV3+FsYbl+pR4rdFQ56YDf
- q4kcXgM2l/Sw8m+/er5R8pIxuVisCtwMX/TavDrs5Q/hYqetehFqFqaIk A==;
-X-CSE-ConnectionGUID: xGQHd+AWTUWfkrwBtP/dGg==
-X-CSE-MsgGUID: MwDpGEPAQs+uFyRynGVFGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3588161"
-X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; d="scan'208,223";a="3588161"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2026 01:22:01 -0800
-X-CSE-ConnectionGUID: r5bYr2Z8TW6ovSdokhPxdw==
-X-CSE-MsgGUID: Fl8ecVjnRFWrk00hqRs9Zg==
+ t=1794821744; x=1826357744;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=u/BrxGsD6jb2/O5lI2j3IRL93AbTvhG2dnmNUQxlEy8=;
+ b=mMLUAeHUBafEyzxJ4ZAXeZ7xEnOu0dVD90Wcj2tCBLxMTmtvDSjgIawI
+ MxjKZ2owKx7dSTNZeTMTqbxe3epF862tiWxqLctJWm+Y61ShmxQN+rZUM
+ ydFi83xo/DCOiY8PXZ2OnxzthocRWPisWoE53AwxXPM8Yn+RgcT8GPMYo
+ WZNYGJqHmcwR45fXLDM4skYGu/lgNsUTVqh575lm/NMDk0Mhsmip+cv+g
+ Jp7t/zt2jrP7dO8h+cC2R/Ck/5vJkcWUF7K3hxh/YC6i+N8v26mthWZDo
+ qwis9UkyOfLGvi8ThL2tr9YbBc4MRR0RKL1iuMTxLhovpBUSNnoFkkp8v Q==;
+X-CSE-ConnectionGUID: BYh72hP6R/6rbnk0FBCzqg==
+X-CSE-MsgGUID: RB9yrAWhSyC/Q+oZ5PGevw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3446265"
+X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
+   d="scan'208";a="3446265"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2026 01:35:37 -0800
+X-CSE-ConnectionGUID: 88aQTOgAQQaSR+1vrJBILg==
+X-CSE-MsgGUID: +qVTSFJ1Q16upumlbHFcMg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; d="scan'208,223";a="9660273"
-Received: from karthik-x299-aorus-gaming-3-pro.iind.intel.com ([10.190.238.68])
+X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; d="scan'208";a="10035016"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.117])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2026 01:22:00 -0800
-From: Karthik B S <karthik.b.s@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: chaitanya.kumar.borah@intel.com, ankit.k.nautiyal@intel.com,
- Karthik B S <karthik.b.s@intel.com>
-Subject: [PATCH i-g-t 2/2] lib/igt_kms: Add max uncompressed dotclock limit
- for non-joiner mode selection
-Date: Mon, 16 Nov 2026 14:48:32 +0530
-Message-ID: <20261116091832.1312335-2-karthik.b.s@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261116091832.1312335-1-karthik.b.s@intel.com>
-References: <20261116091832.1312335-1-karthik.b.s@intel.com>
+ 16 Nov 2026 01:35:35 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, Jeevan B <jeevan.b@intel.com>
+Subject: Re: [PATCH i-g-t] tests/kms_plane_cursor: limit simulation to first
+ and last CRTC
+In-Reply-To: <20261116040120.3197381-1-jeevan.b@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20261116040120.3197381-1-jeevan.b@intel.com>
+Date: Mon, 16 Nov 2026 11:35:32 +0200
+Message-ID: <b1165a2bd1484d569c1422c94cf1cc9da2a51b7a@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -63,109 +65,77 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From display 30 the kernel limits the single pipe pixel rate without
-DSC to the maximum validated frequency, which is below the max dotclock
-derived from CDCLK and reported in debugfs (see
-intel_max_uncompressed_dotclock()). Above this limit an uncompressed
-mode can't be driven by a single pipe.
+On Mon, 16 Nov 2026, Jeevan B <jeevan.b@intel.com> wrote:
+> Running on every CRTC makes the test hit the timeout on simulation.
+> Restrict it to the first and last usable CRTC when running in
+> simulation, which keeps coverage while avoiding the timeout.
+>
+> v2:
+>  - Test the first and last usable CRTC instead of the first 2 pipes, and
+>    drop SIM_MAX_PIPES.
+>
+> Signed-off-by: Jeevan B <jeevan.b@intel.com>
+> ---
+>  tests/kms_plane_cursor.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+>
+> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+> index 4b69f1a17..982505575 100644
+> --- a/tests/kms_plane_cursor.c
+> +++ b/tests/kms_plane_cursor.c
+> @@ -327,8 +327,37 @@ int igt_main()
+>  	for (i = 0; i < ARRAY_SIZE(tests); i++) {
+>  		igt_describe_f("%s", tests[i].desc);
+>  		igt_subtest_with_dynamic_f("%s", tests[i].name) {
+> +			igt_crtc_t *first_crtc = NULL, *last_crtc = NULL;
+> +
+> +			/*
+> +			 * In simulation, only test the first and last usable
+> +			 * CRTC to avoid timeouts while keeping coverage.
+> +			 */
+> +			if (igt_run_in_simulation()) {
+> +				for_each_crtc_with_single_output(&data.display,
+> +								 crtc, output) {
+> +					if ((tests[i].flags & TEST_OVERLAY) &&
+> +					    !igt_crtc_get_plane_type(crtc,
+> +								     DRM_PLANE_TYPE_OVERLAY))
+> +						continue;
+> +
+> +					igt_display_reset(display);
+> +					igt_output_set_crtc(output, crtc);
+> +					if (!intel_pipe_output_combo_valid(display))
+> +						continue;
+> +
+> +					if (!first_crtc)
+> +						first_crtc = crtc;
+> +					last_crtc = crtc;
+> +				}
+> +			}
 
-intel_boundary_non_joiner_mode_found() only checks against the max
-dotclock, so on a sink without DSC support it can select a boundary
-mode which the kernel drives with joiner.
+Why are you duplicating the for_each_crtc_with_single_output() loop?
+Aren't you also *adding* more modesets for simulation here?!
 
-Add intel_get_max_uncompressed_dotclock() mirroring the kernel limits
-and use it in intel_boundary_non_joiner_mode_found(), so that the
-selected boundary mode stays on a single pipe irrespective of DSC
-support in the sink.
+BR,
+Jani.
 
-Signed-off-by: Karthik B S <karthik.b.s@intel.com>
----
- lib/igt_kms.c | 33 +++++++++++++++++++++++++++++++--
- lib/igt_kms.h |  1 +
- 2 files changed, 32 insertions(+), 2 deletions(-)
 
-diff --git a/lib/igt_kms.c b/lib/igt_kms.c
-index 915c6a8a2..b28647696 100644
---- a/lib/igt_kms.c
-+++ b/lib/igt_kms.c
-@@ -7207,6 +7207,32 @@ int igt_get_current_cdclk(int fd)
- 	return read_and_parse_cdclk_debugfs(fd, "Current CD clock frequency:");
- }
- 
-+/**
-+ * intel_get_max_uncompressed_dotclock:
-+ * @drm_fd: drm file descriptor
-+ * @max_dotclock: Max pixel clock frequency
-+ *
-+ * Get the maximum pixel clock a single pipe supports without DSC. This
-+ * mirrors the kernel's intel_max_uncompressed_dotclock(): above this
-+ * limit an uncompressed mode can't be driven by a single pipe, so only
-+ * modes below it are guaranteed to use a single pipe irrespective of
-+ * DSC support in the sink.
-+ *
-+ * Returns: The maximum uncompressed pixel clock for a single pipe.
-+ */
-+int intel_get_max_uncompressed_dotclock(int drm_fd, int max_dotclock)
-+{
-+	int dev_id = intel_get_drm_devid(drm_fd);
-+	int limit = max_dotclock;
-+
-+	if (IS_WILDCATLAKE(dev_id))
-+		limit = 937500;
-+	else if (intel_display_ver(dev_id) >= 30)
-+		limit = 1350000;
-+
-+	return min(max_dotclock, limit);
-+}
-+
- /**
-  * intel_get_max_pipe_hdisplay:
-  * @drm_fd: drm file descriptor
-@@ -7340,7 +7366,9 @@ bool bigjoiner_mode_found(int drm_fd, drmModeConnector *connector,
-  * @mode: libdrm mode to be filled
-  *
-  * Check if connector supports a mode at the platform's maximum single-pipe
-- * hdisplay boundary.
-+ * hdisplay boundary. The mode clock must be below the uncompressed single
-+ * pipe limit, so that the kernel doesn't fall back to joiner when the sink
-+ * doesn't support DSC.
-  *
-  * Returns: True if a valid non-joiner mode at the boundary is found,
-  * false otherwise.
-@@ -7349,12 +7377,13 @@ bool intel_boundary_non_joiner_mode_found(int drm_fd, drmModeConnector *connecto
- 					  int max_dotclock, drmModeModeInfo *mode)
- {
- 	int max_hdisplay = intel_get_max_pipe_hdisplay(drm_fd);
-+	int max_clock = intel_get_max_uncompressed_dotclock(drm_fd, max_dotclock);
- 
- 	for (int i = 0; i < connector->count_modes; i++) {
- 		drmModeModeInfo *current_mode = &connector->modes[i];
- 
- 		if (current_mode->hdisplay == max_hdisplay &&
--		    current_mode->clock < max_dotclock &&
-+		    current_mode->clock < max_clock &&
- 		    !mode_needs_joiner_exception(drm_fd, current_mode)) {
- 			*mode = *current_mode;
- 			return true;
-diff --git a/lib/igt_kms.h b/lib/igt_kms.h
-index dfcb91e02..c0565479f 100644
---- a/lib/igt_kms.h
-+++ b/lib/igt_kms.h
-@@ -1381,6 +1381,7 @@ void igt_sort_connector_modes(drmModeConnector *connector,
- bool igt_max_bpc_constraint(igt_display_t *display, igt_crtc_t *crtc,
- 			    igt_output_t *output, int bpc);
- int igt_get_max_dotclock(int fd);
-+int intel_get_max_uncompressed_dotclock(int drm_fd, int max_dotclock);
- int intel_get_max_pipe_hdisplay(int drm_fd);
- int igt_get_max_cdclk(int fd);
- int igt_get_current_cdclk(int fd);
+> +
+>  			for_each_crtc_with_single_output(&data.display, crtc,
+>  							 output) {
+> +				if (igt_run_in_simulation() &&
+> +				    crtc != first_crtc && crtc != last_crtc)
+> +					continue;
+> +
+>  				if ((tests[i].flags & TEST_OVERLAY) &&
+>  				    !igt_crtc_get_plane_type(crtc,
+>  							     DRM_PLANE_TYPE_OVERLAY))
+
 -- 
-2.43.0
-
+Jani Nikula, Intel
