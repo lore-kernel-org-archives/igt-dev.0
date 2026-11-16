@@ -2,60 +2,122 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54842606A329
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 14:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A135606A336
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 15:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Z2YLcx9b
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=iN1JHm8g
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F2CA810EA69;
-	Mon, 16 Nov 2026 14:59:38 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2D2FE10E755
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 14:54:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794840897; x=1826376897;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=1EOyM2UCw6Un9zb9f3e2jqiVTBLV3/WrGMsRuHtuzSk=;
- b=Z2YLcx9bU3ZMjCDfmlB7bm/Iohj2jjCzttut/5cX1YYFKVK8aF0NsgHo
- HjN3zVzRmhMzXoJu9jbCa0VoNXsZr5+RpArnQxojeHHiZ1kFw158jd2ZA
- Q+Czb4ONrKHJZhSt8N9pa6okiEitcPUr/unu79qZRsKp7BCR0wQPQMl/B
- TaOc3TkAHyPe1A5PpP+QxbEI0u0bGq3jrYApm1k9WaUMSgPuETsx8wrMy
- 1e/iGr/V7VvTM2jAESR9q3hkSbNr/1jobbr13rygBZP8pBW2vZ93KBkbm
- /121Gxx8yIjqiM5re278b65pkQTaMRu8Tt7UW6Ji11JtoTNV3aWn6RdvT A==;
-X-CSE-ConnectionGUID: whrlOBR7QoiUWCKP7rBZXA==
-X-CSE-MsgGUID: mn9cSpHdQu2/FGPcaRlxNg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11968"; a="3594925"
-X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="3594925"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2026 06:54:57 -0800
-X-CSE-ConnectionGUID: C7iOgmx9SmyQnPGN2TtHFg==
-X-CSE-MsgGUID: ZjNmQu84SvybubVylaV3rQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
-   d="scan'208";a="9412839"
-Received: from rkoppura-z790i-aorus-ultra.iind.intel.com ([10.190.239.17])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 16 Nov 2026 06:54:54 -0800
-From: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: soham.purkait@intel.com, badal.nilawar@intel.com, riana.tauro@intel.com,
- anshuman.gupta@intel.com, raag.jadav@intel.com,
- mallesh.koujalagi@intel.com, sk.anirban@intel.com,
- Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-Subject: [PATCH v3 3/4] tests/xe_err_injection: add CPER record header
- validation
-Date: Mon, 16 Nov 2026 20:24:09 +0530
-Message-Id: <20261116145410.1649875-4-ravi.kishore.koppuravuri@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261116145410.1649875-1-ravi.kishore.koppuravuri@intel.com>
-References: <20261116145410.1649875-1-ravi.kishore.koppuravuri@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3DD0510E3C7;
+	Mon, 16 Nov 2026 15:35:55 +0000 (UTC)
+Received: from MW6PR02CU001.outbound.protection.outlook.com
+ (mail-westus2azon11012001.outbound.protection.outlook.com [52.101.48.1])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A3F2D10E3C7
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 15:34:47 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TSa5PK1m7KAgnvPi1MFRyMm/YyrGUeLDUnvvYKYtT/5Wt4W4CLg57oYn4GDBwHfKpt3qkJbhxWzEEjV87+9Rn5aLap40oyfVBwaEstYEuDinmVu7465ShbEiG+HOQmCtVMqgTboGeLBurE61RzzoWiyBoM09txH3EQ8tSS11gP82PRxo1wSjo0EKv3W3PIspq8vBrXNVlj1YV4b7LOZtOllFi9AK9sMNEXaGhHAsgjgo6KC2OnuX+YnDYLHAmm0uUY9n5KuPupBBpJOKOQ3RKMM4A4/+0WCCKfDRXPTy+epX9f15lfeUAzLJ51zMIh9FRyUM+0uWrEp4HHol0/vpfA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=H5fQGlK9WldGDrStHvuLZNtOW02VODvNxbam/clErCo=;
+ b=oYhFw2UqDfVQCaSW/0+MDK8vOenPyF37+0EHjEAKMgI02A1zTneFCdWbRFB/9P6gN/8nkAEy9ntCI7Jy8h3c7XPIEnXORLIlc5EldpIR4CaR0oN8R2wwOwsoAxzYnJJgxPzWtSCjkTMZtRpv/jD/a90zd2q20vSCjr1JHCfd0Scdllc4h5gSwEtld8wBFsBIANlbu5vey6N79JikTYFjDPfma9iWWKAWHPxhWjUGwfyxjzf/I9+ik4K23P+S+8A61WrMKDPU8nTALZim3GTk0rmIqzc4jUN5Sy0XcXnmjFB5u9o57UQXEKO/U0zapSl2emFmx0U465/EL0WjcvUjmw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=H5fQGlK9WldGDrStHvuLZNtOW02VODvNxbam/clErCo=;
+ b=iN1JHm8gfCg2wREesqUjLF5M8kDnCeHnL8L7KA+2nMoqWddRKU2vkUV+aJq2NJisD4M0Pxejm7L1oJQsBuyJgAc6PFU++whIqB8kUDIyW4X3naLpFEULRWdlUYAf6P3AXiOYDwIt/mQptpA2y6MsBoNIZBqbmbguPwEbuJpqUgk=
+Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from MW6PR12MB8705.namprd12.prod.outlook.com (2603:10b6:303:24c::18)
+ by PH5PR12MB092088.namprd12.prod.outlook.com (2603:10b6:510:500::22)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Mon, 16 Nov
+ 2026 15:34:43 +0000
+Received: from MW6PR12MB8705.namprd12.prod.outlook.com
+ ([fe80::e75b:745c:ed13:f321]) by MW6PR12MB8705.namprd12.prod.outlook.com
+ ([fe80::e75b:745c:ed13:f321%4]) with mapi id 15.21.0615.012; Mon, 16 Nov 2026
+ 15:34:43 +0000
+Message-ID: <da1d7d50-2807-4562-a3d8-ae927ff0476e@amd.com>
+Date: Mon, 16 Nov 2026 09:34:41 -0600
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] tests/amdgpu: add blit test for VPE3
+To: Caden Chien <chih-wei.chien@amd.com>, igt-dev@lists.freedesktop.org,
+ Solomon.Chiu@amd.com
+References: <20261116132028.2021-1-chih-wei.chien@amd.com>
+ <20261116132028.2021-3-chih-wei.chien@amd.com>
+Content-Language: en-US
+From: Alex Hung <alex.hung@amd.com>
+In-Reply-To: <20261116132028.2021-3-chih-wei.chien@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MW4PR04CA0179.namprd04.prod.outlook.com
+ (2603:10b6:303:85::34) To MW6PR12MB8705.namprd12.prod.outlook.com
+ (2603:10b6:303:24c::18)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW6PR12MB8705:EE_|PH5PR12MB092088:EE_
+X-MS-Office365-Filtering-Correlation-Id: 00c6606e-5a7e-463d-d8ed-08df43f722b9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|376014|23010399003|366016|1800799024|22082099003|18002099003|4143699003|11063799006|56012099006|10067099003|261022075727099003|261021121427099003|261009223027099003|261102123227099003;
+X-Microsoft-Antispam-Message-Info: Y5yeKxoc3NPliPrsrIFXWQKmrc51hqrbg+NQTZDJSTgDKqFxgcEEq24yKxlaVGWq876iiFpbhtO4C9rd1P25m136hBIsoPWX6FrUX1wj1MAqPh7tUMHgWCgMXafCG+dG+hHY8X1VNx7T2ob6uedfxJ4qg3TFXGySMsXlCV7oGlmo2oPnDhs+a8kKEZHK4VxdQuYRmS4y9uMnxa3l82GiUHcA70wZC0GtPIwuVw9C13ZAzLnf7bupqyoUorBf+NUc7wUcQxt8C8+FBdYN1GvdBJnVfU5zzubjZ7AX6ZTA0QjYP6AipnARTnT4aXmCc3IYP2j/HKARXmiwkJI8TqzprG65iOidTdVt316rSPfnMtIquv+M+NGVDLigL/tVBucMxa4QCR8zVY5ft3hppQmlfHnHzpjl/+R02tpr1aPRhxyuQrF5PUpcBceTdv26AyCVFlU0Jq4oJ2jKIS5h6Ptacz6SNqPIfbpSo5FxO7XPnVAxUVU6Ml+9c8jZZ6kU9I/bW7+nDQnbsvBQGCz3D+OHZs/kjAyGsHUQBf7TVhmlWcB4DkN3C4bRfNprIz1kE2Xc25qbqarqhW+2VLNsV7ZI8IUdEcJVubNQNafTGVwbzp9nNGbKLy9k502qKMS/cgdrWW7tujCM6BIvvhvwucnaexDZPbs6BNc4ABR3C5x79jg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:MW6PR12MB8705.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(23010399003)(366016)(1800799024)(22082099003)(18002099003)(4143699003)(11063799006)(56012099006)(10067099003)(261022075727099003)(261021121427099003)(261009223027099003)(261102123227099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?ZUNaUE9pZVp5ZEpXOVYyQVVPSTdTMGRwMFEvenBTYnJrU3Z1RVFhQmY0VE8r?=
+ =?utf-8?B?cnpRbHkxbHZ2ZGJidmNpNzB4ZDNpVHJKcnd3Tm1idXF6NmY4Z2RlUjRqTy9m?=
+ =?utf-8?B?am9MaWd2YVQ5UXY0UkdKSjJGRmF2V1cwS2lCWXN3Q3ZPUFdaSVNpNkw2OXNu?=
+ =?utf-8?B?THRPUVhWNDRDZHJGWktJYlFxZnlMcWJ5V2NCODAreHRRbGw4NjhsbC9HaE1m?=
+ =?utf-8?B?L0NuMFVUVHhqZFMyWG1yeFBlL3MwV3p3TFlpamcxTjhGQzcyS1FScGN4NTZE?=
+ =?utf-8?B?R1MvejFNNDZoMlIzS0I0Z0R3ZktlcmwvclhFSnBmR2tVaENtbnYwc1prQW1B?=
+ =?utf-8?B?L0pRcThoVFhQTk9DSlVTNFJweXJ0VXJTbHM1dlhxV1JaSjBwMHhucGtwOTRL?=
+ =?utf-8?B?YVYvVGZ5VzEzT0NhU0hnU3ZYVmF1TnhXdHdQbHppMi9IOHZtS1pIS3lka2RH?=
+ =?utf-8?B?U0l2YlNtNUlwcnVhaHJwVzRBNnNUSk4vWmtRcU9GdjdqMEpLalFvS3czNGdM?=
+ =?utf-8?B?bk10akU0TlhMU0FRNklGdlBhdFRGRzVkL1JCcmtrLzBpY1lwbnRaN0hZTCtL?=
+ =?utf-8?B?VE5ac0JFMDcrRDFlckFjRkxhdmxLRFZxUHRtb0dSSktTb1NET1A4c085bXB2?=
+ =?utf-8?B?ZnB3U1BmYTN0STRWTFgrYmJTRk13cnRyT05KNzM2ZnRVRm9QRVV4K1FrWDdC?=
+ =?utf-8?B?c0ZhSXZTL1dJcEszZ25OSEEzQzNzdHp0VWFRWjd1SXpXZUpjTjFOeUdwTEpN?=
+ =?utf-8?B?RnN4eHlVcDVjbFhrK24rUlVDRWY4WUQxdHhxZmVLWHRVcCtQNVkxNHNDNlRS?=
+ =?utf-8?B?Z3R2Z3RiODlLdittOGtQUldydEo5R1B4bmk5dWs2Y3R2YkR2WElRZWxDK1E0?=
+ =?utf-8?B?MzdHNGdZSDNvckozd2JOZXl1K2MxV2U2NVZrcTZYK1MzRFdKSi9La1VMVTAw?=
+ =?utf-8?B?NEgvTDFDM1ZDUlJleHphS3pEZ1U4MnVLRFNTOXJvbEtrcXJHVktCemJDZlY2?=
+ =?utf-8?B?MGlZYlI0UHkzNC8vQkpxRWVaR1h2MGE3VVE4cElQUHNxZXQxWWpiZmJVWi85?=
+ =?utf-8?B?dk9qd2EwUFZqdngvb0J6bEpIWWE4aFFONE9zMTZiY1dPMHVOak8ybW83STAx?=
+ =?utf-8?B?SDZRRGZERlY1ckk5SW4xaWt2eWlRS1Rvc1JvVlBmTDhxSG5hS2VoSkd0ektZ?=
+ =?utf-8?B?TUJMMytKdjBVYXcxT1VUc2JRbm9JUHhPS3d5c0NzM2UyT09ubnNHVUhJS3ha?=
+ =?utf-8?B?M0NBVE1kTTgxbUpBTFZLVndCYUI1dWl6MFVDcHJ0SENIcXNBaFUzemUyMmpS?=
+ =?utf-8?B?WTJSRTBWQ0lMdWQzQmFMZGdCTDBpdWVkZFlQQ3lLUzJGUmVYUVBHMEI0cnIv?=
+ =?utf-8?B?WWxVR3F2L1JlTXlTMkhwa2lCOG1iSy94YTNoclU0cGgzSzRLOUYvWTZ5T05m?=
+ =?utf-8?B?SCtvS2w5TWRVdlh4eTVxM1pCdlVlbmxzL3ZrZjJmOEUzS3U1MkwxMS9JZm5u?=
+ =?utf-8?B?T2dFQi96VFFURS8vbTlaQUpQWlRGU3ZyMkUyMFJ6ZlNmYmVvenVHZDFsQzNl?=
+ =?utf-8?B?bC9VMmNuL3huZG5iWTlzTlA4T3RkdzAyMEc3T0lqK2lrNFFOMnBLNVZ0NGMv?=
+ =?utf-8?B?QXdSOEJuek56b0QvcDlLM0UwKzE0MGlZcUpJa3BjZWpETzhuWUErOHR5b0pW?=
+ =?utf-8?B?Tk5BNHZZTGc2WDk1ZXF1OVJmNUZIUzRyZ0hVamV5azNQSXptcmZpSFRwS3NE?=
+ =?utf-8?B?TE1hM2hZMHBMaWVmdmZmaXJVVTJMdElFVFVQUjdRa1psZzVDdUFtdTFCS25x?=
+ =?utf-8?B?eUU3akVvM0lUczJLTGhicUdLeENoNlNLYWJiRjlWYjBGWkUwb0ppUHdPNElv?=
+ =?utf-8?B?L1oxMGNmc2xiTGVLTXZSUk9zQUxVa2JiQ3VWZFBaNnNRMy9FQ3pKMG5tSHA0?=
+ =?utf-8?B?NlI3SndWWnY3RTUrcnZLb1pVbXJHNGRwdi90R1FpdWpTcUI1TENkckNqYnRh?=
+ =?utf-8?B?M0tNRWpmek5qOStvLzNJZ1FpQ3NUcFkvK0g0b1RvU0tFU2tSUkE3SEdGb01a?=
+ =?utf-8?B?bFhkOFpZRHp1SVdxbG9PK3VSODYxYTJYMWlZRENHTU9pUEZHMjF1dmhodnVH?=
+ =?utf-8?B?OVRUM3c1dlRITGdYbEZwTjVTc05ydEZGV3pTN25TSDdpUFk4RmUvTnljR241?=
+ =?utf-8?B?bExqa1RYcllUdk9iVHpGWlBxam51QzZUQjNwOHF3VG1nRDI1dXNLbldPZGg0?=
+ =?utf-8?B?RUpQZHRsckZnNUtnSSt0N0RYY0picXRtcGFyYlBTMW52cXVNV25ZQ2FQYXpu?=
+ =?utf-8?Q?5gzPVYLfT065dMrc3z?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 00c6606e-5a7e-463d-d8ed-08df43f722b9
+X-MS-Exchange-CrossTenant-AuthSource: MW6PR12MB8705.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 15:34:43.0821 (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Vtmg1oYVe4IAdQav3+Q7kj/uWdx5ZjWlBUmF2f2+prBOhcnBEuaI1vTsBFZcCds6QBqFa7rBRRJzUbuwNe3VKw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH5PR12MB092088
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -67,191 +129,36 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add the cper-record-header test to capture the xe_error_cper trace
-event and validate the CPER signature, revision, signature terminator,
-section count, severity, and record length.
 
-Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
----
-v3:
-  - Added support to read the error counter before waiting for the CPER trace event
-  - Cosmetic changes
----
- tests/intel/xe_cper.h          |  21 +++++++
- tests/intel/xe_err_injection.c | 102 +++++++++++++++++++++++++++++++++
- 2 files changed, 123 insertions(+)
 
-diff --git a/tests/intel/xe_cper.h b/tests/intel/xe_cper.h
-index 706c63715..ff061d35b 100644
---- a/tests/intel/xe_cper.h
-+++ b/tests/intel/xe_cper.h
-@@ -18,4 +18,25 @@
- /* Timeout waiting for a trace event to appear (seconds) */
- #define CPER_EVENT_TIMEOUT_SEC		10
- 
-+/* Standard UEFI CPER record header signature: "CPER" in little-endian */
-+#define CPER_SIG_RECORD			0x52455043U  /* "CPER" */
-+#define CPER_SIG_END			0xFFFFFFFFU
-+#define CPER_REVISION			0x0100U
-+
-+/* CPER error_severity values (UEFI spec Table N-3) */
-+#define CPER_SEV_RECOVERABLE		0U
-+#define CPER_SEV_FATAL			1U
-+#define CPER_SEV_CORRECTED		2U
-+#define CPER_SEV_INFORMATIONAL		3U
-+
-+/* Intel Accelerator section type GUID string representation */
-+#define INTEL_CPER_SECTION_ACCEL_GENERIC_STR \
-+	"ea9d8f84-4258-5227-8028-b9b13e6d58b0"
-+
-+/* Sizes from the spec */
-+#define CPER_RECORD_HEADER_SIZE		128U
-+#define CPER_SECTION_DESC_SIZE		72U
-+#define CPER_INTEL_PUB_HDR_SIZE		328U
-+#define UUID_SIZE			16U
-+
- #endif /* XE_CPER_H */
-diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-index 0b50effb3..747a727bf 100644
---- a/tests/intel/xe_err_injection.c
-+++ b/tests/intel/xe_err_injection.c
-@@ -848,6 +848,99 @@ static void test_cper_validate_tracefs_event(int drm_fd)
- 	igt_assert_eq(buf[0], '0');
- }
- 
-+/**
-+ * SUBTEST: cper-validate-record-header
-+ * Description: Inject a correctable hardware error and verify the CPER
-+ * record header fields (signature "CPER", revision 0x0100, record_length,
-+ * section_count >= 1, error_severity) by reading the xe_error_cper
-+ * tracefs event output.
-+ */
-+
-+/**
-+ * test_cper_validate_record_header - inject a correctable error, capture the
-+ * xe_error_cper trace event and validate CPER record header fields from
-+ * the cper_raw hex dump:
-+ *   bytes  0-3:   signature == "CPER" (0x52455043)
-+ *   bytes  4-5:   revision  == 0x0100
-+ *   bytes  6-9:   signature_end == 0xFFFFFFFF
-+ *   bytes 10-11:  section_count >= 1
-+ *   bytes 12-15:  error_severity in [0..3]
-+ *   bytes 20-23:  record_length >= CPER_RECORD_HEADER_SIZE
-+ */
-+static void test_cper_validate_record_header(int drm_fd)
-+{
-+	char *event_line;
-+	const char *cper_raw;
-+	uint32_t sig, sig_end, rec_len, sev, counter;
-+	uint16_t rev, sec_cnt;
-+
-+	igt_require_f(is_dir_exist(XE_CPER_EVENT_DIR),
-+		      "xe_error_cper trace event not present at %s\n"
-+		      "(kernel xe driver may not have CONFIG_TRACING enabled)\n",
-+		      XE_CPER_EVENT_DIR);
-+
-+	start_cper_tracing(drm_fd);
-+	counter = get_counter(NODE_ID_CORRECTABLE_ERROR, ERROR_ID_CORE_COMPUTE);
-+	if (counter < 0) {
-+		stop_cper_tracing(drm_fd);
-+		igt_assert_f(false, "Failed to read error counter after injection\n");
-+	}
-+
-+	event_line = wait_for_cper_event(drm_fd);
-+	igt_assert_f(event_line,
-+		     "No xe_error_cper trace event received within %d seconds "
-+		     "after injecting CSC hardware error\n",
-+		     CPER_EVENT_TIMEOUT_SEC);
-+
-+	igt_info("Captured trace event: %s\n", event_line);
-+	stop_cper_tracing(drm_fd);
-+
-+	cper_raw = parse_cper_event_field(event_line, "cper_raw");
-+	igt_assert_f(cper_raw, "cper_raw field not found in trace event\n");
-+
-+	/* signature: bytes 0-3 LE == "CPER" */
-+	sig = hexbuf_get_u32le(cper_raw, 0);
-+	igt_assert_f(sig == CPER_SIG_RECORD,
-+		     "CPER signature mismatch: got 0x%08x, expected 0x%08x\n",
-+		     sig, CPER_SIG_RECORD);
-+
-+	/* revision: bytes 4-5 */
-+	rev = (uint16_t)hexbuf_get_byte(cper_raw, 4) |
-+	      ((uint16_t)hexbuf_get_byte(cper_raw, 5) << 8);
-+	igt_assert_f(rev == CPER_REVISION,
-+		     "CPER revision mismatch: got 0x%04x, expected 0x%04x\n",
-+		     rev, CPER_REVISION);
-+
-+	/* signature_end: bytes 6-9 */
-+	sig_end = hexbuf_get_u32le(cper_raw, 6);
-+	igt_assert_f(sig_end == CPER_SIG_END,
-+		     "CPER signature_end mismatch: got 0x%08x, expected 0x%08x\n",
-+		     sig_end, CPER_SIG_END);
-+
-+	/* section_count: bytes 10-11 */
-+	sec_cnt = (uint16_t)hexbuf_get_byte(cper_raw, 10) |
-+		  ((uint16_t)hexbuf_get_byte(cper_raw, 11) << 8);
-+	igt_assert_f(sec_cnt >= 1,
-+		     "CPER section_count must be >= 1, got %u\n", sec_cnt);
-+
-+	/* error_severity: bytes 12-15 */
-+	sev = hexbuf_get_u32le(cper_raw, 12);
-+	igt_assert_f(sev <= CPER_SEV_INFORMATIONAL,
-+		     "CPER error_severity out of range: got %u\n", sev);
-+
-+	/* record_length: bytes 20-23 */
-+	rec_len = hexbuf_get_u32le(cper_raw, 20);
-+	igt_assert_f(rec_len >= CPER_RECORD_HEADER_SIZE,
-+		     "CPER record_length too small: got %u, min %u\n",
-+		     rec_len, CPER_RECORD_HEADER_SIZE);
-+
-+	igt_info("\nCPER record header status: OK\nsignature=0x%08x\nrevision=0x%04x"
-+		 "\nsection_count=%u\nerror_severity=%u\nrecord_length=%u\n\n",
-+		 sig, rev, sec_cnt, sev, rec_len);
-+
-+	free(event_line);
-+}
-+
- enum xe_err_injection_type {
- 	XE_CORE_COMPUTE_UNCORR_ERR_INJ,
- 	XE_CORE_COMPUTE_UNCORR_ERR_INJ_POST_RECOVERY_WL,
-@@ -881,6 +974,7 @@ static void inject_error(enum xe_err_injection_type injection, struct xe_mmio *m
- 
- enum xe_cper_test {
- 	XE_CPER_VALIDATE_TRACEFS_EVENT,
-+	XE_CPER_VALIDATE_RECORD_HEADER,
- };
- 
- static void run_cper_test(enum xe_cper_test test, int fd)
-@@ -889,6 +983,9 @@ static void run_cper_test(enum xe_cper_test test, int fd)
- 	case XE_CPER_VALIDATE_TRACEFS_EVENT:
- 		test_cper_validate_tracefs_event(fd);
- 		break;
-+	case XE_CPER_VALIDATE_RECORD_HEADER:
-+		test_cper_validate_record_header(fd);
-+		break;
- 	default:
- 		igt_info("Invalid CPER test specified\n");
- 	}
-@@ -944,6 +1041,11 @@ int igt_main()
- 	igt_subtest("cper-validate-tracefs-event")
- 		run_cper_test(XE_CPER_VALIDATE_TRACEFS_EVENT, fd);
- 
-+	igt_describe("Inject a correctable error and verify the CPER record header fields in the "
-+		     "xe_error_cper trace event.");
-+	igt_subtest("cper-validate-record-header")
-+		run_cper_test(XE_CPER_VALIDATE_RECORD_HEADER, fd);
-+
- 	igt_fixture() {
- 		xe_mmio_access_fini(&mmio);
- 		drm_close_driver(fd);
--- 
-2.34.1
+On 11/16/26 07:20, Caden Chien wrote:
+> Command objects and job construction function are added for VPE3 blit
+> test.
+> 
+> Signed-off-by: Caden Chien<chih-wei.chien@amd.com>
+> ---
+>   tests/amdgpu/amd_vpe.c     |  90 ++++++++
+>   tests/amdgpu/amd_vpe.h     |   7 +
+>   tests/amdgpu/amd_vpe_cmd.c | 459 +++++++++++++++++++++++++++++++++++++
+>   3 files changed, 556 insertions(+)
+> 
+> diff --git a/tests/amdgpu/amd_vpe.c b/tests/amdgpu/amd_vpe.c
+> index ae76445af..815cd7adf 100644
+> --- a/tests/amdgpu/amd_vpe.c
+> +++ b/tests/amdgpu/amd_vpe.c
+> @@ -309,6 +309,93 @@ static void amdgpu_cs_vpe2_hmirror(amdgpu_device_handle device_handle, struct mm
+>   	free_resource(&dst_plane_bo);
+>   }
+>   
+> +static void amdgpu_cs_vpe3_hmirror(amdgpu_device_handle device_handle, struct mmd_context *context)
 
+amdgpu_cs_vpe3_hmirror is duplicated from amdgpu_cs_vpe2_hmirror. Please 
+make it a shared function.
