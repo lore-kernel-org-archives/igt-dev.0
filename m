@@ -2,170 +2,60 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FD2606A31C
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 09:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33F360A2630
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 10:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.a=rsa-sha256 header.s=dk201812 header.b=ou+qRhzu;
-	dkim=pass (1024-bit key) header.d=IMGTecCRM.onmicrosoft.com header.i=@IMGTecCRM.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-IMGTecCRM-onmicrosoft-com header.b=bXY3NLCo
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SVTm8q2r
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9062E10ED9F;
-	Mon, 16 Nov 2026 09:55:41 +0000 (UTC)
-Received: from mx07-00376f01.pphosted.com (mx07-00376f01.pphosted.com
- [185.132.180.163])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C928B10E1F9
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 09:52:41 +0000 (UTC)
-Received: from pps.filterd (m0168889.ppops.net [127.0.0.1])
- by mx07-00376f01.pphosted.com (8.18.1.12/8.18.1.12) with ESMTP id
- 6AG7wdON3599519
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 09:52:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
- :content-id:content-transfer-encoding:content-type:date:from
- :in-reply-to:message-id:mime-version:references:subject:to; s=
- dk201812; bh=hpu+nYFaO/+p0+JcY9yiM6dWRd+NAWVrfUW7c5XpJoM=; b=ou+
- qRhzuKQVvO7ZUKMSU/mdO2jwKJNJ1gaasUxaWknrlMzw2fYHzCQ/WbgHHilnUjg/
- ZxxPONXRRKk/r0HuHSFBd9BMhRq3O3E24tOaOHYPDhUs5gsLIkPObvEkPiMwmBxc
- 1WBXhiGzkk2DACNCOgXHj1sa/6/IqIGVTgNXfErLpLZ2A6XvD32E0VGbCEp1NhXQ
- 3VNj2pL3H+CKLDskce2BFqbwp+sJLt+FBAERXjFYMs4RjnhE6E+s8duLynpKivHp
- Q0qd6bosAwI9kqdPqxhkXLXO/1nG7PqOfRsA1g7J/ochZJi8FFo18Qus6Xd3lw2I
- GUiCY/h5jqddMFV5/Gg==
-Received: from lo2p265cu024.outbound.protection.outlook.com
- (mail-uksouthazon11021140.outbound.protection.outlook.com [52.101.95.140])
- by mx07-00376f01.pphosted.com (PPS) with ESMTPS id 4hxgky1e04-1
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT
- key_exchange=secp256r1)
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 09:52:39 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=uV0o+asnio+gLmt17P9+3ODC3VLP/nk4rj+NLae5OWoLhhe26F8k7g6+G8fGZybcrTC39NpVIPHdiSMtEIwBzm5o1oHWL8eyII4n+Q280PvzOXmoym4C8lvWw2KP1h9Fcz48FFtKxlzB3UT4FBaLPOmEX0XtKA6RYO6Z1CMSwoS4afCQRdHYeUuT5uFJixw7CjFzob6BoqUA7ZUSBxhjT4Rg/2Nyauxw4WWD7cQIMXIH3zVlWXTot3lYXGwrQpECJo2EbwYmgYM543WAzgIliRGZYCzET6V28cmb3mJAjR32G0gDsnReTM7X5FoeqDhIUoxqXRLrkkGcTJySzRWnOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hpu+nYFaO/+p0+JcY9yiM6dWRd+NAWVrfUW7c5XpJoM=;
- b=WIS/3TaSS+mKcADUMgRaRH+u07/qVO3LmbShaPFJ1NgYXvl9oawOVaTeMDsnkTR4n2YO51/s2CpUi40rroRnvKyf/QoiW2vxurnWQd5xxhRIBoK4WrnEPJjLkptYQKDFXc/Jrmh75yWvgMWwzUUHGona97qV1lhI6o0dWuTS/hYjbf+xsTdWdH6ijMhn/nxwRSNQlPyW/A5xyjUwnm7o3+4S6UFuHHtc5MSb/REHvcZZO/tmm5buYOhAbgmvB4gRSCrHD2rzvhBuBoTm+SVlr8k8DiuXH+g/17tWWQGdWLk9yhRXsevJFuBmmjozu16iSbJORN5+PMjgvf1c016zuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=imgtec.com; dmarc=pass action=none header.from=imgtec.com;
- dkim=pass header.d=imgtec.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=IMGTecCRM.onmicrosoft.com; s=selector2-IMGTecCRM-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hpu+nYFaO/+p0+JcY9yiM6dWRd+NAWVrfUW7c5XpJoM=;
- b=bXY3NLCo0UFdTEeroBXJj1hVoUVgECQjHUeV5m7fgWRItvYW03XLhhh5ocKhzN2k42l25SeWvhc++BbX7AYHhBINcE1r69+qX/EZBv3Wed7Phv49zYEubZajaYDEWkKA7YjYp/oJwj39KqZeu0FXJDJX6tI06Ec2e1B7Rzktx+g=
-Received: from LO0P265MB7076.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2ee::7)
- by CWLP265MB7211.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1f3::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 09:52:35 +0000
-Received: from LO0P265MB7076.GBRP265.PROD.OUTLOOK.COM
- ([fe80::3ee9:8c49:ba94:4237]) by LO0P265MB7076.GBRP265.PROD.OUTLOOK.COM
- ([fe80::3ee9:8c49:ba94:4237%6]) with mapi id 15.21.0615.013; Mon, 16 Nov 2026
- 09:52:35 +0000
-From: Alessio Belle <Alessio.Belle@imgtec.com>
-To: "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, Brajesh
- Gupta <Brajesh.Gupta@imgtec.com>
-CC: Luigi Santivetti <Luigi.Santivetti@imgtec.com>
-Subject: Re: [PATCH i-g-t v3 0/2] imagination: Add Firmware information query
- test
-Thread-Topic: [PATCH i-g-t v3 0/2] imagination: Add Firmware information query
- test
-Thread-Index: AQHdcm5v0/4HQa5WW0Swkuvb0wqVMbcwe4sA
-Date: Mon, 16 Nov 2026 09:52:35 +0000
-Message-ID: <6e468be4f273bb6f1de4d219fa1577d299881355.camel@imgtec.com>
-References: <20261112-b4-fw_info-v3-0-70d20bd7bc28@imgtec.com>
-In-Reply-To: <20261112-b4-fw_info-v3-0-70d20bd7bc28@imgtec.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=imgtec.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: LO0P265MB7076:EE_|CWLP265MB7211:EE_
-x-ms-office365-filtering-correlation-id: e2e4c05c-7c15-45e2-c51d-08df43c75785
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
- ARA:13230040|1800799024|376014|23010399003|366016|22082099003|18002099003|261009223027099003|260925022911599003|260925021911599003|260925021311599003|56012099006|261102123227099003|261028144727099003|261026140227099003|261021123027099003|261022105027099003|261021121427099003|261022115727099003|38070700021|10067099003;
-x-microsoft-antispam-message-info: Vb1duP8y7s40g6WAkUSGQidwTFwcEXL4uuawIjAYlrRrmSMqc9dRWGPM8sqFpy+iA9rmDoIzxDUv7whLbuaZiuDl47ZkyflLNmAvJTpEN3VQ0KxQknpy+4KvyvMrNPZADN5NmU1biEc0dUbdmiwEz6ynDiereS1nFbic5n640Mh9AvOzCEcORXQGZWY3qIVzmWIc1+kbgn1K5UUIn4lTW0U+81Xfhybt5hSm37TcJTMKgiyTDzNImEBUMtPsBnRxEda2lbX6CKEpxNv+qZVvjUla8y9znywr8QWTew2aqxR8jxOeZkRRgvcQ3q0+x/qcrJOaz8GVYD7MFogzjTs6m0Y620ngWRQuxa50Fz8+IBVbZw1rZc5OdFLI5WzLAVBSpkmC9Q6Kn+LY9azPUCa3578JUHwMvDu0Si8XYfnfUNDR067yCfObvaVwlqlKLi6hbTZqvJDaSEe/Pz3pG8o4HrxLmLVz2lAS+HsoS0f7ZTW9KNnTjXDYg6L8E8/W7a5J6tzWh4ts8IFyRxLCJZz69M6aYTZR7tKNILylpw2n1/LMXUz75tuGMoJNxrb3hu8WW3bV8Z/rl9lCjTN4Hjz8y47VekQ3ouB1wvmNx+NmeE1RKrf/Yqk1EqNGfnoVzKb9DHexKAnaerQj/hL2dMWugCZBKoWeaZgQzju3Kl1IDGw=
-x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:LO0P265MB7076.GBRP265.PROD.OUTLOOK.COM; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(23010399003)(366016)(22082099003)(18002099003)(261009223027099003)(260925022911599003)(260925021911599003)(260925021311599003)(56012099006)(261102123227099003)(261028144727099003)(261026140227099003)(261021123027099003)(261022105027099003)(261021121427099003)(261022115727099003)(38070700021)(10067099003);
- DIR:OUT; SFP:1102; 
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?OTBTTTRqaDBKK3VpOGtDRDRmeUdubGc0eEJtdGpEeDRHL0pndlE2VnV0NkFl?=
- =?utf-8?B?T3ovTEF2ZzJDTEU5Yk1CSXVmaUtyQ2I5WFJGMC9LZ29yb3Q4K3ZKMmJ3WUpt?=
- =?utf-8?B?ZHplQldMSkVObkZuYzIxRUJUbjBGWGxlMjhETkhlbGN2amxraElXU0NiaFZx?=
- =?utf-8?B?bGtha2R0YllNb1BMaDY4YTllRHoyYUttV2M4RkgzVkpkUUIrQkZHQmNnaHBV?=
- =?utf-8?B?dE1kSTlTNEV1Q0xKNE9SSkd0NXp3VFNqOC9hUjdjeVh2NXdxUW1NQlV6bDMz?=
- =?utf-8?B?WFA2cEt2NzFFUWJHbTRJTFdta0Zzak1IUTFDVHc1ajk3NnJ6M3lJNlo0VTlt?=
- =?utf-8?B?Q3dNd3FNS09rVktaSUNmRHNLTXZiUFplMDVzYytSVGkzSW5jM3ZPRGFzdEZu?=
- =?utf-8?B?TjdFMkUxRWtXN1FRSVpOY0dVU294RlRsY2ZQcEdlbzA4RFc5a3Q5ZXVXQ25y?=
- =?utf-8?B?MWFrbU9hQjVKdEZ6S2ZqRUc1OVZWT2M0ZnF0SGhyRU8yMGdIOFdySmxLcW1m?=
- =?utf-8?B?c24vb09URmFzZ1JkOVhkVUhZZWFzSGNHbWI3V2ZPTHhmTVVmRFQyQjF5YXc0?=
- =?utf-8?B?V3VMczVPK1lpQjJTRk9ZUk9NNzRiOVlpcER4dHNSRm9sSzdJLzlQZ29pbDht?=
- =?utf-8?B?YUtuY3luQzBnbjhqNEh3cUY0MEt3TkFZU01kVHRGVGRiam9LQ1RNNXpzaVFW?=
- =?utf-8?B?akRwNEZwdXRkQTNFSlFuYmlhcVpvZTFTaU9NcFB1YWFpOGtjSlpSaU9QMEpB?=
- =?utf-8?B?NjlRTnd4cldRQ25vNy9XK1FlUEJobk9HWndoWjFWNDJvQm5mYlJNbEVPSVRk?=
- =?utf-8?B?RzFoWHJTaWpSVG1PNkQrNW1maktUTWpVRklPa2VDblZHUldoWHpBL2xFcTBs?=
- =?utf-8?B?bUh3ayt1bkJtWXl3bFlJUnpVTDJiQlhMRWNPTDhzaEJ2MGs1cWpXUTQxYnNK?=
- =?utf-8?B?UE56bTZNRDdldTZqVk1QUUp3RWRGRFdvbFpHMldaNXVJYlJ5cmYxVWFTby9S?=
- =?utf-8?B?aVRCMGxGUkl3dWVoZkwxTERLUHppZEJqZjhkbnFqOXM2VjFnNDltRlBmREJS?=
- =?utf-8?B?MldSdGZ0ZEFPOFN5dUNXcGZMQkhDWkYvZ2VQbDY1ekpSeXNqVnJ4WDhlZTQ4?=
- =?utf-8?B?Mllkcnp4MmxPUlJqZGIyckVwYVo5K1lNNmZsK2ZmbmV0Z05ydVZwdVZyQ3Jr?=
- =?utf-8?B?U1VXREg5MWxSZW1YMloxWXZkdG9vWmtmMGNxUWxOK3RuMzdtVUxKVWp0dDdl?=
- =?utf-8?B?b0N4U2t5dWp2TjViMWFya2p4OVk5QXp5eURZSytSQ2JubVBidHBsQlZLbkZy?=
- =?utf-8?B?Mm5laWJiSjdwWDdGMVF6U1FGeEhta2poaVlsSXVyRkw0YWdBMk9sNGtteUtH?=
- =?utf-8?B?dUNteUNXOXhzS2RvcHF5cU15MVFhbEgwZDNtelV0VXJrQTNlekJkcE1yRzNn?=
- =?utf-8?B?cmZ1T0EvUXpuSC9MeDhsalZ3YzFDcTAyVjM4TWxjZ3ZBNDhrN3NTMk1keklO?=
- =?utf-8?B?ZTlLeU4xZ2VnNlVGNnoxcWRxdmZtaTVlT0RkcHRZYmd5eDE2RFM1UTVUQWlu?=
- =?utf-8?B?Nkw3ekFpWWgrWUZoYzRtRUNUVjRRTEhIdXArdFZMblArK1VpcVJqOEp0M0JS?=
- =?utf-8?B?L0RNa0tBTGJnOVNuSFRkL0tKU0dwL2cxalN6aU1Wa2dqQzNOeXpUbUN3QUZZ?=
- =?utf-8?B?SzR3ckNOV21qN2pSRUFuaHUzdEFlczVwV1EzVDkvRXA3dk9qNGZXdmhIY1NT?=
- =?utf-8?B?WXgvTmcvTmNpYzNlNmVKUGREbXFzd2xoeElUbVF5VVBLaEhxMDJaQU9xK1c5?=
- =?utf-8?B?WDlTUFk4ZGQ2Rzlkek9EdzV5WUtTOHd0VDVOZTBaNDJTc1lRL2syd1A1dzMw?=
- =?utf-8?B?VGFmOUc5ZlM0MnlhRStsbWZid1IwY1Zmb3BhZ0ZSQzdITW9GRE80cXBzN2kr?=
- =?utf-8?B?bDY5YlhWQkJLaFJsallHMmdYR2RzVFBoaGdhdExmK2hVa2poUjNHeTBpbVZX?=
- =?utf-8?B?cW9CTFAreWwrbVk0eWcyOCtXcllCYTNQZEtFMm1SR0tNM1lMZTV2TmRNb1pq?=
- =?utf-8?B?VlhMSEtrckFnK0JUTEhab0xnRDdUV1FITlJJYUNOcmJtSE9BbnVnNEtLSWI3?=
- =?utf-8?B?MkV5L2phOXJKY1g1eHZzN3VsVHc3RTYyVXduWVA2TlhZdFp6YUROL0x0QW90?=
- =?utf-8?B?MmsxLzYxZWRQQlZORFNoc1l0VTFiaHorZEpGTlhOLzJWQ2ljcWZtemlzM1Jq?=
- =?utf-8?B?K1VtWmZaYy9BSm5HNjZNNFFrOTZNMkVXdkZYUEdPV0IwdE9HU08yZklKZXVD?=
- =?utf-8?B?QXYrMHBBSVVCZ3FycWN0YjY1L2pUbE5rRk1mdnd1d2V4aVE3T05rVzNHRVNU?=
- =?utf-8?Q?h8QXISgMp/yzf3lM=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <80E27CA2C4BCB442B3C91766CC62401D@GBRP265.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: base64
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8379810ED7C;
+	Mon, 16 Nov 2026 10:10:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 52FE910ED7C
+ for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 10:09:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1794823794; x=1826359794;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version;
+ bh=6phvnbffjp6+N33tO64x5OfEtIG7ofHUJhVWG01OrdU=;
+ b=SVTm8q2rAIWf0lBxkRtuXjo8nU8LcKILehyTO7d6yBsMmoZKhHZshv5Y
+ F+PuxfeRkJCKjxautfE0W3KR7KR9wS9LL/+YnaBZaY2wrc5eM1YJWLsaN
+ oL9ws2APF2r1c2ci9e5O6OH0NmDZhwMc4uVhQIdWLFAGLRj36DE7nQLmG
+ 38VeRR+sbD2LZWxEzZ2wSFnQqtVUYfBa2Q3qPiV1WRgjTSdtlG8ypcmKo
+ IBPUs7BfEXgH8pj7Cks4I0ANlIzMSlo8BGgKrzOsnOLN4i+B8xX4ZAW2u
+ C3ZwPXpLeutHlZQIpGLeeNRyldgdvFgm7glGKtYq96uV0L32Nt4nvHO/d Q==;
+X-CSE-ConnectionGUID: 5KcEyWOiTYiQyLoIay6UTg==
+X-CSE-MsgGUID: Vrka7KqkSOaqGWjbZAAB4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11967"; a="3542321"
+X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
+   d="scan'208";a="3542321"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2026 02:09:53 -0800
+X-CSE-ConnectionGUID: jecqx/RhQQ+bZwmC/T2zCg==
+X-CSE-MsgGUID: ZvRH9u9mS52/UlIlKNl4aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,216,1787036400"; 
+   d="scan'208";a="9354749"
+Received: from slindbla-desk.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.117])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 16 Nov 2026 02:09:52 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Gil Dekel <gildekel@google.com>, igt-dev@lists.freedesktop.org
+Cc: Gil Dekel <gildekel@google.com>, Thadeu Lima de Souza Cascardo
+ <cascardo@igalia.com>, Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Mark Yacoub <markyacoub@google.com>
+Subject: Re: [PATCH i-g-t] lib/igt_kms: Skip connectors that can't scan out
+In-Reply-To: <20261114222855.1403127-1-gildekel@google.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20261114222855.1403127-1-gildekel@google.com>
+Date: Mon, 16 Nov 2026 12:09:49 +0200
+Message-ID: <2830247d327fd002ee4d22be4168a1f44b4f0f85@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: ETCqd5/jycbcqWn3BZK+7AX7m/7Jln4px2XV7qcvJhiOStjLcsGw8BRureQdZTr1tV6g/PUFWth09vRMjs535j+YKMPYIOi88PGlUGSCytSQYJ0i31lg+RZpHUkpU743OpOdc2CUWr+7mNS21gEfD21xGSIyQJs0l7M/SiOxT77YieSbwe3+kNDNgb+3492z+vA/7L3NaFSbS1dUpCC9RqNMDU1PWMYru3wXYdhvMxJPlmeYRs7RLYjANxT9IMB/LABdjyYmz0Zdbl/OOtCqWX4flMqcjc5VK8ctUUfFN0t0DUQwvJMhOrZEbBvt0nCciaAR9wBHP2pL5zrDFmcg/A==
-X-OriginatorOrg: imgtec.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: LO0P265MB7076.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2e4c05c-7c15-45e2-c51d-08df43c75785
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Nov 2026 09:52:35.5806 (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 0d5fd8bb-e8c2-4e0a-8dd5-2c264f7140fe
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ykvcHPY9nynRZMLZd68Tya9tyzX69VAU64ZZdCTAj09hFEkRaupXyKBb0tdUsGWjZ9Fy2E8+XGlFlIZfFrWaL7YPF+CXgw1sI2jaa+neuJM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB7211
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTE2MDAzOSBTYWx0ZWRfX8GpzVW1JU9iG
- 5Yxi05hXD7SUAysgRMP/kpOz6bkAs8Mw47fFXgBUtNUNErgwH4Vvo8dyX6JxQ/kHxBzlwEuqLBJ
- 2n9bFExC0a4VXeymFobu9mbcjb8snQuZXCpwf1ggeiizlvwJV8h7fJD+ftFeaTu9kJ7H9JC3xYc
- UqmYcsD6xdlWP/GiUvdu0RhidZggEVLkIzyCR+wKNEuUlBtkTtU5jhAp0pXloTbsH/djyFdeMMm
- 4KPtxvkG6dJWBLjQdJ6+HZPcyOczn5YK0FQ6/QETt7m/VgWkfGgpGa6LdAh9othjJgkC8l2+Dal
- 8ThlvHiqGVaS4yULs7Gk1Jz1yA3o5LUsN9/LBP4QU63k925IyQxys59ObtvjGY1UUfQfgzJoTwM
- P7FjY6ZynjxVKV6Lqh6u8nxNAzApJXN6TvuBbWgIe9gKGogv23ZqcMrEK4IY54zwLy/ef9JGyfd
- BYso23AYP6H3MBhF1EQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTE2MDAzOSBTYWx0ZWRfX7s7pI0tmFksZ
- DlGBxRvV166eHAtWizrYTYWjwYMV2tVRNSTg+t2mOCg8uETbD7LJHYFu+bFyZ0zWfdfAZveL87n
- Kl5NJ1DP7KCWfFrihDFqYRv5BOJTIrQ=
-X-Proofpoint-ORIG-GUID: kCHmfKGYB01HTFZhFQmg5Vz69LmDbkNu
-X-Proofpoint-GUID: kCHmfKGYB01HTFZhFQmg5Vz69LmDbkNu
-X-Authority-Analysis: v=2.4 cv=TbsDJhQh c=1 sm=1 tr=0 ts=6afad267 cx=c_pps
- a=c57zojfn/sHdeyOhpem9jw==:117 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=zJRp6_cAMcgA:10 a=NgoYpvdbvlAA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=kQ-hrUj2-E3RCbRHssb7:22 a=7RYWX5rxfSByPNLylY2M:22 a=e5mUnYsNAAAA:8
- a=bC-a23v3AAAA:8 a=r_1tXGB3AAAA:8 a=f0LPRkRXM42ZLDC8CJIA:9 a=QEXdDO2ut3YA:10
- a=Vxmtnl_E_bksehYqCbjh:22 a=FO4_E8m0qiDe52t0p3_H:22 a=t8nPyN_e6usw4ciXM-Pk:22
+Content-Type: text/plain
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -177,36 +67,694 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-T24gVGh1LCAyMDI2LTExLTEyIGF0IDExOjUzICswNTMwLCBCcmFqZXNoIEd1cHRhIHdyb3RlOg0K
-PiBBZGQgdGVzdCBmb3IgbmV3IEZpcm13YXJlIGluZm9ybWF0aW9uIHF1ZXJ5IHN1YnR5cGUgYWRk
-ZWQgdG8gREVWX1FVRVJZDQo+IHVuZGVyIHVwc3RyZWFtIHJldmlldyBodHRwczovL3BhdGNod29y
-ay5mcmVlZGVza3RvcC5vcmcvc2VyaWVzLzE3NjgwMC8uDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBC
-cmFqZXNoIEd1cHRhIDxicmFqZXNoLmd1cHRhQGltZ3RlYy5jb20+DQoNCkZvciB0aGUgc2VyaWVz
-LA0KDQpSZXZpZXdlZC1ieTogQWxlc3NpbyBCZWxsZSA8YWxlc3Npby5iZWxsZUBpbWd0ZWMuY29t
-Pg0KDQpUaGFua3MsDQpBbGVzc2lvDQoNCj4gLS0tDQo+IENoYW5nZXMgaW4gdjM6DQo+IC0gVXBk
-YXRlZCBhcyBwZXIgaW5wdXRzIGZyb20gQWxlc3Npby4NCj4gLSBDaGFuZ2UgY29tbWl0IG9yZGVy
-IHRvIGhhdmUgVUFQSSB1cGRhdGUgZm9sbG93ZWQgYnkgdGVzdCB1c2luZyBuZXcgaGVhZGVyLg0K
-PiAtIFVwZGF0ZWQgVVBBSSBoZWFkZXIgY29tbWl0IGRlc2NyaXB0aW9uLg0KPiAtIExpbmsgdG8g
-djI6IGh0dHBzOi8vcGF0Y2gubXNnaWQubGluay8yMDI2MTExMS1iNC1md19pbmZvLXYyLTAtNGQ3
-NzFkZGU1Nzc1QGltZ3RlYy5jb20NCj4gDQo+IENoYW5nZXMgaW4gdjI6DQo+IC0gTW92ZWQgdGhl
-IHRlc3QgYW5kIFVBUEkgaGVhZGVyIHVwZGF0ZSBpbnRvIGRpZmZlcmVudCBjb21taXRzIGFzIHN1
-Z2dlc3RlZCBieSBLYW1pbC4NCj4gLSBVQVBJIGhlYWRlciBwYXRjaCBkZXNjcmlwdGlvbiB1cGRh
-dGVkIHdpdGggcmVsZXZhbnQgZHJtLW5leHQgY29tbWl0IElELg0KPiAtIExpbmsgdG8gdjE6IGh0
-dHBzOi8vcGF0Y2gubXNnaWQubGluay8yMDI2MTAyOS1iNC1md19pbmZvLXYxLTEtMGViM2MwOTY5
-YTdmQGltZ3RlYy5jb20NCj4gDQo+IC0tLQ0KPiBCcmFqZXNoIEd1cHRhICgyKToNCj4gICAgICAg
-ZHJtX3VhcGkvaW1hZ2luYXRpb246IFN5bmMgd2l0aCBkcm0tbmV4dA0KPiAgICAgICB0ZXN0cy9p
-bWFnaW5hdGlvbjogQWRkIHF1ZXJ5IEZpcm13YXJlIGluZm9ybWF0aW9uIHRlc3QNCj4gDQo+ICBp
-bmNsdWRlL2RybS11YXBpL3B2cl9kcm0uaCAgICAgICAgfCAyMSArKysrKysrKysrKysrKysrKysr
-KysNCj4gIHRlc3RzL2ltYWdpbmF0aW9uL3B2cl9kZXZfcXVlcnkuYyB8IDI4ICsrKysrKysrKysr
-KysrKysrKysrKysrKystLS0NCj4gIDIgZmlsZXMgY2hhbmdlZCwgNDYgaW5zZXJ0aW9ucygrKSwg
-MyBkZWxldGlvbnMoLSkNCj4gLS0tDQo+IGJhc2UtY29tbWl0OiBmYzc1ZDZkN2ZmY2I3OWU4YTMz
-MTZlODBjNzA4NTQ2MDU2OGE3NjcwDQo+IGNoYW5nZS1pZDogMjAyNjEwMjktYjQtZndfaW5mby0y
-NjlhNzQxMTYzNzQNCj4gDQo+IEJlc3QgcmVnYXJkcywNCj4gLS0gIA0KPiBCcmFqZXNoIEd1cHRh
-IDxicmFqZXNoLmd1cHRhQGltZ3RlYy5jb20+DQo+IA0KDQo=
+On Sat, 14 Nov 2026, Gil Dekel <gildekel@google.com> wrote:
+> igt_output_is_connected() trusts the connector status alone. Some
+> drivers expose writeback outputs as always-connected
+> DRM_MODE_CONNECTOR_VIRTUAL connectors next to their eDP and DP
+> connectors; the downstream msm SDE driver is one.
+
+Why do "some drivers" use DRM_MODE_CONNECTOR_VIRTUAL instead of
+DRM_MODE_CONNECTOR_WRITEBACK? If they used writeback consistently, could
+we handle all of this in a more clean fashion?
+
+Are there upstream drivers that expose writeback as virtual? Or is "some
+drivers" essentially a single downstream driver? Just trying to
+establish what we're dealing with here, and how much cruft is being
+added to cater for it. This is not a trivial amount of code for what
+seems like a corner case.
+
+> IGT then picks such
+> a connector as a display. Its first modeset fails with -EINVAL because
+> no writeback framebuffer is attached, and every test that calls
+> igt_display_require() fails in its fixture.
+>
+> Commit 321448df7fc9 ("lib/igt_kms: Do not treat writeback and virtual
+> connectors as connected") skipped all virtual connectors. It broke VKMS,
+> which has nothing but virtual connectors, and was reverted.
+>
+> Add kmstest_connector_is_scanout_sink(), which decides from the uAPI
+> alone:
+> - Writeback connectors, and any connector exposing WRITEBACK_FB_ID,
+>   are never scanout sinks.
+> - On devices that only expose virtual connectors (VKMS, virtio-gpu,
+>   vmwgfx, ...), the virtual connectors are the displays and are left
+>   alone.
+> - Next to physical connectors, a connected virtual connector is hidden
+>   only if the kernel rejects a TEST_ONLY commit that lights it up with
+>   a plain XRGB8888 primary plane on every CRTC it can use. If the probe
+>   can't be sent (no atomic cap, or not DRM master), the connector is
+>   kept.
+
+What's the runtime penalty of doing all this for all tests? Meaningful
+hit for running CI?
+
+> igt_display_reset_outputs() caches the result per output, and
+> igt_output_is_connected() honours it. kms_setmode enumerates
+> connectors itself on a legacy fd, so it enables the atomic cap just
+> long enough to classify them in its fixture. kms_writeback walks
+> for_each_output() and still finds its connector.
+>
+> Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Mark Yacoub <markyacoub@google.com>
+> Assisted-by: Claude:claude-opus-5.5
+> Signed-off-by: Gil Dekel <gildekel@google.com>
+> ---
+>  lib/igt_kms.c       | 466 ++++++++++++++++++++++++++++++++++++++++++++
+>  lib/igt_kms.h       |  16 +-
+>  tests/kms_setmode.c |  39 ++++
+>  3 files changed, 519 insertions(+), 2 deletions(-)
+
+This is going to be painful for anyone to review properly. IMO the
+kms_setmode change needs to be split to a separate patch. Can you find
+additional ways to chop this up?
+
+BR,
+Jani.
+
+
+>
+> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
+> index 915c6a8a2..bae0f386b 100644
+> --- a/lib/igt_kms.c
+> +++ b/lib/igt_kms.c
+> @@ -2020,6 +2020,449 @@ void igt_sort_connector_modes(drmModeConnector *connector,
+>  	      comparator);
+>  }
+>  
+> +static bool connector_type_is_physical(uint32_t connector_type)
+> +{
+> +	return connector_type != DRM_MODE_CONNECTOR_VIRTUAL &&
+> +	       connector_type != DRM_MODE_CONNECTOR_WRITEBACK;
+> +}
+
+> +
+> +static bool device_has_physical_connector(int drm_fd, const drmModeRes *res)
+> +{
+> +	for (int i = 0; i < res->count_connectors; i++) {
+> +		drmModeConnector *c;
+> +		bool physical;
+> +
+> +		c = drmModeGetConnectorCurrent(drm_fd, res->connectors[i]);
+> +		if (!c)
+> +			continue;
+> +
+> +		physical = connector_type_is_physical(c->connector_type);
+> +		drmModeFreeConnector(c);
+> +
+> +		if (physical)
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +/* Plane properties used by the scanout probe. */
+> +enum probe_plane_prop {
+> +	PROBE_PLANE_FB_ID,
+> +	PROBE_PLANE_CRTC_ID,
+> +	PROBE_PLANE_SRC_X,
+> +	PROBE_PLANE_SRC_Y,
+> +	PROBE_PLANE_SRC_W,
+> +	PROBE_PLANE_SRC_H,
+> +	PROBE_PLANE_CRTC_X,
+> +	PROBE_PLANE_CRTC_Y,
+> +	PROBE_PLANE_CRTC_W,
+> +	PROBE_PLANE_CRTC_H,
+> +	PROBE_PLANE_TYPE,
+> +	PROBE_PLANE_NUM_PROPS
+> +};
+> +
+> +static const char * const probe_plane_prop_names[PROBE_PLANE_NUM_PROPS] = {
+> +	[PROBE_PLANE_FB_ID] = "FB_ID",
+> +	[PROBE_PLANE_CRTC_ID] = "CRTC_ID",
+> +	[PROBE_PLANE_SRC_X] = "SRC_X",
+> +	[PROBE_PLANE_SRC_Y] = "SRC_Y",
+> +	[PROBE_PLANE_SRC_W] = "SRC_W",
+> +	[PROBE_PLANE_SRC_H] = "SRC_H",
+> +	[PROBE_PLANE_CRTC_X] = "CRTC_X",
+> +	[PROBE_PLANE_CRTC_Y] = "CRTC_Y",
+> +	[PROBE_PLANE_CRTC_W] = "CRTC_W",
+> +	[PROBE_PLANE_CRTC_H] = "CRTC_H",
+> +	[PROBE_PLANE_TYPE] = "type",
+> +};
+> +
+> +struct probe_plane {
+> +	uint32_t id;
+> +	uint32_t possible_crtcs;
+> +	uint32_t props[PROBE_PLANE_NUM_PROPS];
+> +	uint64_t values[PROBE_PLANE_NUM_PROPS];
+> +};
+> +
+> +struct probe_connector {
+> +	uint32_t id;
+> +	uint32_t crtc_id_prop;
+> +	uint64_t crtc_id;
+> +};
+> +
+> +struct scanout_probe {
+> +	int drm_fd;
+> +	const drmModeConnector *connector;
+> +	uint32_t conn_crtc_id_prop;
+> +	const drmModeModeInfo *mode;
+> +	uint32_t mode_blob;
+> +	uint32_t fb_id;
+> +	struct probe_connector *others;
+> +	int n_others;
+> +	struct probe_plane *planes;
+> +	int n_planes;
+> +};
+> +
+> +/* Looks up the ids and current values of @n named properties of an object. */
+> +static bool probe_lookup_props(int drm_fd, uint32_t obj_id, uint32_t obj_type,
+> +			       const char * const names[], int n,
+> +			       uint32_t ids[], uint64_t values[])
+> +{
+> +	drmModeObjectPropertiesPtr props;
+> +	int found = 0;
+> +
+> +	props = drmModeObjectGetProperties(drm_fd, obj_id, obj_type);
+> +	if (!props)
+> +		return false;
+> +
+> +	for (int i = 0; i < props->count_props; i++) {
+> +		drmModePropertyPtr prop = drmModeGetProperty(drm_fd, props->props[i]);
+> +
+> +		if (!prop)
+> +			continue;
+> +
+> +		for (int j = 0; j < n; j++) {
+> +			if (strcmp(prop->name, names[j]))
+> +				continue;
+> +
+> +			ids[j] = props->props[i];
+> +			values[j] = props->prop_values[i];
+> +			found++;
+> +			break;
+> +		}
+> +
+> +		drmModeFreeProperty(prop);
+> +	}
+> +
+> +	drmModeFreeObjectProperties(props);
+> +
+> +	return found == n;
+> +}
+> +
+> +static void probe_add(drmModeAtomicReq *req, uint32_t obj_id,
+> +		      uint32_t prop_id, uint64_t value)
+> +{
+> +	igt_assert_lte(0, drmModeAtomicAddProperty(req, obj_id, prop_id, value));
+> +}
+> +
+> +/* Returns an XRGB8888 dumb framebuffer id for @mode, or 0 on failure. */
+> +static uint32_t probe_fb_create(int drm_fd, const drmModeModeInfo *mode,
+> +				uint32_t *handle)
+> +{
+> +	struct drm_mode_create_dumb create = {
+> +		.width = mode->hdisplay,
+> +		.height = mode->vdisplay,
+> +		.bpp = 32,
+> +	};
+> +	uint32_t handles[4] = { 0 }, pitches[4] = { 0 }, offsets[4] = { 0 };
+> +	uint32_t fb_id = 0;
+> +
+> +	*handle = 0;
+> +
+> +	/* The buffer is never mapped, so its pages are never allocated. */
+> +	if (drmIoctl(drm_fd, DRM_IOCTL_MODE_CREATE_DUMB, &create))
+> +		return 0;
+> +
+> +	handles[0] = create.handle;
+> +	pitches[0] = create.pitch;
+> +	if (drmModeAddFB2(drm_fd, mode->hdisplay, mode->vdisplay,
+> +			  DRM_FORMAT_XRGB8888, handles, pitches, offsets,
+> +			  &fb_id, 0)) {
+> +		__kmstest_dumb_destroy(drm_fd, create.handle);
+> +		return 0;
+> +	}
+> +
+> +	*handle = create.handle;
+> +
+> +	return fb_id;
+> +}
+> +
+> +/*
+> + * TEST_ONLY commit that lights up the probed connector on @crtc_id with
+> + * the probe mode and, if available, the probe fb on a primary plane.
+> + * Other connectors and planes on that CRTC are detached in the same
+> + * request. No writeback framebuffer is attached.
+> + */
+> +static int probe_scanout_on_crtc(const struct scanout_probe *p,
+> +				 uint32_t crtc_id, int crtc_idx)
+> +{
+> +	static const char * const crtc_prop_names[] = { "MODE_ID", "ACTIVE" };
+> +	uint32_t crtc_props[2];
+> +	uint64_t crtc_values[2];
+> +	bool have_primary = false;
+> +	drmModeAtomicReq *req;
+> +	int ret;
+> +
+> +	if (!probe_lookup_props(p->drm_fd, crtc_id, DRM_MODE_OBJECT_CRTC,
+> +				crtc_prop_names, 2, crtc_props, crtc_values))
+> +		return -EOPNOTSUPP;
+> +
+> +	req = drmModeAtomicAlloc();
+> +	igt_assert(req);
+> +
+> +	probe_add(req, crtc_id, crtc_props[0], p->mode_blob);
+> +	probe_add(req, crtc_id, crtc_props[1], 1);
+> +	probe_add(req, p->connector->connector_id, p->conn_crtc_id_prop,
+> +		  crtc_id);
+> +
+> +	for (int i = 0; i < p->n_others; i++)
+> +		if (p->others[i].crtc_id == crtc_id)
+> +			probe_add(req, p->others[i].id,
+> +				  p->others[i].crtc_id_prop, 0);
+> +
+> +	for (int i = 0; i < p->n_planes; i++) {
+> +		const struct probe_plane *plane = &p->planes[i];
+> +		const uint32_t *props = plane->props;
+> +		const drmModeModeInfo *mode = p->mode;
+> +
+> +		if (p->fb_id && !have_primary &&
+> +		    plane->possible_crtcs & (1u << crtc_idx) &&
+> +		    plane->values[PROBE_PLANE_TYPE] == DRM_PLANE_TYPE_PRIMARY) {
+> +			probe_add(req, plane->id, props[PROBE_PLANE_FB_ID],
+> +				  p->fb_id);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_CRTC_ID],
+> +				  crtc_id);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_SRC_X], 0);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_SRC_Y], 0);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_SRC_W],
+> +				  (uint64_t)mode->hdisplay << 16);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_SRC_H],
+> +				  (uint64_t)mode->vdisplay << 16);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_CRTC_X], 0);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_CRTC_Y], 0);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_CRTC_W],
+> +				  mode->hdisplay);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_CRTC_H],
+> +				  mode->vdisplay);
+> +			have_primary = true;
+> +		} else if (plane->values[PROBE_PLANE_CRTC_ID] == crtc_id) {
+> +			probe_add(req, plane->id, props[PROBE_PLANE_FB_ID], 0);
+> +			probe_add(req, plane->id, props[PROBE_PLANE_CRTC_ID], 0);
+> +		}
+> +	}
+> +
+> +	ret = drmModeAtomicCommit(p->drm_fd, req,
+> +				  DRM_MODE_ATOMIC_TEST_ONLY |
+> +				  DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+> +	drmModeAtomicFree(req);
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Asks the kernel, with TEST_ONLY commits on each possible CRTC, whether
+> + * @connector can be lit up as a display without a writeback framebuffer.
+> + *
+> + * Returns 0 if a CRTC accepts it, otherwise the last error. -ENOENT,
+> + * -EOPNOTSUPP and -EACCES mean no probe reached the atomic check:
+> + * @connector is disconnected, @drm_fd lacks the atomic client cap
+> + * (atomic properties are hidden), or @drm_fd is not DRM master.
+> + */
+> +static int probe_scanout_sink(int drm_fd, const drmModeRes *res,
+> +			      const drmModeConnector *connector)
+> +{
+> +	struct scanout_probe p = { .drm_fd = drm_fd, .connector = connector };
+> +	drmModePlaneRes *plane_res;
+> +	uint32_t possible_crtcs = 0, handle;
+> +	int ret = -ENODEV;
+> +
+> +	if (connector->connection != DRM_MODE_CONNECTED ||
+> +	    !connector->count_modes)
+> +		return -ENOENT;
+> +
+> +	if (!kmstest_get_property(drm_fd, connector->connector_id,
+> +				  DRM_MODE_OBJECT_CONNECTOR, "CRTC_ID",
+> +				  &p.conn_crtc_id_prop, NULL, NULL))
+> +		return -EOPNOTSUPP;
+> +
+> +	for (int i = 0; i < connector->count_encoders; i++) {
+> +		drmModeEncoder *encoder;
+> +
+> +		encoder = drmModeGetEncoder(drm_fd, connector->encoders[i]);
+> +		if (!encoder)
+> +			continue;
+> +
+> +		possible_crtcs |= encoder->possible_crtcs;
+> +		drmModeFreeEncoder(encoder);
+> +	}
+> +
+> +	/* The smallest mode keeps the probe framebuffer small. */
+> +	p.mode = &connector->modes[0];
+> +	for (int i = 1; i < connector->count_modes; i++) {
+> +		const drmModeModeInfo *m = &connector->modes[i];
+> +
+> +		if (m->hdisplay * m->vdisplay <
+> +		    p.mode->hdisplay * p.mode->vdisplay)
+> +			p.mode = m;
+> +	}
+> +
+> +	p.others = calloc(res->count_connectors, sizeof(*p.others));
+> +	igt_assert(p.others);
+> +	for (int i = 0; i < res->count_connectors; i++) {
+> +		struct probe_connector *other = &p.others[p.n_others];
+> +
+> +		if (res->connectors[i] == connector->connector_id)
+> +			continue;
+> +
+> +		if (kmstest_get_property(drm_fd, res->connectors[i],
+> +					 DRM_MODE_OBJECT_CONNECTOR, "CRTC_ID",
+> +					 &other->crtc_id_prop, &other->crtc_id,
+> +					 NULL)) {
+> +			other->id = res->connectors[i];
+> +			p.n_others++;
+> +		}
+> +	}
+> +
+> +	plane_res = drmModeGetPlaneResources(drm_fd);
+> +	if (plane_res && plane_res->count_planes) {
+> +		p.planes = calloc(plane_res->count_planes, sizeof(*p.planes));
+> +		igt_assert(p.planes);
+> +	}
+> +	for (int i = 0; p.planes && i < plane_res->count_planes; i++) {
+> +		struct probe_plane *plane = &p.planes[p.n_planes];
+> +		drmModePlane *drm_plane;
+> +
+> +		drm_plane = drmModeGetPlane(drm_fd, plane_res->planes[i]);
+> +		if (!drm_plane)
+> +			continue;
+> +
+> +		plane->id = drm_plane->plane_id;
+> +		plane->possible_crtcs = drm_plane->possible_crtcs;
+> +		drmModeFreePlane(drm_plane);
+> +
+> +		if (probe_lookup_props(drm_fd, plane->id, DRM_MODE_OBJECT_PLANE,
+> +				       probe_plane_prop_names,
+> +				       PROBE_PLANE_NUM_PROPS, plane->props,
+> +				       plane->values))
+> +			p.n_planes++;
+> +	}
+> +	drmModeFreePlaneResources(plane_res);
+> +
+> +	ret = drmModeCreatePropertyBlob(drm_fd, p.mode, sizeof(*p.mode),
+> +					&p.mode_blob);
+> +	if (ret)
+> +		goto out;
+> +
+> +	/* Without an fb, still probe with the CRTC and connector alone. */
+> +	p.fb_id = probe_fb_create(drm_fd, p.mode, &handle);
+> +
+> +	ret = -ENODEV;
+> +	for (int i = 0; i < res->count_crtcs && i < 32; i++) {
+> +		if (!(possible_crtcs & (1u << i)))
+> +			continue;
+> +
+> +		ret = probe_scanout_on_crtc(&p, res->crtcs[i], i);
+> +		if (!ret)
+> +			break;
+> +	}
+> +
+> +	if (p.fb_id) {
+> +		drmModeRmFB(drm_fd, p.fb_id);
+> +		__kmstest_dumb_destroy(drm_fd, handle);
+> +	}
+> +	drmModeDestroyPropertyBlob(drm_fd, p.mode_blob);
+> +out:
+> +	free(p.planes);
+> +	free(p.others);
+> +
+> +	return ret;
+> +}
+> +
+> +static const char *probe_result_str(int ret)
+> +{
+> +	switch (ret) {
+> +	case -ENOENT:
+> +		return "disconnected";
+> +	case -EOPNOTSUPP:
+> +		return "no atomic client cap";
+> +	case -EACCES:
+> +		return "not DRM master";
+> +	default:
+> +		return strerror(-ret);
+> +	}
+> +}
+> +
+> +/* True if @ret means no probe reached the atomic check. */
+> +static bool probe_inconclusive(int ret)
+> +{
+> +	return ret == -ENOENT || ret == -EOPNOTSUPP || ret == -EACCES;
+> +}
+> +
+> +static bool connector_is_scanout_sink(int drm_fd, const drmModeRes *res,
+> +				      const drmModeConnector *connector,
+> +				      bool has_writeback_fb_id)
+> +{
+> +	int ret;
+> +
+> +	if (connector->connector_type == DRM_MODE_CONNECTOR_WRITEBACK ||
+> +	    has_writeback_fb_id)
+> +		return false;
+> +
+> +	if (connector->connector_type != DRM_MODE_CONNECTOR_VIRTUAL)
+> +		return true;
+> +
+> +	/* On virtual-only devices (VKMS, virtio-gpu, ...) these are the displays. */
+> +	if (!device_has_physical_connector(drm_fd, res))
+> +		return true;
+> +
+> +	/*
+> +	 * Next to physical connectors, a virtual connector may be a
+> +	 * writeback or concurrent writeback sink that rejects any commit
+> +	 * without an output fb. Only hide it when the kernel says so.
+> +	 */
+> +	ret = probe_scanout_sink(drm_fd, res, connector);
+> +	if (!ret)
+> +		return true;
+> +
+> +	if (probe_inconclusive(ret)) {
+> +		igt_debug("%s-%d: scanout probe not sent (%s), assuming a scanout sink\n",
+> +			  kmstest_connector_type_str(connector->connector_type),
+> +			  connector->connector_type_id, probe_result_str(ret));
+> +		return true;
+> +	}
+> +
+> +	igt_debug("%s-%d: kernel rejected a plain modeset (%s), not a scanout sink\n",
+> +		  kmstest_connector_type_str(connector->connector_type),
+> +		  connector->connector_type_id, probe_result_str(ret));
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * kmstest_connector_is_scanout_sink:
+> + * @drm_fd: DRM fd
+> + * @res: libdrm resources of @drm_fd
+> + * @connector: libdrm connector to check
+> + *
+> + * Checks whether @connector drives a display that can be lit up with a
+> + * plain modeset, as opposed to a memory sink that needs an output
+> + * framebuffer on every commit.
+> + *
+> + * Writeback connectors, and any connector that exposes WRITEBACK_FB_ID,
+> + * are never scanout sinks. Physical connectors always are.
+> + *
+> + * Virtual connectors are scanout sinks on devices that only expose
+> + * virtual connectors (VKMS, virtio-gpu, vmwgfx, ...). Next to physical
+> + * connectors, where some drivers use them for writeback outputs, a
+> + * connected virtual connector is not a scanout sink if the kernel
+> + * rejects a TEST_ONLY commit that lights it up with a plain primary
+> + * plane on any of its CRTCs. That probe needs DRM master and the atomic
+> + * client cap on @drm_fd. Without them the connector is assumed to be a
+> + * scanout sink. This function never changes the client caps of @drm_fd.
+> + *
+> + * Returns: True if @connector is a scanout sink, false otherwise.
+> + */
+> +bool kmstest_connector_is_scanout_sink(int drm_fd, const drmModeRes *res,
+> +				       const drmModeConnector *connector)
+> +{
+> +	bool has_writeback_fb_id =
+> +		kmstest_get_property(drm_fd, connector->connector_id,
+> +				     DRM_MODE_OBJECT_CONNECTOR,
+> +				     "WRITEBACK_FB_ID", NULL, NULL, NULL);
+> +
+> +	return connector_is_scanout_sink(drm_fd, res, connector,
+> +					 has_writeback_fb_id);
+> +}
+> +
+>  /**
+>   * kmstest_get_connector_default_mode:
+>   * @drm_fd: DRM fd
+> @@ -2943,6 +3386,29 @@ void igt_display_reset_outputs(igt_display_t *display)
+>  		}
+>  	}
+>  
+> +	/*
+> +	 * Must be known before the first igt_output_is_connected() call
+> +	 * below, which skips outputs that aren't scanout sinks.
+> +	 */
+> +	for (i = 0; i < display->n_outputs; i++) {
+> +		igt_output_t *output = &display->outputs[i];
+
+See for_each_output().
+
+> +		drmModeConnector *connector = output->config.connector;
+> +
+> +		if (!connector)
+> +			continue;
+> +
+> +		output->non_scanout_sink =
+> +			!connector_is_scanout_sink(display->drm_fd, resources,
+> +						   connector,
+> +						   output->props[IGT_CONNECTOR_WRITEBACK_FB_ID]);
+> +
+> +		if (output->non_scanout_sink &&
+> +		    connector->connector_type == DRM_MODE_CONNECTOR_VIRTUAL &&
+> +		    connector->connection == DRM_MODE_CONNECTED)
+> +			igt_info("%s: not a scanout sink, not used as a display\n",
+> +				 output->name);
+> +	}
+> +
+>  	/* Set reasonable default values for every object in the
+>  	 * display. */
+>  	igt_display_reset(display);
+> diff --git a/lib/igt_kms.h b/lib/igt_kms.h
+> index dfcb91e02..ac28a576e 100644
+> --- a/lib/igt_kms.h
+> +++ b/lib/igt_kms.h
+> @@ -285,6 +285,8 @@ bool kmstest_probe_connector_config(int drm_fd, uint32_t connector_id,
+>  				    unsigned long crtc_idx_mask,
+>  				    struct kmstest_connector_config *config);
+>  void kmstest_free_connector_config(struct kmstest_connector_config *config);
+> +bool kmstest_connector_is_scanout_sink(int drm_fd, const drmModeRes *res,
+> +				       const drmModeConnector *connector);
+>  
+>  void kmstest_set_connector_dpms(int fd, drmModeConnector *connector, int mode);
+>  bool kmstest_get_property(int drm_fd, uint32_t object_id, uint32_t object_type,
+> @@ -512,6 +514,8 @@ typedef struct {
+>  	struct kmstest_connector_config config;
+>  	char *name;
+>  	bool force_reprobe;
+> +	/* Set by igt_display_reset_outputs(), see kmstest_connector_is_scanout_sink(). */
+> +	bool non_scanout_sink;
+>  	igt_crtc_t *pending_crtc;
+>  	bool use_override_mode;
+>  	drmModeModeInfo override_mode;
+> @@ -668,8 +672,12 @@ void igt_wait_for_vblank_ts_seq(igt_crtc_t *crtc, uint64_t *ts_ns, unsigned int
+>   * igt_output_is_connected:
+>   * @output: #igt_output_t to check.
+>   *
+> - * Returns: True if given @output's connection status is CONNECTED,
+> - * else False.
+> + * Outputs that aren't scanout sinks (writeback connectors, and virtual
+> + * connectors used as writeback outputs) are never reported as
+> + * connected, see kmstest_connector_is_scanout_sink().
+> + *
+> + * Returns: True if given @output is a scanout sink whose connection
+> + * status is CONNECTED, else False.
+>   */
+>  static inline bool igt_output_is_connected(igt_output_t *output)
+>  {
+> @@ -678,6 +686,10 @@ static inline bool igt_output_is_connected(igt_output_t *output)
+>  	    !output->config.connector->count_modes)
+>  		return false;
+>  
+> +	/* Memory sinks need an output fb and can't be lit up with a modeset. */
+> +	if (output->non_scanout_sink)
+> +		return false;
+> +
+>  	if (output->config.connector->connection == DRM_MODE_CONNECTED)
+>  		return true;
+>  
+> diff --git a/tests/kms_setmode.c b/tests/kms_setmode.c
+> index a65ea8b23..f105a6ad1 100644
+> --- a/tests/kms_setmode.c
+> +++ b/tests/kms_setmode.c
+> @@ -92,6 +92,7 @@
+>  
+>  static int drm_fd;
+>  static drmModeRes *drm_resources;
+> +static bool *non_scanout_sink;
+>  static int filter_test_id;
+>  static bool dry_run;
+>  static bool extended = false;
+> @@ -895,6 +896,9 @@ static int get_connectors(drmModeRes *resources, int *connector_idxs,
+>  		igt_assert_lt(connector_idx, resources->count_connectors);
+>  		connector_id = resources->connectors[connector_idx];
+>  
+> +		if (non_scanout_sink[connector_idx])
+> +			goto err;
+> +
+>  		if (get_one_connector(resources, connector_id, &cconfs[i]) < 0)
+>  			goto err;
+>  
+> @@ -1047,6 +1051,38 @@ static void restore_cpu_deep_sleep_at_exit(int sig)
+>  	igt_pm_enable_cpu_deep_sleep();
+>  }
+>  
+> +/*
+> + * Marks the connectors that can't be lit up with a plain modeset, such
+> + * as writeback outputs exposed as virtual connectors. Probing those
+> + * needs the atomic cap, so enable it only here: every modeset in this
+> + * test stays legacy.
+> + */
+> +static void find_non_scanout_sinks(void)
+> +{
+> +	bool atomic = !drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 1);
+> +
+> +	non_scanout_sink = calloc(drm_resources->count_connectors,
+> +				  sizeof(*non_scanout_sink));
+> +	igt_assert(non_scanout_sink);
+> +
+> +	for (int i = 0; i < drm_resources->count_connectors; i++) {
+> +		drmModeConnector *connector;
+> +
+> +		connector = drmModeGetConnector(drm_fd,
+> +						drm_resources->connectors[i]);
+> +		if (!connector)
+> +			continue;
+> +
+> +		non_scanout_sink[i] =
+> +			!kmstest_connector_is_scanout_sink(drm_fd, drm_resources,
+> +							   connector);
+> +		drmModeFreeConnector(connector);
+> +	}
+> +
+> +	if (atomic)
+> +		igt_assert_eq(drmSetClientCap(drm_fd, DRM_CLIENT_CAP_ATOMIC, 0), 0);
+> +}
+> +
+>  static int opt_handler(int opt, int opt_index, void *data)
+>  {
+>  	switch (opt) {
+> @@ -1103,6 +1139,8 @@ int igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+>  		drm_resources = drmModeGetResources(drm_fd);
+>  		igt_require(drm_resources);
+>  
+> +		find_non_scanout_sinks();
+> +
+>  		max_dotclock = igt_get_max_dotclock(drm_fd);
+>  	}
+>  
+> @@ -1143,6 +1181,7 @@ int igt_main_args("det:", NULL, help_str, opt_handler, NULL)
+>  	}
+>  
+>  	igt_fixture() {
+> +		free(non_scanout_sink);
+>  		drmModeFreeResources(drm_resources);
+>  		drm_close_driver(drm_fd);
+>  	}
+
+-- 
+Jani Nikula, Intel
