@@ -2,106 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D67A606A329
-	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 08:21:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=pE6jRPQI
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F5D606A32F
+	for <igt-dev@archiver.kernel.org>; Mon, 16 Nov 2026 08:37:42 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0FF0D10EAFA;
-	Mon, 16 Nov 2026 08:21:29 +0000 (UTC)
-Received: from PH0PR06CU001.outbound.protection.outlook.com
- (mail-westus3azon11011066.outbound.protection.outlook.com [40.107.208.66])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 2B54910EA3C
- for <igt-dev@lists.freedesktop.org>; Mon, 16 Nov 2026 08:19:42 +0000 (UTC)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TvoDqgUn25UyeVGV+0RPFVKuIyWs6Ypc5x9f7JFp7CTrHQa+XbRv8528zh+3kBx0mJjCBm/NUrzyFOLHbheNCil68mBo4cA/lShFWjLzvOjnThqL8AKBr/WIs4iZpPAfTZTyJkgZw1YUqsnmEyB8SlLn7mCdz3zdMhKvLQ/wJ9tPmQo5uCkfmn7b03optqAqFt1Q2a/E2Q7a2qFlScJQLzUvrPf7E3US/lFeAL71K6mdpcq5DCqYiVlQSeEYJESnyb0KmNSCeRSDlcL+NGnBAV5FA5Z2H9Vrtvwqyq8/xx77mnSp/+jfKyqcHhJQt1wyg0GgjqRMVQzSEHgVgMn1gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pmq5XG2ogLrD7/RsDNpKc1JtCgN9ouvTJNlrNZiaVxA=;
- b=KJtZgarcTRz5yP5iy0nehatOLNlxMfcicPNQsAsWan4+cjJMK6RFC4Jey2X5zk14riF5/+ByvFu3mGDqomqRhjLCUkLK6Gc67wi0ZZuBQimpw4BX8ROwLnWq+Rpd90+8NOsaZgKBZf8q9jx6RD1SzroP9nsYRa084D/oDPqWb5yA0upF8SY6P5D2T+CT5cIOeCCxR9u3EmTk68kY998DGXXyg+9SSpLqYyJjPg+kWYCptN72CqHdLSEv+nnoZccokYeuBW1jSvZylKZimKKLj2NN2sO20lHIguwsm28RVaqzZ3UQ6WJUUYWbx8dmIG6nsysyRo6vHNKNyKBrTm+6TQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pmq5XG2ogLrD7/RsDNpKc1JtCgN9ouvTJNlrNZiaVxA=;
- b=pE6jRPQIiEVteIZxqpT8kx1Z2bnOJd+SDE9nicADIwyIrhAaYveXE6Yi9X0r0jtFgUE3lvcXIUJ6LMK3rs4ecGcixcYJ+zZgbMqH5ZuI1H0eYQzm/VGezARpSehBkM3C8A6KnQl34xKPCK7MoFO3vOwW0cFklCyz2dXOXymL2pM=
-Received: from PH8PR07CA0026.namprd07.prod.outlook.com (2603:10b6:510:2cf::21)
- by LV8PR12MB9452.namprd12.prod.outlook.com (2603:10b6:408:200::8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Mon, 16 Nov
- 2026 08:19:30 +0000
-Received: from PH1PEPF00062F26.namprd02.prod.outlook.com
- (2603:10b6:510:2cf:cafe::5b) by PH8PR07CA0026.outlook.office365.com
- (2603:10b6:510:2cf::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.14 via Frontend Transport; Mon,
- 16 Nov 2026 08:19:30 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 165.204.84.17) smtp.mailfrom=amd.com;
- dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- PH1PEPF00062F26.mail.protection.outlook.com (10.167.243.55) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Mon, 16 Nov 2026 08:19:29 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Mon, 16 Nov
- 2026 02:19:26 -0600
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Mon, 16 Nov
- 2026 02:19:25 -0600
-Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Mon, 16 Nov 2026 02:19:24 -0600
-From: Jesse Zhang <Jesse.Zhang@amd.com>
-To: <igt-dev@lists.freedesktop.org>
-CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
- <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>, Jesse Zhang
- <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t 4/6] tests/amdgpu: share the SLTH user queue test
- between GFX and compute
-Date: Mon, 16 Nov 2026 16:18:57 +0800
-Message-ID: <20261116081916.2142984-4-Jesse.Zhang@amd.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261116081916.2142984-1-Jesse.Zhang@amd.com>
-References: <20261116081916.2142984-1-Jesse.Zhang@amd.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id A867F10E2B6;
+	Mon, 16 Nov 2026 08:37:41 +0000 (UTC)
+Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4C1C310E3A7;
+ Mon, 16 Nov 2026 08:36:44 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7983999533456295345=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH1PEPF00062F26:EE_|LV8PR12MB9452:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2b768178-223c-40da-5050-08df43ba55fa
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|82310400026|1800799024|36860700016|23010399003|376014|22082099003|18002099003|6133799003|261009223027099003|3023799007|11063799006|56012099006|261028144727099003|261026130827099003|261026135527099003|261026121527099003|261026140227099003|261022113327099003|261022105027099003|261022075727099003|261021130227099003|261021121427099003|261021123027099003|261022115727099003|261102123227099003|261021135927099003|261021133027099003|10067099003;
-X-Microsoft-Antispam-Message-Info: knuV6YGebogyrDOBLwOKMrCV/Xxi2nj45yJTD+B130LucmOqkYIzkmQw7zE70oVcbMpCZcz670hjwBJBf5jRWNVBSZZ0o8tQBId3ZxPDCyi8FBGtTEM2x1RJsvAamg7SM760hhHoCqdoCmcZ50v9MzEo9Pq+GvUaBYXmyTJrWYTXrI9j1UdPp3hbt2veWJZCv4G3N2PPwRessAaJ4yGzh/859iSIEOQQXT6I0uSZ8LW2xX0sBBgizXbjxi5hTruc8QsZceeq7kUax11L5n1bvfRm4yz2UQOOVgd/o6Jk55wkXyDjXmeiRjfjrzUx5VTea1RhWQfhJgSgxCa4/4AnaeT3a5G+YqI4Ej++X/HLxVCupw5pVaeUjm8IwggFi9/D/ZM+3hbYWHZmNRE+yO3zb3ObJWSyQRu0pJ1AlDENOze09MWrq7kYK+jgOXqFyVIZYaN/puVymDWW1GM7nvgSa/v94V1hs3Rf802gjKdG6PyYXcfihYwwvsXx2t9o6m/gMOupJKkFd/rKp1MnYtFUXpRcg8IOcK+7W/badVgqcA7Jeic2rV/G6CVodk4/ZMzpHjv7UDMaGb7PCHMy6TLBh9lY0sLwyBkxEml+0iN5Rj74gmyhWurSaQt05s72vOHIF1hAfth19f/THU1uDpT0vmg64+aKLvbIqaoxIe6kwMhzcWwHK+QjYu8ZOeHyfKJ2MKZinB7XRH2lEKgNoGDQ1g==
-X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(82310400026)(1800799024)(36860700016)(23010399003)(376014)(22082099003)(18002099003)(6133799003)(261009223027099003)(3023799007)(11063799006)(56012099006)(261028144727099003)(261026130827099003)(261026135527099003)(261026121527099003)(261026140227099003)(261022113327099003)(261022105027099003)(261022075727099003)(261021130227099003)(261021121427099003)(261021123027099003)(261022115727099003)(261102123227099003)(261021135927099003)(261021133027099003)(10067099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: aEjj5Ji/brsH97eNbcLjNNaSvlvGDpY8kuDeTlde5IHAt5gJFn9chtZi1s5kAY0lvlntchhbxYAblsiSsQRtHVNCtKVvuPNOoQjHCYIJg/WtlNNpAyiq1Sz8iRyEDw9bLJOZuBd8fCFdA/lfvnmwsce7ieTl+q/tEwK54WXI+seAw3VHDlgU1tJ3M6Obz5H10y3bdLLqmab2Ip2MZqvRcDhm5SrfmqHuNvl2V7RTfRbZ10wY9Xwj3uDbxttCF7e/GenLMdfPHq948bNSNoYAQlC9lWfbsDPnlu/lco6JgYdCjP/3lWicGfkc8uMCk4W12NKhZ9E8D/sN+DKc3FDYRHMWRrCIt6KHZ3pLBkej0lSEieu8eiUwRdBqKZOETXPYTcS/nhJCeD5bq2XKobtJoLCuEwfLYxaxBNZQgwrqDJWr6oz7d9BDyqV/CPbE87Mf
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Nov 2026 08:19:29.4219 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2b768178-223c-40da-5050-08df43ba55fa
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: PH1PEPF00062F26.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9452
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_lib/igt=5Fkms=3A_Reset_left?=
+ =?utf-8?q?over_KMS_color_state?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Gil Dekel" <gildekel@google.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Mon, 16 Nov 2026 08:36:44 -0000
+Message-ID: <179481820430.28268.9932674296117489483@9ac1b63fe3ea>
+X-Patchwork-Hint: ignore
+References: <20261114222902.1404033-1-gildekel@google.com>
+In-Reply-To: <20261114222902.1404033-1-gildekel@google.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -112,432 +34,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-slth_gfx_umq_vgpr_proof_test() can only run the VGPR proof shader on a
-GFX user queue. Move the body into slth_umq_run(), which takes the IP
-type and the shader and returns the stored value, so the other SLTH
-checks can run on GFX and compute user queues without copying it.
+--===============7983999533456295345==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-On compute queues program the dispatch like the compute KQ tests do:
-gfx_program_compute() starts with CONTEXT_CONTROL, which is a GFX only
-packet. Drop the PM4 and pointer dumps while at it.
+== Series Details ==
 
-No functional change for slth-gfx-umq-vgpr-proof.
+Series: lib/igt_kms: Reset leftover KMS color state
+URL   : https://patchwork.freedesktop.org/series/178630/
+State : success
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
----
- tests/amdgpu/amd_basic.c | 350 ++++++++++++---------------------------
- 1 file changed, 104 insertions(+), 246 deletions(-)
+== Summary ==
 
-diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
-index 2fdef83fd..2037c71ad 100644
---- a/tests/amdgpu/amd_basic.c
-+++ b/tests/amdgpu/amd_basic.c
-@@ -1357,293 +1357,151 @@ static void slth_gfx_kq_vgpr_proof_test(amdgpu_device_handle device,
- 	igt_info("SLTH GFX KQ VGPR PROOF COMPLETE\n");
- }
- 
--static void slth_gfx_umq_vgpr_proof_test(amdgpu_device_handle device,
--					 int fd)
-+/*
-+ * Run a SLTH shader on a GFX or compute user queue and return the dword it
-+ * stores. The second-level trap handler is set per GPUVM, so user queues get
-+ * it like kernel queues do. The shader stores to the address in s[0:1].
-+ */
-+static uint32_t
-+slth_umq_run(amdgpu_device_handle device, int fd, unsigned int ip_type,
-+	     void (*prepare_shader)(amdgpu_device_handle device,
-+				    uint8_t *isa_bin, size_t *isa_sz))
- {
--	const struct amdgpu_ip_block_version *gfx_ip =
--		get_ip_block(device, AMD_IP_GFX);
--
-+	const struct amdgpu_ip_block_version *ip = get_ip_block(device, ip_type);
- 	struct amdgpu_ring_context *ring_context;
--
--	amdgpu_bo_handle bo = NULL;
--	amdgpu_va_handle va = 0;
--
--	void *cpu = NULL;
--	uint32_t *ptr_pm4 = NULL;
--	volatile uint32_t *ptr_output = NULL;
--
--	uint64_t mc = 0;
--	uint64_t shader_mc_addr;
--	uint64_t output_mc_addr;
--
- 	struct amdgpu_cmd_base *base_cmd;
--
-+	struct slth_bufs bufs;
-+	amdgpu_bo_handle bo;
-+	amdgpu_va_handle va;
-+	volatile uint32_t *ptr_output;
-+	uint64_t mc, shader_mc_addr, output_mc_addr;
- 	uint8_t isa_bin[8192];
- 	size_t isa_sz = 0;
-+	uint32_t value;
-+	void *cpu;
-+	int r, i;
- 
--	const uint32_t *shader;
--	uint32_t size_bytes;
--
--	struct slth_bufs bufs;
--
--	int r;
-+	igt_assert(ip_type == AMD_IP_GFX || ip_type == AMD_IP_COMPUTE);
-+	igt_assert(ip && ip->funcs);
- 
- 	memset(&bufs, 0, sizeof(bufs));
--
--	igt_assert(gfx_ip);
--	igt_assert(gfx_ip->funcs);
--
--	igt_info("SLTH GFX UMQ VGPR PROOF\n");
--
- 	slth_alloc_buffers(device, &bufs);
-+	slth_prepare_tba_with_handler(device, &bufs, TrapHandlerIsaProof);
- 
--	igt_info("TBA=0x%016llx\n",
--		 (unsigned long long)bufs.tba_mc_addr);
--
--	igt_info("TMA=0x%016llx\n",
--		 (unsigned long long)bufs.tma_mc_addr);
--
--	slth_prepare_tba_with_handler(device,
--				      &bufs,
--			TrapHandlerIsaProof);
--
--	igt_info("TrapHandlerIsaProof loaded into TBA\n");
--
--	r = vm_set_l2_trap(fd,
--			   bufs.tba_mc_addr,
--			bufs.tma_mc_addr);
--
-+	r = vm_set_l2_trap(fd, bufs.tba_mc_addr, bufs.tma_mc_addr);
- 	igt_info("SET_L2_TRAP ret=%d\n", r);
--
- 	igt_assert_eq(r, 0);
- 
--	slth_prepare_vgpr_proof_shader(device,
--				       isa_bin,
--			&isa_sz);
--
--	shader = (const uint32_t *)isa_bin;
--	size_bytes = (uint32_t)isa_sz;
--
--	igt_assert(shader);
--	igt_assert(size_bytes > 0);
--
--	igt_info("SlthVgprProofIsa size=%u\n",
--		 size_bytes);
--
--	igt_info("shader=%p size=%u\n",
--		 shader,
--			size_bytes);
-+	prepare_shader(device, isa_bin, &isa_sz);
-+	igt_assert(isa_sz > 0 && isa_sz <= 4096);
- 
- 	ring_context = calloc(1, sizeof(*ring_context));
- 	igt_assert(ring_context);
- 
--	gfx_ip->funcs->userq_create(device,
--			ring_context,
--			gfx_ip->type);
--
--	igt_info("UMQ queue created\n");
-+	ip->funcs->userq_create(device, ring_context, ip->type);
-+	igt_info("%s UMQ %u created\n", ip_type == AMD_IP_GFX ? "GFX" : "compute",
-+		 ring_context->queue_id);
- 
--	igt_info("timeline=%u point=%llu\n",
--		 ring_context->timeline_syncobj_handle,
--			(unsigned long long)ring_context->point);
--
--	base_cmd = get_cmd_base();
--	igt_assert(base_cmd);
--
--	r = amdgpu_bo_alloc_and_map_sync(
--			device,
--			65536,
--			4096,
--			AMDGPU_GEM_DOMAIN_GTT,
--			AMDGPU_GEM_CREATE_CPU_GTT_USWC,
--			AMDGPU_VM_MTYPE_UC,
--			&bo,
--			&cpu,
--			&mc,
--			&va,
--			ring_context->timeline_syncobj_handle,
--			++ring_context->point,
--			true);
-+	/* IB at 0x0, shader at 0x1000, output at 0x2000 */
-+	r = amdgpu_bo_alloc_and_map_sync(device, 65536, 4096,
-+					 AMDGPU_GEM_DOMAIN_GTT,
-+					 AMDGPU_GEM_CREATE_CPU_GTT_USWC,
-+					 AMDGPU_VM_MTYPE_UC,
-+					 &bo, &cpu, &mc, &va,
-+					 ring_context->timeline_syncobj_handle,
-+					 ++ring_context->point, true);
- 	igt_assert_eq(r, 0);
- 
--	r = amdgpu_timeline_syncobj_wait(
--			device,
--			ring_context->timeline_syncobj_handle,
--			ring_context->point);
-+	r = amdgpu_timeline_syncobj_wait(device,
-+					 ring_context->timeline_syncobj_handle,
-+					 ring_context->point);
- 	igt_assert_eq(r, 0);
- 
- 	memset(cpu, 0, 65536);
--
--	ptr_pm4 = (uint32_t *)cpu;
--
--	memcpy((uint8_t *)cpu + 0x1000,
--	       shader,
--			size_bytes);
--
--	ptr_output =
--		(volatile uint32_t *)((uint8_t *)cpu + 0x2000);
--
--	memset((void *)ptr_output, 0, 4096);
--
-+	memcpy((uint8_t *)cpu + 0x1000, isa_bin, isa_sz);
-+	ptr_output = (volatile uint32_t *)((uint8_t *)cpu + 0x2000);
- 	shader_mc_addr = mc + 0x1000;
- 	output_mc_addr = mc + 0x2000;
- 
--	igt_info("shader_mc_addr = 0x%016llx\n",
--		 (unsigned long long)shader_mc_addr);
--
--	igt_info("output_mc_addr = 0x%016llx\n",
--		 (unsigned long long)output_mc_addr);
--
--	base_cmd->attach_buf(base_cmd,
--			ptr_pm4,
--			4096);
--
--	gfx_ip->funcs->gfx_program_compute(
--			gfx_ip->funcs,
--			base_cmd,
--			shader_mc_addr,
--			output_mc_addr,
--			0x002c0040,
--			0x00000010,
--			1,
--			1,
--			1);
--
--	igt_info("PM4 dwords after gfx_program_compute = %u\n",
--		 base_cmd->cdw);
--
--	gfx_ip->funcs->gfx_dispatch_direct(
--			gfx_ip->funcs,
--			base_cmd,
--			1,
--			1,
--			1,
--			0);
--
--	base_cmd->emit_aligned(base_cmd,
--			7,
--			GFX_COMPUTE_NOP);
--
--	igt_info("PM4 dwords after dispatch = %u\n",
--		 base_cmd->cdw);
--
--	ring_context->pm4_dw = base_cmd->cdw;
--
--	igt_info("UMQ pm4_dw=%u\n",
--		 ring_context->pm4_dw);
--
--	igt_info("IB gpu addr=0x%016llx\n",
--		 (unsigned long long)mc);
--
--	igt_info("Submitting REAL UMQ dispatch\n");
--
--	igt_info("=== PM4 DUMP BEGIN ===\n");
-+	base_cmd = get_cmd_base();
-+	igt_assert(base_cmd);
-+	base_cmd->attach_buf(base_cmd, cpu, 4096);
- 
--	for (int i = 0; i < base_cmd->cdw; i++) {
--		igt_info("PM4[%02d] = 0x%08x\n",
--			 i,
--				ptr_pm4[i]);
-+	if (ip_type == AMD_IP_GFX) {
-+		ip->funcs->gfx_program_compute(ip->funcs, base_cmd,
-+					       shader_mc_addr, output_mc_addr,
-+					       0x002c0040, 0x00000010, 1, 1, 1);
-+		ip->funcs->gfx_dispatch_direct(ip->funcs, base_cmd, 1, 1, 1, 0);
-+	} else {
-+		/*
-+		 * gfx_program_compute() starts with CONTEXT_CONTROL, a GFX only
-+		 * packet, so program the dispatch like the compute KQ tests.
-+		 */
-+		amdgpu_dispatch_init(AMDGPU_HW_IP_COMPUTE, base_cmd, ip->major);
-+		amdgpu_dispatch_write_cumask(base_cmd, ip->major);
-+		amdgpu_dispatch_write2hw(base_cmd, shader_mc_addr, ip->major, 0);
-+
-+		/* COMPUTE_USER_DATA_0..3: s[0:1] = s[2:3] = output address */
-+		base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
-+		base_cmd->emit(base_cmd, 0x240);
-+		base_cmd->emit(base_cmd, lower_32_bits(output_mc_addr));
-+		base_cmd->emit(base_cmd, upper_32_bits(output_mc_addr));
-+		base_cmd->emit(base_cmd, lower_32_bits(output_mc_addr));
-+		base_cmd->emit(base_cmd, upper_32_bits(output_mc_addr));
-+
-+		/* COMPUTE_RESOURCE_LIMITS */
-+		base_cmd->emit(base_cmd, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-+		base_cmd->emit(base_cmd, 0x215);
-+		base_cmd->emit(base_cmd, 0);
-+
-+		base_cmd->emit(base_cmd, PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT, 3));
-+		base_cmd->emit(base_cmd, 1);
-+		base_cmd->emit(base_cmd, 1);
-+		base_cmd->emit(base_cmd, 1);
-+		base_cmd->emit(base_cmd, 1);
- 	}
-+	base_cmd->emit_aligned(base_cmd, 7, GFX_COMPUTE_NOP);
-+	ring_context->pm4_dw = base_cmd->cdw;
- 
--	igt_info("=== PM4 DUMP END ===\n");
--
--	igt_info("before submit point=%llu\n",
--		 (unsigned long long)ring_context->point);
--
--	igt_info("pre-submit wptr=%llu rptr=%llu\n",
--		 (unsigned long long)*ring_context->wptr_cpu,
--			(unsigned long long)*ring_context->rptr_cpu);
--
--	igt_info("IB first 16 DWs:\n");
--
--	for (int i = 0; i < 16 && i < ring_context->pm4_dw; i++)
--		igt_info("IB[%d]=0x%08x\n", i, ptr_pm4[i]);
--
--	gfx_ip->funcs->userq_submit(device,
--			ring_context,
--			gfx_ip->type,
--			mc);
--
--	igt_info("Returned from userq_submit()\n");
--
--	igt_info("post-submit wptr=%llu rptr=%llu\n",
--		 (unsigned long long)*ring_context->wptr_cpu,
--			(unsigned long long)*ring_context->rptr_cpu);
--
--	usleep(100000);
--
--	igt_info("100ms later wptr=%llu rptr=%llu\n",
--		 (unsigned long long)*ring_context->wptr_cpu,
--			(unsigned long long)*ring_context->rptr_cpu);
--
--	igt_info("after submit point=%llu\n",
--		 (unsigned long long)ring_context->point);
--
--	igt_info("timeline=%u point=%llu\n",
--		 ring_context->timeline_syncobj_handle,
--			(unsigned long long)ring_context->point);
--
--	r = amdgpu_timeline_syncobj_wait(
--			device,
--			ring_context->timeline_syncobj_handle,
--			ring_context->point);
--
--	igt_info("timeline wait ret=%d\n", r);
--
--	igt_info("pm4_dw=%u\n",
--		 ring_context->pm4_dw);
-+	ip->funcs->userq_submit(device, ring_context, ip->type, mc);
- 
--	for (int i = 0; i < 1000; i++) {
--		if (ptr_output[0])
--			break;
-+	r = amdgpu_timeline_syncobj_wait(device,
-+					 ring_context->timeline_syncobj_handle,
-+					 ring_context->point);
-+	igt_assert_eq(r, 0);
- 
-+	for (i = 0; i < 1000 && !ptr_output[0]; i++)
- 		usleep(1000);
--	}
--
--	igt_info("final output=0x%x\n",
--		 ptr_output[0]);
--
--	igt_info("Post-dispatch output dump\n");
--
--	for (int i = 0; i < 16; i++) {
--		igt_info("OUT[%d] = 0x%08x\n",
--			 i,
--				ptr_output[i]);
--	}
--
--	igt_info("output_value=%u (0x%x)\n",
--		 ptr_output[0],
--			ptr_output[0]);
--
--	igt_info("VGPR proof output=%u\n",
--		 ptr_output[0]);
--
--	igt_assert_eq(ptr_output[0], 42);
--
--	igt_info("SLTH GFX UMQ VGPR PROOF COMPLETE\n");
--
--	amdgpu_bo_unmap_and_free(bo,
--				 va,
--			mc,
--			65536);
-+	value = ptr_output[0];
-+	igt_info("output_value=%u (0x%x)\n", value, value);
- 
-+	amdgpu_bo_unmap_and_free(bo, va, mc, 65536);
- 	free_cmd_base(base_cmd);
--
--	gfx_ip->funcs->userq_destroy(device,
--			ring_context,
--			gfx_ip->type);
-+	ip->funcs->userq_destroy(device, ring_context, ip->type);
-+	free(ring_context);
- 
- 	r = vm_clear_l2_trap(fd);
--
- 	igt_info("CLEAR_L2_TRAP ret=%d\n", r);
--
- 	igt_assert_eq(r, 0);
--
- 	slth_free_buffers(&bufs);
- 
--	free(ring_context);
-+	return value;
-+}
- 
--	igt_info("UMQ queue destroyed\n");
-+static void slth_gfx_umq_vgpr_proof_test(amdgpu_device_handle device,
-+					 int fd)
-+{
-+	uint32_t value;
-+
-+	igt_info("SLTH GFX UMQ VGPR PROOF\n");
-+
-+	value = slth_umq_run(device, fd, AMD_IP_GFX,
-+			     slth_prepare_vgpr_proof_shader);
-+
-+	/* The trap handler sets v2 to 42 before the shader stores it. */
-+	igt_assert_eq(value, 42);
-+
-+	igt_info("SLTH GFX UMQ VGPR PROOF COMPLETE\n");
- }
- 
- static void
--- 
-2.50.1
+CI Bug Log - changes from XEIGT_9192_BAT -> XEIGTPW_16153_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9192 -> IGTPW_16153
+  * Linux: xe-6137-2b4f99da078af1e9a391d4a4ff51550e30b711f2 -> xe-6147-62b32c6a54fa750e1bd8d18f88a87635e9bf01df
+
+  IGTPW_16153: 16153
+  IGT_9192: 9192
+  xe-6137-2b4f99da078af1e9a391d4a4ff51550e30b711f2: 2b4f99da078af1e9a391d4a4ff51550e30b711f2
+  xe-6147-62b32c6a54fa750e1bd8d18f88a87635e9bf01df: 62b32c6a54fa750e1bd8d18f88a87635e9bf01df
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16153/index.html
+
+--===============7983999533456295345==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>lib/igt_kms: Reset leftover KMS color state</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178630/">https://patchwork.freedesktop.org/series/178630/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16153/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16153/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9192_BAT -&gt; XEIGTPW_16153_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9192 -&gt; IGTPW_16153</li>
+<li>Linux: xe-6137-2b4f99da078af1e9a391d4a4ff51550e30b711f2 -&gt; xe-6147-62b32c6a54fa750e1bd8d18f88a87635e9bf01df</li>
+</ul>
+<p>IGTPW_16153: 16153<br />
+  IGT_9192: 9192<br />
+  xe-6137-2b4f99da078af1e9a391d4a4ff51550e30b711f2: 2b4f99da078af1e9a391d4a4ff51550e30b711f2<br />
+  xe-6147-62b32c6a54fa750e1bd8d18f88a87635e9bf01df: 62b32c6a54fa750e1bd8d18f88a87635e9bf01df</p>
+
+</body>
+</html>
+
+--===============7983999533456295345==--
