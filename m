@@ -2,44 +2,44 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68B8606A31C
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Nov 2026 15:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C617606A31C
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Nov 2026 15:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mogoX9LL
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=lQd9IzB1
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 59AC210E52F;
-	Tue, 17 Nov 2026 15:15:43 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E8FE610E627;
+	Tue, 17 Nov 2026 15:16:39 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5A9AD10E62B
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2026 15:13:54 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2295510E601
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2026 15:14:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794928434; x=1826464434;
+ t=1794928440; x=1826464440;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=bfsq7s4CXHAU+cOGF8i3MXdMlNY4G0ONps/bfWqLl1o=;
- b=mogoX9LLEnKb+8wmow5zqSyTmSXq7FN2UcCTRJj/wmqIAEOLrgV8XVjf
- eTsq3iDcmITC2Qa4EiQJHCKdLIsOPmJukgmnJmRl4SzzcdSmjYACFbBfK
- dDluGf2+1R5HBk49fi30q1pwbNy/fXhbLOnu2Ga6+mOIlZ/xOMFTkQ7Kj
- BJliYabxqxYMM3DrtsvR0XFY3ZrzlGqbcISzGShfPxx+YajhzYXPSGa+O
- 7J2n58wXHYatUZVgA7LODbCV69NbJ6Bl3pV9rugfOni35yWAuKkbLW0DF
- mVgNTRuUVZKIKFVUsd7tM1Hym0OF+xMGz1eOYFAwccaauooMUs2y9GhPR w==;
-X-CSE-ConnectionGUID: d2Zx30vwTPmTq4Bsri+qPw==
-X-CSE-MsgGUID: dMMb0+8DQgyAVHy2/wCpJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3568801"
+ bh=jgg+yef6PQ/ZfFTDEcHFz+o6de2F5Tw6F3hV5ASk61k=;
+ b=lQd9IzB16kUrtOFftITTMkIs4ZhOdrOaVWNMvm1tXVvNmp5qFYMCgm/7
+ pmXjACR3EYUjeHuw/c2nTljjijtFVlxZITnc6dd3afXkcwrWbfvDXK+k0
+ 8s7YosgVoUP8kZ2QLlv30A1nT4JcHqJw6jTB5DqF1nfr3SUwdQWpVvBnO
+ Ywaxj40vOCOEvtPKPPJYuOP/LqU2CyFnE0hk1vI4FYYFy43cSiQQ/oWwm
+ 7yEqMQiie1P2VEkjTvqdoYsJP+oNi4EWk+axAAcR6r4nLgwl1LQx255K4
+ z6DV3adVbaqA5Fz6kg/klYcKzhjPvmOcSssi3uWlxJCzySVR8pqIM4d38 g==;
+X-CSE-ConnectionGUID: b4Q9SqcZTYCj+jBRnJ/VAA==
+X-CSE-MsgGUID: y+uzEBxKSDOw7pa7udfVpQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3568810"
 X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="3568801"
+   d="scan'208";a="3568810"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2026 07:13:54 -0800
-X-CSE-ConnectionGUID: 0VnUYXmGSBC8/8qZMTtWvw==
-X-CSE-MsgGUID: VpqVqhcmS52oOuPNCWnEpQ==
+ 17 Nov 2026 07:14:00 -0800
+X-CSE-ConnectionGUID: loX4FzIKQv6cRUIREL2zdQ==
+X-CSE-MsgGUID: tFqMIH+2RcieIqOdO0ow6g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="9724574"
+   d="scan'208";a="9724594"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2026 07:13:53 -0800
+ 17 Nov 2026 07:13:58 -0800
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Karthik B S <karthik.b.s@intel.com>,
@@ -48,10 +48,10 @@ Cc: Karthik B S <karthik.b.s@intel.com>,
  Jani Nikula <jani.nikula@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
-Subject: [PATCH i-g-t v10 4/9] tests/kms_vblank: limit #outputs tested during
- suspend
-Date: Tue, 17 Nov 2026 16:13:21 +0100
-Message-ID: <20261117151326.2074274-5-michal.grzelak@linux.intel.com>
+Subject: [PATCH i-g-t v10 7/9] tests/intel/kms_ccs: set mask for available
+ hardware pipes
+Date: Tue, 17 Nov 2026 16:13:24 +0100
+Message-ID: <20261117151326.2074274-8-michal.grzelak@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20261117151326.2074274-1-michal.grzelak@linux.intel.com>
 References: <20261117151326.2074274-1-michal.grzelak@linux.intel.com>
@@ -79,97 +79,91 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-We are iterating through each output while testing suspend. This results
-in extended execution time. In turn this leads to hitting CI enforced
-timeout.
+Mapping from hardware pipe into CRTC is needed when testing suspend
+since we need to run test on at least first and last pipe. Currently
+there is a direct mapping between CRTC and hardware pipe but this will
+break after introduction of pipe reordering.
 
-By default limit number of tested outputs to 2. Test each connected
-output when passing command-line parameter.
+Compute array of all available hardware pipes. While doing it also
+compute first and last pipe. Skip whole test when there is no available
+pipe.
 
-v3->v4
-- reset output_count inside dynamic subtest (Thasleem)
-- fix help string's description (Thasleem)
+Skip testing CRTCs that map to unavailable pipes. Currently this is a
+no-op but this will change after limiting suspend tests to first and
+last pipe.
 
-v1->v2
-- fix off-by-one error (Thasleem)
-- reset output_count before subtest (Thasleem)
+v7->v8
+- add patch
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 Signed-off-by: Michał Grzelak <michal.grzelak@linux.intel.com>
 ---
- tests/kms_vblank.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ tests/intel/kms_ccs.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/tests/kms_vblank.c b/tests/kms_vblank.c
-index 47b733af15..5a2ba8b491 100644
---- a/tests/kms_vblank.c
-+++ b/tests/kms_vblank.c
-@@ -109,7 +109,10 @@ typedef struct {
- #define RPM	0x80
- } data_t;
- 
-+#define OUTPUT_LIMIT 2
-+
- static bool all_pipes;
-+static bool all_outputs;
- static int active_crtcs[IGT_MAX_PIPES];
- static uint32_t last_crtc_index;
- 
-@@ -476,6 +479,7 @@ static void vblank_ts_cont(data_t *data, int fd, int nchildren)
- static void run_subtests(data_t *data)
- {
- 	igt_crtc_t *crtc;
-+	int output_count = 0;
- 	const struct {
- 		const char *name;
- 		void (*func)(data_t *, int, int);
-@@ -515,7 +519,14 @@ static void run_subtests(data_t *data)
- 
- 			igt_describe("Check if test run while hanging by introducing NOHANG flag.");
- 			igt_subtest_with_dynamic_f("%s-%s", f->name, m->name) {
-+				output_count = 0;
-+
- 				for_each_connected_output(&data->display, data->output) {
-+					if (!all_outputs && (m->flags & SUSPEND) && output_count >= OUTPUT_LIMIT) {
-+						igt_info("Skipping output %s\n", data->output->name);
-+						continue;
-+					}
-+
- 					for_each_crtc(&data->display, crtc) {
- 						if(!igt_crtc_connector_valid(crtc, data->output))
- 							continue;
-@@ -538,6 +549,8 @@ static void run_subtests(data_t *data)
- 							run_test(data, f->func);
- 						}
- 					}
-+
-+					output_count++;
- 				}
- 			}
- 
-@@ -628,6 +641,9 @@ static int opt_handler(int opt, int opt_index, void *data)
- 		case 'e':
- 			all_pipes = true;
- 			break;
-+		case 'o':
-+			all_outputs = true;
-+			break;
- 		default:
- 			return IGT_OPT_HANDLER_ERROR;
- 	}
-@@ -636,9 +652,10 @@ static int opt_handler(int opt, int opt_index, void *data)
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 8526f1ccfd..734dafd110 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -189,6 +189,7 @@ typedef struct {
+ 	bool user_seed;
+ 	enum igt_commit_style commit;
+ 	int fb_list_length;
++	bool available_pipes[IGT_MAX_PIPES];
+ 	bool do_hibernate;
+ 	bool all_outputs;
+ 	struct {
+@@ -1088,6 +1089,30 @@ static int test_ccs(data_t *data)
+ 	return valid_tests;
  }
  
- const char *help_str =
--	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n";
-+	"  -e \tRun on all pipes. (By default subtests will run on two pipes)\n"
-+	"  -o \tRun on all outputs. (By default subtests will run on two outputs)\n";
- 
--int igt_main_args("e", NULL, help_str, opt_handler, NULL)
-+int igt_main_args("eo", NULL, help_str, opt_handler, NULL)
++static bool set_available_hw_pipes(data_t *data)
++{
++	enum hardware_pipe first_pipe = IGT_MAX_PIPES;
++	enum hardware_pipe last_pipe = PIPE_NONE;
++	enum hardware_pipe hw_pipe;
++	igt_crtc_t *crtc;
++
++	for_each_crtc(&data->display, crtc) {
++		hw_pipe = crtc->hardware_pipe;
++		data->available_pipes[hw_pipe] = true;
++
++		if (last_pipe < hw_pipe)
++			last_pipe = hw_pipe;
++
++		if (first_pipe > hw_pipe)
++			first_pipe = hw_pipe;
++	}
++
++	if (first_pipe == IGT_MAX_PIPES || last_pipe == PIPE_NONE)
++		return false;
++
++	return true;
++}
++
+ static bool skip_plane(data_t *data, igt_plane_t *plane)
  {
- 	igt_crtc_t *crtc;
- 	int fd;
+ 	int index = plane->index;
+@@ -1176,6 +1201,9 @@ static void test_output(data_t *data, const int testnum)
+ 					if (!intel_pipe_output_combo_valid(&data->display))
+ 						continue;
+ 
++					if (!data->available_pipes[crtc->hardware_pipe])
++						continue;
++
+ 					igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc), data->output->name) {
+ 						int valid_tests = 0;
+ 
+@@ -1269,6 +1297,9 @@ int igt_main_args("csrn:", NULL, help_str, opt_handler, &data)
+ 		data.fb_list_length = 0;
+ 	}
+ 
++	igt_fixture()
++		igt_require_f(set_available_hw_pipes(&data), "no pipe available\n");
++
+ 	for (int c = 0; c < ARRAY_SIZE(tests); c++)
+ 		test_output(&data, c);
+ 
 -- 
 2.45.2
 
