@@ -2,28 +2,62 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9D4606A31C
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Nov 2026 14:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849D7606A32C
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Nov 2026 15:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NJoAsbx0
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BEC0110E75C;
-	Tue, 17 Nov 2026 14:50:44 +0000 (UTC)
-Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4DCD010E67A;
- Tue, 17 Nov 2026 14:49:49 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3479856790877433688=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 33B9F10E52F;
+	Tue, 17 Nov 2026 15:14:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 19BFE10E5FF
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2026 15:13:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1794928427; x=1826464427;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Mela6MH4D/CbVRshuVIgnFvQu1azVXq7zQiJ8MDn4Fk=;
+ b=NJoAsbx0Bbln5UbCKoE1KjvQ4g6EcalZ44GBdaW0ROoGS/gVNIINY4s7
+ wUB5n7jBz/CUc11sa6TQa8/pLlXgTOs3Q90M2UV4DBlGYsABOs2KtDA+7
+ ++ctGKExJlcZOF9Eb4Wrqo4lHPBYFmCgV0rqGWMm7zQCtAhCbBVGCUeTn
+ BNEOIznIsLM1dyAiiMKTATlIdJqQZGKBDIzbIpuFRKTbXd8k4i8Mns3Ck
+ dkucq/JBsGhJXaag+TbvExmkuli09aCL1LZC5q3seKfMdQJDVMcMLGcgo
+ SQm+UqG4PaszA3tr8x/9XctSGABQKVg2+lxdmzxmjtTe64VD42XkUtNTv A==;
+X-CSE-ConnectionGUID: oEB7Oi8/RqOOIcI4etK7eA==
+X-CSE-MsgGUID: X1n6QvwwTtuqAIwv2mYuhw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3568777"
+X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
+   d="scan'208";a="3568777"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2026 07:13:46 -0800
+X-CSE-ConnectionGUID: dI13eIL1TKeZ/3D0c5rO4Q==
+X-CSE-MsgGUID: VwjIQXyLQCGLImvklsKXVg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
+   d="scan'208";a="9724526"
+Received: from dev-417.igk.intel.com ([10.91.214.181])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 17 Nov 2026 07:13:45 -0800
+From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Karthik B S <karthik.b.s@intel.com>,
+ Swati Sharma <swati2.sharma@intel.com>,
+ =?UTF-8?q?Juha-Pekka=20Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>,
+ Jani Nikula <jani.nikula@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
+ =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
+Subject: [PATCH i-g-t v10 0/9] tests: limiting suspend tests
+Date: Tue, 17 Nov 2026 16:13:17 +0100
+Message-ID: <20261117151326.2074274-1-michal.grzelak@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/kms=5Fvrr=3A_Add_full?=
- =?utf-8?q?-range_refresh_rate_testing_=28rev3=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Lee Shawn C" <shawn.c.lee@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 17 Nov 2026 14:49:49 -0000
-Message-ID: <179492698931.37416.673663996583665909@9ac1b63fe3ea>
-X-Patchwork-Hint: ignore
-References: <20261117135939.93225-1-shawn.c.lee@intel.com>
-In-Reply-To: <20261117135939.93225-1-shawn.c.lee@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173,
+ 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,114 +68,50 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============3479856790877433688==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Next version of [1].
 
-== Series Details ==
+BR,
+Michał
 
-Series: tests/kms_vrr: Add full-range refresh rate testing (rev3)
-URL   : https://patchwork.freedesktop.org/series/167747/
-State : success
+[1] https://lore.kernel.org/igt-dev/20261106180849.156578-1-michal.grzelak@linux.intel.com/
 
-== Summary ==
+---
+Changelog:
+v9->v10
+- clear array of available pipes before each recomputation (J-P)
 
-CI Bug Log - changes from XEIGT_9196_BAT -> XEIGTPW_16165_BAT
-====================================================
+v8->v9
+- fix extra long opts string for kms_ccs (JP)
 
-Summary
--------
+v7->v8
+- use pipe mask (Jani)
+- add 2 new patches
 
-  **SUCCESS**
+Michał Grzelak (9):
+  tests/kms_async_flips: split outer test loop into two
+  tests/kms_async_flips: set mask for available hardware pipes
+  tests/kms_async_flips: limit #pipes tested during suspend
+  tests/kms_vblank: limit #outputs tested during suspend
+  tests/intel/kms_ccs: split outer test loop into two
+  tests/intel/kms_ccs: limit #outputs tested during suspend
+  tests/intel/kms_ccs: set mask for available hardware pipes
+  tests/intel/kms_ccs: limit #pipes tested during suspend
+  tests/kms_hdr: run on 3 outputs when testing suspend
 
-  No regressions found.
+ tests/intel/kms_ccs.c   | 115 ++++++++++++++++++++++++++++++----------
+ tests/kms_async_flips.c | 103 ++++++++++++++++++++++++-----------
+ tests/kms_hdr.c         |  30 ++++++++++-
+ tests/kms_vblank.c      |  21 +++++++-
+ 4 files changed, 206 insertions(+), 63 deletions(-)
 
-  
+-- 
+2.45.2
 
-Participating hosts (15 -> 13)
-------------------------------
-
-  Missing    (2): bat-bmg-vm bat-ptl-vm 
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9196 -> IGTPW_16165
-  * Linux: xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda -> xe-6160-1bcf6d6c4e900492a190123010854ee3e5f6a6c7
-
-  IGTPW_16165: 16165
-  IGT_9196: 9196
-  xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda: ccb10a534282f16c6d068bc06e5c722680045dda
-  xe-6160-1bcf6d6c4e900492a190123010854ee3e5f6a6c7: 1bcf6d6c4e900492a190123010854ee3e5f6a6c7
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16165/index.html
-
---===============3479856790877433688==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/kms_vrr: Add full-range refresh rate testing (rev3)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/167747/">https://patchwork.freedesktop.org/series/167747/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16165/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16165/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9196_BAT -&gt; XEIGTPW_16165_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 13)</h2>
-<p>Missing    (2): bat-bmg-vm bat-ptl-vm </p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9196 -&gt; IGTPW_16165</li>
-<li>Linux: xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda -&gt; xe-6160-1bcf6d6c4e900492a190123010854ee3e5f6a6c7</li>
-</ul>
-<p>IGTPW_16165: 16165<br />
-  IGT_9196: 9196<br />
-  xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda: ccb10a534282f16c6d068bc06e5c722680045dda<br />
-  xe-6160-1bcf6d6c4e900492a190123010854ee3e5f6a6c7: 1bcf6d6c4e900492a190123010854ee3e5f6a6c7</p>
-
-</body>
-</html>
-
---===============3479856790877433688==--
