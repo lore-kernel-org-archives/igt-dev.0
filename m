@@ -2,58 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EEEC606A331
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Nov 2026 19:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QnFc+0wj
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98336606A31C
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Nov 2026 20:20:23 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3257A10F8FB;
-	Tue, 17 Nov 2026 19:44:25 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4D41410F8F1
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2026 19:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794944597; x=1826480597;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=E0odxg+Wy4O+XC10ycdDmu0+onuaDomJwXXIqUvP7jI=;
- b=QnFc+0wjuHyxaBHhIfAefW7Fg7dP6TTRVrb/P/2KNCoXYdce4oYeYUEX
- zfMtIjRFoJlWc5XfoZppPinC0MIJRnADjdLhnK0iz3zEmwmC6TtAChk81
- 40UWWbPmHXBI35Sb8EF6fBizSUBw8NdO8AfxxRwbSgP1oAvbE32s2BFeR
- ni+zU3kgvlSRFbTDMcutxJrDzAm0VPdPYhDuUWtUeSwb482twsxbne92i
- AFPZFXAtvvdFLDbb162LsAmTf03NuI9QCLvqYqGvO4r70op5uYsGwYoPK
- Ux7SGG9+UwJZNIgG1wlYaZ3RFKOH1X7uCoxkEBCylAAZbcnwbNaqjd8z7 Q==;
-X-CSE-ConnectionGUID: Mp+Za8BoTJ2gPeRfxdB53w==
-X-CSE-MsgGUID: 2xJwIZdCTgChCRzga7o5jQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3627271"
-X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="3627271"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
- by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2026 11:43:16 -0800
-X-CSE-ConnectionGUID: nhb4JhlDS4WfDUMWiZelrg==
-X-CSE-MsgGUID: vgR/xdT0TX2y2NEA8TLPvA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="9914480"
-Received: from abityuts-desk1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.58])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2026 11:43:14 -0800
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>,
- Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: [PATCH i-g-t] tests/core_sysfs: Create listing while reading
-Date: Tue, 17 Nov 2026 20:42:49 +0100
-Message-ID: <20261117194250.72855-1-kamil.konieczny@linux.intel.com>
-X-Mailer: git-send-email 2.55.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2CB9C10F952;
+	Tue, 17 Nov 2026 20:20:23 +0000 (UTC)
+Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id CC0D910E65A;
+ Tue, 17 Nov 2026 20:19:17 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============5703629136983801701=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/core=5Fsysfs=3A_Creat?=
+ =?utf-8?q?e_listing_while_reading?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Tue, 17 Nov 2026 20:19:17 -0000
+Message-ID: <179494675783.39806.6843256983173737497@9ac1b63fe3ea>
+X-Patchwork-Hint: ignore
+References: <20261117194250.72855-1-kamil.konieczny@linux.intel.com>
+In-Reply-To: <20261117194250.72855-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -64,137 +34,189 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Create a lists of sysfs files readed, so it will be easy to
-confirm if all of them are actually read or where is a problem.
+--===============5703629136983801701==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Cc: Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>
-Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
----
- tests/core_sysfs.c | 88 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 86 insertions(+), 2 deletions(-)
+== Series Details ==
 
-diff --git a/tests/core_sysfs.c b/tests/core_sysfs.c
-index 3173ffa7b..14ffa2e0d 100644
---- a/tests/core_sysfs.c
-+++ b/tests/core_sysfs.c
-@@ -3,6 +3,8 @@
-  * Copyright © 2025 Intel Corporation
-  */
- 
-+#include <sys/stat.h>
-+
- #include "igt.h"
- #include "igt_dir.h"
- #include "igt_sysfs.h"
-@@ -24,6 +26,84 @@
- 
- IGT_TEST_DESCRIPTION("Read entries from sysfs paths.");
- 
-+static int read_fails;
-+static int open_fails;
-+static int stat_fails;
-+
-+static int read_sysfs(const char *filename, void *data)
-+{
-+	struct stat sb;
-+	ssize_t bytes_read;
-+	char buf[4096];
-+	int len;
-+	int fd;
-+
-+	len = data ? to_user_pointer(data) + 1 : 0;
-+	if (strlen(filename) <= len || len < 0)
-+		len = 0;
-+
-+	if (lstat(filename, &sb) == -1) {
-+		igt_info("Stat fails errno=%d %s\n", errno, filename);
-+		stat_fails++;
-+		return 0;
-+	}
-+
-+	if ((sb.st_mode & S_IFMT) != S_IFREG) {
-+		igt_info("Not a regular file %s\n", filename);
-+		return 0;
-+	}
-+
-+	fd = open(filename, O_RDONLY);
-+	if (fd < 0) {
-+		if (errno == EISDIR) {
-+			igt_info("dir %s\n", filename);
-+			return 0; /* dir or link */
-+		}
-+
-+		igt_info("Open fails errno=%d %s\n", errno, filename);
-+		open_fails++;
-+		return 0;
-+	}
-+
-+	bytes_read = read(fd, buf, sizeof(buf) - 1);
-+	if (bytes_read < 0) {
-+		igt_info("Read fails errno=%d %s\n", errno, filename);
-+		close(fd);
-+		read_fails++;
-+		return 0;
-+	}
-+
-+	buf[bytes_read] = '\0';
-+	igt_info("%zd\t%s\n", bytes_read, filename + len);
-+
-+	igt_debug("File %s\nData: %s\n", filename + len, buf);
-+	close(fd);
-+
-+	return 0;
-+}
-+
-+static int process_sysfs(int dirfd)
-+{
-+	char syspath[PATH_MAX];
-+	igt_dir_t *config;
-+	int ret;
-+
-+	igt_dir_get_fd_path(dirfd, syspath, PATH_MAX - 1);
-+	igt_info("Reading sysfs files from %s\n", syspath);
-+
-+	config = igt_dir_create(dirfd);
-+	igt_assert_f(config, "Cannot create dir config\n");
-+
-+	igt_dir_scan_dirfd(config, -1);
-+
-+	ret = igt_dir_process_files(config, read_sysfs,
-+				    from_user_pointer(strlen(syspath)));
-+
-+	igt_dir_destroy(config);
-+
-+	return ret;
-+}
-+
- int igt_main()
- {
- 	int fd = -1;
-@@ -38,8 +118,12 @@ int igt_main()
- 	}
- 
- 	igt_describe("Read all entries from sysfs path.");
--	igt_subtest("read-all-entries")
--		igt_dir_process_files_simple(sysfs);
-+	igt_subtest("read-all-entries") {
-+		process_sysfs(sysfs);
-+		igt_assert_eq(read_fails, 0);
-+		igt_assert_eq(open_fails, 0);
-+		igt_assert_eq(stat_fails, 0);
-+	}
- 
- 	igt_fixture() {
- 		close(sysfs);
--- 
-2.55.0
+Series: tests/core_sysfs: Create listing while reading
+URL   : https://patchwork.freedesktop.org/series/178819/
+State : failure
 
+== Summary ==
+
+CI Bug Log - changes from XEIGT_9196_BAT -> XEIGTPW_16167_BAT
+====================================================
+
+Summary
+-------
+
+  **FAILURE**
+
+  Serious unknown changes coming with XEIGTPW_16167_BAT absolutely need to be
+  verified manually.
+  
+  If you think the reported changes have nothing to do with the changes
+  introduced in XEIGTPW_16167_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
+
+  
+
+Participating hosts (15 -> 14)
+------------------------------
+
+  Missing    (1): bat-bmg-vm 
+
+Possible new issues
+-------------------
+
+  Here are the unknown changes that may have been introduced in XEIGTPW_16167_BAT:
+
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@core_sysfs@read-all-entries:
+    - bat-ptl-1:          [PASS][1] -> [FAIL][2]
+   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-1/igt@core_sysfs@read-all-entries.html
+   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-1/igt@core_sysfs@read-all-entries.html
+    - bat-lnl-1:          [PASS][3] -> [FAIL][4]
+   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-lnl-1/igt@core_sysfs@read-all-entries.html
+   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-lnl-1/igt@core_sysfs@read-all-entries.html
+    - bat-bmg-2:          [PASS][5] -> [FAIL][6]
+   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-bmg-2/igt@core_sysfs@read-all-entries.html
+   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-bmg-2/igt@core_sysfs@read-all-entries.html
+    - bat-adlp-7:         [PASS][7] -> [FAIL][8]
+   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-adlp-7/igt@core_sysfs@read-all-entries.html
+   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-adlp-7/igt@core_sysfs@read-all-entries.html
+    - bat-bmg-1:          [PASS][9] -> [FAIL][10]
+   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-bmg-1/igt@core_sysfs@read-all-entries.html
+   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-bmg-1/igt@core_sysfs@read-all-entries.html
+    - bat-lnl-2:          [PASS][11] -> [FAIL][12]
+   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-lnl-2/igt@core_sysfs@read-all-entries.html
+   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-lnl-2/igt@core_sysfs@read-all-entries.html
+    - bat-atsm-2:         [PASS][13] -> [FAIL][14]
+   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-atsm-2/igt@core_sysfs@read-all-entries.html
+   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-atsm-2/igt@core_sysfs@read-all-entries.html
+    - bat-ptl-vm:         [PASS][15] -> [FAIL][16]
+   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-vm/igt@core_sysfs@read-all-entries.html
+   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-vm/igt@core_sysfs@read-all-entries.html
+    - bat-wcl-2:          [PASS][17] -> [FAIL][18]
+   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-wcl-2/igt@core_sysfs@read-all-entries.html
+   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-wcl-2/igt@core_sysfs@read-all-entries.html
+    - bat-nvls-1:         [PASS][19] -> [FAIL][20]
+   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-nvls-1/igt@core_sysfs@read-all-entries.html
+   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-nvls-1/igt@core_sysfs@read-all-entries.html
+    - bat-nvls-2:         [PASS][21] -> [FAIL][22]
+   [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-nvls-2/igt@core_sysfs@read-all-entries.html
+   [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-nvls-2/igt@core_sysfs@read-all-entries.html
+    - bat-ptl-2:          [PASS][23] -> [FAIL][24]
+   [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-2/igt@core_sysfs@read-all-entries.html
+   [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-2/igt@core_sysfs@read-all-entries.html
+    - bat-wcl-1:          [PASS][25] -> [FAIL][26]
+   [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-wcl-1/igt@core_sysfs@read-all-entries.html
+   [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-wcl-1/igt@core_sysfs@read-all-entries.html
+
+  
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9196 -> IGTPW_16167
+  * Linux: xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda -> xe-6163-79504010d899136eff374b34e1fedcb8e5d57fe0
+
+  IGTPW_16167: 16167
+  IGT_9196: 9196
+  xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda: ccb10a534282f16c6d068bc06e5c722680045dda
+  xe-6163-79504010d899136eff374b34e1fedcb8e5d57fe0: 79504010d899136eff374b34e1fedcb8e5d57fe0
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/index.html
+
+--===============5703629136983801701==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/core_sysfs: Create listing while reading</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178819/">https://patchwork.freedesktop.org/series/178819/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9196_BAT -&gt; XEIGTPW_16167_BAT</h1>
+<h2>Summary</h2>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with XEIGTPW_16167_BAT absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in XEIGTPW_16167_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<h2>Participating hosts (15 -&gt; 14)</h2>
+<p>Missing    (1): bat-bmg-vm </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in XEIGTPW_16167_BAT:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@core_sysfs@read-all-entries:<ul>
+<li>bat-ptl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-1/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-1/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-lnl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-lnl-1/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-lnl-1/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-bmg-2/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-bmg-2/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-adlp-7/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-adlp-7/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-bmg-1/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-bmg-1/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-lnl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-lnl-2/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-lnl-2/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-atsm-2/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-atsm-2/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-ptl-vm:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-vm/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-vm/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-wcl-2/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-wcl-2/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-nvls-1/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-nvls-1/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-nvls-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-nvls-2/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-nvls-2/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-2/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-2/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-wcl-1/igt@core_sysfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-wcl-1/igt@core_sysfs@read-all-entries.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9196 -&gt; IGTPW_16167</li>
+<li>Linux: xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda -&gt; xe-6163-79504010d899136eff374b34e1fedcb8e5d57fe0</li>
+</ul>
+<p>IGTPW_16167: 16167<br />
+  IGT_9196: 9196<br />
+  xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda: ccb10a534282f16c6d068bc06e5c722680045dda<br />
+  xe-6163-79504010d899136eff374b34e1fedcb8e5d57fe0: 79504010d899136eff374b34e1fedcb8e5d57fe0</p>
+
+</body>
+</html>
+
+--===============5703629136983801701==--
