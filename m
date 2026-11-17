@@ -2,44 +2,44 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC6D606A331
-	for <igt-dev@archiver.kernel.org>; Tue, 17 Nov 2026 15:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE62606A31C
+	for <igt-dev@archiver.kernel.org>; Tue, 17 Nov 2026 15:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cH4sLePU
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M6Yztdbf
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B63710E07B;
-	Tue, 17 Nov 2026 15:17:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id A4FAB10E628;
+	Tue, 17 Nov 2026 15:18:28 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A9ED110E629
- for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2026 15:13:48 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9734910E622
+ for <igt-dev@lists.freedesktop.org>; Tue, 17 Nov 2026 15:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1794928429; x=1826464429;
+ t=1794928430; x=1826464430;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=S1yf/fNJyPJuKDojU6qn5CehBa52EIxcfDR4aTQ+vwc=;
- b=cH4sLePUgJoS/IYuv3jbI9UYE8msDqC6jgyJaqevXpY6lqREYuwAjF9b
- gBZMrHf0sicWNtzPphW7k202OpXCKkggjWriFrsVxPosOStvy4TLAO+XY
- Dp6CVjxDEj+aIVmpbX0XeOga/mtOthjiX6TQvRbMCj5nBIg5olCJJ88pw
- Mktj1IVdpG+9UwARFj/H7dD/r+9CfunHlcoaxKKp0gNtRGTeHYOfnGwgJ
- WFvDjfNqgTf6zuG0zWz4PKcox+JS97J3zhMXXyovOLmZUJswG5zD0JgFY
- 4CcbmcB5EVBwM9rnYWrMGWPyP0gEvRnXX8H2cpgXKXSg5puKVbUodlRk+ Q==;
-X-CSE-ConnectionGUID: zl8Eigj1Tdm9GEdh8p3ZRw==
-X-CSE-MsgGUID: sjslAAYFTFOdDa4Obdj5bQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3568780"
+ bh=bl2+apnz2d1a3IjPeOzaVN9c9jBrd6lqhuAP/itv6Zo=;
+ b=M6YztdbfJByfEK4EBf8o7dhsPZdvAITWcD5B2pEFN5nbr8Rfse9kDC2D
+ nHqNZvCk60AsdK7B+Wxno/oIJzXR6rLgpdvu5/egvU597MBOsrQYnVQUJ
+ eIlRTo6rDLyntvajm5uBqNMZXpGYgawUXgQ7inm8VY5ygvUXnftzKZpls
+ Li0NuTZU8y8J3JDDe66FN6KES6y9yoJhT6H21jrstpFfSpYdgib+m059B
+ maTx8ZKRLLhYS056n/INbqYJvQJKdtQe3W2B30jRfsEgatO4+SQ4HorDx
+ p/mgCekP8ZZQPbLuW0R6y1b2J8e7T4jdhg1gndlhsFNNE5crTfj2mcG03 w==;
+X-CSE-ConnectionGUID: SHtHzib4RR2EekHRmFv6PQ==
+X-CSE-MsgGUID: QnPm6vdrRWyB/rYR3lJGEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3568784"
 X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="3568780"
+   d="scan'208";a="3568784"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2026 07:13:48 -0800
-X-CSE-ConnectionGUID: u173WMfiQzqok/Sslb1k3g==
-X-CSE-MsgGUID: R/fSsnqaSaqiGy9V+vfD5A==
+ 17 Nov 2026 07:13:50 -0800
+X-CSE-ConnectionGUID: yC99eu+GROa51pz2ECwUVg==
+X-CSE-MsgGUID: eD4VQi6XQ/+UUBjTN4bArg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,218,1787036400"; 
-   d="scan'208";a="9724547"
+   d="scan'208";a="9724559"
 Received: from dev-417.igk.intel.com ([10.91.214.181])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 17 Nov 2026 07:13:47 -0800
+ 17 Nov 2026 07:13:49 -0800
 From: =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Karthik B S <karthik.b.s@intel.com>,
@@ -48,10 +48,10 @@ Cc: Karthik B S <karthik.b.s@intel.com>,
  Jani Nikula <jani.nikula@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@intel.com>,
  =?UTF-8?q?Micha=C5=82=20Grzelak?= <michal.grzelak@linux.intel.com>
-Subject: [PATCH i-g-t v10 1/9] tests/kms_async_flips: split outer test loop
- into two
-Date: Tue, 17 Nov 2026 16:13:18 +0100
-Message-ID: <20261117151326.2074274-2-michal.grzelak@linux.intel.com>
+Subject: [PATCH i-g-t v10 2/9] tests/kms_async_flips: set mask for available
+ hardware pipes
+Date: Tue, 17 Nov 2026 16:13:19 +0100
+Message-ID: <20261117151326.2074274-3-michal.grzelak@linux.intel.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20261117151326.2074274-1-michal.grzelak@linux.intel.com>
 References: <20261117151326.2074274-1-michal.grzelak@linux.intel.com>
@@ -79,98 +79,93 @@ X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-for_each_crtc_with_valid_output() iterates over every crtc with
-connected output. Split it into two loops. This is needed to handle
-cases per output.
+Mapping from hardware pipe into CRTC is needed when testing suspend
+since we need to run test on at least first and last pipe. Currently
+there is a direct mapping between CRTC and hardware pipe but this will
+break after introduction of pipe reordering.
 
-v3->v4
-- break outer loop as well (Thasleem)
-- add missing space (Thasleem)
+Compute array of all available hardware pipes. While doing it also
+compute first and last pipe. Recompute the array on each test since
+testing first and last pipe will only be needed in suspend-resume
+scenario.
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+Skip testing CRTCs that map to unavailable pipes. Currently this is a
+no-op but this will change after limiting suspend tests to first and
+last pipe.
+
+v9->v10
+- clear array of available pipes before each recomputation (J-P)
+
+v7->v8
+- add patch
+
 Signed-off-by: Michał Grzelak <michal.grzelak@linux.intel.com>
 ---
- tests/kms_async_flips.c | 63 ++++++++++++++++++++++-------------------
- 1 file changed, 34 insertions(+), 29 deletions(-)
+ tests/kms_async_flips.c | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
 diff --git a/tests/kms_async_flips.c b/tests/kms_async_flips.c
-index ef4b28eb52..8884efd8ba 100644
+index 8884efd8ba..ed52f1ac64 100644
 --- a/tests/kms_async_flips.c
 +++ b/tests/kms_async_flips.c
-@@ -877,39 +877,44 @@ static void run_test(data_t *data, void (*test)(data_t *))
- 	if (data->atomic_path)
- 		require_atomic_async_cap(data);
- 
--	for_each_crtc_with_valid_output(display, crtc, data->output) {
--		data->crtc = crtc;
--		igt_display_reset(display);
-+	for_each_connected_output(display, data->output) {
-+		for_each_crtc(&data->display, crtc) {
-+			if (!igt_crtc_connector_valid(crtc, data->output))
-+				continue;
- 
--		igt_output_set_crtc(data->output,
--				    crtc);
--		if (!intel_pipe_output_combo_valid(display))
--			continue;
-+			data->crtc = crtc;
-+			igt_display_reset(display);
- 
--		test_init(data);
-+			igt_output_set_crtc(data->output,
-+					    crtc);
-+			if (!intel_pipe_output_combo_valid(display))
-+				continue;
- 
--		if (data->linear_modifier)
--			data->modifier = DRM_FORMAT_MOD_LINEAR;
--		else
--			data->modifier = default_modifier(data);
--
--		igt_require(igt_format_mods_has_modifier(&data->plane->format_mods_async,
--							 data->modifier));
--
--		igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
--			      data->output->name) {
--			/*
--			 * FIXME: joiner+async flip is busted currently in KMD.
--			 * Remove this check once the issues are fixed in KMD.
--			 */
--			igt_skip_on_f(is_joiner_mode(data->drm_fd, data->output),
--				      "Skipping, async flip not supported on joiner mode\n");
--			test_init_fbs(data);
--			test(data);
-+			test_init(data);
-+
-+			if (data->linear_modifier)
-+				data->modifier = DRM_FORMAT_MOD_LINEAR;
-+			else
-+				data->modifier = default_modifier(data);
-+
-+			igt_require(igt_format_mods_has_modifier(&data->plane->format_mods_async,
-+								 data->modifier));
-+
-+			igt_dynamic_f("pipe-%s-%s", igt_crtc_name(crtc),
-+				      data->output->name) {
-+				/*
-+				 * FIXME: joiner+async flip is busted currently in KMD.
-+				 * Remove this check once the issues are fixed in KMD.
-+				 */
-+				igt_skip_on_f(is_joiner_mode(data->drm_fd, data->output),
-+					      "Skipping, async flip not supported on joiner mode\n");
-+				test_init_fbs(data);
-+				test(data);
-+			}
-+			/* Restrict to single pipe in simulation */
-+			if (data->single_pipe)
-+				return;
- 		}
--		/* Restrict to single pipe in simulation */
--		if (data->single_pipe)
--			break;
- 	}
+@@ -140,6 +140,7 @@ typedef struct {
+ 	bool flip_pending;
+ 	igt_crtc_t *crtc;
+ 	bool alternate_sync_async;
++	bool available_pipes[IGT_MAX_PIPES];
+ 	bool suspend_resume;
+ 	bool hang;
+ 	bool dpms;
+@@ -288,10 +289,39 @@ static void require_overlay_flip_support(data_t *data)
+ 		      "Async flip for overlay planes not supported\n");
  }
  
++static bool set_available_hw_pipes(data_t *data)
++{
++	enum hardware_pipe first_pipe = IGT_MAX_PIPES;
++	enum hardware_pipe last_pipe = PIPE_NONE;
++	enum hardware_pipe hw_pipe;
++	igt_crtc_t *crtc;
++
++	for (hw_pipe = 0; hw_pipe < IGT_MAX_PIPES; hw_pipe++)
++		data->available_pipes[hw_pipe] = false;
++
++	for_each_crtc(&data->display, crtc) {
++		hw_pipe = crtc->hardware_pipe;
++		data->available_pipes[hw_pipe] = true;
++
++		if (last_pipe < hw_pipe)
++			last_pipe = hw_pipe;
++
++		if (first_pipe > hw_pipe)
++			first_pipe = hw_pipe;
++	}
++
++	if (first_pipe == IGT_MAX_PIPES || last_pipe == PIPE_NONE)
++	        return false;
++
++	return true;
++}
++
+ static void test_init(data_t *data)
+ {
+ 	drmModeModeInfo *mode;
+ 
++	set_available_hw_pipes(data);
++
+ 	igt_display_reset(&data->display);
+ 	igt_display_commit(&data->display);
+ 
+@@ -892,6 +922,9 @@ static void run_test(data_t *data, void (*test)(data_t *))
+ 
+ 			test_init(data);
+ 
++			if (!data->available_pipes[crtc->hardware_pipe])
++				continue;
++
+ 			if (data->linear_modifier)
+ 				data->modifier = DRM_FORMAT_MOD_LINEAR;
+ 			else
 -- 
 2.45.2
 
