@@ -2,63 +2,59 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93FA606A31C
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 17:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D00606A31C
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 17:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mn8zBry4
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E92Fcvzm
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8608510FE97;
-	Wed, 18 Nov 2026 17:00:25 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4AFB210FE97
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 16:59:11 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2480B10FEA3;
+	Wed, 18 Nov 2026 17:02:16 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 676A210FE97
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 17:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795021151; x=1826557151;
+ t=1795021268; x=1826557268;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=xHmQAIy8Z6UKDCI9hItUiU4szI+nThFoRr9X5/cnUpE=;
- b=Mn8zBry4+t7d8puGjF4wHrI9xvoxf5WN1x2BlEDFB3NjPHZ6hoecVYI7
- es0R3irwn1n27M7DpiOqllQDylYVDFlYN6RSYgNE1131z3UTynYtBmRN6
- JO+U1rUKMu29Ja9wLcMCBIApPXWhNz499uweH36H4Nq1/9xRPez4CiMND
- J20/3nHEFyFb1ADPYKHkTMDgQio12G3m92JxEB0GvG9p9LEnh8zHybseV
- LRBbQPqSy1aRHBZHa/WLvwt3GsqfH8f4hJKQRoxucL6FLFBHhCQBTG4tr
- ewuajF99AgwxPE2bN+/WU/Oq9Yb/xnwPC5cmZ8sdKtwxI408n+bIToh9z w==;
-X-CSE-ConnectionGUID: gPRdE4UaT+2nIPKUS8UHmA==
-X-CSE-MsgGUID: nG1C025FRnKgUJ1ufZX+6w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3701233"
+ bh=bppw7MJzmGpGzBa+rS4uleqCIU7CCTQ2hDdhegrMsTU=;
+ b=E92Fcvzm9VEFJRvTtl70lXaAbNBOfWMB4ohBzchyfmxGqqEvxIHINelU
+ WGITSRmEGaGA9V5mWWpw8XXXHlZ9dv4UQgVEbozgdPt31/xZoKKiQxIRb
+ oLhfwbxthv5X5+IpTnhFt2WFvSr4bzrBSW5fHtj+e4ESPeH3In+h0/SKs
+ jmxgQtGukgmyv+7Z0mmazgNG5jaD9mJL/TkO8Ut9n6niEsGYNCaoz9JBA
+ hzyxZl5dGL7ZS7NtV7qDGzETvxf6UFEl+tYOZw9dIUzL9hF4R8o513bq+
+ jMA0tWwU9Ypkya9XA1qryb/Q1SXhpV4A3GxCLHv3QhS8dkdUCeFUf5B9k Q==;
+X-CSE-ConnectionGUID: LW9opJG2RuSvXpzx59b/Ag==
+X-CSE-MsgGUID: 5tcw2jh3TzeE+1hL89eigg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3834593"
 X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3701233"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 08:58:38 -0800
-X-CSE-ConnectionGUID: yNzy8MmcRH+MhvdZXdHn/A==
-X-CSE-MsgGUID: TESIhzcnQy60ZlMpLXWG6g==
+   d="scan'208";a="3834593"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2026 09:00:49 -0800
+X-CSE-ConnectionGUID: 6J1+LyjXTRywu5CbHsdYRQ==
+X-CSE-MsgGUID: k1eWI6OLRaCu2ZEIjwlD7A==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; d="scan'208";a="10463372"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; d="scan'208";a="10522692"
+Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.162])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 08:58:37 -0800
-Date: Wed, 18 Nov 2026 17:58:33 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+ 18 Nov 2026 09:00:47 -0800
+Date: Wed, 18 Nov 2026 18:00:45 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: Re: [PATCH i-g-t 1/2] lib/intel_bufops: Add support for Tile64 in
- software.
-Message-ID: <aqswjet35bbvidizdsmjwq45sdiloaljo7vvnghtpns47eodfe@rbd43vyx4ya7>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-References: <20261118122619.206753-4-zbigniew.kempczynski@intel.com>
- <20261118122619.206753-5-zbigniew.kempczynski@intel.com>
+ Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>,
+ Peter Senna Tschudin <peter.senna@linux.intel.com>
+Subject: Re: [PATCH i-g-t v2] tests/core_sysfs: Create listing while reading
+Message-ID: <ctzko7ax2ictpoh7lvi5r64b7kehhqz5zc3mj4qrxg54ra6qji@nbfrefrkfg65>
+References: <20261118150235.76447-1-kamil.konieczny@linux.intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261118122619.206753-5-zbigniew.kempczynski@intel.com>
+In-Reply-To: <20261118150235.76447-1-kamil.konieczny@linux.intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -70,244 +66,196 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Zbigniew,
-On 2026-11-18 at 13:26:21 +0100, Zbigniew Kempczyński wrote:
-
-Remove dot from end of subject:
-
-[PATCH i-g-t 1/2] lib/intel_bufops: Add support for Tile64 in software
-
-No need for resend, can be done at merge time.
-
-> Bufops missed Tile64 so extend it and add this feature in software.
+On Wed, Nov 18, 2026 at 04:02:35PM +0100, Kamil Konieczny wrote:
+> Create a lists of sysfs files readed, so it will be easy to
+> confirm if all of them are actually read or where is a problem.
+> Excerpt from output:
 > 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> Opened device: /dev/dri/card1
+> Starting subtest: read-all-entries
+> Reading sysfs files from /sys/devices/pci0000:00/0000:00:02.0/drm/card1
+> ok 2    boot_display
+> power management EIO /sys/devices/pci0000:00/0000:00:02.0/drm/card1/card1-DP-1/power/autosuspend_delay_ms
+> Not readable /sys/devices/pci0000:00/0000:00:02.0/drm/card1/card1-DP-1/i2c-11/delete_device
+> Not a regular file /sys/devices/pci0000:00/0000:00:02.0/drm/card1/card1-DP-1/device
+> ok 9    card1-DP-1/power/runtime_enabled
+> ok 5    gt/gt0/rps_max_freq_mhz
+> ok 54   uevent
+> Summary: reads=293 fails=0 not_readed=64
+> Subtest read-all-entries: SUCCESS (0.008s)
+> 
+> v2: added more exceptions (Zbigniew), added summary (Kamil)
 
-imho Cc should be above, but that is not strong opinion.
+My compiler complains:
 
-LGTM
-Acked-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+../tests/core_sysfs.c: In function ‘read_sysfs’:
+../tests/core_sysfs.c:65:14: error: implicit declaration of function ‘open’; did you mean ‘popen’? [-Wimplicit-function-declaration]
+   65 |         fd = open(filename, O_RDONLY);
+      |              ^~~~
+      |              popen
+../tests/core_sysfs.c:65:14: warning: nested extern declaration of ‘open’ [-Wnested-externs]
+../tests/core_sysfs.c:65:29: error: ‘O_RDONLY’ undeclared (first use in this function)
+   65 |         fd = open(filename, O_RDONLY);
+      |                             ^~~~~~~~
+../tests/core_sysfs.c:65:29: note: each undeclared identifier is reported only once for each function it appears in
 
-Regards,
-Kamil
+Please add necessary includes.
 
+--
+Zbigniew
+
+> 
+> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
+> Cc: Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>
+> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
+> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 > ---
->  lib/intel_bufops.c | 113 ++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 111 insertions(+), 2 deletions(-)
+>  tests/core_sysfs.c | 111 ++++++++++++++++++++++++++++++++++++++++++++-
+>  1 file changed, 109 insertions(+), 2 deletions(-)
 > 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index 1196069a500..2d013ca6547 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -127,12 +127,14 @@ struct buf_ops {
->  	bo_copy linear_to_yf;
->  	bo_copy linear_to_ys;
->  	bo_copy linear_to_tile4;
-> +	bo_copy linear_to_tile64;
->  	bo_copy to_linear;
->  	bo_copy x_to_linear;
->  	bo_copy y_to_linear;
->  	bo_copy yf_to_linear;
->  	bo_copy ys_to_linear;
->  	bo_copy tile4_to_linear;
-> +	bo_copy tile64_to_linear;
->  };
+> diff --git a/tests/core_sysfs.c b/tests/core_sysfs.c
+> index 3173ffa7b..eb2d7c351 100644
+> --- a/tests/core_sysfs.c
+> +++ b/tests/core_sysfs.c
+> @@ -3,6 +3,8 @@
+>   * Copyright © 2025 Intel Corporation
+>   */
 >  
->  static const char *tiling_str(uint32_t tiling)
-> @@ -428,6 +430,78 @@ static void *tile4_ptr(void *ptr,
->  	return ptr + pos;
->  }
->  
-> +/*
-> + * (x,y) to memory location in tile-64 surface.
-> + */
-> +static void *tile64_ptr(void *ptr,
-> +			unsigned int x, unsigned int y,
-> +			unsigned int stride, unsigned int cpp)
-> +{
-> +	const int tile_size = 64 * 1024;
-> +	int tile_width, tile_height;
-> +	int tile_x, tile_y, _x, _y;
-> +	int base, vaddr, pos;
+> +#include <sys/stat.h>
 > +
-> +	switch (cpp) {
-> +	case 1:
-> +		tile_width = 256;
-> +		tile_height = 256;
-> +		break;
-> +	case 2:
-> +		tile_width = 256;
-> +		tile_height = 128;
-> +		break;
-> +	case 4:
-> +		tile_width = 128;
-> +		tile_height = 128;
-> +		break;
-> +	case 8:
-> +	default:
-> +		tile_width = 128;
-> +		tile_height = 64;
-> +		break;
+>  #include "igt.h"
+>  #include "igt_dir.h"
+>  #include "igt_sysfs.h"
+> @@ -24,6 +26,103 @@
+>  
+>  IGT_TEST_DESCRIPTION("Read entries from sysfs paths.");
+>  
+> +static int not_readed_count;
+> +static int ok_count;
+> +static int read_fails;
+> +static int open_fails;
+> +static int stat_fails;
+> +
+> +static int read_sysfs(const char *filename, void *data)
+> +{
+> +	struct stat sb;
+> +	ssize_t bytes_read;
+> +	char buf[4096];
+> +	int len;
+> +	int fd;
+> +
+> +	len = data ? to_user_pointer(data) + 1 : 0;
+> +	if (strlen(filename) <= len || len < 0)
+> +		len = 0;
+> +
+> +	if (lstat(filename, &sb) == -1) {
+> +		igt_info("Stat fails errno=%d %s\n", errno, filename);
+> +		stat_fails++;
+> +		return 0;
 > +	}
 > +
-> +	tile_x = x / tile_width;
-> +	tile_y = y / tile_height;
-> +	_x = x % tile_width;
-> +	_y = y % tile_height;
-> +
-> +	switch (cpp) {
-> +	case 1:
-> +		vaddr = (_x & 0xf) | ((_y & 0x3) << 4) |
-> +			((_x & 0x30) << 2) | ((_y & 0x4) << 6) |
-> +			((_x & 0x40) << 3) | ((_y & 0x18) << 7) |
-> +			((_x & 0x80) << 5) | ((_y & 0xe0) << 8);
-> +		break;
-> +	case 2:
-> +		vaddr = ((_x & 0x7) << 1) | ((_y & 0x3) << 4) |
-> +			((_x & 0x18) << 3) | ((_y & 0x4) << 6) |
-> +			((_x & 0x20) << 4) | ((_y & 0x18) << 7) |
-> +			((_x & 0xc0) << 6) | ((_y & 0x60) << 9);
-> +		break;
-> +	case 4:
-> +		vaddr = ((_x & 0x3) << 2) | ((_y & 0x3) << 4) |
-> +			((_x & 0xc) << 4) | ((_y & 0x4) << 6) |
-> +			((_x & 0x10) << 5) | ((_y & 0x18) << 7) |
-> +			((_x & 0x60) << 7) | ((_y & 0x60) << 9);
-> +		break;
-> +	case 8:
-> +	default:
-> +		vaddr = ((_x & 0x1) << 3) | ((_y & 0x3) << 4) |
-> +			((_x & 0x6) << 5) | ((_y & 0x4) << 6) |
-> +			((_x & 0x8) << 6) | ((_y & 0x18) << 7) |
-> +			((_x & 0x70) << 8) | ((_y & 0x20) << 10);
-> +		break;
+> +	if ((sb.st_mode & S_IFMT) != S_IFREG) {
+> +		igt_info("Not a regular file %s\n", filename);
+> +		not_readed_count++;
+> +		return 0;
 > +	}
 > +
-> +	/* memory location */
-> +	base = tile_y * (stride * tile_height) + tile_x * tile_size;
-> +	pos = base + vaddr;
-> +	igt_assert((pos & (cpp - 1)) == 0);
+> +	if (!(sb.st_mode & 0444)) {
+> +		igt_info("Not readable %s\n", filename);
+> +		not_readed_count++;
+> +		return 0;
+> +	}
 > +
-> +	return ptr + pos;
+> +	fd = open(filename, O_RDONLY);
+> +	if (fd < 0) {
+> +		if (errno == EISDIR) {
+> +			igt_info("dir %s\n", filename);
+> +			not_readed_count++;
+> +			return 0; /* dir or link */
+> +		}
+> +
+> +		igt_info("Open fails errno=%d %o %s\n", errno, sb.st_mode & 0777, filename);
+> +		open_fails++;
+> +
+> +		return 0;
+> +	}
+> +
+> +	bytes_read = read(fd, buf, sizeof(buf) - 1);
+> +	if (bytes_read < 0) {
+> +		if (errno == EIO && !strstr("/power/", filename)) {
+> +			igt_info("power management EIO %s\n", filename);
+> +			not_readed_count++;
+> +			return 0; /* dir or link */
+> +		}
+> +
+> +		igt_info("Read fails errno=%d %s\n", errno, filename);
+> +		close(fd);
+> +		read_fails++;
+> +
+> +		return 0;
+> +	}
+> +
+> +	buf[bytes_read] = '\0';
+> +	igt_info("ok %zd\t%s\n", bytes_read, filename + len);
+> +	ok_count++;
+> +
+> +	igt_debug("File %s\nData: %s\n", filename + len, buf);
+> +	close(fd);
+> +
+> +	return 0;
 > +}
->  
->  static void *yf_ptr(void *ptr,
->  		    unsigned int x, unsigned int y,
-> @@ -489,6 +563,10 @@ static tile_fn __get_tile_fn_ptr(int fd, int tiling)
->  		break;
->  	case I915_TILING_4:
->  		fn = tile4_ptr;
-> +		break;
-> +	case I915_TILING_64:
-> +		fn = tile64_ptr;
-> +		break;
->  	case I915_TILING_Ys:
->  		/* To be implemented */
->  		break;
-> @@ -739,6 +817,13 @@ static void copy_linear_to_tile4(struct buf_ops *bops, struct intel_buf *buf,
->  	__copy_linear_to(bops->fd, buf, linear, I915_TILING_4, 0);
->  }
->  
-> +static void copy_linear_to_tile64(struct buf_ops *bops, struct intel_buf *buf,
-> +				  uint32_t *linear)
+> +
+> +static int process_sysfs(int dirfd)
 > +{
-> +	DEBUGFN();
-> +	__copy_linear_to(bops->fd, buf, linear, I915_TILING_64, 0);
+> +	char syspath[PATH_MAX];
+> +	igt_dir_t *config;
+> +	int ret;
+> +
+> +	igt_dir_get_fd_path(dirfd, syspath, PATH_MAX - 1);
+> +	igt_info("Reading sysfs files from %s\n", syspath);
+> +
+> +	config = igt_dir_create(dirfd);
+> +	igt_assert_f(config, "Cannot create dir config\n");
+> +
+> +	igt_dir_scan_dirfd(config, -1);
+> +
+> +	ret = igt_dir_process_files(config, read_sysfs,
+> +				    from_user_pointer(strlen(syspath)));
+> +
+> +	igt_dir_destroy(config);
+> +
+> +	return ret;
 > +}
 > +
->  static void __copy_to_linear(int fd, struct intel_buf *buf,
->  			     uint32_t *linear, int tiling, uint32_t swizzle)
+>  int igt_main()
 >  {
-> @@ -806,6 +891,13 @@ static void copy_tile4_to_linear(struct buf_ops *bops, struct intel_buf *buf,
->  	__copy_to_linear(bops->fd, buf, linear, I915_TILING_4, 0);
->  }
->  
-> +static void copy_tile64_to_linear(struct buf_ops *bops, struct intel_buf *buf,
-> +				  uint32_t *linear)
-> +{
-> +	DEBUGFN();
-> +	__copy_to_linear(bops->fd, buf, linear, I915_TILING_64, 0);
-> +}
-> +
->  static void copy_linear_to_gtt(struct buf_ops *bops, struct intel_buf *buf,
->  			       uint32_t *linear)
->  {
-> @@ -898,6 +990,10 @@ void intel_buf_to_linear(struct buf_ops *bops, struct intel_buf *buf,
->  		igt_assert(bops->tile4_to_linear);
->  		bops->tile4_to_linear(bops, buf, linear);
->  		break;
-> +	case I915_TILING_64:
-> +		igt_assert(bops->tile64_to_linear);
-> +		bops->tile64_to_linear(bops, buf, linear);
-> +		break;
+>  	int fd = -1;
+> @@ -38,8 +137,16 @@ int igt_main()
 >  	}
 >  
->  	if (buf->compression)
-> @@ -934,6 +1030,10 @@ void linear_to_intel_buf(struct buf_ops *bops, struct intel_buf *buf,
->  		igt_assert(bops->linear_to_tile4);
->  		bops->linear_to_tile4(bops, buf, linear);
->  		break;
-> +	case I915_TILING_64:
-> +		igt_assert(bops->linear_to_tile64);
-> +		bops->linear_to_tile64(bops, buf, linear);
-> +		break;
->  	}
->  
->  	if (buf->compression)
-> @@ -1628,12 +1728,14 @@ void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
->  	.linear_to_yf       = copy_linear_to_yf, \
->  	.linear_to_ys       = copy_linear_to_ys, \
->  	.linear_to_tile4    = copy_linear_to_tile4, \
-> +	.linear_to_tile64   = copy_linear_to_tile64, \
->  	.to_linear          = copy_wc_to_linear, \
->  	.x_to_linear        = copy_gtt_to_linear, \
->  	.y_to_linear        = copy_gtt_to_linear, \
->  	.yf_to_linear       = copy_yf_to_linear, \
->  	.ys_to_linear       = copy_ys_to_linear, \
-> -	.tile4_to_linear    = copy_tile4_to_linear
-> +	.tile4_to_linear    = copy_tile4_to_linear, \
-> +	.tile64_to_linear   = copy_tile64_to_linear
->  
->  static const struct buf_ops buf_ops_arr[] = {
->  	{
-> @@ -1648,7 +1750,7 @@ static const struct buf_ops buf_ops_arr[] = {
->  
->  	{
->  		DEFAULT_BUFOPS(12, ~0U),
-> -		.supported_tiles   = TILE_NONE | TILE_X | TILE_Y | TILE_Yf | TILE_Ys | TILE_4,
-> +		.supported_tiles   = TILE_NONE | TILE_X | TILE_Y | TILE_Yf | TILE_Ys | TILE_4 | TILE_64,
->  	},
->  };
->  
-> @@ -1837,6 +1939,9 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
->  	if (!is_tiling_supported(bops, I915_TILING_4))
->  		igt_debug("Tile4 format not supported\n");
->  
-> +	if (!is_tiling_supported(bops, I915_TILING_64))
-> +		igt_debug("Tile64 format not supported\n");
+>  	igt_describe("Read all entries from sysfs path.");
+> -	igt_subtest("read-all-entries")
+> -		igt_dir_process_files_simple(sysfs);
+> +	igt_subtest("read-all-entries") {
+> +		process_sysfs(sysfs);
+> +		igt_info("Summary: reads=%d fails=%d not_readed=%d\n", ok_count,
+> +			 read_fails + open_fails + stat_fails,
+> +			 not_readed_count);
 > +
->  	if (check_idempotency) {
->  		idempotency_selftest(bops, I915_TILING_X);
->  		idempotency_selftest(bops, I915_TILING_Y);
-> @@ -2003,6 +2108,10 @@ bool buf_ops_set_software_tiling(struct buf_ops *bops,
->  		igt_debug("-> use SW on tiling 4\n");
->  		break;
+> +		igt_assert_eq(read_fails, 0);
+> +		igt_assert_eq(open_fails, 0);
+> +		igt_assert_eq(stat_fails, 0);
+> +	}
 >  
-> +	case I915_TILING_64:
-> +		igt_debug("-> use SW on tiling 64\n");
-> +		break;
-> +
->  	case I915_TILING_Yf:
->  		igt_debug("-> use SW on tiling Yf\n");
->  		break;
+>  	igt_fixture() {
+>  		close(sysfs);
 > -- 
-> 2.43.0
+> 2.55.0
 > 
