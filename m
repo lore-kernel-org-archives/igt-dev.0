@@ -2,58 +2,61 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77195606A325
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 12:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B257606A320
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 13:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=TMRv7XbS
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FXVmasg+
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 26BE410FBA2;
-	Wed, 18 Nov 2026 12:29:24 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8217410E7F1
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 12:26:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id E3DE210FC11;
+	Wed, 18 Nov 2026 13:03:06 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id D465810EC1C;
+ Wed, 18 Nov 2026 13:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795004799; x=1826540799;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=MZaRc7mYy+uVQfFGKP68oOJCxz38fKkAF3AytgRZZU4=;
- b=TMRv7XbSvyqDueF9QZxqeGolYMNPXHz/UknfbPefrwfi+sqltV4N98yZ
- ediiHkJdpIVhAB34OTjmUSZ/14N6+/V7oYewBECsUZOSLi0/b+WkJogDk
- GSRDnLsWPPp7h3NiS9qe93Pv4C9yGD9NCZQBTsJ5PN2iJOV/sQifkEtGs
- piytQy0hSDf5D8j3BN4B/ugmDZskyMANxfbsl7yyiWUEOoqKeCTPOoBYz
- 5djGpOvP3+REBToHpg66CNUJcBqI17TTXrN715VYhKySoKO9pv9wmBfJ4
- 2rAcH6xIFjJOCUvdHtY1FIOoO85Z8kB2+tVO2jrL821nhIn7jZDNYfmGQ A==;
-X-CSE-ConnectionGUID: 6AyzLXarS164er7rK4ke+w==
-X-CSE-MsgGUID: 9KjtEP3HTsOa9MmuPBH/vQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3732289"
+ t=1795006921; x=1826542921;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=qs5dfbl2s9APL1UyHVnTtkrBtjTL5C6vybQzeRX/XGI=;
+ b=FXVmasg+V7SYNIMajXFxq5CwbrXjV5ZXsGuN9qfockRiHjbXjD5pstlq
+ lHV/mCkCrkVT+NPUJGUdSCLWFzX0WjD7KjH95qYlRCdS63KS/nQplcdT4
+ FylRI+ufSV82PdkTYiC1J/DwCwU5IoDzHkjcveDDm4rKwSBSwSN+fHR23
+ lCMD1cKLe23xKHquj3smlD0PMlCnfrpleZ0nStzqkD01P3KpGgF7yZETE
+ DtntUGpnp7HkyQeE1AWjx1ZL5541gJtUMKL07q8fhL646um2cSumZNkYJ
+ PfdltLpSrO8B6i9fFm2hxcYONdfV0HzUGRV9u8QUCssDwJyJvZfh9vgJb A==;
+X-CSE-ConnectionGUID: tr3/bj3lS62/d1d66pKa7g==
+X-CSE-MsgGUID: vzkjioMlTgWf8dlpKhlSHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11969"; a="3805623"
 X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3732289"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 04:26:38 -0800
-X-CSE-ConnectionGUID: qde3AoSKQtijJWTpi6t+iQ==
-X-CSE-MsgGUID: bBooGkeYSGiMjdQt2yM8rQ==
+   d="scan'208";a="3805623"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2026 05:02:00 -0800
+X-CSE-ConnectionGUID: xmACvnEGQu2eT+gVuPGDyA==
+X-CSE-MsgGUID: OHCB/9KlTF6ls/WBUSwFJg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; d="scan'208";a="10529669"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.244.162])
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; d="scan'208";a="10502275"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 04:26:37 -0800
-From: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+ 18 Nov 2026 05:01:58 -0800
+Date: Wed, 18 Nov 2026 14:01:40 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>, 
- Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-Subject: [PATCH i-g-t 2/2] tools/intel_tiling_detect: Enable Tile64 detection
-Date: Wed, 18 Nov 2026 13:26:22 +0100
-Message-ID: <20261118122619.206753-6-zbigniew.kempczynski@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261118122619.206753-4-zbigniew.kempczynski@intel.com>
-References: <20261118122619.206753-4-zbigniew.kempczynski@intel.com>
+Cc: I915-ci-infra@lists.freedesktop.org, 
+ Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>
+Subject: Re: =?utf-8?B?4pyXIFhlLkNJLkJBVA==?= =?utf-8?Q?=3A?= failure for
+ tests/core_sysfs: Create listing while reading
+Message-ID: <fzcg3ysi24nequc7hs4qur53qonim322q6uwyq3om6qenb7fii@vvrwgdgmigch>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org, 
+ Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>
+References: <20261117194250.72855-1-kamil.konieczny@linux.intel.com>
+ <179494675783.39806.6843256983173737497@9ac1b63fe3ea>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <179494675783.39806.6843256983173737497@9ac1b63fe3ea>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,35 +68,115 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Enable Tile64 in detection tool to check what hw blits are supported
-in the hardware.
+Hi igt-dev,
+On 2026-11-17 at 20:19:17 -0000, Patchwork wrote:
+> == Series Details ==
+> 
+> Series: tests/core_sysfs: Create listing while reading
+> URL   : https://patchwork.freedesktop.org/series/178819/
+> State : failure
+> 
+> == Summary ==
+> 
+> CI Bug Log - changes from XEIGT_9196_BAT -> XEIGTPW_16167_BAT
+> ====================================================
+> 
+> Summary
+> -------
+> 
+>   **FAILURE**
+> 
+>   Serious unknown changes coming with XEIGTPW_16167_BAT absolutely need to be
+>   verified manually.
+>   
+>   If you think the reported changes have nothing to do with the changes
+>   introduced in XEIGTPW_16167_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+>   to document this new failure mode, which will reduce false positives in CI.
+> 
+>   
+> 
+> Participating hosts (15 -> 14)
+> ------------------------------
+> 
+>   Missing    (1): bat-bmg-vm 
+> 
+> Possible new issues
+> -------------------
+> 
+>   Here are the unknown changes that may have been introduced in XEIGTPW_16167_BAT:
+> 
+> ### IGT changes ###
+> 
+> #### Possible regressions ####
+> 
+>   * igt@core_sysfs@read-all-entries:
+>     - bat-ptl-1:          [PASS][1] -> [FAIL][2]
+>    [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-1/igt@core_sysfs@read-all-entries.html
+>    [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-1/igt@core_sysfs@read-all-entries.html
+>     - bat-lnl-1:          [PASS][3] -> [FAIL][4]
+>    [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-lnl-1/igt@core_sysfs@read-all-entries.html
+>    [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-lnl-1/igt@core_sysfs@read-all-entries.html
+>     - bat-bmg-2:          [PASS][5] -> [FAIL][6]
+>    [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-bmg-2/igt@core_sysfs@read-all-entries.html
+>    [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-bmg-2/igt@core_sysfs@read-all-entries.html
+>     - bat-adlp-7:         [PASS][7] -> [FAIL][8]
+>    [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-adlp-7/igt@core_sysfs@read-all-entries.html
+>    [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-adlp-7/igt@core_sysfs@read-all-entries.html
+>     - bat-bmg-1:          [PASS][9] -> [FAIL][10]
+>    [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-bmg-1/igt@core_sysfs@read-all-entries.html
+>    [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-bmg-1/igt@core_sysfs@read-all-entries.html
+>     - bat-lnl-2:          [PASS][11] -> [FAIL][12]
+>    [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-lnl-2/igt@core_sysfs@read-all-entries.html
+>    [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-lnl-2/igt@core_sysfs@read-all-entries.html
+>     - bat-atsm-2:         [PASS][13] -> [FAIL][14]
+>    [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-atsm-2/igt@core_sysfs@read-all-entries.html
+>    [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-atsm-2/igt@core_sysfs@read-all-entries.html
+>     - bat-ptl-vm:         [PASS][15] -> [FAIL][16]
+>    [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-vm/igt@core_sysfs@read-all-entries.html
+>    [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-vm/igt@core_sysfs@read-all-entries.html
+>     - bat-wcl-2:          [PASS][17] -> [FAIL][18]
+>    [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-wcl-2/igt@core_sysfs@read-all-entries.html
+>    [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-wcl-2/igt@core_sysfs@read-all-entries.html
+>     - bat-nvls-1:         [PASS][19] -> [FAIL][20]
+>    [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-nvls-1/igt@core_sysfs@read-all-entries.html
+>    [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-nvls-1/igt@core_sysfs@read-all-entries.html
+>     - bat-nvls-2:         [PASS][21] -> [FAIL][22]
+>    [21]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-nvls-2/igt@core_sysfs@read-all-entries.html
+>    [22]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-nvls-2/igt@core_sysfs@read-all-entries.html
+>     - bat-ptl-2:          [PASS][23] -> [FAIL][24]
+>    [23]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-ptl-2/igt@core_sysfs@read-all-entries.html
+>    [24]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-ptl-2/igt@core_sysfs@read-all-entries.html
+>     - bat-wcl-1:          [PASS][25] -> [FAIL][26]
+>    [25]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9196/bat-wcl-1/igt@core_sysfs@read-all-entries.html
+>    [26]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/bat-wcl-1/igt@core_sysfs@read-all-entries.html
+> 
+>   
 
-Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
----
- tools/intel_tiling_detect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+These are tests bugs, please do not file a GitLab work-item.
 
-diff --git a/tools/intel_tiling_detect.c b/tools/intel_tiling_detect.c
-index 951e2eecd04..7b13fdcfe8d 100644
---- a/tools/intel_tiling_detect.c
-+++ b/tools/intel_tiling_detect.c
-@@ -347,7 +347,7 @@ static bool try_tile[NUM_REFS] = {
- 	[I915_TILING_Y] = true,
- 	[I915_TILING_4] = true,
- 	[I915_TILING_Yf] = true,
--	[I915_TILING_64] = false,
-+	[I915_TILING_64] = true,
- };
- 
- int main(int argc, char *argv[])
--- 
-2.43.0
+Regards,
+Kamil
 
+> 
+> 
+> Build changes
+> -------------
+> 
+>   * IGT: IGT_9196 -> IGTPW_16167
+>   * Linux: xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda -> xe-6163-79504010d899136eff374b34e1fedcb8e5d57fe0
+> 
+>   IGTPW_16167: 16167
+>   IGT_9196: 9196
+>   xe-6155-ccb10a534282f16c6d068bc06e5c722680045dda: ccb10a534282f16c6d068bc06e5c722680045dda
+>   xe-6163-79504010d899136eff374b34e1fedcb8e5d57fe0: 79504010d899136eff374b34e1fedcb8e5d57fe0
+> 
+> == Logs ==
+> 
+> For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16167/index.html
