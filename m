@@ -2,52 +2,52 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F071606A325
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 15:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F98606A325
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 15:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c+eNRbkK
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nCRVUkuU
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1652C10E80C;
-	Wed, 18 Nov 2026 15:53:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 9563010E541;
+	Wed, 18 Nov 2026 15:54:12 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C56CA10FE15
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 15:45:38 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3353410FE0E
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 15:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795016739; x=1826552739;
+ t=1795016746; x=1826552746;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=geWjYdZVDcYbZntK3pmot/7WaL+Bgtu6KoJACnVQgik=;
- b=c+eNRbkKGGdNsAeB+fX2Zp2NyY5hYTQKMrDHhut8/aAGOLolgimeCEwO
- CWvaclFAPZPIK2BpGs2a5Zirucl35SM89qWDMLxLjmC1Cip3O+0k8Cy59
- mRxKvUUeK7CVlZPCRxNWR7mkFdxKnSRTTRzpiZa65Jf2B4DEG93GdQGQu
- SoS/vqjMtFbk7C5ggbWcHq3EyBF5uAdaSCfSVVdEwkJSVzupwHt1aUeF2
- Cd+wgEbxBYBlLM1xpurfGG52OonAPyhOJANdy/lK2EL4nDTYzJbbUDcmh
- X9sMmRGLyQyeU3jX7kj4zgb2QKOkfQLetCrP0j7RwtS6hd3DcYieOagHX Q==;
-X-CSE-ConnectionGUID: kn+MEV1wTc60SDXbih/ahA==
-X-CSE-MsgGUID: cfzlQs8rR2O5/65j//Gt6A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3720358"
+ bh=2XZ75xsB9vwR6jyOqVxcyfbIRqH78wdoe/L8p/fCNO4=;
+ b=nCRVUkuUTSy/fmVLh+zlgk1iQcWF7v+nCPkbhP62OInKthj1HARu/B2o
+ 7c3QJMYAVlKoHyUAexthuB/5PWSKAgoG2x7P5IbP5CrGGGv6Q1UlSfqKI
+ ltXuui7s4Cj9VbS56e2+gACzTiosM7BnaaEu4iEqYuz54UM87iUOfjAZ9
+ sGk3vK12RblHeY9km04DazsehW12N5GuLLQtrM3IF37vfy3BMkyvCb3WA
+ uRPNLE6keYarhRkZiFhSYWs+egWClkBIuPq4cYgV833ZOoHp0p7g8qF4q
+ Xka52GxLhPF8V3BGGJEulSiQjFq0EUlmYy54hdoaEHzoft1U/hVqPCIeg A==;
+X-CSE-ConnectionGUID: 1f7PGTyeSGOzcEHf1u63jA==
+X-CSE-MsgGUID: hshPTODgQjiefsr8GPu3RA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3720389"
 X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3720358"
+   d="scan'208";a="3720389"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 07:45:38 -0800
-X-CSE-ConnectionGUID: aREC4fy0RqGUMsQLIsMhpQ==
-X-CSE-MsgGUID: zkG5AFfeQK6A9i+/3Wy1kg==
+ 18 Nov 2026 07:45:46 -0800
+X-CSE-ConnectionGUID: tBAVc883SGucIO1drSHQwg==
+X-CSE-MsgGUID: ZkgmoDMwSoGsiVLqcVaHxA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; d="scan'208";a="10319390"
+X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; d="scan'208";a="10319410"
 Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
  jeevan-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.190.238.87])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 07:45:36 -0800
+ 18 Nov 2026 07:45:44 -0800
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jani.nikula@intel.com, pranay.samala@intel.com, karthik.b.s@intel.com,
  Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 3/8] tests/intel/i915_module_load: Check intel_display
- in load subtest
-Date: Wed, 18 Nov 2026 21:14:18 +0530
-Message-ID: <20261118154426.345883-4-jeevan.b@intel.com>
+Subject: [PATCH i-g-t 7/8] tests/intel/xe_module_load: Verify driver unload
+ result
+Date: Wed, 18 Nov 2026 21:14:22 +0530
+Message-ID: <20261118154426.345883-8-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261118154426.345883-1-jeevan.b@intel.com>
 References: <20261118154426.345883-1-jeevan.b@intel.com>
@@ -72,26 +72,64 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add intel_display to unwanted_drivers so the load subtest skips when it
-is already loaded.
+Assert that igt_xe_driver_unload() succeeds in the unload and reload
+subtests instead of ignoring its return value. In the unload subtest also
+check that xe is gone and that intel_display is unloaded too, unless i915
+is still loaded and holds it.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/i915_module_load.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/intel/xe_module_load.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/i915_module_load.c b/tests/intel/i915_module_load.c
-index 68e238646..c875d2501 100644
---- a/tests/intel/i915_module_load.c
-+++ b/tests/intel/i915_module_load.c
-@@ -605,6 +605,7 @@ int igt_main()
- 	igt_describe("Check if i915 and friends are not yet loaded, then load them.");
- 	igt_subtest("load") {
- 		const char * unwanted_drivers[] = {
-+			"intel_display",
- 			"i915",
- 			"intel-gtt",
- 			NULL
+diff --git a/tests/intel/xe_module_load.c b/tests/intel/xe_module_load.c
+index ae6c6708b..afb1bc0cd 100644
+--- a/tests/intel/xe_module_load.c
++++ b/tests/intel/xe_module_load.c
+@@ -130,7 +130,13 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("unload") {
+-		igt_xe_driver_unload();
++		igt_assert_eq(igt_xe_driver_unload(), IGT_EXIT_SUCCESS);
++		igt_assert(!igt_kmod_is_loaded("xe"));
++
++		/* intel_display stays only if i915 still uses it */
++		if (!igt_kmod_is_loaded("i915"))
++			igt_assert_f(!igt_kmod_is_loaded("intel_display"),
++				     "intel_display still loaded after xe unload\n");
+ 	}
+ 
+ 	igt_subtest("force-load") {
+@@ -143,9 +149,9 @@ int igt_main()
+ 	}
+ 
+ 	igt_subtest("reload-no-display") {
+-		igt_xe_driver_unload();
++		igt_assert_eq(igt_xe_driver_unload(), IGT_EXIT_SUCCESS);
+ 		load_and_check_xe("probe_display=0");
+-		igt_xe_driver_unload();
++		igt_assert_eq(igt_xe_driver_unload(), IGT_EXIT_SUCCESS);
+ 	}
+ 
+ 	igt_subtest("many-reload") {
+@@ -153,14 +159,14 @@ int igt_main()
+ 
+ 		for (i = 0; i < 10; i++) {
+ 			igt_debug("reload cycle: %d\n", i);
+-			igt_xe_driver_unload();
++			igt_assert_eq(igt_xe_driver_unload(), IGT_EXIT_SUCCESS);
+ 			load_and_check_xe(NULL);
+ 			sleep(1);
+ 		}
+ 	}
+ 
+ 	igt_subtest("reload") {
+-		igt_xe_driver_unload();
++		igt_assert_eq(igt_xe_driver_unload(), IGT_EXIT_SUCCESS);
+ 		load_and_check_xe(NULL);
+ 
+ 		/* only default modparams, can leave module loaded */
 -- 
 2.43.0
 
