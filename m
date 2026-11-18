@@ -2,70 +2,75 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55B8606A31C
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 06:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909C4606A31C
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 06:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=PwbFTf4R
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=U8LDoliK
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 8B23410E2E5;
-	Wed, 18 Nov 2026 06:15:52 +0000 (UTC)
-Received: from BYAPR05CU005.outbound.protection.outlook.com
- (mail-westusazon11010025.outbound.protection.outlook.com [52.101.85.25])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7CE0B10E342
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 06:11:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3AA6E10E342;
+	Wed, 18 Nov 2026 06:16:47 +0000 (UTC)
+Received: from CH5PR02CU005.outbound.protection.outlook.com
+ (mail-northcentralusazon11012008.outbound.protection.outlook.com
+ [40.107.200.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F353510E652
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 06:11:11 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=l8EIfsc5aFUn+a/eAkTmJpF6P77JCGlVyKpFkjSoR3ytg/ej4x/AAEXlvRVSKRmGFD0Llx+bh4KyiMzV4Un7SaxWxCx+70PIrDUVKZTSqdn/Y5r6nMy9WIB0oYFHdghYzP+1j+ppjYcMryiaEWYxsUNnOotEgX/NmVxd2FOyxqMHs+XyTAdpr47tGZNs078oL79mG3irG8gwcYpiSziHfSdcf+SKD3W2l51AVLzUhFCQg7J7SCOre2CG3jP4Coz8uWQeJkRwEff464kjkgHTwsXw+LxylCy9IF0GARMAo1sp5pxIFMM0mwKHjnex2+HUZeFaXtk++0Exqjy1TLrRCA==
+ b=JIuTrwyb2mEC1B55l+Pbc8hivjH06fzqO12jdG6tFUGtj5LyCdbNY8VcOWUXPbEkLUo3F8XUiEdRS9lUxlVc78P/ANKTQPpeyZHjMry5ZZEMyRsFeDpvQCCC2pbFg/I1JL9tB/U1PvILlIUvjWEdeTUI3300NSajdOwXu1EqLaEN0QhXywNq603cKl+pmp3HM4UBDD3kHIQECc2fSm/cmCDcEb9Xl4xOl+MwUY2JuWCu7XLorJLVshBOhoies4Rb4YNr0J1rU4PE36dNMqKKkhi479+2Bg87qh924pOo7+hMRsNr7fn7JP+MrG91QlUThEqtj+tDJQNSuR9n2iA80Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3e+ZpcslnTSIHbwd4biZ8ozGBLn6GiuHd0rnBWS035g=;
- b=lAWmChADU+CL2G1ERnkCiHwkHp3/w400PtY0U+tZ9AbbnT8MuhtgV7vhi1AN52Sdic863HtxT43xcxYWmz58SsvgOGOp22evDR9XGdnfVLZb+GbB648EQVPfEA5+4R++/8NTeJfoPlHQLGM0ZtnftR9grcsohXaiILQ53fBbZfWCdo+bF9vOs+LsmVxYpODdpjqnJTsgoOai3kmak9fQ/X296uL2e17Yccv7afFv1U5R1qzwgYwhbx6buoyfm8uATDQhKIpMIv1ImJbuO1+rmhnoncWTpT8sCLG0ex/B7JkfkdABSqUXm+hoh6oQ5A3nCGlsGOzesDGkx7eikFA/WQ==
+ bh=05xX87CtAInv+3PDgXK3mb1ZYskG2Yslpge4SiLnYho=;
+ b=S/7qG4WH9NFe+rCUbeJXQ4eSRGyFOK1+zT7I7Gau0sTL0r0sK+XINrDnzeO4rLfzxcLSVyvmEK0VWHUKF1iQU6BwOkG/FYuDdFrSGLSs/tfewCMRGy1SszM9MfJU7R6o0QEmhTEbzt5Oev7rJsZ/IlaKqxsSBqOkQ6/xOsfpVvAi2YzTduRO74S77hcsEHZfbWXchkOS/rYZnegt923ujm0deiprX0AtDtvX2l3leez0OV0nLh44gZPr9w92voRvHh0G+xxngjId4fwgRedL/8/okbf2Ch7CDCrBdBaZy7d/cDLw5k4YLKMm3n50hOjGSVQK2p5H+KaPFPTmDDS6aA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3e+ZpcslnTSIHbwd4biZ8ozGBLn6GiuHd0rnBWS035g=;
- b=PwbFTf4RgNcyjq909rpUTUEZ0VlkWJEccaWZV8W5py6TiKs9XQ5dy5a3769FKt2JpsVEuO+KscAHscjtKZ1O4y8jdso3GK/tjVnu2cTSSSARbHoDmf6YA0wLcCIc8DZ5aCIBV0d26mFva1dK6/3liAh69WdmIOEDfx5tvKBF79o=
-Received: from BLAPR03CA0094.namprd03.prod.outlook.com (2603:10b6:208:32a::9)
- by CY8PR12MB7753.namprd12.prod.outlook.com (2603:10b6:930:93::13)
+ bh=05xX87CtAInv+3PDgXK3mb1ZYskG2Yslpge4SiLnYho=;
+ b=U8LDoliKxWZVpFYguq8QDqrl6Xuh825rtMyiv6agR42C7h1N+oX/8bN2vtXA53FB/xDcPjLeWOJ4oIMRKke1qu2AEd+icpFze8W3YGMgIJYeSSShuRnZyvFd/ZCCc5WCB5MIiGIAcrS1dlyTvtvAjGBXYtc2oNT9xmovHOCTRAI=
+Received: from PH8PR20CA0005.namprd20.prod.outlook.com (2603:10b6:510:23c::13)
+ by BL1PR12MB5804.namprd12.prod.outlook.com (2603:10b6:208:394::5)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.10; Wed, 18 Nov
- 2026 06:11:17 +0000
-Received: from IA0PEPF0000003D.namprd03.prod.outlook.com
- (2603:10b6:208:32a:cafe::6d) by BLAPR03CA0094.outlook.office365.com
- (2603:10b6:208:32a::9) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.10 via Frontend Transport; Wed,
- 18 Nov 2026 06:11:16 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
+ 2026 06:11:05 +0000
+Received: from PH4PEPF0000B60D.namprd21.prod.outlook.com
+ (2603:10b6:510:23c:cafe::4f) by PH8PR20CA0005.outlook.office365.com
+ (2603:10b6:510:23c::13) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.9 via Frontend Transport; Wed, 18
+ Nov 2026 06:11:05 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- IA0PEPF0000003D.mail.protection.outlook.com (10.167.249.74) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ PH4PEPF0000B60D.mail.protection.outlook.com (10.167.243.88) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.639.5 via Frontend Transport; Wed, 18 Nov 2026 06:11:16 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.662.0 via Frontend Transport; Wed, 18 Nov 2026 06:11:05 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 18 Nov
- 2026 00:11:15 -0600
+ 2026 00:11:05 -0600
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 18 Nov
+ 2026 00:11:05 -0600
 Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Wed, 18 Nov 2026 00:11:13 -0600
+ Transport; Wed, 18 Nov 2026 00:11:03 -0600
 From: Jesse Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>, Jesse Zhang
  <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t V2 7/8] lib/amdgpu: program the CU mask of every SE in
- dispatches
-Date: Wed, 18 Nov 2026 14:10:48 +0800
-Message-ID: <20261118061059.3012530-7-Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t V2 2/8] include/drm-uapi/amdgpu: add the CWSR save area
+ to the compute MQD
+Date: Wed, 18 Nov 2026 14:10:43 +0800
+Message-ID: <20261118061059.3012530-2-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20261118061059.3012530-1-Jesse.Zhang@amd.com>
 References: <20261118061059.3012530-1-Jesse.Zhang@amd.com>
@@ -75,29 +80,29 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PEPF0000003D:EE_|CY8PR12MB7753:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7256ddc6-9136-44a9-84dc-08df453ac135
+X-MS-TrafficTypeDiagnostic: PH4PEPF0000B60D:EE_|BL1PR12MB5804:EE_
+X-MS-Office365-Filtering-Correlation-Id: f4c22779-d120-4cee-ac66-08df453abaf8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|36860700016|23010399003|82310400026|11063799006|261026140227099003|56012099006|261028144727099003|10067099003|261022105027099003|261021123027099003|261021121427099003|261102123227099003|261009223027099003|22082099003|6133799003|18002099003|3023799007;
-X-Microsoft-Antispam-Message-Info: tyki+XT+6D1i4hEr1rx4F2gy/QwysPcsUPPhQ+yWVkzkoUYLJSL2++7SymLninvJHuX8z8nGnBw8eAdZ80QZUMk5bo4SHVKWTe5AhWQP6Wx2uahG8MUjOfGP/SICrErmOgu8WOkLZLnpq9VKdj2J1Cb44A4WNvXJFoEvyQ9MBRw7hWsTf+TWi8Ox0BWAZEL59JCVd+zqIRVb3ycIK5TA7/vouBFHGobh8MaMWRBlKMt5ijyb0OPX39Qpi+TiyYF3dIFULk4WbygUWdZG6Ihk663YytgQW56i/baJrKJ8WLNgc2gje2PVqMs1oeuQ+fFp4aNLFGeHlT+kXsLkwkxDMmataDAQDju6tjmiS0VPp9KoWdkpqoiRgORuA8Uge/S6zxg9kBK7yqsibe1d3/860nt0/Q53IJCsA8av9AH8ESnUQfhx3NoC9oltC0e1jMceQ9wjJ6c7Y7HXOvSKlelzNSorYiNli2mI5h7KSp+LOIfbzPNAfLrZdDcC7nKsnE53UiVj/ayBn2T5nTSrKJDyMvpCs8UIE7qXYWafl99i8YfI+cjbTUh6MJxWke4Ch0sDn1vYXts+KXafwgl75nx48kQ2TB9gshOPi1DQCa/dlRdmeoy9nYWGqjmrFS0ELpQXCtixXgfsmi9NC1mCe6u5c6nMx1Fd5tU4PKS55yjC/da5l33ZF53tXh6K6bjbNiEOpjoI60rs3ieVvnwI4o6+cQ==
+ ARA:13230040|23010399003|82310400026|1800799024|36860700016|376014|261026121527099003|261026140227099003|261028144727099003|261021121427099003|261022105027099003|56012099006|11063799006|10067099003|261102123227099003|22082099003|18002099003|261009223027099003;
+X-Microsoft-Antispam-Message-Info: sdSUhu2NLqbFGbtD6BTCBdONfoaNc6UvU5bWr2uo4hZGK5n4r+VoIsULGMr2oHxhgo/Tov2cxb6frevZQzuJ0ItWt0PIRAuxtBpTBGu+vmU2D5n+CspTk07ZR5PccFHW+ynGElEOwx66wW3geVow/U2ipoZ+V2Bt5sNniGMFP5jhjYdTDBNT2vlyrRTeIKbDtH7S7Nun0K3gMovi9Dd8dTSUIzsYHpmx8ui12bBbCFvb2/dOleRP+Csc3e8PkCYZ3sCzhmTg9jNT1n4kx3iywSZFgqeZD4CwzqQHLmlPuSl/C7XIehyx9JscEhxlVHDtVOUD00+DLl7OmK4goe2HMdFnE5kMjzOWctjN31t4E0fqSk7F0CnuU4HurLWfbJ4+roOT15+a30jLSiM6X93rPqguF/DcPJmXY6MlEuXpDkzYiOa8SzAL62IKGi1yXcGgYrDGrTbC5i9y34RnApAhpF7B9njzRHFbit5K0E04UH8k5SDW27XimsMMtnP8+AAubywxgYwaJKDdBisYPOL3Fl0+qYxN+0qo0uKe78tfG73pjz2AtDivhgVF1xrfN70RUoC6Eu1kdnLd8wAHHah0i0/nzM9R/Ln/+UDmBzJf+Z2FdzN8nWF+bnXigxgf5tq9kCIq4lnJAPcTos9Rr3ykGyxWPMgCkIFd7YQbPPoGsUeeqtMJrqnmJl9h6kpqXlsdIAbJwBtlqaNlRjF48PZhzQ==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(36860700016)(23010399003)(82310400026)(11063799006)(261026140227099003)(56012099006)(261028144727099003)(10067099003)(261022105027099003)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003)(22082099003)(6133799003)(18002099003)(3023799007);
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(23010399003)(82310400026)(1800799024)(36860700016)(376014)(261026121527099003)(261026140227099003)(261028144727099003)(261021121427099003)(261022105027099003)(56012099006)(11063799006)(10067099003)(261102123227099003)(22082099003)(18002099003)(261009223027099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: MEFwvmCOHwwSbbA3Hhk8jMNZmuVzYS944EtY534O1xgqObovAlaIgF5tt37MnbQ8eoX0hh02sG+UEfFtUi8FdPLmSVciy05+1tooNLcNkEo12OvXsezKbxpy6uyZuGb1/aVVE+HmLwTPCltwwjQXLcvhRGPhF8VqVgbbeAoVkvAi4ANELGqP3ryZwgLcY7ExTboI1ZQ/9M52UDJETXxsy6TiJEzj4YQR/L3Wbmm7TbtbSl9aRxV8Rg7V5VFWJ/sLAUPUFmK0H00g1nM3hz+wS1fNJ8Ylc9plhQIkVk6+sVmX6u7cU0XPEzIs2x/Xliou15BqdtdFJb0zMtG76CZVUbnhT4Hb4gUv3kHK8DvzIRBwVgpXlqnIQ9v1aGGJxr1DX+rbvAAFuq02tRr/7uLHFrmG5MPscCflV0esCLW/cu1GabMnYaXNmg6PHDl8T4cq
+X-MS-Exchange-AntiSpam-MessageData-0: tLY41olfc87hdv257Xt3zlfN+F2u/yxYlvlsGijs4Xm1cQLlJK5yt2GgBjyI+GzBbHFBRmnGqcx5dSQBPb8algHn2ImKfPg5xcHMOYCw03d+otcgroUn42fCzyTrwRcKzk7XIe6t9OoSfcOeAuai65Sc4koC00cb5Kivt3ujZIriEKGMLeQiUeE57ouKgrt0rqEgnyAFUbkOXTN5QTBIO68d3SfR1jOrxpmZEJYhOuSEBchgagsZ0K9vHPM/2K6FRuntxZ91VB/TuGtrHG+8YvVl7nifJLxQUk5dyzp1ky1C7mBHvyjPU3nxliUCD618ggN2CXDpe+idArqmPRqes7CytuZt+cj8sA/FdgfMZr8qVtS/U22Iv53+eIOtGT2m/Qla+TBejarUL1BAjRnJO4bePouJaIAunR1xHYMa9gRx4aXBPEqG38Lt2JaFWa+T
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 06:11:16.1409 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7256ddc6-9136-44a9-84dc-08df453ac135
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 06:11:05.6538 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4c22779-d120-4cee-ac66-08df453abaf8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: IA0PEPF0000003D.namprd03.prod.outlook.com
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: PH4PEPF0000B60D.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7753
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5804
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,168 +121,68 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-amdgpu_dispatch_write_cumask() is meant to enable all CUs for the
-following dispatch, but it only writes COMPUTE_STATIC_THREAD_MGMT_SE0-SE3:
-on GFX12 it skips SE0 and SE1 as well, and it never writes the SE4 and
-up registers that GFX9, GFX11 and GFX12 have. SE2 and SE3 are also
-written with index 0 while SE0 and SE1 use index 3 on GFX10 and GFX11.
-
-Write the register of every SE the generation has, with index 3 on
-GFX10 and newer, and add amdgpu_dispatch_write_cumask_mask() for callers
-which need another CU mask. amdgpu_dispatch_write_cumask() still enables
-all CUs.
+Sync amdgpu_drm.h with the kernel CWSR/SLTH series ("drm/amdgpu: Add
+CWSR userspace interfaces"): the compute user queue MQD gets
+ctx_save_area_va and ctx_save_area_size, and AMDGPU_INFO_CWSR returns
+the save area size userspace needs to allocate.
 
 Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 ---
- .../compute_utils/amd_dispatch_helpers.c      | 111 +++++++++++++++---
- .../compute_utils/amd_dispatch_helpers.h      |   3 +
- 2 files changed, 95 insertions(+), 19 deletions(-)
+ include/drm-uapi/amdgpu_drm.h | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-index c05198d8b..193c02005 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-+++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-@@ -71,34 +71,107 @@ amdgpu_dispatch_init(uint32_t ip_type, struct amdgpu_cmd_base *base, uint32_t ve
- 	return base->cdw - i;
- }
+diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+index 832903e2e..5327a6451 100644
+--- a/include/drm-uapi/amdgpu_drm.h
++++ b/include/drm-uapi/amdgpu_drm.h
+@@ -470,6 +470,17 @@ struct drm_amdgpu_userq_mqd_compute_gfx11 {
+ 	 * to get the size.
+ 	 */
+ 	__u64   eop_va;
++	/**
++	 * @ctx_save_area_va: Virtual address of the GPU memory for save/restore buffer.
++	 * This must be from a separate GPU object, and use AMDGPU_INFO IOCTL
++	 * to get the size. This includes control stack, wave context and debugger memory.
++	 */
++	__u64 ctx_save_area_va;
++	/**
++	 * @ctx_save_area_size: Total size (in bytes) allocated for save/restore buffer.
++	 * Use AMDGPU_INFO IOCTL to get the size.
++	 */
++	__u32 ctx_save_area_size;
+ };
  
-+/*
-+ * COMPUTE_STATIC_THREAD_MGMT_SE<n>, one register per SE, as SH register
-+ * offsets: the register dword address minus 0x2c00, the SH register space
-+ * start used by SET_SH_REG. Bits 15:0 (SA0_CU_EN, SH0_CU_EN on GFX9) enable
-+ * the CUs of the first shader array of the SE, bits 31:16 (SA1_CU_EN) those
-+ * of the second one.
+ /* userq signal/wait ioctl */
+@@ -1303,6 +1314,8 @@ struct drm_amdgpu_cs_chunk_cp_gfx_shadow {
+ #define AMDGPU_INFO_GPUVM_FAULT			0x23
+ /* query FW object size and alignment */
+ #define AMDGPU_INFO_UQ_FW_AREAS			0x24
++/* query CWSR size and alignment */
++#define AMDGPU_INFO_CWSR			0x25
+ 
+ #define AMDGPU_INFO_MMR_SE_INDEX_SHIFT	0
+ #define AMDGPU_INFO_MMR_SE_INDEX_MASK	0xff
+@@ -1682,6 +1695,20 @@ struct drm_amdgpu_info_uq_metadata {
+ 	};
+ };
+ 
++/**
++ * struct drm_amdgpu_info_cwsr - cwsr information
++ *
++ * Gives cwsr related size details. User needs to allocate buffer based on this.
 + */
-+static const uint32_t cumask_se_gfx9[] = {
-+	0x216,	/* SE0, 0x2e16 */
-+	0x217,	/* SE1, 0x2e17 */
-+	0x219,	/* SE2, 0x2e19 */
-+	0x21a,	/* SE3, 0x2e1a */
-+	0x225,	/* SE4, 0x2e25 */
-+	0x226,	/* SE5, 0x2e26 */
-+	0x227,	/* SE6, 0x2e27 */
-+	0x228,	/* SE7, 0x2e28 */
++struct drm_amdgpu_info_cwsr {
++	/* Control stack size */
++	__u32 ctl_stack_size;
++	/* Debug memory area size */
++	__u32 dbg_mem_size;
++	/* Minimum save area size required */
++	__u32 min_save_area_size;
 +};
-+
-+static const uint32_t cumask_se_gfx10[] = {
-+	0x216,	/* SE0, 0x2e16 */
-+	0x217,	/* SE1, 0x2e17 */
-+	0x219,	/* SE2, 0x2e19 */
-+	0x21a,	/* SE3, 0x2e1a */
-+};
-+
-+static const uint32_t cumask_se_gfx11[] = {
-+	0x216,	/* SE0, 0x2e16 */
-+	0x217,	/* SE1, 0x2e17 */
-+	0x219,	/* SE2, 0x2e19 */
-+	0x21a,	/* SE3, 0x2e1a */
-+	0x22b,	/* SE4, 0x2e2b */
-+	0x22c,	/* SE5, 0x2e2c */
-+	0x22d,	/* SE6, 0x2e2d */
-+	0x22e,	/* SE7, 0x2e2e */
-+};
-+
-+static const uint32_t cumask_se_gfx12[] = {
-+	0x216,	/* SE0, 0x2e16 */
-+	0x217,	/* SE1, 0x2e17 */
-+	0x219,	/* SE2, 0x2e19 */
-+	0x21a,	/* SE3, 0x2e1a */
-+	0x22b,	/* SE4, 0x2e2b */
-+	0x22c,	/* SE5, 0x2e2c */
-+	0x22d,	/* SE6, 0x2e2d */
-+	0x22e,	/* SE7, 0x2e2e */
-+	0x223,	/* SE8, 0x2e23 */
-+};
-+
-+/*
-+ * Set the CU mask of the following dispatches: write cu_mask to the
-+ * COMPUTE_STATIC_THREAD_MGMT_SE register of every SE the generation has.
-+ */
- int
--amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base, uint32_t version)
-+amdgpu_dispatch_write_cumask_mask(struct amdgpu_cmd_base *base, uint32_t version,
-+				  uint32_t cu_mask)
- {
- 	int offset_prev = base->cdw;
-+	const uint32_t *se;
-+	unsigned int i, num_se;
-+
-+	switch (version) {
-+	case 9:
-+		se = cumask_se_gfx9;
-+		num_se = ARRAY_SIZE(cumask_se_gfx9);
-+		break;
-+	case 10:
-+		se = cumask_se_gfx10;
-+		num_se = ARRAY_SIZE(cumask_se_gfx10);
-+		break;
-+	case 11:
-+		se = cumask_se_gfx11;
-+		num_se = ARRAY_SIZE(cumask_se_gfx11);
-+		break;
-+	default:
-+		se = cumask_se_gfx12;
-+		num_se = ARRAY_SIZE(cumask_se_gfx12);
-+		break;
-+	}
- 
--	if (version == 9) {
--	/*  Issue commands to set cu mask used in current dispatch */
--	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
--		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
--		base->emit(base, 0x216);
--		base->emit(base, 0xffffffff);
--		base->emit(base, 0xffffffff);
--	} else if ((version == 10) || (version == 11)) {
--		/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
--		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
--		base->emit(base, 0x30000216);
--		base->emit(base, 0xffffffff);
--		base->emit(base, 0xffffffff);
-+	for (i = 0; i < num_se; i++) {
-+		if (version == 9) {
-+			base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-+			base->emit(base, se[i]);
-+		} else {
-+			/* index 3: the CP ANDs the mask with the queue CU mask */
-+			base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 1));
-+			base->emit(base, (3u << 28) | se[i]);
-+		}
-+		base->emit(base, cu_mask);
- 	}
--	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
--	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
--	base->emit(base, 0x219);
--	base->emit(base, 0xffffffff);
--	base->emit(base, 0xffffffff);
- 
- 	return base->cdw - offset_prev;
- }
- 
-+/* Enable all CUs for the following dispatches */
-+int
-+amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base, uint32_t version)
-+{
-+	return amdgpu_dispatch_write_cumask_mask(base, version, 0xffffffff);
-+}
 +
  /*
-  * The fence the kernel emits after a job on a kernel queue waits for the
-  * dispatched waves and writes the caches back. A user queue only signals its
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-index e1c6e37f4..98466e0c8 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-+++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-@@ -33,6 +33,9 @@ int amdgpu_dispatch_init(uint32_t ip_type, struct amdgpu_cmd_base *base_cmd, uin
- 
- int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base_cmd, uint32_t version);
- 
-+int amdgpu_dispatch_write_cumask_mask(struct amdgpu_cmd_base *base_cmd, uint32_t version,
-+				      uint32_t cu_mask);
-+
- int amdgpu_dispatch_write_sync(struct amdgpu_cmd_base *base_cmd, uint32_t version);
- 
- int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version, enum cmd_error_type err);
+  * Supported GPU families
+  */
 -- 
 2.50.1
 
