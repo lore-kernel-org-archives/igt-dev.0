@@ -2,106 +2,108 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 630A7606A31C
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 06:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1623F606A31C
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 06:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=dO20ustK
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=0wa2y5zC
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1908510E342;
-	Wed, 18 Nov 2026 06:12:17 +0000 (UTC)
-Received: from BN8PR05CU002.outbound.protection.outlook.com
- (mail-eastus2azon11011044.outbound.protection.outlook.com [52.101.57.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F1F010E52C
+	by gabe.freedesktop.org (Postfix) with ESMTP id B9F3210E2E5;
+	Wed, 18 Nov 2026 06:13:10 +0000 (UTC)
+Received: from SJ2PR03CU001.outbound.protection.outlook.com
+ (mail-westusazon11012046.outbound.protection.outlook.com [52.101.43.46])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F035810E2E5
  for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 06:11:11 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LlEGHwkhxlis/4vBAJgSDC6P/wXh24nzVPsu5iBfWMbUDCS28lt7mvXPDK9dFdwUI3kPYF/b3h1TToVzIb3XNdTkswM62LyIbPfvuBGmFxE3E8J4fOwSa4gX0oCuKLozuBybyHTX8vzmY4o4/1CRuzDHfLSnQcl8GQ4NkmOnHaW957/OJ/NAxVlTK5ApZEcgrKbivr0InB7fZz1YU3TD+5AU0XnzA4BgffB8sMkcaEWw/DSiJUtwm3+WHkxc9Zn95n/YuGCc3zBFBFXYlKKjfnxOJQeznq+qtjzqP8Szh4FhgIt6BrbF0JxhHCW8ofupnGgpIlADGSPZwozpZ4gLjQ==
+ b=y+BqFYmpMg8CQMau40oRXRw0x1JOnyOVlEsuDOZ75x9WcgT2A/EZ5uD4A8zhTSS6ipNqjJ2TzBgAG+6vmN/o+hsb8D3a47mcR/hb0ontJzJaPnvpANkdY9AXCaMfUhKtWa5+4+U/xGgrhyXi9OlFMp+d/J5RTQ0BPAa0Y9o5keBT7tGrzL08rgEfYfk1zmszGSlCSmoTOEAOTZ8Zq161MgrwOb9c0AiZoVbhsktSigdUQ2SfmXl9TOH6VCCq6npoSS+CMDgZ9OsjLrOP2DxGhx0KnWQzP5lsHRvuITuKUHRE8e4f5B1sdBby7/aU6NfoHAjxTEtkAp2vyg6HJr36mA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j8MaNR6niqJfVjKzWKjay5gydY78GOPKX1MGLrgMfsg=;
- b=tjNwIM42EstZe9YnUZe6n5SqnIaBWhBfD1nJiO7ZGOMXBCRj9lNxoVPudNSUfk405YjVrcrFLIr+sKhHQCYnaaii//9KWk7/4bxfMecuW0oNMPWLB7MvoT3WSPPpyYa9BZHRksvz0551A8DH41IC3K+bxkl1+xKkIT2E40kSqcl6MSBuaq3F0TXK6/VY70Xv0r9cznE2nqDHcygUdWE6HFW8XovPT1+TCB27RK65y5NdcKxTt0jd42WHCnbEGBm8jd6vjATtPYqM6JqJ66LeJyEiomPwJgK2HEUrOUK1efw6Jqr8pGFUgngEva6sdPoeLJM/RPVLbRSmm2Yz2LmegA==
+ bh=f/vmKee02IFxwOuvRBiHZ9VetajwNs4u1NnqBuBpcv8=;
+ b=rj37HxtJ3YGWXFCttw7OryUnz4s/JXDJe6QojkyUkGyfYNjwRSLQX5nn+kplJOxUKxbhAFyXYq0qomGv9cWKbiaoeaMM9Vl13Zg8TgqoNIUW3/kDtXGquJCvRJWK0bwA+NkAJkSgUjY+9NvL+UaoadzLJo5mNqjM49xHbphok2p9XM2ALX77MmorEJxE8N3EPJIla6hqXeWkrWVVkK/DoaLZGIfGWjMFOehpFnuwn4HoUAuJJQnGAKBsgUMkWE8yhcz/c2dPm4k0Z4DsE9IlehKZVxWSPFuGQzKIFSMHB3YjUtcJJL5X1ewryOBkMMgV52v/Mx7U71vHK5kxjfnThQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j8MaNR6niqJfVjKzWKjay5gydY78GOPKX1MGLrgMfsg=;
- b=dO20ustKB9OggB07ndy1p0kp5SST1wblVSzBMHwGP9r2kYCW/wTki63GWp9bkjrDBgay/CdB954mkE5MyQ+ZLRE1zoGgvoAgC5NaSdkVp/n7DvvwPp0KW+yte/zjocu71kjtb6SS7o/K8+EDpyOqrzD9LoL/PS/dNnbrUMbspvc=
-Received: from MN0PR03CA0002.namprd03.prod.outlook.com (2603:10b6:208:52f::31)
- by DS6PR12MB777192.namprd12.prod.outlook.com (2603:10b6:8:411::5)
+ bh=f/vmKee02IFxwOuvRBiHZ9VetajwNs4u1NnqBuBpcv8=;
+ b=0wa2y5zCz8t3R3t3E5fmJ3tF21VhxcIKGhGTpMB/DE8W5dnNP4CST91dNItQP/h1zRFwv7i0Uh9fcCydWJfQN/dJkw7tse4SS6nwYzuR74dSzByYZCSnHZMKpMEgLisdhQu5yOrQfVSN0eBFsU816pxVL4mxqXUj8uLUTZxpuAU=
+Received: from PH8PR20CA0015.namprd20.prod.outlook.com (2603:10b6:510:23c::8)
+ by LV5PR12MB9778.namprd12.prod.outlook.com (2603:10b6:408:300::9)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
- 2026 06:11:08 +0000
-Received: from IA0PEPF00000037.namprd03.prod.outlook.com
- (2603:10b6:208:52f:cafe::73) by MN0PR03CA0002.outlook.office365.com
- (2603:10b6:208:52f::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.13 via Frontend Transport; Wed,
- 18 Nov 2026 06:11:08 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Wed, 18 Nov
+ 2026 06:11:04 +0000
+Received: from PH4PEPF0000B60D.namprd21.prod.outlook.com
+ (2603:10b6:510:23c:cafe::6a) by PH8PR20CA0015.outlook.office365.com
+ (2603:10b6:510:23c::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.10 via Frontend Transport; Wed,
+ 18 Nov 2026 06:11:04 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- IA0PEPF00000037.mail.protection.outlook.com (10.167.249.68) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ PH4PEPF0000B60D.mail.protection.outlook.com (10.167.243.88) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Wed, 18 Nov 2026 06:11:07 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.662.0 via Frontend Transport; Wed, 18 Nov 2026 06:11:03 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 18 Nov
- 2026 00:11:07 -0600
+ 2026 00:11:03 -0600
 Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
  (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 18 Nov
- 2026 00:11:07 -0600
+ 2026 00:11:02 -0600
 Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Wed, 18 Nov 2026 00:11:05 -0600
+ Transport; Wed, 18 Nov 2026 00:10:59 -0600
 From: Jesse Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
- Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>, Jesse Zhang
- <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t V2 3/8] lib/amdgpu: give compute user queues a CWSR save
- area
-Date: Wed, 18 Nov 2026 14:10:44 +0800
-Message-ID: <20261118061059.3012530-3-Jesse.Zhang@amd.com>
+ Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>, Felix Kuehling
+ <felix.kuehling@amd.com>, Lancelot Six <lancelot.six@amd.com>, James Zhu
+ <james.zhu@amd.com>, Lijo Lazar <lijo.lazar@amd.com>, Samuel Pitoiset
+ <hakzsam@gmail.com>, Natalie Vock <natalie.vock@gmx.de>,
+ =?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>, "Pierre-Eric
+ Pelloux-Prayer" <pierre-eric.pelloux-prayer@amd.com>
+Subject: [PATCH i-g-t V2 1/8] tests/amdgpu: Add SLTH validation tests for trap
+ handling and trap return.
+Date: Wed, 18 Nov 2026 14:10:42 +0800
+Message-ID: <20261118061059.3012530-1-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20261118061059.3012530-1-Jesse.Zhang@amd.com>
-References: <20261118061059.3012530-1-Jesse.Zhang@amd.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PEPF00000037:EE_|DS6PR12MB777192:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12fe3f8a-6519-4e1c-b806-08df453abc33
+X-MS-TrafficTypeDiagnostic: PH4PEPF0000B60D:EE_|LV5PR12MB9778:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7b6660b6-c077-4ea1-5ae9-08df453ab9e1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|376014|1800799024|82310400026|36860700016|10067099003|261021123027099003|56012099006|11063799006|261026121527099003|261026140227099003|261028144727099003|261021121427099003|261022105027099003|261102123227099003|261009223027099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: usGuaAvPNdLiqD2SEaK4OzQAdVgjODieblEghgYUEyc8yU15p7KOKlg7LmqakONaATLuKElsBbUnzqgxxOQt5vihP7g5TS5dIGvvEBY7vTdMR1sEavMfgTYyzvnrIrjAhClSY6RYU0gxGstygRk66+rrNuzFv+E0Xgck9zHEYh3Q7Xl4GNNufV3xuzDn6BH57zJe0fBM1vuP3m85T1suigm/nrDv1j5MwB3Q+E5+9sOzTNzn59pR7SCxrheAz4wNyfAPi+j3M48JwiKyIJpfC62xYirS6JSf17Fvyfrnel0DHFqVhlnZgblRYpxV+4WVSsjCKGcEsO9jRAcfM/hsKh5z1I+7l8tvNvJ6ZFHor2V0Bd75kRY7/2BiX9vHNevibjw+A98Bf0JySTmtCcSQqtnSpX3A3HGs/nkzvEXUnl7ISHADH+WVEKOMCLxLX4M1IbUkY6qzQMqs2Rycf/uB1Pi5nIHdtaIzTQXK/YxAD26fyG5yCPGRjjKVvT4Y/KL+xGWES0f6jvP06Ojh3GuZD0L4ifEEG/Bh9Y8iaKnXLxWwLU/3SW2v0iJB6jCAByPvSWQQgynxwte2vQDaNubGRRw/atkOL2WKZiGfCxg5iVwJ6uG0wjz2WlNOhivIJ4hMsoRfNdyDlkjWMjb6XnO6dyiJwWZ+I9S3VUJ+rywz9snp3YoI2Z7OuwDnnjO160LTsReXAi0EvmphwLvLLm4r5A==
+ ARA:13230040|23010399003|376014|1800799024|82310400026|36860700016|261021135927099003|10067099003|261021123027099003|261022113327099003|260925021311599003|260925021911599003|260925022911599003|56012099006|11063799006|261026135527099003|261026121527099003|261026140227099003|261022115727099003|261028144727099003|261021133027099003|261021130227099003|261022075727099003|261021121427099003|261026130827099003|261022105027099003|261102123227099003|261009223027099003|261009221227099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info: neVVx/6RAvRdVBDOJAE36FAM+oA4nAVysYJC91K5ChtGXfze3a9mf7AztvvQoyeDdkKhX5jouxx2LKBx6QiP7oM2BwqiJHHj6PHzteGtvwdiWYecDKaRyNFz28404xTR9hhVEVo+TMB18xsQKmnGri4tD8j5eVux2q6cJnNSUdiqdW5OGphZt41SRErWWVr4fnC4Uij4LiBvv6o6ZErUU1QeoN637/to5/MTBw7VbFoxg2bs/IdgK2kR3xYkFWFS9CjxevyHmw0TypH8Dqz42mwDz5EbbMBhj2JOHtiLMDvivqJfV8LdN/iXCReJvmRituwPJ1SdLHCfLOXHYDBCWVcTGBV3d/c7LbNtIdcgCehRWbWHcZO1RIO+CwfwXj1l8Rdygg0b+tSScW8zlyCh3lZWpYQ27pfpR/VpqTBtaWQp3nhSyDI7y/hGHYSls+v2Xusx1yZeIyvZraqaxfsn4husIHC289L5Vd6VOpBieUTTR8I+DPYnKEPsjV1aKv2tWAv64sWOqJyfEyL4CX+jmWGKzM+dr12FfPjC3eS8NQEGhsovRMZs8T4zmsTp5g/VrAtevsxDTPQIL3wiGp57Z9Ei1bc3RQtBugcgMHz1WaW1tPpfzzzjX1zzZ7y1/xQD34cjxM5DbCAx08oDcI1itdQis6kti/3UY7ecouTjHQzjccmGMTx2VQOukGiiUoUA2S9trh3rYoG7S34ckZ0yUg==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(23010399003)(376014)(1800799024)(82310400026)(36860700016)(10067099003)(261021123027099003)(56012099006)(11063799006)(261026121527099003)(261026140227099003)(261028144727099003)(261021121427099003)(261022105027099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003);
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(23010399003)(376014)(1800799024)(82310400026)(36860700016)(261021135927099003)(10067099003)(261021123027099003)(261022113327099003)(260925021311599003)(260925021911599003)(260925022911599003)(56012099006)(11063799006)(261026135527099003)(261026121527099003)(261026140227099003)(261022115727099003)(261028144727099003)(261021133027099003)(261021130227099003)(261022075727099003)(261021121427099003)(261026130827099003)(261022105027099003)(261102123227099003)(261009223027099003)(261009221227099003)(18002099003)(6133799003)(3023799007);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: fyC0taqBeWopRKyraidAI7hbiK5rGHp7sSbpqw5t9h0T4k2AqnI+J22HDvn6sv/4XvpNdqgoV7+3nGnjVka7aeP0aII/e6iDAPVEqKlZhiulB+E4SCMPbxByNt8J4YYIQBcZAVZOvDya7VTV3oENmVlTjpkwbASsnFxQfGVO1mQRvIl5GQrnRuRoLsqG2KQySMIai/n8jj9NXeNvEE+gKNXezTU7pErTFyDYafebIZsEyJiMm9JUZiNYLV2pDwRiwRpoB64+S0b9YXkTK/idIkZXIWnIO3dXT3hL/B8VHZCNOKP4vMxNBfdZJ8nK0pZcf/k8r3IvF0yPiBQKG8NyMx7U2UWsxXOB9JPzJp2RELveVCT9bWZCED3yM2T4JXg6XDaBm9xW9XaE933EqRywOymtL1kRlO5WULx9BdVcTFG8hxBgVE/M/5jMjlPvC9AX
+X-MS-Exchange-AntiSpam-MessageData-0: mShCTUqEu/LpOQqD0lLaNWl/Ur7Hu6MAB1f+xTs2fNS6WO7bbbzUBRPhaTow5ge2aiMz6XfWWJLioHYPZ22vurEgSZO29aojO7IR7fTg3NFoOqb4H79/oitQP1SidPymvku4OaG9MBAhwhLtTggPzk+gwAdypjHLxsw0+NXZteO7iKT8ZJev0elv/ylTdAud9HCQ2mYCBK1Gq2cGBFBUxa+lH+jTvj4JhxkDgPxefmbBtogpJdFz0IGqISYPAW/fGxO2UPTpx8k3d6lF6Pf/rXZh4ztjXDalTpxnsQ6sY80IDGfkCrtJf8YDi7z6HOJlvbR81rHID/nqtz+sZNALLrROi93EHY9SKfoWIxzoYwixt163LcCY9ms+5fucurYA3AYU1sOo822dGh1jLTRkW0y9swcVCNAFf4XXmhTXoN2USjVdha5cx9nYi5BlNW8h
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 06:11:07.7480 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12fe3f8a-6519-4e1c-b806-08df453abc33
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 06:11:03.8233 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b6660b6-c077-4ea1-5ae9-08df453ab9e1
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: IA0PEPF00000037.namprd03.prod.outlook.com
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: PH4PEPF0000B60D.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS6PR12MB777192
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV5PR12MB9778
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -120,94 +122,2222 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With CWSR enabled the kernel requires a context save area for every
-compute user queue, at least AMDGPU_INFO_CWSR min_save_area_size bytes,
-and rejects the queue without one.
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-Query the size, allocate and map the save area and pass it in the
-compute MQD, and free it when the queue is destroyed. Kernels without
-the query take no save area, so keep the MQD fields zero there. Also
-zero-initialize the compute MQD, which now has more than one field.
+SLTH allows a shader to trigger a trap, execute a trap
+handler, return from the trap, and continue shader
+execution.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+This patch adds validation tests to verify that each step
+of this flow works correctly.
+
+slth-gfx-kq-vgpr-proof
+
+  Runs a graphics workload using a kernel queue.
+  The shader triggers an SLTH trap.
+  The trap handler changes a VGPR value from 0 to 42.
+  After returning from the trap, the shader stores the
+  VGPR value to memory.
+  The test verifies that the final value is 42.
+  This confirms that the trap handler executed and that
+  the updated VGPR value remained visible after trap
+  return.
+
+slth-gfx-umq-vgpr-proof
+
+  Runs the same VGPR proof test using a graphics user
+  queue.
+  The shader triggers a trap and the trap handler updates
+  a VGPR value.
+  After trap return, the shader stores the value to
+  memory.
+  The test verifies that the final value is 42.
+  This confirms correct SLTH behaviour through the UMQ
+  execution path.
+
+slth-comp-kq-vgpr-proof
+
+  Runs the VGPR proof test on a compute kernel queue.
+  The shader triggers a trap and the trap handler updates
+  a VGPR value.
+  The shader then resumes execution and stores the value
+  to memory.
+  The test verifies that the stored value is 42.
+  This confirms successful trap entry, trap handler
+  execution and trap return for compute workloads.
+
+slth-comp-kq-returnproof
+
+  Runs a compute workload that initializes a register to
+  1 and then triggers a trap.
+  After returning from the trap, the next instruction
+  changes the register value to 2.
+  The shader stores the final value to memory.
+  The test verifies that the stored value is 2.
+  This confirms that execution resumed at the instruction
+  immediately following s_trap after s_rfe_b64.
+
+Together, these tests verify trap entry, trap handler
+execution, trap return, VGPR state preservation across
+trap return, and correct resumption of shader execution.
+
+Cc: Vitaly Prosyak <vitaly.prosyak@amd.com>
+Cc: Felix Kuehling <felix.kuehling@amd.com>
+Cc: Lancelot Six <lancelot.six@amd.com>
+Cc: James Zhu <james.zhu@amd.com>
+Cc: Lijo Lazar <lijo.lazar@amd.com>
+Cc: Samuel Pitoiset <hakzsam@gmail.com>
+Cc: Natalie Vock <natalie.vock@gmx.de>
+Cc: Timur Kristóf <timur.kristof@gmail.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Pierre-Eric Pelloux-Prayer <pierre-eric.pelloux-prayer@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 ---
- lib/amdgpu/amd_ip_blocks.c | 35 ++++++++++++++++++++++++++++++++++-
- lib/amdgpu/amd_ip_blocks.h |  2 ++
- 2 files changed, 36 insertions(+), 1 deletion(-)
+ include/drm-uapi/amdgpu_drm.h         |   18 +-
+ lib/amdgpu/shaders/amd_shader_store.h |  190 +++
+ tests/amdgpu/amd_basic.c              | 1860 +++++++++++++++++++++++--
+ 3 files changed, 1928 insertions(+), 140 deletions(-)
 
-diff --git a/lib/amdgpu/amd_ip_blocks.c b/lib/amdgpu/amd_ip_blocks.c
-index 9bed04f12..8cf913ac6 100644
---- a/lib/amdgpu/amd_ip_blocks.c
-+++ b/lib/amdgpu/amd_ip_blocks.c
-@@ -936,6 +936,13 @@ user_queue_destroy(amdgpu_device_handle device_handle, struct amdgpu_ring_contex
- 					    ctxt->timeline_syncobj_handle, ++ctxt->point,
- 					    0, 0);
+diff --git a/include/drm-uapi/amdgpu_drm.h b/include/drm-uapi/amdgpu_drm.h
+index 29009f6aa..832903e2e 100644
+--- a/include/drm-uapi/amdgpu_drm.h
++++ b/include/drm-uapi/amdgpu_drm.h
+@@ -603,10 +603,24 @@ struct drm_amdgpu_userq_wait {
+ #define AMDGPU_VM_OP_RESERVE_VMID	1
+ #define AMDGPU_VM_OP_UNRESERVE_VMID	2
  
-+		if (ctxt->cwsr_size)
-+			amdgpu_bo_unmap_and_free_uq(device_handle, ctxt->cwsr.handle,
-+						    ctxt->cwsr.va_handle,
-+						    ctxt->cwsr.mc_addr, ctxt->cwsr_size,
-+						    ctxt->timeline_syncobj_handle, ++ctxt->point,
-+						    0, 0);
++#define AMDGPU_VM_OP_SET_L2_TRAP     3
++#define AMDGPU_VM_OP_CLEAR_L2_TRAP   4
 +
- 		r = amdgpu_timeline_syncobj_wait(device_handle, ctxt->timeline_syncobj_handle,
- 						 ctxt->point);
- 		igt_assert_eq(r, 0);
-@@ -986,7 +993,8 @@ user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context
- 	uint64_t gtt_flags = 0, queue_flags = 0;
- 	struct drm_amdgpu_userq_mqd_gfx11 gfx_mqd;
- 	struct drm_amdgpu_userq_mqd_sdma_gfx11 sdma_mqd;
--	struct drm_amdgpu_userq_mqd_compute_gfx11 compute_mqd;
-+	struct drm_amdgpu_userq_mqd_compute_gfx11 compute_mqd = {0};
-+	struct drm_amdgpu_info_cwsr cwsr_info = {0};
- 	void *mqd;
+ struct drm_amdgpu_vm_in {
+ 	/** AMDGPU_VM_OP_* */
+-	__u32	op;
+-	__u32	flags;
++	__u32 op;
++	__u32 flags;
++
++	union {
++		struct {
++			__u64 tba_va;
++			__u64 tma_va;
++			__u32 tba_sz;
++			__u32 tma_sz;
++		} l2trap;
++
++		__u64 reserved[4];
++	};
+ };
  
- 	if (type > AMD_IP_DMA) {
-@@ -1099,6 +1107,31 @@ user_queue_create(amdgpu_device_handle device_handle, struct amdgpu_ring_context
- 					       ctxt->timeline_syncobj_handle, ++ctxt->point);
- 		igt_assert_eq(r, 0);
- 		compute_mqd.eop_va = ctxt->eop.mc_addr;
+ struct drm_amdgpu_vm_out {
+diff --git a/lib/amdgpu/shaders/amd_shader_store.h b/lib/amdgpu/shaders/amd_shader_store.h
+index 6d04e79d0..a913237ed 100644
+--- a/lib/amdgpu/shaders/amd_shader_store.h
++++ b/lib/amdgpu/shaders/amd_shader_store.h
+@@ -1327,4 +1327,194 @@ static const char * const amdgpu_test_shaders[] = {
+         NULL
+ };
+ 
++/******************************************************************************
++ * SLTH Validation Shaders
++ *
++ * These shaders are used by SLTH IGT validation tests to verify:
++ *
++ *   - SET_L2_TRAP / CLEAR_L2_TRAP UAPI
++ *   - Trap entry
++ *   - Trap handler execution
++ *   - s_rfe_b64 trap return
++ *   - VGPR state modification
++ *   - Post-trap execution
++ *   - KQ execution path
++ *   - UMQ execution path
++ *
++ * The shaders below are specific to SLTH validation and are
++ * not part of the generic AMD shader test collection above.
++ *
++ *****************************************************************************/
 +
-+		/*
-+		 * With CWSR enabled the kernel requires a save area of at least
-+		 * min_save_area_size. Older kernels don't know the query and
-+		 * don't take a save area.
-+		 */
-+		ctxt->cwsr_size = 0;
-+		if (!amdgpu_query_info(device_handle, AMDGPU_INFO_CWSR,
-+				       sizeof(cwsr_info), &cwsr_info) &&
-+		    cwsr_info.min_save_area_size) {
-+			ctxt->cwsr_size = ALIGN(cwsr_info.min_save_area_size, PAGE_SIZE);
-+			r = amdgpu_bo_alloc_and_map_uq(device_handle, ctxt->cwsr_size,
-+						       PAGE_SIZE,
-+						       AMDGPU_GEM_DOMAIN_GTT,
-+						       gtt_flags,
-+						       AMDGPU_VM_MTYPE_UC,
-+						       &ctxt->cwsr.handle, NULL,
-+						       &ctxt->cwsr.mc_addr,
-+						       &ctxt->cwsr.va_handle,
-+						       ctxt->timeline_syncobj_handle,
-+						       ++ctxt->point);
-+			igt_assert_eq(r, 0);
-+			compute_mqd.ctx_save_area_va = ctxt->cwsr.mc_addr;
-+			compute_mqd.ctx_save_area_size = ctxt->cwsr_size;
++/* Shader: SlthVgprProofIsa
++ * Purpose:
++ *   Trigger an SLTH trap and verify that the trap handler
++ *   modifies VGPR state visible after s_rfe_b64 returns.
++ *
++ * Expected:
++ *   TrapHandlerIsaProof updates v2 to 42.
++ *   Shader stores v2 after trap return.
++ *
++ * Proof:
++ *   output == 42
++ */
++static const char SlthVgprProofIsa[] =
++    SHADER_START
++    R"(
++	v_mov_b32 v0, s0
++	v_mov_b32 v1, s1
++
++	v_mov_b32 v2, 0
++
++	s_trap 1
++
++	flat_store_dword v[0:1], v2
++
++	s_endpgm
++)";
++
++/* Shader: SlthReturnProofIsa
++ * Purpose:
++ *   Verify that execution resumes at the instruction
++ *   immediately following s_trap after trap return.
++ *
++ * Flow:
++ *   v2 = 1
++ *   s_trap 1
++ *   v2 = 2
++ *   store(v2)
++ *
++ * Expected:
++ *   output == 2
++ *
++ * Proof:
++ *   The instruction after s_trap executed successfully.
++ *
++ * Validates:
++ *   - Trap entry
++ *   - Trap handler execution
++ *   - Trap return
++ *   - Program counter restoration
++ *   - Post-return instruction execution
++ */
++static const char SlthReturnProofIsa[] =
++    SHADER_START
++    R"(
++	v_mov_b32 v0, s0
++	v_mov_b32 v1, s1
++
++	v_mov_b32 v2, 1
++
++	s_trap 1
++
++	v_mov_b32 v2, 2
++
++	flat_store_dword v[0:1], v2
++
++	s_endpgm
++)";
++
++/* Shader: TrapHandlerIsaProof
++ * Purpose:
++ *   Validation-oriented SLTH trap handler used by
++ *   SLTH proof subtests.
++ *
++ * Difference from TrapHandlerIsa:
++ *   Updates VGPR v2 with a known value (42)
++ *   before returning via s_rfe_b64.
++ *
++ * Expected usage:
++ *   SlthVgprProofIsa
++ *   GFX UMQ SLTH validation
++ *   Compute SLTH proof tests
++ *
++ * Proof:
++ *   If userspace observes value 42 after shader
++ *   completion, trap entry, handler execution,
++ *   and trap return all succeeded.
++ */
++static const char TrapHandlerIsaProof[] =
++    SHADER_START
++    R"(
++	CHECK_VMFAULT:
++	/*if trap jumped to by vmfault, restore skip m0 signalling*/
++	.if (.amdgcn.gfx_generation_number < 12)
++	    s_getreg_b32 ttmp14, hwreg(HW_REG_TRAPSTS)
++	    s_and_b32 ttmp2, ttmp14, 0x800
++	.else
++	    s_getreg_b32 ttmp14, hwreg(HW_REG_EXCP_FLAG_PRIV)
++	    s_and_b32 ttmp2, ttmp14, 0x10
++	.endif
++	s_cbranch_scc1 RESTORE_AND_EXIT
++
++	.if (.amdgcn.gfx_generation_number < 12)
++	    s_and_b32 ttmp2, ttmp14, 0x7080
++	.else
++	    s_and_b32 ttmp2, ttmp14, 0xf
++	.endif
++
++	s_cbranch_scc0 GET_DOORBELL
++
++	v_mov_b32 v5, v4
++	v_mov_b32 v6, ttmp14
++
++	s_branch RESTORE_AND_EXIT
++
++	GET_DOORBELL:
++
++	.if .amdgcn.gfx_generation_number < 11
++	    s_mov_b32 ttmp2, exec_lo
++	    s_mov_b32 ttmp3, exec_hi
++
++	    s_mov_b32 exec_lo, 0x80000000
++
++	    s_sendmsg 10
++
++	    WAIT_SENDMSG:
++	    s_nop 7
++	    s_bitcmp0_b32 exec_lo, 0x1F
++	    s_cbranch_scc0 WAIT_SENDMSG
++
++	    s_mov_b32 exec_hi, ttmp3
++	    s_and_b32 exec_lo, exec_lo, 0xfff
++	    s_mov_b32 ttmp3, exec_lo
++	    s_mov_b32 exec_lo, ttmp2
++	.else
++	    s_sendmsg_rtn_b32 ttmp3, sendmsg(MSG_RTN_GET_DOORBELL)
++	    s_waitcnt lgkmcnt(0)
++	    s_and_b32 ttmp3, ttmp3, 0x3ff
++	.endif
++
++	s_mov_b32 ttmp2, m0
++	s_or_b32 ttmp3, ttmp3, 0x800
++
++	s_mov_b32 m0, ttmp3
++	s_nop 0x0
++	s_sendmsg sendmsg(MSG_INTERRUPT)
++	s_waitcnt lgkmcnt(0)
++
++	s_mov_b32 m0, ttmp2
++
++	/* proof value */
++	v_mov_b32 v2, 42
++
++	s_add_u32 ttmp0, ttmp0, 4
++	s_addc_u32 ttmp1, ttmp1, 0
++	s_and_b32 ttmp1, ttmp1, 0xffff
++
++	RESTORE_AND_EXIT:
++
++	s_lshr_b32 ttmp2, ttmp11, (26 - 15)
++	s_and_b32 ttmp2, ttmp2, (0x8000 | 0x1F0000)
++
++	s_setreg_b32 hwreg(HW_REG_IB_STS), ttmp2
++
++	s_and_b64 exec, exec, exec
++	s_and_b64 vcc, vcc, vcc
++
++	s_setreg_b32 hwreg(HW_REG_STATUS), ttmp12
++
++	s_rfe_b64 [ttmp0, ttmp1]
++)";
++
+ #endif
+diff --git a/tests/amdgpu/amd_basic.c b/tests/amdgpu/amd_basic.c
+index 590163b7b..2fdef83fd 100644
+--- a/tests/amdgpu/amd_basic.c
++++ b/tests/amdgpu/amd_basic.c
+@@ -20,9 +20,28 @@
+ #include "lib/amdgpu/amdgpu_asic_addr.h"
+ #include "lib/amdgpu/amd_utils.h"
+ #include "lib/amdgpu/amd_platform.h"
++#include "lib/amdgpu/shaders/amd_llvm_asm.h"
++#include "lib/amdgpu/shaders/amd_shader_store.h"
+ 
+ #define BUFFER_SIZE (8 * 1024)
+ 
++#define TBA_SIZE (2 * 4096)
++#define TMA_SIZE (4096)
++
++struct slth_bufs {
++	amdgpu_bo_handle tba_bo;
++	amdgpu_bo_handle tma_bo;
++
++	amdgpu_va_handle tba_va_handle;
++	amdgpu_va_handle tma_va_handle;
++
++	uint64_t tba_mc_addr;
++	uint64_t tma_mc_addr;
++
++	void *tba_cpu;
++	void *tma_cpu;
++};
++
+ /**
+  * MEM ALLOC TEST
+  * @param device
+@@ -846,172 +865,1737 @@ static void amdgpu_fwm_test(amdgpu_device_handle device_handle, unsigned ip_type
+ 	free(ring_context);
+ }
+ 
+-int igt_main()
++static void slth_alloc_buffers(amdgpu_device_handle device,
++			       struct slth_bufs *bufs)
+ {
+-	amdgpu_device_handle device;
+-	struct amdgpu_gpu_info gpu_info = {0};
+-	struct drm_amdgpu_info_hw_ip info = {0};
+-	int fd = -1;
+ 	int r;
+-	bool arr_cap[AMD_IP_MAX] = {0};
+-	bool userq_arr_cap[AMD_IP_MAX] = {0};
+-	bool enable_test = false;
+-#ifdef AMDGPU_USERQ_ENABLED
+ 
+-	enable_test = true;
+-#endif
++	memset(bufs, 0, sizeof(*bufs));
++
++	r = amdgpu_bo_alloc_and_map(
++			device,
++			TBA_SIZE,
++			4096,
++			AMDGPU_GEM_DOMAIN_GTT,
++			AMDGPU_GEM_CREATE_VM_ALWAYS_VALID,
++			&bufs->tba_bo,
++			&bufs->tba_cpu,
++			&bufs->tba_mc_addr,
++			&bufs->tba_va_handle);
++	igt_assert_eq(r, 0);
+ 
+-	igt_fixture() {
+-		uint32_t major, minor;
+-		int err;
++	r = amdgpu_bo_alloc_and_map(
++			device,
++			TMA_SIZE,
++			4096,
++			AMDGPU_GEM_DOMAIN_GTT,
++			AMDGPU_GEM_CREATE_VM_ALWAYS_VALID,
++			&bufs->tma_bo,
++			&bufs->tma_cpu,
++			&bufs->tma_mc_addr,
++			&bufs->tma_va_handle);
++	igt_assert_eq(r, 0);
++}
+ 
+-		log_total_time(true, igt_test_name());
+-		fd = drm_open_driver(DRIVER_AMDGPU);
++static void slth_free_buffers(struct slth_bufs *bufs)
++{
++	if (bufs->tba_bo)
++		amdgpu_bo_unmap_and_free(bufs->tba_bo,
++					 bufs->tba_va_handle,
++				bufs->tba_mc_addr,
++				TBA_SIZE);
++
++	if (bufs->tma_bo)
++		amdgpu_bo_unmap_and_free(bufs->tma_bo,
++					 bufs->tma_va_handle,
++				bufs->tma_mc_addr,
++				TMA_SIZE);
++}
+ 
+-		err = amdgpu_device_initialize(fd, &major, &minor, &device);
+-		igt_require(err == 0);
++static int vm_set_l2_trap(int fd,
++			  uint64_t tba_va,
++		uint64_t tma_va)
++{
++	union drm_amdgpu_vm args = {0};
+ 
+-		igt_info("Initialized amdgpu, driver version %d.%d\n",
+-			 major, minor);
++	args.in.op = AMDGPU_VM_OP_SET_L2_TRAP;
+ 
+-		r = amdgpu_query_gpu_info(device, &gpu_info);
+-		igt_assert_eq(r, 0);
+-		r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_GFX, 0, &info);
+-		igt_assert_eq(r, 0);
+-		r = setup_amdgpu_ip_blocks(major, minor,  &gpu_info, device);
+-		igt_assert_eq(r, 0);
+-		asic_rings_readness(device, 1, arr_cap);
+-		asic_userq_readiness(device, userq_arr_cap);
+-		amd_platform_filter_init(&gpu_info);
+-	}
+-	igt_describe("Check-alloc-free-VRAM-visible-non-visible-GART-write-combined-cached");
+-	igt_subtest("memory-alloc")
+-		amdgpu_memory_alloc(device);
++	args.in.l2trap.tba_va = tba_va;
++	args.in.l2trap.tba_sz = TBA_SIZE;
+ 
+-	igt_describe("Check-DMA-CS-works-by-setting-the-pattern-and-after-execution-compare-memory-with-the-golden-settings");
+-	igt_subtest_with_dynamic("userptr-with-IP-DMA") {
+-		if (arr_cap[AMD_IP_DMA]) {
+-			igt_dynamic_f("userptr")
+-			amdgpu_userptr_test(device);
+-		}
+-	}
++	args.in.l2trap.tma_va = tma_va;
++	args.in.l2trap.tma_sz = TMA_SIZE;
+ 
+-	igt_describe("Check-GFX-CS-for-every-available-ring-works-for-write-const-fill-and-copy-operation-using-more-than-one-IB-and-shared-IB");
+-	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX") {
+-		if (arr_cap[AMD_IP_GFX]) {
+-			igt_dynamic_f("cs-gfx")
+-			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, false);
+-		}
+-	}
++	return drmIoctl(fd, DRM_IOCTL_AMDGPU_VM, &args);
++}
+ 
+-	igt_describe("Check-COMPUTE-CS-for-every-available-ring-works-for-write-const-fill-copy-and-nop-operation");
+-	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE") {
+-		if (arr_cap[AMD_IP_COMPUTE]) {
+-			igt_dynamic_f("cs-compute")
+-			amdgpu_command_submission_compute(device, false);
+-		}
+-	}
++static int vm_clear_l2_trap(int fd)
++{
++	union drm_amdgpu_vm args = {0};
+ 
+-	igt_describe("Check-GFX-CS-for-multi-fence");
+-	igt_subtest_with_dynamic("cs-multi-fence-with-IP-GFX") {
+-		if (arr_cap[AMD_IP_GFX] && info.hw_ip_version_major < 11) {
+-			igt_dynamic_f("cs-multi-fence")
+-			amdgpu_command_submission_multi_fence(device);
+-		} else {
+-			igt_info("cs-multi-fence-with-IP-GFX testes are skipped due to GFX11 or no GFX_IP\n");
+-		}
+-	}
++	args.in.op = AMDGPU_VM_OP_CLEAR_L2_TRAP;
+ 
+-	igt_describe("Check-DMA-CS-for-every-available-ring-works-for-write-const-fill-copy-operation");
+-	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA") {
+-		if (arr_cap[AMD_IP_DMA]) {
+-			igt_dynamic_f("cs-sdma")
+-			amdgpu_command_submission_sdma(device, false);
+-		}
+-	}
++	return drmIoctl(fd, DRM_IOCTL_AMDGPU_VM, &args);
++}
+ 
+-	igt_describe("Check-signal-semaphore-on-DMA-wait-on-GFX");
+-	igt_subtest_with_dynamic("semaphore-with-IP-GFX-and-IP-DMA") {
+-		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_DMA]) {
+-			igt_dynamic_f("semaphore")
+-			amdgpu_semaphore_test(device);
+-		}
+-	}
++static void slth_prepare_tba_with_handler(
++		amdgpu_device_handle device,
++		struct slth_bufs *bufs,
++		const char *handler)
++{
++	struct amdgpu_gpu_info info = {0};
++	char mcpu[32] = {};
++	uint8_t isa_bin[8192];
++	size_t isa_sz = 0;
++	int r;
+ 
+-	igt_describe("Check-eviction-using-DMA-max-allocation-size");
+-	igt_subtest_with_dynamic("eviction-test-with-IP-DMA") {
+-		if (arr_cap[AMD_IP_DMA]) {
+-			igt_dynamic_f("eviction_test")
+-			amdgpu_bo_eviction_test(device);
+-		}
+-	}
++	r = amdgpu_query_gpu_info(device, &info);
++	igt_assert_eq(r, 0);
+ 
+-	igt_describe("Check-sync-dependency-using-GFX-ring");
+-	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX") {
+-		if (arr_cap[AMD_IP_GFX]) {
+-			igt_dynamic_f("sync-dependency-test")
+-			amdgpu_sync_dependency_test(device, false);
+-		}
+-	}
++	r = amdgpu_family_id_to_mcpu(info.family_id,
++				     mcpu,
++			sizeof(mcpu));
++	igt_assert_eq(r, 0);
+ 
+-	igt_describe("Check-GFX-CS-for-every-available-ring-works-for-write-const-fill-and-copy-operation-using-more-than-one-IB-and-shared-IB");
+-	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX-UMQ") {
+-		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
+-			igt_dynamic_f("cs-gfx-with-umq")
+-			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, true);
+-		}
+-	}
++	igt_info("family_id=%u mcpu=%s\n",
++		 info.family_id,
++			mcpu);
+ 
+-	igt_describe("Check-COMPUTE-CS-for-every-available-ring-works-for-write-const-fill-copy-and-nop-operation");
+-	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE-UMQ") {
+-		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
+-			igt_dynamic_f("cs-compute-with-umq")
+-			amdgpu_command_submission_compute(device, true);
+-		}
+-	}
++	r = amdgpu_llvm_assemble(mcpu,
++				 handler,
++			isa_bin,
++			sizeof(isa_bin),
++			&isa_sz);
+ 
+-	igt_describe("Check-sync-dependency-using-GFX-ring");
+-	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX-UMQ") {
+-		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
+-			igt_dynamic_f("sync-dependency-test-with-umq")
+-			amdgpu_sync_dependency_test(device, true);
+-		}
+-	}
++	if (r)
++		igt_info("amdgpu_llvm_assemble failed r=%d\n", r);
+ 
+-	igt_describe("Check-DMA-CS-for-every-available-ring-works-for-write-const-fill-copy-operation");
+-	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA-UMQ") {
+-		if (enable_test && userq_arr_cap[AMD_IP_DMA]) {
+-			igt_dynamic_f("cs-sdma-with-umq")
+-			amdgpu_command_submission_sdma(device, true);
+-		}
++	igt_assert_eq(r, 0);
++	igt_assert(isa_sz > 0);
++
++	memset(bufs->tba_cpu, 0, TBA_SIZE);
++	memcpy(bufs->tba_cpu,
++	       isa_bin,
++			isa_sz);
++
++	memset(bufs->tma_cpu, 0, TMA_SIZE);
++
++	igt_info("Trap handler size=%zu\n", isa_sz);
++}
++
++static void slth_prepare_vgpr_proof_shader(amdgpu_device_handle device,
++					   uint8_t *isa_bin,
++		size_t *isa_sz)
++{
++	struct amdgpu_gpu_info info = {0};
++	char mcpu[32] = {};
++	int r;
++
++	r = amdgpu_query_gpu_info(device, &info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_family_id_to_mcpu(info.family_id,
++				     mcpu,
++			sizeof(mcpu));
++	igt_assert_eq(r, 0);
++
++	igt_info("===== SLTH VGPR PROOF SHADER BEGIN =====\n");
++	igt_info("%s\n", SlthVgprProofIsa);
++	igt_info("SLTH VGPR PROOF ISA DUMP\n");
++
++	r = amdgpu_llvm_assemble(mcpu,
++				 SlthVgprProofIsa,
++			isa_bin,
++			8192,
++			isa_sz);
++
++	igt_info("amdgpu_llvm_assemble returned %d\n", r);
++
++	if (r) {
++		igt_info("===== SHADER SOURCE BEGIN =====\n");
++		igt_info("%s\n", SlthVgprProofIsa);
++		igt_info("===== SHADER SOURCE END =====\n");
+ 	}
+ 
+-	igt_describe("Check-all-user-queues-for-write-operation");
+-	igt_subtest_with_dynamic("all-queues-test-with-UMQ") {
+-		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
+-				userq_arr_cap[AMD_IP_COMPUTE] &&
+-				userq_arr_cap[AMD_IP_DMA]) {
+-			igt_dynamic_f("all-queues-with-umq")
+-			amdgpu_test_all_queues(device, true);
+-		}
++	igt_assert_eq(r, 0);
++	igt_assert(*isa_sz > 0);
++
++	igt_info("SlthVgprProofIsa size=%zu\n", *isa_sz);
++
++	igt_info("SLTH VGPR PROOF ISA DUMP\n");
++
++	for (unsigned int i = 0; i < (*isa_sz / sizeof(uint32_t)); i++) {
++		igt_info("ISA[%u] = 0x%08x\n",
++			 i,
++				((uint32_t *)isa_bin)[i]);
+ 	}
++}
+ 
+-	igt_describe("Check-GFX-CS-FENCE_WAIT_MULTI-packet");
+-	igt_subtest_with_dynamic("cs-gfx-fwm-UMQ") {
+-		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
+-			igt_dynamic_f("cs-gfx-fwm-umq")
+-				amdgpu_fwm_test(device, AMDGPU_HW_IP_GFX);
+-		}
++static uint32_t execute_slth_dispatch(
++		amdgpu_device_handle device,
++		uint32_t ip_type,
++		uint32_t version,
++		const uint32_t *shader,
++		uint32_t shader_size)
++{
++	const struct amdgpu_ip_block_version *gfx_ip =
++		get_ip_block(device, AMD_IP_GFX);
++
++	amdgpu_context_handle context_handle;
++
++	amdgpu_bo_handle bo = NULL;
++	amdgpu_va_handle va = 0;
++
++	void *cpu = NULL;
++	uint32_t *ptr_pm4 = NULL;
++	volatile uint32_t *ptr_output = NULL;
++
++	uint64_t mc = 0;
++	uint64_t shader_mc_addr;
++	uint64_t output_mc_addr;
++
++	struct amdgpu_cmd_base *base_cmd;
++	struct amdgpu_cs_request ib_req = {0};
++	struct amdgpu_cs_ib_info ib_info = {0};
++	struct amdgpu_cs_fence fence = {0};
++
++	amdgpu_bo_list_handle bo_list = NULL;
++
++	amdgpu_bo_handle bos[1];
++
++	uint32_t expired = 0;
++	uint32_t output_value;
++	int r;
++
++	base_cmd = get_cmd_base();
++	igt_assert(base_cmd);
++
++	r = amdgpu_cs_ctx_create(device, &context_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map(device,
++				    65536,
++			4096,
++			AMDGPU_GEM_DOMAIN_GTT,
++			0,
++			&bo,
++			&cpu,
++			&mc,
++			&va);
++	igt_assert_eq(r, 0);
++
++	memset(cpu, 0, 65536);
++
++	ptr_pm4 = (uint32_t *)cpu;
++
++	memcpy((uint8_t *)cpu + 0x1000,
++	       shader,
++			shader_size);
++
++	ptr_output =
++		(volatile uint32_t *)((uint8_t *)cpu + 0x2000);
++
++	memset((void *)ptr_output, 0, 4096);
++
++	shader_mc_addr = mc + 0x1000;
++	output_mc_addr = mc + 0x2000;
++
++	igt_info("s0 expected address low  = 0x%08x\n",
++		 lower_32_bits(output_mc_addr));
++
++	igt_info("s1 expected address high = 0x%08x\n",
++		 upper_32_bits(output_mc_addr));
++
++	igt_info("========================================\n");
++	igt_info("SLTH DISPATCH START\n");
++	igt_info("========================================\n");
++
++	igt_info("ip_type        = %u\n", ip_type);
++	igt_info("version        = %u\n", version);
++
++	igt_info("base_mc_addr   = 0x%016llx\n",
++		 (unsigned long long)mc);
++
++	igt_info("shader_mc_addr = 0x%016llx\n",
++		 (unsigned long long)shader_mc_addr);
++
++	igt_info("output_mc_addr = 0x%016llx\n",
++		 (unsigned long long)output_mc_addr);
++
++	igt_info("shader_end     = 0x%016llx\n",
++		 (unsigned long long)
++			(shader_mc_addr + shader_size));
++
++	igt_info("output_end     = 0x%016llx\n",
++		 (unsigned long long)
++			(output_mc_addr + 16384));
++
++	base_cmd->attach_buf(base_cmd,
++			ptr_pm4,
++			4096);
++
++	igt_assert(gfx_ip);
++	igt_assert(gfx_ip->funcs);
++	igt_assert(gfx_ip->funcs->gfx_program_compute);
++	igt_assert(gfx_ip->funcs->gfx_dispatch_direct);
++
++	igt_info("========================================\n");
++	igt_info("NATIVE GFX PROGRAMMING\n");
++	igt_info("========================================\n");
++
++	igt_info("user_data[0] = 0x%08x\n",
++		 lower_32_bits(output_mc_addr));
++
++	igt_info("user_data[1] = 0x%08x\n",
++		 upper_32_bits(output_mc_addr));
++
++	gfx_ip->funcs->gfx_program_compute(
++			gfx_ip->funcs,
++			base_cmd,
++			shader_mc_addr,
++			output_mc_addr,
++			0x002c0040,
++			0x00000010,
++			1,
++			1,
++			1);
++
++	igt_info("PM4 dwords after gfx_program_compute = %u\n",
++		 base_cmd->cdw);
++
++	gfx_ip->funcs->gfx_dispatch_direct(
++			gfx_ip->funcs,
++			base_cmd,
++			1,
++			1,
++			1,
++			0);
++
++	base_cmd->emit_aligned(base_cmd,
++			7,
++			GFX_COMPUTE_NOP);
++
++	igt_info("PM4 dwords after dispatch = %u\n",
++		 base_cmd->cdw);
++
++	bos[0] = bo;
++
++	r = amdgpu_bo_list_create(device,
++				  1,
++			bos,
++			NULL,
++			&bo_list);
++	igt_assert_eq(r, 0);
++
++	ib_info.ib_mc_address = mc;
++	ib_info.size = base_cmd->cdw;
++
++	ib_req.ip_type = ip_type;
++	ib_req.ring = 0;
++	ib_req.resources = bo_list;
++	ib_req.number_of_ibs = 1;
++	ib_req.ibs = &ib_info;
++
++	igt_info("========================================\n");
++	igt_info("PRE-DISPATCH OUTPUT BUFFER\n");
++	igt_info("========================================\n");
++
++	for (int i = 0; i < 16; i++) {
++		igt_info("PRE[%d] = 0x%08x\n",
++			 i,
++				ptr_output[i]);
+ 	}
+ 
+-	igt_describe("Check-COMPUTE-CS-FENCE_WAIT_MULTI-packet");
+-	igt_subtest_with_dynamic("cs-compute-fwm-UMQ") {
+-		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
+-			igt_dynamic_f("cs-compute-fwm-umq")
+-				amdgpu_fwm_test(device, AMDGPU_HW_IP_COMPUTE);
+-		}
++	igt_info("========================================\n");
++	igt_info("IB SUBMIT\n");
++	igt_info("========================================\n");
++
++	igt_info("ib_mc_address = 0x%016llx\n",
++		 (unsigned long long)ib_info.ib_mc_address);
++
++	igt_info("ib_size_dw    = %u\n",
++		 ib_info.size);
++
++	r = amdgpu_cs_submit(context_handle,
++			     0,
++			&ib_req,
++			1);
++
++	igt_info("cs_submit ret = %d\n", r);
++
++	igt_assert_eq(r, 0);
++
++	fence.context = context_handle;
++	fence.ip_type = ip_type;
++	fence.ip_instance = 0;
++	fence.ring = 0;
++	fence.fence = ib_req.seq_no;
++
++	r = amdgpu_cs_query_fence_status(&fence,
++					 5000000000ULL,
++			0,
++			&expired);
++
++	igt_info("========================================\n");
++	igt_info("FENCE STATUS\n");
++	igt_info("========================================\n");
++
++	igt_info("query ret = %d\n", r);
++	igt_info("expired   = %u\n", expired);
++
++	igt_assert_eq(r, 0);
++	igt_assert_eq(expired, 1);
++
++	output_value = ptr_output[0];
++
++	igt_info("========================================\n");
++	igt_info("OUTPUT BUFFER DUMP\n");
++	igt_info("========================================\n");
++
++	for (int i = 0; i < 16; i++) {
++		igt_info("OUT[%d] = 0x%08x\n",
++			 i,
++				ptr_output[i]);
+ 	}
+ 
++	igt_info("========================================\n");
++	igt_info("RESULT\n");
++	igt_info("========================================\n");
++
++	igt_info("output value = 0x%x (%u)\n",
++		 output_value,
++			output_value);
++
++	if (bo_list)
++		amdgpu_bo_list_destroy(bo_list);
++
++	amdgpu_bo_unmap_and_free(bo,
++				 va,
++			mc,
++			65536);
++
++	amdgpu_cs_ctx_free(context_handle);
++
++	free_cmd_base(base_cmd);
++
++	igt_info("SLTH DISPATCH END\n");
++
++	return output_value;
++}
++
++static void slth_gfx_kq_vgpr_proof_test(amdgpu_device_handle device,
++					int fd)
++{
++	struct slth_bufs bufs;
++	uint8_t isa_bin[8192];
++	size_t isa_sz = 0;
++
++	struct amdgpu_gpu_info info = {0};
++	uint32_t version = 12;
++	uint32_t value;
++
++	int ret;
++	int r;
++
++	memset(&bufs, 0, sizeof(bufs));
++
++	igt_info("SLTH GFX KQ VGPR PROOF\n");
++
++	slth_alloc_buffers(device, &bufs);
++
++	slth_prepare_tba_with_handler(device,
++				      &bufs,
++			TrapHandlerIsaProof);
++
++	ret = vm_set_l2_trap(fd,
++			     bufs.tba_mc_addr,
++			bufs.tma_mc_addr);
++	igt_assert_eq(ret, 0);
++
++	slth_prepare_vgpr_proof_shader(device,
++				       isa_bin,
++			&isa_sz);
++
++	r = amdgpu_query_gpu_info(device, &info);
++	igt_assert_eq(r, 0);
++
++	if (FAMILY_IS_GFX1200(info.family_id))
++		version = 12;
++	else if (FAMILY_IS_GFX1150(info.family_id) ||
++		 FAMILY_IS_GFX1100(info.family_id) ||
++			FAMILY_IS_GFX1036(info.family_id) ||
++			FAMILY_IS_GFX1037(info.family_id) ||
++			FAMILY_IS_YC(info.family_id) ||
++			info.family_id == FAMILY_GFX1103)
++		version = 11;
++	else
++		version = 10;
++
++	igt_info("Running SLTH VGPR proof shader\n");
++
++	value = execute_slth_dispatch(device,
++				      AMDGPU_HW_IP_GFX,
++			version,
++			(const uint32_t *)isa_bin,
++			(uint32_t)isa_sz);
++
++	igt_info("VGPR proof output value=%u\n", value);
++
++	if (value == 42)
++		igt_info("SLTH trap handler updated VGPR state, shader resumed successfully\n");
++	else
++		igt_info("SLTH GFX KQ VGPR proof failed: expected=42 actual=%u\n",
++			 value);
++
++	igt_assert_eq(value, 42);
++
++	ret = vm_clear_l2_trap(fd);
++	igt_assert_eq(ret, 0);
++
++	slth_free_buffers(&bufs);
++
++	igt_info("SLTH GFX KQ VGPR PROOF COMPLETE\n");
++}
++
++static void slth_gfx_umq_vgpr_proof_test(amdgpu_device_handle device,
++					 int fd)
++{
++	const struct amdgpu_ip_block_version *gfx_ip =
++		get_ip_block(device, AMD_IP_GFX);
++
++	struct amdgpu_ring_context *ring_context;
++
++	amdgpu_bo_handle bo = NULL;
++	amdgpu_va_handle va = 0;
++
++	void *cpu = NULL;
++	uint32_t *ptr_pm4 = NULL;
++	volatile uint32_t *ptr_output = NULL;
++
++	uint64_t mc = 0;
++	uint64_t shader_mc_addr;
++	uint64_t output_mc_addr;
++
++	struct amdgpu_cmd_base *base_cmd;
++
++	uint8_t isa_bin[8192];
++	size_t isa_sz = 0;
++
++	const uint32_t *shader;
++	uint32_t size_bytes;
++
++	struct slth_bufs bufs;
++
++	int r;
++
++	memset(&bufs, 0, sizeof(bufs));
++
++	igt_assert(gfx_ip);
++	igt_assert(gfx_ip->funcs);
++
++	igt_info("SLTH GFX UMQ VGPR PROOF\n");
++
++	slth_alloc_buffers(device, &bufs);
++
++	igt_info("TBA=0x%016llx\n",
++		 (unsigned long long)bufs.tba_mc_addr);
++
++	igt_info("TMA=0x%016llx\n",
++		 (unsigned long long)bufs.tma_mc_addr);
++
++	slth_prepare_tba_with_handler(device,
++				      &bufs,
++			TrapHandlerIsaProof);
++
++	igt_info("TrapHandlerIsaProof loaded into TBA\n");
++
++	r = vm_set_l2_trap(fd,
++			   bufs.tba_mc_addr,
++			bufs.tma_mc_addr);
++
++	igt_info("SET_L2_TRAP ret=%d\n", r);
++
++	igt_assert_eq(r, 0);
++
++	slth_prepare_vgpr_proof_shader(device,
++				       isa_bin,
++			&isa_sz);
++
++	shader = (const uint32_t *)isa_bin;
++	size_bytes = (uint32_t)isa_sz;
++
++	igt_assert(shader);
++	igt_assert(size_bytes > 0);
++
++	igt_info("SlthVgprProofIsa size=%u\n",
++		 size_bytes);
++
++	igt_info("shader=%p size=%u\n",
++		 shader,
++			size_bytes);
++
++	ring_context = calloc(1, sizeof(*ring_context));
++	igt_assert(ring_context);
++
++	gfx_ip->funcs->userq_create(device,
++			ring_context,
++			gfx_ip->type);
++
++	igt_info("UMQ queue created\n");
++
++	igt_info("timeline=%u point=%llu\n",
++		 ring_context->timeline_syncobj_handle,
++			(unsigned long long)ring_context->point);
++
++	base_cmd = get_cmd_base();
++	igt_assert(base_cmd);
++
++	r = amdgpu_bo_alloc_and_map_sync(
++			device,
++			65536,
++			4096,
++			AMDGPU_GEM_DOMAIN_GTT,
++			AMDGPU_GEM_CREATE_CPU_GTT_USWC,
++			AMDGPU_VM_MTYPE_UC,
++			&bo,
++			&cpu,
++			&mc,
++			&va,
++			ring_context->timeline_syncobj_handle,
++			++ring_context->point,
++			true);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_timeline_syncobj_wait(
++			device,
++			ring_context->timeline_syncobj_handle,
++			ring_context->point);
++	igt_assert_eq(r, 0);
++
++	memset(cpu, 0, 65536);
++
++	ptr_pm4 = (uint32_t *)cpu;
++
++	memcpy((uint8_t *)cpu + 0x1000,
++	       shader,
++			size_bytes);
++
++	ptr_output =
++		(volatile uint32_t *)((uint8_t *)cpu + 0x2000);
++
++	memset((void *)ptr_output, 0, 4096);
++
++	shader_mc_addr = mc + 0x1000;
++	output_mc_addr = mc + 0x2000;
++
++	igt_info("shader_mc_addr = 0x%016llx\n",
++		 (unsigned long long)shader_mc_addr);
++
++	igt_info("output_mc_addr = 0x%016llx\n",
++		 (unsigned long long)output_mc_addr);
++
++	base_cmd->attach_buf(base_cmd,
++			ptr_pm4,
++			4096);
++
++	gfx_ip->funcs->gfx_program_compute(
++			gfx_ip->funcs,
++			base_cmd,
++			shader_mc_addr,
++			output_mc_addr,
++			0x002c0040,
++			0x00000010,
++			1,
++			1,
++			1);
++
++	igt_info("PM4 dwords after gfx_program_compute = %u\n",
++		 base_cmd->cdw);
++
++	gfx_ip->funcs->gfx_dispatch_direct(
++			gfx_ip->funcs,
++			base_cmd,
++			1,
++			1,
++			1,
++			0);
++
++	base_cmd->emit_aligned(base_cmd,
++			7,
++			GFX_COMPUTE_NOP);
++
++	igt_info("PM4 dwords after dispatch = %u\n",
++		 base_cmd->cdw);
++
++	ring_context->pm4_dw = base_cmd->cdw;
++
++	igt_info("UMQ pm4_dw=%u\n",
++		 ring_context->pm4_dw);
++
++	igt_info("IB gpu addr=0x%016llx\n",
++		 (unsigned long long)mc);
++
++	igt_info("Submitting REAL UMQ dispatch\n");
++
++	igt_info("=== PM4 DUMP BEGIN ===\n");
++
++	for (int i = 0; i < base_cmd->cdw; i++) {
++		igt_info("PM4[%02d] = 0x%08x\n",
++			 i,
++				ptr_pm4[i]);
++	}
++
++	igt_info("=== PM4 DUMP END ===\n");
++
++	igt_info("before submit point=%llu\n",
++		 (unsigned long long)ring_context->point);
++
++	igt_info("pre-submit wptr=%llu rptr=%llu\n",
++		 (unsigned long long)*ring_context->wptr_cpu,
++			(unsigned long long)*ring_context->rptr_cpu);
++
++	igt_info("IB first 16 DWs:\n");
++
++	for (int i = 0; i < 16 && i < ring_context->pm4_dw; i++)
++		igt_info("IB[%d]=0x%08x\n", i, ptr_pm4[i]);
++
++	gfx_ip->funcs->userq_submit(device,
++			ring_context,
++			gfx_ip->type,
++			mc);
++
++	igt_info("Returned from userq_submit()\n");
++
++	igt_info("post-submit wptr=%llu rptr=%llu\n",
++		 (unsigned long long)*ring_context->wptr_cpu,
++			(unsigned long long)*ring_context->rptr_cpu);
++
++	usleep(100000);
++
++	igt_info("100ms later wptr=%llu rptr=%llu\n",
++		 (unsigned long long)*ring_context->wptr_cpu,
++			(unsigned long long)*ring_context->rptr_cpu);
++
++	igt_info("after submit point=%llu\n",
++		 (unsigned long long)ring_context->point);
++
++	igt_info("timeline=%u point=%llu\n",
++		 ring_context->timeline_syncobj_handle,
++			(unsigned long long)ring_context->point);
++
++	r = amdgpu_timeline_syncobj_wait(
++			device,
++			ring_context->timeline_syncobj_handle,
++			ring_context->point);
++
++	igt_info("timeline wait ret=%d\n", r);
++
++	igt_info("pm4_dw=%u\n",
++		 ring_context->pm4_dw);
++
++	for (int i = 0; i < 1000; i++) {
++		if (ptr_output[0])
++			break;
++
++		usleep(1000);
++	}
++
++	igt_info("final output=0x%x\n",
++		 ptr_output[0]);
++
++	igt_info("Post-dispatch output dump\n");
++
++	for (int i = 0; i < 16; i++) {
++		igt_info("OUT[%d] = 0x%08x\n",
++			 i,
++				ptr_output[i]);
++	}
++
++	igt_info("output_value=%u (0x%x)\n",
++		 ptr_output[0],
++			ptr_output[0]);
++
++	igt_info("VGPR proof output=%u\n",
++		 ptr_output[0]);
++
++	igt_assert_eq(ptr_output[0], 42);
++
++	igt_info("SLTH GFX UMQ VGPR PROOF COMPLETE\n");
++
++	amdgpu_bo_unmap_and_free(bo,
++				 va,
++			mc,
++			65536);
++
++	free_cmd_base(base_cmd);
++
++	gfx_ip->funcs->userq_destroy(device,
++			ring_context,
++			gfx_ip->type);
++
++	r = vm_clear_l2_trap(fd);
++
++	igt_info("CLEAR_L2_TRAP ret=%d\n", r);
++
++	igt_assert_eq(r, 0);
++
++	slth_free_buffers(&bufs);
++
++	free(ring_context);
++
++	igt_info("UMQ queue destroyed\n");
++}
++
++static void
++slth_comp_kq_vgpr_proof_test(amdgpu_device_handle device,
++			     int fd)
++{
++	struct slth_bufs bufs;
++
++	amdgpu_context_handle context_handle;
++
++	amdgpu_bo_handle bo_dst;
++	amdgpu_bo_handle bo_shader;
++	amdgpu_bo_handle bo_cmd;
++
++	amdgpu_bo_handle resources[3];
++
++	volatile uint32_t *ptr_dst;
++
++	void *ptr_shader;
++	uint32_t *ptr_cmd;
++
++	uint64_t mc_address_dst;
++	uint64_t mc_address_shader;
++	uint64_t mc_address_cmd;
++
++	amdgpu_va_handle va_dst;
++	amdgpu_va_handle va_shader;
++	amdgpu_va_handle va_cmd;
++
++	amdgpu_bo_list_handle bo_list;
++
++	struct amdgpu_cs_request ibs_request = {0};
++	struct amdgpu_cs_ib_info ib_info = {0};
++	struct amdgpu_cs_fence fence_status = {0};
++
++	struct amdgpu_cmd_base *base_cmd =
++		get_cmd_base();
++
++	uint32_t expired = 0;
++	uint32_t version = 12;
++
++	uint8_t isa_bin[8192];
++	size_t isa_sz = 0;
++
++	int bo_dst_size = 16384;
++	int bo_shader_size = 4096;
++	int bo_cmd_size = 4096;
++
++	int i;
++	int r;
++	int ret;
++
++	igt_assert(base_cmd);
++
++	memset(&bufs, 0, sizeof(bufs));
++
++	igt_info("========================================\n");
++	igt_info("COMP KQ VGPR PROOF\n");
++	igt_info("SLTH VGPR PROOF\n");
++	igt_info("========================================\n");
++
++	slth_alloc_buffers(device, &bufs);
++
++	slth_prepare_tba_with_handler(device,
++				      &bufs,
++			TrapHandlerIsaProof);
++
++	ret = vm_set_l2_trap(fd,
++			     bufs.tba_mc_addr,
++			bufs.tma_mc_addr);
++
++	igt_info("SET_L2_TRAP ret=%d\n", ret);
++	igt_assert_eq(ret, 0);
++
++	slth_prepare_vgpr_proof_shader(device,
++				       isa_bin,
++			&isa_sz);
++
++	igt_assert(isa_sz > 0);
++
++	igt_info("SlthVgprProofIsa size=%zu\n",
++		 isa_sz);
++
++	igt_info("===== SLTH VGPR PROOF ISA BEGIN =====\n");
++
++	for (i = 0; i < isa_sz / 4; i++) {
++		igt_info("ISA[%02d] = 0x%08x\n",
++			 i,
++				((uint32_t *)isa_bin)[i]);
++	}
++
++	igt_info("===== SLTH VGPR PROOF ISA END =====\n");
++
++	r = amdgpu_cs_ctx_create(device,
++				 &context_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map(device,
++				    bo_cmd_size,
++			4096,
++			AMDGPU_GEM_DOMAIN_GTT,
++			0,
++			&bo_cmd,
++			(void **)&ptr_cmd,
++			&mc_address_cmd,
++			&va_cmd);
++	igt_assert_eq(r, 0);
++
++	memset(ptr_cmd, 0, bo_cmd_size);
++
++	base_cmd->attach_buf(base_cmd,
++			ptr_cmd,
++			bo_cmd_size);
++
++	r = amdgpu_bo_alloc_and_map(device,
++				    bo_shader_size,
++			4096,
++			AMDGPU_GEM_DOMAIN_VRAM,
++			0,
++			&bo_shader,
++			&ptr_shader,
++			&mc_address_shader,
++			&va_shader);
++	igt_assert_eq(r, 0);
++
++	memset(ptr_shader, 0, bo_shader_size);
++
++	memcpy(ptr_shader,
++	       isa_bin,
++			isa_sz);
++
++	igt_info("shader_mc_addr=0x%016llx\n",
++		 (unsigned long long)mc_address_shader);
++
++	r = amdgpu_bo_alloc_and_map(device,
++				    bo_dst_size,
++			4096,
++			AMDGPU_GEM_DOMAIN_VRAM,
++			0,
++			&bo_dst,
++			(void **)&ptr_dst,
++			&mc_address_dst,
++			&va_dst);
++	igt_assert_eq(r, 0);
++
++	memset((void *)ptr_dst,
++	       0,
++			bo_dst_size);
++
++	igt_info("output_mc_addr=0x%016llx\n",
++		 (unsigned long long)mc_address_dst);
++
++	igt_info("output_lo=0x%08x\n",
++		 lower_32_bits(mc_address_dst));
++
++	igt_info("output_hi=0x%08x\n",
++		 upper_32_bits(mc_address_dst));
++
++	amdgpu_dispatch_init(
++			AMDGPU_HW_IP_COMPUTE,
++			base_cmd,
++			version);
++
++	amdgpu_dispatch_write_cumask(
++			base_cmd,
++			version);
++
++	igt_info("shader_mc_addr=0x%016llx\n",
++		 (unsigned long long)mc_address_shader);
++
++	igt_info("output_mc_addr=0x%016llx\n",
++		 (unsigned long long)mc_address_dst);
++
++	amdgpu_dispatch_write2hw(
++			base_cmd,
++			mc_address_shader,
++			version,
++			0);
++
++	igt_info("cdw after write2hw = %u\n",
++		 base_cmd->cdw);
++
++	for (uint32_t j = 0; j < base_cmd->cdw; j++)
++		igt_info("PRE_USERDATA_PM4[%02u] = 0x%08x\n",
++			 j,
++				ptr_cmd[j]);
++
++	igt_info("========================================\n");
++	igt_info("COMPUTE USER DATA PROGRAMMING\n");
++	igt_info("========================================\n");
++
++	igt_info("mc_address_dst      = 0x%016llx\n",
++		 (unsigned long long)mc_address_dst);
++
++	igt_info("dst low dword       = 0x%08x\n",
++		 (uint32_t)mc_address_dst);
++
++	igt_info("dst high dword      = 0x%08x\n",
++		 (uint32_t)(mc_address_dst >> 32));
++
++	igt_info("SET_SH_REG base     = 0x240\n");
++
++	base_cmd->emit(base_cmd,
++			PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
++
++	base_cmd->emit(base_cmd, 0x240);
++
++	/*
++	 * s0:s1 = source address
++	 */
++	base_cmd->emit(base_cmd,
++			(uint32_t)mc_address_dst);
++
++	base_cmd->emit(base_cmd,
++			(uint32_t)(mc_address_dst >> 32));
++
++	/*
++	 * s2:s3 = destination address
++	 */
++	base_cmd->emit(base_cmd,
++			(uint32_t)mc_address_dst);
++
++	base_cmd->emit(base_cmd,
++			(uint32_t)(mc_address_dst >> 32));
++	igt_info("USER_DATA[0] (s0 low)  = 0x%08x\n",
++		 (uint32_t)mc_address_dst);
++
++	igt_info("USER_DATA[1] (s1 high) = 0x%08x\n",
++		 (uint32_t)(mc_address_dst >> 32));
++
++	igt_info("USER_DATA[2] (s2 low)  = 0x%08x\n",
++		 (uint32_t)mc_address_dst);
++
++	igt_info("USER_DATA[3] (s3 high) = 0x%08x\n",
++		 (uint32_t)(mc_address_dst >> 32));
++
++	base_cmd->emit(base_cmd,
++			PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++
++	base_cmd->emit(base_cmd, 0x215);
++	base_cmd->emit(base_cmd, 0);
++
++	base_cmd->emit(base_cmd,
++			PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT,
++					3));
++
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++
++	base_cmd->emit_aligned(base_cmd,
++			7,
++			GFX_COMPUTE_NOP);
++
++	igt_info("Dispatch PM4 DW=%u\n",
++		 base_cmd->cdw);
++
++	igt_info("========================================\n");
++	igt_info("FINAL PM4 DUMP\n");
++	igt_info("========================================\n");
++
++	for (uint32_t j = 0; j < base_cmd->cdw; j++)
++		igt_info("PM4[%02u] = 0x%08x\n",
++			 j,
++				ptr_cmd[j]);
++
++	resources[0] = bo_dst;
++	resources[1] = bo_shader;
++	resources[2] = bo_cmd;
++
++	r = amdgpu_bo_list_create(device,
++				  3,
++			resources,
++			NULL,
++			&bo_list);
++
++	igt_assert_eq(r, 0);
++
++	ib_info.ib_mc_address = mc_address_cmd;
++	ib_info.size = base_cmd->cdw;
++
++	ibs_request.ip_type = AMDGPU_HW_IP_COMPUTE;
++	ibs_request.ring = 0;
++	ibs_request.resources = bo_list;
++	ibs_request.number_of_ibs = 1;
++	ibs_request.ibs = &ib_info;
++
++	r = amdgpu_cs_submit(context_handle,
++			     0,
++			&ibs_request,
++			1);
++
++	igt_info("cs_submit ret=%d\n", r);
++	igt_assert_eq(r, 0);
++
++	fence_status.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fence_status.ip_instance = 0;
++	fence_status.ring = 0;
++	fence_status.context = context_handle;
++	fence_status.fence = ibs_request.seq_no;
++
++	r = amdgpu_cs_query_fence_status(
++			&fence_status,
++			AMDGPU_TIMEOUT_INFINITE,
++			0,
++			&expired);
++
++	igt_info("fence ret=%d expired=%u\n",
++		 r,
++			expired);
++
++	igt_assert_eq(r, 0);
++	igt_assert_eq(expired, 1);
++
++	igt_info("===== OUTPUT DUMP =====\n");
++
++	for (i = 0; i < 32; i++) {
++		igt_info("OUT[%02d]=0x%08x\n",
++			 i,
++				ptr_dst[i]);
++	}
++
++	igt_info("output[0]=0x%x (%u)\n",
++		 ptr_dst[0],
++			ptr_dst[0]);
++
++	igt_assert_eq(ptr_dst[0], 42);
++
++	ret = vm_clear_l2_trap(fd);
++
++	igt_info("CLEAR_L2_TRAP ret=%d\n", ret);
++	igt_assert_eq(ret, 0);
++
++	slth_free_buffers(&bufs);
++
++	amdgpu_bo_list_destroy(bo_list);
++
++	amdgpu_bo_unmap_and_free(
++			bo_dst,
++			va_dst,
++			mc_address_dst,
++			bo_dst_size);
++
++	amdgpu_bo_unmap_and_free(
++			bo_shader,
++			va_shader,
++			mc_address_shader,
++			bo_shader_size);
++
++	amdgpu_bo_unmap_and_free(
++			bo_cmd,
++			va_cmd,
++			mc_address_cmd,
++			bo_cmd_size);
++
++	amdgpu_cs_ctx_free(context_handle);
++
++	free_cmd_base(base_cmd);
++
++	igt_info("COMP KQ VGPR PROOF COMPLETE\n");
++}
++
++static void
++slth_prepare_returnproof_shader(amdgpu_device_handle device,
++				uint8_t *isa_bin,
++		size_t *isa_sz)
++{
++	struct amdgpu_gpu_info info = {0};
++	char mcpu[32] = {};
++	int r;
++
++	r = amdgpu_query_gpu_info(device, &info);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_family_id_to_mcpu(info.family_id,
++				     mcpu,
++			sizeof(mcpu));
++	igt_assert_eq(r, 0);
++
++	igt_info("===== RETURNPROOF SHADER SOURCE BEGIN =====\n");
++	igt_info("%s\n", SlthReturnProofIsa);
++	igt_info("===== RETURNPROOF SHADER SOURCE END =====\n");
++
++	r = amdgpu_llvm_assemble(mcpu,
++				 SlthReturnProofIsa,
++			isa_bin,
++			8192,
++			isa_sz);
++
++	igt_info("amdgpu_llvm_assemble returned %d\n", r);
++
++	if (r) {
++		igt_info("===== SHADER SOURCE BEGIN =====\n");
++		igt_info("%s\n", SlthReturnProofIsa);
++		igt_info("===== SHADER SOURCE END =====\n");
++	}
++
++	igt_assert_eq(r, 0);
++	igt_assert(*isa_sz > 0);
++
++	igt_info("SlthReturnProofIsa size=%zu\n",
++		 *isa_sz);
++
++	igt_info("RETURNPROOF SHADER ISA DUMP\n");
++
++	for (unsigned int i = 0;
++			i < (*isa_sz / sizeof(uint32_t));
++			i++) {
++		igt_info("ISA[%u] = 0x%08x\n",
++			 i,
++				((uint32_t *)isa_bin)[i]);
++	}
++}
++
++static void
++slth_comp_kq_returnproof_test(amdgpu_device_handle device,
++			      int fd)
++{
++	struct slth_bufs bufs;
++
++	amdgpu_context_handle context_handle;
++
++	amdgpu_bo_handle bo_dst;
++	amdgpu_bo_handle bo_shader;
++	amdgpu_bo_handle bo_cmd;
++
++	amdgpu_bo_handle resources[3];
++
++	volatile uint32_t *ptr_dst;
++
++	void *ptr_shader;
++	uint32_t *ptr_cmd;
++
++	uint64_t mc_address_dst;
++	uint64_t mc_address_shader;
++	uint64_t mc_address_cmd;
++
++	amdgpu_va_handle va_dst;
++	amdgpu_va_handle va_shader;
++	amdgpu_va_handle va_cmd;
++
++	amdgpu_bo_list_handle bo_list;
++
++	struct amdgpu_cs_request ibs_request = {0};
++	struct amdgpu_cs_ib_info ib_info = {0};
++	struct amdgpu_cs_fence fence_status = {0};
++
++	struct amdgpu_cmd_base *base_cmd =
++		get_cmd_base();
++
++	uint32_t expired = 0;
++	uint32_t version = 12;
++
++	uint8_t isa_bin[8192];
++	size_t isa_sz = 0;
++
++	int bo_dst_size = 16384;
++	int bo_shader_size = 4096;
++	int bo_cmd_size = 4096;
++
++	int i;
++	int r;
++	int ret;
++
++	igt_assert(base_cmd);
++
++	memset(&bufs, 0, sizeof(bufs));
++
++	igt_info("========================================\n");
++	igt_info("COMP KQ RETURNPROOF\n");
++	igt_info("SLTH RETURNPROOF\n");
++	igt_info("========================================\n");
++
++	slth_alloc_buffers(device, &bufs);
++
++	slth_prepare_tba_with_handler(device,
++				      &bufs,
++			TrapHandlerIsaProof);
++
++	ret = vm_set_l2_trap(fd,
++			     bufs.tba_mc_addr,
++			bufs.tma_mc_addr);
++
++	igt_info("SET_L2_TRAP ret=%d\n", ret);
++	igt_assert_eq(ret, 0);
++
++	slth_prepare_returnproof_shader(device,
++					isa_bin,
++			&isa_sz);
++	igt_assert(isa_sz > 0);
++
++	igt_info("SlthReturnProofIsa size=%zu\n", isa_sz);
++
++	igt_info("===== RETURNPROOF ISA BEGIN =====\n");
++
++	for (i = 0; i < isa_sz / 4; i++) {
++		igt_info("ISA[%02d] = 0x%08x\n",
++			 i,
++				((uint32_t *)isa_bin)[i]);
++	}
++
++	igt_info("===== RETURNPROOF ISA END =====\n");
++
++	r = amdgpu_cs_ctx_create(device,
++				 &context_handle);
++	igt_assert_eq(r, 0);
++
++	r = amdgpu_bo_alloc_and_map(device,
++				    bo_cmd_size,
++			4096,
++			AMDGPU_GEM_DOMAIN_GTT,
++			0,
++			&bo_cmd,
++			(void **)&ptr_cmd,
++			&mc_address_cmd,
++			&va_cmd);
++	igt_assert_eq(r, 0);
++
++	memset(ptr_cmd, 0, bo_cmd_size);
++
++	base_cmd->attach_buf(base_cmd,
++			ptr_cmd,
++			bo_cmd_size);
++
++	r = amdgpu_bo_alloc_and_map(device,
++				    bo_shader_size,
++			4096,
++			AMDGPU_GEM_DOMAIN_VRAM,
++			0,
++			&bo_shader,
++			&ptr_shader,
++			&mc_address_shader,
++			&va_shader);
++	igt_assert_eq(r, 0);
++
++	memset(ptr_shader, 0, bo_shader_size);
++
++	memcpy(ptr_shader,
++	       isa_bin,
++			isa_sz);
++
++	igt_info("shader_mc_addr=0x%016llx\n",
++		 (unsigned long long)mc_address_shader);
++
++	r = amdgpu_bo_alloc_and_map(device,
++				    bo_dst_size,
++			4096,
++			AMDGPU_GEM_DOMAIN_VRAM,
++			0,
++			&bo_dst,
++			(void **)&ptr_dst,
++			&mc_address_dst,
++			&va_dst);
++	igt_assert_eq(r, 0);
++
++	memset((void *)ptr_dst,
++	       0,
++			bo_dst_size);
++
++	igt_info("output_mc_addr=0x%016llx\n",
++		 (unsigned long long)mc_address_dst);
++
++	igt_info("output_lo=0x%08x\n",
++		 lower_32_bits(mc_address_dst));
++
++	igt_info("output_hi=0x%08x\n",
++		 upper_32_bits(mc_address_dst));
++
++	amdgpu_dispatch_init(
++			AMDGPU_HW_IP_COMPUTE,
++			base_cmd,
++			version);
++
++	amdgpu_dispatch_write_cumask(
++			base_cmd,
++			version);
++
++	igt_info("shader_mc_addr=0x%016llx\n",
++		 (unsigned long long)mc_address_shader);
++
++	igt_info("output_mc_addr=0x%016llx\n",
++		 (unsigned long long)mc_address_dst);
++
++	amdgpu_dispatch_write2hw(
++			base_cmd,
++			mc_address_shader,
++			version,
++			0);
++
++	igt_info("cdw after write2hw = %u\n",
++		 base_cmd->cdw);
++
++	for (uint32_t j = 0; j < base_cmd->cdw; j++)
++		igt_info("PRE_USERDATA_PM4[%02u] = 0x%08x\n",
++			 j,
++				ptr_cmd[j]);
++
++	igt_info("========================================\n");
++	igt_info("COMPUTE USER DATA PROGRAMMING\n");
++	igt_info("========================================\n");
++
++	igt_info("mc_address_dst      = 0x%016llx\n",
++		 (unsigned long long)mc_address_dst);
++
++	igt_info("dst low dword       = 0x%08x\n",
++		 (uint32_t)mc_address_dst);
++
++	igt_info("dst high dword      = 0x%08x\n",
++		 (uint32_t)(mc_address_dst >> 32));
++
++	igt_info("SET_SH_REG base     = 0x240\n");
++
++	base_cmd->emit(base_cmd,
++			PACKET3_COMPUTE(PKT3_SET_SH_REG, 4));
++
++	base_cmd->emit(base_cmd, 0x240);
++
++	/*
++	 * s0:s1 = source address
++	 */
++	base_cmd->emit(base_cmd,
++			(uint32_t)mc_address_dst);
++
++	base_cmd->emit(base_cmd,
++			(uint32_t)(mc_address_dst >> 32));
++
++	/*
++	 * s2:s3 = destination address
++	 */
++	base_cmd->emit(base_cmd,
++			(uint32_t)mc_address_dst);
++
++	base_cmd->emit(base_cmd,
++			(uint32_t)(mc_address_dst >> 32));
++	igt_info("USER_DATA[0] (s0 low)  = 0x%08x\n",
++		 (uint32_t)mc_address_dst);
++
++	igt_info("USER_DATA[1] (s1 high) = 0x%08x\n",
++		 (uint32_t)(mc_address_dst >> 32));
++
++	igt_info("USER_DATA[2] (s2 low)  = 0x%08x\n",
++		 (uint32_t)mc_address_dst);
++
++	igt_info("USER_DATA[3] (s3 high) = 0x%08x\n",
++		 (uint32_t)(mc_address_dst >> 32));
++
++	base_cmd->emit(base_cmd,
++			PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
++
++	base_cmd->emit(base_cmd, 0x215);
++	base_cmd->emit(base_cmd, 0);
++
++	base_cmd->emit(base_cmd,
++			PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT,
++					3));
++
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++	base_cmd->emit(base_cmd, 1);
++
++	base_cmd->emit_aligned(base_cmd,
++			7,
++			GFX_COMPUTE_NOP);
++
++	igt_info("Dispatch PM4 DW=%u\n",
++		 base_cmd->cdw);
++
++	igt_info("========================================\n");
++	igt_info("FINAL PM4 DUMP\n");
++	igt_info("========================================\n");
++
++	for (uint32_t j = 0; j < base_cmd->cdw; j++)
++		igt_info("PM4[%02u] = 0x%08x\n",
++			 j,
++				ptr_cmd[j]);
++
++	resources[0] = bo_dst;
++	resources[1] = bo_shader;
++	resources[2] = bo_cmd;
++
++	r = amdgpu_bo_list_create(device,
++				  3,
++			resources,
++			NULL,
++			&bo_list);
++
++	igt_assert_eq(r, 0);
++
++	ib_info.ib_mc_address = mc_address_cmd;
++	ib_info.size = base_cmd->cdw;
++
++	ibs_request.ip_type = AMDGPU_HW_IP_COMPUTE;
++	ibs_request.ring = 0;
++	ibs_request.resources = bo_list;
++	ibs_request.number_of_ibs = 1;
++	ibs_request.ibs = &ib_info;
++
++	r = amdgpu_cs_submit(context_handle,
++			     0,
++			&ibs_request,
++			1);
++
++	igt_info("cs_submit ret=%d\n", r);
++	igt_assert_eq(r, 0);
++
++	fence_status.ip_type = AMDGPU_HW_IP_COMPUTE;
++	fence_status.ip_instance = 0;
++	fence_status.ring = 0;
++	fence_status.context = context_handle;
++	fence_status.fence = ibs_request.seq_no;
++
++	r = amdgpu_cs_query_fence_status(
++			&fence_status,
++			AMDGPU_TIMEOUT_INFINITE,
++			0,
++			&expired);
++
++	igt_info("fence ret=%d expired=%u\n",
++		 r,
++			expired);
++
++	igt_assert_eq(r, 0);
++	igt_assert_eq(expired, 1);
++
++	igt_info("===== OUTPUT DUMP =====\n");
++
++	for (i = 0; i < 32; i++) {
++		igt_info("OUT[%02d]=0x%08x\n",
++			 i,
++				ptr_dst[i]);
++	}
++
++	igt_info("output[0]=0x%x (%u)\n",
++		 ptr_dst[0],
++			ptr_dst[0]);
++
++	igt_assert_eq(ptr_dst[0], 2);
++
++	ret = vm_clear_l2_trap(fd);
++
++	igt_info("CLEAR_L2_TRAP ret=%d\n", ret);
++	igt_assert_eq(ret, 0);
++
++	slth_free_buffers(&bufs);
++
++	amdgpu_bo_list_destroy(bo_list);
++
++	amdgpu_bo_unmap_and_free(
++			bo_dst,
++			va_dst,
++			mc_address_dst,
++			bo_dst_size);
++
++	amdgpu_bo_unmap_and_free(
++			bo_shader,
++			va_shader,
++			mc_address_shader,
++			bo_shader_size);
++
++	amdgpu_bo_unmap_and_free(
++			bo_cmd,
++			va_cmd,
++			mc_address_cmd,
++			bo_cmd_size);
++
++	amdgpu_cs_ctx_free(context_handle);
++
++	free_cmd_base(base_cmd);
++
++	igt_info("COMP KQ RETURNPROOF COMPLETE\n");
++}
++
++int igt_main()
++{
++	amdgpu_device_handle device;
++	struct amdgpu_gpu_info gpu_info = {0};
++	struct drm_amdgpu_info_hw_ip info = {0};
++	int fd = -1;
++	int r;
++	bool arr_cap[AMD_IP_MAX] = {0};
++	bool userq_arr_cap[AMD_IP_MAX] = {0};
++	bool enable_test = false;
++#ifdef AMDGPU_USERQ_ENABLED
++
++	enable_test = true;
++#endif
++
++	igt_fixture() {
++		uint32_t major, minor;
++		int err;
++
++		log_total_time(true, igt_test_name());
++		fd = drm_open_driver(DRIVER_AMDGPU);
++
++		err = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(err == 0);
++
++		igt_info("Initialized amdgpu, driver version %d.%d\n",
++			 major, minor);
++
++		r = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(r, 0);
++		r = amdgpu_query_hw_ip_info(device, AMDGPU_HW_IP_GFX, 0, &info);
++		igt_assert_eq(r, 0);
++		r = setup_amdgpu_ip_blocks(major, minor,  &gpu_info, device);
++		igt_assert_eq(r, 0);
++		asic_rings_readness(device, 1, arr_cap);
++		asic_userq_readiness(device, userq_arr_cap);
++		amd_platform_filter_init(&gpu_info);
++	}
++	igt_describe("Check-alloc-free-VRAM-visible-non-visible-GART-write-combined-cached");
++	igt_subtest("memory-alloc")
++		amdgpu_memory_alloc(device);
++
++	igt_describe("Check-DMA-CS-works-by-setting-the-pattern-and-after-execution-compare-memory-with-the-golden-settings");
++	igt_subtest_with_dynamic("userptr-with-IP-DMA") {
++		if (arr_cap[AMD_IP_DMA]) {
++			igt_dynamic_f("userptr")
++			amdgpu_userptr_test(device);
 +		}
- 		mqd = &compute_mqd;
- 		break;
- 
-diff --git a/lib/amdgpu/amd_ip_blocks.h b/lib/amdgpu/amd_ip_blocks.h
-index fc123fe1a..24b0f5549 100644
---- a/lib/amdgpu/amd_ip_blocks.h
-+++ b/lib/amdgpu/amd_ip_blocks.h
-@@ -344,6 +344,8 @@ struct amdgpu_ring_context {
- 	struct  amdgpu_userq_bo wptr;
- 	struct  amdgpu_userq_bo csa;
- 	struct  amdgpu_userq_bo eop;
-+	struct  amdgpu_userq_bo cwsr;	/* compute CWSR save area, if needed */
-+	uint32_t cwsr_size;
- 
- 	uint32_t *queue_cpu;
- 	volatile uint64_t *wptr_cpu;
++	}
++
++	igt_describe("Check-GFX-CS-for-every-available-ring-works-for-write-const-fill-and-copy-operation-using-more-than-one-IB-and-shared-IB");
++	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX") {
++		if (arr_cap[AMD_IP_GFX]) {
++			igt_dynamic_f("cs-gfx")
++			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, false);
++		}
++	}
++
++	igt_describe("Check-COMPUTE-CS-for-every-available-ring-works-for-write-const-fill-copy-and-nop-operation");
++	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE") {
++		if (arr_cap[AMD_IP_COMPUTE]) {
++			igt_dynamic_f("cs-compute")
++			amdgpu_command_submission_compute(device, false);
++		}
++	}
++
++	igt_describe("Check-GFX-CS-for-multi-fence");
++	igt_subtest_with_dynamic("cs-multi-fence-with-IP-GFX") {
++		if (arr_cap[AMD_IP_GFX] && info.hw_ip_version_major < 11) {
++			igt_dynamic_f("cs-multi-fence")
++			amdgpu_command_submission_multi_fence(device);
++		} else {
++			igt_info("cs-multi-fence-with-IP-GFX testes are skipped due to GFX11 or no GFX_IP\n");
++		}
++	}
++
++	igt_describe("Check-DMA-CS-for-every-available-ring-works-for-write-const-fill-copy-operation");
++	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA") {
++		if (arr_cap[AMD_IP_DMA]) {
++			igt_dynamic_f("cs-sdma")
++			amdgpu_command_submission_sdma(device, false);
++		}
++	}
++
++	igt_describe("Check-signal-semaphore-on-DMA-wait-on-GFX");
++	igt_subtest_with_dynamic("semaphore-with-IP-GFX-and-IP-DMA") {
++		if (arr_cap[AMD_IP_GFX] && arr_cap[AMD_IP_DMA]) {
++			igt_dynamic_f("semaphore")
++			amdgpu_semaphore_test(device);
++		}
++	}
++
++	igt_describe("Check-eviction-using-DMA-max-allocation-size");
++	igt_subtest_with_dynamic("eviction-test-with-IP-DMA") {
++		if (arr_cap[AMD_IP_DMA]) {
++			igt_dynamic_f("eviction_test")
++			amdgpu_bo_eviction_test(device);
++		}
++	}
++
++	igt_describe("Check-sync-dependency-using-GFX-ring");
++	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX") {
++		if (arr_cap[AMD_IP_GFX]) {
++			igt_dynamic_f("sync-dependency-test")
++			amdgpu_sync_dependency_test(device, false);
++		}
++	}
++
++	igt_describe("Check-GFX-CS-for-every-available-ring-works-for-write-const-fill-and-copy-operation-using-more-than-one-IB-and-shared-IB");
++	igt_subtest_with_dynamic("cs-gfx-with-IP-GFX-UMQ") {
++		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
++			igt_dynamic_f("cs-gfx-with-umq")
++			amdgpu_command_submission_gfx(device, info.hw_ip_version_major < 11, true);
++		}
++	}
++
++	igt_describe("Check-COMPUTE-CS-for-every-available-ring-works-for-write-const-fill-copy-and-nop-operation");
++	igt_subtest_with_dynamic("cs-compute-with-IP-COMPUTE-UMQ") {
++		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
++			igt_dynamic_f("cs-compute-with-umq")
++			amdgpu_command_submission_compute(device, true);
++		}
++	}
++
++	igt_describe("Check-sync-dependency-using-GFX-ring");
++	igt_subtest_with_dynamic("sync-dependency-test-with-IP-GFX-UMQ") {
++		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
++			igt_dynamic_f("sync-dependency-test-with-umq")
++			amdgpu_sync_dependency_test(device, true);
++		}
++	}
++
++	igt_describe("Check-DMA-CS-for-every-available-ring-works-for-write-const-fill-copy-operation");
++	igt_subtest_with_dynamic("cs-sdma-with-IP-DMA-UMQ") {
++		if (enable_test && userq_arr_cap[AMD_IP_DMA]) {
++			igt_dynamic_f("cs-sdma-with-umq")
++			amdgpu_command_submission_sdma(device, true);
++		}
++	}
++
++	igt_describe("Check-all-user-queues-for-write-operation");
++	igt_subtest_with_dynamic("all-queues-test-with-UMQ") {
++		if (enable_test && userq_arr_cap[AMD_IP_GFX] &&
++		    userq_arr_cap[AMD_IP_COMPUTE] &&
++				userq_arr_cap[AMD_IP_DMA]) {
++			igt_dynamic_f("all-queues-with-umq")
++			amdgpu_test_all_queues(device, true);
++		}
++	}
++
++	igt_describe("Check-GFX-CS-FENCE_WAIT_MULTI-packet");
++	igt_subtest_with_dynamic("cs-gfx-fwm-UMQ") {
++		if (enable_test && userq_arr_cap[AMD_IP_GFX]) {
++			igt_dynamic_f("cs-gfx-fwm-umq")
++				amdgpu_fwm_test(device, AMDGPU_HW_IP_GFX);
++		}
++	}
++
++	igt_describe("Check-COMPUTE-CS-FENCE_WAIT_MULTI-packet");
++	igt_subtest_with_dynamic("cs-compute-fwm-UMQ") {
++		if (enable_test && userq_arr_cap[AMD_IP_COMPUTE]) {
++			igt_dynamic_f("cs-compute-fwm-umq")
++				amdgpu_fwm_test(device, AMDGPU_HW_IP_COMPUTE);
++		}
++	}
++
++	igt_subtest("slth-gfx-kq-vgpr-proof")
++		slth_gfx_kq_vgpr_proof_test(device, fd);
++
++	igt_subtest("slth-gfx-umq-vgpr-proof")
++		slth_gfx_umq_vgpr_proof_test(device, fd);
++
++	igt_subtest("slth-comp-kq-vgpr-proof")
++		slth_comp_kq_vgpr_proof_test(device, fd);
++
++	igt_subtest("slth-comp-kq-returnproof")
++		slth_comp_kq_returnproof_test(device, fd);
++
+ 	igt_fixture() {
+ 		amdgpu_device_deinitialize(device);
+ 		drm_close_driver(fd);
 -- 
 2.50.1
 
