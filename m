@@ -2,167 +2,126 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD017606A32C
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 17:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19628606A31C
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 19:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=l9Iw1cOG;
-	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=m7qDytuT
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=SlpKgUX+
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 7116210E176;
-	Wed, 18 Nov 2026 17:53:10 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D148510EC7B
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 17:52:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795024323; x=1826560323;
- h=message-id:date:subject:to:cc:references:from:
- in-reply-to:content-transfer-encoding:mime-version;
- bh=i/ThayN1Cbo02RUtwsuiRrT7bcE0e/aBfAEaPIaJ0Ho=;
- b=l9Iw1cOGVNlj43mXLvIqdqWDEqQ3z6Bxc8X/b4nLdX9WcbN1VdPIPUnc
- JwlaRR5LO7/wX8KS/8qJ0rHXjwFiG6q2Tcnv6EJOw/T4rETk9KL/aY01v
- bcvvCCgyEaj3piQlKQ56rF7zRbuosd8GkEzF0AAZQC+F6gCB4cKcv8Fpd
- qXuh7OPHsNwTDPxYnt8PsulrLlqrVlpu23M4M7XdfVOlP14WGKciWOfQA
- Uzae1h9JzgYSdg5y82DC1f3bqxkasPXEn3LbstmHP7Z4wTALrDxU3078u
- FxqG/KRjivTp+A9H6PsHQagUjLoLpJB92WTtQUwgCfR3ACaCUocAqYLS0 Q==;
-X-CSE-ConnectionGUID: Wct0xBSkQkeI8A5WioAzyw==
-X-CSE-MsgGUID: N1lLAyzxTtCGnc5RoKS7PA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3891448"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3891448"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 09:52:03 -0800
-X-CSE-ConnectionGUID: QOOiQCN0Sk2zOfEEeHxVRA==
-X-CSE-MsgGUID: 90YXdDQwRXqZo2U5i4m29w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; d="scan'208";a="10101186"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
- by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 09:52:03 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 18 Nov 2026 09:52:01 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Wed, 18 Nov 2026 09:52:01 -0800
-Received: from SA9PR02CU001.outbound.protection.outlook.com (40.93.196.15) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Wed, 18 Nov 2026 09:52:01 -0800
+	by gabe.freedesktop.org (Postfix) with ESMTP id B050710FFB7;
+	Wed, 18 Nov 2026 19:26:50 +0000 (UTC)
+Received: from CO1PR03CU002.outbound.protection.outlook.com
+ (mail-westus2azon11010014.outbound.protection.outlook.com [52.101.46.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4174410FFBA
+ for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 19:25:43 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Lj1MwkqgZoR2HVNEYW9vMXLKDr3CO3QO2EdffemyKlBGqS2LzScmIZEVyilUkRuLZWJzPZst1/Y1wCv04uc08coQTXfjkl6M6wfLNcXJM/WuL3fNNed9jQ3IJBbft/M3ZT5V22TYPxhXmg3wCJs42gP94tGrUH2C3AY9xCavin0Mi/wyV9Yo2GBZEybVC1/OzSBCJpJb3/Klxw/xjDQOaeYj06r1wXP7+xoLXjXaxT46wnG1D35dWhn82G92MB1+veoXfBVJi9NXmWg488fLN4gDP1NAoPVy3SKfn6/O/QdMVTBQ5PVVPZNWIBXzNeN4sCoJDT/riWX1bj/Xqlw2sw==
+ b=Sg/sHAn6FActbr5OtudPC3xs7eYePIT3aE2oHOo97hM9vfg1EIh+bWlK2hVt5kPLz47uliW42ERD2sq0cIPn0MFKUlWqddEIF1Vd645V4OtdXhtakkk90Cr8yC2Eoo+P5J/yy9/HQsAdd3BBlkYYDGutxCXUGTVWCCGcLa/JxWqJ7LHJncRgkWnu0/wB0Kzd9rK+9AB94PxPbI62/GSkRuK4K37yCU3pK3ts4C9uusgkeLNqdX5BJhtx++WJxElcg3UNtA3jXL/wx+VTDehJ+OYDi6e8zoNxqGaXcQC0Mf6jonyhP6Rmv4aivSyzuoIMURbh8d7mRdWoJwKKpTeL2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qPD0oLjc78VFm1uKwRJqeSIKipwMzy7jSAJTEbntELw=;
- b=r6vGfD66kGhu9UVNACcOSuazG+hgHQvpausW44JUBtQKv8V4DUbZ3EXrYcmmYnNL56Cg9Kbmi1EB9uo1zneHe9eNQSzk1I6561BsKqpYn9Z3UMl01eiFeN/asJeTQxRN4fUbjhEsVHpBcvcczRF+Lpklhaj+iqy8BNJ/N5NyTTvMQcIFbzl8pcdrun9prUr6XHOpokM+Ktx3p4o3fqI0kFmQSV4bJuJhbyUz/hPZR6ztwLLsUK3I/hip3UcF/TFeK1j4jyonLz2QWiC8LRpTLc516Ae0BWwrXUwvlGZO8B9K8b73IFgnn5B5cRcMp9hk4Se8zPgVDKGJ6PYYhArfkQ==
+ bh=tdsbgOJvpM/2ZcxyVzu9tr9FX/q1YUX8nqZRvRgJ5gM=;
+ b=xvBc50i+D6NVpl9OvvBvjpWXf0dQVLyRiZb5KI+WQLYLOxlLUyj8aoFV4rmwZYrnmbDw1m7xd4lVahau2cJIWzpWlZ2Iq/urX52Fz3/hgLyLq+OOLIp6AQ5M2v3XkfyRTqltbgaVldZw241UHViK21hAbX8Hh8tPEDtTEOyV5PUsvHWrCNVqllJVcIzJmrAs5kG6Vs5aPzNWNjVV/qijPUktEkKeqJiPo33867P5xuaxKASvllJIHom6GepuEGYy8nm3nFEabnE3yP2gRNbk8TjzzqsVNiswGi6RuQl6paPIwJrsL4tJItVvXAxe0O35PNJ3cJBjAlR7uTDQ7ywyhw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com; s=selector1;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qPD0oLjc78VFm1uKwRJqeSIKipwMzy7jSAJTEbntELw=;
- b=m7qDytuT866DaIIGHR4oEK4NY8qxVxbpYJdellf+dXCfPjZSdUA+QdIOnY5vk/feFXPx0bzCaZxOhAsi21ybOgr9UbsLkG/hLrqlF9FCq2og5pXyd1OKC/s+EnvuJA+Hnv5KdkHLkBgYIPcscUCP6UgiTw3wsoQgFQg5D/wskmk=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS6PR11MB087165.namprd11.prod.outlook.com (2603:10b6:8:4c4::7)
- by IA1PR11MB9469.namprd11.prod.outlook.com (2603:10b6:208:5b1::11)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Wed, 18 Nov
- 2026 17:51:59 +0000
-Received: from DS6PR11MB087165.namprd11.prod.outlook.com
- ([fe80::4223:7b03:1329:265f]) by DS6PR11MB087165.namprd11.prod.outlook.com
- ([fe80::4223:7b03:1329:265f%5]) with mapi id 15.21.0615.013; Wed, 18 Nov 2026
- 17:51:59 +0000
-Message-ID: <c0860b29-f27e-43f2-b825-06600487ce92@intel.com>
-Date: Wed, 18 Nov 2026 23:21:50 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] tests/xe_err_injection: add CPER trace event
- helpers
-To: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>,
- <igt-dev@lists.freedesktop.org>
-CC: <badal.nilawar@intel.com>, <riana.tauro@intel.com>,
- <anshuman.gupta@intel.com>, <raag.jadav@intel.com>,
- <mallesh.koujalagi@intel.com>, <sk.anirban@intel.com>
-References: <20261116145410.1649875-1-ravi.kishore.koppuravuri@intel.com>
- <20261116145410.1649875-3-ravi.kishore.koppuravuri@intel.com>
+ bh=tdsbgOJvpM/2ZcxyVzu9tr9FX/q1YUX8nqZRvRgJ5gM=;
+ b=SlpKgUX+rxLcNHtZ6ce4VexYm4B3BbAz+ioatfF+q12su83AavrY58PdGRUjChp5ZlLyHAuqI4eRhi8xUPAlVE7H0CW2Gf/YlOuC2rP4/HaVybOk2/HD8tmy7hoosl4ichVzwpLEsaE/XG78c7Hbe6tvDzRX6xyfnsb9fiAIdhk=
+Received: from CHAPR12MB999247.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::7) by MW4PR12MB7358.namprd12.prod.outlook.com
+ (2603:10b6:303:22b::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.13; Wed, 18 Nov
+ 2026 19:25:39 +0000
+Received: from CHAPR12MB999247.namprd12.prod.outlook.com
+ ([fe80::d727:e84d:1883:b74]) by CHAPR12MB999247.namprd12.prod.outlook.com
+ ([fe80::d727:e84d:1883:b74%6]) with mapi id 15.21.0615.013; Wed, 18 Nov 2026
+ 19:25:38 +0000
+From: "Francis, David" <David.Francis@amd.com>
+To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Prosyak, Vitaly" <Vitaly.Prosyak@amd.com>, Kamil Konieczny
+ <kamil.konieczny@linux.intel.com>, Sebastian Brzezinka
+ <sebastian.brzezinka@intel.com>, "Koenig, Christian"
+ <Christian.Koenig@amd.com>, Simona Vetter <simona@ffwll.ch>, "Deucher,
+ Alexander" <Alexander.Deucher@amd.com>
+Subject: Re: [PATCH v4] tests/intel: Add edge case and race condition tests
+ for GEM_CHANGE_HANDLE
+Thread-Topic: [PATCH v4] tests/intel: Add edge case and race condition tests
+ for GEM_CHANGE_HANDLE
+Thread-Index: AQHdcSi/CygxM0nP6kyg2bHeno59hLcqdViAgAnMydQ=
+Date: Wed, 18 Nov 2026 19:25:38 +0000
+Message-ID: <CHAPR12MB9992477A972F6389F886D55EAEEF7A2@CHAPR12MB999247.namprd12.prod.outlook.com>
+References: <20261110153230.583745-1-David.Francis@amd.com>
+ <6a89a83a-8290-4c59-855a-f798f8350570@igalia.com>
+In-Reply-To: <6a89a83a-8290-4c59-855a-f798f8350570@igalia.com>
+Accept-Language: en-US
 Content-Language: en-US
-From: "Purkait, Soham" <soham.purkait@intel.com>
-In-Reply-To: <20261116145410.1649875-3-ravi.kishore.koppuravuri@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: MA5P287CA0364.INDP287.PROD.OUTLOOK.COM
- (2603:1096:a01:219::14) To DS6PR11MB087165.namprd11.prod.outlook.com
- (2603:10b6:8:4c4::7)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Enabled=True;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SetDate=2026-11-18T19:25:37.699Z;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Name=AMD
+ General; MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_ContentBits=1;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Method=Standard; 
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CHAPR12MB999247:EE_|MW4PR12MB7358:EE_
+x-ms-office365-filtering-correlation-id: 905d6c3f-2851-4924-cb7a-08df45a9b9f2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|1800799024|376014|23010399003|6133799003|22082099003|18002099003|261009223027099003|261009221227099003|261022113327099003|261022075727099003|261021135927099003|261021121427099003|261022105027099003|261026140227099003|261026121527099003|261102123227099003|261028144727099003|11063799006|56012099006|10067099003|4143699003|38070700021|261102130727099003;
+x-microsoft-antispam-message-info: rt7XO2Lad1ybTuoOBw41jwLs4WialK+0Kd5fGfmX/kBRg78fGYWl0yfnf5/MV4CeGVuxB/wEv5w2ZRhPECdqA4G/p2vMghP3ooAf798YPr+2rbIy4vYzAHIdqUNVC2j4HrkuFlwSONzwh0DOAFaVOO6ZZ8l3y1Y4kdiCF7YXlkHFfWnrmMcds7F4L+7HL3C+anKz6OgBeH3lrh6NXkJjWrAuv4w2OPzsnujpIM1/GPvbUuxPS8nooU/tzsQEkb0Rfn3iYd9pcAHOW5xp6TZicn7Jf4qR2LEfTQOR6mJm+ALblA2mDuM2NRgFBsbuDljCeahxI6ViDBQOnniAbIAAMNQ47iHdC7/61KPnQjkqSbtMWl3mTx+A9U6GJJSMFYrcEFMGNT/37QPaHxxP4EfkjJjq1/cT4LceBjWlwQXagmvsv1zYe9Iq6IoBMGIDvVTfEillAfn6p4WeJtEMTNt512XUBZM3t7NG4H9taw+XPGuVWdDVbeL5cQSc/Wg33zCbY+iRl+nTCcO1bgkbEsJarjgpkww+RSJI34bcLTPrzLEqFrj51CtRHDe0x/MXmBQ2RmCypbljpOYGk/czPclUgG9PKvC4IIBhM1+EWG938Sz6atqEcjsJSqTYZQslY0is1GcdHZEH6inDYJa0SYTroYXRYseG/S9oMiDskOBaFoyNwf/m2Q/ZwfMp99oIn41Q8v23foilE86uULJE16mDpWfnXLUkv33P0tcxbtJlqa4=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CHAPR12MB999247.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(6133799003)(22082099003)(18002099003)(261009223027099003)(261009221227099003)(261022113327099003)(261022075727099003)(261021135927099003)(261021121427099003)(261022105027099003)(261026140227099003)(261026121527099003)(261102123227099003)(261028144727099003)(11063799006)(56012099006)(10067099003)(4143699003)(38070700021)(261102130727099003);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?5h29CjWSVNRblvFPIQsiXcPQxx+zL2FO7stypb+WT2TWedMbW3otzLai6mAT?=
+ =?us-ascii?Q?b76wCSOTuNajmeTl+JkSMXZwvKpyJJR96YUOKSF93nkszGWPUTei8P1ECbEe?=
+ =?us-ascii?Q?KPNqEikYFCY3lMPZCl23/bi99mxOqfUP7Gt6WaSs4OVzK8UMpXxJv2ALBalp?=
+ =?us-ascii?Q?kf2wNLnTLypdDu4246ON2/oKqM1a9U2M4u8Iyyamvj88As0UKk91IYgQppDr?=
+ =?us-ascii?Q?z4D63u4Hg0tnEcw+DGc6ZH53lyS60hy13rzjRxYUpd9sezj8zOyMvCln/MlJ?=
+ =?us-ascii?Q?29W9L8tUPeEi2mvIbSe/GVuq0WWjSjz9Sp38KKnN9BxuD/zQgPINxzeYRK+9?=
+ =?us-ascii?Q?bZlltKSANyfsHROvT2iMmQxeUxkx1flBgER6ERC4BrFh8QrJO1C6RTjWY0A1?=
+ =?us-ascii?Q?E82wvf3Z+2RQ4G6dehJic2sNnwzGjjgizCQMf1CE+QkunuIaFwnzuLzGwC9g?=
+ =?us-ascii?Q?Q0YbQCpo0nB91vijOgEcpvnjgOY2KnbEvfVFsQaBwmku+04RaSnZlFUPOBYU?=
+ =?us-ascii?Q?sf7SbVjTUIf76PxU3vZzGWdCNgeSOuGbVTjQhMXwIjBgNPCm7qaWcM/k2Vux?=
+ =?us-ascii?Q?fYoGEKCgpkR9uE+hHEDQp0oRMsu3U27o3aEIgW3H7vyo422Zjyt9G4xfM8TX?=
+ =?us-ascii?Q?Zs+Rx8Xr20HNdylJdUPHNxWRvdwKgDhdL3211kg1CaBrZef/7Jv09iGwhfNP?=
+ =?us-ascii?Q?IYfaGUKa55a52ueqkVRymkepCp9aIv0eJulHFe0gCnW5KdOp+h3747Mpsbt/?=
+ =?us-ascii?Q?Ke3RKphIlD6gDMEO+wxFVwNmoIm4Qqpj0Egb7cxrGZpSu9/0yt4nxTFXDUdW?=
+ =?us-ascii?Q?0ZHX5eGyeFmMiNzqFK+SlXjCh/GTvAucI+NeEiqX5qYJt38irAzbsUVGl+mf?=
+ =?us-ascii?Q?zqG7D+d1J2mj4RRtZ11WJz+Of254xYEAcP7ueHeYul+Flv4+xeEWMYMc1SZP?=
+ =?us-ascii?Q?NfC19kde0MB7z1klK9XUy9/aAvu9KAwQkpKvnH/PK+MTrwj1FWftD/4WyHZM?=
+ =?us-ascii?Q?WsvBy3Wzvjk6sxRTVPKWwqRO83IoNamiiaCD2DJOfCLT2jYJfdqHeaNFvD0J?=
+ =?us-ascii?Q?j/ULqF/RzgClfhVfqGawRQp+kQi5ov+o8iqmGwzVrOt4Rta2cUxK1UWSSmtE?=
+ =?us-ascii?Q?NTFfU310IX+u+/xeCtBHeOLX62ykRQGQglQnv/HWMk+LcHdDjoML+KOdrP9j?=
+ =?us-ascii?Q?N+oC+hT9sT3qKHZAKgT4SQfrFOtUukL6yOsD9q/3x8Yu+ikTnHyDMpxOpZkk?=
+ =?us-ascii?Q?rkwM+sKzTiK7WF1K7HKJ1H02B0Yw2fNCcCJL1W90chgPgPCwjNDsjTJ9wnuD?=
+ =?us-ascii?Q?gGH1t/GZ2HtfHHkF2i0dsPeWO3VXwi+f/FN4GnfjTpbAdy5dkA6aSRoZXQs1?=
+ =?us-ascii?Q?uk7Azkxkmh2H4D/9njJsPMaAvMR9cuZoYOMLq/CMjRBHU9BcilhYD8qcTZ8S?=
+ =?us-ascii?Q?JM8duwkb+t423OaxsrOn2J5Q7hBgUhsgUM2Ip6dvBB6VltSrjxfZ+N+RwzFf?=
+ =?us-ascii?Q?BHU3smJU21HVCO2FhjWp4keU2W5M/zvW06Fz3jt7KTGSGWHDSDcERPMf+oJ+?=
+ =?us-ascii?Q?0NiVIS5R6ANhIZCKH/rYolwhyQLJPE2HsoSGn70WRcZr7X313DRwYQy2URKQ?=
+ =?us-ascii?Q?72y95CCdSGjeWdDA6Wd97q2Mt6FWRDQ3EZzr2XClgmio2DGz9iS9lbt9nPEX?=
+ =?us-ascii?Q?oMSU20vheDmp5EKc+jEbNxPuodXme8kfdeLkFQe1iUw4mBET?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS6PR11MB087165:EE_|IA1PR11MB9469:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9bdc254a-ba53-44b4-6ea9-08df459ca4c7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|1800799024|366016|376014|18002099003|6133799003|261009223027099003|22082099003|261021121427099003|11063799006|56012099006|261021135927099003|261028144727099003|261022075727099003|4143699003|261022105027099003|261022115727099003|261026140227099003|261021133027099003|261026121527099003|261026130827099003|261021123027099003|261021130227099003|261026135527099003|261022113327099003|10067099003|261102123227099003;
-X-Microsoft-Antispam-Message-Info: h5KMlPp6GzH6wZ+etq604UIxKWFInHffQaZKaJp+ka/NZucLjQfjtWeBFPe69DgFoSNm+kz0TlOcCrFpD1buMsPNqYcQNKNtZ+eQ8Z7bq0SCN/x6a4ppw00ceKxBkYNNOGXJBDmQau3uvwvamrYrgXoYomEop9K3/6+KMs+IWoBcqXKGmy8MReXazCyPpzgrKEXZWF2DrK5OeJZ9AHWth0JtCk7uQEdyK4ZXf2bjQrEw+PkCJfgYl+CjRO2GuwEfyYoNOiLobzNNf81IzCl9dHFdAnH8yxf2sVviuFmHrpGc0NA8yjbqzgsZHUkB9/QYDI5zYYbJ18z+pxOM8ZdoWWwq7P2huoBs+LeLtW7o1b+5iKDkbWPDBWK0qO3oO8H/INMSfk5R7t1BcC8bIBz+/6MoxZD2U3T3EQpCeQTHg72CxHvH0vqZ+DVfNHcYapB2I69A4ZzaMABXaaSo5K8mtZpwSixId7bXqR9jfIyjihlNF0XMPm9+m12QkhdR9A7hbTG+2zgetE4OXsLQ1rv9bemFuYwtfTE4ub39qzzZNptnCffxwHuYj2iU6csbfzyNsHpW617EC+OhlNGUwXK9EdgtJsBU5TP1RRU+Z2s9xjBWRmEvIsTU2c5OBJAoaJA3Sjgxd8UzDIAblmKieMMKwntXlMxlkeO8oeTc0fU0q4g=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS6PR11MB087165.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(1800799024)(366016)(376014)(18002099003)(6133799003)(261009223027099003)(22082099003)(261021121427099003)(11063799006)(56012099006)(261021135927099003)(261028144727099003)(261022075727099003)(4143699003)(261022105027099003)(261022115727099003)(261026140227099003)(261021133027099003)(261026121527099003)(261026130827099003)(261021123027099003)(261021130227099003)(261026135527099003)(261022113327099003)(10067099003)(261102123227099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cCtya20rMEpIM2dQOGpUT0hYTU91clA1d1Zqc3p0YTc4K0UyQkZUVkVnSENT?=
- =?utf-8?B?NitkUTRUbHF4cVZIOU1JaTNNOEZTMlZNb0tRYnk0WWJFdzdxVzhJR25UZnJz?=
- =?utf-8?B?MUxrOUZ3RGRTSWN0eWhnVnRXTmpGV1ZPSTF0U3RrU1VzNXhVUFcvbkFTQmZw?=
- =?utf-8?B?SHByMGEzK0RrVzkxQTM0Ymcyamh5MGFzWVJobVpFcUFUNWVBRTZvWWJzRWFM?=
- =?utf-8?B?VzVrUFlGWHV0RVRZVHVKY25hZGtOcnB0TWxSODNYZ3hOeEpZYmZiWE85YzQ4?=
- =?utf-8?B?V2I2dVM2RVZEbklmVlpoRzBwa0dlN3R2QzdiVkh4R0ZzbTlTNEw0OGNvQjFt?=
- =?utf-8?B?aWlmbGZEaXBPMTFZQ3liREpFQVFHL1llc2FybDJ1UlY4R3ZrT1BVUnFybVYx?=
- =?utf-8?B?eDA2NE9OL0Y5UlA5ZXMwOVJJd0JGKzBDVmVRZ2Rmam5nNWI4Y2RaQ0FtdFhX?=
- =?utf-8?B?RjlqNEZvQXV4T1lGVnhldytEODVUUmhIL2FKTUN5QlorOGQxVWNnaGFFSGti?=
- =?utf-8?B?YnFvVzBiMWlsUGNCaFRGb3ZEZVdkRjA2MWdRTXVwRXNSMThzblZxQUxaaEJQ?=
- =?utf-8?B?eUlkcTVnN09Hc3VLc1FEd3kxaHhxa09oNzdEUnZzSHRqZHZNekhrSFRMYTRV?=
- =?utf-8?B?ZGZEMnUyeTg0REFjbllkbHcrK3ZCN1FUNDNxL2lkdFptSTZWZURUK0lkdEFT?=
- =?utf-8?B?WWVGMEhkVDUwUXZnWHVIelMyQnREUXhudDRuTEozZ1lMOWk5MmREOGVML1o1?=
- =?utf-8?B?UkRkcXpnamhOTVVXdW1WK0NiZ1JXVlozTTNOWU42VGI3U2NWOEZYcGVDRFFQ?=
- =?utf-8?B?OFNvY1pDOU5wWjVJVTB3TDM1NHF4QjNpbnV5dmUzQTBqVDAzTUdINlV4eWlZ?=
- =?utf-8?B?Nmt2b1RzWGIvUFVVNmRta2hnYXdpUHgxeTUydGVjNWxvOGEwZnlmYm5hQmlW?=
- =?utf-8?B?VEZVNVh2OGJGRktDaC9SaFQ3ZnNEZ2VhVnRFbnhONU00U0JNL0xxWVIvQ0xB?=
- =?utf-8?B?T0hJZTB5ZGNtc1BEOFduRExSVUdkaFgwdGREd3c0MnJRaEphRk5FSlg3TXhQ?=
- =?utf-8?B?ZzVVeDhwb29NNzlpMldHOHR4R1NzWE1LRGFJMlg5dCtXcmQrVzlvVTV5ZS9r?=
- =?utf-8?B?Tmw1Y2ZwakpwWi9jWVdheHZxbFdGcTVNWnBCNTdMTndWQ21vU25sKzNma1l6?=
- =?utf-8?B?em5ZRjNhcUlqRzNzL0dqVzFHbWRFTHFXWWVkeFZjcTVrdFZsNy8xQjhKRXh1?=
- =?utf-8?B?OFo3OXFIZHZxOStHVTRLaUlUM0dPajhxK1l5Q0RWcHlhd3hFMGxJTmNFeE82?=
- =?utf-8?B?RVhObDZoVnpZTjU3RElvRVhBRGhvN3ZDZ2R2QkdpekpZMTNnZHlLaDJEVExB?=
- =?utf-8?B?TzFZSVJWQzBUaXlySi80WE00bzFaTUV2bUF3VmxRblowRW4wK2hLbjhGYmdG?=
- =?utf-8?B?WTlvSkxVNEw0MldTbEk3aUdLWW5xTmdjcG1mRU53ZjhXV2psUlFkTTBzMGdq?=
- =?utf-8?B?eGtLVmNSZ3loamhpcjZ3YXZOUjROOVB1d1RwR20yaWZIeDVTSWFEc1FSMThm?=
- =?utf-8?B?aG9raTZHQUMzcDEyU2tiTEV6Y0Z0Ni8xR0Jqd2NuUGhtdlF0eE41YUdwSnZE?=
- =?utf-8?B?U3NLcVpCK3hzdGRRaGEyMGhnREhtaEk0eVBueS95NVVPYXFOMnk3L1hxenJ3?=
- =?utf-8?B?d2NTOUJUOFhBY0hZZDBTWGgrb0ppT1ZxcmxtOVVjc0V5SXFZYTBnbVJRcStm?=
- =?utf-8?B?d0hiWXpFQVI2alduTEt0UUZBR1ZpTXRLdzFnYkZIMzMyb0NGOWJhTWR4RVRD?=
- =?utf-8?B?allNQmxPaDdSTEY1Q096M05sRHY5b0ZoY3FKTkVad0hFemJ4bVBBc3RhWXJQ?=
- =?utf-8?B?V05rRnBJclUyeGF0K0VzYitTQStyeWpNYzV3TTh1d0FBenp1b3JjVlFJTHpN?=
- =?utf-8?B?MmU1TUpsZXd1cWltRGhTSU43ajVENlFXcitqNkVPMnFhNXRFR3E2bDFSdkdm?=
- =?utf-8?B?U1lKVjhvY3hpNWV0dTV5ZXFCdkpIdTc5Rk9MY09ha2lWb0c2Z2p5bE1OTTBQ?=
- =?utf-8?B?VGhvZ1VzOC90Z2tRVFQrWGMxSHROZFRFUlZyRCtPSFZZNkJsS0JrWmpEbS9O?=
- =?utf-8?B?YzZHVXl4akFjbDI0Q29QVVJLWnZBOG5EMTVUTEF4WGwzUFdBRWUwYXdOZE4x?=
- =?utf-8?B?dnoyemJoaFVhMkpRUEU0bUM1aHVHSzFFZmJiRWNLV3JLUUlra0NobjVsWC8z?=
- =?utf-8?B?Tkd3ZkhZTS9jSXA2c0NCYW91SFpacnVKOVErQk1UTzFWMENwRmFtNG5CUlZL?=
- =?utf-8?B?K0ZrQUhTc05HWk5OYlpjOFBQMXFSS0kyNFVNT21xZTBlamlJQ3ZrMzRORy8w?=
- =?utf-8?Q?ITy1xu3Tdkz6KMls=3D?=
-X-Exchange-RoutingPolicyChecked: nR+os5EeExQwnY4p6Y24uKx6KcSnoVgm8FrGDP4a7TiFn2h6AKuPJDnW/gJChgY9vJ0HV+t1BvsGinUSRS5/tL4a+xcMoMBzd5BppNSvrq2AxT2K9OnfvuSmysmuCPAIygIprsIShfeSoYBqWa+hk7roOVkN4Kd8ihKUfONuxTgTNkigc+UOL9tOS3JWAn66c2Yr+jwRvzdrqAJWSwaq1JmULLqG5g/1rk1YsSi1cNS38glnSnhjawjbJVyLIRFhFzR942k5uEBltT8dIPB6H/zSCsO4ty+U1ecGwFxpWk4DnPhdtv9XQIIKz5r52PxKd5hMlT0G8vCczcaFa9LQwA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9bdc254a-ba53-44b4-6ea9-08df459ca4c7
-X-MS-Exchange-CrossTenant-AuthSource: DS6PR11MB087165.namprd11.prod.outlook.com
+X-OriginatorOrg: amd.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Nov 2026 17:51:59.2749 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qNBTQtRKWxYfqoFrC9l71Q+kZqqDpk5lFe1BCSKZeNcBs1B0ZbxxxnJcUD/bXaVg+WbrUMcYtMLxFyP+LniE0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB9469
-X-OriginatorOrg: intel.com
+X-MS-Exchange-CrossTenant-AuthSource: CHAPR12MB999247.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 905d6c3f-2851-4924-cb7a-08df45a9b9f2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Nov 2026 19:25:38.0484 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: c06Xnk6FKZsdp4PovZN79cGAzwzzdBDEKGD6C6iHHhNRiERR3a0CZjaOhWiYWUmL
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7358
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -174,236 +133,921 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ravi,
+It's been about a week since this was reviewed.
 
-On 16-11-2026 20:24, Ravi Kishore Koppuravuri wrote:
-> Add tracefs helpers to read and inspect xe_error_cper events, including
-> CPER event polling, field extraction, and little-endian hex value
-> parsing.
+Tvrtko has also reviewed the kernel change.
+
+Is there anything left to do before this is merged? With the current versio=
+n, tests are skipped if the ioctl is still disabled in the kernel.
+
+David Francis
+
+________________________________________
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Sent: Thursday, November 12, 2026 8:43 AM
+To: Francis, David; igt-dev@lists.freedesktop.org
+Cc: Prosyak, Vitaly; Kamil Konieczny; Sebastian Brzezinka; Koenig, Christia=
+n; Simona Vetter; Deucher, Alexander
+Subject: Re: [PATCH v4] tests/intel: Add edge case and race condition tests=
+ for GEM_CHANGE_HANDLE
+
+
+On 10/11/2026 15:32, David Francis wrote:
+> From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 >
-> Signed-off-by: Ravi Kishore Koppuravuri <ravi.kishore.koppuravuri@intel.com>
-> ---
-> v3:
->    - Separated get_error_counter() from wait_cper_event() to make tracing more modular
->    - Added start_cper_tracing() and stop_cper_tracing() helpers to manage CPER tracing lifecycle
-> ---
->   tests/intel/xe_err_injection.c | 156 +++++++++++++++++++++++++++++++++
->   1 file changed, 156 insertions(+)
+> Add a GPU-agnostic GEM_CHANGE_HANDLE tests. These test for basic
+> functionality, edge cases, and race conditions of this ioctl against
+> itself, gem close, gem create, and prime import and export.
 >
-> diff --git a/tests/intel/xe_err_injection.c b/tests/intel/xe_err_injection.c
-> index 6efe092c7..0b50effb3 100644
-> --- a/tests/intel/xe_err_injection.c
-> +++ b/tests/intel/xe_err_injection.c
-> @@ -13,6 +13,7 @@
->    */
->   
->   #include <fcntl.h>
-> +#include <limits.h>
-NAME_MAX and PATH_MAX are already used by the earlier patch. Could this 
-include be moved there so each patch builds on its own?
->   #include <stdio.h>
->   #include <stdlib.h>
->   #include <string.h>
-> @@ -598,6 +599,161 @@ static void configure_cper_on_query_entry(int drm_fd, bool state)
->   	igt_info("%sabled: %s\n", state ? "en" : "dis", path);
->   }
->   
-> +/**
-> + * tracefs_read_trace - read the current trace buffer into a dynamically allocated buffer.
-> + * Caller must free() the dynamic memory.
-> + */
-> +static char *tracefs_read_trace(void)
-> +{
-> +	int fd;
-> +	char *buf;
-> +	ssize_t n;
-> +	size_t cap = 65536, used = 0;
-> Inverted xmas tree. For the magic numbers use a macro. buf/n are too generic.
-> +
-> +	fd = open(TRACEFS_TRACE, O_RDONLY);
-> +	igt_assert_f(fd >= 0, "Cannot open trace file: %s\n", strerror(errno));
-> +
-> +	igt_info("Reading trace buffer: %s\n", TRACEFS_TRACE);
-> +
-> +	/* trace file size is not known ahead of time; read in chunks */
-> +	buf = malloc(cap);
-> +	igt_assert(buf);
-> +
-> +	while (1) {
-> +		n = read(fd, buf + used, cap - used - 1);
-> +		if (n <= 0)
-A read error (n < 0) is treated the same as EOF. Could an error message 
-with strerror(errno) be added to tell them apart ?
-> +			break;
-> +		used += n;
-> +		if (used >= cap - 1) {
-> +			cap *= 2;
-> +			buf = realloc(buf, cap);
-> +			igt_assert(buf);
-fd and buf are leaked if an assert fires. Also use igt_assert_f() with a 
-message , together with cleanup of both resources?
-> +		}
-> +	}
-> +	buf[used] = '\0';
-> +	close(fd);
-> +	igt_info("Read %zu bytes from trace buffer\n", used);
-> +	return buf;
-> +}
-> +
-> +/**
-> + * start_cper_tracing - enable the xe_error_cper trace event and the
-> + * cper_on_query sysfs attribute, and clear the trace buffer. Must be
-> + * called before query_error_counter() so the resulting CPER dump is captured.
-> + */
-> +static void start_cper_tracing(int drm_fd)
-> +{
-> +	configure_xe_cper_tracefs(true);
-> +	configure_cper_on_query_entry(drm_fd, true);
-If configure_cper_on_query_entry() asserts, does the trace event stays 
-enabled? if so, it should be handled in the exit handler.
-> +	tracefs_clear_trace();
-> +}
-> +
-> +/**
-> + * stop_cper_tracing - disable the cper_on_query sysfs attribute and the
-> + * xe_error_cper trace event, and clear the trace buffer.
-> + */
-> +static void stop_cper_tracing(int drm_fd)
-> +{
-> +	configure_cper_on_query_entry(drm_fd, false);
-> +	configure_xe_cper_tracefs(false);
-> +	tracefs_clear_trace();
-> +}
-> +
-> +/**
-> + * wait_for_cper_event - wait up to CPER_EVENT_TIMEOUT_SEC for an
-> + * xe_error_cper line to appear in the trace buffer. Caller must have
-> + * already called start_cper_tracing() and get_counter().
-> + * Returns a malloc'd copy of the matching trace line, or NULL.
-> + * Caller must free()
-> + */
-> +static char *wait_for_cper_event(int drm_fd)
-drm_fd is unused. Could the parameter be dropped?
-> +{
-> +	char *trace, *line, *match = NULL;
-Could trace and line be renamed to trace_buf and trace_line as these are 
-too generic.
-> +	int elapsed = 0;
-> +
-> +	/* Poll the trace buffer until xe_error_cper appears or timeout */
-> +	do {
-> +		sleep(1);
-> +		elapsed++;
-> +		trace = tracefs_read_trace();
-> +
-> +		/* Walk lines looking for "xe_error_cper:" */
-> +		for (line = strtok(trace, "\n"); line; line = strtok(NULL, "\n")) {
-> +			if (strstr(line, "xe_error_cper:")) {
-> +				match = strdup(line);
-strdup() is not checked for NULL.
-> +				break;
-> +			}
-> +		}
-> +		free(trace);
-> +	} while (!match && elapsed < CPER_EVENT_TIMEOUT_SEC);
-Use igt_debug() for the timeout case.
-> +
-> +	return match;
-> +}
-> +
-> +/**
-> + * parse_cper_event_field - extract a "key=value" token from a trace line.
-> + * Returns a pointer into a static buffer; valid until the next call.
-Update the comment to state the "cper_raw" exception.
-> + */
-> +static const char *parse_cper_event_field(const char *line, const char *key)
-> +{
-> +	static char val[512];
-Use a macro for this magic number. Would a warning be useful for the 
-values longer than 512?
-> +	const char *p;
-The name val/p is too generic. what about  field_val/field_pos ?
-> +	int klen;
-Should it be size_t?
-> +	size_t vlen;
-> +
-> +	klen = strlen(key);
-> +	p = strstr(line, key);
-A key can match inside another field name (e.g. cper in cper_len, dev in 
-device etc.). Could the key be matched with a leading space and trailing =?
-> +	if (!p)
-> +		return NULL;
-> +	p += klen;
-> +	if (*p != '=')
-> +		return NULL;
-Both failures return NULL with no message, so the callers cannot tell 
-"key missing" from "malformed". Use igt_debug().
-> +	p++;
-> +
-> +	if (!strcmp(key, "cper_raw"))
-> +		return p;
-> +
-> +	vlen = strcspn(p, " \t\n");
-> +
-> +	if (vlen >= sizeof(val))
-> +		vlen = sizeof(val) - 1;
-> +	memcpy(val, p, vlen);
-> +	val[vlen] = '\0';
-> +	return val;
-> +}
-> +
-> +/**
-> + * hexbuf_get_byte - read byte at 'offset' from a "xx xx xx ..." hex string.
-> + */
-> +static uint8_t hexbuf_get_byte(const char *hexstr, size_t offset)
-> +{
-> +	unsigned int b;
-Too generic name.
-> +	const char *p = hexstr;
-> +	size_t i;
-Inverted xmas tree.
-> +
-> +	for (i = 0; i <= offset; i++) {
-> +		while (*p == ' ')
-> +			p++;
-> +		igt_assert_f(sscanf(p, "%02x", &b) == 1,
-> +			     "Failed to parse hex byte %zu in '%s'\n", i, hexstr);
-> +		p += 2;
-> +	}
-> +	return (uint8_t)b;
-> +}
-> +
-> +/**
-> + * hexbuf_get_u32le - read a 4-byte little-endian u32 starting at byte offset.
-> + */
-> +static uint32_t hexbuf_get_u32le(const char *hexstr, size_t offset)
-The same concept is called cper_raw, hexstr and hexbuf in different 
-places. Could one term be used consistently?
-> +{
-> +	uint32_t v = 0;
-Too generic name.
-> +	int i;
-> +
-> +	for (i = 0; i < 4; i++)
-> +		v |= (uint32_t)hexbuf_get_byte(hexstr, offset + i) << (8 * i);
-Seems like it is O(n) complexity per byte. So reading a whole record 
-could take O(n*n).
-A simpler alternative is to convert cper_raw into a uint8_t array once. 
-All later reads then index the array directly.
+> GEM_CHANGE_HANDLE is currently wired to drm_invalid_op in DRM core. This =
+IGT
+> coverage is a prerequisite for validating the eventual kernel-side ioctl
+> implementation and makes fixing its security bugs safer.
+>
+> v2: Small cleanups, including cutting some includes and no assert in thre=
+ads
+> v3: Skip if ioctl disabled
+> v4: hop around randomly on race tests
+
+Nice, v4 is much easier to follow. Thank you for iterating patiently!
+
+Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
 Regards,
-Soham
-> +	return v;
-> +}
+
+Tvrtko
+
+>
+> Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> Cc: Christian Konig <christian.koenig@amd.com>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> Signed-off-by: David Francis <David.Francis@amd.com>
+> ---
+>   include/drm-uapi/drm.h          |  23 +
+>   tests/intel/gem_change_handle.c | 728 ++++++++++++++++++++++++++++++++
+>   tests/meson.build               |   1 +
+>   3 files changed, 752 insertions(+)
+>   create mode 100644 tests/intel/gem_change_handle.c
+>
+> diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
+> index baa620e3f..cf131da24 100644
+> --- a/include/drm-uapi/drm.h
+> +++ b/include/drm-uapi/drm.h
+> @@ -619,6 +619,21 @@ struct drm_gem_open {
+>       __u64 size;
+>   };
+>
+> +/**
+> + * struct drm_gem_change_handle - Argument for &DRM_IOCTL_GEM_CHANGE_HAN=
+DLE ioctl.
+> + * @handle: The handle of a gem object.
+> + * @new_handle: An available gem handle.
+> + *
+> + * This ioctl changes the handle of a GEM object to the specified one.
+> + * The new handle must be unused. On success the old handle is closed
+> + * and all further IOCTL should refer to the new handle only.
+> + * Calls to DRM_IOCTL_PRIME_FD_TO_HANDLE will return the new handle.
+> + */
+> +struct drm_gem_change_handle {
+> +     __u32 handle;
+> +     __u32 new_handle;
+> +};
 > +
 >   /**
->    * SUBTEST: cper-validate-tracefs-event
->    * Description: Verify that the xe_error_cper tracefs event exists under
+>    * DRM_CAP_DUMB_BUFFER
+>    *
+> @@ -1296,6 +1311,14 @@ extern "C" {
+>    */
+>   #define DRM_IOCTL_MODE_CLOSEFB              DRM_IOWR(0xD0, struct drm_m=
+ode_closefb)
+>
+> +/**
+> + * DRM_IOCTL_GEM_CHANGE_HANDLE - Move an object to a different handle
+> + *
+> + * Some applications (notably CRIU) need objects to have specific gem ha=
+ndles.
+> + * This ioctl changes the object at one gem handle to use a new gem hand=
+le.
+> + */
+> +#define DRM_IOCTL_GEM_CHANGE_HANDLE    DRM_IOWR(0xD2, struct drm_gem_cha=
+nge_handle)
+> +
+>   /*
+>    * Device specific ioctls should only be in their respective headers
+>    * The device specific ioctl range is from 0x40 to 0x9f.
+> diff --git a/tests/intel/gem_change_handle.c b/tests/intel/gem_change_han=
+dle.c
+> new file mode 100644
+> index 000000000..1aef48d0a
+> --- /dev/null
+> +++ b/tests/intel/gem_change_handle.c
+> @@ -0,0 +1,728 @@
+> +// SPDX-License-Identifier: MIT
+> +/*
+> + * Copyright 2026 Advanced Micro Devices, Inc.
+> + * Copyright 2026 Intel Corporation
+> + *
+> + * GPU-agnostic race condition tests for GEM_CHANGE_HANDLE ioctl
+> + *
+> + * NOTE: This test is located in tests/intel/ directory because:
+> + * 1. All gem_* tests are traditionally placed in tests/intel/ regardles=
+s
+> + *    of GPU vendor, following IGT convention for GEM-related tests
+> + * 2. The test uses i915/gem.h and i915/gem_create.h for GEM object crea=
+tion
+> + *    on Intel platforms, though it works vendor-agnostically via DRM co=
+re
+> + * 3. Some subtest designs (noop-same-handle, invalid-*, edge-*, functio=
+nal-*)
+> + *    were proposed by Simona Vetter (Intel), hence Intel copyright head=
+er
+> + *
+> + */
+> +
+> +#include <errno.h>
+> +#include <limits.h>
+> +#include <pthread.h>
+> +#include <sched.h>
+> +#include <string.h>
+> +
+> +#include "igt.h"
+> +#include "igt_device.h"
+> +#include "i915/gem.h"
+> +#include "i915/gem_create.h"
+> +
+> +#include "lib/amdgpu/amd_memory.h"
+> +#include "igt_amd.h"
+> +
+> +#define BO_SIZE (16 * 1024)
+> +#define RACE_DURATION_SEC 1
+> +
+> +//#define VERBOSE_LOGGING 0
+> +
+> +/**
+> + * TEST: gem change handle
+> + * Description: tests for drm ioctl GEM_CHANGE_HANDLE
+> + * Category: Core
+> + * Mega feature: General Core features
+> + * Sub-category: GEM handles
+> + * Functionality: gem change handle
+> + * Feature: gem
+> + * Run type: FULL
+> + *
+> + * SUBTEST: sanity
+> + * Description: Changing a handle to a new value works as intended
+> + *
+> + * SUBTEST: change_prime
+> + * Description: Changing a handle affects the result of prime import
+> + *
+> + * SUBTEST: new_handle_zero
+> + * Description: Changing a handle to 0 should fail
+> + *
+> + * SUBTEST: new_handle_exceeds_int_max
+> + * Description: Changing a handle to > INT_MAX should fail
+> + *
+> + * SUBTEST: new_handle_equals_old_handle
+> + * Description: Changing a handle to itself should fail
+> + *
+> + * SUBTEST: new_handle_taken
+> + * Description: Changing a handle to a value already in use should fail
+> + *
+> + * SUBTEST: invalid_handle
+> + * Description: Changing a non-existent handle should fail
+> + *
+> + * SUBTEST: race_change_change
+> + * Description: Test for race conditions between two GEM_CHANGE_HANDLE
+> + *
+> + * SUBTEST: race_change_create_close
+> + * Description: Test for race conditions between GEM_CHANGE_HANDLE, GEM_=
+CREATE, and GEM_CLOSE
+> + *
+> + * SUBTEST: race_change_export_import
+> + * Description: Test for race conditions between GEM_CHANGE_HANDLE, prim=
+e export, and prime import
+> + */
+> +
+> +IGT_TEST_DESCRIPTION("Edge case and race condition tests for GEM_CHANGE_=
+HANDLE");
+> +
+> +/* Structs */
+> +
+> +/* Driver type detection */
+> +enum gpu_driver {
+> +     DRIVER_TYPE_UNKNOWN =3D 0,
+> +     DRIVER_TYPE_I915,
+> +     DRIVER_TYPE_AMDGPU,
+> +};
+> +
+> +/* GPU context structure */
+> +struct gpu_ctx {
+> +     int fd;
+> +     enum gpu_driver driver;
+> +};
+> +
+> +/* Helpers */
+> +
+> +static uint32_t gpu_create_bo(struct gpu_ctx *ctx, uint64_t size)
+> +{
+> +     uint32_t handle =3D 0;
+> +
+> +     switch (ctx->driver) {
+> +     case DRIVER_TYPE_I915: {
+> +             handle =3D gem_create(ctx->fd, size);
+> +             break;
+> +     }
+> +     case DRIVER_TYPE_AMDGPU:
+> +             handle =3D igt_amd_create_bo(ctx->fd, size);
+> +             break;
+> +     default:
+> +             igt_assert_f(0, "Unsupported driver\n");
+> +     }
+> +
+> +     igt_assert(handle !=3D 0);
+> +     return handle;
+> +}
+> +
+> +static int gem_close_bo(struct gpu_ctx *ctx, uint32_t handle)
+> +{
+> +     struct drm_gem_close close_args =3D { .handle =3D handle };
+> +
+> +     return igt_ioctl(ctx->fd, DRM_IOCTL_GEM_CLOSE, &close_args);
+> +}
+> +
+> +static int gem_change_handle(struct gpu_ctx *ctx, uint32_t old_handle, u=
+int32_t new_handle)
+> +{
+> +     struct drm_gem_change_handle args =3D {
+> +             .handle =3D old_handle,
+> +             .new_handle =3D new_handle,
+> +     };
+> +     return igt_ioctl(ctx->fd, DRM_IOCTL_GEM_CHANGE_HANDLE, &args);
+> +}
+> +
+> +static enum gpu_driver detect_driver(int fd)
+> +{
+> +     /* Check AMDGPU first (primary target) */
+> +     if (is_amdgpu_device(fd))
+> +             return DRIVER_TYPE_AMDGPU;
+> +     if (is_i915_device(fd))
+> +             return DRIVER_TYPE_I915;
+> +     return DRIVER_TYPE_UNKNOWN;
+> +}
+> +
+> +static bool is_ioctl_disabled(struct gpu_ctx *ctx)
+> +{
+> +     uint32_t handle, new_h;
+> +     int ret;
+> +     bool result;
+> +
+> +     handle =3D gpu_create_bo(ctx, 4096);
+> +     new_h =3D handle + 1000;
+> +
+> +     ret =3D gem_change_handle(ctx, handle, new_h);
+> +     result =3D (ret !=3D 0 && errno =3D=3D EINVAL);
+> +
+> +     gem_close_bo(ctx, handle);
+> +     gem_close_bo(ctx, new_h);
+> +
+> +     return result;
+> +}
+> +
+> +#ifdef VERBOSE_LOGGING
+> +#define verbose_log(...) igt_info(__VA_ARGS__)
+> +#else
+> +#define verbose_log(...)
+> +#endif
+> +
+> +/* Sanity and Functionality tests */
+> +
+> +/**
+> + * test_sanity - verify rename actually works
+> + *
+> + * After a successful rename:
+> + * - GEM_CLOSE(old_handle) must FAIL (handle no longer exists)
+> + * - GEM_CLOSE(new_handle) must SUCCEED (object is there)
+> + */
+> +static void test_sanity(struct gpu_ctx *ctx)
+> +{
+> +     uint32_t handle, new_h;
+> +     int ret;
+> +
+> +     handle =3D gpu_create_bo(ctx, 4096);
+> +     new_h =3D handle + 1000;
+> +
+> +     /* Perform the rename */
+> +     ret =3D gem_change_handle(ctx, handle, new_h);
+> +     igt_assert_f(ret =3D=3D 0,
+> +                  "gem_change_handle(%u -> %u) failed: %s\n",
+> +                  handle, new_h, strerror(errno));
+> +
+> +     /* Old handle must be invalid now */
+> +     ret =3D gem_close_bo(ctx, handle);
+> +     igt_assert_f(ret < 0 && errno =3D=3D EINVAL,
+> +                  "GEM_CLOSE(old_handle=3D%u) should fail with EINVAL, "
+> +                  "got ret=3D%d errno=3D%d (%s)\n",
+> +                  handle, ret, errno, strerror(errno));
+> +
+> +     /* New handle must be valid */
+> +     ret =3D gem_close_bo(ctx, new_h);
+> +     igt_assert_f(ret =3D=3D 0,
+> +                  "GEM_CLOSE(new_handle=3D%u) should succeed, "
+> +                  "got ret=3D%d errno=3D%d (%s)\n",
+> +                  new_h, ret, errno, strerror(errno));
+> +}
+> +
+> +/**
+> + * test_change_export - changing a handle affects prime import
+> + *
+> + * Importing a prime object that has had its handle changed since it was
+> + * exported should get the new handle
+> + */
+> +static void test_change_export(struct gpu_ctx *ctx)
+> +{
+> +     int ret, handle1, handle2, dmabuf_fd, imported_handle;
+> +
+> +     /* Create a handle and export it */
+> +     handle1 =3D gpu_create_bo(ctx, 4096);
+> +     handle2 =3D handle1 + 1;
+> +     dmabuf_fd =3D prime_handle_to_fd(ctx->fd, handle1);
+> +
+> +     /* When you import, you get the same handle back */
+> +     imported_handle =3D prime_fd_to_handle(ctx->fd, dmabuf_fd);
+> +     igt_assert_eq(imported_handle, handle1);
+> +
+> +     /* Change the handle (should succeed) */
+> +     ret =3D gem_change_handle(ctx, handle1, handle2);
+> +     igt_assert_eq(ret, 0);
+> +
+> +     /* Import, should get the new handle */
+> +     imported_handle =3D prime_fd_to_handle(ctx->fd, dmabuf_fd);
+> +     igt_assert_eq(imported_handle, handle2);
+> +
+> +     /* Confirm gem object is at the new handle */
+> +     igt_assert_eq(gem_close_bo(ctx, handle2), 0);
+> +
+> +     ret =3D gem_close_bo(ctx, handle1);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, EINVAL);
+> +
+> +     close(dmabuf_fd);
+> +}
+> +
+> +/* Edge case and fail case tests */
+> +
+> +/**
+> + * test_new_handle_zero - new_handle =3D 0 should fail
+> + *
+> + * 0 is not a valid gem handle.
+> + */
+> +static void test_new_handle_zero(struct gpu_ctx *ctx)
+> +{
+> +     uint32_t handle;
+> +     int ret;
+> +
+> +     handle =3D gpu_create_bo(ctx, 4096);
+> +
+> +     /* new_handle =3D 0 must fail with -EINVAL */
+> +     ret =3D gem_change_handle(ctx, handle, 0);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, EINVAL);
+> +
+> +     /* Original handle should still be valid */
+> +     igt_assert_eq(gem_close_bo(ctx, handle), 0);
+> +}
+> +
+> +/**
+> + * test_new_handle_exceeds_int_max - new_handle > INT_MAX should fail
+> + *
+> + * The kernel enforces an idr_alloc() limitation: new_handle must be <=
+=3D INT_MAX.
+> + */
+> +static void test_new_handle_exceeds_int_max(struct gpu_ctx *ctx)
+> +{
+> +     uint32_t handle;
+> +     int ret;
+> +
+> +     handle =3D gpu_create_bo(ctx, 4096);
+> +
+> +     /* new_handle > INT_MAX must fail with -EINVAL */
+> +     ret =3D gem_change_handle(ctx, handle, (uint32_t)INT_MAX + 1);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, EINVAL);
+> +
+> +     /* Also test 0xFFFFFFFF */
+> +     ret =3D gem_change_handle(ctx, handle, 0xFFFFFFFF);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, EINVAL);
+> +
+> +     /* Original handle should still be valid */
+> +     igt_assert_eq(gem_close_bo(ctx, handle), 0);
+> +}
+> +
+> +/**
+> + * test_new_handle_equals_old_handle - new_handle =3D old_handle should =
+fail
+> + *
+> + * The ioctl treats old_handle =3D new_handle as invalid input.
+> + */
+> +static void test_new_handle_equals_old_handle(struct gpu_ctx *ctx)
+> +{
+> +     uint32_t handle;
+> +     int ret;
+> +
+> +     handle =3D gpu_create_bo(ctx, 4096);
+> +
+> +     /* new_handle =3D old_handle must fail with -EINVAL */
+> +     ret =3D gem_change_handle(ctx, handle, handle);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, EINVAL);
+> +
+> +     /* same thing if handle doesn't exist */
+> +     ret =3D gem_change_handle(ctx, handle + 1, handle + 1);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, EINVAL);
+> +
+> +     /* Original handle should still be valid */
+> +     igt_assert_eq(gem_close_bo(ctx, handle), 0);
+> +}
+> +
+> +/**
+> + * test_new_handle_taken - new_handle being the handle of another gem ob=
+ject must fail
+> + *
+> + * Not allowed to change a handle to a handle that's already taken
+> + */
+> +static void test_new_handle_taken(struct gpu_ctx *ctx)
+> +{
+> +     uint32_t handle, handle_2;
+> +     int ret;
+> +
+> +     handle =3D gpu_create_bo(ctx, 4096);
+> +     handle_2 =3D gpu_create_bo(ctx, 4096);
+> +
+> +     /* new_handle is taken must fail with -EBUSY */
+> +     ret =3D gem_change_handle(ctx, handle, handle_2);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, EBUSY);
+> +
+> +     /* And the other way */
+> +     ret =3D gem_change_handle(ctx, handle_2, handle);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, EBUSY);
+> +
+> +     /* Original handles should still be valid */
+> +     igt_assert_eq(gem_close_bo(ctx, handle), 0);
+> +     igt_assert_eq(gem_close_bo(ctx, handle_2), 0);
+> +}
+> +
+> +/**
+> + * test_invalid_handle - non-existent handle should fail
+> + *
+> + * Using a handle that doesn't exist should return -ENOENT.
+> + */
+> +static void test_invalid_handle(struct gpu_ctx *ctx)
+> +{
+> +     int ret;
+> +
+> +     /* Use a handle that was never allocated */
+> +     ret =3D gem_change_handle(ctx, 0xDEAD, 0xBEEF);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, ENOENT);
+> +
+> +     /* Handle 0 is also invalid */
+> +     ret =3D gem_change_handle(ctx, 0, 100);
+> +     igt_assert(ret < 0);
+> +     igt_assert_eq(errno, ENOENT);
+> +}
+> +
+> +/* Race condition test structs and helpers */
+> +
+> +struct change_handle_thread_data {
+> +     struct gpu_ctx *ctx;
+> +     uint32_t handles[4];
+> +     bool running;
+> +     int unexpected_errno;
+> +     pthread_barrier_t barrier;
+> +};
+> +
+> +static void set_up_context(struct change_handle_thread_data *data, struc=
+t gpu_ctx *ctx)
+> +{
+> +     data->handles[0] =3D gpu_create_bo(ctx, BO_SIZE);
+> +     igt_assert(data->handles[0] !=3D 0);
+> +     data->handles[1] =3D gpu_create_bo(ctx, BO_SIZE);
+> +     igt_assert(data->handles[1] !=3D 0);
+> +
+> +     data->ctx =3D ctx;
+> +     data->handles[2] =3D max(data->handles[0], data->handles[1]) + 0x10=
+;
+> +     data->handles[3] =3D max(data->handles[0], data->handles[1]) + 0x20=
+;
+> +     data->unexpected_errno =3D 0;
+> +     __atomic_store_n(&data->running, true, __ATOMIC_RELEASE);
+> +
+> +     pthread_barrier_init(&data->barrier, NULL, 2);
+> +}
+> +
+> +/* Race condition test threads */
+> +
+> +static void *change_handle_thread(void *arg)
+> +{
+> +     struct change_handle_thread_data *data =3D arg;
+> +     uint32_t *h =3D data->handles;
+> +     int ret, old, new;
+> +
+> +     pthread_barrier_wait(&data->barrier);
+> +
+> +     while (__atomic_load_n(&data->running, __ATOMIC_ACQUIRE)) {
+> +             old =3D h[rand() % 4];
+> +             new =3D h[rand() % 4];
+> +             ret =3D gem_change_handle(data->ctx, old, new);
+> +             /*
+> +              * Expected errors:
+> +              * - ENOENT: old handle invalid
+> +              * - EBUSY: target handle occupied (collision detected duri=
+ng idr_alloc)
+> +              * - EINVAL: old and new handle are the same
+> +              */
+> +             if (ret !=3D 0 && errno !=3D ENOENT && errno !=3D EBUSY && =
+old !=3D new)
+> +                     data->unexpected_errno =3D errno;
+> +
+> +             sched_yield();
+> +     }
+> +
+> +     return NULL;
+> +}
+> +
+> +static void *close_recreate_thread(void *arg)
+> +{
+> +     struct change_handle_thread_data *data =3D arg;
+> +     uint32_t *h =3D data->handles;
+> +     int handle, ret, i =3D 0;
+> +
+> +     pthread_barrier_wait(&data->barrier);
+> +
+> +     while (__atomic_load_n(&data->running, __ATOMIC_ACQUIRE)) {
+> +             /* Close a handle; keep trying until success */
+> +             while (true) {
+> +                     ret =3D gem_close_bo(data->ctx, h[i]);
+> +                     if (ret =3D=3D 0) {
+> +                             verbose_log("[CLOSE-TID:%lu] Closed handle =
+%u\n",
+> +                                         (unsigned long)pthread_self(), =
+h[i]);
+> +                             break;
+> +                     }
+> +
+> +                     i  =3D (i + 1) % 4;
+> +
+> +                     if (!__atomic_load_n(&data->running, __ATOMIC_ACQUI=
+RE))
+> +                             return NULL;
+> +             }
+> +
+> +             /* Open a handle */
+> +             handle =3D gpu_create_bo(data->ctx, BO_SIZE);
+> +             verbose_log("[CLOSE-TID:%lu] Created new BO with handle %u\=
+n",
+> +                         (unsigned long)tid, handle);
+> +
+> +             /* If the opened handle isn't one of the four ones being
+> +              * shuffled, change_handle it in. Keep trying until success=
+.
+> +              */
+> +             if (handle !=3D h[0] && handle !=3D h[1] && handle !=3D h[2=
+] && handle !=3D h[3]) {
+> +                     while (true) {
+> +                             ret =3D gem_change_handle(data->ctx, handle=
+, h[i]);
+> +                             if (ret =3D=3D 0) {
+> +                                     verbose_log("[CLOSE-TID:%lu] Change=
+ handle %u to %u\n",
+> +                                                 (unsigned long)pthread_=
+self(), handle, h[i]);
+> +                                     break;
+> +                             }
+> +
+> +                             if (ret !=3D 0 && errno !=3D ENOENT && errn=
+o !=3D EBUSY)
+> +                                     data->unexpected_errno =3D errno;
+> +
+> +                             i  =3D (i + 1) % 4;
+> +
+> +                             if (!__atomic_load_n(&data->running, __ATOM=
+IC_ACQUIRE))
+> +                                     return NULL;
+> +                     }
+> +             }
+> +
+> +             sched_yield();
+> +     }
+> +
+> +     return NULL;
+> +}
+> +
+> +static void *export_import_thread(void *arg)
+> +{
+> +     struct change_handle_thread_data *data =3D arg;
+> +     struct drm_prime_handle prime_args;
+> +     uint32_t *h =3D data->handles;
+> +     int handle, i, ret, dmabuf_fd;
+> +
+> +     pthread_barrier_wait(&data->barrier);
+> +
+> +     while (__atomic_load_n(&data->running, __ATOMIC_ACQUIRE)) {
+> +             /* Export a handle; keep trying until success */
+> +             i =3D 0;
+> +             while (true) {
+> +                     prime_args.handle =3D h[i];
+> +                     prime_args.flags =3D DRM_CLOEXEC | DRM_RDWR;
+> +                     ret =3D igt_ioctl(data->ctx->fd, DRM_IOCTL_PRIME_HA=
+NDLE_TO_FD, &prime_args);
+> +                     if (ret =3D=3D 0) {
+> +                             verbose_log("[PRIME-TID:%lu] Exported handl=
+e %u\n",
+> +                                         (unsigned long)pthread_self, h[=
+i]);
+> +                             break;
+> +                     }
+> +
+> +                     i +=3D 1;
+> +                     if (i > 3)
+> +                             i =3D 0;
+> +
+> +                     if (!__atomic_load_n(&data->running, __ATOMIC_ACQUI=
+RE))
+> +                             return NULL;
+> +             }
+> +
+> +             dmabuf_fd =3D prime_args.fd;
+> +
+> +             /* Import the handle; it should be one of the four handles =
+in the shuffle */
+> +             prime_args.fd =3D dmabuf_fd;
+> +             prime_args.flags =3D 0;
+> +             ret =3D igt_ioctl(data->ctx->fd, DRM_IOCTL_PRIME_FD_TO_HAND=
+LE, &prime_args);
+> +             if (ret !=3D 0)
+> +                     data->unexpected_errno =3D errno;
+> +
+> +             handle =3D prime_args.handle;
+> +             verbose_log("[PRIME-TID:%lu] Imported; got handle %u\n",
+> +                         (unsigned long)tid, handle);
+> +             if(handle !=3D h[0] && handle !=3D h[1] && handle !=3D h[2]=
+ && handle !=3D h[3])
+> +                     data->unexpected_errno =3D ERANGE;
+> +
+> +             close(dmabuf_fd);
+> +
+> +             sched_yield();
+> +     }
+> +
+> +     return NULL;
+> +}
+> +
+> +/* Race condition tests */
+> +
+> +/**
+> + * test_race_change_change - Test for race conditions of change_handle a=
+gainst itself
+> + *
+> + * Start two threads, each of which constantly attempt changes between f=
+our different handles
+> + * Try to catch race conditions such as changing same handle to two diff=
+erent handles,
+> + * Changing two handles to the same handle, changing a handle to a handl=
+e itself being changed,
+> + * etc.
+> + */
+> +static void test_race_change_change(struct gpu_ctx *ctx)
+> +{
+> +     pthread_t thread_change_1, thread_change_2;
+> +     struct change_handle_thread_data data =3D {0};
+> +     int num_handles, ret;
+> +
+> +     set_up_context(&data, ctx);
+> +
+> +     /* Start both threads simultaneously */
+> +     igt_assert_eq(pthread_create(&thread_change_1, NULL, change_handle_=
+thread, &data), 0);
+> +     igt_assert_eq(pthread_create(&thread_change_2, NULL, change_handle_=
+thread, &data), 0);
+> +
+> +     /* Let them race */
+> +     sleep(RACE_DURATION_SEC);
+> +
+> +     __atomic_store_n(&data.running, false, __ATOMIC_RELEASE);
+> +     pthread_join(thread_change_1, NULL);
+> +     pthread_join(thread_change_2, NULL);
+> +
+> +     pthread_barrier_destroy(&data.barrier);
+> +
+> +     igt_assert_eq(data.unexpected_errno, 0);
+> +
+> +     /* Exactly two gem objects should still exist */
+> +     num_handles =3D 0;
+> +     for (int i =3D 0; i < 4; i++) {
+> +             ret =3D gem_close_bo(ctx, data.handles[i]);
+> +
+> +             if (ret =3D=3D 0) {
+> +                     num_handles +=3D 1;
+> +             } else {
+> +                     igt_assert_eq(errno, EINVAL);
+> +             }
+> +     }
+> +     igt_assert_eq(num_handles, 2);
+> +}
+> +
+> +/**
+> + * test_race_change_create_close - Test for race conditions of change_ha=
+ndle against gem create / close
+> + *
+> + * Start two threads, one of which attempts to change between four handl=
+es while the other alternates
+> + * closing a gem handle and creating new ones. Test for race conditions =
+such as change a handle that's
+> + * being closed or change a handle to a value that's being created.
+> + */
+> +static void test_race_change_create_close(struct gpu_ctx *ctx)
+> +{
+> +     pthread_t thread_change, thread_create_close;
+> +     struct change_handle_thread_data data =3D {0};
+> +     int num_handles, ret;
+> +
+> +     set_up_context(&data, ctx);
+> +
+> +     /* Start both threads simultaneously */
+> +     igt_assert_eq(pthread_create(&thread_change, NULL, change_handle_th=
+read, &data), 0);
+> +     igt_assert_eq(pthread_create(&thread_create_close, NULL, close_recr=
+eate_thread, &data), 0);
+> +
+> +     /* Let them race */
+> +     sleep(RACE_DURATION_SEC);
+> +
+> +     __atomic_store_n(&data.running, false, __ATOMIC_RELEASE);
+> +     pthread_join(thread_change, NULL);
+> +     pthread_join(thread_create_close, NULL);
+> +
+> +     pthread_barrier_destroy(&data.barrier);
+> +
+> +     igt_assert_eq(data.unexpected_errno, 0);
+> +
+> +     /* Depending on where create / close ended up, there can be 1 or 2 =
+handles open */
+> +     num_handles =3D 0;
+> +     for (int i =3D 0; i < 4; i++) {
+> +             ret =3D gem_close_bo(ctx, data.handles[i]);
+> +
+> +             if (ret =3D=3D 0) {
+> +                     num_handles +=3D 1;
+> +             } else {
+> +                     igt_assert_eq(errno, EINVAL);
+> +             }
+> +     }
+> +     igt_assert(num_handles >=3D 1 && num_handles <=3D 2);
+> +}
+> +
+> +/**
+> + * test_race_change_export_import - Test for race conditions of change_h=
+andle against prime export / import
+> + *
+> + * Start two threads, one of which attempts to change between four handl=
+es while the other exports
+> + * handles, then imports them again. Check for race conditions such as c=
+hanging a handle while exporting
+> + * it or important a handle while changing it.
+> + */
+> +static void test_race_change_export_import(struct gpu_ctx *ctx)
+> +{
+> +     pthread_t thread_change, thread_export_import;
+> +     struct change_handle_thread_data data =3D {0};
+> +     int num_handles, ret;
+> +
+> +     set_up_context(&data, ctx);
+> +
+> +     /* Start both threads simultaneously */
+> +     igt_assert_eq(pthread_create(&thread_change, NULL, change_handle_th=
+read, &data), 0);
+> +     igt_assert_eq(pthread_create(&thread_export_import, NULL, export_im=
+port_thread, &data), 0);
+> +
+> +     /* Let them race */
+> +     sleep(RACE_DURATION_SEC);
+> +
+> +     __atomic_store_n(&data.running, false, __ATOMIC_RELEASE);
+> +     pthread_join(thread_change, NULL);
+> +     pthread_join(thread_export_import, NULL);
+> +
+> +     pthread_barrier_destroy(&data.barrier);
+> +
+> +     igt_assert_eq(data.unexpected_errno, 0);
+> +
+> +     /* Exporting a handle doesn't close it, so should still be exactly =
+2 */
+> +     num_handles =3D 0;
+> +     for (int i =3D 0; i < 4; i++) {
+> +             ret =3D gem_close_bo(ctx, data.handles[i]);
+> +
+> +             if (ret =3D=3D 0) {
+> +                     num_handles +=3D 1;
+> +             } else {
+> +                     igt_assert_eq(errno, EINVAL);
+> +             }
+> +     }
+> +     igt_assert_eq(num_handles, 2);
+> +}
+> +
+> +int igt_main()
+> +{
+> +     struct gpu_ctx ctx =3D { .fd =3D -1 };
+> +
+> +     igt_fixture() {
+> +             ctx.fd =3D drm_open_driver_render(DRIVER_ANY);
+> +             igt_require(ctx.fd >=3D 0);
+> +
+> +             ctx.driver =3D detect_driver(ctx.fd);
+> +             igt_require_f(ctx.driver !=3D DRIVER_TYPE_UNKNOWN,
+> +                           "Unsupported GPU driver\n");
+> +
+> +             if (ctx.driver =3D=3D DRIVER_TYPE_I915)
+> +                     igt_require_gem(ctx.fd);
+> +
+> +             igt_require_f(!is_ioctl_disabled(&ctx),
+> +                           "GEM_CHANGE_HANDLE ioctl appears to be disabl=
+ed.\n");
+> +     }
+> +
+> +     igt_describe("Sanity Test: Change handle actually changes handle");
+> +     igt_subtest("sanity")
+> +             test_sanity(&ctx);
+> +
+> +     igt_describe("Functionality Test: Change handle affects result of p=
+rime import");
+> +     igt_subtest("change_prime")
+> +             test_change_export(&ctx);
+> +
+> +     igt_describe("Edge Case: New handle =3D 0 should fail");
+> +     igt_subtest("new_handle_zero")
+> +             test_new_handle_zero(&ctx);
+> +
+> +     igt_describe("Edge Case: New handle > INT_MAX should fail");
+> +     igt_subtest("new_handle_exceeds_int_max")
+> +             test_new_handle_exceeds_int_max(&ctx);
+> +
+> +     igt_describe("Edge Case: Changing a handle to itself should fail");
+> +     igt_subtest("new_handle_equals_old_handle")
+> +             test_new_handle_equals_old_handle(&ctx);
+> +
+> +     igt_describe("Edge Case: Change a handle to a value which is taken =
+should fail");
+> +     igt_subtest("new_handle_taken")
+> +             test_new_handle_taken(&ctx);
+> +
+> +     igt_describe("Edge Case: Changing a non-existent handle should fail=
+");
+> +     igt_subtest("invalid_handle")
+> +             test_invalid_handle(&ctx);
+> +
+> +     igt_describe("Race: Changing handle vs. Changing handle");
+> +     igt_subtest("race_change_change")
+> +             test_race_change_change(&ctx);
+> +
+> +     igt_describe("Race: Changing handle vs. Create / Close");
+> +     igt_subtest("race_change_create_close")
+> +             test_race_change_create_close(&ctx);
+> +
+> +     igt_describe("Race: Changing handle vs. Export / Import");
+> +     igt_subtest("race_change_export_import")
+> +             test_race_change_export_import(&ctx);
+> +
+> +     igt_fixture() {
+> +             drm_close_driver(ctx.fd);
+> +     }
+> +
+> +}
+> diff --git a/tests/meson.build b/tests/meson.build
+> index 519a9e727..567878df6 100644
+> --- a/tests/meson.build
+> +++ b/tests/meson.build
+> @@ -105,6 +105,7 @@ intel_i915_progs =3D [
+>       'gem_blits',
+>       'gem_busy',
+>       'gem_caching',
+> +     'gem_change_handle',
+>       'gem_create',
+>       'gem_ccs',
+>       'gem_close',
+
