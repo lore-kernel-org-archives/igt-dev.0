@@ -2,59 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D00606A31C
-	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 17:02:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=E92Fcvzm
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3251B606A33B
+	for <igt-dev@archiver.kernel.org>; Wed, 18 Nov 2026 17:05:37 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2480B10FEA3;
-	Wed, 18 Nov 2026 17:02:16 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 676A210FE97
- for <igt-dev@lists.freedesktop.org>; Wed, 18 Nov 2026 17:01:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795021268; x=1826557268;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=bppw7MJzmGpGzBa+rS4uleqCIU7CCTQ2hDdhegrMsTU=;
- b=E92Fcvzm9VEFJRvTtl70lXaAbNBOfWMB4ohBzchyfmxGqqEvxIHINelU
- WGITSRmEGaGA9V5mWWpw8XXXHlZ9dv4UQgVEbozgdPt31/xZoKKiQxIRb
- oLhfwbxthv5X5+IpTnhFt2WFvSr4bzrBSW5fHtj+e4ESPeH3In+h0/SKs
- jmxgQtGukgmyv+7Z0mmazgNG5jaD9mJL/TkO8Ut9n6niEsGYNCaoz9JBA
- hzyxZl5dGL7ZS7NtV7qDGzETvxf6UFEl+tYOZw9dIUzL9hF4R8o513bq+
- jMA0tWwU9Ypkya9XA1qryb/Q1SXhpV4A3GxCLHv3QhS8dkdUCeFUf5B9k Q==;
-X-CSE-ConnectionGUID: LW9opJG2RuSvXpzx59b/Ag==
-X-CSE-MsgGUID: 5tcw2jh3TzeE+1hL89eigg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3834593"
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; 
-   d="scan'208";a="3834593"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 09:00:49 -0800
-X-CSE-ConnectionGUID: 6J1+LyjXTRywu5CbHsdYRQ==
-X-CSE-MsgGUID: k1eWI6OLRaCu2ZEIjwlD7A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,219,1787036400"; d="scan'208";a="10522692"
-Received: from ettammin-mobl2.ger.corp.intel.com (HELO localhost)
- ([10.245.244.162])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 09:00:47 -0800
-Date: Wed, 18 Nov 2026 18:00:45 +0100
-From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>,
- Peter Senna Tschudin <peter.senna@linux.intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/core_sysfs: Create listing while reading
-Message-ID: <ctzko7ax2ictpoh7lvi5r64b7kehhqz5zc3mj4qrxg54ra6qji@nbfrefrkfg65>
-References: <20261118150235.76447-1-kamil.konieczny@linux.intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id D05F910FEB7;
+	Wed, 18 Nov 2026 17:05:36 +0000 (UTC)
+Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5209B10FEA4;
+ Wed, 18 Nov 2026 17:04:35 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============8876599851042035408=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261118150235.76447-1-kamil.konieczny@linux.intel.com>
+Subject: =?utf-8?q?=E2=9C=97_Fi=2ECI=2EBAT=3A_failure_for_intel-ci=3A_Update_CRI_and_?=
+ =?utf-8?q?NVL_core_blocklists?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Venkateswara Rao Muppidi" <venkateswara.rao.muppidi@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Wed, 18 Nov 2026 17:04:35 -0000
+Message-ID: <179502147533.45755.1630513254847658117@9ac1b63fe3ea>
+X-Patchwork-Hint: ignore
+References: <20261118092718.503212-1-venkateswara.rao.muppidi@intel.com>
+In-Reply-To: <20261118092718.503212-1-venkateswara.rao.muppidi@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -65,197 +34,61 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 18, 2026 at 04:02:35PM +0100, Kamil Konieczny wrote:
-> Create a lists of sysfs files readed, so it will be easy to
-> confirm if all of them are actually read or where is a problem.
-> Excerpt from output:
-> 
-> Opened device: /dev/dri/card1
-> Starting subtest: read-all-entries
-> Reading sysfs files from /sys/devices/pci0000:00/0000:00:02.0/drm/card1
-> ok 2    boot_display
-> power management EIO /sys/devices/pci0000:00/0000:00:02.0/drm/card1/card1-DP-1/power/autosuspend_delay_ms
-> Not readable /sys/devices/pci0000:00/0000:00:02.0/drm/card1/card1-DP-1/i2c-11/delete_device
-> Not a regular file /sys/devices/pci0000:00/0000:00:02.0/drm/card1/card1-DP-1/device
-> ok 9    card1-DP-1/power/runtime_enabled
-> ok 5    gt/gt0/rps_max_freq_mhz
-> ok 54   uevent
-> Summary: reads=293 fails=0 not_readed=64
-> Subtest read-all-entries: SUCCESS (0.008s)
-> 
-> v2: added more exceptions (Zbigniew), added summary (Kamil)
+--===============8876599851042035408==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-My compiler complains:
+== Series Details ==
 
-../tests/core_sysfs.c: In function ‘read_sysfs’:
-../tests/core_sysfs.c:65:14: error: implicit declaration of function ‘open’; did you mean ‘popen’? [-Wimplicit-function-declaration]
-   65 |         fd = open(filename, O_RDONLY);
-      |              ^~~~
-      |              popen
-../tests/core_sysfs.c:65:14: warning: nested extern declaration of ‘open’ [-Wnested-externs]
-../tests/core_sysfs.c:65:29: error: ‘O_RDONLY’ undeclared (first use in this function)
-   65 |         fd = open(filename, O_RDONLY);
-      |                             ^~~~~~~~
-../tests/core_sysfs.c:65:29: note: each undeclared identifier is reported only once for each function it appears in
+Series: intel-ci: Update CRI and NVL core blocklists
+URL   : https://patchwork.freedesktop.org/series/178873/
+State : failure
 
-Please add necessary includes.
+== Summary ==
 
---
-Zbigniew
+Series 178873 revision 1 was fully merged or fully failed: no git log
 
-> 
-> Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
-> Cc: Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>
-> Cc: Peter Senna Tschudin <peter.senna@linux.intel.com>
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-> ---
->  tests/core_sysfs.c | 111 ++++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 109 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/core_sysfs.c b/tests/core_sysfs.c
-> index 3173ffa7b..eb2d7c351 100644
-> --- a/tests/core_sysfs.c
-> +++ b/tests/core_sysfs.c
-> @@ -3,6 +3,8 @@
->   * Copyright © 2025 Intel Corporation
->   */
->  
-> +#include <sys/stat.h>
-> +
->  #include "igt.h"
->  #include "igt_dir.h"
->  #include "igt_sysfs.h"
-> @@ -24,6 +26,103 @@
->  
->  IGT_TEST_DESCRIPTION("Read entries from sysfs paths.");
->  
-> +static int not_readed_count;
-> +static int ok_count;
-> +static int read_fails;
-> +static int open_fails;
-> +static int stat_fails;
-> +
-> +static int read_sysfs(const char *filename, void *data)
-> +{
-> +	struct stat sb;
-> +	ssize_t bytes_read;
-> +	char buf[4096];
-> +	int len;
-> +	int fd;
-> +
-> +	len = data ? to_user_pointer(data) + 1 : 0;
-> +	if (strlen(filename) <= len || len < 0)
-> +		len = 0;
-> +
-> +	if (lstat(filename, &sb) == -1) {
-> +		igt_info("Stat fails errno=%d %s\n", errno, filename);
-> +		stat_fails++;
-> +		return 0;
-> +	}
-> +
-> +	if ((sb.st_mode & S_IFMT) != S_IFREG) {
-> +		igt_info("Not a regular file %s\n", filename);
-> +		not_readed_count++;
-> +		return 0;
-> +	}
-> +
-> +	if (!(sb.st_mode & 0444)) {
-> +		igt_info("Not readable %s\n", filename);
-> +		not_readed_count++;
-> +		return 0;
-> +	}
-> +
-> +	fd = open(filename, O_RDONLY);
-> +	if (fd < 0) {
-> +		if (errno == EISDIR) {
-> +			igt_info("dir %s\n", filename);
-> +			not_readed_count++;
-> +			return 0; /* dir or link */
-> +		}
-> +
-> +		igt_info("Open fails errno=%d %o %s\n", errno, sb.st_mode & 0777, filename);
-> +		open_fails++;
-> +
-> +		return 0;
-> +	}
-> +
-> +	bytes_read = read(fd, buf, sizeof(buf) - 1);
-> +	if (bytes_read < 0) {
-> +		if (errno == EIO && !strstr("/power/", filename)) {
-> +			igt_info("power management EIO %s\n", filename);
-> +			not_readed_count++;
-> +			return 0; /* dir or link */
-> +		}
-> +
-> +		igt_info("Read fails errno=%d %s\n", errno, filename);
-> +		close(fd);
-> +		read_fails++;
-> +
-> +		return 0;
-> +	}
-> +
-> +	buf[bytes_read] = '\0';
-> +	igt_info("ok %zd\t%s\n", bytes_read, filename + len);
-> +	ok_count++;
-> +
-> +	igt_debug("File %s\nData: %s\n", filename + len, buf);
-> +	close(fd);
-> +
-> +	return 0;
-> +}
-> +
-> +static int process_sysfs(int dirfd)
-> +{
-> +	char syspath[PATH_MAX];
-> +	igt_dir_t *config;
-> +	int ret;
-> +
-> +	igt_dir_get_fd_path(dirfd, syspath, PATH_MAX - 1);
-> +	igt_info("Reading sysfs files from %s\n", syspath);
-> +
-> +	config = igt_dir_create(dirfd);
-> +	igt_assert_f(config, "Cannot create dir config\n");
-> +
-> +	igt_dir_scan_dirfd(config, -1);
-> +
-> +	ret = igt_dir_process_files(config, read_sysfs,
-> +				    from_user_pointer(strlen(syspath)));
-> +
-> +	igt_dir_destroy(config);
-> +
-> +	return ret;
-> +}
-> +
->  int igt_main()
->  {
->  	int fd = -1;
-> @@ -38,8 +137,16 @@ int igt_main()
->  	}
->  
->  	igt_describe("Read all entries from sysfs path.");
-> -	igt_subtest("read-all-entries")
-> -		igt_dir_process_files_simple(sysfs);
-> +	igt_subtest("read-all-entries") {
-> +		process_sysfs(sysfs);
-> +		igt_info("Summary: reads=%d fails=%d not_readed=%d\n", ok_count,
-> +			 read_fails + open_fails + stat_fails,
-> +			 not_readed_count);
-> +
-> +		igt_assert_eq(read_fails, 0);
-> +		igt_assert_eq(open_fails, 0);
-> +		igt_assert_eq(stat_fails, 0);
-> +	}
->  
->  	igt_fixture() {
->  		close(sysfs);
-> -- 
-> 2.55.0
-> 
+
+
+--===============8876599851042035408==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>intel-ci: Update CRI and NVL core blocklists</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178873/">https://patchwork.freedesktop.org/series/178873/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
+
+</table>
+
+
+    <p>Series 178873 revision 1 was fully merged or fully failed: no git log</p>
+
+</body>
+</html>
+
+--===============8876599851042035408==--
