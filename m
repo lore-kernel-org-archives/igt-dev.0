@@ -2,53 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA4F606A325
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 13:17:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Y1Sg2XGv
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DCB606A33F
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 13:25:52 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 43F3010E882;
-	Thu, 19 Nov 2026 13:17:39 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6302E10E885
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 13:16:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795094186; x=1826630186;
- h=from:to:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=mnrAIpw2dwAfqDByjdrY0lvVIaB2UdEWwUqYOacNbUo=;
- b=Y1Sg2XGvYenpUtJQ9X29HejLZrmLHNuuw5/OZzlGPzCHfxUovfj3MHCI
- PpwWuU3F5RXNEiNnNxOJvc+/LB2dywXWm9smUlnllImBKGGVLwMzs558B
- 7zO9OfySHhqmtD5D8iHfxtS4NDbvXfx0jxjT9wA7+B1OFhFbAAjsI9KCE
- ghJTq7bcj0PziVvu8UER2w20xOq0uBsB9V8tNp24CCit3yZd597l0z14H
- 48kHsnRnsI3tci2aJNejv6OY7zqdfR2TWMuE6fc3EJS+8hJi11yeyG5m7
- KUzO++D6Cz2Sz5DRo+j7RxDDTroKDWDq/g2C0D/jg3MNNKHD7CRvWzOJK g==;
-X-CSE-ConnectionGUID: qbq+JklmQtiSkZNaj86y6g==
-X-CSE-MsgGUID: hIDxVEADR8qaAFvwsDS2yA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3989086"
-X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; 
-   d="scan'208";a="3989086"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2026 05:15:58 -0800
-X-CSE-ConnectionGUID: 2X0rYdKdQJKlj1z2NfO2Bg==
-X-CSE-MsgGUID: kg7Oo5gyQOqLYdbQ6zFCyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,221,1787036400"; d="scan'208";a="10321954"
-Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
- by orviesa003.jf.intel.com with ESMTP; 19 Nov 2026 05:15:57 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Subject: [PATCH] tests/intel/xe_exec_system_allocator: Limit driver debug logs
- in CI runs
-Date: Thu, 19 Nov 2026 13:15:56 +0000
-Message-ID: <20261119131556.199707-1-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2C47810E88A;
+	Thu, 19 Nov 2026 13:25:52 +0000 (UTC)
+Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id C19DB10E88A;
+ Thu, 19 Nov 2026 13:24:50 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============7586528767461065211=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fa?=
+ =?utf-8?q?tomic=3A_Fix_bind/exec_ordering_and_a_queue_leak?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Shuicheng Lin" <shuicheng.lin@intel.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Nov 2026 13:24:50 -0000
+Message-ID: <179509469078.51026.1682656218225939701@9ac1b63fe3ea>
+X-Patchwork-Hint: ignore
+References: <20261119080722.525281-4-shuicheng.lin@intel.com>
+In-Reply-To: <20261119080722.525281-4-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -59,69 +34,163 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+--===============7586528767461065211==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The subtests involved migration generates a DRM_UT_DRIVER debug
-message for each migrated chunk, exceeding the CI runner's log-size
-limit on large-VRAM devices.
+== Series Details ==
 
-Call xe_drop_driver_debug_if_ci() from the test fixture so that, under
-CI, DRM_UT_DRIVER is cleared from the DRM debug mask for the duration of
-the test. The other debug categories are preserved and the original mask
-is restored on exit.
+Series: tests/intel/xe_exec_atomic: Fix bind/exec ordering and a queue leak
+URL   : https://patchwork.freedesktop.org/series/179030/
+State : success
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index e3e8339c4..fb0c0af16 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -17,6 +17,7 @@
- #include <time.h>
- 
- #include "igt.h"
-+#include "igt_sysfs.h"
- #include "intel_pat.h"
- #include "lib/igt_syncobj.h"
- #include "lib/intel_compute.h"
-@@ -2668,6 +2669,7 @@ int igt_main()
- 
- 	igt_fixture() {
- 		struct xe_device *xe;
-+		int dir;
- 
- 		fd = drm_open_driver(DRIVER_XE);
- 		igt_require(!xe_supports_faults(fd));
-@@ -2689,6 +2691,18 @@ int igt_main()
- 				  num_pat_entries);
- 			num_pat_entries = 0;
- 		}
-+
-+		dir = igt_sysfs_drm_module_params_open();
-+		if (dir >= 0) {
-+			int debug_mask = igt_drm_debug_mask_get(dir);
-+			unsigned int mask_to_set = DRM_UT_DRIVER;
-+
-+			close(dir);
-+			if (debug_mask > 0 && (debug_mask & mask_to_set)) {
-+				igt_install_exit_handler(igt_drm_debug_mask_reset_exit_handler);
-+				update_debug_mask_if_ci(debug_mask & ~mask_to_set);
-+			}
-+		}
- 	}
- 
- 	for (const struct section *s = sections; s->name; s++) {
--- 
-2.43.0
+CI Bug Log - changes from IGT_9198 -> IGTPW_16182
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/index.html
+
+Participating hosts (40 -> 39)
+------------------------------
+
+  Missing    (1): bat-dg2-13 
+
+Known issues
+------------
+
+  Here are the changes found in IGTPW_16182 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adls-6:         [FAIL][1] ([i915#17803]) -> [PASS][2]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-adls-6/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/bat-adls-6/igt@i915_pm_rpm@module-reload.html
+
+  * igt@i915_selftest@live:
+    - fi-bsw-nick:        [ABORT][3] -> [PASS][4] +1 other test pass
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/fi-bsw-nick/igt@i915_selftest@live.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/fi-bsw-nick/igt@i915_selftest@live.html
+
+  * igt@vgem_basic@unload:
+    - bat-rpls-4:         [DMESG-WARN][5] ([i915#13400]) -> [PASS][6]
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@vgem_basic@unload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/bat-rpls-4/igt@vgem_basic@unload.html
+
+  
+  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  [i915#17803]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17803
+
+
+Build changes
+-------------
+
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9198 -> IGTPW_16182
+  * Linux: CI_DRM_19561 -> CI_DRM_19564
+
+  CI-20190529: 20190529
+  CI_DRM_19561: 7f983558aaf724daeafb5904dbb078835857b51e @ git://anongit.freedesktop.org/gfx-ci/linux
+  CI_DRM_19564: 84508686117ca3be5756049acdf15e3e47fd2683 @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_16182: 1b29492d612bef18c9a650a3e69594df14290225 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  IGT_9198: 9198
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/index.html
+
+--===============7586528767461065211==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_atomic: Fix bind/exec ordering and a queue leak</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/179030/">https://patchwork.freedesktop.org/series/179030/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from IGT_9198 -&gt; IGTPW_16182</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_16182 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-adls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-adls-6/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17803">i915#17803</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/bat-adls-6/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
+<p>igt@i915_selftest@live:</p>
+<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/fi-bsw-nick/igt@i915_selftest@live.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/fi-bsw-nick/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+<li>
+<p>igt@vgem_basic@unload:</p>
+<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16182/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a></li>
+</ul>
+</li>
+</ul>
+<h2>Build changes</h2>
+<ul>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9198 -&gt; IGTPW_16182</li>
+<li>Linux: CI_DRM_19561 -&gt; CI_DRM_19564</li>
+</ul>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19561: 7f983558aaf724daeafb5904dbb078835857b51e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  CI_DRM_19564: 84508686117ca3be5756049acdf15e3e47fd2683 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_16182: 1b29492d612bef18c9a650a3e69594df14290225 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
+  IGT_9198: 9198</p>
+
+</body>
+</html>
+
+--===============7586528767461065211==--
