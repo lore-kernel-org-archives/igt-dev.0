@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214AD606A320
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 12:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D20B8606A320
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 12:47:09 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id C4CCF10E854;
-	Thu, 19 Nov 2026 12:43:23 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7534410E864;
+	Thu, 19 Nov 2026 12:47:09 +0000 (UTC)
 Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A322B10E854;
- Thu, 19 Nov 2026 12:42:25 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BE4B710ECA2;
+ Thu, 19 Nov 2026 12:46:12 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============3694252122885271250=="
+ boundary="===============0117163150139210395=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fexec=5Fato?=
- =?utf-8?q?mic=3A_Fix_bind/exec_ordering_and_a_queue_leak?=
+Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_RFC=3A_Add_intel=5Fdispla?=
+ =?utf-8?q?y_module_support_to_module_load_tests?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Shuicheng Lin" <shuicheng.lin@intel.com>
+To: "B, Jeevan" <jeevan.b@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 19 Nov 2026 12:42:25 -0000
-Message-ID: <179509214566.51087.18021248100533798269@9ac1b63fe3ea>
+Date: Thu, 19 Nov 2026 12:46:12 -0000
+Message-ID: <179509237277.51026.1809552346688156338@9ac1b63fe3ea>
 X-Patchwork-Hint: ignore
-References: <20261119080722.525281-4-shuicheng.lin@intel.com>
-In-Reply-To: <20261119080722.525281-4-shuicheng.lin@intel.com>
+References: <20261118154426.345883-1-jeevan.b@intel.com>
+In-Reply-To: <20261118154426.345883-1-jeevan.b@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,65 +36,94 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============3694252122885271250==
+--===============0117163150139210395==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_exec_atomic: Fix bind/exec ordering and a queue leak
-URL   : https://patchwork.freedesktop.org/series/179030/
-State : success
+Series: RFC: Add intel_display module support to module load tests
+URL   : https://patchwork.freedesktop.org/series/178948/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9198_BAT -> XEIGTPW_16182_BAT
+CI Bug Log - changes from IGT_9198 -> IGTPW_16174
 ====================================================
 
 Summary
 -------
 
-  **SUCCESS**
+  **FAILURE**
 
-  No regressions found.
-
+  Serious unknown changes coming with IGTPW_16174 absolutely need to be
+  verified manually.
   
+  If you think the reported changes have nothing to do with the changes
+  introduced in IGTPW_16174, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+  to document this new failure mode, which will reduce false positives in CI.
 
-Participating hosts (15 -> 15)
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/index.html
+
+Participating hosts (40 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (2): bat-dg2-13 bat-adls-6 
 
+Possible new issues
+-------------------
 
-Changes
--------
+  Here are the unknown changes that may have been introduced in IGTPW_16174:
 
-  No changes found
+### IGT changes ###
+
+#### Possible regressions ####
+
+  * igt@runner@aborted:
+    - fi-skl-6600u:       NOTRUN -> [FAIL][1]
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/fi-skl-6600u/igt@runner@aborted.html
+
+  
+Known issues
+------------
+
+  Here are the changes found in IGTPW_16174 that come from known issues:
+
+### IGT changes ###
+
+#### Possible fixes ####
+
+  * igt@i915_selftest@live:
+    - fi-bsw-nick:        [ABORT][2] -> [PASS][3] +1 other test pass
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/fi-bsw-nick/igt@i915_selftest@live.html
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/fi-bsw-nick/igt@i915_selftest@live.html
+
+  
 
 
 Build changes
 -------------
 
-  * IGT: IGT_9198 -> IGTPW_16182
-  * Linux: xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef -> xe-6186-84508686117ca3be5756049acdf15e3e47fd2683
+  * CI: CI-20190529 -> None
+  * IGT: IGT_9198 -> IGTPW_16174
 
-  IGTPW_16182: 1b29492d612bef18c9a650a3e69594df14290225 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git
+  CI-20190529: 20190529
+  CI_DRM_19561: 7f983558aaf724daeafb5904dbb078835857b51e @ git://anongit.freedesktop.org/gfx-ci/linux
+  IGTPW_16174: 16174
   IGT_9198: 9198
-  xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef: 48995c76e90141a4e72ceafeb3762d4a3580eeef
-  xe-6186-84508686117ca3be5756049acdf15e3e47fd2683: 84508686117ca3be5756049acdf15e3e47fd2683
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16182/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/index.html
 
---===============3694252122885271250==
+--===============0117163150139210395==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -114,34 +143,57 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_exec_atomic: Fix bind/exec ordering and a queue leak</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/179030/">https://patchwork.freedesktop.org/series/179030/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
+<tr><td><b>Series:</b></td><td>RFC: Add intel_display module support to module load tests</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178948/">https://patchwork.freedesktop.org/series/178948/</a></td></tr>
+<tr><td><b>State:</b></td><td>failure</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16182/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16182/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9198_BAT -&gt; XEIGTPW_16182_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9198 -&gt; IGTPW_16174</h1>
 <h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
+<p><strong>FAILURE</strong></p>
+<p>Serious unknown changes coming with IGTPW_16174 absolutely need to be<br />
+  verified manually.</p>
+<p>If you think the reported changes have nothing to do with the changes<br />
+  introduced in IGTPW_16174, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
+  to document this new failure mode, which will reduce false positives in CI.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/index.html</p>
+<h2>Participating hosts (40 -&gt; 38)</h2>
+<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
+<h2>Possible new issues</h2>
+<p>Here are the unknown changes that may have been introduced in IGTPW_16174:</p>
+<h3>IGT changes</h3>
+<h4>Possible regressions</h4>
+<ul>
+<li>igt@runner@aborted:<ul>
+<li>fi-skl-6600u:       NOTRUN -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/fi-skl-6600u/igt@runner@aborted.html">FAIL</a></li>
+</ul>
+</li>
+</ul>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_16174 that come from known issues:</p>
+<h3>IGT changes</h3>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_selftest@live:<ul>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/fi-bsw-nick/igt@i915_selftest@live.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16174/fi-bsw-nick/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+</ul>
+</li>
+</ul>
 <h2>Build changes</h2>
 <ul>
-<li>IGT: IGT_9198 -&gt; IGTPW_16182</li>
-<li>Linux: xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef -&gt; xe-6186-84508686117ca3be5756049acdf15e3e47fd2683</li>
+<li>CI: CI-20190529 -&gt; None</li>
+<li>IGT: IGT_9198 -&gt; IGTPW_16174</li>
 </ul>
-<p>IGTPW_16182: 1b29492d612bef18c9a650a3e69594df14290225 @ https://gitlab.freedesktop.org/drm/igt-gpu-tools.git<br />
-  IGT_9198: 9198<br />
-  xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef: 48995c76e90141a4e72ceafeb3762d4a3580eeef<br />
-  xe-6186-84508686117ca3be5756049acdf15e3e47fd2683: 84508686117ca3be5756049acdf15e3e47fd2683</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19561: 7f983558aaf724daeafb5904dbb078835857b51e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_16174: 16174<br />
+  IGT_9198: 9198</p>
 
 </body>
 </html>
 
---===============3694252122885271250==--
+--===============0117163150139210395==--
