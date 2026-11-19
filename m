@@ -2,28 +2,28 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A963E606A324
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 13:07:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93457606A325
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 13:13:40 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4B1DD10E883;
-	Thu, 19 Nov 2026 13:07:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 49D1C10E875;
+	Thu, 19 Nov 2026 13:13:40 +0000 (UTC)
 Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DF0D8112394;
- Thu, 19 Nov 2026 13:06:33 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 3CC0D10E86D;
+ Thu, 19 Nov 2026 13:12:40 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2742768106966943475=="
+ boundary="===============3014256999335178331=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpm=5Fres?=
- =?utf-8?q?idency=3A_Wait_for_a_stable_C6_before_measuring_residency?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fcompute?=
+ =?utf-8?q?=3A_Use_monotonic_clock_in_loop-duration-2s?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Zongyao Bai" <zongyao.bai@intel.com>
+To: "Shuicheng Lin" <shuicheng.lin@intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 19 Nov 2026 13:06:33 -0000
-Message-ID: <179509359390.51308.2493697114688532754@9ac1b63fe3ea>
+Date: Thu, 19 Nov 2026 13:12:40 -0000
+Message-ID: <179509396024.51026.12712810694342686132@9ac1b63fe3ea>
 X-Patchwork-Hint: ignore
-References: <20261119005009.364632-1-zongyao.bai@intel.com>
-In-Reply-To: <20261119005009.364632-1-zongyao.bai@intel.com>
+References: <20261119010857.377785-2-shuicheng.lin@intel.com>
+In-Reply-To: <20261119010857.377785-2-shuicheng.lin@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -42,20 +42,20 @@ X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============2742768106966943475==
+--===============3014256999335178331==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 == Series Details ==
 
-Series: tests/intel/xe_pm_residency: Wait for a stable C6 before measuring residency
-URL   : https://patchwork.freedesktop.org/series/178990/
+Series: tests/intel/xe_compute: Use monotonic clock in loop-duration-2s
+URL   : https://patchwork.freedesktop.org/series/178991/
 State : success
 
 == Summary ==
 
-CI Bug Log - changes from IGT_9198 -> IGTPW_16177
+CI Bug Log - changes from IGT_9198 -> IGTPW_16178
 ====================================================
 
 Summary
@@ -65,54 +65,68 @@ Summary
 
   No regressions found.
 
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/index.html
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/index.html
 
-Participating hosts (40 -> 38)
+Participating hosts (40 -> 39)
 ------------------------------
 
-  Missing    (2): bat-dg2-13 bat-adls-6 
+  Missing    (1): bat-dg2-13 
 
 Known issues
 ------------
 
-  Here are the changes found in IGTPW_16177 that come from known issues:
+  Here are the changes found in IGTPW_16178 that come from known issues:
 
 ### IGT changes ###
 
+#### Issues hit ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - bat-rpls-4:         [PASS][1] -> [DMESG-WARN][2] ([i915#13400])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/bat-rpls-4/igt@i915_pm_rpm@module-reload.html
+
+  
 #### Possible fixes ####
 
+  * igt@i915_pm_rpm@module-reload:
+    - bat-adls-6:         [FAIL][3] ([i915#17803]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-adls-6/igt@i915_pm_rpm@module-reload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/bat-adls-6/igt@i915_pm_rpm@module-reload.html
+
   * igt@i915_selftest@live:
-    - fi-bsw-nick:        [ABORT][1] -> [PASS][2] +1 other test pass
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/fi-bsw-nick/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/fi-bsw-nick/igt@i915_selftest@live.html
+    - fi-bsw-nick:        [ABORT][5] -> [PASS][6] +1 other test pass
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/fi-bsw-nick/igt@i915_selftest@live.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/fi-bsw-nick/igt@i915_selftest@live.html
 
   * igt@vgem_basic@unload:
-    - bat-rpls-4:         [DMESG-WARN][3] ([i915#13400]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@vgem_basic@unload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/bat-rpls-4/igt@vgem_basic@unload.html
+    - bat-rpls-4:         [DMESG-WARN][7] ([i915#13400]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@vgem_basic@unload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/bat-rpls-4/igt@vgem_basic@unload.html
 
   
   [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  [i915#17803]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17803
 
 
 Build changes
 -------------
 
   * CI: CI-20190529 -> None
-  * IGT: IGT_9198 -> IGTPW_16177
+  * IGT: IGT_9198 -> IGTPW_16178
   * Linux: CI_DRM_19561 -> CI_DRM_19563
 
   CI-20190529: 20190529
   CI_DRM_19561: 7f983558aaf724daeafb5904dbb078835857b51e @ git://anongit.freedesktop.org/gfx-ci/linux
   CI_DRM_19563: 2bdca9b1f8638ef27955d61c149bc6fac856d291 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16177: 16177
+  IGTPW_16178: 16178
   IGT_9198: 9198
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/index.html
 
---===============2742768106966943475==
+--===============3014256999335178331==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -132,53 +146,66 @@ Content-Transfer-Encoding: 7bit
 
 <b>Patch Details</b>
 <table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Wait for a stable C6 before measuring residency</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178990/">https://patchwork.freedesktop.org/series/178990/</a></td></tr>
+<tr><td><b>Series:</b></td><td>tests/intel/xe_compute: Use monotonic clock in loop-duration-2s</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178991/">https://patchwork.freedesktop.org/series/178991/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from IGT_9198 -&gt; IGTPW_16177</h1>
+    <h1>CI Bug Log - changes from IGT_9198 -&gt; IGTPW_16178</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16177 that come from known issues:</p>
+<p>Here are the changes found in IGTPW_16178 that come from known issues:</p>
 <h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/bat-rpls-4/igt@i915_pm_rpm@module-reload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
+</ul>
+</li>
+</ul>
 <h4>Possible fixes</h4>
 <ul>
 <li>
+<p>igt@i915_pm_rpm@module-reload:</p>
+<ul>
+<li>bat-adls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-adls-6/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17803">i915#17803</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/bat-adls-6/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
+</ul>
+</li>
+<li>
 <p>igt@i915_selftest@live:</p>
 <ul>
-<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/fi-bsw-nick/igt@i915_selftest@live.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/fi-bsw-nick/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
+<li>fi-bsw-nick:        <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/fi-bsw-nick/igt@i915_selftest@live.html">ABORT</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/fi-bsw-nick/igt@i915_selftest@live.html">PASS</a> +1 other test pass</li>
 </ul>
 </li>
 <li>
 <p>igt@vgem_basic@unload:</p>
 <ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16177/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a></li>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16178/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
 <li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9198 -&gt; IGTPW_16177</li>
+<li>IGT: IGT_9198 -&gt; IGTPW_16178</li>
 <li>Linux: CI_DRM_19561 -&gt; CI_DRM_19563</li>
 </ul>
 <p>CI-20190529: 20190529<br />
   CI_DRM_19561: 7f983558aaf724daeafb5904dbb078835857b51e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
   CI_DRM_19563: 2bdca9b1f8638ef27955d61c149bc6fac856d291 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16177: 16177<br />
+  IGTPW_16178: 16178<br />
   IGT_9198: 9198</p>
 
 </body>
 </html>
 
---===============2742768106966943475==--
+--===============3014256999335178331==--
