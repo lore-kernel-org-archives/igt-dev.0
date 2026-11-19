@@ -2,28 +2,56 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B78860A2601
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 07:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459C0606A320
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 08:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Oeo45Pqf
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6F0EE10EDA5;
-	Thu, 19 Nov 2026 07:11:45 +0000 (UTC)
-Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6CA2610EDA5;
- Thu, 19 Nov 2026 07:10:42 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============8624487032162969811=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id E4C54112082;
+	Thu, 19 Nov 2026 08:08:48 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 09A4F11203E
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 08:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1795075666; x=1826611666;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=BQBhcqVKp5FMEKg0T/nKMa/ibcN4o5/WMhRFs1iZGJE=;
+ b=Oeo45Pqf5XZnFW3xDGInKcJZ2xd2EqJ8bWGNOyYm7jkJe9LWjdr+uOZE
+ h3f1l89AJrt0lJA5a+QO7LkpC8BaygohdjjXoZPws3fUAqPjNHq80Lg9k
+ G+xyTCyjlnORvawmmJWaxk+puElfvOKKWd8k46M9mif1jXsPMyta+ncv4
+ qk9TSvlqV9r7Ql/TiNzyHPDTpMbt9GHe5FJ0uFbNJ+8lSBtJrpDjtg5Eb
+ EZtPf9DaA12COJTBEdBuReNYbKsdVFeAgXlEMlrN7CKaYmzk0oPotlM3/
+ 8D2YFAOOa3ovbd1HeoPACUoG7V5QbnM6E9jRYwGaEmVQyMv9FaaMlVyFy Q==;
+X-CSE-ConnectionGUID: xIkyiBz2SqC2TLw49MU0QQ==
+X-CSE-MsgGUID: slI4nKATSMq1DTHINDg1ig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3766952"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="3766952"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+ by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2026 00:07:46 -0800
+X-CSE-ConnectionGUID: xItrr64KRxC19gIFcq33uA==
+X-CSE-MsgGUID: G6afI7RhTQCr1zDTBndwBw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10616884"
+Received: from cyp05.fm.intel.com ([10.36.55.41])
+ by fmviesa008.fm.intel.com with ESMTP; 19 Nov 2026 00:07:45 -0800
+From: Shuicheng Lin <shuicheng.lin@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>,
+ Matthew Auld <matthew.auld@intel.com>,
+ Priyanka Dandamudi <priyanka.dandamudi@intel.com>
+Subject: [PATCH i-g-t 0/2] tests/intel/xe_exec_atomic: Fix bind/exec ordering
+ and a queue leak
+Date: Thu, 19 Nov 2026 00:07:08 -0800
+Message-ID: <20261119080722.525281-4-shuicheng.lin@intel.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/intel/xe=5Fpm=5Fresid?=
- =?utf-8?q?ency=3A_Wait_for_a_stable_C6_before_measuring_residency?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Zongyao Bai" <zongyao.bai@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 19 Nov 2026 07:10:42 -0000
-Message-ID: <179507224243.48909.8667954964711720114@9ac1b63fe3ea>
-X-Patchwork-Hint: ignore
-References: <20261119005009.364632-1-zongyao.bai@intel.com>
-In-Reply-To: <20261119005009.364632-1-zongyao.bai@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,114 +62,31 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============8624487032162969811==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Two small fixes for basic_inst() in xe_exec_atomic.
 
-== Series Details ==
+Patch 1 makes the exec wait for the VM bind. The bind runs on a separate
+bind exec queue and both the bind and the exec only signal one shared
+syncobj, so the exec can run before the BO is mapped and fault. Use two
+syncobjs so the exec waits on the bind and signals its own completion.
 
-Series: tests/intel/xe_pm_residency: Wait for a stable C6 before measuring residency
-URL   : https://patchwork.freedesktop.org/series/178990/
-State : success
+Patch 2 destroys the bind exec queue, which leaked once per dynamic
+subtest.
 
-== Summary ==
+Shuicheng Lin (2):
+  tests/intel/xe_exec_atomic: Wait for the bind before the exec
+  tests/intel/xe_exec_atomic: Destroy the bind exec queue
 
-CI Bug Log - changes from XEIGT_9198_BAT -> XEIGTPW_16177_BAT
-====================================================
+ tests/intel/xe_exec_atomic.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-Summary
--------
+-- 
+2.43.0
 
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-
-Changes
--------
-
-  No changes found
-
-
-Build changes
--------------
-
-  * IGT: IGT_9198 -> IGTPW_16177
-  * Linux: xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef -> xe-6185-2bdca9b1f8638ef27955d61c149bc6fac856d291
-
-  IGTPW_16177: 16177
-  IGT_9198: 9198
-  xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef: 48995c76e90141a4e72ceafeb3762d4a3580eeef
-  xe-6185-2bdca9b1f8638ef27955d61c149bc6fac856d291: 2bdca9b1f8638ef27955d61c149bc6fac856d291
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16177/index.html
-
---===============8624487032162969811==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/intel/xe_pm_residency: Wait for a stable C6 before measuring residency</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178990/">https://patchwork.freedesktop.org/series/178990/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16177/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16177/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9198_BAT -&gt; XEIGTPW_16177_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Changes</h2>
-<p>No changes found</p>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9198 -&gt; IGTPW_16177</li>
-<li>Linux: xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef -&gt; xe-6185-2bdca9b1f8638ef27955d61c149bc6fac856d291</li>
-</ul>
-<p>IGTPW_16177: 16177<br />
-  IGT_9198: 9198<br />
-  xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef: 48995c76e90141a4e72ceafeb3762d4a3580eeef<br />
-  xe-6185-2bdca9b1f8638ef27955d61c149bc6fac856d291: 2bdca9b1f8638ef27955d61c149bc6fac856d291</p>
-
-</body>
-</html>
-
---===============8624487032162969811==--
