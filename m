@@ -2,29 +2,62 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99706606A325
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 11:29:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD238606A324
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 11:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=D+fgjNgu
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 3ACBA1122DC;
-	Thu, 19 Nov 2026 11:29:22 +0000 (UTC)
-Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D9DD41122CE;
- Thu, 19 Nov 2026 11:28:12 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============0142634041474947518=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F3A4112310;
+	Thu, 19 Nov 2026 11:50:59 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BB7C911232F
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 11:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1795088987; x=1826624987;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=f3xqSaTvp6n+Si7F5R/TWAEitiPJjFBJwqCxndtcsfI=;
+ b=D+fgjNguflrZ+E/FcWlkeZlCupY8M4rqnUd5ZZi2HNfDQnD8l2zGMP6U
+ +HVqswB1xlJLURB2+iPXe79YPaKWUDbovnxhmEucuZ+tvGoQ/x+QNCwOZ
+ 8BWX6uJo5A2NBVOQ7uiANmORC1N0hM1b7vrn3w6IRkbPrE/MpkMha/DEp
+ YiNAEzGGMfOCZgMBzuTeyl2BIhELHt0roATT5nGluudpYuUvldXrx1vNB
+ aRPHuc0fqkB/BZMda2sBZ84S1bL9ztc+EnxhPnip3t1Pn7AvdFAfDpBTJ
+ 8gEguV9OibiC7Nf97kGUV1prsl5JZJGkwPxTbT6Cgbw5C3dyCBqgIZVMF A==;
+X-CSE-ConnectionGUID: sdVQD/i4Q7+2dix4JEWdgA==
+X-CSE-MsgGUID: sNTHhMVBTkOl7ZB3Cdu7cw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3924703"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
+   d="scan'208";a="3924703"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+ by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2026 03:49:46 -0800
+X-CSE-ConnectionGUID: 3v8uWoi3RyCDO8kRpFwhZQ==
+X-CSE-MsgGUID: B7KL5MrHRC6HTj2IcCtQew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10279615"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 19 Nov 2026 03:49:45 -0800
+Date: Thu, 19 Nov 2026 12:49:24 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Zongyao Bai <zongyao.bai@intel.com>
+Cc: igt-dev@lists.freedesktop.org, jia.yao@intel.com, 
+ shuicheng.lin@intel.com, zbigniew.kempczynski@intel.com
+Subject: Re: [PATCH] lib/intel_batchbuffer: Destroy exec queue owned by
+ intel_bb
+Message-ID: <hnsacopnju4moxuxftsots2llnbdpdpzxncrfkp6owq4sv7ywq@aacdiaxn7zkr>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Zongyao Bai <zongyao.bai@intel.com>, igt-dev@lists.freedesktop.org,
+ jia.yao@intel.com, 
+ shuicheng.lin@intel.com, zbigniew.kempczynski@intel.com
+References: <20261118234356.342335-1-zongyao.bai@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi?=
- =?utf-8?q?-g-t=2Cv3=2C01/11=5D_tests/amdgpu=3A_Add_SLTH_validation_tests_fo?=
- =?utf-8?q?r_trap_handling_and_trap_return=2E?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Jesse Zhang" <jesse.zhang@amd.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Thu, 19 Nov 2026 11:28:12 -0000
-Message-ID: <179508769288.50776.2187305061669580000@9ac1b63fe3ea>
-X-Patchwork-Hint: ignore
-References: <20261119061847.3442210-1-Jesse.Zhang@amd.com>
-In-Reply-To: <20261119061847.3442210-1-Jesse.Zhang@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261118234356.342335-1-zongyao.bai@intel.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -35,152 +68,63 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============0142634041474947518==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Hi Zongyao,
+On 2026-11-18 at 15:43:56 -0800, Zongyao Bai wrote:
+> On Xe intel_bb creates an exec queue lazily at first submission (and
+> re-creates it on engine/gt change), but only the previous queue was
+> destroyed on a switch. The last queue was never destroyed by
+> intel_bb_destroy(), so it stayed alive until the drm fd was closed.
+> 
+> Since the queue holds a reference to the VM and its LRC/BOs, the whole
+> VM/LRC/GGTT teardown, including the GuC deregistrations and TLB
+> invalidations, was deferred to fd close and executed as a burst after
+> the test finished. For tests that create a lot of intel_bb (e.g.
+> xe_pat@pat-index-auto) this kept the GT out of C6 for more than a
+> second after the test, making a following xe_pm_residency@idle-residency
+> fail intermittently.
+> 
+> ibb->engine_id is only ever assigned by intel_bb itself, a user supplied
+> ctx is never stored there, so destroy it unconditionally (when set)
+> before destroying the VM. i915 never sets it and is unaffected.
 
-== Series Details ==
++cc Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
 
-Series: series starting with [i-g-t,v3,01/11] tests/amdgpu: Add SLTH validation tests for trap handling and trap return.
-URL   : https://patchwork.freedesktop.org/series/179011/
-State : success
-
-== Summary ==
-
-CI Bug Log - changes from IGT_9198 -> IGTPW_16180
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/index.html
-
-Participating hosts (40 -> 39)
-------------------------------
-
-  Missing    (1): bat-dg2-13 
-
-Known issues
-------------
-
-  Here are the changes found in IGTPW_16180 that come from known issues:
-
-### IGT changes ###
-
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - bat-adls-6:         [FAIL][1] ([i915#17803]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-adls-6/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/bat-adls-6/igt@i915_pm_rpm@module-reload.html
-
-  * igt@vgem_basic@unload:
-    - bat-rpls-4:         [DMESG-WARN][3] ([i915#13400]) -> [PASS][4]
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@vgem_basic@unload.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/bat-rpls-4/igt@vgem_basic@unload.html
-
-  
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
-  [i915#17803]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17803
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9198 -> IGTPW_16180
-  * Linux: CI_DRM_19561 -> CI_DRM_19563
-
-  CI-20190529: 20190529
-  CI_DRM_19561: 7f983558aaf724daeafb5904dbb078835857b51e @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19563: 2bdca9b1f8638ef27955d61c149bc6fac856d291 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16180: 16180
-  IGT_9198: 9198
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/index.html
-
---===============0142634041474947518==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v3,01/11] tests/amdgpu: Add SLTH validation tests for trap handling and trap return.</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/179011/">https://patchwork.freedesktop.org/series/179011/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9198 -&gt; IGTPW_16180</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16180 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Possible fixes</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>bat-adls-6:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-adls-6/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17803">i915#17803</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/bat-adls-6/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-<li>
-<p>igt@vgem_basic@unload:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9198/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16180/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9198 -&gt; IGTPW_16180</li>
-<li>Linux: CI_DRM_19561 -&gt; CI_DRM_19563</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19561: 7f983558aaf724daeafb5904dbb078835857b51e @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19563: 2bdca9b1f8638ef27955d61c149bc6fac856d291 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16180: 16180<br />
-  IGT_9198: 9198</p>
-
-</body>
-</html>
-
---===============0142634041474947518==--
+> 
+> Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
+> ---
+>  lib/intel_batchbuffer.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+> 
+> diff --git a/lib/intel_batchbuffer.c b/lib/intel_batchbuffer.c
+> index 1dacfdc6c..05e6eaf35 100644
+> --- a/lib/intel_batchbuffer.c
+> +++ b/lib/intel_batchbuffer.c
+> @@ -1368,6 +1368,17 @@ void intel_bb_destroy(struct intel_bb *ibb)
+>  		close(ibb->fence);
+>  	if (ibb->engine_syncobj)
+>  		syncobj_destroy(ibb->fd, ibb->engine_syncobj);
+> +	/*
+> +	 * ibb->engine_id is only set when intel_bb created the exec queue
+> +	 * itself (a user supplied ctx is never stored there). Destroy it
+> +	 * together with the batch, otherwise the queue (and the VM and LRC
+> +	 * it references) stay alive until the fd is closed and are torn down
+> +	 * in a burst, keeping the GT busy for seconds after the test.
+> +	 */
+> +	if (ibb->engine_id) {
+> +		xe_exec_queue_destroy(ibb->fd, ibb->engine_id);
+> +		ibb->engine_id = 0;
+> +	}
+>  	if (ibb->vm_id && !ibb->ctx)
+>  		xe_vm_destroy(ibb->fd, ibb->vm_id);
+>  
+> -- 
+> 2.43.0
+> 
