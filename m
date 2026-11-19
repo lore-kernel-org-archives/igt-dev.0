@@ -2,54 +2,55 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8F2F606A31C
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 00:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88ACE606A32A
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 01:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=cuIdSSnT
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XP+fBFp9
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6807A10E7E9;
-	Thu, 19 Nov 2026 00:53:59 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 948201120F4
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 00:50:26 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 394F5112125;
+	Thu, 19 Nov 2026 01:12:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E709910E1A3
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 01:11:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795049426; x=1826585426;
- h=from:to:cc:subject:date:message-id:in-reply-to:
- references:mime-version:content-transfer-encoding;
- bh=utXhID8IYm+vXXR9j+MN2ruf2nMbveed5vh2m6e2aPc=;
- b=cuIdSSnTmYT0lMTzlGxVeZtuUlZqE0QmQ0U2lKl94ANjJdFCSLy9rB0L
- ZJrMLNlkU5RJwQTDlOIL6rtupsUErLRHzOzjQ/XTMfyy5BQypOyzpIwTx
- 9nllD2WZjpZk6dpUE1Ebj5VI3P+rYoAseiekpFy9OhOFhGDg7V5hY3oD/
- 067K8TPiY8Eu1bwi5Wu+hTUVFymQlH+x0EwHzkuDTCbyVb3Z5cWt3IWDr
- lbRCWREleQjaVqE1/d8VjRcriEkbEX0K1b/6HDTS17oRCJphfKhCRJGH9
- OFPtfm5UaB4e+GQjL/IXBg2phdQrSqn/61Xg4PQe5b6Gen9RiTdoMaqgt g==;
-X-CSE-ConnectionGUID: MAb59U/BRHKjdfkyQoMC8A==
-X-CSE-MsgGUID: 1w9k0wxfSYKglvBt92FG0w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3771130"
+ t=1795050706; x=1826586706;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=Vea0ldgdpcK/oRe48Lyzo+FTmP5c0ilyVuQFmyapOqQ=;
+ b=XP+fBFp9ohmyYrR5R+NFa8UH/+Dk0HCmIV+rcrKv8LSPRuh3ViRsJjER
+ vxjGAIcQyWduoB7LQi7GxLf2k9978422a1Ma4/8VBJEl5tKgivd+1I9Ad
+ I8eAdt5ZxvnBCPGiWnIUpxg1fku+qwdr713KqKOogeeEqGFLKGebTzhRp
+ 0hMjFW0UheOo7RsjEHgTKpiq7dLPoFI88tfr9DNNEpxdr8ySErnfjIF7v
+ jTARGgpZ6hfRI3hJLz9kmSsTF/WXOLu/Ns1gVaALtCu4j7CPzHM6SnG1V
+ Hsey0eRmGbb0B85ObO5qBFqiX2uOfd8bwfqxnbAWbc9W7LPuQsmBZUzgL A==;
+X-CSE-ConnectionGUID: GkXJRcfsTz+3dgKQCupdPQ==
+X-CSE-MsgGUID: 3zASusRhQy+bOFRhGUFQVg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3781336"
 X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3771130"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 18 Nov 2026 16:50:16 -0800
-X-CSE-ConnectionGUID: mdPaWSu7Q5G0thzRLHIJdg==
-X-CSE-MsgGUID: Ef7q2dJcSha8BcjW+L2hgA==
+   d="scan'208";a="3781336"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+ by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 18 Nov 2026 17:11:45 -0800
+X-CSE-ConnectionGUID: 20vmb/aTQrekOW8LYwGgQA==
+X-CSE-MsgGUID: aEq3JnmWTaG58Y6Kf1mnfg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10679607"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10427884"
 Received: from cyp05.fm.intel.com ([10.36.55.41])
- by fmviesa007.fm.intel.com with ESMTP; 18 Nov 2026 16:50:17 -0800
-From: Zongyao Bai <zongyao.bai@intel.com>
+ by fmviesa003.fm.intel.com with ESMTP; 18 Nov 2026 17:11:45 -0800
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: jia.yao@intel.com, shuicheng.lin@intel.com,
- Zongyao Bai <zongyao.bai@intel.com>
-Subject: [PATCH 3/3] tests/intel/xe_pmu: Wait for stable C6 in gt-c6-idle
-Date: Wed, 18 Nov 2026 16:50:09 -0800
-Message-ID: <20261119005009.364632-4-zongyao.bai@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
+ Nishit Sharma <nishit.sharma@intel.com>,
+ =?UTF-8?q?Zbigniew=20Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+Subject: [PATCH i-g-t] tests/intel/xe_compute: Use monotonic clock in
+ loop-duration-2s
+Date: Wed, 18 Nov 2026 17:08:58 -0800
+Message-ID: <20261119010857.377785-2-shuicheng.lin@intel.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261119005009.364632-1-zongyao.bai@intel.com>
-References: <20261119005009.364632-1-zongyao.bai@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -69,32 +70,78 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Same as for xe_pm_residency: a single transient visit to C6 does not
-guarantee the GT is idle for the following 3s measurement window. Use
-xe_gt_wait_c6_stable() before comparing the increment of the gt-c6 PMU
-residency with the elapsed PMU timestamp delta.
+The subtest times the loop kernel with gettimeofday(), which follows
+CLOCK_REALTIME. If the system time is stepped (e.g. by NTP) during the
+run, the measured time falls outside (1.8s, 2.2s) and the test fails,
+even though the kernel ran for about 2s.
 
-Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
+Use igt_nsec_elapsed(), which is monotonic, and print the measured
+time and bounds on failure.
+
+Reproduced on PTL by stepping the clock with date -s during the test:
+the old code fails every time, the fixed code passes.
+
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9795
+Cc: Nishit Sharma <nishit.sharma@intel.com>
+Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 ---
- tests/intel/xe_pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tests/intel/xe_compute.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/tests/intel/xe_pmu.c b/tests/intel/xe_pmu.c
-index de07c2236..31b5cbafe 100644
---- a/tests/intel/xe_pmu.c
-+++ b/tests/intel/xe_pmu.c
-@@ -878,9 +878,9 @@ static void test_gt_c6_idle(int xe, unsigned int gt)
+diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c
+index e738c9dab..ee376fd88 100644
+--- a/tests/intel/xe_compute.c
++++ b/tests/intel/xe_compute.c
+@@ -207,12 +207,6 @@ test_compute_kernel_with_ccs_mode(void)
+ 	igt_require(num_gt_with_ccs_mode > 0);
+ }
  
- 	pmu_fd = open_pmu(xe, pmu_config);
+-static double elapsed(const struct timeval *start,
+-		      const struct timeval *end)
+-{
+-	return (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start->tv_usec);
+-}
+-
+ /**
+  * SUBTEST: loop-duration-2s
+  * Functionality: OpenCL kernel
+@@ -228,7 +222,6 @@ test_compute_kernel_loop(uint64_t loop_duration)
+ 	const struct intel_compute_kernels *kernels;
+ 	struct user_execenv execenv = { 0 };
+ 	struct drm_xe_engine_class_instance *hwe;
+-	struct timeval start, end;
+ 	double elapse_time, lower_bound, upper_bound;
  
--	igt_require_f(igt_wait(xe_gt_is_in_c6(xe, gt), 1000, 10) ||
-+	igt_require_f(xe_gt_wait_c6_stable(xe, gt, 500, 5000) ||
- 		      xe_gt_dump_debug_info(xe, gt),
--		      "GT %d should be in C6\n", gt);
-+		      "GT %d should be in stable C6\n", gt);
+ 	fd = drm_open_driver(DRIVER_XE);
+@@ -247,20 +240,23 @@ test_compute_kernel_loop(uint64_t loop_duration)
+ 	execenv.kernel_size = kernels->loop_kernel_size;
  
- 	/* While idle check full RC6. */
- 	start = read_idle_residency(xe, gt);
+ 	xe_for_each_engine(fd, hwe) {
++		struct timespec start = {};
++
+ 		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
+ 			continue;
+ 
+ 		igt_info("Running loop_kernel on ccs engine %d\n", hwe->engine_instance);
+-		gettimeofday(&start, NULL);
++		igt_nsec_elapsed(&start);
+ 		igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd, hwe, &execenv,
+ 								   EXECENV_PREF_SYSTEM),
+ 			     "Unable to run compute kernel successfully\n");
+-		gettimeofday(&end, NULL);
+-		elapse_time = elapsed(&start, &end);
++		elapse_time = igt_nsec_elapsed(&start) / 1e9;
+ 		lower_bound = loop_duration / 1e6 - DURATION_MARGIN;
+ 		upper_bound = loop_duration / 1e6 + DURATION_MARGIN;
+ 
+-		igt_assert(lower_bound < elapse_time && elapse_time < upper_bound);
++		igt_assert_f(lower_bound < elapse_time && elapse_time < upper_bound,
++			     "Elapsed time %.3fs out of range (%.3fs, %.3fs)\n",
++			     elapse_time, lower_bound, upper_bound);
+ 	}
+ 	drm_close_driver(fd);
+ }
 -- 
 2.43.0
 
