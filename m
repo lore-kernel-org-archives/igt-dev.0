@@ -2,55 +2,29 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C221F606A325
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 09:56:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=B/RWDRbq
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20359606A320
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 10:37:20 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 74A41112228;
-	Thu, 19 Nov 2026 09:56:25 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EF077112235
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 09:53:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795082018; x=1826618018;
- h=from:to:subject:date:message-id:in-reply-to:references:
- mime-version:content-transfer-encoding;
- bh=IsqbVCF8S3XaEUdaqjufKHiIvx0gJggHpGqbkmOqnFE=;
- b=B/RWDRbq9/by9k0kkNLX08J1jc7JDHo+GXJp5svwBF6qz6joukeFHt2/
- vZ3csG3zFzaBIVZ2NP9jaY9J1JevVs0WaiuD7IWCwmzeKBD3CwVDd7LI5
- vOMXiVEhVysPrifB7ZdSZUUaZAmTPDTDRayjSXkIOwRMbN61gYe5v/V31
- sQU/64zBSCqAwqJ6uQwjA8smQR88NAEaVuusLiITpfptuYG88SRUDhCAr
- 0wMyWO549Dna9ZLoHwAvhl26xJ2PuhzBhM+2xrh/BChfP04DDCgTUOKz2
- XqUPxH4pv73WuKJUIUJxvsZSWLOJOBXpfh051e1CK2F7ZFiSsw6YdrpOn Q==;
-X-CSE-ConnectionGUID: BcxPwb3bT9KncS8+EeDZFg==
-X-CSE-MsgGUID: BYVld8adRH+jbPBUEp9xKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3929153"
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3929153"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
- by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2026 01:53:38 -0800
-X-CSE-ConnectionGUID: wy4AKnKPTQGgwfhC9O1ZCA==
-X-CSE-MsgGUID: rrJErBw6Tfm/bsJK8FLTfA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10478300"
-Received: from dut2116bmgfrd.iind.intel.com ([10.223.34.13])
- by orviesa001.jf.intel.com with ESMTP; 19 Nov 2026 01:53:37 -0800
-From: nishit.sharma@intel.com
-To: igt-dev@lists.freedesktop.org,
-	kamil.konieczny@linux.intel.com
-Subject: [PATCH v1 2/2] tests/intel/xe_exec_system_allocator: Limit driver
- debug logs in CI
-Date: Thu, 19 Nov 2026 09:53:33 +0000
-Message-ID: <20261119095333.182110-3-nishit.sharma@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261119095333.182110-1-nishit.sharma@intel.com>
-References: <20261119095333.182110-1-nishit.sharma@intel.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id B898710E81D;
+	Thu, 19 Nov 2026 10:37:19 +0000 (UTC)
+Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9617E112292;
+ Thu, 19 Nov 2026 10:35:59 +0000 (UTC)
+Content-Type: multipart/alternative;
+ boundary="===============1492835925368566860=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_series_starting_with_=5Bi-g?=
+ =?utf-8?q?-t=2Cv3=2C01/11=5D_tests/amdgpu=3A_Add_SLTH_validation_tests_for_?=
+ =?utf-8?q?trap_handling_and_trap_return=2E?=
+From: Patchwork <patchwork@emeril.freedesktop.org>
+To: "Jesse Zhang" <jesse.zhang@amd.com>
+Cc: igt-dev@lists.freedesktop.org
+Date: Thu, 19 Nov 2026 10:35:59 -0000
+Message-ID: <179508455960.50512.12338962995169869720@9ac1b63fe3ea>
+X-Patchwork-Hint: ignore
+References: <20261119061847.3442210-1-Jesse.Zhang@amd.com>
+In-Reply-To: <20261119061847.3442210-1-Jesse.Zhang@amd.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -61,51 +35,114 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
+Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Nishit Sharma <nishit.sharma@intel.com>
+--===============1492835925368566860==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-The eviction and migration subtests can generate a DRM_UT_DRIVER debug
-message for each migrated 8 MiB or bigger chunk, exceeding the CI
-runner's log-size limit on large-VRAM devices.
+== Series Details ==
 
-Call xe_drop_driver_debug_if_ci() from the test fixture so that, under
-CI, DRM_UT_DRIVER is cleared from the DRM debug mask for the duration of
-the test. The other debug categories are preserved and the original mask
-is restored on exit.
+Series: series starting with [i-g-t,v3,01/11] tests/amdgpu: Add SLTH validation tests for trap handling and trap return.
+URL   : https://patchwork.freedesktop.org/series/179011/
+State : success
 
-Signed-off-by: Nishit Sharma <nishit.sharma@intel.com>
----
- tests/intel/xe_exec_system_allocator.c | 3 +++
- 1 file changed, 3 insertions(+)
+== Summary ==
 
-diff --git a/tests/intel/xe_exec_system_allocator.c b/tests/intel/xe_exec_system_allocator.c
-index e3e8339c4..da939c37d 100644
---- a/tests/intel/xe_exec_system_allocator.c
-+++ b/tests/intel/xe_exec_system_allocator.c
-@@ -26,6 +26,7 @@
- #include "xe/xe_gt.h"
- #include "xe/xe_ioctl.h"
- #include "xe/xe_query.h"
-+#include "xe/xe_util.h"
- #include <string.h>
- 
- #define USER_FENCE_VALUE	0xdeadbeefdeadbeefull
-@@ -2689,6 +2690,8 @@ int igt_main()
- 				  num_pat_entries);
- 			num_pat_entries = 0;
- 		}
-+
-+		xe_drop_driver_debug_if_ci();
- 	}
- 
- 	for (const struct section *s = sections; s->name; s++) {
--- 
-2.43.0
+CI Bug Log - changes from XEIGT_9198_BAT -> XEIGTPW_16180_BAT
+====================================================
 
+Summary
+-------
+
+  **SUCCESS**
+
+  No regressions found.
+
+  
+
+Participating hosts (15 -> 15)
+------------------------------
+
+  No changes in participating hosts
+
+
+Changes
+-------
+
+  No changes found
+
+
+Build changes
+-------------
+
+  * IGT: IGT_9198 -> IGTPW_16180
+  * Linux: xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef -> xe-6185-2bdca9b1f8638ef27955d61c149bc6fac856d291
+
+  IGTPW_16180: 16180
+  IGT_9198: 9198
+  xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef: 48995c76e90141a4e72ceafeb3762d4a3580eeef
+  xe-6185-2bdca9b1f8638ef27955d61c149bc6fac856d291: 2bdca9b1f8638ef27955d61c149bc6fac856d291
+
+== Logs ==
+
+For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16180/index.html
+
+--===============1492835925368566860==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <title>Project List - Patchwork</title>
+  <style id="css-table-select" type="text/css">
+   td { padding: 2pt; }
+  </style>
+</head>
+<body>
+
+
+<b>Patch Details</b>
+<table>
+<tr><td><b>Series:</b></td><td>series starting with [i-g-t,v3,01/11] tests/amdgpu: Add SLTH validation tests for trap handling and trap return.</td></tr>
+<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/179011/">https://patchwork.freedesktop.org/series/179011/</a></td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
+
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16180/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16180/index.html</a></td></tr>
+
+</table>
+
+
+    <h1>CI Bug Log - changes from XEIGT_9198_BAT -&gt; XEIGTPW_16180_BAT</h1>
+<h2>Summary</h2>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<h2>Participating hosts (15 -&gt; 15)</h2>
+<p>No changes in participating hosts</p>
+<h2>Changes</h2>
+<p>No changes found</p>
+<h2>Build changes</h2>
+<ul>
+<li>IGT: IGT_9198 -&gt; IGTPW_16180</li>
+<li>Linux: xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef -&gt; xe-6185-2bdca9b1f8638ef27955d61c149bc6fac856d291</li>
+</ul>
+<p>IGTPW_16180: 16180<br />
+  IGT_9198: 9198<br />
+  xe-6182-48995c76e90141a4e72ceafeb3762d4a3580eeef: 48995c76e90141a4e72ceafeb3762d4a3580eeef<br />
+  xe-6185-2bdca9b1f8638ef27955d61c149bc6fac856d291: 2bdca9b1f8638ef27955d61c149bc6fac856d291</p>
+
+</body>
+</html>
+
+--===============1492835925368566860==--
