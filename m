@@ -2,52 +2,52 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F123E606A325
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 08:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFD4606A320
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 08:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UyeimWyM
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=i/yplBbu
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9C84311207E;
-	Thu, 19 Nov 2026 08:09:44 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D376311207E;
+	Thu, 19 Nov 2026 08:10:40 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id D4000112076
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 08:07:53 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id B8ED411203E
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 08:07:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795075674; x=1826611674;
+ t=1795075672; x=1826611672;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=pXPZaYFWWoPh4sR/gq/b/0BMLL8pY/TSCPNlxcGnugY=;
- b=UyeimWyMBsjBcCZdKyDhQ1bGx7j2ifZM16HXGzqr23dP6hpRl4Sx0ySZ
- dNP7Ak7cqoKK8s0nLokYmk2OvCbBbMEoMCu+UaFeBYuqdCdlMbyZw7UQU
- y0VS87Vwab1f+ijdc5mQMYvGsXKlVIG3WBMxf5JZzgUGPU5c76NPPUKgH
- uNvdtQoxuCM9MIjBE0+5zZgLEAZuyH2DPk3zMyZ1Zvyyp6pHQItiHd13e
- RxanOVVYJrmFvUacueMysUIJwMYDAw3Db9HgL5UUKshLYEGB+XqarppbU
- AhpFF3t+DP83b1qUd2JnZR7E4aiitZJkb1RsYjuUfWQOr3ShMMqIIbi01 g==;
-X-CSE-ConnectionGUID: 74KX9gLQSSWYLEdRiZL2Vw==
-X-CSE-MsgGUID: lb4GQOoMTauGbNJgL1yhgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3766958"
+ bh=oJ4DvKI8hxvxgHzhjGLHX6bQ+9vz51O8jOVLOkoX9SI=;
+ b=i/yplBbuB5OeFM9yH/CSbgrxwGFprECNcitq5mGD3R3wZdakM6BGhExS
+ v29gZz05nGH+a1acs6FuJ9obqJ2NliuEKOUDTmxHtuxJ2exOkkGutiAUl
+ soFdU3L6tbQo2wovqo1aAiAuc6+CTpDgtSjZ/Dwq7wWpx2Dq5mqqrPayP
+ ANw6deijRtIvReWhWzcDjSTr57LSqeBc9W8E8eYsSyE0eJ9E1vTKKsKkP
+ ggsJdQSscNuvOvUyemGTswfXWTpqqZz7ZQaPbzQ5LSxKUasYuZtXw1FrE
+ EFagqiFwYG6TYcgvhe7hZcB/j9wYDYNMKtcjzdC3bBjETlEDsM5xKE8ia w==;
+X-CSE-ConnectionGUID: VRaf7pquSjWX2mF1KgZqWQ==
+X-CSE-MsgGUID: dV9MMicQQB6C4Ub4axuIoQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3766956"
 X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3766958"
+   d="scan'208";a="3766956"
 Received: from fmviesa008.fm.intel.com ([10.60.135.148])
  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 19 Nov 2026 00:07:54 -0800
-X-CSE-ConnectionGUID: TrBqPdC7R+Go1cP30MLInA==
-X-CSE-MsgGUID: EyuH4g7xSkqQiaox6ZfUBw==
+ 19 Nov 2026 00:07:52 -0800
+X-CSE-ConnectionGUID: 6M36jV4tTT+kgcA6qn8Wog==
+X-CSE-MsgGUID: 5rJ0DRCzRzCc8IcfmNrKIw==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10616915"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10616910"
 Received: from cyp05.fm.intel.com ([10.36.55.41])
- by fmviesa008.fm.intel.com with ESMTP; 19 Nov 2026 00:07:53 -0800
+ by fmviesa008.fm.intel.com with ESMTP; 19 Nov 2026 00:07:51 -0800
 From: Shuicheng Lin <shuicheng.lin@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: Shuicheng Lin <shuicheng.lin@intel.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Matthew Auld <matthew.auld@intel.com>,
  Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-Subject: [PATCH i-g-t 2/2] tests/intel/xe_exec_atomic: Destroy the bind exec
- queue
-Date: Thu, 19 Nov 2026 00:07:10 -0800
-Message-ID: <20261119080722.525281-6-shuicheng.lin@intel.com>
+Subject: [PATCH i-g-t 1/2] tests/intel/xe_exec_atomic: Wait for the bind
+ before the exec
+Date: Thu, 19 Nov 2026 00:07:09 -0800
+Message-ID: <20261119080722.525281-5-shuicheng.lin@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261119080722.525281-4-shuicheng.lin@intel.com>
 References: <20261119080722.525281-4-shuicheng.lin@intel.com>
@@ -72,26 +72,90 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The bind exec queue created in basic_inst() is never destroyed, leaking
-one queue per dynamic subtest until the fd is closed. Destroy it before
-destroying the VM.
+The bind and the exec share a single syncobj, and both only signal it.
+The "sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL" before the exec is a no-op,
+so the exec never waits for the bind. Since the bind runs on a separate
+bind exec queue, the exec may run before the BO is mapped at the batch
+address and fault.
+
+Use two syncobjs: the bind signals sync[0], the exec waits on sync[0]
+and signals sync[1], and the CPU waits on sync[1] before checking the
+result.
 
 Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 ---
- tests/intel/xe_exec_atomic.c | 1 +
- 1 file changed, 1 insertion(+)
+ tests/intel/xe_exec_atomic.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
 diff --git a/tests/intel/xe_exec_atomic.c b/tests/intel/xe_exec_atomic.c
-index 0aa44740b..795d7b549 100644
+index f138a510e..0aa44740b 100644
 --- a/tests/intel/xe_exec_atomic.c
 +++ b/tests/intel/xe_exec_atomic.c
-@@ -112,6 +112,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
- 	gem_close(fd, bo);
+@@ -58,27 +58,26 @@ static void atomic_batch(struct data *data, uint64_t addr, int ops)
+ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instance *eci,
+ 		       uint32_t placement)
+ {
+-	struct drm_xe_sync sync = {
+-		.type = DRM_XE_SYNC_TYPE_SYNCOBJ,
+-		.flags = DRM_XE_SYNC_FLAG_SIGNAL,
++	struct drm_xe_sync sync[2] = {
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
++		{ .type = DRM_XE_SYNC_TYPE_SYNCOBJ, .flags = DRM_XE_SYNC_FLAG_SIGNAL, },
+ 	};
+ 	struct drm_xe_exec exec = {
+ 		.num_batch_buffer = 1,
+-		.num_syncs = 1,
+-		.syncs = to_user_pointer(&sync),
++		.num_syncs = 2,
++		.syncs = to_user_pointer(sync),
+ 	};
+ 	struct data *data;
+ 	uint32_t vm;
+ 	uint32_t exec_queue;
+ 	uint32_t bind_engine;
+-	uint32_t syncobj;
+ 	size_t bo_size;
+ 	int value = 0x123456, match;
+ 	uint64_t addr = 0x100000;
+ 	uint32_t bo = 0;
  
- 	xe_exec_queue_destroy(fd, exec_queue);
-+	xe_exec_queue_destroy(fd, bind_engine);
- 	xe_vm_destroy(fd, vm);
- }
+-	syncobj = syncobj_create(fd, 0);
+-	sync.handle = syncobj;
++	sync[0].handle = syncobj_create(fd, 0);
++	sync[1].handle = syncobj_create(fd, 0);
+ 
+ 	vm = xe_vm_create(fd, 0, 0);
+ 	bo_size = sizeof(*data);
+@@ -89,7 +88,7 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ 
+ 	exec_queue = xe_exec_queue_create(fd, vm, eci, 0);
+ 	bind_engine = xe_bind_exec_queue_create(fd, vm, 0);
+-	xe_vm_bind_async(fd, vm, bind_engine, bo, 0, addr, bo_size, &sync, 1);
++	xe_vm_bind_async(fd, vm, bind_engine, bo, 0, addr, bo_size, sync, 1);
+ 	data = xe_bo_mmap_ext(fd, bo, bo_size, PROT_READ|PROT_WRITE);
+ 	data->data = value;
+ 
+@@ -97,16 +96,18 @@ static void basic_inst(int fd, int inst_type, struct drm_xe_engine_class_instanc
+ 
+ 	exec.exec_queue_id = exec_queue;
+ 	exec.address = data->addr;
+-	sync.flags &= DRM_XE_SYNC_FLAG_SIGNAL;
++	/* Wait on the bind in sync[0], signal the exec completion in sync[1] */
++	sync[0].flags &= ~DRM_XE_SYNC_FLAG_SIGNAL;
+ 	xe_exec(fd, &exec);
+ 
+-	igt_assert(syncobj_wait(fd, &syncobj, 1, INT64_MAX, 0, NULL));
++	igt_assert(syncobj_wait(fd, &sync[1].handle, 1, INT64_MAX, 0, NULL));
+ 	munmap(data, bo_size);
+ 	data = xe_bo_mmap_ext(fd, bo, bo_size, PROT_READ|PROT_WRITE);
+ 	match = (inst_type == MI_ATOMIC_INC) ? ++value : --value;
+ 	igt_assert_eq(data->data, match);
+ 
+-	syncobj_destroy(fd, syncobj);
++	syncobj_destroy(fd, sync[0].handle);
++	syncobj_destroy(fd, sync[1].handle);
+ 	munmap(data, bo_size);
+ 	gem_close(fd, bo);
  
 -- 
 2.43.0
