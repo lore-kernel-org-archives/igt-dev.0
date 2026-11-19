@@ -2,42 +2,42 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175A2606A320
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 06:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75669606A325
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 06:29:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=5hQNxRUO
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=wZl1iHZg
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id AF34810EC52;
-	Thu, 19 Nov 2026 06:28:19 +0000 (UTC)
-Received: from BN8PR05CU002.outbound.protection.outlook.com
- (mail-eastus2azon11011025.outbound.protection.outlook.com [52.101.57.25])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7B36A10E7CF
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 06:19:16 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 0EA5010EC67;
+	Thu, 19 Nov 2026 06:29:18 +0000 (UTC)
+Received: from BL0PR03CU003.outbound.protection.outlook.com
+ (mail-eastusazon11012024.outbound.protection.outlook.com [52.101.53.24])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7497E10E7CF
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 06:19:23 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YRkhImQw19InGXZtz4+P29uuQ1y7+XRLsAxfIyk3UxTumlx4lDCOGuuqDMVUDCzDSuqoA0ZCcrlJa73Km6XdF8bFVkeGaqgazy6RjXYZf8AfqyAOKppM2OH5pN+f0cTvAIDp9Q5aqbXTbswBSPdOEpLEwDROEl4I8Fh1+qDCzgNVi2y8g1QyJixcqOXTh2XT5QlgeOXp/AIKoaOAfPI+Qu6ftKsL9npR23Bxm6e0bYZgkl3+33XV3Ab+yJufS3xLCjjsdDb4shh/bVtR1YrxuILZHRUiRdDLCCZNCbsORlNQU+Rw55MIBz9SjGkjjrEAYOIDEpGZLpTQI2WA26A7YA==
+ b=xh7ydSv83WukwmOOOASuidmQDVDhNu4dxBCCKSIcw7xZrSz3d5DZIJrIlQu181NUKTZIDZaF8UczP3BRUG2cm7ux5hXL9dZ47yp8SBmvb+V2Ak1QHMKbVGGjqVcZMIA0e36CLhnhE3LbvifKpncZAJqzZbblfVjaSV1FVKlEn+wEd97693pdkeSSeGPrykRMgMrL7yLUOfIeD982KfB0og6EoOgU4HRxCiAaihffIFrK/38UqMmteYYSDDm2xDHFaVZQ2SK9I+7Q8U534FSEGU+42IPQ3DqHJGi6wNH04XCkm77Ujpd/1c5D14yQ83/3QwTA8ujRr1/Jy9hfdvjjeQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3e+ZpcslnTSIHbwd4biZ8ozGBLn6GiuHd0rnBWS035g=;
- b=r/gfGBonuwpyS6+3SK44/+rtVb4goEDRG7tuBoqR3LwVaLPoNjiPtHKbV50yZRXPSUlHO3zs4tliOlqHgmFZkjf4CM77JxOvYYy2UFJ9UFVqG7CWem0z7r8v5GEOC1cI2jraeSQvp5/tqikxrwySjN+apE9W6hz3jyGM+cuvj8P1MW/euq928ZzXDqZ9bz36BaWn7vrR3Q+FQmQDwzy/HEms9OxJ1n9iRIVuS5k8QTsTB6aRhl3lmYEK0RzdzXwrqlT7RaTLaMvhnMVUlaLO31o9CPYx5b14BiSrDqYUJz5lZ6zW0DXYozz8TsSPzZ+HJ5GUkw0EtC89bX6pqIiwrg==
+ bh=g6dYMS1H5tOcqD+WdyYBbjG6cEdJ7tBlGQVFcRgucpQ=;
+ b=LD3OxAW86PM/D2NwmtbpfItwUjPoocAgb/STwXs6/jGEgHuzbIWipqD5LUqh0nCp0s3P+2Xl65rdO/Hy0ZD2zNNWPC35c2uR2ulvs8bl9kN6vKKbhcxBHp9bW7BcQYmHW46iFE1bP2FOI5Z+yj5Cp7IhuuAxJCciqOEPJhdz2W3KSJt1+52i3cYCb2Zbydeg8VbcJzy+V3d7t3a35eGEPQXQ5MdqfG7AgSsHiEWfSwhep2qbQMYE98brqe91GXz/PPzGm43CJOJ+TEuuBkpRup2ek4ABp7nrOiJvN9Po6D4hcgvBr5O/APXuufCxAkZ1o+p1sIqB67OKJyt4EoECpA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3e+ZpcslnTSIHbwd4biZ8ozGBLn6GiuHd0rnBWS035g=;
- b=5hQNxRUO8dWbWB0loQMu0YHYClzNW4qImXUjf3zVEOJFaiCOjk94wp5RxG7OowO8hVE2+twGugOz8tP6p5Ea33bYJZSIVUq77yRDrL7jiMCLteGC5MQybBJaZG9y0qsm80ax3s6AVH30+kM4A5qBsdg+SjEFM0W6dZXZG7s32G8=
-Received: from DS7PR03CA0060.namprd03.prod.outlook.com (2603:10b6:5:3b5::35)
- by BN5PR12MB9540.namprd12.prod.outlook.com (2603:10b6:408:2a8::22) with
+ bh=g6dYMS1H5tOcqD+WdyYBbjG6cEdJ7tBlGQVFcRgucpQ=;
+ b=wZl1iHZgff65UNAptx8QLOv28t7e+2zBN1Q77bCOkKrOTjiAYOanqOvPRzJbT4KcjEqKn5+KsHWwzBuqTcHi/rXUnkvgxwoXkl/BD9zt+SwxACmmJMjfJDYmekGre3QEfBc0jMf9q1bWFtP70ZOaROXRIpVu+WZY3kZNSd/biac=
+Received: from DS1PR03CA0025.namprd03.prod.outlook.com (2603:10b6:8:233::18)
+ by DS4PR12MB634945.namprd12.prod.outlook.com (2603:10b6:8:514::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.14; Thu, 19 Nov
- 2026 06:19:11 +0000
-Received: from CY4PEPF000392D9.namprd03.prod.outlook.com
- (2603:10b6:5:3b5:cafe::99) by DS7PR03CA0060.outlook.office365.com
- (2603:10b6:5:3b5::35) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.13 via Frontend Transport; Thu,
- 19 Nov 2026 06:19:10 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.615.17; Thu, 19 Nov
+ 2026 06:19:17 +0000
+Received: from CY4PEPF000392D6.namprd03.prod.outlook.com
+ (2603:10b6:8:233:cafe::51) by DS1PR03CA0025.outlook.office365.com
+ (2603:10b6:8:233::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.14 via Frontend Transport; Thu,
+ 19 Nov 2026 06:19:17 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
@@ -46,26 +46,26 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
 Received: from satlexmb07.amd.com (165.204.84.17) by
- CY4PEPF000392D9.mail.protection.outlook.com (10.167.247.119) with Microsoft
+ CY4PEPF000392D6.mail.protection.outlook.com (10.167.247.116) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.615.4 via Frontend Transport; Thu, 19 Nov 2026 06:19:10 +0000
+ 15.21.639.5 via Frontend Transport; Thu, 19 Nov 2026 06:19:17 +0000
 Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Thu, 19 Nov
- 2026 00:19:10 -0600
+ 2026 00:19:16 -0600
 Received: from JesseDEV.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Thu, 19 Nov 2026 00:19:08 -0600
+ Transport; Thu, 19 Nov 2026 00:19:14 -0600
 From: Jesse Zhang <Jesse.Zhang@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Christian Koenig <christian.koenig@amd.com>,
  Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
  <Pierre-eric.Pelloux-prayer@amd.com>, Jesse Zhang <Jesse.Zhang@amd.com>
-Subject: [PATCH i-g-t v3 07/11] lib/amdgpu: program the CU mask of every SE in
- dispatches
-Date: Thu, 19 Nov 2026 14:18:28 +0800
-Message-ID: <20261119061847.3442210-7-Jesse.Zhang@amd.com>
+Subject: [PATCH i-g-t v3 10/11] tests/amdgpu: add SLTH tests reading the
+ second-level TMA
+Date: Thu, 19 Nov 2026 14:18:31 +0800
+Message-ID: <20261119061847.3442210-10-Jesse.Zhang@amd.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20261119061847.3442210-1-Jesse.Zhang@amd.com>
 References: <20261119061847.3442210-1-Jesse.Zhang@amd.com>
@@ -75,29 +75,29 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF000392D9:EE_|BN5PR12MB9540:EE_
-X-MS-Office365-Filtering-Correlation-Id: 66b6b233-4004-4a12-16d9-08df4605069b
+X-MS-TrafficTypeDiagnostic: CY4PEPF000392D6:EE_|DS4PR12MB634945:EE_
+X-MS-Office365-Filtering-Correlation-Id: dabdf933-2631-4d22-855d-08df46050a7d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|376014|36860700016|1800799024|23010399003|82310400026|3023799007|10067099003|261028144727099003|11063799006|56012099006|261021121427099003|261021123027099003|261026140227099003|261022105027099003|261102123227099003|261009223027099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info: J0wYVE3PwQLbvZrenpU/glrxKmjuTvCnpULp6OMISYpi6Hu8ZwiRJneHy0/PrqK8KcucVkN2ROf9seKNKFsG4apnNhs4XQC6nAJsfLe0dDxOKZ1Bm0KqSEbmTVD1bjaNN1pu+KbP5k9ZBghUKD6QjkhdRSr2QbZjbbB1bdvSrKEXl/hjJgyAvKNyrgZeIUUxNLrNxo3HFt72FP1x563JvMimduRrVPYGOPplZTKLd5hJPmfuFFupRubxZryJKwTvG+LtF3LMuHdATWCD3iNi0WPq/Z1vdlNdW7/ugoxZmBDbc5quqFggA9vIhjQOvkLWKuzUVv8Djbq7vi3pZuK3m93w3u9OEsfbm3UdEgADeTyxMW8tpL2lkyIB5LcjdfduNMMsM5JUIShDbN/pOMtbz4YcR2AjOgqA0y2fyjHs7bfxi4WF4BD7Bq2UDREMP86Jpew2RfFvNjnJDRcb4iAAqS3kMzk3lVltrnmZ9VaJAcVcT7jNWPSfLCALEDbNfeflc0X28dng4EREWIFGdb7+B60N9o/2NKe7aBOoBLqk2I4Kyzq3pS6t/JfIm/QFIYxrIbOF6WA6gdb5YSOsMOB0mpwfGV7XkNnUQFBHCUdkMaHniBk4DjOJ75NqMPPJC44g8Fr2Srz2XPWVchkqp4MI3BcA4eMYe8NT1dW50im5ki7+Qjn7IR1DUE89FsD5HAIQhA1XxI+41NNdoR/KFcdJ6Q==
+ ARA:13230040|82310400026|1800799024|36860700016|376014|23010399003|22082099003|18002099003|6133799003|261009223027099003|3023799007|56012099006|5023799004|11063799006|261102123227099003|261026121527099003|261026140227099003|261028144727099003|261022075727099003|261021123027099003|261021121427099003|261022115727099003|261022105027099003|10067099003;
+X-Microsoft-Antispam-Message-Info: lQg1A1MGNe770WWYSnuIB+PIl8vV8tPT/3IlJ9JOZTL5mLSa2GT1Kq94V+Dk9UWma6V1HZv9PE37qFyU0xBgnC9s/XAv6PxKdMkrNzyaLx9p5SgS50ASjQAq/5STJ6G9VqZbxYkzRs+iC4jZspUE36zlbWkWoRndB2kNRlB4fKoHYnNBqpaF5W6ClJUJUBaYEttdMhaiWulSJEPX1QEPkLZak3Hh9eipclZYHyTi2z+wCfEg2yVn/odytfGafnM0AUTcm+GvY3IpCyOTrPDSJLiLmcxlYcSxFUXt8T9oj8Ztqc6oECwVXH6mxp2XKe5optzZyp0EY7dADJdC8LIqf7NjWcSXBgKrOAnZFm+WZsnimVSpnibWaarva55+LXoMyG+4KqN7kr/X1tbKXsBRq9K8o7TvQ7NnjV4sqe7UwbJ6Usb3SrNWnxtqhnpykU2K3dh/qIEPUC0TyGJu/rzLrkt/ORbeA4KsDYk7lgt46n8O/roupBFSfc5VjJUGTUnUXieEU1u0a3ZRhHQO0Y31Zjdax2pr47lg0ryi7FSx/cMldQw3SbwG/QBMOYmvHPaobMofO+HDgQ6HvHazyhvOmVlGTG9YeZsIwP2+abbxPVe4dMe6UajYtUNrQmjjBsF9F3RybpiP3lzKA+YjCsfpznLZIt5AO4Ascj2TBW3Nqe1qM5j3BYwHz4rddE9gm/k9aRsKQkw2iZqZwmLsKAjnvA==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(376014)(36860700016)(1800799024)(23010399003)(82310400026)(3023799007)(10067099003)(261028144727099003)(11063799006)(56012099006)(261021121427099003)(261021123027099003)(261026140227099003)(261022105027099003)(261102123227099003)(261009223027099003)(18002099003)(22082099003)(6133799003);
+ SFS:(13230040)(82310400026)(1800799024)(36860700016)(376014)(23010399003)(22082099003)(18002099003)(6133799003)(261009223027099003)(3023799007)(56012099006)(5023799004)(11063799006)(261102123227099003)(261026121527099003)(261026140227099003)(261028144727099003)(261022075727099003)(261021123027099003)(261021121427099003)(261022115727099003)(261022105027099003)(10067099003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: tD/X3ZmJDVMsgM3XSGK2+FU42LAq6TfYLDpHbgtlMBVw8whzZyzFNBiOwnz7v/LpMh17k5AuUQL85Mnb5LjjEzW+apEnujuN/JXMUu+ZxdN2hOJUR4ExEWhhmZb5GOt5WZ3CxWmfOxOnR9Hn1Cx2hKM/QqZA5RqNQf8Yx7GnTWJ/FKWRxmtVNVopIuIgBqqiLhjgKyEY/iB5Sa07sj0PWR6Hv173NC3iTKpbZX/rMWI4gyVDx6xhsvyudnVvREd5nRKw62ARp++H4Nm1cPbUV6blzLw1EZ0iolTdW+5ybFt8a46HgyDzSIBY/6CnztiOvht3FJ2v87CFxoPXt8U6pi8ZFiXIOoXonUIhLscbKEcNHx0FuuUeQTyeJNyrFzQ/82ixCXx+QN8Jxo8kiRwHjJAPt/pKCoxzngvJPBgxnw2fOia3wliKNB2CGJtLZc64
+X-MS-Exchange-AntiSpam-MessageData-0: 8pELAiLORTtGQUbEjt5V3GFpvakn+OU0dS2F+pz+xD4lKGf8KARSClrivg2hLl50tlzOtojlmJRK9qAMGqBgNojPd33/y7KeSqa1iwoU/CcGjdpLVAlOFEbvJvUbRqrgP2++mZhj0Wyh2hi+B7ZazkMKlDnilGeaBbb9wN+8lCdWnBae4QpSN0pS6plhzlHLhAChfj7/l97aHZhm4nNGYR8ZG3wvQcFaThP+S6gDDyxkzOniPZXxy8nKOwtdoN4ngbEhpECQIfTJEufQi4I4Q3VfFOBsqbXo3BewOEzvdClN2VQJIW5vmk/DwXLaMzGg/BtbjjLq9pi9+iBHl9P9ARvwBVEa46PfyO3hMi2POfoBuHGMN9jXtg4aD6vbT+z0Hw9WTOrkfZvkH1CwXhMOCvFa+kS6gh7E7QDwcYASqs+JKAI5m8banwLqjy//92gE
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 06:19:10.8651 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 66b6b233-4004-4a12-16d9-08df4605069b
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2026 06:19:17.3758 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: dabdf933-2631-4d22-855d-08df46050a7d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
  Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF000392D9.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF000392D6.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR12MB9540
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PR12MB634945
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -116,168 +116,273 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-amdgpu_dispatch_write_cumask() is meant to enable all CUs for the
-following dispatch, but it only writes COMPUTE_STATIC_THREAD_MGMT_SE0-SE3:
-on GFX12 it skips SE0 and SE1 as well, and it never writes the SE4 and
-up registers that GFX9, GFX11 and GFX12 have. SE2 and SE3 are also
-written with index 0 while SE0 and SE1 use index 3 on GFX10 and GFX11.
+The SLTH tests only check that the second-level trap handler runs,
+so nothing checks the TMA passed to SET_L2_TRAP. The kernel stores
+it in the first-level TMA, and the first-level trap handler loads
+it into ttmp[14:15] for the second-level handler, using the
+first-level TMA address from SQ_SHADER_TMA (or MSG_RTN_GET_TMA).
 
-Write the register of every SE the generation has, with index 3 on
-GFX10 and newer, and add amdgpu_dispatch_write_cumask_mask() for callers
-which need another CU mask. amdgpu_dispatch_write_cumask() still enables
-all CUs.
+Store a known value in the first dword of the second-level TMA and
+add TrapHandlerIsaTmaProof, which loads it through ttmp[14:15] into
+v2. Add the slth-{gfx,comp}-{kq,umq}-tma-proof subtests to run it
+with the VGPR proof shader, which stores v2 after the trap returns.
+They pass only if the TMA address reaches the second-level handler.
+
+To share the code, the GFX and compute KQ VGPR proof tests and the
+user queue helper now take the trap handler and the expected value.
 
 Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
 ---
- .../compute_utils/amd_dispatch_helpers.c      | 111 +++++++++++++++---
- .../compute_utils/amd_dispatch_helpers.h      |   3 +
- 2 files changed, 95 insertions(+), 19 deletions(-)
+ lib/amdgpu/shaders/amd_shader_store.h | 20 ++++++-
+ tests/amdgpu/amd_slth.c               | 79 +++++++++++++++++++++------
+ 2 files changed, 82 insertions(+), 17 deletions(-)
 
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-index c05198d8b..193c02005 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-+++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-@@ -71,34 +71,107 @@ amdgpu_dispatch_init(uint32_t ip_type, struct amdgpu_cmd_base *base, uint32_t ve
- 	return base->cdw - i;
+diff --git a/lib/amdgpu/shaders/amd_shader_store.h b/lib/amdgpu/shaders/amd_shader_store.h
+index a86e7bb25..045f09972 100644
+--- a/lib/amdgpu/shaders/amd_shader_store.h
++++ b/lib/amdgpu/shaders/amd_shader_store.h
+@@ -1355,7 +1355,8 @@ static const char * const amdgpu_test_shaders[] = {
+  *   out = s[0:1];	// output address from COMPUTE_USER_DATA_0/1
+  *   v2 = 0;
+  *   s_trap 1;		// the second-level trap handler sets v2
+- *   *out = v2;		// 42 with TrapHandlerIsaProof
++ *   *out = v2;		// 42 with TrapHandlerIsaProof,
++ *			// TMA[0] with TrapHandlerIsaTmaProof
+  */
+ static const char SlthVgprProofIsa[] =
+     SHADER_START
+@@ -1505,5 +1506,22 @@ static const char SlthReturnProofIsa[] =
+ static const char TrapHandlerIsaProof[] =
+ 	SLTH_TRAP_HANDLER("	v_mov_b32 v2, 42\n");
+ 
++/* Shader: TrapHandlerIsaTmaProof
++ * Purpose:
++ *   Set v2 to the first dword of the second-level TMA on s_trap, shows that
++ *   the TMA set with SET_L2_TRAP reaches the second-level trap handler.
++ *
++ * Pseudo-code (set_v2):
++ *   v2 = *(u32 *)ttmp[14:15];	// TMA[0], SLTH_TMA_MAGIC from the test
++ */
++static const char TrapHandlerIsaTmaProof[] =
++	SLTH_TRAP_HANDLER("	.if .amdgcn.gfx_generation_number >= 12\n"
++	"	s_load_dword ttmp2, ttmp[14:15], 0x0 scope:SCOPE_SYS\n"
++	"	s_wait_kmcnt 0x0\n"
++	"	.else\n"
++	"	s_load_dword ttmp2, ttmp[14:15], 0x0 glc\n"
++	"	s_waitcnt lgkmcnt(0)\n"
++	"	.endif\n"
++	"	v_mov_b32 v2, ttmp2\n");
+ 
+ #endif
+diff --git a/tests/amdgpu/amd_slth.c b/tests/amdgpu/amd_slth.c
+index 34736b34f..585726205 100644
+--- a/tests/amdgpu/amd_slth.c
++++ b/tests/amdgpu/amd_slth.c
+@@ -28,6 +28,9 @@
+ #define TBA_SIZE (2 * 4096)
+ #define TMA_SIZE (4096)
+ 
++/* First dword of the second-level TMA, read by TrapHandlerIsaTmaProof */
++#define SLTH_TMA_MAGIC 0x5ec0de42
++
+ struct slth_bufs {
+ 	amdgpu_bo_handle tba_bo;
+ 	amdgpu_bo_handle tma_bo;
+@@ -156,6 +159,7 @@ static void slth_prepare_tba_with_handler(
+ 			isa_sz);
+ 
+ 	memset(bufs->tma_cpu, 0, TMA_SIZE);
++	*(uint32_t *)bufs->tma_cpu = SLTH_TMA_MAGIC;
+ 
+ 	igt_info("Trap handler size=%zu\n", isa_sz);
+ }
+@@ -498,7 +502,8 @@ static uint32_t execute_slth_dispatch(
  }
  
-+/*
-+ * COMPUTE_STATIC_THREAD_MGMT_SE<n>, one register per SE, as SH register
-+ * offsets: the register dword address minus 0x2c00, the SH register space
-+ * start used by SET_SH_REG. Bits 15:0 (SA0_CU_EN, SH0_CU_EN on GFX9) enable
-+ * the CUs of the first shader array of the SE, bits 31:16 (SA1_CU_EN) those
-+ * of the second one.
-+ */
-+static const uint32_t cumask_se_gfx9[] = {
-+	0x216,	/* SE0, 0x2e16 */
-+	0x217,	/* SE1, 0x2e17 */
-+	0x219,	/* SE2, 0x2e19 */
-+	0x21a,	/* SE3, 0x2e1a */
-+	0x225,	/* SE4, 0x2e25 */
-+	0x226,	/* SE5, 0x2e26 */
-+	0x227,	/* SE6, 0x2e27 */
-+	0x228,	/* SE7, 0x2e28 */
-+};
-+
-+static const uint32_t cumask_se_gfx10[] = {
-+	0x216,	/* SE0, 0x2e16 */
-+	0x217,	/* SE1, 0x2e17 */
-+	0x219,	/* SE2, 0x2e19 */
-+	0x21a,	/* SE3, 0x2e1a */
-+};
-+
-+static const uint32_t cumask_se_gfx11[] = {
-+	0x216,	/* SE0, 0x2e16 */
-+	0x217,	/* SE1, 0x2e17 */
-+	0x219,	/* SE2, 0x2e19 */
-+	0x21a,	/* SE3, 0x2e1a */
-+	0x22b,	/* SE4, 0x2e2b */
-+	0x22c,	/* SE5, 0x2e2c */
-+	0x22d,	/* SE6, 0x2e2d */
-+	0x22e,	/* SE7, 0x2e2e */
-+};
-+
-+static const uint32_t cumask_se_gfx12[] = {
-+	0x216,	/* SE0, 0x2e16 */
-+	0x217,	/* SE1, 0x2e17 */
-+	0x219,	/* SE2, 0x2e19 */
-+	0x21a,	/* SE3, 0x2e1a */
-+	0x22b,	/* SE4, 0x2e2b */
-+	0x22c,	/* SE5, 0x2e2c */
-+	0x22d,	/* SE6, 0x2e2d */
-+	0x22e,	/* SE7, 0x2e2e */
-+	0x223,	/* SE8, 0x2e23 */
-+};
-+
-+/*
-+ * Set the CU mask of the following dispatches: write cu_mask to the
-+ * COMPUTE_STATIC_THREAD_MGMT_SE register of every SE the generation has.
-+ */
- int
--amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base, uint32_t version)
-+amdgpu_dispatch_write_cumask_mask(struct amdgpu_cmd_base *base, uint32_t version,
-+				  uint32_t cu_mask)
+ static void slth_gfx_kq_vgpr_proof_test(amdgpu_device_handle device,
+-					int fd)
++					int fd, const char *handler,
++					uint32_t expected)
  {
- 	int offset_prev = base->cdw;
-+	const uint32_t *se;
-+	unsigned int i, num_se;
-+
-+	switch (version) {
-+	case 9:
-+		se = cumask_se_gfx9;
-+		num_se = ARRAY_SIZE(cumask_se_gfx9);
-+		break;
-+	case 10:
-+		se = cumask_se_gfx10;
-+		num_se = ARRAY_SIZE(cumask_se_gfx10);
-+		break;
-+	case 11:
-+		se = cumask_se_gfx11;
-+		num_se = ARRAY_SIZE(cumask_se_gfx11);
-+		break;
-+	default:
-+		se = cumask_se_gfx12;
-+		num_se = ARRAY_SIZE(cumask_se_gfx12);
-+		break;
-+	}
+ 	struct slth_bufs bufs;
+ 	uint8_t isa_bin[8192];
+@@ -519,7 +524,7 @@ static void slth_gfx_kq_vgpr_proof_test(amdgpu_device_handle device,
  
--	if (version == 9) {
--	/*  Issue commands to set cu mask used in current dispatch */
--	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
--		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 2));
--		base->emit(base, 0x216);
--		base->emit(base, 0xffffffff);
--		base->emit(base, 0xffffffff);
--	} else if ((version == 10) || (version == 11)) {
--		/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE1 - mmCOMPUTE_STATIC_THREAD_MGMT_SE0 */
--		base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
--		base->emit(base, 0x30000216);
--		base->emit(base, 0xffffffff);
--		base->emit(base, 0xffffffff);
-+	for (i = 0; i < num_se; i++) {
-+		if (version == 9) {
-+			base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-+			base->emit(base, se[i]);
-+		} else {
-+			/* index 3: the CP ANDs the mask with the queue CU mask */
-+			base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 1));
-+			base->emit(base, (3u << 28) | se[i]);
-+		}
-+		base->emit(base, cu_mask);
- 	}
--	/* set mmCOMPUTE_STATIC_THREAD_MGMT_SE3 - mmCOMPUTE_STATIC_THREAD_MGMT_SE2 */
--	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG_INDEX, 2));
--	base->emit(base, 0x219);
--	base->emit(base, 0xffffffff);
--	base->emit(base, 0xffffffff);
+ 	slth_prepare_tba_with_handler(device,
+ 				      &bufs,
+-			TrapHandlerIsaProof);
++			handler);
  
- 	return base->cdw - offset_prev;
+ 	ret = vm_set_l2_trap(fd,
+ 			     bufs.tba_mc_addr,
+@@ -555,13 +560,13 @@ static void slth_gfx_kq_vgpr_proof_test(amdgpu_device_handle device,
+ 
+ 	igt_info("VGPR proof output value=%u\n", value);
+ 
+-	if (value == 42)
++	if (value == expected)
+ 		igt_info("SLTH trap handler updated VGPR state, shader resumed successfully\n");
+ 	else
+-		igt_info("SLTH GFX KQ VGPR proof failed: expected=42 actual=%u\n",
+-			 value);
++		igt_info("SLTH GFX KQ VGPR proof failed: expected=%u actual=%u\n",
++			 expected, value);
+ 
+-	igt_assert_eq(value, 42);
++	igt_assert_eq(value, expected);
+ 
+ 	ret = vm_clear_l2_trap(fd);
+ 	igt_assert_eq(ret, 0);
+@@ -578,6 +583,7 @@ static void slth_gfx_kq_vgpr_proof_test(amdgpu_device_handle device,
+  */
+ static uint32_t
+ slth_umq_run(amdgpu_device_handle device, int fd, unsigned int ip_type,
++	     const char *handler,
+ 	     void (*prepare_shader)(amdgpu_device_handle device,
+ 				    uint8_t *isa_bin, size_t *isa_sz))
+ {
+@@ -600,7 +606,7 @@ slth_umq_run(amdgpu_device_handle device, int fd, unsigned int ip_type,
+ 
+ 	memset(&bufs, 0, sizeof(bufs));
+ 	slth_alloc_buffers(device, &bufs);
+-	slth_prepare_tba_with_handler(device, &bufs, TrapHandlerIsaProof);
++	slth_prepare_tba_with_handler(device, &bufs, handler);
+ 
+ 	r = vm_set_l2_trap(fd, bufs.tba_mc_addr, bufs.tma_mc_addr);
+ 	igt_info("SET_L2_TRAP ret=%d\n", r);
+@@ -710,7 +716,7 @@ static void slth_gfx_umq_vgpr_proof_test(amdgpu_device_handle device,
+ 
+ 	igt_info("SLTH GFX UMQ VGPR PROOF\n");
+ 
+-	value = slth_umq_run(device, fd, AMD_IP_GFX,
++	value = slth_umq_run(device, fd, AMD_IP_GFX, TrapHandlerIsaProof,
+ 			     slth_prepare_vgpr_proof_shader);
+ 
+ 	/* The trap handler sets v2 to 42 before the shader stores it. */
+@@ -721,7 +727,8 @@ static void slth_gfx_umq_vgpr_proof_test(amdgpu_device_handle device,
+ 
+ static void
+ slth_comp_kq_vgpr_proof_test(amdgpu_device_handle device,
+-			     int fd)
++			     int fd, const char *handler,
++			     uint32_t expected)
+ {
+ 	struct slth_bufs bufs;
+ 
+@@ -782,7 +789,7 @@ slth_comp_kq_vgpr_proof_test(amdgpu_device_handle device,
+ 
+ 	slth_prepare_tba_with_handler(device,
+ 				      &bufs,
+-			TrapHandlerIsaProof);
++			handler);
+ 
+ 	ret = vm_set_l2_trap(fd,
+ 			     bufs.tba_mc_addr,
+@@ -1042,7 +1049,7 @@ slth_comp_kq_vgpr_proof_test(amdgpu_device_handle device,
+ 		 ptr_dst[0],
+ 			ptr_dst[0]);
+ 
+-	igt_assert_eq(ptr_dst[0], 42);
++	igt_assert_eq(ptr_dst[0], expected);
+ 
+ 	ret = vm_clear_l2_trap(fd);
+ 
+@@ -1492,7 +1499,7 @@ slth_gfx_umq_returnproof_test(amdgpu_device_handle device, int fd)
+ {
+ 	uint32_t value;
+ 
+-	value = slth_umq_run(device, fd, AMD_IP_GFX,
++	value = slth_umq_run(device, fd, AMD_IP_GFX, TrapHandlerIsaProof,
+ 			     slth_prepare_returnproof_shader);
+ 
+ 	/* The instruction after s_trap sets v2 to 2 after the trap returns. */
+@@ -1504,7 +1511,7 @@ slth_comp_umq_vgpr_proof_test(amdgpu_device_handle device, int fd)
+ {
+ 	uint32_t value;
+ 
+-	value = slth_umq_run(device, fd, AMD_IP_COMPUTE,
++	value = slth_umq_run(device, fd, AMD_IP_COMPUTE, TrapHandlerIsaProof,
+ 			     slth_prepare_vgpr_proof_shader);
+ 
+ 	/* The trap handler sets v2 to 42 before the shader stores it. */
+@@ -1516,13 +1523,29 @@ slth_comp_umq_returnproof_test(amdgpu_device_handle device, int fd)
+ {
+ 	uint32_t value;
+ 
+-	value = slth_umq_run(device, fd, AMD_IP_COMPUTE,
++	value = slth_umq_run(device, fd, AMD_IP_COMPUTE, TrapHandlerIsaProof,
+ 			     slth_prepare_returnproof_shader);
+ 
+ 	/* The instruction after s_trap sets v2 to 2 after the trap returns. */
+ 	igt_assert_eq(value, 2);
  }
  
-+/* Enable all CUs for the following dispatches */
-+int
-+amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base, uint32_t version)
++/*
++ * The second-level trap handler sets v2 to the first dword of its TMA, which
++ * only works if the kernel stored the TMA address where the first-level trap
++ * handler gets it from.
++ */
++static void
++slth_umq_tma_proof_test(amdgpu_device_handle device, int fd,
++			unsigned int ip_type)
 +{
-+	return amdgpu_dispatch_write_cumask_mask(base, version, 0xffffffff);
++	uint32_t value;
++
++	value = slth_umq_run(device, fd, ip_type, TrapHandlerIsaTmaProof,
++			     slth_prepare_vgpr_proof_shader);
++	igt_assert_eq_u32(value, SLTH_TMA_MAGIC);
 +}
 +
- /*
-  * The fence the kernel emits after a job on a kernel queue waits for the
-  * dispatched waves and writes the caches back. A user queue only signals its
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-index e1c6e37f4..98466e0c8 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-+++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-@@ -33,6 +33,9 @@ int amdgpu_dispatch_init(uint32_t ip_type, struct amdgpu_cmd_base *base_cmd, uin
+ int igt_main()
+ {
+ 	amdgpu_device_handle device;
+@@ -1565,13 +1588,15 @@ int igt_main()
+ 	}
  
- int amdgpu_dispatch_write_cumask(struct amdgpu_cmd_base *base_cmd, uint32_t version);
+ 	igt_subtest("slth-gfx-kq-vgpr-proof")
+-		slth_gfx_kq_vgpr_proof_test(device, fd);
++		slth_gfx_kq_vgpr_proof_test(device, fd, TrapHandlerIsaProof,
++					    42);
  
-+int amdgpu_dispatch_write_cumask_mask(struct amdgpu_cmd_base *base_cmd, uint32_t version,
-+				      uint32_t cu_mask);
+ 	igt_subtest("slth-gfx-umq-vgpr-proof")
+ 		slth_gfx_umq_vgpr_proof_test(device, fd);
+ 
+ 	igt_subtest("slth-comp-kq-vgpr-proof")
+-		slth_comp_kq_vgpr_proof_test(device, fd);
++		slth_comp_kq_vgpr_proof_test(device, fd, TrapHandlerIsaProof,
++					     42);
+ 
+ 	igt_subtest("slth-comp-kq-returnproof")
+ 		slth_comp_kq_returnproof_test(device, fd);
+@@ -1594,6 +1619,28 @@ int igt_main()
+ 		slth_comp_umq_returnproof_test(device, fd);
+ 	}
+ 
++	igt_describe("Check-SLTH-trap-handler-reads-its-TMA-on-GFX-kernel-queue");
++	igt_subtest("slth-gfx-kq-tma-proof")
++		slth_gfx_kq_vgpr_proof_test(device, fd, TrapHandlerIsaTmaProof,
++					    SLTH_TMA_MAGIC);
 +
- int amdgpu_dispatch_write_sync(struct amdgpu_cmd_base *base_cmd, uint32_t version);
- 
- int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version, enum cmd_error_type err);
++	igt_describe("Check-SLTH-trap-handler-reads-its-TMA-on-compute-kernel-queue");
++	igt_subtest("slth-comp-kq-tma-proof")
++		slth_comp_kq_vgpr_proof_test(device, fd, TrapHandlerIsaTmaProof,
++					     SLTH_TMA_MAGIC);
++
++	igt_describe("Check-SLTH-trap-handler-reads-its-TMA-on-GFX-user-queue");
++	igt_subtest("slth-gfx-umq-tma-proof") {
++		igt_require(enable_test && userq_arr_cap[AMD_IP_GFX]);
++		slth_umq_tma_proof_test(device, fd, AMD_IP_GFX);
++	}
++
++	igt_describe("Check-SLTH-trap-handler-reads-its-TMA-on-compute-user-queue");
++	igt_subtest("slth-comp-umq-tma-proof") {
++		igt_require(enable_test && userq_arr_cap[AMD_IP_COMPUTE]);
++		slth_umq_tma_proof_test(device, fd, AMD_IP_COMPUTE);
++	}
++
+ 	igt_fixture() {
+ 		amdgpu_llvm_asm_shutdown();
+ 		amdgpu_device_deinitialize(device);
 -- 
 2.50.1
 
