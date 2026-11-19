@@ -2,51 +2,53 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490E2606A31C
-	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 00:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DEBD606A320
+	for <igt-dev@archiver.kernel.org>; Thu, 19 Nov 2026 00:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JRA7a7vl
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Gsliexx+
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id CE6951120EF;
-	Thu, 19 Nov 2026 00:51:17 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5B7CD10E7E9;
+	Thu, 19 Nov 2026 00:52:10 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5FDC61120EF
- for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 00:50:16 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 78D611120F3
+ for <igt-dev@lists.freedesktop.org>; Thu, 19 Nov 2026 00:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795049416; x=1826585416;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=H4C/8doECwF5TF+Z/x3iy8Ne68SafKOQPQSh25NqAsE=;
- b=JRA7a7vlPyTasdLpFoPqrXGa+xsduBWzoByXGplRSZNjGZgPp+0GJ+sv
- MKYV5PBpEOjk9rCiQXyhnsfbsZYLeb5hGfpQSWUqmaF3ZqKtloDb+YWpO
- kuhhQ/MNw4gOoC/mXMXHdizdhOekwM8Fx95njhFAepCjuQ2VK4t3jeURj
- uTzVdI3uqtto0g2IN6knjFiKQU2iTzjF37g3jE7iOEh9z+DjetdY6Y1Pe
- TxsHVelxiEXdqk3VmK+TYJ5cnvXDpQ/Hhira7HRTpwbDXgQfzKAeo1mbD
- MZbA2rLzdzrS8rEGj7Zpftx5YlElh84kwbPONUarK85lA2DEmbxMNPp2z w==;
-X-CSE-ConnectionGUID: 4KWEqoj6QSqKZ/0O78s6OA==
-X-CSE-MsgGUID: CxTs0yRbQeCGDCHklx+u7Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3771126"
+ t=1795049421; x=1826585421;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=L6ddGVcbKbxMAmzA93Zkxi5s2nAbXFNvgEik4uzP5z8=;
+ b=Gsliexx+my/E8rthxCkY2GOFaCm8HTpcKX53X7ft/OkbTRk1aFRyO821
+ MK2TmzI+gZlx5up3jqYKR0I+zXnSzDxKwrdq5tYl8H5XPvZsBx7NmCciS
+ 9ljdFaLt9n05qH0uPOFtwRTA/a2rNA7r2ZaJBjOx++mcKRYpOyLrQZJ6q
+ o+QWVGXg2kyW4TX1GrUSrplSdqz8IgFxo5S0sOTBOTe7fh47F/2ZLBFGz
+ Qk4hidpq+3lt564JgBIPx4FPJY12DvTerNqm1Z/H9rx+xKgq752eD1Nb1
+ o2DSgLwwhaqa4EQ869t7n3MVFEnshe3X1QLmAWdeIBTcT2iGvxkcY1Q67 Q==;
+X-CSE-ConnectionGUID: N6yvx/IjRouvSBPpKOO0ig==
+X-CSE-MsgGUID: 6H0RIOL9RZ+E/UiE35K9FQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11970"; a="3771129"
 X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; 
-   d="scan'208";a="3771126"
+   d="scan'208";a="3771129"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
  18 Nov 2026 16:50:16 -0800
-X-CSE-ConnectionGUID: 6BfJUp/QSDyRMa0FKYU9pg==
-X-CSE-MsgGUID: jYUiQ3C+ThWb1QySUmbr0A==
+X-CSE-ConnectionGUID: i+wOc9+GSAK1KHiCZIHlMQ==
+X-CSE-MsgGUID: 0o0Dn18FTB+VnJvgHkLv4w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10679598"
+X-IronPort-AV: E=Sophos;i="6.27,220,1787036400"; d="scan'208";a="10679604"
 Received: from cyp05.fm.intel.com ([10.36.55.41])
- by fmviesa007.fm.intel.com with ESMTP; 18 Nov 2026 16:50:16 -0800
+ by fmviesa007.fm.intel.com with ESMTP; 18 Nov 2026 16:50:17 -0800
 From: Zongyao Bai <zongyao.bai@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: jia.yao@intel.com, shuicheng.lin@intel.com,
  Zongyao Bai <zongyao.bai@intel.com>
-Subject: [PATCH 0/3] tests/intel/xe_pm_residency: Wait for a stable C6 before
- measuring residency
-Date: Wed, 18 Nov 2026 16:50:06 -0800
-Message-ID: <20261119005009.364632-1-zongyao.bai@intel.com>
+Subject: [PATCH 2/3] tests/intel/xe_pm_residency: Wait for stable C6 before
+ measuring
+Date: Wed, 18 Nov 2026 16:50:08 -0800
+Message-ID: <20261119005009.364632-3-zongyao.bai@intel.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20261119005009.364632-1-zongyao.bai@intel.com>
+References: <20261119005009.364632-1-zongyao.bai@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -61,59 +63,81 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Several CI runs of xe_pm_residency@idle-residency@gt0 fail with only
-~82% residency (allowed: 90%).
+test_idle_residency() (idle-residency and gt-c6-freeze) waited only once
+for xe_gt_is_in_c6() and then immediately started the 3s measurement. If
+the GT had just visited C6 while deferred cleanup work from the previously
+executed test was still running (observed after xe_pat@pat-index-auto,
+which leaves ~1s of GT activity at fd close), the measurement window
+included that activity and the test failed with residency well below 90%.
 
-The test waits only once for xe_gt_is_in_c6() and then starts the 3s
-measurement. That single sample can succeed on a transient visit to C6
-while the GT is still being woken up by deferred work of the previous
-test. Some asynchronous teardown (GuC deregistration, LRC/BO free, 
-GGTT node removal and the resulting TLB invalidations on both GTs) 
-may make GT out of C6 for ~0.8-1.4s after the test exits.
+Wait for 500ms of uninterrupted C6 (with the residency counter following)
+before opening the measurement window, using xe_gt_wait_c6_stable(). This
+also removes the dependency on test execution order.
 
-This series makes the C6 residency tests wait until the GT is really
-idle before measuring, as a robustness fix independent of the order in
-which tests are scheduled:
+In toggle-gt-c6 do the same only once, before sampling the C6 power; the
+other repetitions only check the C0/C6 transitions and keep the quick
+single-shot wait.
 
-  1. add xe_gt_wait_c6_stable(): poll idle_status/idle_residency_ms every
-     10ms and require the GT to stay in gt-c6 for a minimum window
-     (with the residency counter advancing >= 95% of the window), with
-     a timeout;
-  2. use it in xe_pm_residency (idle-residency, gt-c6-freeze, and once
-     before the C6 power sample in toggle-gt-c6);
-  3. use it in xe_pmu@gt-c6-idle. 
+Signed-off-by: Zongyao Bai <zongyao.bai@intel.com>
+---
+ tests/intel/xe_pm_residency.c | 21 ++++++++++++++++++---
+ 1 file changed, 18 insertions(+), 3 deletions(-)
 
-The waits use 500ms / 5s. idle-residency-on-exec is intentionally not
-changed because a workload is running while it measures. A GT that never
-reaches stable C6 (e.g. forcewake held) still fails the test, after the
-timeout.
-
-Testing on a BMG-G21 DUT, running xe_pat@pat-index-auto followed
-immediately by xe_pm_residency@idle-residency@gt0, 3 runs each:
-
-  upstream master IGT:       3/3 fail, residency 67.8-78.5%
-  this series:               3/3 pass, residency ~100%, the stable wait
-                             took 1.37-1.68s
-  this series + intel_bb fix: 3/3 pass, wait ~0.5s (minimum window)
-
-Zongyao Bai (3):
-  lib/xe/xe_gt: Add xe_gt_wait_c6_stable()
-  tests/intel/xe_pm_residency: Wait for stable C6 before measuring
-  tests/intel/xe_pmu: Wait for stable C6 in gt-c6-idle
-
- lib/xe/xe_gt.c                | 90 +++++++++++++++++++++++++++++++++++
- lib/xe/xe_gt.h                |  2 +
- tests/intel/xe_pm_residency.c | 21 ++++++--
- tests/intel/xe_pmu.c          |  4 +-
- 4 files changed, 112 insertions(+), 5 deletions(-)
-
+diff --git a/tests/intel/xe_pm_residency.c b/tests/intel/xe_pm_residency.c
+index c5240378a..3f97e882d 100644
+--- a/tests/intel/xe_pm_residency.c
++++ b/tests/intel/xe_pm_residency.c
+@@ -28,6 +28,8 @@
+ 
+ #define NUM_REPS 16 /* No of Repetitions */
+ #define SLEEP_DURATION 3 /* in seconds */
++#define C6_STABLE_MS 500 /* GT must stay in C6 this long before measuring */
++#define C6_STABLE_TIMEOUT_MS 5000
+ 
+ const double tolerance = 0.1;
+ int fw_handle = -1;
+@@ -217,9 +219,14 @@ static void test_idle_residency(int fd, int gt, enum test_type flag)
+ 	unsigned long elapsed_ms, residency_start, residency_end;
+ 	struct timespec ts_start, ts_end;
+ 
+-	igt_assert_f(igt_wait(xe_gt_is_in_c6(fd, gt), 1000, 1) ||
++	/*
++	 * A single visit to C6 is not enough: deferred work of previous
++	 * tests may still wake the GT up after it, which would be accounted
++	 * in the measurement below. Wait for a stable C6 window first.
++	 */
++	igt_assert_f(xe_gt_wait_c6_stable(fd, gt, C6_STABLE_MS, C6_STABLE_TIMEOUT_MS) ||
+ 		     xe_gt_dump_debug_info(fd, gt),
+-		     "GT %d not in C6\n", gt);
++		     "GT %d not in stable C6\n", gt);
+ 
+ 	if (flag == TEST_S2IDLE) {
+ 		clock_gettime(CLOCK_BOOTTIME, &ts_start);
+@@ -332,8 +339,16 @@ static void toggle_gt_c6(int fd, int n)
+ 				     xe_gt_dump_debug_info(fd, gt),
+ 				     "Forcewake released, GT %d should be in C6\n", gt);
+ 
+-		if (n == NUM_REPS)
++		if (n == NUM_REPS) {
++			/* Only the power sample needs the GT to be really idle */
++			xe_for_each_gt(fd, gt)
++				igt_assert_f(xe_gt_wait_c6_stable(fd, gt, C6_STABLE_MS,
++								  C6_STABLE_TIMEOUT_MS) ||
++					     xe_gt_dump_debug_info(fd, gt),
++					     "Forcewake released, GT %d should be in stable C6\n", gt);
++
+ 			measure_power(&gpu, &gt_c6_power);
++		}
+ 	} while (--n);
+ 
+ 	igt_power_close(&gpu);
 -- 
 2.43.0
 
