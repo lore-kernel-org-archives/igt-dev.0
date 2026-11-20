@@ -2,74 +2,128 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96B2606A6E9
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Nov 2026 19:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D775606A33B
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Nov 2026 19:47:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AjsQDvvR
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=1+6TJUYz
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 9AF09112ACF;
-	Fri, 20 Nov 2026 19:28:55 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by gabe.freedesktop.org (Postfix) with ESMTPS id CC044112AAC
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2026 19:27:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795202872; x=1826738872;
- h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=8aXqbLDBNYZ3h5RKtH1Y/5ZcvxQEJuBJbweJ/D3tvQg=;
- b=AjsQDvvRMCNqVuyaiAi7iiLbd/fW4rSERv3L/vABlAw+zPRtbDQ4XTtd
- rFZBsCNMgLsYgakS9cTz7M15odT+hl7CC1OA9HCgMGgISG7kMOVdferF4
- zT4IeY+wV6zJuQTj9aWzw4/1/SCMmEYikw2qS811CU5b0wT41nDUlKNI5
- 6qKcir0Ae+hXMfqmp6T5AeCmeWnHbspD8pxXB6oxcHYN8h14eVSQNn+0V
- chQLkiKF7N3IXmUwSWp3LEbZtfbfYJR6+lxftOrCSAeRry9nti08Wv6Um
- 0giNhorkN5uqgpv+6UzTM1az+u0LuPaKkKfbIyfshW2oJFq83GlVKUGW2 g==;
-X-CSE-ConnectionGUID: zZIZyUr8SGefMvuvOJc+xA==
-X-CSE-MsgGUID: nnsjTOeDQEOrWu5HtVMPcQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="3988645"
-X-IronPort-AV: E=Sophos;i="6.27,223,1787036400"; 
-   d="scan'208";a="3988645"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
- by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2026 11:27:52 -0800
-X-CSE-ConnectionGUID: Fjx7PS4bQQuhKOIZraSfMA==
-X-CSE-MsgGUID: 49cauzowRm26U9D9iD617g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,223,1787036400"; d="scan'208";a="11122782"
-Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
- by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2026 11:27:49 -0800
-Date: Fri, 20 Nov 2026 20:27:46 +0100
-From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Francis, David" <David.Francis@amd.com>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
+	by gabe.freedesktop.org (Postfix) with ESMTP id D145B10E035;
+	Fri, 20 Nov 2026 19:47:26 +0000 (UTC)
+Received: from PH7PR06CU001.outbound.protection.outlook.com
+ (mail-westus3azon11010061.outbound.protection.outlook.com [52.101.201.61])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2C4FE10E070
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2026 19:46:25 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=grzb9OlnKWXsXvZ1zPTGcr569vu++lSiHb6AzbncQRHwHb//2WLllJRYImQ795fpRIAFhppP1QB+NMD1TOcZTEcWCTK3GeG5eILrnGblrM48CNiL140jRX3Jmsm/18t3J9LMSxoSK0boF7Xf4KW/wn9lLK+pLiXecM7ydj0eZ0iEXNAeNqhAKkgB6Q5bqFH8Cl+l1B9BotdjKLDWCP9+tDSDRbvfN+iyT6GK4od2r2RGC1+DYEV6D6U5xKhsSwjrzaXVXqinK03JJIVV3kqvPhwrkkQWHKmgEsrC4igKDE3Cl25svXYVZDzlFKEuZ7GRCHLlomfmt23lZmpXZZnAWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KchocSany/eFTnFV4Iu3MDyesiZwTC3FF/0r8AGcizQ=;
+ b=RN8N8g4KzFDi/92Dr/wyJ3FradmdFQMj3IJsryWYDLPWZIW8vgp3No2hPYTjPaEvHMhxKxdKuIDycontJYH6l0H0hVx8BHc0KQQmQjUEkSIq9OKDU5KEVEuVUrId+e++RzVj2UwcWOYFU3sSgFQE/KAufKMW6PoL6v6BWKW1pf5/3mbeC0aq8q5RNpBpZO7eP0cPXuhuZxfjTJd6pOY/93qatXmVTK+2ejsfURfQ1ZTNGE1H6KxIqsKQHaV7MrT2w+WpKybKXFpaB65XuOdcztx6DoeLP1iB9JwHIkPUBq8HZMrWbwg8gWWDbsm16MIzYllW+j0YSmtwMbrzn00P1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KchocSany/eFTnFV4Iu3MDyesiZwTC3FF/0r8AGcizQ=;
+ b=1+6TJUYz/sC14GPFM6kSHkwXE15jGDjfH8gczJL/A0Ov1IeTUvtdpORxX956j7G0cCSSifb2LMcwtLakaRiQfFD+FX2n6laGSPKS4137roN0DX54eGLXkQLA7fvEq9Z2r9IuyAnExAU6iHToteH3eZSR4Sqd5EIl3a99vk4eKZw=
+Received: from CHAPR12MB999247.namprd12.prod.outlook.com
+ (2603:10b6:610:2ff::7) by SA3PR12MB7783.namprd12.prod.outlook.com
+ (2603:10b6:806:314::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Fri, 20 Nov
+ 2026 19:46:20 +0000
+Received: from CHAPR12MB999247.namprd12.prod.outlook.com
+ ([fe80::d727:e84d:1883:b74]) by CHAPR12MB999247.namprd12.prod.outlook.com
+ ([fe80::d727:e84d:1883:b74%6]) with mapi id 15.21.0639.010; Fri, 20 Nov 2026
+ 19:46:20 +0000
+From: "Francis, David" <David.Francis@amd.com>
+To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+CC: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Prosyak,
- Vitaly" <Vitaly.Prosyak@amd.com>, 
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, 
- Simona Vetter <simona@ffwll.ch>, "Deucher,
+ Vitaly" <Vitaly.Prosyak@amd.com>, Sebastian Brzezinka
+ <sebastian.brzezinka@intel.com>, "Koenig, Christian"
+ <Christian.Koenig@amd.com>, Simona Vetter <simona@ffwll.ch>, "Deucher,
  Alexander" <Alexander.Deucher@amd.com>
 Subject: Re: [PATCH v4] tests/intel: Add edge case and race condition tests
  for GEM_CHANGE_HANDLE
-Message-ID: <bigey4diakr4ljuzegyc6tsnho42cuzpt5jnfflqeihv5nw7hv@iqzf3ljkfrrq>
-Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- "Francis, David" <David.Francis@amd.com>,
- Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Prosyak,
- Vitaly" <Vitaly.Prosyak@amd.com>, 
- Sebastian Brzezinka <sebastian.brzezinka@intel.com>, "Koenig,
- Christian" <Christian.Koenig@amd.com>, 
- Simona Vetter <simona@ffwll.ch>, "Deucher,
- Alexander" <Alexander.Deucher@amd.com>
+Thread-Topic: [PATCH v4] tests/intel: Add edge case and race condition tests
+ for GEM_CHANGE_HANDLE
+Thread-Index: AQHdcSi/CygxM0nP6kyg2bHeno59hLcqdViAgAnMydSAAyX+AIAABNwY
+Date: Fri, 20 Nov 2026 19:46:20 +0000
+Message-ID: <CHAPR12MB9992474795BD2A857C7FC847D0EF782@CHAPR12MB999247.namprd12.prod.outlook.com>
 References: <20261110153230.583745-1-David.Francis@amd.com>
  <6a89a83a-8290-4c59-855a-f798f8350570@igalia.com>
  <CHAPR12MB9992477A972F6389F886D55EAEEF7A2@CHAPR12MB999247.namprd12.prod.outlook.com>
+ <bigey4diakr4ljuzegyc6tsnho42cuzpt5jnfflqeihv5nw7hv@iqzf3ljkfrrq>
+In-Reply-To: <bigey4diakr4ljuzegyc6tsnho42cuzpt5jnfflqeihv5nw7hv@iqzf3ljkfrrq>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Enabled=True;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_SetDate=2026-11-20T19:46:19.852Z;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Name=AMD
+ General; MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_ContentBits=1;
+ MSIP_Label_198e8dea-a4f3-4850-b16a-fd6d2b1302b4_Method=Standard; 
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CHAPR12MB999247:EE_|SA3PR12MB7783:EE_
+x-ms-office365-filtering-correlation-id: bd325840-7201-40c5-da18-08df473ef323
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|366016|1800799024|376014|23010399003|38070700021|6133799003|261009223027099003|261009221227099003|22082099003|18002099003|261021135927099003|261021121427099003|261026121527099003|261026140227099003|261022105027099003|261022113327099003|261022075727099003|261028144727099003|4143699003|56012099006|261102130727099003|261102123227099003|10067099003|11063799006;
+x-microsoft-antispam-message-info: p5Ycku33kkvTGNmx/mLhAySJbtrExLVfal47YOEyBkXIEMtOff/nwydrwwNl+0tZFPiGw+jhEaf5wg0qk90QP6bWVTg76l1/xD0IndJvrtnPbwidGbvWvAiIR1djT5/23Y/NemlvAHjgPJz2TOmBofAGWQggw42X25z/QaZRnLD3BgiolHdknJjIwiNkVJHncOUu8jF4fwlJT/tfOfiUVxQvph0rGKCz35i9YX8Y8Fh/C1mw5jrM866PyToR3E/6HjizrFkjYk3adJInjcciMjfzRDkBbB9O4mf91hLjnZNRR6FfYehv/BP0mmJJ+f8Ts6vb+sGWHA2iBCajv4eyEW5P5FbJinorodAp/RWeqE+fhgiWsifvjgn3DAU3Z0dWGBMN0S8cqoQn90xR2ut+WHVQU0jjOjF3vZLTKv9j0DNjZfGA0cUiGppuhxC+DJ5A3fSq781GkAXBPbJ3V2EwXY3fQRFfPpOUbdKIgYogwtYqct/c0uZribrnIdQC0SR9+puHksts0UYaLXu6q/F+uYpSNksb/xdgqGY0eRLMsRKqNmU28C0fJQbFFTiGLEH/QJRdRHHhI4AxVHQtf2XVoPxdukuxc3FQwB0+KP3cDoU/wTu7NkvlxPuWDLSwXzRAZK9HTTvWV/j/OAyRezdbwB7LMY+rZ4K+d5LtpDkdzNBFI5qKg7b2LcC+YInj0is3uj367luoZKOaGNUd9pRC6CGloKZ5ht4Eu7vslkRtubk=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CHAPR12MB999247.namprd12.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(38070700021)(6133799003)(261009223027099003)(261009221227099003)(22082099003)(18002099003)(261021135927099003)(261021121427099003)(261026121527099003)(261026140227099003)(261022105027099003)(261022113327099003)(261022075727099003)(261028144727099003)(4143699003)(56012099006)(261102130727099003)(261102123227099003)(10067099003)(11063799006);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?5O2KenPtiPaTzbJ1AAKAWa7q01B5IFpjOYsUcmYa8RRK+JSflJ3UakaneeMU?=
+ =?us-ascii?Q?+2n3/YY3D7UinWQUfuuxUnPLTJ01/Sz2Wv96nK0xUcgYPRl4uN3m8cioBv/r?=
+ =?us-ascii?Q?WVFkugsX/QrB3gcb4VrsomcvKmENYwpQCOGAvD0S4PvEf3Z/mS/vJN/HDrG8?=
+ =?us-ascii?Q?8wGazpAly7ETJNzNWAz3M3FhLJyfXSARxGzQLKqzEsvSowJTecD+q1DNsjvu?=
+ =?us-ascii?Q?j4r67AXre4SW/74XFV+EO7iyJ8GdxuPul8/RGFzOsMMIfId6fTJjHX3rNESt?=
+ =?us-ascii?Q?DjMJn+7DTs5Dt1YmRgfHfl/as35A7VNRQ7RmdzHnnUXPCwCktaWnfXdVMzbh?=
+ =?us-ascii?Q?k5uSaauc6DQRN+6KJHIFjr/oF1/hJV8Lzdk8V5SNscZK99l5dqBLFAMdLvWb?=
+ =?us-ascii?Q?ZJhJqblBF0OStrtcRaERDfvZ8xYgrzI2I/3RzIsatoUzJiV2J3yC/vO9XOie?=
+ =?us-ascii?Q?eCkPHOE9PglLVldycOZGZ2aKlLGjlB/I5qYtqOHtIBCvdxMUQ0dd6h8FmY2Q?=
+ =?us-ascii?Q?CHVGICGox9J9gpEUqP+rhMjvui2mPSjuyXwhdKa3gJP17z+hsPDSeqJ76OVe?=
+ =?us-ascii?Q?qARqwSc2x0L76cvJrwHmPv8r19eHRtNvKdYdQMAX8sc6Lnj74VT5zSiBh8JE?=
+ =?us-ascii?Q?peDILvfdVYoFrytF50DSBpGqGjoH0u+htPZRQslU4CmSHczjCwGIiL0WLg9V?=
+ =?us-ascii?Q?8pSPp0WFmFRW5tRSYmTYlztyZvy8WVOljcoN4Kr6auCyQC1ZqZupowZz+qzn?=
+ =?us-ascii?Q?x1zfriFsHbH/4W6zG4g5PAuFNLaQT2vOq3XJXBbnlYi8fLCROz1AuGUBhfoc?=
+ =?us-ascii?Q?CMdcDerpGQDO8KrZvoQz4kMbdmPBxfBuqwfcN5nxaMRG83bMUiMo2ahcNRo9?=
+ =?us-ascii?Q?Nf5400EH+qJOHxGxE3kBPJdhX8jLZqMQUcskW8VWsqDOiJAgapiEvayZsHm7?=
+ =?us-ascii?Q?8mHXDb9Ndj1NwRQAw2YPaoabRg0vSVOffMvHanBBV/Tf9SL//a2mJDmtUIRn?=
+ =?us-ascii?Q?L2EkVrvc/OmHqXiURNIH2O7bfJ+841F/kqMGRfYxNvqdQDxY94+OIYziBHEK?=
+ =?us-ascii?Q?5mQU/wYQvqJGQF0/Wdl1INhpFHlgoiZ8ND7DGFU5Ym2PleWEyebrcSuWA7bd?=
+ =?us-ascii?Q?Dm+Fed7NGRgD47XZe/oVgDxN1n2dnD97WEUSlkQ2ophlv+vuOT2FgBjv/XoG?=
+ =?us-ascii?Q?D5MSLIKzL1M9ZL+0/PV1tutErW9FdomDdDWKc1g/HpGzVQZjOEPEFJeB/hMF?=
+ =?us-ascii?Q?N5zv/tOgQalj8jfdOmEgybsARAyn3R+O/LeQXs2bwsFxMDnTXzr1GTKLRQlO?=
+ =?us-ascii?Q?81ZTcq5UmO67eVBGO/VsCrLN9AAe82oGkKPJo7CVQSf/YvnStsjMp/JvFVwl?=
+ =?us-ascii?Q?mhnM/6QfqYBaKgaHzC88WyeKV25+5LD3a5KKh8xG88iNZpsnAkhz1gv62Kcl?=
+ =?us-ascii?Q?1mHhb2dwLNucBi8u/IZi+QZ300p9RlI/uS5TP202x1UgcRia0BlDNVrBou50?=
+ =?us-ascii?Q?mBfb9svDDzKn3FLTv0fFf3Oa/gBJ7Flnj61/LphXaqfglFxELvKgVwobbDdU?=
+ =?us-ascii?Q?VUhCJk3djDDI3UB+NA/RuLsYHZrTNPP3eAN+TzxXHoI/JUxIQrLKcHnEOpul?=
+ =?us-ascii?Q?NtdWpcsbuWwqVJgyZPEt8Nj8ppalhSKVuf7igZlHpiyL2eldzkrnupYPyfy+?=
+ =?us-ascii?Q?fcpSQi2vWzG08kBJYBxP6SFOPdcMPv2gVPX2ThOP4acH6R2b?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CHAPR12MB9992477A972F6389F886D55EAEEF7A2@CHAPR12MB999247.namprd12.prod.outlook.com>
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CHAPR12MB999247.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bd325840-7201-40c5-da18-08df473ef323
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Nov 2026 19:46:20.2239 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: HNwNkXFSRIlkEQMmo0hAobv0LroChd1x3ozXJNu1wB6MPQV0JmN2BnjkQis803KW
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB7783
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -81,19 +135,38 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Thanks for the find.
+
+I believe that's <fcntl.h>, can easily add that
+
+Are there any other includes it needs to compile? I don't have an arm64 con=
+tainer on hand
+
+Thanks
+David Francis
+
+________________________________________
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Sent: Friday, November 20, 2026 2:27 PM
+To: Francis, David
+Cc: Tvrtko Ursulin; igt-dev@lists.freedesktop.org; Prosyak, Vitaly; Sebasti=
+an Brzezinka; Koenig, Christian; Simona Vetter; Deucher, Alexander
+Subject: Re: [PATCH v4] tests/intel: Add edge case and race condition tests=
+ for GEM_CHANGE_HANDLE
+
 Hi Francis,,
 On 2026-11-18 at 19:25:38 +0000, Francis, David wrote:
 > It's been about a week since this was reviewed.
->=20
+>
 > Tvrtko has also reviewed the kernel change.
->=20
+>
 > Is there anything left to do before this is merged? With the current vers=
 ion, tests are skipped if the ioctl is still disabled in the kernel.
 
@@ -105,43 +178,45 @@ dle.c.o
 FAILED: tests/gem_change_handle.p/intel_gem_change_handle.c.o
 /usr/bin/aarch64-linux-gnu-gcc -Itests/gem_change_handle.p -Itests -I../tes=
 ts -I../include -I../include/drm-uapi -I../include/drm-uapi-experimental -I=
-=2E./include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I.. -I.=
-=2E/lib/vendor -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/aarc=
-h64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freet=
-ype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/aarch64-l=
-inux-gnu -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -fdiagnostic=
-s-color=3Dalways -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
-=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
--function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
-rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
-missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
-on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
-alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
-initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-com=
-pare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Dad=
-dress -Werror=3Darray-bounds -Werror=3Ddangling-pointer -Werror=3Dimplicit =
--Werror=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointer-cast =
--Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer=
--to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigr=
-aphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -D_LAR=
-GEFILE64_SOURCE=3D1 -pthread -MD -MQ tests/gem_change_handle.p/intel_gem_ch=
-ange_handle.c.o -MF tests/gem_change_handle.p/intel_gem_change_handle.c.o.d=
- -o tests/gem_change_handle.p/intel_gem_change_handle.c.o -c ../tests/intel=
-/gem_change_handle.c
+../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I.. -I../=
+lib/vendor -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/aarch64-=
+linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freetype2=
+ -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/aarch64-linux=
+-gnu -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -fdiagnostics-co=
+lor=3Dalways -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=3Dgn=
+u11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad-func=
+tion-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallthrough=
+=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -Wmissi=
+ng-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definition -W=
+pointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuninitialize=
+d -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-initi=
+alizers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-compare =
+-Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Daddress=
+ -Werror=3Darray-bounds -Werror=3Ddangling-pointer -Werror=3Dimplicit -Werr=
+or=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointer-cast -Werr=
+or=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer-to-i=
+nt-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigraphs =
+-Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -D_LARGEFIL=
+E64_SOURCE=3D1 -pthread -MD -MQ tests/gem_change_handle.p/intel_gem_change_=
+handle.c.o -MF tests/gem_change_handle.p/intel_gem_change_handle.c.o.d -o t=
+ests/gem_change_handle.p/intel_gem_change_handle.c.o -c ../tests/intel/gem_=
+change_handle.c
 In file included from /usr/include/xf86drm.h:40,
                  from ../lib/drmtest.h:37,
                  from ../lib/igt.h:27,
                  from ../tests/intel/gem_change_handle.c:24:
-=2E./tests/intel/gem_change_handle.c: In function 'export_import_thread':
-=2E./tests/intel/gem_change_handle.c:491:44: error: 'O_CLOEXEC' undeclared =
-(first use in this function); did you mean 'MFD_CLOEXEC'?
-  491 |                         prime_args.flags =3D DRM_CLOEXEC | DRM_RDWR;
+../tests/intel/gem_change_handle.c: In function 'export_import_thread':
+../tests/intel/gem_change_handle.c:491:44: error: 'O_CLOEXEC' undeclared (f=
+irst use in this function); did you mean 'MFD_CLOEXEC'?
+  491 |                         prime_args.flags =3D DRM_CLOEXEC | DRM_RDWR=
+;
       |                                            ^~~~~~~~~~~
-=2E./tests/intel/gem_change_handle.c:491:44: note: each undeclared identifi=
-er is reported only once for each function it appears in
-=2E./tests/intel/gem_change_handle.c:491:58: error: 'O_RDWR' undeclared (fi=
-rst use in this function)
-  491 |                         prime_args.flags =3D DRM_CLOEXEC | DRM_RDWR;
+../tests/intel/gem_change_handle.c:491:44: note: each undeclared identifier=
+ is reported only once for each function it appears in
+../tests/intel/gem_change_handle.c:491:58: error: 'O_RDWR' undeclared (firs=
+t use in this function)
+  491 |                         prime_args.flags =3D DRM_CLOEXEC | DRM_RDWR=
+;
       |                                                          ^~~~~~~~
 ninja: build stopped: subcommand failed.
 
@@ -149,9 +224,9 @@ ninja: build stopped: subcommand failed.
 Regards,
 Kamil
 
->=20
+>
 > David Francis
->=20
+>
 > ________________________________________
 > From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 > Sent: Thursday, November 12, 2026 8:43 AM
@@ -160,8 +235,8 @@ Kamil
 ian; Simona Vetter; Deucher, Alexander
 > Subject: Re: [PATCH v4] tests/intel: Add edge case and race condition tes=
 ts for GEM_CHANGE_HANDLE
->=20
->=20
+>
+>
 > On 10/11/2026 15:32, David Francis wrote:
 > > From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 > >
@@ -171,22 +246,23 @@ ts for GEM_CHANGE_HANDLE
 > >
 > > GEM_CHANGE_HANDLE is currently wired to drm_invalid_op in DRM core. Thi=
 s IGT
-> > coverage is a prerequisite for validating the eventual kernel-side ioctl
+> > coverage is a prerequisite for validating the eventual kernel-side ioct=
+l
 > > implementation and makes fixing its security bugs safer.
 > >
 > > v2: Small cleanups, including cutting some includes and no assert in th=
 reads
 > > v3: Skip if ioctl disabled
 > > v4: hop around randomly on race tests
->=20
+>
 > Nice, v4 is much easier to follow. Thank you for iterating patiently!
->=20
+>
 > Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->=20
+>
 > Regards,
->=20
+>
 > Tvrtko
->=20
+>
 > >
 > > Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
@@ -198,7 +274,8 @@ reads
 > > Signed-off-by: David Francis <David.Francis@amd.com>
 > > ---
 > >   include/drm-uapi/drm.h          |  23 +
-> >   tests/intel/gem_change_handle.c | 728 ++++++++++++++++++++++++++++++++
+> >   tests/intel/gem_change_handle.c | 728 +++++++++++++++++++++++++++++++=
++
 > >   tests/meson.build               |   1 +
 > >   3 files changed, 752 insertions(+)
 > >   create mode 100644 tests/intel/gem_change_handle.c
@@ -323,7 +400,8 @@ ader
 > > + * Description: Changing a handle to itself should fail
 > > + *
 > > + * SUBTEST: new_handle_taken
-> > + * Description: Changing a handle to a value already in use should fail
+> > + * Description: Changing a handle to a value already in use should fai=
+l
 > > + *
 > > + * SUBTEST: invalid_handle
 > > + * Description: Changing a non-existent handle should fail
@@ -1057,4 +1135,4 @@ il");
 > >       'gem_create',
 > >       'gem_ccs',
 > >       'gem_close',
->=20
+>
