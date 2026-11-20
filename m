@@ -2,25 +2,25 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5F6606A325
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Nov 2026 04:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5080606A320
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Nov 2026 04:56:55 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F188910E05E;
-	Fri, 20 Nov 2026 04:38:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8944010E15B;
+	Fri, 20 Nov 2026 04:56:55 +0000 (UTC)
 Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4727F10E05E;
- Fri, 20 Nov 2026 04:37:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8286810EC81;
+ Fri, 20 Nov 2026 04:56:00 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============2772309811246843973=="
+ boundary="===============3262941868607500740=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_Xe=2ECI=2EBAT=3A_failure_for_tests/core=5Fdebugfs=3A_Cre?=
- =?utf-8?q?ate_listing_while_reading?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/core=5Fdebugfs=3A_C?=
+ =?utf-8?q?reate_listing_while_reading?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: "Kamil Konieczny" <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 20 Nov 2026 04:37:19 -0000
-Message-ID: <179514943928.56453.6487973016493096024@9ac1b63fe3ea>
+Date: Fri, 20 Nov 2026 04:56:00 -0000
+Message-ID: <179515056052.56469.15132379430540171509@9ac1b63fe3ea>
 X-Patchwork-Hint: ignore
 References: <20261119201544.128411-1-kamil.konieczny@linux.intel.com>
 In-Reply-To: <20261119201544.128411-1-kamil.konieczny@linux.intel.com>
@@ -36,13 +36,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============2772309811246843973==
+--===============3262941868607500740==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -51,92 +51,82 @@ Content-Transfer-Encoding: 7bit
 
 Series: tests/core_debugfs: Create listing while reading
 URL   : https://patchwork.freedesktop.org/series/179138/
-State : failure
+State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9200_BAT -> XEIGTPW_16188_BAT
+CI Bug Log - changes from IGT_9200 -> IGTPW_16188
 ====================================================
 
 Summary
 -------
 
-  **FAILURE**
+  **SUCCESS**
 
-  Serious unknown changes coming with XEIGTPW_16188_BAT absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in XEIGTPW_16188_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
+  No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/index.html
 
-Participating hosts (15 -> 15)
+Participating hosts (39 -> 38)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): bat-dg2-13 
 
-Possible new issues
--------------------
+Known issues
+------------
 
-  Here are the unknown changes that may have been introduced in XEIGTPW_16188_BAT:
+  Here are the changes found in IGTPW_16188 that come from known issues:
 
 ### IGT changes ###
 
-#### Possible regressions ####
+#### Issues hit ####
 
-  * igt@core_debugfs@read-all-entries:
-    - bat-wcl-2:          [PASS][1] -> [TIMEOUT][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-wcl-2/igt@core_debugfs@read-all-entries.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-wcl-2/igt@core_debugfs@read-all-entries.html
-    - bat-nvls-1:         [PASS][3] -> [TIMEOUT][4]
-   [3]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-nvls-1/igt@core_debugfs@read-all-entries.html
-   [4]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-nvls-1/igt@core_debugfs@read-all-entries.html
-    - bat-nvls-2:         [PASS][5] -> [TIMEOUT][6]
-   [5]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-nvls-2/igt@core_debugfs@read-all-entries.html
-   [6]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-nvls-2/igt@core_debugfs@read-all-entries.html
-    - bat-ptl-2:          [PASS][7] -> [TIMEOUT][8]
-   [7]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-ptl-2/igt@core_debugfs@read-all-entries.html
-   [8]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-ptl-2/igt@core_debugfs@read-all-entries.html
-    - bat-wcl-1:          [PASS][9] -> [TIMEOUT][10]
-   [9]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-wcl-1/igt@core_debugfs@read-all-entries.html
-   [10]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-wcl-1/igt@core_debugfs@read-all-entries.html
-    - bat-ptl-1:          [PASS][11] -> [TIMEOUT][12]
-   [11]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-ptl-1/igt@core_debugfs@read-all-entries.html
-   [12]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-ptl-1/igt@core_debugfs@read-all-entries.html
-    - bat-bmg-2:          [PASS][13] -> [TIMEOUT][14]
-   [13]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-bmg-2/igt@core_debugfs@read-all-entries.html
-   [14]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-bmg-2/igt@core_debugfs@read-all-entries.html
-    - bat-adlp-7:         [PASS][15] -> [TIMEOUT][16]
-   [15]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-adlp-7/igt@core_debugfs@read-all-entries.html
-   [16]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-adlp-7/igt@core_debugfs@read-all-entries.html
-    - bat-bmg-1:          [PASS][17] -> [TIMEOUT][18]
-   [17]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-bmg-1/igt@core_debugfs@read-all-entries.html
-   [18]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-bmg-1/igt@core_debugfs@read-all-entries.html
-    - bat-atsm-2:         [PASS][19] -> [TIMEOUT][20]
-   [19]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-atsm-2/igt@core_debugfs@read-all-entries.html
-   [20]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-atsm-2/igt@core_debugfs@read-all-entries.html
+  * igt@i915_selftest@live@sanitycheck:
+    - bat-apl-1:          [PASS][1] -> [DMESG-WARN][2] ([i915#13735]) +77 other tests dmesg-warn
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9200/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/bat-apl-1/igt@i915_selftest@live@sanitycheck.html
+
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - bat-apl-1:          [PASS][3] -> [DMESG-WARN][4] ([i915#13735] / [i915#180]) +49 other tests dmesg-warn
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9200/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html
+
+  * igt@vgem_basic@unload:
+    - bat-rpls-4:         [PASS][5] -> [DMESG-WARN][6] ([i915#13400])
+   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9200/bat-rpls-4/igt@vgem_basic@unload.html
+   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/bat-rpls-4/igt@vgem_basic@unload.html
 
   
+#### Possible fixes ####
+
+  * igt@i915_pm_rpm@module-reload:
+    - fi-tgl-1115g4:      [FAIL][7] ([i915#17751]) -> [PASS][8]
+   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9200/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
+
+  
+  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+  [i915#13735]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735
+  [i915#17751]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17751
+  [i915#180]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_9200 -> IGTPW_16188
-  * Linux: xe-6193-5e1f7086abf6664123216020e4afb75a2512292e -> xe-6194-9bf864cd53c8e7651a038b9be01b2b0dfc67b420
 
+  CI-20190529: 20190529
+  CI_DRM_19571: 9bf864cd53c8e7651a038b9be01b2b0dfc67b420 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_16188: 16188
   IGT_9200: 9200
-  xe-6193-5e1f7086abf6664123216020e4afb75a2512292e: 5e1f7086abf6664123216020e4afb75a2512292e
-  xe-6194-9bf864cd53c8e7651a038b9be01b2b0dfc67b420: 9bf864cd53c8e7651a038b9be01b2b0dfc67b420
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/index.html
 
---===============2772309811246843973==
+--===============3262941868607500740==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -158,53 +148,62 @@ Content-Transfer-Encoding: 7bit
 <table>
 <tr><td><b>Series:</b></td><td>tests/core_debugfs: Create listing while reading</td></tr>
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/179138/">https://patchwork.freedesktop.org/series/179138/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+<tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9200_BAT -&gt; XEIGTPW_16188_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9200 -&gt; IGTPW_16188</h1>
 <h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with XEIGTPW_16188_BAT absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in XEIGTPW_16188_BAT, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in XEIGTPW_16188_BAT:</p>
+<p><strong>SUCCESS</strong></p>
+<p>No regressions found.</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/index.html</p>
+<h2>Participating hosts (39 -&gt; 38)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
+<h2>Known issues</h2>
+<p>Here are the changes found in IGTPW_16188 that come from known issues:</p>
 <h3>IGT changes</h3>
-<h4>Possible regressions</h4>
+<h4>Issues hit</h4>
 <ul>
-<li>igt@core_debugfs@read-all-entries:<ul>
-<li>bat-wcl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-wcl-2/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-wcl-2/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-nvls-1:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-nvls-1/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-nvls-1/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-nvls-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-nvls-2/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-nvls-2/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-ptl-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-ptl-2/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-ptl-2/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-wcl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-wcl-1/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-wcl-1/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-ptl-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-ptl-1/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-ptl-1/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-bmg-2:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-bmg-2/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-bmg-2/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-adlp-7:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-adlp-7/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-adlp-7/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-bmg-1/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-bmg-1/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
-<li>bat-atsm-2:         <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/bat-atsm-2/igt@core_debugfs@read-all-entries.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16188/bat-atsm-2/igt@core_debugfs@read-all-entries.html">TIMEOUT</a></li>
+<li>
+<p>igt@i915_selftest@live@sanitycheck:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9200/bat-apl-1/igt@i915_selftest@live@sanitycheck.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/bat-apl-1/igt@i915_selftest@live@sanitycheck.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a>) +77 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@kms_pm_rpm@basic-pci-d3-state:</p>
+<ul>
+<li>bat-apl-1:          <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9200/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/bat-apl-1/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13735">i915#13735</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/180">i915#180</a>) +49 other tests dmesg-warn</li>
+</ul>
+</li>
+<li>
+<p>igt@vgem_basic@unload:</p>
+<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9200/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
+</ul>
+</li>
+</ul>
+<h4>Possible fixes</h4>
+<ul>
+<li>igt@i915_pm_rpm@module-reload:<ul>
+<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9200/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17751">i915#17751</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16188/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9200 -&gt; IGTPW_16188</li>
-<li>Linux: xe-6193-5e1f7086abf6664123216020e4afb75a2512292e -&gt; xe-6194-9bf864cd53c8e7651a038b9be01b2b0dfc67b420</li>
 </ul>
-<p>IGTPW_16188: 16188<br />
-  IGT_9200: 9200<br />
-  xe-6193-5e1f7086abf6664123216020e4afb75a2512292e: 5e1f7086abf6664123216020e4afb75a2512292e<br />
-  xe-6194-9bf864cd53c8e7651a038b9be01b2b0dfc67b420: 9bf864cd53c8e7651a038b9be01b2b0dfc67b420</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19571: 9bf864cd53c8e7651a038b9be01b2b0dfc67b420 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_16188: 16188<br />
+  IGT_9200: 9200</p>
 
 </body>
 </html>
 
---===============2772309811246843973==--
+--===============3262941868607500740==--
