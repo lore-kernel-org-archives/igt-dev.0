@@ -2,51 +2,51 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99E660A2602
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Nov 2026 12:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3867C606A325
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Nov 2026 12:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JA7D2cfn
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=beji+BCi
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 98E6E10E630;
-	Fri, 20 Nov 2026 12:09:30 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 209EA10E2B7
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2026 12:08:22 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id C611610E852;
+	Fri, 20 Nov 2026 12:24:19 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A635310E75D
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2026 12:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795176502; x=1826712502;
+ t=1795177382; x=1826713382;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=AyoxekoN7tXBlKCaVc0IER0591kWzmIbUag+fw2VqKs=;
- b=JA7D2cfn3tUEN1b3cyyeYw3R91AEMXn3oE0MQoGRVKIVraeODCX6lzio
- BP7NMsz9Z5YStVufVoXvu/6WHI0XYV3g0RfllqF3fTy7u+ETYIFSO3qsf
- Jx5dhIE6t1CVjuQOut3CXqBxNMx7ZNOvktr/OIJ+QvJVBkeohEtX9Vmas
- i5XPXDeMWJ9vm+IOhGvjsgaC/WVnwXs0Ws81iKtoaYfXJpccyYY4BGZxF
- 44I46L7+YYd+bejVybHvEpiZ9oUsoJGdq93aS03QfnfBXXOLvRpC5vHio
- yvP4I5qBiJx7TyxWMeNdCt7nYfDrGyMUK9HYp7KBWEVrPvDJXAbhpGyI0 g==;
-X-CSE-ConnectionGUID: Zk+xZBwXSmC3EcRETpRIlA==
-X-CSE-MsgGUID: +jl2BDHZQu6omcbTBeyRPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="4094974"
+ bh=mgiWSshd3v31b3Sj8kSvY20Eigak0cdbyhQujMFi7ZM=;
+ b=beji+BCi9pH/2D2SGV8gv1Z5i58ZbU13d/I2tpdGQb+jNgcBnu+Omq8X
+ OA3kaK8S9bDLPrEYsFrz6VZPxlyfRDXUNVE7d5qGPXeBcv+EDHmY468bs
+ lajsGBqKA9SruU048R25BwZxSajLACZXl28NGcvzlQEK8Hnz97XqTjEt6
+ mupcxoD6aysdf/k6hHPS4TptHO6v1vvzci0iJceN6dHV+4JcQSYs4Soq/
+ Kq86I6zeKW6hpkhQkLGrRQCsAElS0GhPAaoR19sjUfsUZ7HoiMDMupLXv
+ O+IMUt0b7gjs6815aWNlLbPrpZRdcHvC9h4wc9JDH2HsEGCW/PoC6a9fG A==;
+X-CSE-ConnectionGUID: GumCf+D2S82r6eQF48/uRQ==
+X-CSE-MsgGUID: Z0LvY5vRTXSY9F3h5D8acQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11971"; a="3937130"
 X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; 
-   d="scan'208";a="4094974"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2026 04:08:21 -0800
-X-CSE-ConnectionGUID: K04xp3b6QVew0CKf1A8RAw==
-X-CSE-MsgGUID: A4tZ+k2CS6K8i2FvRVVtLA==
+   d="scan'208";a="3937130"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2026 04:23:02 -0800
+X-CSE-ConnectionGUID: DVs9m/U2TJ2EfN/XzXw0oA==
+X-CSE-MsgGUID: zYnDZ+hiRQSw25GHILG9Wg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; d="scan'208";a="10947019"
+X-IronPort-AV: E=Sophos;i="6.27,222,1787036400"; d="scan'208";a="10500344"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost)
  ([10.245.245.234])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 20 Nov 2026 04:08:20 -0800
-Date: Fri, 20 Nov 2026 13:08:18 +0100
+ 20 Nov 2026 04:23:00 -0800
+Date: Fri, 20 Nov 2026 13:22:57 +0100
 From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
 To: Kamil Konieczny <kamil.konieczny@linux.intel.com>
 Cc: igt-dev@lists.freedesktop.org, 
  Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>
 Subject: Re: [PATCH i-g-t] tests/core_sysfs: Fix logic for EIO and other fixes
-Message-ID: <yvavbrk5fmxpdb2n2vxr3imkmgzdxzug5zgguvsrf3chw3byqv@ieznjxlnykqy>
+Message-ID: <eopwehdmdbbe2r3zuo4p45mm4tgcqhp66tewf6eguuwv3la3ze@e3mfi7f2a6sr>
 References: <20261119192357.117416-1-kamil.konieczny@linux.intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -83,10 +83,17 @@ On Thu, Nov 19, 2026 at 08:23:57PM +0100, Kamil Konieczny wrote:
 > 
 > Last fix corrects a typo s/readed/read/.
 
-Generally it's ok, but I think you should use igt_debug() instead of igt_info().
+I've experimented with this a bit and finally I think this test
+should handle all known cases (exceptions) in read_sysfs().
+Currently it returns 0 for everything so you never know if sth
+is changed in sysfs.
+
+So I would add all known cases to read_sysfs() and for rest
+return not 0, so you would catch if sth would be wrong in sysfs.
 
 --
 Zbigniew
+
 > 
 > Cc: Shivtej Eknath Patil <shivtej.eknath.patil@intel.com>
 > Cc: "Zbigniew Kempczyński" <zbigniew.kempczynski@intel.com>
