@@ -2,83 +2,55 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BA7606A320
-	for <igt-dev@archiver.kernel.org>; Fri, 20 Nov 2026 13:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840B5606A326
+	for <igt-dev@archiver.kernel.org>; Fri, 20 Nov 2026 13:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=t2YM4ULO
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Zk3Dhkxk
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 44A2C10E8F0;
-	Fri, 20 Nov 2026 13:35:48 +0000 (UTC)
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com
- [209.85.216.50])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 6AEAA10E8F0
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2026 13:34:45 +0000 (UTC)
-Received: by mail-pj1-f50.google.com with SMTP id
- 98e67ed59e1d1-3b155f50c24so829412a91.3
- for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2026 05:34:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20260707; t=1795181685; x=1795786485; darn=lists.freedesktop.org;
- h=content-transfer-encoding:content-type:in-reply-to:from
- :content-language:references:to:subject:user-agent:mime-version:date
- :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
- bh=h6Ea4a0UjPBZbObDoTd0o6TTCj4pFhia1R2lSf/EsUo=;
- b=t2YM4ULOh8OP5Vwg5l2WycXullrMqC6oK/RCccvXKThj+81xjbW6A0RV0LdhZH7G2v
- KMYWgrHmmMyCzOS7TMYM7N9uFJu2xbSIM61Bo2H4cJEEu4PWtOB0JZLskHgJP2siO9e0
- HtCxtKiTugOkaxP6pNXtjJ4JnH22zGJeAUg7CytTCq4bQNP0awZY6n1noknHUoC6BKka
- ROu6bK4aWRpjJzsXeFBsiyUVT4FfCZ6jWbDzC+GikTitwE83bwl9OGSZND5mlt8pmvgu
- Fi2fWHT1TIu6p8oqStTm87dVeLs0Ryzo8G07n6pyW/9WmhrqwkAEkugzHlygn0CNjP+i
- w+tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1795181685; x=1795786485;
- h=content-transfer-encoding:content-type:in-reply-to:from
- :content-language:references:to:subject:user-agent:mime-version:date
- :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to:content-type;
- bh=h6Ea4a0UjPBZbObDoTd0o6TTCj4pFhia1R2lSf/EsUo=;
- b=CM/iv3MoLBY/ycOsE+35TiEYZEd03HKMxMoFH9xRhRFHSJ6GHRniBeEnnod3wmjyPR
- zcVnrDaE4YrMbgJCJLM74IrD3KVY0kFVS2AuciIZ739gTtrrrFH4nIbVDPqvI1uA8luu
- YbTs5ErXa+3MKhcE+pC6t9DgUNuesbmyZbzV8OPxt0aZWrv+DNATrs0j4T8cQ016qYOx
- QP8AsiqrvptMfk1s8kwZwoaplkrV4OOOAbcTLfk5BseaMEkTCI/wkJVxdBWsmadTVZFt
- F799qV6ixrvt4TRcSF2YvNo8x9yi96xerLjZzbKKJePUHIQNesF4VRPsOqDyfmJcj2dN
- p+iw==
-X-Forwarded-Encrypted: i=1;
- AL+hErG9A3mOy/ugumeeaOEY7UHplaiApVsSHBtvL7wrswrtXTzAeZALwAylYPuPJ6NeYNfdXCyF6+yG@lists.freedesktop.org
-X-Gm-Message-State: APuU4Z8QraXCZMMOJgdGRRNU9MQGG0uErMy2hk/00wyc0FNalATy/TrE
- RGT4Wys8Xb4b1Hqbu/0pKPHLXNtvMITZZejhZjoWyviEPtehfqM9gyuZ
-X-Gm-Gg: AZFdTZfuuj7W0oXjbr+hqSguVc6+w1+DcTmDW1iq2wHY0P3VOQ7BRSqrlWRj4UqT7AS
- U4TBH+D8q8ERvKqpRBHaRH4tanjcHjLsAdVf6hOkqbVd3p/9sLvhpFS4+LHAFFEYwwREyBLK7Ur
- FwPek6AzhocgPNnrsXCdb31iBoFYOw2wO4C/mONF9SBpOBt65eOIXbcBJxEEPhgHQuMapBrgXYh
- HpPYyxTcZVibO1rmcalqYRSLaN1TAfGW4bOt5d9mv2/RrNfTqnl3B9F71flPVkuv49BrWUaD13V
- 09gHVhRluKDZALVr2eyp9N06AokGbQq9ZocSMMGwfsyuO+SMaLc9mKq0AR2ixkoB2dja3EBFI4L
- VpAKEk7tkmWBvU6+fTZcu0oCUuZmgoViv6G4EbS4OLU8RijkRtjIJ9m7WPzzq7mn7r6rrCXRSIP
- +4pPMaE3QDViVxz42HXSSCag96dtYmea/4LX75/oyF6ZCGSahwrjfddlKMSwWl8y44xVTKv93lB
- 0feGL1YGtqU8Oi5ruGj1LDDD7W+uBvl+O48J+ZmjatqbBYtCIx60RE/2A733wgQKX6x8nRbMa2z
- AQx38Tn7co3LcSQkckwsuX89mbAO82eW9DR3WCnnD7rqsM3im8SM7VLzYtqvOhxM+Q+TQswqs/I
- 7
-X-Received: by 2002:a17:90b:1d03:b0:3b1:96fe:f5d2 with SMTP id
- 98e67ed59e1d1-3b41c9bacc7mr3192379a91.65.1795181684585; 
- Fri, 20 Nov 2026 05:34:44 -0800 (PST)
-Received: from [134.134.139.73] ([134.134.139.73])
- by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3b405d96bd3sm7622615a91.12.2026.11.20.05.34.42
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Fri, 20 Nov 2026 05:34:44 -0800 (PST)
-Message-ID: <6c8f3b7f-1885-470a-8893-0cf60148f8f8@gmail.com>
-Date: Fri, 20 Nov 2026 15:34:40 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id BFF5E10E8F0;
+	Fri, 20 Nov 2026 13:36:41 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id E28D0112A55
+ for <igt-dev@lists.freedesktop.org>; Fri, 20 Nov 2026 13:34:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1795181688; x=1826717688;
+ h=from:to:cc:subject:date:message-id:in-reply-to:
+ references:mime-version:content-transfer-encoding;
+ bh=Gcezl251fLqA/XouxEKKzLM/MFNXvpyskWepKyfP1Hg=;
+ b=Zk3DhkxkBA/Jc8trQjUMlUaNeJqKMfLwD1eQz1VEoeYIeorizWJrjw2a
+ 5KuspROy1h7d5CgiDroJybrU8UzNwda9z547F4YWZS71pq2Q1zSlGGkdL
+ ceMVLlrjL97VSkCcgmUXrbceVdKw/qfwonLAqL298Cbgl9bkMLBF86/+d
+ aCxA8Gv2wod53EFxxhlOqS2AButEiJInzEwdDm88BJ3sU7a9le+UCupzw
+ rJYsJB04zPWGKwMYFhi3wWRjsm8qY22+ifGEe3JPzz/ue2ra7L4Ct7iAi
+ FC+ck8u7HOspH7qpH4uKwmqx3qIczF507gjaEQUyDXsWq5fzPo+TPlh9F A==;
+X-CSE-ConnectionGUID: Tl5DNjn+QmiTB6rwsG78vA==
+X-CSE-MsgGUID: N+Yy39hwQpGC4lrFcRu9Og==
+X-IronPort-AV: E=McAfee;i="6800,10657,11972"; a="3943158"
+X-IronPort-AV: E=Sophos;i="6.27,223,1787036400"; 
+   d="scan'208";a="3943158"
+Received: from fmviesa012.fm.intel.com ([10.60.135.152])
+ by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2026 05:34:48 -0800
+X-CSE-ConnectionGUID: T/k7wHSQS4KSNj63yZ98UQ==
+X-CSE-MsgGUID: j1+xJSmpRbqVVjB5iP4Xww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,223,1787036400"; d="scan'208";a="12412021"
+Received: from linux-x299-aorus-gaming-3-pro.iind.intel.com ([10.223.34.115])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 20 Nov 2026 05:34:46 -0800
+From: Swati Sharma <swati2.sharma@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: juhapekka.heikkila@gmail.com,
+	Swati Sharma <swati2.sharma@intel.com>
+Subject: [PATCH i-g-t 1/3] lib/igt_aux: Add hibernate autoresume helper
+Date: Fri, 20 Nov 2026 19:13:58 +0530
+Message-Id: <20261120134400.1888895-2-swati2.sharma@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20261120134400.1888895-1-swati2.sharma@intel.com>
+References: <20261120134400.1888895-1-swati2.sharma@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 1/2] lib/intel_bufops: Add support for Tile64 in
- software.
-To: =?UTF-8?Q?Zbigniew_Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>,
- igt-dev@lists.freedesktop.org, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>
-References: <20261118122619.206753-4-zbigniew.kempczynski@intel.com>
- <20261118122619.206753-5-zbigniew.kempczynski@intel.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20261118122619.206753-5-zbigniew.kempczynski@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -91,237 +63,374 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-14.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-I did sometime ago write much of the same patch but it didn't go 
-anywhere as it got overrun by other stuff, I had planned to enable 
-tile64 framebuffers on xe. This look all good to me.
+Move the hibernation checks and GRUB kernel selection into a reusable
+igt_system_hibernate_autoresume() helper.
 
-Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+The helper verifies hibernation support, swap availability, and the
+resume kernel configuration, then configures GRUB to boot the running
+kernel before starting the suspend-to-disk cycle. Update kms_ccs to use
+the shared helper.
 
-Ville had somewhere branch that was enabling tile64 framebuffers on i915 
-as well as xe if it's interesting thing to try experiment with this.
+Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
+---
+ lib/igt_aux.c         | 143 +++++++++++++++++++++++++++++++++++++
+ lib/igt_aux.h         |   1 +
+ tests/intel/kms_ccs.c | 162 +-----------------------------------------
+ 3 files changed, 145 insertions(+), 161 deletions(-)
 
-/Juha-Pekka
-
-On 18/11/2026 14.26, Zbigniew Kempczyński wrote:
-> Bufops missed Tile64 so extend it and add this feature in software.
-> 
-> Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> ---
->   lib/intel_bufops.c | 113 ++++++++++++++++++++++++++++++++++++++++++++-
->   1 file changed, 111 insertions(+), 2 deletions(-)
-> 
-> diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
-> index 1196069a500..2d013ca6547 100644
-> --- a/lib/intel_bufops.c
-> +++ b/lib/intel_bufops.c
-> @@ -127,12 +127,14 @@ struct buf_ops {
->   	bo_copy linear_to_yf;
->   	bo_copy linear_to_ys;
->   	bo_copy linear_to_tile4;
-> +	bo_copy linear_to_tile64;
->   	bo_copy to_linear;
->   	bo_copy x_to_linear;
->   	bo_copy y_to_linear;
->   	bo_copy yf_to_linear;
->   	bo_copy ys_to_linear;
->   	bo_copy tile4_to_linear;
-> +	bo_copy tile64_to_linear;
->   };
->   
->   static const char *tiling_str(uint32_t tiling)
-> @@ -428,6 +430,78 @@ static void *tile4_ptr(void *ptr,
->   	return ptr + pos;
->   }
->   
-> +/*
-> + * (x,y) to memory location in tile-64 surface.
-> + */
-> +static void *tile64_ptr(void *ptr,
-> +			unsigned int x, unsigned int y,
-> +			unsigned int stride, unsigned int cpp)
-> +{
-> +	const int tile_size = 64 * 1024;
-> +	int tile_width, tile_height;
-> +	int tile_x, tile_y, _x, _y;
-> +	int base, vaddr, pos;
-> +
-> +	switch (cpp) {
-> +	case 1:
-> +		tile_width = 256;
-> +		tile_height = 256;
-> +		break;
-> +	case 2:
-> +		tile_width = 256;
-> +		tile_height = 128;
-> +		break;
-> +	case 4:
-> +		tile_width = 128;
-> +		tile_height = 128;
-> +		break;
-> +	case 8:
-> +	default:
-> +		tile_width = 128;
-> +		tile_height = 64;
-> +		break;
-> +	}
-> +
-> +	tile_x = x / tile_width;
-> +	tile_y = y / tile_height;
-> +	_x = x % tile_width;
-> +	_y = y % tile_height;
-> +
-> +	switch (cpp) {
-> +	case 1:
-> +		vaddr = (_x & 0xf) | ((_y & 0x3) << 4) |
-> +			((_x & 0x30) << 2) | ((_y & 0x4) << 6) |
-> +			((_x & 0x40) << 3) | ((_y & 0x18) << 7) |
-> +			((_x & 0x80) << 5) | ((_y & 0xe0) << 8);
-> +		break;
-> +	case 2:
-> +		vaddr = ((_x & 0x7) << 1) | ((_y & 0x3) << 4) |
-> +			((_x & 0x18) << 3) | ((_y & 0x4) << 6) |
-> +			((_x & 0x20) << 4) | ((_y & 0x18) << 7) |
-> +			((_x & 0xc0) << 6) | ((_y & 0x60) << 9);
-> +		break;
-> +	case 4:
-> +		vaddr = ((_x & 0x3) << 2) | ((_y & 0x3) << 4) |
-> +			((_x & 0xc) << 4) | ((_y & 0x4) << 6) |
-> +			((_x & 0x10) << 5) | ((_y & 0x18) << 7) |
-> +			((_x & 0x60) << 7) | ((_y & 0x60) << 9);
-> +		break;
-> +	case 8:
-> +	default:
-> +		vaddr = ((_x & 0x1) << 3) | ((_y & 0x3) << 4) |
-> +			((_x & 0x6) << 5) | ((_y & 0x4) << 6) |
-> +			((_x & 0x8) << 6) | ((_y & 0x18) << 7) |
-> +			((_x & 0x70) << 8) | ((_y & 0x20) << 10);
-> +		break;
-> +	}
-> +
-> +	/* memory location */
-> +	base = tile_y * (stride * tile_height) + tile_x * tile_size;
-> +	pos = base + vaddr;
-> +	igt_assert((pos & (cpp - 1)) == 0);
-> +
-> +	return ptr + pos;
-> +}
->   
->   static void *yf_ptr(void *ptr,
->   		    unsigned int x, unsigned int y,
-> @@ -489,6 +563,10 @@ static tile_fn __get_tile_fn_ptr(int fd, int tiling)
->   		break;
->   	case I915_TILING_4:
->   		fn = tile4_ptr;
-> +		break;
-> +	case I915_TILING_64:
-> +		fn = tile64_ptr;
-> +		break;
->   	case I915_TILING_Ys:
->   		/* To be implemented */
->   		break;
-> @@ -739,6 +817,13 @@ static void copy_linear_to_tile4(struct buf_ops *bops, struct intel_buf *buf,
->   	__copy_linear_to(bops->fd, buf, linear, I915_TILING_4, 0);
->   }
->   
-> +static void copy_linear_to_tile64(struct buf_ops *bops, struct intel_buf *buf,
-> +				  uint32_t *linear)
-> +{
-> +	DEBUGFN();
-> +	__copy_linear_to(bops->fd, buf, linear, I915_TILING_64, 0);
-> +}
-> +
->   static void __copy_to_linear(int fd, struct intel_buf *buf,
->   			     uint32_t *linear, int tiling, uint32_t swizzle)
->   {
-> @@ -806,6 +891,13 @@ static void copy_tile4_to_linear(struct buf_ops *bops, struct intel_buf *buf,
->   	__copy_to_linear(bops->fd, buf, linear, I915_TILING_4, 0);
->   }
->   
-> +static void copy_tile64_to_linear(struct buf_ops *bops, struct intel_buf *buf,
-> +				  uint32_t *linear)
-> +{
-> +	DEBUGFN();
-> +	__copy_to_linear(bops->fd, buf, linear, I915_TILING_64, 0);
-> +}
-> +
->   static void copy_linear_to_gtt(struct buf_ops *bops, struct intel_buf *buf,
->   			       uint32_t *linear)
->   {
-> @@ -898,6 +990,10 @@ void intel_buf_to_linear(struct buf_ops *bops, struct intel_buf *buf,
->   		igt_assert(bops->tile4_to_linear);
->   		bops->tile4_to_linear(bops, buf, linear);
->   		break;
-> +	case I915_TILING_64:
-> +		igt_assert(bops->tile64_to_linear);
-> +		bops->tile64_to_linear(bops, buf, linear);
-> +		break;
->   	}
->   
->   	if (buf->compression)
-> @@ -934,6 +1030,10 @@ void linear_to_intel_buf(struct buf_ops *bops, struct intel_buf *buf,
->   		igt_assert(bops->linear_to_tile4);
->   		bops->linear_to_tile4(bops, buf, linear);
->   		break;
-> +	case I915_TILING_64:
-> +		igt_assert(bops->linear_to_tile64);
-> +		bops->linear_to_tile64(bops, buf, linear);
-> +		break;
->   	}
->   
->   	if (buf->compression)
-> @@ -1628,12 +1728,14 @@ void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
->   	.linear_to_yf       = copy_linear_to_yf, \
->   	.linear_to_ys       = copy_linear_to_ys, \
->   	.linear_to_tile4    = copy_linear_to_tile4, \
-> +	.linear_to_tile64   = copy_linear_to_tile64, \
->   	.to_linear          = copy_wc_to_linear, \
->   	.x_to_linear        = copy_gtt_to_linear, \
->   	.y_to_linear        = copy_gtt_to_linear, \
->   	.yf_to_linear       = copy_yf_to_linear, \
->   	.ys_to_linear       = copy_ys_to_linear, \
-> -	.tile4_to_linear    = copy_tile4_to_linear
-> +	.tile4_to_linear    = copy_tile4_to_linear, \
-> +	.tile64_to_linear   = copy_tile64_to_linear
->   
->   static const struct buf_ops buf_ops_arr[] = {
->   	{
-> @@ -1648,7 +1750,7 @@ static const struct buf_ops buf_ops_arr[] = {
->   
->   	{
->   		DEFAULT_BUFOPS(12, ~0U),
-> -		.supported_tiles   = TILE_NONE | TILE_X | TILE_Y | TILE_Yf | TILE_Ys | TILE_4,
-> +		.supported_tiles   = TILE_NONE | TILE_X | TILE_Y | TILE_Yf | TILE_Ys | TILE_4 | TILE_64,
->   	},
->   };
->   
-> @@ -1837,6 +1939,9 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
->   	if (!is_tiling_supported(bops, I915_TILING_4))
->   		igt_debug("Tile4 format not supported\n");
->   
-> +	if (!is_tiling_supported(bops, I915_TILING_64))
-> +		igt_debug("Tile64 format not supported\n");
-> +
->   	if (check_idempotency) {
->   		idempotency_selftest(bops, I915_TILING_X);
->   		idempotency_selftest(bops, I915_TILING_Y);
-> @@ -2003,6 +2108,10 @@ bool buf_ops_set_software_tiling(struct buf_ops *bops,
->   		igt_debug("-> use SW on tiling 4\n");
->   		break;
->   
-> +	case I915_TILING_64:
-> +		igt_debug("-> use SW on tiling 64\n");
-> +		break;
-> +
->   	case I915_TILING_Yf:
->   		igt_debug("-> use SW on tiling Yf\n");
->   		break;
+diff --git a/lib/igt_aux.c b/lib/igt_aux.c
+index 18053db8f..dec8073d3 100644
+--- a/lib/igt_aux.c
++++ b/lib/igt_aux.c
+@@ -1120,6 +1120,149 @@ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+ 	close(power_dir);
+ }
+ 
++static bool igt_aux_hibernation_supported(void)
++{
++	char buffer[2048];
++	ssize_t state_bytes;
++	size_t cmdline_bytes;
++	FILE *cmdline;
++	int fd;
++
++	fd = open("/sys/power/state", O_RDONLY);
++	if (fd < 0) {
++		igt_debug("Failed to open /sys/power/state\n");
++		return false;
++	}
++
++	state_bytes = read(fd, buffer, sizeof(buffer) - 1);
++	close(fd);
++	if (state_bytes <= 0) {
++		igt_debug("Failed to read /sys/power/state\n");
++		return false;
++	}
++
++	buffer[state_bytes] = '\0';
++	if (!strstr(buffer, "disk")) {
++		igt_debug("Hibernation (suspend to disk) is not supported on this system.\n");
++		return false;
++	}
++
++	cmdline = fopen("/proc/cmdline", "r");
++	if (!cmdline) {
++		igt_debug("Failed to open /proc/cmdline\n");
++		return false;
++	}
++
++	cmdline_bytes = fread(buffer, 1, sizeof(buffer) - 1, cmdline);
++	fclose(cmdline);
++	buffer[cmdline_bytes] = '\0';
++	if (!strstr(buffer, "resume=")) {
++		igt_debug("Kernel does not have 'resume' parameter configured for hibernation.\n");
++		return false;
++	}
++
++	return true;
++}
++
++static bool igt_aux_ensure_grub_boots_same_kernel(void)
++{
++	char cmdline[1024];
++	char current_kernel[256];
++	char last_menuentry[512] = "";
++	char grub_entry[512];
++	char command[1024];
++	char line[1024];
++	FILE *cmdline_file, *grub_cfg;
++	char *kernel_arg, *kernel_end;
++	bool kernel_found = false;
++
++	cmdline_file = fopen("/proc/cmdline", "r");
++	if (!cmdline_file) {
++		igt_debug("Failed to open /proc/cmdline\n");
++		return false;
++	}
++
++	if (!fgets(cmdline, sizeof(cmdline), cmdline_file)) {
++		fclose(cmdline_file);
++		igt_debug("Failed to read /proc/cmdline\n");
++		return false;
++	}
++	fclose(cmdline_file);
++
++	kernel_arg = strstr(cmdline, "BOOT_IMAGE=");
++	if (!kernel_arg) {
++		igt_debug("BOOT_IMAGE= not found in /proc/cmdline\n");
++		return false;
++	}
++
++	kernel_arg += strlen("BOOT_IMAGE=");
++	kernel_end = strchr(kernel_arg, ' ');
++	if (!kernel_end)
++		kernel_end = kernel_arg + strlen(kernel_arg);
++
++	snprintf(current_kernel, sizeof(current_kernel), "%.*s",
++		 (int)(kernel_end - kernel_arg), kernel_arg);
++	igt_debug("Current kernel image: %s\n", current_kernel);
++
++	grub_cfg = fopen("/boot/grub/grub.cfg", "r");
++	if (!grub_cfg) {
++		igt_debug("Failed to open GRUB configuration file\n");
++		return false;
++	}
++
++	while (fgets(line, sizeof(line), grub_cfg)) {
++		if (strstr(line, "menuentry")) {
++			char *start = strchr(line, '\'');
++			char *end = start ? strchr(start + 1, '\'') : NULL;
++
++			if (start && end)
++				snprintf(last_menuentry, sizeof(last_menuentry), "%.*s",
++					 (int)(end - start - 1), start + 1);
++		}
++
++		if (strstr(line, current_kernel)) {
++			snprintf(grub_entry, sizeof(grub_entry), "%s", last_menuentry);
++			kernel_found = true;
++			break;
++		}
++	}
++	fclose(grub_cfg);
++
++	if (!kernel_found) {
++		igt_debug("Failed to find matching GRUB entry for kernel: %s\n",
++			  current_kernel);
++		return false;
++	}
++
++	snprintf(command, sizeof(command), "grub-reboot \"%s\"", grub_entry);
++	if (system(command) != 0) {
++		igt_debug("Failed to set GRUB boot target to: %s\n", grub_entry);
++		return false;
++	}
++
++	igt_debug("Set GRUB to boot kernel: %s (GRUB entry: %s)\n",
++		  current_kernel, grub_entry);
++	return true;
++}
++
++/**
++ * igt_system_hibernate_autoresume:
++ *
++ * Prepare GRUB to boot the running kernel on the next boot, then perform a
++ * full suspend-to-disk cycle and automatically resume.
++ */
++void igt_system_hibernate_autoresume(void)
++{
++	igt_require_f(igt_aux_hibernation_supported(),
++		      "Kernel is not configured for hibernation resume\n");
++	igt_require_f(igt_get_total_swap_mb(),
++		      "Suspend to disk requires swap space.\n");
++	igt_require_f(igt_aux_ensure_grub_boots_same_kernel(),
++		      "Couldn't find correct kernel in grub.cfg\n");
++
++	igt_system_suspend_autoresume(SUSPEND_STATE_DISK, SUSPEND_TEST_NONE);
++}
++
+ static int original_autoresume_delay;
+ 
+ static void igt_restore_autoresume_delay(int sig)
+diff --git a/lib/igt_aux.h b/lib/igt_aux.h
+index 30530a404..8d7168fe7 100644
+--- a/lib/igt_aux.h
++++ b/lib/igt_aux.h
+@@ -216,6 +216,7 @@ enum igt_mem_sleep {
+ 
+ void igt_system_suspend_autoresume(enum igt_suspend_state state,
+ 				   enum igt_suspend_test test);
++void igt_system_hibernate_autoresume(void);
+ void igt_set_autoresume_delay(int delay_secs);
+ int igt_get_autoresume_delay(enum igt_suspend_state state);
+ 
+diff --git a/tests/intel/kms_ccs.c b/tests/intel/kms_ccs.c
+index 4d0bda6a7..9740fe1ae 100644
+--- a/tests/intel/kms_ccs.c
++++ b/tests/intel/kms_ccs.c
+@@ -270,161 +270,6 @@ static const struct {
+ #define MAX_SPRITE_PLANE_WIDTH 2000
+ 
+ 
+-/**
+- * check_hibernation_support:
+- *
+- * Return: True if kernel is configured with resume point for hibernate.
+- */
+-static bool check_hibernation_support(void)
+-{
+-	int fd;
+-	char buffer[2048];
+-	ssize_t bytes_read;
+-	FILE *cmdline;
+-
+-	/* Check if hibernation is supported in /sys/power/state */
+-	fd = open("/sys/power/state", O_RDONLY);
+-
+-	if (fd <= 0) {
+-		igt_debug("Failed to open /sys/power/state\n");
+-		return false;
+-	}
+-
+-	bytes_read = read(fd, buffer, sizeof(buffer) - 1);
+-	close(fd);
+-
+-	if (bytes_read <= 0) {
+-		igt_debug("Failed to read /sys/power/state");
+-		return false;
+-	}
+-
+-	buffer[bytes_read] = '\0';
+-	if (strstr(buffer, "disk") == NULL) {
+-		igt_debug("Hibernation (suspend to disk) is not supported on this system.\n");
+-		return false;
+-	}
+-
+-	/* Check if resume is configured in kernel command line */
+-	cmdline = fopen("/proc/cmdline", "r");
+-
+-	if (!cmdline) {
+-		igt_debug("Failed to open /proc/cmdline");
+-		return false;
+-	}
+-
+-	fread(buffer, 1, sizeof(buffer) - 1, cmdline);
+-	fclose(cmdline);
+-
+-	if (strstr(buffer, "resume=") == NULL) {
+-		igt_debug("Kernel does not have 'resume' parameter configured for hibernation.\n");
+-		return false;
+-	}
+-
+-	return true;
+-}
+-
+-/**
+- * Ensure_grub_boots_same_kernel:
+- *
+- * Return: True if kernel was found and set for next reboot.
+- */
+-static bool ensure_grub_boots_same_kernel(void)
+-{
+-	char cmdline[1024];
+-	char current_kernel[256];
+-	char last_menuentry[512] = "";
+-	char grub_entry[512];
+-	char command[1024];
+-	FILE *cmdline_file, *grub_cfg;
+-	char line[1024];
+-	bool kernel_found = false;
+-	char *kernel_arg;
+-	char *kernel_end;
+-
+-	/* Read /proc/cmdline to get the current kernel image */
+-	cmdline_file = fopen("/proc/cmdline", "r");
+-	if (!cmdline_file) {
+-		igt_debug("Failed to open /proc/cmdline");
+-		return false;
+-	}
+-
+-	if (!fgets(cmdline, sizeof(cmdline), cmdline_file)) {
+-		fclose(cmdline_file);
+-		igt_debug("Failed to read /proc/cmdline");
+-		return false;
+-	}
+-	fclose(cmdline_file);
+-
+-	/* Parse the kernel image from cmdline */
+-	kernel_arg = strstr(cmdline, "BOOT_IMAGE=");
+-	if (!kernel_arg) {
+-		igt_debug("BOOT_IMAGE= not found in /proc/cmdline\n");
+-		return false;
+-	}
+-
+-	kernel_arg += strlen("BOOT_IMAGE=");
+-	kernel_end = strchr(kernel_arg, ' ');
+-
+-	if (!kernel_end)
+-		kernel_end = kernel_arg + strlen(kernel_arg);
+-
+-	snprintf(current_kernel, sizeof(current_kernel), "%.*s",
+-		 (int)(kernel_end - kernel_arg), kernel_arg);
+-	igt_debug("Current kernel image: %s\n", current_kernel);
+-
+-	/* Open GRUB config file to find matching entry */
+-	grub_cfg = fopen("/boot/grub/grub.cfg", "r");
+-	if (!grub_cfg) {
+-		igt_debug("Failed to open GRUB configuration file");
+-		return false;
+-	}
+-
+-	while (fgets(line, sizeof(line), grub_cfg)) {
+-		/* Check if the line contains a menuentry */
+-		if (strstr(line, "menuentry")) {
+-		/* Store the menuentry line */
+-			char *start = strchr(line, '\'');
+-			char *end = start ? strchr(start + 1, '\'') : NULL;
+-
+-			if (start && end) {
+-				snprintf(last_menuentry,
+-					 sizeof(last_menuentry),
+-					 "%.*s", (int)(end - start - 1),
+-					 start + 1);
+-			}
+-		}
+-
+-		/* Check if the current line contains the kernel */
+-		if (strstr(line, current_kernel)) {
+-			/* Use the last seen menuentry as the match */
+-			snprintf(grub_entry, sizeof(grub_entry), "%s",
+-				 last_menuentry);
+-			kernel_found = true;
+-			break;
+-		}
+-	}
+-
+-	fclose(grub_cfg);
+-
+-	if (!kernel_found) {
+-		igt_debug("Failed to find matching GRUB entry for kernel: %s\n",
+-			  current_kernel);
+-		return false;
+-	}
+-
+-	/* Set the GRUB boot target using grub-reboot */
+-	snprintf(command, sizeof(command), "grub-reboot \"%s\"", grub_entry);
+-	if (system(command) != 0) {
+-		igt_debug("Failed to set GRUB boot target to: %s\n",
+-			  grub_entry);
+-		return false;
+-	}
+-
+-	igt_debug("Set GRUB to boot kernel: %s (GRUB entry: %s)\n",
+-		  current_kernel, grub_entry);
+-	return true;
+-}
+-
+ static void addfb_init(struct igt_fb *fb, struct drm_mode_fb_cmd2 *f)
+ {
+ 	int i;
+@@ -994,12 +839,7 @@ static bool try_config(data_t *data, enum test_fb_flags fb_flags,
+ 	if (ret == 0 && !(fb_flags & TEST_BAD_ROTATION_90) && crc) {
+ 		if (data->flags & TEST_SUSPEND && fb_flags & FB_COMPRESSED) {
+ 			if (data->do_hibernate) {
+-				igt_require_f(check_hibernation_support(),
+-					      "Kernel is not cofigured for resume\n");
+-				igt_require_f(ensure_grub_boots_same_kernel(),
+-					      "Couldn't find correct kernel in grub.cfg\n");
+-				igt_system_suspend_autoresume(SUSPEND_STATE_DISK,
+-							      SUSPEND_TEST_NONE);
++				igt_system_hibernate_autoresume();
+ 			} else {
+ 				igt_system_suspend_autoresume(SUSPEND_STATE_MEM,
+ 							      SUSPEND_TEST_NONE);
+-- 
+2.25.1
 
