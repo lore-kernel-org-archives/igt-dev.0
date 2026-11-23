@@ -2,158 +2,149 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7721A606A33C
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 14:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E117606A686
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 14:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=kRpAbysn;
-	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=Y2ZryuEb
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VTwFswY+;
+	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=FA/gMDru
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1FD4F10EC2E;
-	Mon, 23 Nov 2026 14:58:28 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5CD9410EE9C
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 14:54:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1400910EECE;
+	Mon, 23 Nov 2026 14:59:24 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 1884A10E81C
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 14:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795445682; x=1826981682;
+ t=1795445697; x=1826981697;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:content-transfer-encoding:mime-version;
- bh=7HpTtL/CISfyklfU4aW+NQoSMdEkWFNqjefjeIflwPg=;
- b=kRpAbysn9OoR3uxqt9ROFeQGssj3NArfEN9bxDqDXMYY/BQZTir87iMk
- xmQJMUBFeUVSLETj+dBQD/lyaNyMR4W12RDxEMGkgHnAgpNIamEiLMi2J
- gzGErbwHcEJu5smXmYRWIEyNE8yKk+farrTBo/VVEh9xlZduyYov0mloc
- 24+PtRmEZY31Ml2oG+GKdSdoGRYlfUOJtUY6yINWGHjMBpP7dC/o4EKY1
- XY3Fq4iUNgTFr7H7GegEBXRfeIqN6byeFOCKjI7pyQZPL9fr5iBuho075
- cZo2FB9EJxW9Z46AWZgw4j6F1hnmMdQ9w/90gNgWUVRadbwZfWFpdissb w==;
-X-CSE-ConnectionGUID: 5ddSWTEJSraE2NR/ravIsA==
-X-CSE-MsgGUID: oye7NeUQRz+BB9GPc+uTLQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4149522"
+ bh=uFDXVmbHbeejayuuZAHqFX7f+aTVA+zdtZWc/b8g2E4=;
+ b=VTwFswY+yy+BCTT03nP8tMtN08Pq5J4pe0NutgBOSU343ZQyYpkAcloQ
+ bzknj3ugDgyQrFSv2W0cWFWHvA3zJ3qy5fQGtxvZp7uonFhIxc8S1TmOm
+ Fv8dTqUl05xynefE5T7j5bgi66ATJmfeSVeSVuRu/nKWEyS/AqAsom6ZE
+ wDF3wDzyZtEjRIpo1HhO+4CGlJJGkwRT++bssWkNXc2QM6Xn0Xaj7797g
+ 9Be/PtkdOA65zjeKDlJSH/XrZ3AqKlAOZyRgZ/rqQ7HKOrbfEOIl9evlo
+ 1eJ/0lihSJtrZbFXcQeiV2vNWaikdVfHvPMYXIfHWxZkk5Q5DM7F+AkYZ Q==;
+X-CSE-ConnectionGUID: RHaaZ462RNejuqWPmS5KJA==
+X-CSE-MsgGUID: 0bNNjSkYQeykPEJNTHhuWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4307587"
 X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; 
-   d="scan'208";a="4149522"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 06:54:35 -0800
-X-CSE-ConnectionGUID: P2EbbmLQTP+JmbThH3hzXw==
-X-CSE-MsgGUID: fmcydkqaQqevveh7XMTjAQ==
+   d="scan'208";a="4307587"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Nov 2026 06:54:52 -0800
+X-CSE-ConnectionGUID: 4kwFVNZ/RF6bSKGpTe7ZEQ==
+X-CSE-MsgGUID: 01m3UMwuQHivjdNpEdcr+Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; d="scan'208";a="11302859"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 06:54:34 -0800
+X-IronPort-AV: E=Sophos;i="6.27,229,1787036400"; d="scan'208";a="11093574"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Nov 2026 06:54:40 -0800
 Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57; Mon, 23 Nov 2026 06:54:34 -0800
+ 15.2.2562.57; Mon, 23 Nov 2026 06:54:29 -0800
 Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57 via Frontend Transport; Mon, 23 Nov 2026 06:54:34 -0800
-Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.13) by
+ 15.2.2562.57 via Frontend Transport; Mon, 23 Nov 2026 06:54:29 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.65) by
  edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Mon, 23 Nov 2026 06:54:34 -0800
+ 15.2.2562.56; Mon, 23 Nov 2026 06:54:28 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GEeC6p1xFKgQsEoj2ojnrYBTV6uzoMQM3W3052hpqeDD5QJuzYYD/7BgPDblcF6v6x/qxtI7cSdngxim7nSRge1qaOx30Ev9COP+aDzLqdxfNT7o3iMW7isATXqdURL/BLiQmuIrMmRC+X4nJzKKr2njoBj0QazR1HnfcweHzMYHDWL+yI/Ja+/ZFGQALvsMR2RIAzteDQqoYh+GsgOoARuHfyLugMAt98QWdCG/3PS3ba50qhjDScerKGQHBAzhnfijF+BBF2yPEvlpkgs/EAQZprAKnOXJddosnW0jEYzcOwQ4OW83KrzsZIbdeX++SKy02w+Yh+yQtedXj8lcPA==
+ b=xsrVAHuRTgV4RyF/utc/WV+20QoseLtIIsBcQQV2497qyC/9cQp4kcxd1A7eNnZAbdQrEDcgQOdPdlLq0BF+nZTIs/tgthmrl7LZk/kJGaFg4wpkg6KriGkbutwqJ3RRcujM5WXhsvqYxiqzgfB4s4rn/Qt1bIU95ofDbLr1nCvxyHV5PdgFvv4KZU+ImmUId5wNdANpeJhC1MZxi1OePKqYOcLJ1ZQEcr/++6Psn3gwEDWCmUTznWVuHp78rqao5D/CCtvN4NL6p0hqmxdpNDasIU0L9VWZlfdd1/DnOU2V2ft8AwoVJGjwoycWK4IggCh3Fx3fwD521s+xUB10Mg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g0JqTkmePkyjWb5CCaV8lmscCVjhYkHgTre3EW7AAFo=;
- b=yfBehL18WgVOfnoBXwEy/ndvEsv0+U0Eli6vTblJqbk2HPpHAH18n3Pgmdl8aQxbCjecfRcN2M1pail46eJ9BDfQRbSngjKpD1nIl1qVVl5rMFjACKownJUnk3u7IH6aMUwgvtmy0LlX72XB8HBgCW74pU7kJ+Uw8/D07+y4YtBGhcJoQLu0oN4M3aVRREXHp9YZMNZY7bknuWIKK+OoIHoWze5D9ooarVOHdo9mEJQX7C2bsVLiGpzDh/6rdnZzBMtQVcUCvNkxlBmP28U7CtLewnS1C65qm5vtpc72+Mb1LZeU6xrumuo9jpuk3SjCfjfqYF0knIlJ6tAJc0/XhQ==
+ bh=pywKKk3iR6zkoyjHZmzJu+1XH9ihb/tf3uwA7Vcwvpc=;
+ b=gSjuWOC4o0yfjegtpEAPbnT0TiLETXlSMjxPgTUwmJ6GpzGIDI2iHwm+22GxCCwVLK28eX1lf+b4Q+WL6lkkmEUWVzBJu69KtmMq1DKK/qUBq0DrUAjjgsXOetLe6ensBdRwnd5CeNxttIVn97kj7qVX5yfr6D2Z5dABXh0saigk6TIZQtMDZ+lwroK8vWiF622YGwgkYeo5bzHmMJpg1sZYasXaKuU1+RYNJqmbXKu1THAPW28Ci7dHV5r+sOXki5AedrdW//ukZ7jzCzttGO6DJmUVfqmZXblZSORrSlyVpVpXhOxLNsVSmep90kq9SCJEBwhrLXRqRF6zLfjeOg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g0JqTkmePkyjWb5CCaV8lmscCVjhYkHgTre3EW7AAFo=;
- b=Y2ZryuEbnMfUN4QQe/WaZO7IW0rNzEb03J4R1rxfZI6opJCUi+d55YRabyfO/euGmE18opzrpUfgdUOOUNGHgznGyoq+jM6nMsieGulLx5f7C2vQDmXTujSBrIiyLmmpwNUNTnuDeWRwL4ZBCHvGLlWSO4SXlMs/S8f54p+n/iE=
+ bh=pywKKk3iR6zkoyjHZmzJu+1XH9ihb/tf3uwA7Vcwvpc=;
+ b=FA/gMDrudZRPGyAMd7VDjjiIBxs8XE/2NUJF6YpcHd/Ri87E1S2bEKq5kkEeqK338BuQjEWtFwlttkH2pPghWZ6GBH94HkLmXhcetlJ/OljE8tnWBYvfPd/vNoIfCEqDN162q4nD7qCd9JGaGmD2O0u41gmSSrb4og8pf08t5ro=
 Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 Received: from DS7PR11MB5990.namprd11.prod.outlook.com (2603:10b6:8:71::5) by
  DM6PR11MB4578.namprd11.prod.outlook.com (2603:10b6:5:2a7::15) with
  Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.639.12; Mon, 23 Nov 2026 14:54:32 +0000
+ 15.21.639.12; Mon, 23 Nov 2026 14:54:26 +0000
 Received: from DS7PR11MB5990.namprd11.prod.outlook.com
  ([fe80::133c:5eed:3aec:b899]) by DS7PR11MB5990.namprd11.prod.outlook.com
  ([fe80::133c:5eed:3aec:b899%3]) with mapi id 15.21.0639.011; Mon, 23 Nov 2026
- 14:54:32 +0000
+ 14:54:26 +0000
 From: Rodrigo Vivi <rodrigo.vivi@intel.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH i-g-t 6/6] tests/intel/xe_drm_ras: Test retired pages
-Date: Mon, 23 Nov 2026 09:54:15 -0500
-Message-ID: <20261123145414.2243338-12-rodrigo.vivi@intel.com>
+Subject: [PATCH i-g-t 4/6] lib/igt_drm_ras_nl: Add retired pages helpers
+Date: Mon, 23 Nov 2026 09:54:13 -0500
+Message-ID: <20261123145414.2243338-10-rodrigo.vivi@intel.com>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261123145414.2243338-7-rodrigo.vivi@intel.com>
 References: <20261123145414.2243338-7-rodrigo.vivi@intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0050.namprd05.prod.outlook.com
- (2603:10b6:a03:33f::25) To DS7PR11MB5990.namprd11.prod.outlook.com
+Content-Type: text/plain
+X-ClientProxiedBy: BYAPR21CA0006.namprd21.prod.outlook.com
+ (2603:10b6:a03:114::16) To DS7PR11MB5990.namprd11.prod.outlook.com
  (2603:10b6:8:71::5)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS7PR11MB5990:EE_|DM6PR11MB4578:EE_
-X-MS-Office365-Filtering-Correlation-Id: d7a79a94-93f3-4b04-876c-08df4971ae8a
+X-MS-Office365-Filtering-Correlation-Id: b6eecd19-9fbc-4816-f34d-08df4971ab64
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|366016|376014|23010399003|1800799024|10067099003|11063799006|5023799004|56012099006|261009223027099003|261022075727099003|261022105027099003|261022113327099003|261021121427099003|261026121527099003|261026140227099003|261028144727099003|261102123227099003|18002099003|22082099003|6133799003;
-X-Microsoft-Antispam-Message-Info: wjKyoaDrQIWzalJLWuHWpilXPRx3c3nxro1ItmGUl2BONvPq42+hFP05QhGFNd9ZSq657EOIsdbJlvNGU9wJwDhXQBlEQ5wZU3iO4LXJwa8kP/G/VqOLfjmeyrEfqG+S6G4eN7rPnvPkLxBywDVq4e12scz3VW9cC0+bGzmRBoi8g9S1UyMs0kIpIzxNypOfYgp68W9wHyFaYNd5aoiQ6V8BHlYSNzLYDJq3qI6ZcxEJ21/Bl+FQNWuCmsTgtQCsVBjkAnDIeE7kESZ5JtCwwAte6TAmfaLGV0fe7dkNFL0QzeFXXrCCAYno1httk34iZazi6a0u2ttRftoAkKHyk8pkGMLWM+TSAP2J0qsdtpdsJ2YwrppAZsdmnUqkJh6h+IU9eJdb/52Y0wmwY9Gw4VeSiImZP+k8iJw2nXQCOUJxkGmJqChhMsTXAGPZN0w5F+ZWAuKMns40A7ZQ8xH3LleeFOWXjNU/mysh56ww7D1wIi9R+cj+d3OCDclyJPEPu7nvodrgmei6zEAlUIYLRv+jmSQbWRCF2rU75jhjxTn6k5o150Ubt09Rex+4AhRBrc1nQxV4b7wxrna6VrM6WbHconzDVT1ZFWh1BAbvE156U815O6gRWrs6PD1VMGaaOqChNqK8YNG7eR4Q2WMgshJIV28+MMDkojpl5ffcHC4=
+ ARA:13230040|366016|376014|23010399003|1800799024|10067099003|11063799006|56012099006|261009223027099003|261022075727099003|261022105027099003|261021121427099003|261026121527099003|261026140227099003|261028144727099003|261102123227099003|18002099003|22082099003|6133799003;
+X-Microsoft-Antispam-Message-Info: osDDAEAiAavRkgge+aEkcsyw9wOl50dnhge6IdKFVuEaSykhco4l3oMrTrB6OA/3HrCnb6XtmIf9zDnk9Z7gbPeplGRn7PrM4QUQvlRksdCmlCTTBLLLIUrYzyHgN6qaMKJD0TIuDpmpnuRpUXCIDJlr/4RG48hgzbuVT69t9cHZhU8Zvgz4eSJds4Pe/GiEBeNalmzs5u4vAqswGQUVOJdG+nNEEAYVgUwTh9FoXKxBwWPF4WObLrwC+WlffkTvO/WlYFUn/C8jbMgM4alojK9oXKr1RQPSWPXMUV5SecSYrK8JPqjQBxIBKF7n5HburQxBx47I4KyVTL8f5f7M3KmN7vhd8kR5ibNQI4fSreOimOenNWUoTiIsVTzncbSu4UkA1jE7KqIQ6CYIUiyCDtb8JoIcreJtFz98kDrT6PTbkhrYDwRLogqFesU23fQJcHhRmHmj/pf1SxbJxZhBFtRZJW32GrnIBw1G3PXQAwtJJluQsKWYrANy3XG28z3in0B0dOZwxrtUZN/GXQrtrENLUtOoDUqEtOrqSqUdumBjmB52P+jqvA7mK1Vl8XuRnb53qpV6kWfQm07Uyly6P3S2hd7JCvFcza4xbT8RRh9/uIEucuuWHwONhkR3qLxZTH155v0exkYR3cqH7aD4W4j6J21vEsyp5nmf2B120eY=
 X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
  IPV:NLI; SFV:NSPM; H:DS7PR11MB5990.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(11063799006)(5023799004)(56012099006)(261009223027099003)(261022075727099003)(261022105027099003)(261022113327099003)(261021121427099003)(261026121527099003)(261026140227099003)(261028144727099003)(261102123227099003)(18002099003)(22082099003)(6133799003);
+ SFS:(13230040)(366016)(376014)(23010399003)(1800799024)(10067099003)(11063799006)(56012099006)(261009223027099003)(261022075727099003)(261022105027099003)(261021121427099003)(261026121527099003)(261026140227099003)(261028144727099003)(261102123227099003)(18002099003)(22082099003)(6133799003);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?N0M4VWdnMENNR01zSXp1bVZDQ1A1cU4ySGFmRDNOd1JUM2ptUVFzMVhKeHZE?=
- =?utf-8?B?bml6S3plT3EvU3puVGhXZFZMRXlpam5xaUZkbk1OanVnWkdWYXd4b1BETXk0?=
- =?utf-8?B?Szh6aUwwZ1BZTjZzcVVnQ2pRVmV2NEoveDErekJtSk9zc2llSlJXZktMWDVP?=
- =?utf-8?B?SE9YSFNZck5wT2JHWkx0WTZRMzdTUHlqemNSNnEwdzJHUklsNmxhM3hzaE5y?=
- =?utf-8?B?MWFLNmZzQ2x0cFlPa2hObThqSitzRUZmWVZhakY1RUIxbE84N1JNV3MxM0tP?=
- =?utf-8?B?eHZwcUpsQy90aVM1eDA2OTNtM0RLNlVhcm1VNWsxR293bGlPbDc0NE43dGVS?=
- =?utf-8?B?Qm1wVXVQQ1o0R2xqdW1Cb2tXNm5EWit3d2lIZ1NwUzdJVUMxdDgvZTNXVWdj?=
- =?utf-8?B?TEhoSzJld2tiM0pRZGh5S2taT3F2Y0JNdTZUVDlzTWVqc1E3UGdDeElZNnVz?=
- =?utf-8?B?cHo5TkhaT3VNMlpIT1hpZnhZTWxSUlhLbDlYZlN4dDdnV3pDaEc3RVFMYkxT?=
- =?utf-8?B?OWRVRHdXR1RkZ28yME96WHB1SHdyeDNWcnJRd2gyY2x3cFByTGVCOGJRR1Q0?=
- =?utf-8?B?VHd5TDRZano0Yi9GeWdyZ1FTZGpjL2xHa0xid3ZIaUxHUmxhOFZDa2c4SGJ2?=
- =?utf-8?B?TDJuVklwQ3dodUxXbGRvcGRDdC90OHAxait3TjZ1bURqTEdSQ0RMQkpxVE1u?=
- =?utf-8?B?R0d2U2Y0aUFwM2JTMmdBZGRDNmQyUVJIeXZiTTdVUnFWWVVBRklCVjdHdWls?=
- =?utf-8?B?RXhUM0dPeXVaallXRWJCNzhEbWpjRDVxUVVzWlhPRndvT2RucnRTdG1WdDQ5?=
- =?utf-8?B?NkorNFB0S0RDWUxnMXN6U2lmSkFLSStCZ0hjclFmQnJ2V3Y3d2xObGpuOW9r?=
- =?utf-8?B?c0k3ZHgwaTdkZW1QQ0JjZTQvRlMwdENmTCszRURkbkhoWEJhNXZIaTBZREIr?=
- =?utf-8?B?NlNVNm1NeS9DaUlldXhBdUVTSitxTnV0NGJRajRreUIzSVVOWTNISW11RE1Q?=
- =?utf-8?B?R2xJR1RoemVjSThWV1BMcVRCUWh0dklwNVNEUXo4NmdHa1pJelpQaXc0bG9v?=
- =?utf-8?B?VW5WZmRHcW5uK1lzTndzTU0xd0R5VmpMOVliTVFQdHRYelphVzlPNVFlWFVP?=
- =?utf-8?B?MEpORDduYUhaaDd3dCtIOVk3QVN1VVhjN25GRndBMVkxV2dmMkdTVS9ybzlZ?=
- =?utf-8?B?UUhlclJJNEhzNytoZ3dYa2dyTHNHM3dxVU01TjVrZ1pmYjF6ZGFuZkhIZUxh?=
- =?utf-8?B?YWJ1ejMxSnhoSnRKSWs1R0Y2YWxPU2R2QVIyWVAyQUdWR0hwY2toNy9yOFhm?=
- =?utf-8?B?UkNaaTlRVnBNK09yTFl2eTJ5NjZScExwVEhlQlhMeXMrREI1T0oveUZvVGFn?=
- =?utf-8?B?N3VSVEVNbFl6M013dzZUQlJzaXVoZkYxdmgzRTQ2ak5XUGt5TlhMN3lFc1Ay?=
- =?utf-8?B?bm5lUFo2SG5RdjFxTHBEcmU0Y21mNDJOTzZUMEN3TEY2SGljeklGNm9xQ1M5?=
- =?utf-8?B?dmlGY1lhbTljdWRCT3dmZE9waEhzbFZocXVRWGZGRlVscW1ZSDRpSWg5WGFw?=
- =?utf-8?B?SkQxZGFlNmM2WkpKSEs3OU9BWkZmbnRSdFk0TTlRYUxYci92NnE4K1hsYWp0?=
- =?utf-8?B?bXFqdXNFRFE0d09GL0djTlJndkJJOGVSaFBuaEcxU1NRL2VwSE5va3pieXZr?=
- =?utf-8?B?L0FDWFgveFNwVDk2Qkx2Y0FPdWx3cHFLS1h3d1hWWFFJdzNnemJWSFpuVFRn?=
- =?utf-8?B?enVyVGE4aURlejVydmpqck9CZEhlbUI5MXl4U3Rjc1RHclRjVk10NHhyMkFm?=
- =?utf-8?B?UXArelVNdXR4WnM4SS83MUlnQUphbnFacnYzRWxLeVZuanhtM3NIMTRoOEor?=
- =?utf-8?B?SmovVmZsZmM4YTNtdzE3eDVRRzRqeHV2OUZkV28rSUhSNzFrODJ2RXBwQWY1?=
- =?utf-8?B?bm54SjNiS00rMklqclJJVWdDNFBQNXVDRFZBVEs0SDFQRi9sSFcrSm53bUlM?=
- =?utf-8?B?cWZOOGJUTENtN3hFWG5lWVpVSStoTkhWYkpQRzBRL2tiLzZhTWVERjJldXJR?=
- =?utf-8?B?VVVDcDYvUHhxaXBKL3M4ZlBKdVd3QUhFV0ZmbXQ5TnptZElPUTBDVHF1bkVp?=
- =?utf-8?B?WDZNaEtmZC8xVEJNWENjMTRCVXF3UVRhQWFqSjVwU0FlREltbjVJZkl1dGZq?=
- =?utf-8?B?WlM1RVkxMms1QWhxeWxLZnZGQ2xrRHZCdk56NlVlT2ZENzFoU0xjbmM4allJ?=
- =?utf-8?B?eExER0xjZGZFTllMalFmUTYzZU5mTWl6a0JBelBFbEhZMUc4RzV0MzhtOXV2?=
- =?utf-8?B?ckppeWRJOVJFZllJeGo4UE9lNFhLOHBCM3RwTlZKKzRWbGtKK2tiZz09?=
-X-Exchange-RoutingPolicyChecked: MDr1vXkj3fBOf8qiTqWnBZcluEukfehet7RbwaHyoNjAfWVOlIVORLqPARn7rTqIwu/s5dOig0bcdJm7bsGr+A4dv6lxkei/Vp80w/pl3zcFlhGVUty3MXnMag4S8jEWmNx4FvBKv04QCJJwuSVxUo2sJqfiF2+HBBXT4moZsk0zBPfVyDNuQE8DdcdZTkoBcHNcLxOOMBoJwJvmbGZNxueB2oyuKMvS/TbjZtgCApnA5PbcybmRKN4tvsh5mxSD5RCy5grOh/5wbo6ftxbOsK0lDl/o/QPXCTb/mf+izxMCsBYO2gOlgsk1Zaa437FMm8ujAMOil1Xm6DS1r1ywpA==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d7a79a94-93f3-4b04-876c-08df4971ae8a
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?xeCr+SUwH63mMKHR2cThan1fGyYCcKotUmYLTgIlfuJnJ+RT4uOX8i7tw+a/?=
+ =?us-ascii?Q?z/5Afrus5dYdDe5Rsi/xl1QjNdczJRuy/9kpOcyTvygzaBE+fWcO8kiqJigq?=
+ =?us-ascii?Q?IkUUvx0tTdA8flj0k0679HFoYV2XJuBvgL70RG27JugjlpkJK2CstIxzOoQ2?=
+ =?us-ascii?Q?3ebu7QSmHNqU/KUo8hXEM/1525Iearqqi57bmDTHKmSb6YyA5bX2Ak2iw1o8?=
+ =?us-ascii?Q?5Wg3IeW0ZWv4gBLX55LusF5FJdOr599E/JlOnDHDkn424WHsjcsenrDD8o5N?=
+ =?us-ascii?Q?V4Rvsc06ifzQpHqFFG/yOTw+GEg15Xm7oUoEUizrQjGdMVMuVSUdl+mcXTAc?=
+ =?us-ascii?Q?ZqLFGK1Ta+qxgR4E6c8ZHQ6oobp88NUP8h0GcUsZBil4GtHLX869GLZajdhH?=
+ =?us-ascii?Q?4fkTLe5T35IKAKQmyqFSNdnqObzH478uMRunv+Sph5M/wBNee++ZvICoKIpI?=
+ =?us-ascii?Q?LMmPEufo5+9JbWcke9E+iaJEvklQUa+PJUfKGkUw8BfVOPGHyWo88Ccf9gqN?=
+ =?us-ascii?Q?7ASrtp5iw0Jbft5v1vVvkYqXJ8cgf8NoAkxrcJLLrSRjFH/4pDi++5e8wpLt?=
+ =?us-ascii?Q?FCHp4Eae8+pYlDnRDoaFbozRpf7oVpoRy96er4y7OtygGbG7babYL00tX6Mk?=
+ =?us-ascii?Q?mEjmYsUMI9fNXBle1XcngTQdOAYoPxJjEppRlgG3BjkrgByz6KrR2QoZa/Io?=
+ =?us-ascii?Q?Wtao1Ko+M065JWLCNBx1agr9aRDz/XADib1nIFfRsrZNapvyoGSzygcuaFYe?=
+ =?us-ascii?Q?IONN8ld/DZWXpb4/Jtf1QJFyyJ389BXECfwZ5cuGalf6uCVTy0tMl2Kv8beA?=
+ =?us-ascii?Q?s+Kh2wEVRUjsZDHoW/KB+cMEsg2QRSMZQWieC7HIQp8uyszOQpcQfx0xt1pL?=
+ =?us-ascii?Q?gf54RUy/wEdbmEIoUBiIksZthok4RYw2stUROaQKXhaZExbps60P5mdZ67ly?=
+ =?us-ascii?Q?2Fc5beWTFgyL6mAseYLwEvYW4f5EvarpgjMW4VjBK5Yoj4UN7veJ33P217CK?=
+ =?us-ascii?Q?NAMlxZtdO6Ll+x79rDTwYHW8/FQedQ6YWEMdLES1X1b7OtWTCFGw29lbf7ZG?=
+ =?us-ascii?Q?bm3FxhcGvoA3vrGctUSiw0ztVcboyV8ogtNbUpxoZQSR6oAVAMz9YgRxxrkQ?=
+ =?us-ascii?Q?MjmqKc4Ul8Nxj5B7ZU7MWLPdaXWslnzKTK5y+kM1vwa1TV1fCUHa+sVLQL2n?=
+ =?us-ascii?Q?+B3BYXwT8cxSQWTO3m7aEw/BsBqW0eS9CqfsMw9Z5dlYDGggZmgITtQUqZMp?=
+ =?us-ascii?Q?2/pi9y5UVVNrl4YLiR6b7qFF2hgNNML+VTyEvUbFt51atH9d4MLgydIeD/Ei?=
+ =?us-ascii?Q?Jq4Cg8Kj1k/WSPF8sM17V/c98vUpdpWnUScxyB2iNAFNiq59BOEKQ+TKNsES?=
+ =?us-ascii?Q?XEKjCoR4nCfMYTHGk+rQ6atIftIhCNkfSunGKIEAVEfrCBOV/W8hF6oLlqAh?=
+ =?us-ascii?Q?j1in0V+pmsvCPvwAFqiwPkMjJeiD91z0QnXjvs/n70jk0PfD8ZVZuZ2poFRC?=
+ =?us-ascii?Q?GbQ+N9O0kC1lfE43+TI/so5cMJeIIOQDtxSR5EVMdTw3JWNR35z8U5bA81sU?=
+ =?us-ascii?Q?M6FbWTDUbcQdOOPNiuCa87atLlKr8iDY6xTQbMDJ8Nss9rYtkK2yb6lAGCE+?=
+ =?us-ascii?Q?Z/7sUwfMF8b74d+/IGgd717soFj1DEQqC/VXrIcjKSKj9mbXDi2HWrixGouk?=
+ =?us-ascii?Q?rk8jfA4SyXrxfHR7SdwHKHtSH1Wg3qVqHgMj+wucEOTyH4Dkcd1Nyo5DOzJx?=
+ =?us-ascii?Q?zZZieuOWjw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: kSsf7qT7AwaKB/JZbNmMgXaVzrp8AgxgeHECxM4WPHDO9F65XMO+3ijE6u/xPfABs7fMQhsOqv0ro9uLc55XoZ9ka3CaytVkNFoF2ewuKSYOHTXfChhlf5tgvyYHgBewr/83pNGxnIYT6b2JUwjYZuJ7n07JEXfRFbGoAbBuGKaWA8HrVfIPFqCAI66/cl7x27pAUXAIhQKD6idvnv+wq58YZzqR/48GyXGrk4rluFIuT3fHazk8y/vbIU31nlqy1U5fgsK8fJNHLVOd4eFau92h2p+MzE1Tj5k+/47tRmt1G0N/513Gbg9B/nrXE0L96upehaVePW9hYCAYQwALhg==
+X-MS-Exchange-CrossTenant-Network-Message-Id: b6eecd19-9fbc-4816-f34d-08df4971ab64
 X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5990.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 14:54:32.0095 (UTC)
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 14:54:26.7159 (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3jZWW8r9C7ETewWjve+fkrSBXaI9fUJgAAq0sqxs8Q4b06EpzfIIQgihFzflXxB3Saxr5sasE2b5SwESMu0yrw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: zy/TF/g+YSNREgS5mZ+bCToSAHi1695TeUpRw/4CVbR7BcTyn52y+NQH8jHtSH1mi632by1FTe0Hmz86gIKznQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB4578
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -174,259 +165,151 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Check the retired-pages node of the device:
- - retired-pages-info: the node reports a page limit.
- - retired-pages-inject: pages injected through the VRAM page fault
-   debugfs interface are listed over netlink, in address order, exactly
-   as in vram_bad_pages.
- - retired-pages-invalid-node: requests on an unknown node or on a node
-   of another type fail with -ENOENT.
-
-Tested on BMG with simulated retired pages.
+Add igt_drm_ras_nl_get_retired_pages_info() and
+igt_drm_ras_nl_list_retired_pages() for retired-pages nodes. The uint
+attributes are read as u32 or u64 depending on their length, so libnl
+older than 3.9 works too.
 
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 ---
- tests/intel/xe_drm_ras.c | 218 +++++++++++++++++++++++++++++++++++++++
- tests/meson.build        |   1 +
- 2 files changed, 219 insertions(+)
- create mode 100644 tests/intel/xe_drm_ras.c
+ lib/igt_drm_ras_nl.c | 81 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/igt_drm_ras_nl.h | 18 ++++++++++
+ 2 files changed, 99 insertions(+)
 
-diff --git a/tests/intel/xe_drm_ras.c b/tests/intel/xe_drm_ras.c
-new file mode 100644
-index 000000000..4803623c1
---- /dev/null
-+++ b/tests/intel/xe_drm_ras.c
-@@ -0,0 +1,218 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright © 2026 Intel Corporation
-+ */
+diff --git a/lib/igt_drm_ras_nl.c b/lib/igt_drm_ras_nl.c
+index 282648f55..62336aadb 100644
+--- a/lib/igt_drm_ras_nl.c
++++ b/lib/igt_drm_ras_nl.c
+@@ -661,6 +661,11 @@ int igt_drm_ras_nl_wait_for_error_report_event(struct igt_drm_ras_nl_context *ct
+ 	return 0;
+ }
+ 
++static uint64_t nla_get_uint_any(const struct nlattr *attr)
++{
++	return nla_len(attr) == sizeof(uint32_t) ? nla_get_u32(attr) : nla_get_u64(attr);
++}
++
+ struct request_state {
+ 	struct igt_drm_ras_nl_context *ctx;
+ 	bool done;
+@@ -829,3 +834,79 @@ int igt_drm_ras_nl_list_error_counters(struct igt_drm_ras_nl_context *ctx, uint3
+ 	return request(ctx, DRM_RAS_CMD_GET_ERROR_COUNTER, NLM_F_DUMP,
+ 		       DRM_RAS_A_ERROR_COUNTER_ATTRS_NODE_ID, node_id, error_counter_cb, &list);
+ }
++
++static int retired_pages_info_cb(struct nl_msg *msg, void *arg)
++{
++	struct nlattr *tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_MAX + 1];
++	uint64_t *max_pages = arg;
++
++	if (genlmsg_parse(nlmsg_hdr(msg), 0, tb, DRM_RAS_A_RETIRED_PAGE_ATTRS_MAX, NULL) ||
++	    !tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_MAX_PAGES])
++		return NL_SKIP;
++
++	*max_pages = nla_get_uint_any(tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_MAX_PAGES]);
++
++	return NL_OK;
++}
 +
 +/**
-+ * TEST: DRM RAS netlink interface
-+ * Category: Core
-+ * Mega feature: RAS
-+ * Sub-category: RAS tests
-+ * Functionality: drm-ras
-+ * Test category: functionality test
++ * igt_drm_ras_nl_get_retired_pages_info - Get the retired page limits of a node
++ * @ctx: initialized DRM RAS netlink context
++ * @node_id: retired-pages node ID
++ * @max_pages: set to the maximum number of pages that can be retired
 + *
-+ * SUBTEST: retired-pages-info
-+ * Description: Check that the retired-pages node reports its page limit
-+ *
-+ * SUBTEST: retired-pages-inject
-+ * Description: Inject VRAM page faults and check that the retired pages
-+ *	reported over netlink match vram_bad_pages in debugfs
-+ *
-+ * SUBTEST: retired-pages-invalid-node
-+ * Description: Check that retired pages requests fail on other nodes
++ * Returns: 0 on success, negative errno otherwise.
 + */
++int igt_drm_ras_nl_get_retired_pages_info(struct igt_drm_ras_nl_context *ctx, uint32_t node_id,
++					  uint64_t *max_pages)
++{
++	return request(ctx, DRM_RAS_CMD_GET_RETIRED_PAGES_INFO, 0,
++		       DRM_RAS_A_RETIRED_PAGE_ATTRS_NODE_ID, node_id,
++		       retired_pages_info_cb, max_pages);
++}
 +
-+#include <fcntl.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <unistd.h>
-+
-+#include "igt.h"
-+#include "igt_debugfs.h"
-+#include "igt_device.h"
-+#include "igt_drm_ras_nl.h"
-+#include "igt_sysfs.h"
-+
-+#define FAULT_INJECT_DIR	"inject_mempage_offline"
-+#define TRIGGER_FILE		"inject_mempage_offline_trigger"
-+#define VRAM_BAD_PAGES		"vram_bad_pages"
-+#define INJECT_PAGES		5
-+
-+struct nodes {
-+	const char *device;
-+	int64_t retired_pages;
-+	int64_t other;
-+	uint32_t max_id;
++struct retired_page_list {
++	igt_drm_ras_retired_page_fn fn;
++	void *data;
 +};
 +
-+struct pages {
-+	struct igt_drm_ras_retired_page *page;
-+	int count;
-+};
-+
-+static void find_nodes(const struct igt_drm_ras_node *node, void *data)
++static int retired_page_cb(struct nl_msg *msg, void *arg)
 +{
-+	struct nodes *nodes = data;
-+
-+	nodes->max_id = max(nodes->max_id, node->id);
-+
-+	if (strcmp(node->device_name, nodes->device))
-+		return;
-+
-+	if (node->type == DRM_RAS_NODE_TYPE_RETIRED_PAGES)
-+		nodes->retired_pages = node->id;
-+	else
-+		nodes->other = node->id;
-+}
-+
-+static void add_page(const struct igt_drm_ras_retired_page *page, void *data)
-+{
-+	struct pages *pages = data;
-+
-+	pages->page = realloc(pages->page, (pages->count + 1) * sizeof(*page));
-+	igt_assert(pages->page);
-+	pages->page[pages->count++] = *page;
-+}
-+
-+static void netlink_pages(struct igt_drm_ras_nl_context *ctx, uint32_t node,
-+			  struct pages *pages)
-+{
-+	*pages = (struct pages) {};
-+	igt_assert_eq(igt_drm_ras_nl_list_retired_pages(ctx, node, add_page, pages), 0);
-+	igt_assert(!ctx->dump_interrupted);
-+}
-+
-+static int cmp_address(const void *a, const void *b)
-+{
-+	const struct igt_drm_ras_retired_page *pa = a, *pb = b;
-+
-+	return pa->address < pb->address ? -1 : pa->address > pb->address;
-+}
-+
-+static void debugfs_pages(int fd, struct pages *pages)
-+{
++	struct nlattr *tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_MAX + 1];
++	struct retired_page_list *list = arg;
 +	struct igt_drm_ras_retired_page page;
-+	char *buf, *line, *save;
-+	uint64_t pfn, size;
-+	char flag;
-+	int dir;
 +
-+	dir = igt_debugfs_dir(fd);
-+	buf = igt_sysfs_get(dir, VRAM_BAD_PAGES);
-+	close(dir);
-+	igt_assert(buf);
++	if (genlmsg_parse(nlmsg_hdr(msg), 0, tb, DRM_RAS_A_RETIRED_PAGE_ATTRS_MAX, NULL) ||
++	    !tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_ADDRESS] ||
++	    !tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_SIZE] ||
++	    !tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_STATUS])
++		return NL_SKIP;
 +
-+	*pages = (struct pages) {};
-+	for (line = strtok_r(buf, "\n", &save); line; line = strtok_r(NULL, "\n", &save)) {
-+		if (sscanf(line, "0x%" SCNx64 " : 0x%" SCNx64 " : %c", &pfn, &size, &flag) != 3)
-+			continue;
++	page.address = nla_get_uint_any(tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_ADDRESS]);
++	page.size = nla_get_uint_any(tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_SIZE]);
++	page.status = nla_get_u32(tb[DRM_RAS_A_RETIRED_PAGE_ATTRS_STATUS]);
 +
-+		page.address = pfn * getpagesize();
-+		page.size = size;
-+		page.status = flag == 'R' ? DRM_RAS_RETIRED_PAGE_STATUS_RETIRED :
-+			      flag == 'P' ? DRM_RAS_RETIRED_PAGE_STATUS_PENDING :
-+					    DRM_RAS_RETIRED_PAGE_STATUS_FAILED;
-+		add_page(&page, pages);
-+	}
-+	free(buf);
++	list->fn(&page, list->data);
 +
-+	qsort(pages->page, pages->count, sizeof(*pages->page), cmp_address);
++	return NL_OK;
 +}
 +
-+static void inject_page(int fd)
++/**
++ * igt_drm_ras_nl_list_retired_pages - Call @fn for each retired page of a node
++ * @ctx: initialized DRM RAS netlink context
++ * @node_id: retired-pages node ID
++ * @fn: called once per page, in increasing address order
++ * @data: passed to @fn
++ *
++ * @ctx->dump_interrupted tells whether the list changed while it was read.
++ *
++ * Returns: 0 on success, negative errno otherwise.
++ */
++int igt_drm_ras_nl_list_retired_pages(struct igt_drm_ras_nl_context *ctx, uint32_t node_id,
++				      igt_drm_ras_retired_page_fn fn, void *data)
 +{
-+	if (igt_debugfs_exists(fd, FAULT_INJECT_DIR "/probability", O_WRONLY)) {
-+		igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "100");
-+		igt_debugfs_write(fd, FAULT_INJECT_DIR "/times", "1");
-+	}
++	struct retired_page_list list = { fn, data };
 +
-+	igt_debugfs_write(fd, TRIGGER_FILE, "0");
++	return request(ctx, DRM_RAS_CMD_GET_RETIRED_PAGES, NLM_F_DUMP,
++		       DRM_RAS_A_RETIRED_PAGE_ATTRS_NODE_ID, node_id, retired_page_cb, &list);
 +}
-+
-+static void test_info(struct igt_drm_ras_nl_context *ctx, uint32_t node)
-+{
-+	uint64_t max_pages = 0;
-+
-+	igt_assert_eq(igt_drm_ras_nl_get_retired_pages_info(ctx, node, &max_pages), 0);
-+	igt_assert_lt_u64(0, max_pages);
-+}
-+
-+static void test_inject(int fd, struct igt_drm_ras_nl_context *ctx, uint32_t node)
-+{
-+	struct pages before, after, debugfs;
-+	int i;
-+
-+	igt_require(igt_debugfs_exists(fd, TRIGGER_FILE, O_WRONLY));
-+	igt_require(igt_debugfs_exists(fd, VRAM_BAD_PAGES, O_RDONLY));
-+
-+	netlink_pages(ctx, node, &before);
-+
-+	for (i = 0; i < INJECT_PAGES; i++)
-+		inject_page(fd);
-+
-+	netlink_pages(ctx, node, &after);
-+	igt_require_f(after.count != before.count, "VRAM page fault injection not active\n");
-+	igt_assert_eq(after.count, before.count + INJECT_PAGES);
-+
-+	for (i = 1; i < after.count; i++)
-+		igt_assert_lt_u64(after.page[i - 1].address, after.page[i].address);
-+
-+	debugfs_pages(fd, &debugfs);
-+	igt_assert_eq(debugfs.count, after.count);
-+	for (i = 0; i < after.count; i++) {
-+		igt_assert_eq_u64(after.page[i].address, debugfs.page[i].address);
-+		igt_assert_eq_u64(after.page[i].size, debugfs.page[i].size);
-+		igt_assert_eq_u32(after.page[i].status, debugfs.page[i].status);
-+	}
-+
-+	free(before.page);
-+	free(after.page);
-+	free(debugfs.page);
-+}
-+
-+static void test_invalid_node(struct igt_drm_ras_nl_context *ctx, struct nodes *nodes)
-+{
-+	struct pages pages = {};
-+	uint64_t max_pages;
-+
-+	igt_assert_eq(igt_drm_ras_nl_get_retired_pages_info(ctx, nodes->max_id + 1, &max_pages),
-+		      -ENOENT);
-+	igt_assert_eq(igt_drm_ras_nl_list_retired_pages(ctx, nodes->max_id + 1, add_page, &pages),
-+		      -ENOENT);
-+
-+	if (nodes->other >= 0)
-+		igt_assert_eq(igt_drm_ras_nl_list_retired_pages(ctx, nodes->other, add_page,
-+								&pages), -ENOENT);
-+
-+	igt_assert_eq(pages.count, 0);
-+}
-+
-+int igt_main()
-+{
-+	struct igt_drm_ras_nl_context ctx;
-+	char slot[NAME_MAX];
-+	struct nodes nodes = { .device = slot, .retired_pages = -1, .other = -1 };
-+	int fd;
-+
-+	igt_fixture() {
-+		fd = drm_open_driver(DRIVER_XE);
-+		igt_device_get_pci_slot_name(fd, slot);
-+		igt_require_f(!igt_drm_ras_nl_init(&ctx), "drm-ras netlink not available\n");
-+		igt_assert_eq(igt_drm_ras_nl_list_nodes(&ctx, find_nodes, &nodes), 0);
-+		igt_require_f(nodes.retired_pages >= 0, "No retired-pages node on %s\n", slot);
-+	}
-+
-+	igt_subtest("retired-pages-info")
-+		test_info(&ctx, nodes.retired_pages);
-+
-+	igt_subtest("retired-pages-inject")
-+		test_inject(fd, &ctx, nodes.retired_pages);
-+
-+	igt_subtest("retired-pages-invalid-node")
-+		test_invalid_node(&ctx, &nodes);
-+
-+	igt_fixture() {
-+		igt_drm_ras_nl_cleanup(&ctx);
-+		drm_close_driver(fd);
-+	}
-+}
-diff --git a/tests/meson.build b/tests/meson.build
-index 806320a82..14e576ea6 100644
---- a/tests/meson.build
-+++ b/tests/meson.build
-@@ -361,6 +361,7 @@ intel_xe_progs = [
- ]
+diff --git a/lib/igt_drm_ras_nl.h b/lib/igt_drm_ras_nl.h
+index 4980904f8..996defc51 100644
+--- a/lib/igt_drm_ras_nl.h
++++ b/lib/igt_drm_ras_nl.h
+@@ -95,9 +95,23 @@ struct igt_drm_ras_error_counter {
+ 	uint32_t value;
+ };
  
- if have_libnl
-+        intel_xe_progs += 'xe_drm_ras'
-         intel_xe_progs += 'xe_err_injection'
- endif
++/**
++ * struct igt_drm_ras_retired_page - DRM RAS retired page
++ */
++struct igt_drm_ras_retired_page {
++	/** @address: Device address of the page */
++	uint64_t address;
++	/** @size: Size of the page in bytes */
++	uint64_t size;
++	/** @status: Retirement status (enum drm_ras_retired_page_status) */
++	uint32_t status;
++};
++
+ typedef void (*igt_drm_ras_node_fn)(const struct igt_drm_ras_node *node, void *data);
+ typedef void (*igt_drm_ras_error_counter_fn)(const struct igt_drm_ras_error_counter *counter,
+ 					     void *data);
++typedef void (*igt_drm_ras_retired_page_fn)(const struct igt_drm_ras_retired_page *page,
++					    void *data);
  
+ void igt_drm_ras_nl_cleanup(struct igt_drm_ras_nl_context *ctx);
+ int igt_drm_ras_nl_init(struct igt_drm_ras_nl_context *ctx);
+@@ -111,5 +125,9 @@ int igt_drm_ras_nl_list_nodes(struct igt_drm_ras_nl_context *ctx,
+ 			      igt_drm_ras_node_fn fn, void *data);
+ int igt_drm_ras_nl_list_error_counters(struct igt_drm_ras_nl_context *ctx, uint32_t node_id,
+ 				       igt_drm_ras_error_counter_fn fn, void *data);
++int igt_drm_ras_nl_get_retired_pages_info(struct igt_drm_ras_nl_context *ctx, uint32_t node_id,
++					  uint64_t *max_pages);
++int igt_drm_ras_nl_list_retired_pages(struct igt_drm_ras_nl_context *ctx, uint32_t node_id,
++				      igt_drm_ras_retired_page_fn fn, void *data);
+ 
+ #endif /* IGT_DRM_RAS_NL_H */
 -- 
 2.56.0
 
