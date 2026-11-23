@@ -2,59 +2,63 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F2A606A31F
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 10:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC0F606A32C
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 10:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ef1cdrLz
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ASpZUQC7
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 5DB9E10EBB8;
-	Mon, 23 Nov 2026 10:20:43 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 10D0E10EBB8;
- Mon, 23 Nov 2026 10:19:38 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id ECD6310E13A;
+	Mon, 23 Nov 2026 10:33:13 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 427AF10E6EE
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 10:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795429178; x=1826965178;
+ t=1795429928; x=1826965928;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=22BRmkEB1u0hWkGJWCBhqyDi9C19lA7CfLKcM5I3P5o=;
- b=ef1cdrLzRd6TBz2otvjCjAe+GZ4nEW4bnn2fA/dEodjAgmD+FJlFEW/Z
- +i4SU5tWZ106U80W6MFhALlzHAy9gJXQOuxB87Ld5cLo+gPZUjKlDusNM
- 5lDHWQN26L4Qux15isoGlH34Ai3bzL8tnB5MtbL8xUhq2IVR7Rz+nPCOP
- jQTzsI+zLDiszhK3IPjFmitVRpxtVSzlb0jsbFF1fhDrzD1IkEw9e9whL
- 1XoFttWk9WnYadTV7BULCTFFzYJvyuA00v/8KxgAnx94h8Ldszq9W7uOQ
- kBkUM2uQELFq/OKB+k6n4bym05nvctjkultRouUGeidGKQrf3dsqW+6O1 Q==;
-X-CSE-ConnectionGUID: VsKYgiXlQem2gyakr0En4g==
-X-CSE-MsgGUID: Jkw2OJJXSl2rjFqF14XdUA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4068471"
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=ANg+/G/fchUVl7U6XByXeHyGYq+229/29BfHRmsIk80=;
+ b=ASpZUQC7ktM0OymLd8a/SUM/Y1GJ59teSsMKhW3LT9FaRLSvSXo5VCn6
+ SpKzgwZROrK21MXgPrDPtyOr51+v48sA1/1WA7qR3EeYXebvPS0gF1CmE
+ fz6lq+uu4SI4e9/XeFAWq5o9F4eCT4U8p4ZhaUYGmzDyXrtJTkIyxJbXM
+ FpXBH+Wb0GYL0Cnar5JJFmdaKmByUAaeB3kcFAy8MO4HTAMcnhr7HWUAO
+ HciQCdCO1mleq7A+YGPvqQW/Zr9mIi7R/t9jp9ujceFJBsPBsY5GUDQfO
+ muRus6SyMrj4spg9RQSvMMC51sicxr63QK78wmAIiicKAwIkXoQfI8/IN Q==;
+X-CSE-ConnectionGUID: x1iGsxHhTvaX5HdnFtj6kw==
+X-CSE-MsgGUID: MI+CqHsNQJemEfEgY8G4ag==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4267227"
 X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4068471"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 02:19:38 -0800
-X-CSE-ConnectionGUID: zou6qHyeSGWvLTlh4/c53Q==
-X-CSE-MsgGUID: Q6iGl93WQoajgUDFPdIGYg==
+   d="scan'208";a="4267227"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Nov 2026 02:32:08 -0800
+X-CSE-ConnectionGUID: Xh1YgEJCStW0L1oMHikDYA==
+X-CSE-MsgGUID: 74YyTybiRG+loriQY7ZUjg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11818090"
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11626268"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 02:19:37 -0800
-Date: Mon, 23 Nov 2026 11:19:16 +0100
+ 23 Nov 2026 02:32:07 -0800
+Date: Mon, 23 Nov 2026 11:32:03 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: I915-ci-infra@lists.freedesktop.org
-Subject: Re: =?utf-8?B?4pyXIGk5MTUuQ0kuQkFUOiBmYWlsdXJlIGZv?= =?utf-8?Q?r?=
- tests/core_sysfs: Fix logic for EIO and other fixes (rev2)
-Message-ID: <kcfpc5mvavzztn33cfsnkorbx2d47fygpecnbqbezykbrar23d@xo33rkyxezix>
+To: "Li, Yuling" <Yuling.Li@amd.com>
+Cc: igt-dev@lists.freedesktop.org, vitaly.prosyak@amd.com
+Subject: Re: =?utf-8?Q?=E2=9C=97_Xe=2ECI=2EFULL=3A_failure_for_tests=2Fkms?=
+ =?utf-8?Q?=5Fplane=5Fcursor?= =?utf-8?Q?=3A?= add native cursor test with
+ multiple overlays
+Message-ID: <bnvcygbxlmj7sla6rpqm6g56iinzbmvpd6o43bhsgat5bstj3a@62qj6lwq7nb3>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- igt-dev@lists.freedesktop.org, I915-ci-infra@lists.freedesktop.org
-References: <20261120182614.34410-1-kamil.konieczny@linux.intel.com>
- <179521369144.62454.11808615798138294727@9ac1b63fe3ea>
+ "Li, Yuling" <Yuling.Li@amd.com>, igt-dev@lists.freedesktop.org,
+ vitaly.prosyak@amd.com
+References: <20261120073049.91138-1-Yuling.Li@amd.com>
+ <179532717060.65319.2573542902043083133@9ac1b63fe3ea>
+ <BY5PR12MB422875725C2B45D58B6619CFF6452@BY5PR12MB4228.namprd12.prod.outlook.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <179521369144.62454.11808615798138294727@9ac1b63fe3ea>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <BY5PR12MB422875725C2B45D58B6619CFF6452@BY5PR12MB4228.namprd12.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -66,116 +70,201 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi igt-dev,
-On 2026-11-20 at 22:28:11 -0000, Patchwork wrote:
-> == Series Details ==
+Hi Yuling,
+On 2026-11-23 at 03:38:01 +0000, Li, Yuling wrote:
+> AMD General
 > 
-> Series: tests/core_sysfs: Fix logic for EIO and other fixes (rev2)
-> URL   : https://patchwork.freedesktop.org/series/179132/
-> State : failure
+> Hi CI team,
 > 
-> == Summary ==
-> 
-> CI Bug Log - changes from IGT_9201 -> IGTPW_16193
-> ====================================================
-> 
-> Summary
-> -------
-> 
->   **FAILURE**
-> 
->   Serious unknown changes coming with IGTPW_16193 absolutely need to be
->   verified manually.
->   
->   If you think the reported changes have nothing to do with the changes
->   introduced in IGTPW_16193, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
->   to document this new failure mode, which will reduce false positives in CI.
-> 
->   External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16193/index.html
-> 
-> Participating hosts (40 -> 39)
-> ------------------------------
-> 
->   Missing    (1): bat-dg2-13 
-> 
-> Possible new issues
-> -------------------
-> 
->   Here are the unknown changes that may have been introduced in IGTPW_16193:
-> 
-> ### IGT changes ###
-> 
-> #### Possible regressions ####
-> 
->   * igt@kms_pm_rpm@basic-pci-d3-state:
->     - fi-cfl-guc:         [PASS][1] -> [SKIP][2] +1 other test skip
->    [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9201/fi-cfl-guc/igt@kms_pm_rpm@basic-pci-d3-state.html
->    [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16193/fi-cfl-guc/igt@kms_pm_rpm@basic-pci-d3-state.html
-> 
->   * igt@kms_pm_rpm@basic-rte:
->     - fi-cfl-guc:         [PASS][3] -> [FAIL][4]
->    [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9201/fi-cfl-guc/igt@kms_pm_rpm@basic-rte.html
->    [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16193/fi-cfl-guc/igt@kms_pm_rpm@basic-rte.html
-> 
+> The new introduced kms_plane_cursor@multi-overlay test passed all reported configurations. The CI status change comes from unrelated tests.
+> Can you help check if they are existing/unrelated failures? Thank you.
 
-Unrelated, no need to run full as this change was tested in BAT.
+These are non-related changes, you can tell it yourself as they
+are different from a test you changed. Apart from that, please
+cut you reply after 'Known issues' unless you want to comment
+on them. For example, look at end fo this message where I cut
+it.
+
+Btw please subscribe to igt-dev mailing list or expect a delay
+in reaching to ML.
+
++cc Vitaly
 
 Regards,
 Kamil
 
->   
+> 
+> Sincerely
+> Yuling
+> 
+> 
+> ________________________________
+> From: Patchwork <patchwork@emeril.freedesktop.org>
+> Sent: Sunday, November 22, 2026 1:59 PM
+> To: Li, Yuling <Yuling.Li@amd.com>
+> Cc: igt-dev@lists.freedesktop.org <igt-dev@lists.freedesktop.org>
+> Subject: ✗ Xe.CI.FULL: failure for tests/kms_plane_cursor: add native cursor test with multiple overlays
+> 
+> You don't often get email from patchwork@emeril.freedesktop.org. Learn why this is important<https://aka.ms/LearnAboutSenderIdentification>
+> Patch Details
+> Series:
+> tests/kms_plane_cursor: add native cursor test with multiple overlays
+> URL:
+> https://patchwork.freedesktop.org/series/179205/
+> State:
+> failure
+> Details:
+> https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16190/index.html
+> CI Bug Log - changes from XEIGT_9200_FULL -> XEIGTPW_16190_FULL
+> Summary
+> 
+> WARNING
+> 
+> Minor unknown changes coming with XEIGTPW_16190_FULL need to be verified
+> manually.
+> 
+> If you think the reported changes have nothing to do with the changes
+> introduced in XEIGTPW_16190_FULL, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
+> to document this new failure mode, which will reduce false positives in CI.
+> 
+> Participating hosts (3 -> 3)
+> 
+> No changes in participating hosts
+> 
+> Possible new issues
+> 
+> Here are the unknown changes that may have been introduced in XEIGTPW_16190_FULL:
+> 
+> IGT changes
+> Warnings
+> 
+>   *   igt@xe_evict@evict-beng-small-multi-vm-cm:
+>      *   shard-ptl: SKIP<https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/shard-ptl-2/igt@xe_evict@evict-beng-small-multi-vm-cm.html> (Intel XE#5764<https://gitlab.freedesktop.org/drm/xe/kernel/issues/5764>) -> INCOMPLETE<https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16190/shard-ptl-4/igt@xe_evict@evict-beng-small-multi-vm-cm.html>
+> 
+> New tests
+> 
+> New tests have been introduced between XEIGT_9200_FULL and XEIGTPW_16190_FULL:
+> 
+> New IGT tests (25)
+> 
+>   *   igt@kms_plane_cursor@multi-overlay:
+> 
+>      *   Statuses : 3 pass(s)
+>      *   Exec time: [15.97, 22.67] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-a-dp-2-size-128:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.20] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-a-dp-2-size-256:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.17] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-a-dp-2-size-64:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.36] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-a-edp-1-size-128:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [1.50, 1.52] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-a-edp-1-size-256:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [1.54, 1.57] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-a-edp-1-size-64:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [1.47, 1.51] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-b-edp-1-size-128:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [1.45, 1.59] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-b-edp-1-size-256:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [1.52, 1.54] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-b-edp-1-size-64:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [2.24, 2.26] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-b-hdmi-a-3-size-128:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.20] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-b-hdmi-a-3-size-256:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.20] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-b-hdmi-a-3-size-64:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.24] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-c-dp-2-size-128:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.20] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-c-dp-2-size-256:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.20] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-c-dp-2-size-64:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.27] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-c-edp-1-size-128:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [1.46, 1.52] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-c-edp-1-size-256:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [1.48, 1.50] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-c-edp-1-size-64:
+> 
+>      *   Statuses : 2 pass(s)
+>      *   Exec time: [2.21, 2.22] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-d-dp-2-size-128:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.20] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-d-dp-2-size-256:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.20] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-d-dp-2-size-64:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.26] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-d-edp-1-size-128:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.52] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-d-edp-1-size-256:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [1.50] s
+>   *   igt@kms_plane_cursor@multi-overlay@pipe-d-edp-1-size-64:
+> 
+>      *   Statuses : 1 pass(s)
+>      *   Exec time: [2.16] s
+> 
 > Known issues
-> ------------
 > 
->   Here are the changes found in IGTPW_16193 that come from known issues:
+> Here are the changes found in XEIGTPW_16190_FULL that come from known issues:
 > 
-> ### IGT changes ###
+> IGT changes
+> Issues hit
 > 
-> #### Issues hit ####
+>   *   igt@intel_hwmon@hwmon-write:
 > 
->   * igt@vgem_basic@unload:
->     - bat-rpls-4:         [PASS][5] -> [DMESG-WARN][6] ([i915#13400])
->    [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9201/bat-rpls-4/igt@vgem_basic@unload.html
->    [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16193/bat-rpls-4/igt@vgem_basic@unload.html
+>      *   shard-bmg: PASS<https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9200/shard-bmg-4/igt@intel_hwmon@hwmon-write.html> -> FAIL<https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16190/shard-bmg-5/igt@intel_hwmon@hwmon-write.html> (Intel XE#8583<https://gitlab.freedesktop.org/drm/xe/kernel/issues/8583>)
+>   *   igt@kms_addfb_basic@addfb25-y-tiled-small-legacy:
 > 
->   
-> #### possible fixes ####
-> 
->   * igt@i915_selftest@live:
->     - bat-arlh-3:         [incomplete][7] ([i915#16547]) -> [pass][8]
->    [7]: https://intel-gfx-ci.01.org/tree/drm-tip/igt_9201/bat-arlh-3/igt@i915_selftest@live.html
->    [8]: https://intel-gfx-ci.01.org/tree/drm-tip/igtpw_16193/bat-arlh-3/igt@i915_selftest@live.html
-> 
->   * igt@i915_selftest@live@active:
->     - bat-arlh-3:         [incomplete][9] -> [pass][10]
->    [9]: https://intel-gfx-ci.01.org/tree/drm-tip/igt_9201/bat-arlh-3/igt@i915_selftest@live@active.html
->    [10]: https://intel-gfx-ci.01.org/tree/drm-tip/igtpw_16193/bat-arlh-3/igt@i915_selftest@live@active.html
-> 
->   
->   [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
->   [i915#16547]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16547
-> 
-> 
-> build changes
-> -------------
-> 
->   * ci: ci-20190529 -> none
->   * igt: igt_9201 -> igtpw_16193
->   * linux: ci_drm_19574 -> ci_drm_19575
-> 
->   ci-20190529: 20190529
->   ci_drm_19574: 90b50d97b3af2f55a75116f1ec76e0cf62914418 @ git://anongit.freedesktop.org/gfx-ci/linux
->   ci_drm_19575: d706b8b5a4276d637251224ed2d5ff30a982fa0a @ git://anongit.freedesktop.org/gfx-ci/linux
->   igtpw_16193: 16193
->   igt_9201: 9201
-> 
-> == logs ==
-> 
-> for more details see: https://intel-gfx-ci.01.org/tree/drm-tip/igtpw_16193/index.html
+...cut...
