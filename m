@@ -2,58 +2,61 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F45606A31F
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 09:33:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F604606A31F
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 09:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CqeL17eG
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OdSxW84U
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2B65210E402;
-	Mon, 23 Nov 2026 09:33:19 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 5E04310E402
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 09:32:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D38A810E402;
+	Mon, 23 Nov 2026 09:34:18 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9940B10E402
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 09:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795426338; x=1826962338;
- h=from:to:cc:subject:in-reply-to:references:date:
- message-id:mime-version;
- bh=Y+XPidYHoHRNYDfl0ok0fT92rai5RCAYlYQQFC9wqhM=;
- b=CqeL17eGlQpyhd8iHAlSA8ogZrsLGIwtXEuVz4FQTALpLdiBqyF+EuhO
- XxYaVZNYR01R06Mx8q5LJ3aKV+0uYld6e7gb61PoARcDJaZ9y/rCbLCrV
- V7RfsezNuGXOZgRpEMDnuL9SbpbB39KZ1IRNsCQH5XxvJzVDS7juuEAvM
- FtrkLSbgHdlB0CDra87sFgfRJXatI2ykFeXc0Mj5IfOx7ctn4LodDCXDS
- SL5x7F9fSD6s4liiFV38QbfbZrez2PBjNqhyHdVg1Fp8gGZTb4v7SmBwW
- zAigIK/S17cIG4JLQlwmEovh8UJLDQ9SvtZKtp098gLoUxuduvDVWWPkX Q==;
-X-CSE-ConnectionGUID: ABmmuthfQhCE9xkkAyX/Tw==
-X-CSE-MsgGUID: qoKc2Ly2QvKLfODEz7/AkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4112836"
+ t=1795426393; x=1826962393;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=xjXcgR848OHMYIly1uFQj27TFd/Q6U2KQnoK7BEg19k=;
+ b=OdSxW84UzGLLFJdfYguak1Tzsfemr6/vjVYiLsZg9vUpJpL5SE10HX7Y
+ Jq9e7FmeI5thrBa7Il9LZ54IgsyoQ1hAz2B+TYWAfLfiUEJa7L4yNoESM
+ grByuny++FhaXUWO2pHov+g/XeMJYlnY5KBYwySNfKfpGUY8XRZPeRpo0
+ zN0EQxRuweGE7LFS+ZdysUprwXykgtRf4x/Vl1XJUwMxz+LQUe1RTG4XN
+ lsOTysg72eFnxKLy86DQCKm9y64Fer7dOtf+tTtOOAhs06exTpWq/+1AT
+ rWCX9lVkwW+WteswrKWYbYcfjotQxgIiW91eBilJKaxvIvTdnw70056bC g==;
+X-CSE-ConnectionGUID: XqqDYmMJTMWJKGTAo8UitQ==
+X-CSE-MsgGUID: aBea9HZpQqKdMVE4Iubchg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4215174"
 X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4112836"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
- by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 01:32:18 -0800
-X-CSE-ConnectionGUID: ouds1GN8RbO7wFQRL4A6+Q==
-X-CSE-MsgGUID: YLbLddhqRb68CEB1gcbMWQ==
+   d="scan'208";a="4215174"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Nov 2026 01:33:12 -0800
+X-CSE-ConnectionGUID: mzxpis8nSsuPIABzsH3VPw==
+X-CSE-MsgGUID: R2ylTC6gTO68A5c7je8a5g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11237251"
-Received: from mkosciow-mobl1.ger.corp.intel.com (HELO localhost)
- ([10.245.244.220])
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11614867"
+Received: from smoticic-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.244.198])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 01:32:17 -0800
-From: Jani Nikula <jani.nikula@intel.com>
-To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
-Cc: karthik.b.s@intel.com, Jeevan B <jeevan.b@intel.com>
-Subject: Re: [PATCH i-g-t] tests/kms_plane_cursor: limit simulation to first
- and last CRTC
-In-Reply-To: <20261123055604.724128-1-jeevan.b@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20261123055604.724128-1-jeevan.b@intel.com>
-Date: Mon, 23 Nov 2026 11:32:14 +0200
-Message-ID: <621c782368a8d45b97bddab30c05d49198838a2f@intel.com>
+ 23 Nov 2026 01:33:11 -0800
+Date: Mon, 23 Nov 2026 10:33:09 +0100
+From: Zbigniew =?utf-8?Q?Kempczy=C5=84ski?= <zbigniew.kempczynski@intel.com>
+To: Juha-Pekka =?utf-8?B?SGVpa2tpbMOk?= <juhapekka.heikkila@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, 
+ Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>
+Subject: Re: [PATCH i-g-t 1/2] lib/intel_bufops: Add support for Tile64 in
+ software.
+Message-ID: <cjcjjiak5zt4ju75ebs7gsqcatptfsviia7tgtho4lvnxapk35@hygai6ivnzd4>
+References: <20261118122619.206753-4-zbigniew.kempczynski@intel.com>
+ <20261118122619.206753-5-zbigniew.kempczynski@intel.com>
+ <6c8f3b7f-1885-470a-8893-0cf60148f8f8@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6c8f3b7f-1885-470a-8893-0cf60148f8f8@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -72,110 +75,224 @@ X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 23 Nov 2026, Jeevan B <jeevan.b@intel.com> wrote:
-> Running on every CRTC makes the test hit the timeout on simulation.
-> Restrict it to the first and last usable CRTC when running in
-> simulation, which keeps coverage while avoiding the timeout.
->
-> v2:
->  - Test the first and last usable CRTC instead of the first 2 pipes,
->    and drop SIM_MAX_PIPES.
-> v3:
->  - Skip non-first/non-last CRTCs inside the existing loop.
->
-> Signed-off-by: Jeevan B <jeevan.b@intel.com>
-> ---
->  tests/kms_plane_cursor.c | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
->
-> diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
-> index 4b69f1a17..dfe1f2418 100644
-> --- a/tests/kms_plane_cursor.c
-> +++ b/tests/kms_plane_cursor.c
-> @@ -288,7 +288,7 @@ int igt_main()
->  {
->  	static const int cursor_sizes[] = { 64, 128, 256 };
->  	data_t data = { .max_curw = 64, .max_curh = 64 };
-> -	igt_crtc_t *crtc;
-> +	igt_crtc_t *crtc, *last_crtc;
->  	igt_output_t *output;
->  	igt_display_t *display;
->  	int i, j;
-> @@ -315,6 +315,8 @@ int igt_main()
->  		igt_require(data.display.is_atomic);
->  		igt_display_require_output(&data.display);
->  		display = &data.display;
-> +		last_crtc = igt_crtc_for_pipe(display,
-> +					      igt_display_n_crtcs(display) - 1);
+On Fri, Nov 20, 2026 at 03:34:40PM +0200, Juha-Pekka Heikkilä wrote:
+> I did sometime ago write much of the same patch but it didn't go anywhere as
+> it got overrun by other stuff, I had planned to enable tile64 framebuffers
+> on xe. This look all good to me.
+> 
+> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-That's just plain wrong in many different ways.
+Thank you for the review, I've merged series today.
 
-Basically there's no guarantee "igt_display_n_crtcs(display) - 1" is a
-pipe that exists. Pipes aren't guaranteed to be consecutive, and they
-may not have anything to do with the number of CRTCs or CRTC indexes or
-anything.
+--
+Zbigniew
 
-Even if "igt_display_n_crtcs(display) - 1" exists, it may be any pipe,
-first, last, or something in between. You just can't make any
-assumptions about pipe numbering or how they correspond to CRTCs.
-
-And, in general, do not use igt_crtc_for_pipe() at all if it can be
-avoided. Everything should be CRTC based if possible.
-
----
-
-Now, we've seen patches here that do stuff on first/last pipe only, or
-first/last CRTC only, or whatever.
-
-I've said it a few times in various contexts, but this sprinkling of
-random checks within loops is really not the way to go.
-
-What you want is a CRTC index mask that you initialize in the beginning,
-and the test loop only uses CRTCs that are in the mask. The test loop
-shouldn't need to do any of this "igt_run_in_simulation()" or whatever.
-
-
-BR,
-Jani.
-
-
->  
->  		ret = drmGetCap(data.drm_fd, DRM_CAP_CURSOR_WIDTH, &data.max_curw);
->  		igt_assert(ret == 0 || errno == EINVAL);
-> @@ -327,6 +329,8 @@ int igt_main()
->  	for (i = 0; i < ARRAY_SIZE(tests); i++) {
->  		igt_describe_f("%s", tests[i].desc);
->  		igt_subtest_with_dynamic_f("%s", tests[i].name) {
-> +			bool tested_first = false;
-> +
->  			for_each_crtc_with_single_output(&data.display, crtc,
->  							 output) {
->  				if ((tests[i].flags & TEST_OVERLAY) &&
-> @@ -334,6 +338,15 @@ int igt_main()
->  							     DRM_PLANE_TYPE_OVERLAY))
->  					continue;
->  
-> +				/*
-> +				 * In simulation, only test the first usable
-> +				 * CRTC and the last one to avoid timeouts
-> +				 * while keeping coverage.
-> +				 */
-> +				if (igt_run_in_simulation() && tested_first &&
-> +				    crtc != last_crtc)
-> +					continue;
-> +
->  				igt_display_reset(display);
->  
->  				igt_output_set_crtc(output,
-> @@ -341,6 +354,8 @@ int igt_main()
->  				if (!intel_pipe_output_combo_valid(display))
->  					continue;
->  
-> +				tested_first = true;
-> +
->  				test_init(&data,
->  					  crtc,
->  					  output,
-
--- 
-Jani Nikula, Intel
+> 
+> Ville had somewhere branch that was enabling tile64 framebuffers on i915 as
+> well as xe if it's interesting thing to try experiment with this.
+> 
+> /Juha-Pekka
+> 
+> On 18/11/2026 14.26, Zbigniew Kempczyński wrote:
+> > Bufops missed Tile64 so extend it and add this feature in software.
+> > 
+> > Signed-off-by: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
+> > Cc: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
+> > ---
+> >   lib/intel_bufops.c | 113 ++++++++++++++++++++++++++++++++++++++++++++-
+> >   1 file changed, 111 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/lib/intel_bufops.c b/lib/intel_bufops.c
+> > index 1196069a500..2d013ca6547 100644
+> > --- a/lib/intel_bufops.c
+> > +++ b/lib/intel_bufops.c
+> > @@ -127,12 +127,14 @@ struct buf_ops {
+> >   	bo_copy linear_to_yf;
+> >   	bo_copy linear_to_ys;
+> >   	bo_copy linear_to_tile4;
+> > +	bo_copy linear_to_tile64;
+> >   	bo_copy to_linear;
+> >   	bo_copy x_to_linear;
+> >   	bo_copy y_to_linear;
+> >   	bo_copy yf_to_linear;
+> >   	bo_copy ys_to_linear;
+> >   	bo_copy tile4_to_linear;
+> > +	bo_copy tile64_to_linear;
+> >   };
+> >   static const char *tiling_str(uint32_t tiling)
+> > @@ -428,6 +430,78 @@ static void *tile4_ptr(void *ptr,
+> >   	return ptr + pos;
+> >   }
+> > +/*
+> > + * (x,y) to memory location in tile-64 surface.
+> > + */
+> > +static void *tile64_ptr(void *ptr,
+> > +			unsigned int x, unsigned int y,
+> > +			unsigned int stride, unsigned int cpp)
+> > +{
+> > +	const int tile_size = 64 * 1024;
+> > +	int tile_width, tile_height;
+> > +	int tile_x, tile_y, _x, _y;
+> > +	int base, vaddr, pos;
+> > +
+> > +	switch (cpp) {
+> > +	case 1:
+> > +		tile_width = 256;
+> > +		tile_height = 256;
+> > +		break;
+> > +	case 2:
+> > +		tile_width = 256;
+> > +		tile_height = 128;
+> > +		break;
+> > +	case 4:
+> > +		tile_width = 128;
+> > +		tile_height = 128;
+> > +		break;
+> > +	case 8:
+> > +	default:
+> > +		tile_width = 128;
+> > +		tile_height = 64;
+> > +		break;
+> > +	}
+> > +
+> > +	tile_x = x / tile_width;
+> > +	tile_y = y / tile_height;
+> > +	_x = x % tile_width;
+> > +	_y = y % tile_height;
+> > +
+> > +	switch (cpp) {
+> > +	case 1:
+> > +		vaddr = (_x & 0xf) | ((_y & 0x3) << 4) |
+> > +			((_x & 0x30) << 2) | ((_y & 0x4) << 6) |
+> > +			((_x & 0x40) << 3) | ((_y & 0x18) << 7) |
+> > +			((_x & 0x80) << 5) | ((_y & 0xe0) << 8);
+> > +		break;
+> > +	case 2:
+> > +		vaddr = ((_x & 0x7) << 1) | ((_y & 0x3) << 4) |
+> > +			((_x & 0x18) << 3) | ((_y & 0x4) << 6) |
+> > +			((_x & 0x20) << 4) | ((_y & 0x18) << 7) |
+> > +			((_x & 0xc0) << 6) | ((_y & 0x60) << 9);
+> > +		break;
+> > +	case 4:
+> > +		vaddr = ((_x & 0x3) << 2) | ((_y & 0x3) << 4) |
+> > +			((_x & 0xc) << 4) | ((_y & 0x4) << 6) |
+> > +			((_x & 0x10) << 5) | ((_y & 0x18) << 7) |
+> > +			((_x & 0x60) << 7) | ((_y & 0x60) << 9);
+> > +		break;
+> > +	case 8:
+> > +	default:
+> > +		vaddr = ((_x & 0x1) << 3) | ((_y & 0x3) << 4) |
+> > +			((_x & 0x6) << 5) | ((_y & 0x4) << 6) |
+> > +			((_x & 0x8) << 6) | ((_y & 0x18) << 7) |
+> > +			((_x & 0x70) << 8) | ((_y & 0x20) << 10);
+> > +		break;
+> > +	}
+> > +
+> > +	/* memory location */
+> > +	base = tile_y * (stride * tile_height) + tile_x * tile_size;
+> > +	pos = base + vaddr;
+> > +	igt_assert((pos & (cpp - 1)) == 0);
+> > +
+> > +	return ptr + pos;
+> > +}
+> >   static void *yf_ptr(void *ptr,
+> >   		    unsigned int x, unsigned int y,
+> > @@ -489,6 +563,10 @@ static tile_fn __get_tile_fn_ptr(int fd, int tiling)
+> >   		break;
+> >   	case I915_TILING_4:
+> >   		fn = tile4_ptr;
+> > +		break;
+> > +	case I915_TILING_64:
+> > +		fn = tile64_ptr;
+> > +		break;
+> >   	case I915_TILING_Ys:
+> >   		/* To be implemented */
+> >   		break;
+> > @@ -739,6 +817,13 @@ static void copy_linear_to_tile4(struct buf_ops *bops, struct intel_buf *buf,
+> >   	__copy_linear_to(bops->fd, buf, linear, I915_TILING_4, 0);
+> >   }
+> > +static void copy_linear_to_tile64(struct buf_ops *bops, struct intel_buf *buf,
+> > +				  uint32_t *linear)
+> > +{
+> > +	DEBUGFN();
+> > +	__copy_linear_to(bops->fd, buf, linear, I915_TILING_64, 0);
+> > +}
+> > +
+> >   static void __copy_to_linear(int fd, struct intel_buf *buf,
+> >   			     uint32_t *linear, int tiling, uint32_t swizzle)
+> >   {
+> > @@ -806,6 +891,13 @@ static void copy_tile4_to_linear(struct buf_ops *bops, struct intel_buf *buf,
+> >   	__copy_to_linear(bops->fd, buf, linear, I915_TILING_4, 0);
+> >   }
+> > +static void copy_tile64_to_linear(struct buf_ops *bops, struct intel_buf *buf,
+> > +				  uint32_t *linear)
+> > +{
+> > +	DEBUGFN();
+> > +	__copy_to_linear(bops->fd, buf, linear, I915_TILING_64, 0);
+> > +}
+> > +
+> >   static void copy_linear_to_gtt(struct buf_ops *bops, struct intel_buf *buf,
+> >   			       uint32_t *linear)
+> >   {
+> > @@ -898,6 +990,10 @@ void intel_buf_to_linear(struct buf_ops *bops, struct intel_buf *buf,
+> >   		igt_assert(bops->tile4_to_linear);
+> >   		bops->tile4_to_linear(bops, buf, linear);
+> >   		break;
+> > +	case I915_TILING_64:
+> > +		igt_assert(bops->tile64_to_linear);
+> > +		bops->tile64_to_linear(bops, buf, linear);
+> > +		break;
+> >   	}
+> >   	if (buf->compression)
+> > @@ -934,6 +1030,10 @@ void linear_to_intel_buf(struct buf_ops *bops, struct intel_buf *buf,
+> >   		igt_assert(bops->linear_to_tile4);
+> >   		bops->linear_to_tile4(bops, buf, linear);
+> >   		break;
+> > +	case I915_TILING_64:
+> > +		igt_assert(bops->linear_to_tile64);
+> > +		bops->linear_to_tile64(bops, buf, linear);
+> > +		break;
+> >   	}
+> >   	if (buf->compression)
+> > @@ -1628,12 +1728,14 @@ void intel_buf_draw_pattern(struct buf_ops *bops, struct intel_buf *buf,
+> >   	.linear_to_yf       = copy_linear_to_yf, \
+> >   	.linear_to_ys       = copy_linear_to_ys, \
+> >   	.linear_to_tile4    = copy_linear_to_tile4, \
+> > +	.linear_to_tile64   = copy_linear_to_tile64, \
+> >   	.to_linear          = copy_wc_to_linear, \
+> >   	.x_to_linear        = copy_gtt_to_linear, \
+> >   	.y_to_linear        = copy_gtt_to_linear, \
+> >   	.yf_to_linear       = copy_yf_to_linear, \
+> >   	.ys_to_linear       = copy_ys_to_linear, \
+> > -	.tile4_to_linear    = copy_tile4_to_linear
+> > +	.tile4_to_linear    = copy_tile4_to_linear, \
+> > +	.tile64_to_linear   = copy_tile64_to_linear
+> >   static const struct buf_ops buf_ops_arr[] = {
+> >   	{
+> > @@ -1648,7 +1750,7 @@ static const struct buf_ops buf_ops_arr[] = {
+> >   	{
+> >   		DEFAULT_BUFOPS(12, ~0U),
+> > -		.supported_tiles   = TILE_NONE | TILE_X | TILE_Y | TILE_Yf | TILE_Ys | TILE_4,
+> > +		.supported_tiles   = TILE_NONE | TILE_X | TILE_Y | TILE_Yf | TILE_Ys | TILE_4 | TILE_64,
+> >   	},
+> >   };
+> > @@ -1837,6 +1939,9 @@ static struct buf_ops *__buf_ops_create(int fd, bool check_idempotency)
+> >   	if (!is_tiling_supported(bops, I915_TILING_4))
+> >   		igt_debug("Tile4 format not supported\n");
+> > +	if (!is_tiling_supported(bops, I915_TILING_64))
+> > +		igt_debug("Tile64 format not supported\n");
+> > +
+> >   	if (check_idempotency) {
+> >   		idempotency_selftest(bops, I915_TILING_X);
+> >   		idempotency_selftest(bops, I915_TILING_Y);
+> > @@ -2003,6 +2108,10 @@ bool buf_ops_set_software_tiling(struct buf_ops *bops,
+> >   		igt_debug("-> use SW on tiling 4\n");
+> >   		break;
+> > +	case I915_TILING_64:
+> > +		igt_debug("-> use SW on tiling 64\n");
+> > +		break;
+> > +
+> >   	case I915_TILING_Yf:
+> >   		igt_debug("-> use SW on tiling Yf\n");
+> >   		break;
+> 
