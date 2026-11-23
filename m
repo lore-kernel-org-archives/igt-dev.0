@@ -2,162 +2,160 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52409606A31A
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 02:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB14606A31A
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 05:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VVsOoL18;
-	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=ajObVnZK
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IQf11Eg6;
+	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=lo1rlTJR
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id F3B6C10E134;
-	Mon, 23 Nov 2026 01:59:50 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C3E9810E134
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 01:58:39 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 347AE10E105;
+	Mon, 23 Nov 2026 05:04:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id EE30A10E09F;
+ Mon, 23 Nov 2026 05:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795399120; x=1826935120;
- h=message-id:date:subject:to:references:from:in-reply-to:
- content-transfer-encoding:mime-version;
- bh=HSzojIJNtXOswhXANZTTEzeMUUETlVqOKzS/BD+HN9M=;
- b=VVsOoL18K7S9hSdzAqZ9L4+BWVJcpci1f9U96FB/3O2GheQS3K7wRUll
- En0s9wM11pOeVVZ0bR1tDctUJQY5QuwbbDF0VnbuhnIh4rjvuZEC39mct
- MxkMblLakCtU1lp2Xsz8IXJtUdIgUQjLmqPAHZfM/KjxJ/x2pSAIOSXgv
- 2AVCjwzxXQAz66k2xIXXgvGt/lji+IWxvytevrEb/sgD4CvDlOpopJv/o
- hS5WbWNd70sWJ6lkvw5IA6VZZirtqH5IVnXLpA+mDbwhck1EdofMxQmYO
- MXFt0lX1CXvGr+kqbbPU6GZJR2Dq/ylR7RKXgNmZgacS+EWRd+Qgo1BrG g==;
-X-CSE-ConnectionGUID: g9GtC4O0QxWWGwCQi+VJFA==
-X-CSE-MsgGUID: 84PwblH4QCmjzoiziZjGFg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4242105"
+ t=1795410216; x=1826946216;
+ h=from:to:cc:subject:date:message-id:references:
+ in-reply-to:content-transfer-encoding:mime-version;
+ bh=W+V/PtOVKGQDbkuj2gMThpz8U5Dcw+V20IwiYSC8BoA=;
+ b=IQf11Eg69GrVhPmb+0i85scCn4XC7Aofl5+3Pc6A+LZp1qqiZdhZs5B0
+ U0dcpXDTFm/htYo3pIMuJtVSSqzcXTr35IRI7n9f18+h4sp5C3pwLzQEU
+ /WlOObVfHfUjQj6r5yALEAh1uJPMK+VCehxBjCd2oZQWY3tSLuwO1XisH
+ SMJDhyKtbXJ09pJiGk49zk7aQA5t/ImaIRIt+VA65Xj5ISnlHqGJllak5
+ /QyEebtenOrb865LQbHXF67LMrLEnABf7taB4q3P8V1J9HZR17S1Z05/B
+ +YenpDvf2qWGpvf2gscYFX3jsU89y098t65ol/R3n/mdxrQrEgGlFrehB Q==;
+X-CSE-ConnectionGUID: j1K+AAHoRh2k3b8eq1c1nA==
+X-CSE-MsgGUID: HlrLvmZzSy63JVvU7oj3AQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4093633"
 X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4242105"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2026 17:58:39 -0800
-X-CSE-ConnectionGUID: TqSluZVWQqKutWeBh7e1pA==
-X-CSE-MsgGUID: IJ6ldiE1S9+Y8cTcQOY/MQ==
+   d="scan'208";a="4093633"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2026 21:03:35 -0800
+X-CSE-ConnectionGUID: vy1nWIeQSd+MR+/473dj/Q==
+X-CSE-MsgGUID: A7f9gKaFSHmFr1UBY8qE1Q==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11114513"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2026 17:58:39 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11083472"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+ by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2026 21:03:34 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Sun, 22 Nov 2026 17:58:38 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ 15.2.2562.57; Sun, 22 Nov 2026 21:03:34 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56 via Frontend Transport; Sun, 22 Nov 2026 17:58:38 -0800
-Received: from CO1PR03CU002.outbound.protection.outlook.com (52.101.46.5) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ 15.2.2562.57 via Frontend Transport; Sun, 22 Nov 2026 21:03:34 -0800
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.71)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Sun, 22 Nov 2026 17:58:37 -0800
+ 15.2.2562.56; Sun, 22 Nov 2026 21:03:33 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=InZK55YK+ir+IYTBfF3F53A0jEYk2xvfG9eVnGBMEj82wvM9BdVtxEdYFEMH8NULe/WD62TjrRWzXO9Qgd1Jo31AnK4E5e7ofVK8yNeAz25K6+TjZAvDP6jqssQPZSXCjYzXuIf3F/bxqBJ/TXg5/qSAeIvIgIlbTwrHoAvHMONiOSU8xNvgFMX/I4cdgzj1DPPPmCYgJoYr67An8HnL4ESyDt+5fF8n2VoKucp0eXdEjmXTYtooSmJB/yJkrv0sKs063MKEdpF5RLVAck3uA8GM/2QuxA02J7aVxJOjRGCMRG0DTZzGK+BQIq0Y4ngMoIjqaXJuG/BOkzZgGxV+5w==
+ b=Af4koQTYuQPOhKATyKZUQG/qC6G7jplJgZlh+CMhyIaU/4HRlQ0s0BxsrEHVE1v6Sna0Yv0cSwlf2I625KqL0auL64iCtH7YQx+/z46fV6y2K6funb7fMkO5oi+RX3ZJVtL6IcYJwYXIJ2sEBjR2nWW2nfGI60G+HlaF+FPHTZ4biE7XO33SCqi7Tt5A8S9aYlsg/a7+1SqjDkeJ7I/ifddul4FMC5VaJb/GFM2shsLTfpZ738yhDMFlnO9vk014eGTIfdThE1sET+tu7ppyyRo+6SOugxJEsn/BpZEUNTiTLAXb5evDWlAokbWTIcFnfai6tF2s7HIalO3QDBEF2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8iE6ZRhdnn0nHgS8/iGNEi1ey3R9eO8SoswON/GrA74=;
- b=D/6xkjMbxOPo/5IkOQsR2I0k3ZX/AcWlEFs5TzVWOn5gHA/xlYQYW6Xz3DxAxwn9sA/+hM0ikEcjJsciO+5A2/kGXDQ3XgNHLSKKPRtN+1cUqFySm3RwZhDM3T6CLosw6X9LEkMvyswrukh1lriEkK70ZFNXEcsUQt0XBL4+Cyhaekh0yUxcvP0WZeYDNZz1rn7E4xiM6zk0gaOMDx7PQ/IT+MA+EqDCjWeTfDpbqb9sEt4ZQIidtuUBoqXMSTnQHLQ3BOhimyJxsTU8DhPfipzjxQgHU3zm3sNb2/ErKz5P0h6DHn17cIiKjv6Yy6HLoMaJIO0Hlyftet04pTKZKQ==
+ bh=8H1gKKeGKfpOy0J7NF9Eeffku2q00yRUhn5fxz5zbkM=;
+ b=SFdVAG3k1WViHXHrpC+wKosoIgvFY3JihBIY0jKkSf2b3ruBOCCvvDFw/GK7BaqMfm9jYHUML79K0x1x0zgwlzj2plXUIXG9tnyMt/UPVwatDYsU9t22TRg7ieyf0hNjJXnVVEuMYroa/zd+fnVhiushiUxr+aW28Uc9IrH0YoADwwc3rDC4Qifj/d6pJX0RODoCxH4ij/BNfSfZrhcZmREFEKynTjqOBn0HmGEKIkoa7y9JTlHoV/XCwSVGHAWVozed8vRWuccRxEkkaLJFCecbejl7lUuQAsgKS4SASLeBN1vMWHNde/6QmBSlXHwwFqNKU6yEl27IdMJLONzjmg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8iE6ZRhdnn0nHgS8/iGNEi1ey3R9eO8SoswON/GrA74=;
- b=ajObVnZKjNtYz/F9IfZiPYR7WhHHtKj9n/dekbHwXFCEKNGJWpUDgw6p39gQeyFG6kn9w1l5PT0nV2KIrCRrzIML9Rj47wFuniZw8uajB+rCCcZhfN6e4scMZsdrfMlkZHVzakDjiL5WwpFRTP5LYrlk3OKR309a5ZPyqhJ6q+E=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from MW4PR11MB7149.namprd11.prod.outlook.com (2603:10b6:303:221::14)
- by DS0PR11MB6472.namprd11.prod.outlook.com (2603:10b6:8:c0::9) with
- Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.639.13; Mon, 23 Nov 2026 01:58:31 +0000
-Received: from MW4PR11MB7149.namprd11.prod.outlook.com
- ([fe80::75d3:519d:fced:5a6c]) by MW4PR11MB7149.namprd11.prod.outlook.com
- ([fe80::75d3:519d:fced:5a6c%4]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
- 01:58:30 +0000
-Message-ID: <5ad43161-d7a7-4805-8a75-66977aef2f50@intel.com>
-Date: Mon, 23 Nov 2026 07:28:16 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 2/2] tests/kms_vrr: add support for full range refresh
- rate testing
-To: Lee Shawn C <shawn.c.lee@intel.com>, <igt-dev@lists.freedesktop.org>
-References: <20261117135939.93225-1-shawn.c.lee@intel.com>
- <20261117135939.93225-3-shawn.c.lee@intel.com>
+ bh=8H1gKKeGKfpOy0J7NF9Eeffku2q00yRUhn5fxz5zbkM=;
+ b=lo1rlTJRLrytghB+cqlxDf7xL1BW7pnN+63kbdRRnFOehDgud3mqk6GK+gaOT4XSA15u10/jWewpr8Ocx5DRXIgg4FY0dsjRbo0HyYywYNziMeyY4xFtM9Uz3X4+Cc6MuTCWfnIuFcj+WNIv7q/qRolCVKTGHn7HWSvDwKNsql8=
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
+ by PH8PR11MB6973.namprd11.prod.outlook.com (2603:10b6:510:226::21)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Mon, 23 Nov
+ 2026 05:03:30 +0000
+Received: from CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::52c4:16e1:a67e:63bc]) by CH3PR11MB8434.namprd11.prod.outlook.com
+ ([fe80::52c4:16e1:a67e:63bc%6]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
+ 05:03:30 +0000
+From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
+To: "Lin, Shuicheng" <shuicheng.lin@intel.com>,
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
+CC: "Lin, Shuicheng" <shuicheng.lin@intel.com>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, "Kamil
+ Konieczny" <kamil.konieczny@linux.intel.com>, "Auld, Matthew"
+ <matthew.auld@intel.com>, "Kempczynski, Zbigniew"
+ <zbigniew.kempczynski@intel.com>
+Subject: RE: [PATCH i-g-t] tests/intel/xe_create: Add
+ create-huge-sysmem-defer-backing subtest
+Thread-Topic: [PATCH i-g-t] tests/intel/xe_create: Add
+ create-huge-sysmem-defer-backing subtest
+Thread-Index: AQHdeZtOqoiaF4Nx6Eq2xEa0IyrAt7c7HJzg
+Date: Mon, 23 Nov 2026 05:03:30 +0000
+Message-ID: <CH3PR11MB84343502B29909942687E0B28D452@CH3PR11MB8434.namprd11.prod.outlook.com>
+References: <20261121093216.1509828-2-shuicheng.lin@intel.com>
+In-Reply-To: <20261121093216.1509828-2-shuicheng.lin@intel.com>
+Accept-Language: en-US, en-IN
 Content-Language: en-US
-From: "Naladala, Ramanaidu" <Ramanaidu.naladala@intel.com>
-In-Reply-To: <20261117135939.93225-3-shawn.c.lee@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA0PR01CA0057.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:ac::15) To MW4PR11MB7149.namprd11.prod.outlook.com
- (2603:10b6:303:221::14)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|PH8PR11MB6973:EE_
+x-ms-office365-filtering-correlation-id: 8e6b250e-3343-455d-c360-08df491f1dd9
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+ ARA:13230040|376014|10070799003|366016|1800799024|23010399003|18002099003|22082099003|6133799003|261009223027099003|56012099006|11063799006|10067099003|5023799004|261102123227099003|261022105027099003|261026140227099003|261026121527099003|261028144727099003|261021123027099003|261021121427099003|38070700021;
+x-microsoft-antispam-message-info: EZkXIpXGwWvthHKq2+6PiN99DH4s1YGsyfW8YpxzRJPn3dM0jhbqOX4I6RfqVce5xwfIE0aKB8vQR86+nzQfCFSvmDal6zPSffRudZQPdywVAn2LqvEJwWHQFcjZxNaIrPl7qc9WBbaq9ykBOg/YTRUwUPMX1nPBCKegtE5nldscjLA9ZARJZMKanugdp70H6mGcQ+LNLIRIK4OvC1/ij4sPNfjdnuBxxm1rnvL7Rf/xnrf3I+Tr/QWg/Lp+Fpv4xyofHGN6oPnkppshv9ky3q0+e92Qdjq49gnmXlz/ktjj4rZ9gaHOGmo3RV5vYSWf6Ltt/fggUfgbUMkh/O7RNaw5J3whGxeoQDSypEhqhYYrc2chmI5i0xymY9Tb1buCu5CBo03MWJPpm/QcaGTY8mTrpvkx80lZ54FRAiewPd37R8RMXej9HTooCIAszoC2Er5YfwAACKxXTXssaWXZb6tv+yQTp/sVBrGGZ8GnrpsG5iMa1AucdlNaKYvFTrWqPvMpwFP2fy0wv3kO5DMhALtUJ0s/zg3cY15RMIhNsDtv2aoNBESnSwMmZLdB1xw9CUE5Xh57zJBOo1iLtJsVNDKz3P6wMgtAOplVc4RjIvv8VXrCdBhIEBc9nRuUj+Egwuzrjil9Av/a+dLOb2kb/8vez+DeZ29XAIJ8a/Fba5U=
+x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(376014)(10070799003)(366016)(1800799024)(23010399003)(18002099003)(22082099003)(6133799003)(261009223027099003)(56012099006)(11063799006)(10067099003)(5023799004)(261102123227099003)(261022105027099003)(261026140227099003)(261026121527099003)(261028144727099003)(261021123027099003)(261021121427099003)(38070700021);
+ DIR:OUT; SFP:1101; 
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?PCJQzM9wrpzOyllQZNeJ6wQeM/FmaffgvFYQR6Fgnbvsj25hl4M+VhLI0lDz?=
+ =?us-ascii?Q?RKQ4zDKlpvXpzDq1g+dXPjZGUrJa7Gx4dYgINvbKIcLKcuY5wgVneslP+mXH?=
+ =?us-ascii?Q?C8cTjVk/+UqEvUykp/EHLoorQpLSRz8iXh7Tganoyuvn3K3lsFHKyK9itpaF?=
+ =?us-ascii?Q?rPKjiuFOlTQolA8prkh1eWCVzdTrNRQgjhiSVtXKHZFlZ2DwoSaS5oP/WaAl?=
+ =?us-ascii?Q?FEwWTDS3PI3kjuC1Llp1CBvYu6rzPO5o4qdRGd3QryTIRSD7jY6+0+2U+2in?=
+ =?us-ascii?Q?K5Hqabk3vbvlKlfb8HlsKUZg7FP2AHefUKen2wxZZ12RKHaCqKxXPkROZbv3?=
+ =?us-ascii?Q?3Mhb5opE7EqY3H0jdbO9Womd4xaj2k++DMIJr6/LshDpW4UzGMPMJx0snAeL?=
+ =?us-ascii?Q?aIab6fY5PRYvhII2Dyh0d2FTBvHLdo942lPrNoAx3vwgIJKi+sqMUs+4GWkT?=
+ =?us-ascii?Q?IYEiAzZFhS/x9f30OkkTYfK4t1CHHlUMSET3K1bf+/1o3pZlqkD1eH1ToiTm?=
+ =?us-ascii?Q?wDu8NGMenbwDtmRj8SVWIf35bEANXD1kZXVUOkYwoPq/ANAQOTRd2INcXwws?=
+ =?us-ascii?Q?lyQBvRVESrbPivMyzdDA+UT0Cxo2J/WLmVjPxOa2Lcr2orA35okm5PSvVamM?=
+ =?us-ascii?Q?AGFLCviurCDgnBu+0yfyjIWPVl+qvGqtCM6bQnGcpJEkESK82Q6zzzohnHV+?=
+ =?us-ascii?Q?iXy6KQ7aX8ZzD2wIQU8XluWaCcdOBBkWsPn2SBnUVioQQeVFhhwMiaKPEUDO?=
+ =?us-ascii?Q?2vgPaXh67qhHEddVmSkAIugKGxoGGDkbBvpB0Oi0NoER2bssOUGXGJK+iQ8g?=
+ =?us-ascii?Q?4M9Djqo6KyTPzc0Acynu02WMJYShscwST7MXyADups0MZ6GZz6W3w15/qoZc?=
+ =?us-ascii?Q?IWeA3gxZH1jjTEUfThBbjFhI9PNkleBQGMghBXWE+GXNxWV66qbSl1pgWffP?=
+ =?us-ascii?Q?NlvW4phOljHCszX9MrJoJywbid5IT+Ti4I/bUS/sDgpEVyFFq9020NhTvpWb?=
+ =?us-ascii?Q?Tjc9QfSUlE0YYpvpoMxdLEiTi/k2yHdM94TNPPuwJIMAt98uwlf/thlahNDE?=
+ =?us-ascii?Q?381dBx/ohmsqCfBXzSOcGwjLSIjJSfR9Gz9upV1SZLe4Y3ODg9hIY3AGrfx5?=
+ =?us-ascii?Q?UUMwmKbQrJo4By0FyE1kMB6x9A4LOZSy3GJh3m51XT4POsZIenF1rdCtZjWh?=
+ =?us-ascii?Q?/VCJMWJPgSjND5CXBKfOdGlsNswY/V5YA/SXbxKHfBUAT4/+yYZwXqoGY4fw?=
+ =?us-ascii?Q?ZP5U3H/zMfm84APZ3RQhdkwGO6lh8A6LhLCtaCnXtIrCwtzJUOo/AcLSB02b?=
+ =?us-ascii?Q?lGD7RmqQj8VH+bj+H1QAq6lIupUtSEbWOaqSBfP+LJ6PZtJB/9JGKV/bv3h1?=
+ =?us-ascii?Q?PwimHBDayCBlF9+Q3puVg8W9MXCdQfnAOjeOGMY2ztghUi/bJGZyHm7VVFvC?=
+ =?us-ascii?Q?1aJCMvbRg1SBA4Ype0hU/uEZZWVUvd9UOuesWw0aO3iBvyQ6PuNGbiQGb9Sv?=
+ =?us-ascii?Q?qTDLyVXL+eGOlNRkCjbOLA6NHX4u+PI6P1ahNrCx9cWZxNf+sM0oHe6QCBdx?=
+ =?us-ascii?Q?6mTMQi16CDHO+Ra6wGlo6oARbdyfAATzaKzPgm5B3V12aT49AR66e2CNO8lG?=
+ =?us-ascii?Q?awXcmvW5VTkZlPQ04Mc+ClJazNwDSWfPb9GS5sxEe71SAOWhNqiZBfasMJJ3?=
+ =?us-ascii?Q?1tUzbiQvEtCOz8zWrCbVl2kyVyQ+cYoA2OmESQD92960WJDRL5T1lgkPromu?=
+ =?us-ascii?Q?puJ4KCGAu7UEYrmTCy9UqwRrtFOGelGwiow6hoD1KyQXGK6Npt6p87yDsa37?=
+x-ms-exchange-antispam-messagedata-1: b1semIGjMNFjCt+afzhgFPx9psz0jkModCc=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW4PR11MB7149:EE_|DS0PR11MB6472:EE_
-X-MS-Office365-Filtering-Correlation-Id: c3316de5-64c0-48b2-fb20-08df490545f3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|23010399003|1800799024|376014|366016|261026121527099003|261026140227099003|261028144727099003|261021123027099003|261021121427099003|261022075727099003|261022113327099003|261022105027099003|261102123227099003|11063799006|4143699003|56012099006|10067099003|18002099003|22082099003|261009223027099003|261009221727099003|261009221227099003|6133799003|261009223327099003|261009220027099003|3023799007;
-X-Microsoft-Antispam-Message-Info: p2AZRWgO/dT5wnQW5AzDmMdUbnYDysRYwCrKaLZ1MTG/5jlx8c5mYmQcvTQFXcyraptAeYbch4p/beefyzGls36Z0FtX6/wN9PeQIWY8C/RwtedBecnriOvWrw3wBYuqtUNziFl/PGi6g8yhHqD9fIxgy8tiNLAjCPJjTUIFUAfrV5ThemrHTntv7PoZPsWAscztNVXfXk8ZzntarTLQEUd9ZMl3lBnQ44E/WhOVtoBdV+c3BLFAvI1S3YlouWZRGuPByz3oRL7m6NYRl8VYwBH1La2u7vn1uvkw36wPUxCkJcyR2hcJhd4i+vEpUcUiSuwA+Mn4vxiKv/d69al8ESdK1EdtlTy0ZIY6dvoAsepdmZlXeQkuHQkw/7XtZUsXPzvHBeNwsDQJcBc+7dy/abIzEG2PAgh4UrSLrrdjZnvjnKRLLb2Ujqo0oIpYYPtuOfycrpIK/gj1lu52yP4+fYMXskWHmlAZNtK5SCysnd5GJc4LZIKPqhLUSzHVVdhKjRYWvSf+xO4u7lubrixcadkYGbsM5VAK9y/ERfOPiNib/SFX3K7tmFoZoQIfh5XhgGw1HAwrn1XuEHTa/ycFiXMdE1D6PqCalreVkSMgcwMezNGVvPzU1uatc+Jqee4ao6zY5fF3K5tyQdlc4mfza03pTz/eVEyASIYovDADq2o=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:MW4PR11MB7149.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(23010399003)(1800799024)(376014)(366016)(261026121527099003)(261026140227099003)(261028144727099003)(261021123027099003)(261021121427099003)(261022075727099003)(261022113327099003)(261022105027099003)(261102123227099003)(11063799006)(4143699003)(56012099006)(10067099003)(18002099003)(22082099003)(261009223027099003)(261009221727099003)(261009221227099003)(6133799003)(261009223327099003)(261009220027099003)(3023799007);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SStNOVhLaGp2T0RpQjVDUFBMK3RMbEkrNlhDcGZjQ1ZwcFlpZTlXTDJNUTZ0?=
- =?utf-8?B?MlVYSE5QQWgvcTVLMmZDSVhMbUw2NG9DRS9xdnNhNEcyeDFXYUFpR1oydE1p?=
- =?utf-8?B?Z2pON3JiYWUzT1UxN1pFckhrMmE4b2tMTm11Tk1kUk5wRnloeXhtazFFMnBo?=
- =?utf-8?B?QVZ4QTdQSWNqcW9CeldhUjVVM01iSnVsZmNCdXExZllYekRsNVlnRFdCRGdQ?=
- =?utf-8?B?eG1rZ3l4bFpPdllLM01VMnNPVERJeEZzdEVIZGIyMkNSMVRLRzZibE5ZMkJF?=
- =?utf-8?B?a2h2TEJ3dVB1NlRpTW5GNTdwNWdHUWwydnBJYUFsZS9mY3h5SDNsa3hKWUc5?=
- =?utf-8?B?dkxybWh6MVh1UXpBNjBmUXFENThwMUJFMDFGU1phUmRLZGt1Z3ZsaTQrMWw5?=
- =?utf-8?B?OHRGakliYW9sSXJvazF2dmdENlFlKzAxSHAreTRFNGFsUEY0MEdZaXRhTzg4?=
- =?utf-8?B?Vm4xN3Y3UzFKMWNpT24reFM3NHppWlBTdHVlZjc4ZzBFQTkyckpFT2JlS2R5?=
- =?utf-8?B?dkpJMFd2bEp3UU9lMGl0VzQrQlRaQTRhTEx1cHJYbnJUQ05KeTJnVm9EaXBp?=
- =?utf-8?B?eVR5dEN3d3pubTdKT0VCd0RTZ3hVd0pvTUlpeGdPb2pCMHdIdmUvMmxYMHQ3?=
- =?utf-8?B?OVJkSTlUNlJvaWpaOUFBWDVoL1FIdUtqc0hLclJhamxSWXI1Z3FDVEN6V1or?=
- =?utf-8?B?VjRTeGNsWHdwVkcxajlaS1luRndEZmFlL0VLOUxuMS9pTm5GeUJ5eVlCSTlZ?=
- =?utf-8?B?SUw2TEV4ME9kcVR4d2gyOVl0UXdzTEN1WVdDNU1FYWtUcVdkazFwWFRtQ3VD?=
- =?utf-8?B?eGZ2Wml1dXd4ZTUyZWcraFlJSndMR2cybGJWRTlKNytQc3cyWXlESFdLNWc2?=
- =?utf-8?B?elhlYmMrTlBFcTlodkt6cnZmVWUxVlZlSGhieWJsTks2Nkg2TTl0dU5sSVI4?=
- =?utf-8?B?S3VXYzNGNURnc1BsRmN3T2xNN3VPYzdLSDFXalhSb0VXYkNZUWlESVNLVkhS?=
- =?utf-8?B?cXE5aWZGQzFrVkI2bEtrRG1WWFlYOEtrVW9QZllQODQ3TFQ1NWpYenpsUXZE?=
- =?utf-8?B?R3M2T3lNZTVaaFVERk5DVVFHMkJGa2RxZWtiTEd4dHY0cERpTE1BREdpVjJz?=
- =?utf-8?B?RHQzeFZSOUVvQTZiNVpaU1YzdmduT2EvRHQvUkRXT1FwWm56ajRoTmJ1VHNE?=
- =?utf-8?B?TGoyRjJOZkpoTUpqRDkzckZYK2xudmhtM2N2V1hhc0tjRkhwUWd0bGE3TUhC?=
- =?utf-8?B?a3Z1VlJYNStwb3JuNlNFZ0p2dnkxSXI0Y0ovdUhyUHNxOEJJaE9aNEhnV3I1?=
- =?utf-8?B?eHdna3h0M1Evam1DTXVyalNPYmpaNDFIWW1sWDhYV0xrL3JrUndzZjhycllh?=
- =?utf-8?B?N1p1NUJhRndGRjJTY3cwc245T1VWOFNQWllCUXZoUy82eXNRTzI5bWJPbDdl?=
- =?utf-8?B?VmJOaHZQS2xSbVlRdkpRd3FVMUJ6eFlhRkhmQmxuTlZFeC9ldTdLNGozVVp3?=
- =?utf-8?B?b2ZBd0IrYTYyVWdXMUMya3Q4Vlh6SGhROGhQVnd6MDZ6WE13Q0R2SW9PZHRm?=
- =?utf-8?B?MmRKU2I1UFlHc2xKNHRQNUt3bzlGSnBjSzdVSVAxMHV4NVhPYmJYNWt6ZWRz?=
- =?utf-8?B?czVRTFE1K0cvY3hkQ0pEQXAwbVg5WFhKb0VFVlAzT3UveWFIVGtUa0FsVjMy?=
- =?utf-8?B?OC8wQnZEZG1XcVFSQ2xiS3NNeEd5bVJIelRPNnBzbHN2K1Q5dWV6OU10RkdO?=
- =?utf-8?B?bmlMNkVXOHlMM1lSMmJUNTNBdlM5LzhsbU0xZ1FqeGkxRlVBLzBXdllwTFE2?=
- =?utf-8?B?UUVST1pCL1k2ZUhldlFvZlZtTTA1aDJlY0NPMVlZOEwzKzUzV2plU2tVVGdV?=
- =?utf-8?B?TVNaejViRnJVa3c4WWVBbVc4NzBsbHdaNVNlNG14TDIxUXZPUGFOR0lFaTh6?=
- =?utf-8?B?TGdXR1VOY2RVemxyMnZ4a3dXSkJPZnVHUE4vRDZvVVFDWit4M3dZb2hhbENJ?=
- =?utf-8?B?QzJTQ3RsNXlWYWxVUnQ3MDZ5blUzZUtIMHZmOHRna3ZWdWJSV1NnL0ZKU2kv?=
- =?utf-8?B?YXJKTkJsQ2lEcEU0WVg3VzRDS0JXRGs5UzgwM2xPeEZGVHRHOTBIUnRXcUpF?=
- =?utf-8?B?NUNsT0NjTURZdU9STUo5NGJaYU9zVlhTMGU0VWo0ZXBrUi8wRk1ObWo2U3hZ?=
- =?utf-8?B?bithcW40QUVzTVc1MkI0SXE5U3Ayc0wrYWNVazdWYlFGQll0VGNYSjg4aWp1?=
- =?utf-8?B?OFpqdVFGWHZHVHdBTDV5dVhBd3I1YWhIdnE0NzBGYU1XR3F0bkJGQlhDS05Z?=
- =?utf-8?B?RyswR2dxNWVTcjNrWE9XOXRzSStiY1AvRWRtTVlXUnk2aG5ybUlodStmcGNR?=
- =?utf-8?Q?+8bepyFZkTnHnmKs=3D?=
-X-Exchange-RoutingPolicyChecked: CNcBN5a3fdyjWYPgizyfXFzCgHkD583zphHxWoaEDe+qTOjJFqogVwBHc8QyaNfEtnf+aRjvx1kgIu46tA/jNBpkWzyq1u2nIAxSpWXqm8m5ShXDfg3v6RDKGE/ArT/dX81VjzLubFuyhVpzV1ICpncL/wVE91V9prIwtx64vtajFdNy+XXxgec4sLNPwCfimbLcorOhkicPtLjH2G8i+f9Gm0WfId0nIDjWyxfePTu0O15gEkO0hNX6B9LuMk2SL06gDCE5sOA6M7hiJ32oiTo1nYBFuUtM4svEzKsCvXZzsBC7CeC/nammXBz0FM0nMOJv1ml1rHMB+DPzPA5DuQ==
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3316de5-64c0-48b2-fb20-08df490545f3
-X-MS-Exchange-CrossTenant-AuthSource: MW4PR11MB7149.namprd11.prod.outlook.com
+X-Exchange-RoutingPolicyChecked: VicJrG/TnvIXeLL3baTlsviONb61ErqUywZW5dndtGky6x4066VoBX9NyL1XDccWyHES3aaMPUpFUraDeQuHjZp9l86QULaxSQdbPNy8T3JxvMuj5CUEC4VZp2Fvc6TcwK18sAaJCORlRxFW7Dh9Vv8Pu5CwmRj5KYkcn5HoUjJW+/40XzXKxR4k9EUxlN4/OSIkSqLoX5e9nketwBBmHKZAO70YwS7XCISYkFpeuolzyIQBSG7IYAH4Vt9Ozt90/dvSMbdjR/1oqXPVuLMb9ozBvh44oKF4Tiu1ahJqYsc2dfdjziNFhfmVI9DT/snDsBTxZWcoOK2iwIQqzZ0D2Q==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 01:58:30.8520 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bL9bFoiE0mVhkXJmTKIO6WLbS4Jz6gSfdX12XePxK4Djej0TwuL3iApEJ3BSZJxaQUBOVZx3nmadNWvTIQk8EHObrOL4KrsX2P5XjH4OA44=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB6472
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8e6b250e-3343-455d-c360-08df491f1dd9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Nov 2026 05:03:30.2705 (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: lfDnoljwPA6Zeho1t7mon3XcbrEfH0XqEoKwhanRxPYaTE9CUZPF7oEIZ+JMGY4feATPCzItVnhhZAMaULdGk8BJOVkbV+eal4gHOmDRBFE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6973
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -170,281 +168,180 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Shawn,
 
-On 11/17/2026 7:29 PM, Lee Shawn C wrote:
-> Currently, kms_vrr tests fixed step increments within the VRR range.
-> To better validate hardware stability and potential issues across the
-> entire spectrum, this patch adds a 'full-range' testing mode.
->
-> When the full-range flag is enabled, the test will:
-> 1. Iterate from the maximum to the minimum refresh rate (stepping by 1).
-> 2. For standard testing, maintain the existing behavior of incrementing
->     from minimum to maximum using the defined step size.
->
-> v2: Fix build failure by adding documentation for the new subtest.
-> v3: Remove unnecessary '!!' operator when assigning to bool.
-> v4: Add full-range (top-down/bottom-up) subtests to verify all supported
->      RR within VRR range.
-> v5: Fix build failure for the new subtest.
-> v6: Revert commit 862eb176244f ("tests/kms_vrr: Start virtual RR test
->      above midpoint to avoid mode fallback").
-> v7: Not allow to run full range test if eDP display did not support
->      multiple refresh rate.
-> v8: Add is_pixel_clock_identical() helper.
-> v9: Add ALLOW_MODESET flag to the initial commit request.
-> v10: Rebase on top of latest upstream master (commit 05c13a14f7f8).
->
-> Cc: Naladala Ramanaidu <ramanaidu.naladala@intel.com>
-> Signed-off-by: Lee Shawn C <shawn.c.lee@intel.com>
+
+> -----Original Message-----
+> From: Intel-xe <intel-xe-bounces@lists.freedesktop.org> On Behalf Of Shui=
+cheng
+> Lin
+> Sent: 21 November 2026 15:02
+> To: igt-dev@lists.freedesktop.org
+> Cc: Lin, Shuicheng <shuicheng.lin@intel.com>; intel-xe@lists.freedesktop.=
+org;
+> Kamil Konieczny <kamil.konieczny@linux.intel.com>; Auld, Matthew
+> <matthew.auld@intel.com>; Kempczynski, Zbigniew
+> <zbigniew.kempczynski@intel.com>
+> Subject: [PATCH i-g-t] tests/intel/xe_create: Add create-huge-sysmem-defe=
+r-
+> backing subtest
+>=20
+> Create a 1 TiB system memory bo with DEFER_BACKING. Its TTM page director=
+y
+> needs more than INT_MAX bytes, which made kvmalloc() emit a kernel
+> WARNING. Check that the ioctl fails gracefully; the WARNING itself is cau=
+ght by
+> igt_runner through dmesg. The expected TTM "Failed allocating page table"=
+ error
+> message is ignored.
+>=20
+> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 > ---
->   tests/kms_vrr.c | 173 +++++++++++++++++++++++++++++++++++++++---------
->   1 file changed, 141 insertions(+), 32 deletions(-)
->
-> diff --git a/tests/kms_vrr.c b/tests/kms_vrr.c
-> index 0102afe203dc..ac5b6d222208 100644
-> --- a/tests/kms_vrr.c
-> +++ b/tests/kms_vrr.c
-> @@ -64,9 +64,11 @@
->    * Description: Test to switch RR seamlessly without modeset.
->    * Mega feature: General Display Features
->    *
-> - * SUBTEST: seamless-rr-switch-virtual
-> - * Description: Test to create a Virtual Mode in VRR range and switch to it
-> - * 		without a full modeset.
-> + * SUBTEST: seamless-rr-switch-virtual-top-down
-> + * Description: Vrr seamless refresh rate switch for virtual modes using full range
-> + *
-> + * SUBTEST: seamless-rr-switch-virtual-bottom-up
-> + * Description: Vrr seamless refresh rate switch for virtual modes using full range
-The two subtests currently use the same description, making it hard to 
-distinguish between top-down and bottom-up traversal in the test output 
-and documentation.
->    *
->    * SUBTEST: lobf
->    * Description: Test to validate link-off between active frames in non-psr
-> @@ -115,9 +117,10 @@ enum {
->   	TEST_FLIPLINE = 1 << 3,
->   	TEST_SEAMLESS_VRR = 1 << 4,
->   	TEST_SEAMLESS_DRRS = 1 << 5,
-> -	TEST_SEAMLESS_VIRTUAL_RR = 1 << 6,
-> -	TEST_FASTSET = 1 << 7,
-> -	TEST_MAXMIN = 1 << 8,
-> +	TEST_SEAMLESS_VIRTUAL_RR_TOP_DOWN = 1 << 6,
-> +	TEST_SEAMLESS_VIRTUAL_RR_BOTTOM_UP = 1 << 7,
-> +	TEST_FASTSET = 1 << 8,
-> +	TEST_MAXMIN = 1 << 9,
->   	TEST_LINK_OFF = 1 << 10,
->   	TEST_NEGATIVE = 1 << 11,
->   	TEST_FORCE_RR = 1 << 12,
-> @@ -296,13 +299,93 @@ low_rr_mode_with_same_res(igt_output_t *output, unsigned int vrr_min)
->   	return mode;
->   }
->   
-> -static void
-> -virtual_rr_vrr_range_mode(drmModeModeInfo *mode, float virtual_refresh_rate)
-> +static bool
-> +virtual_rr_vrr_range_mode(data_t *data, drmModeModeInfo *mode, float virtual_refresh_rate)
->   {
->   	uint64_t clock_hz = mode->clock * 1000;
-> +	uint16_t virtual_vtotal;
+>=20
+> Notes:
+>     This test depends on the kernel patch "drm/ttm: Don't warn on oversiz=
+ed
+>     page directory allocations":
+>     https://patchwork.freedesktop.org/series/179273/
+>     https://lore.kernel.org/all/20261121091815.1436090-2-
+> shuicheng.lin@intel.com/
+>=20
+>     The bo creation only reaches the TTM page directory allocation once t=
+he
+>     DRM mmap offset range is larger than 1 TiB, i.e. with kernel commit
+>     6a68105dac4f ("drm: increase 64-bit mmap_range size to 8TB"), current=
+ly
+>     in drm-tip. Without it the ioctl fails earlier with -ENOSPC and the t=
+est
+>     passes. With it, but without the TTM fix, the kernel WARNs and the te=
+st
+>     is reported as dmesg-warn (or abort with --abort-on-monitored-error).
+>=20
+>     Tested on BMG with drm-xe-next plus 6a68105dac4f, with and without th=
+e
+>     TTM fix.
+>=20
+>  tests/intel/xe_create.c | 62 +++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 59 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c index
+> fd1993b21..1edb9593d 100644
+> --- a/tests/intel/xe_create.c
+> +++ b/tests/intel/xe_create.c
+> @@ -42,14 +42,16 @@ static int __ioctl_create(int fd, struct
+> drm_xe_gem_create *create)
+>  	return ret;
+>  }
+>=20
+> -static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t plac=
+ement,
+> -		       uint32_t *handlep)
+> +static int __create_bo_flags(int fd, uint32_t vm, uint64_t size,
+> +			     uint32_t placement, uint32_t flags,
+> +			     uint32_t *handlep)
+>  {
+>  	struct drm_xe_gem_create create =3D {
+>  		.vm_id =3D vm,
+>  		.size =3D size,
+> -		.cpu_caching =3D __xe_default_cpu_caching(fd, placement, 0),
+> +		.cpu_caching =3D __xe_default_cpu_caching(fd, placement, flags),
+>  		.placement =3D placement,
+> +		.flags =3D flags,
+>  	};
+>  	int ret;
+>=20
+> @@ -61,6 +63,12 @@ static int __create_bo(int fd, uint32_t vm, uint64_t s=
+ize,
+> uint32_t placement,
+>  	return ret;
+>  }
+>=20
+> +static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t plac=
+ement,
+> +		       uint32_t *handlep)
+> +{
+> +	return __create_bo_flags(fd, vm, size, placement, 0, handlep); }
 > +
-> +	virtual_vtotal = clock_hz / (mode->htotal * virtual_refresh_rate);
-> +	if (is_intel_device(data->drm_fd) && virtual_vtotal > 8192) {
-> +		igt_info("VTotal (%d) already exceed 8192 at %fHz\n",
-> +			 virtual_vtotal, virtual_refresh_rate);
-> +		return false;
-> +	}
->   
-> -	mode->vtotal = clock_hz / (mode->htotal * virtual_refresh_rate);
-> +	mode->vsync_start = virtual_vtotal - (mode->vtotal - mode->vsync_start);
-> +	mode->vsync_end   = virtual_vtotal - (mode->vtotal - mode->vsync_end);
-> +	mode->vtotal = virtual_vtotal;
->   	mode->vrefresh = virtual_refresh_rate;
-> +	return true;
+>  /**
+>   * SUBTEST: valid-flag
+>   * Functionality: ioctl_input_validation @@ -405,6 +413,51 @@ static voi=
+d
+> create_massive_size(int fd)
+>  	}
+>  }
+>=20
+> +/**
+> + * SUBTEST: create-huge-sysmem-defer-backing
+> + * Functionality: ioctl
+> + * Test category: functionality test
+> + * Description: Create a system memory bo with DEFER_BACKING whose TTM
+> page
+> + *		directory needs more than INT_MAX bytes, and verify the
+> + *		ioctl fails gracefully instead of triggering a kernel warning
+> + *		in the kvmalloc() size check.
+> + */
+> +static void create_huge_sysmem_defer_backing(int fd) {
+> +	/*
+> +	 * TTM keeps one pointer per page in its page directory, and
+> +	 * kvmalloc() refuses (and warns about) anything above INT_MAX bytes.
+> +	 * 1 TiB of 4 KiB pages needs 2 GiB of pointers, just above the limit.
+> +	 * DEFER_BACKING places the bo in system memory first, which
+> bypasses
+> +	 * the total-RAM limit of the TT manager, so the page directory
+> +	 * allocation is reached without any real memory being consumed.
+> +	 */
+> +	const uint64_t size =3D ((uint64_t)INT_MAX / sizeof(uint64_t) + 1) *
+> +			      PAGE_SIZE;
+> +	uint32_t handle =3D 0;
+> +	int ret;
+> +
+> +	/* The expected allocation failure is logged with pr_err() by TTM. */
+> +	igt_emit_ignore_dmesg_regex("Failed allocating page table");
+> +
+> +	ret =3D __create_bo_flags(fd, 0, size, system_memory(fd),
+> +
+> 	DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING, &handle);
+> +	igt_debug("bo create of %" PRIu64 " bytes returned %d\n", size, ret);
+> +
+> +	/*
+> +	 * -ENOSPC: the size does not fit in the mmap offset range.
+> +	 * -ENOMEM: the TTM page directory could not be allocated.
+> +	 * Success is fine as well, as long as no kernel warning is emitted,
+> +	 * which is checked by igt_runner through dmesg.
+> +	 */
+> +	igt_assert_f(ret =3D=3D 0 || ret =3D=3D -ENOMEM || ret =3D=3D -ENOSPC,
+> +		     "unexpected bo create result %d (%s)\n", ret,
+> +		     strerror(-ret));
+> +
+> +	if (!ret)
+> +		gem_close(fd, handle);
 > +}
 > +
-> +static bool
-> +is_edp_multiple_rr_panel(igt_output_t *output)
-> +{
-> +	drmModeConnector *connector = output->config.connector;
-> +	uint32_t first_clock = 0, first_rr = 0;
-> +	bool found_first = false;
+>  /**
+>   * SUBTEST: create-big-vram
+>   * Functionality: bo
+> @@ -581,6 +634,9 @@ int igt_main_args("Q:p:", NULL, help_str, opt_handler=
+,
+> NULL)
+>  		create_massive_size(xe);
+>  	}
+>=20
+> +	igt_subtest("create-huge-sysmem-defer-backing")
+> +		create_huge_sysmem_defer_backing(xe);
+LGTM,
+Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
 > +
-> +	if (connector->connector_type != DRM_MODE_CONNECTOR_eDP) {
-> +		igt_info("Connector %s is not eDP, skipping DRRS check\n",
-> +			 output->name);
-> +		return false;
-> +	}
-> +
-> +	for (int i = 0; i < connector->count_modes; i++) {
-> +		drmModeModeInfo *mode = &connector->modes[i];
-> +
-> +		if (!found_first) {
-> +			first_clock = mode->clock;
-> +			first_rr    = mode->vrefresh;
-> +			found_first = true;
-> +			continue;
-> +		}
-> +
-> +		if (mode->vrefresh != first_rr &&
-> +		    mode->clock == first_clock) {
-> +			igt_info("Multiple RR panel detected (not DRRS): "
-> +				 "same clock %d kHz, vrefresh %d vs %d Hz\n",
-> +				 first_clock, first_rr, mode->vrefresh);
-> +			return true;
-> +		}
-> +	}
-> +
-> +	return false;
-> +}
-> +
-> +static drmModeModeInfo*
-> +get_selected_fixed_mode(igt_output_t *output, bool lowest)
-> +{
-> +	drmModeConnectorPtr connector = output->config.connector;
-> +	drmModeModeInfo *selected_mode = NULL;
-> +
-> +	for (int i = 0; i < connector->count_modes; i++) {
-> +		drmModeModeInfo *m = &connector->modes[i];
-> +
-> +		if (m->type & (DRM_MODE_TYPE_PREFERRED | DRM_MODE_TYPE_DRIVER)) {
-> +			if (!selected_mode) {
-> +				selected_mode = m;
-> +				continue;
-> +			}
-> +
-> +			if (lowest) {
-> +				if (m->vrefresh < selected_mode->vrefresh)
-> +					selected_mode = m;
-> +			} else {
-> +				if (m->vrefresh > selected_mode->vrefresh)
-> +					selected_mode = m;
-> +			}
-> +		}
-> +	}
-> +
-> +	if (selected_mode) {
-> +		igt_info("Found Target Fixed Mode: \"%s\" %dHz (vtotal: %d)\n",
-> +			 selected_mode->name, selected_mode->vrefresh, selected_mode->vtotal);
-> +		return selected_mode;
-> +	}
-> +
-> +	return NULL;
->   }
->   
->   /* Read min and max vrr range from the connector debugfs. */
-> @@ -991,45 +1074,65 @@ test_seamless_virtual_rr_basic(data_t *data, igt_crtc_t *crtc,
->   			       igt_output_t *output, uint32_t flags)
->   {
->   	uint32_t result;
-> -	unsigned int vrefresh;
-> +	int vrefresh;
->   	uint64_t rate[] = {0};
-> -	uint32_t step_size;
-> -	drmModeModeInfo virtual_mode;
-> +	int start, end, step;
-> +	drmModeModeInfo *virtual_mode = NULL;
-> +	bool need_low_rr = flags & TEST_SEAMLESS_VIRTUAL_RR_BOTTOM_UP;
->   
-> -	igt_info("Use HIGH_RR Mode as default\n");
-> -	kmstest_dump_mode(&data->switch_modes[HIGH_RR_MODE]);
-> +	if (!is_edp_multiple_rr_panel(output)) {
-> +		igt_info("This panel does not support this testing.\n");
-> +		return;
-> +	}
-Returning silently makes the dynamic subtest appear to pass. Use igt_skip()
-> +
-> +	virtual_mode = get_selected_fixed_mode(output, need_low_rr);
-> +	if (!virtual_mode)
-> +		return;
-> +
-> +	igt_info("Use %s_RR Mode as default\n", need_low_rr ? "LOW" : "HIGH");
-> +	kmstest_dump_mode(virtual_mode);
->   
->   	prepare_test(data, output, crtc);
-> -	rate[0] = igt_kms_frame_time_from_vrefresh(data->switch_modes[HIGH_RR_MODE].vrefresh);
-> +	rate[0] = igt_kms_frame_time_from_vrefresh(virtual_mode->vrefresh);
->   
->   	/*
->   	 * Sink with DRR and VRR can be in downclock mode so
-> -	 * switch to highest refresh rate mode.
-> +	 * switch to desired requested rate mode.
->   	 */
-> -	igt_output_override_mode(output, &data->switch_modes[HIGH_RR_MODE]);
-> -	igt_assert(igt_display_try_commit_atomic(&data->display, DRM_MODE_PAGE_FLIP_EVENT, NULL) == 0);
-> +	igt_output_override_mode(output, virtual_mode);
-> +	igt_assert(igt_display_try_commit_atomic(&data->display,
-> +						 DRM_MODE_PAGE_FLIP_EVENT |
-> +						 DRM_MODE_ATOMIC_ALLOW_MODESET,
-> +						 NULL) == 0);
->   
->   	result = flip_and_measure(data, output, rate, 1, TEST_DURATION_NS);
->   	igt_assert_f(result > 75,
->   		     "Refresh rate (%u Hz) %"PRIu64"ns: Target threshold not reached, result was %u%%\n",
->   		     data->switch_modes[HIGH_RR_MODE].vrefresh, rate[0], result);
->   
-> -	/*
-> -	 * Calculate step size by considering the no. of steps required to
-> -	 * reach Vmin to Vmax as 5.
-> -	 */
-> -	step_size = (data->range.max - data->range.min) / 5;
-> -
->   	/* Switch to Virtual RR */
-> -	virtual_mode = *igt_output_get_mode(output);
-> +	virtual_mode = igt_output_get_mode(output);
-> +
-> +	if (flags & TEST_SEAMLESS_VIRTUAL_RR_TOP_DOWN) {
-> +		start = data->range.max;
-> +		end = data->range.min;
-> +		step = -1;
-> +	} else {
-> +		start = data->range.min;
-> +		end = data->range.max;
-> +		step = 1;
-> +	}
->   
-> -	for (vrefresh = data->range.min + step_size; vrefresh < data->range.max; vrefresh += step_size) {
-> -		virtual_rr_vrr_range_mode(&virtual_mode, vrefresh);
-> +	for (vrefresh = start; step > 0 ? vrefresh <= end : vrefresh >= end; vrefresh += step) {
-> +		if (!virtual_rr_vrr_range_mode(data, virtual_mode, vrefresh))
-> +			continue;
->   
->   		igt_info("Requesting Virtual Mode with Refresh Rate (%u Hz): \n", vrefresh);
-> -		kmstest_dump_mode(&virtual_mode);
-> +		kmstest_dump_mode(virtual_mode);
-> +
-> +		igt_output_override_mode(output, virtual_mode);
->   
-> -		igt_output_override_mode(output, &virtual_mode);
-> +		igt_assert(igt_display_try_commit_atomic(&data->display, DRM_MODE_ATOMIC_TEST_ONLY, NULL) == 0);
->   		igt_assert(igt_display_try_commit_atomic(&data->display, 0, NULL) == 0);
->   
->   		rate[0] = igt_kms_frame_time_from_vrefresh(vrefresh);
-> @@ -1390,9 +1493,15 @@ int igt_main_args("drs:", long_opts, help_str, opt_handler, &data)
->   		igt_subtest_with_dynamic("flip-basic-fastset")
->   			run_vrr_test(&data, test_basic, TEST_FASTSET);
->   
-> -		igt_describe("Test to switch to any custom virtual mode in VRR range without modeset.");
-> -		igt_subtest_with_dynamic("seamless-rr-switch-virtual")
-> -			run_vrr_test(&data, test_seamless_virtual_rr_basic, TEST_SEAMLESS_VIRTUAL_RR);
-> +		igt_describe("Test to switch to all virtual modes in VRR range without modeset.");
-> +		igt_subtest_with_dynamic("seamless-rr-switch-virtual-top-down")
-> +			run_vrr_test(&data, test_seamless_virtual_rr_basic,
-> +				     TEST_SEAMLESS_VIRTUAL_RR_TOP_DOWN);
-> +
-> +		igt_describe("Test to switch to all virtual modes in VRR range without modeset.");
-> +		igt_subtest_with_dynamic("seamless-rr-switch-virtual-bottom-up")
-> +			run_vrr_test(&data, test_seamless_virtual_rr_basic,
-> +				     TEST_SEAMLESS_VIRTUAL_RR_BOTTOM_UP);
->   
->   		igt_describe("Test to validate the link-off between active frames in "
->   			     "non-PSR operation.");
+>  	igt_subtest_with_dynamic("create-big-vram") {
+>  		int gt;
+>=20
+>=20
+> base-commit: 792f1105b5f0e2bc254cf2254cc8f6aef8799659
+> --
+> 2.43.0
+
