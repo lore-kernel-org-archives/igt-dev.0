@@ -2,82 +2,101 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9B2606A31A
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 18:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279F1606A32C
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 21:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H3CFe4Ms
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=HXeJyOaP
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id B13C310F120;
-	Mon, 23 Nov 2026 18:14:11 +0000 (UTC)
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com
- [209.85.216.44])
- by gabe.freedesktop.org (Postfix) with ESMTPS id AC2D010E0AB
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 18:13:06 +0000 (UTC)
-Received: by mail-pj1-f44.google.com with SMTP id
- 98e67ed59e1d1-3ac9f49b984so2052662a91.1
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 10:13:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20260707; t=1795457586; x=1796062386; darn=lists.freedesktop.org;
- h=content-transfer-encoding:content-type:in-reply-to:content-language
- :references:to:from:subject:user-agent:mime-version:date:message-id
- :from:to:cc:subject:date:message-id:reply-to:content-type;
- bh=IBSHiZTJNFiHNbgrHMXoPTen8eWfPrIKbQPLeresatw=;
- b=H3CFe4MsA0qu1ka6dw7aK/2MyEe7Xb1Eb+NO+N1osLUjO2NH+Qm7+KvWLpKvkgjAJb
- StihRrAfIxzDDfDpkLlRiKoQ4n2oQohe+kcC/4qJ/cr3194Lrrw6xvWkoS34ScWw5ooT
- 1jHwmAf80saBHHxBAC9uJuq5iZhy1Se03MnpP7jnTGi2rBTF7uK3/scSJkiSVsVXNF+J
- ltOi9QIrNk/nut1NEUvreS/CXlYSuHteii2YE5A+bQqzf4nZ8bMD+e7w1DILyzwHw3qh
- 56OEmnh6is+QQrQRPyI/B+Kk5rXYG/xK+rGAdmYxKt3FWaRP/qR1Bttl+Q4u0lpnDGUS
- zrrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1795457586; x=1796062386;
- h=content-transfer-encoding:content-type:in-reply-to:content-language
- :references:to:from:subject:user-agent:mime-version:date:message-id
- :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
- :reply-to:content-type;
- bh=IBSHiZTJNFiHNbgrHMXoPTen8eWfPrIKbQPLeresatw=;
- b=eK72xuuPBsW6Qoenr6cUV5JWdsTbgNNZ3Dz17F0dDxgPrsK1oyIKyOqVWWsKdunD9n
- 2o+5sFOrzoBK53t/VnFgiRQQvyBsokczoz0si/wBi8kL0WVwjeOaKVV9dE7rubywl9Ux
- A6TxYqMB/dPfnKevK4R364YDY/xiVCnRsSSXfW45xkUhTS9QATp3D+84k7aiqMeJkRJx
- mil2/gQMPWt7H2iQKcHwfjAhyRioIvrXJqwfsQCRC/sRRax1gXjBjXLvaPZPb4GXrtIo
- dZ3k/ilkreOO8ZKV/Kxm9nuNETrDJwrqtxNv314eugXL5HaFJeyl5d1fZ5smoBFwJUZM
- B26g==
-X-Forwarded-Encrypted: i=1;
- AL+hErFIJGeLLSZ7kkjdfPFHu0FF+cFGzjzMv+2R+gYfVpRutjI0F+LIdtC9qfD+2076/uRsZYsRaLlq@lists.freedesktop.org
-X-Gm-Message-State: APuU4Z+yME9PpBKm97/njjpzpfdPW3FvaoVU+W+z9DAidNkY3TDQvJZH
- wmzj8ywAzG2PmqdoGxadPEtX2pyKtCM/TNereUtCL6N4SFc3URsSVvUx8396D0buPP8=
-X-Gm-Gg: AZFdTZcpH6z7Kdh8GSHS+jZLD+ONSZ5nTIi13ZWuZFDtweh1wEmbt9fT054NnpEfrYY
- YpmNlOOODC0Ni6SkzB8YzA/Y/4EgEA3n0VrMkw4EYUvYylIDD1gwfZvzFYagA9oCqKNKVkqhTbZ
- NKxV7AGI7jCFnsarMbaNyp+JUWVTaBDY2X6UJn8H4n9P4WSc1ciskIgpOiQP1Gl/iulvelgmukF
- Ss31rvEaD5+Et084oJVqeDQbKK5KSG+q/mmgzn1ahZeA5xdQws/VNV8eheZOjvHWjrRER2L9ba9
- zjH3Rgor44N/ryTgoOXe9uOsZXPSYFtZ9dazrDDVYa1ECgyEWKVXiHfcNi23lL+TLIhdAQio2Xz
- 5QT75ZXsLPjZvaBx0FJv7ZQdF958p9cGEP6qTQkTBcRSWBdYbCO9rJ2ststmc/gsuOWtG/lTw2i
- ZrXKbdDFB7qPU3+lkLkSW3QnownJGZhO3zeVJyZDcIVLVFhsqm+YbagOYaf70Z02+6I8l3/fL77
- Pm//xJug7lxlYDSFmmxp9OpEwXnc11WLArS8M/v0WUuZcq1Mh0agHkeCliNDch/+I11/OpMpPq1
- BBR9ga3Pjs3yblVHhmydW5jl13CkZ/T9owlTmn9BnuNdqcxmgRBOfnZER1m9f5H4lDDr8r9Q5l9
- g
-X-Received: by 2002:a17:90b:2e8e:b0:3b4:323f:bdce with SMTP id
- 98e67ed59e1d1-3b4323fd218mr6970398a91.35.1795457585954; 
- Mon, 23 Nov 2026 10:13:05 -0800 (PST)
-Received: from [134.134.139.77] ([134.134.139.77])
- by smtp.gmail.com with ESMTPSA id
- 41be03b00d2f7-cde6d0818c1sm5549978a12.30.2026.11.23.10.13.04
- (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Mon, 23 Nov 2026 10:13:05 -0800 (PST)
-Message-ID: <3ac4922e-f812-4432-82a2-5c0b8ffd3fd1@gmail.com>
-Date: Mon, 23 Nov 2026 20:13:02 +0200
+	by gabe.freedesktop.org (Postfix) with ESMTP id CCFA010E037;
+	Mon, 23 Nov 2026 21:45:17 +0000 (UTC)
+Received: from SN4PR0501CU005.outbound.protection.outlook.com
+ (mail-southcentralusazon11011022.outbound.protection.outlook.com
+ [40.93.194.22])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0A4CA10E037
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 21:44:13 +0000 (UTC)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CicuScv/ui1UjiBUOqhdc2ks0jfbOilM2h0PspwEnvcb/39//VNJoSknu/WySyRFnCpTTOvhjKiQmcTMkRJU5A2JOy5ZEO5wmNCxLHakhG0OaQj9AeanpW/2QirC/B8BDYqN2EvmJEGmbmqMtUKFcCIesD+ZuaNlIo7isFR2OIxQGTLy0rQPKqd/yvyyNgaKhJAvmN53ByGvPcPpfo5x8CSIbNXhIff5F2ntC1DSxB2zKD1xuIPra8g+nc3hZMCj3zJd6iJm5uk0j8CaZ04/SBi3YWlUOkLAHecI0tNvPKpucatkDEJWU8L3z3O9e1Ba3ts8/5hWYtBVSeB+n58q7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=knoU5v7ronEnYCaHmjAmtoD9s3ZoI8A7RKXtwOriops=;
+ b=qNuXjld31LhUwCFz2unP+AmJq6ID9Y3sTX1RiUVJLsdggl3pQBY1uhL0r3un2H+Dm3ULSzcps3IaKU6YePX6QQejRjZbpZmluDO5hpo+cUoMPdDjt9kvUurJqsQxu8H7bGJl2BwL/3EJ3v1ZLP3XxUDsDOrZ9kXhroyQNYqv1eS/EYLAjSoSL5Ex8lK21k/x4an4aFcMIaSBMasgzSx0ZGLPTiViEDAjjzCXjm99NKs76f5l0Rf8LQX1WB6016SE8VRdYycQLqPu+ieyPNV/R7bSefVKQiUQd2TWEXu+PvpThCAnYZ+CKWMjLCfb6QfTLvA+VyMVz4QZkPtHaKqDcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=knoU5v7ronEnYCaHmjAmtoD9s3ZoI8A7RKXtwOriops=;
+ b=HXeJyOaPzjNEgm31re448I8wkLDeET35czZ3z87kp5djG7HBAIYdya9HuCprs/gx1xpI6Lt6gVjxZTbzbtR3MYV70keFmBHkacDYggdTqARUII+CQ+TgxHoA50oztA4N+PHyOJ2RdyeE3Sh3x5neJZrzSplk+BNX50c6dF2HKIk=
+Received: from PH8P221CA0004.NAMP221.PROD.OUTLOOK.COM (2603:10b6:510:2d8::9)
+ by CY5PR12MB6429.namprd12.prod.outlook.com (2603:10b6:930:3b::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.13; Mon, 23 Nov
+ 2026 21:44:07 +0000
+Received: from CY6PEPF0000004C.namprd03.prod.outlook.com
+ (2603:10b6:510:2d8:cafe::86) by PH8P221CA0004.outlook.office365.com
+ (2603:10b6:510:2d8::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.639.14 via Frontend Transport; Mon,
+ 23 Nov 2026 21:44:07 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com;
+ dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ CY6PEPF0000004C.mail.protection.outlook.com (10.167.247.137) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.639.5 via Frontend Transport; Mon, 23 Nov 2026 21:44:06 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Mon, 23 Nov
+ 2026 15:44:04 -0600
+Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Mon, 23 Nov
+ 2026 15:44:04 -0600
+Received: from tony-dev2.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
+ Transport; Mon, 23 Nov 2026 15:44:04 -0600
+From: <Haoming.Qi@amd.com>
+To: <igt-dev@lists.freedesktop.org>
+CC: <Alex.Hung@amd.com>, Tony Qi <Haoming.Qi@amd.com>
+Subject: [PATCH] lib/igt_fb: use cached copy for slow reads on amdgpu
+Date: Mon, 23 Nov 2026 16:41:35 -0500
+Message-ID: <20261123214135.3566782-1-Haoming.Qi@amd.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t] lib/igt_kms: Try all blend modes when resetting it
-From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-To: Icenowy Zheng <zhengxingda@iscas.ac.cn>,
- Development mailing list for IGT GPU Tools <igt-dev@lists.freedesktop.org>
-References: <20261117103356.303340-1-zhengxingda@iscas.ac.cn>
- <424a48b2-4f44-4f0b-97a4-aab35c5153eb@gmail.com>
-Content-Language: en-US
-In-Reply-To: <424a48b2-4f44-4f0b-97a4-aab35c5153eb@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY6PEPF0000004C:EE_|CY5PR12MB6429:EE_
+X-MS-Office365-Filtering-Correlation-Id: a418317e-dbf9-438c-ff9c-08df49aae60e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+ ARA:13230040|82310400026|1800799024|376014|23010399003|36860700016|18002099003|11063799006|56012099006|261026130827099003|261022075727099003|261102123227099003|261026135527099003|261026140227099003|261026121527099003|261028144727099003|261022113327099003|261022115727099003|261021121427099003|261022105027099003|261021123027099003|261021133027099003|261021130227099003|261009223027099003|261021135927099003|10067099003;
+X-Microsoft-Antispam-Message-Info: pYlqbyS9G+CU6xABTcag6L0HJPZ0ptmgmu+X5bVhRUQq6WsPIFMKnlv1147ZYkxmu6P1oZ9dh8eF5B/nI9rHI+WN5Jm20XxwD3+MDpp+WBBk8BKJPBRqN0SZ053b3FhkFZDajf3UWmT4ICmRtXfMlLpAb+V/BpiIjLeOARLKG7G9uvmC+g/mHT+E+fQW6intySazbTefKzgu4dAoVXshWDHogaCq4OVC/0TX2uC7tBMoj4Bn0ikHa5aZ5Q9PTsuPl0trPraN/7Orhr1dKib1NPEFw9hTi0otKYDd8Ev01OSatBOBSUyHGdsQXy1nPbX9FG3FFaqFqZo35wWY9CGk7rni/exx4uwCrf/d1/40QEvyoRoNnB23xhZg0SdvqmiB2SbEZVLVgfChGiF/+C61pXbfwvSxZmKrVfJXWPqHvTslulbCJNm0pqSaLf6pzC4WxayRCl13wXMR8QgG3RebhYBjbnVxonnZfelkv+Ftr5/YheFk8e3MLuXqc6VwgKeh8THAKHWzRPr3dr2oP224laoVPJoNG6FkNy1m61u4B0vbXwdd8cRyRmb/Tss4oVXDufduMd6UNi5vaAjZyg/Nsmw17/7Z3UGBmjkVkoMDMe24znPxorf8wSJcAP3WUEez1etp8KPqB8QRsNC0DYwellrKd+tbmEq1cAVj+M17tVgtiTEJ9oJn/jbMw2/gXdwxOt13MFkAmfgEQKYiRTEZDg==
+X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(82310400026)(1800799024)(376014)(23010399003)(36860700016)(18002099003)(11063799006)(56012099006)(261026130827099003)(261022075727099003)(261102123227099003)(261026135527099003)(261026140227099003)(261026121527099003)(261028144727099003)(261022113327099003)(261022115727099003)(261021121427099003)(261022105027099003)(261021123027099003)(261021133027099003)(261021130227099003)(261009223027099003)(261021135927099003)(10067099003);
+ DIR:OUT; SFP:1101; 
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: FPZzsCRnBSepuIBKim4Xcye9Td+c9hroxkDYF23Rf0x8CF2KBlOZ5CYFXH1W9LEjPbStYZFIIcdFuXpCbCCPr1hA5hHt1r11FFRslUDm3XU+yEysYwOr6Mjh8l7gjWVuNrcE89Gctx/4UOy4wzb5oFSnPDVJJNnKERTG4ACi19UrawloaYoL9VDwCPPBpgrjErXWCdDxKab3iZ8naoQlMyyKA1eCvmdQ7+0kAq4PNag5E9CCRA9qBZ0L9qD7fVv+MSX45vX4pTQurHlKAP7m63yXZm20xpdx2Hutjl7Blc36jfQoO2Ise7u8gglstUDSSVopkmswzam4WxkblP2a92pS299kgk8Bj2gD0lQoXUUgVsvTSO4sM9WuiVw7YPmokwcSmg+gNs826wRo2M0pSLgLpBTMQdZXpgpYDVg+ZYwwBHhy3drT2qu81GwcgZUV
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Nov 2026 21:44:06.2464 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a418317e-dbf9-438c-ff9c-08df49aae60e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CY6PEPF0000004C.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6429
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -89,78 +108,51 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-14.2 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-merged.
+From: Tony Qi <Haoming.Qi@amd.com>
 
-On 20/11/2026 16.02, Juha-Pekka Heikkilä wrote:
-> Look ok
-> 
-> Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
-> 
-> If nobody else get to merge this I'll merge it on Monday when I have 
-> access to my machine.
-> 
-> /Juha-Pekka
-> 
-> On 17/11/2026 12.33, Icenowy Zheng wrote:
->> Since Linux 7.3, the pixel blend mode property of planes would be
->> present (and required when the plane supports formats w/ alpha) even
->> when Pre-multiplied isn't supported, which leads to assertion failure in
->> igt_plane_reset().
->>
->> Add logic to try all possible values for this property mimicking the
->> logic of kernel deciding the default value.
->>
->> Signed-off-by: Icenowy Zheng <zhengxingda@iscas.ac.cn>
->> ---
->>   lib/igt_kms.c | 18 +++++++++++++++++-
->>   1 file changed, 17 insertions(+), 1 deletion(-)
->>
->> diff --git a/lib/igt_kms.c b/lib/igt_kms.c
->> index 915c6a8a2..789da08b3 100644
->> --- a/lib/igt_kms.c
->> +++ b/lib/igt_kms.c
->> @@ -2644,6 +2644,22 @@ static int get_drm_plane_type(int drm_fd, 
->> uint32_t plane_id)
->>       return DRM_PLANE_TYPE_OVERLAY;
->>   }
->> +static void igt_plane_reset_blend_mode(igt_plane_t *plane)
->> +{
->> +    bool result;
->> +
->> +    result = igt_plane_try_prop_enum(plane, 
->> IGT_PLANE_PIXEL_BLEND_MODE, "Pre-multiplied");
->> +    if (result)
->> +        return;
->> +
->> +    result = igt_plane_try_prop_enum(plane, 
->> IGT_PLANE_PIXEL_BLEND_MODE, "Coverage");
->> +    if (result)
->> +        return;
->> +
->> +    result = igt_plane_try_prop_enum(plane, 
->> IGT_PLANE_PIXEL_BLEND_MODE, "None");
->> +    igt_assert(result);
->> +}
->> +
->>   static void igt_plane_reset(igt_plane_t *plane)
->>   {
->>       igt_display_t *display = plane->crtc->display;
->> @@ -2679,7 +2695,7 @@ static void igt_plane_reset(igt_plane_t *plane)
->>           igt_plane_set_prop_value(plane, IGT_PLANE_ROTATION, 
->> IGT_ROTATION_0);
->>       if (igt_plane_has_prop(plane, IGT_PLANE_PIXEL_BLEND_MODE))
->> -        igt_plane_set_prop_enum(plane, IGT_PLANE_PIXEL_BLEND_MODE, 
->> "Pre-multiplied");
->> +        igt_plane_reset_blend_mode(plane);
->>       if (igt_plane_has_prop(plane, IGT_PLANE_ALPHA))
->>           igt_plane_set_prop_value(plane, IGT_PLANE_ALPHA, 0xffff);
-> 
+create_cairo_surface__convert() only sets slow_reads for Intel, so on
+amdgpu the YUV->RGB conversion reads the source framebuffer pixel by
+pixel straight from its mapping. On discrete GPUs that mapping is
+write-combined VRAM behind PCIe, where uncached reads are extremely
+slow, and they get even slower when memory runs at a low clock.
+
+Set slow_reads for amdgpu as well, so convert_src_get() copies the BO
+into system memory with igt_memcpy_from_wc() and converts from there.
+On APUs the extra copy is cheap.
+
+Profiling amd_plane@mpo-pan-p010 on a discrete GPU showed 97% of the
+runtime in convert_yuv16_to_float(). With this change:
+
+  amd_plane@mpo-pan-p010:   111.3s -> 9.3s
+  amd_plane (all subtests): 7m40s  -> 51s
+
+No change in subtest results.
+
+Signed-off-by: Tony Qi <Haoming.Qi@amd.com>
+---
+ lib/igt_fb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/igt_fb.c b/lib/igt_fb.c
+index 3d15f0595..e993d7d71 100644
+--- a/lib/igt_fb.c
++++ b/lib/igt_fb.c
+@@ -4803,7 +4803,7 @@ static void create_cairo_surface__convert(int fd, struct igt_fb *fb)
+ 		igt_assert(blit->base.linear.map);
+ 
+ 		/* reading via gtt mmap is slow */
+-		cvt.src.slow_reads = is_intel_device(fd);
++		cvt.src.slow_reads = is_intel_device(fd) || is_amdgpu_device(fd);
+ 	}
+ 
+ 	cvt.dst.ptr = blit->shadow_ptr;
+-- 
+2.53.0
 
