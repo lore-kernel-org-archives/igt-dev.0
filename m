@@ -2,63 +2,76 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86898606A321
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 14:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4F6606A31E
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 14:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xg8tpav5
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=QSfT48B7
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1C61210EE84;
-	Mon, 23 Nov 2026 14:31:16 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 7DACB10EE75
- for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 14:29:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 418BF10EE6B;
+	Mon, 23 Nov 2026 14:32:25 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 5911910EE82
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 14:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795444193; x=1826980193;
+ t=1795444242; x=1826980242;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:content-transfer-encoding:in-reply-to;
- bh=EduZK4hVpmbyDi82GDXY0E/zm97DL04/gKhfnvEYPfQ=;
- b=Xg8tpav5lj5zksNr53hI4TkisV/BSqAw+D5ftFK0ioyg0+eG+dU+5chx
- ltJ+rASw7HJwlbbj8MxclhOtfrvj2FOfn4hRepFUofW2Vm6Kx3xMH2sPN
- qbnJnFl8NyQBaeRf7AvWBXvW0xywKS2jee7x0dJNa5sBtshjoJ8Y/2S1H
- XNG2sf7y5pkySYqRBY5fcrkNZ/PzBJtmJO5EdrVOGzIbioeMu5JADgxUC
- rM3uhRwVbhKBjsTTD00Vm4/NCuS3/fmBSyyCzshMzK4NoshjQMEvtqkmd
- D3WK3zJFoa4b+Bzg27Eui7Lmj0CPFhRSn3vNBxxruoiLZea9e5LxBcxq5 Q==;
-X-CSE-ConnectionGUID: TskEEoHGSlmkStgkRjTYkA==
-X-CSE-MsgGUID: tTZATmFrQw6GrBWvuBdr+g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4268961"
+ bh=nO/VyzzUP449pG3AVQEBPQXYXY4i6KtBNGWSUIglYQo=;
+ b=QSfT48B72pbPUY/HQrsllKM3rNc9pnplClehAN4oWNkF+zB+0Fvoy3xb
+ BV/Vb8g9osDx5//+j2qO2shphfHL1P7KZLpKI/mmT8qVFm+Ak0DDlDeaG
+ tcvdIefXOWkWiZC0kyQ54u1v72xTWTlbAmUF1i3pguX9SmpRvzFnkFOSs
+ 1wBGXXk3WdoYJCiVof7XLhu8C80rFt8wA6iMTQ6LUOtSUcu695aY4nnH1
+ rb/M9ZQ93NFn4a7kKYjy6LO4ScOXrLQt7IubSxHD37F2jPGM7QtpbdIKx
+ Q5KLmhFdLIdp7h/moebwA/9jx9HBMYfwdpBll+TPJFFWrtniwzzJ06faF g==;
+X-CSE-ConnectionGUID: MEbmFkIfQYijhgMXXwjSeQ==
+X-CSE-MsgGUID: sJSblW4zRBa/C3uLUuFG5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4140221"
 X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4268961"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
- by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 06:29:52 -0800
-X-CSE-ConnectionGUID: SKAasd1tQMi821jdyll2Vg==
-X-CSE-MsgGUID: mquL3UF7T4WNyM0A5KQ2Tg==
+   d="scan'208";a="4140221"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+ by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 23 Nov 2026 06:30:34 -0800
+X-CSE-ConnectionGUID: SJP+/Oj3S5y+/f83i9z7zg==
+X-CSE-MsgGUID: eiILxyudRAOOcCg/7uPS7w==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11505307"
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11392519"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 06:29:51 -0800
-Date: Mon, 23 Nov 2026 15:29:46 +0100
+ 23 Nov 2026 06:30:31 -0800
+Date: Mon, 23 Nov 2026 15:30:27 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: Piotr =?utf-8?Q?Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>, 
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>
-Subject: Re: [PATCH i-g-t v2] tests/core_debugfs: Create listing while reading
-Message-ID: <xjdsvmveg6xyxxy5ga4sga7sp3zywyu2u7676exuvfz2uo67cb@w3xjgr4ft6gr>
+To: "Francis, David" <David.Francis@amd.com>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Prosyak,
+ Vitaly" <Vitaly.Prosyak@amd.com>, 
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>, "Koenig,
+ Christian" <Christian.Koenig@amd.com>, 
+ Simona Vetter <simona@ffwll.ch>, "Deucher,
+ Alexander" <Alexander.Deucher@amd.com>
+Subject: Re: [PATCH v4] tests/intel: Add edge case and race condition tests
+ for GEM_CHANGE_HANDLE
+Message-ID: <nnb4k5djm6xtws2d43pnzd4yfy3nsbhevzrjru2qdik4c53r3w@ippbw7agawlj>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- igt-dev@lists.freedesktop.org,
- Piotr =?utf-8?Q?Pi=C3=B3rkowski?= <piotr.piorkowski@intel.com>, 
- Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
- Lukasz Laguna <lukasz.laguna@intel.com>
-References: <20261120183707.35596-1-kamil.konieczny@linux.intel.com>
+ "Francis, David" <David.Francis@amd.com>,
+ Tvrtko Ursulin <tvrtko.ursulin@igalia.com>, 
+ "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Prosyak,
+ Vitaly" <Vitaly.Prosyak@amd.com>, 
+ Sebastian Brzezinka <sebastian.brzezinka@intel.com>, "Koenig,
+ Christian" <Christian.Koenig@amd.com>, 
+ Simona Vetter <simona@ffwll.ch>, "Deucher,
+ Alexander" <Alexander.Deucher@amd.com>
+References: <20261110153230.583745-1-David.Francis@amd.com>
+ <6a89a83a-8290-4c59-855a-f798f8350570@igalia.com>
+ <CHAPR12MB9992477A972F6389F886D55EAEEF7A2@CHAPR12MB999247.namprd12.prod.outlook.com>
+ <bigey4diakr4ljuzegyc6tsnho42cuzpt5jnfflqeihv5nw7hv@iqzf3ljkfrrq>
+ <CHAPR12MB9992474795BD2A857C7FC847D0EF782@CHAPR12MB999247.namprd12.prod.outlook.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261120183707.35596-1-kamil.konieczny@linux.intel.com>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CHAPR12MB9992474795BD2A857C7FC847D0EF782@CHAPR12MB999247.namprd12.prod.outlook.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -77,149 +90,1008 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi igt-dev,
-On 2026-11-20 at 19:37:05 +0100, Kamil Konieczny wrote:
-> Create a listing of processed debugfs files while reading them.
-> Debugfs can have some pre-required conditions before reading
-> a node suceedes, so fail only when stat is impossible or no file
-> was present.
-> 
-> v2: add O_NONBLOCK to open, add prefix ok to prints (Kamil)
-> 
-> Signed-off-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Hi Francis,,
+On 2026-11-20 at 19:46:20 +0000, Francis, David wrote:
+> Thanks for the find.
+>=20
+> I believe that's <fcntl.h>, can easily add that
 
-+cc
-Piotr Piórkowski <piotr.piorkowski@intel.com>
-Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Lukasz Laguna <lukasz.laguna@intel.com>
+Yes, it is enough.
 
-> ---
->  tests/core_debugfs.c | 98 +++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 97 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tests/core_debugfs.c b/tests/core_debugfs.c
-> index 0e654c3e3..a74d211a7 100644
-> --- a/tests/core_debugfs.c
-> +++ b/tests/core_debugfs.c
-> @@ -3,6 +3,9 @@
->   * Copyright © 2025 Intel Corporation
->   */
->  
-> +#include <fcntl.h>
-> +#include <sys/stat.h>
-> +
->  #include "igt.h"
->  #include "igt_debugfs.h"
->  #include "igt_dir.h"
-> @@ -23,6 +26,93 @@
->  
->  IGT_TEST_DESCRIPTION("Read entries from debugfs");
->  
-> +static int not_read_count;
-> +static int ok_count;
-> +static int stat_fails;
-> +
-> +static int read_debugfs(const char *filename, void *data)
-> +{
-> +	struct stat sb;
-> +	ssize_t bytes_read;
-> +	char buf[4096];
-> +	int len;
-> +	int fd;
-> +
-> +	len = data ? to_user_pointer(data) + 1 : 0;
-> +	if (len < 0 || strlen(filename) <= len)
-> +		len = 0;
-> +
-> +	if (lstat(filename, &sb) == -1) {
-> +		igt_info("Stat fails errno=%d %s\n", errno, filename);
-> +		stat_fails++;
-> +
-> +		return 0;
-> +	}
-> +
-> +	if ((sb.st_mode & S_IFMT) != S_IFREG) {
-> +		igt_info("ok not a regular file %s\n", filename);
-> +		not_read_count++;
-> +
-> +		return 0;
-> +	}
-> +
-> +	if (!(sb.st_mode & 0444)) {
-> +		igt_info("ok not readable %o %s\n", sb.st_mode & 0777, filename);
-> +		not_read_count++;
-> +
-> +		return 0;
-> +	}
-> +
-> +	fd = open(filename, O_RDONLY | O_NONBLOCK);
-> +	if (fd < 0) {
-> +		igt_info("ok open fails errno=%d %o %s\n", errno, sb.st_mode & 0777, filename);
-> +		not_read_count++;
-> +
-> +		return 0;
-> +	}
-> +
-> +	bytes_read = read(fd, buf, sizeof(buf) - 1);
-> +	if (bytes_read < 0) {
-> +		igt_info("ok read fails errno=%d %s\n", errno, filename);
-> +		close(fd);
-> +		not_read_count++;
-> +
-> +		return 0;
-> +	}
-> +
-> +	buf[bytes_read] = '\0';
-> +	igt_info("ok %zd\t%s\n", bytes_read, filename + len);
-> +	ok_count++;
-> +
-> +	igt_debug("File %s\nData: %s\n", filename + len, buf);
-> +	close(fd);
-> +
-> +	return 0;
-> +}
-> +
-> +static int process_debugfs(int dirfd)
-> +{
-> +	char debugpath[PATH_MAX];
-> +	igt_dir_t *config;
-> +	int ret;
-> +
-> +	ret = igt_dir_get_fd_path(dirfd, debugpath, PATH_MAX - 1);
-> +	igt_assert_f(ret >= 0, "Cannot get path\n");
-> +	igt_info("Reading debugfs files from %s\n", debugpath);
-> +
-> +	config = igt_dir_create(dirfd);
-> +	igt_assert_f(config, "Cannot create dir config\n");
-> +
-> +	igt_dir_scan_dirfd(config, -1);
-> +
-> +	ret = igt_dir_process_files(config, read_debugfs,
-> +				    from_user_pointer(strlen(debugpath)));
-> +
-> +	igt_dir_destroy(config);
-> +
-> +	return ret;
-> +}
-> +
->  int igt_main()
->  {
->  	int debugfs = -1;
-> @@ -38,7 +128,13 @@ int igt_main()
->  
->  	igt_describe("Read all entries from debugfs path.");
->  	igt_subtest("read-all-entries") {
-> -		igt_dir_process_files_simple(debugfs);
-> +		process_debugfs(debugfs);
-> +		igt_info("Summary: reads=%d stat_fails=%d not_read=%d\n", ok_count,
-> +			 stat_fails,
-> +			 not_read_count);
-> +
-> +		igt_assert_lt(0, ok_count);
-> +		igt_assert_eq(stat_fails, 0);
->  	}
->  
->  	igt_fixture() {
-> -- 
-> 2.55.0
-> 
+Regards,
+Kamil
+
+>=20
+> Are there any other includes it needs to compile? I don't have an arm64 c=
+ontainer on hand
+>=20
+> Thanks
+> David Francis
+>=20
+> ________________________________________
+> From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> Sent: Friday, November 20, 2026 2:27 PM
+> To: Francis, David
+> Cc: Tvrtko Ursulin; igt-dev@lists.freedesktop.org; Prosyak, Vitaly; Sebas=
+tian Brzezinka; Koenig, Christian; Simona Vetter; Deucher, Alexander
+> Subject: Re: [PATCH v4] tests/intel: Add edge case and race condition tes=
+ts for GEM_CHANGE_HANDLE
+>=20
+> Hi Francis,,
+> On 2026-11-18 at 19:25:38 +0000, Francis, David wrote:
+> > It's been about a week since this was reviewed.
+> >
+> > Tvrtko has also reviewed the kernel change.
+> >
+> > Is there anything left to do before this is merged? With the current ve=
+rsion, tests are skipped if the ioctl is still disabled in the kernel.
+>=20
+> Please check compilation on arm64 container and restore some
+> includes, as now it fails:
+>=20
+> 864/1845] Compiling C object tests/gem_change_handle.p/intel_gem_change_h=
+andle.c.o
+> FAILED: tests/gem_change_handle.p/intel_gem_change_handle.c.o
+> /usr/bin/aarch64-linux-gnu-gcc -Itests/gem_change_handle.p -Itests -I../t=
+ests -I../include -I../include/drm-uapi -I../include/drm-uapi-experimental =
+-I../include/linux-uapi -Ilib -I../lib -I../lib/stubs/syscalls -I. -I.. -I.=
+=2E/lib/vendor -I/usr/include/cairo -I/usr/include/glib-2.0 -I/usr/lib/aarc=
+h64-linux-gnu/glib-2.0/include -I/usr/include/pixman-1 -I/usr/include/freet=
+ype2 -I/usr/include/libpng16 -I/usr/include/libdrm -I/usr/include/aarch64-l=
+inux-gnu -I/usr/include/libdrm/nouveau -I/usr/include/valgrind -fdiagnostic=
+s-color=3Dalways -D_FILE_OFFSET_BITS=3D64 -Wall -Winvalid-pch -Wextra -std=
+=3Dgnu11 -O2 -g -D_GNU_SOURCE -include config.h -D_FORTIFY_SOURCE=3D2 -Wbad=
+-function-cast -Wdeclaration-after-statement -Wformat=3D2 -Wimplicit-fallth=
+rough=3D0 -Wlogical-op -Wmissing-declarations -Wmissing-format-attribute -W=
+missing-noreturn -Wmissing-prototypes -Wnested-externs -Wold-style-definiti=
+on -Wpointer-arith -Wredundant-decls -Wshadow -Wstrict-prototypes -Wuniniti=
+alized -Wunused -Wno-clobbered -Wno-maybe-uninitialized -Wno-missing-field-=
+initializers -Wno-pointer-arith -Wno-address-of-packed-member -Wno-sign-com=
+pare -Wno-type-limits -Wno-unused-parameter -Wno-unused-result -Werror=3Dad=
+dress -Werror=3Darray-bounds -Werror=3Ddangling-pointer -Werror=3Dimplicit =
+-Werror=3Dinit-self -Werror=3Dint-conversion -Werror=3Dint-to-pointer-cast =
+-Werror=3Dmain -Werror=3Dmissing-braces -Werror=3Dnonnull -Werror=3Dpointer=
+-to-int-cast -Werror=3Dreturn-type -Werror=3Dsequence-point -Werror=3Dtrigr=
+aphs -Werror=3Dwrite-strings -fno-builtin-malloc -fno-builtin-calloc -D_LAR=
+GEFILE64_SOURCE=3D1 -pthread -MD -MQ tests/gem_change_handle.p/intel_gem_ch=
+ange_handle.c.o -MF tests/gem_change_handle.p/intel_gem_change_handle.c.o.d=
+ -o tests/gem_change_handle.p/intel_gem_change_handle.c.o -c ../tests/intel=
+/gem_change_handle.c
+> In file included from /usr/include/xf86drm.h:40,
+>                  from ../lib/drmtest.h:37,
+>                  from ../lib/igt.h:27,
+>                  from ../tests/intel/gem_change_handle.c:24:
+> ../tests/intel/gem_change_handle.c: In function 'export_import_thread':
+> ../tests/intel/gem_change_handle.c:491:44: error: 'O_CLOEXEC' undeclared =
+(first use in this function); did you mean 'MFD_CLOEXEC'?
+>   491 |                         prime_args.flags =3D DRM_CLOEXEC | DRM_RD=
+WR;
+>       |                                            ^~~~~~~~~~~
+> ../tests/intel/gem_change_handle.c:491:44: note: each undeclared identifi=
+er is reported only once for each function it appears in
+> ../tests/intel/gem_change_handle.c:491:58: error: 'O_RDWR' undeclared (fi=
+rst use in this function)
+>   491 |                         prime_args.flags =3D DRM_CLOEXEC | DRM_RD=
+WR;
+>       |                                                          ^~~~~~~~
+> ninja: build stopped: subcommand failed.
+>=20
+>=20
+> Regards,
+> Kamil
+>=20
+> >
+> > David Francis
+> >
+> > ________________________________________
+> > From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> > Sent: Thursday, November 12, 2026 8:43 AM
+> > To: Francis, David; igt-dev@lists.freedesktop.org
+> > Cc: Prosyak, Vitaly; Kamil Konieczny; Sebastian Brzezinka; Koenig, Chri=
+stian; Simona Vetter; Deucher, Alexander
+> > Subject: Re: [PATCH v4] tests/intel: Add edge case and race condition t=
+ests for GEM_CHANGE_HANDLE
+> >
+> >
+> > On 10/11/2026 15:32, David Francis wrote:
+> > > From: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> > >
+> > > Add a GPU-agnostic GEM_CHANGE_HANDLE tests. These test for basic
+> > > functionality, edge cases, and race conditions of this ioctl against
+> > > itself, gem close, gem create, and prime import and export.
+> > >
+> > > GEM_CHANGE_HANDLE is currently wired to drm_invalid_op in DRM core. T=
+his IGT
+> > > coverage is a prerequisite for validating the eventual kernel-side io=
+ctl
+> > > implementation and makes fixing its security bugs safer.
+> > >
+> > > v2: Small cleanups, including cutting some includes and no assert in =
+threads
+> > > v3: Skip if ioctl disabled
+> > > v4: hop around randomly on race tests
+> >
+> > Nice, v4 is much easier to follow. Thank you for iterating patiently!
+> >
+> > Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> >
+> > Regards,
+> >
+> > Tvrtko
+> >
+> > >
+> > > Cc: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> > > Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+> > > Cc: Sebastian Brzezinka <sebastian.brzezinka@intel.com>
+> > > Cc: Christian Konig <christian.koenig@amd.com>
+> > > Cc: Simona Vetter <simona@ffwll.ch>
+> > > Cc: Alex Deucher <alexander.deucher@amd.com>
+> > > Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
+> > > Signed-off-by: David Francis <David.Francis@amd.com>
+> > > ---
+> > >   include/drm-uapi/drm.h          |  23 +
+> > >   tests/intel/gem_change_handle.c | 728 +++++++++++++++++++++++++++++=
++++
+> > >   tests/meson.build               |   1 +
+> > >   3 files changed, 752 insertions(+)
+> > >   create mode 100644 tests/intel/gem_change_handle.c
+> > >
+> > > diff --git a/include/drm-uapi/drm.h b/include/drm-uapi/drm.h
+> > > index baa620e3f..cf131da24 100644
+> > > --- a/include/drm-uapi/drm.h
+> > > +++ b/include/drm-uapi/drm.h
+> > > @@ -619,6 +619,21 @@ struct drm_gem_open {
+> > >       __u64 size;
+> > >   };
+> > >
+> > > +/**
+> > > + * struct drm_gem_change_handle - Argument for &DRM_IOCTL_GEM_CHANGE=
+_HANDLE ioctl.
+> > > + * @handle: The handle of a gem object.
+> > > + * @new_handle: An available gem handle.
+> > > + *
+> > > + * This ioctl changes the handle of a GEM object to the specified on=
+e.
+> > > + * The new handle must be unused. On success the old handle is closed
+> > > + * and all further IOCTL should refer to the new handle only.
+> > > + * Calls to DRM_IOCTL_PRIME_FD_TO_HANDLE will return the new handle.
+> > > + */
+> > > +struct drm_gem_change_handle {
+> > > +     __u32 handle;
+> > > +     __u32 new_handle;
+> > > +};
+> > > +
+> > >   /**
+> > >    * DRM_CAP_DUMB_BUFFER
+> > >    *
+> > > @@ -1296,6 +1311,14 @@ extern "C" {
+> > >    */
+> > >   #define DRM_IOCTL_MODE_CLOSEFB              DRM_IOWR(0xD0, struct d=
+rm_mode_closefb)
+> > >
+> > > +/**
+> > > + * DRM_IOCTL_GEM_CHANGE_HANDLE - Move an object to a different handle
+> > > + *
+> > > + * Some applications (notably CRIU) need objects to have specific ge=
+m handles.
+> > > + * This ioctl changes the object at one gem handle to use a new gem =
+handle.
+> > > + */
+> > > +#define DRM_IOCTL_GEM_CHANGE_HANDLE    DRM_IOWR(0xD2, struct drm_gem=
+_change_handle)
+> > > +
+> > >   /*
+> > >    * Device specific ioctls should only be in their respective headers
+> > >    * The device specific ioctl range is from 0x40 to 0x9f.
+> > > diff --git a/tests/intel/gem_change_handle.c b/tests/intel/gem_change=
+_handle.c
+> > > new file mode 100644
+> > > index 000000000..1aef48d0a
+> > > --- /dev/null
+> > > +++ b/tests/intel/gem_change_handle.c
+> > > @@ -0,0 +1,728 @@
+> > > +// SPDX-License-Identifier: MIT
+> > > +/*
+> > > + * Copyright 2026 Advanced Micro Devices, Inc.
+> > > + * Copyright 2026 Intel Corporation
+> > > + *
+> > > + * GPU-agnostic race condition tests for GEM_CHANGE_HANDLE ioctl
+> > > + *
+> > > + * NOTE: This test is located in tests/intel/ directory because:
+> > > + * 1. All gem_* tests are traditionally placed in tests/intel/ regar=
+dless
+> > > + *    of GPU vendor, following IGT convention for GEM-related tests
+> > > + * 2. The test uses i915/gem.h and i915/gem_create.h for GEM object =
+creation
+> > > + *    on Intel platforms, though it works vendor-agnostically via DR=
+M core
+> > > + * 3. Some subtest designs (noop-same-handle, invalid-*, edge-*, fun=
+ctional-*)
+> > > + *    were proposed by Simona Vetter (Intel), hence Intel copyright =
+header
+> > > + *
+> > > + */
+> > > +
+> > > +#include <errno.h>
+> > > +#include <limits.h>
+> > > +#include <pthread.h>
+> > > +#include <sched.h>
+> > > +#include <string.h>
+> > > +
+> > > +#include "igt.h"
+> > > +#include "igt_device.h"
+> > > +#include "i915/gem.h"
+> > > +#include "i915/gem_create.h"
+> > > +
+> > > +#include "lib/amdgpu/amd_memory.h"
+> > > +#include "igt_amd.h"
+> > > +
+> > > +#define BO_SIZE (16 * 1024)
+> > > +#define RACE_DURATION_SEC 1
+> > > +
+> > > +//#define VERBOSE_LOGGING 0
+> > > +
+> > > +/**
+> > > + * TEST: gem change handle
+> > > + * Description: tests for drm ioctl GEM_CHANGE_HANDLE
+> > > + * Category: Core
+> > > + * Mega feature: General Core features
+> > > + * Sub-category: GEM handles
+> > > + * Functionality: gem change handle
+> > > + * Feature: gem
+> > > + * Run type: FULL
+> > > + *
+> > > + * SUBTEST: sanity
+> > > + * Description: Changing a handle to a new value works as intended
+> > > + *
+> > > + * SUBTEST: change_prime
+> > > + * Description: Changing a handle affects the result of prime import
+> > > + *
+> > > + * SUBTEST: new_handle_zero
+> > > + * Description: Changing a handle to 0 should fail
+> > > + *
+> > > + * SUBTEST: new_handle_exceeds_int_max
+> > > + * Description: Changing a handle to > INT_MAX should fail
+> > > + *
+> > > + * SUBTEST: new_handle_equals_old_handle
+> > > + * Description: Changing a handle to itself should fail
+> > > + *
+> > > + * SUBTEST: new_handle_taken
+> > > + * Description: Changing a handle to a value already in use should f=
+ail
+> > > + *
+> > > + * SUBTEST: invalid_handle
+> > > + * Description: Changing a non-existent handle should fail
+> > > + *
+> > > + * SUBTEST: race_change_change
+> > > + * Description: Test for race conditions between two GEM_CHANGE_HAND=
+LE
+> > > + *
+> > > + * SUBTEST: race_change_create_close
+> > > + * Description: Test for race conditions between GEM_CHANGE_HANDLE, =
+GEM_CREATE, and GEM_CLOSE
+> > > + *
+> > > + * SUBTEST: race_change_export_import
+> > > + * Description: Test for race conditions between GEM_CHANGE_HANDLE, =
+prime export, and prime import
+> > > + */
+> > > +
+> > > +IGT_TEST_DESCRIPTION("Edge case and race condition tests for GEM_CHA=
+NGE_HANDLE");
+> > > +
+> > > +/* Structs */
+> > > +
+> > > +/* Driver type detection */
+> > > +enum gpu_driver {
+> > > +     DRIVER_TYPE_UNKNOWN =3D 0,
+> > > +     DRIVER_TYPE_I915,
+> > > +     DRIVER_TYPE_AMDGPU,
+> > > +};
+> > > +
+> > > +/* GPU context structure */
+> > > +struct gpu_ctx {
+> > > +     int fd;
+> > > +     enum gpu_driver driver;
+> > > +};
+> > > +
+> > > +/* Helpers */
+> > > +
+> > > +static uint32_t gpu_create_bo(struct gpu_ctx *ctx, uint64_t size)
+> > > +{
+> > > +     uint32_t handle =3D 0;
+> > > +
+> > > +     switch (ctx->driver) {
+> > > +     case DRIVER_TYPE_I915: {
+> > > +             handle =3D gem_create(ctx->fd, size);
+> > > +             break;
+> > > +     }
+> > > +     case DRIVER_TYPE_AMDGPU:
+> > > +             handle =3D igt_amd_create_bo(ctx->fd, size);
+> > > +             break;
+> > > +     default:
+> > > +             igt_assert_f(0, "Unsupported driver\n");
+> > > +     }
+> > > +
+> > > +     igt_assert(handle !=3D 0);
+> > > +     return handle;
+> > > +}
+> > > +
+> > > +static int gem_close_bo(struct gpu_ctx *ctx, uint32_t handle)
+> > > +{
+> > > +     struct drm_gem_close close_args =3D { .handle =3D handle };
+> > > +
+> > > +     return igt_ioctl(ctx->fd, DRM_IOCTL_GEM_CLOSE, &close_args);
+> > > +}
+> > > +
+> > > +static int gem_change_handle(struct gpu_ctx *ctx, uint32_t old_handl=
+e, uint32_t new_handle)
+> > > +{
+> > > +     struct drm_gem_change_handle args =3D {
+> > > +             .handle =3D old_handle,
+> > > +             .new_handle =3D new_handle,
+> > > +     };
+> > > +     return igt_ioctl(ctx->fd, DRM_IOCTL_GEM_CHANGE_HANDLE, &args);
+> > > +}
+> > > +
+> > > +static enum gpu_driver detect_driver(int fd)
+> > > +{
+> > > +     /* Check AMDGPU first (primary target) */
+> > > +     if (is_amdgpu_device(fd))
+> > > +             return DRIVER_TYPE_AMDGPU;
+> > > +     if (is_i915_device(fd))
+> > > +             return DRIVER_TYPE_I915;
+> > > +     return DRIVER_TYPE_UNKNOWN;
+> > > +}
+> > > +
+> > > +static bool is_ioctl_disabled(struct gpu_ctx *ctx)
+> > > +{
+> > > +     uint32_t handle, new_h;
+> > > +     int ret;
+> > > +     bool result;
+> > > +
+> > > +     handle =3D gpu_create_bo(ctx, 4096);
+> > > +     new_h =3D handle + 1000;
+> > > +
+> > > +     ret =3D gem_change_handle(ctx, handle, new_h);
+> > > +     result =3D (ret !=3D 0 && errno =3D=3D EINVAL);
+> > > +
+> > > +     gem_close_bo(ctx, handle);
+> > > +     gem_close_bo(ctx, new_h);
+> > > +
+> > > +     return result;
+> > > +}
+> > > +
+> > > +#ifdef VERBOSE_LOGGING
+> > > +#define verbose_log(...) igt_info(__VA_ARGS__)
+> > > +#else
+> > > +#define verbose_log(...)
+> > > +#endif
+> > > +
+> > > +/* Sanity and Functionality tests */
+> > > +
+> > > +/**
+> > > + * test_sanity - verify rename actually works
+> > > + *
+> > > + * After a successful rename:
+> > > + * - GEM_CLOSE(old_handle) must FAIL (handle no longer exists)
+> > > + * - GEM_CLOSE(new_handle) must SUCCEED (object is there)
+> > > + */
+> > > +static void test_sanity(struct gpu_ctx *ctx)
+> > > +{
+> > > +     uint32_t handle, new_h;
+> > > +     int ret;
+> > > +
+> > > +     handle =3D gpu_create_bo(ctx, 4096);
+> > > +     new_h =3D handle + 1000;
+> > > +
+> > > +     /* Perform the rename */
+> > > +     ret =3D gem_change_handle(ctx, handle, new_h);
+> > > +     igt_assert_f(ret =3D=3D 0,
+> > > +                  "gem_change_handle(%u -> %u) failed: %s\n",
+> > > +                  handle, new_h, strerror(errno));
+> > > +
+> > > +     /* Old handle must be invalid now */
+> > > +     ret =3D gem_close_bo(ctx, handle);
+> > > +     igt_assert_f(ret < 0 && errno =3D=3D EINVAL,
+> > > +                  "GEM_CLOSE(old_handle=3D%u) should fail with EINVA=
+L, "
+> > > +                  "got ret=3D%d errno=3D%d (%s)\n",
+> > > +                  handle, ret, errno, strerror(errno));
+> > > +
+> > > +     /* New handle must be valid */
+> > > +     ret =3D gem_close_bo(ctx, new_h);
+> > > +     igt_assert_f(ret =3D=3D 0,
+> > > +                  "GEM_CLOSE(new_handle=3D%u) should succeed, "
+> > > +                  "got ret=3D%d errno=3D%d (%s)\n",
+> > > +                  new_h, ret, errno, strerror(errno));
+> > > +}
+> > > +
+> > > +/**
+> > > + * test_change_export - changing a handle affects prime import
+> > > + *
+> > > + * Importing a prime object that has had its handle changed since it=
+ was
+> > > + * exported should get the new handle
+> > > + */
+> > > +static void test_change_export(struct gpu_ctx *ctx)
+> > > +{
+> > > +     int ret, handle1, handle2, dmabuf_fd, imported_handle;
+> > > +
+> > > +     /* Create a handle and export it */
+> > > +     handle1 =3D gpu_create_bo(ctx, 4096);
+> > > +     handle2 =3D handle1 + 1;
+> > > +     dmabuf_fd =3D prime_handle_to_fd(ctx->fd, handle1);
+> > > +
+> > > +     /* When you import, you get the same handle back */
+> > > +     imported_handle =3D prime_fd_to_handle(ctx->fd, dmabuf_fd);
+> > > +     igt_assert_eq(imported_handle, handle1);
+> > > +
+> > > +     /* Change the handle (should succeed) */
+> > > +     ret =3D gem_change_handle(ctx, handle1, handle2);
+> > > +     igt_assert_eq(ret, 0);
+> > > +
+> > > +     /* Import, should get the new handle */
+> > > +     imported_handle =3D prime_fd_to_handle(ctx->fd, dmabuf_fd);
+> > > +     igt_assert_eq(imported_handle, handle2);
+> > > +
+> > > +     /* Confirm gem object is at the new handle */
+> > > +     igt_assert_eq(gem_close_bo(ctx, handle2), 0);
+> > > +
+> > > +     ret =3D gem_close_bo(ctx, handle1);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, EINVAL);
+> > > +
+> > > +     close(dmabuf_fd);
+> > > +}
+> > > +
+> > > +/* Edge case and fail case tests */
+> > > +
+> > > +/**
+> > > + * test_new_handle_zero - new_handle =3D 0 should fail
+> > > + *
+> > > + * 0 is not a valid gem handle.
+> > > + */
+> > > +static void test_new_handle_zero(struct gpu_ctx *ctx)
+> > > +{
+> > > +     uint32_t handle;
+> > > +     int ret;
+> > > +
+> > > +     handle =3D gpu_create_bo(ctx, 4096);
+> > > +
+> > > +     /* new_handle =3D 0 must fail with -EINVAL */
+> > > +     ret =3D gem_change_handle(ctx, handle, 0);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, EINVAL);
+> > > +
+> > > +     /* Original handle should still be valid */
+> > > +     igt_assert_eq(gem_close_bo(ctx, handle), 0);
+> > > +}
+> > > +
+> > > +/**
+> > > + * test_new_handle_exceeds_int_max - new_handle > INT_MAX should fail
+> > > + *
+> > > + * The kernel enforces an idr_alloc() limitation: new_handle must be=
+ <=3D INT_MAX.
+> > > + */
+> > > +static void test_new_handle_exceeds_int_max(struct gpu_ctx *ctx)
+> > > +{
+> > > +     uint32_t handle;
+> > > +     int ret;
+> > > +
+> > > +     handle =3D gpu_create_bo(ctx, 4096);
+> > > +
+> > > +     /* new_handle > INT_MAX must fail with -EINVAL */
+> > > +     ret =3D gem_change_handle(ctx, handle, (uint32_t)INT_MAX + 1);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, EINVAL);
+> > > +
+> > > +     /* Also test 0xFFFFFFFF */
+> > > +     ret =3D gem_change_handle(ctx, handle, 0xFFFFFFFF);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, EINVAL);
+> > > +
+> > > +     /* Original handle should still be valid */
+> > > +     igt_assert_eq(gem_close_bo(ctx, handle), 0);
+> > > +}
+> > > +
+> > > +/**
+> > > + * test_new_handle_equals_old_handle - new_handle =3D old_handle sho=
+uld fail
+> > > + *
+> > > + * The ioctl treats old_handle =3D new_handle as invalid input.
+> > > + */
+> > > +static void test_new_handle_equals_old_handle(struct gpu_ctx *ctx)
+> > > +{
+> > > +     uint32_t handle;
+> > > +     int ret;
+> > > +
+> > > +     handle =3D gpu_create_bo(ctx, 4096);
+> > > +
+> > > +     /* new_handle =3D old_handle must fail with -EINVAL */
+> > > +     ret =3D gem_change_handle(ctx, handle, handle);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, EINVAL);
+> > > +
+> > > +     /* same thing if handle doesn't exist */
+> > > +     ret =3D gem_change_handle(ctx, handle + 1, handle + 1);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, EINVAL);
+> > > +
+> > > +     /* Original handle should still be valid */
+> > > +     igt_assert_eq(gem_close_bo(ctx, handle), 0);
+> > > +}
+> > > +
+> > > +/**
+> > > + * test_new_handle_taken - new_handle being the handle of another ge=
+m object must fail
+> > > + *
+> > > + * Not allowed to change a handle to a handle that's already taken
+> > > + */
+> > > +static void test_new_handle_taken(struct gpu_ctx *ctx)
+> > > +{
+> > > +     uint32_t handle, handle_2;
+> > > +     int ret;
+> > > +
+> > > +     handle =3D gpu_create_bo(ctx, 4096);
+> > > +     handle_2 =3D gpu_create_bo(ctx, 4096);
+> > > +
+> > > +     /* new_handle is taken must fail with -EBUSY */
+> > > +     ret =3D gem_change_handle(ctx, handle, handle_2);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, EBUSY);
+> > > +
+> > > +     /* And the other way */
+> > > +     ret =3D gem_change_handle(ctx, handle_2, handle);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, EBUSY);
+> > > +
+> > > +     /* Original handles should still be valid */
+> > > +     igt_assert_eq(gem_close_bo(ctx, handle), 0);
+> > > +     igt_assert_eq(gem_close_bo(ctx, handle_2), 0);
+> > > +}
+> > > +
+> > > +/**
+> > > + * test_invalid_handle - non-existent handle should fail
+> > > + *
+> > > + * Using a handle that doesn't exist should return -ENOENT.
+> > > + */
+> > > +static void test_invalid_handle(struct gpu_ctx *ctx)
+> > > +{
+> > > +     int ret;
+> > > +
+> > > +     /* Use a handle that was never allocated */
+> > > +     ret =3D gem_change_handle(ctx, 0xDEAD, 0xBEEF);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, ENOENT);
+> > > +
+> > > +     /* Handle 0 is also invalid */
+> > > +     ret =3D gem_change_handle(ctx, 0, 100);
+> > > +     igt_assert(ret < 0);
+> > > +     igt_assert_eq(errno, ENOENT);
+> > > +}
+> > > +
+> > > +/* Race condition test structs and helpers */
+> > > +
+> > > +struct change_handle_thread_data {
+> > > +     struct gpu_ctx *ctx;
+> > > +     uint32_t handles[4];
+> > > +     bool running;
+> > > +     int unexpected_errno;
+> > > +     pthread_barrier_t barrier;
+> > > +};
+> > > +
+> > > +static void set_up_context(struct change_handle_thread_data *data, s=
+truct gpu_ctx *ctx)
+> > > +{
+> > > +     data->handles[0] =3D gpu_create_bo(ctx, BO_SIZE);
+> > > +     igt_assert(data->handles[0] !=3D 0);
+> > > +     data->handles[1] =3D gpu_create_bo(ctx, BO_SIZE);
+> > > +     igt_assert(data->handles[1] !=3D 0);
+> > > +
+> > > +     data->ctx =3D ctx;
+> > > +     data->handles[2] =3D max(data->handles[0], data->handles[1]) + =
+0x10;
+> > > +     data->handles[3] =3D max(data->handles[0], data->handles[1]) + =
+0x20;
+> > > +     data->unexpected_errno =3D 0;
+> > > +     __atomic_store_n(&data->running, true, __ATOMIC_RELEASE);
+> > > +
+> > > +     pthread_barrier_init(&data->barrier, NULL, 2);
+> > > +}
+> > > +
+> > > +/* Race condition test threads */
+> > > +
+> > > +static void *change_handle_thread(void *arg)
+> > > +{
+> > > +     struct change_handle_thread_data *data =3D arg;
+> > > +     uint32_t *h =3D data->handles;
+> > > +     int ret, old, new;
+> > > +
+> > > +     pthread_barrier_wait(&data->barrier);
+> > > +
+> > > +     while (__atomic_load_n(&data->running, __ATOMIC_ACQUIRE)) {
+> > > +             old =3D h[rand() % 4];
+> > > +             new =3D h[rand() % 4];
+> > > +             ret =3D gem_change_handle(data->ctx, old, new);
+> > > +             /*
+> > > +              * Expected errors:
+> > > +              * - ENOENT: old handle invalid
+> > > +              * - EBUSY: target handle occupied (collision detected =
+during idr_alloc)
+> > > +              * - EINVAL: old and new handle are the same
+> > > +              */
+> > > +             if (ret !=3D 0 && errno !=3D ENOENT && errno !=3D EBUSY=
+ && old !=3D new)
+> > > +                     data->unexpected_errno =3D errno;
+> > > +
+> > > +             sched_yield();
+> > > +     }
+> > > +
+> > > +     return NULL;
+> > > +}
+> > > +
+> > > +static void *close_recreate_thread(void *arg)
+> > > +{
+> > > +     struct change_handle_thread_data *data =3D arg;
+> > > +     uint32_t *h =3D data->handles;
+> > > +     int handle, ret, i =3D 0;
+> > > +
+> > > +     pthread_barrier_wait(&data->barrier);
+> > > +
+> > > +     while (__atomic_load_n(&data->running, __ATOMIC_ACQUIRE)) {
+> > > +             /* Close a handle; keep trying until success */
+> > > +             while (true) {
+> > > +                     ret =3D gem_close_bo(data->ctx, h[i]);
+> > > +                     if (ret =3D=3D 0) {
+> > > +                             verbose_log("[CLOSE-TID:%lu] Closed han=
+dle %u\n",
+> > > +                                         (unsigned long)pthread_self=
+(), h[i]);
+> > > +                             break;
+> > > +                     }
+> > > +
+> > > +                     i  =3D (i + 1) % 4;
+> > > +
+> > > +                     if (!__atomic_load_n(&data->running, __ATOMIC_A=
+CQUIRE))
+> > > +                             return NULL;
+> > > +             }
+> > > +
+> > > +             /* Open a handle */
+> > > +             handle =3D gpu_create_bo(data->ctx, BO_SIZE);
+> > > +             verbose_log("[CLOSE-TID:%lu] Created new BO with handle=
+ %u\n",
+> > > +                         (unsigned long)tid, handle);
+> > > +
+> > > +             /* If the opened handle isn't one of the four ones being
+> > > +              * shuffled, change_handle it in. Keep trying until suc=
+cess.
+> > > +              */
+> > > +             if (handle !=3D h[0] && handle !=3D h[1] && handle !=3D=
+ h[2] && handle !=3D h[3]) {
+> > > +                     while (true) {
+> > > +                             ret =3D gem_change_handle(data->ctx, ha=
+ndle, h[i]);
+> > > +                             if (ret =3D=3D 0) {
+> > > +                                     verbose_log("[CLOSE-TID:%lu] Ch=
+ange handle %u to %u\n",
+> > > +                                                 (unsigned long)pthr=
+ead_self(), handle, h[i]);
+> > > +                                     break;
+> > > +                             }
+> > > +
+> > > +                             if (ret !=3D 0 && errno !=3D ENOENT && =
+errno !=3D EBUSY)
+> > > +                                     data->unexpected_errno =3D errn=
+o;
+> > > +
+> > > +                             i  =3D (i + 1) % 4;
+> > > +
+> > > +                             if (!__atomic_load_n(&data->running, __=
+ATOMIC_ACQUIRE))
+> > > +                                     return NULL;
+> > > +                     }
+> > > +             }
+> > > +
+> > > +             sched_yield();
+> > > +     }
+> > > +
+> > > +     return NULL;
+> > > +}
+> > > +
+> > > +static void *export_import_thread(void *arg)
+> > > +{
+> > > +     struct change_handle_thread_data *data =3D arg;
+> > > +     struct drm_prime_handle prime_args;
+> > > +     uint32_t *h =3D data->handles;
+> > > +     int handle, i, ret, dmabuf_fd;
+> > > +
+> > > +     pthread_barrier_wait(&data->barrier);
+> > > +
+> > > +     while (__atomic_load_n(&data->running, __ATOMIC_ACQUIRE)) {
+> > > +             /* Export a handle; keep trying until success */
+> > > +             i =3D 0;
+> > > +             while (true) {
+> > > +                     prime_args.handle =3D h[i];
+> > > +                     prime_args.flags =3D DRM_CLOEXEC | DRM_RDWR;
+> > > +                     ret =3D igt_ioctl(data->ctx->fd, DRM_IOCTL_PRIM=
+E_HANDLE_TO_FD, &prime_args);
+> > > +                     if (ret =3D=3D 0) {
+> > > +                             verbose_log("[PRIME-TID:%lu] Exported h=
+andle %u\n",
+> > > +                                         (unsigned long)pthread_self=
+, h[i]);
+> > > +                             break;
+> > > +                     }
+> > > +
+> > > +                     i +=3D 1;
+> > > +                     if (i > 3)
+> > > +                             i =3D 0;
+> > > +
+> > > +                     if (!__atomic_load_n(&data->running, __ATOMIC_A=
+CQUIRE))
+> > > +                             return NULL;
+> > > +             }
+> > > +
+> > > +             dmabuf_fd =3D prime_args.fd;
+> > > +
+> > > +             /* Import the handle; it should be one of the four hand=
+les in the shuffle */
+> > > +             prime_args.fd =3D dmabuf_fd;
+> > > +             prime_args.flags =3D 0;
+> > > +             ret =3D igt_ioctl(data->ctx->fd, DRM_IOCTL_PRIME_FD_TO_=
+HANDLE, &prime_args);
+> > > +             if (ret !=3D 0)
+> > > +                     data->unexpected_errno =3D errno;
+> > > +
+> > > +             handle =3D prime_args.handle;
+> > > +             verbose_log("[PRIME-TID:%lu] Imported; got handle %u\n",
+> > > +                         (unsigned long)tid, handle);
+> > > +             if(handle !=3D h[0] && handle !=3D h[1] && handle !=3D =
+h[2] && handle !=3D h[3])
+> > > +                     data->unexpected_errno =3D ERANGE;
+> > > +
+> > > +             close(dmabuf_fd);
+> > > +
+> > > +             sched_yield();
+> > > +     }
+> > > +
+> > > +     return NULL;
+> > > +}
+> > > +
+> > > +/* Race condition tests */
+> > > +
+> > > +/**
+> > > + * test_race_change_change - Test for race conditions of change_hand=
+le against itself
+> > > + *
+> > > + * Start two threads, each of which constantly attempt changes betwe=
+en four different handles
+> > > + * Try to catch race conditions such as changing same handle to two =
+different handles,
+> > > + * Changing two handles to the same handle, changing a handle to a h=
+andle itself being changed,
+> > > + * etc.
+> > > + */
+> > > +static void test_race_change_change(struct gpu_ctx *ctx)
+> > > +{
+> > > +     pthread_t thread_change_1, thread_change_2;
+> > > +     struct change_handle_thread_data data =3D {0};
+> > > +     int num_handles, ret;
+> > > +
+> > > +     set_up_context(&data, ctx);
+> > > +
+> > > +     /* Start both threads simultaneously */
+> > > +     igt_assert_eq(pthread_create(&thread_change_1, NULL, change_han=
+dle_thread, &data), 0);
+> > > +     igt_assert_eq(pthread_create(&thread_change_2, NULL, change_han=
+dle_thread, &data), 0);
+> > > +
+> > > +     /* Let them race */
+> > > +     sleep(RACE_DURATION_SEC);
+> > > +
+> > > +     __atomic_store_n(&data.running, false, __ATOMIC_RELEASE);
+> > > +     pthread_join(thread_change_1, NULL);
+> > > +     pthread_join(thread_change_2, NULL);
+> > > +
+> > > +     pthread_barrier_destroy(&data.barrier);
+> > > +
+> > > +     igt_assert_eq(data.unexpected_errno, 0);
+> > > +
+> > > +     /* Exactly two gem objects should still exist */
+> > > +     num_handles =3D 0;
+> > > +     for (int i =3D 0; i < 4; i++) {
+> > > +             ret =3D gem_close_bo(ctx, data.handles[i]);
+> > > +
+> > > +             if (ret =3D=3D 0) {
+> > > +                     num_handles +=3D 1;
+> > > +             } else {
+> > > +                     igt_assert_eq(errno, EINVAL);
+> > > +             }
+> > > +     }
+> > > +     igt_assert_eq(num_handles, 2);
+> > > +}
+> > > +
+> > > +/**
+> > > + * test_race_change_create_close - Test for race conditions of chang=
+e_handle against gem create / close
+> > > + *
+> > > + * Start two threads, one of which attempts to change between four h=
+andles while the other alternates
+> > > + * closing a gem handle and creating new ones. Test for race conditi=
+ons such as change a handle that's
+> > > + * being closed or change a handle to a value that's being created.
+> > > + */
+> > > +static void test_race_change_create_close(struct gpu_ctx *ctx)
+> > > +{
+> > > +     pthread_t thread_change, thread_create_close;
+> > > +     struct change_handle_thread_data data =3D {0};
+> > > +     int num_handles, ret;
+> > > +
+> > > +     set_up_context(&data, ctx);
+> > > +
+> > > +     /* Start both threads simultaneously */
+> > > +     igt_assert_eq(pthread_create(&thread_change, NULL, change_handl=
+e_thread, &data), 0);
+> > > +     igt_assert_eq(pthread_create(&thread_create_close, NULL, close_=
+recreate_thread, &data), 0);
+> > > +
+> > > +     /* Let them race */
+> > > +     sleep(RACE_DURATION_SEC);
+> > > +
+> > > +     __atomic_store_n(&data.running, false, __ATOMIC_RELEASE);
+> > > +     pthread_join(thread_change, NULL);
+> > > +     pthread_join(thread_create_close, NULL);
+> > > +
+> > > +     pthread_barrier_destroy(&data.barrier);
+> > > +
+> > > +     igt_assert_eq(data.unexpected_errno, 0);
+> > > +
+> > > +     /* Depending on where create / close ended up, there can be 1 o=
+r 2 handles open */
+> > > +     num_handles =3D 0;
+> > > +     for (int i =3D 0; i < 4; i++) {
+> > > +             ret =3D gem_close_bo(ctx, data.handles[i]);
+> > > +
+> > > +             if (ret =3D=3D 0) {
+> > > +                     num_handles +=3D 1;
+> > > +             } else {
+> > > +                     igt_assert_eq(errno, EINVAL);
+> > > +             }
+> > > +     }
+> > > +     igt_assert(num_handles >=3D 1 && num_handles <=3D 2);
+> > > +}
+> > > +
+> > > +/**
+> > > + * test_race_change_export_import - Test for race conditions of chan=
+ge_handle against prime export / import
+> > > + *
+> > > + * Start two threads, one of which attempts to change between four h=
+andles while the other exports
+> > > + * handles, then imports them again. Check for race conditions such =
+as changing a handle while exporting
+> > > + * it or important a handle while changing it.
+> > > + */
+> > > +static void test_race_change_export_import(struct gpu_ctx *ctx)
+> > > +{
+> > > +     pthread_t thread_change, thread_export_import;
+> > > +     struct change_handle_thread_data data =3D {0};
+> > > +     int num_handles, ret;
+> > > +
+> > > +     set_up_context(&data, ctx);
+> > > +
+> > > +     /* Start both threads simultaneously */
+> > > +     igt_assert_eq(pthread_create(&thread_change, NULL, change_handl=
+e_thread, &data), 0);
+> > > +     igt_assert_eq(pthread_create(&thread_export_import, NULL, expor=
+t_import_thread, &data), 0);
+> > > +
+> > > +     /* Let them race */
+> > > +     sleep(RACE_DURATION_SEC);
+> > > +
+> > > +     __atomic_store_n(&data.running, false, __ATOMIC_RELEASE);
+> > > +     pthread_join(thread_change, NULL);
+> > > +     pthread_join(thread_export_import, NULL);
+> > > +
+> > > +     pthread_barrier_destroy(&data.barrier);
+> > > +
+> > > +     igt_assert_eq(data.unexpected_errno, 0);
+> > > +
+> > > +     /* Exporting a handle doesn't close it, so should still be exac=
+tly 2 */
+> > > +     num_handles =3D 0;
+> > > +     for (int i =3D 0; i < 4; i++) {
+> > > +             ret =3D gem_close_bo(ctx, data.handles[i]);
+> > > +
+> > > +             if (ret =3D=3D 0) {
+> > > +                     num_handles +=3D 1;
+> > > +             } else {
+> > > +                     igt_assert_eq(errno, EINVAL);
+> > > +             }
+> > > +     }
+> > > +     igt_assert_eq(num_handles, 2);
+> > > +}
+> > > +
+> > > +int igt_main()
+> > > +{
+> > > +     struct gpu_ctx ctx =3D { .fd =3D -1 };
+> > > +
+> > > +     igt_fixture() {
+> > > +             ctx.fd =3D drm_open_driver_render(DRIVER_ANY);
+> > > +             igt_require(ctx.fd >=3D 0);
+> > > +
+> > > +             ctx.driver =3D detect_driver(ctx.fd);
+> > > +             igt_require_f(ctx.driver !=3D DRIVER_TYPE_UNKNOWN,
+> > > +                           "Unsupported GPU driver\n");
+> > > +
+> > > +             if (ctx.driver =3D=3D DRIVER_TYPE_I915)
+> > > +                     igt_require_gem(ctx.fd);
+> > > +
+> > > +             igt_require_f(!is_ioctl_disabled(&ctx),
+> > > +                           "GEM_CHANGE_HANDLE ioctl appears to be di=
+sabled.\n");
+> > > +     }
+> > > +
+> > > +     igt_describe("Sanity Test: Change handle actually changes handl=
+e");
+> > > +     igt_subtest("sanity")
+> > > +             test_sanity(&ctx);
+> > > +
+> > > +     igt_describe("Functionality Test: Change handle affects result =
+of prime import");
+> > > +     igt_subtest("change_prime")
+> > > +             test_change_export(&ctx);
+> > > +
+> > > +     igt_describe("Edge Case: New handle =3D 0 should fail");
+> > > +     igt_subtest("new_handle_zero")
+> > > +             test_new_handle_zero(&ctx);
+> > > +
+> > > +     igt_describe("Edge Case: New handle > INT_MAX should fail");
+> > > +     igt_subtest("new_handle_exceeds_int_max")
+> > > +             test_new_handle_exceeds_int_max(&ctx);
+> > > +
+> > > +     igt_describe("Edge Case: Changing a handle to itself should fai=
+l");
+> > > +     igt_subtest("new_handle_equals_old_handle")
+> > > +             test_new_handle_equals_old_handle(&ctx);
+> > > +
+> > > +     igt_describe("Edge Case: Change a handle to a value which is ta=
+ken should fail");
+> > > +     igt_subtest("new_handle_taken")
+> > > +             test_new_handle_taken(&ctx);
+> > > +
+> > > +     igt_describe("Edge Case: Changing a non-existent handle should =
+fail");
+> > > +     igt_subtest("invalid_handle")
+> > > +             test_invalid_handle(&ctx);
+> > > +
+> > > +     igt_describe("Race: Changing handle vs. Changing handle");
+> > > +     igt_subtest("race_change_change")
+> > > +             test_race_change_change(&ctx);
+> > > +
+> > > +     igt_describe("Race: Changing handle vs. Create / Close");
+> > > +     igt_subtest("race_change_create_close")
+> > > +             test_race_change_create_close(&ctx);
+> > > +
+> > > +     igt_describe("Race: Changing handle vs. Export / Import");
+> > > +     igt_subtest("race_change_export_import")
+> > > +             test_race_change_export_import(&ctx);
+> > > +
+> > > +     igt_fixture() {
+> > > +             drm_close_driver(ctx.fd);
+> > > +     }
+> > > +
+> > > +}
+> > > diff --git a/tests/meson.build b/tests/meson.build
+> > > index 519a9e727..567878df6 100644
+> > > --- a/tests/meson.build
+> > > +++ b/tests/meson.build
+> > > @@ -105,6 +105,7 @@ intel_i915_progs =3D [
+> > >       'gem_blits',
+> > >       'gem_busy',
+> > >       'gem_caching',
+> > > +     'gem_change_handle',
+> > >       'gem_create',
+> > >       'gem_ccs',
+> > >       'gem_close',
+> >
