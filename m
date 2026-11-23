@@ -2,160 +2,154 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB14606A31A
-	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 05:04:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7ED606A327
+	for <igt-dev@archiver.kernel.org>; Mon, 23 Nov 2026 06:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=IQf11Eg6;
-	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=lo1rlTJR
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=aFBIMOjU;
+	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=FrUQYRWc
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 347AE10E105;
-	Mon, 23 Nov 2026 05:04:45 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by gabe.freedesktop.org (Postfix) with ESMTPS id EE30A10E09F;
- Mon, 23 Nov 2026 05:03:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2E4CA10E13B;
+	Mon, 23 Nov 2026 06:23:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 50AE910E13B
+ for <igt-dev@lists.freedesktop.org>; Mon, 23 Nov 2026 06:21:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795410216; x=1826946216;
+ t=1795414920; x=1826950920;
  h=from:to:cc:subject:date:message-id:references:
  in-reply-to:content-transfer-encoding:mime-version;
- bh=W+V/PtOVKGQDbkuj2gMThpz8U5Dcw+V20IwiYSC8BoA=;
- b=IQf11Eg69GrVhPmb+0i85scCn4XC7Aofl5+3Pc6A+LZp1qqiZdhZs5B0
- U0dcpXDTFm/htYo3pIMuJtVSSqzcXTr35IRI7n9f18+h4sp5C3pwLzQEU
- /WlOObVfHfUjQj6r5yALEAh1uJPMK+VCehxBjCd2oZQWY3tSLuwO1XisH
- SMJDhyKtbXJ09pJiGk49zk7aQA5t/ImaIRIt+VA65Xj5ISnlHqGJllak5
- /QyEebtenOrb865LQbHXF67LMrLEnABf7taB4q3P8V1J9HZR17S1Z05/B
- +YenpDvf2qWGpvf2gscYFX3jsU89y098t65ol/R3n/mdxrQrEgGlFrehB Q==;
-X-CSE-ConnectionGUID: j1K+AAHoRh2k3b8eq1c1nA==
-X-CSE-MsgGUID: HlrLvmZzSy63JVvU7oj3AQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4093633"
+ bh=wVFRpI1phA+xZNxtEOv4hqTNXK61M5eUFQ7OF6fA1zI=;
+ b=aFBIMOjUMqbMzhX3x3VxIDKOsvE5qcEPKms6573HTpBfT3dHrzk7vYCY
+ c6U/5+fupcmUL6FM67hR4xe7lHjAapgi9sfg7tAITUgb4g7PPh1QXnCJa
+ uP7SayrkhSxFmMYGkn/Tfz8mb5t+r9z7OC5WALh+9q/C6IJCT761ZLuzS
+ M7GLh3GNHL3xd64ecAKlhP9i20MOgCAzb9UAYLuTAOHokLQ4itoc9M2sM
+ ct52Ywzob8Ty2le3gTfFzQ/0Qsdk/eQ7jBbAnv2WDKWpqO7Xhbvn5+CGZ
+ uk3RsFA/XwyVNX8sf9cnTYxrFlt+fPOIIIKZs8IdzRxTBzgyDBPc7qCX6 Q==;
+X-CSE-ConnectionGUID: 8NbirIdbQCmHueOJxYPDlA==
+X-CSE-MsgGUID: RqYyM+ZpQ4eozaXfZnXZpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11974"; a="4058620"
 X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; 
-   d="scan'208";a="4093633"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
- by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2026 21:03:35 -0800
-X-CSE-ConnectionGUID: vy1nWIeQSd+MR+/473dj/Q==
-X-CSE-MsgGUID: A7f9gKaFSHmFr1UBY8qE1Q==
+   d="scan'208";a="4058620"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+ by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2026 22:21:59 -0800
+X-CSE-ConnectionGUID: n+yYe4R3SkmQ27XQT/8QYA==
+X-CSE-MsgGUID: Q8KfJUbrQf2mFGChkkD7CQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11083472"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
- by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 22 Nov 2026 21:03:34 -0800
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57; Sun, 22 Nov 2026 21:03:34 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+X-IronPort-AV: E=Sophos;i="6.27,227,1787036400"; d="scan'208";a="11555605"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+ by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 22 Nov 2026 22:21:59 -0800
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
  ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57 via Frontend Transport; Sun, 22 Nov 2026 21:03:34 -0800
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.71)
- by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ 15.2.2562.57; Sun, 22 Nov 2026 22:21:58 -0800
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.56; Sun, 22 Nov 2026 21:03:33 -0800
+ 15.2.2562.57 via Frontend Transport; Sun, 22 Nov 2026 22:21:58 -0800
+Received: from BL0PR03CU003.outbound.protection.outlook.com (52.101.53.9) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.56; Sun, 22 Nov 2026 22:21:57 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Af4koQTYuQPOhKATyKZUQG/qC6G7jplJgZlh+CMhyIaU/4HRlQ0s0BxsrEHVE1v6Sna0Yv0cSwlf2I625KqL0auL64iCtH7YQx+/z46fV6y2K6funb7fMkO5oi+RX3ZJVtL6IcYJwYXIJ2sEBjR2nWW2nfGI60G+HlaF+FPHTZ4biE7XO33SCqi7Tt5A8S9aYlsg/a7+1SqjDkeJ7I/ifddul4FMC5VaJb/GFM2shsLTfpZ738yhDMFlnO9vk014eGTIfdThE1sET+tu7ppyyRo+6SOugxJEsn/BpZEUNTiTLAXb5evDWlAokbWTIcFnfai6tF2s7HIalO3QDBEF2w==
+ b=TA1Mbvd53TJG+JhB8V4Iw8aqhPHFoZwtcvXMYr/HC2cK0yflWcEuTdzbDLliy7CBvj9aWJa8in2CBnPsAg8wuqQRnTukgeTRpPdmkSwz9biWGzQHRSiKZbg5x1ulPTDfh3F3R0Hzp30IjShhc7jPxT7tXUQA6j/SStbZwQxkjg9nRYlYIUcuWfHdLskGmW1qfisesmFYs5vQuvnmunm5xBqdVb3Ime89CGdVguTBKF/+Fq6Ix/GoqP+h35GtGerATitYRXNmdbyh7X5b0T+VF82LbNWWcfgk8CS5IE3B0lZ/il2f3ToUehWzF+TMH7CqBCQsouhGjI4UXxWn4PL5rA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8H1gKKeGKfpOy0J7NF9Eeffku2q00yRUhn5fxz5zbkM=;
- b=SFdVAG3k1WViHXHrpC+wKosoIgvFY3JihBIY0jKkSf2b3ruBOCCvvDFw/GK7BaqMfm9jYHUML79K0x1x0zgwlzj2plXUIXG9tnyMt/UPVwatDYsU9t22TRg7ieyf0hNjJXnVVEuMYroa/zd+fnVhiushiUxr+aW28Uc9IrH0YoADwwc3rDC4Qifj/d6pJX0RODoCxH4ij/BNfSfZrhcZmREFEKynTjqOBn0HmGEKIkoa7y9JTlHoV/XCwSVGHAWVozed8vRWuccRxEkkaLJFCecbejl7lUuQAsgKS4SASLeBN1vMWHNde/6QmBSlXHwwFqNKU6yEl27IdMJLONzjmg==
+ bh=D48hgWjweEjIYwReum72vsgmfePuLx97zEMoRcuLc28=;
+ b=fyh5WM165wllATMWrciIQZ/VOei4v/U5LDgf93/EIcRXwR6GdFA4OfS15ZFM7SiW3vJrKGOU8f1got/ZEh/Li1ZpisFo0Mq8JuLoNUxY/VisgAUCEvpdBPJVOmIEtIoMa7QcvDMc+AV1NjOKSkqIk4byUIEnog71VAmxuKpr41vbFc/uMYlxGW0Th1xUucOkUqu2zVUbhq7TvFNiIyzx1U45t75K1xifg0KbNk4IpxoCamzm2DICapfHyJw+7xMd94SC+rq/Krjsxt+NuAesm5NWodRCMSrC6L1VLUaXLqQQdOSI+9ZgV6DmurpbA5HiBSRBpdgrfz/ltUkwhkKyTQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8H1gKKeGKfpOy0J7NF9Eeffku2q00yRUhn5fxz5zbkM=;
- b=lo1rlTJRLrytghB+cqlxDf7xL1BW7pnN+63kbdRRnFOehDgud3mqk6GK+gaOT4XSA15u10/jWewpr8Ocx5DRXIgg4FY0dsjRbo0HyYywYNziMeyY4xFtM9Uz3X4+Cc6MuTCWfnIuFcj+WNIv7q/qRolCVKTGHn7HWSvDwKNsql8=
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com (2603:10b6:610:176::19)
- by PH8PR11MB6973.namprd11.prod.outlook.com (2603:10b6:510:226::21)
- with Microsoft SMTP Server (version=TLS1_2,
+ bh=D48hgWjweEjIYwReum72vsgmfePuLx97zEMoRcuLc28=;
+ b=FrUQYRWcMv/FKImyvOFjCpmpZBQSCktAcHTQqRULdhGzBGlprFP7SNQuJAJE7+7YosXm/lns+ZIIwKXO+JN3/kVo5DRooozvzuW/pklaGhaBO5dx6PKddIRZsJN8pQSH04lKZsZBYp4JRhceSe1z37ggeBT1GIynWQTB+gYSAPY=
+Received: from DM4PR11MB5325.namprd11.prod.outlook.com (2603:10b6:5:390::19)
+ by IA0PR11MB8397.namprd11.prod.outlook.com (2603:10b6:208:48b::21) with
+ Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.639.12; Mon, 23 Nov
- 2026 05:03:30 +0000
-Received: from CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::52c4:16e1:a67e:63bc]) by CH3PR11MB8434.namprd11.prod.outlook.com
- ([fe80::52c4:16e1:a67e:63bc%6]) with mapi id 15.21.0639.012; Mon, 23 Nov 2026
- 05:03:30 +0000
-From: "Dandamudi, Priyanka" <priyanka.dandamudi@intel.com>
-To: "Lin, Shuicheng" <shuicheng.lin@intel.com>,
+ 2026 06:21:50 +0000
+Received: from DM4PR11MB5325.namprd11.prod.outlook.com
+ ([fe80::a1ba:c191:333b:b6a0]) by DM4PR11MB5325.namprd11.prod.outlook.com
+ ([fe80::a1ba:c191:333b:b6a0%5]) with mapi id 15.21.0639.011; Mon, 23 Nov 2026
+ 06:21:50 +0000
+From: "B, Jeevan" <jeevan.b@intel.com>
+To: "Sharma, Swati2" <swati2.sharma@intel.com>,
  "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>
-CC: "Lin, Shuicheng" <shuicheng.lin@intel.com>,
- "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, "Kamil
- Konieczny" <kamil.konieczny@linux.intel.com>, "Auld, Matthew"
- <matthew.auld@intel.com>, "Kempczynski, Zbigniew"
- <zbigniew.kempczynski@intel.com>
-Subject: RE: [PATCH i-g-t] tests/intel/xe_create: Add
- create-huge-sysmem-defer-backing subtest
-Thread-Topic: [PATCH i-g-t] tests/intel/xe_create: Add
- create-huge-sysmem-defer-backing subtest
-Thread-Index: AQHdeZtOqoiaF4Nx6Eq2xEa0IyrAt7c7HJzg
-Date: Mon, 23 Nov 2026 05:03:30 +0000
-Message-ID: <CH3PR11MB84343502B29909942687E0B28D452@CH3PR11MB8434.namprd11.prod.outlook.com>
-References: <20261121093216.1509828-2-shuicheng.lin@intel.com>
-In-Reply-To: <20261121093216.1509828-2-shuicheng.lin@intel.com>
-Accept-Language: en-US, en-IN
+CC: "Sharma, Swati2" <swati2.sharma@intel.com>
+Subject: RE: [PATCH i-g-t] tests/kms_color_pipeline: Limit simulation to
+ first/last planes
+Thread-Topic: [PATCH i-g-t] tests/kms_color_pipeline: Limit simulation to
+ first/last planes
+Thread-Index: AQHdeSQ3sd6h9wux2kSKwMKLIBg/vrc7MtrA
+Date: Mon, 23 Nov 2026 06:21:50 +0000
+Message-ID: <DM4PR11MB53255DFC4EF1A0671DD694D390452@DM4PR11MB5325.namprd11.prod.outlook.com>
+References: <20261120192818.1894936-1-swati2.sharma@intel.com>
+In-Reply-To: <20261120192818.1894936-1-swati2.sharma@intel.com>
+Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
 authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB8434:EE_|PH8PR11MB6973:EE_
-x-ms-office365-filtering-correlation-id: 8e6b250e-3343-455d-c360-08df491f1dd9
+x-ms-traffictypediagnostic: DM4PR11MB5325:EE_|IA0PR11MB8397:EE_
+x-ms-office365-filtering-correlation-id: 87b6cf97-206a-4b3c-dc4d-08df492a0f20
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;
- ARA:13230040|376014|10070799003|366016|1800799024|23010399003|18002099003|22082099003|6133799003|261009223027099003|56012099006|11063799006|10067099003|5023799004|261102123227099003|261022105027099003|261026140227099003|261026121527099003|261028144727099003|261021123027099003|261021121427099003|38070700021;
-x-microsoft-antispam-message-info: EZkXIpXGwWvthHKq2+6PiN99DH4s1YGsyfW8YpxzRJPn3dM0jhbqOX4I6RfqVce5xwfIE0aKB8vQR86+nzQfCFSvmDal6zPSffRudZQPdywVAn2LqvEJwWHQFcjZxNaIrPl7qc9WBbaq9ykBOg/YTRUwUPMX1nPBCKegtE5nldscjLA9ZARJZMKanugdp70H6mGcQ+LNLIRIK4OvC1/ij4sPNfjdnuBxxm1rnvL7Rf/xnrf3I+Tr/QWg/Lp+Fpv4xyofHGN6oPnkppshv9ky3q0+e92Qdjq49gnmXlz/ktjj4rZ9gaHOGmo3RV5vYSWf6Ltt/fggUfgbUMkh/O7RNaw5J3whGxeoQDSypEhqhYYrc2chmI5i0xymY9Tb1buCu5CBo03MWJPpm/QcaGTY8mTrpvkx80lZ54FRAiewPd37R8RMXej9HTooCIAszoC2Er5YfwAACKxXTXssaWXZb6tv+yQTp/sVBrGGZ8GnrpsG5iMa1AucdlNaKYvFTrWqPvMpwFP2fy0wv3kO5DMhALtUJ0s/zg3cY15RMIhNsDtv2aoNBESnSwMmZLdB1xw9CUE5Xh57zJBOo1iLtJsVNDKz3P6wMgtAOplVc4RjIvv8VXrCdBhIEBc9nRuUj+Egwuzrjil9Av/a+dLOb2kb/8vez+DeZ29XAIJ8a/Fba5U=
+ ARA:13230040|366016|1800799024|376014|23010399003|22082099003|18002099003|3023799007|11063799006|56012099006|261028144727099003|261021123027099003|10067099003|261021121427099003|261026140227099003|261009223027099003|261102123227099003|261022105027099003|38070700021;
+x-microsoft-antispam-message-info: RgpAAG7V5lEzMnDrpHHsPjMQbNEXMaO7H5rgYhZh6QYenXwTEEDRuq7G4NEtdpEgQdQoqoYF5/jk5WOM1s4xMBDJTm8fGF8OISsPo035BAFIwyLTY8N74cjnzw7U+2kl9ZCiBuqlAwe37FEbUlWxS9jv5sXgi+IQgEWsFKdBkSbhV64szY+Eoez0cHJXb9nKM+ToB7QzW1MFj9651JmGVpg9Rj85EdP/gsgEESYpYSYVDdb/2oTNq/b32mej+qLz+yIxvMdsWjiGO4hWP4eotSzRWLzYuRrONamcY1XPnUGuwTIp+Z1F+dnW9jmkBaJVZNaRYdrksEPlx+HdU+Uz2didoM3gZu2IwaKnfcXtD3/yo3YfBMZGZFd0vX6lEFlAYQqhAHGM0I6e9T6IYuR76grcB3biRTYt0fF9gCitB3EmSBLoPl4xfwst+zTn2RVoaWRH0QQ07a6uFYBPft2Zhq06AlDewFCEpirFQKg1OZjLi2gVtmfDp1yjJCP3Dyvx0Ha9rOK5NNNZ8qQKB8afDK5og2vF3oLO9dM/ZYsfSD2Ed29HmSwpje+9fyUEdIpFoL08Qvqa5Z7gOu3hPy7hOWGjba4ObBVDmqqYTlItRN7Im+JPoOSywtMAjKVzGXQirkigC2n4WROFXto4BmQR/78fC+ZnZ+xrj9wpejjVNYKK/Y731JIizxpnsn3JQwadRU+Z2LNli/tG/mxgkEqrTCQ2rrR0nJUxvxER1UCcHCk=
 x-forefront-antispam-report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:CH3PR11MB8434.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(376014)(10070799003)(366016)(1800799024)(23010399003)(18002099003)(22082099003)(6133799003)(261009223027099003)(56012099006)(11063799006)(10067099003)(5023799004)(261102123227099003)(261022105027099003)(261026140227099003)(261026121527099003)(261028144727099003)(261021123027099003)(261021121427099003)(38070700021);
+ IPV:NLI; SFV:NSPM; H:DM4PR11MB5325.namprd11.prod.outlook.com; PTR:; CAT:NONE;
+ SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(22082099003)(18002099003)(3023799007)(11063799006)(56012099006)(261028144727099003)(261021123027099003)(10067099003)(261021121427099003)(261026140227099003)(261009223027099003)(261102123227099003)(261022105027099003)(38070700021);
  DIR:OUT; SFP:1101; 
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?PCJQzM9wrpzOyllQZNeJ6wQeM/FmaffgvFYQR6Fgnbvsj25hl4M+VhLI0lDz?=
- =?us-ascii?Q?RKQ4zDKlpvXpzDq1g+dXPjZGUrJa7Gx4dYgINvbKIcLKcuY5wgVneslP+mXH?=
- =?us-ascii?Q?C8cTjVk/+UqEvUykp/EHLoorQpLSRz8iXh7Tganoyuvn3K3lsFHKyK9itpaF?=
- =?us-ascii?Q?rPKjiuFOlTQolA8prkh1eWCVzdTrNRQgjhiSVtXKHZFlZ2DwoSaS5oP/WaAl?=
- =?us-ascii?Q?FEwWTDS3PI3kjuC1Llp1CBvYu6rzPO5o4qdRGd3QryTIRSD7jY6+0+2U+2in?=
- =?us-ascii?Q?K5Hqabk3vbvlKlfb8HlsKUZg7FP2AHefUKen2wxZZ12RKHaCqKxXPkROZbv3?=
- =?us-ascii?Q?3Mhb5opE7EqY3H0jdbO9Womd4xaj2k++DMIJr6/LshDpW4UzGMPMJx0snAeL?=
- =?us-ascii?Q?aIab6fY5PRYvhII2Dyh0d2FTBvHLdo942lPrNoAx3vwgIJKi+sqMUs+4GWkT?=
- =?us-ascii?Q?IYEiAzZFhS/x9f30OkkTYfK4t1CHHlUMSET3K1bf+/1o3pZlqkD1eH1ToiTm?=
- =?us-ascii?Q?wDu8NGMenbwDtmRj8SVWIf35bEANXD1kZXVUOkYwoPq/ANAQOTRd2INcXwws?=
- =?us-ascii?Q?lyQBvRVESrbPivMyzdDA+UT0Cxo2J/WLmVjPxOa2Lcr2orA35okm5PSvVamM?=
- =?us-ascii?Q?AGFLCviurCDgnBu+0yfyjIWPVl+qvGqtCM6bQnGcpJEkESK82Q6zzzohnHV+?=
- =?us-ascii?Q?iXy6KQ7aX8ZzD2wIQU8XluWaCcdOBBkWsPn2SBnUVioQQeVFhhwMiaKPEUDO?=
- =?us-ascii?Q?2vgPaXh67qhHEddVmSkAIugKGxoGGDkbBvpB0Oi0NoER2bssOUGXGJK+iQ8g?=
- =?us-ascii?Q?4M9Djqo6KyTPzc0Acynu02WMJYShscwST7MXyADups0MZ6GZz6W3w15/qoZc?=
- =?us-ascii?Q?IWeA3gxZH1jjTEUfThBbjFhI9PNkleBQGMghBXWE+GXNxWV66qbSl1pgWffP?=
- =?us-ascii?Q?NlvW4phOljHCszX9MrJoJywbid5IT+Ti4I/bUS/sDgpEVyFFq9020NhTvpWb?=
- =?us-ascii?Q?Tjc9QfSUlE0YYpvpoMxdLEiTi/k2yHdM94TNPPuwJIMAt98uwlf/thlahNDE?=
- =?us-ascii?Q?381dBx/ohmsqCfBXzSOcGwjLSIjJSfR9Gz9upV1SZLe4Y3ODg9hIY3AGrfx5?=
- =?us-ascii?Q?UUMwmKbQrJo4By0FyE1kMB6x9A4LOZSy3GJh3m51XT4POsZIenF1rdCtZjWh?=
- =?us-ascii?Q?/VCJMWJPgSjND5CXBKfOdGlsNswY/V5YA/SXbxKHfBUAT4/+yYZwXqoGY4fw?=
- =?us-ascii?Q?ZP5U3H/zMfm84APZ3RQhdkwGO6lh8A6LhLCtaCnXtIrCwtzJUOo/AcLSB02b?=
- =?us-ascii?Q?lGD7RmqQj8VH+bj+H1QAq6lIupUtSEbWOaqSBfP+LJ6PZtJB/9JGKV/bv3h1?=
- =?us-ascii?Q?PwimHBDayCBlF9+Q3puVg8W9MXCdQfnAOjeOGMY2ztghUi/bJGZyHm7VVFvC?=
- =?us-ascii?Q?1aJCMvbRg1SBA4Ype0hU/uEZZWVUvd9UOuesWw0aO3iBvyQ6PuNGbiQGb9Sv?=
- =?us-ascii?Q?qTDLyVXL+eGOlNRkCjbOLA6NHX4u+PI6P1ahNrCx9cWZxNf+sM0oHe6QCBdx?=
- =?us-ascii?Q?6mTMQi16CDHO+Ra6wGlo6oARbdyfAATzaKzPgm5B3V12aT49AR66e2CNO8lG?=
- =?us-ascii?Q?awXcmvW5VTkZlPQ04Mc+ClJazNwDSWfPb9GS5sxEe71SAOWhNqiZBfasMJJ3?=
- =?us-ascii?Q?1tUzbiQvEtCOz8zWrCbVl2kyVyQ+cYoA2OmESQD92960WJDRL5T1lgkPromu?=
- =?us-ascii?Q?puJ4KCGAu7UEYrmTCy9UqwRrtFOGelGwiow6hoD1KyQXGK6Npt6p87yDsa37?=
-x-ms-exchange-antispam-messagedata-1: b1semIGjMNFjCt+afzhgFPx9psz0jkModCc=
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?VuELxh8UYKP1897SCZ4/zdLKj4qdyXtSZyGb9fuc+gMdbKiZ7W+g+C/k6jKJ?=
+ =?us-ascii?Q?tGlROzazVnHL7S3VvWDlGyzQprccjt7p9i13xjQO56hRSnDF+RBJPlrDrWQ4?=
+ =?us-ascii?Q?T3pZi6gooQnnL/KMcHu6ZMT4nMpouq75aFlxwqBNNzojA8US6eKL+g6/dwTr?=
+ =?us-ascii?Q?MmKVwYXCrP4k7D9YG3mnsNhhXtqw2u0Oky/0GtbjJLjroaTc+NoXqHb3rF3+?=
+ =?us-ascii?Q?tJIURtrxihLu9ioqRjy8KQI/rH/YcXAEyChu83Fx1OO844g+mkOT7BCGgwLY?=
+ =?us-ascii?Q?m3pBqVqLmipi6VMMzpA34/EjX4OIrIz/acaOqh84nQ2SxINApzPWMFyAtMQV?=
+ =?us-ascii?Q?kT3njUYfYhJqfYu5ujy4naLHEiTvx4ALN5+wVUSkUN6wDG9nLKTL/hkWWj2w?=
+ =?us-ascii?Q?9L7MS4XrPqTNcX5w1pJ2HaExxTmsTX/U5+ZnytlRMLWMiiEz3KbFHh6Dy7SS?=
+ =?us-ascii?Q?YVMBtLm2COwL0p266Njh3sar5dCsxgwyJoYhOwZZANhyDCHliD5ehurhp636?=
+ =?us-ascii?Q?BrvDlbesAGASJFR0OKGi4hr8mxPgxG4tBb3ElRu0pK2ao6QQUDgYgVm5TXIS?=
+ =?us-ascii?Q?PY0aaSA1dkpW9qMokZ3oP54+p4or5dzZqannT/hulvlEBII2Gz0M+ccydiwY?=
+ =?us-ascii?Q?sB8tLxmQVnk9yt0If553hN5B1gAUKQUw22Z3OCh2xJSJahbs6l0OfqgwILxB?=
+ =?us-ascii?Q?Ao5audR9nvnPiA0LYDnpvfdLZB/5Q+jv0NOkEt2TjTiOJBkaLF2XEeYtmovu?=
+ =?us-ascii?Q?dbShEvosWht5VLlxfdo0FwYmvDoqox7MSWOs8v4JpMKWiz+Ms3bUS7mpO7Jd?=
+ =?us-ascii?Q?gNZu2bmjXesN43c6DmGb8NMBO7XqJKRYtxj7+kJlq82VQA1NyPl5FKZbB/3N?=
+ =?us-ascii?Q?7ctTux4aBdzJjZPUJ3yOciivpiLy9ZLKizhKEQR5x5jaOEdx5b5A3gjlDNhz?=
+ =?us-ascii?Q?PFuQ/2HqTXsryULH+MH7jXcyZHI9Ch4epbkTLaHMmhP34q11XvEMV7EIEoVx?=
+ =?us-ascii?Q?MxvtafonpajEnfVEefMWEpnwX7M7QUWdf8rZgzgNq42GuXpfVZqyFzzN/Lgj?=
+ =?us-ascii?Q?RBgaIDqHzpZ+118Y0Y78KT8V5GHze34qVtynvElAyUbqURzUBf1j2mTemQjN?=
+ =?us-ascii?Q?asO4CrGH9RoZfPlYPyK/l+sOjHm8kNtaXAzfX+NhOuDEJLAtHq8svkA39zdO?=
+ =?us-ascii?Q?YyMRSfR9/9n1HA5rLG2Nitz21KbPXU6OraZX0oxXd+e3dM6kwiMdP7SIpC9h?=
+ =?us-ascii?Q?Mbv91x8DfhQc+Dv78dgyQ9dIyevaeFEhJnCaZlqNnWS3DMtzxPpvfAT5k1Cx?=
+ =?us-ascii?Q?dzm2i6OSzY+CRCDLROCE+TqFlL0v1RjpvUSz5sPQvqtl9THjTXFBJmiNwksO?=
+ =?us-ascii?Q?+T+iX8COgT+BisNM6j6gCiuWTDHoYaHMe5jihfar3vEluFRYl9KlX6HmFOdE?=
+ =?us-ascii?Q?zqUiIZqJ8cuiIw044wDHAeH8co2eBdP6sWckAAPLilRqxdYEMQJpjtTHnUwZ?=
+ =?us-ascii?Q?K+bKs52IpxS9+0PiTed53ntjceNQ6ThzyIjLfJAj4RlR9y1syCryLo0/hmG6?=
+ =?us-ascii?Q?JfmsCMu37ptsUFY0QnA4mOeYWxWA9F0wnELgF3RHWsAfRw60qfi4znHPcmAg?=
+ =?us-ascii?Q?WvB+SmGh9AC1ay4wB9BVcWbxoJe5j19gScSW3VjITguSJg2IOFO2JbM1RHJ4?=
+ =?us-ascii?Q?40tfHSTH9IbAkiuf8ik7vtwrDhMnewlvXzz+9DaBDujy5qHu?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: VicJrG/TnvIXeLL3baTlsviONb61ErqUywZW5dndtGky6x4066VoBX9NyL1XDccWyHES3aaMPUpFUraDeQuHjZp9l86QULaxSQdbPNy8T3JxvMuj5CUEC4VZp2Fvc6TcwK18sAaJCORlRxFW7Dh9Vv8Pu5CwmRj5KYkcn5HoUjJW+/40XzXKxR4k9EUxlN4/OSIkSqLoX5e9nketwBBmHKZAO70YwS7XCISYkFpeuolzyIQBSG7IYAH4Vt9Ozt90/dvSMbdjR/1oqXPVuLMb9ozBvh44oKF4Tiu1ahJqYsc2dfdjziNFhfmVI9DT/snDsBTxZWcoOK2iwIQqzZ0D2Q==
+X-Exchange-RoutingPolicyChecked: 2oYdved1kSGH3lgR0wBnVr9pTvSd9j8IDmyJkld4r2Fz2z2ujj3b1zq+ijyhsyJTxdBpVhEtFC84+AaarAqMBUcko+zx8exW9zhR0udrZ/EZeBczMuXV9LHv/deshtDhpjvK1SsQSUCoQCQCpH/LoSqA1V5LFjseVYtlGRAi9kdShZOjwQFVzurMnijLQQnh8rXHhgZQ6QIS5NAfUtMXW5GHdwerjn21Vwnf/8fkFfM5k80HBIyEPEKaMQpJX6Sk+2y3gafvIZZqh3Z4s94wjeUeJvA2TO3HEqmOftaQtKJwci8ePiAwKv0GpMXoREMb9CDdWNVBFV/io2Sg/ALrAw==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8434.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8e6b250e-3343-455d-c360-08df491f1dd9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Nov 2026 05:03:30.2705 (UTC)
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB5325.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 87b6cf97-206a-4b3c-dc4d-08df492a0f20
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Nov 2026 06:21:50.0758 (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: lfDnoljwPA6Zeho1t7mon3XcbrEfH0XqEoKwhanRxPYaTE9CUZPF7oEIZ+JMGY4feATPCzItVnhhZAMaULdGk8BJOVkbV+eal4gHOmDRBFE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6973
+X-MS-Exchange-CrossTenant-userprincipalname: d6r+yk3tiNzgqyzQ+37m4EVz9+6oLaCB5CFzs+fhfkVAD3rpQtG2mwjAJCfqEcZz/RMBuu/xasYqaOhxS+OZww==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8397
 X-OriginatorOrg: intel.com
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
@@ -171,177 +165,164 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Looks good.=20
+Nit: the fixed-matrix subtests already limit simulation to the first/last p=
+lanes, so please reword the commit message to say this extends that to the =
+regular colorop subtests and factors it into a helper.
 
+Reviewed-by: Jeevan B jeevan.b@intel.com
 
 > -----Original Message-----
-> From: Intel-xe <intel-xe-bounces@lists.freedesktop.org> On Behalf Of Shui=
-cheng
-> Lin
-> Sent: 21 November 2026 15:02
+> From: igt-dev <igt-dev-bounces@lists.freedesktop.org> On Behalf Of Swati
+> Sharma
+> Sent: Saturday, November 21, 2026 12:58 AM
 > To: igt-dev@lists.freedesktop.org
-> Cc: Lin, Shuicheng <shuicheng.lin@intel.com>; intel-xe@lists.freedesktop.=
-org;
-> Kamil Konieczny <kamil.konieczny@linux.intel.com>; Auld, Matthew
-> <matthew.auld@intel.com>; Kempczynski, Zbigniew
-> <zbigniew.kempczynski@intel.com>
-> Subject: [PATCH i-g-t] tests/intel/xe_create: Add create-huge-sysmem-defe=
-r-
-> backing subtest
+> Cc: Sharma, Swati2 <swati2.sharma@intel.com>
+> Subject: [PATCH i-g-t] tests/kms_color_pipeline: Limit simulation to firs=
+t/last
+> planes
 >=20
-> Create a 1 TiB system memory bo with DEFER_BACKING. Its TTM page director=
-y
-> needs more than INT_MAX bytes, which made kvmalloc() emit a kernel
-> WARNING. Check that the ioctl fails gracefully; the WARNING itself is cau=
-ght by
-> igt_runner through dmesg. The expected TTM "Failed allocating page table"=
- error
-> message is ignored.
+> The plane color pipeline subtests iterate over every eligible plane, whic=
+h can
+> make simulation runs time out. Restrict simulation coverage for both regu=
+lar
+> and fixed-matrix subtests to the first and last planes supporting color
+> pipelines, while retaining full coverage otherwise.
 >=20
-> Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+> Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
+>  tests/intel/kms_color_pipeline.c | 75 +++++++++++++++-----------------
+>  1 file changed, 35 insertions(+), 40 deletions(-)
 >=20
-> Notes:
->     This test depends on the kernel patch "drm/ttm: Don't warn on oversiz=
-ed
->     page directory allocations":
->     https://patchwork.freedesktop.org/series/179273/
->     https://lore.kernel.org/all/20261121091815.1436090-2-
-> shuicheng.lin@intel.com/
+> diff --git a/tests/intel/kms_color_pipeline.c b/tests/intel/kms_color_pip=
+eline.c
+> index 69d5d8cf2..41a0e244a 100644
+> --- a/tests/intel/kms_color_pipeline.c
+> +++ b/tests/intel/kms_color_pipeline.c
+> @@ -197,17 +197,27 @@ static void _test_plane_colorops(data_t *data,
+>  		igt_assert_crc_equal(crc_ref, &crc_pipe);  }
 >=20
->     The bo creation only reaches the TTM page directory allocation once t=
-he
->     DRM mmap offset range is larger than 1 TiB, i.e. with kernel commit
->     6a68105dac4f ("drm: increase 64-bit mmap_range size to 8TB"), current=
-ly
->     in drm-tip. Without it the ioctl fails earlier with -ENOSPC and the t=
-est
->     passes. With it, but without the TTM fix, the kernel WARNs and the te=
-st
->     is reported as dmesg-warn (or abort with --abort-on-monitored-error).
->=20
->     Tested on BMG with drm-xe-next plus 6a68105dac4f, with and without th=
-e
->     TTM fix.
->=20
->  tests/intel/xe_create.c | 62 +++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 59 insertions(+), 3 deletions(-)
->=20
-> diff --git a/tests/intel/xe_create.c b/tests/intel/xe_create.c index
-> fd1993b21..1edb9593d 100644
-> --- a/tests/intel/xe_create.c
-> +++ b/tests/intel/xe_create.c
-> @@ -42,14 +42,16 @@ static int __ioctl_create(int fd, struct
-> drm_xe_gem_create *create)
->  	return ret;
->  }
->=20
-> -static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t plac=
-ement,
-> -		       uint32_t *handlep)
-> +static int __create_bo_flags(int fd, uint32_t vm, uint64_t size,
-> +			     uint32_t placement, uint32_t flags,
-> +			     uint32_t *handlep)
+> -static void test_plane_colorops(data_t *data, igt_crtc_t *crtc,
+> -				const color_t *fb_colors,
+> -				const color_t *exp_colors,
+> -				kms_colorop_t *colorops[])
+> +static void test_colorops_on_planes(data_t *data, igt_crtc_t *crtc,
+> +				    const color_t *fb_colors, igt_crc_t *ref_crc,
+> +				    kms_colorop_t *colorops[], uint32_t
+> input_format)
 >  {
->  	struct drm_xe_gem_create create =3D {
->  		.vm_id =3D vm,
->  		.size =3D size,
-> -		.cpu_caching =3D __xe_default_cpu_caching(fd, placement, 0),
-> +		.cpu_caching =3D __xe_default_cpu_caching(fd, placement, flags),
->  		.placement =3D placement,
-> +		.flags =3D flags,
->  	};
->  	int ret;
+>  	int n_planes =3D crtc->n_planes;
+> +	int first_plane =3D -1, last_plane =3D -1;
+> +	bool in_simulation =3D igt_run_in_simulation();
+>  	igt_output_t *output =3D data->output;
+>  	igt_plane_t *plane;
+> -	igt_crc_t ref_crc;
 >=20
-> @@ -61,6 +63,12 @@ static int __create_bo(int fd, uint32_t vm, uint64_t s=
-ize,
-> uint32_t placement,
->  	return ret;
->  }
->=20
-> +static int __create_bo(int fd, uint32_t vm, uint64_t size, uint32_t plac=
-ement,
-> +		       uint32_t *handlep)
-> +{
-> +	return __create_bo_flags(fd, vm, size, placement, 0, handlep); }
+> -	capture_ref_crc(data, output, exp_colors, &ref_crc);
+> +	for (int plane_id =3D 0; plane_id < n_planes; plane_id++) {
+> +		plane =3D igt_output_get_plane(output, plane_id);
 > +
->  /**
->   * SUBTEST: valid-flag
->   * Functionality: ioctl_input_validation @@ -405,6 +413,51 @@ static voi=
-d
-> create_massive_size(int fd)
+> +		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+> +			continue;
+> +
+> +		if (first_plane < 0)
+> +			first_plane =3D plane_id;
+> +
+> +		last_plane =3D plane_id;
+> +	}
+>=20
+>  	for (int plane_id =3D 0; plane_id < n_planes; plane_id++) {
+>  		plane =3D igt_output_get_plane(output, plane_id); @@ -215,13
+> +225,28 @@ static void test_plane_colorops(data_t *data, igt_crtc_t *crtc=
+,
+>  		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+>  			continue;
+>=20
+> +		if (in_simulation &&
+> +		    plane_id !=3D first_plane && plane_id !=3D last_plane)
+> +			continue;
+> +
+>  		igt_dynamic_f("pipe-%s-plane-%u", igt_crtc_name(crtc),
+> plane_id)
+>  			_test_plane_colorops(data, plane, fb_colors,
+> -					     &ref_crc, colorops,
+> -					     DRM_FORMAT_XRGB8888);
+> +					     ref_crc, colorops, input_format);
 >  	}
 >  }
 >=20
-> +/**
-> + * SUBTEST: create-huge-sysmem-defer-backing
-> + * Functionality: ioctl
-> + * Test category: functionality test
-> + * Description: Create a system memory bo with DEFER_BACKING whose TTM
-> page
-> + *		directory needs more than INT_MAX bytes, and verify the
-> + *		ioctl fails gracefully instead of triggering a kernel warning
-> + *		in the kvmalloc() size check.
-> + */
-> +static void create_huge_sysmem_defer_backing(int fd) {
-> +	/*
-> +	 * TTM keeps one pointer per page in its page directory, and
-> +	 * kvmalloc() refuses (and warns about) anything above INT_MAX bytes.
-> +	 * 1 TiB of 4 KiB pages needs 2 GiB of pointers, just above the limit.
-> +	 * DEFER_BACKING places the bo in system memory first, which
-> bypasses
-> +	 * the total-RAM limit of the TT manager, so the page directory
-> +	 * allocation is reached without any real memory being consumed.
-> +	 */
-> +	const uint64_t size =3D ((uint64_t)INT_MAX / sizeof(uint64_t) + 1) *
-> +			      PAGE_SIZE;
-> +	uint32_t handle =3D 0;
-> +	int ret;
+> +static void test_plane_colorops(data_t *data, igt_crtc_t *crtc,
+> +				const color_t *fb_colors,
+> +				const color_t *exp_colors,
+> +				kms_colorop_t *colorops[])
+> +{
+> +	igt_crc_t ref_crc;
 > +
-> +	/* The expected allocation failure is logged with pr_err() by TTM. */
-> +	igt_emit_ignore_dmesg_regex("Failed allocating page table");
-> +
-> +	ret =3D __create_bo_flags(fd, 0, size, system_memory(fd),
-> +
-> 	DRM_XE_GEM_CREATE_FLAG_DEFER_BACKING, &handle);
-> +	igt_debug("bo create of %" PRIu64 " bytes returned %d\n", size, ret);
-> +
-> +	/*
-> +	 * -ENOSPC: the size does not fit in the mmap offset range.
-> +	 * -ENOMEM: the TTM page directory could not be allocated.
-> +	 * Success is fine as well, as long as no kernel warning is emitted,
-> +	 * which is checked by igt_runner through dmesg.
-> +	 */
-> +	igt_assert_f(ret =3D=3D 0 || ret =3D=3D -ENOMEM || ret =3D=3D -ENOSPC,
-> +		     "unexpected bo create result %d (%s)\n", ret,
-> +		     strerror(-ret));
-> +
-> +	if (!ret)
-> +		gem_close(fd, handle);
+> +	capture_ref_crc(data, data->output, exp_colors, &ref_crc);
+> +	test_colorops_on_planes(data, crtc, fb_colors, &ref_crc, colorops,
+> +				DRM_FORMAT_XRGB8888);
 > +}
 > +
+>  static void
+>  run_tests_for_plane(data_t *data)
+>  {
+> @@ -406,12 +431,8 @@ static void test_plane_fixed_matrix_colorops(data_t
+> *data, igt_crtc_t *crtc,
+>  					     const color_t *fb_colors,
+>  					     kms_colorop_t *colorops[])
+>  {
+> -	int n_planes =3D crtc->n_planes;
+> -	int first_plane =3D -1, last_plane =3D -1;
+> -	bool in_simulation =3D igt_run_in_simulation();
+>  	igt_output_t *output =3D data->output;
+>  	drmModeModeInfo *mode =3D data->mode;
+> -	igt_plane_t *plane;
+>  	igt_crc_t ref_crc;
+>  	struct igt_fb yuv_fb;
+>  	enum igt_color_encoding encoding;
+> @@ -435,34 +456,8 @@ static void test_plane_fixed_matrix_colorops(data_t
+> *data, igt_crtc_t *crtc,
+>  	capture_sw_converted_ref_crc(data, output, &yuv_fb, &ref_crc);
+>  	igt_remove_fb(data->drm_fd, &yuv_fb);
+>=20
+> -	/* Get first & last planes supporting color pipeline. */
+> -	for (int plane_id =3D 0; plane_id < n_planes; plane_id++) {
+> -		plane =3D igt_output_get_plane(output, plane_id);
+> -
+> -		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+> -			continue;
+> -
+> -		if (first_plane < 0)
+> -			first_plane =3D plane_id;
+> -
+> -		last_plane =3D plane_id;
+> -	}
+> -
+> -	for (int plane_id =3D 0; plane_id < n_planes; plane_id++) {
+> -		plane =3D igt_output_get_plane(output, plane_id);
+> -
+> -		if (!igt_plane_has_prop(plane, IGT_PLANE_COLOR_PIPELINE))
+> -			continue;
+> -
+> -		if (in_simulation &&
+> -		    plane_id !=3D first_plane && plane_id !=3D last_plane)
+> -			continue;
+> -
+> -		igt_dynamic_f("pipe-%s-plane-%u", igt_crtc_name(crtc),
+> plane_id)
+> -			_test_plane_colorops(data, plane, fb_colors,
+> -					     &ref_crc, colorops,
+> -					     DRM_FORMAT_YUYV);
+> -	}
+> +	test_colorops_on_planes(data, crtc, fb_colors, &ref_crc, colorops,
+> +				DRM_FORMAT_YUYV);
+>  }
+>=20
 >  /**
->   * SUBTEST: create-big-vram
->   * Functionality: bo
-> @@ -581,6 +634,9 @@ int igt_main_args("Q:p:", NULL, help_str, opt_handler=
-,
-> NULL)
->  		create_massive_size(xe);
->  	}
->=20
-> +	igt_subtest("create-huge-sysmem-defer-backing")
-> +		create_huge_sysmem_defer_backing(xe);
-LGTM,
-Reviewed-by: Priyanka Dandamudi <priyanka.dandamudi@intel.com>
-> +
->  	igt_subtest_with_dynamic("create-big-vram") {
->  		int gt;
->=20
->=20
-> base-commit: 792f1105b5f0e2bc254cf2254cc8f6aef8799659
 > --
-> 2.43.0
+> 2.25.1
 
