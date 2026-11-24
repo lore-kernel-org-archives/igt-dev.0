@@ -2,51 +2,51 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51253606A31E
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 04:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22EB606A32A
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 04:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R5OSGhDr
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T8NAFBjE
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0439810E198;
-	Tue, 24 Nov 2026 04:50:08 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 55D5310E4D5;
+	Tue, 24 Nov 2026 04:51:03 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 76F5B10E4D5
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2026 04:47:19 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 375E810E4D5
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2026 04:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795495639; x=1827031639;
+ t=1795495633; x=1827031633;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=Bs0d8Hr2/iG6ECt8SLPzVsP9m6sRbNJmk/7/owFR1fs=;
- b=R5OSGhDrsgZmTX05yO6l7aDDU9yiEWaAUVNlcJWA0C0X+aVn0PllC2zd
- D1vgmSSk2TFIN28A0XO5WUOTykWQ3QkkPt60r4TYW/pBLDY96Dd3FntV3
- GsenlBpJYibnzyGhFvf3OjthWIWTG+yOC250TzAbU6LEtDpWK04/IsXSE
- kNxC7Rb4+nyhcLMy1shPzKEMSZ3S4GjjV3skZiCynayvLW7dt3/e13Dvs
- +VKWQKV0D7pu8BzDYBt5HkArfrqWqMNlmrS3jKIm2SkKzvbWZXQjI38DH
- MWdD6KixhrlCqhrdCQki5fFoVrqLVQBKrjW4VBhcw8jWlj7gnf86Wq/zX w==;
-X-CSE-ConnectionGUID: FogYgQ41Se6eCtzD3a/6gg==
-X-CSE-MsgGUID: +gNKQTsWSHepgbYRUA44aw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4193623"
+ bh=wJ4pfmMmTMv45SX0gLjyTbDSDzAGc/2+hUF3YypIEQE=;
+ b=T8NAFBjEjzw2m6buYDlysYqXQsMfJi+dEed2GjD5PnhKlI4sdGIpWFWL
+ ZYy1gqDNqdRpogDYF7CNXMgWT3Am48IrRR4ecFqoW1g5riRrn9llSinlq
+ 6plFPurtGxIw3ZSsdUs4QbhDn4AzZ4PD5XpVaFAXlTWl5fLf5FVkxyhDn
+ jpo+FxVB3GQrON0gz+4l1TgBOxstkNdGBlA6YTpVe4BkmuZs3mzS7v4b3
+ +79L6eekericv7o1eE5oJgaioHXSSg/mVo4ICpoYtOP60JnVu+hO0GxA3
+ Wm3dCbvhNJ34HnL0jfws+iUOLsCBdrvnFqwuP3ngIjzfFqFfrj8+L/rbl Q==;
+X-CSE-ConnectionGUID: Yvu3Ht7HQluNdCUIzF0lXg==
+X-CSE-MsgGUID: gCzxaKO0TT2KxIpmwhgdMA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4193614"
 X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
-   d="scan'208";a="4193623"
+   d="scan'208";a="4193614"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 20:47:19 -0800
-X-CSE-ConnectionGUID: fOeETJfnR5ajyRTvBZ+QTw==
-X-CSE-MsgGUID: MwPX8ezWSJ6WVRPgXTWitQ==
+ 23 Nov 2026 20:47:13 -0800
+X-CSE-ConnectionGUID: P5pzWMDESqiGK69hJn3smQ==
+X-CSE-MsgGUID: hicDiSsmR0uwBEIIfwnegQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; d="scan'208";a="11444995"
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; d="scan'208";a="11444954"
 Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
  jeevan-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.190.238.87])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 20:47:18 -0800
+ 23 Nov 2026 20:47:11 -0800
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, jani.nikula@intel.com, Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 4/4] tests/intel/xe_module_load: Add intel_display
- module subtests
-Date: Tue, 24 Nov 2026 10:15:59 +0530
-Message-ID: <20261124044559.897167-5-jeevan.b@intel.com>
+Subject: [PATCH i-g-t 1/4] lib/igt_params: Fall back to intel_display module
+ parameters
+Date: Tue, 24 Nov 2026 10:15:56 +0530
+Message-ID: <20261124044559.897167-2-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261124044559.897167-1-jeevan.b@intel.com>
 References: <20261124044559.897167-1-jeevan.b@intel.com>
@@ -71,144 +71,175 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Treat a leftover intel_display as an unwanted driver for the "load"
-subtest and add the same intel_display ordering subtests as for i915
-(load-xe-then-display, unload-display-with-xe,
-unload-xe-also-unloads-display, reload-display-only). They skip when the
-module does not exist.
+With display split into a dedicated intel-display.ko, display module
+parameters move from /sys/module/<driver>/parameters to
+/sys/module/intel_display/parameters.
+
+Add igt_display_params_open() to open the intel_display parameters
+directory, and make igt_params_get()/igt_params_set() search the GPU
+driver module first and then intel_display. Existing tests keep working
+unchanged on kernels both with and without the dedicated display module.
+igt_params_open() is unchanged.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- tests/intel/xe_module_load.c | 100 +++++++++++++++++++++++++++++++++++
- 1 file changed, 100 insertions(+)
+ lib/igt_params.c | 83 +++++++++++++++++++++++++++++++++++++++++++++---
+ lib/igt_params.h |  1 +
+ 2 files changed, 79 insertions(+), 5 deletions(-)
 
-diff --git a/tests/intel/xe_module_load.c b/tests/intel/xe_module_load.c
-index 0c75c4ebc..4cefba09d 100644
---- a/tests/intel/xe_module_load.c
-+++ b/tests/intel/xe_module_load.c
-@@ -94,9 +94,18 @@ static void load_and_check_xe(const char *opts)
- static const char * const unwanted_drivers[] = {
- 	"xe",
- 	"i915",
-+	"intel_display",
- 	NULL
- };
+diff --git a/lib/igt_params.c b/lib/igt_params.c
+index 3dad317a5..01494d17e 100644
+--- a/lib/igt_params.c
++++ b/lib/igt_params.c
+@@ -28,6 +28,7 @@
+ #include <stdio.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
++#include <unistd.h>
  
-+/* Start from a clean slate and skip if there is no dedicated display module */
-+static void display_module_setup(void)
-+{
-+	igt_require_f(!igt_xe_driver_unload(), "Could not unload xe\n");
+ #include <i915_drm.h>
+ 
+@@ -123,7 +124,9 @@ static void igt_params_save(int dir, const char *name)
+  * @device: fd of the device
+  *
+  * This opens the module parameters directory (under sysfs) corresponding
+- * to the device for use with igt_sysfs_set() and igt_sysfs_get().
++ * to the device for use with igt_sysfs_set() and igt_sysfs_get(). Only the
++ * parameters of the GPU driver module are covered; for the dedicated
++ * intel_display module see igt_display_params_open().
+  *
+  * Returns:
+  * The directory fd, or -1 on failure.
+@@ -156,12 +159,77 @@ int igt_params_open(int device)
+ 	return params;
+ }
+ 
++#define INTEL_DISPLAY_PARAMS_PATH "/sys/module/intel_display/parameters"
 +
-+	igt_intel_display_prepare_alone();
++/**
++ * igt_display_params_open:
++ *
++ * Opens the module parameters directory of the dedicated intel-display.ko
++ * module (/sys/module/intel_display/parameters, the kernel exposes the module
++ * name with an underscore). On kernels where display is still built into the
++ * GPU driver module this directory does not exist.
++ *
++ * Parameters changed at runtime through the driver's debugfs
++ * (<driver>_params) are per DRM device and are not affected by the split.
++ *
++ * Returns:
++ * The directory fd, or -1 on failure.
++ */
++int igt_display_params_open(void)
++{
++	return open(INTEL_DISPLAY_PARAMS_PATH, O_RDONLY);
++}
++
++/* Is @device driven by a driver whose display code can live in intel_display? */
++static bool device_uses_intel_display(int device)
++{
++	drm_version_t version;
++	char name[32] = "";
++
++	memset(&version, 0, sizeof(version));
++	version.name_len = sizeof(name) - 1;
++	version.name = name;
++	if (ioctl(device, DRM_IOCTL_VERSION, &version))
++		return false;
++
++	return !strcmp(name, "i915") || !strcmp(name, "xe");
++}
++
++/*
++ * Open the params directory that holds @parameter: the GPU driver module
++ * first, then, for i915 and xe devices only, the intel_display module. This
++ * keeps tests working on kernels with and without a dedicated display module
++ * without touching intel_display parameters on other vendors' devices.
++ */
++static int params_open_for(int device, const char *parameter)
++{
++	int dir;
++
++	dir = igt_params_open(device);
++	if (dir >= 0 && faccessat(dir, parameter, F_OK, 0) == 0)
++		return dir;
++	if (dir >= 0)
++		close(dir);
++
++	if (!device_uses_intel_display(device))
++		return -1;
++
++	dir = igt_display_params_open();
++	if (dir >= 0 && faccessat(dir, parameter, F_OK, 0) == 0)
++		return dir;
++	if (dir >= 0)
++		close(dir);
++
++	return -1;
 +}
 +
  /**
-  * SUBTEST: force-load
-  * Description: Load the Xe driver passing ``force_probe=*`` parameter
-@@ -115,6 +124,22 @@ static const char * const unwanted_drivers[] = {
+  * __igt_params_get:
+  * @device: fd of the device
+  * @parameter: the name of the parameter to get
   *
-  * SUBTEST: many-reload
-  * Description: Reload the Xe driver many times
-+ *
-+ * SUBTEST: load-xe-then-display
-+ * Description: Load the Xe driver and check that the intel_display module it
-+ *		depends on is loaded as well.
-+ *
-+ * SUBTEST: unload-display-with-xe
-+ * Description: Check that intel_display cannot be removed while Xe holds it,
-+ *		then unload both and load Xe again.
-+ *
-+ * SUBTEST: unload-xe-also-unloads-display
-+ * Description: Check that unloading Xe also removes the intel_display module
-+ *		once nothing else holds it.
-+ *
-+ * SUBTEST: reload-display-only
-+ * Description: Unload and reload the intel_display module and then bring Xe
-+ *		back up on top of it.
-  */
- int igt_main()
- {
-@@ -165,5 +190,80 @@ int igt_main()
- 		/* only default modparams, can leave module loaded */
- 	}
+- * This reads the value of the modparam.
++ * This reads the value of the modparam. The GPU driver module is searched
++ * first and, for i915 and xe devices, the intel_display module second.
+  *
+  * Returns:
+  * A nul-terminated string, must be freed by caller after use, or NULL
+@@ -172,7 +240,7 @@ char *__igt_params_get(int device, const char *parameter)
+ 	char *str;
+ 	int dir;
  
-+	igt_describe("Load xe and check that intel_display is pulled in as a dependency.");
-+	igt_subtest("load-xe-then-display") {
-+		display_module_setup();
-+		igt_assert_eq(igt_intel_display_unload(), 0);
-+		igt_assert_intel_driver_and_display_unloaded("xe");
-+
-+		load_and_check_xe(NULL);
-+		igt_assert(igt_kmod_is_loaded("intel_display"));
-+	}
-+
-+	igt_describe("Check intel_display is held by xe, then unload both and reload xe.");
-+	igt_subtest("unload-display-with-xe") {
-+		int ret;
-+
-+		/* modprobe intel_display: loads alone, nothing uses it yet */
-+		display_module_setup();
-+		igt_assert(igt_kmod_is_loaded("intel_display"));
-+		igt_assert_f(!igt_kmod_is_loaded("xe"), "xe loaded with display only\n");
-+		igt_assert_f(!igt_intel_display_has_holders(),
-+			     "intel_display held before xe was loaded\n");
-+
-+		/* modprobe xe: display is now used by it */
-+		load_and_check_xe(NULL);
-+		igt_assert(igt_kmod_is_loaded("xe"));
-+		igt_assert_f(igt_intel_display_has_holders(),
-+			     "intel_display not held by xe\n");
-+
-+		/*
-+		 * rmmod intel_display: refused, xe calls into display. The
-+		 * kernel reports -EWOULDBLOCK while other modules depend on the
-+		 * target (libkmod removes non-blocking), -EBUSY otherwise.
-+		 */
-+		ret = igt_intel_display_try_unload();
-+		igt_assert_f(ret == -EWOULDBLOCK || ret == -EBUSY,
-+			     "intel_display removed or unexpected error while xe holds it: %d\n", ret);
-+		igt_assert(igt_kmod_is_loaded("xe"));
-+		igt_assert(igt_kmod_is_loaded("intel_display"));
-+
-+		/* rmmod xe: goes first, intel_display stays behind, unused */
-+		igt_assert_eq(igt_intel_driver_unload_keep_display("xe"), 0);
-+		igt_assert_f(!igt_kmod_is_loaded("xe"), "xe still loaded\n");
-+		igt_assert_f(igt_kmod_is_loaded("intel_display"),
-+			     "intel_display disappeared with xe\n");
-+		igt_assert_f(!igt_intel_display_has_holders(),
-+			     "intel_display still held after xe was removed\n");
-+
-+		/* rmmod intel_display: now it works */
-+		igt_assert_eq(igt_intel_display_unload(), 0);
-+		igt_assert_intel_driver_and_display_unloaded("xe");
-+
-+		load_and_check_xe(NULL);
-+	}
-+
-+	igt_describe("Check that unloading xe also removes the intel_display it no longer uses.");
-+	igt_subtest("unload-xe-also-unloads-display") {
-+		display_module_setup();
-+		load_and_check_xe(NULL);
-+		igt_assert(igt_kmod_is_loaded("intel_display"));
-+
-+		igt_assert_eq(igt_xe_driver_unload(), 0);
-+		igt_assert_intel_driver_and_display_unloaded("xe");
-+
-+		load_and_check_xe(NULL);
-+	}
-+
-+	igt_describe("Reload only the display module, then reload xe on top of it.");
-+	igt_subtest("reload-display-only") {
-+		display_module_setup();
-+		igt_assert_eq(igt_intel_display_unload(), 0);
-+		igt_assert_intel_driver_and_display_unloaded("xe");
-+
-+		igt_assert_eq(igt_intel_display_load(NULL), 0);
-+		load_and_check_xe(NULL);
-+	}
-+
- 	/* Subtests should unload the module themselves if they use modparams */
- }
+-	dir = igt_params_open(device);
++	dir = params_open_for(device, parameter);
+ 	if (dir < 0)
+ 		return NULL;
+ 
+@@ -189,7 +257,7 @@ static bool __igt_params_set(int device, const char *parameter,
+ 	int dir;
+ 	int ret;
+ 
+-	dir = igt_params_open(device);
++	dir = params_open_for(device, parameter);
+ 	if (dir < 0)
+ 		return false;
+ 
+@@ -208,6 +276,9 @@ static bool __igt_params_set(int device, const char *parameter,
+  * @parameter: the name of the parameter to set
+  * @fmt: printf-esque format string
+  *
++ * The parameter is looked up in the GPU driver module first and, for i915
++ * and xe devices, in the intel_display module second.
++ *
+  * Returns true on success
+  */
+ bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
+@@ -230,7 +301,9 @@ bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
+  *
+  * Save original value to be restored by exit handler. Parameter is first
+  * searched at debugfs/dri/N/<device>_params and if not found will look for
+- * parameter at /sys/module/<device>/parameters.
++ * parameter at /sys/module/<device>/parameters. If the parameter is not found
++ * there either, the dedicated intel_display module is searched at
++ * /sys/module/intel_display/parameters.
+  *
+  * Giving -1 here for default device will search for matching device from
+  * debugfs/dri/N where N go from 0 to 63. First device found from debugfs
+diff --git a/lib/igt_params.h b/lib/igt_params.h
+index 6494786f0..f2ec44d1f 100644
+--- a/lib/igt_params.h
++++ b/lib/igt_params.h
+@@ -27,6 +27,7 @@
+ #include <stdbool.h>
+ 
+ int igt_params_open(int device);
++int igt_display_params_open(void);
+ 
+ char *__igt_params_get(int device, const char *parameter);
+ 
 -- 
 2.43.0
 
