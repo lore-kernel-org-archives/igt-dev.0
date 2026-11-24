@@ -2,51 +2,51 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22EB606A32A
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 04:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC68606A321
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 04:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T8NAFBjE
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=BfH46HCW
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 55D5310E4D5;
-	Tue, 24 Nov 2026 04:51:03 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id EE8FA10E4D5;
+	Tue, 24 Nov 2026 04:52:00 +0000 (UTC)
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 375E810E4D5
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2026 04:47:13 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 000F310E4EA
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2026 04:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795495633; x=1827031633;
+ t=1795495635; x=1827031635;
  h=from:to:cc:subject:date:message-id:in-reply-to:
  references:mime-version:content-transfer-encoding;
- bh=wJ4pfmMmTMv45SX0gLjyTbDSDzAGc/2+hUF3YypIEQE=;
- b=T8NAFBjEjzw2m6buYDlysYqXQsMfJi+dEed2GjD5PnhKlI4sdGIpWFWL
- ZYy1gqDNqdRpogDYF7CNXMgWT3Am48IrRR4ecFqoW1g5riRrn9llSinlq
- 6plFPurtGxIw3ZSsdUs4QbhDn4AzZ4PD5XpVaFAXlTWl5fLf5FVkxyhDn
- jpo+FxVB3GQrON0gz+4l1TgBOxstkNdGBlA6YTpVe4BkmuZs3mzS7v4b3
- +79L6eekericv7o1eE5oJgaioHXSSg/mVo4ICpoYtOP60JnVu+hO0GxA3
- Wm3dCbvhNJ34HnL0jfws+iUOLsCBdrvnFqwuP3ngIjzfFqFfrj8+L/rbl Q==;
-X-CSE-ConnectionGUID: Yvu3Ht7HQluNdCUIzF0lXg==
-X-CSE-MsgGUID: gCzxaKO0TT2KxIpmwhgdMA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4193614"
+ bh=vXyIQoP3xklBzZWoi1Kver4knq53rRQtObXUajUpyJ8=;
+ b=BfH46HCWPN5NL0a6yuydLChWHVoLwTu7JZK1ZSx+5ta/5TaRG4PEeo1W
+ /JVC72ZK1U1+L1mleS+iyVKNgVQdyMyAqfpvzV5m6C9U9MkcWJ+IFxCSs
+ 1jOryi9w9nL/n7bH6K+/sNuzpG8iJUUTPyENfUKv8YwMvcYBNJeBHchE1
+ /Kmm7KJK+wvRk4mOr0NLGPk+hVzEqDq7w/s1HOVTIeCSZy+iDr3zmdd9O
+ LVqSeh/cylqgLbg1Ea4SPY6v5c09iRFDRRxuKt6AckOBu4s2HNd5U8eB8
+ IDttria1sTv4tN5U1/567tQre7O91AdWEohSfF0MStopYfOm9Qo+CNMvu w==;
+X-CSE-ConnectionGUID: OjwJWs6xQY68Z7Ne/k4NaA==
+X-CSE-MsgGUID: FBA2mcgrRuCMlFeqyO15eQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4193619"
 X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
-   d="scan'208";a="4193614"
+   d="scan'208";a="4193619"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 20:47:13 -0800
-X-CSE-ConnectionGUID: P5pzWMDESqiGK69hJn3smQ==
-X-CSE-MsgGUID: hicDiSsmR0uwBEIIfwnegQ==
+ 23 Nov 2026 20:47:14 -0800
+X-CSE-ConnectionGUID: V3YOxmesRFuF8BnWNiD+kQ==
+X-CSE-MsgGUID: kyXNu8E0Q6Gx3HVh+RuXZA==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; d="scan'208";a="11444954"
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; d="scan'208";a="11444972"
 Received: from linux-panther-lake-client-platform.iind.intel.com (HELO
  jeevan-X299-AORUS-Gaming-3-Pro.iind.intel.com) ([10.190.238.87])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 23 Nov 2026 20:47:11 -0800
+ 23 Nov 2026 20:47:13 -0800
 From: Jeevan B <jeevan.b@intel.com>
 To: igt-dev@lists.freedesktop.org
 Cc: karthik.b.s@intel.com, jani.nikula@intel.com, Jeevan B <jeevan.b@intel.com>
-Subject: [PATCH i-g-t 1/4] lib/igt_params: Fall back to intel_display module
- parameters
-Date: Tue, 24 Nov 2026 10:15:56 +0530
-Message-ID: <20261124044559.897167-2-jeevan.b@intel.com>
+Subject: [PATCH i-g-t 2/4] lib/igt_kmod: Handle the dedicated intel_display
+ module
+Date: Tue, 24 Nov 2026 10:15:57 +0530
+Message-ID: <20261124044559.897167-3-jeevan.b@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261124044559.897167-1-jeevan.b@intel.com>
 References: <20261124044559.897167-1-jeevan.b@intel.com>
@@ -71,175 +71,299 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With display split into a dedicated intel-display.ko, display module
-parameters move from /sys/module/<driver>/parameters to
-/sys/module/intel_display/parameters.
+With display built as intel-display.ko, loading i915/xe pulls it in as a
+dependency but unloading the GPU driver leaves it loaded, which leaks
+state into following tests.
 
-Add igt_display_params_open() to open the intel_display parameters
-directory, and make igt_params_get()/igt_params_set() search the GPU
-driver module first and then intel_display. Existing tests keep working
-unchanged on kernels both with and without the dedicated display module.
-igt_params_open() is unchanged.
+Unload intel_display after the GPU driver once nothing else holds it,
+both in __igt_intel_driver_unload() and igt_xe_driver_unload(); the GPU
+driver always goes first, as it calls into display.
+
+Add helpers for tests that need to control the module explicitly:
+igt_intel_display_load()/igt_intel_display_unload() to load it alone and
+to unload it together with its holders, igt_intel_display_try_unload()
+to attempt a direct removal, igt_intel_driver_unload_keep_display() to
+remove only the GPU driver, and igt_intel_display_has_holders().
+
+The module file is intel-display.ko but the kernel registers it as
+intel_display; document that and the unload ordering.
+
+The dedicated module needs a kernel that builds display as
+intel-display.ko; on older kernels the new helpers fail or are no-ops.
 
 Signed-off-by: Jeevan B <jeevan.b@intel.com>
 ---
- lib/igt_params.c | 83 +++++++++++++++++++++++++++++++++++++++++++++---
- lib/igt_params.h |  1 +
- 2 files changed, 79 insertions(+), 5 deletions(-)
+ lib/igt_kmod.c | 209 +++++++++++++++++++++++++++++++++++++++++++++++--
+ lib/igt_kmod.h |   7 ++
+ 2 files changed, 210 insertions(+), 6 deletions(-)
 
-diff --git a/lib/igt_params.c b/lib/igt_params.c
-index 3dad317a5..01494d17e 100644
---- a/lib/igt_params.c
-+++ b/lib/igt_params.c
-@@ -28,6 +28,7 @@
- #include <stdio.h>
- #include <sys/ioctl.h>
- #include <sys/stat.h>
-+#include <unistd.h>
- 
- #include <i915_drm.h>
- 
-@@ -123,7 +124,9 @@ static void igt_params_save(int dir, const char *name)
-  * @device: fd of the device
-  *
-  * This opens the module parameters directory (under sysfs) corresponding
-- * to the device for use with igt_sysfs_set() and igt_sysfs_get().
-+ * to the device for use with igt_sysfs_set() and igt_sysfs_get(). Only the
-+ * parameters of the GPU driver module are covered; for the dedicated
-+ * intel_display module see igt_display_params_open().
-  *
-  * Returns:
-  * The directory fd, or -1 on failure.
-@@ -156,12 +159,77 @@ int igt_params_open(int device)
- 	return params;
+diff --git a/lib/igt_kmod.c b/lib/igt_kmod.c
+index 76680fca5..276ea0c89 100644
+--- a/lib/igt_kmod.c
++++ b/lib/igt_kmod.c
+@@ -585,19 +585,129 @@ int igt_audio_driver_load(char **who)
+ 	return ret;
  }
  
-+#define INTEL_DISPLAY_PARAMS_PATH "/sys/module/intel_display/parameters"
+-int __igt_intel_driver_unload(char **who, const char *driver)
++/*
++ * The module file is intel-display.ko, but the kernel registers module names
++ * with underscores (/sys/module, /proc/modules), which is what
++ * igt_kmod_is_loaded() matches against. modprobe/libkmod accept either form.
++ *
++ * Dependency order is always intel_display -> i915/xe: the core drivers call
++ * into display, so display can only be removed once every GPU driver holding
++ * it is gone. modprobe loads intel_display automatically as a dependency, but
++ * unloading a module does not remove its dependencies, hence the explicit
++ * unload below.
++ */
++#define INTEL_DISPLAY_MODULE "intel_display"
 +
 +/**
-+ * igt_display_params_open:
++ * igt_intel_display_has_holders:
 + *
-+ * Opens the module parameters directory of the dedicated intel-display.ko
-+ * module (/sys/module/intel_display/parameters, the kernel exposes the module
-+ * name with an underscore). On kernels where display is still built into the
-+ * GPU driver module this directory does not exist.
-+ *
-+ * Parameters changed at runtime through the driver's debugfs
-+ * (<driver>_params) are per DRM device and are not affected by the split.
-+ *
-+ * Returns:
-+ * The directory fd, or -1 on failure.
++ * Returns: true if any module (i915, xe, ...) still depends on intel_display,
++ * as listed in /sys/module/intel_display/holders.
 + */
-+int igt_display_params_open(void)
++bool igt_intel_display_has_holders(void)
 +{
-+	return open(INTEL_DISPLAY_PARAMS_PATH, O_RDONLY);
-+}
++	DIR *d = opendir("/sys/module/" INTEL_DISPLAY_MODULE "/holders");
++	struct dirent *de;
++	bool held = false;
 +
-+/* Is @device driven by a driver whose display code can live in intel_display? */
-+static bool device_uses_intel_display(int device)
-+{
-+	drm_version_t version;
-+	char name[32] = "";
-+
-+	memset(&version, 0, sizeof(version));
-+	version.name_len = sizeof(name) - 1;
-+	version.name = name;
-+	if (ioctl(device, DRM_IOCTL_VERSION, &version))
++	if (!d)
 +		return false;
 +
-+	return !strcmp(name, "i915") || !strcmp(name, "xe");
++	while ((de = readdir(d))) {
++		if (de->d_name[0] != '.') {
++			held = true;
++			break;
++		}
++	}
++	closedir(d);
++
++	return held;
++}
++
++/**
++ * igt_intel_display_load:
++ * @opts: options to pass to the intel_display module, or NULL
++ *
++ * Loads the dedicated intel_display module. This is a no-op returning 0 if
++ * the module is already loaded. Returns a negative errno if the module
++ * does not exist, e.g. on kernels with display built into the GPU driver.
++ */
++int igt_intel_display_load(const char *opts)
++{
++	if (igt_kmod_is_loaded(INTEL_DISPLAY_MODULE))
++		return 0;
++
++	return igt_kmod_load(INTEL_DISPLAY_MODULE, opts);
++}
++
++/**
++ * igt_intel_display_unload:
++ *
++ * Unloads the dedicated intel_display module. Any GPU driver (i915 and/or xe)
++ * holding it is unloaded first. Returns 0 if the module is not loaded.
++ */
++int igt_intel_display_unload(void)
++{
++	if (!igt_kmod_is_loaded(INTEL_DISPLAY_MODULE))
++		return 0;
++
++	return igt_kmod_unload(INTEL_DISPLAY_MODULE);
++}
++
++/**
++ * igt_intel_display_try_unload:
++ *
++ * Attempts to remove the intel_display module directly, without first
++ * unloading the modules that hold it. This is expected to fail while i915 or
++ * xe is loaded, as the core drivers call into display: with -EWOULDBLOCK when
++ * other modules depend on it (libkmod removes modules non-blocking), or
++ * -EBUSY when the module is otherwise in use.
++ *
++ * Returns: 0 on success or a negative errno.
++ */
++int igt_intel_display_try_unload(void)
++{
++	struct kmod_module *kmod;
++	int err;
++
++	err = kmod_module_new_from_name(kmod_ctx(), INTEL_DISPLAY_MODULE, &kmod);
++	if (err < 0)
++		return err;
++
++	err = kmod_module_remove_module(kmod, 0);
++	kmod_module_unref(kmod);
++
++	return err;
 +}
 +
 +/*
-+ * Open the params directory that holds @parameter: the GPU driver module
-+ * first, then, for i915 and xe devices only, the intel_display module. This
-+ * keeps tests working on kernels with and without a dedicated display module
-+ * without touching intel_display parameters on other vendors' devices.
++ * Unload intel_display once the GPU driver using it is gone. Leave it alone
++ * while another GPU driver still holds it.
 + */
-+static int params_open_for(int device, const char *parameter)
-+{
-+	int dir;
-+
-+	dir = igt_params_open(device);
-+	if (dir >= 0 && faccessat(dir, parameter, F_OK, 0) == 0)
-+		return dir;
-+	if (dir >= 0)
-+		close(dir);
-+
-+	if (!device_uses_intel_display(device))
-+		return -1;
-+
-+	dir = igt_display_params_open();
-+	if (dir >= 0 && faccessat(dir, parameter, F_OK, 0) == 0)
-+		return dir;
-+	if (dir >= 0)
-+		close(dir);
-+
-+	return -1;
-+}
-+
- /**
-  * __igt_params_get:
-  * @device: fd of the device
-  * @parameter: the name of the parameter to get
-  *
-- * This reads the value of the modparam.
-+ * This reads the value of the modparam. The GPU driver module is searched
-+ * first and, for i915 and xe devices, the intel_display module second.
-  *
-  * Returns:
-  * A nul-terminated string, must be freed by caller after use, or NULL
-@@ -172,7 +240,7 @@ char *__igt_params_get(int device, const char *parameter)
- 	char *str;
- 	int dir;
- 
--	dir = igt_params_open(device);
-+	dir = params_open_for(device, parameter);
- 	if (dir < 0)
- 		return NULL;
- 
-@@ -189,7 +257,7 @@ static bool __igt_params_set(int device, const char *parameter,
- 	int dir;
++static int intel_display_unload_if_unused(char **who)
+ {
  	int ret;
  
--	dir = igt_params_open(device);
-+	dir = params_open_for(device, parameter);
- 	if (dir < 0)
- 		return false;
++	if (!igt_kmod_is_loaded(INTEL_DISPLAY_MODULE) ||
++	    igt_intel_display_has_holders())
++		return 0;
++
++	ret = igt_kmod_unload(INTEL_DISPLAY_MODULE);
++	if (ret && who)
++		*who = strdup_realloc(*who, INTEL_DISPLAY_MODULE);
++
++	return ret;
++}
++
++/* Unload modules that only have a soft dependency on the GPU driver */
++static int unload_aux_modules(char **who)
++{
+ 	const char *aux[] = {
+ 		/* gen5: ips uses symbol_get() so only a soft module dependency */
+ 		"intel_ips",
+ 		NULL,
+ 	};
+-
+-	ret = igt_audio_driver_unload(who);
+-	if (ret)
+-		return ret;
++	int ret;
  
-@@ -208,6 +276,9 @@ static bool __igt_params_set(int device, const char *parameter,
-  * @parameter: the name of the parameter to set
-  * @fmt: printf-esque format string
-  *
-+ * The parameter is looked up in the GPU driver module first and, for i915
-+ * and xe devices, in the intel_display module second.
+ 	for (const char **m = aux; *m; m++) {
+ 		if (!igt_kmod_is_loaded(*m))
+@@ -612,6 +722,90 @@ int __igt_intel_driver_unload(char **who, const char *driver)
+ 		}
+ 	}
+ 
++	return 0;
++}
++
++/**
++ * igt_intel_driver_unload_keep_display:
++ * @driver: GPU driver module to unload, e.g. "i915" or "xe"
 + *
-  * Returns true on success
-  */
- bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
-@@ -230,7 +301,9 @@ bool igt_params_set(int device, const char *parameter, const char *fmt, ...)
-  *
-  * Save original value to be restored by exit handler. Parameter is first
-  * searched at debugfs/dri/N/<device>_params and if not found will look for
-- * parameter at /sys/module/<device>/parameters.
-+ * parameter at /sys/module/<device>/parameters. If the parameter is not found
-+ * there either, the dedicated intel_display module is searched at
-+ * /sys/module/intel_display/parameters.
-  *
-  * Giving -1 here for default device will search for matching device from
-  * debugfs/dri/N where N go from 0 to 63. First device found from debugfs
-diff --git a/lib/igt_params.h b/lib/igt_params.h
-index 6494786f0..f2ec44d1f 100644
---- a/lib/igt_params.h
-+++ b/lib/igt_params.h
-@@ -27,6 +27,7 @@
- #include <stdbool.h>
++ * Unloads only the GPU driver, leaving intel_display loaded. Like
++ * igt_intel_driver_unload() it first unloads the audio driver and the
++ * auxiliary modules (e.g. intel_ips) and unbinds @driver from its devices.
++ * Tests use this to check the removal order i915/xe first, intel_display
++ * second, step by step. Regular tests should use igt_intel_driver_unload(),
++ * which also removes an unused intel_display.
++ *
++ * Returns: 0 on success or a negative errno.
++ */
++int igt_intel_driver_unload_keep_display(const char *driver)
++{
++	int ret;
++
++	ret = igt_audio_driver_unload(NULL);
++	if (ret)
++		return ret;
++
++	ret = unload_aux_modules(NULL);
++	if (ret)
++		return ret;
++
++	if (!igt_kmod_is_loaded(driver))
++		return 0;
++
++	igt_kmod_unbind(driver, NULL);
++	ret = igt_kmod_unload(driver);
++
++	return igt_kmod_is_loaded(driver) ? (ret ?: -EBUSY) : 0;
++}
++
++/**
++ * igt_intel_display_prepare_alone:
++ *
++ * Test helper: starts from a state with intel_display loaded on its own, i.e.
++ * without i915 or xe. Any GPU driver still holding the module is unloaded
++ * first, so callers should unload their driver beforehand with the matching
++ * helper. Skips the test if intel_display cannot be unloaded, or if there is
++ * no dedicated intel_display module (kernels with display built into the GPU
++ * driver).
++ */
++void igt_intel_display_prepare_alone(void)
++{
++	int ret;
++
++	igt_require_f(!igt_intel_display_unload(),
++		      "Could not unload intel_display\n");
++
++	ret = igt_intel_display_load(NULL);
++	igt_skip_on_f(ret, "No dedicated intel_display module (%d)\n", ret);
++	igt_assert(igt_kmod_is_loaded(INTEL_DISPLAY_MODULE));
++}
++
++/**
++ * igt_assert_intel_driver_and_display_unloaded:
++ * @driver: GPU driver module, e.g. "i915" or "xe"
++ *
++ * Asserts that neither @driver nor intel_display is loaded.
++ */
++void igt_assert_intel_driver_and_display_unloaded(const char *driver)
++{
++	igt_assert_f(!igt_kmod_is_loaded(driver), "%s still loaded\n", driver);
++	igt_assert_f(!igt_kmod_is_loaded(INTEL_DISPLAY_MODULE),
++		     "%s still loaded\n", INTEL_DISPLAY_MODULE);
++}
++
++int __igt_intel_driver_unload(char **who, const char *driver)
++{
++	int ret;
++
++	ret = igt_audio_driver_unload(who);
++	if (ret)
++		return ret;
++
++	ret = unload_aux_modules(who);
++	if (ret)
++		return ret;
++
+ 	if (igt_kmod_is_loaded(driver)) {
+ 		igt_kmod_unbind(driver, NULL);
  
- int igt_params_open(int device);
-+int igt_display_params_open(void);
+@@ -624,7 +818,7 @@ int __igt_intel_driver_unload(char **who, const char *driver)
+ 		}
+ 	}
  
- char *__igt_params_get(int device, const char *parameter);
+-	return 0;
++	return intel_display_unload_if_unused(who);
+ }
  
+ static char *kmod_pci_driver_from_module_alloc(const char *mod_name)
+@@ -763,6 +957,9 @@ int igt_xe_driver_unload(void)
+ 	if (igt_kmod_is_loaded("xe"))
+ 		return IGT_EXIT_FAILURE;
+ 
++	if (intel_display_unload_if_unused(NULL))
++		return IGT_EXIT_FAILURE;
++
+ 	return IGT_EXIT_SUCCESS;
+ }
+ 
+diff --git a/lib/igt_kmod.h b/lib/igt_kmod.h
+index f6c17ff73..141582f15 100644
+--- a/lib/igt_kmod.h
++++ b/lib/igt_kmod.h
+@@ -55,6 +55,13 @@ int igt_audio_driver_load(char **whom);
+ int igt_intel_driver_load(const char *opts, const char *driver);
+ int igt_intel_driver_unload(const char *driver);
+ int __igt_intel_driver_unload(char **who, const char *driver);
++int igt_intel_display_load(const char *opts);
++int igt_intel_display_unload(void);
++int igt_intel_display_try_unload(void);
++bool igt_intel_display_has_holders(void);
++int igt_intel_driver_unload_keep_display(const char *driver);
++void igt_intel_display_prepare_alone(void);
++void igt_assert_intel_driver_and_display_unloaded(const char *driver);
+ 
+ static inline int igt_i915_driver_load(const char *opts)
+ {
 -- 
 2.43.0
 
