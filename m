@@ -2,48 +2,67 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FFC606A323
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Nov 2026 09:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFFE606A31E
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Nov 2026 09:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L4CSrD4P
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=fClxD5E0
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 0499410E02F;
-	Wed, 25 Nov 2026 09:52:01 +0000 (UTC)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
- by gabe.freedesktop.org (Postfix) with ESMTPS id B4B0D10E3DF;
- Tue, 24 Nov 2026 10:54:56 +0000 (UTC)
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
- by tor.source.kernel.org (Postfix) with ESMTP id E10C3625D9;
- Tue, 24 Nov 2026 10:54:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6E51F000C0;
- Tue, 24 Nov 2026 10:54:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
- s=k20260515; t=1795517695;
- bh=PViI4YFFHH8dsw1LEuH9tJVkgS7gEQVSJSwRx25RdBE=;
- h=Date:From:To:Cc:Subject:References:In-Reply-To;
- b=L4CSrD4Pd/4635lRv+mKeClDsIQNVAGClY7J5B0TFbtCYJrv8XGrNSv8bfYb099KF
- wC8o1R6aQ0Bn7nTiOoZmqpe3qTBP9O2kp3uY8t0QLHE923JaYsAiAs647syhGGi3ql
- rzDemC7kdFGZcp87kXJx3NxOWdQbmNsJaZ677/uvXT5JcmBcHYKCCQGBduJ8p544lp
- XyYzCXsNck038FHGiMzId9PGt9Nv3JE/yK6xkniFpiNN3BdanIdvqgkRSAUVHUUZOx
- pbPYIeumK9G8uPRbuWNXluD1WkjBbhz5KVZ5tJlZIguCGyW4jCIEiTrS/+Dv3FJXPh
- i7O28MNBb4rcA==
-Date: Tue, 24 Nov 2026 10:54:50 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
- Felix Kuehling <felix.kuehling@amd.com>,
- Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
-Subject: Re: [PATCH i-g-t] tests/gem_mmap_offset: Accept partial read in
- oob-read
-Message-ID: <awVlaeEQSpee2cI2@gremlin>
-References: <20261123211018.12339-1-david@kernel.org>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3BF9A10FA40;
+	Wed, 25 Nov 2026 09:52:56 +0000 (UTC)
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id F1D1710E590
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2026 19:44:45 +0000 (UTC)
+Received: by mail-qv1-f69.google.com with SMTP id
+ 6a1803df08f44-920fb8b9859so3790216d6.2
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2026 11:44:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=google.com; s=20260707; t=1795549485; x=1796154285;
+ darn=lists.freedesktop.org; 
+ h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+ :to:cc:subject:date:message-id:reply-to:content-type;
+ bh=qBY3pbohUa30DWTCIdY3S5ou+p7iDAzUbkwoJghY7dg=;
+ b=fClxD5E0f1I7k1Azi+AwSQvcm5mhWiXlQrFaNnGCvO5r8ASkMp2zZLqnPdl+7I2Tom
+ JL0b6EueK6xhyKUBwAdDWzd588GQ9C98tbBeQbvg1Ni7Ks3j+4q8bwRfqLdn256unF1u
+ 0RPBFojNJ4ru65gGlyU/KV4epUSW9pmx8z6pTXe4wl0p4i+v6+66gkLv+uprx4lQMGFn
+ XM6+ZfnwMHkD4HtZrSusP7A7iRlUNTMjIeZX6iU/LODgELgYyoNo+2PPPj1UykMFSXb/
+ SbBApcoQxE33Foxyfn/JTCYEaFZ7YtuI29cJx2WiL9m1wRNhILXfdaiwksJzEHt7vIIT
+ z0LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=1e100.net; s=20260707; t=1795549485; x=1796154285;
+ h=content-type:cc:to:from:subject:message-id:mime-version:date
+ :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+ :content-type;
+ bh=qBY3pbohUa30DWTCIdY3S5ou+p7iDAzUbkwoJghY7dg=;
+ b=IdkqpkwH7/WgFrtMPn46wq0DiX5EnofLGGE38aL1bDrIAvHxdpZZjJRUgU2pnyVYQo
+ F6drgAQUxcLnQJW5CgokpUQG6kYi5ncTSNIvy44k3eeaZndvuw5YsWHLBwgo1REnrAlj
+ Om+X1/F6IZSsjTL+2639SBNW4T3Eyn+x8+3fQzFkstyNS2VHBg2BfcGJMf3spblXzZkV
+ VkosnlJZYMLdcqsiWcJKLft8T1a11m0Qsj5pjsJ+AjKeh0ScJkVLKkqeK0WE6sMseQfH
+ bLdYyzL8m5xv4R17xE1nKIknsMEUx+yDZGo0sjXHNbUEsKi99bbTrCZH1trE+c8W9rHR
+ 4k4w==
+X-Gm-Message-State: APuU4Z/Z7cPP2/2rImlGRCv+yDuZqpE1YwQm/fkBW4JOVndXUX6ABLqf
+ ejSyUFEE1Rtkzpa6WC/suhVa7tCHrRXp3kfRe53HP8P9plLNb7HvHRwZLKCFRcWjWlkb0+OPF/M
+ dGw7USEPfxNlzVtMJvhIfQ/wsLE483Qg85ZMuVluBdBKoz4XMoyvN41hqnZC92wcM4gWQZEzh+R
+ kgcvo2Xi2juc8Qzvlj73Tm60V8UwqxAYM0uj0emJgl69Y2trPMcnkQ5quG
+X-Received: from qvqg10.prod.google.com ([2002:ad4:514a:0:b0:921:1571:e6c1])
+ (user=gildekel job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a0c:f00f:0:b0:921:1150:b15 with SMTP id
+ 6a1803df08f44-92134b496c9mr235038676d6.52.1795549484617; 
+ Tue, 24 Nov 2026 11:44:44 -0800 (PST)
+Date: Tue, 24 Nov 2026 14:44:39 -0500
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261123211018.12339-1-david@kernel.org>
-X-Mailman-Approved-At: Wed, 25 Nov 2026 09:48:19 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.56.1.831.g720f3f5937-goog
+Message-ID: <20261124194441.314626-1-gildekel@google.com>
+Subject: [PATCH i-g-t v3 0/2] lib/igt_kms: Skip non-scanout connectors
+From: Gil Dekel <gildekel@google.com>
+To: igt-dev@lists.freedesktop.org
+Cc: Gil Dekel <gildekel@google.com>, Jani Nikula <jani.nikula@intel.com>, 
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Mark Yacoub <markyacoub@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailman-Approved-At: Wed, 25 Nov 2026 09:48:20 +0000
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -55,112 +74,55 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 23, 2026 at 10:10:18PM +0100, David Hildenbrand (Arm) wrote:
-> The oob-read test reads 8 bytes through /proc/self/mem, assuming that
-> the kernel would reject the entire read with EIO.
->
-> However, we have 4 remaining bytes in the 4 KiB mapping we can read, so
-> it's valid for the kernel to only do a partial read that covers these 4
-> bytes. Allow that as well.
->
-> Otherwise, the test will fail on a kernel with upcoming vm_ops->access
-> fixes, whereby vm_ops->access is limited to the current VMA, so the
-> read would continue with the next mapping (if any).
->
-> So we have to make sure that nothing is mapped after the GEM mapping.
-> Let's reserve an 8 KiB memory region, map the GEM object into the first
-> 4 KiB slot, and create a hole by unmapping the second 4 KiB slot.
->
-> With the kernel changes in place:
->
->   $ build/tests/gem_mmap_offset --run-subtest oob-read
->   [...]
->   Using IGT_SRANDOM=1795467759 for randomisation
->   Opened device: /dev/dri/card1
->   Starting subtest: oob-read
->   Subtest oob-read: SUCCESS (0,000s)
->
-> Link: https://lore.kernel.org/r/20261122-access_shite-v2-0-808d8d2aa700@kernel.org
-> Cc: Felix Kuehling <felix.kuehling@amd.com>
-> Cc: Christian König <christian.koenig@amd.com>
-> Cc: Lorenzo Stoakes <ljs@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Qualcomm's downstream msm SDE driver exposes its writeback output as an
+always-connected DRM_MODE_CONNECTOR_VIRTUAL connector next to physical
+eDP and DP connectors. igt_output_is_connected() treats any CONNECTED
+connector with modes as a display, so KMS tests pick that connector and
+fail their first modeset with -EINVAL.
 
-It's funny how these things can ripple out, but very much seems a correct
-change!
+This series classifies non-scanout connectors from standard KMS uAPI
+without affecting virtual-only drivers (VKMS, virtio-gpu, vmwgfx) or
+adding any ioctl overhead on physical-only drivers (i915, xe, amdgpu,
+nouveau, upstream msm):
+- Patch 1/2 marks WRITEBACK connectors, connectors with WRITEBACK_FB_ID,
+  and connected VIRTUAL connectors that coexist with physical connectors
+  and reject a primary-plane DRM_MODE_ATOMIC_TEST_ONLY modeset across
+  all compatible CRTCs as non_scanout_sink in
+  igt_display_reset_outputs().
+- Patch 2/2 teaches kms_setmode, which enumerates raw drmModeRes
+  connectors on a legacy fd, to skip connectors flagged as
+  non_scanout_sink.
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+v3:
+- Split kms_setmode into patch 2/2 and use for_each_output() in
+  igt_display_reset_outputs(), per Jani Nikula's feedback.
+- Clarify driver motivation and zero-ioctl CI path in patch 1/2.
+v2:
+- Replace custom libdrm dumb-buffer probing with an igt_display_t/igt_fb
+  TEST_ONLY probe in igt_display_reset_outputs().
 
-> ---
->  tests/intel/gem_mmap_offset.c | 35 ++++++++++++++++++++++++++++-------
->  1 file changed, 28 insertions(+), 7 deletions(-)
->
-> diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
-> index d3c56ab40..e4c0cfbd9 100644
-> --- a/tests/intel/gem_mmap_offset.c
-> +++ b/tests/intel/gem_mmap_offset.c
-> @@ -482,13 +482,29 @@ test_oob_read(int i915)
->  	handle = gem_create(i915, 4096);
->
->  	for_each_mmap_offset_type(i915, t) {
-> -		uint32_t *ptr;
-> +		struct drm_i915_gem_mmap_offset arg = {
-> +			.handle = handle,
-> +			.flags = t->type,
-> +		};
-> +		void *ptr;
->
-> -		ptr = __mmap_offset(i915, handle, 0, 4096,
-> -				    PROT_READ | PROT_WRITE,
-> -				    t->type);
-> -		if (!ptr)
-> +		if (mmap_offset_ioctl(i915, &arg))
-> +			continue;
-> +
-> +		/* Reserve a region for mapping + hole to stop read(). */
-> +		ptr = mmap(NULL, 8192, PROT_NONE,
-> +			   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +		igt_assert(ptr != MAP_FAILED);
-> +
-> +		/* Place our mapping into the first slot. */
-> +		if (mmap(ptr, 4096, PROT_READ | PROT_WRITE,
-> +			 MAP_SHARED | MAP_FIXED, i915, arg.offset) == MAP_FAILED) {
-> +			munmap(ptr, 8192);
->  			continue;
-> +		}
-> +
-> +		/* And our hole into the second slot. */
-> +		munmap(ptr + 4096, 4096);
->
->  		memfd = open("/proc/self/mem", O_RDWR);
->  		igt_require_f(memfd != -1, "/proc/self/mem\n");
-> @@ -497,9 +513,14 @@ test_oob_read(int i915)
->  		ret = lseek(memfd, addr, SEEK_SET);
->  		igt_assert_f(ret != -1, "lseek failed\n");
->
-> -		/* Triggering the buf (out of bound read) */
-> +		/*
-> +		 * Read across the end of the mapping. The read is either
-> +		 * rejected entirely, or completes partially for the remaining
-> +		 * 4 bytes in the mapping.
-> +		 */
->  		ret = read(memfd, read_buf, 8);
-> -		igt_assert(ret == -1 && errno ==  EIO);
-> +		igt_assert_f((ret == -1 && errno == EIO) || ret == 4,
-> +			     "ret=%d errno=%d\n", ret, errno);
->
->  		munmap(ptr, 4096);
->  		close(memfd);
-> --
-> 2.56.1
->
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+Cc: Mark Yacoub <markyacoub@google.com>
 
---
-Cheers, Lorenzo
+Gil Dekel (2):
+  lib/igt_kms: Skip non-scanout connectors
+  tests/kms_setmode: Skip non-scanout sinks
+
+ lib/igt_kms.c       | 86 +++++++++++++++++++++++++++++++++++++++++++--
+ lib/igt_kms.h       |  8 +++--
+ tests/kms_setmode.c | 37 +++++++++++++++++++
+ 3 files changed, 125 insertions(+), 6 deletions(-)
+
+-- 
+Gil Dekel, Senior SWE, Google | Android Laptops & Tablets Display
+
