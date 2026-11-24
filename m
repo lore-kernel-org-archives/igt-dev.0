@@ -2,70 +2,64 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040EB606A31E
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 16:14:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EE2606A33C
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 16:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OfXucTCo
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JvFh3slm
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A7CEA10F64F;
-	Tue, 24 Nov 2026 16:14:49 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id BF0E910F79C
- for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2026 16:13:42 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id D0CC910F7E8;
+	Tue, 24 Nov 2026 16:54:45 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 8F4DD10EA56;
+ Tue, 24 Nov 2026 16:53:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795536823; x=1827072823;
+ t=1795539218; x=1827075218;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:content-transfer-encoding:in-reply-to;
- bh=f7YfFFtbOBhOrp076Qggz0+3+4iOQes8WY2XXGh+FJo=;
- b=OfXucTCo18Cr0nHayh9JflO5FcYswPuXY11BIWG/JRsfOG9sIyAsf/Mt
- 1jL+yZZc5qAeJs+hTgYogEQBPkQ4wYMNg6k+O8QHQnSulm3K0cCJRxrap
- xCenti6FP7Do+aL8jc57jru4tSs0MUtNFzqJcsemU/c+pejRCkuXrEOsU
- /1mOUZOjwjp/vz3LYvQkf7UmXbnJL6LTJLTQ134RsFpdQ7UIkl6ZxqnPz
- Nc/tf3XPf6sia00cZEy5/XZzbGW8L9h9a/2EtULt6kGs7MWiHg7LxY3uF
- w4wdoZ6Yq9SXZ2XfNd0eU5lP58m34oHcFF4kB3X9e3dAPLslDwngkmjjk Q==;
-X-CSE-ConnectionGUID: /rW86FYBRMiM4frQQTZQyw==
-X-CSE-MsgGUID: kHSRr6Q2QIKG9jn51TzB0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4437911"
+ mime-version:in-reply-to;
+ bh=5vzMqQTW9bipIuVLCxmsZr0kbn/k+9A1BtzY6Fdtqo4=;
+ b=JvFh3slmytUdRz4tboEDVhCWAXTJr5Syf+QDq686XCxCx8DvMHQo9MDg
+ ljM3qi+ELmrp3glVDTgiNLhgaY+t8EIDMO6b/bLaIccneT/Fx/0LTtcQJ
+ Vq7PxL2XOHuMYeQFCHxQvD9LSdMr0hAk9llX3VKmeYVwzU80FXIKNcKH4
+ c7sgEGe4bh3csEnGwcJeNsPMX+9DXvzqW8FSS53i1HllYsCPgWnVtpTDg
+ RtuygqOYuuV8pZD/tROTfiXTdAmjQmx+Jc2xGJjDvKa1EXljBpg2d8c/w
+ OseMS7qOwItGOL0VJnGYG2/Jz7qBU0ESRZfpQFgozmF0XlY5goqCZskD1 g==;
+X-CSE-ConnectionGUID: XMA4xo7mROK6CaL43gaWpg==
+X-CSE-MsgGUID: 9GgQ3UTmT+euLyMgtInv5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4254610"
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4437911"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
- by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2026 08:04:40 -0800
-X-CSE-ConnectionGUID: UDIsNUATSJWWvMJj1o3n9Q==
-X-CSE-MsgGUID: wWFxYAUsQ5KI0f8xYnML3Q==
+   d="scan'208";a="4254610"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2026 08:53:35 -0800
+X-CSE-ConnectionGUID: dcKPpqidQ/WRU7ICMnnWCw==
+X-CSE-MsgGUID: of9u7HhARHy8litZ04JFTQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; d="scan'208";a="12189555"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; d="scan'208";a="11624124"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2026 08:04:40 -0800
-Date: Tue, 24 Nov 2026 17:04:36 +0100
+ 24 Nov 2026 08:53:33 -0800
+Date: Tue, 24 Nov 2026 17:53:30 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: "Lin, Shuicheng" <shuicheng.lin@intel.com>
-Cc: "Sharma, Nishit" <nishit.sharma@intel.com>, 
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kempczynski,
- Zbigniew" <zbigniew.kempczynski@intel.com>, 
- "B S, Karthik" <karthik.b.s@intel.com>, "Sharma,
- Swati2" <swati2.sharma@intel.com>
-Subject: Re: [PATCH i-g-t] tests/intel/xe_compute: Use monotonic clock in
- loop-duration-2s
-Message-ID: <b6yxt7nygssym375sfotaa32isppakwude5pwfkedkcbtgbyrn@3bk4x55r5eob>
+To: Aditya Tipre <tipreaditya@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+ louis.chauvet@bootlin.com, sowmiya.s@intel.com, karthik.b.s@intel.com, 
+ swati2.sharma@intel.com
+Subject: Re: [PATCH i-g-t v3 1/2] tests/kms_writeback: Wait for the valid FB
+ ID writeback
+Message-ID: <noadhonrzbrwqcxwslspwqbib7q3s2e2pawxjbg7crid6rap7x@ot6y72stxm5f>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- "Lin, Shuicheng" <shuicheng.lin@intel.com>, "Sharma,
- Nishit" <nishit.sharma@intel.com>, 
- "igt-dev@lists.freedesktop.org" <igt-dev@lists.freedesktop.org>, "Kempczynski,
- Zbigniew" <zbigniew.kempczynski@intel.com>, 
- "B S, Karthik" <karthik.b.s@intel.com>, "Sharma,
- Swati2" <swati2.sharma@intel.com>
-References: <20261119010857.377785-2-shuicheng.lin@intel.com>
- <bdae5fbd-eb7c-4d18-96f2-2bd53aed2e4a@intel.com>
- <DM4PR11MB5456E36DF756A3F92A13C26FEA442@DM4PR11MB5456.namprd11.prod.outlook.com>
+ Aditya Tipre <tipreaditya@gmail.com>, igt-dev@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, 
+ louis.chauvet@bootlin.com, sowmiya.s@intel.com, karthik.b.s@intel.com, 
+ swati2.sharma@intel.com
+References: <PH7PR11MB6796FA8DDA56651E65E018D2E5682@PH7PR11MB6796.namprd11.prod.outlook.com>
+ <20261105225628.4123-1-tipreaditya@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DM4PR11MB5456E36DF756A3F92A13C26FEA442@DM4PR11MB5456.namprd11.prod.outlook.com>
+In-Reply-To: <20261105225628.4123-1-tipreaditya@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -80,110 +74,95 @@ Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Lin,,
-On 2026-11-24 at 06:49:55 +0000, Lin, Shuicheng wrote:
-> Thanks Nishit for the review.
+Hi Aditya,
+On 2026-11-05 at 17:56:27 -0500, Aditya Tipre wrote:
+> The positive WRITEBACK_FB_ID test submits a writeback to the common input
+> framebuffer without requesting or waiting for its completion fence. A
+> blocking atomic commit does not imply that writeback has finished.
 > 
-> Hi all,
-> Could you please help me review and merge it?
-> Thanks.
+> The following pixel-output test fills the same buffer with its reference
+> color. The earlier writeback can still be modifying it, leaving a mixture
+> of the old and new contents and causing intermittent checksum failures.
+> On ARM64 VKMS, a diagnostic run observed the prior fence still unsignalled
+> and a black row in both the input and the captured output after the input
+> had been filled red.
 > 
-> Shuicheng
+> Request a fence for the successful FB ID writeback and wait for it before
+> returning. Only require the returned fence descriptor to be -1 when the
+> commit fails, so the shared commit helper also accepts this successful
+> fenced operation. Keep all invalid-parameter checks intact.
 > 
+> Signed-off-by: Aditya Tipre <tipreaditya@gmail.com>
 
-Applied, thank you all!
+Please rebase on current top and also use a cover letter with
+a different subject for series, for example:
+
+[PATCH i-g-t v4 0/2] kms_writeback: check crc survivies writeback
+
+and then resend this series, also please make it a new series (do
+not use reply-to any msg-ids linking it) so our patchwork could
+take it properly and then CI could test it. If you want, you can give
+a links to previous series to lore.kernel.org (there is igt-dev
+mirror) in cover letter.
+
+One more nit at end.
+
+> ---
+> New prerequisite in v3:
+> - Wait for the existing valid FB ID writeback before its target buffer is
+>   reused as input by the next subtest.
+> 
+> A diagnostic run observed the prior fence still unsignalled and a row of
+> old black pixels replacing red input pixels. Waiting for the fence removes
+> this race. The standalone fix passes the four applicable existing subtests
+> on unfixed and fixed VKMS kernels with one and two CPUs; both XRGB2101010
+> cases skip.
+> 
+>  tests/kms_writeback.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
+> index 7c30e8e..550d603 100644
+> --- a/tests/kms_writeback.c
+> +++ b/tests/kms_writeback.c
+> @@ -228,7 +228,7 @@ static int do_writeback_test(igt_output_t *output, uint32_t fb_id,
+>  
+>  	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
+>  
+> -	if (ptr_valid)
+> +	if (ptr_valid && ret)
+>  		igt_assert(*out_fence_ptr == -1);
+>  
+>  	/* WRITEBACK_FB_ID must always read as zero */
+> @@ -288,8 +288,12 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
+>  	igt_assert_eq(ret, 0);
+>  
+>  	/* Valid output buffer */
+> -	ret = do_writeback_test(output, valid_fb->fb_id, NULL, false);
+> +	ret = do_writeback_test(output, valid_fb->fb_id,
+> +				&output->writeback_out_fence_fd, true);
+>  	igt_assert_eq(ret, 0);
+> +
+> +	/* The next subtest may reuse this buffer as input. */
+> +	igt_get_and_wait_out_fence(output);
+>  }
+>  
+>  static void fill_fb(igt_fb_t *fb, uint32_t pixel)
+> 
+> base-commit: 454657e58fbcfd6fa8a9db0830aa1652fe6364c2
+
+Can you not use these 'base-commit' line? Or at least rebase on
+current top.
+
+Thanks!
 
 Regards,
 Kamil
 
-> On Thu, Nov 19, 2026 11:26 AM Nishit Sharma wrote:
-> > On 11/19/2026 6:38 AM, Shuicheng Lin wrote:
-> > > The subtest times the loop kernel with gettimeofday(), which follows
-> > > CLOCK_REALTIME. If the system time is stepped (e.g. by NTP) during the
-> > > run, the measured time falls outside (1.8s, 2.2s) and the test fails,
-> > > even though the kernel ran for about 2s.
-> > >
-> > > Use igt_nsec_elapsed(), which is monotonic, and print the measured
-> > > time and bounds on failure.
-> > >
-> > > Reproduced on PTL by stepping the clock with date -s during the test:
-> > > the old code fails every time, the fixed code passes.
-> > >
-> > > Closes: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9795
-> > > Cc: Nishit Sharma <nishit.sharma@intel.com>
-> > > Cc: Zbigniew Kempczyński <zbigniew.kempczynski@intel.com>
-> > > Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-> > > ---
-> > >   tests/intel/xe_compute.c | 18 +++++++-----------
-> > >   1 file changed, 7 insertions(+), 11 deletions(-)
-> > >
-> > > diff --git a/tests/intel/xe_compute.c b/tests/intel/xe_compute.c index
-> > > e738c9dab..ee376fd88 100644
-> > > --- a/tests/intel/xe_compute.c
-> > > +++ b/tests/intel/xe_compute.c
-> > > @@ -207,12 +207,6 @@ test_compute_kernel_with_ccs_mode(void)
-> > >   	igt_require(num_gt_with_ccs_mode > 0);
-> > >   }
-> > >
-> > > -static double elapsed(const struct timeval *start,
-> > > -		      const struct timeval *end)
-> > > -{
-> > > -	return (end->tv_sec - start->tv_sec) + 1e-6*(end->tv_usec - start-
-> > >tv_usec);
-> > > -}
-> > > -
-> > >   /**
-> > >    * SUBTEST: loop-duration-2s
-> > >    * Functionality: OpenCL kernel
-> > > @@ -228,7 +222,6 @@ test_compute_kernel_loop(uint64_t loop_duration)
-> > >   	const struct intel_compute_kernels *kernels;
-> > >   	struct user_execenv execenv = { 0 };
-> > >   	struct drm_xe_engine_class_instance *hwe;
-> > > -	struct timeval start, end;
-> > >   	double elapse_time, lower_bound, upper_bound;
-> > >
-> > >   	fd = drm_open_driver(DRIVER_XE);
-> > > @@ -247,20 +240,23 @@ test_compute_kernel_loop(uint64_t
-> > loop_duration)
-> > >   	execenv.kernel_size = kernels->loop_kernel_size;
-> > >
-> > >   	xe_for_each_engine(fd, hwe) {
-> > > +		struct timespec start = {};
-> > > +
-> > >   		if (hwe->engine_class != DRM_XE_ENGINE_CLASS_COMPUTE)
-> > >   			continue;
-> > >
-> > >   		igt_info("Running loop_kernel on ccs engine %d\n", hwe-
-> > >engine_instance);
-> > > -		gettimeofday(&start, NULL);
-> > > +		igt_nsec_elapsed(&start);
-> > >   		igt_assert_f(xe_run_intel_compute_kernel_on_engine(fd,
-> > hwe, &execenv,
-> > >
-> > EXECENV_PREF_SYSTEM),
-> > >   			     "Unable to run compute kernel successfully\n");
-> > > -		gettimeofday(&end, NULL);
-> > > -		elapse_time = elapsed(&start, &end);
-> > > +		elapse_time = igt_nsec_elapsed(&start) / 1e9;
-> > >   		lower_bound = loop_duration / 1e6 - DURATION_MARGIN;
-> > >   		upper_bound = loop_duration / 1e6 + DURATION_MARGIN;
-> > >
-> > > -		igt_assert(lower_bound < elapse_time && elapse_time <
-> > upper_bound);
-> > > +		igt_assert_f(lower_bound < elapse_time && elapse_time <
-> > upper_bound,
-> > > +			     "Elapsed time %.3fs out of range (%.3fs, %.3fs)\n",
-> > > +			     elapse_time, lower_bound, upper_bound);
-> > >   	}
-> > >   	drm_close_driver(fd);
-> > >   }
-> > 
-> > 
-> > LGTM:
-> > 
-> > Reviewed-by: Nishit Sharma <nishit.sharma@intel.com>
+> -- 
+> 2.50.1 (Apple Git-155)
 > 
