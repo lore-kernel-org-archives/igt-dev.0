@@ -2,64 +2,66 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EE2606A33C
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 16:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B142D606A321
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 17:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JvFh3slm
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ReUDI1vB
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D0CC910F7E8;
-	Tue, 24 Nov 2026 16:54:45 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 8F4DD10EA56;
- Tue, 24 Nov 2026 16:53:37 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5438510E2AC;
+	Tue, 24 Nov 2026 17:24:22 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 0196910E1E4;
+ Tue, 24 Nov 2026 17:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795539218; x=1827075218;
+ t=1795540988; x=1827076988;
  h=date:from:to:cc:subject:message-id:references:
- mime-version:in-reply-to;
- bh=5vzMqQTW9bipIuVLCxmsZr0kbn/k+9A1BtzY6Fdtqo4=;
- b=JvFh3slmytUdRz4tboEDVhCWAXTJr5Syf+QDq686XCxCx8DvMHQo9MDg
- ljM3qi+ELmrp3glVDTgiNLhgaY+t8EIDMO6b/bLaIccneT/Fx/0LTtcQJ
- Vq7PxL2XOHuMYeQFCHxQvD9LSdMr0hAk9llX3VKmeYVwzU80FXIKNcKH4
- c7sgEGe4bh3csEnGwcJeNsPMX+9DXvzqW8FSS53i1HllYsCPgWnVtpTDg
- RtuygqOYuuV8pZD/tROTfiXTdAmjQmx+Jc2xGJjDvKa1EXljBpg2d8c/w
- OseMS7qOwItGOL0VJnGYG2/Jz7qBU0ESRZfpQFgozmF0XlY5goqCZskD1 g==;
-X-CSE-ConnectionGUID: XMA4xo7mROK6CaL43gaWpg==
-X-CSE-MsgGUID: 9GgQ3UTmT+euLyMgtInv5Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4254610"
+ mime-version:content-transfer-encoding:in-reply-to;
+ bh=B1jilPwUeusB7PG2DHmeoL58moYF94tE0IcDHfzTFo0=;
+ b=ReUDI1vBLi3MapA/97Q5VEn/6WqQmzkKG7SOFZKlQ6NDxDhsdKGGX9PV
+ +tSvzOhJciRou76fa8w4kfpcgc/hQlBRYyWgeNqr+jIdjN480/sJWUVTS
+ kHAJjC7CmlLYuOTMMXgRooX24XgZa9s/Lt2TcAbzeWxVuOijJHc2ZjrLs
+ 7xqBD+DvutO/IW0uCqILk1q7KIthTBf1CtRcqQ7APLyR5B2iOtvaomqg9
+ qMvBJ8fO90qqrZjrDEW2Pbn/1aiR+q2gd1YaWPO+f5szjoxcVReoIRTAi
+ kCkhWHZae3dVZuI57XdzzPVOV/8Xz0RxqSHM59HInurBEmCIwEA9M1sXq Q==;
+X-CSE-ConnectionGUID: nBnfpz/TTaCGOdpUUnaV9g==
+X-CSE-MsgGUID: MUaBZNozQZWmpQ5ebfF6jA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11976"; a="4381909"
 X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; 
-   d="scan'208";a="4254610"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
- by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2026 08:53:35 -0800
-X-CSE-ConnectionGUID: dcKPpqidQ/WRU7ICMnnWCw==
-X-CSE-MsgGUID: of9u7HhARHy8litZ04JFTQ==
+   d="scan'208";a="4381909"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+ by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2026 08:58:24 -0800
+X-CSE-ConnectionGUID: wc1YbE0eRAS7BEVLwihSlw==
+X-CSE-MsgGUID: uMvtTE6kTs25LVgHUfqX2g==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; d="scan'208";a="11624124"
+X-IronPort-AV: E=Sophos;i="6.27,231,1787036400"; d="scan'208";a="12062797"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 24 Nov 2026 08:53:33 -0800
-Date: Tue, 24 Nov 2026 17:53:30 +0100
+ 24 Nov 2026 08:58:23 -0800
+Date: Tue, 24 Nov 2026 17:58:20 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Aditya Tipre <tipreaditya@gmail.com>
-Cc: igt-dev@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
- louis.chauvet@bootlin.com, sowmiya.s@intel.com, karthik.b.s@intel.com, 
- swati2.sharma@intel.com
-Subject: Re: [PATCH i-g-t v3 1/2] tests/kms_writeback: Wait for the valid FB
- ID writeback
-Message-ID: <noadhonrzbrwqcxwslspwqbib7q3s2e2pawxjbg7crid6rap7x@ot6y72stxm5f>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: igt-dev@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
+ Felix Kuehling <felix.kuehling@amd.com>,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+ Lorenzo Stoakes <ljs@kernel.org>
+Subject: Re: [PATCH i-g-t] tests/gem_mmap_offset: Accept partial read in
+ oob-read
+Message-ID: <afhttabxnvseuecu6ul45fspncolrinn62rfqbomsmxytgo6zl@ldk5dzyd27sf>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Aditya Tipre <tipreaditya@gmail.com>, igt-dev@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, 
- louis.chauvet@bootlin.com, sowmiya.s@intel.com, karthik.b.s@intel.com, 
- swati2.sharma@intel.com
-References: <PH7PR11MB6796FA8DDA56651E65E018D2E5682@PH7PR11MB6796.namprd11.prod.outlook.com>
- <20261105225628.4123-1-tipreaditya@gmail.com>
+ "David Hildenbrand (Arm)" <david@kernel.org>, igt-dev@lists.freedesktop.org,
+ intel-gfx@lists.freedesktop.org, 
+ Felix Kuehling <felix.kuehling@amd.com>,
+ Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, 
+ Lorenzo Stoakes <ljs@kernel.org>
+References: <20261123211018.12339-1-david@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261105225628.4123-1-tipreaditya@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20261123211018.12339-1-david@kernel.org>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -78,91 +80,106 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Aditya,
-On 2026-11-05 at 17:56:27 -0500, Aditya Tipre wrote:
-> The positive WRITEBACK_FB_ID test submits a writeback to the common input
-> framebuffer without requesting or waiting for its completion fence. A
-> blocking atomic commit does not imply that writeback has finished.
+Hi David,
+On 2026-11-23 at 22:10:18 +0100, David Hildenbrand (Arm) wrote:
+> The oob-read test reads 8 bytes through /proc/self/mem, assuming that
+> the kernel would reject the entire read with EIO.
 > 
-> The following pixel-output test fills the same buffer with its reference
-> color. The earlier writeback can still be modifying it, leaving a mixture
-> of the old and new contents and causing intermittent checksum failures.
-> On ARM64 VKMS, a diagnostic run observed the prior fence still unsignalled
-> and a black row in both the input and the captured output after the input
-> had been filled red.
+> However, we have 4 remaining bytes in the 4 KiB mapping we can read, so
+> it's valid for the kernel to only do a partial read that covers these 4
+> bytes. Allow that as well.
 > 
-> Request a fence for the successful FB ID writeback and wait for it before
-> returning. Only require the returned fence descriptor to be -1 when the
-> commit fails, so the shared commit helper also accepts this successful
-> fenced operation. Keep all invalid-parameter checks intact.
+> Otherwise, the test will fail on a kernel with upcoming vm_ops->access
+> fixes, whereby vm_ops->access is limited to the current VMA, so the
+> read would continue with the next mapping (if any).
 > 
-> Signed-off-by: Aditya Tipre <tipreaditya@gmail.com>
-
-Please rebase on current top and also use a cover letter with
-a different subject for series, for example:
-
-[PATCH i-g-t v4 0/2] kms_writeback: check crc survivies writeback
-
-and then resend this series, also please make it a new series (do
-not use reply-to any msg-ids linking it) so our patchwork could
-take it properly and then CI could test it. If you want, you can give
-a links to previous series to lore.kernel.org (there is igt-dev
-mirror) in cover letter.
-
-One more nit at end.
-
+> So we have to make sure that nothing is mapped after the GEM mapping.
+> Let's reserve an 8 KiB memory region, map the GEM object into the first
+> 4 KiB slot, and create a hole by unmapping the second 4 KiB slot.
+> 
+> With the kernel changes in place:
+> 
+>   $ build/tests/gem_mmap_offset --run-subtest oob-read
+>   [...]
+>   Using IGT_SRANDOM=1795467759 for randomisation
+>   Opened device: /dev/dri/card1
+>   Starting subtest: oob-read
+>   Subtest oob-read: SUCCESS (0,000s)
+> 
+> Link: https://lore.kernel.org/r/20261122-access_shite-v2-0-808d8d2aa700@kernel.org
+> Cc: Felix Kuehling <felix.kuehling@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Lorenzo Stoakes <ljs@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 > ---
-> New prerequisite in v3:
-> - Wait for the existing valid FB ID writeback before its target buffer is
->   reused as input by the next subtest.
+>  tests/intel/gem_mmap_offset.c | 35 ++++++++++++++++++++++++++++-------
+>  1 file changed, 28 insertions(+), 7 deletions(-)
 > 
-> A diagnostic run observed the prior fence still unsignalled and a row of
-> old black pixels replacing red input pixels. Waiting for the fence removes
-> this race. The standalone fix passes the four applicable existing subtests
-> on unfixed and fixed VKMS kernels with one and two CPUs; both XRGB2101010
-> cases skip.
-> 
->  tests/kms_writeback.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
-> 
-> diff --git a/tests/kms_writeback.c b/tests/kms_writeback.c
-> index 7c30e8e..550d603 100644
-> --- a/tests/kms_writeback.c
-> +++ b/tests/kms_writeback.c
-> @@ -228,7 +228,7 @@ static int do_writeback_test(igt_output_t *output, uint32_t fb_id,
->  
->  	ret = igt_display_try_commit_atomic(display, DRM_MODE_ATOMIC_ALLOW_MODESET, NULL);
->  
-> -	if (ptr_valid)
-> +	if (ptr_valid && ret)
->  		igt_assert(*out_fence_ptr == -1);
->  
->  	/* WRITEBACK_FB_ID must always read as zero */
-> @@ -288,8 +288,12 @@ static void writeback_fb_id(igt_output_t *output, igt_fb_t *valid_fb, igt_fb_t *
->  	igt_assert_eq(ret, 0);
->  
->  	/* Valid output buffer */
-> -	ret = do_writeback_test(output, valid_fb->fb_id, NULL, false);
-> +	ret = do_writeback_test(output, valid_fb->fb_id,
-> +				&output->writeback_out_fence_fd, true);
->  	igt_assert_eq(ret, 0);
-> +
-> +	/* The next subtest may reuse this buffer as input. */
-> +	igt_get_and_wait_out_fence(output);
->  }
->  
->  static void fill_fb(igt_fb_t *fb, uint32_t pixel)
-> 
-> base-commit: 454657e58fbcfd6fa8a9db0830aa1652fe6364c2
+> diff --git a/tests/intel/gem_mmap_offset.c b/tests/intel/gem_mmap_offset.c
+> index d3c56ab40..e4c0cfbd9 100644
+> --- a/tests/intel/gem_mmap_offset.c
+> +++ b/tests/intel/gem_mmap_offset.c
+> @@ -482,13 +482,29 @@ test_oob_read(int i915)
+>  	handle = gem_create(i915, 4096);
+--------------------------------- ^
 
-Can you not use these 'base-commit' line? Or at least rebase on
-current top.
-
-Thanks!
+Should this be 2*4096? Also buffer size will need an adjustment.
+If yes, maybe better to create a new subtest like oob-read-8k
+so old one will be unchanged.
 
 Regards,
 Kamil
 
+>  
+>  	for_each_mmap_offset_type(i915, t) {
+> -		uint32_t *ptr;
+> +		struct drm_i915_gem_mmap_offset arg = {
+> +			.handle = handle,
+> +			.flags = t->type,
+> +		};
+> +		void *ptr;
+>  
+> -		ptr = __mmap_offset(i915, handle, 0, 4096,
+> -				    PROT_READ | PROT_WRITE,
+> -				    t->type);
+> -		if (!ptr)
+> +		if (mmap_offset_ioctl(i915, &arg))
+> +			continue;
+> +
+> +		/* Reserve a region for mapping + hole to stop read(). */
+> +		ptr = mmap(NULL, 8192, PROT_NONE,
+> +			   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+> +		igt_assert(ptr != MAP_FAILED);
+> +
+> +		/* Place our mapping into the first slot. */
+> +		if (mmap(ptr, 4096, PROT_READ | PROT_WRITE,
+> +			 MAP_SHARED | MAP_FIXED, i915, arg.offset) == MAP_FAILED) {
+> +			munmap(ptr, 8192);
+>  			continue;
+> +		}
+> +
+> +		/* And our hole into the second slot. */
+> +		munmap(ptr + 4096, 4096);
+>  
+>  		memfd = open("/proc/self/mem", O_RDWR);
+>  		igt_require_f(memfd != -1, "/proc/self/mem\n");
+> @@ -497,9 +513,14 @@ test_oob_read(int i915)
+>  		ret = lseek(memfd, addr, SEEK_SET);
+>  		igt_assert_f(ret != -1, "lseek failed\n");
+>  
+> -		/* Triggering the buf (out of bound read) */
+> +		/*
+> +		 * Read across the end of the mapping. The read is either
+> +		 * rejected entirely, or completes partially for the remaining
+> +		 * 4 bytes in the mapping.
+> +		 */
+>  		ret = read(memfd, read_buf, 8);
+> -		igt_assert(ret == -1 && errno ==  EIO);
+> +		igt_assert_f((ret == -1 && errno == EIO) || ret == 4,
+> +			     "ret=%d errno=%d\n", ret, errno);
+>  
+>  		munmap(ptr, 4096);
+>  		close(memfd);
 > -- 
-> 2.50.1 (Apple Git-155)
+> 2.56.1
 > 
