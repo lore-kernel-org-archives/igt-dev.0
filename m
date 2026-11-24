@@ -2,28 +2,60 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CAE606A33C
-	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 10:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05553606A31E
+	for <igt-dev@archiver.kernel.org>; Tue, 24 Nov 2026 11:04:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mCTDU45F
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id D6BE910F439;
-	Tue, 24 Nov 2026 10:17:01 +0000 (UTC)
-Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 060E010F439;
- Tue, 24 Nov 2026 10:16:04 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============3593098061485746918=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id B11F810F4AB;
+	Tue, 24 Nov 2026 11:04:03 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 9229D10F4B4
+ for <igt-dev@lists.freedesktop.org>; Tue, 24 Nov 2026 11:02:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1795518177; x=1827054177;
+ h=from:to:cc:subject:in-reply-to:references:date:
+ message-id:mime-version:content-transfer-encoding;
+ bh=N6eqY6nLPbr4bPiRTSesGHf+GfIblzcW8J9MH+atlFo=;
+ b=mCTDU45Fs+GbmaUotNAjvcuexEf8GMKJAoksQMJBm/A85s+YsJ1JcxqN
+ 9RCehTIUmvreTIpTgFwlMztGC8AJzL1IyxsacUqoqPeMrUK8fOngcqlnE
+ Ju5Ykak8ZuvMnJJZJV02CgEZnQekrB67mWTjzMOIpgw8su3FJnACFzRr5
+ 1pYDO5HmQiwyQWamGn97qCYPeFFCdrEraiUrle1ZnIj0OJ2Edqa7qsv+L
+ Ot9CF0azQ5G5S9Z87x/27kBAgsB8e3Wj4Ot1eLXMsqzPJojvwycU9PnFn
+ 2IdUenkU1w2UgFEmGLIPEchF33L4aaYWyanStix/Aqidcw24HFTNi8DG/ w==;
+X-CSE-ConnectionGUID: 2r5jzhI8Qj6UWsSx4XIJrg==
+X-CSE-MsgGUID: B++uKwYDSkixfFbNeGo6Nw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11975"; a="4246639"
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; 
+   d="scan'208";a="4246639"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2026 03:02:39 -0800
+X-CSE-ConnectionGUID: jVcpQmxQSXqDhhsz6tthEw==
+X-CSE-MsgGUID: ZfeS9wlwRYmL0H9cUAvTfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,230,1787036400"; d="scan'208";a="11524131"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO localhost)
+ ([10.245.245.138])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 24 Nov 2026 03:02:36 -0800
+From: Jani Nikula <jani.nikula@intel.com>
+To: Jeevan B <jeevan.b@intel.com>, igt-dev@lists.freedesktop.org
+Cc: karthik.b.s@intel.com, Jeevan B <jeevan.b@intel.com>, =?utf-8?Q?Micha?=
+ =?utf-8?Q?=C5=82?= Grzelak <michal.grzelak@intel.com>
+Subject: Re: [PATCH i-g-t] tests/kms_plane_cursor: limit simulation to first
+ and last CRTC
+In-Reply-To: <20261124062725.952438-1-jeevan.b@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
+ 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+References: <20261124062725.952438-1-jeevan.b@intel.com>
+Date: Tue, 24 Nov 2026 13:02:33 +0200
+Message-ID: <6676344cae734db2fddb0783bdeb9712a4d0f963@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_lib/igt=5Fkms=3A_Try_all_?=
- =?utf-8?q?blend_modes_when_resetting_it_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Icenowy Zheng" <zhengxingda@iscas.ac.cn>
-Cc: igt-dev@lists.freedesktop.org
-Date: Tue, 24 Nov 2026 10:16:04 -0000
-Message-ID: <179551536401.76306.5388743956445362881@9ac1b63fe3ea>
-X-Patchwork-Hint: ignore
-References: <20261117103356.303340-1-zhengxingda@iscas.ac.cn>
-In-Reply-To: <20261117103356.303340-1-zhengxingda@iscas.ac.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,185 +66,113 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============3593098061485746918==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+On Tue, 24 Nov 2026, Jeevan B <jeevan.b@intel.com> wrote:
+> Running on every CRTC makes the test hit the timeout on simulation.
+> Restrict it to the first and last usable CRTC when running in
+> simulation, which keeps coverage while avoiding the timeout.
+>
+> Move the per-pipe validity check and the per-pipe subtest body into
+> pipe_output_valid() and run_pipe() so both the regular and the
+> simulation paths can share them.
 
-== Series Details ==
+I think you're overcomplicating things for something that should be
+simplified.
 
-Series: lib/igt_kms: Try all blend modes when resetting it (rev2)
-URL   : https://patchwork.freedesktop.org/series/178854/
-State : failure
+I don't know what to say. I don't think my review comments are being
+understood.
 
-== Summary ==
+Below is what I meant, maybe C is the lingua franca. Use the first and
+last pipes on simulation, all otherwise. And keep the simulation
+conditional stuff mostly out of the main test loops, because it
+complicates everything.
 
-CI Bug Log - changes from IGT_9197 -> IGTPW_16170
-====================================================
-
-Summary
--------
-
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_16170 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_16170, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/index.html
-
-Participating hosts (40 -> 38)
-------------------------------
-
-  Missing    (2): bat-dg2-13 bat-adls-6 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_16170:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-skl-6600u:       [PASS][1] -> [INCOMPLETE][2]
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9197/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html
-
-  * igt@i915_selftest@live:
-    - bat-rpls-4:         [PASS][3] -> [INCOMPLETE][4] +1 other test incomplete
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9197/bat-rpls-4/igt@i915_selftest@live.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/bat-rpls-4/igt@i915_selftest@live.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_16170 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@vgem_basic@unload:
-    - bat-rpls-4:         [PASS][5] -> [DMESG-WARN][6] ([i915#13400])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9197/bat-rpls-4/igt@vgem_basic@unload.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/bat-rpls-4/igt@vgem_basic@unload.html
-
-  
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
+Also Cc: Micha=C5=82, this is what I meant in my comments to you too. There=
+'s
+no need for those complicated arrays with bools.
 
 
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9197 -> IGTPW_16170
-  * Linux: CI_DRM_19554 -> CI_DRM_19557
-
-  CI-20190529: 20190529
-  CI_DRM_19554: e2f954ea951b668430703f19387784f203ad71d0 @ git://anongit.freedesktop.org/gfx-ci/linux
-  CI_DRM_19557: 6d6b6ed3d20eb8db677d6463fd2f267fc29cd510 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16170: 16170
-  IGT_9197: 9197
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/index.html
-
---===============3593098061485746918==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+BR,
+Jani.
 
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
+PS. It's untested.
 
 
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>lib/igt_kms: Try all blend modes when resetting it (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/178854/">https://patchwork.freedesktop.org/series/178854/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
+diff --git a/tests/kms_plane_cursor.c b/tests/kms_plane_cursor.c
+index 4b69f1a17e24..a1111245fb0d 100644
+--- a/tests/kms_plane_cursor.c
++++ b/tests/kms_plane_cursor.c
+@@ -284,6 +284,27 @@ static void test_cursor(data_t *data, int size, unsign=
+ed int flags)
+        test_cursor_spots(data, size, flags);
+ }
+=20
++static uint32_t get_crtc_index_mask(igt_display_t *display)
++{
++       igt_crtc_t *crtc, *first_pipe_crtc =3D NULL, *last_pipe_crtc =3D NU=
+LL;
++       __maybe_unused igt_output_t *output;
++       uint32_t crtc_index_mask =3D 0;
++
++       for_each_crtc_with_single_output(display, crtc, output) {
++               if (!first_pipe_crtc || crtc->hardware_pipe < first_pipe_cr=
+tc->hardware_pipe)
++                       first_pipe_crtc =3D crtc;
++               if (!last_pipe_crtc || crtc->hardware_pipe > last_pipe_crtc=
+->hardware_pipe)
++                       last_pipe_crtc =3D crtc;
++               crtc_index_mask |=3D 1 << crtc->crtc_index;
++       }
++
++       if (igt_run_in_simulation() && first_pipe_crtc && last_pipe_crtc)
++               crtc_index_mask =3D 1 << first_pipe_crtc->crtc_index |
++                       1 << last_pipe_crtc->crtc_index;
++
++       return crtc_index_mask;
++}
++
+ int igt_main()
+ {
+        static const int cursor_sizes[] =3D { 64, 128, 256 };
+@@ -291,6 +312,7 @@ int igt_main()
+        igt_crtc_t *crtc;
+        igt_output_t *output;
+        igt_display_t *display;
++       uint32_t crtc_index_mask =3D 0;
+        int i, j;
+        struct {
+                const char *name;
+@@ -322,6 +344,8 @@ int igt_main()
+                igt_assert(ret =3D=3D 0 || errno =3D=3D EINVAL);
+=20
+                kmstest_set_vt_graphics_mode();
++
++               crtc_index_mask =3D get_crtc_index_mask(&data.display);
+        }
+=20
+        for (i =3D 0; i < ARRAY_SIZE(tests); i++) {
+@@ -329,6 +353,9 @@ int igt_main()
+                igt_subtest_with_dynamic_f("%s", tests[i].name) {
+                        for_each_crtc_with_single_output(&data.display, crt=
+c,
+                                                         output) {
++                               if (!(crtc_index_mask & (1 << crtc->crtc_in=
+dex)))
++                                       continue;
++
+                                if ((tests[i].flags & TEST_OVERLAY) &&
+                                    !igt_crtc_get_plane_type(crtc,
+                                                             DRM_PLANE_TYPE=
+_OVERLAY))
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/index.html</a></td></tr>
 
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9197 -&gt; IGTPW_16170</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_16170 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_16170, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/index.html</p>
-<h2>Participating hosts (40 -&gt; 38)</h2>
-<p>Missing    (2): bat-dg2-13 bat-adls-6 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_16170:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>
-<p>igt@i915_pm_rpm@module-reload:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9197/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/fi-skl-6600u/igt@i915_pm_rpm@module-reload.html">INCOMPLETE</a></li>
-</ul>
-</li>
-<li>
-<p>igt@i915_selftest@live:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9197/bat-rpls-4/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/bat-rpls-4/igt@i915_selftest@live.html">INCOMPLETE</a> +1 other test incomplete</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16170 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@vgem_basic@unload:<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9197/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16170/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9197 -&gt; IGTPW_16170</li>
-<li>Linux: CI_DRM_19554 -&gt; CI_DRM_19557</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19554: e2f954ea951b668430703f19387784f203ad71d0 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  CI_DRM_19557: 6d6b6ed3d20eb8db677d6463fd2f267fc29cd510 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16170: 16170<br />
-  IGT_9197: 9197</p>
-
-</body>
-</html>
-
---===============3593098061485746918==--
+--=20
+Jani Nikula, Intel
