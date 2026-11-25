@@ -2,78 +2,79 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED45606A31E
-	for <igt-dev@archiver.kernel.org>; Wed, 25 Nov 2026 11:20:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6397D606A321
+	for <igt-dev@archiver.kernel.org>; Wed, 25 Nov 2026 11:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uOGT3yos
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=C/QQAtLA
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 4515B10FB50;
-	Wed, 25 Nov 2026 11:20:37 +0000 (UTC)
-Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 4089610E0EF
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Nov 2026 11:18:51 +0000 (UTC)
-Received: by mail-dl1-f53.google.com with SMTP id
- a92af1059eb24-1b546061d58so12740955c88.1
- for <igt-dev@lists.freedesktop.org>; Wed, 25 Nov 2026 03:18:51 -0800 (PST)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 1B7BB10E0EF;
+	Wed, 25 Nov 2026 11:21:36 +0000 (UTC)
+Received: from mail-dy1-f176.google.com (mail-dy1-f176.google.com
+ [74.125.82.176])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 4720E10E0EF
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Nov 2026 11:19:07 +0000 (UTC)
+Received: by mail-dy1-f176.google.com with SMTP id
+ 5a478bee46e88-386c4d2e2ccso2759004eec.0
+ for <igt-dev@lists.freedesktop.org>; Wed, 25 Nov 2026 03:19:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20260707; t=1795605530; x=1796210330; darn=lists.freedesktop.org;
+ d=gmail.com; s=20260707; t=1795605546; x=1796210346; darn=lists.freedesktop.org;
  h=content-transfer-encoding:content-type:in-reply-to:from
  :content-language:references:to:subject:user-agent:mime-version:date
  :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
- bh=J1B6+/iviN7CFniGpycbDyRqCx9CpYuMzTA4kjmW2mw=;
- b=uOGT3yosBtI6XwVzAWLmwsI3lAN885GwKyJ3GNw8xpGUi8eq3Giz2cLeVGpvBCJy9p
- TgpPAo8MPPbPYIUCKQ4I8PCS0fq6vkpd31/fGCDig9OOWfkt8hIWmNgqeqRyEgzGgWzj
- dA0unpXy1O0x4h1L4FyM8d9bC2tHkULAaQiCfETti5HSd8fY8ZZr2j8ciqdBizryLwlu
- Ml255m2NpSvnSKKwiZNmMDBrIyP1E4tvmm6XdN+qVkM4jhBAesAKTVT1xAZHjwm5RrXv
- 2KppflMPsqmYEa4m/ZqdNTev8HUHNbGsmifNHPnvexfNHoYpXj9H6mWv+RjbJVND8CvD
- Tr2Q==
+ bh=bL7aqJi3diXiQ/lK5Fw7q4kfhW25DQyH1rvU4qAcNcQ=;
+ b=C/QQAtLAOtd4ccMRcUKYy4++pbFpcHJa46963kj+bEV1h5lgV+C3/NaU914hP20Wp9
+ RMKgJl7Vb/CnRrwr0jQoAxoDQR4iyAsIpiTREjLAgzd7SMB+VfJZ98y03Ht1sSQrpMEY
+ 5aLSoh13nSNPumBqevnmmnqE6fnWYYrCRT4fuSSfIdXMZzfoSUkOp3Wv/ThquaCRXS4J
+ wvweIX4zYQNV0z59E7FeXcwMCdMmTphvlM8MamwWCWcnH0ZDZphYyIBuQzGOn07j+w93
+ npo3EBX14E/OnQr5sADNGbrkhh1PBAtNSBr8CQWr32uZK9vVcR6ol4pkIYbqybuLywsy
+ UAFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1795605530; x=1796210330;
+ d=1e100.net; s=20260707; t=1795605546; x=1796210346;
  h=content-transfer-encoding:content-type:in-reply-to:from
  :content-language:references:to:subject:user-agent:mime-version:date
  :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
  :message-id:reply-to:content-type;
- bh=J1B6+/iviN7CFniGpycbDyRqCx9CpYuMzTA4kjmW2mw=;
- b=Em5PiGQFyHz04pmHkGgAVdH95NSFGdGFJzEuRGo3sIZLCnlnwki/QPzvBK9WdFiBK+
- Ud0ZFBIrfL9xzySdLKhtCQ5PkgDKZ2XX1G0rlsfgnZ2By6fJRALt55NVGN8AZAED3xIo
- SVCRxvG/kP+Ok8vnnl1VD+syAeHdodOMvBEeYmje17Xo6TbK0CTtNN4VaDpF7tgoWH8Y
- ZTemTUddWe+RnYl1ueiQU7D1MkGt25fF/NV7ZemImG7O55PYeVrCiYwYY2KV1habLSu5
- mqCs7I7uihed76tSxw0TW1rlAqNDTd+O8s6OiyDQ+ufNGTlVhCVHLwpwYCyffQl9COX7
- w9bQ==
+ bh=bL7aqJi3diXiQ/lK5Fw7q4kfhW25DQyH1rvU4qAcNcQ=;
+ b=QrobWcJCOzYXHKrQv9fEE6gf5VNFSZ2ov9zMCSu7EgJDt4imeFx+mVAmN47PBmOmp9
+ QrWBT2vDVdxMZlj8q+o6QQdjQE4VKoUF+fmuMGdH14KREhSH1/EhtzwcGYmP8jdPtiXq
+ qkap7V+LhaMjnmMQECbMdmPjD2UiH23OwMLVTNse+0PN/YBo1TZPkCpU45NUFZHcbBUu
+ yniOymAh2mWvz+ib7BpJFTeOgPN479+GgLj+EAAXnmj3m4AT7v1NU8cdxVUzQQB8agg3
+ kVdPrvY/ADqs36duM3vPWZZS9HyRouKYotbsog117Yyqj90mM7LJ5edwoAz+IUA2OQUb
+ aUfA==
 X-Forwarded-Encrypted: i=1;
- AL+hErG+JL/EKRTQOkNd37mEvwmkF4xtzBuHLuwADorcm5rbagpV5PNWVUksGf1QGFSq3MRlrLjvmVIT@lists.freedesktop.org
-X-Gm-Message-State: APuU4Z/k395amL4nff1/d6qmH9vD1Sx1UY43TPmYfOSf8waZvlwqAMRz
- kqy3BzFnJeaCZ6Zq0r3FXleI1xiK8rUSMiSs6Jtm9X5YzrlO/bxtrwxKbGT09VtogpY=
-X-Gm-Gg: AZFdTZel0gZBpPNuvPy8E+mfZdeqIx+RnJREoDNFE0sS+oCu3guHV85Aepo2Wb2UiGD
- ZsItFhNXN9KB4TISiP66TAvJSaP5Vq2O2ydWWyvz41CivPnTinqZJoPFTthThpY5EG2/v9lob8i
- fi132rUwkP6yq/El96BPBJ6FZVXv2l6rVOZc1Z9SXI8HAzXwRiKhQJA05ZOrhnzrbCfLM6airrP
- VzBDxJ01bxQU+jDJGtx2Aya2loWUHRmm/7eZwkD4uD/4iUoQO2y+T5n7zc/974swSiVFXDzeaw5
- 3PHuw7fMu3k972evmlauY8KCXnaRIyX1vIdrreZHftk3ZliDCCzLK7ivw6oHvbZDZDxCW3NjM4T
- DYESfZjhulmxAsiOSgBemajzfWyHdQeoHNfo+Tlc64HpkgbIWBC1tV+cSElLNhcnCRiXoY2EpH+
- fosGGMj1z2FTWkC87CwFnnXImDi6zcI+pZ5oGk13YtRzC5bGE2oCMWnlltPmCQdc5jOfixiIsWC
- /1/ZlAu21FZAYA2MEFcRv6QtmrUnF3clrPWC/oZl1C7MfMiFcEyuL7wpI4GEVgbxOgRVckpC136
- iEzzWIHRGZeQvuz8NSpj5ToQqyia+cuH2F8hihq4lnBiwehSajIWZpBIz4FqUDr2oLukcoIH
-X-Received: by 2002:a05:7022:294:10b0:19a:bbe8:41a8 with SMTP id
- a92af1059eb24-1b5568c876dmr17226108c88.20.1795605530406; 
- Wed, 25 Nov 2026 03:18:50 -0800 (PST)
+ AL+hErFjJSNNWeJ7NR6oBuSJHsQwomKapZt2+F42qL92wiOwS/s0Xhp5v3S5RfTyLYCJQgNDpUC3E9vR@lists.freedesktop.org
+X-Gm-Message-State: APuU4Z/29ELGu0/f7Cs6Y96O8G3Qf8sPXytT0tQvANli55jubFyfSFeL
+ zyYvumYIwAcP3yVIrT+3CZ2Z57oXqc0Y8lqufTOYFnPUlfazDdfSOWjw
+X-Gm-Gg: AZFdTZdRxvUnBB/eclIB3UaGX2Vk4a1KnyKZb/CLeBRpP+qEIHmFH4GeCyeDBgnHkLw
+ tci1YFR8s3csyHAO1VwfHoh0rJGVey24URWIxQo5p91mUjRAZkUj6atUI5x8fdNbI/HDllz837M
+ lsc2JJ39LwMlX/pAGmr/v0621Pr0nTVytbNMKXdBIabyA0K7o/WXcmakgHD5zm24G0RAhuzr4NL
+ wTbBX1dpoVRpvKuMOypZ7neuukhxrI84FnTBf2kQP+yo+3/4szJjDCoPwNGPb6+HB+JdnjNYghg
+ 3bBuJOqnXrx8Hb25nEJpL0xjCtZEw0mvlN1AbYohAnTmKBFASl4T5VlD0kTzbJcWzjicfdeZJgv
+ HIIirXt+TZQHIupU09gj/H2XnQlDkeNtDENwkLtp5wdMcxgB03+aZh1Hf8YIfXC4XRT6PQeX0P0
+ b5rLYbsWUOHlaqZ3gJ05H+TzkU8Le4x0172RxJQlaetqz22sjSEa7u+T49wrO6F4cRPFh/YtJU+
+ AIUVMU+RtpRprI1JCeZLt+JT7Mod2dnPGsKu4HR1q7cyNvGQot+LGKaSMWGu5TfB2j/ULNH1SEl
+ TF4dSk6guUVA/1O5nvy2tSasrl2dv0LlfXWoP311TpHD+WBUfzl5I1x3U2FyweHHEy2RS62w
+X-Received: by 2002:a05:693c:8209:b0:36a:4a68:84e5 with SMTP id
+ 5a478bee46e88-3856f14bcfbmr19450232eec.8.1795605546336; 
+ Wed, 25 Nov 2026 03:19:06 -0800 (PST)
 Received: from [192.55.55.46] ([192.55.55.46])
  by smtp.gmail.com with ESMTPSA id
- a92af1059eb24-1b55684c85fsm61937569c88.14.2026.11.25.03.18.48
+ 5a478bee46e88-385d2b93dd9sm60387297eec.24.2026.11.25.03.19.04
  (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
- Wed, 25 Nov 2026 03:18:50 -0800 (PST)
-Message-ID: <f2198c67-1396-4662-a936-9744f1e423fe@gmail.com>
-Date: Wed, 25 Nov 2026 13:18:46 +0200
+ Wed, 25 Nov 2026 03:19:05 -0800 (PST)
+Message-ID: <ec5ffd49-73bc-44d3-abcf-152ab39f9922@gmail.com>
+Date: Wed, 25 Nov 2026 13:19:02 +0200
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH i-g-t 2/3] tests/intel/kms_hdmi_audio_bw: Use hibernate
- helper
+Subject: Re: [PATCH i-g-t 3/3] tests/intel/kms_hdmi_audio_bw: Gate hibernate
+ test
 To: Swati Sharma <swati2.sharma@intel.com>, igt-dev@lists.freedesktop.org
 References: <20261120134400.1888895-1-swati2.sharma@intel.com>
- <20261120134400.1888895-3-swati2.sharma@intel.com>
+ <20261120134400.1888895-4-swati2.sharma@intel.com>
 Content-Language: en-US
 From: =?UTF-8?Q?Juha-Pekka_Heikkil=C3=A4?= <juhapekka.heikkila@gmail.com>
-In-Reply-To: <20261120134400.1888895-3-swati2.sharma@intel.com>
+In-Reply-To: <20261120134400.1888895-4-swati2.sharma@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-BeenThere: igt-dev@lists.freedesktop.org
@@ -97,29 +98,80 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 Reviewed-by: Juha-Pekka Heikkila <juhapekka.heikkila@gmail.com>
 
-On 20/11/2026 15.43, Swati Sharma wrote:
-> Use igt_system_hibernate_autoresume() for suspend-to-disk audio
-> recovery. Keep the existing suspend helper for other suspend states.
+On 20/11/2026 15.44, Swati Sharma wrote:
+> Require the -r option to run the suspend-to-disk audio recovery test.
+> This keeps the full hibernate cycle opt-in while leaving other recovery
+> tests unchanged.
 > 
 > Signed-off-by: Swati Sharma <swati2.sharma@intel.com>
 > ---
->   tests/intel/kms_hdmi_audio_bw.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
+>   tests/intel/kms_hdmi_audio_bw.c | 31 +++++++++++++++++++++++++++----
+>   1 file changed, 27 insertions(+), 4 deletions(-)
 > 
 > diff --git a/tests/intel/kms_hdmi_audio_bw.c b/tests/intel/kms_hdmi_audio_bw.c
-> index c6b052744..31a7f2949 100644
+> index 31a7f2949..eb34acd04 100644
 > --- a/tests/intel/kms_hdmi_audio_bw.c
 > +++ b/tests/intel/kms_hdmi_audio_bw.c
-> @@ -530,7 +530,10 @@ static void test_audio_recovery(data_t *data, enum igt_suspend_state state,
->   					   data->output->config.connector,
->   					   DRM_MODE_DPMS_ON);
->   	} else {
-> -		igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
-> +		if (state == SUSPEND_STATE_DISK)
-> +			igt_system_hibernate_autoresume();
-> +		else
-> +			igt_system_suspend_autoresume(state, SUSPEND_TEST_NONE);
->   	}
+> @@ -40,7 +40,7 @@
+>    * arg[1]:
+>    *
+>    * @mem: Suspend to memory, respecting the system's mem_sleep default
+> - * @disk: Suspend to disk (hibernate)
+> + * @disk: Suspend to disk (hibernate), enabled with -r
+>    *
+>    * SUBTEST: dpms-audio-recovery
+>    * Description: Validate audio state restoration after a DPMS off/on cycle
+> @@ -58,6 +58,7 @@ typedef struct {
+>   	igt_output_t *output;
+>   	igt_crtc_t *crtc;
+>   	struct igt_fb fb;
+> +	bool do_hibernate;
+>   } data_t;
 >   
->   	wait_for_eld();
+>   /* All sample rates declared in the EDID SAD */
+> @@ -552,10 +553,29 @@ static void test_audio_recovery(data_t *data, enum igt_suspend_state state,
+>   	cleanup_connector(data);
+>   }
+>   
+> -int igt_main()
+> +static int opt_handler(int opt, int opt_index, void *opt_data)
+>   {
+> -	data_t data = {};
+> +	data_t *data = opt_data;
+>   
+> +	switch (opt) {
+> +	case 'r':
+> +		data->do_hibernate = true;
+> +		break;
+> +	default:
+> +		return IGT_OPT_HANDLER_ERROR;
+> +	}
+> +
+> +	return IGT_OPT_HANDLER_SUCCESS;
+> +}
+> +
+> +static data_t data;
+> +
+> +static const char *help_str =
+> +"  -r\t\tEnable the full suspend-to-disk audio recovery test\n"
+> +;
+> +
+> +int igt_main_args("r", NULL, help_str, opt_handler, &data)
+> +{
+>   	igt_fixture() {
+>   		data.drm_fd = drm_open_driver_master(DRIVER_INTEL | DRIVER_XE);
+>   		igt_require(is_intel_device(data.drm_fd));
+> @@ -586,8 +606,11 @@ int igt_main()
+>   
+>   	igt_describe("Validate audio recovery after suspend to disk "
+>   		     "(hibernate) with constrained hblank.");
+> -	igt_subtest("suspend-disk-audio-recovery")
+> +	igt_subtest("suspend-disk-audio-recovery") {
+> +		igt_require_f(data.do_hibernate,
+> +			      "Run with -r to enable full hibernate\n");
+>   		test_audio_recovery(&data, SUSPEND_STATE_DISK, false);
+> +	}
+>   
+>   	igt_describe("Validate audio recovery after a DPMS off/on cycle "
+>   		     "with constrained hblank.");
 
