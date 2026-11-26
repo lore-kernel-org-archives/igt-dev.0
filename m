@@ -2,70 +2,52 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7881B606A31C
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Nov 2026 10:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA0A606A31C
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Nov 2026 11:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qaNfoIT1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Zwi8wQdn
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 2A8671122C7;
-	Thu, 26 Nov 2026 10:54:51 +0000 (UTC)
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com
- [209.85.216.51])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 3116E10E3E6
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 10:53:49 +0000 (UTC)
-Received: by mail-pj1-f51.google.com with SMTP id
- 98e67ed59e1d1-3ae1da332bcso3565896a91.2
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 02:53:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=gmail.com; s=20260707; t=1795690429; x=1796295229; darn=lists.freedesktop.org;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
- bh=Biq0Fk3ikDiYyQFOCDGY6bQ/ex+OS0/x2yH2qbB39Ak=;
- b=qaNfoIT1mHuSu/VOD1/WwWe7KvSiW+xIdFtj6I6Ci4rxHNJgpP3DD6U7Q8WCm9q5t0
- jx9IDFVxBcPQv4Olkta8UomXMDZqAGGTniqEzCf5hJBwl+sKgfHaw/eK+ku7Ehpnsml5
- 2YeSfZD+ddRrxUtWee8wfWopXMc9+0j9mDZ73XdVWZnX6pnay5LBTSF3BN78jyRglRNJ
- EfCfTIlknG4iXerhSsn8pIiDpyDTbcCziims2Y8oLh/CNugY/bF9+sj7NDern/oz0efL
- 8VfpKYEGzKa0JepHQrQlutIi9UcV+LIP27V2QXJPfxgdgT9ZMgDG6LvmR6Qvi9W9n9Oq
- Nflg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=1e100.net; s=20260707; t=1795690429; x=1796295229;
- h=content-transfer-encoding:mime-version:message-id:date:subject:cc
- :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
- :message-id:reply-to:content-type;
- bh=Biq0Fk3ikDiYyQFOCDGY6bQ/ex+OS0/x2yH2qbB39Ak=;
- b=FGjpE2hBPnZ9ciBCob08HIL3r7wpGg2qR1p/Ydp1zTd8W0hPoEcsgyhVqwHp8OakF8
- MYIOTq7fNHXl6IgCi4q3omXgMxqJW/vgc8C/MCX6MQ6HTJKXfUOMSpxpmJgOX7Cl6Ze/
- aPM8EgfoNEXARsmp1lfoF8XfGel0Nphmd3lGEDE7f8VrweIL5126S8CXazH1VFSqmIZm
- /LKWcu39og9wJ2bG9L07XvCcqnSszpWX3PkUWGz/W2MYcndhiC7mz8cICai4hp0UFHZ/
- sUskyB+u2HmmgcDFlcWjzCxQHjgiUlsNc4qgn9zFGFzZ5UxNGTo8N5oF6AcUbpp2v6RV
- GibA==
-X-Gm-Message-State: APuU4Z9qWT0SZr5TYXMOwhtNYKhFJUB03Vh/6frIbJk/TtEvJA6ZWQ8F
- 3QELDCpz0aP36wpwIYQCQa1PpGkfa3BeI2rxUjT4lddekLvsr5fgiy+SoJIxBzAC
-X-Gm-Gg: AZFdTZeuuLb4HypsRWXChJOkqF2iJ4cPIFdotFMe52ci0PUzo3h2MMOJfwu3gKzWJV6
- cUQFifm6CiVJDFkf3ZkGBdJOCaweW3apZsm+b1rbrh91tBbQq9tZOHIdyUS9Fs0XjVQft2cVvqM
- cF5swn46DsI8zhWJkGkuRdsYX+OzenFXR3xt1H7vLRnHtk5DRZXNeWdH/9A3f9nfIbVBjSv5KzJ
- CFeYN/vV1SmqLPa3ht+IvWgYVn+ZTo0jryEs/dzHbAX5YEZupziNJrjRWP3fonZE1YfGlcCLG2a
- 5drALkThh3LFr4QezDmc1neKuzBDXoqplAoTG+CpXqsfQjUcyLZj6BxCnCrnC/okLwMaekdLKKl
- LoJVrtubl8uzIWqrK5R4yxPku3wyqXBHgkiPE3Nx5mqJZcGoYPS8EVEjOQ8hlam6I7BBELIFlQE
- QGdepueLXOmMAp8wW0LgQOfS43l0dHJ9DooyrETFpGIsELeGCN34Yf2v2VKECO35byVTK1CuTax
- otzZiZ8skoAXOd/QX0A3F3Kb8JBi3eqP4GvwylXvjJfYMbinftlJ6RRMuhtiyTS6ZUlb2JN+SNa
- 9LmbBD0dFY/ps6RXvQNOp4ZJ5Ev97q4NxenkBb/gXLmJI/LV5mZGqaVlj9CL454cnDyMyWrsDLc
- GeD0AAoiRR6I=
-X-Received: by 2002:a17:90b:4a48:b0:3ab:2d17:51c5 with SMTP id
- 98e67ed59e1d1-3b41c7b60b5mr18630945a91.6.1795690428365; 
- Thu, 26 Nov 2026 02:53:48 -0800 (PST)
-Received: from DESKTOP-TPPBPA1 (36-226-201-204.dynamic-ip.hinet.net.
- [36.226.201.204]) by smtp.gmail.com with ESMTPSA id
- 98e67ed59e1d1-3b405d63728sm37600470a91.8.2026.11.26.02.53.47
- (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
- Thu, 26 Nov 2026 02:53:47 -0800 (PST)
-From: Roy <rongh7426@gmail.com>
+	by gabe.freedesktop.org (Postfix) with ESMTP id 2DF3F10E050;
+	Thu, 26 Nov 2026 11:16:54 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id BF2A21122E8
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 11:15:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1795691748; x=1827227748;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=tScDr45xhYY4pyn5xMS1EHhcK7Vj3KSK/9lZ1N0+f1U=;
+ b=Zwi8wQdnTIAU7HE87HG3Na3BPtRCzCDhDXTMRx28DnZjqGCA89NQgOZP
+ x7bl0aDq0W3ywDFVV6jxWUNzvStCxUfa72ySup+1/IX7zCFwPk+c3ZKga
+ lUQ+tMRCfTdzRqcEr36gW/VIKX/nhEvJJrUZ1P4tJAp8PLagoxNz2fJxI
+ PW+7uuCQwm2y/M9c0l7GOCdexXCS2UMLYmbeLsJB/PAsAQgCryH8aXiVz
+ cVAOom8qNAUHwOOfQE1iAV0uKnk96Q+QakfNWZiEyKF94ZQ7z+opooGQq
+ upxXXr70lRkVCjESSpJRQdwGvxxhzmQr0TrdJRYYVdMAj1aB4f6+2YfoJ Q==;
+X-CSE-ConnectionGUID: IqFwl0WBTqmR0Bqh+c9NLQ==
+X-CSE-MsgGUID: tZ8so2cSTquNeriH682HJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11977"; a="4500040"
+X-IronPort-AV: E=Sophos;i="6.27,234,1787036400"; 
+   d="scan'208";a="4500040"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Nov 2026 03:15:48 -0800
+X-CSE-ConnectionGUID: 3mnl2FToRzuCO/VkccFhcw==
+X-CSE-MsgGUID: uATm/Ro9Swir2K0slpqS7w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,234,1787036400"; d="scan'208";a="13919179"
+Received: from tejasupa-desk.iind.intel.com (HELO tejasupa-desk)
+ ([10.190.239.37])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Nov 2026 03:15:46 -0800
+From: Tejas Upadhyay <tejas.upadhyay@intel.com>
 To: igt-dev@lists.freedesktop.org
-Cc: Roy <rongh7426@gmail.com>
-Subject: [PATCH i-g-t] lib/igt_eld: Accept the ASoC hdmi-codec ELD format
-Date: Thu, 26 Nov 2026 18:53:45 +0800
-Message-ID: <20261126105345.656307-1-rongh7426@gmail.com>
-X-Mailer: git-send-email 2.51.1.windows.1
+Cc: nitin.r.gote@intel.com, arvind.yadav@intel.com,
+ Tejas Upadhyay <tejas.upadhyay@intel.com>
+Subject: [i-g-t V2] tests/xe: Add bad page decay reclaim coverage
+Date: Thu, 26 Nov 2026 16:45:28 +0530
+Message-ID: <20261126111527.3899889-2-tejas.upadhyay@intel.com>
+X-Mailer: git-send-email 2.52.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -80,103 +62,359 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-eld_parse_entry() only reports a monitor when the ELD file has
-"monitor_present 1", and eld_get_igt() also needs "eld_valid 1". Those
-two fields are printed by the HDA HDMI codec only. The ELD files of the
-ASoC hdmi-codec, used by HDMI audio on Arm boards, start at
-monitor_name, so every ELD there is treated as having no monitor.
+Add coverage for VRAM bad page decay handling.
 
-On a Raspberry Pi 5 (vc4), kms_hdmi_inject's inject-audio fails even
-though the ELD shows the injected EDID:
+The new tests verify two scenarios:
 
-  (kms_hdmi_inject) igt_eld-DEBUG: Monitor not present in ELD: /proc/asound/card0/eld#0
-  (kms_hdmi_inject) CRITICAL: HDMI ELD missing after retry
+- A soft-offlined page is reclaimed after the configured
+  bad_page_decay_secs timeout expires.
 
-while /proc/asound/card0/eld#0 has:
+- Re-injecting the same page before timeout promotes the page
+  from SOFT to HARD offline status, preventing reclaim.
 
-  monitor_name		IGT
-  connection_type	HDMI
-  eld_version		[0x2] CEA-861D or below
+To keep the tests synchronized with the active kernel
+configuration, the timeout is read from xe configfs instead of
+being hardcoded. The tests derive their wait times from the
+configured decay interval and skip with instructions when the
+configuration is unsuitable for automated execution.
 
-When the two fields are missing, use the ELD version instead. The
-hdmi-codec shows an all-zero ELD, with eld_version [0x0], when no sink
-is connected, so a non-zero version means a monitor is present and its
-ELD is valid. ELD files that have the fields are handled as before.
-
-Tested on a Raspberry Pi 5 (Raspberry Pi OS kernel 6.18.39):
-kms_hdmi_inject inject-audio fails before and passes after; inject-4k
-passes both times.
-
-This change and its description were written with the help of an AI
-coding assistant (Claude); the test runs above were done on real
-hardware.
-
-Signed-off-by: Roy <rongh7426@gmail.com>
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
 ---
- lib/igt_eld.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ tests/intel/xe_mempage_offline.c | 279 +++++++++++++++++++++++++++++++
+ 1 file changed, 279 insertions(+)
 
-diff --git a/lib/igt_eld.c b/lib/igt_eld.c
-index 0d3c668..51d2ee7 100644
---- a/lib/igt_eld.c
-+++ b/lib/igt_eld.c
-@@ -167,6 +167,11 @@ static bool parse_sad_field(struct eld_sad *sad, const char *key, char *value)
-  *
-  * Each entry contains one or more SAD blocks. Their contents is exposed in
-  * sadN_* fields.
-+ *
-+ * The monitor_present and eld_valid fields are printed by the HDA HDMI codec
-+ * only. The ASoC hdmi-codec starts at monitor_name and shows an all-zero ELD
-+ * (eld_version [0x0]) when no sink is connected, so without those fields a
-+ * non-zero ELD version means a monitor is present and its ELD is valid.
-  */
- static bool eld_parse_entry(const char *path, struct eld_entry *eld)
+diff --git a/tests/intel/xe_mempage_offline.c b/tests/intel/xe_mempage_offline.c
+index f1f7765b1..b4567221b 100644
+--- a/tests/intel/xe_mempage_offline.c
++++ b/tests/intel/xe_mempage_offline.c
+@@ -19,6 +19,7 @@
+ #include <unistd.h>
+ 
+ #include "igt.h"
++#include "igt_configfs.h"
+ #include "igt_debugfs.h"
+ #include "igt_device.h"
+ #include "igt_kmod.h"
+@@ -29,6 +30,7 @@
+ #define FAULT_INJECT_DIR	"inject_mempage_offline"
+ #define TRIGGER_FILE		"inject_mempage_offline_trigger"
+ #define VRAM_BAD_PAGES		"vram_bad_pages"
++#define MAX_TRACKED_BAD_PAGES 10000
+ 
+ static int count_bad_pages(int fd)
  {
-@@ -175,6 +180,8 @@ static bool eld_parse_entry(const char *path, struct eld_entry *eld)
- 	char *key, *value, *sad_key;
- 	size_t len;
- 	bool monitor_present = false;
-+	bool has_present = false, has_valid = false;
-+	unsigned int eld_version = 0;
- 	bool sad_ok;
- 	int sad_index;
+@@ -106,6 +108,112 @@ static uint64_t get_last_bad_page_pfn(int fd)
+ 	return pfn;
+ }
  
-@@ -196,10 +203,15 @@ static bool eld_parse_entry(const char *path, struct eld_entry *eld)
- 		/* Skip whitespace at the beginning */
- 		value += strspn(value, ELD_DELIM);
- 
-+		has_present |= strcmp(key, "monitor_present") == 0;
-+		has_valid |= strcmp(key, "eld_valid") == 0;
++static bool vram_bad_page_exists(int fd, uint64_t addr)
++{
++        char buf[4096];
++        char *line, *saveptr;
++        uint64_t found_addr;
 +
- 		if (strcmp(key, "monitor_present") == 0)
- 			monitor_present = strcmp(value, "1") == 0;
- 		else if (strcmp(key, "eld_valid") == 0)
- 			eld->valid = strcmp(value, "1") == 0;
-+		else if (strcmp(key, "eld_version") == 0)
-+			sscanf(value, "[0x%x]", &eld_version);
- 		else if (strcmp(key, "monitor_name") == 0)
- 			snprintf(eld->monitor_name, sizeof(eld->monitor_name),
- 				 "%s", value);
-@@ -227,6 +239,11 @@ static bool eld_parse_entry(const char *path, struct eld_entry *eld)
- 
- 	fclose(f);
- 
-+	if (!has_present)
-+		monitor_present = eld_version != 0;
-+	if (!has_valid)
-+		eld->valid = monitor_present;
++        __igt_debugfs_read(fd, VRAM_BAD_PAGES, buf, sizeof(buf));
 +
- 	if (!monitor_present)
- 		igt_debug("Monitor not present in ELD: %s\n", path);
- 	return monitor_present;
++        for (line = strtok_r(buf, "\n", &saveptr);
++             line;
++             line = strtok_r(NULL, "\n", &saveptr)) {
++
++                if (sscanf(line, "%lx", &found_addr) == 1 &&
++                    found_addr == addr)
++                        return true;
++        }
++
++        return false;
++}
++
++/* Snapshot every address currently listed in vram_bad_pages. */
++static int get_bad_page_pfns(int fd, uint64_t *pfns, int max)
++{
++        char buf[4096];
++        char *line, *saveptr;
++        uint64_t addr;
++        int count = 0;
++
++        __igt_debugfs_read(fd, VRAM_BAD_PAGES, buf, sizeof(buf));
++
++        if (buf[0] == '\0')
++                return 0;
++
++        for (line = strtok_r(buf, "\n", &saveptr);
++             line && count < max;
++             line = strtok_r(NULL, "\n", &saveptr)) {
++                if (line[0] != '0' || line[1] != 'x')
++                        continue;
++                if (sscanf(line, "0x%lx", &addr) == 1)
++                        pfns[count++] = addr;
++        }
++
++        return count;
++}
++
++static bool pfn_in_list(const uint64_t *pfns, int count, uint64_t pfn)
++{
++        for (int i = 0; i < count; i++)
++                if (pfns[i] == pfn)
++                        return true;
++
++        return false;
++}
++
++static char bus_addr[32];
++
++static void set_bus_addr(int fd)
++{
++        struct pci_device *pci = igt_device_get_pci_device(fd);
++
++        snprintf(bus_addr, sizeof(bus_addr),
++                 "%04x:%02x:%02x.%d",
++                 pci->domain,
++                 pci->bus,
++                 pci->dev,
++                 pci->func);
++}
++
++static int get_bad_page_decay_secs(void)
++{
++        int configfs_fd;
++        int device_fd;
++        int val;
++        int ret;
++
++        configfs_fd = igt_configfs_open("xe");
++        igt_require(configfs_fd >= 0);
++
++        device_fd = openat(configfs_fd,
++                           bus_addr,
++                           O_RDONLY | O_DIRECTORY);
++
++        igt_require_f(device_fd >= 0,
++                      "No configfs entry for %s\n",
++                      bus_addr);
++
++        ret = igt_sysfs_scanf(device_fd,
++                              "bad_page_decay_secs",
++                              "%d",
++                              &val);
++
++        close(device_fd);
++        close(configfs_fd);
++
++        igt_require_f(ret == 1,
++                      "Failed reading bad_page_decay_secs\n");
++
++        return val;
++}
++
++static int decay_gc_wait_secs(int decay_secs)
++{
++        /* Must mirror KMD logic */
++        return max(decay_secs / 8, 60) + 5;
++}
++
+ static void inject_fault(int fd)
+ {
+ 	igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "100");
+@@ -114,6 +222,21 @@ static void inject_fault(int fd)
+ 	__igt_debugfs_write(fd, TRIGGER_FILE, "0", 1);
+ }
+ 
++static void require_valid_decay_interval(int decay_interval)
++{
++	igt_require_f(decay_interval > 0 &&
++			decay_interval <= 300,
++			"bad_page_decay_secs=%d is not suitable for this test.\n"
++			"Please reconfigure and reprobe xe:\n"
++			"  echo %s > /sys/bus/pci/drivers/xe/unbind\n"
++			"  echo 30 > /sys/kernel/config/xe/%s/bad_page_decay_secs\n"
++			"  echo %s > /sys/bus/pci/drivers/xe/bind\n",
++			decay_interval,
++			bus_addr,
++			bus_addr,
++			bus_addr);
++}
++
+ /**
+  * SUBTEST: inject-single-page
+  * Description: Inject a single VRAM page fault and verify it appears in vram_bad_pages
+@@ -123,6 +246,17 @@ static void inject_fault(int fd)
+  * SUBTEST: inject-duplicate-page
+  * Description: Inject two pages and verify both appear in vram_bad_pages
+  */
++/**
++ * SUBTEST: inject-and-noreclaim
++ * Description: Inject a duplicate VRAM page fault before patrol-scrubber time and
++ * verify it still appears in vram_bad_pages
++ */
++
++/**
++ * SUBTEST: inject-and-reclaim
++ * Description: Inject a page fault once and wait for patrol-scrubber cycle to
++ * completeverify, page should be reclaimed and not appear in vram_bad_pages
++ */
+ 
+ int igt_main()
+ {
+@@ -188,6 +322,151 @@ int igt_main()
+ 		igt_assert_eq(after_count, initial_count + 1);
+ 	}
+ 
++	igt_subtest("inject-and-noreclaim")
++	{
++		uint64_t pfn;
++		char pfn_str[32];
++		int decay_interval;
++		int wait_time;
++		int debugfs_fd;
++		int ret;
++
++		set_bus_addr(fd);
++		decay_interval = get_bad_page_decay_secs();
++		require_valid_decay_interval(decay_interval);
++
++		wait_time =
++			decay_interval +
++			decay_gc_wait_secs(decay_interval);
++
++		igt_info("decay=%d wait=%d\n",
++				decay_interval, wait_time);
++
++		inject_fault(fd);
++
++		pfn = get_last_bad_page_pfn(fd);
++		igt_assert(pfn != 0);
++
++		sleep(max(decay_interval / 2, 1));
++
++		snprintf(pfn_str, sizeof(pfn_str),
++				"0x%llx",
++				(unsigned long long)pfn);
++
++		/* Reset / override the allowed fault count to 2 (or more) */
++		if (igt_debugfs_exists(fd, FAULT_INJECT_DIR "/times", O_WRONLY)) {
++			igt_debugfs_write(fd, FAULT_INJECT_DIR "/times", "2");
++		}
++		debugfs_fd = igt_debugfs_open(fd,
++				TRIGGER_FILE,
++				O_WRONLY);
++		igt_assert(debugfs_fd >= 0);
++
++		errno = 0;
++		ret = write(debugfs_fd,
++				pfn_str,
++				strlen(pfn_str));
++
++		igt_assert(ret > 0 || errno == EEXIST);
++
++		close(debugfs_fd);
++
++		sleep(wait_time);
++
++		/* HARD page should survive reclaim */
++		igt_assert(vram_bad_page_exists(fd, pfn));
++	}
++
++	igt_subtest("inject-and-reclaim")
++	{
++		int initial_count, after_count;
++		int decay_interval;
++		int wait_time;
++		uint64_t pfn;
++		uint64_t existing_pfns[MAX_TRACKED_BAD_PAGES];
++		int existing_count;
++		char pfn_str[32];
++		int debugfs_fd;
++		int ret;
++
++		set_bus_addr(fd);
++		decay_interval = get_bad_page_decay_secs();
++		require_valid_decay_interval(decay_interval);
++
++		wait_time =
++			decay_interval +
++			decay_gc_wait_secs(decay_interval);
++
++		igt_info("decay=%d wait=%d\n",
++				decay_interval, wait_time);
++
++		initial_count = count_bad_pages(fd);
++		existing_count = get_bad_page_pfns(fd, existing_pfns,
++				MAX_TRACKED_BAD_PAGES);
++
++		/*
++		 * Pick a valid PFN that is not already in vram_bad_pages.
++		 * Step downward from existing_pfns if bad pages already exist,
++		 * otherwise start from a valid base PFN.
++		 */
++		pfn = existing_count > 0 ? existing_pfns[0] - 1 : 0x100;
++		while (vram_bad_page_exists(fd, pfn) ||
++				pfn_in_list(existing_pfns, existing_count, pfn)) {
++			igt_assert(pfn > 1);
++			pfn--;
++		}
++
++		snprintf(pfn_str, sizeof(pfn_str),
++				"0x%llx",
++				(unsigned long long)pfn);
++
++		/* 1. Inject fault at the chosen non-colliding PFN */
++		if (igt_debugfs_exists(fd, FAULT_INJECT_DIR "/times", O_WRONLY))
++			igt_debugfs_write(fd, FAULT_INJECT_DIR "/times", "2");
++
++		debugfs_fd = igt_debugfs_open(fd,
++				TRIGGER_FILE,
++				O_WRONLY);
++		igt_assert(debugfs_fd >= 0);
++
++		errno = 0;
++		ret = write(debugfs_fd,
++				pfn_str,
++				strlen(pfn_str));
++		igt_assert(ret > 0);
++		close(debugfs_fd);
++
++		igt_assert(pfn != 0);
++		after_count = count_bad_pages(fd);
++		igt_assert_eq(after_count, initial_count + 1);
++		igt_assert(vram_bad_page_exists(fd, pfn));
++
++		/* 2. Wait for decay + GC reclaim window */
++		sleep(wait_time);
++
++		/* SOFT page should be reclaimed */
++		igt_assert(!vram_bad_page_exists(fd, pfn));
++		after_count = count_bad_pages(fd);
++		igt_assert_eq(after_count, initial_count);
++
++		/* 3. Re-trigger the exact same PFN after decay time is over */
++		debugfs_fd = igt_debugfs_open(fd,
++				TRIGGER_FILE,
++				O_WRONLY);
++		igt_assert(debugfs_fd >= 0);
++
++		errno = 0;
++		ret = write(debugfs_fd,
++				pfn_str,
++				strlen(pfn_str));
++		igt_assert(ret > 0);
++		close(debugfs_fd);
++
++		after_count = count_bad_pages(fd);
++		igt_assert_eq(after_count, initial_count + 1);
++		igt_assert(vram_bad_page_exists(fd, pfn));
++	}
++
+ 	igt_fixture() {
+ 		igt_debugfs_write(fd, FAULT_INJECT_DIR "/probability", "0");
+ 		drm_close_driver(fd);
 -- 
-2.51.1.windows.1
+2.52.0
 
