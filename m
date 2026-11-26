@@ -2,43 +2,43 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE26C606A31E
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Nov 2026 10:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D2A606A31C
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Nov 2026 10:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=emersion.fr header.i=@emersion.fr header.a=rsa-sha256 header.s=protonmail2 header.b=EjdFyoWd
+	dkim=pass (2048-bit key, unprotected) header.d=emersion.fr header.i=@emersion.fr header.a=rsa-sha256 header.s=protonmail2 header.b=RRlzGY8K
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6042D11227F;
-	Thu, 26 Nov 2026 10:03:40 +0000 (UTC)
-Received: from mail-24421.protonmail.ch (mail-24421.protonmail.ch
- [109.224.244.21])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0BB511227A
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 10:02:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 362C3112281;
+	Thu, 26 Nov 2026 10:04:49 +0000 (UTC)
+Received: from mail-4321.protonmail.ch (mail-4321.protonmail.ch [185.70.43.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 7BE5211227F
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 10:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=emersion.fr;
- s=protonmail2; t=1795687339; x=1795946539;
- bh=lO9NCia0E6SBvml4t/wDyX4O+Aoqo9I+yAoOsy3gRUA=;
+ s=protonmail2; t=1795687279; x=1795946479;
+ bh=93CEM9rRfj84aloxCaucbMnnLuaAdOEFpKc3WFvZXzw=;
  h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
  Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
  Message-ID:BIMI-Selector;
- b=EjdFyoWdW1SDK3FvJlXFDhuJ9EDwGvZ3mWeTWXL0RRtuhj0kDXchcfLC8spA2FSd0
- Fh4ohcto6uLCqu9wlqkrDRgEqHTFxPek/Or/6uqSd3aZE+f71nJUM0UYAZcHbDoWER
- 2I6EKvaqjWWlTIo35BkjgxS8s77Lp3VJwchs2RjKJ/Ke6kXigVcjlSvN7ed5AbmeUw
- 1GhPE+h9S0/BjBH72zIT3gpSXAIWp74XZze9g/OCx7twOskaAxHywBbDDf4hLT9jgk
- EtCGWR2pDF3gOJENz8O4cXp5fuBvmfGWQobBk0vETzH+lvDcNaWErQJ6HRFUDu8j3o
- 3oZz4zmQuLlnA==
-Date: Thu, 26 Nov 2026 10:02:14 +0000
-To: igt-dev@lists.freedesktop.org
+ b=RRlzGY8Kbpr9gdDRU4mDzqz2fi/Jp4ep+ybPlC43tFqIiWmW/l3PBsAo8682XS3vd
+ UnzE+ok141xUdklvzdjRoyova/PZp3+7+bhGMcVnIwCtIpW7iHObB1oT5lMiXNLeme
+ 4UODq0cXJDz4CFTCcCCgfrOYqVHaevtJjSqA6KRzrZMeCQ1keLQcpev/mbeg6fxehr
+ wCuhNeHBQNMQqNy2oxMEF53fhSG8LGIjJ5DAnh1MxR/gRFai7yzt1P+2D4RRHgEFGp
+ A/VZo+bee/1z6sfjMFvgdbXaK1KW+mOoFTO5GAA6lnXGKttIn1aKEvin/x+iWa0ba+
+ mR5KiUUl8LaKw==
+Date: Thu, 26 Nov 2026 10:01:12 +0000
+To: Gil Dekel <gildekel@google.com>
 From: Simon Ser <contact@emersion.fr>
-Cc: Gil Dekel <gildekel@google.com>, Jani Nikula <jani.nikula@intel.com>,
+Cc: igt-dev@lists.freedesktop.org, Jani Nikula <jani.nikula@intel.com>,
  Swati Sharma <swati2.sharma@intel.com>, Karthik B S <karthik.b.s@intel.com>,
  Mark Yacoub <markyacoub@google.com>,
  Kamil Konieczny <kamil.konieczny@linux.intel.com>,
  Ryszard Knop <ryszard.knop@intel.com>
-Subject: [PATCH v2 2/2] meson: require libdisplay-info v0.4.0
-Message-ID: <20261126100201.606756-2-contact@emersion.fr>
-In-Reply-To: <20261126100201.606756-1-contact@emersion.fr>
-References: <20261126100201.606756-1-contact@emersion.fr>
+Subject: Re: [PATCH] lib/igt_hdr: switch to libdisplay-info for EDID parsing
+Message-ID: <f0kqdnSslJ5aAt-_9T_HNf07PsmBlKfKkvhAFvy1KtRSS-gD7Bkkncrxv1AushLYuWS3XZulBswj4YRfi_E7I0h6r9XeVLFh4Mwuz6dskVY=@emersion.fr>
+In-Reply-To: <CA++eeRNu6hCHrKUdNKcs_so5F+3rsdBpmHszP9qjZc2gfiSi9Q@mail.gmail.com>
+References: <20261121115236.124211-1-contact@emersion.fr>
+ <CA++eeRNu6hCHrKUdNKcs_so5F+3rsdBpmHszP9qjZc2gfiSi9Q@mail.gmail.com>
 Feedback-ID: 1358184:user:proton
-X-Pm-Message-ID: 216ee5abf3f88d756aa794e6ef51523a8ca23614
+X-Pm-Message-ID: bcac838bbbd2efc9988e0edb7f75a507307a875a
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -54,77 +54,77 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This version looks up CTA extension blocks nested inside a DisplayID
-extension block. This is required for upcoming tests leveraging
-igt_hdr helpers.
+On Tuesday, November 24th, 2026 at 19:26, Gil Dekel <gildekel@google.com> w=
+rote:
 
-On systems not shipping a new enough libdisplay-info, a wrap file [1] is
-provided so that Meson can automatically download and link to an
-up-to-date subproject [2]. This eases developer setup when IGT is built
-on distributions such as Debian. This behavior is typically disabled
-when packaging software via the wrap_mode=3Dnodownload option (see e.g.
-the arch-meson wrapper [3] used for Arch Linux packaging).
+> I'll drop patches 1/3 and 2/3 of my series in favor of this. A few
+> comments inline below.
 
-A slightly newer commit is pulled in by the wrap to avoid compiling
-a bunch of unnecessary v4l-utils code when libdisplay-info is used
-as a subproject [4].
+Thanks for the review! I'll be sending v2 shortly.
 
-v2: new commit (Gil)
+> > diff --git a/lib/igt_hdr.c b/lib/igt_hdr.c
+> > index c0ed9e843163..b8175ceef1f7 100644
+> > --- a/lib/igt_hdr.c
+> > +++ b/lib/igt_hdr.c
+> > @@ -11,6 +11,8 @@
+> >  #include <termios.h>
+> >  #include <unistd.h>
+> >
+> > +#include <libdisplay-info/info.h>
+>=20
+> Nit: #include "igt_edid.h" (at line 7, and in lib/igt_hdr.h) looks
+> unused now.
 
-[1]: https://mesonbuild.com/Wrap-dependency-system-manual.html
-[2]: https://mesonbuild.com/Subprojects.html
-[3]: https://gitlab.archlinux.org/archlinux/packaging/packages/meson/-/blob=
-/9fe4433580978cc020c813019b77238ce65ab38d/arch-meson#L19
-[4]: https://gitlab.freedesktop.org/emersion/libdisplay-info/-/merge_reques=
-ts/219
+Good catch! Removed both.
 
-Signed-off-by: Simon Ser <contact@emersion.fr>
-Cc: Gil Dekel <gildekel@google.com>
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Swati Sharma <swati2.sharma@intel.com>
-Cc: Karthik B S <karthik.b.s@intel.com>
-Cc: Mark Yacoub <markyacoub@google.com>
-Cc: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-Cc: Ryszard Knop <ryszard.knop@intel.com>
----
- meson.build                      | 2 +-
- subprojects/libdisplay-info.wrap | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
- create mode 100644 subprojects/libdisplay-info.wrap
+> >  /**
+> >   * igt_is_panel_hdr:
+> >   * @fd: DRM file descriptor
+> > @@ -63,13 +38,10 @@ static bool cta_block(const char *edid_ext)
+> >  bool igt_is_panel_hdr(int fd, igt_output_t *output)
+>=20
+> Nit: the doc comment right above igt_is_panel_hdr() still says "in the
+> CTA extension".
 
-diff --git a/meson.build b/meson.build
-index e7c685116b13..ead7be9c5eb0 100644
---- a/meson.build
-+++ b/meson.build
-@@ -151,7 +151,7 @@ build_info +=3D 'Valgrind annotations: @0@'.format(valg=
-rind.found())
- cairo =3D dependency('cairo', version : '>1.12.0', required : true)
- libpci =3D dependency('libpci', required : true)
- libudev =3D dependency('libudev', required : true)
--libdisplay_info =3D dependency('libdisplay-info', required : true)
-+libdisplay_info =3D dependency('libdisplay-info', version : '>=3D0.4.0', r=
-equired : true)
- glib =3D dependency('glib-2.0', required : true)
-=20
- libtsi =3D cc.find_library('TSI', required : false)
-diff --git a/subprojects/libdisplay-info.wrap b/subprojects/libdisplay-info=
-.wrap
-new file mode 100644
-index 000000000000..6a771b10030f
---- /dev/null
-+++ b/subprojects/libdisplay-info.wrap
-@@ -0,0 +1,3 @@
-+[wrap-git]
-+url =3D https://gitlab.freedesktop.org/emersion/libdisplay-info.git
-+revision =3D 548330bca9bd3c6518cf4c6b38c954cfaabe782d
---=20
-2.56.1
+I've reworded this section to be a bit more explicit, explaining that a
+CTA extension may be inside the base EDID, or nested inside a DisplayID
+extension).
 
+> > +=09info =3D di_info_parse_edid(edid_blob->data, edid_blob->length);
+> > +=09igt_assert(info);
+>=20
+> di_info_parse_edid() returns NULL when an EDID fails its base-block
+> checksum, so igt_assert(info) fails the test where the old code
+> returned false. Would it make sense to warn and return false when !info
+> instead of asserting?
 
+Yup, I've done that!
+
+> > diff --git a/meson.build b/meson.build
+> > index eec131375e06..e7c685116b13 100644
+> > --- a/meson.build
+> > +++ b/meson.build
+> > @@ -151,6 +151,7 @@ build_info +=3D 'Valgrind annotations: @0@'.format(=
+valgrind.found())
+> >  cairo =3D dependency('cairo', version : '>1.12.0', required : true)
+> >  libpci =3D dependency('libpci', required : true)
+> >  libudev =3D dependency('libudev', required : true)
+> > +libdisplay_info =3D dependency('libdisplay-info', required : true)
+>=20
+> DisplayID CTA HDR parsing landed in libdisplay-info 0.4.0; 0.2.0 and
+> 0.3.0 only check CTA-861 extensions (and return pq=3D0 on this panel's
+> EDID). Since build-fedora currently pulls 0.3.0, could this require
+> version : '>=3D 0.4.0' so Meson also falls back to your 0.4.0 wrap there?
+
+I've added a patch with the version bump and the wrap file. (Feel free
+to let me know if you'd rather have it squashed into the previous
+commit.)
+
+Simon
