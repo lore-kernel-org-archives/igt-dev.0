@@ -2,71 +2,75 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FB9606A31E
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Nov 2026 03:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE91606A69A
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Nov 2026 03:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=5q0awdkF
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=JmlOh8EK
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 13FD010E2EC;
-	Thu, 26 Nov 2026 03:28:51 +0000 (UTC)
-Received: from CY7PR03CU001.outbound.protection.outlook.com
- (mail-westcentralusazon11010022.outbound.protection.outlook.com
- [40.93.198.22])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A497210E461
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 03:24:18 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 13EBA10E309;
+	Thu, 26 Nov 2026 03:29:54 +0000 (UTC)
+Received: from SN4PR0501CU005.outbound.protection.outlook.com
+ (mail-southcentralusazon11011033.outbound.protection.outlook.com
+ [40.93.194.33])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A4ED110E2E8
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 03:24:20 +0000 (UTC)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N/IfmYZiNkQGpJcXp7Q1yZ7VI5O9u4q4gzsO4/4VVG6mYfsyvsEpywMJXeY84zpXMaIyUnRodmYqEPAM/DHoMl3nY8hMvjeJWizQs40tywAo18IwN9ebnX95PH3RGBUGWPcZiNdk5k6frFhqeqHh2SXTwmN0ANZDwf89CAXZuHC+1FIvTJfD7I33MAVHOgRcsF+yAXSshbWNfeYTKfNJjwCPp5SxgpbOwDPaAaKvwYKQmsXu6+A0eQmTdBuudhrOvu0ekPkJ8y42bQZzQWVS2cN0ZqTwtA7prIX5fbu6XAHAl7oHIKsw9AInaOO7zWjwFxAP6zl/k8N+V4AmOoSyYw==
+ b=IHIGbimLxjngn7o5P1hpi+Z0fTPMU+TGx40fnGmOTZbHkPPT07xqR1lf0ORAeCGsXdYyAIneupWKakEqzzLvPcrrMOzCW79GLzHcD3zGmXH1Rou+0a4YoIBL98LAS13MUH1RLxNtON6UR0NYEgoFg3zL9QeXkHtZoM+6oidqKFPC5NX61tahGzMfkK5o5sGs8iz4YTXJ1p10Byu4A5PNtbBiQTVzGNtqP1iovRQMTXbswSVKFTJR7Vsww8dEvILKnVvshac9ZcIZoHR8OAEHUH2s78N1wq/SFsu8iiNYEtDe53JJcWSqyAfxh/XcQ85rA/EhoMAFib9KVWWv0MTpqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=waLNmIpUdC+vZU69J6AhNBtqmf8bvfZaIBpac20ZWnI=;
- b=bCuZRKGCKvKhRUN7KipgxKmdyAiZUNNFHWDIXLFuPts8rl+Dy85KXX0syxpTl6bZpAiitJb9CQGciGnMK67HJSSsJY9boKz3cf1T768jdCOdqE7BWEN527Hgk/3pFVNkdJsjaugAPuTc3j49gRbxEGRRmTMSc/JQUW72SJ10XS8fcqV1fgXl0PR6CdcPgfm3XHeK2tPb040NtyQdZNZI3cNkQGWG8NJ1F2ponn5I7IMIpqVq5VKzEXMxN686IU4H4GrlNhtsGk18DpQRAThC8LNjrrRBrhgzS66HL5z7VAi4fh/6JIM0iumVJZt5fg7XnETOvwJuO9usC/ofCuOJjg==
+ bh=t806STgFZ0dNOzLVLKeqDT30WQtydW3tS8F7Yqccs1M=;
+ b=pOMfmQ3cJt4RRRRNPebqz+yKXYjfFvQzD+lRsqpOEfOnJSOJTnoDUseB2eRDsYPV0ShDtqv7FcjLccnX0tuPtou6z009wOO1yr9481odEmx1tssrbVd51BpWoikULK6PjtxYIEdDD58yvBAMWb91B4k9321JL0WczyE3qIlQfBP4pwMdEqAf+hcpx+yfoCyyhEwlKEeR08PStTdp+SKiWNNbnm5o4Bz4cMKTikXie5+cqbWWiTNX8xK7hfCAXVgCet0yySKtir9yk6Re6DeW4LVWYheNeXM+tk/RurRDRXTeCxxddOWtGxmS7yxxgKOtlXWQuMoJ8lIfxX5AlVTdzw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com; 
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1; 
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=waLNmIpUdC+vZU69J6AhNBtqmf8bvfZaIBpac20ZWnI=;
- b=5q0awdkFmWOKmK9QyGKCAGVhVvkgMI4qR5XVa8guEcmcz86gxXhtm3d6HwO10p2/JaBHvPgkTgnfqTLmYijlI/4MIDYWfLOTtVcSdg8tU6JQCibQ4/5xVO+tZjkkz2UGbfjRWpCUzm8rmOYpb8KwjeUEcoQddfdMDVSA+q3OlGw=
-Received: from MN2PR06CA0019.namprd06.prod.outlook.com (2603:10b6:208:23d::24)
- by CH0PR12MB8532.namprd12.prod.outlook.com (2603:10b6:610:191::22)
+ bh=t806STgFZ0dNOzLVLKeqDT30WQtydW3tS8F7Yqccs1M=;
+ b=JmlOh8EK8R8EhWyymeovQRcYDmtPpQBT3A9Os24LNafpV+rib8d8Of1mlOTmGZuIvZLHW7wIwb5jbuZ7lWE2oZYgYO1zY1kVhV2itc8dQ0SyI8M7NeYEbxMBPKOeMaKfqT8sWKKVV8N7xTnd6u0HoiBZrbAbv3QbfORSGzT0H28=
+Received: from SJ0PR03CA0240.namprd03.prod.outlook.com (2603:10b6:a03:39f::35)
+ by SN7PR12MB8058.namprd12.prod.outlook.com (2603:10b6:806:348::14)
  with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Thu, 26 Nov
- 2026 03:24:08 +0000
-Received: from BL4PEPF000003EE.namprd04.prod.outlook.com
- (2603:10b6:208:23d:cafe::33) by MN2PR06CA0019.outlook.office365.com
- (2603:10b6:208:23d::24) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Thu, 26 Nov
+ 2026 03:24:11 +0000
+Received: from SJ1PEPF000037A9.namprd03.prod.outlook.com
+ (2603:10b6:a03:39f:cafe::84) by SJ0PR03CA0240.outlook.office365.com
+ (2603:10b6:a03:39f::35) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.7 via Frontend Transport; Thu, 26
- Nov 2026 03:24:08 +0000
+ Nov 2026 03:24:11 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 165.204.84.17) smtp.mailfrom=amd.com;
  dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BL4PEPF000003EE.mail.protection.outlook.com (10.167.249.10) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ SJ1PEPF000037A9.mail.protection.outlook.com (10.167.244.182) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.662.3 via Frontend Transport; Thu, 26 Nov 2026 03:24:08 +0000
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ 15.21.662.3 via Frontend Transport; Thu, 26 Nov 2026 03:24:10 +0000
+Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 25 Nov
- 2026 21:24:07 -0600
+ 2026 21:24:09 -0600
+Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb10.amd.com
+ (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.57; Wed, 25 Nov
+ 2026 21:24:08 -0600
 Received: from AB350-desktop.amd.com (10.180.168.240) by satlexmb08.amd.com
  (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.57 via Frontend
- Transport; Wed, 25 Nov 2026 21:24:07 -0600
+ Transport; Wed, 25 Nov 2026 21:24:08 -0600
 From: <vitaly.prosyak@amd.com>
 To: <igt-dev@lists.freedesktop.org>
 CC: Vitaly Prosyak <vitaly.prosyak@amd.com>,
  =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, Alex Deucher
  <alexander.deucher@amd.com>, Jesse Zhang <jesse.zhang@amd.com>, "Claude
  Sonnet 5" <noreply@anthropic.com>
-Subject: [PATCH 2/5] lib/amdgpu/compute_utils: add dispatch helpers needed by
- SPM capture
-Date: Wed, 25 Nov 2026 22:22:06 -0500
-Message-ID: <20261126032404.172848-2-vitaly.prosyak@amd.com>
+Subject: [PATCH 4/5] tests/amdgpu/amd_spm: add SPM capture test (CPF-busy,
+ cache-hit, cache-benchmark)
+Date: Wed, 25 Nov 2026 22:22:08 -0500
+Message-ID: <20261126032404.172848-4-vitaly.prosyak@amd.com>
 X-Mailer: git-send-email 2.56.1
 In-Reply-To: <20261126032404.172848-1-vitaly.prosyak@amd.com>
 References: <20261126032404.172848-1-vitaly.prosyak@amd.com>
@@ -76,29 +80,29 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL4PEPF000003EE:EE_|CH0PR12MB8532:EE_
-X-MS-Office365-Filtering-Correlation-Id: 783a6aef-3943-4e55-d0df-08df4b6cbb92
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000037A9:EE_|SN7PR12MB8058:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7ef3679-e740-46a1-b2ff-08df4b6cbd05
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
- ARA:13230040|36860700016|23010399003|1800799024|82310400026|376014|10067099003|56012099006|261026121527099003|261026140227099003|261026130827099003|261026135527099003|261028144727099003|261022115727099003|261022113327099003|261022105027099003|261022075727099003|261021133027099003|261021135927099003|261021130227099003|261021123027099003|261021121427099003|261102123227099003|261009223027099003|22082099003|18002099003|11063799006|6123799006|6133799003;
-X-Microsoft-Antispam-Message-Info: naQHG9iACyO5Re6d9eaF+N53ip7ioS9WcUSdqeAB3M/t/ByTmBhjm5G8tvRPULsL8nVlbEEEdJ9RHx5LFn8YQKpInMrbBKKI+SZMOrCjTt+VoWUqiU6gbwy/OeP0NZuLuJcssAvRLnxVigXW9fa42AIN2ne74jgjS62JI8gjQvbw4E4kzy9AWxTNQ6YuFxhguU81OR0387zJD6SpboXtUed18INt4YoSGFQkL8kg3h33vjIwkZiYQz9WiAl1c8cJn/jnnJfWpxw/1bkTDISlhPS4h07B09uAHWLF9c5skWk9/6rExD1MW5qTDbJgpB9xFQ/DV6WwrIW+/WXvvRx+vb4ZtrYsvOki6sx+ukniLjfzTXRITgfY9vsioDegkUtQ0I2XdPEGuCNHls73XVFaCv+NXppYkupclL6uJYWzN1DlZLJsy9ESB6AikLrfMYIoVQIBiqFJuw7jNNQ+c7M497aWhcC+l8TKh0CLfJqXzfQ9l9lJVLNgQRoyJ7YFy78ZJ/n2V5c5DnhtgUhNFt5Xmnk5mcWMZ7AmqcBQGUBvB3ku47oq/Rpk4TnD1zYCskAaqpDnFIfg/yrvEmW3usD5fNtEYH+WdO76ZUU3F1iGDe3uroohOCnk4CQW7QMU15hA036RO+PCYxseb4nje89sNpu6ximAK2fIeeDrHA7GkqNkrU28u7l4h9jYGzvdABrEXoUKAWx+8edVuJPJr2uwgw==
+ ARA:13230040|36860700016|1800799024|23010399003|376014|82310400026|10067099003|6123799006|5023799004|11063799006|260925021311599003|260925021911599003|260925022911599003|56012099006|261102123227099003|261021133027099003|261021123027099003|261022075727099003|261021135927099003|261021130227099003|261021121427099003|261026140227099003|261022113327099003|261026130827099003|261026121527099003|261022115727099003|261009223027099003|261026135527099003|261022105027099003|261028144727099003|22082099003|18002099003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info: oiJMA7RLO5DvJVRZiB8d7tUKxUaXkXaFqtDu5fR1hMMWm9TcAnAucyc+/M/qRFghXVJXyzv2snAVFvzkoSiXR3cu9KS7rF60wOKRK/BEXfnln7MgxpAqoUIhg3m1lNLXjGuBdinTBN2V/wzxbtx6FxFhXSNlv9o8Ac8zKGHwSDRAOjARpmh3KPicvj4+e9EBjEwEUlO/zNjKcTFRrm/ubsiWFs6dB6CFGfpCHlca73CQg9FdbMWnZIPZGArtiavD6CTMgxVLy1kDKI/zVG1tMKcTiGtOPpduEBdpDXbnYKTEUwTrWMlEUuR5rsUh+8LKgYKwujZNNVBMQXkuRLvsGai81cCwd98m0FfUKs0gtrCQeW5CmfOFGugIH6+JzXE3xFlhtnlUtPpVV1fu2p6EYJj2WD9lv4vCP0aSs5EYtED94LekOTIxcgH5njPxXyyciKp9JbwjPlQ4ysFlxGNAJYw+9v97IP5GkiZRDVl8180DW/dJFun2CziKC8hE9a8XctSE2CLibUpSkbED+KSdhAf4I3gd/p45l747yJIaEnNFAQMrPgf+2BETt/W9t4djQugf11I19nqryJZe3kAzKMFh2xYLGgU/fjYoOx0j+AdlU1gt4al+VER9uh8jMYTMpeY475EILhnqRZBL0dNv8/1h0+ZXht1O+ehbImn6wQh2rud3bb/ouhl9gayFzkT1GY0gh8zlprhELnr98oe5jQ==
 X-Forefront-Antispam-Report: CIP:165.204.84.17; CTRY:US; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:satlexmb07.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
- SFS:(13230040)(36860700016)(23010399003)(1800799024)(82310400026)(376014)(10067099003)(56012099006)(261026121527099003)(261026140227099003)(261026130827099003)(261026135527099003)(261028144727099003)(261022115727099003)(261022113327099003)(261022105027099003)(261022075727099003)(261021133027099003)(261021135927099003)(261021130227099003)(261021123027099003)(261021121427099003)(261102123227099003)(261009223027099003)(22082099003)(18002099003)(11063799006)(6123799006)(6133799003);
+ IPV:NLI; SFV:NSPM; H:satlexmb08.amd.com; PTR:InfoDomainNonexistent; CAT:NONE;
+ SFS:(13230040)(36860700016)(1800799024)(23010399003)(376014)(82310400026)(10067099003)(6123799006)(5023799004)(11063799006)(260925021311599003)(260925021911599003)(260925022911599003)(56012099006)(261102123227099003)(261021133027099003)(261021123027099003)(261022075727099003)(261021135927099003)(261021130227099003)(261021121427099003)(261026140227099003)(261022113327099003)(261026130827099003)(261026121527099003)(261022115727099003)(261009223027099003)(261026135527099003)(261022105027099003)(261028144727099003)(22082099003)(18002099003)(6133799003)(3023799007);
  DIR:OUT; SFP:1101; 
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: RPR6kJFOWxviQbRs+vuT5RszoJeVn5eXuUgFb6pdOioXnmj2NHCJIl/OBaq90ETBNQmqX/p1z3lkwuUfvVeD5NjNABezX4R23PjkR94NeKlTWYRu8cjtYvcAY8WPLpRQlu5PqbV5M15Vh6DGssjOBBEVts7JltzJoMW19vmCmJ8S511dBPVuqBRYw4hUScGHIPx1vhSKVPDXSB0qf19rnz3qMm1B3tMKw16wq38V9VF16Oe6KgbIP0mQWEnZ7YkuuqXjIbk3c+GUfVK4KsoBjMHOeHmkEH71pMuFrft4IqnpELE11SPALBmDwvOb3EhyOygTsTlfL4FmPzDUu2DZTZkztjUy0sywq698iJ4W3FIRJmFho5ogmRpd+Ron76vHv9KUhEYem+qyL7pt4OPtH/wDNNnCPYSAFPd14Nl+kI9nTn+k7SM5NU/txuw1Btfc
+X-MS-Exchange-AntiSpam-MessageData-0: RKLFvAi/oKqTBQP/IEpTXQShxMuDbOT4CV3H7+/UA9ZeRk9e3N0n/ie4X0GOJbtzmHHc0964nBLTiq8cSJqpPerF1/gYCKfy/5uLat1srSeUcwygbwwI5SexeOzxGJQHf+rZfIQOsUEdb+K3wUtLGQ39ZwwVUIRdTMiHbtQ/6MTfjjOhNK7QKTV9q2PSSn9Y6gQ95TVR+gNLvBXTh346uVEYGrrBgaDqMtT3QLWKL7lMDmkNCJVJIXfHeEMmSi7OIjJaQnukym8mCvf2f1ale1k3RVNnKWkJTsPjh4sp7tOiGM+YCRKAu8AJ9KuirzRQ4fwWX7ZOnLKajU5POOb25eAFREnUSOxfT/x6QaXgH8mYvftgzFst9l56+eqAfm4ryiXmer6o71X51fwE7csQ4yEjf6oS8VKXTn3rZ3I5/LZ/qm9EMU3O7FEsz4Xa3onT
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 03:24:08.5065 (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 783a6aef-3943-4e55-d0df-08df4b6cbb92
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 03:24:10.8449 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7ef3679-e740-46a1-b2ff-08df4b6cbd05
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d; Ip=[165.204.84.17];
- Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource: BL4PEPF000003EE.namprd04.prod.outlook.com
+ Helo=[satlexmb08.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PEPF000037A9.namprd03.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8532
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8058
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -119,22 +123,28 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Vitaly Prosyak <vitaly.prosyak@amd.com>
 
-Two small, generation-independent additions used by the upcoming SPM
-capture test (tests/amdgpu/amd_spm.c):
+Add tests/amdgpu/amd_spm.c, covering the direct SPM capture library:
 
-- amdgpu_memcpy_dispatch_test_with_bo(): identical to the existing
-  amdgpu_memcpy_dispatch_test(), but takes an extra BO to add to the
-  dispatch's resource list. The SPM test reuses this to submit its
-  CPF-busy/cache-hit workload while keeping the SPM ring BO resident,
-  without duplicating the whole memcpy-dispatch sequence just to add
-  one more resource. amdgpu_memcpy_dispatch_test() becomes a thin
-  wrapper passing resident_bo = NULL.
+- spm-cpf-busy: single CPF-busy counter sampled across one compute
+  dispatch.
+- spm-cache-hit: per-cache-block (L0/L1/L2/instruction/scalar)
+  hit-rate counters sampled across 64 compute dispatches.
+- spm-cache-benchmark: a dynamic subtest per cache working-set/access-
+  pattern/scalar/instruction case (see cache_benchmarks[]), each
+  running its own warm-up + measured dispatches and reporting both
+  wall-clock throughput and the hardware's own hit-rate counters.
 
-- amdgpu_dispatch_write_direct(): factors out the
-  "clear mmCOMPUTE_RESOURCE_LIMITS, PACKET3_DISPATCH_DIRECT, NOP-pad"
-  tail every compute dispatch in amd_dispatch.c already ends with, so
-  the SPM cache-benchmark test can issue its own dispatch without
-  hand-rolling those PM4 packets itself.
+Which ASIC is plugged in is determined entirely at runtime inside
+amd_spm_capture_init() -> select_ops() (lib/amdgpu/amd_spm.c); this
+file never branches on gfx_major/gfx_minor itself, and -- now that the
+shader/descriptor hooks exist -- never builds a PM4 packet directly
+either: run_cache_benchmark() only calls
+amd_spm_capture_build_cache_bench_shader()/
+amd_spm_capture_emit_cache_bench_descriptors()/
+amdgpu_dispatch_write_direct(), all ASIC-specific or packet-level work
+happens behind those calls.
+
+Register 'amd_spm' as a test binary in tests/amdgpu/meson.build.
 
 Cc: Christian König <christian.koenig@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
@@ -142,138 +152,468 @@ Cc: Jesse Zhang <jesse.zhang@amd.com>
 Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>
 Signed-off-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
 ---
- lib/amdgpu/compute_utils/amd_dispatch.c       | 27 ++++++++++++++++---
- lib/amdgpu/compute_utils/amd_dispatch.h       |  9 +++++++
- .../compute_utils/amd_dispatch_helpers.c      | 22 +++++++++++++++
- .../compute_utils/amd_dispatch_helpers.h      |  3 +++
- 4 files changed, 58 insertions(+), 3 deletions(-)
+ tests/amdgpu/amd_spm.c   | 439 +++++++++++++++++++++++++++++++++++++++
+ tests/amdgpu/meson.build |   1 +
+ 2 files changed, 440 insertions(+)
+ create mode 100644 tests/amdgpu/amd_spm.c
 
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch.c b/lib/amdgpu/compute_utils/amd_dispatch.c
-index ebb721781..2943b4e3d 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch.c
-+++ b/lib/amdgpu/compute_utils/amd_dispatch.c
-@@ -271,7 +271,8 @@ amdgpu_memset_dispatch_test(amdgpu_device_handle device_handle,
- }
- 
- int
--amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
-+amdgpu_memcpy_dispatch_test_with_bo(amdgpu_bo_handle resident_bo,
-+				amdgpu_device_handle device_handle,
- 				amdgpu_context_handle context_handle_param,
- 				uint32_t ip_type, uint32_t ring, uint32_t priority,
- 				uint32_t version, enum cmd_error_type hang,
-@@ -279,7 +280,7 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- {
- 	amdgpu_context_handle context_handle_free = NULL;
- 	amdgpu_context_handle context_handle_in_use = NULL;
--	amdgpu_bo_handle bo_src, bo_dst, bo_shader, bo_cmd, resources[4];
-+	amdgpu_bo_handle bo_src, bo_dst, bo_shader, bo_cmd, resources[5];
- 	volatile unsigned char *ptr_dst;
- 	void *ptr_shader;
- 	unsigned char *ptr_src;
-@@ -452,7 +453,14 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- 	resources[2] = bo_dst;
- 	resources[3] = bo_cmd;
- 
--	if (!user_queue) {
-+	if (!user_queue && resident_bo) {
-+		resources[4] = resident_bo;
-+		r = amdgpu_bo_list_create(device_handle, 5,
-+					  resources, NULL, &bo_list);
-+		igt_assert_eq(r, 0);
+diff --git a/tests/amdgpu/amd_spm.c b/tests/amdgpu/amd_spm.c
+new file mode 100644
+index 000000000..eda5c929e
+--- /dev/null
++++ b/tests/amdgpu/amd_spm.c
+@@ -0,0 +1,439 @@
++// SPDX-License-Identifier: MIT
++/* Copyright 2026 Advanced Micro Devices, Inc. */
++
++#include "igt.h"
++#include "lib/amdgpu/amd_ip_blocks.h"
++#include "lib/amdgpu/amd_spm.h"
++#include "lib/amdgpu/amd_memory.h"
++#include "lib/amdgpu/compute_utils/amd_dispatch.h"
++#include "lib/amdgpu/compute_utils/amd_dispatch_helpers.h"
++
++#include <time.h>
++
++static void
++print_cache_stats(const struct amd_spm_cache_stats stats[AMD_SPM_CACHE_COUNT],
++		  uint32_t gfx_major)
++{
++	static const char *const names[AMD_SPM_CACHE_COUNT] = {
++		"L0 vector cache", "L1 vector cache", "L2 cache",
++		"Instruction cache", "Scalar-data cache",
++	};
++	static const char *const blocks_gfx10[AMD_SPM_CACHE_COUNT] = {
++		"TCP", "GL1C", "GL2C", "SQ", "SQ",
++	};
++	static const char *const events_gfx10[AMD_SPM_CACHE_COUNT] = {
++		"0x09/0x12", "0x0e/0x12", "0x03/0x23",
++		"0x12c/0x12d", "0x14f/0x150",
++	};
++	static const char *const blocks_gfx11[AMD_SPM_CACHE_COUNT] = {
++		"TCP", "GL1C", "GL2C", "SQ_WGP", "SQ_WGP",
++	};
++	static const char *const events_gfx11[AMD_SPM_CACHE_COUNT] = {
++		"0x09/0x11", "0x0e/0x12", "0x03/0x2b",
++		"0x10e/0x10f", "0x126/0x127",
++	};
++	const char *const *blocks = gfx_major == 10 ? blocks_gfx10 : blocks_gfx11;
++	const char *const *events = gfx_major == 10 ? events_gfx10 : events_gfx11;
++	uint64_t requests = 0;
++
++	igt_info("%-20s %-7s %-12s %10s %12s %12s %12s %9s %s\n",
++		 "Counter", "Block", "Events", "Hit %", "Requests", "Hits",
++		 "Misses", "Instances", "Status");
++	for (unsigned int cache = 0; cache < AMD_SPM_CACHE_COUNT; cache++) {
++		const struct amd_spm_cache_stats *result = &stats[cache];
++		char percentage[24] = "N/A";
++		char hits[24] = "N/A";
++		const char *status = result->saturated ? "clamped" :
++			!result->consistent ? "inconsistent" :
++			!result->requests ? "no requests" : "sampled";
++
++		igt_assert(result->instances > 0);
++		requests += result->requests;
++		if (result->consistent)
++			snprintf(hits, sizeof(hits), "%llu",
++				 (unsigned long long)result->hits);
++		if (result->requests && result->consistent && !result->saturated)
++			snprintf(percentage, sizeof(percentage), "%.2f%%",
++				 100.0 * result->hits / result->requests);
++		igt_info("%-20s %-7s %-12s %10s %12llu %12s %12llu %9u %s\n",
++			 names[cache], blocks[cache], events[cache], percentage,
++			 (unsigned long long)result->requests, hits,
++			 (unsigned long long)result->misses, result->instances,
++			 status);
++	}
++	igt_assert(requests > 0);
++}
++
++/*
++ * GFX11/GFX10 cache working-set/access-pattern/scalar/instruction benchmarks.
++ * enum amd_spm_cache_bench_kind / struct amd_spm_cache_bench_case
++ * (lib/amdgpu/amd_spm.h) describe a case; the shader bytes and the PM4 that
++ * binds buffers to it are entirely generation-specific and live behind
++ * amd_spm_capture_build_cache_bench_shader() /
++ * amd_spm_capture_emit_cache_bench_descriptors() in lib/amdgpu/amd_spm.c --
++ * this file never branches on gfx_major/gfx_minor or builds PM4 itself.
++ */
++struct cache_benchmark_case {
++	const char *name;
++	struct amd_spm_cache_bench_case params;
++};
++
++static const struct cache_benchmark_case cache_benchmarks[] = {
++	{ "vector-reuse-4k", { AMD_SPM_CACHE_BENCH_VECTOR, 4096, 0, 256, 0 } },
++	{ "vector-reuse-64k", { AMD_SPM_CACHE_BENCH_VECTOR, 65536, 0, 256, 0 } },
++	{ "vector-reuse-1m", { AMD_SPM_CACHE_BENCH_VECTOR, 1048576, 4096, 256, 0 } },
++	{ "vector-stream-64m", { AMD_SPM_CACHE_BENCH_VECTOR, 67108864, 4096, 1024, 0 } },
++	{ "vector-stride-64m", { AMD_SPM_CACHE_BENCH_VECTOR, 67108864, 16384, 256, 0 } },
++	{ "scalar-reuse-4k", { AMD_SPM_CACHE_BENCH_SCALAR, 4096, 0, 256, 0 } },
++	{ "scalar-stream-1m", { AMD_SPM_CACHE_BENCH_SCALAR, 1048576, 1024, 1024, 0 } },
++	{ "instruction-small", { AMD_SPM_CACHE_BENCH_INSTRUCTION, 4096, 0, 256, 16 } },
++	{ "instruction-large", { AMD_SPM_CACHE_BENCH_INSTRUCTION, 4096, 0, 32, 16384 } },
++};
++
++static void
++cache_benchmark_submit(amdgpu_device_handle device, struct amd_spm_capture *spm,
++		       amdgpu_bo_list_handle resources, uint64_t command_va,
++		       uint32_t dwords)
++{
++	struct amdgpu_cs_ib_info ib = {
++		.ib_mc_address = command_va,
++		.size = dwords,
++	};
++	struct amdgpu_cs_request request = {
++		.ip_type = AMDGPU_HW_IP_GFX,
++		.resources = resources,
++		.number_of_ibs = 1,
++		.ibs = &ib,
++	};
++	struct amdgpu_cs_fence fence = {
++		.context = spm->context,
++		.ip_type = AMDGPU_HW_IP_GFX,
++	};
++	uint32_t expired = 0;
++	int ret;
++
++	ret = amdgpu_cs_submit(spm->context, 0, &request, 1);
++	igt_assert_eq(ret, 0);
++	fence.fence = request.seq_no;
++	ret = amdgpu_cs_query_fence_status(&fence, 10000000000ULL, 0, &expired);
++	igt_assert_eq(ret, 0);
++	igt_assert_f(expired, "Cache benchmark did not complete within 10 seconds\n");
++}
++
++static bool
++profile_name_matches(const char *name, const char *const *names, unsigned int count)
++{
++	for (unsigned int index = 0; index < count; index++)
++		if (!strcmp(name, names[index]))
++			return true;
++	return false;
++}
++
++static const char *const gfx10_or_gfx11_cache_profiles[] = { "gfx10", "gfx11" };
++
++static void
++run_cache_benchmark(amdgpu_device_handle device, const struct cache_benchmark_case *test)
++{
++	struct amd_spm_capture capture = {};
++	struct amd_spm_cache_stats stats[AMD_SPM_CACHE_COUNT];
++	struct amdgpu_cmd_base *base = get_cmd_base();
++	amdgpu_bo_handle buffers[4] = {};
++	amdgpu_bo_handle resources[5];
++	amdgpu_va_handle mappings[4] = {};
++	amdgpu_bo_list_handle resource_list = NULL;
++	uint64_t addresses[4] = {};
++	void *cpu[4] = {};
++	uint32_t sizes[4] = { test->params.working_set, 65536, 131072, 4096 };
++	struct timespec start, end;
++	uint32_t num_samples, shader_bytes, expected;
++	uint32_t stride_bytes = test->params.kind == AMD_SPM_CACHE_BENCH_VECTOR ?
++		test->params.step * 16 : test->params.step;
++	uint64_t counter_sum, payload;
++	double elapsed;
++	int ret;
++
++	bool matches;
++	char profile_name[32];
++
++	/* Phase 1: detect the SPM profile and bail out early on unsupported ASICs. */
++	ret = amd_spm_capture_init(&capture, device);
++	igt_assert_eq(ret, 0);
++	snprintf(profile_name, sizeof(profile_name), "%s", capture.profile.name);
++	matches = profile_name_matches(capture.profile.name, gfx10_or_gfx11_cache_profiles,
++				       ARRAY_SIZE(gfx10_or_gfx11_cache_profiles));
++	if (!matches)
++		amd_spm_capture_fini(&capture);
++	igt_require_f(matches,
++		      "Detected SPM profile '%s': this cache benchmark has no shader for that ASIC\n",
++		      profile_name);
++	ret = amd_spm_capture_enable_caches(&capture);
++	igt_require_f(ret == 0, "SPM cache counters unavailable: %d\n", ret);
++
++	/*
++	 * Phase 2: allocate the four persistent buffers this case reuses across
++	 * every dispatch (warm-up and measured alike): [0] source data (filled
++	 * with 1u32 below so a correct run sums to a known value), [1]
++	 * destination (one 16-byte slot per work-item), [2] shader code, [3] the
++	 * PM4 command buffer itself.
++	 */
++	for (uint32_t index = 0; index < ARRAY_SIZE(buffers); index++) {
++		ret = amdgpu_bo_alloc_and_map(device, sizes[index], 4096,
++					      AMDGPU_GEM_DOMAIN_VRAM, 0,
++					     &buffers[index], &cpu[index], &addresses[index],
++					     &mappings[index]);
++		igt_assert_eq(ret, 0);
++		memset(cpu[index], 0, sizes[index]);
++		resources[index] = buffers[index];
++	}
++	for (uint32_t index = 0; index < sizes[0] / sizeof(uint32_t); index++)
++		((uint32_t *)cpu[0])[index] = 1;
++	base->attach_buf(base, cpu[3], sizes[3]);
++	/*
++	 * Phase 3: build this generation's shader and bind the source/
++	 * destination buffers to it -- entirely through the library's hooks
++	 * (amd_spm_capture_build_cache_bench_shader()/
++	 * amd_spm_capture_emit_cache_bench_descriptors()), never branching on
++	 * gfx_major/gfx_minor or emitting PM4 here.
++	 */
++	shader_bytes = amd_spm_capture_build_cache_bench_shader(&capture, cpu[2], sizes[2],
++								&test->params);
++	igt_require_f(shader_bytes > 0,
++		      "Cache-benchmark shader unavailable for SPM profile '%s' "
++		      "(no llvm-mc, assembly failed, or unsupported generation)\n",
++		      profile_name);
++	amdgpu_dispatch_init(AMDGPU_HW_IP_GFX, base, capture.gfx_major);
++	amdgpu_dispatch_write_cumask(base, capture.gfx_major);
++	amdgpu_dispatch_write2hw(base, addresses[2], capture.gfx_major, BACKEND_SE_GC_SHADER_EXEC_SUCCESS);
++	ret = amd_spm_capture_emit_cache_bench_descriptors(&capture, base, addresses[0],
++							   addresses[1], sizes[0] / 16);
++	igt_assert_eq(ret, 0);
++	amdgpu_dispatch_write_direct(base, 64, 1, 1);
++	resources[4] = capture.ring_bo;
++	ret = amdgpu_bo_list_create(device, ARRAY_SIZE(resources), resources, NULL, &resource_list);
++	igt_assert_eq(ret, 0);
++	igt_info("Cache benchmark %s: address span=%u bytes, stride=%u bytes, iterations=%u, shader=%u bytes\n",
++		 test->name, test->params.working_set, stride_bytes, test->params.iterations, shader_bytes);
++	igt_info("64 workgroups x 64 threads, 2 warm-up and 8 measured dispatches on persistent buffers\n");
++	/*
++	 * Phase 4: 2 warm-up dispatches (outside the SPM capture window) to get
++	 * the shader resident and caches into steady state before measuring.
++	 */
++	for (uint32_t dispatch = 0; dispatch < 2; dispatch++)
++		cache_benchmark_submit(device, &capture, resource_list, addresses[3], base->cdw);
++	memset(cpu[1], 0, sizes[1]);
++	/* Phase 5: the 8 measured dispatches, bracketed by the SPM capture window. */
++	ret = amd_spm_capture_start(&capture);
++	igt_assert_eq(ret, 0);
++	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &start), 0);
++	for (uint32_t dispatch = 0; dispatch < 8; dispatch++)
++		cache_benchmark_submit(device, &capture, resource_list, addresses[3], base->cdw);
++	igt_assert_eq(clock_gettime(CLOCK_MONOTONIC, &end), 0);
++	ret = amd_spm_capture_stop(&capture);
++	igt_assert_eq(ret, 0);
++	/*
++	 * Phase 6: correctness check -- every work-item's accumulated counter
++	 * must equal iterations * instructions (instructions == 1 for the
++	 * vector/scalar kinds, which only run their inner loop body once per
++	 * iteration). A mismatch here means the shader ran the wrong number of
++	 * times or read/wrote the wrong addresses, independent of anything SPM
++	 * measured.
++	 */
++	expected = test->params.iterations *
++		(test->params.kind == AMD_SPM_CACHE_BENCH_INSTRUCTION ? test->params.instructions : 1);
++	for (uint32_t index = 0; index < sizes[1] / sizeof(uint32_t); index++)
++		igt_assert_eq(((uint32_t *)cpu[1])[index], expected);
++	/*
++	 * Phase 7: read the SPM samples and report both the wall-clock benchmark
++	 * numbers (submission + fence-wait time, logical payload throughput) and
++	 * the hardware's own per-cache hit-rate counters side by side.
++	 */
++	ret = amd_spm_capture_read_caches(&capture, &num_samples, &counter_sum, stats);
++	igt_assert_eq(ret, 0);
++	elapsed = end.tv_sec - start.tv_sec + (end.tv_nsec - start.tv_nsec) / 1e9;
++	igt_assert(elapsed > 0);
++	payload = test->params.kind == AMD_SPM_CACHE_BENCH_VECTOR ?
++			4096ULL * 16 * test->params.iterations * 8 :
++		test->params.kind == AMD_SPM_CACHE_BENCH_SCALAR ?
++			64ULL * 4 * test->params.iterations * 8 : 0;
++	igt_info("Benchmark wall time (submission + fence waits): %.3f ms, %.3f us/dispatch\n",
++		 elapsed * 1000, elapsed * 1e6 / 8);
++	if (payload)
++		igt_info("Logical shader read payload=%llu bytes, wall-time throughput=%.3f GiB/s\n",
++			 (unsigned long long)payload, payload / elapsed / (1024.0 * 1024 * 1024));
++	else
++		igt_info("Instruction work=%llu vector adds (not a memory-bandwidth measurement)\n",
++			 4096ULL * test->params.iterations * test->params.instructions * 8);
++	igt_info("SPM results: %u samples, CPF busy=%llu; counts cover the capture window\n",
++		 num_samples, (unsigned long long)counter_sum);
++	print_cache_stats(stats, capture.gfx_major);
++	igt_assert(num_samples > 0);
++	igt_assert(counter_sum > 0);
++	if (test->params.kind == AMD_SPM_CACHE_BENCH_SCALAR)
++		igt_assert_f(stats[AMD_SPM_CACHE_SCALAR].requests > 0,
++			     "Scalar-load workload produced no sampled scalar-cache activity\n");
++	/* Phase 8: release everything this case allocated. */
++	amdgpu_bo_list_destroy(resource_list);
++	for (uint32_t index = 0; index < ARRAY_SIZE(buffers); index++)
++		amdgpu_bo_unmap_and_free(buffers[index], mappings[index],
++					 addresses[index], sizes[index]);
++	free_cmd_base(base);
++	amd_spm_capture_fini(&capture);
++}
++
++/*
++ * Called exactly once, from exactly one subtest. Which ASIC is plugged in is
++ * determined entirely at runtime inside amd_spm_capture_init() -> select_ops()
++ * in lib/amdgpu/amd_spm.c, which looks the detected generation up in its
++ * spm_generations[] table and installs that generation's hooks into
++ * capture->ops. This function never branches on gfx_major/gfx_minor itself --
++ * it just calls amd_spm_capture_init() and, whichever generation got
++ * selected, the rest of the capture lifecycle (start/stop/read) always goes
++ * through capture->ops.* indirectly via the library's own public API.
++ */
++static void
++run_cpf_busy(amdgpu_device_handle device, struct amd_spm_capture *capture)
++{
++	uint32_t num_samples = 0;
++	uint64_t counter_sum = 0;
++	int ret;
++
++	ret = amd_spm_capture_init(capture, device);
++	igt_require_f(ret == 0, "SPM CPF-busy capture unavailable: %d\n", ret);
++
++	igt_info("SPM profile %s: pointer unit %u bytes, data offset %u bytes\n",
++		 capture->profile.name, capture->profile.pointer_granularity,
++		 capture->profile.data_offset);
++
++	ret = amd_spm_capture_start(capture);
++	igt_assert_eq(ret, 0);
++	ret = amdgpu_memcpy_dispatch_test_with_bo(capture->ring_bo,
++						  device, capture->context,
++						  AMDGPU_HW_IP_GFX, 0, 0,
++						  capture->gfx_major,
++						  BACKEND_SE_GC_SHADER_EXEC_SUCCESS,
++						  NULL, false);
++	igt_assert_eq(ret, 0);
++	ret = amd_spm_capture_stop(capture);
++	igt_assert_eq(ret, 0);
++	ret = amd_spm_capture_read(capture, &num_samples, &counter_sum);
++	igt_assert_eq(ret, 0);
++	igt_assert(num_samples > 0);
++	igt_assert(counter_sum > 0);
++	igt_info("SPM samples %u, CPF busy sum %llu\n",
++		 num_samples, (unsigned long long)counter_sum);
++
++	amd_spm_capture_fini(capture);
++}
++
++int igt_main()
++{
++	amdgpu_device_handle device = NULL;
++	struct amd_spm_capture capture = {};
++	struct amdgpu_gpu_info gpu_info = {};
++	uint32_t major, minor;
++	int fd = -1;
++	int ret;
++
++	igt_fixture() {
++		fd = drm_open_driver(DRIVER_AMDGPU);
++		ret = amdgpu_device_initialize(fd, &major, &minor, &device);
++		igt_require(ret == 0);
++		ret = amdgpu_query_gpu_info(device, &gpu_info);
++		igt_assert_eq(ret, 0);
++		ret = setup_amdgpu_ip_blocks(major, minor, &gpu_info, device);
++		igt_assert_eq(ret, 0);
 +	}
 +
-+	if (!user_queue && !resident_bo) {
- 		r = amdgpu_bo_list_create(device_handle, 4, resources, NULL, &bo_list);
- 		igt_assert_eq(r, 0);
- 	}
-@@ -530,6 +538,19 @@ amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- 	return r;
- }
- 
-+int
-+amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
-+			    amdgpu_context_handle context_handle_param,
-+			    uint32_t ip_type, uint32_t ring, uint32_t priority,
-+			    uint32_t version, enum cmd_error_type hang,
-+			    struct amdgpu_cs_err_codes *err_codes,
-+			    bool user_queue)
-+{
-+	return amdgpu_memcpy_dispatch_test_with_bo(
-+		NULL, device_handle, context_handle_param, ip_type, ring,
-+		priority, version, hang, err_codes, user_queue);
++	igt_describe("Direct SPM CPF busy capture during compute dispatch");
++	igt_subtest("spm-cpf-busy")
++		run_cpf_busy(device, &capture);
++
++	igt_describe("SPM per-cache-block hit-rate capture during compute dispatch");
++	igt_subtest("spm-cache-hit") {
++		struct amd_spm_cache_stats stats[AMD_SPM_CACHE_COUNT];
++		uint32_t num_samples = 0;
++		uint64_t counter_sum = 0;
++
++		ret = amd_spm_capture_init(&capture, device);
++		igt_require_f(ret == 0, "SPM capture unavailable: %d\n", ret);
++		ret = amd_spm_capture_enable_caches(&capture);
++		if (ret)
++			amd_spm_capture_fini(&capture);
++		igt_require_f(ret == 0, "SPM cache counters unavailable: %d\n", ret);
++
++		ret = amd_spm_capture_start(&capture);
++		igt_assert_eq(ret, 0);
++		igt_info("SPM cache workload: run 64 compute dispatches\n");
++		for (unsigned int dispatch = 0; dispatch < 64; dispatch++) {
++			ret = amdgpu_memcpy_dispatch_test_with_bo(capture.ring_bo,
++								  device, capture.context,
++								  AMDGPU_HW_IP_GFX, 0, 0,
++								  capture.gfx_major,
++								  BACKEND_SE_GC_SHADER_EXEC_SUCCESS,
++								  NULL, false);
++			igt_assert_eq(ret, 0);
++		}
++		ret = amd_spm_capture_stop(&capture);
++		igt_assert_eq(ret, 0);
++		ret = amd_spm_capture_read_caches(&capture, &num_samples,
++						  &counter_sum, stats);
++		igt_assert_eq(ret, 0);
++		igt_info("SPM cache results: %u samples, %u bytes/sample, CPF busy sum=%llu\n",
++			 num_samples, capture.sample_size, (unsigned long long)counter_sum);
++		igt_assert(num_samples > 0);
++		igt_assert(counter_sum > 0);
++		print_cache_stats(stats, capture.gfx_major);
++
++		amd_spm_capture_fini(&capture);
++	}
++
++	/*
++	 * GFX11 uses hand-assembled RDNA3 machine code; GFX10 uses portable
++	 * AMDGCN assembly text assembled at run time via llvm-mc (see
++	 * build_gfx10_cache_bench_shader() in lib/amdgpu/amd_spm.c). Dispatching
++	 * the wrong generation's workload at an ASIC does not just fail cleanly -- it hangs real
++	 * hardware (verified: every dynamic case timed out waiting on its
++	 * fence the one time the GFX11 shaders ran against a Navi10/GFX10
++	 * GPU before this check existed). The safety check lives in
++	 * run_cache_benchmark() itself (profile_name_matches against
++	 * gfx10_or_gfx11_cache_profiles) so every dynamic case skips before
++	 * touching any GPU resource, not just this outer gate.
++	 */
++	igt_describe("GFX10/GFX11 cache working-set, access-pattern, scalar and instruction benchmarks");
++	igt_subtest_with_dynamic("spm-cache-benchmark") {
++		struct amd_spm_capture probe = {};
++		char probe_name[32];
++		bool matches;
++		int probe_ret;
++
++		/*
++		 * Check once, before creating any dynamic subtest, instead of
++		 * letting each of the 9 cases independently discover "wrong
++		 * ASIC" via run_cache_benchmark()'s own check. Same safety
++		 * property (nothing touches the GPU on an unsupported part),
++		 * one SKIP line instead of nine.
++		 */
++		probe_ret = amd_spm_capture_init(&probe, device);
++		igt_require_f(probe_ret == 0, "SPM capture unavailable: %d\n", probe_ret);
++		snprintf(probe_name, sizeof(probe_name), "%s", probe.profile.name);
++		matches = profile_name_matches(probe.profile.name, gfx10_or_gfx11_cache_profiles,
++					       ARRAY_SIZE(gfx10_or_gfx11_cache_profiles));
++		amd_spm_capture_fini(&probe);
++		igt_require_f(matches,
++			      "Detected SPM profile '%s': this cache benchmark has no shader for that ASIC\n",
++			      probe_name);
++
++		for (uint32_t index = 0; index < ARRAY_SIZE(cache_benchmarks); index++) {
++			igt_dynamic_f("%s", cache_benchmarks[index].name)
++				run_cache_benchmark(device, &cache_benchmarks[index]);
++		}
++	}
++
++	igt_fixture() {
++		amd_spm_capture_fini(&capture);
++		if (device)
++			amdgpu_device_deinitialize(device);
++		if (fd >= 0)
++			close(fd);
++	}
 +}
-+
- static void
- amdgpu_memcpy_dispatch_hang_slow_test(amdgpu_device_handle device_handle,
- 				      uint32_t ip_type, uint32_t priority,
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch.h b/lib/amdgpu/compute_utils/amd_dispatch.h
-index a7cb5d348..2d699a261 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch.h
-+++ b/lib/amdgpu/compute_utils/amd_dispatch.h
-@@ -41,6 +41,15 @@ int amdgpu_memcpy_dispatch_test(amdgpu_device_handle device_handle,
- 					struct amdgpu_cs_err_codes *err_codes,
- 					bool userq);
- 
-+int amdgpu_memcpy_dispatch_test_with_bo(amdgpu_bo_handle resident_bo,
-+					amdgpu_device_handle device_handle,
-+					amdgpu_context_handle context_handle,
-+					uint32_t ip_type, uint32_t ring,
-+					uint32_t priority, uint32_t version,
-+					enum cmd_error_type hang,
-+					struct amdgpu_cs_err_codes *err_codes,
-+					bool userq);
-+
- void amdgpu_dispatch_hang_slow_helper(amdgpu_device_handle device_handle,
- 				      uint32_t ip_type, const struct pci_addr *pci, bool userq);
- 
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-index 60fbc7d10..cbaea3e98 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-+++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.c
-@@ -243,6 +243,28 @@ int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base, uint64_t shader_addr,
- 	return base->cdw - offset_prev;
- }
- 
-+/*
-+ * Clear mmCOMPUTE_RESOURCE_LIMITS and issue PACKET3_DISPATCH_DIRECT, the same
-+ * ASIC-independent tail every compute dispatch in this file ends with (see
-+ * e.g. the sequences a few lines above amdgpu_dispatch_write2hw()'s callers).
-+ * Padded to a PM4 packet boundary with NOPs, same as those call sites.
-+ */
-+void
-+amdgpu_dispatch_write_direct(struct amdgpu_cmd_base *base,
-+			     uint32_t dim_x, uint32_t dim_y, uint32_t dim_z)
-+{
-+	/* clear mmCOMPUTE_RESOURCE_LIMITS */
-+	base->emit(base, PACKET3_COMPUTE(PKT3_SET_SH_REG, 1));
-+	base->emit(base, 0x215);
-+	base->emit(base, 0);
-+
-+	base->emit(base, PACKET3_COMPUTE(PACKET3_DISPATCH_DIRECT, 3));
-+	base->emit(base, dim_x);
-+	base->emit(base, dim_y);
-+	base->emit(base, dim_z);
-+	base->emit_aligned(base, 7, GFX_COMPUTE_NOP);
-+}
-+
- /**
-  * execute_compute_dispatch - Execute a single compute dispatch for memory copy
-  * @device: AMDGPU device handle
-diff --git a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-index 02e28aba7..6dd3c5260 100644
---- a/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-+++ b/lib/amdgpu/compute_utils/amd_dispatch_helpers.h
-@@ -37,6 +37,9 @@ int amdgpu_dispatch_write_sync(struct amdgpu_cmd_base *base_cmd, uint32_t versio
- 
- int amdgpu_dispatch_write2hw(struct amdgpu_cmd_base *base_cmd, uint64_t shader_addr, uint32_t version, enum cmd_error_type err);
- 
-+void amdgpu_dispatch_write_direct(struct amdgpu_cmd_base *base_cmd,
-+				  uint32_t dim_x, uint32_t dim_y, uint32_t dim_z);
-+
- int execute_compute_dispatch(amdgpu_device_handle device,
- 				   uint32_t version,
- 				   uint64_t shader_mc_addr,
+diff --git a/tests/amdgpu/meson.build b/tests/amdgpu/meson.build
+index 11e5c00da..e78a39c43 100644
+--- a/tests/amdgpu/meson.build
++++ b/tests/amdgpu/meson.build
+@@ -57,6 +57,7 @@ if libdrm_amdgpu.found()
+ 			  'amd_userptr_invalidation',
+ 			  'amd_close_race',
+ 			  'amd_mes_reset',
++			  'amd_spm',
+ 			]
+ 	if libdrm_amdgpu.version().version_compare('> 2.4.97')
+ 		amdgpu_progs +=[ 'amd_syncobj', ]
 -- 
 2.56.1
 
