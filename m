@@ -2,165 +2,57 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CCA606A31C
-	for <igt-dev@archiver.kernel.org>; Thu, 26 Nov 2026 13:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F5E606A323
+	for <igt-dev@archiver.kernel.org>; Thu, 26 Nov 2026 14:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=T/EYJdsn;
-	dkim=pass (1024-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=selector1 header.b=B2p8Lefa
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jMc0LRvH
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 1412810E9E0;
-	Thu, 26 Nov 2026 13:46:59 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 53D2610E306
- for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 13:45:34 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 8D81B1124B2;
+	Thu, 26 Nov 2026 14:47:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id A85E61124AB
+ for <igt-dev@lists.freedesktop.org>; Thu, 26 Nov 2026 14:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795700734; x=1827236734;
- h=content-transfer-encoding:date:message-id:cc:subject:
- from:to:references:in-reply-to:mime-version;
- bh=5FF/Pz7eK0hIiMq6ndHT6EAxowM5KZTE/J9Vj9GAYyo=;
- b=T/EYJdsn2nfwLQF/iP620y75aCWTs6uFV9OxuJBiEv8tBxibEzSPzC6z
- Yr/sy8dpbb2kGSeAG1gZCzWy0+/rEeyku0+6aNbDxgocKEg7BhjS5rpWr
- QMP1PO+BMGYkVr3vjm6R1Pj0iadTThKxwahhHmddXDMikrWr+rZgVqQvf
- 1Qs0qt29X3vSHIx+FFKaol6jDYSULle+dbmlilmmH1ctjCrOCYJ+yFNJ1
- RCfzkxSNB3rpMJ+gFWtTihKXzsAYXLnHSBXmrdrZFITkO/9uK7b47m7RX
- QUcimLGOfs1J4cG1hN5TawnY0mH3/6HUp6IHcrNim3LI5GDfuiKPHeuVK w==;
-X-CSE-ConnectionGUID: tc0drtoeQpKYb+XqXKBOTQ==
-X-CSE-MsgGUID: 0u4Z5Ce6SyOdIX4XFpnaOg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11978"; a="4629371"
+ t=1795704366; x=1827240366;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=6FEmNSNFZTUCqzHuYrtw7sHvcnSVsgB3sJwFT8iaDxI=;
+ b=jMc0LRvHs4rOBkdicvtZfKvG/m2HSoeI2qBZQ4CasjuDIEs8IHoY3Jsb
+ EHr4lifvQmSoidhOF0DcjutpxEWOdYj9no9OUfyPa2RyutWLQW6q10cf7
+ Gk9Z+ptl8uas/UnBGcCPtcqi92WYQhtlKXIyyBTFJl0MxwqolXcNEglXi
+ 6wusFt26MjibRv75tjE9rNmoc8aO2kG/ByoxWKChnS0gr+tusb4DXHJjl
+ 5jOneZerbHfv4ZMLRMd0aBjuCeSQbuNx5lVK1ishrDy40HTjoqlue9FH1
+ gpf4YtqPIMGJdLMBO95ZTTYI9ulgKQh8pdz624K1WRPgf1bFCQgFRfnJJ A==;
+X-CSE-ConnectionGUID: xvCwslh5T+O3KzskKsw82Q==
+X-CSE-MsgGUID: 9/BdMyDQRY2M5YBaLuA11g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11978"; a="4499764"
 X-IronPort-AV: E=Sophos;i="6.27,235,1787036400"; 
-   d="scan'208";a="4629371"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
- by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Nov 2026 05:45:34 -0800
-X-CSE-ConnectionGUID: Ftj04ZulRoO2Rks3dEAfqQ==
-X-CSE-MsgGUID: 9pVmIPYmRPuzN0RhAgr29w==
+   d="scan'208";a="4499764"
+Received: from fmviesa011.fm.intel.com ([10.60.135.151])
+ by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Nov 2026 06:46:06 -0800
+X-CSE-ConnectionGUID: lZcpHPHLRE24PpoiDLsVGg==
+X-CSE-MsgGUID: vQFWk/SySWu7A1OXXa/cFg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,235,1787036400"; d="scan'208";a="12180949"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
- by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 26 Nov 2026 05:45:34 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57; Thu, 26 Nov 2026 05:45:33 -0800
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57 via Frontend Transport; Thu, 26 Nov 2026 05:45:33 -0800
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.27) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.57; Thu, 26 Nov 2026 05:45:33 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KLAHdAt+wvlIBfFeKGit2TmnJySEfgd9CKgKNxr/Dv4SNnW0Jn2rNKDDgyQJHehG2r9n12TaeD09udaon5uY+TI1VGWdzd/V917g4JRgre/4irP47zrgfRALtuNIIk8WWRPTVr9FJFbBB0sRH5HwadMtkY+uC8Ffal7PEEll0HWYOiZHbEXsOc+tnmueYUVWzzpU1mrRi33ZQnjMDQoHX5Kt7SFgE4IP4cG+pWicO75SenVUTCc98QI1B029VNGbmaRDghaEGnd14da4ikmx9aezzZyzwuI3xPFzBz4Vy4uZ5El8iQLc0Yl/9jMYvT9t9qcvYuXycFJ5jHWBCKK+rw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com; 
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z5cZUQbYRjuSriReW+hk7yf2aZn123fz85YOVmPhlE0=;
- b=dlVNgVHiPC2EKlrXpw1JCmhXi6B6E1zjx54a+kbuk/BS7emUg8wcfuUSknLizYnEG20+xC2046ePKC3cpvb+rH1+I6RMpCZzPPwDHN4Rus9ayMxmV9r6sXQiM2NAhiv3xQzdbQRnjCBrv4vA8t8dohrM7ziJF5r5S4iM/qBjGRIjHKgS8vKc4oWiHk83NVFFMjP/d78qs8ACoEoDeBFRKeQu3sNQsru6q+3C2YWwHD93GPzE3p8CA1PtfzhdE70UTJr10HaWuk+aBLQ0FBjgZT1EbarYukgMxvmrnGU+IuuhNBYne9L0s4yjhUY/4RLH/LSQk0ih+HsTYd1WM5oDZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z5cZUQbYRjuSriReW+hk7yf2aZn123fz85YOVmPhlE0=;
- b=B2p8Lefa5VX11LYN/6ZTG+ZD6lbVPesFWRZWZ51lglor8rb9MqVEypjQSsfTtux0fmyIZi1JoPHOKJ8fGnRGkOnvajQqFOjsyWkcYXrhxKlWnhWMbtrAkPm8wH8hAt9XF4AEej2N+Abogj/cD9Kj9KkX8IKRDQirfoDnAanzbdA=
-Authentication-Results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS4PR11MB134916.namprd11.prod.outlook.com (2603:10b6:8:4f0::21)
- by DS0PR11MB7334.namprd11.prod.outlook.com (2603:10b6:8:11d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.7; Thu, 26 Nov
- 2026 13:45:30 +0000
-Received: from DS4PR11MB134916.namprd11.prod.outlook.com
- ([fe80::87f6:b354:5770:3ad4]) by DS4PR11MB134916.namprd11.prod.outlook.com
- ([fe80::87f6:b354:5770:3ad4%5]) with mapi id 15.21.0662.004; Thu, 26 Nov 2026
- 13:45:30 +0000
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Nov 2026 14:45:24 +0100
-Message-Id: <DN56S4GLP6GS.1SCLSVJK44OY5@intel.com>
-CC: <igt-dev@lists.freedesktop.org>, Sebastian Brzezinka
- <sebastian.brzezinka@intel.com>
-Subject: Re: [PATCH i-g-t 2/9] tools/drm_ras: Add a DRM RAS netlink tool
-From: "Sebastian Brzezinka" <sebastian.brzezinka@intel.com>
-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>
-X-Mailer: aerc 0.22.0
-References: <20261124213532.3674338-10-rodrigo.vivi@intel.com>
- <20261124213532.3674338-11-rodrigo.vivi@intel.com>
- <xq56jebalb3klsplxs4vswsoorh4ccqyceb73ihdwxwe34nh5k@uvqnne6aiduc>
-In-Reply-To: <xq56jebalb3klsplxs4vswsoorh4ccqyceb73ihdwxwe34nh5k@uvqnne6aiduc>
-X-ClientProxiedBy: WA1P291CA0020.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:19::24) To DS4PR11MB134916.namprd11.prod.outlook.com
- (2603:10b6:8:4f0::21)
+X-IronPort-AV: E=Sophos;i="6.27,235,1787036400"; d="scan'208";a="13961051"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Nov 2026 06:46:05 -0800
+Date: Thu, 26 Nov 2026 15:46:02 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Simon Zeni <simon.zeni@collabora.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/3] drm_uapi/fourcc: sync with drm-next
+Message-ID: <uc66fmbmf42s7vsm5un3tvbrzg5zwxqnhgnasggdpbx6u3hz7d@cjghja2dmazj>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Simon Zeni <simon.zeni@collabora.com>, igt-dev@lists.freedesktop.org
+References: <20261125193826.57420-1-simon.zeni@collabora.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS4PR11MB134916:EE_|DS0PR11MB7334:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3be8a124-3851-4d4c-099b-08df4bc38939
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
- ARA:13230040|1800799024|376014|366016|23010399003|6133799003|22082099003|18002099003|11063799006|4143699003|56012099006|261026121527099003|261021121427099003|261022113327099003|261102123227099003|261009223027099003|10067099003;
-X-Microsoft-Antispam-Message-Info: NxdQuldy7xGcGjT7u6dj5mC9UoRJ43KCkcylPA5cViWXWzWf9YKDAPXymfaxmINKKBfjCgs7MxfLm5JZzSlqKQ7Bv4H/kBGkTywQOjZaORebc8H4GZp6ZnKvXfkiAyE/LYd0NbKDftbGqSJevmeOgSExeZBd7hha7jcmCQWpsTP9D5eulyxIShQ1N9GBaC9tEsiQG4rHCnv31cWGX9Xljevm6mfUcDyWe8Qpcu/br7eKZebbPWr+8JQmrQ4Ab/uhamcwR/mM6VpSWWJOw91gLLxfiKPCNGQ3t/nmxQK+cp+H8K5WTJPoqW+8XhXvOl7pDYf343aFimcb9dhLe0MFXkbco2k7YYmxVIs8cC0xV3D7S8fw6+3jlxUcrBmF3IwYLDmqx2VBICvkodkt1IXDIGJjbE0rWjUesj+S56X2l/geF9GU4sCkQ4+qXr3Yg6iXbPeQTeliQIeZ/2xUDdcNfywKSFAaQaYY9ddpVM56S+h87K6Usm2wRjcOtAbT/tVPLGU5RDb1vpPz5Akkrz4EhLRzaVR35tao8F7S/3O+JBdUFGlaJ3qksa4eMl/+Nm6r/S32WHDfsv3y2qwGLx06I7vh9VZS/9H4EN5lSRXY7Bo380QsYXVkse3G+xmxwPt8TfwCubY2niisILQXsB4K2UpQhogI3t0iCowlQ55nc4w=
-X-Forefront-Antispam-Report: CIP:255.255.255.255; CTRY:; LANG:en; SCL:1; SRV:;
- IPV:NLI; SFV:NSPM; H:DS4PR11MB134916.namprd11.prod.outlook.com; PTR:; CAT:NONE;
- SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(6133799003)(22082099003)(18002099003)(11063799006)(4143699003)(56012099006)(261026121527099003)(261021121427099003)(261022113327099003)(261102123227099003)(261009223027099003)(10067099003);
- DIR:OUT; SFP:1101; 
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?MnFWUHBCM000aEFLRWI4Q1dSMHNaVVNLdUxhMWFjV0ZUdzkxNEd1cG1oVlA4?=
- =?utf-8?B?QmZZdUhPV3Z5TFgvaUxqVDdRU1cveTBaYnlkaDc5TEVJY29JVERna0FJaTZ4?=
- =?utf-8?B?MXViaDErQlo4VXRQWG0rM3BUbDFidzRFeFF0UDNpOFd6UjFOdVJKSm1JNzND?=
- =?utf-8?B?aFFENW1LRWxtTjVNWmdlb05Gamp2Q2RxNUFMVE5hSnNReUdNVWFmTWxpWkV3?=
- =?utf-8?B?YVZ3UjlHemZxOS8wdTZtWVZ4OU0rNVZQaCtjTGhEMVgvMnFoZ3VRSm83TmxR?=
- =?utf-8?B?OWUrWTJKK01YZitFZnBDclBSM1pwdnRjeWpCZG1ybytuZHNkdVB0R1FpMWo0?=
- =?utf-8?B?c0FhRXdTWDc1enY5MTJ0Mkk1WmUxOXhZYytnbXZudnVQSzFneXlMbllQdnZs?=
- =?utf-8?B?d2c1azJxbmtDQVRCcW9ibTFOTis0TVRud2J4c1FjQ0VCVk5kbHFUaDNtek40?=
- =?utf-8?B?UTZwMXR2WitlOVcwTVFENER1TUE3dEVwTE4yYmk5dHJpaXNRZG81cW1JZ2tx?=
- =?utf-8?B?TzRwT2hPSkpaVUtTUW5CZ1NzRHM0eDQxaDVuTGZPT1orRzFrL0IrbTloWGVK?=
- =?utf-8?B?Wm9PdEMxNS82M0p1UUVxS3FPSTdXTTMreFUwcU9iMXlVdDdUQmFOMTQ1MHNq?=
- =?utf-8?B?eEJwUFFVVXVJckdvSlZvU1VheGhpenZJbUw3OFNpUlhzUDRiL0MydER6Qlpi?=
- =?utf-8?B?c1FHYUFLYUxKbkZEakpEVzl0aWtGNHNNYnBUWTd4WldMSmxTbytJZkQ3ODVN?=
- =?utf-8?B?VTZXUTVrc2lhU1BJZDk2MVZnYkJWc1gxTXBHMmpDSE9QWWhCdmJuVVl6bjBS?=
- =?utf-8?B?V2hlK1BzWHdLRXpJV3ZKZEdGMFdWVk9GQlJSVVVGMEdEalg0L3BBV0FzMHZT?=
- =?utf-8?B?SjVROGQvZStwZkV3ZUl2b0FXSUNnc1hFc3ROODlmbEJTSFlHQ2pLUVFMRWMz?=
- =?utf-8?B?bTFPVU40ZnQ4dFkzYlRDbFVKVDZYOXg2RDRtSVppY05sNCtTbzlpVExFUC9l?=
- =?utf-8?B?U3U1UUJrQXN1SlJsSkhybnpXVW9vTDNuRDRDd2ZhYjlIRmJCMlhPSDQrZ3dp?=
- =?utf-8?B?OGJJZGhGSU12ellGMGhtT1lBVXRNUGtlUjZVSlpUSTQrSHc5MW9KVTNyc1JR?=
- =?utf-8?B?R1Q2Mzh3UHJuZU9lQi9MQ0hINnhIZUVveE1qY0t3WFRjdzI1WW5VU1hQSzd5?=
- =?utf-8?B?eXduRnJHK2didGptYklEV1ZmdFBBZEFZRHlUcUVJSFRTcjBXYlFtRnJ4dTlr?=
- =?utf-8?B?NTZTS2JWNVFyWkEwa01pTjRJQ1AvTytxVTB4Z05WQ2F3aEp4NVd6ZWs3T0dV?=
- =?utf-8?B?SkhOaitEUzU4bWRlNU1SK0EzdE4xbHVtNEloS0FhblRjeWJSQTVFOEUzamI2?=
- =?utf-8?B?T2NCUitiWUtHQWNUYm9oTEdWQnFaK1B2OERaNEN4eW1JQ1ArVmZ1MkFpVjNO?=
- =?utf-8?B?RFBEMTF6cmVOd0hUajNKUXd6anlkNjNOSXdDdy9mU0xya2lyR3E2YlFmSjIz?=
- =?utf-8?B?VGNoQ2F6a3BPL3ppN3F2L0R3N1graFVlYzYwT2hSNFlzNUlVb1FuL0hYL3Ns?=
- =?utf-8?B?S2tHU1ljYUNJN3BJTm1kNis2cHBUQUduYVRUQVpuT2g5VWxrTlUxZm1jM0Jn?=
- =?utf-8?B?UURFMndZWkVaLzR0Yjh3QzlObkVQSFZ3VDZlNXhkQm1yU0JjQm13NEwrQXV4?=
- =?utf-8?B?OTRyUTgwNXpjVlNTZm92UmRVRGlZOFlZbWdVRWo5bEtuTkliL2VJRnJhbDh6?=
- =?utf-8?B?bExsamQ4bXJnazYwcUorYXV6NWJ1SlVRbnJVelNRZkp5SWhQMW9xUUtrQjVM?=
- =?utf-8?B?OUh2RFArWDBrWGIzRTlsWGJHRmN3S21iZVFzaWg1VTRRcURLZWRPVGNtZzc1?=
- =?utf-8?B?cDRVUkpzakxGWWlmOXNxOFRUSnM1Q1RpWnZKbUFkOHhNcG9BRW5MNU9JWnRz?=
- =?utf-8?B?aVBQK3VGZXd4Yjh4NVF6WCttZW5mZVN1Q2wyOVh4eFNvOTE2a1F0bGhDVTNU?=
- =?utf-8?B?ZUh2QkE3RklTVzljL1pDaFc3LzB4d2I5Y2Q1VEl1L3EvWDhNdkdlNFFEUldJ?=
- =?utf-8?B?Z2owMUpSKzZRU2UvNVdKT0czTU50RHJtc0pXL0dqdVNvQjNqcjE3MDFKR3A2?=
- =?utf-8?B?dW4yYXk2VFlsK1l6b2U4eTY2NUxEL3JaZEpRdFRXNjZYR1V1ZTJjU1dDT2FZ?=
- =?utf-8?B?SVplUkhHVlNFOVhjbXVpWUhOakRQWlVlays1dFhoZHBIZnY2ZTFNRTlZVWFa?=
- =?utf-8?B?anBCaFR0RDZlOGpIUGlIeFc2NmdWNnFxWXJ5eEx1eVhQVk9TcDNBUG9GWTBS?=
- =?utf-8?B?bjZ5SlZUUEhiUDdsSWNjekM2N3JRSzdncEVNQitEdjNBSmdkenMza2FGVFFH?=
- =?utf-8?Q?atiey5c9EejjCSAk=3D?=
-X-Exchange-RoutingPolicyChecked: EMYhO06Hf1T3lBHn3LGEVaiAtFMvQyIlUw9aZsTCad8ajbSG2a6ek9IAHILDZh004QZzs0fy/nbX8sgh/N6Q6xYIselnkOMU/flIiidl1e8tFapTwWR25RX1vA1Qhs3e33Uh763ivIwWTa5j01srPOWHqeudQLqf4pUjoxAdc4SAB6GS83iBdK0HmsQtWJX5bxQpQOpyPImD8oP6XZ6JLxuWbBIW2xaKMjs2YE7Sv5H2Q8qsd7uLK2D743Yy/lF4WYtRcSR1JA481+VI/cNpUMezEVfbVu2yoLeAHwV5YlcpMLnvR5xXpFHzwwXY5X7fcNgAtcooyHxEFMh2WVGgFg==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3be8a124-3851-4d4c-099b-08df4bc38939
-X-MS-Exchange-CrossTenant-AuthSource: DS4PR11MB134916.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Nov 2026 13:45:30.3634 (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: rJhY52qkqhbjiZh3362LZRvraoB2xuAmzt1Pjqu3DbW70UlApeiqBnBNFM3rmKnUhlRalQgWfiZVKA+VDCHFd8erVawacN63WAT3wVsbgoE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7334
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261125193826.57420-1-simon.zeni@collabora.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -172,69 +64,670 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Kamil, Rodrigo,
+Hi Simon,
+On 2026-11-25 at 14:37:08 -0500, Simon Zeni wrote:
 
-On Thu Nov 26, 2026 at 2:20 PM CET, Kamil Konieczny wrote:
-> Hi Rodrigo,
-> On 2026-11-24 at 16:35:33 -0500, Rodrigo Vivi wrote:
->> List the drm-ras nodes, and show the error counters of a given node:
->>=20
->>   # drm_ras
->>   0	0000:03:00.0	correctable-errors	error-counter
->>   1	0000:03:00.0	uncorrectable-errors	error-counter
->>   # drm_ras -n 0
->>   1	core-compute	0
->>   2	soc-internal	0
->>=20
->> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
->> ---
->>  tools/drm_ras.c   | 106 ++++++++++++++++++++++++++++++++++++++++++++++
->>  tools/meson.build |   7 +++
->>  2 files changed, 113 insertions(+)
->>  create mode 100644 tools/drm_ras.c
->>=20
->> diff --git a/tools/drm_ras.c b/tools/drm_ras.c
->> new file mode 100644
->> index 000000000..0af1ca919
->> --- /dev/null
->> +++ b/tools/drm_ras.c
->> @@ -0,0 +1,106 @@
->> +// SPDX-License-Identifier: MIT
->> +/*
->> + * Copyright =C2=A9 2026 Intel Corporation
->> + */
->> +
->> +#include <errno.h>
->> +#include <getopt.h>
->
-> Add
-> #include <stdbool.h>
->
->> +#include <stdio.h>
->> +#include <stdlib.h>
->> +#include <string.h>
->> +
->> +#include "drmtest.h"
->
-> Can it be dropped in favor of tools stubs?
-> Looks like macro ARRAY_SIZE should be moved to some non-test header.
->
-> +cc Sebastian Brzezinka <sebastian.brzezinka@intel.com>
->
-Agreed on all points.
+can you add a commit hash in subject? Something like:
 
-For now a local ARRAY_SIZE definition is the better option, so drmtest.h
-can go. I'll find a proper shared place for ARRAY_SIZE and clean it
-up later.
+[PATCH i-g-t 1/3] drm_uapi/fourcc: sync with drm-next 601c30449
 
---=20
-Best regards,
-Sebastian
+> Sync with drm-next commit 601c30449 (" Merge tag 'drm-misc-next-2026-11-13' of
+> https://gitlab.freedesktop.org/drm/misc/kernel into drm-next")
 
+It would be better to describe which commits enters here,
+for example in drm-next:
+
+git log --oneline -- include/uapi/drm/drm_fourcc.h
+
+will give:
+a77fa227bb0c drm/fourcc: Add Apple Interchange layout format modifier
+6a03efb8613a drm/fourcc: Add modifiers for AMD GFX6-8
+19d584a634fe drm/fourcc: Fix descriptions of 32b float formats
+3c8ed384503f drm/fourcc: Add DRM_FORMAT_XVUY2101010
+7db42b1718da drm/fourcc: Add DRM_FORMAT_T430
+e8e388c30180 drm/fourcc: Add DRM_FORMAT_XYYY2101010
+c0f8aaa7dcec drm/fourcc: Add DRM_FORMAT_Y8
+b718f0418420 drm/fourcc: Add DRM_FORMAT_P230
+a1b6cf8e5e7e drm: uapi: Use SPDX in DRM core uAPI headers
+21f6bcdf2be7 Merge tag 'drm-misc-next-2026-02-26' of https://gitlab.freedesktop.org/drm/misc/kernel into drm-next
+e9e0b48cd15b drm/fourcc: fix plane order for 10/12/16-bit YCbCr formats
+3aecd55af5b8 drm: add ARM interleaved 64k modifier
+
+imho you can skip 'Merge tag' line but I do not know what is the
+oldest here, at least it should be up to SPDX. You can also look
+into igt with: 
+
+git show a31c48a76e88
+
+drm-uapi/xe: sync with kernel f99a05cc0b85
+
+Sync Xe drm uapi with drm-next up to commit f99a05cc0b85, this
+will bring following changes:
+
+f99a05cc0b85 ("drm/xe/uapi: Add UAPI support for purgeable buffer objects")
+716c11d462c5 ("drm/xe/uapi: Define drm_xe_vm_get_property")
+[cut]
+
+imho something like this could help us see a range of changes.
+
+> 
+> Signed-off-by: Simon Zeni <simon.zeni@collabora.com>
+> ---
+>  include/drm-uapi/drm_fourcc.h | 465 ++++++++++++++++++++++++++++++----
+>  1 file changed, 418 insertions(+), 47 deletions(-)
+> 
+LGTM
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+
+> diff --git a/include/drm-uapi/drm_fourcc.h b/include/drm-uapi/drm_fourcc.h
+> index 27f87be10..07188f219 100644
+> --- a/include/drm-uapi/drm_fourcc.h
+> +++ b/include/drm-uapi/drm_fourcc.h
+> @@ -1,24 +1,6 @@
+> +/* SPDX-License-Identifier: MIT */
+>  /*
+>   * Copyright 2011 Intel Corporation
+> - *
+> - * Permission is hereby granted, free of charge, to any person obtaining a
+> - * copy of this software and associated documentation files (the "Software"),
+> - * to deal in the Software without restriction, including without limitation
+> - * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+> - * and/or sell copies of the Software, and to permit persons to whom the
+> - * Software is furnished to do so, subject to the following conditions:
+> - *
+> - * The above copyright notice and this permission notice (including the next
+> - * paragraph) shall be included in all copies or substantial portions of the
+> - * Software.
+> - *
+> - * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+> - * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+> - * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+> - * VA LINUX SYSTEMS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+> - * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+> - * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+> - * OTHER DEALINGS IN THE SOFTWARE.
+>   */
+>  
+>  #ifndef DRM_FOURCC_H
+> @@ -210,6 +192,10 @@ extern "C" {
+>  #define DRM_FORMAT_RGBA1010102	fourcc_code('R', 'A', '3', '0') /* [31:0] R:G:B:A 10:10:10:2 little endian */
+>  #define DRM_FORMAT_BGRA1010102	fourcc_code('B', 'A', '3', '0') /* [31:0] B:G:R:A 10:10:10:2 little endian */
+>  
+> +/* 48 bpp RGB */
+> +#define DRM_FORMAT_RGB161616 fourcc_code('R', 'G', '4', '8') /* [47:0] R:G:B 16:16:16 little endian */
+> +#define DRM_FORMAT_BGR161616 fourcc_code('B', 'G', '4', '8') /* [47:0] B:G:R 16:16:16 little endian */
+> +
+>  /* 64 bpp RGB */
+>  #define DRM_FORMAT_XRGB16161616	fourcc_code('X', 'R', '4', '8') /* [63:0] x:R:G:B 16:16:16:16 little endian */
+>  #define DRM_FORMAT_XBGR16161616	fourcc_code('X', 'B', '4', '8') /* [63:0] x:B:G:R 16:16:16:16 little endian */
+> @@ -218,7 +204,7 @@ extern "C" {
+>  #define DRM_FORMAT_ABGR16161616	fourcc_code('A', 'B', '4', '8') /* [63:0] A:B:G:R 16:16:16:16 little endian */
+>  
+>  /*
+> - * Floating point 64bpp RGB
+> + * Half-Floating point - 16b/component
+>   * IEEE 754-2008 binary16 half-precision float
+>   * [15:0] sign:exponent:mantissa 1:5:10
+>   */
+> @@ -228,6 +214,20 @@ extern "C" {
+>  #define DRM_FORMAT_ARGB16161616F fourcc_code('A', 'R', '4', 'H') /* [63:0] A:R:G:B 16:16:16:16 little endian */
+>  #define DRM_FORMAT_ABGR16161616F fourcc_code('A', 'B', '4', 'H') /* [63:0] A:B:G:R 16:16:16:16 little endian */
+>  
+> +#define DRM_FORMAT_R16F          fourcc_code('R', ' ', ' ', 'H') /* [15:0] R 16 little endian */
+> +#define DRM_FORMAT_GR1616F       fourcc_code('G', 'R', ' ', 'H') /* [31:0] G:R 16:16 little endian */
+> +#define DRM_FORMAT_BGR161616F    fourcc_code('B', 'G', 'R', 'H') /* [47:0] B:G:R 16:16:16 little endian */
+> +
+> +/*
+> + * Floating point - 32b/component
+> + * IEEE 754-2008 binary32 float
+> + * [31:0] sign:exponent:mantissa 1:8:23
+> + */
+> +#define DRM_FORMAT_R32F          fourcc_code('R', ' ', ' ', 'F') /* [31:0] R 32 little endian */
+> +#define DRM_FORMAT_GR3232F       fourcc_code('G', 'R', ' ', 'F') /* [63:0] G:R 32:32 little endian */
+> +#define DRM_FORMAT_BGR323232F    fourcc_code('B', 'G', 'R', 'F') /* [95:0] B:G:R 32:32:32 little endian */
+> +#define DRM_FORMAT_ABGR32323232F fourcc_code('A', 'B', '8', 'F') /* [127:0] A:B:G:R 32:32:32:32 little endian */
+> +
+>  /*
+>   * RGBA format with 10-bit components packed in 64-bit per pixel, with 6 bits
+>   * of unused padding per component:
+> @@ -246,6 +246,7 @@ extern "C" {
+>  #define DRM_FORMAT_XVUY8888	fourcc_code('X', 'V', 'U', 'Y') /* [31:0] X:Cr:Cb:Y 8:8:8:8 little endian */
+>  #define DRM_FORMAT_VUY888	fourcc_code('V', 'U', '2', '4') /* [23:0] Cr:Cb:Y 8:8:8 little endian */
+>  #define DRM_FORMAT_VUY101010	fourcc_code('V', 'U', '3', '0') /* Y followed by U then V, 10:10:10. Non-linear modifier only */
+> +#define DRM_FORMAT_XVUY2101010	fourcc_code('X', 'Y', '3', '0') /* [31:0] x:Cr:Cb:Y 2:10:10:10 little endian */
+>  
+>  /*
+>   * packed Y2xx indicate for each component, xx valid data occupy msb
+> @@ -361,6 +362,14 @@ extern "C" {
+>   */
+>  #define DRM_FORMAT_P030		fourcc_code('P', '0', '3', '0') /* 2x2 subsampled Cr:Cb plane 10 bits per channel packed */
+>  
+> +/*
+> + * 2 plane YCbCr422.
+> + * 3 10 bit components and 2 padding bits packed into 4 bytes.
+> + * index 0 = Y plane, [31:0] x:Y2:Y1:Y0 2:10:10:10 little endian
+> + * index 1 = Cr:Cb plane, [63:0] x:Cr2:Cb2:Cr1:x:Cb1:Cr0:Cb0 [2:10:10:10:2:10:10:10] little endian
+> + */
+> +#define DRM_FORMAT_P230		fourcc_code('P', '2', '3', '0') /* 2x1 subsampled Cr:Cb plane 10 bits per channel packed */
+> +
+>  /* 3 plane non-subsampled (444) YCbCr
+>   * 16 bits per component, but only 10 bits are used and 6 bits are padded
+>   * index 0: Y plane, [15:0] Y:x [10:6] little endian
+> @@ -377,6 +386,51 @@ extern "C" {
+>   */
+>  #define DRM_FORMAT_Q401		fourcc_code('Q', '4', '0', '1')
+>  
+> +/*
+> + * 3 plane non-subsampled (444) YCbCr LSB aligned
+> + * 10 bpc, 30 bits per sample image data in a single contiguous buffer.
+> + * index 0: Y plane,  [31:0] x:Y2:Y1:Y0    [2:10:10:10] little endian
+> + * index 1: Cb plane, [31:0] x:Cb2:Cb1:Cb0 [2:10:10:10] little endian
+> + * index 2: Cr plane, [31:0] x:Cr2:Cr1:Cr0 [2:10:10:10] little endian
+> + */
+> +#define DRM_FORMAT_T430		fourcc_code('T', '4', '3', '0')
+> +
+> +/*
+> + * 3 plane YCbCr LSB aligned
+> + * In order to use these formats in a similar fashion to MSB aligned ones
+> + * implementation can multiply the values by 2^6=64. For that reason the padding
+> + * must only contain zeros.
+> + * index 0 = Y plane, [15:0] z:Y [6:10] little endian
+> + * index 1 = Cb plane, [15:0] z:Cb [6:10] little endian
+> + * index 2 = Cr plane, [15:0] z:Cr [6:10] little endian
+> + */
+> +#define DRM_FORMAT_S010	fourcc_code('S', '0', '1', '0') /* 2x2 subsampled Cb (1) and Cr (2) planes 10 bits per channel */
+> +#define DRM_FORMAT_S210	fourcc_code('S', '2', '1', '0') /* 2x1 subsampled Cb (1) and Cr (2) planes 10 bits per channel */
+> +#define DRM_FORMAT_S410	fourcc_code('S', '4', '1', '0') /* non-subsampled Cb (1) and Cr (2) planes 10 bits per channel */
+> +
+> +/*
+> + * 3 plane YCbCr LSB aligned
+> + * In order to use these formats in a similar fashion to MSB aligned ones
+> + * implementation can multiply the values by 2^4=16. For that reason the padding
+> + * must only contain zeros.
+> + * index 0 = Y plane, [15:0] z:Y [4:12] little endian
+> + * index 1 = Cb plane, [15:0] z:Cb [4:12] little endian
+> + * index 2 = Cr plane, [15:0] z:Cr [4:12] little endian
+> + */
+> +#define DRM_FORMAT_S012	fourcc_code('S', '0', '1', '2') /* 2x2 subsampled Cb (1) and Cr (2) planes 12 bits per channel */
+> +#define DRM_FORMAT_S212	fourcc_code('S', '2', '1', '2') /* 2x1 subsampled Cb (1) and Cr (2) planes 12 bits per channel */
+> +#define DRM_FORMAT_S412	fourcc_code('S', '4', '1', '2') /* non-subsampled Cb (1) and Cr (2) planes 12 bits per channel */
+> +
+> +/*
+> + * 3 plane YCbCr
+> + * index 0 = Y plane, [15:0] Y little endian
+> + * index 1 = Cb plane, [15:0] Cb little endian
+> + * index 2 = Cr plane, [15:0] Cr little endian
+> + */
+> +#define DRM_FORMAT_S016	fourcc_code('S', '0', '1', '6') /* 2x2 subsampled Cb (1) and Cr (2) planes 16 bits per channel */
+> +#define DRM_FORMAT_S216	fourcc_code('S', '2', '1', '6') /* 2x1 subsampled Cb (1) and Cr (2) planes 16 bits per channel */
+> +#define DRM_FORMAT_S416	fourcc_code('S', '4', '1', '6') /* non-subsampled Cb (1) and Cr (2) planes 16 bits per channel */
+> +
+>  /*
+>   * 3 plane YCbCr
+>   * index 0: Y plane, [7:0] Y
+> @@ -397,6 +451,16 @@ extern "C" {
+>  #define DRM_FORMAT_YUV444	fourcc_code('Y', 'U', '2', '4') /* non-subsampled Cb (1) and Cr (2) planes */
+>  #define DRM_FORMAT_YVU444	fourcc_code('Y', 'V', '2', '4') /* non-subsampled Cr (1) and Cb (2) planes */
+>  
+> +/*
+> + * Y-only (greyscale) formats
+> + *
+> + * The Y-only formats are handled similarly to the YCbCr formats in the display
+> + * pipeline, with the Cb and Cr implicitly neutral (0.0 in nominal values). This
+> + * also means that COLOR_RANGE property applies to the Y-only formats.
+> + */
+> +
+> +#define DRM_FORMAT_Y8		fourcc_code('G', 'R', 'E', 'Y')  /* 8-bit Y-only */
+> +#define DRM_FORMAT_XYYY2101010	fourcc_code('Y', 'P', 'A', '4')  /* [31:0] x:Y2:Y1:Y0 2:10:10:10 little endian */
+>  
+>  /*
+>   * Format Modifiers:
+> @@ -421,6 +485,8 @@ extern "C" {
+>  #define DRM_FORMAT_MOD_VENDOR_ARM     0x08
+>  #define DRM_FORMAT_MOD_VENDOR_ALLWINNER 0x09
+>  #define DRM_FORMAT_MOD_VENDOR_AMLOGIC 0x0a
+> +#define DRM_FORMAT_MOD_VENDOR_MTK     0x0b
+> +#define DRM_FORMAT_MOD_VENDOR_APPLE   0x0c
+>  
+>  /* add more to the end as needed */
+>  
+> @@ -923,14 +989,20 @@ extern "C" {
+>   *               2 = Gob Height 8, Turing+ Page Kind mapping
+>   *               3 = Reserved for future use.
+>   *
+> - * 22:22 s     Sector layout.  On Tegra GPUs prior to Xavier, there is a further
+> - *             bit remapping step that occurs at an even lower level than the
+> - *             page kind and block linear swizzles.  This causes the layout of
+> - *             surfaces mapped in those SOC's GPUs to be incompatible with the
+> - *             equivalent mapping on other GPUs in the same system.
+> - *
+> - *               0 = Tegra K1 - Tegra Parker/TX2 Layout.
+> - *               1 = Desktop GPU and Tegra Xavier+ Layout
+> + * 22:22 s     Sector layout.  There is a further bit remapping step that occurs
+> + * 26:27       at an even lower level than the page kind and block linear
+> + *             swizzles.  This causes the bit arrangement of surfaces in memory
+> + *             to differ subtly, and prevents direct sharing of surfaces between
+> + *             GPUs with different layouts.
+> + *
+> + *               0 = Tegra K1 - Tegra Parker/TX2 Layout
+> + *               1 = Pre-GB20x, GB20x 32+ bpp, GB10, Tegra Xavier-Orin Layout
+> + *               2 = GB20x(Blackwell 2)+ 8 bpp surface layout
+> + *               3 = GB20x(Blackwell 2)+ 16 bpp surface layout
+> + *               4 = Reserved for future use.
+> + *               5 = Reserved for future use.
+> + *               6 = Reserved for future use.
+> + *               7 = Reserved for future use.
+>   *
+>   * 25:23 c     Lossless Framebuffer Compression type.
+>   *
+> @@ -945,7 +1017,7 @@ extern "C" {
+>   *               6 = Reserved for future use
+>   *               7 = Reserved for future use
+>   *
+> - * 55:25 -     Reserved for future use.  Must be zero.
+> + * 55:28 -     Reserved for future use.  Must be zero.
+>   */
+>  #define DRM_FORMAT_MOD_NVIDIA_BLOCK_LINEAR_2D(c, s, g, k, h) \
+>  	fourcc_mod_code(NVIDIA, (0x10 | \
+> @@ -953,6 +1025,7 @@ extern "C" {
+>  				 (((k) & 0xff) << 12) | \
+>  				 (((g) & 0x3) << 20) | \
+>  				 (((s) & 0x1) << 22) | \
+> +				 (((s) & 0x6) << 25) | \
+>  				 (((c) & 0x7) << 23)))
+>  
+>  /* To grandfather in prior block linear format modifiers to the above layout,
+> @@ -1359,6 +1432,22 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
+>  #define DRM_FORMAT_MOD_ARM_16X16_BLOCK_U_INTERLEAVED \
+>  	DRM_FORMAT_MOD_ARM_CODE(DRM_FORMAT_MOD_ARM_TYPE_MISC, 1ULL)
+>  
+> +/*
+> + * ARM 64k interleaved modifier
+> + *
+> + * This is used by ARM Mali v10+ GPUs. With this modifier, the plane is divided
+> + * into 64k byte 1:1 or 2:1 -sided tiles. The 64k tiles are laid out linearly.
+> + * Each 64k tile is divided into blocks of 16x16 texel blocks, which are
+> + * themselves laid out linearly within a 64k tile. Then within each 16x16
+> + * block, texel blocks are laid out according to U order, similar to
+> + * 16X16_BLOCK_U_INTERLEAVED.
+> + *
+> + * Note that unlike 16X16_BLOCK_U_INTERLEAVED, the layout does not change
+> + * depending on whether a format is compressed or not.
+> + */
+> +#define DRM_FORMAT_MOD_ARM_INTERLEAVED_64K \
+> +	DRM_FORMAT_MOD_ARM_CODE(DRM_FORMAT_MOD_ARM_TYPE_MISC, 2ULL)
+> +
+>  /*
+>   * Allwinner tiled modifier
+>   *
+> @@ -1453,6 +1542,114 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
+>   */
+>  #define AMLOGIC_FBC_OPTION_MEM_SAVING		(1ULL << 0)
+>  
+> +/* MediaTek modifiers
+> + * Bits  Parameter                Notes
+> + * ----- ------------------------ ---------------------------------------------
+> + *   7: 0 TILE LAYOUT              Values are MTK_FMT_MOD_TILE_*
+> + *  15: 8 COMPRESSION              Values are MTK_FMT_MOD_COMPRESS_*
+> + *  23:16 10 BIT LAYOUT            Values are MTK_FMT_MOD_10BIT_LAYOUT_*
+> + *
+> + */
+> +
+> +#define DRM_FORMAT_MOD_MTK(__flags)		fourcc_mod_code(MTK, __flags)
+> +
+> +/*
+> + * MediaTek Tiled Modifier
+> + * The lowest 8 bits of the modifier is used to specify the tiling
+> + * layout. Only the 16L_32S tiling is used for now, but we define an
+> + * "untiled" version and leave room for future expansion.
+> + */
+> +#define MTK_FMT_MOD_TILE_MASK     0xf
+> +#define MTK_FMT_MOD_TILE_NONE     0x0
+> +#define MTK_FMT_MOD_TILE_16L32S   0x1
+> +
+> +/*
+> + * Bits 8-15 specify compression options
+> + */
+> +#define MTK_FMT_MOD_COMPRESS_MASK (0xf << 8)
+> +#define MTK_FMT_MOD_COMPRESS_NONE (0x0 << 8)
+> +#define MTK_FMT_MOD_COMPRESS_V1   (0x1 << 8)
+> +
+> +/*
+> + * Bits 16-23 specify how the bits of 10 bit formats are
+> + * stored out in memory
+> + */
+> +#define MTK_FMT_MOD_10BIT_LAYOUT_MASK      (0xf << 16)
+> +#define MTK_FMT_MOD_10BIT_LAYOUT_PACKED    (0x0 << 16)
+> +#define MTK_FMT_MOD_10BIT_LAYOUT_LSBTILED  (0x1 << 16)
+> +#define MTK_FMT_MOD_10BIT_LAYOUT_LSBRASTER (0x2 << 16)
+> +
+> +/* alias for the most common tiling format */
+> +#define DRM_FORMAT_MOD_MTK_16L_32S_TILE  DRM_FORMAT_MOD_MTK(MTK_FMT_MOD_TILE_16L32S)
+> +
+> +/*
+> + * Apple GPU-tiled layouts.
+> + *
+> + * Apple GPUs support nonlinear tilings with optional lossless compression.
+> + *
+> + * GPU-tiled images are divided into 16KiB tiles:
+> + *
+> + *     Bytes per pixel  Tile size
+> + *     ---------------  ---------
+> + *                   1  128x128
+> + *                   2  128x64
+> + *                   4  64x64
+> + *                   8  64x32
+> + *                  16  32x32
+> + *
+> + * Tiles are raster-order. Pixels within a tile are interleaved (Morton order).
+> + *
+> + * Compressed images pad the body to 128-bytes and are immediately followed by a
+> + * metadata section. The metadata section rounds the image dimensions to
+> + * powers-of-two and contains 8 bytes for each 16x16 compression subtile.
+> + * Subtiles are interleaved (Morton order).
+> + *
+> + * All images are 128-byte aligned.
+> + *
+> + * These layouts fundamentally do not have meaningful strides. No matter how we
+> + * specify strides for these layouts, userspace unaware of Apple image layouts
+> + * will be unable to use correctly the specified stride for any purpose.
+> + * Userspace aware of the image layouts do not use strides. The most "correct"
+> + * convention would be setting the image stride to 0. Unfortunately, some
+> + * software assumes the stride is at least (width * bytes per pixel). We
+> + * therefore require that stride equals (width * bytes per pixel). Since the
+> + * stride is arbitrary here, we pick the simplest convention.
+> + *
+> + * Although containing two sections, compressed image layouts are treated in
+> + * software as a single plane. This is modelled after AFBC, a similar
+> + * scheme. Attempting to separate the sections to be "explicit" in DRM would
+> + * only generate more confusion, as software does not treat the image this way.
+> + *
+> + * For detailed information on the hardware image layouts, see
+> + * https://docs.mesa3d.org/drivers/asahi.html#image-layouts
+> + */
+> +#define DRM_FORMAT_MOD_APPLE_GPU_TILED fourcc_mod_code(APPLE, 1)
+> +#define DRM_FORMAT_MOD_APPLE_GPU_TILED_COMPRESSED fourcc_mod_code(APPLE, 2)
+> +
+> +/*
+> + * Apple Interchange layout
+> + *
+> + * Apple Interchange is a compressed framebuffer format used exclusively for
+> + * sharing buffers between hardware blocks (GPU, display controller, video
+> + * codecs) on Apple platforms. It is similar to and uses the same compression
+> + * scheme as GPU_TILED_COMPRESSED. There is no known uncompressed variant
+> + * of Apple Interchange.
+> + *
+> + * Unlike the GPU layouts, tile size is not dependent on bit depth. RGB
+> + * images and the chroma components of YUV images use 16x16 tiles. The
+> + * luma component of YUV images uses 32x32 tiles. Compression tiles
+> + * are once again 16x16 with 8 bytes of metadata per compression subtile.
+> + *
+> + * Following the example set by GPU_TILED_{,COMPRESSED}, Interchange images
+> + * are treated as a single plane by software and do not have a meaningful
+> + * stride.
+> + *
+> + * AGX has limited support for Apple Interchange. It cannot be used for Z/S
+> + * buffers or array images, for example. It is intended for scanout buffer
+> + * sharing only.
+> + */
+> +#define DRM_FORMAT_MOD_APPLE_INTERCHANGE fourcc_mod_code(APPLE, 3)
+> +
+>  /*
+>   * AMD modifiers
+>   *
+> @@ -1473,36 +1670,69 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
+>   * For multi-plane formats the above surfaces get merged into one plane for
+>   * each format plane, based on the required alignment only.
+>   *
+> - * Bits  Parameter                Notes
+> - * ----- ------------------------ ---------------------------------------------
+> + * Bits    Parameter                Notes
+> + * ------- ------------------------ ---------------------------------------------
+> + *
+> + * DRM format modifier fields on AMD GPUs:
+> + *     7:0 TILE_VERSION             Values are AMD_FMT_MOD_TILE_VER_*
+> + *    12:8 TILE                     Values are AMD_FMT_MOD_TILE_<version>_*
+> + *      13 DCC                      Delta Color Compression, supported on GFX8 and newer
+> + *   55:14 (chip specific)          See below for details, depends on GFX block version
+> + *   63:56 Vendor                   Value is DRM_FORMAT_MOD_VENDOR_AMD
+> + *
+> + * Chip specific fields on Gfx9 and newer:
+> + *      14 DCC_RETILE
+> + *      15 DCC_PIPE_ALIGN
+> + *      16 DCC_INDEPENDENT_64B
+> + *      17 DCC_INDEPENDENT_128B
+> + *   19:18 DCC_MAX_COMPRESSED_BLOCK Values are AMD_FMT_MOD_DCC_BLOCK_*
+> + *      20 DCC_CONSTANT_ENCODE
+> + *   23:21 PIPE_XOR_BITS            Only for some chips
+> + *   26:24 BANK_XOR_BITS            Only for some chips
+> + *   29:27 PACKERS                  Only for some chips
+> + *   32:30 RB                       Only for some chips
+> + *   35:33 PIPE                     Only for some chips
+> + *   55:36 -                        Reserved for future use, must be zero
+> + *
+> + * Chip specific fields on Gfx6-8:
+> + *   16:14 MICROTILE                Micro tile format
+> + *   21:17 PIPE_CONFIG              Number of pipes and how pipes are interleaved
+> + *   24:22 TILE_SPLIT               Tile split size
+> + *   26:25 BANK_WIDTH               Number of tiles in the X direction in the same bank
+> + *   28:27 BANK_HEIGHT              Number of tiles in the Y direction in the same bank
+> + *   30:29 MACRO_TILE_ASPECT        Macro tile aspect ratio
+> + *   32:31 NUM_BANKS                Number of banks
+> + *   55:33 -                        Reserved for future use, must be zero
+>   *
+> - *   7:0 TILE_VERSION             Values are AMD_FMT_MOD_TILE_VER_*
+> - *  12:8 TILE                     Values are AMD_FMT_MOD_TILE_<version>_*
+> - *    13 DCC
+> - *    14 DCC_RETILE
+> - *    15 DCC_PIPE_ALIGN
+> - *    16 DCC_INDEPENDENT_64B
+> - *    17 DCC_INDEPENDENT_128B
+> - * 19:18 DCC_MAX_COMPRESSED_BLOCK Values are AMD_FMT_MOD_DCC_BLOCK_*
+> - *    20 DCC_CONSTANT_ENCODE
+> - * 23:21 PIPE_XOR_BITS            Only for some chips
+> - * 26:24 BANK_XOR_BITS            Only for some chips
+> - * 29:27 PACKERS                  Only for some chips
+> - * 32:30 RB                       Only for some chips
+> - * 35:33 PIPE                     Only for some chips
+> - * 55:36 -                        Reserved for future use, must be zero
+>   */
+>  #define AMD_FMT_MOD fourcc_mod_code(AMD, 0)
+>  
+>  #define IS_AMD_FMT_MOD(val) (((val) >> 56) == DRM_FORMAT_MOD_VENDOR_AMD)
+>  
+> -/* Reserve 0 for GFX8 and older */
+> +#define AMD_FMT_MOD_TILE_VER_GFX6 0
+>  #define AMD_FMT_MOD_TILE_VER_GFX9 1
+>  #define AMD_FMT_MOD_TILE_VER_GFX10 2
+>  #define AMD_FMT_MOD_TILE_VER_GFX10_RBPLUS 3
+>  #define AMD_FMT_MOD_TILE_VER_GFX11 4
+>  #define AMD_FMT_MOD_TILE_VER_GFX12 5
+>  
+> +/*
+> + * Gfx6-8 tiling modes.
+> + * A complete reference implementation is found in addrlib in the Mesa code base.
+> + *
+> + * - Microtiled modes (1D):
+> + *   Pixel data is organized into micro tiles of 8x8 pixels.
+> + *
+> + * - Macrotiled modes (2D):
+> + *   Micro tiles are further organized into macro tiles.
+> + *   These are optimized for even load distribution among memory channels.
+> + *
+> + * Note that only THIN1 modes are exposed here.
+> + * THICK and XTHICK are for 3D images and not relevant to DRM format modifiers.
+> + */
+> +#define AMD_FMT_MOD_TILE_GFX6_1D_TILED_THIN1 0x2
+> +#define AMD_FMT_MOD_TILE_GFX6_2D_TILED_THIN1 0x4
+> +
+>  /*
+>   * 64K_S is the same for GFX9/GFX10/GFX10_RBPLUS and hence has GFX9 as canonical
+>   * version.
+> @@ -1516,6 +1746,7 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
+>   * 64K_D_2D on GFX12 is identical to 64K_D on GFX11.
+>   */
+>  #define AMD_FMT_MOD_TILE_GFX9_64K_D 10
+> +#define AMD_FMT_MOD_TILE_GFX9_4K_D_X 22
+>  #define AMD_FMT_MOD_TILE_GFX9_64K_S_X 25
+>  #define AMD_FMT_MOD_TILE_GFX9_64K_D_X 26
+>  #define AMD_FMT_MOD_TILE_GFX9_64K_R_X 27
+> @@ -1600,6 +1831,146 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
+>  #define AMD_FMT_MOD_PIPE_SHIFT 33
+>  #define AMD_FMT_MOD_PIPE_MASK 0x7
+>  
+> +/*
+> + * MICRO_TILE_MODE, 3 bits. Determines the micro tile format.
+> + * Only relevant to Gfx6-8.
+> + *
+> + * DISPLAY - Displayable tiling
+> + * THIN - Non-displayable tiling, a.k.a thin micro tiling
+> + * DEPTH, THICK - not exposed, not relevant to DRM format modifier use cases
+> + * ROTATED - not exposed, not implemented in Linux or Mesa
+> + */
+> +#define AMD_FMT_MOD_MICROTILE_SHIFT 14ULL
+> +#define AMD_FMT_MOD_MICROTILE_MASK 0x7
+> +
+> +#define AMD_FMT_MOD_MICROTILE_DISPLAY 0x0
+> +#define AMD_FMT_MOD_MICROTILE_THIN 0x1
+> +
+> +/*
+> + * PIPE_CONFIG, 5 bits. Number of pipes and how pipes are interleaved on the surface,
+> + * which means the shader engine tile size and packer tile size.
+> + * Typically matches the number of memory channels, or number of RBs.
+> + * Only relevant to Gfx6-8 macro tiled modes.
+> + *
+> + * P<n>_<a>x<b>_<c>x<d>
+> + * where:
+> + * <n> - number of pipes
+> + * <a>x<b> - shader engine tile size
+> + * <c>x<d> - packer tile size
+> + */
+> +#define AMD_FMT_MOD_PIPE_CONFIG_SHIFT 17ULL
+> +#define AMD_FMT_MOD_PIPE_CONFIG_MASK 0x1f
+> +
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P2 0x0
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P4_8x16 0x4
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P4_16x16 0x5
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P4_16x32 0x6
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P4_32x32 0x7
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P8_16x16_8x16 0x8
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P8_16x32_8x16 0x9
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P8_32x32_8x16 0xa
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P8_16x32_16x16 0xb
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P8_32x32_16x16 0xc
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P8_32x32_16x32 0xd
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P8_32x64_32x32 0xe
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P16_32x32_8x16 0x10
+> +#define AMD_FMT_MOD_PIPE_CONFIG_P16_32x32_16x16 0x11
+> +
+> +/*
+> + * TILE_SPLIT, 3 bits.
+> + * Only relevant to Gfx6-8 macro tiled modes.
+> + *
+> + * On GFX6 (or with depth tiling modes on GFX7 and newer),
+> + * the GFX block uses the GB_TILE_MODE.TILE_SPLIT field directly.
+> + *
+> + * On GFX7 and newer with non-depth tiling modes, the GFX block uses a
+> + * split factor which is stored in the GB_TILE_MODE.SAMPLE_SPLIT field.
+> + * SAMPLE_SPLIT may be: 0 - 1 byte; 1 - 2 bytes; 2 - 4 bytes; 3 - 8 bytes.
+> + * The actual tile size and tile split bytes are calculated as follows:
+> + *
+> + *    bpp = ... <- bits per pixel in the current image
+> + *    thickness = ... <- depends on array mode; may be: 1, 4, 8
+> + *    num_samples = ... <- number of samples in the current image
+> + *    tile_size_pixels = 8 * 8
+> + *    tile_bytes_1x = thickness * tile_size_pixels * bpp / 8
+> + *    sample_split_factor = 1 << SAMPLE_SPLIT
+> + *    tile_split_bytes = clamp(tile_bytes_1x * sample_split_factor, 256, dram_row_size_bytes)
+> + *    tile_bytes = clamp(tile_bytes_1x * num_samples, 64, tile_split_bytes)
+> + *
+> + * In both cases, the display block (DCE) has no SAMPLE_SPLIT
+> + * and just needs the tile split bytes in the GRPH_CONTROL.GRPH_TILE_SPLIT field.
+> + * To maximize compatibility between GFX6-7, we don't include the SAMPLE_SPLIT
+> + * in the format modifiers.
+> + *
+> + * The actual tile split in bytes is: 64 << field value
+> + * Possible values of this field:
+> + *
+> + * 0 - Tile split is 64 bytes
+> + * 1 - Tile split is 128 bytes
+> + * 2 - Tile split is 256 bytes
+> + * 3 - Tile split is 512 bytes
+> + * 4 - Tile split is 1 KiB
+> + * 5 - Tile split is 2 KiB
+> + * 6 - Tile split is 4 KiB
+> + */
+> +#define AMD_FMT_MOD_TILE_SPLIT_SHIFT 22ULL
+> +#define AMD_FMT_MOD_TILE_SPLIT_MASK 0x7
+> +
+> +/*
+> + * BANK_WIDTH, 2 bits. Number of tiles in the X direction in the same bank.
+> + * Only relevant to Gfx6-8 macro tiled modes.
+> + * The actual bank width is: 1 << field value
+> + * Possible values:
+> + *
+> + * 0 - bank width is 1
+> + * 1 - bank width is 2
+> + * 2 - bank width is 4
+> + * 3 - bank width is 8
+> + */
+> +#define AMD_FMT_MOD_BANK_WIDTH_SHIFT 25ULL
+> +#define AMD_FMT_MOD_BANK_WIDTH_MASK 0x3
+> +
+> +/*
+> + * BANK_HEIGHT, 2 bits. Number of tiles in the Y direction in the same bank.
+> + * Only relevant to Gfx6-8 macro tiled modes.
+> + * The actual bank height is: 1 << field value
+> + * Possible values:
+> + *
+> + * 0 - bank height is 1
+> + * 1 - bank height is 2
+> + * 2 - bank height is 4
+> + * 3 - bank height is 8
+> + */
+> +#define AMD_FMT_MOD_BANK_HEIGHT_SHIFT 27ULL
+> +#define AMD_FMT_MOD_BANK_HEIGHT_MASK 0x3
+> +
+> +/*
+> + * MACRO_TILE_ASPECT, 2 bits. Macro tile aspect ratio.
+> + * Only relevant to Gfx6-8 macro tiled modes.
+> + * Possible values:
+> + *
+> + * 0 - aspect ratio is 1:1
+> + * 1 - aspect ratio is 4:1
+> + * 2 - aspect ratio is 16:1
+> + * 3 - aspect ratio is 64:1
+> + */
+> +#define AMD_FMT_MOD_MACRO_TILE_ASPECT_SHIFT 29ULL
+> +#define AMD_FMT_MOD_MACRO_TILE_ASPECT_MASK 0x3
+> +
+> +/*
+> + * NUM_BANKS, 2 bits. Number of banks.
+> + * Only relevant to Gfx6-8 macro tiled modes.
+> + * The actual number of banks is: 2 << field value
+> + * Possible values:
+> + *
+> + * 0 - number of banks is 2
+> + * 1 - number of banks is 4
+> + * 2 - number of banks is 8
+> + * 3 - number of banks is 16
+> + */
+> +#define AMD_FMT_MOD_NUM_BANKS_SHIFT 31ULL
+> +#define AMD_FMT_MOD_NUM_BANKS_MASK 0x3
+> +
+>  #define AMD_FMT_MOD_SET(field, value) \
+>  	((__u64)(value) << AMD_FMT_MOD_##field##_SHIFT)
+>  #define AMD_FMT_MOD_GET(field, value) \
+> -- 
+> 2.53.0
+> 
