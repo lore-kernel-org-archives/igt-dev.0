@@ -2,60 +2,59 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F009F606A31E
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 12:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 891D9606A31C
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 12:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=CpEcZCeB
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nGZgHeQe
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id A30F010E4F6;
-	Fri, 27 Nov 2026 12:33:54 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by gabe.freedesktop.org (Postfix) with ESMTPS id A762E10E56C
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2026 12:32:51 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 3D74710E501;
+	Fri, 27 Nov 2026 12:53:46 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 853CB10E501
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2026 12:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795782772; x=1827318772;
+ t=1795783963; x=1827319963;
  h=date:from:to:cc:subject:message-id:references:
  mime-version:in-reply-to;
- bh=li6os6KzvaH8Gr26C37wlKLqIdjoUO+UuiNtWfCJqno=;
- b=CpEcZCeBqGQB2opEYjbODCX25WiEtSCJiPllmfatGp5ID9Vx9IvToCAX
- nOQeTlR4iojNj8BvQskuYDYWHO3BqpNDvVH3tGjA0oqVVgmy2X9lv2X4/
- zWe4W9NEiXYEkVL9Urf6B+DzMvIyP7D5qsaY4CwcjkOkYxxuoUHGecQGa
- GIP7z7cj4DLHq60uLG+wQOhNmVFPN8oFb6XdiRp/5KuzycoNv90GHbeyd
- E85fbZhtVoQGv5+nR2JIaL5o1eHJ6FHRhh1o8rXKnAsKUdnq6dpvVTkNg
- r28tKQ/99umfNnsgwttoCsF7olO2wWpmTLMBTP7+2NhawpCuL5PyWtT1m A==;
-X-CSE-ConnectionGUID: AI+X89pPSV2akqBWeyXAyQ==
-X-CSE-MsgGUID: gtWfwB1xQGi9W9PUQ3Eifg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11979"; a="4693256"
+ bh=rji+w1wGENgr+cg/Q+BwzO2NuLYocl+m6FYR829kXv8=;
+ b=nGZgHeQe/8J2sYrbXdGEJtwtnrMQ5H+Yp27q+9HcQ2ppt6xyqluTmQyC
+ NtM26MVSIhd8Asxkl3Vz73q+JtlvadYkvVpiF6QDbzK2ViSSca1oE/tQk
+ 2w2BCi2UH6cRoSQLLO977yivDGdfWPxYV9tuY08+ZcV7NgL10lbC41HBW
+ iZ4yEAhVXkK+QB5U6Fn3Yo8QVC9NSUgQbJ8FrPgIgtNmYLNhVPCD9k1Mr
+ yzqpWu1M4pWwCCZZX6N0jq2DC1PSugIx0E7MTBK2pz7OZUYhq+iYT6pZ5
+ xmTSGwoZDLAicvtPB+m6iNjzW1TnayZIkY2pJr4WdJYY+bIeOTECJzftc A==;
+X-CSE-ConnectionGUID: P7C4GAOpTsywPvrA7B5aiw==
+X-CSE-MsgGUID: k9PhCV+vQ4KUYVNC4ghZCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11979"; a="4606703"
 X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; 
-   d="scan'208";a="4693256"
-Received: from fmviesa012.fm.intel.com ([10.60.135.152])
- by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2026 04:32:52 -0800
-X-CSE-ConnectionGUID: OHH7DglwTDePSpELse+bkQ==
-X-CSE-MsgGUID: GtlAoBM5S3i6qFEQIhbFJg==
+   d="scan'208";a="4606703"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+ by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2026 04:52:42 -0800
+X-CSE-ConnectionGUID: tsalyRLBSbSR1/5EPZ+Jnw==
+X-CSE-MsgGUID: f6LSjNM3Rfq9M6XblhnJbQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; d="scan'208";a="14064046"
+X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; d="scan'208";a="12414179"
 Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2026 04:32:50 -0800
-Date: Fri, 27 Nov 2026 13:32:47 +0100
+ 27 Nov 2026 04:52:41 -0800
+Date: Fri, 27 Nov 2026 13:52:22 +0100
 From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
-To: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
-Cc: igt-dev@lists.freedesktop.org, 
- Himanshu Girotra <himanshu.girotra@intel.com>
-Subject: Re: [PATCH] lib/pciids: sync with kernel commit 78b2ef7a0c02
-Message-ID: <dm2abxt4feloott4iqwlsyag7bhfsfhyd6jt7dbrsrns3jeilh@5y63tjfdr6bc>
+To: Roy <rongh7426@gmail.com>
+Cc: igt-dev@lists.freedesktop.org, Swati Sharma <swati2.sharma@intel.com>, 
+ Karthik B S <karthik.b.s@intel.com>
+Subject: Re: [PATCH i-g-t] lib/igt_eld: Accept the ASoC hdmi-codec ELD format
+Message-ID: <fnflpngytwky7bsabbbkrbxhq667u4c37ozqirfbofhrp4sd5g@givkorm2oppj>
 Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
- Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>,
- igt-dev@lists.freedesktop.org, 
- Himanshu Girotra <himanshu.girotra@intel.com>
-References: <20261127112441.762644-2-balasubramani.vivekanandan@intel.com>
+ Roy <rongh7426@gmail.com>, igt-dev@lists.freedesktop.org, 
+ Swati Sharma <swati2.sharma@intel.com>, Karthik B S <karthik.b.s@intel.com>
+References: <20261126105345.656307-1-rongh7426@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261127112441.762644-2-balasubramani.vivekanandan@intel.com>
+In-Reply-To: <20261126105345.656307-1-rongh7426@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -74,40 +73,109 @@ X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Balasubramani,
-On 2026-11-27 at 16:54:42 +0530, Balasubramani Vivekanandan wrote:
-> Sync brings new PCI IDs for CRI.
+Hi Roy,
+On 2026-11-26 at 18:53:45 +0800, Roy wrote:
+> eld_parse_entry() only reports a monitor when the ELD file has
+> "monitor_present 1", and eld_get_igt() also needs "eld_valid 1". Those
+> two fields are printed by the HDA HDMI codec only. The ELD files of the
+> ASoC hdmi-codec, used by HDMI audio on Arm boards, start at
+> monitor_name, so every ELD there is treated as having no monitor.
 > 
-> Signed-off-by: Balasubramani Vivekanandan <balasubramani.vivekanandan@intel.com>
+> On a Raspberry Pi 5 (vc4), kms_hdmi_inject's inject-audio fails even
+> though the ELD shows the injected EDID:
+> 
+>   (kms_hdmi_inject) igt_eld-DEBUG: Monitor not present in ELD: /proc/asound/card0/eld#0
+>   (kms_hdmi_inject) CRITICAL: HDMI ELD missing after retry
+> 
+> while /proc/asound/card0/eld#0 has:
+> 
+>   monitor_name		IGT
+>   connection_type	HDMI
+>   eld_version		[0x2] CEA-861D or below
+> 
+> When the two fields are missing, use the ELD version instead. The
+> hdmi-codec shows an all-zero ELD, with eld_version [0x0], when no sink
+> is connected, so a non-zero version means a monitor is present and its
+> ELD is valid. ELD files that have the fields are handled as before.
+> 
+> Tested on a Raspberry Pi 5 (Raspberry Pi OS kernel 6.18.39):
+> kms_hdmi_inject inject-audio fails before and passes after; inject-4k
+> passes both times.
+> 
+> This change and its description were written with the help of an AI
+> coding assistant (Claude); the test runs above were done on real
+> hardware.
 
-Applied, thanks!
+Move this note about AI use after '---' so it will not
+enter git log.
 
+> 
+> Signed-off-by: Roy <rongh7426@gmail.com>
 
-Regards,
-Kamil
+As I wrote, it is better to have full name here like
+first_name last_name <your@email>
+but short nick is also ok, up to you.
+
++cc Swati Sharma <swati2.sharma@intel.com>,
+Karthik B S <karthik.b.s@intel.com>
 
 > ---
->  lib/pciids.h | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+>  lib/igt_eld.c | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 > 
-> diff --git a/lib/pciids.h b/lib/pciids.h
-> index a21609207..ab02bef26 100644
-> --- a/lib/pciids.h
-> +++ b/lib/pciids.h
-> @@ -905,7 +905,12 @@
->  	MACRO__(0x674E, ## __VA_ARGS__), \
->  	MACRO__(0x674F, ## __VA_ARGS__), \
->  	MACRO__(0x6750, ## __VA_ARGS__), \
-> -	MACRO__(0x6751, ## __VA_ARGS__)
-> +	MACRO__(0x6751, ## __VA_ARGS__), \
-> +	MACRO__(0x6752, ## __VA_ARGS__), \
-> +	MACRO__(0x6753, ## __VA_ARGS__), \
-> +	MACRO__(0x6754, ## __VA_ARGS__), \
-> +	MACRO__(0x6755, ## __VA_ARGS__), \
-> +	MACRO__(0x6756, ## __VA_ARGS__)
+> diff --git a/lib/igt_eld.c b/lib/igt_eld.c
+> index 0d3c668..51d2ee7 100644
+> --- a/lib/igt_eld.c
+> +++ b/lib/igt_eld.c
+> @@ -167,6 +167,11 @@ static bool parse_sad_field(struct eld_sad *sad, const char *key, char *value)
+>   *
+>   * Each entry contains one or more SAD blocks. Their contents is exposed in
+>   * sadN_* fields.
+> + *
+> + * The monitor_present and eld_valid fields are printed by the HDA HDMI codec
+> + * only. The ASoC hdmi-codec starts at monitor_name and shows an all-zero ELD
+> + * (eld_version [0x0]) when no sink is connected, so without those fields a
+> + * non-zero ELD version means a monitor is present and its ELD is valid.
+>   */
+>  static bool eld_parse_entry(const char *path, struct eld_entry *eld)
+>  {
+> @@ -175,6 +180,8 @@ static bool eld_parse_entry(const char *path, struct eld_entry *eld)
+>  	char *key, *value, *sad_key;
+>  	size_t len;
+>  	bool monitor_present = false;
+> +	bool has_present = false, has_valid = false;
+> +	unsigned int eld_version = 0;
+>  	bool sad_ok;
+>  	int sad_index;
 >  
->  /* NVL-P */
->  #define INTEL_NVLP_IDS(MACRO__, ...) \
+> @@ -196,10 +203,15 @@ static bool eld_parse_entry(const char *path, struct eld_entry *eld)
+>  		/* Skip whitespace at the beginning */
+>  		value += strspn(value, ELD_DELIM);
+>  
+> +		has_present |= strcmp(key, "monitor_present") == 0;
+> +		has_valid |= strcmp(key, "eld_valid") == 0;
+> +
+>  		if (strcmp(key, "monitor_present") == 0)
+>  			monitor_present = strcmp(value, "1") == 0;
+>  		else if (strcmp(key, "eld_valid") == 0)
+>  			eld->valid = strcmp(value, "1") == 0;
+> +		else if (strcmp(key, "eld_version") == 0)
+> +			sscanf(value, "[0x%x]", &eld_version);
+>  		else if (strcmp(key, "monitor_name") == 0)
+>  			snprintf(eld->monitor_name, sizeof(eld->monitor_name),
+>  				 "%s", value);
+> @@ -227,6 +239,11 @@ static bool eld_parse_entry(const char *path, struct eld_entry *eld)
+>  
+>  	fclose(f);
+>  
+> +	if (!has_present)
+> +		monitor_present = eld_version != 0;
+> +	if (!has_valid)
+> +		eld->valid = monitor_present;
+> +
+>  	if (!monitor_present)
+>  		igt_debug("Monitor not present in ELD: %s\n", path);
+>  	return monitor_present;
 > -- 
-> 2.53.0
+> 2.51.1.windows.1
 > 
