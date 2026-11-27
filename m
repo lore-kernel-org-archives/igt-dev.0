@@ -2,25 +2,25 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEAA606A31C
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 06:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BC5606A327
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 06:50:49 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id EC4B810FC6C;
-	Fri, 27 Nov 2026 06:32:14 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 7DB0A11213B;
+	Fri, 27 Nov 2026 06:50:49 +0000 (UTC)
 Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 93C9611213B;
- Fri, 27 Nov 2026 06:31:11 +0000 (UTC)
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 985D6112341;
+ Fri, 27 Nov 2026 06:49:48 +0000 (UTC)
 Content-Type: multipart/alternative;
- boundary="===============4620110397957542818=="
+ boundary="===============3238249261796910386=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_add_suspend?=
- =?utf-8?q?/resume_test_=28amd=5Fsuspend=29?=
+Subject: =?utf-8?q?=E2=9C=93_i915=2ECI=2EBAT=3A_success_for_tests/amdgpu=3A_add_suspe?=
+ =?utf-8?q?nd/resume_test_=28amd=5Fsuspend=29?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
 To: vitaly.prosyak@amd.com
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Nov 2026 06:31:11 -0000
-Message-ID: <179576107159.97381.16899951375586385636@9ac1b63fe3ea>
+Date: Fri, 27 Nov 2026 06:49:48 -0000
+Message-ID: <179576218861.97421.142973859490666177@9ac1b63fe3ea>
 X-Patchwork-Hint: ignore
 References: <20261127033032.130382-1-vitaly.prosyak@amd.com>
 In-Reply-To: <20261127033032.130382-1-vitaly.prosyak@amd.com>
@@ -36,13 +36,13 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============4620110397957542818==
+--===============3238249261796910386==
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -55,7 +55,7 @@ State : success
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9206_BAT -> XEIGTPW_16226_BAT
+CI Bug Log - changes from IGT_9206 -> IGTPW_16226
 ====================================================
 
 Summary
@@ -65,45 +65,55 @@ Summary
 
   No regressions found.
 
-  
+  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/index.html
 
-Participating hosts (15 -> 15)
+Participating hosts (40 -> 39)
 ------------------------------
 
-  No changes in participating hosts
+  Missing    (1): bat-dg2-13 
 
 Known issues
 ------------
 
-  Here are the changes found in XEIGTPW_16226_BAT that come from known issues:
+  Here are the changes found in IGTPW_16226 that come from known issues:
 
 ### IGT changes ###
 
-#### Possible fixes ####
+#### Issues hit ####
 
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-bmg-1:          [ABORT][1] ([Intel XE#9841]) -> [PASS][2]
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9206/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16226/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html
+  * igt@kms_pm_rpm@basic-pci-d3-state:
+    - bat-rpls-4:         [PASS][1] -> [DMESG-WARN][2] ([i915#13400])
+   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9206/bat-rpls-4/igt@kms_pm_rpm@basic-pci-d3-state.html
+   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/bat-rpls-4/igt@kms_pm_rpm@basic-pci-d3-state.html
 
   
-  [Intel XE#9841]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9841
+#### Possible fixes ####
+
+  * igt@vgem_basic@unload:
+    - bat-rpls-4:         [DMESG-WARN][3] ([i915#13400]) -> [PASS][4]
+   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9206/bat-rpls-4/igt@vgem_basic@unload.html
+   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/bat-rpls-4/igt@vgem_basic@unload.html
+
+  
+  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
 
 
 Build changes
 -------------
 
+  * CI: CI-20190529 -> None
   * IGT: IGT_9206 -> IGTPW_16226
 
+  CI-20190529: 20190529
+  CI_DRM_19621: 17f7eb2368b0eed1dfda22b10966fa181d9b2c83 @ git://anongit.freedesktop.org/gfx-ci/linux
   IGTPW_16226: 16226
   IGT_9206: 9206
-  xe-6246-17f7eb2368b0eed1dfda22b10966fa181d9b2c83: 17f7eb2368b0eed1dfda22b10966fa181d9b2c83
 
 == Logs ==
 
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16226/index.html
+For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/index.html
 
---===============4620110397957542818==
+--===============3238249261796910386==
 Content-Type: text/html; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
@@ -127,36 +137,46 @@ Content-Transfer-Encoding: 7bit
 <tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/179813/">https://patchwork.freedesktop.org/series/179813/</a></td></tr>
 <tr><td><b>State:</b></td><td>success</td></tr>
 
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16226/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16226/index.html</a></td></tr>
+    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/index.html</a></td></tr>
 
 </table>
 
 
-    <h1>CI Bug Log - changes from XEIGT_9206_BAT -&gt; XEIGTPW_16226_BAT</h1>
+    <h1>CI Bug Log - changes from IGT_9206 -&gt; IGTPW_16226</h1>
 <h2>Summary</h2>
 <p><strong>SUCCESS</strong></p>
 <p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
+<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/index.html</p>
+<h2>Participating hosts (40 -&gt; 39)</h2>
+<p>Missing    (1): bat-dg2-13 </p>
 <h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_16226_BAT that come from known issues:</p>
+<p>Here are the changes found in IGTPW_16226 that come from known issues:</p>
 <h3>IGT changes</h3>
+<h4>Issues hit</h4>
+<ul>
+<li>igt@kms_pm_rpm@basic-pci-d3-state:<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9206/bat-rpls-4/igt@kms_pm_rpm@basic-pci-d3-state.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/bat-rpls-4/igt@kms_pm_rpm@basic-pci-d3-state.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
+</ul>
+</li>
+</ul>
 <h4>Possible fixes</h4>
 <ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9206/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9841">Intel XE#9841</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16226/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html">PASS</a></li>
+<li>igt@vgem_basic@unload:<ul>
+<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9206/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16226/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a></li>
 </ul>
 </li>
 </ul>
 <h2>Build changes</h2>
 <ul>
+<li>CI: CI-20190529 -&gt; None</li>
 <li>IGT: IGT_9206 -&gt; IGTPW_16226</li>
 </ul>
-<p>IGTPW_16226: 16226<br />
-  IGT_9206: 9206<br />
-  xe-6246-17f7eb2368b0eed1dfda22b10966fa181d9b2c83: 17f7eb2368b0eed1dfda22b10966fa181d9b2c83</p>
+<p>CI-20190529: 20190529<br />
+  CI_DRM_19621: 17f7eb2368b0eed1dfda22b10966fa181d9b2c83 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
+  IGTPW_16226: 16226<br />
+  IGT_9206: 9206</p>
 
 </body>
 </html>
 
---===============4620110397957542818==--
+--===============3238249261796910386==--
