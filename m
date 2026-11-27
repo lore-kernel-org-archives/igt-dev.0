@@ -2,28 +2,29 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2DB606A31C
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 04:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9107C606A31C
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 04:29:26 +0000 (UTC)
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id BF36C10E048;
-	Fri, 27 Nov 2026 04:24:52 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 430BE10E183;
+	Fri, 27 Nov 2026 04:29:26 +0000 (UTC)
 Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id DAC5A10E048;
- Fri, 27 Nov 2026 04:23:51 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============6132996671096222265=="
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 2D44010E183;
+ Fri, 27 Nov 2026 04:28:29 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=93_Xe=2ECI=2EBAT=3A_success_for_tests/xe=3A_Add_bad_page_de?=
- =?utf-8?q?cay_reclaim_coverage_=28rev2=29?=
+Content-Transfer-Encoding: 7bit
+Subject: =?utf-8?q?=E2=9C=97_LGCI=2EVerificationFailed=3A_failure_for_series_starting?=
+ =?utf-8?q?_with_=5Bi-g-t=2C1/2=5D_tests/kms=5Fbw=3A_Check_is=5Fatomic=2C_no?=
+ =?utf-8?q?t_its_address?=
 From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Tejas Upadhyay" <tejas.upadhyay@intel.com>
+To: "Roy" <rongh7426@gmail.com>
 Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Nov 2026 04:23:51 -0000
-Message-ID: <179575343188.96552.2116521627016438575@9ac1b63fe3ea>
+Date: Fri, 27 Nov 2026 04:28:29 -0000
+Message-ID: <179575370917.96552.14652020642333306872@9ac1b63fe3ea>
 X-Patchwork-Hint: ignore
-References: <20261126111527.3899889-2-tejas.upadhyay@intel.com>
-In-Reply-To: <20261126111527.3899889-2-tejas.upadhyay@intel.com>
+References: <20261126162433.665660-1-rongh7426@gmail.com>
+In-Reply-To: <20261126162433.665660-1-rongh7426@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -36,131 +37,22 @@ List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-1.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-4.0 required=3.0 tests=BAYES_00,MAILING_LIST_MULTI,
+	SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============6132996671096222265==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
 == Series Details ==
 
-Series: tests/xe: Add bad page decay reclaim coverage (rev2)
-URL   : https://patchwork.freedesktop.org/series/177444/
-State : success
+Series: series starting with [i-g-t,1/2] tests/kms_bw: Check is_atomic, not its address
+URL   : https://patchwork.freedesktop.org/series/179773/
+State : failure
 
 == Summary ==
 
-CI Bug Log - changes from XEIGT_9205_BAT -> XEIGTPW_16223_BAT
-====================================================
-
-Summary
--------
-
-  **SUCCESS**
-
-  No regressions found.
-
-  
-
-Participating hosts (15 -> 15)
-------------------------------
-
-  No changes in participating hosts
-
-Known issues
-------------
-
-  Here are the changes found in XEIGTPW_16223_BAT that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@core_hotunplug@unbind-rebind:
-    - bat-bmg-1:          [PASS][1] -> [ABORT][2] ([Intel XE#9841])
-   [1]: https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9205/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html
-   [2]: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16223/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html
-
-  
-  [Intel XE#9841]: https://gitlab.freedesktop.org/drm/xe/kernel/issues/9841
+Series author address 'rongh7426@gmail.com' is not on the allowlist, which prevents CI from being automatically triggered.
+If you want CI to run for this series, ask Patchwork project owners to click 'retest' on the series in Patchwork.
+Exception occurred during validation, bailing out!
+Build URL: http://gfx-ci.igk.intel.com:8080/job/CI_IGTPW_check/244230/ (on cidrm1)
 
 
-Build changes
--------------
-
-  * IGT: IGT_9205 -> IGTPW_16223
-  * Linux: xe-6245-b9ca025eaaa7b876bdd4a17bb77dc35d6d648648 -> xe-6246-17f7eb2368b0eed1dfda22b10966fa181d9b2c83
-
-  IGTPW_16223: 16223
-  IGT_9205: 9205
-  xe-6245-b9ca025eaaa7b876bdd4a17bb77dc35d6d648648: b9ca025eaaa7b876bdd4a17bb77dc35d6d648648
-  xe-6246-17f7eb2368b0eed1dfda22b10966fa181d9b2c83: 17f7eb2368b0eed1dfda22b10966fa181d9b2c83
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16223/index.html
-
---===============6132996671096222265==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe: Add bad page decay reclaim coverage (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177444/">https://patchwork.freedesktop.org/series/177444/</a></td></tr>
-<tr><td><b>State:</b></td><td>success</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16223/index.html">https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16223/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from XEIGT_9205_BAT -&gt; XEIGTPW_16223_BAT</h1>
-<h2>Summary</h2>
-<p><strong>SUCCESS</strong></p>
-<p>No regressions found.</p>
-<h2>Participating hosts (15 -&gt; 15)</h2>
-<p>No changes in participating hosts</p>
-<h2>Known issues</h2>
-<p>Here are the changes found in XEIGTPW_16223_BAT that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>igt@core_hotunplug@unbind-rebind:<ul>
-<li>bat-bmg-1:          <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGT_9205/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/intel-xe/IGTPW_16223/bat-bmg-1/igt@core_hotunplug@unbind-rebind.html">ABORT</a> (<a href="https://gitlab.freedesktop.org/drm/xe/kernel/issues/9841">Intel XE#9841</a>)</li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>IGT: IGT_9205 -&gt; IGTPW_16223</li>
-<li>Linux: xe-6245-b9ca025eaaa7b876bdd4a17bb77dc35d6d648648 -&gt; xe-6246-17f7eb2368b0eed1dfda22b10966fa181d9b2c83</li>
-</ul>
-<p>IGTPW_16223: 16223<br />
-  IGT_9205: 9205<br />
-  xe-6245-b9ca025eaaa7b876bdd4a17bb77dc35d6d648648: b9ca025eaaa7b876bdd4a17bb77dc35d6d648648<br />
-  xe-6246-17f7eb2368b0eed1dfda22b10966fa181d9b2c83: 17f7eb2368b0eed1dfda22b10966fa181d9b2c83</p>
-
-</body>
-</html>
-
---===============6132996671096222265==--
