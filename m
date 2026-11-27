@@ -2,28 +2,53 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275AC606A338
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 04:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3B6606A31C
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 04:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GCsP7QsP
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id 6EC6810E0C2;
-	Fri, 27 Nov 2026 04:38:20 +0000 (UTC)
-Received: from 9ac1b63fe3ea (emeril.freedesktop.org [131.252.210.167])
- by gabe.freedesktop.org (Postfix) with ESMTPS id 51FD010E0C2;
- Fri, 27 Nov 2026 04:37:22 +0000 (UTC)
-Content-Type: multipart/alternative;
- boundary="===============4420979488927831991=="
+	by gabe.freedesktop.org (Postfix) with ESMTP id 48A1710E799;
+	Fri, 27 Nov 2026 04:46:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 639FE10E799
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2026 04:45:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+ d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+ t=1795754708; x=1827290708;
+ h=from:to:cc:subject:date:message-id:mime-version:
+ content-transfer-encoding;
+ bh=F326g/oYYj+zc4NEgp0iGRgzU6yS/6eBzLo+CXqMcQo=;
+ b=GCsP7QsPPWqFjnw8+kXRU9HAor43lNflKIfJe5tvrEbbL9C2DNoYH2fN
+ 4YJYOSqAIxGYv0XexZEd/PeUFEhw0ILG9QJS/tBAcbBQ1oYKUEYEE2CYS
+ 2DOKdTw+9BLR0LGp+wWaW/JMA5fXsavIidTTSGe5vqZYV5CTThJx13N8Z
+ GnYlyWNk3zEeSd0YyDo/OqfOzmVRuF94pMKZZyKAXG+ENnu8i9QBsCohx
+ YUTo7aCRNvhaXJO6orHU5apgfKPaN2Htm/Mp+/2qZczYQQw+FJ/mi/uou
+ kLVz+s24Pf+DCu5uaI1E98p4M3UfUStBmy/TuHz+2jl36jYOuAGb5TBmi A==;
+X-CSE-ConnectionGUID: 0MC2h+SGQAqR57KM1EhIhQ==
+X-CSE-MsgGUID: v53qBq6fQIyP9eYW0pubXg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11978"; a="4674226"
+X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; 
+   d="scan'208";a="4674226"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+ by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 26 Nov 2026 20:45:07 -0800
+X-CSE-ConnectionGUID: w7ooucSdQmib3r/piS1PsA==
+X-CSE-MsgGUID: blWZ4d0oQ/mcJgJEsN7fBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; d="scan'208";a="12096036"
+Received: from hgirotra-desk.iind.intel.com ([10.190.216.57])
+ by orviesa008.jf.intel.com with ESMTP; 26 Nov 2026 20:45:05 -0800
+From: Himanshu Girotra <himanshu.girotra@intel.com>
+To: igt-dev@lists.freedesktop.org
+Cc: ramadevi.gandi@intel.com, nishit.sharma@intel.com,
+ zbigniew.kempczynski@intel.com
+Subject: [PATCH i-g-t 0/2] Enable TG preemption testing on CRI
+Date: Fri, 27 Nov 2026 10:15:02 +0530
+Message-ID: <20261127044504.4119774-1-himanshu.girotra@intel.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Subject: =?utf-8?q?=E2=9C=97_i915=2ECI=2EBAT=3A_failure_for_tests/xe=3A_Add_bad_page_?=
- =?utf-8?q?decay_reclaim_coverage_=28rev2=29?=
-From: Patchwork <patchwork@emeril.freedesktop.org>
-To: "Tejas Upadhyay" <tejas.upadhyay@intel.com>
-Cc: igt-dev@lists.freedesktop.org
-Date: Fri, 27 Nov 2026 04:37:22 -0000
-Message-ID: <179575424232.96586.14793426927624583605@9ac1b63fe3ea>
-X-Patchwork-Hint: ignore
-References: <20261126111527.3899889-2-tejas.upadhyay@intel.com>
-In-Reply-To: <20261126111527.3899889-2-tejas.upadhyay@intel.com>
+Content-Transfer-Encoding: 8bit
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -34,210 +59,33 @@ List-Post: <mailto:igt-dev@lists.freedesktop.org>
 List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
-Reply-To: igt-dev@lists.freedesktop.org
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-6.0 required=3.0 tests=BAYES_00,HTML_MESSAGE,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
---===============4420979488927831991==
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+CRI (Xe3p_XPC, 35.11) advertises only WMTP in the compute preempt
+table, so xe_compute_preempt@compute-threadgroup-preempt is skipped on
+CRI. Thread group preemption is supported on CRI and uses the same
+xe3p preemption path as 35.10.
 
-== Series Details ==
+Patch 1 advertises PREEMPT_TGP for 35.11.
+Patch 2 enables the test in CRI CI.
 
-Series: tests/xe: Add bad page decay reclaim coverage (rev2)
-URL   : https://patchwork.freedesktop.org/series/177444/
-State : failure
+Tested on CRI silicon (kernel 7.4.0-rc4):
+- xe_compute_preempt: all subtests pass
 
-== Summary ==
+Himanshu Girotra (2):
+  lib/intel_compute: Enable TG preemption for Xe3p_XPC 35.11
+  tests/intel-ci: Unblock compute-threadgroup-preempt on CRI
 
-CI Bug Log - changes from IGT_9205 -> IGTPW_16223
-====================================================
+ lib/intel_compute.c                      | 2 +-
+ tests/intel-ci/xe.cri.core.blocklist.txt | 4 ----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-Summary
--------
+-- 
+2.53.0
 
-  **FAILURE**
-
-  Serious unknown changes coming with IGTPW_16223 absolutely need to be
-  verified manually.
-  
-  If you think the reported changes have nothing to do with the changes
-  introduced in IGTPW_16223, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them
-  to document this new failure mode, which will reduce false positives in CI.
-
-  External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/index.html
-
-Participating hosts (40 -> 39)
-------------------------------
-
-  Missing    (1): bat-dg2-13 
-
-Possible new issues
--------------------
-
-  Here are the unknown changes that may have been introduced in IGTPW_16223:
-
-### IGT changes ###
-
-#### Possible regressions ####
-
-  * igt@i915_selftest@live:
-    - bat-rpls-4:         [PASS][1] -> [INCOMPLETE][2] +1 other test incomplete
-   [1]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/bat-rpls-4/igt@i915_selftest@live.html
-   [2]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/bat-rpls-4/igt@i915_selftest@live.html
-
-  
-Known issues
-------------
-
-  Here are the changes found in IGTPW_16223 that come from known issues:
-
-### IGT changes ###
-
-#### Issues hit ####
-
-  * igt@kms_pipe_crc_basic@read-crc:
-    - fi-skl-6600u:       [PASS][3] -> [INCOMPLETE][4] ([i915#10056] / [i915#16789])
-   [3]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/fi-skl-6600u/igt@kms_pipe_crc_basic@read-crc.html
-   [4]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/fi-skl-6600u/igt@kms_pipe_crc_basic@read-crc.html
-
-  * igt@kms_pipe_crc_basic@read-crc@pipe-b-edp-1:
-    - fi-skl-6600u:       [PASS][5] -> [INCOMPLETE][6] ([i915#16789])
-   [5]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/fi-skl-6600u/igt@kms_pipe_crc_basic@read-crc@pipe-b-edp-1.html
-   [6]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/fi-skl-6600u/igt@kms_pipe_crc_basic@read-crc@pipe-b-edp-1.html
-
-  * igt@vgem_basic@unload:
-    - bat-rpls-4:         [PASS][7] -> [DMESG-WARN][8] ([i915#13400])
-   [7]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/bat-rpls-4/igt@vgem_basic@unload.html
-   [8]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/bat-rpls-4/igt@vgem_basic@unload.html
-
-  
-#### Possible fixes ####
-
-  * igt@i915_pm_rpm@module-reload:
-    - fi-tgl-1115g4:      [FAIL][9] ([i915#17751]) -> [PASS][10]
-   [9]: https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-   [10]: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html
-
-  
-  [i915#10056]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10056
-  [i915#13400]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400
-  [i915#16789]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16789
-  [i915#17751]: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17751
-
-
-Build changes
--------------
-
-  * CI: CI-20190529 -> None
-  * IGT: IGT_9205 -> IGTPW_16223
-
-  CI-20190529: 20190529
-  CI_DRM_19621: 17f7eb2368b0eed1dfda22b10966fa181d9b2c83 @ git://anongit.freedesktop.org/gfx-ci/linux
-  IGTPW_16223: 16223
-  IGT_9205: 9205
-
-== Logs ==
-
-For more details see: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/index.html
-
---===============4420979488927831991==
-Content-Type: text/html; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-  <title>Project List - Patchwork</title>
-  <style id="css-table-select" type="text/css">
-   td { padding: 2pt; }
-  </style>
-</head>
-<body>
-
-
-<b>Patch Details</b>
-<table>
-<tr><td><b>Series:</b></td><td>tests/xe: Add bad page decay reclaim coverage (rev2)</td></tr>
-<tr><td><b>URL:</b></td><td><a href="https://patchwork.freedesktop.org/series/177444/">https://patchwork.freedesktop.org/series/177444/</a></td></tr>
-<tr><td><b>State:</b></td><td>failure</td></tr>
-
-    <tr><td><b>Details:</b></td><td><a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/index.html">https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/index.html</a></td></tr>
-
-</table>
-
-
-    <h1>CI Bug Log - changes from IGT_9205 -&gt; IGTPW_16223</h1>
-<h2>Summary</h2>
-<p><strong>FAILURE</strong></p>
-<p>Serious unknown changes coming with IGTPW_16223 absolutely need to be<br />
-  verified manually.</p>
-<p>If you think the reported changes have nothing to do with the changes<br />
-  introduced in IGTPW_16223, please notify your bug team (I915-ci-infra@lists.freedesktop.org) to allow them<br />
-  to document this new failure mode, which will reduce false positives in CI.</p>
-<p>External URL: https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/index.html</p>
-<h2>Participating hosts (40 -&gt; 39)</h2>
-<p>Missing    (1): bat-dg2-13 </p>
-<h2>Possible new issues</h2>
-<p>Here are the unknown changes that may have been introduced in IGTPW_16223:</p>
-<h3>IGT changes</h3>
-<h4>Possible regressions</h4>
-<ul>
-<li>igt@i915_selftest@live:<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/bat-rpls-4/igt@i915_selftest@live.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/bat-rpls-4/igt@i915_selftest@live.html">INCOMPLETE</a> +1 other test incomplete</li>
-</ul>
-</li>
-</ul>
-<h2>Known issues</h2>
-<p>Here are the changes found in IGTPW_16223 that come from known issues:</p>
-<h3>IGT changes</h3>
-<h4>Issues hit</h4>
-<ul>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/fi-skl-6600u/igt@kms_pipe_crc_basic@read-crc.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/fi-skl-6600u/igt@kms_pipe_crc_basic@read-crc.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/10056">i915#10056</a> / <a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16789">i915#16789</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@kms_pipe_crc_basic@read-crc@pipe-b-edp-1:</p>
-<ul>
-<li>fi-skl-6600u:       <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/fi-skl-6600u/igt@kms_pipe_crc_basic@read-crc@pipe-b-edp-1.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/fi-skl-6600u/igt@kms_pipe_crc_basic@read-crc@pipe-b-edp-1.html">INCOMPLETE</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/16789">i915#16789</a>)</li>
-</ul>
-</li>
-<li>
-<p>igt@vgem_basic@unload:</p>
-<ul>
-<li>bat-rpls-4:         <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/bat-rpls-4/igt@vgem_basic@unload.html">PASS</a> -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/bat-rpls-4/igt@vgem_basic@unload.html">DMESG-WARN</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13400">i915#13400</a>)</li>
-</ul>
-</li>
-</ul>
-<h4>Possible fixes</h4>
-<ul>
-<li>igt@i915_pm_rpm@module-reload:<ul>
-<li>fi-tgl-1115g4:      <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGT_9205/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">FAIL</a> (<a href="https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/17751">i915#17751</a>) -&gt; <a href="https://intel-gfx-ci.01.org/tree/drm-tip/IGTPW_16223/fi-tgl-1115g4/igt@i915_pm_rpm@module-reload.html">PASS</a></li>
-</ul>
-</li>
-</ul>
-<h2>Build changes</h2>
-<ul>
-<li>CI: CI-20190529 -&gt; None</li>
-<li>IGT: IGT_9205 -&gt; IGTPW_16223</li>
-</ul>
-<p>CI-20190529: 20190529<br />
-  CI_DRM_19621: 17f7eb2368b0eed1dfda22b10966fa181d9b2c83 @ git://anongit.freedesktop.org/gfx-ci/linux<br />
-  IGTPW_16223: 16223<br />
-  IGT_9205: 9205</p>
-
-</body>
-</html>
-
---===============4420979488927831991==--
