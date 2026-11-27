@@ -2,53 +2,57 @@ Received: from gabe.freedesktop.org (gabe.freedesktop.org [131.252.210.177])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C6B606A31E
-	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 12:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99A1606A31C
+	for <igt-dev@archiver.kernel.org>; Fri, 27 Nov 2026 12:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AxrCdoOR
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=dTbbbNda
 Received: from gabe.freedesktop.org (localhost [127.0.0.1])
-	by gabe.freedesktop.org (Postfix) with ESMTP id E88C710E568;
-	Fri, 27 Nov 2026 12:25:28 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
- by gabe.freedesktop.org (Postfix) with ESMTPS id C0C9B10E568
- for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2026 12:24:21 +0000 (UTC)
+	by gabe.freedesktop.org (Postfix) with ESMTP id 5F7F210E5C8;
+	Fri, 27 Nov 2026 12:30:44 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+ by gabe.freedesktop.org (Postfix) with ESMTPS id 497F210E5C8
+ for <igt-dev@lists.freedesktop.org>; Fri, 27 Nov 2026 12:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
- t=1795782262; x=1827318262;
- h=from:to:cc:subject:date:message-id:mime-version:
- content-transfer-encoding;
- bh=SBckZniqmbi6pKKwNyQCQPfQRZ2qQ7h1si86bI8ZCwg=;
- b=AxrCdoORifA5fPcAybEZZU50/4vkSJLuPMGbWczMdv430xXLeJw8rdWP
- LY12iskMqMwqpzZ8poscAzJ9ZBRNsPd0pCL/JProxWVL+xTlbwfCVvGq1
- vAyDhZPEtc5eNBhvpjrweBN0sZqSk9XcYkLRYqOu9jUsAuXmyHPwdEvB4
- tX5r8fLnCNT18ERprH8ko5qsfqfS00wUaBR6JFyhj+os8I592Gv4hZGxW
- HtPPAzDNnBDJA91r33aNz5B+U6pnY4AOr+MRvDDHovTXjizvCKa6KD6Sl
- RbM/48YTBUl5lzNDpxt58GCq5TZ5tcXrFPjLGYFqqzJ0rCJGKtWksnMXA w==;
-X-CSE-ConnectionGUID: dNYEJIrYTHqfKNaEY/X5QA==
-X-CSE-MsgGUID: AMYKjYzNRXqybaRfVPIu8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11979"; a="4538580"
+ t=1795782582; x=1827318582;
+ h=date:from:to:cc:subject:message-id:references:
+ mime-version:in-reply-to;
+ bh=JyRl7oAFp0J8JOwRfGZQKCHCqtfmatwZK29fdu5F3Ns=;
+ b=dTbbbNdaDS0l/jsc2aGL44L/JtjgOve10BVUxZsWX3L/kl/zhUcOUv4K
+ mzWYD+2N6QISdpl4AQl58cyzCOQQ+4OVHh5B3mDWWfF3LequXEvLLR7fJ
+ bLm3lFT5FeK4O8ybXtiNWroYC9mxLPQ11GpRov/lc4vqFAoaiXzaRiP/5
+ PUqyhlpkAARq29y62t4/A5XC97H2S6MOC3PlMzwLXIFQknNbKuOf8Lvz6
+ h32mOFmEouOf9mDVfu15afexaQ7jQ6WvHvknKIov0zUQ+BIN0909R1Vv+
+ GNAPIPgK0j1q2JoEYMSzIrOih60n8TrTp4X50zqC3fIP091UK5Yw5fn9g A==;
+X-CSE-ConnectionGUID: 0RRT9ZfOTbyjsXDwCkMvsg==
+X-CSE-MsgGUID: k4/YTCyOQu64LI9hBHsEUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11979"; a="4784636"
 X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; 
-   d="scan'208";a="4538580"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
- by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
- 27 Nov 2026 04:24:22 -0800
-X-CSE-ConnectionGUID: mqzA7PHWSeuAsnBrNVVGbg==
-X-CSE-MsgGUID: 2v7Il33KRRWBsT0tQbtYbQ==
+   d="scan'208";a="4784636"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+ by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2026 04:29:41 -0800
+X-CSE-ConnectionGUID: zpGigyMRS0eWKkyePhWkeQ==
+X-CSE-MsgGUID: Eu6hfokTRReAtkeBJ784pg==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; d="scan'208";a="12525164"
-Received: from vmuppidi-nuc8i7beh.iind.intel.com ([10.223.55.76])
- by fmviesa005.fm.intel.com with ESMTP; 27 Nov 2026 04:24:20 -0800
-From: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-To: igt-dev@lists.freedesktop.org
-Cc: ramadevi.gandi@intel.com, himanshu.girotra@intel.com,
- Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
-Subject: [PATCH i-g-t v2] intel-ci: Update blocklist for CRI core
-Date: Fri, 27 Nov 2026 17:58:18 +0530
-Message-ID: <20261127122818.5410-1-venkateswara.rao.muppidi@intel.com>
-X-Mailer: git-send-email 2.43.0
+X-IronPort-AV: E=Sophos;i="6.27,236,1787036400"; d="scan'208";a="12991649"
+Received: from kamilkon-desk.igk.intel.com (HELO localhost) ([10.211.136.201])
+ by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 27 Nov 2026 04:29:39 -0800
+Date: Fri, 27 Nov 2026 13:29:36 +0100
+From: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+To: Roy <rongh7426@gmail.com>
+Cc: igt-dev@lists.freedesktop.org
+Subject: Re: [PATCH i-g-t 1/2] tests/kms_bw: Check is_atomic, not its address
+Message-ID: <zmsmnmqd6pqrrswbcyw6zw7gqa6dyoivlczqzxh26mov2vojay@crprfrh4joyi>
+Mail-Followup-To: Kamil Konieczny <kamil.konieczny@linux.intel.com>, 
+ Roy <rongh7426@gmail.com>, igt-dev@lists.freedesktop.org
+References: <20261126162433.665660-1-rongh7426@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261126162433.665660-1-rongh7426@gmail.com>
 X-BeenThere: igt-dev@lists.freedesktop.org
 X-Mailman-Version: 2.1.29
 Precedence: list
@@ -60,52 +64,55 @@ List-Help: <mailto:igt-dev-request@lists.freedesktop.org?subject=help>
 List-Subscribe: <https://lists.freedesktop.org/mailman/listinfo/igt-dev>,
  <mailto:igt-dev-request@lists.freedesktop.org?subject=subscribe>
 Sender: "igt-dev" <igt-dev-bounces@lists.freedesktop.org>
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_NONE,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add two more valid skips to the CRI core blocklist:
+Hi Roy,
+On 2026-11-27 at 00:24:32 +0800, Roy wrote:
+> The fixture has igt_require(&data.display.is_atomic), which is always
+> true, so the test also runs on drivers without atomic modesetting
+> support. Test the value instead.
 
-- xe_evict@evict(-beng)?-large-multi-vm(-cm)?: bo_size is 3/8 of VRAM,
-  which exceeds the usable system memory on CRI. The working set size
-  evaluates to zero and the test skips.
-- xe_survivability@runtime-survivability: csc_hw_err debugfs support is
-  not currently required on CRI, so the test is skipped.
+Nice catch!
 
-V2:
-CPU-bind implementation replaced the legacy GPU-bind mechanism on CRI,
-so the test is not applicable.
+> 
+> This change and its description were written with the help of an AI
+> coding assistant (Claude).
 
-Signed-off-by: Venkateswara Rao Muppidi <venkateswara.rao.muppidi@intel.com>
----
- tests/intel-ci/xe.cri.core.blocklist.txt | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Please do not add it here, better place is after '---' line,
+so it will not enter git log.
 
-diff --git a/tests/intel-ci/xe.cri.core.blocklist.txt b/tests/intel-ci/xe.cri.core.blocklist.txt
-index 6b77523d6..2a708e50e 100644
---- a/tests/intel-ci/xe.cri.core.blocklist.txt
-+++ b/tests/intel-ci/xe.cri.core.blocklist.txt
-@@ -76,3 +76,17 @@ igt@xe_mmap@small-bar
- ##################################################################
- igt@xe_vm@single-op-map-mirror-over-bound
- ##################################################################
-+#Valid Skip: bo_size (3/8 of VRAM) exceeds usable system
-+# memory -> ws==0 -> skip
-+##################################################################
-+igt@xe_evict@evict(?:-beng)?-large-multi-vm(?:-cm)?
-+##################################################################
-+# Valid Skip: csc_hw_err debugfs support is currently not required
-+##################################################################
-+igt@xe_survivability@runtime-survivability
-+##################################################################
-+#Valid Skip: CPU-bind implementation replaced legacy GPU-bind
-+# mechanism
-+##################################################################
-+igt@xe_vm@bind-array-enobufs
-+##################################################################
--- 
-2.43.0
+> 
+> Signed-off-by: Roy <rongh7426@gmail.com>
 
+As I wrote, it is better to have full name here.
+
+> ---
+>  tests/kms_bw.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tests/kms_bw.c b/tests/kms_bw.c
+> index ea7cf7b..10bb520 100644
+> --- a/tests/kms_bw.c
+> +++ b/tests/kms_bw.c
+> @@ -334,7 +334,7 @@ int igt_main()
+>  		kmstest_set_vt_graphics_mode();
+>  
+>  		igt_display_require(&data.display, data.fd);
+> -		igt_require(&data.display.is_atomic);
+> +		igt_require(data.display.is_atomic);
+
+Reviewed-by: Kamil Konieczny <kamil.konieczny@linux.intel.com>
+
+Regards,
+Kamil
+>  		igt_display_require_output(&data.display);
+>  
+>  	}
+> -- 
+> 2.51.1.windows.1
+> 
